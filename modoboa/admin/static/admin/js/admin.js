@@ -493,6 +493,15 @@ Identities.prototype = {
                 return true;
             }
         });
+        $("#original_senderaddress").dynamic_input({
+            input_added: function($row) {
+                $row.find("label").html("");
+            },
+            input_removed: function($input) {
+                $input.parents(".form-group").remove();
+                return true;
+            }
+        });
         $("#id_email").autocompleter({
             from_character: "@",
             choices: $.proxy(this.get_domain_list, this)

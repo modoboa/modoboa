@@ -22,7 +22,7 @@ from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.validators import validate_utf8_email
 from modoboa.lib.web_utils import render_to_json_response
 
-from ..models import Domain, Mailbox, Alias
+from .. import models
 
 
 class AccountFormGeneral(forms.ModelForm):
@@ -197,6 +197,16 @@ class AccountFormMail(forms.Form, DynamicForm):
             "a 'catchall' alias (ex: *@domain.tld)."
         )
     )
+    senderaddress = lib_fields.UTF8AndEmptyUserEmailField(
+        label=ugettext_lazy("Sender addresses"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Additional sender address(es) for this account. The user will be "
+            "allowed to send emails using this address, even if it "
+            "does not exist locally. Indicate one address per input. Press "
+            "ENTER to add a new input."
+        )
+    )
 
     def __init__(self, *args, **kwargs):
         self.mb = kwargs.pop("instance", None)
@@ -211,14 +221,17 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.extra_fields.append(fname)
         if self.mb is not None:
             self.fields["email"].required = True
-            cpt = 1
             qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
-            for ralias in qset:
-                name = "aliases_%d" % cpt
+            for cpt, ralias in enumerate(qset):
+                name = "aliases_{}".format(cpt + 1)
                 self._create_field(
                     lib_fields.UTF8AndEmptyUserEmailField, name,
                     ralias.alias.address)
-                cpt += 1
+            for cpt, saddress in enumerate(self.mb.senderaddress_set.all()):
+                name = "senderaddress_{}".format(cpt + 1)
+                self._create_field(
+                    lib_fields.UTF8AndEmptyUserEmailField, name,
+                    saddress.address)
             self.fields["email"].initial = self.mb.full_address
             self.fields["quota_act"].initial = self.mb.use_domain_quota
             if not self.mb.use_domain_quota and self.mb.quota:
@@ -229,6 +242,9 @@ class AccountFormMail(forms.Form, DynamicForm):
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(
                 args[0], "aliases", lib_fields.UTF8AndEmptyUserEmailField)
+            self._load_from_qdict(
+                args[0], "senderaddress",
+                lib_fields.UTF8AndEmptyUserEmailField)
 
     def clean_email(self):
         """Ensure lower case emails"""
@@ -237,8 +253,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not domname:
             return email
         try:
-            self.domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
+            self.domain = models.Domain.objects.get(name=domname)
+        except models.Domain.DoesNotExist:
             raise forms.ValidationError(_("Domain does not exist"))
         if not self.mb:
             try:
@@ -254,23 +270,27 @@ class AccountFormMail(forms.Form, DynamicForm):
 
         Check if quota is >= 0 only when the domain value is not used.
         """
-        super(AccountFormMail, self).clean()
-        if not self.cleaned_data["quota_act"] \
-                and self.cleaned_data['quota'] is not None:
-            if self.cleaned_data["quota"] < 0:
-                self.add_error("quota", _("Must be a positive integer"))
+        cleaned_data = super(AccountFormMail, self).clean()
+        condition = (
+            not cleaned_data["quota_act"] and
+            cleaned_data["quota"] is not None and
+            cleaned_data["quota"] < 0)
+        if condition:
+            self.add_error("quota", _("Must be a positive integer"))
         self.aliases = []
-        for name, value in self.cleaned_data.iteritems():
-            if not name.startswith("aliases"):
-                continue
+        self.sender_addresses = []
+        for name, value in cleaned_data.iteritems():
             if value == "":
                 continue
-            local_part, domname = split_mailbox(value)
-            if not Domain.objects.filter(name=domname).exists():
-                self.add_error(name, _("Local domain does not exist"))
-                break
-            self.aliases.append(value.lower())
-        return self.cleaned_data
+            if name.startswith("aliases"):
+                local_part, domname = split_mailbox(value)
+                if not models.Domain.objects.filter(name=domname).exists():
+                    self.add_error(name, _("Local domain does not exist"))
+                    continue
+                self.aliases.append(value.lower())
+            elif name.startswith("senderaddress"):
+                self.sender_addresses.append(value.lower())
+        return cleaned_data
 
     def create_mailbox(self, user, account):
         """Create a mailbox associated to :kw:`account`."""
@@ -278,7 +298,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             raise lib_exceptions.PermDeniedException
         core_signals.can_create_object.send(
             self.__class__, context=user, object_type="mailboxes")
-        self.mb = Mailbox(
+        self.mb = models.Mailbox(
             address=self.locpart, domain=self.domain, user=account,
             use_domain_quota=self.cleaned_data["quota_act"])
         self.mb.set_quota(self.cleaned_data["quota"],
@@ -311,11 +331,26 @@ class AccountFormMail(forms.Form, DynamicForm):
                     alias__address=alias).exists():
                 continue
             local_part, domname = split_mailbox(alias)
-            al = Alias(address=alias, enabled=account.is_active)
-            al.domain = Domain.objects.get(name=domname)
+            al = models.Alias(address=alias, enabled=account.is_active)
+            al.domain = models.Domain.objects.get(name=domname)
             al.save()
             al.set_recipients([self.mb.full_address])
             al.post_create(user)
+
+    def _update_sender_addresses(self):
+        """Update mailbox sender addresses."""
+        for saddress in self.mb.senderaddress_set.all():
+            if saddress.address not in self.sender_addresses:
+                saddress.delete()
+            else:
+                self.sender_addresses.remove(saddress.address)
+        if not len(self.sender_addresses):
+            return
+        to_create = []
+        for saddress in self.sender_addresses:
+            to_create.append(
+                models.SenderAddress(address=saddress, mailbox=self.mb))
+        models.SenderAddress.objects.bulk_create(to_create)
 
     def save(self, user, account):
         """Save or update account mailbox."""
@@ -339,6 +374,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         account.save()
 
         self._update_aliases(user, account)
+        self._update_sender_addresses()
 
         return self.mb
 
@@ -361,7 +397,8 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
 
         if not hasattr(self, "account") or self.account is None:
             return
-        for pos, dom in enumerate(Domain.objects.get_for_admin(self.account)):
+        qset = models.Domain.objects.get_for_admin(self.account)
+        for pos, dom in enumerate(qset):
             name = "domains_%d" % (pos + 1)
             self._create_field(lib_fields.DomainNameField, name, dom.name)
         if len(args) and isinstance(args[0], QueryDict):
@@ -370,7 +407,8 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
 
     def save(self):
         current_domains = [
-            dom.name for dom in Domain.objects.get_for_admin(self.account)
+            dom.name for dom in
+            models.Domain.objects.get_for_admin(self.account)
         ]
         for name, value in self.cleaned_data.items():
             if not name.startswith("domains"):
@@ -378,34 +416,31 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             if value in ["", None]:
                 continue
             if value not in current_domains:
-                domain = Domain.objects.get(name=value)
+                domain = models.Domain.objects.get(name=value)
                 domain.add_admin(self.account)
 
-        for domain in Domain.objects.get_for_admin(self.account):
+        for domain in models.Domain.objects.get_for_admin(self.account):
             if not filter(lambda name: self.cleaned_data[name] == domain.name,
                           self.cleaned_data.keys()):
                 domain.remove_admin(self.account)
 
 
 class AccountForm(TabForms):
-
     """Account edition form."""
 
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
         self.forms = [
-            dict(id="general", title=_("General"),
-                 formtpl="admin/account_general_form.html",
-                 cls=AccountFormGeneral,
-                 new_args=[self.user], mandatory=True),
-            dict(id="mail",
-                 title=_("Mail"), formtpl="admin/mailform.html",
-                 cls=AccountFormMail),
-            dict(
-                id="perms", title=_("Permissions"),
-                formtpl="admin/permsform.html",
-                cls=AccountPermissionsForm
-            )
+            {"id": "general", "title": _("General"),
+             "formtpl": "admin/account_general_form.html",
+             "cls": AccountFormGeneral,
+             "new_args": [self.user], "mandatory": True},
+            {"id": "mail",
+             "title": _("Mail"), "formtpl": "admin/mailform.html",
+             "cls": AccountFormMail},
+            {"id": "perms", "title": _("Permissions"),
+             "formtpl": "admin/permsform.html",
+             "cls": AccountPermissionsForm}
         ]
         cbargs = [self.user]
         if "instances" in kwargs:

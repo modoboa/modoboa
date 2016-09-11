@@ -2,6 +2,20 @@
 
 """Core application constants."""
 
+from django.utils.translation import ugettext_lazy
+
+SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
+DOMAINADMINS_ROLE = ("DomainAdmins", ugettext_lazy("Domain administrator"))
+RESELLERS_ROLE = ("Resellers", ugettext_lazy("Reseller"))
+SUPERADMINS_ROLE = ("SuperAdmins", ugettext_lazy("Super administrator"))
+
+ROLES = (
+    SIMPLEUSERS_ROLE,
+    DOMAINADMINS_ROLE,
+    RESELLERS_ROLE,
+    SUPERADMINS_ROLE,
+)
+
 ADMIN_GROUPS = [
     "SuperAdmins",
     "Resellers",

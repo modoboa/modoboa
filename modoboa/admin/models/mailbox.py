@@ -340,6 +340,26 @@ class Mailbox(AdminObject):
 reversion.register(Mailbox)
 
 
+@python_2_unicode_compatible
+class SenderAddress(models.Model):
+    """Extra sender address for Mailbox."""
+
+    address = models.EmailField()
+    mailbox = models.ForeignKey(Mailbox)
+
+    class Meta:
+        app_label = "admin"
+        unique_together = [
+            ("address", "mailbox"),
+        ]
+
+    def __str__(self):
+        """Return address."""
+        return smart_text(self.address)
+
+reversion.register(SenderAddress)
+
+
 class MailboxOperation(models.Model):
 
     """An operation on a mailbox."""
