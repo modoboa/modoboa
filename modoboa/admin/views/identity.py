@@ -174,7 +174,7 @@ def newaccount(request):
 @login_required
 @permission_required("core.change_user")
 @reversion.create_revision()
-def editaccount(request, pk, tplname="common/tabforms.html"):
+def editaccount(request, pk):
     account = User.objects.get(pk=pk)
     if not request.user.can_access(account):
         raise PermDeniedException

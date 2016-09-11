@@ -70,6 +70,29 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
+    def test_sender_address(self):
+        """Check if sender addresses are saved."""
+        account = User.objects.get(username="user@test.com")
+        values = {
+            "username": "user@test.com", "first_name": "Tester",
+            "last_name": "Toto", "role": "SimpleUsers",
+            "quota_act": True, "is_active": True, "email": "user@test.com",
+            "senderaddress": "test@titi.com", "senderaddress_1": "toto@go.com"
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values)
+        self.assertEqual(
+            models.SenderAddress.objects.filter(
+                mailbox__address="user").count(),
+            2)
+        del values["senderaddress_1"]
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values)
+        self.assertEqual(
+            models.SenderAddress.objects.filter(
+                mailbox__address="user").count(),
+            1)
+
     def test_conflicts(self):
         """Check if unicity constraints are respected."""
         values = {

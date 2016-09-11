@@ -357,6 +357,13 @@ class User(PermissionsMixin):
         self.save()
         self._role = role
 
+    def get_role_display(self):
+        """Return the display name of this role."""
+        for role in constants.ROLES:
+            if role[0] == self.role:
+                return role[1]
+        return _("Unknown")
+
     @cached_property
     def is_admin(self):
         """Shortcut to check if user is administrator."""

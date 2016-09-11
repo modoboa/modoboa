@@ -110,6 +110,33 @@ class SenderLoginMailboxMap(object):
     )
 
 
+class SenderLoginMailboxExtraMap(object):
+    """Map file to list per-mailbox extra addresses."""
+
+    filename = "sql-sender-login-mailboxes-extra.cf"
+
+    # FIXME: is it necessary to filter against user status?
+
+    mysql = (
+        "SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s'"
+    )
+    postgres = (
+        "SELECT mb.address || '@' || dom.name) FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s'"
+    )
+    sqlite = (
+        "SELECT mb.address || '@' || dom.name) FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s'"
+    )
+
+
 class SenderLoginAliasMap(object):
 
     """Map file to list authorized sender addresses (from aliases)."""
@@ -139,5 +166,5 @@ class SenderLoginAliasMap(object):
 
 registry.add_files([
     DomainsMap, DomainsAliasesMap, AliasesMap, MaintainMap,
-    SenderLoginAliasMap, SenderLoginMailboxMap
+    SenderLoginAliasMap, SenderLoginMailboxMap, SenderLoginMailboxExtraMap
 ])
