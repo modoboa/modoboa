@@ -24,10 +24,17 @@ class Command(BaseCommand):
 
     help = "Load Modoboa initial data"
 
+    def add_arguments(self, parser):
+        """Add extra arguments to command."""
+        parser.add_argument(
+            "--admin-username", default="admin",
+            help="Username of the initial super administrator."
+        )
+
     def handle(self, *args, **options):
         """Command entry point."""
         if not User.objects.filter(is_superuser=True).count():
-            admin = User(username="admin", is_superuser=True)
+            admin = User(username=options["admin_username"], is_superuser=True)
             admin.set_password("password")
             admin.save()
             ObjectAccess.objects.create(
