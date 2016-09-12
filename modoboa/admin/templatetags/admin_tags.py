@@ -47,14 +47,6 @@ def domains_menu(selection, user, ajax_mode=True):
          "url": reverse("admin:domain_statistics")}
     ]
     if user.has_perm("admin.add_domain"):
-        entries += [
-            {"name": "newdomain",
-             "label": _("Add domain"),
-             "img": "fa fa-plus",
-             "modal": True,
-             "modalcb": "admin.newdomain_cb",
-             "url": reverse("admin:domain_add")},
-        ]
         entries += events.raiseQueryEvent("ExtraDomainMenuEntries", user)
         entries += [
             {"name": "import",
