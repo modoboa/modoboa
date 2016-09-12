@@ -82,6 +82,10 @@ class DeployCommand(Command):
             '--dont-install-extensions', action='store_true', default=False,
             help='Do not install extensions using pip'
         )
+        self._parser.add_argument(
+            '--admin-username', default='admin',
+            help="Username of the initial super administrator"
+        )
 
     def _exec_django_command(self, name, cwd, *args):
         """Run a django command for the freshly created project
@@ -249,7 +253,8 @@ class DeployCommand(Command):
             "migrate", parsed_args.name, '--noinput'
         )
         self._exec_django_command(
-            "load_initial_data", parsed_args.name
+            "load_initial_data", parsed_args.name,
+            "--admin-username", parsed_args.admin_username
         )
         if parsed_args.collectstatic:
             self._exec_django_command(

@@ -4,7 +4,7 @@ import httmock
 
 from django.core import management
 from django.core.urlresolvers import reverse
-from django.test import override_settings
+from django.test import override_settings, TestCase
 
 from modoboa.lib import exceptions
 from modoboa.lib import parameters
@@ -42,6 +42,17 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+
+
+class ChangeDefaultAdminTestCase(TestCase):
+    """Try to change the default username."""
+
+    def test_management_command(self):
+        """Use dedicated option."""
+        management.call_command(
+            "load_initial_data", "--admin-username", "modoadmin")
+        self.assertTrue(
+            self.client.login(username="modoadmin", password="password"))
 
 
 class DashboardTestCase(ModoTestCase):
