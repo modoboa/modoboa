@@ -2,14 +2,8 @@
 
 """Internal library for admin."""
 
-import socket
-import ipaddress
-from datetime import datetime
-from datetime import timedelta
 from functools import wraps
 from itertools import chain
-
-import dns.resolver
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
@@ -20,7 +14,7 @@ from modoboa.core import signals as core_signals
 from modoboa.lib import events
 from modoboa.lib.exceptions import PermDeniedException
 
-from .models import Domain, DomainAlias, Alias, MXRecord
+from .models import Domain, DomainAlias, Alias
 
 
 def needs_mailbox():
@@ -104,42 +98,6 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
     if qset_filters:
         domains = domains.filter(**qset_filters)
     return domains
-
-
-def get_mx_records_for_domain(domain, ttl=7200):
-    try:
-        answers = dns.resolver.query(domain.name, "MX")
-    except dns.resolver.NoAnswer:
-        return
-    now = datetime.now()
-    delta = timedelta(seconds=ttl)
-    records = MXRecord.objects.filter(domain=domain,
-                                      updated__gte=now - delta)
-    if records.count():
-        print('skip update')
-        for record in records:
-            yield record
-        raise StopIteration()
-    MXRecord.objects.filter(domain=domain).delete()
-    for answer in answers:
-        address = None
-        try:
-            ipaddress.ip_address(str(answer.exchange))
-        except ValueError:
-            try:
-                address = socket.gethostbyname(str(answer.exchange))
-            except socket.gaierror:
-                pass
-        else:
-            address = str(answer.exchange)
-        finally:
-            if address is not None:
-                record = MXRecord.objects.create(
-                    domain=domain,
-                    name=str(answer.exchange).strip('.'),
-                    address=address,
-                    updated=now)
-                yield record
 
 
 def check_if_domain_exists(name, extra_checks=None):

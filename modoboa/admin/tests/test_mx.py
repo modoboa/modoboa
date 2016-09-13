@@ -24,8 +24,19 @@ class DNSBLTestCase(ModoTestCase):
     def test_management_command(self):
         """Check that command works fine."""
         self.assertEqual(models.DNSBLResult.objects.count(), 0)
-        management.call_command("modo", "check_dnsbl")
+        management.call_command("modo", "check_mx")
         self.assertTrue(
+            models.DNSBLResult.objects.filter(domain=self.domain).exists())
+        response = self.client.get(
+            reverse("admin:dnsbl_domain_detail", args=[self.domain.pk]))
+        self.assertEqual(response.status_code, 200)
+
+    @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
+    def test_management_command_no_dnsbl(self):
+        """Check that command works fine without dnsbl."""
+        self.assertEqual(models.DNSBLResult.objects.count(), 0)
+        management.call_command("modo", "check_mx", "--no-dnsbl")
+        self.assertFalse(
             models.DNSBLResult.objects.filter(domain=self.domain).exists())
         response = self.client.get(
             reverse("admin:dnsbl_domain_detail", args=[self.domain.pk]))
