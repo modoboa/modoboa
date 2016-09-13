@@ -13,6 +13,12 @@ from rest_framework.test import APITestCase
 from modoboa.lib import parameters
 from modoboa.core import models as core_models
 
+try:
+    import ldap  # NOQA
+    NO_LDAP = False
+except ImportError:
+    NO_LDAP = True
+
 
 class ModoTestCase(TestCase):
 
