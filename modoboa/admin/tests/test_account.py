@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from unittest import skipIf
+
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
@@ -7,6 +9,7 @@ from modoboa.core.models import User
 from modoboa.core import tests as core_tests
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import NO_LDAP
 
 from .. import factories
 from .. import models
@@ -171,6 +174,7 @@ class AccountTestCase(ModoTestCase):
         self.assertIn("Resources usage", response.content)
 
 
+@skipIf(NO_LDAP, 'No ldap module installed')
 @override_settings(AUTHENTICATION_BACKENDS=(
     'modoboa.lib.authbackends.LDAPBackend',
     'modoboa.lib.authbackends.SimpleBackend',

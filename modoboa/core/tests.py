@@ -1,5 +1,7 @@
 """Tests for core application."""
 
+from unittest import skipIf
+
 import httmock
 
 from django.core import management
@@ -9,6 +11,7 @@ from django.test import override_settings
 from modoboa.lib import exceptions
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import NO_LDAP
 
 from . import factories
 from . import mocks
@@ -44,6 +47,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(response.url.endswith(reverse("admin:domain_list")))
 
 
+@skipIf(NO_LDAP, 'No ldap module installed')
 class LDAPTestCaseMixin(object):
     """Set of methods used to test LDAP features."""
 
