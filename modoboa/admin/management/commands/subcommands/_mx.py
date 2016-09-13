@@ -41,6 +41,9 @@ class CheckMXRecords(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command."""
         parser.add_argument(
+            "--valid-mx", type=str, action='append', default=[],
+            help="Valid MX ips.")
+        parser.add_argument(
             "--no-dnsbl", action='store_true', default=False,
             help="Skip DNSBL queries.")
         parser.add_argument(
@@ -131,14 +134,47 @@ class CheckMXRecords(BaseCommand):
                 continue
             status, msg = email_utils.sendmail_simple(
                 self.sender, admin.email,
-                domainsubject=subject, content=content)
+                subject=subject, content=content)
+            if not status:
+                print(msg)
+
+    def check_valid_mx(self, domain, mx_list, valid_mx=None, **options):
+        alerts = []
+        check = False
+        mx_names = [mx.name for mx in mx_list]
+        mxs = mx_names + [mx.address for mx in mx_list]
+        if valid_mx:
+            check = True in [mx in mxs for mx in valid_mx]
+        if not mxs:
+            alerts.append(_('Domain {} as no MX record').format(domain))
+        elif valid_mx and check is False:
+            args = (domain, ', '.join(mx_names))
+            alerts.append(
+                _('Domain {0} got an invalid MX record. Got {1}').format(*args)
+            )
+        if not alerts:
+            return
+        content = render_to_string(
+            "admin/notifications/domain_invalid_mx.html", {
+                "domain": domain, "valid_mx": valid_mx, "alerts": alerts
+            })
+        subject = _("[modoboa] MX issue(s) for domain {}").format(
+            domain.name)
+        for admin in domain.admins:
+            if not admin.email:
+                continue
+            status, msg = email_utils.sendmail_simple(
+                self.sender, admin.email,
+                subject=subject, content=content)
             if not status:
                 print(msg)
 
     def check_domain(self, domain, timeout=3, ttl=7200, **options):
         """Check specified domain."""
 
-        mx_list = self.get_mx_records_for_domain(domain, ttl=ttl)
+        mx_list = list(self.get_mx_records_for_domain(domain, ttl=ttl))
+
+        self.check_valid_mx(domain, mx_list, **options)
 
         if parameters.get_admin("ENABLE_DNSBL_CHECKS") == "no":
             return
