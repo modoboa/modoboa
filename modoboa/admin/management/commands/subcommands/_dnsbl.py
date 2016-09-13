@@ -1,8 +1,5 @@
 """Management command to check defined domains against DNSBL providers."""
 
-import ipaddress
-
-import dns.resolver
 import gevent
 from gevent import socket
 
@@ -14,6 +11,7 @@ from django.utils.translation import ugettext as _
 
 from modoboa.admin import constants
 from modoboa.admin import models
+from modoboa.admin.lib import get_mx_records_for_domain
 from modoboa.lib import parameters
 from modoboa.lib import email_utils
 
@@ -41,37 +39,37 @@ class CheckDNSBLCommand(BaseCommand):
             "--timeout", type=int, default=3,
             help="Timeout used for queries.")
 
-    def query(self, ip_list, provider):
+    def query(self, mx_list, provider):
         """Check given IP against given provider."""
         results = {}
-        for ip in ip_list:
-            reverse = ".".join(reversed(ip.split(".")))
+        for mx in mx_list:
+            reverse = ".".join(reversed(mx.address.split(".")))
             pattern = "{}.{}".format(reverse, provider)
             try:
-                results[ip] = socket.gethostbyname(pattern)
+                results[mx] = socket.gethostbyname(pattern)
             except socket.gaierror:
-                results[ip] = False
+                results[mx] = False
         return provider, results
 
     def store_domain_result(self, domain, provider, results):
         """Store provider results for domain."""
         alerts = {}
         to_create = []
-        for ip in results.keys():
-            result = "" if not results[ip] else results[ip]
+        for mx in results.keys():
+            result = "" if not results[mx] else results[mx]
             dnsbl_result = models.DNSBLResult.objects.filter(
-                domain=domain, provider=provider, mx=ip).first()
+                domain=domain, provider=provider, mx=mx).first()
             if dnsbl_result is None:
                 to_create.append(
                     models.DNSBLResult(
-                        domain=domain, provider=provider, mx=ip,
+                        domain=domain, provider=provider, mx=mx,
                         status=result)
                 )
             else:
                 if not dnsbl_result.status and result:
                     if domain not in alerts:
                         alerts[domain] = []
-                    alerts[domain].append((provider, ip))
+                    alerts[domain].append((provider, mx))
                 dnsbl_result.status = result
                 dnsbl_result.save()
         models.DNSBLResult.objects.bulk_create(to_create)
@@ -90,34 +88,13 @@ class CheckDNSBLCommand(BaseCommand):
                 self.sender, admin.email,
                 domainsubject=subject, content=content)
             if not status:
-                print msg
+                print(msg)
 
     def check_domain(self, domain, timeout):
         """Check specified domain."""
-        resolver = dns.resolver.Resolver()
-        try:
-            answers = resolver.query(domain.name, "MX")
-        except dns.resolver.NoAnswer:
-            return
-        ip_list = []
-        for answer in answers:
-            address = None
-            try:
-                ipaddress.ip_address(str(answer.exchange))
-            except ValueError:
-                try:
-                    address = socket.gethostbyname(str(answer.exchange))
-                except socket.gaierror:
-                    pass
-            else:
-                address = str(answer.exchange)
-            finally:
-                if address is not None:
-                    ip_list.append(address)
-        if len(ip_list) == 0:
-            return
+        mx_list = get_mx_records_for_domain(domain)
         jobs = [
-            gevent.spawn(self.query, ip_list, provider)
+            gevent.spawn(self.query, mx_list, provider)
             for provider in self.providers]
         gevent.joinall(jobs, timeout)
         for job in jobs:

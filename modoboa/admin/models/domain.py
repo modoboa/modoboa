@@ -102,6 +102,10 @@ class Domain(AdminObject):
     def aliases(self):
         return self.domainalias_set
 
+    @property
+    def mx_records(self):
+        self.mxrecord_set
+
     @cached_property
     def dnsbl_status_color(self):
         """Shortcut to DNSBL results."""
@@ -220,6 +224,18 @@ class Domain(AdminObject):
 reversion.register(Domain)
 
 
+class MXRecord(models.Model):
+
+    domain = models.ForeignKey(Domain)
+    name = models.CharField(max_length=254)
+    address = models.GenericIPAddressField()
+    managed = models.BooleanField(default=False)
+    updated = models.DateTimeField()
+
+    def __unicode__(self):
+        return u'{0.name} ({0.address}) for {0.domain} '.format(self)
+
+
 class DNSBLQuerySet(models.QuerySet):
     """Custom manager for DNSBLResultManager."""
 
@@ -233,7 +249,7 @@ class DNSBLResult(models.Model):
 
     domain = models.ForeignKey(Domain)
     provider = models.CharField(max_length=254, db_index=True)
-    mx = models.GenericIPAddressField()
+    mx = models.ForeignKey(MXRecord)
     status = models.CharField(max_length=45, blank=True, db_index=True)
 
     objects = models.Manager.from_queryset(DNSBLQuerySet)()
