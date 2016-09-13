@@ -96,7 +96,7 @@ class CheckMXRecords(BaseCommand):
                 results[mx] = False
         return provider, results
 
-    def store_domain_result(self, domain, provider, results):
+    def store_dnsbl_result(self, domain, provider, results):
         """Store provider results for domain."""
         alerts = {}
         to_create = []
@@ -153,7 +153,7 @@ class CheckMXRecords(BaseCommand):
                 if not job.successful():
                     continue
                 provider, results = job.value
-                self.store_domain_result(domain, provider, results)
+                self.store_dnsbl_result(domain, provider, results)
 
     def handle(self, *args, **options):
         """Command entry point."""
