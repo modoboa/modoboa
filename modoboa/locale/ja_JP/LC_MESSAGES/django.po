@@ -1,0 +1,744 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# cwatanab <chihiro.watanabe@live.jp>, 2016
+# csmk, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
+"PO-Revision-Date: 2016-09-14 17:06+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/language/ja_JP/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: core/__init__.py:63
+msgid "One or more updates are available"
+msgstr "1つ以上のアップデートが利用できます"
+
+#: core/app_settings.py:39
+msgid "Authentication"
+msgstr "認証"
+
+#: core/app_settings.py:42
+msgid "Authentication type"
+msgstr "認証の種類"
+
+#: core/app_settings.py:43
+msgid "Local"
+msgstr "ローカル"
+
+#: core/app_settings.py:46
+msgid "The backend used for authentication"
+msgstr "認証に使用されるバックエンド"
+
+#: core/app_settings.py:51
+msgid "Default password scheme"
+msgstr "デフォルトのパスワードハッシュ"
+
+#: core/app_settings.py:55
+msgid "md5crypt (weak)"
+msgstr "md5crypt (弱い)"
+
+#: core/app_settings.py:56
+msgid "sha256 (weak)"
+msgstr "sha256 (弱い)"
+
+#: core/app_settings.py:57
+msgid "md5 (weak)"
+msgstr "md5 (弱い)"
+
+#: core/app_settings.py:58
+msgid "crypt (weak)"
+msgstr "crypt (弱い)"
+
+#: core/app_settings.py:59
+msgid "plain (weak)"
+msgstr "plain (弱い)"
+
+#: core/app_settings.py:61
+msgid "Scheme used to crypt mailbox passwords"
+msgstr "ハッシュは、メールボックスパスワードを暗号化するのに使われます"
+
+#: core/app_settings.py:66
+msgid "Rounds"
+msgstr "ラウンド"
+
+#: core/app_settings.py:69
+msgid ""
+"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
+"between 1000 and 999999999, inclusive."
+msgstr "ラウンド数は(sha256crypt と sha512crypt だけで)使用しています。\n1000 から 999999999 の間でなければなりません。"
+
+#: core/app_settings.py:76
+msgid "Secret key"
+msgstr "シークレットキー"
+
+#: core/app_settings.py:78
+msgid "Key used to encrypt/decrypt passwords"
+msgstr "キーは、パスワードを暗号化/復号化はするために使用されます。"
+
+#: core/app_settings.py:83
+msgid "LDAP settings"
+msgstr "LDAP 設定"
+
+#: core/app_settings.py:86
+msgid "Server address"
+msgstr "サーバーアドレス"
+
+#: core/app_settings.py:89
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "LDAP サーバーの IP アドレス、または DNS 名"
+
+#: core/app_settings.py:94
+msgid "Server port"
+msgstr "サーバーポート"
+
+#: core/app_settings.py:96
+msgid "The TCP port number used by the LDAP server"
+msgstr "LDAP サーバーの TCP ポート番号"
+
+#: core/app_settings.py:101
+msgid "Use a secured connection"
+msgstr "セキュアな接続を使う"
+
+#: core/app_settings.py:104
+msgid "Use an SSL/TLS connection to access the LDAP server"
+msgstr "LDAP サーバーへの接続に SSL/TLS 接続を使う"
+
+#: core/app_settings.py:108
+msgid "Authentication method"
+msgstr "認証方法"
+
+#: core/app_settings.py:109
+msgid "Search and bind"
+msgstr "検索と Bind"
+
+#: core/app_settings.py:110
+msgid "Direct bind"
+msgstr "Bind"
+
+#: core/app_settings.py:112
+msgid "Choose the authentication method to use"
+msgstr "使用する認証方式を選択します"
+
+#: core/app_settings.py:117
+msgid "Bind DN"
+msgstr "Bind DN"
+
+#: core/app_settings.py:120
+msgid ""
+"The distinguished name to use when binding to the LDAP server. Leave empty "
+"for an anonymous bind"
+msgstr "LDAPサーバにバインドするときの識別名に使用します。\n匿名バインドのときは空のままにします。"
+
+#: core/app_settings.py:128
+msgid "Bind password"
+msgstr "Bind パスワード"
+
+#: core/app_settings.py:131
+msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
+msgstr "(\"Bind DN\" を使って) LDAPサーバにバインドするときに使用するパスワード"
+
+#: core/app_settings.py:140
+msgid "Users search base"
+msgstr "ユーザーの検索ベース"
+
+#: core/app_settings.py:143
+msgid "The distinguished name of the search base used to find users"
+msgstr "ユーザーを見つけるために使用される検索ベースの識別名(DN)"
+
+#: core/app_settings.py:150
+msgid "Search filter"
+msgstr "検索フィルター"
+
+#: core/app_settings.py:153
+msgid ""
+"An optional filter string (e.g. '(objectClass=person)'). In order to be "
+"valid, it must be enclosed in parentheses."
+msgstr "オプションのフィルタ文字列 (例えば \"(objectClass=person)\") \n有効であるためには、括弧で囲まなければなりません。"
+
+#: core/app_settings.py:161
+msgid "User DN template"
+msgstr "ユーザー DN テンプレート"
+
+#: core/app_settings.py:164
+#, python-format
+msgid ""
+"The template used to construct a user's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr "ユーザーDNを作るために使用されるテンプレート。1つのプレースホルダ (%(user)s)が含まれている必要があります。"
+
+#: core/app_settings.py:172
+msgid "Password attribute"
+msgstr "パスワード属性"
+
+#: core/app_settings.py:174
+msgid "The attribute used to store user passwords"
+msgstr "ユーザーパスワードを格納するための属性"
+
+#: core/app_settings.py:179
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: core/app_settings.py:182
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr "LDAP サーバーが Active Directory かどうか"
+
+#: core/app_settings.py:186
+msgid "Administrator groups"
+msgstr "管理者グループ"
+
+#: core/app_settings.py:189
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "これらの LDAP の Posix グループのメンバーは、ドメイン管理者として作成されます。\n\";\" 文字を使って、複数グループを書けます。"
+
+#: core/app_settings.py:196
+msgid "Group type"
+msgstr "グループ種類"
+
+#: core/app_settings.py:200
+msgid "The LDAP group type to use with your directory."
+msgstr "ディレクトリで使用されている LDAP グループの種類"
+
+#: core/app_settings.py:205
+msgid "Groups search base"
+msgstr "グループの検索ベース"
+
+#: core/app_settings.py:208
+msgid "The distinguished name of the search base used to find groups"
+msgstr "グループを見つけるために使用される検索ベースの識別名(DN)"
+
+#: core/app_settings.py:213
+msgid "Notifications"
+msgstr "通知"
+
+#: core/app_settings.py:216
+msgid "Sender address"
+msgstr "送信者アドレス"
+
+#: core/app_settings.py:219
+msgid "Email address used to send notifications."
+msgstr "通知の送信に使われる電子メールアドレス"
+
+#: core/app_settings.py:223
+msgid "Public API"
+msgstr ""
+
+#: core/app_settings.py:226
+msgid "Enable communication"
+msgstr ""
+
+#: core/app_settings.py:229
+msgid "Enable communication with Modoboa public API"
+msgstr ""
+
+#: core/app_settings.py:233
+msgid "Check new versions"
+msgstr "新しいバージョンをチェックする"
+
+#: core/app_settings.py:236
+msgid "Automatically checks if a newer version is available"
+msgstr "新しいバージョンが利用可能かどうか、自動的にチェックする"
+
+#: core/app_settings.py:240
+msgid "Send statistics"
+msgstr ""
+
+#: core/app_settings.py:243
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr ""
+
+#: core/app_settings.py:247
+msgid "Miscellaneous"
+msgstr "その他"
+
+#: core/app_settings.py:250
+msgid "Top notifications check interval"
+msgstr "トップの通知をチェックする間隔"
+
+#: core/app_settings.py:253
+msgid "Interval between two top notification checks (in seconds)"
+msgstr "2つのトップの通知チェックの間隔 (秒)"
+
+#: core/app_settings.py:259
+msgid "Maximum log record age"
+msgstr "最大ログ記録期間"
+
+#: core/app_settings.py:261
+msgid "The maximum age in days of a log record"
+msgstr "ログを記録する日数の最大期間"
+
+#: core/app_settings.py:266
+msgid "Items per page"
+msgstr "ページあたりの件数"
+
+#: core/app_settings.py:268
+msgid "Number of displayed items per page"
+msgstr "ページあたりに表示される項目の数"
+
+#: core/app_settings.py:273
+msgid "Default top redirection"
+msgstr "デフォルトのリダイレクト先"
+
+#: core/app_settings.py:277
+msgid "The default redirection used when no application is specified"
+msgstr "アプリケーションが指定されていないときのデフォルトのリダイレクト先に使用されます"
+
+#: core/app_settings.py:310
+msgid "Key must be either 16, 24, or 32 bytes long"
+msgstr "キーは、16, 24, 32 バイトのいずれかの長さでなければいけません"
+
+#: core/app_settings.py:319
+msgid "Invalid syntax"
+msgstr "不正な構文"
+
+#: core/app_settings.py:325
+msgid "Invalid rounds number"
+msgstr "不正なラウンド数"
+
+#: core/app_settings.py:346
+msgid "This field is required"
+msgstr "このフィールドは必須です"
+
+#: core/apps.py:55
+msgid "General"
+msgstr "全般"
+
+#: core/constants.py:7
+msgid "Simple user"
+msgstr "ユーザー"
+
+#: core/constants.py:8
+msgid "Domain administrator"
+msgstr "ドメイン管理者"
+
+#: core/constants.py:9
+msgid "Reseller"
+msgstr "リセーラー"
+
+#: core/constants.py:10
+msgid "Super administrator"
+msgstr "全体管理者"
+
+#: core/forms.py:19
+msgid "Username"
+msgstr "ユーザ名"
+
+#: core/forms.py:23
+msgid "Password"
+msgstr "パスワード"
+
+#: core/forms.py:37
+msgid "Old password"
+msgstr "現在のパスワード"
+
+#: core/forms.py:41
+msgid "New password"
+msgstr "新しいパスワード"
+
+#: core/forms.py:45
+msgid "Confirmation"
+msgstr "確認"
+
+#: core/forms.py:73
+msgid "Old password mismatchs"
+msgstr "現在のパスワードが一致しません"
+
+#: core/forms.py:80
+msgid "Passwords mismatch"
+msgstr "パスワード不一致"
+
+#: core/forms.py:100
+msgid "Enable API access"
+msgstr "API アクセスを有効にします"
+
+#: core/handlers.py:34
+msgid "added"
+msgstr "追加しました"
+
+#: core/handlers.py:37
+msgid "modified"
+msgstr "修正しました"
+
+#: core/handlers.py:39 core/handlers.py:64
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
+
+#: core/handlers.py:66
+msgid "deleted"
+msgstr "削除しました"
+
+#: core/models.py:58
+msgid "Allow mailboxes access"
+msgstr "メールボックスのアクセスを許可する"
+
+#: core/models.py:60
+msgid "Allow this administrator to access user mailboxes"
+msgstr "ユーザーのメールボックスアクセスをこの管理者に許可する"
+
+#: core/models.py:63
+msgid "password"
+msgstr "パスワード"
+
+#: core/models.py:65
+msgid "last login"
+msgstr "最終ログイン"
+
+#: core/models.py:71
+msgid "Prefered language to display pages."
+msgstr "ページの表示に優先言語を使う"
+
+#: core/models.py:75
+msgid "Phone number"
+msgstr "電話番号"
+
+#: core/models.py:77
+msgid "Secondary email"
+msgstr "2つめの電子メール"
+
+#: core/models.py:80
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr "別の電子メールアドレスは、回復の必要のために使用することができます。"
+
+#: core/models.py:112
+msgid "You can't delete your own account"
+msgstr "あなた自身のアカウントは削除できません"
+
+#: core/models.py:162
+msgid "Failed to update password: LDAP module not installed"
+msgstr "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていません。"
+
+#: core/models.py:220
+msgid "account"
+msgstr "アカウント"
+
+#: core/models.py:365
+msgid "Unknown"
+msgstr ""
+
+#: core/models.py:404
+msgid "Invalid line"
+msgstr "不正な行"
+
+#: core/models.py:412
+msgid "You can't import an account with a role greater than yours"
+msgstr "あなた以上のロールを持ったアカウントはインポートできません"
+
+#: core/models.py:427
+#, python-format
+msgid "The simple user '%s' must have a valid email address"
+msgstr "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
+
+#: core/models.py:432
+#, python-format
+msgid "username and email fields must not differ for '%s'"
+msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"
+
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr "API アクセス"
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr "Modoboa API へのアクセスを制御"
+
+#: core/templates/core/api_access.html:8
+msgid "API access token"
+msgstr "API アクセストークン"
+
+#: core/templates/core/api_access.html:29
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
+msgid "Update"
+msgstr "更新"
+
+#: core/templates/core/dashboard.html:9
+#, python-format
+msgid "Hello %(user)s."
+msgstr ""
+
+#: core/templates/core/dashboard.html:15
+msgid "Latest news"
+msgstr ""
+
+#: core/templates/core/dashboard.html:29
+msgid ""
+"Visit to the <a href=\"https://modoboa.org/blog/\" "
+"target=\"_blank\">official weblog</a> for more information."
+msgstr ""
+
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
+msgid "Information"
+msgstr "情報"
+
+#: core/templates/core/information.html:2
+msgid "Various information about Modoboa"
+msgstr "Modoboa についてのいろいろな情報"
+
+#: core/templates/core/information.html:5
+msgid "One or more updates are available!"
+msgstr "1つ以上のアップデートが利用できます！"
+
+#: core/templates/core/information.html:6
+msgid "Check the following list to find the component(s) that can be updated."
+msgstr "更新することができるコンポーネントを見つけるために以下のリストをチェックしてください。"
+
+#: core/templates/core/information.html:10
+msgid "Applications"
+msgstr "アプリケーション"
+
+#: core/templates/core/information.html:14
+#: core/templates/core/information.html:36
+msgid "Name"
+msgstr "名前"
+
+#: core/templates/core/information.html:15
+msgid "Installed version"
+msgstr "インストールされたバージョン"
+
+#: core/templates/core/information.html:16
+msgid "Last version"
+msgstr "最新のバージョン"
+
+#: core/templates/core/information.html:17
+msgid "Description"
+msgstr "説明"
+
+#: core/templates/core/information.html:32
+msgid "Active users"
+msgstr "アクティブユーザー"
+
+#: core/templates/core/information.html:37
+msgid "Group name"
+msgstr "グループ名"
+
+#: core/templates/core/information.html:38
+msgid "Last login"
+msgstr "最終ログイン"
+
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:57
+msgid "Logs"
+msgstr "ログ"
+
+#: core/templates/core/logs.html:2
+msgid "Previously on Modoboa..."
+msgstr "Modoboa 以前 ..."
+
+#: core/templates/core/logs.html:6
+msgid "Date"
+msgstr "日付"
+
+#: core/templates/core/logs.html:7
+msgid "Level"
+msgstr "レベル"
+
+#: core/templates/core/logs.html:8
+msgid "Logger"
+msgstr "ロガー"
+
+#: core/templates/core/logs.html:9
+msgid "Message"
+msgstr "メッセージ"
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:62
+msgid "Parameters"
+msgstr "パラメータ"
+
+#: core/templates/core/parameters.html:2
+msgid "Configure Modoboa"
+msgstr "Modoboa を設定する"
+
+#: core/templates/core/parameters.html:6
+#: core/templates/core/user_preferences.html:10
+msgid "Save"
+msgstr "保存"
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr "Modoboa 設定"
+
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:81
+msgid "Settings"
+msgstr "設定"
+
+#: core/templates/core/user_preferences.html:2
+#: core/templatetags/core_tags.py:108
+msgid "Preferences"
+msgstr "プリファレンス"
+
+#: core/templates/core/user_preferences.html:2
+msgid "Customize Modoboa"
+msgstr "Modoboa のカスタマイズ"
+
+#: core/templates/core/user_preferences.html:14
+msgid "No preferences available."
+msgstr "プリファレンスがありません"
+
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:104
+msgid "Profile"
+msgstr "プロフィール"
+
+#: core/templates/core/user_profile.html:3
+msgid "Update your personal information"
+msgstr "個人情報を更新します"
+
+#: core/templatetags/core_tags.py:27
+msgid "Modoboa"
+msgstr "Modoboa"
+
+#: core/templatetags/core_tags.py:90
+msgid "Logout"
+msgstr "ログアウト"
+
+#: core/templatetags/core_tags.py:115
+msgid "API"
+msgstr "API"
+
+#: core/utils.py:22
+msgid "The core part of Modoboa"
+msgstr "Modoboaのコア部分"
+
+#: core/views/admin.py:51
+msgid "Parameters saved"
+msgstr "パラメータが保存されました"
+
+#: core/views/auth.py:41
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr "ユーザー \"%s\" がログインに成功しました"
+
+#: core/views/auth.py:48
+msgid "Your username and password didn't match. Please try again."
+msgstr "ユーザー名とパスワードが一致しません。やり直してください。"
+
+#: core/views/auth.py:76
+#, python-format
+msgid "User '%s' logged out"
+msgstr "ユーザー \"%s\" がログアウトしました"
+
+#: core/views/user.py:47
+msgid "Profile updated"
+msgstr "プロフィールが更新されました"
+
+#: core/views/user.py:71
+msgid "Preferences saved"
+msgstr "プリファレンスが保存されました"
+
+#: core/views/user.py:91
+msgid "Access updated"
+msgstr "アクセスが更新されました"
+
+#: lib/db_utils.py:25
+#, python-format
+msgid "Connection to database %s not configured"
+msgstr "データベース %s への接続が構成されていません"
+
+#: lib/exceptions.py:67
+#, python-format
+msgid "Permission denied: %s"
+msgstr "アクセス拒否: %s"
+
+#: lib/exceptions.py:68
+msgid "Permission denied"
+msgstr "アクセス拒否"
+
+#: lib/fields.py:15 lib/validators.py:14
+msgid "Enter a valid domain name"
+msgstr "正しいドメイン名を入力してください"
+
+#: lib/fields.py:44 lib/fields.py:58
+msgid "Enter a valid email address."
+msgstr "正しいメールアドレスを入力してください"
+
+#: lib/form_utils.py:84
+msgid "Submit"
+msgstr "送信"
+
+#: lib/form_utils.py:117 lib/form_utils.py:120
+msgid "Invalid request"
+msgstr "不正なリクエスト"
+
+#: lib/form_utils.py:412
+msgid "Yes"
+msgstr "はい"
+
+#: lib/form_utils.py:412
+msgid "No"
+msgstr "いいえ"
+
+#: lib/ldap_utils.py:124
+msgid "Failed to update password: {}"
+msgstr "パスワードの更新に失敗しました:  {}"
+
+#: templates/404.html:4 templates/500.html.py:4
+msgid "Sorry"
+msgstr "すみません"
+
+#: templates/404.html:5
+msgid "The requested page does not exist."
+msgstr "リクエストされたページは、存在しません。"
+
+#: templates/500.html:5
+msgid "An internal error occured."
+msgstr "内部エラーが発生しました"
+
+#: templates/common/email_searchbar.html:5
+msgid "Search..."
+msgstr "検索 ..."
+
+#: templates/common/email_searchbar.html:10
+msgid "From address"
+msgstr "From アドレス"
+
+#: templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "件名"
+
+#: templates/common/email_searchbar.html:33
+msgid "Both"
+msgstr "両方"
+
+#: templates/common/error.html:4
+msgid "Error:"
+msgstr "エラー："
+
+#: templates/common/generic_field.html:11
+#: templates/common/generic_fields_group.html:8
+msgid "Help:"
+msgstr "ヘルプ："
+
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "閉じる"
+
+#: templates/common/wizard_forms.html:31
+msgid "Previous"
+msgstr "前へ"
+
+#: templates/common/wizard_forms.html:32
+msgid "Next"
+msgstr "次へ"
+
+#: templates/registration/login.html:9
+msgid "Welcome to Modoboa"
+msgstr "Modoboa へようこそ"
+
+#: templates/registration/login.html:40
+msgid "Remember me"
+msgstr "記憶する"
+
+#: templates/registration/login.html:43
+msgid "Log in"
+msgstr "ログイン"

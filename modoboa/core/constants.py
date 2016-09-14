@@ -29,6 +29,7 @@ LANGUAGES = (
     ("es", u"español"),
     ("fr", u"français"),
     ("it", u"italiano"),
+    ("ja_JP", u"日本の"),
     ("nl", u"nederlands"),
     ("pt_PT", u"português"),
     ("pt_BR", u"português (BR)"),
