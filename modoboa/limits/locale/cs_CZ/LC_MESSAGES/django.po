@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -209,7 +209,7 @@ msgstr "Neplatné omezení"
 msgid "You're not allowed to define unlimited values"
 msgstr "Nemáte oprávnění nastavovat neomezené hodnoty"
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
 msgid "Resources"
 msgstr "Zdroje"
 
@@ -222,12 +222,12 @@ msgstr "%s: limit byl dosažen"
 msgid "Not enough resources"
 msgstr "Nedostatek zdrojů"
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr "neomezeno"
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr "Využití zdrojů"
 

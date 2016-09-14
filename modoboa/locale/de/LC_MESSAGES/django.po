@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: 2015-07-09 14:03+0000\n"
 "Last-Translator: controlc.de\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/__init__.py:65
+#: core/__init__.py:63
 msgid "One or more updates are available"
 msgstr "Eine oder mehrere Aktualisierungen sind verfügbar"
 
@@ -248,68 +248,106 @@ msgid "Email address used to send notifications."
 msgstr ""
 
 #: core/app_settings.py:223
-msgid "Miscellaneous"
-msgstr "Verschiedenes"
+msgid "Public API"
+msgstr ""
 
 #: core/app_settings.py:226
-msgid "Top notifications check interval"
-msgstr "Benachrichtigungs-Prüfintervall"
+msgid "Enable communication"
+msgstr ""
 
 #: core/app_settings.py:229
-msgid "Interval between two top notification checks (in seconds)"
-msgstr "Intervall zwischen zwei Benachrichtigungsprüfungen (in Sekunden)"
+msgid "Enable communication with Modoboa public API"
+msgstr ""
 
-#: core/app_settings.py:235
+#: core/app_settings.py:233
 msgid "Check new versions"
 msgstr "Prüfe auf neue Versionen"
 
-#: core/app_settings.py:238
+#: core/app_settings.py:236
 msgid "Automatically checks if a newer version is available"
 msgstr "Prüft automatisch ob eine neuere Version verfügbar ist."
 
-#: core/app_settings.py:242
+#: core/app_settings.py:240
+msgid "Send statistics"
+msgstr ""
+
+#: core/app_settings.py:243
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr ""
+
+#: core/app_settings.py:247
+msgid "Miscellaneous"
+msgstr "Verschiedenes"
+
+#: core/app_settings.py:250
+msgid "Top notifications check interval"
+msgstr "Benachrichtigungs-Prüfintervall"
+
+#: core/app_settings.py:253
+msgid "Interval between two top notification checks (in seconds)"
+msgstr "Intervall zwischen zwei Benachrichtigungsprüfungen (in Sekunden)"
+
+#: core/app_settings.py:259
 msgid "Maximum log record age"
 msgstr "Maximales Alter für Log-Einträge"
 
-#: core/app_settings.py:244
+#: core/app_settings.py:261
 msgid "The maximum age in days of a log record"
 msgstr "Das maximale Alter eines Log-Eintrags (in Tagen)"
 
-#: core/app_settings.py:249
+#: core/app_settings.py:266
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: core/app_settings.py:251
+#: core/app_settings.py:268
 msgid "Number of displayed items per page"
 msgstr "Anzahl dargestellter Einträge pro Seite"
 
-#: core/app_settings.py:256
+#: core/app_settings.py:273
 msgid "Default top redirection"
 msgstr "Standardumleitung"
 
-#: core/app_settings.py:260
+#: core/app_settings.py:277
 msgid "The default redirection used when no application is specified"
 msgstr "Die Standardumleitung wenn kein Programm angegeben wurde"
 
-#: core/app_settings.py:291
+#: core/app_settings.py:310
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Schlüssel muss 16, 24 oder 32 Byte lang sein"
 
-#: core/app_settings.py:300
+#: core/app_settings.py:319
 msgid "Invalid syntax"
 msgstr "Ungültiger Syntax"
 
-#: core/app_settings.py:306
+#: core/app_settings.py:325
 msgid "Invalid rounds number"
 msgstr "Ungültige Zahl für Runden"
 
-#: core/app_settings.py:327
+#: core/app_settings.py:346
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
-#: core/apps.py:54
+#: core/apps.py:55
 msgid "General"
 msgstr "Allgemein"
+
+#: core/constants.py:7
+msgid "Simple user"
+msgstr "Normaler Benutzer"
+
+#: core/constants.py:8
+#, fuzzy
+#| msgid "Super administrator"
+msgid "Domain administrator"
+msgstr "Super-Administrator"
+
+#: core/constants.py:9
+msgid "Reseller"
+msgstr ""
+
+#: core/constants.py:10
+msgid "Super administrator"
+msgstr "Super-Administrator"
 
 #: core/forms.py:19
 msgid "Username"
@@ -343,84 +381,88 @@ msgstr "Passwörter stimmen nicht überein"
 msgid "Enable API access"
 msgstr ""
 
-#: core/handlers.py:30
+#: core/handlers.py:34
 msgid "added"
 msgstr "hinzugefügt"
 
-#: core/handlers.py:33
+#: core/handlers.py:37
 msgid "modified"
 msgstr "verändert"
 
-#: core/handlers.py:35 core/handlers.py:60
+#: core/handlers.py:39 core/handlers.py:64
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s der Identität %(user)s"
 
-#: core/handlers.py:62
+#: core/handlers.py:66
 msgid "deleted"
 msgstr "entfernt"
 
-#: core/models.py:54
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr "Erlaube den Postfach-Zugriff"
 
-#: core/models.py:56
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Erlaubt dem Administrator auf Benutzer-Postfächer zuzugreifen"
 
-#: core/models.py:59
+#: core/models.py:63
 msgid "password"
 msgstr "Passwort"
 
-#: core/models.py:61
+#: core/models.py:65
 msgid "last login"
 msgstr "Letzte Anmeldung"
 
-#: core/models.py:67
+#: core/models.py:71
 #, fuzzy
 #| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Bevorzugte Sprache für Seitendarstellung"
 
-#: core/models.py:71
+#: core/models.py:75
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:73
+#: core/models.py:77
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:76
+#: core/models.py:80
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:108
+#: core/models.py:112
 msgid "You can't delete your own account"
 msgstr "Sie können Ihr eigenes Konto nicht entfernen"
 
-#: core/models.py:158
+#: core/models.py:162
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Konnte Passwort nicht aktualisieren: LDAP-Modul nicht installiert"
 
-#: core/models.py:212
+#: core/models.py:220
 msgid "account"
 msgstr "Konto"
 
-#: core/models.py:380
+#: core/models.py:365
+msgid "Unknown"
+msgstr ""
+
+#: core/models.py:404
 msgid "Invalid line"
 msgstr "Ungültige Zeile"
 
-#: core/models.py:388
+#: core/models.py:412
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 "Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
 
-#: core/models.py:403
+#: core/models.py:427
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 
-#: core/models.py:408
+#: core/models.py:432
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"
@@ -441,6 +483,21 @@ msgstr ""
 #: core/templates/core/user_profile.html:10 lib/form_utils.py:359
 msgid "Update"
 msgstr "Aktualisieren"
+
+#: core/templates/core/dashboard.html:9
+#, python-format
+msgid "Hello %(user)s."
+msgstr ""
+
+#: core/templates/core/dashboard.html:15
+msgid "Latest news"
+msgstr ""
+
+#: core/templates/core/dashboard.html:29
+msgid ""
+"Visit to the <a href=\"https://modoboa.org/blog/\" target=\"_blank"
+"\">official weblog</a> for more information."
+msgstr ""
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
 msgid "Information"
@@ -561,7 +618,7 @@ msgstr "Profil"
 msgid "Update your personal information"
 msgstr "Aktualisieren Sie Ihre persönlichen Daten"
 
-#: core/templatetags/core_tags.py:26
+#: core/templatetags/core_tags.py:27
 msgid "Modoboa"
 msgstr "Modoboa"
 
@@ -573,7 +630,7 @@ msgstr "Logout"
 msgid "API"
 msgstr ""
 
-#: core/utils.py:20
+#: core/utils.py:22
 msgid "The core part of Modoboa"
 msgstr "Der Kern von Modoboa"
 
@@ -581,18 +638,18 @@ msgstr "Der Kern von Modoboa"
 msgid "Parameters saved"
 msgstr "Parameter gespeichert"
 
-#: core/views/auth.py:39
+#: core/views/auth.py:41
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Benutzer '%s' hat sich erfolgreich angemeldet"
 
-#: core/views/auth.py:54
+#: core/views/auth.py:48
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuchen Sie es "
 "noch einmal."
 
-#: core/views/auth.py:82
+#: core/views/auth.py:76
 #, python-format
 msgid "User '%s' logged out"
 msgstr "Benutzer '%s' hat sich abgemeldet"
@@ -656,24 +713,6 @@ msgstr "Nein"
 #| msgid "Failed to update password: %s"
 msgid "Failed to update password: {}"
 msgstr "Konnte Passwort nicht aktualisieren: %s"
-
-#: lib/permissions.py:10
-msgid "Simple user"
-msgstr "Normaler Benutzer"
-
-#: lib/permissions.py:11
-#, fuzzy
-#| msgid "Super administrator"
-msgid "Domain administrator"
-msgstr "Super-Administrator"
-
-#: lib/permissions.py:12
-msgid "Reseller"
-msgstr ""
-
-#: lib/permissions.py:13
-msgid "Super administrator"
-msgstr "Super-Administrator"
 
 #: templates/404.html:4 templates/500.html.py:4
 msgid "Sorry"

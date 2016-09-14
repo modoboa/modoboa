@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: 2013-12-23 00:56+0100\n"
 "Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
@@ -211,7 +211,7 @@ msgstr "Limite non valido"
 msgid "You're not allowed to define unlimited values"
 msgstr "Non ti è consentito definire valori non limitati"
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
 msgid "Resources"
 msgstr "Risorse"
 
@@ -224,12 +224,12 @@ msgstr "%s: raggiunto il limite"
 msgid "Not enough resources"
 msgstr "Risorse insufficienti"
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr "senza limiti"
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr "Utilizzo risorse"
 

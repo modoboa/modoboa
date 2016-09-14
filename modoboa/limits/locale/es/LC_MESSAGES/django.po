@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: 2013-10-01 09:56+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -210,7 +210,7 @@ msgstr "Límite inválido"
 msgid "You're not allowed to define unlimited values"
 msgstr "No está autorizado definir valores ilimitados"
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
 msgid "Resources"
 msgstr "Recursos"
 
@@ -223,12 +223,12 @@ msgstr "%s: límete alcanzado"
 msgid "Not enough resources"
 msgstr "No hay suficientes recursos"
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr "ilimitado"
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr "Uso de recursos"
 

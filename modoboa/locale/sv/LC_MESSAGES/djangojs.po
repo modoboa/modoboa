@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:06+0200\n"
 "PO-Revision-Date: 2016-05-30 18:03+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -36,7 +36,7 @@ msgstr "Varning"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: static/js/global.js:339
+#: static/js/global.js:341
 msgid "Internal error"
 msgstr "Internt fel"
 

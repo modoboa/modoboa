@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: core/__init__.py:65
+#: core/__init__.py:63
 #, fuzzy
 #| msgid "An update is available!"
 msgid "One or more updates are available"
@@ -252,72 +252,110 @@ msgid "Email address used to send notifications."
 msgstr ""
 
 #: core/app_settings.py:223
+msgid "Public API"
+msgstr ""
+
+#: core/app_settings.py:226
+msgid "Enable communication"
+msgstr ""
+
+#: core/app_settings.py:229
+msgid "Enable communication with Modoboa public API"
+msgstr ""
+
+#: core/app_settings.py:233
+msgid "Check new versions"
+msgstr "Zkontrolovat verzi"
+
+#: core/app_settings.py:236
+msgid "Automatically checks if a newer version is available"
+msgstr "Automaticky kontrolovat dostupnost nové verze"
+
+#: core/app_settings.py:240
+msgid "Send statistics"
+msgstr ""
+
+#: core/app_settings.py:243
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr ""
+
+#: core/app_settings.py:247
 msgid "Miscellaneous"
 msgstr "Různé"
 
-#: core/app_settings.py:226
+#: core/app_settings.py:250
 msgid "Top notifications check interval"
 msgstr "Interval aktualizací upozornění"
 
-#: core/app_settings.py:229
+#: core/app_settings.py:253
 #, fuzzy
 #| msgid "Interval between two top notification checks"
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Interval mezi aktualizacemi upozornění na stránce"
 
-#: core/app_settings.py:235
-msgid "Check new versions"
-msgstr "Zkontrolovat verzi"
-
-#: core/app_settings.py:238
-msgid "Automatically checks if a newer version is available"
-msgstr "Automaticky kontrolovat dostupnost nové verze"
-
-#: core/app_settings.py:242
+#: core/app_settings.py:259
 msgid "Maximum log record age"
 msgstr "Maximální stáří záznamu"
 
-#: core/app_settings.py:244
+#: core/app_settings.py:261
 msgid "The maximum age in days of a log record"
 msgstr "Maximální stáří záznamu ve dnech"
 
-#: core/app_settings.py:249
+#: core/app_settings.py:266
 msgid "Items per page"
 msgstr "Položek na stránce"
 
-#: core/app_settings.py:251
+#: core/app_settings.py:268
 msgid "Number of displayed items per page"
 msgstr "Počet zobrazených položek na stránce"
 
-#: core/app_settings.py:256
+#: core/app_settings.py:273
 msgid "Default top redirection"
 msgstr "Výchozí přesměrování aplikace"
 
-#: core/app_settings.py:260
+#: core/app_settings.py:277
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "Výchozí přesměrování, které se použije, pokud není žádná aplikace "
 "specifikována"
 
-#: core/app_settings.py:291
+#: core/app_settings.py:310
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Klíč musí mít délku 16, 24 nebo 32 znaků"
 
-#: core/app_settings.py:300
+#: core/app_settings.py:319
 msgid "Invalid syntax"
 msgstr "Neplatná syntaxe"
 
-#: core/app_settings.py:306
+#: core/app_settings.py:325
 msgid "Invalid rounds number"
 msgstr "Neplatný počet cyklů"
 
-#: core/app_settings.py:327
+#: core/app_settings.py:346
 msgid "This field is required"
 msgstr "Toto pole je vyžadováno"
 
-#: core/apps.py:54
+#: core/apps.py:55
 msgid "General"
 msgstr "Obecné"
+
+#: core/constants.py:7
+msgid "Simple user"
+msgstr "Bežný uživatel"
+
+#: core/constants.py:8
+#, fuzzy
+#| msgid "Super administrator"
+msgid "Domain administrator"
+msgstr "Super správce"
+
+#: core/constants.py:9
+msgid "Reseller"
+msgstr ""
+
+#: core/constants.py:10
+msgid "Super administrator"
+msgstr "Super správce"
 
 #: core/forms.py:19
 msgid "Username"
@@ -351,83 +389,87 @@ msgstr "Hesla se neshodují"
 msgid "Enable API access"
 msgstr ""
 
-#: core/handlers.py:30
+#: core/handlers.py:34
 msgid "added"
 msgstr "přidáno"
 
-#: core/handlers.py:33
+#: core/handlers.py:37
 msgid "modified"
 msgstr "upraveno"
 
-#: core/handlers.py:35 core/handlers.py:60
+#: core/handlers.py:39 core/handlers.py:64
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s uživatelem %(user)s"
 
-#: core/handlers.py:62
+#: core/handlers.py:66
 msgid "deleted"
 msgstr "smazáno"
 
-#: core/models.py:54
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr ""
 
-#: core/models.py:56
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:59
+#: core/models.py:63
 msgid "password"
 msgstr "heslo"
 
-#: core/models.py:61
+#: core/models.py:65
 msgid "last login"
 msgstr "poslední přihlášení"
 
-#: core/models.py:67
+#: core/models.py:71
 #, fuzzy
 #| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Preferovaný jazyk pro zobrazení stránek"
 
-#: core/models.py:71
+#: core/models.py:75
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:73
+#: core/models.py:77
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:76
+#: core/models.py:80
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:108
+#: core/models.py:112
 msgid "You can't delete your own account"
 msgstr "Nemůžete smazat vlastní účet"
 
-#: core/models.py:158
+#: core/models.py:162
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 
-#: core/models.py:212
+#: core/models.py:220
 msgid "account"
 msgstr "účet"
 
-#: core/models.py:380
+#: core/models.py:365
+msgid "Unknown"
+msgstr ""
+
+#: core/models.py:404
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: core/models.py:388
+#: core/models.py:412
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nemůžete importvat účet s vyšším oprávněním, než máte vy sám"
 
-#: core/models.py:403
+#: core/models.py:427
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Běžný uživatel '%s' musí mít nastavenou platnou emailovou adresu"
 
-#: core/models.py:408
+#: core/models.py:432
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "pole uživatelského jména a emailu se nesmí pro '%s' lišit"
@@ -448,6 +490,21 @@ msgstr ""
 #: core/templates/core/user_profile.html:10 lib/form_utils.py:359
 msgid "Update"
 msgstr "Aktualizovat"
+
+#: core/templates/core/dashboard.html:9
+#, python-format
+msgid "Hello %(user)s."
+msgstr ""
+
+#: core/templates/core/dashboard.html:15
+msgid "Latest news"
+msgstr ""
+
+#: core/templates/core/dashboard.html:29
+msgid ""
+"Visit to the <a href=\"https://modoboa.org/blog/\" target=\"_blank"
+"\">official weblog</a> for more information."
+msgstr ""
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
 msgid "Information"
@@ -572,7 +629,7 @@ msgstr "Profil"
 msgid "Update your personal information"
 msgstr "Aktualizovat osobní informace"
 
-#: core/templatetags/core_tags.py:26
+#: core/templatetags/core_tags.py:27
 msgid "Modoboa"
 msgstr "Modoboa"
 
@@ -584,7 +641,7 @@ msgstr "Odhlásit se"
 msgid "API"
 msgstr ""
 
-#: core/utils.py:20
+#: core/utils.py:22
 #, fuzzy
 #| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
@@ -594,17 +651,17 @@ msgstr "Vítejte v Modoboa"
 msgid "Parameters saved"
 msgstr "Parametry uloženy"
 
-#: core/views/auth.py:39
+#: core/views/auth.py:41
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Uživatel '%s' se úspěšně přihlásil"
 
-#: core/views/auth.py:54
+#: core/views/auth.py:48
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Vaše uživatelské jméno nebo heslo se neshodují. Zkuste to prosím znovu."
 
-#: core/views/auth.py:82
+#: core/views/auth.py:76
 #, python-format
 msgid "User '%s' logged out"
 msgstr "Uživatel '%s' se odhlásil"
@@ -668,24 +725,6 @@ msgstr "Ne"
 #| msgid "Failed to update password: %s"
 msgid "Failed to update password: {}"
 msgstr "Nebylo možné změnit heslo: %s"
-
-#: lib/permissions.py:10
-msgid "Simple user"
-msgstr "Bežný uživatel"
-
-#: lib/permissions.py:11
-#, fuzzy
-#| msgid "Super administrator"
-msgid "Domain administrator"
-msgstr "Super správce"
-
-#: lib/permissions.py:12
-msgid "Reseller"
-msgstr ""
-
-#: lib/permissions.py:13
-msgid "Super administrator"
-msgstr "Super správce"
 
 #: templates/404.html:4 templates/500.html.py:4
 msgid "Sorry"

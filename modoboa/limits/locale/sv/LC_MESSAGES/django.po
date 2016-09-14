@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: 2016-05-30 18:08+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -187,7 +187,7 @@ msgstr "Ogiltig gräns"
 msgid "You're not allowed to define unlimited values"
 msgstr "Du har inte tillåtelse att definiera obegränsat värden"
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
 msgid "Resources"
 msgstr "Resurser"
 
@@ -200,11 +200,11 @@ msgstr "%s: gräns uppnådd"
 msgid "Not enough resources"
 msgstr "Inte tillräckligt med resurser"
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr "obegränsad"
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr "Resurs användande"

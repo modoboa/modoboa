@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -204,7 +204,7 @@ msgstr "Ongeldige limiet"
 msgid "You're not allowed to define unlimited values"
 msgstr "U mag geen ongelimiteerde waardes opgeven"
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
 msgid "Resources"
 msgstr "Capaciteiten"
 
@@ -217,12 +217,12 @@ msgstr "%s: limiet bereikt"
 msgid "Not enough resources"
 msgstr "Niet genoeg capaciteit"
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr "ongelimiteerd"
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr "Capaciteit gebruik"
 

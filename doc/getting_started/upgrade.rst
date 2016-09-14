@@ -55,8 +55,8 @@ Specific upgrade instructions
 An interesting feature brougth by this version is the capability of
 querying main `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ providers
 for every defined domain. With this, you will quickly now if one the
-you know is listed or not. To activate it, add the following line to
-you crontab::
+domains you manage is listed or not. To activate it, add the following
+line to your crontab::
 
   */30 * * * * <modoboa_site>/manage.py modo check_dnsbl
 

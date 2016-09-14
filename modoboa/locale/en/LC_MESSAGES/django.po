@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-09-14 19:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/__init__.py:65
+#: core/__init__.py:63
 msgid "One or more updates are available"
 msgstr ""
 
@@ -229,67 +229,103 @@ msgid "Email address used to send notifications."
 msgstr ""
 
 #: core/app_settings.py:223
-msgid "Miscellaneous"
+msgid "Public API"
 msgstr ""
 
 #: core/app_settings.py:226
-msgid "Top notifications check interval"
+msgid "Enable communication"
 msgstr ""
 
 #: core/app_settings.py:229
-msgid "Interval between two top notification checks (in seconds)"
+msgid "Enable communication with Modoboa public API"
 msgstr ""
 
-#: core/app_settings.py:235
+#: core/app_settings.py:233
 msgid "Check new versions"
 msgstr ""
 
-#: core/app_settings.py:238
+#: core/app_settings.py:236
 msgid "Automatically checks if a newer version is available"
 msgstr ""
 
-#: core/app_settings.py:242
+#: core/app_settings.py:240
+msgid "Send statistics"
+msgstr ""
+
+#: core/app_settings.py:243
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr ""
+
+#: core/app_settings.py:247
+msgid "Miscellaneous"
+msgstr ""
+
+#: core/app_settings.py:250
+msgid "Top notifications check interval"
+msgstr ""
+
+#: core/app_settings.py:253
+msgid "Interval between two top notification checks (in seconds)"
+msgstr ""
+
+#: core/app_settings.py:259
 msgid "Maximum log record age"
 msgstr ""
 
-#: core/app_settings.py:244
+#: core/app_settings.py:261
 msgid "The maximum age in days of a log record"
 msgstr ""
 
-#: core/app_settings.py:249
+#: core/app_settings.py:266
 msgid "Items per page"
 msgstr ""
 
-#: core/app_settings.py:251
+#: core/app_settings.py:268
 msgid "Number of displayed items per page"
 msgstr ""
 
-#: core/app_settings.py:256
+#: core/app_settings.py:273
 msgid "Default top redirection"
 msgstr ""
 
-#: core/app_settings.py:260
+#: core/app_settings.py:277
 msgid "The default redirection used when no application is specified"
 msgstr ""
 
-#: core/app_settings.py:291
+#: core/app_settings.py:310
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr ""
 
-#: core/app_settings.py:300
+#: core/app_settings.py:319
 msgid "Invalid syntax"
 msgstr ""
 
-#: core/app_settings.py:306
+#: core/app_settings.py:325
 msgid "Invalid rounds number"
 msgstr ""
 
-#: core/app_settings.py:327
+#: core/app_settings.py:346
 msgid "This field is required"
 msgstr ""
 
-#: core/apps.py:54
+#: core/apps.py:55
 msgid "General"
+msgstr ""
+
+#: core/constants.py:7
+msgid "Simple user"
+msgstr ""
+
+#: core/constants.py:8
+msgid "Domain administrator"
+msgstr ""
+
+#: core/constants.py:9
+msgid "Reseller"
+msgstr ""
+
+#: core/constants.py:10
+msgid "Super administrator"
 msgstr ""
 
 #: core/forms.py:19
@@ -324,81 +360,85 @@ msgstr ""
 msgid "Enable API access"
 msgstr ""
 
-#: core/handlers.py:30
+#: core/handlers.py:34
 msgid "added"
 msgstr ""
 
-#: core/handlers.py:33
+#: core/handlers.py:37
 msgid "modified"
 msgstr ""
 
-#: core/handlers.py:35 core/handlers.py:60
+#: core/handlers.py:39 core/handlers.py:64
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr ""
 
-#: core/handlers.py:62
+#: core/handlers.py:66
 msgid "deleted"
 msgstr ""
 
-#: core/models.py:54
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr ""
 
-#: core/models.py:56
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:59
+#: core/models.py:63
 msgid "password"
 msgstr ""
 
-#: core/models.py:61
+#: core/models.py:65
 msgid "last login"
 msgstr ""
 
-#: core/models.py:67
+#: core/models.py:71
 msgid "Prefered language to display pages."
 msgstr ""
 
-#: core/models.py:71
+#: core/models.py:75
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:73
+#: core/models.py:77
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:76
+#: core/models.py:80
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:108
+#: core/models.py:112
 msgid "You can't delete your own account"
 msgstr ""
 
-#: core/models.py:158
+#: core/models.py:162
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 
-#: core/models.py:212
+#: core/models.py:220
 msgid "account"
 msgstr ""
 
-#: core/models.py:380
+#: core/models.py:365
+msgid "Unknown"
+msgstr ""
+
+#: core/models.py:404
 msgid "Invalid line"
 msgstr ""
 
-#: core/models.py:388
+#: core/models.py:412
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 
-#: core/models.py:403
+#: core/models.py:427
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 
-#: core/models.py:408
+#: core/models.py:432
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
@@ -418,6 +458,21 @@ msgstr ""
 #: core/templates/core/api_access.html:29
 #: core/templates/core/user_profile.html:10 lib/form_utils.py:359
 msgid "Update"
+msgstr ""
+
+#: core/templates/core/dashboard.html:9
+#, python-format
+msgid "Hello %(user)s."
+msgstr ""
+
+#: core/templates/core/dashboard.html:15
+msgid "Latest news"
+msgstr ""
+
+#: core/templates/core/dashboard.html:29
+msgid ""
+"Visit to the <a href=\"https://modoboa.org/blog/\" target=\"_blank"
+"\">official weblog</a> for more information."
 msgstr ""
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
@@ -535,7 +590,7 @@ msgstr ""
 msgid "Update your personal information"
 msgstr ""
 
-#: core/templatetags/core_tags.py:26
+#: core/templatetags/core_tags.py:27
 msgid "Modoboa"
 msgstr ""
 
@@ -547,7 +602,7 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: core/utils.py:20
+#: core/utils.py:22
 msgid "The core part of Modoboa"
 msgstr ""
 
@@ -555,16 +610,16 @@ msgstr ""
 msgid "Parameters saved"
 msgstr ""
 
-#: core/views/auth.py:39
+#: core/views/auth.py:41
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr ""
 
-#: core/views/auth.py:54
+#: core/views/auth.py:48
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 
-#: core/views/auth.py:82
+#: core/views/auth.py:76
 #, python-format
 msgid "User '%s' logged out"
 msgstr ""
@@ -621,22 +676,6 @@ msgstr ""
 
 #: lib/ldap_utils.py:124
 msgid "Failed to update password: {}"
-msgstr ""
-
-#: lib/permissions.py:10
-msgid "Simple user"
-msgstr ""
-
-#: lib/permissions.py:11
-msgid "Domain administrator"
-msgstr ""
-
-#: lib/permissions.py:12
-msgid "Reseller"
-msgstr ""
-
-#: lib/permissions.py:13
-msgid "Super administrator"
 msgstr ""
 
 #: templates/404.html:4 templates/500.html.py:4
