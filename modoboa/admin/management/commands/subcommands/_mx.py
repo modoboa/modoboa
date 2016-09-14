@@ -64,19 +64,23 @@ class CheckMXRecords(BaseCommand):
     def get_mx_records_for_domain(self, domain, ttl=7200):
         """Return one or more `models.MXRecord` for `domain`. DNS queries are
         not performed while `ttl` (in seconds) is still valid"""
-        try:
-            answers = dns.resolver.query(domain.name, "MX")
-        except dns.resolver.NoAnswer:
-            return
         now = datetime.now()
-        delta = timedelta(seconds=ttl)
         records = models.MXRecord.objects.filter(domain=domain,
-                                                 updated__gte=now - delta)
+                                                 updated__gt=now)
         if records.count():
             for record in records:
                 yield record
             raise StopIteration()
-        models.MXRecord.objects.filter(domain=domain).delete()
+        else:
+            models.MXRecord.objects.filter(domain=domain).delete()
+
+        try:
+            answers = dns.resolver.query(domain.name, "MX")
+        except dns.resolver.NoAnswer:
+            raise StopIteration()
+
+        delta = timedelta(seconds=ttl)
+
         for answer in answers:
             address = None
             try:
@@ -94,7 +98,7 @@ class CheckMXRecords(BaseCommand):
                         domain=domain,
                         name=str(answer.exchange).strip('.'),
                         address=address,
-                        updated=now)
+                        updated=now + delta)
                     yield record
 
     def query_dnsbl(self, mx_list, provider):
