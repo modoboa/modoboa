@@ -53,6 +53,14 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
     dom_sep = SeparatorField(label=ugettext_lazy("Domains"))
 
+    enable_mx_checks = YesNoField(
+        label=ugettext_lazy("Enable MX checks"),
+        initial="yes",
+        help_text=ugettext_lazy(
+            "Check that every domain has a valid MX record"
+        )
+    )
+
     enable_dnsbl_checks = YesNoField(
         label=ugettext_lazy("Enable DNSBL checks"),
         initial="yes",
