@@ -7,6 +7,7 @@
   <td name="tags">{% render_tags domain.tags %}</td>
   <td name="auth">
     <small>
+      <span class="label label-mini label-{% if not domain.mxrecord_set.exists %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
       <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
     </small>
   </td>

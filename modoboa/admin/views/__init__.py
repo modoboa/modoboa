@@ -2,7 +2,7 @@
 
 from .alias import AliasDetailView
 from .identity import AccountDetailView
-from .dnsbl import DNSBLDomainDetailView
+from .dns import DNSBLDomainDetailView, MXDomainDetailView
 from .domain import DomainDetailView
 
 
@@ -11,4 +11,5 @@ __all__ = [
     "AliasDetailView",
     "DNSBLDomainDetailView",
     "DomainDetailView",
+    "MXDomainDetailView",
 ]

@@ -225,6 +225,7 @@ reversion.register(Domain)
 
 
 class MXRecord(models.Model):
+    """A model used to store MX records for Domain."""
 
     domain = models.ForeignKey(Domain)
     name = models.CharField(max_length=254)
