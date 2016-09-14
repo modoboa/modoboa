@@ -19,15 +19,7 @@ register = template.Library()
 @register.simple_tag
 def core_menu(selection, user):
     """Build the top level menu."""
-    entries = []
-    if user.is_admin:
-        entries += [
-            {"name": "dashboard",
-             "label": "",
-             "img": "fa fa-home fa-lg",
-             "url": reverse("core:dashboard")}
-        ]
-    entries += (
+    entries = (
         events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user))
     if user.is_superuser:
         entries += [

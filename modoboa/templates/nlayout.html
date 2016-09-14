@@ -37,6 +37,13 @@
 
         <div id="topmenu" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
+            {% if user.is_admin %}
+              <li{% if selection == "dashboard" %} class="active"{% endif %}>
+                <a name="dashboard" href="{% url 'core:dashboard' %}">
+                  <span class="fa fa-home fa-lg"></span>
+                </a>
+              </li>
+            {% endif %}
             {% if selection %}
               {% extensions_menu selection user %}{% core_menu selection user %}
             {% else %}
