@@ -23,7 +23,7 @@
       <div class="panel-body">
         <div class="row">
           <span class="title">{% trans "DNS status" %}</span>
-          <span class="label label-mini label-{% if not domain.mxrecord_set.exists %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
+          <span class="label label-mini label-{% if not domain.mxrecord_set.valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
           <span class="label label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
         </div>
         <div class="row">

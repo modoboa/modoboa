@@ -15,14 +15,27 @@
       {% for mx in domain.mxrecord_set.all %}
         <tr>
           <td>{{ mx.name }}</td>
-          <td>{{ mx.address }}</td>
+          <td>
+            {% if mx.is_managed %}
+              {% if not mx.managed %}
+                <a class="label label-danger"
+                   href="{% url 'core:index' %}#parameters"
+                   title="{% trans 'This ip does not match any of the valid MXs defined in settings' %}"
+                >{{ mx.address }}</a>
+              {% else %}
+                <span class="label label-success">{{ mx.address }}</span>
+              {% endif %}
+            {% else %}
+                {{ mx.address }}
+            {% endif %}
+          </td>
           <td>{{ mx.updated|date:"SHORT_DATETIME_FORMAT" }}</td>
         </tr>
       {% empty %}
         <tr>
           <td colspan="3">{% trans "No MX record found for this domain." %}</td>
         </tr>
-      {% endfor %}      
+      {% endfor %}
     </tbody>
   </table>
 {% endblock %}
