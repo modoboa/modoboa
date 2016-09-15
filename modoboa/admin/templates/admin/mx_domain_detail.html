@@ -18,10 +18,10 @@
           <td>
             {% if mx.is_managed %}
               {% if not mx.managed %}
-                <a class="label label-danger"
-                   href="{% url 'core:index' %}#parameters"
-                   title="{% trans 'This ip does not match any of the valid MXs defined in settings' %}"
-                >{{ mx.address }}</a>
+                <a class="label label-danger help"
+                   rel="popover"
+                   data-content="{% trans 'This IP does not match any of the valid MXs defined in parameters' %}"
+                   >{{ mx.address }}</a>
               {% else %}
                 <span class="label label-success">{{ mx.address }}</span>
               {% endif %}
