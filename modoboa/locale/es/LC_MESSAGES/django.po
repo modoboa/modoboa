@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 19:05+0200\n"
+"POT-Creation-Date: 2016-09-16 12:33+0200\n"
 "PO-Revision-Date: 2013-10-01 09:56+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -505,8 +505,8 @@ msgstr ""
 
 #: core/templates/core/dashboard.html:29
 msgid ""
-"Visit to the <a href=\"https://modoboa.org/blog/\" target=\"_blank"
-"\">official weblog</a> for more information."
+"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
+"weblog</a> for more information."
 msgstr ""
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:53

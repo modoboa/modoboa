@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # cwatanab <chihiro.watanabe@live.jp>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 19:05+0200\n"
+"POT-Creation-Date: 2016-09-16 12:33+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/language/ja_JP/)\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
+"language/ja_JP/)\n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin/app_settings.py:54 admin/callbacks.py:25
@@ -33,68 +34,83 @@ msgid "Check that every domain has a valid MX record"
 msgstr ""
 
 #: admin/app_settings.py:65
+msgid "Valid MXs"
+msgstr ""
+
+#: admin/app_settings.py:68
+msgid ""
+"IP(s) or network(s) of the MX that should match with domains' MX records. On "
+"per line."
+msgstr ""
+
+#: admin/app_settings.py:77
 msgid "Enable DNSBL checks"
 msgstr "DNSBL チェックを有効にする"
 
-#: admin/app_settings.py:68
+#: admin/app_settings.py:80
 msgid "Check every domain against major DNSBL providers"
 msgstr "すべてのドメインを 主な DNSBL プロバイダーでチェックする"
 
-#: admin/app_settings.py:72 admin/templates/admin/domain_detail.html.py:33
+#: admin/app_settings.py:84 admin/templates/admin/domain_detail.html.py:40
 msgid "Mailboxes"
 msgstr "メールボックス"
 
-#: admin/app_settings.py:75
+#: admin/app_settings.py:87
 msgid "Handle mailboxes on filesystem"
 msgstr "ファイルシステムのメールボックスを操作する"
 
-#: admin/app_settings.py:78
+#: admin/app_settings.py:90
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Modoboa で、メールボックスの名前の変更もしくは、削除したとき、ファイルシステム上のメールボックスも、名前の変更もしくは削除する。"
+msgstr ""
+"Modoboa で、メールボックスの名前の変更もしくは、削除したとき、ファイルシステ"
+"ム上のメールボックスも、名前の変更もしくは削除する。"
 
-#: admin/app_settings.py:84
+#: admin/app_settings.py:96
 msgid "Mailboxes owner"
 msgstr "メールボックス所有者"
 
-#: admin/app_settings.py:87
+#: admin/app_settings.py:99
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "ファイルシステム上のメールボックスを所有するUNIXアカウント"
 
-#: admin/app_settings.py:92
+#: admin/app_settings.py:104
 msgid "Default domain quota"
 msgstr "デフォルトドメインクォータ"
 
-#: admin/app_settings.py:95
+#: admin/app_settings.py:107
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr "デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n値が0の場合は、クォータ制限はありません。"
+msgstr ""
+"デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適"
+"用されます。\n"
+"値が0の場合は、クォータ制限はありません。"
 
-#: admin/app_settings.py:101
+#: admin/app_settings.py:113
 msgid "Automatic account removal"
 msgstr "アカウントの自動削除"
 
-#: admin/app_settings.py:104
+#: admin/app_settings.py:116
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "メールボックスが削除されたとき、関連するアカウントも削除します"
 
-#: admin/app_settings.py:108
+#: admin/app_settings.py:120
 msgid "Automatic domain/mailbox creation"
 msgstr "ドメインとメールボックスを自動作成"
 
-#: admin/app_settings.py:111
-msgid ""
-"Create a domain and a mailbox when an account is automatically created."
-msgstr "アカウントが自動的に作成されたとき、ドメインとメールボックを作成します。"
+#: admin/app_settings.py:123
+msgid "Create a domain and a mailbox when an account is automatically created."
+msgstr ""
+"アカウントが自動的に作成されたとき、ドメインとメールボックを作成します。"
 
-#: admin/app_settings.py:157 admin/forms/account.py:279
+#: admin/app_settings.py:170 admin/forms/account.py:279
 #: admin/forms/domain.py:81
 msgid "Must be a positive integer"
 msgstr "正の整数でなければいけません"
 
-#: admin/app_settings.py:167
+#: admin/app_settings.py:180
 msgid "Administration"
 msgstr "管理"
 
@@ -126,7 +142,7 @@ msgstr "アカウントのインポートに失敗しました  (%s):  不正な
 msgid "domain alias"
 msgstr "ドメインエイリアス"
 
-#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:61
+#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:68
 msgid "Username"
 msgstr "ユーザー名"
 
@@ -134,7 +150,10 @@ msgstr "ユーザー名"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr "ユーザーの名前。\nメールボックスを持つユーザーもしくは管理者の有効な電子メールアドレスでなければなりません。"
+msgstr ""
+"ユーザーの名前。\n"
+"メールボックスを持つユーザーもしくは管理者の有効な電子メールアドレスでなけれ"
+"ばなりません。"
 
 #: admin/forms/account.py:40 admin/templates/admin/account_detail.html.py:29
 msgid "Role"
@@ -190,7 +209,11 @@ msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr "このメールボックスのクォータ (MB)\nカスタム値またはドメインのデフォルト値を定義します\n無制限の値を定義する場合は空白のままにします\n（ドメイン管理者には許可されていません）"
+msgstr ""
+"このメールボックスのクォータ (MB)\n"
+"カスタム値またはドメインのデフォルト値を定義します\n"
+"無制限の値を定義する場合は空白のままにします\n"
+"（ドメイン管理者には許可されていません）"
 
 #: admin/forms/account.py:192 admin/forms/domain.py:44
 #: admin/templates/admin/domains.html:35
@@ -202,7 +225,12 @@ msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
 "*@domain.tld)."
-msgstr "メールボックスのエイリアス\ninput ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追加します\n 「キャッチオール」エイリアスを作成するには、 ' * '文字を使用してください  (例: *@domain.tld)"
+msgstr ""
+"メールボックスのエイリアス\n"
+"input ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追"
+"加します\n"
+" 「キャッチオール」エイリアスを作成するには、 ' * '文字を使用してください  "
+"(例: *@domain.tld)"
 
 #: admin/forms/account.py:201
 msgid "Sender addresses"
@@ -265,7 +293,10 @@ msgstr "メールアドレス"
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr "エイリアスアドレス\nキャッチオールエイリアスを作成するためには、ドメイン名だけを入力します  (@domain.tld)"
+msgstr ""
+"エイリアスアドレス\n"
+"キャッチオールエイリアスを作成するためには、ドメイン名だけを入力します  "
+"(@domain.tld)"
 
 #: admin/forms/alias.py:33 admin/templates/admin/alias_detail.html.py:37
 msgid "Recipients"
@@ -275,7 +306,10 @@ msgstr "受信者"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr "アドレスはこのエイリアスが指し示すます。\ninput ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追加します"
+msgstr ""
+"アドレスはこのエイリアスが指し示すます。\n"
+"input ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追"
+"加します"
 
 #: admin/forms/alias.py:90
 msgid "You don't have access to this domain"
@@ -302,13 +336,18 @@ msgstr "タイプ"
 msgid ""
 "Default quota in MB applied to mailboxes. Leave empty to use the default "
 "value."
-msgstr "デフォルトクォータ (MB) は、メールボックスに適用されます。\nデフォルト値を使用する場合は空白のままにします。"
+msgstr ""
+"デフォルトクォータ (MB) は、メールボックスに適用されます。\n"
+"デフォルト値を使用する場合は空白のままにします。"
 
 #: admin/forms/domain.py:47
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr "このドメインのエイリアス \ninput ごとに1つの名前を入力して、 ENTER キーを押して、新しい input を追加します"
+msgstr ""
+"このドメインのエイリアス \n"
+"input ごとに1つの名前を入力して、 ENTER キーを押して、新しい input を追加しま"
+"す"
 
 #: admin/forms/domain.py:101 admin/forms/domain.py:113
 #: admin/forms/domain.py:121
@@ -328,9 +367,10 @@ msgstr "ドメイン管理者を作成する"
 msgid "Automatically create an administrator for this domain"
 msgstr "自動的にドメインの管理者を作成する"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:61
+#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:68
 #: admin/templates/admin/domains.html:34
 #: admin/templates/admin/identity_headers.html:2
+#: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "名前"
 
@@ -338,7 +378,9 @@ msgstr "名前"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr "管理者の名前\nここでは、ドメイン名を含めないでください、それが自動的に付加されます。"
+msgstr ""
+"管理者の名前\n"
+"ここでは、ドメイン名を含めないでください、それが自動的に付加されます。"
 
 #: admin/forms/domain.py:184
 msgid "Create aliases"
@@ -401,7 +443,9 @@ msgstr "メッセージを転送して、ローカルのメールボックスへ
 msgid ""
 "You can't define a forward to a local destination. Please ask your "
 "administrator to create an alias instead."
-msgstr "ローカルの宛先に転送先を定義することはできません。\n代わりにエイリアスを作成するには、管理者に依頼してください。"
+msgstr ""
+"ローカルの宛先に転送先を定義することはできません。\n"
+"代わりにエイリアスを作成するには、管理者に依頼してください。"
 
 #: admin/forms/import_.py:11
 msgid "Select a file"
@@ -421,7 +465,9 @@ msgstr "パスワード暗号化"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "ファイルに含まれるパスワードが暗号化されていない場合は、このオプションをチェックしてください"
+msgstr ""
+"ファイルに含まれるパスワードが暗号化されていない場合は、このオプションを"
+"チェックしてください"
 
 #: admin/lib.py:31
 msgid "A mailbox is required"
@@ -435,20 +481,20 @@ msgstr "ドメインのインポートは許可されていません"
 msgid "You are not allowed to import domain aliases."
 msgstr "ドメインエイリアスのインポートは許可されていません"
 
-#: admin/management/commands/subcommands/_mx.py:152
+#: admin/management/commands/subcommands/_mx.py:155
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] ドメイン {} の DNSBL結果"
 
-#: admin/management/commands/subcommands/_mx.py:171
+#: admin/management/commands/subcommands/_mx.py:176
 msgid "Domain {} as no MX record"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:181
+#: admin/management/commands/subcommands/_mx.py:187
 #, python-brace-format
 msgid "Domain {0} got an invalid MX record. Got {1}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:197
+#: admin/management/commands/subcommands/_mx.py:203
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr ""
 
@@ -662,6 +708,7 @@ msgid "Provider"
 msgstr "プロバイダー"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
+#: admin/templates/admin/mx_domain_detail.html:10
 #: admin/templates/admin/quota_headers.html:2
 msgid "Address"
 msgstr "アドレス"
@@ -682,39 +729,41 @@ msgstr "すべて良好です。このドメインは載っていません。"
 msgid "No information available for this domain."
 msgstr "このドメインに関する情報がありません。"
 
-#: admin/templates/admin/domain_detail.html:25
-#: admin/templates/admin/domains.html:37
-msgid "Authentication"
-msgstr "認証"
+#: admin/templates/admin/domain_detail.html:26
+#: admin/templates/admin/domains.html:38
+#, fuzzy
+#| msgid "Status"
+msgid "DNS status"
+msgstr "ステータス"
 
-#: admin/templates/admin/domain_detail.html:29
+#: admin/templates/admin/domain_detail.html:36
 msgid "Creation date"
 msgstr "作成日時"
 
-#: admin/templates/admin/domain_detail.html:31
+#: admin/templates/admin/domain_detail.html:38
 msgid "Last modification date"
 msgstr "最終修正日時"
 
-#: admin/templates/admin/domain_detail.html:32
-#: admin/templates/admin/domain_detail.html:41
+#: admin/templates/admin/domain_detail.html:39
+#: admin/templates/admin/domain_detail.html:48
 #: admin/templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "ドメインエイリアス"
 
-#: admin/templates/admin/domain_detail.html:34
+#: admin/templates/admin/domain_detail.html:41
 msgid "Mailbox aliases"
 msgstr "メールボックスエイリアス"
 
-#: admin/templates/admin/domain_detail.html:58
+#: admin/templates/admin/domain_detail.html:65
 msgid "Administrators"
 msgstr "管理者"
 
-#: admin/templates/admin/domain_detail.html:68
+#: admin/templates/admin/domain_detail.html:75
 #: admin/templatetags/admin_tags.py:252
 msgid "Remove this permission"
 msgstr "このパーミッションを削除"
 
-#: admin/templates/admin/domain_detail.html:73
+#: admin/templates/admin/domain_detail.html:80
 msgid "No domain administrator defined yet."
 msgstr "ドメイン管理者が指定されていません"
 
@@ -759,7 +808,7 @@ msgstr ""
 msgid "Tags"
 msgstr "タグ"
 
-#: admin/templates/admin/domains.html:38
+#: admin/templates/admin/domains.html:40
 #: admin/templates/admin/identity_headers.html:5
 msgid "Actions"
 msgstr "アション"
@@ -800,19 +849,40 @@ msgstr "値を選択してください"
 msgid "Use domain default value"
 msgstr "ドメインのデフォルト値を使う"
 
+#: admin/templates/admin/mx_domain_detail.html:11
+#, fuzzy
+#| msgid "Update"
+msgid "Updated"
+msgstr "更新"
+
+#: admin/templates/admin/mx_domain_detail.html:23
+msgid "This IP does not match any of the valid MXs defined in parameters"
+msgstr ""
+
+#: admin/templates/admin/mx_domain_detail.html:36
+#, fuzzy
+#| msgid "No information available for this domain."
+msgid "No MX record found for this domain."
+msgstr "このドメインに関する情報がありません。"
+
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr "Modoboa は、ドメイン %(domain)s が、以下の DNSBL プロバイダーに載っていることを検出しました："
+msgstr ""
+"Modoboa は、ドメイン %(domain)s が、以下の DNSBL プロバイダーに載っていること"
+"を検出しました："
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr "ドメインのレピュテーションが影響を受けることになりますし、それから来るメールはスパムと見なされる可能性があります。あなたは、これらのプロバイダーに連絡して、検出されたIPアドレスを登録解除してもらう必要があります。"
+msgstr ""
+"ドメインのレピュテーションが影響を受けることになりますし、それから来るメール"
+"はスパムと見なされる可能性があります。あなたは、これらのプロバイダーに連絡し"
+"て、検出されたIPアドレスを登録解除してもらう必要があります。"
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -906,15 +976,19 @@ msgid "Alias deleted"
 msgid_plural "Aliases deleted"
 msgstr[0] ""
 
-#: admin/views/dnsbl.py:30
+#: admin/views/dns.py:30
+msgid "MX records of {}"
+msgstr ""
+
+#: admin/views/dns.py:53
 msgid "DNSBL summary for {}"
 msgstr "{} のDNSBL 要約"
 
-#: admin/views/domain.py:136
+#: admin/views/domain.py:143
 msgid "You can't delete your own domain"
 msgstr "あなた自身のドメインは削除できません"
 
-#: admin/views/domain.py:139
+#: admin/views/domain.py:146
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "ドメインを削除しました"
@@ -956,9 +1030,18 @@ msgid ""
 "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
 "  %s\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
 "<p>You can use a different character as separator.</p>\n"
-msgstr "次のどちらかのフォーマットに従った CSV ファイルを用意してください：\n<ul>\n<li><em>domain; 名前; クォータ; 有効フラグ</em></li>\n<li><em>domainalias; 名前; 対象のドメイン; 有効フラグ</em></li>\n%s\n</ul>\n<p>各行の最初の要素は必須で、上の値に等しくなければなりません。</p>\n<p>セパレータとして別の文字を使用することができます。</p>\n"
+msgstr ""
+"次のどちらかのフォーマットに従った CSV ファイルを用意してください：\n"
+"<ul>\n"
+"<li><em>domain; 名前; クォータ; 有効フラグ</em></li>\n"
+"<li><em>domainalias; 名前; 対象のドメイン; 有効フラグ</em></li>\n"
+"%s\n"
+"</ul>\n"
+"<p>各行の最初の要素は必須で、上の値に等しくなければなりません。</p>\n"
+"<p>セパレータとして別の文字を使用することができます。</p>\n"
 
 #: admin/views/import_.py:98
 msgid "Import domains"
@@ -968,10 +1051,12 @@ msgstr "ドメインをインポート"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>\n"
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address; quota; [, domain, ...]</em></li>\n"
 "<li><em>alias; address; enabled; recipient; recipient; ...</em></li>\n"
 "</ul>\n"
-"<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
+"<p>The first element of each line is mandatory and must be equal to one of "
+"the previous values.</p>\n"
 "\n"
 "<p>You can use a different character as separator.</p>\n"
 msgstr ""
@@ -983,3 +1068,6 @@ msgstr "ID をインポート"
 #: admin/views/user.py:35
 msgid "Forward updated"
 msgstr "転送先が更新されました"
+
+#~ msgid "Authentication"
+#~ msgstr "認証"

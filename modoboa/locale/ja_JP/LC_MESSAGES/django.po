@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # cwatanab <chihiro.watanabe@live.jp>, 2016
 # csmk, 2014
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 19:05+0200\n"
+"POT-Creation-Date: 2016-09-16 12:33+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/language/ja_JP/)\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
+"language/ja_JP/)\n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: core/__init__.py:63
@@ -75,7 +76,9 @@ msgstr "ラウンド"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr "ラウンド数は(sha256crypt と sha512crypt だけで)使用しています。\n1000 から 999999999 の間でなければなりません。"
+msgstr ""
+"ラウンド数は(sha256crypt と sha512crypt だけで)使用しています。\n"
+"1000 から 999999999 の間でなければなりません。"
 
 #: core/app_settings.py:76
 msgid "Secret key"
@@ -137,7 +140,9 @@ msgstr "Bind DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr "LDAPサーバにバインドするときの識別名に使用します。\n匿名バインドのときは空のままにします。"
+msgstr ""
+"LDAPサーバにバインドするときの識別名に使用します。\n"
+"匿名バインドのときは空のままにします。"
 
 #: core/app_settings.py:128
 msgid "Bind password"
@@ -145,7 +150,8 @@ msgstr "Bind パスワード"
 
 #: core/app_settings.py:131
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr "(\"Bind DN\" を使って) LDAPサーバにバインドするときに使用するパスワード"
+msgstr ""
+"(\"Bind DN\" を使って) LDAPサーバにバインドするときに使用するパスワード"
 
 #: core/app_settings.py:140
 msgid "Users search base"
@@ -163,7 +169,9 @@ msgstr "検索フィルター"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr "オプションのフィルタ文字列 (例えば \"(objectClass=person)\") \n有効であるためには、括弧で囲まなければなりません。"
+msgstr ""
+"オプションのフィルタ文字列 (例えば \"(objectClass=person)\") \n"
+"有効であるためには、括弧で囲まなければなりません。"
 
 #: core/app_settings.py:161
 msgid "User DN template"
@@ -174,7 +182,9 @@ msgstr "ユーザー DN テンプレート"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr "ユーザーDNを作るために使用されるテンプレート。1つのプレースホルダ (%(user)s)が含まれている必要があります。"
+msgstr ""
+"ユーザーDNを作るために使用されるテンプレート。1つのプレースホルダ (%(user)s)"
+"が含まれている必要があります。"
 
 #: core/app_settings.py:172
 msgid "Password attribute"
@@ -198,9 +208,12 @@ msgstr "管理者グループ"
 
 #: core/app_settings.py:189
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators."
-" Use ';' characters to separate groups."
-msgstr "これらの LDAP の Posix グループのメンバーは、ドメイン管理者として作成されます。\n\";\" 文字を使って、複数グループを書けます。"
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr ""
+"これらの LDAP の Posix グループのメンバーは、ドメイン管理者として作成されま"
+"す。\n"
+"\";\" 文字を使って、複数グループを書けます。"
 
 #: core/app_settings.py:196
 msgid "Group type"
@@ -292,7 +305,9 @@ msgstr "デフォルトのリダイレクト先"
 
 #: core/app_settings.py:277
 msgid "The default redirection used when no application is specified"
-msgstr "アプリケーションが指定されていないときのデフォルトのリダイレクト先に使用されます"
+msgstr ""
+"アプリケーションが指定されていないときのデフォルトのリダイレクト先に使用され"
+"ます"
 
 #: core/app_settings.py:310
 msgid "Key must be either 16, 24, or 32 bytes long"
@@ -417,7 +432,9 @@ msgstr "あなた自身のアカウントは削除できません"
 
 #: core/models.py:162
 msgid "Failed to update password: LDAP module not installed"
-msgstr "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていません。"
+msgstr ""
+"パスワードの更新に失敗しました ： LDAP モジュールがインストールされていませ"
+"ん。"
 
 #: core/models.py:220
 msgid "account"
@@ -438,7 +455,8 @@ msgstr "あなた以上のロールを持ったアカウントはインポート
 #: core/models.py:427
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
-msgstr "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
+msgstr ""
+"ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
 
 #: core/models.py:432
 #, python-format
@@ -473,8 +491,8 @@ msgstr ""
 
 #: core/templates/core/dashboard.html:29
 msgid ""
-"Visit to the <a href=\"https://modoboa.org/blog/\" "
-"target=\"_blank\">official weblog</a> for more information."
+"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
+"weblog</a> for more information."
 msgstr ""
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
@@ -491,7 +509,9 @@ msgstr "1つ以上のアップデートが利用できます！"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr "更新することができるコンポーネントを見つけるために以下のリストをチェックしてください。"
+msgstr ""
+"更新することができるコンポーネントを見つけるために以下のリストをチェックして"
+"ください。"
 
 #: core/templates/core/information.html:10
 msgid "Applications"

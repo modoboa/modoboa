@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 19:05+0200\n"
-"PO-Revision-Date: 2016-09-14 18:07+0000\n"
+"POT-Creation-Date: 2016-09-16 12:33+0200\n"
+"PO-Revision-Date: 2016-09-16 10:40+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -33,68 +33,78 @@ msgid "Check that every domain has a valid MX record"
 msgstr "Vérifie que chaque domaine a un enregistrement MX valide"
 
 #: admin/app_settings.py:65
+msgid "Valid MXs"
+msgstr "MX(s) valide(s)"
+
+#: admin/app_settings.py:68
+msgid ""
+"IP(s) or network(s) of the MX that should match with domains' MX records. On"
+" per line."
+msgstr "IP(s) ou réseau(x) avec lesquels les enregistrements MX des domaines doivent correspondre. Un par ligne."
+
+#: admin/app_settings.py:77
 msgid "Enable DNSBL checks"
 msgstr "Activer les vérifications DNSBL"
 
-#: admin/app_settings.py:68
+#: admin/app_settings.py:80
 msgid "Check every domain against major DNSBL providers"
 msgstr "Vérifie chaque domaine auprès des fournisseurs de DNSBL"
 
-#: admin/app_settings.py:72 admin/templates/admin/domain_detail.html.py:33
+#: admin/app_settings.py:84 admin/templates/admin/domain_detail.html.py:40
 msgid "Mailboxes"
 msgstr "Boites"
 
-#: admin/app_settings.py:75
+#: admin/app_settings.py:87
 msgid "Handle mailboxes on filesystem"
 msgstr "Gérer les boites sur le système de fichiers"
 
-#: admin/app_settings.py:78
+#: admin/app_settings.py:90
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
 msgstr "Renommer ou supprimer les boites sur le système de fichiers quand elles sont renommées ou supprimées dans Modoboa"
 
-#: admin/app_settings.py:84
+#: admin/app_settings.py:96
 msgid "Mailboxes owner"
 msgstr "Propriétaire des boites"
 
-#: admin/app_settings.py:87
+#: admin/app_settings.py:99
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "Le compte UNIX qui possède les boites sur le système de fichiers"
 
-#: admin/app_settings.py:92
+#: admin/app_settings.py:104
 msgid "Default domain quota"
 msgstr "Quota de domaine par défaut"
 
-#: admin/app_settings.py:95
+#: admin/app_settings.py:107
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr "Quota par défaut (en Mo) appliqué aux domaines fraichement créés et ne spécifiant pas de valeur. 0 signifie qu'aucun quota ne sera appliqué."
 
-#: admin/app_settings.py:101
+#: admin/app_settings.py:113
 msgid "Automatic account removal"
 msgstr "Suppression automatique de compte"
 
-#: admin/app_settings.py:104
+#: admin/app_settings.py:116
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "Lorsqu'une boite aux lettres est supprimée, supprimer le compte associé en même temps"
 
-#: admin/app_settings.py:108
+#: admin/app_settings.py:120
 msgid "Automatic domain/mailbox creation"
 msgstr "Création automatique de domaine/boite aux lettres"
 
-#: admin/app_settings.py:111
+#: admin/app_settings.py:123
 msgid ""
 "Create a domain and a mailbox when an account is automatically created."
 msgstr "Créer un domaine et une boite aux lettres quand un compte est créé automatiquement."
 
-#: admin/app_settings.py:157 admin/forms/account.py:279
+#: admin/app_settings.py:170 admin/forms/account.py:279
 #: admin/forms/domain.py:81
 msgid "Must be a positive integer"
 msgstr "Doit être un entier positif"
 
-#: admin/app_settings.py:167
+#: admin/app_settings.py:180
 msgid "Administration"
 msgstr "Administration"
 
@@ -126,7 +136,7 @@ msgstr "L'import du compte a échoué (%s): mauvais quota"
 msgid "domain alias"
 msgstr "alias de domaine"
 
-#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:61
+#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:68
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -328,9 +338,10 @@ msgstr "Créer un administrateur de domaine"
 msgid "Automatically create an administrator for this domain"
 msgstr "Créer automatiquement un administrateur pour ce domaine"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:61
+#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:68
 #: admin/templates/admin/domains.html:34
 #: admin/templates/admin/identity_headers.html:2
+#: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Nom"
 
@@ -435,20 +446,20 @@ msgstr "Vous n'êtes pas autorisé à importer des domaines"
 msgid "You are not allowed to import domain aliases."
 msgstr "Vous n'êtes pas autorisé à importer des alias de domaine."
 
-#: admin/management/commands/subcommands/_mx.py:152
+#: admin/management/commands/subcommands/_mx.py:155
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problème(s) DNSBL pour le domaine {}"
 
-#: admin/management/commands/subcommands/_mx.py:171
+#: admin/management/commands/subcommands/_mx.py:176
 msgid "Domain {} as no MX record"
 msgstr "Le domaine {} n'a aucun enregistrement MX"
 
-#: admin/management/commands/subcommands/_mx.py:181
+#: admin/management/commands/subcommands/_mx.py:187
 #, python-brace-format
 msgid "Domain {0} got an invalid MX record. Got {1}"
 msgstr "L'enregistrement MX du domaine {0} n'est pas bon : {1}."
 
-#: admin/management/commands/subcommands/_mx.py:197
+#: admin/management/commands/subcommands/_mx.py:203
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] problème(s) de MX pour le domaine {}"
 
@@ -662,6 +673,7 @@ msgid "Provider"
 msgstr "Fournisseur"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
+#: admin/templates/admin/mx_domain_detail.html:10
 #: admin/templates/admin/quota_headers.html:2
 msgid "Address"
 msgstr "Adresse"
@@ -682,39 +694,39 @@ msgstr "Tout va bien, ce domaine n'est pas listé."
 msgid "No information available for this domain."
 msgstr "Aucune information disponible pour ce domaine."
 
-#: admin/templates/admin/domain_detail.html:25
-#: admin/templates/admin/domains.html:37
-msgid "Authentication"
-msgstr "Authentification"
+#: admin/templates/admin/domain_detail.html:26
+#: admin/templates/admin/domains.html:38
+msgid "DNS status"
+msgstr "Statut DNS"
 
-#: admin/templates/admin/domain_detail.html:29
+#: admin/templates/admin/domain_detail.html:36
 msgid "Creation date"
 msgstr "Date de création"
 
-#: admin/templates/admin/domain_detail.html:31
+#: admin/templates/admin/domain_detail.html:38
 msgid "Last modification date"
 msgstr "Date de dernière modification"
 
-#: admin/templates/admin/domain_detail.html:32
-#: admin/templates/admin/domain_detail.html:41
+#: admin/templates/admin/domain_detail.html:39
+#: admin/templates/admin/domain_detail.html:48
 #: admin/templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "Alias de domaine"
 
-#: admin/templates/admin/domain_detail.html:34
+#: admin/templates/admin/domain_detail.html:41
 msgid "Mailbox aliases"
 msgstr "Alias de boite."
 
-#: admin/templates/admin/domain_detail.html:58
+#: admin/templates/admin/domain_detail.html:65
 msgid "Administrators"
 msgstr "Administrateurs"
 
-#: admin/templates/admin/domain_detail.html:68
+#: admin/templates/admin/domain_detail.html:75
 #: admin/templatetags/admin_tags.py:252
 msgid "Remove this permission"
 msgstr "Supprimer cette permission"
 
-#: admin/templates/admin/domain_detail.html:73
+#: admin/templates/admin/domain_detail.html:80
 msgid "No domain administrator defined yet."
 msgstr "Aucun administrateur de domaine défini."
 
@@ -759,7 +771,7 @@ msgstr "Ajouter"
 msgid "Tags"
 msgstr "Tags"
 
-#: admin/templates/admin/domains.html:38
+#: admin/templates/admin/domains.html:40
 #: admin/templates/admin/identity_headers.html:5
 msgid "Actions"
 msgstr "Actions"
@@ -799,6 +811,18 @@ msgstr "Choisir une valeur"
 #: admin/templates/admin/mailform.html:4
 msgid "Use domain default value"
 msgstr "Utiliser la valeur par défaut du domaine"
+
+#: admin/templates/admin/mx_domain_detail.html:11
+msgid "Updated"
+msgstr "Mis à jour"
+
+#: admin/templates/admin/mx_domain_detail.html:23
+msgid "This IP does not match any of the valid MXs defined in parameters"
+msgstr "Cette IP ne correspond à un aucun des MX valides déclarés dans les paramètres."
+
+#: admin/templates/admin/mx_domain_detail.html:36
+msgid "No MX record found for this domain."
+msgstr "Aucun enregistrement MX trouvé pour ce domaine."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
@@ -907,15 +931,19 @@ msgid_plural "Aliases deleted"
 msgstr[0] "Alias supprimé"
 msgstr[1] "Alias supprimés"
 
-#: admin/views/dnsbl.py:30
+#: admin/views/dns.py:30
+msgid "MX records of {}"
+msgstr "Enregistrements MX de {}"
+
+#: admin/views/dns.py:53
 msgid "DNSBL summary for {}"
 msgstr "Résumé DNSBL pour {}"
 
-#: admin/views/domain.py:136
+#: admin/views/domain.py:143
 msgid "You can't delete your own domain"
 msgstr "Vous ne pouvez pas supprimer votre propre domaine"
 
-#: admin/views/domain.py:139
+#: admin/views/domain.py:146
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domaine supprimé"
