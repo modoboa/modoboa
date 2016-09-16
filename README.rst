@@ -38,7 +38,7 @@ Main features
 Documentation
 *************
 
-A detailed `documentation <https://modoboa.readthedocs.org/>`_ will help you
+A detailed `documentation <https://modoboa.readthedocs.io/>`_ will help you
 to install, use or extend Modoboa.
 
 *************
