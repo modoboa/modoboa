@@ -227,7 +227,7 @@ reversion.register(Domain)
 class MXQuerySet(models.QuerySet):
     """Custom manager for MXRecord."""
 
-    def valids(self):
+    def has_valids(self):
         """Return managed results."""
         if parameters.get_admin("ENABLE_MX_CHECKS"):
             if parameters.get_admin("VALID_MXS", app="admin").strip():
