@@ -43,7 +43,7 @@ class CheckMXRecords(BaseCommand):
         """Return valid MXs set in admin."""
         valid_mxs = parameters.get_admin("VALID_MXS", app="admin")
         return [ipaddress.ip_network(u"{}".format(v.strip()))
-                for v in valid_mxs.split('\n') if v.strip()]
+                for v in valid_mxs.split() if v.strip()]
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""
