@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase
+from modoboa.lib import parameters
 
 from .. import factories
 from .. import models
@@ -19,28 +20,26 @@ class MXTestCase(ModoTestCase):
         super(MXTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
         factories.DomainFactory(name="pouet.com")  # should not exist
+        parameters.save_admin('VALID_MXS', '127.0.0.1', app='admin')
 
     def test_management_command(self):
         """Check that command works fine."""
         self.assertEqual(models.MXRecord.objects.count(), 0)
-        management.call_command("modo", "check_mx", "--no-dnsbl",
-                                "--valid-mx=127.0.0.1", "--ttl=0")
+        management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=0")
         self.assertTrue(
             models.MXRecord.objects.filter(domain=self.domain).exists())
 
         # we passed a ttl to 0. this will reset the cache this time
         qs = models.MXRecord.objects.filter(domain=self.domain)
         id = qs[0].id
-        management.call_command("modo", "check_mx", "--no-dnsbl",
-                                "--valid-mx=127.0.0.1", "--ttl=7200")
+        management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=7200")
         qs = models.MXRecord.objects.filter(domain=self.domain)
         self.assertNotEqual(id, qs[0].id)
         id = qs[0].id
 
         # assume that mxrecords ids are the same. means that we taking care of
         # ttl
-        management.call_command("modo", "check_mx", "--no-dnsbl",
-                                "--valid-mx=127.0.0.1")
+        management.call_command("modo", "check_mx", "--no-dnsbl")
         qs = models.MXRecord.objects.filter(domain=self.domain)
         self.assertEqual(id, qs[0].id)
 

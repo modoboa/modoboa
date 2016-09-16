@@ -61,6 +61,17 @@ class AdminParametersForm(parameters.AdminParametersForm):
         )
     )
 
+    valid_mxs = forms.CharField(
+        label=ugettext_lazy("Valid MXs"),
+        initial="",
+        help_text=ugettext_lazy(
+            "IP(s) or network(s) "
+            "of the MX that should match with domains' MX records. "
+            "On per line."
+        ),
+        widget=forms.Textarea
+    )
+
     enable_dnsbl_checks = YesNoField(
         label=ugettext_lazy("Enable DNSBL checks"),
         initial="yes",

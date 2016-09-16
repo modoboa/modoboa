@@ -38,12 +38,15 @@ class CheckMXRecords(BaseCommand):
         """Return sender address for notifications."""
         return parameters.get_admin("SENDER_ADDRESS", app="core")
 
+    @cached_property
+    def valid_mxs(self):
+        """Return valid MXs set in admin."""
+        valid_mxs = parameters.get_admin("VALID_MXS", app="admin")
+        return [ipaddress.ip_network(u"{}".format(v.strip()))
+                for v in valid_mxs.split() if v.strip()]
+
     def add_arguments(self, parser):
         """Add extra arguments to command."""
-        parser.add_argument(
-            "--valid-mx", type=str, action="append", default=[],
-            help="Valid MX ip(s) or subnet(s) used to check that domain's MX "
-                 "are your own.")
         parser.add_argument(
             "--no-dnsbl", action="store_true", default=False,
             help="Skip DNSBL queries.")
@@ -158,7 +161,7 @@ class CheckMXRecords(BaseCommand):
             if not status:
                 print(msg)
 
-    def check_valid_mx(self, domain, mx_list, valid_mx=None, **options):
+    def check_valid_mx(self, domain, mx_list, **options):
         """Check that domain's MX record exist.
 
         If `valid_mx` is provided, retrieved MX records must be
@@ -166,14 +169,17 @@ class CheckMXRecords(BaseCommand):
         """
         alerts = []
         check = False
-        mxs = [ipaddress.ip_address(u"%s" % mx.address) for mx in mx_list]
+        mxs = [(mx, ipaddress.ip_address(u"%s" % mx.address))
+               for mx in mx_list]
+        valid_mxs = self.valid_mxs
         if not mxs:
             alerts.append(_("Domain {} as no MX record").format(domain))
-        elif valid_mx:
-            for subnet in valid_mx:
-                check = True in [mx in subnet for mx in mxs]
-                if check is True:
-                    break
+        elif valid_mxs:
+            for subnet in valid_mxs:
+                for mx, addr in mxs:
+                    if addr in subnet:
+                        mx.managed = check = True
+                        mx.save()
             if check is False:
                 mx_names = [
                     "{0.name} ({0.address})".format(mx) for mx in mx_list]
@@ -192,7 +198,7 @@ class CheckMXRecords(BaseCommand):
             return
         content = render_to_string(
             "admin/notifications/domain_invalid_mx.html", {
-                "domain": domain, "valid_mx": valid_mx, "alerts": alerts
+                "domain": domain, "alerts": alerts
             })
         subject = _("[modoboa] MX issue(s) for domain {}").format(
             domain.name)
@@ -227,11 +233,6 @@ class CheckMXRecords(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
-        # Check that user provide valid network addresses
-        valid_mx = options["valid_mx"]
-        options["valid_mx"] = [
-            ipaddress.ip_network(u"{}".format(v)) for v in valid_mx]
-
         # Remove deprecated records first
         models.DNSBLResult.objects.exclude(
             provider__in=self.providers).delete()

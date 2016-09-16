@@ -224,6 +224,17 @@ class Domain(AdminObject):
 reversion.register(Domain)
 
 
+class MXQuerySet(models.QuerySet):
+    """Custom manager for MXRecord."""
+
+    def has_valids(self):
+        """Return managed results."""
+        if parameters.get_admin("ENABLE_MX_CHECKS"):
+            if parameters.get_admin("VALID_MXS", app="admin").strip():
+                return self.filter(managed=True).exists()
+        return self.exists()
+
+
 class MXRecord(models.Model):
     """A model used to store MX records for Domain."""
 
@@ -232,6 +243,13 @@ class MXRecord(models.Model):
     address = models.GenericIPAddressField()
     managed = models.BooleanField(default=False)
     updated = models.DateTimeField()
+
+    objects = models.Manager.from_queryset(MXQuerySet)()
+
+    def is_managed(self):
+        if not parameters.get_admin("ENABLE_MX_CHECKS"):
+            return False
+        return bool(parameters.get_admin("VALID_MXS", app="admin").strip())
 
     def __unicode__(self):
         return u'{0.name} ({0.address}) for {0.domain} '.format(self)
