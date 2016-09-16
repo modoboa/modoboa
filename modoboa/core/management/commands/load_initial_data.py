@@ -30,6 +30,10 @@ class Command(BaseCommand):
             "--admin-username", default="admin",
             help="Username of the initial super administrator."
         )
+        parser.add_argument(
+            "--extra-fixtures", action="store_true", default=False,
+            help="Also load some fixtures from the admin application."
+        )
 
     def handle(self, *args, **options):
         """Command entry point."""
@@ -70,3 +74,7 @@ class Command(BaseCommand):
             extension = exts_pool.get_extension(extname)
             extension.load_initial_data()
             events.raiseEvent("InitialDataLoaded", extname)
+
+        if options['extra_fixtures']:
+            from modoboa.admin import factories
+            factories.populate_database()
