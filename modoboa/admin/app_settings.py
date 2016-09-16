@@ -65,7 +65,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Valid MXs"),
         initial="",
         help_text=ugettext_lazy(
-            "IP(s) or netmask(s) "
+            "IP(s) or network(s) "
             "of the MX that should match with domains' MX records. "
             "On per line."
         ),
