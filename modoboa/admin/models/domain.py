@@ -229,9 +229,8 @@ class MXQuerySet(models.QuerySet):
 
     def has_valids(self):
         """Return managed results."""
-        if parameters.get_admin("ENABLE_MX_CHECKS"):
-            if parameters.get_admin("VALID_MXS", app="admin").strip():
-                return self.filter(managed=True).exists()
+        if parameters.get_admin("VALID_MXS", app="admin").strip():
+            return self.filter(managed=True).exists()
         return self.exists()
 
 

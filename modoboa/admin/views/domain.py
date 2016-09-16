@@ -63,7 +63,7 @@ def _domains(request):
     context = {
         "handle_mailboxes": parameters.get_admin(
             "HANDLE_MAILBOXES", raise_error=False),
-        "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
+        "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL"),
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
     if page is None:
@@ -71,7 +71,10 @@ def _domains(request):
     else:
         context["rows"] = _render_to_string(
             request, "admin/domains_table.html", {
-                'domains': page.object_list,
+                "domains": page.object_list,
+                "enable_mx_checks": parameters.get_admin("ENABLE_MX_CHECKS"),
+                "enable_dnsbl_checks": (
+                    parameters.get_admin("ENABLE_DNSBL_CHECKS")),
             }
         )
         context["pages"] = [page.number]
@@ -87,7 +90,11 @@ def domains(request, tplname="admin/domains.html"):
                 reverse("admin:identity_list")
             )
         return HttpResponseRedirect(reverse("core:user_index"))
-    return render(request, tplname, {"selection": "domains"})
+    return render(request, tplname, {
+        "selection": "domains",
+        "enable_mx_checks": parameters.get_admin("ENABLE_MX_CHECKS"),
+        "enable_dnsbl_checks": parameters.get_admin("ENABLE_DNSBL_CHECKS")
+    })
 
 
 @login_required
@@ -176,7 +183,11 @@ class DomainDetailView(
         context = super(DomainDetailView, self).get_context_data(**kwargs)
         result = signals.extra_domain_dashboard_widgets.send(
             self.__class__, user=self.request.user, domain=self.object)
-        context["templates"] = {"left": [], "right": []}
+        context.update({
+            "templates": {"left": [], "right": []},
+            "enable_mx_checks": parameters.get_admin("ENABLE_MX_CHECKS"),
+            "enable_dnsbl_checks": parameters.get_admin("ENABLE_DNSBL_CHECKS"),
+        })
         for receiver, widgets in result:
             for widget in widgets:
                 context["templates"][widget["column"]].append(
