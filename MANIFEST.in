@@ -1,4 +1,4 @@
-include README.rst LICENSE requirements.txt
+include README.rst CONTRIBUTING.rst LICENSE requirements.txt
 recursive-include modoboa *.html *.js *.css *.png *.po *.mo *.json *.gif *.ttf *.woff
 recursive-include modoboa/core/templates *.tpl
 recursive-include modoboa/core/commands/templates *.tpl

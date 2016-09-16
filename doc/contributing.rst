@@ -1,0 +1,4 @@
+Rules
+=================
+
+.. include:: ../CONTRIBUTING.rst

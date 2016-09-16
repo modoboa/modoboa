@@ -62,3 +62,13 @@ Additional resource
 
    additional/migrating
    additional/virtualmachine
+
+*******************
+Contributing
+*******************
+
+.. toctree::
+   :maxdepth: 2
+
+   contributing
+   contributors
