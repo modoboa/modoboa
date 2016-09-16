@@ -20,7 +20,9 @@ from ..models import Domain, Alias
 class AliasForm(forms.ModelForm, DynamicForm):
     """A form to create/modify an alias."""
 
-    random_address = forms.BooleanField(required=False)
+    random_address = forms.BooleanField(
+        label=ugettext_lazy("Random address"),
+        required=False)
     address = lib_fields.UTF8AndEmptyUserEmailField(
         label=ugettext_lazy("Email address"),
         help_text=ugettext_lazy(

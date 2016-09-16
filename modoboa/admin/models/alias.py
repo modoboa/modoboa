@@ -28,20 +28,22 @@ class Alias(AdminObject):
     """Mailbox alias."""
 
     address = models.CharField(
-        ugettext_lazy('address'), max_length=254,
+        ugettext_lazy("address"), max_length=254,
         help_text=ugettext_lazy(
             "The alias address."
         )
     )
     domain = models.ForeignKey(Domain, null=True)
     enabled = models.BooleanField(
-        ugettext_lazy('enabled'),
+        ugettext_lazy("enabled"),
         help_text=ugettext_lazy("Check to activate this alias"),
         default=True
     )
     internal = models.BooleanField(default=False)
-    description = models.TextField(blank=True)
-    expire_at = models.DateTimeField(blank=True, null=True)
+    description = models.TextField(
+        ugettext_lazy("Description"), blank=True)
+    expire_at = models.DateTimeField(
+        ugettext_lazy("Expire at"), blank=True, null=True)
     _objectname = 'MailboxAlias'
 
     class Meta:

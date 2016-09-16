@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 12:33+0200\n"
+"POT-Creation-Date: 2016-09-16 15:54+0200\n"
 "PO-Revision-Date: 2015-10-11 11:48+0000\n"
 "Last-Translator: Rocco <mors10@hotmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/"
@@ -252,7 +252,7 @@ msgstr ""
 "Indirizzi verso il quale questo alias punterà . Indicare un solo indirizzo "
 "per ogni ingresso , premere INVIO per aggiungere un nuovo input ."
 
-#: admin/forms/account.py:258 admin/forms/alias.py:87
+#: admin/forms/account.py:258 admin/forms/alias.py:89
 #: admin/models/mailbox.py:293
 msgid "Domain does not exist"
 msgstr "Il dominio non esiste"
@@ -296,11 +296,17 @@ msgstr "Nuovo account"
 msgid "Account created"
 msgstr "Account creato"
 
-#: admin/forms/alias.py:25
+#: admin/forms/alias.py:24
+#, fuzzy
+#| msgid "Invalid address"
+msgid "Random address"
+msgstr "Indirizzo non valido"
+
+#: admin/forms/alias.py:27
 msgid "Email address"
 msgstr "Indirizzo email"
 
-#: admin/forms/alias.py:27
+#: admin/forms/alias.py:29
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
@@ -308,11 +314,11 @@ msgstr ""
 "Indirizzi email alias. Per creare un alias catchall specifica il nome del "
 "dominio (@domain.tld)."
 
-#: admin/forms/alias.py:33 admin/templates/admin/alias_detail.html.py:37
+#: admin/forms/alias.py:35 admin/templates/admin/alias_detail.html.py:37
 msgid "Recipients"
 msgstr "Destinatari"
 
-#: admin/forms/alias.py:35
+#: admin/forms/alias.py:37
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
@@ -320,17 +326,17 @@ msgstr ""
 "Indirizzi verso il quale questo alias punterà . Indicare un solo indirizzo "
 "per ogni ingresso , premere INVIO per aggiungere un nuovo input ."
 
-#: admin/forms/alias.py:90
+#: admin/forms/alias.py:92
 msgid "You don't have access to this domain"
 msgstr "Non hai accesso a questo dominio"
 
-#: admin/forms/alias.py:107 admin/forms/alias.py:109
+#: admin/forms/alias.py:109 admin/forms/alias.py:111
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "This field is required"
 msgstr "É necessaria una casella"
 
-#: admin/forms/alias.py:113
+#: admin/forms/alias.py:115
 msgid "No recipient defined"
 msgstr "Non è stato definito un destinatario"
 
@@ -525,24 +531,32 @@ msgstr "Attivato"
 msgid "Check to activate this alias"
 msgstr "Seleziona per attivare questo alias"
 
-#: admin/models/alias.py:87
+#: admin/models/alias.py:44 admin/templates/admin/alias_detail.html.py:32
+msgid "Description"
+msgstr ""
+
+#: admin/models/alias.py:46 admin/templates/admin/alias_detail.html.py:29
+msgid "Expire at"
+msgstr ""
+
+#: admin/models/alias.py:89
 msgid "alias"
 msgstr "alias"
 
-#: admin/models/alias.py:119
+#: admin/models/alias.py:121
 msgid "Invalid address"
 msgstr "Indirizzo non valido"
 
-#: admin/models/alias.py:140
+#: admin/models/alias.py:142
 msgid "Local recipient {}@{} not found"
 msgstr "Destinatario locale  {}@{} non trovato"
 
-#: admin/models/alias.py:170
+#: admin/models/alias.py:172
 #, python-format
 msgid "Invalid line: %s"
 msgstr "Riga non valida: %s"
 
-#: admin/models/alias.py:176
+#: admin/models/alias.py:178
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Il dominio '%s' non esiste"
@@ -730,14 +744,6 @@ msgstr "alias"
 #| msgid "Alias modified"
 msgid "Modified"
 msgstr "Alias modificato"
-
-#: admin/templates/admin/alias_detail.html:29
-msgid "Expire at"
-msgstr ""
-
-#: admin/templates/admin/alias_detail.html:32
-msgid "Description"
-msgstr ""
 
 #: admin/templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"

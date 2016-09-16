@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 12:33+0200\n"
+"POT-Creation-Date: 2016-09-16 15:54+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -243,7 +243,7 @@ msgid ""
 "one address per input. Press ENTER to add a new input."
 msgstr ""
 
-#: admin/forms/account.py:258 admin/forms/alias.py:87
+#: admin/forms/account.py:258 admin/forms/alias.py:89
 #: admin/models/mailbox.py:293
 msgid "Domain does not exist"
 msgstr "ドメインは存在しません"
@@ -285,11 +285,17 @@ msgstr "新しいアカウト"
 msgid "Account created"
 msgstr "アカウントを作成しました"
 
-#: admin/forms/alias.py:25
+#: admin/forms/alias.py:24
+#, fuzzy
+#| msgid "Invalid address"
+msgid "Random address"
+msgstr "不正なアドレス"
+
+#: admin/forms/alias.py:27
 msgid "Email address"
 msgstr "メールアドレス"
 
-#: admin/forms/alias.py:27
+#: admin/forms/alias.py:29
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
@@ -298,11 +304,11 @@ msgstr ""
 "キャッチオールエイリアスを作成するためには、ドメイン名だけを入力します  "
 "(@domain.tld)"
 
-#: admin/forms/alias.py:33 admin/templates/admin/alias_detail.html.py:37
+#: admin/forms/alias.py:35 admin/templates/admin/alias_detail.html.py:37
 msgid "Recipients"
 msgstr "受信者"
 
-#: admin/forms/alias.py:35
+#: admin/forms/alias.py:37
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
@@ -311,15 +317,15 @@ msgstr ""
 "input ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追"
 "加します"
 
-#: admin/forms/alias.py:90
+#: admin/forms/alias.py:92
 msgid "You don't have access to this domain"
 msgstr "このドメインにアクセスする権限がありません"
 
-#: admin/forms/alias.py:107 admin/forms/alias.py:109
+#: admin/forms/alias.py:109 admin/forms/alias.py:111
 msgid "This field is required"
 msgstr ""
 
-#: admin/forms/alias.py:113
+#: admin/forms/alias.py:115
 msgid "No recipient defined"
 msgstr "受信者が定義されていません"
 
@@ -515,24 +521,32 @@ msgstr "有効"
 msgid "Check to activate this alias"
 msgstr "このエイリアスをアクティブにするために確認してください"
 
-#: admin/models/alias.py:87
+#: admin/models/alias.py:44 admin/templates/admin/alias_detail.html.py:32
+msgid "Description"
+msgstr ""
+
+#: admin/models/alias.py:46 admin/templates/admin/alias_detail.html.py:29
+msgid "Expire at"
+msgstr ""
+
+#: admin/models/alias.py:89
 msgid "alias"
 msgstr "エイリアス"
 
-#: admin/models/alias.py:119
+#: admin/models/alias.py:121
 msgid "Invalid address"
 msgstr "不正なアドレス"
 
-#: admin/models/alias.py:140
+#: admin/models/alias.py:142
 msgid "Local recipient {}@{} not found"
 msgstr "ローカル受信者 {}@{} は見つかりません"
 
-#: admin/models/alias.py:170
+#: admin/models/alias.py:172
 #, python-format
 msgid "Invalid line: %s"
 msgstr "不正な行: %s"
 
-#: admin/models/alias.py:176
+#: admin/models/alias.py:178
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "ドメイン %s は、存在しません"
@@ -693,14 +707,6 @@ msgstr ""
 
 #: admin/templates/admin/alias_detail.html:27
 msgid "Modified"
-msgstr ""
-
-#: admin/templates/admin/alias_detail.html:29
-msgid "Expire at"
-msgstr ""
-
-#: admin/templates/admin/alias_detail.html:32
-msgid "Description"
 msgstr ""
 
 #: admin/templates/admin/dnsbl_domain_detail.html:10
