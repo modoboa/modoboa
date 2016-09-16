@@ -43,6 +43,9 @@ class AliasForm(forms.ModelForm, DynamicForm):
     class Meta:
         model = Alias
         fields = ("address", "domain", "enabled", "expire_at", "description")
+        labels = {
+            "domain": ugettext_lazy("Domain")
+        }
         widgets = {
             "domain": forms.widgets.Select(
                 attrs={"class": "selectpicker", "data-live-search": "true"})

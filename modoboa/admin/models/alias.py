@@ -33,8 +33,7 @@ class Alias(AdminObject):
             "The alias address."
         )
     )
-    domain = models.ForeignKey(
-        ugettext_lazy("Domain"), Domain, null=True)
+    domain = models.ForeignKey(Domain, null=True)
     enabled = models.BooleanField(
         ugettext_lazy("enabled"),
         help_text=ugettext_lazy("Check to activate this alias"),
