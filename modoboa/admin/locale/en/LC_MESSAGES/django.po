@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 15:54+0200\n"
+"POT-Creation-Date: 2016-09-16 16:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -301,7 +301,7 @@ msgstr ""
 msgid "No recipient defined"
 msgstr ""
 
-#: admin/forms/domain.py:24 admin/models/domain.py:87
+#: admin/forms/domain.py:24 admin/models/alias.py:37 admin/models/domain.py:87
 #: admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr ""
@@ -473,41 +473,41 @@ msgstr ""
 msgid "The alias address."
 msgstr ""
 
-#: admin/models/alias.py:38 admin/models/domain.py:42
+#: admin/models/alias.py:39 admin/models/domain.py:42
 #: admin/models/domain_alias.py:44
 msgid "enabled"
 msgstr ""
 
-#: admin/models/alias.py:39 admin/models/domain_alias.py:45
+#: admin/models/alias.py:40 admin/models/domain_alias.py:45
 msgid "Check to activate this alias"
 msgstr ""
 
-#: admin/models/alias.py:44 admin/templates/admin/alias_detail.html.py:32
+#: admin/models/alias.py:45 admin/templates/admin/alias_detail.html.py:32
 msgid "Description"
 msgstr ""
 
-#: admin/models/alias.py:46 admin/templates/admin/alias_detail.html.py:29
+#: admin/models/alias.py:47 admin/templates/admin/alias_detail.html.py:29
 msgid "Expire at"
 msgstr ""
 
-#: admin/models/alias.py:89
+#: admin/models/alias.py:90
 msgid "alias"
 msgstr ""
 
-#: admin/models/alias.py:121
+#: admin/models/alias.py:122
 msgid "Invalid address"
 msgstr ""
 
-#: admin/models/alias.py:142
+#: admin/models/alias.py:143
 msgid "Local recipient {}@{} not found"
 msgstr ""
 
-#: admin/models/alias.py:172
+#: admin/models/alias.py:173
 #, python-format
 msgid "Invalid line: %s"
 msgstr ""
 
-#: admin/models/alias.py:178
+#: admin/models/alias.py:179
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr ""

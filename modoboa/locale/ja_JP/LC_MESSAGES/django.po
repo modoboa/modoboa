@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 15:54+0200\n"
+"POT-Creation-Date: 2016-09-16 16:03+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -394,71 +394,83 @@ msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
 msgid "deleted"
 msgstr "削除しました"
 
-#: core/models.py:58
+#: core/models.py:51
+#, fuzzy
+#| msgid "Group name"
+msgid "First name"
+msgstr "グループ名"
+
+#: core/models.py:53
+#, fuzzy
+#| msgid "Last login"
+msgid "Last name"
+msgstr "最終ログイン"
+
+#: core/models.py:60
 msgid "Allow mailboxes access"
 msgstr "メールボックスのアクセスを許可する"
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "Allow this administrator to access user mailboxes"
 msgstr "ユーザーのメールボックスアクセスをこの管理者に許可する"
 
-#: core/models.py:63
+#: core/models.py:65
 msgid "password"
 msgstr "パスワード"
 
-#: core/models.py:65
+#: core/models.py:67
 msgid "last login"
 msgstr "最終ログイン"
 
-#: core/models.py:71
+#: core/models.py:73
 msgid "Prefered language to display pages."
 msgstr "ページの表示に優先言語を使う"
 
-#: core/models.py:75
+#: core/models.py:77
 msgid "Phone number"
 msgstr "電話番号"
 
-#: core/models.py:77
+#: core/models.py:79
 msgid "Secondary email"
 msgstr "2つめの電子メール"
 
-#: core/models.py:80
+#: core/models.py:82
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "別の電子メールアドレスは、回復の必要のために使用することができます。"
 
-#: core/models.py:112
+#: core/models.py:114
 msgid "You can't delete your own account"
 msgstr "あなた自身のアカウントは削除できません"
 
-#: core/models.py:162
+#: core/models.py:164
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていませ"
 "ん。"
 
-#: core/models.py:220
+#: core/models.py:222
 msgid "account"
 msgstr "アカウント"
 
-#: core/models.py:365
+#: core/models.py:367
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:404
+#: core/models.py:406
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: core/models.py:412
+#: core/models.py:414
 msgid "You can't import an account with a role greater than yours"
 msgstr "あなた以上のロールを持ったアカウントはインポートできません"
 
-#: core/models.py:427
+#: core/models.py:429
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
 
-#: core/models.py:432
+#: core/models.py:434
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"

@@ -47,8 +47,10 @@ class User(PermissionsMixin):
     It also adds new attributes and methods.
     """
     username = models.CharField(max_length=254, unique=True)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(
+        ugettext_lazy("First name"), max_length=30, blank=True)
+    last_name = models.CharField(
+        ugettext_lazy("Last name"), max_length=30, blank=True)
     email = models.EmailField(max_length=254, blank=True, db_index=True)
     is_staff = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True, db_index=True)

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 15:54+0200\n"
+"POT-Creation-Date: 2016-09-16 16:03+0200\n"
 "PO-Revision-Date: 2015-10-11 11:48+0000\n"
 "Last-Translator: Rocco <mors10@hotmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/"
@@ -340,7 +340,7 @@ msgstr "É necessaria una casella"
 msgid "No recipient defined"
 msgstr "Non è stato definito un destinatario"
 
-#: admin/forms/domain.py:24 admin/models/domain.py:87
+#: admin/forms/domain.py:24 admin/models/alias.py:37 admin/models/domain.py:87
 #: admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr "Dominio"
@@ -522,41 +522,41 @@ msgstr "indirizzo"
 msgid "The alias address."
 msgstr "Indirizzi Alias."
 
-#: admin/models/alias.py:38 admin/models/domain.py:42
+#: admin/models/alias.py:39 admin/models/domain.py:42
 #: admin/models/domain_alias.py:44
 msgid "enabled"
 msgstr "Attivato"
 
-#: admin/models/alias.py:39 admin/models/domain_alias.py:45
+#: admin/models/alias.py:40 admin/models/domain_alias.py:45
 msgid "Check to activate this alias"
 msgstr "Seleziona per attivare questo alias"
 
-#: admin/models/alias.py:44 admin/templates/admin/alias_detail.html.py:32
+#: admin/models/alias.py:45 admin/templates/admin/alias_detail.html.py:32
 msgid "Description"
 msgstr ""
 
-#: admin/models/alias.py:46 admin/templates/admin/alias_detail.html.py:29
+#: admin/models/alias.py:47 admin/templates/admin/alias_detail.html.py:29
 msgid "Expire at"
 msgstr ""
 
-#: admin/models/alias.py:89
+#: admin/models/alias.py:90
 msgid "alias"
 msgstr "alias"
 
-#: admin/models/alias.py:121
+#: admin/models/alias.py:122
 msgid "Invalid address"
 msgstr "Indirizzo non valido"
 
-#: admin/models/alias.py:142
+#: admin/models/alias.py:143
 msgid "Local recipient {}@{} not found"
 msgstr "Destinatario locale  {}@{} non trovato"
 
-#: admin/models/alias.py:172
+#: admin/models/alias.py:173
 #, python-format
 msgid "Invalid line: %s"
 msgstr "Riga non valida: %s"
 
-#: admin/models/alias.py:178
+#: admin/models/alias.py:179
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Il dominio '%s' non esiste"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 15:54+0200\n"
+"POT-Creation-Date: 2016-09-16 16:03+0200\n"
 "PO-Revision-Date: 2016-05-30 18:03+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -396,68 +396,80 @@ msgstr "%(object)s '%(name)s' %(action)s av användare %(user)s"
 msgid "deleted"
 msgstr "raderad"
 
-#: core/models.py:58
+#: core/models.py:51
+#, fuzzy
+#| msgid "Group name"
+msgid "First name"
+msgstr "Gruppnamn"
+
+#: core/models.py:53
+#, fuzzy
+#| msgid "Last login"
+msgid "Last name"
+msgstr "Senaste inloggad"
+
+#: core/models.py:60
 msgid "Allow mailboxes access"
 msgstr "Tillåt åtkomst till brevlådor"
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Tillåt den här administratören att ändra användares brevlådor"
 
-#: core/models.py:63
+#: core/models.py:65
 msgid "password"
 msgstr "lösenord"
 
-#: core/models.py:65
+#: core/models.py:67
 msgid "last login"
 msgstr "senaste inloggning"
 
-#: core/models.py:71
+#: core/models.py:73
 msgid "Prefered language to display pages."
 msgstr "Önskat språk för att visa sidor."
 
-#: core/models.py:75
+#: core/models.py:77
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: core/models.py:77
+#: core/models.py:79
 msgid "Secondary email"
 msgstr "Sekundär e-post"
 
-#: core/models.py:80
+#: core/models.py:82
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "En alternativ e-post adress, kan användas för återställningsbehov."
 
-#: core/models.py:112
+#: core/models.py:114
 msgid "You can't delete your own account"
 msgstr "Du kan inte radera ditt eget konto"
 
-#: core/models.py:162
+#: core/models.py:164
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Misslyckades med att uppdatera lösenord: LDAP modul ej installerad"
 
-#: core/models.py:220
+#: core/models.py:222
 msgid "account"
 msgstr "konto"
 
-#: core/models.py:365
+#: core/models.py:367
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:404
+#: core/models.py:406
 msgid "Invalid line"
 msgstr "Ogiltig rad"
 
-#: core/models.py:412
+#: core/models.py:414
 msgid "You can't import an account with a role greater than yours"
 msgstr "Du kan inte importera konto med en roll större än din"
 
-#: core/models.py:427
+#: core/models.py:429
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Den enkla användaren '%s' måste ha en gällande e-postadress"
 
-#: core/models.py:432
+#: core/models.py:434
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "användarnamn och e-post fält får inte avvika för '%s'"

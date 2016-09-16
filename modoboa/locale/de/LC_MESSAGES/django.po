@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 15:54+0200\n"
+"POT-Creation-Date: 2016-09-16 16:03+0200\n"
 "PO-Revision-Date: 2015-07-09 14:03+0000\n"
 "Last-Translator: controlc.de\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
@@ -398,71 +398,83 @@ msgstr "%(object)s '%(name)s' %(action)s der Identität %(user)s"
 msgid "deleted"
 msgstr "entfernt"
 
-#: core/models.py:58
+#: core/models.py:51
+#, fuzzy
+#| msgid "Group name"
+msgid "First name"
+msgstr "Gruppenname"
+
+#: core/models.py:53
+#, fuzzy
+#| msgid "Last login"
+msgid "Last name"
+msgstr "Letzte Anmeldung"
+
+#: core/models.py:60
 msgid "Allow mailboxes access"
 msgstr "Erlaube den Postfach-Zugriff"
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Erlaubt dem Administrator auf Benutzer-Postfächer zuzugreifen"
 
-#: core/models.py:63
+#: core/models.py:65
 msgid "password"
 msgstr "Passwort"
 
-#: core/models.py:65
+#: core/models.py:67
 msgid "last login"
 msgstr "Letzte Anmeldung"
 
-#: core/models.py:71
+#: core/models.py:73
 #, fuzzy
 #| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Bevorzugte Sprache für Seitendarstellung"
 
-#: core/models.py:75
+#: core/models.py:77
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:77
+#: core/models.py:79
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:80
+#: core/models.py:82
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:112
+#: core/models.py:114
 msgid "You can't delete your own account"
 msgstr "Sie können Ihr eigenes Konto nicht entfernen"
 
-#: core/models.py:162
+#: core/models.py:164
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Konnte Passwort nicht aktualisieren: LDAP-Modul nicht installiert"
 
-#: core/models.py:220
+#: core/models.py:222
 msgid "account"
 msgstr "Konto"
 
-#: core/models.py:365
+#: core/models.py:367
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:404
+#: core/models.py:406
 msgid "Invalid line"
 msgstr "Ungültige Zeile"
 
-#: core/models.py:412
+#: core/models.py:414
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 "Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
 
-#: core/models.py:427
+#: core/models.py:429
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 
-#: core/models.py:432
+#: core/models.py:434
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"

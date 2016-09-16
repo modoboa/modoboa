@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 15:54+0200\n"
-"PO-Revision-Date: 2016-09-16 10:37+0000\n"
+"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"PO-Revision-Date: 2016-09-16 14:04+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: core/__init__.py:63
@@ -64,8 +64,7 @@ msgstr "plain (faible)"
 
 #: core/app_settings.py:61
 msgid "Scheme used to crypt mailbox passwords"
-msgstr ""
-"Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+msgstr "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
 #: core/app_settings.py:66
 msgid "Rounds"
@@ -75,9 +74,7 @@ msgstr "Tours"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit "
-"être compris entre 1000 et 999999999 inclue."
+msgstr "Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit être compris entre 1000 et 999999999 inclue."
 
 #: core/app_settings.py:76
 msgid "Secret key"
@@ -139,9 +136,7 @@ msgstr "ND de connexion"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser "
-"vide pour une connexion anonyme"
+msgstr "Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser vide pour une connexion anonyme"
 
 #: core/app_settings.py:128
 msgid "Bind password"
@@ -149,9 +144,7 @@ msgstr "Mot de passe de connexion"
 
 #: core/app_settings.py:131
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de "
-"connexion')"
+msgstr "Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de connexion')"
 
 #: core/app_settings.py:140
 msgid "Users search base"
@@ -159,9 +152,7 @@ msgstr "Base de recherche des utilisateurs"
 
 #: core/app_settings.py:143
 msgid "The distinguished name of the search base used to find users"
-msgstr ""
-"Le nom distinctif de la base de recherche utilisée pour rechercher les "
-"utilisateurs"
+msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les utilisateurs"
 
 #: core/app_settings.py:150
 msgid "Search filter"
@@ -171,9 +162,7 @@ msgstr "Filtre de recherche"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être "
-"valide, il doit être entouré de parenthèses."
+msgstr "Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être valide, il doit être entouré de parenthèses."
 
 #: core/app_settings.py:161
 msgid "User DN template"
@@ -184,9 +173,7 @@ msgstr "Modèle de nom distinctif utilisateur"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il "
-"doit contenir un espace réservé (ex. %(user)s)"
+msgstr "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il doit contenir un espace réservé (ex. %(user)s)"
 
 #: core/app_settings.py:172
 msgid "Password attribute"
@@ -210,12 +197,9 @@ msgstr "Groupes administrateurs"
 
 #: core/app_settings.py:189
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Les membres de ces groupes LDAP (Posix) seront créés en tant "
-"qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les "
-"groupes."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Les membres de ces groupes LDAP (Posix) seront créés en tant qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les groupes."
 
 #: core/app_settings.py:196
 msgid "Group type"
@@ -231,9 +215,7 @@ msgstr "Base de recherche des groupes"
 
 #: core/app_settings.py:208
 msgid "The distinguished name of the search base used to find groups"
-msgstr ""
-"Le nom distinctif de la base de recherche utilisée pour rechercher les "
-"groupes"
+msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les groupes"
 
 #: core/app_settings.py:213
 msgid "Notifications"
@@ -273,9 +255,7 @@ msgstr "Envoyer des statistiques"
 
 #: core/app_settings.py:243
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Envoyer des statistiques à l'API publique de Modoboa (compteurs et "
-"extensions utilisées)"
+msgstr "Envoyer des statistiques à l'API publique de Modoboa (compteurs et extensions utilisées)"
 
 #: core/app_settings.py:247
 msgid "Miscellaneous"
@@ -311,8 +291,7 @@ msgstr "Redirection par défaut"
 
 #: core/app_settings.py:277
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"La redirection appliquée par défaut quand aucune application n'est spécifiée"
+msgstr "La redirection appliquée par défaut quand aucune application n'est spécifiée"
 
 #: core/app_settings.py:310
 msgid "Key must be either 16, 24, or 32 bytes long"
@@ -399,69 +378,76 @@ msgstr "%(object)s '%(name)s' %(action)s par l'utilisateur %(user)s"
 msgid "deleted"
 msgstr "Supprimé"
 
-#: core/models.py:58
+#: core/models.py:51
+msgid "First name"
+msgstr "Prénom"
+
+#: core/models.py:53
+msgid "Last name"
+msgstr "Nom"
+
+#: core/models.py:60
 msgid "Allow mailboxes access"
 msgstr "Autoriser l'accès aux boites"
 
-#: core/models.py:60
+#: core/models.py:62
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Autoriser cet administrateur à accéder aux boites des utilisateurs"
 
-#: core/models.py:63
+#: core/models.py:65
 msgid "password"
 msgstr "mot de passe"
 
-#: core/models.py:65
+#: core/models.py:67
 msgid "last login"
 msgstr "dernière connexion"
 
-#: core/models.py:71
+#: core/models.py:73
 msgid "Prefered language to display pages."
 msgstr "Langage préféré pour afficher les pages"
 
-#: core/models.py:75
+#: core/models.py:77
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: core/models.py:77
+#: core/models.py:79
 msgid "Secondary email"
 msgstr "Email secondaire"
 
-#: core/models.py:80
+#: core/models.py:82
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "Une adresse e-mail alternative ou de secours."
 
-#: core/models.py:112
+#: core/models.py:114
 msgid "You can't delete your own account"
 msgstr "Vous ne pouvez pas supprimer votre propre compte"
 
-#: core/models.py:162
+#: core/models.py:164
 msgid "Failed to update password: LDAP module not installed"
-msgstr ""
-"Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
+msgstr "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
 
-#: core/models.py:220
+#: core/models.py:222
 msgid "account"
 msgstr "compte"
 
-#: core/models.py:365
+#: core/models.py:367
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: core/models.py:404
+#: core/models.py:406
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: core/models.py:412
+#: core/models.py:414
 msgid "You can't import an account with a role greater than yours"
 msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur au votre"
 
-#: core/models.py:427
+#: core/models.py:429
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "L'utilisateur simple '%s' doit avoir une adresse email valide"
 
-#: core/models.py:432
+#: core/models.py:434
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Les champs username et email de '%s' ne doivent pas différer"
@@ -496,9 +482,7 @@ msgstr "Dernières nouvelles"
 msgid ""
 "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
 "weblog</a> for more information."
-msgstr ""
-"Visitez le <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blog "
-"officiel</a> pour plus d'information."
+msgstr "Visitez le <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blog officiel</a> pour plus d'information."
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
 msgid "Information"
@@ -514,8 +498,7 @@ msgstr "Une ou plusieurs mises à jour sont disponibles!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
+msgstr "Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -643,9 +626,7 @@ msgstr "Utiliseur '%s' connecté avec succès"
 
 #: core/views/auth.py:48
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
-"réessayer."
+msgstr "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez réessayer."
 
 #: core/views/auth.py:76
 #, python-format
