@@ -21,11 +21,17 @@
         <h3 class="panel-title">{% trans "Summary" %}</h3>
       </div>
       <div class="panel-body">
-        <div class="row">
-          <span class="title">{% trans "DNS status" %}</span>
-          <span class="label label-mini label-{% if not domain.mxrecord_set.has_valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
-          <span class="label label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
-        </div>
+        {% if enable_mx_checks == "yes" or enable_dnsbl_checks == "yes" %}
+          <div class="row">
+            <span class="title">{% trans "DNS status" %}</span>
+            {% if enable_mx_checks == "yes" %}
+              <span class="label label-mini label-{% if not domain.mxrecord_set.has_valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
+            {% endif %}
+            {% if enable_dnsbl_checks == "yes" %}
+              <span class="label label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
+            {% endif %}
+          </div>
+        {% endif %}
         <div class="row">
           <span class="title">{% trans "Creation date" %}</span><span>{{ domain.creation }}</span>
         </div>

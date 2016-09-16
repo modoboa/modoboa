@@ -5,12 +5,18 @@
   <td name="name"><a href="{% url 'admin:domain_detail' domain.id %}">{{ domain }}</a>{% if not domain.enabled %} ({% trans "disabled" %}){% endif %}</td>
   <td name="aliases">{% domain_aliases domain %} </td>
   <td name="tags">{% render_tags domain.tags %}</td>
-  <td name="auth">
-    <small>
-      <span class="label label-mini label-{% if not domain.mxrecord_set.exists %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
-      <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
-    </small>
-  </td>
+  {% if enable_mx_checks == "yes" or enable_dnsbl_checks == "yes" %}
+    <td name="dns">
+      <small>
+        {% if enable_mx_checks == "yes" %}
+          <span class="label label-mini label-{% if not domain.mxrecord_set.has_valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
+        {% endif %}
+        {% if enable_dnsbl_checks == "yes" %}
+          <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
+        {% endif %}
+      </small>
+    </td>
+  {% endif %}
   <td name="actions">{% domain_actions user domain %}</td>
 </tr>
 {% endfor %}

@@ -69,7 +69,8 @@ class AdminParametersForm(parameters.AdminParametersForm):
             "of the MX that should match with domains' MX records. "
             "On per line."
         ),
-        widget=forms.Textarea
+        widget=forms.Textarea,
+        required=False
     )
 
     enable_dnsbl_checks = YesNoField(
@@ -126,6 +127,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
     # Visibility rules
     visibility_rules = {
+        "valid_mxs": "enable_mx_checks=yes",
         "mailboxes_owner": "handle_mailboxes=yes",
     }
 
