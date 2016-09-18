@@ -80,7 +80,7 @@ class CheckMXRecords(BaseCommand):
         models.MXRecord.objects.filter(domain=domain).delete()
         try:
             answers = dns.resolver.query(domain.name, "MX")
-        except dns.resolver.NoAnswer:
+        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
             raise StopIteration()
 
         delta = timedelta(seconds=ttl)
