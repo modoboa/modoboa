@@ -83,7 +83,8 @@ class CheckMXRecords(BaseCommand):
         models.MXRecord.objects.filter(domain=domain).delete()
         try:
             answers = dns.resolver.query(domain.name, "MX")
-        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN,
+                dns.resolver.NoNameservers):
             raise StopIteration()
 
         delta = timedelta(seconds=ttl)
@@ -243,7 +244,9 @@ class CheckMXRecords(BaseCommand):
         if options['domain']:
             domains = []
             for domain in options['domain']:
-                if domain.isdigit():
+                if isinstance(domain, models.Domain):
+                    domains.append(domain)
+                elif domain.isdigit():
                     domains.append(models.Domain.objects.get(domain))
                 else:
                     domains.append(models.Domain.objects.filter(name=domain))
