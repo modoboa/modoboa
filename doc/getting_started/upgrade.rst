@@ -68,8 +68,8 @@ following line to your crontab::
 
   0 * * * * <modoboa_site>/manage.py communicate_with_public_api
 
-Please also note that public API now uses TLS so you must update
-your configuration as follows::
+Please also note that public API now uses TLS so you must update your
+configuration as follows::
 
   MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
