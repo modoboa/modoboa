@@ -9,7 +9,7 @@
     <td name="dns">
       <small>
         {% if domain.awaiting_checks %}
-          <span class="label label-mini label-info">{% trans "awaiting checks" %}</span>
+          <span class="label label-mini label-info">{% trans "Awaiting checks" %}</span>
         {% else %}
           {% if enable_mx_checks == "yes" %}
             <span class="label label-mini label-{% if not domain.mxrecord_set.has_valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
