@@ -1,6 +1,5 @@
 """Django signal handlers for admin."""
 
-from django.core import management
 from django.db.models import signals
 from django.dispatch import receiver
 
@@ -11,11 +10,6 @@ from . import models
 def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
     """Update associated MXs and mailboxes."""
     if kwargs.get("created"):
-        management.call_command(
-                'modo', 'check_mx',
-                domain=[instance],
-                skip_admin_emails=True,
-                )
         return
     instance.mailbox_set.filter(use_domain_quota=True).update(
         quota=instance.quota)

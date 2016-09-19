@@ -1,7 +1,10 @@
 """Models related to domains management."""
 
+import datetime
+
 from django.db import models
 from django.db.models.manager import Manager
+from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -103,8 +106,18 @@ class Domain(AdminObject):
         return self.domainalias_set
 
     @property
-    def mx_records(self):
-        self.mxrecord_set
+    def just_created(self):
+        """return  true if the domain was created in the latest 24h"""
+        now = timezone.now()
+        delta = datetime.timedelta(days=1)
+        return bool(self.creation + delta > now)
+
+    def awaiting_checks(self):
+        """return  true if the domain has no valid MX records and was created
+        in the latest 24h"""
+        if (not self.mxrecord_set.has_valids()) and self.just_created:
+            return True
+        return False
 
     @cached_property
     def dnsbl_status_color(self):
