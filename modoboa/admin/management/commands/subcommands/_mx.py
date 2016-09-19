@@ -58,6 +58,9 @@ class CheckMXRecords(BaseCommand):
             default=False,
             help="Skip domain's admins email notification.")
         parser.add_argument(
+            "--domain", type=str, action="append", default=[],
+            help="Domain name or id to update.")
+        parser.add_argument(
             "--timeout", type=int, default=3,
             help="Timeout used for queries.")
         parser.add_argument(
@@ -86,22 +89,22 @@ class CheckMXRecords(BaseCommand):
         delta = timedelta(seconds=ttl)
 
         for answer in answers:
-            address = None
             try:
-                ipaddress.ip_address(str(answer.exchange))
-            except ValueError:
-                try:
-                    address = socket.gethostbyname(str(answer.exchange))
-                except socket.gaierror:
-                    pass
+                # work if .exchange is a name or IP
+                address = socket.gethostbyname(str(answer.exchange))
+            except socket.gaierror:
+                pass
             else:
-                address = str(answer.exchange)
-            finally:
-                if address is not None:
+                try:
+                    # we must have a valid IP
+                    address = ipaddress.ip_address(u'{}'.format(address))
+                except ValueError:
+                    pass
+                else:
                     record = models.MXRecord.objects.create(
                         domain=domain,
-                        name=str(answer.exchange).strip("."),
-                        address=address,
+                        name=u'{}'.format(str(answer.exchange).strip(".")),
+                        address=u'{}'.format(address),
                         updated=now + delta)
                     yield record
 
@@ -237,5 +240,17 @@ class CheckMXRecords(BaseCommand):
         models.DNSBLResult.objects.exclude(
             provider__in=self.providers).delete()
 
-        for domain in models.Domain.objects.filter(enabled=True):
+        if options['domain']:
+            domains = []
+            for domain in options['domain']:
+                if domain.isdigit():
+                    domains.append(models.Domain.objects.get(domain))
+                else:
+                    domains.append(models.Domain.objects.filter(name=domain))
+        else:
+            domains = models.Domain.objects.filter(enabled=True)
+
+        options.pop('domain')
+
+        for domain in domains:
             self.check_domain(domain, **options)
