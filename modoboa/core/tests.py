@@ -159,7 +159,7 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
     def check_created_user(self, username, group="SimpleUsers", with_mb=True):
         """Check that created user is valid."""
         user = models.User.objects.get(username=username)
-        self.assertEqual(user.group, group)
+        self.assertEqual(user.role, group)
         if with_mb:
             self.assertEqual(user.email, username)
             self.assertEqual(user.mailbox.domain.name, "example.com")

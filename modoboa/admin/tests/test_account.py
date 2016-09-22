@@ -5,8 +5,9 @@ from unittest import skipIf
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
-from modoboa.core.models import User
+from modoboa.core import factories as core_factories
 from modoboa.core import tests as core_tests
+from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 from modoboa.lib.tests import NO_LDAP
@@ -233,7 +234,9 @@ class PermissionsTestCase(ModoTestCase):
                 app="limits"
             )
         factories.populate_database()
-        cls.user = User.objects.get(username='user@test.com')
+        cls.reseller = core_factories.UserFactory(username="reseller")
+        cls.reseller.role = "Resellers"
+        cls.user = User.objects.get(username="user@test.com")
         cls.values = dict(
             username=cls.user.username, role="DomainAdmins",
             is_active=cls.user.is_active, email="user@test.com",
@@ -248,14 +251,15 @@ class PermissionsTestCase(ModoTestCase):
             reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
-        self.assertEqual(self.user.group, "DomainAdmins")
+        self.assertEqual(self.user.role, "DomainAdmins")
 
         self.values["role"] = "SimpleUsers"
         self.ajax_post(
             reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
-        self.assertNotEqual(self.user.group, 'DomainAdmins')
+        self.assertNotEqual(
+            self.user.groups.first().name, "DomainAdmins")
 
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
@@ -281,16 +285,16 @@ class PermissionsTestCase(ModoTestCase):
             self.client.login(username="admin@test.com", password="toto")
         )
         admin = User.objects.get(username="admin@test.com")
-        values = dict(
-            username="admin@test.com", first_name="Admin",
-            password1="", password2="",
-            quota=10, is_active=True, email="admin@test.com"
-        )
+        values = {
+            "username": "admin@test.com", "first_name": "Admin",
+            "password1": "", "password2": "",
+            "quota": 10, "is_active": True, "email": "admin@test.com"
+        }
         self.ajax_post(
             reverse("admin:account_change", args=[admin.id]),
             values
         )
-        self.assertEqual(admin.group, "DomainAdmins")
+        self.assertEqual(admin.role, "DomainAdmins")
         self.assertTrue(admin.can_access(
             models.Domain.objects.get(name="test.com")))
 
@@ -299,8 +303,28 @@ class PermissionsTestCase(ModoTestCase):
             reverse("admin:account_change", args=[admin.id]),
             values
         )
-        admin = User.objects.get(username="admin@test.com")
-        self.assertEqual(admin.group, "DomainAdmins")
+        admin.refresh_from_db()
+        self.assertEqual(admin.role, "DomainAdmins")
+
+        self.client.logout()
+        self.client.login(username=self.reseller.username, password="toto")
+        self.assertTrue(self.reseller.can_access(self.reseller))
+        values = {
+            "username": self.reseller.username, "first_name": "Reseller",
+            "password1": "", "password2": "",
+            "is_active": True
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[self.reseller.pk]),
+            values
+        )
+        self.assertEqual(self.reseller.role, "Resellers")
+        values["role"] = "SuperAdmins"
+        self.ajax_post(
+            reverse("admin:account_change", args=[self.reseller.pk]),
+            values
+        )
+        self.assertEqual(self.reseller.role, "Resellers")
 
     def test_domadmin_access(self):
         self.client.logout()

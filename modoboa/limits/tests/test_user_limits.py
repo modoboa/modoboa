@@ -162,7 +162,7 @@ class DomainAdminTestCase(ResourceTestCase):
     def test_aliases_limit_through_account_form(self):
         user = User.objects.get(username='user@test.com')
         values = dict(
-            username=user.username, role=user.group,
+            username=user.username, role=user.role,
             is_active=user.is_active, email=user.email, quota_act=True,
             aliases="alias1@test.com", aliases_1="alias2@test.com"
         )
@@ -320,7 +320,7 @@ class ResellerTestCase(ResourceTestCase):
 
         # Give 1 mailbox and 2 aliases to the admin -> should work
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
         }
@@ -347,7 +347,7 @@ class ResellerTestCase(ResourceTestCase):
         self._create_account('admin1@domain.tld', role='DomainAdmins')
         user = User.objects.get(username='admin1@domain.tld')
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
         }
@@ -379,7 +379,7 @@ class ResellerTestCase(ResourceTestCase):
 
         # Give 1 mailbox and 2 aliases to the admin -> should work
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
         }
@@ -411,7 +411,7 @@ class ResellerTestCase(ResourceTestCase):
 
         # Give 2 mailboxes and 3 aliases to the admin -> should fail.
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 2, 'mailbox_aliases_limit': 3
         }

@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.core.models import User
 from modoboa.core import signals as core_signals
 from modoboa.lib import events, parameters
-from modoboa.lib.exceptions import ModoboaException, Conflict
+from modoboa.lib.exceptions import Conflict
 from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
     YesNoField, WizardForm, WizardStep, DynamicForm, TabForms
@@ -282,7 +282,7 @@ class DomainForm(TabForms):
         domadmins = [u for u in self.domain.admins
                      if self.request.user.can_access(u) and not u.is_superuser]
         if not self.request.user.is_superuser:
-            domadmins = [u for u in domadmins if u.group == "DomainAdmins"]
+            domadmins = [u for u in domadmins if u.role == "DomainAdmins"]
         context.update({
             "title": self.domain.name,
             "action": reverse(

@@ -28,7 +28,7 @@ class GroupFactory(factory.DjangoModelFactory):
     class Meta:
         model = Group
 
-    name = 'DefaultGroup'
+    name = "DefaultGroup"
 
 
 class UserFactory(PermissionFactory):
@@ -40,7 +40,7 @@ class UserFactory(PermissionFactory):
         django_get_or_create = ("username", )
 
     email = factory.LazyAttribute(lambda a: a.username)
-    password = '{PLAIN}toto'
+    password = "{PLAIN}toto"
 
     @factory.post_generation
     def groups(self, create, extracted, **kwargs):

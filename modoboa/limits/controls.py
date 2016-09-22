@@ -51,7 +51,7 @@ def user_can_set_role(user, role, account=None):
     )
     if condition:
         return [True]
-    if account is not None and account.group == role:
+    if account is not None and account.role == role:
         return [True]
     return [False]
 
@@ -60,18 +60,18 @@ def user_can_set_role(user, role, account=None):
 def on_account_modified(old, new):
     """Update limits when roles are updated"""
     owner = get_object_owner(old)
-    if owner.group not in ["SuperAdmins", "Resellers"]:
+    if owner.role not in ["SuperAdmins", "Resellers"]:
         # Domain admins can't change the role so nothing to check.
         return
 
-    if new.group not in ["DomainAdmins", "Resellers"]:
+    if new.role not in ["DomainAdmins", "Resellers"]:
         move_pool_resource(owner, new)
 
 
 @events.observe("AccountDeleted")
 def on_account_deleted(account, byuser, **kwargs):
     owner = get_object_owner(account)
-    if owner.group not in ["SuperAdmins", "Resellers"]:
+    if owner.role not in ["SuperAdmins", "Resellers"]:
         return
 
     move_pool_resource(owner, account)

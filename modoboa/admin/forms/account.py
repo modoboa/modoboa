@@ -38,7 +38,7 @@ class AccountFormGeneral(forms.ModelForm):
     )
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
-        choices=[('', ugettext_lazy("Choose"))],
+        choices=[("", ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
     )
     password1 = PasswordField(
@@ -69,17 +69,17 @@ class AccountFormGeneral(forms.ModelForm):
         )
         self.fields["is_active"].label = _("Enabled")
         self.user = user
-        if user.group == "DomainAdmins":
+        if user.role in ["Resellers", "DomainAdmins"]:
             self.fields["role"] = forms.CharField(
                 label="",
                 widget=forms.HiddenInput(attrs={"class": "form-control"}),
                 required=False
             )
         else:
-            self.fields["role"].choices = [('', ugettext_lazy("Choose"))]
-            self.fields["role"].choices += \
-                get_account_roles(user, kwargs['instance']) \
-                if 'instance' in kwargs else get_account_roles(user)
+            self.fields["role"].choices += (
+                get_account_roles(user, kwargs["instance"])
+                if "instance" in kwargs else get_account_roles(user)
+            )
 
         if not user.is_superuser:
             del self.fields["master_user"]
@@ -91,7 +91,7 @@ class AccountFormGeneral(forms.ModelForm):
                 not account.mailbox.domain.enabled
             )
             if domain_disabled:
-                self.fields["is_active"].widget.attrs['disabled'] = "disabled"
+                self.fields["is_active"].widget.attrs["disabled"] = "disabled"
             if args:
                 if args[0].get("password1", "") == "" \
                    and args[0].get("password2", "") == "":
@@ -99,7 +99,7 @@ class AccountFormGeneral(forms.ModelForm):
                     self.fields["password2"].required = False
                 if domain_disabled:
                     del self.fields["is_active"]
-            self.fields["role"].initial = account.group
+            self.fields["role"].initial = account.role
             if not account.is_local \
                and parameters.get_admin(
                    "LDAP_AUTH_METHOD", app="core") == "directbind":
@@ -118,10 +118,12 @@ class AccountFormGeneral(forms.ModelForm):
         return not self.instance.mailbox.domain.enabled
 
     def clean_role(self):
-        if self.user.group == "DomainAdmins":
+        if self.user.role == "DomainAdmins":
             if self.instance == self.user:
                 return "DomainAdmins"
             return "SimpleUsers"
+        elif self.user.role == "Resellers" and self.instance == self.user:
+            return "Resellers"
         return self.cleaned_data["role"]
 
     def clean_username(self):
@@ -459,10 +461,12 @@ class AccountForm(TabForms):
         })
 
     def check_perms(self, account):
-        if account.is_superuser:
-            return False
-        return self.user.has_perm("admin.add_domain") \
-            and account.has_perm("core.add_user")
+        """Check if perms form must displayed or not."""
+        return (
+            self.user.is_superuser and
+            not account.is_superuser and
+            account.has_perm("core.add_user")
+        )
 
     def _before_is_valid(self, form):
         if form["id"] == "general":
@@ -480,9 +484,8 @@ class AccountForm(TabForms):
         return True
 
     def is_valid(self):
-        """Two steps validation.
-        """
-        self.instances["general"].oldgroup = self.instances["general"].group
+        """Two steps validation."""
+        self.instances["general"].oldgroup = self.instances["general"].role
         if super(AccountForm, self).is_valid(mandatory_only=True):
             self.account = self.forms[0]["instance"].save()
             return super(AccountForm, self).is_valid(optional_only=True)
