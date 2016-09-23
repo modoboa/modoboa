@@ -61,7 +61,6 @@ Additional resource
    :maxdepth: 2
 
    additional/migrating
-   additional/virtualmachine
 
 *******************
 Contributing
