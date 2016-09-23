@@ -59,17 +59,23 @@ class AccountFormGeneral(forms.ModelForm):
             "username", "first_name", "last_name", "role", "is_active",
             "master_user"
         )
+        labels = {
+            "is_active": ugettext_lazy("Enabled")
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)
         self.fields = OrderedDict(
             (key, self.fields[key]) for key in
-            ['role', 'username', 'first_name', 'last_name', 'password1',
-             'password2', 'master_user', 'is_active']
+            ["role", "username", "first_name", "last_name", "password1",
+             "password2", "master_user", "is_active"]
         )
-        self.fields["is_active"].label = _("Enabled")
         self.user = user
-        if user.role in ["Resellers", "DomainAdmins"]:
+        condition = (
+            user.role == "DomainAdmins" or
+            user.role == "Resellers" and self.instance == user
+        )
+        if condition:
             self.fields["role"] = forms.CharField(
                 label="",
                 widget=forms.HiddenInput(attrs={"class": "form-control"}),
@@ -77,34 +83,39 @@ class AccountFormGeneral(forms.ModelForm):
             )
         else:
             self.fields["role"].choices += (
-                get_account_roles(user, kwargs["instance"])
-                if "instance" in kwargs else get_account_roles(user)
+                get_account_roles(user, self.instance)
+                if self.instance.pk else get_account_roles(user)
             )
 
         if not user.is_superuser:
             del self.fields["master_user"]
 
-        if "instance" in kwargs:
-            account = kwargs["instance"]
-            domain_disabled = (
-                hasattr(account, "mailbox") and
-                not account.mailbox.domain.enabled
-            )
+        if not self.instance.pk:
+            return
+
+        domain_disabled = (
+            hasattr(self.instance, "mailbox") and
+            not self.instance.mailbox.domain.enabled
+        )
+        if domain_disabled:
+            self.fields["is_active"].widget.attrs["disabled"] = "disabled"
+        if args:
+            empty_password = (
+                args[0].get("password1", "") == "" and
+                args[0].get("password2", "") == "")
+            if empty_password:
+                self.fields["password1"].required = False
+                self.fields["password2"].required = False
             if domain_disabled:
-                self.fields["is_active"].widget.attrs["disabled"] = "disabled"
-            if args:
-                if args[0].get("password1", "") == "" \
-                   and args[0].get("password2", "") == "":
-                    self.fields["password1"].required = False
-                    self.fields["password2"].required = False
-                if domain_disabled:
-                    del self.fields["is_active"]
-            self.fields["role"].initial = account.role
-            if not account.is_local \
-               and parameters.get_admin(
-                   "LDAP_AUTH_METHOD", app="core") == "directbind":
-                del self.fields["password1"]
-                del self.fields["password2"]
+                del self.fields["is_active"]
+        self.fields["role"].initial = self.instance.role
+        condition = (
+            not self.instance.is_local and
+            parameters.get_admin(
+                "LDAP_AUTH_METHOD", app="core") == "directbind")
+        if condition:
+            del self.fields["password1"]
+            del self.fields["password2"]
 
     def domain_is_disabled(self):
         """Little shortcut to get the domain's state.

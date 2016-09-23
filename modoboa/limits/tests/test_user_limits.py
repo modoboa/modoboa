@@ -245,12 +245,12 @@ class ResellerTestCase(ResourceTestCase):
 
         self.user.userobjectlimit_set.filter(
             name="mailboxes").update(max_value=3)
-        self._create_account('user1@domain.tld')
-        user = User.objects.get(username='user1@domain.tld')
+        self._create_account("user1@domain.tld")
+        user = User.objects.get(username="user1@domain.tld")
         values = {
-            'username': user.username, 'role': 'DomainAdmins',
-            'quota_act': True, 'is_active': user.is_active,
-            'email': user.email
+            "username": user.username, "role": "DomainAdmins",
+            "quota_act": True, "is_active": user.is_active,
+            "email": user.email
         }
         resp = self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
