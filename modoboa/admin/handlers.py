@@ -7,8 +7,8 @@ from . import models
 
 
 @receiver(signals.post_save, sender=models.Domain)
-def update_domain_mailboxes(sender, instance, **kwargs):
-    """Update associated mailboxes."""
+def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
+    """Update associated MXs and mailboxes."""
     if kwargs.get("created"):
         return
     instance.mailbox_set.filter(use_domain_quota=True).update(

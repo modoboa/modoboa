@@ -8,11 +8,15 @@
   {% if enable_mx_checks == "yes" or enable_dnsbl_checks == "yes" %}
     <td name="dns">
       <small>
-        {% if enable_mx_checks == "yes" %}
-          <span class="label label-mini label-{% if not domain.mxrecord_set.has_valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
-        {% endif %}
-        {% if enable_dnsbl_checks == "yes" %}
-          <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
+        {% if domain.awaiting_checks %}
+          <span class="label label-mini label-info">{% trans "Awaiting checks" %}</span>
+        {% else %}
+          {% if enable_mx_checks == "yes" %}
+            <span class="label label-mini label-{% if not domain.mxrecord_set.has_valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
+          {% endif %}
+          {% if enable_dnsbl_checks == "yes" %}
+            <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
+          {% endif %}
         {% endif %}
       </small>
     </td>
