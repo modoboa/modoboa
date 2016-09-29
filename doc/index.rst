@@ -13,10 +13,9 @@ Getting started
 .. toctree::
    :maxdepth: 2
 
-   getting_started/install
-   getting_started/upgrade
+   installation
+   upgrade
    getting_started/configuration
-
 
 *******
 Plugins
