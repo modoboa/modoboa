@@ -59,6 +59,9 @@ class MXTestCase(ModoTestCase):
         self.assertFalse(
             models.MXRecord.objects.filter(domain=self.bad_domain).exists())
 
+        management.call_command(
+            "modo", "check_mx", "--domain", "toto.com")
+
 
 class DNSBLTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
