@@ -98,14 +98,14 @@ class CheckMXRecords(BaseCommand):
             else:
                 try:
                     # we must have a valid IP
-                    address = ipaddress.ip_address(u'{}'.format(address))
+                    address = ipaddress.ip_address(u"{}".format(address))
                 except ValueError:
                     pass
                 else:
                     record = models.MXRecord.objects.create(
                         domain=domain,
-                        name=u'{}'.format(str(answer.exchange).strip(".")),
-                        address=u'{}'.format(address),
+                        name=u"{}".format(str(answer.exchange).strip(".")),
+                        address=u"{}".format(address),
                         updated=now + delta)
                     yield record
 
@@ -177,7 +177,7 @@ class CheckMXRecords(BaseCommand):
                for mx in mx_list]
         valid_mxs = self.valid_mxs
         if not mxs:
-            alerts.append(_("Domain {} as no MX record").format(domain))
+            alerts.append(_("Domain {} has no MX record").format(domain))
         elif valid_mxs:
             for subnet in valid_mxs:
                 for mx, addr in mxs:
@@ -188,7 +188,7 @@ class CheckMXRecords(BaseCommand):
                 mx_names = [
                     "{0.name} ({0.address})".format(mx) for mx in mx_list]
                 alerts.append(
-                    _("Domain {0} got an invalid MX record. Got {1}").format(
+                    _("MX record for domain {0} is invalid: {1}").format(
                         domain, ", ".join(mx_names))
                 )
         if not alerts:
@@ -241,19 +241,20 @@ class CheckMXRecords(BaseCommand):
         models.DNSBLResult.objects.exclude(
             provider__in=self.providers).delete()
 
-        if options['domain']:
+        if options["domain"]:
             domains = []
-            for domain in options['domain']:
-                if isinstance(domain, models.Domain):
-                    domains.append(domain)
-                elif domain.isdigit():
-                    domains.append(models.Domain.objects.get(domain))
-                else:
-                    domains.append(models.Domain.objects.filter(name=domain))
+            for domain in options["domain"]:
+                try:
+                    if domain.isdigit():
+                        domains.append(models.Domain.objects.get(pk=domain))
+                    else:
+                        domains.append(models.Domain.objects.get(name=domain))
+                except models.Domain.DoesNotExist:
+                    pass
         else:
             domains = models.Domain.objects.filter(enabled=True)
 
-        options.pop('domain')
+        options.pop("domain")
 
         for domain in domains:
             self.check_domain(domain, **options)
