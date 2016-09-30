@@ -83,7 +83,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.assertFalse(limit.is_exceeded())
         user = User.objects.get(username="admin@test2.com")
         values = {
-            "username": user.username, "role": user.group,
+            "username": user.username, "role": user.role,
             "is_active": user.is_active, "email": user.email,
             "quota_act": True, "domains": "test2.com",
             "domains_1": "test.com"
@@ -130,7 +130,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         limit.save()
         self.assertFalse(limit.is_exceeded())
         values = {
-            "username": user.username, "role": user.group,
+            "username": user.username, "role": user.role,
             "is_active": user.is_active, "email": user.email,
             "quota_act": True,
             "aliases": "alias@test.com", "aliases_1": "alias1@test.com"

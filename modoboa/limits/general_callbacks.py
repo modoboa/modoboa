@@ -26,7 +26,7 @@ def display_pool_usage(user, target, currentpage):
             name for name, tpl in utils.get_user_limit_templates()
             if name not in exceptions and
             ("required_role" not in tpl or
-             tpl["required_role"] == user.group)
+             tpl["required_role"] == user.role)
         ]
 
     limits = user.userobjectlimit_set.filter(name__in=names, max_value__gt=0)
@@ -42,10 +42,14 @@ def display_pool_usage(user, target, currentpage):
 def extra_account_form(user, account=None):
     if parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no":
         return []
-    if user.group not in ["SuperAdmins", "Resellers"]:
+    if user.role not in ["SuperAdmins", "Resellers"]:
         return []
-    if account is not None and \
-            account.group not in ["Resellers", "DomainAdmins"]:
+    condition = (
+        (account is not None and
+         account.role not in ["Resellers", "DomainAdmins"]) or
+        user == account
+    )
+    if condition:
         return []
 
     return [{
@@ -81,8 +85,7 @@ def fill_domain_instances(user, domain, instances):
 def check_form_access(account, form):
     if form["id"] != "resources":
         return [True]
-    if not account.belongs_to_group("Resellers") and \
-       not account.belongs_to_group("DomainAdmins"):
+    if account.role not in ["Resellers", "DomainAdmins"]:
         return [False]
     return [True]
 
@@ -91,11 +94,11 @@ def check_form_access(account, form):
 def fill_account_instances(user, account, instances):
     condition = (
         parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
-        (not user.is_superuser and user.group != "Resellers")
+        (not user.is_superuser and user.role != "Resellers")
     )
     if condition:
         return
-    if account.group not in ["Resellers", "DomainAdmins"]:
+    if account.role not in ["Resellers", "DomainAdmins"]:
         return
     instances["resources"] = account
 

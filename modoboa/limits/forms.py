@@ -21,7 +21,7 @@ class ResourcePoolForm(forms.Form):
             if "required_role" in tpl:
                 condition = (
                     self.account is not None and
-                    self.account.group != tpl["required_role"]
+                    self.account.role != tpl["required_role"]
                 )
                 if condition:
                     continue

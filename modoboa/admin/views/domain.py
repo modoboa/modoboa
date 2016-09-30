@@ -152,7 +152,7 @@ def deldomain(request, dom_id):
 def domain_statistics(request):
     """A simple page to present domain statistics."""
     context = {}
-    if request.user.group == "SuperAdmins":
+    if request.user.role == "SuperAdmins":
         context.update({
             "domains_counter": Domain.objects.count(),
             "domain_aliases_counter": DomainAlias.objects.count(),

@@ -220,7 +220,7 @@ class User(PermissionsMixin):
     @property
     def tags(self):
         return [{"name": "account", "label": _("account"), "type": "idt"},
-                {"name": self.group, "label": self.group,
+                {"name": self.role, "label": self.role,
                  "type": "grp", "color": "info"}]
 
     @property
@@ -258,21 +258,8 @@ class User(PermissionsMixin):
         from email.header import Header
         if self.first_name != "" or self.last_name != "":
             return "%s <%s>" % \
-                (Header(self.fullname, 'utf8').encode(), self.email)
+                (Header(self.fullname, "utf8").encode(), self.email)
         return self.email
-
-    def belongs_to_group(self, name):
-        """Simple shortcut to check if this user is a member of a
-        specific group.
-
-        :param name: the group's name
-        :return: a boolean
-        """
-        try:
-            self.groups.get(name=name)
-        except Group.DoesNotExist:
-            return False
-        return True
 
     def is_owner(self, obj):
         """Tell is the user is the unique owner of this object
@@ -339,7 +326,7 @@ class User(PermissionsMixin):
 
         :param string role: the role to set
         """
-        if role is None or self.group == role:
+        if role is None or self.role == role:
             return
         events.raiseEvent("RoleChanged", self, role)
         self.groups.clear()
@@ -353,7 +340,7 @@ class User(PermissionsMixin):
                 self.groups.add(Group.objects.get(name=role))
             except Group.DoesNotExist:
                 self.groups.add(Group.objects.get(name="SimpleUsers"))
-            if self.group != "SimpleUsers" and not self.can_access(self):
+            if role != "SimpleUsers" and not self.can_access(self):
                 from modoboa.lib.permissions import grant_access_to_object
                 grant_access_to_object(self, self)
         self.save()
@@ -392,7 +379,7 @@ class User(PermissionsMixin):
 
         The expected order is the following::
 
-        "account", loginname, password, first name, last name, enabled, group
+        "account", loginname, password, first name, last name, enabled, role
 
         Additional fields can be added using the *AccountImported* event.
 
@@ -463,7 +450,7 @@ class User(PermissionsMixin):
             self.first_name.encode("utf-8"),
             self.last_name.encode("utf-8"),
             self.is_active,
-            self.group,
+            self.role,
             self.email.encode("utf-8")
         ]
         row += events.raiseQueryEvent("AccountExported", self)
@@ -472,7 +459,7 @@ class User(PermissionsMixin):
 reversion.register(User)
 
 
-def populate_callback(user, group='SimpleUsers'):
+def populate_callback(user, group="SimpleUsers"):
     """Populate callback
 
     If the LDAP authentication backend is in use, this callback will

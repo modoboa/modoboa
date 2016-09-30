@@ -102,7 +102,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_role(self, account):
         """Return role."""
-        return account.group
+        return account.role
 
     def get_domains(self, account):
         """Return domains administered by this account."""

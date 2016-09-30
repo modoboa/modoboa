@@ -85,7 +85,7 @@ def grant_access_to_all_objects(user, role):
 def export_admin_domains(admin):
     result = [admin.mailbox.quota] \
         if hasattr(admin, "mailbox") else [""]
-    if admin.group != "DomainAdmins":
+    if admin.role != "DomainAdmins":
         return result
     return result + [dom.name for dom in Domain.objects.get_for_admin(admin)]
 
@@ -139,7 +139,7 @@ def import_account_mailbox(user, account, row):
             quota, override_rules=user.has_perm("admin.change_domain")
         )
         mb.save(creator=user)
-    if account.group == "DomainAdmins":
+    if account.role == "DomainAdmins":
         for domname in row[2:]:
             try:
                 dom = Domain.objects.get(name=domname.strip())
@@ -157,7 +157,7 @@ def account_auto_created(user):
     if parameters.get_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX") == "no":
         return
     localpart, domname = split_mailbox(user.username)
-    if user.group != 'SimpleUsers' and domname is None:
+    if user.role != 'SimpleUsers' and domname is None:
         return
     sadmins = User.objects.filter(is_superuser=True)
     try:
