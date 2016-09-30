@@ -420,12 +420,12 @@ You first need to create configuration files (or map files) that will
 be used by Postfix to lookup into Modoboa tables.
 
 To automaticaly generate the requested map files and store them in a
-directory, run the following command::
+directory, run the following commands::
 
-  $ modoboa-admin.py postfix_maps --dbtype <mysql|postgres|sqlite> <directory>
+  $ cd <modoboa_instance_path>
+  $ python manage.py generate_postfix_maps --destdir <directory>
 
-``<directory>`` is the directory where the files will be
-stored. Answer the few questions and you're done.
+``<directory>`` is the directory where the files will be stored.
 
 .. _postfix_config:
 
@@ -461,6 +461,7 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   smtpd_sender_login_maps =
         <driver>:/etc/postfix/sql-sender-login-mailboxes.cf
         <driver>:/etc/postfix/sql-sender-login-aliases.cf
+        <driver>:/etc/postfix/sql-sender-login-mailboxes-extra.cf
 
   smtpd_sender_restrictions =
         reject_sender_login_mismatch
