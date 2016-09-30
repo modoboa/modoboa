@@ -162,3 +162,18 @@ class DomainTestCase(ModoTestCase):
             "ENABLE_DOMAIN_LIMITS", "yes", app="limits")
         response = self.client.get(url)
         self.assertIn("Resources usage", response.content)
+
+    def test_domain_statitics_view(self):
+        """Test statistics display."""
+        url = reverse("admin:domain_statistics")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Global counters", response.content)
+        self.assertIn("Per-domain counters", response.content)
+
+        self.client.force_login(
+            User.objects.get(username="admin@test.com"))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("Global counters", response.content)
+        self.assertIn("Per-domain counters", response.content)

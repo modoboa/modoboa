@@ -3,7 +3,7 @@
 from .alias import AliasDetailView
 from .identity import AccountDetailView
 from .dns import DNSBLDomainDetailView, MXDomainDetailView
-from .domain import DomainDetailView
+from .domain import DomainDetailView, DomainStatisticsView
 
 
 __all__ = [
@@ -11,5 +11,6 @@ __all__ = [
     "AliasDetailView",
     "DNSBLDomainDetailView",
     "DomainDetailView",
+    "DomainStatisticsView",
     "MXDomainDetailView",
 ]
