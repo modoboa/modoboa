@@ -1,13 +1,13 @@
 """Tools for top level testing (ie. when ran by Travis)."""
 
 import os
+import shutil
 import tempfile
 
-from .sysutils import exec_cmd
+from django.core.management import call_command
 
 
 class MapFilesTestCaseMixin(object):
-
     """A generic test case to check map files generation."""
 
     MAP_FILES = None
@@ -18,17 +18,13 @@ class MapFilesTestCaseMixin(object):
         self.workdir = tempfile.mkdtemp()
 
     def tearDown(self):
-        exec_cmd("rm -rf {0}".format(self.workdir))
+        shutil.rmtree(self.workdir)
 
     def _test_maps_generation(self, engine):
         dburl = "{0}://user:password@localhost/testdb".format(engine)
-        code, output = exec_cmd(
-            "modoboa-admin.py postfix_maps {0}--dburl {1} {2}".format(
-                "--extensions {} ".format(self.extension)
-                if self.extension else "", dburl, self.workdir
-            )
-        )
-        self.assertEqual(code, 0)
+        call_command(
+            "generate_postfix_maps",
+            "--dburl", dburl, "--destdir", self.workdir)
 
         for mapfile in self.MAP_FILES:
             path = "{0}/{1}".format(self.workdir, mapfile)

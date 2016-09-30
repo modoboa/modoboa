@@ -1,7 +1,5 @@
 """Map file definitions for postfix."""
 
-from modoboa.core.commands.postfix_maps import registry
-
 
 class DomainsMap(object):
 
@@ -166,8 +164,3 @@ class SenderLoginAliasMap(object):
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s'"
     )
-
-registry.add_files([
-    DomainsMap, DomainsAliasesMap, AliasesMap, MaintainMap,
-    SenderLoginAliasMap, SenderLoginMailboxMap, SenderLoginMailboxExtraMap
-])

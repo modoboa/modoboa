@@ -5,9 +5,11 @@ from django.dispatch import receiver
 
 from modoboa.admin import models as admin_models
 from modoboa.admin.signals import use_external_recipients
+from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 
 from . import models
+from . import postfix_maps
 
 
 @receiver(use_external_recipients)
@@ -39,3 +41,14 @@ def clean_domain(sender, instance, **kwargs):
         # at form level...
         models.RelayDomain.objects.create(
             domain=instance, service=models.Service.objects.first())
+
+
+@receiver(core_signals.register_postfix_maps)
+def register_postfix_maps(sender, **kwargs):
+    """Register postfix maps."""
+    return [
+        postfix_maps.RelayDomainsMap,
+        postfix_maps.RelayDomainsTransportMap,
+        postfix_maps.SplitedDomainsTransportMap,
+        postfix_maps.RelayRecipientVerification
+    ]
