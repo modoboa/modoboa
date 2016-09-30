@@ -30,13 +30,6 @@ class Command(BaseCommand):
         parser.add_argument(
             "--destdir", default=".",
             help="Directory where files will be created")
-        parser.add_argument(
-            "--extensions", type=str, nargs="+",
-            help=(
-                "Generate map files for those extensions "
-                "('all' shortcut available)"
-            )
-        )
 
     def __register_map_files(self):
         """Load specified applications."""
