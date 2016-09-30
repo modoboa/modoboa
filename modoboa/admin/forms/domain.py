@@ -279,17 +279,13 @@ class DomainForm(TabForms):
         super(DomainForm, self).__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
-        domadmins = [u for u in self.domain.admins
-                     if self.request.user.can_access(u) and not u.is_superuser]
-        if not self.request.user.is_superuser:
-            domadmins = [u for u in domadmins if u.role == "DomainAdmins"]
+        """Add information to template context."""
         context.update({
             "title": self.domain.name,
             "action": reverse(
                 "admin:domain_change", args=[self.domain.pk]),
             "formid": "domform",
-            "domain": self.domain,
-            "domadmins": domadmins
+            "domain": self.domain
         })
 
     def is_valid(self):
