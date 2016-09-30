@@ -3,7 +3,10 @@
 from django.db.models import signals
 from django.dispatch import receiver
 
+from modoboa.core import signals as core_signals
+
 from . import models
+from . import postfix_maps
 
 
 @receiver(signals.post_save, sender=models.Domain)
@@ -97,3 +100,14 @@ def remove_alias_for_mailbox(sender, instance, **kwargs):
     """Remove "self alias" for this mailbox."""
     models.Alias.objects.filter(
         address=instance.full_address).delete()
+
+
+@receiver(core_signals.register_postfix_maps)
+def register_postfix_maps(sender, **kwargs):
+    """Register admin map files."""
+    return [
+        postfix_maps.DomainsMap, postfix_maps.DomainsAliasesMap,
+        postfix_maps.AliasesMap, postfix_maps.MaintainMap,
+        postfix_maps.SenderLoginAliasMap, postfix_maps.SenderLoginMailboxMap,
+        postfix_maps.SenderLoginMailboxExtraMap
+    ]
