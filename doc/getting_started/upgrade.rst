@@ -59,14 +59,14 @@ for every defined domain. With this, you will quickly now if one the
 domains you manage is listed or not. To activate it, add the
 following line to your crontab::
 
-  */30 * * * * <modoboa_site>/manage.py modo check_mx
+  */30 * * * * <modoboa_site>/env/bin/python <modoboa_instance_dir>/manage.py modo check_mx
 
 The communication with Modoboa public API has been reworked. Instead
 of sending direct synchronous queries (for example to check new
 versions), a cron job has been added. To activate it, add the
 following line to your crontab::
 
-  0 * * * * <modoboa_site>/manage.py communicate_with_public_api
+  0 * * * * <modoboa_site>/env/bin/python <modoboa_instance_dir>/manage.py communicate_with_public_api
 
 Please also note that public API now uses TLS so you must update your
 configuration as follows::
