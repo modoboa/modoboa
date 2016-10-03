@@ -11,6 +11,18 @@ from modoboa.lib.api_client import ModoAPIClient
 from . import models
 
 
+def parse_map_file(path):
+    """Parse a postfix map file and return values."""
+    content = {}
+    with open(path) as fp:
+        for line in fp:
+            if not line or line.startswith("#"):
+                continue
+            name, value = line.split("=", 1)
+            content[name.strip()] = value.strip()
+    return content
+
+
 def check_for_updates(request):
     """Check if a new version of Modoboa is available."""
     local_config = models.LocalConfig.objects.first()
