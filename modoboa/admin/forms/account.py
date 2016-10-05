@@ -292,7 +292,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.add_error("quota", _("Must be a positive integer"))
         self.aliases = []
         self.sender_addresses = []
-        for name, value in cleaned_data.iteritems():
+        for name, value in cleaned_data.items():
             if value == "":
                 continue
             if name.startswith("aliases"):
