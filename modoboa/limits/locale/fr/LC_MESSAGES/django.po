@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-06 13:36+0200\n"
 "PO-Revision-Date: 2016-04-27 20:12+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -187,7 +187,7 @@ msgstr "Limite invalide"
 msgid "You're not allowed to define unlimited values"
 msgstr "Vous n'êtes pas autorisé à définir des valeurs illimitées"
 
-#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
+#: limits/general_callbacks.py:56 limits/general_callbacks.py:69
 msgid "Resources"
 msgstr "Ressources"
 

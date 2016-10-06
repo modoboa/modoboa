@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-06 13:36+0200\n"
 "PO-Revision-Date: 2016-05-30 18:03+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -452,24 +452,24 @@ msgstr "Misslyckades med att uppdatera lösenord: LDAP modul ej installerad"
 msgid "account"
 msgstr "konto"
 
-#: core/models.py:367
+#: core/models.py:354
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:406
+#: core/models.py:393
 msgid "Invalid line"
 msgstr "Ogiltig rad"
 
-#: core/models.py:414
+#: core/models.py:401
 msgid "You can't import an account with a role greater than yours"
 msgstr "Du kan inte importera konto med en roll större än din"
 
-#: core/models.py:429
+#: core/models.py:416
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Den enkla användaren '%s' måste ha en gällande e-postadress"
 
-#: core/models.py:434
+#: core/models.py:421
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "användarnamn och e-post fält får inte avvika för '%s'"
@@ -549,8 +549,8 @@ msgid "Active users"
 msgstr "Aktiva användare"
 
 #: core/templates/core/information.html:37
-msgid "Group name"
-msgstr "Gruppnamn"
+msgid "Role"
+msgstr ""
 
 #: core/templates/core/information.html:38
 msgid "Last login"
@@ -564,7 +564,7 @@ msgstr "Loggar"
 msgid "Previously on Modoboa..."
 msgstr "Tidigare på Modoboa..."
 
-#: core/templates/core/logs.html:6
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
 msgid "Date"
 msgstr "Datum"
 
@@ -634,7 +634,7 @@ msgstr "Logga ut"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:22
+#: core/utils.py:34
 msgid "The core part of Modoboa"
 msgstr "Kärnan av Modoboa"
 
@@ -710,7 +710,19 @@ msgstr "Nej"
 msgid "Failed to update password: {}"
 msgstr "Misslyckades med att uppdatera lösenord: {}"
 
-#: templates/404.html:4 templates/500.html.py:4
+#: lib/templatetags/lib_tags.py:103
+msgid "From"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103
+msgid "To"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Ämne"
+
+#: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
 msgstr "Ursäkta"
 
@@ -729,10 +741,6 @@ msgstr "Sök..."
 #: templates/common/email_searchbar.html:10
 msgid "From address"
 msgstr "Från adress"
-
-#: templates/common/email_searchbar.html:17
-msgid "Subject"
-msgstr "Ämne"
 
 #: templates/common/email_searchbar.html:33
 msgid "Both"
@@ -772,3 +780,6 @@ msgstr "Kom ihåg mig"
 #: templates/registration/login.html:43
 msgid "Log in"
 msgstr "Logga in"
+
+#~ msgid "Group name"
+#~ msgstr "Gruppnamn"
