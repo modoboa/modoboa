@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-06 13:36+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -452,25 +452,25 @@ msgstr ""
 msgid "account"
 msgstr "アカウント"
 
-#: core/models.py:367
+#: core/models.py:354
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:406
+#: core/models.py:393
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: core/models.py:414
+#: core/models.py:401
 msgid "You can't import an account with a role greater than yours"
 msgstr "あなた以上のロールを持ったアカウントはインポートできません"
 
-#: core/models.py:429
+#: core/models.py:416
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
 
-#: core/models.py:434
+#: core/models.py:421
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"
@@ -551,8 +551,8 @@ msgid "Active users"
 msgstr "アクティブユーザー"
 
 #: core/templates/core/information.html:37
-msgid "Group name"
-msgstr "グループ名"
+msgid "Role"
+msgstr ""
 
 #: core/templates/core/information.html:38
 msgid "Last login"
@@ -566,7 +566,7 @@ msgstr "ログ"
 msgid "Previously on Modoboa..."
 msgstr "Modoboa 以前 ..."
 
-#: core/templates/core/logs.html:6
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
 msgid "Date"
 msgstr "日付"
 
@@ -636,7 +636,7 @@ msgstr "ログアウト"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:22
+#: core/utils.py:34
 msgid "The core part of Modoboa"
 msgstr "Modoboaのコア部分"
 
@@ -712,7 +712,19 @@ msgstr "いいえ"
 msgid "Failed to update password: {}"
 msgstr "パスワードの更新に失敗しました:  {}"
 
-#: templates/404.html:4 templates/500.html.py:4
+#: lib/templatetags/lib_tags.py:103
+msgid "From"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103
+msgid "To"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "件名"
+
+#: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
 msgstr "すみません"
 
@@ -731,10 +743,6 @@ msgstr "検索 ..."
 #: templates/common/email_searchbar.html:10
 msgid "From address"
 msgstr "From アドレス"
-
-#: templates/common/email_searchbar.html:17
-msgid "Subject"
-msgstr "件名"
 
 #: templates/common/email_searchbar.html:33
 msgid "Both"
@@ -774,3 +782,6 @@ msgstr "記憶する"
 #: templates/registration/login.html:43
 msgid "Log in"
 msgstr "ログイン"
+
+#~ msgid "Group name"
+#~ msgstr "グループ名"

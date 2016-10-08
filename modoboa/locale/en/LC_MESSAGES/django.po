@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-06 13:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -429,24 +429,24 @@ msgstr ""
 msgid "account"
 msgstr ""
 
-#: core/models.py:367
+#: core/models.py:354
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:406
+#: core/models.py:393
 msgid "Invalid line"
 msgstr ""
 
-#: core/models.py:414
+#: core/models.py:401
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 
-#: core/models.py:429
+#: core/models.py:416
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 
-#: core/models.py:434
+#: core/models.py:421
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
@@ -525,7 +525,7 @@ msgid "Active users"
 msgstr ""
 
 #: core/templates/core/information.html:37
-msgid "Group name"
+msgid "Role"
 msgstr ""
 
 #: core/templates/core/information.html:38
@@ -540,7 +540,7 @@ msgstr ""
 msgid "Previously on Modoboa..."
 msgstr ""
 
-#: core/templates/core/logs.html:6
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
 msgid "Date"
 msgstr ""
 
@@ -610,7 +610,7 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: core/utils.py:22
+#: core/utils.py:34
 msgid "The core part of Modoboa"
 msgstr ""
 
@@ -686,7 +686,19 @@ msgstr ""
 msgid "Failed to update password: {}"
 msgstr ""
 
-#: templates/404.html:4 templates/500.html.py:4
+#: lib/templatetags/lib_tags.py:103
+msgid "From"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103
+msgid "To"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr ""
+
+#: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
 msgstr ""
 
@@ -704,10 +716,6 @@ msgstr ""
 
 #: templates/common/email_searchbar.html:10
 msgid "From address"
-msgstr ""
-
-#: templates/common/email_searchbar.html:17
-msgid "Subject"
 msgstr ""
 
 #: templates/common/email_searchbar.html:33

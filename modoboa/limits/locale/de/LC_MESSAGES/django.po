@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-06 13:36+0200\n"
 "PO-Revision-Date: 2014-12-03 11:02+0000\n"
 "Last-Translator: Arvedui <arvedui@posteo.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
@@ -210,7 +210,7 @@ msgstr ""
 "Sie verfügen nicht über die erforderlichen Rechte, um unbegrenzte Werte "
 "anzugeben"
 
-#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
+#: limits/general_callbacks.py:56 limits/general_callbacks.py:69
 msgid "Resources"
 msgstr "Ressourcen"
 

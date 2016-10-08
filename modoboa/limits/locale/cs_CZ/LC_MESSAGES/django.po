@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-06 13:36+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -209,7 +209,7 @@ msgstr "Neplatné omezení"
 msgid "You're not allowed to define unlimited values"
 msgstr "Nemáte oprávnění nastavovat neomezené hodnoty"
 
-#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
+#: limits/general_callbacks.py:56 limits/general_callbacks.py:69
 msgid "Resources"
 msgstr "Zdroje"
 

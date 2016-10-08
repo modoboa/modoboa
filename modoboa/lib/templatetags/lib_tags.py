@@ -6,6 +6,7 @@ from datetime import datetime
 from django import template
 from django.template import Template, Context
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
 
 from modoboa.lib import events
 
@@ -94,3 +95,10 @@ def extra_static_content(caller, st_type, user):
                 "GetStaticContent", caller, st_type, user)
         })
     )
+
+
+@register.filter(name='localize_header_name')
+def localize_header_name(headername):
+    """ Localizes the header names """
+    names = {"From": _("From"), "To": _("To"), "Date": _("Date"), "Subject": _("Subject")}
+    return names.get(headername, headername)

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-06 13:36+0200\n"
 "PO-Revision-Date: 2013-10-01 09:56+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -466,24 +466,24 @@ msgstr "Falló al actualizar la contraseña: módulo LDAP no instalado"
 msgid "account"
 msgstr "cuenta"
 
-#: core/models.py:367
+#: core/models.py:354
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:406
+#: core/models.py:393
 msgid "Invalid line"
 msgstr "Línea inválida"
 
-#: core/models.py:414
+#: core/models.py:401
 msgid "You can't import an account with a role greater than yours"
 msgstr "No puede importar una cuenta con un rol mayor que el suyo"
 
-#: core/models.py:429
+#: core/models.py:416
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "El usuario normal '%s' debe tener una dirección de email válida"
 
-#: core/models.py:434
+#: core/models.py:421
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
@@ -568,8 +568,8 @@ msgid "Active users"
 msgstr "Usuarios activos"
 
 #: core/templates/core/information.html:37
-msgid "Group name"
-msgstr "Nombre del grupo"
+msgid "Role"
+msgstr ""
 
 #: core/templates/core/information.html:38
 msgid "Last login"
@@ -583,7 +583,7 @@ msgstr "Logs"
 msgid "Previously on Modoboa..."
 msgstr "Anteriormente en Modoboa..."
 
-#: core/templates/core/logs.html:6
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
 msgid "Date"
 msgstr "Fecha"
 
@@ -655,7 +655,7 @@ msgstr "Salir"
 msgid "API"
 msgstr ""
 
-#: core/utils.py:22
+#: core/utils.py:34
 #, fuzzy
 #| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
@@ -741,7 +741,19 @@ msgstr "No "
 msgid "Failed to update password: {}"
 msgstr "Falló la actualización de la contraseña: %s"
 
-#: templates/404.html:4 templates/500.html.py:4
+#: lib/templatetags/lib_tags.py:103
+msgid "From"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103
+msgid "To"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Tema"
+
+#: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
 msgstr "Lo siento"
 
@@ -760,10 +772,6 @@ msgstr "Buscar..."
 #: templates/common/email_searchbar.html:10
 msgid "From address"
 msgstr "De la dirección"
-
-#: templates/common/email_searchbar.html:17
-msgid "Subject"
-msgstr "Tema"
 
 #: templates/common/email_searchbar.html:33
 msgid "Both"
@@ -803,6 +811,9 @@ msgstr "Recuerdame"
 #: templates/registration/login.html:43
 msgid "Log in"
 msgstr "Entrar"
+
+#~ msgid "Group name"
+#~ msgstr "Nombre del grupo"
 
 #~ msgid "Display"
 #~ msgstr "Mostrar"
