@@ -55,7 +55,7 @@ Specific upgrade instructions
 An interesting feature brougth by this version is the capability to
 make different checks about MX records. For example, Modoboa can
 query main `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ providers
-for every defined domain. With this, you will quickly now if one the
+for every defined domain. With this, you will quickly know if one the
 domains you manage is listed or not. To activate it, add the
 following line to your crontab::
 
