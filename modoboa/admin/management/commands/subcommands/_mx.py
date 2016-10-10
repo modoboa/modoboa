@@ -114,7 +114,7 @@ class CheckMXRecords(BaseCommand):
         results = {}
         for mx in mx_list:
             reverse = ".".join(reversed(mx.address.split(".")))
-            pattern = "{}.{}".format(reverse, provider)
+            pattern = "{}.{}.".format(reverse, provider)
             try:
                 results[mx] = socket.gethostbyname(pattern)
             except socket.gaierror:

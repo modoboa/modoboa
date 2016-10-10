@@ -21,7 +21,6 @@ DNSBL_PROVIDERS = [
     "dnsbl-3.uceprotect.net",
     "dnsbl.cyberlogic.net",
     "dnsbl.inps.de",
-    "dnsbl.njabl.org",
     "dnsbl.sorbs.net",
     "drone.abuse.ch",
     "duinv.aupads.org",
