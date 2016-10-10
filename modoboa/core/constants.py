@@ -38,6 +38,24 @@ LANGUAGES = (
 )
 
 
+# according to https://en.wikipedia.org/wiki/Date_format_by_country
+# and https://en.wikipedia.org/wiki/Date_and_time_representation_by_country
+DATETIME_FORMATS = {
+    "cs": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "de": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "en": {'SHORT': 'l, P', 'LONG': 'N j, Y P'},
+    "es": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "fr": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "it": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "ja_JP": {'SHORT': 'l, P', 'LONG': 'N j, Y P'},
+    "nl": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "pt_PT": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "pt_BR": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "ru": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+    "sv": {'SHORT': 'l, H:i', 'LONG': 'd. N Y H:i'},
+
+}
+
 LDAP_GROUP_TYPES = (
     ("posixgroup", "PosixGroup"),
     ("groupofnames", "GroupOfNames"),
