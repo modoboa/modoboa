@@ -73,6 +73,16 @@ configuration as follows::
 
   MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
+Finally, it is now possible to declare additional sender addresses on
+a per-account basis. You need to update your postfix configuration in
+order to use this functionality. Just edit the :file:`main.cf` file
+and change the following parameter::
+
+  smtpd_sender_login_maps =
+      <driver>:/etc/postfix/sql-sender-login-mailboxes.cf
+      <driver>:/etc/postfix/sql-sender-login-aliases.cf
+      <driver>:/etc/postfix/sql-sender-login-mailboxes-extra.cf
+
 1.5.0
 =====
 
