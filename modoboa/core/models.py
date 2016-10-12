@@ -243,16 +243,6 @@ class User(PermissionsMixin):
         return "----"
 
     @property
-    def group(self):
-        """FIXME: DEPRECATED"""
-        if self.is_superuser:
-            return "SuperAdmins"
-        try:
-            return self.groups.all()[0].name
-        except IndexError:
-            return "---"
-
-    @property
     def enabled(self):
         return self.is_active
 
