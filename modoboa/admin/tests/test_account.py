@@ -74,6 +74,24 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
+    def test_delete_default_superadmin(self):
+        """Delete default superadmin."""
+        sadmin2 = core_factories.UserFactory(
+            username="admin2", is_superuser=True)
+        sadmin = User.objects.get(username="admin")
+        self.client.force_login(sadmin2)
+        self.ajax_post(
+            reverse("admin:account_delete", args=[sadmin.pk]), {}
+        )
+        values = {
+            "username": "user@test.com", "role": "DomainAdmins",
+            "is_active": True, "email": "user@test.com"
+        }
+        account = User.objects.get(username="user@test.com")
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values
+        )
+
     def test_sender_address(self):
         """Check if sender addresses are saved."""
         account = User.objects.get(username="user@test.com")
@@ -198,7 +216,7 @@ class AccountTestCase(ModoTestCase):
         self.assertIn("Resources usage", response.content)
 
 
-@skipIf(NO_LDAP, 'No ldap module installed')
+@skipIf(NO_LDAP, "No ldap module installed")
 @override_settings(AUTHENTICATION_BACKENDS=(
     'modoboa.lib.authbackends.LDAPBackend',
     'modoboa.lib.authbackends.SimpleBackend',

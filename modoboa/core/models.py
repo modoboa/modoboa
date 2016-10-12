@@ -118,6 +118,9 @@ class User(PermissionsMixin):
             raise PermDeniedException
 
         owner = get_object_owner(self)
+        if owner == self:
+            # The default admin is being removed...
+            owner = fromuser
         for ooentry in self.objectaccess_set.filter(is_owner=True):
             if ooentry.content_object is not None:
                 grant_access_to_object(owner, ooentry.content_object, True)
