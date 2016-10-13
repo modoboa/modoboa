@@ -125,13 +125,13 @@ class SenderLoginMailboxExtraMap(object):
         "WHERE sad.address='%s'"
     )
     postgres = (
-        "SELECT mb.address || '@' || dom.name) FROM admin_mailbox mb "
+        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
         "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "WHERE sad.address='%s'"
     )
     sqlite = (
-        "SELECT mb.address || '@' || dom.name) FROM admin_mailbox mb "
+        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
         "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "WHERE sad.address='%s'"
