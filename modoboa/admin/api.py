@@ -56,9 +56,12 @@ class AccountViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         """Return a serializer."""
-        if self.request.method == "GET":
-            return serializers.AccountSerializer
-        return serializers.WritableAccountSerializer
+        action_dict = {
+            "list": serializers.AccountSerializer,
+            "retrive": serializers.AccountSerializer
+        }
+        return action_dict.get(
+            self.action, serializers.WritableAccountSerializer)
 
     def get_queryset(self):
         """Filter queryset based on current user."""

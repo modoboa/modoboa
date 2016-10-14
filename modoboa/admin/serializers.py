@@ -8,6 +8,7 @@ from rest_framework import serializers
 from passwords import validators
 
 from modoboa.admin import models as admin_models
+from modoboa.core import constants as core_constants
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
 from modoboa.lib import exceptions as lib_exceptions
@@ -154,6 +155,8 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
 class WritableAccountSerializer(AccountSerializer):
     """Serializer to create account."""
 
+    role = serializers.ChoiceField(choices=core_constants.ROLES)
+
     class Meta(AccountSerializer.Meta):
         fields = AccountSerializer.Meta.fields + (
             "password", )
@@ -184,11 +187,12 @@ class WritableAccountSerializer(AccountSerializer):
     def validate(self, data):
         """Check constraints."""
         master_user = data.get("master_user", False)
-        if master_user and data["role"] != "SuperAdmins":
+        role = data.get("role")
+        if master_user and role != "SuperAdmins":
             raise serializers.ValidationError({
                 "master_user": _("Not allowed for this role.")
             })
-        if data["role"] == "SimpleUsers":
+        if role == "SimpleUsers":
             mailbox = data.get("mailbox")
             if mailbox is None:
                 data["mailbox"] = {

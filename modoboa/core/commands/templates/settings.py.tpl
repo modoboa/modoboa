@@ -167,8 +167,12 @@ SWAGGER_SETTINGS = {
     "exclude_namespaces": [],
     "info": {
         "contact": "contact@modoboa.com",
-        "description": ("Modoboa API, requires a valid token."),
-        "title": "Modoboa API",
+        "description": (
+            "Modoboa API, requires a valid token. To obtain a token, login "
+            "as super administrator, go to 'User settings > API' and enable "
+            "API access. Click on 'Update' and wait for page refresh."
+        ),
+        "title": "Modoboa API documentation",
     }
 }
 
