@@ -206,8 +206,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         required=False,
         help_text=ugettext_lazy(
             "Alias(es) of this mailbox. Indicate only one address per input, "
-            "press ENTER to add a new input. Use the '*' character to create "
-            "a 'catchall' alias (ex: *@domain.tld)."
+            "press ENTER to add a new input. To create a catchall alias, just "
+            "enter the domain name (@domain.tld)."
         )
     )
     senderaddress = lib_fields.UTF8AndEmptyUserEmailField(
