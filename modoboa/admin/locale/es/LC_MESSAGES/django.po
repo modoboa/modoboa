@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 13:36+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2013-10-01 09:56+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -222,10 +222,15 @@ msgid "Alias(es)"
 msgstr "Alias"
 
 #: admin/forms/account.py:208
+#, fuzzy
+#| msgid ""
+#| "Alias(es) of this mailbox. Indicate only one address per input, press "
+#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
+#| "alias (ex: *@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
-"*@domain.tld)."
+"to add a new input. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
 msgstr ""
 "Alias de este mailbox. Indique sólo una dirección por entrada, presione "
 "ENTER para añadir una nueva entrada. Use el carácter '*' para crear una "
@@ -632,32 +637,32 @@ msgstr "La cuota es mayor que el límite permitido para el dominio (%dM)"
 msgid "A quota is required"
 msgstr "Una cuota es obligatoria"
 
-#: admin/serializers.py:44 admin/serializers.py:224 admin/serializers.py:313
+#: admin/serializers.py:45 admin/serializers.py:228 admin/serializers.py:317
 #, fuzzy
 #| msgid "Permissions"
 msgid "Permission denied."
 msgstr "Permisos"
 
-#: admin/serializers.py:82
+#: admin/serializers.py:83
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: admin/serializers.py:189
+#: admin/serializers.py:193
 msgid "Not allowed for this role."
 msgstr ""
 
-#: admin/serializers.py:199
+#: admin/serializers.py:203
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: admin/serializers.py:211
+#: admin/serializers.py:215
 #, fuzzy
 #| msgid "Domain does not exist"
 msgid "Local domain {} does not exist"
 msgstr "El dominio no existe"
 
-#: admin/serializers.py:311
+#: admin/serializers.py:315
 #, fuzzy
 #| msgid "Domain modified"
 msgid "Domain not found."

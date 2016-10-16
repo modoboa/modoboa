@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 13:36+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -434,6 +434,12 @@ msgstr "heslo"
 msgid "last login"
 msgstr "poslední přihlášení"
 
+#: core/models.py:70
+#, fuzzy
+#| msgid "Prefered language"
+msgid "language"
+msgstr "Preferovaný jazyk"
+
 #: core/models.py:73
 #, fuzzy
 #| msgid "Prefered language to display pages"
@@ -456,32 +462,32 @@ msgstr ""
 msgid "You can't delete your own account"
 msgstr "Nemůžete smazat vlastní účet"
 
-#: core/models.py:164
+#: core/models.py:167
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 
-#: core/models.py:222
+#: core/models.py:225
 msgid "account"
 msgstr "účet"
 
-#: core/models.py:354
+#: core/models.py:347
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:393
+#: core/models.py:386
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: core/models.py:401
+#: core/models.py:394
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nemůžete importvat účet s vyšším oprávněním, než máte vy sám"
 
-#: core/models.py:416
+#: core/models.py:409
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Běžný uživatel '%s' musí mít nastavenou platnou emailovou adresu"
 
-#: core/models.py:421
+#: core/models.py:414
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "pole uživatelského jména a emailu se nesmí pro '%s' lišit"
@@ -814,6 +820,3 @@ msgstr "Přihlásit"
 
 #~ msgid "Display"
 #~ msgstr "Zobrazení"
-
-#~ msgid "Prefered language"
-#~ msgstr "Preferovaný jazyk"

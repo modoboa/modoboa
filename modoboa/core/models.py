@@ -62,12 +62,12 @@ class User(PermissionsMixin):
             "Allow this administrator to access user mailboxes"
         )
     )
-    password = models.CharField(ugettext_lazy('password'), max_length=256)
+    password = models.CharField(ugettext_lazy("password"), max_length=256)
     last_login = models.DateTimeField(
         ugettext_lazy('last login'), blank=True, null=True
     )
 
-    language = models.CharField(
+    language = models.CharField(ugettext_lazy("language"),
         max_length=10, default="en", choices=constants.LANGUAGES,
         help_text=ugettext_lazy(
             "Prefered language to display pages."

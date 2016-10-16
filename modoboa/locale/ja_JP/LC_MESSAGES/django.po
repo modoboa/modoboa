@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 13:36+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -422,6 +422,10 @@ msgstr "パスワード"
 msgid "last login"
 msgstr "最終ログイン"
 
+#: core/models.py:70
+msgid "language"
+msgstr ""
+
 #: core/models.py:73
 msgid "Prefered language to display pages."
 msgstr "ページの表示に優先言語を使う"
@@ -442,35 +446,35 @@ msgstr "別の電子メールアドレスは、回復の必要のために使用
 msgid "You can't delete your own account"
 msgstr "あなた自身のアカウントは削除できません"
 
-#: core/models.py:164
+#: core/models.py:167
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていませ"
 "ん。"
 
-#: core/models.py:222
+#: core/models.py:225
 msgid "account"
 msgstr "アカウント"
 
-#: core/models.py:354
+#: core/models.py:347
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:393
+#: core/models.py:386
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: core/models.py:401
+#: core/models.py:394
 msgid "You can't import an account with a role greater than yours"
 msgstr "あなた以上のロールを持ったアカウントはインポートできません"
 
-#: core/models.py:416
+#: core/models.py:409
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
 
-#: core/models.py:421
+#: core/models.py:414
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"

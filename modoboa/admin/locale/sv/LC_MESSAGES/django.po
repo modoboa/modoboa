@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 13:36+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2016-05-30 18:05+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -218,10 +218,15 @@ msgid "Alias(es)"
 msgstr "Alias"
 
 #: admin/forms/account.py:208
+#, fuzzy
+#| msgid ""
+#| "Alias(es) of this mailbox. Indicate only one address per input, press "
+#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
+#| "alias (ex: *@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
-"*@domain.tld)."
+"to add a new input. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
 msgstr ""
 "Alias för denna brevlåda. Ange endast en adress per rad, tryck ENTER för att "
 "lägga till ny rad. Använd '*' för att skapa ett 'catchall' alias (ex: "
@@ -606,30 +611,30 @@ msgstr "Kvotan är större än domänens gräns (%dM)"
 msgid "A quota is required"
 msgstr "En kvota krävs"
 
-#: admin/serializers.py:44 admin/serializers.py:224 admin/serializers.py:313
+#: admin/serializers.py:45 admin/serializers.py:228 admin/serializers.py:317
 msgid "Permission denied."
 msgstr "Åtskomst nekad."
 
-#: admin/serializers.py:82
+#: admin/serializers.py:83
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista över administrerade domäner (endast återförsäljare och "
 "domänadministratörer)."
 
-#: admin/serializers.py:189
+#: admin/serializers.py:193
 msgid "Not allowed for this role."
 msgstr "Inte tillåtet för denna roll."
 
-#: admin/serializers.py:199
+#: admin/serializers.py:203
 msgid "Must be equal to mailbox full_address"
 msgstr "Måste vara lika med brevlådans full_address"
 
-#: admin/serializers.py:211
+#: admin/serializers.py:215
 msgid "Local domain {} does not exist"
 msgstr "Lokal domän {} finns inte"
 
-#: admin/serializers.py:311
+#: admin/serializers.py:315
 msgid "Domain not found."
 msgstr "Domän kunde ej hittas."
 
