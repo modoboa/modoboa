@@ -118,6 +118,9 @@ class User(PermissionsMixin):
             raise PermDeniedException
 
         owner = get_object_owner(self)
+        if owner == self:
+            # The default admin is being removed...
+            owner = fromuser
         for ooentry in self.objectaccess_set.filter(is_owner=True):
             if ooentry.content_object is not None:
                 grant_access_to_object(owner, ooentry.content_object, True)
@@ -238,16 +241,6 @@ class User(PermissionsMixin):
         if self.first_name != "":
             return "%s %s" % (self.first_name, self.last_name)
         return "----"
-
-    @property
-    def group(self):
-        """FIXME: DEPRECATED"""
-        if self.is_superuser:
-            return "SuperAdmins"
-        try:
-            return self.groups.all()[0].name
-        except IndexError:
-            return "---"
 
     @property
     def enabled(self):
