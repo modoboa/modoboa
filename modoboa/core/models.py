@@ -67,7 +67,7 @@ class User(PermissionsMixin):
         ugettext_lazy('last login'), blank=True, null=True
     )
 
-    language = models.CharField(
+    language = models.CharField(ugettext_lazy('language'),
         max_length=10, default="en", choices=constants.LANGUAGES,
         help_text=ugettext_lazy(
             "Prefered language to display pages."
