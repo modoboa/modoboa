@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 13:36+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -434,6 +434,12 @@ msgstr "wachtwoord"
 msgid "last login"
 msgstr "laatste login"
 
+#: core/models.py:70
+#, fuzzy
+#| msgid "Prefered language"
+msgid "language"
+msgstr "Voorkeurs taal"
+
 #: core/models.py:73
 #, fuzzy
 #| msgid "Prefered language to display pages"
@@ -456,32 +462,32 @@ msgstr ""
 msgid "You can't delete your own account"
 msgstr "U kunt uw eigen account niet verwijderen"
 
-#: core/models.py:164
+#: core/models.py:167
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Mislukt om wachtwoord aan te passen: LDAP module niet geinstalleerd"
 
-#: core/models.py:222
+#: core/models.py:225
 msgid "account"
 msgstr "account"
 
-#: core/models.py:354
+#: core/models.py:347
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:393
+#: core/models.py:386
 msgid "Invalid line"
 msgstr "Verkeerde regel"
 
-#: core/models.py:401
+#: core/models.py:394
 msgid "You can't import an account with a role greater than yours"
 msgstr "U kunt geen accounts importeren met hogere rechten dan die van uzelf."
 
-#: core/models.py:416
+#: core/models.py:409
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "De gebruiker '%s' moet een geldig email adres hebben"
 
-#: core/models.py:421
+#: core/models.py:414
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "gebruikersnaam en email velden moeten niet verschillen van '%s'"
@@ -815,6 +821,3 @@ msgstr "Inloggen"
 
 #~ msgid "Display"
 #~ msgstr "Weergeven"
-
-#~ msgid "Prefered language"
-#~ msgstr "Voorkeurs taal"

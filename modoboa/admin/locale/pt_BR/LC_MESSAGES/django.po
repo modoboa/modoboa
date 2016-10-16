@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 13:36+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2016-05-17 12:28+0000\n"
 "Last-Translator: Jose Marcos Araujo <jmaraujo@avancetec.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
@@ -223,10 +223,15 @@ msgid "Alias(es)"
 msgstr "Alias(es)"
 
 #: admin/forms/account.py:208
+#, fuzzy
+#| msgid ""
+#| "Alias(es) of this mailbox. Indicate only one address per input, press "
+#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
+#| "alias (ex: *@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
-"*@domain.tld)."
+"to add a new input. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
 msgstr ""
 "Alias(es) para essa caixa de correio. Indique apenas um endereço por "
 "entrada, pressione ENTER para adicionar uma nova entrada. Use o caractere "
@@ -613,30 +618,30 @@ msgstr "A cota é maior que o permitido pelo limite do domínio (%dM)"
 msgid "A quota is required"
 msgstr "Uma cota é requerida"
 
-#: admin/serializers.py:44 admin/serializers.py:224 admin/serializers.py:313
+#: admin/serializers.py:45 admin/serializers.py:228 admin/serializers.py:317
 msgid "Permission denied."
 msgstr "Permissão negada"
 
-#: admin/serializers.py:82
+#: admin/serializers.py:83
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista dos domínios administrados (somente revendedores e administradores de "
 "domínio)"
 
-#: admin/serializers.py:189
+#: admin/serializers.py:193
 msgid "Not allowed for this role."
 msgstr "Não permitido para este perfil (role)"
 
-#: admin/serializers.py:199
+#: admin/serializers.py:203
 msgid "Must be equal to mailbox full_address"
 msgstr "Deve ser igual ao endereço completo da conta"
 
-#: admin/serializers.py:211
+#: admin/serializers.py:215
 msgid "Local domain {} does not exist"
 msgstr "Domínio local {} não existe"
 
-#: admin/serializers.py:311
+#: admin/serializers.py:315
 msgid "Domain not found."
 msgstr "Domínio não encontrado"
 
