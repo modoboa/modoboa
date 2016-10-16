@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 13:36+0200\n"
+"POT-Creation-Date: 2016-10-11 11:43+0200\n"
 "PO-Revision-Date: 2015-07-09 14:03+0000\n"
 "Last-Translator: controlc.de\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
@@ -214,10 +214,8 @@ msgstr ""
 "angelegt werden. Nutzen Sie ';', um Gruppen zu separieren."
 
 #: core/app_settings.py:196
-#, fuzzy
-#| msgid "Group name"
 msgid "Group type"
-msgstr "Gruppenname"
+msgstr "Gruppentyp"
 
 #: core/app_settings.py:200
 msgid "The LDAP group type to use with your directory."
@@ -399,16 +397,12 @@ msgid "deleted"
 msgstr "entfernt"
 
 #: core/models.py:51
-#, fuzzy
-#| msgid "Group name"
 msgid "First name"
-msgstr "Gruppenname"
+msgstr "Vorname"
 
 #: core/models.py:53
-#, fuzzy
-#| msgid "Last login"
 msgid "Last name"
-msgstr "Letzte Anmeldung"
+msgstr "Nachname"
 
 #: core/models.py:60
 msgid "Allow mailboxes access"
@@ -426,23 +420,25 @@ msgstr "Passwort"
 msgid "last login"
 msgstr "Letzte Anmeldung"
 
+#: core/models.py:70
+msgid "language"
+msgstr "Sprache"
+
 #: core/models.py:73
-#, fuzzy
-#| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Bevorzugte Sprache für Seitendarstellung"
 
 #: core/models.py:77
 msgid "Phone number"
-msgstr ""
+msgstr "Telefonnummer"
 
 #: core/models.py:79
 msgid "Secondary email"
-msgstr ""
+msgstr "Alternative Email-Adresse"
 
 #: core/models.py:82
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr ""
+msgstr "Eine alternative e-mail Adresse zur Widerherstellung."
 
 #: core/models.py:114
 msgid "You can't delete your own account"
@@ -458,7 +454,7 @@ msgstr "Konto"
 
 #: core/models.py:354
 msgid "Unknown"
-msgstr ""
+msgstr "Unbekannt"
 
 #: core/models.py:393
 msgid "Invalid line"
@@ -499,11 +495,11 @@ msgstr "Aktualisieren"
 #: core/templates/core/dashboard.html:9
 #, python-format
 msgid "Hello %(user)s."
-msgstr ""
+msgstr "Hallo %(user)s."
 
 #: core/templates/core/dashboard.html:15
 msgid "Latest news"
-msgstr ""
+msgstr "Neueste Nachrichten"
 
 #: core/templates/core/dashboard.html:29
 msgid ""
@@ -556,7 +552,7 @@ msgstr "Aktive Benutzer"
 
 #: core/templates/core/information.html:37
 msgid "Role"
-msgstr ""
+msgstr "Rolle"
 
 #: core/templates/core/information.html:38
 msgid "Last login"
@@ -651,7 +647,6 @@ msgid "Parameters saved"
 msgstr "Parameter gespeichert"
 
 #: core/views/auth.py:41
-#, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Benutzer '%s' hat sich erfolgreich angemeldet"
 
@@ -721,10 +716,8 @@ msgid "No"
 msgstr "Nein"
 
 #: lib/ldap_utils.py:124
-#, fuzzy
-#| msgid "Failed to update password: %s"
 msgid "Failed to update password: {}"
-msgstr "Konnte Passwort nicht aktualisieren: %s"
+msgstr "Konnte Passwort nicht aktualisieren: {}"
 
 #: lib/templatetags/lib_tags.py:103
 msgid "From"
@@ -797,11 +790,5 @@ msgstr "An mich erinnern"
 msgid "Log in"
 msgstr "Anmelden"
 
-#~ msgid "Group name"
-#~ msgstr "Gruppenname"
-
 #~ msgid "Display"
 #~ msgstr "Darstellung"
-
-#~ msgid "Prefered language"
-#~ msgstr "Bevorzugte Sprache"
