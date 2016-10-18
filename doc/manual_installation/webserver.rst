@@ -1,14 +1,8 @@
-.. _webservers:
+.. _webserver:
 
-###########
-Web servers
-###########
-
-.. _apache2:
-
-*******
-Apache2
-*******
+##########
+Web server
+##########
 
 .. note:: 
 
@@ -19,31 +13,34 @@ Apache2
    possible that **your** installation of uwsgi or nginx or Apache or
    what-have-you works differently. Keep this in mind.
 
-mod_wsgi
-========
+.. _apache2:
 
-First, make sure that mod_wsgi is installed on your server.
+Apache2
+*******
+
+First, make sure that ``mod_wsgi`` is installed on your server.
 
 Create a new virtualhost in your Apache configuration and put the
 following content inside::
 
   <VirtualHost *:80>
     ServerName <your value>
-    DocumentRoot <path to your site's dir>
+    DocumentRoot <modoboa_instance_path>
 
-    Alias /media/ <path to your site's dir>/media/
-    <Directory <path to your site's dir>/media>
+    Alias /media/ <modoboa_instance_path>/media/
+    <Directory <modoboa_instance_path>/media>
       Order deny,allow
       Allow from all
     </Directory>
 
-    Alias /sitestatic/ <path to your site's dir>/sitestatic/
-    <Directory <path to your site's dir>/sitestatic>
+    Alias /sitestatic/ <modoboa_instance_path>/sitestatic/
+    <Directory <modoboa_instance_path>/sitestatic>
       Order deny,allow
       Allow from all
     </Directory>
 
-    WSGIScriptAlias / <path to your site's dir>/wsgi.py
+    WSGIScriptAlias / <modoboa_instance_path>/<instance_name>/wsgi.py
+  
   </VirtualHost>
 
 This is just one possible configuration.
@@ -51,7 +48,7 @@ This is just one possible configuration.
 To use mod_wsgi daemon mode, add the two following directives just
 under ``WSGIScriptAlias``::
 
-  WSGIDaemonProcess example.com python-path=<path to your site's dir>:<virtualenv path>/lib/python2.7/site-packages
+  WSGIDaemonProcess example.com python-path=<modoboa_instance>:<virtualenv path>/lib/python2.7/site-packages
   WSGIProcessGroup example.com
 
 Replace values between ``<>`` with yours. If you don't use a
@@ -59,23 +56,16 @@ Replace values between ``<>`` with yours. If you don't use a
 remove the last part of the ``WSGIDaemonProcess`` directive.
 
 .. note::
+
    You will certainly need more configuration in order to launch
    Apache.
 
+Now, you can go the :ref:`dovecot` section to continue the installation.
+
 .. _nginx-label:
 
-*****
 Nginx
 *****
-
-.. note:: 
-
-   The following instructions are meant to help you get your site up
-   and running quickly. However it is not possible for the people
-   contributing documentation to Modoboa to test every single
-   combination of web server, wsgi server, distribution, etc. So it is
-   possible that **your** installation of uwsgi or nginx or Apache or
-   what-have-you works differently. Keep this in mind.
 
 This section covers two different ways of running Modoboa behind
 `Nginx <http://nginx.org/>`_ using a WSGI application server. Choose
@@ -86,7 +76,7 @@ In both cases, you'll need to download and `install nginx
 <http://wiki.nginx.org/Install>`_.
 
 Green Unicorn
-=============
++++++++++++++
 
 Firstly, `Download and install gunicorn
 <http://gunicorn.org/install.html>`_. Then, use the following sample
@@ -120,7 +110,7 @@ following configuration::
         keepalive_timeout 70;
 
         server_name <host fqdn>;
-        root <modoboa's root dir>;
+        root <modoboa_instance_path>;
 
         access_log  /var/log/nginx/<host fqdn>.access.log;
         error_log /var/log/nginx/<host fqdn>.error.log;
@@ -160,11 +150,12 @@ key. `This article
 contains information about how to do it.
 
 Paste this content to your configuration (replace values between
-``<>`` with yours), restart nginx and enjoy a really fast
-application!
+``<>`` with yours) and restart nginx.
+
+Now, you can go the :ref:`dovecot` section to continue the installation.
 
 uWSGI
-=====
++++++
 
 The following setup is meant to get you started quickly. You should
 read the documentation of both nginx and uwsgi to understand how to
@@ -304,3 +295,5 @@ does not require it. In the configuration above:
 ``<name>``
   The name that you passed to ``modoboa-admin.py deploy`` when you
   created your Modoboa instance.
+
+Now, you can go the :ref:`dovecot` section to continue the installation.

@@ -2,37 +2,82 @@
 Upgrade
 #######
 
+Modoboa
+*******
+
 .. warning::
 
    The new version you are going to install may need to modify your
    database. Before you start, make sure to backup everything!
 
 Most of the time, upgrading your installation to a newer Modoboa
-version only requires a few actions. In any case, you will need to
+version only requires a few actions. In every case, you will need to
 apply the general procedure first and then check if the version you
 are installing requires specific actions.
 
-.. note::
-   
-   In case you use a dedicated user and/or a virtualenv, do not forget to
-   use them:
+In case you use a dedicated user and/or a virtualenv, do not forget to
+use them:
 
-   .. sourcecode:: bash
+.. sourcecode:: bash
 
-     > sudo -i <modoboa_user>
-     > source <virtuenv_path>/bin/activate
+   > sudo -i <modoboa_user>
+   > source <virtuenv_path>/bin/activate
 
-The general procedure is as follows::
+Then, run the following commands:
 
-  > pip install modoboa==<VERSION>
-  > cd <modoboa_instance_dir>
-  > python manage.py migrate
-  > python manage.py collectstatic
+.. sourcecode:: bash
+
+   > pip install modoboa==<VERSION>
+   > cd <modoboa_instance_dir>
+   > python manage.py migrate
+   > python manage.py collectstatic
 
 Once done, check if the version you are installing requires
 :ref:`specific_upgrade_instructions`.
   
 Finally, restart your web server.
+
+Sometimes, you might need to upgrade postfix map files too. To do so,
+just run the ``generate_postfix_maps`` command on the same directory
+than the one used for installation (:file:`/etc/postfix` by default).
+
+Make sure to use root privileges and run the following command:
+
+.. sourcecode:: bash
+
+   > python manage.py generate_postfix_maps --destdir <directory>
+
+Then, reload postfix.
+
+Extensions
+**********
+
+If a new version is available for an extension you're using, it is
+recommanded to install it. Upgrading an extensions is pretty and the
+procedure is almost the same than the one used for Modoboa.
+
+In case you use a dedicated user and/or a virtualenv, do not forget to
+use them:
+
+.. sourcecode:: bash
+
+   > sudo -i <modoboa_user>
+   > source <virtuenv_path>/bin/activate
+
+Then, run the following commands:
+
+.. sourcecode:: bash
+
+   > pip install <EXTENSION>==<VERSION>
+   > cd <modoboa_instance_dir>
+   > python manage.py migrate
+   > python manage.py collectstatic
+
+Finally, restart your web server.
+
+It is a generic upgrade procedure which will be enough most of the
+time but it is generally a good idea to check the associated
+documentation.
 
 .. _specific_upgrade_instructions:
 
