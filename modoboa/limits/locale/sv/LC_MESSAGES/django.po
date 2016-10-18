@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2016-05-30 18:08+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -187,7 +187,7 @@ msgstr "Ogiltig gräns"
 msgid "You're not allowed to define unlimited values"
 msgstr "Du har inte tillåtelse att definiera obegränsat värden"
 
-#: limits/general_callbacks.py:52 limits/general_callbacks.py:65
+#: limits/general_callbacks.py:56 limits/general_callbacks.py:69
 msgid "Resources"
 msgstr "Resurser"
 

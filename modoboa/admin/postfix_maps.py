@@ -1,7 +1,5 @@
 """Map file definitions for postfix."""
 
-from modoboa.core.commands.postfix_maps import registry
-
 
 class DomainsMap(object):
 
@@ -127,13 +125,13 @@ class SenderLoginMailboxExtraMap(object):
         "WHERE sad.address='%s'"
     )
     postgres = (
-        "SELECT mb.address || '@' || dom.name) FROM admin_mailbox mb "
+        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
         "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "WHERE sad.address='%s'"
     )
     sqlite = (
-        "SELECT mb.address || '@' || dom.name) FROM admin_mailbox mb "
+        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
         "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "WHERE sad.address='%s'"
@@ -166,8 +164,3 @@ class SenderLoginAliasMap(object):
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s'"
     )
-
-registry.add_files([
-    DomainsMap, DomainsAliasesMap, AliasesMap, MaintainMap,
-    SenderLoginAliasMap, SenderLoginMailboxMap, SenderLoginMailboxExtraMap
-])

@@ -1,7 +1,5 @@
 """Map file definitions for postfix."""
 
-from modoboa.core.commands.postfix_maps import registry
-
 
 class RelayDomainsMap(object):
 
@@ -116,9 +114,3 @@ class RelayRecipientVerification(object):
         "INNER JOIN admin_domain AS dom ON rdom.domain_id=dom.id "
         "WHERE rdom.verify_recipients=1 AND dom.name='%d'"
     )
-
-
-registry.add_files([
-    RelayDomainsMap, RelayDomainsTransportMap, SplitedDomainsTransportMap,
-    RelayRecipientVerification
-])

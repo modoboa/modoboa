@@ -22,7 +22,7 @@ class AliasTestCase(ModoTestCase):
     def test_alias(self):
         user = User.objects.get(username="user@test.com")
         values = dict(
-            username="user@test.com", role=user.group,
+            username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com",
             aliases="toto@test.com", aliases_1="titi@test.com"
         )
@@ -64,7 +64,7 @@ class AliasTestCase(ModoTestCase):
         """Try to create an upper case alias."""
         user = User.objects.get(username="user@test.com")
         values = dict(
-            username="user@test.com", role=user.group,
+            username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com",
             aliases="Toto@test.com"
         )
@@ -94,7 +94,7 @@ class AliasTestCase(ModoTestCase):
         """Try to create a alias with tag in recipient address"""
         user = User.objects.get(username="user@test.com")
         values = dict(
-            username="user@test.com", role=user.group,
+            username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com"
         )
         self.ajax_post(

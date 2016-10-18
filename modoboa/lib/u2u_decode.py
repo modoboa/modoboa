@@ -1,12 +1,9 @@
-#!/usr/bin/env python
 # coding: utf-8
-"""
-u2u_decode.py
 
-unstructured rfc2047 header to unicode
-"""
-import re
+"""Unstructured rfc2047 header to unicode."""
+
 from email.header import decode_header, make_header
+import re
 
 # check spaces between encoded_words (and strip them)
 sre = re.compile(r'\?=[ \t]+=\?')
@@ -15,7 +12,7 @@ mre = re.compile(r'=\?[^?]*?\?[bq]\?[^?\t]*?\?=', re.I)
 
 
 def clean_spaces(m):
-    """Replace unencoded spaces in string
+    """Replace unencoded spaces in string.
 
     :param str m: a match object
     :return: the cleaned string
@@ -24,12 +21,11 @@ def clean_spaces(m):
 
 
 def decode_mime(m):
-    """substitute matching encoded_word with unicode equiv.
-    """
+    """Substitute matching encoded_word with unicode equiv."""
     h = decode_header(clean_spaces(m))
     try:
         u = unicode(make_header(h))
-    except UnicodeDecodeError:
+    except (LookupError, UnicodeDecodeError):
         return m.group(0)
     return u
 

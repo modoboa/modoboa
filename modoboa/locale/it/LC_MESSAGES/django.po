@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2015-10-11 11:47+0000\n"
 "Last-Translator: Rocco <mors10@hotmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/"
@@ -436,6 +436,12 @@ msgstr "password"
 msgid "last login"
 msgstr "ultimo login"
 
+#: core/models.py:70
+#, fuzzy
+#| msgid "Prefered language"
+msgid "language"
+msgstr "Lingua preferita"
+
 #: core/models.py:73
 #, fuzzy
 #| msgid "Prefered language to display pages"
@@ -458,32 +464,32 @@ msgstr ""
 msgid "You can't delete your own account"
 msgstr "Non puoi cancellare il tuo account"
 
-#: core/models.py:164
+#: core/models.py:167
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Aggiornamento della password fallito: il modulo LDAP non è installato"
 
-#: core/models.py:222
+#: core/models.py:225
 msgid "account"
 msgstr "account"
 
-#: core/models.py:367
+#: core/models.py:347
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:406
+#: core/models.py:386
 msgid "Invalid line"
 msgstr "Riga non valida"
 
-#: core/models.py:414
+#: core/models.py:394
 msgid "You can't import an account with a role greater than yours"
 msgstr "Non puoi importare un account con un ruolo superiore al tuo"
 
-#: core/models.py:429
+#: core/models.py:409
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "L'utente '%s' deve avere un indirizzo email valido"
 
-#: core/models.py:434
+#: core/models.py:414
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "I campi nome utente e email di '%s' devono avere lo stesso valore"
@@ -564,8 +570,8 @@ msgid "Active users"
 msgstr "Utenti attivi"
 
 #: core/templates/core/information.html:37
-msgid "Group name"
-msgstr "Nome gruppo"
+msgid "Role"
+msgstr ""
 
 #: core/templates/core/information.html:38
 msgid "Last login"
@@ -579,7 +585,7 @@ msgstr "Log"
 msgid "Previously on Modoboa..."
 msgstr "Precedentemente su Modoboa ..."
 
-#: core/templates/core/logs.html:6
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
 msgid "Date"
 msgstr "Data"
 
@@ -651,7 +657,7 @@ msgstr "Esci"
 msgid "API"
 msgstr ""
 
-#: core/utils.py:22
+#: core/utils.py:34
 msgid "The core part of Modoboa"
 msgstr "Parte centrale di Modoboa"
 
@@ -733,7 +739,19 @@ msgstr "No"
 msgid "Failed to update password: {}"
 msgstr "Aggiornamento della password fallito: %s"
 
-#: templates/404.html:4 templates/500.html.py:4
+#: lib/templatetags/lib_tags.py:103
+msgid "From"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103
+msgid "To"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Oggetto"
+
+#: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
 msgstr "Dispiace"
 
@@ -752,10 +770,6 @@ msgstr "Ricerca ..."
 #: templates/common/email_searchbar.html:10
 msgid "From address"
 msgstr "Mittente"
-
-#: templates/common/email_searchbar.html:17
-msgid "Subject"
-msgstr "Oggetto"
 
 #: templates/common/email_searchbar.html:33
 msgid "Both"
@@ -796,8 +810,8 @@ msgstr "Ricordami"
 msgid "Log in"
 msgstr "Registrati"
 
+#~ msgid "Group name"
+#~ msgstr "Nome gruppo"
+
 #~ msgid "Display"
 #~ msgstr "Mostra"
-
-#~ msgid "Prefered language"
-#~ msgstr "Lingua preferita"

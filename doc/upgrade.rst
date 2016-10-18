@@ -90,23 +90,33 @@ Specific instructions
 An interesting feature brougth by this version is the capability to
 make different checks about MX records. For example, Modoboa can
 query main `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ providers
-for every defined domain. With this, you will quickly now if one the
+for every defined domain. With this, you will quickly know if one the
 domains you manage is listed or not. To activate it, add the
 following line to your crontab::
 
-  */30 * * * * <modoboa_site>/manage.py modo check_mx
+  */30 * * * * <optional_virtualenv_path/>python <modoboa_instance_dir>/manage.py modo check_mx
 
 The communication with Modoboa public API has been reworked. Instead
 of sending direct synchronous queries (for example to check new
 versions), a cron job has been added. To activate it, add the
 following line to your crontab::
 
-  0 * * * * <modoboa_site>/manage.py communicate_with_public_api
+  0 * * * * <optional_virtualenv_path/>python <modoboa_instance_dir>/manage.py communicate_with_public_api
 
 Please also note that public API now uses TLS so you must update your
 configuration as follows::
 
   MODOBOA_API_URL = 'https://api.modoboa.org/1/'
+
+Finally, it is now possible to declare additional sender addresses on
+a per-account basis. You need to update your postfix configuration in
+order to use this functionality. Just edit the :file:`main.cf` file
+and change the following parameter::
+
+  smtpd_sender_login_maps =
+      <driver>:/etc/postfix/sql-sender-login-mailboxes.cf
+      <driver>:/etc/postfix/sql-sender-login-aliases.cf
+      <driver>:/etc/postfix/sql-sender-login-mailboxes-extra.cf
 
 1.5.0
 =====

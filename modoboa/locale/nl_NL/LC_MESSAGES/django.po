@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -434,6 +434,12 @@ msgstr "wachtwoord"
 msgid "last login"
 msgstr "laatste login"
 
+#: core/models.py:70
+#, fuzzy
+#| msgid "Prefered language"
+msgid "language"
+msgstr "Voorkeurs taal"
+
 #: core/models.py:73
 #, fuzzy
 #| msgid "Prefered language to display pages"
@@ -456,32 +462,32 @@ msgstr ""
 msgid "You can't delete your own account"
 msgstr "U kunt uw eigen account niet verwijderen"
 
-#: core/models.py:164
+#: core/models.py:167
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Mislukt om wachtwoord aan te passen: LDAP module niet geinstalleerd"
 
-#: core/models.py:222
+#: core/models.py:225
 msgid "account"
 msgstr "account"
 
-#: core/models.py:367
+#: core/models.py:347
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:406
+#: core/models.py:386
 msgid "Invalid line"
 msgstr "Verkeerde regel"
 
-#: core/models.py:414
+#: core/models.py:394
 msgid "You can't import an account with a role greater than yours"
 msgstr "U kunt geen accounts importeren met hogere rechten dan die van uzelf."
 
-#: core/models.py:429
+#: core/models.py:409
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "De gebruiker '%s' moet een geldig email adres hebben"
 
-#: core/models.py:434
+#: core/models.py:414
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "gebruikersnaam en email velden moeten niet verschillen van '%s'"
@@ -566,8 +572,8 @@ msgid "Active users"
 msgstr "Actieve gebruikers"
 
 #: core/templates/core/information.html:37
-msgid "Group name"
-msgstr "Groep naam"
+msgid "Role"
+msgstr ""
 
 #: core/templates/core/information.html:38
 msgid "Last login"
@@ -581,7 +587,7 @@ msgstr "Logs"
 msgid "Previously on Modoboa..."
 msgstr "Vorige gebeurtenissen op Modoboa..."
 
-#: core/templates/core/logs.html:6
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
 msgid "Date"
 msgstr "Datum"
 
@@ -653,7 +659,7 @@ msgstr "Uitloggen"
 msgid "API"
 msgstr ""
 
-#: core/utils.py:22
+#: core/utils.py:34
 #, fuzzy
 #| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
@@ -739,7 +745,19 @@ msgstr "Nee"
 msgid "Failed to update password: {}"
 msgstr "Mislukt om wachtwoord aan te passen: %s"
 
-#: templates/404.html:4 templates/500.html.py:4
+#: lib/templatetags/lib_tags.py:103
+msgid "From"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103
+msgid "To"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
 msgstr "Sorry"
 
@@ -758,10 +776,6 @@ msgstr "Zoeken..."
 #: templates/common/email_searchbar.html:10
 msgid "From address"
 msgstr "Van adres"
-
-#: templates/common/email_searchbar.html:17
-msgid "Subject"
-msgstr "Onderwerp"
 
 #: templates/common/email_searchbar.html:33
 msgid "Both"
@@ -802,8 +816,8 @@ msgstr "Onthoud mij"
 msgid "Log in"
 msgstr "Inloggen"
 
+#~ msgid "Group name"
+#~ msgstr "Groep naam"
+
 #~ msgid "Display"
 #~ msgstr "Weergeven"
-
-#~ msgid "Prefered language"
-#~ msgstr "Voorkeurs taal"

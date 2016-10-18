@@ -19,8 +19,10 @@ class MXTestCase(ModoTestCase):
         """Create some data."""
         super(MXTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
-        factories.DomainFactory(name="pouet.com")  # should not exist
-        parameters.save_admin('VALID_MXS', '127.0.0.1', app='admin')
+        # should not exist
+        cls.bad_domain = factories.DomainFactory(name="pouet.com")
+        parameters.save_admin("VALID_MXS", "127.0.0.1")
+        models.MXRecord.objects.all().delete()
 
     def test_management_command(self):
         """Check that command works fine."""
@@ -43,6 +45,23 @@ class MXTestCase(ModoTestCase):
         qs = models.MXRecord.objects.filter(domain=self.domain)
         self.assertEqual(id, qs[0].id)
 
+    def test_single_domain_update(self):
+        """Update only one domain."""
+        management.call_command(
+            "modo", "check_mx", "--domain", self.domain.name)
+        self.assertTrue(
+            models.MXRecord.objects.filter(domain=self.domain).exists())
+        self.assertFalse(
+            models.MXRecord.objects.filter(domain=self.bad_domain).exists())
+
+        management.call_command(
+            "modo", "check_mx", "--domain", str(self.bad_domain.pk))
+        self.assertFalse(
+            models.MXRecord.objects.filter(domain=self.bad_domain).exists())
+
+        management.call_command(
+            "modo", "check_mx", "--domain", "toto.com")
+
 
 class DNSBLTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
@@ -53,6 +72,7 @@ class DNSBLTestCase(ModoTestCase):
         super(DNSBLTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
         factories.DomainFactory(name="pouet.com")  # should not exist
+        models.DNSBLResult.objects.all().delete()
 
     @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
     def test_management_command(self):

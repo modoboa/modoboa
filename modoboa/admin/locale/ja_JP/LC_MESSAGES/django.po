@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-16 16:03+0200\n"
+"POT-Creation-Date: 2016-10-16 14:31+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -51,7 +51,7 @@ msgstr "DNSBL チェックを有効にする"
 msgid "Check every domain against major DNSBL providers"
 msgstr "すべてのドメインを 主な DNSBL プロバイダーでチェックする"
 
-#: admin/app_settings.py:84 admin/templates/admin/domain_detail.html.py:40
+#: admin/app_settings.py:84 admin/templates/admin/domain_detail.html:44
 msgid "Mailboxes"
 msgstr "メールボックス"
 
@@ -105,7 +105,7 @@ msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "アカウントが自動的に作成されたとき、ドメインとメールボックを作成します。"
 
-#: admin/app_settings.py:170 admin/forms/account.py:279
+#: admin/app_settings.py:170 admin/forms/account.py:292
 #: admin/forms/domain.py:81
 msgid "Must be a positive integer"
 msgstr "正の整数でなければいけません"
@@ -114,13 +114,13 @@ msgstr "正の整数でなければいけません"
 msgid "Administration"
 msgstr "管理"
 
-#: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html.py:36
+#: admin/callbacks.py:35 admin/templates/admin/domain_statistics.html:36
 #: admin/templates/admin/domain_statistics.html:50
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "ID"
 
-#: admin/callbacks.py:50 admin/templates/admin/forward.html.py:2
+#: admin/callbacks.py:50 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "転送先"
 
@@ -142,7 +142,7 @@ msgstr "アカウントのインポートに失敗しました  (%s):  不正な
 msgid "domain alias"
 msgstr "ドメインエイリアス"
 
-#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html.py:68
+#: admin/forms/account.py:33 admin/templates/admin/domain_detail.html:72
 msgid "Username"
 msgstr "ユーザー名"
 
@@ -155,11 +155,11 @@ msgstr ""
 "メールボックスを持つユーザーもしくは管理者の有効な電子メールアドレスでなけれ"
 "ばなりません。"
 
-#: admin/forms/account.py:40 admin/templates/admin/account_detail.html.py:29
+#: admin/forms/account.py:40 admin/templates/admin/account_detail.html:29
 msgid "Role"
 msgstr "ロール"
 
-#: admin/forms/account.py:41 admin/forms/account.py:79
+#: admin/forms/account.py:41
 msgid "Choose"
 msgstr "選ぶ"
 
@@ -179,32 +179,32 @@ msgstr "確認"
 msgid "Enter the same password as above, for verification."
 msgstr "確認のため、上記と同じパスワードを入力します。"
 
-#: admin/forms/account.py:70
+#: admin/forms/account.py:63
 msgid "Enabled"
 msgstr "有効化"
 
-#: admin/forms/account.py:142
+#: admin/forms/account.py:155
 msgid "The two password fields didn't match."
 msgstr "2つのパスワード項目が一致しません"
 
-#: admin/forms/account.py:157
+#: admin/forms/account.py:170
 msgid "Only super administrators are allowed for this mode"
 msgstr "スーパー管理者だけが、このモードのために許可されています。"
 
-#: admin/forms/account.py:165
+#: admin/forms/account.py:178
 msgid "You can't disable your own account"
 msgstr "あなた自身のアカウントは無効化できません"
 
-#: admin/forms/account.py:180
+#: admin/forms/account.py:193
 msgid "E-mail"
 msgstr "電子メール"
 
-#: admin/forms/account.py:182 admin/forms/domain.py:36
+#: admin/forms/account.py:195 admin/forms/domain.py:36
 #: admin/templates/admin/account_detail.html:45
 msgid "Quota"
 msgstr "クォータ"
 
-#: admin/forms/account.py:184
+#: admin/forms/account.py:197
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -215,16 +215,21 @@ msgstr ""
 "無制限の値を定義する場合は空白のままにします\n"
 "（ドメイン管理者には許可されていません）"
 
-#: admin/forms/account.py:192 admin/forms/domain.py:44
+#: admin/forms/account.py:205 admin/forms/domain.py:44
 #: admin/templates/admin/domains.html:35
 msgid "Alias(es)"
 msgstr "エイリアス"
 
-#: admin/forms/account.py:195
+#: admin/forms/account.py:208
+#, fuzzy
+#| msgid ""
+#| "Alias(es) of this mailbox. Indicate only one address per input, press "
+#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
+#| "alias (ex: *@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
-"*@domain.tld)."
+"to add a new input. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
 msgstr ""
 "メールボックスのエイリアス\n"
 "input ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追"
@@ -232,56 +237,56 @@ msgstr ""
 " 「キャッチオール」エイリアスを作成するには、 ' * '文字を使用してください  "
 "(例: *@domain.tld)"
 
-#: admin/forms/account.py:201
+#: admin/forms/account.py:214
 msgid "Sender addresses"
 msgstr ""
 
-#: admin/forms/account.py:204
+#: admin/forms/account.py:217
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
 msgstr ""
 
-#: admin/forms/account.py:258 admin/forms/alias.py:89
+#: admin/forms/account.py:271 admin/forms/alias.py:92
 #: admin/models/mailbox.py:293
 msgid "Domain does not exist"
 msgstr "ドメインは存在しません"
 
-#: admin/forms/account.py:288
+#: admin/forms/account.py:301
 msgid "Local domain does not exist"
 msgstr "ローカルドメインは存在しません"
 
-#: admin/forms/account.py:386
+#: admin/forms/account.py:399
 msgid "Domain(s)"
 msgstr "ドメイン"
 
-#: admin/forms/account.py:388
+#: admin/forms/account.py:401
 msgid "Domain(s) that user administrates"
 msgstr "ユーザーに管理されたドメイン"
 
-#: admin/forms/account.py:434 admin/forms/account.py:518
-#: admin/forms/domain.py:266 admin/forms/domain.py:336
+#: admin/forms/account.py:447 admin/forms/account.py:532
+#: admin/forms/domain.py:266 admin/forms/domain.py:332
 msgid "General"
 msgstr "全般"
 
-#: admin/forms/account.py:439 admin/forms/account.py:524
+#: admin/forms/account.py:452 admin/forms/account.py:538
 msgid "Mail"
 msgstr "メール"
 
-#: admin/forms/account.py:441
+#: admin/forms/account.py:454
 msgid "Permissions"
 msgstr "アクセス許可"
 
-#: admin/forms/account.py:507
+#: admin/forms/account.py:521
 msgid "Account updated"
 msgstr "アカウントを更新しました"
 
-#: admin/forms/account.py:531
+#: admin/forms/account.py:545
 msgid "New account"
 msgstr "新しいアカウト"
 
-#: admin/forms/account.py:543
+#: admin/forms/account.py:557
 msgid "Account created"
 msgstr "アカウントを作成しました"
 
@@ -304,7 +309,7 @@ msgstr ""
 "キャッチオールエイリアスを作成するためには、ドメイン名だけを入力します  "
 "(@domain.tld)"
 
-#: admin/forms/alias.py:35 admin/templates/admin/alias_detail.html.py:37
+#: admin/forms/alias.py:35 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "受信者"
 
@@ -317,24 +322,24 @@ msgstr ""
 "input ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追"
 "加します"
 
-#: admin/forms/alias.py:92
-msgid "You don't have access to this domain"
-msgstr "このドメインにアクセスする権限がありません"
-
-#: admin/forms/alias.py:109 admin/forms/alias.py:111
-msgid "This field is required"
-msgstr ""
-
-#: admin/forms/alias.py:115
-msgid "No recipient defined"
-msgstr "受信者が定義されていません"
-
-#: admin/forms/domain.py:24 admin/models/alias.py:37 admin/models/domain.py:87
+#: admin/forms/alias.py:47 admin/forms/domain.py:24 admin/models/domain.py:90
 #: admin/templates/admin/domain_statistics.html:49
 msgid "Domain"
 msgstr "ドメイン"
 
-#: admin/forms/domain.py:33 admin/templates/admin/domain_statistics.html.py:26
+#: admin/forms/alias.py:95
+msgid "You don't have access to this domain"
+msgstr "このドメインにアクセスする権限がありません"
+
+#: admin/forms/alias.py:112 admin/forms/alias.py:114
+msgid "This field is required"
+msgstr ""
+
+#: admin/forms/alias.py:118
+msgid "No recipient defined"
+msgstr "受信者が定義されていません"
+
+#: admin/forms/domain.py:33 admin/templates/admin/domain_statistics.html:26
 msgid "Type"
 msgstr "タイプ"
 
@@ -373,7 +378,7 @@ msgstr "ドメイン管理者を作成する"
 msgid "Automatically create an administrator for this domain"
 msgstr "自動的にドメインの管理者を作成する"
 
-#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html.py:68
+#: admin/forms/domain.py:174 admin/templates/admin/domain_detail.html:72
 #: admin/templates/admin/domains.html:34
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
@@ -405,19 +410,19 @@ msgstr "不正なフォーマット"
 msgid "User '%s' already exists"
 msgstr "ユーザー %s はすでに存在します"
 
-#: admin/forms/domain.py:325
+#: admin/forms/domain.py:321
 msgid "Domain modified"
 msgstr "ドメインが修正されました"
 
-#: admin/forms/domain.py:345
+#: admin/forms/domain.py:341
 msgid "Options"
 msgstr "オプション"
 
-#: admin/forms/domain.py:353
+#: admin/forms/domain.py:349
 msgid "New domain"
 msgstr "新しいドメイン"
 
-#: admin/forms/domain.py:366
+#: admin/forms/domain.py:362
 msgid "Domain created"
 msgstr "ドメインが作成されました"
 
@@ -487,20 +492,20 @@ msgstr "ドメインのインポートは許可されていません"
 msgid "You are not allowed to import domain aliases."
 msgstr "ドメインエイリアスのインポートは許可されていません"
 
-#: admin/management/commands/subcommands/_mx.py:155
+#: admin/management/commands/subcommands/_mx.py:159
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] ドメイン {} の DNSBL結果"
 
-#: admin/management/commands/subcommands/_mx.py:176
-msgid "Domain {} as no MX record"
+#: admin/management/commands/subcommands/_mx.py:180
+msgid "Domain {} has no MX record"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:187
+#: admin/management/commands/subcommands/_mx.py:191
 #, python-brace-format
-msgid "Domain {0} got an invalid MX record. Got {1}"
+msgid "MX record for domain {0} is invalid: {1}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:203
+#: admin/management/commands/subcommands/_mx.py:207
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr ""
 
@@ -512,62 +517,62 @@ msgstr "アドレス"
 msgid "The alias address."
 msgstr "エイリアスアドレス"
 
-#: admin/models/alias.py:39 admin/models/domain.py:42
+#: admin/models/alias.py:38 admin/models/domain.py:45
 #: admin/models/domain_alias.py:44
 msgid "enabled"
 msgstr "有効"
 
-#: admin/models/alias.py:40 admin/models/domain_alias.py:45
+#: admin/models/alias.py:39 admin/models/domain_alias.py:45
 msgid "Check to activate this alias"
 msgstr "このエイリアスをアクティブにするために確認してください"
 
-#: admin/models/alias.py:45 admin/templates/admin/alias_detail.html.py:32
+#: admin/models/alias.py:44 admin/templates/admin/alias_detail.html:32
 msgid "Description"
 msgstr ""
 
-#: admin/models/alias.py:47 admin/templates/admin/alias_detail.html.py:29
+#: admin/models/alias.py:46 admin/templates/admin/alias_detail.html:29
 msgid "Expire at"
 msgstr ""
 
-#: admin/models/alias.py:90
+#: admin/models/alias.py:89
 msgid "alias"
 msgstr "エイリアス"
 
-#: admin/models/alias.py:122
+#: admin/models/alias.py:121
 msgid "Invalid address"
 msgstr "不正なアドレス"
 
-#: admin/models/alias.py:143
+#: admin/models/alias.py:142
 msgid "Local recipient {}@{} not found"
 msgstr "ローカル受信者 {}@{} は見つかりません"
 
-#: admin/models/alias.py:173
+#: admin/models/alias.py:172
 #, python-format
 msgid "Invalid line: %s"
 msgstr "不正な行: %s"
 
-#: admin/models/alias.py:179
+#: admin/models/alias.py:178
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "ドメイン %s は、存在しません"
 
-#: admin/models/domain.py:38 admin/models/domain_alias.py:37
+#: admin/models/domain.py:41 admin/models/domain_alias.py:37
 msgid "name"
 msgstr "名前"
 
-#: admin/models/domain.py:39
+#: admin/models/domain.py:42
 msgid "The domain name"
 msgstr "ドメイン名"
 
-#: admin/models/domain.py:43
+#: admin/models/domain.py:46
 msgid "Check to activate this domain"
 msgstr "このドメインをアクティブするために確認してください"
 
-#: admin/models/domain.py:198 admin/models/domain_alias.py:71
+#: admin/models/domain.py:211 admin/models/domain_alias.py:71
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: admin/models/domain.py:206
+#: admin/models/domain.py:219
 #, python-format
 msgid "Invalid quota value for domain '%s'"
 msgstr "不正なドメイン %s のクォータ値"
@@ -607,28 +612,28 @@ msgstr "クォータが、ドメインに許可された制限  (%dM) より大�
 msgid "A quota is required"
 msgstr "クォータは必須です"
 
-#: admin/serializers.py:44 admin/serializers.py:224 admin/serializers.py:313
+#: admin/serializers.py:45 admin/serializers.py:228 admin/serializers.py:317
 msgid "Permission denied."
 msgstr "アクセス拒否"
 
-#: admin/serializers.py:82
+#: admin/serializers.py:83
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "管理しているドメインのリスト (リセーラーとドメイン管理者のみ)"
 
-#: admin/serializers.py:189
+#: admin/serializers.py:193
 msgid "Not allowed for this role."
 msgstr "このロールには許可されていません"
 
-#: admin/serializers.py:199
+#: admin/serializers.py:203
 msgid "Must be equal to mailbox full_address"
 msgstr "メールボックス full_address に等しくなければなりません"
 
-#: admin/serializers.py:211
+#: admin/serializers.py:215
 msgid "Local domain {} does not exist"
 msgstr "ローカルドメイン {}  は、存在しません"
 
-#: admin/serializers.py:311
+#: admin/serializers.py:315
 msgid "Domain not found."
 msgstr "ドメインが見つかりません"
 
@@ -742,34 +747,39 @@ msgstr "このドメインに関する情報がありません。"
 msgid "DNS status"
 msgstr "ステータス"
 
-#: admin/templates/admin/domain_detail.html:36
+#: admin/templates/admin/domain_detail.html:28
+#: admin/templates/admin/domains_table.html:12
+msgid "Awaiting checks"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:40
 msgid "Creation date"
 msgstr "作成日時"
 
-#: admin/templates/admin/domain_detail.html:38
+#: admin/templates/admin/domain_detail.html:42
 msgid "Last modification date"
 msgstr "最終修正日時"
 
-#: admin/templates/admin/domain_detail.html:39
-#: admin/templates/admin/domain_detail.html:48
+#: admin/templates/admin/domain_detail.html:43
+#: admin/templates/admin/domain_detail.html:52
 #: admin/templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "ドメインエイリアス"
 
-#: admin/templates/admin/domain_detail.html:41
+#: admin/templates/admin/domain_detail.html:45
 msgid "Mailbox aliases"
 msgstr "メールボックスエイリアス"
 
-#: admin/templates/admin/domain_detail.html:65
+#: admin/templates/admin/domain_detail.html:69
 msgid "Administrators"
 msgstr "管理者"
 
-#: admin/templates/admin/domain_detail.html:75
+#: admin/templates/admin/domain_detail.html:79
 #: admin/templatetags/admin_tags.py:252
 msgid "Remove this permission"
 msgstr "このパーミッションを削除"
 
-#: admin/templates/admin/domain_detail.html:80
+#: admin/templates/admin/domain_detail.html:84
 msgid "No domain administrator defined yet."
 msgstr "ドメイン管理者が指定されていません"
 

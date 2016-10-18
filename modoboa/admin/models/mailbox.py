@@ -283,7 +283,7 @@ class Mailbox(AdminObject):
         newaddress = None
         if values["email"] != self.full_address:
             newaddress = values["email"]
-        elif (self.user.group == "SimpleUsers" and
+        elif (self.user.role == "SimpleUsers" and
               self.user.username != self.full_address):
             newaddress = self.user.username
         if newaddress is not None:

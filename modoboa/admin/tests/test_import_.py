@@ -75,7 +75,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         self.assertEqual(u1.first_name, "User")
         self.assertEqual(u1.last_name, "One")
         self.assertTrue(u1.is_active)
-        self.assertEqual(u1.group, "SimpleUsers")
+        self.assertEqual(u1.role, "SimpleUsers")
         self.assertTrue(mb1.use_domain_quota)
         self.assertEqual(mb1.quota, 0)
         self.assertTrue(admin.is_owner(mb1))
@@ -87,7 +87,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         da = User.objects.get(username="truc@test.com")
         damb = da.mailbox
         self.assertEqual(da.first_name, u"René")
-        self.assertEqual(da.group, "DomainAdmins")
+        self.assertEqual(da.role, "DomainAdmins")
         self.assertEqual(damb.quota, 5)
         self.assertFalse(damb.use_domain_quota)
         self.assertEqual(damb.full_address, "truc@test.com")

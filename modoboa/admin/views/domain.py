@@ -147,21 +147,27 @@ def deldomain(request, dom_id):
     return render_to_json_response(msg)
 
 
-@login_required
-@permission_required("admin.view_domains")
-def domain_statistics(request):
+class DomainStatisticsView(
+        auth_mixins.PermissionRequiredMixin, generic.TemplateView):
     """A simple page to present domain statistics."""
-    context = {}
-    if request.user.group == "SuperAdmins":
+
+    template_name = "admin/domain_statistics.html"
+    permission_required = "admin.view_domains"
+
+    def get_context_data(self, **kwargs):
+        """Add counters."""
+        context = super(DomainStatisticsView, self).get_context_data(**kwargs)
+        if self.request.user.role == "SuperAdmins":
+            context.update({
+                "domains_counter": Domain.objects.count(),
+                "domain_aliases_counter": DomainAlias.objects.count(),
+                "identities_counter": (
+                    User.objects.count() +
+                    Alias.objects.filter(internal=False).count()),
+            })
         context.update({
-            "domains_counter": Domain.objects.count(),
-            "domain_aliases_counter": DomainAlias.objects.count(),
-            "identities_counter": (
-                User.objects.count() +
-                Alias.objects.filter(internal=False).count()),
-        })
-    context.update({"domains": Domain.objects.get_for_admin(request.user)})
-    return render(request, "admin/domain_statistics.html", context)
+            "domains": Domain.objects.get_for_admin(self.request.user)})
+        return context
 
 
 class DomainDetailView(

@@ -38,7 +38,7 @@ def dologin(request):
                     request.user.language)
 
                 logger.info(
-                    _("User '%s' successfully logged in" % user.username)
+                    _("User '%s' successfully logged in") % user.username
                 )
                 events.raiseEvent("UserLogin", request,
                                   form.cleaned_data["username"],
@@ -73,6 +73,6 @@ def dologout(request):
     if not request.user.is_anonymous():
         events.raiseEvent("UserLogout", request)
         logger = logging.getLogger("modoboa.auth")
-        logger.info(_("User '%s' logged out" % request.user.username))
+        logger.info(_("User '%s' logged out") % request.user.username)
         logout(request)
     return HttpResponseRedirect(reverse("core:login"))

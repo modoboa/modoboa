@@ -38,7 +38,7 @@ class AccountFormGeneral(forms.ModelForm):
     )
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
-        choices=[('', ugettext_lazy("Choose"))],
+        choices=[("", ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
     )
     password1 = PasswordField(
@@ -59,52 +59,63 @@ class AccountFormGeneral(forms.ModelForm):
             "username", "first_name", "last_name", "role", "is_active",
             "master_user"
         )
+        labels = {
+            "is_active": ugettext_lazy("Enabled")
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)
         self.fields = OrderedDict(
             (key, self.fields[key]) for key in
-            ['role', 'username', 'first_name', 'last_name', 'password1',
-             'password2', 'master_user', 'is_active']
+            ["role", "username", "first_name", "last_name", "password1",
+             "password2", "master_user", "is_active"]
         )
-        self.fields["is_active"].label = _("Enabled")
         self.user = user
-        if user.group == "DomainAdmins":
+        condition = (
+            user.role == "DomainAdmins" or
+            user.role == "Resellers" and self.instance == user
+        )
+        if condition:
             self.fields["role"] = forms.CharField(
                 label="",
                 widget=forms.HiddenInput(attrs={"class": "form-control"}),
                 required=False
             )
         else:
-            self.fields["role"].choices = [('', ugettext_lazy("Choose"))]
-            self.fields["role"].choices += \
-                get_account_roles(user, kwargs['instance']) \
-                if 'instance' in kwargs else get_account_roles(user)
+            self.fields["role"].choices += (
+                get_account_roles(user, self.instance)
+                if self.instance.pk else get_account_roles(user)
+            )
 
         if not user.is_superuser:
             del self.fields["master_user"]
 
-        if "instance" in kwargs:
-            account = kwargs["instance"]
-            domain_disabled = (
-                hasattr(account, "mailbox") and
-                not account.mailbox.domain.enabled
-            )
+        if not self.instance.pk:
+            return
+
+        domain_disabled = (
+            hasattr(self.instance, "mailbox") and
+            not self.instance.mailbox.domain.enabled
+        )
+        if domain_disabled:
+            self.fields["is_active"].widget.attrs["disabled"] = "disabled"
+        if args:
+            empty_password = (
+                args[0].get("password1", "") == "" and
+                args[0].get("password2", "") == "")
+            if empty_password:
+                self.fields["password1"].required = False
+                self.fields["password2"].required = False
             if domain_disabled:
-                self.fields["is_active"].widget.attrs['disabled'] = "disabled"
-            if args:
-                if args[0].get("password1", "") == "" \
-                   and args[0].get("password2", "") == "":
-                    self.fields["password1"].required = False
-                    self.fields["password2"].required = False
-                if domain_disabled:
-                    del self.fields["is_active"]
-            self.fields["role"].initial = account.group
-            if not account.is_local \
-               and parameters.get_admin(
-                   "LDAP_AUTH_METHOD", app="core") == "directbind":
-                del self.fields["password1"]
-                del self.fields["password2"]
+                del self.fields["is_active"]
+        self.fields["role"].initial = self.instance.role
+        condition = (
+            not self.instance.is_local and
+            parameters.get_admin(
+                "LDAP_AUTH_METHOD", app="core") == "directbind")
+        if condition:
+            del self.fields["password1"]
+            del self.fields["password2"]
 
     def domain_is_disabled(self):
         """Little shortcut to get the domain's state.
@@ -118,10 +129,12 @@ class AccountFormGeneral(forms.ModelForm):
         return not self.instance.mailbox.domain.enabled
 
     def clean_role(self):
-        if self.user.group == "DomainAdmins":
+        if self.user.role == "DomainAdmins":
             if self.instance == self.user:
                 return "DomainAdmins"
             return "SimpleUsers"
+        elif self.user.role == "Resellers" and self.instance == self.user:
+            return "Resellers"
         return self.cleaned_data["role"]
 
     def clean_username(self):
@@ -193,8 +206,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         required=False,
         help_text=ugettext_lazy(
             "Alias(es) of this mailbox. Indicate only one address per input, "
-            "press ENTER to add a new input. Use the '*' character to create "
-            "a 'catchall' alias (ex: *@domain.tld)."
+            "press ENTER to add a new input. To create a catchall alias, just "
+            "enter the domain name (@domain.tld)."
         )
     )
     senderaddress = lib_fields.UTF8AndEmptyUserEmailField(
@@ -279,7 +292,7 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.add_error("quota", _("Must be a positive integer"))
         self.aliases = []
         self.sender_addresses = []
-        for name, value in cleaned_data.iteritems():
+        for name, value in list(cleaned_data.items()):
             if value == "":
                 continue
             if name.startswith("aliases"):
@@ -459,10 +472,12 @@ class AccountForm(TabForms):
         })
 
     def check_perms(self, account):
-        if account.is_superuser:
-            return False
-        return self.user.has_perm("admin.add_domain") \
-            and account.has_perm("core.add_user")
+        """Check if perms form must displayed or not."""
+        return (
+            self.user.is_superuser and
+            not account.is_superuser and
+            account.has_perm("core.add_user")
+        )
 
     def _before_is_valid(self, form):
         if form["id"] == "general":
@@ -480,9 +495,8 @@ class AccountForm(TabForms):
         return True
 
     def is_valid(self):
-        """Two steps validation.
-        """
-        self.instances["general"].oldgroup = self.instances["general"].group
+        """Two steps validation."""
+        self.instances["general"].oldgroup = self.instances["general"].role
         if super(AccountForm, self).is_valid(mandatory_only=True):
             self.account = self.forms[0]["instance"].save()
             return super(AccountForm, self).is_valid(optional_only=True)
