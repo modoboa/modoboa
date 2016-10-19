@@ -1,5 +1,5 @@
 ###################
-Adding a new plugin
+Create a new plugin
 ###################
 
 ************
@@ -14,19 +14,20 @@ implementation provides the following possibilities:
 * Register callback actions for specific events
 
 Plugins are nothing more than Django applications with an extra piece
-of code that integrates them into Modoboa. The *modo_extension.py* file
-will contain a complete description of the plugin:
+of code that integrates them into Modoboa. The
+:file:`modo_extension.py` file will contain a complete description of
+the plugin:
 
 * Admin and user parameters
 * Observed events
 * Custom menu entries
 
 The communication between both applications is provided by
-:ref:`events`. Modoboa offers some kind of hooks to let plugin add custom
-actions.
+:ref:`events`. Modoboa offers some kind of hooks to let plugins add
+custom actions.
 
-The following subsections describe plugin architecture and explain
-how you can create your own plugin.
+The following subsections describe the plugin architecture and explain
+how you can create your own.
 
 *****************
 The required glue
@@ -45,7 +46,6 @@ of the future extension::
 
   
   class MyExtension(ModoExtension):
-
       """My custom Modoboa extension."""
 
       name = "myext"
@@ -82,9 +82,9 @@ Parameters
 A plugin can declare its own parameters. There are two levels available:
 
 * 'Administration' parameters : used to configure the plugin, editable
-  inside the *Admin > Settings > Parameters* page,
+  inside the *Admin > Settings > Parameters* page
 * 'User' parameters : per-user parameters (or preferences), editable
-  inside the *Options > Preferences* page.
+  inside the *Options > Preferences* page
 
 Playing with parameters
 =======================

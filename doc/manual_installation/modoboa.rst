@@ -34,6 +34,8 @@ Then, install Modoboa:
 
   (env)> pip install modoboa
 
+.. _database:
+  
 Database
 --------
 
