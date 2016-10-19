@@ -97,7 +97,7 @@ class APIAccessForm(forms.Form):
     """Form to control API access."""
 
     enable_api_access = forms.BooleanField(
-        label=_("Enable API access"), required=False)
+        label=ugettext_lazy("Enable API access"), required=False)
 
     def __init__(self, *args, **kwargs):
         """Initialize form."""

@@ -1,6 +1,6 @@
-###############################
-Development recipes for Modoboa
-###############################
+###########
+Useful tips
+###########
 
 You would like to work on Modoboa but you don't know where to start?
 You're at the right place! Browse this page to learn useful tips.
@@ -51,8 +51,9 @@ You're ready to go!
 Manage static files
 ===================
 
-Modoboa uses `bower <http://bower.io/>`_ (thanks to `django-bower <https://github.com/nvbn/django-bower>`_)
-to manage its CSS and javascript dependencies.
+Modoboa uses `bower <http://bower.io/>`_ (thanks to `django-bower
+<https://github.com/nvbn/django-bower>`_) to manage its CSS and
+javascript dependencies.
 
 Those dependencies are listed in a file called :file:`dev_settings.py`
 located inside the :file:`<path_to_local_copy>/modoboa/core`
@@ -65,6 +66,42 @@ If you want to add a new dependency, just complete the
 
 It will download and store the required files into the
 :file:`<path_to_local_copy>/modoboa/bower_components` directory.
+
+Test your modifications
+=======================
+
+If you deployed a specific instance for your development needs, you
+can run the tests suite as follows:
+
+.. sourcecode:: bash
+
+  > python manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.relaydomains
+
+Otherwise, you can run the tests suite from the repository using `tox
+<https://tox.readthedocs.io>`_.
+
+Start a basic Modoboa instance
+==============================
+
+From the repository, run the following command to launch a simple
+instance with a few fixtures:
+
+.. sourcecode:: bash
+
+  > tox -e serve
+
+You can use admin/password to log in.
+
+Build the documentation
+=======================
+
+If you need to modify the documenation and want to see the result, you
+can build it as follows:
+
+.. sourcecode:: bash
+     
+   > tox -e doc
+   > firefox .tox/doc/tmp/html/index.html
 
 FAQ
 ===

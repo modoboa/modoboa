@@ -1,3 +1,4 @@
 factory-boy>=2.4
 testfixtures==4.7.0
 httmock==1.2.5
+tox
