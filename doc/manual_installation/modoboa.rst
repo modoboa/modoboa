@@ -139,4 +139,38 @@ command::
 
   $ modoboa-admin.py help deploy
 
+Cron jobs
+---------
+
+A few recurring jobs must be configured to make Modoboa works as
+expected.
+
+Create a new file, for example :file:`/etc/cron.d/modoboa` and put the
+following content inside::
+
+  #
+  # Modoboa specific cron jobs
+  #
+  PYTHON=<PATH TO PYTHON BINARY>
+  INSTANCE=<PATH TO MODOBOA INSTANCE>
+
+  # Operations on mailboxes
+  *       *       *       *       *       vmail   $PYTHON $INSTANCE/manage.py handle_mailbox_operations
+
+  # Sessions table cleanup
+  0       0       *       *       *       root    $PYTHON $INSTANCE/manage.py clearsessions
+
+  # Logs table cleanup
+  0       0       *       *       *       root    $PYTHON $INSTANCE/manage.py cleanlogs
+
+  # Logs parsing
+  */5     *       *       *       *       root    $PYTHON $INSTANCE/manage.py logparser &> /dev/null
+
+  # DNSBL checks
+  */30    *       *       *       *       root    $PYTHON $INSTANCE/manage.py modo check_mx
+
+  # Public API communication
+  0       *       *       *       *       root    $PYTHON $INSTANCE/manage.py communicate_with_public_api
+
+
 Now you can continue to the :ref:`webserver` section.
