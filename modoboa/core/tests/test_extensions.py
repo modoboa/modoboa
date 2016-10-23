@@ -10,6 +10,8 @@ from django.test import TestCase, override_settings
 
 from .. import extensions
 
+sys.path.append(os.path.dirname(__file__))
+
 CUSTOM_APPS = (
     "modoboa",
     "modoboa.core",
@@ -21,32 +23,22 @@ CUSTOM_APPS = (
     "stupid_extension_2",
 )
 
-sys.path.append(os.path.dirname(__file__))
 
-
-class StupidExtension2(extensions.ModoExtension):
-    """Stupid extension to use with tests."""
-
-    name = "stupid_extension_2"
-    label = "Stupid extension"
-    version = "1.0.0"
-    description = "A stupid extension"
-
-    def load(self):
-        pass
-
-    def load_initial_data(self):
-        pass
-
-
-@override_settings(MODOBOA_APPS=CUSTOM_APPS)
 class ExtensionTestCase(TestCase):
     """Extensions related tests."""
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         """Initiate test context."""
-        self.pool = extensions.exts_pool
-        self.pool.load_all()
+        cls.pool = extensions.exts_pool
+        with override_settings(MODOBOA_APPS=CUSTOM_APPS):
+            cls.pool.load_all()
+
+    @classmethod
+    def tearDownClass(cls):
+        """Reset context."""
+        del cls.pool.extensions["stupid_extension_1"]
+        del cls.pool.extensions["stupid_extension_2"]
 
     def test_register(self):
         """Test if registering works."""
