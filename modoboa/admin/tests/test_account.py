@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.test import override_settings
 
 from modoboa.core import factories as core_factories
-from modoboa.core import tests as core_tests
+from modoboa.core.tests import test_core
 from modoboa.core.models import User
 from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
@@ -221,7 +221,7 @@ class AccountTestCase(ModoTestCase):
     'modoboa.lib.authbackends.LDAPBackend',
     'modoboa.lib.authbackends.SimpleBackend',
 ))
-class LDAPAccountTestCase(core_tests.LDAPTestCaseMixin, ModoTestCase):
+class LDAPAccountTestCase(test_core.LDAPTestCaseMixin, ModoTestCase):
     """Check LDAP related code."""
 
     def test_autocreate_disabled(self):
