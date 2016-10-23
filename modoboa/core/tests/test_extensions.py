@@ -3,6 +3,9 @@
 import os
 import sys
 
+from testfixtures import compare
+
+from django.core import management
 from django.test import TestCase, override_settings
 
 from .. import extensions
@@ -55,9 +58,24 @@ class ExtensionTestCase(TestCase):
         instance = self.pool.get_extension("stupid_extension_1")
         self.assertEqual(instance.__class__.__name__, "StupidExtension1")
 
+    def test_get_extension_infos(self):
+        """Check getter method."""
+        self.assertIsNone(self.pool.get_extension_infos("toto"))
+        infos = self.pool.get_extension_infos("stupid_extension_1")
+        compare(infos, {
+            "name": "stupid_extension_1", "label": "Stupid extension",
+            "version": "1.0.0", "description": "A stupid extension",
+            "url": None, "always_active": False
+        })
+
     def test_list_all(self):
         """Check list_all method."""
         result = self.pool.list_all()
         self.assertEqual(len(result), 1)
         ext = result[0]
         self.assertEqual(ext["id"], "stupid_extension_1")
+
+    def test_load_initial_data(self):
+        """Check if method is called."""
+        with self.assertRaises(RuntimeError):
+            management.call_command("load_initial_data")

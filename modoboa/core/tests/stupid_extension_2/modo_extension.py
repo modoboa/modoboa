@@ -11,10 +11,4 @@ class StupidExtension2(extensions.ModoExtension):
     version = "1.0.0"
     description = "A stupid extension"
 
-    def load(self):
-        pass
-
-    def load_initial_data(self):
-        pass
-
 extensions.exts_pool.register_extension(StupidExtension2, show=False)
