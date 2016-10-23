@@ -13,9 +13,9 @@ from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 from modoboa.lib.tests import NO_LDAP
 
-from . import factories
-from . import mocks
-from . import models
+from .. import factories
+from .. import mocks
+from .. import models
 
 
 class AuthenticationTestCase(ModoTestCase):
