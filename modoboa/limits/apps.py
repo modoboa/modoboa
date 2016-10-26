@@ -1,20 +1,20 @@
 """App config for limits."""
 
 from django.apps import AppConfig
-
+from django.utils.translation import ugettext as _
 
 EVENTS = [
-    'GetExtraLimitTemplates'
+    "GetExtraLimitTemplates"
 ]
 
 
 def load_limits_settings():
     """Load settings."""
-    from django.utils.translation import ugettext as _
-    from modoboa.lib import events, parameters
+    from modoboa.lib import events
+    from modoboa.parameters import tools as param_tools
     from .app_settings import ParametersForm
 
-    parameters.register(ParametersForm, _("Limits"))
+    param_tools.registry.add("global", ParametersForm, _("Limits"))
     events.declare(EVENTS)
     from . import controls
     from . import general_callbacks

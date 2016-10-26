@@ -63,6 +63,7 @@ MODOBOA_APPS = (
     'modoboa.admin',
     'modoboa.relaydomains',
     'modoboa.limits',
+    'modoboa.parameters',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}
@@ -81,6 +82,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'modoboa.core.middleware.LocalConfigMiddleware',
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
     'modoboa.lib.middleware.RequestCatcherMiddleware',

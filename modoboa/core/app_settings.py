@@ -3,12 +3,13 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from modoboa.lib import parameters
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
     YesNoField, SeparatorField, InlineRadioSelect
 )
+from modoboa.parameters import forms as param_forms
+from modoboa.parameters import tools as param_tools
 
 from . import constants
 
@@ -30,8 +31,7 @@ def enabled_applications():
     return sorted(result, key=lambda e: e[0])
 
 
-class GeneralParametersForm(parameters.AdminParametersForm):
-
+class GeneralParametersForm(param_forms.AdminParametersForm):
     """General parameters."""
 
     app = "core"
@@ -348,7 +348,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         return cleaned_data
 
     def to_django_settings(self):
-        """Apply LDAP related parameters to Django settings
+        """Apply LDAP related parameters to Django settings.
 
         Doing so, we can use the django_auth_ldap module.
         """
@@ -360,7 +360,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         except ImportError:
             ldap_available = False
 
-        values = self.get_current_values()
+        values = dict(param_tools.get_global_parameters("core"))
         if not ldap_available or values["authentication_type"] != "ldap":
             return
         if not hasattr(settings, "AUTH_LDAP_USER_ATTR_MAP"):

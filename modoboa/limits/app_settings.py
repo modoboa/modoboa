@@ -4,10 +4,10 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from modoboa.lib.form_utils import SeparatorField, YesNoField
-from modoboa.lib.parameters import AdminParametersForm
+from modoboa.parameters import forms as param_forms
 
 
-class ParametersForm(AdminParametersForm):
+class ParametersForm(param_forms.AdminParametersForm):
     """Available admin parameters."""
 
     app = "limits"
@@ -135,7 +135,3 @@ class ParametersForm(AdminParametersForm):
         "deflt_domain_domain_aliases_limit": "enable_domain_limits=True",
         "deflt_domain_domain_admins_limit": "enable_domain_limits=True",
     }
-
-    def __init__(self, *args, **kwargs):
-        super(ParametersForm, self).__init__(*args, **kwargs)
-        self._load_extra_parameters('A')

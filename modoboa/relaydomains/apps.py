@@ -1,7 +1,7 @@
 """AppConfig for relaydomains."""
 
 from django.apps import AppConfig
-
+from django.utils.translation import ugettext as _
 
 EVENTS = [
     "RelayDomainCreated",
@@ -16,11 +16,11 @@ EVENTS = [
 
 def load_relaydomains_settings():
     """Load application settings."""
-    from django.utils.translation import ugettext as _
-    from modoboa.lib import events, parameters
+    from modoboa.parameters import tools as param_tools
+    from modoboa.lib import events
     from .app_settings import AdminParametersForm
 
-    parameters.register(AdminParametersForm, _("Relay domains"))
+    param_tools.registry.add("global", AdminParametersForm, _("Relay domains"))
     events.declare(EVENTS)
     from . import general_callbacks
 

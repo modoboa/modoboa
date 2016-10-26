@@ -21,13 +21,12 @@ from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import events
-from modoboa.lib import parameters as lib_parameters
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
+from modoboa.parameters import tools as param_tools
 
 from . import constants
-from . import parameters
 
 
 try:
@@ -102,7 +101,7 @@ class User(PermissionsMixin):
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""
         super(User, self).__init__(*args, **kwargs)
-        self.parameters = parameters.Manager("user", self._parameters)
+        self.parameters = param_tools.Manager("user", self._parameters)
 
     def delete(self, fromuser, *args, **kwargs):
         """Custom delete method
@@ -147,13 +146,13 @@ class User(PermissionsMixin):
         one more time.
 
         """
-        try:
-            scheme = lib_parameters.get_admin("PASSWORD_SCHEME")
-        except parameters.NotDefined:
+        scheme = param_tools.get_global_parameter(
+            "password_scheme", raise_exception=False)
+        if scheme is None:
             from modoboa.core.apps import load_core_settings
             load_core_settings()
-            scheme = lib_parameters.get_admin("PASSWORD_SCHEME")
-
+            scheme = param_tools.get_global_parameter(
+                "password_scheme", raise_exception=False)
         if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
@@ -520,4 +519,4 @@ class LocalConfig(models.Model):
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""
         super(LocalConfig, self).__init__(*args, **kwargs)
-        self.parameters = parameters.Manager("admin", self._parameters)
+        self.parameters = param_tools.Manager("global", self._parameters)

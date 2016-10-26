@@ -8,12 +8,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from rest_framework.authtoken.models import Token
 
-from modoboa.core import parameters as core_parameters
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.cryptutils import encrypt
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
+from modoboa.parameters import tools as param_tools
+
 from ..forms import ProfileForm, APIAccessForm
 
 
@@ -60,7 +61,7 @@ def profile(request, tplname='core/user_profile.html'):
 @login_required
 def preferences(request):
     if request.method == "POST":
-        forms = core_parameters.registry.get_forms(
+        forms = param_tools.registry.get_forms(
             "user", request.POST, user=request.user)
         for formdef in forms:
             form = formdef["form"]
@@ -70,12 +71,13 @@ def preferences(request):
             return render_to_json_response({
                 "prefix": form.app, "form_errors": form.errors
             }, status=400)
-
+        request.user.save()
         return render_to_json_response(_("Preferences saved"))
 
     return render_to_json_response({
         "content": _render_to_string(request, "core/user_preferences.html", {
-            "forms": parameters.get_user_forms(request.user)
+            "forms": param_tools.registry.get_forms(
+                "user", user=request.user, first_app="general")
         })
     })
 

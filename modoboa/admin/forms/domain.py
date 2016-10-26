@@ -5,15 +5,16 @@ from django.core.urlresolvers import reverse
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import events, parameters
+from modoboa.core.models import User
+from modoboa.lib import events
 from modoboa.lib.exceptions import Conflict
 from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
     YesNoField, WizardForm, WizardStep, DynamicForm, TabForms
 )
 from modoboa.lib.web_utils import render_to_json_response
+from modoboa.parameters import tools as param_tools
 
 from ..lib import check_if_domain_exists
 from ..models import (
@@ -75,11 +76,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
     def clean_quota(self):
-        if self.cleaned_data['quota'] is None:
-            return int(parameters.get_admin('DEFAULT_DOMAIN_QUOTA'))
-        if self.cleaned_data['quota'] < 0:
+        """Check quota value."""
+        if self.cleaned_data["quota"] is None:
+            return param_tools.get_global_parameter("default_domain_quota")
+        if self.cleaned_data["quota"] < 0:
             raise forms.ValidationError(_("Must be a positive integer"))
-        return self.cleaned_data['quota']
+        return self.cleaned_data["quota"]
 
     def clean(self):
         """Custom fields validation.

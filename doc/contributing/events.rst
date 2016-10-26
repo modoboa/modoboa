@@ -563,20 +563,6 @@ Must return a list of set. Each set must contain at least three entries::
 
   [('<limit_name>', '<limit label>', '<limit help text>')]
 
-GetExtraParameters
-==================
-
-Raised to request extra parameters for a given parameters form.
-
-*Callback prototype*::
-
-  def callback(application, level): pass
-
-* ``application`` is the name of the form's application (ie. admin, amavis, etc.)
-* ``level`` is the form's level: ``A`` for admin or ``U`` for user
-
-Must return a dictionary. Each entry must be a valid Django form field.
-
 .. _getextrarolepermissions:
 
 GetExtraRolePermissions

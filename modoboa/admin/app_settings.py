@@ -6,11 +6,11 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy
 
-from ..lib import events
-from modoboa.lib import parameters
 from modoboa.lib.form_utils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
+from modoboa.parameters import forms as param_forms
 
+from ..lib import events
 
 ADMIN_EVENTS = [
     "DomainCreated",
@@ -48,7 +48,7 @@ ADMIN_EVENTS = [
 ]
 
 
-class AdminParametersForm(parameters.AdminParametersForm):
+class AdminParametersForm(param_forms.AdminParametersForm):
     app = "admin"
 
     dom_sep = SeparatorField(label=ugettext_lazy("Domains"))
@@ -174,9 +174,9 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
 def load_admin_settings():
     """Load admin settings."""
-    from .app_settings import AdminParametersForm
+    from modoboa.parameters import tools as param_tools
 
-    parameters.register(
-        AdminParametersForm, ugettext_lazy("Administration"))
+    param_tools.registry.add(
+        "global", AdminParametersForm, ugettext_lazy("Administration"))
     events.declare(ADMIN_EVENTS)
     from . import callbacks

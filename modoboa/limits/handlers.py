@@ -10,7 +10,7 @@ from modoboa.admin import signals as admin_signals
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
 from modoboa.lib import signals as lib_signals
-from modoboa.lib import parameters
+from modoboa.parameters import tools as param_tools
 
 from . import lib
 from . import models
@@ -21,13 +21,13 @@ from . import utils
 def check_object_limit(sender, context, object_type, **kwargs):
     """Check if user can create a new object."""
     if context.__class__.__name__ == "User":
-        if not parameters.get_admin("ENABLE_ADMIN_LIMITS"):
+        if not param_tools.get_global_parameter("enable_admin_limits"):
             return
         if context.is_superuser:
             return True
         limit = context.userobjectlimit_set.get(name=object_type)
     elif context.__class__.__name__ == "Domain":
-        if not parameters.get_admin("ENABLE_DOMAIN_LIMITS"):
+        if not param_tools.get_global_parameter("enable_domain_limits"):
             return
         limit = context.domainobjectlimit_set.get(name=object_type)
     else:
@@ -50,9 +50,9 @@ def create_user_limits(sender, instance, **kwargs):
         max_value = 0
         # creator can be None if user was created by a factory
         if not creator or creator.is_superuser:
-            max_value = int(
-                parameters.get_admin(
-                    "DEFLT_USER_{}_LIMIT".format(name.upper())))
+            max_value = (
+                param_tools.get_global_parameter(
+                    "deflt_user_{0}_limit".format(name)))
         models.UserObjectLimit.objects.create(
             user=instance, name=name, content_type=ct, max_value=max_value)
 
@@ -63,8 +63,9 @@ def create_domain_limits(sender, instance, **kwargs):
     if not kwargs.get("created"):
         return
     for name, definition in utils.get_domain_limit_templates():
-        max_value = int(
-            parameters.get_admin("DEFLT_DOMAIN_{}_LIMIT".format(name.upper())))
+        max_value = (
+            param_tools.get_global_parameter(
+                "deflt_domain_{0}_limit".format(name)))
         models.DomainObjectLimit.objects.create(
             domain=instance, name=name, max_value=max_value)
 
@@ -72,7 +73,7 @@ def create_domain_limits(sender, instance, **kwargs):
 @receiver(admin_signals.extra_domain_dashboard_widgets)
 def display_domain_limits(sender, user, domain, **kwargs):
     """Display resources usage for domain."""
-    if not parameters.get_admin("ENABLE_DOMAIN_LIMITS"):
+    if not param_tools.get_global_parameter("enable_domain_limits"):
         return []
     return [{
         "column": "right",
@@ -87,7 +88,7 @@ def display_domain_limits(sender, user, domain, **kwargs):
 def display_admin_limits(sender, user, account, **kwargs):
     """Display resources usage for admin."""
     condition = (
-        parameters.get_admin("ENABLE_ADMIN_LIMITS") and
+        param_tools.get_global_parameter("enable_admin_limits") and
         account.role in ["DomainAdmins", "Resellers"]
     )
     if not condition:

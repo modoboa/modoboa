@@ -4,9 +4,10 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core import signals as core_signals
-from modoboa.lib import parameters, events
+from modoboa.lib import events
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import PermDeniedException, BadRequest, Conflict
+from modoboa.parameters import tools as param_tools
 
 from .models import (
     Domain, DomainAlias, Mailbox, Alias
@@ -154,7 +155,7 @@ def account_auto_created(user):
     from modoboa.lib.permissions import grant_access_to_object
     from .lib import check_if_domain_exists
 
-    if not parameters.get_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX"):
+    if not param_tools.get_global_parameter("auto_create_domain_and_mailbox"):
         return
     localpart, domname = split_mailbox(user.username)
     if user.role != 'SimpleUsers' and domname is None:

@@ -12,13 +12,15 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from reversion import revisions as reversion
 
-from .base import AdminObject
-from .domain import Domain
 from modoboa.core.models import User
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import exec_cmd
+from modoboa.parameters import tools as param_tools
+
+from .base import AdminObject
+from .domain import Domain
 
 
 class Quota(models.Model):
@@ -131,15 +133,15 @@ class Mailbox(AdminObject):
         several patterns to understand and we don't want to implement
         them.
         """
-        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-        if not hm:
+        admin_params = dict(param_tools.get_global_parameters("admin"))
+        if not admin_params.get("handle_mailboxes"):
             return None
         if self.__mail_home is None:
             curuser = pwd.getpwuid(os.getuid()).pw_name
-            mbowner = parameters.get_admin("MAILBOXES_OWNER")
+            mbowner = admin_params["mailboxes_owner"]
             options = {}
             if curuser != mbowner:
-                options['sudo_user'] = mbowner
+                options["sudo_user"] = mbowner
             code, output = exec_cmd(
                 "doveadm user %s -f home" % self.full_address, **options
             )
@@ -180,7 +182,8 @@ class Mailbox(AdminObject):
 
     def rename_dir(self, old_mail_home):
         """Rename local directory if needed."""
-        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
+        hm = param_tools.get_global_parameter(
+            "handle_mailboxes", raise_exception=False)
         if not hm:
             return
         MailboxOperation.objects.create(
@@ -210,10 +213,11 @@ class Mailbox(AdminObject):
         self.rename_dir(old_mail_home)
 
     def delete_dir(self):
-        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
+        hm = param_tools.get_global_parameter(
+            "handle_mailboxes", raise_exception=False)
         if not hm:
             return
-        MailboxOperation.objects.create(type='delete', argument=self.mail_home)
+        MailboxOperation.objects.create(type="delete", argument=self.mail_home)
 
     def set_quota(self, value=None, override_rules=False):
         """Set or update quota's value for this mailbox.

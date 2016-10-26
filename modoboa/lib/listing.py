@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from modoboa.lib import parameters
+from modoboa.parameters import tools as param_tools
 
 
 def get_sort_order(qdict, default, allowed_values=None):
@@ -34,7 +34,8 @@ def get_listing_page(objects, pagenum):
     :return: a ``Page`` object
     """
     paginator = Paginator(
-        objects, int(parameters.get_admin("ITEMS_PER_PAGE", app="core")),
+        objects,
+        param_tools.get_global_parameter("items_per_page", app="core"),
         allow_empty_first_page=False
     )
     try:

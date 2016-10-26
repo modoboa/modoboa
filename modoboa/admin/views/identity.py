@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import (
 from reversion import revisions as reversion
 
 from modoboa.core.models import User
-from modoboa.lib import parameters, events
+from modoboa.lib import events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
 )

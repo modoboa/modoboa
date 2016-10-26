@@ -12,7 +12,6 @@ from modoboa.core import PERMISSIONS
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib import events
-from modoboa.lib import models as lib_models
 from modoboa.lib.permissions import add_permissions_to_group
 import modoboa.relaydomains.models as relay_models
 

@@ -2,6 +2,7 @@
 
 from modoboa.lib import exceptions
 from modoboa.lib import form_utils
+from modoboa.lib import signals
 from modoboa.lib.sysutils import guess_extension_name
 
 
@@ -27,7 +28,7 @@ class Registry(object):
     def __init__(self):
         """Constructor."""
         self._registry = {
-            "admin": {},
+            "global": {},
             "user": {}
         }
 
@@ -123,7 +124,9 @@ class Manager(object):
             app = guess_extension_name()
         values = registry.get_defaults(self._level, app)
         for parameter, value in values.iteritems():
-            yield (parameter, self._parameters[app].get(parameter, value))
+            if app in self._parameters:
+                value = self._parameters[app].get(parameter, value)
+            yield (parameter, value)
 
     def set_value(self, parameter, value, app=None):
         """Set parameter for the given app."""
@@ -144,3 +147,52 @@ class Manager(object):
         if app not in self._parameters:
             self._parameters[app] = registry.get_defaults(self._level, app)
         self._parameters[app].update(values)
+
+
+def get_localconfig():
+    """Retrieve current LocalConfig instance."""
+    from modoboa.core import models as core_models
+    request = signals.get_request()
+    if request:
+        return request.localconfig
+    return core_models.LocalConfig.objects.first()
+
+
+def get_global_parameter(name, app=None, **kwargs):
+    """Retrieve a global parameter.
+
+    This is a shortcut to use when a LocalConfig instance is not
+    available (ie. when no request object is available).
+
+    A ``NotDefined`` exception if the parameter doesn't exist.
+
+    :param name: the parameter's name
+    :param app: the application owning the parameter
+    :return: the corresponding value
+
+    """
+    if app is None:
+        app = guess_extension_name()
+    return get_localconfig().parameters.get_value(name, app=app, **kwargs)
+
+
+def get_global_parameters(app, **kwargs):
+    """Retrieve global parameters of a given app.
+
+    This is a shortcut to use when a LocalConfig instance is not
+    available (ie. when no request object is available).
+
+    A ``NotDefined`` exception if the parameter doesn't exist.
+
+    :param name: the parameter's name
+    :param app: the application owning the parameter
+    :return: the corresponding value
+
+    """
+    return get_localconfig().parameters.get_values(app, **kwargs)
+
+
+def apply_to_django_settings():
+    """Apply global parameters to Django settings module."""
+    for form in registry.get_forms("global"):
+        form["form"].to_django_settings()

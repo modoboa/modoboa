@@ -1,7 +1,7 @@
 {% load i18n lib_tags %}
 <h2>{% trans "Parameters" %} <small>{% trans "Configure Modoboa" %}</small></h2><hr />
 <form id="settings_form" method="POST" action="{% url 'core:parameter_save' %}" class="form-horizontal">{% csrf_token %}
-  {% include "common/parameters.html" %}
+  {% include "parameters/base_form.html" %}
   <hr>
   <button type="submit" class="btn btn-primary col-xs-offset-4 col-xs-4" id="update" name="update">{% trans 'Save' %}</button>
 </form>
