@@ -6,7 +6,6 @@ from django.test import TestCase
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
 from modoboa.core.factories import UserFactory
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 from modoboa.lib.test_utils import MapFilesTestCaseMixin
 from modoboa.limits import utils as limits_utils
@@ -20,7 +19,7 @@ class Operations(object):
     def _create_relay_domain(self, name, status=200):
         srv, created = Service.objects.get_or_create(name='dummy')
         values = {
-            "name": name, "create_dom_admin": "no", "type": "relaydomain",
+            "name": name, "create_dom_admin": False, "type": "relaydomain",
             "target_host": "external.host.tld", "service": srv.id,
             "enabled": True, "stepid": "step3"
         }
@@ -213,15 +212,18 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "enabled": True
         }
         self.ajax_post(reverse("admin:alias_add"), values)
-        alias = admin_models.Alias.objects.get(address="alias@relaydomain.tld")
+        self.assertTrue(
+            admin_models.Alias.objects.filter(
+                address="alias@relaydomain.tld").exists())
         values = {
             "address": "alias2@relaydomain.tld",
             "recipients": "local@relaydomain.tld",
             "enabled": True
         }
         self.ajax_post(reverse("admin:alias_add"), values)
-        alias = admin_models.Alias.objects.get(
-            address="alias2@relaydomain.tld")
+        self.assertTrue(
+            admin_models.Alias.objects.filter(
+                address="alias2@relaydomain.tld").exists())
 
 
 class LimitsTestCase(ModoTestCase, Operations):
@@ -230,11 +232,10 @@ class LimitsTestCase(ModoTestCase, Operations):
     def setUpTestData(cls):
         """Create test data."""
         super(LimitsTestCase, cls).setUpTestData()
-
         for name, tpl in limits_utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2, app="limits"
-            )
+            cls.localconfig.parameters.set_value(
+                "deflt_user_{0}_limit".format(name), 2, app="limits")
+        cls.localconfig.save()
         cls.user = UserFactory.create(
             username='reseller', groups=('Resellers',)
         )

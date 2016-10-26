@@ -7,7 +7,6 @@ from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Alias, Domain
 from modoboa.core.factories import UserFactory
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib import tests as lib_tests
 
 from .. import utils
@@ -48,13 +47,14 @@ class ResourceTestCase(lib_tests.ModoTestCase):
     def setUpTestData(cls):
         """Custom setUpTestData method."""
         super(ResourceTestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "yes")
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "no")
+        cls.localconfig.parameters.set_values({
+            "enable_admin_limits": True,
+            "enable_domain_limits": False
+        })
         for name, tpl in utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2,
-                app="limits"
-            )
+            cls.localconfig.parameters.set_value(
+                "deflt_user_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         populate_database()
 
     def _create_account(self, username, role='SimpleUsers', status=200):
@@ -78,13 +78,15 @@ class ResourceTestCase(lib_tests.ModoTestCase):
 
     def _create_domain(self, name, status=200, withtpl=False):
         values = {
-            "name": name, "quota": 100, "create_dom_admin": "no",
-            "create_aliases": "no", "stepid": 'step3', "type": "domain"
+            "name": name, "quota": 100, "create_dom_admin": False,
+            "create_aliases": False, "stepid": "step3", "type": "domain"
         }
         if withtpl:
-            values['create_dom_admin'] = 'yes'
-            values['dom_admin_username'] = 'admin'
-            values['create_aliases'] = 'yes'
+            values.update({
+                "create_dom_admin": True,
+                "dom_admin_username": "admin",
+                "create_aliases": True
+            })
         response = self.ajax_post(
             reverse("admin:domain_add"), values, status
         )

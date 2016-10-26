@@ -102,9 +102,10 @@ class LDAPTestCaseMixin(object):
 
     def activate_ldap_authentication(self):
         """Modify settings."""
-        parameters.save_admin(
-            "AUTHENTICATION_TYPE", "ldap")
-        parameters.save_admin("LDAP_SERVER_PORT", "3389")
+        self.set_global_parameters({
+            "authentication_type": "ldap",
+            "ldap_server_port": 3389
+        })
 
     def restore_user_password(self, username, new_password):
         """Restore user password to its initial state."""
@@ -131,16 +132,19 @@ class LDAPTestCaseMixin(object):
 
     def searchbind_mode(self):
         """Apply settings required by the searchbind mode."""
-        parameters.save_admin("LDAP_AUTH_METHOD", "searchbind")
-        parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
-        parameters.save_admin("LDAP_BIND_PASSWORD", "test")
-        parameters.save_admin("LDAP_SEARCH_BASE", "ou=users,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_auth_method": "searchbind",
+            "ldap_bind_dn": "cn=admin,dc=example,dc=com",
+            "ldap_bind_password": "test",
+            "ldap_search_base": "ou=users,dc=example,dc=com"
+        })
 
     def directbind_mode(self):
         """Apply settings required by the directbind mode."""
-        parameters.save_admin("LDAP_AUTH_METHOD", "directbind")
-        parameters.save_admin(
-            "LDAP_USER_DN_TEMPLATE", "cn=%(user)s,ou=users,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_auth_method": "directbind",
+            "ldap_user_dn_template": "cn=%(user)s,ou=users,dc=example,dc=com"
+        })
 
 
 @override_settings(AUTHENTICATION_BACKENDS=(

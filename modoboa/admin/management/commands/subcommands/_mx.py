@@ -217,11 +217,11 @@ class CheckMXRecords(BaseCommand):
         """Check specified domain."""
         mx_list = list(self.get_mx_records_for_domain(domain, ttl=ttl))
 
-        if parameters.get_admin("ENABLE_MX_CHECKS") != "no":
+        if parameters.get_admin("ENABLE_MX_CHECKS"):
             self.check_valid_mx(domain, mx_list, **options)
 
         condition = (
-            parameters.get_admin("ENABLE_DNSBL_CHECKS") == "no" or
+            not parameters.get_admin("ENABLE_DNSBL_CHECKS") or
             options["no_dnsbl"] is True)
         if condition or not mx_list:
             return

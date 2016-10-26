@@ -12,26 +12,16 @@ Only super users will be able to access this part of the web interface.
 
 from django import forms
 
+from modoboa.core import parameters as core_parameters
 from modoboa.lib import events
-from modoboa.lib.exceptions import ModoboaException
+from modoboa.lib import signals
 from modoboa.lib.sysutils import guess_extension_name
 
 from . import db_utils
+from . import form_utils
 
 
 _params = {'A': {}, 'U': {}}
-
-
-class NotDefined(ModoboaException):
-    http_code = 404
-
-    def __init__(self, app, name):
-        self.app = app
-        self.name = name
-
-    def __str__(self):
-        return "Application '%s' and/or parameter '%s' not defined" \
-            % (self.app, self.name)
 
 
 class GenericParametersForm(forms.Form):
@@ -43,10 +33,12 @@ class GenericParametersForm(forms.Form):
     visibility_rules = None
 
     def __init__(self, *args, **kwargs):
+        """Constructor."""
         if self.app is None:
             raise NotImplementedError
 
         kwargs["prefix"] = self.app
+        load_values_from_db = kwargs.pop("load_values_from_db", True)
         super(GenericParametersForm, self).__init__(*args, **kwargs)
 
         self.visirules = {}
@@ -58,7 +50,7 @@ class GenericParametersForm(forms.Form):
                 }
                 self.visirules["%s-%s" % (self.app, key)] = visibility
 
-        if not args:
+        if not args and load_values_from_db:
             self._load_initial_values()
 
     def _load_initial_values(self):
@@ -89,42 +81,44 @@ class GenericParametersForm(forms.Form):
 
 
 class AdminParametersForm(GenericParametersForm):
+    """Base form to declare admin level parameters."""
+
+    def __init__(self, *args, **kwargs):
+        """Store LocalConfig instance."""
+        self.localconfig = kwargs.pop("localconfig", None)
+        super(AdminParametersForm, self).__init__(*args, **kwargs)
 
     def _load_initial_values(self):
-        from .models import Parameter
-
-        if not db_utils.db_table_exists("lib_parameter"):
+        """Load form initial values from database."""
+        condition = (
+            not db_utils.db_table_exists("core_localconfig") or
+            not self.localconfig)
+        if condition:
             return
-        names = [
-            "%s.%s" % (self.app, name.upper()) for name in self.fields.keys()
-        ]
-        for p in Parameter.objects.filter(name__in=names):
-            self.fields[p.shortname].initial = self._decode_value(p.value)
+        values = self.localconfig.parameters.get_values(app=self.app)
+        for key, value in values:
+            self.fields[key].initial = value
 
     def save(self):
-        from .models import Parameter
-        from modoboa.lib.form_utils import SeparatorField
-
+        """Save parameters to database."""
+        parameters = {}
         for name, value in self.cleaned_data.items():
-            if type(self.fields[name]) is SeparatorField:
+            if type(self.fields[name]) is form_utils.SeparatorField:
                 continue
-            fullname = "%s.%s" % (self.app, name.upper())
-            try:
-                p = Parameter.objects.get(name=fullname)
-            except Parameter.DoesNotExist:
-                p = Parameter()
-                p.name = fullname
-            self._save_parameter(p, name, value)
+            parameters[name] = value
+        self.localconfig.parameters.set_values(parameters, app=self.app)
 
     def to_django_settings(self):
+        """Inject parameters into django settings module."""
         pass
 
     def get_current_values(self):
+        """Return current values from the database."""
         values = {}
         for key in self.fields.keys():
             try:
                 values[key] = get_admin(key.upper(), app=self.app)
-            except NotDefined:
+            except core_parameters.NotDefined:
                 pass
         return values
 
@@ -170,7 +164,7 @@ class UserParametersForm(GenericParametersForm):
 
 
 def register(formclass, label):
-    """Register a form class containing parameters
+    """Register a form class containing parameters.
 
     formclass must inherit from ``AdminParametersForm`` or
     ``UserParametersForm``.
@@ -178,22 +172,13 @@ def register(formclass, label):
     :param formclass: a form class
     :param string label: the label to display in parameters or settings pages
     """
-    from modoboa.lib.form_utils import SeparatorField
-
     if issubclass(formclass, AdminParametersForm):
-        level = 'A'
+        level = "admin"
     elif issubclass(formclass, UserParametersForm):
-        level = 'U'
+        level = "user"
     else:
         raise RuntimeError("Unknown parameter class")
-    _params[level][formclass.app] = {
-        "label": label, "form": formclass, "defaults": {}
-    }
-    form = formclass()
-    for name, field in form.fields.items():
-        if type(field) is SeparatorField:
-            continue
-        _params[level][formclass.app]["defaults"][name.upper()] = field.initial
+    core_parameters.registry.add(level, formclass, label)
 
 
 def unregister(app=None):
@@ -257,7 +242,7 @@ def save_user(user, name, value, app=None):
 
 
 def get_admin(name, app=None, raise_error=True):
-    """Return an administrative parameter
+    """Return an administrative parameter.
 
     A ``NotDefined`` exception if the parameter doesn't exist.
 
@@ -265,21 +250,17 @@ def get_admin(name, app=None, raise_error=True):
     :param app: the application owning the parameter
     :return: the corresponding value as a string
     """
-    from .models import Parameter
-
+    # FIXME: deprecate this function
+    request = signals.get_request()
+    if request:
+        localconfig = request.localconfig
+    else:
+        from modoboa.core import models as core_models
+        localconfig = core_models.LocalConfig.objects.first()
     if app is None:
         app = guess_extension_name()
-    try:
-        __is_defined(app, "A", name)
-    except NotDefined:
-        if raise_error:
-            raise
-        return None
-    try:
-        p = Parameter.objects.get(name="%s.%s" % (app, name))
-    except Parameter.DoesNotExist:
-        return _params["A"][app]["defaults"][name]
-    return p.value.decode("unicode_escape").replace('\\r\\n', '\n')
+    return localconfig.parameters.get_value(
+        name, app=app, raise_exception=raise_error)
 
 
 def get_user(user, name, app=None, raise_error=True):
@@ -331,10 +312,8 @@ def get_admin_forms(*args, **kwargs):
 
     Generates an instance of each declared form.
     """
-    for app in get_sorted_apps('A'):
-        formdef = _params['A'][app]
-        yield {"label": formdef["label"],
-               "form": formdef["form"](*args, **kwargs)}
+    return core_parameters.registry.get_forms(
+        "admin", *args, **kwargs)
 
 
 def get_user_forms(user, *args, **kwargs):

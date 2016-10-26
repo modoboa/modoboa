@@ -40,7 +40,7 @@ def user_can_set_role(user, role, account=None):
     :param str newrole: role to check
     """
     condition = (
-        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        not parameters.get_admin("ENABLE_ADMIN_LIMITS") or
         role != "DomainAdmins")
     if condition:
         return [True]

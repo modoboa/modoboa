@@ -21,13 +21,13 @@ from . import utils
 def check_object_limit(sender, context, object_type, **kwargs):
     """Check if user can create a new object."""
     if context.__class__.__name__ == "User":
-        if parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no":
+        if not parameters.get_admin("ENABLE_ADMIN_LIMITS"):
             return
         if context.is_superuser:
             return True
         limit = context.userobjectlimit_set.get(name=object_type)
     elif context.__class__.__name__ == "Domain":
-        if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+        if not parameters.get_admin("ENABLE_DOMAIN_LIMITS"):
             return
         limit = context.domainobjectlimit_set.get(name=object_type)
     else:
@@ -72,7 +72,7 @@ def create_domain_limits(sender, instance, **kwargs):
 @receiver(admin_signals.extra_domain_dashboard_widgets)
 def display_domain_limits(sender, user, domain, **kwargs):
     """Display resources usage for domain."""
-    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+    if not parameters.get_admin("ENABLE_DOMAIN_LIMITS"):
         return []
     return [{
         "column": "right",
@@ -87,7 +87,7 @@ def display_domain_limits(sender, user, domain, **kwargs):
 def display_admin_limits(sender, user, account, **kwargs):
     """Display resources usage for admin."""
     condition = (
-        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "yes" and
+        parameters.get_admin("ENABLE_ADMIN_LIMITS") and
         account.role in ["DomainAdmins", "Resellers"]
     )
     if not condition:

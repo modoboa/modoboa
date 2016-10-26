@@ -12,7 +12,7 @@ from . import utils
 @events.observe("ExtraAdminContent")
 def display_pool_usage(user, target, currentpage):
     condition = (
-        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        not parameters.get_admin("ENABLE_ADMIN_LIMITS") or
         target != "leftcol" or user.is_superuser)
     if condition:
         return []
@@ -40,7 +40,7 @@ def display_pool_usage(user, target, currentpage):
 
 @events.observe("ExtraAccountForm")
 def extra_account_form(user, account=None):
-    if parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no":
+    if not parameters.get_admin("ENABLE_ADMIN_LIMITS"):
         return []
     if user.role not in ["SuperAdmins", "Resellers"]:
         return []
@@ -61,7 +61,7 @@ def extra_account_form(user, account=None):
 @events.observe("ExtraDomainForm")
 def extra_domain_form(user, domain):
     """Include domain limits form."""
-    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+    if not parameters.get_admin("ENABLE_DOMAIN_LIMITS"):
         return []
     if not user.has_perm("admin.change_domain"):
         return []
@@ -74,7 +74,7 @@ def extra_domain_form(user, domain):
 @events.observe("FillDomainInstances")
 def fill_domain_instances(user, domain, instances):
     """Set domain instance for resources form."""
-    if parameters.get_admin("ENABLE_DOMAIN_LIMITS") == "no":
+    if not parameters.get_admin("ENABLE_DOMAIN_LIMITS"):
         return
     if not user.has_perm("admin.change_domain"):
         return
@@ -93,7 +93,7 @@ def check_form_access(account, form):
 @events.observe("FillAccountInstances")
 def fill_account_instances(user, account, instances):
     condition = (
-        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        not parameters.get_admin("ENABLE_ADMIN_LIMITS") or
         (not user.is_superuser and user.role != "Resellers")
     )
     if condition:
@@ -106,7 +106,7 @@ def fill_account_instances(user, account, instances):
 @events.observe("GetStaticContent")
 def get_static_content(caller, st_type, user):
     condition = (
-        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        not parameters.get_admin("ENABLE_ADMIN_LIMITS") or
         caller not in ["domains", "identities"] or
         user.role in ["SuperAdmins", "SimpleUsers"]
     )

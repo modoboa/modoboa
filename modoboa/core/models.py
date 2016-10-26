@@ -20,12 +20,14 @@ import jsonfield
 from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
-from modoboa.lib import events, parameters
+from modoboa.lib import events
+from modoboa.lib import parameters as lib_parameters
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
 
 from . import constants
+from . import parameters
 
 
 try:
@@ -67,7 +69,8 @@ class User(PermissionsMixin):
         ugettext_lazy('last login'), blank=True, null=True
     )
 
-    language = models.CharField(ugettext_lazy("language"),
+    language = models.CharField(
+        ugettext_lazy("language"),
         max_length=10, default="en", choices=constants.LANGUAGES,
         help_text=ugettext_lazy(
             "Prefered language to display pages."
@@ -139,11 +142,11 @@ class User(PermissionsMixin):
 
         """
         try:
-            scheme = parameters.get_admin("PASSWORD_SCHEME")
+            scheme = lib_parameters.get_admin("PASSWORD_SCHEME")
         except parameters.NotDefined:
             from modoboa.core.apps import load_core_settings
             load_core_settings()
-            scheme = parameters.get_admin("PASSWORD_SCHEME")
+            scheme = lib_parameters.get_admin("PASSWORD_SCHEME")
 
         if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
@@ -505,3 +508,10 @@ class LocalConfig(models.Model):
 
     # API results cache
     api_versions = jsonfield.JSONField()
+
+    _parameters = jsonfield.JSONField()
+
+    def __init__(self, *args, **kwargs):
+        """Load parameter manager."""
+        super(LocalConfig, self).__init__(*args, **kwargs)
+        self.parameters = parameters.Manager("admin", self._parameters)

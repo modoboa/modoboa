@@ -154,7 +154,7 @@ def account_auto_created(user):
     from modoboa.lib.permissions import grant_access_to_object
     from .lib import check_if_domain_exists
 
-    if parameters.get_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX") == "no":
+    if not parameters.get_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX"):
         return
     localpart, domname = split_mailbox(user.username)
     if user.role != 'SimpleUsers' and domname is None:

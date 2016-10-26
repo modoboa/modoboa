@@ -6,7 +6,7 @@ import abc
 from collections import OrderedDict
 import re
 
-from django.forms import ChoiceField
+from django.forms import TypedChoiceField
 from django.forms.fields import Field
 from django.forms.widgets import RadioSelect
 from django.forms.widgets import RadioChoiceInput
@@ -371,19 +371,23 @@ class TabForms(object):
 
 
 class CustomRadioInput(RadioChoiceInput):
+    """Custom radio input."""
+
     def __unicode__(self):
-        if 'id' in self.attrs:
-            label_for = ' for="%s"' % self.attrs['id']
+        if "id" in self.attrs:
+            label_for = ' for="%s"' % self.attrs["id"]
         else:
-            label_for = ''
+            label_for = ""
         choice_label = conditional_escape(force_unicode(self.choice_label))
         return mark_safe(
-            u'<label class="radio-inline" %s>%s %s</label>'
+            u"<label class='radio-inline' %s>%s %s</label>"
             % (label_for, self.tag(), choice_label)
         )
 
 
 class InlineRadioRenderer(RadioSelect.renderer):
+    """Custom inline radio renderer."""
+
     def __iter__(self):
         for i, choice in enumerate(self.choices):
             yield CustomRadioInput(
@@ -392,24 +396,35 @@ class InlineRadioRenderer(RadioSelect.renderer):
 
     def render(self):
         return mark_safe(
-            u'\n'.join([u'%s\n' % force_unicode(w) for w in self])
+            u"\n".join([u"%s\n" % force_unicode(w) for w in self])
         )
 
 
 class InlineRadioSelect(RadioSelect):
+    """Custom inline radio widget."""
+
     renderer = InlineRadioRenderer
 
 
 class SeparatorField(Field):
+    """Custom field to represent a separator."""
+
     def __init__(self, *args, **kwargs):
         kwargs["required"] = False
         super(SeparatorField, self).__init__(*args, **kwargs)
 
 
-class YesNoField(ChoiceField):
+class YesNoField(TypedChoiceField):
+    """A yes/no form field."""
+
     def __init__(self, *args, **kwargs):
-        kwargs["choices"] = [
-            ("yes", ugettext_lazy("Yes")), ("no", ugettext_lazy("No"))
-        ]
-        kwargs["widget"] = InlineRadioSelect
+        """Constructor."""
+        kwargs.update({
+            "choices": (
+                (True, ugettext_lazy("Yes")),
+                (False, ugettext_lazy("No"))
+            ),
+            "widget": InlineRadioSelect,
+            "coerce": lambda x: x == "True"
+        })
         super(YesNoField, self).__init__(*args, **kwargs)

@@ -16,7 +16,7 @@ from reversion import revisions as reversion
 
 from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import parameters, events
+from modoboa.lib import events
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
@@ -61,20 +61,22 @@ def _domains(request):
         domainlist = sorted(domainlist, key=lambda d: d.tags[0],
                             reverse=sort_dir == '-')
     context = {
-        "handle_mailboxes": parameters.get_admin(
-            "HANDLE_MAILBOXES", raise_error=False),
-        "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL"),
+        "handle_mailboxes": request.localconfig.parameters.get_value(
+            "handle_mailboxes", raise_exception=False),
+        "auto_account_removal": request.localconfig.parameters.get_value(
+            "auto_account_removal"),
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
     if page is None:
         context["length"] = 0
     else:
+        parameters = request.localconfig.parameters
         context["rows"] = _render_to_string(
             request, "admin/domains_table.html", {
                 "domains": page.object_list,
-                "enable_mx_checks": parameters.get_admin("ENABLE_MX_CHECKS"),
+                "enable_mx_checks": parameters.get_value("enable_mx_checks"),
                 "enable_dnsbl_checks": (
-                    parameters.get_admin("ENABLE_DNSBL_CHECKS")),
+                    parameters.get_value("enable_dnsbl_checks"))
             }
         )
         context["pages"] = [page.number]
@@ -90,10 +92,11 @@ def domains(request, tplname="admin/domains.html"):
                 reverse("admin:identity_list")
             )
         return HttpResponseRedirect(reverse("core:user_index"))
+    parameters = request.localconfig.parameters
     return render(request, tplname, {
         "selection": "domains",
-        "enable_mx_checks": parameters.get_admin("ENABLE_MX_CHECKS"),
-        "enable_dnsbl_checks": parameters.get_admin("ENABLE_DNSBL_CHECKS")
+        "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
     })
 
 
@@ -189,10 +192,11 @@ class DomainDetailView(
         context = super(DomainDetailView, self).get_context_data(**kwargs)
         result = signals.extra_domain_dashboard_widgets.send(
             self.__class__, user=self.request.user, domain=self.object)
+        parameters = self.request.localconfig.parameters
         context.update({
             "templates": {"left": [], "right": []},
-            "enable_mx_checks": parameters.get_admin("ENABLE_MX_CHECKS"),
-            "enable_dnsbl_checks": parameters.get_admin("ENABLE_DNSBL_CHECKS"),
+            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+            "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
         })
         for receiver, widgets in result:
             for widget in widgets:

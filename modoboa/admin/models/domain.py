@@ -185,7 +185,7 @@ class Domain(AdminObject):
         if self.alias_set.count():
             events.raiseEvent("MailboxAliasDeleted", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
-        if parameters.get_admin("AUTO_ACCOUNT_REMOVAL") == "yes":
+        if parameters.get_admin("AUTO_ACCOUNT_REMOVAL"):
             for account in User.objects.filter(mailbox__domain=self):
                 account.delete(fromuser, keepdir)
         elif self.mailbox_set.count():

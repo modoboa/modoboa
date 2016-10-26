@@ -76,7 +76,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         load_admin_settings()
-        if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
+        if not parameters.get_admin("HANDLE_MAILBOXES"):
             return
         if not self.check_pidfile(options['pidfile']):
             return

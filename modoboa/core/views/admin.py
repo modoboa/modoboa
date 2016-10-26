@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
 from modoboa.core.models import Log
+from modoboa.core import parameters as core_parameters
 from modoboa.core.utils import check_for_updates
 from modoboa.lib import events, parameters
 from modoboa.lib.listing import get_sort_order, get_listing_page
@@ -31,7 +32,8 @@ def viewparameters(request, tplname='core/parameters.html'):
     return render_to_json_response({
         "left_selection": "parameters",
         "content": _render_to_string(request, tplname, {
-            "forms": parameters.get_admin_forms
+            "forms": core_parameters.registry.get_forms(
+                "admin", localconfig=request.localconfig)
         })
     })
 
@@ -39,7 +41,10 @@ def viewparameters(request, tplname='core/parameters.html'):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def saveparameters(request):
-    for formdef in parameters.get_admin_forms(request.POST):
+    """Save all parameters."""
+    forms = core_parameters.registry.get_forms(
+        "admin", request.POST, localconfig=request.localconfig)
+    for formdef in forms:
         form = formdef["form"]
         if form.is_valid():
             form.save()
@@ -48,6 +53,7 @@ def saveparameters(request):
         return render_to_json_response(
             {'form_errors': form.errors, 'prefix': form.app}, status=400
         )
+    request.localconfig.save()
     return render_to_json_response(_("Parameters saved"))
 
 

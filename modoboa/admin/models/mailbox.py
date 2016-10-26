@@ -132,7 +132,7 @@ class Mailbox(AdminObject):
         them.
         """
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-        if hm is None or hm == "no":
+        if not hm:
             return None
         if self.__mail_home is None:
             curuser = pwd.getpwuid(os.getuid()).pw_name
@@ -181,7 +181,7 @@ class Mailbox(AdminObject):
     def rename_dir(self, old_mail_home):
         """Rename local directory if needed."""
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-        if hm is None or hm == "no":
+        if not hm:
             return
         MailboxOperation.objects.create(
             mailbox=self, type="rename", argument=old_mail_home
@@ -211,7 +211,7 @@ class Mailbox(AdminObject):
 
     def delete_dir(self):
         hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-        if hm is None or hm == "no":
+        if not hm:
             return
         MailboxOperation.objects.create(type='delete', argument=self.mail_home)
 

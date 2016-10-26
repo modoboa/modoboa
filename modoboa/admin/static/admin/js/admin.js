@@ -146,7 +146,7 @@ Domains.prototype = {
      * @param {Object} data - options
      */
     init_domain_links: function(data) {
-        var deloptions = (data.handle_mailboxes === "yes") ?
+        var deloptions = (data.handle_mailboxes) ?
             {keepdir: gettext("Do not delete domain directory")} : {};
         var warnmsg = (data.auto_account_removal && data.auto_account_removal === "yes")
             ? gettext("This operation will remove ALL data associated to this domain.")
@@ -329,7 +329,7 @@ Identities.prototype = {
     init_identity_links: function(data) {
         var deloptions = {};
 
-        if (data.handle_mailboxes === "yes") {
+        if (data.handle_mailboxes) {
             deloptions = {keepdir: gettext("Do not delete mailbox directory")};
         }
 

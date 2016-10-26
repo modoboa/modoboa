@@ -49,8 +49,8 @@ def _identities(request):
         objects = sorted(idents_list, key=lambda o: o.tags[0],
                          reverse=sort_dir == '-')
     context = {
-        "handle_mailboxes": parameters.get_admin(
-            "HANDLE_MAILBOXES", raise_error=False)
+        "handle_mailboxes": request.localconfig.parameters.get_value(
+            "handle_mailboxes", raise_exception=False)
     }
     page = get_listing_page(objects, request.GET.get("page", 1))
     if page is None:
