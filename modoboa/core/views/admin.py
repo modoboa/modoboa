@@ -11,7 +11,7 @@ from django.utils.translation import ugettext as _
 from modoboa.core.models import Log
 from modoboa.core import parameters as core_parameters
 from modoboa.core.utils import check_for_updates
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response

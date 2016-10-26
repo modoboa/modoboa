@@ -84,6 +84,7 @@ class User(PermissionsMixin):
         help_text=ugettext_lazy(
             "An alternative e-mail address, can be used for recovery needs.")
     )
+    _parameters = jsonfield.JSONField(default={})
 
     objects = UserManager()
 
@@ -97,6 +98,11 @@ class User(PermissionsMixin):
         ]
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
+
+    def __init__(self, *args, **kwargs):
+        """Load parameter manager."""
+        super(User, self).__init__(*args, **kwargs)
+        self.parameters = parameters.Manager("user", self._parameters)
 
     def delete(self, fromuser, *args, **kwargs):
         """Custom delete method
@@ -509,7 +515,7 @@ class LocalConfig(models.Model):
     # API results cache
     api_versions = jsonfield.JSONField()
 
-    _parameters = jsonfield.JSONField()
+    _parameters = jsonfield.JSONField(default={})
 
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""

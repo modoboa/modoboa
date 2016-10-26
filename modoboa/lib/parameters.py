@@ -76,6 +76,10 @@ class GenericParametersForm(forms.Form):
             p.value = str(value)
         p.save()
 
+    @staticmethod
+    def has_access(**kwargs):
+        return True
+
     def save(self):
         raise NotImplementedError
 
@@ -141,10 +145,6 @@ class UserParametersForm(GenericParametersForm):
         ]
         for p in UserParameter.objects.filter(user=self.user, name__in=names):
             self.fields[p.shortname].initial = self._decode_value(p.value)
-
-    @staticmethod
-    def has_access(user):
-        return True
 
     def save(self):
         from .models import UserParameter
@@ -290,23 +290,6 @@ def get_user(user, name, app=None, raise_error=True):
     return p.value.decode("unicode_escape")
 
 
-def get_sorted_apps(level, first="core"):
-    """Retrieve the sorted list of all registerd applications.
-
-    :param str level: application level
-    :param str first: force the first item of the result
-    :rtype: list
-    """
-    sorted_apps = []
-    if first in _params[level]:
-        sorted_apps.append(first)
-    sorted_apps += sorted(
-        [app for app in _params[level].keys() if app != first],
-        key=lambda app: _params[level][app]["label"]
-    )
-    return sorted_apps
-
-
 def get_admin_forms(*args, **kwargs):
     """Get all admin level forms.
 
@@ -318,17 +301,9 @@ def get_admin_forms(*args, **kwargs):
 
 def get_user_forms(user, *args, **kwargs):
     """Return an instance of each user-level forms."""
-    kwargs["user"] = user
-    sorted_apps = get_sorted_apps('U', first="general")
-    result = []
-    for app in sorted_apps:
-        formdef = _params["U"][app]
-        if not formdef["form"].has_access(user):
-            continue
-        result.append({
-            "label": formdef["label"],
-            "form": formdef["form"](*args, **kwargs)})
-    return result
+    kwargs.update({"user": user, "first_app": "general"})
+    return core_parameters.registry.get_forms(
+        "user", *args, **kwargs)
 
 
 def get_parameter_form(level, name, app=None):

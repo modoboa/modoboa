@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.test import override_settings, TestCase
 
 from modoboa.lib import exceptions
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 from modoboa.lib.tests import NO_LDAP
 
@@ -152,7 +151,6 @@ class LDAPTestCaseMixin(object):
     'modoboa.lib.authbackends.SimpleBackend',
 ))
 class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
-
     """Validate LDAP authentication scenarios."""
 
     def setUp(self):
@@ -178,9 +176,10 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.check_created_user(username)
         self.client.logout()
 
-        parameters.save_admin("LDAP_ADMIN_GROUPS", "admins")
-        parameters.save_admin(
-            "LDAP_GROUPS_SEARCH_BASE", "ou=groups,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_admin_groups": "admins",
+            "ldap_groups_search_base": "ou=groups,dc=example,dc=com"
+        })
         username = "mailadmin@example.com"
         self.authenticate(username, "test", False)
         self.check_created_user(username, "DomainAdmins")
@@ -198,9 +197,10 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
 
         # 1: must work because usernames of domain admins are not
         # always email addresses
-        parameters.save_admin("LDAP_ADMIN_GROUPS", "admins")
-        parameters.save_admin(
-            "LDAP_GROUPS_SEARCH_BASE", "ou=groups,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_admin_groups": "admins",
+            "ldap_groups_search_base": "ou=groups,dc=example,dc=com"
+        })
         username = "mailadmin"
         self.authenticate(username, "test", False)
         self.check_created_user(username, "DomainAdmins", False)

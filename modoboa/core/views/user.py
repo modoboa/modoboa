@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from rest_framework.authtoken.models import Token
 
+from modoboa.core import parameters as core_parameters
 from modoboa.lib import events, parameters
 from modoboa.lib.cryptutils import encrypt
 from modoboa.lib.web_utils import (
@@ -59,7 +60,9 @@ def profile(request, tplname='core/user_profile.html'):
 @login_required
 def preferences(request):
     if request.method == "POST":
-        for formdef in parameters.get_user_forms(request.user, request.POST):
+        forms = core_parameters.registry.get_forms(
+            "user", request.POST, user=request.user)
+        for formdef in forms:
             form = formdef["form"]
             if form.is_valid():
                 form.save()
