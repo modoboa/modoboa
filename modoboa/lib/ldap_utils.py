@@ -86,7 +86,7 @@ class LDAPAuthBackend(object):
 
     def _find_user_dn(self, user):
         """Find the DN of the given user."""
-        core_params = param_tools.get_global_parameter("core")
+        core_params = dict(param_tools.get_global_parameters("core"))
         sbase = core_params["ldap_search_base"]
         sfilter = core_params["ldap_search_filter"]
         sfilter = sfilter % {"user": user}
