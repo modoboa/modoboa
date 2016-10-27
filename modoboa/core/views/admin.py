@@ -28,7 +28,22 @@ def viewsettings(request, tplname='core/settings_header.html'):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewparameters(request, tplname='core/parameters.html'):
+def parameters(request, tplname="core/parameters.html"):
+    """View to display and save global parameters."""
+    if request.method == "POST":
+        forms = param_tools.registry.get_forms(
+            "global", request.POST, localconfig=request.localconfig)
+        for formdef in forms:
+            form = formdef["form"]
+            if form.is_valid():
+                form.save()
+                form.to_django_settings()
+                continue
+            return render_to_json_response(
+                {"form_errors": form.errors, "prefix": form.app}, status=400
+            )
+        request.localconfig.save()
+        return render_to_json_response(_("Parameters saved"))
     return render_to_json_response({
         "left_selection": "parameters",
         "content": _render_to_string(request, tplname, {
@@ -36,25 +51,6 @@ def viewparameters(request, tplname='core/parameters.html'):
                 "global", localconfig=request.localconfig)
         })
     })
-
-
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
-def saveparameters(request):
-    """Save all parameters."""
-    forms = param_tools.registry.get_forms(
-        "global", request.POST, localconfig=request.localconfig)
-    for formdef in forms:
-        form = formdef["form"]
-        if form.is_valid():
-            form.save()
-            form.to_django_settings()
-            continue
-        return render_to_json_response(
-            {'form_errors': form.errors, 'prefix': form.app}, status=400
-        )
-    request.localconfig.save()
-    return render_to_json_response(_("Parameters saved"))
 
 
 @login_required

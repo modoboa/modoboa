@@ -63,6 +63,7 @@ class Registry(object):
             if not data["formclass"].has_access(**kwargs):
                 continue
             result.append({
+                "app": app,
                 "label": data["label"],
                 "form": data["formclass"](*args, **kwargs)
             })

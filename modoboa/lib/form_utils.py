@@ -232,9 +232,8 @@ class DynamicForm(object):
 
 
 class TabForms(object):
-
     """
-    Simple forms container
+    Simple forms container.
 
     This class tries to encapsulate multiple forms that will be
     displayed using tabs. It is different from a classical formset

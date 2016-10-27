@@ -15,14 +15,7 @@ from . import constants
 
 
 def enabled_applications():
-    """Return the list of installed extensions.
-
-    We check if the table exists before trying to fetch activated
-    extensions because the admin module is always imported by Django,
-    even before the database exists (example: the first ``syncdb``).
-
-    :return: a list
-    """
+    """Return the list of installed extensions."""
     from modoboa.core.extensions import exts_pool
 
     result = [("user", "user")]

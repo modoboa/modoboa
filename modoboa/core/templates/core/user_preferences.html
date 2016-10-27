@@ -3,11 +3,11 @@
 <hr>
 {% if forms %}
   <form class="form-horizontal" method="POST" action="{% url 'core:user_preferences' %}" 
-        id="uprefs_form">
+        id="parameters_form">
     {% csrf_token %}
     {% include "parameters/base_form.html" %}
     <hr>
-    <button type="submit" class="btn btn-primary col-xs-offset-4 col-xs-4" id="update" name="update">{% trans 'Save' %}</button>
+    <button type="submit" class="btn btn-primary col-xs-offset-4 col-xs-4" name="update">{% trans 'Save' %}</button>
   </form>
 {% else %}
   <div class="alert alert-info">
