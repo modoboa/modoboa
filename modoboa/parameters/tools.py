@@ -1,5 +1,7 @@
 """Parameters management."""
 
+import copy
+
 from modoboa.lib import exceptions
 from modoboa.lib import form_utils
 from modoboa.lib import signals
@@ -136,7 +138,8 @@ class Manager(object):
         if not registry.exists(self._level, app, parameter):
             raise NotDefined(app, parameter)
         if app not in self._parameters:
-            self._parameters[app] = registry.get_defaults(self._level, app)
+            self._parameters[app] = copy.deepcopy(
+                registry.get_defaults(self._level, app))
         self._parameters[app][parameter] = value
 
     def set_values(self, values, app=None):
@@ -146,7 +149,8 @@ class Manager(object):
         if not registry.exists(self._level, app):
             raise NotDefined(app)
         if app not in self._parameters:
-            self._parameters[app] = registry.get_defaults(self._level, app)
+            self._parameters[app] = copy.deepcopy(
+                registry.get_defaults(self._level, app))
         self._parameters[app].update(values)
 
 

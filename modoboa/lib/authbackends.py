@@ -37,6 +37,8 @@ try:
             """Load LDAP settings."""
             param_tools.apply_to_django_settings()
             super(LDAPBackend, self).__init__(*args, **kwargs)
+            self.global_params = dict(
+                param_tools.get_global_parameters("core"))
 
         def get_or_create_user(self, username, ldap_user):
             """
@@ -45,13 +47,11 @@ try:
             the user. ldap_user.dn is the user's DN and
             ldap_user.attrs contains all of their LDAP attributes.
             """
-            group = 'SimpleUsers'
-            admin_groups = (
-                param_tools.get_global_parameter(
-                    "ldap_admin_groups", app="core").split(";"))
+            group = "SimpleUsers"
+            admin_groups = self.global_params["ldap_admin_groups"].split(";")
             for grp in admin_groups:
                 if grp.strip() in ldap_user.group_names:
-                    group = 'DomainAdmins'
+                    group = "DomainAdmins"
                     break
             if group == 'SimpleUsers':
                 lpart, domain = split_mailbox(username)
@@ -75,9 +75,7 @@ try:
             return user
 
         def authenticate(self, username, password):
-            auth_type = param_tools.get_global_parameter(
-                "authentication_type", app="core")
-            if auth_type == "ldap":
+            if self.global_params["authentication_type"] == "ldap":
                 return super(LDAPBackend, self).authenticate(
                     username, password)
             return None

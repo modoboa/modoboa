@@ -7,6 +7,7 @@ import httmock
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import override_settings, TestCase
+from django.utils.functional import cached_property
 
 from modoboa.lib import exceptions
 from modoboa.lib.tests import ModoTestCase
@@ -61,6 +62,12 @@ class ChangeDefaultAdminTestCase(TestCase):
 class LDAPTestCaseMixin(object):
     """Set of methods used to test LDAP features."""
 
+    @cached_property
+    def ldapauthbackend(self):
+        """Return LDAPAuthBackend instance."""
+        from modoboa.lib.ldap_utils import LDAPAuthBackend
+        return LDAPAuthBackend()
+
     def activate_ldap_authentication(self):
         """Modify settings."""
         self.set_global_parameters({
@@ -70,12 +77,9 @@ class LDAPTestCaseMixin(object):
 
     def restore_user_password(self, username, new_password):
         """Restore user password to its initial state."""
-        from modoboa.lib.ldap_utils import LDAPAuthBackend
-
-        backend = LDAPAuthBackend()
         for password in ["Toto1234", "test"]:
             try:
-                backend.update_user_password(
+                self.ldapauthbackend.update_user_password(
                     username, password, new_password)
             except exceptions.InternalError:
                 pass
@@ -136,7 +140,6 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         username = "testuser@example.com"
         self.authenticate(username, "test")
         self.check_created_user(username)
-        self.client.logout()
 
         self.set_global_parameters({
             "ldap_admin_groups": "admins",

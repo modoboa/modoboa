@@ -44,15 +44,14 @@ def create_user_limits(sender, instance, **kwargs):
         return
     request = lib_signals.get_request()
     creator = request.user if request else None
+    global_params = dict(param_tools.get_global_parameters("limits"))
     for name, definition in utils.get_user_limit_templates():
         ct = ContentType.objects.get_by_natural_key(
             *definition["content_type"].split("."))
         max_value = 0
         # creator can be None if user was created by a factory
         if not creator or creator.is_superuser:
-            max_value = (
-                param_tools.get_global_parameter(
-                    "deflt_user_{0}_limit".format(name)))
+            max_value = global_params["deflt_user_{0}_limit".format(name)]
         models.UserObjectLimit.objects.create(
             user=instance, name=name, content_type=ct, max_value=max_value)
 
@@ -62,10 +61,9 @@ def create_domain_limits(sender, instance, **kwargs):
     """Create limits for new domain."""
     if not kwargs.get("created"):
         return
+    global_params = dict(param_tools.get_global_parameters("limits"))
     for name, definition in utils.get_domain_limit_templates():
-        max_value = (
-            param_tools.get_global_parameter(
-                "deflt_domain_{0}_limit".format(name)))
+        max_value = global_params["deflt_domain_{0}_limit".format(name)]
         models.DomainObjectLimit.objects.create(
             domain=instance, name=name, max_value=max_value)
 
