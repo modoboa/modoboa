@@ -145,7 +145,7 @@ class Mailbox(AdminObject):
             )
             if code:
                 raise lib_exceptions.InternalError(
-                    _("Failed to retrieve mailbox location (%s)" % output))
+                    _(u"Failed to retrieve mailbox location (%s)") % output)
             self.__mail_home = output.strip()
         return self.__mail_home
 
