@@ -10,11 +10,12 @@ from django.utils.translation import ugettext as _
 
 from modoboa.core.models import Log
 from modoboa.core.utils import check_for_updates
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
+from modoboa.parameters import tools as param_tools
 
 
 @login_required
@@ -27,28 +28,29 @@ def viewsettings(request, tplname='core/settings_header.html'):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewparameters(request, tplname='core/parameters.html'):
+def parameters(request, tplname="core/parameters.html"):
+    """View to display and save global parameters."""
+    if request.method == "POST":
+        forms = param_tools.registry.get_forms(
+            "global", request.POST, localconfig=request.localconfig)
+        for formdef in forms:
+            form = formdef["form"]
+            if form.is_valid():
+                form.save()
+                form.to_django_settings()
+                continue
+            return render_to_json_response(
+                {"form_errors": form.errors, "prefix": form.app}, status=400
+            )
+        request.localconfig.save()
+        return render_to_json_response(_("Parameters saved"))
     return render_to_json_response({
         "left_selection": "parameters",
         "content": _render_to_string(request, tplname, {
-            "forms": parameters.get_admin_forms
+            "forms": param_tools.registry.get_forms(
+                "global", localconfig=request.localconfig)
         })
     })
-
-
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
-def saveparameters(request):
-    for formdef in parameters.get_admin_forms(request.POST):
-        form = formdef["form"]
-        if form.is_valid():
-            form.save()
-            form.to_django_settings()
-            continue
-        return render_to_json_response(
-            {'form_errors': form.errors, 'prefix': form.app}, status=400
-        )
-    return render_to_json_response(_("Parameters saved"))
 
 
 @login_required

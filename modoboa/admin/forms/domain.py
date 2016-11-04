@@ -5,15 +5,16 @@ from django.core.urlresolvers import reverse
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import events, parameters
+from modoboa.core.models import User
+from modoboa.lib import events
 from modoboa.lib.exceptions import Conflict
 from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
     YesNoField, WizardForm, WizardStep, DynamicForm, TabForms
 )
 from modoboa.lib.web_utils import render_to_json_response
+from modoboa.parameters import tools as param_tools
 
 from ..lib import check_if_domain_exists
 from ..models import (
@@ -75,11 +76,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
     def clean_quota(self):
-        if self.cleaned_data['quota'] is None:
-            return int(parameters.get_admin('DEFAULT_DOMAIN_QUOTA'))
-        if self.cleaned_data['quota'] < 0:
+        """Check quota value."""
+        if self.cleaned_data["quota"] is None:
+            return param_tools.get_global_parameter("default_domain_quota")
+        if self.cleaned_data["quota"] < 0:
             raise forms.ValidationError(_("Must be a positive integer"))
-        return self.cleaned_data['quota']
+        return self.cleaned_data["quota"]
 
     def clean(self):
         """Custom fields validation.
@@ -164,7 +166,7 @@ class DomainFormOptions(forms.Form):
 
     create_dom_admin = YesNoField(
         label=ugettext_lazy("Create a domain administrator"),
-        initial="no",
+        initial=False,
         help_text=ugettext_lazy(
             "Automatically create an administrator for this domain"
         )
@@ -182,7 +184,7 @@ class DomainFormOptions(forms.Form):
 
     create_aliases = YesNoField(
         label=ugettext_lazy("Create aliases"),
-        initial="yes",
+        initial=True,
         help_text=ugettext_lazy(
             "Automatically create standard aliases for this domain"
         ),
@@ -191,25 +193,33 @@ class DomainFormOptions(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(DomainFormOptions, self).__init__(*args, **kwargs)
-        result = events.raiseQueryEvent('UserCanSetRole', user, 'DomainAdmins')
+        result = events.raiseQueryEvent("UserCanSetRole", user, "DomainAdmins")
         if False in result:
             self.fields = {}
             return
-        if args:
-            if args[0].get("create_dom_admin", "no") == "yes":
-                self.fields["dom_admin_username"].required = True
-                self.fields["create_aliases"].required = True
 
     def clean_dom_admin_username(self):
         """Ensure admin username is an email address."""
-        if '@' in self.cleaned_data["dom_admin_username"]:
+        if "@" in self.cleaned_data["dom_admin_username"]:
             raise forms.ValidationError(_("Invalid format"))
         return self.cleaned_data["dom_admin_username"]
+
+    def clean(self):
+        """Check required values."""
+        cleaned_data = super(DomainFormOptions, self).clean()
+        if cleaned_data.get("create_dom_admin"):
+            if not cleaned_data.get("dom_admin_username"):
+                self.add_error(
+                    "dom_admin_username", _("This field is required."))
+            if "create_aliases" not in cleaned_data:
+                self.add_error(
+                    "create_aliases", _("This field is required."))
+        return cleaned_data
 
     def save(self, *args, **kwargs):
         if not self.fields:
             return
-        if self.cleaned_data["create_dom_admin"] == "no":
+        if not self.cleaned_data["create_dom_admin"]:
             return
         user = kwargs.pop("user")
         domain = kwargs.pop("domain")
@@ -237,8 +247,7 @@ class DomainFormOptions(forms.Form):
             override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
 
-        if domain.type == "domain" and \
-           self.cleaned_data["create_aliases"] == "yes":
+        if domain.type == "domain" and self.cleaned_data["create_aliases"]:
             core_signals.can_create_object.send(
                 self.__class__, context=user, object_type="mailbox_aliases")
             alias = Alias(

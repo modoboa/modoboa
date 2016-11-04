@@ -7,7 +7,6 @@ import json
 from django.core.urlresolvers import reverse
 
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
@@ -15,7 +14,6 @@ from ..models import Domain, Alias
 
 
 class DomainTestCase(ModoTestCase):
-
     """Test case for Domain."""
 
     @classmethod
@@ -27,7 +25,7 @@ class DomainTestCase(ModoTestCase):
     def test_create(self):
         """Test the creation of a domain."""
         values = {
-            "name": "pouet.com", "quota": 100, "create_dom_admin": "no",
+            "name": "pouet.com", "quota": 100, "create_dom_admin": False,
             "type": "domain", "stepid": "step3"
         }
         self.ajax_post(reverse("admin:domain_add"), values)
@@ -40,7 +38,7 @@ class DomainTestCase(ModoTestCase):
     def test_create_utf8(self):
         """Test the creation of a domain with non-ASCII characters."""
         values = {
-            "name": "pouét.com", "quota": 100, "create_dom_admin": "no",
+            "name": "pouét.com", "quota": 100, "create_dom_admin": False,
             "type": "domain", "stepid": "step3"
         }
         self.ajax_post(reverse("admin:domain_add"), values)
@@ -51,12 +49,10 @@ class DomainTestCase(ModoTestCase):
         self.assertFalse(dom.admins)
 
     def test_create_with_template(self):
-        """Test the creation of a domain with a template
-
-        """
+        """Test the creation of a domain with a template."""
         values = {
-            "name": "pouet.com", "quota": 100, "create_dom_admin": "yes",
-            "dom_admin_username": "toto", "create_aliases": "yes",
+            "name": "pouet.com", "quota": 100, "create_dom_admin": True,
+            "dom_admin_username": "toto", "create_aliases": True,
             "type": "domain", "stepid": 'step3'
         }
         self.ajax_post(
@@ -76,8 +72,8 @@ class DomainTestCase(ModoTestCase):
     def test_create_with_template_and_empty_quota(self):
         """Test the creation of a domain with a template and no quota"""
         values = {
-            "name": "pouet.com", "quota": 0, "create_dom_admin": "yes",
-            "dom_admin_username": "toto", "create_aliases": "yes",
+            "name": "pouet.com", "quota": 0, "create_dom_admin": True,
+            "dom_admin_username": "toto", "create_aliases": True,
             "type": "domain", "stepid": 'step3'
         }
         self.ajax_post(
@@ -95,10 +91,10 @@ class DomainTestCase(ModoTestCase):
         self.assertTrue(da.can_access(al))
 
     def test_create_using_default_quota(self):
-        parameters.save_admin('DEFAULT_DOMAIN_QUOTA', 50, app='admin')
+        self.set_global_parameter("default_domain_quota", 50)
         values = {
-            "name": "pouet.com", "create_dom_admin": "yes",
-            "dom_admin_username": "toto", "create_aliases": "yes",
+            "name": "pouet.com", "create_dom_admin": True,
+            "dom_admin_username": "toto", "create_aliases": True,
             "type": "domain", "stepid": 'step3'
         }
         self.ajax_post(
@@ -149,8 +145,7 @@ class DomainTestCase(ModoTestCase):
 
     def test_domain_detail_view(self):
         """Test Domain detail view."""
-        parameters.save_admin(
-            "ENABLE_DOMAIN_LIMITS", "no", app="limits")
+        self.set_global_parameter("enable_domain_limits", False, app="limits")
         domain = Domain.objects.get(name="test.com")
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
@@ -158,8 +153,7 @@ class DomainTestCase(ModoTestCase):
         self.assertIn("Summary", response.content)
         self.assertIn("Administrators", response.content)
         self.assertNotIn("Resources usage", response.content)
-        parameters.save_admin(
-            "ENABLE_DOMAIN_LIMITS", "yes", app="limits")
+        self.set_global_parameter("enable_domain_limits", True, app="limits")
         response = self.client.get(url)
         self.assertIn("Resources usage", response.content)
 

@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from modoboa.admin import models as admin_models
 from modoboa.core.extensions import exts_pool
-from modoboa.lib import api_client, parameters
+from modoboa.lib import api_client
 
 from ... import models
 
@@ -16,18 +16,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
-        if parameters.get_admin("ENABLE_API_COMMUNICATION") == "no":
-            return
-        self.client = api_client.ModoAPIClient()
         local_config = (
             models.LocalConfig.objects.select_related("site").first())
+        if not local_config.parameters.get_value("enable_api_communication"):
+            return
+        self.client = api_client.ModoAPIClient()
         if not local_config.api_pk:
             pk = self.client.register_instance(local_config.site.domain)
             if pk is None:
                 raise CommandError("Instance registration failed.")
             local_config.api_pk = pk
 
-        if parameters.get_admin("CHECK_NEW_VERSIONS") == "yes":
+        if local_config.parameters.get_value("check_new_versions"):
             versions = self.client.versions()
             if versions is None:
                 raise CommandError("Failed to retrieve versions from the API.")
@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
         local_config.save()
 
-        if parameters.get_admin("SEND_STATISTICS") == "no":
+        if not local_config.parameters.get_value("send_statistics"):
             return
         extensions = [ext["name"] for ext in exts_pool.list_all()]
         data = {

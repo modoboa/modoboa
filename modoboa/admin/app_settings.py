@@ -6,11 +6,11 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy
 
-from ..lib import events
-from modoboa.lib import parameters
 from modoboa.lib.form_utils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
+from modoboa.parameters import forms as param_forms
 
+from ..lib import events
 
 ADMIN_EVENTS = [
     "DomainCreated",
@@ -48,14 +48,14 @@ ADMIN_EVENTS = [
 ]
 
 
-class AdminParametersForm(parameters.AdminParametersForm):
+class AdminParametersForm(param_forms.AdminParametersForm):
     app = "admin"
 
     dom_sep = SeparatorField(label=ugettext_lazy("Domains"))
 
     enable_mx_checks = YesNoField(
         label=ugettext_lazy("Enable MX checks"),
-        initial="yes",
+        initial=True,
         help_text=ugettext_lazy(
             "Check that every domain has a valid MX record"
         )
@@ -75,7 +75,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
     enable_dnsbl_checks = YesNoField(
         label=ugettext_lazy("Enable DNSBL checks"),
-        initial="yes",
+        initial=True,
         help_text=ugettext_lazy(
             "Check every domain against major DNSBL providers"
         )
@@ -85,7 +85,7 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
     handle_mailboxes = YesNoField(
         label=ugettext_lazy("Handle mailboxes on filesystem"),
-        initial="no",
+        initial=False,
         help_text=ugettext_lazy(
             "Rename or remove mailboxes on the filesystem when they get"
             " renamed or removed within Modoboa"
@@ -111,14 +111,14 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
     auto_account_removal = YesNoField(
         label=ugettext_lazy("Automatic account removal"),
-        initial="no",
+        initial=False,
         help_text=ugettext_lazy(
             "When a mailbox is removed, also remove the associated account")
     )
 
     auto_create_domain_and_mailbox = YesNoField(
         label=ugettext_lazy("Automatic domain/mailbox creation"),
-        initial="yes",
+        initial=True,
         help_text=ugettext_lazy(
             "Create a domain and a mailbox when an account is automatically "
             "created."
@@ -127,8 +127,8 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
     # Visibility rules
     visibility_rules = {
-        "valid_mxs": "enable_mx_checks=yes",
-        "mailboxes_owner": "handle_mailboxes=yes",
+        "valid_mxs": "enable_mx_checks=True",
+        "mailboxes_owner": "handle_mailboxes=True",
     }
 
     def __init__(self, *args, **kwargs):
@@ -174,9 +174,9 @@ class AdminParametersForm(parameters.AdminParametersForm):
 
 def load_admin_settings():
     """Load admin settings."""
-    from .app_settings import AdminParametersForm
+    from modoboa.parameters import tools as param_tools
 
-    parameters.register(
-        AdminParametersForm, ugettext_lazy("Administration"))
+    param_tools.registry.add(
+        "global", AdminParametersForm, ugettext_lazy("Administration"))
     events.declare(ADMIN_EVENTS)
     from . import callbacks

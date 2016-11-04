@@ -3,25 +3,19 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from modoboa.lib import parameters
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
     YesNoField, SeparatorField, InlineRadioSelect
 )
+from modoboa.parameters import forms as param_forms
+from modoboa.parameters import tools as param_tools
 
 from . import constants
 
 
 def enabled_applications():
-    """Return the list of installed extensions.
-
-    We check if the table exists before trying to fetch activated
-    extensions because the admin module is always imported by Django,
-    even before the database exists (example: the first ``syncdb``).
-
-    :return: a list
-    """
+    """Return the list of installed extensions."""
     from modoboa.core.extensions import exts_pool
 
     result = [("user", "user")]
@@ -30,8 +24,7 @@ def enabled_applications():
     return sorted(result, key=lambda e: e[0])
 
 
-class GeneralParametersForm(parameters.AdminParametersForm):
-
+class GeneralParametersForm(param_forms.AdminParametersForm):
     """General parameters."""
 
     app = "core"
@@ -99,7 +92,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     ldap_secured = YesNoField(
         label=ugettext_lazy("Use a secured connection"),
-        initial="no",
+        initial=False,
         help_text=ugettext_lazy(
             "Use an SSL/TLS connection to access the LDAP server")
     )
@@ -177,7 +170,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     ldap_is_active_directory = YesNoField(
         label=ugettext_lazy("Active Directory"),
-        initial="no",
+        initial=False,
         help_text=ugettext_lazy(
             "Tell if the LDAP server is an Active Directory one")
     )
@@ -224,21 +217,21 @@ class GeneralParametersForm(parameters.AdminParametersForm):
 
     enable_api_communication = YesNoField(
         label=ugettext_lazy("Enable communication"),
-        initial="yes",
+        initial=True,
         help_text=ugettext_lazy(
             "Enable communication with Modoboa public API")
     )
 
     check_new_versions = YesNoField(
         label=ugettext_lazy("Check new versions"),
-        initial="yes",
+        initial=True,
         help_text=ugettext_lazy(
             "Automatically checks if a newer version is available")
     )
 
     send_statistics = YesNoField(
         label=ugettext_lazy("Send statistics"),
-        initial="yes",
+        initial=True,
         help_text=ugettext_lazy(
             "Send statistics to Modoboa public API "
             "(counters and used extensions)")
@@ -296,8 +289,8 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         "ldap_admin_groups": "authentication_type=ldap",
         "ldap_group_type": "authentication_type=ldap",
         "ldap_groups_search_base": "authentication_type=ldap",
-        "check_new_versions": "enable_api_communication=yes",
-        "send_statistics": "enable_api_communication=yes",
+        "check_new_versions": "enable_api_communication=True",
+        "send_statistics": "enable_api_communication=True",
     }
 
     def __init__(self, *args, **kwargs):
@@ -348,7 +341,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         return cleaned_data
 
     def to_django_settings(self):
-        """Apply LDAP related parameters to Django settings
+        """Apply LDAP related parameters to Django settings.
 
         Doing so, we can use the django_auth_ldap module.
         """
@@ -360,7 +353,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
         except ImportError:
             ldap_available = False
 
-        values = self.get_current_values()
+        values = dict(param_tools.get_global_parameters("core"))
         if not ldap_available or values["authentication_type"] != "ldap":
             return
         if not hasattr(settings, "AUTH_LDAP_USER_ATTR_MAP"):
@@ -369,7 +362,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                 "email": "mail",
                 "last_name": "sn"
             })
-        ldap_uri = 'ldaps://' if values["ldap_secured"] == "yes" else "ldap://"
+        ldap_uri = "ldaps://" if values["ldap_secured"] else "ldap://"
         ldap_uri += "%s:%s" % (
             values["ldap_server_address"], values["ldap_server_port"])
         setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
@@ -400,7 +393,7 @@ class GeneralParametersForm(parameters.AdminParametersForm):
                 settings, "AUTH_LDAP_USER_DN_TEMPLATE",
                 values["ldap_user_dn_template"]
             )
-        if values["ldap_is_active_directory"] == "yes":
+        if values["ldap_is_active_directory"]:
             if not hasattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS"):
                 setattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS", {
                     ldap.OPT_REFERRALS: False

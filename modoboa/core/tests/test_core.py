@@ -7,9 +7,9 @@ import httmock
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import override_settings, TestCase
+from django.utils.functional import cached_property
 
 from modoboa.lib import exceptions
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 from modoboa.lib.tests import NO_LDAP
 
@@ -58,62 +58,28 @@ class ChangeDefaultAdminTestCase(TestCase):
             self.client.login(username="modoadmin", password="password"))
 
 
-class DashboardTestCase(ModoTestCase):
-    """Dashboard tests."""
-
-    @classmethod
-    def setUpTestData(cls):
-        """Create some data."""
-        super(DashboardTestCase, cls).setUpTestData()
-        cls.dadmin = factories.UserFactory(
-            username="admin@test.com", groups=("DomainAdmins",)
-        )
-        cls.user = factories.UserFactory(
-            username="user@test.com", groups=("SimpleUsers",)
-        )
-
-    def test_access(self):
-        """Load dashboard."""
-        url = reverse("core:dashboard")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", response.content)
-        self.client.logout()
-        self.client.login(username=self.dadmin.username, password="toto")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", response.content)
-        self.client.logout()
-        self.client.login(username=self.user.username, password="toto")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
-
-    def test_root_dispatch(self):
-        """Check root dispatching."""
-        url = reverse("core:root")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("core:dashboard")))
-
-
 @skipIf(NO_LDAP, 'No ldap module installed')
 class LDAPTestCaseMixin(object):
     """Set of methods used to test LDAP features."""
 
+    @cached_property
+    def ldapauthbackend(self):
+        """Return LDAPAuthBackend instance."""
+        from modoboa.lib.ldap_utils import LDAPAuthBackend
+        return LDAPAuthBackend()
+
     def activate_ldap_authentication(self):
         """Modify settings."""
-        parameters.save_admin(
-            "AUTHENTICATION_TYPE", "ldap")
-        parameters.save_admin("LDAP_SERVER_PORT", "3389")
+        self.set_global_parameters({
+            "authentication_type": "ldap",
+            "ldap_server_port": 3389
+        })
 
     def restore_user_password(self, username, new_password):
         """Restore user password to its initial state."""
-        from modoboa.lib.ldap_utils import LDAPAuthBackend
-
-        backend = LDAPAuthBackend()
         for password in ["Toto1234", "test"]:
             try:
-                backend.update_user_password(
+                self.ldapauthbackend.update_user_password(
                     username, password, new_password)
             except exceptions.InternalError:
                 pass
@@ -131,16 +97,19 @@ class LDAPTestCaseMixin(object):
 
     def searchbind_mode(self):
         """Apply settings required by the searchbind mode."""
-        parameters.save_admin("LDAP_AUTH_METHOD", "searchbind")
-        parameters.save_admin("LDAP_BIND_DN", "cn=admin,dc=example,dc=com")
-        parameters.save_admin("LDAP_BIND_PASSWORD", "test")
-        parameters.save_admin("LDAP_SEARCH_BASE", "ou=users,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_auth_method": "searchbind",
+            "ldap_bind_dn": "cn=admin,dc=example,dc=com",
+            "ldap_bind_password": "test",
+            "ldap_search_base": "ou=users,dc=example,dc=com"
+        })
 
     def directbind_mode(self):
         """Apply settings required by the directbind mode."""
-        parameters.save_admin("LDAP_AUTH_METHOD", "directbind")
-        parameters.save_admin(
-            "LDAP_USER_DN_TEMPLATE", "cn=%(user)s,ou=users,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_auth_method": "directbind",
+            "ldap_user_dn_template": "cn=%(user)s,ou=users,dc=example,dc=com"
+        })
 
 
 @override_settings(AUTHENTICATION_BACKENDS=(
@@ -148,7 +117,6 @@ class LDAPTestCaseMixin(object):
     'modoboa.lib.authbackends.SimpleBackend',
 ))
 class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
-
     """Validate LDAP authentication scenarios."""
 
     def setUp(self):
@@ -172,11 +140,11 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         username = "testuser@example.com"
         self.authenticate(username, "test")
         self.check_created_user(username)
-        self.client.logout()
 
-        parameters.save_admin("LDAP_ADMIN_GROUPS", "admins")
-        parameters.save_admin(
-            "LDAP_GROUPS_SEARCH_BASE", "ou=groups,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_admin_groups": "admins",
+            "ldap_groups_search_base": "ou=groups,dc=example,dc=com"
+        })
         username = "mailadmin@example.com"
         self.authenticate(username, "test", False)
         self.check_created_user(username, "DomainAdmins")
@@ -194,9 +162,10 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
 
         # 1: must work because usernames of domain admins are not
         # always email addresses
-        parameters.save_admin("LDAP_ADMIN_GROUPS", "admins")
-        parameters.save_admin(
-            "LDAP_GROUPS_SEARCH_BASE", "ou=groups,dc=example,dc=com")
+        self.set_global_parameters({
+            "ldap_admin_groups": "admins",
+            "ldap_groups_search_base": "ou=groups,dc=example,dc=com"
+        })
         username = "mailadmin"
         self.authenticate(username, "test", False)
         self.check_created_user(username, "DomainAdmins", False)

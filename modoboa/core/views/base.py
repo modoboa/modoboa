@@ -5,8 +5,6 @@ from django.views import generic
 
 from django.contrib.auth import mixins as auth_mixins
 
-from modoboa.lib import parameters
-
 from ..extensions import exts_pool
 
 
@@ -18,7 +16,8 @@ def find_nextlocation(request, user):
     nextlocation = request.POST.get("next", None)
     if nextlocation is None or nextlocation == "None":
         if request.user.role == "SimpleUsers":
-            topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION")
+            topredir = request.localconfig.parameters.get_value(
+                "default_top_redirection")
             if topredir != "user":
                 infos = exts_pool.get_extension_infos(topredir)
                 nextlocation = infos["url"] if infos["url"] else infos["name"]

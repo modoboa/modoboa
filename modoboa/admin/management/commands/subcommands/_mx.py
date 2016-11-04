@@ -17,8 +17,8 @@ from django.utils.translation import ugettext as _
 
 from modoboa.admin import constants
 from modoboa.admin import models
-from modoboa.lib import parameters
 from modoboa.lib import email_utils
+from modoboa.parameters import tools as param_tools
 
 
 class CheckMXRecords(BaseCommand):
@@ -36,12 +36,12 @@ class CheckMXRecords(BaseCommand):
     @cached_property
     def sender(self):
         """Return sender address for notifications."""
-        return parameters.get_admin("SENDER_ADDRESS", app="core")
+        return param_tools.get_global_parameter("sender_address", app="core")
 
     @cached_property
     def valid_mxs(self):
         """Return valid MXs set in admin."""
-        valid_mxs = parameters.get_admin("VALID_MXS", app="admin")
+        valid_mxs = param_tools.get_global_parameter("valid_mxs")
         return [ipaddress.ip_network(u"{}".format(v.strip()))
                 for v in valid_mxs.split() if v.strip()]
 
@@ -217,11 +217,11 @@ class CheckMXRecords(BaseCommand):
         """Check specified domain."""
         mx_list = list(self.get_mx_records_for_domain(domain, ttl=ttl))
 
-        if parameters.get_admin("ENABLE_MX_CHECKS") != "no":
+        if param_tools.get_global_parameter("enable_mx_checks"):
             self.check_valid_mx(domain, mx_list, **options)
 
         condition = (
-            parameters.get_admin("ENABLE_DNSBL_CHECKS") == "no" or
+            not param_tools.get_global_parameter("enable_dnsbl_checks") or
             options["no_dnsbl"] is True)
         if condition or not mx_list:
             return

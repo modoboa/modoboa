@@ -10,12 +10,12 @@ from django.core.management.base import BaseCommand
 
 from modoboa.core import PERMISSIONS
 from modoboa.core.extensions import exts_pool
-from modoboa.core.models import User, ObjectAccess
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib import events
-from modoboa.lib import models as lib_models
 from modoboa.lib.permissions import add_permissions_to_group
 import modoboa.relaydomains.models as relay_models
+
+from ... import models
 
 
 class Command(BaseCommand):
@@ -37,25 +37,26 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
-        if not User.objects.filter(is_superuser=True).count():
-            admin = User(username=options["admin_username"], is_superuser=True)
+        if not models.User.objects.filter(is_superuser=True).count():
+            admin = models.User(
+                username=options["admin_username"], is_superuser=True)
             admin.set_password("password")
             admin.save()
-            ObjectAccess.objects.create(
+            models.ObjectAccess.objects.create(
                 user=admin, content_object=admin, is_owner=True)
 
-        param_name = "core.SECRET_KEY"
-        qset = lib_models.Parameter.objects.filter(name=param_name)
-        if not qset.exists():
-            lib_models.Parameter.objects.create(
-                name=param_name, value=random_key())
+        lc = models.LocalConfig.objects.first()
+        secret_key = lc.parameters.get_value("secret_key")
+        if not secret_key:
+            lc.parameters.set_value("secret_key", random_key())
+            lc.save()
 
-        for service_name in ['relay', 'smtp']:
+        for service_name in ["relay", "smtp"]:
             relay_models.Service.objects.get_or_create(name=service_name)
 
         exts_pool.load_all()
 
-        superadmin = User.objects.filter(is_superuser=True).first()
+        superadmin = models.User.objects.filter(is_superuser=True).first()
         groups = PERMISSIONS.keys() + [
             role[0] for role
             in events.raiseQueryEvent("GetExtraRoles", superadmin, None)
@@ -75,6 +76,6 @@ class Command(BaseCommand):
             extension.load_initial_data()
             events.raiseEvent("InitialDataLoaded", extname)
 
-        if options['extra_fixtures']:
+        if options["extra_fixtures"]:
             from modoboa.admin import factories
             factories.populate_database()

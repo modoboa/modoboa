@@ -7,8 +7,8 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from reversion import revisions as reversion
 
 from modoboa.admin import models as admin_models
-from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
+from modoboa.parameters import tools as param_tools
 
 
 class ServiceManager(Manager):
@@ -20,7 +20,7 @@ class ServiceManager(Manager):
         entries are saved and outdated ones (ie. present in the
         database but not in the file) are removed.
         """
-        with open(parameters.get_admin('MASTER_CF_PATH')) as fp:
+        with open(param_tools.get_global_parameter("master_cf_path")) as fp:
             content = fp.read()
         services = []
         for line in content.split('\n'):

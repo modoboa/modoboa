@@ -9,9 +9,9 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from passwords.fields import PasswordField
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import events, parameters
+from modoboa.core.models import User
+from modoboa.lib import events
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
@@ -21,6 +21,7 @@ from modoboa.lib.form_utils import (
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.validators import validate_utf8_email
 from modoboa.lib.web_utils import render_to_json_response
+from modoboa.parameters import tools as param_tools
 
 from .. import models
 
@@ -111,8 +112,8 @@ class AccountFormGeneral(forms.ModelForm):
         self.fields["role"].initial = self.instance.role
         condition = (
             not self.instance.is_local and
-            parameters.get_admin(
-                "LDAP_AUTH_METHOD", app="core") == "directbind")
+            param_tools.get_global_parameter(
+                "ldap_auth_method", app="core") == "directbind")
         if condition:
             del self.fields["password1"]
             del self.fields["password2"]

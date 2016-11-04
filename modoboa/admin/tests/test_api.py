@@ -10,7 +10,6 @@ from rest_framework.authtoken.models import Token
 
 from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoAPITestCase
 
 from .. import factories
@@ -196,8 +195,10 @@ class AccountAPITestCase(ModoAPITestCase):
     def setUp(self):
         """Test setup."""
         super(AccountAPITestCase, self).setUp()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no", app="limits")
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "no", app="limits")
+        self.set_global_parameters({
+            "enable_admin_limits": False,
+            "enable_domain_limits": False
+        }, app="limits")
 
     def test_get_accounts(self):
         """Retrieve a list of accounts."""
@@ -461,7 +462,9 @@ class AliasAPITestCase(ModoAPITestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(AliasAPITestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no", app="limits")
+        cls.localconfig.parameters.set_value(
+            "enable_admin_limits", False, app="limits")
+        cls.localconfig.save()
         factories.populate_database()
         cls.da_token = Token.objects.create(
             user=core_models.User.objects.get(username="admin@test.com"))

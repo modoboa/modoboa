@@ -1,18 +1,16 @@
 # coding: utf-8
-"""
-:mod:`controls` --- provides event handlers that check if limits are reached
-----------------------------------------------------------------------------
 
-"""
+"""Event handlers that check if limits are reached."""
 
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.permissions import get_object_owner
+from modoboa.parameters import tools as param_tools
 
 from . import utils
 
 
 def move_pool_resource(owner, user):
-    """Move resource from one pool to another
+    """Move resource from one pool to another.
 
     When an account doesn't need a pool anymore, we move the
     associated resource to the pool of its owner.
@@ -40,7 +38,7 @@ def user_can_set_role(user, role, account=None):
     :param str newrole: role to check
     """
     condition = (
-        parameters.get_admin("ENABLE_ADMIN_LIMITS") == "no" or
+        not param_tools.get_global_parameter("enable_admin_limits") or
         role != "DomainAdmins")
     if condition:
         return [True]

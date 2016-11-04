@@ -3,7 +3,6 @@ from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
@@ -16,7 +15,9 @@ class ImportTestCase(ModoTestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(ImportTestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no", app="limits")
+        cls.localconfig.parameters.set_value(
+            "enable_admin_limits", False, app="limits")
+        cls.localconfig.save()
         factories.populate_database()
 
     def test_domains_import(self):

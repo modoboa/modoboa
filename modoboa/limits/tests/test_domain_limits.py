@@ -7,7 +7,6 @@ from modoboa.admin import factories as admin_factories
 from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib import tests as lib_tests
 
 from .. import utils
@@ -20,11 +19,14 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(DomainLimitsTestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no")
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+        cls.localconfig.parameters.set_values({
+            "enable_admin_limits": False,
+            "enable_domain_limits": True
+        })
         for name, tpl in utils.get_domain_limit_templates():
-            parameters.save_admin(
-                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+            cls.localconfig.parameters.set_value(
+                "deflt_domain_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         admin_factories.populate_database()
 
     def test_set_limits(self):

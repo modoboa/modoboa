@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase
-from modoboa.lib import parameters
 
 from .. import factories
 from .. import models
@@ -21,7 +20,8 @@ class MXTestCase(ModoTestCase):
         cls.domain = factories.DomainFactory(name="modoboa.org")
         # should not exist
         cls.bad_domain = factories.DomainFactory(name="pouet.com")
-        parameters.save_admin("VALID_MXS", "127.0.0.1")
+        cls.localconfig.parameters.set_value("valid_mxs", "127.0.0.1")
+        cls.localconfig.save()
         models.MXRecord.objects.all().delete()
 
     def test_management_command(self):

@@ -9,7 +9,6 @@ from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib import tests as lib_tests
 
 from .. import utils
@@ -23,8 +22,9 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         """Create test data."""
         super(APIAdminLimitsTestCase, cls).setUpTestData()
         for name, tpl in utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{}_LIMIT".format(name.upper()), 2)
+            cls.localconfig.parameters.set_value(
+                "deflt_user_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         populate_database()
         cls.user = User.objects.get(username="admin@test.com")
         cls.da_token = Token.objects.create(user=cls.user)
@@ -181,10 +181,12 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(APIDomainLimitsTestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+        cls.localconfig.parameters.set_value(
+            "enable_domain_limits", True)
         for name, tpl in utils.get_domain_limit_templates():
-            parameters.save_admin(
-                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+            cls.localconfig.parameters.set_value(
+                "deflt_domain_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         populate_database()
 
     def test_mailboxes_limit(self):

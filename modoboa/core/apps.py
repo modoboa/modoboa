@@ -2,7 +2,7 @@
 
 from django.apps import AppConfig
 from django.db.models import signals
-
+from django.utils.translation import ugettext_lazy
 
 BASE_EVENTS = [
     "AccountCreated",
@@ -36,7 +36,6 @@ BASE_EVENTS = [
     "ExtraUprefsRoutes",
     "ExtraUprefsJS",
 
-    "GetExtraParameters",
     "ExtraFormFields",
     "SaveExtraFormFields",
 ]
@@ -48,11 +47,12 @@ def load_core_settings():
     This function must be manually called (see :file:`urls.py`) in
     order to load base settings.
     """
-    from django.utils.translation import ugettext_lazy
-    from modoboa.lib import parameters, events
+    from modoboa.lib import events
+    from modoboa.parameters import tools as param_tools
     from .app_settings import GeneralParametersForm
 
-    parameters.register(GeneralParametersForm, ugettext_lazy("General"))
+    param_tools.registry.add(
+        "global", GeneralParametersForm, ugettext_lazy("General"))
     events.declare(BASE_EVENTS)
 
 

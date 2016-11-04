@@ -13,10 +13,11 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 from reversion import revisions as reversion
 
-from modoboa.core.models import User, ObjectAccess
 from modoboa.core import signals as core_signals
-from modoboa.lib import events, parameters
+from modoboa.core.models import User, ObjectAccess
+from modoboa.lib import events
 from modoboa.lib.exceptions import BadRequest, Conflict
+from modoboa.parameters import tools as param_tools
 
 from .base import AdminObject
 
@@ -185,11 +186,11 @@ class Domain(AdminObject):
         if self.alias_set.count():
             events.raiseEvent("MailboxAliasDeleted", self.alias_set.all())
             ungrant_access_to_objects(self.alias_set.all())
-        if parameters.get_admin("AUTO_ACCOUNT_REMOVAL") == "yes":
+        if param_tools.get_global_parameter("auto_account_removal"):
             for account in User.objects.filter(mailbox__domain=self):
                 account.delete(fromuser, keepdir)
         elif self.mailbox_set.count():
-            Quota.objects.filter(username__contains='@%s' % self.name).delete()
+            Quota.objects.filter(username__contains="@%s" % self.name).delete()
             events.raiseEvent("MailboxDeleted", self.mailbox_set.all())
             ungrant_access_to_objects(self.mailbox_set.all())
         super(Domain, self).delete()
@@ -242,7 +243,7 @@ class MXQuerySet(models.QuerySet):
 
     def has_valids(self):
         """Return managed results."""
-        if parameters.get_admin("VALID_MXS", app="admin").strip():
+        if param_tools.get_global_parameter("valid_mxs").strip():
             return self.filter(managed=True).exists()
         return self.exists()
 
@@ -259,12 +260,12 @@ class MXRecord(models.Model):
     objects = models.Manager.from_queryset(MXQuerySet)()
 
     def is_managed(self):
-        if not parameters.get_admin("ENABLE_MX_CHECKS"):
+        if not param_tools.get_global_parameter("enable_mx_checks"):
             return False
-        return bool(parameters.get_admin("VALID_MXS", app="admin").strip())
+        return bool(param_tools.get_global_parameter("valid_mxs").strip())
 
     def __unicode__(self):
-        return u'{0.name} ({0.address}) for {0.domain} '.format(self)
+        return u"{0.name} ({0.address}) for {0.domain} ".format(self)
 
 
 class DNSBLQuerySet(models.QuerySet):

@@ -8,9 +8,9 @@ from django.test import override_settings
 from modoboa.core import factories as core_factories
 from modoboa.core.tests import test_core
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 from modoboa.lib.tests import NO_LDAP
+from modoboa.limits import utils as limits_utils
 
 from .. import factories
 from .. import models
@@ -201,8 +201,7 @@ class AccountTestCase(ModoTestCase):
 
     def test_account_detail_view(self):
         """Test account detail view."""
-        parameters.save_admin(
-            "ENABLE_ADMIN_LIMITS", "no", app="limits")
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
         account = User.objects.get(username="admin@test.com")
         url = reverse("admin:account_detail", args=[account.pk])
         response = self.client.get(url)
@@ -210,8 +209,7 @@ class AccountTestCase(ModoTestCase):
         self.assertIn("Summary", response.content)
         self.assertIn("Administered domains", response.content)
         self.assertNotIn("Resources usage", response.content)
-        parameters.save_admin(
-            "ENABLE_ADMIN_LIMITS", "yes", app="limits")
+        self.set_global_parameter("enable_admin_limits", True, app="limits")
         response = self.client.get(url)
         self.assertIn("Resources usage", response.content)
 
@@ -228,7 +226,7 @@ class LDAPAccountTestCase(test_core.LDAPTestCaseMixin, ModoTestCase):
         """Check if objects are not created as expected."""
         self.activate_ldap_authentication()
         self.searchbind_mode()
-        parameters.save_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX", "no")
+        self.set_global_parameter("auto_create_domain_and_mailbox", False)
         username = "testuser@example.com"
         self.authenticate(username, "test")
         self.assertFalse(
@@ -242,15 +240,12 @@ class PermissionsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        from modoboa.lib import parameters
-        from modoboa.limits import utils as limits_utils
-
         super(PermissionsTestCase, cls).setUpTestData()
+        parameters = {}
         for name, tpl in limits_utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2,
-                app="limits"
-            )
+            parameters["deflt_user_{0}_limit".format(name)] = 2
+        cls.localconfig.parameters.set_values(parameters, app="limits")
+        cls.localconfig.save()
         factories.populate_database()
         cls.reseller = core_factories.UserFactory(username="reseller")
         cls.reseller.role = "Resellers"

@@ -20,10 +20,11 @@ import jsonfield
 from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
-from modoboa.lib import events, parameters
+from modoboa.lib import events
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
+from modoboa.parameters import tools as param_tools
 
 from . import constants
 
@@ -67,7 +68,8 @@ class User(PermissionsMixin):
         ugettext_lazy('last login'), blank=True, null=True
     )
 
-    language = models.CharField(ugettext_lazy("language"),
+    language = models.CharField(
+        ugettext_lazy("language"),
         max_length=10, default="en", choices=constants.LANGUAGES,
         help_text=ugettext_lazy(
             "Prefered language to display pages."
@@ -81,6 +83,7 @@ class User(PermissionsMixin):
         help_text=ugettext_lazy(
             "An alternative e-mail address, can be used for recovery needs.")
     )
+    _parameters = jsonfield.JSONField(default={})
 
     objects = UserManager()
 
@@ -94,6 +97,11 @@ class User(PermissionsMixin):
         ]
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
+
+    def __init__(self, *args, **kwargs):
+        """Load parameter manager."""
+        super(User, self).__init__(*args, **kwargs)
+        self.parameters = param_tools.Manager("user", self._parameters)
 
     def delete(self, fromuser, *args, **kwargs):
         """Custom delete method
@@ -138,13 +146,13 @@ class User(PermissionsMixin):
         one more time.
 
         """
-        try:
-            scheme = parameters.get_admin("PASSWORD_SCHEME")
-        except parameters.NotDefined:
+        scheme = param_tools.get_global_parameter(
+            "password_scheme", raise_exception=False)
+        if scheme is None:
             from modoboa.core.apps import load_core_settings
             load_core_settings()
-            scheme = parameters.get_admin("PASSWORD_SCHEME")
-
+            scheme = param_tools.get_global_parameter(
+                "password_scheme", raise_exception=False)
         if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
@@ -505,3 +513,10 @@ class LocalConfig(models.Model):
 
     # API results cache
     api_versions = jsonfield.JSONField()
+
+    _parameters = jsonfield.JSONField(default={})
+
+    def __init__(self, *args, **kwargs):
+        """Load parameter manager."""
+        super(LocalConfig, self).__init__(*args, **kwargs)
+        self.parameters = param_tools.Manager("global", self._parameters)

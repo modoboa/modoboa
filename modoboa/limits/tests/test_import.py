@@ -6,7 +6,6 @@ from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
 from modoboa.core import factories as core_factories
 from modoboa.core import models as core_models
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
 
 from .. import utils
@@ -135,9 +134,11 @@ class UserLimitImportTestCase(LimitImportTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
+        localconfig = core_models.LocalConfig.objects.first()
         for name, tpl in utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{}_LIMIT".format(name.upper()), 2)
+            localconfig.parameters.set_value(
+                "deflt_user_{0}_limit".format(name), 2)
+        localconfig.save()
         super(UserLimitImportTestCase, cls).setUpTestData()
 
     def test_domains_import(self):
@@ -192,11 +193,15 @@ class DomainLimitImportTestCase(LimitImportTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no")
+        localconfig = core_models.LocalConfig.objects.first()
+        localconfig.parameters.set_values({
+            "enable_domain_limits": True,
+            "enable_admin_limits": False
+        })
         for name, tpl in utils.get_domain_limit_templates():
-            parameters.save_admin(
-                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+            localconfig.parameters.set_value(
+                "deflt_domain_{0}_limit".format(name), 2)
+        localconfig.save()
         super(DomainLimitImportTestCase, cls).setUpTestData()
         mb = admin_factories.MailboxFactory(
             user__username="user@test4.com",

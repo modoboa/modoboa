@@ -3,12 +3,11 @@
 from django.contrib.auth.backends import ModelBackend
 
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib.email_utils import split_mailbox
+from modoboa.parameters import tools as param_tools
 
 
 class SimpleBackend(ModelBackend):
-
     """Simple authentication backend."""
 
     def authenticate(self, username=None, password=None):
@@ -36,8 +35,10 @@ try:
 
         def __init__(self, *args, **kwargs):
             """Load LDAP settings."""
-            parameters.apply_to_django_settings()
+            param_tools.apply_to_django_settings()
             super(LDAPBackend, self).__init__(*args, **kwargs)
+            self.global_params = dict(
+                param_tools.get_global_parameters("core"))
 
         def get_or_create_user(self, username, ldap_user):
             """
@@ -46,12 +47,11 @@ try:
             the user. ldap_user.dn is the user's DN and
             ldap_user.attrs contains all of their LDAP attributes.
             """
-            group = 'SimpleUsers'
-            admin_groups = parameters \
-                .get_admin('LDAP_ADMIN_GROUPS', app='core').split(';')
+            group = "SimpleUsers"
+            admin_groups = self.global_params["ldap_admin_groups"].split(";")
             for grp in admin_groups:
                 if grp.strip() in ldap_user.group_names:
-                    group = 'DomainAdmins'
+                    group = "DomainAdmins"
                     break
             if group == 'SimpleUsers':
                 lpart, domain = split_mailbox(username)
@@ -75,8 +75,7 @@ try:
             return user
 
         def authenticate(self, username, password):
-            auth_type = parameters.get_admin("AUTHENTICATION_TYPE", app="core")
-            if auth_type == "ldap":
+            if self.global_params["authentication_type"] == "ldap":
                 return super(LDAPBackend, self).authenticate(
                     username, password)
             return None
