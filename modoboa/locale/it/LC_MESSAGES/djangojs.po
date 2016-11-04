@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-14 19:06+0200\n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
 "PO-Revision-Date: 2015-10-11 11:13+0000\n"
 "Last-Translator: Rocco <mors10@hotmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "'"
 msgstr ""
 
-#: core/static/core/js/settings.js:14
+#: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
 msgstr "Non sono presenti altri log da mostrare"
 

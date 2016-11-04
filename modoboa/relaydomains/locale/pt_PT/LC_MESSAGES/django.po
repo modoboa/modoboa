@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 14:31+0200\n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
 "PO-Revision-Date: 2014-12-29 12:51+0000\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -24,15 +24,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:18
+#: relaydomains/app_settings.py:15
 msgid "General"
 msgstr "Geral"
 
-#: relaydomains/app_settings.py:21
+#: relaydomains/app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Caminho para para o ficheiro master.cf Postfix"
 
-#: relaydomains/app_settings.py:23
+#: relaydomains/app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Caminho para o ficheiro de configuração master.cf"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 14:31+0200\n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -24,55 +24,55 @@ msgstr ""
 msgid "One or more updates are available"
 msgstr "1つ以上のアップデートが利用できます"
 
-#: core/app_settings.py:39
+#: core/app_settings.py:32
 msgid "Authentication"
 msgstr "認証"
 
-#: core/app_settings.py:42
+#: core/app_settings.py:35
 msgid "Authentication type"
 msgstr "認証の種類"
 
-#: core/app_settings.py:43
+#: core/app_settings.py:36
 msgid "Local"
 msgstr "ローカル"
 
-#: core/app_settings.py:46
+#: core/app_settings.py:39
 msgid "The backend used for authentication"
 msgstr "認証に使用されるバックエンド"
 
-#: core/app_settings.py:51
+#: core/app_settings.py:44
 msgid "Default password scheme"
 msgstr "デフォルトのパスワードハッシュ"
 
-#: core/app_settings.py:55
+#: core/app_settings.py:48
 msgid "md5crypt (weak)"
 msgstr "md5crypt (弱い)"
 
-#: core/app_settings.py:56
+#: core/app_settings.py:49
 msgid "sha256 (weak)"
 msgstr "sha256 (弱い)"
 
-#: core/app_settings.py:57
+#: core/app_settings.py:50
 msgid "md5 (weak)"
 msgstr "md5 (弱い)"
 
-#: core/app_settings.py:58
+#: core/app_settings.py:51
 msgid "crypt (weak)"
 msgstr "crypt (弱い)"
 
-#: core/app_settings.py:59
+#: core/app_settings.py:52
 msgid "plain (weak)"
 msgstr "plain (弱い)"
 
-#: core/app_settings.py:61
+#: core/app_settings.py:54
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "ハッシュは、メールボックスパスワードを暗号化するのに使われます"
 
-#: core/app_settings.py:66
+#: core/app_settings.py:59
 msgid "Rounds"
 msgstr "ラウンド"
 
-#: core/app_settings.py:69
+#: core/app_settings.py:62
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -80,63 +80,63 @@ msgstr ""
 "ラウンド数は(sha256crypt と sha512crypt だけで)使用しています。\n"
 "1000 から 999999999 の間でなければなりません。"
 
-#: core/app_settings.py:76
+#: core/app_settings.py:69
 msgid "Secret key"
 msgstr "シークレットキー"
 
-#: core/app_settings.py:78
+#: core/app_settings.py:71
 msgid "Key used to encrypt/decrypt passwords"
 msgstr "キーは、パスワードを暗号化/復号化はするために使用されます。"
 
-#: core/app_settings.py:83
+#: core/app_settings.py:76
 msgid "LDAP settings"
 msgstr "LDAP 設定"
 
-#: core/app_settings.py:86
+#: core/app_settings.py:79
 msgid "Server address"
 msgstr "サーバーアドレス"
 
-#: core/app_settings.py:89
+#: core/app_settings.py:82
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "LDAP サーバーの IP アドレス、または DNS 名"
 
-#: core/app_settings.py:94
+#: core/app_settings.py:87
 msgid "Server port"
 msgstr "サーバーポート"
 
-#: core/app_settings.py:96
+#: core/app_settings.py:89
 msgid "The TCP port number used by the LDAP server"
 msgstr "LDAP サーバーの TCP ポート番号"
 
-#: core/app_settings.py:101
+#: core/app_settings.py:94
 msgid "Use a secured connection"
 msgstr "セキュアな接続を使う"
 
-#: core/app_settings.py:104
+#: core/app_settings.py:97
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "LDAP サーバーへの接続に SSL/TLS 接続を使う"
 
-#: core/app_settings.py:108
+#: core/app_settings.py:101
 msgid "Authentication method"
 msgstr "認証方法"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:102
 msgid "Search and bind"
 msgstr "検索と Bind"
 
-#: core/app_settings.py:110
+#: core/app_settings.py:103
 msgid "Direct bind"
 msgstr "Bind"
 
-#: core/app_settings.py:112
+#: core/app_settings.py:105
 msgid "Choose the authentication method to use"
 msgstr "使用する認証方式を選択します"
 
-#: core/app_settings.py:117
+#: core/app_settings.py:110
 msgid "Bind DN"
 msgstr "Bind DN"
 
-#: core/app_settings.py:120
+#: core/app_settings.py:113
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -144,28 +144,28 @@ msgstr ""
 "LDAPサーバにバインドするときの識別名に使用します。\n"
 "匿名バインドのときは空のままにします。"
 
-#: core/app_settings.py:128
+#: core/app_settings.py:121
 msgid "Bind password"
 msgstr "Bind パスワード"
 
-#: core/app_settings.py:131
+#: core/app_settings.py:124
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "(\"Bind DN\" を使って) LDAPサーバにバインドするときに使用するパスワード"
 
-#: core/app_settings.py:140
+#: core/app_settings.py:133
 msgid "Users search base"
 msgstr "ユーザーの検索ベース"
 
-#: core/app_settings.py:143
+#: core/app_settings.py:136
 msgid "The distinguished name of the search base used to find users"
 msgstr "ユーザーを見つけるために使用される検索ベースの識別名(DN)"
 
-#: core/app_settings.py:150
+#: core/app_settings.py:143
 msgid "Search filter"
 msgstr "検索フィルター"
 
-#: core/app_settings.py:153
+#: core/app_settings.py:146
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -173,11 +173,11 @@ msgstr ""
 "オプションのフィルタ文字列 (例えば \"(objectClass=person)\") \n"
 "有効であるためには、括弧で囲まなければなりません。"
 
-#: core/app_settings.py:161
+#: core/app_settings.py:154
 msgid "User DN template"
 msgstr "ユーザー DN テンプレート"
 
-#: core/app_settings.py:164
+#: core/app_settings.py:157
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -186,27 +186,27 @@ msgstr ""
 "ユーザーDNを作るために使用されるテンプレート。1つのプレースホルダ (%(user)s)"
 "が含まれている必要があります。"
 
-#: core/app_settings.py:172
+#: core/app_settings.py:165
 msgid "Password attribute"
 msgstr "パスワード属性"
 
-#: core/app_settings.py:174
+#: core/app_settings.py:167
 msgid "The attribute used to store user passwords"
 msgstr "ユーザーパスワードを格納するための属性"
 
-#: core/app_settings.py:179
+#: core/app_settings.py:172
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:182
+#: core/app_settings.py:175
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "LDAP サーバーが Active Directory かどうか"
 
-#: core/app_settings.py:186
+#: core/app_settings.py:179
 msgid "Administrator groups"
 msgstr "管理者グループ"
 
-#: core/app_settings.py:189
+#: core/app_settings.py:182
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -215,113 +215,113 @@ msgstr ""
 "す。\n"
 "\";\" 文字を使って、複数グループを書けます。"
 
-#: core/app_settings.py:196
+#: core/app_settings.py:189
 msgid "Group type"
 msgstr "グループ種類"
 
-#: core/app_settings.py:200
+#: core/app_settings.py:193
 msgid "The LDAP group type to use with your directory."
 msgstr "ディレクトリで使用されている LDAP グループの種類"
 
-#: core/app_settings.py:205
+#: core/app_settings.py:198
 msgid "Groups search base"
 msgstr "グループの検索ベース"
 
-#: core/app_settings.py:208
+#: core/app_settings.py:201
 msgid "The distinguished name of the search base used to find groups"
 msgstr "グループを見つけるために使用される検索ベースの識別名(DN)"
 
-#: core/app_settings.py:213
+#: core/app_settings.py:206
 msgid "Notifications"
 msgstr "通知"
 
-#: core/app_settings.py:216
+#: core/app_settings.py:209
 msgid "Sender address"
 msgstr "送信者アドレス"
 
-#: core/app_settings.py:219
+#: core/app_settings.py:212
 msgid "Email address used to send notifications."
 msgstr "通知の送信に使われる電子メールアドレス"
 
-#: core/app_settings.py:223
+#: core/app_settings.py:216
 msgid "Public API"
 msgstr ""
 
-#: core/app_settings.py:226
+#: core/app_settings.py:219
 msgid "Enable communication"
 msgstr ""
 
-#: core/app_settings.py:229
+#: core/app_settings.py:222
 msgid "Enable communication with Modoboa public API"
 msgstr ""
 
-#: core/app_settings.py:233
+#: core/app_settings.py:226
 msgid "Check new versions"
 msgstr "新しいバージョンをチェックする"
 
-#: core/app_settings.py:236
+#: core/app_settings.py:229
 msgid "Automatically checks if a newer version is available"
 msgstr "新しいバージョンが利用可能かどうか、自動的にチェックする"
 
-#: core/app_settings.py:240
+#: core/app_settings.py:233
 msgid "Send statistics"
 msgstr ""
 
-#: core/app_settings.py:243
+#: core/app_settings.py:236
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 
-#: core/app_settings.py:247
+#: core/app_settings.py:240
 msgid "Miscellaneous"
 msgstr "その他"
 
-#: core/app_settings.py:250
+#: core/app_settings.py:243
 msgid "Top notifications check interval"
 msgstr "トップの通知をチェックする間隔"
 
-#: core/app_settings.py:253
+#: core/app_settings.py:246
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "2つのトップの通知チェックの間隔 (秒)"
 
-#: core/app_settings.py:259
+#: core/app_settings.py:252
 msgid "Maximum log record age"
 msgstr "最大ログ記録期間"
 
-#: core/app_settings.py:261
+#: core/app_settings.py:254
 msgid "The maximum age in days of a log record"
 msgstr "ログを記録する日数の最大期間"
 
-#: core/app_settings.py:266
+#: core/app_settings.py:259
 msgid "Items per page"
 msgstr "ページあたりの件数"
 
-#: core/app_settings.py:268
+#: core/app_settings.py:261
 msgid "Number of displayed items per page"
 msgstr "ページあたりに表示される項目の数"
 
-#: core/app_settings.py:273
+#: core/app_settings.py:266
 msgid "Default top redirection"
 msgstr "デフォルトのリダイレクト先"
 
-#: core/app_settings.py:277
+#: core/app_settings.py:270
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "アプリケーションが指定されていないときのデフォルトのリダイレクト先に使用され"
 "ます"
 
-#: core/app_settings.py:310
+#: core/app_settings.py:303
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "キーは、16, 24, 32 バイトのいずれかの長さでなければいけません"
 
-#: core/app_settings.py:319
+#: core/app_settings.py:312
 msgid "Invalid syntax"
 msgstr "不正な構文"
 
-#: core/app_settings.py:325
+#: core/app_settings.py:318
 msgid "Invalid rounds number"
 msgstr "不正なラウンド数"
 
-#: core/app_settings.py:346
+#: core/app_settings.py:339
 msgid "This field is required"
 msgstr "このフィールドは必須です"
 
@@ -345,35 +345,35 @@ msgstr "リセーラー"
 msgid "Super administrator"
 msgstr "全体管理者"
 
-#: core/forms.py:19
+#: core/forms.py:18
 msgid "Username"
 msgstr "ユーザ名"
 
-#: core/forms.py:23
+#: core/forms.py:22
 msgid "Password"
 msgstr "パスワード"
 
-#: core/forms.py:37
+#: core/forms.py:35
 msgid "Old password"
 msgstr "現在のパスワード"
 
-#: core/forms.py:41
+#: core/forms.py:39
 msgid "New password"
 msgstr "新しいパスワード"
 
-#: core/forms.py:45
+#: core/forms.py:43
 msgid "Confirmation"
 msgstr "確認"
 
-#: core/forms.py:73
+#: core/forms.py:71
 msgid "Old password mismatchs"
 msgstr "現在のパスワードが一致しません"
 
-#: core/forms.py:80
+#: core/forms.py:78
 msgid "Passwords mismatch"
 msgstr "パスワード不一致"
 
-#: core/forms.py:100
+#: core/forms.py:97
 msgid "Enable API access"
 msgstr "API アクセスを有効にします"
 
@@ -394,87 +394,87 @@ msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
 msgid "deleted"
 msgstr "削除しました"
 
-#: core/models.py:51
+#: core/models.py:52
 #, fuzzy
 #| msgid "Group name"
 msgid "First name"
 msgstr "グループ名"
 
-#: core/models.py:53
+#: core/models.py:54
 #, fuzzy
 #| msgid "Last login"
 msgid "Last name"
 msgstr "最終ログイン"
 
-#: core/models.py:60
+#: core/models.py:61
 msgid "Allow mailboxes access"
 msgstr "メールボックスのアクセスを許可する"
 
-#: core/models.py:62
+#: core/models.py:63
 msgid "Allow this administrator to access user mailboxes"
 msgstr "ユーザーのメールボックスアクセスをこの管理者に許可する"
 
-#: core/models.py:65
+#: core/models.py:66
 msgid "password"
 msgstr "パスワード"
 
-#: core/models.py:67
+#: core/models.py:68
 msgid "last login"
 msgstr "最終ログイン"
 
-#: core/models.py:70
+#: core/models.py:72
 msgid "language"
 msgstr ""
 
-#: core/models.py:73
+#: core/models.py:75
 msgid "Prefered language to display pages."
 msgstr "ページの表示に優先言語を使う"
 
-#: core/models.py:77
+#: core/models.py:79
 msgid "Phone number"
 msgstr "電話番号"
 
-#: core/models.py:79
+#: core/models.py:81
 msgid "Secondary email"
 msgstr "2つめの電子メール"
 
-#: core/models.py:82
+#: core/models.py:84
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "別の電子メールアドレスは、回復の必要のために使用することができます。"
 
-#: core/models.py:114
+#: core/models.py:122
 msgid "You can't delete your own account"
 msgstr "あなた自身のアカウントは削除できません"
 
-#: core/models.py:167
+#: core/models.py:175
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていませ"
 "ん。"
 
-#: core/models.py:225
+#: core/models.py:233
 msgid "account"
 msgstr "アカウント"
 
-#: core/models.py:347
+#: core/models.py:355
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:386
+#: core/models.py:394
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: core/models.py:394
+#: core/models.py:402
 msgid "You can't import an account with a role greater than yours"
 msgstr "あなた以上のロールを持ったアカウントはインポートできません"
 
-#: core/models.py:409
+#: core/models.py:417
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
 
-#: core/models.py:414
+#: core/models.py:422
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"
@@ -492,7 +492,7 @@ msgid "API access token"
 msgstr "API アクセストークン"
 
 #: core/templates/core/api_access.html:29
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:358
 msgid "Update"
 msgstr "更新"
 
@@ -644,7 +644,7 @@ msgstr "API"
 msgid "The core part of Modoboa"
 msgstr "Modoboaのコア部分"
 
-#: core/views/admin.py:51
+#: core/views/admin.py:46
 msgid "Parameters saved"
 msgstr "パラメータが保存されました"
 
@@ -662,15 +662,15 @@ msgstr "ユーザー名とパスワードが一致しません。やり直して
 msgid "User '%s' logged out"
 msgstr "ユーザー \"%s\" がログアウトしました"
 
-#: core/views/user.py:47
+#: core/views/user.py:49
 msgid "Profile updated"
 msgstr "プロフィールが更新されました"
 
-#: core/views/user.py:71
+#: core/views/user.py:75
 msgid "Preferences saved"
 msgstr "プリファレンスが保存されました"
 
-#: core/views/user.py:91
+#: core/views/user.py:96
 msgid "Access updated"
 msgstr "アクセスが更新されました"
 
@@ -704,15 +704,15 @@ msgstr "送信"
 msgid "Invalid request"
 msgstr "不正なリクエスト"
 
-#: lib/form_utils.py:412
+#: lib/form_utils.py:423
 msgid "Yes"
 msgstr "はい"
 
-#: lib/form_utils.py:412
+#: lib/form_utils.py:424
 msgid "No"
 msgstr "いいえ"
 
-#: lib/ldap_utils.py:124
+#: lib/ldap_utils.py:125
 msgid "Failed to update password: {}"
 msgstr "パスワードの更新に失敗しました:  {}"
 
@@ -728,7 +728,7 @@ msgstr ""
 msgid "Subject"
 msgstr "件名"
 
-#: templates/404.html:4 templates/500.html:4
+#: templates/404.html:4 templates/500.html.py:4
 msgid "Sorry"
 msgstr "すみません"
 

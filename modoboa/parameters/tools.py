@@ -118,7 +118,7 @@ class Manager(object):
                 raise
             return None
         if app in self._parameters:
-            return self._parameters[app][parameter]
+            return self._parameters[app].get(parameter, default)
         return default
 
     def get_values(self, app=None):

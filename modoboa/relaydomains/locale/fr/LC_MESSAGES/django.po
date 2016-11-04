@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: modoboa-1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 14:31+0200\n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
 "PO-Revision-Date: 2011-01-07 10:00+100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: FR <tonio@ngyn.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:18
+#: relaydomains/app_settings.py:15
 msgid "General"
 msgstr "Général"
 
-#: relaydomains/app_settings.py:21
+#: relaydomains/app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Chemin d'accès vers le fichier master.cf de Postfix"
 
-#: relaydomains/app_settings.py:23
+#: relaydomains/app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Chemin d'accès vers le fichier de configuration master.cf"
 

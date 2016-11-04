@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 14:31+0200\n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,15 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: relaydomains/app_settings.py:18
+#: relaydomains/app_settings.py:15
 msgid "General"
 msgstr "Основные"
 
-#: relaydomains/app_settings.py:21
+#: relaydomains/app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr ""
 
-#: relaydomains/app_settings.py:23
+#: relaydomains/app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr ""
 
