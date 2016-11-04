@@ -366,11 +366,7 @@ class User(PermissionsMixin):
         events.raiseEvent("AccountCreated", self)
 
     def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
+        creator = kwargs.pop("creator", None)
         super(User, self).save(*args, **kwargs)
         if creator is not None:
             self.post_create(creator)
