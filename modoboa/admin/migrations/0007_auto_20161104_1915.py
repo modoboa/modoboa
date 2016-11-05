@@ -8,8 +8,8 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('relaydomains', '0003_remove_relaydomain_dates'),
         ('admin', '0006_auto_20161104_1900'),
+        ('relaydomains', '0004_auto_20161105_1426'),
     ]
 
     operations = [

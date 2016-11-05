@@ -12,8 +12,7 @@ def move_dates(apps, schema_editor):
     DomainAlias = apps.get_model("admin", "DomainAlias")
     Mailbox = apps.get_model("admin", "Mailbox")
     Alias = apps.get_model("admin", "Alias")
-    RelayDomain = apps.get_model("relaydomains", "RelayDomain")
-    for model in [Domain, DomainAlias, Mailbox, Alias, RelayDomain]:
+    for model in [Domain, DomainAlias, Mailbox, Alias]:
         for instance in model.objects.all():
             instance.creation = instance.dates.creation
             instance.last_modification = instance.dates.last_modification
