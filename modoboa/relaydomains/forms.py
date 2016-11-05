@@ -30,7 +30,7 @@ class RelayDomainFormGeneral(forms.ModelForm):
 
     class Meta:
         model = RelayDomain
-        exclude = ["domain", "dates"]
+        exclude = ["domain", "creation", "last_modification"]
         widgets = {
             "service": forms.Select(attrs={"class": "form-control"})
         }

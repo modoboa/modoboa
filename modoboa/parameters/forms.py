@@ -2,7 +2,6 @@
 
 from django import forms
 
-from modoboa.lib import events
 from modoboa.lib import db_utils
 from modoboa.lib import form_utils
 

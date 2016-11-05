@@ -108,14 +108,14 @@ class Domain(AdminObject):
 
     @property
     def just_created(self):
-        """return  true if the domain was created in the latest 24h"""
+        """Return true if the domain was created in the latest 24h."""
         now = timezone.now()
         delta = datetime.timedelta(days=1)
         return self.creation + delta > now
 
     def awaiting_checks(self):
-        """return  true if the domain has no valid MX records and was created
-        in the latest 24h"""
+        """Return true if the domain has no valid MX record and was created
+        in the latest 24h."""
         if (not self.mxrecord_set.has_valids()) and self.just_created:
             return True
         return False

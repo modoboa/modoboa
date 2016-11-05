@@ -41,7 +41,6 @@ class ServiceManager(Manager):
 
 
 class Service(models.Model):
-
     """Postfix service."""
 
     name = models.CharField(
@@ -59,13 +58,13 @@ class Service(models.Model):
 
 
 class RelayDomain(admin_models.AdminObject):
-
     """Relay domain.
 
     A relay domain differs from a usual domaine because its final
     destination is not reached yet. It must be accepted by the MTA but
     it will then be transfered to another one.
     """
+
     domain = models.OneToOneField("admin.Domain", null=True)
     target_host = models.CharField(
         ugettext_lazy('target host'), max_length=255,
