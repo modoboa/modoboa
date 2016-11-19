@@ -3,18 +3,20 @@
 
 import logging
 
-from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
+from django.contrib.auth import authenticate, login, logout
+
 from modoboa.core.forms import LoginForm
 from modoboa.lib import events
 from modoboa.lib.web_utils import _render_to_string
 
 from .base import find_nextlocation
+from .. import signals
 
 logger = logging.getLogger("modoboa.auth")
 
@@ -40,9 +42,10 @@ def dologin(request):
                 logger.info(
                     _("User '%s' successfully logged in") % user.username
                 )
-                events.raiseEvent("UserLogin", request,
-                                  form.cleaned_data["username"],
-                                  form.cleaned_data["password"])
+                signals.user_login.send(
+                    sender="dologin",
+                    username=form.cleaned_data["username"],
+                    password=form.cleaned_data["password"])
                 return HttpResponseRedirect(find_nextlocation(request, user))
             error = _(
                 "Your username and password didn't match. Please try again.")
@@ -59,20 +62,22 @@ def dologin(request):
         nextlocation = request.GET.get("next", None)
         httpcode = 200
 
+    announcements = signals.get_announcements.send(
+        sender="login", location="loginpage")
+    announcements = [announcement[1] for announcement in announcements]
     return HttpResponse(_render_to_string(request, "registration/login.html", {
         "form": form, "error": error, "next": nextlocation,
-        "annoucements": events.raiseQueryEvent("GetAnnouncement", "loginpage")
+        "annoucements": announcements
     }), status=httpcode)
 
 dologin = never_cache(dologin)
 
 
 def dologout(request):
-    """Logout the current user.
-    """
+    """Logout current user."""
     if not request.user.is_anonymous():
-        events.raiseEvent("UserLogout", request)
+        signals.user_logout.send(sender="dologout")
         logger = logging.getLogger("modoboa.auth")
-        logger.info(_("User '%s' logged out") % request.user.username)
+        logger.info(_("User {} logged out").format(request.user.username))
         logout(request)
     return HttpResponseRedirect(reverse("core:login"))

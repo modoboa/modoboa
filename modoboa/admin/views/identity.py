@@ -188,8 +188,7 @@ def editaccount(request, pk):
 @login_required
 @permission_required("core.delete_user")
 def delaccount(request, pk):
-    keepdir = True if request.POST.get("keepdir", "false") == "true" else False
-    User.objects.get(pk=pk).delete(request.user, keep_mb_dir=keepdir)
+    User.objects.get(pk=pk).delete()
     return render_to_json_response(
         ungettext("Account deleted", "Accounts deleted", 1)
     )

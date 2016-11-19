@@ -1,45 +1,10 @@
 """General event callbacks."""
 
-from django.conf import settings
-from django.template import Template, Context
 from django.utils.translation import ugettext_lazy, ugettext as _
 
 from modoboa.lib import events
 
 from .forms import RelayDomainWizardStep, RelayDomainFormGeneral
-
-PERMISSIONS = {
-    "Resellers": [
-        ("relaydomains", "relaydomain", "add_relaydomain"),
-        ("relaydomains", "relaydomain", "change_relaydomain"),
-        ("relaydomains", "relaydomain", "delete_relaydomain"),
-        ("relaydomains", "service", "add_service"),
-        ("relaydomains", "service", "change_service"),
-        ("relaydomains", "service", "delete_service")
-    ]
-}
-
-
-@events.observe("GetExtraRolePermissions")
-def extra_permissions(rolename):
-    """Return extra permissions for Resellers."""
-    return PERMISSIONS.get(rolename, [])
-
-
-@events.observe('GetStaticContent')
-def static_content(caller, st_type, user):
-    if caller != 'domains' or st_type != 'js':
-        return []
-
-    t = Template("""<script src="{{ STATIC_URL }}relaydomains/js/relay_domains.js" type="text/javascript"></script>
-<script type="text/javascript">
-  var rdomain;
-  $(document).ready(function() {
-    rdomain = new RelayDomains({});
-  });
-</script>
-""")
-    return [t.render(Context({'STATIC_URL': settings.STATIC_URL}))]
 
 
 @events.observe('ExtraDomainFilters')

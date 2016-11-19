@@ -16,7 +16,6 @@ def load_limits_settings():
 
     param_tools.registry.add("global", ParametersForm, _("Limits"))
     events.declare(EVENTS)
-    from . import controls
     from . import general_callbacks
 
 

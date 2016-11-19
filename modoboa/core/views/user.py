@@ -16,22 +16,23 @@ from modoboa.lib.web_utils import (
 from modoboa.parameters import tools as param_tools
 
 from ..forms import ProfileForm, APIAccessForm
+from .. import signals
 
 
 @login_required
 def index(request, tplname="core/user_index.html"):
-    extrajs = events.raiseQueryEvent("ExtraUprefsJS", request.user)
-    return render(request, tplname, {
-        "selection": "user",
-        "extrajs": "".join(extrajs)
-    })
+    """Render user index page."""
+    # FIXME: replace ExtraUprefsJS in autoreply
+    return render(request, tplname, {"selection": "user"})
 
 
 @login_required
 def profile(request, tplname='core/user_profile.html'):
     """Profile detail/update view."""
     update_password = True
-    if True in events.raiseQueryEvent("PasswordChange", request.user):
+    results = signals.allow_password_change.send(
+        sender="profile", user=request.user)
+    if True in [result[1] for result in results]:
         update_password = False
 
     if request.method == "POST":

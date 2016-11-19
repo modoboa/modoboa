@@ -12,7 +12,7 @@
 <script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/twocols_nav.js' %}"></script>
 <script type="text/javascript">
-{{ extrajs|safe }}
+{% extra_static_content "user_index" "js" user %}
 $(document).ready(function() {
     var userprefs = new TwocolsNav({
         deflocation: "profile/",

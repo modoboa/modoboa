@@ -1,6 +1,5 @@
-"""
-Views available to super administrators only.
-"""
+"""Views available to super administrators only."""
+
 from django.contrib.auth.decorators import (
     login_required, user_passes_test
 )
@@ -10,12 +9,13 @@ from django.utils.translation import ugettext as _
 
 from modoboa.core.models import Log
 from modoboa.core.utils import check_for_updates
-from modoboa.lib import events
 from modoboa.lib.listing import get_sort_order, get_listing_page
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
 from modoboa.parameters import tools as param_tools
+
+from .. import signals
 
 
 @login_required
@@ -117,6 +117,8 @@ def check_top_notifications(request):
     """
     AJAX service to check for new top notifications to display.
     """
-    return render_to_json_response(
-        events.raiseQueryEvent("TopNotifications", request, True)
-    )
+    notifications = signals.get_top_notifications.send(
+        sender="top_notifications", include_all=True)
+    notifications = reduce(
+        lambda a, b: a + b, [notif[1] for notif in notifications])
+    return render_to_json_response(notifications)

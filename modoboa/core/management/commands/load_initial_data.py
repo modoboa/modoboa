@@ -8,14 +8,14 @@
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-from modoboa.core import PERMISSIONS
-from modoboa.core.extensions import exts_pool
 from modoboa.lib.cryptutils import random_key
-from modoboa.lib import events
 from modoboa.lib.permissions import add_permissions_to_group
 import modoboa.relaydomains.models as relay_models
 
+from ... import constants
+from ... import extensions
 from ... import models
+from ... import signals
 
 
 class Command(BaseCommand):
@@ -54,27 +54,26 @@ class Command(BaseCommand):
         for service_name in ["relay", "smtp"]:
             relay_models.Service.objects.get_or_create(name=service_name)
 
-        exts_pool.load_all()
+        extensions.exts_pool.load_all()
 
-        superadmin = models.User.objects.filter(is_superuser=True).first()
-        groups = PERMISSIONS.keys() + [
-            role[0] for role
-            in events.raiseQueryEvent("GetExtraRoles", superadmin, None)
-        ]
+        groups = constants.PERMISSIONS.keys()
         for groupname in groups:
             group, created = Group.objects.get_or_create(name=groupname)
+            results = signals.extra_role_permissions.send(
+                sender=self.__class__, role=groupname)
             permissions = (
-                PERMISSIONS.get(groupname, []) +
-                events.raiseQueryEvent("GetExtraRolePermissions", groupname)
+                constants.PERMISSIONS.get(groupname, []) +
+                reduce(lambda a, b: a + b, [result[1] for result in results])
             )
             if not permissions:
                 continue
             add_permissions_to_group(group, permissions)
 
-        for extname in exts_pool.extensions.keys():
-            extension = exts_pool.get_extension(extname)
+        for extname in extensions.exts_pool.extensions.keys():
+            extension = extensions.exts_pool.get_extension(extname)
             extension.load_initial_data()
-            events.raiseEvent("InitialDataLoaded", extname)
+            signals.initial_data_loaded.send(
+                sender=self.__class__, extname=extname)
 
         if options["extra_fixtures"]:
             from modoboa.admin import factories

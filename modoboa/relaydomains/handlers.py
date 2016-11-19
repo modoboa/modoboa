@@ -1,13 +1,16 @@
 """Django signal handlers for relaydomains."""
 
+from django.conf import settings
 from django.db.models import signals
 from django.dispatch import receiver
+from django.template import Template, Context
 
 from modoboa.admin import models as admin_models
 from modoboa.admin.signals import use_external_recipients
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 
+from . import constants
 from . import models
 from . import postfix_maps
 
@@ -52,3 +55,26 @@ def register_postfix_maps(sender, **kwargs):
         postfix_maps.SplitedDomainsTransportMap,
         postfix_maps.RelayRecipientVerification
     ]
+
+
+@receiver(core_signals.extra_role_permissions)
+def extra_role_permissions(sender, role, **kwargs):
+    """Add permissions to the Resellers group."""
+    return constants.PERMISSIONS.get(role, [])
+
+
+@receiver(core_signals.extra_static_content)
+def static_content(sender, caller, st_type, user, **kwargs):
+    """Add extra static content."""
+    if caller != "domains" or st_type != "js":
+        return []
+
+    t = Template("""<script src="{{ STATIC_URL }}relaydomains/js/relay_domains.js" type="text/javascript"></script>
+<script type="text/javascript">
+  var rdomain;
+  $(document).ready(function() {
+    rdomain = new RelayDomains({});
+  });
+</script>
+""")
+    return [t.render(Context({"STATIC_URL": settings.STATIC_URL}))]

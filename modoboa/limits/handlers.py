@@ -2,6 +2,7 @@
 
 from django.db.models import signals
 from django.dispatch import receiver
+from django.template.loader import render_to_string
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -10,6 +11,7 @@ from modoboa.admin import signals as admin_signals
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
 from modoboa.lib import signals as lib_signals
+from modoboa.lib import permissions
 from modoboa.parameters import tools as param_tools
 
 from . import lib
@@ -99,3 +101,117 @@ def display_admin_limits(sender, user, account, **kwargs):
                 account.userobjectlimit_set.select_related("content_type"))
         }
     }]
+
+
+@receiver(core_signals.account_deleted)
+def move_resource(sender, user, **kwargs):
+    """Move remaining resource to another user."""
+    owner = permissions.get_object_owner(user)
+    if owner.is_superuser or owner.role != "Resellers":
+        return
+    utils.move_pool_resource(owner, user)
+
+
+@receiver(core_signals.user_can_set_role)
+def user_can_set_role(sender, user, role, account=None, **kwargs):
+    """Check if the user can still set this role.
+
+    The only interesting case concerns resellers defining new domain
+    administrators. We want to check if they are allowed to do this
+    operation before any modification is made to :keyword:`account`.
+
+    :param ``User`` user: connected user
+    :param str role: role to check
+    :param ``User`` account: account modified (None on creation)
+    """
+    condition = (
+        not param_tools.get_global_parameter("enable_admin_limits") or
+        role != "DomainAdmins")
+    if condition:
+        return True
+    lname = "domain_admins"
+    condition = (
+        user.is_superuser or
+        not user.userobjectlimit_set.get(name=lname).is_exceeded()
+    )
+    if condition:
+        return True
+    if account is not None and account.role == role:
+        return True
+    return False
+
+
+@receiver(core_signals.extra_static_content)
+def get_static_content(sender, caller, st_type, user, **kwargs):
+    """Add extra static content."""
+    condition = (
+        not param_tools.get_global_parameter("enable_admin_limits") or
+        caller not in ["domains", "identities"] or
+        user.role in ["SuperAdmins", "SimpleUsers"]
+    )
+    if condition:
+        return []
+    if st_type == "css":
+        return ["""<style>
+.resource {
+    padding: 10px 15px;
+}
+
+.resource .progress {
+    margin-bottom: 0px;
+}
+
+.resource .progress .bar {
+    color: #000000;
+}
+</style>
+"""]
+    return ["""
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".progress").tooltip();
+});
+</script>
+"""]
+
+
+@receiver(admin_signals.extra_admin_content)
+def display_pool_usage(sender, user, location, currentpage, **kwargs):
+    """Display current usage."""
+    condition = (
+        not param_tools.get_global_parameter("enable_admin_limits") or
+        location != "leftcol" or user.is_superuser)
+    if condition:
+        return []
+    if currentpage == "identities":
+        names = ["mailboxes", "mailbox_aliases"]
+        if user.has_perm("admin.add_domain"):
+            names += ["domain_admins"]
+    else:
+        exceptions = ["domain_admins", "mailboxes", "mailbox_aliases"]
+        names = [
+            name for name, tpl in utils.get_user_limit_templates()
+            if name not in exceptions and
+            ("required_role" not in tpl or
+             tpl["required_role"] == user.role)
+        ]
+
+    limits = user.userobjectlimit_set.filter(name__in=names, max_value__gt=0)
+    if len(limits) == 0:
+        return []
+    return [
+        render_to_string("limits/poolusage.html",
+                         dict(limits=limits))
+    ]
+
+
+@receiver(core_signals.account_role_changed)
+def move_pool_resource(sender, account, role, **kwargs):
+    """Move remaining resource to owner if needed."""
+    owner = permissions.get_object_owner(account)
+    if not owner or owner.is_superuser or owner.role != "Resellers":
+        # Domain admins can't change the role so nothing to check.
+        return
+
+    if role not in ["DomainAdmins", "Resellers"]:
+        utils.move_pool_resource(owner, account)

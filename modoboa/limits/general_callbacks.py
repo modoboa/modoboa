@@ -10,35 +10,6 @@ from . import forms
 from . import utils
 
 
-@events.observe("ExtraAdminContent")
-def display_pool_usage(user, target, currentpage):
-    condition = (
-        not param_tools.get_global_parameter("enable_admin_limits") or
-        target != "leftcol" or user.is_superuser)
-    if condition:
-        return []
-    if currentpage == "identities":
-        names = ["mailboxes", "mailbox_aliases"]
-        if user.has_perm("admin.add_domain"):
-            names += ["domain_admins"]
-    else:
-        exceptions = ["domain_admins", "mailboxes", "mailbox_aliases"]
-        names = [
-            name for name, tpl in utils.get_user_limit_templates()
-            if name not in exceptions and
-            ("required_role" not in tpl or
-             tpl["required_role"] == user.role)
-        ]
-
-    limits = user.userobjectlimit_set.filter(name__in=names, max_value__gt=0)
-    if len(limits) == 0:
-        return []
-    return [
-        render_to_string("limits/poolusage.html",
-                         dict(limits=limits))
-    ]
-
-
 @events.observe("ExtraAccountForm")
 def extra_account_form(user, account=None):
     if not param_tools.get_global_parameter("enable_admin_limits"):
@@ -102,36 +73,3 @@ def fill_account_instances(user, account, instances):
     if account.role not in ["Resellers", "DomainAdmins"]:
         return
     instances["resources"] = account
-
-
-@events.observe("GetStaticContent")
-def get_static_content(caller, st_type, user):
-    condition = (
-        not param_tools.get_global_parameter("enable_admin_limits") or
-        caller not in ["domains", "identities"] or
-        user.role in ["SuperAdmins", "SimpleUsers"]
-    )
-    if condition:
-        return []
-    if st_type == "css":
-        return ["""<style>
-.resource {
-    padding: 10px 15px;
-}
-
-.resource .progress {
-    margin-bottom: 0px;
-}
-
-.resource .progress .bar {
-    color: #000000;
-}
-</style>
-"""]
-    return ["""
-<script type="text/javascript">
-$(document).ready(function() {
-    $(".progress").tooltip();
-});
-</script>
-"""]

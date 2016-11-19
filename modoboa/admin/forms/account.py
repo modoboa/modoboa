@@ -229,10 +229,14 @@ class AccountFormMail(forms.Form, DynamicForm):
             "quota": 3
         }
         self.extra_fields = []
-        result = events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb)
-        for fname, field in result:
-            self.fields[fname] = field
-            self.extra_fields.append(fname)
+        results = core_signals.extra_form_fields.send(
+            sender=self.__class__, form="mailform", instance=self.mb)
+        if results:
+            results = reduce(
+                lambda a, b: a + b, [result for result in results])
+            for fname, field in results:
+                self.fields[fname] = field
+                self.extra_fields.append(fname)
         if self.mb is not None:
             self.fields["email"].required = True
             qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
@@ -380,9 +384,9 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.cleaned_data["use_domain_quota"] = (
                 self.cleaned_data["quota_act"])
             self.mb.update_from_dict(user, self.cleaned_data)
-        events.raiseEvent(
-            'SaveExtraFormFields', 'mailform', self.mb, self.cleaned_data
-        )
+        core_signals.extra_form_fields.send(
+            sender=self.__class__, form="mailform", instance=self.mb,
+            cleaned_data=self.cleaned_data)
 
         account.email = self.cleaned_data["email"]
         account.save()

@@ -174,7 +174,6 @@ def get_global_parameter(name, app=None, **kwargs):
     :param name: the parameter's name
     :param app: the application owning the parameter
     :return: the corresponding value
-
     """
     if app is None:
         app = guess_extension_name()

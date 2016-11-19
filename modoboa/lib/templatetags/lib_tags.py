@@ -8,7 +8,7 @@ from django.template import Template, Context
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
-from modoboa.lib import events
+from modoboa.core import signals as core_signals
 
 register = template.Library()
 
@@ -89,11 +89,12 @@ def extra_static_content(caller, st_type, user):
     tpl = template.Template(
         "{% for sc in static_content %}{{ sc|safe }}{% endfor %}"
     )
+    static_content = core_signals.extra_static_content.send(
+        sender="extra_static_content",
+        caller=caller, st_type=st_type, user=user)
+    static_content = [result[1] for result in static_content]
     return tpl.render(
-        template.Context({
-            'static_content': events.raiseQueryEvent(
-                "GetStaticContent", caller, st_type, user)
-        })
+        template.Context({"static_content": static_content})
     )
 
 

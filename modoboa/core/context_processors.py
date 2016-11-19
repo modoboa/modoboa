@@ -1,6 +1,6 @@
 """Custom context processors."""
 
-from modoboa.lib import events
+from . import signals
 
 
 def top_notifications(request):
@@ -9,8 +9,11 @@ def top_notifications(request):
         return {}
     interval = request.localconfig.parameters.get_value(
         "top_notifications_check_interval")
+    notifications = signals.get_top_notifications.send(
+        sender="top_notifications", include_all=False)
+    notifications = reduce(
+        lambda a, b: a + b, [notif[1] for notif in notifications])
     return {
         "notifications_check_interval": interval * 1000,
-        "top_notifications": events.raiseQueryEvent(
-            "TopNotifications", request, False)
+        "top_notifications": notifications
     }

@@ -6,38 +6,8 @@ from django.utils.translation import ugettext_lazy
 
 BASE_EVENTS = [
     "AccountCreated",
-    "AccountAutoCreated",
+
     "AccountModified",
-    "AccountDeleted",
-    "AccountExported",
-    "AccountImported",
-    "PasswordUpdated",
-    "ExtraAccountActions",
-    "RoleChanged",
-    "GetExtraRoles",
-    "GetExtraRolePermissions",
-    "PasswordChange",
-    "UserCanSetRole",
-
-    "InitialDataLoaded",
-
-    "UserMenuDisplay",
-    "AdminMenuDisplay",
-    "GetStaticContent",
-
-    "UserLogin",
-    "UserLogout",
-
-    "GetAnnouncement",
-
-    "TopNotifications",
-    "ExtraAdminContent",
-
-    "ExtraUprefsRoutes",
-    "ExtraUprefsJS",
-
-    "ExtraFormFields",
-    "SaveExtraFormFields",
 ]
 
 
@@ -57,7 +27,6 @@ def load_core_settings():
 
 
 class CoreConfig(AppConfig):
-
     """App configuration."""
 
     name = "modoboa.core"

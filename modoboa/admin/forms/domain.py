@@ -193,8 +193,9 @@ class DomainFormOptions(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(DomainFormOptions, self).__init__(*args, **kwargs)
-        result = events.raiseQueryEvent("UserCanSetRole", user, "DomainAdmins")
-        if False in result:
+        results = core_signals.user_can_set_role.send(
+            sender=self.__class__, user=user, role="DomainAdmins")
+        if False in [result[1] for result in results]:
             self.fields = {}
             return
 

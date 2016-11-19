@@ -75,10 +75,6 @@ class AccountViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(mailbox__domain__name=domain)
         return queryset
 
-    def perform_destroy(self, instance):
-        """Add custom args to delete call."""
-        instance.delete(self.request.user)
-
     @detail_route(methods=["put"])
     def password(self, request, pk=None):
         """Change account password."""

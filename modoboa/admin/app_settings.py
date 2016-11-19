@@ -18,7 +18,7 @@ ADMIN_EVENTS = [
     "DomainDeleted",
     "DomainOwnershipRemoved",
     "GetTagsForDomain",
-    "ExtraDomainMenuEntries",
+
     "ExtraDomainFilters",
     "ExtraDomainQsetFilters",
     "ExtraDomainTypes",
