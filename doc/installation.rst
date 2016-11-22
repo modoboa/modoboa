@@ -2,7 +2,7 @@
 Installation
 ############
 
-Recommanded way
+Recommended way
 ===============
 
 If you start from scratch and want to deploy a complete mail server,
