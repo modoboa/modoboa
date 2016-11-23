@@ -80,17 +80,6 @@ def render_fields_group(form, pattern):
 
 
 @register.simple_tag
-def render_extra_fields(form):
-    result = ''
-    for fname in form.extra_fields:
-        result += render_to_string("common/generic_field.html", {
-            'field': form[fname], 'help_display_mode': 'tooltip',
-            'label_width': 'col-sm-4'
-        })
-    return result
-
-
-@register.simple_tag
 def render_field_width(field):
     """."""
     form = field.form
