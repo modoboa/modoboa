@@ -41,7 +41,7 @@ def clean_domain(sender, instance, **kwargs):
         return
     has_relaydom = hasattr(instance, "relaydomain")
     if instance.type == "domain" and has_relaydom:
-        models.RelayDomain.objects.filter(domain=instance).delete()
+        instance.relaydomain.delete()
     elif instance.type == "relaydomain" and not has_relaydom:
         # Make sure to create a RelayDomain instance since we can't do it
         # at form level...

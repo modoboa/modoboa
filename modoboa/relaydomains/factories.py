@@ -28,7 +28,7 @@ class RelayDomainFactory(PermissionFactory):
         model = models.RelayDomain
         django_get_or_create = ("domain", )
 
-    domain = factory.SubFactory(DomainFactory, type="relaydomain")
     target_host = "external.host.tld"
+    domain = factory.SubFactory(DomainFactory)
     verify_recipients = True
     service = factory.SubFactory(ServiceFactory)
