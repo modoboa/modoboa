@@ -1,6 +1,7 @@
 """Test map files generation."""
 
 import os
+from unittest import skipIf
 
 from django.conf import settings
 from django.core.management import call_command
@@ -20,6 +21,8 @@ class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
         "sql-sender-login-mailboxes-extra.cf", "sql-sender-login-aliases.cf"
     ]
 
+    @skipIf(not settings.DATABASES['default']['USER'],
+            'Broken test with sqlite')
     def test_map_upgrade(self):
         """Check that map content is used."""
         dburl = "postgres://user:password@localhost/testdb"
