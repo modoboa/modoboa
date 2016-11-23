@@ -1,5 +1,7 @@
 """modoboa-admin-relaydomains unit tests."""
 
+import json
+
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -62,14 +64,23 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         """Create test data."""
         super(RelayDomainsTestCase, cls).setUpTestData()
         admin_factories.populate_database()
-        cls.rdom = RelayDomainFactory(domain__name='relaydomain.tld')
+        cls.rdom = RelayDomainFactory(domain__name="relaydomain.tld")
         admin_factories.DomainAliasFactory(
-            name='relaydomainalias.tld', target=cls.rdom.domain)
+            name="relaydomainalias.tld", target=cls.rdom.domain)
         admin_factories.MailboxFactory(
             domain=cls.rdom.domain, address="local",
             user__username="local@relaydomain.tld",
             user__groups=("SimpleUsers", )
         )
+
+    def test_domain_list_view(self):
+        """Make sure relaydomain is listed."""
+        url = reverse("admin:_domain_list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = json.loads(response.content)
+        self.assertIn("relaydomain.tld", content["rows"])
+        self.assertIn("Relay Domain", content["rows"])
 
     def test_create_relaydomain(self):
         """Test the creation of a relay domain.

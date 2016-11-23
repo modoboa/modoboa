@@ -46,7 +46,8 @@ def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     extra_filters = reduce(
         lambda a, b: a + b,
-        [result for result in signals.extra_domain_filters(sender="_domains")]
+        [result[1] for result in
+         signals.extra_domain_filters.send(sender="_domains")]
     )
     filters = dict(
         (flt, request.GET.get(flt, None))
