@@ -62,7 +62,12 @@ class Repair(BaseCommand):
                     elif isinstance(obj, models.DomainAlias):
                         admin = obj.target.admins.first()
                     else:
-                        admin = obj.domain.admins.first()
+                        if obj.domain:
+                            admin = obj.domain.admins.first()
+                        else:
+                            # Alias is an internal alias for domain alias
+                            # we don't care if it's not owned
+                            continue
                     if not admin:
                         # domain has no admin. use the first superuser found
                         admin = User.objects.filter(is_superuser=True,

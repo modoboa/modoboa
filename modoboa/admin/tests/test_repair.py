@@ -39,3 +39,8 @@ class RepairTestCase(ModoTestCase):
         management.call_command("modo", "repair", "--quiet", "--dry-run")
         # assert its not fixed
         self.assertIs(get_object_owner(mbox), None)
+
+    def test_management_command_with_nul_domain(self):
+        """ Just assume nothing raise when an alias has no domain"""
+        models.Alias.objects.create(address='@modoboa.xxx')
+        management.call_command("modo", "repair", "--quiet")
