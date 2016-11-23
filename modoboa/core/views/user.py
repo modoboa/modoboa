@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from rest_framework.authtoken.models import Token
 
-from modoboa.lib import events
 from modoboa.lib.cryptutils import encrypt
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
@@ -22,7 +21,6 @@ from .. import signals
 @login_required
 def index(request, tplname="core/user_index.html"):
     """Render user index page."""
-    # FIXME: replace ExtraUprefsJS in autoreply
     return render(request, tplname, {"selection": "user"})
 
 
