@@ -16,7 +16,6 @@ from reversion import revisions as reversion
 
 from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import events
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
 )
@@ -45,10 +44,13 @@ def index(request):
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
+    extra_filters = reduce(
+        lambda a, b: a + b,
+        [result for result in signals.extra_domain_filters(sender="_domains")]
+    )
     filters = dict(
         (flt, request.GET.get(flt, None))
-        for flt in ['domfilter', 'searchquery'] +
-        events.raiseQueryEvent('ExtraDomainFilters')
+        for flt in ["domfilter", "searchquery"] + extra_filters
     )
     request.session['domains_filters'] = filters
     domainlist = get_domains(request.user, **filters)
@@ -126,7 +128,10 @@ def editdomain(request, dom_id):
         raise PermDeniedException
 
     instances = dict(general=domain)
-    events.raiseEvent("FillDomainInstances", request.user, domain, instances)
+    results = signals.get_domain_form_instances.send(
+        sender="editdomain", user=request.user, domain=domain)
+    for result in results:
+        instances.update(result[1])
     return DomainForm(request, instances=instances).process()
 
 

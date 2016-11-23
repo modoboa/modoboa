@@ -4,18 +4,21 @@ from django.conf import settings
 from django.db.models import signals
 from django.dispatch import receiver
 from django.template import Template, Context
+from django.utils.translation import ugettext as _
 
 from modoboa.admin import models as admin_models
-from modoboa.admin.signals import use_external_recipients
+from modoboa.admin import signals as admin_signals
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 
 from . import constants
+from . import forms
+from . import lib
 from . import models
 from . import postfix_maps
 
 
-@receiver(use_external_recipients)
+@receiver(admin_signals.use_external_recipients)
 def check_relaydomain_alias(sender, **kwargs):
     """Allow the creation of an alias on a relaydomain."""
     recipient = kwargs.get("recipients")
@@ -78,3 +81,85 @@ def static_content(sender, caller, st_type, user, **kwargs):
 </script>
 """)
     return [t.render(Context({"STATIC_URL": settings.STATIC_URL}))]
+
+
+@receiver(admin_signals.extra_domain_filters)
+def extra_domain_filters(sender, **kwargs):
+    """Return relaydomain filters."""
+    return ["srvfilter"]
+
+
+@receiver(admin_signals.extra_domain_forms)
+def extra_domain_form(sender, user, **kwargs):
+    """Return relay settings for domain edition."""
+    if not user.has_perm("relaydomains.change_relaydomain"):
+        return []
+    domain = kwargs.get("domain")
+    if not domain or domain.type != "relaydomain":
+        return []
+    return [{
+        "id": "relaydomain", "title": _("Relay settings"),
+        "cls": forms.RelayDomainFormGeneral,
+        "formtpl": "relaydomains/relaydomain_form.html"
+    }]
+
+
+@receiver(admin_signals.get_domain_form_instances)
+def fill_domain_instances(sender, user, domain, **kwargs):
+    """Fill the relaydomain form with the right instance."""
+    condition = (
+        not user.has_perm("relaydomains.change_relaydomain") or
+        domain.type != "relaydomain"
+    )
+    if condition:
+        return {}
+    return {"relaydomain": domain.relaydomain}
+
+
+@receiver(admin_signals.extra_domain_import_help)
+def extra_domain_import_help(sender, **kwargs):
+    """Add extra help lines."""
+    return [_("""
+<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>
+""")]
+
+
+@receiver(admin_signals.extra_domain_qset_filters)
+def extra_domain_entries(sender, domfilter, extrafilters, **kwargs):
+    """Return extra queryset filters."""
+    if domfilter is not None and domfilter and domfilter != "relaydomain":
+        return {}
+    if "srvfilter" in extrafilters and extrafilters["srvfilter"]:
+        return {"relaydomain__service__name": extrafilters["srvfilter"]}
+    return {}
+
+
+@receiver(admin_signals.extra_domain_types)
+def extra_domain_types(sender, **kwargs):
+    """Declare the relay domain type."""
+    return [("relaydomain", _("Relay domain"))]
+
+
+@receiver(admin_signals.extra_domain_wizard_steps)
+def extra_wizard_step(sender, **kwargs):
+    """Return a step to configure the relay settings."""
+    return [forms.RelayDomainWizardStep(
+        "relay", forms.RelayDomainFormGeneral, _("Relay domain"),
+        "relaydomains/relaydomain_form.html"
+    )]
+
+
+@receiver(admin_signals.get_domain_tags)
+def get_tags_for_domain(sender, domain, **kwargs):
+    """Return relay domain custom tags."""
+    if domain.type != "relaydomain":
+        return []
+    return domain.relaydomain.tags
+
+
+@receiver(admin_signals.import_object)
+def get_import_func(sender, objtype, **kwargs):
+    """Return function used to import objtype."""
+    if objtype == "relaydomain":
+        return [lib.import_relaydomain]
+    return []

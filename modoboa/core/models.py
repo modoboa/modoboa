@@ -20,7 +20,6 @@ import jsonfield
 from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
-from modoboa.lib import events
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
@@ -330,7 +329,6 @@ class User(PermissionsMixin):
         """Grant permission on this user to creator."""
         from modoboa.lib.permissions import grant_access_to_object
         grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("AccountCreated", self)
 
     def save(self, *args, **kwargs):
         creator = kwargs.pop("creator", None)

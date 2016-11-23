@@ -12,7 +12,6 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import authenticate, login, logout
 
 from modoboa.core.forms import LoginForm
-from modoboa.lib import events
 from modoboa.lib.web_utils import _render_to_string
 
 from .base import find_nextlocation

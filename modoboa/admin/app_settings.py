@@ -1,4 +1,4 @@
-"""Modoboa admin settings and events."""
+"""Modoboa admin settings."""
 
 import os
 
@@ -9,43 +9,6 @@ from django.utils.translation import ugettext_lazy
 from modoboa.lib.form_utils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import forms as param_forms
-
-from ..lib import events
-
-ADMIN_EVENTS = [
-    "DomainCreated",
-    "DomainModified",
-    "DomainDeleted",
-    "DomainOwnershipRemoved",
-    "GetTagsForDomain",
-
-    "ExtraDomainFilters",
-    "ExtraDomainQsetFilters",
-    "ExtraDomainTypes",
-    "ExtraDomainWizardSteps",
-    "GetDomainModifyLink",
-    "CheckDomainName",
-
-    "DomainAliasCreated",
-    "DomainAliasDeleted",
-
-    "MailboxCreated",
-    "MailboxDeleted",
-    "MailboxModified",
-
-    "MailboxAliasCreated",
-    "MailboxAliasDeleted",
-
-    "ExtraDomainForm",
-    "FillDomainInstances",
-
-    "ExtraAccountForm",
-    "CheckExtraAccountForm",
-    "FillAccountInstances",
-
-    "ExtraDomainImportHelp",
-    "ImportObject"
-]
 
 
 class AdminParametersForm(param_forms.AdminParametersForm):
@@ -178,5 +141,3 @@ def load_admin_settings():
 
     param_tools.registry.add(
         "global", AdminParametersForm, ugettext_lazy("Administration"))
-    events.declare(ADMIN_EVENTS)
-    from . import callbacks

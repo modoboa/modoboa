@@ -94,11 +94,9 @@ def mailbox_deleted_handler(sender, **kwargs):
     It manually removes the mailbox from the aliases it is linked to
     and then remove all empty aliases.
     """
-    from modoboa.lib import events
     from modoboa.lib.permissions import ungrant_access_to_object
 
     mb = kwargs["instance"]
-    events.raiseEvent("MailboxDeleted", mb)
     ungrant_access_to_object(mb)
     for ralias in mb.aliasrecipient_set.select_related("alias"):
         alias = ralias.alias

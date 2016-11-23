@@ -36,3 +36,4 @@ user_can_set_role = django.dispatch.Signal(
     providing_args=["user", "role", "account"])
 user_login = django.dispatch.Signal(
     providing_args=["username", "password"])
+user_logout = django.dispatch.Signal()

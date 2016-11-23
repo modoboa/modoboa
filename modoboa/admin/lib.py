@@ -11,10 +11,11 @@ from django.utils.translation import ugettext as _
 
 from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import events
 from modoboa.lib.exceptions import PermDeniedException
 
 from .models import Domain, DomainAlias, Alias
+
+from . import signals
 
 
 def needs_mailbox():
@@ -92,24 +93,23 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
         q = Q(name__contains=searchquery)
         q |= Q(domainalias__name__contains=searchquery)
         domains = domains.filter(q).distinct()
-    qset_filters = events.raiseDictEvent(
-        "ExtraDomainQsetFilters", domfilter, extrafilters
-    )
-    if qset_filters:
+    results = signals.extra_domain_qset_filters.send(
+        sender="get_domains", domfilter=domfilter, extrafilters=extrafilters)
+    if results:
+        qset_filters = {}
+        for result in results:
+            qset_filters.update(result[1])
         domains = domains.filter(**qset_filters)
     return domains
 
 
-def check_if_domain_exists(name, extra_checks=None):
+def check_if_domain_exists(name, dtypes):
     """Check if a domain already exists.
 
     We not only look for domains, we also look for every object that
     could conflict with a domain (domain alias, etc.)
 
     """
-    dtypes = events.raiseQueryEvent('CheckDomainName')
-    if extra_checks is not None:
-        dtypes = extra_checks + dtypes
     for dtype, label in dtypes:
         if dtype.objects.filter(name=name).exists():
             return label

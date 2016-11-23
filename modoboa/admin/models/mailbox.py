@@ -13,7 +13,6 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from reversion import revisions as reversion
 
 from modoboa.core.models import User
-from modoboa.lib import events
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import exec_cmd
@@ -305,7 +304,6 @@ class Mailbox(AdminObject):
         if newaddress:
             self.rename(local_part, domain)
         self.save()
-        events.raiseEvent("MailboxModified", self)
 
     def save(self, *args, **kwargs):
         """Custom save.

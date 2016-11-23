@@ -7,7 +7,6 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
-from modoboa.lib import events
 from modoboa.lib.exceptions import Conflict
 from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
@@ -16,10 +15,12 @@ from modoboa.lib.form_utils import (
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
 
+from .. import signals
 from ..lib import check_if_domain_exists
 from ..models import (
     Domain, DomainAlias, Mailbox, Alias
 )
+
 
 DOMAIN_TYPES = [
     ("domain", _("Domain")),
@@ -60,9 +61,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             self.oldname = kwargs["instance"].name
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
 
-        self.fields["type"].choices = (
-            DOMAIN_TYPES + events.raiseQueryEvent("ExtraDomainTypes"))
-
+        extra_domain_types = reduce(
+            lambda a, b: a + b,
+            [result[1] for result in signals.extra_domain_types.send(
+                sender=self.__class__)]
+        )
+        self.fields["type"].choices = DOMAIN_TYPES + extra_domain_types
         self.field_widths = {
             "quota": 3
         }
@@ -87,8 +91,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         """Custom fields validation.
 
         We want to prevent duplicate names between domains and domain
-        aliases. Extensions have the possibility to declare other
-        objects (see *CheckDomainName* event).
+        aliases.
 
         The validation way is not very smart...
         """
@@ -279,11 +282,14 @@ class DomainForm(TabForms):
                 "mandatory": True
             })
 
-        cbargs = [self.user]
+        cbargs = {"user": self.user}
         if "instances" in kwargs:
             self.domain = kwargs["instances"]["general"]
-            cbargs += [self.domain]
-        self.forms += events.raiseQueryEvent("ExtraDomainForm", *cbargs)
+            cbargs["domain"] = self.domain
+        results = signals.extra_domain_forms.send(
+            sender=self.__class__, **cbargs)
+        self.forms += reduce(
+            lambda a, b: a + b, [result[1] for result in results])
         if not self.forms:
             self.active_id = "admins"
         super(DomainForm, self).__init__(request, *args, **kwargs)
@@ -326,8 +332,6 @@ class DomainForm(TabForms):
             f["instance"].save(self.request.user)
 
     def done(self):
-        if "general" in self.instances:
-            events.raiseEvent("DomainModified", self.instances["general"])
         return render_to_json_response(_("Domain modified"))
 
 
@@ -343,9 +347,10 @@ class DomainWizard(WizardForm):
                 "admin/domain_general_form.html"
             )
         )
-        steps = events.raiseQueryEvent("ExtraDomainWizardSteps")
-        for step in steps:
-            self.add_step(step)
+        results = signals.extra_domain_wizard_steps.send(sender=self.__class__)
+        for result in results:
+            for step in result[1]:
+                self.add_step(step)
         self.add_step(
             WizardStep(
                 "options", DomainFormOptions, _("Options"),

@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import ugettext as _
 
 from modoboa.admin import models as admin_models
 from modoboa.admin import signals as admin_signals
@@ -14,6 +15,7 @@ from modoboa.lib import signals as lib_signals
 from modoboa.lib import permissions
 from modoboa.parameters import tools as param_tools
 
+from . import forms
 from . import lib
 from . import models
 from . import utils
@@ -101,6 +103,74 @@ def display_admin_limits(sender, user, account, **kwargs):
                 account.userobjectlimit_set.select_related("content_type"))
         }
     }]
+
+
+@receiver(admin_signals.extra_account_forms)
+def extra_account_form(sender, user, account=None, **kwargs):
+    """Add limits form."""
+    if not param_tools.get_global_parameter("enable_admin_limits"):
+        return []
+    if user.role not in ["SuperAdmins", "Resellers"]:
+        return []
+    condition = (
+        (account is not None and
+         account.role not in ["Resellers", "DomainAdmins"]) or
+        user == account
+    )
+    if condition:
+        return []
+    return [{
+        "id": "resources", "title": _("Resources"),
+        "cls": forms.ResourcePoolForm
+    }]
+
+
+@receiver(admin_signals.check_extra_account_form)
+def check_form_access(sender, account, form, **kwargs):
+    """Check if form must be used for account."""
+    if form["id"] != "resources":
+        return True
+    if account.role not in ["Resellers", "DomainAdmins"]:
+        return False
+    return True
+
+
+@receiver(admin_signals.get_account_form_instances)
+def fill_account_instances(sender, user, account, **kwargs):
+    """Set account instance for resources form."""
+    condition = (
+        not param_tools.get_global_parameter("enable_admin_limits") or
+        (not user.is_superuser and user.role != "Resellers") or
+        account.role not in ["Resellers", "DomainAdmins"]
+    )
+    if condition:
+        return {}
+    return {"resources": account}
+
+
+@receiver(admin_signals.extra_domain_forms)
+def extra_domain_form(sender, user, domain, **kwargs):
+    """Include domain limits form."""
+    if not param_tools.get_global_parameter("enable_domain_limits"):
+        return []
+    if not user.has_perm("admin.change_domain"):
+        return []
+    return [{
+        "id": "resources", "title": _("Resources"),
+        "cls": forms.DomainLimitsForm
+    }]
+
+
+@receiver(admin_signals.get_domain_form_instances)
+def fill_domain_instances(sender, user, domain, **kwargs):
+    """Set domain instance for resources form."""
+    condition = (
+        not param_tools.get_global_parameter("enable_domain_limits") or
+        not user.has_perm("admin.change_domain")
+    )
+    if condition:
+        return {}
+    return {"resources": domain}
 
 
 @receiver(core_signals.account_deleted)
