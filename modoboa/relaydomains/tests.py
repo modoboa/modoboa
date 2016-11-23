@@ -1,5 +1,6 @@
 """modoboa-admin-relaydomains unit tests."""
 
+from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -224,6 +225,23 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         self.assertTrue(
             admin_models.Alias.objects.filter(
                 address="alias2@relaydomain.tld").exists())
+
+
+class ImportTestCase(ModoTestCase):
+    """Test import."""
+
+    def test_webui_import(self):
+        """Check if import from webui works."""
+        f = ContentFile("relaydomain;relay.com;127.0.0.1;relay;True;True",
+                        name="domains.csv")
+        self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(
+            admin_models.Domain.objects.filter(
+                name="relay.com", type="relaydomain").exists())
 
 
 class LimitsTestCase(ModoTestCase, Operations):

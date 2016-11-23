@@ -161,5 +161,5 @@ def get_tags_for_domain(sender, domain, **kwargs):
 def get_import_func(sender, objtype, **kwargs):
     """Return function used to import objtype."""
     if objtype == "relaydomain":
-        return [lib.import_relaydomain]
-    return []
+        return lib.import_relaydomain
+    return None

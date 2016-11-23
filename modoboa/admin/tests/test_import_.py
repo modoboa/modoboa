@@ -21,6 +21,10 @@ class ImportTestCase(ModoTestCase):
         factories.populate_database()
 
     def test_domains_import(self):
+        response = self.client.get(reverse("admin:domain_import"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Provide a CSV", response.content)
+
         f = ContentFile(b"""domain; domain1.com; 100; True
 domain; domain2.com; 200; False
 domainalias; domalias1.com; domain1.com; True
@@ -56,6 +60,10 @@ domainalias;test.alias;test.com;True
         self.assertIn('Object already exists: domainalias', resp.content)
 
     def test_identities_import(self):
+        response = self.client.get(reverse("admin:identity_import"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Provide a CSV", response.content)
+
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 0
 account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 5; test.com

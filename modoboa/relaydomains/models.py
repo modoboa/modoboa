@@ -113,7 +113,7 @@ class RelayDomain(admin_models.AdminObject):
         if len(row) != 6:
             raise BadRequest(_("Invalid line"))
         self.domain = admin_models.Domain(
-            name=row[1].strip(), type="relaydomain",
+            name=row[1].strip(), type="relaydomain", quota=0,
             enabled=(row[4].strip() in ["True", "1", "yes", "y"])
         )
         self.domain.save(creator=user)
