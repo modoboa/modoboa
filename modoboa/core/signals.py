@@ -17,8 +17,6 @@ can_create_object = django.dispatch.Signal(
 extra_account_actions = django.dispatch.Signal(providing_args=["account"])
 extra_admin_menu_entries = django.dispatch.Signal(
     providing_args=["location", "user"])
-extra_form_fields = django.dispatch.Signal(
-    providing_args=["form", "instance"])
 extra_role_permissions = django.dispatch.Signal(providing_args=["role"])
 extra_static_content = django.dispatch.Signal(
     providing_args=["caller", "st_type", "user"])
@@ -30,8 +28,6 @@ get_top_notifications = django.dispatch.Signal(
     providing_args=["include_all"])
 initial_data_loaded = django.dispatch.Signal(providing_args=["extname"])
 register_postfix_maps = django.dispatch.Signal()
-save_extra_form_fields = django.dispatch.Signal(
-    providing_args=["form", "instance", "cleaned_data"])
 user_can_set_role = django.dispatch.Signal(
     providing_args=["user", "role", "account"])
 user_login = django.dispatch.Signal(
