@@ -125,10 +125,13 @@ query = {{ query|safe }}
             mapcontent = utils.parse_map_file(fullpath)
             context = copy.deepcopy(context)
             context["dbtype"] = self.__checksums[mapobject.filename]["dbtype"]
-            context["dbuser"] = mapcontent["user"]
-            context["dbpass"] = mapcontent["password"]
-            context["dbname"] = mapcontent["dbname"]
-            context["dbhost"] = mapcontent["hosts"]
+            if context["dbtype"] == "sqlite":
+                context["dbname"] = mapcontent["dbpath"]
+            else:
+                context["dbuser"] = mapcontent["user"]
+                context["dbpass"] = mapcontent["password"]
+                context["dbname"] = mapcontent["dbname"]
+                context["dbhost"] = mapcontent["hosts"]
         content = self.get_template(context["dbtype"]).render(
             Context(
                 dict(context.items(),
