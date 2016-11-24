@@ -42,8 +42,9 @@ class Repair(BaseCommand):
         if not quiet:
             print(message)
 
-    def fix_owner(self, model, dry_run=False, **options):
-        for obj in model.objects.all():
+    def fix_owner(self, qs, dry_run=False, **options):
+        model = qs.model
+        for obj in qs:
             kw = dict(
                 cls=model.__name__,
                 obj=obj
@@ -62,12 +63,7 @@ class Repair(BaseCommand):
                     elif isinstance(obj, models.DomainAlias):
                         admin = obj.target.admins.first()
                     else:
-                        if obj.domain:
-                            admin = obj.domain.admins.first()
-                        else:
-                            # Alias is an internal alias for domain alias
-                            # we don't care if it's not owned
-                            continue
+                        admin = obj.domain.admins.first()
                     if not admin:
                         # domain has no admin. use the first superuser found
                         admin = User.objects.filter(is_superuser=True,
@@ -81,11 +77,11 @@ class Repair(BaseCommand):
     @known_problem
     def sometimes_objects_have_no_owner(self, **options):
         owned_models = (
-            User,
-            models.Domain,
-            models.Mailbox,
-            models.Alias,
-            models.DomainAlias
+            User.objects.all(),
+            models.Domain.objects.all(),
+            models.DomainAlias.objects.all(),
+            models.Alias.objects.filter(domain__isnull=False),
+            models.Mailbox.objects.filter(domain__isnull=False),
         )
-        for model in owned_models:
-            self.fix_owner(model, **options)
+        for qs in owned_models:
+            self.fix_owner(qs, **options)
