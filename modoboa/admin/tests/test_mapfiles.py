@@ -42,9 +42,13 @@ class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
         dbsettings = settings.DATABASES["default"]
         for f in self.MAP_FILES:
             mapcontent = parse_map_file(os.path.join(self.workdir, f))
-            self.assertEqual(mapcontent["user"], dbsettings["USER"])
-            self.assertEqual(mapcontent["password"], dbsettings["PASSWORD"])
-            self.assertEqual(mapcontent["dbname"], dbsettings["NAME"])
+            if dbsettings["ENGINE"] == "django.db.backends.sqlite3":
+                self.assertEqual(mapcontent["dbpath"], dbsettings["NAME"])
+            else:
+                self.assertEqual(mapcontent["user"], dbsettings["USER"])
+                self.assertEqual(
+                    mapcontent["password"], dbsettings["PASSWORD"])
+                self.assertEqual(mapcontent["dbname"], dbsettings["NAME"])
 
         # Now modify a file manually
         path = os.path.join(self.workdir, "sql-domains.cf")
