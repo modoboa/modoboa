@@ -1,5 +1,7 @@
 """Core views test cases."""
 
+import json
+
 from testfixtures import compare
 
 from django import forms
@@ -66,6 +68,13 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+
+    def test_top_notifications(self):
+        """Check top notifications service."""
+        url = reverse("core:top_notifications_check")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(json.loads(response.content)), 1)
 
 
 class SettingsTestCase(ModoTestCase):

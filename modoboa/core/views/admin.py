@@ -114,9 +114,7 @@ def logs_page(request, tplname="core/logs_page.html"):
 
 @login_required
 def check_top_notifications(request):
-    """
-    AJAX service to check for new top notifications to display.
-    """
+    """AJAX service to check for new top notifications to display."""
     notifications = signals.get_top_notifications.send(
         sender="top_notifications", include_all=True)
     notifications = reduce(
