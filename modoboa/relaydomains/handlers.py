@@ -116,14 +116,6 @@ def fill_domain_instances(sender, user, domain, **kwargs):
     return {"relaydomain": domain.relaydomain}
 
 
-@receiver(admin_signals.extra_domain_import_help)
-def extra_domain_import_help(sender, **kwargs):
-    """Add extra help lines."""
-    return [_("""
-<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>
-""")]
-
-
 @receiver(admin_signals.extra_domain_qset_filters)
 def extra_domain_entries(sender, domfilter, extrafilters, **kwargs):
     """Return extra queryset filters."""

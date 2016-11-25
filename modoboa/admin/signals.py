@@ -16,7 +16,6 @@ extra_domain_dashboard_widgets = django.dispatch.Signal(
     providing_args=["user", "domain"])
 extra_domain_filters = django.dispatch.Signal()
 extra_domain_forms = django.dispatch.Signal(providing_args=["user", "domain"])
-extra_domain_import_help = django.dispatch.Signal()
 extra_domain_menu_entries = django.dispatch.Signal(providing_args=["user"])
 extra_domain_qset_filters = django.dispatch.Signal(
     providing_args=["domfilter", "extrafilters"])
