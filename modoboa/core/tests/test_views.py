@@ -11,6 +11,23 @@ from modoboa.parameters import tools as param_tools
 
 from .. import factories
 from .. import models
+from .. import signals
+
+
+def announcement(sender, location, **kwargs):
+    """Simpler handler."""
+    return "This is an annoucement!"
+
+
+class LoginTestCase(ModoTestCase):
+    """Login page test cases."""
+
+    def test_announcements(self):
+        """Check if announcements are displayed."""
+        signals.get_announcements.connect(announcement)
+        response = self.client.get(reverse("core:login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("This is an annoucement!", response.content)
 
 
 class DashboardTestCase(ModoTestCase):
