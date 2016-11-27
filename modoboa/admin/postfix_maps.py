@@ -63,7 +63,7 @@ class AliasesMap(object):
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s' AND "
-        "(al.expire_at IS NULL OR al.expire_at>now())"
+        "(al.expire_at IS NULL OR al.expire_at>datetime('now'))"
     )
 
 
