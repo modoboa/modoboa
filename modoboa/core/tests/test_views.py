@@ -157,6 +157,16 @@ class UserSettings(param_forms.UserParametersForm):
     test = forms.CharField()
 
 
+def extra_user_menu(sender, location, user, **kwargs):
+    """Return extra menu entry."""
+    return [
+        {"name": "test_menu_entry",
+         "class": "ajaxnav",
+         "url": "toto/",
+         "label": "Test"}
+    ]
+
+
 class PreferencesTestCase(ModoTestCase):
     """Test user preferences."""
 
@@ -171,6 +181,13 @@ class PreferencesTestCase(ModoTestCase):
         """Remove user class."""
         super(PreferencesTestCase, cls).tearDownClass()
         del param_tools.registry._registry["user"]["core"]
+
+    def test_get_user_index(self):
+        """Retrieve index page."""
+        signals.extra_user_menu_entries.connect(extra_user_menu)
+        url = reverse("core:user_index")
+        response = self.client.get(url)
+        self.assertContains(response, 'name="test_menu_entry"')
 
     def test_get_preferences(self):
         """Test preferences display."""
