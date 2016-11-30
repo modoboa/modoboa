@@ -101,5 +101,10 @@ def extra_static_content(caller, st_type, user):
 @register.filter(name='localize_header_name')
 def localize_header_name(headername):
     """ Localizes the header names """
-    names = {"From": _("From"), "To": _("To"), "Date": _("Date"), "Subject": _("Subject")}
+    names = {
+        "From": _("From"),
+        "To": _("To"),
+        "Date": _("Date"),
+        "Subject": _("Subject")
+    }
     return names.get(headername, headername)

@@ -70,7 +70,7 @@ def extra_role_permissions(sender, role, **kwargs):
 def static_content(sender, caller, st_type, user, **kwargs):
     """Add extra static content."""
     if caller != "domains" or st_type != "js":
-        return []
+        return ""
 
     t = Template("""<script src="{{ STATIC_URL }}relaydomains/js/relay_domains.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -80,7 +80,7 @@ def static_content(sender, caller, st_type, user, **kwargs):
   });
 </script>
 """)
-    return [t.render(Context({"STATIC_URL": settings.STATIC_URL}))]
+    return t.render(Context({"STATIC_URL": settings.STATIC_URL}))
 
 
 @receiver(admin_signals.extra_domain_filters)

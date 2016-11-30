@@ -25,7 +25,7 @@ urlpatterns += patterns(
 extra_routes = core_signals.extra_uprefs_routes.send(sender="urls")
 if extra_routes:
     extra_routes = reduce(
-        lambda a, b: a + b, [route for route in extra_routes])
+        lambda a, b: a + b, [route[1] for route in extra_routes])
     urlpatterns += patterns(
         '',
         *extra_routes

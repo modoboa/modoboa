@@ -220,9 +220,9 @@ def get_static_content(sender, caller, st_type, user, **kwargs):
         user.role in ["SuperAdmins", "SimpleUsers"]
     )
     if condition:
-        return []
+        return ""
     if st_type == "css":
-        return ["""<style>
+        return """<style>
 .resource {
     padding: 10px 15px;
 }
@@ -235,14 +235,14 @@ def get_static_content(sender, caller, st_type, user, **kwargs):
     color: #000000;
 }
 </style>
-"""]
-    return ["""
+"""
+    return """
 <script type="text/javascript">
 $(document).ready(function() {
     $(".progress").tooltip();
 });
 </script>
-"""]
+"""
 
 
 @receiver(admin_signals.extra_admin_content)
