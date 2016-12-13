@@ -67,8 +67,8 @@ class DomainTestCase(ModoTestCase):
         self.assertTrue(da.can_access(al))
 
         values = {
-            "name": "pouet2.com", "quota": 100, "create_dom_admin": "yes",
-            "dom_admin_username": "postmaster", "create_aliases": "yes",
+            "name": "pouet2.com", "quota": 100, "create_dom_admin": True,
+            "dom_admin_username": "postmaster", "create_aliases": True,
             "type": "domain", "stepid": "step3"
         }
         self.ajax_post(reverse("admin:domain_add"), values)
