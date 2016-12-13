@@ -51,18 +51,13 @@ class DomainTestCase(ModoTestCase):
         self.assertFalse(dom.admins)
 
     def test_create_with_template(self):
-        """Test the creation of a domain with a template
-
-        """
+        """Test the creation of a domain with a template."""
         values = {
             "name": "pouet.com", "quota": 100, "create_dom_admin": "yes",
             "dom_admin_username": "toto", "create_aliases": "yes",
             "type": "domain", "stepid": 'step3'
         }
-        self.ajax_post(
-            reverse("admin:domain_add"),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         da = User.objects.get(username="toto@pouet.com")
         self.assertIn(da, dom.admins)
@@ -72,6 +67,18 @@ class DomainTestCase(ModoTestCase):
             .exists()
         )
         self.assertTrue(da.can_access(al))
+
+        values = {
+            "name": "pouet2.com", "quota": 100, "create_dom_admin": "yes",
+            "dom_admin_username": "postmaster", "create_aliases": "yes",
+            "type": "domain", "stepid": "step3"
+        }
+        self.ajax_post(reverse("admin:domain_add"), values)
+        self.assertTrue(
+            User.objects.filter(username="postmaster@pouet2.com").exists())
+        self.assertFalse(
+            Alias.objects.filter(
+                address="postmaster@pouet2.com", internal=False).exists())
 
     def test_create_with_template_and_empty_quota(self):
         """Test the creation of a domain with a template and no quota"""

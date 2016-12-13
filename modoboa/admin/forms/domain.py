@@ -229,23 +229,26 @@ class DomainFormOptions(forms.Form):
         da.role = "DomainAdmins"
         da.post_create(user)
 
+        dom_admin_username = self.cleaned_data["dom_admin_username"]
         mb = Mailbox(
-            address=self.cleaned_data["dom_admin_username"], domain=domain,
+            address=dom_admin_username, domain=domain,
             user=da, use_domain_quota=True
         )
         mb.set_quota(
             override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
 
-        if domain.type == "domain" and \
-           self.cleaned_data["create_aliases"] == "yes":
+        condition = (
+            domain.type == "domain" and
+            self.cleaned_data["create_aliases"] == "yes" and
+            dom_admin_username != "postmaster"
+        )
+        if condition:
             core_signals.can_create_object.send(
                 self.__class__, context=user, object_type="mailbox_aliases")
-            alias = Alias(
-                address=u"postmaster@{}".format(domain.name),
-                domain=domain, enabled=True
-            )
-            alias.save()
+            address = u"postmaster@{}".format(domain.name)
+            alias = Alias.objects.create(
+                address=address, domain=domain, enabled=True)
             alias.set_recipients([mb.full_address])
             alias.post_create(user)
 
