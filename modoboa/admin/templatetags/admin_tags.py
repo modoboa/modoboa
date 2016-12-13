@@ -164,7 +164,7 @@ def identity_actions(user, ident):
         result = core_signals.extra_account_actions.send(
             sender="identity_actions", account=ident)
         for action in result:
-            actions += result[1]
+            actions += action[1]
         url = (
             reverse("admin:account_change", args=[objid]) +
             "?active_tab=default"
