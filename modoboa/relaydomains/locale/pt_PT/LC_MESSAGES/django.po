@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2014-12-29 12:51+0000\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -36,7 +36,7 @@ msgstr "Caminho para para o ficheiro master.cf Postfix"
 msgid "Path to the master.cf configuration file"
 msgstr "Caminho para o ficheiro de configuração master.cf"
 
-#: relaydomains/apps.py:23
+#: relaydomains/apps.py:12
 msgid "Relay domains"
 msgstr ""
 
@@ -50,52 +50,45 @@ msgstr ""
 msgid "The relay domain name"
 msgstr "O nome do domínio"
 
-#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
+#: relaydomains/handlers.py:101
+msgid "Relay settings"
+msgstr ""
+
+#: relaydomains/handlers.py:132 relaydomains/handlers.py:139
 #, fuzzy
 #| msgid "domain"
 msgid "Relay domain"
 msgstr "domínio"
 
-#: relaydomains/general_callbacks.py:73
-msgid "Relay settings"
-msgstr ""
-
-#: relaydomains/general_callbacks.py:109
-msgid ""
-"\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
-msgstr ""
-
-#: relaydomains/models.py:48
+#: relaydomains/models.py:47
 msgid "name"
 msgstr "nome"
 
-#: relaydomains/models.py:49
+#: relaydomains/models.py:48
 msgid "The service name"
 msgstr "O nome do serviço"
 
-#: relaydomains/models.py:71
+#: relaydomains/models.py:70
 msgid "target host"
 msgstr "endereço de destino"
 
-#: relaydomains/models.py:72
+#: relaydomains/models.py:71
 msgid "Remote destination of this domain"
 msgstr "Endereço de destino remoto deste domínio"
 
-#: relaydomains/models.py:76
+#: relaydomains/models.py:75
 msgid "verify recipients"
 msgstr "verificar destinatários"
 
-#: relaydomains/models.py:77
+#: relaydomains/models.py:76
 msgid "Check for valid recipients"
 msgstr "Analisar se os destinatáris são válidos"
 
-#: relaydomains/models.py:88
+#: relaydomains/models.py:87
 msgid "Relay Domain"
 msgstr ""
 
-#: relaydomains/models.py:115
+#: relaydomains/models.py:114
 msgid "Invalid line"
 msgstr "Linha inválida"
 

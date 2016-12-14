@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2016-06-07 07:16+0000\n"
 "Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -139,7 +139,7 @@ msgstr ""
 "新しいドメインに許可されたエイリアスの最大数 (0は作成を拒否、-1は無制限の作成"
 "を許可)"
 
-#: limits/apps.py:17
+#: limits/apps.py:12
 msgid "Limits"
 msgstr "制限"
 
@@ -187,7 +187,7 @@ msgstr "不正な制限"
 msgid "You're not allowed to define unlimited values"
 msgstr "無制限な値に設定するのは許可されていません"
 
-#: limits/general_callbacks.py:57 limits/general_callbacks.py:70
+#: limits/handlers.py:123 limits/handlers.py:159
 msgid "Resources"
 msgstr "リソース"
 

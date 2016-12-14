@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -18,12 +18,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-
-#: core/__init__.py:63
-#, fuzzy
-#| msgid "An update is available!"
-msgid "One or more updates are available"
-msgstr "Je dostupná aktualizace!"
 
 #: core/app_settings.py:32
 msgid "Authentication"
@@ -335,7 +329,7 @@ msgstr "Neplatný počet cyklů"
 msgid "This field is required"
 msgstr "Toto pole je vyžadováno"
 
-#: core/apps.py:55
+#: core/apps.py:18
 msgid "General"
 msgstr "Obecné"
 
@@ -389,22 +383,32 @@ msgstr "Hesla se neshodují"
 msgid "Enable API access"
 msgstr ""
 
-#: core/handlers.py:34
+#: core/handlers.py:41
 msgid "added"
 msgstr "přidáno"
 
-#: core/handlers.py:37
+#: core/handlers.py:44
 msgid "modified"
 msgstr "upraveno"
 
-#: core/handlers.py:39 core/handlers.py:64
+#: core/handlers.py:46 core/handlers.py:70
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s uživatelem %(user)s"
 
-#: core/handlers.py:66
+#: core/handlers.py:72
 msgid "deleted"
 msgstr "smazáno"
+
+#: core/handlers.py:92
+msgid "You can't delete your own account"
+msgstr "Nemůžete smazat vlastní účet"
+
+#: core/handlers.py:128
+#, fuzzy
+#| msgid "An update is available!"
+msgid "One or more updates are available"
+msgstr "Je dostupná aktualizace!"
 
 #: core/models.py:52
 #, fuzzy
@@ -458,36 +462,32 @@ msgstr ""
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:122
-msgid "You can't delete your own account"
-msgstr "Nemůžete smazat vlastní účet"
-
-#: core/models.py:175
+#: core/models.py:140
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 
-#: core/models.py:233
+#: core/models.py:198
 msgid "account"
 msgstr "účet"
 
-#: core/models.py:355
+#: core/models.py:321
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:394
+#: core/models.py:355
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: core/models.py:402
+#: core/models.py:363
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nemůžete importvat účet s vyšším oprávněním, než máte vy sám"
 
-#: core/models.py:417
+#: core/models.py:378
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Běžný uživatel '%s' musí mít nastavenou platnou emailovou adresu"
 
-#: core/models.py:422
+#: core/models.py:383
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "pole uživatelského jména a emailu se nesmí pro '%s' lišit"
@@ -524,7 +524,7 @@ msgid ""
 "weblog</a> for more information."
 msgstr ""
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:59
 msgid "Information"
 msgstr "Informace"
 
@@ -579,7 +579,7 @@ msgstr ""
 msgid "Last login"
 msgstr "Poslední přihlášení"
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:57
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:63
 msgid "Logs"
 msgstr "Záznamy"
 
@@ -587,7 +587,7 @@ msgstr "Záznamy"
 msgid "Previously on Modoboa..."
 msgstr "Dříve v Modoboa..."
 
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:107
 msgid "Date"
 msgstr "Datum"
 
@@ -603,7 +603,7 @@ msgstr "Zaznamenal"
 msgid "Message"
 msgstr "Zpráva"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:62
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:68
 msgid "Parameters"
 msgstr "Parametry"
 
@@ -620,12 +620,12 @@ msgstr "Uložit"
 msgid "Modoboa settings"
 msgstr "Nastavení Modoboa"
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:81
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:87
 msgid "Settings"
 msgstr "Nastavení"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:108
+#: core/templatetags/core_tags.py:117
 msgid "Preferences"
 msgstr "Možnosti"
 
@@ -639,7 +639,7 @@ msgstr "Nastavit Modoboa"
 msgid "No preferences available."
 msgstr "Možnosti uloženy"
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:104
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:113
 msgid "Profile"
 msgstr "Profil"
 
@@ -647,15 +647,15 @@ msgstr "Profil"
 msgid "Update your personal information"
 msgstr "Aktualizovat osobní informace"
 
-#: core/templatetags/core_tags.py:27
+#: core/templatetags/core_tags.py:31
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:90
+#: core/templatetags/core_tags.py:99
 msgid "Logout"
 msgstr "Odhlásit se"
 
-#: core/templatetags/core_tags.py:115
+#: core/templatetags/core_tags.py:124
 msgid "API"
 msgstr ""
 
@@ -669,30 +669,31 @@ msgstr "Vítejte v Modoboa"
 msgid "Parameters saved"
 msgstr "Parametry uloženy"
 
-#: core/views/auth.py:41
+#: core/views/auth.py:42
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Uživatel '%s' se úspěšně přihlásil"
 
-#: core/views/auth.py:48
+#: core/views/auth.py:50
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Vaše uživatelské jméno nebo heslo se neshodují. Zkuste to prosím znovu."
 
-#: core/views/auth.py:76
-#, python-format
-msgid "User '%s' logged out"
+#: core/views/auth.py:80
+#, fuzzy
+#| msgid "User '%s' logged out"
+msgid "User {} logged out"
 msgstr "Uživatel '%s' se odhlásil"
 
-#: core/views/user.py:49
+#: core/views/user.py:48
 msgid "Profile updated"
 msgstr "Profil aktualizován"
 
-#: core/views/user.py:75
+#: core/views/user.py:74
 msgid "Preferences saved"
 msgstr "Možnosti uloženy"
 
-#: core/views/user.py:96
+#: core/views/user.py:95
 #, fuzzy
 #| msgid "Profile updated"
 msgid "Access updated"
@@ -744,15 +745,15 @@ msgstr "Ne"
 msgid "Failed to update password: {}"
 msgstr "Nebylo možné změnit heslo: %s"
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:105
 msgid "From"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:106
 msgid "To"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+#: lib/templatetags/lib_tags.py:108 templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "Předmět"
 

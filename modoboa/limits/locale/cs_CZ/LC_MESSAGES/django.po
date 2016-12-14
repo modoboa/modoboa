@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -145,7 +145,7 @@ msgid ""
 "-1 to allow unlimited creations)"
 msgstr "Maximální povolený počet aliasů (nastavení nového správce)"
 
-#: limits/apps.py:17
+#: limits/apps.py:12
 msgid "Limits"
 msgstr "Omezení"
 
@@ -209,7 +209,7 @@ msgstr "Neplatné omezení"
 msgid "You're not allowed to define unlimited values"
 msgstr "Nemáte oprávnění nastavovat neomezené hodnoty"
 
-#: limits/general_callbacks.py:57 limits/general_callbacks.py:70
+#: limits/handlers.py:123 limits/handlers.py:159
 msgid "Resources"
 msgstr "Zdroje"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -19,10 +19,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: core/__init__.py:63
-msgid "One or more updates are available"
-msgstr "1つ以上のアップデートが利用できます"
 
 #: core/app_settings.py:32
 msgid "Authentication"
@@ -325,7 +321,7 @@ msgstr "不正なラウンド数"
 msgid "This field is required"
 msgstr "このフィールドは必須です"
 
-#: core/apps.py:55
+#: core/apps.py:18
 msgid "General"
 msgstr "全般"
 
@@ -377,22 +373,30 @@ msgstr "パスワード不一致"
 msgid "Enable API access"
 msgstr "API アクセスを有効にします"
 
-#: core/handlers.py:34
+#: core/handlers.py:41
 msgid "added"
 msgstr "追加しました"
 
-#: core/handlers.py:37
+#: core/handlers.py:44
 msgid "modified"
 msgstr "修正しました"
 
-#: core/handlers.py:39 core/handlers.py:64
+#: core/handlers.py:46 core/handlers.py:70
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
 
-#: core/handlers.py:66
+#: core/handlers.py:72
 msgid "deleted"
 msgstr "削除しました"
+
+#: core/handlers.py:92
+msgid "You can't delete your own account"
+msgstr "あなた自身のアカウントは削除できません"
+
+#: core/handlers.py:128
+msgid "One or more updates are available"
+msgstr "1つ以上のアップデートが利用できます"
 
 #: core/models.py:52
 #, fuzzy
@@ -442,39 +446,35 @@ msgstr "2つめの電子メール"
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "別の電子メールアドレスは、回復の必要のために使用することができます。"
 
-#: core/models.py:122
-msgid "You can't delete your own account"
-msgstr "あなた自身のアカウントは削除できません"
-
-#: core/models.py:175
+#: core/models.py:140
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていませ"
 "ん。"
 
-#: core/models.py:233
+#: core/models.py:198
 msgid "account"
 msgstr "アカウント"
 
-#: core/models.py:355
+#: core/models.py:321
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:394
+#: core/models.py:355
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: core/models.py:402
+#: core/models.py:363
 msgid "You can't import an account with a role greater than yours"
 msgstr "あなた以上のロールを持ったアカウントはインポートできません"
 
-#: core/models.py:417
+#: core/models.py:378
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
 
-#: core/models.py:422
+#: core/models.py:383
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"
@@ -511,7 +511,7 @@ msgid ""
 "weblog</a> for more information."
 msgstr ""
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:59
 msgid "Information"
 msgstr "情報"
 
@@ -562,7 +562,7 @@ msgstr ""
 msgid "Last login"
 msgstr "最終ログイン"
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:57
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:63
 msgid "Logs"
 msgstr "ログ"
 
@@ -570,7 +570,7 @@ msgstr "ログ"
 msgid "Previously on Modoboa..."
 msgstr "Modoboa 以前 ..."
 
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:107
 msgid "Date"
 msgstr "日付"
 
@@ -586,7 +586,7 @@ msgstr "ロガー"
 msgid "Message"
 msgstr "メッセージ"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:62
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:68
 msgid "Parameters"
 msgstr "パラメータ"
 
@@ -603,12 +603,12 @@ msgstr "保存"
 msgid "Modoboa settings"
 msgstr "Modoboa 設定"
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:81
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:87
 msgid "Settings"
 msgstr "設定"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:108
+#: core/templatetags/core_tags.py:117
 msgid "Preferences"
 msgstr "プリファレンス"
 
@@ -620,7 +620,7 @@ msgstr "Modoboa のカスタマイズ"
 msgid "No preferences available."
 msgstr "プリファレンスがありません"
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:104
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:113
 msgid "Profile"
 msgstr "プロフィール"
 
@@ -628,15 +628,15 @@ msgstr "プロフィール"
 msgid "Update your personal information"
 msgstr "個人情報を更新します"
 
-#: core/templatetags/core_tags.py:27
+#: core/templatetags/core_tags.py:31
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:90
+#: core/templatetags/core_tags.py:99
 msgid "Logout"
 msgstr "ログアウト"
 
-#: core/templatetags/core_tags.py:115
+#: core/templatetags/core_tags.py:124
 msgid "API"
 msgstr "API"
 
@@ -648,29 +648,30 @@ msgstr "Modoboaのコア部分"
 msgid "Parameters saved"
 msgstr "パラメータが保存されました"
 
-#: core/views/auth.py:41
+#: core/views/auth.py:42
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "ユーザー \"%s\" がログインに成功しました"
 
-#: core/views/auth.py:48
+#: core/views/auth.py:50
 msgid "Your username and password didn't match. Please try again."
 msgstr "ユーザー名とパスワードが一致しません。やり直してください。"
 
-#: core/views/auth.py:76
-#, python-format
-msgid "User '%s' logged out"
+#: core/views/auth.py:80
+#, fuzzy
+#| msgid "User '%s' logged out"
+msgid "User {} logged out"
 msgstr "ユーザー \"%s\" がログアウトしました"
 
-#: core/views/user.py:49
+#: core/views/user.py:48
 msgid "Profile updated"
 msgstr "プロフィールが更新されました"
 
-#: core/views/user.py:75
+#: core/views/user.py:74
 msgid "Preferences saved"
 msgstr "プリファレンスが保存されました"
 
-#: core/views/user.py:96
+#: core/views/user.py:95
 msgid "Access updated"
 msgstr "アクセスが更新されました"
 
@@ -716,15 +717,15 @@ msgstr "いいえ"
 msgid "Failed to update password: {}"
 msgstr "パスワードの更新に失敗しました:  {}"
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:105
 msgid "From"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:106
 msgid "To"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+#: lib/templatetags/lib_tags.py:108 templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "件名"
 

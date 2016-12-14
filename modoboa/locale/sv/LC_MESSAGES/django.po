@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2016-05-30 18:03+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -20,10 +20,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: core/__init__.py:63
-msgid "One or more updates are available"
-msgstr "En eller fler uppdateringar är tillgängliga"
 
 #: core/app_settings.py:32
 msgid "Authentication"
@@ -327,7 +323,7 @@ msgstr "Ogiltigt antal omgångar"
 msgid "This field is required"
 msgstr "Detta fält är obligatoriskt"
 
-#: core/apps.py:55
+#: core/apps.py:18
 msgid "General"
 msgstr "Allmänt"
 
@@ -379,22 +375,30 @@ msgstr "Lösenord matchar inte"
 msgid "Enable API access"
 msgstr "Aktivera API access"
 
-#: core/handlers.py:34
+#: core/handlers.py:41
 msgid "added"
 msgstr "tillagd"
 
-#: core/handlers.py:37
+#: core/handlers.py:44
 msgid "modified"
 msgstr "ändrad"
 
-#: core/handlers.py:39 core/handlers.py:64
+#: core/handlers.py:46 core/handlers.py:70
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s av användare %(user)s"
 
-#: core/handlers.py:66
+#: core/handlers.py:72
 msgid "deleted"
 msgstr "raderad"
+
+#: core/handlers.py:92
+msgid "You can't delete your own account"
+msgstr "Du kan inte radera ditt eget konto"
+
+#: core/handlers.py:128
+msgid "One or more updates are available"
+msgstr "En eller fler uppdateringar är tillgängliga"
 
 #: core/models.py:52
 #, fuzzy
@@ -444,36 +448,32 @@ msgstr "Sekundär e-post"
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "En alternativ e-post adress, kan användas för återställningsbehov."
 
-#: core/models.py:122
-msgid "You can't delete your own account"
-msgstr "Du kan inte radera ditt eget konto"
-
-#: core/models.py:175
+#: core/models.py:140
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Misslyckades med att uppdatera lösenord: LDAP modul ej installerad"
 
-#: core/models.py:233
+#: core/models.py:198
 msgid "account"
 msgstr "konto"
 
-#: core/models.py:355
+#: core/models.py:321
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:394
+#: core/models.py:355
 msgid "Invalid line"
 msgstr "Ogiltig rad"
 
-#: core/models.py:402
+#: core/models.py:363
 msgid "You can't import an account with a role greater than yours"
 msgstr "Du kan inte importera konto med en roll större än din"
 
-#: core/models.py:417
+#: core/models.py:378
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Den enkla användaren '%s' måste ha en gällande e-postadress"
 
-#: core/models.py:422
+#: core/models.py:383
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "användarnamn och e-post fält får inte avvika för '%s'"
@@ -510,7 +510,7 @@ msgid ""
 "weblog</a> for more information."
 msgstr ""
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:59
 msgid "Information"
 msgstr "Information"
 
@@ -560,7 +560,7 @@ msgstr ""
 msgid "Last login"
 msgstr "Senaste inloggad"
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:57
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:63
 msgid "Logs"
 msgstr "Loggar"
 
@@ -568,7 +568,7 @@ msgstr "Loggar"
 msgid "Previously on Modoboa..."
 msgstr "Tidigare på Modoboa..."
 
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:107
 msgid "Date"
 msgstr "Datum"
 
@@ -584,7 +584,7 @@ msgstr "Loggare"
 msgid "Message"
 msgstr "Meddelande"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:62
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:68
 msgid "Parameters"
 msgstr "Parametrar"
 
@@ -601,12 +601,12 @@ msgstr "Spara"
 msgid "Modoboa settings"
 msgstr "Modoboa inställningar"
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:81
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:87
 msgid "Settings"
 msgstr "Inställningar"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:108
+#: core/templatetags/core_tags.py:117
 msgid "Preferences"
 msgstr "Inställningar"
 
@@ -618,7 +618,7 @@ msgstr "Anpassa Modoboa"
 msgid "No preferences available."
 msgstr "Inga inställningar finns."
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:104
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:113
 msgid "Profile"
 msgstr "Profil"
 
@@ -626,15 +626,15 @@ msgstr "Profil"
 msgid "Update your personal information"
 msgstr "Uppdatera personlig information"
 
-#: core/templatetags/core_tags.py:27
+#: core/templatetags/core_tags.py:31
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:90
+#: core/templatetags/core_tags.py:99
 msgid "Logout"
 msgstr "Logga ut"
 
-#: core/templatetags/core_tags.py:115
+#: core/templatetags/core_tags.py:124
 msgid "API"
 msgstr "API"
 
@@ -646,29 +646,30 @@ msgstr "Kärnan av Modoboa"
 msgid "Parameters saved"
 msgstr "Parametrar sparade"
 
-#: core/views/auth.py:41
+#: core/views/auth.py:42
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Användare '%s' har loggat in"
 
-#: core/views/auth.py:48
+#: core/views/auth.py:50
 msgid "Your username and password didn't match. Please try again."
 msgstr "Ditt användarnamn och lösenord matchar inte. Var vänlig försök igen."
 
-#: core/views/auth.py:76
-#, python-format
-msgid "User '%s' logged out"
+#: core/views/auth.py:80
+#, fuzzy
+#| msgid "User '%s' logged out"
+msgid "User {} logged out"
 msgstr "Användare '%s' har loggat ut"
 
-#: core/views/user.py:49
+#: core/views/user.py:48
 msgid "Profile updated"
 msgstr "Profil uppdaterad"
 
-#: core/views/user.py:75
+#: core/views/user.py:74
 msgid "Preferences saved"
 msgstr "Inställningar sparade"
 
-#: core/views/user.py:96
+#: core/views/user.py:95
 msgid "Access updated"
 msgstr "Åtkomst uppdaterad"
 
@@ -714,15 +715,15 @@ msgstr "Nej"
 msgid "Failed to update password: {}"
 msgstr "Misslyckades med att uppdatera lösenord: {}"
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:105
 msgid "From"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:106
 msgid "To"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+#: lib/templatetags/lib_tags.py:108 templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "Ämne"
 

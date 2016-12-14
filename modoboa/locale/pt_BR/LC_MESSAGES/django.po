@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2016-05-17 12:26+0000\n"
 "Last-Translator: Jose Marcos Araujo <jmaraujo@avancetec.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
@@ -23,10 +23,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: core/__init__.py:63
-msgid "One or more updates are available"
-msgstr "Uma ou mais atualizações disponíveis"
 
 #: core/app_settings.py:32
 msgid "Authentication"
@@ -330,7 +326,7 @@ msgstr "Número de ciclos inválido"
 msgid "This field is required"
 msgstr "Este campo é obrigatório"
 
-#: core/apps.py:55
+#: core/apps.py:18
 msgid "General"
 msgstr "Geral"
 
@@ -382,22 +378,30 @@ msgstr "Senhas não conferem"
 msgid "Enable API access"
 msgstr "Ativar acesso à API"
 
-#: core/handlers.py:34
+#: core/handlers.py:41
 msgid "added"
 msgstr "adicionado"
 
-#: core/handlers.py:37
+#: core/handlers.py:44
 msgid "modified"
 msgstr "modificado"
 
-#: core/handlers.py:39 core/handlers.py:64
+#: core/handlers.py:46 core/handlers.py:70
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s pelo(s) usuário(s) %(user)s"
 
-#: core/handlers.py:66
+#: core/handlers.py:72
 msgid "deleted"
 msgstr "apagado"
+
+#: core/handlers.py:92
+msgid "You can't delete your own account"
+msgstr "Você não pode deletar sua própria conta"
+
+#: core/handlers.py:128
+msgid "One or more updates are available"
+msgstr "Uma ou mais atualizações disponíveis"
 
 #: core/models.py:52
 #, fuzzy
@@ -449,36 +453,32 @@ msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 "Endereço de e-mail alternativo, use-o para recuperar a conta caso precise"
 
-#: core/models.py:122
-msgid "You can't delete your own account"
-msgstr "Você não pode deletar sua própria conta"
-
-#: core/models.py:175
+#: core/models.py:140
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Falha ao atualizar senha: módulo LDAP não instalado"
 
-#: core/models.py:233
+#: core/models.py:198
 msgid "account"
 msgstr "conta"
 
-#: core/models.py:355
+#: core/models.py:321
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:394
+#: core/models.py:355
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: core/models.py:402
+#: core/models.py:363
 msgid "You can't import an account with a role greater than yours"
 msgstr "Você não pode importar uma conta com um papel maior que o seu"
 
-#: core/models.py:417
+#: core/models.py:378
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "O usuário simples '%s' deve ter um endereço de e-mail válido"
 
-#: core/models.py:422
+#: core/models.py:383
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "os campos nome de usuário e e-mail não diferem de '%s'"
@@ -515,7 +515,7 @@ msgid ""
 "weblog</a> for more information."
 msgstr ""
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:53
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:59
 msgid "Information"
 msgstr "Informação"
 
@@ -565,7 +565,7 @@ msgstr ""
 msgid "Last login"
 msgstr "Último login"
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:57
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:63
 msgid "Logs"
 msgstr "Logs"
 
@@ -573,7 +573,7 @@ msgstr "Logs"
 msgid "Previously on Modoboa..."
 msgstr "Previamente no Modoboa..."
 
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:103
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:107
 msgid "Date"
 msgstr "Data"
 
@@ -589,7 +589,7 @@ msgstr "Logger"
 msgid "Message"
 msgstr "Mensagem"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:62
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:68
 msgid "Parameters"
 msgstr "Parâmetros"
 
@@ -606,12 +606,12 @@ msgstr "Salvar"
 msgid "Modoboa settings"
 msgstr "Configurações do Modoboa"
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:81
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:87
 msgid "Settings"
 msgstr "Configurações"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:108
+#: core/templatetags/core_tags.py:117
 msgid "Preferences"
 msgstr "Preferências"
 
@@ -623,7 +623,7 @@ msgstr "Customizar Modoboa"
 msgid "No preferences available."
 msgstr "Não há preferências disponíveis."
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:104
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:113
 msgid "Profile"
 msgstr "Perfil"
 
@@ -631,15 +631,15 @@ msgstr "Perfil"
 msgid "Update your personal information"
 msgstr "Atualizar sua informação pessoal"
 
-#: core/templatetags/core_tags.py:27
+#: core/templatetags/core_tags.py:31
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:90
+#: core/templatetags/core_tags.py:99
 msgid "Logout"
 msgstr "Sair"
 
-#: core/templatetags/core_tags.py:115
+#: core/templatetags/core_tags.py:124
 msgid "API"
 msgstr "API"
 
@@ -651,29 +651,30 @@ msgstr "Core do Modoboa"
 msgid "Parameters saved"
 msgstr "Parêmetros salvos"
 
-#: core/views/auth.py:41
+#: core/views/auth.py:42
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Usuário '%s' autenticado com successo"
 
-#: core/views/auth.py:48
+#: core/views/auth.py:50
 msgid "Your username and password didn't match. Please try again."
 msgstr "Seu usuário e senha não conferem. Por favor tente novamente."
 
-#: core/views/auth.py:76
-#, python-format
-msgid "User '%s' logged out"
+#: core/views/auth.py:80
+#, fuzzy
+#| msgid "User '%s' logged out"
+msgid "User {} logged out"
 msgstr "O usuário '%s' saiu"
 
-#: core/views/user.py:49
+#: core/views/user.py:48
 msgid "Profile updated"
 msgstr "Perfil atualizado"
 
-#: core/views/user.py:75
+#: core/views/user.py:74
 msgid "Preferences saved"
 msgstr "Preferências salvas"
 
-#: core/views/user.py:96
+#: core/views/user.py:95
 msgid "Access updated"
 msgstr "Acesso atualizado"
 
@@ -719,15 +720,15 @@ msgstr "Não"
 msgid "Failed to update password: {}"
 msgstr "Falha ao atualizar a senha: {}"
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:105
 msgid "From"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103
+#: lib/templatetags/lib_tags.py:106
 msgid "To"
 msgstr ""
 
-#: lib/templatetags/lib_tags.py:103 templates/common/email_searchbar.html:17
+#: lib/templatetags/lib_tags.py:108 templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "Assunto"
 
