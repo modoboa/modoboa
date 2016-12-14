@@ -45,6 +45,9 @@ class RelayDomainFormGeneral(forms.ModelForm):
         """Custom save method."""
         domain = kwargs.get("domain")
         instance = super(RelayDomainFormGeneral, self).save(commit=False)
+        if instance.domain and instance.domain.type == "domain":
+            # Avoid new creation if domain type has been changed.
+            return None
         if domain:
             instance.domain = domain
         instance.save()

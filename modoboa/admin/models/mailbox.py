@@ -13,7 +13,6 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from reversion import revisions as reversion
 
 from modoboa.core.models import User
-from modoboa.lib import events
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import exec_cmd
@@ -75,7 +74,6 @@ class MailboxManager(Manager):
 
 @python_2_unicode_compatible
 class Mailbox(AdminObject):
-
     """User mailbox."""
 
     address = models.CharField(
@@ -306,7 +304,6 @@ class Mailbox(AdminObject):
         if newaddress:
             self.rename(local_part, domain)
         self.save()
-        events.raiseEvent("MailboxModified", self)
 
     def save(self, *args, **kwargs):
         """Custom save.
@@ -325,21 +322,6 @@ class Mailbox(AdminObject):
             self.quota_value, created = Quota.objects.get_or_create(
                 username=self.full_address)
         super(Mailbox, self).save(*args, **kwargs)
-
-    def delete(self, keepdir=False):
-        """Custom delete method
-
-        We try to delete the associated quota in the same time (it may
-        has already been removed if we're deleting a domain).
-
-        :param bool keepdir: delete the mailbox home dir on the
-                             filesystem or not
-
-        """
-        Quota.objects.filter(username=self.full_address).delete()
-        if not keepdir:
-            self.delete_dir()
-        super(Mailbox, self).delete()
 
 reversion.register(Mailbox)
 

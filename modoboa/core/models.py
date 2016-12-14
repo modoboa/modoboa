@@ -20,13 +20,13 @@ import jsonfield
 from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
-from modoboa.lib import events
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
 from modoboa.parameters import tools as param_tools
 
 from . import constants
+from . import signals
 
 
 try:
@@ -103,41 +103,6 @@ class User(PermissionsMixin):
         super(User, self).__init__(*args, **kwargs)
         self.parameters = param_tools.Manager("user", self._parameters)
 
-    def delete(self, fromuser, *args, **kwargs):
-        """Custom delete method
-
-        To check permissions properly, we need to make a distinction
-        between 2 cases:
-
-        * If the user owns a mailbox, the check is made on that object
-          (useful for domain admins)
-
-        * Otherwise, the check is made on the user
-        """
-        from modoboa.lib.permissions import \
-            get_object_owner, grant_access_to_object, ungrant_access_to_object
-
-        if fromuser == self:
-            raise PermDeniedException(
-                _("You can't delete your own account")
-            )
-
-        if not fromuser.can_access(self):
-            raise PermDeniedException
-
-        owner = get_object_owner(self)
-        if owner == self:
-            # The default admin is being removed...
-            owner = fromuser
-        for ooentry in self.objectaccess_set.filter(is_owner=True):
-            if ooentry.content_object is not None:
-                grant_access_to_object(owner, ooentry.content_object, True)
-                ungrant_access_to_object(ooentry.content_object, self)
-
-        events.raiseEvent("AccountDeleted", self, fromuser, **kwargs)
-        ungrant_access_to_object(self)
-        super(User, self).delete()
-
     def _crypt_password(self, raw_value):
         """Crypt the local password using the appropriate scheme.
 
@@ -177,9 +142,9 @@ class User(PermissionsMixin):
             LDAPAuthBackend().update_user_password(
                 self.username, curvalue, raw_value
             )
-        events.raiseEvent(
-            "PasswordUpdated", self, raw_value, self.pk is None
-        )
+        signals.account_password_updated.send(
+            sender=self.__class__,
+            account=self, password=raw_value, created=self.pk is None)
 
     def check_password(self, raw_value):
         """Compare raw_value to current password."""
@@ -329,7 +294,8 @@ class User(PermissionsMixin):
         """
         if role is None or self.role == role:
             return
-        events.raiseEvent("RoleChanged", self, role)
+        signals.account_role_changed.send(
+            sender=self.__class__, account=self, role=role)
         self.groups.clear()
         if role == "SuperAdmins":
             self.is_superuser = True
@@ -363,7 +329,6 @@ class User(PermissionsMixin):
         """Grant permission on this user to creator."""
         from modoboa.lib.permissions import grant_access_to_object
         grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("AccountCreated", self)
 
     def save(self, *args, **kwargs):
         creator = kwargs.pop("creator", None)
@@ -378,7 +343,7 @@ class User(PermissionsMixin):
 
         "account", loginname, password, first name, last name, enabled, role
 
-        Additional fields can be added using the *AccountImported* event.
+        Additional fields can be added using the *account_imported* signal.
 
         :param user: a ``core.User`` instance
         :param row: a list containing the expected information
@@ -431,7 +396,8 @@ class User(PermissionsMixin):
         self.post_create(user)
         if len(row) < 8:
             return
-        events.raiseEvent("AccountImported", user, self, row[7:])
+        signals.account_imported.send(
+            sender=self.__class__, user=user, account=self, row=row[7:])
 
     def to_csv(self, csvwriter):
         """Export this account.
@@ -450,7 +416,10 @@ class User(PermissionsMixin):
             self.role,
             self.email.encode("utf-8")
         ]
-        row += events.raiseQueryEvent("AccountExported", self)
+        results = signals.account_exported.send(
+            sender=self.__class__, user=self)
+        for result in results:
+            row += result[1]
         csvwriter.writerow(row)
 
 reversion.register(User)
@@ -473,7 +442,8 @@ def populate_callback(user, group="SimpleUsers"):
     user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)
-    events.raiseEvent("AccountAutoCreated", user)
+    signals.account_auto_created.send(
+        sender="populate_callback", user=user)
 
 
 class ObjectAccess(models.Model):

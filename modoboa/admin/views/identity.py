@@ -13,7 +13,6 @@ from django.contrib.auth.decorators import (
 from reversion import revisions as reversion
 
 from modoboa.core.models import User
-from modoboa.lib import events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
 )
@@ -181,15 +180,17 @@ def editaccount(request, pk):
     mb = account.mailbox if hasattr(account, "mailbox") else None
 
     instances = dict(general=account, mail=mb, perms=account)
-    events.raiseEvent("FillAccountInstances", request.user, account, instances)
+    results = signals.get_account_form_instances.send(
+        sender="editaccount", user=request.user, account=account)
+    for result in results:
+        instances.update(result[1])
     return AccountForm(request, instances=instances).process()
 
 
 @login_required
 @permission_required("core.delete_user")
 def delaccount(request, pk):
-    keepdir = True if request.POST.get("keepdir", "false") == "true" else False
-    User.objects.get(pk=pk).delete(request.user, keep_mb_dir=keepdir)
+    User.objects.get(pk=pk).delete()
     return render_to_json_response(
         ungettext("Account deleted", "Accounts deleted", 1)
     )

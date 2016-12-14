@@ -21,4 +21,3 @@ Table of contents
 
    contributing/getting_started
    contributing/plugin_api
-   contributing/events

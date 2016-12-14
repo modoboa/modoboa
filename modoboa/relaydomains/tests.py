@@ -1,5 +1,8 @@
 """modoboa-admin-relaydomains unit tests."""
 
+import json
+
+from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -11,13 +14,13 @@ from modoboa.lib.test_utils import MapFilesTestCaseMixin
 from modoboa.limits import utils as limits_utils
 
 from .factories import RelayDomainFactory
-from .models import RelayDomain, Service
+from . import models
 
 
 class Operations(object):
 
     def _create_relay_domain(self, name, status=200):
-        srv, created = Service.objects.get_or_create(name='dummy')
+        srv, created = models.Service.objects.get_or_create(name='dummy')
         values = {
             "name": name, "create_dom_admin": False, "type": "relaydomain",
             "target_host": "external.host.tld", "service": srv.id,
@@ -29,7 +32,7 @@ class Operations(object):
         )
 
     def _relay_domain_alias_operation(self, optype, rdomain, name, status=200):
-        rdom = RelayDomain.objects.get(domain__name=rdomain)
+        rdom = models.RelayDomain.objects.get(domain__name=rdomain)
         values = {
             "name": rdom.domain.name, "target_host": rdom.target_host,
             "type": "relaydomain", "service": rdom.service.id
@@ -61,14 +64,25 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         """Create test data."""
         super(RelayDomainsTestCase, cls).setUpTestData()
         admin_factories.populate_database()
-        cls.rdom = RelayDomainFactory(domain__name='relaydomain.tld')
+        cls.rdom = RelayDomainFactory(domain__name="relaydomain.tld")
+        cls.rdom.domain.type = "relaydomain"
+        cls.rdom.domain.save()
         admin_factories.DomainAliasFactory(
-            name='relaydomainalias.tld', target=cls.rdom.domain)
+            name="relaydomainalias.tld", target=cls.rdom.domain)
         admin_factories.MailboxFactory(
             domain=cls.rdom.domain, address="local",
             user__username="local@relaydomain.tld",
             user__groups=("SimpleUsers", )
         )
+
+    def test_domain_list_view(self):
+        """Make sure relaydomain is listed."""
+        url = reverse("admin:_domain_list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = json.loads(response.content)
+        self.assertIn("relaydomain.tld", content["rows"])
+        self.assertIn("Relay Domain", content["rows"])
 
     def test_create_relaydomain(self):
         """Test the creation of a relay domain.
@@ -79,7 +93,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         FIXME: add a check for domain alias.
         """
         self._create_relay_domain('relaydomain1.tld')
-        rdom = RelayDomain.objects.get(domain__name='relaydomain1.tld')
+        rdom = models.RelayDomain.objects.get(domain__name='relaydomain1.tld')
         self.assertEqual(rdom.target_host, 'external.host.tld')
         self.assertEqual(rdom.service.name, 'dummy')
         self.assertEqual(rdom.domain.enabled, True)
@@ -126,16 +140,16 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         Rename 'relaydomain.tld' domain to 'relaydomain.org'
         """
         values = {
-            'name': "relaydomain.org", "target_host": self.rdom.target_host,
+            "name": "relaydomain.org", "target_host": self.rdom.target_host,
             "type": "relaydomain", "enabled": True,
             "service": self.rdom.service.id
         }
         self.ajax_post(
-            reverse('admin:domain_change',
+            reverse("admin:domain_change",
                     args=[self.rdom.domain.id]),
             values
         )
-        RelayDomain.objects.get(domain__name='relaydomain.org')
+        models.RelayDomain.objects.get(domain__name='relaydomain.org')
 
     def test_relaydomain_domain_switch(self):
         """Check domain <-> relaydomain transitions."""
@@ -144,12 +158,13 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "name": "relaydomain.tld",
             "type": "domain",
             "enabled": True,
+            "target_host": self.rdom.target_host,
+            "service": self.rdom.service.pk
         }
         self.ajax_post(
-            reverse('admin:domain_change', args=[domain.pk]), values)
+            reverse("admin:domain_change", args=[domain.pk]), values)
         self.assertFalse(
-            RelayDomain.objects.filter(
-                domain__name="relaydomain.tld").exists())
+            models.RelayDomain.objects.filter(domain=domain).exists())
         self.assertEqual(
             admin_models.Domain.objects.get(name="relaydomain.tld").type,
             "domain")
@@ -164,7 +179,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             admin_models.Domain.objects.get(name="relaydomain.tld").type,
             "relaydomain")
         self.assertTrue(
-            RelayDomain.objects.filter(
+            models.RelayDomain.objects.filter(
                 domain__name="relaydomain.tld").exists())
 
     def test_edit_relaydomainalias(self):
@@ -193,16 +208,16 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
                     args=[self.rdom.domain.id]),
             {}
         )
-        with self.assertRaises(RelayDomain.DoesNotExist):
-            RelayDomain.objects.get(domain__name='relaydomain.tld')
+        with self.assertRaises(models.RelayDomain.DoesNotExist):
+            models.RelayDomain.objects.get(domain__name='relaydomain.tld')
 
     def test_delete_relaydomainalias(self):
         """Test the removal of a relay domain alias."""
         self._relay_domain_alias_operation(
             'del', self.rdom.domain.name, 'relaydomainalias.tld'
         )
-        with self.assertRaises(RelayDomain.DoesNotExist):
-            RelayDomain.objects.get(domain__name='relaydomainalias.tld')
+        with self.assertRaises(models.RelayDomain.DoesNotExist):
+            models.RelayDomain.objects.get(domain__name='relaydomainalias.tld')
 
     def test_alias_on_relaydomain(self):
         """Create an alias on a relay domain."""
@@ -224,6 +239,23 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         self.assertTrue(
             admin_models.Alias.objects.filter(
                 address="alias2@relaydomain.tld").exists())
+
+
+class ImportTestCase(ModoTestCase):
+    """Test import."""
+
+    def test_webui_import(self):
+        """Check if import from webui works."""
+        f = ContentFile("relaydomain;relay.com;127.0.0.1;relay;True;True",
+                        name="domains.csv")
+        self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(
+            admin_models.Domain.objects.filter(
+                name="relay.com", type="relaydomain").exists())
 
 
 class LimitsTestCase(ModoTestCase, Operations):

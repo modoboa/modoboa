@@ -17,7 +17,7 @@ class ServiceFactory(factory.DjangoModelFactory):
         model = models.Service
         django_get_or_create = ('name', )
 
-    name = 'dummy'
+    name = "dummy"
 
 
 class RelayDomainFactory(PermissionFactory):
@@ -26,8 +26,9 @@ class RelayDomainFactory(PermissionFactory):
 
     class Meta:
         model = models.RelayDomain
+        django_get_or_create = ("domain", )
 
+    target_host = "external.host.tld"
     domain = factory.SubFactory(DomainFactory)
-    target_host = 'external.host.tld'
     verify_recipients = True
     service = factory.SubFactory(ServiceFactory)

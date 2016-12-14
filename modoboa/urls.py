@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 
 from modoboa.core.extensions import exts_pool
-from modoboa.lib import events
+from modoboa.core import signals as core_signals
 
 
 urlpatterns = patterns(
@@ -22,10 +22,14 @@ urlpatterns += patterns(
     *exts_pool.load_all()
 )
 
-urlpatterns += patterns(
-    '',
-    *events.raiseQueryEvent("ExtraUprefsRoutes")
-)
+extra_routes = core_signals.extra_uprefs_routes.send(sender="urls")
+if extra_routes:
+    extra_routes = reduce(
+        lambda a, b: a + b, [route[1] for route in extra_routes])
+    urlpatterns += patterns(
+        '',
+        *extra_routes
+    )
 
 # API urls
 urlpatterns += patterns(

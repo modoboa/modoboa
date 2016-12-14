@@ -1,10 +1,22 @@
 """Django signal handlers for admin."""
 
+from django.core.urlresolvers import reverse
 from django.db.models import signals
 from django.dispatch import receiver
+from django.utils.translation import ugettext as _
 
+from django.contrib.contenttypes.models import ContentType
+
+from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
+from modoboa.lib.cryptutils import encrypt
+from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib import exceptions
+from modoboa.lib import permissions
+from modoboa.lib import signals as lib_signals
+from modoboa.parameters import tools as param_tools
 
+from . import lib
 from . import models
 from . import postfix_maps
 
@@ -74,7 +86,7 @@ def manage_alias_for_mailbox(sender, instance, **kwargs):
 
 @receiver(signals.pre_delete, sender=models.Mailbox)
 def mailbox_deleted_handler(sender, **kwargs):
-    """``Mailbox`` pre_delete signal receiver
+    """``Mailbox`` pre_delete signal receiver.
 
     In order to properly handle deletions (ie. we don't want to leave
     orphan records into the db), we define this custom receiver.
@@ -82,17 +94,24 @@ def mailbox_deleted_handler(sender, **kwargs):
     It manually removes the mailbox from the aliases it is linked to
     and then remove all empty aliases.
     """
-    from modoboa.lib import events
     from modoboa.lib.permissions import ungrant_access_to_object
 
-    mb = kwargs['instance']
-    events.raiseEvent("MailboxDeleted", mb)
+    mb = kwargs["instance"]
     ungrant_access_to_object(mb)
     for ralias in mb.aliasrecipient_set.select_related("alias"):
         alias = ralias.alias
         ralias.delete()
         if not alias.aliasrecipient_set.exists():
             alias.delete()
+    models.Quota.objects.filter(username=mb.full_address).delete()
+    request = lib_signals.get_request()
+    if not request.localconfig.parameters.get_value(
+            "handle_mailboxes", raise_exception=False):
+        return
+    keepdir = request.POST.get("keepdir", "false") == "true"
+    if keepdir:
+        return
+    mb.delete_dir()
 
 
 @receiver(signals.post_delete, sender=models.Mailbox)
@@ -111,3 +130,166 @@ def register_postfix_maps(sender, **kwargs):
         postfix_maps.SenderLoginAliasMap, postfix_maps.SenderLoginMailboxMap,
         postfix_maps.SenderLoginMailboxExtraMap
     ]
+
+
+@receiver(core_signals.account_auto_created)
+def account_auto_created(sender, user, **kwargs):
+    """New account has been auto-created, build the rest."""
+    if not param_tools.get_global_parameter("auto_create_domain_and_mailbox"):
+        return
+    localpart, domname = split_mailbox(user.username)
+    if user.role != 'SimpleUsers' and domname is None:
+        return
+    sadmins = core_models.User.objects.filter(is_superuser=True)
+    try:
+        domain = models.Domain.objects.get(name=domname)
+    except models.Domain.DoesNotExist:
+        label = lib.check_if_domain_exists(
+            domname, [(models.DomainAlias, _("domain alias"))])
+        if label is not None:
+            return
+        domain = models.Domain(name=domname, enabled=True, quota=0)
+        domain.save(creator=sadmins[0])
+        for su in sadmins[1:]:
+            permissions.grant_access_to_object(su, domain)
+    qset = models.Mailbox.objects.filter(domain=domain, address=localpart)
+    if not qset.exists():
+        mb = models.Mailbox(
+            address=localpart, domain=domain, user=user, use_domain_quota=True
+        )
+        mb.set_quota(override_rules=True)
+        mb.save(creator=sadmins[0])
+        for su in sadmins[1:]:
+            permissions.grant_access_to_object(su, mb)
+
+
+@receiver(core_signals.account_exported)
+def export_admin_domains(sender, user, **kwargs):
+    """Export administered domains too."""
+    result = [user.mailbox.quota] if hasattr(user, "mailbox") else [""]
+    if user.role != "DomainAdmins":
+        return result
+    return result + [
+        dom.name for dom in models.Domain.objects.get_for_admin(user)]
+
+
+@receiver(core_signals.account_imported)
+def import_account_mailbox(sender, user, account, row, **kwargs):
+    """Handle extra fields when an account is imported.
+
+    Expected fields:
+
+    email address; quota; [domain; ...]
+
+    :param User user: user importing the account
+    :param User account: account being imported
+    :param list rom: list of fields (strings)
+    """
+    account.email = row[0].strip()
+    if account.email:
+        mailbox, domname = split_mailbox(account.email)
+        domain = models.Domain.objects.filter(name=domname).first()
+        if not domain:
+            raise exceptions.BadRequest(
+                _("Account import failed (%s): domain does not exist")
+                % account.username
+            )
+        if not user.can_access(domain):
+            raise exceptions.PermDeniedException
+        core_signals.can_create_object.send(
+            sender="import", context=user, object_type="mailboxes")
+        core_signals.can_create_object.send(
+            sender="import", context=domain, object_type="mailboxes")
+        account.save()
+        qset = models.Mailbox.objects.filter(address=mailbox, domain=domain)
+        if qset.exists():
+            raise exceptions.Conflict(
+                _("Mailbox {} already exists").format(account.email))
+        if len(row) == 1:
+            quota = None
+        else:
+            try:
+                quota = int(row[1].strip())
+            except ValueError:
+                raise exceptions.BadRequest(
+                    _("Account import failed (%s): wrong quota value")
+                    % account.username
+                )
+        use_domain_quota = True if not quota else False
+        mb = models.Mailbox(
+            address=mailbox, domain=domain,
+            user=account, use_domain_quota=use_domain_quota)
+        mb.set_quota(
+            quota, override_rules=user.has_perm("admin.change_domain")
+        )
+        mb.save(creator=user)
+    if account.role == "DomainAdmins":
+        for domname in row[2:]:
+            try:
+                dom = models.Domain.objects.get(name=domname.strip())
+            except models.Domain.DoesNotExist:
+                continue
+            dom.add_admin(account)
+
+
+@receiver(core_signals.extra_admin_menu_entries)
+def admin_menu(sender, location, user, **kwargs):
+    """Add extra menu entries for admins."""
+    if location != "top_menu":
+        return []
+    entries = []
+    if user.has_perm("admin.view_domains"):
+        entries += [
+            {"name": "domains",
+             "url": reverse("admin:domain_list"),
+             "label": _("Domains")}
+        ]
+    conditions = (
+        user.has_perm("core.add_user"),
+        user.has_perm("admin.add_alias")
+    )
+    if any(conditions):
+        entries += [
+            {"name": "identities",
+             "url": reverse("admin:identity_list"),
+             "label": _("Identities")},
+        ]
+    return entries
+
+
+@receiver(core_signals.extra_user_menu_entries)
+def user_menu(sender, location, user, **kwargs):
+    """Add extra menu entries for users."""
+    if location != "uprefs_menu":
+        return []
+    if not hasattr(user, "mailbox"):
+        return []
+    return [
+        {"name": "forward",
+         "class": "ajaxnav",
+         "url": "forward/",
+         "label": _("Forward")}
+    ]
+
+
+@receiver(core_signals.user_login)
+def user_logged_in(sender, username, password, **kwargs):
+    """Store user password in session."""
+    request = lib_signals.get_request()
+    if hasattr(request.user, "mailbox"):
+        request.session["password"] = encrypt(password)
+
+
+@receiver(core_signals.account_role_changed)
+def grant_access_to_all_objects(sender, account, role, **kwargs):
+    """Grant all permissions if new role is SuperAdmin."""
+    if role != "SuperAdmins":
+        return
+    perm_models = [
+        core_models.User, models.Domain, models.DomainAlias, models.Mailbox,
+        models.Alias]
+    for model in perm_models:
+        permissions.grant_access_to_objects(
+            account, model.objects.all(),
+            ContentType.objects.get_for_model(model)
+        )

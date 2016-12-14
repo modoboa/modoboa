@@ -3,7 +3,6 @@
 from django.db import models
 from django.utils import timezone
 
-from modoboa.lib import events
 from modoboa.lib.permissions import (
     grant_access_to_object, ungrant_access_to_object
 )
@@ -32,7 +31,6 @@ class AdminObject(models.Model):
 
     def post_create(self, creator):
         grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("%sCreated" % self.objectname, creator, self)
 
     def save(self, *args, **kwargs):
         creator = kwargs.pop("creator", None)
@@ -41,6 +39,5 @@ class AdminObject(models.Model):
             self.post_create(creator)
 
     def delete(self):
-        events.raiseEvent("%sDeleted" % self.objectname, self)
         ungrant_access_to_object(self)
         super(AdminObject, self).delete()

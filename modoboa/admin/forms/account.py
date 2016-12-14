@@ -11,7 +11,6 @@ from passwords.fields import PasswordField
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
-from modoboa.lib import events
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
@@ -24,6 +23,7 @@ from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
 
 from .. import models
+from .. import signals
 
 
 class AccountFormGeneral(forms.ModelForm):
@@ -228,11 +228,6 @@ class AccountFormMail(forms.Form, DynamicForm):
         self.field_widths = {
             "quota": 3
         }
-        self.extra_fields = []
-        result = events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb)
-        for fname, field in result:
-            self.fields[fname] = field
-            self.extra_fields.append(fname)
         if self.mb is not None:
             self.fields["email"].required = True
             qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
@@ -380,9 +375,6 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.cleaned_data["use_domain_quota"] = (
                 self.cleaned_data["quota_act"])
             self.mb.update_from_dict(user, self.cleaned_data)
-        events.raiseEvent(
-            'SaveExtraFormFields', 'mailform', self.mb, self.cleaned_data
-        )
 
         account.email = self.cleaned_data["email"]
         account.save()
@@ -456,11 +448,13 @@ class AccountForm(TabForms):
              "formtpl": "admin/permsform.html",
              "cls": AccountPermissionsForm}
         ]
-        cbargs = [self.user]
+        cbargs = {"user": self.user}
         if "instances" in kwargs:
-            cbargs += [kwargs["instances"]["general"]]
-        self.forms += events.raiseQueryEvent("ExtraAccountForm", *cbargs)
-
+            cbargs["account"] = kwargs["instances"]["general"]
+        results = signals.extra_account_forms.send(
+            sender=self.__class__, **cbargs)
+        self.forms += reduce(
+            lambda a, b: a + b, [result[1] for result in results])
         super(AccountForm, self).__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
@@ -489,9 +483,10 @@ class AccountForm(TabForms):
                 return False
             return True
 
-        extra_forms = events.raiseQueryEvent(
-            "CheckExtraAccountForm", self.account, form)
-        if False in extra_forms:
+        results = signals.check_extra_account_form.send(
+            sender=self.__class__, account=self.account, form=form)
+        results = [result[1] for result in results]
+        if False in results:
             return False
         return True
 
@@ -509,9 +504,6 @@ class AccountForm(TabForms):
         As forms interact with each other, it is simpler to make
         custom code to save them.
         """
-        events.raiseEvent(
-            "AccountModified", self.instances["general"], self.account
-        )
         self.forms[1]["instance"].save(self.user, self.account)
         if len(self.forms) <= 2:
             return

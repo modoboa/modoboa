@@ -12,11 +12,11 @@ from django.utils.translation import ugettext as _
 
 from reversion import revisions as reversion
 
-from modoboa.lib import events
 from modoboa.lib.exceptions import ModoboaException, Conflict
 
 from ..forms import ImportIdentitiesForm, ImportDataForm
 from .. import lib
+from .. import signals
 
 
 @reversion.create_revision()
@@ -48,12 +48,11 @@ def importdata(request, formclass=ImportDataForm):
                     try:
                         fct = getattr(lib, "import_%s" % row[0].strip())
                     except AttributeError:
-                        fct = events.raiseQueryEvent(
-                            'ImportObject', row[0].strip()
-                        )
+                        fct = signals.import_object.send(
+                            sender="importdata", objtype=row[0].strip())
                         if not fct:
                             continue
-                        fct = fct[0]
+                        fct = fct[0][1]
                     with transaction.atomic():
                         try:
                             fct(request.user, row, form.cleaned_data)
@@ -83,17 +82,6 @@ def import_domains(request):
     if request.method == "POST":
         return importdata(request)
 
-    helptext = _("""Provide a CSV file where lines respect one of the following formats:
-<ul>
-  <li><em>domain; name; quota; enabled</em></li>
-  <li><em>domainalias; name; targeted domain; enabled</em></li>
-  %s
-</ul>
-<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
-<p>You can use a different character as separator.</p>
-""" % ''.join([unicode(hlp) for hlp in
-               events.raiseQueryEvent('ExtraDomainImportHelp')]))
-
     ctx = dict(
         title=_("Import domains"),
         action_label=_("Import"),
@@ -102,10 +90,9 @@ def import_domains(request):
         formid="importform",
         enctype="multipart/form-data",
         target="import_target",
-        helptext=helptext,
         form=ImportDataForm()
     )
-    return render(request, "admin/importform.html", ctx)
+    return render(request, "admin/import_domains_form.html", ctx)
 
 
 @login_required
@@ -117,15 +104,6 @@ def import_identities(request):
     if request.method == "POST":
         return importdata(request, ImportIdentitiesForm)
 
-    helptext = _("""Provide a CSV file where lines respect one of the following formats:
-<ul>
-<li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>
-<li><em>alias; address; enabled; recipient; recipient; ...</em></li>
-</ul>
-<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>
-
-<p>You can use a different character as separator.</p>
-""")
     ctx = dict(
         title=_("Import identities"),
         action_label=_("Import"),
@@ -134,7 +112,6 @@ def import_identities(request):
         formid="importform",
         enctype="multipart/form-data",
         target="import_target",
-        form=ImportIdentitiesForm(),
-        helptext=helptext
+        form=ImportIdentitiesForm()
     )
-    return render(request, "admin/importform.html", ctx)
+    return render(request, "admin/import_identities_form.html", ctx)

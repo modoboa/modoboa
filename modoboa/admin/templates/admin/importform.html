@@ -4,7 +4,7 @@
 {% block formbody %}
 <div class="alert alert-info">
   <h4>{% trans "Help" %}</h4>
-  {{ helptext|safe }}
+  {% block helptext %}{% endblock %}
 </div>
 {% render_form form %}
 <iframe id="import_target" name="import_target" src="#" 

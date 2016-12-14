@@ -19,12 +19,11 @@ of code that integrates them into Modoboa. The
 the plugin:
 
 * Admin and user parameters
-* Observed events
 * Custom menu entries
 
-The communication between both applications is provided by
-:ref:`events`. Modoboa offers some kind of hooks to let plugins add
-custom actions.
+The communication between both applications is provided by `Django
+signals
+<https://docs.djangoproject.com/en/1.9/topics/signals/>`_.
 
 The following subsections describe the plugin architecture and explain
 how you can create your own.
@@ -81,7 +80,7 @@ Parameters
 
 A plugin can declare its own parameters. There are two levels available:
 
-* 'Administration' parameters : used to configure the plugin, editable
+* 'Global' parameters : used to configure the plugin, editable
   inside the *Admin > Settings > Parameters* page
 * 'User' parameters : per-user parameters (or preferences), editable
   inside the *Options > Preferences* page
@@ -89,100 +88,118 @@ A plugin can declare its own parameters. There are two levels available:
 Playing with parameters
 =======================
 
-To declare a new administration parameter, use the following function::
+Parameters are defined using `Django forms
+<https://docs.djangoproject.com/en/1.9/topics/forms/>`_ and Modoboa
+adds two special forms you can inherit depending on the level of
+parameter(s) you want to add:
 
-  from modoboa.lib import parameters
+* ``modoboa.parameters.forms.AdminParametersForm``: for general parameters
 
-  parameters.register_admin(name, **kwargs)
+* ``modoboa.parameters.forms.UserParametersForm``: for user parameters
 
-To declare a new user parameter, use the following function::
+To register new parameters, add the following line into the ``load``
+method of your plugin class::
 
-  parameter.register_user(name, **kwargs)
+  from modoboa.parameters import tools as param_tools
+  param_tools.registry.add(
+      LEVEL, YourForm, ugettext_lazy("Title"))
 
-Both functions accept extra arguments listed here:
+Replace ``LEVEL`` by ``"global"`` or ``"user"``.
 
-* ``type`` : parameter's type, possible values are : ``int``, ``string``, ``list``, ``list_yesno``,
-* ``deflt`` : default value,
-* ``help`` : help text,
-* ``values`` : list of possible values if ``type`` is ``list``.
-
-***************************
-Custom administrative roles
-***************************
+***********************
+Custom role permissions
+***********************
 
 Modoboa uses Django's internal permission system. Administrative roles
 are nothing more than groups (``Group`` instances).
 
-If an extension needs to add new roles, the following steps are required:
+An extension can add new permissions to a group by listening to the
+``extra_role_permissions`` signal. Here is an example:
 
-#. Listen to the :ref:`getextraroles` event that will return
-   the group's name
+.. sourcecode:: python
 
-#. Listen to the :ref:`getextrarolepermissions` event that will return
-   the new group's permissions
+   from django.dispatch import receiver
+   from modoboa.core import signals as core_signals
 
-The group will automatically be created the next time you run the
-``load_initial_data`` command.
+   PERMISSIONS = {
+       "Resellers": [
+           ("relaydomains", "relaydomain", "add_relaydomain"),
+           ("relaydomains", "relaydomain", "change_relaydomain"),
+           ("relaydomains", "relaydomain", "delete_relaydomain"),
+           ("relaydomains", "service", "add_service"),
+           ("relaydomains", "service", "change_service"),
+           ("relaydomains", "service", "delete_service")
+       ]
+   }
+
+   @receiver(core_signals.extra_role_permissions)
+   def extra_role_permissions(sender, role, **kwargs):
+      """Add permissions to the Resellers group."""
+      return constants.PERMISSIONS.get(role, [])
 
 *********************
 Extending admin forms
 *********************
 
-the forms used to edit objects (account, domain, etc.) through the admin
-panel are composed of tabs. You can extend those forms (ie. add new
-tabs) in a pretty easy way by defining events.
+The forms used to edit objects (account, domain, etc.) through the admin
+panel are composed of tabs. You can extend them (ie. add new
+tabs) in a pretty easy way thanks to custom signals.
 
 Account
 =======
 
 To add a new tab to the account edition form, define new listeners
-(handlers) for the following events:
+(handlers) for the following signals:
 
-* :ref:`event_extraaccountform`
+* ``modoboa.admin.signals.extra_account_forms``
 
-* :ref:`event_fillaccountinstances`
+* ``modoboa.admin.signals.get_account_form_instances``
 
-* :ref:`event_checkextraaccountform` (optional)
+* ``modoboa.admin.signals.check_extra_account_form`` (optional)
 
 Example:
   
 .. sourcecode:: python
 
-   from modoboa.lib import events
+   from django.dispatch import receiver
+   from modoboa.admin import signals as admin_signals
 
-   @events.observe("ExtraAccountForm")
-   def extra_account_form(user, account=None):
+
+   @receiver(admin_signals.extra_account_forms)
+   def extra_account_form(sender, user, account, **kwargs):
        return [
            {"id": "tabid", "title": "Title", "cls": MyFormClass}
        ]
 
-   @events.observe("FillAccountInstances")
-   def fill_my_tab(user, account, instances):
-       instances["id"] = my_instance
-       
+   @receiver(admin_signals.get_account_form_instances)
+   def fill_my_tab(sender, user, account, **kwargs):
+       return {"id": my_instance}
+
        
 Domain
 ======
 
 To add a new tab to the domain edition form, define new listeners
-(handlers) for the following events:
+(handlers) for the following signals:
 
-* :ref:`event_extradomainform`
+* ``modoboa.admin.signals.extra_domain_forms``
 
-* :ref:`event_filldomaininstances`
+* ``modoboa.admin.signals.get_domain_form_instances``
 
 Example:
 
 .. sourcecode:: python
 
-   from modoboa.lib import events
+   from django.dispatch import receiver
+   from modoboa.admin import signals as admin_signals
 
-   @events.observe("ExtraDomainForm")
-   def extra_domain_form(user, domain):
+
+   @receiver(admin_signals.extra_domain_forms)
+   def extra_account_form(sender, user, domain, **kwargs):
        return [
            {"id": "tabid", "title": "Title", "cls": MyFormClass}
        ]
 
-   @events.observe("FillDomainInstances")
-   def fill_my_tab(user, domain, instances):
-       instances["id"] = my_instance
+   @receiver(admin_signals.get_domain_form_instances)
+   def fill_my_tab(sender, user, domain, **kwargs):
+       return {"id": my_instance}

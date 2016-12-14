@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from modoboa.lib import events
+from modoboa.core import signals as core_signals
 from modoboa.lib.templatetags.lib_tags import render_link
 from modoboa.lib.web_utils import render_actions
 
@@ -47,7 +47,10 @@ def domains_menu(selection, user, ajax_mode=True):
          "url": reverse("admin:domain_statistics")}
     ]
     if user.has_perm("admin.add_domain"):
-        entries += events.raiseQueryEvent("ExtraDomainMenuEntries", user)
+        extra_entries = signals.extra_domain_menu_entries.send(
+            sender="domains_menu", user=user)
+        for entry in extra_entries:
+            entries += entry[1]
         entries += [
             {"name": "import",
              "label": _("Import"),
@@ -157,7 +160,11 @@ def identity_actions(user, ident):
     name = ident.__class__.__name__
     objid = ident.id
     if name == "User":
-        actions = events.raiseQueryEvent("ExtraAccountActions", ident)
+        actions = []
+        result = core_signals.extra_account_actions.send(
+            sender="identity_actions", account=ident)
+        for action in result:
+            actions += action[1]
         url = (
             reverse("admin:account_change", args=[objid]) +
             "?active_tab=default"
@@ -265,7 +272,10 @@ def gender(value, target):
 
 @register.simple_tag
 def get_extra_admin_content(user, target, currentpage):
-    res = events.raiseQueryEvent(
-        "ExtraAdminContent", user, target, currentpage
-    )
-    return mark_safe("".join(res))
+    results = signals.extra_admin_content.send(
+        sender="get_extra_admin_content",
+        user=user, location=target, currentpage=currentpage)
+    if not results:
+        return ""
+    results = reduce(lambda a, b: a + b, [result[1] for result in results])
+    return mark_safe("".join(results))

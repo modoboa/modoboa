@@ -1,5 +1,7 @@
 """Core views test cases."""
 
+import json
+
 from testfixtures import compare
 
 from django import forms
@@ -11,6 +13,23 @@ from modoboa.parameters import tools as param_tools
 
 from .. import factories
 from .. import models
+from .. import signals
+
+
+def announcement(sender, location, **kwargs):
+    """Simpler handler."""
+    return "This is an annoucement!"
+
+
+class LoginTestCase(ModoTestCase):
+    """Login page test cases."""
+
+    def test_announcements(self):
+        """Check if announcements are displayed."""
+        signals.get_announcements.connect(announcement)
+        response = self.client.get(reverse("core:login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("This is an annoucement!", response.content)
 
 
 class DashboardTestCase(ModoTestCase):
@@ -49,6 +68,13 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+
+    def test_top_notifications(self):
+        """Check top notifications service."""
+        url = reverse("core:top_notifications_check")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(json.loads(response.content)), 1)
 
 
 class SettingsTestCase(ModoTestCase):
@@ -131,6 +157,16 @@ class UserSettings(param_forms.UserParametersForm):
     test = forms.CharField()
 
 
+def extra_user_menu(sender, location, user, **kwargs):
+    """Return extra menu entry."""
+    return [
+        {"name": "test_menu_entry",
+         "class": "ajaxnav",
+         "url": "toto/",
+         "label": "Test"}
+    ]
+
+
 class PreferencesTestCase(ModoTestCase):
     """Test user preferences."""
 
@@ -145,6 +181,13 @@ class PreferencesTestCase(ModoTestCase):
         """Remove user class."""
         super(PreferencesTestCase, cls).tearDownClass()
         del param_tools.registry._registry["user"]["core"]
+
+    def test_get_user_index(self):
+        """Retrieve index page."""
+        signals.extra_user_menu_entries.connect(extra_user_menu)
+        url = reverse("core:user_index")
+        response = self.client.get(url)
+        self.assertContains(response, 'name="test_menu_entry"')
 
     def test_get_preferences(self):
         """Test preferences display."""
