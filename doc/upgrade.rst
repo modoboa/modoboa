@@ -87,6 +87,12 @@ Specific instructions
 1.6.0
 =====
 
+.. warning::
+
+   You have to upgrade extensions due to `core.User` model attribute change (`user.group` to `user.role`).
+   Otherwise, you will have an internal error after upgrade.
+   In particular: `modoboa-amavisd https://github.com/modoboa/modoboa-amavis/commit/35df4e48b124e56df930cda8c013af0c1fcaabf3`_, `modoboa-stats https://github.com/modoboa/modoboa-stats/commit/aa4a39ce65eb306ad6dec30a54eb58945b120274`_, `modoboa-postfix-autoreply <https://github.com/modoboa/modoboa-postfix-autoreply/commit/20f98c8d1c0c0dbd420f47aefcbb0290022414a4>`_ are concerned.
+
 An interesting feature brougth by this version is the capability to
 make different checks about MX records. For example, Modoboa can
 query main `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ providers
