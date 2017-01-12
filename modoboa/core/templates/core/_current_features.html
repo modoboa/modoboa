@@ -1,0 +1,19 @@
+{% load i18n %}
+
+<!-- Current features to sponsor -->
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">{% trans "Features looking for sponsoring" %}</h3>
+  </div>
+  <div class="panel-body">
+    {% for feature in features %}
+      <h4>{{ feature.name }}</h4>
+      <span class="label label-info">{% trans "Current:" %} {{ feature.current }}</span>
+      <span class="label label-success">{% trans "Goal:" %} {{ feature.goal }}</span>
+      <p>{{ feature.description }}</p>
+      <a href="{{ feature.full_url }}" class="btn btn-primary">{% trans "More" %}</a>
+    {% empty %}
+      <div class="alert alert-info">{% trans "FIXME" %}</div>
+    {% endfor %}
+  </div>
+</div>
