@@ -65,9 +65,8 @@ class AdminParametersForm(parameters.AdminParametersForm):
         label=ugettext_lazy("Valid MXs"),
         initial="",
         help_text=ugettext_lazy(
-            "IP(s) or network(s) "
-            "of the MX that should match with domains' MX records. "
-            "On per line."
+            "A list of IP or network address every MX record should match."
+            " A warning will be sent if a record does not respect it."
         ),
         widget=forms.Textarea,
         required=False

@@ -25,46 +25,110 @@ General parameters
 
 The *admin* application exposes several parameters, they are presented below:
 
-+--------------------+--------------------+--------------------+
-|Name                |Description         |Default value       |
-+====================+====================+====================+
-|Authentication type |The backend used for|Local               |
-|                    |authentication      |                    |
-+--------------------+--------------------+--------------------+
-|Default password    |Scheme used to crypt|crypt               |
-|scheme              |mailbox passwords   |                    |
-+--------------------+--------------------+--------------------+
-|Secret key          |A key used to       |random value        |
-|                    |encrypt users'      |                    |
-|                    |password in sessions|                    |
-+--------------------+--------------------+--------------------+
-|Handle mailboxes on |Rename or remove    |no                  |
-|filesystem          |mailboxes on the    |                    |
-|                    |filesystem when they|                    |
-|                    |get renamed or      |                    |
-|                    |removed within      |                    |
-|                    |Modoboa             |                    |
-+--------------------+--------------------+--------------------+
-|Mailboxes owner     |The UNIX account who|vmail               |
-|                    |owns mailboxes on   |                    |
-|                    |the filesystem      |                    |
-+--------------------+--------------------+--------------------+
-|Automatic account   |When a mailbox is   |no                  |
-|removal             |removed, also remove|                    |
-|                    |the associated      |                    |
-|                    |account             |                    |
-+--------------------+--------------------+--------------------+
-|Maximum log record  |The maximum age in  |365                 |
-|age                 |days of a log record|                    |
-+--------------------+--------------------+--------------------+
-|Items per page      |Number of displayed |30                  |
-|                    |items per page      |                    |
-+--------------------+--------------------+--------------------+
-|Default top         |The default         |userprefs           |
-|redirection         |redirection used    |                    |
-|                    |when no application |                    |
-|                    |is specified        |                    |
-+--------------------+--------------------+--------------------+
++--------------------+---------------------+-------------------------------+--------------------+
+|Name                |Tab                  |Description                    |Default value       |
++====================+=====================+===============================+====================+
+|Authentication type |General              |The backend used for           |Local               |
+|                    |                     |authentication                 |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Default password    |General              |Scheme used to crypt           |crypt               |
+|scheme              |                     |mailbox passwords              |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Rounds              |General              |Number of rounds (only used by |70000               |
+|                    |                     |`sha256crypt` and              |                    |
+|                    |                     |`sha512crypt`). Must be between|                    |
+|                    |                     |1000 and 999999999, inclusive. |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Secret key          |General              |A key used to                  |random value        |
+|                    |                     |encrypt users'                 |                    |
+|                    |                     |password in sessions           |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Sender address      |General              |Email address used to send     |                    |
+|                    |                     |notifications.                 |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Enable communication|General              |Enable communication with      |yes                 |
+|                    |                     |Modoboa public API             |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Check new versions  |General              |Automatically checks if a newer|yes                 |
+|                    |                     |version is available           |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Send statistics     |General              |Send statistics to Modoboa     |yes                 |
+|                    |                     |public API (counters and used  |                    |
+|                    |                     |extensions)                    |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Top notifications   |General              |Interval between two top       |30                  |
+|check interval      |                     |notification checks (in        |                    |
+|                    |                     |seconds)                       |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Maximum log record  |General              |The maximum age in             |365                 |
+|age                 |                     |days of a log record           |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Items per page      |General              |Number of displayed            |30                  |
+|                    |                     |items per page                 |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Default top         |General              |The default                    |userprefs           |
+|redirection         |                     |redirection used               |                    |
+|                    |                     |when no application            |                    |
+|                    |                     |is specified                   |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Enable MX checks    |Admin                |Check that every domain has a  |yes                 |
+|                    |                     |valid MX record                |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Valid MXs           |Admin                |A list of IP or network address|                    |
+|                    |                     |every MX should match. A       |                    |
+|                    |                     |warning will be sent if a      |                    |
+|                    |                     |record does not respect this   |                    |
+|                    |                     |it.                            |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Enable DNSBL checks |Admin                |Check every domain against     |yes                 |
+|                    |                     |major DNSBL providers          |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Handle mailboxes on |Admin                |Rename or remove               |no                  |
+|filesystem          |                     |mailboxes on the               |                    |
+|                    |                     |filesystem when they           |                    |
+|                    |                     |get renamed or                 |                    |
+|                    |                     |removed within                 |                    |
+|                    |                     |Modoboa                        |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Mailboxes owner     |Admin                |The UNIX account who           |vmail               |
+|                    |                     |owns mailboxes on              |                    |
+|                    |                     |the filesystem                 |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Default domain quota|Admin                |Default quota (in MB) applied  |0                   |
+|                    |                     |to freshly created domains with|                    |
+|                    |                     |no value specified. A value of |                    |
+|                    |                     |0 means no quota.              |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Automatic account   |Admin                |When a mailbox is              |no                  |
+|removal             |                     |removed, also remove           |                    |
+|                    |                     |the associated                 |                    |
+|                    |                     |account                        |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Automatic           |Admin                |Create a domain and a mailbox  |yes                 |
+|domain/mailbox      |                     |when an account is             |                    |
+|creation            |                     |automatically created          |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
 
 .. note::
 
