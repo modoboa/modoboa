@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-16 13:02+0100\n"
-"PO-Revision-Date: 2017-01-16 12:05+0000\n"
+"POT-Creation-Date: 2017-01-16 17:38+0100\n"
+"PO-Revision-Date: 2017-01-16 16:47+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -49,7 +49,7 @@ msgstr "Activer les vérifications DNSBL"
 msgid "Check every domain against major DNSBL providers"
 msgstr "Vérifie chaque domaine auprès des fournisseurs de DNSBL"
 
-#: app_settings.py:46 templates/admin/domain_detail.html:44
+#: app_settings.py:46 templates/admin/domain_detail.html:46
 msgid "Mailboxes"
 msgstr "Boites"
 
@@ -106,7 +106,7 @@ msgstr "Doit être un entier positif"
 msgid "Administration"
 msgstr "Administration"
 
-#: forms/account.py:34 templates/admin/domain_detail.html:72
+#: forms/account.py:34 templates/admin/domain_detail.html:74
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -313,7 +313,7 @@ msgstr "Créer un administrateur de domaine"
 msgid "Automatically create an administrator for this domain"
 msgstr "Créer automatiquement un administrateur pour ce domaine"
 
-#: forms/domain.py:179 templates/admin/domain_detail.html:72
+#: forms/domain.py:179 templates/admin/domain_detail.html:74
 #: templates/admin/domains.html:34 templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
@@ -694,36 +694,41 @@ msgstr "Aucune information disponible pour ce domaine."
 msgid "DNS status"
 msgstr "Statut DNS"
 
-#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:14
+#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:12
+msgctxt "checks"
+msgid "Disabled"
+msgstr "Désactivés"
+
+#: templates/admin/domain_detail.html:30 templates/admin/domains_table.html:14
 msgid "Awaiting checks"
 msgstr "En attente de vérification"
 
-#: templates/admin/domain_detail.html:40
+#: templates/admin/domain_detail.html:42
 msgid "Creation date"
 msgstr "Date de création"
 
-#: templates/admin/domain_detail.html:42
+#: templates/admin/domain_detail.html:44
 msgid "Last modification date"
 msgstr "Date de dernière modification"
 
-#: templates/admin/domain_detail.html:43 templates/admin/domain_detail.html:52
+#: templates/admin/domain_detail.html:45 templates/admin/domain_detail.html:54
 #: templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "Alias de domaine"
 
-#: templates/admin/domain_detail.html:45
+#: templates/admin/domain_detail.html:47
 msgid "Mailbox aliases"
 msgstr "Alias de boite."
 
-#: templates/admin/domain_detail.html:69
+#: templates/admin/domain_detail.html:71
 msgid "Administrators"
 msgstr "Administrateurs"
 
-#: templates/admin/domain_detail.html:79 templatetags/admin_tags.py:259
+#: templates/admin/domain_detail.html:81 templatetags/admin_tags.py:259
 msgid "Remove this permission"
 msgstr "Supprimer cette permission"
 
-#: templates/admin/domain_detail.html:84
+#: templates/admin/domain_detail.html:86
 msgid "No domain administrator defined yet."
 msgstr "Aucun administrateur de domaine défini."
 
@@ -772,11 +777,6 @@ msgstr "Actions"
 msgid "disabled"
 msgstr "Desactivé"
 
-#: templates/admin/domains_table.html:12
-msgctxt "checks"
-msgid "Disabled"
-msgstr "Désactivés"
-
 #: templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
 msgstr "Transférer automatiquement les messages vers une autre adresse"
@@ -798,10 +798,10 @@ msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; enabled</em></li> <li><em>domainalias; name; "
 "targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; "
-"service; enabled; verify recipients</em></li> </ul> <p>The first element of "
-"each line is mandatory and must be equal to one of the previous values.</p> "
-"<p>You can use a different character as separator.</p>"
-msgstr "Fournissez un fichier CSV dans lequel les lignes respectent un des formats suivants : <ul> <li><em>domain; name; quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li> </ul> <p>Le premier élément de chaque ligne est obligatoire et doit être égal à l'une des valeurs présentées.</p><p>Vous pouvez utiliser un caractère différent en tant que séparateur.</p>"
+"target port; service; enabled; verify recipients</em></li> </ul> <p>The "
+"first element of each line is mandatory and must be equal to one of the "
+"previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Fournissez un fichier CSV dans lequel les lignes respectent un des formats suivants : <ul> <li><em>domain; nom; quota; actif</em></li> <li><em>domainalias; nom; domaine cible; actif</em></li> <li><em>relaydomain; nom; hôte cible; port cible; service; actif; vérifier les destinataires</em></li> </ul> <p>Le premier élément de chaque ligne est obligatoire et doit être égal à l'une des valeurs présentées.</p><p>Vous pouvez utiliser un caractère différent en tant que séparateur.</p>\""
 
 #: templates/admin/import_identities_form.html:6
 msgid ""

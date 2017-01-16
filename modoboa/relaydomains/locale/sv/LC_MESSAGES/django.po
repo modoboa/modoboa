@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-14 14:13+0100\n"
+"POT-Creation-Date: 2017-01-16 17:41+0100\n"
 "PO-Revision-Date: 2015-01-13 15:18+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -21,79 +21,96 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:15
+#: app_settings.py:15
 msgid "General"
 msgstr "Generellt"
 
-#: relaydomains/app_settings.py:18
+#: app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Sökväg till Postfix master.cf"
 
-#: relaydomains/app_settings.py:20
+#: app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Sökväg till master.cf konfigureringsfil"
 
-#: relaydomains/apps.py:12
+#: apps.py:12
 msgid "Relay domains"
 msgstr "Relay domän"
 
-#: relaydomains/forms.py:27
-msgid "Name"
-msgstr ""
-
-#: relaydomains/forms.py:28
+#: forms.py:52
 #, fuzzy
-#| msgid "The domain name"
-msgid "The relay domain name"
-msgstr "Domännamnet"
+#| msgid "Invalid line"
+msgid "Invalid value"
+msgstr "Ogiltig rad"
 
-#: relaydomains/handlers.py:101
+#: handlers.py:105
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay settings"
 msgstr "Relay domän"
 
-#: relaydomains/handlers.py:132 relaydomains/handlers.py:139
+#: handlers.py:136 handlers.py:143
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay domain"
 msgstr "Relay domän"
 
-#: relaydomains/models.py:47
+#: models.py:47
 msgid "name"
 msgstr "namn"
 
-#: relaydomains/models.py:48
+#: models.py:48
 msgid "The service name"
 msgstr "Tjänstens namn"
 
-#: relaydomains/models.py:70
-msgid "target host"
+#: models.py:70
+#, fuzzy
+#| msgid "target host"
+msgid "target host address"
 msgstr "målvärd"
 
-#: relaydomains/models.py:71
-msgid "Remote destination of this domain"
+#: models.py:72
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote address (hostname or IP) of this domain"
 msgstr "Fjärrmål för den här domänen"
 
-#: relaydomains/models.py:75
+#: models.py:75
+#, fuzzy
+#| msgid "target host"
+msgid "target host port"
+msgstr "målvärd"
+
+#: models.py:77
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote port of this domain"
+msgstr "Fjärrmål för den här domänen"
+
+#: models.py:82
 msgid "verify recipients"
 msgstr "verifiera mottagare"
 
-#: relaydomains/models.py:76
+#: models.py:83
 msgid "Check for valid recipients"
 msgstr "Kontrollera giltiga mottagare"
 
-#: relaydomains/models.py:87
+#: models.py:94
 msgid "Relay Domain"
 msgstr "Relay domän"
 
-#: relaydomains/models.py:114
+#: models.py:122
 msgid "Invalid line"
 msgstr "Ogiltig rad"
 
-#: relaydomains/templates/relaydomains/service_field.html:3
+#: templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "Skanna"
+
+#, fuzzy
+#~| msgid "The domain name"
+#~ msgid "The relay domain name"
+#~ msgstr "Domännamnet"
 
 #, fuzzy
 #~| msgid ""

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-16 13:02+0100\n"
+"POT-Creation-Date: 2017-01-16 17:38+0100\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Check every domain against major DNSBL providers"
 msgstr ""
 
-#: app_settings.py:46 templates/admin/domain_detail.html:44
+#: app_settings.py:46 templates/admin/domain_detail.html:46
 msgid "Mailboxes"
 msgstr "Mailboxen"
 
@@ -114,7 +114,7 @@ msgstr "Dit moet een positive integer zijn."
 msgid "Administration"
 msgstr "Administratie"
 
-#: forms/account.py:34 templates/admin/domain_detail.html:72
+#: forms/account.py:34 templates/admin/domain_detail.html:74
 msgid "Username"
 msgstr "Gebruikersnaam"
 
@@ -364,7 +364,7 @@ msgstr "Maak een domein administrator aan"
 msgid "Automatically create an administrator for this domain"
 msgstr "Automatisch een administrator aanmaken voor dit domein"
 
-#: forms/domain.py:179 templates/admin/domain_detail.html:72
+#: forms/domain.py:179 templates/admin/domain_detail.html:74
 #: templates/admin/domains.html:34 templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
@@ -791,36 +791,43 @@ msgstr ""
 msgid "DNS status"
 msgstr "Statistieken"
 
-#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:14
+#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:12
+#, fuzzy
+#| msgid "disabled"
+msgctxt "checks"
+msgid "Disabled"
+msgstr "uitgeschakeld"
+
+#: templates/admin/domain_detail.html:30 templates/admin/domains_table.html:14
 msgid "Awaiting checks"
 msgstr ""
 
-#: templates/admin/domain_detail.html:40
+#: templates/admin/domain_detail.html:42
 msgid "Creation date"
 msgstr "Datum van aanmaken"
 
-#: templates/admin/domain_detail.html:42
+#: templates/admin/domain_detail.html:44
 msgid "Last modification date"
 msgstr "Laatst gewijzigd"
 
-#: templates/admin/domain_detail.html:43 templates/admin/domain_detail.html:52
+#: templates/admin/domain_detail.html:45 templates/admin/domain_detail.html:54
 #: templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "Domein aliassen"
 
-#: templates/admin/domain_detail.html:45
+#: templates/admin/domain_detail.html:47
 msgid "Mailbox aliases"
 msgstr "Mailbox aliassen"
 
-#: templates/admin/domain_detail.html:69
+#: templates/admin/domain_detail.html:71
 msgid "Administrators"
 msgstr "Administrators"
 
-#: templates/admin/domain_detail.html:79 templatetags/admin_tags.py:259
+#: templates/admin/domain_detail.html:81 templatetags/admin_tags.py:259
 msgid "Remove this permission"
 msgstr "Deze bevoegdheid verwijderen"
 
-#: templates/admin/domain_detail.html:84
+#: templates/admin/domain_detail.html:86
 #, fuzzy
 #| msgid "No domain administrator defined"
 msgid "No domain administrator defined yet."
@@ -873,13 +880,6 @@ msgstr "Acties"
 msgid "disabled"
 msgstr "uitgeschakeld"
 
-#: templates/admin/domains_table.html:12
-#, fuzzy
-#| msgid "disabled"
-msgctxt "checks"
-msgid "Disabled"
-msgstr "uitgeschakeld"
-
 #: templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
 msgstr "Automatisch mails doorsturen naar een ander adres"
@@ -914,9 +914,9 @@ msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; enabled</em></li> <li><em>domainalias; name; "
 "targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; "
-"service; enabled; verify recipients</em></li> </ul> <p>The first element of "
-"each line is mandatory and must be equal to one of the previous values.</p> "
-"<p>You can use a different character as separator.</p>"
+"target port; service; enabled; verify recipients</em></li> </ul> <p>The "
+"first element of each line is mandatory and must be equal to one of the "
+"previous values.</p> <p>You can use a different character as separator.</p>"
 msgstr ""
 "Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende "
 "formaten:\n"

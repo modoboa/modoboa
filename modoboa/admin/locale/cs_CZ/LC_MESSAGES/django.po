@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-16 13:02+0100\n"
+"POT-Creation-Date: 2017-01-16 17:38+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -50,7 +50,7 @@ msgstr ""
 msgid "Check every domain against major DNSBL providers"
 msgstr ""
 
-#: app_settings.py:46 templates/admin/domain_detail.html:44
+#: app_settings.py:46 templates/admin/domain_detail.html:46
 msgid "Mailboxes"
 msgstr "Schránky"
 
@@ -110,7 +110,7 @@ msgstr "Musí se jednat o kladné číslo"
 msgid "Administration"
 msgstr "Správa"
 
-#: forms/account.py:34 templates/admin/domain_detail.html:72
+#: forms/account.py:34 templates/admin/domain_detail.html:74
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -362,7 +362,7 @@ msgstr "Vytvořit správce domény"
 msgid "Automatically create an administrator for this domain"
 msgstr "Automaticky vytvořit správce této domény"
 
-#: forms/domain.py:179 templates/admin/domain_detail.html:72
+#: forms/domain.py:179 templates/admin/domain_detail.html:74
 #: templates/admin/domains.html:34 templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
@@ -788,36 +788,43 @@ msgstr ""
 msgid "DNS status"
 msgstr "Statistiky"
 
-#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:14
+#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:12
+#, fuzzy
+#| msgid "disabled"
+msgctxt "checks"
+msgid "Disabled"
+msgstr "zákázáno"
+
+#: templates/admin/domain_detail.html:30 templates/admin/domains_table.html:14
 msgid "Awaiting checks"
 msgstr ""
 
-#: templates/admin/domain_detail.html:40
+#: templates/admin/domain_detail.html:42
 msgid "Creation date"
 msgstr "Datum vytvoření"
 
-#: templates/admin/domain_detail.html:42
+#: templates/admin/domain_detail.html:44
 msgid "Last modification date"
 msgstr "Datum poslední změny"
 
-#: templates/admin/domain_detail.html:43 templates/admin/domain_detail.html:52
+#: templates/admin/domain_detail.html:45 templates/admin/domain_detail.html:54
 #: templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "Doménové aliasy"
 
-#: templates/admin/domain_detail.html:45
+#: templates/admin/domain_detail.html:47
 msgid "Mailbox aliases"
 msgstr "Aliasy schránek"
 
-#: templates/admin/domain_detail.html:69
+#: templates/admin/domain_detail.html:71
 msgid "Administrators"
 msgstr "Správci"
 
-#: templates/admin/domain_detail.html:79 templatetags/admin_tags.py:259
+#: templates/admin/domain_detail.html:81 templatetags/admin_tags.py:259
 msgid "Remove this permission"
 msgstr "Odstranit toto oprávnění"
 
-#: templates/admin/domain_detail.html:84
+#: templates/admin/domain_detail.html:86
 #, fuzzy
 #| msgid "No domain administrator defined"
 msgid "No domain administrator defined yet."
@@ -870,13 +877,6 @@ msgstr "Akce"
 msgid "disabled"
 msgstr "zákázáno"
 
-#: templates/admin/domains_table.html:12
-#, fuzzy
-#| msgid "disabled"
-msgctxt "checks"
-msgid "Disabled"
-msgstr "zákázáno"
-
 #: templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
 msgstr "Automaticky přesměrovat emaily na jinou adresu"
@@ -911,9 +911,9 @@ msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; enabled</em></li> <li><em>domainalias; name; "
 "targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; "
-"service; enabled; verify recipients</em></li> </ul> <p>The first element of "
-"each line is mandatory and must be equal to one of the previous values.</p> "
-"<p>You can use a different character as separator.</p>"
+"target port; service; enabled; verify recipients</em></li> </ul> <p>The "
+"first element of each line is mandatory and must be equal to one of the "
+"previous values.</p> <p>You can use a different character as separator.</p>"
 msgstr ""
 "Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených "
 "formátů:\n"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-16 13:02+0100\n"
+"POT-Creation-Date: 2017-01-16 17:38+0100\n"
 "PO-Revision-Date: 2016-05-17 12:28+0000\n"
 "Last-Translator: Jose Marcos Araujo <jmaraujo@avancetec.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Check every domain against major DNSBL providers"
 msgstr ""
 
-#: app_settings.py:46 templates/admin/domain_detail.html:44
+#: app_settings.py:46 templates/admin/domain_detail.html:46
 msgid "Mailboxes"
 msgstr "Caixas de correios"
 
@@ -116,7 +116,7 @@ msgstr "Deve ser um inteiro positivo"
 msgid "Administration"
 msgstr "Administração"
 
-#: forms/account.py:34 templates/admin/domain_detail.html:72
+#: forms/account.py:34 templates/admin/domain_detail.html:74
 msgid "Username"
 msgstr "Nome de usuário"
 
@@ -356,7 +356,7 @@ msgstr "Criar um administrador de domínio"
 msgid "Automatically create an administrator for this domain"
 msgstr "Criar automaticamente um administrador para este domínio"
 
-#: forms/domain.py:179 templates/admin/domain_detail.html:72
+#: forms/domain.py:179 templates/admin/domain_detail.html:74
 #: templates/admin/domains.html:34 templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
@@ -770,36 +770,43 @@ msgstr ""
 msgid "DNS status"
 msgstr "Estatísticas"
 
-#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:14
+#: templates/admin/domain_detail.html:28 templates/admin/domains_table.html:12
+#, fuzzy
+#| msgid "disabled"
+msgctxt "checks"
+msgid "Disabled"
+msgstr "desabilitado"
+
+#: templates/admin/domain_detail.html:30 templates/admin/domains_table.html:14
 msgid "Awaiting checks"
 msgstr ""
 
-#: templates/admin/domain_detail.html:40
+#: templates/admin/domain_detail.html:42
 msgid "Creation date"
 msgstr "Data de criação"
 
-#: templates/admin/domain_detail.html:42
+#: templates/admin/domain_detail.html:44
 msgid "Last modification date"
 msgstr "Data da última modificação"
 
-#: templates/admin/domain_detail.html:43 templates/admin/domain_detail.html:52
+#: templates/admin/domain_detail.html:45 templates/admin/domain_detail.html:54
 #: templates/admin/domain_statistics.html:33
 msgid "Domain aliases"
 msgstr "Alias de domínios"
 
-#: templates/admin/domain_detail.html:45
+#: templates/admin/domain_detail.html:47
 msgid "Mailbox aliases"
 msgstr "Alias de caixas de correio"
 
-#: templates/admin/domain_detail.html:69
+#: templates/admin/domain_detail.html:71
 msgid "Administrators"
 msgstr "Administradores"
 
-#: templates/admin/domain_detail.html:79 templatetags/admin_tags.py:259
+#: templates/admin/domain_detail.html:81 templatetags/admin_tags.py:259
 msgid "Remove this permission"
 msgstr "Remover essa persmissão"
 
-#: templates/admin/domain_detail.html:84
+#: templates/admin/domain_detail.html:86
 #, fuzzy
 #| msgid "No domain administrator defined"
 msgid "No domain administrator defined yet."
@@ -852,13 +859,6 @@ msgstr "Ações"
 msgid "disabled"
 msgstr "desabilitado"
 
-#: templates/admin/domains_table.html:12
-#, fuzzy
-#| msgid "disabled"
-msgctxt "checks"
-msgid "Disabled"
-msgstr "desabilitado"
-
 #: templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
 msgstr "Encaminhar e-mails automaticamente para outro endereço"
@@ -893,9 +893,9 @@ msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; enabled</em></li> <li><em>domainalias; name; "
 "targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; "
-"service; enabled; verify recipients</em></li> </ul> <p>The first element of "
-"each line is mandatory and must be equal to one of the previous values.</p> "
-"<p>You can use a different character as separator.</p>"
+"target port; service; enabled; verify recipients</em></li> </ul> <p>The "
+"first element of each line is mandatory and must be equal to one of the "
+"previous values.</p> <p>You can use a different character as separator.</p>"
 msgstr ""
 "Forneça um arquivo CSV onde as linhas respeitam um dos seguintes formatos:\n"
 "<ul>\n"

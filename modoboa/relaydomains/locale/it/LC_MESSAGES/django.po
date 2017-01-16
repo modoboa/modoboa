@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-14 14:13+0100\n"
+"POT-Creation-Date: 2017-01-16 17:41+0100\n"
 "PO-Revision-Date: 2013-12-23 00:56+0100\n"
 "Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
@@ -17,79 +17,96 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:15
+#: app_settings.py:15
 msgid "General"
 msgstr "Generale"
 
-#: relaydomains/app_settings.py:18
+#: app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Percorso del file master.cf di Postfix"
 
-#: relaydomains/app_settings.py:20
+#: app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Percorso del file di configurazione master.cf"
 
-#: relaydomains/apps.py:12
+#: apps.py:12
 msgid "Relay domains"
 msgstr "Domini relè"
 
-#: relaydomains/forms.py:27
-msgid "Name"
-msgstr ""
-
-#: relaydomains/forms.py:28
+#: forms.py:52
 #, fuzzy
-#| msgid "The domain name"
-msgid "The relay domain name"
-msgstr "Il nome del dominio"
+#| msgid "Invalid line"
+msgid "Invalid value"
+msgstr "Riga non valida"
 
-#: relaydomains/handlers.py:101
+#: handlers.py:105
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay settings"
 msgstr "Domini relè"
 
-#: relaydomains/handlers.py:132 relaydomains/handlers.py:139
+#: handlers.py:136 handlers.py:143
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay domain"
 msgstr "Domini relè"
 
-#: relaydomains/models.py:47
+#: models.py:47
 msgid "name"
 msgstr "nome"
 
-#: relaydomains/models.py:48
+#: models.py:48
 msgid "The service name"
 msgstr "Il nome del servizio"
 
-#: relaydomains/models.py:70
-msgid "target host"
+#: models.py:70
+#, fuzzy
+#| msgid "target host"
+msgid "target host address"
 msgstr "destinazione"
 
-#: relaydomains/models.py:71
-msgid "Remote destination of this domain"
+#: models.py:72
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote address (hostname or IP) of this domain"
 msgstr "Destinazione remota per questo dominio"
 
-#: relaydomains/models.py:75
+#: models.py:75
+#, fuzzy
+#| msgid "target host"
+msgid "target host port"
+msgstr "destinazione"
+
+#: models.py:77
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote port of this domain"
+msgstr "Destinazione remota per questo dominio"
+
+#: models.py:82
 msgid "verify recipients"
 msgstr "Verifica destinatari"
 
-#: relaydomains/models.py:76
+#: models.py:83
 msgid "Check for valid recipients"
 msgstr "Verifica validità destinatari"
 
-#: relaydomains/models.py:87
+#: models.py:94
 msgid "Relay Domain"
 msgstr "Dominio relè"
 
-#: relaydomains/models.py:114
+#: models.py:122
 msgid "Invalid line"
 msgstr "Riga non valida"
 
-#: relaydomains/templates/relaydomains/service_field.html:3
+#: templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "Cerca"
+
+#, fuzzy
+#~| msgid "The domain name"
+#~ msgid "The relay domain name"
+#~ msgstr "Il nome del dominio"
 
 #, fuzzy
 #~| msgid ""
