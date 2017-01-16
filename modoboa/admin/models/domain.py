@@ -75,7 +75,7 @@ class Domain(AdminObject):
 
     @property
     def mbalias_count(self):
-        return self.alias_set.count()
+        return self.alias_set.filter(internal=False).count()
 
     @property
     def identities_count(self):
