@@ -107,7 +107,7 @@ def get_tags_for_domain(domain):
 @events.observe('ExtraDomainImportHelp')
 def extra_domain_import_help():
     return [ugettext_lazy("""
-<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>
+<li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li>
 """)]
 
 

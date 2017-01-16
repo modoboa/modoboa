@@ -107,7 +107,8 @@ class RelayDomain(admin_models.AdminObject):
         """
         csvwriter.writerow(
             ["relaydomain", self.domain.name, self.target_host,
-             self.service.name, self.domain.enabled, self.verify_recipients]
+             self.target_port, self.service.name, self.domain.enabled,
+             self.verify_recipients]
         )
         for dalias in self.domain.domainalias_set.all():
             dalias.to_csv(csvwriter)
@@ -118,17 +119,18 @@ class RelayDomain(admin_models.AdminObject):
         :param user: user importing the relay domain
         :param str row: relay domain definition
         """
-        if len(row) != 6:
+        if len(row) != 7:
             raise BadRequest(_("Invalid line"))
         self.domain = admin_models.Domain(
             name=row[1].strip(), type="relaydomain",
-            enabled=(row[4].strip() in ["True", "1", "yes", "y"])
+            enabled=(row[5].strip() in ["True", "1", "yes", "y"])
         )
         self.domain.save(creator=user)
         self.target_host = row[2].strip()
+        self.target_port = int(row[3].strip())
         self.service, created = Service.objects.get_or_create(
-            name=row[3].strip())
-        self.verify_recipients = (row[5].strip() in ["True", "1", "yes", "y"])
+            name=row[4].strip())
+        self.verify_recipients = (row[6].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
 
 

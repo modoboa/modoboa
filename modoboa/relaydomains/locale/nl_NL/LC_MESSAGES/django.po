@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-16 14:31+0200\n"
+"POT-Creation-Date: 2017-01-16 17:24+0100\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -20,45 +20,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:18
+#: app_settings.py:18
 msgid "General"
 msgstr "Algemeen"
 
-#: relaydomains/app_settings.py:21
+#: app_settings.py:21
 msgid "Postfix's master.cf path"
 msgstr "Map waarin Postfix's master.cf staat"
 
-#: relaydomains/app_settings.py:23
+#: app_settings.py:23
 msgid "Path to the master.cf configuration file"
 msgstr "Locatie van Postfix's master.cf"
 
-#: relaydomains/apps.py:23
+#: apps.py:23
 msgid "Relay domains"
 msgstr "Doorstuur domeinen"
 
-#: relaydomains/forms.py:27
-msgid "Name"
-msgstr ""
-
-#: relaydomains/forms.py:28
+#: forms.py:52
 #, fuzzy
-#| msgid "The domain name"
-msgid "The relay domain name"
-msgstr "De domeinnaam"
+#| msgid "Invalid line"
+msgid "Invalid value"
+msgstr "Verkeerde regel"
 
-#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
+#: general_callbacks.py:53 general_callbacks.py:60
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay domain"
 msgstr "Doorstuur domeinen"
 
-#: relaydomains/general_callbacks.py:73
+#: general_callbacks.py:73
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay settings"
 msgstr "Doorstuur domeinen"
 
-#: relaydomains/general_callbacks.py:109
+#: general_callbacks.py:109
 #, fuzzy
 #| msgid ""
 #| "\n"
@@ -67,46 +63,67 @@ msgstr "Doorstuur domeinen"
 #| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
 msgid ""
 "\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
+"<li><em>relaydomain; name; target host; target port; service; enabled; "
+"verify recipients</em></li>\n"
 msgstr ""
 "\n"
 "<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
 "em></li>\n"
 "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
 
-#: relaydomains/models.py:48
+#: models.py:48
 msgid "name"
 msgstr "naam"
 
-#: relaydomains/models.py:49
+#: models.py:49
 msgid "The service name"
 msgstr "De servicenaam"
 
-#: relaydomains/models.py:71
-msgid "target host"
+#: models.py:71
+#, fuzzy
+#| msgid "target host"
+msgid "target host address"
 msgstr "doel host"
 
-#: relaydomains/models.py:72
-msgid "Remote destination of this domain"
+#: models.py:73
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote address (hostname or IP) of this domain"
 msgstr "Externe bestemming van dit domein"
 
-#: relaydomains/models.py:76
+#: models.py:76
+#, fuzzy
+#| msgid "target host"
+msgid "target host port"
+msgstr "doel host"
+
+#: models.py:78
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote port of this domain"
+msgstr "Externe bestemming van dit domein"
+
+#: models.py:83
 msgid "verify recipients"
 msgstr "controleer ontvangers"
 
-#: relaydomains/models.py:77
+#: models.py:84
 msgid "Check for valid recipients"
 msgstr "Controleer geldigheid ontvangers"
 
-#: relaydomains/models.py:88
+#: models.py:95
 msgid "Relay Domain"
 msgstr "Doorstuur Domein"
 
-#: relaydomains/models.py:115
+#: models.py:123
 msgid "Invalid line"
 msgstr "Verkeerde regel"
 
-#: relaydomains/templates/relaydomains/service_field.html:3
+#: templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "Scan"
+
+#, fuzzy
+#~| msgid "The domain name"
+#~ msgid "The relay domain name"
+#~ msgstr "De domeinnaam"
