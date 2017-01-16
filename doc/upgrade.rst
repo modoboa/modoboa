@@ -84,6 +84,55 @@ documentation.
 Specific instructions
 *********************
 
+1.6.1
+=====
+
+First of all, update postfix map files as follows:
+
+.. sourcecode:: bash
+
+   > python manage.py generate_postfix_maps --destdir <path> --force-overwrite
+                
+Then, modify postfix's configuration as follows::
+
+  smtpd_sender_login_maps =
+      <driver>:<path>/sql-sender-login-mailboxes.cf
+      <driver>:<path>/sql-sender-login-aliases.cf
+      <driver>:<path>/sql-sender-login-mailboxes-extra.cf
+
+Replace ``<driver>`` and ``<path>`` by your values.
+
+Finally, reload postfix.
+
+This release also deprecates some internal functions. As a result,
+several extensions has been updated to maintain the compatibility. If
+you enabled the notification service, you'll find the list of
+available updates directly in your Modoboa console.
+
+For the others, here is the list:
+
++------------------------------+------------------------------+
+|Name                          |Version                       |
++==============================+==============================+
+|modoboa-amavis                |1.0.10                        |
++------------------------------+------------------------------+
+|modoboa-postfix-autoreply     |1.1.7                         |
++------------------------------+------------------------------+
+|modoboa-radicale              |1.0.5                         |
++------------------------------+------------------------------+
+|modoboa-stats                 |1.0.9                         |
++------------------------------+------------------------------+
+
+Command line shortcut:
+
+.. sourcecode:: bash
+
+  $ pip install modoboa-amavis==1.0.10
+  $ pip install modoboa-postfix-autoreply==1.1.7
+  $ pip install modoboa-radicale==1.0.5
+  $ pip install modoboa-stats==1.0.9
+
+
 1.6.0
 =====
 
