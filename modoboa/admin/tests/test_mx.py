@@ -72,6 +72,8 @@ class DNSBLTestCase(ModoTestCase):
         super(DNSBLTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
         factories.DomainFactory(name="pouet.com")  # should not exist
+        cls.domain2 = factories.DomainFactory(
+            name="test.localhost")  # Should not be checked
         models.DNSBLResult.objects.all().delete()
 
     @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
@@ -84,6 +86,8 @@ class DNSBLTestCase(ModoTestCase):
         response = self.client.get(
             reverse("admin:dnsbl_domain_detail", args=[self.domain.pk]))
         self.assertEqual(response.status_code, 200)
+        self.assertFalse(self.domain.uses_a_reserved_tld)
+        self.assertTrue(self.domain2.uses_a_reserved_tld)
 
     @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
     def test_management_command_no_dnsbl(self):

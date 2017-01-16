@@ -80,3 +80,12 @@ DNSBL_PROVIDERS = [
     "zen.spamhaus.org",
     "zombie.dnsbl.sorbs.net",
 ]
+
+# Do not run tests for these domains.
+# https://en.wikipedia.org/wiki/Top-level_domain#Reserved_domains
+RESERVED_TLD = [
+    "example",
+    "invalid",
+    "localhost",
+    "test"
+]

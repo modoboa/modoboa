@@ -257,4 +257,6 @@ class CheckMXRecords(BaseCommand):
         options.pop("domain")
 
         for domain in domains:
+            if domain.uses_a_reserved_tld:
+                continue
             self.check_domain(domain, **options)

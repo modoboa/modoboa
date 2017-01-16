@@ -20,6 +20,7 @@ from modoboa.parameters import tools as param_tools
 
 from .. import signals
 from .base import AdminObject
+from .. import constants
 
 
 class DomainManager(Manager):
@@ -107,6 +108,12 @@ class Domain(AdminObject):
     @property
     def aliases(self):
         return self.domainalias_set
+
+    @property
+    def uses_a_reserved_tld(self):
+        """Does this domain use a reserved TLD."""
+        tld = self.name.split(".", 1)[-1]
+        return tld in constants.RESERVED_TLD
 
     @property
     def just_created(self):
