@@ -39,14 +39,18 @@ def clean_domain(sender, instance, **kwargs):
     """Remove or create RelayDomain record if needed."""
     if kwargs.get("created"):
         return
-    has_relaydom = hasattr(instance, "relaydomain")
-    if instance.type == "domain" and has_relaydom:
-        instance.relaydomain.delete()
-    elif instance.type == "relaydomain" and not has_relaydom:
+    if instance.type == "domain":
+        try:
+            instance.relaydomain.delete()
+        except models.RelayDomain.DoesNotExist:
+            pass
+    else:
         # Make sure to create a RelayDomain instance since we can't do it
         # at form level...
-        models.RelayDomain.objects.create(
-            domain=instance, service=models.Service.objects.first())
+        models.RelayDomain.objects.get_or_create(
+            domain=instance,
+            defaults={"service": models.Service.objects.first()}
+        )
 
 
 @receiver(core_signals.register_postfix_maps)

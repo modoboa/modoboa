@@ -13,7 +13,6 @@ from modoboa.lib.tests import ModoTestCase
 from modoboa.lib.test_utils import MapFilesTestCaseMixin
 from modoboa.limits import utils as limits_utils
 
-from .factories import RelayDomainFactory
 from . import models
 
 
@@ -23,8 +22,8 @@ class Operations(object):
         srv, created = models.Service.objects.get_or_create(name='dummy')
         values = {
             "name": name, "create_dom_admin": False, "type": "relaydomain",
-            "target_host": "external.host.tld", "service": srv.id,
-            "enabled": True, "stepid": "step3"
+            "target_host": "external.host.tld", "target_port": 25,
+            "service": srv.id, "enabled": True, "stepid": "step3"
         }
         return self.ajax_post(
             reverse("admin:domain_add"),
@@ -35,6 +34,7 @@ class Operations(object):
         rdom = models.RelayDomain.objects.get(domain__name=rdomain)
         values = {
             "name": rdom.domain.name, "target_host": rdom.target_host,
+            "target_port": rdom.target_port,
             "type": "relaydomain", "service": rdom.service.id
         }
         aliases = [alias.name for alias in rdom.domain.domainalias_set.all()]
@@ -64,9 +64,11 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         """Create test data."""
         super(RelayDomainsTestCase, cls).setUpTestData()
         admin_factories.populate_database()
-        cls.rdom = RelayDomainFactory(domain__name="relaydomain.tld")
-        cls.rdom.domain.type = "relaydomain"
-        cls.rdom.domain.save()
+        dom = admin_factories.DomainFactory(
+            name="relaydomain.tld", type="relaydomain")
+        dom.relaydomain.target_host = "external.host.tld"
+        dom.relaydomain.save()
+        cls.rdom = dom.relaydomain
         admin_factories.DomainAliasFactory(
             name="relaydomainalias.tld", target=cls.rdom.domain)
         admin_factories.MailboxFactory(
@@ -141,28 +143,29 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         """
         values = {
             "name": "relaydomain.org", "target_host": self.rdom.target_host,
-            "type": "relaydomain", "enabled": True,
+            "target_port": 4040, "type": "relaydomain", "enabled": True,
             "service": self.rdom.service.id
         }
         self.ajax_post(
-            reverse("admin:domain_change",
-                    args=[self.rdom.domain.id]),
+            reverse("admin:domain_change", args=[self.rdom.domain.id]),
             values
         )
-        models.RelayDomain.objects.get(domain__name='relaydomain.org')
+        self.rdom.refresh_from_db()
+        self.assertEqual(self.rdom.target_port, 4040)
 
     def test_relaydomain_domain_switch(self):
         """Check domain <-> relaydomain transitions."""
-        domain = self.rdom.domain
+        domain_pk = self.rdom.domain.pk
         values = {
             "name": "relaydomain.tld",
             "type": "domain",
             "enabled": True,
             "target_host": self.rdom.target_host,
+            "target_port": self.rdom.target_port,
             "service": self.rdom.service.pk
         }
         self.ajax_post(
-            reverse("admin:domain_change", args=[domain.pk]), values)
+            reverse("admin:domain_change", args=[domain_pk]), values)
         self.assertFalse(
             models.RelayDomain.objects.filter(domain=domain).exists())
         self.assertEqual(
@@ -174,7 +177,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "enabled": True,
         }
         self.ajax_post(
-            reverse("admin:domain_change", args=[domain.pk]), values)
+            reverse("admin:domain_change", args=[domain_pk]), values)
         self.assertEqual(
             admin_models.Domain.objects.get(name="relaydomain.tld").type,
             "relaydomain")
@@ -189,6 +192,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         """
         values = {
             "name": "relaydomain.org", "target_host": self.rdom.target_host,
+            "target_port": self.rdom.target_port,
             "type": "relaydomain", "service": self.rdom.service.id,
             "aliases": "relaydomainalias.net"
         }
@@ -246,7 +250,7 @@ class ImportTestCase(ModoTestCase):
 
     def test_webui_import(self):
         """Check if import from webui works."""
-        f = ContentFile("relaydomain;relay.com;127.0.0.1;relay;True;True",
+        f = ContentFile("relaydomain;relay.com;127.0.0.1;25;relay;True;True",
                         name="domains.csv")
         self.client.post(
             reverse("admin:domain_import"), {

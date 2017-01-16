@@ -67,8 +67,15 @@ class RelayDomain(admin_models.AdminObject):
 
     domain = models.OneToOneField("admin.Domain", null=True)
     target_host = models.CharField(
-        ugettext_lazy('target host'), max_length=255,
-        help_text=ugettext_lazy('Remote destination of this domain')
+        ugettext_lazy("target host address"), max_length=255,
+        help_text=ugettext_lazy(
+            "Remote address (hostname or IP) of this domain")
+    )
+    target_port = models.IntegerField(
+        ugettext_lazy("target host port"),
+        help_text=ugettext_lazy(
+            "Remote port of this domain"),
+        default=25
     )
     service = models.ForeignKey(Service)
     verify_recipients = models.BooleanField(
