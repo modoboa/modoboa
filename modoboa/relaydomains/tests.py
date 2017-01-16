@@ -167,7 +167,8 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         self.ajax_post(
             reverse("admin:domain_change", args=[domain_pk]), values)
         self.assertFalse(
-            models.RelayDomain.objects.filter(domain=domain).exists())
+            models.RelayDomain.objects.filter(
+                domain__pk=domain_pk).exists())
         self.assertEqual(
             admin_models.Domain.objects.get(name="relaydomain.tld").type,
             "domain")
