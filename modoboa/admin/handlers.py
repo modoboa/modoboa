@@ -42,6 +42,13 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
         q.delete()
     for mb in instance.mailbox_set.all():
         mb.rename_dir(instance.old_mail_homes[mb.pk])
+    # FIXME: could be replaced by
+    # .update(address=Concat("local_part", Value(instance.name)))
+    # if the local_part was stored aside the address...
+    for alias in instance.alias_set.all():
+        alias.address = "{}@{}".format(
+            alias.address.split("@", 1)[0], instance.name)
+        alias.save(update_fields=["address"])
 
 
 @receiver(signals.post_save, sender=models.DomainAlias)
