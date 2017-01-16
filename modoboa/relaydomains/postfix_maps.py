@@ -26,7 +26,8 @@ class RelayDomainsTransportMap(object):
 
     filename = "sql-relaydomains-transport.cf"
     mysql = (
-        "SELECT CONCAT(srv.name, ':[', rdom.target_host, ']') "
+        "SELECT CONCAT(srv.name, ':[', rdom.target_host, ']:'"
+        ", rdom.target_port) "
         "FROM postfix_relay_domains_service AS srv "
         "INNER JOIN postfix_relay_domains_relaydomain AS rdom "
         "ON rdom.service_id=srv.id "
@@ -34,7 +35,8 @@ class RelayDomainsTransportMap(object):
         "WHERE dom.enabled=1 AND dom.name='%s'"
     )
     postgres = (
-        "SELECT srv.name || ':[' || rdom.target_host || ']' "
+        "SELECT srv.name || ':[' || rdom.target_host || ']:' || "
+        "rdom.target_port "
         "FROM postfix_relay_domains_service AS srv "
         "INNER JOIN postfix_relay_domains_relaydomain AS rdom "
         "ON rdom.service_id=srv.id "
@@ -42,7 +44,8 @@ class RelayDomainsTransportMap(object):
         "WHERE dom.enabled AND dom.name='%s'"
     )
     sqlite = (
-        "SELECT srv.name || ':[' || rdom.target_host || ']' "
+        "SELECT srv.name || ':[' || rdom.target_host || ']:' || "
+        "rdom.target_host "
         "FROM postfix_relay_domains_service AS srv "
         "INNER JOIN postfix_relay_domains_relaydomain AS rdom "
         "ON rdom.service_id=srv.id "
