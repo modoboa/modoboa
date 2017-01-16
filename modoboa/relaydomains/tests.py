@@ -155,8 +155,6 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         }
         self.ajax_post(
             reverse("admin:domain_change", args=[domain_pk]), values)
-        # FIXME: the relaydomain should be deleted but it is not!
-        # relaydomains/handlers.py:clean_domain()
         self.assertFalse(
             RelayDomain.objects.filter(
                 domain__name="relaydomain.tld").exists())
