@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('relaydomains', '0002_migrate_from_modoboa_admin_relaydomains'),
+        ('relaydomains', '0004_auto_20161105_1426'),
     ]
 
     operations = [
