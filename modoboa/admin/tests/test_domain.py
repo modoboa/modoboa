@@ -144,6 +144,14 @@ class DomainTestCase(ModoTestCase):
         with self.assertRaises(Domain.DoesNotExist):
             Domain.objects.get(pk=1)
 
+    def test_domain_counters(self):
+        """Check counters at domain level."""
+        domain = Domain.objects.get(name="test.com")
+        self.assertEqual(domain.domainalias_count, 0)
+        self.assertEqual(domain.mailbox_count, 2)
+        self.assertEqual(domain.mbalias_count, 3)
+        self.assertEqual(domain.identities_count, 5)
+
     def test_domain_flat_list(self):
         """Test the 'domain_flat_list' view."""
         response = self.client.get(reverse("admin:domain_flat_list"))
