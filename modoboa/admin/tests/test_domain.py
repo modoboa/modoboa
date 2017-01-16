@@ -135,6 +135,10 @@ class DomainTestCase(ModoTestCase):
         self.assertEqual(dom.name, "pouet.com")
         self.assertTrue(dom.enabled)
 
+        # Check if aliases were renamed too
+        self.assertTrue(
+            dom.alias_set.filter(address="postmaster@pouet.com").exists())
+
     def test_delete(self):
         """Test the removal of a domain
         """
