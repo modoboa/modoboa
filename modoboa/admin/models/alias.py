@@ -100,8 +100,9 @@ class Alias(AdminObject):
                 grant_access_to_object(admin, self)
 
     def set_recipients(self, address_list):
-        """Set recipients for this alias. Special recipients:
+        """Set recipients for this alias.
 
+        Special recipients:
         * local mailbox + extension: r_mailbox will be set to local mailbox
         * alias address == recipient address: valid only to keep local copies
           (when a forward is defined) and to create exceptions when a catchall

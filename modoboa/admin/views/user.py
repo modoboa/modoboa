@@ -31,7 +31,10 @@ def forward(request, tplname="admin/forward.html"):
             if form.cleaned_data["keepcopies"]:
                 recipients.append(mb.full_address)
             al.set_recipients(recipients)
-            al.post_create(request.user)
+            if len(recipients) == 0:
+                al.delete()
+            else:
+                al.post_create(request.user)
             return render_to_json_response(_("Forward updated"))
 
         return render_to_json_response(
