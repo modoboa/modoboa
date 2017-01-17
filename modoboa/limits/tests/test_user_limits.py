@@ -152,12 +152,17 @@ class DomainAdminTestCase(ResourceTestCase):
         self._check_limit('mailbox_aliases', 2, 2)
         self._create_alias('alias3@test.com', status=403)
         self._check_limit('mailbox_aliases', 2, 2)
+        # Set unlimited value
+        self.user.userobjectlimit_set.filter(name="mailbox_aliases").update(
+            max_value=-1)
+        self._create_alias('alias3@test.com')
+        self._check_limit('mailbox_aliases', 3, -1)
         self.ajax_post(
             reverse('admin:alias_delete') + '?selection=%d'
             % Alias.objects.get(address='alias2@test.com').id,
             {}
         )
-        self._check_limit('mailbox_aliases', 1, 2)
+        self._check_limit('mailbox_aliases', 2, -1)
 
     def test_aliases_limit_through_account_form(self):
         user = User.objects.get(username='user@test.com')

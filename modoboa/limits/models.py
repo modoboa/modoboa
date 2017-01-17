@@ -32,7 +32,10 @@ class ObjectLimitMixin(object):
 
     def is_exceeded(self, count=1):
         """Check if limit will be reached if we add count object(s)."""
-        return self.current_value + 1 > self.max_value
+        return (
+            self.max_value != -1 and
+            self.current_value + 1 > self.max_value
+        )
 
     def __str__(self):
         """Display current usage."""
@@ -88,10 +91,6 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
         if self.max_value == 0:
             return 100
         return int(float(self.current_value) / self.max_value * 100)
-
-    def is_exceeded(self, count=1):
-        """Check if limit will be reached if we add count object(s)."""
-        return self.current_value + 1 > self.max_value
 
     def __str__(self):
         """Display current usage."""

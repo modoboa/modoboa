@@ -109,7 +109,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.assertFalse(limit.is_exceeded())
         username = "toto@test.com"
         values = {
-            "username": username,
+            "username": "toto@test.com",
             "first_name": "Tester", "last_name": "Toto",
             "password1": "Toto1234", "password2": "Toto1234",
             "role": "SimpleUsers", "quota_act": True,
@@ -118,8 +118,15 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.ajax_post(reverse("admin:account_add"), values, 200)
         self.assertTrue(limit.is_exceeded())
 
-        username = "titi@test.com"
+        values["username"] = "titi@test.com"
+        values["email"] = "titi@test.com"
         self.ajax_post(reverse("admin:account_add"), values, 400)
+
+        # Set unlimited value
+        limit.max_value = -1
+        limit.save(update_fields=["max_value"])
+        self.ajax_post(reverse("admin:account_add"), values)
+        self.assertFalse(limit.is_exceeded())
 
     def test_mailbox_aliases_limit(self):
         """Try to exceed defined limits."""
