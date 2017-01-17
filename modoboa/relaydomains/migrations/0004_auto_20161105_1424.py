@@ -19,7 +19,7 @@ def move_dates(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('relaydomains', '0002_migrate_from_modoboa_admin_relaydomains'),
+        ('relaydomains', '0003_auto_20170116_1508'),
     ]
 
     operations = [
