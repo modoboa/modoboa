@@ -27,11 +27,14 @@ def forward(request, tplname="admin/forward.html"):
                 al = Alias.objects.create(
                     address=mb.full_address, domain=mb.domain,
                     enabled=mb.user.is_active)
-            recipients = form.get_recipients()
+            recipients = form.cleaned_data["dest"]
             if form.cleaned_data["keepcopies"]:
                 recipients.append(mb.full_address)
             al.set_recipients(recipients)
-            al.post_create(request.user)
+            if len(recipients) == 0:
+                al.delete()
+            else:
+                al.post_create(request.user)
             return render_to_json_response(_("Forward updated"))
 
         return render_to_json_response(
