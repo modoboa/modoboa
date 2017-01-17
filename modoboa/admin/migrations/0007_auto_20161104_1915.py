@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('admin', '0006_auto_20161104_1900'),
-        ('relaydomains', '0004_auto_20161105_1426'),
+        ('relaydomains', '0005_auto_20161105_1426'),
     ]
 
     operations = [
