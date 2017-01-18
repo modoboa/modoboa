@@ -101,7 +101,8 @@ class DomainTestCase(ModoTestCase):
 
     def test_create_with_template_and_custom_password(self):
         """Test creation of a domain with a template and custom password."""
-        self.set_global_parameter("default_password", "Toto1234", app="core")
+        password = "Toto1000"
+        self.set_global_parameter("default_password", password, app="core")
         values = {
             "name": "pouet.com", "quota": 0, "create_dom_admin": True,
             "dom_admin_username": "toto", "create_aliases": True,
@@ -121,7 +122,7 @@ class DomainTestCase(ModoTestCase):
         )
         self.assertTrue(da.can_access(al))
         self.assertTrue(
-            self.client.login(username="toto@pouet.com", password="Toto1234"))
+            self.client.login(username="toto@pouet.com", password=password))
 
     def test_create_using_default_quota(self):
         self.set_global_parameter("default_domain_quota", 50)
