@@ -240,14 +240,14 @@ This parameter is optional but you must ensure it is set to ``False``
 The default configuration file provided by the ``modoboa-admin.py``
 command is properly configured.
 
-****
-LDAP
-****
+***********************
+External authentication
+***********************
 
 .. _ldap_auth:
 
-Authentication
-==============
+LDAP
+====
 
 Modoboa supports external LDAP authentication using the following extra components:
 
@@ -380,6 +380,30 @@ Modoboa.
    email address change for example). Currently, the only solution is
    to manually delete the Modoboa record, it will be recreated on the
    next user login.
+
+.. _smtp_auth:
+
+SMTP
+====
+
+It is possible to use an existing SMTP server as an authentication
+source. To enable this feature, edit the :file:`settings.py` file and
+change the following setting:
+
+.. sourcecode:: python
+
+   AUTHENTICATION_BACKENDS = (
+       'modoboa.lib.authbackends.SMTPBackend',
+       'django.contrib.auth.backends.ModelBackend',
+   )
+
+SMTP server location can be customized using the following settings:
+
+.. sourcecode:: python
+
+   AUTH_SMTP_SERVER_ADDRESS = 'localhost'
+   AUTH_SMTP_SERVER_PORT = 25
+   AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
 
 ********************
 Database maintenance

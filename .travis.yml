@@ -6,6 +6,7 @@ addons:
   apt:
     packages:
       - ldap-utils
+      - postfix
       - slapd
 
 env:
