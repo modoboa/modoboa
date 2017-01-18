@@ -89,8 +89,16 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'modoboa.lib.authbackends.SimpleBackend',
+    # 'modoboa.lib.authbackends.LDAPBackend',
+    # 'modoboa.lib.authbackends.SMTPBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
+
+# SMTP authentication
+# AUTH_SMTP_SERVER_ADDRESS = 'localhost'
+# AUTH_SMTP_SERVER_PORT = 25
+# AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
+
 
 TEMPLATES = [
     {

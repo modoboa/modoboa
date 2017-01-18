@@ -217,7 +217,7 @@ class AccountTestCase(ModoTestCase):
 @skipIf(NO_LDAP, "No ldap module installed")
 @override_settings(AUTHENTICATION_BACKENDS=(
     'modoboa.lib.authbackends.LDAPBackend',
-    'modoboa.lib.authbackends.SimpleBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ))
 class LDAPAccountTestCase(test_core.LDAPTestCaseMixin, ModoTestCase):
     """Check LDAP related code."""

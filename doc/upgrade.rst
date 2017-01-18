@@ -84,6 +84,20 @@ documentation.
 Specific instructions
 *********************
 
+1.7.0
+=====
+
+Modoboa used to provide a custom authentication backend
+(``modoboa.lib.authbackends.SimpleBackend``) but it has been
+removed. Please modify you :file:`settings.py` file as follows:
+
+.. sourcecode:: python
+
+   AUTHENTICATION_BACKENDS = (
+       # Other backends before...
+       'django.contrib.auth.backends.ModelBackend',
+   )
+
 1.6.1
 =====
 
