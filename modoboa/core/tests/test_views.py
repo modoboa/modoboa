@@ -125,7 +125,8 @@ class SettingsTestCase(ModoTestCase):
         "limits-deflt_user_domains_limit": "0",
         "core-ldap_search_filter": "(mail=%(user)s)",
         "core-ldap_secured": "False",
-        "core-ldap_user_dn_template": ""
+        "core-ldap_user_dn_template": "",
+        "core-default_password": "Toto1000"
     }
 
     def test_get_settings(self):
