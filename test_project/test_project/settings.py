@@ -83,7 +83,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'modoboa.lib.authbackends.SimpleBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + [
