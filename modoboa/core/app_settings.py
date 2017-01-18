@@ -3,6 +3,8 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from passwords import validators
+
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
@@ -70,6 +72,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         initial=random_key(),
         help_text=ugettext_lazy("Key used to encrypt/decrypt passwords"),
         widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+
+    default_password = forms.CharField(
+        label=ugettext_lazy("Default password"),
+        initial="password",
+        help_text=ugettext_lazy(
+            "Default password for automatically created accounts."),
+        validators=[validators.validate_length, validators.complexity]
     )
 
     # LDAP specific settings

@@ -99,6 +99,30 @@ class DomainTestCase(ModoTestCase):
         )
         self.assertTrue(da.can_access(al))
 
+    def test_create_with_template_and_custom_password(self):
+        """Test creation of a domain with a template and custom password."""
+        self.set_global_parameter("default_password", "Toto1234", app="core")
+        values = {
+            "name": "pouet.com", "quota": 0, "create_dom_admin": True,
+            "dom_admin_username": "toto", "create_aliases": True,
+            "type": "domain", "stepid": 'step3'
+        }
+        self.ajax_post(
+            reverse("admin:domain_add"),
+            values
+        )
+        dom = Domain.objects.get(name="pouet.com")
+        da = User.objects.get(username="toto@pouet.com")
+        self.assertIn(da, dom.admins)
+        al = Alias.objects.get(address="postmaster@pouet.com")
+        self.assertTrue(
+            al.aliasrecipient_set.filter(r_mailbox=da.mailbox)
+            .exists()
+        )
+        self.assertTrue(da.can_access(al))
+        self.assertTrue(
+            self.client.login(username="toto@pouet.com", password="Toto1234"))
+
     def test_create_using_default_quota(self):
         self.set_global_parameter("default_domain_quota", 50)
         values = {

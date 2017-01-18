@@ -238,7 +238,8 @@ class DomainFormOptions(forms.Form):
         core_signals.can_create_object.send(
             self.__class__, context=user, object_type="mailboxes")
         da = User(username=username, email=username, is_active=True)
-        da.set_password("password")
+        da.set_password(
+            param_tools.get_global_parameter("default_password", app="core"))
         da.save()
         da.role = "DomainAdmins"
         da.post_create(user)

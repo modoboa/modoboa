@@ -19,8 +19,7 @@ from ... import signals
 
 
 class Command(BaseCommand):
-
-    """Command defintion."""
+    """Command definition."""
 
     help = "Load Modoboa initial data"
 
