@@ -217,7 +217,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     sender_address = lib_fields.UTF8EmailField(
         label=_("Sender address"),
-        initial="noreply@modoboa.org",
+        initial="noreply@yourdomain.test",
         help_text=_(
             "Email address used to send notifications."
         )
