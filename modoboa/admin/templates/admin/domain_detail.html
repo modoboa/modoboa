@@ -23,6 +23,7 @@
       <div class="panel-body">
         {% if enable_mx_checks or enable_dnsbl_checks %}
           <div class="row">
+            <span class="title">{% trans "DNS status" %}</span>
             {% include "admin/_domain_dnschecks_status.html" %}
           </div>
         {% endif %}
