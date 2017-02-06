@@ -253,7 +253,7 @@ class CheckMXRecords(BaseCommand):
                     pass
         else:
             domains = models.Domain.objects.filter(
-                enabled=True, enable_dnsbl_checks=True)
+                enabled=True, enable_dns_checks=True)
 
         options.pop("domain")
 
