@@ -28,7 +28,6 @@ DOMAIN_TYPES = [
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
-
     """A form to create/edit a domain."""
 
     type = forms.ChoiceField(
@@ -53,7 +52,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
     class Meta:
         model = Domain
-        fields = ("name", "type", "quota", "aliases", "enabled")
+        fields = (
+            "name", "type", "quota", "aliases", "enabled", "enable_dns_checks")
 
     def __init__(self, *args, **kwargs):
         self.oldname = None

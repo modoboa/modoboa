@@ -74,6 +74,8 @@ class DNSBLTestCase(ModoTestCase):
         factories.DomainFactory(name="pouet.com")  # should not exist
         cls.domain2 = factories.DomainFactory(
             name="test.localhost")  # Should not be checked
+        cls.domain3 = factories.DomainFactory(
+            name="modoboa.com", enable_dns_checks=False)
         models.DNSBLResult.objects.all().delete()
 
     @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])

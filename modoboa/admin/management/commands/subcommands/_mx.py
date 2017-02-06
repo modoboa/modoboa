@@ -252,7 +252,8 @@ class CheckMXRecords(BaseCommand):
                 except models.Domain.DoesNotExist:
                     pass
         else:
-            domains = models.Domain.objects.filter(enabled=True)
+            domains = models.Domain.objects.filter(
+                enabled=True, enable_dnsbl_checks=True)
 
         options.pop("domain")
 
