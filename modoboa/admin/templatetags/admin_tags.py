@@ -40,11 +40,6 @@ def domains_menu(selection, user, ajax_mode=True):
          "img": "fa fa-user",
          "class": "ajaxnav navigation",
          "url": domain_list_url},
-        {"name": "statistics",
-         "label": _("Statistics"),
-         "img": "fa fa-line-chart",
-         "class": "navigation",
-         "url": reverse("admin:domain_statistics")}
     ]
     if user.has_perm("admin.add_domain"):
         extra_entries = signals.extra_domain_menu_entries.send(

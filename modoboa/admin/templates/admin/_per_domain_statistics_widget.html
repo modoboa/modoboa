@@ -1,0 +1,17 @@
+{% load i18n %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading"><h3 class="panel-title">{% trans "Per-domain statistics" %}</h3></div>
+  <table class="table">
+    <tr>
+      <th>{% trans "Domain" %}</th>
+      <th>{% trans "Identities" %}</th>
+    </tr>
+    {% for domain in domains %}
+      <tr>
+        <td><a href="{% url 'admin:domain_detail' domain.pk %}">{{ domain.name }}</a></td>
+        <td>{{ domain.identities_count }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
