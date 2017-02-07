@@ -205,7 +205,7 @@ class DomainTestCase(ModoTestCase):
 
     def test_statitics_widget(self):
         """Test statistics display in dashboard."""
-        url = reverse("admin:dashboard")
+        url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIn("Global statistics", response.content)
