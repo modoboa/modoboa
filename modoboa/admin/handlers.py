@@ -300,3 +300,26 @@ def grant_access_to_all_objects(sender, account, role, **kwargs):
             account, model.objects.all(),
             ContentType.objects.get_for_model(model)
         )
+
+
+@receiver(core_signals.extra_admin_dashboard_widgets)
+def add_widgets_to_admin_dashboard(sender, user, **kwargs):
+    """Add admin widgets to dashboard."""
+    if user.is_superuser:
+        context = {
+            "domains_counter": models.Domain.objects.count(),
+            "domain_aliases_counter": models.DomainAlias.objects.count(),
+            "identities_counter": (
+                core_models.User.objects.count() +
+                models.Alias.objects.filter(internal=False).count()),
+        }
+        template = "admin/_global_statistics_widget.html"
+    else:
+        context = {
+            "domains": models.Domain.objects.get_for_admin(user)}
+        template = "admin/_per_domain_statistics_widget.html"
+    return [{
+        "column": "right",
+        "template": template,
+        "context": context
+    }]

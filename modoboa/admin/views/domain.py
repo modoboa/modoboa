@@ -14,7 +14,6 @@ from django.contrib.auth.decorators import (
 
 from reversion import revisions as reversion
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
 from modoboa.lib.web_utils import (
     _render_to_string, render_to_json_response
@@ -26,9 +25,7 @@ from modoboa.lib.listing import get_sort_order, get_listing_page
 
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
-from ..models import (
-    Domain, DomainAlias, Mailbox, Alias
-)
+from ..models import Domain, Mailbox
 from .. import signals
 
 
@@ -156,29 +153,6 @@ def deldomain(request, dom_id):
     return render_to_json_response(msg)
 
 
-class DomainStatisticsView(
-        auth_mixins.PermissionRequiredMixin, generic.TemplateView):
-    """A simple page to present domain statistics."""
-
-    template_name = "admin/domain_statistics.html"
-    permission_required = "admin.view_domains"
-
-    def get_context_data(self, **kwargs):
-        """Add counters."""
-        context = super(DomainStatisticsView, self).get_context_data(**kwargs)
-        if self.request.user.role == "SuperAdmins":
-            context.update({
-                "domains_counter": Domain.objects.count(),
-                "domain_aliases_counter": DomainAlias.objects.count(),
-                "identities_counter": (
-                    User.objects.count() +
-                    Alias.objects.filter(internal=False).count()),
-            })
-        context.update({
-            "domains": Domain.objects.get_for_admin(self.request.user)})
-        return context
-
-
 class DomainDetailView(
         auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """DetailView for Domain."""
@@ -208,6 +182,7 @@ class DomainDetailView(
             for widget in widgets:
                 context["templates"][widget["column"]].append(
                     widget["template"])
+                # FIXME: can raise conflicts...
                 context.update(widget["context"])
 
         return context
