@@ -20,7 +20,7 @@ def find_nextlocation(request, user):
                 "default_top_redirection")
             if topredir != "user":
                 infos = exts_pool.get_extension_infos(topredir)
-                nextlocation = infos["url"] if infos["url"] else infos["name"]
+                nextlocation = infos["topredirection_url"]
             else:
                 nextlocation = reverse("core:user_index")
         else:
