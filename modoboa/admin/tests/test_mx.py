@@ -85,6 +85,8 @@ class DNSBLTestCase(ModoTestCase):
         management.call_command("modo", "check_mx")
         self.assertTrue(
             models.DNSBLResult.objects.filter(domain=self.domain).exists())
+        self.assertFalse(
+            models.DNSBLResult.objects.filter(domain=self.domain3).exists())
         response = self.client.get(
             reverse("admin:dnsbl_domain_detail", args=[self.domain.pk]))
         self.assertEqual(response.status_code, 200)
