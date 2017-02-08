@@ -57,7 +57,8 @@ class ExtensionTestCase(TestCase):
         compare(infos, {
             "name": "stupid_extension_1", "label": "Stupid extension",
             "version": "1.0.0", "description": "A stupid extension",
-            "url": None, "always_active": False
+            "url": None, "always_active": False,
+            "topredirection_url": None
         })
 
     def test_list_all(self):
