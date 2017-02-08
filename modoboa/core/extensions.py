@@ -19,13 +19,14 @@ class ModoExtension(object):
     url = None
     needs_media = False
     always_active = False
-    available_for_topredirection = False
+    topredirection_url = None
 
     def infos(self):
         """Information about this extension."""
         return {
             "name": self.name, "label": self.label, "version": self.version,
             "description": self.description, "url": self.url,
+            "topredirection_url": self.topredirection_url,
             "always_active": self.always_active
         }
 

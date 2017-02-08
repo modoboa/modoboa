@@ -20,9 +20,11 @@ def enabled_applications():
     """Return the list of installed extensions."""
     from modoboa.core.extensions import exts_pool
 
-    result = [("user", "user")]
+    result = [("user", _("User profile"))]
     for extension in exts_pool.list_all():
-        result.append((extension["name"], extension["name"]))
+        if not extension["topredirection_url"]:
+            continue
+        result.append((extension["name"], extension["label"]))
     return sorted(result, key=lambda e: e[0])
 
 
