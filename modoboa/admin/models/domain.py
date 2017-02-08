@@ -50,6 +50,10 @@ class Domain(AdminObject):
     )
     owners = GenericRelation(ObjectAccess)
     type = models.CharField(default="domain", max_length=20)
+    enable_dns_checks = models.BooleanField(
+        ugettext_lazy("Enable DNS checks"), default=True,
+        help_text=ugettext_lazy("Check to enable DNS checks for this domain")
+    )
 
     objects = DomainManager()
 

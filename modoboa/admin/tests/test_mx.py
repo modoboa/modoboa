@@ -74,6 +74,8 @@ class DNSBLTestCase(ModoTestCase):
         factories.DomainFactory(name="pouet.com")  # should not exist
         cls.domain2 = factories.DomainFactory(
             name="test.localhost")  # Should not be checked
+        cls.domain3 = factories.DomainFactory(
+            name="modoboa.com", enable_dns_checks=False)
         models.DNSBLResult.objects.all().delete()
 
     @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
@@ -83,6 +85,8 @@ class DNSBLTestCase(ModoTestCase):
         management.call_command("modo", "check_mx")
         self.assertTrue(
             models.DNSBLResult.objects.filter(domain=self.domain).exists())
+        self.assertFalse(
+            models.DNSBLResult.objects.filter(domain=self.domain3).exists())
         response = self.client.get(
             reverse("admin:dnsbl_domain_detail", args=[self.domain.pk]))
         self.assertEqual(response.status_code, 200)

@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% if not domain.enable_dns_checks or domain.uses_a_reserved_tld %}
+  <span class="label label-mini label-default">{% trans "Disabled" context "checks" %}</span>
+{% elif domain.awaiting_checks %}
+  <span class="label label-mini label-info">{% trans "Awaiting checks" %}</span>
+{% else %}
+  {% if enable_mx_checks %}
+    <span class="label label-mini label-{% if not domain.mxrecord_set.has_valids %}danger{% else %}success{% endif %}"><a href="{% url 'admin:mx_domain_detail' domain.pk %}" data-toggle="ajaxmodal">MX</a></span>
+  {% endif %}
+  {% if enable_dnsbl_checks %}
+    <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
+  {% endif %}
+{% endif %}
