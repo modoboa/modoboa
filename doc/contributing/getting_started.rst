@@ -23,9 +23,10 @@ To do so, run the following commands::
 
   $ virtualenv <path>
   $ source <path>/bin/activate
-  $ git clone https://github.com/tonioo/modoboa.git
+  $ git clone https://github.com/modoboa/modoboa.git
   $ cd modoboa
   $ python setup.py develop
+  $ pip install -r dev-requirements.txt
 
 The ``develop`` command creates a symbolic link to your local copy so
 any modification you make will be automatically available in your
@@ -37,16 +38,18 @@ Deploy an instance for development
 .. warning::
 
    Make sure to :ref:`create a database <database>` before running
-   this step.
+   this step. The format of the database url is also described in this
+   page.
 
 Now that you have a :ref:`running environment <venv_for_dev>`, you're
 ready to deploy a test instance::
 
-  $ modoboa-admin.py deploy --devel --dburl <database url> <path>
   $ cd <path>
+  $ modoboa-admin.py deploy --dburl default:<database url> --hostname localhost --devel instance
   $ python manage.py runserver
 
-You're ready to go!
+You're ready to go! You should be able to access Modoboa at
+``http://localhost:8000`` using ``admin:password`` as credentials.
 
 Manage static files
 ===================
