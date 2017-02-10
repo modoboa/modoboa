@@ -3,6 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -15,9 +16,7 @@ from django.contrib.auth.decorators import (
 from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
-from modoboa.lib.web_utils import (
-    _render_to_string, render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.lib.exceptions import (
     PermDeniedException
 )
@@ -71,13 +70,13 @@ def _domains(request):
         context["length"] = 0
     else:
         parameters = request.localconfig.parameters
-        context["rows"] = _render_to_string(
-            request, "admin/domains_table.html", {
+        context["rows"] = render_to_string(
+            "admin/domains_table.html", {
                 "domains": page.object_list,
                 "enable_mx_checks": parameters.get_value("enable_mx_checks"),
                 "enable_dnsbl_checks": (
                     parameters.get_value("enable_dnsbl_checks"))
-            }
+            }, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)

@@ -1,6 +1,7 @@
 """Identity related views."""
 
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -19,9 +20,7 @@ from modoboa.lib.exceptions import (
 from modoboa.lib.listing import (
     get_sort_order, get_listing_page
 )
-from modoboa.lib.web_utils import (
-    _render_to_string, render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
 
 from ..forms import AccountForm, AccountWizard
 from ..lib import get_identities
@@ -55,12 +54,12 @@ def _identities(request):
     if page is None:
         context["length"] = 0
     else:
-        context["headers"] = _render_to_string(
-            request, "admin/identity_headers.html", {})
-        context["rows"] = _render_to_string(
-            request, "admin/identities_table.html", {
+        context["headers"] = render_to_string(
+            "admin/identity_headers.html", {}, request)
+        context["rows"] = render_to_string(
+            "admin/identities_table.html", {
                 "identities": page.object_list
-            }
+            }, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
@@ -111,17 +110,15 @@ def list_quotas(request):
         raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
     context = {
-        "headers": _render_to_string(
-            request, "admin/quota_headers.html", {}
+        "headers": render_to_string(
+            "admin/quota_headers.html", {}, request
         )
     }
     if page is None:
         context["length"] = 0
     else:
-        context["rows"] = _render_to_string(
-            request, "admin/quotas.html", {
-                "mboxes": page
-            }
+        context["rows"] = render_to_string(
+            "admin/quotas.html", {"mboxes": page}, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)

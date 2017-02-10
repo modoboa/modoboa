@@ -1,13 +1,13 @@
 """SimpleUsers views."""
 
-from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
+
+from django.contrib.auth.decorators import login_required
 
 from reversion import revisions as reversion
 
-from modoboa.lib.web_utils import (
-    render_to_json_response, _render_to_string
-)
+from modoboa.lib.web_utils import render_to_json_response
 
 from ..forms import ForwardForm
 from ..lib import needs_mailbox
@@ -49,7 +49,5 @@ def forward(request, tplname="admin/forward.html"):
             recipients.remove(mb.full_address)
         form.fields["dest"].initial = "\n".join(recipients)
     return render_to_json_response({
-        "content": _render_to_string(request, tplname, {
-            "form": form
-        })
+        "content": render_to_string(tplname, {"form": form}, request)
     })
