@@ -74,7 +74,7 @@ dologin = never_cache(dologin)
 
 def dologout(request):
     """Logout current user."""
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         signals.user_logout.send(sender="dologout", request=request)
         logger = logging.getLogger("modoboa.auth")
         logger.info(_("User {} logged out").format(request.user.username))

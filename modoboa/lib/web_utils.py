@@ -21,8 +21,7 @@ def _render_to_string(request, tpl, user_context):
     Just a wrapper which automatically adds a RequestContext instance
     (useful to use settings variables like STATIC_URL inside templates)
     """
-    return render_to_string(tpl, user_context,
-                            context_instance=template.RequestContext(request))
+    return render_to_string(tpl, user_context, request)
 
 
 def _render_error(request, errortpl="error", user_context=None):

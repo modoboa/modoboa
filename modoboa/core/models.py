@@ -168,13 +168,15 @@ class User(PermissionsMixin):
     def natural_key(self):
         return (self.get_username(),)
 
+    @property
     def is_anonymous(self):
-        """
-        Always returns False. This is a way of comparing User objects to
-        anonymous users.
+        """Always returns False.
+
+        This is a way of comparing User objects to anonymous users.
         """
         return False
 
+    @property
     def is_authenticated(self):
         """
         Always return True. This is a way to tell if the user has been

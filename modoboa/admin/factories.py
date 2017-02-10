@@ -43,7 +43,6 @@ class MailboxFactory(PermissionFactory):
     domain = factory.SubFactory(DomainFactory)
     user = factory.SubFactory(UserFactory)
     quota = 10
-    enabled = True
 
 
 class AliasRecipientFactory(factory.django.DjangoModelFactory):
