@@ -21,7 +21,7 @@ if DB == 'MYSQL':
         },
 
     }
-if DB == 'SQLITE':
+elif DB == 'SQLITE':
     DATABASES = {
 
         'default': {
