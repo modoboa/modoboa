@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name, protected-access
 """Admin urls."""
 
 from django.conf.urls import url

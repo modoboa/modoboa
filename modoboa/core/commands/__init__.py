@@ -9,8 +9,7 @@ from django.template import Context, Template
 
 
 class Command(object):
-
-    """Base command class
+    """Base command class.
 
     A valid administrative command must inherit from this class.
     """
@@ -22,7 +21,12 @@ class Command(object):
         self._parser = argparse.ArgumentParser()
         self._verbose = verbose
         if not settings.configured:
-            settings.configure()
+            settings.configure(
+                TEMPLATES=[{
+                    "BACKEND": (
+                        "django.template.backends.django.DjangoTemplates")
+                }]
+            )
         self._templates_dir = "%s/templates" % os.path.dirname(__file__)
 
     def _render_template(self, tplfile, env):
@@ -52,18 +56,19 @@ def scan_for_commands(dirname=""):
     path = os.path.join(os.path.dirname(__file__), dirname)
     result = {}
     for f in os.listdir(path):
-        if f in ['.', '..', '__init__.py']:
+        if f in [".", "..", "__init__.py"]:
             continue
-        if not f.endswith('.py'):
+        if not f.endswith(".py"):
             continue
         if os.path.isfile(f):
             continue
-        cmdname = f.replace('.py', '')
+        cmdname = f.replace(".py", "")
         cmdmod = __import__("modoboa.core.commands", globals(), locals(),
                             [cmdname])
         cmdmod = getattr(cmdmod, cmdname)
-        if '_' in cmdname:
-            cmdclassname = ''.join([s.capitalize() for s in cmdname.split('_')])
+        if "_" in cmdname:
+            cmdclassname = "".join(
+                [s.capitalize() for s in cmdname.split("_")])
         else:
             cmdclassname = cmdname.capitalize()
         try:
