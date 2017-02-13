@@ -147,7 +147,7 @@ MySQL users
 
   default_pass_scheme = CRYPT
 
-  password_query = SELECT email AS user, password FROM core_user, admin_domain WHERE ecore_user.mail='%Lu' AND core_user.is_active=1 AND admin_domain.name='%Ld' AND admin_domain.enabled=1
+  password_query = SELECT email AS user, password FROM core_user, admin_domain WHERE core_user.email='%Lu' AND core_user.is_active=1 AND admin_domain.name='%Ld' AND admin_domain.enabled=1
 
   user_query = SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, <uid> AS uid, <gid> AS gid, concat('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%Ln' AND dom.name='%Ld'
 
