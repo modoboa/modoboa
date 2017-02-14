@@ -1,7 +1,7 @@
 """Extension management."""
 
 from django.conf import settings
-from django.conf.urls import include
+from django.conf.urls import include, url
 
 
 class ModoExtension(object):
@@ -75,18 +75,18 @@ class ExtensionsPool(object):
         if extinstance is None:
             return None
         result = None
-        try:
-            baseurl = (
-                extinstance.url if extinstance.url is not None
-                else name
-            )
-            result = (
-                r'^%s/' % (baseurl),
-                include("{0}.urls".format(name), namespace=name)
-            )
-        except ImportError:
+        #try:
+        baseurl = (
+            extinstance.url if extinstance.url is not None
+            else name
+        )
+        result = (
+            url(r'^%s/' % (baseurl),
+                include("{0}.urls".format(name), namespace=name))
+        )
+        #except ImportError:
             # No urls for this extension
-            pass
+        #    pass
         extinstance.load()
         return result
 

@@ -190,7 +190,7 @@ Domains.prototype = {
 
     create_dom_admin_changed: function(e) {
         var $target = $(e.target);
-        this.change_inputs_state(($target.val() === "yes") ? false : true);
+        this.change_inputs_state(($target.val() === "True") ? false : true);
     },
 
     /**
@@ -215,7 +215,7 @@ Domains.prototype = {
         $("input[name=create_dom_admin]").click(
             $.proxy(this.create_dom_admin_changed, this));
         this.change_inputs_state(
-            $("input[name=create_dom_admin]:checked").val() === "yes" ? false : true
+            $("input[name=create_dom_admin]:checked").val() === "True" ? false : true
         );
         this.optionsform_prefill();
     },
