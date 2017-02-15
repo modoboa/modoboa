@@ -17,7 +17,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         """Check if user can access dashboard."""
-        if not request.user.is_authenticated() or not request.user.is_admin:
+        if not request.user.is_authenticated or not request.user.is_admin:
             return self.handle_no_permission()
         return super(DashboardView, self).dispatch(request, *args, **kwargs)
 

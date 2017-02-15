@@ -1,7 +1,7 @@
 """Extension management."""
 
 from django.conf import settings
-from django.conf.urls import include
+from django.conf.urls import include, url
 
 
 class ModoExtension(object):
@@ -81,8 +81,8 @@ class ExtensionsPool(object):
                 else name
             )
             result = (
-                r'^%s/' % (baseurl),
-                include("{0}.urls".format(name), namespace=name)
+                url(r'^%s/' % (baseurl),
+                    include("{0}.urls".format(name), namespace=name))
             )
         except ImportError:
             # No urls for this extension

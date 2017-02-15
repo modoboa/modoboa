@@ -5,6 +5,7 @@ import logging
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
@@ -12,7 +13,6 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import authenticate, login, logout
 
 from modoboa.core.forms import LoginForm
-from modoboa.lib.web_utils import _render_to_string
 
 from .base import find_nextlocation
 from .. import signals
@@ -64,17 +64,20 @@ def dologin(request):
     announcements = signals.get_announcements.send(
         sender="login", location="loginpage")
     announcements = [announcement[1] for announcement in announcements]
-    return HttpResponse(_render_to_string(request, "registration/login.html", {
-        "form": form, "error": error, "next": nextlocation,
-        "annoucements": announcements
-    }), status=httpcode)
+    return HttpResponse(
+        render_to_string(
+            "registration/login.html", {
+                "form": form, "error": error, "next": nextlocation,
+                "annoucements": announcements},
+            request),
+        status=httpcode)
 
 dologin = never_cache(dologin)
 
 
 def dologout(request):
     """Logout current user."""
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         signals.user_logout.send(sender="dologout", request=request)
         logger = logging.getLogger("modoboa.auth")
         logger.info(_("User {} logged out").format(request.user.username))

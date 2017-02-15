@@ -1,7 +1,6 @@
 """A management command to apply mailbox operations."""
 
 import logging
-from optparse import make_option
 import os
 
 from django.core.management.base import BaseCommand
@@ -25,16 +24,16 @@ class Command(BaseCommand):
 
     help = "Handles rename and delete operations on mailboxes"
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            "--pidfile", default="/tmp/handle_mailbox_operations.pid",
-            help="Path to the file that will contain the PID of this process"
-        ),
-    )
-
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
         self.logger = logging.getLogger("modoboa.admin")
+
+    def add_arguments(self, parser):
+        """Add extra arguments to command line."""
+        parser.add_argument(
+            "--pidfile", default="/tmp/handle_mailbox_operations.pid",
+            help="Path to the file that will contain the PID of this process"
+        )
 
     def rename_mailbox(self, operation):
         if not os.path.exists(operation.argument):

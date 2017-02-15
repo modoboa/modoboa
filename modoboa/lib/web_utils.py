@@ -15,16 +15,6 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 
 
-def _render_to_string(request, tpl, user_context):
-    """Custom rendering function.
-
-    Just a wrapper which automatically adds a RequestContext instance
-    (useful to use settings variables like STATIC_URL inside templates)
-    """
-    return render_to_string(tpl, user_context,
-                            context_instance=template.RequestContext(request))
-
-
 def _render_error(request, errortpl="error", user_context=None):
     if user_context is None:
         user_context = {}
@@ -73,7 +63,7 @@ def ajax_response(request, status="ok", respmsg=None,
     for k, v in kwargs.iteritems():
         ctx[k] = v
     if template is not None:
-        content = _render_to_string(request, template, ctx)
+        content = render_to_string(template, ctx, request)
     elif "content" in kwargs:
         content = kwargs["content"]
     else:

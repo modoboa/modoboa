@@ -14,6 +14,7 @@ from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 
 from modoboa.admin import constants
 from modoboa.admin import models
@@ -72,7 +73,7 @@ class CheckMXRecords(BaseCommand):
 
         DNS queries are not performed while `ttl` (in seconds) is still valid.
         """
-        now = datetime.now()
+        now = timezone.now()
         records = models.MXRecord.objects.filter(domain=domain,
                                                  updated__gt=now)
         if records.exists():

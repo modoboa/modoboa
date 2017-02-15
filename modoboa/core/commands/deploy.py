@@ -17,7 +17,6 @@ except ImportError:
 import django
 from django.core import management
 from django.template import Context, Template
-
 import dj_database_url
 
 from modoboa.core.commands import Command

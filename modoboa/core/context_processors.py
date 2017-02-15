@@ -5,7 +5,7 @@ from . import signals
 
 def top_notifications(request):
     """A context processor to include top notifications."""
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         return {}
     interval = request.localconfig.parameters.get_value(
         "top_notifications_check_interval")

@@ -1,6 +1,7 @@
 """Simple user views."""
 
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
@@ -9,9 +10,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from rest_framework.authtoken.models import Token
 
 from modoboa.lib.cryptutils import encrypt
-from modoboa.lib.web_utils import (
-    _render_to_string, render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
 
 from ..forms import ProfileForm, APIAccessForm
@@ -51,9 +50,9 @@ def profile(request, tplname='core/user_profile.html'):
 
     form = ProfileForm(update_password, instance=request.user)
     return render_to_json_response({
-        "content": _render_to_string(request, tplname, {
+        "content": render_to_string(tplname, {
             "form": form
-        })
+        }, request)
     })
 
 
@@ -74,10 +73,10 @@ def preferences(request):
         return render_to_json_response(_("Preferences saved"))
 
     return render_to_json_response({
-        "content": _render_to_string(request, "core/user_preferences.html", {
+        "content": render_to_string("core/user_preferences.html", {
             "forms": param_tools.registry.get_forms(
                 "user", user=request.user, first_app="general")
-        })
+        }, request)
     })
 
 
@@ -98,6 +97,6 @@ def api_access(request):
         }, status=400)
     form = APIAccessForm(user=request.user)
     return render_to_json_response({
-        "content": _render_to_string(
-            request, "core/api_access.html", {"form": form})
+        "content": render_to_string(
+            "core/api_access.html", {"form": form}, request)
     })

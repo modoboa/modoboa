@@ -22,7 +22,7 @@ def enabled_applications():
 
     result = [("user", _("User profile"))]
     for extension in exts_pool.list_all():
-        if not extension["topredirection_url"]:
+        if "topredirection_url" not in extension:
             continue
         result.append((extension["name"], extension["label"]))
     return sorted(result, key=lambda e: e[0])
