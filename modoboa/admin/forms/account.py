@@ -278,8 +278,6 @@ class AccountFormMail(forms.Form, DynamicForm):
         Check if quota is >= 0 only when the domain value is not used.
         """
         cleaned_data = super(AccountFormMail, self).clean()
-        if not cleaned_data["email"]:
-            return cleaned_data
         use_default_domain_quota = cleaned_data["quota_act"]
         condition = (
             not use_default_domain_quota and

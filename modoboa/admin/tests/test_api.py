@@ -44,14 +44,14 @@ class DomainAPITestCase(ModoAPITestCase):
         """Check domain creation."""
         url = reverse("external_api:domain-list")
         response = self.client.post(
-            url, {"name": "test3.com", "default_mailbox_quota": 10})
+            url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
+        )
         self.assertEqual(response.status_code, 201)
         self.assertTrue(
             models.Domain.objects.filter(name="test3.com").exists())
         response = self.client.post(url, {})
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", response.data)
-        self.assertIn("default_mailbox_quota", response.data)
 
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
@@ -302,7 +302,7 @@ class AccountAPITestCase(ModoAPITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
         data = copy.deepcopy(self.ACCOUNT_DATA)
-        data["mailbox"]["quota"] = 20
+        data["mailbox"]["quota"] = 1000
         url = reverse("external_api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)

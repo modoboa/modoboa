@@ -23,7 +23,9 @@ class DomainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Domain
-        fields = ("pk", "name", "default_mailbox_quota", "enabled", "type", )
+        fields = (
+            "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
+        )
 
     def create(self, validated_data):
         """Set permissions."""
@@ -236,11 +238,10 @@ class WritableAccountSerializer(AccountSerializer):
         except lib_exceptions.ModoboaException as inst:
             raise serializers.ValidationError({
                 "domain": unicode(inst)})
+        quota = data.pop("quota", None)
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
-        mb.set_quota(
-            data.get("quota"), creator.has_perm("admin.add_domain")
-        )
+        mb.set_quota(quota, creator.has_perm("admin.add_domain"))
         mb.save(creator=creator)
         account.email = full_address
         return mb

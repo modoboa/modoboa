@@ -181,13 +181,13 @@ domainalias; domalias1.com; test.com; True
         self.client.logout()
         self.client.login(username="admin@test.com", password="toto")
         f = ContentFile(b"""
-account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 20
+account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 40
 """, name="identities.csv")
         resp = self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn('Quota is greater than the allowed', resp.content)
+        self.assertIn("Domain quota exceeded", resp.content)
 
     def test_import_missing_quota(self):
         f = ContentFile(b"""
