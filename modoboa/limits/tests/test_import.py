@@ -147,8 +147,8 @@ class UserLimitImportTestCase(LimitImportTestCase):
             username=self.reseller.username, password="toto")
         limit = self.reseller.userobjectlimit_set.get(name="domains")
         self.assertFalse(limit.is_exceeded())
-        f = ContentFile(b"""domain; domain1.com; 100; True
-domain; domain2.com; 200; False
+        f = ContentFile(b"""domain; domain1.com; 1000; 100; True
+domain; domain2.com; 1000; 200; False
 """, name="domains.csv")
         self.client.post(
             reverse("admin:domain_import"), {
@@ -157,7 +157,7 @@ domain; domain2.com; 200; False
         )
         self.assertTrue(limit.is_exceeded())
 
-        f = ContentFile(b"""domain; domain3.com; 100; True
+        f = ContentFile(b"""domain; domain3.com; 1000; 100; True
 """, name="domains.csv")
         response = self.client.post(
             reverse("admin:domain_import"), {

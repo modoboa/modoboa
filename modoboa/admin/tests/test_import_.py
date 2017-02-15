@@ -25,8 +25,8 @@ class ImportTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Provide a CSV", response.content)
 
-        f = ContentFile(b"""domain; domain1.com; 100; True
-domain; domain2.com; 200; False
+        f = ContentFile(b"""domain; domain1.com; 1000; 100; True
+domain; domain2.com; 1000; 200; False
 domainalias; domalias1.com; domain1.com; True
 """, name="domains.csv")
         self.client.post(
@@ -36,6 +36,7 @@ domainalias; domalias1.com; domain1.com; True
         )
         admin = User.objects.get(username="admin")
         dom = Domain.objects.get(name="domain1.com")
+        self.assertEqual(dom.quota, 1000)
         self.assertEqual(dom.default_mailbox_quota, 100)
         self.assertTrue(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
@@ -49,7 +50,7 @@ domainalias; domalias1.com; domain1.com; True
         self.assertTrue(admin.is_owner(dom))
 
     def test_import_domains_with_conflict(self):
-        f = ContentFile(b"""domain;test.alias;10;True
+        f = ContentFile(b"""domain;test.alias;100;10;True
 domainalias;test.alias;test.com;True
 """, name="domains.csv")
         resp = self.client.post(
@@ -160,7 +161,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; t
         self.client.logout()
         self.client.login(username="admin@test.com", password="toto")
         f = ContentFile(b"""
-domain; domain2.com; 200; False
+domain; domain2.com; 1000; 200; False
 """, name="identities.csv")
         resp = self.client.post(
             reverse("admin:identity_import"),

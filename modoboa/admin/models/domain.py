@@ -241,28 +241,38 @@ class Domain(AdminObject):
 
         The expected fields order is the following::
 
-          "domain", name, default_mailbox_quota, enabled
+          "domain", name, quota, default_mailbox_quota, enabled
 
         :param ``core.User`` user: user creating the domain
         :param str row: a list containing domain's definition
         """
-        if len(row) < 4:
+        if len(row) < 5:
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
         if Domain.objects.filter(name=self.name).exists():
             raise Conflict
         try:
-            self.default_mailbox_quota = int(row[2].strip())
+            self.quota = int(row[2].strip())
         except ValueError:
             raise BadRequest(
-                _("Invalid default mailbox quota value for domain '%s'")
-                % self.name)
-        self.enabled = (row[3].strip() in ["True", "1", "yes", "y"])
+                _("Invalid quota value for domain '{}'")
+                .format(self.name)
+            )
+        try:
+            self.default_mailbox_quota = int(row[3].strip())
+        except ValueError:
+            raise BadRequest(
+                _("Invalid default mailbox quota value for domain '{}'")
+                .format(self.name)
+            )
+        self.enabled = (row[4].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
 
     def to_csv(self, csvwriter):
         csvwriter.writerow([
-            "domain", self.name, self.default_mailbox_quot, self.enabled])
+            "domain", self.name, self.quota, self.default_mailbox_quot,
+            self.enabled
+        ])
         for dalias in self.domainalias_set.all():
             dalias.to_csv(csvwriter)
 
