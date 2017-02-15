@@ -33,8 +33,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     type = forms.ChoiceField(
         label=ugettext_lazy("Type"),
     )
-    quota = forms.IntegerField(
-        label=ugettext_lazy("Quota"),
+    default_mailbox_quota = forms.IntegerField(
+        label=ugettext_lazy("Default mailbox quota"),
         required=False,
         help_text=ugettext_lazy(
             "Default quota in MB applied to mailboxes. Leave empty to use the "
@@ -53,7 +53,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     class Meta:
         model = Domain
         fields = (
-            "name", "type", "quota", "aliases", "enabled", "enable_dns_checks")
+            "name", "type", "default_mailbox_quota", "aliases", "enabled",
+            "enable_dns_checks")
 
     def __init__(self, *args, **kwargs):
         self.oldname = None
@@ -68,7 +69,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         )
         self.fields["type"].choices = DOMAIN_TYPES + extra_domain_types
         self.field_widths = {
-            "quota": 3
+            "default_mailbox_quota": 3
         }
 
         if len(args) and isinstance(args[0], QueryDict):
@@ -79,13 +80,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 name = "aliases_%d" % (pos + 1)
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
-    def clean_quota(self):
+    def clean_default_mailbox_quota(self):
         """Check quota value."""
-        if self.cleaned_data["quota"] is None:
+        if self.cleaned_data["default_mailbox_quota"] is None:
             return param_tools.get_global_parameter("default_domain_quota")
-        if self.cleaned_data["quota"] < 0:
+        if self.cleaned_data["default_mailbox_quota"] < 0:
             raise forms.ValidationError(_("Must be a positive integer"))
-        return self.cleaned_data["quota"]
+        return self.cleaned_data["default_mailbox_quota"]
 
     def clean(self):
         """Custom fields validation.

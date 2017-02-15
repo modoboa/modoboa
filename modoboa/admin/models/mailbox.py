@@ -228,19 +228,20 @@ class Mailbox(AdminObject):
         :param integer value: the quota's value
         :param bool override_rules: allow to override defined quota rules
         """
+        default_mailbox_quota = self.domain.default_mailbox_quota
         if value is None:
             if self.use_domain_quota:
-                self.quota = self.domain.quota
+                self.quota = default_mailbox_quota
             else:
                 self.quota = 0
-        elif int(value) > self.domain.quota and not override_rules:
+        elif int(value) > default_mailbox_quota and not override_rules:
             raise lib_exceptions.BadRequest(
                 _("Quota is greater than the allowed domain's limit (%dM)") %
-                self.domain.quota
+                default_mailbox_quota
             )
         else:
             self.quota = value
-        if not self.quota and self.domain.quota and not override_rules:
+        if not self.quota and default_mailbox_quota and not override_rules:
             raise lib_exceptions.BadRequest(_("A quota is required"))
 
     def get_quota(self):

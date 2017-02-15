@@ -43,18 +43,20 @@ class DomainAPITestCase(ModoAPITestCase):
     def test_create_domain(self):
         """Check domain creation."""
         url = reverse("external_api:domain-list")
-        response = self.client.post(url, {"name": "test3.com", "quota": 10})
+        response = self.client.post(
+            url, {"name": "test3.com", "default_mailbox_quota": 10})
         self.assertEqual(response.status_code, 201)
         self.assertTrue(
             models.Domain.objects.filter(name="test3.com").exists())
         response = self.client.post(url, {})
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", response.data)
-        self.assertIn("quota", response.data)
+        self.assertIn("default_mailbox_quota", response.data)
 
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
-        response = self.client.post(url, {"name": "test4.com", "quota": 10})
+        response = self.client.post(
+            url, {"name": "test4.com", "default_mailbox_quota": 10})
         self.assertEqual(response.status_code, 403)
 
     def test_update_domain(self):
@@ -64,15 +66,17 @@ class DomainAPITestCase(ModoAPITestCase):
             domain__name="test.com", address="user").update(
                 use_domain_quota=True)
         url = reverse("external_api:domain-detail", args=[domain.pk])
-        response = self.client.put(url, {"name": "test.com", "quota": 1000})
+        response = self.client.put(
+            url, {"name": "test.com", "default_mailbox_quota": 1000})
         self.assertEqual(response.status_code, 200)
         domain.refresh_from_db()
-        self.assertEqual(domain.quota, 1000)
+        self.assertEqual(domain.default_mailbox_quota, 1000)
         mb = models.Mailbox.objects.get(
             domain__name="test.com", address="user")
         self.assertEqual(mb.quota, 1000)
 
-        response = self.client.put(url, {"name": "test42.com", "quota": 1000})
+        response = self.client.put(
+            url, {"name": "test42.com", "default_mailbox_quota": 1000})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(
             models.Mailbox.objects.filter(
@@ -267,7 +271,8 @@ class AccountAPITestCase(ModoAPITestCase):
         user = core_models.User.objects.filter(pk=account["pk"]).first()
         self.assertIsNot(user, None)
         self.assertIsNot(user.mailbox, None)
-        self.assertEqual(user.mailbox.quota, user.mailbox.domain.quota)
+        self.assertEqual(
+            user.mailbox.quota, user.mailbox.domain.default_mailbox_quota)
 
     def test_create_existing_account(self):
         """Check if unicity is respected."""

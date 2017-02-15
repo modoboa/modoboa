@@ -39,9 +39,9 @@ class DomainAliasTestCase(ModoTestCase):
     def test_form(self):
         dom = Domain.objects.get(name="test.com")
         values = dict(
-            name=dom.name, quota=dom.quota, enabled=dom.enabled,
-            aliases="domalias.net", aliases_1="domaliasé.com",
-            type="domain"
+            name=dom.name, default_mailbox_quota=dom.default_mailbox_quota,
+            enabled=dom.enabled, aliases="domalias.net",
+            aliases_1="domaliasé.com", type="domain"
         )
         self.ajax_post(
             reverse("admin:domain_change",

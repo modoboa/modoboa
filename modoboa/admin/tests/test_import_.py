@@ -36,7 +36,7 @@ domainalias; domalias1.com; domain1.com; True
         )
         admin = User.objects.get(username="admin")
         dom = Domain.objects.get(name="domain1.com")
-        self.assertEqual(dom.quota, 100)
+        self.assertEqual(dom.default_mailbox_quota, 100)
         self.assertTrue(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
         domalias = DomainAlias.objects.get(name="domalias1.com")
@@ -44,7 +44,7 @@ domainalias; domalias1.com; domain1.com; True
         self.assertTrue(dom.enabled)
         self.assertTrue(admin.is_owner(domalias))
         dom = Domain.objects.get(name="domain2.com")
-        self.assertEqual(dom.quota, 200)
+        self.assertEqual(dom.default_mailbox_quota, 200)
         self.assertFalse(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
 
@@ -200,7 +200,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
         account = User.objects.get(username="user1@test.com")
         self.assertEqual(
             account.mailbox.quota,
-            account.mailbox.domain.quota
+            account.mailbox.domain.default_mailbox_quota
         )
 
     def test_import_duplicate(self):

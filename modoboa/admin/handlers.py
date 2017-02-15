@@ -27,7 +27,7 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
     if kwargs.get("created"):
         return
     instance.mailbox_set.filter(use_domain_quota=True).update(
-        quota=instance.quota)
+        quota=instance.default_mailbox_quota)
     if instance.old_mail_homes is None:
         return
     qset = (
@@ -155,7 +155,8 @@ def account_auto_created(sender, user, **kwargs):
             domname, [(models.DomainAlias, _("domain alias"))])
         if label is not None:
             return
-        domain = models.Domain(name=domname, enabled=True, quota=0)
+        domain = models.Domain(
+            name=domname, enabled=True, default_mailbox_quota=0)
         domain.save(creator=sadmins[0])
         for su in sadmins[1:]:
             permissions.grant_access_to_object(su, domain)

@@ -16,7 +16,7 @@ class DomainFactory(PermissionFactory):
         django_get_or_create = ("name", )
 
     type = "domain"
-    quota = 10
+    default_mailbox_quota = 10
     enabled = True
 
 
@@ -96,7 +96,7 @@ def populate_database():
 
     dom.add_admin(admin)
 
-    dom2 = DomainFactory.create(name='test2.com', quota=0)
+    dom2 = DomainFactory.create(name='test2.com', default_mailbox_quota=0)
     admin = UserFactory.create(
         username='admin@test2.com', groups=('DomainAdmins',),
         password='{PLAIN}toto'

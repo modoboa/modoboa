@@ -42,7 +42,8 @@ class Domain(AdminObject):
 
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
-    quota = models.IntegerField()
+    # quota = models.IntegerField()
+    default_mailbox_quota = models.IntegerField()
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
         help_text=ugettext_lazy("Check to activate this domain"),
@@ -210,7 +211,7 @@ class Domain(AdminObject):
 
         The expected fields order is the following::
 
-          "domain", name, quota, enabled
+          "domain", name, default_mailbox_quota, enabled
 
         :param ``core.User`` user: user creating the domain
         :param str row: a list containing domain's definition
@@ -221,15 +222,17 @@ class Domain(AdminObject):
         if Domain.objects.filter(name=self.name).exists():
             raise Conflict
         try:
-            self.quota = int(row[2].strip())
+            self.default_mailbox_quota = int(row[2].strip())
         except ValueError:
             raise BadRequest(
-                _("Invalid quota value for domain '%s'") % self.name)
+                _("Invalid default mailbox quota value for domain '%s'")
+                % self.name)
         self.enabled = (row[3].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
 
     def to_csv(self, csvwriter):
-        csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
+        csvwriter.writerow([
+            "domain", self.name, self.default_mailbox_quot, self.enabled])
         for dalias in self.domainalias_set.all():
             dalias.to_csv(csvwriter)
 

@@ -23,7 +23,7 @@ class DomainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Domain
-        fields = ("pk", "name", "quota", "enabled", "type", )
+        fields = ("pk", "name", "default_mailbox_quota", "enabled", "type", )
 
     def create(self, validated_data):
         """Set permissions."""
