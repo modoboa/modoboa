@@ -1,10 +1,13 @@
 """Export related test cases."""
 
+from testfixtures import compare
+
 from django.core.urlresolvers import reverse
 
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
+from .. import models
 
 
 class ExportTestCase(ModoTestCase):
@@ -43,11 +46,15 @@ class ExportTestCase(ModoTestCase):
 
     def test_export_domains(self):
         """Check domain export."""
+        dom = models.Domain.objects.get(name="test.com")
+        factories.DomainAliasFactory(name="alias.test", target=dom)
         response = self.__export_domains()
-        self.assertListEqual(
-            "domain;test2.com;0;0;True\r\ndomain;test.com;50;10;True\r\n",
-            response.content.strip()
-        )
+        expected_response = [
+            "domain;test2.com;0;0;True",
+            "domain;test.com;50;10;True",
+            "domainalias;alias.test;test.com;True"
+        ]
+        compare(response.content.strip().split("\r\n"), expected_response)
 
     def test_export_identities(self):
         response = self.__export_identities()
