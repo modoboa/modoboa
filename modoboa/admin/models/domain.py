@@ -167,6 +167,13 @@ class Domain(AdminObject):
         return self.mailbox_set.aggregate(
             total=models.Sum("quota"))["total"]
 
+    @cached_property
+    def quota_usage_in_percent(self):
+        """Return quota usage in percent."""
+        if not self.quota_usage:
+            return 0
+        return int(self.quota_usage / float(self.quota) * 100)
+
     def add_admin(self, account):
         """Add a new administrator to this domain.
 

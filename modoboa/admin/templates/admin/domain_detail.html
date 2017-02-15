@@ -20,21 +20,50 @@
       <div class="panel-heading">
         <h3 class="panel-title">{% trans "Summary" %}</h3>
       </div>
-      <div class="panel-body">
+      <table class="table">
         {% if enable_mx_checks or enable_dnsbl_checks %}
-          <div class="row">
-            <span class="title">{% trans "DNS status" %}</span>
-            {% include "admin/_domain_dnschecks_status.html" %}
-          </div>
+          <tr>
+            <th>{% trans "DNS status" %}</th>
+            <td>
+              {% include "admin/_domain_dnschecks_status.html" %}
+            </td>
+          </tr>
         {% endif %}
-        <div class="row">
-          <span class="title">{% trans "Creation date" %}</span><span>{{ domain.creation }}</span>
-        </div>
-        <div class="row"><span class="title">{% trans "Last modification date" %}</span><span>{{ domain.last_modification }}</span></div>
-        <div class="row"><span class="title">{% trans "Domain aliases" %}</span><span>{{ domain.domainalias_count }}</span></div>
-        <div class="row"><span class="title"><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}">{% trans "Mailboxes" %}</a></span><span>{{ domain.mailbox_count }}</span></div>
-        <div class="row"><span class="title"><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}">{% trans "Mailbox aliases" %}</a></span><span>{{ domain.mbalias_count }}</span></div>
-      </div>
+        <tr>
+          <th width="40%">{% trans "Creation date" %}</th>
+          <td>{{ domain.creation }}</td>
+        </tr>
+        <tr>
+          <th>{% trans "Last modification date" %}</th>
+          <td>{{ domain.last_modification }}</td>
+        </tr>
+        <tr>
+          <th>{% trans "Domain aliases" %}</th>
+          <td>{{ domain.domainalias_count }}</td>
+        </tr>
+        <tr>
+          <th><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}">{% trans "Mailboxes" %}</a></th>
+          <td>{{ domain.mailbox_count }}</td>
+        </tr>
+        <tr>
+          <th><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}">{% trans "Mailbox aliases" %}</a></th>
+          <td>{{ domain.mbalias_count }}</td>
+        </tr>
+        <tr>
+          <th>{% trans "Quota" %}</a></th>
+          <td>{{ domain.quota }} {% trans "MB" %}</td>
+        </tr>
+        {% if domain.quota %}
+          <tr>
+            <th>{% trans "Usage" %}</a></th>
+            <td>{% include "common/progressbar.html" with id="quotabar" value=domain.quota_usage_in_percent %}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <th>{% trans "Default mailbox quota" %}</a></th>
+          <td>{{ domain.default_mailbox_quota }} {% trans "MB" %}</td>
+        </tr>
+      </table>
     </div>
 
     {% if object.domainalias_set.exists %}
@@ -58,24 +87,26 @@
   <div class="col-xs-12 col-sm-6">
     <div class="panel panel-info">
       <div class="panel-heading"><h3 class="panel-title">{% trans "Administrators" %}</h3></div>
-      <div class="panel-body">
-        <table id="domadmins" class="table table-condensed">
+      <table id="domadmins" class="table">
+        <thead>
           <tr><th>{% trans "Username" %}</th><th>{% trans "Name" %}</th><th></th></tr>
-          {% for da in domain.admins %}
-            <tr>
-              <td>{{ da.username }}</td>
-              <td>{{ da.fullname }}</td>
-              <td name="actions">
-                {% if perms.admin.change_domain %}
-                  <a name="removeperm" href="{% url 'admin:permission_remove' %}?domid={{ domain.id }}&daid={{ da.id }}" title="{% trans 'Remove this permission' %}"><span class="fa fa-trash"></span></a>
-                {% endif %}
-              </td>
-            </tr>
-          {% empty %}
-            <tr><td colspan="3">{% trans "No domain administrator defined yet." %}</td></tr>
-          {% endfor %}
-        </table>
-      </div>
+        </thead>
+        <tbody>
+        {% for da in domain.admins %}
+          <tr>
+            <td>{{ da.username }}</td>
+            <td>{{ da.fullname }}</td>
+            <td name="actions">
+              {% if perms.admin.change_domain %}
+                <a name="removeperm" href="{% url 'admin:permission_remove' %}?domid={{ domain.id }}&daid={{ da.id }}" title="{% trans 'Remove this permission' %}"><span class="fa fa-trash"></span></a>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3">{% trans "No domain administrator defined yet." %}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
     </div>
     
     {% for template in templates.right %}

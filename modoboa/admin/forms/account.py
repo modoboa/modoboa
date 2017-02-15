@@ -197,7 +197,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         help_text=_("Quota in MB for this mailbox. Define a custom value or "
                     "use domain's default one. Leave empty to define an "
                     "unlimited value (not allowed for domain "
-                    "administrators).")
+                    "administrators)."),
+        widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
     quota_act = forms.BooleanField(required=False)
     aliases = lib_fields.UTF8AndEmptyUserEmailField(
