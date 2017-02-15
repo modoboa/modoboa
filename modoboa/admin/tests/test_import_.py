@@ -49,6 +49,22 @@ domainalias; domalias1.com; domain1.com; True
         self.assertFalse(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
 
+    def test_domain_import_bad_syntax(self):
+        """Check errors handling."""
+        url = reverse("admin:domain_import")
+        f = ContentFile("domain; domain1.com; 100; True",
+                        name="domains.csv")
+        response = self.client.post(url, {"sourcefile": f})
+        self.assertContains(response, "Invalid line")
+        f = ContentFile("domain; domain1.com; XX; 100; True",
+                        name="domains.csv")
+        response = self.client.post(url, {"sourcefile": f})
+        self.assertContains(response, "Invalid quota value")
+        f = ContentFile("domain; domain1.com; 100; XX; True",
+                        name="domains.csv")
+        response = self.client.post(url, {"sourcefile": f})
+        self.assertContains(response, "Invalid default mailbox quota")
+
     def test_import_domains_with_conflict(self):
         f = ContentFile(b"""domain;test.alias;100;10;True
 domainalias;test.alias;test.com;True

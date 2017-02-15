@@ -269,8 +269,9 @@ class Domain(AdminObject):
         self.save(creator=user)
 
     def to_csv(self, csvwriter):
+        """Export domain and domain aliases to CSV format."""
         csvwriter.writerow([
-            "domain", self.name, self.quota, self.default_mailbox_quot,
+            "domain", self.name, self.quota, self.default_mailbox_quota,
             self.enabled
         ])
         for dalias in self.domainalias_set.all():

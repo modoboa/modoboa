@@ -8,7 +8,6 @@ from .. import factories
 
 
 class ExportTestCase(ModoTestCase):
-
     """Test case for export operations."""
 
     @classmethod
@@ -16,6 +15,14 @@ class ExportTestCase(ModoTestCase):
         """Create test data."""
         super(ExportTestCase, cls).setUpTestData()
         factories.populate_database()
+
+    def __export_domains(self, domfilter=""):
+        self.client.get(
+            "{}?domfilter={}".format(
+                reverse("admin:_domain_list"), domfilter))
+        return self.client.post(
+            reverse("admin:domain_export"), {"filename": "test.csv"}
+        )
 
     def __export_identities(self, idtfilter="", grpfilter=""):
         self.client.get(
@@ -33,6 +40,14 @@ class ExportTestCase(ModoTestCase):
             if not entry:
                 continue
             self.assertIn(entry, list2)
+
+    def test_export_domains(self):
+        """Check domain export."""
+        response = self.__export_domains()
+        self.assertListEqual(
+            "domain;test2.com;0;0;True\r\ndomain;test.com;50;10;True\r\n",
+            response.content.strip()
+        )
 
     def test_export_identities(self):
         response = self.__export_identities()
