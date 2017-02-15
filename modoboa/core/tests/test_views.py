@@ -115,6 +115,7 @@ class SettingsTestCase(ModoTestCase):
         "admin-auto_create_domain_and_mailbox": "True",
         "admin-enable_dnsbl_checks": "True",
         "admin-default_domain_quota": "0",
+        "admin-default_mailbox_quota": "0",
         "core-ldap_server_address": "localhost",
         "core-authentication_type": "local",
         "core-ldap_admin_groups": "",
