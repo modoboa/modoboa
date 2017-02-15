@@ -71,6 +71,15 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    default_mailbox_quota = forms.IntegerField(
+        label=ugettext_lazy("Default mailbox quota"),
+        initial=0,
+        help_text=ugettext_lazy(
+            "Default mailbox quota (in MB) applied to freshly created domains "
+            "with no value specified. A value of 0 means no quota."
+        )
+    )
+
     auto_account_removal = YesNoField(
         label=ugettext_lazy("Automatic account removal"),
         initial=False,
@@ -96,7 +105,8 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     def __init__(self, *args, **kwargs):
         super(AdminParametersForm, self).__init__(*args, **kwargs)
         self.field_widths = {
-            "default_domain_quota": 2
+            "default_domain_quota": 2,
+            "default_mailbox_quota": 2
         }
         hide_fields = False
         dpath = None
@@ -127,11 +137,19 @@ class AdminParametersForm(param_forms.AdminParametersForm):
 
     def clean_default_domain_quota(self):
         """Ensure quota is a positive integer."""
-        if self.cleaned_data['default_domain_quota'] < 0:
+        if self.cleaned_data["default_domain_quota"] < 0:
             raise forms.ValidationError(
-                ugettext_lazy('Must be a positive integer')
+                ugettext_lazy("Must be a positive integer")
             )
-        return self.cleaned_data['default_domain_quota']
+        return self.cleaned_data["default_domain_quota"]
+
+    def clean_default_mailbox_quota(self):
+        """Ensure quota is a positive integer."""
+        if self.cleaned_data["default_mailbox_quota"] < 0:
+            raise forms.ValidationError(
+                ugettext_lazy("Must be a positive integer")
+            )
+        return self.cleaned_data["default_mailbox_quota"]
 
 
 def load_admin_settings():

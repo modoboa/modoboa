@@ -81,7 +81,7 @@ class Mailbox(AdminObject):
         help_text=ugettext_lazy(
             "Mailbox address (without the @domain.tld part)")
     )
-    quota = models.PositiveIntegerField()
+    quota = models.PositiveIntegerField(default=0)
     use_domain_quota = models.BooleanField(default=False)
     domain = models.ForeignKey(Domain)
     user = models.OneToOneField(User)
@@ -218,7 +218,7 @@ class Mailbox(AdminObject):
         MailboxOperation.objects.create(type="delete", argument=self.mail_home)
 
     def set_quota(self, value=None, override_rules=False):
-        """Set or update quota's value for this mailbox.
+        """Set or update quota value for this mailbox.
 
         A value equal to 0 means the mailbox won't have any quota. The
         following cases allow people to define such behaviour:
@@ -228,21 +228,23 @@ class Mailbox(AdminObject):
         :param integer value: the quota's value
         :param bool override_rules: allow to override defined quota rules
         """
-        default_mailbox_quota = self.domain.default_mailbox_quota
+        old_quota = self.quota
         if value is None:
             if self.use_domain_quota:
-                self.quota = default_mailbox_quota
+                self.quota = self.domain.default_mailbox_quota
             else:
                 self.quota = 0
-        elif int(value) > default_mailbox_quota and not override_rules:
-            raise lib_exceptions.BadRequest(
-                _("Quota is greater than the allowed domain's limit (%dM)") %
-                default_mailbox_quota
-            )
         else:
             self.quota = value
-        if not self.quota and default_mailbox_quota and not override_rules:
-            raise lib_exceptions.BadRequest(_("A quota is required"))
+        if self.quota == 0:
+            if self.domain.quota and not override_rules:
+                raise lib_exceptions.BadRequest(_("A quota is required"))
+        elif self.domain.quota:
+            quota_usage = self.domain.quota_usage
+            if old_quota:
+                quota_usage -= old_quota
+            if quota_usage + self.quota > self.domain.quota:
+                raise lib_exceptions.BadRequest(_("Domain quota exceeded"))
 
     def get_quota(self):
         """Get quota limit.

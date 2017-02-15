@@ -42,8 +42,21 @@ class Domain(AdminObject):
 
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
-    # quota = models.IntegerField()
-    default_mailbox_quota = models.IntegerField()
+    quota = models.PositiveIntegerField(
+        default=0,
+        help_text=ugettext_lazy(
+            "Quota in MB shared between mailboxes. A value of 0 means "
+            "no quota."
+        )
+    )
+    default_mailbox_quota = models.PositiveIntegerField(
+        verbose_name=ugettext_lazy("Default mailbox quota"),
+        default=0,
+        help_text=ugettext_lazy(
+            "Default quota in MB applied to mailboxes. A value of 0 means "
+            "no quota."
+        )
+    )
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
         help_text=ugettext_lazy("Check to activate this domain"),
@@ -143,6 +156,16 @@ class Domain(AdminObject):
             return "danger"
         else:
             return "success"
+
+    @cached_property
+    def quota_usage(self):
+        """Return current quota usage."""
+        if not self.quota:
+            return 0
+        if not self.mailbox_set.exists():
+            return 0
+        return self.mailbox_set.aggregate(
+            total=models.Sum("quota"))["total"]
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
