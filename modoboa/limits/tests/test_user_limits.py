@@ -78,7 +78,8 @@ class ResourceTestCase(lib_tests.ModoTestCase):
 
     def _create_domain(self, name, status=200, withtpl=False):
         values = {
-            "name": name, "quota": 100, "create_dom_admin": False,
+            "name": name, "quota": 100, "default_mailbox_quota": 10,
+            "create_dom_admin": False,
             "create_aliases": False, "stepid": "step3", "type": "domain"
         }
         if withtpl:
@@ -95,16 +96,17 @@ class ResourceTestCase(lib_tests.ModoTestCase):
     def _domain_alias_operation(self, optype, domain, name, status=200):
         dom = Domain.objects.get(name=domain)
         values = {
-            'name': dom.name, 'quota': dom.quota, 'enabled': dom.enabled,
-            "type": "domain"
+            "name": dom.name, "quota": dom.quota, "enabled": dom.enabled,
+            "type": "domain",
+            "default_mailbox_quota": dom.default_mailbox_quota,
         }
         aliases = [alias.name for alias in dom.domainalias_set.all()]
-        if optype == 'add':
+        if optype == "add":
             aliases.append(name)
         else:
             aliases.remove(name)
         for cpt, alias in enumerate(aliases):
-            fname = 'aliases' if not cpt else 'aliases_%d' % cpt
+            fname = "aliases" if not cpt else "aliases_%d" % cpt
             values[fname] = alias
         self.ajax_post(
             reverse("admin:domain_change", args=[dom.id]),

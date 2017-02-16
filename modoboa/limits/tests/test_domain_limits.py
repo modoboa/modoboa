@@ -34,6 +34,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         domain = Domain.objects.get(name="test.com")
         values = {
             "name": domain.name, "quota": domain.quota,
+            "default_mailbox_quota": domain.default_mailbox_quota,
             "enabled": domain.enabled, "type": "domain",
             "mailboxes_limit": 3, "mailbox_aliases_limit": 3,
             "domain_aliases_limit": 3, "domain_admins_limit": 3
@@ -62,6 +63,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.assertFalse(limit.is_exceeded())
         values = {
             "name": domain.name, "quota": domain.quota,
+            "default_mailbox_quota": domain.default_mailbox_quota,
             "enabled": domain.enabled, "type": "domain",
             "mailboxes_limit": 2, "mailbox_aliases_limit": 2,
             "domain_aliases_limit": 2, "domain_admins_limit": 2,

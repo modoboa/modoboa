@@ -23,7 +23,8 @@ class Operations(object):
         values = {
             "name": name, "create_dom_admin": False, "type": "relaydomain",
             "target_host": "external.host.tld", "target_port": 25,
-            "service": srv.id, "enabled": True, "stepid": "step3"
+            "service": srv.id, "enabled": True, "stepid": "step3",
+            "quota": 0, "default_mailbox_quota": 0
         }
         return self.ajax_post(
             reverse("admin:domain_add"),
@@ -35,7 +36,8 @@ class Operations(object):
         values = {
             "name": rdom.domain.name, "target_host": rdom.target_host,
             "target_port": rdom.target_port,
-            "type": "relaydomain", "service": rdom.service.id
+            "type": "relaydomain", "service": rdom.service.id,
+            "quota": 0, "default_mailbox_quota": 0
         }
         aliases = [alias.name for alias in rdom.domain.domainalias_set.all()]
         if optype == 'add':
@@ -144,7 +146,8 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         values = {
             "name": "relaydomain.org", "target_host": self.rdom.target_host,
             "target_port": 4040, "type": "relaydomain", "enabled": True,
-            "service": self.rdom.service.id
+            "service": self.rdom.service.id,
+            "quota": 0, "default_mailbox_quota": 0
         }
         self.ajax_post(
             reverse("admin:domain_change", args=[self.rdom.domain.id]),
@@ -159,6 +162,8 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         values = {
             "name": "relaydomain.tld",
             "type": "domain",
+            "quota": 0,
+            "default_mailbox_quota": 0,
             "enabled": True,
             "target_host": self.rdom.target_host,
             "target_port": self.rdom.target_port,
@@ -176,6 +181,8 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "name": "relaydomain.tld",
             "type": "relaydomain",
             "enabled": True,
+            "quota": 0,
+            "default_mailbox_quota": 0
         }
         self.ajax_post(
             reverse("admin:domain_change", args=[domain_pk]), values)
@@ -195,7 +202,8 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "name": "relaydomain.org", "target_host": self.rdom.target_host,
             "target_port": self.rdom.target_port,
             "type": "relaydomain", "service": self.rdom.service.id,
-            "aliases": "relaydomainalias.net"
+            "aliases": "relaydomainalias.net",
+            "quota": 0, "default_mailbox_quota": 0
         }
         self.ajax_post(
             reverse('admin:domain_change',

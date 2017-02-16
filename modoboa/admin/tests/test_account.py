@@ -165,16 +165,33 @@ class AccountTestCase(ModoTestCase):
         self._set_quota("user@test.com", 0)
 
     def test_set_nul_quota_as_domainadmin(self):
+        """Check cases where a domain admin set unlimited quota."""
         self.client.logout()
         self.assertTrue(
             self.client.login(username="admin@test.com", password="toto")
         )
+        # Fails because domain has a quota
         self._set_quota("user@test.com", 0, 400)
         self.client.logout()
         self.assertTrue(
             self.client.login(username="admin@test2.com", password="toto")
         )
+        # Ok because domain has no quota
         self._set_quota("user@test2.com", 0)
+
+    def test_domain_quota(self):
+        """Check domain quota."""
+        dom = models.Domain.objects.get(name="test.com")
+        dom.quota = 100
+        dom.save(update_fields=["quota"])
+        # 2 x 10MB
+        self.assertEqual(dom.quota_usage, 20)
+        self._set_quota("user@test.com", 80)
+        del dom.quota_usage
+        # 10 + 80 < 100 => ok
+        self.assertEqual(dom.quota_usage, 90)
+        # 30 + 80 > 100 => failure
+        self._set_quota("admin@test.com", 30, 400)
 
     def test_master_user(self):
         """Validate the master user mode."""
@@ -250,11 +267,15 @@ class PermissionsTestCase(ModoTestCase):
         cls.reseller = core_factories.UserFactory(username="reseller")
         cls.reseller.role = "Resellers"
         cls.user = User.objects.get(username="user@test.com")
-        cls.values = dict(
-            username=cls.user.username, role="DomainAdmins",
-            is_active=cls.user.is_active, email="user@test.com",
-            quota_act=True
-        )
+
+    def setUp(self):
+        """Initiate test context."""
+        super(PermissionsTestCase, self).setUp()
+        self.values = {
+            "username": self.user.username, "role": "DomainAdmins",
+            "is_active": self.user.is_active, "email": "user@test.com",
+            "quota_act": True
+        }
 
     def tearDown(self):
         self.client.logout()

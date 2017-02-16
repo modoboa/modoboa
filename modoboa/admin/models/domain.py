@@ -42,7 +42,21 @@ class Domain(AdminObject):
 
     name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
-    quota = models.IntegerField()
+    quota = models.PositiveIntegerField(
+        default=0,
+        help_text=ugettext_lazy(
+            "Quota in MB shared between mailboxes. A value of 0 means "
+            "no quota."
+        )
+    )
+    default_mailbox_quota = models.PositiveIntegerField(
+        verbose_name=ugettext_lazy("Default mailbox quota"),
+        default=0,
+        help_text=ugettext_lazy(
+            "Default quota in MB applied to mailboxes. A value of 0 means "
+            "no quota."
+        )
+    )
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),
         help_text=ugettext_lazy("Check to activate this domain"),
@@ -143,6 +157,23 @@ class Domain(AdminObject):
         else:
             return "success"
 
+    @cached_property
+    def quota_usage(self):
+        """Return current quota usage."""
+        if not self.quota:
+            return 0
+        if not self.mailbox_set.exists():
+            return 0
+        return self.mailbox_set.aggregate(
+            total=models.Sum("quota"))["total"]
+
+    @cached_property
+    def quota_usage_in_percent(self):
+        """Return quota usage in percent."""
+        if not self.quota_usage:
+            return 0
+        return int(self.quota_usage / float(self.quota) * 100)
+
     def add_admin(self, account):
         """Add a new administrator to this domain.
 
@@ -210,12 +241,12 @@ class Domain(AdminObject):
 
         The expected fields order is the following::
 
-          "domain", name, quota, enabled
+          "domain", name, quota, default_mailbox_quota, enabled
 
         :param ``core.User`` user: user creating the domain
         :param str row: a list containing domain's definition
         """
-        if len(row) < 4:
+        if len(row) < 5:
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
         if Domain.objects.filter(name=self.name).exists():
@@ -224,12 +255,25 @@ class Domain(AdminObject):
             self.quota = int(row[2].strip())
         except ValueError:
             raise BadRequest(
-                _("Invalid quota value for domain '%s'") % self.name)
-        self.enabled = (row[3].strip() in ["True", "1", "yes", "y"])
+                _("Invalid quota value for domain '{}'")
+                .format(self.name)
+            )
+        try:
+            self.default_mailbox_quota = int(row[3].strip())
+        except ValueError:
+            raise BadRequest(
+                _("Invalid default mailbox quota value for domain '{}'")
+                .format(self.name)
+            )
+        self.enabled = (row[4].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
 
     def to_csv(self, csvwriter):
-        csvwriter.writerow(["domain", self.name, self.quota, self.enabled])
+        """Export domain and domain aliases to CSV format."""
+        csvwriter.writerow([
+            "domain", self.name, self.quota, self.default_mailbox_quota,
+            self.enabled
+        ])
         for dalias in self.domainalias_set.all():
             dalias.to_csv(csvwriter)
 

@@ -187,7 +187,6 @@ class AccountFormGeneral(forms.ModelForm):
 
 
 class AccountFormMail(forms.Form, DynamicForm):
-
     """Form to handle mail part."""
 
     email = lib_fields.UTF8EmailField(
@@ -280,8 +279,9 @@ class AccountFormMail(forms.Form, DynamicForm):
         Check if quota is >= 0 only when the domain value is not used.
         """
         cleaned_data = super(AccountFormMail, self).clean()
+        use_default_domain_quota = cleaned_data["quota_act"]
         condition = (
-            not cleaned_data["quota_act"] and
+            not use_default_domain_quota and
             cleaned_data["quota"] is not None and
             cleaned_data["quota"] < 0)
         if condition:

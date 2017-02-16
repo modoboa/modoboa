@@ -25,35 +25,37 @@ class DomainTestCase(ModoTestCase):
     def test_create(self):
         """Test the creation of a domain."""
         values = {
-            "name": "pouet.com", "quota": 100, "create_dom_admin": False,
-            "type": "domain", "stepid": "step3"
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": False, "type": "domain", "stepid": "step3"
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         self.assertEqual(dom.name, "pouet.com")
-        self.assertEqual(dom.quota, 100)
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
         self.assertEqual(dom.enabled, False)
         self.assertFalse(dom.admins)
 
     def test_create_utf8(self):
         """Test the creation of a domain with non-ASCII characters."""
         values = {
-            "name": "pouét.com", "quota": 100, "create_dom_admin": False,
-            "type": "domain", "stepid": "step3"
+            "name": "pouét.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": False, "type": "domain", "stepid": "step3"
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name=u"pouét.com")
         self.assertEqual(dom.name, u"pouét.com")
-        self.assertEqual(dom.quota, 100)
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
         self.assertEqual(dom.enabled, False)
         self.assertFalse(dom.admins)
 
     def test_create_with_template(self):
         """Test the creation of a domain with a template."""
         values = {
-            "name": "pouet.com", "quota": 100, "create_dom_admin": True,
-            "dom_admin_username": "toto", "create_aliases": True,
-            "type": "domain", "stepid": 'step3'
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": True, "dom_admin_username": "toto",
+            "create_aliases": True, "type": "domain", "stepid": 'step3'
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
@@ -67,9 +69,9 @@ class DomainTestCase(ModoTestCase):
         self.assertTrue(da.can_access(al))
 
         values = {
-            "name": "pouet2.com", "quota": 100, "create_dom_admin": True,
-            "dom_admin_username": "postmaster", "create_aliases": True,
-            "type": "domain", "stepid": "step3"
+            "name": "pouet2.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": True, "dom_admin_username": "postmaster",
+            "create_aliases": True, "type": "domain", "stepid": "step3"
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         self.assertTrue(
@@ -81,9 +83,9 @@ class DomainTestCase(ModoTestCase):
     def test_create_with_template_and_empty_quota(self):
         """Test the creation of a domain with a template and no quota"""
         values = {
-            "name": "pouet.com", "quota": 0, "create_dom_admin": True,
-            "dom_admin_username": "toto", "create_aliases": True,
-            "type": "domain", "stepid": 'step3'
+            "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
+            "create_dom_admin": True, "dom_admin_username": "toto",
+            "create_aliases": True, "type": "domain", "stepid": 'step3'
         }
         self.ajax_post(
             reverse("admin:domain_add"),
@@ -104,9 +106,9 @@ class DomainTestCase(ModoTestCase):
         password = "Toto1000"
         self.set_global_parameter("default_password", password, app="core")
         values = {
-            "name": "pouet.com", "quota": 0, "create_dom_admin": True,
-            "dom_admin_username": "toto", "create_aliases": True,
-            "type": "domain", "stepid": 'step3'
+            "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
+            "create_dom_admin": True, "dom_admin_username": "toto",
+            "create_aliases": True, "type": "domain", "stepid": 'step3'
         }
         self.ajax_post(
             reverse("admin:domain_add"),
@@ -125,20 +127,12 @@ class DomainTestCase(ModoTestCase):
             self.client.login(username="toto@pouet.com", password=password))
 
     def test_create_using_default_quota(self):
-        self.set_global_parameter("default_domain_quota", 50)
-        values = {
-            "name": "pouet.com", "create_dom_admin": True,
-            "dom_admin_username": "toto", "create_aliases": True,
-            "type": "domain", "stepid": 'step3'
-        }
-        self.ajax_post(
-            reverse("admin:domain_add"),
-            values
-        )
-        dom = Domain.objects.get(name="pouet.com")
-        self.assertEqual(dom.quota, 50)
-        da = User.objects.get(username="toto@pouet.com")
-        self.assertEqual(da.mailbox.quota, 50)
+        """Check that default value is used for creation."""
+        self.set_global_parameter("default_domain_quota", 500)
+        self.set_global_parameter("default_mailbox_quota", 50)
+        response = self.client.get(reverse("admin:domain_add"))
+        self.assertContains(response, "value=\"500\"")
+        self.assertContains(response, "value=\"50\"")
 
     def test_modify(self):
         """Test the modification of a domain
@@ -146,8 +140,8 @@ class DomainTestCase(ModoTestCase):
         Rename 'test.com' domain to 'pouet.com'
         """
         values = {
-            "name": "pouet.com", "quota": 100, "type": "domain",
-            "enabled": True
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "type": "domain", "enabled": True
         }
         dom = Domain.objects.get(name="test.com")
         self.ajax_post(

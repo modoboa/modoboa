@@ -5,10 +5,10 @@ from django.core.urlresolvers import reverse
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
+from .. import models
 
 
 class ExportTestCase(ModoTestCase):
-
     """Test case for export operations."""
 
     @classmethod
@@ -16,6 +16,14 @@ class ExportTestCase(ModoTestCase):
         """Create test data."""
         super(ExportTestCase, cls).setUpTestData()
         factories.populate_database()
+
+    def __export_domains(self, domfilter=""):
+        self.client.get(
+            "{}?domfilter={}".format(
+                reverse("admin:_domain_list"), domfilter))
+        return self.client.post(
+            reverse("admin:domain_export"), {"filename": "test.csv"}
+        )
 
     def __export_identities(self, idtfilter="", grpfilter=""):
         self.client.get(
@@ -28,11 +36,28 @@ class ExportTestCase(ModoTestCase):
         )
 
     def assertListEqual(self, list1, list2):
-        list2 = list2.split('\r\n')
-        for entry in list1.split('\r\n'):
+        list1 = list1.split("\r\n")
+        list2 = list2.split("\r\n")
+        self.assertEqual(len(list1), len(list2))
+        for entry in list1:
             if not entry:
                 continue
             self.assertIn(entry, list2)
+
+    def test_export_domains(self):
+        """Check domain export."""
+        dom = models.Domain.objects.get(name="test.com")
+        factories.DomainAliasFactory(name="alias.test", target=dom)
+        response = self.__export_domains()
+        expected_response = [
+            "domain;test.com;50;10;True",
+            "domainalias;alias.test;test.com;True",
+            "domain;test2.com;0;0;True",
+        ]
+        self.assertListEqual(
+            "\r\n".join(expected_response),
+            response.content.strip()
+        )
 
     def test_export_identities(self):
         response = self.__export_identities()

@@ -21,7 +21,6 @@ from modoboa.lib.web_utils import render_to_json_response
 
 
 class WizardStep(object):
-
     """A wizard step."""
 
     def __init__(self, uid, formclass, title, formtpl=None, new_args=None):
@@ -66,7 +65,6 @@ class WizardStep(object):
 
 
 class WizardForm(object):
-
     """Custom wizard."""
 
     __metaclass__ = abc.ABCMeta
