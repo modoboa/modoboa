@@ -181,11 +181,6 @@ class DomainAdminTestCase(ResourceTestCase):
         Alias.objects.get(address='alias1@test.com')
         self._check_limit('mailbox_aliases', 2, 2)
 
-    def test_quota(self):
-        """Check that quota limit does not exist."""
-        self.assertFalse(
-            self.user.userobjectlimit_set.filter(name="quota").exists())
-
 
 class ResellerTestCase(ResourceTestCase):
 
