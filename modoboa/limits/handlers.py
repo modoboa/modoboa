@@ -22,23 +22,25 @@ from . import utils
 
 
 @receiver(core_signals.can_create_object)
-def check_object_limit(sender, context, object_type, **kwargs):
+def check_object_limit(sender, context, **kwargs):
     """Check if user can create a new object."""
     if context.__class__.__name__ == "User":
         if not param_tools.get_global_parameter("enable_admin_limits"):
             return
         if context.is_superuser:
             return True
-        limit = context.userobjectlimit_set.get(name=object_type)
+        ct = ContentType.objects.get_for_model(kwargs.get("klass"))
+        limits = context.userobjectlimit_set.filter(content_type=ct)
     elif context.__class__.__name__ == "Domain":
         if not param_tools.get_global_parameter("enable_domain_limits"):
             return
-        limit = context.domainobjectlimit_set.get(name=object_type)
+        object_type = kwargs.get("object_type")
+        limits = context.domainobjectlimit_set.filter(name=object_type)
     else:
         raise NotImplementedError
-    count = kwargs.get("count", 1)
-    if limit.is_exceeded(count):
-        raise lib.LimitReached(limit)
+    for limit in limits:
+        if limit.is_exceeded(kwargs.get("count", 1), kwargs.get("instance")):
+            raise lib.LimitReached(limit)
 
 
 @receiver(signals.post_save, sender=core_models.User)

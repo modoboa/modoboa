@@ -13,7 +13,7 @@ account_password_updated = django.dispatch.Signal(
     providing_args=["account", "password", "created"])
 allow_password_change = django.dispatch.Signal(providing_args=["user"])
 can_create_object = django.dispatch.Signal(
-    providing_args=["context", "object_type", "count"])
+    providing_args=["context", "klass", "object_type", "count", "instance"])
 extra_account_actions = django.dispatch.Signal(providing_args=["account"])
 extra_admin_dashboard_widgets = django.dispatch.Signal(
     providing_args=["user"])

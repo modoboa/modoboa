@@ -72,6 +72,16 @@ class ParametersForm(param_forms.AdminParametersForm):
         widget=forms.widgets.TextInput(
             attrs={"class": "col-md-1 form-control"})
     )
+    deflt_user_quota_limit = forms.IntegerField(
+        label=_("Quota"),
+        initial=0,
+        help_text=_(
+            "The quota a reseller will be allowed to share between the "
+            "domains he creates. (0 means no quota)"
+        ),
+        widget=forms.widgets.TextInput(
+            attrs={"class": "col-md-1 form-control"})
+    )
 
     domain_limits_sep = SeparatorField(label=_("Default per-domain limits"))
 

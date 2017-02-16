@@ -1,7 +1,11 @@
 {% extends "admin/header.html" %}
 
-{% load i18n %}
-{% load admin_tags %}
+{% load admin_tags i18n lib_tags %}
+
+{% block extra_css %}
+  {{ block.super }}
+  {% extra_static_content "domains" "css" user %}
+{% endblock %}
 
 {% block leftcol %}
 <ul class="nav nav-sidebar">

@@ -127,7 +127,8 @@ class SettingsTestCase(ModoTestCase):
         "core-ldap_search_filter": "(mail=%(user)s)",
         "core-ldap_secured": "False",
         "core-ldap_user_dn_template": "",
-        "core-default_password": "Toto1000"
+        "core-default_password": "Toto1000",
+        "limits-deflt_user_quota_limit": "0",
     }
 
     def test_get_settings(self):

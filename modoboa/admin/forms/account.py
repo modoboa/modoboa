@@ -306,7 +306,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not user.can_access(self.domain):
             raise lib_exceptions.PermDeniedException
         core_signals.can_create_object.send(
-            self.__class__, context=user, object_type="mailboxes")
+            self.__class__, context=user, klass=models.Mailbox)
         self.mb = models.Mailbox(
             address=self.locpart, domain=self.domain, user=account,
             use_domain_quota=self.cleaned_data["quota_act"])
@@ -330,7 +330,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not self.aliases:
             return
         core_signals.can_create_object.send(
-            self.__class__, context=user, object_type="mailbox_aliases",
+            self.__class__, context=user, klass=models.Alias,
             count=len(self.aliases))
         core_signals.can_create_object.send(
             self.__class__, context=self.mb.domain,

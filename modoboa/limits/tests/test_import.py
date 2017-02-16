@@ -26,8 +26,7 @@ class LimitImportTestCase(ModoTestCase):
 
     def _test_domain_alias_import(self, limit):
         """Check domain aliases limit."""
-        self.client.login(
-            username=self.reseller.username, password="toto")
+        self.client.force_login(self.reseller)
         self.assertFalse(limit.is_exceeded())
         f = ContentFile(b"""domainalias; domalias1.com; {domain}; True
 domainalias; domalias2.com; {domain}; True
@@ -51,8 +50,7 @@ domainalias; domalias2.com; {domain}; True
 
     def _test_domain_admins_import(self, limit, initial_count=0):
         """Check domain admins limit."""
-        self.client.login(
-            username=self.reseller.username, password="toto")
+        self.client.force_login(self.reseller)
         self.assertFalse(limit.is_exceeded())
         content = ""
         for cpt in xrange(initial_count, 2):
@@ -80,12 +78,15 @@ domainalias; domalias2.com; {domain}; True
 
     def _test_mailboxes_import(self, limit):
         """Check mailboxes limit."""
-        self.client.login(
-            username=self.dadmin.username, password="toto")
+        self.client.force_login(self.dadmin)
         self.assertFalse(limit.is_exceeded())
-        f = ContentFile(b"""account; user1@{domain}; toto; User; One; True; SimpleUsers; user1@{domain}; 5
-account; truc@{domain}; toto; René; Truc; True; SimpleUsers; truc@{domain}; 5
-""".format(domain=self.domain), name="domains.csv")
+        f = ContentFile(
+            "account; user1@{domain}; toto; User; One; True; SimpleUsers; "
+            "user1@{domain}; 5\r\n"
+            "account; truc@{domain}; toto; René; Truc; True; SimpleUsers; "
+            "truc@{domain}; 5\r\n".format(domain=self.domain),
+            name="domains.csv"
+        )
         response = self.client.post(
             reverse("admin:identity_import"), {
                 "sourcefile": f
@@ -105,8 +106,7 @@ account; user3@{domain}; toto; User; One; True; SimpleUsers; user3@{domain}; 5
 
     def _test_mailbox_aliases_import(self, limit):
         """Check mailbox aliases limit."""
-        self.client.login(
-            username=self.dadmin.username, password="toto")
+        self.client.force_login(self.dadmin)
         self.assertFalse(limit.is_exceeded())
         f = ContentFile(b"""alias; alias1@{domain}; True; user@{domain}
 alias; alias2@{domain}; True; user@{domain}
@@ -143,26 +143,26 @@ class UserLimitImportTestCase(LimitImportTestCase):
 
     def test_domains_import(self):
         """Check domains limit."""
-        self.client.login(
-            username=self.reseller.username, password="toto")
+        self.client.force_login(self.reseller)
         limit = self.reseller.userobjectlimit_set.get(name="domains")
         self.assertFalse(limit.is_exceeded())
-        f = ContentFile(b"""domain; domain1.com; 1000; 100; True
-domain; domain2.com; 1000; 200; False
-""", name="domains.csv")
+        f = ContentFile("domain; domain1.com; 1; 1; True", name="domains.csv")
         self.client.post(
-            reverse("admin:domain_import"), {
-                "sourcefile": f
-            }
+            reverse("admin:domain_import"), {"sourcefile": f}
         )
-        self.assertTrue(limit.is_exceeded())
+        self.assertFalse(limit.is_exceeded())
 
-        f = ContentFile(b"""domain; domain3.com; 1000; 100; True
+        f = ContentFile("domain; domain2.com; 2; 1; True", name="domains.csv")
+        response = self.client.post(
+            reverse("admin:domain_import"), {"sourcefile": f}
+        )
+        self.assertContains(response, "Quota: limit reached")
+
+        f = ContentFile(b"""domain; domain2.com; 1; 1; True
+domain; domain3.com; 1000; 100; True
 """, name="domains.csv")
         response = self.client.post(
-            reverse("admin:domain_import"), {
-                "sourcefile": f
-            }
+            reverse("admin:domain_import"), {"sourcefile": f}
         )
         self.assertContains(response, "Domains: limit reached")
 

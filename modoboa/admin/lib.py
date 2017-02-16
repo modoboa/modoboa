@@ -121,7 +121,7 @@ def import_domain(user, row, formopts):
     if not user.has_perm("admin.add_domain"):
         raise PermDeniedException(_("You are not allowed to import domains"))
     core_signals.can_create_object.send(
-        sender="import", context=user, object_type="domains")
+        sender="import", context=user, klass=Domain)
     dom = Domain()
     dom.from_csv(user, row)
 
@@ -132,7 +132,7 @@ def import_domainalias(user, row, formopts):
         raise PermDeniedException(
             _("You are not allowed to import domain aliases."))
     core_signals.can_create_object.send(
-        sender="import", context=user, object_type="domain_aliases")
+        sender="import", context=user, klass=DomainAlias)
     domalias = DomainAlias()
     domalias.from_csv(user, row)
 

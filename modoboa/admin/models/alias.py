@@ -180,7 +180,7 @@ class Alias(AdminObject):
         if not user.can_access(domain):
             raise PermDeniedException
         core_signals.can_create_object.send(
-            sender="import", context=user, object_type="mailbox_aliases")
+            sender="import", context=user, klass=Alias)
         core_signals.can_create_object.send(
             sender="import", context=domain, object_type="mailbox_aliases")
         if Alias.objects.filter(address=address).exists():

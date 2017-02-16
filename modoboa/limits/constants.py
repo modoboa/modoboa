@@ -26,7 +26,14 @@ DEFAULT_USER_LIMITS = collections.OrderedDict((
         "help": _("Maximum number of domain administrators this user "
                   "can create"),
         "required_role": "Resellers",
-        "extra_filters": {"groups__name": "DomainAdmins"}})
+        "extra_filters": {"groups__name": "DomainAdmins"}}),
+    ("quota", {
+        "content_type": "admin.domain", "label": _("Quota"),
+        "help": _("Quota shared between domains of this reseller"),
+        "required_role": "Resellers",
+        "type": "sum",
+        "field": "quota"
+    })
 ))
 
 

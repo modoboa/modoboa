@@ -79,16 +79,19 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.r_token.key)
         limit = self.reseller.userobjectlimit_set.get(name="domains")
+        quota = self.reseller.userobjectlimit_set.get(name="quota")
         url = reverse("external_api:domain-list")
-        data = {"name": "test3.com", "quota": 10}
+        data = {"name": "test3.com", "quota": 1}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         self.assertFalse(limit.is_exceeded())
+        self.assertFalse(quota.is_exceeded())
 
         data["name"] = "test4.com"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         self.assertTrue(limit.is_exceeded())
+        self.assertFalse(quota.is_exceeded())
 
         data["username"] = "test5.com"
         response = self.client.post(url, data, format="json")

@@ -76,9 +76,9 @@ class ResourceTestCase(lib_tests.ModoTestCase):
             reverse("admin:alias_add"), values, status
         )
 
-    def _create_domain(self, name, status=200, withtpl=False):
+    def _create_domain(self, name, status=200, withtpl=False, quota=100):
         values = {
-            "name": name, "quota": 100, "default_mailbox_quota": 10,
+            "name": name, "quota": quota, "default_mailbox_quota": 10,
             "create_dom_admin": False,
             "create_aliases": False, "stepid": "step3", "type": "domain"
         }
@@ -132,8 +132,7 @@ class DomainAdminTestCase(ResourceTestCase):
     def setUp(self):
         """Test initialization."""
         super(DomainAdminTestCase, self).setUp()
-        self.client.logout()
-        self.client.login(username='admin@test.com', password='toto')
+        self.client.force_login(self.user)
 
     def test_mailboxes_limit(self):
         self._create_account('tester1@test.com')
@@ -189,6 +188,8 @@ class ResellerTestCase(ResourceTestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(ResellerTestCase, cls).setUpTestData()
+        cls.localconfig.parameters.set_value("deflt_user_quota_limit", 1000)
+        cls.localconfig.save()
         cls.user = UserFactory(
             username='reseller', groups=('Resellers',)
         )
@@ -196,8 +197,7 @@ class ResellerTestCase(ResourceTestCase):
     def setUp(self):
         """Test initialization."""
         super(ResellerTestCase, self).setUp()
-        self.client.logout()
-        self.client.login(username='reseller', password='toto')
+        self.client.force_login(self.user)
 
     def test_domains_limit(self):
         response = self.client.get(reverse("admin:domain_list"))
@@ -292,9 +292,23 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('domain_admins', 2, 2)
         self._check_limit('domains', 3, 3)
 
+    def test_quota(self):
+        """Check quota resource."""
+        self._create_domain("domain1.tld", withtpl=True, quota=1000)
+        response = self._create_domain(
+            "domain2.tld", status=403, withtpl=True, quota=1000)
+        self.assertEqual(response, "Quota: limit reached")
+        dom1 = Domain.objects.get(name="domain1.tld")
+        url = reverse("admin:domain_change", args=[dom1.pk])
+        values = {
+            "name": dom1.name, "type": dom1.type, "enabled": dom1.enabled,
+            "default_mailbox_quota": dom1.default_mailbox_quota,
+            "quota": 500
+        }
+        self.ajax_post(url, values)
+
     def test_reseller_deletes_domain(self):
-        """Check if all resources are restored after the deletion.
-        """
+        """Check if all resources are restored after the deletion."""
         self._create_domain('domain.tld', withtpl=True)
         dom = Domain.objects.get(name="domain.tld")
         self.ajax_post(
