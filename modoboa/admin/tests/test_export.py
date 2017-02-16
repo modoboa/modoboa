@@ -1,7 +1,5 @@
 """Export related test cases."""
 
-from testfixtures import compare
-
 from django.core.urlresolvers import reverse
 
 from modoboa.lib.tests import ModoTestCase
@@ -38,8 +36,10 @@ class ExportTestCase(ModoTestCase):
         )
 
     def assertListEqual(self, list1, list2):
-        list2 = list2.split('\r\n')
-        for entry in list1.split('\r\n'):
+        list1 = list1.split("\r\n")
+        list2 = list2.split("\r\n")
+        self.assertEqual(len(list1), len(list2))
+        for entry in list1:
             if not entry:
                 continue
             self.assertIn(entry, list2)
@@ -50,11 +50,14 @@ class ExportTestCase(ModoTestCase):
         factories.DomainAliasFactory(name="alias.test", target=dom)
         response = self.__export_domains()
         expected_response = [
-            "domain;test2.com;0;0;True",
             "domain;test.com;50;10;True",
-            "domainalias;alias.test;test.com;True"
+            "domainalias;alias.test;test.com;True",
+            "domain;test2.com;0;0;True",
         ]
-        compare(response.content.strip().split("\r\n"), expected_response)
+        self.assertListEqual(
+            "\r\n".join(expected_response),
+            response.content.strip()
+        )
 
     def test_export_identities(self):
         response = self.__export_identities()
