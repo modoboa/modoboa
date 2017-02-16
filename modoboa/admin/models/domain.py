@@ -266,6 +266,9 @@ class Domain(AdminObject):
                 .format(self.name)
             )
         self.enabled = (row[4].strip() in ["True", "1", "yes", "y"])
+        core_signals.can_create_object.send(
+            sender=self.__class__, context=user, klass=Domain,
+            instance=self)
         self.save(creator=user)
 
     def to_csv(self, csvwriter):

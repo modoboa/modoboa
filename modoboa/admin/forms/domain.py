@@ -128,6 +128,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         """
         d = super(DomainFormGeneral, self).save(commit=False)
+        core_signals.can_create_object.send(
+            sender=self.__class__, context=user, klass=Domain, instance=d)
         if not commit:
             return d
         d.save()
@@ -138,7 +140,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 self.aliases.remove(dalias.name)
         if self.aliases:
             core_signals.can_create_object.send(
-                self.__class__, context=user, object_type="domain_aliases",
+                self.__class__, context=user, klass=DomainAlias,
                 count=len(self.aliases))
             core_signals.can_create_object.send(
                 self.__class__, context=d, object_type="domain_aliases",
@@ -224,7 +226,7 @@ class DomainFormOptions(forms.Form):
         else:
             raise Conflict(_("User '%s' already exists") % username)
         core_signals.can_create_object.send(
-            self.__class__, context=user, object_type="mailboxes")
+            self.__class__, context=user, klass=Mailbox)
         da = User(username=username, email=username, is_active=True)
         da.set_password(
             param_tools.get_global_parameter("default_password", app="core"))
@@ -248,7 +250,7 @@ class DomainFormOptions(forms.Form):
         )
         if condition:
             core_signals.can_create_object.send(
-                self.__class__, context=user, object_type="mailbox_aliases")
+                self.__class__, context=user, klass=Alias)
             address = u"postmaster@{}".format(domain.name)
             alias = Alias.objects.create(
                 address=address, domain=domain, enabled=True)

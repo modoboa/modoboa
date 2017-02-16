@@ -30,7 +30,11 @@ class DomainSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Set permissions."""
         domain = models.Domain(**validated_data)
-        domain.save(creator=self.context["request"].user)
+        creator = self.context["request"].user
+        core_signals.can_create_object.send(
+                sender=self.__class__, context=creator,
+                klass=models.Domain, instance=domain)
+        domain.save(creator=creator)
         return domain
 
 
@@ -54,7 +58,7 @@ class DomainAliasSerializer(serializers.ModelSerializer):
         try:
             core_signals.can_create_object.send(
                 sender=self.__class__, context=creator,
-                object_type="domain_aliases")
+                klass=models.DomainAlias)
             core_signals.can_create_object.send(
                 sender=self.__class__, context=domain_alias.target,
                 object_type="domain_aliases")
@@ -231,7 +235,7 @@ class WritableAccountSerializer(AccountSerializer):
         try:
             core_signals.can_create_object.send(
                 sender=self.__class__, context=creator,
-                object_type="mailboxes")
+                klass=admin_models.Mailbox)
             core_signals.can_create_object.send(
                 sender=self.__class__, context=domain,
                 object_type="mailboxes")
@@ -324,7 +328,7 @@ class AliasSerializer(serializers.ModelSerializer):
         try:
             core_signals.can_create_object.send(
                 sender=self.__class__, context=creator,
-                object_type="mailbox_aliases")
+                klass=admin_models.Alias)
             core_signals.can_create_object.send(
                 sender=self.__class__, context=self.domain,
                 object_type="mailbox_aliases")

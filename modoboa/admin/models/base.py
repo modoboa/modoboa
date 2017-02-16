@@ -23,6 +23,18 @@ class AdminObject(models.Model):
     class Meta:
         abstract = True
 
+    def __init__(self, *args, **kwargs):
+        """Custom constructor."""
+        super(AdminObject, self).__init__(*args, **kwargs)
+        self._loaded_values = {}
+
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        """Store loaded values."""
+        instance = super(AdminObject, cls).from_db(db, field_names, values)
+        instance._loaded_values = dict(zip(field_names, values))
+        return instance
+
     @property
     def objectname(self):
         if self._objectname is None:

@@ -205,7 +205,7 @@ def import_account_mailbox(sender, user, account, row, **kwargs):
         if not user.can_access(domain):
             raise exceptions.PermDeniedException
         core_signals.can_create_object.send(
-            sender="import", context=user, object_type="mailboxes")
+            sender="import", context=user, klass=models.Mailbox)
         core_signals.can_create_object.send(
             sender="import", context=domain, object_type="mailboxes")
         account.save()
