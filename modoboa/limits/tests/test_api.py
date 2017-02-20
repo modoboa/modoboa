@@ -93,9 +93,17 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         self.assertTrue(limit.is_exceeded())
         self.assertFalse(quota.is_exceeded())
 
-        data["username"] = "test5.com"
+        data["name"] = "test5.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.content, '"Quota: limit reached"')
+
+        data["quota"] = 0
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.content,
+            '"You\'re not allowed to define unlimited values"')
 
     def test_domain_aliases_limit(self):
         """Check domain aliases limit."""

@@ -10,6 +10,7 @@ from django.utils.translation import ugettext as _
 
 from modoboa.core import models as core_models
 
+from . import lib
 from . import utils
 
 
@@ -45,6 +46,10 @@ class ObjectLimitMixin(object):
             return False
         field = self.definition["field"]
         value = getattr(instance, field)
+        if value == 0:
+            # Do not allow unlimited value
+            raise lib.BadLimitValue(
+                _("You're not allowed to define unlimited values"))
         try:
             old_value = instance._loaded_values[field]
         except (AttributeError, KeyError):

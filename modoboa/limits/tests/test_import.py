@@ -152,6 +152,13 @@ class UserLimitImportTestCase(LimitImportTestCase):
         )
         self.assertFalse(limit.is_exceeded())
 
+        f = ContentFile("domain; domain2.com; 0; 1; True", name="domains.csv")
+        response = self.client.post(
+            reverse("admin:domain_import"), {"sourcefile": f}
+        )
+        self.assertContains(
+            response, "not allowed to define unlimited values")
+
         f = ContentFile("domain; domain2.com; 2; 1; True", name="domains.csv")
         response = self.client.post(
             reverse("admin:domain_import"), {"sourcefile": f}
