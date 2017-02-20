@@ -29,8 +29,8 @@ class DomainSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Check quota values."""
-        quota = data["quota"]
-        default_mailbox_quota = data["default_mailbox_quota"]
+        quota = data.get("quota", 0)
+        default_mailbox_quota = data.get("default_mailbox_quota", 0)
         if quota != 0 and default_mailbox_quota > quota:
             raise serializers.ValidationError({
                 "default_mailbox_quota":

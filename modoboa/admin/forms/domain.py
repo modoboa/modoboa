@@ -97,6 +97,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 % unicode(label)
             )
         condition = (
+            self.cleaned_data["quota"] != 0 and
             self.cleaned_data["default_mailbox_quota"] >
             self.cleaned_data["quota"])
         if condition:
