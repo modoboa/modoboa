@@ -96,8 +96,11 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         data["name"] = "test5.com"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 403)
-        self.assertEqual(response.content, '"Quota: limit reached"')
+        self.assertEqual(response.content, '"Domains: limit reached"')
 
+        self.client.delete(
+            reverse("external_api:domain-detail",
+                    args=[Domain.objects.get(name="test4.com").pk]))
         data["quota"] = 0
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
