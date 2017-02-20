@@ -27,6 +27,17 @@ class DomainSerializer(serializers.ModelSerializer):
             "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
         )
 
+    def validate(self, data):
+        """Check quota values."""
+        quota = data["quota"]
+        default_mailbox_quota = data["default_mailbox_quota"]
+        if quota != 0 and default_mailbox_quota > quota:
+            raise serializers.ValidationError({
+                "default_mailbox_quota":
+                _("Cannot be greater than domain quota")
+            })
+        return data
+
     def create(self, validated_data):
         """Set permissions."""
         domain = models.Domain(**validated_data)

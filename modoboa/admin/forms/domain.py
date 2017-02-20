@@ -96,6 +96,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 "name", _("A %s with this name already exists")
                 % unicode(label)
             )
+        condition = (
+            self.cleaned_data["default_mailbox_quota"] >
+            self.cleaned_data["quota"])
+        if condition:
+            self.add_error(
+                "default_mailbox_quota",
+                _("Cannot be greater than domain quota"))
         if self.user.role == "Resellers":
             limit = self.user.userobjectlimit_set.get(name="quota")
             if limit.max_value != 0:
