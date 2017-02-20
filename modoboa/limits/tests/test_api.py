@@ -80,6 +80,8 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION='Token ' + self.r_token.key)
         limit = self.reseller.userobjectlimit_set.get(name="domains")
         quota = self.reseller.userobjectlimit_set.get(name="quota")
+        quota.max_value = 3
+        quota.save(update_fields=["max_value"])
         url = reverse("external_api:domain-list")
         data = {"name": "test3.com", "quota": 1}
         response = self.client.post(url, data, format="json")
