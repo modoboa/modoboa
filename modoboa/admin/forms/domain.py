@@ -48,7 +48,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             "name", "type", "quota", "default_mailbox_quota", "aliases",
             "enabled", "enable_dns_checks")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         self.oldname = None
         if "instance" in kwargs:
             self.oldname = kwargs["instance"].name
@@ -67,6 +67,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             "quota": 3,
             "default_mailbox_quota": 3
         }
+        self.user = user
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "aliases", DomainNameField)
@@ -95,6 +96,17 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 "name", _("A %s with this name already exists")
                 % unicode(label)
             )
+        if self.user.role == "Resellers":
+            limit = self.user.userobjectlimit_set.get(name="quota")
+            if limit.max_value != 0:
+                quota = self.cleaned_data["quota"]
+                msg = _("You can't define an unlimited quota.")
+                if quota == 0:
+                    self.add_error("quota", msg)
+                default_mailbox_quota = self.cleaned_data[
+                    "default_mailbox_quota"]
+                if default_mailbox_quota == 0:
+                    self.add_error("default_mailbox_quota", msg)
         self.aliases = []
         for k in cleaned_data.keys():
             if not k.startswith("aliases"):
@@ -273,7 +285,8 @@ class DomainForm(TabForms):
                 "title": _("General"),
                 "formtpl": "admin/domain_general_form.html",
                 "cls": DomainFormGeneral,
-                "mandatory": True
+                "mandatory": True,
+                "new_args": [request.user]
             })
 
         cbargs = {"user": self.user}
@@ -337,7 +350,8 @@ class DomainWizard(WizardForm):
         self.add_step(
             WizardStep(
                 "general", DomainFormGeneral, _("General"),
-                "admin/domain_general_form.html"
+                "admin/domain_general_form.html",
+                [request.user]
             )
         )
         results = signals.extra_domain_wizard_steps.send(sender=self.__class__)

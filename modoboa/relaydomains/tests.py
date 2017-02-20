@@ -18,7 +18,7 @@ from . import models
 
 class Operations(object):
 
-    def _create_relay_domain(self, name, status=200):
+    def _create_relay_domain(self, name, status=200, **kwargs):
         srv, created = models.Service.objects.get_or_create(name='dummy')
         values = {
             "name": name, "create_dom_admin": False, "type": "relaydomain",
@@ -26,6 +26,7 @@ class Operations(object):
             "service": srv.id, "enabled": True, "stepid": "step3",
             "quota": 0, "default_mailbox_quota": 0
         }
+        values.update(kwargs)
         return self.ajax_post(
             reverse("admin:domain_add"),
             values, status
@@ -37,7 +38,8 @@ class Operations(object):
             "name": rdom.domain.name, "target_host": rdom.target_host,
             "target_port": rdom.target_port,
             "type": "relaydomain", "service": rdom.service.id,
-            "quota": 0, "default_mailbox_quota": 0
+            "quota": rdom.domain.quota,
+            "default_mailbox_quota": rdom.domain.default_mailbox_quota
         }
         aliases = [alias.name for alias in rdom.domain.domainalias_set.all()]
         if optype == 'add':
@@ -288,13 +290,14 @@ class LimitsTestCase(ModoTestCase, Operations):
     def setUp(self):
         """Initialize test."""
         super(LimitsTestCase, self).setUp()
-        self.client.logout()
-        self.client.login(username='reseller', password='toto')
+        self.client.force_login(self.user)
 
     def test_relay_domains_limit(self):
-        self._create_relay_domain('relaydomain1.tld')
+        self._create_relay_domain(
+            'relaydomain1.tld', quota=1, default_mailbox_quota=1)
         self._check_limit('domains', 1, 2)
-        self._create_relay_domain('relaydomain2.tld')
+        self._create_relay_domain(
+            'relaydomain2.tld', quota=1, default_mailbox_quota=1)
         self._check_limit('domains', 2, 2)
         self._create_relay_domain('relaydomain3.tld', 403)
         self._check_limit('domains', 2, 2)
@@ -304,7 +307,8 @@ class LimitsTestCase(ModoTestCase, Operations):
         self._check_limit('domains', 1, 2)
 
     def test_relay_domain_aliases_limit(self):
-        self._create_relay_domain('relaydomain1.tld')
+        self._create_relay_domain(
+            'relaydomain1.tld', quota=1, default_mailbox_quota=1)
         self._relay_domain_alias_operation(
             'add', 'relaydomain1.tld', 'relay-domain-alias1.tld'
         )

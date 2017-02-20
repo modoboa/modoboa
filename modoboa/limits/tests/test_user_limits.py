@@ -76,9 +76,9 @@ class ResourceTestCase(lib_tests.ModoTestCase):
             reverse("admin:alias_add"), values, status
         )
 
-    def _create_domain(self, name, status=200, withtpl=False, quota=100):
+    def _create_domain(self, name, status=200, withtpl=False, **kwargs):
         values = {
-            "name": name, "quota": quota, "default_mailbox_quota": 10,
+            "name": name, "quota": 100, "default_mailbox_quota": 10,
             "create_dom_admin": False,
             "create_aliases": False, "stepid": "step3", "type": "domain"
         }
@@ -88,6 +88,7 @@ class ResourceTestCase(lib_tests.ModoTestCase):
                 "dom_admin_username": "admin",
                 "create_aliases": True
             })
+        values.update(kwargs)
         response = self.ajax_post(
             reverse("admin:domain_add"), values, status
         )
@@ -306,6 +307,20 @@ class ResellerTestCase(ResourceTestCase):
             "quota": 500
         }
         self.ajax_post(url, values)
+
+    def test_quota_constraints(self):
+        """Check reseller can't define unlimited quota."""
+        response = self._create_domain("domain1.tld", 400, quota=0)
+        self.assertEqual(
+            response["form_errors"]["quota"][0],
+            "You can't define an unlimited quota.")
+        response = self._create_domain(
+            "domain1.tld", 400, default_mailbox_quota=0)
+        self.assertEqual(
+            response["form_errors"]["default_mailbox_quota"][0],
+            "You can't define an unlimited quota.")
+        self.user.userobjectlimit_set.filter(name="quota").update(max_value=0)
+        response = self._create_domain("domain1.tld", quota=0)
 
     def test_reseller_deletes_domain(self):
         """Check if all resources are restored after the deletion."""

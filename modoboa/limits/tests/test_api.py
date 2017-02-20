@@ -80,6 +80,8 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION='Token ' + self.r_token.key)
         limit = self.reseller.userobjectlimit_set.get(name="domains")
         quota = self.reseller.userobjectlimit_set.get(name="quota")
+        quota.max_value = 3
+        quota.save(update_fields=["max_value"])
         url = reverse("external_api:domain-list")
         data = {"name": "test3.com", "quota": 1}
         response = self.client.post(url, data, format="json")
@@ -93,9 +95,20 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         self.assertTrue(limit.is_exceeded())
         self.assertFalse(quota.is_exceeded())
 
-        data["username"] = "test5.com"
+        data["name"] = "test5.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.content, '"Domains: limit reached"')
+
+        self.client.delete(
+            reverse("external_api:domain-detail",
+                    args=[Domain.objects.get(name="test4.com").pk]))
+        data["quota"] = 0
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.content,
+            '"You\'re not allowed to define unlimited values"')
 
     def test_domain_aliases_limit(self):
         """Check domain aliases limit."""
