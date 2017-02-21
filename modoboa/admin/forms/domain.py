@@ -104,7 +104,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             self.add_error(
                 "default_mailbox_quota",
                 _("Cannot be greater than domain quota"))
-        if self.user.role == "Resellers":
+        elif self.user.role == "Resellers":
             limit = self.user.userobjectlimit_set.get(name="quota")
             if limit.max_value != 0:
                 quota = self.cleaned_data["quota"]
