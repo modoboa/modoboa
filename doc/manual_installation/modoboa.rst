@@ -26,7 +26,19 @@ The following example illustrates how to realize this (Debian like system):
   (env)> source env/bin/activate
   (env)> pip install -U pip
 
-FIXME: dépendances système pour compilation
+Modoboa depends on external tools and some of them require compilation
+so you need a compiler and a few C libraries. Make sure to install the
+following system packages according to your distribution:
+
++------------------------------+------------------------------+
+|Debian/Ubuntu                 |CentOS                        |
++==============================+==============================+
+|build-essential, python-dev,  |gcc, gcc-c++, python-devel,   |
+|libxml2-dev, libxslt-dev,     |libxml2-devel, libxslt-devel, |
+|libjpeg-dev, librrd-dev,      |libjpeg-turbo-devel,          |
+|rrdtool, libffi-dev           |rrdtool-devel, rrdtool,       |
+|                              |libffi-devel                  |
++------------------------------+------------------------------+
 
 Then, install Modoboa:
 
