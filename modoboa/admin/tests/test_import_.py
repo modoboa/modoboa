@@ -64,6 +64,12 @@ domainalias; domalias1.com; domain1.com; True
                         name="domains.csv")
         response = self.client.post(url, {"sourcefile": f})
         self.assertContains(response, "Invalid default mailbox quota")
+        f = ContentFile("domain; domain1.com; 10; 100; True",
+                        name="domains.csv")
+        response = self.client.post(url, {"sourcefile": f})
+        self.assertContains(
+            response,
+            "Default mailbox quota cannot be greater than domain quota")
 
     def test_import_domains_with_conflict(self):
         f = ContentFile(b"""domain;test.alias;100;10;True
