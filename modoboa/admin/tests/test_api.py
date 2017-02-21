@@ -53,6 +53,12 @@ class DomainAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", response.data)
 
+        response = self.client.post(
+            url, {"name": "test5.com", "quota": 1, "default_mailbox_quota": 10}
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("default_mailbox_quota", response.data)
+
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
         response = self.client.post(

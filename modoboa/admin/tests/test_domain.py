@@ -126,6 +126,33 @@ class DomainTestCase(ModoTestCase):
         self.assertTrue(
             self.client.login(username="toto@pouet.com", password=password))
 
+    def test_quota_constraints(self):
+        """Check quota constraints."""
+        values = {
+            "name": "pouet.com", "quota": 10, "default_mailbox_quota": 100,
+            "create_dom_admin": True, "dom_admin_username": "toto",
+            "create_aliases": True, "type": "domain", "stepid": 'step3'
+        }
+        response = self.ajax_post(
+            reverse("admin:domain_add"),
+            values, status=400
+        )
+        self.assertEqual(
+            response["form_errors"]["default_mailbox_quota"][0],
+            "Cannot be greater than domain quota")
+
+        dom = Domain.objects.get(name="test.com")
+        values["name"] = dom.name
+        values["quota"] = 10
+        values["default_mailbox_quota"] = 100
+        response = self.ajax_post(
+            reverse("admin:domain_change", args=[dom.pk]),
+            values, status=400
+        )
+        self.assertEqual(
+            response["form_errors"]["default_mailbox_quota"][0],
+            "Cannot be greater than domain quota")
+
     def test_create_using_default_quota(self):
         """Check that default value is used for creation."""
         self.set_global_parameter("default_domain_quota", 500)
@@ -157,8 +184,7 @@ class DomainTestCase(ModoTestCase):
             dom.alias_set.filter(address="postmaster@pouet.com").exists())
 
     def test_delete(self):
-        """Test the removal of a domain
-        """
+        """Test the removal of a domain."""
         dom = Domain.objects.get(name="test.com")
         self.ajax_post(
             reverse("admin:domain_delete", args=[dom.id]),

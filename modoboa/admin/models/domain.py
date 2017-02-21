@@ -265,6 +265,11 @@ class Domain(AdminObject):
                 _("Invalid default mailbox quota value for domain '{}'")
                 .format(self.name)
             )
+        if self.quota != 0 and self.default_mailbox_quota > self.quota:
+            raise BadRequest(
+                _("Default mailbox quota cannot be greater than domain "
+                  "quota")
+            )
         self.enabled = (row[4].strip() in ["True", "1", "yes", "y"])
         core_signals.can_create_object.send(
             sender=self.__class__, context=user, klass=Domain,
