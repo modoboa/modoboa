@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,7 +119,7 @@ msgid ""
 "-1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/apps.py:17
+#: limits/apps.py:12
 msgid "Limits"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "You're not allowed to define unlimited values"
 msgstr ""
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/handlers.py:123 limits/handlers.py:159
 msgid "Resources"
 msgstr ""
 
@@ -180,11 +180,11 @@ msgstr ""
 msgid "Not enough resources"
 msgstr ""
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr ""
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr ""

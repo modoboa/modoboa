@@ -12,9 +12,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 from logging.handlers import SysLogHandler
 
-from django.conf import global_settings
-
-from modoboa.test_settings import *
+from modoboa.test_settings import *  # NOQA
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -26,12 +24,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '!8o(-dbbl3e+*bh7nx-^xysdt)1gso*%@4ze4-9_9o+i&amp;t--u_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = 'DEBUG' in os.environ
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
-    'localhost'
+    '127.0.0.1',
+    'localhost',
 ]
 
 SITE_ID = 1
@@ -59,6 +58,7 @@ MODOBOA_APPS = (
     'modoboa.admin',
     'modoboa.limits',
     'modoboa.relaydomains',
+    'modoboa.parameters',
 )
 
 INSTALLED_APPS += MODOBOA_APPS
@@ -74,17 +74,36 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'modoboa.core.middleware.LocalConfigMiddleware',
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
     'modoboa.lib.middleware.RequestCatcherMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'modoboa.lib.authbackends.SimpleBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + [
-    'modoboa.core.context_processors.top_notifications',
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'modoboa.core.context_processors.top_notifications',
+            ],
+            'debug': False,
+        },
+    },
 ]
 
 ROOT_URLCONF = 'test_project.urls'
@@ -105,14 +124,13 @@ USE_L10N = False
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/sitestatic/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'sitestatic')
 STATICFILES_DIRS = (
-    '/home/tonio/.pythonenvs/modoboa/lib/python2.7/site-packages/modoboa-1.3.3-py2.7.egg/modoboa/bower_components',
+    os.path.join(BASE_DIR, '..', 'modoboa', 'bower_components'),
 )
 
 MEDIA_URL = '/media/'
@@ -130,9 +148,9 @@ REST_FRAMEWORK = {
 }
 
 # Modoboa settings
-#MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
+# MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
 
-#DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
+# DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
 
 MODOBOA_API_URL = 'http://api.modoboa.org/1/'
 

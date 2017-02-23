@@ -9,9 +9,8 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from passwords.fields import PasswordField
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import events, parameters
+from modoboa.core.models import User
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
@@ -21,8 +20,10 @@ from modoboa.lib.form_utils import (
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.validators import validate_utf8_email
 from modoboa.lib.web_utils import render_to_json_response
+from modoboa.parameters import tools as param_tools
 
-from ..models import Domain, Mailbox, Alias
+from .. import models
+from .. import signals
 
 
 class AccountFormGeneral(forms.ModelForm):
@@ -38,7 +39,7 @@ class AccountFormGeneral(forms.ModelForm):
     )
     role = forms.ChoiceField(
         label=ugettext_lazy("Role"),
-        choices=[('', ugettext_lazy("Choose"))],
+        choices=[("", ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
     )
     password1 = PasswordField(
@@ -59,52 +60,63 @@ class AccountFormGeneral(forms.ModelForm):
             "username", "first_name", "last_name", "role", "is_active",
             "master_user"
         )
+        labels = {
+            "is_active": ugettext_lazy("Enabled")
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)
         self.fields = OrderedDict(
             (key, self.fields[key]) for key in
-            ['role', 'username', 'first_name', 'last_name', 'password1',
-             'password2', 'master_user', 'is_active']
+            ["role", "username", "first_name", "last_name", "password1",
+             "password2", "master_user", "is_active"]
         )
-        self.fields["is_active"].label = _("Enabled")
         self.user = user
-        if user.group == "DomainAdmins":
+        condition = (
+            user.role == "DomainAdmins" or
+            user.role == "Resellers" and self.instance == user
+        )
+        if condition:
             self.fields["role"] = forms.CharField(
                 label="",
                 widget=forms.HiddenInput(attrs={"class": "form-control"}),
                 required=False
             )
         else:
-            self.fields["role"].choices = [('', ugettext_lazy("Choose"))]
-            self.fields["role"].choices += \
-                get_account_roles(user, kwargs['instance']) \
-                if 'instance' in kwargs else get_account_roles(user)
+            self.fields["role"].choices += (
+                get_account_roles(user, self.instance)
+                if self.instance.pk else get_account_roles(user)
+            )
 
         if not user.is_superuser:
             del self.fields["master_user"]
 
-        if "instance" in kwargs:
-            account = kwargs["instance"]
-            domain_disabled = (
-                hasattr(account, "mailbox") and
-                not account.mailbox.domain.enabled
-            )
+        if not self.instance.pk:
+            return
+
+        domain_disabled = (
+            hasattr(self.instance, "mailbox") and
+            not self.instance.mailbox.domain.enabled
+        )
+        if domain_disabled:
+            self.fields["is_active"].widget.attrs["disabled"] = "disabled"
+        if args:
+            empty_password = (
+                args[0].get("password1", "") == "" and
+                args[0].get("password2", "") == "")
+            if empty_password:
+                self.fields["password1"].required = False
+                self.fields["password2"].required = False
             if domain_disabled:
-                self.fields["is_active"].widget.attrs['disabled'] = "disabled"
-            if args:
-                if args[0].get("password1", "") == "" \
-                   and args[0].get("password2", "") == "":
-                    self.fields["password1"].required = False
-                    self.fields["password2"].required = False
-                if domain_disabled:
-                    del self.fields["is_active"]
-            self.fields["role"].initial = account.group
-            if not account.is_local \
-               and parameters.get_admin(
-                   "LDAP_AUTH_METHOD", app="core") == "directbind":
-                del self.fields["password1"]
-                del self.fields["password2"]
+                del self.fields["is_active"]
+        self.fields["role"].initial = self.instance.role
+        condition = (
+            not self.instance.is_local and
+            param_tools.get_global_parameter(
+                "ldap_auth_method", app="core") == "directbind")
+        if condition:
+            del self.fields["password1"]
+            del self.fields["password2"]
 
     def domain_is_disabled(self):
         """Little shortcut to get the domain's state.
@@ -118,10 +130,12 @@ class AccountFormGeneral(forms.ModelForm):
         return not self.instance.mailbox.domain.enabled
 
     def clean_role(self):
-        if self.user.group == "DomainAdmins":
+        if self.user.role == "DomainAdmins":
             if self.instance == self.user:
                 return "DomainAdmins"
             return "SimpleUsers"
+        elif self.user.role == "Resellers" and self.instance == self.user:
+            return "Resellers"
         return self.cleaned_data["role"]
 
     def clean_username(self):
@@ -173,7 +187,6 @@ class AccountFormGeneral(forms.ModelForm):
 
 
 class AccountFormMail(forms.Form, DynamicForm):
-
     """Form to handle mail part."""
 
     email = lib_fields.UTF8EmailField(
@@ -193,8 +206,18 @@ class AccountFormMail(forms.Form, DynamicForm):
         required=False,
         help_text=ugettext_lazy(
             "Alias(es) of this mailbox. Indicate only one address per input, "
-            "press ENTER to add a new input. Use the '*' character to create "
-            "a 'catchall' alias (ex: *@domain.tld)."
+            "press ENTER to add a new input. To create a catchall alias, just "
+            "enter the domain name (@domain.tld)."
+        )
+    )
+    senderaddress = lib_fields.UTF8AndEmptyUserEmailField(
+        label=ugettext_lazy("Sender addresses"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Additional sender address(es) for this account. The user will be "
+            "allowed to send emails using this address, even if it "
+            "does not exist locally. Indicate one address per input. Press "
+            "ENTER to add a new input."
         )
     )
 
@@ -204,21 +227,19 @@ class AccountFormMail(forms.Form, DynamicForm):
         self.field_widths = {
             "quota": 3
         }
-        self.extra_fields = []
-        result = events.raiseQueryEvent('ExtraFormFields', 'mailform', self.mb)
-        for fname, field in result:
-            self.fields[fname] = field
-            self.extra_fields.append(fname)
         if self.mb is not None:
             self.fields["email"].required = True
-            cpt = 1
             qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
-            for ralias in qset:
-                name = "aliases_%d" % cpt
+            for cpt, ralias in enumerate(qset):
+                name = "aliases_{}".format(cpt + 1)
                 self._create_field(
                     lib_fields.UTF8AndEmptyUserEmailField, name,
                     ralias.alias.address)
-                cpt += 1
+            for cpt, saddress in enumerate(self.mb.senderaddress_set.all()):
+                name = "senderaddress_{}".format(cpt + 1)
+                self._create_field(
+                    lib_fields.UTF8AndEmptyUserEmailField, name,
+                    saddress.address)
             self.fields["email"].initial = self.mb.full_address
             self.fields["quota_act"].initial = self.mb.use_domain_quota
             if not self.mb.use_domain_quota and self.mb.quota:
@@ -229,6 +250,9 @@ class AccountFormMail(forms.Form, DynamicForm):
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(
                 args[0], "aliases", lib_fields.UTF8AndEmptyUserEmailField)
+            self._load_from_qdict(
+                args[0], "senderaddress",
+                lib_fields.UTF8AndEmptyUserEmailField)
 
     def clean_email(self):
         """Ensure lower case emails"""
@@ -237,8 +261,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not domname:
             return email
         try:
-            self.domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
+            self.domain = models.Domain.objects.get(name=domname)
+        except models.Domain.DoesNotExist:
             raise forms.ValidationError(_("Domain does not exist"))
         if not self.mb:
             try:
@@ -254,31 +278,36 @@ class AccountFormMail(forms.Form, DynamicForm):
 
         Check if quota is >= 0 only when the domain value is not used.
         """
-        super(AccountFormMail, self).clean()
-        if not self.cleaned_data["quota_act"] \
-                and self.cleaned_data['quota'] is not None:
-            if self.cleaned_data["quota"] < 0:
-                self.add_error("quota", _("Must be a positive integer"))
+        cleaned_data = super(AccountFormMail, self).clean()
+        use_default_domain_quota = cleaned_data["quota_act"]
+        condition = (
+            not use_default_domain_quota and
+            cleaned_data["quota"] is not None and
+            cleaned_data["quota"] < 0)
+        if condition:
+            self.add_error("quota", _("Must be a positive integer"))
         self.aliases = []
-        for name, value in self.cleaned_data.iteritems():
-            if not name.startswith("aliases"):
-                continue
+        self.sender_addresses = []
+        for name, value in list(cleaned_data.items()):
             if value == "":
                 continue
-            local_part, domname = split_mailbox(value)
-            if not Domain.objects.filter(name=domname).exists():
-                self.add_error(name, _("Local domain does not exist"))
-                break
-            self.aliases.append(value.lower())
-        return self.cleaned_data
+            if name.startswith("aliases"):
+                local_part, domname = split_mailbox(value)
+                if not models.Domain.objects.filter(name=domname).exists():
+                    self.add_error(name, _("Local domain does not exist"))
+                    continue
+                self.aliases.append(value.lower())
+            elif name.startswith("senderaddress"):
+                self.sender_addresses.append(value.lower())
+        return cleaned_data
 
     def create_mailbox(self, user, account):
         """Create a mailbox associated to :kw:`account`."""
         if not user.can_access(self.domain):
             raise lib_exceptions.PermDeniedException
         core_signals.can_create_object.send(
-            self.__class__, context=user, object_type="mailboxes")
-        self.mb = Mailbox(
+            self.__class__, context=user, klass=models.Mailbox)
+        self.mb = models.Mailbox(
             address=self.locpart, domain=self.domain, user=account,
             use_domain_quota=self.cleaned_data["quota_act"])
         self.mb.set_quota(self.cleaned_data["quota"],
@@ -301,7 +330,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         if not self.aliases:
             return
         core_signals.can_create_object.send(
-            self.__class__, context=user, object_type="mailbox_aliases",
+            self.__class__, context=user, klass=models.Alias,
             count=len(self.aliases))
         core_signals.can_create_object.send(
             self.__class__, context=self.mb.domain,
@@ -311,11 +340,26 @@ class AccountFormMail(forms.Form, DynamicForm):
                     alias__address=alias).exists():
                 continue
             local_part, domname = split_mailbox(alias)
-            al = Alias(address=alias, enabled=account.is_active)
-            al.domain = Domain.objects.get(name=domname)
+            al = models.Alias(address=alias, enabled=account.is_active)
+            al.domain = models.Domain.objects.get(name=domname)
             al.save()
             al.set_recipients([self.mb.full_address])
             al.post_create(user)
+
+    def _update_sender_addresses(self):
+        """Update mailbox sender addresses."""
+        for saddress in self.mb.senderaddress_set.all():
+            if saddress.address not in self.sender_addresses:
+                saddress.delete()
+            else:
+                self.sender_addresses.remove(saddress.address)
+        if not len(self.sender_addresses):
+            return
+        to_create = []
+        for saddress in self.sender_addresses:
+            to_create.append(
+                models.SenderAddress(address=saddress, mailbox=self.mb))
+        models.SenderAddress.objects.bulk_create(to_create)
 
     def save(self, user, account):
         """Save or update account mailbox."""
@@ -331,14 +375,12 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.cleaned_data["use_domain_quota"] = (
                 self.cleaned_data["quota_act"])
             self.mb.update_from_dict(user, self.cleaned_data)
-        events.raiseEvent(
-            'SaveExtraFormFields', 'mailform', self.mb, self.cleaned_data
-        )
 
         account.email = self.cleaned_data["email"]
         account.save()
 
         self._update_aliases(user, account)
+        self._update_sender_addresses()
 
         return self.mb
 
@@ -361,7 +403,8 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
 
         if not hasattr(self, "account") or self.account is None:
             return
-        for pos, dom in enumerate(Domain.objects.get_for_admin(self.account)):
+        qset = models.Domain.objects.get_for_admin(self.account)
+        for pos, dom in enumerate(qset):
             name = "domains_%d" % (pos + 1)
             self._create_field(lib_fields.DomainNameField, name, dom.name)
         if len(args) and isinstance(args[0], QueryDict):
@@ -370,7 +413,8 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
 
     def save(self):
         current_domains = [
-            dom.name for dom in Domain.objects.get_for_admin(self.account)
+            dom.name for dom in
+            models.Domain.objects.get_for_admin(self.account)
         ]
         for name, value in self.cleaned_data.items():
             if not name.startswith("domains"):
@@ -378,40 +422,39 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             if value in ["", None]:
                 continue
             if value not in current_domains:
-                domain = Domain.objects.get(name=value)
+                domain = models.Domain.objects.get(name=value)
                 domain.add_admin(self.account)
 
-        for domain in Domain.objects.get_for_admin(self.account):
+        for domain in models.Domain.objects.get_for_admin(self.account):
             if not filter(lambda name: self.cleaned_data[name] == domain.name,
                           self.cleaned_data.keys()):
                 domain.remove_admin(self.account)
 
 
 class AccountForm(TabForms):
-
     """Account edition form."""
 
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
         self.forms = [
-            dict(id="general", title=_("General"),
-                 formtpl="admin/account_general_form.html",
-                 cls=AccountFormGeneral,
-                 new_args=[self.user], mandatory=True),
-            dict(id="mail",
-                 title=_("Mail"), formtpl="admin/mailform.html",
-                 cls=AccountFormMail),
-            dict(
-                id="perms", title=_("Permissions"),
-                formtpl="admin/permsform.html",
-                cls=AccountPermissionsForm
-            )
+            {"id": "general", "title": _("General"),
+             "formtpl": "admin/account_general_form.html",
+             "cls": AccountFormGeneral,
+             "new_args": [self.user], "mandatory": True},
+            {"id": "mail",
+             "title": _("Mail"), "formtpl": "admin/mailform.html",
+             "cls": AccountFormMail},
+            {"id": "perms", "title": _("Permissions"),
+             "formtpl": "admin/permsform.html",
+             "cls": AccountPermissionsForm}
         ]
-        cbargs = [self.user]
+        cbargs = {"user": self.user}
         if "instances" in kwargs:
-            cbargs += [kwargs["instances"]["general"]]
-        self.forms += events.raiseQueryEvent("ExtraAccountForm", *cbargs)
-
+            cbargs["account"] = kwargs["instances"]["general"]
+        results = signals.extra_account_forms.send(
+            sender=self.__class__, **cbargs)
+        self.forms += reduce(
+            lambda a, b: a + b, [result[1] for result in results])
         super(AccountForm, self).__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
@@ -424,10 +467,12 @@ class AccountForm(TabForms):
         })
 
     def check_perms(self, account):
-        if account.is_superuser:
-            return False
-        return self.user.has_perm("admin.add_domain") \
-            and account.has_perm("core.add_user")
+        """Check if perms form must displayed or not."""
+        return (
+            self.user.is_superuser and
+            not account.is_superuser and
+            account.has_perm("core.add_user")
+        )
 
     def _before_is_valid(self, form):
         if form["id"] == "general":
@@ -438,16 +483,16 @@ class AccountForm(TabForms):
                 return False
             return True
 
-        extra_forms = events.raiseQueryEvent(
-            "CheckExtraAccountForm", self.account, form)
-        if False in extra_forms:
+        results = signals.check_extra_account_form.send(
+            sender=self.__class__, account=self.account, form=form)
+        results = [result[1] for result in results]
+        if False in results:
             return False
         return True
 
     def is_valid(self):
-        """Two steps validation.
-        """
-        self.instances["general"].oldgroup = self.instances["general"].group
+        """Two steps validation."""
+        self.instances["general"].oldgroup = self.instances["general"].role
         if super(AccountForm, self).is_valid(mandatory_only=True):
             self.account = self.forms[0]["instance"].save()
             return super(AccountForm, self).is_valid(optional_only=True)
@@ -459,9 +504,6 @@ class AccountForm(TabForms):
         As forms interact with each other, it is simpler to make
         custom code to save them.
         """
-        events.raiseEvent(
-            "AccountModified", self.instances["general"], self.account
-        )
         self.forms[1]["instance"].save(self.user, self.account)
         if len(self.forms) <= 2:
             return

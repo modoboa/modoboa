@@ -23,4 +23,16 @@ $(document).ready(function() {
 {% extra_static_content "identities" "js" user %}
 {% endblock %}
 
+{% block toolbar_right %}
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="fa fa-plus"></span> {% trans "Add" %} <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a data-toggle="ajaxmodal" modalcb="admin.newaccount_cb" href="{% url 'admin:account_add' %}"><span class="fa fa-user"></span> {% trans "Account" %}</a></li>
+      <li><a data-toggle="ajaxmodal" modalcb="admin.aliasform_cb" href="{% url 'admin:alias_add' %}"><span class="fa fa-mail-forward"></span> {% trans "Alias" %}</a></li>
+    </ul>
+  </div>
+{% endblock %}
+
 {% block actions %}{% identities_menu user "identities" %}{% endblock %}

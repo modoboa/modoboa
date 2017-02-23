@@ -4,6 +4,8 @@
  * @constructor
  * @param {Object} options - instance options
  */
+/* global TwocolsNav */
+
 var Settings = function(options) {
     TwocolsNav.call(this, options);
 };
@@ -40,7 +42,7 @@ Settings.prototype = {
      * Navigation callback: extensions.
      */
     extensions_callback: function(data) {
-        this.select_left_menu();        
+        this.select_left_menu();
         if (data.content) {
             $('#' + this.options.divid).html(data.content);
         }

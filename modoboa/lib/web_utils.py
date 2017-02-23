@@ -10,21 +10,9 @@ import sys
 
 from django import template
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-
-
-def _render_to_string(request, tpl, user_context):
-    """Custom rendering function.
-
-    Just a wrapper which automatically adds a RequestContext instance
-    (useful to use settings variables like STATIC_URL inside templates)
-    """
-    return render_to_string(tpl, user_context,
-                            context_instance=template.RequestContext(request))
 
 
 def _render_error(request, errortpl="error", user_context=None):
@@ -75,7 +63,7 @@ def ajax_response(request, status="ok", respmsg=None,
     for k, v in kwargs.iteritems():
         ctx[k] = v
     if template is not None:
-        content = _render_to_string(request, template, ctx)
+        content = render_to_string(template, ctx, request)
     elif "content" in kwargs:
         content = kwargs["content"]
     else:
@@ -136,35 +124,6 @@ def size2integer(value):
     if m.group(2)[0] in ["G", "g"]:
         return int(m.group(1)) * 2 ** 30
     return 0
-
-
-@login_required
-def topredirection(request):
-    """Simple view to redirect the request when no application is specified.
-
-    The default "top redirection" can be specified in the *Admin >
-    Settings* panel. It is the application that will be
-    launched. Those not allowed to access the application will be
-    redirected to their preferences page.
-
-    This feature only applies to simple users.
-
-    :param request: a Request object
-    """
-    from modoboa.lib import parameters
-    from modoboa.core.extensions import exts_pool
-
-    if request.user.group == 'SimpleUsers':
-        topredir = parameters.get_admin("DEFAULT_TOP_REDIRECTION", app="core")
-        if topredir != "user":
-            infos = exts_pool.get_extension_infos(topredir)
-            path = infos["url"] if infos["url"] else infos["name"]
-        else:
-            path = reverse("core:user_index")
-    else:
-        # FIXME
-        path = reverse("admin:domain_list")
-    return HttpResponseRedirect(path)
 
 
 class NavigationParameters(object):

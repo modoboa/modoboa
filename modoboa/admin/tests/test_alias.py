@@ -8,7 +8,7 @@ from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
-from ..models import Alias, AliasRecipient
+from ..models import Alias, AliasRecipient, Domain
 
 
 class AliasTestCase(ModoTestCase):
@@ -22,7 +22,7 @@ class AliasTestCase(ModoTestCase):
     def test_alias(self):
         user = User.objects.get(username="user@test.com")
         values = dict(
-            username="user@test.com", role=user.group,
+            username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com",
             aliases="toto@test.com", aliases_1="titi@test.com"
         )
@@ -55,7 +55,7 @@ class AliasTestCase(ModoTestCase):
             "enabled": True
         }
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
         alias = Alias.objects.get(address="badalias@test.com")
         self.assertEqual(alias.recipients_count, 1)
@@ -64,7 +64,7 @@ class AliasTestCase(ModoTestCase):
         """Try to create an upper case alias."""
         user = User.objects.get(username="user@test.com")
         values = dict(
-            username="user@test.com", role=user.group,
+            username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com",
             aliases="Toto@test.com"
         )
@@ -94,7 +94,7 @@ class AliasTestCase(ModoTestCase):
         """Try to create a alias with tag in recipient address"""
         user = User.objects.get(username="user@test.com")
         values = dict(
-            username="user@test.com", role=user.group,
+            username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com"
         )
         self.ajax_post(
@@ -126,13 +126,15 @@ class AliasTestCase(ModoTestCase):
         )
 
     def test_dlist(self):
-        values = dict(address="all@test.com",
-                      recipients="user@test.com",
-                      recipients_1="admin@test.com",
-                      recipients_2="ext@titi.com",
-                      enabled=True)
+        values = {
+            "address": "all@test.com",
+            "recipients": "user@test.com",
+            "recipients_1": "admin@test.com",
+            "recipients_2": "ext@titi.com",
+            "enabled": True
+        }
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
         user = User.objects.get(username="user@test.com")
         mb = user.mailbox
@@ -164,7 +166,7 @@ class AliasTestCase(ModoTestCase):
     def test_forward(self):
         values = dict(address="forward2@test.com", recipients="rcpt@dest.com")
         self.ajax_post(
-            reverse("admin:forward_add"), values
+            reverse("admin:alias_add"), values
         )
         fwd = Alias.objects.get(address="forward2@test.com")
         self.assertEqual(fwd.recipients_count, 1)
@@ -187,7 +189,7 @@ class AliasTestCase(ModoTestCase):
     def test_forward_and_local_copies(self):
         values = dict(address="user@test.com", recipients="rcpt@dest.com")
         self.ajax_post(
-            reverse("admin:forward_add"), values
+            reverse("admin:alias_add"), values
         )
         fwd = Alias.objects.get(address="user@test.com", internal=False)
         self.assertEqual(fwd.recipients_count, 1)
@@ -211,18 +213,37 @@ class AliasTestCase(ModoTestCase):
             "enabled": True
         }
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
 
+    def test_random_alias(self):
+        """Test creation of a random alias."""
+        alias_count = Alias.objects.count()
+        values = {
+            "random_address": True,
+            "domain": Domain.objects.get(name="test.com").pk,
+            "recipients": "user@test.com",
+            "enabled": True
+        }
+        self.ajax_post(reverse("admin:alias_add"), values)
+        self.assertEqual(Alias.objects.count(), alias_count + 1)
+
+        del values["domain"]
+        content = self.ajax_post(reverse("admin:alias_add"), values, 400)
+        self.assertIn("domain", content["form_errors"])
+
     def test_distribution_list_deletion_on_user_update_bug(self):
-        """This test demonstrates an issue with distribution list being deleted 
-           when one of the users which belong to that list is changed."""
+        """This test demonstrates an issue with distribution list being
+           deleted when one of the users which belong to that list is
+           changed.
+
+        """
         values = dict(address="list@test.com",
                       recipients="user@test.com",
                       recipients_1="admin@test.com",
                       enabled=True)
         self.ajax_post(
-            reverse("admin:dlist_add"), values
+            reverse("admin:alias_add"), values
         )
 
         user = User.objects.get(username="user@test.com")
@@ -233,4 +254,14 @@ class AliasTestCase(ModoTestCase):
         )
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
 
-        self.assertEqual(Alias.objects.filter(address="list@test.com").count(), 1)
+        self.assertEqual(
+            Alias.objects.filter(address="list@test.com").count(), 1)
+
+    def test_alias_detail_view(self):
+        """Test alias detail view."""
+        account = Alias.objects.get(address="postmaster@test.com")
+        url = reverse("admin:alias_detail", args=[account.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Summary", response.content)
+        self.assertIn("Recipients", response.content)

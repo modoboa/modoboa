@@ -2,7 +2,6 @@ from django.core.urlresolvers import reverse
 
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
-from modoboa.lib import parameters
 
 from .. import factories
 
@@ -28,7 +27,7 @@ class PasswordSchemesTestCase(ModoTestCase):
         )
 
     def _test_scheme(self, name, startpattern):
-        parameters.save_admin('PASSWORD_SCHEME', name, app='core')
+        self.set_global_parameter("password_scheme", name, app="core")
         self._create_account()
         account = User.objects.get(username='tester@test.com')
         self.assertTrue(account.password.startswith(startpattern))

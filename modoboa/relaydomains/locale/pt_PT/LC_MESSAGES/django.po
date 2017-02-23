@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2017-01-16 17:41+0100\n"
 "PO-Revision-Date: 2014-12-29 12:51+0000\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -24,81 +24,91 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:18
+#: app_settings.py:15
 msgid "General"
 msgstr "Geral"
 
-#: relaydomains/app_settings.py:21
+#: app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Caminho para para o ficheiro master.cf Postfix"
 
-#: relaydomains/app_settings.py:23
+#: app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Caminho para o ficheiro de configuração master.cf"
 
-#: relaydomains/apps.py:23
+#: apps.py:12
 msgid "Relay domains"
 msgstr ""
 
-#: relaydomains/forms.py:27
-msgid "Name"
+#: forms.py:52
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Invalid value"
+msgstr "Linha inválida"
+
+#: handlers.py:105
+msgid "Relay settings"
 msgstr ""
 
-#: relaydomains/forms.py:28
-#, fuzzy
-#| msgid "The domain name"
-msgid "The relay domain name"
-msgstr "O nome do domínio"
-
-#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
+#: handlers.py:136 handlers.py:143
 #, fuzzy
 #| msgid "domain"
 msgid "Relay domain"
 msgstr "domínio"
 
-#: relaydomains/general_callbacks.py:73
-msgid "Relay settings"
-msgstr ""
-
-#: relaydomains/general_callbacks.py:109
-msgid ""
-"\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
-msgstr ""
-
-#: relaydomains/models.py:48
+#: models.py:47
 msgid "name"
 msgstr "nome"
 
-#: relaydomains/models.py:49
+#: models.py:48
 msgid "The service name"
 msgstr "O nome do serviço"
 
-#: relaydomains/models.py:71
-msgid "target host"
+#: models.py:70
+#, fuzzy
+#| msgid "target host"
+msgid "target host address"
 msgstr "endereço de destino"
 
-#: relaydomains/models.py:72
-msgid "Remote destination of this domain"
+#: models.py:72
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote address (hostname or IP) of this domain"
 msgstr "Endereço de destino remoto deste domínio"
 
-#: relaydomains/models.py:76
+#: models.py:75
+#, fuzzy
+#| msgid "target host"
+msgid "target host port"
+msgstr "endereço de destino"
+
+#: models.py:77
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote port of this domain"
+msgstr "Endereço de destino remoto deste domínio"
+
+#: models.py:82
 msgid "verify recipients"
 msgstr "verificar destinatários"
 
-#: relaydomains/models.py:77
+#: models.py:83
 msgid "Check for valid recipients"
 msgstr "Analisar se os destinatáris são válidos"
 
-#: relaydomains/models.py:88
+#: models.py:94
 msgid "Relay Domain"
 msgstr ""
 
-#: relaydomains/models.py:115
+#: models.py:122
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: relaydomains/templates/relaydomains/service_field.html:3
+#: templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "Analisar"
+
+#, fuzzy
+#~| msgid "The domain name"
+#~ msgid "The relay domain name"
+#~ msgstr "O nome do domínio"

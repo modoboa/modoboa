@@ -7,7 +7,6 @@ from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Alias, Domain
 from modoboa.core.factories import UserFactory
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib import tests as lib_tests
 
 from .. import utils
@@ -48,11 +47,14 @@ class ResourceTestCase(lib_tests.ModoTestCase):
     def setUpTestData(cls):
         """Custom setUpTestData method."""
         super(ResourceTestCase, cls).setUpTestData()
+        cls.localconfig.parameters.set_values({
+            "enable_admin_limits": True,
+            "enable_domain_limits": False
+        })
         for name, tpl in utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2,
-                app="limits"
-            )
+            cls.localconfig.parameters.set_value(
+                "deflt_user_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         populate_database()
 
     def _create_account(self, username, role='SimpleUsers', status=200):
@@ -74,15 +76,19 @@ class ResourceTestCase(lib_tests.ModoTestCase):
             reverse("admin:alias_add"), values, status
         )
 
-    def _create_domain(self, name, status=200, withtpl=False):
+    def _create_domain(self, name, status=200, withtpl=False, **kwargs):
         values = {
-            "name": name, "quota": 100, "create_dom_admin": "no",
-            "create_aliases": "no", "stepid": 'step3', "type": "domain"
+            "name": name, "quota": 100, "default_mailbox_quota": 10,
+            "create_dom_admin": False,
+            "create_aliases": False, "stepid": "step3", "type": "domain"
         }
         if withtpl:
-            values['create_dom_admin'] = 'yes'
-            values['dom_admin_username'] = 'admin'
-            values['create_aliases'] = 'yes'
+            values.update({
+                "create_dom_admin": True,
+                "dom_admin_username": "admin",
+                "create_aliases": True
+            })
+        values.update(kwargs)
         response = self.ajax_post(
             reverse("admin:domain_add"), values, status
         )
@@ -91,16 +97,17 @@ class ResourceTestCase(lib_tests.ModoTestCase):
     def _domain_alias_operation(self, optype, domain, name, status=200):
         dom = Domain.objects.get(name=domain)
         values = {
-            'name': dom.name, 'quota': dom.quota, 'enabled': dom.enabled,
-            "type": "domain"
+            "name": dom.name, "quota": dom.quota, "enabled": dom.enabled,
+            "type": "domain",
+            "default_mailbox_quota": dom.default_mailbox_quota,
         }
         aliases = [alias.name for alias in dom.domainalias_set.all()]
-        if optype == 'add':
+        if optype == "add":
             aliases.append(name)
         else:
             aliases.remove(name)
         for cpt, alias in enumerate(aliases):
-            fname = 'aliases' if not cpt else 'aliases_%d' % cpt
+            fname = "aliases" if not cpt else "aliases_%d" % cpt
             values[fname] = alias
         self.ajax_post(
             reverse("admin:domain_change", args=[dom.id]),
@@ -126,8 +133,7 @@ class DomainAdminTestCase(ResourceTestCase):
     def setUp(self):
         """Test initialization."""
         super(DomainAdminTestCase, self).setUp()
-        self.client.logout()
-        self.client.login(username='admin@test.com', password='toto')
+        self.client.force_login(self.user)
 
     def test_mailboxes_limit(self):
         self._create_account('tester1@test.com')
@@ -150,17 +156,22 @@ class DomainAdminTestCase(ResourceTestCase):
         self._check_limit('mailbox_aliases', 2, 2)
         self._create_alias('alias3@test.com', status=403)
         self._check_limit('mailbox_aliases', 2, 2)
+        # Set unlimited value
+        self.user.userobjectlimit_set.filter(name="mailbox_aliases").update(
+            max_value=-1)
+        self._create_alias('alias3@test.com')
+        self._check_limit('mailbox_aliases', 3, -1)
         self.ajax_post(
             reverse('admin:alias_delete') + '?selection=%d'
             % Alias.objects.get(address='alias2@test.com').id,
             {}
         )
-        self._check_limit('mailbox_aliases', 1, 2)
+        self._check_limit('mailbox_aliases', 2, -1)
 
     def test_aliases_limit_through_account_form(self):
         user = User.objects.get(username='user@test.com')
         values = dict(
-            username=user.username, role=user.group,
+            username=user.username, role=user.role,
             is_active=user.is_active, email=user.email, quota_act=True,
             aliases="alias1@test.com", aliases_1="alias2@test.com"
         )
@@ -178,6 +189,8 @@ class ResellerTestCase(ResourceTestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(ResellerTestCase, cls).setUpTestData()
+        cls.localconfig.parameters.set_value("deflt_user_quota_limit", 1000)
+        cls.localconfig.save()
         cls.user = UserFactory(
             username='reseller', groups=('Resellers',)
         )
@@ -185,8 +198,7 @@ class ResellerTestCase(ResourceTestCase):
     def setUp(self):
         """Test initialization."""
         super(ResellerTestCase, self).setUp()
-        self.client.logout()
-        self.client.login(username='reseller', password='toto')
+        self.client.force_login(self.user)
 
     def test_domains_limit(self):
         response = self.client.get(reverse("admin:domain_list"))
@@ -243,12 +255,12 @@ class ResellerTestCase(ResourceTestCase):
 
         self.user.userobjectlimit_set.filter(
             name="mailboxes").update(max_value=3)
-        self._create_account('user1@domain.tld')
-        user = User.objects.get(username='user1@domain.tld')
+        self._create_account("user1@domain.tld")
+        user = User.objects.get(username="user1@domain.tld")
         values = {
-            'username': user.username, 'role': 'DomainAdmins',
-            'quota_act': True, 'is_active': user.is_active,
-            'email': user.email
+            "username": user.username, "role": "DomainAdmins",
+            "quota_act": True, "is_active": user.is_active,
+            "email": user.email
         }
         resp = self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -281,9 +293,37 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit('domain_admins', 2, 2)
         self._check_limit('domains', 3, 3)
 
+    def test_quota(self):
+        """Check quota resource."""
+        self._create_domain("domain1.tld", withtpl=True, quota=1000)
+        response = self._create_domain(
+            "domain2.tld", status=403, withtpl=True, quota=1000)
+        self.assertEqual(response, "Quota: limit reached")
+        dom1 = Domain.objects.get(name="domain1.tld")
+        url = reverse("admin:domain_change", args=[dom1.pk])
+        values = {
+            "name": dom1.name, "type": dom1.type, "enabled": dom1.enabled,
+            "default_mailbox_quota": dom1.default_mailbox_quota,
+            "quota": 500
+        }
+        self.ajax_post(url, values)
+
+    def test_quota_constraints(self):
+        """Check reseller can't define unlimited quota."""
+        response = self._create_domain("domain1.tld", 400, quota=0)
+        self.assertEqual(
+            response["form_errors"]["quota"][0],
+            "You can't define an unlimited quota.")
+        response = self._create_domain(
+            "domain1.tld", 400, default_mailbox_quota=0)
+        self.assertEqual(
+            response["form_errors"]["default_mailbox_quota"][0],
+            "You can't define an unlimited quota.")
+        self.user.userobjectlimit_set.filter(name="quota").update(max_value=0)
+        response = self._create_domain("domain1.tld", quota=0)
+
     def test_reseller_deletes_domain(self):
-        """Check if all resources are restored after the deletion.
-        """
+        """Check if all resources are restored after the deletion."""
         self._create_domain('domain.tld', withtpl=True)
         dom = Domain.objects.get(name="domain.tld")
         self.ajax_post(
@@ -318,7 +358,7 @@ class ResellerTestCase(ResourceTestCase):
 
         # Give 1 mailbox and 2 aliases to the admin -> should work
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
         }
@@ -345,7 +385,7 @@ class ResellerTestCase(ResourceTestCase):
         self._create_account('admin1@domain.tld', role='DomainAdmins')
         user = User.objects.get(username='admin1@domain.tld')
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
         }
@@ -377,7 +417,7 @@ class ResellerTestCase(ResourceTestCase):
 
         # Give 1 mailbox and 2 aliases to the admin -> should work
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
         }
@@ -409,7 +449,7 @@ class ResellerTestCase(ResourceTestCase):
 
         # Give 2 mailboxes and 3 aliases to the admin -> should fail.
         values = {
-            'username': user.username, 'role': user.group, 'quota_act': True,
+            'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
             'mailboxes_limit': 2, 'mailbox_aliases_limit': 3
         }

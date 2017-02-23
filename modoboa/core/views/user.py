@@ -1,6 +1,7 @@
 """Simple user views."""
 
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
@@ -8,28 +9,27 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from rest_framework.authtoken.models import Token
 
-from modoboa.lib import events, parameters
 from modoboa.lib.cryptutils import encrypt
-from modoboa.lib.web_utils import (
-    _render_to_string, render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
+from modoboa.parameters import tools as param_tools
+
 from ..forms import ProfileForm, APIAccessForm
+from .. import signals
 
 
 @login_required
 def index(request, tplname="core/user_index.html"):
-    extrajs = events.raiseQueryEvent("ExtraUprefsJS", request.user)
-    return render(request, tplname, {
-        "selection": "user",
-        "extrajs": "".join(extrajs)
-    })
+    """Render user index page."""
+    return render(request, tplname, {"selection": "user"})
 
 
 @login_required
 def profile(request, tplname='core/user_profile.html'):
     """Profile detail/update view."""
     update_password = True
-    if True in events.raiseQueryEvent("PasswordChange", request.user):
+    results = signals.allow_password_change.send(
+        sender="profile", user=request.user)
+    if True in [result[1] for result in results]:
         update_password = False
 
     if request.method == "POST":
@@ -50,16 +50,18 @@ def profile(request, tplname='core/user_profile.html'):
 
     form = ProfileForm(update_password, instance=request.user)
     return render_to_json_response({
-        "content": _render_to_string(request, tplname, {
+        "content": render_to_string(tplname, {
             "form": form
-        })
+        }, request)
     })
 
 
 @login_required
 def preferences(request):
     if request.method == "POST":
-        for formdef in parameters.get_user_forms(request.user, request.POST):
+        forms = param_tools.registry.get_forms(
+            "user", request.POST, user=request.user)
+        for formdef in forms:
             form = formdef["form"]
             if form.is_valid():
                 form.save()
@@ -67,13 +69,14 @@ def preferences(request):
             return render_to_json_response({
                 "prefix": form.app, "form_errors": form.errors
             }, status=400)
-
+        request.user.save()
         return render_to_json_response(_("Preferences saved"))
 
     return render_to_json_response({
-        "content": _render_to_string(request, "core/user_preferences.html", {
-            "forms": parameters.get_user_forms(request.user)
-        })
+        "content": render_to_string("core/user_preferences.html", {
+            "forms": param_tools.registry.get_forms(
+                "user", user=request.user, first_app="general")
+        }, request)
     })
 
 
@@ -94,6 +97,6 @@ def api_access(request):
         }, status=400)
     form = APIAccessForm(user=request.user)
     return render_to_json_response({
-        "content": _render_to_string(
-            request, "core/api_access.html", {"form": form})
+        "content": render_to_string(
+            "core/api_access.html", {"form": form}, request)
     })

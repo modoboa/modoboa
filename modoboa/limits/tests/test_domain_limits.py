@@ -7,7 +7,6 @@ from modoboa.admin import factories as admin_factories
 from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib import tests as lib_tests
 
 from .. import utils
@@ -20,11 +19,14 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(DomainLimitsTestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no")
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+        cls.localconfig.parameters.set_values({
+            "enable_admin_limits": False,
+            "enable_domain_limits": True
+        })
         for name, tpl in utils.get_domain_limit_templates():
-            parameters.save_admin(
-                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+            cls.localconfig.parameters.set_value(
+                "deflt_domain_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         admin_factories.populate_database()
 
     def test_set_limits(self):
@@ -32,6 +34,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         domain = Domain.objects.get(name="test.com")
         values = {
             "name": domain.name, "quota": domain.quota,
+            "default_mailbox_quota": domain.default_mailbox_quota,
             "enabled": domain.enabled, "type": "domain",
             "mailboxes_limit": 3, "mailbox_aliases_limit": 3,
             "domain_aliases_limit": 3, "domain_admins_limit": 3
@@ -60,6 +63,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.assertFalse(limit.is_exceeded())
         values = {
             "name": domain.name, "quota": domain.quota,
+            "default_mailbox_quota": domain.default_mailbox_quota,
             "enabled": domain.enabled, "type": "domain",
             "mailboxes_limit": 2, "mailbox_aliases_limit": 2,
             "domain_aliases_limit": 2, "domain_admins_limit": 2,
@@ -83,7 +87,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.assertFalse(limit.is_exceeded())
         user = User.objects.get(username="admin@test2.com")
         values = {
-            "username": user.username, "role": user.group,
+            "username": user.username, "role": user.role,
             "is_active": user.is_active, "email": user.email,
             "quota_act": True, "domains": "test2.com",
             "domains_1": "test.com"
@@ -109,7 +113,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.assertFalse(limit.is_exceeded())
         username = "toto@test.com"
         values = {
-            "username": username,
+            "username": "toto@test.com",
             "first_name": "Tester", "last_name": "Toto",
             "password1": "Toto1234", "password2": "Toto1234",
             "role": "SimpleUsers", "quota_act": True,
@@ -118,8 +122,15 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         self.ajax_post(reverse("admin:account_add"), values, 200)
         self.assertTrue(limit.is_exceeded())
 
-        username = "titi@test.com"
+        values["username"] = "titi@test.com"
+        values["email"] = "titi@test.com"
         self.ajax_post(reverse("admin:account_add"), values, 400)
+
+        # Set unlimited value
+        limit.max_value = -1
+        limit.save(update_fields=["max_value"])
+        self.ajax_post(reverse("admin:account_add"), values)
+        self.assertFalse(limit.is_exceeded())
 
     def test_mailbox_aliases_limit(self):
         """Try to exceed defined limits."""
@@ -130,7 +141,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
         limit.save()
         self.assertFalse(limit.is_exceeded())
         values = {
-            "username": user.username, "role": user.group,
+            "username": user.username, "role": user.role,
             "is_active": user.is_active, "email": user.email,
             "quota_act": True,
             "aliases": "alias@test.com", "aliases_1": "alias1@test.com"

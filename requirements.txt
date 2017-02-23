@@ -1,4 +1,4 @@
-django>=1.9,<=1.9.99
+django>=1.10,<=1.10.99
 django-reversion==1.10.2
 dj-database-url
 pycrypto
@@ -9,13 +9,15 @@ bcrypt==2.0.0
 django-versionfield2>=0.3.3
 requests
 django-xforwardedfor-middleware
-django-passwords==0.3.10
+django-passwords==0.3.12
 rfc6266
 progressbar==2.3
-djangorestframework==3.3.1
-django-rest-swagger==0.3.5
+djangorestframework==3.5.3
+django-rest-swagger==0.3.10
 django-subcommand2==0.1.1
 gevent==1.1.1
 ipaddress
 dnspython==1.12.0
 jsonfield==1.0.3
+py-dateutil==2.2
+feedparser==5.2.1

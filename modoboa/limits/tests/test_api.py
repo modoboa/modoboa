@@ -9,7 +9,6 @@ from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
-from modoboa.lib import parameters
 from modoboa.lib import tests as lib_tests
 
 from .. import utils
@@ -23,8 +22,9 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         """Create test data."""
         super(APIAdminLimitsTestCase, cls).setUpTestData()
         for name, tpl in utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{}_LIMIT".format(name.upper()), 2)
+            cls.localconfig.parameters.set_value(
+                "deflt_user_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         populate_database()
         cls.user = User.objects.get(username="admin@test.com")
         cls.da_token = Token.objects.create(user=cls.user)
@@ -79,20 +79,36 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.r_token.key)
         limit = self.reseller.userobjectlimit_set.get(name="domains")
+        quota = self.reseller.userobjectlimit_set.get(name="quota")
+        quota.max_value = 3
+        quota.save(update_fields=["max_value"])
         url = reverse("external_api:domain-list")
-        data = {"name": "test3.com", "quota": 10}
+        data = {"name": "test3.com", "quota": 1}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         self.assertFalse(limit.is_exceeded())
+        self.assertFalse(quota.is_exceeded())
 
         data["name"] = "test4.com"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         self.assertTrue(limit.is_exceeded())
+        self.assertFalse(quota.is_exceeded())
 
-        data["username"] = "test5.com"
+        data["name"] = "test5.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.content, '"Domains: limit reached"')
+
+        self.client.delete(
+            reverse("external_api:domain-detail",
+                    args=[Domain.objects.get(name="test4.com").pk]))
+        data["quota"] = 0
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.content,
+            '"You\'re not allowed to define unlimited values"')
 
     def test_domain_aliases_limit(self):
         """Check domain aliases limit."""
@@ -181,10 +197,12 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(APIDomainLimitsTestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "yes")
+        cls.localconfig.parameters.set_value(
+            "enable_domain_limits", True)
         for name, tpl in utils.get_domain_limit_templates():
-            parameters.save_admin(
-                "DEFLT_DOMAIN_{}_LIMIT".format(name.upper()), 2)
+            cls.localconfig.parameters.set_value(
+                "deflt_domain_{0}_limit".format(name), 2)
+        cls.localconfig.save()
         populate_database()
 
     def test_mailboxes_limit(self):

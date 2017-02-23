@@ -2,6 +2,8 @@
  * Global javascript utilities
  */
 
+/* global $ */
+
 var static_url = "";
 
 /*
@@ -180,7 +182,7 @@ function simple_ajax_form_post(e, options) {
             return;
         }
         if (opts.reload_on_success) {
-            if (opts.reload_mode == 'full') {
+            if (opts.reload_mode === 'full') {
                 window.location.reload();
             } else {
                 histomanager.update(true);
@@ -230,13 +232,13 @@ function gethref(obj) {
  * http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript
  */
 function parse_qs(raw) {
-    if (raw === "") return {};
+    if (raw === "") { return {}; }
     var res = {};
 
     for (var i = 0; i < raw.length; i++) {
         var p = raw[i].split('=');
 
-        if (p.length != 2) continue;
+        if (p.length !== 2) { continue; }
         res[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
     }
     return res;
@@ -289,12 +291,12 @@ function simple_ajax_request(e, uoptions) {
     var defaults = {};
     var options = $.extend({}, defaults, uoptions);
 
-    if (e !== undefined) e.preventDefault();
+    if (e !== undefined) { e.preventDefault(); }
     $.ajax({
         url: $this.attr("href"),
         dataType: 'json'
     }).done(function(data) {
-        if (options.ok_cb) options.ok_cb(data);
+        if (options.ok_cb) { options.ok_cb(data); }
         if (data) {
             $("body").notify("success", data, 2000);
         }
@@ -306,7 +308,7 @@ function simple_ajax_request(e, uoptions) {
  * the status code received with a response is equal to 278.
  */
 function ajax_login_redirect(xhr) {
-    if (xhr.status != 278) {
+    if (xhr.status !== 278) {
         return;
     }
     var params = "?next=" + window.location.pathname;
@@ -359,5 +361,5 @@ $(document).ready(function() {
     $(document).on('click', 'a[data-toggle="ajaxmodal"]', modalbox);
     $(document).on('click', 'a[data-toggle="ajaxmodal-autowidth"]', modalbox_autowidth);
     $(document).on('click', '.activator', activate_widget);
-    $(".help").popover({trigger: 'hover'}).click(function(e) {e.preventDefault();});
+    $(".help").popover({trigger: 'hover'}).click(function(e) { e.preventDefault(); });
 });

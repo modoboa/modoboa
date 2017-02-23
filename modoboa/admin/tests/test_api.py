@@ -10,7 +10,6 @@ from rest_framework.authtoken.models import Token
 
 from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoAPITestCase
 
 from .. import factories
@@ -44,18 +43,26 @@ class DomainAPITestCase(ModoAPITestCase):
     def test_create_domain(self):
         """Check domain creation."""
         url = reverse("external_api:domain-list")
-        response = self.client.post(url, {"name": "test3.com", "quota": 10})
+        response = self.client.post(
+            url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
+        )
         self.assertEqual(response.status_code, 201)
         self.assertTrue(
             models.Domain.objects.filter(name="test3.com").exists())
         response = self.client.post(url, {})
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", response.data)
-        self.assertIn("quota", response.data)
+
+        response = self.client.post(
+            url, {"name": "test5.com", "quota": 1, "default_mailbox_quota": 10}
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("default_mailbox_quota", response.data)
 
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
-        response = self.client.post(url, {"name": "test4.com", "quota": 10})
+        response = self.client.post(
+            url, {"name": "test4.com", "default_mailbox_quota": 10})
         self.assertEqual(response.status_code, 403)
 
     def test_update_domain(self):
@@ -65,15 +72,17 @@ class DomainAPITestCase(ModoAPITestCase):
             domain__name="test.com", address="user").update(
                 use_domain_quota=True)
         url = reverse("external_api:domain-detail", args=[domain.pk])
-        response = self.client.put(url, {"name": "test.com", "quota": 1000})
+        response = self.client.put(
+            url, {"name": "test.com", "default_mailbox_quota": 1000})
         self.assertEqual(response.status_code, 200)
         domain.refresh_from_db()
-        self.assertEqual(domain.quota, 1000)
+        self.assertEqual(domain.default_mailbox_quota, 1000)
         mb = models.Mailbox.objects.get(
             domain__name="test.com", address="user")
         self.assertEqual(mb.quota, 1000)
 
-        response = self.client.put(url, {"name": "test42.com", "quota": 1000})
+        response = self.client.put(
+            url, {"name": "test42.com", "default_mailbox_quota": 1000})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(
             models.Mailbox.objects.filter(
@@ -196,8 +205,10 @@ class AccountAPITestCase(ModoAPITestCase):
     def setUp(self):
         """Test setup."""
         super(AccountAPITestCase, self).setUp()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no", app="limits")
-        parameters.save_admin("ENABLE_DOMAIN_LIMITS", "no", app="limits")
+        self.set_global_parameters({
+            "enable_admin_limits": False,
+            "enable_domain_limits": False
+        }, app="limits")
 
     def test_get_accounts(self):
         """Retrieve a list of accounts."""
@@ -266,7 +277,8 @@ class AccountAPITestCase(ModoAPITestCase):
         user = core_models.User.objects.filter(pk=account["pk"]).first()
         self.assertIsNot(user, None)
         self.assertIsNot(user.mailbox, None)
-        self.assertEqual(user.mailbox.quota, user.mailbox.domain.quota)
+        self.assertEqual(
+            user.mailbox.quota, user.mailbox.domain.default_mailbox_quota)
 
     def test_create_existing_account(self):
         """Check if unicity is respected."""
@@ -296,7 +308,7 @@ class AccountAPITestCase(ModoAPITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
         data = copy.deepcopy(self.ACCOUNT_DATA)
-        data["mailbox"]["quota"] = 20
+        data["mailbox"]["quota"] = 1000
         url = reverse("external_api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
@@ -336,6 +348,26 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         account.refresh_from_db()
         self.assertEqual(account.email, account.mailbox.full_address)
+        self.assertTrue(account.check_password("Toto1234"))
+
+        del data["password"]
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        account.refresh_from_db()
+        self.assertTrue(account.check_password("Toto1234"))
+
+    def test_patch_account(self):
+        """Try to patch an account."""
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("external_api:account-detail", args=[account.pk])
+        data = {
+            "username": "fromapi@test.com",
+            "mailbox": {
+                "full_address": "fromapi@test.com",
+            }
+        }
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, 405)
 
     def test_update_domain_admin_account(self):
         """Try to change administered domains."""
@@ -441,7 +473,9 @@ class AliasAPITestCase(ModoAPITestCase):
     def setUpTestData(cls):
         """Create test data."""
         super(AliasAPITestCase, cls).setUpTestData()
-        parameters.save_admin("ENABLE_ADMIN_LIMITS", "no", app="limits")
+        cls.localconfig.parameters.set_value(
+            "enable_admin_limits", False, app="limits")
+        cls.localconfig.save()
         factories.populate_database()
         cls.da_token = Token.objects.create(
             user=core_models.User.objects.get(username="admin@test.com"))

@@ -1,7 +1,5 @@
 """Map file definitions for postfix."""
 
-from modoboa.core.commands.postfix_maps import registry
-
 
 class DomainsMap(object):
 
@@ -52,17 +50,20 @@ class AliasesMap(object):
     mysql = (
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s'"
+        "WHERE al.enabled=1 AND al.address='%s' AND "
+        "(al.expire_at IS NULL OR al.expire_at>now())"
     )
     postgres = (
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
-        "WHERE al.enabled AND al.address='%s'"
+        "WHERE al.enabled AND al.address='%s' AND "
+        "(al.expire_at IS NULL OR al.expire_at>now())"
     )
     sqlite = (
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s'"
+        "WHERE al.enabled=1 AND al.address='%s' AND "
+        "(al.expire_at IS NULL OR al.expire_at>datetime('now'))"
     )
 
 
@@ -110,6 +111,33 @@ class SenderLoginMailboxMap(object):
     )
 
 
+class SenderLoginMailboxExtraMap(object):
+    """Map file to list per-mailbox extra addresses."""
+
+    filename = "sql-sender-login-mailboxes-extra.cf"
+
+    # FIXME: is it necessary to filter against user status?
+
+    mysql = (
+        "SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s'"
+    )
+    postgres = (
+        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s'"
+    )
+    sqlite = (
+        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s'"
+    )
+
+
 class SenderLoginAliasMap(object):
 
     """Map file to list authorized sender addresses (from aliases)."""
@@ -136,8 +164,3 @@ class SenderLoginAliasMap(object):
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
         "WHERE al.enabled=1 AND al.address='%s'"
     )
-
-registry.add_files([
-    DomainsMap, DomainsAliasesMap, AliasesMap, MaintainMap,
-    SenderLoginAliasMap, SenderLoginMailboxMap
-])

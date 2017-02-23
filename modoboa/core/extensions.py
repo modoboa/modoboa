@@ -1,11 +1,10 @@
 """Extension management."""
 
 from django.conf import settings
-from django.conf.urls import include
+from django.conf.urls import include, url
 
 
 class ModoExtension(object):
-
     """
     Base extension class.
 
@@ -20,25 +19,27 @@ class ModoExtension(object):
     url = None
     needs_media = False
     always_active = False
-    available_for_topredirection = False
+    topredirection_url = None
 
     def infos(self):
-        return dict(
-            name=self.name, label=self.label, version=self.version,
-            description=self.description, url=self.url,
-            always_active=self.always_active
-        )
+        """Information about this extension."""
+        return {
+            "name": self.name, "label": self.label, "version": self.version,
+            "description": self.description, "url": self.url,
+            "topredirection_url": self.topredirection_url,
+            "always_active": self.always_active
+        }
 
     def load_initial_data(self):
         """Declare extension data in this method."""
         pass
 
     def load(self):
+        """Add extension loading tasks in this method."""
         pass
 
 
 class ExtensionsPool(object):
-
     """The extensions manager"""
 
     def __init__(self):
@@ -60,11 +61,8 @@ class ExtensionsPool(object):
             self.extensions[name]["instance"] = self.extensions[name]["cls"]()
         return self.extensions[name]["instance"]
 
-    def is_extension_installed(self, name):
-        """Check if an extension is installed ir not."""
-        return name in settings.MODOBOA_APPS
-
     def get_extension_infos(self, name):
+        """Return information about the specified extension."""
         instance = self.get_extension(name)
         if instance is None:
             return None
@@ -83,8 +81,8 @@ class ExtensionsPool(object):
                 else name
             )
             result = (
-                r'^%s/' % (baseurl),
-                include("{0}.urls".format(name), namespace=name)
+                url(r'^%s/' % (baseurl),
+                    include("{0}.urls".format(name), namespace=name))
             )
         except ImportError:
             # No urls for this extension

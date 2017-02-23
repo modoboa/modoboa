@@ -1,8 +1,11 @@
-from django.conf.urls import patterns, url
+"""Relay domains urls."""
 
-urlpatterns = patterns(
-    'modoboa.relaydomains.views',
+from django.conf.urls import url
 
-    url(r'^scan_services/$', 'scan_for_services',
+from . import views
+
+
+urlpatterns = [
+    url(r'^scan_services/$', views.scan_for_services,
         name="service_scan"),
-)
+]

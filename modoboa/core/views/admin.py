@@ -1,6 +1,5 @@
-"""
-Views available to super administrators only.
-"""
+"""Views available to super administrators only."""
+
 from django.contrib.auth.decorators import (
     login_required, user_passes_test
 )
@@ -10,11 +9,11 @@ from django.utils.translation import ugettext as _
 
 from modoboa.core.models import Log
 from modoboa.core.utils import check_for_updates
-from modoboa.lib import events, parameters
 from modoboa.lib.listing import get_sort_order, get_listing_page
-from modoboa.lib.web_utils import (
-    _render_to_string, render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
+from modoboa.parameters import tools as param_tools
+
+from .. import signals
 
 
 @login_required
@@ -27,28 +26,29 @@ def viewsettings(request, tplname='core/settings_header.html'):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewparameters(request, tplname='core/parameters.html'):
+def parameters(request, tplname="core/parameters.html"):
+    """View to display and save global parameters."""
+    if request.method == "POST":
+        forms = param_tools.registry.get_forms(
+            "global", request.POST, localconfig=request.localconfig)
+        for formdef in forms:
+            form = formdef["form"]
+            if form.is_valid():
+                form.save()
+                form.to_django_settings()
+                continue
+            return render_to_json_response(
+                {"form_errors": form.errors, "prefix": form.app}, status=400
+            )
+        request.localconfig.save()
+        return render_to_json_response(_("Parameters saved"))
     return render_to_json_response({
         "left_selection": "parameters",
-        "content": _render_to_string(request, tplname, {
-            "forms": parameters.get_admin_forms
-        })
+        "content": render_to_string(tplname, {
+            "forms": param_tools.registry.get_forms(
+                "global", localconfig=request.localconfig)
+        }, request)
     })
-
-
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
-def saveparameters(request):
-    for formdef in parameters.get_admin_forms(request.POST):
-        form = formdef["form"]
-        if form.is_valid():
-            form.save()
-            form.to_django_settings()
-            continue
-        return render_to_json_response(
-            {'form_errors': form.errors, 'prefix': form.app}, status=400
-        )
-    return render_to_json_response(_("Parameters saved"))
 
 
 @login_required
@@ -112,9 +112,9 @@ def logs_page(request, tplname="core/logs_page.html"):
 
 @login_required
 def check_top_notifications(request):
-    """
-    AJAX service to check for new top notifications to display.
-    """
-    return render_to_json_response(
-        events.raiseQueryEvent("TopNotifications", request, True)
-    )
+    """AJAX service to check for new top notifications to display."""
+    notifications = signals.get_top_notifications.send(
+        sender="top_notifications", include_all=True)
+    notifications = reduce(
+        lambda a, b: a + b, [notif[1] for notif in notifications])
+    return render_to_json_response(notifications)

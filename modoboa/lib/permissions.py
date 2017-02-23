@@ -1,38 +1,35 @@
 # coding: utf-8
+"""Object level permissions."""
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext_lazy
 
+from modoboa.core import constants as core_constants
+from modoboa.core import signals as core_signals
 from modoboa.core.models import ObjectAccess, User
-from modoboa.lib import events
-
-SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
-DOMAINADMINS_ROLE = ("DomainAdmins", ugettext_lazy("Domain administrator"))
-RESELLERS_ROLE = ("Resellers", ugettext_lazy("Reseller"))
-SUPERADMINS_ROLE = ("SuperAdmins", ugettext_lazy("Super administrator"))
 
 
 def get_account_roles(user, account=None):
     """Return the list of available account roles.
 
-    This function is used to create or modify an account. The returned
-    list can be extended by listening to the ``GetExtraRoles`` event.
+    This function is used to create or modify an account.
 
     :param ``User`` user: connected user
     :param ``User`` account: account beeing modified (None on creation)
     :return: list of strings
     """
-    result = [SIMPLEUSERS_ROLE]
-    filters = events.raiseQueryEvent(
-        "UserCanSetRole", user, "DomainAdmins", account
-    )
-    if user.has_perm("admin.add_domain") and \
-            (not filters or True in filters):
-        result += [DOMAINADMINS_ROLE]
+    result = [core_constants.SIMPLEUSERS_ROLE]
+    filters = core_signals.user_can_set_role.send(
+        sender="get_account_roles", user=user, role="DomainAdmins",
+        account=account)
+    condition = (
+        user.has_perm("admin.add_domain") and
+        (not filters or True in [flt[1] for flt in filters]))
+    if condition:
+        result += [core_constants.DOMAINADMINS_ROLE]
     if user.is_superuser:
-        result += [RESELLERS_ROLE, SUPERADMINS_ROLE]
-    result += events.raiseQueryEvent("GetExtraRoles", user, account)
+        result += [
+            core_constants.RESELLERS_ROLE, core_constants.SUPERADMINS_ROLE]
     return sorted(result, key=lambda role: role[1])
 
 

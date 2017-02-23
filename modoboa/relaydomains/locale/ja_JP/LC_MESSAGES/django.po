@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# cwatanab <chihiro.watanabe@live.jp>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-01-16 17:41+0100\n"
+"PO-Revision-Date: 2016-06-07 07:27+0000\n"
+"Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
+"language/ja_JP/)\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: app_settings.py:15
+msgid "General"
+msgstr "全般"
+
+#: app_settings.py:18
+msgid "Postfix's master.cf path"
+msgstr "Postfix の master.cf へのパス"
+
+#: app_settings.py:20
+msgid "Path to the master.cf configuration file"
+msgstr "master.cf 設定ファイルへのパス"
+
+#: apps.py:12
+msgid "Relay domains"
+msgstr "リレードメイン"
+
+#: forms.py:52
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Invalid value"
+msgstr "不正な行"
+
+#: handlers.py:105
+msgid "Relay settings"
+msgstr "リレー設定"
+
+#: handlers.py:136 handlers.py:143
+msgid "Relay domain"
+msgstr "リレードメイン"
+
+#: models.py:47
+msgid "name"
+msgstr "名前"
+
+#: models.py:48
+msgid "The service name"
+msgstr "サービス名"
+
+#: models.py:70
+#, fuzzy
+#| msgid "target host"
+msgid "target host address"
+msgstr "ターゲットホスト"
+
+#: models.py:72
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote address (hostname or IP) of this domain"
+msgstr "このドメインのリモート接続先"
+
+#: models.py:75
+#, fuzzy
+#| msgid "target host"
+msgid "target host port"
+msgstr "ターゲットホスト"
+
+#: models.py:77
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote port of this domain"
+msgstr "このドメインのリモート接続先"
+
+#: models.py:82
+msgid "verify recipients"
+msgstr "受信者を確認"
+
+#: models.py:83
+msgid "Check for valid recipients"
+msgstr "有効な受信者を確認してください"
+
+#: models.py:94
+msgid "Relay Domain"
+msgstr "リレードメイン"
+
+#: models.py:122
+msgid "Invalid line"
+msgstr "不正な行"
+
+#: templates/relaydomains/service_field.html:3
+msgid "Scan"
+msgstr "スキャン"
+
+#~ msgid "Name"
+#~ msgstr "名前"
+
+#~ msgid "The relay domain name"
+#~ msgstr "リレードメインの名前"
+
+#~ msgid ""
+#~ "\n"
+#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
+#~ "recipients</em></li>\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
+#~ "recipients</em></li>\n"

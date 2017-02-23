@@ -1,0 +1,12 @@
+{% load form_tags %}
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    {% for form in forms %}<li{% if forloop.first %} class="active"{% endif %}><a href="#{{ forloop.counter }}" data-app="{{ form.app }}" data-toggle="tab">{{ form.label }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="tab-content">{% for form in forms %}
+    <div class="tab-pane{% if forloop.first %} active{% endif %}" id="{{ forloop.counter }}">
+      {% render_form form.form %}
+    </div>{% endfor %}
+  </div>
+</div>

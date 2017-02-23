@@ -1,6 +1,4 @@
-"""
-Admin extension tags.
-"""
+"""Admin extension tags."""
 
 from django import template
 from django.core.urlresolvers import reverse
@@ -8,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from modoboa.lib import events
+from modoboa.core import signals as core_signals
 from modoboa.lib.templatetags.lib_tags import render_link
 from modoboa.lib.web_utils import render_actions
 
@@ -42,22 +40,12 @@ def domains_menu(selection, user, ajax_mode=True):
          "img": "fa fa-user",
          "class": "ajaxnav navigation",
          "url": domain_list_url},
-        {"name": "statistics",
-         "label": _("Statistics"),
-         "img": "fa fa-line-chart",
-         "class": "navigation",
-         "url": reverse("admin:domain_statistics")}
     ]
     if user.has_perm("admin.add_domain"):
-        entries += [
-            {"name": "newdomain",
-             "label": _("Add domain"),
-             "img": "fa fa-plus",
-             "modal": True,
-             "modalcb": "admin.newdomain_cb",
-             "url": reverse("admin:domain_add")},
-        ]
-        entries += events.raiseQueryEvent("ExtraDomainMenuEntries", user)
+        extra_entries = signals.extra_domain_menu_entries.send(
+            sender="domains_menu", user=user)
+        for entry in extra_entries:
+            entries += entry[1]
         entries += [
             {"name": "import",
              "label": _("Import"),
@@ -81,48 +69,32 @@ def domains_menu(selection, user, ajax_mode=True):
 
 
 @register.simple_tag
-def identities_menu(user, selection=None):
+def identities_menu(user, selection=None, ajax_mode=True):
     """Menu specific to the Identities page.
 
     :param ``User`` user: the connecter user
     :rtype: str
     :return: the rendered menu
     """
+    nav_classes = "navigation"
+    if ajax_mode:
+        identity_list_url = "list/"
+        quota_list_url = "quotas/"
+        nav_classes += " ajaxnav"
+    else:
+        identity_list_url = reverse("admin:identity_list")
+        quota_list_url = identity_list_url + "#quotas/"
     entries = [
         {"name": "identities",
          "label": _("List identities"),
          "img": "fa fa-user",
-         "class": "ajaxnav navigation",
-         "url": "list/"},
+         "class": nav_classes,
+         "url": identity_list_url},
         {"name": "quotas",
          "label": _("List quotas"),
          "img": "fa fa-hdd-o",
-         "class": "ajaxnav navigation",
-         "url": "quotas/"},
-        {"name": "newaccount",
-         "label": _("Add account"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.newaccount_cb",
-         "url": reverse("admin:account_add")},
-        {"name": "newalias",
-         "label": _("Add alias"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:alias_add")},
-        {"name": "newforward",
-         "label": _("Add forward"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:forward_add")},
-        {"name": "newdlist",
-         "label": _("Add distribution list"),
-         "img": "fa fa-plus",
-         "modal": True,
-         "modalcb": "admin.aliasform_cb",
-         "url": reverse("admin:dlist_add")},
+         "class": nav_classes,
+         "url": quota_list_url},
         {"name": "import",
          "label": _("Import"),
          "img": "fa fa-folder-open",
@@ -134,8 +106,7 @@ def identities_menu(user, selection=None):
          "img": "fa fa-share-alt",
          "url": reverse("admin:identity_export"),
          "modal": True,
-         "modalcb": "admin.exportform_cb"
-         }
+         "modalcb": "admin.exportform_cb"}
     ]
 
     return render_to_string('common/menulist.html', {
@@ -184,8 +155,22 @@ def identity_actions(user, ident):
     name = ident.__class__.__name__
     objid = ident.id
     if name == "User":
-        actions = events.raiseQueryEvent("ExtraAccountActions", ident)
+        actions = []
+        result = core_signals.extra_account_actions.send(
+            sender="identity_actions", account=ident)
+        for action in result:
+            actions += action[1]
+        url = (
+            reverse("admin:account_change", args=[objid]) +
+            "?active_tab=default"
+        )
         actions += [
+            {"name": "changeaccount",
+             "url": url,
+             "img": "fa fa-edit",
+             "modal": True,
+             "modalcb": "admin.editaccount_cb",
+             "title": _("Edit {}").format(ident.username)},
             {"name": "delaccount",
              "url": reverse("admin:account_delete", args=[objid]),
              "img": "fa fa-trash",
@@ -193,6 +178,12 @@ def identity_actions(user, ident):
         ]
     else:
         actions = [
+            {"name": "changealias",
+             "url": reverse("admin:alias_change", args=[objid]),
+             "img": "fa fa-edit",
+             "modal": True,
+             "modalcb": "admin.aliasform_cb",
+             "title": _("Edit {}").format(ident)},
             {"name": "delalias",
              "url": "{}?selection={}".format(
                  reverse("admin:alias_delete"), objid),
@@ -214,20 +205,6 @@ def check_identity_status(identity):
     elif not identity.enabled or not identity.domain.enabled:
         return False
     return True
-
-
-@register.simple_tag
-def domain_modify_link(domain):
-    linkdef = {"label": domain.name, "modal": True}
-    if domain.__class__.__name__ == "Domain":
-        linkdef["url"] = reverse(
-            "admin:domain_change", args=[domain.id])
-        linkdef["modalcb"] = "admin.domainform_cb"
-    else:
-        tmp = events.raiseDictEvent('GetDomainModifyLink', domain)
-        for key in ['url', 'modalcb']:
-            linkdef[key] = tmp[key]
-    return render_link(linkdef)
 
 
 @register.simple_tag
@@ -290,7 +267,10 @@ def gender(value, target):
 
 @register.simple_tag
 def get_extra_admin_content(user, target, currentpage):
-    res = events.raiseQueryEvent(
-        "ExtraAdminContent", user, target, currentpage
-    )
-    return mark_safe("".join(res))
+    results = signals.extra_admin_content.send(
+        sender="get_extra_admin_content",
+        user=user, location=target, currentpage=currentpage)
+    if not results:
+        return ""
+    results = reduce(lambda a, b: a + b, [result[1] for result in results])
+    return mark_safe("".join(results))

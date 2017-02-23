@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2017-01-16 17:41+0100\n"
 "PO-Revision-Date: 2014-12-13 09:10+0000\n"
 "Last-Translator: Paulino Michelazzo <paulino@michelazzo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -21,93 +21,109 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: relaydomains/app_settings.py:18
+#: app_settings.py:15
 msgid "General"
 msgstr "Geral"
 
-#: relaydomains/app_settings.py:21
+#: app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Caminho do master.cf do Postfix"
 
-#: relaydomains/app_settings.py:23
+#: app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Caminho para o arquivo de configuração master.cf"
 
-#: relaydomains/apps.py:23
+#: apps.py:12
 msgid "Relay domains"
 msgstr "Domínios de relay"
 
-#: relaydomains/forms.py:27
-msgid "Name"
-msgstr ""
-
-#: relaydomains/forms.py:28
+#: forms.py:52
 #, fuzzy
-#| msgid "The domain name"
-msgid "The relay domain name"
-msgstr "Nome do domínio"
+#| msgid "Invalid line"
+msgid "Invalid value"
+msgstr "Linha inválida"
 
-#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
-#, fuzzy
-#| msgid "Relay domains"
-msgid "Relay domain"
-msgstr "Domínios de relay"
-
-#: relaydomains/general_callbacks.py:73
+#: handlers.py:105
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay settings"
 msgstr "Domínios de relay"
 
-#: relaydomains/general_callbacks.py:109
+#: handlers.py:136 handlers.py:143
 #, fuzzy
-#| msgid ""
-#| "\n"
-#| "<li><em>relaydomain; name; target host; service; enabled; verify "
-#| "recipients</em></li>\n"
-#| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
-msgid ""
-"\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
-msgstr ""
-"\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
-"<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+#| msgid "Relay domains"
+msgid "Relay domain"
+msgstr "Domínios de relay"
 
-#: relaydomains/models.py:48
+#: models.py:47
 msgid "name"
 msgstr "nome"
 
-#: relaydomains/models.py:49
+#: models.py:48
 msgid "The service name"
 msgstr "O nome do serviço"
 
-#: relaydomains/models.py:71
-msgid "target host"
+#: models.py:70
+#, fuzzy
+#| msgid "target host"
+msgid "target host address"
 msgstr "host de destino"
 
-#: relaydomains/models.py:72
-msgid "Remote destination of this domain"
+#: models.py:72
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote address (hostname or IP) of this domain"
 msgstr "Destino remoto para este domínio"
 
-#: relaydomains/models.py:76
+#: models.py:75
+#, fuzzy
+#| msgid "target host"
+msgid "target host port"
+msgstr "host de destino"
+
+#: models.py:77
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote port of this domain"
+msgstr "Destino remoto para este domínio"
+
+#: models.py:82
 msgid "verify recipients"
 msgstr "verificar destinatários"
 
-#: relaydomains/models.py:77
+#: models.py:83
 msgid "Check for valid recipients"
 msgstr "Verificar destinatários válidos"
 
-#: relaydomains/models.py:88
+#: models.py:94
 msgid "Relay Domain"
 msgstr "Domínio de Relay"
 
-#: relaydomains/models.py:115
+#: models.py:122
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: relaydomains/templates/relaydomains/service_field.html:3
+#: templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "Scan"
+
+#, fuzzy
+#~| msgid "The domain name"
+#~ msgid "The relay domain name"
+#~ msgstr "Nome do domínio"
+
+#, fuzzy
+#~| msgid ""
+#~| "\n"
+#~| "<li><em>relaydomain; name; target host; service; enabled; verify "
+#~| "recipients</em></li>\n"
+#~| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+#~ msgid ""
+#~ "\n"
+#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
+#~ "recipients</em></li>\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
+#~ "recipients</em></li>\n"
+#~ "<li><em>relaydomainalias; name; target; enabled</em></li>\n"

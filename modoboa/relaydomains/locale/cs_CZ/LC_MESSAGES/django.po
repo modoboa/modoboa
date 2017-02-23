@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2017-01-16 17:41+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,93 +19,109 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: relaydomains/app_settings.py:18
+#: app_settings.py:15
 msgid "General"
 msgstr "Obecné"
 
-#: relaydomains/app_settings.py:21
+#: app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Cesta k Postfix souboru master.cf"
 
-#: relaydomains/app_settings.py:23
+#: app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Cesta ke konfiguračnímu souboru master.cf"
 
-#: relaydomains/apps.py:23
+#: apps.py:12
 msgid "Relay domains"
 msgstr "Relay domény"
 
-#: relaydomains/forms.py:27
-msgid "Name"
-msgstr ""
-
-#: relaydomains/forms.py:28
+#: forms.py:52
 #, fuzzy
-#| msgid "The domain name"
-msgid "The relay domain name"
-msgstr "Doménové jméno"
+#| msgid "Invalid line"
+msgid "Invalid value"
+msgstr "Neplatný řádek"
 
-#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
-#, fuzzy
-#| msgid "Relay domains"
-msgid "Relay domain"
-msgstr "Relay domény"
-
-#: relaydomains/general_callbacks.py:73
+#: handlers.py:105
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Relay settings"
 msgstr "Relay domény"
 
-#: relaydomains/general_callbacks.py:109
+#: handlers.py:136 handlers.py:143
 #, fuzzy
-#| msgid ""
-#| "\n"
-#| "<li><em>relaydomain; name; target host; service; enabled; verify "
-#| "recipients</em></li>\n"
-#| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
-msgid ""
-"\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
-msgstr ""
-"\n"
-"<li><em>relay doména; název; cílový server; služba; povoleno; ověřit "
-"příjemce</em></li>\n"
-"<li><em>alias relay domény; název; cíl; povoleno</em></li>\n"
+#| msgid "Relay domains"
+msgid "Relay domain"
+msgstr "Relay domény"
 
-#: relaydomains/models.py:48
+#: models.py:47
 msgid "name"
 msgstr "název"
 
-#: relaydomains/models.py:49
+#: models.py:48
 msgid "The service name"
 msgstr "Název služby"
 
-#: relaydomains/models.py:71
-msgid "target host"
+#: models.py:70
+#, fuzzy
+#| msgid "target host"
+msgid "target host address"
 msgstr "cílový server"
 
-#: relaydomains/models.py:72
-msgid "Remote destination of this domain"
+#: models.py:72
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote address (hostname or IP) of this domain"
 msgstr "Vzdálený cíl této domény"
 
-#: relaydomains/models.py:76
+#: models.py:75
+#, fuzzy
+#| msgid "target host"
+msgid "target host port"
+msgstr "cílový server"
+
+#: models.py:77
+#, fuzzy
+#| msgid "Remote destination of this domain"
+msgid "Remote port of this domain"
+msgstr "Vzdálený cíl této domény"
+
+#: models.py:82
 msgid "verify recipients"
 msgstr "ověřit příjemce"
 
-#: relaydomains/models.py:77
+#: models.py:83
 msgid "Check for valid recipients"
 msgstr "Kontrola platných příjemců"
 
-#: relaydomains/models.py:88
+#: models.py:94
 msgid "Relay Domain"
 msgstr "Relay doména"
 
-#: relaydomains/models.py:115
+#: models.py:122
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: relaydomains/templates/relaydomains/service_field.html:3
+#: templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "Prohledat"
+
+#, fuzzy
+#~| msgid "The domain name"
+#~ msgid "The relay domain name"
+#~ msgstr "Doménové jméno"
+
+#, fuzzy
+#~| msgid ""
+#~| "\n"
+#~| "<li><em>relaydomain; name; target host; service; enabled; verify "
+#~| "recipients</em></li>\n"
+#~| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
+#~ msgid ""
+#~ "\n"
+#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
+#~ "recipients</em></li>\n"
+#~ msgstr ""
+#~ "\n"
+#~ "<li><em>relay doména; název; cílový server; služba; povoleno; ověřit "
+#~ "příjemce</em></li>\n"
+#~ "<li><em>alias relay domény; název; cíl; povoleno</em></li>\n"

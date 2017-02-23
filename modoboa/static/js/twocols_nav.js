@@ -3,6 +3,9 @@
  *
  * @constructor
  */
+
+/* global Listing */
+
 var TwocolsNav = function(options) {
     Listing.call(this, options);
 };
@@ -33,6 +36,17 @@ TwocolsNav.prototype = {
                 success_cb: $.proxy(this.save_cb, this)
             });
         }, this));
+        $(document).on('submit', '#parameters_form', function(evt) {
+            simple_ajax_form_post(evt, {
+                formid: $(this).attr('id'),
+                modal: false,
+                reload_on_success: false,
+                success_cb: $.proxy(this.save_cb, this),
+                error_cb: function(data) {
+                    $('a[data-app="' + data.prefix + '"]').tab('show');
+                }
+            });
+        });
     },
 
     update_content: function(data) {

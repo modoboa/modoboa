@@ -3,6 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -14,12 +15,8 @@ from django.contrib.auth.decorators import (
 
 from reversion import revisions as reversion
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
-from modoboa.lib import parameters, events
-from modoboa.lib.web_utils import (
-    _render_to_string, render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
 from modoboa.lib.exceptions import (
     PermDeniedException
 )
@@ -27,9 +24,7 @@ from modoboa.lib.listing import get_sort_order, get_listing_page
 
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
-from ..models import (
-    Domain, DomainAlias, Mailbox, Alias
-)
+from ..models import Domain, Mailbox
 from .. import signals
 
 
@@ -45,10 +40,14 @@ def index(request):
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
+    extra_filters = reduce(
+        lambda a, b: a + b,
+        [result[1] for result in
+         signals.extra_domain_filters.send(sender="_domains")]
+    )
     filters = dict(
         (flt, request.GET.get(flt, None))
-        for flt in ['domfilter', 'searchquery'] +
-        events.raiseQueryEvent('ExtraDomainFilters')
+        for flt in ["domfilter", "searchquery"] + extra_filters
     )
     request.session['domains_filters'] = filters
     domainlist = get_domains(request.user, **filters)
@@ -61,18 +60,23 @@ def _domains(request):
         domainlist = sorted(domainlist, key=lambda d: d.tags[0],
                             reverse=sort_dir == '-')
     context = {
-        "handle_mailboxes": parameters.get_admin(
-            "HANDLE_MAILBOXES", raise_error=False),
-        "auto_account_removal": parameters.get_admin("AUTO_ACCOUNT_REMOVAL")
+        "handle_mailboxes": request.localconfig.parameters.get_value(
+            "handle_mailboxes", raise_exception=False),
+        "auto_account_removal": request.localconfig.parameters.get_value(
+            "auto_account_removal"),
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
     if page is None:
         context["length"] = 0
     else:
-        context["rows"] = _render_to_string(
-            request, "admin/domains_table.html", {
-                'domains': page.object_list,
-            }
+        parameters = request.localconfig.parameters
+        context["rows"] = render_to_string(
+            "admin/domains_table.html", {
+                "domains": page.object_list,
+                "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+                "enable_dnsbl_checks": (
+                    parameters.get_value("enable_dnsbl_checks"))
+            }, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
@@ -87,7 +91,12 @@ def domains(request, tplname="admin/domains.html"):
                 reverse("admin:identity_list")
             )
         return HttpResponseRedirect(reverse("core:user_index"))
-    return render(request, tplname, {"selection": "domains"})
+    parameters = request.localconfig.parameters
+    return render(request, tplname, {
+        "selection": "domains",
+        "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
+    })
 
 
 @login_required
@@ -102,7 +111,7 @@ def domains_list(request):
 @reversion.create_revision()
 def newdomain(request):
     core_signals.can_create_object.send(
-        "newdomain", context=request.user, object_type="domains")
+        "newdomain", context=request.user, klass=Domain)
     return DomainWizard(request).process()
 
 
@@ -116,7 +125,10 @@ def editdomain(request, dom_id):
         raise PermDeniedException
 
     instances = dict(general=domain)
-    events.raiseEvent("FillDomainInstances", request.user, domain, instances)
+    results = signals.get_domain_form_instances.send(
+        sender="editdomain", user=request.user, domain=domain)
+    for result in results:
+        instances.update(result[1])
     return DomainForm(request, instances=instances).process()
 
 
@@ -140,23 +152,6 @@ def deldomain(request, dom_id):
     return render_to_json_response(msg)
 
 
-@login_required
-@permission_required("admin.view_domains")
-def domain_statistics(request):
-    """A simple page to present domain statistics."""
-    context = {}
-    if request.user.group == "SuperAdmins":
-        context.update({
-            "domains_counter": Domain.objects.count(),
-            "domain_aliases_counter": DomainAlias.objects.count(),
-            "identities_counter": (
-                User.objects.count() +
-                Alias.objects.filter(internal=False).count()),
-        })
-    context.update({"domains": Domain.objects.get_for_admin(request.user)})
-    return render(request, "admin/domain_statistics.html", context)
-
-
 class DomainDetailView(
         auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """DetailView for Domain."""
@@ -176,11 +171,17 @@ class DomainDetailView(
         context = super(DomainDetailView, self).get_context_data(**kwargs)
         result = signals.extra_domain_dashboard_widgets.send(
             self.__class__, user=self.request.user, domain=self.object)
-        context["templates"] = {"left": [], "right": []}
+        parameters = self.request.localconfig.parameters
+        context.update({
+            "templates": {"left": [], "right": []},
+            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+            "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
+        })
         for receiver, widgets in result:
             for widget in widgets:
                 context["templates"][widget["column"]].append(
                     widget["template"])
+                # FIXME: can raise conflicts...
                 context.update(widget["context"])
 
         return context

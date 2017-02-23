@@ -1,10 +1,8 @@
 """External API urls."""
 
-from django.conf.urls import patterns, include
+from django.conf.urls import include, url
 
 
-urlpatterns = patterns(
-    "",
-
-    ("", include("modoboa.admin.urls_api")),
-)
+urlpatterns = [
+    url("", include("modoboa.admin.urls_api")),
+]

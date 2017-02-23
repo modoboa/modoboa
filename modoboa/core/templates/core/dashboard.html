@@ -1,0 +1,27 @@
+{% extends "fluid.html" %}
+
+{% load i18n %}
+
+{% block container_content %}
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+      <h1>{% blocktrans with user=user.fullname trimmed %}Hello {{ user }}.{% endblocktrans %}</h1>
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          {% for widget in widgets.left %}
+            {% include widget %}
+          {% endfor %}
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          {% for widget in widgets.right %}
+            {% include widget %}
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock container_content %}

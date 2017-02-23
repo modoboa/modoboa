@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2017-01-16 17:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,77 +17,74 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: relaydomains/app_settings.py:18
+#: app_settings.py:15
 msgid "General"
 msgstr ""
 
-#: relaydomains/app_settings.py:21
+#: app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr ""
 
-#: relaydomains/app_settings.py:23
+#: app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr ""
 
-#: relaydomains/apps.py:23
+#: apps.py:12
 msgid "Relay domains"
 msgstr ""
 
-#: relaydomains/forms.py:27
-msgid "Name"
+#: forms.py:52
+msgid "Invalid value"
 msgstr ""
 
-#: relaydomains/forms.py:28
-msgid "The relay domain name"
-msgstr ""
-
-#: relaydomains/general_callbacks.py:53 relaydomains/general_callbacks.py:60
-msgid "Relay domain"
-msgstr ""
-
-#: relaydomains/general_callbacks.py:73
+#: handlers.py:105
 msgid "Relay settings"
 msgstr ""
 
-#: relaydomains/general_callbacks.py:109
-msgid ""
-"\n"
-"<li><em>relaydomain; name; target host; service; enabled; verify recipients</"
-"em></li>\n"
+#: handlers.py:136 handlers.py:143
+msgid "Relay domain"
 msgstr ""
 
-#: relaydomains/models.py:48
+#: models.py:47
 msgid "name"
 msgstr ""
 
-#: relaydomains/models.py:49
+#: models.py:48
 msgid "The service name"
 msgstr ""
 
-#: relaydomains/models.py:71
-msgid "target host"
+#: models.py:70
+msgid "target host address"
 msgstr ""
 
-#: relaydomains/models.py:72
-msgid "Remote destination of this domain"
+#: models.py:72
+msgid "Remote address (hostname or IP) of this domain"
 msgstr ""
 
-#: relaydomains/models.py:76
+#: models.py:75
+msgid "target host port"
+msgstr ""
+
+#: models.py:77
+msgid "Remote port of this domain"
+msgstr ""
+
+#: models.py:82
 msgid "verify recipients"
 msgstr ""
 
-#: relaydomains/models.py:77
+#: models.py:83
 msgid "Check for valid recipients"
 msgstr ""
 
-#: relaydomains/models.py:88
+#: models.py:94
 msgid "Relay Domain"
 msgstr ""
 
-#: relaydomains/models.py:115
+#: models.py:122
 msgid "Invalid line"
 msgstr ""
 
-#: relaydomains/templates/relaydomains/service_field.html:3
+#: templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr ""

@@ -1,0 +1,45 @@
+{% extends "admin/header.html" %}
+
+{% load i18n %}
+{% load admin_tags %}
+{% load lib_tags %}
+
+{% block leftcol %}
+  <ul class="nav nav-sidebar">
+    {% identities_menu user "identities" False %}
+  </ul>
+
+  {% get_extra_admin_content user "leftcol" selection %}
+{% endblock %}
+
+{% block apparea %}
+  <h2>{% trans "Alias" %} {{ object }}{% if not object.enabled %} <small>{% trans "(disabled)" %}</small>{% endif %}</h2>
+  <hr>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">{% trans "Summary" %}</h3>
+        </div>
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            <dt>{% trans "Created" %}</dt><dd>{{ alias.creation|date:"SHORT_DATETIME_FORMAT" }}</dd>
+            <dt>{% trans "Modified" %}</dt><dd>{{ alias.last_modification|date:"SHORT_DATETIME_FORMAT" }}</dd>
+            {% if alias.expire_at %}
+              <dt>{% trans "Expire at" %}</dt><dd>{{ alias.expire_at|date:"SHORT_DATETIME_FORMAT" }}</dd>
+            {% endif %}
+            {% if alias.description %}
+              <dt>{% trans "Description" %}</dt><dd>{{ alias.description }}</dd>
+            {% endif %}
+          </dl>
+        </div>
+        <table class="table">
+          <tr><th>{% trans "Recipients" %}</th></tr>
+          {% for recipient in object.recipients %}
+            <tr><td>{{ recipient }}</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -146,7 +146,7 @@ Domains.prototype = {
      * @param {Object} data - options
      */
     init_domain_links: function(data) {
-        var deloptions = (data.handle_mailboxes === "yes") ?
+        var deloptions = (data.handle_mailboxes) ?
             {keepdir: gettext("Do not delete domain directory")} : {};
         var warnmsg = (data.auto_account_removal && data.auto_account_removal === "yes")
             ? gettext("This operation will remove ALL data associated to this domain.")
@@ -190,7 +190,7 @@ Domains.prototype = {
 
     create_dom_admin_changed: function(e) {
         var $target = $(e.target);
-        this.change_inputs_state(($target.val() === "yes") ? false : true);
+        this.change_inputs_state(($target.val() === "True") ? false : true);
     },
 
     /**
@@ -215,7 +215,7 @@ Domains.prototype = {
         $("input[name=create_dom_admin]").click(
             $.proxy(this.create_dom_admin_changed, this));
         this.change_inputs_state(
-            $("input[name=create_dom_admin]:checked").val() === "yes" ? false : true
+            $("input[name=create_dom_admin]:checked").val() === "True" ? false : true
         );
         this.optionsform_prefill();
     },
@@ -329,7 +329,7 @@ Identities.prototype = {
     init_identity_links: function(data) {
         var deloptions = {};
 
-        if (data.handle_mailboxes === "yes") {
+        if (data.handle_mailboxes) {
             deloptions = {keepdir: gettext("Do not delete mailbox directory")};
         }
 
@@ -493,6 +493,15 @@ Identities.prototype = {
                 return true;
             }
         });
+        $("#original_senderaddress").dynamic_input({
+            input_added: function($row) {
+                $row.find("label").html("");
+            },
+            input_removed: function($input) {
+                $input.parents(".form-group").remove();
+                return true;
+            }
+        });
         $("#id_email").autocompleter({
             from_character: "@",
             choices: $.proxy(this.get_domain_list, this)
@@ -552,6 +561,15 @@ Identities.prototype = {
     },
 
     aliasform_cb: function() {
+        $("#id_random_address").click(function(evt) {
+            if ($(this).prop("checked")) {
+                $("#id_address").parents(".form-group").hide();
+                $("#id_domain").parents(".form-group").show();
+            } else {
+                $("#id_address").parents(".form-group").show();
+                $("#id_domain").parents(".form-group").hide();
+            }
+        });
         $("#id_address").autocompleter({
             from_character: "@",
             choices: $.proxy(this.get_domain_list, this)
@@ -564,6 +582,9 @@ Identities.prototype = {
                 $input.parents(".form-group").remove();
                 return true;
             }
+        });
+        $("#id_expire_at").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
         });
         $(".submit").on('click', $.proxy(function(e) {
             simple_ajax_form_post(e, {

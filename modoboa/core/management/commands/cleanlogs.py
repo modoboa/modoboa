@@ -1,29 +1,28 @@
 # coding: utf-8
 
 import datetime
-from optparse import make_option
+import logging
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from modoboa.core.models import Log
-from modoboa.lib import parameters
+
+from ... import parameters
 
 
 class Command(BaseCommand):
-    args = ''
-    help = 'Log table cleanup'
+    args = ""
+    help = "Log table cleanup"
 
-    option_list = BaseCommand.option_list + (
-        make_option('--debug',
-                    action='store_true',
-                    default=False,
-                    help='Activate debug output'),
-        make_option('--verbose',
-                    action='store_true',
-                    default=False,
-                    help='Display informational messages')
-    )
+    def add_arguments(self, parser):
+        """Add extra arguments to command line."""
+        parser.add_argument(
+            "--debug", action="store_true", default=False,
+            help="Activate debug output")
+        parser.add_argument(
+            "--verbose", action="store_true", default=False,
+            help="Display informational messages")
 
     def __vprint(self, msg):
         if not self.verbose:
@@ -32,13 +31,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options["debug"]:
-            import logging
             l = logging.getLogger("django.db.backends")
             l.setLevel(logging.DEBUG)
             l.addHandler(logging.StreamHandler())
         self.verbose = options["verbose"]
 
-        log_maximum_age = int(parameters.get_admin("LOG_MAXIMUM_AGE"))
+        log_maximum_age = parameters.get_global_parameter("log_maximum_age")
         self.__vprint("Deleting logs older than %d days..." % log_maximum_age)
         limit = timezone.now() - datetime.timedelta(log_maximum_age)
         Log.objects.filter(date_created__lt=limit).delete()

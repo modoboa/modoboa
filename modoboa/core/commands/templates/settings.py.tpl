@@ -63,6 +63,7 @@ MODOBOA_APPS = (
     'modoboa.admin',
     'modoboa.relaydomains',
     'modoboa.limits',
+    'modoboa.parameters',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}
@@ -81,14 +82,23 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'modoboa.core.middleware.LocalConfigMiddleware',
     'modoboa.lib.middleware.AjaxLoginRedirect',
     'modoboa.lib.middleware.CommonExceptionCatcher',
     'modoboa.lib.middleware.RequestCatcherMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'modoboa.lib.authbackends.SimpleBackend',
+    # 'modoboa.lib.authbackends.LDAPBackend',
+    # 'modoboa.lib.authbackends.SMTPBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
+
+# SMTP authentication
+# AUTH_SMTP_SERVER_ADDRESS = 'localhost'
+# AUTH_SMTP_SERVER_PORT = 25
+# AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
+
 
 TEMPLATES = [
     {
@@ -133,7 +143,7 @@ TIME_ZONE = '{{ timezone }}'
 
 USE_I18N = True
 
-USE_L10N = False
+USE_L10N = True
 
 USE_TZ = True
 
@@ -167,8 +177,12 @@ SWAGGER_SETTINGS = {
     "exclude_namespaces": [],
     "info": {
         "contact": "contact@modoboa.com",
-        "description": ("Modoboa API, requires a valid token."),
-        "title": "Modoboa API",
+        "description": (
+            "Modoboa API, requires a valid token. To obtain a token, login "
+            "as super administrator, go to 'User settings > API' and enable "
+            "API access. Click on 'Update' and wait for page refresh."
+        ),
+        "title": "Modoboa API documentation",
     }
 }
 

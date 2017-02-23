@@ -1,16 +1,23 @@
 # coding: utf-8
+"""Core authentication views."""
+
 import logging
 
-from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
+from django.contrib.auth import authenticate, login, logout
+
 from modoboa.core.forms import LoginForm
-from modoboa.lib import events
-from modoboa.lib.web_utils import _render_to_string
+
+from .base import find_nextlocation
+from .. import signals
+
+logger = logging.getLogger("modoboa.auth")
 
 
 def dologin(request):
@@ -23,10 +30,6 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
-                nextlocation = None
-                if not user.last_login:
-                    # Redirect to profile on first login
-                    nextlocation = reverse("core:user_index")
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
@@ -36,20 +39,13 @@ def dologin(request):
                     request.user.language)
 
                 logger.info(
-                    _("User '%s' successfully logged in" % user.username)
+                    _("User '%s' successfully logged in") % user.username
                 )
-                events.raiseEvent("UserLogin", request,
-                                  form.cleaned_data["username"],
-                                  form.cleaned_data["password"])
-
-                if nextlocation is None:
-                    nextlocation = request.POST.get("next", None)
-                    if nextlocation is None or nextlocation == "None":
-                        if user.group == "SimpleUsers":
-                            nextlocation = reverse("topredirection")
-                        else:
-                            nextlocation = reverse("admin:domain_list")
-                return HttpResponseRedirect(nextlocation)
+                signals.user_login.send(
+                    sender="dologin",
+                    username=form.cleaned_data["username"],
+                    password=form.cleaned_data["password"])
+                return HttpResponseRedirect(find_nextlocation(request, user))
             error = _(
                 "Your username and password didn't match. Please try again.")
             logger.warning(
@@ -65,20 +61,25 @@ def dologin(request):
         nextlocation = request.GET.get("next", None)
         httpcode = 200
 
-    return HttpResponse(_render_to_string(request, "registration/login.html", {
-        "form": form, "error": error, "next": nextlocation,
-        "annoucements": events.raiseQueryEvent("GetAnnouncement", "loginpage")
-    }), status=httpcode)
+    announcements = signals.get_announcements.send(
+        sender="login", location="loginpage")
+    announcements = [announcement[1] for announcement in announcements]
+    return HttpResponse(
+        render_to_string(
+            "registration/login.html", {
+                "form": form, "error": error, "next": nextlocation,
+                "annoucements": announcements},
+            request),
+        status=httpcode)
 
 dologin = never_cache(dologin)
 
 
 def dologout(request):
-    """Logout the current user.
-    """
-    if not request.user.is_anonymous():
-        events.raiseEvent("UserLogout", request)
+    """Logout current user."""
+    if not request.user.is_anonymous:
+        signals.user_logout.send(sender="dologout", request=request)
         logger = logging.getLogger("modoboa.auth")
-        logger.info(_("User '%s' logged out" % request.user.username))
+        logger.info(_("User {} logged out").format(request.user.username))
         logout(request)
     return HttpResponseRedirect(reverse("core:login"))

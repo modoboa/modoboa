@@ -21,6 +21,7 @@ class DomainViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -36,6 +37,7 @@ class DomainAliasViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainAliasSerializer
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -50,12 +52,16 @@ class AccountViewSet(viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_serializer_class(self):
         """Return a serializer."""
-        if self.request.method == "GET":
-            return serializers.AccountSerializer
-        return serializers.WritableAccountSerializer
+        action_dict = {
+            "list": serializers.AccountSerializer,
+            "retrive": serializers.AccountSerializer
+        }
+        return action_dict.get(
+            self.action, serializers.WritableAccountSerializer)
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -68,10 +74,6 @@ class AccountViewSet(viewsets.ModelViewSet):
         if domain:
             queryset = queryset.filter(mailbox__domain__name=domain)
         return queryset
-
-    def perform_destroy(self, instance):
-        """Add custom args to delete call."""
-        instance.delete(self.request.user)
 
     @detail_route(methods=["put"])
     def password(self, request, pk=None):
@@ -142,6 +144,7 @@ class AliasViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.AliasSerializer
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

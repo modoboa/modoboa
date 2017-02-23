@@ -1,5 +1,9 @@
 """Models related to aliases management."""
 
+import hashlib
+import random
+
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -24,18 +28,22 @@ class Alias(AdminObject):
     """Mailbox alias."""
 
     address = models.CharField(
-        ugettext_lazy('address'), max_length=254,
+        ugettext_lazy("address"), max_length=254,
         help_text=ugettext_lazy(
             "The alias address."
         )
     )
     domain = models.ForeignKey(Domain, null=True)
     enabled = models.BooleanField(
-        ugettext_lazy('enabled'),
+        ugettext_lazy("enabled"),
         help_text=ugettext_lazy("Check to activate this alias"),
         default=True
     )
     internal = models.BooleanField(default=False)
+    description = models.TextField(
+        ugettext_lazy("Description"), blank=True)
+    expire_at = models.DateTimeField(
+        ugettext_lazy("Expire at"), blank=True, null=True)
     _objectname = 'MailboxAlias'
 
     class Meta:
@@ -48,6 +56,14 @@ class Alias(AdminObject):
 
     def __str__(self):
         return smart_text(self.address)
+
+    @classmethod
+    def generate_random_address(cls):
+        """Generate a random address (local part)."""
+        m = hashlib.md5()
+        for x in random.sample(xrange(10000000), 60):
+            m.update(str(x))
+        return m.hexdigest()[:20]
 
     @property
     def identity(self):
@@ -65,24 +81,16 @@ class Alias(AdminObject):
 
     @property
     def type(self):
-        cpt = self.recipients_count
-        if cpt > 1:
-            return "dlist"
-        qset = self.aliasrecipient_set.filter(
-            r_mailbox__isnull=True, r_alias__isnull=True)
-        if qset.exists():
-            return "forward"
+        """FIXME: deprecated."""
         return "alias"
 
     @property
     def tags(self):
-        labels = {
-            "dlist": _("distribution list"),
-            "forward": _("forward"),
-            "alias": _("alias")
-        }
-        altype = self.type
-        return [{"name": altype, "label": labels[altype], "type": "idt"}]
+        return [{"name": "alias", "label": _("alias"), "type": "idt"}]
+
+    def get_absolute_url(self):
+        """Return detail url for this alias."""
+        return reverse("admin:alias_detail", args=[self.pk])
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
@@ -92,8 +100,9 @@ class Alias(AdminObject):
                 grant_access_to_object(admin, self)
 
     def set_recipients(self, address_list):
-        """Set recipients for this alias. Special recipients:
+        """Set recipients for this alias.
 
+        Special recipients:
         * local mailbox + extension: r_mailbox will be set to local mailbox
         * alias address == recipient address: valid only to keep local copies
           (when a forward is defined) and to create exceptions when a catchall
@@ -159,9 +168,7 @@ class Alias(AdminObject):
         return self.aliasrecipient_set.count()
 
     def from_csv(self, user, row, expected_elements=5):
-        """Create a new alias from a CSV file entry
-
-        """
+        """Create a new alias from a CSV file entry."""
         if len(row) < expected_elements:
             raise BadRequest(_("Invalid line: %s" % row))
         address = row[1].strip()
@@ -173,7 +180,7 @@ class Alias(AdminObject):
         if not user.can_access(domain):
             raise PermDeniedException
         core_signals.can_create_object.send(
-            sender="import", context=user, object_type="mailbox_aliases")
+            sender="import", context=user, klass=Alias)
         core_signals.can_create_object.send(
             sender="import", context=domain, object_type="mailbox_aliases")
         if Alias.objects.filter(address=address).exists():
@@ -186,7 +193,7 @@ class Alias(AdminObject):
         self.post_create(user)
 
     def to_csv(self, csvwriter):
-        row = [self.type, self.address.encode("utf-8"), self.enabled]
+        row = ["alias", self.address.encode("utf-8"), self.enabled]
         row += self.recipients
         csvwriter.writerow(row)
 

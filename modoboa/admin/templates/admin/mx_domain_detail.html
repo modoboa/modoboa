@@ -1,0 +1,41 @@
+{% extends "common/generic_modal.html" %}
+
+{% load i18n %}
+
+{% block modalbody %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>{% trans "Name" %}</th>
+        <th>{% trans "Address" %}</th>
+        <th>{% trans "Updated" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mx in domain.mxrecord_set.all %}
+        <tr>
+          <td>{{ mx.name }}</td>
+          <td>
+            {% if mx.is_managed %}
+              {% if not mx.managed %}
+                <a class="label label-danger help"
+                   rel="popover"
+                   data-content="{% trans 'This IP does not match any of the valid MXs defined in parameters' %}"
+                   >{{ mx.address }}</a>
+              {% else %}
+                <span class="label label-success">{{ mx.address }}</span>
+              {% endif %}
+            {% else %}
+                {{ mx.address }}
+            {% endif %}
+          </td>
+          <td>{{ mx.updated|date:"SHORT_DATETIME_FORMAT" }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">{% trans "No MX record found for this domain." %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

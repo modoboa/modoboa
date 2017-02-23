@@ -3,9 +3,13 @@ Advanced (ie. stronger) password hashers.
 
 This module relies on `passlib` to provide more secure hashers.
 """
+
 from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
-from modoboa.core.password_hashers.base import PasswordHasher
-from modoboa.lib import parameters
+
+from modoboa.parameters import tools as param_tools
+
+from .base import PasswordHasher
+
 
 class BLFCRYPTHasher(PasswordHasher):
     """
@@ -25,7 +29,7 @@ class BLFCRYPTHasher(PasswordHasher):
         # Using the parameter for rounds will generate the error
         # ValueError: rounds too high (bcrypt requires <= 31 rounds)
         # when using the bcrypt hasher.
-        #rounds = int(parameters.get_admin('ROUNDS_NUMBER'))
+        # rounds = parameters.get_global_parameter("rounds_number")
         # To get around this, I use the default of 12.
         rounds = 12
         return bcrypt.encrypt(clearvalue, rounds=rounds)
@@ -71,7 +75,7 @@ class SHA256CRYPTHasher(PasswordHasher):
         return pwhash
 
     def _encrypt(self, clearvalue, salt=None):
-        rounds = int(parameters.get_admin('ROUNDS_NUMBER'))
+        rounds = param_tools.get_global_parameter("rounds_number")
         return sha256_crypt.encrypt(clearvalue, rounds=rounds)
 
     def verify(self, clearvalue, hashed_value):
@@ -94,7 +98,7 @@ class SHA512CRYPTHasher(PasswordHasher):
         return pwhash
 
     def _encrypt(self, clearvalue, salt=None):
-        rounds = int(parameters.get_admin('ROUNDS_NUMBER'))
+        rounds = param_tools.get_global_parameter("rounds_number")
         return sha512_crypt.encrypt(clearvalue, rounds=rounds)
 
     def verify(self, clearvalue, hashed_value):

@@ -2,7 +2,7 @@
 `Modoboa <http://modoboa.org/>`_
 ################################
 
-|travis| |codecov| |landscape| |latest-version| |downloads|
+|travis| |codecov| |landscape| |latest-version|
 
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
@@ -38,7 +38,7 @@ Main features
 Documentation
 *************
 
-A detailed `documentation <https://modoboa.readthedocs.org/>`_ will help you
+A detailed `documentation <https://modoboa.readthedocs.io/>`_ will help you
 to install, use or extend Modoboa.
 
 *************
@@ -55,13 +55,10 @@ The following external libraries are provided with Modoboa:
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
-.. |landscape| image:: https://landscape.io/github/tonioo/modoboa/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/tonioo/modoboa/master
+.. |landscape| image:: https://landscape.io/github/modoboa/modoboa/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/modoboa/modoboa/master
    :alt: Code Health
-.. |downloads| image:: https://img.shields.io/pypi/dm/modoboa.svg
-   :target: https://pypi.python.org/pypi/modoboa/
-   :alt: Downloads from Pypi
-.. |travis| image:: https://travis-ci.org/tonioo/modoboa.png?branch=master
-   :target: https://travis-ci.org/tonioo/modoboa
-.. |codecov| image:: http://codecov.io/github/tonioo/modoboa/coverage.svg?branch=master
-   :target: http://codecov.io/github/tonioo/modoboa?branch=master
+.. |travis| image:: https://travis-ci.org/modoboa/modoboa.png?branch=master
+   :target: https://travis-ci.org/modoboa/modoboa
+.. |codecov| image:: http://codecov.io/github/modoboa/modoboa/coverage.svg?branch=master
+   :target: http://codecov.io/github/modoboa/modoboa?branch=master

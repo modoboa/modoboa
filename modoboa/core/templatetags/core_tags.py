@@ -1,32 +1,36 @@
 """Custom tags for Core application."""
 
+import os
+import pkg_resources
 import re
 
 from django import template
-from django.contrib.sessions.models import Session
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
-from modoboa.lib import events
+from django.contrib.sessions.models import Session
 
+from .. import signals
 
 register = template.Library()
 
 
 @register.simple_tag
 def core_menu(selection, user):
-    entries = \
-        events.raiseQueryEvent("AdminMenuDisplay", "top_menu", user)
+    """Build the top level menu."""
+    entries = signals.extra_admin_menu_entries.send(
+        sender="core_menu", location="top_menu", user=user)
+    entries = reduce(lambda a, b: a + b, [entry[1] for entry in entries])
     if user.is_superuser:
         entries += [
             {"name": "settings",
              "label": _("Modoboa"),
              "url": reverse("core:index")}
         ]
-
     if not len(entries):
         return ""
     return render_to_string("common/menulist.html", {
@@ -38,8 +42,10 @@ def core_menu(selection, user):
 
 @register.simple_tag
 def extensions_menu(selection, user):
-    menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu", user)
-    return render_to_string('common/menulist.html', {
+    menu = signals.extra_user_menu_entries.send(
+        sender="core_menu", location="top_menu", user=user)
+    menu = reduce(lambda a, b: a + b, [entry[1] for entry in menu])
+    return render_to_string("common/menulist.html", {
         "selection": selection, "entries": menu, "user": user
     })
 
@@ -83,13 +89,16 @@ def user_menu(user, selection):
          ]}
     ]
 
-    entries[0]["menu"] += \
-        events.raiseQueryEvent("UserMenuDisplay", "options_menu", user) \
-        + [{"name": "logout",
-            "url": reverse("core:logout"),
-            "label": _("Logout"),
-            "img": "fa fa-sign-out"}]
-
+    extra_entries = signals.extra_user_menu_entries.send(
+        sender="user_menu", location="options_menu", user=user)
+    extra_entries = reduce(
+        lambda a, b: a + b, [entry[1] for entry in extra_entries])
+    entries[0]["menu"] += (
+        extra_entries + [{"name": "logout",
+                          "url": reverse("core:logout"),
+                          "label": _("Logout"),
+                          "img": "fa fa-sign-out"}]
+    )
     return render_to_string("common/menulist.html", {
         "selection": selection, "entries": entries, "user": user
     })
@@ -114,9 +123,13 @@ def uprefs_menu(selection, user):
             "url": "api/",
             "label": _("API"),
         })
-    entries += events.raiseQueryEvent("UserMenuDisplay", "uprefs_menu", user)
+    extra_entries = signals.extra_user_menu_entries.send(
+        sender="user_menu", location="uprefs_menu", user=user)
+    extra_entries = reduce(
+        lambda a, b: a + b, [entry[1] for entry in extra_entries])
+    entries += extra_entries
     entries = sorted(entries, key=lambda e: e["label"])
-    return render_to_string('common/menu.html', {
+    return render_to_string("common/menu.html", {
         "entries": entries,
         "css": "nav nav-sidebar",
         "selection": selection,
@@ -157,7 +170,6 @@ def visirule(field):
 
 @register.simple_tag
 def get_version():
-    import pkg_resources
     return pkg_resources.get_distribution("modoboa").version
 
 
@@ -201,9 +213,6 @@ def connected_users(parser, token):
 
 @register.simple_tag
 def get_modoboa_logo():
-    import os
-    from django.conf import settings
-
     try:
         logo = settings.MODOBOA_CUSTOM_LOGO
     except AttributeError:
@@ -215,9 +224,12 @@ def get_modoboa_logo():
 
 @register.simple_tag
 def load_optionalmenu(user):
-    menu = events.raiseQueryEvent("UserMenuDisplay", "top_menu_middle", user)
+    menu = signals.extra_user_menu_entries.send(
+        sender="user_menu", location="top_menu_middle", user=user)
+    menu = reduce(
+        lambda a, b: a + b, [entry[1] for entry in menu])
     return template.loader.render_to_string(
-        'common/menulist.html',
+        "common/menulist.html",
         {"entries": menu, "user": user}
     )
 

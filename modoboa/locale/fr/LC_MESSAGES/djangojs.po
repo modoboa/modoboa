@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
 "PO-Revision-Date: 2016-04-27 20:14+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "'"
 msgstr "'"
 
-#: core/static/core/js/settings.js:14
+#: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
 msgstr "Plus d'entrée de journal à afficher"
 
@@ -35,7 +35,7 @@ msgstr "Avertissement"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: static/js/global.js:339
+#: static/js/global.js:341
 msgid "Internal error"
 msgstr "Erreur interne"
 

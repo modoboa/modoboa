@@ -1,16 +1,13 @@
-"""
-Relay domains settings definition.
-"""
+"""Relay domains settings definition."""
 
 from django import forms
 from django.utils.translation import ugettext_lazy
 
-from modoboa.lib import parameters
 from modoboa.lib.form_utils import SeparatorField
+from modoboa.parameters import forms as param_forms
 
 
-class AdminParametersForm(parameters.AdminParametersForm):
-
+class AdminParametersForm(param_forms.AdminParametersForm):
     """Admin parameters definition."""
 
     app = "relaydomains"

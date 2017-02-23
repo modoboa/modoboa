@@ -1,29 +1,31 @@
 """Identity related views."""
 
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _, ungettext
+from django.views import generic
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.shortcuts import render
-from django.utils.translation import ugettext as _, ungettext
-from django.views.decorators.csrf import ensure_csrf_cookie
 
 from reversion import revisions as reversion
 
 from modoboa.core.models import User
-from modoboa.lib import parameters, events
 from modoboa.lib.exceptions import (
     PermDeniedException, BadRequest
 )
 from modoboa.lib.listing import (
     get_sort_order, get_listing_page
 )
-from modoboa.lib.web_utils import (
-    _render_to_string, render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
 
 from ..forms import AccountForm, AccountWizard
 from ..lib import get_identities
 from ..models import Mailbox, Domain
+from .. import signals
 
 
 @login_required
@@ -45,19 +47,19 @@ def _identities(request):
         objects = sorted(idents_list, key=lambda o: o.tags[0],
                          reverse=sort_dir == '-')
     context = {
-        "handle_mailboxes": parameters.get_admin(
-            "HANDLE_MAILBOXES", raise_error=False)
+        "handle_mailboxes": request.localconfig.parameters.get_value(
+            "handle_mailboxes", raise_exception=False)
     }
     page = get_listing_page(objects, request.GET.get("page", 1))
     if page is None:
         context["length"] = 0
     else:
-        context["headers"] = _render_to_string(
-            request, "admin/identity_headers.html", {})
-        context["rows"] = _render_to_string(
-            request, "admin/identities_table.html", {
+        context["headers"] = render_to_string(
+            "admin/identity_headers.html", {}, request)
+        context["rows"] = render_to_string(
+            "admin/identities_table.html", {
                 "identities": page.object_list
-            }
+            }, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
@@ -108,17 +110,15 @@ def list_quotas(request):
         raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
     context = {
-        "headers": _render_to_string(
-            request, "admin/quota_headers.html", {}
+        "headers": render_to_string(
+            "admin/quota_headers.html", {}, request
         )
     }
     if page is None:
         context["length"] = 0
     else:
-        context["rows"] = _render_to_string(
-            request, "admin/quotas.html", {
-                "mboxes": page
-            }
+        context["rows"] = render_to_string(
+            "admin/quotas.html", {"mboxes": page}, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
@@ -170,22 +170,24 @@ def newaccount(request):
 @login_required
 @permission_required("core.change_user")
 @reversion.create_revision()
-def editaccount(request, accountid, tplname="common/tabforms.html"):
-    account = User.objects.get(pk=accountid)
+def editaccount(request, pk):
+    account = User.objects.get(pk=pk)
     if not request.user.can_access(account):
         raise PermDeniedException
     mb = account.mailbox if hasattr(account, "mailbox") else None
 
     instances = dict(general=account, mail=mb, perms=account)
-    events.raiseEvent("FillAccountInstances", request.user, account, instances)
+    results = signals.get_account_form_instances.send(
+        sender="editaccount", user=request.user, account=account)
+    for result in results:
+        instances.update(result[1])
     return AccountForm(request, instances=instances).process()
 
 
 @login_required
 @permission_required("core.delete_user")
-def delaccount(request, accountid):
-    keepdir = True if request.POST.get("keepdir", "false") == "true" else False
-    User.objects.get(pk=accountid).delete(request.user, keep_mb_dir=keepdir)
+def delaccount(request, pk):
+    User.objects.get(pk=pk).delete()
     return render_to_json_response(
         ungettext("Account deleted", "Accounts deleted", 1)
     )
@@ -208,3 +210,36 @@ def remove_permission(request):
         raise PermDeniedException
     domain.remove_admin(account)
     return render_to_json_response({})
+
+
+class AccountDetailView(
+        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+    """DetailView for Account."""
+
+    model = User
+    permission_required = "core.add_user"
+    template_name = "admin/account_detail.html"
+
+    def has_permission(self):
+        """Check object-level access."""
+        result = super(AccountDetailView, self).has_permission()
+        if not result:
+            return result
+        return self.request.user.can_access(self.get_object())
+
+    def get_context_data(self, **kwargs):
+        """Add information to context."""
+        context = super(AccountDetailView, self).get_context_data(**kwargs)
+        del context["user"]
+        result = signals.extra_account_dashboard_widgets.send(
+            self.__class__, user=self.request.user, account=self.object)
+        context["templates"] = {"left": [], "right": []}
+        for receiver, widgets in result:
+            for widget in widgets:
+                context["templates"][widget["column"]].append(
+                    widget["template"])
+                context.update(widget["context"])
+        if self.object.role in ["Resellers", "DomainAdmins"]:
+            context["domains"] = Domain.objects.get_for_admin(self.object)
+        context["selection"] = "identities"
+        return context

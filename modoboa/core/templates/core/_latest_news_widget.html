@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">{% trans "Latest news" %}</h3>
+  </div>
+  <table class="table">
+    <tbody>
+      {% for post in news %}
+        <tr>
+          <td><a href="{{ post.link }}" target="_blank">{{ post.title }}</a></td>
+          <td class="text-right">{{ post.published|date:"DATE_FORMAT" }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="panel-body text-center">
+    {% blocktrans trimmed %}
+      Visit the <a href="https://modoboa.org/blog/" target="_blank">official weblog</a> for more information.
+    {% endblocktrans %}
+  </div>
+</div>

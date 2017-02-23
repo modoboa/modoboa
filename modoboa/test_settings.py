@@ -21,6 +21,18 @@ if DB == 'MYSQL':
         },
 
     }
+elif DB == 'SQLITE':
+    DATABASES = {
+
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'modoboa_test.db',
+            'PORT': '',
+            'ATOMIC_REQUESTS': True,
+
+        },
+
+    }
 else:
     DATABASES = {
 

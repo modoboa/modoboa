@@ -9,10 +9,10 @@ from django.core.management.base import BaseCommand, CommandError
 
 from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
-from modoboa.lib import events
 from modoboa.lib.exceptions import Conflict
 
 from .... import lib
+from .... import signals
 
 
 class ImportCommand(BaseCommand):
@@ -59,11 +59,11 @@ class ImportCommand(BaseCommand):
                 try:
                     fct = getattr(lib, "import_%s" % row[0].strip())
                 except AttributeError:
-                    fct = events.raiseQueryEvent(
-                        "ImportObject", row[0].strip())
+                    fct = signals.import_object.send(
+                        sender=self.__class__, objtype=row[0].strip())
                     if not fct:
                         continue
-                    fct = fct[0]
+                    fct = fct[0][1]
                 try:
                     fct(superadmin, row, options)
                 except Conflict:

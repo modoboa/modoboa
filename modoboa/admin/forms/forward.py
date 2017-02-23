@@ -1,15 +1,13 @@
 """Forms related to forwards management."""
 
 from django import forms
-from django.utils.translation import ugettext as _, ugettext_lazy
-
-from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.exceptions import BadRequest, PermDeniedException
-
-from ..models import Domain
+from django.core import validators
+from django.utils.translation import ugettext_lazy
 
 
 class ForwardForm(forms.Form):
+    """Forward definition form."""
+
     dest = forms.CharField(
         label=ugettext_lazy("Recipient(s)"),
         widget=forms.Textarea(attrs={"class": "form-control"}),
@@ -24,23 +22,13 @@ class ForwardForm(forms.Form):
             "Forward messages and store copies into your local mailbox")
     )
 
-    def get_recipients(self):
+    def clean_dest(self):
+        """Check recipients validity."""
+        rawdata = self.cleaned_data.get("dest", "").strip()
         recipients = []
-        rawdata = self.cleaned_data["dest"].strip()
         if not rawdata:
             return recipients
         for rcpt in rawdata.split(","):
-            local_part, domname = split_mailbox(rcpt)
-            if not local_part or not domname:
-                raise BadRequest("Invalid mailbox syntax for %s" % rcpt)
-            try:
-                Domain.objects.get(name=domname)
-            except Domain.DoesNotExist:
-                recipients += [rcpt]
-            else:
-                raise PermDeniedException(
-                    _("You can't define a forward to a local destination. "
-                      "Please ask your administrator to create an alias "
-                      "instead.")
-                )
+            validators.validate_email(rcpt)
+            recipients += [rcpt]
         return recipients

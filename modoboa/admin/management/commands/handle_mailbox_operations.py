@@ -1,11 +1,11 @@
+"""A management command to apply mailbox operations."""
 
 import logging
-from optparse import make_option
 import os
 
 from django.core.management.base import BaseCommand
 
-from modoboa.lib import parameters
+from param_tools import tools as param_tools
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
 
@@ -14,22 +14,26 @@ from ...models import MailboxOperation
 
 
 class OperationError(Exception):
+    """Custom exception."""
+
     pass
 
 
 class Command(BaseCommand):
-    help = 'Handles rename and delete operations on mailboxes'
+    """Command definition"""
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '--pidfile', default='/tmp/handle_mailbox_operations.pid',
-            help='Path to the file that will contain the PID of this process'
-        ),
-    )
+    help = "Handles rename and delete operations on mailboxes"
 
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
-        self.logger = logging.getLogger('modoboa.admin')
+        self.logger = logging.getLogger("modoboa.admin")
+
+    def add_arguments(self, parser):
+        """Add extra arguments to command line."""
+        parser.add_argument(
+            "--pidfile", default="/tmp/handle_mailbox_operations.pid",
+            help="Path to the file that will contain the PID of this process"
+        )
 
     def rename_mailbox(self, operation):
         if not os.path.exists(operation.argument):
@@ -75,22 +79,23 @@ class Command(BaseCommand):
         return True
 
     def handle(self, *args, **options):
+        """Command entry point."""
         load_admin_settings()
-        if parameters.get_admin("HANDLE_MAILBOXES") == 'no':
+        if not param_tools.get_global_parameter("handle_mailboxes"):
             return
-        if not self.check_pidfile(options['pidfile']):
+        if not self.check_pidfile(options["pidfile"]):
             return
         for ope in MailboxOperation.objects.all():
             try:
-                f = getattr(self, '%s_mailbox' % ope.type)
+                f = getattr(self, "%s_mailbox" % ope.type)
             except AttributeError:
                 continue
             try:
                 f(ope)
             except (OperationError, InternalError) as e:
-                self.logger.critical('%s failed (reason: %s)',
-                                     ope, str(e).encode('utf-8'))
+                self.logger.critical("%s failed (reason: %s)",
+                                     ope, str(e).encode("utf-8"))
             else:
-                self.logger.info('%s succeed', ope)
+                self.logger.info("%s succeed", ope)
                 ope.delete()
-        os.unlink(options['pidfile'])
+        os.unlink(options["pidfile"])

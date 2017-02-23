@@ -8,6 +8,7 @@ from rest_framework import serializers
 from passwords import validators
 
 from modoboa.admin import models as admin_models
+from modoboa.core import constants as core_constants
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
 from modoboa.lib import exceptions as lib_exceptions
@@ -22,12 +23,29 @@ class DomainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Domain
-        fields = ("pk", "name", "quota", "enabled", "type", )
+        fields = (
+            "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
+        )
+
+    def validate(self, data):
+        """Check quota values."""
+        quota = data.get("quota", 0)
+        default_mailbox_quota = data.get("default_mailbox_quota", 0)
+        if quota != 0 and default_mailbox_quota > quota:
+            raise serializers.ValidationError({
+                "default_mailbox_quota":
+                _("Cannot be greater than domain quota")
+            })
+        return data
 
     def create(self, validated_data):
         """Set permissions."""
         domain = models.Domain(**validated_data)
-        domain.save(creator=self.context["request"].user)
+        creator = self.context["request"].user
+        core_signals.can_create_object.send(
+                sender=self.__class__, context=creator,
+                klass=models.Domain, instance=domain)
+        domain.save(creator=creator)
         return domain
 
 
@@ -51,7 +69,7 @@ class DomainAliasSerializer(serializers.ModelSerializer):
         try:
             core_signals.can_create_object.send(
                 sender=self.__class__, context=creator,
-                object_type="domain_aliases")
+                klass=models.DomainAlias)
             core_signals.can_create_object.send(
                 sender=self.__class__, context=domain_alias.target,
                 object_type="domain_aliases")
@@ -102,7 +120,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_role(self, account):
         """Return role."""
-        return account.group
+        return account.role
 
     def get_domains(self, account):
         """Return domains administered by this account."""
@@ -154,6 +172,8 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
 class WritableAccountSerializer(AccountSerializer):
     """Serializer to create account."""
 
+    role = serializers.ChoiceField(choices=core_constants.ROLES)
+
     class Meta(AccountSerializer.Meta):
         fields = AccountSerializer.Meta.fields + (
             "password", )
@@ -169,6 +189,8 @@ class WritableAccountSerializer(AccountSerializer):
             choices=permissions.get_account_roles(user))
         self.fields["domains"] = serializers.ListField(
             child=serializers.CharField(), allow_empty=False, required=False)
+        if request.method == "PUT":
+            self.fields["password"].required = False
 
     def validate_password(self, value):
         """Check password constraints."""
@@ -182,11 +204,12 @@ class WritableAccountSerializer(AccountSerializer):
     def validate(self, data):
         """Check constraints."""
         master_user = data.get("master_user", False)
-        if master_user and data["role"] != "SuperAdmins":
+        role = data.get("role")
+        if master_user and role != "SuperAdmins":
             raise serializers.ValidationError({
                 "master_user": _("Not allowed for this role.")
             })
-        if data["role"] == "SimpleUsers":
+        if role == "SimpleUsers":
             mailbox = data.get("mailbox")
             if mailbox is None:
                 data["mailbox"] = {
@@ -223,18 +246,17 @@ class WritableAccountSerializer(AccountSerializer):
         try:
             core_signals.can_create_object.send(
                 sender=self.__class__, context=creator,
-                object_type="mailboxes")
+                klass=admin_models.Mailbox)
             core_signals.can_create_object.send(
                 sender=self.__class__, context=domain,
                 object_type="mailboxes")
         except lib_exceptions.ModoboaException as inst:
             raise serializers.ValidationError({
                 "domain": unicode(inst)})
+        quota = data.pop("quota", None)
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
-        mb.set_quota(
-            data.get("quota"), creator.has_perm("admin.add_domain")
-        )
+        mb.set_quota(quota, creator.has_perm("admin.add_domain"))
         mb.save(creator=creator)
         account.email = full_address
         return mb
@@ -270,11 +292,12 @@ class WritableAccountSerializer(AccountSerializer):
     def update(self, instance, validated_data):
         """Update account and associated objects."""
         mailbox_data = validated_data.pop("mailbox")
-        password = validated_data.pop("password")
+        password = validated_data.pop("password", None)
         domains = validated_data.pop("domains", [])
         for key, value in validated_data.items():
             setattr(instance, key, value)
-        instance.set_password(password)
+        if password:
+            instance.set_password(password)
         instance.save()
         if mailbox_data:
             creator = self.context["request"].user
@@ -316,7 +339,7 @@ class AliasSerializer(serializers.ModelSerializer):
         try:
             core_signals.can_create_object.send(
                 sender=self.__class__, context=creator,
-                object_type="mailbox_aliases")
+                klass=admin_models.Alias)
             core_signals.can_create_object.send(
                 sender=self.__class__, context=self.domain,
                 object_type="mailbox_aliases")

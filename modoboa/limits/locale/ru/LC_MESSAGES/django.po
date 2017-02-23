@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -147,7 +147,7 @@ msgid ""
 "-1 to allow unlimited creations)"
 msgstr "Максимальное количество синонимов для нового администратора"
 
-#: limits/apps.py:17
+#: limits/apps.py:12
 msgid "Limits"
 msgstr "Лимиты"
 
@@ -217,7 +217,7 @@ msgstr "Ошибочный лимит"
 msgid "You're not allowed to define unlimited values"
 msgstr "Вам не позволено определять нелимитированные значения"
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/handlers.py:123 limits/handlers.py:159
 msgid "Resources"
 msgstr "Ресурсы"
 
@@ -230,12 +230,12 @@ msgstr "%s лимит исчерпан"
 msgid "Not enough resources"
 msgstr "Недостаточно ресурсов"
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr "Не лимитировано"
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr "Использование ресурсов"
 

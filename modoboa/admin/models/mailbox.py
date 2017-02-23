@@ -12,13 +12,14 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from reversion import revisions as reversion
 
-from .base import AdminObject
-from .domain import Domain
 from modoboa.core.models import User
-from modoboa.lib import events, parameters
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import exec_cmd
+from modoboa.parameters import tools as param_tools
+
+from .base import AdminObject
+from .domain import Domain
 
 
 class Quota(models.Model):
@@ -73,7 +74,6 @@ class MailboxManager(Manager):
 
 @python_2_unicode_compatible
 class Mailbox(AdminObject):
-
     """User mailbox."""
 
     address = models.CharField(
@@ -81,7 +81,7 @@ class Mailbox(AdminObject):
         help_text=ugettext_lazy(
             "Mailbox address (without the @domain.tld part)")
     )
-    quota = models.PositiveIntegerField()
+    quota = models.PositiveIntegerField(default=0)
     use_domain_quota = models.BooleanField(default=False)
     domain = models.ForeignKey(Domain)
     user = models.OneToOneField(User)
@@ -131,21 +131,21 @@ class Mailbox(AdminObject):
         several patterns to understand and we don't want to implement
         them.
         """
-        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-        if hm is None or hm == "no":
+        admin_params = dict(param_tools.get_global_parameters("admin"))
+        if not admin_params.get("handle_mailboxes"):
             return None
         if self.__mail_home is None:
             curuser = pwd.getpwuid(os.getuid()).pw_name
-            mbowner = parameters.get_admin("MAILBOXES_OWNER")
+            mbowner = admin_params["mailboxes_owner"]
             options = {}
             if curuser != mbowner:
-                options['sudo_user'] = mbowner
+                options["sudo_user"] = mbowner
             code, output = exec_cmd(
                 "doveadm user %s -f home" % self.full_address, **options
             )
             if code:
                 raise lib_exceptions.InternalError(
-                    _("Failed to retrieve mailbox location (%s)" % output))
+                    _(u"Failed to retrieve mailbox location (%s)") % output)
             self.__mail_home = output.strip()
         return self.__mail_home
 
@@ -155,13 +155,11 @@ class Mailbox(AdminObject):
 
         :rtype: list of string
         """
-        aliases = []
         qset = (
             self.aliasrecipient_set.select_related("alias")
             .filter(alias__internal=False)
         )
-        for alr in qset:
-            aliases += [alr.alias.address]
+        aliases = [alr.alias.address for alr in qset]
         return aliases
 
     @property
@@ -182,8 +180,9 @@ class Mailbox(AdminObject):
 
     def rename_dir(self, old_mail_home):
         """Rename local directory if needed."""
-        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-        if hm is None or hm == "no":
+        hm = param_tools.get_global_parameter(
+            "handle_mailboxes", raise_exception=False)
+        if not hm:
             return
         MailboxOperation.objects.create(
             mailbox=self, type="rename", argument=old_mail_home
@@ -212,13 +211,14 @@ class Mailbox(AdminObject):
         self.rename_dir(old_mail_home)
 
     def delete_dir(self):
-        hm = parameters.get_admin("HANDLE_MAILBOXES", raise_error=False)
-        if hm is None or hm == "no":
+        hm = param_tools.get_global_parameter(
+            "handle_mailboxes", raise_exception=False)
+        if not hm:
             return
-        MailboxOperation.objects.create(type='delete', argument=self.mail_home)
+        MailboxOperation.objects.create(type="delete", argument=self.mail_home)
 
     def set_quota(self, value=None, override_rules=False):
-        """Set or update quota's value for this mailbox.
+        """Set or update quota value for this mailbox.
 
         A value equal to 0 means the mailbox won't have any quota. The
         following cases allow people to define such behaviour:
@@ -228,20 +228,23 @@ class Mailbox(AdminObject):
         :param integer value: the quota's value
         :param bool override_rules: allow to override defined quota rules
         """
+        old_quota = self.quota
         if value is None:
             if self.use_domain_quota:
-                self.quota = self.domain.quota
+                self.quota = self.domain.default_mailbox_quota
             else:
                 self.quota = 0
-        elif int(value) > self.domain.quota and not override_rules:
-            raise lib_exceptions.BadRequest(
-                _("Quota is greater than the allowed domain's limit (%dM)")
-                  % self.domain.quota
-            )
         else:
             self.quota = value
-        if not self.quota and self.domain.quota and not override_rules:
-            raise lib_exceptions.BadRequest(_("A quota is required"))
+        if self.quota == 0:
+            if self.domain.quota and not override_rules:
+                raise lib_exceptions.BadRequest(_("A quota is required"))
+        elif self.domain.quota:
+            quota_usage = self.domain.quota_usage
+            if old_quota:
+                quota_usage -= old_quota
+            if quota_usage + self.quota > self.domain.quota:
+                raise lib_exceptions.BadRequest(_("Domain quota exceeded"))
 
     def get_quota(self):
         """Get quota limit.
@@ -285,7 +288,7 @@ class Mailbox(AdminObject):
         newaddress = None
         if values["email"] != self.full_address:
             newaddress = values["email"]
-        elif (self.user.group == "SimpleUsers" and
+        elif (self.user.role == "SimpleUsers" and
               self.user.username != self.full_address):
             newaddress = self.user.username
         if newaddress is not None:
@@ -304,7 +307,6 @@ class Mailbox(AdminObject):
         if newaddress:
             self.rename(local_part, domain)
         self.save()
-        events.raiseEvent("MailboxModified", self)
 
     def save(self, *args, **kwargs):
         """Custom save.
@@ -324,22 +326,27 @@ class Mailbox(AdminObject):
                 username=self.full_address)
         super(Mailbox, self).save(*args, **kwargs)
 
-    def delete(self, keepdir=False):
-        """Custom delete method
-
-        We try to delete the associated quota in the same time (it may
-        has already been removed if we're deleting a domain).
-
-        :param bool keepdir: delete the mailbox home dir on the
-                             filesystem or not
-
-        """
-        Quota.objects.filter(username=self.full_address).delete()
-        if not keepdir:
-            self.delete_dir()
-        super(Mailbox, self).delete()
-
 reversion.register(Mailbox)
+
+
+@python_2_unicode_compatible
+class SenderAddress(models.Model):
+    """Extra sender address for Mailbox."""
+
+    address = models.EmailField()
+    mailbox = models.ForeignKey(Mailbox)
+
+    class Meta:
+        app_label = "admin"
+        unique_together = [
+            ("address", "mailbox"),
+        ]
+
+    def __str__(self):
+        """Return address."""
+        return smart_text(self.address)
+
+reversion.register(SenderAddress)
 
 
 class MailboxOperation(models.Model):

@@ -21,7 +21,6 @@ DNSBL_PROVIDERS = [
     "dnsbl-3.uceprotect.net",
     "dnsbl.cyberlogic.net",
     "dnsbl.inps.de",
-    "dnsbl.njabl.org",
     "dnsbl.sorbs.net",
     "drone.abuse.ch",
     "duinv.aupads.org",
@@ -80,4 +79,13 @@ DNSBL_PROVIDERS = [
     "xbl.spamhaus.org",
     "zen.spamhaus.org",
     "zombie.dnsbl.sorbs.net",
+]
+
+# Do not run tests for these domains.
+# https://en.wikipedia.org/wiki/Top-level_domain#Reserved_domains
+RESERVED_TLD = [
+    "example",
+    "invalid",
+    "localhost",
+    "test"
 ]

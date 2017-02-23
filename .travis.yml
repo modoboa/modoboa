@@ -1,11 +1,13 @@
 sudo: false
 language: python
+cache: pip
 python:
   - "2.7"
 addons:
   apt:
     packages:
       - ldap-utils
+      - postfix
       - slapd
 
 env:
@@ -18,18 +20,19 @@ services:
 
 before_install:
   - pip install codecov
+  - if [[ $DB = 'POSTGRESQL' ]]; then pip install -q psycopg2; fi
+  - if [[ $DB = 'MYSQL' ]]; then pip install -q mysqlclient; fi
 
 install:
   - python setup.py -q develop
-  - pip install -q psycopg2 mysqlclient
   - pip install -q -r ldap-requirements.txt
   - pip install -q -r test-requirements.txt
 
 before_script:
-  - psql -c 'create database modoboa_test;' -U postgres
-  - mysql -e "create database IF NOT EXISTS modoboa_test;" -uroot
-  - mysql -e "CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'modoboa'" -uroot;
-  - mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'modoboa'@'localhost';" -uroot;
+  - if [[ $DB = 'POSTGRESQL' ]]; then psql -c 'create database modoboa_test;' -U postgres; fi
+  - if [[ $DB = 'MYSQL' ]]; then mysql -e "create database IF NOT EXISTS modoboa_test;" -uroot; fi
+  - if [[ $DB = 'MYSQL' ]]; then mysql -e "CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'modoboa'" -uroot; fi
+  - if [[ $DB = 'MYSQL' ]]; then mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'modoboa'@'localhost';" -uroot; fi
   - mkdir /tmp/slapd
   - slapd -f test_data/slapd.conf -h ldap://localhost:3389 &
   - sleep 3
@@ -38,7 +41,7 @@ before_script:
 script:
   - python ./tests.py
   - cd test_project
-  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin.tests modoboa.limits modoboa.relaydomains
+  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.admin.tests modoboa.limits modoboa.relaydomains
 
 after_success:
   - codecov

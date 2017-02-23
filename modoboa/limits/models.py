@@ -5,10 +5,12 @@
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
 from modoboa.core import models as core_models
 
+from . import lib
 from . import utils
 
 
@@ -21,6 +23,11 @@ class ObjectLimitMixin(object):
         return self.definition["label"]
 
     @property
+    def type(self):
+        """Return limit type."""
+        return self.definition.get("type", "count")
+
+    @property
     def usage(self):
         """Return current limit usage in %."""
         if self.max_value < 0:
@@ -29,9 +36,25 @@ class ObjectLimitMixin(object):
             return 100
         return int(float(self.current_value) / self.max_value * 100)
 
-    def is_exceeded(self, count=1):
-        """Check if limit will be reached if we add count object(s)."""
-        return self.current_value + 1 > self.max_value
+    def is_exceeded(self, count=1, instance=None):
+        """Check if limit will be reached if we add this object."""
+        if self.type == "count":
+            if self.max_value == -1:
+                return False
+            return self.current_value + count > self.max_value
+        if self.max_value == 0 or instance is None:
+            return False
+        field = self.definition["field"]
+        value = getattr(instance, field)
+        if value == 0:
+            # Do not allow unlimited value
+            raise lib.BadLimitValue(
+                _("You're not allowed to define unlimited values"))
+        try:
+            old_value = instance._loaded_values[field]
+        except (AttributeError, KeyError):
+            old_value = 0
+        return self.current_value + (value - old_value) > self.max_value
 
     def __str__(self):
         """Display current usage."""
@@ -63,7 +86,10 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
     @property
     def current_value(self):
         """Return the current number of objects."""
-        if "extra_filters" not in self.definition:
+        condition = (
+            self.type == "count" and
+            "extra_filters" not in self.definition)
+        if condition:
             return core_models.ObjectAccess.objects.filter(
                 user=self.user, is_owner=True,
                 content_type=self.content_type).count()
@@ -71,15 +97,21 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
             user=self.user, is_owner=True,
             content_type=self.content_type).values_list("object_id", flat=True)
         model_class = self.content_type.model_class()
-        return model_class.objects.filter(
-            pk__in=id_list, **self.definition["extra_filters"]).count()
+        if self.type == "count":
+            return model_class.objects.filter(
+                pk__in=id_list, **self.definition["extra_filters"]).count()
+        qset = model_class.objects.filter(pk__in=id_list)
+        if not qset.exists():
+            return 0
+        return qset.aggregate(
+            total=models.Sum(self.definition["field"]))["total"]
 
     @property
     def label(self):
         """Return display name."""
         return self.definition["label"]
 
-    @property
+    @cached_property
     def usage(self):
         """Return current limit usage in %."""
         if self.max_value < 0:
@@ -87,10 +119,6 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
         if self.max_value == 0:
             return 100
         return int(float(self.current_value) / self.max_value * 100)
-
-    def is_exceeded(self, count=1):
-        """Check if limit will be reached if we add count object(s)."""
-        return self.current_value + 1 > self.max_value
 
     def __str__(self):
         """Display current usage."""

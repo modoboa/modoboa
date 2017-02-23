@@ -2,9 +2,10 @@
 
 from subcommand.base import SubcommandCommand
 
-from .subcommands._dnsbl import CheckDNSBLCommand
+from .subcommands._mx import CheckMXRecords
 from .subcommands._export import ExportCommand
 from .subcommands._import import ImportCommand
+from .subcommands._repair import Repair
 
 
 class Command(SubcommandCommand):
@@ -18,5 +19,6 @@ class Command(SubcommandCommand):
     subcommands = {
         "export": ExportCommand,
         "import": ImportCommand,
-        "check_dnsbl": CheckDNSBLCommand,
+        "check_mx": CheckMXRecords,
+        "repair": Repair,
     }

@@ -8,11 +8,10 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from passwords.fields import PasswordField
 
 from modoboa.core.models import User
-from modoboa.lib import parameters
+from modoboa.parameters import tools as param_tools
 
 
 class LoginForm(forms.Form):
-
     """User login form."""
 
     username = forms.CharField(
@@ -30,7 +29,6 @@ class LoginForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
-
     """Form to update User profile."""
 
     oldpassword = forms.CharField(
@@ -51,8 +49,8 @@ class ProfileForm(forms.ModelForm):
         fields = ("first_name", "last_name", "language",
                   "phone_number", "secondary_email")
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'})
+            "first_name": forms.TextInput(attrs={"class": "form-control"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control"})
         }
 
     def __init__(self, update_password, *args, **kwargs):
@@ -66,7 +64,7 @@ class ProfileForm(forms.ModelForm):
         if self.cleaned_data["oldpassword"] == "":
             return self.cleaned_data["oldpassword"]
 
-        if parameters.get_admin("AUTHENTICATION_TYPE") != "local":
+        if param_tools.get_global_parameter("authentication_type") != "local":
             return self.cleaned_data["oldpassword"]
 
         if not self.instance.check_password(self.cleaned_data["oldpassword"]):
@@ -93,11 +91,10 @@ class ProfileForm(forms.ModelForm):
 
 
 class APIAccessForm(forms.Form):
-
     """Form to control API access."""
 
     enable_api_access = forms.BooleanField(
-        label=_("Enable API access"), required=False)
+        label=ugettext_lazy("Enable API access"), required=False)
 
     def __init__(self, *args, **kwargs):
         """Initialize form."""

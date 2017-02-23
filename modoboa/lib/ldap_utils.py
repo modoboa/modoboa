@@ -1,8 +1,7 @@
 # coding: utf-8
 
 """
-:mod:`ldaputils` --- a collection of LDAP based classes/functions
------------------------------------------------------------------
+A collection of LDAP based classes/functions.
 
 For a first version, the LDAP support offered by Modoboa only supports
 one global server definition : the one the django-auth-ldap uses.
@@ -39,14 +38,16 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from modoboa.core.password_hashers import get_password_hasher
-from modoboa.lib import parameters
 from modoboa.lib.exceptions import InternalError
+from modoboa.parameters import tools as param_tools
 
 
 class LDAPAuthBackend(object):
+    """LDAP authentication backend."""
 
     def __init__(self):
-        parameters.apply_to_django_settings()
+        param_tools.apply_to_django_settings()
+        self.global_params = dict(param_tools.get_global_parameters("core"))
         self.server_uri = self._setting(
             "AUTH_LDAP_SERVER_URI", "ldap://localhost"
         )
@@ -74,7 +75,7 @@ class LDAPAuthBackend(object):
         """Connect to the server according to configuration."""
         if self.conn is not None:
             return
-        mode = parameters.get_admin("LDAP_AUTH_METHOD", app="core")
+        mode = self.global_params["ldap_auth_method"]
         if mode == "searchbind":
             bind_dn = self._setting("AUTH_LDAP_BIND_DN", "")
             bind_pwd = self._setting("AUTH_LDAP_BIND_PASSWORD", "")
@@ -86,8 +87,8 @@ class LDAPAuthBackend(object):
 
     def _find_user_dn(self, user):
         """Find the DN of the given user."""
-        sbase = parameters.get_admin("LDAP_SEARCH_BASE", app="core")
-        sfilter = parameters.get_admin("LDAP_SEARCH_FILTER", app="core")
+        sbase = self.global_params["ldap_search_base"]
+        sfilter = self.global_params["ldap_search_filter"]
         sfilter = sfilter % {"user": user}
         res = self.conn.search_s(sbase, ldap.SCOPE_SUBTREE, sfilter)
         try:
@@ -102,8 +103,8 @@ class LDAPAuthBackend(object):
         :param clearpassword: the clear password
         :return: the encrypted password
         """
-        scheme = parameters.get_admin("PASSWORD_SCHEME", app="core")
-        hasher = get_password_hasher(scheme.upper())('ldap')
+        scheme = self.global_params["password_scheme"]
+        hasher = get_password_hasher(scheme.upper())("ldap")
         return hasher.encrypt(clearpassword)
 
     def update_user_password(self, user, password, newpassword):

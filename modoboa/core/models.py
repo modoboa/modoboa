@@ -2,27 +2,31 @@
 
 import re
 
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.functional import cached_property
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from django.contrib.auth.hashers import make_password, is_password_usable
 from django.contrib.auth.models import (
     UserManager, Group, PermissionsMixin
 )
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.db import models
-from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible, smart_text
-from django.utils.translation import ugettext as _, ugettext_lazy
 
 import jsonfield
 from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
-from modoboa.lib import events, parameters
 from modoboa.lib.exceptions import (
     PermDeniedException, InternalError, BadRequest, Conflict
 )
+from modoboa.parameters import tools as param_tools
 
 from . import constants
+from . import signals
 
 
 try:
@@ -44,8 +48,10 @@ class User(PermissionsMixin):
     It also adds new attributes and methods.
     """
     username = models.CharField(max_length=254, unique=True)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(
+        ugettext_lazy("First name"), max_length=30, blank=True)
+    last_name = models.CharField(
+        ugettext_lazy("Last name"), max_length=30, blank=True)
     email = models.EmailField(max_length=254, blank=True, db_index=True)
     is_staff = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True, db_index=True)
@@ -57,12 +63,13 @@ class User(PermissionsMixin):
             "Allow this administrator to access user mailboxes"
         )
     )
-    password = models.CharField(ugettext_lazy('password'), max_length=256)
+    password = models.CharField(ugettext_lazy("password"), max_length=256)
     last_login = models.DateTimeField(
         ugettext_lazy('last login'), blank=True, null=True
     )
 
     language = models.CharField(
+        ugettext_lazy("language"),
         max_length=10, default="en", choices=constants.LANGUAGES,
         help_text=ugettext_lazy(
             "Prefered language to display pages."
@@ -76,6 +83,7 @@ class User(PermissionsMixin):
         help_text=ugettext_lazy(
             "An alternative e-mail address, can be used for recovery needs.")
     )
+    _parameters = jsonfield.JSONField(default={})
 
     objects = UserManager()
 
@@ -90,37 +98,10 @@ class User(PermissionsMixin):
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
 
-    def delete(self, fromuser, *args, **kwargs):
-        """Custom delete method
-
-        To check permissions properly, we need to make a distinction
-        between 2 cases:
-
-        * If the user owns a mailbox, the check is made on that object
-          (useful for domain admins)
-
-        * Otherwise, the check is made on the user
-        """
-        from modoboa.lib.permissions import \
-            get_object_owner, grant_access_to_object, ungrant_access_to_object
-
-        if fromuser == self:
-            raise PermDeniedException(
-                _("You can't delete your own account")
-            )
-
-        if not fromuser.can_access(self):
-            raise PermDeniedException
-
-        owner = get_object_owner(self)
-        for ooentry in self.objectaccess_set.filter(is_owner=True):
-            if ooentry.content_object is not None:
-                grant_access_to_object(owner, ooentry.content_object, True)
-                ungrant_access_to_object(ooentry.content_object, self)
-
-        events.raiseEvent("AccountDeleted", self, fromuser, **kwargs)
-        ungrant_access_to_object(self)
-        super(User, self).delete()
+    def __init__(self, *args, **kwargs):
+        """Load parameter manager."""
+        super(User, self).__init__(*args, **kwargs)
+        self.parameters = param_tools.Manager("user", self._parameters)
 
     def _crypt_password(self, raw_value):
         """Crypt the local password using the appropriate scheme.
@@ -130,13 +111,13 @@ class User(PermissionsMixin):
         one more time.
 
         """
-        try:
-            scheme = parameters.get_admin("PASSWORD_SCHEME")
-        except parameters.NotDefined:
+        scheme = param_tools.get_global_parameter(
+            "password_scheme", raise_exception=False)
+        if scheme is None:
             from modoboa.core.apps import load_core_settings
             load_core_settings()
-            scheme = parameters.get_admin("PASSWORD_SCHEME")
-
+            scheme = param_tools.get_global_parameter(
+                "password_scheme", raise_exception=False)
         if isinstance(raw_value, unicode):
             raw_value = raw_value.encode("utf-8")
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
@@ -161,9 +142,9 @@ class User(PermissionsMixin):
             LDAPAuthBackend().update_user_password(
                 self.username, curvalue, raw_value
             )
-        events.raiseEvent(
-            "PasswordUpdated", self, raw_value, self.pk is None
-        )
+        signals.account_password_updated.send(
+            sender=self.__class__,
+            account=self, password=raw_value, created=self.pk is None)
 
     def check_password(self, raw_value):
         """Compare raw_value to current password."""
@@ -187,13 +168,15 @@ class User(PermissionsMixin):
     def natural_key(self):
         return (self.get_username(),)
 
+    @property
     def is_anonymous(self):
-        """
-        Always returns False. This is a way of comparing User objects to
-        anonymous users.
+        """Always returns False.
+
+        This is a way of comparing User objects to anonymous users.
         """
         return False
 
+    @property
     def is_authenticated(self):
         """
         Always return True. This is a way to tell if the user has been
@@ -208,10 +191,14 @@ class User(PermissionsMixin):
     def has_usable_password(self):
         return is_password_usable(self.password)
 
+    def get_absolute_url(self):
+        """Return detail url for this user."""
+        return reverse("admin:account_detail", args=[self.pk])
+
     @property
     def tags(self):
         return [{"name": "account", "label": _("account"), "type": "idt"},
-                {"name": self.group, "label": self.group,
+                {"name": self.role, "label": self.role,
                  "type": "grp", "color": "info"}]
 
     @property
@@ -231,16 +218,6 @@ class User(PermissionsMixin):
         return "----"
 
     @property
-    def group(self):
-        """FIXME: DEPRECATED"""
-        if self.is_superuser:
-            return "SuperAdmins"
-        try:
-            return self.groups.all()[0].name
-        except IndexError:
-            return "---"
-
-    @property
     def enabled(self):
         return self.is_active
 
@@ -249,21 +226,8 @@ class User(PermissionsMixin):
         from email.header import Header
         if self.first_name != "" or self.last_name != "":
             return "%s <%s>" % \
-                (Header(self.fullname, 'utf8').encode(), self.email)
+                (Header(self.fullname, "utf8").encode(), self.email)
         return self.email
-
-    def belongs_to_group(self, name):
-        """Simple shortcut to check if this user is a member of a
-        specific group.
-
-        :param name: the group's name
-        :return: a boolean
-        """
-        try:
-            self.groups.get(name=name)
-        except Group.DoesNotExist:
-            return False
-        return True
 
     def is_owner(self, obj):
         """Tell is the user is the unique owner of this object
@@ -314,12 +278,15 @@ class User(PermissionsMixin):
     @property
     def role(self):
         """Return user role."""
-        if self.is_superuser:
-            return "SuperAdmins"
-        try:
-            return self.groups.all()[0].name
-        except IndexError:
-            return "---"
+        if not hasattr(self, "_role"):
+            if self.is_superuser:
+                self._role = "SuperAdmins"
+            else:
+                try:
+                    self._role = self.groups.all()[0].name
+                except IndexError:
+                    self._role = "---"
+        return self._role
 
     @role.setter
     def role(self, role):
@@ -327,9 +294,10 @@ class User(PermissionsMixin):
 
         :param string role: the role to set
         """
-        if role is None or self.group == role:
+        if role is None or self.role == role:
             return
-        events.raiseEvent("RoleChanged", self, role)
+        signals.account_role_changed.send(
+            sender=self.__class__, account=self, role=role)
         self.groups.clear()
         if role == "SuperAdmins":
             self.is_superuser = True
@@ -341,23 +309,31 @@ class User(PermissionsMixin):
                 self.groups.add(Group.objects.get(name=role))
             except Group.DoesNotExist:
                 self.groups.add(Group.objects.get(name="SimpleUsers"))
-            if self.group != "SimpleUsers" and not self.can_access(self):
+            if role != "SimpleUsers" and not self.can_access(self):
                 from modoboa.lib.permissions import grant_access_to_object
                 grant_access_to_object(self, self)
         self.save()
+        self._role = role
+
+    def get_role_display(self):
+        """Return the display name of this role."""
+        for role in constants.ROLES:
+            if role[0] == self.role:
+                return role[1]
+        return _("Unknown")
+
+    @cached_property
+    def is_admin(self):
+        """Shortcut to check if user is administrator."""
+        return self.role in constants.ADMIN_GROUPS
 
     def post_create(self, creator):
         """Grant permission on this user to creator."""
         from modoboa.lib.permissions import grant_access_to_object
         grant_access_to_object(creator, self, is_owner=True)
-        events.raiseEvent("AccountCreated", self)
 
     def save(self, *args, **kwargs):
-        if "creator" in kwargs:
-            creator = kwargs["creator"]
-            del kwargs["creator"]
-        else:
-            creator = None
+        creator = kwargs.pop("creator", None)
         super(User, self).save(*args, **kwargs)
         if creator is not None:
             self.post_create(creator)
@@ -367,9 +343,9 @@ class User(PermissionsMixin):
 
         The expected order is the following::
 
-        "account", loginname, password, first name, last name, enabled, group
+        "account", loginname, password, first name, last name, enabled, role
 
-        Additional fields can be added using the *AccountImported* event.
+        Additional fields can be added using the *account_imported* signal.
 
         :param user: a ``core.User`` instance
         :param row: a list containing the expected information
@@ -422,7 +398,8 @@ class User(PermissionsMixin):
         self.post_create(user)
         if len(row) < 8:
             return
-        events.raiseEvent("AccountImported", user, self, row[7:])
+        signals.account_imported.send(
+            sender=self.__class__, user=user, account=self, row=row[7:])
 
     def to_csv(self, csvwriter):
         """Export this account.
@@ -438,16 +415,19 @@ class User(PermissionsMixin):
             self.first_name.encode("utf-8"),
             self.last_name.encode("utf-8"),
             self.is_active,
-            self.group,
+            self.role,
             self.email.encode("utf-8")
         ]
-        row += events.raiseQueryEvent("AccountExported", self)
+        results = signals.account_exported.send(
+            sender=self.__class__, user=self)
+        for result in results:
+            row += result[1]
         csvwriter.writerow(row)
 
 reversion.register(User)
 
 
-def populate_callback(user, group='SimpleUsers'):
+def populate_callback(user, group="SimpleUsers"):
     """Populate callback
 
     If the LDAP authentication backend is in use, this callback will
@@ -464,7 +444,8 @@ def populate_callback(user, group='SimpleUsers'):
     user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)
-    events.raiseEvent("AccountAutoCreated", user)
+    signals.account_auto_created.send(
+        sender="populate_callback", user=user)
 
 
 class ObjectAccess(models.Model):
@@ -500,3 +481,10 @@ class LocalConfig(models.Model):
 
     # API results cache
     api_versions = jsonfield.JSONField()
+
+    _parameters = jsonfield.JSONField(default={})
+
+    def __init__(self, *args, **kwargs):
+        """Load parameter manager."""
+        super(LocalConfig, self).__init__(*args, **kwargs)
+        self.parameters = param_tools.Manager("global", self._parameters)

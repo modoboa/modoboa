@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 15:29+0200\n"
+"POT-Creation-Date: 2016-12-14 14:13+0100\n"
 "PO-Revision-Date: 2014-12-03 11:02+0000\n"
 "Last-Translator: Arvedui <arvedui@posteo.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
@@ -152,7 +152,7 @@ msgid ""
 "-1 to allow unlimited creations)"
 msgstr "Maximale Anzahl Aliase, die ein neuer Administrator erstellen darf"
 
-#: limits/apps.py:17
+#: limits/apps.py:12
 msgid "Limits"
 msgstr "Grenzwerte"
 
@@ -210,7 +210,7 @@ msgstr ""
 "Sie verfügen nicht über die erforderlichen Rechte, um unbegrenzte Werte "
 "anzugeben"
 
-#: limits/general_callbacks.py:53 limits/general_callbacks.py:66
+#: limits/handlers.py:123 limits/handlers.py:159
 msgid "Resources"
 msgstr "Ressourcen"
 
@@ -223,12 +223,12 @@ msgstr "%s: Grenze erreicht"
 msgid "Not enough resources"
 msgstr "Nicht ausreichend Ressourcen"
 
-#: limits/models.py:39 limits/models.py:98
+#: limits/models.py:40 limits/models.py:99
 msgid "unlimited"
 msgstr "unbegrenzt"
 
-#: limits/templates/limits/domain_resources_widget.html:5
 #: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
 msgid "Resources usage"
 msgstr "Ressourcen-Verbrauch"
 

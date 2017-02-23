@@ -1,12 +1,16 @@
 # coding: utf-8
 
+from unittest import skipIf
+
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
+from modoboa.core import factories as core_factories
+from modoboa.core.tests import test_ldap
 from modoboa.core.models import User
-from modoboa.core import tests as core_tests
-from modoboa.lib import parameters
 from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import NO_LDAP
+from modoboa.limits import utils as limits_utils
 
 from .. import factories
 from .. import models
@@ -70,6 +74,47 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
+    def test_delete_default_superadmin(self):
+        """Delete default superadmin."""
+        sadmin2 = core_factories.UserFactory(
+            username="admin2", is_superuser=True)
+        sadmin = User.objects.get(username="admin")
+        self.client.force_login(sadmin2)
+        self.ajax_post(
+            reverse("admin:account_delete", args=[sadmin.pk]), {}
+        )
+        values = {
+            "username": "user@test.com", "role": "DomainAdmins",
+            "is_active": True, "email": "user@test.com"
+        }
+        account = User.objects.get(username="user@test.com")
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values
+        )
+
+    def test_sender_address(self):
+        """Check if sender addresses are saved."""
+        account = User.objects.get(username="user@test.com")
+        values = {
+            "username": "user@test.com", "first_name": "Tester",
+            "last_name": "Toto", "role": "SimpleUsers",
+            "quota_act": True, "is_active": True, "email": "user@test.com",
+            "senderaddress": "test@titi.com", "senderaddress_1": "toto@go.com"
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values)
+        self.assertEqual(
+            models.SenderAddress.objects.filter(
+                mailbox__address="user").count(),
+            2)
+        del values["senderaddress_1"]
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values)
+        self.assertEqual(
+            models.SenderAddress.objects.filter(
+                mailbox__address="user").count(),
+            1)
+
     def test_conflicts(self):
         """Check if unicity constraints are respected."""
         values = {
@@ -120,16 +165,33 @@ class AccountTestCase(ModoTestCase):
         self._set_quota("user@test.com", 0)
 
     def test_set_nul_quota_as_domainadmin(self):
+        """Check cases where a domain admin set unlimited quota."""
         self.client.logout()
         self.assertTrue(
             self.client.login(username="admin@test.com", password="toto")
         )
+        # Fails because domain has a quota
         self._set_quota("user@test.com", 0, 400)
         self.client.logout()
         self.assertTrue(
             self.client.login(username="admin@test2.com", password="toto")
         )
+        # Ok because domain has no quota
         self._set_quota("user@test2.com", 0)
+
+    def test_domain_quota(self):
+        """Check domain quota."""
+        dom = models.Domain.objects.get(name="test.com")
+        dom.quota = 100
+        dom.save(update_fields=["quota"])
+        # 2 x 10MB
+        self.assertEqual(dom.quota_usage, 20)
+        self._set_quota("user@test.com", 80)
+        del dom.quota_usage
+        # 10 + 80 < 100 => ok
+        self.assertEqual(dom.quota_usage, 90)
+        # 30 + 80 > 100 => failure
+        self._set_quota("admin@test.com", 30, 400)
 
     def test_master_user(self):
         """Validate the master user mode."""
@@ -154,19 +216,34 @@ class AccountTestCase(ModoTestCase):
             reverse("admin:account_add"), values, status=400
         )
 
+    def test_account_detail_view(self):
+        """Test account detail view."""
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        account = User.objects.get(username="admin@test.com")
+        url = reverse("admin:account_detail", args=[account.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Summary", response.content)
+        self.assertIn("Administered domains", response.content)
+        self.assertNotIn("Resources usage", response.content)
+        self.set_global_parameter("enable_admin_limits", True, app="limits")
+        response = self.client.get(url)
+        self.assertIn("Resources usage", response.content)
 
+
+@skipIf(NO_LDAP, "No ldap module installed")
 @override_settings(AUTHENTICATION_BACKENDS=(
     'modoboa.lib.authbackends.LDAPBackend',
-    'modoboa.lib.authbackends.SimpleBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ))
-class LDAPAccountTestCase(core_tests.LDAPTestCaseMixin, ModoTestCase):
+class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
     """Check LDAP related code."""
 
     def test_autocreate_disabled(self):
         """Check if objects are not created as expected."""
         self.activate_ldap_authentication()
         self.searchbind_mode()
-        parameters.save_admin("AUTO_CREATE_DOMAIN_AND_MAILBOX", "no")
+        self.set_global_parameter("auto_create_domain_and_mailbox", False)
         username = "testuser@example.com"
         self.authenticate(username, "test")
         self.assertFalse(
@@ -180,22 +257,25 @@ class PermissionsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        from modoboa.lib import parameters
-        from modoboa.limits import utils as limits_utils
-
         super(PermissionsTestCase, cls).setUpTestData()
+        parameters = {}
         for name, tpl in limits_utils.get_user_limit_templates():
-            parameters.save_admin(
-                "DEFLT_USER_{0}_LIMIT".format(name.upper()), 2,
-                app="limits"
-            )
+            parameters["deflt_user_{0}_limit".format(name)] = 2
+        cls.localconfig.parameters.set_values(parameters, app="limits")
+        cls.localconfig.save()
         factories.populate_database()
-        cls.user = User.objects.get(username='user@test.com')
-        cls.values = dict(
-            username=cls.user.username, role="DomainAdmins",
-            is_active=cls.user.is_active, email="user@test.com",
-            quota_act=True
-        )
+        cls.reseller = core_factories.UserFactory(username="reseller")
+        cls.reseller.role = "Resellers"
+        cls.user = User.objects.get(username="user@test.com")
+
+    def setUp(self):
+        """Initiate test context."""
+        super(PermissionsTestCase, self).setUp()
+        self.values = {
+            "username": self.user.username, "role": "DomainAdmins",
+            "is_active": self.user.is_active, "email": "user@test.com",
+            "quota_act": True
+        }
 
     def tearDown(self):
         self.client.logout()
@@ -205,14 +285,15 @@ class PermissionsTestCase(ModoTestCase):
             reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
-        self.assertEqual(self.user.group, "DomainAdmins")
+        self.assertEqual(self.user.role, "DomainAdmins")
 
         self.values["role"] = "SimpleUsers"
         self.ajax_post(
             reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
-        self.assertNotEqual(self.user.group, 'DomainAdmins')
+        self.assertNotEqual(
+            self.user.groups.first().name, "DomainAdmins")
 
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
@@ -238,16 +319,16 @@ class PermissionsTestCase(ModoTestCase):
             self.client.login(username="admin@test.com", password="toto")
         )
         admin = User.objects.get(username="admin@test.com")
-        values = dict(
-            username="admin@test.com", first_name="Admin",
-            password1="", password2="",
-            quota=10, is_active=True, email="admin@test.com"
-        )
+        values = {
+            "username": "admin@test.com", "first_name": "Admin",
+            "password1": "", "password2": "",
+            "quota": 10, "is_active": True, "email": "admin@test.com"
+        }
         self.ajax_post(
             reverse("admin:account_change", args=[admin.id]),
             values
         )
-        self.assertEqual(admin.group, "DomainAdmins")
+        self.assertEqual(admin.role, "DomainAdmins")
         self.assertTrue(admin.can_access(
             models.Domain.objects.get(name="test.com")))
 
@@ -256,8 +337,28 @@ class PermissionsTestCase(ModoTestCase):
             reverse("admin:account_change", args=[admin.id]),
             values
         )
-        admin = User.objects.get(username="admin@test.com")
-        self.assertEqual(admin.group, "DomainAdmins")
+        admin.refresh_from_db()
+        self.assertEqual(admin.role, "DomainAdmins")
+
+        self.client.logout()
+        self.client.login(username=self.reseller.username, password="toto")
+        self.assertTrue(self.reseller.can_access(self.reseller))
+        values = {
+            "username": self.reseller.username, "first_name": "Reseller",
+            "password1": "", "password2": "",
+            "is_active": True
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[self.reseller.pk]),
+            values
+        )
+        self.assertEqual(self.reseller.role, "Resellers")
+        values["role"] = "SuperAdmins"
+        self.ajax_post(
+            reverse("admin:account_change", args=[self.reseller.pk]),
+            values
+        )
+        self.assertEqual(self.reseller.role, "Resellers")
 
     def test_domadmin_access(self):
         self.client.logout()
@@ -305,7 +406,7 @@ class PermissionsTestCase(ModoTestCase):
             recipients_1="user@test2.com",
             enabled=True
         )
-        self.ajax_post(reverse("admin:dlist_add"), values)
+        self.ajax_post(reverse("admin:alias_add"), values)
 
     def test_domainadmin_master_user(self):
         """Check domain administrator is not allowed to access this feature."""

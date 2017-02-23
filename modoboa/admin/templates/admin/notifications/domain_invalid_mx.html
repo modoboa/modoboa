@@ -1,0 +1,9 @@
+{% load i18n %}
+
+{% blocktrans trimmed with domain=domain.name %}
+  Modoboa detected that domain {{ domain }} has no valid MX record:
+{% endblocktrans %}
+
+{% for alert in alerts %}
+  - {{ alert }}
+{% endfor %}

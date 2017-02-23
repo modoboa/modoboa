@@ -4,10 +4,10 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from modoboa.lib.form_utils import SeparatorField, YesNoField
-from modoboa.lib.parameters import AdminParametersForm
+from modoboa.parameters import forms as param_forms
 
 
-class ParametersForm(AdminParametersForm):
+class ParametersForm(param_forms.AdminParametersForm):
     """Available admin parameters."""
 
     app = "limits"
@@ -16,7 +16,7 @@ class ParametersForm(AdminParametersForm):
 
     enable_admin_limits = YesNoField(
         label=_("Enable per-admin limits"),
-        initial="yes",
+        initial=True,
         help_text=_("Enable or disable per-admin limits")
     )
 
@@ -72,12 +72,22 @@ class ParametersForm(AdminParametersForm):
         widget=forms.widgets.TextInput(
             attrs={"class": "col-md-1 form-control"})
     )
+    deflt_user_quota_limit = forms.IntegerField(
+        label=_("Quota"),
+        initial=0,
+        help_text=_(
+            "The quota a reseller will be allowed to share between the "
+            "domains he creates. (0 means no quota)"
+        ),
+        widget=forms.widgets.TextInput(
+            attrs={"class": "col-md-1 form-control"})
+    )
 
     domain_limits_sep = SeparatorField(label=_("Default per-domain limits"))
 
     enable_domain_limits = YesNoField(
         label=_("Enable per-domain limits"),
-        initial="no",
+        initial=False,
         help_text=_("Enable or disable per-domain limits")
     )
 
@@ -125,17 +135,13 @@ class ParametersForm(AdminParametersForm):
     )
 
     visibility_rules = {
-        "deflt_user_domains_limit": "enable_admin_limits=yes",
-        "deflt_user_domain_aliases_limit": "enable_admin_limits=yes",
-        "deflt_user_mailboxes_limit": "enable_admin_limits=yes",
-        "deflt_user_mailbox_aliases_limit": "enable_admin_limits=yes",
-        "deflt_user_domain_admins_limit": "enable_admin_limits=yes",
-        "deflt_domain_mailboxes_limit": "enable_domain_limits=yes",
-        "deflt_domain_mailbox_aliases_limit": "enable_domain_limits=yes",
-        "deflt_domain_domain_aliases_limit": "enable_domain_limits=yes",
-        "deflt_domain_domain_admins_limit": "enable_domain_limits=yes",
+        "deflt_user_domains_limit": "enable_admin_limits=True",
+        "deflt_user_domain_aliases_limit": "enable_admin_limits=True",
+        "deflt_user_mailboxes_limit": "enable_admin_limits=True",
+        "deflt_user_mailbox_aliases_limit": "enable_admin_limits=True",
+        "deflt_user_domain_admins_limit": "enable_admin_limits=True",
+        "deflt_domain_mailboxes_limit": "enable_domain_limits=True",
+        "deflt_domain_mailbox_aliases_limit": "enable_domain_limits=True",
+        "deflt_domain_domain_aliases_limit": "enable_domain_limits=True",
+        "deflt_domain_domain_admins_limit": "enable_domain_limits=True",
     }
-
-    def __init__(self, *args, **kwargs):
-        super(AdminParametersForm, self).__init__(*args, **kwargs)
-        self._load_extra_parameters('A')

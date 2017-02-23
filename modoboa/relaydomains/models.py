@@ -7,8 +7,8 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from reversion import revisions as reversion
 
 from modoboa.admin import models as admin_models
-from modoboa.lib import parameters
 from modoboa.lib.exceptions import BadRequest
+from modoboa.parameters import tools as param_tools
 
 
 class ServiceManager(Manager):
@@ -20,7 +20,7 @@ class ServiceManager(Manager):
         entries are saved and outdated ones (ie. present in the
         database but not in the file) are removed.
         """
-        with open(parameters.get_admin('MASTER_CF_PATH')) as fp:
+        with open(param_tools.get_global_parameter("master_cf_path")) as fp:
             content = fp.read()
         services = []
         for line in content.split('\n'):
@@ -41,7 +41,6 @@ class ServiceManager(Manager):
 
 
 class Service(models.Model):
-
     """Postfix service."""
 
     name = models.CharField(
@@ -59,17 +58,24 @@ class Service(models.Model):
 
 
 class RelayDomain(admin_models.AdminObject):
-
     """Relay domain.
 
     A relay domain differs from a usual domaine because its final
     destination is not reached yet. It must be accepted by the MTA but
     it will then be transfered to another one.
     """
+
     domain = models.OneToOneField("admin.Domain", null=True)
     target_host = models.CharField(
-        ugettext_lazy('target host'), max_length=255,
-        help_text=ugettext_lazy('Remote destination of this domain')
+        ugettext_lazy("target host address"), max_length=255,
+        help_text=ugettext_lazy(
+            "Remote address (hostname or IP) of this domain")
+    )
+    target_port = models.IntegerField(
+        ugettext_lazy("target host port"),
+        help_text=ugettext_lazy(
+            "Remote port of this domain"),
+        default=25
     )
     service = models.ForeignKey(Service)
     verify_recipients = models.BooleanField(
@@ -100,7 +106,8 @@ class RelayDomain(admin_models.AdminObject):
         """
         csvwriter.writerow(
             ["relaydomain", self.domain.name, self.target_host,
-             self.service.name, self.domain.enabled, self.verify_recipients]
+             self.target_port, self.service.name, self.domain.enabled,
+             self.verify_recipients]
         )
         for dalias in self.domain.domainalias_set.all():
             dalias.to_csv(csvwriter)
@@ -111,17 +118,18 @@ class RelayDomain(admin_models.AdminObject):
         :param user: user importing the relay domain
         :param str row: relay domain definition
         """
-        if len(row) != 6:
+        if len(row) != 7:
             raise BadRequest(_("Invalid line"))
         self.domain = admin_models.Domain(
-            name=row[1].strip(), type="relaydomain",
-            enabled=(row[4].strip() in ["True", "1", "yes", "y"])
+            name=row[1].strip(), type="relaydomain", quota=0,
+            enabled=(row[5].strip() in ["True", "1", "yes", "y"])
         )
         self.domain.save(creator=user)
         self.target_host = row[2].strip()
+        self.target_port = row[3].strip()
         self.service, created = Service.objects.get_or_create(
-            name=row[3].strip())
-        self.verify_recipients = (row[5].strip() in ["True", "1", "yes", "y"])
+            name=row[4].strip())
+        self.verify_recipients = (row[6].strip() in ["True", "1", "yes", "y"])
         self.save(creator=user)
 
 

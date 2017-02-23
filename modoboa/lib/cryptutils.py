@@ -7,7 +7,7 @@ import string
 
 from Crypto.Cipher import AES
 
-from modoboa.lib import parameters
+from modoboa.parameters import tools as param_tools
 
 
 def random_key(l=16):
@@ -16,7 +16,8 @@ def random_key(l=16):
     :param integer l: the key's length
     :return: a string
     """
-    population = string.digits + string.letters + string.punctuation
+    punctuation = """!#$%&'()*+,-./:;<=>?@[]^_`{|}~"""
+    population = string.digits + string.letters + punctuation
     while True:
         key = "".join(random.sample(population * l, l))
         if len(key) == l:
@@ -24,7 +25,7 @@ def random_key(l=16):
 
 
 def encrypt(clear):
-    key = parameters.get_admin("SECRET_KEY", app="core")
+    key = param_tools.get_global_parameter("secret_key", app="core")
     obj = AES.new(key, AES.MODE_ECB)
     if type(clear) is unicode:
         clear = clear.encode("utf-8")
@@ -37,7 +38,8 @@ def encrypt(clear):
 
 def decrypt(ciph):
     obj = AES.new(
-        parameters.get_admin("SECRET_KEY", app="core"), AES.MODE_ECB
+        param_tools.get_global_parameter(
+            "secret_key", app="core"), AES.MODE_ECB
     )
     ciph = base64.b64decode(ciph)
     clear = obj.decrypt(ciph)
