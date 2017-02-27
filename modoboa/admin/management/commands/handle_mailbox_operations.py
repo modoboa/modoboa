@@ -97,8 +97,8 @@ class Command(BaseCommand):
             try:
                 f(ope)
             except (OperationError, InternalError) as e:
-                self.logger.critical("%s failed (reason: %s)",
-                                     ope, str(e).encode("utf-8"))
+                self.logger.critical(
+                    "%s failed (reason: %s)", ope, str(e).decode("utf-8"))
             else:
                 self.logger.info("%s succeed", ope)
                 ope.delete()
