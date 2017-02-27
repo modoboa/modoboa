@@ -135,7 +135,7 @@ def editdomain(request, dom_id):
 @login_required
 @permission_required("admin.delete_domain")
 def deldomain(request, dom_id):
-    keepdir = True if request.POST.get("keepdir", "false") == "true" else False
+    keepdir = request.POST.get("keepdir", "false") == "true"
     try:
         mb = Mailbox.objects.get(user__id=request.user.id)
     except Mailbox.DoesNotExist:
