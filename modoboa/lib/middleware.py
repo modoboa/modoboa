@@ -2,7 +2,6 @@
 
 """Custom middlewares."""
 
-from threading import local
 
 from django.http import HttpResponseRedirect
 
@@ -12,7 +11,7 @@ from modoboa.lib.web_utils import (
     _render_error, ajax_response, render_to_json_response
 )
 
-_local_store = local()
+from . import singleton
 
 
 class AjaxLoginRedirect(object):
@@ -45,20 +44,26 @@ class CommonExceptionCatcher(object):
         )
 
 
-class RequestCatcherMiddleware(object):
-    """Simple middleware to store the current request."""
+class RequestCatcherMiddleware(singleton.Singleton):
+    """Simple middleware to store the current request.
+
+    FIXME: the Singleton hack is used to make tests work. I don't know
+    why but middlewares are not dropped between test case runs so more
+    than one instance can be listening to the request_accessor signal
+    and we don't want that!
+    """
 
     def __init__(self):
-        _local_store.request = None
-        request_accessor.connect(self)
+        self._request = None
+        request_accessor.signal.connect(self)
 
     def process_request(self, request):
-        _local_store.request = request
+        self._request = request
 
     def process_response(self, request, response):
         """Empty store."""
-        _local_store.request = None
+        self._request = None
         return response
 
     def __call__(self, **kwargs):
-        return _local_store.request
+        return self._request
