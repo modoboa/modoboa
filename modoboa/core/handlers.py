@@ -77,6 +77,9 @@ def log_object_removal(sender, instance, **kwargs):
 
 def create_local_config(sender, **kwargs):
     """Create local config if needed."""
+    using = kwargs.get("using")
+    if using != "default":
+        return
     if models.LocalConfig.objects.using(kwargs["using"]).exists():
         return
     models.LocalConfig.objects.create(
