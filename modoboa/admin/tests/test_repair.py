@@ -28,7 +28,7 @@ class RepairTestCase(ModoTestCase):
         # fix it. run in quiet mode because we dont want output in tests
         ret = management.call_command("modo", "repair", "--quiet")
         assert ret is None
-        # assert its fixed
+        # assert it's fixed
         self.assertIsNot(get_object_owner(mbox), None)
         self.assertIsNot(get_object_owner(alias), None)
 
@@ -45,7 +45,18 @@ class RepairTestCase(ModoTestCase):
         self.assertIs(get_object_owner(mbox), None)
 
     def test_management_command_with_nul_domain(self):
-        """ Just assume nothing raise when an alias has no domain"""
+        """Just assume nothing raise when an alias has no domain."""
         models.Alias.objects.create(address='@modoboa.xxx')
         ret = management.call_command("modo", "repair", "--quiet")
         assert ret is None
+
+    def test_management_command_with_no_alias(self):
+        """Check that problem is fixed."""
+        count, detail = models.Alias.objects.filter(
+            address="user@test.com", internal=True).delete()
+        self.assertEqual(count, 2)
+        ret = management.call_command("modo", "repair", "--quiet")
+        assert ret is None
+        self.assertTrue(
+            models.Alias.objects.filter(
+                address="user@test.com", internal=True).exists())
