@@ -186,12 +186,18 @@ class DomainTestCase(ModoTestCase):
     def test_delete(self):
         """Test the removal of a domain."""
         dom = Domain.objects.get(name="test.com")
-        self.ajax_post(
-            reverse("admin:domain_delete", args=[dom.id]),
-            {}
-        )
+        self.ajax_post(reverse("admin:domain_delete", args=[dom.id]))
         with self.assertRaises(Domain.DoesNotExist):
             Domain.objects.get(pk=1)
+        self.assertTrue(
+            User.objects.filter(username="user@test.com").exists())
+        self.set_global_parameter("auto_account_removal", True)
+        dom = Domain.objects.get(name="test2.com")
+        self.ajax_post(reverse("admin:domain_delete", args=[dom.id]))
+        with self.assertRaises(Domain.DoesNotExist):
+            Domain.objects.get(pk=1)
+        self.assertFalse(
+            User.objects.filter(username="admin@test2.com").exists())
 
     def test_domain_counters(self):
         """Check counters at domain level."""
