@@ -78,17 +78,17 @@ def sometimes_mailbox_have_no_alias(**options):
             internal=True)
         if created:
             alias_created += 1
-            log("Alias {0} created".format(alias))
+            log("Alias {0} created".format(alias), **options)
         recipient, created = models.AliasRecipient.objects.get_or_create(
             alias=alias,
             address=instance.full_address,
             r_mailbox=instance)
         if created:
             recipient_created += 1
-            log("AliasRecipient {0} created".format(recipient))
+            log("AliasRecipient {0} created".format(recipient), **options)
     if alias_created or recipient_created:
         log("{0} alias created. {1} alias recipient created".format(
-            alias_created, recipient_created))
+            alias_created, recipient_created), **options)
 
 
 class Repair(BaseCommand):
