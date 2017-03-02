@@ -7,6 +7,12 @@ from modoboa.lib.permissions import get_object_owner
 from modoboa.core.models import User
 from modoboa.admin import models
 
+try:
+    from modoboa_postfix_autoreply.models import ARmessage
+except ImportError:
+    ARmessage = None
+
+
 known_problems = []
 
 
@@ -33,7 +39,7 @@ class Repair(BaseCommand):
         """Command entry point."""
         for problem in known_problems:
             func = getattr(self, problem)
-            title = func.__name__.capitalize().replace("_", " ")
+            title = func.__doc__.strip()
             self.log("", **options)
             self.log("Checking for... {}...".format(title), **options)
             func(**options)
@@ -76,6 +82,7 @@ class Repair(BaseCommand):
 
     @known_problem
     def sometimes_objects_have_no_owner(self, **options):
+        """Sometime objects have no owner"""
         owned_models = (
             User.objects.all(),
             models.Domain.objects.all(),
@@ -85,3 +92,52 @@ class Repair(BaseCommand):
         )
         for qs in owned_models:
             self.fix_owner(qs, **options)
+
+    @known_problem
+    def ensure_autoreplies_recipents_are_valids(self, **options):
+        """Sometime autoreply alias exists when ARmessage is not enabled"""
+        if ARmessage is None:
+            return
+        deleted = 0
+        qs = models.AliasRecipient.objects.filter(
+            address__contains='@autoreply.')
+        for alias in qs:
+            address, domain = alias.alias.address.split('@')
+            arqs = ARmessage.objects.filter(
+                mbox__address=address,
+                mbox__domain__name=domain)
+            if not arqs.count():
+                self.log('Delete {0} (No AR found)'.format(alias))
+                deleted += 1
+            else:
+                for ar in arqs:
+                    if not ar.enabled:
+                        self.log('Delete {0} (AR disabled)'.format(alias))
+                        alias.delete()
+                        deleted += 1
+        if deleted:
+            self.log('{0} alias recipient deleted'.format(deleted))
+
+    @known_problem
+    def sometimes_mailbox_have_no_alias(self, **options):
+        """Sometime mailboxes have no alias"""
+        alias_created = 0
+        recipient_created = 0
+        for instance in models.Mailbox.objects.all():
+            alias, created = models.Alias.objects.get_or_create(
+                address=instance.full_address,
+                domain=instance.domain,
+                internal=True)
+            if created:
+                alias_created += 1
+                self.log('Alias {0} created'.format(alias))
+            recipient, created = models.AliasRecipient.objects.get_or_create(
+                alias=alias,
+                address=instance.full_address,
+                r_mailbox=instance)
+            if created:
+                recipient_created += 1
+                self.log('AliasRecipient {0} created'.format(recipient))
+        if alias_created or recipient_created:
+            self.log('{0} alias created. {1} alias recipient created'.format(
+                alias_created, recipient_created))
