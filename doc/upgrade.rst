@@ -200,8 +200,8 @@ Command line shortcuts:
    $ pip install modoboa-stats==1.1.0
    $ pip install modoboa-webmail==1.1.0
 
-Notes about quota changes and Reseller user
--------------------------------------------
+Notes about quota changes and resellers
+---------------------------------------
 
 Reseller users now have a quota option in Resources tab. This is the quota
 that a reseller can share between all its domains.
