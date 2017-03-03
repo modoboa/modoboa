@@ -264,7 +264,7 @@ like this::
 
     AUTHENTICATION_BACKENDS = (
       'modoboa.lib.authbackends.LDAPBackend',
-      'modoboa.lib.authbackends.SimpleBackend',
+      'django.contrib.auth.backends.ModelBackend',
     )
 
 Finally, go to *Modoboa > Parameters > General* and set *Authentication
