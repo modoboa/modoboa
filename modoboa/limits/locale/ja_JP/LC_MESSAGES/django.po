@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-14 14:13+0100\n"
+"POT-Creation-Date: 2017-03-03 08:55+0100\n"
 "PO-Revision-Date: 2016-06-07 07:16+0000\n"
 "Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -31,8 +31,8 @@ msgstr "管理者あたりの制限を有効にする"
 msgid "Enable or disable per-admin limits"
 msgstr "管理者あたりの制限を有効もしくは無効にする"
 
-#: limits/app_settings.py:24 limits/app_settings.py:85 limits/constants.py:25
-#: limits/constants.py:48
+#: limits/app_settings.py:24 limits/app_settings.py:95 limits/constants.py:25
+#: limits/constants.py:55
 msgid "Domain admins"
 msgstr "ドメイン管理者"
 
@@ -56,8 +56,8 @@ msgstr ""
 "新しい管理者に許可されたドメインの最大数 (0は作成を拒否、-1は無制限の作成を許"
 "可)"
 
-#: limits/app_settings.py:45 limits/app_settings.py:96 limits/constants.py:14
-#: limits/constants.py:35
+#: limits/app_settings.py:45 limits/app_settings.py:106 limits/constants.py:14
+#: limits/constants.py:42
 msgid "Domain aliases"
 msgstr "ドメインエイリアス"
 
@@ -69,8 +69,8 @@ msgstr ""
 "新しい管理者に許可されたドメインエイリアスの最大数 (0は作成を拒否、-1は無制限"
 "の作成を許可)"
 
-#: limits/app_settings.py:56 limits/app_settings.py:107 limits/constants.py:18
-#: limits/constants.py:39
+#: limits/app_settings.py:56 limits/app_settings.py:117 limits/constants.py:18
+#: limits/constants.py:46
 msgid "Mailboxes"
 msgstr "メールボックス"
 
@@ -82,8 +82,8 @@ msgstr ""
 "新しい管理者に許可されたメールボックスの最大数 (0は作成を拒否、-1は無制限の作"
 "成を許可)"
 
-#: limits/app_settings.py:66 limits/app_settings.py:117 limits/constants.py:21
-#: limits/constants.py:42
+#: limits/app_settings.py:66 limits/app_settings.py:127 limits/constants.py:21
+#: limits/constants.py:49
 msgid "Mailbox aliases"
 msgstr "メールボックスエイリアス"
 
@@ -95,19 +95,29 @@ msgstr ""
 "新しい管理者に許可されたエイリアスの最大数 (0は作成を拒否、-1は無制限の作成を"
 "許可)"
 
-#: limits/app_settings.py:76
+#: limits/app_settings.py:76 limits/constants.py:31
+msgid "Quota"
+msgstr ""
+
+#: limits/app_settings.py:79
+msgid ""
+"The quota a reseller will be allowed to share between the domains he "
+"creates. (0 means no quota)"
+msgstr ""
+
+#: limits/app_settings.py:86
 msgid "Default per-domain limits"
 msgstr "デフォルトのドメインあたりの制限"
 
-#: limits/app_settings.py:79
+#: limits/app_settings.py:89
 msgid "Enable per-domain limits"
 msgstr "ドメインあたりの制限を有効にする"
 
-#: limits/app_settings.py:81
+#: limits/app_settings.py:91
 msgid "Enable or disable per-domain limits"
 msgstr "ドメインあたりの制限を有効もしくは無効にする"
 
-#: limits/app_settings.py:88
+#: limits/app_settings.py:98
 msgid ""
 "Maximum number of allowed domain administrators for a new domain. (0 to deny "
 "any creation, -1 to allow unlimited creations)"
@@ -115,7 +125,7 @@ msgstr ""
 "新しいドメインに許可されたドメイン管理者の最大数 (0は作成を拒否、-1は無制限の"
 "作成を許可)"
 
-#: limits/app_settings.py:99
+#: limits/app_settings.py:109
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -123,7 +133,7 @@ msgstr ""
 "新しいドメインに許可されたドメインエイリアスの最大数 (0は作成を拒否、-1は無制"
 "限の作成を許可)"
 
-#: limits/app_settings.py:110
+#: limits/app_settings.py:120
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -131,7 +141,7 @@ msgstr ""
 "新しいドメインに許可されたメールボックスの最大数 (0は作成を拒否、-1は無制限の"
 "作成を許可)"
 
-#: limits/app_settings.py:120
+#: limits/app_settings.py:130
 msgid ""
 "Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
 "-1 to allow unlimited creations)"
@@ -163,19 +173,23 @@ msgstr "このユーザーが作成できるメールボックスエイリアス
 msgid "Maximum number of domain administrators this user can create"
 msgstr "このユーザーが作成できるドメイン管理者の最大数"
 
-#: limits/constants.py:36
+#: limits/constants.py:32
+msgid "Quota shared between domains of this reseller"
+msgstr ""
+
+#: limits/constants.py:43
 msgid "Maximum number of domain aliases allowed for this domain."
 msgstr "このドメインに許可されたドメインエイリアスの最大数"
 
-#: limits/constants.py:40
+#: limits/constants.py:47
 msgid "Maximum number of mailboxes allowed for this domain."
 msgstr "このドメインに許可されたメールボックスの最大数"
 
-#: limits/constants.py:44
+#: limits/constants.py:51
 msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr "このドメインに許可されたメールボックスエイリアスの最大数"
 
-#: limits/constants.py:49
+#: limits/constants.py:56
 msgid "Maximum number of domain admins allowed for this domain."
 msgstr "このドメインに許可されたドメイン管理者の最大数"
 
@@ -183,11 +197,11 @@ msgstr "このドメインに許可されたドメイン管理者の最大数"
 msgid "Invalid limit"
 msgstr "不正な制限"
 
-#: limits/forms.py:64
+#: limits/forms.py:64 limits/models.py:52
 msgid "You're not allowed to define unlimited values"
 msgstr "無制限な値に設定するのは許可されていません"
 
-#: limits/handlers.py:123 limits/handlers.py:159
+#: limits/handlers.py:125 limits/handlers.py:161
 msgid "Resources"
 msgstr "リソース"
 
@@ -200,7 +214,7 @@ msgstr "%s: 制限に達しました"
 msgid "Not enough resources"
 msgstr "リソースが足りません"
 
-#: limits/models.py:40 limits/models.py:99
+#: limits/models.py:62 limits/models.py:126
 msgid "unlimited"
 msgstr "無制限"
 

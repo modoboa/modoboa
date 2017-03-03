@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-16 17:41+0100\n"
+"POT-Creation-Date: 2017-03-03 08:55+0100\n"
 "PO-Revision-Date: 2016-06-07 07:27+0000\n"
 "Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -19,85 +19,85 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: app_settings.py:15
+#: relaydomains/app_settings.py:15
 msgid "General"
 msgstr "全般"
 
-#: app_settings.py:18
+#: relaydomains/app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Postfix の master.cf へのパス"
 
-#: app_settings.py:20
+#: relaydomains/app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "master.cf 設定ファイルへのパス"
 
-#: apps.py:12
+#: relaydomains/apps.py:12
 msgid "Relay domains"
 msgstr "リレードメイン"
 
-#: forms.py:52
+#: relaydomains/forms.py:52
 #, fuzzy
 #| msgid "Invalid line"
 msgid "Invalid value"
 msgstr "不正な行"
 
-#: handlers.py:105
+#: relaydomains/handlers.py:105
 msgid "Relay settings"
 msgstr "リレー設定"
 
-#: handlers.py:136 handlers.py:143
+#: relaydomains/handlers.py:136 relaydomains/handlers.py:143
 msgid "Relay domain"
 msgstr "リレードメイン"
 
-#: models.py:47
+#: relaydomains/models.py:47
 msgid "name"
 msgstr "名前"
 
-#: models.py:48
+#: relaydomains/models.py:48
 msgid "The service name"
 msgstr "サービス名"
 
-#: models.py:70
+#: relaydomains/models.py:70
 #, fuzzy
 #| msgid "target host"
 msgid "target host address"
 msgstr "ターゲットホスト"
 
-#: models.py:72
+#: relaydomains/models.py:72
 #, fuzzy
 #| msgid "Remote destination of this domain"
 msgid "Remote address (hostname or IP) of this domain"
 msgstr "このドメインのリモート接続先"
 
-#: models.py:75
+#: relaydomains/models.py:75
 #, fuzzy
 #| msgid "target host"
 msgid "target host port"
 msgstr "ターゲットホスト"
 
-#: models.py:77
+#: relaydomains/models.py:77
 #, fuzzy
 #| msgid "Remote destination of this domain"
 msgid "Remote port of this domain"
 msgstr "このドメインのリモート接続先"
 
-#: models.py:82
+#: relaydomains/models.py:82
 msgid "verify recipients"
 msgstr "受信者を確認"
 
-#: models.py:83
+#: relaydomains/models.py:83
 msgid "Check for valid recipients"
 msgstr "有効な受信者を確認してください"
 
-#: models.py:94
+#: relaydomains/models.py:94
 msgid "Relay Domain"
 msgstr "リレードメイン"
 
-#: models.py:122
+#: relaydomains/models.py:122
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: templates/relaydomains/service_field.html:3
+#: relaydomains/templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "スキャン"
 

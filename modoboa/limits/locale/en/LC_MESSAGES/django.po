@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-14 14:13+0100\n"
+"POT-Creation-Date: 2017-03-03 08:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,8 +29,8 @@ msgstr ""
 msgid "Enable or disable per-admin limits"
 msgstr ""
 
-#: limits/app_settings.py:24 limits/app_settings.py:85 limits/constants.py:25
-#: limits/constants.py:48
+#: limits/app_settings.py:24 limits/app_settings.py:95 limits/constants.py:25
+#: limits/constants.py:55
 msgid "Domain admins"
 msgstr ""
 
@@ -50,8 +50,8 @@ msgid ""
 "creation, -1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/app_settings.py:45 limits/app_settings.py:96 limits/constants.py:14
-#: limits/constants.py:35
+#: limits/app_settings.py:45 limits/app_settings.py:106 limits/constants.py:14
+#: limits/constants.py:42
 msgid "Domain aliases"
 msgstr ""
 
@@ -61,8 +61,8 @@ msgid ""
 "any creation, -1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/app_settings.py:56 limits/app_settings.py:107 limits/constants.py:18
-#: limits/constants.py:39
+#: limits/app_settings.py:56 limits/app_settings.py:117 limits/constants.py:18
+#: limits/constants.py:46
 msgid "Mailboxes"
 msgstr ""
 
@@ -72,8 +72,8 @@ msgid ""
 "creation, -1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/app_settings.py:66 limits/app_settings.py:117 limits/constants.py:21
-#: limits/constants.py:42
+#: limits/app_settings.py:66 limits/app_settings.py:127 limits/constants.py:21
+#: limits/constants.py:49
 msgid "Mailbox aliases"
 msgstr ""
 
@@ -83,37 +83,47 @@ msgid ""
 "creation, -1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/app_settings.py:76
-msgid "Default per-domain limits"
+#: limits/app_settings.py:76 limits/constants.py:31
+msgid "Quota"
 msgstr ""
 
 #: limits/app_settings.py:79
+msgid ""
+"The quota a reseller will be allowed to share between the domains he "
+"creates. (0 means no quota)"
+msgstr ""
+
+#: limits/app_settings.py:86
+msgid "Default per-domain limits"
+msgstr ""
+
+#: limits/app_settings.py:89
 msgid "Enable per-domain limits"
 msgstr ""
 
-#: limits/app_settings.py:81
+#: limits/app_settings.py:91
 msgid "Enable or disable per-domain limits"
 msgstr ""
 
-#: limits/app_settings.py:88
+#: limits/app_settings.py:98
 msgid ""
 "Maximum number of allowed domain administrators for a new domain. (0 to deny "
 "any creation, -1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/app_settings.py:99
+#: limits/app_settings.py:109
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/app_settings.py:110
+#: limits/app_settings.py:120
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
 
-#: limits/app_settings.py:120
+#: limits/app_settings.py:130
 msgid ""
 "Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
 "-1 to allow unlimited creations)"
@@ -143,19 +153,23 @@ msgstr ""
 msgid "Maximum number of domain administrators this user can create"
 msgstr ""
 
-#: limits/constants.py:36
+#: limits/constants.py:32
+msgid "Quota shared between domains of this reseller"
+msgstr ""
+
+#: limits/constants.py:43
 msgid "Maximum number of domain aliases allowed for this domain."
 msgstr ""
 
-#: limits/constants.py:40
+#: limits/constants.py:47
 msgid "Maximum number of mailboxes allowed for this domain."
 msgstr ""
 
-#: limits/constants.py:44
+#: limits/constants.py:51
 msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr ""
 
-#: limits/constants.py:49
+#: limits/constants.py:56
 msgid "Maximum number of domain admins allowed for this domain."
 msgstr ""
 
@@ -163,11 +177,11 @@ msgstr ""
 msgid "Invalid limit"
 msgstr ""
 
-#: limits/forms.py:64
+#: limits/forms.py:64 limits/models.py:52
 msgid "You're not allowed to define unlimited values"
 msgstr ""
 
-#: limits/handlers.py:123 limits/handlers.py:159
+#: limits/handlers.py:125 limits/handlers.py:161
 msgid "Resources"
 msgstr ""
 
@@ -180,7 +194,7 @@ msgstr ""
 msgid "Not enough resources"
 msgstr ""
 
-#: limits/models.py:40 limits/models.py:99
+#: limits/models.py:62 limits/models.py:126
 msgid "unlimited"
 msgstr ""
 
