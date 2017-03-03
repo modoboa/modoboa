@@ -186,6 +186,40 @@ Finally, upgrade your extensions and reactivate them.
 |modoboa-webmail               |1.1.0                         |
 +------------------------------+------------------------------+
 
+Command line shortcuts:
+
+.. sourcecode:: bash
+
+   $ pip install modoboa-amavis==1.1.0
+   $ pip install modoboa-dmarc==1.0.0
+   $ pip install modoboa-imap-migration==1.1.0
+   $ pip install modoboa-pdfcredentials==1.1.0
+   $ pip install modoboa-postfix-autoreply==1.2.0
+   $ pip install modoboa-radicale==1.1.0
+   $ pip install modoboa-sievefilters==1.1.0
+   $ pip install modoboa-stats==1.1.0
+   $ pip install modoboa-webmail==1.1.0
+
+Notes about quota changes and Reseller user
+-------------------------------------------
+
+Reseller users now have a quota option in Resources tab. This is the quota
+that a reseller can share between all its domains.
+
+There are two quotas for a domain in the new version:
+
+1. Quota &
+2. Default mailbox quota.
+
+[1]. Quota: quota shared between mailboxes
+This quota is shared between all the mailboxes of this domain. This
+value cannot exceed reseller's quota and hence cannot be 0(unlimited)
+if reseller has finite quota.
+
+[2]. Default mailbox quota: default quota applied to mailboxes
+This quota is the default quota applied to new mailboxes. This value
+cannot exceed Quota[1] and hence cannot be 0(unlimited) if Quota[1] is
+finite.
 
 1.6.1
 =====
