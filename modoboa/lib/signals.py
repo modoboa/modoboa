@@ -2,15 +2,16 @@
 
 from threading import local
 
-import django.dispatch
+_local_store = local()
 
-request_accessor = local()
-request_accessor.signal = django.dispatch.Signal()
+
+def set_current_request(request):
+    """Store current request."""
+    _local_store.request = request
 
 
 def get_request():
     """Get the current request from anywhere."""
-    request = request_accessor.signal.send(None)
-    if request:
-        return request[0][1]
-    return None
+    if "request" not in _local_store.__dict__:
+        return None
+    return _local_store.request
