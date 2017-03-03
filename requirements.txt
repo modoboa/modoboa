@@ -6,7 +6,7 @@ argparse
 passlib==1.6.5
 # bcrypt requires libffi-dev
 bcrypt==2.0.0
-django-versionfield2>=0.3.3
+django-versionfield2>=0.5.0
 requests
 django-xforwardedfor-middleware
 django-passwords==0.3.12

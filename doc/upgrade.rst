@@ -152,6 +152,32 @@ Edit the :file:`settings.py` and apply the following changes:
        'django.contrib.auth.backends.ModelBackend',
    )
 
+* Remove ``TEMPLATE_CONTEXT_PROCESSORS`` and replace it by:
+
+.. sourcecode:: python
+
+   TEMPLATES = [
+       {
+           'BACKEND': 'django.template.backends.django.DjangoTemplates',
+           'DIRS': [],
+           'APP_DIRS': True,
+           'OPTIONS': {
+               'context_processors': [
+                   'django.template.context_processors.debug',
+                   'django.template.context_processors.request',
+                   'django.contrib.auth.context_processors.auth',
+                   'django.template.context_processors.i18n',
+                   'django.template.context_processors.media',
+                   'django.template.context_processors.static',
+                   'django.template.context_processors.tz',
+                   'django.contrib.messages.context_processors.messages',
+                   'modoboa.core.context_processors.top_notifications',
+               ],
+               'debug': False,
+           },
+       },
+   ]
+
 Run the following commands (load virtualenv if you use one):
 
 .. sourcecode:: bash
@@ -199,6 +225,13 @@ Command line shortcuts:
    $ pip install modoboa-sievefilters==1.1.0
    $ pip install modoboa-stats==1.1.0
    $ pip install modoboa-webmail==1.1.0
+
+And please make sure you use the latest version of the
+``django-versionfield2`` package:
+
+.. sourcecode:: bash
+
+   $ pip install -U django-versionfield2
 
 Notes about quota changes and resellers
 ---------------------------------------
