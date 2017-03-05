@@ -34,7 +34,7 @@ Then, run the following commands:
 
 Once done, check if the version you are installing requires
 :ref:`specific_upgrade_instructions`.
-  
+
 Finally, restart your web server.
 
 Sometimes, you might need to upgrade postfix map files too. To do so,
@@ -87,9 +87,63 @@ Specific instructions
 1.7.0
 =====
 
-Modoboa used to provide a custom authentication backend
-(``modoboa.lib.authbackends.SimpleBackend``) but it has been
-removed. Please modify you :file:`settings.py` file as follows:
+This version requires Django >= 1.10 so you need to make some
+modifications. It also brings internal API changes which are not
+backward compatible so installed extensions must be upgraded too.
+
+First of all, deactivate all installed extensions (edit the
+:file:`settings.py` file and comment the corresponding lines in
+``MODOBOA_APPS``).
+
+Edit the :file:`urls.py` file of your local instance and replace its
+content by the following one:
+
+.. sourcecode:: python
+
+   from django.conf.urls import include, url
+
+   urlpatterns = [
+       url(r'', include('modoboa.urls')),
+   ]
+
+Edit the :file:`settings.py` and apply the following changes:
+
+* Add ``'modoboa.parameters'`` to ``MODOBOA_APPS``:
+
+.. sourcecode:: python
+
+   MODOBOA_APPS = (
+       'modoboa',
+       'modoboa.core',
+       'modoboa.lib',
+       'modoboa.admin',
+       'modoboa.relaydomains',
+       'modoboa.limits',
+       'modoboa.parameters',
+       # Modoboa extensions here.
+   )
+
+* Add ``'modoboa.core.middleware.LocalConfigMiddleware'`` to ``MIDDLEWARE_CLASSES``:
+
+.. sourcecode:: python
+  
+   MIDDLEWARE_CLASSES = (
+       'django.contrib.sessions.middleware.SessionMiddleware',
+       'django.middleware.common.CommonMiddleware',
+       'django.middleware.csrf.CsrfViewMiddleware',
+       'django.contrib.auth.middleware.AuthenticationMiddleware',
+       'django.contrib.messages.middleware.MessageMiddleware',
+       'django.middleware.locale.LocaleMiddleware',
+       'django.middleware.clickjacking.XFrameOptionsMiddleware',
+       'modoboa.core.middleware.LocalConfigMiddleware',
+       'modoboa.lib.middleware.AjaxLoginRedirect',
+       'modoboa.lib.middleware.CommonExceptionCatcher',
+       'modoboa.lib.middleware.RequestCatcherMiddleware',
+  )
+
+* Modoboa used to provide a custom authentication backend
+  (``modoboa.lib.authbackends.SimpleBackend``) but it has been
+  removed. Replace it as follows:
 
 .. sourcecode:: python
 
@@ -97,6 +151,108 @@ removed. Please modify you :file:`settings.py` file as follows:
        # Other backends before...
        'django.contrib.auth.backends.ModelBackend',
    )
+
+* Remove ``TEMPLATE_CONTEXT_PROCESSORS`` and replace it by:
+
+.. sourcecode:: python
+
+   TEMPLATES = [
+       {
+           'BACKEND': 'django.template.backends.django.DjangoTemplates',
+           'DIRS': [],
+           'APP_DIRS': True,
+           'OPTIONS': {
+               'context_processors': [
+                   'django.template.context_processors.debug',
+                   'django.template.context_processors.request',
+                   'django.contrib.auth.context_processors.auth',
+                   'django.template.context_processors.i18n',
+                   'django.template.context_processors.media',
+                   'django.template.context_processors.static',
+                   'django.template.context_processors.tz',
+                   'django.contrib.messages.context_processors.messages',
+                   'modoboa.core.context_processors.top_notifications',
+               ],
+               'debug': False,
+           },
+       },
+   ]
+
+Run the following commands (load virtualenv if you use one):
+
+.. sourcecode:: bash
+
+   > sudo -u <modoboa_user> -i
+   > source <virtuenv_path>/bin/activate
+   > cd <modoboa_instance_dir>
+   > python manage.py migrate
+   > python manage.py collectstatic
+
+Finally, upgrade your extensions and reactivate them.
+
++------------------------------+------------------------------+
+|Name                          |Version                       |
++==============================+==============================+
+|modoboa-amavis                |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-dmarc                 |1.0.0                         |
++------------------------------+------------------------------+
+|modoboa-imap-migration        |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-pdfcredentials        |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-postfix-autoreply     |1.2.0                         |
++------------------------------+------------------------------+
+|modoboa-radicale              |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-sievefilters          |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-stats                 |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-webmail               |1.1.0                         |
++------------------------------+------------------------------+
+
+Command line shortcuts:
+
+.. sourcecode:: bash
+
+   $ pip install modoboa-amavis==1.1.0
+   $ pip install modoboa-dmarc==1.0.0
+   $ pip install modoboa-imap-migration==1.1.0
+   $ pip install modoboa-pdfcredentials==1.1.0
+   $ pip install modoboa-postfix-autoreply==1.2.0
+   $ pip install modoboa-radicale==1.1.0
+   $ pip install modoboa-sievefilters==1.1.0
+   $ pip install modoboa-stats==1.1.0
+   $ pip install modoboa-webmail==1.1.0
+
+And please make sure you use the latest version of the
+``django-versionfield2`` package:
+
+.. sourcecode:: bash
+
+   $ pip install -U django-versionfield2
+
+Notes about quota changes and resellers
+---------------------------------------
+
+Reseller users now have a quota option in Resources tab. This is the quota
+that a reseller can share between all its domains.
+
+There are two quotas for a domain in the new version:
+
+1. Quota &
+2. Default mailbox quota.
+
+[1]. Quota: quota shared between mailboxes
+This quota is shared between all the mailboxes of this domain. This
+value cannot exceed reseller's quota and hence cannot be 0(unlimited)
+if reseller has finite quota.
+
+[2]. Default mailbox quota: default quota applied to mailboxes
+This quota is the default quota applied to new mailboxes. This value
+cannot exceed Quota[1] and hence cannot be 0(unlimited) if Quota[1] is
+finite.
 
 1.6.1
 =====
@@ -154,7 +310,7 @@ Command line shortcut:
 
    You have to upgrade extensions due to `core.User` model attribute change (`user.group` to `user.role`).
    Otherwise, you will have an internal error after upgrade.
-   In particular: `modoboa-amavisd https://github.com/modoboa/modoboa-amavis/commit/35df4e48b124e56df930cda8c013af0c1fcaabf3`_, `modoboa-stats https://github.com/modoboa/modoboa-stats/commit/aa4a39ce65eb306ad6dec30a54eb58945b120274`_, `modoboa-postfix-autoreply <https://github.com/modoboa/modoboa-postfix-autoreply/commit/20f98c8d1c0c0dbd420f47aefcbb0290022414a4>`_ are concerned.
+   In particular: `modoboa-amavisd <https://github.com/modoboa/modoboa-amavis/commit/35df4e48b124e56df930cda8c013af0c1fcaabf3>`_, `modoboa-stats <https://github.com/modoboa/modoboa-stats/commit/aa4a39ce65eb306ad6dec30a54eb58945b120274>`_, `modoboa-postfix-autoreply <https://github.com/modoboa/modoboa-postfix-autoreply/commit/20f98c8d1c0c0dbd420f47aefcbb0290022414a4>`_ are concerned.
 
 An interesting feature brougth by this version is the capability to
 make different checks about MX records. For example, Modoboa can
@@ -407,8 +563,8 @@ Here are the required steps:
 
 #. The cleanup job has been renamed in Django, so you have to modify your crontab entry::
 
-   - 0 0 * * * <modoboa_site>/manage.py cleanup
-   + 0 0 * * * <modoboa_site>/manage.py clearsessions
+     - 0 0 * * * <modoboa_site>/manage.py cleanup
+     + 0 0 * * * <modoboa_site>/manage.py clearsessions
 
 1.2.0
 =====

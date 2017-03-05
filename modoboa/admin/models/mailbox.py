@@ -350,7 +350,6 @@ reversion.register(SenderAddress)
 
 
 class MailboxOperation(models.Model):
-
     """An operation on a mailbox."""
 
     mailbox = models.ForeignKey(Mailbox, blank=True, null=True)

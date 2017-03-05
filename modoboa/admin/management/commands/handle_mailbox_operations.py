@@ -2,10 +2,11 @@
 
 import logging
 import os
+import shutil
 
 from django.core.management.base import BaseCommand
 
-from param_tools import tools as param_tools
+from modoboa.parameters import tools as param_tools
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
 
@@ -52,13 +53,16 @@ class Command(BaseCommand):
             raise OperationError(output)
 
     def delete_mailbox(self, operation):
+        """Try to delete a mailbox tree on filesystem."""
         if not os.path.exists(operation.argument):
             return
-        code, output = exec_cmd(
-            "rm -r %s" % operation.argument
-        )
-        if code:
-            raise OperationError(output)
+
+        def onerror(function, path, excinfo):
+            """Handle errors."""
+            self.logger.critical(
+                "delete failed (reason: {})".format(excinfo))
+
+        shutil.rmtree(operation.argument, False, onerror)
 
     def check_pidfile(self, path):
         """Check if this command is already running
@@ -93,8 +97,8 @@ class Command(BaseCommand):
             try:
                 f(ope)
             except (OperationError, InternalError) as e:
-                self.logger.critical("%s failed (reason: %s)",
-                                     ope, str(e).encode("utf-8"))
+                self.logger.critical(
+                    "%s failed (reason: %s)", ope, str(e).decode("utf-8"))
             else:
                 self.logger.info("%s succeed", ope)
                 ope.delete()

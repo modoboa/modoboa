@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2015,2017
 # Théo BOUGE <titi1994@aliceadsl.fr>, 2015
@@ -9,84 +9,84 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-16 17:41+0100\n"
+"POT-Creation-Date: 2017-03-03 08:55+0100\n"
 "PO-Revision-Date: 2017-01-16 16:45+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: app_settings.py:15
+#: relaydomains/app_settings.py:15
 msgid "General"
 msgstr "Général"
 
-#: app_settings.py:18
+#: relaydomains/app_settings.py:18
 msgid "Postfix's master.cf path"
 msgstr "Chemin d'accès vers le fichier master.cf de Postfix"
 
-#: app_settings.py:20
+#: relaydomains/app_settings.py:20
 msgid "Path to the master.cf configuration file"
 msgstr "Chemin d'accès vers le fichier de configuration master.cf"
 
-#: apps.py:12
+#: relaydomains/apps.py:12
 msgid "Relay domains"
 msgstr "Domaines relais"
 
-#: forms.py:52
+#: relaydomains/forms.py:52
 msgid "Invalid value"
 msgstr "Mauvaise valeur"
 
-#: handlers.py:105
+#: relaydomains/handlers.py:105
 msgid "Relay settings"
 msgstr "Paramètre du relais"
 
-#: handlers.py:136 handlers.py:143
+#: relaydomains/handlers.py:136 relaydomains/handlers.py:143
 msgid "Relay domain"
 msgstr "Domaine relais"
 
-#: models.py:47
+#: relaydomains/models.py:47
 msgid "name"
 msgstr "Nom"
 
-#: models.py:48
+#: relaydomains/models.py:48
 msgid "The service name"
 msgstr "Le nom du service"
 
-#: models.py:70
+#: relaydomains/models.py:70
 msgid "target host address"
 msgstr "Adresse de l'hôte cible"
 
-#: models.py:72
+#: relaydomains/models.py:72
 msgid "Remote address (hostname or IP) of this domain"
 msgstr "Adresse de destination (nom d'hôte ou IP) de ce domaine"
 
-#: models.py:75
+#: relaydomains/models.py:75
 msgid "target host port"
 msgstr "Port de l'hôte cible"
 
-#: models.py:77
+#: relaydomains/models.py:77
 msgid "Remote port of this domain"
 msgstr "Port de destination de ce domaine"
 
-#: models.py:82
+#: relaydomains/models.py:82
 msgid "verify recipients"
 msgstr "Vérifier les destinataires"
 
-#: models.py:83
+#: relaydomains/models.py:83
 msgid "Check for valid recipients"
 msgstr "Vérifie si les destinataires sont valides (existent)"
 
-#: models.py:94
+#: relaydomains/models.py:94
 msgid "Relay Domain"
 msgstr "Domaine relais"
 
-#: models.py:122
+#: relaydomains/models.py:122
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: templates/relaydomains/service_field.html:3
+#: relaydomains/templates/relaydomains/service_field.html:3
 msgid "Scan"
 msgstr "Scanner"

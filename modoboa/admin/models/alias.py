@@ -148,8 +148,8 @@ class Alias(AdminObject):
                     kwargs["r_alias"] = rcpt
                 else:
                     kwargs["r_mailbox"] = rcpt
-            to_create.append(AliasRecipient(**kwargs))
-        AliasRecipient.objects.bulk_create(to_create)
+            AliasRecipient(**kwargs).save()
+
         # Remove old recipients
         self.aliasrecipient_set.exclude(
             address__in=address_list).delete()

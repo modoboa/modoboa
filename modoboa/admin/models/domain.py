@@ -226,8 +226,7 @@ class Domain(AdminObject):
         if self.alias_set.count():
             ungrant_access_to_objects(self.alias_set.all())
         if param_tools.get_global_parameter("auto_account_removal"):
-            for account in User.objects.filter(mailbox__domain=self):
-                account.delete(fromuser, keepdir)
+            User.objects.filter(mailbox__domain=self).delete()
         elif self.mailbox_set.count():
             Quota.objects.filter(username__contains="@%s" % self.name).delete()
             ungrant_access_to_objects(self.mailbox_set.all())
