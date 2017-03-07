@@ -45,8 +45,10 @@ class Command(BaseCommand):
                 user=admin, content_object=admin, is_owner=True)
 
         lc = models.LocalConfig.objects.first()
-        secret_key = lc.parameters.get_value("secret_key")
-        if not secret_key:
+        condition = (
+            "core" not in lc._parameters or
+            "secret_key" not in lc._parameters["core"])
+        if condition:
             lc.parameters.set_value("secret_key", random_key())
             lc.save()
 
