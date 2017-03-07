@@ -42,15 +42,22 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
 
-class ChangeDefaultAdminTestCase(TestCase):
+class LoadInitialDataTestCase(TestCase):
     """Try to change the default username."""
 
-    def test_management_command(self):
+    def test_change_default_admin(self):
         """Use dedicated option."""
         management.call_command(
             "load_initial_data", "--admin-username", "modoadmin")
         self.assertTrue(
             self.client.login(username="modoadmin", password="password"))
+
+    def test_set_secret_key(self):
+        """Use dedicated option."""
+        management.call_command("load_initial_data")
+        lc = models.LocalConfig.objects.first()
+        self.assertIn("core", lc._parameters)
+        self.assertIn("secret_key", lc._parameters["core"])
 
 
 class ProfileTestCase(ModoTestCase):
