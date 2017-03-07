@@ -15,7 +15,7 @@ progressbar==2.3
 djangorestframework==3.5.3
 django-rest-swagger==0.3.10
 django-subcommand2==0.1.1
-gevent==1.1.1
+gevent==1.2.1
 ipaddress
 dnspython==1.12.0
 jsonfield==1.0.3
