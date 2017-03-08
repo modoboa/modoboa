@@ -84,6 +84,18 @@ documentation.
 Specific instructions
 *********************
 
+1.7.1
+=====
+
+If you used 1.7.0 for a fresh installation, please run the following commands:
+
+.. sourcecode:: bash
+
+   > sudo -u <modoboa_user> -i
+   > source <virtuenv_path>/bin/activate
+   > cd <modoboa_instance_dir>
+   > python manage.py load_initial_data
+
 1.7.0
 =====
 
