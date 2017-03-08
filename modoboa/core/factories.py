@@ -50,3 +50,14 @@ class UserFactory(PermissionFactory):
         if extracted:
             for group in extracted:
                 self.groups.add(Group.objects.get(name=group))
+
+
+class LogFactory(factory.DjangoModelFactory):
+    """Factory for Log."""
+
+    class Meta:
+        model = models.Log
+
+    logger = "modoboa.admin"
+    message = "A message"
+    level = "info"
