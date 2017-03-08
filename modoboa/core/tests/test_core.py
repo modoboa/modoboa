@@ -2,6 +2,8 @@
 
 import httmock
 
+from dateutil.relativedelta import relativedelta
+
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -42,8 +44,8 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
 
-class LoadInitialDataTestCase(TestCase):
-    """Try to change the default username."""
+class ManagementCommandsTestCase(TestCase):
+    """Test management commands."""
 
     def test_change_default_admin(self):
         """Use dedicated option."""
@@ -58,6 +60,15 @@ class LoadInitialDataTestCase(TestCase):
         lc = models.LocalConfig.objects.first()
         self.assertIn("core", lc._parameters)
         self.assertIn("secret_key", lc._parameters["core"])
+
+    def test_clean_logs(self):
+        """Run cleanlogs command."""
+        log1 = factories.LogFactory()
+        factories.LogFactory()
+        log1.date_created -= relativedelta(years=2)
+        log1.save(update_fields=["date_created"])
+        management.call_command("cleanlogs")
+        self.assertEqual(models.Log.objects.count(), 1)
 
 
 class ProfileTestCase(ModoTestCase):
