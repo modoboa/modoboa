@@ -1,3 +1,4 @@
+# coding: utf-8
 """Custom tags for Core application."""
 
 import os
@@ -10,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import get_language, ugettext as _
 
 from django.contrib.sessions.models import Session
 
@@ -255,3 +256,12 @@ def display_messages(msgs):
     });
 </script>
 """ % (level, text, timeout))
+
+
+@register.filter
+def currencyfmt(amount):
+    """Simple temp. filter to replace babel."""
+    lang = get_language()
+    if lang == "fr":
+        return u"{} €".format(amount)
+    return u"€{}".format(amount)
