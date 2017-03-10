@@ -215,6 +215,16 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         required=False
     )
 
+    dash_sep = SeparatorField(label=ugettext_lazy("Dashboard"))
+
+    news_url = forms.URLField(
+        label=ugettext_lazy("Custom news url"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Display custom news for resellers and domain administrators"
+        )
+    )
+
     notif_sep = SeparatorField(label=ugettext_lazy("Notifications"))
 
     sender_address = lib_fields.UTF8EmailField(
