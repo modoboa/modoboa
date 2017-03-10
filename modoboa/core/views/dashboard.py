@@ -37,8 +37,13 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
             lang = "en"
         context.update({"selection": "dashboard"})
 
-        posts = feedparser.parse(
-            "{}{}/weblog/feeds/".format(MODOBOA_WEBSITE_URL, lang))
+        feed_url = "{}{}/weblog/feeds/".format(MODOBOA_WEBSITE_URL, lang)
+        if self.request.user.role != "SuperAdmins":
+            custom_feed_url = (
+                self.request.localconfig.parameters.get_value("news_url"))
+            if custom_feed_url:
+                feed_url = custom_feed_url
+        posts = feedparser.parse(feed_url)
         entries = []
         for entry in posts["entries"][:5]:
             entry["published"] = parser.parse(entry["published"])

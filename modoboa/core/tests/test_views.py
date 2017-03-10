@@ -62,6 +62,18 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
 
+    def test_custom_news(self):
+        """Check that custom news are displayed."""
+        url = reverse("core:dashboard")
+        response = self.client.get(url)
+        self.assertContains(response, "https://modoboa.org")
+
+        self.set_global_parameter(
+            "news_url", "https://www.djangoproject.com/rss/weblog/")
+        self.client.force_login(self.dadmin)
+        response = self.client.get(url)
+        self.assertContains(response, "djangoproject")
+
     def test_root_dispatch(self):
         """Check root dispatching."""
         url = reverse("core:root")
