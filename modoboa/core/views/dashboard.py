@@ -46,13 +46,12 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
         context["widgets"]["left"].append("core/_latest_news_widget.html")
         context.update({"news": entries})
 
-        url = "{}{}/projects/?featured=true".format(
+        url = "{}{}/api/projects/?featured=true".format(
             MODOBOA_WEBSITE_URL, lang)
         response = requests.get(url)
-        features = []
         if response.status_code == 200:
             features = response.json()
-            context["widgets"]["left"].append("core/_current_features.html")
+            context["widgets"]["right"].append("core/_current_features.html")
             context.update({"features": features})
 
         # Extra widgets

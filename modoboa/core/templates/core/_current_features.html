@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load core_tags i18n %}
 
 <!-- Current features to sponsor -->
 <div class="panel panel-primary">
@@ -7,13 +7,20 @@
   </div>
   <div class="panel-body">
     {% for feature in features %}
-      <h4>{{ feature.name }}</h4>
-      <span class="label label-info">{% trans "Current:" %} {{ feature.current }}</span>
-      <span class="label label-success">{% trans "Goal:" %} {{ feature.goal }}</span>
-      <p>{{ feature.description }}</p>
-      <a href="{{ feature.full_url }}" class="btn btn-primary">{% trans "More" %}</a>
+      <h4>{{ feature.name }}
+        <span class="pull-right">
+          <span class="label label-success">
+            {{ feature.current|currencyfmt }} / {{ feature.goal|currencyfmt }}</span>
+        </span>
+      </h4>
+      <p class="slogan">{{ feature.slogan|safe }}</p>
+      <div class="text-center">
+        <a href="{{ feature.full_url }}" class="btn btn-primary" target="_blank">
+          {% trans "More" %}</a>
+      </div>
+      {% if not forloop.last %}<hr>{% endif %}
     {% empty %}
-      <div class="alert alert-info">{% trans "FIXME" %}</div>
+      <div class="alert alert-info">{% trans "Nothing to sponsor yet." %}</div>
     {% endfor %}
   </div>
 </div>

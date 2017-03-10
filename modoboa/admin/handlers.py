@@ -320,7 +320,7 @@ def add_widgets_to_admin_dashboard(sender, user, **kwargs):
             "domains": models.Domain.objects.get_for_admin(user)}
         template = "admin/_per_domain_statistics_widget.html"
     return [{
-        "column": "right",
+        "column": "left",
         "template": template,
         "context": context
     }]

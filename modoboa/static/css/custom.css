@@ -285,3 +285,8 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
 #wizard .carousel-inner {
     overflow: visible;
 }
+
+/* Dashboard */
+.slogan {
+    padding-top: 15px;
+}
