@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'reversion',
+    'ckeditor',
+    'ckeditor_uploader',
     'rest_framework.authtoken',
     'rest_framework_swagger',
 {% if devmode %}    'djangobower',{% endif %}
@@ -201,6 +203,38 @@ PASSWORD_COMPLEXITY = {
     "UPPER": 1,
     "LOWER": 1,
     "DIGITS": 1
+}
+
+# CKeditor
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_RESTRICT_BY_USER = True
+
+CKEDITOR_BROWSE_SHOW_DIRS = True
+
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'allowedContent': True,
+        'toolbar': 'Modoboa',
+        'width': None,
+        'toolbar_Modoboa': [
+            ['Bold', 'Italic', 'Underline'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['BidiLtr', 'BidiRtl', 'Language'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+            ['Undo', 'Redo'],
+            ['Link', 'Unlink', 'Anchor', '-', 'Smiley'],
+            ['TextColor', 'BGColor', '-', 'Source'],
+            ['Font', 'FontSize'],
+            ['Image', ],
+            ['SpellChecker']
+        ],
+    },
 }
 
 # Logging configuration
