@@ -17,7 +17,16 @@ from . import serializers
 
 
 class DomainViewSet(viewsets.ModelViewSet):
-    """ViewSet for Domain."""
+    """
+    retrieve:
+    Return the given domain.
+
+    list:
+    Return a list of all existing domains.
+
+    create:
+    Create a new domain instance.
+    """
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer

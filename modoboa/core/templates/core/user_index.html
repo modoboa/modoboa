@@ -11,16 +11,22 @@
 <script type="text/javascript" src="{% static 'js/history.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/listing.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/twocols_nav.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <script type="text/javascript">
-{% extra_static_content "user_index" "js" user %}
-$(document).ready(function() {
-    var userprefs = new TwocolsNav({
-        deflocation: "profile/",
-        formid: "uprefs_form",
-        divid: "uprefs_content",
-        reload_exceptions: ["profile", "api"]
-    });
-});
+ {% extra_static_content "user_index" "js" user %}
+
+ function preferencesCallback() {
+     $(document).trigger('preferencesLoaded');
+ }
+
+ $(document).ready(function() {
+     var userprefs = new TwocolsNav({
+         deflocation: "profile/",
+         formid: "uprefs_form",
+         divid: "uprefs_content",
+         reload_exceptions: ["profile", "api"]
+     });
+ });
 </script>
 {% endblock %}
 

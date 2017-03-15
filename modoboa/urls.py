@@ -2,13 +2,20 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.views.i18n import JavaScriptCatalog
 
+from django.contrib.auth.decorators import login_required
+
+from ckeditor_uploader import views as cku_views
+
 from modoboa.admin.views.user import forward
 from modoboa.core.extensions import exts_pool
 from modoboa.core import signals as core_signals
 
-
 urlpatterns = [
     url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    url(r'^ckeditor/upload/', login_required(cku_views.upload),
+        name="ckeditor_upload"),
+    url(r'^ckeditor/browse/', login_required(cku_views.browse),
+        name="ckeditor_browse"),
     url('', include('modoboa.core.urls', namespace="core")),
     url('^user/forward/', forward, name="user_forward"),
     url('admin/', include('modoboa.admin.urls', namespace="admin")),
@@ -29,11 +36,6 @@ urlpatterns += [
     url("^api/v1/", include("modoboa.urls_api", namespace="external_api")),
     url("^docs/api/", include('rest_framework_swagger.urls')),
 ]
-
-if 'modoboa.demo' in settings.INSTALLED_APPS:
-    urlpatterns += [
-        url(r'^demo/', include('modoboa.demo.urls', namespace="demo"))
-    ]
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns

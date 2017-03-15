@@ -76,7 +76,8 @@ def preferences(request):
         "content": render_to_string("core/user_preferences.html", {
             "forms": param_tools.registry.get_forms(
                 "user", user=request.user, first_app="general")
-        }, request)
+        }, request),
+        "onload_cb": "preferencesCallback",
     })
 
 
