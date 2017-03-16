@@ -2,7 +2,7 @@
 
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 
 from rest_framework import serializers
 from passwords import validators
@@ -317,7 +317,8 @@ class AliasSerializer(serializers.ModelSerializer):
     address = lib_fields.DRFEmailFieldUTF8AndEmptyUser()
     recipients = serializers.ListField(
         child=lib_fields.DRFEmailFieldUTF8AndEmptyUser(),
-        allow_empty=False)
+        allow_empty=False,
+        help_text=ugettext_lazy("A list of recipient"))
 
     class Meta:
         model = admin_models.Alias

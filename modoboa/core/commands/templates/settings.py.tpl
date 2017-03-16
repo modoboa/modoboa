@@ -50,8 +50,8 @@ INSTALLED_APPS = (
     'reversion',
     'ckeditor',
     'ckeditor_uploader',
+    'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_swagger',
 {% if devmode %}    'djangobower',{% endif %}
 )
 
@@ -167,6 +167,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',

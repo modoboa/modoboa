@@ -5,10 +5,13 @@ from django.views.i18n import JavaScriptCatalog
 from django.contrib.auth.decorators import login_required
 
 from ckeditor_uploader import views as cku_views
+from rest_framework.documentation import include_docs_urls
 
 from modoboa.admin.views.user import forward
 from modoboa.core.extensions import exts_pool
 from modoboa.core import signals as core_signals
+
+API_TITLE = 'Modoboa API'
 
 urlpatterns = [
     url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
@@ -34,7 +37,7 @@ if extra_routes:
 # API urls
 urlpatterns += [
     url("^api/v1/", include("modoboa.urls_api", namespace="external_api")),
-    url("^docs/api/", include('rest_framework_swagger.urls')),
+    url(r"^docs/api/", include_docs_urls(title=API_TITLE))
 ]
 
 if settings.DEBUG:
