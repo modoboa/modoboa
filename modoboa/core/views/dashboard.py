@@ -40,7 +40,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
         feed_url = "{}{}/weblog/feeds/".format(MODOBOA_WEBSITE_URL, lang)
         if self.request.user.role != "SuperAdmins":
             custom_feed_url = (
-                self.request.localconfig.parameters.get_value("news_url"))
+                self.request.localconfig.parameters.get_value("rss_feed_url"))
             if custom_feed_url:
                 feed_url = custom_feed_url
         posts = feedparser.parse(feed_url)

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-03 08:55+0100\n"
+"POT-Creation-Date: 2017-03-16 10:36+0100\n"
 "PO-Revision-Date: 2015-07-09 14:03+0000\n"
 "Last-Translator: controlc.de\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
@@ -242,98 +242,110 @@ msgid "The distinguished name of the search base used to find groups"
 msgstr "Der DN der Search Base mit Gruppen gefunden werden"
 
 #: core/app_settings.py:218
+msgid "Dashboard"
+msgstr ""
+
+#: core/app_settings.py:221
+msgid "Custom RSS feed"
+msgstr ""
+
+#: core/app_settings.py:224
+msgid "Display custom RSS feed to resellers and domain administrators"
+msgstr ""
+
+#: core/app_settings.py:228
 #, fuzzy
 #| msgid "Applications"
 msgid "Notifications"
 msgstr "Applikationen"
 
-#: core/app_settings.py:221
+#: core/app_settings.py:231
 #, fuzzy
 #| msgid "Server address"
 msgid "Sender address"
 msgstr "Server-Adresse"
 
-#: core/app_settings.py:224
+#: core/app_settings.py:234
 msgid "Email address used to send notifications."
 msgstr ""
 
-#: core/app_settings.py:228
+#: core/app_settings.py:238
 msgid "Public API"
 msgstr ""
 
-#: core/app_settings.py:231
+#: core/app_settings.py:241
 msgid "Enable communication"
 msgstr ""
 
-#: core/app_settings.py:234
+#: core/app_settings.py:244
 msgid "Enable communication with Modoboa public API"
 msgstr ""
 
-#: core/app_settings.py:238
+#: core/app_settings.py:248
 msgid "Check new versions"
 msgstr "Prüfe auf neue Versionen"
 
-#: core/app_settings.py:241
+#: core/app_settings.py:251
 msgid "Automatically checks if a newer version is available"
 msgstr "Prüft automatisch ob eine neuere Version verfügbar ist."
 
-#: core/app_settings.py:245
+#: core/app_settings.py:255
 msgid "Send statistics"
 msgstr ""
 
-#: core/app_settings.py:248
+#: core/app_settings.py:258
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 
-#: core/app_settings.py:252
+#: core/app_settings.py:262
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
-#: core/app_settings.py:255
+#: core/app_settings.py:265
 msgid "Top notifications check interval"
 msgstr "Benachrichtigungs-Prüfintervall"
 
-#: core/app_settings.py:258
+#: core/app_settings.py:268
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Intervall zwischen zwei Benachrichtigungsprüfungen (in Sekunden)"
 
-#: core/app_settings.py:264
+#: core/app_settings.py:274
 msgid "Maximum log record age"
 msgstr "Maximales Alter für Log-Einträge"
 
-#: core/app_settings.py:266
+#: core/app_settings.py:276
 msgid "The maximum age in days of a log record"
 msgstr "Das maximale Alter eines Log-Eintrags (in Tagen)"
 
-#: core/app_settings.py:271
+#: core/app_settings.py:281
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: core/app_settings.py:273
+#: core/app_settings.py:283
 msgid "Number of displayed items per page"
 msgstr "Anzahl dargestellter Einträge pro Seite"
 
-#: core/app_settings.py:278
+#: core/app_settings.py:288
 msgid "Default top redirection"
 msgstr "Standardumleitung"
 
-#: core/app_settings.py:282
+#: core/app_settings.py:292
 msgid "The default redirection used when no application is specified"
 msgstr "Die Standardumleitung wenn kein Programm angegeben wurde"
 
-#: core/app_settings.py:315
+#: core/app_settings.py:325
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Schlüssel muss 16, 24 oder 32 Byte lang sein"
 
-#: core/app_settings.py:324
+#: core/app_settings.py:334
 msgid "Invalid syntax"
 msgstr "Ungültiger Syntax"
 
-#: core/app_settings.py:330
+#: core/app_settings.py:340
 msgid "Invalid rounds number"
 msgstr "Ungültige Zahl für Runden"
 
-#: core/app_settings.py:351
+#: core/app_settings.py:361
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
@@ -491,6 +503,22 @@ msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 msgid "username and email fields must not differ for '%s'"
 msgstr "Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"
 
+#: core/templates/core/_current_features.html:6
+msgid "Features looking for sponsoring"
+msgstr ""
+
+#: core/templates/core/_current_features.html:12
+msgid "Goal:"
+msgstr ""
+
+#: core/templates/core/_current_features.html:18
+msgid "More"
+msgstr ""
+
+#: core/templates/core/_current_features.html:22
+msgid "Nothing to sponsor yet."
+msgstr ""
+
 #: core/templates/core/_latest_news_widget.html:5
 msgid "Latest news"
 msgstr "Neueste Nachrichten"
@@ -523,7 +551,7 @@ msgstr "Aktualisieren"
 msgid "Hello %(user)s."
 msgstr "Hallo %(user)s."
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:59
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:60
 msgid "Information"
 msgstr "Information"
 
@@ -574,7 +602,7 @@ msgstr "Rolle"
 msgid "Last login"
 msgstr "Letzte Anmeldung"
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:63
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:64
 msgid "Logs"
 msgstr "Logs"
 
@@ -598,7 +626,7 @@ msgstr "Logger"
 msgid "Message"
 msgstr "Nachricht"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:68
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:69
 msgid "Parameters"
 msgstr "Parameter"
 
@@ -615,12 +643,12 @@ msgstr "Speichern"
 msgid "Modoboa settings"
 msgstr "Modoboa-Einstellungen"
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:87
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:88
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:117
+#: core/templatetags/core_tags.py:118
 msgid "Preferences"
 msgstr "Einstellungen"
 
@@ -634,7 +662,7 @@ msgstr "Modoboa anpassen"
 msgid "No preferences available."
 msgstr "Einstellungen gespeichert"
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:113
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:114
 msgid "Profile"
 msgstr "Profil"
 
@@ -642,15 +670,15 @@ msgstr "Profil"
 msgid "Update your personal information"
 msgstr "Aktualisieren Sie Ihre persönlichen Daten"
 
-#: core/templatetags/core_tags.py:31
+#: core/templatetags/core_tags.py:32
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:99
+#: core/templatetags/core_tags.py:100
 msgid "Logout"
 msgstr "Logout"
 
-#: core/templatetags/core_tags.py:124
+#: core/templatetags/core_tags.py:125
 msgid "API"
 msgstr ""
 
@@ -687,7 +715,7 @@ msgstr "Profil aktualisiert"
 msgid "Preferences saved"
 msgstr "Einstellungen gespeichert"
 
-#: core/views/user.py:94
+#: core/views/user.py:95
 #, fuzzy
 #| msgid "Profile updated"
 msgid "Access updated"

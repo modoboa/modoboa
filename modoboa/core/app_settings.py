@@ -217,11 +217,11 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     dash_sep = SeparatorField(label=ugettext_lazy("Dashboard"))
 
-    news_url = forms.URLField(
-        label=ugettext_lazy("Custom news url"),
+    rss_feed_url = forms.URLField(
+        label=ugettext_lazy("Custom RSS feed"),
         required=False,
         help_text=ugettext_lazy(
-            "Display custom news for resellers and domain administrators"
+            "Display custom RSS feed to resellers and domain administrators"
         )
     )
 

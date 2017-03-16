@@ -69,7 +69,7 @@ class DashboardTestCase(ModoTestCase):
         self.assertContains(response, "https://modoboa.org")
 
         self.set_global_parameter(
-            "news_url", "https://www.djangoproject.com/rss/weblog/")
+            "rss_feed_url", "https://www.djangoproject.com/rss/weblog/")
         self.client.force_login(self.dadmin)
         response = self.client.get(url)
         self.assertContains(response, "djangoproject")

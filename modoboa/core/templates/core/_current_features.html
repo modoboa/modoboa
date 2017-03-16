@@ -9,8 +9,7 @@
     {% for feature in features %}
       <h4>{{ feature.name }}
         <span class="pull-right">
-          <span class="label label-success">
-            {{ feature.current|currencyfmt }} / {{ feature.goal|currencyfmt }}</span>
+          <span class="label label-success">{% trans "Goal:" %} {{ feature.goal|currencyfmt }}</span>
         </span>
       </h4>
       <p class="slogan">{{ feature.slogan|safe }}</p>
