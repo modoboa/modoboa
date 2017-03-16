@@ -87,12 +87,14 @@ Specific instructions
 1.7.2
 =====
 
-CKeditor is now embedded by default (thanks to the ``django-ckeditor``
-package) and some configuration changes are required to make it work.
+API documentation has evolved (because of the upgrade to Django Rest
+Framework 3.6) and CKeditor is now embedded by default (thanks to the
+``django-ckeditor`` package). Some configuration changes are
+required.
 
 Edit your :file:`settings.py` file and apply the following modifications:
 
-* Add ``ckeditor`` and ``ckeditor_uploader`` to ``INSTALLED_APPS``
+* Update the ``INSTALLED_APPS`` variable as follows:
 
 .. sourcecode:: python
 
@@ -106,9 +108,22 @@ Edit your :file:`settings.py` file and apply the following modifications:
        'reversion',
        'ckeditor',
        'ckeditor_uploader',
+       'rest_framework',
        'rest_framework.authtoken',
-       'rest_framework_swagger',
    )
+
+* Update the ``REST_FRAMEWORK`` variable as follows:
+
+.. sourcecode:: python
+
+   REST_FRAMEWORK = {
+       'DEFAULT_AUTHENTICATION_CLASSES': (
+           'rest_framework.authentication.TokenAuthentication',
+           'rest_framework.authentication.SessionAuthentication',
+       ),
+   }
+
+* Remove the ``SWAGGER_SETTINGS`` variable
 
 * Add the following content
      

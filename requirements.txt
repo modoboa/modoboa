@@ -8,8 +8,9 @@ django-xforwardedfor-middleware
 
 dj-database-url
 
-djangorestframework==3.5.3
-django-rest-swagger==0.3.10
+coreapi==2.3.0
+coreapi-cli==1.0.6
+djangorestframework==3.6.2
 
 argparse
 # bcrypt requires libffi-dev
