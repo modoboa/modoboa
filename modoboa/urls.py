@@ -36,8 +36,8 @@ if extra_routes:
 
 # API urls
 urlpatterns += [
+    url("^docs/api/", include_docs_urls(title=API_TITLE)),
     url("^api/v1/", include("modoboa.urls_api", namespace="external_api")),
-    # url(r"^docs/api/", include_docs_urls(title=API_TITLE))
 ]
 
 if settings.DEBUG:
