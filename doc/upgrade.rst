@@ -84,6 +84,74 @@ documentation.
 Specific instructions
 *********************
 
+1.7.2
+=====
+
+CKeditor is now embedded by default (thanks to the ``django-ckeditor``
+package) and some configuration changes are required to make it work.
+
+Edit your :file:`settings.py` file and apply the following modifications:
+
+* Add ``ckeditor`` and ``ckeditor_uploader`` to ``INSTALLED_APPS``
+
+.. sourcecode:: python
+
+   INSTALLED_APPS = (
+       'django.contrib.auth',
+       'django.contrib.contenttypes',
+       'django.contrib.sessions',
+       'django.contrib.messages',
+       'django.contrib.sites',
+       'django.contrib.staticfiles',
+       'reversion',
+       'ckeditor',
+       'ckeditor_uploader',
+       'rest_framework.authtoken',
+       'rest_framework_swagger',
+   )
+
+* Add the following content
+     
+.. sourcecode:: python
+                  
+   # CKeditor
+
+   CKEDITOR_UPLOAD_PATH = "uploads/"
+
+   CKEDITOR_IMAGE_BACKEND = "pillow"
+
+   CKEDITOR_RESTRICT_BY_USER = True
+
+   CKEDITOR_BROWSE_SHOW_DIRS = True
+
+   CKEDITOR_ALLOW_NONIMAGE_FILES = False
+
+   CKEDITOR_CONFIGS = {
+       'default': {
+           'allowedContent': True,
+           'toolbar': 'Modoboa',
+           'width': None,
+           'toolbar_Modoboa': [
+               ['Bold', 'Italic', 'Underline'],
+               ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+               ['BidiLtr', 'BidiRtl', 'Language'],
+               ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+               ['Undo', 'Redo'],
+               ['Link', 'Unlink', 'Anchor', '-', 'Smiley'],
+               ['TextColor', 'BGColor', '-', 'Source'],
+               ['Font', 'FontSize'],
+               ['Image', ],
+               ['SpellChecker']
+           ],
+       },
+   }
+
+Don't forget to run the following command:
+
+.. sourcecode:: bash
+
+   > python manage.py collectstatic
+
 1.7.1
 =====
 
