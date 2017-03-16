@@ -24,9 +24,10 @@ before_install:
   - if [[ $DB = 'MYSQL' ]]; then pip install -q mysqlclient; fi
 
 install:
-  - python setup.py -q develop
+  - pip install -q -r requirements.txt
   - pip install -q -r ldap-requirements.txt
   - pip install -q -r test-requirements.txt
+  - pip install -e .
 
 before_script:
   - if [[ $DB = 'POSTGRESQL' ]]; then psql -c 'create database modoboa_test;' -U postgres; fi
