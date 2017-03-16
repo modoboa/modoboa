@@ -8,6 +8,8 @@ django-xforwardedfor-middleware
 
 dj-database-url
 
+coreapi==2.3.0
+coreapi-cli==1.0.6
 djangorestframework==3.6.2
 
 argparse
