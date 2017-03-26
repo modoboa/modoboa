@@ -6,6 +6,7 @@ import sys
 from testfixtures import compare
 
 from django.core import management
+from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
 
 from .. import extensions
@@ -57,7 +58,7 @@ class ExtensionTestCase(TestCase):
         compare(infos, {
             "name": "stupid_extension_1", "label": "Stupid extension",
             "version": "1.0.0", "description": "A stupid extension",
-            "url": None, "always_active": False,
+            "url": "stupid_extension_1", "always_active": False,
             "topredirection_url": None
         })
 
@@ -72,3 +73,14 @@ class ExtensionTestCase(TestCase):
         """Check if method is called."""
         with self.assertRaises(RuntimeError):
             management.call_command("load_initial_data")
+
+    def test_get_urls(self):
+        """Load extensions urls."""
+        urls = self.pool.get_urls()
+        self.assertEqual(len(urls), 1)
+
+        url = reverse("stupid_extension_2:index")
+        self.assertEqual(url, "/stupid_extension_2/")
+
+        urls = self.pool.get_urls(category="api")
+        self.assertEqual(len(urls), 0)

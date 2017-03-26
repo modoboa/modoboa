@@ -16,16 +16,22 @@ class ModoExtension(object):
     label = None
     version = "NA"
     description = ""
-    url = None
     needs_media = False
     always_active = False
+    url = None
     topredirection_url = None
+
+    def get_url(self):
+        """Return extension base url."""
+        if self.url is None:
+            return self.name
+        return self.url
 
     def infos(self):
         """Information about this extension."""
         return {
             "name": self.name, "label": self.label, "version": self.version,
-            "description": self.description, "url": self.url,
+            "description": self.description, "url": self.get_url(),
             "topredirection_url": self.topredirection_url,
             "always_active": self.always_active
         }
@@ -101,8 +107,7 @@ class ExtensionsPool(object):
                 root = ""
                 pattern = "{}.urls_api"
             else:
-                baseurl = getattr(ext, "url", ext_name)
-                root = r"^{}/".format(baseurl)
+                root = r"^{}/".format(ext.get_url())
                 options.update({"namespace": ext_name})
                 pattern = "{}.urls"
             try:
