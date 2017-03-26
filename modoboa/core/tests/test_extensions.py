@@ -79,8 +79,5 @@ class ExtensionTestCase(TestCase):
         urls = self.pool.get_urls()
         self.assertEqual(len(urls), 1)
 
-        url = reverse("stupid_extension_2:index")
-        self.assertEqual(url, "/stupid_extension_2/")
-
         urls = self.pool.get_urls(category="api")
         self.assertEqual(len(urls), 0)

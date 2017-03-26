@@ -98,7 +98,7 @@ class ExtensionsPool(object):
             self.load_extension(ext)
 
     def get_urls(self, category="app"):
-        """Get all extensions defined urls."""
+        """Get all urls defined by extensions."""
         result = []
         for ext_name in self.extensions.keys():
             ext = self.get_extension(ext_name)
