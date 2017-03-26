@@ -16,16 +16,22 @@ class ModoExtension(object):
     label = None
     version = "NA"
     description = ""
-    url = None
     needs_media = False
     always_active = False
+    url = None
     topredirection_url = None
+
+    def get_url(self):
+        """Return extension base url."""
+        if self.url is None:
+            return self.name
+        return self.url
 
     def infos(self):
         """Information about this extension."""
         return {
             "name": self.name, "label": self.label, "version": self.version,
-            "description": self.description, "url": self.url,
+            "description": self.description, "url": self.get_url(),
             "topredirection_url": self.topredirection_url,
             "always_active": self.always_active
         }
@@ -74,21 +80,8 @@ class ExtensionsPool(object):
         extinstance = self.get_extension(name)
         if extinstance is None:
             return None
-        result = None
-        try:
-            baseurl = (
-                extinstance.url if extinstance.url is not None
-                else name
-            )
-            result = (
-                url(r'^%s/' % (baseurl),
-                    include("{0}.urls".format(name), namespace=name))
-            )
-        except ImportError:
-            # No urls for this extension
-            pass
         extinstance.load()
-        return result
+        return extinstance
 
     def load_all(self):
         """Load all defined extensions.
@@ -101,11 +94,29 @@ class ExtensionsPool(object):
 
         :return: a list of url maps
         """
-        result = []
         for ext in settings.MODOBOA_APPS:
-            ext_urls = self.load_extension(ext)
-            if ext_urls is not None:
-                result += [ext_urls]
+            self.load_extension(ext)
+
+    def get_urls(self, category="app"):
+        """Get all urls defined by extensions."""
+        result = []
+        for ext_name in self.extensions.keys():
+            ext = self.get_extension(ext_name)
+            options = {}
+            if category == "api":
+                root = ""
+                pattern = "{}.urls_api"
+            else:
+                root = r"^{}/".format(ext.get_url())
+                options.update({"namespace": ext_name})
+                pattern = "{}.urls"
+            try:
+                result.append(
+                    url(root, include(pattern.format(ext_name), **options))
+                )
+            except ImportError:
+                # No urls for this extension
+                pass
         return result
 
     def list_all(self):

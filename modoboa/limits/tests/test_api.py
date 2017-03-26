@@ -39,7 +39,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION='Token ' + self.r_token.key)
 
         limit = self.reseller.userobjectlimit_set.get(name="domain_admins")
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         data = {
             "username": "fromapi@test.com",
             "role": "DomainAdmins",
@@ -61,7 +61,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         user = User.objects.get(username="user@test.com")
         domain = Domain.objects.get(name="test.com")
         domain.add_admin(self.reseller)
-        url = reverse("external_api:account-detail", args=[user.pk])
+        url = reverse("api:account-detail", args=[user.pk])
         data = {
             "username": user.username,
             "role": "DomainAdmins",
@@ -82,7 +82,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         quota = self.reseller.userobjectlimit_set.get(name="quota")
         quota.max_value = 3
         quota.save(update_fields=["max_value"])
-        url = reverse("external_api:domain-list")
+        url = reverse("api:domain-list")
         data = {"name": "test3.com", "quota": 1}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -101,7 +101,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         self.assertEqual(response.content, '"Domains: limit reached"')
 
         self.client.delete(
-            reverse("external_api:domain-detail",
+            reverse("api:domain-detail",
                     args=[Domain.objects.get(name="test4.com").pk]))
         data["quota"] = 0
         response = self.client.post(url, data, format="json")
@@ -117,7 +117,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         domain = Domain.objects.get(name="test.com")
         domain.add_admin(self.reseller)
         limit = self.reseller.userobjectlimit_set.get(name="domain_aliases")
-        url = reverse("external_api:domain_alias-list")
+        url = reverse("api:domain_alias-list")
         data = {"name": "dalias1.com", "target": domain.pk}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -138,7 +138,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailboxes")
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         data = {
             "username": "fromapi@test.com",
             "role": "SimpleUsers",
@@ -169,7 +169,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailbox_aliases")
-        url = reverse("external_api:alias-list")
+        url = reverse("api:alias-list")
         data = {
             "address": "alias_fromapi@test.com",
             "recipients": [
@@ -210,7 +210,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="mailboxes")
         self.assertTrue(limit.is_exceeded())
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         data = {
             "username": "fromapi@test.com",
             "role": "SimpleUsers",
@@ -227,7 +227,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         """Check domain_aliases limit."""
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="domain_aliases")
-        url = reverse("external_api:domain_alias-list")
+        url = reverse("api:domain_alias-list")
         data = {"name": "dalias1.com", "target": domain.pk}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -244,7 +244,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="mailbox_aliases")
         self.assertTrue(limit.is_exceeded())
-        url = reverse("external_api:alias-list")
+        url = reverse("api:alias-list")
         data = {
             "address": "alias_fromapi@test.com",
             "recipients": [

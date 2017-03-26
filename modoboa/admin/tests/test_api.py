@@ -29,20 +29,20 @@ class DomainAPITestCase(ModoAPITestCase):
 
     def test_get_domains(self):
         """Retrieve a list of domains."""
-        url = reverse("external_api:domain-list")
+        url = reverse("api:domain-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
         domain = response.data[0]
         url = reverse(
-            "external_api:domain-detail", args=[domain["pk"]])
+            "api:domain-detail", args=[domain["pk"]])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["name"], domain["name"])
 
     def test_create_domain(self):
         """Check domain creation."""
-        url = reverse("external_api:domain-list")
+        url = reverse("api:domain-list")
         response = self.client.post(
             url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
         )
@@ -71,7 +71,7 @@ class DomainAPITestCase(ModoAPITestCase):
         models.Mailbox.objects.filter(
             domain__name="test.com", address="user").update(
                 use_domain_quota=True)
-        url = reverse("external_api:domain-detail", args=[domain.pk])
+        url = reverse("api:domain-detail", args=[domain.pk])
         response = self.client.put(
             url, {"name": "test.com", "default_mailbox_quota": 1000})
         self.assertEqual(response.status_code, 200)
@@ -91,7 +91,7 @@ class DomainAPITestCase(ModoAPITestCase):
     def test_delete_domain(self):
         """Try to delete a domain."""
         domain = models.Domain.objects.get(name="test.com")
-        url = reverse("external_api:domain-detail", args=[domain.pk])
+        url = reverse("api:domain-detail", args=[domain.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(models.Domain.objects.filter(pk=domain.pk).exists())
@@ -114,30 +114,30 @@ class DomainAliasAPITestCase(ModoAPITestCase):
 
     def test_get(self):
         """Retrieve a list of domain aliases."""
-        url = reverse("external_api:domain_alias-list")
+        url = reverse("api:domain_alias-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
         url = reverse(
-            "external_api:domain_alias-detail", args=[response.data[0]["pk"]])
+            "api:domain_alias-detail", args=[response.data[0]["pk"]])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["name"], "dalias1.com")
 
-        url = reverse("external_api:domain_alias-list")
+        url = reverse("api:domain_alias-list")
         response = self.client.get("{}?domain=test.com".format(url))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
-        response = self.client.get(reverse("external_api:domain_alias-list"))
+        response = self.client.get(reverse("api:domain_alias-list"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 0)
 
     def test_post(self):
         """Try to create a new domain alias."""
-        url = reverse("external_api:domain_alias-list")
+        url = reverse("api:domain_alias-list")
         target = models.Domain.objects.get(name="test.com")
         data = {
             "name": "dalias3.com",
@@ -160,7 +160,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
     def test_put(self):
         """Try to update a domain alias."""
         dalias = models.DomainAlias.objects.get(name="dalias1.com")
-        url = reverse("external_api:domain_alias-detail", args=[dalias.pk])
+        url = reverse("api:domain_alias-detail", args=[dalias.pk])
         data = {
             "name": "dalias3.com", "target": dalias.target.pk
         }
@@ -174,7 +174,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
     def test_delete(self):
         """Try to delete an existing domain alias."""
         dalias = models.DomainAlias.objects.get(name="dalias1.com")
-        url = reverse("external_api:domain_alias-detail", args=[dalias.pk])
+        url = reverse("api:domain_alias-detail", args=[dalias.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(
@@ -212,7 +212,7 @@ class AccountAPITestCase(ModoAPITestCase):
 
     def test_get_accounts(self):
         """Retrieve a list of accounts."""
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
@@ -230,7 +230,7 @@ class AccountAPITestCase(ModoAPITestCase):
 
     def test_create_account(self):
         """Try to create a new account."""
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, self.ACCOUNT_DATA, format="json")
         self.assertEqual(response.status_code, 201)
 
@@ -244,7 +244,7 @@ class AccountAPITestCase(ModoAPITestCase):
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["username"] = "fromapi_ééé@test.com"
         data["mailbox"]["full_address"] = data["username"]
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 
@@ -253,7 +253,7 @@ class AccountAPITestCase(ModoAPITestCase):
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["domains"] = ["test.com"]
         data["role"] = "DomainAdmins"
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         domain = admin_models.Domain.objects.get(name="test.com")
@@ -270,7 +270,7 @@ class AccountAPITestCase(ModoAPITestCase):
         """Try to create a new account."""
         data = copy.deepcopy(self.ACCOUNT_DATA)
         del data["mailbox"]
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         account = json.loads(response.content)
@@ -284,7 +284,7 @@ class AccountAPITestCase(ModoAPITestCase):
         """Check if unicity is respected."""
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["username"] = "user@test.com"
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
 
@@ -297,7 +297,7 @@ class AccountAPITestCase(ModoAPITestCase):
         """Try to create a new account."""
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["password"] = "toto"
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         errors = json.loads(response.content)
@@ -309,13 +309,13 @@ class AccountAPITestCase(ModoAPITestCase):
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["mailbox"]["quota"] = 1000
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         data["username"] = "fromapi@test2.com"
         data["mailbox"].update({"full_address": "fromapi@test2.com",
                                 "quota": 10})
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         errors = json.loads(response.content)
@@ -325,7 +325,7 @@ class AccountAPITestCase(ModoAPITestCase):
         """Try to create a new account."""
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["master_user"] = True
-        url = reverse("external_api:account-list")
+        url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         errors = json.loads(response.content)
@@ -334,7 +334,7 @@ class AccountAPITestCase(ModoAPITestCase):
     def test_update_account(self):
         """Try to update an account."""
         account = core_models.User.objects.get(username="user@test.com")
-        url = reverse("external_api:account-detail", args=[account.pk])
+        url = reverse("api:account-detail", args=[account.pk])
         data = {
             "username": "fromapi@test.com",
             "role": account.role,
@@ -359,7 +359,7 @@ class AccountAPITestCase(ModoAPITestCase):
     def test_patch_account(self):
         """Try to patch an account."""
         account = core_models.User.objects.get(username="user@test.com")
-        url = reverse("external_api:account-detail", args=[account.pk])
+        url = reverse("api:account-detail", args=[account.pk])
         data = {
             "username": "fromapi@test.com",
             "mailbox": {
@@ -372,7 +372,7 @@ class AccountAPITestCase(ModoAPITestCase):
     def test_update_domain_admin_account(self):
         """Try to change administered domains."""
         account = core_models.User.objects.get(username="admin@test.com")
-        url = reverse("external_api:account-detail", args=[account.pk])
+        url = reverse("api:account-detail", args=[account.pk])
         data = {
             "username": account.username,
             "role": account.role,
@@ -399,7 +399,7 @@ class AccountAPITestCase(ModoAPITestCase):
     def test_update_account_wrong_address(self):
         """Try to update an account."""
         account = core_models.User.objects.get(username="user@test.com")
-        url = reverse("external_api:account-detail", args=[account.pk])
+        url = reverse("api:account-detail", args=[account.pk])
         data = {
             "username": "fromapi@test3.com",
             "role": account.role,
@@ -417,7 +417,7 @@ class AccountAPITestCase(ModoAPITestCase):
         account = core_models.User.objects.get(username="user@test.com")
         domadmin = core_models.User.objects.get(username="admin@test.com")
         self.assertTrue(domadmin.can_access(account))
-        url = reverse("external_api:account-detail", args=[account.pk])
+        url = reverse("api:account-detail", args=[account.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(
@@ -426,7 +426,7 @@ class AccountAPITestCase(ModoAPITestCase):
 
     def test_account_exists(self):
         """Validate /exists/ service."""
-        url = reverse("external_api:account-exists")
+        url = reverse("api:account-exists")
         response = self.client.get(
             "{}?email={}".format(url, "user@test.com"))
         self.assertEqual(response.status_code, 200)
@@ -444,7 +444,7 @@ class AccountAPITestCase(ModoAPITestCase):
         """Check the change password service."""
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse(
-            "external_api:account-password", args=[account.pk])
+            "api:account-password", args=[account.pk])
         response = self.client.put(
             url, {"password": "toto", "new_password": "pass"},
             format="json")
@@ -482,7 +482,7 @@ class AliasAPITestCase(ModoAPITestCase):
 
     def test_get_aliases(self):
         """Retrieve a list of aliases."""
-        url = reverse("external_api:alias-list")
+        url = reverse("api:alias-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
@@ -496,7 +496,7 @@ class AliasAPITestCase(ModoAPITestCase):
     def test_get_alias(self):
         """Retrieve an alias."""
         al = models.Alias.objects.get(address="alias@test.com")
-        url = reverse("external_api:alias-detail", args=[al.pk])
+        url = reverse("api:alias-detail", args=[al.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         response = json.loads(response.content)
@@ -504,7 +504,7 @@ class AliasAPITestCase(ModoAPITestCase):
 
     def test_create_alias(self):
         """Try to create a new alias."""
-        url = reverse("external_api:alias-list")
+        url = reverse("api:alias-list")
         response = self.client.post(url, self.ALIAS_DATA, format="json")
         self.assertEqual(response.status_code, 201)
 
@@ -531,7 +531,7 @@ class AliasAPITestCase(ModoAPITestCase):
         """As DomainAdmin, try to create a new alias."""
         self.client.credentials(
             HTTP_AUTHORIZATION='Token ' + self.da_token.key)
-        url = reverse("external_api:alias-list")
+        url = reverse("api:alias-list")
         response = self.client.post(url, self.ALIAS_DATA, format="json")
         self.assertEqual(response.status_code, 201)
 
@@ -545,7 +545,7 @@ class AliasAPITestCase(ModoAPITestCase):
     def test_update_alias(self):
         """Try to update an alias."""
         alias = models.Alias.objects.get(address="alias@test.com")
-        url = reverse("external_api:alias-detail", args=[alias.pk])
+        url = reverse("api:alias-detail", args=[alias.pk])
         data = {
             "address": "alias@test.com",
             "recipients": ["user@test.com", "user@nonlocal.com"]
@@ -576,7 +576,7 @@ class AliasAPITestCase(ModoAPITestCase):
         alias = models.Alias.objects.get(address="alias@test.com")
         domadmin = core_models.User.objects.get(username="admin@test.com")
         self.assertTrue(domadmin.can_access(alias))
-        url = reverse("external_api:alias-detail", args=[alias.pk])
+        url = reverse("api:alias-detail", args=[alias.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertFalse(
