@@ -26,7 +26,8 @@ urlpatterns = [
         include('modoboa.relaydomains.urls', namespace="relaydomains")),
 ]
 
-urlpatterns += exts_pool.load_all()
+exts_pool.load_all()
+urlpatterns += exts_pool.get_urls()
 
 extra_routes = core_signals.extra_uprefs_routes.send(sender="urls")
 if extra_routes:
@@ -37,7 +38,7 @@ if extra_routes:
 # API urls
 urlpatterns += [
     url("^docs/api/", include_docs_urls(title=API_TITLE)),
-    url("^api/v1/", include("modoboa.urls_api", namespace="external_api")),
+    url("^api/v1/", include("modoboa.urls_api", namespace="api")),
 ]
 
 if settings.DEBUG:

@@ -74,21 +74,8 @@ class ExtensionsPool(object):
         extinstance = self.get_extension(name)
         if extinstance is None:
             return None
-        result = None
-        try:
-            baseurl = (
-                extinstance.url if extinstance.url is not None
-                else name
-            )
-            result = (
-                url(r'^%s/' % (baseurl),
-                    include("{0}.urls".format(name), namespace=name))
-            )
-        except ImportError:
-            # No urls for this extension
-            pass
         extinstance.load()
-        return result
+        return extinstance
 
     def load_all(self):
         """Load all defined extensions.
@@ -101,11 +88,30 @@ class ExtensionsPool(object):
 
         :return: a list of url maps
         """
-        result = []
         for ext in settings.MODOBOA_APPS:
-            ext_urls = self.load_extension(ext)
-            if ext_urls is not None:
-                result += [ext_urls]
+            self.load_extension(ext)
+
+    def get_urls(self, category="app"):
+        """Get all extensions defined urls."""
+        result = []
+        for ext_name in self.extensions.keys():
+            ext = self.get_extension(ext_name)
+            options = {}
+            if category == "api":
+                root = ""
+                pattern = "{}.urls_api"
+            else:
+                baseurl = getattr(ext, "url", ext_name)
+                root = r"^{}/".format(baseurl)
+                options.update({"namespace": ext_name})
+                pattern = "{}.urls"
+            try:
+                result.append(
+                    url(root, include(pattern.format(ext_name), **options))
+                )
+            except ImportError:
+                # No urls for this extension
+                pass
         return result
 
     def list_all(self):
