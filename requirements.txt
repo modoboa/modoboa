@@ -24,5 +24,6 @@ passlib==1.6.5
 progressbar==2.3
 py-dateutil==2.2
 pycrypto
+pytz
 requests
 rfc6266
