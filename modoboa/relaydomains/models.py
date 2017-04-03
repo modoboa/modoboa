@@ -122,14 +122,15 @@ class RelayDomain(admin_models.AdminObject):
             raise BadRequest(_("Invalid line"))
         self.domain = admin_models.Domain(
             name=row[1].strip(), type="relaydomain", quota=0,
-            enabled=(row[5].strip() in ["True", "1", "yes", "y"])
+            enabled=(row[5].strip().lower() in ["true", "1", "yes", "y"])
         )
         self.domain.save(creator=user)
         self.target_host = row[2].strip()
         self.target_port = row[3].strip()
         self.service, created = Service.objects.get_or_create(
             name=row[4].strip())
-        self.verify_recipients = (row[6].strip() in ["True", "1", "yes", "y"])
+        self.verify_recipients = (
+            row[6].strip().lower() in ["true", "1", "yes", "y"])
         self.save(creator=user)
 
 

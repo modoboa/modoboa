@@ -80,7 +80,7 @@ class DomainAlias(AdminObject):
             raise BadRequest(_("Unknown domain %s") % domname)
         core_signals.can_create_object.send(
             sender="import", context=self.target, object_type="domain_aliases")
-        self.enabled = row[3].strip() in ["True", "1", "yes", "y"]
+        self.enabled = row[3].strip().lower() in ["true", "1", "yes", "y"]
         self.save(creator=user)
 
     def to_csv(self, csvwriter):

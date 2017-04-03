@@ -392,7 +392,7 @@ class User(PermissionsMixin):
             self.password = row[2].strip()
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
-        self.is_active = (row[5].strip() in ["True", "1", "yes", "y"])
+        self.is_active = (row[5].strip().lower() in ["true", "1", "yes", "y"])
         self.save()
         self.role = desired_role
         self.post_create(user)

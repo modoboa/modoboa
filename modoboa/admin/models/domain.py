@@ -269,7 +269,7 @@ class Domain(AdminObject):
                 _("Default mailbox quota cannot be greater than domain "
                   "quota")
             )
-        self.enabled = (row[4].strip() in ["True", "1", "yes", "y"])
+        self.enabled = (row[4].strip().lower() in ["true", "1", "yes", "y"])
         core_signals.can_create_object.send(
             sender=self.__class__, context=user, klass=Domain,
             instance=self)
