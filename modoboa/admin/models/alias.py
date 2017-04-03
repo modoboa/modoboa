@@ -187,7 +187,7 @@ class Alias(AdminObject):
             raise Conflict
         self.address = address
         self.domain = domain
-        self.enabled = (row[2].strip() in ["True", "1", "yes", "y"])
+        self.enabled = (row[2].strip().lower() in ["true", "1", "yes", "y"])
         self.save()
         self.set_recipients([raddress.strip() for raddress in row[3:]])
         self.post_create(user)
