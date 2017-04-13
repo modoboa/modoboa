@@ -12,6 +12,6 @@ BOWER_INSTALLED_APPS = (
     "bootstrap-select#1.7.3",
     "d3#3.5.0",
     "eonasdan-bootstrap-datetimepicker#3.1.3",
-    "font-awesome#4.2.0",
+    "font-awesome#4.7.0",
     "c3#0.4.10",
 )
