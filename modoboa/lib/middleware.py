@@ -37,7 +37,7 @@ class CommonExceptionCatcher(object):
                 unicode(exception), status=exception.http_code
             )
         return _render_error(
-            request, user_context=dict(error=str(exception))
+            request, user_context=dict(error=unicode(exception))
         )
 
 

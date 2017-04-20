@@ -6,9 +6,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/viewmail.css' %}" />
   </head>
   <body>
-    <div id="table-container">
-      {{ headers }}
-    </div>
+    {% if headers %}
+      <div id="table-container">
+        {{ headers }}
+      </div>
+    {% endif %}
     {{ mailbody|safe }}
   </body>
 </html>
