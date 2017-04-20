@@ -193,7 +193,7 @@ def import_account_mailbox(sender, user, account, row, **kwargs):
     :param User account: account being imported
     :param list rom: list of fields (strings)
     """
-    account.email = row[0].strip()
+    account.email = row[0].strip().lower()
     if account.email:
         mailbox, domname = split_mailbox(account.email)
         domain = models.Domain.objects.filter(name=domname).first()
