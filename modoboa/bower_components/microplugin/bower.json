@@ -1,0 +1,22 @@
+{
+	"name": "microplugin",
+	"keywords": ["extensibility","plugins","architecture","require","dependencies"],
+	"description": "A lightweight plugin / dependency system for javascript libraries.",
+	"version": "0.0.3",
+	"license": "Apache License, Version 2.0",
+	"readmeFilename": "README.md",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/brianreavis/microplugin.js.git"
+	},
+	"main": [
+		"src/microplugin.js"
+	],
+	"ignore": [
+		"Makefile",
+		"test",
+		".travis.yml",
+		".npmignore.yml"
+	],
+	"dependencies": {}
+}
