@@ -4,7 +4,7 @@ import smtplib
 
 from django.conf import settings
 
-from modoboa.core.models import User
+from modoboa.core.models import populate_callback, User
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.parameters import tools as param_tools
 
@@ -64,7 +64,6 @@ try:
     from django_auth_ldap.backend import (
         LDAPBackend as orig_LDAPBackend, _LDAPUser
     )
-    from modoboa.core.models import populate_callback
 
     class LDAPBackend(orig_LDAPBackend):
 
