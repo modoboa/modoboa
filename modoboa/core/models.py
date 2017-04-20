@@ -366,7 +366,7 @@ class User(PermissionsMixin):
                     "yours"
                 ))
 
-        self.username = row[1].strip()
+        self.username = row[1].strip().lower()
         try:
             User.objects.get(username=self.username)
         except User.DoesNotExist:
