@@ -53,7 +53,7 @@ function modalbox(e, css, defhref, defcb, defclosecb) {
         $div.modal({show: false});
         $div.one('shown.bs.modal', function() {
             if ($(".selectpicker").length) {
-                $(".selectpicker").selectpicker();
+                $(".selectpicker").selectize();
             }
             $(".help").popover({
                 container: "#modalbox",
@@ -349,8 +349,8 @@ function defaultAjaxErrorHandler(event, jqxhr, settings) {
 String.prototype.format = function() {
     var args = arguments;
     return this.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
-        if (m == "{{") { return "{"; }
-        if (m == "}}") { return "}"; }
+        if (m === "{{") { return "{"; }
+        if (m === "}}") { return "}"; }
         return args[n];
     });
 };

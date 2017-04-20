@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'bootstrap-select/dist/css/bootstrap-select.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'selectize/dist/css/selectize.bootstrap3.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
     {% block extra_css %}{% endblock %}
   </head>
@@ -67,7 +67,7 @@
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
     <script type="text/javascript" src="{% static 'moment/min/moment.min.js' %}"></script>
     <script src="{% static 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'bootstrap-select/dist/js/bootstrap-select.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'selectize/dist/js/standalone/selectize.min.js' %}" type="text/javascript"></script>
     {% if LANGUAGE_CODE != "en" %}<script src="{{ STATIC_URL }}moment/locale/{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
     {% if TEMPLATE_DEBUG %}
       <script src="//maxcdn.bootstrapcdn.com/bootlint/0.4.0/bootlint.min.js"></script>
@@ -81,6 +81,7 @@
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     <script type="text/javascript">
       var top_notifications;
+      var userLang = "{{ LANGUAGE_CODE }}";
 
       set_static_url("{{ STATIC_URL }}");
       $(document).ready(function() {
