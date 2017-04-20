@@ -265,3 +265,22 @@ class AliasTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Summary", response.content)
         self.assertIn("Recipients", response.content)
+
+    def test_domainadmin_restrictions(self):
+        """Check that restrictions are applied."""
+        admin = User.objects.get(username="admin@test.com")
+        self.client.force_login(admin)
+
+        user = User.objects.get(username="user@test.com")
+        values = dict(
+            username="user@test.com", role=user.role,
+            is_active=user.is_active, email="user@test.com",
+            aliases="toto@test.com", aliases_1="titi@test2.com"
+        )
+        response = self.ajax_post(
+            reverse("admin:account_change", args=[user.id]),
+            values, 400
+        )
+        self.assertEqual(
+            response["form_errors"]["aliases_1"][0],
+            "You don't have access to this domain")

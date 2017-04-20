@@ -221,8 +221,9 @@ class AccountFormMail(forms.Form, DynamicForm):
         )
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         self.mb = kwargs.pop("instance", None)
+        self.user = user
         super(AccountFormMail, self).__init__(*args, **kwargs)
         self.field_widths = {
             "quota": 3
@@ -293,11 +294,22 @@ class AccountFormMail(forms.Form, DynamicForm):
                 continue
             if name.startswith("aliases"):
                 local_part, domname = split_mailbox(value)
-                if not models.Domain.objects.filter(name=domname).exists():
+                domain = models.Domain.objects.filter(name=domname).first()
+                if not domain:
                     self.add_error(name, _("Local domain does not exist"))
+                    continue
+                if not self.user.can_access(domain):
+                    self.add_error(
+                        name, _("You don't have access to this domain"))
                     continue
                 self.aliases.append(value.lower())
             elif name.startswith("senderaddress"):
+                local_part, domname = split_mailbox(value)
+                domain = models.Domain.objects.filter(name=domname).first()
+                if domain and not self.user.can_access(domain):
+                    self.add_error(
+                        name, _("You don't have access to this domain"))
+                    continue
                 self.sender_addresses.append(value.lower())
         return cleaned_data
 
@@ -443,7 +455,8 @@ class AccountForm(TabForms):
              "new_args": [self.user], "mandatory": True},
             {"id": "mail",
              "title": _("Mail"), "formtpl": "admin/mailform.html",
-             "cls": AccountFormMail},
+             "cls": AccountFormMail,
+             "new_args": [self.user]},
             {"id": "perms", "title": _("Permissions"),
              "formtpl": "admin/permsform.html",
              "cls": AccountPermissionsForm}
@@ -529,7 +542,8 @@ class AccountWizard(WizardForm):
         self.add_step(
             WizardStep(
                 "mail", AccountFormMail, _("Mail"),
-                "admin/mailform.html"
+                "admin/mailform.html",
+                new_args=[request.user]
             )
         )
 
