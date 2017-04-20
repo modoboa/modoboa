@@ -115,6 +115,24 @@ class AccountTestCase(ModoTestCase):
                 mailbox__address="user").count(),
             1)
 
+    def test_sender_address_as_domainadmin(self):
+        """Check that restrictions are applied."""
+        admin = User.objects.get(username="admin@test.com")
+        self.client.force_login(admin)
+        account = User.objects.get(username="user@test.com")
+        values = {
+            "username": "user@test.com", "first_name": "Tester",
+            "last_name": "Toto", "role": "SimpleUsers",
+            "quota_act": True, "is_active": True, "email": "user@test.com",
+            "senderaddress": "test@titi.com",
+            "senderaddress_1": "toto@test2.com"
+        }
+        response = self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values, 400)
+        self.assertEqual(
+            response["form_errors"]["senderaddress_1"][0],
+            "You don't have access to this domain")
+
     def test_conflicts(self):
         """Check if unicity constraints are respected."""
         values = {
