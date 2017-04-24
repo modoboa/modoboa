@@ -3,6 +3,7 @@
 from dateutil import parser
 import feedparser
 import requests
+from requests.exceptions import RequestException
 
 from django.views import generic
 
@@ -53,11 +54,16 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
 
         url = "{}{}/api/projects/?featured=true".format(
             MODOBOA_WEBSITE_URL, lang)
-        response = requests.get(url)
-        if response.status_code == 200:
-            features = response.json()
-            context["widgets"]["right"].append("core/_current_features.html")
-            context.update({"features": features})
+        features = []
+        try:
+            response = requests.get(url)
+        except RequestException:
+            pass
+        else:
+            if response.status_code == 200:
+                features = response.json()
+        context["widgets"]["right"].append("core/_current_features.html")
+        context.update({"features": features})
 
         # Extra widgets
         result = signals.extra_admin_dashboard_widgets.send(
