@@ -252,6 +252,12 @@ LOGGING = {
         }
     }
 }
+
+# Load settings from extensions
 {% for extension in extra_settings %}
-from {{ extension }}.settings import *
+try:
+    from {{ extension }} import settings as {{ extension }}_settings
+    {{ extension }}_settings.apply(globals())
+except AttributeError:
+    from {{ extension }}.settings import *
 {% endfor %}
