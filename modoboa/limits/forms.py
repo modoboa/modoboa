@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 
 from modoboa.lib.permissions import get_object_owner
 
-from .lib import BadLimitValue, UnsufficientResource
+from .lib import allocate_resources_from_user
 from . import utils
 
 
@@ -48,32 +48,6 @@ class ResourcePoolForm(forms.Form):
             self.fields[fieldname].initial = (
                 user.userobjectlimit_set.get(name=lname).max_value)
 
-    def allocate_from_user(self, limit, user):
-        """Allocate resource using an existing user.
-
-        When a reseller creates a domain administrator, he generally
-        assigns him resource to create new objetcs. As a reseller may
-        also be limited, the resource he gives is taken from its own
-        pool.
-        """
-        ol = user.userobjectlimit_set.get(name=limit.name)
-        fieldname = "{}_limit".format(limit.name)
-        newvalue = self.cleaned_data[fieldname]
-        if newvalue == -1 and ol.max_value != -1:
-            raise BadLimitValue(
-                _("You're not allowed to define unlimited values")
-            )
-
-        if limit.max_value > -1:
-            newvalue -= limit.max_value
-            if newvalue == 0:
-                return
-        remain = ol.max_value - ol.current_value
-        if newvalue > remain:
-            raise UnsufficientResource(ol)
-        ol.max_value -= newvalue
-        ol.save()
-
     def save(self):
         owner = get_object_owner(self.account)
         for name, ltpl in utils.get_user_limit_templates():
@@ -82,9 +56,10 @@ class ResourcePoolForm(forms.Form):
                 continue
             l = self.account.userobjectlimit_set.get(name=name)
             if not owner.is_superuser:
-                self.allocate_from_user(l, owner)
+                allocate_resources_from_user(
+                    l, owner, self.cleaned_data["fieldname"])
             l.max_value = self.cleaned_data[fieldname]
-            l.save()
+            l.save(update_fields=["max_value"])
 
 
 class DomainLimitsForm(forms.Form):

@@ -1,6 +1,8 @@
 # coding: utf-8
 """Test cases for the limits extension."""
 
+from testfixtures import compare
+
 from django.core.urlresolvers import reverse
 
 from rest_framework.authtoken.models import Token
@@ -9,6 +11,7 @@ from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
+from modoboa.lib import permissions
 from modoboa.lib import tests as lib_tests
 
 from .. import utils
@@ -253,3 +256,88 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
+
+
+class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
+    """Check resources API."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(ResourcesAPITestCase, cls).setUpTestData()
+        for name, tpl in utils.get_user_limit_templates():
+            cls.localconfig.parameters.set_value(
+                "deflt_user_{0}_limit".format(name), 2)
+        cls.localconfig.save()
+        populate_database()
+        cls.user = User.objects.get(username="admin@test.com")
+        cls.da_token = Token.objects.create(user=cls.user)
+        cls.reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers", ),
+        )
+        cls.r_token = Token.objects.create(user=cls.reseller)
+
+    def test_get_admin_resources(self):
+        """Retrieve admin resources."""
+        url = reverse("api:resources-detail", args=[self.user.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        expected = {
+            "quota": 2,
+            "mailboxes": 2,
+            "domain_admins": 2,
+            "domain_aliases": 2,
+            "domains": 2,
+            "mailbox_aliases": 2
+        }
+        compare(expected, response.data)
+
+        # As reseller => fails
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+        # As domain admin => fails
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_update_resources(self):
+        """Update resources."""
+        url = reverse("api:resources-detail", args=[self.reseller.pk])
+        response = self.client.get(url)
+        resources = response.data
+        resources.update({"domains": 1000, "mailboxes": 1000})
+        response = self.client.put(url, resources)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self.reseller.userobjectlimit_set.get(name="domains").max_value,
+            1000)
+
+        # As domain admin => fails
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
+        resources.update({"domains": 2, "mailboxes": 2})
+        url = reverse("api:resources-detail", args=[self.user.pk])
+        response = self.client.put(url, resources)
+        self.assertEqual(response.status_code, 404)
+
+        # As reseller => ok
+        permissions.grant_access_to_object(self.reseller, self.user, True)
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
+        resources.update({"domains": 500, "mailboxes": 500})
+        url = reverse("api:resources-detail", args=[self.user.pk])
+        response = self.client.put(url, resources)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self.user.userobjectlimit_set.get(name="domains").max_value,
+            500)
+        self.assertEqual(
+            self.reseller.userobjectlimit_set.get(name="domains").max_value,
+            502)
+        resources.update({"domains": 1003})
+        response = self.client.put(url, resources)
+        self.assertEqual(response.status_code, 424)
