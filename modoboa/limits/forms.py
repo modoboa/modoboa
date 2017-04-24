@@ -57,7 +57,7 @@ class ResourcePoolForm(forms.Form):
             l = self.account.userobjectlimit_set.get(name=name)
             if not owner.is_superuser:
                 allocate_resources_from_user(
-                    l, owner, self.cleaned_data["fieldname"])
+                    l, owner, self.cleaned_data[fieldname])
             l.max_value = self.cleaned_data[fieldname]
             l.save(update_fields=["max_value"])
 
