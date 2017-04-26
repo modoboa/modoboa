@@ -276,6 +276,8 @@ def prepare_addresses(addresses, usage="header"):
     """
     result = []
     for address in re.split('[,;]', addresses):
+        if not address:
+            continue
         name, addr = parseaddr(address)
         if name and usage == "header":
             result.append("%s <%s>" % (Header(name, 'utf8').encode(), addr))
