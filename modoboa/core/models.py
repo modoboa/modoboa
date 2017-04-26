@@ -1,5 +1,6 @@
 """Core models."""
 
+from email.header import Header
 import re
 
 from django.core.urlresolvers import reverse
@@ -223,10 +224,9 @@ class User(PermissionsMixin):
 
     @property
     def encoded_address(self):
-        from email.header import Header
         if self.first_name != "" or self.last_name != "":
-            return "%s <%s>" % \
-                (Header(self.fullname, "utf8").encode(), self.email)
+            return '"{}" <{}>'.format(
+                Header(self.fullname, "utf8").encode(), self.email)
         return self.email
 
     def is_owner(self, obj):
