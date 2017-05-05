@@ -29,15 +29,15 @@ It is extensible by nature and comes with a lot of additional extensions:
 |                                                         |                         |                                                      |
 |                                                         |                         |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-dmarc                                           |A set of tools to use    |https://github.com/modoboa-dmarc                      |
+|`modoboa-dmarc                                           |A set of tools to use    |https://github.com/modoboa/modoboa-dmarc              |
 |<https://github.com/modoboa/modoboa-dmarc>`_             |`DMARC                   |                                                      |
 |                                                         |<https://dmarc.org>`_    |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-imap-migration                                  |Migrate mailboxes from an|https://github.com/modoboa-imap-migration             |
+|`modoboa-imap-migration                                  |Migrate mailboxes from an|https://github.com/modoboa/modoboa-imap-migration     |
 |<https://github.com/modoboa/modoboa-imap-migration>`_    |existing server using    |                                                      |
 |                                                         |IMAP (and offlineimap)   |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-pdfcredentials                                  |Generate PDF documents   |https://github.com/modoboa-pdfcredentials             |
+|`modoboa-pdfcredentials                                  |Generate PDF documents   |https://github.com/modoboa/modoboa-pdfcredentials     |
 |<https://github.com/modoboa/modoboa-pdfcredentials>`_    |containing account       |                                                      |
 |                                                         |credentials              |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
