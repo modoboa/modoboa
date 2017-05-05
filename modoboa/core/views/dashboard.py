@@ -52,18 +52,21 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
         context["widgets"]["left"].append("core/_latest_news_widget.html")
         context.update({"news": entries})
 
-        url = "{}{}/api/projects/?featured=true".format(
-            MODOBOA_WEBSITE_URL, lang)
-        features = []
-        try:
-            response = requests.get(url)
-        except RequestException:
-            pass
-        else:
-            if response.status_code == 200:
-                features = response.json()
-        context["widgets"]["right"].append("core/_current_features.html")
-        context.update({"features": features})
+        hide_features_widget = self.request.localconfig.parameters.get_value(
+            "hide_features_widget")
+        if self.request.user.is_superuser or not hide_features_widget:
+            url = "{}{}/api/projects/?featured=true".format(
+                MODOBOA_WEBSITE_URL, lang)
+            features = []
+            try:
+                response = requests.get(url)
+            except RequestException:
+                pass
+            else:
+                if response.status_code == 200:
+                    features = response.json()
+            context["widgets"]["right"].append("core/_current_features.html")
+            context.update({"features": features})
 
         # Extra widgets
         result = signals.extra_admin_dashboard_widgets.send(
