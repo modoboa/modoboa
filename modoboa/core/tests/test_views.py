@@ -74,6 +74,20 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertContains(response, "djangoproject")
 
+    def test_features_visibility(self):
+        """Hide or not features widget."""
+        url = reverse("core:dashboard")
+        response = self.client.get(url)
+        self.assertContains(response, "Features looking for sponsoring")
+
+        self.client.force_login(self.dadmin)
+        response = self.client.get(url)
+        self.assertContains(response, "Features looking for sponsoring")
+
+        self.set_global_parameter("hide_features_widget", True)
+        response = self.client.get(url)
+        self.assertNotContains(response, "Features looking for sponsoring")
+
     def test_root_dispatch(self):
         """Check root dispatching."""
         url = reverse("core:root")
@@ -141,6 +155,7 @@ class SettingsTestCase(ModoTestCase):
         "core-ldap_user_dn_template": "",
         "core-default_password": "Toto1000",
         "limits-deflt_user_quota_limit": "0",
+        "core-hide_features_widget": "False",
     }
 
     def test_get_settings(self):

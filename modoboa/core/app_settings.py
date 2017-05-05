@@ -225,6 +225,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    hide_features_widget = YesNoField(
+        label=ugettext_lazy("Hide features widget"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Hide features widget for resellers and domain administrators"
+        )
+    )
+
     notif_sep = SeparatorField(label=ugettext_lazy("Notifications"))
 
     sender_address = lib_fields.UTF8EmailField(
