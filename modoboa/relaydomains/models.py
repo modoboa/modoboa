@@ -1,5 +1,7 @@
 """Relay domain related models."""
 
+from builtins import object
+
 from django.db import models
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -50,7 +52,7 @@ class Service(models.Model):
 
     objects = ServiceManager()
 
-    class Meta:
+    class Meta(object):
         db_table = "postfix_relay_domains_service"
 
     def __str__(self):
@@ -84,7 +86,7 @@ class RelayDomain(admin_models.AdminObject):
         default=False
     )
 
-    class Meta:
+    class Meta(object):
         ordering = ["domain__name"]
         db_table = "postfix_relay_domains_relaydomain"
 

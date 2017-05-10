@@ -2,6 +2,8 @@
 
 """Models for the limits extensions."""
 
+from builtins import object
+
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -72,7 +74,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
     content_type = models.ForeignKey("contenttypes.ContentType")
     max_value = models.IntegerField(default=0)
 
-    class Meta:
+    class Meta(object):
         unique_together = (("user", "name"), )
 
     @property
@@ -134,7 +136,7 @@ class DomainObjectLimit(ObjectLimitMixin, models.Model):
     name = models.CharField(max_length=254)
     max_value = models.IntegerField(default=0)
 
-    class Meta:
+    class Meta(object):
         unique_together = (("domain", "name"), )
 
     @property

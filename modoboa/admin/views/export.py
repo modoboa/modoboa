@@ -1,7 +1,7 @@
 """Export related views."""
 
-import cStringIO
 import csv
+import io
 
 from rfc6266 import build_header
 
@@ -47,7 +47,7 @@ def export_identities(request):
     if request.method == "POST":
         form = ExportIdentitiesForm(request.POST)
         form.is_valid()
-        fp = cStringIO.StringIO()
+        fp = io.BytesIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         identities = get_identities(
             request.user, **request.session['identities_filters'])
@@ -75,7 +75,7 @@ def export_domains(request):
     if request.method == "POST":
         form = ExportDomainsForm(request.POST)
         form.is_valid()
-        fp = cStringIO.StringIO()
+        fp = io.BytesIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         for dom in get_domains(request.user,
                                **request.session['domains_filters']):

@@ -36,14 +36,14 @@ class ResourcePoolForm(forms.Form):
         cleaned_data = super(ResourcePoolForm, self).clean()
         if self.errors:
             return cleaned_data
-        for lname in self.fields.keys():
+        for lname in list(self.fields.keys()):
             if cleaned_data[lname] < -1:
                 self.add_error(lname, _("Invalid limit"))
         return cleaned_data
 
     def load_from_user(self, user):
         """Load limit values from given user."""
-        for fieldname in self.fields.keys():
+        for fieldname in list(self.fields.keys()):
             lname = fieldname.replace("_limit", "")
             self.fields[fieldname].initial = (
                 user.userobjectlimit_set.get(name=lname).max_value)
@@ -75,7 +75,7 @@ class DomainLimitsForm(forms.Form):
             )
         if not self.domain:
             return
-        for fieldname in self.fields.keys():
+        for fieldname in list(self.fields.keys()):
             lname = fieldname.replace("_limit", "")
             self.fields[fieldname].initial = (
                 self.domain.domainobjectlimit_set.get(name=lname).max_value)
@@ -85,7 +85,7 @@ class DomainLimitsForm(forms.Form):
         cleaned_data = super(DomainLimitsForm, self).clean()
         if self.errors:
             return cleaned_data
-        for lname in self.fields.keys():
+        for lname in list(self.fields.keys()):
             if cleaned_data[lname] < -1:
                 self.add_error(lname, _("Invalid limit"))
         return cleaned_data

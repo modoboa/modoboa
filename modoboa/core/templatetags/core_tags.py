@@ -1,6 +1,7 @@
 # coding: utf-8
 """Custom tags for Core application."""
 
+from functools import reduce
 import os
 import pkg_resources
 import re
@@ -10,6 +11,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.encoding import smart_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language, ugettext as _
 
@@ -241,7 +243,7 @@ def display_messages(msgs):
     level = "info"
     for m in msgs:
         level = m.tags
-        text += unicode(m) + "\\\n"
+        text += smart_text(m) + "\\\n"
 
     if level == "info":
         level = "success"

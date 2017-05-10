@@ -1,13 +1,15 @@
 # coding: utf-8
 
-import re
-import smtplib
-import time
+from builtins import object
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
+import re
+import smtplib
+import time
 
 from django.conf import settings
+from django.utils.encoding import smart_text
 from django.template.loader import render_to_string
 
 from modoboa.lib import u2u_decode
@@ -79,7 +81,7 @@ class Email(object):
             decoded = decode_header(fname)
             value = (
                 decoded[0][0] if decoded[0][1] is None
-                else unicode(decoded[0][0], decoded[0][1])
+                else smart_text(decoded[0][0], decoded[0][1])
             )
         else:
             value = "part_%s" % level
@@ -321,7 +323,7 @@ def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
         s = smtplib.SMTP(server, port)
         s.sendmail(sender, [rcpt], msgstring)
         s.quit()
-    except smtplib.SMTPException, e:
+    except smtplib.SMTPException as e:
         return False, "SMTP error: %s" % str(e)
     return True, None
 
@@ -360,7 +362,7 @@ def sendmail_fromfile(sender, rcpt, fname):
     """
     try:
         fp = open(fname)
-    except IOError, e:
+    except IOError as e:
         return False, str(e)
 
     content = """From: %s

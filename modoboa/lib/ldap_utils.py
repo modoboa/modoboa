@@ -32,6 +32,9 @@ Extracted from `this blog
   one instance to another.
 
 """
+
+from builtins import object
+
 import ldap
 
 from django.conf import settings

@@ -1,5 +1,7 @@
 """Custom context processors."""
 
+from functools import reduce
+
 from . import signals
 
 

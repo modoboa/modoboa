@@ -3,6 +3,7 @@
 """Form management utilities."""
 
 import abc
+from builtins import object, range
 from collections import OrderedDict
 import re
 
@@ -18,6 +19,8 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.web_utils import render_to_json_response
+
+ABC = abc.ABCMeta("ABC", (object,), {})  # compatible with Python 2 *and* 3
 
 
 class WizardStep(object):
@@ -64,10 +67,8 @@ class WizardStep(object):
         self.form = self._cls(*args)
 
 
-class WizardForm(object):
+class WizardForm(ABC):
     """Custom wizard."""
-
-    __metaclass__ = abc.ABCMeta
 
     template_name = "common/wizard_forms.html"
 
@@ -86,7 +87,7 @@ class WizardForm(object):
     def errors(self):
         result = {}
         for step in self.steps:
-            for name, value in step.form.errors.items():
+            for name, value in list(step.form.errors.items()):
                 if name == '__all__':
                     continue
                 result[name] = value
@@ -139,7 +140,7 @@ class WizardForm(object):
         stepid = self._get_step_id()
         self.create_forms(self.request.POST)
         statuses = []
-        for cpt in xrange(0, stepid):
+        for cpt in range(0, stepid):
             if self.steps[cpt].check_access(self):
                 statuses.append(self.steps[cpt].form.is_valid())
         if False in statuses:
@@ -201,7 +202,7 @@ class DynamicForm(object):
         if value is not None:
             self.fields[name].initial = value
         if pos:
-            order = self.fields.keys()
+            order = list(self.fields.keys())
             order.remove(name)
             order.insert(pos, name)
             self.fields = OrderedDict((key, self.fields[key]) for key in order)
@@ -215,7 +216,7 @@ class DynamicForm(object):
         """
         expr = re.compile(r'%s_\d+' % pattern)
         values = []
-        for k, v in qdict.iteritems():
+        for k, v in list(qdict.items()):
             if k == pattern or expr.match(k):
                 values.append((k, v))
 
@@ -280,7 +281,7 @@ class TabForms(object):
         """
         result = {}
         for f in self.forms:
-            for name, value in f['instance'].errors.items():
+            for name, value in list(f['instance'].errors.items()):
                 if name == '__all__':
                     continue
                 result[name] = value

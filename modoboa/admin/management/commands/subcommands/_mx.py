@@ -1,6 +1,7 @@
 """Management command to check defined domains."""
 
-from datetime import datetime
+from __future__ import print_function
+
 from datetime import timedelta
 import ipaddress
 

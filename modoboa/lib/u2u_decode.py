@@ -5,6 +5,8 @@
 from email.header import decode_header, make_header
 import re
 
+from django.utils.encoding import smart_text
+
 # check spaces between encoded_words (and strip them)
 sre = re.compile(r'\?=[ \t]+=\?')
 # re pat for MIME encoded_word (without trailing spaces)
@@ -24,7 +26,7 @@ def decode_mime(m):
     """Substitute matching encoded_word with unicode equiv."""
     h = decode_header(clean_spaces(m))
     try:
-        u = unicode(make_header(h))
+        u = smart_text(make_header(h))
     except (LookupError, UnicodeDecodeError):
         return m.group(0)
     return u

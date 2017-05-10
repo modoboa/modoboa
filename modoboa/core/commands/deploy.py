@@ -2,6 +2,9 @@
 
 """A shortcut to deploy a fresh modoboa instance."""
 
+from __future__ import print_function
+
+from builtins import input
 import getpass
 import os
 import shutil
@@ -105,9 +108,9 @@ class DeployCommand(Command):
             output = None
         if p.returncode:
             if output:
-                print >> sys.stderr, "\n".join(
-                    [l for l in output if l is not None])
-            print >> sys.stderr, "%s failed, check your configuration" % cmd
+                print("\n".join(
+                    [l for l in output if l is not None]), file=sys.stderr)
+            print("%s failed, check your configuration" % cmd, file=sys.stderr)
 
     def ask_db_info(self, name='default'):
         """Prompt the user for database information
@@ -117,10 +120,11 @@ class DeployCommand(Command):
 
         :param name: the connection name
         """
-        print "Configuring database connection: %s" % name
+        print("Configuring database connection: %s" % name)
         info = {
             'conn_name': name,
-            'ENGINE': raw_input('Database type (mysql, postgres or sqlite3): ')
+            'ENGINE': eval(
+                input('Database type (mysql, postgres or sqlite3): '))
         }
         if info['ENGINE'] not in ['mysql', 'postgres', 'sqlite3']:
             raise RuntimeError('Unsupported database engine')
@@ -135,15 +139,15 @@ class DeployCommand(Command):
         else:
             info['ENGINE'] = 'django.db.backends.mysql'
             default_port = 3306
-        info['HOST'] = raw_input("Database host (default: 'localhost'): ")
-        info['PORT'] = raw_input(
-            "Database port (default: '%s'): " % default_port)
+        info['HOST'] = eval(input("Database host (default: 'localhost'): "))
+        info['PORT'] = eval(
+            input("Database port (default: '%s'): " % default_port))
         # leave port setting empty, if default value is supplied and
         # leave it to django
         if info['PORT'] == default_port:
             info['PORT'] = ''
-        info['NAME'] = raw_input('Database name: ')
-        info['USER'] = raw_input('Username: ')
+        info['NAME'] = eval(input('Database name: '))
+        info['USER'] = eval(input('Username: '))
         info['PASSWORD'] = getpass.getpass('Password: ')
         return info
 
@@ -192,7 +196,7 @@ class DeployCommand(Command):
                 # In case the user fails to supply a valid database url,
                 # fallback to manual mode
                 if not info:
-                    print "There was a problem with your database-url. \n"
+                    print("There was a problem with your database-url. \n")
                     info = self.ask_db_info(conn_name)
                 # If we set this earlier, our fallback method will never
                 # be triggered
@@ -205,9 +209,8 @@ class DeployCommand(Command):
         if parsed_args.domain:
             allowed_host = parsed_args.domain
         else:
-            allowed_host = raw_input(
-                'What will be the hostname used to access Modoboa? '
-            )
+            allowed_host = eval(
+                input('What will be the hostname used to access Modoboa? '))
             if not allowed_host:
                 allowed_host = "localhost"
         extra_settings = []

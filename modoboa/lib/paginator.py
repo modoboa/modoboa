@@ -2,6 +2,8 @@
 Custom pagination tools.
 """
 
+from builtins import object
+
 
 class Page(object):
 

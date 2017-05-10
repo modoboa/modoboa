@@ -1,12 +1,14 @@
 """Core models."""
 
+from builtins import object
 from email.header import Header
 import re
 
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import (
+    python_2_unicode_compatible, smart_bytes, smart_text)
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -91,7 +93,7 @@ class User(PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
-    class Meta:
+    class Meta(object):
         ordering = ["username"]
         index_together = [
             ['email', 'is_active']
@@ -119,8 +121,7 @@ class User(PermissionsMixin):
             load_core_settings()
             scheme = param_tools.get_global_parameter(
                 "password_scheme", raise_exception=False)
-        if isinstance(raw_value, unicode):
-            raw_value = raw_value.encode("utf-8")
+        raw_value = smart_bytes(raw_value)
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
     def set_password(self, raw_value, curvalue=None):
@@ -152,8 +153,7 @@ class User(PermissionsMixin):
         match = self.password_expr.match(self.password)
         if match is None:
             return False
-        if isinstance(raw_value, unicode):
-            raw_value = raw_value.encode("utf-8")
+        raw_value = smart_bytes(raw_value)
         scheme = match.group(1)
         val2 = match.group(2)
         hasher = get_password_hasher(scheme)
@@ -410,13 +410,13 @@ class User(PermissionsMixin):
         """
         row = [
             "account",
-            self.username.encode("utf-8"),
-            self.password.encode("utf-8"),
-            self.first_name.encode("utf-8"),
-            self.last_name.encode("utf-8"),
+            smart_bytes(self.username),
+            smart_bytes(self.password),
+            smart_bytes(self.first_name),
+            smart_bytes(self.last_name),
             self.is_active,
             self.role,
-            self.email.encode("utf-8")
+            smart_bytes(self.email)
         ]
         results = signals.account_exported.send(
             sender=self.__class__, user=self)
@@ -455,7 +455,7 @@ class ObjectAccess(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     is_owner = models.BooleanField(default=False)
 
-    class Meta:
+    class Meta(object):
         unique_together = (("user", "content_type", "object_id"),)
 
     def __unicode__(self):

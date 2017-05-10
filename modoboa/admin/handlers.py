@@ -174,7 +174,7 @@ def account_auto_created(sender, user, **kwargs):
 @receiver(core_signals.account_exported)
 def export_admin_domains(sender, user, **kwargs):
     """Export administered domains too."""
-    result = [user.mailbox.quota] if hasattr(user, "mailbox") else [""]
+    result = [user.mailbox.quota] if hasattr(user, "mailbox") else [u""]
     if user.role != "DomainAdmins":
         return result
     return result + [

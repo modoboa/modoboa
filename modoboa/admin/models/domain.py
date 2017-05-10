@@ -1,6 +1,7 @@
 """Models related to domains management."""
 
 import datetime
+from functools import reduce
 
 from django.db import models
 from django.db.models.manager import Manager

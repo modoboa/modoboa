@@ -1,4 +1,7 @@
 # coding: utf-8
+
+from builtins import range
+
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 
@@ -53,7 +56,7 @@ domainalias; domalias2.com; {domain}; True
         self.client.force_login(self.reseller)
         self.assertFalse(limit.is_exceeded())
         content = ""
-        for cpt in xrange(initial_count, 2):
+        for cpt in range(initial_count, 2):
             content += (
                 "account; admin{cpt}@{domain}; toto; User; One; True; "
                 "DomainAdmins; user{cpt}@{domain}; 5; {domain}\n"

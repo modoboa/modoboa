@@ -5,6 +5,8 @@
 
 """
 
+from functools import reduce
+
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
@@ -57,7 +59,7 @@ class Command(BaseCommand):
 
         extensions.exts_pool.load_all()
 
-        groups = constants.PERMISSIONS.keys()
+        groups = list(constants.PERMISSIONS.keys())
         for groupname in groups:
             group, created = Group.objects.get_or_create(name=groupname)
             results = signals.extra_role_permissions.send(
@@ -70,7 +72,7 @@ class Command(BaseCommand):
                 continue
             add_permissions_to_group(group, permissions)
 
-        for extname in extensions.exts_pool.extensions.keys():
+        for extname in list(extensions.exts_pool.extensions.keys()):
             extension = extensions.exts_pool.get_extension(extname)
             extension.load_initial_data()
             signals.initial_data_loaded.send(

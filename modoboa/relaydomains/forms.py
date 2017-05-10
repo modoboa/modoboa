@@ -1,5 +1,7 @@
 """Postfix relay domains extension forms."""
 
+from builtins import object
+
 from django import forms
 from django.core import validators
 from django.utils.translation import ugettext as _
@@ -22,7 +24,7 @@ class RelayDomainWizardStep(WizardStep):
 class RelayDomainFormGeneral(forms.ModelForm):
     """RelayDomain form."""
 
-    class Meta:
+    class Meta(object):
         model = RelayDomain
         exclude = ["domain", "creation", "last_modification"]
         widgets = {

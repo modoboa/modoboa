@@ -1,4 +1,5 @@
 """Management command to generate/update postfix map files."""
+from __future__ import print_function
 
 import copy
 import hashlib
@@ -134,7 +135,7 @@ query = {{ query|safe }}
                 context["dbhost"] = mapcontent["hosts"]
         content = self.get_template(context["dbtype"]).render(
             Context(
-                dict(context.items(),
+                dict(list(context.items()),
                      query=getattr(mapobject, context["dbtype"]))
             )
         )
@@ -160,6 +161,6 @@ query = {{ query|safe }}
                 force_overwrite=options["force_overwrite"])
             checksums[mapobject.filename] = checksum
         with open(self.__checksums_file, "w") as fp:
-            for fname, checksum in checksums.items():
+            for fname, checksum in list(checksums.items()):
                 fp.write("{}:{}:{}\n".format(
                     fname, context["dbtype"], checksum))

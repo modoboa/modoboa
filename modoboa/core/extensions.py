@@ -1,5 +1,7 @@
 """Extension management."""
 
+from builtins import object
+
 from django.conf import settings
 from django.conf.urls import include, url
 
@@ -100,7 +102,7 @@ class ExtensionsPool(object):
     def get_urls(self, category="app"):
         """Get all urls defined by extensions."""
         result = []
-        for ext_name in self.extensions.keys():
+        for ext_name in list(self.extensions.keys()):
             ext = self.get_extension(ext_name)
             options = {}
             if category == "api":
@@ -122,7 +124,7 @@ class ExtensionsPool(object):
     def list_all(self):
         """List all defined extensions."""
         result = []
-        for extname, extdef in self.extensions.iteritems():
+        for extname, extdef in list(self.extensions.items()):
             if not extdef["show"]:
                 continue
             infos = self.get_extension_infos(extname)

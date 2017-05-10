@@ -1,5 +1,6 @@
 """Parameters management."""
 
+from builtins import object
 import copy
 
 from modoboa.lib import exceptions
@@ -42,9 +43,9 @@ class Registry(object):
 
     def _load_default_values(self, level):
         """Load default values."""
-        for app, data in self._registry[level].items():
+        for app, data in list(self._registry[level].items()):
             form = data["formclass"](load_values_from_db=False)
-            for name, field in form.fields.items():
+            for name, field in list(form.fields.items()):
                 if type(field) is form_utils.SeparatorField:
                     continue
                 data["defaults"][name] = field.initial
@@ -56,7 +57,8 @@ class Registry(object):
         if first_app in self._registry[level]:
             sorted_apps.append(first_app)
         sorted_apps += sorted(
-            [a for a in self._registry[level].keys() if a != first_app],
+            [a for a in list(self._registry[level].keys())
+             if a != first_app],
             key=lambda a: self._registry[level][a]["label"]
         )
         result = []
@@ -126,7 +128,7 @@ class Manager(object):
         if app is None:
             app = guess_extension_name()
         values = registry.get_defaults(self._level, app)
-        for parameter, value in values.iteritems():
+        for parameter, value in list(values.items()):
             if app in self._parameters:
                 value = self._parameters[app].get(parameter, value)
             yield (parameter, value)

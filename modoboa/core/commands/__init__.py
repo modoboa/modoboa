@@ -1,5 +1,8 @@
 # coding: utf-8
 
+from __future__ import print_function
+from builtins import object
+
 import argparse
 import os
 import sys
@@ -94,7 +97,7 @@ def handle_command_line():
     (args, remaining) = parser.parse_known_args()
 
     if args.command not in commands:
-        print >> sys.stderr, "Unknown command '%s'" % args.command
+        print("Unknown command '%s'" % args.command, file=sys.stderr)
         sys.exit(1)
 
     commands[args.command](commands, verbose=args.verbose).run(remaining)

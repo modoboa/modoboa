@@ -4,6 +4,8 @@
 This module contains extra functions/shortcuts used to render HTML.
 """
 
+from builtins import object
+
 import json
 import re
 import sys
@@ -36,7 +38,7 @@ def getctx(status, level=1, callback=None, **kwargs):
     else:
         callername = callback
     ctx = {"status": status, "callback": callername}
-    for kw, v in kwargs.iteritems():
+    for kw, v in list(kwargs.items()):
         ctx[kw] = v
     return ctx
 
@@ -60,7 +62,7 @@ def ajax_response(request, status="ok", respmsg=None,
     :param kwargs: dict used for template rendering
     """
     ctx = {}
-    for k, v in kwargs.iteritems():
+    for k, v in list(kwargs.items()):
         ctx[k] = v
     if template is not None:
         content = render_to_string(template, ctx, request)

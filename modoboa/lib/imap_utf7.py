@@ -51,6 +51,8 @@ Found here:
 http://svn.plone.org/svn/collective/mxmImapClient/trunk/imapUTF7.py
 
 """
+from __future__ import print_function
+
 import binascii
 import codecs
 
@@ -172,29 +174,29 @@ if __name__ == '__main__':
     # print u'båx'.encode('imap4-utf-7')
     # print 'expected b&AOU-x'
 
-    print '#######'
-    print 'bøx'
+    print('#######')
+    print('bøx')
     e = imapUTF7Encode(u'bøx')
-    print e
-    print imapUTF7Decode(e).encode('latin-1')
+    print(e)
+    print(imapUTF7Decode(e).encode('latin-1'))
 
-    print '#######'
-    print 'båx'
+    print('#######')
+    print('båx')
     e = imapUTF7Encode(u'båx')
-    print e
-    print imapUTF7Decode(e).encode('latin-1')
+    print(e)
+    print(imapUTF7Decode(e).encode('latin-1'))
 
-    print '#######'
-    print '~/bågø'
+    print('#######')
+    print('~/bågø')
     e = imapUTF7Encode(u'~/bågø')
-    print e
-    print imapUTF7Decode(e).encode('latin-1')
+    print(e)
+    print(imapUTF7Decode(e).encode('latin-1'))
 
-    print '#######'
-    print 'Ting & Såger'
+    print('#######')
+    print('Ting & Såger')
     e = imapUTF7Encode(u'Ting & Såger')
-    print e
-    print imapUTF7Decode(e).encode('latin-1')
+    print(e)
+    print(imapUTF7Decode(e).encode('latin-1'))
 
     # e = imapUTF7Decode('b&AOU-x')
     # print e.encode('latin-1')
@@ -202,13 +204,13 @@ if __name__ == '__main__':
     # e = imapUTF7Decode('b&APg-x')
     # print e.encode('latin-1')
 
-    print '#######'
-    print '~/Følder/mailbåx & stuff + more'
+    print('#######')
+    print('~/Følder/mailbåx & stuff + more')
     n = u'~/Følder/mailbåx & stuff + more'
     e = imapUTF7Encode(n)
-    print e
-    print imapUTF7Decode(e).encode('latin-1')
+    print(e)
+    print(imapUTF7Decode(e).encode('latin-1'))
 
-    print '#######'
-    print '~peter/mail/&ZeVnLIqe-/&U,BTFw-'
-    print imapUTF7Decode('~peter/mail/&ZeVnLIqe-/&U,BTFw-').encode('utf-8')
+    print('#######')
+    print('~peter/mail/&ZeVnLIqe-/&U,BTFw-')
+    print(imapUTF7Decode('~peter/mail/&ZeVnLIqe-/&U,BTFw-').encode('utf-8'))

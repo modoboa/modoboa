@@ -1,5 +1,7 @@
 """Views available to super administrators only."""
 
+from functools import reduce
+
 from django.contrib.auth.decorators import (
     login_required, user_passes_test
 )

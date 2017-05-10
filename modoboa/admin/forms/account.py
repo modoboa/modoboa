@@ -1,6 +1,7 @@
 """Forms related to accounts management."""
 
 from collections import OrderedDict
+from functools import reduce
 
 from django import forms
 from django.core.urlresolvers import reverse

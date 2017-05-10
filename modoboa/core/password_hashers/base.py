@@ -3,11 +3,14 @@ Base password hashers.
 
 Contains weak hashers (the original ones) available with Modoboa.
 """
+
+import base64
+from builtins import object
 import crypt
 import hashlib
-import base64
-import string
 from random import Random
+import string
+
 from django.utils.crypto import constant_time_compare
 
 

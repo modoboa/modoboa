@@ -16,7 +16,7 @@ register = template.Library()
 @register.simple_tag
 def join(items, sep=','):
     res = ""
-    for k, v in items.iteritems():
+    for k, v in list(items.items()):
         if res != "":
             res += sep
         res += "%s : '%s'" % (k, v)

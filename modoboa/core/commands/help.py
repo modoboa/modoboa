@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from __future__ import print_function
+
 import sys
 
 from . import Command
@@ -16,7 +18,7 @@ class HelpCommand(Command):
 
     def handle(self, parsed_args):
         if parsed_args.name not in self._commands:
-            print >>sys.stderr, "Unknown command: %s" % parsed_args.name
+            print("Unknown command: %s" % parsed_args.name, file=sys.stderr)
             sys.exit(1)
         cmd = self._commands[parsed_args.name](self._commands)
         cmd._parser.prog = "modoboa-admin.py %s" % parsed_args.name
