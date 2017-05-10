@@ -5,7 +5,6 @@
 from __future__ import unicode_literals
 
 import abc
-from builtins import object, range
 from collections import OrderedDict
 import re
 
@@ -22,7 +21,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.web_utils import render_to_json_response
 
-ABC = abc.ABCMeta("ABC", (object,), {})  # compatible with Python 2 *and* 3
+ABC = abc.ABCMeta(b"ABC", (object,), {})  # compatible with Python 2 *and* 3
 
 
 class WizardStep(object):

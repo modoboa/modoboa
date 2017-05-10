@@ -1,7 +1,5 @@
 # coding: utf-8
 
-from builtins import range
-
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 

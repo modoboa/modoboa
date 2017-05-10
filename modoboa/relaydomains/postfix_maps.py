@@ -1,7 +1,5 @@
 """Map file definitions for postfix."""
 
-from builtins import object
-
 
 class RelayDomainsMap(object):
 

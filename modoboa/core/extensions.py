@@ -1,7 +1,5 @@
 """Extension management."""
 
-from builtins import object
-
 from django.conf import settings
 from django.conf.urls import include, url
 

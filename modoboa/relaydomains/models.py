@@ -1,7 +1,5 @@
 """Relay domain related models."""
 
-from builtins import object
-
 from django.db import models
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext as _, ugettext_lazy

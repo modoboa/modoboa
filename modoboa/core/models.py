@@ -1,6 +1,5 @@
 """Core models."""
 
-from builtins import object
 from email.header import Header
 import re
 

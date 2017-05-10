@@ -1,7 +1,6 @@
 # coding: utf-8
 """Testing utilities."""
 
-from builtins import object
 import json
 
 from django.core import management

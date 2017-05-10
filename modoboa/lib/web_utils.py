@@ -4,8 +4,6 @@
 This module contains extra functions/shortcuts used to render HTML.
 """
 
-from builtins import object
-
 import json
 import re
 import sys

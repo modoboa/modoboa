@@ -1,6 +1,5 @@
 """relaydomains unit tests."""
 
-from builtins import object
 import json
 
 from django.core.files.base import ContentFile

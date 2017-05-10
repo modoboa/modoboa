@@ -5,7 +5,6 @@ Contains weak hashers (the original ones) available with Modoboa.
 """
 
 import base64
-from builtins import object
 import crypt
 import hashlib
 from random import Random

@@ -1,6 +1,5 @@
 # coding: utf-8
 
-from builtins import object
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr

@@ -2,8 +2,6 @@
 
 """Core forms."""
 
-from builtins import object
-
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 

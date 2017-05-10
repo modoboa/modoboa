@@ -2,8 +2,6 @@
 
 """Custom middlewares."""
 
-from builtins import object
-
 from django.http import HttpResponseRedirect
 from django.utils.encoding import smart_text
 

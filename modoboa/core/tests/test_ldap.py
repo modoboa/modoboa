@@ -1,7 +1,5 @@
 """Tests for core application."""
 
-from builtins import object
-
 from unittest import skipIf
 
 from django.core.urlresolvers import reverse

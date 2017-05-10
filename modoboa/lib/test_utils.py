@@ -1,7 +1,5 @@
 """Tools for top level testing (ie. when ran by Travis)."""
 
-from builtins import object
-
 import os
 import shutil
 import tempfile

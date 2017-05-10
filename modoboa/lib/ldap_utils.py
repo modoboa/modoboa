@@ -33,8 +33,6 @@ Extracted from `this blog
 
 """
 
-from builtins import object
-
 import ldap
 
 from django.conf import settings

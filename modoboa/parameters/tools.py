@@ -1,6 +1,5 @@
 """Parameters management."""
 
-from builtins import object
 import copy
 
 from modoboa.lib import exceptions

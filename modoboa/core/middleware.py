@@ -1,7 +1,5 @@
 """Core middlewares."""
 
-from builtins import object
-
 from . import models
 
 

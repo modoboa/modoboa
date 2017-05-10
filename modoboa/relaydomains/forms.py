@@ -1,7 +1,5 @@
 """Postfix relay domains extension forms."""
 
-from builtins import object
-
 from django import forms
 from django.core import validators
 from django.utils.translation import ugettext as _

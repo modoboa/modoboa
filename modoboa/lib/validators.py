@@ -1,6 +1,5 @@
 """Field validators."""
 
-from builtins import object
 import re
 
 from django.core.exceptions import ValidationError
