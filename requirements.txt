@@ -21,7 +21,7 @@ gevent==1.2.1
 ipaddress
 jsonfield==1.0.3
 passlib==1.6.5
-progressbar==2.3
+progressbar33==2.4
 py-dateutil==2.2
 pycrypto
 pytz
