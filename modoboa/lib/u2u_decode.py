@@ -33,7 +33,7 @@ def decode_mime(m):
 
 
 def u2u_decode(s):
-    ur"""utility function for (final) decoding of mime header
+    """utility function for (final) decoding of mime header
 
     note: resulting string is in one line (no \n within)
     note2: spaces between enc_words are stripped (see RFC2047)

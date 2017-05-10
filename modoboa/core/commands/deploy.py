@@ -11,6 +11,8 @@ import shutil
 import subprocess
 import sys
 
+from os.path import isfile
+
 try:
     import pip
 except ImportError:
@@ -108,8 +110,10 @@ class DeployCommand(Command):
             output = None
         if p.returncode:
             if output:
-                print("\n".join(
-                    [l for l in output if l is not None]), file=sys.stderr)
+                print(
+                    "\n".join([l.decode() for l in output if l is not None]),
+                    file=sys.stderr
+                )
             print("%s failed, check your configuration" % cmd, file=sys.stderr)
 
     def ask_db_info(self, name='default'):
@@ -250,7 +254,8 @@ class DeployCommand(Command):
         )
         os.mkdir("%s/media" % parsed_args.name)
 
-        os.unlink("%s/settings.pyc" % path)
+        if isfile("%s/settings.pyc" % path):
+            os.unlink("%s/settings.pyc" % path)
         self._exec_django_command(
             "migrate", parsed_args.name, '--noinput'
         )
