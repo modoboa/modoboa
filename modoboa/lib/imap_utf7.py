@@ -51,7 +51,7 @@ Found here:
 http://svn.plone.org/svn/collective/mxmImapClient/trunk/imapUTF7.py
 
 """
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import binascii
 import codecs

@@ -1,5 +1,7 @@
 """Simple user views."""
 
+from __future__ import unicode_literals
+
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils import translation

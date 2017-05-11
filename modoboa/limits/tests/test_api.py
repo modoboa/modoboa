@@ -1,6 +1,8 @@
 # coding: utf-8
 """Test cases for the limits extension."""
 
+from __future__ import unicode_literals
+
 from testfixtures import compare
 
 from django.core.urlresolvers import reverse

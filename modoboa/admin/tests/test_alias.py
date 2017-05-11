@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from __future__ import unicode_literals
+
 """Admin test cases."""
 
 from django.core.urlresolvers import reverse

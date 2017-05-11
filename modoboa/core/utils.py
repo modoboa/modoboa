@@ -1,5 +1,7 @@
 """Utility functions."""
 
+from __future__ import unicode_literals
+
 from django.utils.translation import ugettext as _
 
 from versionfield.constants import DEFAULT_NUMBER_BITS

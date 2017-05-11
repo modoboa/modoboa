@@ -1,5 +1,7 @@
 """Export related test cases."""
 
+from __future__ import unicode_literals
+
 from django.core.urlresolvers import reverse
 
 from modoboa.lib.tests import ModoTestCase

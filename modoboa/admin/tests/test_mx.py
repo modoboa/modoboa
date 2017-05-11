@@ -1,5 +1,7 @@
 """DNSBL related tests."""
 
+from __future__ import unicode_literals
+
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import override_settings

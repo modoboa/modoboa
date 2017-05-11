@@ -2,6 +2,8 @@
 Custom pagination tools.
 """
 
+from __future__ import unicode_literals
+
 
 class Page(object):
 

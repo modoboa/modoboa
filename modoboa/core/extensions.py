@@ -1,7 +1,10 @@
 """Extension management."""
 
+from __future__ import unicode_literals
+
 from django.conf import settings
 from django.conf.urls import include, url
+from django.utils import six
 
 
 class ModoExtension(object):
@@ -76,7 +79,11 @@ class ExtensionsPool(object):
 
     def load_extension(self, name):
         """Load a registered extension."""
-        __import__(name, locals(), globals(), ["modo_extension"])
+        if six.PY2:
+            fromlist = ["modo_extension".encode()]
+        else:
+            fromlist = ["modo_extension"]
+        __import__(name, locals(), globals(), fromlist)
         extinstance = self.get_extension(name)
         if extinstance is None:
             return None

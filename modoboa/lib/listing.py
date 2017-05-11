@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from modoboa.parameters import tools as param_tools

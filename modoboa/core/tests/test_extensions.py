@@ -1,12 +1,13 @@
 """Extensions management related test cases."""
 
+from __future__ import unicode_literals
+
 import os
 import sys
 
 from testfixtures import compare
 
 from django.core import management
-from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
 
 from .. import extensions

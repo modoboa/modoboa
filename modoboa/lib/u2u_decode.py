@@ -2,6 +2,8 @@
 
 """Unstructured rfc2047 header to unicode."""
 
+from __future__ import unicode_literals
+
 from email.header import decode_header, make_header
 import re
 

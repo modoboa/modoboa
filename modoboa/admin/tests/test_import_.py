@@ -1,4 +1,7 @@
 # coding: utf-8
+
+from __future__ import unicode_literals
+
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 

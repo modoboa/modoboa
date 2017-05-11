@@ -1,5 +1,7 @@
 """Import related views."""
 
+from __future__ import unicode_literals
+
 import csv
 
 from django.contrib.auth.decorators import (

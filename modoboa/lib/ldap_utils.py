@@ -33,6 +33,8 @@ Extracted from `this blog
 
 """
 
+from __future__ import unicode_literals
+
 import ldap
 
 from django.conf import settings

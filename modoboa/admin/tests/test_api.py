@@ -1,6 +1,8 @@
 # coding: utf-8
 """Admin API related tests."""
 
+from __future__ import unicode_literals
+
 import copy
 import json
 

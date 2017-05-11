@@ -2,7 +2,7 @@
 
 """A shortcut to deploy a fresh modoboa instance."""
 
-from __future__ import print_function
+from __future__ import unicode_literals, print_function
 
 import getpass
 import os
@@ -21,6 +21,7 @@ except ImportError:
 import django
 from django.core import management
 from django.template import Context, Template
+from django.utils import six
 import dj_database_url
 
 from modoboa.core.commands import Command
@@ -231,7 +232,11 @@ class DeployCommand(Command):
             os.path.join(os.path.dirname(__file__), "../../bower_components")
         )
 
-        mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
+        if six.PY2:
+            fromlist = ['settings'.encode()]
+        else:
+            fromlist = ['settings']
+        mod = __import__(parsed_args.name, globals(), locals(), fromlist)
         tpl = self._render_template(
             "%s/settings.py.tpl" % self._templates_dir, {
                 'db_connections': connections,

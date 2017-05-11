@@ -1,5 +1,7 @@
 """Models related to domains management."""
 
+from __future__ import unicode_literals
+
 import datetime
 from functools import reduce
 

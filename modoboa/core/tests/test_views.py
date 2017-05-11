@@ -1,5 +1,7 @@
 """Core views test cases."""
 
+from __future__ import unicode_literals
+
 import json
 
 from testfixtures import compare

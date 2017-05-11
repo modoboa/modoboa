@@ -1,5 +1,7 @@
 """relaydomains unit tests."""
 
+from __future__ import unicode_literals
+
 import json
 
 from django.core.files.base import ContentFile

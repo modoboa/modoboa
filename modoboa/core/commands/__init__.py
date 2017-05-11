@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from __future__ import print_function
+from __future__ import unicode_literals, print_function
 
 import argparse
 import os
@@ -8,6 +8,7 @@ import sys
 
 from django.conf import settings
 from django.template import Context, Template
+from django.utils import six
 
 
 class Command(object):
@@ -65,8 +66,12 @@ def scan_for_commands(dirname=""):
         if os.path.isfile(f):
             continue
         cmdname = f.replace(".py", "")
+        if six.PY2:
+            fromlist = [cmdname.encode()]
+        else:
+            fromlist = [cmdname]
         cmdmod = __import__("modoboa.core.commands", globals(), locals(),
-                            [cmdname])
+                            fromlist)
         cmdmod = getattr(cmdmod, cmdname)
         if "_" in cmdname:
             cmdclassname = "".join(

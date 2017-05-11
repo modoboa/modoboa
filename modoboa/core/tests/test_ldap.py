@@ -1,5 +1,7 @@
 """Tests for core application."""
 
+from __future__ import unicode_literals
+
 from unittest import skipIf
 
 from django.core.urlresolvers import reverse

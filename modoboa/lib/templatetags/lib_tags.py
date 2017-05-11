@@ -1,6 +1,8 @@
 # coding: utf-8
 """Custom template tags."""
 
+from __future__ import unicode_literals
+
 from datetime import datetime
 
 from django import template

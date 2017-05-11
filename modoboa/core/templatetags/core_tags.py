@@ -1,6 +1,8 @@
 # coding: utf-8
 """Custom tags for Core application."""
 
+from __future__ import unicode_literals
+
 from functools import reduce
 import os
 import pkg_resources

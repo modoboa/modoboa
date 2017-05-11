@@ -1,5 +1,7 @@
 """Modoboa core signals."""
 
+from __future__ import unicode_literals
+
 import django.dispatch
 
 account_auto_created = django.dispatch.Signal(providing_args=["user"])

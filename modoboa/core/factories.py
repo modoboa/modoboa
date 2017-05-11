@@ -1,5 +1,7 @@
 """Factories for core application."""
 
+from __future__ import unicode_literals
+
 import factory
 
 from django.contrib.auth.models import Group

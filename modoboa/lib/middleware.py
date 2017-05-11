@@ -2,6 +2,8 @@
 
 """Custom middlewares."""
 
+from __future__ import unicode_literals
+
 from django.http import HttpResponseRedirect
 from django.utils.encoding import smart_text
 

@@ -4,6 +4,8 @@ Base password hashers.
 Contains weak hashers (the original ones) available with Modoboa.
 """
 
+from __future__ import unicode_literals
+
 import base64
 import crypt
 import hashlib

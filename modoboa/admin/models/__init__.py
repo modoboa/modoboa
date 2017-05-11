@@ -1,5 +1,7 @@
 """Admin models."""
 
+from __future__ import unicode_literals
+
 from .base import AdminObject
 from .domain import Domain, MXRecord, DNSBLResult
 from .domain_alias import DomainAlias

@@ -1,5 +1,7 @@
 """Django management command to export admin objects."""
 
+from __future__ import unicode_literals
+
 import csv
 import sys
 

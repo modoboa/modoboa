@@ -1,6 +1,6 @@
 """Management command to check and fix known problems."""
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 from django.conf import settings
 from django.core.management.base import BaseCommand

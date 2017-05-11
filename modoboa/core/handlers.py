@@ -1,5 +1,7 @@
 """Modoboa core signal handlers."""
 
+from __future__ import unicode_literals
+
 import logging
 
 from django.core.urlresolvers import reverse

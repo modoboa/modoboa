@@ -4,6 +4,9 @@
 This module extra functions/shortcuts to communicate with the system
 (executing commands, etc.)
 """
+
+from __future__ import unicode_literals
+
 import subprocess
 import inspect
 import re

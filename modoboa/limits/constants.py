@@ -1,5 +1,7 @@
 """Modoboa limits constants."""
 
+from __future__ import unicode_literals
+
 import collections
 
 from django.utils.translation import ugettext_lazy as _
