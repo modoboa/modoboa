@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import ugettext as _
+from django.utils.encoding import force_text
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 
@@ -41,8 +42,9 @@ def profile(request, tplname='core/user_profile.html'):
         if form.is_valid():
             form.save()
             if update_password and form.cleaned_data["confirmation"] != "":
-                request.session["password"] = encrypt(
-                    form.cleaned_data["confirmation"])
+                request.session["password"] = force_text(encrypt(
+                    form.cleaned_data["confirmation"]
+                ))
             translation.activate(request.user.language)
             request.session[translation.LANGUAGE_SESSION_KEY] = (
                 request.user.language)

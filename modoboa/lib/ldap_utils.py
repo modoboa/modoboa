@@ -39,7 +39,7 @@ import ldap
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.utils.encoding import smart_bytes
+from django.utils.encoding import force_bytes
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import InternalError
@@ -69,7 +69,7 @@ class LDAPAuthBackend(object):
 
     def _get_conn(self, dn, password):
         """Get a connection from the server."""
-        conn = ldap.initialize(self.server_uri)
+        conn = ldap.initialize(self.server_uri, bytes_mode=False)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
         conn.simple_bind_s(dn, password)
@@ -120,8 +120,8 @@ class LDAPAuthBackend(object):
                 ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
             )
         ldif = [(ldap.MOD_REPLACE,
-                 smart_bytes(self.pwd_attr),
-                 smart_bytes(self._crypt_password(newpassword)))]
+                 self.pwd_attr,
+                 force_bytes(self._crypt_password(newpassword)))]
         try:
             self.conn.modify_s(user_dn, ldif)
         except ldap.LDAPError as e:

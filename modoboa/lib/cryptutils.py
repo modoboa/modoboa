@@ -7,6 +7,8 @@ import base64
 import random
 import string
 
+from django.utils.encoding import force_bytes
+
 from Crypto.Cipher import AES
 
 from modoboa.parameters import tools as param_tools
@@ -32,7 +34,9 @@ def encrypt(clear):
     if type(clear) is str:
         clear = clear.encode("utf-8")
     if len(clear) % AES.block_size:
-        clear += " " * (AES.block_size - len(clear) % AES.block_size)
+        clear += (
+            force_bytes(" ") * (AES.block_size - len(clear) % AES.block_size)
+        )
     ciph = obj.encrypt(clear)
     ciph = base64.b64encode(ciph)
     return ciph

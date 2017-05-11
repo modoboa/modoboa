@@ -8,7 +8,7 @@ import sys
 
 from django.conf import settings
 from django.template import Context, Template
-from django.utils import six
+from django.utils.encoding import smart_str
 
 
 class Command(object):
@@ -66,12 +66,8 @@ def scan_for_commands(dirname=""):
         if os.path.isfile(f):
             continue
         cmdname = f.replace(".py", "")
-        if six.PY2:
-            fromlist = [cmdname.encode()]
-        else:
-            fromlist = [cmdname]
         cmdmod = __import__("modoboa.core.commands", globals(), locals(),
-                            fromlist)
+                            [smart_str(cmdname)])
         cmdmod = getattr(cmdmod, cmdname)
         if "_" in cmdname:
             cmdclassname = "".join(

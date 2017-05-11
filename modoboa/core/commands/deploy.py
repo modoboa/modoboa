@@ -21,7 +21,7 @@ except ImportError:
 import django
 from django.core import management
 from django.template import Context, Template
-from django.utils import six
+from django.utils.encoding import smart_str
 import dj_database_url
 
 from modoboa.core.commands import Command
@@ -232,11 +232,9 @@ class DeployCommand(Command):
             os.path.join(os.path.dirname(__file__), "../../bower_components")
         )
 
-        if six.PY2:
-            fromlist = ['settings'.encode()]
-        else:
-            fromlist = ['settings']
-        mod = __import__(parsed_args.name, globals(), locals(), fromlist)
+        mod = __import__(
+            parsed_args.name, globals(), locals(), [smart_str('settings')]
+        )
         tpl = self._render_template(
             "%s/settings.py.tpl" % self._templates_dir, {
                 'db_connections': connections,
