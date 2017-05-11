@@ -2,7 +2,6 @@
 """Testing utilities."""
 
 from builtins import object
-import json
 
 from django.core import management
 from django.test import TestCase
@@ -65,7 +64,7 @@ class ModoTestCase(ParametersMixin, TestCase):
         response = getattr(self.client, method)(
             url, params, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, status)
-        return json.loads(response.content)
+        return response.json()
 
     def ajax_post(self, *args, **kwargs):
         return self.ajax_request('post', *args, **kwargs)

@@ -143,7 +143,7 @@ def get_object_owner(obj):
 
 def add_permissions_to_group(group, permissions):
     """Add the specified permissions to a django group."""
-    if isinstance(group, basestring):
+    if isinstance(group, str):
         group = Group.objects.get(name=group)
 
     for appname, modelname, permname in permissions:

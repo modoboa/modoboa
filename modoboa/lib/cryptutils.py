@@ -17,7 +17,7 @@ def random_key(l=16):
     :return: a string
     """
     punctuation = """!#$%&'()*+,-./:;<=>?@[]^_`{|}~"""
-    population = string.digits + string.letters + punctuation
+    population = string.digits + string.ascii_letters + punctuation
     while True:
         key = "".join(random.sample(population * l, l))
         if len(key) == l:
@@ -27,13 +27,12 @@ def random_key(l=16):
 def encrypt(clear):
     key = param_tools.get_global_parameter("secret_key", app="core")
     obj = AES.new(key, AES.MODE_ECB)
-    if type(clear) is unicode:
-        clear = clear.encode("utf-8")
+    clear = str(clear)
     if len(clear) % AES.block_size:
         clear += " " * (AES.block_size - len(clear) % AES.block_size)
     ciph = obj.encrypt(clear)
     ciph = base64.b64encode(ciph)
-    return ciph
+    return str(ciph)
 
 
 def decrypt(ciph):
