@@ -53,6 +53,8 @@ http://svn.plone.org/svn/collective/mxmImapClient/trunk/imapUTF7.py
 """
 from __future__ import print_function, unicode_literals
 
+from django.utils.encoding import force_text
+
 import binascii
 import codecs
 
@@ -91,7 +93,7 @@ def encoder(s):
 
 def modified_unbase64(s):
     b = binascii.a2b_base64(s.replace(',', '/') + '===')
-    return unicode(b, 'utf-16be')
+    return force_text(b, encoding='utf-16be')
 
 
 def decoder(s):
@@ -129,6 +131,8 @@ class StreamWriter(codecs.StreamWriter):
 def imap4_utf_7(name):
     if name == 'imap4-utf-7':
         return (encoder, decoder, StreamReader, StreamWriter)
+
+
 codecs.register(imap4_utf_7)
 
 

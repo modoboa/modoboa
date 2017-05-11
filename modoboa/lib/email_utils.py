@@ -12,6 +12,7 @@ import time
 from django.conf import settings
 from django.utils.encoding import smart_text
 from django.template.loader import render_to_string
+from django.utils import six
 
 from modoboa.lib import u2u_decode
 
@@ -77,7 +78,7 @@ class Email(object):
         """
         fname = msg.get_filename()
         if fname is not None:
-            if type(fname) is unicode:
+            if type(fname) is six.text_type:
                 fname = fname.encode("utf-8")
             decoded = decode_header(fname)
             value = (
