@@ -3,8 +3,6 @@
 
 from __future__ import unicode_literals
 
-import json
-
 from django.core import management
 from django.test import TestCase
 

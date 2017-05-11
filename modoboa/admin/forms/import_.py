@@ -29,7 +29,7 @@ class ImportDataForm(forms.Form):
     def clean_sepchar(self):
         if self.cleaned_data["sepchar"] == "":
             return ";"
-        return str(self.cleaned_data["sepchar"])
+        return self.cleaned_data["sepchar"]
 
 
 class ImportIdentitiesForm(ImportDataForm):

@@ -39,6 +39,7 @@ import ldap
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
+from django.utils.encoding import smart_bytes
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import InternalError
@@ -119,8 +120,8 @@ class LDAPAuthBackend(object):
                 ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
             )
         ldif = [(ldap.MOD_REPLACE,
-                 self.pwd_attr,
-                 self._crypt_password(newpassword))]
+                 smart_bytes(self.pwd_attr),
+                 smart_bytes(self._crypt_password(newpassword)))]
         try:
             self.conn.modify_s(user_dn, ldif)
         except ldap.LDAPError as e:
