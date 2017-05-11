@@ -31,7 +31,7 @@ class LimitImportTestCase(ModoTestCase):
         """Check domain aliases limit."""
         self.client.force_login(self.reseller)
         self.assertFalse(limit.is_exceeded())
-        f = ContentFile(b"""domainalias; domalias1.com; {domain}; True
+        f = ContentFile("""domainalias; domalias1.com; {domain}; True
 domainalias; domalias2.com; {domain}; True
 """.format(domain=self.domain), name="domains.csv")
         self.client.post(
@@ -70,7 +70,7 @@ domainalias; domalias2.com; {domain}; True
         )
         self.assertTrue(limit.is_exceeded())
 
-        f = ContentFile(b"""account; admin3@{domain}; toto; User; One; True; DomainAdmins; admin3@{domain}; 5; {domain}
+        f = ContentFile("""account; admin3@{domain}; toto; User; One; True; DomainAdmins; admin3@{domain}; 5; {domain}
 """.format(domain=self.domain), name="domain_admins.csv")
         response = self.client.post(
             reverse("admin:identity_import"), {
@@ -111,7 +111,7 @@ account; user3@{domain}; toto; User; One; True; SimpleUsers; user3@{domain}; 5
         """Check mailbox aliases limit."""
         self.client.force_login(self.dadmin)
         self.assertFalse(limit.is_exceeded())
-        f = ContentFile(b"""alias; alias1@{domain}; True; user@{domain}
+        f = ContentFile("""alias; alias1@{domain}; True; user@{domain}
 alias; alias2@{domain}; True; user@{domain}
 """.format(domain=self.domain), name="aliases.csv")
         response = self.client.post(

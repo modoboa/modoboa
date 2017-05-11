@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import force_text
 
 from rest_framework import serializers
 from passwords import validators
@@ -77,7 +78,7 @@ class DomainAliasSerializer(serializers.ModelSerializer):
                 object_type="domain_aliases")
         except lib_exceptions.ModoboaException as inst:
             raise serializers.ValidationError({
-                "domain": unicode(inst)})
+                "domain": force_text(inst)})
         domain_alias.save(creator=creator)
         return domain_alias
 
@@ -254,7 +255,7 @@ class WritableAccountSerializer(AccountSerializer):
                 object_type="mailboxes")
         except lib_exceptions.ModoboaException as inst:
             raise serializers.ValidationError({
-                "domain": unicode(inst)})
+                "domain": force_text(inst)})
         quota = data.pop("quota", None)
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
@@ -347,7 +348,7 @@ class AliasSerializer(serializers.ModelSerializer):
                 sender=self.__class__, context=self.domain,
                 object_type="mailbox_aliases")
         except lib_exceptions.ModoboaException as inst:
-            raise serializers.ValidationError(unicode(inst))
+            raise serializers.ValidationError(force_text(inst))
         recipients = validated_data.pop("recipients", None)
         alias = admin_models.Alias(domain=self.domain, **validated_data)
         alias.save(creator=creator)
