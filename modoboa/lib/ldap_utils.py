@@ -40,6 +40,7 @@ import ldap
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils.encoding import force_bytes
+from django.utils import six
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import InternalError

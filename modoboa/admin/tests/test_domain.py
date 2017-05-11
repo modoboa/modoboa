@@ -222,12 +222,12 @@ class DomainTestCase(ModoTestCase):
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Summary", response.content)
-        self.assertIn("Administrators", response.content)
-        self.assertNotIn("Resources usage", response.content)
+        self.assertIn("Summary", response.content.decode())
+        self.assertIn("Administrators", response.content.decode())
+        self.assertNotIn("Resources usage", response.content.decode())
         self.set_global_parameter("enable_domain_limits", True, app="limits")
         response = self.client.get(url)
-        self.assertIn("Resources usage", response.content)
+        self.assertIn("Resources usage", response.content.decode())
 
     def test_statitics_widget(self):
         """Test statistics display in dashboard."""

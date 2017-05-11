@@ -7,7 +7,9 @@ import random
 
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import (
+    python_2_unicode_compatible, smart_text, force_str, force_bytes
+)
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from reversion import revisions as reversion
@@ -64,7 +66,7 @@ class Alias(AdminObject):
         """Generate a random address (local part)."""
         m = hashlib.md5()
         for x in random.sample(range(10000000), 60):
-            m.update(str(x))
+            m.update(force_bytes(x))
         return m.hexdigest()[:20]
 
     @property
@@ -111,7 +113,6 @@ class Alias(AdminObject):
           is defined on the associated domain
 
         """
-        to_create = []
         for address in set(address_list):
             if not address:
                 continue
@@ -195,9 +196,10 @@ class Alias(AdminObject):
         self.post_create(user)
 
     def to_csv(self, csvwriter):
-        row = ["alias", self.address.encode("utf-8"), self.enabled]
+        row = ["alias", force_str(self.address), self.enabled]
         row += self.recipients
         csvwriter.writerow(row)
+
 
 reversion.register(Alias)
 

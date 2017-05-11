@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
+from django.utils.encoding import force_text
 
 from modoboa.lib.tests import ModoTestCase
 
@@ -38,8 +39,8 @@ class ExportTestCase(ModoTestCase):
         )
 
     def assertListEqual(self, list1, list2):
-        list1 = list1.split("\r\n")
-        list2 = list2.split("\r\n")
+        list1 = force_text(list1).split("\r\n")
+        list2 = force_text(list2).split("\r\n")
         self.assertEqual(len(list1), len(list2))
         for entry in list1:
             if not entry:
@@ -85,7 +86,7 @@ class ExportTestCase(ModoTestCase):
         response = self.__export_identities(
             idtfilter="account", grpfilter="SuperAdmins"
         )
-        elements = response.content.strip().split(";")
+        elements = response.content.decode().strip().split(";")
         self.assertEqual(len(elements), 9)
         elements[2] = ""
         self.assertEqual(
@@ -104,6 +105,6 @@ class ExportTestCase(ModoTestCase):
     def test_export_aliases(self):
         response = self.__export_identities(idtfilter="alias")
         self.assertEqual(
-            response.content.strip(),
+            response.content.decode().strip(),
             "alias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com"
         )

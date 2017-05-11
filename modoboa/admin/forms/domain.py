@@ -8,6 +8,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import force_text
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
@@ -98,7 +99,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if label is not None:
             self.add_error(
                 "name", _("A %s with this name already exists")
-                % unicode(label)
+                % force_text(label)
             )
         condition = (
             self.cleaned_data["quota"] != 0 and
@@ -120,7 +121,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 if default_mailbox_quota == 0:
                     self.add_error("default_mailbox_quota", msg)
         self.aliases = []
-        for k in cleaned_data.keys():
+        copied_data = cleaned_data.copy()
+        for k in copied_data.keys():
             if not k.startswith("aliases"):
                 continue
             if cleaned_data[k] == "":
@@ -137,7 +139,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             if label is not None:
                 self.add_error(
                     k, _("A %s with this name already exists")
-                    % unicode(label)
+                    % force_text(label)
                 )
             else:
                 self.aliases.append(cleaned_data[k])
