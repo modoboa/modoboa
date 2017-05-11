@@ -236,11 +236,12 @@ class DomainTestCase(ModoTestCase):
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Global statistics", response.content)
+        self.assertIn("Global statistics", response.content.decode('utf-8'))
 
         self.client.force_login(
             User.objects.get(username="admin@test.com"))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotIn("Global statistics", response.content)
-        self.assertIn("Per-domain statistics", response.content)
+        content = response.content.decode('utf-8')
+        self.assertNotIn("Global statistics", content)
+        self.assertIn("Per-domain statistics", content)
