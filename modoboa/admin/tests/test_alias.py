@@ -265,8 +265,8 @@ class AliasTestCase(ModoTestCase):
         url = reverse("admin:alias_detail", args=[account.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Summary", response.content)
-        self.assertIn("Recipients", response.content)
+        self.assertIn("Summary", response.content.decode())
+        self.assertIn("Recipients", response.content.decode())
 
     def test_domainadmin_restrictions(self):
         """Check that restrictions are applied."""

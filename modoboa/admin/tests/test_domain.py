@@ -4,8 +4,6 @@ from __future__ import unicode_literals
 
 """Domain related test cases."""
 
-import json
-
 from django.core.urlresolvers import reverse
 
 from modoboa.core.models import User
@@ -213,7 +211,7 @@ class DomainTestCase(ModoTestCase):
         """Test the 'domain_flat_list' view."""
         response = self.client.get(reverse("admin:domain_flat_list"))
         self.assertEqual(response.status_code, 200)
-        content = json.loads(response.content)
+        content = response.json()
         self.assertIn("test.com", content)
         self.assertIn("test2.com", content)
 

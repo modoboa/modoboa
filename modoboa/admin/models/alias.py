@@ -63,7 +63,7 @@ class Alias(AdminObject):
     def generate_random_address(cls):
         """Generate a random address (local part)."""
         m = hashlib.md5()
-        for x in random.sample(xrange(10000000), 60):
+        for x in random.sample(range(10000000), 60):
             m.update(str(x))
         return m.hexdigest()[:20]
 

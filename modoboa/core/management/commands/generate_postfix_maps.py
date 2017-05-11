@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.template import Context, Template
 from django.utils import timezone
+from django.utils.encoding import force_bytes
 
 import dj_database_url
 
@@ -68,7 +69,7 @@ class Command(BaseCommand):
             fname not in self.__checksums)
         if condition:
             return True
-        with open(path) as fp:
+        with open(path, mode="rb") as fp:
             checksum = hashlib.md5(fp.read()).hexdigest()
         return checksum == self.__checksums[fname]["checksum"]
 
@@ -142,7 +143,7 @@ query = {{ query|safe }}
         fullpath = os.path.join(destdir, mapobject.filename)
         with open(fullpath, "w") as fp:
             fp.write(content)
-        return hashlib.md5(content).hexdigest()
+        return hashlib.md5(force_bytes(content)).hexdigest()
 
     def handle(self, *args, **options):
         """Command entry point."""
