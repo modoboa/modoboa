@@ -69,7 +69,10 @@ class LDAPAuthBackend(object):
 
     def _get_conn(self, dn, password):
         """Get a connection from the server."""
-        conn = ldap.initialize(self.server_uri, bytes_mode=False)
+        kwargs = {}
+        if six.PY3:
+            kwargs['bytes_mode'] = False
+        conn = ldap.initialize(self.server_uri, **kwargs)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
         conn.simple_bind_s(dn, password)
