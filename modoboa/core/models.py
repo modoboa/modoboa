@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import (
-    python_2_unicode_compatible, smart_bytes, smart_text)
+    python_2_unicode_compatible, smart_bytes, smart_text, force_str)
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -154,7 +154,7 @@ class User(PermissionsMixin):
         match = self.password_expr.match(self.password)
         if match is None:
             return False
-        raw_value = smart_bytes(raw_value)
+        raw_value = force_str(raw_value)
         scheme = match.group(1)
         val2 = match.group(2)
         hasher = get_password_hasher(scheme)
@@ -424,6 +424,7 @@ class User(PermissionsMixin):
         for result in results:
             row += result[1]
         csvwriter.writerow(row)
+
 
 reversion.register(User)
 

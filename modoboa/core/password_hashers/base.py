@@ -13,6 +13,7 @@ from random import Random
 import string
 
 from django.utils.crypto import constant_time_compare
+from django.utils.encoding import force_text
 
 
 class PasswordHasher(object):
@@ -35,7 +36,7 @@ class PasswordHasher(object):
         """
         if self._target == 'ldap':
             return base64.b64encode(pwhash)
-        return pwhash
+        return force_text(pwhash)
 
     def encrypt(self, clearvalue):
         """Encrypt a password.
