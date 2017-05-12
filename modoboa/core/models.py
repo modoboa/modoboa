@@ -1,6 +1,7 @@
 """Core models."""
 
-from builtins import object
+from __future__ import unicode_literals
+
 from email.header import Header
 import re
 
@@ -8,7 +9,8 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import (
-    python_2_unicode_compatible, smart_bytes, smart_text)
+    python_2_unicode_compatible, smart_bytes, smart_text, force_str, force_text
+)
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -153,7 +155,7 @@ class User(PermissionsMixin):
         match = self.password_expr.match(self.password)
         if match is None:
             return False
-        raw_value = smart_bytes(raw_value)
+        raw_value = force_str(raw_value)
         scheme = match.group(1)
         val2 = match.group(2)
         hasher = get_password_hasher(scheme)
@@ -410,19 +412,20 @@ class User(PermissionsMixin):
         """
         row = [
             "account",
-            smart_bytes(self.username),
-            smart_bytes(self.password),
-            smart_bytes(self.first_name),
-            smart_bytes(self.last_name),
-            self.is_active,
-            self.role,
-            smart_bytes(self.email)
+            force_text(self.username),
+            force_text(self.password),
+            force_text(self.first_name),
+            force_text(self.last_name),
+            force_text(self.is_active),
+            force_text(self.role),
+            force_text(self.email)
         ]
         results = signals.account_exported.send(
             sender=self.__class__, user=self)
         for result in results:
             row += result[1]
         csvwriter.writerow(row)
+
 
 reversion.register(User)
 

@@ -1,7 +1,6 @@
 """relaydomains unit tests."""
 
-from builtins import object
-import json
+from __future__ import unicode_literals
 
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
@@ -87,7 +86,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         url = reverse("admin:_domain_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        content = json.loads(response.content)
+        content = response.json()
         self.assertIn("relaydomain.tld", content["rows"])
         self.assertIn("Relay Domain", content["rows"])
 

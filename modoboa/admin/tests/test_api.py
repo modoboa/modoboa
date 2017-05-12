@@ -1,6 +1,8 @@
 # coding: utf-8
 """Admin API related tests."""
 
+from __future__ import unicode_literals
+
 import copy
 import json
 
@@ -146,7 +148,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 
-        dalias = json.loads(response.content)
+        dalias = response.json()
         dalias = models.DomainAlias.objects.filter(
             pk=dalias["pk"]).first()
         self.assertEqual(dalias.target, target)
@@ -215,17 +217,17 @@ class AccountAPITestCase(ModoAPITestCase):
         url = reverse("api:account-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
+        response = response.json()
         self.assertEqual(len(response), 5)
 
         response = self.client.get("{}?domain=test.com".format(url))
         self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
+        response = response.json()
         self.assertEqual(len(response), 2)
 
         response = self.client.get("{}?domain=pouet.com".format(url))
         self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
+        response = response.json()
         self.assertEqual(len(response), 0)
 
     def test_create_account(self):
@@ -234,7 +236,7 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.post(url, self.ACCOUNT_DATA, format="json")
         self.assertEqual(response.status_code, 201)
 
-        account = json.loads(response.content)
+        account = response.json()
         user = core_models.User.objects.filter(pk=account["pk"]).first()
         self.assertIsNot(user, None)
         self.assertIsNot(user.mailbox, None)
@@ -258,7 +260,7 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 201)
         domain = admin_models.Domain.objects.get(name="test.com")
         admin = core_models.User.objects.get(
-            pk=json.loads(response.content)["pk"])
+            pk=response.json()["pk"])
         self.assertIn(admin, domain.admins)
 
         data["username"] = "domain_admin"
@@ -273,7 +275,7 @@ class AccountAPITestCase(ModoAPITestCase):
         url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
-        account = json.loads(response.content)
+        account = response.json()
         user = core_models.User.objects.filter(pk=account["pk"]).first()
         self.assertIsNot(user, None)
         self.assertIsNot(user.mailbox, None)
@@ -300,7 +302,7 @@ class AccountAPITestCase(ModoAPITestCase):
         url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
-        errors = json.loads(response.content)
+        errors = response.json()
         self.assertIn("password", errors)
 
     def test_create_account_as_domadmin(self):
@@ -318,7 +320,7 @@ class AccountAPITestCase(ModoAPITestCase):
         url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
-        errors = json.loads(response.content)
+        errors = response.json()
         self.assertIn("domain", errors)
 
     def test_create_account_bad_master_user(self):
@@ -328,7 +330,7 @@ class AccountAPITestCase(ModoAPITestCase):
         url = reverse("api:account-list")
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
-        errors = json.loads(response.content)
+        errors = response.json()
         self.assertIn("master_user", errors)
 
     def test_update_account(self):
@@ -430,12 +432,12 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.get(
             "{}?email={}".format(url, "user@test.com"))
         self.assertEqual(response.status_code, 200)
-        content = json.loads(response.content)
+        content = response.json()
         self.assertTrue(content["exists"])
         response = self.client.get(
             "{}?email={}".format(url, "pipo@test.com"))
         self.assertEqual(response.status_code, 200)
-        content = json.loads(response.content)
+        content = response.json()
         self.assertFalse(content["exists"])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 400)
@@ -485,12 +487,12 @@ class AliasAPITestCase(ModoAPITestCase):
         url = reverse("api:alias-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
+        response = response.json()
         self.assertEqual(len(response), 3)
 
         response = self.client.get("{}?domain=test.com".format(url))
         self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
+        response = response.json()
         self.assertEqual(len(response), 3)
 
     def test_get_alias(self):
@@ -499,7 +501,7 @@ class AliasAPITestCase(ModoAPITestCase):
         url = reverse("api:alias-detail", args=[al.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        response = json.loads(response.content)
+        response = response.json()
         self.assertEqual(response["recipients"], ["user@test.com"])
 
     def test_create_alias(self):
@@ -508,7 +510,7 @@ class AliasAPITestCase(ModoAPITestCase):
         response = self.client.post(url, self.ALIAS_DATA, format="json")
         self.assertEqual(response.status_code, 201)
 
-        alias = json.loads(response.content)
+        alias = json.loads(response.content.decode('utf-8'))
         alias = models.Alias.objects.filter(pk=alias["pk"]).first()
         domadmin = core_models.User.objects.get(username="admin@test.com")
         self.assertTrue(domadmin.can_access(alias))
@@ -539,7 +541,7 @@ class AliasAPITestCase(ModoAPITestCase):
         data["address"] = "alias_fromapi@test2.com"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
-        errors = json.loads(response.content)
+        errors = response.json()
         self.assertIn("address", errors)
 
     def test_update_alias(self):

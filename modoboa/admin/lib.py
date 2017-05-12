@@ -2,6 +2,8 @@
 
 """Internal library for admin."""
 
+from __future__ import unicode_literals
+
 from functools import wraps
 from itertools import chain
 

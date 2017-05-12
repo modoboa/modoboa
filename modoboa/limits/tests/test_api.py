@@ -1,6 +1,8 @@
 # coding: utf-8
 """Test cases for the limits extension."""
 
+from __future__ import unicode_literals
+
 from testfixtures import compare
 
 from django.core.urlresolvers import reverse
@@ -101,7 +103,9 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         data["name"] = "test5.com"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 403)
-        self.assertEqual(response.content, '"Domains: limit reached"')
+        self.assertEqual(
+            response.content.decode('utf-8'), '"Domains: limit reached"'
+        )
 
         self.client.delete(
             reverse("api:domain-detail",
@@ -110,7 +114,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.content,
+            response.content.decode(),
             '"You\'re not allowed to define unlimited values"')
 
     def test_domain_aliases_limit(self):

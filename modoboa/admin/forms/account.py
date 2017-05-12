@@ -1,5 +1,7 @@
 """Forms related to accounts management."""
 
+from __future__ import unicode_literals
+
 from collections import OrderedDict
 from functools import reduce
 

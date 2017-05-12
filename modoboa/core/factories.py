@@ -1,6 +1,6 @@
 """Factories for core application."""
 
-from builtins import object
+from __future__ import unicode_literals
 
 import factory
 

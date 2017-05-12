@@ -1,7 +1,7 @@
 # coding: utf-8
 """Testing utilities."""
 
-from builtins import object
+from __future__ import unicode_literals
 
 from django.core import management
 from django.test import TestCase

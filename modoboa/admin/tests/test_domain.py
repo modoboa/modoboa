@@ -1,8 +1,8 @@
 # coding: utf-8
 
-"""Domain related test cases."""
+from __future__ import unicode_literals
 
-import json
+"""Domain related test cases."""
 
 from django.core.urlresolvers import reverse
 
@@ -211,7 +211,7 @@ class DomainTestCase(ModoTestCase):
         """Test the 'domain_flat_list' view."""
         response = self.client.get(reverse("admin:domain_flat_list"))
         self.assertEqual(response.status_code, 200)
-        content = json.loads(response.content)
+        content = response.json()
         self.assertIn("test.com", content)
         self.assertIn("test2.com", content)
 
@@ -222,23 +222,24 @@ class DomainTestCase(ModoTestCase):
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Summary", response.content)
-        self.assertIn("Administrators", response.content)
-        self.assertNotIn("Resources usage", response.content)
+        self.assertIn("Summary", response.content.decode())
+        self.assertIn("Administrators", response.content.decode())
+        self.assertNotIn("Resources usage", response.content.decode())
         self.set_global_parameter("enable_domain_limits", True, app="limits")
         response = self.client.get(url)
-        self.assertIn("Resources usage", response.content)
+        self.assertIn("Resources usage", response.content.decode())
 
     def test_statitics_widget(self):
         """Test statistics display in dashboard."""
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Global statistics", response.content)
+        self.assertIn("Global statistics", response.content.decode('utf-8'))
 
         self.client.force_login(
             User.objects.get(username="admin@test.com"))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotIn("Global statistics", response.content)
-        self.assertIn("Per-domain statistics", response.content)
+        content = response.content.decode('utf-8')
+        self.assertNotIn("Global statistics", content)
+        self.assertIn("Per-domain statistics", content)

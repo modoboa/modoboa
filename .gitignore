@@ -10,3 +10,5 @@ DEV
 .idea
 .ropeproject
 modoboa.iml
+.tox
+modoboa_test

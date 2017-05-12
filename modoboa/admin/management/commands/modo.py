@@ -1,5 +1,7 @@
 """Modoboa main management command."""
 
+from __future__ import unicode_literals
+
 from subcommand.base import SubcommandCommand
 
 from .subcommands._mx import CheckMXRecords

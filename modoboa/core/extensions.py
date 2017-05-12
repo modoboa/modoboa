@@ -1,9 +1,10 @@
 """Extension management."""
 
-from builtins import object
+from __future__ import unicode_literals
 
 from django.conf import settings
 from django.conf.urls import include, url
+from django.utils.encoding import smart_str
 
 
 class ModoExtension(object):
@@ -78,7 +79,7 @@ class ExtensionsPool(object):
 
     def load_extension(self, name):
         """Load a registered extension."""
-        __import__(name, locals(), globals(), ["modo_extension"])
+        __import__(name, locals(), globals(), [smart_str('modo_extension')])
         extinstance = self.get_extension(name)
         if extinstance is None:
             return None
@@ -131,5 +132,6 @@ class ExtensionsPool(object):
             infos["id"] = extname
             result += [infos]
         return sorted(result, key=lambda i: i["name"])
+
 
 exts_pool = ExtensionsPool()

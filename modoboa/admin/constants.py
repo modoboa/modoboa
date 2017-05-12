@@ -1,5 +1,7 @@
 """Admin constants."""
 
+from __future__ import unicode_literals
+
 DNSBL_PROVIDERS = [
     "aspews.ext.sorbs.net",
     "b.barracudacentral.org",

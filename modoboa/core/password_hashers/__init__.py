@@ -1,6 +1,9 @@
 """
 Password hashers for Modoboa.
 """
+
+from __future__ import unicode_literals
+
 from modoboa.core.password_hashers.base import (
     PLAINHasher, CRYPTHasher, MD5Hasher, SHA256Hasher
 )

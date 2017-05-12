@@ -2,7 +2,7 @@
 
 """Models for the limits extensions."""
 
-from builtins import object
+from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import models

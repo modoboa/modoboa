@@ -2,14 +2,15 @@
 
 """A shortcut to deploy a fresh modoboa instance."""
 
-from __future__ import print_function
+from __future__ import unicode_literals, print_function
 
-from builtins import input
 import getpass
 import os
 import shutil
 import subprocess
 import sys
+
+from os.path import isfile
 
 try:
     import pip
@@ -20,6 +21,7 @@ except ImportError:
 import django
 from django.core import management
 from django.template import Context, Template
+from django.utils.encoding import smart_str
 import dj_database_url
 
 from modoboa.core.commands import Command
@@ -108,8 +110,10 @@ class DeployCommand(Command):
             output = None
         if p.returncode:
             if output:
-                print("\n".join(
-                    [l for l in output if l is not None]), file=sys.stderr)
+                print(
+                    "\n".join([l.decode() for l in output if l is not None]),
+                    file=sys.stderr
+                )
             print("%s failed, check your configuration" % cmd, file=sys.stderr)
 
     def ask_db_info(self, name='default'):
@@ -228,7 +232,9 @@ class DeployCommand(Command):
             os.path.join(os.path.dirname(__file__), "../../bower_components")
         )
 
-        mod = __import__(parsed_args.name, globals(), locals(), ['settings'])
+        mod = __import__(
+            parsed_args.name, globals(), locals(), [smart_str('settings')]
+        )
         tpl = self._render_template(
             "%s/settings.py.tpl" % self._templates_dir, {
                 'db_connections': connections,
@@ -250,7 +256,8 @@ class DeployCommand(Command):
         )
         os.mkdir("%s/media" % parsed_args.name)
 
-        os.unlink("%s/settings.pyc" % path)
+        if isfile("%s/settings.pyc" % path):
+            os.unlink("%s/settings.pyc" % path)
         self._exec_django_command(
             "migrate", parsed_args.name, '--noinput'
         )

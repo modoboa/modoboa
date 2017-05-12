@@ -1,5 +1,7 @@
 """Custom authentication backends."""
 
+from __future__ import unicode_literals
+
 import smtplib
 
 from django.conf import settings

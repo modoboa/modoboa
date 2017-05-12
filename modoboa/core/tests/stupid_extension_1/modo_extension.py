@@ -1,5 +1,7 @@
 """A stupid extension used for tests."""
 
+from __future__ import unicode_literals
+
 from modoboa.core import extensions
 
 

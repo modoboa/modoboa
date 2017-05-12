@@ -1,5 +1,7 @@
 """Core dashboard views."""
 
+from __future__ import unicode_literals
+
 from dateutil import parser
 import feedparser
 import requests

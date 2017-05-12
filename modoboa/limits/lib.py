@@ -4,6 +4,9 @@
 -------------------------------
 
 """
+
+from __future__ import unicode_literals
+
 from django.utils.translation import ugettext as _
 
 from modoboa.lib.exceptions import ModoboaException

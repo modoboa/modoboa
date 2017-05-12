@@ -1,7 +1,6 @@
 # coding: utf-8
 
-from __future__ import print_function
-from builtins import object
+from __future__ import unicode_literals, print_function
 
 import argparse
 import os
@@ -9,6 +8,7 @@ import sys
 
 from django.conf import settings
 from django.template import Context, Template
+from django.utils.encoding import smart_str
 
 
 class Command(object):
@@ -67,7 +67,7 @@ def scan_for_commands(dirname=""):
             continue
         cmdname = f.replace(".py", "")
         cmdmod = __import__("modoboa.core.commands", globals(), locals(),
-                            [cmdname])
+                            [smart_str(cmdname)])
         cmdmod = getattr(cmdmod, cmdname)
         if "_" in cmdname:
             cmdclassname = "".join(

@@ -2,8 +2,9 @@
 
 """Form management utilities."""
 
+from __future__ import unicode_literals
+
 import abc
-from builtins import object, range
 from collections import OrderedDict
 import re
 
@@ -12,7 +13,7 @@ from django.forms.fields import Field
 from django.forms.widgets import RadioSelect
 from django.forms.widgets import RadioChoiceInput
 from django.shortcuts import render
-from django.utils.encoding import force_text
+from django.utils.encoding import force_text, force_str
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -20,7 +21,8 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.web_utils import render_to_json_response
 
-ABC = abc.ABCMeta("ABC", (object,), {})  # compatible with Python 2 *and* 3
+
+ABC = abc.ABCMeta(force_str('ABC'), (object,), {})
 
 
 class WizardStep(object):

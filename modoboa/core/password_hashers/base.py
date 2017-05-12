@@ -4,14 +4,16 @@ Base password hashers.
 Contains weak hashers (the original ones) available with Modoboa.
 """
 
+from __future__ import unicode_literals
+
 import base64
-from builtins import object
 import crypt
 import hashlib
 from random import Random
 import string
 
 from django.utils.crypto import constant_time_compare
+from django.utils.encoding import force_text, force_bytes
 
 
 class PasswordHasher(object):
@@ -49,8 +51,8 @@ class PasswordHasher(object):
         :rtype: str
         :return: encrypted password
         """
-        pwhash = self._b64encode(self._encrypt(clearvalue))
-        return '%s%s' % (self.scheme, pwhash)
+        pwhash = self._b64encode(self._encrypt(force_text(clearvalue)))
+        return '%s%s' % (self.scheme, force_text(pwhash))
 
     def verify(self, clearvalue, hashed_value):
         """Verify a password against a hashed value.
@@ -91,7 +93,7 @@ class CRYPTHasher(PasswordHasher):
 
     def _encrypt(self, clearvalue, salt=None):
         if salt is None:
-            salt = "".join(Random().sample(string.letters + string.digits, 2))
+            salt = "".join(Random().sample(string.ascii_letters + string.digits, 2))
         return crypt.crypt(clearvalue, salt)
 
 
@@ -107,7 +109,7 @@ class MD5Hasher(PasswordHasher):
         return '{MD5}'
 
     def _encrypt(self, clearvalue, salt=None):
-        obj = hashlib.md5(clearvalue)
+        obj = hashlib.md5(force_bytes(clearvalue))
         return obj.hexdigest()
 
 
@@ -123,7 +125,7 @@ class SHA256Hasher(PasswordHasher):
         return '{SHA256}'
 
     def _encrypt(self, clearvalue, salt=None):
-        return hashlib.sha256(clearvalue).digest()
+        return hashlib.sha256(force_bytes(clearvalue)).digest()
 
     def _b64encode(self, pwhash):
         """Encode :keyword:`pwhash` using base64.

@@ -1,6 +1,7 @@
 """Parameters management."""
 
-from builtins import object
+from __future__ import unicode_literals
+
 import copy
 
 from modoboa.lib import exceptions

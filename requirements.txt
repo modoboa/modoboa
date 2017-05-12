@@ -15,7 +15,7 @@ djangorestframework==3.6.2
 argparse
 # bcrypt requires libffi-dev
 bcrypt==2.0.0
-dnspython==1.12.0
+dnspython==1.15.0
 feedparser==5.2.1
 gevent==1.2.1
 ipaddress

@@ -4,7 +4,7 @@
 This module contains extra functions/shortcuts used to render HTML.
 """
 
-from builtins import object
+from __future__ import unicode_literals
 
 import json
 import re

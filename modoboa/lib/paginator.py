@@ -2,7 +2,7 @@
 Custom pagination tools.
 """
 
-from builtins import object
+from __future__ import unicode_literals
 
 
 class Page(object):

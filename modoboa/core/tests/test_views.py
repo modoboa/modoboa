@@ -1,5 +1,7 @@
 """Core views test cases."""
 
+from __future__ import unicode_literals
+
 from testfixtures import compare
 
 from django import forms
@@ -49,12 +51,12 @@ class DashboardTestCase(ModoTestCase):
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", str(response.content))
+        self.assertIn("Latest news", response.content.decode('utf-8'))
         self.client.logout()
         self.client.login(username=self.dadmin.username, password="toto")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", str(response.content))
+        self.assertIn("Latest news", response.content.decode('utf-8'))
         self.client.logout()
         self.client.login(username=self.user.username, password="toto")
         response = self.client.get(url)

@@ -1,6 +1,6 @@
 """A management command to apply mailbox operations."""
 
-from __future__ import print_function
+from __future__ import unicode_literals, print_function
 
 import logging
 import os

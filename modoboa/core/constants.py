@@ -2,6 +2,8 @@
 
 """Core application constants."""
 
+from __future__ import unicode_literals
+
 from django.utils.translation import ugettext_lazy
 
 SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
