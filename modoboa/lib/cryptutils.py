@@ -7,7 +7,7 @@ import base64
 import random
 import string
 
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_text
 
 from Crypto.Cipher import AES
 
@@ -39,7 +39,7 @@ def encrypt(clear):
         )
     ciph = obj.encrypt(clear)
     ciph = base64.b64encode(ciph)
-    return ciph
+    return force_text(ciph)
 
 
 def decrypt(ciph):
