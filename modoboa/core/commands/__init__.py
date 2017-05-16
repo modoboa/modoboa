@@ -1,11 +1,14 @@
 # coding: utf-8
 
+from __future__ import unicode_literals, print_function
+
 import argparse
 import os
 import sys
 
 from django.conf import settings
 from django.template import Context, Template
+from django.utils.encoding import smart_str
 
 
 class Command(object):
@@ -64,7 +67,7 @@ def scan_for_commands(dirname=""):
             continue
         cmdname = f.replace(".py", "")
         cmdmod = __import__("modoboa.core.commands", globals(), locals(),
-                            [cmdname])
+                            [smart_str(cmdname)])
         cmdmod = getattr(cmdmod, cmdname)
         if "_" in cmdname:
             cmdclassname = "".join(
@@ -94,7 +97,7 @@ def handle_command_line():
     (args, remaining) = parser.parse_known_args()
 
     if args.command not in commands:
-        print >> sys.stderr, "Unknown command '%s'" % args.command
+        print("Unknown command '%s'" % args.command, file=sys.stderr)
         sys.exit(1)
 
     commands[args.command](commands, verbose=args.verbose).run(remaining)

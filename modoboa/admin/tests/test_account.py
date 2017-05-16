@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from __future__ import unicode_literals
+
 from unittest import skipIf
 
 from django.core.urlresolvers import reverse
@@ -241,12 +243,12 @@ class AccountTestCase(ModoTestCase):
         url = reverse("admin:account_detail", args=[account.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Summary", response.content)
-        self.assertIn("Administered domains", response.content)
-        self.assertNotIn("Resources usage", response.content)
+        self.assertIn("Summary", response.content.decode())
+        self.assertIn("Administered domains", response.content.decode())
+        self.assertNotIn("Resources usage", response.content.decode())
         self.set_global_parameter("enable_admin_limits", True, app="limits")
         response = self.client.get(url)
-        self.assertIn("Resources usage", response.content)
+        self.assertIn("Resources usage", response.content.decode())
 
 
 @skipIf(NO_LDAP, "No ldap module installed")

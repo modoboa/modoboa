@@ -3,6 +3,7 @@ language: python
 cache: pip
 python:
   - "2.7"
+  - "3.4"
 addons:
   apt:
     packages:
@@ -42,7 +43,7 @@ before_script:
 script:
   - python ./tests.py
   - cd test_project
-  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.admin.tests modoboa.limits modoboa.relaydomains
+  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.relaydomains
 
 after_success:
   - codecov

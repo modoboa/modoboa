@@ -1,6 +1,6 @@
 """User related tests."""
 
-import json
+from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
 
@@ -28,7 +28,7 @@ class ForwardTestCase(ModoTestCase):
         )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        content = json.loads(response.content)
+        content = response.json()
         self.assertIn("user@extdomain.com", content["content"])
         self.assertNotIn("user@test.com", content["content"])
         forward = Alias.objects.get(address="user@test.com", internal=False)
@@ -41,5 +41,5 @@ class ForwardTestCase(ModoTestCase):
         self.ajax_post(url, {"dest": "", "keepcopies": False})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        content = json.loads(response.content)
+        content = response.json()
         self.assertNotIn("user@extdomain.com", content["content"])

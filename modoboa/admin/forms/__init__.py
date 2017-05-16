@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from .domain import (
     DomainFormGeneral, DomainFormOptions, DomainForm, DomainWizard
 )

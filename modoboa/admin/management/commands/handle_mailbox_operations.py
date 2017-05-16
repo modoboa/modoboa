@@ -1,5 +1,7 @@
 """A management command to apply mailbox operations."""
 
+from __future__ import unicode_literals, print_function
+
 import logging
 import os
 import shutil
@@ -79,7 +81,7 @@ class Command(BaseCommand):
             if not code:
                 return False
         with open(path, 'w') as fp:
-            print >> fp, os.getpid()
+            print(os.getpid(), file=fp)
         return True
 
     def handle(self, *args, **options):

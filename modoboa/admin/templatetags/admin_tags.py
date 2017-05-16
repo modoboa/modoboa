@@ -1,5 +1,9 @@
 """Admin extension tags."""
 
+from __future__ import unicode_literals
+
+from functools import reduce
+
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string

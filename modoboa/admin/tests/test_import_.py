@@ -1,4 +1,7 @@
 # coding: utf-8
+
+from __future__ import unicode_literals
+
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 
@@ -23,7 +26,7 @@ class ImportTestCase(ModoTestCase):
     def test_domains_import(self):
         response = self.client.get(reverse("admin:domain_import"))
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Provide a CSV", response.content)
+        self.assertIn("Provide a CSV", response.content.decode())
 
         f = ContentFile(b"""domain; domain1.com; 1000; 100; True
 domain; domain2.com; 1000; 200; False
@@ -80,14 +83,14 @@ domainalias;test.alias;test.com;True
                 "sourcefile": f
             }
         )
-        self.assertIn('Object already exists: domainalias', resp.content)
+        self.assertIn('Object already exists: domainalias', resp.content.decode())
 
     def test_identities_import(self):
         response = self.client.get(reverse("admin:identity_import"))
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Provide a CSV", response.content)
+        self.assertIn("Provide a CSV", response.content.decode())
 
-        f = ContentFile(b"""
+        f = ContentFile("""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 0
 account; Truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 5; test.com
 alias; alias1@test.com; True; user1@test.com
@@ -176,7 +179,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; t
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn('wrong quota value', resp.content)
+        self.assertIn('wrong quota value', resp.content.decode())
 
     def test_import_domain_by_domainadmin(self):
         """Check if a domain admin is not allowed to import a domain."""
@@ -189,7 +192,7 @@ domain; domain2.com; 1000; 200; False
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn("You are not allowed to import domains", resp.content)
+        self.assertIn("You are not allowed to import domains", resp.content.decode())
         f = ContentFile(b"""
 domainalias; domalias1.com; test.com; True
 """, name="identities.csv")
@@ -198,7 +201,7 @@ domainalias; domalias1.com; test.com; True
             {"sourcefile": f, "crypt_password": True}
         )
         self.assertIn(
-            "You are not allowed to import domain aliases", resp.content)
+            "You are not allowed to import domain aliases", resp.content.decode())
 
     def test_import_quota_too_big(self):
         self.client.logout()
@@ -210,7 +213,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 40
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn("Domain quota exceeded", resp.content)
+        self.assertIn("Domain quota exceeded", resp.content.decode())
 
     def test_import_missing_quota(self):
         f = ContentFile(b"""
@@ -227,7 +230,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
         )
 
     def test_import_duplicate(self):
-        f = ContentFile(b"""
+        f = ContentFile("""
 account; admin@test.com; toto; Admin; ; True; DomainAdmins; admin@test.com; 0; test.com
 account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0; test.com
 """, name="identities.csv")

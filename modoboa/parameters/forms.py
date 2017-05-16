@@ -1,5 +1,7 @@
 """Parameters forms."""
 
+from __future__ import unicode_literals
+
 from django import forms
 
 from modoboa.lib import db_utils
@@ -25,7 +27,7 @@ class GenericParametersForm(forms.Form):
 
         self.visirules = {}
         if self.visibility_rules is not None:
-            for key, rule in self.visibility_rules.items():
+            for key, rule in list(self.visibility_rules.items()):
                 field, value = rule.split("=")
                 visibility = {
                     "field": "id_%s-%s" % (self.app, field), "value": value
@@ -68,7 +70,7 @@ class AdminParametersForm(GenericParametersForm):
     def save(self):
         """Save parameters to database."""
         parameters = {}
-        for name, value in self.cleaned_data.items():
+        for name, value in list(self.cleaned_data.items()):
             if type(self.fields[name]) is form_utils.SeparatorField:
                 continue
             parameters[name] = value
@@ -99,7 +101,7 @@ class UserParametersForm(GenericParametersForm):
     def save(self):
         """Save new values."""
         parameters = {}
-        for name, value in self.cleaned_data.items():
+        for name, value in list(self.cleaned_data.items()):
             if type(self.fields[name]) is form_utils.SeparatorField:
                 continue
             parameters[name] = value

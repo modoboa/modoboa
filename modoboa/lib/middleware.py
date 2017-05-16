@@ -2,7 +2,10 @@
 
 """Custom middlewares."""
 
+from __future__ import unicode_literals
+
 from django.http import HttpResponseRedirect
+from django.utils.encoding import smart_text
 
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib import signals as lib_signals
@@ -30,14 +33,14 @@ class CommonExceptionCatcher(object):
         if request.is_ajax() or "/api/" in request.path:
             if exception.http_code is None:
                 return ajax_response(
-                    request, status="ko", respmsg=unicode(exception),
+                    request, status="ko", respmsg=smart_text(exception),
                     norefresh=True
                 )
             return render_to_json_response(
-                unicode(exception), status=exception.http_code
+                smart_text(exception), status=exception.http_code
             )
         return _render_error(
-            request, user_context=dict(error=unicode(exception))
+            request, user_context=dict(error=smart_text(exception))
         )
 
 

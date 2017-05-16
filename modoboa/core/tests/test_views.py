@@ -1,6 +1,6 @@
 """Core views test cases."""
 
-import json
+from __future__ import unicode_literals
 
 from testfixtures import compare
 
@@ -29,7 +29,7 @@ class LoginTestCase(ModoTestCase):
         signals.get_announcements.connect(announcement)
         response = self.client.get(reverse("core:login"))
         self.assertEqual(response.status_code, 200)
-        self.assertIn("This is an annoucement!", response.content)
+        self.assertIn("This is an annoucement!", str(response.content))
 
 
 class DashboardTestCase(ModoTestCase):
@@ -51,12 +51,12 @@ class DashboardTestCase(ModoTestCase):
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", response.content)
+        self.assertIn("Latest news", response.content.decode('utf-8'))
         self.client.logout()
         self.client.login(username=self.dadmin.username, password="toto")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", response.content)
+        self.assertIn("Latest news", response.content.decode('utf-8'))
         self.client.logout()
         self.client.login(username=self.user.username, password="toto")
         response = self.client.get(url)
@@ -100,7 +100,7 @@ class DashboardTestCase(ModoTestCase):
         url = reverse("core:top_notifications_check")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(json.loads(response.content)), 1)
+        self.assertEqual(len(response.json()), 1)
 
 
 class SettingsTestCase(ModoTestCase):

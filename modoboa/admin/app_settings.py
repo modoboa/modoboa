@@ -1,10 +1,13 @@
 """Modoboa admin settings."""
 
+from __future__ import unicode_literals
+
 import os
 
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy
+from django.utils.encoding import force_text
 
 from modoboa.lib.form_utils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
@@ -127,6 +130,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
             except OSError:
                 hide_fields = True
             else:
+                version = force_text(version)
                 if code or not version.strip().startswith("2"):
                     hide_fields = True
         else:

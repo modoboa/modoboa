@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django import forms
 from django.utils.translation import ugettext_lazy
 
@@ -23,12 +25,12 @@ class ExportDataForm(forms.Form):
     def clean_sepchar(self):
         if self.cleaned_data["sepchar"] == "":
             return ";"
-        return str(self.cleaned_data["sepchar"])
+        return self.cleaned_data["sepchar"]
 
     def clean_filename(self):
         if self.cleaned_data["filename"] == "":
             return self.fields["filename"].initial
-        return str(self.cleaned_data["filename"])
+        return self.cleaned_data["filename"]
 
 
 class ExportDomainsForm(ExportDataForm):

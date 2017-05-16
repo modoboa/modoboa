@@ -1,6 +1,10 @@
 """Import related views."""
 
+from __future__ import unicode_literals
+
 import csv
+
+from io import StringIO
 
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
@@ -9,6 +13,8 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
+from django.utils.encoding import smart_str, force_text
+from django.utils import six
 
 from reversion import revisions as reversion
 
@@ -34,8 +40,16 @@ def importdata(request, formclass=ImportDataForm):
     form = formclass(request.POST, request.FILES)
     if form.is_valid():
         try:
-            reader = csv.reader(request.FILES['sourcefile'],
-                                delimiter=form.cleaned_data['sepchar'])
+            if six.PY2:
+                infile = request.FILES['sourcefile']
+            else:
+                infile = StringIO(
+                    force_text(request.FILES['sourcefile'].read())
+                )
+            reader = csv.reader(
+                infile,
+                delimiter=smart_str(form.cleaned_data['sepchar'])
+            )
         except csv.Error as inst:
             error = str(inst)
 

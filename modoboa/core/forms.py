@@ -2,6 +2,8 @@
 
 """Core forms."""
 
+from __future__ import unicode_literals
+
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -44,7 +46,7 @@ class ProfileForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
 
-    class Meta:
+    class Meta(object):
         model = User
         fields = ("first_name", "last_name", "language",
                   "phone_number", "secondary_email")

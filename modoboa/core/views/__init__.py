@@ -1,5 +1,7 @@
 """Core views."""
 
+from __future__ import unicode_literals
+
 from .admin import (
     check_top_notifications, information, logs, logs_page, parameters,
     viewsettings)

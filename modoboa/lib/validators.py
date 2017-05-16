@@ -1,5 +1,7 @@
 """Field validators."""
 
+from __future__ import unicode_literals
+
 import re
 
 from django.core.exceptions import ValidationError
@@ -44,9 +46,9 @@ class UTF8EmailValidator(EmailValidator):
     ascii_set = u"-!#$%&'*+/=?^_`{}|~0-9A-Z"
     user_regex_raw = (
         # dot-atom
-        ur"^[" + ascii_set + ul + "]+(\.[" + ascii_set + ul + "]+)*\Z"
+        r"^[" + ascii_set + ul + "]+(\.[" + ascii_set + ul + "]+)*\Z"
         # quoted-string
-        ur'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-\011\013\014\016-\177])*"\Z)'
+        r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-\011\013\014\016-\177])*"\Z)'
     )
     user_regex = re.compile("(" + user_regex_raw, re.IGNORECASE)
 
@@ -58,6 +60,6 @@ class UTF8AndEmptyUserEmailValidator(UTF8EmailValidator):
     """Same as upper + allows empty local part."""
 
     user_regex = re.compile(
-        ur"(^$|" + UTF8EmailValidator.user_regex_raw, re.IGNORECASE)
+        r"(^$|" + UTF8EmailValidator.user_regex_raw, re.IGNORECASE)
 
 validate_utf8_and_empty_user_email = UTF8AndEmptyUserEmailValidator()

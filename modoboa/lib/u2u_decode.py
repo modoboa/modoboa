@@ -2,8 +2,12 @@
 
 """Unstructured rfc2047 header to unicode."""
 
+from __future__ import unicode_literals
+
 from email.header import decode_header, make_header
 import re
+
+from django.utils.encoding import smart_text
 
 # check spaces between encoded_words (and strip them)
 sre = re.compile(r'\?=[ \t]+=\?')
@@ -24,14 +28,14 @@ def decode_mime(m):
     """Substitute matching encoded_word with unicode equiv."""
     h = decode_header(clean_spaces(m))
     try:
-        u = unicode(make_header(h))
+        u = smart_text(make_header(h))
     except (LookupError, UnicodeDecodeError):
         return m.group(0)
     return u
 
 
 def u2u_decode(s):
-    ur"""utility function for (final) decoding of mime header
+    """utility function for (final) decoding of mime header
 
     note: resulting string is in one line (no \n within)
     note2: spaces between enc_words are stripped (see RFC2047)

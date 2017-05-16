@@ -1,5 +1,7 @@
 """Relaydomains app constants."""
 
+from __future__ import unicode_literals
+
 PERMISSIONS = {
     "Resellers": [
         ("relaydomains", "relaydomain", "add_relaydomain"),

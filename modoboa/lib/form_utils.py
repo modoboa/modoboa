@@ -2,6 +2,8 @@
 
 """Form management utilities."""
 
+from __future__ import unicode_literals
+
 import abc
 from collections import OrderedDict
 import re
@@ -11,13 +13,16 @@ from django.forms.fields import Field
 from django.forms.widgets import RadioSelect
 from django.forms.widgets import RadioChoiceInput
 from django.shortcuts import render
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text, force_str
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.web_utils import render_to_json_response
+
+
+ABC = abc.ABCMeta(force_str('ABC'), (object,), {})
 
 
 class WizardStep(object):
@@ -64,10 +69,8 @@ class WizardStep(object):
         self.form = self._cls(*args)
 
 
-class WizardForm(object):
+class WizardForm(ABC):
     """Custom wizard."""
-
-    __metaclass__ = abc.ABCMeta
 
     template_name = "common/wizard_forms.html"
 
@@ -86,7 +89,7 @@ class WizardForm(object):
     def errors(self):
         result = {}
         for step in self.steps:
-            for name, value in step.form.errors.items():
+            for name, value in list(step.form.errors.items()):
                 if name == '__all__':
                     continue
                 result[name] = value
@@ -139,7 +142,7 @@ class WizardForm(object):
         stepid = self._get_step_id()
         self.create_forms(self.request.POST)
         statuses = []
-        for cpt in xrange(0, stepid):
+        for cpt in range(0, stepid):
             if self.steps[cpt].check_access(self):
                 statuses.append(self.steps[cpt].form.is_valid())
         if False in statuses:
@@ -201,7 +204,7 @@ class DynamicForm(object):
         if value is not None:
             self.fields[name].initial = value
         if pos:
-            order = self.fields.keys()
+            order = list(self.fields.keys())
             order.remove(name)
             order.insert(pos, name)
             self.fields = OrderedDict((key, self.fields[key]) for key in order)
@@ -215,7 +218,7 @@ class DynamicForm(object):
         """
         expr = re.compile(r'%s_\d+' % pattern)
         values = []
-        for k, v in qdict.iteritems():
+        for k, v in list(qdict.items()):
             if k == pattern or expr.match(k):
                 values.append((k, v))
 
@@ -280,7 +283,7 @@ class TabForms(object):
         """
         result = {}
         for f in self.forms:
-            for name, value in f['instance'].errors.items():
+            for name, value in list(f['instance'].errors.items()):
                 if name == '__all__':
                     continue
                 result[name] = value
@@ -375,7 +378,7 @@ class CustomRadioInput(RadioChoiceInput):
             label_for = ' for="%s"' % self.attrs["id"]
         else:
             label_for = ""
-        choice_label = conditional_escape(force_unicode(self.choice_label))
+        choice_label = conditional_escape(force_text(self.choice_label))
         return mark_safe(
             u"<label class='radio-inline' %s>%s %s</label>"
             % (label_for, self.tag(), choice_label)
@@ -393,7 +396,7 @@ class InlineRadioRenderer(RadioSelect.renderer):
 
     def render(self):
         return mark_safe(
-            u"\n".join([u"%s\n" % force_unicode(w) for w in self])
+            u"\n".join([u"%s\n" % force_text(w) for w in self])
         )
 
 

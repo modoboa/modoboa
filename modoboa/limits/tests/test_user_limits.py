@@ -1,6 +1,8 @@
 # coding: utf-8
 """Test cases for the limits extension."""
 
+from __future__ import unicode_literals
+
 from django.core.urlresolvers import reverse
 
 from modoboa.admin.factories import populate_database

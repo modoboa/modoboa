@@ -1,4 +1,7 @@
 # Development settings
+
+from __future__ import unicode_literals
+
 import os
 
 BOWER_COMPONENTS_ROOT = os.path.join(

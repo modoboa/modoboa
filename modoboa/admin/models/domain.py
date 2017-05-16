@@ -1,11 +1,16 @@
 """Models related to domains management."""
 
+from __future__ import unicode_literals
+
 import datetime
+from functools import reduce
 
 from django.db import models
 from django.db.models.manager import Manager
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import (
+    python_2_unicode_compatible, smart_text, force_text
+)
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -278,7 +283,10 @@ class Domain(AdminObject):
     def to_csv(self, csvwriter):
         """Export domain and domain aliases to CSV format."""
         csvwriter.writerow([
-            "domain", self.name, self.quota, self.default_mailbox_quota,
+            "domain",
+            force_text(self.name),
+            self.quota,
+            self.default_mailbox_quota,
             self.enabled
         ])
         for dalias in self.domainalias_set.all():
@@ -292,6 +300,7 @@ class Domain(AdminObject):
         super(Domain, self).post_create(creator)
         for domalias in self.domainalias_set.all():
             domalias.post_create(creator)
+
 
 reversion.register(Domain)
 

@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from __future__ import print_function, unicode_literals
+
 import datetime
 import logging
 
@@ -27,7 +29,7 @@ class Command(BaseCommand):
     def __vprint(self, msg):
         if not self.verbose:
             return
-        print msg
+        print(msg)
 
     def handle(self, *args, **options):
         if options["debug"]:

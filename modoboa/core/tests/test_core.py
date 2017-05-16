@@ -1,5 +1,7 @@
 """Tests for core application."""
 
+from __future__ import unicode_literals
+
 import httmock
 
 from dateutil.relativedelta import relativedelta

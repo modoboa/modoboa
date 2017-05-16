@@ -1,5 +1,7 @@
 """Custom authentication backends."""
 
+from __future__ import unicode_literals
+
 import smtplib
 
 from django.conf import settings
@@ -14,11 +16,6 @@ class SMTPBackend(object):
 
     def authenticate(self, username=None, password=None):
         """Check the username/password and return a User."""
-        if type(username) is unicode:
-            username = username.encode("utf-8")
-        if type(password) is unicode:
-            password = password.encode("utf-8")
-
         host = getattr(settings, "AUTH_SMTP_SERVER_ADDRESS", "localhost")
         port = getattr(settings, "AUTH_SMTP_SERVER_PORT", 25)
         secured_mode = getattr(settings, "AUTH_SMTP_SECURED_MODE", None)

@@ -1,14 +1,18 @@
 # coding: utf-8
 
-import re
-import smtplib
-import time
+from __future__ import unicode_literals
+
 from email.header import Header, decode_header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
+import re
+import smtplib
+import time
 
 from django.conf import settings
+from django.utils.encoding import smart_text
 from django.template.loader import render_to_string
+from django.utils import six
 
 from modoboa.lib import u2u_decode
 
@@ -74,12 +78,12 @@ class Email(object):
         """
         fname = msg.get_filename()
         if fname is not None:
-            if type(fname) is unicode:
+            if type(fname) is six.text_type:
                 fname = fname.encode("utf-8")
             decoded = decode_header(fname)
             value = (
                 decoded[0][0] if decoded[0][1] is None
-                else unicode(decoded[0][0], decoded[0][1])
+                else smart_text(decoded[0][0], decoded[0][1])
             )
         else:
             value = "part_%s" % level
@@ -321,7 +325,7 @@ def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
         s = smtplib.SMTP(server, port)
         s.sendmail(sender, [rcpt], msgstring)
         s.quit()
-    except smtplib.SMTPException, e:
+    except smtplib.SMTPException as e:
         return False, "SMTP error: %s" % str(e)
     return True, None
 
@@ -360,7 +364,7 @@ def sendmail_fromfile(sender, rcpt, fname):
     """
     try:
         fp = open(fname)
-    except IOError, e:
+    except IOError as e:
         return False, str(e)
 
     content = """From: %s

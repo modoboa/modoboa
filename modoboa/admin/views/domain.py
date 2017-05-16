@@ -1,5 +1,9 @@
 """Domain related views."""
 
+from __future__ import unicode_literals
+
+from functools import reduce
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render

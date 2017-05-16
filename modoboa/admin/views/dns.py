@@ -1,5 +1,7 @@
 """DNSBL related views."""
 
+from __future__ import unicode_literals
+
 from django.views import generic
 
 from django.utils.translation import ugettext as _

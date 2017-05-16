@@ -1,5 +1,7 @@
 """AppConfig for admin."""
 
+from __future__ import unicode_literals
+
 from django.apps import AppConfig
 
 from .app_settings import load_admin_settings

@@ -32,10 +32,15 @@ Extracted from `this blog
   one instance to another.
 
 """
+
+from __future__ import unicode_literals
+
 import ldap
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
+from django.utils.encoding import force_bytes
+from django.utils import six
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import InternalError
@@ -65,7 +70,10 @@ class LDAPAuthBackend(object):
 
     def _get_conn(self, dn, password):
         """Get a connection from the server."""
-        conn = ldap.initialize(self.server_uri)
+        kwargs = {}
+        if six.PY3:
+            kwargs['bytes_mode'] = False
+        conn = ldap.initialize(self.server_uri, **kwargs)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
         conn.simple_bind_s(dn, password)
@@ -117,7 +125,7 @@ class LDAPAuthBackend(object):
             )
         ldif = [(ldap.MOD_REPLACE,
                  self.pwd_attr,
-                 self._crypt_password(newpassword))]
+                 force_bytes(self._crypt_password(newpassword)))]
         try:
             self.conn.modify_s(user_dn, ldif)
         except ldap.LDAPError as e:
