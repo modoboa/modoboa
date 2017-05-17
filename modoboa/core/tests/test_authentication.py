@@ -4,12 +4,14 @@ from __future__ import unicode_literals
 
 import smtplib
 
+from unittest import skipIf
 from mock import patch
 
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import NO_SMTP
 
 from .. import factories
 from .. import models
@@ -43,6 +45,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
 
+@skipIf(NO_SMTP, 'No SMTP server available')
 @override_settings(AUTHENTICATION_BACKENDS=(
     "modoboa.lib.authbackends.SMTPBackend",
     "django.contrib.auth.backends.ModelBackend"
