@@ -3,6 +3,8 @@
 
 from __future__ import unicode_literals
 
+import socket
+
 from django.core import management
 from django.test import TestCase
 
@@ -12,6 +14,13 @@ from rest_framework.test import APITestCase
 from modoboa.core import models as core_models
 
 from . import sysutils
+
+try:
+    s = socket.create_connection(('127.0.0.1', 25))
+    s.close()
+    NO_SMTP = False
+except socket.error:
+    NO_SMTP = True
 
 try:
     import ldap  # NOQA
