@@ -70,6 +70,7 @@ Table of contents
    installation
    upgrade
    configuration
+   moving
    rest_api
    contributing
    contributors
