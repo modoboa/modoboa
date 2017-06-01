@@ -82,6 +82,8 @@ def dologout(request):
     if not request.user.is_anonymous:
         signals.user_logout.send(sender="dologout", request=request)
         logger = logging.getLogger("modoboa.auth")
-        logger.info(_("User {} logged out").format(request.user.username))
+        logger.info(
+            _("User '{}' successfully logged out").format(
+                request.user.username))
         logout(request)
     return HttpResponseRedirect(reverse("core:login"))
