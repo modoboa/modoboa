@@ -11,6 +11,8 @@ import gevent
 from gevent import socket
 
 from django.conf import settings
+from django.core import mail
+from django.core.mail import EmailMessage
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.utils.functional import cached_property
@@ -131,19 +133,24 @@ class CheckMXRecords(BaseCommand):
             result = "" if not results[mx] else results[mx]
             dnsbl_result = models.DNSBLResult.objects.filter(
                 domain=domain, provider=provider, mx=mx).first()
+            trigger = False
             if dnsbl_result is None:
                 to_create.append(
                     models.DNSBLResult(
                         domain=domain, provider=provider, mx=mx,
                         status=result)
                 )
+                if result:
+                    trigger = True
             else:
-                if not dnsbl_result.status and result:
-                    if domain not in alerts:
-                        alerts[domain] = []
-                    alerts[domain].append((provider, mx))
                 dnsbl_result.status = result
                 dnsbl_result.save()
+                if not dnsbl_result.status and result:
+                    trigger = True
+            if trigger:
+                if domain not in alerts:
+                    alerts[domain] = []
+                alerts[domain].append((provider, mx))
         models.DNSBLResult.objects.bulk_create(to_create)
         if not alerts:
             return
@@ -154,19 +161,19 @@ class CheckMXRecords(BaseCommand):
             )
         if not len(emails):
             return
-        for domain, providers in list(alerts.items()):
-            content = render_to_string(
-                "admin/notifications/domain_in_dnsbl.html", {
-                    "domain": domain, "alerts": providers
-                })
-            subject = _("[modoboa] DNSBL issue(s) for domain {}").format(
-                domain.name)
-            for email in emails:
-                status, msg = email_utils.sendmail_simple(
-                    self.sender, email,
-                    subject=subject, content=content.strip())
-                if not status:
-                    print(msg)
+        with mail.get_connection() as connection:
+            for domain, providers in list(alerts.items()):
+                content = render_to_string(
+                    "admin/notifications/domain_in_dnsbl.html", {
+                        "domain": domain, "alerts": providers
+                    })
+                subject = _("[modoboa] DNSBL issue(s) for domain {}").format(
+                    domain.name)
+                msg = EmailMessage(
+                    subject, content.strip(), self.sender, emails,
+                    connection=connection
+                )
+                msg.send()
 
     def check_valid_mx(self, domain, mx_list, **options):
         """Check that domain's MX record exist.
@@ -209,12 +216,8 @@ class CheckMXRecords(BaseCommand):
             })
         subject = _("[modoboa] MX issue(s) for domain {}").format(
             domain.name)
-        for email in emails:
-            status, msg = email_utils.sendmail_simple(
-                self.sender, email,
-                subject=subject, content=content.strip())
-            if not status:
-                print(msg)
+        msg = EmailMessage(subject, content.strip(), self.sender, emails)
+        msg.send()
 
     def check_domain(self, domain, timeout=3, ttl=7200, **options):
         """Check specified domain."""
