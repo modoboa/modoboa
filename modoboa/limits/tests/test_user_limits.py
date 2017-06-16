@@ -81,7 +81,7 @@ class ResourceTestCase(lib_tests.ModoTestCase):
     def _create_domain(self, name, status=200, withtpl=False, **kwargs):
         values = {
             "name": name, "quota": 100, "default_mailbox_quota": 10,
-            "create_dom_admin": False,
+            "create_dom_admin": False, "with_mailbox": True,
             "create_aliases": False, "stepid": "step3", "type": "domain"
         }
         if withtpl:

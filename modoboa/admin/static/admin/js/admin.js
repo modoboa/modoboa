@@ -7,9 +7,7 @@
  * application.
  */
 
-/*global
- $ Listing
-*/
+/* global $ gettext Listing */
 
 var Admin = function(options) {
     Listing.call(this, options);
@@ -185,12 +183,19 @@ Domains.prototype = {
 
     change_inputs_state: function(value) {
         $("#id_dom_admin_username").attr("disabled", value);
+        $("input[name=with_mailbox]").attr("disabled", value);
         $("input[name=create_aliases]").attr("disabled", value);
     },
 
     create_dom_admin_changed: function(e) {
         var $target = $(e.target);
         this.change_inputs_state(($target.val() === "True") ? false : true);
+    },
+
+    withMailboxChanged: function(e) {
+        var $target = $(e.target);
+        $("input[name=create_aliases]").attr(
+            "disabled", $target.val() === "False");
     },
 
     /**
@@ -214,6 +219,8 @@ Domains.prototype = {
     optionsform_init: function() {
         $("input[name=create_dom_admin]").click(
             $.proxy(this.create_dom_admin_changed, this));
+        $("input[name=with_mailbox]").click(
+            $.proxy(this.withMailboxChanged, this));
         this.change_inputs_state(
             $("input[name=create_dom_admin]:checked").val() === "True" ? false : true
         );

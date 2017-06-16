@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from __future__ import unicode_literals
-
 """Domain related test cases."""
+
+from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
 
@@ -55,7 +55,8 @@ class DomainTestCase(ModoTestCase):
         values = {
             "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
             "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": 'step3'
+            "with_mailbox": True, "create_aliases": True, "type": "domain",
+            "stepid": "step3"
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
@@ -71,7 +72,8 @@ class DomainTestCase(ModoTestCase):
         values = {
             "name": "pouet2.com", "quota": 1000, "default_mailbox_quota": 100,
             "create_dom_admin": True, "dom_admin_username": "postmaster",
-            "create_aliases": True, "type": "domain", "stepid": "step3"
+            "create_aliases": True, "type": "domain", "stepid": "step3",
+            "with_mailbox": True
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         self.assertTrue(
@@ -80,12 +82,29 @@ class DomainTestCase(ModoTestCase):
             Alias.objects.filter(
                 address="postmaster@pouet2.com", internal=False).exists())
 
+    def test_create_with_template_and_no_mailbox(self):
+        """Test domain creation with administrator but no mailbox."""
+        values = {
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": True, "dom_admin_username": "toto",
+            "with_mailbox": False, "create_aliases": True, "type": "domain",
+            "stepid": "step3"
+        }
+        self.ajax_post(reverse("admin:domain_add"), values)
+        dom = Domain.objects.get(name="pouet.com")
+        da = User.objects.get(username="toto@pouet.com")
+        self.assertIn(da, dom.admins)
+        self.assertFalse(hasattr(da, "mailbox"))
+        self.assertFalse(
+            Alias.objects.filter(address="postmaster@pouet.com").exists())
+
     def test_create_with_template_and_empty_quota(self):
         """Test the creation of a domain with a template and no quota"""
         values = {
             "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
             "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": 'step3'
+            "create_aliases": True, "type": "domain", "stepid": "step3",
+            "with_mailbox": True
         }
         self.ajax_post(
             reverse("admin:domain_add"),
@@ -108,7 +127,8 @@ class DomainTestCase(ModoTestCase):
         values = {
             "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
             "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": 'step3'
+            "create_aliases": True, "type": "domain", "stepid": "step3",
+            "with_mailbox": True
         }
         self.ajax_post(
             reverse("admin:domain_add"),
