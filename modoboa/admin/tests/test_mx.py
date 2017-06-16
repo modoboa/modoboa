@@ -2,6 +2,9 @@
 
 from __future__ import unicode_literals
 
+from mock import patch
+
+from django.core import mail
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import override_settings
@@ -65,6 +68,7 @@ class MXTestCase(ModoTestCase):
             "modo", "check_mx", "--domain", "toto.com")
 
 
+@override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
 class DNSBLTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
 
@@ -80,7 +84,6 @@ class DNSBLTestCase(ModoTestCase):
             name="modoboa.com", enable_dns_checks=False)
         models.DNSBLResult.objects.all().delete()
 
-    @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
     def test_management_command(self):
         """Check that command works fine."""
         self.assertEqual(models.DNSBLResult.objects.count(), 0)
@@ -95,7 +98,14 @@ class DNSBLTestCase(ModoTestCase):
         self.assertFalse(self.domain.uses_a_reserved_tld)
         self.assertTrue(self.domain2.uses_a_reserved_tld)
 
-    @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
+    @patch("gevent.socket.gethostbyname")
+    def test_notifications(self, mock_gethostbyname):
+        """Check notifications."""
+        mock_gethostbyname.return_value = "1.2.3.4"
+        management.call_command(
+            "modo", "check_mx", "--email", "user@example.test")
+        self.assertEqual(len(mail.outbox), 2)
+
     def test_management_command_no_dnsbl(self):
         """Check that command works fine without dnsbl."""
         self.assertEqual(models.DNSBLResult.objects.count(), 0)
