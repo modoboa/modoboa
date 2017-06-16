@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from __future__ import unicode_literals
-
 """Domain related test cases."""
+
+from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
 
