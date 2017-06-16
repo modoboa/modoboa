@@ -21,7 +21,6 @@ from django.utils import timezone
 
 from modoboa.admin import constants
 from modoboa.admin import models
-from modoboa.lib import email_utils
 from modoboa.parameters import tools as param_tools
 
 
