@@ -201,6 +201,15 @@ class DomainFormOptions(forms.Form):
         required=False
     )
 
+    with_mailbox = YesNoField(
+        label=ugettext_lazy("With a mailbox"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Create a mailbox for the administrator."
+        ),
+        required=False
+    )
+
     create_aliases = YesNoField(
         label=ugettext_lazy("Create aliases"),
         initial=True,
@@ -260,28 +269,29 @@ class DomainFormOptions(forms.Form):
         da.role = "DomainAdmins"
         da.post_create(user)
 
-        dom_admin_username = self.cleaned_data["dom_admin_username"]
-        mb = Mailbox(
-            address=dom_admin_username, domain=domain,
-            user=da, use_domain_quota=True
-        )
-        mb.set_quota(
-            override_rules=user.has_perm("admin.change_domain"))
-        mb.save(creator=user)
+        if self.cleaned_data["with_mailbox"]:
+            dom_admin_username = self.cleaned_data["dom_admin_username"]
+            mb = Mailbox(
+                address=dom_admin_username, domain=domain,
+                user=da, use_domain_quota=True
+            )
+            mb.set_quota(
+                override_rules=user.has_perm("admin.change_domain"))
+            mb.save(creator=user)
 
-        condition = (
-            domain.type == "domain" and
-            self.cleaned_data["create_aliases"] and
-            dom_admin_username != "postmaster"
-        )
-        if condition:
-            core_signals.can_create_object.send(
-                self.__class__, context=user, klass=Alias)
-            address = u"postmaster@{}".format(domain.name)
-            alias = Alias.objects.create(
-                address=address, domain=domain, enabled=True)
-            alias.set_recipients([mb.full_address])
-            alias.post_create(user)
+            condition = (
+                domain.type == "domain" and
+                self.cleaned_data["create_aliases"] and
+                dom_admin_username != "postmaster"
+            )
+            if condition:
+                core_signals.can_create_object.send(
+                    self.__class__, context=user, klass=Alias)
+                address = u"postmaster@{}".format(domain.name)
+                alias = Alias.objects.create(
+                    address=address, domain=domain, enabled=True)
+                alias.set_recipients([mb.full_address])
+                alias.post_create(user)
 
         domain.add_admin(da)
 
