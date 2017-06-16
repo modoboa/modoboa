@@ -147,25 +147,26 @@ class CheckMXRecords(BaseCommand):
         models.DNSBLResult.objects.bulk_create(to_create)
         if not alerts:
             return
-        emails = options["email"]
+        emails = list(options["email"])
         if not options["skip_admin_emails"]:
             emails.extend(
                 domain.admins.exclude(email="").values_list("email", flat=True)
             )
         if not len(emails):
             return
-        content = render_to_string(
-            "admin/notifications/domain_in_dnsbl.html", {
-                "domain": domain, "alerts": alerts
-            })
-        subject = _("[modoboa] DNSBL issue(s) for domain {}").format(
-            domain.name)
-        for email in emails:
-            status, msg = email_utils.sendmail_simple(
-                self.sender, email,
-                subject=subject, content=content)
-            if not status:
-                print(msg)
+        for domain, providers in list(alerts.items()):
+            content = render_to_string(
+                "admin/notifications/domain_in_dnsbl.html", {
+                    "domain": domain, "alerts": providers
+                })
+            subject = _("[modoboa] DNSBL issue(s) for domain {}").format(
+                domain.name)
+            for email in emails:
+                status, msg = email_utils.sendmail_simple(
+                    self.sender, email,
+                    subject=subject, content=content.strip())
+                if not status:
+                    print(msg)
 
     def check_valid_mx(self, domain, mx_list, **options):
         """Check that domain's MX record exist.
@@ -195,7 +196,7 @@ class CheckMXRecords(BaseCommand):
                 )
         if not alerts:
             return
-        emails = options["email"]
+        emails = list(options["email"])
         if not options["skip_admin_emails"]:
             emails.extend(
                 domain.admins.exclude(email="").values_list("email", flat=True)
@@ -211,7 +212,7 @@ class CheckMXRecords(BaseCommand):
         for email in emails:
             status, msg = email_utils.sendmail_simple(
                 self.sender, email,
-                subject=subject, content=content)
+                subject=subject, content=content.strip())
             if not status:
                 print(msg)
 
