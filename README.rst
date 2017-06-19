@@ -43,6 +43,12 @@ Documentation
 A detailed `documentation <https://modoboa.readthedocs.io/>`_ will help you
 to install, use or extend Modoboa.
 
+*****************
+Demo Installation
+*****************
+
+If you want to try out Modoboa, check out our `demo installation <https://demo.modoboa.org/>`_.
+
 *************
 External code
 *************
