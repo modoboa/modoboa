@@ -198,8 +198,7 @@ class WritableAccountSerializer(AccountSerializer):
     def validate_password(self, value):
         """Check password constraints."""
         try:
-            validators.validate_length(value)
-            validators.complexity(value)
+            password_validation.validate_password(value, self.instance)
         except ValidationError as exc:
             raise serializers.ValidationError(exc.messages[0])
         return value
