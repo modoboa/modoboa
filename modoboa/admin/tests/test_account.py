@@ -205,11 +205,11 @@ class AccountTestCase(ModoTestCase):
         dom.quota = 100
         dom.save(update_fields=["quota"])
         # 2 x 10MB
-        self.assertEqual(dom.quota_usage, 20)
+        self.assertEqual(dom.allocated_quota, 20)
         self._set_quota("user@test.com", 80)
-        del dom.quota_usage
+        del dom.allocated_quota
         # 10 + 80 < 100 => ok
-        self.assertEqual(dom.quota_usage, 90)
+        self.assertEqual(dom.allocated_quota, 90)
         # 30 + 80 > 100 => failure
         self._set_quota("admin@test.com", 30, 400)
 

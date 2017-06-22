@@ -24,6 +24,17 @@ from .base import AdminObject
 from .domain import Domain
 
 
+class QuotaManager(models.Manager):
+    """Custom manager for Quota."""
+
+    def get_domain_usage(self, domain):
+        """Return current usage for domain."""
+        qset = self.get_queryset().filter(
+            username__endswith="@{}".format(domain.name))
+        result = qset.aggregate(usage=models.Sum("bytes"))
+        return result.get("usage", 0)
+
+
 class Quota(models.Model):
 
     """Keeps track of Mailbox current quota."""
@@ -31,6 +42,8 @@ class Quota(models.Model):
     username = models.EmailField(primary_key=True, max_length=254)
     bytes = models.BigIntegerField(default=0)
     messages = models.IntegerField(default=0)
+
+    objects = QuotaManager()
 
     class Meta:
         app_label = "admin"
@@ -242,7 +255,7 @@ class Mailbox(AdminObject):
             if self.domain.quota and not override_rules:
                 raise lib_exceptions.BadRequest(_("A quota is required"))
         elif self.domain.quota:
-            quota_usage = self.domain.quota_usage
+            quota_usage = self.domain.allocated_quota
             if old_quota:
                 quota_usage -= old_quota
             if quota_usage + self.quota > self.domain.quota:

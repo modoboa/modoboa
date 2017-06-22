@@ -163,8 +163,8 @@ class Domain(AdminObject):
             return "success"
 
     @cached_property
-    def quota_usage(self):
-        """Return current quota usage."""
+    def allocated_quota(self):
+        """Return current quota allocation."""
         if not self.quota:
             return 0
         if not self.mailbox_set.exists():
@@ -173,11 +173,11 @@ class Domain(AdminObject):
             total=models.Sum("quota"))["total"]
 
     @cached_property
-    def quota_usage_in_percent(self):
-        """Return quota usage in percent."""
-        if not self.quota_usage:
+    def allocated_quota_in_percent(self):
+        """Return allocated quota in percent."""
+        if not self.allocated_quota:
             return 0
-        return int(self.quota_usage / float(self.quota) * 100)
+        return int(self.allocated_quota / float(self.quota) * 100)
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
