@@ -108,7 +108,7 @@ try:
         def authenticate(self, username, password):
             if self.global_params["authentication_type"] == "ldap":
                 return super(LDAPBackend, self).authenticate(
-                    username, password)
+                    username=username, password=password)
             return None
 
 except ImportError:

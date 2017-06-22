@@ -23,7 +23,7 @@ The following example illustrates how to realize this (Debian like system):
   > sudo useradd modoboa
   > sudo -i modoboa
   > virtualenv env
-  (env)> source env/bin/activate
+  > source env/bin/activate
   (env)> pip install -U pip
 
 Modoboa depends on external tools and some of them require compilation

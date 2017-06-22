@@ -1,1 +1,1 @@
-django-auth-ldap
+django-auth-ldap>=1.2.13
