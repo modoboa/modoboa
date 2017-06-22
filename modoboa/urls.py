@@ -6,14 +6,16 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.views.i18n import JavaScriptCatalog
 
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 
 from ckeditor_uploader import views as cku_views
 from rest_framework.documentation import include_docs_urls
 
 from modoboa.admin.views.user import forward
-from modoboa.core.extensions import exts_pool
 from modoboa.core import signals as core_signals
+from modoboa.core import views as core_views
+from modoboa.core.extensions import exts_pool
 
 API_TITLE = 'Modoboa API'
 
@@ -28,6 +30,16 @@ urlpatterns = [
     url('admin/', include('modoboa.admin.urls', namespace="admin")),
     url('relaydomains/',
         include('modoboa.relaydomains.urls', namespace="relaydomains")),
+    # No namespace
+    url(r'^accounts/password_reset/$', core_views.password_reset,
+        name="password_reset"),
+    url(r'^accounts/password_reset/done/$', auth_views.password_reset_done,
+        name="password_reset_done"),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',  # noqa
+        auth_views.password_reset_confirm, name="password_reset_confirm"),
+    url(r'^reset/done/$', auth_views.password_reset_complete,
+        name="password_reset_complete"),
+
 ]
 
 exts_pool.load_all()

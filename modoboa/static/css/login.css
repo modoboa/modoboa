@@ -1,55 +1,13 @@
-@media (max-width: 767px) {
-    form.login-form div.checkbox button.btn{
-        margin-top: 20px;
-        margin-bottom: 0;
-    }
-}
-
-body{
-    background-color: #EDEDEC;
-}
-
-#logo{
-    margin-bottom: 5%;
-}
-
-.thumbnail{
-    background-color: transparent;
-    border-color: transparent;
-}
-.form-actions { 
-    background-color: transparent;
-    padding-right: 0px;
-    padding-left: 0px;
-    margin-bottom: 0px;
-}
-
 .login-error {
     margin: 20px auto;
     max-width: 300px;
 }
 
-html body div.container div#box div#logo.row ul.thumbnails li{
-    list-style-type: none;
+form.login-form div.checkbox button.btn {
+    margin-bottom: 20px;
 }
 
-
-.thumbnails{
-    padding-left: 0;
-}
-
-.input-group {
-    border-collapse: separate;
-    display: table;
-    position: relative;
-}
-
-
-form.login-form div.checkbox button.btn{
-    margin-bottom:20px;
-}
-
-.login-form .form-group div.checkbox label{
+.login-form .form-group div.checkbox label {
     padding-top: 0;
     padding-bottom: 10px;
 }

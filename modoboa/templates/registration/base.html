@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load i18n core_tags static %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{% trans "Welcome to Modoboa" %}</title>
+    <link rel="icon" type="image/png" href="{% static 'css/logo-icon.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/offline.css' %}" />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      <div id="box" class="col-lg-9 col-lg-offset-1">
+        <div id="logo" class="row">
+          <ul class="thumbnails">
+            <li>
+              <div class="col-lg-offset-4 col-lg-5 col-md-offset-4 col-md-5 col-sm-offset-4 col-sm-5">
+                <a href="#" class="thumbnail">
+                  <img src="{% get_modoboa_logo %}" />
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class=" divider"></div>
+        {% block main_content %}{% endblock %}
+      </div>
+      {% block sub_content %}{% endblock %}
+    </div>
+    <!-- Javascript -->
+    <script type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    {% if TEMPLATE_DEBUG %}
+    <script src="//maxcdn.bootstrapcdn.com/bootlint/0.4.0/bootlint.min.js"></script>
+    {% endif %}
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,40 @@
+@media (max-width: 767px) {
+    form div.checkbox button.btn {
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+}
+
+body {
+    background-color: #EDEDEC;
+}
+
+#logo {
+    margin-bottom: 5%;
+}
+
+html body div.container div#box div#logo.row ul.thumbnails li {
+    list-style-type: none;
+}
+
+.thumbnail {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.thumbnails {
+    padding-left: 0;
+}
+
+.input-group {
+    border-collapse: separate;
+    display: table;
+    position: relative;
+}
+
+.form-actions { 
+    background-color: transparent;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}

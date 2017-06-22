@@ -7,6 +7,7 @@ import smtplib
 from unittest import skipIf
 from mock import patch
 
+from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
@@ -43,6 +44,44 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+
+
+class PasswordResetTestCase(ModoTestCase):
+    """Test password reset service."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(PasswordResetTestCase, cls).setUpTestData()
+        cls.account_ok = factories.UserFactory(
+            username="user@test.com", secondary_email="test@ext.com",
+            groups=('SimpleUsers',)
+        )
+        cls.account_ko = factories.UserFactory(
+            username="user2@test.com", groups=('SimpleUsers',)
+        )
+
+    def test_reset_password(self):
+        """Validate simple case."""
+        self.client.logout()
+        url = reverse("password_reset")
+        data = {"email": self.account_ok.email}
+        response = self.client.post(url, data, follow=True)
+        self.assertContains(
+            response,
+            "We've emailed you instructions for setting your password")
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_reset_password_no_secondary_email(self):
+        """Check email is not sent."""
+        self.client.logout()
+        url = reverse("password_reset")
+        data = {"email": self.account_ko.email}
+        response = self.client.post(url, data, follow=True)
+        self.assertContains(
+            response,
+            "We've emailed you instructions for setting your password")
+        self.assertEqual(len(mail.outbox), 0)
 
 
 @skipIf(NO_SMTP, 'No SMTP server available')
