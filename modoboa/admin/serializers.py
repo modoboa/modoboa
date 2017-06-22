@@ -7,8 +7,9 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.encoding import force_text
 
+from django.contrib.auth import password_validation
+
 from rest_framework import serializers
-from passwords import validators
 
 from modoboa.admin import models as admin_models
 from modoboa.core import constants as core_constants
@@ -159,8 +160,7 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
     def validate_new_password(self, value):
         """Check new password."""
         try:
-            validators.validate_length(value)
-            validators.complexity(value)
+            password_validation.validate_password(value, self.instance)
         except ValidationError as exc:
             raise serializers.ValidationError(exc.messages[0])
         return value

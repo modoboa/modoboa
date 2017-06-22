@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from passwords.fields import PasswordField
+from django.contrib.auth import password_validation
 
 from modoboa.core.models import User
 from modoboa.parameters import tools as param_tools
@@ -37,11 +37,11 @@ class ProfileForm(forms.ModelForm):
         label=ugettext_lazy("Old password"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
-    newpassword = PasswordField(
+    newpassword = forms.CharField(
         label=ugettext_lazy("New password"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
-    confirmation = PasswordField(
+    confirmation = forms.CharField(
         label=ugettext_lazy("Confirmation"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
@@ -78,7 +78,8 @@ class ProfileForm(forms.ModelForm):
         confirmation = self.cleaned_data["confirmation"]
         if newpassword != confirmation:
             raise forms.ValidationError(_("Passwords mismatch"))
-        return self.cleaned_data["confirmation"]
+        password_validation.validate_password(confirmation, self.instance)
+        return confirmation
 
     def save(self, commit=True):
         user = super(ProfileForm, self).save(commit=False)
