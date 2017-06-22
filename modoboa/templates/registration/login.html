@@ -1,71 +1,46 @@
-<!DOCTYPE html>
-{% load i18n core_tags lib_tags form_tags %}
-{% load static %}
-<html lang="{{ LANGUAGE_CODE }}">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>{% trans "Welcome to Modoboa" %}</title>
-    <link rel="icon" type="image/png" href="{% static 'css/logo-icon.png' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
-  </head>
-  <body>
-    <div class="container">
-      <div id="box" class="col-lg-9 col-lg-offset-1">
-        <div id="logo" class="row">
-          <ul class="thumbnails">
-            <li>
-              <div class="col-lg-offset-4 col-lg-5 col-md-offset-4 col-md-5 col-sm-offset-4 col-sm-5">
-                <a href="#" class="thumbnail">
-                  <img src="{% get_modoboa_logo %}" />
-                </a>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class=" divider"></div>
-        <form method="post" action="{% url 'core:login' %}" class="login-form form-horizontal">
-          {% csrf_token %}
-          {% render_field form.username %}
-          {% render_field form.password %}
-          <input type="hidden" name="next" value="{{ next }}" />
-          <div class="form-group">
-            <div class="control-label col-lg-4 col-md-4 col-sm-4 ">
-            </div>
-            <div class="col-lg-5 col-md-5 col-sm-5">
-              <div class="checkbox">
-                <label class="checkbox" for="id_rememberme">
-                  <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
-                </label>
-                
-                <button class="btn btn-primary col-lg-12" type="submit">{% trans "Log in" %}</button>
-              </div>
-            </div>
-          </div>
-        </form>
-        <div class="login-error">
-          {% if error %}{% alert error "danger" %}{% endif %}
+{% extends "registration/base.html" %}
+
+{% load i18n core_tags lib_tags form_tags static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
+{% endblock %}
+
+{% block main_content %}
+  <form method="post" action="{% url 'core:login' %}" class="login-form form-horizontal">
+    {% csrf_token %}
+    {% render_field form.username %}
+    {% render_field form.password %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <div class="form-group">
+      <div class="control-label col-lg-4 col-md-4 col-sm-4 ">
+      </div>
+      <div class="col-lg-5 col-md-5 col-sm-5">
+        <div class="checkbox">
+          <label class="checkbox" for="id_rememberme">
+            <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
+          </label>
+          <button class="btn btn-primary col-lg-12" type="submit">{% trans "Log in" %}</button>
+          <a class="pull-right" href="{% url 'password_reset' %}">{% trans "Forgot password?" %}</a>
         </div>
       </div>
-      {% for annoucement in annoucements %}
-      <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ annoucement|safe }}</div>
-      {% endfor %}
     </div>
+  </form>
+  <div class="login-error">
+    {% if error %}{% alert error "danger" %}{% endif %}
+  </div>
+{% endblock %}
 
-    <!-- Javascript -->
-    <script type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    {% if TEMPLATE_DEBUG %}
-    <script src="//maxcdn.bootstrapcdn.com/bootlint/0.4.0/bootlint.min.js"></script>
-    {% endif %}
-    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-      $('#id_username').focus();
-      });
-    </script>
+{% block sub_content %}
+  {% for annoucement in annoucements %}
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ annoucement|safe }}</div>
+  {% endfor %}
+{% endblock %}
 
-  </body>
-</html>
+{% block extra_js %}
+  <script type="text/javascript">
+   $(document).ready(function() {
+       $('#id_username').focus();
+   });
+  </script>
+{% endblock %}

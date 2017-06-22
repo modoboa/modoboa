@@ -13,8 +13,9 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import views as auth_views
 
-from modoboa.core.forms import LoginForm
+from modoboa.core import forms
 
 from .base import find_nextlocation
 from .. import signals
@@ -26,7 +27,7 @@ def dologin(request):
     """Try to authenticate."""
     error = None
     if request.method == "POST":
-        form = LoginForm(request.POST)
+        form = forms.LoginForm(request.POST)
         if form.is_valid():
             logger = logging.getLogger('modoboa.auth')
             user = authenticate(username=form.cleaned_data["username"],
@@ -59,7 +60,7 @@ def dologin(request):
         nextlocation = request.POST.get("next", None)
         httpcode = 401
     else:
-        form = LoginForm()
+        form = forms.LoginForm()
         nextlocation = request.GET.get("next", None)
         httpcode = 200
 
@@ -87,3 +88,12 @@ def dologout(request):
                 request.user.username))
         logout(request)
     return HttpResponseRedirect(reverse("core:login"))
+
+
+def password_reset(request, **kwargs):
+    """Custom view to override form."""
+    kwargs.update({
+        "from_email": "tonio@ngyn.org",
+        "password_reset_form": forms.PasswordResetForm
+    })
+    return auth_views.password_reset(request, **kwargs)

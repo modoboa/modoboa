@@ -5,7 +5,11 @@
 from __future__ import unicode_literals
 
 from django import forms
+from django.db.models import Q
 from django.utils.translation import ugettext as _, ugettext_lazy
+
+from django.contrib.auth import forms as auth_forms
+from django.contrib.auth import get_user_model
 
 from passwords.fields import PasswordField
 
@@ -103,3 +107,24 @@ class APIAccessForm(forms.Form):
         user = kwargs.pop("user")
         super(APIAccessForm, self).__init__(*args, **kwargs)
         self.fields["enable_api_access"].initial = hasattr(user, "auth_token")
+
+
+class PasswordResetForm(auth_forms.PasswordResetForm):
+    """Custom password reset form."""
+
+    def get_users(self, email):
+        """Return matching user(s) who should receive a reset."""
+        return (
+            get_user_model()._default_manager.filter(
+                email__iexact=email, is_active=True)
+            .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
+        )
+
+    def send_mail(self, subject_template_name, email_template_name,
+                  context, from_email, to_email,
+                  html_email_template_name=None):
+        """Send message to secondary email instead."""
+        to_email = context["user"].secondary_email
+        super(PasswordResetForm, self).send_mail(
+            subject_template_name, email_template_name,
+            context, from_email, to_email, html_email_template_name)
