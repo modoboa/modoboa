@@ -83,7 +83,8 @@ domainalias;test.alias;test.com;True
                 "sourcefile": f
             }
         )
-        self.assertIn('Object already exists: domainalias', resp.content.decode())
+        self.assertIn(
+            "Object already exists: domainalias", resp.content.decode())
 
     def test_identities_import(self):
         response = self.client.get(reverse("admin:identity_import"))
@@ -274,3 +275,16 @@ alias;user.alias@test.com;True;user@test.com;;;;;;;;;;;;;;;;
         )
         alias = Alias.objects.get(address="user.alias@test.com")
         self.assertEqual(alias.type, "alias")
+
+    def test_import_account_alias_conflict(self):
+        """Specific test for #1144."""
+        f = ContentFile(b"""
+alias;user@test.com;True;admin@test.com
+""", name="identities.csv")
+        self.client.post(
+            reverse("admin:identity_import"),
+            {"sourcefile": f, "crypt_password": True}
+        )
+        self.assertTrue(
+            Alias.objects.filter(
+                address="user@test.com", internal=False).exists())

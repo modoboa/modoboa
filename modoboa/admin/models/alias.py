@@ -186,7 +186,7 @@ class Alias(AdminObject):
             sender="import", context=user, klass=Alias)
         core_signals.can_create_object.send(
             sender="import", context=domain, object_type="mailbox_aliases")
-        if Alias.objects.filter(address=address).exists():
+        if Alias.objects.filter(address=address, internal=False).exists():
             raise Conflict
         self.address = address
         self.domain = domain
