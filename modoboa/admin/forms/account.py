@@ -157,7 +157,8 @@ class AccountFormGeneral(forms.ModelForm):
         if password1 != password2:
             raise forms.ValidationError(
                 _("The two password fields didn't match."))
-        password_validation.validate_password(password2, self.instance)
+        if password2 != "":
+            password_validation.validate_password(password2, self.instance)
         return password2
 
     def clean(self):
@@ -182,9 +183,8 @@ class AccountFormGeneral(forms.ModelForm):
             raise lib_exceptions.PermDeniedException(
                 _("You can't disable your own account"))
         if commit:
-            if "password1" in self.cleaned_data \
-               and self.cleaned_data["password1"] != "":
-                account.set_password(self.cleaned_data["password1"])
+            if self.cleaned_data.get("password2", "") != "":
+                account.set_password(self.cleaned_data["password2"])
             account.save()
             account.role = self.cleaned_data["role"]
         return account
