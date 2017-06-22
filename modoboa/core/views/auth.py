@@ -93,7 +93,8 @@ def dologout(request):
 def password_reset(request, **kwargs):
     """Custom view to override form."""
     kwargs.update({
-        "from_email": "tonio@ngyn.org",
+        "from_email": (
+            request.localconfig.parameters.get_value("sender_address")),
         "password_reset_form": forms.PasswordResetForm
     })
     return auth_views.password_reset(request, **kwargs)
