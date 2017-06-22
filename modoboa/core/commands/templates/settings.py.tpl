@@ -178,15 +178,31 @@ REST_FRAMEWORK = {
 
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
-# django-passwords
+# Password validation rules
 
-PASSWORD_MIN_LENGTH = 8
-
-PASSWORD_COMPLEXITY = {
-    "UPPER": 1,
-    "LOWER": 1,
-    "DIGITS": 1
-}
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'modoboa.core.password_validation.ComplexityValidator',
+        'OPTIONS': {
+            'upper': 1,
+            'lower': 1,
+            'digits': 1,
+            'specials': 0
+        }
+    },
+]
 
 # CKeditor
 

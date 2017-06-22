@@ -6,7 +6,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from passwords import validators
+from django.contrib.auth import password_validation
 
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.cryptutils import random_key
@@ -83,8 +83,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         label=ugettext_lazy("Default password"),
         initial="password",
         help_text=ugettext_lazy(
-            "Default password for automatically created accounts."),
-        validators=[validators.validate_length, validators.complexity]
+            "Default password for automatically created accounts.")
     )
 
     # LDAP specific settings
@@ -349,6 +348,12 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         value = self.cleaned_data["rounds_number"]
         if value < 1000 or value > 999999999:
             raise forms.ValidationError(_("Invalid rounds number"))
+        return value
+
+    def clean_default_password(self):
+        """Check password complexity."""
+        value = self.cleaned_data["default_password"]
+        password_validation.validate_password(value)
         return value
 
     def clean(self):

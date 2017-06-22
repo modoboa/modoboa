@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from passwords.fields import PasswordField
+from django.contrib.auth import password_validation
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
@@ -45,11 +45,11 @@ class AccountFormGeneral(forms.ModelForm):
         choices=[("", ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
     )
-    password1 = PasswordField(
+    password1 = forms.CharField(
         label=ugettext_lazy("Password"), widget=forms.widgets.PasswordInput
     )
 
-    password2 = PasswordField(
+    password2 = forms.CharField(
         label=ugettext_lazy("Confirmation"),
         widget=forms.widgets.PasswordInput,
         help_text=ugettext_lazy(
@@ -157,6 +157,8 @@ class AccountFormGeneral(forms.ModelForm):
         if password1 != password2:
             raise forms.ValidationError(
                 _("The two password fields didn't match."))
+        if password2 != "":
+            password_validation.validate_password(password2, self.instance)
         return password2
 
     def clean(self):
@@ -181,9 +183,8 @@ class AccountFormGeneral(forms.ModelForm):
             raise lib_exceptions.PermDeniedException(
                 _("You can't disable your own account"))
         if commit:
-            if "password1" in self.cleaned_data \
-               and self.cleaned_data["password1"] != "":
-                account.set_password(self.cleaned_data["password1"])
+            if self.cleaned_data.get("password2", "") != "":
+                account.set_password(self.cleaned_data["password2"])
             account.save()
             account.role = self.cleaned_data["role"]
         return account
