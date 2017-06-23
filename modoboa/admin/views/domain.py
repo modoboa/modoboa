@@ -28,7 +28,7 @@ from modoboa.lib.listing import get_sort_order, get_listing_page
 
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
-from ..models import Domain, Mailbox
+from ..models import Domain, Mailbox, Quota
 from .. import signals
 
 
@@ -176,10 +176,19 @@ class DomainDetailView(
         result = signals.extra_domain_dashboard_widgets.send(
             self.__class__, user=self.request.user, domain=self.object)
         parameters = self.request.localconfig.parameters
+        used_quota = int(
+            Quota.objects.get_domain_usage(self.object) / 1048576)
+        used_quota_in_percent = int(
+            used_quota / float(self.object.quota) * 100)
+        allocated_quota = (
+            self.object.allocated_quota_in_percent - used_quota_in_percent)
         context.update({
             "templates": {"left": [], "right": []},
             "enable_mx_checks": parameters.get_value("enable_mx_checks"),
             "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
+            "used_quota": used_quota,
+            "used_quota_in_percent": used_quota_in_percent,
+            "allocated_quota": allocated_quota
         })
         for receiver, widgets in result:
             for widget in widgets:
