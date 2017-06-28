@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from rest_framework.authtoken.models import Token
 
 from modoboa.admin import models as admin_models
+from modoboa.core import factories as core_factories
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
@@ -357,6 +358,19 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         account.refresh_from_db()
         self.assertTrue(account.check_password("Toto1234"))
+
+    def test_update_account_with_no_mailbox(self):
+        """Try to disable an account."""
+        account = core_factories.UserFactory(
+            username="reseller", groups=("Resellers", ))
+        url = reverse("api:account-detail", args=[account.pk])
+        data = {
+            "username": "reseller",
+            "role": account.role,
+            "is_active": False
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
 
     def test_patch_account(self):
         """Try to patch an account."""
