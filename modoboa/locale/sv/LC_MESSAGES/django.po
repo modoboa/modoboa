@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-01 10:30+0200\n"
+"POT-Creation-Date: 2017-06-27 16:42+0200\n"
 "PO-Revision-Date: 2016-05-30 18:03+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -101,55 +101,55 @@ msgstr "Standard lösenords schema"
 msgid "Default password for automatically created accounts."
 msgstr ""
 
-#: core/app_settings.py:91
+#: core/app_settings.py:90
 msgid "LDAP settings"
 msgstr "LDAP inställningar"
 
-#: core/app_settings.py:94
+#: core/app_settings.py:93
 msgid "Server address"
 msgstr "Server adress"
 
-#: core/app_settings.py:97
+#: core/app_settings.py:96
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "IP adressen eller DNS namn för LDAP server"
 
-#: core/app_settings.py:102
+#: core/app_settings.py:101
 msgid "Server port"
 msgstr "Server port"
 
-#: core/app_settings.py:104
+#: core/app_settings.py:103
 msgid "The TCP port number used by the LDAP server"
 msgstr "TCP port som används av LDAP servern"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:108
 msgid "Use a secured connection"
 msgstr "Använd en säker anslutning"
 
-#: core/app_settings.py:112
+#: core/app_settings.py:111
 msgid "Use an SSL/TLS connection to access the LDAP server"
 msgstr "Använd SSL/TLS anslutning för åtkomst till LDAP servern"
 
-#: core/app_settings.py:116
+#: core/app_settings.py:115
 msgid "Authentication method"
 msgstr "Autentiseringsmetod"
 
-#: core/app_settings.py:117
+#: core/app_settings.py:116
 msgid "Search and bind"
 msgstr "Sök och bind"
 
-#: core/app_settings.py:118
+#: core/app_settings.py:117
 msgid "Direct bind"
 msgstr "Direkt bindning"
 
-#: core/app_settings.py:120
+#: core/app_settings.py:119
 msgid "Choose the authentication method to use"
 msgstr "Välj autentiseringsmetod att använda"
 
-#: core/app_settings.py:125
+#: core/app_settings.py:124
 msgid "Bind DN"
 msgstr "Bind DN"
 
-#: core/app_settings.py:128
+#: core/app_settings.py:127
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -157,28 +157,28 @@ msgstr ""
 "Det unika namnet för att använda vid bindningar till LDAP-servern. Lämna "
 "tomt för en anonym bindning"
 
-#: core/app_settings.py:136
+#: core/app_settings.py:135
 msgid "Bind password"
 msgstr "Bind lösenord"
 
-#: core/app_settings.py:139
+#: core/app_settings.py:138
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Lösenordet ska användas vid bindning till LDAP-servern (med \"Bind DN ')"
 
-#: core/app_settings.py:148
+#: core/app_settings.py:147
 msgid "Users search base"
 msgstr "Användare sökbas"
 
-#: core/app_settings.py:151
+#: core/app_settings.py:150
 msgid "The distinguished name of the search base used to find users"
 msgstr "Det unika namnet för sökbasen som används för att hitta användare"
 
-#: core/app_settings.py:158
+#: core/app_settings.py:157
 msgid "Search filter"
 msgstr "Sökfilter"
 
-#: core/app_settings.py:161
+#: core/app_settings.py:160
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -186,11 +186,11 @@ msgstr ""
 "En valfri filtersträng (t.ex. \"(objectClass = personer) '). För att vara "
 "giltigt måste det omges av parenteser."
 
-#: core/app_settings.py:169
+#: core/app_settings.py:168
 msgid "User DN template"
 msgstr "Anvädar DN mall"
 
-#: core/app_settings.py:172
+#: core/app_settings.py:171
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -199,27 +199,27 @@ msgstr ""
 "Mallen som används för att konstruera en användares DN. Den bör innehålla en "
 "platshållare (dvs. %(user)s)"
 
-#: core/app_settings.py:180
+#: core/app_settings.py:179
 msgid "Password attribute"
 msgstr "Lösenordsattribut"
 
-#: core/app_settings.py:182
+#: core/app_settings.py:181
 msgid "The attribute used to store user passwords"
 msgstr "Attribut som används för att lagra användarlösenord"
 
-#: core/app_settings.py:187
+#: core/app_settings.py:186
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:190
+#: core/app_settings.py:189
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Berätta om LDAP-servern är en Active Directory"
 
-#: core/app_settings.py:194
+#: core/app_settings.py:193
 msgid "Administrator groups"
 msgstr "Administratörsgrupper"
 
-#: core/app_settings.py:197
+#: core/app_settings.py:196
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -227,135 +227,135 @@ msgstr ""
 "Användare av dessa LDAP Posix grupper kommer skapas som "
 "domänadministratörer. Använd ';' för att separera grupper."
 
-#: core/app_settings.py:204
+#: core/app_settings.py:203
 msgid "Group type"
 msgstr "Grupptyp"
 
-#: core/app_settings.py:208
+#: core/app_settings.py:207
 msgid "The LDAP group type to use with your directory."
 msgstr "Välj LDAP grupptyp att använda med din katalog"
 
-#: core/app_settings.py:213
+#: core/app_settings.py:212
 msgid "Groups search base"
 msgstr "Grupper sökbas"
 
-#: core/app_settings.py:216
+#: core/app_settings.py:215
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Det unika namnet för sökbasen som används för att hitta grupper"
 
-#: core/app_settings.py:221 core/templates/core/dashboard.html:5
+#: core/app_settings.py:220 core/templates/core/dashboard.html:5
 msgid "Dashboard"
 msgstr ""
 
-#: core/app_settings.py:224
+#: core/app_settings.py:223
 msgid "Custom RSS feed"
 msgstr ""
 
-#: core/app_settings.py:227
+#: core/app_settings.py:226
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr ""
 
-#: core/app_settings.py:232
+#: core/app_settings.py:231
 msgid "Hide features widget"
 msgstr ""
 
-#: core/app_settings.py:235
+#: core/app_settings.py:234
 msgid "Hide features widget for resellers and domain administrators"
 msgstr ""
 
-#: core/app_settings.py:239
+#: core/app_settings.py:238
 #, fuzzy
 #| msgid "Applications"
 msgid "Notifications"
 msgstr "Applikationer"
 
-#: core/app_settings.py:242
+#: core/app_settings.py:241
 #, fuzzy
 #| msgid "Server address"
 msgid "Sender address"
 msgstr "Server adress"
 
-#: core/app_settings.py:245
+#: core/app_settings.py:244
 msgid "Email address used to send notifications."
 msgstr ""
 
-#: core/app_settings.py:249
+#: core/app_settings.py:248
 msgid "Public API"
 msgstr ""
 
-#: core/app_settings.py:252
+#: core/app_settings.py:251
 msgid "Enable communication"
 msgstr ""
 
-#: core/app_settings.py:255
+#: core/app_settings.py:254
 msgid "Enable communication with Modoboa public API"
 msgstr ""
 
-#: core/app_settings.py:259
+#: core/app_settings.py:258
 msgid "Check new versions"
 msgstr "Kontrollera nya versioner"
 
-#: core/app_settings.py:262
+#: core/app_settings.py:261
 msgid "Automatically checks if a newer version is available"
 msgstr "Kontrollera automatiskt om en nyare version finns"
 
-#: core/app_settings.py:266
+#: core/app_settings.py:265
 msgid "Send statistics"
 msgstr ""
 
-#: core/app_settings.py:269
+#: core/app_settings.py:268
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 
-#: core/app_settings.py:273
+#: core/app_settings.py:272
 msgid "Miscellaneous"
 msgstr "Övrigt"
 
-#: core/app_settings.py:276
+#: core/app_settings.py:275
 msgid "Top notifications check interval"
 msgstr "Toppnotifikationer kontrollintervall"
 
-#: core/app_settings.py:279
+#: core/app_settings.py:278
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Intervall mellan två toppnotifikationskontroller (i sekunder)"
 
-#: core/app_settings.py:285
+#: core/app_settings.py:284
 msgid "Maximum log record age"
 msgstr "Maximal ålder för loggpost"
 
-#: core/app_settings.py:287
+#: core/app_settings.py:286
 msgid "The maximum age in days of a log record"
 msgstr "Maximal ålder i dagar för en logg post"
 
-#: core/app_settings.py:292
+#: core/app_settings.py:291
 msgid "Items per page"
 msgstr "Artiklar per sida"
 
-#: core/app_settings.py:294
+#: core/app_settings.py:293
 msgid "Number of displayed items per page"
 msgstr "Antal poster som visas per sida"
 
-#: core/app_settings.py:299
+#: core/app_settings.py:298
 msgid "Default top redirection"
 msgstr "Standard topp omdirigering"
 
-#: core/app_settings.py:303
+#: core/app_settings.py:302
 msgid "The default redirection used when no application is specified"
 msgstr "Standard omdirigering när ingen applikation angetts"
 
-#: core/app_settings.py:336
+#: core/app_settings.py:335
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Nyckel måste vara endera 16, 24 eller 32 bytes lång"
 
-#: core/app_settings.py:345
+#: core/app_settings.py:344
 msgid "Invalid syntax"
 msgstr "Ogiltig syntax"
 
-#: core/app_settings.py:351
+#: core/app_settings.py:350
 msgid "Invalid rounds number"
 msgstr "Ogiltigt antal omgångar"
 
-#: core/app_settings.py:372
+#: core/app_settings.py:377
 msgid "This field is required"
 msgstr "Detta fält är obligatoriskt"
 
@@ -379,35 +379,35 @@ msgstr "Återförsäljare"
 msgid "Super administrator"
 msgstr "Super administratör"
 
-#: core/forms.py:20
+#: core/forms.py:24
 msgid "Username"
 msgstr "Användarnamn"
 
-#: core/forms.py:24
+#: core/forms.py:28
 msgid "Password"
 msgstr "Lösenord"
 
-#: core/forms.py:37
+#: core/forms.py:41
 msgid "Old password"
 msgstr "Gammalt lösenord"
 
-#: core/forms.py:41
+#: core/forms.py:45
 msgid "New password"
 msgstr "Nytt lösenord"
 
-#: core/forms.py:45
+#: core/forms.py:49
 msgid "Confirmation"
 msgstr "Bekräftelse"
 
-#: core/forms.py:73
+#: core/forms.py:77
 msgid "Old password mismatchs"
 msgstr "Gammalt lösenord matchar inte"
 
-#: core/forms.py:80
+#: core/forms.py:84
 msgid "Passwords mismatch"
 msgstr "Lösenord matchar inte"
 
-#: core/forms.py:99
+#: core/forms.py:104
 msgid "Enable API access"
 msgstr "Aktivera API access"
 
@@ -513,6 +513,34 @@ msgstr "Den enkla användaren '%s' måste ha en gällande e-postadress"
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "användarnamn och e-post fält får inte avvika för '%s'"
+
+#: core/password_validation.py:26
+msgid "Password must contain at least {} digit."
+msgid_plural "Password must contain at least {} digits."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:36
+msgid "Password must contain at least {} lowercase letter."
+msgid_plural "Password must contain at least {} lowercase letters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:47
+msgid "Password must contain at least {} uppercase letter."
+msgid_plural "Password must contain at least {} uppercase letters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:59
+msgid "Password must contain at least {} special character."
+msgid_plural "Password must contain at least {} special characters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:67
+msgid "Your password must contain a combination of different character types."
+msgstr ""
 
 #: core/templates/core/_current_features.html:6
 msgid "Features looking for sponsoring"
@@ -705,16 +733,16 @@ msgstr "Kärnan av Modoboa"
 msgid "Parameters saved"
 msgstr "Parametrar sparade"
 
-#: core/views/auth.py:44
+#: core/views/auth.py:45
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Användare '%s' har loggat in"
 
-#: core/views/auth.py:52
+#: core/views/auth.py:53
 msgid "Your username and password didn't match. Please try again."
 msgstr "Ditt användarnamn och lösenord matchar inte. Var vänlig försök igen."
 
-#: core/views/auth.py:86
+#: core/views/auth.py:87
 #, fuzzy
 #| msgid "User '%s' successfully logged in"
 msgid "User '{}' successfully logged out"
@@ -754,7 +782,8 @@ msgstr "Skriv in ett giltigt domännamn"
 msgid "Enter a valid email address."
 msgstr "Ange en giltig e-postadress"
 
-#: lib/form_utils.py:85
+#: lib/form_utils.py:85 templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr "Skicka"
 
@@ -833,17 +862,72 @@ msgstr "Föregående"
 msgid "Next"
 msgstr "Nästa"
 
-#: templates/registration/login.html:9
+#: templates/registration/base.html:8
 msgid "Welcome to Modoboa"
 msgstr "Välkommen till Modoboa"
 
-#: templates/registration/login.html:40
+#: templates/registration/login.html:21
 msgid "Remember me"
 msgstr "Kom ihåg mig"
 
-#: templates/registration/login.html:43
+#: templates/registration/login.html:23
 msgid "Log in"
 msgstr "Logga in"
+
+#: templates/registration/login.html:24
+#: templates/registration/password_reset_form.html:6
+#, fuzzy
+#| msgid "password"
+msgid "Forgot password?"
+msgstr "lösenord"
+
+#: templates/registration/password_reset_complete.html:8
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
+"in</a> now."
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:7
+#, fuzzy
+#| msgid "New password"
+msgid "Change password"
+msgstr "Nytt lösenord"
+
+#: templates/registration/password_reset_confirm.html:17
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr ""
+
+#: templates/registration/password_reset_done.html:7
+msgid ""
+"<p>We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly.</p> "
+"<p>If you don't receive an email, please make sure you've entered your "
+"primary address, and check your spam folder.</p>"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:4
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(username)s Modoboa "
+"account, click the link below:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:10
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr ""
+
+#: templates/registration/password_reset_email.html:14
+msgid "Sincerely, The Modoboa Team."
+msgstr ""
+
+#: templates/registration/password_reset_subject.txt:3
+msgid "Modoboa password reset"
+msgstr ""
 
 #, fuzzy
 #~| msgid "User '%s' logged out"

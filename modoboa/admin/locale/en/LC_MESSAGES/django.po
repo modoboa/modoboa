@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-01 10:30+0200\n"
+"POT-Creation-Date: 2017-06-27 16:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,7 @@ msgid ""
 msgstr ""
 
 #: admin/app_settings.py:78 admin/models/domain.py:58
-#: admin/templates/admin/domain_detail.html:67
+#: admin/templates/admin/domain_detail.html:72
 msgid "Default mailbox quota"
 msgstr ""
 
@@ -109,7 +109,7 @@ msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 
 #: admin/app_settings.py:146 admin/app_settings.py:154
-#: admin/forms/account.py:292
+#: admin/forms/account.py:293
 msgid "Must be a positive integer"
 msgstr ""
 
@@ -117,7 +117,7 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: admin/forms/account.py:37 admin/templates/admin/domain_detail.html:96
+#: admin/forms/account.py:37 admin/templates/admin/domain_detail.html:101
 msgid "Username"
 msgstr ""
 
@@ -159,97 +159,97 @@ msgstr ""
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: admin/forms/account.py:174
+#: admin/forms/account.py:176
 msgid "Only super administrators are allowed for this mode"
 msgstr ""
 
-#: admin/forms/account.py:182
+#: admin/forms/account.py:184
 msgid "You can't disable your own account"
 msgstr ""
 
-#: admin/forms/account.py:196
+#: admin/forms/account.py:197
 msgid "E-mail"
 msgstr ""
 
-#: admin/forms/account.py:198 admin/templates/admin/account_detail.html:45
+#: admin/forms/account.py:199 admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:57
 msgid "Quota"
 msgstr ""
 
-#: admin/forms/account.py:200
+#: admin/forms/account.py:201
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
 msgstr ""
 
-#: admin/forms/account.py:208 admin/forms/domain.py:42
+#: admin/forms/account.py:209 admin/forms/domain.py:42
 #: admin/templates/admin/domains.html:35
 msgid "Alias(es)"
 msgstr ""
 
-#: admin/forms/account.py:211
+#: admin/forms/account.py:212
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
 msgstr ""
 
-#: admin/forms/account.py:217
+#: admin/forms/account.py:218
 msgid "Sender addresses"
 msgstr ""
 
-#: admin/forms/account.py:220
+#: admin/forms/account.py:221
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
 msgstr ""
 
-#: admin/forms/account.py:270 admin/forms/alias.py:94
-#: admin/models/mailbox.py:300
+#: admin/forms/account.py:271 admin/forms/alias.py:94
+#: admin/models/mailbox.py:313
 msgid "Domain does not exist"
 msgstr ""
 
-#: admin/forms/account.py:302
+#: admin/forms/account.py:303
 msgid "Local domain does not exist"
 msgstr ""
 
-#: admin/forms/account.py:306 admin/forms/account.py:314
+#: admin/forms/account.py:307 admin/forms/account.py:315
 #: admin/forms/alias.py:97
 msgid "You don't have access to this domain"
 msgstr ""
 
-#: admin/forms/account.py:407
+#: admin/forms/account.py:408
 msgid "Domain(s)"
 msgstr ""
 
-#: admin/forms/account.py:409
+#: admin/forms/account.py:410
 msgid "Domain(s) that user administrates"
 msgstr ""
 
-#: admin/forms/account.py:455 admin/forms/account.py:541
-#: admin/forms/domain.py:299 admin/forms/domain.py:366
+#: admin/forms/account.py:456 admin/forms/account.py:542
+#: admin/forms/domain.py:309 admin/forms/domain.py:376
 msgid "General"
 msgstr ""
 
-#: admin/forms/account.py:460 admin/forms/account.py:547
+#: admin/forms/account.py:461 admin/forms/account.py:548
 msgid "Mail"
 msgstr ""
 
-#: admin/forms/account.py:463
+#: admin/forms/account.py:464
 msgid "Permissions"
 msgstr ""
 
-#: admin/forms/account.py:530
+#: admin/forms/account.py:531
 msgid "Account updated"
 msgstr ""
 
-#: admin/forms/account.py:555
+#: admin/forms/account.py:556
 msgid "New account"
 msgstr ""
 
-#: admin/forms/account.py:567
+#: admin/forms/account.py:568
 msgid "Account created"
 msgstr ""
 
@@ -311,7 +311,7 @@ msgstr ""
 msgid "A %s with this name already exists"
 msgstr ""
 
-#: admin/forms/domain.py:111 admin/serializers.py:40
+#: admin/forms/domain.py:111 admin/serializers.py:41
 msgid "Cannot be greater than domain quota"
 msgstr ""
 
@@ -331,7 +331,7 @@ msgstr ""
 msgid "Automatically create an administrator for this domain"
 msgstr ""
 
-#: admin/forms/domain.py:195 admin/templates/admin/domain_detail.html:96
+#: admin/forms/domain.py:195 admin/templates/admin/domain_detail.html:101
 #: admin/templates/admin/domains.html:34
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
@@ -345,39 +345,47 @@ msgid ""
 msgstr ""
 
 #: admin/forms/domain.py:205
-msgid "Create aliases"
+msgid "With a mailbox"
 msgstr ""
 
 #: admin/forms/domain.py:208
+msgid "Create a mailbox for the administrator."
+msgstr ""
+
+#: admin/forms/domain.py:214
+msgid "Create aliases"
+msgstr ""
+
+#: admin/forms/domain.py:217
 msgid "Automatically create standard aliases for this domain"
 msgstr ""
 
-#: admin/forms/domain.py:224
+#: admin/forms/domain.py:233
 msgid "Invalid format"
 msgstr ""
 
-#: admin/forms/domain.py:233 admin/forms/domain.py:236
+#: admin/forms/domain.py:242 admin/forms/domain.py:245
 msgid "This field is required."
 msgstr ""
 
-#: admin/forms/domain.py:253
+#: admin/forms/domain.py:262
 #, python-format
 msgid "User '%s' already exists"
 msgstr ""
 
-#: admin/forms/domain.py:356
+#: admin/forms/domain.py:366
 msgid "Domain modified"
 msgstr ""
 
-#: admin/forms/domain.py:377
+#: admin/forms/domain.py:387
 msgid "Options"
 msgstr ""
 
-#: admin/forms/domain.py:385
+#: admin/forms/domain.py:395
 msgid "New domain"
 msgstr ""
 
-#: admin/forms/domain.py:398
+#: admin/forms/domain.py:408
 msgid "Domain created"
 msgstr ""
 
@@ -430,7 +438,7 @@ msgstr ""
 msgid "Account import failed (%s): domain does not exist"
 msgstr ""
 
-#: admin/handlers.py:217 admin/models/mailbox.py:325
+#: admin/handlers.py:217 admin/models/mailbox.py:338
 msgid "Mailbox {} already exists"
 msgstr ""
 
@@ -462,24 +470,24 @@ msgstr ""
 msgid "You are not allowed to import domain aliases."
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:161
+#: admin/management/commands/subcommands/_mx.py:169
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:182
+#: admin/management/commands/subcommands/_mx.py:189
 msgid "Domain {} has no MX record"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:193
+#: admin/management/commands/subcommands/_mx.py:200
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:209
+#: admin/management/commands/subcommands/_mx.py:216
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr ""
 
-#: admin/models/alias.py:35 admin/models/mailbox.py:82
+#: admin/models/alias.py:35 admin/models/mailbox.py:95
 msgid "address"
 msgstr ""
 
@@ -587,49 +595,49 @@ msgstr ""
 msgid "Unknown domain %s"
 msgstr ""
 
-#: admin/models/mailbox.py:84
+#: admin/models/mailbox.py:97
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr ""
 
-#: admin/models/mailbox.py:150
+#: admin/models/mailbox.py:163
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr ""
 
-#: admin/models/mailbox.py:243
+#: admin/models/mailbox.py:256
 msgid "A quota is required"
 msgstr ""
 
-#: admin/models/mailbox.py:249
+#: admin/models/mailbox.py:262
 msgid "Domain quota exceeded"
 msgstr ""
 
-#: admin/serializers.py:65 admin/serializers.py:248 admin/serializers.py:337
+#: admin/serializers.py:66 admin/serializers.py:247 admin/serializers.py:336
 msgid "Permission denied."
 msgstr ""
 
-#: admin/serializers.py:103
+#: admin/serializers.py:104
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: admin/serializers.py:213
+#: admin/serializers.py:212
 msgid "Not allowed for this role."
 msgstr ""
 
-#: admin/serializers.py:223
+#: admin/serializers.py:222
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: admin/serializers.py:235
+#: admin/serializers.py:234
 msgid "Local domain {} does not exist"
 msgstr ""
 
-#: admin/serializers.py:324
+#: admin/serializers.py:323
 msgid "A list of recipient"
 msgstr ""
 
-#: admin/serializers.py:335
+#: admin/serializers.py:334
 msgid "Domain not found."
 msgstr ""
 
@@ -652,7 +660,7 @@ msgstr ""
 
 #: admin/templates/admin/_global_statistics_widget.html:14
 #: admin/templates/admin/domain_detail.html:45
-#: admin/templates/admin/domain_detail.html:76
+#: admin/templates/admin/domain_detail.html:81
 msgid "Domain aliases"
 msgstr ""
 
@@ -781,7 +789,9 @@ msgid "Mailbox aliases"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domain_detail.html:68
+#: admin/templates/admin/domain_detail.html:65
+#: admin/templates/admin/domain_detail.html:66
+#: admin/templates/admin/domain_detail.html:73
 #: admin/templates/admin/domain_general_form.html:4
 #: admin/templates/admin/domain_general_form.html:5
 #: admin/templates/admin/mailform.html:4
@@ -793,20 +803,29 @@ msgstr ""
 msgid "Usage"
 msgstr ""
 
-#: admin/templates/admin/domain_detail.html:93
+#: admin/templates/admin/domain_detail.html:65
+msgctxt "quota"
+msgid "used"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:66
+msgid "allocated"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:98
 msgid "Administrators"
 msgstr ""
 
-#: admin/templates/admin/domain_detail.html:105
+#: admin/templates/admin/domain_detail.html:110
 #: admin/templatetags/admin_tags.py:258
 msgid "Remove this permission"
 msgstr ""
 
-#: admin/templates/admin/domain_detail.html:110
+#: admin/templates/admin/domain_detail.html:115
 msgid "No domain administrator defined yet."
 msgstr ""
 
-#: admin/templates/admin/domain_options_form.html:7
+#: admin/templates/admin/domain_options_form.html:9
 msgid "You can't create a new domain administrator"
 msgstr ""
 
