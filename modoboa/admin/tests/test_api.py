@@ -264,6 +264,11 @@ class AccountAPITestCase(ModoAPITestCase):
             pk=response.json()["pk"])
         self.assertIn(admin, domain.admins)
 
+        response = self.client.get(
+            reverse("api:account-detail", args=[admin.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("domains", response.json())
+
         data["username"] = "domain_admin"
         del data["mailbox"]
         response = self.client.post(url, data, format="json")

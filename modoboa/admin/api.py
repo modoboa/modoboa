@@ -69,7 +69,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         """Return a serializer."""
         action_dict = {
             "list": serializers.AccountSerializer,
-            "retrive": serializers.AccountSerializer
+            "retrieve": serializers.AccountSerializer
         }
         return action_dict.get(
             self.action, serializers.WritableAccountSerializer)
