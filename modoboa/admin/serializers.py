@@ -293,7 +293,7 @@ class WritableAccountSerializer(AccountSerializer):
 
     def update(self, instance, validated_data):
         """Update account and associated objects."""
-        mailbox_data = validated_data.pop("mailbox")
+        mailbox_data = validated_data.pop("mailbox", None)
         password = validated_data.pop("password", None)
         domains = validated_data.pop("domains", [])
         for key, value in validated_data.items():
