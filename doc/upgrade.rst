@@ -84,6 +84,64 @@ documentation.
 Specific instructions
 *********************
 
+1.8.0
+=====
+
+Modoboa now relies on `Django's builtin password validation system
+<https://docs.djangoproject.com/en/1.10/topics/auth/passwords/#module-django.contrib.auth.password_validation>`_
+to validate user passwords, instead of ``django-passwords``.
+
+Remove ``django-passwords`` from your system:
+
+.. sourcecode:: bash
+
+   > sudo -u <modoboa_user> -i
+   > source <virtuenv_path>/bin/activate
+   > pip uninstall django-passwords
+
+Edit the :file:`settings.py` file and remove the following content:
+
+.. sourcecode:: python
+
+   # django-passwords
+
+   PASSWORD_MIN_LENGTH = 8
+
+   PASSWORD_COMPLEXITY = {
+       "UPPER": 1,
+       "LOWER": 1,
+       "DIGITS": 1
+   }
+
+Add the following lines:
+
+.. sourcecode:: python
+
+   # Password validation rules
+   AUTH_PASSWORD_VALIDATORS = [
+       {
+           'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+       },
+       {
+           'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+       },
+       {
+           'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+       },
+       {
+           'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+       },
+       {
+           'NAME': 'modoboa.core.password_validation.ComplexityValidator',
+           'OPTIONS': {
+               'upper': 1,
+               'lower': 1,
+               'digits': 1,
+               'specials': 0
+           }
+       },
+   ]
+
 1.7.2
 =====
 
@@ -167,51 +225,6 @@ Don't forget to run the following command:
 
    > python manage.py collectstatic
 
-1.8.0
-=====
-
-Modoboa now relies on `Django's builtin password validation system
-<https://docs.djangoproject.com/en/1.10/topics/auth/passwords/#module-django.contrib.auth.password_validation>`_
-to validate user passwords, instead of ``django-passwords``.
-
-Remove ``django-passwords`` from your system:
-
-.. sourcecode:: bash
-
-   > sudo -u <modoboa_user> -i
-   > source <virtuenv_path>/bin/activate
-   > pip uninstall django-passwords
-
-Then, edit the :file:`settings.py` file and add the following content
-inside::
-
-.. sourcecode:: python
-
-   # Password validation rules
-
-   AUTH_PASSWORD_VALIDATORS = [
-       {
-           'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-       },
-       {
-           'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-       },
-       {
-           'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-       },
-       {
-           'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-       },
-       {
-           'NAME': 'modoboa.core.password_validation.ComplexityValidator',
-           'OPTIONS': {
-               'upper': 1,
-               'lower': 1,
-               'digits': 1,
-               'specials': 0
-           }
-       },
-   ]
 
 1.7.1
 =====
