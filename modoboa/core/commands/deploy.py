@@ -172,8 +172,6 @@ class DeployCommand(Command):
         include in the final configuration.
 
         """
-        pip_args = ["install"] + [extension[0] for extension in extensions]
-        pip.main(pip_args)
         extra_settings = []
         for extension in extensions:
             module = __import__(extension[1], locals(), globals(), [])
@@ -225,7 +223,10 @@ class DeployCommand(Command):
             extensions = [(extension, extension.replace("-", "_"))
                           for extension in extensions]
             if not parsed_args.dont_install_extensions:
-                extra_settings = self.install_extensions(extensions)
+                pip_args = (
+                    ["install"] + [extension[0] for extension in extensions])
+                pip.main(pip_args)
+            extra_settings = self.find_extra_settings(extensions)
             extensions = [extension[1] for extension in extensions]
 
         bower_components_dir = os.path.realpath(
