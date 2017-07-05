@@ -45,6 +45,24 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
+    def test_open_redirect(self):
+        """Check that open redirect is not allowed."""
+        self.client.logout()
+        data = {"username": "admin", "password": "password"}
+
+        # 1. Check valid redirection
+        url = "{}?next=/admin/".format(reverse("core:login"))
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse("admin:index")))
+        self.client.logout()
+
+        # 2. Check bad redirection
+        url = "{}?next=http://www.evil.com".format(reverse("core:login"))
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+
 
 class PasswordResetTestCase(ModoTestCase):
     """Test password reset service."""

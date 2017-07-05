@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
+from django.utils.http import is_safe_url
 from django.views import generic
 
 from django.contrib.auth import mixins as auth_mixins
@@ -15,18 +16,23 @@ def find_nextlocation(request, user):
     if not user.last_login:
         # Redirect to profile on first login
         return reverse("core:user_index")
-    nextlocation = request.POST.get("next", None)
-    if nextlocation is None or nextlocation == "None":
-        if request.user.role == "SimpleUsers":
-            topredir = request.localconfig.parameters.get_value(
-                "default_top_redirection")
-            if topredir != "user":
-                infos = exts_pool.get_extension_infos(topredir)
-                nextlocation = infos["topredirection_url"]
-            else:
-                nextlocation = reverse("core:user_index")
+    nextlocation = request.POST.get("next", request.GET.get("next"))
+    condition = (
+        nextlocation is not None and nextlocation != "" and
+        is_safe_url(nextlocation, host=request.get_host())
+    )
+    if condition:
+        return nextlocation
+    if request.user.role == "SimpleUsers":
+        topredir = request.localconfig.parameters.get_value(
+            "default_top_redirection")
+        if topredir != "user":
+            infos = exts_pool.get_extension_infos(topredir)
+            nextlocation = infos["topredirection_url"]
         else:
-            nextlocation = reverse("core:dashboard")
+            nextlocation = reverse("core:user_index")
+    else:
+        nextlocation = reverse("core:dashboard")
     return nextlocation
 
 
