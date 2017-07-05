@@ -178,7 +178,8 @@ def editaccount(request, pk):
         raise PermDeniedException
     mb = account.mailbox if hasattr(account, "mailbox") else None
 
-    instances = dict(general=account, mail=mb, perms=account)
+    instances = dict(
+        general=account, profile=account, mail=mb, perms=account)
     results = signals.get_account_form_instances.send(
         sender="editaccount", user=request.user, account=account)
     for result in results:

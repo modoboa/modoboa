@@ -26,7 +26,8 @@ class AliasTestCase(ModoTestCase):
         values = dict(
             username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com",
-            aliases="toto@test.com", aliases_1="titi@test.com"
+            aliases="toto@test.com", aliases_1="titi@test.com",
+            language="en"
         )
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -68,7 +69,7 @@ class AliasTestCase(ModoTestCase):
         values = dict(
             username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com",
-            aliases="Toto@test.com"
+            aliases="Toto@test.com", language="en"
         )
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -97,7 +98,8 @@ class AliasTestCase(ModoTestCase):
         user = User.objects.get(username="user@test.com")
         values = dict(
             username="user@test.com", role=user.role,
-            is_active=user.is_active, email="user@test.com"
+            is_active=user.is_active, email="user@test.com",
+            language="en"
         )
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -252,7 +254,8 @@ class AliasTestCase(ModoTestCase):
         values = dict(
             username=user.username, first_name="Tester", last_name="Toto",
             password1="Toto1234", password2="Toto1234", role="SimpleUsers",
-            quota_act=True, is_active=True, email=user.email
+            quota_act=True, is_active=True, email=user.email,
+            language="en"
         )
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
 
@@ -277,7 +280,8 @@ class AliasTestCase(ModoTestCase):
         values = dict(
             username="user@test.com", role=user.role,
             is_active=user.is_active, email="user@test.com",
-            aliases="toto@test.com", aliases_1="titi@test2.com"
+            aliases="toto@test.com", aliases_1="titi@test2.com",
+            language="en"
         )
         response = self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
