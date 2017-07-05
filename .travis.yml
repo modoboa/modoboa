@@ -41,7 +41,7 @@ before_script:
   - ldapadd -h localhost:3389 -D cn=admin,dc=example,dc=com -w test -f test_data/base.ldif
 
 script:
-  - coverage run --source ../modoboa ./tests.py
+  - coverage run --source modoboa ./tests.py
   - cd test_project
   - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.relaydomains
 
