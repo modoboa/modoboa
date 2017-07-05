@@ -175,7 +175,8 @@ class DomainAdminTestCase(ResourceTestCase):
         values = dict(
             username=user.username, role=user.role,
             is_active=user.is_active, email=user.email, quota_act=True,
-            aliases="alias1@test.com", aliases_1="alias2@test.com"
+            aliases="alias1@test.com", aliases_1="alias2@test.com",
+            language="en"
         )
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -262,7 +263,7 @@ class ResellerTestCase(ResourceTestCase):
         values = {
             "username": user.username, "role": "DomainAdmins",
             "quota_act": True, "is_active": user.is_active,
-            "email": user.email
+            "email": user.email, "language": "en"
         }
         resp = self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -362,7 +363,8 @@ class ResellerTestCase(ResourceTestCase):
         values = {
             'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
-            'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
+            'mailboxes_limit': 1, 'mailbox_aliases_limit': 2,
+            'language': 'en'
         }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -389,7 +391,8 @@ class ResellerTestCase(ResourceTestCase):
         values = {
             'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
-            'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
+            'mailboxes_limit': 1, 'mailbox_aliases_limit': 2,
+            'language': 'en'
         }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -421,7 +424,8 @@ class ResellerTestCase(ResourceTestCase):
         values = {
             'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
-            'mailboxes_limit': 1, 'mailbox_aliases_limit': 2
+            'mailboxes_limit': 1, 'mailbox_aliases_limit': 2,
+            'language': 'en'
         }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -436,6 +440,7 @@ class ResellerTestCase(ResourceTestCase):
             'username': user.username, 'role': 'SimpleUsers',
             'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
+            'language': 'en',
         }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -453,7 +458,8 @@ class ResellerTestCase(ResourceTestCase):
         values = {
             'username': user.username, 'role': user.role, 'quota_act': True,
             'is_active': user.is_active, 'email': user.email,
-            'mailboxes_limit': 2, 'mailbox_aliases_limit': 3
+            'mailboxes_limit': 2, 'mailbox_aliases_limit': 3,
+            'language': 'en'
         }
         resp = self.ajax_post(
             reverse("admin:account_change", args=[user.id]),

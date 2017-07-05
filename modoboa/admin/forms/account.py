@@ -61,7 +61,7 @@ class AccountFormGeneral(forms.ModelForm):
         model = User
         fields = (
             "username", "first_name", "last_name", "role", "is_active",
-            "master_user"
+            "master_user",
         )
         labels = {
             "is_active": ugettext_lazy("Enabled")
@@ -188,6 +188,14 @@ class AccountFormGeneral(forms.ModelForm):
             account.save()
             account.role = self.cleaned_data["role"]
         return account
+
+
+class AccountProfileForm(forms.ModelForm):
+    """Form to edit account profile."""
+
+    class Meta:
+        model = User
+        fields = ("secondary_email", "phone_number", "language")
 
 
 class AccountFormMail(forms.Form, DynamicForm):
@@ -457,6 +465,9 @@ class AccountForm(TabForms):
              "formtpl": "admin/account_general_form.html",
              "cls": AccountFormGeneral,
              "new_args": [self.user], "mandatory": True},
+            {"id": "profile", "title": _("Profile"),
+             "formtpl": "admin/account_profile_form.html",
+             "cls": AccountProfileForm},
             {"id": "mail",
              "title": _("Mail"), "formtpl": "admin/mailform.html",
              "cls": AccountFormMail,
@@ -521,10 +532,11 @@ class AccountForm(TabForms):
         As forms interact with each other, it is simpler to make
         custom code to save them.
         """
-        self.forms[1]["instance"].save(self.user, self.account)
-        if len(self.forms) <= 2:
+        self.forms[1]["instance"].save()
+        self.forms[2]["instance"].save(self.user, self.account)
+        if len(self.forms) <= 3:
             return
-        for f in self.forms[2:]:
+        for f in self.forms[3:]:
             f["instance"].save()
 
     def done(self):

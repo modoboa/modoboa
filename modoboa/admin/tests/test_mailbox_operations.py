@@ -65,7 +65,8 @@ class MailboxOperationTestCase(ModoTestCase):
             address="admin", domain__name="test.com")
         values = {
             "username": "admin2@test.com", "role": "DomainAdmins",
-            "is_active": True, "email": "admin2@test.com"
+            "is_active": True, "email": "admin2@test.com",
+            "language": "en"
         }
         self.ajax_post(
             reverse("admin:account_change", args=[mb.user.pk]), values

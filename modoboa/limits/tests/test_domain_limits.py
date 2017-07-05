@@ -92,7 +92,7 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
             "username": user.username, "role": user.role,
             "is_active": user.is_active, "email": user.email,
             "quota_act": True, "domains": "test2.com",
-            "domains_1": "test.com"
+            "domains_1": "test.com", "language": "en"
         }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
@@ -146,7 +146,8 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
             "username": user.username, "role": user.role,
             "is_active": user.is_active, "email": user.email,
             "quota_act": True,
-            "aliases": "alias@test.com", "aliases_1": "alias1@test.com"
+            "aliases": "alias@test.com", "aliases_1": "alias1@test.com",
+            "language": "en"
         }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),

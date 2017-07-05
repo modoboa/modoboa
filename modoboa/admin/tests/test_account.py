@@ -53,10 +53,16 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
-        values.update({"username": "pouet@test.com"})
+        values.update({
+            "username": "pouet@test.com", "language": "en",
+            "secondary_email": "homer@simpson.com",
+            "phone_number": "123456789"
+        })
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]), values
         )
+        account.refresh_from_db()
+        self.assertEqual(account.secondary_email, values["secondary_email"])
         mb = models.Mailbox.objects.get(pk=mb.pk)
         self.assertEqual(mb.full_address, "pouet@test.com")
         self.assertEqual(mb.quota_value.username, "pouet@test.com")
@@ -87,7 +93,8 @@ class AccountTestCase(ModoTestCase):
         )
         values = {
             "username": "user@test.com", "role": "DomainAdmins",
-            "is_active": True, "email": "user@test.com"
+            "is_active": True, "email": "user@test.com",
+            "language": "en"
         }
         account = User.objects.get(username="user@test.com")
         self.ajax_post(
@@ -101,7 +108,8 @@ class AccountTestCase(ModoTestCase):
             "username": "user@test.com", "first_name": "Tester",
             "last_name": "Toto", "role": "SimpleUsers",
             "quota_act": True, "is_active": True, "email": "user@test.com",
-            "senderaddress": "test@titi.com", "senderaddress_1": "toto@go.com"
+            "senderaddress": "test@titi.com", "senderaddress_1": "toto@go.com",
+            "language": "en"
         }
         self.ajax_post(
             reverse("admin:account_change", args=[account.pk]), values)
@@ -174,7 +182,8 @@ class AccountTestCase(ModoTestCase):
         account = User.objects.get(username=email)
         values = {
             "username": email, "role": "SimpleUsers", "quota_act": False,
-            "is_active": True, "quota": value, "email": email
+            "is_active": True, "quota": value, "email": email,
+            "language": "en"
         }
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]),
@@ -294,7 +303,7 @@ class PermissionsTestCase(ModoTestCase):
         self.values = {
             "username": self.user.username, "role": "DomainAdmins",
             "is_active": self.user.is_active, "email": "user@test.com",
-            "quota_act": True
+            "quota_act": True, "language": "en"
         }
 
     def tearDown(self):
@@ -342,7 +351,8 @@ class PermissionsTestCase(ModoTestCase):
         values = {
             "username": "admin@test.com", "first_name": "Admin",
             "password1": "", "password2": "",
-            "quota": 10, "is_active": True, "email": "admin@test.com"
+            "quota": 10, "is_active": True, "email": "admin@test.com",
+            "language": "en"
         }
         self.ajax_post(
             reverse("admin:account_change", args=[admin.id]),
@@ -366,7 +376,7 @@ class PermissionsTestCase(ModoTestCase):
         values = {
             "username": self.reseller.username, "first_name": "Reseller",
             "password1": "", "password2": "",
-            "is_active": True
+            "is_active": True, "language": "en"
         }
         self.ajax_post(
             reverse("admin:account_change", args=[self.reseller.pk]),
