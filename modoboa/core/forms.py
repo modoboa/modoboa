@@ -80,6 +80,8 @@ class ProfileForm(forms.ModelForm):
     def clean_confirmation(self):
         newpassword = self.cleaned_data["newpassword"]
         confirmation = self.cleaned_data["confirmation"]
+        if not newpassword and not confirmation:
+            return confirmation
         if newpassword != confirmation:
             raise forms.ValidationError(_("Passwords mismatch"))
         password_validation.validate_password(confirmation, self.instance)
