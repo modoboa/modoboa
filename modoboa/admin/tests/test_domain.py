@@ -257,6 +257,13 @@ class DomainTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("Usage", response.content.decode())
 
+        # Try with a fresh domain (see #1174)
+        domain = factories.DomainFactory(name="simpson.com", quota=100)
+        url = reverse("admin:domain_detail", args=[domain.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Usage", response.content.decode())
+
     def test_statitics_widget(self):
         """Test statistics display in dashboard."""
         url = reverse("core:dashboard")
