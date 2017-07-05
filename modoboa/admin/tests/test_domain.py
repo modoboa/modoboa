@@ -244,10 +244,18 @@ class DomainTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Summary", response.content.decode())
         self.assertIn("Administrators", response.content.decode())
+        self.assertIn("Usage", response.content.decode())
         self.assertNotIn("Resources usage", response.content.decode())
         self.set_global_parameter("enable_domain_limits", True, app="limits")
         response = self.client.get(url)
         self.assertIn("Resources usage", response.content.decode())
+
+        # Try a domain with no quota
+        domain = Domain.objects.filter(quota=0).first()
+        url = reverse("admin:domain_detail", args=[domain.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("Usage", response.content.decode())
 
     def test_statitics_widget(self):
         """Test statistics display in dashboard."""
