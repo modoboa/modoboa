@@ -52,9 +52,10 @@ def parse_dependency_links(*filenames):
 def read(fname):
     return open(os.path.join(ROOT, fname)).read()
 
+
 setup(
     name="modoboa",
-    version="1.8.0",
+    version="1.8.1",
     url="http://modoboa.org/",
     license="ISC",
     description="Mail hosting made simple",
