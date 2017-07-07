@@ -7,17 +7,13 @@ import re
 
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils import timezone
 from django.utils.encoding import (
     python_2_unicode_compatible, smart_bytes, smart_text, force_str, force_text
 )
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from django.contrib.auth.hashers import make_password, is_password_usable
-from django.contrib.auth.models import (
-    UserManager, Group, PermissionsMixin
-)
+from django.contrib.auth.models import Group, AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
@@ -42,7 +38,7 @@ except ImportError:
 
 
 @python_2_unicode_compatible
-class User(PermissionsMixin):
+class User(AbstractUser):
 
     """Custom User model.
 
@@ -52,15 +48,11 @@ class User(PermissionsMixin):
 
     It also adds new attributes and methods.
     """
+
     username = models.CharField(max_length=254, unique=True)
-    first_name = models.CharField(
-        ugettext_lazy("First name"), max_length=30, blank=True)
-    last_name = models.CharField(
-        ugettext_lazy("Last name"), max_length=30, blank=True)
     email = models.EmailField(max_length=254, blank=True, db_index=True)
     is_staff = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True, db_index=True)
-    date_joined = models.DateTimeField(default=timezone.now)
     is_local = models.BooleanField(default=True, db_index=True)
     master_user = models.BooleanField(
         ugettext_lazy("Allow mailboxes access"), default=False,
@@ -69,9 +61,6 @@ class User(PermissionsMixin):
         )
     )
     password = models.CharField(ugettext_lazy("password"), max_length=256)
-    last_login = models.DateTimeField(
-        ugettext_lazy('last login'), blank=True, null=True
-    )
 
     language = models.CharField(
         ugettext_lazy("language"),
@@ -89,11 +78,6 @@ class User(PermissionsMixin):
             "An alternative e-mail address, can be used for recovery needs.")
     )
     _parameters = jsonfield.JSONField(default={})
-
-    objects = UserManager()
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
 
     class Meta(object):
         ordering = ["username"]
@@ -161,38 +145,8 @@ class User(PermissionsMixin):
         hasher = get_password_hasher(scheme)
         return hasher().verify(raw_value, val2)
 
-    def get_username(self):
-        "Return the identifying username for this User"
-        return getattr(self, self.USERNAME_FIELD)
-
     def __str__(self):
         return smart_text(self.get_username())
-
-    def natural_key(self):
-        return (self.get_username(),)
-
-    @property
-    def is_anonymous(self):
-        """Always returns False.
-
-        This is a way of comparing User objects to anonymous users.
-        """
-        return False
-
-    @property
-    def is_authenticated(self):
-        """
-        Always return True. This is a way to tell if the user has been
-        authenticated in templates.
-        """
-        return True
-
-    def set_unusable_password(self):
-        # Sets a value that will never be a valid hash
-        self.password = make_password(None)
-
-    def has_usable_password(self):
-        return is_password_usable(self.password)
 
     def get_absolute_url(self):
         """Return detail url for this user."""
