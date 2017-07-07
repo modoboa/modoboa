@@ -165,7 +165,7 @@ class DeployCommand(Command):
         official_exts = ModoAPIClient(url).list_extensions()
         return [extension["name"] for extension in official_exts]
 
-    def install_extensions(self, extensions):
+    def find_extra_settings(self, extensions):
         """Install one or more extensions.
 
         Return the list of extensions providing settings we must
