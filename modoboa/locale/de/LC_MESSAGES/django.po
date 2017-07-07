@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-27 16:42+0200\n"
+"POT-Creation-Date: 2017-07-07 11:29+0200\n"
 "PO-Revision-Date: 2015-07-09 14:03+0000\n"
 "Last-Translator: controlc.de\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
@@ -403,11 +403,11 @@ msgstr "Bestätigung"
 msgid "Old password mismatchs"
 msgstr "Altes Passwort stimmt nicht überein"
 
-#: core/forms.py:84
+#: core/forms.py:86
 msgid "Passwords mismatch"
 msgstr "Passwörter stimmen nicht überein"
 
-#: core/forms.py:104
+#: core/forms.py:106
 msgid "Enable API access"
 msgstr ""
 
@@ -436,77 +436,65 @@ msgstr "Sie können Ihr eigenes Konto nicht entfernen"
 msgid "One or more updates are available"
 msgstr "Eine oder mehrere Aktualisierungen sind verfügbar"
 
-#: core/models.py:57
-msgid "First name"
-msgstr "Vorname"
-
-#: core/models.py:59
-msgid "Last name"
-msgstr "Nachname"
-
-#: core/models.py:66
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr "Erlaube den Postfach-Zugriff"
 
-#: core/models.py:68
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Erlaubt dem Administrator auf Benutzer-Postfächer zuzugreifen"
 
-#: core/models.py:71
+#: core/models.py:63
 msgid "password"
 msgstr "Passwort"
 
-#: core/models.py:73
-msgid "last login"
-msgstr "Letzte Anmeldung"
-
-#: core/models.py:77
+#: core/models.py:66
 msgid "language"
 msgstr "Sprache"
 
-#: core/models.py:80
+#: core/models.py:69
 msgid "Prefered language to display pages."
 msgstr "Bevorzugte Sprache für Seitendarstellung"
 
-#: core/models.py:84
+#: core/models.py:73
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: core/models.py:86
+#: core/models.py:75
 msgid "Secondary email"
 msgstr "Alternative Email-Adresse"
 
-#: core/models.py:89
+#: core/models.py:78
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "Eine alternative e-mail Adresse zur Widerherstellung."
 
-#: core/models.py:144
+#: core/models.py:128
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Konnte Passwort nicht aktualisieren: LDAP-Modul nicht installiert"
 
-#: core/models.py:203
+#: core/models.py:157
 msgid "account"
 msgstr "Konto"
 
-#: core/models.py:325
+#: core/models.py:279
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: core/models.py:359
+#: core/models.py:313
 msgid "Invalid line"
 msgstr "Ungültige Zeile"
 
-#: core/models.py:367
+#: core/models.py:321
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 "Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
 
-#: core/models.py:382
+#: core/models.py:336
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
 
-#: core/models.py:387
+#: core/models.py:341
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"
@@ -854,9 +842,8 @@ msgstr "Fehler:"
 msgid "Help:"
 msgstr "Hilfe:"
 
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Schließen"
 
@@ -934,6 +921,15 @@ msgstr ""
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
 msgstr ""
+
+#~ msgid "First name"
+#~ msgstr "Vorname"
+
+#~ msgid "Last name"
+#~ msgstr "Nachname"
+
+#~ msgid "last login"
+#~ msgstr "Letzte Anmeldung"
 
 #, fuzzy
 #~| msgid "User '%s' logged out"

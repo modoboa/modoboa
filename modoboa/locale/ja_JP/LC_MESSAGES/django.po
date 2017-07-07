@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-27 16:42+0200\n"
+"POT-Creation-Date: 2017-07-07 11:29+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -401,11 +401,11 @@ msgstr "確認"
 msgid "Old password mismatchs"
 msgstr "現在のパスワードが一致しません"
 
-#: core/forms.py:84
+#: core/forms.py:86
 msgid "Passwords mismatch"
 msgstr "パスワード不一致"
 
-#: core/forms.py:104
+#: core/forms.py:106
 msgid "Enable API access"
 msgstr "API アクセスを有効にします"
 
@@ -434,83 +434,67 @@ msgstr "あなた自身のアカウントは削除できません"
 msgid "One or more updates are available"
 msgstr "1つ以上のアップデートが利用できます"
 
-#: core/models.py:57
-#, fuzzy
-#| msgid "Group name"
-msgid "First name"
-msgstr "グループ名"
-
-#: core/models.py:59
-#, fuzzy
-#| msgid "Last login"
-msgid "Last name"
-msgstr "最終ログイン"
-
-#: core/models.py:66
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr "メールボックスのアクセスを許可する"
 
-#: core/models.py:68
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr "ユーザーのメールボックスアクセスをこの管理者に許可する"
 
-#: core/models.py:71
+#: core/models.py:63
 msgid "password"
 msgstr "パスワード"
 
-#: core/models.py:73
-msgid "last login"
-msgstr "最終ログイン"
-
-#: core/models.py:77
+#: core/models.py:66
 msgid "language"
 msgstr ""
 
-#: core/models.py:80
+#: core/models.py:69
 msgid "Prefered language to display pages."
 msgstr "ページの表示に優先言語を使う"
 
-#: core/models.py:84
+#: core/models.py:73
 msgid "Phone number"
 msgstr "電話番号"
 
-#: core/models.py:86
+#: core/models.py:75
 msgid "Secondary email"
 msgstr "2つめの電子メール"
 
-#: core/models.py:89
+#: core/models.py:78
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "別の電子メールアドレスは、回復の必要のために使用することができます。"
 
-#: core/models.py:144
+#: core/models.py:128
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていませ"
 "ん。"
 
-#: core/models.py:203
+#: core/models.py:157
 msgid "account"
 msgstr "アカウント"
 
-#: core/models.py:325
+#: core/models.py:279
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:359
+#: core/models.py:313
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: core/models.py:367
+#: core/models.py:321
 msgid "You can't import an account with a role greater than yours"
 msgstr "あなた以上のロールを持ったアカウントはインポートできません"
 
-#: core/models.py:382
+#: core/models.py:336
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
 
-#: core/models.py:387
+#: core/models.py:341
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"
@@ -846,9 +830,8 @@ msgstr "エラー："
 msgid "Help:"
 msgstr "ヘルプ："
 
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "閉じる"
 
@@ -926,6 +909,19 @@ msgstr ""
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Group name"
+#~ msgid "First name"
+#~ msgstr "グループ名"
+
+#, fuzzy
+#~| msgid "Last login"
+#~ msgid "Last name"
+#~ msgstr "最終ログイン"
+
+#~ msgid "last login"
+#~ msgstr "最終ログイン"
 
 #, fuzzy
 #~| msgid "User '%s' logged out"

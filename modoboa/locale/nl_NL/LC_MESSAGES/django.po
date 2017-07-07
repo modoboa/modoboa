@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-27 16:42+0200\n"
+"POT-Creation-Date: 2017-07-07 11:29+0200\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -411,11 +411,11 @@ msgstr "Bevestiging"
 msgid "Old password mismatchs"
 msgstr "Oud wachtwoord komt niet overeen"
 
-#: core/forms.py:84
+#: core/forms.py:86
 msgid "Passwords mismatch"
 msgstr "Wachtwoorden komt niet overeen"
 
-#: core/forms.py:104
+#: core/forms.py:106
 msgid "Enable API access"
 msgstr ""
 
@@ -446,84 +446,68 @@ msgstr "U kunt uw eigen account niet verwijderen"
 msgid "One or more updates are available"
 msgstr "Er is een update beschikbaar!"
 
-#: core/models.py:57
-#, fuzzy
-#| msgid "Group name"
-msgid "First name"
-msgstr "Groep naam"
-
-#: core/models.py:59
-#, fuzzy
-#| msgid "Last login"
-msgid "Last name"
-msgstr "Laatste login"
-
-#: core/models.py:66
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr ""
 
-#: core/models.py:68
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:71
+#: core/models.py:63
 msgid "password"
 msgstr "wachtwoord"
 
-#: core/models.py:73
-msgid "last login"
-msgstr "laatste login"
-
-#: core/models.py:77
+#: core/models.py:66
 #, fuzzy
 #| msgid "Prefered language"
 msgid "language"
 msgstr "Voorkeurs taal"
 
-#: core/models.py:80
+#: core/models.py:69
 #, fuzzy
 #| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Voorkeurstaal om pagina's weer te geven"
 
-#: core/models.py:84
+#: core/models.py:73
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:86
+#: core/models.py:75
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:89
+#: core/models.py:78
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:144
+#: core/models.py:128
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Mislukt om wachtwoord aan te passen: LDAP module niet geinstalleerd"
 
-#: core/models.py:203
+#: core/models.py:157
 msgid "account"
 msgstr "account"
 
-#: core/models.py:325
+#: core/models.py:279
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:359
+#: core/models.py:313
 msgid "Invalid line"
 msgstr "Verkeerde regel"
 
-#: core/models.py:367
+#: core/models.py:321
 msgid "You can't import an account with a role greater than yours"
 msgstr "U kunt geen accounts importeren met hogere rechten dan die van uzelf."
 
-#: core/models.py:382
+#: core/models.py:336
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "De gebruiker '%s' moet een geldig email adres hebben"
 
-#: core/models.py:387
+#: core/models.py:341
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "gebruikersnaam en email velden moeten niet verschillen van '%s'"
@@ -879,9 +863,8 @@ msgstr "Foutmelding:"
 msgid "Help:"
 msgstr "Help:"
 
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Sluiten"
 
@@ -959,6 +942,19 @@ msgstr ""
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Group name"
+#~ msgid "First name"
+#~ msgstr "Groep naam"
+
+#, fuzzy
+#~| msgid "Last login"
+#~ msgid "Last name"
+#~ msgstr "Laatste login"
+
+#~ msgid "last login"
+#~ msgstr "laatste login"
 
 #, fuzzy
 #~| msgid "User '%s' logged out"

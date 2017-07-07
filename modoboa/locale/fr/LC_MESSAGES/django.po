@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-27 16:42+0200\n"
-"PO-Revision-Date: 2017-06-28 11:15+0000\n"
+"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"PO-Revision-Date: 2017-07-07 09:30+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -381,11 +381,11 @@ msgstr "Confirmation"
 msgid "Old password mismatchs"
 msgstr "L'ancien mot de passe est incorrect"
 
-#: core/forms.py:84
+#: core/forms.py:86
 msgid "Passwords mismatch"
 msgstr "Les mots de passe diffèrent"
 
-#: core/forms.py:104
+#: core/forms.py:106
 msgid "Enable API access"
 msgstr "Activer l'accès API"
 
@@ -414,76 +414,64 @@ msgstr "Vous ne pouvez pas supprimer votre propre compte"
 msgid "One or more updates are available"
 msgstr "Une ou plusieurs mises à jour sont disponibles!"
 
-#: core/models.py:57
-msgid "First name"
-msgstr "Prénom"
-
-#: core/models.py:59
-msgid "Last name"
-msgstr "Nom"
-
-#: core/models.py:66
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr "Autoriser l'accès aux boites"
 
-#: core/models.py:68
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Autoriser cet administrateur à accéder aux boites des utilisateurs"
 
-#: core/models.py:71
+#: core/models.py:63
 msgid "password"
 msgstr "mot de passe"
 
-#: core/models.py:73
-msgid "last login"
-msgstr "dernière connexion"
-
-#: core/models.py:77
+#: core/models.py:66
 msgid "language"
 msgstr "langue"
 
-#: core/models.py:80
+#: core/models.py:69
 msgid "Prefered language to display pages."
 msgstr "Langage préféré pour afficher les pages"
 
-#: core/models.py:84
+#: core/models.py:73
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: core/models.py:86
+#: core/models.py:75
 msgid "Secondary email"
 msgstr "Email secondaire"
 
-#: core/models.py:89
+#: core/models.py:78
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "Une adresse e-mail alternative ou de secours."
 
-#: core/models.py:144
+#: core/models.py:128
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
 
-#: core/models.py:203
+#: core/models.py:157
 msgid "account"
 msgstr "compte"
 
-#: core/models.py:325
+#: core/models.py:279
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: core/models.py:359
+#: core/models.py:313
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: core/models.py:367
+#: core/models.py:321
 msgid "You can't import an account with a role greater than yours"
 msgstr "Vous ne pouvez pas importer un compte avec un rôle supérieur au votre"
 
-#: core/models.py:382
+#: core/models.py:336
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "L'utilisateur simple '%s' doit avoir une adresse email valide"
 
-#: core/models.py:387
+#: core/models.py:341
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "Les champs username et email de '%s' ne doivent pas différer"

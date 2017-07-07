@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-27 16:42+0200\n"
+"POT-Creation-Date: 2017-07-07 11:29+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -126,7 +126,7 @@ msgstr ""
 "アカウントが自動的に作成されたとき、ドメインとメールボックを作成します。"
 
 #: admin/app_settings.py:146 admin/app_settings.py:154
-#: admin/forms/account.py:293
+#: admin/forms/account.py:301
 msgid "Must be a positive integer"
 msgstr "正の整数でなければいけません"
 
@@ -187,16 +187,16 @@ msgstr "スーパー管理者だけが、このモードのために許可され
 msgid "You can't disable your own account"
 msgstr "あなた自身のアカウントは無効化できません"
 
-#: admin/forms/account.py:197
+#: admin/forms/account.py:205
 msgid "E-mail"
 msgstr "電子メール"
 
-#: admin/forms/account.py:199 admin/templates/admin/account_detail.html:45
+#: admin/forms/account.py:207 admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:57
 msgid "Quota"
 msgstr "クォータ"
 
-#: admin/forms/account.py:201
+#: admin/forms/account.py:209
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -207,12 +207,12 @@ msgstr ""
 "無制限の値を定義する場合は空白のままにします\n"
 "（ドメイン管理者には許可されていません）"
 
-#: admin/forms/account.py:209 admin/forms/domain.py:42
+#: admin/forms/account.py:217 admin/forms/domain.py:42
 #: admin/templates/admin/domains.html:35
 msgid "Alias(es)"
 msgstr "エイリアス"
 
-#: admin/forms/account.py:212
+#: admin/forms/account.py:220
 #, fuzzy
 #| msgid ""
 #| "Alias(es) of this mailbox. Indicate only one address per input, press "
@@ -229,61 +229,65 @@ msgstr ""
 " 「キャッチオール」エイリアスを作成するには、 ' * '文字を使用してください  "
 "(例: *@domain.tld)"
 
-#: admin/forms/account.py:218
+#: admin/forms/account.py:226
 msgid "Sender addresses"
 msgstr ""
 
-#: admin/forms/account.py:221
+#: admin/forms/account.py:229
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
 msgstr ""
 
-#: admin/forms/account.py:271 admin/forms/alias.py:94
-#: admin/models/mailbox.py:313
+#: admin/forms/account.py:279 admin/forms/alias.py:94
+#: admin/models/mailbox.py:315
 msgid "Domain does not exist"
 msgstr "ドメインは存在しません"
 
-#: admin/forms/account.py:303
+#: admin/forms/account.py:311
 msgid "Local domain does not exist"
 msgstr "ローカルドメインは存在しません"
 
-#: admin/forms/account.py:307 admin/forms/account.py:315
+#: admin/forms/account.py:315 admin/forms/account.py:323
 #: admin/forms/alias.py:97
 msgid "You don't have access to this domain"
 msgstr "このドメインにアクセスする権限がありません"
 
-#: admin/forms/account.py:408
+#: admin/forms/account.py:416
 msgid "Domain(s)"
 msgstr "ドメイン"
 
-#: admin/forms/account.py:410
+#: admin/forms/account.py:418
 msgid "Domain(s) that user administrates"
 msgstr "ユーザーに管理されたドメイン"
 
-#: admin/forms/account.py:456 admin/forms/account.py:542
+#: admin/forms/account.py:464 admin/forms/account.py:554
 #: admin/forms/domain.py:309 admin/forms/domain.py:376
 msgid "General"
 msgstr "全般"
 
-#: admin/forms/account.py:461 admin/forms/account.py:548
+#: admin/forms/account.py:468
+msgid "Profile"
+msgstr ""
+
+#: admin/forms/account.py:472 admin/forms/account.py:560
 msgid "Mail"
 msgstr "メール"
 
-#: admin/forms/account.py:464
+#: admin/forms/account.py:475
 msgid "Permissions"
 msgstr "アクセス許可"
 
-#: admin/forms/account.py:531
+#: admin/forms/account.py:543
 msgid "Account updated"
 msgstr "アカウントを更新しました"
 
-#: admin/forms/account.py:556
+#: admin/forms/account.py:568
 msgid "New account"
 msgstr "新しいアカウト"
 
-#: admin/forms/account.py:568
+#: admin/forms/account.py:580
 msgid "Account created"
 msgstr "アカウントを作成しました"
 
@@ -491,7 +495,7 @@ msgstr ""
 msgid "Account import failed (%s): domain does not exist"
 msgstr "アカウントのインポートに失敗しました  (%s):  ドメインが存在しません"
 
-#: admin/handlers.py:217 admin/models/mailbox.py:338
+#: admin/handlers.py:217 admin/models/mailbox.py:340
 msgid "Mailbox {} already exists"
 msgstr "メールボックス {} はすでに存在します"
 
@@ -540,7 +544,7 @@ msgstr ""
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr ""
 
-#: admin/models/alias.py:35 admin/models/mailbox.py:95
+#: admin/models/alias.py:35 admin/models/mailbox.py:97
 msgid "address"
 msgstr "アドレス"
 
@@ -670,20 +674,20 @@ msgstr "ドメインこのエイリアスポイントへ"
 msgid "Unknown domain %s"
 msgstr "不明なドメイン %s"
 
-#: admin/models/mailbox.py:97
+#: admin/models/mailbox.py:99
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "メールボックスアドレス (@domain.tld 部分なし)"
 
-#: admin/models/mailbox.py:163
+#: admin/models/mailbox.py:165
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "メールボックスの場所の取得に失敗しました (%s)"
 
-#: admin/models/mailbox.py:256
+#: admin/models/mailbox.py:258
 msgid "A quota is required"
 msgstr "クォータは必須です"
 
-#: admin/models/mailbox.py:262
+#: admin/models/mailbox.py:264
 #, fuzzy
 #| msgid "Domain created"
 msgid "Domain quota exceeded"
@@ -1182,12 +1186,12 @@ msgstr "ID をエクスポート"
 msgid "Export domains"
 msgstr "ドメインをエクスポート"
 
-#: admin/views/identity.py:112 admin/views/identity.py:204
-#: admin/views/identity.py:209
+#: admin/views/identity.py:112 admin/views/identity.py:205
+#: admin/views/identity.py:210
 msgid "Invalid request"
 msgstr "不正なリクエスト"
 
-#: admin/views/identity.py:194
+#: admin/views/identity.py:195
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "アカウントを削除しました"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-27 16:42+0200\n"
+"POT-Creation-Date: 2017-07-07 11:29+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -411,11 +411,11 @@ msgstr "Potvrzení"
 msgid "Old password mismatchs"
 msgstr "Původní heslo se neshoduje"
 
-#: core/forms.py:84
+#: core/forms.py:86
 msgid "Passwords mismatch"
 msgstr "Hesla se neshodují"
 
-#: core/forms.py:104
+#: core/forms.py:106
 msgid "Enable API access"
 msgstr ""
 
@@ -446,84 +446,68 @@ msgstr "Nemůžete smazat vlastní účet"
 msgid "One or more updates are available"
 msgstr "Je dostupná aktualizace!"
 
-#: core/models.py:57
-#, fuzzy
-#| msgid "Group name"
-msgid "First name"
-msgstr "Název skupiny"
-
-#: core/models.py:59
-#, fuzzy
-#| msgid "Last login"
-msgid "Last name"
-msgstr "Poslední přihlášení"
-
-#: core/models.py:66
+#: core/models.py:58
 msgid "Allow mailboxes access"
 msgstr ""
 
-#: core/models.py:68
+#: core/models.py:60
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:71
+#: core/models.py:63
 msgid "password"
 msgstr "heslo"
 
-#: core/models.py:73
-msgid "last login"
-msgstr "poslední přihlášení"
-
-#: core/models.py:77
+#: core/models.py:66
 #, fuzzy
 #| msgid "Prefered language"
 msgid "language"
 msgstr "Preferovaný jazyk"
 
-#: core/models.py:80
+#: core/models.py:69
 #, fuzzy
 #| msgid "Prefered language to display pages"
 msgid "Prefered language to display pages."
 msgstr "Preferovaný jazyk pro zobrazení stránek"
 
-#: core/models.py:84
+#: core/models.py:73
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:86
+#: core/models.py:75
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:89
+#: core/models.py:78
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:144
+#: core/models.py:128
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 
-#: core/models.py:203
+#: core/models.py:157
 msgid "account"
 msgstr "účet"
 
-#: core/models.py:325
+#: core/models.py:279
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:359
+#: core/models.py:313
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: core/models.py:367
+#: core/models.py:321
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nemůžete importvat účet s vyšším oprávněním, než máte vy sám"
 
-#: core/models.py:382
+#: core/models.py:336
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Běžný uživatel '%s' musí mít nastavenou platnou emailovou adresu"
 
-#: core/models.py:387
+#: core/models.py:341
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "pole uživatelského jména a emailu se nesmí pro '%s' lišit"
@@ -882,9 +866,8 @@ msgstr "Chyba:"
 msgid "Help:"
 msgstr "Nápověda:"
 
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Zavřít"
 
@@ -962,6 +945,19 @@ msgstr ""
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Group name"
+#~ msgid "First name"
+#~ msgstr "Název skupiny"
+
+#, fuzzy
+#~| msgid "Last login"
+#~ msgid "Last name"
+#~ msgstr "Poslední přihlášení"
+
+#~ msgid "last login"
+#~ msgstr "poslední přihlášení"
 
 #, fuzzy
 #~| msgid "User '%s' logged out"
