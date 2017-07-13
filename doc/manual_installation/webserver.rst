@@ -40,7 +40,9 @@ following content inside::
     </Directory>
 
     WSGIScriptAlias / <modoboa_instance_path>/<instance_name>/wsgi.py
-  
+
+    # Pass Authorization header to enable API usage:
+    WSGIPassAuthorization On
   </VirtualHost>
 
 This is just one possible configuration.
