@@ -57,11 +57,11 @@ def dologin(request):
                    "user": form.cleaned_data["username"]}
             )
 
-        nextlocation = request.POST.get("next", None)
+        nextlocation = request.POST.get("next", "")
         httpcode = 401
     else:
         form = forms.LoginForm()
-        nextlocation = request.GET.get("next", None)
+        nextlocation = request.GET.get("next", "")
         httpcode = 200
 
     announcements = signals.get_announcements.send(
@@ -74,6 +74,7 @@ def dologin(request):
                 "annoucements": announcements},
             request),
         status=httpcode)
+
 
 dologin = never_cache(dologin)
 
