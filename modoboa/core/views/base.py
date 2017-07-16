@@ -18,7 +18,7 @@ def find_nextlocation(request, user):
         return reverse("core:user_index")
     nextlocation = request.POST.get("next", request.GET.get("next"))
     condition = (
-        nextlocation is not None and nextlocation != "" and
+        nextlocation is not None and nextlocation != "" and nextlocation != "None" and
         is_safe_url(nextlocation, host=request.get_host())
     )
     if condition:
