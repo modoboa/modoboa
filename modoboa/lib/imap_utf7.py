@@ -63,12 +63,12 @@ import codecs
 
 def modified_base64(s):
     s = s.encode('utf-16be')
-    return binascii.b2a_base64(s).rstrip('\n=').replace('/', ',')
+    return binascii.b2a_base64(s).rstrip(b'\n=').replace(b'/', b',')
 
 
 def doB64(_in, r):
     if _in:
-        r.append('&%s-' % modified_base64(''.join(_in)))
+        r.append(b'&%s-' % modified_base64(b''.join(_in)))
         del _in[:]
 
 
@@ -79,41 +79,41 @@ def encoder(s):
         ordC = ord(c)
         if 0x20 <= ordC <= 0x25 or 0x27 <= ordC <= 0x7e:
             doB64(_in, r)
-            r.append(c)
+            r.append(c.encode())
         elif c == '&':
             doB64(_in, r)
-            r.append('&-')
+            r.append(b'&-')
         else:
             _in.append(c)
     doB64(_in, r)
-    return (str(''.join(r)), len(s))
+    return (b''.join(r), len(s))
 
 
 # decoding
 
 def modified_unbase64(s):
-    b = binascii.a2b_base64(s.replace(',', '/') + '===')
-    return force_text(b, encoding='utf-16be')
+    b = binascii.a2b_base64(s.replace(b',', b'/') + b'===')
+    return b.decode('utf-16be')
 
 
 def decoder(s):
     r = []
-    decode = []
+    decode = bytearray()
     for c in s:
-        if c == '&' and not decode:
-            decode.append('&')
-        elif c == '-' and decode:
+        if c == ord('&') and not decode:
+            decode.append(ord('&'))
+        elif c == ord('-') and decode:
             if len(decode) == 1:
                 r.append('&')
             else:
                 r.append(modified_unbase64(''.join(decode[1:])))
-            decode = []
+            decode = bytearray()
         elif decode:
             decode.append(c)
         else:
-            r.append(c)
+            r.append(chr(c))
     if decode:
-        r.append(modified_unbase64(''.join(decode[1:])))
+        r.append(modified_unbase64(decode[1:]))
     bin_str = ''.join(r)
     return (bin_str, len(s))
 

@@ -22,7 +22,7 @@ jsonfield==1.0.3
 passlib==1.6.5
 progressbar33==2.4
 py-dateutil==2.2
-pycrypto
+cryptography
 pytz
 requests
 rfc6266

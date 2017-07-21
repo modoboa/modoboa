@@ -9,7 +9,8 @@ import string
 
 from django.utils.encoding import force_bytes, force_text
 
-from Crypto.Cipher import AES
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
 
 from modoboa.parameters import tools as param_tools
 
@@ -29,27 +30,27 @@ def random_key(l=16):
 
 
 def encrypt(clear):
+    key = force_bytes(
+        param_tools.get_global_parameter("secret_key", app="core"))
+    backend = default_backend()
+    cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=backend)
+    encryptor = cipher.encryptor()
+    block_size = algorithms.AES.block_size
+    if len(clear) % block_size:
+        clear += " " * (block_size - len(clear) % block_size)
+    ct = encryptor.update(force_bytes(clear)) + encryptor.finalize()
+    return force_text(base64.b64encode(ct))
+
+
+def decrypt(ct):
+    backend = default_backend()
     key = param_tools.get_global_parameter("secret_key", app="core")
-    obj = AES.new(key, AES.MODE_ECB)
-    if type(clear) is str:
-        clear = clear.encode("utf-8")
-    if len(clear) % AES.block_size:
-        clear += (
-            force_bytes(" ") * (AES.block_size - len(clear) % AES.block_size)
-        )
-    ciph = obj.encrypt(clear)
-    ciph = base64.b64encode(ciph)
-    return force_text(ciph)
-
-
-def decrypt(ciph):
-    obj = AES.new(
-        param_tools.get_global_parameter(
-            "secret_key", app="core"), AES.MODE_ECB
-    )
-    ciph = base64.b64decode(ciph)
-    clear = obj.decrypt(ciph)
-    return clear.rstrip(' ')
+    cipher = Cipher(
+        algorithms.AES(force_bytes(key)), modes.ECB(), backend=backend)
+    ct = base64.b64decode(force_bytes(ct))
+    decryptor = cipher.decryptor()
+    clear = decryptor.update(ct) + decryptor.finalize()
+    return force_text(clear.rstrip(b" "))
 
 
 def get_password(request):
