@@ -334,6 +334,9 @@ class MXRecord(models.Model):
     def __unicode__(self):
         return u"{0.name} ({0.address}) for {0.domain} ".format(self)
 
+    def __str__(self):
+        return "{0.name} ({0.address}) for {0.domain} ".format(self)
+
 
 class DNSBLQuerySet(models.QuerySet):
     """Custom manager for DNSBLResultManager."""

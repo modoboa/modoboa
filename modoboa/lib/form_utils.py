@@ -384,6 +384,17 @@ class CustomRadioInput(RadioChoiceInput):
             % (label_for, self.tag(), choice_label)
         )
 
+    def __str__(self):
+        if "id" in self.attrs:
+            label_for = ' for="%s"' % self.attrs["id"]
+        else:
+            label_for = ""
+        choice_label = conditional_escape(force_text(self.choice_label))
+        return mark_safe(
+            "<label class='radio-inline' %s>%s %s</label>"
+            % (label_for, self.tag(), choice_label)
+        )
+
 
 class InlineRadioRenderer(RadioSelect.renderer):
     """Custom inline radio renderer."""

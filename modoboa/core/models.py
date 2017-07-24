@@ -420,6 +420,11 @@ class ObjectAccess(models.Model):
             self.user, self.content_object, self.content_type
         )
 
+    def __str__(self):
+        return "%s => %s (%s)" % (
+            self.user, self.content_object, self.content_type
+        )
+
 
 class Log(models.Model):
     """Simple log in database."""
