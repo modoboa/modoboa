@@ -13,7 +13,7 @@ from django.forms.fields import Field
 from django.forms.widgets import RadioSelect
 from django.forms.widgets import RadioChoiceInput
 from django.shortcuts import render
-from django.utils.encoding import force_text, force_str
+from django.utils.encoding import python_2_unicode_compatible, force_text, force_str
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -370,17 +370,18 @@ class TabForms(object):
 #
 
 
+@python_2_unicode_compatible
 class CustomRadioInput(RadioChoiceInput):
     """Custom radio input."""
 
-    def __unicode__(self):
+    def __str__(self):
         if "id" in self.attrs:
             label_for = ' for="%s"' % self.attrs["id"]
         else:
             label_for = ""
         choice_label = conditional_escape(force_text(self.choice_label))
         return mark_safe(
-            u"<label class='radio-inline' %s>%s %s</label>"
+            "<label class='radio-inline' %s>%s %s</label>"
             % (label_for, self.tag(), choice_label)
         )
 

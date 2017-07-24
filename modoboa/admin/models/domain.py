@@ -315,6 +315,7 @@ class MXQuerySet(models.QuerySet):
         return self.exists()
 
 
+@python_2_unicode_compatible
 class MXRecord(models.Model):
     """A model used to store MX records for Domain."""
 
@@ -331,8 +332,8 @@ class MXRecord(models.Model):
             return False
         return bool(param_tools.get_global_parameter("valid_mxs").strip())
 
-    def __unicode__(self):
-        return u"{0.name} ({0.address}) for {0.domain} ".format(self)
+    def __str__(self):
+        return "{0.name} ({0.address}) for {0.domain} ".format(self)
 
 
 class DNSBLQuerySet(models.QuerySet):
