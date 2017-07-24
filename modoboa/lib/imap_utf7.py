@@ -53,22 +53,21 @@ http://svn.plone.org/svn/collective/mxmImapClient/trunk/imapUTF7.py
 """
 from __future__ import print_function, unicode_literals
 
-from django.utils.encoding import force_text
-
-import binascii
 import codecs
 
 # encoding
 
+PRINTABLE = set(range(0x20, 0x26)) | set(range(0x27, 0x7f))
 
-def modified_base64(s):
-    s = s.encode('utf-16be')
-    return binascii.b2a_base64(s).rstrip(b'\n=').replace(b'/', b',')
+
+def modified_utf7(s):
+    s_utf7 = s.encode('utf-7')
+    return s_utf7[1:-1].replace(b'/', b',')
 
 
 def doB64(_in, r):
     if _in:
-        r.append(b'&%s-' % modified_base64(b''.join(_in)))
+        r.extend([b'&', modified_utf7(''.join(_in)), b'-'])
         del _in[:]
 
 
@@ -76,8 +75,7 @@ def encoder(s):
     r = []
     _in = []
     for c in s:
-        ordC = ord(c)
-        if 0x20 <= ordC <= 0x25 or 0x27 <= ordC <= 0x7e:
+        if ord(c) in PRINTABLE:
             doB64(_in, r)
             r.append(c.encode())
         elif c == '&':
@@ -91,29 +89,30 @@ def encoder(s):
 
 # decoding
 
-def modified_unbase64(s):
-    b = binascii.a2b_base64(s.replace(b',', b'/') + b'===')
-    return b.decode('utf-16be')
+
+def modified_unutf7(s):
+    s_utf7 = b'+' + s.replace(b',', b'/') + b'-'
+    return s_utf7.decode('utf-7')
 
 
 def decoder(s):
     r = []
-    decode = bytearray()
+    decoded = bytearray()
     for c in s:
-        if c == ord('&') and not decode:
-            decode.append(ord('&'))
-        elif c == ord('-') and decode:
-            if len(decode) == 1:
+        if c == ord('&') and not decoded:
+            decoded.append(ord('&'))
+        elif c == ord('-') and decoded:
+            if len(decoded) == 1:
                 r.append('&')
             else:
-                r.append(modified_unbase64(''.join(decode[1:])))
-            decode = bytearray()
-        elif decode:
-            decode.append(c)
+                r.append(modified_unutf7(decoded[1:]))
+            decoded = bytearray()
+        elif decoded:
+            decoded.append(c)
         else:
             r.append(chr(c))
-    if decode:
-        r.append(modified_unbase64(decode[1:]))
+    if decoded:
+        r.append(modified_unutf7(decoded[1:]))
     bin_str = ''.join(r)
     return (bin_str, len(s))
 
