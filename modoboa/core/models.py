@@ -405,6 +405,7 @@ def populate_callback(user, group="SimpleUsers"):
         sender="populate_callback", user=user)
 
 
+@python_2_unicode_compatible
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User)
     content_type = models.ForeignKey(ContentType)
@@ -414,11 +415,6 @@ class ObjectAccess(models.Model):
 
     class Meta(object):
         unique_together = (("user", "content_type", "object_id"),)
-
-    def __unicode__(self):
-        return "%s => %s (%s)" % (
-            self.user, self.content_object, self.content_type
-        )
 
     def __str__(self):
         return "%s => %s (%s)" % (
