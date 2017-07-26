@@ -78,7 +78,7 @@ class Email(object):
         """
         fname = msg.get_filename()
         if fname is not None:
-            if type(fname) is six.text_type:
+            if isinstance(fname, six.text_type):
                 fname = fname.encode("utf-8")
             decoded = decode_header(fname)
             value = (
@@ -218,7 +218,9 @@ class Email(object):
             body = lxml.html.tostring(html)
         else:
             body = lxml.html.tostring(body)
-            body = re.sub("<(/?)body", lambda m: "<%sdiv" % m.group(1), body)
+            body = re.sub(
+                "<(/?)body", lambda m: "<%sdiv" % m.group(1),
+                body.decode())
         return body
 
 
@@ -284,7 +286,7 @@ def prepare_addresses(addresses, usage="header"):
             continue
         name, addr = parseaddr(address)
         if name and usage == "header":
-            result.append("%s <%s>" % (Header(name, 'utf8').encode(), addr))
+            result.append("%s <%s>" % (Header(name, 'utf8'), addr))
         else:
             result.append(addr)
     if usage == "header":
