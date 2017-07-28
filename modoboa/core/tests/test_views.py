@@ -156,6 +156,7 @@ class SettingsTestCase(ModoTestCase):
         "core-default_password": "Toto1000",
         "limits-deflt_user_quota_limit": "0",
         "core-hide_features_widget": "False",
+        "core-inactive_account_threshold": "30",
     }
 
     def test_get_settings(self):
@@ -169,6 +170,7 @@ class SettingsTestCase(ModoTestCase):
         """Test settings save."""
         url = reverse("core:parameters")
         response = self.client.post(url, self.settings_sample, format="json")
+        print response.content
         self.assertEqual(response.status_code, 200)
         self.settings_sample["core-rounds_number"] = ""
         response = self.client.post(url, self.settings_sample, format="json")
