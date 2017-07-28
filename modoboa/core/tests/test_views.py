@@ -170,7 +170,6 @@ class SettingsTestCase(ModoTestCase):
         """Test settings save."""
         url = reverse("core:parameters")
         response = self.client.post(url, self.settings_sample, format="json")
-        print response.content
         self.assertEqual(response.status_code, 200)
         self.settings_sample["core-rounds_number"] = ""
         response = self.client.post(url, self.settings_sample, format="json")
