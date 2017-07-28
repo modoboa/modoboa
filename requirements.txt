@@ -13,13 +13,13 @@ djangorestframework==3.6.2
 
 argparse
 # bcrypt requires libffi-dev
-bcrypt==2.0.0
+bcrypt==3.1.3
 dnspython==1.15.0
 feedparser==5.2.1
 gevent==1.2.1
 ipaddress
 jsonfield==1.0.3
-passlib==1.6.5
+passlib==1.7.1
 progressbar33==2.4
 py-dateutil==2.2
 cryptography
