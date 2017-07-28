@@ -118,9 +118,9 @@ def ungrant_access_to_object(obj, user=None):
 
 
 def ungrant_access_to_objects(objects):
-    """Cancel all accesses for a given objects list
+    """Cancel all accesses for a given object list.
 
-    :param objects: a list of objects inheriting from ``model.Model``
+    :param objects: a list of objects inheriting from ``models.Model``
     """
     for obj in objects:
         ct = ContentType.objects.get_for_model(obj)

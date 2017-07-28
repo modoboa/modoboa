@@ -92,14 +92,17 @@ def create_local_config(sender, **kwargs):
 @receiver(signals.pre_delete, sender=models.User)
 def update_permissions(sender, instance, **kwargs):
     """Permissions cleanup."""
-    from_user = get_request().user
-    if from_user == instance:
-        raise exceptions.PermDeniedException(
-            _("You can't delete your own account")
-        )
+    request = get_request()
+    # request migth be None (management command context)
+    if request:
+        from_user = request.user
+        if from_user == instance:
+            raise exceptions.PermDeniedException(
+                _("You can't delete your own account")
+            )
 
-    if not from_user.can_access(instance):
-        raise exceptions.PermDeniedException
+        if not from_user.can_access(instance):
+            raise exceptions.PermDeniedException
 
     # We send an additional signal before permissions are removed
     core_signals.account_deleted.send(

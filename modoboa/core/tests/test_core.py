@@ -5,10 +5,12 @@ from __future__ import unicode_literals
 import httmock
 
 from dateutil.relativedelta import relativedelta
+from six import StringIO
 
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.utils import timezone
 
 from modoboa.lib.tests import ModoTestCase
 
@@ -71,6 +73,39 @@ class ManagementCommandsTestCase(TestCase):
         log1.save(update_fields=["date_created"])
         management.call_command("cleanlogs")
         self.assertEqual(models.Log.objects.count(), 1)
+
+    def test_clean_inactive_accounts(self):
+        """Run clean_inactive_accounts command."""
+        management.call_command("load_initial_data")
+
+        # no inactive account, should exit normaly
+        management.call_command("clean_inactive_accounts")
+
+        last_login = timezone.now() - relativedelta(days=45)
+        account = factories.UserFactory(
+            username="user1@domain.test", groups=("SimpleUsers", ),
+            last_login=last_login
+        )
+        management.call_command("clean_inactive_accounts", "--dry-run")
+        account.refresh_from_db()
+        self.assertTrue(account.is_active)
+
+        out = StringIO()
+        management.call_command(
+            "clean_inactive_accounts", "--verbose", "--dry-run", stdout=out)
+        self.assertIn("user1@domain.test", out.getvalue())
+
+        management.call_command("clean_inactive_accounts", "--silent")
+        account.refresh_from_db()
+        self.assertFalse(account.is_active)
+
+        account.is_active = True
+        account.save(update_fields=["is_active"])
+
+        management.call_command(
+            "clean_inactive_accounts", "--silent", "--delete")
+        with self.assertRaises(models.User.DoesNotExist):
+            account.refresh_from_db()
 
 
 class ProfileTestCase(ModoTestCase):
