@@ -70,11 +70,15 @@ def log_object_removal(sender, instance, **kwargs):
     except Version.DoesNotExist:
         return
     logger = logging.getLogger("modoboa.admin")
-    msg = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
+    msg = _("%(object)s '%(name)s' %(action)s by ") % {
         "object": smart_text(version.content_type).capitalize(),
-        "name": version.object_repr, "action": _("deleted"),
-        "user": get_request().user.username
+        "name": version.object_repr, "action": _("deleted")
     }
+    request = get_request()
+    if request:
+        msg += _("user {}").format(request.user.username)
+    else:
+        msg += _("management command")
     logger.critical(msg)
 
 
