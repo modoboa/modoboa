@@ -75,7 +75,7 @@ example, when you rename an e-mail address through the web UI, the
 associated mailbox on the file system is not modified
 directly. Instead of that, a *rename* order is created for this
 mailbox. The mailbox will be considered unavailable until the order is
-not executed (see :ref:`Postfix configuration <postfix_config>`).
+executed (see :ref:`Postfix configuration <postfix_config>`).
 
 Edit the crontab of the user who owns the mailboxes on the file system::
 
