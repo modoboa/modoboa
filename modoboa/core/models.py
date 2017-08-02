@@ -8,7 +8,7 @@ import re
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import (
-    python_2_unicode_compatible, smart_bytes, smart_text, force_str, force_text
+    python_2_unicode_compatible, smart_bytes, smart_text, force_str
 )
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -365,14 +365,14 @@ class User(AbstractUser):
         :param csvwriter: csv object
         """
         row = [
-            "account",
-            force_text(self.username),
-            force_text(self.password),
-            force_text(self.first_name),
-            force_text(self.last_name),
-            force_text(self.is_active),
-            force_text(self.role),
-            force_text(self.email)
+            b"account",
+            smart_bytes(self.username),
+            smart_bytes(self.password),
+            smart_bytes(self.first_name),
+            smart_bytes(self.last_name),
+            smart_bytes(self.is_active),
+            smart_bytes(self.role),
+            smart_bytes(self.email)
         ]
         results = signals.account_exported.send(
             sender=self.__class__, user=self)

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """Export related test cases."""
 
 from __future__ import unicode_literals
@@ -70,11 +72,16 @@ class ExportTestCase(ModoTestCase):
         )
 
     def test_export_simpleusers(self):
+        factories.MailboxFactory(
+            user__username="toto@test.com",
+            user__first_name="Léon", user__groups=("SimpleUsers", ),
+            address="toto", domain__name="test.com",
+        )
         response = self.__export_identities(
             idtfilter="account", grpfilter="SimpleUsers"
         )
         self.assertListEqual(
-            "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10",
+            "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\naccount;toto@test.com;{PLAIN}toto;Léon;;True;SimpleUsers;toto@test.com;10",
             response.content.strip()
         )
 
