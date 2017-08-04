@@ -8,7 +8,7 @@ import re
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import (
-    python_2_unicode_compatible, smart_bytes, smart_text, force_str, force_text
+    python_2_unicode_compatible, smart_bytes, smart_text, force_str
 )
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -366,13 +366,13 @@ class User(AbstractUser):
         """
         row = [
             "account",
-            force_text(self.username),
-            force_text(self.password),
-            force_text(self.first_name),
-            force_text(self.last_name),
-            force_text(self.is_active),
-            force_text(self.role),
-            force_text(self.email)
+            force_str(self.username),
+            force_str(self.password),
+            force_str(self.first_name),
+            force_str(self.last_name),
+            force_str(self.is_active),
+            force_str(self.role),
+            force_str(self.email)
         ]
         results = signals.account_exported.send(
             sender=self.__class__, user=self)
