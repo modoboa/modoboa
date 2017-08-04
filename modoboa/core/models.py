@@ -365,14 +365,14 @@ class User(AbstractUser):
         :param csvwriter: csv object
         """
         row = [
-            b"account",
-            smart_bytes(self.username),
-            smart_bytes(self.password),
-            smart_bytes(self.first_name),
-            smart_bytes(self.last_name),
-            smart_bytes(self.is_active),
-            smart_bytes(self.role),
-            smart_bytes(self.email)
+            "account",
+            force_str(self.username),
+            force_str(self.password),
+            force_str(self.first_name),
+            force_str(self.last_name),
+            force_str(self.is_active),
+            force_str(self.role),
+            force_str(self.email)
         ]
         results = signals.account_exported.send(
             sender=self.__class__, user=self)
