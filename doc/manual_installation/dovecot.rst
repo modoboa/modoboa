@@ -400,3 +400,57 @@ Finally, configure the ``sieve`` plugin by editing the
 Restart Dovecot.
 
 Now, you can go to the :ref:`postfix` section to finish the installation.
+
+Last-login tracking
+===================
+
+To update the ``last_login`` attribute of an account after a succesful
+IMAP or POP3 login, you can configure a `post-login script
+<https://wiki.dovecot.org/PostLoginScripting>`_.
+
+Open :file:`conf.d/10-master.conf` add the following configuration
+(``imap`` and ``pop3`` services are already defined, you just need to
+update them)::
+
+  service imap {
+    executable = imap postlogin
+  }
+
+  service pop3 {
+    executable = pop3 postlogin
+  }
+
+  service postlogin {
+    executable = script-login /usr/local/bin/postlogin.sh
+    user = modoboa
+    unix_listener postlogin {
+    }
+  }
+
+Then, you must create a script named
+:file:`/usr/local/bin/postlogin.sh`. According to your database
+engine, the content will differ.
+
+PostgreSQL
+----------
+
+::
+   #!/bin/sh
+
+   psql -c "UPDATE core_user SET last_login=now() WHERE username='$USER'" > /dev/null
+
+   exec "$@"
+
+MySQL
+-----
+
+::
+   #!/bin/sh
+
+   DBNAME=XXX
+   DBUSER=XXX
+   DBPASSWORD=XXX
+
+   echo "UPDATE core_user SET last_login=now() WHERE username='$USER'" | mysql -u $DBUSER -p$DBPASSWORD $DBNAME
+
+   exec "$@"

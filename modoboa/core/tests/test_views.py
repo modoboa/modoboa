@@ -156,6 +156,7 @@ class SettingsTestCase(ModoTestCase):
         "core-default_password": "Toto1000",
         "limits-deflt_user_quota_limit": "0",
         "core-hide_features_widget": "False",
+        "core-inactive_account_threshold": "30",
     }
 
     def test_get_settings(self):

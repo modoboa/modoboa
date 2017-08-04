@@ -114,13 +114,21 @@ def mailbox_deleted_handler(sender, **kwargs):
             alias.delete()
     models.Quota.objects.filter(username=mb.full_address).delete()
     request = lib_signals.get_request()
-    if not request.localconfig.parameters.get_value(
-            "handle_mailboxes", raise_exception=False):
-        return
-    keepdir = request.POST.get("keepdir", "false") == "true"
-    if keepdir:
-        return
-    mb.delete_dir()
+    if request:
+        if not request.localconfig.parameters.get_value(
+                "handle_mailboxes", raise_exception=False):
+            return
+        keepdir = request.POST.get("keepdir", "false") == "true"
+        if keepdir:
+            return
+        mb.delete_dir()
+    else:
+        # Management command context
+        localconfig = core_models.LocalConfig.objects.first()
+        if not localconfig.parameters.get_value(
+                "handle_mailboxes", raise_exception=False):
+            return
+        mb.delete_dir()
 
 
 @receiver(signals.post_delete, sender=models.Mailbox)

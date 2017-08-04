@@ -271,6 +271,16 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
 
+    inactive_account_threshold = forms.IntegerField(
+        label=_("Inactive account threshold"),
+        initial=30,
+        help_text=_(
+            "An account with a last login date greater than this threshold "
+            "(in days) will be considered as inactive"
+        ),
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+
     top_notifications_check_interval = forms.IntegerField(
         label=_("Top notifications check interval"),
         initial=30,
