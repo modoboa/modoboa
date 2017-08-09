@@ -6,7 +6,7 @@ from django import http
 
 from django.contrib.contenttypes.models import ContentType
 
-from rest_framework import status, viewsets
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
@@ -62,8 +62,10 @@ class DomainAliasViewSet(viewsets.ModelViewSet):
 class AccountViewSet(viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    filter_backends = [filters.SearchFilter]
     http_method_names = ["get", "post", "put", "delete"]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    search_fields = ("^first_name", "^last_name", "^email")
 
     def get_serializer_class(self):
         """Return a serializer."""
