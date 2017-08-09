@@ -231,6 +231,11 @@ class AccountAPITestCase(ModoAPITestCase):
         response = response.json()
         self.assertEqual(len(response), 0)
 
+        response = self.client.get("{}?search=user@test.com".format(url))
+        self.assertEqual(response.status_code, 200)
+        response = response.json()
+        self.assertEqual(len(response), 1)
+
     def test_create_account(self):
         """Try to create a new account."""
         url = reverse("api:account-list")
