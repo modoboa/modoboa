@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"POT-Creation-Date: 2017-08-09 13:29+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -308,52 +308,62 @@ msgid "Miscellaneous"
 msgstr "その他"
 
 #: core/app_settings.py:275
+msgid "Inactive account threshold"
+msgstr ""
+
+#: core/app_settings.py:278
+msgid ""
+"An account with a last login date greater than this threshold (in days) will "
+"be considered as inactive"
+msgstr ""
+
+#: core/app_settings.py:285
 msgid "Top notifications check interval"
 msgstr "トップの通知をチェックする間隔"
 
-#: core/app_settings.py:278
+#: core/app_settings.py:288
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "2つのトップの通知チェックの間隔 (秒)"
 
-#: core/app_settings.py:284
+#: core/app_settings.py:294
 msgid "Maximum log record age"
 msgstr "最大ログ記録期間"
 
-#: core/app_settings.py:286
+#: core/app_settings.py:296
 msgid "The maximum age in days of a log record"
 msgstr "ログを記録する日数の最大期間"
 
-#: core/app_settings.py:291
+#: core/app_settings.py:301
 msgid "Items per page"
 msgstr "ページあたりの件数"
 
-#: core/app_settings.py:293
+#: core/app_settings.py:303
 msgid "Number of displayed items per page"
 msgstr "ページあたりに表示される項目の数"
 
-#: core/app_settings.py:298
+#: core/app_settings.py:308
 msgid "Default top redirection"
 msgstr "デフォルトのリダイレクト先"
 
-#: core/app_settings.py:302
+#: core/app_settings.py:312
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "アプリケーションが指定されていないときのデフォルトのリダイレクト先に使用され"
 "ます"
 
-#: core/app_settings.py:335
+#: core/app_settings.py:345
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "キーは、16, 24, 32 バイトのいずれかの長さでなければいけません"
 
-#: core/app_settings.py:344
+#: core/app_settings.py:354
 msgid "Invalid syntax"
 msgstr "不正な構文"
 
-#: core/app_settings.py:350
+#: core/app_settings.py:360
 msgid "Invalid rounds number"
 msgstr "不正なラウンド数"
 
-#: core/app_settings.py:377
+#: core/app_settings.py:387
 msgid "This field is required"
 msgstr "このフィールドは必須です"
 
@@ -417,20 +427,34 @@ msgstr "追加しました"
 msgid "modified"
 msgstr "修正しました"
 
-#: core/handlers.py:49 core/handlers.py:73
+#: core/handlers.py:49
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
+
+#: core/handlers.py:73
+#, fuzzy, python-format
+#| msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
 
 #: core/handlers.py:75
 msgid "deleted"
 msgstr "削除しました"
 
-#: core/handlers.py:98
+#: core/handlers.py:79
+msgid "user {}"
+msgstr ""
+
+#: core/handlers.py:81
+msgid "management command"
+msgstr ""
+
+#: core/handlers.py:105
 msgid "You can't delete your own account"
 msgstr "あなた自身のアカウントは削除できません"
 
-#: core/handlers.py:134
+#: core/handlers.py:141
 msgid "One or more updates are available"
 msgstr "1つ以上のアップデートが利用できます"
 
@@ -569,7 +593,7 @@ msgid "API access token"
 msgstr "API アクセストークン"
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:360
 msgid "Update"
 msgstr "更新"
 
@@ -724,7 +748,7 @@ msgstr "ユーザー \"%s\" がログインに成功しました"
 msgid "Your username and password didn't match. Please try again."
 msgstr "ユーザー名とパスワードが一致しません。やり直してください。"
 
-#: core/views/auth.py:87
+#: core/views/auth.py:88
 #, fuzzy
 #| msgid "User '%s' successfully logged in"
 msgid "User '{}' successfully logged out"
@@ -764,20 +788,20 @@ msgstr "正しいドメイン名を入力してください"
 msgid "Enter a valid email address."
 msgstr "正しいメールアドレスを入力してください"
 
-#: lib/form_utils.py:85 templates/registration/password_reset_confirm.html:12
+#: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr "送信"
 
-#: lib/form_utils.py:118 lib/form_utils.py:121
+#: lib/form_utils.py:119 lib/form_utils.py:122
 msgid "Invalid request"
 msgstr "不正なリクエスト"
 
-#: lib/form_utils.py:424
+#: lib/form_utils.py:426
 msgid "Yes"
 msgstr "はい"
 
-#: lib/form_utils.py:425
+#: lib/form_utils.py:427
 msgid "No"
 msgstr "いいえ"
 

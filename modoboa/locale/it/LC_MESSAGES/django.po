@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"POT-Creation-Date: 2017-08-09 13:29+0200\n"
 "PO-Revision-Date: 2015-10-11 11:47+0000\n"
 "Last-Translator: Rocco <mors10@hotmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/"
@@ -319,52 +319,62 @@ msgid "Miscellaneous"
 msgstr "Miscellanea"
 
 #: core/app_settings.py:275
+msgid "Inactive account threshold"
+msgstr ""
+
+#: core/app_settings.py:278
+msgid ""
+"An account with a last login date greater than this threshold (in days) will "
+"be considered as inactive"
+msgstr ""
+
+#: core/app_settings.py:285
 msgid "Top notifications check interval"
 msgstr "Intervallo per nofifiche importanti"
 
-#: core/app_settings.py:278
+#: core/app_settings.py:288
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Intervallo tra due nuove notifiche importanti (in secondi)"
 
-#: core/app_settings.py:284
+#: core/app_settings.py:294
 msgid "Maximum log record age"
 msgstr "Età massima dei log"
 
-#: core/app_settings.py:286
+#: core/app_settings.py:296
 msgid "The maximum age in days of a log record"
 msgstr "La persistenza massima in giorni dei log"
 
-#: core/app_settings.py:291
+#: core/app_settings.py:301
 msgid "Items per page"
 msgstr "Elementi per pagina"
 
-#: core/app_settings.py:293
+#: core/app_settings.py:303
 msgid "Number of displayed items per page"
 msgstr "Numero degli elementi visualizzati in ciascuna pagina"
 
-#: core/app_settings.py:298
+#: core/app_settings.py:308
 msgid "Default top redirection"
 msgstr "Reindirizzamento principale predefinito"
 
-#: core/app_settings.py:302
+#: core/app_settings.py:312
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "Redirezione predefinita utilizzata quando non è specificata alcuna "
 "applicazione"
 
-#: core/app_settings.py:335
+#: core/app_settings.py:345
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "La chiave può essere lunga solo 16, 24 o 32 bytes"
 
-#: core/app_settings.py:344
+#: core/app_settings.py:354
 msgid "Invalid syntax"
 msgstr "Sintassi errata"
 
-#: core/app_settings.py:350
+#: core/app_settings.py:360
 msgid "Invalid rounds number"
 msgstr "Numero di cicli non valido"
 
-#: core/app_settings.py:377
+#: core/app_settings.py:387
 msgid "This field is required"
 msgstr "Questo campo è obbligatorio"
 
@@ -430,20 +440,34 @@ msgstr "aggiunto"
 msgid "modified"
 msgstr "modificato"
 
-#: core/handlers.py:49 core/handlers.py:73
+#: core/handlers.py:49
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s dell'utente %(user)s"
+
+#: core/handlers.py:73
+#, fuzzy, python-format
+#| msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s dell'utente %(user)s"
 
 #: core/handlers.py:75
 msgid "deleted"
 msgstr "cancellato"
 
-#: core/handlers.py:98
+#: core/handlers.py:79
+msgid "user {}"
+msgstr ""
+
+#: core/handlers.py:81
+msgid "management command"
+msgstr ""
+
+#: core/handlers.py:105
 msgid "You can't delete your own account"
 msgstr "Non puoi cancellare il tuo account"
 
-#: core/handlers.py:134
+#: core/handlers.py:141
 msgid "One or more updates are available"
 msgstr "Sono disponibili nuovi aggiornamenti"
 
@@ -588,7 +612,7 @@ msgid "API access token"
 msgstr ""
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:360
 msgid "Update"
 msgstr "Aggiorna"
 
@@ -745,7 +769,7 @@ msgstr "L'utente '%s? è correttamente registrato"
 msgid "Your username and password didn't match. Please try again."
 msgstr "Il tuo username e/o la tua password non corrispondono. Riprova."
 
-#: core/views/auth.py:87
+#: core/views/auth.py:88
 #, fuzzy
 #| msgid "User '%s' successfully logged in"
 msgid "User '{}' successfully logged out"
@@ -789,20 +813,20 @@ msgstr "Inserisci un nome di dominio valido"
 msgid "Enter a valid email address."
 msgstr "Inserisci un nome di dominio valido"
 
-#: lib/form_utils.py:85 templates/registration/password_reset_confirm.html:12
+#: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr "Invia"
 
-#: lib/form_utils.py:118 lib/form_utils.py:121
+#: lib/form_utils.py:119 lib/form_utils.py:122
 msgid "Invalid request"
 msgstr "Richiesta non valida"
 
-#: lib/form_utils.py:424
+#: lib/form_utils.py:426
 msgid "Yes"
 msgstr "Si"
 
-#: lib/form_utils.py:425
+#: lib/form_utils.py:427
 msgid "No"
 msgstr "No"
 

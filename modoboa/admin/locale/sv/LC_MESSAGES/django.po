@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Martin Persson <martin.jens.persson@gmail.com>, 2014
 # Olle Gustafsson <olle@dalnix.se>, 2013,2015-2017
@@ -9,17 +9,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"POT-Creation-Date: 2017-08-09 13:29+0200\n"
 "PO-Revision-Date: 2017-07-07 11:06+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
-"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
+"sv/)\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/app_settings.py:20 admin/handlers.py:255
+#: admin/app_settings.py:20 admin/handlers.py:263
 #: admin/templates/admin/_global_statistics_widget.html:11
 #: admin/templates/admin/domains.html:4
 msgid "Domains"
@@ -39,9 +40,11 @@ msgstr "Giltiga MX"
 
 #: admin/app_settings.py:34
 msgid ""
-"A list of IP or network address every MX record should match. A warning will"
-" be sent if a record does not respect it."
-msgstr "En lista över IP eller nätverksadresser varje MX record skall matcha. En varning kommer skickas om ett record inte matchar."
+"A list of IP or network address every MX record should match. A warning will "
+"be sent if a record does not respect it."
+msgstr ""
+"En lista över IP eller nätverksadresser varje MX record skall matcha. En "
+"varning kommer skickas om ett record inte matchar."
 
 #: admin/app_settings.py:42
 msgid "Enable DNSBL checks"
@@ -63,7 +66,9 @@ msgstr "Hantera brevlådor på filsystem"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Byt namn på eller ta bort brevlådor på filsystemet när de kommer byta namn eller tas bort inom Modoboa"
+msgstr ""
+"Byt namn på eller ta bort brevlådor på filsystemet när de kommer byta namn "
+"eller tas bort inom Modoboa"
 
 #: admin/app_settings.py:61
 msgid "Mailboxes owner"
@@ -81,7 +86,9 @@ msgstr "Standard domän kvota"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr "Standard kvota (i MB) applicerad på nyskapade domäner som inte har något värde specificerat. Ett värde på 0 betyder ingen kvota."
+msgstr ""
+"Standard kvota (i MB) applicerad på nyskapade domäner som inte har något "
+"värde specificerat. Ett värde på 0 betyder ingen kvota."
 
 #: admin/app_settings.py:78 admin/models/domain.py:58
 #: admin/templates/admin/domain_detail.html:72
@@ -92,7 +99,9 @@ msgstr "Standard brevlåde kvota"
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
-msgstr "Standard brevlåde kvota (i MB) applicerad på nyligen skapade domäner där inget värde angetts. 0 betyder ingen kvota."
+msgstr ""
+"Standard brevlåde kvota (i MB) applicerad på nyligen skapade domäner där "
+"inget värde angetts. 0 betyder ingen kvota."
 
 #: admin/app_settings.py:87
 msgid "Automatic account removal"
@@ -107,8 +116,7 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automatisk skapande av domän/brevlåda"
 
 #: admin/app_settings.py:97
-msgid ""
-"Create a domain and a mailbox when an account is automatically created."
+msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "Skapa en domän och en brevlåda när ett konto skapas automatiskt."
 
 #: admin/app_settings.py:146 admin/app_settings.py:154
@@ -128,7 +136,9 @@ msgstr "Användarnamn"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr "Användarens namn. Måste vara en giltig e-postadress för vanliga användare eller för administratörer med brevlåda."
+msgstr ""
+"Användarens namn. Måste vara en giltig e-postadress för vanliga användare "
+"eller för administratörer med brevlåda."
 
 #: admin/forms/account.py:44 admin/templates/admin/account_detail.html:29
 msgid "Role"
@@ -184,7 +194,10 @@ msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr "Kvot i MB för denna brevlåda. Definiera ett anpassat värde eller använda domänens förvalda. Lämna tomt för att definiera ett obegränsat värde (ej tillåtet för domänadministratörer)."
+msgstr ""
+"Kvot i MB för denna brevlåda. Definiera ett anpassat värde eller använda "
+"domänens förvalda. Lämna tomt för att definiera ett obegränsat värde (ej "
+"tillåtet för domänadministratörer)."
 
 #: admin/forms/account.py:217 admin/forms/domain.py:42
 #: admin/templates/admin/domains.html:35
@@ -196,7 +209,10 @@ msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr "Alias för denna brevlåda. Ange endast en adress per inmatning, tryck RETUR för att lägga till nytt. För att skapa ett \"catch-all\" alias, ange bara domännamnet (@domain.tld)."
+msgstr ""
+"Alias för denna brevlåda. Ange endast en adress per inmatning, tryck RETUR "
+"för att lägga till nytt. För att skapa ett \"catch-all\" alias, ange bara "
+"domännamnet (@domain.tld)."
 
 #: admin/forms/account.py:226
 msgid "Sender addresses"
@@ -207,7 +223,10 @@ msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr "Övriga avsändaradresser fär detta konto. Användaren tillåts skicka e-post med från denna adress, även om den inte finns lokalt. Ange en adress per rad. Tryck RETUR för att lägga till ny rad."
+msgstr ""
+"Övriga avsändaradresser fär detta konto. Användaren tillåts skicka e-post "
+"med från denna adress, även om den inte finns lokalt. Ange en adress per "
+"rad. Tryck RETUR för att lägga till ny rad."
 
 #: admin/forms/account.py:279 admin/forms/alias.py:94
 #: admin/models/mailbox.py:315
@@ -272,7 +291,8 @@ msgstr "E-post adress"
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr "Alias adress. För en \"catch-all\"-alias, ange bara domännamnet (@domän.tld)."
+msgstr ""
+"Alias adress. För en \"catch-all\"-alias, ange bara domännamnet (@domän.tld)."
 
 #: admin/forms/alias.py:37 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -282,7 +302,9 @@ msgstr "Mottagare"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr "Adresser detta alias kommer peka på. Ange bara en adress per fält, tryck RETUR för att lägga till ytterligare."
+msgstr ""
+"Adresser detta alias kommer peka på. Ange bara en adress per fält, tryck "
+"RETUR för att lägga till ytterligare."
 
 #: admin/forms/alias.py:49 admin/forms/domain.py:31 admin/models/domain.py:115
 #: admin/templates/admin/_per_domain_statistics_widget.html:7
@@ -306,9 +328,11 @@ msgstr "Typ"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr "Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att lägga till en rad."
+msgstr ""
+"Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att "
+"lägga till en rad."
 
-#: admin/forms/domain.py:98 admin/handlers.py:157
+#: admin/forms/domain.py:98 admin/handlers.py:165
 msgid "domain alias"
 msgstr "domän alias"
 
@@ -349,7 +373,9 @@ msgstr "Namn"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr "Administratörens namn. Inkludera inte domänens namn här, den kommer att läggas till automatiskt."
+msgstr ""
+"Administratörens namn. Inkludera inte domänens namn här, den kommer att "
+"läggas till automatiskt."
 
 #: admin/forms/domain.py:205
 msgid "With a mailbox"
@@ -440,28 +466,28 @@ msgstr "Krypterade lösenord"
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr "Markera det här alternativet om lösenord i filen inte är krypterad"
 
-#: admin/handlers.py:204
+#: admin/handlers.py:212
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Konto import misslyckades (%s): domänen existerar inte"
 
-#: admin/handlers.py:217 admin/models/mailbox.py:340
+#: admin/handlers.py:225 admin/models/mailbox.py:340
 msgid "Mailbox {} already exists"
 msgstr "Brevlåda {} finns redan"
 
-#: admin/handlers.py:225
+#: admin/handlers.py:233
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Importering av konto misslyckades (%s): Fel kvota värde"
 
-#: admin/handlers.py:265
+#: admin/handlers.py:273
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Konton"
 
-#: admin/handlers.py:281 admin/templates/admin/forward.html:2
+#: admin/handlers.py:289 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Vidarebefordra"
 
@@ -626,7 +652,9 @@ msgstr "Åtskomst nekad."
 #: admin/serializers.py:104
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr "Lista över administrerade domäner (endast återförsäljare och domänadministratörer)."
+msgstr ""
+"Lista över administrerade domäner (endast återförsäljare och "
+"domänadministratörer)."
 
 #: admin/serializers.py:212
 msgid "Not allowed for this role."
@@ -880,17 +908,30 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr "Tillhandahåll en CSV fil där raderna har följande format: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>Det första elementet i varje rad är obligatoriskt och måste vara lika med en av de tidigare värdena.</p> <p>Du kan använda ett annat tecken som separator.</p>"
+msgstr ""
+"Tillhandahåll en CSV fil där raderna har följande format: <ul> "
+"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
+"<li><em>domainalias; name; targeted domain; enabled</em></li> "
+"<li><em>relaydomain; name; target host; target port; service; enabled; "
+"verify recipients</em></li> </ul> <p>Det första elementet i varje rad är "
+"obligatoriskt och måste vara lika med en av de tidigare värdena.</p> <p>Du "
+"kan använda ett annat tecken som separator.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group;"
-" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can"
-" use a different character as separator.</p>"
-msgstr "Tillhandahåll en CSV-fil där raderna har följande format: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>Det första elementet i varje rad är obligatorisk och måste vara lika med en av de tidigare värdena.</p> <p>Du kan använda ett annat tecken separator.</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can "
+"use a different character as separator.</p>"
+msgstr ""
+"Tillhandahåll en CSV-fil där raderna har följande format: <ul> "
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"recipient; recipient; ...</em></li> </ul> <p>Det första elementet i varje "
+"rad är obligatorisk och måste vara lika med en av de tidigare värdena.</p> "
+"<p>Du kan använda ett annat tecken separator.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -929,14 +970,19 @@ msgstr "Inget MX record funnet för denna domän."
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr "Modoboa har upptäckt att domän %(domain)s är listad host följande DNSBL leverantörer:"
+msgstr ""
+"Modoboa har upptäckt att domän %(domain)s är listad host följande DNSBL "
+"leverantörer:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr "Domänens rykte kommer påverkas och det finns en chans att epost som kommer från den anses vara skräppost. Du bör kontakta dessa leverantörer och be den att avlista upptäckt IP adress(er)."
+msgstr ""
+"Domänens rykte kommer påverkas och det finns en chans att epost som kommer "
+"från den anses vara skräppost. Du bör kontakta dessa leverantörer och be den "
+"att avlista upptäckt IP adress(er)."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format

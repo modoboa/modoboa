@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"POT-Creation-Date: 2017-08-09 13:29+0200\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: admin/app_settings.py:20 admin/handlers.py:255
+#: admin/app_settings.py:20 admin/handlers.py:263
 #: admin/templates/admin/_global_statistics_widget.html:11
 #: admin/templates/admin/domains.html:4
 msgid "Domains"
@@ -350,7 +350,7 @@ msgstr ""
 "input ごとに1つの名前を入力して、 ENTER キーを押して、新しい input を追加しま"
 "す"
 
-#: admin/forms/domain.py:98 admin/handlers.py:157
+#: admin/forms/domain.py:98 admin/handlers.py:165
 msgid "domain alias"
 msgstr "ドメインエイリアス"
 
@@ -490,28 +490,28 @@ msgstr ""
 "ファイルに含まれるパスワードが暗号化されていない場合は、このオプションを"
 "チェックしてください"
 
-#: admin/handlers.py:204
+#: admin/handlers.py:212
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "アカウントのインポートに失敗しました  (%s):  ドメインが存在しません"
 
-#: admin/handlers.py:217 admin/models/mailbox.py:340
+#: admin/handlers.py:225 admin/models/mailbox.py:340
 msgid "Mailbox {} already exists"
 msgstr "メールボックス {} はすでに存在します"
 
-#: admin/handlers.py:225
+#: admin/handlers.py:233
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "アカウントのインポートに失敗しました  (%s):  不正なクォータの値"
 
-#: admin/handlers.py:265
+#: admin/handlers.py:273
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "ID"
 
-#: admin/handlers.py:281 admin/templates/admin/forward.html:2
+#: admin/handlers.py:289 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "転送先"
 

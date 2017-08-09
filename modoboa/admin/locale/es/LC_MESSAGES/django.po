@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"POT-Creation-Date: 2017-08-09 13:29+0200\n"
 "PO-Revision-Date: 2017-06-28 00:48+0000\n"
 "Last-Translator: Evilham <github@evilham.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/tonio/modoboa/language/"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/app_settings.py:20 admin/handlers.py:255
+#: admin/app_settings.py:20 admin/handlers.py:263
 #: admin/templates/admin/_global_statistics_widget.html:11
 #: admin/templates/admin/domains.html:4
 msgid "Domains"
@@ -334,7 +334,7 @@ msgstr ""
 "Alia(s) de este dominio. Indique únicamente un nombre por entrada, presione "
 "ENTER para añadir una nueva entrada."
 
-#: admin/forms/domain.py:98 admin/handlers.py:157
+#: admin/forms/domain.py:98 admin/handlers.py:165
 msgid "domain alias"
 msgstr "alias del dominio"
 
@@ -470,28 +470,28 @@ msgstr ""
 "Marque esta opción si las contraseñas que contiene su fichero no están "
 "cifradas"
 
-#: admin/handlers.py:204
+#: admin/handlers.py:212
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Falló la importación de la cuenta (%s): el dominio no existe"
 
-#: admin/handlers.py:217 admin/models/mailbox.py:340
+#: admin/handlers.py:225 admin/models/mailbox.py:340
 msgid "Mailbox {} already exists"
 msgstr "El buzón {} ya existe"
 
-#: admin/handlers.py:225
+#: admin/handlers.py:233
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Error en la importación de la cuenta (%s): valor de cuota incorrecto"
 
-#: admin/handlers.py:265
+#: admin/handlers.py:273
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identidades"
 
-#: admin/handlers.py:281 admin/templates/admin/forward.html:2
+#: admin/handlers.py:289 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Siguiente"
 

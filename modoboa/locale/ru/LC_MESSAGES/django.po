@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"POT-Creation-Date: 2017-08-09 13:29+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -308,52 +308,62 @@ msgid "Miscellaneous"
 msgstr "Прочее"
 
 #: core/app_settings.py:275
+msgid "Inactive account threshold"
+msgstr ""
+
+#: core/app_settings.py:278
+msgid ""
+"An account with a last login date greater than this threshold (in days) will "
+"be considered as inactive"
+msgstr ""
+
+#: core/app_settings.py:285
 #, fuzzy
 msgid "Top notifications check interval"
 msgstr "Уведомления отправителю"
 
-#: core/app_settings.py:278
+#: core/app_settings.py:288
 #, fuzzy
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Интервал между запросами на деблокирование для доставки"
 
-#: core/app_settings.py:284
+#: core/app_settings.py:294
 msgid "Maximum log record age"
 msgstr "Максимальный срок хранения лог записей"
 
-#: core/app_settings.py:286
+#: core/app_settings.py:296
 msgid "The maximum age in days of a log record"
 msgstr "Срок хранения лог записей в днях "
 
-#: core/app_settings.py:291
+#: core/app_settings.py:301
 msgid "Items per page"
 msgstr "Элементов на странице"
 
-#: core/app_settings.py:293
+#: core/app_settings.py:303
 msgid "Number of displayed items per page"
 msgstr "Количество элементов на странице"
 
-#: core/app_settings.py:298
+#: core/app_settings.py:308
 msgid "Default top redirection"
 msgstr "Порог перенаправления по умолчанию"
 
-#: core/app_settings.py:302
+#: core/app_settings.py:312
 msgid "The default redirection used when no application is specified"
 msgstr "Если приложение не указано. Используется перенаправление по умолчанию."
 
-#: core/app_settings.py:335
+#: core/app_settings.py:345
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Ключ должен быть 16, 24 или 32 байта длинной"
 
-#: core/app_settings.py:344
+#: core/app_settings.py:354
 msgid "Invalid syntax"
 msgstr "Ошибка в написании"
 
-#: core/app_settings.py:350
+#: core/app_settings.py:360
 msgid "Invalid rounds number"
 msgstr ""
 
-#: core/app_settings.py:377
+#: core/app_settings.py:387
 msgid "This field is required"
 msgstr "Это поле обязательно для заполнеия"
 
@@ -419,20 +429,34 @@ msgstr "добавлено"
 msgid "modified"
 msgstr "изменено"
 
-#: core/handlers.py:49 core/handlers.py:73
+#: core/handlers.py:49
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s пользователем %(user)s"
+
+#: core/handlers.py:73
+#, fuzzy, python-format
+#| msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s пользователем %(user)s"
 
 #: core/handlers.py:75
 msgid "deleted"
 msgstr "удалено"
 
-#: core/handlers.py:98
+#: core/handlers.py:79
+msgid "user {}"
+msgstr ""
+
+#: core/handlers.py:81
+msgid "management command"
+msgstr ""
+
+#: core/handlers.py:105
 msgid "You can't delete your own account"
 msgstr "Вы не можете удалить собственный аккаунт"
 
-#: core/handlers.py:134
+#: core/handlers.py:141
 #, fuzzy
 msgid "One or more updates are available"
 msgstr "Статистика не доступна"
@@ -581,7 +605,7 @@ msgid "API access token"
 msgstr ""
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:360
 msgid "Update"
 msgstr "Обновление"
 
@@ -743,7 +767,7 @@ msgstr "Пользователь '%s' успешно вошел в систем�
 msgid "Your username and password didn't match. Please try again."
 msgstr "Не правильное имя или пароль. Попробуйте еще раз."
 
-#: core/views/auth.py:87
+#: core/views/auth.py:88
 #, fuzzy
 #| msgid "User '%s' successfully logged in"
 msgid "User '{}' successfully logged out"
@@ -787,20 +811,20 @@ msgstr "Введите действительный адрес домена"
 msgid "Enter a valid email address."
 msgstr "Введите действительный адрес домена"
 
-#: lib/form_utils.py:85 templates/registration/password_reset_confirm.html:12
+#: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr ""
 
-#: lib/form_utils.py:118 lib/form_utils.py:121
+#: lib/form_utils.py:119 lib/form_utils.py:122
 msgid "Invalid request"
 msgstr "Ошибочный запрос"
 
-#: lib/form_utils.py:424
+#: lib/form_utils.py:426
 msgid "Yes"
 msgstr "Да"
 
-#: lib/form_utils.py:425
+#: lib/form_utils.py:427
 msgid "No"
 msgstr "Нет"
 

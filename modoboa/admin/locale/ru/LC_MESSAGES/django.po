@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 11:29+0200\n"
+"POT-Creation-Date: 2017-08-09 13:29+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: admin/app_settings.py:20 admin/handlers.py:255
+#: admin/app_settings.py:20 admin/handlers.py:263
 #: admin/templates/admin/_global_statistics_widget.html:11
 #: admin/templates/admin/domains.html:4
 msgid "Domains"
@@ -350,7 +350,7 @@ msgstr ""
 "Синоним(ы) этого домена. Вводите одно имя за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/domain.py:98 admin/handlers.py:157
+#: admin/forms/domain.py:98 admin/handlers.py:165
 msgid "domain alias"
 msgstr ""
 
@@ -490,30 +490,30 @@ msgstr "Шифровать пароль"
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr "Выберите эту опцию если пароль в вашем файле не зашифрован "
 
-#: admin/handlers.py:204
+#: admin/handlers.py:212
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Ошибка импорта аккаунта (%s): домен должен существовать "
 
-#: admin/handlers.py:217 admin/models/mailbox.py:340
+#: admin/handlers.py:225 admin/models/mailbox.py:340
 #, fuzzy
 #| msgid "Mailbox %s already exists"
 msgid "Mailbox {} already exists"
 msgstr "Почтовый ящик %s существует"
 
-#: admin/handlers.py:225
+#: admin/handlers.py:233
 #, fuzzy, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Ошибка импорта аккаунта (%s): домен должен существовать "
 
-#: admin/handlers.py:265
+#: admin/handlers.py:273
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Пользователи"
 
-#: admin/handlers.py:281 admin/templates/admin/forward.html:2
+#: admin/handlers.py:289 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Перенаправленые"
 
