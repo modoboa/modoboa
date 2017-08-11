@@ -9,6 +9,7 @@ from django.core import management
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
+from modoboa.core import factories as core_factories
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
@@ -25,6 +26,18 @@ class MXTestCase(ModoTestCase):
         cls.domain = factories.DomainFactory(name="modoboa.org")
         # should not exist
         cls.bad_domain = factories.DomainFactory(name="pouet.com")
+        # Add domain admin with mailbox
+        mb = factories.MailboxFactory(
+            address="admin", domain=cls.bad_domain,
+            user__username="admin@pouet.com",
+            user__groups=("DomainAdmins", )
+        )
+        cls.bad_domain.add_admin(mb.user)
+        # Add domain admin with no mailbox
+        admin = core_factories.UserFactory(
+            username="admin2@pouet.com", groups=("DomainAdmins", ))
+        cls.bad_domain.add_admin(admin)
+
         cls.localconfig.parameters.set_value("valid_mxs", "127.0.0.1")
         cls.localconfig.save()
         models.MXRecord.objects.all().delete()
@@ -63,6 +76,7 @@ class MXTestCase(ModoTestCase):
             "modo", "check_mx", "--domain", str(self.bad_domain.pk))
         self.assertFalse(
             models.MXRecord.objects.filter(domain=self.bad_domain).exists())
+        self.assertEqual(len(mail.outbox), 1)
 
         management.call_command(
             "modo", "check_mx", "--domain", "toto.com")
