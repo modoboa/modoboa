@@ -156,7 +156,8 @@ class CheckMXRecords(BaseCommand):
         emails = list(options["email"])
         if not options["skip_admin_emails"]:
             emails.extend(
-                domain.admins.exclude(email="").values_list("email", flat=True)
+                domain.admins.exclude(mailbox__isnull=True)
+                .values_list("email", flat=True)
             )
         if not len(emails):
             return
@@ -205,7 +206,8 @@ class CheckMXRecords(BaseCommand):
         emails = list(options["email"])
         if not options["skip_admin_emails"]:
             emails.extend(
-                domain.admins.exclude(email="").values_list("email", flat=True)
+                domain.admins.exclude(mailbox__isnull=True)
+                .values_list("email", flat=True)
             )
         if not len(emails):
             return
