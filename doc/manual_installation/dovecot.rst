@@ -434,7 +434,8 @@ engine, the content will differ.
 PostgreSQL
 ----------
 
-::
+.. sourcecode:: bash
+
    #!/bin/sh
 
    psql -c "UPDATE core_user SET last_login=now() WHERE username='$USER'" > /dev/null
@@ -444,7 +445,8 @@ PostgreSQL
 MySQL
 -----
 
-::
+.. sourcecode:: bash
+
    #!/bin/sh
 
    DBNAME=XXX
