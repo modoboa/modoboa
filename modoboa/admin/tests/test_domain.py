@@ -13,6 +13,7 @@ from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
 
+from . import utils
 from .. import factories
 from ..models import Domain, Alias
 
@@ -197,7 +198,7 @@ class DomainTestCase(ModoTestCase):
         self.set_global_parameter("valid_mxs", "1.2.3.4")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
 
-        mock_query.return_value = [FakeDNSAnswer("mail.ok.com")]
+        mock_query.return_value = [utils.FakeDNSAnswer("mail.ok.com")]
         mock_gethostbyname.return_value = "1.2.3.5"
         values = {
             "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
