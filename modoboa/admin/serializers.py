@@ -17,7 +17,9 @@ from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import permissions, email_utils, fields as lib_fields
+from modoboa.parameters import tools as param_tools
 
+from . import lib
 from . import models
 
 
@@ -30,6 +32,17 @@ class DomainSerializer(serializers.ModelSerializer):
         fields = (
             "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
         )
+
+    def validate_name(self, value):
+        """Check name constraints."""
+        domains_must_have_authorized_mx = (
+            param_tools.get_global_parameter("domains_must_have_authorized_mx")
+        )
+        if domains_must_have_authorized_mx and not self.user.is_superuser:
+            if not lib.domain_has_authorized_mx(value):
+                raise serializers.ValidationError(
+                    _("No authorized MX record found for this domain"))
+        return value
 
     def validate(self, data):
         """Check quota values."""

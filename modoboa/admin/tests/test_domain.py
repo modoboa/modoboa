@@ -4,13 +4,24 @@
 
 from __future__ import unicode_literals
 
+import dns.resolver
+from mock import patch
+
 from django.core.urlresolvers import reverse
 
+from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
 
 from .. import factories
 from ..models import Domain, Alias
+
+
+class FakeDNSAnswer(object):
+    """Fake answer."""
+
+    def __init__(self, exchange):
+        self.exchange = exchange
 
 
 class DomainTestCase(ModoTestCase):
@@ -180,6 +191,31 @@ class DomainTestCase(ModoTestCase):
         response = self.client.get(reverse("admin:domain_add"))
         self.assertContains(response, "value=\"500\"")
         self.assertContains(response, "value=\"50\"")
+
+    @patch.object(dns.resolver.Resolver, "query")
+    @patch("socket.gethostbyname")
+    def test_create_and_check_mx(self, mock_gethostbyname, mock_query):
+        """Check for authorized MX record."""
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers", ))
+        self.client.force_login(reseller)
+
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        self.set_global_parameter("valid_mxs", "1.2.3.4")
+        self.set_global_parameter("domains_must_have_authorized_mx", True)
+
+        mock_query.return_value = [FakeDNSAnswer("mail.ok.com")]
+        mock_gethostbyname.return_value = "1.2.3.5"
+        values = {
+            "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
+            "create_dom_admin": True, "dom_admin_username": "toto",
+            "create_aliases": True, "type": "domain", "stepid": "step3",
+            "with_mailbox": True
+        }
+        self.ajax_post(reverse("admin:domain_add"), values, 400)
+
+        mock_gethostbyname.return_value = "1.2.3.4"
+        self.ajax_post(reverse("admin:domain_add"), values)
 
     def test_modify(self):
         """Test the modification of a domain

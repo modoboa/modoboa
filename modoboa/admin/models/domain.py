@@ -23,9 +23,9 @@ from modoboa.core.models import User, ObjectAccess
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
 
-from .. import signals
 from .base import AdminObject
 from .. import constants
+from .. import signals
 
 
 class DomainManager(Manager):
@@ -250,11 +250,22 @@ class Domain(AdminObject):
         :param ``core.User`` user: user creating the domain
         :param str row: a list containing domain's definition
         """
+        from .. import lib
+
         if len(row) < 5:
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip()
         if Domain.objects.filter(name=self.name).exists():
             raise Conflict
+        domains_must_have_authorized_mx = (
+            param_tools.get_global_parameter("domains_must_have_authorized_mx")
+        )
+        if domains_must_have_authorized_mx and not self.user.is_superuser:
+            if not lib.domain_has_authorized_mx(self.name):
+                raise BadRequest(
+                    _("No authorized MX record found for domain {}")
+                    .format(self.name)
+                )
         try:
             self.quota = int(row[2].strip())
         except ValueError:
@@ -303,57 +314,3 @@ class Domain(AdminObject):
 
 
 reversion.register(Domain)
-
-
-class MXQuerySet(models.QuerySet):
-    """Custom manager for MXRecord."""
-
-    def has_valids(self):
-        """Return managed results."""
-        if param_tools.get_global_parameter("valid_mxs").strip():
-            return self.filter(managed=True).exists()
-        return self.exists()
-
-
-@python_2_unicode_compatible
-class MXRecord(models.Model):
-    """A model used to store MX records for Domain."""
-
-    domain = models.ForeignKey(Domain)
-    name = models.CharField(max_length=254)
-    address = models.GenericIPAddressField()
-    managed = models.BooleanField(default=False)
-    updated = models.DateTimeField()
-
-    objects = models.Manager.from_queryset(MXQuerySet)()
-
-    def is_managed(self):
-        if not param_tools.get_global_parameter("enable_mx_checks"):
-            return False
-        return bool(param_tools.get_global_parameter("valid_mxs").strip())
-
-    def __str__(self):
-        return "{0.name} ({0.address}) for {0.domain} ".format(self)
-
-
-class DNSBLQuerySet(models.QuerySet):
-    """Custom manager for DNSBLResultManager."""
-
-    def blacklisted(self):
-        """Return blacklisted results."""
-        return self.exclude(status="")
-
-
-class DNSBLResult(models.Model):
-    """Store a DNSBL query result."""
-
-    domain = models.ForeignKey(Domain)
-    provider = models.CharField(max_length=254, db_index=True)
-    mx = models.ForeignKey(MXRecord)
-    status = models.CharField(max_length=45, blank=True, db_index=True)
-
-    objects = models.Manager.from_queryset(DNSBLQuerySet)()
-
-    class Meta:
-        app_label = "admin"
-        unique_together = [("domain", "provider", "mx")]

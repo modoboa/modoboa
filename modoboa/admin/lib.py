@@ -5,7 +5,11 @@
 from __future__ import unicode_literals
 
 from functools import wraps
+import ipaddress
 from itertools import chain
+import socket
+
+import dns.resolver
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
@@ -14,6 +18,7 @@ from django.utils.translation import ugettext as _
 from modoboa.core.models import User
 from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import PermDeniedException
+from modoboa.parameters import tools as param_tools
 
 from .models import Domain, DomainAlias, Alias
 
@@ -161,3 +166,43 @@ def import_forward(user, row, formopts):
 
 def import_dlist(user, row, formopts):
     _import_alias(user, row)
+
+
+def get_domain_mx_list(name):
+    """Return a list of MX IP address for domain."""
+    result = []
+    try:
+        answers = dns.resolver.query(name, "MX")
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN,
+            dns.resolver.NoNameservers):
+        return result
+    for answer in answers:
+        try:
+            # work if .exchange is a name or IP
+            address = socket.gethostbyname(str(answer.exchange))
+        except socket.gaierror:
+            pass
+        else:
+            try:
+                # we must have a valid IP
+                address = ipaddress.ip_address("{}".format(address))
+            except ValueError:
+                pass
+            else:
+                result.append((str(answer.exchange), address))
+    return result
+
+
+def domain_has_authorized_mx(name):
+    """Check if domain has authorized mx record at least."""
+    valid_mxs = param_tools.get_global_parameter("valid_mxs")
+    valid_mxs = [ipaddress.ip_network(u"{}".format(v.strip()))
+                 for v in valid_mxs.split() if v.strip()]
+    domain_mxs = get_domain_mx_list(name)
+    if len(domain_mxs) == 0:
+        return True
+    for mx_addr, mx_ip_addr in domain_mxs:
+        for subnet in valid_mxs:
+            if mx_ip_addr in subnet:
+                return True
+    return False

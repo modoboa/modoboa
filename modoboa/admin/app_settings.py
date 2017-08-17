@@ -6,7 +6,7 @@ import os
 
 from django import forms
 from django.conf import settings
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.encoding import force_text
 
 from modoboa.lib.form_utils import YesNoField, SeparatorField
@@ -36,6 +36,15 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         ),
         widget=forms.Textarea,
         required=False
+    )
+
+    domains_must_have_authorized_mx = YesNoField(
+        label=ugettext_lazy("New domains must use authorized MX(s)"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Prevent the creation of a new domain if its MX record does "
+            "not use one of the defined addresses."
+        )
     )
 
     enable_dnsbl_checks = YesNoField(
@@ -102,6 +111,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     # Visibility rules
     visibility_rules = {
         "valid_mxs": "enable_mx_checks=True",
+        "domains_must_have_authorized_mx": "enable_mx_checks=True",
         "mailboxes_owner": "handle_mailboxes=True",
     }
 
@@ -154,6 +164,20 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                 ugettext_lazy("Must be a positive integer")
             )
         return self.cleaned_data["default_mailbox_quota"]
+
+    def clean(self):
+        """Check MX options."""
+        cleaned_data = super(AdminParametersForm, self).clean()
+        condition = (
+            cleaned_data.get("enable_mx_checks") and
+            cleaned_data.get("domains_must_have_authorized_mx") and
+            not cleaned_data.get("valid_mxs"))
+        if condition:
+            raise forms.ValidationError(
+                "valid_mxs",
+                _("Define at least one address authorized network / address")
+            )
+        return cleaned_data
 
 
 def load_admin_settings():
