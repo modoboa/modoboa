@@ -260,7 +260,7 @@ class Domain(AdminObject):
         domains_must_have_authorized_mx = (
             param_tools.get_global_parameter("domains_must_have_authorized_mx")
         )
-        if domains_must_have_authorized_mx and not self.user.is_superuser:
+        if domains_must_have_authorized_mx and not user.is_superuser:
             if not lib.domain_has_authorized_mx(self.name):
                 raise BadRequest(
                     _("No authorized MX record found for domain {}")

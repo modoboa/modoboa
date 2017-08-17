@@ -17,13 +17,6 @@ from .. import factories
 from ..models import Domain, Alias
 
 
-class FakeDNSAnswer(object):
-    """Fake answer."""
-
-    def __init__(self, exchange):
-        self.exchange = exchange
-
-
 class DomainTestCase(ModoTestCase):
     """Test case for Domain."""
 
@@ -213,6 +206,8 @@ class DomainTestCase(ModoTestCase):
             "with_mailbox": True
         }
         self.ajax_post(reverse("admin:domain_add"), values, 400)
+        self.assertFalse(
+            Domain.objects.filter(name=values["name"]).exists())
 
         mock_gethostbyname.return_value = "1.2.3.4"
         self.ajax_post(reverse("admin:domain_add"), values)

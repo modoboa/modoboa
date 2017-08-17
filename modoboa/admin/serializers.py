@@ -38,7 +38,8 @@ class DomainSerializer(serializers.ModelSerializer):
         domains_must_have_authorized_mx = (
             param_tools.get_global_parameter("domains_must_have_authorized_mx")
         )
-        if domains_must_have_authorized_mx and not self.user.is_superuser:
+        user = self.context["request"].user
+        if domains_must_have_authorized_mx and not user.is_superuser:
             if not lib.domain_has_authorized_mx(value):
                 raise serializers.ValidationError(
                     _("No authorized MX record found for this domain"))
