@@ -173,9 +173,9 @@ class AdminParametersForm(param_forms.AdminParametersForm):
             cleaned_data.get("domains_must_have_authorized_mx") and
             not cleaned_data.get("valid_mxs"))
         if condition:
-            raise forms.ValidationError(
+            self.add_error(
                 "valid_mxs",
-                _("Define at least one address authorized network / address")
+                _("Define at least one authorized network / address")
             )
         return cleaned_data
 
