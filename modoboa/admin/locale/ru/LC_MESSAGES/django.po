@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-09 13:29+0200\n"
+"POT-Creation-Date: 2017-08-18 14:44+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -44,22 +44,32 @@ msgid ""
 msgstr ""
 
 #: admin/app_settings.py:42
-msgid "Enable DNSBL checks"
+msgid "New domains must use authorized MX(s)"
 msgstr ""
 
 #: admin/app_settings.py:45
+msgid ""
+"Prevent the creation of a new domain if its MX record does not use one of "
+"the defined addresses."
+msgstr ""
+
+#: admin/app_settings.py:51
+msgid "Enable DNSBL checks"
+msgstr ""
+
+#: admin/app_settings.py:54
 msgid "Check every domain against major DNSBL providers"
 msgstr ""
 
-#: admin/app_settings.py:49 admin/templates/admin/domain_detail.html:49
+#: admin/app_settings.py:58 admin/templates/admin/domain_detail.html:49
 msgid "Mailboxes"
 msgstr "Почтовые ящики"
 
-#: admin/app_settings.py:52
+#: admin/app_settings.py:61
 msgid "Handle mailboxes on filesystem"
 msgstr "Обрабатывать почтовые ящики на диске"
 
-#: admin/app_settings.py:55
+#: admin/app_settings.py:64
 #, fuzzy
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
@@ -68,58 +78,62 @@ msgstr ""
 "Удалять или переименовывать почтовые ящики на диске, если они удалены или "
 "переименованы в Modoboa"
 
-#: admin/app_settings.py:61
+#: admin/app_settings.py:70
 msgid "Mailboxes owner"
 msgstr "Почтовые ящики закончились"
 
-#: admin/app_settings.py:64
+#: admin/app_settings.py:73
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "UNIX аккаунт владельца почтового ящика на диске"
 
-#: admin/app_settings.py:69
+#: admin/app_settings.py:78
 msgid "Default domain quota"
 msgstr ""
 
-#: admin/app_settings.py:72
+#: admin/app_settings.py:81
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr ""
 
-#: admin/app_settings.py:78 admin/models/domain.py:58
+#: admin/app_settings.py:87 admin/models/domain.py:58
 #: admin/templates/admin/domain_detail.html:72
 msgid "Default mailbox quota"
 msgstr ""
 
-#: admin/app_settings.py:81
+#: admin/app_settings.py:90
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
 msgstr ""
 
-#: admin/app_settings.py:87
+#: admin/app_settings.py:96
 msgid "Automatic account removal"
 msgstr "Автоматическое удаление аккаунта"
 
-#: admin/app_settings.py:90
+#: admin/app_settings.py:99
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "При удалении почтового ящика, так же удалять и аккаунт владельца"
 
-#: admin/app_settings.py:94
+#: admin/app_settings.py:103
 #, fuzzy
 msgid "Automatic domain/mailbox creation"
 msgstr "Домен создан"
 
-#: admin/app_settings.py:97
+#: admin/app_settings.py:106
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 
-#: admin/app_settings.py:146 admin/app_settings.py:154
+#: admin/app_settings.py:156 admin/app_settings.py:164
 #: admin/forms/account.py:301
 msgid "Must be a positive integer"
 msgstr ""
 
-#: admin/app_settings.py:164
+#: admin/app_settings.py:178
+msgid "Define at least one authorized network / address"
+msgstr ""
+
+#: admin/app_settings.py:188
 msgid "Administration"
 msgstr ""
 
@@ -256,7 +270,7 @@ msgid "Domain(s) that user administrates"
 msgstr "Домен(ы) администрируемые пользователем"
 
 #: admin/forms/account.py:464 admin/forms/account.py:554
-#: admin/forms/domain.py:309 admin/forms/domain.py:376
+#: admin/forms/domain.py:320 admin/forms/domain.py:387
 msgid "General"
 msgstr "Основные"
 
@@ -350,44 +364,47 @@ msgstr ""
 "Синоним(ы) этого домена. Вводите одно имя за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/domain.py:98 admin/handlers.py:165
+#: admin/forms/domain.py:89 admin/handlers.py:165
 msgid "domain alias"
 msgstr ""
 
-#: admin/forms/domain.py:101 admin/forms/domain.py:133
-#: admin/forms/domain.py:141
+#: admin/forms/domain.py:92 admin/forms/domain.py:144 admin/forms/domain.py:152
 #, python-format
 msgid "A %s with this name already exists"
 msgstr ""
 
-#: admin/forms/domain.py:111 admin/serializers.py:41
+#: admin/forms/domain.py:100 admin/serializers.py:45
+msgid "No authorized MX record found for this domain"
+msgstr ""
+
+#: admin/forms/domain.py:122 admin/serializers.py:55
 msgid "Cannot be greater than domain quota"
 msgstr ""
 
-#: admin/forms/domain.py:116
+#: admin/forms/domain.py:127
 msgid "You can't define an unlimited quota."
 msgstr ""
 
-#: admin/forms/domain.py:133 admin/forms/domain.py:138
+#: admin/forms/domain.py:144 admin/forms/domain.py:149
 msgid "domain"
 msgstr ""
 
-#: admin/forms/domain.py:187
+#: admin/forms/domain.py:198
 msgid "Create a domain administrator"
 msgstr "Создание администратора домена"
 
-#: admin/forms/domain.py:190
+#: admin/forms/domain.py:201
 msgid "Automatically create an administrator for this domain"
 msgstr "Автоматически создаст администратора для этого домена"
 
-#: admin/forms/domain.py:195 admin/templates/admin/domain_detail.html:101
+#: admin/forms/domain.py:206 admin/templates/admin/domain_detail.html:101
 #: admin/templates/admin/domains.html:34
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Логин"
 
-#: admin/forms/domain.py:198
+#: admin/forms/domain.py:209
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
@@ -395,52 +412,52 @@ msgstr ""
 "Имя администратора. Не включайте имя домена оно будет добавлено "
 "автоматически."
 
-#: admin/forms/domain.py:205
+#: admin/forms/domain.py:216
 msgid "With a mailbox"
 msgstr ""
 
-#: admin/forms/domain.py:208
+#: admin/forms/domain.py:219
 #, fuzzy
 #| msgid "Create a domain administrator"
 msgid "Create a mailbox for the administrator."
 msgstr "Создание администратора домена"
 
-#: admin/forms/domain.py:214
+#: admin/forms/domain.py:225
 msgid "Create aliases"
 msgstr "Создание синонимов"
 
-#: admin/forms/domain.py:217
+#: admin/forms/domain.py:228
 msgid "Automatically create standard aliases for this domain"
 msgstr "Автоматически создает стандартные синонимы для этого домена"
 
-#: admin/forms/domain.py:233
+#: admin/forms/domain.py:244
 msgid "Invalid format"
 msgstr "Неверный формат"
 
-#: admin/forms/domain.py:242 admin/forms/domain.py:245
+#: admin/forms/domain.py:253 admin/forms/domain.py:256
 #, fuzzy
 #| msgid "A quota is required"
 msgid "This field is required."
 msgstr "Требуется квота"
 
-#: admin/forms/domain.py:262
+#: admin/forms/domain.py:273
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Пользователь  '%s' уже существует"
 
-#: admin/forms/domain.py:366
+#: admin/forms/domain.py:377
 msgid "Domain modified"
 msgstr "Домен изменен"
 
-#: admin/forms/domain.py:387
+#: admin/forms/domain.py:398
 msgid "Options"
 msgstr "Опции"
 
-#: admin/forms/domain.py:395
+#: admin/forms/domain.py:406
 msgid "New domain"
 msgstr "Новый домен"
 
-#: admin/forms/domain.py:408
+#: admin/forms/domain.py:419
 msgid "Domain created"
 msgstr "Домен создан"
 
@@ -517,34 +534,34 @@ msgstr "Пользователи"
 msgid "Forward"
 msgstr "Перенаправленые"
 
-#: admin/lib.py:34
+#: admin/lib.py:39
 msgid "A mailbox is required"
 msgstr ""
 
-#: admin/lib.py:124
+#: admin/lib.py:129
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You are not allowed to import domains"
 msgstr "Вы не можете удалить собственный домен"
 
-#: admin/lib.py:135
+#: admin/lib.py:140
 msgid "You are not allowed to import domain aliases."
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:169
+#: admin/management/commands/subcommands/_mx.py:124
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:189
+#: admin/management/commands/subcommands/_mx.py:144
 msgid "Domain {} has no MX record"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:200
+#: admin/management/commands/subcommands/_mx.py:155
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:216
+#: admin/management/commands/subcommands/_mx.py:172
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr ""
 
@@ -631,19 +648,23 @@ msgstr ""
 msgid "Check to enable DNS checks for this domain"
 msgstr "Отметить для активации этого домена"
 
-#: admin/models/domain.py:254 admin/models/domain_alias.py:73
+#: admin/models/domain.py:256 admin/models/domain_alias.py:73
 msgid "Invalid line"
 msgstr "Ошибочная строка"
 
-#: admin/models/domain.py:262
+#: admin/models/domain.py:266
+msgid "No authorized MX record found for domain {}"
+msgstr ""
+
+#: admin/models/domain.py:273
 msgid "Invalid quota value for domain '{}'"
 msgstr ""
 
-#: admin/models/domain.py:269
+#: admin/models/domain.py:280
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr ""
 
-#: admin/models/domain.py:274
+#: admin/models/domain.py:285
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr ""
 
@@ -683,36 +704,36 @@ msgstr "Требуется квота"
 msgid "Domain quota exceeded"
 msgstr "Домен создан"
 
-#: admin/serializers.py:66 admin/serializers.py:247 admin/serializers.py:336
+#: admin/serializers.py:80 admin/serializers.py:261 admin/serializers.py:350
 #, fuzzy
 #| msgid "Permissions"
 msgid "Permission denied."
 msgstr "Права"
 
-#: admin/serializers.py:104
+#: admin/serializers.py:118
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: admin/serializers.py:212
+#: admin/serializers.py:226
 msgid "Not allowed for this role."
 msgstr ""
 
-#: admin/serializers.py:222
+#: admin/serializers.py:236
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: admin/serializers.py:234
+#: admin/serializers.py:248
 #, fuzzy
 #| msgid "Domain does not exist"
 msgid "Local domain {} does not exist"
 msgstr "Домен не существует"
 
-#: admin/serializers.py:323
+#: admin/serializers.py:337
 msgid "A list of recipient"
 msgstr ""
 
-#: admin/serializers.py:334
+#: admin/serializers.py:348
 #, fuzzy
 #| msgid "Domain modified"
 msgid "Domain not found."
