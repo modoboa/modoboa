@@ -2,10 +2,7 @@
 
 from __future__ import print_function, unicode_literals
 
-from datetime import timedelta
 import ipaddress
-
-import dns.resolver
 
 import gevent
 from gevent import socket
@@ -17,7 +14,6 @@ from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
-from django.utils import timezone
 
 from modoboa.admin import constants
 from modoboa.admin import models
@@ -69,48 +65,6 @@ class CheckMXRecords(BaseCommand):
         parser.add_argument(
             "--ttl", type=int, default=7200,
             help="TTL for dns query.")
-
-    def get_mx_records_for_domain(self, domain, ttl=7200):
-        """Return one or more `models.MXRecord` for `domain`.
-
-        DNS queries are not performed while `ttl` (in seconds) is still valid.
-        """
-        now = timezone.now()
-        records = models.MXRecord.objects.filter(domain=domain,
-                                                 updated__gt=now)
-        if records.exists():
-            for record in records:
-                yield record
-            raise StopIteration()
-
-        models.MXRecord.objects.filter(domain=domain).delete()
-        try:
-            answers = dns.resolver.query(domain.name, "MX")
-        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN,
-                dns.resolver.NoNameservers):
-            raise StopIteration()
-
-        delta = timedelta(seconds=ttl)
-
-        for answer in answers:
-            try:
-                # work if .exchange is a name or IP
-                address = socket.gethostbyname(str(answer.exchange))
-            except socket.gaierror:
-                pass
-            else:
-                try:
-                    # we must have a valid IP
-                    address = ipaddress.ip_address(u"{}".format(address))
-                except ValueError:
-                    pass
-                else:
-                    record = models.MXRecord.objects.create(
-                        domain=domain,
-                        name=u"{}".format(str(answer.exchange).strip(".")),
-                        address=u"{}".format(address),
-                        updated=now + delta)
-                    yield record
 
     def query_dnsbl(self, mx_list, provider):
         """Check given IP against given DNSBL provider."""
@@ -183,7 +137,7 @@ class CheckMXRecords(BaseCommand):
         """
         alerts = []
         check = False
-        mxs = [(mx, ipaddress.ip_address(u"%s" % mx.address))
+        mxs = [(mx, ipaddress.ip_address("%s" % mx.address))
                for mx in mx_list]
         valid_mxs = self.valid_mxs
         if not mxs:
@@ -222,7 +176,8 @@ class CheckMXRecords(BaseCommand):
 
     def check_domain(self, domain, timeout=3, ttl=7200, **options):
         """Check specified domain."""
-        mx_list = list(self.get_mx_records_for_domain(domain, ttl=ttl))
+        mx_list = list(
+            models.MXRecord.objects.get_or_create_for_domain(domain, ttl))
 
         if param_tools.get_global_parameter("enable_mx_checks"):
             self.check_valid_mx(domain, mx_list, **options)

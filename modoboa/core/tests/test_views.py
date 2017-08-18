@@ -157,6 +157,7 @@ class SettingsTestCase(ModoTestCase):
         "limits-deflt_user_quota_limit": "0",
         "core-hide_features_widget": "False",
         "core-inactive_account_threshold": "30",
+        "admin-domains_must_have_authorized_mx": False,
     }
 
     def test_get_settings(self):

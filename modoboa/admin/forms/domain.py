@@ -21,7 +21,7 @@ from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
 
 from .. import signals
-from ..lib import check_if_domain_exists
+from ..lib import check_if_domain_exists, domain_has_authorized_mx
 from ..models import (
     Domain, DomainAlias, Mailbox, Alias
 )
@@ -82,6 +82,25 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 name = "aliases_%d" % (pos + 1)
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
+    def clean_name(self):
+        """Check unicity and more."""
+        name = self.cleaned_data["name"]
+        label = check_if_domain_exists(
+            name, [(DomainAlias, _('domain alias'))])
+        if label is not None:
+            raise forms.ValidationError(
+                _("A %s with this name already exists") % force_text(label))
+
+        domains_must_have_authorized_mx = (
+            param_tools.get_global_parameter("domains_must_have_authorized_mx")
+        )
+        if domains_must_have_authorized_mx and not self.user.is_superuser:
+            if not domain_has_authorized_mx(name):
+                raise forms.ValidationError(
+                    _("No authorized MX record found for this domain"))
+
+        return name
+
     def clean(self):
         """Custom fields validation.
 
@@ -93,14 +112,6 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         cleaned_data = super(DomainFormGeneral, self).clean()
         if self._errors:
             return cleaned_data
-        name = cleaned_data["name"]
-        label = check_if_domain_exists(
-            name, [(DomainAlias, _('domain alias'))])
-        if label is not None:
-            self.add_error(
-                "name", _("A %s with this name already exists")
-                % force_text(label)
-            )
         condition = (
             self.cleaned_data["quota"] != 0 and
             self.cleaned_data["default_mailbox_quota"] >
@@ -128,7 +139,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             if cleaned_data[k] == "":
                 del cleaned_data[k]
                 continue
-            if cleaned_data[k] == name:
+            if cleaned_data[k] == self.cleaned_data["name"]:
                 self._errors[k] = self.error_class(
                     [_("A %s with this name already exists") % _("domain")]
                 )

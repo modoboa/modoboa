@@ -6,6 +6,9 @@ from __future__ import unicode_literals
 import copy
 import json
 
+import dns.resolver
+from mock import patch
+
 from django.core.urlresolvers import reverse
 
 from rest_framework.authtoken.models import Token
@@ -15,6 +18,7 @@ from modoboa.core import factories as core_factories
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
+from . import utils
 from .. import factories
 from .. import models
 
@@ -67,6 +71,35 @@ class DomainAPITestCase(ModoAPITestCase):
         response = self.client.post(
             url, {"name": "test4.com", "default_mailbox_quota": 10})
         self.assertEqual(response.status_code, 403)
+
+    @patch.object(dns.resolver.Resolver, "query")
+    @patch("socket.gethostbyname")
+    def test_create_domain_with_mx_check(self, mock_gethostbyname, mock_query):
+        """Check domain creation when MX check is activated."""
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        self.set_global_parameter("valid_mxs", "1.2.3.4")
+        self.set_global_parameter("domains_must_have_authorized_mx", True)
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers", ))
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+
+        url = reverse("api:domain-list")
+        mock_query.return_value = [utils.FakeDNSAnswer("mail.ok.com")]
+        mock_gethostbyname.return_value = "1.2.3.5"
+        response = self.client.post(
+            url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["name"][0],
+            "No authorized MX record found for this domain")
+
+        mock_gethostbyname.return_value = "1.2.3.4"
+        response = self.client.post(
+            url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
+        )
+        self.assertEqual(response.status_code, 201)
 
     def test_update_domain(self):
         """Check domain update."""

@@ -2,12 +2,17 @@
 
 from __future__ import unicode_literals
 
+from mock import patch
+import dns.resolver
+
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 
+from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
 
+from . import utils
 from .. import factories
 from ..models import Domain, Alias, DomainAlias
 
@@ -73,6 +78,37 @@ domainalias; domalias1.com; domain1.com; True
         self.assertContains(
             response,
             "Default mailbox quota cannot be greater than domain quota")
+
+    @patch.object(dns.resolver.Resolver, "query")
+    @patch("socket.gethostbyname")
+    def test_domain_import_with_mx_check(self, mock_gethostbyname, mock_query):
+        """Check domain import when MX check is enabled."""
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers", ))
+        self.client.force_login(reseller)
+        self.set_global_parameter("valid_mxs", "1.2.3.4")
+        self.set_global_parameter("domains_must_have_authorized_mx", True)
+
+        mock_query.return_value = [utils.FakeDNSAnswer("mail.ok.com")]
+        mock_gethostbyname.return_value = "1.2.3.5"
+        f = ContentFile(
+            b"domain; domain1.com; 100; 1; True", name="domains.csv")
+        resp = self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertContains(resp, "No authorized MX record found for domain")
+
+        mock_gethostbyname.return_value = "1.2.3.4"
+        f.seek(0)
+        resp = self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        self.assertTrue(
+            Domain.objects.filter(name="domain1.com").exists())
 
     def test_import_domains_with_conflict(self):
         f = ContentFile(b"""domain;test.alias;100;10;True
