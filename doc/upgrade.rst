@@ -84,6 +84,21 @@ documentation.
 Specific instructions
 *********************
 
+1.8.3
+=====
+
+Edit the :file:`settings.py` file and replace the following line:
+
+.. sourcecode:: python
+
+   BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+by:
+
+.. sourcecode:: python
+
+   BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
+
 1.8.0
 =====
 
