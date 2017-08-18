@@ -16,7 +16,7 @@ from logging.handlers import SysLogHandler
 from modoboa.core.dev_settings import *
 {% endif %}
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
