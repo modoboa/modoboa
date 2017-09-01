@@ -1,3 +1,5 @@
+# coding: utf8
+
 """Tests for core application."""
 
 from __future__ import unicode_literals

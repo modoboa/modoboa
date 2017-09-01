@@ -18,6 +18,31 @@ from .. import factories
 from .. import models
 
 
+class AuthenticationTestCase(ModoTestCase):
+    """Check authentication."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(AuthenticationTestCase, cls).setUpTestData()
+        cls.mb = factories.MailboxFactory(
+            domain__name="test.com", address="user",
+            user__username="user@test.com",
+            user__groups=('SimpleUsers',)
+        )
+
+    def test_authentication_unicode(self):
+        """Test with unicode password."""
+        self.client.logout()
+        password = "Tété1234"
+        self.mb.user.set_password(password)
+        self.mb.user.save(update_fields=["password"])
+        data = {"username": self.mb.full_address, "password": password}
+        response = self.client.post(reverse("core:login"), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse("core:user_index")))
+
+
 class AccountTestCase(ModoTestCase):
 
     @classmethod
