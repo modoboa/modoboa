@@ -36,9 +36,10 @@ def encrypt(clear):
     cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=backend)
     encryptor = cipher.encryptor()
     block_size = algorithms.AES.block_size
+    clear = force_bytes(clear)
     if len(clear) % block_size:
-        clear += " " * (block_size - len(clear) % block_size)
-    ct = encryptor.update(force_bytes(clear)) + encryptor.finalize()
+        clear += b" " * (block_size - len(clear) % block_size)
+    ct = encryptor.update(clear) + encryptor.finalize()
     return force_text(base64.b64encode(ct))
 
 
