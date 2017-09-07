@@ -87,6 +87,18 @@ class DomainTestCase(ModoTestCase):
             Alias.objects.filter(
                 address="postmaster@pouet2.com", internal=False).exists())
 
+    def test_create_with_template_and_random_password(self):
+        """Test domain creation with administrator and random password."""
+        values = {
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": True, "dom_admin_username": "toto",
+            "with_mailbox": True, "create_aliases": True, "type": "domain",
+            "stepid": "step3", "random_password": True
+        }
+        self.ajax_post(reverse("admin:domain_add"), values)
+        self.assertFalse(
+            self.client.login(username="admin@pouet.com", password="password"))
+
     def test_create_with_template_and_no_mailbox(self):
         """Test domain creation with administrator but no mailbox."""
         values = {

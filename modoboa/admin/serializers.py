@@ -189,11 +189,13 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
 class WritableAccountSerializer(AccountSerializer):
     """Serializer to create account."""
 
+    random_password = serializers.BooleanField(default=False)
     role = serializers.ChoiceField(choices=core_constants.ROLES)
+    password = serializers.CharField(required=False)
 
     class Meta(AccountSerializer.Meta):
         fields = AccountSerializer.Meta.fields + (
-            "password", )
+            "password", "random_password")
 
     def __init__(self, *args, **kwargs):
         """Adapt fields to current user."""
@@ -206,16 +208,6 @@ class WritableAccountSerializer(AccountSerializer):
             choices=permissions.get_account_roles(user))
         self.fields["domains"] = serializers.ListField(
             child=serializers.CharField(), allow_empty=False, required=False)
-        if request.method == "PUT":
-            self.fields["password"].required = False
-
-    def validate_password(self, value):
-        """Check password constraints."""
-        try:
-            password_validation.validate_password(value, self.instance)
-        except ValidationError as exc:
-            raise serializers.ValidationError(exc.messages[0])
-        return value
 
     def validate(self, data):
         """Check constraints."""
@@ -234,6 +226,19 @@ class WritableAccountSerializer(AccountSerializer):
             elif mailbox["full_address"] != data["username"]:
                 raise serializers.ValidationError({
                     "username": _("Must be equal to mailbox full_address")
+                })
+        if not data["random_password"]:
+            password = data.get("password")
+            if password:
+                try:
+                    password_validation.validate_password(
+                        data["password"], self.instance)
+                except ValidationError as exc:
+                    raise serializers.ValidationError({
+                        "password": exc.messages[0]})
+            elif not self.instance:
+                raise serializers.ValidationError({
+                    "password": _("This field is required.")
                 })
         domain_names = data.get("domains")
         if not domain_names:
@@ -296,8 +301,13 @@ class WritableAccountSerializer(AccountSerializer):
         mailbox_data = validated_data.pop("mailbox", None)
         role = validated_data.pop("role")
         domains = validated_data.pop("domains", [])
+        random_password = validated_data.pop("random_password", False)
         user = core_models.User(**validated_data)
-        user.set_password(validated_data["password"])
+        if random_password:
+            password = lib.make_password()
+        else:
+            password = validated_data.pop("password")
+        user.set_password(password)
         user.save(creator=creator)
         if mailbox_data:
             self._create_mailbox(creator, user, mailbox_data)

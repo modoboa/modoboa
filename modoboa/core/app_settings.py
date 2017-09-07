@@ -86,6 +86,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Default password for automatically created accounts.")
     )
 
+    random_password_length = forms.IntegerField(
+        label=ugettext_lazy("Random password length"),
+        min_value=8,
+        initial=8,
+        help_text=ugettext_lazy(
+            "Length of randomly generated passwords.")
+    )
+
     # LDAP specific settings
     ldap_sep = SeparatorField(label=ugettext_lazy("LDAP settings"))
 

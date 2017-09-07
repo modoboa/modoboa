@@ -468,6 +468,21 @@ Identities.prototype = {
         }
     },
 
+    /**
+     * Hide or show password inputs depending on value.
+     *
+     * @param {bool} value - visibility flag
+     */
+    togglePasswordInputs: function(value) {
+        if (value) {
+            $('#id_password1').parents(".form-group").show();
+            $('#id_password2').parents(".form-group").show();
+        } else {
+            $('#id_password1').parents(".form-group").hide();
+            $('#id_password2').parents(".form-group").hide();
+        }
+    },
+
     generalform_init: function(notrigger) {
         $("#id_role").change($.proxy(function(e) {
             var $this = $(e.target);
@@ -478,6 +493,10 @@ Identities.prototype = {
             } else {
                 this.normal_mode(value);
             }
+        }, this));
+        $('#id_random_password').click($.proxy(function (e) {
+            var $this = $(e.target);
+            this.togglePasswordInputs(!$this.prop('checked'));
         }, this));
         this.toggle_master_user($("#id_role").val());
         if (notrigger !== undefined && notrigger) {

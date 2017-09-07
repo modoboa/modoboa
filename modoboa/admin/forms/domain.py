@@ -20,8 +20,9 @@ from modoboa.lib.form_utils import (
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
 
+from .. import lib
 from .. import signals
-from ..lib import check_if_domain_exists, domain_has_authorized_mx
+
 from ..models import (
     Domain, DomainAlias, Mailbox, Alias
 )
@@ -85,7 +86,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     def clean_name(self):
         """Check unicity and more."""
         name = self.cleaned_data["name"]
-        label = check_if_domain_exists(
+        label = lib.check_if_domain_exists(
             name, [(DomainAlias, _('domain alias'))])
         if label is not None:
             raise forms.ValidationError(
@@ -95,7 +96,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             param_tools.get_global_parameter("domains_must_have_authorized_mx")
         )
         if domains_must_have_authorized_mx and not self.user.is_superuser:
-            if not domain_has_authorized_mx(name):
+            if not lib.domain_has_authorized_mx(name):
                 raise forms.ValidationError(
                     _("No authorized MX record found for this domain"))
 
@@ -145,7 +146,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 )
                 del cleaned_data[k]
                 continue
-            label = check_if_domain_exists(
+            label = lib.check_if_domain_exists(
                 cleaned_data[k], [(Domain, _("domain"))])
             if label is not None:
                 self.add_error(
@@ -212,6 +213,15 @@ class DomainFormOptions(forms.Form):
         required=False
     )
 
+    random_password = YesNoField(
+        label=ugettext_lazy("Random password"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Generate a random password for the administrator."
+        ),
+        required=False
+    )
+
     with_mailbox = YesNoField(
         label=ugettext_lazy("With a mailbox"),
         initial=True,
@@ -274,8 +284,12 @@ class DomainFormOptions(forms.Form):
         core_signals.can_create_object.send(
             self.__class__, context=user, klass=Mailbox)
         da = User(username=username, email=username, is_active=True)
-        da.set_password(
-            param_tools.get_global_parameter("default_password", app="core"))
+        if self.cleaned_data["random_password"]:
+            password = lib.make_password()
+        else:
+            password = param_tools.get_global_parameter(
+                "default_password", app="core")
+        da.set_password(password)
         da.save()
         da.role = "DomainAdmins"
         da.post_create(user)
