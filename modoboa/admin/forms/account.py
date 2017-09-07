@@ -25,6 +25,7 @@ from modoboa.lib.validators import validate_utf8_email
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
 
+from .. import lib
 from .. import models
 from .. import signals
 
@@ -45,8 +46,17 @@ class AccountFormGeneral(forms.ModelForm):
         choices=[("", ugettext_lazy("Choose"))],
         help_text=ugettext_lazy("What level of permission this user will have")
     )
+    random_password = forms.BooleanField(
+        label=ugettext_lazy("Random password"),
+        help_text=ugettext_lazy(
+            "Generate a random password. If you're updating this account and "
+            "check this box, a new password will be generated."
+        ),
+        required=False
+    )
     password1 = forms.CharField(
-        label=ugettext_lazy("Password"), widget=forms.widgets.PasswordInput
+        label=ugettext_lazy("Password"), widget=forms.widgets.PasswordInput,
+        required=False
     )
 
     password2 = forms.CharField(
@@ -54,7 +64,8 @@ class AccountFormGeneral(forms.ModelForm):
         widget=forms.widgets.PasswordInput,
         help_text=ugettext_lazy(
             "Enter the same password as above, for verification."
-        )
+        ),
+        required=False
     )
 
     class Meta:
@@ -71,8 +82,9 @@ class AccountFormGeneral(forms.ModelForm):
         super(AccountFormGeneral, self).__init__(*args, **kwargs)
         self.fields = OrderedDict(
             (key, self.fields[key]) for key in
-            ["role", "username", "first_name", "last_name", "password1",
-             "password2", "master_user", "is_active"]
+            ["role", "username", "first_name", "last_name",
+             "random_password", "password1", "password2",
+             "master_user", "is_active"]
         )
         self.user = user
         condition = (
@@ -103,21 +115,15 @@ class AccountFormGeneral(forms.ModelForm):
         )
         if domain_disabled:
             self.fields["is_active"].widget.attrs["disabled"] = "disabled"
-        if args:
-            empty_password = (
-                args[0].get("password1", "") == "" and
-                args[0].get("password2", "") == "")
-            if empty_password:
-                self.fields["password1"].required = False
-                self.fields["password2"].required = False
-            if domain_disabled:
-                del self.fields["is_active"]
+        if args and domain_disabled:
+            del self.fields["is_active"]
         self.fields["role"].initial = self.instance.role
         condition = (
             not self.instance.is_local and
             param_tools.get_global_parameter(
                 "ldap_auth_method", app="core") == "directbind")
         if condition:
+            del self.fields["random_password"]
             del self.fields["password1"]
             del self.fields["password2"]
 
@@ -151,16 +157,6 @@ class AccountFormGeneral(forms.ModelForm):
         validate_utf8_email(uname)
         return uname
 
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1", "")
-        password2 = self.cleaned_data["password2"]
-        if password1 != password2:
-            raise forms.ValidationError(
-                _("The two password fields didn't match."))
-        if password2 != "":
-            password_validation.validate_password(password2, self.instance)
-        return password2
-
     def clean(self):
         """Check master user mode."""
         super(AccountFormGeneral, self).clean()
@@ -175,6 +171,26 @@ class AccountFormGeneral(forms.ModelForm):
                 "master_user",
                 _("Only super administrators are allowed for this mode")
             )
+        random_password = self.cleaned_data.get("random_password")
+        if random_password:
+            self.cleaned_data["password2"] = lib.make_password()
+        elif "random_password" in self.fields and not random_password:
+            password1 = self.cleaned_data.get("password1", "")
+            password2 = self.cleaned_data.get("password2", "")
+            empty_password = password1 == "" and password2 == ""
+            if not self.instance.pk or not empty_password:
+                if not password1:
+                    self.add_error("password1", _("This field is required."))
+                if not password2:
+                    self.add_error("password2", _("This field is required."))
+                if not self.errors:
+                    if password1 != password2:
+                        self.add_error(
+                            "password2",
+                            _("The two password fields didn't match."))
+                    else:
+                        password_validation.validate_password(
+                            password2, self.instance)
         return self.cleaned_data
 
     def save(self, commit=True):

@@ -289,6 +289,15 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 
+    def test_create_account_with_random_password(self):
+        """Try to create a new account with random password."""
+        url = reverse("api:account-list")
+        data = dict(self.ACCOUNT_DATA)
+        data["random_password"] = True
+        del data["password"]
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
     def test_create_domainadmin_account(self):
         """Try to create a domain admin."""
         data = copy.deepcopy(self.ACCOUNT_DATA)

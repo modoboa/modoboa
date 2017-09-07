@@ -107,6 +107,36 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
+    def test_random_password(self):
+        """Try to create an account with a random password."""
+        values = {
+            "username": "tester@test.com",
+            "first_name": "Tester", "last_name": "Toto",
+            "random_password": True, "role": "SimpleUsers",
+            "quota_act": True, "is_active": True, "email": "tester@test.com",
+            "stepid": "step2"
+        }
+        self.ajax_post(reverse("admin:account_add"), values)
+
+        account = User.objects.get(username=values["username"])
+        password = account.password
+        values["language"] = "en"
+        # Since 'random_password' is still True, a new password should
+        # be generated
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values
+        )
+        account.refresh_from_db()
+        self.assertNotEqual(password, account.password)
+        password = account.password
+
+        values["random_password"] = False
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.pk]), values
+        )
+        account.refresh_from_db()
+        self.assertEqual(password, account.password)
+
     def test_delete_default_superadmin(self):
         """Delete default superadmin."""
         sadmin2 = core_factories.UserFactory(

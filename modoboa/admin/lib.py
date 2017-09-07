@@ -7,7 +7,9 @@ from __future__ import unicode_literals
 from functools import wraps
 import ipaddress
 from itertools import chain
+import random
 import socket
+import string
 
 import dns.resolver
 
@@ -206,3 +208,13 @@ def domain_has_authorized_mx(name):
             if mx_ip_addr in subnet:
                 return True
     return False
+
+
+def make_password():
+    """Create a random password."""
+    length = int(
+        param_tools.get_global_parameter("randow_password_length", app="core")
+    )
+    return "".join(
+        random.SystemRandom().choice(
+            string.ascii_letters + string.digits) for _ in range(length))
