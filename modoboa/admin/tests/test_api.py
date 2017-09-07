@@ -285,7 +285,12 @@ class AccountAPITestCase(ModoAPITestCase):
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["username"] = "fromapi_ééé@test.com"
         data["mailbox"]["full_address"] = data["username"]
-        url = reverse("api:account-list")
+
+        del data["password"]
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+        data["password"] = "Toto1234"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 

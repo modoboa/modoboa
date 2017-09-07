@@ -236,7 +236,7 @@ class WritableAccountSerializer(AccountSerializer):
                 except ValidationError as exc:
                     raise serializers.ValidationError({
                         "password": exc.messages[0]})
-            elif not self.instance.pk:
+            elif not self.instance:
                 raise serializers.ValidationError({
                     "password": _("This field is required.")
                 })

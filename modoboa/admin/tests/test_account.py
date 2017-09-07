@@ -107,6 +107,27 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
+    def test_password_constraints(self):
+        """Check password constraints."""
+        values = {
+            "username": "tester@test.com",
+            "first_name": "Tester", "last_name": "Toto",
+            "password1": "", "password2": "",
+            "role": "SimpleUsers",
+            "quota_act": True, "is_active": True, "email": "tester@test.com",
+            "stepid": "step2"
+        }
+        resp = self.ajax_post(reverse("admin:account_add"), values, 400)
+        self.assertEqual(
+            resp["form_errors"]["password1"][0],
+            "This field is required.")
+        values["password1"] = "Toto1234"
+        values["password2"] = "Toto12345"
+        resp = self.ajax_post(reverse("admin:account_add"), values, 400)
+        self.assertEqual(
+            resp["form_errors"]["password2"][0],
+            "The two password fields didn't match.")
+
     def test_random_password(self):
         """Try to create an account with a random password."""
         values = {
