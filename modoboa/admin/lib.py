@@ -213,7 +213,7 @@ def domain_has_authorized_mx(name):
 def make_password():
     """Create a random password."""
     length = int(
-        param_tools.get_global_parameter("randow_password_length", app="core")
+        param_tools.get_global_parameter("random_password_length", app="core")
     )
     return "".join(
         random.SystemRandom().choice(

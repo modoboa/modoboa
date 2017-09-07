@@ -86,7 +86,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Default password for automatically created accounts.")
     )
 
-    randow_password_length = forms.IntegerField(
+    random_password_length = forms.IntegerField(
         label=ugettext_lazy("Random password length"),
         min_value=8,
         initial=8,
