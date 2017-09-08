@@ -350,8 +350,12 @@ class AccountFormMail(forms.Form, DynamicForm):
         self.mb = models.Mailbox(
             address=self.locpart, domain=self.domain, user=account,
             use_domain_quota=self.cleaned_data["quota_act"])
-        self.mb.set_quota(self.cleaned_data["quota"],
-                          user.has_perm("admin.add_domain"))
+        override_rules = (
+            user.is_superuser or
+            user.has_perm("admin.add_domain") and
+            not user.userobjectlimit_set.get(name="quota").max_value
+        )
+        self.mb.set_quota(self.cleaned_data["quota"], override_rules)
         self.mb.save(creator=user)
 
     def _update_aliases(self, user, account):
