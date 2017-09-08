@@ -59,13 +59,15 @@ class ResourceTestCase(lib_tests.ModoTestCase):
         cls.localconfig.save()
         populate_database()
 
-    def _create_account(self, username, role='SimpleUsers', status=200):
+    def _create_account(
+            self, username, role='SimpleUsers', status=200, **kwargs):
         values = dict(
             username=username, first_name="Tester", last_name="Toto",
             password1="Toto1234", password2="Toto1234", role=role,
             quota_act=True,
             is_active=True, email=username, stepid='step2',
         )
+        values.update(kwargs)
         return self.ajax_post(
             reverse("admin:account_add"), values, status
         )
@@ -322,8 +324,32 @@ class ResellerTestCase(ResourceTestCase):
         self.assertEqual(
             response["form_errors"]["default_mailbox_quota"][0],
             "You can't define an unlimited quota.")
+
         self.user.userobjectlimit_set.filter(name="quota").update(max_value=0)
-        response = self._create_domain("domain1.tld", quota=0)
+        response = self._create_domain("domain2.tld", quota=0)
+
+    def test_quota_propagation(self):
+        """Check that quota is applied everywhere."""
+        # Try to assign an unlimited quota to an admin
+        # See https://github.com/modoboa/modoboa/issues/1223
+        self._create_domain("domain1.tld")
+        self._create_account(
+            "admin@domain1.tld", role="DomainAdmins",
+            quota_act=False, quota=0, status=400)
+
+        self._create_domain("domain2.tld", withtpl=True)
+        admin = User.objects.get(username="admin@domain2.tld")
+        values = {
+            "username": admin.username, "role": admin.role,
+            "is_active": admin.is_active, "email": admin.email,
+            "mailboxes_limit": 1, "mailbox_aliases_limit": 2,
+            "language": "en", "quota_act": False, "quota": 0
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[admin.pk]),
+            values,
+            400
+        )
 
     def test_reseller_deletes_domain(self):
         """Check if all resources are restored after the deletion."""
