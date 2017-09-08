@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-18 14:44+0200\n"
+"POT-Creation-Date: 2017-09-08 10:50+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -125,7 +125,7 @@ msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 
 #: admin/app_settings.py:156 admin/app_settings.py:164
-#: admin/forms/account.py:301
+#: admin/forms/account.py:317
 msgid "Must be a positive integer"
 msgstr ""
 
@@ -137,66 +137,85 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: admin/forms/account.py:37 admin/templates/admin/domain_detail.html:101
+#: admin/forms/account.py:38 admin/templates/admin/domain_detail.html:101
 msgid "Username"
 msgstr "Логин пользователя"
 
-#: admin/forms/account.py:39
+#: admin/forms/account.py:40
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
 msgstr ""
 
-#: admin/forms/account.py:44 admin/templates/admin/account_detail.html:29
+#: admin/forms/account.py:45 admin/templates/admin/account_detail.html:29
 msgid "Role"
 msgstr "Роль"
 
-#: admin/forms/account.py:45
+#: admin/forms/account.py:46
 msgid "Choose"
 msgstr "Выбрать"
 
-#: admin/forms/account.py:46
+#: admin/forms/account.py:47
 msgid "What level of permission this user will have"
 msgstr "Разрешения для этого пользователя"
 
-#: admin/forms/account.py:49
+#: admin/forms/account.py:50 admin/forms/domain.py:217
+#, fuzzy
+#| msgid "Invalid request"
+msgid "Random password"
+msgstr "Ошибочный запрос"
+
+#: admin/forms/account.py:52
+msgid ""
+"Generate a random password. If you're updating this account and check this "
+"box, a new password will be generated."
+msgstr ""
+
+#: admin/forms/account.py:58
 msgid "Password"
 msgstr "Пароль"
 
-#: admin/forms/account.py:53
+#: admin/forms/account.py:63
 msgid "Confirmation"
 msgstr "Подтверждение"
 
-#: admin/forms/account.py:56
+#: admin/forms/account.py:66
 msgid "Enter the same password as above, for verification."
 msgstr "Введите такой же пароль как выше. Для проверки."
 
-#: admin/forms/account.py:67
+#: admin/forms/account.py:78
 msgid "Enabled"
 msgstr "Разрешено"
 
-#: admin/forms/account.py:159
-msgid "The two password fields didn't match."
-msgstr "Пароли не совпадают"
-
-#: admin/forms/account.py:176
+#: admin/forms/account.py:172
 msgid "Only super administrators are allowed for this mode"
 msgstr ""
 
-#: admin/forms/account.py:184
+#: admin/forms/account.py:183 admin/forms/account.py:185
+#: admin/forms/domain.py:263 admin/forms/domain.py:266 admin/serializers.py:241
+#, fuzzy
+#| msgid "A quota is required"
+msgid "This field is required."
+msgstr "Требуется квота"
+
+#: admin/forms/account.py:190
+msgid "The two password fields didn't match."
+msgstr "Пароли не совпадают"
+
+#: admin/forms/account.py:200
 msgid "You can't disable your own account"
 msgstr "Вы не можете запретить собственный аккаунт"
 
-#: admin/forms/account.py:205
+#: admin/forms/account.py:221
 msgid "E-mail"
 msgstr "Е-майл"
 
-#: admin/forms/account.py:207 admin/templates/admin/account_detail.html:45
+#: admin/forms/account.py:223 admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:57
 msgid "Quota"
 msgstr "Квота"
 
-#: admin/forms/account.py:209
+#: admin/forms/account.py:225
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -207,12 +226,12 @@ msgstr ""
 "Оставьте пустым для неограниченного значения.  (Не разрешено администраторам "
 "домена)"
 
-#: admin/forms/account.py:217 admin/forms/domain.py:42
+#: admin/forms/account.py:233 admin/forms/domain.py:43
 #: admin/templates/admin/domains.html:35
 msgid "Alias(es)"
 msgstr "Синоним(ы)"
 
-#: admin/forms/account.py:220
+#: admin/forms/account.py:236
 #, fuzzy
 #| msgid ""
 #| "Alias(es) of this mailbox. Indicate only one address per input, press "
@@ -226,13 +245,13 @@ msgstr ""
 "Синонимы этого почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
 "добавления. Используйте '*' для создания синонима 'для всех' (*@domain.tld)"
 
-#: admin/forms/account.py:226
+#: admin/forms/account.py:242
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Sender addresses"
 msgstr "Ошибочный запрос"
 
-#: admin/forms/account.py:229
+#: admin/forms/account.py:245
 #, fuzzy
 #| msgid ""
 #| "Mailbox(es) this alias will point to. Indicate only one address per "
@@ -245,56 +264,56 @@ msgstr ""
 "Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/account.py:279 admin/forms/alias.py:94
+#: admin/forms/account.py:295 admin/forms/alias.py:94
 #: admin/models/mailbox.py:315
 msgid "Domain does not exist"
 msgstr "Домен не существует"
 
-#: admin/forms/account.py:311
+#: admin/forms/account.py:327
 #, fuzzy
 #| msgid "Domain does not exist"
 msgid "Local domain does not exist"
 msgstr "Домен не существует"
 
-#: admin/forms/account.py:315 admin/forms/account.py:323
+#: admin/forms/account.py:331 admin/forms/account.py:339
 #: admin/forms/alias.py:97
 msgid "You don't have access to this domain"
 msgstr "Вы не имеете права доступа к этому домену"
 
-#: admin/forms/account.py:416
+#: admin/forms/account.py:436
 msgid "Domain(s)"
 msgstr "Домен(ы)"
 
-#: admin/forms/account.py:418
+#: admin/forms/account.py:438
 msgid "Domain(s) that user administrates"
 msgstr "Домен(ы) администрируемые пользователем"
 
-#: admin/forms/account.py:464 admin/forms/account.py:554
-#: admin/forms/domain.py:320 admin/forms/domain.py:387
+#: admin/forms/account.py:484 admin/forms/account.py:574
+#: admin/forms/domain.py:334 admin/forms/domain.py:401
 msgid "General"
 msgstr "Основные"
 
-#: admin/forms/account.py:468
+#: admin/forms/account.py:488
 msgid "Profile"
 msgstr ""
 
-#: admin/forms/account.py:472 admin/forms/account.py:560
+#: admin/forms/account.py:492 admin/forms/account.py:580
 msgid "Mail"
 msgstr "Почта"
 
-#: admin/forms/account.py:475
+#: admin/forms/account.py:495
 msgid "Permissions"
 msgstr "Права"
 
-#: admin/forms/account.py:543
+#: admin/forms/account.py:563
 msgid "Account updated"
 msgstr "аккаунт изменен"
 
-#: admin/forms/account.py:568
+#: admin/forms/account.py:588
 msgid "New account"
 msgstr "Новый аккаунт"
 
-#: admin/forms/account.py:580
+#: admin/forms/account.py:600
 msgid "Account created"
 msgstr "Аккаунт создан"
 
@@ -336,7 +355,7 @@ msgstr ""
 "Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/alias.py:49 admin/forms/domain.py:31 admin/models/domain.py:115
+#: admin/forms/alias.py:49 admin/forms/domain.py:32 admin/models/domain.py:115
 #: admin/templates/admin/_per_domain_statistics_widget.html:7
 msgid "Domain"
 msgstr ""
@@ -351,12 +370,12 @@ msgstr "Требуется квота"
 msgid "No recipient defined"
 msgstr "Получатель не определен"
 
-#: admin/forms/domain.py:39
+#: admin/forms/domain.py:40
 #: admin/templates/admin/_global_statistics_widget.html:7
 msgid "Type"
 msgstr ""
 
-#: admin/forms/domain.py:45
+#: admin/forms/domain.py:46
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
@@ -364,47 +383,47 @@ msgstr ""
 "Синоним(ы) этого домена. Вводите одно имя за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/domain.py:89 admin/handlers.py:165
+#: admin/forms/domain.py:90 admin/handlers.py:165
 msgid "domain alias"
 msgstr ""
 
-#: admin/forms/domain.py:92 admin/forms/domain.py:144 admin/forms/domain.py:152
+#: admin/forms/domain.py:93 admin/forms/domain.py:145 admin/forms/domain.py:153
 #, python-format
 msgid "A %s with this name already exists"
 msgstr ""
 
-#: admin/forms/domain.py:100 admin/serializers.py:45
+#: admin/forms/domain.py:101 admin/serializers.py:45
 msgid "No authorized MX record found for this domain"
 msgstr ""
 
-#: admin/forms/domain.py:122 admin/serializers.py:55
+#: admin/forms/domain.py:123 admin/serializers.py:55
 msgid "Cannot be greater than domain quota"
 msgstr ""
 
-#: admin/forms/domain.py:127
+#: admin/forms/domain.py:128
 msgid "You can't define an unlimited quota."
 msgstr ""
 
-#: admin/forms/domain.py:144 admin/forms/domain.py:149
+#: admin/forms/domain.py:145 admin/forms/domain.py:150
 msgid "domain"
 msgstr ""
 
-#: admin/forms/domain.py:198
+#: admin/forms/domain.py:199
 msgid "Create a domain administrator"
 msgstr "Создание администратора домена"
 
-#: admin/forms/domain.py:201
+#: admin/forms/domain.py:202
 msgid "Automatically create an administrator for this domain"
 msgstr "Автоматически создаст администратора для этого домена"
 
-#: admin/forms/domain.py:206 admin/templates/admin/domain_detail.html:101
+#: admin/forms/domain.py:207 admin/templates/admin/domain_detail.html:101
 #: admin/templates/admin/domains.html:34
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Логин"
 
-#: admin/forms/domain.py:209
+#: admin/forms/domain.py:210
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
@@ -412,52 +431,52 @@ msgstr ""
 "Имя администратора. Не включайте имя домена оно будет добавлено "
 "автоматически."
 
-#: admin/forms/domain.py:216
+#: admin/forms/domain.py:220
+#, fuzzy
+#| msgid "Create a domain administrator"
+msgid "Generate a random password for the administrator."
+msgstr "Создание администратора домена"
+
+#: admin/forms/domain.py:226
 msgid "With a mailbox"
 msgstr ""
 
-#: admin/forms/domain.py:219
+#: admin/forms/domain.py:229
 #, fuzzy
 #| msgid "Create a domain administrator"
 msgid "Create a mailbox for the administrator."
 msgstr "Создание администратора домена"
 
-#: admin/forms/domain.py:225
+#: admin/forms/domain.py:235
 msgid "Create aliases"
 msgstr "Создание синонимов"
 
-#: admin/forms/domain.py:228
+#: admin/forms/domain.py:238
 msgid "Automatically create standard aliases for this domain"
 msgstr "Автоматически создает стандартные синонимы для этого домена"
 
-#: admin/forms/domain.py:244
+#: admin/forms/domain.py:254
 msgid "Invalid format"
 msgstr "Неверный формат"
 
-#: admin/forms/domain.py:253 admin/forms/domain.py:256
-#, fuzzy
-#| msgid "A quota is required"
-msgid "This field is required."
-msgstr "Требуется квота"
-
-#: admin/forms/domain.py:273
+#: admin/forms/domain.py:283
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Пользователь  '%s' уже существует"
 
-#: admin/forms/domain.py:377
+#: admin/forms/domain.py:391
 msgid "Domain modified"
 msgstr "Домен изменен"
 
-#: admin/forms/domain.py:398
+#: admin/forms/domain.py:412
 msgid "Options"
 msgstr "Опции"
 
-#: admin/forms/domain.py:406
+#: admin/forms/domain.py:420
 msgid "New domain"
 msgstr "Новый домен"
 
-#: admin/forms/domain.py:419
+#: admin/forms/domain.py:433
 msgid "Domain created"
 msgstr "Домен создан"
 
@@ -512,7 +531,7 @@ msgstr "Выберите эту опцию если пароль в вашем �
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Ошибка импорта аккаунта (%s): домен должен существовать "
 
-#: admin/handlers.py:225 admin/models/mailbox.py:340
+#: admin/handlers.py:225 admin/models/mailbox.py:342
 #, fuzzy
 #| msgid "Mailbox %s already exists"
 msgid "Mailbox {} already exists"
@@ -534,17 +553,17 @@ msgstr "Пользователи"
 msgid "Forward"
 msgstr "Перенаправленые"
 
-#: admin/lib.py:39
+#: admin/lib.py:41
 msgid "A mailbox is required"
 msgstr ""
 
-#: admin/lib.py:129
+#: admin/lib.py:131
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You are not allowed to import domains"
 msgstr "Вы не можете удалить собственный домен"
 
-#: admin/lib.py:140
+#: admin/lib.py:142
 msgid "You are not allowed to import domain aliases."
 msgstr ""
 
@@ -704,7 +723,7 @@ msgstr "Требуется квота"
 msgid "Domain quota exceeded"
 msgstr "Домен создан"
 
-#: admin/serializers.py:80 admin/serializers.py:261 admin/serializers.py:350
+#: admin/serializers.py:80 admin/serializers.py:266 admin/serializers.py:360
 #, fuzzy
 #| msgid "Permissions"
 msgid "Permission denied."
@@ -715,25 +734,25 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: admin/serializers.py:226
+#: admin/serializers.py:218
 msgid "Not allowed for this role."
 msgstr ""
 
-#: admin/serializers.py:236
+#: admin/serializers.py:228
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: admin/serializers.py:248
+#: admin/serializers.py:253
 #, fuzzy
 #| msgid "Domain does not exist"
 msgid "Local domain {} does not exist"
 msgstr "Домен не существует"
 
-#: admin/serializers.py:337
+#: admin/serializers.py:347
 msgid "A list of recipient"
 msgstr ""
 
-#: admin/serializers.py:348
+#: admin/serializers.py:358
 #, fuzzy
 #| msgid "Domain modified"
 msgid "Domain not found."
@@ -847,7 +866,7 @@ msgstr ""
 msgid "No sender address defined"
 msgstr ""
 
-#: admin/templates/admin/account_general_form.html:11
+#: admin/templates/admin/account_general_form.html:12
 #: admin/templates/admin/aliasform.html:13
 #, fuzzy
 msgid "Domain is disabled"
@@ -954,7 +973,7 @@ msgstr "Удалить это разрешение"
 msgid "No domain administrator defined yet."
 msgstr "Администратор домена не определен"
 
-#: admin/templates/admin/domain_options_form.html:9
+#: admin/templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
 msgstr ""
 
