@@ -401,6 +401,8 @@ Restart Dovecot.
 
 Now, you can go to the :ref:`postfix` section to finish the installation.
 
+.. _lastlogin:
+
 Last-login tracking
 ===================
 

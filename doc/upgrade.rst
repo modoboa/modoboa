@@ -84,6 +84,11 @@ documentation.
 Specific instructions
 *********************
 
+1.9.0
+=====
+
+If you want to manage inactive accounts, look at :ref:`inactive_accounts`.
+
 1.8.3
 =====
 

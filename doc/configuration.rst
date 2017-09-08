@@ -440,3 +440,25 @@ For example, you could setup a cron job to run this script every night::
   #
   # Or like this if you use a virtual environment:
   # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py clearsessions
+
+.. _inactive_accounts:
+
+Cleaning inactive accounts
+==========================
+
+Thanks to :ref:`lastlogin`, it is now possible to monitor inactive
+accounts. An account is considered inactive if no login has been
+recorded for the last 30 days (this value can be changed through the
+admin panel).
+
+A management command is available to disable or delete inactive
+accounts. For example, you could setup a cron job to run it every
+night::
+
+  0 0 * * * <modoboa_site>/manage.py clean_inactive_accounts
+  #
+  # Or like this if you use a virtual environment:
+  # 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py clean_inactive_accounts
+
+The default behaviour is to disable accounts. You can delete them
+using the ``--delete`` option.
