@@ -55,7 +55,7 @@ def read(fname):
 
 setup(
     name="modoboa",
-    version="1.8.2",
+    version="1.8.3",
     url="http://modoboa.org/",
     license="ISC",
     description="Mail hosting made simple",
