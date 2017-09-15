@@ -128,6 +128,13 @@ class AccountTestCase(ModoTestCase):
             resp["form_errors"]["password2"][0],
             "The two password fields didn't match.")
 
+        values["password1"] = "toto1234"
+        values["password2"] = "toto1234"
+        resp = self.ajax_post(reverse("admin:account_add"), values, 400)
+        self.assertEqual(
+            resp["form_errors"]["password2"][0],
+            "Password must contain at least 1 uppercase letter.")
+
     def test_random_password(self):
         """Try to create an account with a random password."""
         values = {

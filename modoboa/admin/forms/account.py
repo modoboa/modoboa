@@ -183,14 +183,18 @@ class AccountFormGeneral(forms.ModelForm):
                     self.add_error("password1", _("This field is required."))
                 if not password2:
                     self.add_error("password2", _("This field is required."))
-                if not self.errors:
-                    if password1 != password2:
-                        self.add_error(
-                            "password2",
-                            _("The two password fields didn't match."))
-                    else:
-                        password_validation.validate_password(
-                            password2, self.instance)
+                if self.errors:
+                    return self.cleaned_data
+                if password1 != password2:
+                    self.add_error(
+                        "password2",
+                        _("The two password fields didn't match."))
+                    return self.cleaned_data
+                try:
+                    password_validation.validate_password(
+                        password2, self.instance)
+                except forms.ValidationError as ve:
+                    self.add_error("password2", ve.messages)
         return self.cleaned_data
 
     def save(self, commit=True):
