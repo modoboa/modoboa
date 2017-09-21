@@ -25,6 +25,14 @@ To use it, just run the following commands in your terminal:
   > git clone https://github.com/modoboa/modoboa-installer
   > cd modoboa-installer
   > sudo ./run.py <your domain>
+  
+
+if you get this warning - '/usr/bin/env: ‘python’: No such file or directory'. Run this command first
+
+.. sourcecode:: bash
+
+   > sudo apt-get install python-virtualenv python-pip
+
 
 Wait a few minutes and you're done \o/
 
