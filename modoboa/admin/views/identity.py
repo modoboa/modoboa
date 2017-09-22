@@ -113,14 +113,14 @@ def list_quotas(request):
     page = get_listing_page(mboxes, request.GET.get("page", 1))
     context = {
         "headers": render_to_string(
-            "admin/quota_headers.html", {}, request
+            "admin/identities_quota_headers.html", {}, request
         )
     }
     if page is None:
         context["length"] = 0
     else:
         context["rows"] = render_to_string(
-            "admin/quotas.html", {"mboxes": page}, request
+            "admin/identities_quotas.html", {"mboxes": page}, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)

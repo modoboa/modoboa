@@ -35,15 +35,25 @@ def domains_menu(selection, user, ajax_mode=True):
     :rtype: str
     :return: rendered menu (as HTML)
     """
-    domain_list_url = (
-        "list/" if ajax_mode else reverse("admin:domain_list")
-    )
+    nav_classes = "navigation"
+    if ajax_mode:
+        domain_list_url = "list/"
+        quota_list_url = "quotas/"
+        nav_classes += " ajaxnav"
+    else:
+        domain_list_url = reverse("admin:domain_list")
+        quota_list_url = domain_list_url + "#quotas/"
     entries = [
         {"name": "domains",
          "label": _("List domains"),
          "img": "fa fa-user",
          "class": "ajaxnav navigation",
          "url": domain_list_url},
+        {"name": "quotas",
+         "label": _("List quotas"),
+         "img": "fa fa-hdd-o",
+         "class": "ajaxnav navigation",
+         "url": quota_list_url},
     ]
     if user.has_perm("admin.add_domain"):
         extra_entries = signals.extra_domain_menu_entries.send(
