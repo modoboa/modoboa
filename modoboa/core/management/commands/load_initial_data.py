@@ -40,6 +40,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
+        extensions.exts_pool.load_all()
+
         if not models.User.objects.filter(is_superuser=True).count():
             admin = models.User(
                 username=options["admin_username"], is_superuser=True)
@@ -58,8 +60,6 @@ class Command(BaseCommand):
 
         for service_name in ["relay", "smtp"]:
             relay_models.Service.objects.get_or_create(name=service_name)
-
-        extensions.exts_pool.load_all()
 
         groups = list(constants.PERMISSIONS.keys())
         for groupname in groups:
