@@ -8,7 +8,7 @@
   {% if field.label %}
   <label class="control-label {{ label_width }}" for="id_{{ field.html_name }}">{{ field.label }}
     {% if help_display_mode == "tooltip" and field.help_text %}
-    <a href="#" class="help" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover">?</a>
+    <a href="#" class="help" data-original-title="{% trans 'Help:' %} {{ field.label }}" data-content="{{ field.help_text }}" rel="popover" tabindex="-1">?</a>
     {% endif %}
   </label>
   {% endif %}
