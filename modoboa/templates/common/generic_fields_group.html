@@ -5,7 +5,7 @@
     {% if forloop.first %}
       {{ label }}
       {% if help_text %}
-    <a href="#" class="help" data-original-title="{% trans 'Help:' %} {{ label }}" data-content="{{ help_text }}" rel="popover">?</a>
+    <a href="#" class="help" data-original-title="{% trans 'Help:' %} {{ label }}" data-content="{{ help_text }}" rel="popover" tabindex="-1">?</a>
       {% endif %}
     {% endif %}
   </label>
