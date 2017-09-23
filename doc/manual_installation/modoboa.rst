@@ -89,7 +89,7 @@ Install the corresponding Python binding:
 
 .. sourcecode:: bash
 
-  (env)> pip install MySQL-Python
+  (env)> pip install mysqlclient
 
 Then, create a user and a database:
 
