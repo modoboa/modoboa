@@ -100,15 +100,15 @@ class DeployCommand(Command):
         :param name: the command name
         :param cwd: the directory where the command must be executed
         """
-        cmd = 'python manage.py %s %s' % (name, " ".join(args))
+        cmd = [sys.executable, 'manage.py', name]
+        cmd.extend(args)
         if not self._verbose:
             p = subprocess.Popen(
-                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                shell=True, cwd=cwd
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=cwd
             )
             output = p.communicate()
         else:
-            p = subprocess.Popen(cmd, shell=True, cwd=cwd)
+            p = subprocess.Popen(cmd, cwd=cwd)
             p.wait()
             output = None
         if p.returncode:
