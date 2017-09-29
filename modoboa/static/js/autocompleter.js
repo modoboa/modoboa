@@ -103,6 +103,7 @@
                     this.$element.val(curvalue.substr(
                         0, curvalue.indexOf(this.options.from_character) + 1
                     ) + $link.attr("name"));
+                    this.$element.change();
                 }
                 this.hide_menu();
             }
