@@ -158,7 +158,8 @@ class SettingsTestCase(ModoTestCase):
         "core-hide_features_widget": "False",
         "core-inactive_account_threshold": "30",
         "admin-domains_must_have_authorized_mx": False,
-        "core-random_password_length": "8"
+        "core-random_password_length": "8",
+        "admin-create_alias_on_mbox_rename": False,
     }
 
     def test_get_settings(self):

@@ -108,6 +108,14 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    create_alias_on_mbox_rename = YesNoField(
+        label=ugettext_lazy("Create an alias when a mailbox is renamed"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Create an alias using the old address when a mailbox is renamed."
+        )
+    )
+
     # Visibility rules
     visibility_rules = {
         "valid_mxs": "enable_mx_checks=True",

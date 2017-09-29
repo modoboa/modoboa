@@ -84,13 +84,19 @@ def manage_alias_for_mailbox(sender, instance, **kwargs):
     old_address = getattr(instance, "old_full_address", None)
     if old_address is None or old_address == instance.full_address:
         return
+    # Update old self alias
     alr = models.AliasRecipient.objects.get(
         alias__address=old_address, address=old_address,
         r_mailbox=instance, alias__internal=True)
     alr.address = instance.full_address
     alr.save()
     alr.alias.address = instance.full_address
+    alr.alias.domain = instance.domain
     alr.alias.save()
+
+    # Update AliasRecipient instances
+    instance.aliasrecipient_set.filter(alias__internal=False).update(
+        address=instance.full_address)
 
 
 @receiver(signals.pre_delete, sender=models.Mailbox)

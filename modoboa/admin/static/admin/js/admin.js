@@ -437,13 +437,20 @@ Identities.prototype = {
     },
 
     simpleuser_mode: function() {
-        $("#id_username").autocompleter({
+        var $username = $('#id_username');
+        var $email = $('#id_email');
+
+        $username.change(function (evt) {
+            $email.val($(this).val());
+            $email.change();
+        });
+        $username.autocompleter({
             from_character: "@",
             choices: $.proxy(this.get_domain_list, this)
         });
         $("#id_email").addClass("disabled")
             .attr("readonly", "")
-                .autocompleter("unbind");
+            .autocompleter("unbind");
         this.toggle_master_user();
     },
 
@@ -483,6 +490,18 @@ Identities.prototype = {
         }
     },
 
+    /**
+     * Callback to watch for username change.
+     *
+     */
+    emailChanged: function(event) {
+        var $target = get_target(event);
+
+        if ($target.val() !== this.originalEmail) {
+            $('#id_create_alias_with_old_address').parents(".form-group").show();
+        }
+    },
+
     generalform_init: function(notrigger) {
         $("#id_role").change($.proxy(function(e) {
             var $this = $(e.target);
@@ -499,6 +518,7 @@ Identities.prototype = {
             this.togglePasswordInputs(!$this.prop('checked'));
         }, this));
         this.toggle_master_user($("#id_role").val());
+        $('#id_create_alias_with_old_address').parents('.form-group').hide();
         if (notrigger !== undefined && notrigger) {
             return;
         }
@@ -506,6 +526,10 @@ Identities.prototype = {
     },
 
     mailform_init: function() {
+        var $email = $('#id_email');
+
+        this.originalEmail = $email.val();
+        $email.change($.proxy(this.emailChanged, this));
         $("#id_aliases").autocompleter({
             from_character: "@",
             choices: $.proxy(this.get_domain_list, this)
@@ -528,7 +552,7 @@ Identities.prototype = {
                 return true;
             }
         });
-        $("#id_email").autocompleter({
+        $email.autocompleter({
             from_character: "@",
             choices: $.proxy(this.get_domain_list, this)
         });
