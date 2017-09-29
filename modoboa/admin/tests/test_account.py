@@ -107,6 +107,78 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
+    def test_aliases_update_on_rename(self):
+        """Check if aliases are updated on mailbox rename."""
+        account = User.objects.get(username="user@test.com")
+        values = {
+            "username": "new_user@test.com",
+            "first_name": account.first_name,
+            "last_name": account.last_name,
+            "role": account.role,
+            "quota_act": True,
+            "is_active": account.is_active,
+            "email": "new_user@test.com",
+            "language": "en",
+            "create_alias_with_old_address": False,
+            "aliases_1": "alias@test.com"
+        }
+        url = reverse("admin:account_change", args=[account.pk])
+        self.ajax_post(url, values)
+        qset = account.mailbox.aliasrecipient_set.filter(alias__internal=False)
+        for alr in qset:
+            self.assertEqual(alr.address, values["email"])
+
+    def test_create_alias_on_rename(self):
+        """Check if alias is automatically created."""
+        account = User.objects.get(username="user@test.com")
+        values = {
+            "username": "new_user@test.com",
+            "first_name": account.first_name,
+            "last_name": account.last_name,
+            "role": account.role,
+            "quota_act": True,
+            "is_active": account.is_active,
+            "email": "new_user@test.com",
+            "language": "en",
+            "create_alias_with_old_address": False
+        }
+        url = reverse("admin:account_change", args=[account.pk])
+        # Rename while option is set to False -> no alias created
+        self.ajax_post(url, values)
+        self.assertFalse(
+            models.AliasRecipient.objects.filter(
+                address="new_user@test.com", alias__address="user@test.com",
+                alias__internal=False
+            ).exists()
+        )
+        # Now rename while option set to True -> alias created
+        values.update({
+            "username": "user@test.com",
+            "email": "user@test.com",
+            "create_alias_with_old_address": True}
+        )
+        self.ajax_post(url, values)
+        self.assertTrue(
+            models.AliasRecipient.objects.filter(
+                address="user@test.com", alias__address="new_user@test.com",
+                alias__internal=False
+            ).exists()
+        )
+        # Change domain while option set to True -> alias created
+        values.update({
+            "username": "new_user@test2.com",
+            "email": "new_user@test2.com",
+        })
+        self.ajax_post(url, values)
+        self.assertTrue(
+            models.AliasRecipient.objects.filter(
+                address="new_user@test2.com",
+                alias__address="user@test.com",
+                alias__domain__name="test.com",
+                alias__internal=False
+            ).exists()
+        )
+
     def test_password_constraints(self):
         """Check password constraints."""
         values = {

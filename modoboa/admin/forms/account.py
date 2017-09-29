@@ -223,6 +223,11 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     email = lib_fields.UTF8EmailField(
         label=ugettext_lazy("E-mail"), required=False)
+    create_alias_with_old_address = forms.BooleanField(
+        label=ugettext_lazy("Create an alias using the old address"),
+        required=False,
+        initial=False
+    )
     quota = forms.IntegerField(
         label=ugettext_lazy("Quota"),
         required=False,
@@ -277,7 +282,12 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.fields["quota_act"].initial = self.mb.use_domain_quota
             if not self.mb.use_domain_quota and self.mb.quota:
                 self.fields["quota"].initial = self.mb.quota
+            self.fields["create_alias_with_old_address"].initial = (
+                param_tools.get_global_parameter(
+                    "create_alias_on_mbox_rename")
+            )
         else:
+            del self.fields["create_alias_with_old_address"]
             self.fields["quota_act"].initial = True
 
         if len(args) and isinstance(args[0], QueryDict):
@@ -422,6 +432,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         else:
             self.cleaned_data["use_domain_quota"] = (
                 self.cleaned_data["quota_act"])
+            if self.cleaned_data.get("create_alias_with_old_address", False):
+                self.aliases.append(self.mb.full_address)
             self.mb.update_from_dict(user, self.cleaned_data)
 
         account.email = self.cleaned_data["email"]

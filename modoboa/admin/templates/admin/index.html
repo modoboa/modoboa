@@ -1,0 +1,29 @@
+{% extends "fluid.html" %}
+
+{% load i18n lib_tags static %}
+{% load render_bundle from webpack_loader %}
+
+{% block pagetitle %}{% trans "Admin" %}{% endblock %}
+
+{% block extra_css %}
+  {% if not debug %}
+    {% render_bundle 'app' 'css' 'ADMIN' %}
+  {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  {% if not debug %}
+    {% render_bundle 'manifest' 'js' 'ADMIN' %}
+    {% render_bundle 'vendor' 'js' 'ADMIN' %}
+    {% render_bundle 'app' 'js' 'ADMIN' %}
+  {% else %}
+    {% render_bundle 'app' 'js' 'ADMIN' %}
+  {% endif %}
+{% endblock %}
+
+{% block container_content %}
+
+  <div id="app">
+  </div>
+
+{% endblock %}
