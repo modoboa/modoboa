@@ -53,11 +53,11 @@ def _identities(request):
             "handle_mailboxes", raise_exception=False)
     }
     page = get_listing_page(objects, request.GET.get("page", 1))
+    context["headers"] = render_to_string(
+        "admin/identity_headers.html", {}, request)
     if page is None:
         context["length"] = 0
     else:
-        context["headers"] = render_to_string(
-            "admin/identity_headers.html", {}, request)
         context["rows"] = render_to_string(
             "admin/identities_table.html", {
                 "identities": page.object_list

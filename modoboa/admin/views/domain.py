@@ -70,17 +70,17 @@ def _domains(request):
             "auto_account_removal"),
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
+    parameters = request.localconfig.parameters
+    context["headers"] = render_to_string(
+        "admin/domain_headers.html", {
+            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+            "enable_dnsbl_checks": (
+                parameters.get_value("enable_dnsbl_checks"))
+        }, request
+    )
     if page is None:
         context["length"] = 0
     else:
-        parameters = request.localconfig.parameters
-        context["headers"] = render_to_string(
-            "admin/domain_headers.html", {
-                "enable_mx_checks": parameters.get_value("enable_mx_checks"),
-                "enable_dnsbl_checks": (
-                    parameters.get_value("enable_dnsbl_checks"))
-            }, request
-        )
         context["rows"] = render_to_string(
             "admin/domains_table.html", {
                 "domains": page.object_list,
