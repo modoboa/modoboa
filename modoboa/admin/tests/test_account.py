@@ -414,6 +414,16 @@ class AccountTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertIn("Resources usage", response.content.decode())
 
+    def test_quota_list_view(self):
+        """Test quota list view."""
+        models.Quota.objects.filter(username="user@test.com").update(
+            bytes=5 * 1048576)
+        url = reverse("admin:quota_list")
+        response = self.ajax_get(url)
+        self.assertIn("5M", response["rows"])
+        self.assertIn('title="50%"', response["rows"])
+        self.assertIn("user@test.com", response["rows"])
+
 
 @skipIf(NO_LDAP, "No ldap module installed")
 @override_settings(AUTHENTICATION_BACKENDS=(
