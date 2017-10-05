@@ -95,13 +95,17 @@ def list_quotas(request):
                 "(admin_quota.bytes::float / (CAST(admin_mailbox.quota "
                 "AS BIGINT) * 1048576)) * 100"
             )
-        else:
+        elif db_type == "mysql":
             select = (
-                "CAST(admin_quota.bytes AS FLOAT) / (admin_mailbox.quota "
+                "admin_quota.bytes / (admin_mailbox.quota "
                 "* 1048576) * 100"
             )
-            if db_type == "mysql":
-                where = "CONCAT(admin_mailbox.address,'@',admin_domain.name)"
+            where = "CONCAT(admin_mailbox.address,'@',admin_domain.name)"
+        else:
+            select = (
+                "admin_quota.bytes * 1.0 / (admin_mailbox.quota "
+                "* 1048576) * 100"
+            )
         mboxes = mboxes.extra(
             select={'quota_usage': select},
             where=["admin_quota.username=%s" % where],
