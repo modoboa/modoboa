@@ -423,6 +423,19 @@ class AccountTestCase(ModoTestCase):
         self.assertIn("5M", response["rows"])
         self.assertIn('title="50%"', response["rows"])
         self.assertIn("user@test.com", response["rows"])
+        old_rows = response["rows"]
+
+        response = self.ajax_get(
+            "{}?sort_order=-quota_value__bytes".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+        old_rows = response["rows"]
+
+        response = self.ajax_get(
+            "{}?sort_order=-quota_usage".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+        response = self.ajax_get(
+            "{}?sort_order=-unknown".format(url), status=400)
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
