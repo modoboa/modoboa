@@ -118,6 +118,7 @@ def domains_list(request):
 
 
 @login_required
+@permission_required("admin.add_domain")
 def list_quotas(request):
     from modoboa.lib.db_utils import db_type
 
