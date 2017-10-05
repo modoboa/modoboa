@@ -432,7 +432,7 @@ class AccountTestCase(ModoTestCase):
 
         response = self.ajax_get(
             "{}?sort_order=-quota_usage".format(url))
-        self.assertNotEqual(old_rows, response["rows"])
+        self.assertEqual(old_rows, response["rows"])
 
         response = self.ajax_get(
             "{}?sort_order=-unknown".format(url), status=400)

@@ -97,7 +97,7 @@ def list_quotas(request):
             )
         else:
             select = (
-                "admin_quota.bytes / (admin_mailbox.quota "
+                "admin_quota.bytes * 1.0 / (admin_mailbox.quota "
                 "* 1048576) * 100"
             )
             if db_type == "mysql":
