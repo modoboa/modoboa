@@ -45,7 +45,7 @@ Now that you have a :ref:`running environment <venv_for_dev>`, you're
 ready to deploy a test instance::
 
   $ cd <path>
-  $ modoboa-admin.py deploy --dburl default:<database url> --hostname localhost --devel instance
+  $ modoboa-admin.py deploy --dburl default:<database url> --domain localhost --devel instance
   $ python manage.py runserver
 
 You're ready to go! You should be able to access Modoboa at
