@@ -27,6 +27,9 @@ import dj_database_url
 from modoboa.core.commands import Command
 from modoboa.lib.api_client import ModoAPIClient
 
+if sys.version_info < (3, 0, 0):
+	input = raw_input
+
 DBCONN_TPL = """
     '{{ conn_name }}': {
         'ENGINE': '{{ ENGINE }}',
@@ -97,15 +100,15 @@ class DeployCommand(Command):
         :param name: the command name
         :param cwd: the directory where the command must be executed
         """
-        cmd = 'python manage.py %s %s' % (name, " ".join(args))
+        cmd = [sys.executable, 'manage.py', name]
+        cmd.extend(args)
         if not self._verbose:
             p = subprocess.Popen(
-                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                shell=True, cwd=cwd
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=cwd
             )
             output = p.communicate()
         else:
-            p = subprocess.Popen(cmd, shell=True, cwd=cwd)
+            p = subprocess.Popen(cmd, cwd=cwd)
             p.wait()
             output = None
         if p.returncode:
@@ -127,8 +130,8 @@ class DeployCommand(Command):
         print("Configuring database connection: %s" % name)
         info = {
             'conn_name': name,
-            'ENGINE': eval(
-                input('Database type (mysql, postgres or sqlite3): '))
+            'ENGINE': input(
+                'Database type (mysql, postgres or sqlite3): ')
         }
         if info['ENGINE'] not in ['mysql', 'postgres', 'sqlite3']:
             raise RuntimeError('Unsupported database engine')
@@ -143,15 +146,15 @@ class DeployCommand(Command):
         else:
             info['ENGINE'] = 'django.db.backends.mysql'
             default_port = 3306
-        info['HOST'] = eval(input("Database host (default: 'localhost'): "))
-        info['PORT'] = eval(
-            input("Database port (default: '%s'): " % default_port))
+        info['HOST'] = input("Database host (default: 'localhost'): ")
+        info['PORT'] = input(
+            "Database port (default: '%s'): " % default_port)
         # leave port setting empty, if default value is supplied and
         # leave it to django
         if info['PORT'] == default_port:
             info['PORT'] = ''
-        info['NAME'] = eval(input('Database name: '))
-        info['USER'] = eval(input('Username: '))
+        info['NAME'] = input('Database name: ')
+        info['USER'] = input('Username: ')
         info['PASSWORD'] = getpass.getpass('Password: ')
         return info
 
@@ -211,8 +214,8 @@ class DeployCommand(Command):
         if parsed_args.domain:
             allowed_host = parsed_args.domain
         else:
-            allowed_host = eval(
-                input('What will be the hostname used to access Modoboa? '))
+            allowed_host = input(
+                'What will be the hostname used to access Modoboa? ')
             if not allowed_host:
                 allowed_host = "localhost"
         extra_settings = []

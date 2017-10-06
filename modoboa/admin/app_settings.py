@@ -133,7 +133,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         dpath = None
         code, output = exec_cmd("which dovecot")
         if not code:
-            dpath = output.strip()
+            dpath = force_text(output).strip()
         else:
             known_paths = getattr(
                 settings, "DOVECOT_LOOKUP_PATH",
