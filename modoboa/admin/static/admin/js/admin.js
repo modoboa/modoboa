@@ -166,6 +166,14 @@ Domains.prototype = {
      * @param {Object} data - response of the ajax call (JSON)
      */
     list_cb: function(data) {
+        if ($(".sidebar li.active").length === 0) {
+            var menu = this.navobj.getbaseurl();
+            if (menu === "list") {
+                menu = "domains";
+            }
+            $("a[name={0}]".format(menu)).parent().addClass("active");
+        }
+        $("#objects_table thead tr").html(data.headers);
         Admin.prototype.list_cb.call(this, data);
         this.init_domain_links(data);
     },

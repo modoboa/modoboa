@@ -179,6 +179,24 @@ class Domain(AdminObject):
             return 0
         return int(self.allocated_quota / float(self.quota) * 100)
 
+    @cached_property
+    def used_quota(self):
+        """Return current quota usage."""
+        from .mailbox import Quota
+
+        if not self.quota:
+            return 0
+        if not self.mailbox_set.exists():
+            return 0
+        return int(Quota.objects.get_domain_usage(self) / 1048576)
+
+    @cached_property
+    def used_quota_in_percent(self):
+        """Return used quota in percent."""
+        if not self.allocated_quota:
+            return 0
+        return int(self.used_quota / float(self.quota) * 100)
+
     def add_admin(self, account):
         """Add a new administrator to this domain.
 
