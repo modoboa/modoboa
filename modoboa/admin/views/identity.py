@@ -79,39 +79,36 @@ def list_quotas(request):
     mboxes = mboxes.exclude(quota=0)
     if sort_order in ["address", "quota"]:
         mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
-    elif sort_order == "quota_value__bytes":
-        where = "admin_mailbox.address||'@'||admin_domain.name"
-        mboxes = mboxes.extra(
-            select={"quota_value__bytes": "admin_quota.bytes"},
-            where=["admin_quota.username=%s" % where],
-            tables=["admin_quota", "admin_domain"],
-            order_by=["%s%s" % (sort_dir, sort_order)]
-        )
-    elif sort_order == "quota_usage":
-        where = "admin_mailbox.address||'@'||admin_domain.name"
+    elif sort_order in ("quota_value__bytes", "quota_usage"):
         db_type = db_type()
-        if db_type == "postgres":
-            select = (
-                "(admin_quota.bytes::float / (CAST(admin_mailbox.quota "
-                "AS BIGINT) * 1048576)) * 100"
-            )
-        elif db_type == "mysql":
-            select = (
-                "admin_quota.bytes / (admin_mailbox.quota "
-                "* 1048576) * 100"
-            )
+        if db_type == "mysql":
             where = "CONCAT(admin_mailbox.address,'@',admin_domain.name)"
         else:
-            select = (
-                "admin_quota.bytes * 1.0 / (admin_mailbox.quota "
-                "* 1048576) * 100"
+            where = "admin_mailbox.address||'@'||admin_domain.name"
+        if sort_order == "quota_value__bytes":
+            mboxes = mboxes.extra(
+                select={"quota_value__bytes": "admin_quota.bytes"},
+                where=["admin_quota.username=%s" % where],
+                tables=["admin_quota", "admin_domain"],
+                order_by=["%s%s" % (sort_dir, sort_order)]
             )
-        mboxes = mboxes.extra(
-            select={'quota_usage': select},
-            where=["admin_quota.username=%s" % where],
-            tables=["admin_quota", "admin_domain"],
-            order_by=["%s%s" % (sort_dir, sort_order)]
-        )
+        else:
+            if db_type == "postgres":
+                select = (
+                    "(admin_quota.bytes::float / (CAST(admin_mailbox.quota "
+                    "AS BIGINT) * 1048576)) * 100"
+                )
+            else:
+                select = (
+                    "(admin_quota.bytes * 1.0 / (admin_mailbox.quota "
+                    "* 1048576)) * 100"
+                )
+            mboxes = mboxes.extra(
+                select={'quota_usage': select},
+                where=["admin_quota.username=%s" % where],
+                tables=["admin_quota", "admin_domain"],
+                order_by=["%s%s" % (sort_dir, sort_order)]
+            )
     else:
         raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
