@@ -62,8 +62,8 @@
             <th>{% trans "Usage" %}</a></th>
             <td>
               <div class="progress">
-                <div class="{% progress_color used_quota_in_percent %}" style="width: {{ used_quota_in_percent }}%" title="{{ used_quota_in_percent }}% ({{ used_quota }} {% trans "MB" %}) {% trans 'used' context 'quota' %}"></div>
-                <div class="{% progress_color domain.allocated_quota_in_percent %}" style="width: {{ allocated_quota }}%" title="{{ domain.allocated_quota_in_percent }}% ({{ domain.allocated_quota }} {% trans "MB" %}) {% trans 'allocated' %}"></div>
+                <div class="{% progress_color domain.used_quota_in_percent %}" style="width: {{ domain.used_quota_in_percent }}%" title="{{ domain.used_quota_in_percent }}% ({{ domain.used_quota }} {% trans "MB" %}) {% trans 'used' context 'quota' %}"></div>
+                <div class="{% progress_color domain.allocated_quota_in_percent %}" style="width: {{ domain.allocated_quota_in_percent }}%" title="{{ domain.allocated_quota_in_percent }}% ({{ domain.allocated_quota }} {% trans "MB" %}) {% trans 'allocated' %}"></div>
               </div>
             </td>
           </tr>
