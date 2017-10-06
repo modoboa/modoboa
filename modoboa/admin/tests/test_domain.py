@@ -308,6 +308,14 @@ class DomainTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Usage", response.content.decode())
 
+    def test_domain_quota_list_view(self):
+        """Test quota list view."""
+        url = reverse("admin:domain_quota_list")
+        response = self.ajax_get(url)
+        self.assertIn("50M", response["rows"])
+        self.assertIn('title="40% (20 MB) allocated"', response["rows"])
+        self.assertIn("test.com", response["rows"])
+
     def test_statitics_widget(self):
         """Test statistics display in dashboard."""
         url = reverse("core:dashboard")
