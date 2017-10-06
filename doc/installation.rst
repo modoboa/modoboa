@@ -27,7 +27,7 @@ To use it, just run the following commands in your terminal:
   > sudo ./run.py <your domain>
   
   
-if you get this warning - '/usr/bin/env: ‘python’: No such file or directory', do make sure sure python is installed on your server. Sometimes python is installed but the installer can detect it or which python version to run, for example on a debian based system. Then run this command first.
+if you get this warning - '/usr/bin/env: ‘python’: No such file or directory', do make sure sure python is installed on your server. Sometimes python is installed but the installer can't detect it or which python version to run, especially on a debian based system. Then run this command first.
 
 .. sourcecode:: bash
 
