@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from functools import reduce
 
 from django.core.urlresolvers import reverse
+from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -22,13 +23,13 @@ from reversion import revisions as reversion
 from modoboa.core import signals as core_signals
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.lib.exceptions import (
-    PermDeniedException
+    BadRequest, PermDeniedException
 )
 from modoboa.lib.listing import get_sort_order, get_listing_page
 
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
-from ..models import Domain, Mailbox, Quota
+from ..models import Domain, Mailbox
 from .. import signals
 
 
@@ -122,9 +123,16 @@ def domains_list(request):
 def list_quotas(request):
     from modoboa.lib.db_utils import db_type
 
-    sort_order, sort_dir = get_sort_order(request.GET, "domain")
+    sort_order, sort_dir = get_sort_order(request.GET, "name")
     domains = Domain.objects.get_for_admin(request.user)
     domains = domains.exclude(quota=0)
+    if sort_order in ["name", "quota"]:
+        domains = domains.order_by("{}{}".format(sort_dir, sort_order))
+    elif sort_order == "allocated_quota":
+        domains = (
+            domains.annotate(allocated_quota=Sum("mailbox__quota"))
+            .order_by("{}{}".format(sort_dir, sort_order))
+        )
     page = get_listing_page(domains, request.GET.get("page", 1))
     context = {
         "headers": render_to_string(
@@ -212,18 +220,6 @@ class DomainDetailView(
             "enable_mx_checks": parameters.get_value("enable_mx_checks"),
             "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
         })
-        if self.object.quota:
-            used_quota = int(
-                Quota.objects.get_domain_usage(self.object) / 1048576)
-            used_quota_in_percent = int(
-                used_quota / float(self.object.quota) * 100)
-            allocated_quota = (
-                self.object.allocated_quota_in_percent - used_quota_in_percent)
-            context.update({
-                "used_quota": used_quota,
-                "used_quota_in_percent": used_quota_in_percent,
-                "allocated_quota": allocated_quota
-            })
         for receiver, widgets in result:
             for widget in widgets:
                 context["templates"][widget["column"]].append(
