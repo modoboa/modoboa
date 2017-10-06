@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^domains/(?P<pk>\d+)/mx/$', views.MXDomainDetailView.as_view(),
         name="mx_domain_detail"),
     url(r'^domains/list/$', domain_views._domains, name="_domain_list"),
+    url(r'^domains/quotas/$', domain_views.list_quotas,
+        name="domain_quota_list"),
     url(r'^domains/flatlist/$', domain_views.domains_list,
         name="domain_flat_list"),
     url(r'^domains/new/', domain_views.newdomain, name='domain_add'),
@@ -40,7 +42,7 @@ urlpatterns += [
     url(r'^identities/list/$', identity_views._identities,
         name="_identity_list"),
     url(r'^identities/quotas/$', identity_views.list_quotas,
-        name="quota_list"),
+        name="identity_quota_list"),
     url(r'^identities/page/$', identity_views.get_next_page,
         name="identity_page"),
 

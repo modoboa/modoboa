@@ -70,10 +70,17 @@ def _domains(request):
             "auto_account_removal"),
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
+    parameters = request.localconfig.parameters
+    context["headers"] = render_to_string(
+        "admin/domain_headers.html", {
+            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+            "enable_dnsbl_checks": (
+                parameters.get_value("enable_dnsbl_checks"))
+        }, request
+    )
     if page is None:
         context["length"] = 0
     else:
-        parameters = request.localconfig.parameters
         context["rows"] = render_to_string(
             "admin/domains_table.html", {
                 "domains": page.object_list,
@@ -108,6 +115,30 @@ def domains(request, tplname="admin/domains.html"):
 def domains_list(request):
     doms = [dom.name for dom in Domain.objects.get_for_admin(request.user)]
     return render_to_json_response(doms)
+
+
+@login_required
+@permission_required("admin.add_domain")
+def list_quotas(request):
+    from modoboa.lib.db_utils import db_type
+
+    sort_order, sort_dir = get_sort_order(request.GET, "domain")
+    domains = Domain.objects.get_for_admin(request.user)
+    domains = domains.exclude(quota=0)
+    page = get_listing_page(domains, request.GET.get("page", 1))
+    context = {
+        "headers": render_to_string(
+            "admin/domains_quota_headers.html", {}, request
+        )
+    }
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = render_to_string(
+            "admin/domains_quotas.html", {"domains": page}, request
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
 
 
 @login_required
