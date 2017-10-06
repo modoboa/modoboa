@@ -310,11 +310,19 @@ class DomainTestCase(ModoTestCase):
 
     def test_domain_quota_list_view(self):
         """Test quota list view."""
+        factories.DomainFactory(name="test3.com", quota=100)
         url = reverse("admin:domain_quota_list")
         response = self.ajax_get(url)
         self.assertIn("50M", response["rows"])
         self.assertIn('title="40% (20 MB) allocated"', response["rows"])
         self.assertIn("test.com", response["rows"])
+
+        old_rows = response["rows"]
+        response = self.ajax_get("{}?sort_order=-name".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+        response = self.ajax_get("{}?sort_order=allocated_quota".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
 
     def test_statitics_widget(self):
         """Test statistics display in dashboard."""
