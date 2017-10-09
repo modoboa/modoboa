@@ -205,7 +205,7 @@ class DomainDetailView(
     def get_queryset(self):
         """Add some prefetching."""
         return (
-            super(DomainDetailView, self).get_queryset()
+            Domain.objects.get_for_admin(self.request.user)
             .prefetch_related("domainalias_set", "mailbox_set", "alias_set")
         )
 
