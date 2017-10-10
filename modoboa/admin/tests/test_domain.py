@@ -308,6 +308,14 @@ class DomainTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Usage", response.content.decode())
 
+        user = User.objects.get(username="user@test.com")
+        self.client.force_login(user)
+        domain = Domain.objects.get(name="test2.com")
+        url = reverse("admin:domain_detail", args=[domain.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith("/accounts/login"))
+
     def test_domain_quota_list_view(self):
         """Test quota list view."""
         factories.DomainFactory(name="test3.com", quota=100)
