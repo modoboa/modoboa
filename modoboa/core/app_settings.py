@@ -112,11 +112,12 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
-    ldap_secured = YesNoField(
+    ldap_secured = forms.ChoiceField(
         label=ugettext_lazy("Use a secured connection"),
-        initial=False,
+        choices=constants.LDAP_SECURE_MODES,
+        initial="none",
         help_text=ugettext_lazy(
-            "Use an SSL/TLS connection to access the LDAP server")
+            "Use an SSL/STARTTLS connection to access the LDAP server")
     )
 
     ldap_auth_method = forms.ChoiceField(
@@ -418,10 +419,12 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                 "email": "mail",
                 "last_name": "sn"
             })
-        ldap_uri = "ldaps://" if values["ldap_secured"] else "ldap://"
+        ldap_uri = "ldaps://" if values["ldap_secured"] == "ssl" else "ldap://"
         ldap_uri += "%s:%s" % (
             values["ldap_server_address"], values["ldap_server_port"])
         setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
+        if values["ldap_secured"] == "starttls":
+            setattr(settings, "AUTH_LDAP_START_TLS", True)
 
         if values["ldap_group_type"] == "groupofnames":
             setattr(settings, "AUTH_LDAP_GROUP_TYPE", GroupOfNamesType())
