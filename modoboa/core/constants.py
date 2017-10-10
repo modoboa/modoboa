@@ -45,6 +45,12 @@ LDAP_GROUP_TYPES = (
     ("groupofnames", "GroupOfNames"),
 )
 
+LDAP_SECURE_MODES = [
+    ("none", ugettext_lazy("No")),
+    ("starttls", "STARTTLS"),
+    ("ssl", "SSL/TLS")
+]
+
 PERMISSIONS = {
     "SimpleUsers": [],
     "DomainAdmins": [

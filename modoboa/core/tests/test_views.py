@@ -151,7 +151,7 @@ class SettingsTestCase(ModoTestCase):
         "admin-valid_mxs": "",
         "limits-deflt_user_domains_limit": "0",
         "core-ldap_search_filter": "(mail=%(user)s)",
-        "core-ldap_secured": "False",
+        "core-ldap_secured": "none",
         "core-ldap_user_dn_template": "",
         "core-default_password": "Toto1000",
         "limits-deflt_user_quota_limit": "0",
