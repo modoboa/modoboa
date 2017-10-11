@@ -92,7 +92,7 @@ class CheckMXRecords(BaseCommand):
                 to_create.append(
                     models.DNSBLResult(
                         domain=domain, provider=provider, mx=mx,
-                        status=result if result else "")
+                        status=result)
                 )
                 if result:
                     trigger = True
