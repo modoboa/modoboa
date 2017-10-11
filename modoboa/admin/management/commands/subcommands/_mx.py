@@ -82,8 +82,9 @@ class CheckMXRecords(BaseCommand):
         """Store DNSBL provider results for domain."""
         alerts = {}
         to_create = []
-        for mx in results.keys():
-            result = "" if not results[mx] else results[mx]
+        for mx, result in list(results.items()):
+            if not result:
+                result = ""
             dnsbl_result = models.DNSBLResult.objects.filter(
                 domain=domain, provider=provider, mx=mx).first()
             trigger = False
@@ -91,7 +92,7 @@ class CheckMXRecords(BaseCommand):
                 to_create.append(
                     models.DNSBLResult(
                         domain=domain, provider=provider, mx=mx,
-                        status=result)
+                        status=result if result else "")
                 )
                 if result:
                     trigger = True
