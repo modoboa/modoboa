@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-08 10:50+0200\n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
 "PO-Revision-Date: 2017-07-07 11:06+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/app_settings.py:20 admin/handlers.py:263
+#: admin/app_settings.py:20 admin/handlers.py:269
 #: admin/templates/admin/_global_statistics_widget.html:11
 #: admin/templates/admin/domains.html:4
 msgid "Domains"
@@ -129,16 +129,24 @@ msgstr "Automatisk skapande av domän/brevlåda"
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "Skapa en domän och en brevlåda när ett konto skapas automatiskt."
 
-#: admin/app_settings.py:156 admin/app_settings.py:164
-#: admin/forms/account.py:317
+#: admin/app_settings.py:112
+msgid "Create an alias when a mailbox is renamed"
+msgstr ""
+
+#: admin/app_settings.py:115
+msgid "Create an alias using the old address when a mailbox is renamed."
+msgstr ""
+
+#: admin/app_settings.py:164 admin/app_settings.py:172
+#: admin/forms/account.py:331
 msgid "Must be a positive integer"
 msgstr "Måste vara ett positivt heltal"
 
-#: admin/app_settings.py:178
+#: admin/app_settings.py:186
 msgid "Define at least one authorized network / address"
 msgstr ""
 
-#: admin/app_settings.py:188
+#: admin/app_settings.py:196
 msgid "Administration"
 msgstr "Administration"
 
@@ -203,24 +211,28 @@ msgstr "Endast superadmininstratörer tillåts åtkomst till det här läget"
 msgid "This field is required."
 msgstr "Detta fält krävs."
 
-#: admin/forms/account.py:190
+#: admin/forms/account.py:191
 msgid "The two password fields didn't match."
 msgstr "Dessa två lösnordsfält matchar inte."
 
-#: admin/forms/account.py:200
+#: admin/forms/account.py:204
 msgid "You can't disable your own account"
 msgstr "Du kan inte inaktivera ditt eget konto"
 
-#: admin/forms/account.py:221
+#: admin/forms/account.py:225
 msgid "E-mail"
 msgstr "E-post"
 
-#: admin/forms/account.py:223 admin/templates/admin/account_detail.html:45
+#: admin/forms/account.py:227
+msgid "Create an alias using the old address"
+msgstr ""
+
+#: admin/forms/account.py:232 admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:57
 msgid "Quota"
 msgstr "Kvot"
 
-#: admin/forms/account.py:225
+#: admin/forms/account.py:234
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -230,12 +242,12 @@ msgstr ""
 "domänens förvalda. Lämna tomt för att definiera ett obegränsat värde (ej "
 "tillåtet för domänadministratörer)."
 
-#: admin/forms/account.py:233 admin/forms/domain.py:43
-#: admin/templates/admin/domains.html:35
+#: admin/forms/account.py:242 admin/forms/domain.py:43
+#: admin/templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Alias"
 
-#: admin/forms/account.py:236
+#: admin/forms/account.py:245
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
@@ -245,11 +257,11 @@ msgstr ""
 "för att lägga till nytt. För att skapa ett \"catch-all\" alias, ange bara "
 "domännamnet (@domain.tld)."
 
-#: admin/forms/account.py:242
+#: admin/forms/account.py:251
 msgid "Sender addresses"
 msgstr "Avsändaradress"
 
-#: admin/forms/account.py:245
+#: admin/forms/account.py:254
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
@@ -259,54 +271,54 @@ msgstr ""
 "med från denna adress, även om den inte finns lokalt. Ange en adress per "
 "rad. Tryck RETUR för att lägga till ny rad."
 
-#: admin/forms/account.py:295 admin/forms/alias.py:94
+#: admin/forms/account.py:309 admin/forms/alias.py:94
 #: admin/models/mailbox.py:315
 msgid "Domain does not exist"
 msgstr "Domän existerar inte"
 
-#: admin/forms/account.py:327
+#: admin/forms/account.py:341
 msgid "Local domain does not exist"
 msgstr "Lokal domän existerar inte"
 
-#: admin/forms/account.py:331 admin/forms/account.py:339
+#: admin/forms/account.py:345 admin/forms/account.py:353
 #: admin/forms/alias.py:97
 msgid "You don't have access to this domain"
 msgstr "Du har inte åtkomst till denna domän"
 
-#: admin/forms/account.py:436
+#: admin/forms/account.py:452
 msgid "Domain(s)"
 msgstr "Domän(er)"
 
-#: admin/forms/account.py:438
+#: admin/forms/account.py:454
 msgid "Domain(s) that user administrates"
 msgstr "Domän(er) användaren administrerar"
 
-#: admin/forms/account.py:484 admin/forms/account.py:574
+#: admin/forms/account.py:500 admin/forms/account.py:590
 #: admin/forms/domain.py:334 admin/forms/domain.py:401
 msgid "General"
 msgstr "Generellt"
 
-#: admin/forms/account.py:488
+#: admin/forms/account.py:504
 msgid "Profile"
 msgstr "Profil"
 
-#: admin/forms/account.py:492 admin/forms/account.py:580
+#: admin/forms/account.py:508 admin/forms/account.py:596
 msgid "Mail"
 msgstr "Post"
 
-#: admin/forms/account.py:495
+#: admin/forms/account.py:511
 msgid "Permissions"
 msgstr "Rättigheter"
 
-#: admin/forms/account.py:563
+#: admin/forms/account.py:579
 msgid "Account updated"
 msgstr "Konto uppdaterat"
 
-#: admin/forms/account.py:588
+#: admin/forms/account.py:604
 msgid "New account"
 msgstr "Nytt konto"
 
-#: admin/forms/account.py:600
+#: admin/forms/account.py:616
 msgid "Account created"
 msgstr "Konto skapat"
 
@@ -339,6 +351,7 @@ msgstr ""
 
 #: admin/forms/alias.py:49 admin/forms/domain.py:32 admin/models/domain.py:115
 #: admin/templates/admin/_per_domain_statistics_widget.html:7
+#: admin/templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr "Domän"
 
@@ -363,7 +376,7 @@ msgstr ""
 "Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att "
 "lägga till en rad."
 
-#: admin/forms/domain.py:90 admin/handlers.py:165
+#: admin/forms/domain.py:90 admin/handlers.py:171
 msgid "domain alias"
 msgstr "domän alias"
 
@@ -399,7 +412,7 @@ msgid "Automatically create an administrator for this domain"
 msgstr "Skapa en domän administratör automatiskt för denna domän"
 
 #: admin/forms/domain.py:207 admin/templates/admin/domain_detail.html:101
-#: admin/templates/admin/domains.html:34
+#: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
@@ -504,28 +517,28 @@ msgstr "Krypterade lösenord"
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr "Markera det här alternativet om lösenord i filen inte är krypterad"
 
-#: admin/handlers.py:212
+#: admin/handlers.py:218
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Konto import misslyckades (%s): domänen existerar inte"
 
-#: admin/handlers.py:225 admin/models/mailbox.py:342
+#: admin/handlers.py:231 admin/models/mailbox.py:342
 msgid "Mailbox {} already exists"
 msgstr "Brevlåda {} finns redan"
 
-#: admin/handlers.py:233
+#: admin/handlers.py:239
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Importering av konto misslyckades (%s): Fel kvota värde"
 
-#: admin/handlers.py:273
+#: admin/handlers.py:279
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Konton"
 
-#: admin/handlers.py:289 admin/templates/admin/forward.html:2
+#: admin/handlers.py:295 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Vidarebefordra"
 
@@ -541,20 +554,20 @@ msgstr "Du tillåts inte att importera domäner"
 msgid "You are not allowed to import domain aliases."
 msgstr "Du tillåts inte att importera domän alias."
 
-#: admin/management/commands/subcommands/_mx.py:124
+#: admin/management/commands/subcommands/_mx.py:125
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL fråga(or) för domän {}"
 
-#: admin/management/commands/subcommands/_mx.py:144
+#: admin/management/commands/subcommands/_mx.py:145
 msgid "Domain {} has no MX record"
 msgstr "Domän {} saknar MX record"
 
-#: admin/management/commands/subcommands/_mx.py:155
+#: admin/management/commands/subcommands/_mx.py:156
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "MX record för domän {0} är ogiltig: {1}"
 
-#: admin/management/commands/subcommands/_mx.py:172
+#: admin/management/commands/subcommands/_mx.py:173
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] MX problem för domän {}"
 
@@ -633,25 +646,25 @@ msgstr "Aktivera DNS kontroller"
 msgid "Check to enable DNS checks for this domain"
 msgstr "Markera för att aktivera DNS kontroller för den här domänen"
 
-#: admin/models/domain.py:256 admin/models/domain_alias.py:73
+#: admin/models/domain.py:274 admin/models/domain_alias.py:73
 msgid "Invalid line"
 msgstr "Ogiltig rad"
 
-#: admin/models/domain.py:266
+#: admin/models/domain.py:284
 #, fuzzy
 #| msgid "No MX record found for this domain."
 msgid "No authorized MX record found for domain {}"
 msgstr "Inget MX record funnet för denna domän."
 
-#: admin/models/domain.py:273
+#: admin/models/domain.py:291
 msgid "Invalid quota value for domain '{}'"
 msgstr "Ogiltig kvota värd för domän '{}'"
 
-#: admin/models/domain.py:280
+#: admin/models/domain.py:298
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr "Ogiltig standard brevlådekvota för domän '{}'"
 
-#: admin/models/domain.py:285
+#: admin/models/domain.py:303
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr "Standard brevlådekvota kan inte vara större än domänkvotan"
 
@@ -829,8 +842,8 @@ msgid "Provider"
 msgstr "Leverantör"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
+#: admin/templates/admin/identities_quota_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:10
-#: admin/templates/admin/quota_headers.html:2
 msgid "Address"
 msgstr "Adress"
 
@@ -851,7 +864,7 @@ msgid "No information available for this domain."
 msgstr "Ingen information tillgänglig för den här domänen."
 
 #: admin/templates/admin/domain_detail.html:30
-#: admin/templates/admin/domains.html:38
+#: admin/templates/admin/domain_headers.html:7
 msgid "DNS status"
 msgstr "DNS status"
 
@@ -873,7 +886,9 @@ msgstr "Brevlåde alias"
 #: admin/templates/admin/domain_detail.html:73
 #: admin/templates/admin/domain_general_form.html:4
 #: admin/templates/admin/domain_general_form.html:5
-#: admin/templates/admin/mailform.html:4
+#: admin/templates/admin/domains_quotas.html:11
+#: admin/templates/admin/domains_quotas.html:12
+#: admin/templates/admin/mailform.html:7
 #: admin/templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "MB"
@@ -883,11 +898,13 @@ msgid "Usage"
 msgstr "Användande"
 
 #: admin/templates/admin/domain_detail.html:65
+#: admin/templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
 msgstr "använt"
 
 #: admin/templates/admin/domain_detail.html:66
+#: admin/templates/admin/domains_quotas.html:12
 msgid "allocated"
 msgstr "allokerat"
 
@@ -896,13 +913,23 @@ msgid "Administrators"
 msgstr "Administratörer"
 
 #: admin/templates/admin/domain_detail.html:110
-#: admin/templatetags/admin_tags.py:258
+#: admin/templatetags/admin_tags.py:268
 msgid "Remove this permission"
 msgstr "Radera detta tillstånd"
 
 #: admin/templates/admin/domain_detail.html:115
 msgid "No domain administrator defined yet."
 msgstr "Ingen domänadministratöre ännu definierad."
+
+#: admin/templates/admin/domain_headers.html:5
+#: admin/templates/admin/identity_headers.html:4
+msgid "Tags"
+msgstr "Tagg"
+
+#: admin/templates/admin/domain_headers.html:9
+#: admin/templates/admin/identity_headers.html:5
+msgid "Actions"
+msgstr "Åtgärder"
 
 #: admin/templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
@@ -913,15 +940,26 @@ msgstr "Du kan inte skapa en ny domänadministratör"
 msgid "Add"
 msgstr "Lägg till"
 
-#: admin/templates/admin/domains.html:36
-#: admin/templates/admin/identity_headers.html:4
-msgid "Tags"
-msgstr "Tagg"
+#: admin/templates/admin/domains_quota_headers.html:3
+#: admin/templates/admin/identities_quota_headers.html:4
+msgid "Limit"
+msgstr "Gräns"
 
-#: admin/templates/admin/domains.html:40
-#: admin/templates/admin/identity_headers.html:5
-msgid "Actions"
-msgstr "Åtgärder"
+#: admin/templates/admin/domains_quota_headers.html:4
+msgid "Used"
+msgstr ""
+
+#: admin/templates/admin/domains_quota_headers.html:5
+#, fuzzy
+#| msgid "allocated"
+msgid "Allocated"
+msgstr "allokerat"
+
+#: admin/templates/admin/domains_quota_headers.html:6
+#: admin/templates/admin/identities_quota_headers.html:5
+#, python-format
+msgid "Usage (%%)"
+msgstr "Användning (%%)"
 
 #: admin/templates/admin/domains_table.html:5
 msgid "disabled"
@@ -938,6 +976,10 @@ msgstr "Uppdatera"
 #: admin/templates/admin/identities.html:32
 msgid "Account"
 msgstr "Konto"
+
+#: admin/templates/admin/identities_quota_headers.html:3
+msgid "Value"
+msgstr "Värde"
 
 #: admin/templates/admin/identity_headers.html:3
 msgid "Fullname/Recipient"
@@ -993,7 +1035,7 @@ msgstr "Administratör"
 msgid "Choose a value"
 msgstr "Välj ett värde"
 
-#: admin/templates/admin/mailform.html:4
+#: admin/templates/admin/mailform.html:7
 msgid "Use domain default value"
 msgstr "Använd domänens standardvärde"
 
@@ -1033,19 +1075,6 @@ msgstr ""
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
 msgstr "Modoboa upptäckte att domänen %(domain)s saknar giltiga MX record:"
 
-#: admin/templates/admin/quota_headers.html:3
-msgid "Value"
-msgstr "Värde"
-
-#: admin/templates/admin/quota_headers.html:4
-msgid "Limit"
-msgstr "Gräns"
-
-#: admin/templates/admin/quota_headers.html:5
-#, python-format
-msgid "Usage (%%)"
-msgstr "Användning (%%)"
-
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
 msgstr "Sök"
@@ -1058,39 +1087,39 @@ msgstr "enabled_m"
 msgid "enabled_f"
 msgstr "enabled_f"
 
-#: admin/templatetags/admin_tags.py:43
+#: admin/templatetags/admin_tags.py:48
 msgid "List domains"
 msgstr "Lista domäner"
 
-#: admin/templatetags/admin_tags.py:55 admin/templatetags/admin_tags.py:103
+#: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:108
+msgid "List quotas"
+msgstr "Lista kvoter"
+
+#: admin/templatetags/admin_tags.py:65 admin/templatetags/admin_tags.py:113
 #: admin/views/import_.py:101 admin/views/import_.py:123
 msgid "Import"
 msgstr "Importera"
 
-#: admin/templatetags/admin_tags.py:61 admin/templatetags/admin_tags.py:109
+#: admin/templatetags/admin_tags.py:71 admin/templatetags/admin_tags.py:119
 #: admin/views/export.py:44 admin/views/export.py:74
 msgid "Export"
 msgstr "Exportera"
 
-#: admin/templatetags/admin_tags.py:93
+#: admin/templatetags/admin_tags.py:103
 msgid "List identities"
 msgstr "Lista konton"
 
-#: admin/templatetags/admin_tags.py:98
-msgid "List quotas"
-msgstr "Lista kvoter"
-
-#: admin/templatetags/admin_tags.py:128
+#: admin/templatetags/admin_tags.py:138
 msgid "View the domain's identities"
 msgstr "Visa domänens konton"
 
-#: admin/templatetags/admin_tags.py:134 admin/templatetags/admin_tags.py:177
-#: admin/templatetags/admin_tags.py:190
+#: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:187
+#: admin/templatetags/admin_tags.py:200
 msgid "Edit {}"
 msgstr "Redigera {}"
 
-#: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:181
-#: admin/templatetags/admin_tags.py:195
+#: admin/templatetags/admin_tags.py:154 admin/templatetags/admin_tags.py:191
+#: admin/templatetags/admin_tags.py:205
 #, python-format
 msgid "Delete %s?"
 msgstr "Radera %s?"
@@ -1129,11 +1158,11 @@ msgstr "MX record för {}"
 msgid "DNSBL summary for {}"
 msgstr "DNSBL summering för {}"
 
-#: admin/views/domain.py:152
+#: admin/views/domain.py:191
 msgid "You can't delete your own domain"
 msgstr "Du kan inte radera din egen domän"
 
-#: admin/views/domain.py:155
+#: admin/views/domain.py:194
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domän raderad"
@@ -1147,12 +1176,12 @@ msgstr "Exportera konton"
 msgid "Export domains"
 msgstr "Exportera domäner"
 
-#: admin/views/identity.py:112 admin/views/identity.py:205
-#: admin/views/identity.py:210
+#: admin/views/identity.py:113 admin/views/identity.py:206
+#: admin/views/identity.py:211
 msgid "Invalid request"
 msgstr "Ogiltig förfrågan"
 
-#: admin/views/identity.py:195
+#: admin/views/identity.py:196
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Konto raderat"

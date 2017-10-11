@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-08 10:50+0200\n"
-"PO-Revision-Date: 2017-09-08 08:54+0000\n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"PO-Revision-Date: 2017-10-11 15:56+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -124,234 +124,234 @@ msgstr "Le port TCP utilisé par le serveur LDAP"
 msgid "Use a secured connection"
 msgstr "Utiliser une connexion sécurisée"
 
-#: core/app_settings.py:119
-msgid "Use an SSL/TLS connection to access the LDAP server"
-msgstr "Utiliser une connextion SSL/TLS pour accéder au serveur LDAP"
+#: core/app_settings.py:120
+msgid "Use an SSL/STARTTLS connection to access the LDAP server"
+msgstr "Utiliser une connexion SSL/STARTTLS pour accéder au serveur LDAP"
 
-#: core/app_settings.py:123
+#: core/app_settings.py:124
 msgid "Authentication method"
 msgstr "Méthode d'authentification"
 
-#: core/app_settings.py:124
+#: core/app_settings.py:125
 msgid "Search and bind"
 msgstr "Recherche et connexion"
 
-#: core/app_settings.py:125
+#: core/app_settings.py:126
 msgid "Direct bind"
 msgstr "Connexion directe"
 
-#: core/app_settings.py:127
+#: core/app_settings.py:128
 msgid "Choose the authentication method to use"
 msgstr "Choisir la méthode d'authentification à utiliser"
 
-#: core/app_settings.py:132
+#: core/app_settings.py:133
 msgid "Bind DN"
 msgstr "ND de connexion"
 
-#: core/app_settings.py:135
+#: core/app_settings.py:136
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
 msgstr "Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser vide pour une connexion anonyme"
 
-#: core/app_settings.py:143
+#: core/app_settings.py:144
 msgid "Bind password"
 msgstr "Mot de passe de connexion"
 
-#: core/app_settings.py:146
+#: core/app_settings.py:147
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr "Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de connexion')"
 
-#: core/app_settings.py:155
+#: core/app_settings.py:156
 msgid "Users search base"
 msgstr "Base de recherche des utilisateurs"
 
-#: core/app_settings.py:158
+#: core/app_settings.py:159
 msgid "The distinguished name of the search base used to find users"
 msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les utilisateurs"
 
-#: core/app_settings.py:165
+#: core/app_settings.py:166
 msgid "Search filter"
 msgstr "Filtre de recherche"
 
-#: core/app_settings.py:168
+#: core/app_settings.py:169
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
 msgstr "Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être valide, il doit être entouré de parenthèses."
 
-#: core/app_settings.py:176
+#: core/app_settings.py:177
 msgid "User DN template"
 msgstr "Modèle de nom distinctif utilisateur"
 
-#: core/app_settings.py:179
+#: core/app_settings.py:180
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il doit contenir un espace réservé (ex. %(user)s)"
 
-#: core/app_settings.py:187
+#: core/app_settings.py:188
 msgid "Password attribute"
 msgstr "Attribut 'mot de passe'"
 
-#: core/app_settings.py:189
+#: core/app_settings.py:190
 msgid "The attribute used to store user passwords"
 msgstr "L'attribut utilisé pour stocker les mots de passe"
 
-#: core/app_settings.py:194
+#: core/app_settings.py:195
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:197
+#: core/app_settings.py:198
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Indiquer si le serveur LDAP est un Active Directory ou pas"
 
-#: core/app_settings.py:201
+#: core/app_settings.py:202
 msgid "Administrator groups"
 msgstr "Groupes administrateurs"
 
-#: core/app_settings.py:204
+#: core/app_settings.py:205
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators."
 " Use ';' characters to separate groups."
 msgstr "Les membres de ces groupes LDAP (Posix) seront créés en tant qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les groupes."
 
-#: core/app_settings.py:211
+#: core/app_settings.py:212
 msgid "Group type"
 msgstr "Type de groupe"
 
-#: core/app_settings.py:215
+#: core/app_settings.py:216
 msgid "The LDAP group type to use with your directory."
 msgstr "Le type de groupe LDAP à utiliser avec votre annuaire."
 
-#: core/app_settings.py:220
+#: core/app_settings.py:221
 msgid "Groups search base"
 msgstr "Base de recherche des groupes"
 
-#: core/app_settings.py:223
+#: core/app_settings.py:224
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les groupes"
 
-#: core/app_settings.py:228 core/templates/core/dashboard.html:5
+#: core/app_settings.py:229 core/templates/core/dashboard.html:5
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: core/app_settings.py:231
+#: core/app_settings.py:232
 msgid "Custom RSS feed"
 msgstr "Flux RSS personnalisé"
 
-#: core/app_settings.py:234
+#: core/app_settings.py:235
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr "Afficher un flux RSS personnalisé aux revendeurs et administrateurs de domaine"
 
-#: core/app_settings.py:239
+#: core/app_settings.py:240
 msgid "Hide features widget"
 msgstr "Masquer le widget des fonctionnalités"
 
-#: core/app_settings.py:242
+#: core/app_settings.py:243
 msgid "Hide features widget for resellers and domain administrators"
 msgstr "Masquer le widget des fonctionnalités pour les revendeurs et les administrateurs de domaine"
 
-#: core/app_settings.py:246
+#: core/app_settings.py:247
 msgid "Notifications"
 msgstr "Notifications"
 
-#: core/app_settings.py:249
+#: core/app_settings.py:250
 msgid "Sender address"
 msgstr "Adresse d'envoi"
 
-#: core/app_settings.py:252
+#: core/app_settings.py:253
 msgid "Email address used to send notifications."
 msgstr "Adresse utilisée pour envoyer les notifications."
 
-#: core/app_settings.py:256
+#: core/app_settings.py:257
 msgid "Public API"
 msgstr "API publique"
 
-#: core/app_settings.py:259
+#: core/app_settings.py:260
 msgid "Enable communication"
 msgstr "Activer la communication"
 
-#: core/app_settings.py:262
+#: core/app_settings.py:263
 msgid "Enable communication with Modoboa public API"
 msgstr "Activer la communication avec l'API publique de Modoboa"
 
-#: core/app_settings.py:266
+#: core/app_settings.py:267
 msgid "Check new versions"
 msgstr "Vérifier les nouvelles versions"
 
-#: core/app_settings.py:269
+#: core/app_settings.py:270
 msgid "Automatically checks if a newer version is available"
 msgstr "Vérifie automatiquement si une nouvelle version est disponible"
 
-#: core/app_settings.py:273
+#: core/app_settings.py:274
 msgid "Send statistics"
 msgstr "Envoyer des statistiques"
 
-#: core/app_settings.py:276
+#: core/app_settings.py:277
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr "Envoyer des statistiques à l'API publique de Modoboa (compteurs et extensions utilisées)"
 
-#: core/app_settings.py:280
+#: core/app_settings.py:281
 msgid "Miscellaneous"
 msgstr "Divers"
 
-#: core/app_settings.py:283
+#: core/app_settings.py:284
 msgid "Inactive account threshold"
 msgstr "Seuil des comptes inactifs"
 
-#: core/app_settings.py:286
+#: core/app_settings.py:287
 msgid ""
 "An account with a last login date greater than this threshold (in days) will"
 " be considered as inactive"
 msgstr "Un compte avec une date de dernière connexion antérieure à ce seuil sera considéré comme inactif"
 
-#: core/app_settings.py:293
+#: core/app_settings.py:294
 msgid "Top notifications check interval"
 msgstr "Intervalle de vérification des notifications"
 
-#: core/app_settings.py:296
+#: core/app_settings.py:297
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Intervalle entre deux vérifications de notification (en secondes)"
 
-#: core/app_settings.py:302
+#: core/app_settings.py:303
 msgid "Maximum log record age"
 msgstr "Age maximal d'un enregistrement du journal"
 
-#: core/app_settings.py:304
+#: core/app_settings.py:305
 msgid "The maximum age in days of a log record"
 msgstr "L'age maximal en jours d'un enregistrement du journal"
 
-#: core/app_settings.py:309
+#: core/app_settings.py:310
 msgid "Items per page"
 msgstr "Eléments par page"
 
-#: core/app_settings.py:311
+#: core/app_settings.py:312
 msgid "Number of displayed items per page"
 msgstr "Nombre d'éléments affichés par page"
 
-#: core/app_settings.py:316
+#: core/app_settings.py:317
 msgid "Default top redirection"
 msgstr "Redirection par défaut"
 
-#: core/app_settings.py:320
+#: core/app_settings.py:321
 msgid "The default redirection used when no application is specified"
 msgstr "La redirection appliquée par défaut quand aucune application n'est spécifiée"
 
-#: core/app_settings.py:353
+#: core/app_settings.py:354
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "La longueur d'une clé doit être de 16, 24 ou 32 octets"
 
-#: core/app_settings.py:362
+#: core/app_settings.py:363
 msgid "Invalid syntax"
 msgstr "Syntaxe invalide"
 
-#: core/app_settings.py:368
+#: core/app_settings.py:369
 msgid "Invalid rounds number"
 msgstr "Nombre invalide de tours"
 
-#: core/app_settings.py:395
+#: core/app_settings.py:396
 msgid "This field is required"
 msgstr "Ce champ est requis"
 
@@ -374,6 +374,10 @@ msgstr "Revendeur"
 #: core/constants.py:12
 msgid "Super administrator"
 msgstr "Super administrateur"
+
+#: core/constants.py:49 lib/form_utils.py:427
+msgid "No"
+msgstr "Non"
 
 #: core/forms.py:24
 msgid "Username"
@@ -784,10 +788,6 @@ msgstr "Requête invalide"
 #: lib/form_utils.py:426
 msgid "Yes"
 msgstr "Oui"
-
-#: lib/form_utils.py:427
-msgid "No"
-msgstr "Non"
 
 #: lib/ldap_utils.py:133
 msgid "Failed to update password: {}"
