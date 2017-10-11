@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-08 10:50+0200\n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: admin/app_settings.py:20 admin/handlers.py:263
+#: admin/app_settings.py:20 admin/handlers.py:269
 #: admin/templates/admin/_global_statistics_widget.html:11
 #: admin/templates/admin/domains.html:4
 msgid "Domains"
@@ -124,16 +124,24 @@ msgstr "Домен создан"
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 
-#: admin/app_settings.py:156 admin/app_settings.py:164
-#: admin/forms/account.py:317
+#: admin/app_settings.py:112
+msgid "Create an alias when a mailbox is renamed"
+msgstr ""
+
+#: admin/app_settings.py:115
+msgid "Create an alias using the old address when a mailbox is renamed."
+msgstr ""
+
+#: admin/app_settings.py:164 admin/app_settings.py:172
+#: admin/forms/account.py:331
 msgid "Must be a positive integer"
 msgstr ""
 
-#: admin/app_settings.py:178
+#: admin/app_settings.py:186
 msgid "Define at least one authorized network / address"
 msgstr ""
 
-#: admin/app_settings.py:188
+#: admin/app_settings.py:196
 msgid "Administration"
 msgstr ""
 
@@ -198,24 +206,28 @@ msgstr ""
 msgid "This field is required."
 msgstr "Требуется квота"
 
-#: admin/forms/account.py:190
+#: admin/forms/account.py:191
 msgid "The two password fields didn't match."
 msgstr "Пароли не совпадают"
 
-#: admin/forms/account.py:200
+#: admin/forms/account.py:204
 msgid "You can't disable your own account"
 msgstr "Вы не можете запретить собственный аккаунт"
 
-#: admin/forms/account.py:221
+#: admin/forms/account.py:225
 msgid "E-mail"
 msgstr "Е-майл"
 
-#: admin/forms/account.py:223 admin/templates/admin/account_detail.html:45
+#: admin/forms/account.py:227
+msgid "Create an alias using the old address"
+msgstr ""
+
+#: admin/forms/account.py:232 admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:57
 msgid "Quota"
 msgstr "Квота"
 
-#: admin/forms/account.py:225
+#: admin/forms/account.py:234
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -226,12 +238,12 @@ msgstr ""
 "Оставьте пустым для неограниченного значения.  (Не разрешено администраторам "
 "домена)"
 
-#: admin/forms/account.py:233 admin/forms/domain.py:43
-#: admin/templates/admin/domains.html:35
+#: admin/forms/account.py:242 admin/forms/domain.py:43
+#: admin/templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Синоним(ы)"
 
-#: admin/forms/account.py:236
+#: admin/forms/account.py:245
 #, fuzzy
 #| msgid ""
 #| "Alias(es) of this mailbox. Indicate only one address per input, press "
@@ -245,13 +257,13 @@ msgstr ""
 "Синонимы этого почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
 "добавления. Используйте '*' для создания синонима 'для всех' (*@domain.tld)"
 
-#: admin/forms/account.py:242
+#: admin/forms/account.py:251
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Sender addresses"
 msgstr "Ошибочный запрос"
 
-#: admin/forms/account.py:245
+#: admin/forms/account.py:254
 #, fuzzy
 #| msgid ""
 #| "Mailbox(es) this alias will point to. Indicate only one address per "
@@ -264,56 +276,56 @@ msgstr ""
 "Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/account.py:295 admin/forms/alias.py:94
+#: admin/forms/account.py:309 admin/forms/alias.py:94
 #: admin/models/mailbox.py:315
 msgid "Domain does not exist"
 msgstr "Домен не существует"
 
-#: admin/forms/account.py:327
+#: admin/forms/account.py:341
 #, fuzzy
 #| msgid "Domain does not exist"
 msgid "Local domain does not exist"
 msgstr "Домен не существует"
 
-#: admin/forms/account.py:331 admin/forms/account.py:339
+#: admin/forms/account.py:345 admin/forms/account.py:353
 #: admin/forms/alias.py:97
 msgid "You don't have access to this domain"
 msgstr "Вы не имеете права доступа к этому домену"
 
-#: admin/forms/account.py:436
+#: admin/forms/account.py:452
 msgid "Domain(s)"
 msgstr "Домен(ы)"
 
-#: admin/forms/account.py:438
+#: admin/forms/account.py:454
 msgid "Domain(s) that user administrates"
 msgstr "Домен(ы) администрируемые пользователем"
 
-#: admin/forms/account.py:484 admin/forms/account.py:574
+#: admin/forms/account.py:500 admin/forms/account.py:590
 #: admin/forms/domain.py:334 admin/forms/domain.py:401
 msgid "General"
 msgstr "Основные"
 
-#: admin/forms/account.py:488
+#: admin/forms/account.py:504
 msgid "Profile"
 msgstr ""
 
-#: admin/forms/account.py:492 admin/forms/account.py:580
+#: admin/forms/account.py:508 admin/forms/account.py:596
 msgid "Mail"
 msgstr "Почта"
 
-#: admin/forms/account.py:495
+#: admin/forms/account.py:511
 msgid "Permissions"
 msgstr "Права"
 
-#: admin/forms/account.py:563
+#: admin/forms/account.py:579
 msgid "Account updated"
 msgstr "аккаунт изменен"
 
-#: admin/forms/account.py:588
+#: admin/forms/account.py:604
 msgid "New account"
 msgstr "Новый аккаунт"
 
-#: admin/forms/account.py:600
+#: admin/forms/account.py:616
 msgid "Account created"
 msgstr "Аккаунт создан"
 
@@ -357,6 +369,7 @@ msgstr ""
 
 #: admin/forms/alias.py:49 admin/forms/domain.py:32 admin/models/domain.py:115
 #: admin/templates/admin/_per_domain_statistics_widget.html:7
+#: admin/templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr ""
 
@@ -383,7 +396,7 @@ msgstr ""
 "Синоним(ы) этого домена. Вводите одно имя за раз. Нажмите ENTER для "
 "добавления."
 
-#: admin/forms/domain.py:90 admin/handlers.py:165
+#: admin/forms/domain.py:90 admin/handlers.py:171
 msgid "domain alias"
 msgstr ""
 
@@ -417,7 +430,7 @@ msgid "Automatically create an administrator for this domain"
 msgstr "Автоматически создаст администратора для этого домена"
 
 #: admin/forms/domain.py:207 admin/templates/admin/domain_detail.html:101
-#: admin/templates/admin/domains.html:34
+#: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
@@ -526,30 +539,30 @@ msgstr "Шифровать пароль"
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr "Выберите эту опцию если пароль в вашем файле не зашифрован "
 
-#: admin/handlers.py:212
+#: admin/handlers.py:218
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Ошибка импорта аккаунта (%s): домен должен существовать "
 
-#: admin/handlers.py:225 admin/models/mailbox.py:342
+#: admin/handlers.py:231 admin/models/mailbox.py:342
 #, fuzzy
 #| msgid "Mailbox %s already exists"
 msgid "Mailbox {} already exists"
 msgstr "Почтовый ящик %s существует"
 
-#: admin/handlers.py:233
+#: admin/handlers.py:239
 #, fuzzy, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Ошибка импорта аккаунта (%s): домен должен существовать "
 
-#: admin/handlers.py:273
+#: admin/handlers.py:279
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Пользователи"
 
-#: admin/handlers.py:289 admin/templates/admin/forward.html:2
+#: admin/handlers.py:295 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Перенаправленые"
 
@@ -567,20 +580,20 @@ msgstr "Вы не можете удалить собственный домен"
 msgid "You are not allowed to import domain aliases."
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:124
+#: admin/management/commands/subcommands/_mx.py:125
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:144
+#: admin/management/commands/subcommands/_mx.py:145
 msgid "Domain {} has no MX record"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:155
+#: admin/management/commands/subcommands/_mx.py:156
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:172
+#: admin/management/commands/subcommands/_mx.py:173
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr ""
 
@@ -667,23 +680,23 @@ msgstr ""
 msgid "Check to enable DNS checks for this domain"
 msgstr "Отметить для активации этого домена"
 
-#: admin/models/domain.py:256 admin/models/domain_alias.py:73
+#: admin/models/domain.py:274 admin/models/domain_alias.py:73
 msgid "Invalid line"
 msgstr "Ошибочная строка"
 
-#: admin/models/domain.py:266
+#: admin/models/domain.py:284
 msgid "No authorized MX record found for domain {}"
 msgstr ""
 
-#: admin/models/domain.py:273
+#: admin/models/domain.py:291
 msgid "Invalid quota value for domain '{}'"
 msgstr ""
 
-#: admin/models/domain.py:280
+#: admin/models/domain.py:298
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr ""
 
-#: admin/models/domain.py:285
+#: admin/models/domain.py:303
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr ""
 
@@ -890,8 +903,8 @@ msgid "Provider"
 msgstr ""
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
+#: admin/templates/admin/identities_quota_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:10
-#: admin/templates/admin/quota_headers.html:2
 msgid "Address"
 msgstr "Адрес"
 
@@ -914,7 +927,7 @@ msgid "No information available for this domain."
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:30
-#: admin/templates/admin/domains.html:38
+#: admin/templates/admin/domain_headers.html:7
 #, fuzzy
 #| msgid "Statistics"
 msgid "DNS status"
@@ -938,7 +951,9 @@ msgstr "Синонимы почтового ящика"
 #: admin/templates/admin/domain_detail.html:73
 #: admin/templates/admin/domain_general_form.html:4
 #: admin/templates/admin/domain_general_form.html:5
-#: admin/templates/admin/mailform.html:4
+#: admin/templates/admin/domains_quotas.html:11
+#: admin/templates/admin/domains_quotas.html:12
+#: admin/templates/admin/mailform.html:7
 #: admin/templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "Мб"
@@ -950,11 +965,13 @@ msgid "Usage"
 msgstr "использование (%%)"
 
 #: admin/templates/admin/domain_detail.html:65
+#: admin/templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:66
+#: admin/templates/admin/domains_quotas.html:12
 msgid "allocated"
 msgstr ""
 
@@ -963,7 +980,7 @@ msgid "Administrators"
 msgstr "Администраторы"
 
 #: admin/templates/admin/domain_detail.html:110
-#: admin/templatetags/admin_tags.py:258
+#: admin/templatetags/admin_tags.py:268
 msgid "Remove this permission"
 msgstr "Удалить это разрешение"
 
@@ -972,6 +989,16 @@ msgstr "Удалить это разрешение"
 #| msgid "No domain administrator defined"
 msgid "No domain administrator defined yet."
 msgstr "Администратор домена не определен"
+
+#: admin/templates/admin/domain_headers.html:5
+#: admin/templates/admin/identity_headers.html:4
+msgid "Tags"
+msgstr "Теги"
+
+#: admin/templates/admin/domain_headers.html:9
+#: admin/templates/admin/identity_headers.html:5
+msgid "Actions"
+msgstr "Действие"
 
 #: admin/templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
@@ -984,15 +1011,26 @@ msgstr ""
 msgid "Add"
 msgstr "Адрес"
 
-#: admin/templates/admin/domains.html:36
-#: admin/templates/admin/identity_headers.html:4
-msgid "Tags"
-msgstr "Теги"
+#: admin/templates/admin/domains_quota_headers.html:3
+#: admin/templates/admin/identities_quota_headers.html:4
+msgid "Limit"
+msgstr "Лимит"
 
-#: admin/templates/admin/domains.html:40
-#: admin/templates/admin/identity_headers.html:5
-msgid "Actions"
-msgstr "Действие"
+#: admin/templates/admin/domains_quota_headers.html:4
+msgid "Used"
+msgstr ""
+
+#: admin/templates/admin/domains_quota_headers.html:5
+#, fuzzy
+#| msgid "Alias created"
+msgid "Allocated"
+msgstr "Синоним создан"
+
+#: admin/templates/admin/domains_quota_headers.html:6
+#: admin/templates/admin/identities_quota_headers.html:5
+#, python-format
+msgid "Usage (%%)"
+msgstr "использование (%%)"
 
 #: admin/templates/admin/domains_table.html:5
 #, fuzzy
@@ -1012,6 +1050,10 @@ msgstr "Обновление"
 #| msgid "Add account"
 msgid "Account"
 msgstr "Добавить аккаунт"
+
+#: admin/templates/admin/identities_quota_headers.html:3
+msgid "Value"
+msgstr "Значение"
 
 #: admin/templates/admin/identity_headers.html:3
 msgid "Fullname/Recipient"
@@ -1054,7 +1096,7 @@ msgstr ""
 msgid "Choose a value"
 msgstr "Выбрать значение"
 
-#: admin/templates/admin/mailform.html:4
+#: admin/templates/admin/mailform.html:7
 msgid "Use domain default value"
 msgstr "Используются значения домена по умолчанию "
 
@@ -1091,19 +1133,6 @@ msgstr ""
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
 msgstr ""
 
-#: admin/templates/admin/quota_headers.html:3
-msgid "Value"
-msgstr "Значение"
-
-#: admin/templates/admin/quota_headers.html:4
-msgid "Limit"
-msgstr "Лимит"
-
-#: admin/templates/admin/quota_headers.html:5
-#, python-format
-msgid "Usage (%%)"
-msgstr "использование (%%)"
-
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
 msgstr "Поиск"
@@ -1116,40 +1145,40 @@ msgstr "enabled_m"
 msgid "enabled_f"
 msgstr "enabled_f"
 
-#: admin/templatetags/admin_tags.py:43
+#: admin/templatetags/admin_tags.py:48
 #, fuzzy
 msgid "List domains"
 msgstr "Список квот"
 
-#: admin/templatetags/admin_tags.py:55 admin/templatetags/admin_tags.py:103
+#: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:108
+msgid "List quotas"
+msgstr "Список квот"
+
+#: admin/templatetags/admin_tags.py:65 admin/templatetags/admin_tags.py:113
 #: admin/views/import_.py:101 admin/views/import_.py:123
 msgid "Import"
 msgstr "Импорт"
 
-#: admin/templatetags/admin_tags.py:61 admin/templatetags/admin_tags.py:109
+#: admin/templatetags/admin_tags.py:71 admin/templatetags/admin_tags.py:119
 #: admin/views/export.py:44 admin/views/export.py:74
 msgid "Export"
 msgstr "Экспорт"
 
-#: admin/templatetags/admin_tags.py:93
+#: admin/templatetags/admin_tags.py:103
 msgid "List identities"
 msgstr "Список пользователей"
 
-#: admin/templatetags/admin_tags.py:98
-msgid "List quotas"
-msgstr "Список квот"
-
-#: admin/templatetags/admin_tags.py:128
+#: admin/templatetags/admin_tags.py:138
 msgid "View the domain's identities"
 msgstr "Информация о домене"
 
-#: admin/templatetags/admin_tags.py:134 admin/templatetags/admin_tags.py:177
-#: admin/templatetags/admin_tags.py:190
+#: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:187
+#: admin/templatetags/admin_tags.py:200
 msgid "Edit {}"
 msgstr ""
 
-#: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:181
-#: admin/templatetags/admin_tags.py:195
+#: admin/templatetags/admin_tags.py:154 admin/templatetags/admin_tags.py:191
+#: admin/templatetags/admin_tags.py:205
 #, python-format
 msgid "Delete %s?"
 msgstr "Удалить %s?"
@@ -1191,11 +1220,11 @@ msgstr ""
 msgid "DNSBL summary for {}"
 msgstr ""
 
-#: admin/views/domain.py:152
+#: admin/views/domain.py:191
 msgid "You can't delete your own domain"
 msgstr "Вы не можете удалить собственный домен"
 
-#: admin/views/domain.py:155
+#: admin/views/domain.py:194
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Домен удален"
@@ -1210,12 +1239,12 @@ msgstr "Экспорт пользователя"
 msgid "Export domains"
 msgstr "Экспорт доменов"
 
-#: admin/views/identity.py:112 admin/views/identity.py:205
-#: admin/views/identity.py:210
+#: admin/views/identity.py:113 admin/views/identity.py:206
+#: admin/views/identity.py:211
 msgid "Invalid request"
 msgstr "Ошибочный запрос"
 
-#: admin/views/identity.py:195
+#: admin/views/identity.py:196
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Аккаунт удален"

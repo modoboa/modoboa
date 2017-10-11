@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-08 10:50+0200\n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
 "PO-Revision-Date: 2015-07-09 14:03+0000\n"
 "Last-Translator: controlc.de\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
@@ -135,58 +135,60 @@ msgstr "Der TCP Port des LDAP-Servers"
 msgid "Use a secured connection"
 msgstr "Gesicherte Verbindung verwenden"
 
-#: core/app_settings.py:119
-msgid "Use an SSL/TLS connection to access the LDAP server"
+#: core/app_settings.py:120
+#, fuzzy
+#| msgid "Use an SSL/TLS connection to access the LDAP server"
+msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgstr "SSL/TLS-Verbindung für Zugriff auf LDAP-Server verwenden"
 
-#: core/app_settings.py:123
+#: core/app_settings.py:124
 msgid "Authentication method"
 msgstr "Authentifizierungsmethode"
 
-#: core/app_settings.py:124
+#: core/app_settings.py:125
 msgid "Search and bind"
 msgstr "Suchen und Bind anwenden"
 
-#: core/app_settings.py:125
+#: core/app_settings.py:126
 msgid "Direct bind"
 msgstr "Direkter Bind"
 
-#: core/app_settings.py:127
+#: core/app_settings.py:128
 msgid "Choose the authentication method to use"
 msgstr "Wählen Sie die Authentifizierungsmethode"
 
-#: core/app_settings.py:132
+#: core/app_settings.py:133
 msgid "Bind DN"
 msgstr "Bind DN"
 
-#: core/app_settings.py:135
+#: core/app_settings.py:136
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
 msgstr ""
 "Der DN für einen Bind an den LDAP-Server. Nichts eingeben für anonymen Bind."
 
-#: core/app_settings.py:143
+#: core/app_settings.py:144
 msgid "Bind password"
 msgstr "Bind Passwort"
 
-#: core/app_settings.py:146
+#: core/app_settings.py:147
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr "Das Passwort wenn mit dem Bind DN angemeldet wird."
 
-#: core/app_settings.py:155
+#: core/app_settings.py:156
 msgid "Users search base"
 msgstr "Benutzer Search Base"
 
-#: core/app_settings.py:158
+#: core/app_settings.py:159
 msgid "The distinguished name of the search base used to find users"
 msgstr "Der DN der Search Base mit der Benutzerkonten gefunden werden"
 
-#: core/app_settings.py:165
+#: core/app_settings.py:166
 msgid "Search filter"
 msgstr "Suchfilter"
 
-#: core/app_settings.py:168
+#: core/app_settings.py:169
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -194,11 +196,11 @@ msgstr ""
 "Ein optionaler Filter, z.B. '(objectClass=person)'. Der Filter muss "
 "entsprechend der LDAP-Konvention in Klammern gesetzt werden."
 
-#: core/app_settings.py:176
+#: core/app_settings.py:177
 msgid "User DN template"
 msgstr "Vorlage für User DN"
 
-#: core/app_settings.py:179
+#: core/app_settings.py:180
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -207,27 +209,27 @@ msgstr ""
 "Die Vorlage für einen User DN. Sie sollte einen Platzhalter, z.B. %(user)s "
 "enthalten."
 
-#: core/app_settings.py:187
+#: core/app_settings.py:188
 msgid "Password attribute"
 msgstr "Passwort-Attribut"
 
-#: core/app_settings.py:189
+#: core/app_settings.py:190
 msgid "The attribute used to store user passwords"
 msgstr "Das Attribut für Benutzerpasswörter"
 
-#: core/app_settings.py:194
+#: core/app_settings.py:195
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:197
+#: core/app_settings.py:198
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Auswählen wenn der LDAP-Server ein Active Directory ist."
 
-#: core/app_settings.py:201
+#: core/app_settings.py:202
 msgid "Administrator groups"
 msgstr "Administrator-Gruppen"
 
-#: core/app_settings.py:204
+#: core/app_settings.py:205
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -235,145 +237,145 @@ msgstr ""
 "Mitglieder dieser LDAP Posix-Gruppe werden als Domain-Administratoren "
 "angelegt werden. Nutzen Sie ';', um Gruppen zu separieren."
 
-#: core/app_settings.py:211
+#: core/app_settings.py:212
 msgid "Group type"
 msgstr "Gruppentyp"
 
-#: core/app_settings.py:215
+#: core/app_settings.py:216
 msgid "The LDAP group type to use with your directory."
 msgstr ""
 
-#: core/app_settings.py:220
+#: core/app_settings.py:221
 msgid "Groups search base"
 msgstr "Gruppen Search Base"
 
-#: core/app_settings.py:223
+#: core/app_settings.py:224
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Der DN der Search Base mit Gruppen gefunden werden"
 
-#: core/app_settings.py:228 core/templates/core/dashboard.html:5
+#: core/app_settings.py:229 core/templates/core/dashboard.html:5
 msgid "Dashboard"
 msgstr ""
 
-#: core/app_settings.py:231
+#: core/app_settings.py:232
 msgid "Custom RSS feed"
 msgstr ""
 
-#: core/app_settings.py:234
+#: core/app_settings.py:235
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr ""
 
-#: core/app_settings.py:239
+#: core/app_settings.py:240
 msgid "Hide features widget"
 msgstr ""
 
-#: core/app_settings.py:242
+#: core/app_settings.py:243
 msgid "Hide features widget for resellers and domain administrators"
 msgstr ""
 
-#: core/app_settings.py:246
+#: core/app_settings.py:247
 #, fuzzy
 #| msgid "Applications"
 msgid "Notifications"
 msgstr "Applikationen"
 
-#: core/app_settings.py:249
+#: core/app_settings.py:250
 #, fuzzy
 #| msgid "Server address"
 msgid "Sender address"
 msgstr "Server-Adresse"
 
-#: core/app_settings.py:252
+#: core/app_settings.py:253
 msgid "Email address used to send notifications."
 msgstr ""
 
-#: core/app_settings.py:256
+#: core/app_settings.py:257
 msgid "Public API"
 msgstr ""
 
-#: core/app_settings.py:259
+#: core/app_settings.py:260
 msgid "Enable communication"
 msgstr ""
 
-#: core/app_settings.py:262
+#: core/app_settings.py:263
 msgid "Enable communication with Modoboa public API"
 msgstr ""
 
-#: core/app_settings.py:266
+#: core/app_settings.py:267
 msgid "Check new versions"
 msgstr "Prüfe auf neue Versionen"
 
-#: core/app_settings.py:269
+#: core/app_settings.py:270
 msgid "Automatically checks if a newer version is available"
 msgstr "Prüft automatisch ob eine neuere Version verfügbar ist."
 
-#: core/app_settings.py:273
+#: core/app_settings.py:274
 msgid "Send statistics"
 msgstr ""
 
-#: core/app_settings.py:276
+#: core/app_settings.py:277
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 
-#: core/app_settings.py:280
+#: core/app_settings.py:281
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
-#: core/app_settings.py:283
+#: core/app_settings.py:284
 msgid "Inactive account threshold"
 msgstr ""
 
-#: core/app_settings.py:286
+#: core/app_settings.py:287
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
 msgstr ""
 
-#: core/app_settings.py:293
+#: core/app_settings.py:294
 msgid "Top notifications check interval"
 msgstr "Benachrichtigungs-Prüfintervall"
 
-#: core/app_settings.py:296
+#: core/app_settings.py:297
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Intervall zwischen zwei Benachrichtigungsprüfungen (in Sekunden)"
 
-#: core/app_settings.py:302
+#: core/app_settings.py:303
 msgid "Maximum log record age"
 msgstr "Maximales Alter für Log-Einträge"
 
-#: core/app_settings.py:304
+#: core/app_settings.py:305
 msgid "The maximum age in days of a log record"
 msgstr "Das maximale Alter eines Log-Eintrags (in Tagen)"
 
-#: core/app_settings.py:309
+#: core/app_settings.py:310
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: core/app_settings.py:311
+#: core/app_settings.py:312
 msgid "Number of displayed items per page"
 msgstr "Anzahl dargestellter Einträge pro Seite"
 
-#: core/app_settings.py:316
+#: core/app_settings.py:317
 msgid "Default top redirection"
 msgstr "Standardumleitung"
 
-#: core/app_settings.py:320
+#: core/app_settings.py:321
 msgid "The default redirection used when no application is specified"
 msgstr "Die Standardumleitung wenn kein Programm angegeben wurde"
 
-#: core/app_settings.py:353
+#: core/app_settings.py:354
 msgid "Key must be either 16, 24, or 32 bytes long"
 msgstr "Schlüssel muss 16, 24 oder 32 Byte lang sein"
 
-#: core/app_settings.py:362
+#: core/app_settings.py:363
 msgid "Invalid syntax"
 msgstr "Ungültiger Syntax"
 
-#: core/app_settings.py:368
+#: core/app_settings.py:369
 msgid "Invalid rounds number"
 msgstr "Ungültige Zahl für Runden"
 
-#: core/app_settings.py:395
+#: core/app_settings.py:396
 msgid "This field is required"
 msgstr "Dieses Feld ist erforderlich"
 
@@ -398,6 +400,10 @@ msgstr ""
 #: core/constants.py:12
 msgid "Super administrator"
 msgstr "Super-Administrator"
+
+#: core/constants.py:49 lib/form_utils.py:427
+msgid "No"
+msgstr "Nein"
 
 #: core/forms.py:24
 msgid "Username"
@@ -822,10 +828,6 @@ msgstr "Ungültige Anfrage"
 #: lib/form_utils.py:426
 msgid "Yes"
 msgstr "Ja"
-
-#: lib/form_utils.py:427
-msgid "No"
-msgstr "Nein"
 
 #: lib/ldap_utils.py:133
 msgid "Failed to update password: {}"
