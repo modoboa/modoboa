@@ -74,4 +74,4 @@ Then, run the following commands:
    > python manage.py migrate
    > python manage.py collectstatic
 
-Then, restart your web sever.
+Then, restart your web server.
