@@ -827,13 +827,13 @@ msgstr "Toegang geweigerd"
 
 #: lib/fields.py:17 lib/validators.py:16
 msgid "Enter a valid domain name"
-msgstr "Vul een geledige domeinnaam in"
+msgstr "Vul een geldige domeinnaam in"
 
 #: lib/fields.py:46 lib/fields.py:60
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Enter a valid email address."
-msgstr "Vul een geledig email adres in"
+msgstr "Vul een geldig email adres in"
 
 #: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
