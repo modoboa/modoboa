@@ -788,7 +788,7 @@ msgstr "Gebruiker '%s' successvol aangemeld"
 #: core/views/auth.py:53
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
-"Uw gebruikersnaam en wachtwoord komen niet overeen. Probeer het alstublief "
+"Uw gebruikersnaam en wachtwoord komen niet overeen. Probeer het alstublieft"
 "opnieuw."
 
 #: core/views/auth.py:88
@@ -827,13 +827,13 @@ msgstr "Toegang geweigerd"
 
 #: lib/fields.py:17 lib/validators.py:16
 msgid "Enter a valid domain name"
-msgstr "Vul een geledige domeinnaam in"
+msgstr "Vul een geldige domeinnaam in"
 
 #: lib/fields.py:46 lib/fields.py:60
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Enter a valid email address."
-msgstr "Vul een geledige domeinnaam in"
+msgstr "Vul een geldig email adres in"
 
 #: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
@@ -856,11 +856,11 @@ msgstr "Mislukt om wachtwoord aan te passen: %s"
 
 #: lib/templatetags/lib_tags.py:107
 msgid "From"
-msgstr ""
+msgstr "Van"
 
 #: lib/templatetags/lib_tags.py:108
 msgid "To"
-msgstr ""
+msgstr "aan"
 
 #: lib/templatetags/lib_tags.py:110 templates/common/email_searchbar.html:17
 msgid "Subject"
@@ -929,7 +929,7 @@ msgstr "Inloggen"
 #, fuzzy
 #| msgid "password"
 msgid "Forgot password?"
-msgstr "wachtwoord"
+msgstr "Wachtwoord vergeten?"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
@@ -948,7 +948,7 @@ msgstr "Nieuw wachtwoord"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr ""
+msgstr "De wachtwoord reset link was niet geldig, vraag een nieuwe aan"
 
 #: templates/registration/password_reset_done.html:7
 msgid ""
@@ -973,11 +973,11 @@ msgstr ""
 
 #: templates/registration/password_reset_email.html:14
 msgid "Sincerely, The Modoboa Team."
-msgstr ""
+msgstr "Met vriendelijke groet, het Modoboa Team"
 
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
-msgstr ""
+msgstr "Modoboa wachtwoord reset"
 
 #, fuzzy
 #~| msgid "Group name"
