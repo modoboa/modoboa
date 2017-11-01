@@ -32,11 +32,11 @@ msgstr ""
 
 #: admin/app_settings.py:26
 msgid "Check that every domain has a valid MX record"
-msgstr ""
+msgstr "Controlleer of ieder domein een valide MX record heeft"
 
 #: admin/app_settings.py:31
 msgid "Valid MXs"
-msgstr ""
+msgstr "Correcte MX-records"
 
 #: admin/app_settings.py:34
 msgid ""
@@ -56,11 +56,11 @@ msgstr ""
 
 #: admin/app_settings.py:51
 msgid "Enable DNSBL checks"
-msgstr ""
+msgstr "Zet DNSBL controle aan"
 
 #: admin/app_settings.py:54
 msgid "Check every domain against major DNSBL providers"
-msgstr ""
+msgstr "Controlleer ieder domein bij de grote DNSBL providers"
 
 #: admin/app_settings.py:58 admin/templates/admin/domain_detail.html:49
 msgid "Mailboxes"
@@ -138,11 +138,11 @@ msgstr ""
 
 #: admin/app_settings.py:112
 msgid "Create an alias when a mailbox is renamed"
-msgstr ""
+msgstr "Maak een alias aan wanneer een mailbox word hernoemd"
 
 #: admin/app_settings.py:115
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
+msgstr "Maak een alias aan met het oude adres wanneer een mailbox word hernoemd"
 
 #: admin/app_settings.py:164 admin/app_settings.py:172
 #: admin/forms/account.py:331
@@ -171,7 +171,7 @@ msgstr ""
 
 #: admin/forms/account.py:45 admin/templates/admin/account_detail.html:29
 msgid "Role"
-msgstr "Regel"
+msgstr "Rol"
 
 #: admin/forms/account.py:46
 msgid "Choose"
@@ -185,7 +185,7 @@ msgstr "Welk niveau van rechten deze gebruiker zal hebben"
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Random password"
-msgstr "Ongeldig verzoek"
+msgstr "Willekeuring wachtwoord"
 
 #: admin/forms/account.py:52
 msgid ""
@@ -203,7 +203,7 @@ msgstr "Bevestiging"
 
 #: admin/forms/account.py:66
 msgid "Enter the same password as above, for verification."
-msgstr "Herhaal wachtwoord (voor verificatie)"
+msgstr "Herhaal wachtwoord ter verificatie"
 
 #: admin/forms/account.py:78
 msgid "Enabled"
@@ -211,7 +211,7 @@ msgstr "Actief"
 
 #: admin/forms/account.py:172
 msgid "Only super administrators are allowed for this mode"
-msgstr ""
+msgstr "Alleen super administrators mogen dit"
 
 #: admin/forms/account.py:183 admin/forms/account.py:185
 #: admin/forms/domain.py:263 admin/forms/domain.py:266 admin/serializers.py:241
@@ -234,7 +234,7 @@ msgstr "E-mail"
 
 #: admin/forms/account.py:227
 msgid "Create an alias using the old address"
-msgstr ""
+msgstr "Maak een alias aan met het oude adres"
 
 #: admin/forms/account.py:232 admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:57
@@ -321,7 +321,7 @@ msgstr "Algemeen"
 
 #: admin/forms/account.py:504
 msgid "Profile"
-msgstr ""
+msgstr "Profiel"
 
 #: admin/forms/account.py:508 admin/forms/account.py:596
 msgid "Mail"
@@ -337,7 +337,7 @@ msgstr "Account aangepast"
 
 #: admin/forms/account.py:604
 msgid "New account"
-msgstr "Nieuwe account"
+msgstr "Nieuw account"
 
 #: admin/forms/account.py:616
 msgid "Account created"
@@ -347,7 +347,7 @@ msgstr "Account aangemaakt"
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Random address"
-msgstr "Ongeldig verzoek"
+msgstr "Willekeuring adres"
 
 #: admin/forms/alias.py:29
 msgid "Email address"
@@ -465,7 +465,7 @@ msgstr "Maak een domein administrator aan"
 
 #: admin/forms/domain.py:226
 msgid "With a mailbox"
-msgstr ""
+msgstr "Met een mailbox"
 
 #: admin/forms/domain.py:229
 #, fuzzy
@@ -590,24 +590,24 @@ msgstr "U kunt uw eigen domein niet verwijderen"
 
 #: admin/lib.py:142
 msgid "You are not allowed to import domain aliases."
-msgstr ""
+msgstr "U bent niet gemachtigd om domein aliassen te importeren."
 
 #: admin/management/commands/subcommands/_mx.py:125
 msgid "[modoboa] DNSBL issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] DNSBL problemen voor domein {}"
 
 #: admin/management/commands/subcommands/_mx.py:145
 msgid "Domain {} has no MX record"
-msgstr ""
+msgstr "Domein {} heeft geen MX record(s)"
 
 #: admin/management/commands/subcommands/_mx.py:156
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
-msgstr ""
+msgstr "MX record voor domein {0} is ongeldig: {1}"
 
 #: admin/management/commands/subcommands/_mx.py:173
 msgid "[modoboa] MX issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] MX probleem met domein {}"
 
 #: admin/models/alias.py:35 admin/models/mailbox.py:97
 msgid "address"
@@ -630,11 +630,11 @@ msgstr "Aanvinken om deze alias te activeren"
 
 #: admin/models/alias.py:48 admin/templates/admin/alias_detail.html:32
 msgid "Description"
-msgstr ""
+msgstr "Omschrijving"
 
 #: admin/models/alias.py:50 admin/templates/admin/alias_detail.html:29
 msgid "Expire at"
-msgstr ""
+msgstr "Verloopt op"
 
 #: admin/models/alias.py:93
 msgid "alias"
@@ -696,7 +696,7 @@ msgstr "Aanvinken om dit domein te activeren"
 
 #: admin/models/domain.py:73
 msgid "Enable DNS checks"
-msgstr ""
+msgstr "Activeer DNS checks"
 
 #: admin/models/domain.py:74
 #, fuzzy
@@ -768,7 +768,7 @@ msgstr "Domein aangemaakt"
 #, fuzzy
 #| msgid "Permissions"
 msgid "Permission denied."
-msgstr "Rechten"
+msgstr "Toegang geweigerd"
 
 #: admin/serializers.py:118
 msgid ""
@@ -777,11 +777,11 @@ msgstr ""
 
 #: admin/serializers.py:218
 msgid "Not allowed for this role."
-msgstr ""
+msgstr "Niet toegestaan met deze rol"
 
 #: admin/serializers.py:228
 msgid "Must be equal to mailbox full_address"
-msgstr ""
+msgstr "Moet gelijk zijn aan het volledige e-mail adres"
 
 #: admin/serializers.py:253
 #, fuzzy
@@ -791,7 +791,7 @@ msgstr "Domein bestaat niet"
 
 #: admin/serializers.py:347
 msgid "A list of recipient"
-msgstr ""
+msgstr "Een lijst van ontvangers"
 
 #: admin/serializers.py:358
 #, fuzzy
@@ -808,7 +808,7 @@ msgstr "uitgeschakeld"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
-msgstr ""
+msgstr "Controles afwachten"
 
 #: admin/templates/admin/_global_statistics_widget.html:4
 #, fuzzy
@@ -862,11 +862,11 @@ msgstr "Aanmaken"
 
 #: admin/templates/admin/account_detail.html:35
 msgid "Last login"
-msgstr ""
+msgstr "Laatste login"
 
 #: admin/templates/admin/account_detail.html:38
 msgid "Secondary email"
-msgstr ""
+msgstr "Tweede email"
 
 #: admin/templates/admin/account_detail.html:38
 #: admin/templates/admin/account_detail.html:41
@@ -877,7 +877,7 @@ msgstr "Geen ontvanger opgegeven"
 
 #: admin/templates/admin/account_detail.html:41
 msgid "Phone number"
-msgstr ""
+msgstr "Telefoonnummer"
 
 #: admin/templates/admin/account_detail.html:55
 #, fuzzy
@@ -905,11 +905,11 @@ msgstr "Geen ontvanger opgegeven"
 
 #: admin/templates/admin/account_detail.html:87
 msgid "Additional sender addresses"
-msgstr ""
+msgstr "Overige verstuur adressen"
 
 #: admin/templates/admin/account_detail.html:93
 msgid "No sender address defined"
-msgstr ""
+msgstr "Er is geen verzendadres gedefineerd"
 
 #: admin/templates/admin/account_general_form.html:12
 #: admin/templates/admin/aliasform.html:13
@@ -951,11 +951,11 @@ msgstr ""
 
 #: admin/templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
-msgstr ""
+msgstr "Alles OK, dit domein komt niet voor in de lijst"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
-msgstr ""
+msgstr "Geen informatie beschikbaar voor dit domein"
 
 #: admin/templates/admin/domain_detail.html:30
 #: admin/templates/admin/domain_headers.html:7
@@ -1194,7 +1194,7 @@ msgstr ""
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
-msgstr ""
+msgstr "Geen mx record gevonden voor dit domein"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
@@ -1298,7 +1298,7 @@ msgstr ""
 
 #: admin/views/dns.py:55
 msgid "DNSBL summary for {}"
-msgstr ""
+msgstr "DNSBL samenvatting voor {}"
 
 #: admin/views/domain.py:191
 msgid "You can't delete your own domain"
