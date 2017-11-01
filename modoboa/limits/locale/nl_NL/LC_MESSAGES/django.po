@@ -114,7 +114,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Default limits"
 msgid "Default per-domain limits"
-msgstr "Standaard limieten"
+msgstr "Standaard per-domein limieten"
 
 #: limits/app_settings.py:91
 msgid "Enable per-domain limits"
