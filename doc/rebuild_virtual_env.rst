@@ -1,3 +1,7 @@
+############
+Rebuild The Virtual Environment
+############
+
 Sometimes when upgrading your Operating System (eg from Ubuntu 17.04 to Ubuntu 17.10) your virtual environment running modoboa can get corrupted. Your first response will be to panic but fear not! The solution is in this document.
 
 First things first:
