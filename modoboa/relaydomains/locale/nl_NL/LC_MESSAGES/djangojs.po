@@ -22,4 +22,4 @@ msgstr ""
 
 #: relaydomains/static/relaydomains/js/relay_domains.js:45
 msgid "Services updated"
-msgstr "Services upgedate"
+msgstr "Services geüpdatet"
