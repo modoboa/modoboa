@@ -1,6 +1,6 @@
 include README.rst CONTRIBUTING.rst LICENSE requirements.txt
 include modoboa/admin/tests/dovecot
-recursive-include modoboa *.html *.js *.css *.png *.po *.mo *.json *.gif *.ttf *.woff
+recursive-include modoboa *.html *.js *.css *.png *.po *.mo *.json *.gif *.ttf *.woff *.woff2
 recursive-include modoboa/core/templates *.tpl
 recursive-include modoboa/core/commands/templates *.tpl
 recursive-include doc *
