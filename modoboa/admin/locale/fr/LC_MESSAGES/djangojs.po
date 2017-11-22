@@ -33,7 +33,7 @@ msgstr "Cette opération supprimera TOUTES les données associées à ce domaine
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Cette opération supprimera toutes les données associées à ce domaine à l'excéption des comptes."
+msgstr "Cette opération supprimera toutes les données associées à ce domaine à l'exception des comptes."
 
 #: admin/static/admin/js/admin.js:236
 msgid "No domain administrator defined"
