@@ -123,7 +123,8 @@ query = {{ query|safe }}
             self, mapobject, destdir, context, force_overwrite=False):
         """Render a map file."""
         fullpath = os.path.join(destdir, mapobject.filename)
-        if os.path.exists(fullpath) and not force_overwrite:
+        if os.path.exists(fullpath) and mapobject.filename in self.__checksums \
+        and not force_overwrite:
             if not self.__check_file(fullpath):
                 print(
                     "Cannot upgrade '{}' map because it has been modified."
