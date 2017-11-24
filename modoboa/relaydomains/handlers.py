@@ -106,9 +106,9 @@ def get_import_func(sender, objtype, **kwargs):
 @receiver(signals.post_save, sender=tr_models.Transport)
 def update_recipient_access(sender, instance, **kwargs):
     """Create or delete recipient access rule."""
-    if instance.service != "relay" or not instance._settings:
+    if instance.service != "relay":
         return
-    if instance._settings["relay_verify_recipients"]:
+    if instance._settings.get("relay_verify_recipients", False):
         models.RecipientAccess.objects.get_or_create(
             pattern=instance.pattern,
             defaults={"action": "reject_unverified_recipient"}

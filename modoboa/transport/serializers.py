@@ -1,5 +1,7 @@
 """Transport serializers."""
 
+import json
+
 from django.utils.translation import ugettext as _
 
 from rest_framework import serializers
@@ -22,7 +24,8 @@ class TransportSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 "service": _("Unsupported service")
             })
-        errors = self.backend.clean_fields(data)
+        data["_settings"] = json.loads(data["_settings"])
+        errors = self.backend.clean_fields(data["_settings"])
         if errors:
             raise serializers.ValidationError({
                 "_settings": ",".join(

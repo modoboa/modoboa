@@ -6,6 +6,13 @@ from . import backends
 from . import models
 
 
+TYPE_TO_FIELD_MAP = {
+    "int": forms.IntegerField,
+    "boolean": forms.BooleanField,
+    "string": forms.CharField
+}
+
+
 class BackendSettingsMixin(object):
     """A mixin to deal with backend settings in a model form."""
 
@@ -24,14 +31,10 @@ class BackendSettingsMixin(object):
                 options["initial"] = self.instance._settings.get(fullname)
             elif "default" in setting:
                 options["initial"] = setting["default"]
-            if ftype == "string":
-                if setting.get("widget") == "textarea":
-                    options["widget"] = forms.Textarea
-                self.fields[fullname] = forms.CharField(
-                    label=setting["label"], required=False, **options)
-            elif ftype == "boolean":
-                self.fields[fullname] = forms.BooleanField(
-                    label=setting["label"], required=False, **options)
+            if "widget" in setting:
+                options["widget"] = setting["widget"]
+            self.fields[fullname] = TYPE_TO_FIELD_MAP[ftype](
+                label=setting["label"], required=False, **options)
             self.setting_fields.append(fullname)
 
     def clean_backend_fields(self, name):

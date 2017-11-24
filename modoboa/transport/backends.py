@@ -13,12 +13,50 @@ class TransportBackend(object):
     name = None
     settings = ()
 
+    def _validate_host_address(self, value):
+        """Validate an host address syntax."""
+        validator_list = [
+            lib_validators.validate_hostname,
+            validators.validate_ipv46_address
+        ]
+        for validator in validator_list:
+            try:
+                validator(value)
+            except forms.ValidationError:
+                pass
+            else:
+                return True
+        return False
+
     def clean_fields(self, values):
-        """Clean received values."""
-        return []
+        """Check that values are correct."""
+        errors = []
+        for setting in self.settings:
+            fname = "{}_{}".format(self.name, setting["name"])
+            value = values.get(fname)
+            if not value:
+                if not setting.get("required", True):
+                    continue
+                errors.append((fname, _("This field is required")))
+                continue
+            ftype = setting.get("type", "string")
+            if ftype == "string":
+                validator = setting.get("validator")
+                vfunc = "_validate_{}".format(validator)
+                if validator and hasattr(self, vfunc):
+                    if getattr(self, vfunc)(value):
+                        continue
+                else:
+                    continue
+            elif ftype == "int" and isinstance(value, int):
+                continue
+            elif ftype == "boolean" and isinstance(value, bool):
+                continue
+            errors.append((fname, _("Invalid value")))
+        return errors
 
     def serialize(self, transport):
-        """Make sure values are correct."""
+        """Transform received values if needed."""
         pass
 
 
@@ -28,30 +66,13 @@ class RelayTransportBackend(TransportBackend):
     name = "relay"
 
     settings = (
-        {"name": "target_host", "label": _("target host address")},
+        {"name": "target_host", "label": _("target host address"),
+         "validator": "host_address"},
         {"name": "target_port", "label": _("target host port"),
-         "default": "25"},
+         "type": "int", "default": 25},
         {"name": "verify_recipients", "label": _("verify recipients"),
-         "type": "boolean", "required": False},
+         "type": "boolean", "required": False, "default": False},
     )
-
-    def clean_fields(self, values):
-        """Check that values are correct."""
-        validator_list = [
-            lib_validators.validate_hostname,
-            validators.validate_ipv46_address
-        ]
-        value = values.get("relay_target_host")
-        if not value:
-            return [("relay_target_host", _("This field is required"))]
-        for validator in validator_list:
-            try:
-                validator(value)
-            except forms.ValidationError:
-                pass
-            else:
-                return []
-        return [("relay_target_host", _("Invalid value"))]
 
     def serialize(self, transport):
         """Make sure next_hop is set."""
