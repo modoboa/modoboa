@@ -1,0 +1,124 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-24 16:42+0100\n"
+"PO-Revision-Date: 2017-11-24 17:22+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: backends.py:31
+msgid "target host address"
+msgstr "adresse de l'hôte cible"
+
+#: backends.py:32
+msgid "target host port"
+msgstr "admin/tests/"
+
+#: backends.py:34
+msgid "verify recipients"
+msgstr "vérifier les destinataires"
+
+#: backends.py:46
+msgid "This field is required"
+msgstr "Ce champ est requis"
+
+#: backends.py:54
+msgid "Invalid value"
+msgstr "Valeur incorrecte"
+
+#: handlers.py:20 templates/transport/transport_list.html:5
+msgid "Transports"
+msgstr "Transports"
+
+#: models.py:18
+msgid "pattern"
+msgstr "patron"
+
+#: models.py:19
+msgid "service"
+msgstr "service"
+
+#: models.py:20
+msgid "next hop"
+msgstr "saut suivant"
+
+#: serializers.py:23
+msgid "Unsupported service"
+msgstr "Service non supporté"
+
+#: templates/transport/_transport_headers.html:3
+msgid "Name"
+msgstr "Nom"
+
+#: templates/transport/_transport_headers.html:4
+msgid "Tags"
+msgstr "Libellés"
+
+#: templates/transport/_transport_headers.html:5
+#: templates/transport/transport_list.html:33
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/transport/transport_list.html:21
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/transport/transport_list.html:31
+msgid "Pattern"
+msgstr "Patron"
+
+#: templates/transport/transport_list.html:32
+msgid "Service"
+msgstr "Service"
+
+#: templates/transport/transport_list.html:39
+msgid "disabled"
+msgstr "désactivé"
+
+#: templates/transport/transport_list.html:49
+#, python-format
+msgid "Delete %(pattern)s? "
+msgstr "Supprimer %(pattern)s ? "
+
+#: templates/transport/transport_list.html:56
+msgid "No transport defined yet."
+msgstr "Aucun transport défini"
+
+#: views.py:47
+msgid "Transport created"
+msgstr "Transport créé"
+
+#: views.py:99
+msgid "Create"
+msgstr "Créer"
+
+#: views.py:100
+msgid "New transport"
+msgstr "Nouveau transport"
+
+#: views.py:112
+msgid "Transport updated"
+msgstr "Transport mis à jour"
+
+#: views.py:121
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: views.py:122
+msgid "Edit transport"
+msgstr "Modifier le transport"
+
+#: views.py:141
+msgid "Transport deleted"
+msgstr "Transport supprimé"

@@ -188,8 +188,8 @@ function simple_ajax_form_post(e, options) {
                 histomanager.update(true);
             }
         }
-        if (data) {
-            $("body").notify('success', data, 2000);
+        if (data && data.message) {
+            $("body").notify('success', data.message, 2000);
         }
     }).fail(function(jqxhr) {
         var data = $.parseJSON(jqxhr.responseText);

@@ -65,7 +65,7 @@ class TransportMixin(object):
             options.update({"creator": self.request.user})
         transport.save(**options)
         messages.success(self.request, self.success_message)
-        return http.HttpResponseRedirect(self.success_url)
+        return http.JsonResponse({})
 
     def get_context_data(self, **kwargs):
         """Include extra data."""
