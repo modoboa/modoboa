@@ -255,6 +255,15 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     float:none;
 }
 
+/* Tables */
+table th#actions {
+    text-align: right;
+}
+
+table td[name="actions"] {
+    text-align: right;
+}
+
 /* --------- specific pages --------- */
 
 /* identities tables */

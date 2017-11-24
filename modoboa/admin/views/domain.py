@@ -45,11 +45,10 @@ def index(request):
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
-    extra_filters = reduce(
-        lambda a, b: a + b,
-        [result[1] for result in
-         signals.extra_domain_filters.send(sender="_domains")]
-    )
+    extra_filters = signals.extra_domain_filters.send(sender="_domains")
+    if extra_filters:
+        extra_filters = reduce(
+            lambda a, b: a + b, [result[1] for result in extra_filters])
     filters = dict(
         (flt, request.GET.get(flt, None))
         for flt in ["domfilter", "searchquery"] + extra_filters

@@ -1,0 +1,5 @@
+"""Transport constants."""
+
+PERMISSIONS = {
+
+}
