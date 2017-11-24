@@ -171,7 +171,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         )
         self.transport.refresh_from_db()
         self.assertEqual(
-            self.transport._settings["relay_target_port"], "4040")
+            self.transport._settings["relay_target_port"], 4040)
         self.assertTrue(
             models.RecipientAccess.objects.filter(
                 pattern=values["name"]).exists())
