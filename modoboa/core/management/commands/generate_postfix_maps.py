@@ -125,7 +125,7 @@ query = {{ query|safe }}
                 print(
                     "Cannot upgrade '{}' map because it has been modified."
                     .format(mapobject.filename))
-                return self.__checksums[mapobject.filename]
+                return self.__checksums[mapobject.filename["checksum"]]
             mapcontent = utils.parse_map_file(fullpath)
             context = copy.deepcopy(context)
             context["dbtype"] = self.__checksums[mapobject.filename]["dbtype"]
