@@ -50,10 +50,13 @@ class Command(BaseCommand):
             return
         with open(self.__checksums_file) as fp:
             for line in fp:
-                fname, dbtype, checksum = line.split(":")
-                self.__checksums[fname.strip()] = {
-                    "dbtype": dbtype, "checksum": checksum.strip()
-                }
+                try:
+                    fname, dbtype, checksum = line.split(":")
+                    self.__checksums[fname.strip()] = {
+                        "dbtype": dbtype, "checksum": checksum.strip()
+                    }
+                except ValueError:
+                    pass # Ignore incorrect checksum file lines
 
     def __register_map_files(self):
         """Load specified applications."""
