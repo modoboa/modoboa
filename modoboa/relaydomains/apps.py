@@ -14,3 +14,4 @@ class RelayDomainsConfig(AppConfig):
 
     def ready(self):
         from . import handlers
+        from . import transport
