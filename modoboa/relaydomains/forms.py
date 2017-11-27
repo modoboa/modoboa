@@ -3,13 +3,11 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.core import validators
-from django.utils.translation import ugettext as _
 
 from modoboa.lib.form_utils import WizardStep
-from modoboa.lib import validators as lib_validators
-
-from .models import RelayDomain
+from modoboa.transport import backends as tr_backends
+from modoboa.transport import forms as tr_forms
+from modoboa.transport import models as tr_models
 
 
 class RelayDomainWizardStep(WizardStep):
@@ -21,47 +19,40 @@ class RelayDomainWizardStep(WizardStep):
         return wizard.steps[0].form.cleaned_data["type"] == "relaydomain"
 
 
-class RelayDomainFormGeneral(forms.ModelForm):
-    """RelayDomain form."""
+class RelayDomainFormGeneral(tr_forms.BackendSettingsMixin, forms.ModelForm):
+    """A form to display transport of type relay."""
 
     class Meta(object):
-        model = RelayDomain
-        exclude = ["domain", "creation", "last_modification"]
-        widgets = {
-            "service": forms.Select(attrs={"class": "form-control"})
-        }
+        model = tr_models.Transport
+        exclude = [
+            "creation", "pattern", "service", "next_hop", "enabled",
+            "_settings"
+        ]
 
     def __init__(self, *args, **kwargs):
         super(RelayDomainFormGeneral, self).__init__(*args, **kwargs)
-        self.field_widths = {
-            "service": 3
-        }
+        settings = tr_backends.manager.get_backend_settings("relay")
+        self.inject_backend_settings("relay", settings)
 
-    def clean_target_host(self):
-        """Check that target host is valid."""
-        validator_list = [
-            lib_validators.validate_hostname,
-            validators.validate_ipv46_address
-        ]
-        value = self.cleaned_data.get("target_host")
-        for validator in validator_list:
-            try:
-                validator(value)
-            except forms.ValidationError:
-                pass
-            else:
-                return value
-        raise forms.ValidationError(_("Invalid value"), code="invalid")
+    def clean(self):
+        """Check values."""
+        cleaned_data = super(RelayDomainFormGeneral, self).clean()
+        if self.errors:
+            return cleaned_data
+        self.clean_backend_fields("relay")
+        return cleaned_data
 
     def save(self, *args, **kwargs):
         """Custom save method."""
-        domain = kwargs.get("domain")
-        instance = super(RelayDomainFormGeneral, self).save(commit=False)
-        if instance.domain and instance.domain.type == "domain":
-            # Avoid new creation if domain type has been changed.
+        domain = kwargs.pop("domain", None)
+        if domain.type != "relaydomain":
+            # We don't want to recreate the transport we just deleted
+            # (post_save signal).
             return None
-        if domain:
-            instance.domain = domain
-        if instance.domain.type == "relaydomain":
-            instance.save()
+        instance = super(RelayDomainFormGeneral, self).save(commit=False)
+        instance.pattern = domain.name
+        instance.service = "relay"
+        instance.enabled = domain.enabled
+        self.backend.serialize(instance)
+        instance.save()
         return instance

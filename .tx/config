@@ -42,3 +42,15 @@ file_filter = modoboa/admin/locale/<lang>/LC_MESSAGES/djangojs.po
 source_file = modoboa/admin/locale/en/LC_MESSAGES/djangojs.po
 source_lang = en
 type = PO
+
+[modoboa.transport-djangopo]
+file_filter = modoboa/transport/locale/<lang>/LC_MESSAGES/django.po
+source_file = modoboa/transport/locale/en/LC_MESSAGES/django.po
+source_lang = en
+type = PO
+
+[modoboa.transport-djangojspo]
+file_filter = modoboa/transport/locale/<lang>/LC_MESSAGES/djangojs.po
+source_file = modoboa/transport/locale/en/LC_MESSAGES/djangojs.po
+source_lang = en
+type = PO
