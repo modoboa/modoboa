@@ -1,0 +1,66 @@
+{% extends "twocols.html" %}
+
+{% load i18n admin_tags lib_tags static %}
+
+{% block pagetitle %}{% trans "Transports" %}{% endblock %}
+
+{% block leftcol %}
+  <ul class="nav nav-sidebar">
+    {% domains_menu "transports" user False %}
+  </ul>
+{% endblock %}
+
+{% block apparea %}
+  <div class="row">
+    <div class="col-sm-5">
+      {% include "admin/searchform.html" %}
+    </div>
+    <div class="col-sm-3">
+      {% if perms.transport.add_transport %}
+        <a href="{% url 'transport:transport_create' %}" class="btn btn-primary" data-toggle="ajaxmodal" modalcb="transportFormCallback">
+          <span class="fa fa-plus"></span> {% trans "Add" %}
+        </a>
+      {% endif %}
+    </div>
+    <div id="taglist" class="col-sm-4"> </div>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th id="pattern" class="sortable" data-sort_order="pattern" width="">{% trans "Pattern" %}</th>
+        <th id="service" class="sortable" data-sort_order="service" width="">{% trans "Service" %}</th>
+        <th id="actions" width="">{% trans "Actions" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transport in object_list %}
+        <tr class="{% if not transport.enabled %}text-muted{% endif %}">
+          <td>{{ transport.pattern }}{% if not transport.enabled %} ({% trans "disabled" %}){% endif %}</td>
+          <td><span class="label label-default">
+            <a href="#" class="filter transport">{{ transport.service }}</a>
+          </span></td>
+          <td name="actions">
+            <a href="{% url 'transport:transport_update' transport.pk %}"
+               data-toggle="ajaxmodal" modalcb="transportFormCallback">
+              <span class="fa fa-edit"></span>
+            </a>
+            <a href="{% url 'transport:transport_delete' transport.pk %}"
+               name="deltransport" title="{% blocktrans with pattern=transport.pattern %}Delete {{ pattern }}? {% endblocktrans %}">
+              <span class="fa fa-trash"></span>
+            </a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3">
+          <div class="alert alert-info">{% trans "No transport defined yet." %}</div>
+        </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'transport/js/transport.js' %}"></script>
+{% endblock %}

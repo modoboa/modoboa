@@ -120,7 +120,6 @@ class SettingsTestCase(ModoTestCase):
         "core-ldap_bind_password": "",
         "limits-deflt_domain_domain_aliases_limit": "0",
         "core-secret_key": ":?j3]QPWo!.'_c4n",
-        "relaydomains-master_cf_path": "/etc/postfix/master.cf",
         "limits-deflt_domain_domain_admins_limit": "0",
         "limits-enable_admin_limits": "True",
         "core-ldap_bind_dn": "",
@@ -166,7 +165,7 @@ class SettingsTestCase(ModoTestCase):
         """Test settings display."""
         url = reverse("core:parameters")
         response = self.ajax_get(url)
-        for app in ["core", "admin", "limits", "relaydomains"]:
+        for app in ["core", "admin", "limits"]:
             self.assertIn('data-app="{}"'.format(app), response["content"])
 
     def test_save_settings(self):

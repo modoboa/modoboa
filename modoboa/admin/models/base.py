@@ -5,9 +5,25 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 
+from django.contrib.contenttypes.fields import GenericRelation
+
+from modoboa.core import models as core_models
 from modoboa.lib.permissions import (
     grant_access_to_object, ungrant_access_to_object
 )
+
+
+class AdminObjectManager(models.Manager):
+
+    def get_for_admin(self, admin):
+        """Return the objects belonging to this admin
+
+        The result is a ``QuerySet`` object, so this function can be used
+        to fill ``ModelChoiceField`` objects.
+        """
+        if admin.is_superuser:
+            return self.get_queryset()
+        return self.get_queryset().filter(owners__user=admin)
 
 
 class AdminObject(models.Model):
@@ -20,7 +36,10 @@ class AdminObject(models.Model):
 
     creation = models.DateTimeField(default=timezone.now)
     last_modification = models.DateTimeField(auto_now=True)
+    owners = GenericRelation(core_models.ObjectAccess)
     _objectname = None
+
+    objects = AdminObjectManager()
 
     class Meta:
         abstract = True

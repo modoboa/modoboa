@@ -12,3 +12,6 @@ DEV
 modoboa.iml
 .tox
 modoboa_test
+.coverage
+build/
+dist/

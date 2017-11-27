@@ -22,40 +22,6 @@ class RelayDomainsMap(object):
     )
 
 
-class RelayDomainsTransportMap(object):
-
-    """A transport map for relay domains."""
-
-    filename = "sql-relaydomains-transport.cf"
-    mysql = (
-        "SELECT CONCAT(srv.name, ':[', rdom.target_host, ']:'"
-        ", rdom.target_port) "
-        "FROM postfix_relay_domains_service AS srv "
-        "INNER JOIN postfix_relay_domains_relaydomain AS rdom "
-        "ON rdom.service_id=srv.id "
-        "INNER JOIN admin_domain AS dom ON rdom.domain_id=dom.id "
-        "WHERE dom.enabled=1 AND dom.name='%s'"
-    )
-    postgres = (
-        "SELECT srv.name || ':[' || rdom.target_host || ']:' || "
-        "rdom.target_port "
-        "FROM postfix_relay_domains_service AS srv "
-        "INNER JOIN postfix_relay_domains_relaydomain AS rdom "
-        "ON rdom.service_id=srv.id "
-        "INNER JOIN admin_domain AS dom ON rdom.domain_id=dom.id "
-        "WHERE dom.enabled AND dom.name='%s'"
-    )
-    sqlite = (
-        "SELECT srv.name || ':[' || rdom.target_host || ']:' || "
-        "rdom.target_host "
-        "FROM postfix_relay_domains_service AS srv "
-        "INNER JOIN postfix_relay_domains_relaydomain AS rdom "
-        "ON rdom.service_id=srv.id "
-        "INNER JOIN admin_domain AS dom ON rdom.domain_id=dom.id "
-        "WHERE dom.enabled=1 AND dom.name='%s'"
-    )
-
-
 class SplitedDomainsTransportMap(object):
 
     """A transport map for splited domains.
@@ -66,32 +32,29 @@ class SplitedDomainsTransportMap(object):
     filename = "sql-spliteddomains-transport.cf"
     mysql = (
         "SELECT 'lmtp:unix:private/dovecot-lmtp' "
-        "FROM postfix_relay_domains_relaydomain AS rdom "
-        "INNER JOIN admin_domain AS dom "
-        "ON rdom.domain_id=dom.id "
+        "FROM admin_domain AS dom "
         "INNER JOIN admin_mailbox AS mbox ON dom.id=mbox.domain_id "
         "INNER JOIN core_user AS u ON mbox.user_id=u.id "
-        "WHERE dom.enabled=1 AND dom.name='%d' AND u.is_active=1 "
+        "WHERE dom.type='relaydomain' AND dom.enabled=1 "
+        "AND dom.name='%d' AND u.is_active=1 "
         "AND mbox.address='%u'"
     )
     postgres = (
         "SELECT 'lmtp:unix:private/dovecot-lmtp' "
-        "FROM postfix_relay_domains_relaydomain AS rdom "
-        "INNER JOIN admin_domain AS dom "
-        "ON rdom.domain_id=dom.id "
+        "FROM admin_domain AS dom "
         "INNER JOIN admin_mailbox AS mbox ON dom.id=mbox.domain_id "
         "INNER JOIN core_user AS u ON mbox.user_id=u.id "
-        "WHERE dom.enabled AND dom.name='%d' AND u.is_active "
+        "WHERE dom.type='relaydomain' AND dom.enabled "
+        "AND dom.name='%d' AND u.is_active "
         "AND mbox.address='%u'"
     )
     sqlite = (
         "SELECT 'lmtp:unix:private/dovecot-lmtp' "
-        "FROM postfix_relay_domains_relaydomain AS rdom "
-        "INNER JOIN admin_domain AS dom "
-        "ON rdom.domain_id=dom.id "
+        "FROM admin_domain AS dom "
         "INNER JOIN admin_mailbox AS mbox ON dom.id=mbox.domain_id "
         "INNER JOIN core_user AS u ON mbox.user_id=u.id "
-        "WHERE dom.enabled=1 AND dom.name='%d' AND u.is_active=1 "
+        "WHERE dom.type='relaydomain' AND dom.enabled=1 "
+        "AND dom.name='%d' AND u.is_active=1 "
         "AND mbox.address='%u'"
     )
 
@@ -102,20 +65,11 @@ class RelayRecipientVerification(object):
 
     filename = "sql-relay-recipient-verification.cf"
     mysql = (
-        "SELECT 'reject_unverified_recipient' "
-        "FROM postfix_relay_domains_relaydomain AS rdom "
-        "INNER JOIN admin_domain AS dom ON rdom.domain_id=dom.id "
-        "WHERE rdom.verify_recipients=1 AND dom.name='%d'"
+        "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
     )
     postgres = (
-        "SELECT 'reject_unverified_recipient' "
-        "FROM postfix_relay_domains_relaydomain AS rdom "
-        "INNER JOIN admin_domain AS dom ON rdom.domain_id=dom.id "
-        "WHERE rdom.verify_recipients AND dom.name='%d'"
+        "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
     )
     sqlite = (
-        "SELECT 'reject_unverified_recipient' "
-        "FROM postfix_relay_domains_relaydomain AS rdom "
-        "INNER JOIN admin_domain AS dom ON rdom.domain_id=dom.id "
-        "WHERE rdom.verify_recipients=1 AND dom.name='%d'"
+        "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
     )

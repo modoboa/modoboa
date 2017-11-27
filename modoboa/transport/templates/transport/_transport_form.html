@@ -1,0 +1,14 @@
+{% extends "common/generic_modal_form.html" %}
+
+{% load form_tags %}
+
+{% block formbody %}
+  {% render_field form.pattern %}
+  {% render_field form.service %}
+  {% render_field form.enabled %}
+  <div id="backend_settings">
+    {% for field in setting_fields %}
+      {% render_field field hidden=True %}
+    {% endfor %}
+  </div>
+{% endblock %}

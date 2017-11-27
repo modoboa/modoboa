@@ -1,6 +1,5 @@
 {% load form_tags %}
 
-{% render_field form.target_host %}
-{% render_field form.target_port %}
-{% include "relaydomains/service_field.html" with field=form.service label_width="col-sm-4" %}
-{% render_field form.verify_recipients %}
+{% render_field form.relay_target_host %}
+{% render_field form.relay_target_port %}
+{% render_field form.relay_verify_recipients %}

@@ -345,6 +345,7 @@ class Mailbox(AdminObject):
                 username=self.full_address)
         super(Mailbox, self).save(*args, **kwargs)
 
+
 reversion.register(Mailbox)
 
 
@@ -364,6 +365,7 @@ class SenderAddress(models.Model):
     def __str__(self):
         """Return address."""
         return smart_text(self.address)
+
 
 reversion.register(SenderAddress)
 

@@ -14,7 +14,6 @@ from django.core.management.base import BaseCommand
 
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.permissions import add_permissions_to_group
-import modoboa.relaydomains.models as relay_models
 
 from ... import constants
 from ... import extensions
@@ -58,18 +57,15 @@ class Command(BaseCommand):
             lc.parameters.set_value("secret_key", random_key())
             lc.save()
 
-        for service_name in ["relay", "smtp"]:
-            relay_models.Service.objects.get_or_create(name=service_name)
-
         groups = list(constants.PERMISSIONS.keys())
         for groupname in groups:
             group, created = Group.objects.get_or_create(name=groupname)
             results = signals.extra_role_permissions.send(
                 sender=self.__class__, role=groupname)
-            permissions = (
-                constants.PERMISSIONS.get(groupname, []) +
-                reduce(lambda a, b: a + b, [result[1] for result in results])
-            )
+            permissions = constants.PERMISSIONS.get(groupname, [])
+            if results:
+                permissions += reduce(
+                    lambda a, b: a + b, [result[1] for result in results])
             if not permissions:
                 continue
             add_permissions_to_group(group, permissions)

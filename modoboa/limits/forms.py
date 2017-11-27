@@ -92,7 +92,7 @@ class DomainLimitsForm(forms.Form):
                 self.add_error(lname, _("Invalid limit"))
         return cleaned_data
 
-    def save(self, user):
+    def save(self, user, **kwargs):
         """Set limits."""
         for name, ltpl in utils.get_domain_limit_templates():
             fieldname = "{}_limit".format(name)

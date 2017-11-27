@@ -3,10 +3,8 @@
 from __future__ import unicode_literals
 
 import datetime
-from functools import reduce
 
 from django.db import models
-from django.db.models.manager import Manager
 from django.utils import timezone
 from django.utils.encoding import (
     python_2_unicode_compatible, smart_text, force_text
@@ -14,31 +12,15 @@ from django.utils.encoding import (
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from django.contrib.contenttypes.fields import GenericRelation
-
 from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
-from modoboa.core.models import User, ObjectAccess
+from modoboa.core.models import User
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
 
 from .base import AdminObject
 from .. import constants
-from .. import signals
-
-
-class DomainManager(Manager):
-
-    def get_for_admin(self, admin):
-        """Return the domains belonging to this admin
-
-        The result is a ``QuerySet`` object, so this function can be used
-        to fill ``ModelChoiceField`` objects.
-        """
-        if admin.is_superuser:
-            return self.get_queryset()
-        return self.get_queryset().filter(owners__user=admin)
 
 
 @python_2_unicode_compatible
@@ -67,14 +49,11 @@ class Domain(AdminObject):
         help_text=ugettext_lazy("Check to activate this domain"),
         default=True
     )
-    owners = GenericRelation(ObjectAccess)
     type = models.CharField(default="domain", max_length=20)
     enable_dns_checks = models.BooleanField(
         ugettext_lazy("Enable DNS checks"), default=True,
         help_text=ugettext_lazy("Check to enable DNS checks for this domain")
     )
-
-    objects = DomainManager()
 
     class Meta:
         permissions = (
@@ -111,11 +90,11 @@ class Domain(AdminObject):
 
     @property
     def tags(self):
-        if self.type == "domain":
-            return [{"name": "domain", "label": _("Domain"), "type": "dom"}]
-        results = signals.get_domain_tags.send(
-            sender=self.__class__, domain=self)
-        return reduce(lambda a, b: a + b, [result[1] for result in results])
+        label = ""
+        for dt in constants.DOMAIN_TYPES:
+            if self.type == dt[0]:
+                label = dt[1]
+        return [{"name": self.type, "label": label, "type": "dom"}]
 
     @property
     def admins(self):

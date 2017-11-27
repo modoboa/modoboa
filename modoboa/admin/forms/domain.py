@@ -20,17 +20,13 @@ from modoboa.lib.form_utils import (
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
 
+from .. import constants
 from .. import lib
 from .. import signals
 
 from ..models import (
     Domain, DomainAlias, Mailbox, Alias
 )
-
-
-DOMAIN_TYPES = [
-    ("domain", _("Domain")),
-]
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
@@ -63,12 +59,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         self.fields["quota"].initial = params["default_domain_quota"]
         self.fields["default_mailbox_quota"].initial = (
             params["default_mailbox_quota"])
-        extra_domain_types = reduce(
-            lambda a, b: a + b,
-            [result[1] for result in signals.extra_domain_types.send(
-                sender=self.__class__)]
-        )
-        self.fields["type"].choices = DOMAIN_TYPES + extra_domain_types
+        self.fields["type"].choices = constants.DOMAIN_TYPES
         self.field_widths = {
             "quota": 3,
             "default_mailbox_quota": 3
@@ -382,10 +373,13 @@ class DomainForm(TabForms):
         first_form = self.forms[0]["instance"]
         options = {}
         if isinstance(first_form, DomainFormGeneral):
-            options["domalias_post_create"] = True
-        first_form.save(self.request.user, **options)
+            domain = first_form.save(
+                self.request.user, domalias_post_create=True)
+            options.update({"domain": domain})
+        else:
+            first_form.save(self.request.user)
         for f in self.forms[1:]:
-            f["instance"].save(self.request.user)
+            f["instance"].save(self.request.user, **options)
 
     def done(self):
         return render_to_json_response(_("Domain modified"))
