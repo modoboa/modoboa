@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
+# Kostas Moumouris <moumouriskostas@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"PO-Revision-Date: 2017-10-12 13:34+0000\n"
+"Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el_GR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: relaydomains/app_settings.py:17
+msgid "General"
+msgstr "Γενικά"
+
+#: relaydomains/app_settings.py:20
+msgid "Postfix's master.cf path"
+msgstr "Διαδρομή προς το αρχείο master.cf της Postfix"
+
+#: relaydomains/app_settings.py:22
+msgid "Path to the master.cf configuration file"
+msgstr "Διαδρομή προς το αρχείο ρυθμίσεων master.cf"
+
+#: relaydomains/apps.py:14
+msgid "Relay domains"
+msgstr "Relay domains"
+
+#: relaydomains/forms.py:54
+msgid "Invalid value"
+msgstr "Διεύθυνση κεντρικού υπολογιστή target host"
+
+#: relaydomains/handlers.py:107
+msgid "Relay settings"
+msgstr "Ρυθμίσεις Relay"
+
+#: relaydomains/handlers.py:138 relaydomains/handlers.py:145
+msgid "Relay domain"
+msgstr "Relay domain"
+
+#: relaydomains/models.py:49
+msgid "name"
+msgstr "όνομα"
+
+#: relaydomains/models.py:50
+msgid "The service name"
+msgstr "Το όνομα της υπηρεσίας"
+
+#: relaydomains/models.py:72
+msgid "target host address"
+msgstr "Διεύθυνση κεντρικού host"
+
+#: relaydomains/models.py:74
+msgid "Remote address (hostname or IP) of this domain"
+msgstr "Απομακρυσμένη διεύθυνση (hostname ή IP) από το domain"
+
+#: relaydomains/models.py:77
+msgid "target host port"
+msgstr "Θύρα κεντρικού host"
+
+#: relaydomains/models.py:79
+msgid "Remote port of this domain"
+msgstr "Απομακρυσμένα θύρα του domain"
+
+#: relaydomains/models.py:84
+msgid "verify recipients"
+msgstr "επιβεβαίωση παραληπτών"
+
+#: relaydomains/models.py:85
+msgid "Check for valid recipients"
+msgstr "Έλεγχος για έγκυρους παραλήπτες"
+
+#: relaydomains/models.py:96
+msgid "Relay Domain"
+msgstr "Relay Domain"
+
+#: relaydomains/models.py:124
+msgid "Invalid line"
+msgstr "Λάθος γραμμή"
+
+#: relaydomains/templates/relaydomains/service_field.html:3
+msgid "Scan"
+msgstr "Σάρωση"
