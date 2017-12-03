@@ -22,9 +22,7 @@ from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.web_utils import render_to_json_response
-from modoboa.lib.exceptions import (
-    BadRequest, PermDeniedException
-)
+from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.listing import get_sort_order, get_listing_page
 
 from ..forms import DomainForm, DomainWizard
@@ -61,7 +59,7 @@ def _domains(request):
             key=lambda d: getattr(d, sort_order), reverse=sort_dir == '-'
         )
     else:
-        domainlist = sorted(domainlist, key=lambda d: d.tags[0],
+        domainlist = sorted(domainlist, key=lambda d: d.tags[0]["name"],
                             reverse=sort_dir == '-')
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
