@@ -1,0 +1,1156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
+# Kostas Moumouris <moumouriskostas@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"PO-Revision-Date: 2017-10-12 08:13+0000\n"
+"Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el_GR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin/app_settings.py:20 admin/handlers.py:269
+#: admin/templates/admin/_global_statistics_widget.html:11
+#: admin/templates/admin/domains.html:4
+msgid "Domains"
+msgstr "Domains"
+
+#: admin/app_settings.py:23
+msgid "Enable MX checks"
+msgstr "Ενεργοποίηση ελέγχου MX"
+
+#: admin/app_settings.py:26
+msgid "Check that every domain has a valid MX record"
+msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
+
+#: admin/app_settings.py:31
+msgid "Valid MXs"
+msgstr "Έγκυρα MXς"
+
+#: admin/app_settings.py:34
+msgid ""
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "Μια λίστα από IP ή δικτυακές διευθύνσεις που κάθε εγράφη MX πρέπει να ταιριάζει. "
+
+#: admin/app_settings.py:42
+msgid "New domains must use authorized MX(s)"
+msgstr "Τα νέα domain πρέπει να χρησιμοποιούν εξουσιοδοτημένους MX(s)"
+
+#: admin/app_settings.py:45
+msgid ""
+"Prevent the creation of a new domain if its MX record does not use one of "
+"the defined addresses."
+msgstr "Αποτροπή δημιουργίας νέου domain, εάν η εγράφη MX  χρησιμοποιεί μια από τις  είδη ορισμένες διευθύνσεις."
+
+#: admin/app_settings.py:51
+msgid "Enable DNSBL checks"
+msgstr "Ενεργοποίηση ελέγχου DNSBL"
+
+#: admin/app_settings.py:54
+msgid "Check every domain against major DNSBL providers"
+msgstr "Έλεγχος κάθε domain κατά κύριους DNSBL πάροχους"
+
+#: admin/app_settings.py:58 admin/templates/admin/domain_detail.html:49
+msgid "Mailboxes"
+msgstr "Γραμματοκιβώτια"
+
+#: admin/app_settings.py:61
+msgid "Handle mailboxes on filesystem"
+msgstr "Χειριστείτε γραμματοκιβώτια στο σύστημα αρχείων"
+
+#: admin/app_settings.py:64
+msgid ""
+"Rename or remove mailboxes on the filesystem when they get renamed or "
+"removed within Modoboa"
+msgstr "Μετονομασία και διαγραφή γραμματοκιβωτίων στο σύστημα αρχείων, όταν μετονομάζονται ή διαγράφονται από το Medaboa "
+
+#: admin/app_settings.py:70
+msgid "Mailboxes owner"
+msgstr "Ο ιδιοκτήτης των γραμματοκιβωτίων"
+
+#: admin/app_settings.py:73
+msgid "The UNIX account who owns mailboxes on the filesystem"
+msgstr "Ο UNIX λογαριασμός που είναι ιδιοκτήτης των γραμματοκιβωτίων στο σύστημα αρχείων"
+
+#: admin/app_settings.py:78
+msgid "Default domain quota"
+msgstr "Προκαθορισμένο domain quota"
+
+#: admin/app_settings.py:81
+msgid ""
+"Default quota (in MB) applied to freshly created domains with no value "
+"specified. A value of 0 means no quota."
+msgstr "Προκαθορισμένο quota (σε MB) που εφαρμόζεται στα νέα domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota. "
+
+#: admin/app_settings.py:87 admin/models/domain.py:58
+#: admin/templates/admin/domain_detail.html:72
+msgid "Default mailbox quota"
+msgstr "Προκαθορισμένο quota γραμματοκιβωτίου "
+
+#: admin/app_settings.py:90
+msgid ""
+"Default mailbox quota (in MB) applied to freshly created domains with no "
+"value specified. A value of 0 means no quota."
+msgstr "Προκαθορισμένο quota γραμματοκιβωτίου (σε MB) που εφαρμόζεται στα νέα domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota. "
+
+#: admin/app_settings.py:96
+msgid "Automatic account removal"
+msgstr "Αυτόματη αφαίρεση λογαριασμών"
+
+#: admin/app_settings.py:99
+msgid "When a mailbox is removed, also remove the associated account"
+msgstr "Όταν αφαιρείται ένα γραμματοκιβώτιο, να αφαιρείται και ο σχετικός λογαριασμός"
+
+#: admin/app_settings.py:103
+msgid "Automatic domain/mailbox creation"
+msgstr "Αυτόματη δημιουργία domain/γραμματοκιβωτίων"
+
+#: admin/app_settings.py:106
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr "Δημιουργία domain και γραμματοκιβωτίου κατά την αυτόματη δημιουργία λογαριασμού"
+
+#: admin/app_settings.py:112
+msgid "Create an alias when a mailbox is renamed"
+msgstr "Δημιουργία ενός ψευδώνυμου κατά τη μετονομασία ενός γραμματοκιβωτίου"
+
+#: admin/app_settings.py:115
+msgid "Create an alias using the old address when a mailbox is renamed."
+msgstr "Δημιουργήστε ένα ψευδώνυμο χρησιμοποιώντας την παλιά διεύθυνση όταν μετονομάζεται ένα γραμματοκιβώτιο."
+
+#: admin/app_settings.py:164 admin/app_settings.py:172
+#: admin/forms/account.py:331
+msgid "Must be a positive integer"
+msgstr "Πρέπει να είναι θετικός ακέραιος"
+
+#: admin/app_settings.py:186
+msgid "Define at least one authorized network / address"
+msgstr "Ορίστε τουλάχιστον μια εξουσιοδοτημένη διεύθυνση / δίκτυο"
+
+#: admin/app_settings.py:196
+msgid "Administration"
+msgstr "Διαχείριση"
+
+#: admin/forms/account.py:38 admin/templates/admin/domain_detail.html:101
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+#: admin/forms/account.py:40
+msgid ""
+"The user's name. Must be a valid e-mail address for simple users or "
+"administrators with a mailbox."
+msgstr "Το όνομα του χρήστη. Πρέπει να είναι μια έγκυρη e-mail διεύθυνση για απλούς χρήστες ή διαχειριστές με γραμματοκιβώτιο."
+
+#: admin/forms/account.py:45 admin/templates/admin/account_detail.html:29
+msgid "Role"
+msgstr "Ρόλος"
+
+#: admin/forms/account.py:46
+msgid "Choose"
+msgstr "Επιλογή"
+
+#: admin/forms/account.py:47
+msgid "What level of permission this user will have"
+msgstr "Το επίπεδο δικαιωμάτων αυτού του χρήστη"
+
+#: admin/forms/account.py:50 admin/forms/domain.py:217
+msgid "Random password"
+msgstr "Τυχαίως κωδικός"
+
+#: admin/forms/account.py:52
+msgid ""
+"Generate a random password. If you're updating this account and check this "
+"box, a new password will be generated."
+msgstr "Δημιουργία ενός τυχαίου κωδικού.  Εάν ενημερώνεται αυτό το λογαριασμό και επιλέξετε το box, ένας νέος τυχαίος κωδικός θα δημιουργηθεί. "
+
+#: admin/forms/account.py:58
+msgid "Password"
+msgstr "Κωδικός"
+
+#: admin/forms/account.py:63
+msgid "Confirmation"
+msgstr "Επιβεβαίωση"
+
+#: admin/forms/account.py:66
+msgid "Enter the same password as above, for verification."
+msgstr "Εισάγετε τον ίδιο κωδικό για επιβεβαίωση. "
+
+#: admin/forms/account.py:78
+msgid "Enabled"
+msgstr "Ενεργοποιημένο"
+
+#: admin/forms/account.py:172
+msgid "Only super administrators are allowed for this mode"
+msgstr "Μόνο σε super διαχειριστές επιτρέπεται αυτή η λειτουργία. "
+
+#: admin/forms/account.py:183 admin/forms/account.py:185
+#: admin/forms/domain.py:263 admin/forms/domain.py:266
+#: admin/serializers.py:241
+msgid "This field is required."
+msgstr "Αυτό το πεδίο απαιτείτε."
+
+#: admin/forms/account.py:191
+msgid "The two password fields didn't match."
+msgstr "Οι δύο κωδικοί δεν είναι ίδιοι"
+
+#: admin/forms/account.py:204
+msgid "You can't disable your own account"
+msgstr "Δεν μπορείτε να απενεργοποιήσετε τον δικό σας λογαριασμό"
+
+#: admin/forms/account.py:225
+msgid "E-mail"
+msgstr "E-mail"
+
+#: admin/forms/account.py:227
+msgid "Create an alias using the old address"
+msgstr "Δημιουργήστε ένα ψευδώνυμο χρησιμοποιώντας την παλιά διεύθυνση"
+
+#: admin/forms/account.py:232 admin/templates/admin/account_detail.html:45
+#: admin/templates/admin/domain_detail.html:57
+msgid "Quota"
+msgstr "Quota"
+
+#: admin/forms/account.py:234
+msgid ""
+"Quota in MB for this mailbox. Define a custom value or use domain's default "
+"one. Leave empty to define an unlimited value (not allowed for domain "
+"administrators)."
+msgstr "Quota σε ΜΒ για γραμματοκιβώτια. Ορίστε μια προσαρμοσμένη τιμή ή χρησιμοποιήστε την προεπιλεγμένη του τομέα. Αφήστε το κενό για να μη βάλετε όριο (δεν επιτρέπεται για διαχειριστές domain)."
+
+#: admin/forms/account.py:242 admin/forms/domain.py:43
+#: admin/templates/admin/domain_headers.html:4
+msgid "Alias(es)"
+msgstr "Ψευδώνυμο(μα) "
+
+#: admin/forms/account.py:245
+msgid ""
+"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
+"to add a new input. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
+msgstr "Ψευδώνυμο(μα) αυτού του mailbox. Εισάγεται μόνο μια διεύθυνση τη φορά, πατήστε ENTER για να προσθέσετε επιπλέον. Για να δημιουργήσετε ένα  catchall ψευδώνυμο, εισάγετε το όνομα τομέα (@domain.tld)."
+
+#: admin/forms/account.py:251
+msgid "Sender addresses"
+msgstr "Διεύθυνση αποστολέα"
+
+#: admin/forms/account.py:254
+msgid ""
+"Additional sender address(es) for this account. The user will be allowed to "
+"send emails using this address, even if it does not exist locally. Indicate "
+"one address per input. Press ENTER to add a new input."
+msgstr "Επιπρόσθετη(τες) διεύθυνση(σεις)  αποστολέα για αυτό το λογαριασμό. Ο χρήστης επιτρέπεται να αποστέλλει email χρησιμοποιώντας αυτή την διεύθυνση, ακόμη και εάν αυτή δεν υπάρχει τοπικά στον server.  Εισάγετε μόνο μια διεύθυνση ανά γραμμή. Πιέστε ENTER για να εισάγεται επιπλέον διευθύνσεις.  "
+
+#: admin/forms/account.py:309 admin/forms/alias.py:94
+#: admin/models/mailbox.py:315
+msgid "Domain does not exist"
+msgstr "Το domain δεν υπάρχει"
+
+#: admin/forms/account.py:341
+msgid "Local domain does not exist"
+msgstr "To τοπικό domain δεν υπάρχει"
+
+#: admin/forms/account.py:345 admin/forms/account.py:353
+#: admin/forms/alias.py:97
+msgid "You don't have access to this domain"
+msgstr "Δεν έχετε πρόσβαση σε αυτό το domain"
+
+#: admin/forms/account.py:452
+msgid "Domain(s)"
+msgstr "Domain(s)"
+
+#: admin/forms/account.py:454
+msgid "Domain(s) that user administrates"
+msgstr "Τα domains που ο χρήστης διαχειρίζεται"
+
+#: admin/forms/account.py:500 admin/forms/account.py:590
+#: admin/forms/domain.py:334 admin/forms/domain.py:401
+msgid "General"
+msgstr "Γενικά"
+
+#: admin/forms/account.py:504
+msgid "Profile"
+msgstr "Προφιλ"
+
+#: admin/forms/account.py:508 admin/forms/account.py:596
+msgid "Mail"
+msgstr "Μήνυμα"
+
+#: admin/forms/account.py:511
+msgid "Permissions"
+msgstr "Δικαιώματα"
+
+#: admin/forms/account.py:579
+msgid "Account updated"
+msgstr "Ο λογαριασμός ενημερώθηκε"
+
+#: admin/forms/account.py:604
+msgid "New account"
+msgstr "Νέος λογαριασμός"
+
+#: admin/forms/account.py:616
+msgid "Account created"
+msgstr "Ο λογαριασμός δημιουργήθηκε"
+
+#: admin/forms/alias.py:26
+msgid "Random address"
+msgstr "Τυχαία διεύθυνση"
+
+#: admin/forms/alias.py:29
+msgid "Email address"
+msgstr "Διεύθυνση Email"
+
+#: admin/forms/alias.py:31
+msgid ""
+"The alias address. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
+msgstr "Διεύθυνση ψευδώνυμου.  Για να δημιουργήσεις catchall ψευδώνυμα, απλός εισάγεται το όνομα του domain (@domain.tld)."
+
+#: admin/forms/alias.py:37 admin/templates/admin/alias_detail.html:37
+msgid "Recipients"
+msgstr "Παραλήπτες"
+
+#: admin/forms/alias.py:39
+msgid ""
+"Addresses this alias will point to. Indicate only one address per input, "
+"press ENTER to add a new input."
+msgstr "Οι διευθύνσεις στις οποίες το ψευδώνυμο θα δείχνει. Εισάγεται  μόνο μία διεύθυνση ανά εγράφη, πατήστε ENTER για να εισάγεται επιπλέον."
+
+#: admin/forms/alias.py:49 admin/forms/domain.py:32 admin/models/domain.py:115
+#: admin/templates/admin/_per_domain_statistics_widget.html:7
+#: admin/templates/admin/domains_quota_headers.html:2
+msgid "Domain"
+msgstr "Domain"
+
+#: admin/forms/alias.py:114 admin/forms/alias.py:116
+msgid "This field is required"
+msgstr "Το πεδίο απαιτείται "
+
+#: admin/forms/alias.py:120
+msgid "No recipient defined"
+msgstr "Δεν έχει ορισθεί παραλήπτης"
+
+#: admin/forms/domain.py:40
+#: admin/templates/admin/_global_statistics_widget.html:7
+msgid "Type"
+msgstr "Τύπος"
+
+#: admin/forms/domain.py:46
+msgid ""
+"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
+"add a new input."
+msgstr "Ψευδώνυμο(μα) από το domain. Εισάγεται μόνο ένα όνομα ανά γραμμή, πατήστε ENTER για να εισάγεται επιπλέον.  "
+
+#: admin/forms/domain.py:90 admin/handlers.py:171
+msgid "domain alias"
+msgstr "Ψευδώνυμα (alias) domain "
+
+#: admin/forms/domain.py:93 admin/forms/domain.py:145
+#: admin/forms/domain.py:153
+#, python-format
+msgid "A %s with this name already exists"
+msgstr "Το '%s' με αυτό το όνομα υπάρχει ήδη"
+
+#: admin/forms/domain.py:101 admin/serializers.py:45
+msgid "No authorized MX record found for this domain"
+msgstr "Δεν υπάρχουν ΜΧ έγραφες για αυτό το domain "
+
+#: admin/forms/domain.py:123 admin/serializers.py:55
+msgid "Cannot be greater than domain quota"
+msgstr "Δεν μπορεί να είναι μεγαλύτερο από το domain quota."
+
+#: admin/forms/domain.py:128
+msgid "You can't define an unlimited quota."
+msgstr "Δεν μπορείτε  να ορίσετε ένα απεριόριστο quota."
+
+#: admin/forms/domain.py:145 admin/forms/domain.py:150
+msgid "domain"
+msgstr "domain"
+
+#: admin/forms/domain.py:199
+msgid "Create a domain administrator"
+msgstr "Δημιουργία διαχειριστή domain"
+
+#: admin/forms/domain.py:202
+msgid "Automatically create an administrator for this domain"
+msgstr "Αυτόματη δημιουργία διαχειριστή για αυτό το domain"
+
+#: admin/forms/domain.py:207 admin/templates/admin/domain_detail.html:101
+#: admin/templates/admin/domain_headers.html:3
+#: admin/templates/admin/identity_headers.html:2
+#: admin/templates/admin/mx_domain_detail.html:9
+msgid "Name"
+msgstr "Όνομα"
+
+#: admin/forms/domain.py:210
+msgid ""
+"The administrator's name. Don't include the domain's name here, it will be "
+"automatically appended."
+msgstr "Το όνομα του διαχειριστή. Μην συμπεριλάβετε το όνομα του domain, γιατί θα προσαρτηθεί αυτόματα στο τέλος."
+
+#: admin/forms/domain.py:220
+msgid "Generate a random password for the administrator."
+msgstr "Δημιουργήστε έναν τυχαίο κωδικό πρόσβασης για το διαχειριστή."
+
+#: admin/forms/domain.py:226
+msgid "With a mailbox"
+msgstr "Με ένα γραμματοκιβώτιο"
+
+#: admin/forms/domain.py:229
+msgid "Create a mailbox for the administrator."
+msgstr "Δημιουργήστε ένα γραμματοκιβώτιο για το διαχειριστή."
+
+#: admin/forms/domain.py:235
+msgid "Create aliases"
+msgstr "Δημιουργία Ψευδώνυμου"
+
+#: admin/forms/domain.py:238
+msgid "Automatically create standard aliases for this domain"
+msgstr "Δημιουργήστε αυτόματα standard ψευδώνυμα για αυτόν το domain"
+
+#: admin/forms/domain.py:254
+msgid "Invalid format"
+msgstr "Λάθος μορφοποίηση"
+
+#: admin/forms/domain.py:283
+#, python-format
+msgid "User '%s' already exists"
+msgstr "Ο χρήστης '%s' υπάρχει ήδη"
+
+#: admin/forms/domain.py:391
+msgid "Domain modified"
+msgstr "Το domain άλλαξε"
+
+#: admin/forms/domain.py:412
+msgid "Options"
+msgstr "Επιλογές"
+
+#: admin/forms/domain.py:420
+msgid "New domain"
+msgstr "Νέο domain"
+
+#: admin/forms/domain.py:433
+msgid "Domain created"
+msgstr "Το domain δημιουργήθηκε"
+
+#: admin/forms/export.py:9
+msgid "File name"
+msgstr "Όνομα αρχείου"
+
+#: admin/forms/export.py:15 admin/forms/import_.py:15
+msgid "Separator"
+msgstr "Διαχωριστικό"
+
+#: admin/forms/forward.py:14
+msgid "Recipient(s)"
+msgstr "Παραλήπτες"
+
+#: admin/forms/forward.py:18
+msgid "Indicate one or more recipients separated by a ','"
+msgstr "Προσθέστε παραπάνω από έναν παραλήπτη μετά το διαχωριστικό ','"
+
+#: admin/forms/forward.py:21
+msgid "Keep local copies"
+msgstr "Αποθήκευση τοπικών αντιγράφων"
+
+#: admin/forms/forward.py:24
+msgid "Forward messages and store copies into your local mailbox"
+msgstr "Προώθηση μηνυμάτων και αποθήκευση αντιγράφων στο τοπικό γραμματοκιβώτιο"
+
+#: admin/forms/import_.py:13
+msgid "Select a file"
+msgstr "Επιλέξτε αρχείο"
+
+#: admin/forms/import_.py:21
+msgid "Continue on error"
+msgstr "Συνέχεια σε περίπτωση σφάλματος"
+
+#: admin/forms/import_.py:22
+msgid "Don't treat duplicated objects as error"
+msgstr "Μην αντιμετωπίζετε τα διπλότυπα αντικείμενα ως σφάλματα"
+
+#: admin/forms/import_.py:40
+msgid "Crypt passwords"
+msgstr "Κρυπτογράφηση κωδικών"
+
+#: admin/forms/import_.py:42
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr "Επιλέξτε εάν οι κωδικοί που βρίσκονται στο αρχείο δεν είναι κρυπτογραφημένοι"
+
+#: admin/handlers.py:218
+#, python-format
+msgid "Account import failed (%s): domain does not exist"
+msgstr "Η εισαγωγή λογαριασμού απέτυχε (%s): το domain δεν υπάρχει"
+
+#: admin/handlers.py:231 admin/models/mailbox.py:342
+msgid "Mailbox {} already exists"
+msgstr "Το γραμματοκιβώτιο {} είδη υπάρχει "
+
+#: admin/handlers.py:239
+#, python-format
+msgid "Account import failed (%s): wrong quota value"
+msgstr "Η εισαγωγή του λογαριασμού (%s) απέτυχε: λάθος τιμή στο quota"
+
+#: admin/handlers.py:279
+#: admin/templates/admin/_global_statistics_widget.html:17
+#: admin/templates/admin/_per_domain_statistics_widget.html:8
+#: admin/templates/admin/identities.html:5
+msgid "Identities"
+msgstr "Ταυτότητες"
+
+#: admin/handlers.py:295 admin/templates/admin/forward.html:2
+msgid "Forward"
+msgstr "Προώθηση"
+
+#: admin/lib.py:41
+msgid "A mailbox is required"
+msgstr "Απαιτείται γραμματοκιβώτιο"
+
+#: admin/lib.py:131
+msgid "You are not allowed to import domains"
+msgstr "Δεν έχετε δικαίωμα εισαγωγής domain"
+
+#: admin/lib.py:142
+msgid "You are not allowed to import domain aliases."
+msgstr "Δεν επιτρέπεται να εισαγάγετε ψευδώνυμα στο domain."
+
+#: admin/management/commands/subcommands/_mx.py:125
+msgid "[modoboa] DNSBL issue(s) for domain {}"
+msgstr "[modoboa] DNSBL ζήτημα(τα) για το domain {}"
+
+#: admin/management/commands/subcommands/_mx.py:145
+msgid "Domain {} has no MX record"
+msgstr "Το Domain {} δεν έχει εγγραφή MX "
+
+#: admin/management/commands/subcommands/_mx.py:156
+#, python-brace-format
+msgid "MX record for domain {0} is invalid: {1}"
+msgstr "Η εγγραφή MX για το domain  {0} δεν είναι έγκυρη: {1} "
+
+#: admin/management/commands/subcommands/_mx.py:173
+msgid "[modoboa] MX issue(s) for domain {}"
+msgstr "[modoboa] MX ζήτημα(τα) για το domain {}"
+
+#: admin/models/alias.py:35 admin/models/mailbox.py:97
+msgid "address"
+msgstr "διεύθυνση"
+
+#: admin/models/alias.py:37
+msgid "The alias address."
+msgstr "Η εναλλακτική διεύθυνση."
+
+#: admin/models/alias.py:42 admin/models/domain.py:66
+#: admin/models/domain_alias.py:46
+msgid "enabled"
+msgstr "ενεργοποιημένο"
+
+#: admin/models/alias.py:43 admin/models/domain_alias.py:47
+msgid "Check to activate this alias"
+msgstr "Επιλέξτε για να ενεργοποιήσετε αυτό το ψευδώνυμο"
+
+#: admin/models/alias.py:48 admin/templates/admin/alias_detail.html:32
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: admin/models/alias.py:50 admin/templates/admin/alias_detail.html:29
+msgid "Expire at"
+msgstr "Λήγει την "
+
+#: admin/models/alias.py:93
+msgid "alias"
+msgstr "Ψευδώνυμο"
+
+#: admin/models/alias.py:125
+msgid "Invalid address"
+msgstr "Λάθος διεύθυνση"
+
+#: admin/models/alias.py:146
+msgid "Local recipient {}@{} not found"
+msgstr "Ο τοπικός παραλήπτης {}@{} δεν βρέθηκε"
+
+#: admin/models/alias.py:176
+#, python-format
+msgid "Invalid line: %s"
+msgstr "Λάθος γραμμή: %s"
+
+#: admin/models/alias.py:182
+#, python-format
+msgid "Domain '%s' does not exist"
+msgstr "Το domain '%s' δεν υπάρχει"
+
+#: admin/models/domain.py:48 admin/models/domain_alias.py:39
+msgid "name"
+msgstr "όνομα"
+
+#: admin/models/domain.py:49
+msgid "The domain name"
+msgstr "Το όνομα του domain"
+
+#: admin/models/domain.py:53
+msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
+msgstr "Κοινόχρηστο quota σε MB μεταξύ γραμματοκιβωτίων. Μια τιμή 0 σημαίνει ότι δεν υπάρχει quota. "
+
+#: admin/models/domain.py:61
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr "Προκαθορισμένο quota σε MB που εφαρμόζεται στα γραμματοκιβώτια. Μια τιμή 0 σημαίνει ότι δεν υπάρχει quota.  "
+
+#: admin/models/domain.py:67
+msgid "Check to activate this domain"
+msgstr "Επιλέξτε για να ενεργοποιηθεί αυτό το domain"
+
+#: admin/models/domain.py:73
+msgid "Enable DNS checks"
+msgstr "Ενεργοποίση ελέγχου DNS"
+
+#: admin/models/domain.py:74
+msgid "Check to enable DNS checks for this domain"
+msgstr "Επιλέξτε για να ενεργοποιήσετε τους ελέγχους DNS για αυτόν το domain"
+
+#: admin/models/domain.py:274 admin/models/domain_alias.py:73
+msgid "Invalid line"
+msgstr "Λάθος γραμμή"
+
+#: admin/models/domain.py:284
+msgid "No authorized MX record found for domain {}"
+msgstr "Δεν βρέθηκε εξουσιοδοτημένη εγγραφή MX για το domain {}"
+
+#: admin/models/domain.py:291
+msgid "Invalid quota value for domain '{}'"
+msgstr "Μη έγκυρη τιμή quota για το domain '{}'"
+
+#: admin/models/domain.py:298
+msgid "Invalid default mailbox quota value for domain '{}'"
+msgstr "Μη έγκυρη τιμή quota για το προεπιλεγμένο γραμματοκιβώτιο για το domain '{}'"
+
+#: admin/models/domain.py:303
+msgid "Default mailbox quota cannot be greater than domain quota"
+msgstr "Το προεπιλεγμένο quota για το γραμματοκιβώτιο δεν πρέπει να είναι μεγαλύτερο από το domain quota. "
+
+#: admin/models/domain_alias.py:40
+msgid "The alias name"
+msgstr "Το όνομα του ψευδώνυμου"
+
+#: admin/models/domain_alias.py:42
+msgid "target"
+msgstr "στόχος"
+
+#: admin/models/domain_alias.py:43
+msgid "The domain this alias points to"
+msgstr "To domain στο οποίο αναφέρεται αυτό το ψευδώνυμο"
+
+#: admin/models/domain_alias.py:82
+#, python-format
+msgid "Unknown domain %s"
+msgstr "Άγνωστο domain %s"
+
+#: admin/models/mailbox.py:99
+msgid "Mailbox address (without the @domain.tld part)"
+msgstr "Διεύθυνση γραμματοκιβωτίου (χωρίς το @domain.tld κομμάτι)"
+
+#: admin/models/mailbox.py:165
+#, python-format
+msgid "Failed to retrieve mailbox location (%s)"
+msgstr "Σφάλμα κατά την ανάκτηση της τοποθεσίας του γραμματοκιβωτίου (%s)"
+
+#: admin/models/mailbox.py:258
+msgid "A quota is required"
+msgstr "Ένα quota απαιτείται "
+
+#: admin/models/mailbox.py:264
+msgid "Domain quota exceeded"
+msgstr "Υπέρβαση του domain quota"
+
+#: admin/serializers.py:80 admin/serializers.py:266 admin/serializers.py:360
+msgid "Permission denied."
+msgstr "Η άδεια απορρίφθηκε."
+
+#: admin/serializers.py:118
+msgid ""
+"List of administered domains (resellers and domain administrators only)."
+msgstr "Λίστα διαχειριζόμενων domains (αφορά μόνο μεταπωλητές και διαχειριστές domain)"
+
+#: admin/serializers.py:218
+msgid "Not allowed for this role."
+msgstr "Δεν επιτρέπεται για αυτόν τον ρόλο."
+
+#: admin/serializers.py:228
+msgid "Must be equal to mailbox full_address"
+msgstr "Πρέπει να είναι ίσο με την full_address του γραμματοκιβωτίου"
+
+#: admin/serializers.py:253
+msgid "Local domain {} does not exist"
+msgstr "Το τοπικός domain {} δεν υπάρχει"
+
+#: admin/serializers.py:347
+msgid "A list of recipient"
+msgstr "Λίστα παραληπτών"
+
+#: admin/serializers.py:358
+msgid "Domain not found."
+msgstr "To domain δεν βρέθηκε."
+
+#: admin/templates/admin/_domain_dnschecks_status.html:4
+msgctxt "checks"
+msgid "Disabled"
+msgstr "Απενεργοποιήθηκε "
+
+#: admin/templates/admin/_domain_dnschecks_status.html:6
+msgid "Awaiting checks"
+msgstr "Αναμονή ελέγχων"
+
+#: admin/templates/admin/_global_statistics_widget.html:4
+msgid "Global statistics"
+msgstr "Γενικά στατιστικά"
+
+#: admin/templates/admin/_global_statistics_widget.html:8
+msgid "Quantity"
+msgstr "Ποσότητα"
+
+#: admin/templates/admin/_global_statistics_widget.html:14
+#: admin/templates/admin/domain_detail.html:45
+#: admin/templates/admin/domain_detail.html:81
+msgid "Domain aliases"
+msgstr "Ψευδώνυμα domain"
+
+#: admin/templates/admin/_per_domain_statistics_widget.html:4
+msgid "Per-domain statistics"
+msgstr "Στατιστικά ανά-domain"
+
+#: admin/templates/admin/account_detail.html:16
+#: admin/templates/admin/alias_detail.html:16
+#: admin/templates/admin/domain_detail.html:19
+#: admin/templates/admin/identities_table.html:7
+msgid "(disabled)"
+msgstr "(απενεργοποιήθηκε)"
+
+#: admin/templates/admin/account_detail.html:22
+#: admin/templates/admin/alias_detail.html:22
+#: admin/templates/admin/domain_detail.html:25
+msgid "Summary"
+msgstr "Περίληψη"
+
+#: admin/templates/admin/account_detail.html:26
+msgid "Full name"
+msgstr "Πλήρες όνομα"
+
+#: admin/templates/admin/account_detail.html:32
+#: admin/templates/admin/alias_detail.html:26
+msgid "Created"
+msgstr "Δημιουργήθηκε"
+
+#: admin/templates/admin/account_detail.html:35
+msgid "Last login"
+msgstr "Τελευταία είσοδος"
+
+#: admin/templates/admin/account_detail.html:38
+msgid "Secondary email"
+msgstr "Δευτερεύων email"
+
+#: admin/templates/admin/account_detail.html:38
+#: admin/templates/admin/account_detail.html:41
+msgid "Not defined"
+msgstr "Μη καθορισμένο"
+
+#: admin/templates/admin/account_detail.html:41
+msgid "Phone number"
+msgstr "Τηλέφωνο"
+
+#: admin/templates/admin/account_detail.html:55
+msgid "Administered domains"
+msgstr "Δια χειριζόμενα domains "
+
+#: admin/templates/admin/account_detail.html:61
+msgid "No domain defined."
+msgstr "Δεν ορίστηκε domain"
+
+#: admin/templates/admin/account_detail.html:75
+msgid "Aliases"
+msgstr "Ψευδώνυμα"
+
+#: admin/templates/admin/account_detail.html:81
+msgid "No alias defined"
+msgstr "Δεν ορίστηκε ψευδώνυμο"
+
+#: admin/templates/admin/account_detail.html:87
+msgid "Additional sender addresses"
+msgstr "Επιπρόσθετη διεύθυνση αποστολέα"
+
+#: admin/templates/admin/account_detail.html:93
+msgid "No sender address defined"
+msgstr "Δεν ορίστηκε διεύθυνση αποστολέα "
+
+#: admin/templates/admin/account_general_form.html:12
+#: admin/templates/admin/aliasform.html:13
+msgid "Domain is disabled"
+msgstr "Το domain είναι απενεργοποιημένο"
+
+#: admin/templates/admin/alias_detail.html:16
+#: admin/templates/admin/identities.html:33
+msgid "Alias"
+msgstr "Ψευδώνυμο "
+
+#: admin/templates/admin/alias_detail.html:27
+msgid "Modified"
+msgstr "Τροποποιήθηκε"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:10
+msgid "Provider"
+msgstr "Πάροχος"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:11
+#: admin/templates/admin/identities_quota_headers.html:2
+#: admin/templates/admin/mx_domain_detail.html:10
+msgid "Address"
+msgstr "Διεύθυνση"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:12
+msgid "Status"
+msgstr "Κατάσταση"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:21
+msgid "listed"
+msgstr "καταχωρημένο"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:29
+msgid "Everything is fine, this domain is not listed."
+msgstr "Όλα είναι καλά, αυτό το domain δεν είναι καταχωρημένο."
+
+#: admin/templates/admin/dnsbl_domain_detail.html:32
+msgid "No information available for this domain."
+msgstr "Δεν υπάρχουν διαθέσιμες πληροφορίες για αυτό το domain"
+
+#: admin/templates/admin/domain_detail.html:30
+#: admin/templates/admin/domain_headers.html:7
+msgid "DNS status"
+msgstr "Κατάσταση DNS"
+
+#: admin/templates/admin/domain_detail.html:37
+msgid "Creation date"
+msgstr "Ημερομηνία δημιουργίας"
+
+#: admin/templates/admin/domain_detail.html:41
+msgid "Last modification date"
+msgstr "Τελευταία ημερομηνία αλλαγής"
+
+#: admin/templates/admin/domain_detail.html:53
+msgid "Mailbox aliases"
+msgstr "Ψευδώνυμο γραμματοκιβωτίου "
+
+#: admin/templates/admin/domain_detail.html:58
+#: admin/templates/admin/domain_detail.html:65
+#: admin/templates/admin/domain_detail.html:66
+#: admin/templates/admin/domain_detail.html:73
+#: admin/templates/admin/domain_general_form.html:4
+#: admin/templates/admin/domain_general_form.html:5
+#: admin/templates/admin/domains_quotas.html:11
+#: admin/templates/admin/domains_quotas.html:12
+#: admin/templates/admin/mailform.html:7
+#: admin/templates/admin/newdomainform.html:3
+msgid "MB"
+msgstr "MB"
+
+#: admin/templates/admin/domain_detail.html:62
+msgid "Usage"
+msgstr "Χρήση"
+
+#: admin/templates/admin/domain_detail.html:65
+#: admin/templates/admin/domains_quotas.html:11
+msgctxt "quota"
+msgid "used"
+msgstr "χρησιμοποιείται "
+
+#: admin/templates/admin/domain_detail.html:66
+#: admin/templates/admin/domains_quotas.html:12
+msgid "allocated"
+msgstr "Κατανεμημένο"
+
+#: admin/templates/admin/domain_detail.html:98
+msgid "Administrators"
+msgstr "Διαχειριστές"
+
+#: admin/templates/admin/domain_detail.html:110
+#: admin/templatetags/admin_tags.py:268
+msgid "Remove this permission"
+msgstr "Αφαίρεση αυτού του δικαιώματος"
+
+#: admin/templates/admin/domain_detail.html:115
+msgid "No domain administrator defined yet."
+msgstr "Δεν έχει καθοριστεί ακόμη διαχειριστής του domain."
+
+#: admin/templates/admin/domain_headers.html:5
+#: admin/templates/admin/identity_headers.html:4
+msgid "Tags"
+msgstr "Ετικέτες"
+
+#: admin/templates/admin/domain_headers.html:9
+#: admin/templates/admin/identity_headers.html:5
+msgid "Actions"
+msgstr "Ενέργειες"
+
+#: admin/templates/admin/domain_options_form.html:10
+msgid "You can't create a new domain administrator"
+msgstr "Δεν μπορείτε να δημιουργήσετε έναν νέο διαχειριστή domain"
+
+#: admin/templates/admin/domains.html:26
+#: admin/templates/admin/identities.html:29
+msgid "Add"
+msgstr "Προσθέτω"
+
+#: admin/templates/admin/domains_quota_headers.html:3
+#: admin/templates/admin/identities_quota_headers.html:4
+msgid "Limit"
+msgstr "Όριο"
+
+#: admin/templates/admin/domains_quota_headers.html:4
+msgid "Used"
+msgstr "Χρησιμοποιούμενος"
+
+#: admin/templates/admin/domains_quota_headers.html:5
+msgid "Allocated"
+msgstr "Δεσμευμένος"
+
+#: admin/templates/admin/domains_quota_headers.html:6
+#: admin/templates/admin/identities_quota_headers.html:5
+#, python-format
+msgid "Usage (%%)"
+msgstr "Χρήση (%%)"
+
+#: admin/templates/admin/domains_table.html:5
+msgid "disabled"
+msgstr "απενεργοποιημένο"
+
+#: admin/templates/admin/forward.html:2
+msgid "Automatically forward emails to another address"
+msgstr "Αυτόματη προώθηση των email σε άλλη διεύθυνση"
+
+#: admin/templates/admin/forward.html:9 admin/views/alias.py:93
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: admin/templates/admin/identities.html:32
+msgid "Account"
+msgstr "Λογαριασμός"
+
+#: admin/templates/admin/identities_quota_headers.html:3
+msgid "Value"
+msgstr "Τιμή"
+
+#: admin/templates/admin/identity_headers.html:3
+msgid "Fullname/Recipient"
+msgstr "Όνομα/Παραλήπτης"
+
+#: admin/templates/admin/import_domains_form.html:6
+msgid ""
+"Provide a CSV file where lines respect one of the following formats: <ul> "
+"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
+"<li><em>domainalias; name; targeted domain; enabled</em></li> "
+"<li><em>relaydomain; name; target host; target port; service; enabled; "
+"verify recipients</em></li> </ul> <p>The first element of each line is "
+"mandatory and must be equal to one of the previous values.</p> <p>You can "
+"use a different character as separator.</p>"
+msgstr "Εισάγετε ένα αρχείο CSV όπου οι γραμμές ακολουθούν μία από τις παρακάτω μορφές:<ul><li><em>\ndomain; όνομα; quota; προεπιλεγμένο quota γραμματοκιβωτίου;ενεργοποιημένα</em></li><li><em> domains; όνομα; target domain; ενεργοποιημένα</em></li><li><em> relaydomain; όνομα; target host;target port;υπηρεσία; ενεργοποιημένη; επαλήθευση παραληπτών</em></li></ul><p> Το πρώτο στοιχείο κάθε γραμμής είναι υποχρεωτικό και πρέπει να είναι ίσο με μία από τις προηγούμενες τιμές.</p><p> Μπορείτε να χρησιμοποιήσετε διαφορετικό χαρακτήρα ως διαχωριστικό.</p>"
+
+#: admin/templates/admin/import_identities_form.html:6
+msgid ""
+"Provide a CSV file where lines respect one of the following formats: <ul> "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
+msgstr "Εισάγεται ένα αρχείο CSV όπου οι γραμμές ακολουθούν μία από τις ακόλουθες μορφές:<ul><li><em> account; login name; Κωδικός πρόσβασης; όνομα; επίθετο; ενεργοποιημένος; ομάδα; διεύθυνση; quota; [, domain, ...]</em></li><li><em> ψευδώνυμο; διεύθυνση; ενεργοποιημένος; παραλήπτης; παραλήπτης; ...</em></li></ul><p> Το πρώτο στοιχείο κάθε γραμμής είναι υποχρεωτικό και πρέπει να είναι ίδιο με μία από τις προηγούμενες τιμές.</p><p> Μπορείτε να χρησιμοποιήσετε διαφορετικό χαρακτήρα ως διαχωριστικό."
+
+#: admin/templates/admin/importform.html:6
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: admin/templates/admin/importform.html:13
+msgid "Importing..."
+msgstr "Εισαγωγή..."
+
+#: admin/templates/admin/index.html:6
+msgid "Admin"
+msgstr "Διαχειριστής"
+
+#: admin/templates/admin/mailboxes_raw.html:3
+msgid "Choose a value"
+msgstr "Επιλέξτε μία τιμή"
+
+#: admin/templates/admin/mailform.html:7
+msgid "Use domain default value"
+msgstr "Χρήση της προεπιλεγμένης τιμής του domain"
+
+#: admin/templates/admin/mx_domain_detail.html:11
+msgid "Updated"
+msgstr "Ενημερώθηκε"
+
+#: admin/templates/admin/mx_domain_detail.html:23
+msgid "This IP does not match any of the valid MXs defined in parameters"
+msgstr "Αυτή η διεύθυνση IP δεν αντιστοιχεί σε κανένα από τα έγκυρο MX που ορίζονται στις παραμέτρους"
+
+#: admin/templates/admin/mx_domain_detail.html:36
+msgid "No MX record found for this domain."
+msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
+
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:3
+#, python-format
+msgid ""
+"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
+"providers:"
+msgstr "Η Modoboa ανίχνευσε ότι το domain %(domain)s είναι καταχωρημένος στους ακόλουθους παρόχους DNSBL:"
+
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:11
+msgid ""
+"The domain's reputation will be affected and there is a chance that emails "
+"coming from it are considered as spam. You should contact those providers "
+"and ask them to unlist detected IP address(es)."
+msgstr "Η φήμη (reputation) του domain θα επηρεαστεί και υπάρχει πιθανότητα τα μηνύματα ηλεκτρονικού ταχυδρομείου που προέρχονται από αυτό να θεωρούνται ανεπιθύμητα. Θα πρέπει να επικοινωνήσετε με αυτούς τους παροχους και να τους ζητήσετε να σας βγάλουν από τη  λίστα ανεπιθύμητων διευθύνσεων IP."
+
+#: admin/templates/admin/notifications/domain_invalid_mx.html:3
+#, python-format
+msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
+msgstr "To Modoboa ανίχνευσε ότι το domain %(domain)s δεν έχει έγκυρη εγγραφή MX:"
+
+#: admin/templates/admin/searchform.html:6
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: admin/templatetags/admin_tags.py:22
+msgid "enabled_m"
+msgstr "enabled_m"
+
+#: admin/templatetags/admin_tags.py:22
+msgid "enabled_f"
+msgstr "enabled_f"
+
+#: admin/templatetags/admin_tags.py:48
+msgid "List domains"
+msgstr "Λίστα domains"
+
+#: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:108
+msgid "List quotas"
+msgstr "List Quotas"
+
+#: admin/templatetags/admin_tags.py:65 admin/templatetags/admin_tags.py:113
+#: admin/views/import_.py:101 admin/views/import_.py:123
+msgid "Import"
+msgstr "Εισαγωγή"
+
+#: admin/templatetags/admin_tags.py:71 admin/templatetags/admin_tags.py:119
+#: admin/views/export.py:44 admin/views/export.py:74
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: admin/templatetags/admin_tags.py:103
+msgid "List identities"
+msgstr "Λίστα ταυτοτήτων"
+
+#: admin/templatetags/admin_tags.py:138
+msgid "View the domain's identities"
+msgstr "Εμφάνιση των ταυτοτήτων του domain"
+
+#: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:187
+#: admin/templatetags/admin_tags.py:200
+msgid "Edit {}"
+msgstr "Επεξεργασία{}"
+
+#: admin/templatetags/admin_tags.py:154 admin/templatetags/admin_tags.py:191
+#: admin/templatetags/admin_tags.py:205
+#, python-format
+msgid "Delete %s?"
+msgstr "Διαγραφή %s;"
+
+#: admin/views/alias.py:35
+msgid "Alias with this name already exists"
+msgstr "Υπάρχει είδη αυτό το ψευδώνυμο"
+
+#: admin/views/alias.py:60
+msgid "Create"
+msgstr "Δημιουργία"
+
+#: admin/views/alias.py:72
+msgid "New alias"
+msgstr "Νέο ψευδώνυμο"
+
+#: admin/views/alias.py:73
+msgid "Alias created"
+msgstr "Το ψευδώνυμο δημιουργήθηκε"
+
+#: admin/views/alias.py:85
+msgid "Alias modified"
+msgstr "Το ψευδώνυμο τροποποιήθηκε"
+
+#: admin/views/alias.py:109
+msgid "Alias deleted"
+msgid_plural "Aliases deleted"
+msgstr[0] "Το ψευδώνυμο διαγράφηκε"
+msgstr[1] "Ψευδώνυμο διαγράφηκε"
+
+#: admin/views/dns.py:32
+msgid "MX records of {}"
+msgstr "Έγραφες MX από{}"
+
+#: admin/views/dns.py:55
+msgid "DNSBL summary for {}"
+msgstr "Περίληψη DNSBL για{}"
+
+#: admin/views/domain.py:191
+msgid "You can't delete your own domain"
+msgstr "Δεν μπορείτε να σβήσετε το δικό σας domain"
+
+#: admin/views/domain.py:194
+msgid "Domain deleted"
+msgid_plural "Domains deleted"
+msgstr[0] "Το domain διαφράφηκε"
+msgstr[1] "Τα domains διαφράφηκαν"
+
+#: admin/views/export.py:43
+msgid "Export identities"
+msgstr "Εξαγωγή ταυτοτήτων"
+
+#: admin/views/export.py:73
+msgid "Export domains"
+msgstr "Εξαγωγή των domain"
+
+#: admin/views/identity.py:113 admin/views/identity.py:206
+#: admin/views/identity.py:211
+msgid "Invalid request"
+msgstr "Λάθος αίτημα"
+
+#: admin/views/identity.py:196
+msgid "Account deleted"
+msgid_plural "Accounts deleted"
+msgstr[0] "Ο λογαριασμός διαγράφηκε"
+msgstr[1] "Οι λογαριασμοί διαγράφηκαν"
+
+#: admin/views/import_.py:77
+#, python-format
+msgid "Object already exists: %s"
+msgstr "Το αντικείμενο υπάρχει ήδη: %s'"
+
+#: admin/views/import_.py:81
+#, python-format
+msgid "%d objects imported successfully"
+msgstr "%d αντικείμενα εισήχθησαν με επιτυχία"
+
+#: admin/views/import_.py:100
+msgid "Import domains"
+msgstr "Εισαγωγή των domain"
+
+#: admin/views/import_.py:122
+msgid "Import identities"
+msgstr "Εισαγωγή ταυτοτήτων"
+
+#: admin/views/user.py:40
+msgid "Forward updated"
+msgstr "Η προώθηση ενημερώθηκε"

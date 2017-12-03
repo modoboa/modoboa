@@ -1,0 +1,917 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
+# Kostas Moumouris <moumouriskostas@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"PO-Revision-Date: 2017-10-12 19:37+0000\n"
+"Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el_GR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/app_settings.py:26
+msgid "User profile"
+msgstr "Προφίλ Χρήστη"
+
+#: core/app_settings.py:39
+msgid "Authentication"
+msgstr "Πιστοποίηση"
+
+#: core/app_settings.py:42
+msgid "Authentication type"
+msgstr "Τύπος Πιστοποίησης"
+
+#: core/app_settings.py:43
+msgid "Local"
+msgstr "Τοπικός"
+
+#: core/app_settings.py:46
+msgid "The backend used for authentication"
+msgstr "Το backend που χρησιμοποιείται για πιστοποίηση"
+
+#: core/app_settings.py:51
+msgid "Default password scheme"
+msgstr "Προεπιλεγμένος αλγόριθμος κωδικοποίησης"
+
+#: core/app_settings.py:55
+msgid "md5crypt (weak)"
+msgstr "md5crypt (αδύναμο)"
+
+#: core/app_settings.py:56
+msgid "sha256 (weak)"
+msgstr "sha256 (αδύναμο)"
+
+#: core/app_settings.py:57
+msgid "md5 (weak)"
+msgstr "md5 (αδύναμο)"
+
+#: core/app_settings.py:58
+msgid "crypt (weak)"
+msgstr "crypt (αδύναμο)"
+
+#: core/app_settings.py:59
+msgid "plain (weak)"
+msgstr "plain (αδύναμο)"
+
+#: core/app_settings.py:61
+msgid "Scheme used to crypt mailbox passwords"
+msgstr "Σχήμα που θα χρησιμοποιηθεί για την κρυπτογράφηση των κωδικών των λογαριασμών αλληλογραφίας"
+
+#: core/app_settings.py:66
+msgid "Rounds"
+msgstr "Επαναλήψεων"
+
+#: core/app_settings.py:69
+msgid ""
+"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
+"between 1000 and 999999999, inclusive."
+msgstr "Αριθμός επαναλήψεων (μόνο για sha256crypt και sha512crypt). Μπορεί να είναι από 1000 έως και 999999999"
+
+#: core/app_settings.py:76
+msgid "Secret key"
+msgstr "Μυστικό κλειδί"
+
+#: core/app_settings.py:78
+msgid "Key used to encrypt/decrypt passwords"
+msgstr "Το κλειδί που χρησιμοποιείται για την κρυπτογράφηση/αποκρυπτογράφηση των κωδικών"
+
+#: core/app_settings.py:83
+msgid "Default password"
+msgstr "Προκαθορισμένος κωδικός"
+
+#: core/app_settings.py:86
+msgid "Default password for automatically created accounts."
+msgstr "Προκαθορισμένος κωδικός για αυτόματη δημιουργία λογαριασμών"
+
+#: core/app_settings.py:90
+msgid "Random password length"
+msgstr "Μήκος τυχαίου κωδικού"
+
+#: core/app_settings.py:94
+msgid "Length of randomly generated passwords."
+msgstr "Μήκος των τυχαίων  δημιουργημένων κωδικών"
+
+#: core/app_settings.py:98
+msgid "LDAP settings"
+msgstr "Ρυθμίσεις LDAP"
+
+#: core/app_settings.py:101
+msgid "Server address"
+msgstr "Διεύθυνση εξυπηρετητή"
+
+#: core/app_settings.py:104
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "Η IP διεύθυνση ή το DNS όνομα του εξυπηρετητή LDAP"
+
+#: core/app_settings.py:109
+msgid "Server port"
+msgstr "Πόρτα εξυπηρετητή"
+
+#: core/app_settings.py:111
+msgid "The TCP port number used by the LDAP server"
+msgstr "Η TCP πόρτα λειτουργίας του εξυπηρετητή LDAP"
+
+#: core/app_settings.py:116
+msgid "Use a secured connection"
+msgstr "Χρήση ασφαλής σύνδεσης"
+
+#: core/app_settings.py:120
+msgid "Use an SSL/STARTTLS connection to access the LDAP server"
+msgstr "Χρησιμοποιήστε μια σύνδεση SSL / STARTTLS για να συνδεθήκατε στον διακομιστή LDAP"
+
+#: core/app_settings.py:124
+msgid "Authentication method"
+msgstr "Μέθοδος Πιστοποίησης"
+
+#: core/app_settings.py:125
+msgid "Search and bind"
+msgstr "Αναζήτηση χρήστη και bind"
+
+#: core/app_settings.py:126
+msgid "Direct bind"
+msgstr "Χρήση Bind DN"
+
+#: core/app_settings.py:128
+msgid "Choose the authentication method to use"
+msgstr "Επιλογή μεθόδου πιστοποίησης"
+
+#: core/app_settings.py:133
+msgid "Bind DN"
+msgstr "Bind DN"
+
+#: core/app_settings.py:136
+msgid ""
+"The distinguished name to use when binding to the LDAP server. Leave empty "
+"for an anonymous bind"
+msgstr "To distinguished name για το bind στον εξυπηρετητή LDAP. Αφήστε το κενό για anonymous"
+
+#: core/app_settings.py:144
+msgid "Bind password"
+msgstr "Bind κωδικός "
+
+#: core/app_settings.py:147
+msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
+msgstr "Ο κωδικός για το bind στον εξυπηρετητή LDAP (αντιστοιχεί στο 'Bind DN')"
+
+#: core/app_settings.py:156
+msgid "Users search base"
+msgstr "Base αναζήτησης χρηστών"
+
+#: core/app_settings.py:159
+msgid "The distinguished name of the search base used to find users"
+msgstr "Το Base DN αναζήτησης χρηστών"
+
+#: core/app_settings.py:166
+msgid "Search filter"
+msgstr "Φίλτρο αναζήτησης"
+
+#: core/app_settings.py:169
+msgid ""
+"An optional filter string (e.g. '(objectClass=person)'). In order to be "
+"valid, it must be enclosed in parentheses."
+msgstr "Προαιρετικό φίλτρο (π.χ. '(objectClass=person)'). Για να είναι έγκυρο πρέπει να περικλείεται σε παρενθέσεις."
+
+#: core/app_settings.py:177
+msgid "User DN template"
+msgstr "Πρότυπο για DN χρηστών"
+
+#: core/app_settings.py:180
+#, python-format
+msgid ""
+"The template used to construct a user's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr "Το πρότυπο δημιουργίας DN χρηστών. Θα πρέπει να περιλαμβάνει έναν placeholder (π.χ. %(user)s)"
+
+#: core/app_settings.py:188
+msgid "Password attribute"
+msgstr "Το πεδίο του κωδικού"
+
+#: core/app_settings.py:190
+msgid "The attribute used to store user passwords"
+msgstr "Το πεδίο αποθήκευσης των κωδικών χρηστών"
+
+#: core/app_settings.py:195
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: core/app_settings.py:198
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr "Ο εξυπηρετητής LDAP είναι Active Directory"
+
+#: core/app_settings.py:202
+msgid "Administrator groups"
+msgstr "Groups Διαχειριστών"
+
+#: core/app_settings.py:205
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Τα μέλη αυτών των LDAP Posix ομάδων χρηστών θα δημιουργηθούν ως διαχειριστές domain. Χρησιμοποιείστε τον χαραχτήρα ';' για να ξεχωρίσετε τις ομάδες."
+
+#: core/app_settings.py:212
+msgid "Group type"
+msgstr "Τύπος ομάδας"
+
+#: core/app_settings.py:216
+msgid "The LDAP group type to use with your directory."
+msgstr "Τύπος ομάδας LDAP που χρησιμοποιείται με τον κατάλογο σας."
+
+#: core/app_settings.py:221
+msgid "Groups search base"
+msgstr "Base αναζήτησης ομάδων χρηστών"
+
+#: core/app_settings.py:224
+msgid "The distinguished name of the search base used to find groups"
+msgstr "Το Base DN αναζήτησης ομάδων χρηστών"
+
+#: core/app_settings.py:229 core/templates/core/dashboard.html:5
+msgid "Dashboard"
+msgstr "Ταμπλό Συντομεύσεων"
+
+#: core/app_settings.py:232
+msgid "Custom RSS feed"
+msgstr "Κατά παραγγελία RSS feed"
+
+#: core/app_settings.py:235
+msgid "Display custom RSS feed to resellers and domain administrators"
+msgstr "Προβολή κατά παραγγελία RSS feed για μεταπωλητές και διαχειριστές τομέα"
+
+#: core/app_settings.py:240
+msgid "Hide features widget"
+msgstr "Κρύβω τις λειτουργίες από τα widget"
+
+#: core/app_settings.py:243
+msgid "Hide features widget for resellers and domain administrators"
+msgstr "Κρύβω τις λειτουργίες από τα widget για τους μεταπωλητές και τους διαχειριστές του τομέα"
+
+#: core/app_settings.py:247
+msgid "Notifications"
+msgstr "Υπενθύμιση "
+
+#: core/app_settings.py:250
+msgid "Sender address"
+msgstr "Διεύθυνση αποστολέα"
+
+#: core/app_settings.py:253
+msgid "Email address used to send notifications."
+msgstr "Email διεύθυνση που χρησιμοποιείται για την αποστολή υπενθυμίσεων "
+
+#: core/app_settings.py:257
+msgid "Public API"
+msgstr "Δημόσιο API"
+
+#: core/app_settings.py:260
+msgid "Enable communication"
+msgstr "Ενεργοποίηση επικοινωνίας"
+
+#: core/app_settings.py:263
+msgid "Enable communication with Modoboa public API"
+msgstr "Ενεργοποίηση επικοινωνίας με δημόσιο API του Modaboa"
+
+#: core/app_settings.py:267
+msgid "Check new versions"
+msgstr "Έλεγχος ενημερώσεων"
+
+#: core/app_settings.py:270
+msgid "Automatically checks if a newer version is available"
+msgstr "Αυτόματος έλεγχος διαθέσιμων ενημερώσεων"
+
+#: core/app_settings.py:274
+msgid "Send statistics"
+msgstr "Αποστολή στατιστικών"
+
+#: core/app_settings.py:277
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr "Αποστολή στατιστικών στο public API του Motaboa (counters και used extensions)"
+
+#: core/app_settings.py:281
+msgid "Miscellaneous"
+msgstr "Διάφορα"
+
+#: core/app_settings.py:284
+msgid "Inactive account threshold"
+msgstr "Όριο απενεργοποιημένων λογαριασμών  "
+
+#: core/app_settings.py:287
+msgid ""
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
+msgstr "Όριο (σε ημέρες) για να απενεργοποιηθεί ένας Λογαριασμός."
+
+#: core/app_settings.py:294
+msgid "Top notifications check interval"
+msgstr "Μέγιστο διάστημα ελέγχου ειδοποιήσεων"
+
+#: core/app_settings.py:297
+msgid "Interval between two top notification checks (in seconds)"
+msgstr "Διάστημα μεταξύ των δύο πρώτων ελέγχων ειδοποιήσεων (σε δευτερόλεπτα)"
+
+#: core/app_settings.py:303
+msgid "Maximum log record age"
+msgstr "Μέγιστος χρόνος καταγραφής των log"
+
+#: core/app_settings.py:305
+msgid "The maximum age in days of a log record"
+msgstr "Μέγιστη διάρκεια σε ημέρες καταγραφής των log"
+
+#: core/app_settings.py:310
+msgid "Items per page"
+msgstr "Εμφανίσεις ανά σελίδα"
+
+#: core/app_settings.py:312
+msgid "Number of displayed items per page"
+msgstr "Αριθμός εμφανίσεων ανά σελίδα"
+
+#: core/app_settings.py:317
+msgid "Default top redirection"
+msgstr "Κύριες προκαθορισμένες αναδρομολογήσεις"
+
+#: core/app_settings.py:321
+msgid "The default redirection used when no application is specified"
+msgstr "Προκαθορισμένες αναδρομολογήσεις που χρησιμοποιούνται όταν δεν υπάρχουν προκαθορισμένες εφαρμογές"
+
+#: core/app_settings.py:354
+msgid "Key must be either 16, 24, or 32 bytes long"
+msgstr "Το κλειδί πρέπει να είναι μεγέθους 16, 24 ή 32 bytes"
+
+#: core/app_settings.py:363
+msgid "Invalid syntax"
+msgstr "Μη έγκυρη σύνταξη"
+
+#: core/app_settings.py:369
+msgid "Invalid rounds number"
+msgstr "Λάθος αριθμός επαναλήψεων "
+
+#: core/app_settings.py:396
+msgid "This field is required"
+msgstr "Αυτό το πεδίο είναι υποχρεωτικό"
+
+#: core/apps.py:20
+msgid "General"
+msgstr "Γενικά"
+
+#: core/constants.py:9
+msgid "Simple user"
+msgstr "Απλός χρήστης"
+
+#: core/constants.py:10
+msgid "Domain administrator"
+msgstr "Διαχειριστής Τομέα"
+
+#: core/constants.py:11
+msgid "Reseller"
+msgstr "Μεταπωλητής "
+
+#: core/constants.py:12
+msgid "Super administrator"
+msgstr "Super διαχειριστής"
+
+#: core/constants.py:49 lib/form_utils.py:427
+msgid "No"
+msgstr "Όχι"
+
+#: core/forms.py:24
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+#: core/forms.py:28
+msgid "Password"
+msgstr "Κωδικός"
+
+#: core/forms.py:41
+msgid "Old password"
+msgstr "Παλιός κωδικός"
+
+#: core/forms.py:45
+msgid "New password"
+msgstr "Νέος κωδικός"
+
+#: core/forms.py:49
+msgid "Confirmation"
+msgstr "Επιβεβαίωση"
+
+#: core/forms.py:77
+msgid "Old password mismatchs"
+msgstr "Αναντιστοιχία παλιού κωδικού"
+
+#: core/forms.py:86
+msgid "Passwords mismatch"
+msgstr "Αναντιστοιχία κωδικών"
+
+#: core/forms.py:106
+msgid "Enable API access"
+msgstr "Ενεργοποίηση πρόσβασης API"
+
+#: core/handlers.py:44
+msgid "added"
+msgstr "πρόσθεσε"
+
+#: core/handlers.py:47
+msgid "modified"
+msgstr "άλλαξε"
+
+#: core/handlers.py:49
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s του χρήστη %(user)s"
+
+#: core/handlers.py:73
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by "
+msgstr "%(object)s'%(name)s'%(action)s από"
+
+#: core/handlers.py:75
+msgid "deleted"
+msgstr "Διαγράφηκε"
+
+#: core/handlers.py:79
+msgid "user {}"
+msgstr "Χρήστης {}"
+
+#: core/handlers.py:81
+msgid "management command"
+msgstr "Εντολή διαχείρισης"
+
+#: core/handlers.py:105
+msgid "You can't delete your own account"
+msgstr "Δεν μπορείτε να διαγράψετε τον δικό σας λογαριασμό"
+
+#: core/handlers.py:141
+msgid "One or more updates are available"
+msgstr "Υπάρχουν διαθέσιμες ενημερώσεις"
+
+#: core/models.py:58
+msgid "Allow mailboxes access"
+msgstr "Να επιτρέπεται η πρόσβαση σε γραμματοκιβώτια"
+
+#: core/models.py:60
+msgid "Allow this administrator to access user mailboxes"
+msgstr "Να επιτρέπεται σε αυτόν τον διαχειριστή η πρόσβαση στα γραμματοκιβώτια χρηστών"
+
+#: core/models.py:63
+msgid "password"
+msgstr "κωδικός"
+
+#: core/models.py:66
+msgid "language"
+msgstr "Γλώσσα "
+
+#: core/models.py:69
+msgid "Prefered language to display pages."
+msgstr "Επιλογή γλώσσας για την εμφάνιση σελίδων."
+
+#: core/models.py:73
+msgid "Phone number"
+msgstr "Τηλέφωνο"
+
+#: core/models.py:75
+msgid "Secondary email"
+msgstr "Δευτερεύον email"
+
+#: core/models.py:78
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr "Μια εναλλακτική e-mail διεύθυνση, μπορεί να χρησιμοποιηθεί για λόγους ανάκτησης."
+
+#: core/models.py:128
+msgid "Failed to update password: LDAP module not installed"
+msgstr "Σφάλμα κατά την ενημέρωση του κωδικού: το LDAP module δεν είναι εγκατεστημένο"
+
+#: core/models.py:157
+msgid "account"
+msgstr "λογαριασμός"
+
+#: core/models.py:279
+msgid "Unknown"
+msgstr "Άγνωστη"
+
+#: core/models.py:313
+msgid "Invalid line"
+msgstr "Λάθος γραμμή"
+
+#: core/models.py:321
+msgid "You can't import an account with a role greater than yours"
+msgstr "Δεν μπορείτε να εισάγετε έναν λογαριασμό με ρόλο μεγαλύτερο από τον δικό σας"
+
+#: core/models.py:336
+#, python-format
+msgid "The simple user '%s' must have a valid email address"
+msgstr "Ο απλός χρήστης '%s' πρέπει να έχει μια έγκυρη email διεύθυνση"
+
+#: core/models.py:341
+#, python-format
+msgid "username and email fields must not differ for '%s'"
+msgstr "Το όνομα χρήστη και το email δεν μπορεί να είναι διαφορετικά για τον '%s'"
+
+#: core/password_validation.py:26
+msgid "Password must contain at least {} digit."
+msgid_plural "Password must contain at least {} digits."
+msgstr[0] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {} ένα ψηφίο"
+msgstr[1] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {} ένα ψηφίο"
+
+#: core/password_validation.py:36
+msgid "Password must contain at least {} lowercase letter."
+msgid_plural "Password must contain at least {} lowercase letters."
+msgstr[0] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {} μικρά γράμματα."
+msgstr[1] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {} μικρά γράμματα."
+
+#: core/password_validation.py:47
+msgid "Password must contain at least {} uppercase letter."
+msgid_plural "Password must contain at least {} uppercase letters."
+msgstr[0] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {} κεφαλαία γράμματα."
+msgstr[1] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {}  κεφαλαία γράμματα."
+
+#: core/password_validation.py:59
+msgid "Password must contain at least {} special character."
+msgid_plural "Password must contain at least {} special characters."
+msgstr[0] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {} ένα σπέσιαλ χαρακτήρα."
+msgstr[1] "Ο κωδικός πρέπει να περιέχει τουλάχιστον {} ένα σπέσιαλ χαρακτήρα."
+
+#: core/password_validation.py:67
+msgid "Your password must contain a combination of different character types."
+msgstr "Ο κωδικός πρέπει να περιέχει ένα συνδυασμό από διαφορετικούς τύπους χαρακτήρων."
+
+#: core/templates/core/_current_features.html:6
+msgid "Features looking for sponsoring"
+msgstr "Χαρακτηριστικά που αναζητούν χορηγία"
+
+#: core/templates/core/_current_features.html:12
+msgid "Goal:"
+msgstr "Στόχος:"
+
+#: core/templates/core/_current_features.html:18
+msgid "More"
+msgstr "Περισσότερα "
+
+#: core/templates/core/_current_features.html:22
+msgid "Nothing to sponsor yet."
+msgstr "Κανένας υποστηριχτής ακόμη."
+
+#: core/templates/core/_latest_news_widget.html:5
+msgid "Latest news"
+msgstr "Τελευταία νέα"
+
+#: core/templates/core/_latest_news_widget.html:19
+msgid ""
+"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
+"weblog</a> for more information."
+msgstr "Επισκέψου το<a href=\"https://modoboa.org/blog/\" target=\"_blank\">επίσιμο weblog</a>για περισσότερες πληροφορίες"
+
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr "πρόσβαση API"
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr "Ρυθμίσεις πρόσβασης στο API του Modoboa"
+
+#: core/templates/core/api_access.html:7
+#, python-format
+msgid ""
+"A documentation of the API is available <strong><a href=\"%(url)s\" "
+"target=\"_blank\">here</a></strong>."
+msgstr "Οδηγίες για το API είναι διαθέσιμες <strong><a href=\"%(url)s\" target=\"_blank\">εδώ</a>"
+
+#: core/templates/core/api_access.html:14
+msgid "API access token"
+msgstr "Κωδικός πρόσβασης στο API"
+
+#: core/templates/core/api_access.html:35
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:360
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: core/templates/core/dashboard.html:11
+#, python-format
+msgid "Hello %(user)s."
+msgstr "Για σου %(user)s."
+
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:64
+msgid "Information"
+msgstr "Πληροφορίες"
+
+#: core/templates/core/information.html:2
+msgid "Various information about Modoboa"
+msgstr "Διάφορες πληροφορίες για το Modoboa"
+
+#: core/templates/core/information.html:5
+msgid "One or more updates are available!"
+msgstr "Υπάρχουν διαθέσιμες ενημερώσεις!"
+
+#: core/templates/core/information.html:6
+msgid "Check the following list to find the component(s) that can be updated."
+msgstr "Έλεγχος της ακόλουθης λίστας για εύρεση αρθρώματος(των) που μπορούν να αναβαθμιστούν."
+
+#: core/templates/core/information.html:10
+msgid "Applications"
+msgstr "Εφαρμογές"
+
+#: core/templates/core/information.html:14
+#: core/templates/core/information.html:36
+msgid "Name"
+msgstr "Όνομα"
+
+#: core/templates/core/information.html:15
+msgid "Installed version"
+msgstr "Εγκατεστημένη έκδοση"
+
+#: core/templates/core/information.html:16
+msgid "Last version"
+msgstr "Τελευταία έκδοση"
+
+#: core/templates/core/information.html:17
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: core/templates/core/information.html:32
+msgid "Active users"
+msgstr "Ενεργοί χρήστες"
+
+#: core/templates/core/information.html:37
+msgid "Role"
+msgstr "Ρόλος"
+
+#: core/templates/core/information.html:38
+msgid "Last login"
+msgstr "Τελευταία είσοδος χρήστη"
+
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:68
+msgid "Logs"
+msgstr "Καταγραφές"
+
+#: core/templates/core/logs.html:2
+msgid "Previously on Modoboa..."
+msgstr "Πρώην στο Modaboa... "
+
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:109
+msgid "Date"
+msgstr "Ημερομηνία"
+
+#: core/templates/core/logs.html:7
+msgid "Level"
+msgstr "Επίπεδο"
+
+#: core/templates/core/logs.html:8
+msgid "Logger"
+msgstr "Καταχωρητής"
+
+#: core/templates/core/logs.html:9
+msgid "Message"
+msgstr "Μήνυμα"
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:73
+msgid "Parameters"
+msgstr "Παράμετροι"
+
+#: core/templates/core/parameters.html:2
+msgid "Configure Modoboa"
+msgstr "Ρυθμίστε το Modoboa"
+
+#: core/templates/core/parameters.html:6
+#: core/templates/core/user_preferences.html:10
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr "Ρυθμίσεις Modoboa"
+
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:92
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: core/templates/core/user_preferences.html:2
+#: core/templatetags/core_tags.py:122
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+#: core/templates/core/user_preferences.html:2
+msgid "Customize Modoboa"
+msgstr "Προσαρμογή του Modoboa"
+
+#: core/templates/core/user_preferences.html:14
+msgid "No preferences available."
+msgstr "Δεν υπάρχουν διαθέσιμες προτιμήσεις."
+
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:118
+msgid "Profile"
+msgstr "Προφίλ"
+
+#: core/templates/core/user_profile.html:3
+msgid "Update your personal information"
+msgstr "Ενημέρωση προσωπικών πληροφοριών"
+
+#: core/templatetags/core_tags.py:36
+msgid "Modoboa"
+msgstr "Modoboa"
+
+#: core/templatetags/core_tags.py:104
+msgid "Logout"
+msgstr "Έξοδος"
+
+#: core/templatetags/core_tags.py:129
+msgid "API"
+msgstr "API"
+
+#: core/utils.py:36
+msgid "The core part of Modoboa"
+msgstr "Το βασικό μέρος του Modoboa"
+
+#: core/views/admin.py:48
+msgid "Parameters saved"
+msgstr "Οι παράμετροι αποθηκεύτηκαν"
+
+#: core/views/auth.py:45
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr "Επιτυχής είσοδος του χρήστη '%s'"
+
+#: core/views/auth.py:53
+msgid "Your username and password didn't match. Please try again."
+msgstr "Λάθος όνομα χρήστη ή κωδικός. Παρακαλώ δοκιμάστε ξανά."
+
+#: core/views/auth.py:88
+msgid "User '{}' successfully logged out"
+msgstr "Ο χρήστης '{}'  αποσυνδέθηκε επιτυχώς"
+
+#: core/views/user.py:51
+msgid "Profile updated"
+msgstr "Το προφίλ ενημερώθηκε"
+
+#: core/views/user.py:77
+msgid "Preferences saved"
+msgstr "Οι προτιμήσεις αποθηκεύτηκαν"
+
+#: core/views/user.py:99
+msgid "Access updated"
+msgstr "Το πρόσβαση ενημερώθηκε"
+
+#: lib/db_utils.py:27
+#, python-format
+msgid "Connection to database %s not configured"
+msgstr "Δεν έχει ρυθμιστεί η σύνδεση με την βάση δεδομένων %s"
+
+#: lib/exceptions.py:70
+#, python-format
+msgid "Permission denied: %s"
+msgstr "Δεν επιτρέπεται η πρόσβαση: %s"
+
+#: lib/exceptions.py:71
+msgid "Permission denied"
+msgstr "Δεν επιτρέπεται η πρόσβαση"
+
+#: lib/fields.py:17 lib/validators.py:16
+msgid "Enter a valid domain name"
+msgstr "Εισάγετε ένα έγκυρο όνομα domain"
+
+#: lib/fields.py:46 lib/fields.py:60
+msgid "Enter a valid email address."
+msgstr "Εισαγωγή μιας πραγματικής διεύθυνσης email."
+
+#: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_form.html:11
+msgid "Submit"
+msgstr "Αποστολή"
+
+#: lib/form_utils.py:119 lib/form_utils.py:122
+msgid "Invalid request"
+msgstr "Λάθος αίτημα"
+
+#: lib/form_utils.py:426
+msgid "Yes"
+msgstr "Ναι"
+
+#: lib/ldap_utils.py:133
+msgid "Failed to update password: {}"
+msgstr "Αποτυχία ενημέρωσης κωδικού: {}"
+
+#: lib/templatetags/lib_tags.py:107
+msgid "From"
+msgstr "Από"
+
+#: lib/templatetags/lib_tags.py:108
+msgid "To"
+msgstr "Προς"
+
+#: lib/templatetags/lib_tags.py:110 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Τίτλος"
+
+#: templates/404.html:4 templates/500.html:4
+msgid "Sorry"
+msgstr "Συγνώμη"
+
+#: templates/404.html:5
+msgid "The requested page does not exist."
+msgstr "Η συγκεκριμένη σελίδα δεν υπάρχει."
+
+#: templates/500.html:5
+msgid "An internal error occured."
+msgstr "Εσωτερικό σφάλμα."
+
+#: templates/common/email_searchbar.html:5
+msgid "Search..."
+msgstr "Αναζήτηση..."
+
+#: templates/common/email_searchbar.html:10
+msgid "From address"
+msgstr "Διεύθυνση αποστολέα"
+
+#: templates/common/email_searchbar.html:33
+msgid "Both"
+msgstr "Και τα δύο"
+
+#: templates/common/error.html:4
+msgid "Error:"
+msgstr "Λάθος:"
+
+#: templates/common/generic_field.html:11
+#: templates/common/generic_fields_group.html:8
+msgid "Help:"
+msgstr "Βοήθεια:"
+
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: templates/common/wizard_forms.html:31
+msgid "Previous"
+msgstr "Προηγούμενο"
+
+#: templates/common/wizard_forms.html:32
+msgid "Next"
+msgstr "Επόμενο"
+
+#: templates/registration/base.html:8
+msgid "Welcome to Modoboa"
+msgstr "Καλώς ορίσατε στο Modoboa"
+
+#: templates/registration/login.html:21
+msgid "Remember me"
+msgstr "Να με θυμάσαι"
+
+#: templates/registration/login.html:23
+msgid "Log in"
+msgstr "Είσοδος Χρήστη"
+
+#: templates/registration/login.html:24
+#: templates/registration/password_reset_form.html:6
+msgid "Forgot password?"
+msgstr "Ξέχασα των κωδικό;"
+
+#: templates/registration/password_reset_complete.html:8
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
+"in</a> now."
+msgstr "Ο κωδικός σου έχει οριστεί. Για να εισαγωγή πηγαίνετε  στο <a href=\"%(url)s\"> </a>."
+
+#: templates/registration/password_reset_confirm.html:7
+msgid "Change password"
+msgstr "Αλλαγή κωδικού"
+
+#: templates/registration/password_reset_confirm.html:17
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr "Ο σύνδεσμος για την επαναφορά του κωδικού ήταν άκυρος, πιθανότατα γιατί είχε είδη χρησιμοποιηθεί. Παρακαλώ ζητήστε μια νέα επαναφορά κωδικού."
+
+#: templates/registration/password_reset_done.html:7
+msgid ""
+"<p>We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly.</p> "
+"<p>If you don't receive an email, please make sure you've entered your "
+"primary address, and check your spam folder.</p>"
+msgstr "Σας έχουμε αποστείλει με ηλεκτρονικό ταχυδρομείο οδηγίες για να ορίσετε των κωδικό σας, εφόσον υπάρχει ένας λογαριασμός με το διεύθυνση ηλεκτρονικής αλληλογραφίας που καταχωρήσατε.  Θα πρέπει να το λάβετε σύντομα. <p><p>Εάν δεν λάβατε το email, παρακαλώ συγουρευτείτε ότι εισάγατε σωστά την διεύθυνση σας και ελέγξτε τον φάκελο τον Spam σας. </p> "
+
+#: templates/registration/password_reset_email.html:4
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(username)s Modoboa "
+"account, click the link below:"
+msgstr "Για να ενεργοποιήσετε την διαδικασία επαναφοράς κωδικού για το λογαριασμό του Modaboa %(username)s, παρακαλώ πατήστε στον ακόλουθο σύνδεσμο:"
+
+#: templates/registration/password_reset_email.html:10
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr "Εφόσον ο παρακάτω σύνδεσμος δεν λειτουργεί, αντιγράψτε και επικολλήστε το σύνδεσμο URL σε ένα νέο παράθυρο φύλλομετρητή. "
+
+#: templates/registration/password_reset_email.html:14
+msgid "Sincerely, The Modoboa Team."
+msgstr "Με εκτίμηση, Η ομάδα του Modaboa."
+
+#: templates/registration/password_reset_subject.txt:3
+msgid "Modoboa password reset"
+msgstr "Ο κωδικός του Μοdaboa επαναφέρθηκε"

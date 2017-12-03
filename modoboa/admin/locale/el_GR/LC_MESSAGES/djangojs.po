@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
+# Kostas Moumouris <moumouriskostas@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"PO-Revision-Date: 2017-10-05 20:01+0000\n"
+"Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el_GR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin/static/admin/js/admin.js:131
+msgid "No more domain to show"
+msgstr "Δεν υπάρχουν άλλα domains για εμφάνιση"
+
+#: admin/static/admin/js/admin.js:150
+msgid "Do not delete domain directory"
+msgstr "Να μην διαγραφεί ο κατάλογος αρχείων του domain "
+
+#: admin/static/admin/js/admin.js:152
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Αυτή η λειτουργία θα καταργήσει ΟΛΑ τα δεδομένα που σχετίζονται με αυτό το domain."
+
+#: admin/static/admin/js/admin.js:153
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "Αυτή η λειτουργία θα καταργήσει όλα τα δεδομένα που σχετίζονται με αυτό το domain, εκτός από τους λογαριασμούς χρηστών."
+
+#: admin/static/admin/js/admin.js:236
+msgid "No domain administrator defined"
+msgstr "Δεν έχει οριστεί διαχειριστής domain"
+
+#: admin/static/admin/js/admin.js:291 admin/static/admin/js/admin.js:359
+msgid "No more identity to show"
+msgstr "Δεν υπάρχουν άλλες ταυτότητες για εμφάνιση"
+
+#: admin/static/admin/js/admin.js:333
+msgid "Do not delete mailbox directory"
+msgstr "Να μην διαγραφεί ο κατάλογος αρχείων του γραμματοκιβωτίου "
+
+#: admin/static/admin/js/admin.js:362
+msgid "No more quota to show"
+msgstr "Δεν υπάρχει κανένα quota"
