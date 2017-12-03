@@ -1,954 +1,985 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2015-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
-"PO-Revision-Date: 2017-10-11 15:56+0000\n"
+"POT-Creation-Date: 2017-12-03 12:51+0100\n"
+"PO-Revision-Date: 2017-12-03 12:52+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: admin/app_settings.py:20 admin/handlers.py:269
-#: admin/templates/admin/_global_statistics_widget.html:11
-#: admin/templates/admin/domains.html:4
+#: app_settings.py:20 handlers.py:269
+#: templates/admin/_global_statistics_widget.html:11
+#: templates/admin/domains.html:4
 msgid "Domains"
 msgstr "Domaines"
 
-#: admin/app_settings.py:23
+#: app_settings.py:23
 msgid "Enable MX checks"
 msgstr "Activer la vérification des MX"
 
-#: admin/app_settings.py:26
+#: app_settings.py:26
 msgid "Check that every domain has a valid MX record"
 msgstr "Vérifie que chaque domaine a un enregistrement MX valide"
 
-#: admin/app_settings.py:31
+#: app_settings.py:31
 msgid "Valid MXs"
 msgstr "MX(s) valide(s)"
 
-#: admin/app_settings.py:34
+#: app_settings.py:34
 msgid ""
-"A list of IP or network address every MX record should match. A warning will"
-" be sent if a record does not respect it."
-msgstr "Une liste d'adresses IP ou réseau que chaque enregistrement MX doit respecter. Un avertissement sera envoyé dès qu'un enregistrement ne la respecte pas."
+"A list of IP or network address every MX record should match. A warning will "
+"be sent if a record does not respect it."
+msgstr ""
+"Une liste d'adresses IP ou réseau que chaque enregistrement MX doit "
+"respecter. Un avertissement sera envoyé dès qu'un enregistrement ne la "
+"respecte pas."
 
-#: admin/app_settings.py:42
+#: app_settings.py:42
 msgid "New domains must use authorized MX(s)"
 msgstr "Les nouveaux domaines doivent utiliser un ou plusieurs MX autorisés"
 
-#: admin/app_settings.py:45
+#: app_settings.py:45
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr "Empêcher la création d'un domaine s'il n'a pas au moins un MX utilisant une adresse autorisée."
+msgstr ""
+"Empêcher la création d'un domaine s'il n'a pas au moins un MX utilisant une "
+"adresse autorisée."
 
-#: admin/app_settings.py:51
+#: app_settings.py:51
 msgid "Enable DNSBL checks"
 msgstr "Activer les vérifications DNSBL"
 
-#: admin/app_settings.py:54
+#: app_settings.py:54
 msgid "Check every domain against major DNSBL providers"
 msgstr "Vérifie chaque domaine auprès des fournisseurs de DNSBL"
 
-#: admin/app_settings.py:58 admin/templates/admin/domain_detail.html:49
+#: app_settings.py:58 templates/admin/domain_detail.html:49
 msgid "Mailboxes"
 msgstr "Boites"
 
-#: admin/app_settings.py:61
+#: app_settings.py:61
 msgid "Handle mailboxes on filesystem"
 msgstr "Gérer les boites sur le système de fichiers"
 
-#: admin/app_settings.py:64
+#: app_settings.py:64
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Renommer ou supprimer les boites sur le système de fichiers quand elles sont renommées ou supprimées dans Modoboa"
+msgstr ""
+"Renommer ou supprimer les boites sur le système de fichiers quand elles sont "
+"renommées ou supprimées dans Modoboa"
 
-#: admin/app_settings.py:70
+#: app_settings.py:70
 msgid "Mailboxes owner"
 msgstr "Propriétaire des boites"
 
-#: admin/app_settings.py:73
+#: app_settings.py:73
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "Le compte UNIX qui possède les boites sur le système de fichiers"
 
-#: admin/app_settings.py:78
+#: app_settings.py:78
 msgid "Default domain quota"
 msgstr "Quota de domaine par défaut"
 
-#: admin/app_settings.py:81
+#: app_settings.py:81
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr "Quota par défaut (en Mo) appliqué aux domaines fraichement créés et ne spécifiant pas de valeur. 0 signifie qu'aucun quota ne sera appliqué."
+msgstr ""
+"Quota par défaut (en Mo) appliqué aux domaines fraichement créés et ne "
+"spécifiant pas de valeur. 0 signifie qu'aucun quota ne sera appliqué."
 
-#: admin/app_settings.py:87 admin/models/domain.py:58
-#: admin/templates/admin/domain_detail.html:72
+#: app_settings.py:87 models/domain.py:40 templates/admin/domain_detail.html:72
 msgid "Default mailbox quota"
 msgstr "Quota par défaut pour une boîte aux lettres"
 
-#: admin/app_settings.py:90
+#: app_settings.py:90
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
-msgstr "Quota par défaut pour une boîte aux lettres utilisé pour les domaines nouvellement créés. Une valeur à 0 signifie pas de quota."
+msgstr ""
+"Quota par défaut pour une boîte aux lettres utilisé pour les domaines "
+"nouvellement créés. Une valeur à 0 signifie pas de quota."
 
-#: admin/app_settings.py:96
+#: app_settings.py:96
 msgid "Automatic account removal"
 msgstr "Suppression automatique de compte"
 
-#: admin/app_settings.py:99
+#: app_settings.py:99
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr "Lorsqu'une boite aux lettres est supprimée, supprimer le compte associé en même temps"
+msgstr ""
+"Lorsqu'une boite aux lettres est supprimée, supprimer le compte associé en "
+"même temps"
 
-#: admin/app_settings.py:103
+#: app_settings.py:103
 msgid "Automatic domain/mailbox creation"
 msgstr "Création automatique de domaine/boite aux lettres"
 
-#: admin/app_settings.py:106
-msgid ""
-"Create a domain and a mailbox when an account is automatically created."
-msgstr "Créer un domaine et une boite aux lettres quand un compte est créé automatiquement."
+#: app_settings.py:106
+msgid "Create a domain and a mailbox when an account is automatically created."
+msgstr ""
+"Créer un domaine et une boite aux lettres quand un compte est créé "
+"automatiquement."
 
-#: admin/app_settings.py:112
+#: app_settings.py:112
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Créer un alias quand une boite aux lettres est renommée"
 
-#: admin/app_settings.py:115
+#: app_settings.py:115
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr "Créer un alias en utilisant l'ancienne adresse quand une boite aux lettres est renommée."
+msgstr ""
+"Créer un alias en utilisant l'ancienne adresse quand une boite aux lettres "
+"est renommée."
 
-#: admin/app_settings.py:164 admin/app_settings.py:172
-#: admin/forms/account.py:331
+#: app_settings.py:164 app_settings.py:172 forms/account.py:331
 msgid "Must be a positive integer"
 msgstr "Doit être un entier positif"
 
-#: admin/app_settings.py:186
+#: app_settings.py:186
 msgid "Define at least one authorized network / address"
 msgstr "Définissez au moins un réseau / une adresse autorisé"
 
-#: admin/app_settings.py:196
+#: app_settings.py:196
 msgid "Administration"
 msgstr "Administration"
 
-#: admin/forms/account.py:38 admin/templates/admin/domain_detail.html:101
+#: constants.py:99 forms/alias.py:49
+#: templates/admin/_per_domain_statistics_widget.html:7
+#: templates/admin/domains_quota_headers.html:2
+msgid "Domain"
+msgstr "Domaine"
+
+#: constants.py:100
+msgid "Relay domain"
+msgstr "Domaine relais"
+
+#: forms/account.py:38 templates/admin/domain_detail.html:101
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: admin/forms/account.py:40
+#: forms/account.py:40
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr "Le nom de l'utilisateur. Doit être une adresse e-mail valide pour les utilisateurs simples ou les administrateurs avec une boite aux lettres."
+msgstr ""
+"Le nom de l'utilisateur. Doit être une adresse e-mail valide pour les "
+"utilisateurs simples ou les administrateurs avec une boite aux lettres."
 
-#: admin/forms/account.py:45 admin/templates/admin/account_detail.html:29
+#: forms/account.py:45 templates/admin/account_detail.html:29
 msgid "Role"
 msgstr "Rôle"
 
-#: admin/forms/account.py:46
+#: forms/account.py:46
 msgid "Choose"
 msgstr "Choisir"
 
-#: admin/forms/account.py:47
+#: forms/account.py:47
 msgid "What level of permission this user will have"
 msgstr "Quel niveau de permission cet utilisateur aura"
 
-#: admin/forms/account.py:50 admin/forms/domain.py:217
+#: forms/account.py:50 forms/domain.py:208
 msgid "Random password"
 msgstr "Mot de passe aléatoire"
 
-#: admin/forms/account.py:52
+#: forms/account.py:52
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
-msgstr "Générer un mot de passe aléatoire. Si vous modifiez ce compte et cochez cette case, un nouveau mot de passe sera généré."
+msgstr ""
+"Générer un mot de passe aléatoire. Si vous modifiez ce compte et cochez "
+"cette case, un nouveau mot de passe sera généré."
 
-#: admin/forms/account.py:58
+#: forms/account.py:58
 msgid "Password"
 msgstr "Mot de passe"
 
-#: admin/forms/account.py:63
+#: forms/account.py:63
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: admin/forms/account.py:66
+#: forms/account.py:66
 msgid "Enter the same password as above, for verification."
 msgstr "Entrer le même mot de passe, pour vérification."
 
-#: admin/forms/account.py:78
+#: forms/account.py:78
 msgid "Enabled"
 msgstr "Activé"
 
-#: admin/forms/account.py:172
+#: forms/account.py:172
 msgid "Only super administrators are allowed for this mode"
 msgstr "Seuls les super administrateurs sont autorisés pour ce mode"
 
-#: admin/forms/account.py:183 admin/forms/account.py:185
-#: admin/forms/domain.py:263 admin/forms/domain.py:266
-#: admin/serializers.py:241
+#: forms/account.py:183 forms/account.py:185 forms/domain.py:254
+#: forms/domain.py:257 serializers.py:241
 msgid "This field is required."
 msgstr "Ce champ est requis."
 
-#: admin/forms/account.py:191
+#: forms/account.py:191
 msgid "The two password fields didn't match."
 msgstr "Les deux mots de passe ne correspondent pas."
 
-#: admin/forms/account.py:204
+#: forms/account.py:204
 msgid "You can't disable your own account"
 msgstr "Vous ne pouvez pas désactiver votre propre compte"
 
-#: admin/forms/account.py:225
+#: forms/account.py:225
 msgid "E-mail"
 msgstr "E-mail"
 
-#: admin/forms/account.py:227
+#: forms/account.py:227
 msgid "Create an alias using the old address"
 msgstr "Créer un alias en utilisant l'ancienne adresse"
 
-#: admin/forms/account.py:232 admin/templates/admin/account_detail.html:45
-#: admin/templates/admin/domain_detail.html:57
+#: forms/account.py:232 templates/admin/account_detail.html:45
+#: templates/admin/domain_detail.html:57
 msgid "Quota"
 msgstr "Quota"
 
-#: admin/forms/account.py:234
+#: forms/account.py:234
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr "Quota en Mo pour cette boite. Définir une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée (interdit pour les admins. de domaine)."
+msgstr ""
+"Quota en Mo pour cette boite. Définir une valeur spécifique ou utiliser la "
+"valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée "
+"(interdit pour les admins. de domaine)."
 
-#: admin/forms/account.py:242 admin/forms/domain.py:43
-#: admin/templates/admin/domain_headers.html:4
+#: forms/account.py:242 forms/domain.py:39
+#: templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Alias"
 
-#: admin/forms/account.py:245
+#: forms/account.py:245
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr "Alias de cette boîte aux lettres. Indiquer une adresse par champ, appuyer sur ENTREE pour ajouter un nouveau champ. Pour créer un alias 'fourre-tout', entrer seulement le nom du domaine (@domain.tld)."
+msgstr ""
+"Alias de cette boîte aux lettres. Indiquer une adresse par champ, appuyer "
+"sur ENTREE pour ajouter un nouveau champ. Pour créer un alias 'fourre-tout', "
+"entrer seulement le nom du domaine (@domain.tld)."
 
-#: admin/forms/account.py:251
+#: forms/account.py:251
 msgid "Sender addresses"
 msgstr "Adresses d'envoi"
 
-#: admin/forms/account.py:254
+#: forms/account.py:254
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr "Adresse(s) d'envoi supplémentaire(s) pour ce compte. L'utilisateur sera autorisé à envoyer des e-mails en utilisant la/les adresse(s) déclarée(s), même si elle(s) n'existe(nt) pas localement. Indiquer une adresse par champ. Appuyer sur ENTREE pour ajouter un nouveau champ."
+msgstr ""
+"Adresse(s) d'envoi supplémentaire(s) pour ce compte. L'utilisateur sera "
+"autorisé à envoyer des e-mails en utilisant la/les adresse(s) déclarée(s), "
+"même si elle(s) n'existe(nt) pas localement. Indiquer une adresse par champ. "
+"Appuyer sur ENTREE pour ajouter un nouveau champ."
 
-#: admin/forms/account.py:309 admin/forms/alias.py:94
-#: admin/models/mailbox.py:315
+#: forms/account.py:309 forms/alias.py:94 models/mailbox.py:315
 msgid "Domain does not exist"
 msgstr "Domaine inexistant"
 
-#: admin/forms/account.py:341
+#: forms/account.py:341
 msgid "Local domain does not exist"
 msgstr "Le domaine local n'existe pas"
 
-#: admin/forms/account.py:345 admin/forms/account.py:353
-#: admin/forms/alias.py:97
+#: forms/account.py:345 forms/account.py:353 forms/alias.py:97
 msgid "You don't have access to this domain"
 msgstr "Vous n'avez pas accès à ce domaine"
 
-#: admin/forms/account.py:452
+#: forms/account.py:452
 msgid "Domain(s)"
 msgstr "Domaine(s)"
 
-#: admin/forms/account.py:454
+#: forms/account.py:454
 msgid "Domain(s) that user administrates"
 msgstr "Domaine(s) que cet utilisateur administre"
 
-#: admin/forms/account.py:500 admin/forms/account.py:590
-#: admin/forms/domain.py:334 admin/forms/domain.py:401
+#: forms/account.py:500 forms/account.py:590 forms/domain.py:325
+#: forms/domain.py:395
 msgid "General"
 msgstr "Général"
 
-#: admin/forms/account.py:504
+#: forms/account.py:504
 msgid "Profile"
 msgstr "Profil"
 
-#: admin/forms/account.py:508 admin/forms/account.py:596
+#: forms/account.py:508 forms/account.py:596
 msgid "Mail"
 msgstr "Courrier"
 
-#: admin/forms/account.py:511
+#: forms/account.py:511
 msgid "Permissions"
 msgstr "Permissions"
 
-#: admin/forms/account.py:579
+#: forms/account.py:579
 msgid "Account updated"
 msgstr "Compte mis à jour"
 
-#: admin/forms/account.py:604
+#: forms/account.py:604
 msgid "New account"
 msgstr "Nouveau compte"
 
-#: admin/forms/account.py:616
+#: forms/account.py:616
 msgid "Account created"
 msgstr "Compte créé"
 
-#: admin/forms/alias.py:26
+#: forms/alias.py:26
 msgid "Random address"
 msgstr "Adresse aléatoire"
 
-#: admin/forms/alias.py:29
+#: forms/alias.py:29
 msgid "Email address"
 msgstr "Adresse email"
 
-#: admin/forms/alias.py:31
+#: forms/alias.py:31
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr "L'adresse de l'alias. Pour créer un alias \"fourre-tout\", saisissez uniquement le nom du domaine (@domain.tld)."
+msgstr ""
+"L'adresse de l'alias. Pour créer un alias \"fourre-tout\", saisissez "
+"uniquement le nom du domaine (@domain.tld)."
 
-#: admin/forms/alias.py:37 admin/templates/admin/alias_detail.html:37
+#: forms/alias.py:37 templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Destinataires"
 
-#: admin/forms/alias.py:39
+#: forms/alias.py:39
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr "Les adresses vers lesquelles cet alias pointera. Indiquer une adresse par champ, appuyer sur ENTREE pour ajouter un nouveau champ."
+msgstr ""
+"Les adresses vers lesquelles cet alias pointera. Indiquer une adresse par "
+"champ, appuyer sur ENTREE pour ajouter un nouveau champ."
 
-#: admin/forms/alias.py:49 admin/forms/domain.py:32 admin/models/domain.py:115
-#: admin/templates/admin/_per_domain_statistics_widget.html:7
-#: admin/templates/admin/domains_quota_headers.html:2
-msgid "Domain"
-msgstr "Domaine"
-
-#: admin/forms/alias.py:114 admin/forms/alias.py:116
+#: forms/alias.py:114 forms/alias.py:116
 msgid "This field is required"
 msgstr "Ce champ est requis."
 
-#: admin/forms/alias.py:120
+#: forms/alias.py:120
 msgid "No recipient defined"
 msgstr "Aucune destinataire défini"
 
-#: admin/forms/domain.py:40
-#: admin/templates/admin/_global_statistics_widget.html:7
+#: forms/domain.py:36 templates/admin/_global_statistics_widget.html:7
 msgid "Type"
 msgstr "Type"
 
-#: admin/forms/domain.py:46
+#: forms/domain.py:42
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr "Alias de ce domaine. Indiquer seulement un nom par champ, appuyer sur ENTREE pour ajouter un nouveau champ."
+msgstr ""
+"Alias de ce domaine. Indiquer seulement un nom par champ, appuyer sur ENTREE "
+"pour ajouter un nouveau champ."
 
-#: admin/forms/domain.py:90 admin/handlers.py:171
+#: forms/domain.py:81 handlers.py:171
 msgid "domain alias"
 msgstr "alias de domaine"
 
-#: admin/forms/domain.py:93 admin/forms/domain.py:145
-#: admin/forms/domain.py:153
+#: forms/domain.py:84 forms/domain.py:136 forms/domain.py:144
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "Un %s de ce nom existe déjà"
 
-#: admin/forms/domain.py:101 admin/serializers.py:45
+#: forms/domain.py:92 serializers.py:45
 msgid "No authorized MX record found for this domain"
 msgstr "Aucun enregistrement MX autorisé trouvé pour ce domaine"
 
-#: admin/forms/domain.py:123 admin/serializers.py:55
+#: forms/domain.py:114 serializers.py:55
 msgid "Cannot be greater than domain quota"
 msgstr "Ne peut pas être supérieur au quota du domaine"
 
-#: admin/forms/domain.py:128
+#: forms/domain.py:119
 msgid "You can't define an unlimited quota."
 msgstr "Vous ne pouvez pas définir de quota illimité"
 
-#: admin/forms/domain.py:145 admin/forms/domain.py:150
+#: forms/domain.py:136 forms/domain.py:141
 msgid "domain"
 msgstr "domaine"
 
-#: admin/forms/domain.py:199
+#: forms/domain.py:190
 msgid "Create a domain administrator"
 msgstr "Créer un administrateur de domaine"
 
-#: admin/forms/domain.py:202
+#: forms/domain.py:193
 msgid "Automatically create an administrator for this domain"
 msgstr "Créer automatiquement un administrateur pour ce domaine"
 
-#: admin/forms/domain.py:207 admin/templates/admin/domain_detail.html:101
-#: admin/templates/admin/domain_headers.html:3
-#: admin/templates/admin/identity_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:9
+#: forms/domain.py:198 templates/admin/domain_detail.html:101
+#: templates/admin/domain_headers.html:3
+#: templates/admin/identity_headers.html:2
+#: templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Nom"
 
-#: admin/forms/domain.py:210
+#: forms/domain.py:201
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr "Le nom de l'administrateur. Ne pas include un nom de domaine ici, il sera ajouté automatiquement."
+msgstr ""
+"Le nom de l'administrateur. Ne pas include un nom de domaine ici, il sera "
+"ajouté automatiquement."
 
-#: admin/forms/domain.py:220
+#: forms/domain.py:211
 msgid "Generate a random password for the administrator."
 msgstr "Générer un mot de passe aléatoire pour cet administrateur."
 
-#: admin/forms/domain.py:226
+#: forms/domain.py:217
 msgid "With a mailbox"
 msgstr "Avec une boite aux lettres"
 
-#: admin/forms/domain.py:229
+#: forms/domain.py:220
 msgid "Create a mailbox for the administrator."
 msgstr "Créer une boite aux lettres pour l'administrateur"
 
-#: admin/forms/domain.py:235
+#: forms/domain.py:226
 msgid "Create aliases"
 msgstr "Créer des alias"
 
-#: admin/forms/domain.py:238
+#: forms/domain.py:229
 msgid "Automatically create standard aliases for this domain"
 msgstr "Créer automatiquement des alias standard pour ce domaine"
 
-#: admin/forms/domain.py:254
+#: forms/domain.py:245
 msgid "Invalid format"
 msgstr "Format invalide"
 
-#: admin/forms/domain.py:283
+#: forms/domain.py:274
 #, python-format
 msgid "User '%s' already exists"
 msgstr "L'utilisateur '%s' existe déjà"
 
-#: admin/forms/domain.py:391
+#: forms/domain.py:385
 msgid "Domain modified"
 msgstr "Domaine modifié"
 
-#: admin/forms/domain.py:412
+#: forms/domain.py:406
 msgid "Options"
 msgstr "Options"
 
-#: admin/forms/domain.py:420
+#: forms/domain.py:414
 msgid "New domain"
 msgstr "Nouveau domaine"
 
-#: admin/forms/domain.py:433
+#: forms/domain.py:427
 msgid "Domain created"
 msgstr "Domaine créé"
 
-#: admin/forms/export.py:9
+#: forms/export.py:9
 msgid "File name"
 msgstr "Nom du fichier"
 
-#: admin/forms/export.py:15 admin/forms/import_.py:15
+#: forms/export.py:15 forms/import_.py:15
 msgid "Separator"
 msgstr "Séparateur"
 
-#: admin/forms/forward.py:14
+#: forms/forward.py:14
 msgid "Recipient(s)"
 msgstr "Destinataire(s)"
 
-#: admin/forms/forward.py:18
+#: forms/forward.py:18
 msgid "Indicate one or more recipients separated by a ','"
 msgstr "Indiquer un ou plusieurs destinataires séparés par une ','"
 
-#: admin/forms/forward.py:21
+#: forms/forward.py:21
 msgid "Keep local copies"
 msgstr "Conserver des copies locales"
 
-#: admin/forms/forward.py:24
+#: forms/forward.py:24
 msgid "Forward messages and store copies into your local mailbox"
 msgstr "Transférer les messages et conserver une copie dans votre boite locale"
 
-#: admin/forms/import_.py:13
+#: forms/import_.py:13
 msgid "Select a file"
 msgstr "Sélectionner un fichier"
 
-#: admin/forms/import_.py:21
+#: forms/import_.py:21
 msgid "Continue on error"
 msgstr "Continuer en cas d'erreur"
 
-#: admin/forms/import_.py:22
+#: forms/import_.py:22
 msgid "Don't treat duplicated objects as error"
 msgstr "Ne pas traiter les objets dupliqués comme des erreurs"
 
-#: admin/forms/import_.py:40
+#: forms/import_.py:40
 msgid "Crypt passwords"
 msgstr "Chiffrer les mots de passe"
 
-#: admin/forms/import_.py:42
+#: forms/import_.py:42
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "Cocher cette option si les mots de passe contenus dans votre fichier ne sont pas chiffrés"
+msgstr ""
+"Cocher cette option si les mots de passe contenus dans votre fichier ne sont "
+"pas chiffrés"
 
-#: admin/handlers.py:218
+#: handlers.py:218
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "L'import du compte a échoué (%s): le domaine n'existe pas"
 
-#: admin/handlers.py:231 admin/models/mailbox.py:342
+#: handlers.py:231 models/mailbox.py:342
 msgid "Mailbox {} already exists"
 msgstr "La boite {} existe déjà"
 
-#: admin/handlers.py:239
+#: handlers.py:239
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "L'import du compte a échoué (%s): mauvais quota"
 
-#: admin/handlers.py:279
-#: admin/templates/admin/_global_statistics_widget.html:17
-#: admin/templates/admin/_per_domain_statistics_widget.html:8
-#: admin/templates/admin/identities.html:5
+#: handlers.py:279 templates/admin/_global_statistics_widget.html:17
+#: templates/admin/_per_domain_statistics_widget.html:8
+#: templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identités"
 
-#: admin/handlers.py:295 admin/templates/admin/forward.html:2
+#: handlers.py:295 templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Transfert"
 
-#: admin/lib.py:41
+#: lib.py:41
 msgid "A mailbox is required"
 msgstr "Une boite aux lettres est requise"
 
-#: admin/lib.py:131
+#: lib.py:131
 msgid "You are not allowed to import domains"
 msgstr "Vous n'êtes pas autorisé à importer des domaines"
 
-#: admin/lib.py:142
+#: lib.py:142
 msgid "You are not allowed to import domain aliases."
 msgstr "Vous n'êtes pas autorisé à importer des alias de domaine."
 
-#: admin/management/commands/subcommands/_mx.py:125
+#: management/commands/subcommands/_mx.py:125
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problème(s) DNSBL pour le domaine {}"
 
-#: admin/management/commands/subcommands/_mx.py:145
+#: management/commands/subcommands/_mx.py:145
 msgid "Domain {} has no MX record"
 msgstr "Le domaine {} n'a pas d'enregistrement MX"
 
-#: admin/management/commands/subcommands/_mx.py:156
+#: management/commands/subcommands/_mx.py:156
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "Enregistrement MX invalide pour le domaine {0} : {1}"
 
-#: admin/management/commands/subcommands/_mx.py:173
+#: management/commands/subcommands/_mx.py:173
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] problème(s) de MX pour le domaine {}"
 
-#: admin/models/alias.py:35 admin/models/mailbox.py:97
+#: models/alias.py:35 models/mailbox.py:97
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models/alias.py:37
+#: models/alias.py:37
 msgid "The alias address."
 msgstr "L'adresse de l'alias"
 
-#: admin/models/alias.py:42 admin/models/domain.py:66
-#: admin/models/domain_alias.py:46
+#: models/alias.py:42 models/domain.py:48 models/domain_alias.py:46
 msgid "enabled"
 msgstr "Activé"
 
-#: admin/models/alias.py:43 admin/models/domain_alias.py:47
+#: models/alias.py:43 models/domain_alias.py:47
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
-#: admin/models/alias.py:48 admin/templates/admin/alias_detail.html:32
+#: models/alias.py:48 templates/admin/alias_detail.html:32
 msgid "Description"
 msgstr "Description"
 
-#: admin/models/alias.py:50 admin/templates/admin/alias_detail.html:29
+#: models/alias.py:50 templates/admin/alias_detail.html:29
 msgid "Expire at"
 msgstr "Expire le"
 
-#: admin/models/alias.py:93
+#: models/alias.py:93
 msgid "alias"
 msgstr "alias"
 
-#: admin/models/alias.py:125
+#: models/alias.py:125
 msgid "Invalid address"
 msgstr "Adresse invalide"
 
-#: admin/models/alias.py:146
+#: models/alias.py:146
 msgid "Local recipient {}@{} not found"
 msgstr "Destinataire local {}@{} introuvable"
 
-#: admin/models/alias.py:176
+#: models/alias.py:176
 #, python-format
 msgid "Invalid line: %s"
 msgstr "Ligne invalide : %s"
 
-#: admin/models/alias.py:182
+#: models/alias.py:182
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Domaine '%s' inexistant"
 
-#: admin/models/domain.py:48 admin/models/domain_alias.py:39
+#: models/domain.py:30 models/domain_alias.py:39
 msgid "name"
 msgstr "Nom"
 
-#: admin/models/domain.py:49
+#: models/domain.py:31
 msgid "The domain name"
 msgstr "Le nom du domaine"
 
-#: admin/models/domain.py:53
+#: models/domain.py:35
 msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr "Quota en Mo partagé entre les boîtes aux lettres. Une valeur à 0 signifie pas de quota."
+msgstr ""
+"Quota en Mo partagé entre les boîtes aux lettres. Une valeur à 0 signifie "
+"pas de quota."
 
-#: admin/models/domain.py:61
+#: models/domain.py:43
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr "Quota par défaut en Mo appliqué aux boîtes aux lettres. Une valeur à 0 signifie pas de quota."
+msgstr ""
+"Quota par défaut en Mo appliqué aux boîtes aux lettres. Une valeur à 0 "
+"signifie pas de quota."
 
-#: admin/models/domain.py:67
+#: models/domain.py:49
 msgid "Check to activate this domain"
 msgstr "Cocher pour activer ce domaine"
 
-#: admin/models/domain.py:73
+#: models/domain.py:54
 msgid "Enable DNS checks"
 msgstr "Activer les tests DNS"
 
-#: admin/models/domain.py:74
+#: models/domain.py:55
 msgid "Check to enable DNS checks for this domain"
 msgstr "Cocher pour activer les tests DNS pour ce domaine"
 
-#: admin/models/domain.py:274 admin/models/domain_alias.py:73
+#: models/domain.py:253 models/domain_alias.py:73
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: admin/models/domain.py:284
+#: models/domain.py:263
 msgid "No authorized MX record found for domain {}"
 msgstr "Aucun enregistrement MX autorisé trouvé pour le domaine {}"
 
-#: admin/models/domain.py:291
+#: models/domain.py:270
 msgid "Invalid quota value for domain '{}'"
 msgstr "Quota invalide pour le domaine '{}'"
 
-#: admin/models/domain.py:298
+#: models/domain.py:277
 msgid "Invalid default mailbox quota value for domain '{}'"
-msgstr "Quota par défaut pour une boîte aux lettres invalide pour le domaine '{}'"
+msgstr ""
+"Quota par défaut pour une boîte aux lettres invalide pour le domaine '{}'"
 
-#: admin/models/domain.py:303
+#: models/domain.py:282
 msgid "Default mailbox quota cannot be greater than domain quota"
-msgstr "Le quota par défaut d'une boîte aux lettres ne peut pas être supérieur au quota du domaine"
+msgstr ""
+"Le quota par défaut d'une boîte aux lettres ne peut pas être supérieur au "
+"quota du domaine"
 
-#: admin/models/domain_alias.py:40
+#: models/domain_alias.py:40
 msgid "The alias name"
 msgstr "Le nom de l'alias"
 
-#: admin/models/domain_alias.py:42
+#: models/domain_alias.py:42
 msgid "target"
 msgstr "cible"
 
-#: admin/models/domain_alias.py:43
+#: models/domain_alias.py:43
 msgid "The domain this alias points to"
 msgstr "Le domaine vers lequel cet alias pointe"
 
-#: admin/models/domain_alias.py:82
+#: models/domain_alias.py:82
 #, python-format
 msgid "Unknown domain %s"
 msgstr "Domaine %s inconnu"
 
-#: admin/models/mailbox.py:99
+#: models/mailbox.py:99
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adresse de la boite aux lettres (sans la partie @domain.tld)"
 
-#: admin/models/mailbox.py:165
+#: models/mailbox.py:165
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Impossible de récuperer l'emplacement de la boite (%s)"
 
-#: admin/models/mailbox.py:258
+#: models/mailbox.py:258
 msgid "A quota is required"
 msgstr "Un quota est requis"
 
-#: admin/models/mailbox.py:264
+#: models/mailbox.py:264
 msgid "Domain quota exceeded"
 msgstr "Quota du domaine dépassé"
 
-#: admin/serializers.py:80 admin/serializers.py:266 admin/serializers.py:360
+#: serializers.py:80 serializers.py:266 serializers.py:360
 msgid "Permission denied."
 msgstr "Permission refusée."
 
-#: admin/serializers.py:118
+#: serializers.py:118
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr "Liste des domaines administrés (revendeurs et administrateurs de domaine seulement)."
+msgstr ""
+"Liste des domaines administrés (revendeurs et administrateurs de domaine "
+"seulement)."
 
-#: admin/serializers.py:218
+#: serializers.py:218
 msgid "Not allowed for this role."
 msgstr "Non autorisé pour ce rôle."
 
-#: admin/serializers.py:228
+#: serializers.py:228
 msgid "Must be equal to mailbox full_address"
 msgstr "Doit être égale au champ full_address dans mailbox"
 
-#: admin/serializers.py:253
+#: serializers.py:253
 msgid "Local domain {} does not exist"
 msgstr "Le domaine local {} n'existe pas"
 
-#: admin/serializers.py:347
+#: serializers.py:347
 msgid "A list of recipient"
 msgstr "Une liste de destinataire"
 
-#: admin/serializers.py:358
+#: serializers.py:358
 msgid "Domain not found."
 msgstr "Domaine introuvable."
 
-#: admin/templates/admin/_domain_dnschecks_status.html:4
+#: templates/admin/_domain_dnschecks_status.html:4
 msgctxt "checks"
 msgid "Disabled"
 msgstr "Désactivés"
 
-#: admin/templates/admin/_domain_dnschecks_status.html:6
+#: templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
 msgstr "En attente de vérification"
 
-#: admin/templates/admin/_global_statistics_widget.html:4
+#: templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
 msgstr "Statistiques globales"
 
-#: admin/templates/admin/_global_statistics_widget.html:8
+#: templates/admin/_global_statistics_widget.html:8
 msgid "Quantity"
 msgstr "Quantité"
 
-#: admin/templates/admin/_global_statistics_widget.html:14
-#: admin/templates/admin/domain_detail.html:45
-#: admin/templates/admin/domain_detail.html:81
+#: templates/admin/_global_statistics_widget.html:14
+#: templates/admin/domain_detail.html:45 templates/admin/domain_detail.html:81
 msgid "Domain aliases"
 msgstr "Alias de domaine"
 
-#: admin/templates/admin/_per_domain_statistics_widget.html:4
+#: templates/admin/_per_domain_statistics_widget.html:4
 msgid "Per-domain statistics"
 msgstr "Statistiques par domaine"
 
-#: admin/templates/admin/account_detail.html:16
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/domain_detail.html:19
-#: admin/templates/admin/identities_table.html:7
+#: templates/admin/account_detail.html:16 templates/admin/alias_detail.html:16
+#: templates/admin/domain_detail.html:19
+#: templates/admin/identities_table.html:7
 msgid "(disabled)"
 msgstr "(désactivé)"
 
-#: admin/templates/admin/account_detail.html:22
-#: admin/templates/admin/alias_detail.html:22
-#: admin/templates/admin/domain_detail.html:25
+#: templates/admin/account_detail.html:22 templates/admin/alias_detail.html:22
+#: templates/admin/domain_detail.html:25
 msgid "Summary"
 msgstr "Résumé"
 
-#: admin/templates/admin/account_detail.html:26
+#: templates/admin/account_detail.html:26
 msgid "Full name"
 msgstr "Nom complet"
 
-#: admin/templates/admin/account_detail.html:32
-#: admin/templates/admin/alias_detail.html:26
+#: templates/admin/account_detail.html:32 templates/admin/alias_detail.html:26
 msgid "Created"
 msgstr "Créé"
 
-#: admin/templates/admin/account_detail.html:35
+#: templates/admin/account_detail.html:35
 msgid "Last login"
 msgstr "Dernière connexion"
 
-#: admin/templates/admin/account_detail.html:38
+#: templates/admin/account_detail.html:38
 msgid "Secondary email"
 msgstr "E-mail secondaire"
 
-#: admin/templates/admin/account_detail.html:38
-#: admin/templates/admin/account_detail.html:41
+#: templates/admin/account_detail.html:38
+#: templates/admin/account_detail.html:41
 msgid "Not defined"
 msgstr "Non défini"
 
-#: admin/templates/admin/account_detail.html:41
+#: templates/admin/account_detail.html:41
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: admin/templates/admin/account_detail.html:55
+#: templates/admin/account_detail.html:55
 msgid "Administered domains"
 msgstr "Domaines gérés"
 
-#: admin/templates/admin/account_detail.html:61
+#: templates/admin/account_detail.html:61
 msgid "No domain defined."
 msgstr "Aucun domaine défini."
 
-#: admin/templates/admin/account_detail.html:75
+#: templates/admin/account_detail.html:75
 msgid "Aliases"
 msgstr "Alias"
 
-#: admin/templates/admin/account_detail.html:81
+#: templates/admin/account_detail.html:81
 msgid "No alias defined"
 msgstr "Aucun alias défini"
 
-#: admin/templates/admin/account_detail.html:87
+#: templates/admin/account_detail.html:87
 msgid "Additional sender addresses"
 msgstr "Adresses d'envoi supplémentaires"
 
-#: admin/templates/admin/account_detail.html:93
+#: templates/admin/account_detail.html:93
 msgid "No sender address defined"
 msgstr "Aucune adresse d'envoi déclarée"
 
-#: admin/templates/admin/account_general_form.html:12
-#: admin/templates/admin/aliasform.html:13
+#: templates/admin/account_general_form.html:12
+#: templates/admin/aliasform.html:13
 msgid "Domain is disabled"
 msgstr "Le domaine est désactivé"
 
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/identities.html:33
+#: templates/admin/alias_detail.html:16 templates/admin/identities.html:33
 msgid "Alias"
 msgstr "Alias"
 
-#: admin/templates/admin/alias_detail.html:27
+#: templates/admin/alias_detail.html:27
 msgid "Modified"
 msgstr "Modifié"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:10
+#: templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"
 msgstr "Fournisseur"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:11
-#: admin/templates/admin/identities_quota_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:10
+#: templates/admin/dnsbl_domain_detail.html:11
+#: templates/admin/identities_quota_headers.html:2
+#: templates/admin/mx_domain_detail.html:10
 msgid "Address"
 msgstr "Adresse"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:12
+#: templates/admin/dnsbl_domain_detail.html:12
 msgid "Status"
 msgstr "Statut"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:21
+#: templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
 msgstr "listé"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:29
+#: templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
 msgstr "Tout va bien, ce domaine n'est pas listé."
 
-#: admin/templates/admin/dnsbl_domain_detail.html:32
+#: templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
 msgstr "Aucune information disponible pour ce domaine."
 
-#: admin/templates/admin/domain_detail.html:30
-#: admin/templates/admin/domain_headers.html:7
+#: templates/admin/domain_detail.html:30 templates/admin/domain_headers.html:7
 msgid "DNS status"
 msgstr "Statut DNS"
 
-#: admin/templates/admin/domain_detail.html:37
+#: templates/admin/domain_detail.html:37
 msgid "Creation date"
 msgstr "Date de création"
 
-#: admin/templates/admin/domain_detail.html:41
+#: templates/admin/domain_detail.html:41
 msgid "Last modification date"
 msgstr "Date de dernière modification"
 
-#: admin/templates/admin/domain_detail.html:53
+#: templates/admin/domain_detail.html:53
 msgid "Mailbox aliases"
 msgstr "Alias de boite."
 
-#: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domain_detail.html:65
-#: admin/templates/admin/domain_detail.html:66
-#: admin/templates/admin/domain_detail.html:73
-#: admin/templates/admin/domain_general_form.html:4
-#: admin/templates/admin/domain_general_form.html:5
-#: admin/templates/admin/domains_quotas.html:11
-#: admin/templates/admin/domains_quotas.html:12
-#: admin/templates/admin/mailform.html:7
-#: admin/templates/admin/newdomainform.html:3
+#: templates/admin/domain_detail.html:58 templates/admin/domain_detail.html:65
+#: templates/admin/domain_detail.html:66 templates/admin/domain_detail.html:73
+#: templates/admin/domain_general_form.html:4
+#: templates/admin/domain_general_form.html:5
+#: templates/admin/domains_quotas.html:11
+#: templates/admin/domains_quotas.html:12 templates/admin/mailform.html:7
+#: templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "Mo"
 
-#: admin/templates/admin/domain_detail.html:62
+#: templates/admin/domain_detail.html:62
 msgid "Usage"
 msgstr "Utilisation"
 
-#: admin/templates/admin/domain_detail.html:65
-#: admin/templates/admin/domains_quotas.html:11
+#: templates/admin/domain_detail.html:65 templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
 msgstr "utilisé"
 
-#: admin/templates/admin/domain_detail.html:66
-#: admin/templates/admin/domains_quotas.html:12
+#: templates/admin/domain_detail.html:66 templates/admin/domains_quotas.html:12
 msgid "allocated"
 msgstr "alloué"
 
-#: admin/templates/admin/domain_detail.html:98
+#: templates/admin/domain_detail.html:98
 msgid "Administrators"
 msgstr "Administrateurs"
 
-#: admin/templates/admin/domain_detail.html:110
-#: admin/templatetags/admin_tags.py:268
+#: templates/admin/domain_detail.html:110 templatetags/admin_tags.py:268
 msgid "Remove this permission"
 msgstr "Supprimer cette permission"
 
-#: admin/templates/admin/domain_detail.html:115
+#: templates/admin/domain_detail.html:115
 msgid "No domain administrator defined yet."
 msgstr "Aucun administrateur de domaine défini."
 
-#: admin/templates/admin/domain_headers.html:5
-#: admin/templates/admin/identity_headers.html:4
+#: templates/admin/domain_headers.html:5
+#: templates/admin/identity_headers.html:4
 msgid "Tags"
 msgstr "Tags"
 
-#: admin/templates/admin/domain_headers.html:9
-#: admin/templates/admin/identity_headers.html:5
+#: templates/admin/domain_headers.html:9
+#: templates/admin/identity_headers.html:5
 msgid "Actions"
 msgstr "Actions"
 
-#: admin/templates/admin/domain_options_form.html:10
+#: templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
 msgstr "Vous ne pouvez pas créer de nouvel administrateur de domaine"
 
-#: admin/templates/admin/domains.html:26
-#: admin/templates/admin/identities.html:29
+#: templates/admin/domains.html:26 templates/admin/identities.html:29
 msgid "Add"
 msgstr "Ajouter"
 
-#: admin/templates/admin/domains_quota_headers.html:3
-#: admin/templates/admin/identities_quota_headers.html:4
+#: templates/admin/domains_quota_headers.html:3
+#: templates/admin/identities_quota_headers.html:4
 msgid "Limit"
 msgstr "Limite"
 
-#: admin/templates/admin/domains_quota_headers.html:4
+#: templates/admin/domains_quota_headers.html:4
 msgid "Used"
 msgstr "Utilisé"
 
-#: admin/templates/admin/domains_quota_headers.html:5
+#: templates/admin/domains_quota_headers.html:5
 msgid "Allocated"
 msgstr "Alloué"
 
-#: admin/templates/admin/domains_quota_headers.html:6
-#: admin/templates/admin/identities_quota_headers.html:5
+#: templates/admin/domains_quota_headers.html:6
+#: templates/admin/identities_quota_headers.html:5
 #, python-format
 msgid "Usage (%%)"
 msgstr "Utilisation (%%)"
 
-#: admin/templates/admin/domains_table.html:5
+#: templates/admin/domains_table.html:5
 msgid "disabled"
 msgstr "Desactivé"
 
-#: admin/templates/admin/forward.html:2
+#: templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
 msgstr "Transférer automatiquement les messages vers une autre adresse"
 
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:93
+#: templates/admin/forward.html:9 views/alias.py:93
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: admin/templates/admin/identities.html:32
+#: templates/admin/identities.html:32
 msgid "Account"
 msgstr "Compte"
 
-#: admin/templates/admin/identities_quota_headers.html:3
+#: templates/admin/identities_quota_headers.html:3
 msgid "Value"
 msgstr "Valeur"
 
-#: admin/templates/admin/identity_headers.html:3
+#: templates/admin/identity_headers.html:3
 msgid "Fullname/Recipient"
 msgstr "Nom complet/Destinataire"
 
-#: admin/templates/admin/import_domains_form.html:6
+#: templates/admin/import_domains_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
@@ -957,199 +988,221 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr "Fournir un fichier CSV dans lequel les lignes respectent un des formats suivants : <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>Vous pouvez utiliser un caractère différent comme séparateur.</p>"
+msgstr ""
+"Fournir un fichier CSV dans lequel les lignes respectent un des formats "
+"suivants : <ul> <li><em>domain; name; quota; default mailbox quota; enabled</"
+"em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> "
+"<li><em>relaydomain; name; target host; target port; service; enabled; "
+"verify recipients</em></li> </ul> <p>The first element of each line is "
+"mandatory and must be equal to one of the previous values.</p> <p>Vous "
+"pouvez utiliser un caractère différent comme séparateur.</p>"
 
-#: admin/templates/admin/import_identities_form.html:6
+#: templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group;"
-" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can"
-" use a different character as separator.</p>"
-msgstr "Fournissez un fichier CSV dans lequel les lignes respectent un des formats suivants : <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>Le premier élément de chaque ligne est obligatoire et doit être égal à l'une des valeurs présentées.</p><p>Vous pouvez utiliser un caractère différent en tant que séparateur.</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can "
+"use a different character as separator.</p>"
+msgstr ""
+"Fournissez un fichier CSV dans lequel les lignes respectent un des formats "
+"suivants : <ul> <li><em>account; loginname; password; first name; last name; "
+"enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; "
+"address; enabled; recipient; recipient; ...</em></li> </ul> <p>Le premier "
+"élément de chaque ligne est obligatoire et doit être égal à l'une des "
+"valeurs présentées.</p><p>Vous pouvez utiliser un caractère différent en "
+"tant que séparateur.</p>"
 
-#: admin/templates/admin/importform.html:6
+#: templates/admin/importform.html:6
 msgid "Help"
 msgstr "Aide"
 
-#: admin/templates/admin/importform.html:13
+#: templates/admin/importform.html:13
 msgid "Importing..."
 msgstr "Import en cours..."
 
-#: admin/templates/admin/index.html:6
+#: templates/admin/index.html:6
 msgid "Admin"
 msgstr "Admin"
 
-#: admin/templates/admin/mailboxes_raw.html:3
+#: templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
 msgstr "Choisir une valeur"
 
-#: admin/templates/admin/mailform.html:7
+#: templates/admin/mailform.html:7
 msgid "Use domain default value"
 msgstr "Utiliser la valeur par défaut du domaine"
 
-#: admin/templates/admin/mx_domain_detail.html:11
+#: templates/admin/mx_domain_detail.html:11
 msgid "Updated"
 msgstr "Mis à jour"
 
-#: admin/templates/admin/mx_domain_detail.html:23
+#: templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr "Cette IP ne correspond à un aucun des MX valides déclarés dans les paramètres."
+msgstr ""
+"Cette IP ne correspond à un aucun des MX valides déclarés dans les "
+"paramètres."
 
-#: admin/templates/admin/mx_domain_detail.html:36
+#: templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
 msgstr "Aucun enregistrement MX trouvé pour ce domaine."
 
-#: admin/templates/admin/notifications/domain_in_dnsbl.html:3
+#: templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr "Modoboa a détecté que le domaine %(domain)s est listé par les fournisseurs de DNSBL suivants :"
+msgstr ""
+"Modoboa a détecté que le domaine %(domain)s est listé par les fournisseurs "
+"de DNSBL suivants :"
 
-#: admin/templates/admin/notifications/domain_in_dnsbl.html:11
+#: templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr "La réputation de ce domaine sera affectée et il est probable que les emails venant de lui soient considérés comme du spam. Vous devriez contacter ces fournisseurs pour leur demander de délister la/les adresse(s) détectée(s)."
+msgstr ""
+"La réputation de ce domaine sera affectée et il est probable que les emails "
+"venant de lui soient considérés comme du spam. Vous devriez contacter ces "
+"fournisseurs pour leur demander de délister la/les adresse(s) détectée(s)."
 
-#: admin/templates/admin/notifications/domain_invalid_mx.html:3
+#: templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr "Modoboa a détecté que le domain %(domain)s n'a aucun enregistrement MX valide :"
+msgstr ""
+"Modoboa a détecté que le domain %(domain)s n'a aucun enregistrement MX "
+"valide :"
 
-#: admin/templates/admin/searchform.html:6
+#: templates/admin/searchform.html:6
 msgid "Search"
 msgstr "Chercher"
 
-#: admin/templatetags/admin_tags.py:22
+#: templatetags/admin_tags.py:22
 msgid "enabled_m"
 msgstr "Activé"
 
-#: admin/templatetags/admin_tags.py:22
+#: templatetags/admin_tags.py:22
 msgid "enabled_f"
 msgstr "Activée"
 
-#: admin/templatetags/admin_tags.py:48
+#: templatetags/admin_tags.py:48
 msgid "List domains"
 msgstr "Lister les domaines"
 
-#: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:108
+#: templatetags/admin_tags.py:53 templatetags/admin_tags.py:108
 msgid "List quotas"
 msgstr "Lister les quotas"
 
-#: admin/templatetags/admin_tags.py:65 admin/templatetags/admin_tags.py:113
-#: admin/views/import_.py:101 admin/views/import_.py:123
+#: templatetags/admin_tags.py:65 templatetags/admin_tags.py:113
+#: views/import_.py:101 views/import_.py:123
 msgid "Import"
 msgstr "Importer"
 
-#: admin/templatetags/admin_tags.py:71 admin/templatetags/admin_tags.py:119
-#: admin/views/export.py:44 admin/views/export.py:74
+#: templatetags/admin_tags.py:71 templatetags/admin_tags.py:119
+#: views/export.py:44 views/export.py:74
 msgid "Export"
 msgstr "Exporter"
 
-#: admin/templatetags/admin_tags.py:103
+#: templatetags/admin_tags.py:103
 msgid "List identities"
 msgstr "Lister les identités"
 
-#: admin/templatetags/admin_tags.py:138
+#: templatetags/admin_tags.py:138
 msgid "View the domain's identities"
 msgstr "Voir les identités du domaine"
 
-#: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:187
-#: admin/templatetags/admin_tags.py:200
+#: templatetags/admin_tags.py:144 templatetags/admin_tags.py:187
+#: templatetags/admin_tags.py:200
 msgid "Edit {}"
 msgstr "Modifier {}"
 
-#: admin/templatetags/admin_tags.py:154 admin/templatetags/admin_tags.py:191
-#: admin/templatetags/admin_tags.py:205
+#: templatetags/admin_tags.py:154 templatetags/admin_tags.py:191
+#: templatetags/admin_tags.py:205
 #, python-format
 msgid "Delete %s?"
 msgstr "Supprimer %s ?"
 
-#: admin/views/alias.py:35
+#: views/alias.py:35
 msgid "Alias with this name already exists"
 msgstr "Un alias de ce nom existe déjà"
 
-#: admin/views/alias.py:60
+#: views/alias.py:60
 msgid "Create"
 msgstr "Créer"
 
-#: admin/views/alias.py:72
+#: views/alias.py:72
 msgid "New alias"
 msgstr "Nouvel alias"
 
-#: admin/views/alias.py:73
+#: views/alias.py:73
 msgid "Alias created"
 msgstr "Alias créé"
 
-#: admin/views/alias.py:85
+#: views/alias.py:85
 msgid "Alias modified"
 msgstr "Alias modifié"
 
-#: admin/views/alias.py:109
+#: views/alias.py:109
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
 msgstr[0] "Alias supprimé"
 msgstr[1] "Alias supprimés"
 
-#: admin/views/dns.py:32
+#: views/dns.py:32
 msgid "MX records of {}"
 msgstr "Enregistrements MX de {}"
 
-#: admin/views/dns.py:55
+#: views/dns.py:55
 msgid "DNSBL summary for {}"
 msgstr "Résumé DNSBL pour {}"
 
-#: admin/views/domain.py:191
+#: views/domain.py:190
 msgid "You can't delete your own domain"
 msgstr "Vous ne pouvez pas supprimer votre propre domaine"
 
-#: admin/views/domain.py:194
+#: views/domain.py:193
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domaine supprimé"
 msgstr[1] "Domaines supprimés"
 
-#: admin/views/export.py:43
+#: views/export.py:43
 msgid "Export identities"
 msgstr "Export d'identités"
 
-#: admin/views/export.py:73
+#: views/export.py:73
 msgid "Export domains"
 msgstr "Export de domaines"
 
-#: admin/views/identity.py:113 admin/views/identity.py:206
-#: admin/views/identity.py:211
+#: views/identity.py:113 views/identity.py:206 views/identity.py:211
 msgid "Invalid request"
 msgstr "Requête invalide"
 
-#: admin/views/identity.py:196
+#: views/identity.py:196
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Compte supprimé"
 msgstr[1] "Comptes supprimés"
 
-#: admin/views/import_.py:77
+#: views/import_.py:77
 #, python-format
 msgid "Object already exists: %s"
 msgstr "L'objet existe déjà : %s"
 
-#: admin/views/import_.py:81
+#: views/import_.py:81
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d objets importés avec succès"
 
-#: admin/views/import_.py:100
+#: views/import_.py:100
 msgid "Import domains"
 msgstr "Importer des domaines"
 
-#: admin/views/import_.py:122
+#: views/import_.py:122
 msgid "Import identities"
 msgstr "Importer des identités"
 
-#: admin/views/user.py:40
+#: views/user.py:40
 msgid "Forward updated"
 msgstr "Transfert mis à jour"
