@@ -151,7 +151,7 @@ def domain_actions(user, domain):
         actions.append({
             "name": "deldomain",
             "url": reverse("admin:domain_delete", args=[domain.id]),
-            "title": _("Delete %s?" % domain.name),
+            "title": _("Delete %s?") % domain.name,
             "img": "fa fa-trash"
         })
 
@@ -188,7 +188,7 @@ def identity_actions(user, ident):
             {"name": "delaccount",
              "url": reverse("admin:account_delete", args=[objid]),
              "img": "fa fa-trash",
-             "title": _("Delete %s?" % ident.username)},
+             "title": _("Delete %s?") % ident.username},
         ]
     else:
         actions = [
@@ -202,7 +202,7 @@ def identity_actions(user, ident):
              "url": "{}?selection={}".format(
                  reverse("admin:alias_delete"), objid),
              "img": "fa fa-trash",
-             "title": _("Delete %s?" % ident.address)},
+             "title": _("Delete %s?") % ident.address},
         ]
     return render_actions(actions)
 
