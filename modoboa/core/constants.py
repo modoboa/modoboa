@@ -28,6 +28,7 @@ LANGUAGES = (
     ("cs", u"čeština"),
     ("de", u"deutsch"),
     ("en", u"english"),
+    ("el_GR", u"ελληνικά"),
     ("es", u"español"),
     ("fr", u"français"),
     ("it", u"italiano"),
