@@ -79,6 +79,11 @@ It is a generic upgrade procedure which will be enough most of the
 time but it is generally a good idea to check the associated
 documentation.
 
+Rebuild Virtual Environment
+***************************
+
+.. include:: rebuild_virtual_env.rst
+
 .. _specific_upgrade_instructions:
 
 Specific instructions

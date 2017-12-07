@@ -1,3 +1,5 @@
+.. _modoboa_manual_install:
+
 #######
 Modoboa
 #######
