@@ -36,6 +36,7 @@ LANGUAGES = (
     ("nl", u"nederlands"),
     ("pt_PT", u"português"),
     ("pt_BR", u"português (BR)"),
+    ("pl_PL", u"polski"),
     ("ru", u"русский"),
     ("sv", u"svenska"),
 )

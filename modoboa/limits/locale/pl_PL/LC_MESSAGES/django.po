@@ -1,0 +1,206 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# sin88 <sin@sin.waw.pl>, 2016
+# Tomasz Proć <tomasz.proc@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"PO-Revision-Date: 2017-12-01 15:11+0000\n"
+"Last-Translator: Tomasz Proć <tomasz.proc@gmail.com>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/language/pl_PL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: limits/app_settings.py:17
+msgid "Default per-admin limits"
+msgstr "Domyślne limity per admin"
+
+#: limits/app_settings.py:20
+msgid "Enable per-admin limits"
+msgstr "Włącz limity per admin"
+
+#: limits/app_settings.py:22
+msgid "Enable or disable per-admin limits"
+msgstr "Włącz lub wyłącz limity per admin"
+
+#: limits/app_settings.py:26 limits/app_settings.py:97 limits/constants.py:27
+#: limits/constants.py:57
+msgid "Domain admins"
+msgstr "Administratorzy domeny"
+
+#: limits/app_settings.py:29
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr "Maksymalna dozwolona liczba administratorów domen dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/app_settings.py:37 limits/constants.py:12
+msgid "Domains"
+msgstr "Domeny"
+
+#: limits/app_settings.py:40
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maksymalna dozwolona ilość domen dla nowego administratora. (0 dla tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/app_settings.py:47 limits/app_settings.py:108 limits/constants.py:16
+#: limits/constants.py:44
+msgid "Domain aliases"
+msgstr "Aliasy domen"
+
+#: limits/app_settings.py:50
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "Maksymalna dozwolona ilość aliasów domen dla nowego administratora. (0 dla tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/app_settings.py:58 limits/app_settings.py:119 limits/constants.py:20
+#: limits/constants.py:48
+msgid "Mailboxes"
+msgstr "Skrzynki pocztowe"
+
+#: limits/app_settings.py:61
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maksymalna dozwolona liczba skrzynek dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/app_settings.py:68 limits/app_settings.py:129 limits/constants.py:23
+#: limits/constants.py:51
+msgid "Mailbox aliases"
+msgstr "Aliasy skrzynek pocztowych"
+
+#: limits/app_settings.py:71
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Maksymalna dozwolona liczba aliasów dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/app_settings.py:78 limits/constants.py:33
+msgid "Quota"
+msgstr "Pojemność"
+
+#: limits/app_settings.py:81
+msgid ""
+"The quota a reseller will be allowed to share between the domains he "
+"creates. (0 means no quota)"
+msgstr "Pojemność jaką reseller może dzielić między domenami które utworzy. (0 oznacza brak limitu)"
+
+#: limits/app_settings.py:88
+msgid "Default per-domain limits"
+msgstr "Domyślne limity per domena"
+
+#: limits/app_settings.py:91
+msgid "Enable per-domain limits"
+msgstr "Włącz limity per domena"
+
+#: limits/app_settings.py:93
+msgid "Enable or disable per-domain limits"
+msgstr "Włącz lub wyłącz limity per domena"
+
+#: limits/app_settings.py:100
+msgid ""
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "Max liczba administratrów nowej domeny. (0 tworzenie niedozwolone, -1 dla braku limitu)"
+
+#: limits/app_settings.py:111
+msgid ""
+"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Max liczba aliasów domen nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/app_settings.py:122
+msgid ""
+"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "Max liczba skrzynek dla nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/app_settings.py:132
+msgid ""
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
+msgstr "Max liczba aliasów dla nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
+
+#: limits/apps.py:14
+msgid "Limits"
+msgstr "Limity"
+
+#: limits/constants.py:13
+msgid "Maximum number of domains this user can create"
+msgstr "Maksymalna liczba domen, które może stworzyć użytkownik"
+
+#: limits/constants.py:17
+msgid "Maximum number of domain aliases this user can create"
+msgstr "Maksymalna liczba aliasów domen, które może stworzyć użytkownik"
+
+#: limits/constants.py:21
+msgid "Maximum number of mailboxes this user can create"
+msgstr "Maksymalna liczba skrzynek, które może stworzyć użytkownik"
+
+#: limits/constants.py:24
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "Maksymalna liczba aliasów skrzynek, które może stworzyć użytkownik"
+
+#: limits/constants.py:28
+msgid "Maximum number of domain administrators this user can create"
+msgstr "Maksymalna liczba kont aministratorów domen, które może stworzyć użytkownik"
+
+#: limits/constants.py:34
+msgid "Quota shared between domains of this reseller"
+msgstr "Pojemność współdzielona między domenami tego resellera"
+
+#: limits/constants.py:45
+msgid "Maximum number of domain aliases allowed for this domain."
+msgstr "Max liczba aliasów domen dla tej domeny."
+
+#: limits/constants.py:49
+msgid "Maximum number of mailboxes allowed for this domain."
+msgstr "Max liczba skrzynek dla tej domeny."
+
+#: limits/constants.py:53
+msgid "Maximum number of mailbox aliases allowed for this domain."
+msgstr "Max liczba aliasów dla tej domeny."
+
+#: limits/constants.py:58
+msgid "Maximum number of domain admins allowed for this domain."
+msgstr "Max liczba administratorów domeny."
+
+#: limits/forms.py:43 limits/forms.py:92
+msgid "Invalid limit"
+msgstr "Nieprawidłowy limit"
+
+#: limits/handlers.py:127 limits/handlers.py:163
+msgid "Resources"
+msgstr "Zasoby"
+
+#: limits/lib.py:22
+#, python-format
+msgid "%s: limit reached"
+msgstr "Osiągnięto limit: %s"
+
+#: limits/lib.py:32
+msgid "Not enough resources"
+msgstr "Brak wystarczających zasobów"
+
+#: limits/lib.py:50 limits/models.py:54
+msgid "You're not allowed to define unlimited values"
+msgstr "Nie jesteś uprawniony do wprowadzenia nielimitowanej wartości"
+
+#: limits/models.py:64 limits/models.py:128
+msgid "unlimited"
+msgstr "nielimitowane"
+
+#: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
+msgid "Resources usage"
+msgstr "Wykorzystanie zasobów"

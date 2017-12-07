@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# sin88 <sin@sin.waw.pl>, 2016
+# Tomasz Proć <tomasz.proc@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"PO-Revision-Date: 2017-12-01 16:11+0000\n"
+"Last-Translator: Tomasz Proć <tomasz.proc@gmail.com>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/language/pl_PL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: relaydomains/app_settings.py:17
+msgid "General"
+msgstr "Ogólne"
+
+#: relaydomains/app_settings.py:20
+msgid "Postfix's master.cf path"
+msgstr "Ścieżka do master.cf Postfix'a"
+
+#: relaydomains/app_settings.py:22
+msgid "Path to the master.cf configuration file"
+msgstr "Ścieżka do pliku konfiguracyjnego master.cf"
+
+#: relaydomains/apps.py:14
+msgid "Relay domains"
+msgstr "Domeny przekazujące"
+
+#: relaydomains/forms.py:54
+msgid "Invalid value"
+msgstr "Zła wartość"
+
+#: relaydomains/handlers.py:107
+msgid "Relay settings"
+msgstr "Ustawienia przekazywania"
+
+#: relaydomains/handlers.py:138 relaydomains/handlers.py:145
+msgid "Relay domain"
+msgstr "Domena przekazująca"
+
+#: relaydomains/models.py:49
+msgid "name"
+msgstr "nazwa"
+
+#: relaydomains/models.py:50
+msgid "The service name"
+msgstr "Nazwa usługi"
+
+#: relaydomains/models.py:72
+msgid "target host address"
+msgstr "adres hosta docelowego"
+
+#: relaydomains/models.py:74
+msgid "Remote address (hostname or IP) of this domain"
+msgstr "Zdalny adres (nazwa hosta lub IP) dla tej domeny"
+
+#: relaydomains/models.py:77
+msgid "target host port"
+msgstr "docelowy port hosta"
+
+#: relaydomains/models.py:79
+msgid "Remote port of this domain"
+msgstr "Zdalny port dla tej domeny"
+
+#: relaydomains/models.py:84
+msgid "verify recipients"
+msgstr "sprawdź odbiorców"
+
+#: relaydomains/models.py:85
+msgid "Check for valid recipients"
+msgstr "Sprawź prawidłowość odbiorców"
+
+#: relaydomains/models.py:96
+msgid "Relay Domain"
+msgstr "Relay Domain"
+
+#: relaydomains/models.py:124
+msgid "Invalid line"
+msgstr "Nieprawidłowa linia"
+
+#: relaydomains/templates/relaydomains/service_field.html:3
+msgid "Scan"
+msgstr "Skanuj"
