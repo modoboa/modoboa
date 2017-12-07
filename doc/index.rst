@@ -69,8 +69,10 @@ Table of contents
 
    installation
    upgrade
+   rebuild_virtual_env
    configuration
    moving
    rest_api
    contributing
    contributors
+
