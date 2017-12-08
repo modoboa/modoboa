@@ -20,9 +20,10 @@ from modoboa.lib import u2u_decode
 class EmailAddress(object):
 
     def __init__(self, address):
-        self.fulladdress = u2u_decode.u2u_decode(address).strip("\r\t\n")
-        (self.name, self.address) = parseaddr(self.fulladdress)
-        if self.name == "":
+        self.name, self.address = u2u_decode.decode_address(address)
+        if self.name:
+            self.fulladdress = "{} <{}>".format(self.name, self.address)
+        else:
             self.fulladdress = self.address
 
     def __str__(self):
