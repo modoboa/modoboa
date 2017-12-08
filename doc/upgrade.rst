@@ -89,6 +89,24 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.9.2
+=====
+
+First of all, update postfix map files as follows:
+
+.. sourcecode:: bash
+
+   > python manage.py generate_postfix_maps --destdir <path>
+                
+Then, modify postfix's configuration as follows::
+
+  smtpd_sender_login_maps =
+      <driver>:<path>/sql-sender-login-map.cf
+
+Replace ``<driver>`` and ``<path>`` by your values.
+
+Finally, reload postfix.
+
 1.9.0
 =====
 

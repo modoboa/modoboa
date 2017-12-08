@@ -18,8 +18,7 @@ class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
 
     MAP_FILES = [
         "sql-domains.cf", "sql-domain-aliases.cf", "sql-aliases.cf",
-        "sql-maintain.cf", "sql-sender-login-mailboxes.cf",
-        "sql-sender-login-mailboxes-extra.cf", "sql-sender-login-aliases.cf"
+        "sql-maintain.cf", "sql-sender-login-map.cf"
     ]
 
     def test_map_upgrade(self):

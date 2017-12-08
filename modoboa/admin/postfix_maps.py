@@ -97,72 +97,53 @@ class MaintainMap(object):
     )
 
 
-class SenderLoginMailboxMap(object):
+class SenderLoginMap(object):
+    """Map file to list authorized sender addresses for a given account:
+    * Its mailbox
+    * Its aliases
+    * Extra addresses
+    """
 
-    """Map file to list authorized sender addresses (from mailboxes)."""
-
-    filename = "sql-sender-login-mailboxes.cf"
+    filename = "sql-sender-login-map.cf"
     mysql = (
-        "SELECT email FROM core_user WHERE email='%s' AND is_active=1 "
-    )
-    postgres = (
-        "SELECT email FROM core_user WHERE email='%s' AND is_active"
-    )
-    sqlite = (
-        "SELECT email FROM core_user WHERE email='%s' AND is_active=1"
-    )
-
-
-class SenderLoginMailboxExtraMap(object):
-    """Map file to list per-mailbox extra addresses."""
-
-    filename = "sql-sender-login-mailboxes-extra.cf"
-
-    # FIXME: is it necessary to filter against user status?
-
-    mysql = (
-        "SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
+        "(SELECT email FROM core_user WHERE email='%s' AND is_active=1) "
+        "UNION "
+        "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
         "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
-        "WHERE sad.address='%s'"
-    )
-    postgres = (
-        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
-        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
-        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
-        "WHERE sad.address='%s'"
-    )
-    sqlite = (
-        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
-        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
-        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
-        "WHERE sad.address='%s'"
-    )
-
-
-class SenderLoginAliasMap(object):
-
-    """Map file to list authorized sender addresses (from aliases)."""
-
-    filename = "sql-sender-login-aliases.cf"
-    mysql = (
-        "SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
+        "WHERE sad.address='%s') "
+        "UNION "
+        "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
         "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s'"
+        "WHERE al.enabled=1 AND al.address='%s')"
     )
     postgres = (
-        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "(SELECT email FROM core_user WHERE email='%s' AND is_active) "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s') "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
         "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled AND al.address='%s'"
+        "WHERE al.enabled AND al.address='%s')"
     )
     sqlite = (
-        "SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "(SELECT email FROM core_user WHERE email='%s' AND is_active=1) "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='%s') "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
         "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s'"
+        "WHERE al.enabled=1 AND al.address='%s')"
     )
