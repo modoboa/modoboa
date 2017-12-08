@@ -97,7 +97,7 @@ class MaintainMap(object):
     )
 
 
-class SenderLoginMailboxMap(object):
+class SenderLoginMap(object):
     """Map file to list authorized sender addresses for a given account:
     * Its mailbox
     * Its aliases
