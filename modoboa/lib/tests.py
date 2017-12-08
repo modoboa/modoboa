@@ -14,6 +14,7 @@ from rest_framework.test import APITestCase
 from modoboa.core import models as core_models
 
 from . import sysutils
+from . import u2u_decode
 
 try:
     s = socket.create_connection(('127.0.0.1', 25))
@@ -103,3 +104,46 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
         """Setup."""
         super(ModoAPITestCase, self).setUp()
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+
+class U2UTestCase(TestCase):
+    """Test RFC1342 decoding utilities."""
+
+    def test_header_decoding(self):
+        """Simple decoding."""
+        samples = [
+            ("=?ISO-8859-15?Q?=20Profitez de tous les services en ligne sur "
+             "impots.gouv.fr?=",
+             "Profitez de tous les services en ligne sur impots.gouv.fr"),
+            ("=?ISO-8859-1?Q?Accus=E9?= de =?ISO-8859-1?Q?r=E9ception?= de "
+             "votre annonce",
+             "Accusé de réception de votre annonce"),
+            ("Sm=?ISO-8859-1?B?9g==?=rg=?ISO-8859-1?B?5Q==?=sbord",
+             "Sm\xf6rg\xe5sbord")
+        ]
+        for sample in samples:
+            self.assertEqual(u2u_decode.u2u_decode(sample[0]), sample[1])
+
+    def test_address_header_decoding(self):
+        """Check address decoding."""
+        mailsploit_sample = (
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=00?="
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com")
+        expected_result = (
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??="
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com")
+        self.assertEqual(
+            u2u_decode.decode_address(mailsploit_sample),
+            ("", expected_result)
+        )
+        mailsploit_sample = (
+            '"=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?="\n'
+            '<=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?='
+            '@mailsploit.com>')
+        expected_result = (
+            'potus@whitehouse.gov',
+            '=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??='
+            '@mailsploit.com')
+        self.assertEqual(
+            u2u_decode.decode_address(mailsploit_sample),
+            expected_result)
