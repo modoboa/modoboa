@@ -11,6 +11,7 @@ import time
 
 from django.conf import settings
 from django.utils.encoding import smart_text
+from django.utils.html import conditional_escape
 from django.template.loader import render_to_string
 from django.utils import six
 
@@ -198,6 +199,7 @@ class Email(object):
         })
 
     def viewmail_plain(self, content, **kwargs):
+        content = conditional_escape(content)
         return "<pre>%s</pre>" % content
 
     def viewmail_html(self, content, **kwargs):
