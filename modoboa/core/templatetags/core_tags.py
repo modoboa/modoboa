@@ -158,7 +158,7 @@ def colorize_level(level):
 @register.filter
 def tohtml(message):
     """Simple tag to format a text using HTML."""
-    return re.sub(r"'(.*?)'", "<strong>\g<1></strong>", message)
+    return re.sub(r"'(.*?)'", r"<strong>\g<1></strong>", message)
 
 
 @register.simple_tag

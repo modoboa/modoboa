@@ -33,8 +33,6 @@ def post_revision_commit(sender, **kwargs):
     django-reversion for that.
 
     """
-    from modoboa.lib.signals import get_request
-
     current_user = get_request().user.username
     logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
@@ -61,8 +59,6 @@ def log_object_removal(sender, instance, **kwargs):
 
     We want to know who was responsible for an object deletion.
     """
-    from reversion.models import Version
-
     if not reversion.is_registered(sender):
         return
     del_list = Version.objects.get_deleted(sender)
