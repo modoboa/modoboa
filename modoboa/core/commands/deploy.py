@@ -28,7 +28,7 @@ from modoboa.core.commands import Command
 from modoboa.lib.api_client import ModoAPIClient
 
 if sys.version_info < (3, 0, 0):
-	input = raw_input
+    input = raw_input
 
 DBCONN_TPL = """
     '{{ conn_name }}': {

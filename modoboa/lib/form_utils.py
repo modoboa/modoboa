@@ -194,6 +194,9 @@ class DynamicForm(object):
 
     """
 
+    fields = {}
+    data = {}
+
     def _create_field(self, typ, name, value=None, pos=None):
         """Create a new form field.
         """
