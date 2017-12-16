@@ -1,0 +1,130 @@
+Return-Path: <me@example.net>
+X-Original-To: someone@example.net
+Delivered-To: me@example.net
+Received: from mail.example.net (localhost [127.0.0.1])
+	by mail.example.net (Postfix) with ESMTP id 4BD531AF130
+	for <someone@example.net>; Sun, 17 Dec 2017 03:11:30 +0000 (GMT)
+Authentication-Results: mail.example.net (amavisd-new);
+	dkim=pass (1024-bit key) reason="pass (just generated, assumed good)"
+	header.d=example.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=example.net; h=
+	content-language:content-type:content-type:mime-version
+	:user-agent:date:date:message-id:subject:subject:from:from
+	:received:received; s=mail; t=1513480289; bh=wAmt0wg2Yk04321B
+	Q63uWL5f67PEBB2EEGONiFUrIvk=; b=UZUzPqH8TUk/bMZm1ofkjwatNCQftZKK
+	C91uIuX3mmjvngNwbVjx4m7jFZItZscNqigyGJN5HCOl8tC/LJmmWzRdhIisFtLA
+	uXRiBuWps82rbV4ciFU8N30i9UXvtWvMywwL6pYSESqixiwylzbddjMjKXXdyqaT
+	DTyR16ZK8IE=
+X-Virus-Scanned: amavisd-new at example.net
+X-Spam-Flag: NO
+X-Spam-Score: -0.988
+X-Spam-Level:
+X-Spam-Status: No, score=-0.988 tagged_above=-999 required=3.9
+	tests=[ALL_TRUSTED=-1, HTML_MESSAGE=0.001, T_HTML_ATTACH=0.01,
+	URIBL_BLOCKED=0.001] autolearn=no autolearn_force=no
+Received: from mail.example.net ([127.0.0.1])
+	by mail.example.net (mail.example.net [127.0.0.1]) (amavisd-new, port 10026)
+	with LMTP id BSCmm59DxNvB for <someone@example.net>;
+	Sun, 17 Dec 2017 03:11:29 +0000 (GMT)
+Received: from [10.0.0.1] (my-pc.example.net [10.0.0.1])
+	by mail.example.net (Postfix) with ESMTPSA id 641171AF12D
+	for <someone@example.net>; Sun, 17 Dec 2017 03:11:29 +0000 (GMT)
+To: Someone <someone@example.net>
+From: Me <me@example.net>
+X-Clacks-Overhead: GNU Terry Pratchett
+Subject: A test message
+Message-ID: <5294ad7a-e966-f1a0-3431-8c4b1b76f5a3@example.net>
+Date: Sun, 17 Dec 2017 03:11:33 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="------------7EB9EDC10414C906CC3C2CEA"
+Content-Language: en-GB
+
+This is a multi-part message in MIME format.
+--------------7EB9EDC10414C906CC3C2CEA
+Content-Type: multipart/alternative;
+ boundary="------------87B289699A48D5D0D61BABCC"
+
+
+--------------87B289699A48D5D0D61BABCC
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+This is an *html* /test /_message._
+
+:-)
+
+
+-- 
+Someone
+someone@example.net
+
+
+--------------87B289699A48D5D0D61BABCC
+Content-Type: multipart/related;
+ boundary="------------D585B241EEF60F0F44EC20E5"
+
+
+--------------D585B241EEF60F0F44EC20E5
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <p>This is an <b>html</b> <i>test </i><u>message.</u></p>
+    <span class="moz-smiley-s1"><span>:-)</span></span><br>
+    <br>
+    <img moz-do-not-send="false"
+      src="cid:part1.D56823CE.7959DBD4@example.net" alt="" height="10"
+      width="10"><br>
+    <pre class="moz-signature" cols="72">-- 
+someone
+<a class="moz-txt-link-abbreviated" href="mailto:someone@example.net">someone@example.net</a></pre>
+  </body>
+</html>
+
+--------------D585B241EEF60F0F44EC20E5
+Content-Type: image/png;
+ name="image.png"
+Content-Transfer-Encoding: base64
+Content-ID: <part1.D56823CE.7959DBD4@example.net>
+Content-Disposition: inline;
+ filename="image.png"
+
+iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwY
+AAAAF0lEQVQY02NgYGD4//8/ThKfHASMRN0AfaqVa6MQxIQAAAAASUVORK5CYII=
+--------------D585B241EEF60F0F44EC20E5--
+
+--------------87B289699A48D5D0D61BABCC--
+
+--------------7EB9EDC10414C906CC3C2CEA
+Content-Type: text/html;
+ name="test.html"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="test.html"
+
+//48AHMAcABhAG4APgA8AGIAPgBTAG8AbQBlACAAPABpAD4ASABUAE0ATAA8AC8AaQA+ACAA
+dABlAHgAdAA8AC8AYgA+ACwAIABhACAAPABhACAAaAByAGUAZgA9ACIAaAB0AHQAcAA6AC8A
+LwBlAHgAYQBtAHAAbABlAC4AbgBlAHQAIgAgAHQAYQByAGcAZQB0AD0AIgBfAGIAbABhAG4A
+awAiACAAcgBlAGwAPQAiAG4AbwBmAG8AbABsAG8AdwAiAD4AbABpAG4AawA8AC8AYQA+ACwA
+IABhAG4AJgAjADEAMwA7AA0ACgBlAG0AYgBlAGQAZABlAGQAIABpAG0AYQBnAGUAIABhAG4A
+ZAAgAGEAbgAgAGUAeAB0AGUAcgBuAGEAbAAgAGkAbQBhAGcAZQAuADwAYgByAD4AJgAjADEA
+MwA7AA0ACgA8AGkAbQBnACAAcwByAGMAPQAiAGQAYQB0AGEAOgBpAG0AYQBnAGUALwBwAG4A
+ZwA7AGIAYQBzAGUANgA0ACwAaQBWAEIATwBSAHcAMABLAEcAZwBvAEEAQQBBAEEATgBTAFUA
+aABFAFUAZwBBAEEAQQBBAG8AQQBBAEEAQQBLAEMAQQBJAEEAQQBBAEEAQwBVAEYAagBxAEEA
+QQBBAEEAQwBYAEIASQBXAFgATQBBAEEAQQBzAFQAQQBBAEEATABFAHcARQBBAG0AcAB3AFkA
+QQBBAEEAQQBGADAAbABFAFEAVgBRAFkAMAAyAE4AZwBZAEcARAA0AC8ALwA4AC8AVABoAEsA
+ZgBIAEEAUwBNAFIATgAwAEEAZgBhAHEAVgBhADYATQBRAHgASQBRAEEAQQBBAEEAQQBTAFUA
+VgBPAFIASwA1AEMAWQBJAEkAPQAiACAAdABhAHIAZwBlAHQAPQAiAF8AYgBsAGEAbgBrACIA
+PgA8AGIAcgA+ACYAIwAxADMAOwANAAoAPABpAG0AZwAgAHMAcgBjAD0AIgBoAHQAdABwADoA
+LwAvAGUAeABhAG0AcABsAGUALgBuAGUAdAAvAGkAbQBhAGcAZQAuAHAAbgBnACIAIAB0AGEA
+cgBnAGUAdAA9ACIAXwBiAGwAYQBuAGsAIgA+ADwAYgByAD4AJgAjADEAMwA7AA0ACgBOAGkA
+ZgB0AHkAIQA8AC8AcwBwAGEAbgA+AA0ACgA=
+--------------7EB9EDC10414C906CC3C2CEA--

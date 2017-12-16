@@ -1,0 +1,5 @@
+<pre>This is a plain text e-mail message.
+
+-- 
+Someone
+someone@example.net</pre>
