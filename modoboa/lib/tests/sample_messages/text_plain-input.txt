@@ -1,0 +1,51 @@
+Return-Path: <someone@example.net>
+X-Original-To: me@example.net Delivered-To: someone@example.net
+Received: from mail.example.net (localhost [127.0.0.1])
+	by mail.example.net (Postfix) with ESMTP id A142E1AF12D
+	for <me@example.net>; Sun, 17 Dec 2017 13:10:10 +0000 (GMT)
+Authentication-Results: mail.example.net (amavisd-new);
+	dkim=pass (1024-bit key) reason="pass (just generated, assumed good)"
+	header.d=example.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=example.net; h=
+	content-transfer-encoding:content-language:content-type
+	:content-type:mime-version:user-agent:date:date:message-id
+	:subject:subject:from:from:received:received; s=mail; t=
+	1513516210; bh=yyFHETi2jtS7bFMEIArr53VnJMNNjltuXCFTOqs/cL0=; b=X
+	nMo4pMsaH7EO9A55i0SOv5RGP4Sp4eukaXXQJgMWahcfUn4mM2+pSdc+8ZMaXX7y
+	ITQdCzI0LL9WGfX7bbMA49hYtIELjQ/AochqABTUsMxnq0Sgf1FE37bA3NS1pBtp
+	TBKehpGjr86y0V247Okmf2faEkO9dMvmwWz8QBI0N4=
+X-Virus-Scanned: amavisd-new at example.net
+X-Spam-Flag: NO
+X-Spam-Score: -0.999
+X-Spam-Level:
+X-Spam-Status: No, score=-0.999 tagged_above=-999 required=3.9
+	tests=[ALL_TRUSTED=-1, URIBL_BLOCKED=0.001]
+	autolearn=no autolearn_force=no
+Received: from mail.example.net ([127.0.0.1])
+	by mail.example.net (mail.example.net [127.0.0.1]) (amavisd-new, port 10026)
+	with LMTP id j0UYMNn7ZprP for <me@example.net>;
+	Sun, 17 Dec 2017 13:10:10 +0000 (GMT)
+Received: from [10.0.0.1] (my-pc.example.net [10.0.0.1])
+	by mail.example.net (Postfix) with ESMTPSA id E66201AF132
+	for <me@example.net>; Sun, 17 Dec 2017 13:10:09 +0000 (GMT)
+To: Me <me@example.net>
+From: Someone <someone@example.net>
+X-Clacks-Overhead: GNU Terry Pratchett
+Subject: =?UTF-8?Q?T=c3=a9st_message?=
+Message-ID: <8626caea-4c05-8dc5-c687-bcfb7a329d18@example.net>
+Date: Sun, 17 Dec 2017 13:10:14 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.5.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-rAnDoM-cAsE-hEaDeR: fOoBaR
+X-UPPER-CASE-HEADER: FOOBAR
+x-lower-case-header: foobar
+
+This is a plain text e-mail message.
+
+-- 
+Someone
+someone@example.net
