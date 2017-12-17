@@ -1,7 +1,7 @@
 django>=1.10,<=1.10.99
 django-braces==1.11.0
 django-ckeditor==5.2.1
-django-reversion==1.10.2
+django-reversion==2.0.12
 django-subcommand2==0.1.1
 django-versionfield2>=0.5.0
 django-xforwardedfor-middleware
