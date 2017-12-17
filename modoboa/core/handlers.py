@@ -13,6 +13,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.sites import models as sites_models
 
 from reversion import revisions as reversion
+from reversion.models import Version
 
 from modoboa.lib import exceptions
 from modoboa.lib import permissions
@@ -39,7 +40,7 @@ def post_revision_commit(sender, **kwargs):
     for version in kwargs["versions"]:
         if version.object is None:
             continue
-        prev_revisions = reversion.get_for_object(version.object)
+        prev_revisions = Version.objects.get_for_object(version.object)
         if prev_revisions.count() == 1:
             action = _("added")
             level = "info"
@@ -64,7 +65,7 @@ def log_object_removal(sender, instance, **kwargs):
 
     if not reversion.is_registered(sender):
         return
-    del_list = reversion.get_deleted(sender)
+    del_list = Version.objects.get_deleted(sender)
     try:
         version = del_list.get(object_id=instance.id)
     except Version.DoesNotExist:
