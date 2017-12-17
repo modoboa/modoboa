@@ -37,14 +37,14 @@ class MXRecordManager(models.Manager):
         if records.exists():
             for record in records:
                 yield record
-            raise StopIteration()
+            return
 
         self.get_queryset().filter(domain=domain).delete()
 
         delta = datetime.timedelta(seconds=ttl)
         domain_mxs = lib.get_domain_mx_list(domain.name)
         if len(domain_mxs) == 0:
-            raise StopIteration
+            return
         for mx_addr, mx_ip_addr in domain_mxs:
             record = self.get_queryset().create(
                 domain=domain,
