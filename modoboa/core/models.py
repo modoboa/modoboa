@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from email.header import Header
 import re
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.encoding import (
     python_2_unicode_compatible, smart_bytes, smart_text, force_str
@@ -407,8 +407,8 @@ def populate_callback(user, group="SimpleUsers"):
 
 @python_2_unicode_compatible
 class ObjectAccess(models.Model):
-    user = models.ForeignKey(User)
-    content_type = models.ForeignKey(ContentType)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     is_owner = models.BooleanField(default=False)
@@ -435,7 +435,7 @@ class LocalConfig(models.Model):
     """Store instance configuration here."""
 
     api_pk = models.PositiveIntegerField(null=True)
-    site = models.ForeignKey("sites.Site")
+    site = models.ForeignKey("sites.Site", on_delete=models.CASCADE)
 
     # API results cache
     api_versions = jsonfield.JSONField()

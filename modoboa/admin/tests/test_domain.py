@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 import dns.resolver
 from mock import patch
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User

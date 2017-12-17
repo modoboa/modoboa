@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from unittest import skipIf
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import override_settings
 
 from modoboa.core import factories as core_factories

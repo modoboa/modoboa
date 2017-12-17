@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import hashlib
 import random
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.encoding import (
     python_2_unicode_compatible, smart_text, force_str, force_bytes
@@ -37,7 +37,7 @@ class Alias(AdminObject):
             "The alias address."
         )
     )
-    domain = models.ForeignKey(Domain, null=True)
+    domain = models.ForeignKey(Domain, null=True, on_delete=models.CASCADE)
     enabled = models.BooleanField(
         ugettext_lazy("enabled"),
         help_text=ugettext_lazy("Check to activate this alias"),
@@ -210,13 +210,15 @@ class AliasRecipient(models.Model):
     """An alias recipient."""
 
     address = models.EmailField()
-    alias = models.ForeignKey(Alias)
+    alias = models.ForeignKey(Alias, on_delete=models.CASCADE)
 
     # if recipient is a local mailbox
-    r_mailbox = models.ForeignKey(Mailbox, blank=True, null=True)
+    r_mailbox = models.ForeignKey(Mailbox, blank=True, null=True,
+                                  on_delete=models.CASCADE)
     # if recipient is a local alias
     r_alias = models.ForeignKey(
-        Alias, related_name="alias_recipient_aliases", blank=True, null=True)
+        Alias, related_name="alias_recipient_aliases", blank=True, null=True,
+        on_delete=models.CASCADE)
 
     class Meta:
         app_label = "admin"

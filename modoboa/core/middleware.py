@@ -2,10 +2,12 @@
 
 from __future__ import unicode_literals
 
+from django.utils.deprecation import MiddlewareMixin
+
 from . import models
 
 
-class LocalConfigMiddleware(object):
+class LocalConfigMiddleware(MiddlewareMixin):
     """A middleware to inject LocalConfig into request."""
 
     def process_request(self, request):
