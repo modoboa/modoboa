@@ -31,8 +31,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('address', models.EmailField(max_length=75)),
-                ('alias', models.ForeignKey(to='admin.Alias')),
-                ('r_alias', models.ForeignKey(related_name='alias_recipient_aliases', blank=True, to='admin.Alias', null=True)),
+                ('alias', models.ForeignKey(to='admin.Alias', on_delete=models.CASCADE)),
+                ('r_alias', models.ForeignKey(related_name='alias_recipient_aliases', blank=True, to='admin.Alias', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'modoboa_admin_aliasrecipient',
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('type', models.CharField(max_length=20, choices=[(b'rename', b'rename'), (b'delete', b'delete')])),
                 ('argument', models.TextField()),
-                ('mailbox', models.ForeignKey(blank=True, to='admin.Mailbox', null=True)),
+                ('mailbox', models.ForeignKey(blank=True, to='admin.Mailbox', null=True, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -116,43 +116,43 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mailbox',
             name='dates',
-            field=models.ForeignKey(to='admin.ObjectDates'),
+            field=models.ForeignKey(to='admin.ObjectDates', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='mailbox',
             name='domain',
-            field=models.ForeignKey(to='admin.Domain'),
+            field=models.ForeignKey(to='admin.Domain', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='mailbox',
             name='user',
-            field=models.OneToOneField(to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='domainalias',
             name='dates',
-            field=models.ForeignKey(to='admin.ObjectDates'),
+            field=models.ForeignKey(to='admin.ObjectDates', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='domainalias',
             name='target',
-            field=models.ForeignKey(verbose_name='target', to='admin.Domain', help_text='The domain this alias points to'),
+            field=models.ForeignKey(verbose_name='target', to='admin.Domain', help_text='The domain this alias points to', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='domain',
             name='dates',
-            field=models.ForeignKey(to='admin.ObjectDates'),
+            field=models.ForeignKey(to='admin.ObjectDates', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='aliasrecipient',
             name='r_mailbox',
-            field=models.ForeignKey(blank=True, to='admin.Mailbox', null=True),
+            field=models.ForeignKey(blank=True, to='admin.Mailbox', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -162,13 +162,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='alias',
             name='dates',
-            field=models.ForeignKey(to='admin.ObjectDates'),
+            field=models.ForeignKey(to='admin.ObjectDates', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='alias',
             name='domain',
-            field=models.ForeignKey(to='admin.Domain', null=True),
+            field=models.ForeignKey(to='admin.Domain', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

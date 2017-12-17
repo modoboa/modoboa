@@ -11,12 +11,8 @@ import re
 from django.forms import TypedChoiceField
 from django.forms.fields import Field
 from django.forms.widgets import RadioSelect
-from django.forms.widgets import RadioChoiceInput
 from django.shortcuts import render
-from django.utils.encoding import (
-    python_2_unicode_compatible, force_text, force_str)
-from django.utils.html import conditional_escape
-from django.utils.safestring import mark_safe
+from django.utils.encoding import force_str
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib.exceptions import BadRequest
@@ -371,41 +367,9 @@ class TabForms(object):
 #
 
 
-@python_2_unicode_compatible
-class CustomRadioInput(RadioChoiceInput):
-    """Custom radio input."""
-
-    def __str__(self):
-        if "id" in self.attrs:
-            label_for = ' for="%s"' % self.attrs["id"]
-        else:
-            label_for = ""
-        choice_label = conditional_escape(force_text(self.choice_label))
-        return mark_safe(
-            "<label class='radio-inline' %s>%s %s</label>"
-            % (label_for, self.tag(), choice_label)
-        )
-
-
-class InlineRadioRenderer(RadioSelect.renderer):
-    """Custom inline radio renderer."""
-
-    def __iter__(self):
-        for i, choice in enumerate(self.choices):
-            yield CustomRadioInput(
-                self.name, self.value, self.attrs.copy(), choice, i
-            )
-
-    def render(self):
-        return mark_safe(
-            u"\n".join([u"%s\n" % force_text(w) for w in self])
-        )
-
-
-class InlineRadioSelect(RadioSelect):
-    """Custom inline radio widget."""
-
-    renderer = InlineRadioRenderer
+class HorizontalRadioSelect(RadioSelect):
+    template_name = "common/horizontal_select.html"
+    option_template_name = "common/horizontal_select_option.html"
 
 
 class SeparatorField(Field):
@@ -426,7 +390,7 @@ class YesNoField(TypedChoiceField):
                 (True, ugettext_lazy("Yes")),
                 (False, ugettext_lazy("No"))
             ),
-            "widget": InlineRadioSelect,
+            "widget": HorizontalRadioSelect(),
             "coerce": lambda x: x == "True"
         })
         super(YesNoField, self).__init__(*args, **kwargs)

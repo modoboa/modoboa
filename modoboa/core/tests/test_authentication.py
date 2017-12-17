@@ -10,7 +10,7 @@ from unittest import skipIf
 from mock import patch
 
 from django.core import mail
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase

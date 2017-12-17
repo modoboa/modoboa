@@ -2,7 +2,7 @@
 
 import json
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
 

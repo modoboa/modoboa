@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from testfixtures import compare
 
 from django import forms
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from modoboa.lib.tests import ModoTestCase
 from modoboa.parameters import forms as param_forms

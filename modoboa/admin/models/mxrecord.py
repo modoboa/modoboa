@@ -58,7 +58,7 @@ class MXRecordManager(models.Manager):
 class MXRecord(models.Model):
     """A model used to store MX records for Domain."""
 
-    domain = models.ForeignKey("admin.Domain")
+    domain = models.ForeignKey("admin.Domain", on_delete=models.CASCADE)
     name = models.CharField(max_length=254)
     address = models.GenericIPAddressField()
     managed = models.BooleanField(default=False)
@@ -86,9 +86,9 @@ class DNSBLQuerySet(models.QuerySet):
 class DNSBLResult(models.Model):
     """Store a DNSBL query result."""
 
-    domain = models.ForeignKey("admin.Domain")
+    domain = models.ForeignKey("admin.Domain", on_delete=models.CASCADE)
     provider = models.CharField(max_length=254, db_index=True)
-    mx = models.ForeignKey(MXRecord)
+    mx = models.ForeignKey(MXRecord, on_delete=models.CASCADE)
     status = models.CharField(max_length=45, blank=True, db_index=True)
 
     objects = models.Manager.from_queryset(DNSBLQuerySet)()
