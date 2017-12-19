@@ -146,3 +146,20 @@ class AliasViewSet(viewsets.ModelViewSet):
         if domain:
             queryset = queryset.filter(domain__name=domain)
         return queryset
+
+
+class SenderAddressViewSet(viewsets.ModelViewSet):
+    """View set for SenderAddress model."""
+
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    serializer_class = serializers.SenderAddressSerializer
+
+    def get_queryset(self):
+        """Filter queryset based on current user."""
+        user = self.request.user
+        mb_ids = (
+            user.objectaccess_set.filter(
+                content_type=ContentType.objects.get_for_model(models.Mailbox))
+            .values_list("object_id", flat=True)
+        )
+        return models.SenderAddress.objects.filter(mailbox__pk__in=mb_ids)

@@ -63,6 +63,15 @@ class AliasFactory(PermissionFactory):
     enabled = True
 
 
+class SenderAddressFactory(factory.django.DjangoModelFactory):
+    """Factory for SenderAddress model."""
+
+    mailbox = factory.SubFactory(MailboxFactory)
+
+    class Meta:
+        model = models.SenderAddress
+
+
 def populate_database():
     """Create test data.
 

@@ -105,7 +105,7 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Mailbox
-        fields = ("full_address", "use_domain_quota", "quota", )
+        fields = ("pk", "full_address", "use_domain_quota", "quota", )
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -386,3 +386,31 @@ class AliasSerializer(serializers.ModelSerializer):
         instance.save()
         instance.set_recipients(recipients)
         return instance
+
+
+class SenderAddressSerializer(serializers.ModelSerializer):
+    """Base Alias serializer."""
+
+    address = lib_fields.DRFEmailFieldUTF8AndEmptyUser()
+
+    class Meta:
+        model = admin_models.SenderAddress
+        fields = ("pk", "address", "mailbox")
+
+    def validate_address(self, value):
+        """Check domain."""
+        local_part, domain = email_utils.split_mailbox(value)
+        domain = admin_models.Domain.objects.filter(name=domain).first()
+        user = self.context["request"].user
+        if domain and not user.can_access(domain):
+            raise serializers.ValidationError(
+                _("You don't have access to this domain."))
+        return value
+
+    def validate_mailbox(self, value):
+        """Check permission."""
+        user = self.context["request"].user
+        if not user.can_access(value):
+            raise serializers.ValidationError(
+                _("You don't have access to this mailbox."))
+        return value

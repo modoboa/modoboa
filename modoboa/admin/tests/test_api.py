@@ -281,6 +281,7 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertIsNot(user.mailbox, None)
         domadmin = core_models.User.objects.get(username="admin@test.com")
         self.assertTrue(domadmin.can_access(user))
+        self.assertIn("pk", account["mailbox"])
 
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["username"] = "fromapi_ééé@test.com"
@@ -660,3 +661,91 @@ class AliasAPITestCase(ModoAPITestCase):
                 address="user@test.com", alias__address="alias@test.com")
             .exists()
         )
+
+
+class SenderAddressAPITestCase(ModoAPITestCase):
+    """Check SenderAddress API."""
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super(SenderAddressAPITestCase, cls).setUpTestData()
+        cls.localconfig.parameters.set_value(
+            "enable_admin_limits", False, app="limits")
+        cls.localconfig.save()
+        factories.populate_database()
+        cls.sa1 = factories.SenderAddressFactory(
+            address="test@domain.ext",
+            mailbox__user__username="user@test.com",
+            mailbox__address="user",
+            mailbox__domain__name="test.com"
+        )
+        cls.da_token = Token.objects.create(
+            user=core_models.User.objects.get(username="admin@test.com"))
+
+    def test_list(self):
+        """Retrieve a list of sender addresses."""
+        url = reverse("api:sender_address-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = response.json()
+        self.assertEqual(len(response), 1)
+
+    def test_create(self):
+        """Create a new sender addresses."""
+        url = reverse("api:sender_address-list")
+        mbox = models.Mailbox.objects.get(
+            address="admin", domain__name="test.com")
+        data = {"address": "@extdomain.test", "mailbox": mbox.pk}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 201)
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+        data = {"address": "user@test2.com", "mailbox": mbox.pk}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["address"][0],
+            "You don't have access to this domain.")
+
+        mbox = models.Mailbox.objects.get(
+            address="admin", domain__name="test2.com")
+        data = {"address": "toto@titi.com", "mailbox": mbox.pk}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["mailbox"][0],
+            "You don't have access to this mailbox.")
+
+    def test_patch(self):
+        """Patch an existing sender address."""
+        url = reverse("api:sender_address-detail", args=[self.sa1.pk])
+        mbox = models.Mailbox.objects.get(
+            address="user", domain__name="test.com")
+        data = {"address": "@extdomain.test"}
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, 200)
+        self.sa1.refresh_from_db()
+        self.assertEqual(self.sa1.mailbox, mbox)
+        self.assertEqual(self.sa1.address, data["address"])
+
+    def test_update(self):
+        """Update an existing sender address."""
+        url = reverse("api:sender_address-detail", args=[self.sa1.pk])
+        mbox = models.Mailbox.objects.get(
+            address="user", domain__name="test.com")
+        data = {"address": "@extdomain.test", "mailbox": mbox.pk}
+        response = self.client.put(url, data)
+        self.assertEqual(response.status_code, 200)
+        self.sa1.refresh_from_db()
+        self.assertEqual(self.sa1.mailbox, mbox)
+        self.assertEqual(self.sa1.address, data["address"])
+
+    def test_delete(self):
+        """Delete an existing sender address."""
+        url = reverse("api:sender_address-detail", args=[self.sa1.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        with self.assertRaises(models.SenderAddress.DoesNotExist):
+            self.sa1.refresh_from_db()
