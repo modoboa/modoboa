@@ -119,7 +119,15 @@ class U2UTestCase(TestCase):
              "votre annonce",
              "Accusé de réception de votre annonce"),
             ("Sm=?ISO-8859-1?B?9g==?=rg=?ISO-8859-1?B?5Q==?=sbord",
-             "Sm\xf6rg\xe5sbord")
+             "Sm\xf6rg\xe5sbord"),
+            # The following case currently fails because of the way we split
+            # encoded words to parse them separately, which can lead to
+            # unexpected unicode decode errors... I think it will work fine on
+            # Python3
+            # ("=?utf-8?B?VMOpbMOpcMOpYWdlIFZJTkNJIEF1dG9yb3V0ZXMgLSBFeHDD?=\n"
+            #  "=?utf-8?B?qWRpdGlvbiBkZSB2b3RyZSBjb21tYW5kZSBOwrAgMjAxNzEyMDcw"
+            #  "MDA1?=\n=?utf-8?B?MyBkdSAwNy8xMi8yMDE3IDE0OjQ5OjQx?=",
+            #  "")
         ]
         for sample in samples:
             self.assertEqual(u2u_decode.u2u_decode(sample[0]), sample[1])
