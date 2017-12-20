@@ -40,7 +40,7 @@ def clean_domain(sender, instance, **kwargs):
     tr_models.Transport.objects.filter(pattern=instance.name).delete()
 
 
-@receiver(signals.pre_delete, sender=admin_models.Domain)
+@receiver(signals.post_delete, sender=admin_models.Domain)
 def delete_transport(sender, instance, **kwargs):
     """Delete Transport instance if any."""
     tr_models.Transport.objects.filter(pattern=instance.name).delete()
@@ -65,9 +65,9 @@ def extra_domain_form(sender, user, **kwargs):
     if not domain or domain.type != "relaydomain":
         return []
     return [{
-        "id": "relaydomain", "title": _("Relay settings"),
+        "id": "relaydomain", "title": _("Transport settings"),
         "cls": forms.RelayDomainFormGeneral,
-        "formtpl": "relaydomains/relaydomain_form.html"
+        "formtpl": "transport/_transport_form.html"
     }]
 
 
@@ -81,8 +81,7 @@ def fill_domain_instances(sender, user, domain, **kwargs):
     if condition:
         return {}
     return {
-        "relaydomain": (
-            tr_models.Transport.objects.filter(pattern=domain.name).first())
+        "relaydomain": domain.transport
     }
 
 
@@ -90,8 +89,8 @@ def fill_domain_instances(sender, user, domain, **kwargs):
 def extra_wizard_step(sender, **kwargs):
     """Return a step to configure the relay settings."""
     return [forms.RelayDomainWizardStep(
-        "relay", forms.RelayDomainFormGeneral, _("Relay domain"),
-        "relaydomains/relaydomain_form.html"
+        "relay", forms.RelayDomainFormGeneral, _("Transport"),
+        "transport/_transport_form.html"
     )]
 
 

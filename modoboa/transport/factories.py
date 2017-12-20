@@ -2,12 +2,10 @@
 
 import factory
 
-from modoboa.core.factories import PermissionFactory
-
 from . import models
 
 
-class TransportFactory(PermissionFactory):
+class TransportFactory(factory.django.DjangoModelFactory):
     """Factory for Transport."""
 
     class Meta:
@@ -17,4 +15,3 @@ class TransportFactory(PermissionFactory):
     pattern = factory.Sequence(lambda n: "transport{}".format(n))
     service = "relay"
     next_hop = "[external.host.tld]:25"
-
