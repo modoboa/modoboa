@@ -55,6 +55,9 @@ class Domain(AdminObject):
         help_text=ugettext_lazy("Check to enable DNS checks for this domain")
     )
 
+    transport = models.OneToOneField(
+        "transport.Transport", null=True, on_delete=models.SET_NULL)
+
     class Meta:
         permissions = (
             ("view_domain", "View domain"),
@@ -94,7 +97,15 @@ class Domain(AdminObject):
         for dt in constants.DOMAIN_TYPES:
             if self.type == dt[0]:
                 label = dt[1]
-        return [{"name": self.type, "label": label, "type": "dom"}]
+        result = [{"name": self.type, "label": label, "type": "dom"}]
+        if self.transport:
+            result.append({
+                "name": self.transport.service,
+                "label": self.transport.service,
+                "type": "srv",
+                "color": "info"
+            })
+        return result
 
     @property
     def admins(self):

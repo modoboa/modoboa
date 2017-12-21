@@ -10,14 +10,12 @@ def move_relaydomain_to_transport(apps, schema_editor):
     RelayDomain = apps.get_model("relaydomains", "RelayDomain")
     RecipientAccess = apps.get_model("relaydomains", "RecipientAccess")
     Transport = apps.get_model("transport", "Transport")
-    tr_to_create = []
     ra_to_create = []
     for rd in RelayDomain.objects.select_related("domain", "service"):
         next_hop = "[{}]:{}".format(rd.target_host, rd.target_port)
-        tr = Transport(
+        tr = Transport.objects.create(
             pattern=rd.domain.name,
             service="relay",
-            enabled=rd.domain.enabled,
             next_hop=next_hop,
             _settings={
                 "relay_target_host": rd.target_host,
@@ -25,13 +23,13 @@ def move_relaydomain_to_transport(apps, schema_editor):
                 "relay_verify_recipients": rd.verify_recipients
             }
         )
-        tr_to_create.append(tr)
+        rd.domain.transport = tr
+        rd.domain.save(update_fields=["transport"])
         if not rd.verify_recipients:
             continue
         ra_to_create.append(
             RecipientAccess(
                 pattern=rd.domain.name, action="reject_unverified_recipient"))
-    Transport.objects.bulk_create(tr_to_create)
     RecipientAccess.objects.bulk_create(ra_to_create)
 
 
@@ -45,6 +43,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('relaydomains', '0007_recipientaccess'),
         ('transport', '0001_initial'),
+        ('admin', '0011_domain_transport'),
     ]
 
     operations = [

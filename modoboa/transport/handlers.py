@@ -2,25 +2,14 @@
 
 from __future__ import unicode_literals
 
-from django.urls import reverse
+from django.db.models import signals
 from django.dispatch import receiver
-from django.utils.translation import ugettext as _
 
-from modoboa.admin import signals as admin_signals
 from modoboa.core import signals as core_signals
 
+from . import backends
+from . import models
 from . import postfix_maps
-
-
-@receiver(admin_signals.extra_domain_menu_entries)
-def extra_domain_menu_entries(sender, user, **kwargs):
-    """Add extra menu entries."""
-    return [{
-        "name": "transports",
-        "label": _("Transports"),
-        "url": reverse("transport:transport_list"),
-        "img": "fa fa-bus",
-    }]
 
 
 @receiver(core_signals.register_postfix_maps)
@@ -29,3 +18,10 @@ def register_postfix_maps(sender, **kwargs):
     return [
         postfix_maps.TransportMap,
     ]
+
+
+@receiver(signals.pre_save, sender=models.Transport)
+def serialize_transport_settings(sender, instance, **kwargs):
+    """Call backend serialize method on transport."""
+    backend = backends.manager.get_backend(instance.service)
+    backend.serialize(instance)

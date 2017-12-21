@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import django.utils.timezone
+
 import jsonfield.fields
 
 
@@ -19,12 +19,9 @@ class Migration(migrations.Migration):
             name='Transport',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('creation', models.DateTimeField(default=django.utils.timezone.now)),
-                ('last_modification', models.DateTimeField(auto_now=True)),
                 ('pattern', models.CharField(max_length=254, unique=True, verbose_name='pattern')),
                 ('service', models.CharField(max_length=30, verbose_name='service')),
                 ('next_hop', models.CharField(blank=True, max_length=100, verbose_name='next hop')),
-                ('enabled', models.BooleanField(default=True, verbose_name='enabled')),
                 ('_settings', jsonfield.fields.JSONField(default={})),
             ],
             options={

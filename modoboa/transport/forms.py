@@ -19,7 +19,7 @@ class BackendSettingsMixin(object):
     def __init__(self, *args, **kwargs):
         """Constructor."""
         super(BackendSettingsMixin, self).__init__(*args, **kwargs)
-        self.setting_fields = []
+        self.setting_field_names = []
 
     def inject_backend_settings(self, name, settings):
         """Inject backend settings to form."""
@@ -35,7 +35,7 @@ class BackendSettingsMixin(object):
                 options["widget"] = setting["widget"]
             self.fields[fullname] = TYPE_TO_FIELD_MAP[ftype](
                 label=setting["label"], required=False, **options)
-            self.setting_fields.append(fullname)
+            self.setting_field_names.append(fullname)
 
     def clean_backend_fields(self, name):
         """Clean backend fields."""
@@ -47,7 +47,8 @@ class BackendSettingsMixin(object):
         """Set settings to JSON field."""
         transport = super(BackendSettingsMixin, self).save(commit=False)
         transport._settings = {
-            name: self.cleaned_data[name] for name in self.setting_fields
+            name: self.cleaned_data[name]
+            for name in self.setting_field_names
         }
         if commit:
             transport.save()
@@ -60,7 +61,7 @@ class TransportForm(BackendSettingsMixin, forms.ModelForm):
     service = forms.ChoiceField(choices=[])
 
     class Meta:
-        fields = ("pattern", "service", "enabled")
+        fields = ("pattern", "service")
         model = models.Transport
 
     def __init__(self, *args, **kwargs):
@@ -70,6 +71,10 @@ class TransportForm(BackendSettingsMixin, forms.ModelForm):
         settings = backends.manager.get_all_backend_settings()
         for name, backend_settings in settings.items():
             self.inject_backend_settings(name, backend_settings)
+
+    @property
+    def setting_fields(self):
+        return [self[name] for name in self.setting_field_names]
 
     def _clean_fields(self):
         """Make backend settings required."""

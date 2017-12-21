@@ -28,8 +28,6 @@ urlpatterns = [
     url('', include('modoboa.core.urls', namespace="core")),
     url('^user/forward/', forward, name="user_forward"),
     url('admin/', include('modoboa.admin.urls', namespace="admin")),
-    url(r'^transports/',
-        include("modoboa.transport.urls", namespace="transport")),
     # No namespace
     url(r'^accounts/password_reset/$', core_views.password_reset,
         name="password_reset"),

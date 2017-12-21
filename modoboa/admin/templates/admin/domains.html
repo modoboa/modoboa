@@ -1,5 +1,6 @@
 {% extends "admin/listing.html" %}
-{% load i18n admin_tags lib_tags %}
+
+{% load i18n admin_tags lib_tags static%}
 
 {% block pagetitle %}{% trans "Domains" %}{% endblock %}
 
@@ -9,14 +10,15 @@
 {% endblock %}
 
 {% block extra_js %}
-{{ block.super }}
-<script type="text/javascript">
-$(document).ready(function() {
-    admin = new Domains({
-        load_page_url: "{% url 'admin:_domain_list' %}"
-    });
-});
-</script>
+  {{ block.super }}
+  <script src="{% static 'transport/js/transport.js' %}" type="text/javascript"></script>
+  <script type="text/javascript">
+   $(document).ready(function() {
+       admin = new Domains({
+           load_page_url: "{% url 'admin:_domain_list' %}"
+       });
+   });
+  </script>
 {% extra_static_content "domains" "js" user %}
 {% endblock %}
 

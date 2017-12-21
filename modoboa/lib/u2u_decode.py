@@ -1,6 +1,11 @@
 # coding: utf-8
 
-"""Unstructured rfc2047 header to unicode."""
+"""
+Unstructured rfc2047 header to unicode.
+
+A stupid (and not accurate) answer to https://bugs.python.org/issue1079.
+
+"""
 
 from __future__ import unicode_literals
 

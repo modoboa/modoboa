@@ -18,26 +18,8 @@ function transportFormCallback () {
         displayBackendSettings($(this).val());
     });
     displayBackendSettings($service_field.val());
-
-    $('.submit').one('click', $.proxy(function(e) {
-        simple_ajax_form_post(e, {
-            formid: 'transport_form',
-            error_cb: transportFormCallback
-        });
-    }, this));
 }
 
 $(document).ready(function () {
-    $('#searchquery').focus(function () {
-        $(this).val('');
-    }).blur(function (e) {
-        var $this = $(this);
-        if ($this.val() === '') {
-            $this.val(gettext('Search'));
-        }
-    });
-    $('a[name=deltransport]').confirm({
-        question: function() { return this.$element.attr('title'); },
-        method: 'DELETE'
-    });
+    $(this).bind('domform_init', transportFormCallback);
 });
