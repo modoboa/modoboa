@@ -1,23 +1,23 @@
-django>=1.10,<=1.10.99
+django>=1.11.8,<=1.11.99
 django-braces==1.11.0
-django-ckeditor==5.2.1
-django-reversion==1.10.2
+django-ckeditor==5.2.2
+django-reversion==2.0.12
 django-subcommand2==0.1.1
 django-versionfield2>=0.5.0
 django-xforwardedfor-middleware
 
 dj-database-url
 
-coreapi==2.3.1
+coreapi==2.3.3
 coreapi-cli==1.0.6
-djangorestframework==3.7.1
+djangorestframework==3.7.3
 
 argparse
 # bcrypt requires libffi-dev
 bcrypt==3.1.4
 dnspython==1.15.0
 feedparser==5.2.1
-gevent==1.2.1
+gevent==1.2.2
 ipaddress
 jsonfield==2.0.2
 passlib==1.7.1

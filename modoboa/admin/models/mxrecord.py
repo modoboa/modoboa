@@ -37,14 +37,14 @@ class MXRecordManager(models.Manager):
         if records.exists():
             for record in records:
                 yield record
-            raise StopIteration()
+            return
 
         self.get_queryset().filter(domain=domain).delete()
 
         delta = datetime.timedelta(seconds=ttl)
         domain_mxs = lib.get_domain_mx_list(domain.name)
         if len(domain_mxs) == 0:
-            raise StopIteration
+            return
         for mx_addr, mx_ip_addr in domain_mxs:
             record = self.get_queryset().create(
                 domain=domain,
@@ -58,7 +58,7 @@ class MXRecordManager(models.Manager):
 class MXRecord(models.Model):
     """A model used to store MX records for Domain."""
 
-    domain = models.ForeignKey("admin.Domain")
+    domain = models.ForeignKey("admin.Domain", on_delete=models.CASCADE)
     name = models.CharField(max_length=254)
     address = models.GenericIPAddressField()
     managed = models.BooleanField(default=False)
@@ -86,9 +86,9 @@ class DNSBLQuerySet(models.QuerySet):
 class DNSBLResult(models.Model):
     """Store a DNSBL query result."""
 
-    domain = models.ForeignKey("admin.Domain")
+    domain = models.ForeignKey("admin.Domain", on_delete=models.CASCADE)
     provider = models.CharField(max_length=254, db_index=True)
-    mx = models.ForeignKey(MXRecord)
+    mx = models.ForeignKey(MXRecord, on_delete=models.CASCADE)
     status = models.CharField(max_length=45, blank=True, db_index=True)
 
     objects = models.Manager.from_queryset(DNSBLQuerySet)()

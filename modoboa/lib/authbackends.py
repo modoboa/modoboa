@@ -29,9 +29,9 @@ class SMTPBackend(object):
             smtp.login(username, password)
         except smtplib.SMTPException:
             return None
-        return self.get_or_create_user(username)
+        return self.get_or_build_user(username)
 
-    def get_or_create_user(self, username):
+    def get_or_build_user(self, username):
         """Get a user or create it the first time.
 
         .. note::
@@ -71,7 +71,7 @@ try:
             self.global_params = dict(
                 param_tools.get_global_parameters("core"))
 
-        def get_or_create_user(self, username, ldap_user):
+        def get_or_build_user(self, username, ldap_user):
             """
             This must return a (User, created) 2-tuple for the given
             LDAP user.  username is the Django-friendly username of

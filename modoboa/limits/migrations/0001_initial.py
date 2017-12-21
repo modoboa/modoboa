@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             name='LimitsPool',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'limits_limitspool',
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='limit',
             name='pool',
-            field=models.ForeignKey(to='limits.LimitsPool'),
+            field=models.ForeignKey(to='limits.LimitsPool', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

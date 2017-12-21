@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=254)),
                 ('max_value', models.IntegerField(default=0)),
-                ('domain', models.ForeignKey(to='admin.Domain')),
+                ('domain', models.ForeignKey(to='admin.Domain', on_delete=models.CASCADE)),
             ],
             bases=(modoboa.limits.models.ObjectLimitMixin, models.Model),
         ),

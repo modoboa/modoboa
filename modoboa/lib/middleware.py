@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 from django.http import HttpResponseRedirect
 from django.utils.encoding import smart_text
+from django.utils.deprecation import MiddlewareMixin
 
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib import signals as lib_signals
@@ -14,7 +15,7 @@ from modoboa.lib.web_utils import (
 )
 
 
-class AjaxLoginRedirect(object):
+class AjaxLoginRedirect(MiddlewareMixin):
 
     def process_response(self, request, response):
         if request.is_ajax():
@@ -23,7 +24,7 @@ class AjaxLoginRedirect(object):
         return response
 
 
-class CommonExceptionCatcher(object):
+class CommonExceptionCatcher(MiddlewareMixin):
     """Modoboa exceptions catcher."""
 
     def process_exception(self, request, exception):
@@ -44,7 +45,7 @@ class CommonExceptionCatcher(object):
         )
 
 
-class RequestCatcherMiddleware(object):
+class RequestCatcherMiddleware(MiddlewareMixin):
     """Simple middleware to store the current request."""
 
     def process_request(self, request):

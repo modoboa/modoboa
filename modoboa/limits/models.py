@@ -69,9 +69,10 @@ class ObjectLimitMixin(object):
 class UserObjectLimit(ObjectLimitMixin, models.Model):
     """Object level limit."""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=254)
-    content_type = models.ForeignKey("contenttypes.ContentType")
+    content_type = models.ForeignKey("contenttypes.ContentType",
+                                     on_delete=models.CASCADE)
     max_value = models.IntegerField(default=0)
 
     class Meta(object):
@@ -132,7 +133,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
 class DomainObjectLimit(ObjectLimitMixin, models.Model):
     """Per-domain limits on object creation."""
 
-    domain = models.ForeignKey("admin.Domain")
+    domain = models.ForeignKey("admin.Domain", on_delete=models.CASCADE)
     name = models.CharField(max_length=254)
     max_value = models.IntegerField(default=0)
 

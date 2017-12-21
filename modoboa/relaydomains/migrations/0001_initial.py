@@ -17,8 +17,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('target_host', models.CharField(help_text='Remote destination of this domain', max_length=255, verbose_name='target host')),
                 ('verify_recipients', models.BooleanField(default=False, help_text='Check for valid recipients', verbose_name='verify recipients')),
-                ('dates', models.ForeignKey(to='admin.ObjectDates')),
-                ('domain', models.OneToOneField(null=True, to='admin.Domain')),
+                ('dates', models.ForeignKey(to='admin.ObjectDates', on_delete=models.CASCADE)),
+                ('domain', models.OneToOneField(null=True, to='admin.Domain', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['domain__name'],
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='relaydomain',
             name='service',
-            field=models.ForeignKey(to='relaydomains.Service'),
+            field=models.ForeignKey(to='relaydomains.Service', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

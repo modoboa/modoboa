@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils import translation

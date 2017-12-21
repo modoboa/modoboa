@@ -10,7 +10,7 @@ import re
 
 from django import template
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.encoding import smart_text
@@ -158,7 +158,7 @@ def colorize_level(level):
 @register.filter
 def tohtml(message):
     """Simple tag to format a text using HTML."""
-    return re.sub(r"'(.*?)'", "<strong>\g<1></strong>", message)
+    return re.sub(r"'(.*?)'", r"<strong>\g<1></strong>", message)
 
 
 @register.simple_tag

@@ -9,7 +9,7 @@ from rfc6266 import build_header
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext as _

@@ -6,7 +6,7 @@ from mock import patch
 import dns.resolver
 
 from django.core.files.base import ContentFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User

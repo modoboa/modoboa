@@ -100,8 +100,8 @@ class Mailbox(AdminObject):
     )
     quota = models.PositiveIntegerField(default=0)
     use_domain_quota = models.BooleanField(default=False)
-    domain = models.ForeignKey(Domain)
-    user = models.OneToOneField(User)
+    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     objects = MailboxManager()
 
@@ -354,7 +354,7 @@ class SenderAddress(models.Model):
     """Extra sender address for Mailbox."""
 
     address = models.EmailField()
-    mailbox = models.ForeignKey(Mailbox)
+    mailbox = models.ForeignKey(Mailbox, on_delete=models.CASCADE)
 
     class Meta:
         app_label = "admin"
@@ -373,7 +373,8 @@ reversion.register(SenderAddress)
 class MailboxOperation(models.Model):
     """An operation on a mailbox."""
 
-    mailbox = models.ForeignKey(Mailbox, blank=True, null=True)
+    mailbox = models.ForeignKey(Mailbox, blank=True, null=True,
+                                on_delete=models.CASCADE)
     type = models.CharField(
         max_length=20, choices=(('rename', 'rename'), ('delete', 'delete'))
     )

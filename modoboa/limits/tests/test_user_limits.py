@@ -3,7 +3,7 @@
 
 from __future__ import unicode_literals
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Alias, Domain
