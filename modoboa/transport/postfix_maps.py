@@ -10,15 +10,15 @@ class TransportMap(object):
     mysql = (
         "SELECT CONCAT(service, ':', next_hop) "
         "FROM transport_transport "
-        "WHERE enabled=1 AND pattern='%s'"
+        "WHERE pattern='%s'"
     )
     postgres = (
         "SELECT service || ':' || next_hop "
         "FROM transport_transport "
-        "WHERE enabled AND pattern='%s'"
+        "WHERE pattern='%s'"
     )
     sqlite = (
         "SELECT service || ':' || next_hop "
         "FROM transport_transport "
-        "WHERE enabled=1 AND pattern='%s'"
+        "WHERE pattern='%s'"
     )
