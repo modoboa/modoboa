@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """Testing utilities."""
 
 from __future__ import unicode_literals
@@ -13,8 +14,7 @@ from rest_framework.test import APITestCase
 
 from modoboa.core import models as core_models
 
-from . import sysutils
-from . import u2u_decode
+from .. import sysutils
 
 try:
     s = socket.create_connection(('127.0.0.1', 25))
@@ -24,7 +24,7 @@ except socket.error:
     NO_SMTP = True
 
 try:
-    import ldap  # NOQA
+    import ldap  # noqa
     NO_LDAP = False
 except ImportError:
     NO_LDAP = True
@@ -34,7 +34,7 @@ class ParametersMixin(object):
     """Add tools to manage parameters."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa
         """Set LocalConfig instance."""
         super(ParametersMixin, cls).setUpTestData()
         cls.localconfig = core_models.LocalConfig.objects.first()
@@ -58,7 +58,7 @@ class ModoTestCase(ParametersMixin, TestCase):
     """All test cases must inherit from this one."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa
         """Create a default user."""
         super(ModoTestCase, cls).setUpTestData()
         management.call_command("load_initial_data")
@@ -93,7 +93,7 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
     """All test cases must inherit from this one."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa
         """Create a default user."""
         super(ModoAPITestCase, cls).setUpTestData()
         management.call_command("load_initial_data")
@@ -104,54 +104,3 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
         """Setup."""
         super(ModoAPITestCase, self).setUp()
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-
-
-class U2UTestCase(TestCase):
-    """Test RFC1342 decoding utilities."""
-
-    def test_header_decoding(self):
-        """Simple decoding."""
-        samples = [
-            ("=?ISO-8859-15?Q?=20Profitez de tous les services en ligne sur "
-             "impots.gouv.fr?=",
-             "Profitez de tous les services en ligne sur impots.gouv.fr"),
-            ("=?ISO-8859-1?Q?Accus=E9?= de =?ISO-8859-1?Q?r=E9ception?= de "
-             "votre annonce",
-             "Accusé de réception de votre annonce"),
-            ("Sm=?ISO-8859-1?B?9g==?=rg=?ISO-8859-1?B?5Q==?=sbord",
-             "Sm\xf6rg\xe5sbord"),
-            # The following case currently fails because of the way we split
-            # encoded words to parse them separately, which can lead to
-            # unexpected unicode decode errors... I think it will work fine on
-            # Python3
-            # ("=?utf-8?B?VMOpbMOpcMOpYWdlIFZJTkNJIEF1dG9yb3V0ZXMgLSBFeHDD?=\n"
-            #  "=?utf-8?B?qWRpdGlvbiBkZSB2b3RyZSBjb21tYW5kZSBOwrAgMjAxNzEyMDcw"
-            #  "MDA1?=\n=?utf-8?B?MyBkdSAwNy8xMi8yMDE3IDE0OjQ5OjQx?=",
-            #  "")
-        ]
-        for sample in samples:
-            self.assertEqual(u2u_decode.u2u_decode(sample[0]), sample[1])
-
-    def test_address_header_decoding(self):
-        """Check address decoding."""
-        mailsploit_sample = (
-            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=00?="
-            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com")
-        expected_result = (
-            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??="
-            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com")
-        self.assertEqual(
-            u2u_decode.decode_address(mailsploit_sample),
-            ("", expected_result)
-        )
-        mailsploit_sample = (
-            '"=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?="\n'
-            '<=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?='
-            '@mailsploit.com>')
-        expected_result = (
-            'potus@whitehouse.gov',
-            '=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??='
-            '@mailsploit.com')
-        self.assertEqual(
-            u2u_decode.decode_address(mailsploit_sample),
-            expected_result)
