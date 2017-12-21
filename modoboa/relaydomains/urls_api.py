@@ -7,5 +7,5 @@ from . import viewsets
 
 router = routers.SimpleRouter()
 router.register(
-    r"transports", viewsets.TransportViewSet, base_name="transport")
+    r"relaydomains", viewsets.RelayDomainViewSet, base_name="relaydomain")
 urlpatterns = router.urls

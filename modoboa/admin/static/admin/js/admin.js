@@ -128,6 +128,7 @@ Domains.prototype = {
         this.options.navigation_params.push("domfilter", "srvfilter");
         this.options.eor_message = gettext("No more domain to show");
         this.register_tag_handler("dom");
+        this.register_tag_handler("srv", this.srv_tag_handler);
     },
 
     /**
@@ -176,6 +177,22 @@ Domains.prototype = {
         $("#objects_table thead tr").html(data.headers);
         Admin.prototype.list_cb.call(this, data);
         this.init_domain_links(data);
+    },
+
+    srv_tag_handler: function(tag, $link) {
+        if (this.navobj.getparam(tag + "filter") === undefined && $link.hasClass(tag)) {
+            var text = $link.attr("name");
+            this.navobj
+                .setparam("domfilter", "relaydomain")
+                .setparam(tag + "filter", text)
+                .update();
+            if ($("a[name=dom]").length === 0) {
+                $("#taglist").append(this.make_tag("relaydomain", "dom"));
+            }
+            $("#taglist").append(this.make_tag(text, tag));
+            return true;
+        }
+        return false;
     },
 
     /**

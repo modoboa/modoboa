@@ -28,4 +28,4 @@ def import_relaydomain(user, row, formopts):
     transport = tr_models.Transport(
         pattern=domain.name, service="relay", _settings=settings)
     tr_backends.manager.get_backend("relay").serialize(transport)
-    transport.save(creator=user)
+    transport.save()
