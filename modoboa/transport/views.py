@@ -1,7 +1,7 @@
 """Transport views."""
 
 from django import http
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.views import generic
 

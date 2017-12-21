@@ -9,7 +9,7 @@ import tempfile
 import mock
 
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase

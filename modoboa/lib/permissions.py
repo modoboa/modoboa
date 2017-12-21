@@ -51,8 +51,6 @@ def grant_access_to_object(user, obj, is_owner=False):
     :param obj: an admin. object (Domain, Mailbox, ...)
     :param is_owner: the user is the unique object's owner
     """
-    from modoboa.core.models import User
-
     ct = ContentType.objects.get_for_model(obj)
     entry, created = ObjectAccess.objects.get_or_create(
         user=user, content_type=ct, object_id=obj.id)

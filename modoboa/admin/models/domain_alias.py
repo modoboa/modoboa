@@ -40,7 +40,8 @@ class DomainAlias(AdminObject):
                             help_text=ugettext_lazy("The alias name"))
     target = models.ForeignKey(
         Domain, verbose_name=ugettext_lazy('target'),
-        help_text=ugettext_lazy("The domain this alias points to")
+        help_text=ugettext_lazy("The domain this alias points to"),
+        on_delete=models.CASCADE
     )
     enabled = models.BooleanField(
         ugettext_lazy('enabled'),

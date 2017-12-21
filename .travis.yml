@@ -1,10 +1,19 @@
-sudo: false
 language: python
-cache: pip
 python:
   - "2.7"
   - "3.4"
+  - "3.5"
   - "3.6"
+
+env:
+  global:
+    - PYTHONWARNINGS="default,ignore::PendingDeprecationWarning,ignore::ResourceWarning"
+  matrix:
+    - DB="POSTGRESQL"
+    - DB="MYSQL"
+
+sudo: false
+
 addons:
   apt:
     packages:
@@ -12,30 +21,28 @@ addons:
       - postfix
       - slapd
 
-env:
-  - DB="POSTGRESQL"
-  - DB="MYSQL"
+cache: pip
 
 services:
-  - mysql
   - postgres
+  - mysql
 
 before_install:
   - pip install codecov
-  - if [[ $DB = 'POSTGRESQL' ]]; then pip install -q psycopg2; fi
-  - if [[ $DB = 'MYSQL' ]]; then pip install -q mysqlclient; fi
+  - if [[ $DB = "POSTGRESQL" ]]; then pip install -q psycopg2; fi
+  - if [[ $DB = "MYSQL" ]]; then pip install -q mysqlclient; fi
 
 install:
   - pip install -q -r requirements.txt
   - pip install -q -r ldap-requirements.txt
   - pip install -q -r test-requirements.txt
-  - pip install -e .
+  - python setup.py -q develop
 
 before_script:
-  - if [[ $DB = 'POSTGRESQL' ]]; then psql -c 'create database modoboa_test;' -U postgres; fi
-  - if [[ $DB = 'MYSQL' ]]; then mysql -e "create database IF NOT EXISTS modoboa_test;" -uroot; fi
-  - if [[ $DB = 'MYSQL' ]]; then mysql -e "CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'modoboa'" -uroot; fi
-  - if [[ $DB = 'MYSQL' ]]; then mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'modoboa'@'localhost';" -uroot; fi
+  - if [[ $DB = "POSTGRESQL" ]]; then psql -c "CREATE DATABASE modoboa_test;" -U postgres; fi
+  - if [[ $DB = "MYSQL" ]]; then mysql -e "CREATE DATABASE IF NOT EXISTS modoboa_test;" -uroot; fi
+  - if [[ $DB = "MYSQL" ]]; then mysql -e "CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'modoboa'" -uroot; fi
+  - if [[ $DB = "MYSQL" ]]; then mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'modoboa'@'localhost';" -uroot; fi
   - mkdir /tmp/slapd
   - slapd -f test_data/slapd.conf -h ldap://localhost:3389 &
   - sleep 3

@@ -114,9 +114,9 @@ def size2integer(value):
     :param value: the string to convert
     :return: the corresponding integer value
     """
-    m = re.match("(\d+)\s*(\w+)", value)
+    m = re.match(r"(\d+)\s*(\w+)", value)
     if m is None:
-        if re.match("\d+", value):
+        if re.match(r"\d+", value):
             return int(value)
         return 0
     if m.group(2)[0] in ["K", "k"]:

@@ -11,7 +11,7 @@ from django.contrib.auth import password_validation
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
-    YesNoField, SeparatorField, InlineRadioSelect
+    YesNoField, SeparatorField, HorizontalRadioSelect
 )
 from modoboa.parameters import forms as param_forms
 from modoboa.parameters import tools as param_tools
@@ -44,7 +44,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                  ('ldap', "LDAP")],
         initial="local",
         help_text=ugettext_lazy("The backend used for authentication"),
-        widget=InlineRadioSelect
+        widget=HorizontalRadioSelect()
     )
 
     password_scheme = forms.ChoiceField(
