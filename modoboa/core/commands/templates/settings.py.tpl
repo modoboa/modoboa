@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for {{ name }} project.
 
@@ -38,6 +39,15 @@ ALLOWED_HOSTS = [
 ]
 
 SITE_ID = 1
+
+# A list of all the people who get code error notifications. When DEBUG=False
+# and a view raises an exception, Django will email these people with the full
+# exception information.
+# See https://docs.djangoproject.com/en/dev/ref/settings/#admins
+#ADMINS = [('Administrator', 'admin@example.net')]
+
+# The email address that error messages come from, such as those sent to ADMINS
+#SERVER_EMAIL = 'webmaster@example.net'
 
 # Security settings
 
@@ -252,6 +262,11 @@ LOGGING = {
         },
     },
     'handlers': {
+        'mail-admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True
+        },
         'syslog-auth': {
             'class': 'logging.handlers.SysLogHandler',
             'facility': SysLogHandler.LOG_AUTH,
@@ -262,6 +277,11 @@ LOGGING = {
         }
     },
     'loggers': {
+        'django': {
+            'handlers': ['mail-admins'],
+            'level': 'ERROR',
+            'propagate': False
+        },
         'modoboa.auth': {
             'handlers': ['syslog-auth', 'modoboa'],
             'level': 'INFO',
