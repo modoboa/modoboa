@@ -3,3 +3,5 @@ mock==2.0.0
 httmock==1.2.5
 testfixtures==4.7.0
 tox
+psycopg2>=2.5.4
+mysqlclient>=1.3.3
