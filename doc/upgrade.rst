@@ -89,6 +89,21 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.10.0
+======
+
+First of all, update postfix map files as follows:
+
+.. sourcecode:: bash
+
+   > python manage.py generate_postfix_maps --destdir <path>
+                
+Then, modify postfix's configuration as follows::
+
+If transport_maps contains sql-relaydomains-transport.cf, remove it.
+
+Finally, reload postfix.
+
 1.9.2
 =====
 
