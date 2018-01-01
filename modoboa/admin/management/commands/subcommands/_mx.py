@@ -12,6 +12,7 @@ from django.core import mail
 from django.core.mail import EmailMessage
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
+from django.utils.encoding import smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
@@ -41,7 +42,7 @@ class CheckMXRecords(BaseCommand):
     def valid_mxs(self):
         """Return valid MXs set in admin."""
         valid_mxs = param_tools.get_global_parameter("valid_mxs")
-        return [ipaddress.ip_network(u"{}".format(v.strip()))
+        return [ipaddress.ip_network(smart_text(v.strip()))
                 for v in valid_mxs.split() if v.strip()]
 
     def add_arguments(self, parser):

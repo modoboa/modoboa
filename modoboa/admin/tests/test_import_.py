@@ -2,8 +2,8 @@
 
 from __future__ import unicode_literals
 
-from mock import patch
 import dns.resolver
+from mock import patch
 
 from django.core.files.base import ContentFile
 from django.urls import reverse
@@ -80,19 +80,19 @@ domainalias; domalias1.com; domain1.com; True
             "Default mailbox quota cannot be greater than domain quota")
 
     @patch.object(dns.resolver.Resolver, "query")
-    @patch("socket.gethostbyname")
-    def test_domain_import_with_mx_check(self, mock_gethostbyname, mock_query):
+    @patch("socket.getaddrinfo")
+    def test_domain_import_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain import when MX check is enabled."""
         reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers", ))
         self.client.force_login(reseller)
-        self.set_global_parameter("valid_mxs", "1.2.3.4")
+        self.set_global_parameter("valid_mxs", "192.0.2.1 2001:db8::1")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
 
-        mock_query.return_value = [utils.FakeDNSAnswer("mail.ok.com")]
-        mock_gethostbyname.return_value = "1.2.3.5"
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         f = ContentFile(
-            b"domain; domain1.com; 100; 1; True", name="domains.csv")
+            b"domain; test3.com; 100; 1; True", name="domains.csv")
         resp = self.client.post(
             reverse("admin:domain_import"), {
                 "sourcefile": f
@@ -100,8 +100,9 @@ domainalias; domalias1.com; domain1.com; True
         )
         self.assertContains(resp, "No authorized MX record found for domain")
 
-        mock_gethostbyname.return_value = "1.2.3.4"
-        f.seek(0)
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
+        f = ContentFile(
+            b"domain; domain1.com; 100; 1; True", name="domains.csv")
         resp = self.client.post(
             reverse("admin:domain_import"), {
                 "sourcefile": f

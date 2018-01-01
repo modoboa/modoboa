@@ -199,21 +199,21 @@ class DomainTestCase(ModoTestCase):
         self.assertContains(response, "value=\"50\"")
 
     @patch.object(dns.resolver.Resolver, "query")
-    @patch("socket.gethostbyname")
-    def test_create_and_check_mx(self, mock_gethostbyname, mock_query):
+    @patch("socket.getaddrinfo")
+    def test_create_and_check_mx(self, mock_getaddrinfo, mock_query):
         """Check for authorized MX record."""
         reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers", ))
         self.client.force_login(reseller)
 
         self.set_global_parameter("enable_admin_limits", False, app="limits")
-        self.set_global_parameter("valid_mxs", "1.2.3.4")
+        self.set_global_parameter("valid_mxs", "192.0.2.1 2001:db8::1")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
 
-        mock_query.return_value = [utils.FakeDNSAnswer("mail.ok.com")]
-        mock_gethostbyname.return_value = "1.2.3.5"
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         values = {
-            "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
+            "name": "no-mx.example.com", "quota": 0, "default_mailbox_quota": 0,
             "create_dom_admin": True, "dom_admin_username": "toto",
             "create_aliases": True, "type": "domain", "stepid": "step3",
             "with_mailbox": True
@@ -222,7 +222,8 @@ class DomainTestCase(ModoTestCase):
         self.assertFalse(
             Domain.objects.filter(name=values["name"]).exists())
 
-        mock_gethostbyname.return_value = "1.2.3.4"
+        values["name"] = "pouet.com"
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         self.ajax_post(reverse("admin:domain_add"), values)
 
     def test_modify(self):
