@@ -7,14 +7,17 @@ from __future__ import unicode_literals
 from functools import wraps
 import ipaddress
 from itertools import chain
+import logging
 import random
 import socket
 import string
 
+from dns.name import IDNA_2008_UTS_46
 import dns.resolver
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 
 from modoboa.core.models import User
@@ -170,39 +173,55 @@ def import_dlist(user, row, formopts):
     _import_alias(user, row)
 
 
-def get_domain_mx_list(name):
+def get_domain_mx_list(domain):
     """Return a list of MX IP address for domain."""
     result = []
+    logger = logging.getLogger("modoboa.admin")
     try:
-        answers = dns.resolver.query(name, "MX")
-    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN,
-            dns.resolver.NoNameservers):
-        return result
-    for answer in answers:
-        try:
-            # work if .exchange is a name or IP
-            address = socket.gethostbyname(str(answer.exchange))
-        except socket.gaierror:
-            pass
-        else:
+        dns_answers = dns.resolver.query(domain, "MX")
+    except dns.resolver.NXDOMAIN as e:
+        logger.error(_("No DNS records found for %s") % domain, exc_info=e)
+    except dns.resolver.NoAnswer as e:
+        logger.error(_("No MX record for %s") % domain, exc_info=e)
+    except dns.resolver.NoNameservers as e:
+        logger.error(_("No working name servers found"), exc_info=e)
+    except dns.resolver.Timeout as e:
+        logger.warning(
+            _("DNS resolution timeout, unable to query %s at the moment") % domain,
+            exc_info=e)
+    else:
+        for dns_answer in dns_answers:
             try:
-                # we must have a valid IP
-                address = ipaddress.ip_address("{}".format(address))
-            except ValueError:
-                pass
+                mx_domain = dns_answer.exchange.to_unicode(
+                    omit_final_dot=True, idna_codec=IDNA_2008_UTS_46)
+                ip_answers = socket.getaddrinfo(
+                    mx_domain, 25, 0, socket.SOCK_STREAM)
+            except socket.gaierror as e:
+                logger.warning(
+                    _("Unable to lookup ip addresses for %s; %s") % (
+                        mx_domain, str(e)),
+                    exc_info=e)
             else:
-                result.append((str(answer.exchange), address))
+                for ip_answer in ip_answers:
+                    try:
+                        mx_ip = ipaddress.ip_address(
+                            smart_text(ip_answer[4][0]))
+                    except ValueError as e:
+                        logger.warning(
+                            _("Invalid IP address format for %s; %s") % (
+                                mx_domain, smart_text(ip_answer[4][0])),
+                            exc_info=e)
+                    else:
+                        result.append((mx_domain, mx_ip))
     return result
 
 
 def domain_has_authorized_mx(name):
     """Check if domain has authorized mx record at least."""
     valid_mxs = param_tools.get_global_parameter("valid_mxs")
-    valid_mxs = [ipaddress.ip_network(u"{}".format(v.strip()))
+    valid_mxs = [ipaddress.ip_network(smart_text(v.strip()))
                  for v in valid_mxs.split() if v.strip()]
     domain_mxs = get_domain_mx_list(name)
-    if len(domain_mxs) == 0:
-        return True
     for mx_addr, mx_ip_addr in domain_mxs:
         for subnet in valid_mxs:
             if mx_ip_addr in subnet:
