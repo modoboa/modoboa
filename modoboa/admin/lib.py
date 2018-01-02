@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """Internal library for admin."""
 
@@ -222,7 +222,7 @@ def domain_has_authorized_mx(name):
     valid_mxs = [ipaddress.ip_network(smart_text(v.strip()))
                  for v in valid_mxs.split() if v.strip()]
     domain_mxs = get_domain_mx_list(name)
-    for mx_addr, mx_ip_addr in domain_mxs:
+    for mx_addr, mx_ip_addr in domain_mxs:  # noqa:B007
         for subnet in valid_mxs:
             if mx_ip_addr in subnet:
                 return True

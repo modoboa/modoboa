@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Management command to check defined domains."""
 
 from __future__ import print_function, unicode_literals
@@ -24,7 +26,7 @@ from modoboa.parameters import tools as param_tools
 class CheckMXRecords(BaseCommand):
     """Command class."""
 
-    help = "Check defined domains."
+    help = "Check defined domains."  # noqa:A003
 
     @cached_property
     def providers(self):
