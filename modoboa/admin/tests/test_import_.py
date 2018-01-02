@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
@@ -20,7 +20,7 @@ from ..models import Domain, Alias, DomainAlias
 class ImportTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa: N802
         """Create test data."""
         super(ImportTestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(

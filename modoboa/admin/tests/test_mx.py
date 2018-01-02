@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """DNSBL related tests."""
 
 from __future__ import unicode_literals
@@ -25,7 +27,7 @@ class MXTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa:N802
         """Create some data."""
         super(MXTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
@@ -64,17 +66,17 @@ class MXTestCase(ModoTestCase):
 
         # we passed a ttl to 0. this will reset the cache this time
         qs = models.MXRecord.objects.filter(domain=self.domain)
-        id = qs[0].id
+        id_ = qs[0].id
         management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=7200")
         qs = models.MXRecord.objects.filter(domain=self.domain)
-        self.assertNotEqual(id, qs[0].id)
-        id = qs[0].id
+        self.assertNotEqual(id_, qs[0].id)
+        id_ = qs[0].id
 
         # assume that mxrecords ids are the same. means that we taking care of
         # ttl
         management.call_command("modo", "check_mx", "--no-dnsbl")
         qs = models.MXRecord.objects.filter(domain=self.domain)
-        self.assertEqual(id, qs[0].id)
+        self.assertEqual(id_, qs[0].id)
 
     @patch("gevent.socket.gethostbyname")
     @patch("socket.getaddrinfo")
@@ -137,7 +139,7 @@ class DNSBLTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa:N802
         """Create some data."""
         super(DNSBLTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")

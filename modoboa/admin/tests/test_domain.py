@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """Domain related test cases."""
 
@@ -22,7 +22,7 @@ class DomainTestCase(ModoTestCase):
     """Test case for Domain."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa: N802
         """Create test data."""
         super(DomainTestCase, cls).setUpTestData()
         factories.populate_database()
