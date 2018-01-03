@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-import csv
+from backports import csv
 import sys
 
 from django.core.management.base import BaseCommand
