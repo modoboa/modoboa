@@ -366,13 +366,13 @@ class User(AbstractUser):
         """
         row = [
             "account",
-            force_str(self.username),
-            force_str(self.password),
-            force_str(self.first_name),
-            force_str(self.last_name),
-            force_str(self.is_active),
-            force_str(self.role),
-            force_str(self.email)
+            smart_text(self.username),
+            smart_text(self.password),
+            smart_text(self.first_name),
+            smart_text(self.last_name),
+            smart_text(self.is_active),
+            smart_text(self.role),
+            smart_text(self.email)
         ]
         results = signals.account_exported.send(
             sender=self.__class__, user=self)
