@@ -23,7 +23,9 @@
       <ul class="dropdown-menu">
         {% for sentry in entry.menu %}
           {% if sentry.divider %}
-        <li class="divider"></li>
+            <li class="divider"></li>
+          {% elif sentry.header %}
+            <li class="dropdown-header">{{ sentry.label }}</li>
           {% else %}
         <li>{% render_link sentry %}</li>
           {% endif %}
