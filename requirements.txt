@@ -27,3 +27,4 @@ cryptography
 pytz
 requests
 rfc6266
+lxml

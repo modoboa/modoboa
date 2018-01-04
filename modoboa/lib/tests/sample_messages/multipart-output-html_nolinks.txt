@@ -1,0 +1,16 @@
+<div>
+  
+
+    
+  
+  <body>
+    <p>This is an <b>html</b> <i>test </i><u>message.</u></p>
+    <span class="moz-smiley-s1"><span>:-)</span></span><br>
+    <br>
+    <img alt="" height="10" width="10"><br>
+    <pre class="moz-signature" cols="72">-- 
+someone
+<a class="moz-txt-link-abbreviated">someone@example.net</a></pre>
+  </body>
+<p>
+&#65533;&#65533;</p></div>

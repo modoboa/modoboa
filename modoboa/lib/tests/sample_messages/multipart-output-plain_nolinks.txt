@@ -1,0 +1,7 @@
+<pre>This is an *html* /test /_message._
+
+:-)
+
+-- 
+Someone
+someone@example.net</pre>

@@ -1,21 +1,28 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
-from email.header import Header, decode_header
+import email
+from email.header import Header
 from email.mime.text import MIMEText
 from email.utils import make_msgid, formatdate, parseaddr
 import re
 import smtplib
 import time
 
-from django.conf import settings
-from django.utils.encoding import smart_text
-from django.utils.html import conditional_escape
+from django.utils.encoding import smart_str, smart_text
+from django.utils.html import conditional_escape, escape
 from django.template.loader import render_to_string
-from django.utils import six
 
 from modoboa.lib import u2u_decode
+
+import lxml.html
+from lxml.html.clean import Cleaner
+
+
+# used by Email()
+_RE_REMOVE_EXTRA_WHITESPACE = re.compile(r"\n\s*\n")
+_RE_CID = re.compile(r".*[ ]*cid=\"([^\"]*)\".*", re.I)
 
 
 class EmailAddress(object):
@@ -33,107 +40,100 @@ class EmailAddress(object):
 
 class Email(object):
 
-    def __init__(self, mailid, mformat="plain", dformat="plain", links=0):
-        self.attached_map = {}
+    _basic_headers = (
+        "From",
+        "To",
+        "Cc",
+        "Date",
+        "Subject",
+    )
+
+    _image_mime_types = (
+        "image/png",
+        "image/gif",
+        "image/jpeg",
+    )
+
+    def __init__(self, mailid, mformat="plain", dformat="plain", links=False):
         self.contents = {"html": "", "plain": ""}
-        self.headers = []
-        self.attachments = {}
         self.mailid = mailid
         self.mformat = mformat
         self.dformat = dformat
-        self.links = links
+
+        if isinstance(links, bool):
+            self.links = links
+        elif isinstance(links, int):
+            # TODO: modoboa-webmail currently sets links == 0 or 1, it needs
+            #       updated to use True or False.
+            self.links = bool(links)
+        elif links == "0":
+            raise TypeError("links == \"0\" is not valid, did you mean True or "
+                            "False?")
+        else:
+            raise TypeError("links should be a boolean value")
+
         self._msg = None
+        self._headers = None
         self._body = None
+        self._images = {}
+
+        # used by modoboa_webmail.lib.imapemail.ImapEmail
+        self.attachments = {}
 
     @property
     def msg(self):
-        """Return an email.message object.
-        """
-        raise NotImplementedError
+        if self._msg is None:
+            mail_text = self._fetch_message()
+            assert isinstance(mail_text, bytes)
+            # python 2 expects str (bytes), python 3 expects str (unicode)
+            mail_text = smart_str(mail_text, errors="replace")
+            self._msg = email.message_from_string(mail_text)
+
+        return self._msg
+
+    @property
+    def headers(self):
+        if self._headers is None:
+            self._headers = []
+
+            # don't break modoboa_webmail.lib.imapemail.ImapEmail, it
+            # doesn't have self._msg it loads e-mails (and their headers)
+            # from the IMAP server.
+            if self._msg is not None:
+                for header in self._basic_headers:
+                    value = self.get_header(self.msg, header)
+                    self._headers.append({
+                        "name": header,
+                        "value": value
+                    })
+
+        return self._headers
+
+    @headers.setter
+    def headers(self, value):
+        self._headers = value
 
     @property
     def body(self):
-        """Return email's body."""
         if self._body is None:
-            self._body = (
-                getattr(self, "viewmail_%s" % self.mformat)
-                (self.contents[self.mformat], links=self.links)
-            )
+            self._parse(self.msg)
+            self._body = getattr(self, "viewmail_%s" % self.dformat)()
+
         return self._body
 
-    def get_header(self, msg, hdrname):
-        """Look for a particular header.
-
-        :param string hdrname: header name
-        :return: header avalue
-        """
-        for name in [hdrname, hdrname.upper()]:
-            if name in msg:
-                return msg[name]
+    def get_header(self, msg, header):
+        # msg parameter to maintain compatibility with
+        # modoboa_webmail.lib.imapemail.ImapEmail
+        if header in msg:
+            return "".join([smart_text(v, encoding=(e or 'ascii'))
+                            for v, e in email.header.decode_header(msg[header])
+                            ])
         return ""
 
-    def _parse_default(self, msg, level):
-        """Default parser
+    def _fetch_message(self):
+        raise NotImplementedError()
 
-        All parts handled by this parser will be consireded as
-        attachments.
-        """
-        fname = msg.get_filename()
-        if fname is not None:
-            if isinstance(fname, six.text_type):
-                fname = fname.encode("utf-8")
-            decoded = decode_header(fname)
-            value = (
-                decoded[0][0] if decoded[0][1] is None
-                else smart_text(decoded[0][0], decoded[0][1])
-            )
-        else:
-            value = "part_%s" % level
-        self.attachments[level] = value
-
-    def _parse_text(self, msg, level):
-        """Displayable content parser
-
-        text, html, calendar, etc. All those contents can be displayed
-        inside a navigator.
-        """
-        if msg.get_content_subtype() not in ["plain", "html"]:
-            self._parse_default(msg, level)
-            target = "plain"
-        else:
-            target = msg.get_content_subtype()
-        self.contents[target] += decode(msg.get_payload(decode=True),
-                                        charset=msg.get_content_charset())
-
-    def _parse_image(self, msg, level):
-        """image/* parser
-
-        The only reason to make a specific parser for images is that,
-        sometimes, messages embark inline images, which means they
-        must be displayed and not attached.
-        """
-        if self.dformat == "html" and self.links \
-                and "Content-Disposition" in msg:
-            if msg["Content-Disposition"].startswith("inline"):
-                cid = None
-                if "Content-ID" in msg:
-                    m = re.match("<(.+)>", msg["Content-ID"])
-                    cid = m is not None and m.group(1) or msg["Content-ID"]
-                fname = msg.get_filename()
-                if fname is None:
-                    if "Content-Location" in msg:
-                        fname = msg["Content-Location"]
-                    elif cid is not None:
-                        fname = cid
-                    else:
-                        # I give up for now :p
-                        return
-                self.attached_map[cid] = re.match("^http:", fname) and fname \
-                    or self.__save_image(fname, msg)
-                return
-        self._parse_default(msg, level)
-
-    def _parse(self, msg, level=None):
+    def _parse(self, msg, level=0):
         """Recursive email parser
 
         A message structure can be complex. To correctly handle
@@ -146,85 +146,121 @@ class Email(object):
         :param msg: message (or part) to parse
         :param level: current part number
         """
-        if msg.is_multipart() and msg.get_content_maintype() != "message":
-            cpt = 1
-            for part in msg.get_payload():
-                nlevel = level is None and ("%d" % cpt) \
-                    or "%s.%d" % (level, cpt)
-                self._parse(part, nlevel)
-                cpt += 1
+        content_type = msg.get_content_maintype()
+        is_attachment = "attachment" in msg.get("Content-Disposition", "")
+
+        if content_type == "text" and not is_attachment:
+            self._parse_text(msg, level)
+        elif content_type == "multipart" and not is_attachment:
+            self._parse_multipart(msg, level)
+        else:
+            self._parse_inline_image(msg, level)
+
+        if self.contents["plain"]:
+            self._post_process_plain()
+        if self.contents["html"]:
+            self._post_process_html()
+
+    def _parse_text(self, msg, level=0):
+        content_type = msg.get_content_subtype()
+
+        if content_type in ["plain", "html"]:
+            encoding = msg.get_content_charset() or "utf-8"
+            mail_text = smart_text(msg.get_payload(decode=True), encoding=encoding, errors="replace")
+            self.contents[content_type] += mail_text
+
+    def _parse_multipart(self, msg, level=0):
+        level += 1
+        for part in msg.walk():
+            content_type = part.get_content_maintype()
+            if content_type == "text":
+                self._parse_text(part, level=level)
+            else:
+                # I'm  a dumb mail parser and treat all non-text parts as attachments
+                self._parse_inline_image(part, level=level)
+
+    def _parse_inline_image(self, msg, level=0):
+        content_type = msg.get_content_type()
+        cid = None
+        if "Content-ID" in msg:
+            cid = msg["Content-ID"]
+            if cid.startswith('<') and cid.endswith('>'):
+                cid = cid[1:-1]
+        else:
+            matches = _RE_CID.match(msg["Content-Type"])
+            if matches is not None:
+                cid = matches.group(1)
+        transfer_encoding = msg["Content-Transfer-Encoding"]
+        if content_type not in self._image_mime_types or cid is None:
+            # I'm a dumb mail parser and I don't care ;p
+            return
+        if transfer_encoding != "base64":
+            # I don't deal with non base64 encoded images
+            return
+        if cid in self._images:
+            # Duplicate Content-ID
             return
 
-        if level is None:
-            level = "1"
-        try:
-            getattr(self, "_parse_%s" % msg.get_content_maintype())(msg, level)
-        except AttributeError:
-            self._parse_default(msg, level)
+        self._images[cid] = "data:%s;base64,%s" % (
+            content_type, "".join(msg.get_payload().splitlines(False)))
 
-    def __save_image(self, fname, part):
-        """Save an inline image on the filesystem.
+    def _post_process_plain(self):
+        mail_text = _RE_REMOVE_EXTRA_WHITESPACE \
+            .sub("\n\n", self.contents["plain"]).strip()
+        mail_text = escape(mail_text)
+        self.contents["plain"] = smart_text(mail_text)
 
-        Some HTML messages are using inline images (attached images
-        with links on them inside the body). In order to display them,
-        images are saved on the filesystem and links contained in the
-        message are modified.
+    def _post_process_html(self):
+        html = lxml.html.fromstring(self.contents["html"])
 
-        :param fname: the image associated filename
-        :param part: the email part that contains the image payload
-        """
-        if re.search(r"\.\.", fname):
-            return None
-        path = "/static/tmp/" + fname
-        fp = open(settings.MODOBOA_DIR + path, "wb")
-        fp.write(part.get_payload(decode=True))
-        fp.close()
-        return path
+        if self.links:
+            html.rewrite_links(self._map_cid)
 
-    def map_cid(self, url):
-        """Replace attachment links.
+            for link in html.iterlinks():
+                link[0].set("target", "_blank")
+        else:
+            html.rewrite_links(lambda x: None)
 
-        :param str url: original url
-        :rtype: string
-        :return: internal link
-        """
-        match = re.match(".*cid:(.+)", url)
-        if match is not None:
-            if match.group(1) in self.attached_map:
-                return self.attached_map[match.group(1)]
+        cleaner = Cleaner(
+                scripts=True,
+                javascript=True,
+                links=True,
+                page_structure=True,
+                embedded=True,
+                frames=True,
+                add_nofollow=True)
+        mail_text = lxml.html.tostring(cleaner.clean_html(html))
+        self.contents["html"] = smart_text(mail_text)
+
+    def _map_cid(self, url):
+        if url.startswith("cid:"):
+            cid = url[4:]
+            if cid in self._images:
+                url = self._images[cid]
+
         return url
 
+    def viewmail_plain(self, contents=None, **kwargs):
+        # contents and **kwargs parameters to maintain compatibility with
+        # modoboa_webmail.lib.imapemail.ImapEmail
+        if contents is None:
+            contents = self.contents["plain"]
+        else:
+            contents = conditional_escape(contents)
+        return "<pre>%s</pre>" % contents
+
+    def viewmail_html(self, contents=None, **kwargs):
+        # contents and **kwargs parameters to maintain compatibility with
+        # modoboa_webmail.lib.imapemail.ImapEmail
+        if contents is None:
+            contents = self.contents["html"]
+        return contents
+
     def render_headers(self, **kwargs):
-        return render_to_string("common/mailheaders.html", {
+        context = {
             "headers": self.headers,
-        })
-
-    def viewmail_plain(self, content, **kwargs):
-        content = conditional_escape(content)
-        return "<pre>%s</pre>" % content
-
-    def viewmail_html(self, content, **kwargs):
-        import lxml.html
-
-        if content is None or content == "":
-            return ""
-        links = kwargs.get("links", 0)
-        html = lxml.html.fromstring(content)
-        if not links:
-            html.rewrite_links(lambda x: None)
-        else:
-            html.rewrite_links(self.map_cid)
-            for link in html.iterlinks():
-                link[0].set('target', '_blank')
-        body = html.find("body")
-        if body is None:
-            body = lxml.html.tostring(html)
-        else:
-            body = lxml.html.tostring(body)
-            body = re.sub(
-                "<(/?)body", lambda m: "<%sdiv" % m.group(1),
-                body.decode())
-        return body
+        }
+        return render_to_string("common/mailheaders.html", context)
 
 
 def split_mailbox(mailbox, return_extension=False):

@@ -1,0 +1,16 @@
+<div>
+  
+
+    
+  
+  <body>
+    <p>This is an <b>html</b> <i>test </i><u>message.</u></p>
+    <span class="moz-smiley-s1"><span>:-)</span></span><br>
+    <br>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAF0lEQVQY02NgYGD4//8/ThKfHASMRN0AfaqVa6MQxIQAAAAASUVORK5CYII=" alt="" height="10" width="10" target="_blank"><br>
+    <pre class="moz-signature" cols="72">-- 
+someone
+<a class="moz-txt-link-abbreviated" href="mailto:someone@example.net" target="_blank" rel="nofollow">someone@example.net</a></pre>
+  </body>
+<p>
+&#65533;&#65533;</p></div>
