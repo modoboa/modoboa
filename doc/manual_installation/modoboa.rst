@@ -93,6 +93,10 @@ Install the corresponding Python binding:
 
   (env)> pip install mysqlclient
 
+.. note::
+
+   MariaDB 10.2 (and newer) require mysqlclient 1.3.11 (or newer).
+
 Then, create a user and a database:
 
 .. sourcecode:: bash
