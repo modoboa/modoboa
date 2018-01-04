@@ -84,16 +84,16 @@ def import_domains(request):
     if request.method == "POST":
         return importdata(request)
 
-    ctx = dict(
-        title=_("Import domains"),
-        action_label=_("Import"),
-        action_classes="submit",
-        action=reverse("admin:domain_import"),
-        formid="importform",
-        enctype="multipart/form-data",
-        target="import_target",
-        form=ImportDataForm()
-    )
+    ctx = {
+        "title": _("Import domains"),
+        "action_label": _("Import"),
+        "action_classes": "submit",
+        "action": reverse("admin:domain_import"),
+        "formid": "importform",
+        "enctype": "multipart/form-data",
+        "target": "import_target",
+        "form": ImportDataForm(),
+    }
     return render(request, "admin/import_domains_form.html", ctx)
 
 
@@ -106,14 +106,14 @@ def import_identities(request):
     if request.method == "POST":
         return importdata(request, ImportIdentitiesForm)
 
-    ctx = dict(
-        title=_("Import identities"),
-        action_label=_("Import"),
-        action_classes="submit",
-        action=reverse("admin:identity_import"),
-        formid="importform",
-        enctype="multipart/form-data",
-        target="import_target",
-        form=ImportIdentitiesForm()
-    )
+    ctx = {
+        "title": _("Import identities"),
+        "action_label": _("Import"),
+        "action_classes": "submit",
+        "action": reverse("admin:identity_import"),
+        "formid": "importform",
+        "enctype": "multipart/form-data",
+        "target": "import_target",
+        "form": ImportIdentitiesForm()
+    }
     return render(request, "admin/import_identities_form.html", ctx)
