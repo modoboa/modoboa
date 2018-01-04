@@ -15,7 +15,7 @@ from .... import models
 class ExportCommand(BaseCommand):
     """Command class."""
 
-    help = "Export domains or identities using CSV format"
+    help = "Export domains or identities using CSV format"  # noqa:A003
 
     def add_arguments(self, parser):
         """Add arguments to command."""

@@ -21,7 +21,7 @@ class ImportCommand(BaseCommand):
     """Command class."""
 
     args = "csvfile"
-    help = "Import identities from a csv file"
+    help = "Import identities from a csv file"  # noqa:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""
