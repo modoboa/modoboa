@@ -2,17 +2,11 @@ comment:
   layout: header, changes, diff
 coverage:
   ignore:
-  - modoboa/core/migrations/*
-  - modoboa/core/tests.py
+  - **/migrations/*
+  - **/tests/*
+  - **/tests.py
   - modoboa/core/dev_settings.py
-  - modoboa/lib/migrations/*
-  - modoboa/lib/tests.py
-  - modoboa/admin/migrations/*
-  - modoboa/admin/tests/*
-  - modoboa/limits/migrations/*
-  - modoboa/limits/tests.py
-  - modoboa/relaydomains/migrations/*
-  - modoboa/relaydomains/tests.py
+  - modoboa/test_settings.py
   status:
     patch:
       default:
