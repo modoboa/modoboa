@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """Admin API related tests."""
 
 from __future__ import unicode_literals
@@ -27,7 +28,7 @@ class DomainAPITestCase(ModoAPITestCase):
     """Check API."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa: N802
         """Create test data."""
         super(DomainAPITestCase, cls).setUpTestData()
         factories.populate_database()
@@ -73,11 +74,11 @@ class DomainAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 403)
 
     @patch.object(dns.resolver.Resolver, "query")
-    @patch("socket.gethostbyname")
-    def test_create_domain_with_mx_check(self, mock_gethostbyname, mock_query):
+    @patch("socket.getaddrinfo")
+    def test_create_domain_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain creation when MX check is activated."""
         self.set_global_parameter("enable_admin_limits", False, app="limits")
-        self.set_global_parameter("valid_mxs", "1.2.3.4")
+        self.set_global_parameter("valid_mxs", "192.0.2.1 2001:db8::1")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
         reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers", ))
@@ -85,19 +86,19 @@ class DomainAPITestCase(ModoAPITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
 
         url = reverse("api:domain-list")
-        mock_query.return_value = [utils.FakeDNSAnswer("mail.ok.com")]
-        mock_gethostbyname.return_value = "1.2.3.5"
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         response = self.client.post(
-            url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
+            url, {"name": "no-mx.example.com", "quota": 0, "default_mailbox_quota": 10}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json()["name"][0],
             "No authorized MX record found for this domain")
 
-        mock_gethostbyname.return_value = "1.2.3.4"
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         response = self.client.post(
-            url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
+            url, {"name": "test4.com", "quota": 0, "default_mailbox_quota": 10}
         )
         self.assertEqual(response.status_code, 201)
 
@@ -137,7 +138,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
     """Check DomainAlias API."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa: N802
         """Create test data."""
         super(DomainAliasAPITestCase, cls).setUpTestData()
         factories.populate_database()
@@ -231,7 +232,7 @@ class AccountAPITestCase(ModoAPITestCase):
     }
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa: N802
         """Create test data."""
         super(AccountAPITestCase, cls).setUpTestData()
         factories.populate_database()
@@ -544,7 +545,7 @@ class AliasAPITestCase(ModoAPITestCase):
     }
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa: N802
         """Create test data."""
         super(AliasAPITestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(
@@ -667,7 +668,7 @@ class SenderAddressAPITestCase(ModoAPITestCase):
     """Check SenderAddress API."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # noqa: N802
         """Create test data."""
         super(SenderAddressAPITestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(

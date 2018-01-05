@@ -237,6 +237,7 @@ CKEDITOR_CONFIGS = {
 
 LOGGING = {
     'version': 1,
+    'disable_existing_loggers': False,
     'formatters': {
         'syslog': {
             'format': '%(name)s: %(levelname)s %(message)s'

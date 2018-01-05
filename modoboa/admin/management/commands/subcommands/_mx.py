@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Management command to check defined domains."""
 
 from __future__ import print_function, unicode_literals
@@ -12,6 +14,7 @@ from django.core import mail
 from django.core.mail import EmailMessage
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
+from django.utils.encoding import smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
@@ -23,7 +26,7 @@ from modoboa.parameters import tools as param_tools
 class CheckMXRecords(BaseCommand):
     """Command class."""
 
-    help = "Check defined domains."
+    help = "Check defined domains."  # noqa:A003
 
     @cached_property
     def providers(self):
@@ -41,7 +44,7 @@ class CheckMXRecords(BaseCommand):
     def valid_mxs(self):
         """Return valid MXs set in admin."""
         valid_mxs = param_tools.get_global_parameter("valid_mxs")
-        return [ipaddress.ip_network(u"{}".format(v.strip()))
+        return [ipaddress.ip_network(smart_text(v.strip()))
                 for v in valid_mxs.split() if v.strip()]
 
     def add_arguments(self, parser):
@@ -69,13 +72,21 @@ class CheckMXRecords(BaseCommand):
     def query_dnsbl(self, mx_list, provider):
         """Check given IP against given DNSBL provider."""
         results = {}
-        for mx in mx_list:
-            reverse = ".".join(reversed(mx.address.split(".")))
+        for ip, mxs in mx_list.items():
+            try:
+                ip = ipaddress.ip_address(smart_text(ip))
+            except ValueError as e:
+                continue
+            else:
+                delim = "." if ip.version == 4 else ":"
+                reverse = delim.join(ip.exploded.split(delim)[::-1])
             pattern = "{}.{}.".format(reverse, provider)
             try:
-                results[mx] = socket.gethostbyname(pattern)
+                result = socket.gethostbyname(pattern)
             except socket.gaierror:
-                results[mx] = False
+                result = False
+            for mx in mxs:
+                results[mx] = result
         return provider, results
 
     def store_dnsbl_result(self, domain, provider, results, **options):
@@ -188,8 +199,16 @@ class CheckMXRecords(BaseCommand):
             options["no_dnsbl"] is True)
         if condition or not mx_list:
             return
+
+        mx_by_ip = {}
+        for mx in mx_list:
+            if mx.address not in mx_by_ip:
+                mx_by_ip[mx.address] = [mx]
+            elif mx not in mx_by_ip[mx.address]:
+                mx_by_ip[mx.address].append(mx)
+
         jobs = [
-            gevent.spawn(self.query_dnsbl, mx_list, provider)
+            gevent.spawn(self.query_dnsbl, mx_by_ip, provider)
             for provider in self.providers]
         gevent.joinall(jobs, timeout)
         for job in jobs:
