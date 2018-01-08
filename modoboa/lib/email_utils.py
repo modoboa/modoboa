@@ -84,7 +84,6 @@ class Email(object):
     def msg(self):
         if self._msg is None:
             mail_text = self._fetch_message()
-            assert isinstance(mail_text, bytes)
             # python 2 expects str (bytes), python 3 expects str (unicode)
             mail_text = smart_str(mail_text, errors="replace")
             self._msg = email.message_from_string(mail_text)
