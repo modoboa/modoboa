@@ -20,7 +20,7 @@ from ..models import Domain, Alias, DomainAlias
 class ImportTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # noqa:N802
         """Create test data."""
         super(ImportTestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(
@@ -325,3 +325,23 @@ alias;user@test.com;True;admin@test.com
         self.assertTrue(
             Alias.objects.filter(
                 address="user@test.com", internal=False).exists())
+
+    def test_domains_import_utf8(self):
+        response = self.client.get(reverse("admin:domain_import"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Provide a CSV", response.content.decode())
+
+        f = ContentFile("""domain; dómªin1.com; 1000; 100; True
+dómain; dómªin2.com; 1000; 100; True
+""".encode("utf8"), name="dómains.csv")
+        self.client.post(
+            reverse("admin:domain_import"), {
+                "sourcefile": f
+            }
+        )
+        admin = User.objects.get(username="admin")
+        dom = Domain.objects.get(name="dómªin1.com")
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))

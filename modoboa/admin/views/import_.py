@@ -2,9 +2,9 @@
 
 from __future__ import unicode_literals
 
-import csv
+from backports import csv
 
-from io import StringIO
+import io
 
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
@@ -12,16 +12,14 @@ from django.contrib.auth.decorators import (
 from django.urls import reverse
 from django.db import transaction
 from django.shortcuts import render
+from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
-from django.utils.encoding import smart_str, force_text
-from django.utils import six
 
 from reversion import revisions as reversion
 
 from modoboa.lib.exceptions import ModoboaException, Conflict
 
 from ..forms import ImportIdentitiesForm, ImportDataForm
-from .. import lib
 from .. import signals
 
 
@@ -40,33 +38,23 @@ def importdata(request, formclass=ImportDataForm):
     form = formclass(request.POST, request.FILES)
     if form.is_valid():
         try:
-            if six.PY2:
-                infile = request.FILES['sourcefile']
-            else:
-                infile = StringIO(
-                    force_text(request.FILES['sourcefile'].read())
-                )
-            reader = csv.reader(
-                infile,
-                delimiter=smart_str(form.cleaned_data['sepchar'])
-            )
+            infile = io.TextIOWrapper(
+                request.FILES['sourcefile'].file, encoding="utf8")
+            reader = csv.reader(infile, delimiter=form.cleaned_data['sepchar'])
         except csv.Error as inst:
-            error = str(inst)
-
-        if error is None:
+            error = smart_text(inst)
+        else:
             try:
                 cpt = 0
                 for row in reader:
                     if not row:
                         continue
-                    try:
-                        fct = getattr(lib, "import_%s" % row[0].strip())
-                    except AttributeError:
-                        fct = signals.import_object.send(
-                            sender="importdata", objtype=row[0].strip())
-                        if not fct:
-                            continue
-                        fct = fct[0][1]
+                    fct = signals.import_object.send(
+                        sender="importdata", objtype=row[0].strip())
+                    fct = [func for x_, func in fct if func is not None]
+                    if not fct:
+                        continue
+                    fct = fct[0]
                     with transaction.atomic():
                         try:
                             fct(request.user, row, form.cleaned_data)
@@ -96,16 +84,16 @@ def import_domains(request):
     if request.method == "POST":
         return importdata(request)
 
-    ctx = dict(
-        title=_("Import domains"),
-        action_label=_("Import"),
-        action_classes="submit",
-        action=reverse("admin:domain_import"),
-        formid="importform",
-        enctype="multipart/form-data",
-        target="import_target",
-        form=ImportDataForm()
-    )
+    ctx = {
+        "title": _("Import domains"),
+        "action_label": _("Import"),
+        "action_classes": "submit",
+        "action": reverse("admin:domain_import"),
+        "formid": "importform",
+        "enctype": "multipart/form-data",
+        "target": "import_target",
+        "form": ImportDataForm(),
+    }
     return render(request, "admin/import_domains_form.html", ctx)
 
 
@@ -118,14 +106,14 @@ def import_identities(request):
     if request.method == "POST":
         return importdata(request, ImportIdentitiesForm)
 
-    ctx = dict(
-        title=_("Import identities"),
-        action_label=_("Import"),
-        action_classes="submit",
-        action=reverse("admin:identity_import"),
-        formid="importform",
-        enctype="multipart/form-data",
-        target="import_target",
-        form=ImportIdentitiesForm()
-    )
+    ctx = {
+        "title": _("Import identities"),
+        "action_label": _("Import"),
+        "action_classes": "submit",
+        "action": reverse("admin:identity_import"),
+        "formid": "importform",
+        "enctype": "multipart/form-data",
+        "target": "import_target",
+        "form": ImportIdentitiesForm()
+    }
     return render(request, "admin/import_identities_form.html", ctx)

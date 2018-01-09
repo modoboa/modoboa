@@ -18,6 +18,7 @@ from modoboa.lib import permissions
 from modoboa.lib import signals as lib_signals
 from modoboa.parameters import tools as param_tools
 
+from . import signals as admin_signals
 from . import lib
 from . import models
 from . import postfix_maps
@@ -339,3 +340,21 @@ def add_widgets_to_admin_dashboard(sender, user, **kwargs):
         "template": template,
         "context": context
     }]
+
+
+@receiver(admin_signals.import_object)
+def get_import_func(sender, objtype, **kwargs):
+    """Return function used to import objtype."""
+    if objtype == "domain":
+        return lib.import_domain
+    elif objtype == "domainalias":
+        return lib.import_domainalias
+    elif objtype == "account":
+        return lib.import_account
+    elif objtype == "alias":
+        return lib.import_alias
+    elif objtype == "forward":
+        return lib.import_forward
+    elif objtype == "dlist":
+        return lib.import_dlist
+    return None
