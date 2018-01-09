@@ -2,7 +2,8 @@
 
 from __future__ import unicode_literals
 
-import csv
+from backports import csv
+import io
 import os
 
 import progressbar
@@ -13,7 +14,6 @@ from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.exceptions import Conflict
 
-from .... import lib
 from .... import signals
 
 
@@ -21,7 +21,7 @@ class ImportCommand(BaseCommand):
     """Command class."""
 
     args = "csvfile"
-    help = "Import identities from a csv file"
+    help = "Import identities from a csv file"  # noqa:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""
@@ -52,20 +52,18 @@ class ImportCommand(BaseCommand):
                 progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()
             ], maxval=num_lines
         ).start()
-        with open(filename) as f:
+        with io.open(filename, encoding="utf8") as f:
             reader = csv.reader(f, delimiter=options["sepchar"])
             i = 0
             for row in reader:
                 if not row:
                     continue
-                try:
-                    fct = getattr(lib, "import_%s" % row[0].strip())
-                except AttributeError:
-                    fct = signals.import_object.send(
-                        sender=self.__class__, objtype=row[0].strip())
-                    if not fct:
-                        continue
-                    fct = fct[0][1]
+                fct = signals.import_object.send(
+                    sender=self.__class__, objtype=row[0].strip())
+                fct = [func for x_, func in fct if func is not None]
+                if not fct:
+                    continue
+                fct = fct[0]
                 try:
                     fct(superadmin, row, options)
                 except Conflict:
