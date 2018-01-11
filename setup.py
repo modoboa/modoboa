@@ -1,78 +1,72 @@
 #!/usr/bin/env python
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+# -*- coding: utf-8 -*-
 
-import os
-import re
+"""
+A setuptools based setup module.
+
+See:
+https://packaging.python.org/en/latest/distributing.html
+"""
+
+from __future__ import unicode_literals
+
+import io
+from os import path
+from pip.req import parse_requirements
 from setuptools import setup, find_packages
 
-ROOT = os.path.dirname(__file__)
-PIP_REQUIRES = os.path.join(ROOT, "requirements.txt")
 
-
-def parse_requirements(*filenames):
-    """
-    We generate our install_requires from the pip-requires and test-requires
-    files so that we don't have to maintain the dependency definitions in
-    two places.
-    """
+def get_requirements(requirements_file):
+    """Use pip to parse requirements file."""
     requirements = []
-    for f in filenames:
-        for line in open(f, 'r').read().split('\n'):
-            # Comment lines. Skip.
-            if re.match(r'(\s*#)|(\s*$)', line):
-                continue
-            # Editable matches. Put the egg name into our reqs list.
-            if re.match(r'\s*-e\s+', line):
-                pkg = re.sub(r'\s*-e\s+.*#egg=(.*)$', r'\1', line)
-                requirements.append("%s" % pkg)
-            # File-based installs not supported/needed. Skip.
-            elif re.match(r'\s*-f\s+', line):
-                pass
-            else:
-                requirements.append(line)
+    if path.isfile(requirements_file):
+        for req in parse_requirements(requirements_file, session="hack"):
+            # check markers, such as
+            #
+            #     rope_py3k    ; python_version >= '3.0'
+            #
+            if req.match_markers():
+                requirements.append(str(req.req))
     return requirements
 
 
-def parse_dependency_links(*filenames):
-    """
-    We generate our dependency_links from the pip-requires and test-requires
-    files for the dependencies pulled from github (prepended with -e).
-    """
-    dependency_links = []
-    for f in filenames:
-        for line in open(f, 'r').read().split('\n'):
-            if re.match(r'\s*-[ef]\s+', line):
-                line = re.sub(r'\s*-[ef]\s+', '', line)
-                line = re.sub(r'\s*git\+https', 'http', line)
-                line = re.sub(r'\.git#', '/tarball/master#', line)
-                dependency_links.append(line)
-    return dependency_links
+if __name__ == "__main__":
+    HERE = path.abspath(path.dirname(__file__))
+    INSTALL_REQUIRES = get_requirements(path.join(HERE, "requirements.txt"))
 
+    with io.open(path.join(HERE, "README.rst"), encoding="utf-8") as readme:
+        LONG_DESCRIPTION = readme.read()
 
-def read(fname):
-    return open(os.path.join(ROOT, fname)).read()
-
-
-setup(
-    name="modoboa",
-    version="1.9.1",
-    url="http://modoboa.org/",
-    license="ISC",
-    description="Mail hosting made simple",
-    long_description=read("README.rst"),
-    author="Antoine Nguyen",
-    author_email="tonio@ngyn.org",
-    packages=find_packages(),
-    include_package_data=True,
-    scripts=["bin/modoboa-admin.py"],
-    zip_safe=False,
-    install_requires=parse_requirements(PIP_REQUIRES),
-    dependency_links=parse_dependency_links(PIP_REQUIRES),
-    classifiers=["Development Status :: 5 - Production/Stable",
-                 "Framework :: Django",
-                 "Intended Audience :: System Administrators",
-                 "License :: OSI Approved :: MIT License",
-                 "Operating System :: OS Independent",
-                 "Programming Language :: Python",
-                 "Topic :: Internet :: WWW/HTTP"]
-)
+    setup(
+        name="modoboa",
+        description="Mail hosting made simple",
+        long_description=LONG_DESCRIPTION,
+        license="ISC",
+        url="http://modoboa.org/",
+        author="Antoine Nguyen",
+        author_email="tonio@ngyn.org",
+        classifiers=[
+            "Development Status :: 5 - Production/Stable",
+            "Environment :: Web Environment",
+            "Framework :: Django :: 1.11",
+            "Intended Audience :: System Administrators",
+            "License :: OSI Approved :: ISC License (ISCL)",
+            "Operating System :: OS Independent",
+            "Programming Language :: Python :: 2",
+            "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.4",
+            "Programming Language :: Python :: 3.5",
+            "Programming Language :: Python :: 3.6",
+            "Topic :: Communications :: Email",
+            "Topic :: Internet :: WWW/HTTP",
+        ],
+        keywords="email",
+        packages=find_packages(exclude=["doc", "test_data", "test_project"]),
+        include_package_data=True,
+        zip_safe=False,
+        scripts=["bin/modoboa-admin.py"],
+        install_requires=INSTALL_REQUIRES,
+        use_scm_version=True,
+        setup_requires=["setuptools_scm"],
+    )
