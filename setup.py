@@ -33,6 +33,10 @@ def get_requirements(requirements_file):
 if __name__ == "__main__":
     HERE = path.abspath(path.dirname(__file__))
     INSTALL_REQUIRES = get_requirements(path.join(HERE, "requirements.txt"))
+    MYSQL_REQUIRES = get_requirements(path.join(HERE, "mysql-requirements.txt"))
+    POSTGRESQL_REQUIRES = get_requirements(
+        path.join(HERE, "postgresql-requirements.txt"))
+    LDAP_REQUIRES = get_requirements(path.join(HERE, "ldap-requirements.txt"))
 
     with io.open(path.join(HERE, "README.rst"), encoding="utf-8") as readme:
         LONG_DESCRIPTION = readme.read()
@@ -69,4 +73,9 @@ if __name__ == "__main__":
         install_requires=INSTALL_REQUIRES,
         use_scm_version=True,
         setup_requires=["setuptools_scm"],
+        extras_require={
+            "ldap": LDAP_REQUIRES,
+            "mysql": MYSQL_REQUIRES,
+            "postgresql": POSTGRESQL_REQUIRES,
+        },
     )
