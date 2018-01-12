@@ -64,7 +64,8 @@ class AdminParametersForm(param_forms.AdminParametersForm):
             "Absolute path of the directory where DKIM private keys will "
             "be stored. Make sure this directory belongs to root user "
             "and is not readable by the outside world."
-        )
+        ),
+        required=False
     )
 
     dkim_default_key_length = forms.ChoiceField(
