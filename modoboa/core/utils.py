@@ -2,10 +2,9 @@
 
 from __future__ import unicode_literals
 
-from django.utils.translation import ugettext as _
+from pkg_resources import parse_version
 
-from versionfield.constants import DEFAULT_NUMBER_BITS
-from versionfield.version import Version
+from django.utils.translation import ugettext as _
 
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.api_client import ModoAPIClient
@@ -38,15 +37,15 @@ def check_for_updates(request):
     }] + extensions
     update_avail = False
     for extension in extensions:
-        local_version = Version(extension["version"], DEFAULT_NUMBER_BITS)
         pkgname = extension["name"].replace("_", "-")
         for api_extension in local_config.api_versions:
             if api_extension["name"] != pkgname:
                 continue
-            last_version = Version(
-                api_extension["version"], DEFAULT_NUMBER_BITS)
             extension["last_version"] = api_extension["version"]
-            if last_version > local_version:
+            if (
+                parse_version(api_extension["version"])
+                > parse_version(extension["version"])
+               ):
                 extension["update"] = True
                 extension["changelog_url"] = api_extension["url"]
                 update_avail = True
