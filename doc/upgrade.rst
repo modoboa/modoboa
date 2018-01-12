@@ -100,25 +100,17 @@ First of all, update postfix map files as follows:
                 
 Then, modify postfix's configuration as follows::
 
-If transport_maps contains sql-relaydomains-transport.cf, remove it.
-
-Finally, reload postfix.
-
-1.9.2
-=====
-
-First of all, update postfix map files as follows:
-
-.. sourcecode:: bash
-
-   > python manage.py generate_postfix_maps --destdir <path>
-                
-Then, modify postfix's configuration as follows::
-
-  smtpd_sender_login_maps =
+    smtpd_sender_login_maps =
       <driver>:<path>/sql-sender-login-map.cf
 
+    transport_maps =
+      <driver>:<path>/sql-transport.cf
+      <driver>:<path>/sql-spliteddomains-transport.cf
+      # other map files...
+
 Replace ``<driver>`` and ``<path>`` by your values.
+
+If ``transport_maps`` contains ``sql-relaydomains-transport.cf``, remove it.
 
 Finally, reload postfix.
 
