@@ -33,7 +33,7 @@ class ManageDKIMKeys(BaseCommand):
         if code:
             print("Failed to generate DKIM public key for domain {}: {}"
                   .format(domain.name, output))
-        public_key = ""
+        public_key = b""
         for cpt, line in enumerate(output.splitlines()):
             if cpt == 0 or line.startswith(b"-----"):
                 continue
