@@ -41,7 +41,9 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
   virtual_alias_maps = <driver>:/etc/postfix/sql-aliases.cf
 
   relay_domains = <driver>:/etc/postfix/sql-relaydomains.cf
-  transport_maps = <driver>:/etc/postfix/sql-spliteddomains-transport.cf
+  transport_maps =
+    <driver>:/etc/postfix/sql-transport.cf
+    <driver>:/etc/postfix/sql-spliteddomains-transport.cf
 
   smtpd_recipient_restrictions =
         # ...
