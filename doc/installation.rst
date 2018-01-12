@@ -73,5 +73,6 @@ Then, run the following commands:
    > cd <modoboa_instance_dir>
    > python manage.py migrate
    > python manage.py collectstatic
+   > python manage.py check --deploy
 
 Then, restart your web server.
