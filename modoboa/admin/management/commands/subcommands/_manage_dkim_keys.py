@@ -35,7 +35,7 @@ class ManageDKIMKeys(BaseCommand):
                   .format(domain.name, output))
         public_key = ""
         for cpt, line in enumerate(output.splitlines()):
-            if cpt == 0 or line.startswith("-----"):
+            if cpt == 0 or line.startswith(b"-----"):
                 continue
             public_key += line
         domain.dkim_public_key = public_key
