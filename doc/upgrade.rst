@@ -31,6 +31,7 @@ Then, run the following commands:
    > cd <modoboa_instance_dir>
    > python manage.py migrate
    > python manage.py collectstatic
+   > python manage.py check --deploy
 
 Once done, check if the version you are installing requires
 :ref:`specific_upgrade_instructions`.
@@ -72,6 +73,7 @@ Then, run the following commands:
    > cd <modoboa_instance_dir>
    > python manage.py migrate
    > python manage.py collectstatic
+   > python manage.py check --deploy
 
 Finally, restart your web server.
 
