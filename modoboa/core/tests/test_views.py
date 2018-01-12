@@ -159,6 +159,8 @@ class SettingsTestCase(ModoTestCase):
         "admin-domains_must_have_authorized_mx": False,
         "core-random_password_length": "8",
         "admin-create_alias_on_mbox_rename": False,
+        "admin-dkim_keys_storage_dir": "",
+        "admin-dkim_default_key_length": 1024
     }
 
     def test_get_settings(self):
