@@ -2,7 +2,7 @@
 `Modoboa <http://modoboa.org/>`_
 ################################
 
-|travis| |codecov| |landscape| |latest-version|
+|travis| |codecov| |codacy| |latest-version|
 
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
@@ -63,10 +63,9 @@ The following external libraries are provided with Modoboa:
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
-.. |landscape| image:: https://landscape.io/github/modoboa/modoboa/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/modoboa/modoboa/master
-   :alt: Code Health
 .. |travis| image:: https://travis-ci.org/modoboa/modoboa.png?branch=master
    :target: https://travis-ci.org/modoboa/modoboa
 .. |codecov| image:: http://codecov.io/github/modoboa/modoboa/coverage.svg?branch=master
    :target: http://codecov.io/github/modoboa/modoboa?branch=master
+.. |codacy| image:: https://api.codacy.com/project/badge/Grade/82fd10127ac3468899ca75f04e9862b6
+    :target: https://www.codacy.com/app/modoboa/modoboa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=modoboa/modoboa&amp;utm_campaign=Badge_Grade
