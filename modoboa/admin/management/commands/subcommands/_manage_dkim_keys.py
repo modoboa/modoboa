@@ -5,6 +5,7 @@ from __future__ import print_function, unicode_literals
 import os
 
 from django.core.management.base import BaseCommand
+from django.utils.encoding import smart_text
 
 from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
@@ -26,16 +27,16 @@ class ManageDKIMKeys(BaseCommand):
             "openssl genrsa -out {} {}".format(pkey_path, key_size))
         if code:
             print("Failed to generate DKIM private key for domain {}: {}"
-                  .format(domain.name, output))
+                  .format(domain.name, smart_text(output)))
         domain.dkim_private_key_path = pkey_path
         code, output = sysutils.exec_cmd(
             "openssl rsa -in {} -pubout".format(pkey_path))
         if code:
             print("Failed to generate DKIM public key for domain {}: {}"
-                  .format(domain.name, output))
-        public_key = b""
-        for cpt, line in enumerate(output.splitlines()):
-            if cpt == 0 or line.startswith(b"-----"):
+                  .format(domain.name, smart_text(output)))
+        public_key = ""
+        for cpt, line in enumerate(smart_text(output).splitlines()):
+            if cpt == 0 or line.startswith("-----"):
                 continue
             public_key += line
         domain.dkim_public_key = public_key

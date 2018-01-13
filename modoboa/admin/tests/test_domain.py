@@ -10,12 +10,15 @@ import tempfile
 
 import dns.resolver
 from mock import patch
+from testfixtures import compare
 
 from django.core.management import call_command
 from django.urls import reverse
+from django.utils.html import escape
 
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
+from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
 
 from . import utils
@@ -371,6 +374,21 @@ class DKIMTestCase(ModoTestCase):
     def tearDown(self):
         shutil.rmtree(self.workdir)
 
+    def test_global_settings(self):
+        """Check validation rules."""
+        url = reverse("core:parameters")
+        settings = SETTINGS_SAMPLE.copy()
+        settings["admin-dkim_keys_storage_dir"] = "/wrong"
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        compare(response.json(), {
+            "form_errors": {"dkim_keys_storage_dir": ["Directory not found."]},
+            "prefix": "admin"
+        })
+        settings["admin-dkim_keys_storage_dir"] = self.workdir
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 200)
+
     def test_dkim_key_creation(self):
         """Test DKIM key creation."""
         values = {
@@ -395,3 +413,9 @@ class DKIMTestCase(ModoTestCase):
         call_command("modo", "manage_dkim_keys")
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
+
+        domain = Domain.objects.get(name=values["name"])
+        url = reverse("admin:domain_detail", args=[domain.pk])
+        response = self.client.get(url)
+        self.assertContains(
+            response, escape(domain.bind_format_dkim_public_key))
