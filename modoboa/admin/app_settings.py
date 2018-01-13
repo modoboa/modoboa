@@ -201,13 +201,13 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         if storage_dir:
             if not os.path.isdir(storage_dir):
                 raise forms.ValidationError(
-                    ugettext_lazy("Directory not found")
+                    ugettext_lazy("Directory not found.")
                 )
             code, output = exec_cmd("which openssl")
             if code:
                 raise forms.ValidationError(
                     ugettext_lazy(
-                        "openssl not found, please make sure it is installed")
+                        "openssl not found, please make sure it is installed.")
                 )
         return storage_dir
 
