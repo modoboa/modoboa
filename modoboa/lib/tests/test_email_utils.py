@@ -9,7 +9,8 @@ import os
 from django.test import SimpleTestCase
 from django.utils.encoding import smart_bytes, smart_text
 
-from ..email_utils import Email, split_address, split_local_part
+from ..email_utils import (
+    Email, prepare_addresses, split_address, split_local_part)
 
 SAMPLES_DIR = os.path.realpath(
     os.path.join(os.path.dirname(__file__), "sample_messages"))
@@ -152,4 +153,34 @@ class EmailAddressParserTests(SimpleTestCase):
         local_part = "mailer-daemon"
         expected_output = ("mailer-daemon", None)
         output = split_local_part(local_part, "-")
+        self.assertEqual(output, expected_output)
+
+    def test_prepare_addresses(self):
+        """Check a list of e-mail addresses is sepearted correctly."""
+        # value is an array with one long string not 3 sepearte values.
+        value = [
+            "\"Doe, John\" <doe.john@sub.example.com>;"
+            "\"John Smith\" <john.smith@sub.example.com>,"
+            "admin@sub.example.com"
+        ]
+        expected_output = "\"Doe, John\" <doe.john@sub.example.com>,"\
+                          "John Smith <john.smith@sub.example.com>,"\
+                          "admin@sub.example.com"
+        output = prepare_addresses(value)
+        self.assertEqual(output, expected_output)
+
+    def test_prepare_addresses_usage_envelope(self):
+        """Check a list of e-mail addresses is sepearted correctly."""
+        # value is an array with one long string not 3 sepearte values.
+        value = [
+            "\"Doe, John\" <doe.john@sub.example.com>;"
+            "\"John Smith\" <john.smith@sub.example.com>,"
+            "admin@sub.example.com"
+        ]
+        expected_output = [
+            "doe.john@sub.example.com",
+            "john.smith@sub.example.com",
+            "admin@sub.example.com",
+        ]
+        output = prepare_addresses(value, usage="envelope")
         self.assertEqual(output, expected_output)

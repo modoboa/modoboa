@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import email
 from email.header import Header
 from email.mime.text import MIMEText
-from email.utils import make_msgid, formatdate, parseaddr
+from email.utils import make_msgid, formataddr, formatdate, getaddresses
 import re
 import smtplib
 import time
@@ -341,22 +341,18 @@ def decode(string, encodings=None, charset=None):
 def prepare_addresses(addresses, usage="header"):
     """Prepare addresses before using them
 
-    FIXME: We need a real address parser here! If a name contains a
-    separator, it creates two wrong addresses.
-
     :param list addresses: a list of addresses
     :param string usage: how those addresses are going to be used
     :return: a string or a list depending on usage value
     """
     result = []
-    for address in re.split('[,;]', addresses):
+    for name, address in getaddresses(addresses):
         if not address:
             continue
-        name, addr = parseaddr(address)
         if name and usage == "header":
-            result.append("%s <%s>" % (Header(name, 'utf8'), addr))
+            result.append(formataddr((name, address)))
         else:
-            result.append(addr)
+            result.append(address)
     if usage == "header":
         return ",".join(result)
     return result
