@@ -319,7 +319,7 @@ def prepare_addresses(addresses, usage="header"):
     :return: a string or a list depending on usage value
     """
     result = []
-    for address in re.split('[,;]', addresses):
+    for address in re.split('[;]', addresses):
         if not address:
             continue
         name, addr = parseaddr(address)
