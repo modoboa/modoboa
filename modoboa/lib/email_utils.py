@@ -10,6 +10,7 @@ import re
 import smtplib
 import time
 
+from django.utils import six
 from django.utils.encoding import smart_str, smart_text
 from django.utils.html import conditional_escape, escape
 from django.template.loader import render_to_string
@@ -262,6 +263,47 @@ class Email(object):
         return render_to_string("common/mailheaders.html", context)
 
 
+def split_address(address):
+    """Split an e-mail address into local part and domain."""
+    assert isinstance(address, six.text_type),\
+        "address should be of type %s" % six.text_type.__name__
+    if "@" not in address:
+        local_part = address
+        domain = None
+    else:
+        local_part, domain = address.split("@", 1)
+    return (local_part, domain)
+
+
+def split_local_part(local_part, delimiter=None):
+    """Split a local part into local part and extension."""
+    assert isinstance(local_part, six.text_type),\
+        "local_part should be of type %s" % six.text_type.__name__
+    assert isinstance(delimiter, six.text_type) or delimiter is None,\
+        "delimiter should be of type %s" % six.text_type.__name__
+    extension = None
+    if local_part.lower() in ["mailer-daemon", "double-bounce"]:
+        # never split these special addresses
+        pass
+    elif (
+        delimiter == "-"
+        and (local_part.startswith("owner-")
+             or local_part.endswith("-request"))
+    ):
+        # don't split owner-* or *-request if - is the delimiter, they are
+        # special addresses used by mail lists.
+        pass
+    elif (
+        delimiter
+        and delimiter in local_part
+        and local_part[0] != delimiter
+        and local_part[-1] != delimiter
+    ):
+        local_part, extension = local_part.split(delimiter, 1)
+
+    return (local_part, extension)
+
+
 def split_mailbox(mailbox, return_extension=False):
     """Try to split an address into parts (local part and domain name).
 
@@ -271,23 +313,11 @@ def split_mailbox(mailbox, return_extension=False):
     :return: a tuple (local part, domain<, extension>)
 
     """
-    domain = None
-    if "@" not in mailbox:
-        localpart = mailbox
-    else:
-        parts = mailbox.split("@")
-        if len(parts) == 2:
-            localpart = parts[0]
-            domain = parts[1]
-        else:
-            domain = parts[-1]
-            localpart = "@".join(parts[:-1])
+    local_part, domain = split_address(mailbox)
     if not return_extension:
-        return (localpart, domain)
-    extension = None
-    if "+" in localpart:
-        localpart, extension = localpart.split("+", 1)
-    return (localpart, domain, extension)
+        return (local_part, domain)
+    local_part, extension = split_local_part(local_part, delimiter="+")
+    return (local_part, domain, extension)
 
 
 def decode(string, encodings=None, charset=None):

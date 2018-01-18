@@ -9,7 +9,7 @@ import os
 from django.test import SimpleTestCase
 from django.utils.encoding import smart_bytes, smart_text
 
-from ..email_utils import Email
+from ..email_utils import Email, split_address, split_local_part
 
 SAMPLES_DIR = os.path.realpath(
     os.path.join(os.path.dirname(__file__), "sample_messages"))
@@ -106,3 +106,50 @@ class EmailTests(SimpleTestCase):
     def test_email_multipart_without_links(self):
         """display the text/html part of a multipart message with links removed"""
         self._test_email("multipart", dformat="html", links=False)
+
+
+class EmailAddressParserTests(SimpleTestCase):
+
+    """Tests for split_address() and split_local_part()."""
+
+    def test_split_address_with_domain(self):
+        """Split an e-mail address with domain."""
+        address = "User@sub.exAMPLE.COM"
+        expected_output = ("User", "sub.exAMPLE.COM")
+        output = split_address(address)
+        self.assertEqual(output, expected_output)
+
+    def test_split_address_without_domain(self):
+        """Split an e-mail address with domain."""
+        address = "User"
+        expected_output = ("User", None)
+        output = split_address(address)
+        self.assertEqual(output, expected_output)
+
+    def test_split_local_part_without_delimiter(self):
+        """Split a local part without delimiter."""
+        local_part = "User+Foo"
+        expected_output = ("User+Foo", None)
+        output = split_local_part(local_part)
+        self.assertEqual(output, expected_output)
+
+    def test_split_local_part_with_delimiter(self):
+        """Split a local part with delimiter."""
+        local_part = "User+Foo"
+        expected_output = ("User", "Foo")
+        output = split_local_part(local_part, "+")
+        self.assertEqual(output, expected_output)
+
+    def test_split_local_part_mailing_list_address(self):
+        """Check special case addresses used by mailing lists."""
+        local_part = "owner-modoboa"
+        expected_output = ("owner-modoboa", None)
+        output = split_local_part(local_part, "-")
+        self.assertEqual(output, expected_output)
+
+    def test_split_local_part_special_address(self):
+        """Check special case addresses."""
+        local_part = "mailer-daemon"
+        expected_output = ("mailer-daemon", None)
+        output = split_local_part(local_part, "-")
+        self.assertEqual(output, expected_output)
