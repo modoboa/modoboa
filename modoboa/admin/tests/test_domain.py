@@ -4,13 +4,21 @@
 
 from __future__ import unicode_literals
 
+import os
+import shutil
+import tempfile
+
 import dns.resolver
 from mock import patch
+from testfixtures import compare
 
+from django.core.management import call_command
 from django.urls import reverse
+from django.utils.html import escape
 
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
+from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
 
 from . import utils
@@ -213,7 +221,8 @@ class DomainTestCase(ModoTestCase):
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         values = {
-            "name": "no-mx.example.com", "quota": 0, "default_mailbox_quota": 0,
+            "name": "no-mx.example.com", "quota": 0,
+            "default_mailbox_quota": 0,
             "create_dom_admin": True, "dom_admin_username": "toto",
             "create_aliases": True, "type": "domain", "stepid": "step3",
             "with_mailbox": True
@@ -347,3 +356,66 @@ class DomainTestCase(ModoTestCase):
         content = response.content.decode('utf-8')
         self.assertNotIn("Global statistics", content)
         self.assertIn("Per-domain statistics", content)
+
+
+class DKIMTestCase(ModoTestCase):
+    """Test case for DKIM."""
+
+    @classmethod
+    def setUpTestData(cls):  # noqa: N802
+        """Create test data."""
+        super(DKIMTestCase, cls).setUpTestData()
+        factories.populate_database()
+
+    def setUp(self):
+        super(DKIMTestCase, self).setUp()
+        self.workdir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        shutil.rmtree(self.workdir)
+
+    def test_global_settings(self):
+        """Check validation rules."""
+        url = reverse("core:parameters")
+        settings = SETTINGS_SAMPLE.copy()
+        settings["admin-dkim_keys_storage_dir"] = "/wrong"
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        compare(response.json(), {
+            "form_errors": {"dkim_keys_storage_dir": ["Directory not found."]},
+            "prefix": "admin"
+        })
+        settings["admin-dkim_keys_storage_dir"] = self.workdir
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    def test_dkim_key_creation(self):
+        """Test DKIM key creation."""
+        values = {
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": False, "type": "domain", "stepid": "step3",
+            "enable_dkim": True, "dkim_key_selector": ""
+        }
+        response = self.ajax_post(reverse("admin:domain_add"), values, 400)
+        self.assertEqual(
+            response["form_errors"]["enable_dkim"][0],
+            "DKIM keys storage directory not configured")
+
+        self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
+        response = self.ajax_post(reverse("admin:domain_add"), values, 400)
+        self.assertEqual(
+            response["form_errors"]["dkim_key_selector"][0],
+            "This field is required.")
+
+        values["dkim_key_selector"] = "default"
+        self.ajax_post(reverse("admin:domain_add"), values)
+
+        call_command("modo", "manage_dkim_keys")
+        key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
+        self.assertTrue(os.path.exists(key_path))
+
+        domain = Domain.objects.get(name=values["name"])
+        url = reverse("admin:domain_detail", args=[domain.pk])
+        response = self.client.get(url)
+        self.assertContains(
+            response, escape(domain.bind_format_dkim_public_key))

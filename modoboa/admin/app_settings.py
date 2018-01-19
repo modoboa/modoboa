@@ -13,6 +13,8 @@ from modoboa.lib.form_utils import YesNoField, SeparatorField
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import forms as param_forms
 
+from . import constants
+
 
 class AdminParametersForm(param_forms.AdminParametersForm):
     app = "admin"
@@ -52,6 +54,26 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         initial=True,
         help_text=ugettext_lazy(
             "Check every domain against major DNSBL providers"
+        )
+    )
+
+    dkim_keys_storage_dir = forms.CharField(
+        label=ugettext_lazy("DKIM keys storage directory"),
+        initial="",
+        help_text=ugettext_lazy(
+            "Absolute path of the directory where DKIM private keys will "
+            "be stored. Make sure this directory belongs to root user "
+            "and is not readable by the outside world."
+        ),
+        required=False
+    )
+
+    dkim_default_key_length = forms.ChoiceField(
+        label=ugettext_lazy("Default DKIM key length"),
+        initial=2048,
+        choices=constants.DKIM_KEY_LENGTHS,
+        help_text=ugettext_lazy(
+            "Default length in bits for newly generated DKIM keys."
         )
     )
 
@@ -172,6 +194,22 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                 ugettext_lazy("Must be a positive integer")
             )
         return self.cleaned_data["default_mailbox_quota"]
+
+    def clean_dkim_keys_storage_dir(self):
+        """Check that directory exists."""
+        storage_dir = self.cleaned_data.get("dkim_keys_storage_dir", "")
+        if storage_dir:
+            if not os.path.isdir(storage_dir):
+                raise forms.ValidationError(
+                    ugettext_lazy("Directory not found.")
+                )
+            code, output = exec_cmd("which openssl")
+            if code:
+                raise forms.ValidationError(
+                    ugettext_lazy(
+                        "openssl not found, please make sure it is installed.")
+                )
+        return storage_dir
 
     def clean(self):
         """Check MX options."""

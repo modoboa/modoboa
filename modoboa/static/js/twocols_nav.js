@@ -36,7 +36,7 @@ TwocolsNav.prototype = {
                 success_cb: $.proxy(this.save_cb, this)
             });
         }, this));
-        $(document).on('submit', '#parameters_form', function(evt) {
+        $(document).on('submit', '#parameters_form', $.proxy(function(evt) {
             simple_ajax_form_post(evt, {
                 formid: $(this).attr('id'),
                 modal: false,
@@ -46,7 +46,7 @@ TwocolsNav.prototype = {
                     $('a[data-app="' + data.prefix + '"]').tab('show');
                 }
             });
-        });
+        }, this));
     },
 
     update_content: function(data) {

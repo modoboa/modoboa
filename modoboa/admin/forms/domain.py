@@ -43,12 +43,16 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             "press ENTER to add a new input."
         )
     )
+    dkim_key_selector = forms.CharField(
+        label=ugettext_lazy("Key selector"), required=False)
 
     class Meta:
         model = Domain
         fields = (
             "name", "type", "quota", "default_mailbox_quota", "aliases",
-            "enabled", "enable_dns_checks")
+            "enabled", "enable_dns_checks", "enable_dkim",
+            "dkim_key_selector", "dkim_key_length"
+        )
 
     def __init__(self, user, *args, **kwargs):
         self.oldname = None
@@ -93,6 +97,17 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         return name
 
+    def clean_enable_dkim(self):
+        """Check prerequisites."""
+        enabled = self.cleaned_data.get("enable_dkim")
+        if not enabled:
+            return enabled
+        storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
+        if not storage_dir:
+            raise forms.ValidationError(
+                _("DKIM keys storage directory not configured"))
+        return enabled
+
     def clean(self):
         """Custom fields validation.
 
@@ -123,6 +138,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                     "default_mailbox_quota"]
                 if default_mailbox_quota == 0:
                     self.add_error("default_mailbox_quota", msg)
+        if self.cleaned_data["enable_dkim"]:
+            if not self.cleaned_data.get("dkim_key_selector"):
+                self.add_error(
+                    "dkim_key_selector", _("This field is required."))
         self.aliases = []
         copied_data = cleaned_data.copy()
         for k in copied_data.keys():

@@ -58,6 +58,21 @@ class Domain(AdminObject):
     transport = models.OneToOneField(
         "transport.Transport", null=True, on_delete=models.SET_NULL)
 
+    enable_dkim = models.BooleanField(
+        ugettext_lazy("Enable DKIM signing"),
+        help_text=ugettext_lazy(
+            "If you activate this feature, a DKIM key will be "
+            "generated for this domain."),
+        default=False
+    )
+    dkim_key_selector = models.CharField(max_length=30, default="modoboa")
+    dkim_key_length = models.PositiveIntegerField(
+        ugettext_lazy("Key length"), choices=constants.DKIM_KEY_LENGTHS,
+        blank=True, null=True
+    )
+    dkim_public_key = models.TextField(blank=True)
+    dkim_private_key_path = models.CharField(max_length=254, blank=True)
+
     class Meta:
         permissions = (
             ("view_domain", "View domain"),
@@ -186,6 +201,12 @@ class Domain(AdminObject):
         if not self.allocated_quota:
             return 0
         return int(self.used_quota / float(self.quota) * 100)
+
+    @property
+    def bind_format_dkim_public_key(self):
+        """Return DKIM public key using Bind format."""
+        return "{}._domainkey 10800 IN TXT \"v=DKIM1; k=rsa; p={}\"".format(
+            self.dkim_key_selector, self.dkim_public_key)
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
