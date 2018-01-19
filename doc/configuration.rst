@@ -103,6 +103,20 @@ The *admin* application exposes several parameters, they are presented below:
 |                    |                     |                               |                    |
 |                    |                     |                               |                    |
 +--------------------+---------------------+-------------------------------+--------------------+
+|DKIM keys storage   |Admin                |Path to a directory where DKIM |                    |
+|directory           |                     | generated keys will be stored |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
+|Default DKIM key    |Admin                |The default size (in bits) for |2048                |
+|length              |                     |new keys                       |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
+|                    |                     |                               |                    |
++--------------------+---------------------+-------------------------------+--------------------+
 |Handle mailboxes on |Admin                |Rename or remove               |no                  |
 |filesystem          |                     |mailboxes on the               |                    |
 |                    |                     |filesystem when they           |                    |

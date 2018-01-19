@@ -15,6 +15,63 @@ from .. import factories
 from .. import models
 from .. import signals
 
+SETTINGS_SAMPLE = {
+    "core-check_new_versions": "True",
+    "core-log_maximum_age": "365",
+    "core-ldap_auth_method": "searchbind",
+    "limits-deflt_domain_mailbox_aliases_limit": "0",
+    "core-send_statistics": "True",
+    "core-default_top_redirection": "user",
+    "core-sender_address": "noreply@modoboa.org",
+    "admin-auto_account_removal": "False",
+    "core-ldap_server_port": "389",
+    "core-rounds_number": "70000",
+    "core-ldap_bind_password": "",
+    "limits-deflt_domain_domain_aliases_limit": "0",
+    "core-secret_key": ":?j3]QPWo!.'_c4n",
+    "limits-deflt_domain_domain_admins_limit": "0",
+    "limits-enable_admin_limits": "True",
+    "core-ldap_bind_dn": "",
+    "core-enable_api_communication": "True",
+    "limits-deflt_user_domain_admins_limit": "0",
+    "limits-enable_domain_limits": "False",
+    "csrfmiddlewaretoken": "SGgMVZsA4TPqoiV786TMST6xgOlhAf4F",
+    "limits-deflt_user_mailboxes_limit": "0",
+    "core-password_scheme": "sha512crypt",
+    "core-items_per_page": "30",
+    "limits-deflt_user_mailbox_aliases_limit": "0",
+    "limits-deflt_domain_mailboxes_limit": "0",
+    "core-ldap_is_active_directory": "False",
+    "core-ldap_group_type": "posixgroup",
+    "limits-deflt_user_domain_aliases_limit": "0",
+    "core-top_notifications_check_interval": "30",
+    "core-ldap_password_attribute": "userPassword",
+    "admin-auto_create_domain_and_mailbox": "True",
+    "admin-enable_dnsbl_checks": "True",
+    "admin-default_domain_quota": "0",
+    "admin-default_mailbox_quota": "0",
+    "core-ldap_server_address": "localhost",
+    "core-authentication_type": "local",
+    "core-ldap_admin_groups": "",
+    "core-ldap_groups_search_base": "",
+    "admin-enable_mx_checks": "True",
+    "core-ldap_search_base": "",
+    "admin-valid_mxs": "",
+    "limits-deflt_user_domains_limit": "0",
+    "core-ldap_search_filter": "(mail=%(user)s)",
+    "core-ldap_secured": "none",
+    "core-ldap_user_dn_template": "",
+    "core-default_password": "Toto1000",
+    "limits-deflt_user_quota_limit": "0",
+    "core-hide_features_widget": "False",
+    "core-inactive_account_threshold": "30",
+    "admin-domains_must_have_authorized_mx": False,
+    "core-random_password_length": "8",
+    "admin-create_alias_on_mbox_rename": False,
+    "admin-dkim_keys_storage_dir": "",
+    "admin-dkim_default_key_length": 1024
+}
+
 
 def announcement(sender, location, **kwargs):
     """Simpler handler."""
@@ -106,61 +163,6 @@ class DashboardTestCase(ModoTestCase):
 class SettingsTestCase(ModoTestCase):
     """Settings tests."""
 
-    settings_sample = {
-        "core-check_new_versions": "True",
-        "core-log_maximum_age": "365",
-        "core-ldap_auth_method": "searchbind",
-        "limits-deflt_domain_mailbox_aliases_limit": "0",
-        "core-send_statistics": "True",
-        "core-default_top_redirection": "user",
-        "core-sender_address": "noreply@modoboa.org",
-        "admin-auto_account_removal": "False",
-        "core-ldap_server_port": "389",
-        "core-rounds_number": "70000",
-        "core-ldap_bind_password": "",
-        "limits-deflt_domain_domain_aliases_limit": "0",
-        "core-secret_key": ":?j3]QPWo!.'_c4n",
-        "limits-deflt_domain_domain_admins_limit": "0",
-        "limits-enable_admin_limits": "True",
-        "core-ldap_bind_dn": "",
-        "core-enable_api_communication": "True",
-        "limits-deflt_user_domain_admins_limit": "0",
-        "limits-enable_domain_limits": "False",
-        "csrfmiddlewaretoken": "SGgMVZsA4TPqoiV786TMST6xgOlhAf4F",
-        "limits-deflt_user_mailboxes_limit": "0",
-        "core-password_scheme": "sha512crypt",
-        "core-items_per_page": "30",
-        "limits-deflt_user_mailbox_aliases_limit": "0",
-        "limits-deflt_domain_mailboxes_limit": "0",
-        "core-ldap_is_active_directory": "False",
-        "core-ldap_group_type": "posixgroup",
-        "limits-deflt_user_domain_aliases_limit": "0",
-        "core-top_notifications_check_interval": "30",
-        "core-ldap_password_attribute": "userPassword",
-        "admin-auto_create_domain_and_mailbox": "True",
-        "admin-enable_dnsbl_checks": "True",
-        "admin-default_domain_quota": "0",
-        "admin-default_mailbox_quota": "0",
-        "core-ldap_server_address": "localhost",
-        "core-authentication_type": "local",
-        "core-ldap_admin_groups": "",
-        "core-ldap_groups_search_base": "",
-        "admin-enable_mx_checks": "True",
-        "core-ldap_search_base": "",
-        "admin-valid_mxs": "",
-        "limits-deflt_user_domains_limit": "0",
-        "core-ldap_search_filter": "(mail=%(user)s)",
-        "core-ldap_secured": "none",
-        "core-ldap_user_dn_template": "",
-        "core-default_password": "Toto1000",
-        "limits-deflt_user_quota_limit": "0",
-        "core-hide_features_widget": "False",
-        "core-inactive_account_threshold": "30",
-        "admin-domains_must_have_authorized_mx": False,
-        "core-random_password_length": "8",
-        "admin-create_alias_on_mbox_rename": False,
-    }
-
     def test_get_settings(self):
         """Test settings display."""
         url = reverse("core:parameters")
@@ -171,10 +173,11 @@ class SettingsTestCase(ModoTestCase):
     def test_save_settings(self):
         """Test settings save."""
         url = reverse("core:parameters")
-        response = self.client.post(url, self.settings_sample, format="json")
+        settings = SETTINGS_SAMPLE.copy()
+        response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
-        self.settings_sample["core-rounds_number"] = ""
-        response = self.client.post(url, self.settings_sample, format="json")
+        settings["core-rounds_number"] = ""
+        response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
         compare(response.json(), {
             "form_errors": {"rounds_number": ["This field is required."]},

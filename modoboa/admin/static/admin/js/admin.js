@@ -224,6 +224,21 @@ Domains.prototype = {
     },
 
     /**
+     * Hide or show password inputs depending on value.
+     *
+     * @param {bool} value - visibility flag
+     */
+    toggleDKIMFields: function (value) {
+        if (value) {
+            $('#id_dkim_key_selector').parents(".form-group").show();
+            $('#id_dkim_key_length').parents(".form-group").show();
+        } else {
+            $('#id_dkim_key_selector').parents(".form-group").hide();
+            $('#id_dkim_key_length').parents(".form-group").hide();
+        }
+    },
+
+    /**
      * Initialize the main form contained in the domain edition modal.
      *
      * @this Domains
@@ -239,6 +254,11 @@ Domains.prototype = {
                 return true;
             }
         });
+        $('#id_enable_dkim').click($.proxy(function (e) {
+            var $this = $(e.target);
+            this.toggleDKIMFields($this.prop('checked'));
+        }, this));
+        this.toggleDKIMFields($('#id_enable_dkim').prop('checked'));
     },
 
     optionsform_init: function() {
