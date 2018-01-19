@@ -65,7 +65,7 @@ class Domain(AdminObject):
             "generated for this domain."),
         default=False
     )
-    dkim_key_selector = models.CharField(max_length=30, default="default")
+    dkim_key_selector = models.CharField(max_length=30, default="modoboa")
     dkim_key_length = models.PositiveIntegerField(
         ugettext_lazy("Key length"), choices=constants.DKIM_KEY_LENGTHS,
         blank=True, null=True

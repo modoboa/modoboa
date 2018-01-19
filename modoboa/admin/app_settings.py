@@ -73,7 +73,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         initial=1024,
         choices=constants.DKIM_KEY_LENGTHS,
         help_text=ugettext_lazy(
-            "Default length for newly generated DKIM keys."
+            "Default length in bits for newly generated DKIM keys."
         )
     )
 
