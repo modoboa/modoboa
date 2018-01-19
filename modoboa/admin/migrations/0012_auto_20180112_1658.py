@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='domain',
             name='dkim_key_selector',
-            field=models.CharField(default='default', max_length=30, verbose_name='Key selector'),
+            field=models.CharField(default='modoboa', max_length=30, verbose_name='Key selector'),
         ),
         migrations.AddField(
             model_name='domain',
