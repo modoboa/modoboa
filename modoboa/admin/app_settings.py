@@ -70,7 +70,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
 
     dkim_default_key_length = forms.ChoiceField(
         label=ugettext_lazy("Default DKIM key length"),
-        initial=1024,
+        initial=2048,
         choices=constants.DKIM_KEY_LENGTHS,
         help_text=ugettext_lazy(
             "Default length in bits for newly generated DKIM keys."
