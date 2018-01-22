@@ -271,7 +271,7 @@ def split_address(address):
         local_part = address
         domain = None
     else:
-        local_part, domain = address.split("@", 1)
+        local_part, domain = address.rsplit("@", 1)
     return (local_part, domain)
 
 
