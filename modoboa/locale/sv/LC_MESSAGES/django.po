@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2017-07-07 09:30+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -379,6 +379,17 @@ msgstr "Detta fält är obligatoriskt"
 msgid "General"
 msgstr "Allmänt"
 
+#: core/checks/settings_checks.py:11
+msgid ""
+"You have USE_TZ set to False, this may result in issues during transitions "
+"between summer/winter time (ie the same local time occuring twice due to "
+"clock change)."
+msgstr ""
+
+#: core/checks/settings_checks.py:14
+msgid "Set `USE_TZ = True` in settings.py"
+msgstr ""
+
 #: core/constants.py:9
 msgid "Simple user"
 msgstr "Enkel användare"
@@ -395,7 +406,7 @@ msgstr "Återförsäljare"
 msgid "Super administrator"
 msgstr "Super administratör"
 
-#: core/constants.py:49 lib/form_utils.py:427
+#: core/constants.py:51 lib/form_utils.py:394
 msgid "No"
 msgstr "Nej"
 
@@ -431,42 +442,42 @@ msgstr "Lösenord matchar inte"
 msgid "Enable API access"
 msgstr "Aktivera API access"
 
-#: core/handlers.py:44
+#: core/handlers.py:43
 msgid "added"
 msgstr "tillagd"
 
-#: core/handlers.py:47
+#: core/handlers.py:46
 msgid "modified"
 msgstr "ändrad"
 
-#: core/handlers.py:49
+#: core/handlers.py:48
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s av användare %(user)s"
 
-#: core/handlers.py:73
+#: core/handlers.py:70
 #, fuzzy, python-format
 #| msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s av användare %(user)s"
 
-#: core/handlers.py:75
+#: core/handlers.py:72
 msgid "deleted"
 msgstr "raderad"
 
-#: core/handlers.py:79
+#: core/handlers.py:76
 msgid "user {}"
 msgstr ""
 
-#: core/handlers.py:81
+#: core/handlers.py:78
 msgid "management command"
 msgstr ""
 
-#: core/handlers.py:105
+#: core/handlers.py:102
 msgid "You can't delete your own account"
 msgstr "Du kan inte radera ditt eget konto"
 
-#: core/handlers.py:141
+#: core/handlers.py:138
 msgid "One or more updates are available"
 msgstr "En eller fler uppdateringar finns tillgängliga"
 
@@ -610,7 +621,7 @@ msgid "API access token"
 msgstr "API åtkomst token"
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:360
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
 msgid "Update"
 msgstr "Uppdatera"
 
@@ -747,7 +758,7 @@ msgstr "Logga ut"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:36
+#: core/utils.py:35
 msgid "The core part of Modoboa"
 msgstr "Kärnan av Modoboa"
 
@@ -802,16 +813,16 @@ msgstr "Skriv in ett giltigt domännamn"
 msgid "Enter a valid email address."
 msgstr "Ange en giltig e-postadress"
 
-#: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
+#: lib/form_utils.py:82 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr "Skicka"
 
-#: lib/form_utils.py:119 lib/form_utils.py:122
+#: lib/form_utils.py:115 lib/form_utils.py:118
 msgid "Invalid request"
 msgstr "Ogiltig förfrågan"
 
-#: lib/form_utils.py:426
+#: lib/form_utils.py:393
 msgid "Yes"
 msgstr "Ja"
 

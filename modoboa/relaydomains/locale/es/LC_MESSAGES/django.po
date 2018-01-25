@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2013-10-01 09:56+0000\n"
 "Last-Translator: Pedro Gracia <lasarux@neuroomante.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/modoboa/language/"
@@ -20,90 +20,76 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/app_settings.py:17
-msgid "General"
-msgstr "General"
+#: relaydomains/handlers.py:68
+#, fuzzy
+msgid "Transport settings"
+msgstr "Nuevo dominio"
 
-#: relaydomains/app_settings.py:20
-msgid "Postfix's master.cf path"
+#: relaydomains/handlers.py:92
+msgid "Transport"
 msgstr ""
 
-#: relaydomains/app_settings.py:22
-#, fuzzy
-msgid "Path to the master.cf configuration file"
-msgstr "Ruta del fichero de log"
-
-#: relaydomains/apps.py:14
-#, fuzzy
-msgid "Relay domains"
-msgstr "Nuevo dominio"
-
-#: relaydomains/forms.py:54
-#, fuzzy
-#| msgid "Invalid line"
-msgid "Invalid value"
+#: relaydomains/lib.py:16
+msgid "Invalid line"
 msgstr "Línea inválida"
 
-#: relaydomains/handlers.py:107
-#, fuzzy
-msgid "Relay settings"
-msgstr "Nuevo dominio"
+#: relaydomains/serializers.py:26
+msgid "Unsupported service"
+msgstr ""
 
-#: relaydomains/handlers.py:138 relaydomains/handlers.py:145
-#, fuzzy
-msgid "Relay domain"
-msgstr "Nuevo dominio"
-
-#: relaydomains/models.py:49
-msgid "name"
-msgstr "nombre"
-
-#: relaydomains/models.py:50
-#, fuzzy
-msgid "The service name"
-msgstr "Nombre del alias"
-
-#: relaydomains/models.py:72
+#: relaydomains/transport.py:14
 #, fuzzy
 msgid "target host address"
 msgstr "objetivo"
 
-#: relaydomains/models.py:74
-#, fuzzy
-msgid "Remote address (hostname or IP) of this domain"
-msgstr "Marcar para activar este dominio"
-
-#: relaydomains/models.py:77
+#: relaydomains/transport.py:16
 #, fuzzy
 msgid "target host port"
 msgstr "objetivo"
 
-#: relaydomains/models.py:79
-#, fuzzy
-msgid "Remote port of this domain"
-msgstr "Marcar para activar este dominio"
-
-#: relaydomains/models.py:84
+#: relaydomains/transport.py:18
 #, fuzzy
 msgid "verify recipients"
 msgstr "Destinatarios"
 
-#: relaydomains/models.py:85
-msgid "Check for valid recipients"
-msgstr ""
+#~ msgid "General"
+#~ msgstr "General"
 
-#: relaydomains/models.py:96
 #, fuzzy
-msgid "Relay Domain"
-msgstr "Nuevo dominio"
+#~ msgid "Path to the master.cf configuration file"
+#~ msgstr "Ruta del fichero de log"
 
-#: relaydomains/models.py:124
-msgid "Invalid line"
-msgstr "Línea inválida"
+#, fuzzy
+#~ msgid "Relay domains"
+#~ msgstr "Nuevo dominio"
 
-#: relaydomains/templates/relaydomains/service_field.html:3
-msgid "Scan"
-msgstr ""
+#, fuzzy
+#~| msgid "Invalid line"
+#~ msgid "Invalid value"
+#~ msgstr "Línea inválida"
+
+#, fuzzy
+#~ msgid "Relay domain"
+#~ msgstr "Nuevo dominio"
+
+#~ msgid "name"
+#~ msgstr "nombre"
+
+#, fuzzy
+#~ msgid "The service name"
+#~ msgstr "Nombre del alias"
+
+#, fuzzy
+#~ msgid "Remote address (hostname or IP) of this domain"
+#~ msgstr "Marcar para activar este dominio"
+
+#, fuzzy
+#~ msgid "Remote port of this domain"
+#~ msgstr "Marcar para activar este dominio"
+
+#, fuzzy
+#~ msgid "Relay Domain"
+#~ msgstr "Nuevo dominio"
 
 #, fuzzy
 #~| msgid "The domain name"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2016-05-17 12:26+0000\n"
 "Last-Translator: Jose Marcos Araujo <jmaraujo@avancetec.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
@@ -388,6 +388,17 @@ msgstr "Este campo é obrigatório"
 msgid "General"
 msgstr "Geral"
 
+#: core/checks/settings_checks.py:11
+msgid ""
+"You have USE_TZ set to False, this may result in issues during transitions "
+"between summer/winter time (ie the same local time occuring twice due to "
+"clock change)."
+msgstr ""
+
+#: core/checks/settings_checks.py:14
+msgid "Set `USE_TZ = True` in settings.py"
+msgstr ""
+
 #: core/constants.py:9
 msgid "Simple user"
 msgstr "Usuário simples"
@@ -404,7 +415,7 @@ msgstr "Revendedor"
 msgid "Super administrator"
 msgstr "Super administrador"
 
-#: core/constants.py:49 lib/form_utils.py:427
+#: core/constants.py:51 lib/form_utils.py:394
 msgid "No"
 msgstr "Não"
 
@@ -440,42 +451,42 @@ msgstr "Senhas não conferem"
 msgid "Enable API access"
 msgstr "Ativar acesso à API"
 
-#: core/handlers.py:44
+#: core/handlers.py:43
 msgid "added"
 msgstr "adicionado"
 
-#: core/handlers.py:47
+#: core/handlers.py:46
 msgid "modified"
 msgstr "modificado"
 
-#: core/handlers.py:49
+#: core/handlers.py:48
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s pelo(s) usuário(s) %(user)s"
 
-#: core/handlers.py:73
+#: core/handlers.py:70
 #, fuzzy, python-format
 #| msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s pelo(s) usuário(s) %(user)s"
 
-#: core/handlers.py:75
+#: core/handlers.py:72
 msgid "deleted"
 msgstr "apagado"
 
-#: core/handlers.py:79
+#: core/handlers.py:76
 msgid "user {}"
 msgstr ""
 
-#: core/handlers.py:81
+#: core/handlers.py:78
 msgid "management command"
 msgstr ""
 
-#: core/handlers.py:105
+#: core/handlers.py:102
 msgid "You can't delete your own account"
 msgstr "Você não pode deletar sua própria conta"
 
-#: core/handlers.py:141
+#: core/handlers.py:138
 msgid "One or more updates are available"
 msgstr "Uma ou mais atualizações disponíveis"
 
@@ -617,7 +628,7 @@ msgid "API access token"
 msgstr "Token de acesso a API"
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:360
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
 msgid "Update"
 msgstr "Atualizar"
 
@@ -754,7 +765,7 @@ msgstr "Sair"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:36
+#: core/utils.py:35
 msgid "The core part of Modoboa"
 msgstr "Core do Modoboa"
 
@@ -811,16 +822,16 @@ msgstr "Digite um nome de domínio válido"
 msgid "Enter a valid email address."
 msgstr "Digite um endereço válido de e-mail"
 
-#: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
+#: lib/form_utils.py:82 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr "Enviar"
 
-#: lib/form_utils.py:119 lib/form_utils.py:122
+#: lib/form_utils.py:115 lib/form_utils.py:118
 msgid "Invalid request"
 msgstr "Solicitação inválida"
 
-#: lib/form_utils.py:426
+#: lib/form_utils.py:393
 msgid "Yes"
 msgstr "Sim"
 

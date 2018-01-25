@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2016-05-30 18:08+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -214,7 +214,7 @@ msgstr "Inte tillräckligt med resurser"
 msgid "You're not allowed to define unlimited values"
 msgstr "Du har inte tillåtelse att definiera obegränsat värden"
 
-#: limits/models.py:64 limits/models.py:128
+#: limits/models.py:64 limits/models.py:129
 msgid "unlimited"
 msgstr "obegränsad"
 

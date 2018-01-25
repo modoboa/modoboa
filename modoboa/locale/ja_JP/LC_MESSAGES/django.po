@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2016-09-14 17:06+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -383,6 +383,17 @@ msgstr "このフィールドは必須です"
 msgid "General"
 msgstr "全般"
 
+#: core/checks/settings_checks.py:11
+msgid ""
+"You have USE_TZ set to False, this may result in issues during transitions "
+"between summer/winter time (ie the same local time occuring twice due to "
+"clock change)."
+msgstr ""
+
+#: core/checks/settings_checks.py:14
+msgid "Set `USE_TZ = True` in settings.py"
+msgstr ""
+
 #: core/constants.py:9
 msgid "Simple user"
 msgstr "ユーザー"
@@ -399,7 +410,7 @@ msgstr "リセーラー"
 msgid "Super administrator"
 msgstr "全体管理者"
 
-#: core/constants.py:49 lib/form_utils.py:427
+#: core/constants.py:51 lib/form_utils.py:394
 msgid "No"
 msgstr "いいえ"
 
@@ -435,42 +446,42 @@ msgstr "パスワード不一致"
 msgid "Enable API access"
 msgstr "API アクセスを有効にします"
 
-#: core/handlers.py:44
+#: core/handlers.py:43
 msgid "added"
 msgstr "追加しました"
 
-#: core/handlers.py:47
+#: core/handlers.py:46
 msgid "modified"
 msgstr "修正しました"
 
-#: core/handlers.py:49
+#: core/handlers.py:48
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
 
-#: core/handlers.py:73
+#: core/handlers.py:70
 #, fuzzy, python-format
 #| msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
 
-#: core/handlers.py:75
+#: core/handlers.py:72
 msgid "deleted"
 msgstr "削除しました"
 
-#: core/handlers.py:79
+#: core/handlers.py:76
 msgid "user {}"
 msgstr ""
 
-#: core/handlers.py:81
+#: core/handlers.py:78
 msgid "management command"
 msgstr ""
 
-#: core/handlers.py:105
+#: core/handlers.py:102
 msgid "You can't delete your own account"
 msgstr "あなた自身のアカウントは削除できません"
 
-#: core/handlers.py:141
+#: core/handlers.py:138
 msgid "One or more updates are available"
 msgstr "1つ以上のアップデートが利用できます"
 
@@ -609,7 +620,7 @@ msgid "API access token"
 msgstr "API アクセストークン"
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:360
+#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
 msgid "Update"
 msgstr "更新"
 
@@ -747,7 +758,7 @@ msgstr "ログアウト"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:36
+#: core/utils.py:35
 msgid "The core part of Modoboa"
 msgstr "Modoboaのコア部分"
 
@@ -804,16 +815,16 @@ msgstr "正しいドメイン名を入力してください"
 msgid "Enter a valid email address."
 msgstr "正しいメールアドレスを入力してください"
 
-#: lib/form_utils.py:86 templates/registration/password_reset_confirm.html:12
+#: lib/form_utils.py:82 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr "送信"
 
-#: lib/form_utils.py:119 lib/form_utils.py:122
+#: lib/form_utils.py:115 lib/form_utils.py:118
 msgid "Invalid request"
 msgstr "不正なリクエスト"
 
-#: lib/form_utils.py:426
+#: lib/form_utils.py:393
 msgid "Yes"
 msgstr "はい"
 

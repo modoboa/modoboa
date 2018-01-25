@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-24 16:42+0100\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2017-11-24 17:22+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,108 +17,85 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: backends.py:31
-msgid "target host address"
-msgstr "adresse de l'hôte cible"
-
-#: backends.py:32
-msgid "target host port"
-msgstr "admin/tests/"
-
-#: backends.py:34
-msgid "verify recipients"
-msgstr "vérifier les destinataires"
-
-#: backends.py:46
+#: transport/backends.py:40
 msgid "This field is required"
 msgstr "Ce champ est requis"
 
-#: backends.py:54
+#: transport/backends.py:55
 msgid "Invalid value"
 msgstr "Valeur incorrecte"
 
-#: handlers.py:20 templates/transport/transport_list.html:5
-msgid "Transports"
-msgstr "Transports"
-
-#: models.py:18
+#: transport/models.py:18
 msgid "pattern"
 msgstr "patron"
 
-#: models.py:19
+#: transport/models.py:19
 msgid "service"
 msgstr "service"
 
-#: models.py:20
+#: transport/models.py:20
 msgid "next hop"
 msgstr "saut suivant"
 
-#: serializers.py:23
-msgid "Unsupported service"
-msgstr "Service non supporté"
+#~ msgid "target host address"
+#~ msgstr "adresse de l'hôte cible"
 
-#: templates/transport/_transport_headers.html:3
-msgid "Name"
-msgstr "Nom"
+#~ msgid "target host port"
+#~ msgstr "admin/tests/"
 
-#: templates/transport/_transport_headers.html:4
-msgid "Tags"
-msgstr "Libellés"
+#~ msgid "verify recipients"
+#~ msgstr "vérifier les destinataires"
 
-#: templates/transport/_transport_headers.html:5
-#: templates/transport/transport_list.html:33
-msgid "Actions"
-msgstr "Actions"
+#~ msgid "Transports"
+#~ msgstr "Transports"
 
-#: templates/transport/transport_list.html:21
-msgid "Add"
-msgstr "Ajouter"
+#~ msgid "Unsupported service"
+#~ msgstr "Service non supporté"
 
-#: templates/transport/transport_list.html:31
-msgid "Pattern"
-msgstr "Patron"
+#~ msgid "Name"
+#~ msgstr "Nom"
 
-#: templates/transport/transport_list.html:32
-msgid "Service"
-msgstr "Service"
+#~ msgid "Tags"
+#~ msgstr "Libellés"
 
-#: templates/transport/transport_list.html:39
-msgid "disabled"
-msgstr "désactivé"
+#~ msgid "Actions"
+#~ msgstr "Actions"
 
-#: templates/transport/transport_list.html:49
-#, python-format
-msgid "Delete %(pattern)s? "
-msgstr "Supprimer %(pattern)s ? "
+#~ msgid "Add"
+#~ msgstr "Ajouter"
 
-#: templates/transport/transport_list.html:56
-msgid "No transport defined yet."
-msgstr "Aucun transport défini"
+#~ msgid "Pattern"
+#~ msgstr "Patron"
 
-#: views.py:47
-msgid "Transport created"
-msgstr "Transport créé"
+#~ msgid "Service"
+#~ msgstr "Service"
 
-#: views.py:99
-msgid "Create"
-msgstr "Créer"
+#~ msgid "disabled"
+#~ msgstr "désactivé"
 
-#: views.py:100
-msgid "New transport"
-msgstr "Nouveau transport"
+#~ msgid "Delete %(pattern)s? "
+#~ msgstr "Supprimer %(pattern)s ? "
 
-#: views.py:112
-msgid "Transport updated"
-msgstr "Transport mis à jour"
+#~ msgid "No transport defined yet."
+#~ msgstr "Aucun transport défini"
 
-#: views.py:121
-msgid "Update"
-msgstr "Mettre à jour"
+#~ msgid "Transport created"
+#~ msgstr "Transport créé"
 
-#: views.py:122
-msgid "Edit transport"
-msgstr "Modifier le transport"
+#~ msgid "Create"
+#~ msgstr "Créer"
 
-#: views.py:141
-msgid "Transport deleted"
-msgstr "Transport supprimé"
+#~ msgid "New transport"
+#~ msgstr "Nouveau transport"
+
+#~ msgid "Transport updated"
+#~ msgstr "Transport mis à jour"
+
+#~ msgid "Update"
+#~ msgstr "Mettre à jour"
+
+#~ msgid "Edit transport"
+#~ msgstr "Modifier le transport"
+
+#~ msgid "Transport deleted"
+#~ msgstr "Transport supprimé"

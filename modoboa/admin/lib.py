@@ -198,8 +198,9 @@ def get_domain_mx_list(domain):
                     mx_domain, 25, 0, socket.SOCK_STREAM)
             except socket.gaierror as e:
                 logger.warning(
-                    _("Unable to lookup ip addresses for %s; %s") % (
-                        mx_domain, str(e)),
+                    _("Unable to lookup ip addresses for %(domain)s; "
+                      "%(error)s")
+                    % {"domain": mx_domain, "error": str(e)},
                     exc_info=e)
             else:
                 for ip_answer in ip_answers:
@@ -208,8 +209,10 @@ def get_domain_mx_list(domain):
                             smart_text(ip_answer[4][0]))
                     except ValueError as e:
                         logger.warning(
-                            _("Invalid IP address format for %s; %s") % (
-                                mx_domain, smart_text(ip_answer[4][0])),
+                            _("Invalid IP address format for %(domain)s; "
+                              "%(addr)s")
+                            % {"domain": mx_domain,
+                               "addr": smart_text(ip_answer[4][0])},
                             exc_info=e)
                     else:
                         result.append((mx_domain, mx_ip))

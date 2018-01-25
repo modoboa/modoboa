@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,74 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: relaydomains/app_settings.py:17
-msgid "General"
+#: relaydomains/handlers.py:68
+msgid "Transport settings"
 msgstr ""
 
-#: relaydomains/app_settings.py:20
-msgid "Postfix's master.cf path"
+#: relaydomains/handlers.py:92
+msgid "Transport"
 msgstr ""
 
-#: relaydomains/app_settings.py:22
-msgid "Path to the master.cf configuration file"
-msgstr ""
-
-#: relaydomains/apps.py:14
-msgid "Relay domains"
-msgstr ""
-
-#: relaydomains/forms.py:54
-msgid "Invalid value"
-msgstr ""
-
-#: relaydomains/handlers.py:107
-msgid "Relay settings"
-msgstr ""
-
-#: relaydomains/handlers.py:138 relaydomains/handlers.py:145
-msgid "Relay domain"
-msgstr ""
-
-#: relaydomains/models.py:49
-msgid "name"
-msgstr ""
-
-#: relaydomains/models.py:50
-msgid "The service name"
-msgstr ""
-
-#: relaydomains/models.py:72
-msgid "target host address"
-msgstr ""
-
-#: relaydomains/models.py:74
-msgid "Remote address (hostname or IP) of this domain"
-msgstr ""
-
-#: relaydomains/models.py:77
-msgid "target host port"
-msgstr ""
-
-#: relaydomains/models.py:79
-msgid "Remote port of this domain"
-msgstr ""
-
-#: relaydomains/models.py:84
-msgid "verify recipients"
-msgstr ""
-
-#: relaydomains/models.py:85
-msgid "Check for valid recipients"
-msgstr ""
-
-#: relaydomains/models.py:96
-msgid "Relay Domain"
-msgstr ""
-
-#: relaydomains/models.py:124
+#: relaydomains/lib.py:16
 msgid "Invalid line"
 msgstr ""
 
-#: relaydomains/templates/relaydomains/service_field.html:3
-msgid "Scan"
+#: relaydomains/serializers.py:26
+msgid "Unsupported service"
+msgstr ""
+
+#: relaydomains/transport.py:14
+msgid "target host address"
+msgstr ""
+
+#: relaydomains/transport.py:16
+msgid "target host port"
+msgstr ""
+
+#: relaydomains/transport.py:18
+msgid "verify recipients"
 msgstr ""

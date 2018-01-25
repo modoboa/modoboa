@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2014-12-31 11:37+0000\n"
 "Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
@@ -231,7 +231,7 @@ msgstr "Niet genoeg capaciteit"
 msgid "You're not allowed to define unlimited values"
 msgstr "U mag geen ongelimiteerde waardes opgeven"
 
-#: limits/models.py:64 limits/models.py:128
+#: limits/models.py:64 limits/models.py:129
 msgid "unlimited"
 msgstr "ongelimiteerd"
 

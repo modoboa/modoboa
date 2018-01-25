@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -236,7 +236,7 @@ msgstr "Nedostatek zdrojů"
 msgid "You're not allowed to define unlimited values"
 msgstr "Nemáte oprávnění nastavovat neomezené hodnoty"
 
-#: limits/models.py:64 limits/models.py:128
+#: limits/models.py:64 limits/models.py:129
 msgid "unlimited"
 msgstr "neomezeno"
 
