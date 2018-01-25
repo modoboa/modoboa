@@ -146,6 +146,11 @@ If ``transport_maps`` contains ``sql-relaydomains-transport.cf``, remove it.
 
 Reload postfix.
 
+Add the following cron job in order to generate DKIM keys::
+
+  # Generate DKIM keys (they will belong to the user running this job)
+  *       *       *       *       *       root    $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
+
 And finally, upgrade all your installed plugins to the following versions:
 
 .. warning::
