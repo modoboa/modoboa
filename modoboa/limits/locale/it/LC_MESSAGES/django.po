@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2013-12-23 00:56+0100\n"
 "Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
@@ -238,7 +238,7 @@ msgstr "Risorse insufficienti"
 msgid "You're not allowed to define unlimited values"
 msgstr "Non ti è consentito definire valori non limitati"
 
-#: limits/models.py:64 limits/models.py:128
+#: limits/models.py:64 limits/models.py:129
 msgid "unlimited"
 msgstr "senza limiti"
 

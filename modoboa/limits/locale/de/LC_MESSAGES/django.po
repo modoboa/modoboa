@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-11 17:51+0200\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: 2014-12-03 11:02+0000\n"
 "Last-Translator: Arvedui <arvedui@posteo.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/modoboa/language/"
@@ -237,7 +237,7 @@ msgstr ""
 "Sie verfügen nicht über die erforderlichen Rechte, um unbegrenzte Werte "
 "anzugeben"
 
-#: limits/models.py:64 limits/models.py:128
+#: limits/models.py:64 limits/models.py:129
 msgid "unlimited"
 msgstr "unbegrenzt"
 

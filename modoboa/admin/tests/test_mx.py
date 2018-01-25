@@ -32,7 +32,8 @@ class MXTestCase(ModoTestCase):
         super(MXTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
         # should not exist
-        cls.bad_domain = factories.DomainFactory(name="does-not-exist.example.com")
+        cls.bad_domain = factories.DomainFactory(
+            name="does-not-exist.example.com")
         # Add domain admin with mailbox
         mb = factories.MailboxFactory(
             address="admin", domain=cls.bad_domain,
@@ -42,7 +43,8 @@ class MXTestCase(ModoTestCase):
         cls.bad_domain.add_admin(mb.user)
         # Add domain admin with no mailbox
         admin = core_factories.UserFactory(
-            username="admin2@does-not-exist.example.com", groups=("DomainAdmins", ))
+            username="admin2@does-not-exist.example.com",
+            groups=("DomainAdmins", ))
         cls.bad_domain.add_admin(admin)
 
         cls.localconfig.parameters.set_value(
@@ -126,11 +128,11 @@ class MXTestCase(ModoTestCase):
                 _("DNS resolution timeout, unable to query %s at the moment")
                 % "timeout.example.com"),
             ("modoboa.admin", "WARNING",
-                _("Unable to lookup ip addresses for %s; %s")
-                % ("does-not-exist.example.com", "")),
+                _("Unable to lookup ip addresses for %(domain)s; %(error)s")
+                % {"domain": "does-not-exist.example.com", "error": ""}),
             ("modoboa.admin", "WARNING",
-                _("Invalid IP address format for %s; %s")
-                % ("bad-response.example.com", "BAD")),
+                _("Invalid IP address format for %(domain)s; %(addr)s")
+                % {"domain": "bad-response.example.com", "addr": "BAD"}),
             )
 
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-24 16:42+0100\n"
+"POT-Creation-Date: 2018-01-25 09:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,108 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: backends.py:31
-msgid "target host address"
-msgstr ""
-
-#: backends.py:32
-msgid "target host port"
-msgstr ""
-
-#: backends.py:34
-msgid "verify recipients"
-msgstr ""
-
-#: backends.py:46
+#: transport/backends.py:40
 msgid "This field is required"
 msgstr ""
 
-#: backends.py:54
+#: transport/backends.py:55
 msgid "Invalid value"
 msgstr ""
 
-#: handlers.py:20 templates/transport/transport_list.html:5
-msgid "Transports"
-msgstr ""
-
-#: models.py:18
+#: transport/models.py:18
 msgid "pattern"
 msgstr ""
 
-#: models.py:19
+#: transport/models.py:19
 msgid "service"
 msgstr ""
 
-#: models.py:20
+#: transport/models.py:20
 msgid "next hop"
-msgstr ""
-
-#: serializers.py:23
-msgid "Unsupported service"
-msgstr ""
-
-#: templates/transport/_transport_headers.html:3
-msgid "Name"
-msgstr ""
-
-#: templates/transport/_transport_headers.html:4
-msgid "Tags"
-msgstr ""
-
-#: templates/transport/_transport_headers.html:5
-#: templates/transport/transport_list.html:33
-msgid "Actions"
-msgstr ""
-
-#: templates/transport/transport_list.html:21
-msgid "Add"
-msgstr ""
-
-#: templates/transport/transport_list.html:31
-msgid "Pattern"
-msgstr ""
-
-#: templates/transport/transport_list.html:32
-msgid "Service"
-msgstr ""
-
-#: templates/transport/transport_list.html:39
-msgid "disabled"
-msgstr ""
-
-#: templates/transport/transport_list.html:49
-#, python-format
-msgid "Delete %(pattern)s? "
-msgstr ""
-
-#: templates/transport/transport_list.html:56
-msgid "No transport defined yet."
-msgstr ""
-
-#: views.py:47
-msgid "Transport created"
-msgstr ""
-
-#: views.py:99
-msgid "Create"
-msgstr ""
-
-#: views.py:100
-msgid "New transport"
-msgstr ""
-
-#: views.py:112
-msgid "Transport updated"
-msgstr ""
-
-#: views.py:121
-msgid "Update"
-msgstr ""
-
-#: views.py:122
-msgid "Edit transport"
-msgstr ""
-
-#: views.py:141
-msgid "Transport deleted"
 msgstr ""
