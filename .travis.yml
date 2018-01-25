@@ -67,4 +67,4 @@ deploy:
   on:
     tags: true
     python: '3.6'
-    condition: "$DB == POSTGRESQL"
+    condition: "$DB = POSTGRESQL"
