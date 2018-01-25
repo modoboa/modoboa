@@ -94,7 +94,24 @@ Specific instructions
 1.10.0
 ======
 
-Edit the :file:`settings.py` file and replace the following line:
+Edit the :file:`settings.py` file and apply the following modifications.
+
+Add ``'modoboa.transport'`` to ``INSTALLED_APPS``:
+
+.. sourcecode:: python
+
+   INSTALLED_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+   )
+
+Replace the following line:
 
 .. sourcecode:: python
 
@@ -110,7 +127,7 @@ Update postfix map files as follows:
 
 .. sourcecode:: bash
 
-   > python manage.py generate_postfix_maps --destdir <path>
+   > python manage.py generate_postfix_maps --force --destdir <path>
 
 Then, modify postfix's configuration as follows::
 
@@ -126,7 +143,43 @@ Replace ``<driver>`` and ``<path>`` by your values.
 
 If ``transport_maps`` contains ``sql-relaydomains-transport.cf``, remove it.
 
-Finally, reload postfix.
+Reload postfix.
+
+And finally, upgrade all your installed plugins to the following versions:
+
+.. warning::
+
+   If you use the amavis plugin, make sure to include its
+   configuration as follows into :file:`settings.py`:
+
+   .. sourcecode:: python
+
+      from modoboa_amavis import settings as modoboa_amavis_settings
+      modoboa_amavis_settings.apply(globals())
+
++------------------------------+------------------------------+
+|Name                          |Version                       |
++==============================+==============================+
+|modoboa-amavis                |1.2.0                         |
++------------------------------+------------------------------+
+|modoboa-contacts              |0.5.0                         |
++------------------------------+------------------------------+
+|modoboa-dmarc                 |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-imap-migration        |1.2.0                         |
++------------------------------+------------------------------+
+|modoboa-pdfcredentials        |1.3.0                         |
++------------------------------+------------------------------+
+|modoboa-postfix-autoreply     |1.4.0                         |
++------------------------------+------------------------------+
+|modoboa-radicale              |1.2.0                         |
++------------------------------+------------------------------+
+|modoboa-sievefilters          |1.4.0                         |
++------------------------------+------------------------------+
+|modoboa-stats                 |1.4.0                         |
++------------------------------+------------------------------+
+|modoboa-webmail               |1.4.0                         |
++------------------------------+------------------------------+
 
 1.9.0
 =====
