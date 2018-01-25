@@ -94,12 +94,24 @@ Specific instructions
 1.10.0
 ======
 
-First of all, update postfix map files as follows:
+Edit the :file:`settings.py` file and replace the following line:
+
+.. sourcecode:: python
+
+   MIDDLEWARE_CLASSES = (
+
+by:
+
+.. sourcecode:: python
+
+   MIDDLEWARE = (
+
+Update postfix map files as follows:
 
 .. sourcecode:: bash
 
    > python manage.py generate_postfix_maps --destdir <path>
-                
+
 Then, modify postfix's configuration as follows::
 
     smtpd_sender_login_maps =
@@ -236,9 +248,9 @@ Edit your :file:`settings.py` file and apply the following modifications:
 * Remove the ``SWAGGER_SETTINGS`` variable
 
 * Add the following content
-     
+
 .. sourcecode:: python
-                  
+
    # CKeditor
 
    CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -332,7 +344,7 @@ Edit the :file:`settings.py` and apply the following changes:
 * Add ``'modoboa.core.middleware.LocalConfigMiddleware'`` to ``MIDDLEWARE_CLASSES``:
 
 .. sourcecode:: python
-  
+
    MIDDLEWARE_CLASSES = (
        'django.contrib.sessions.middleware.SessionMiddleware',
        'django.middleware.common.CommonMiddleware',
@@ -468,7 +480,7 @@ First of all, update postfix map files as follows:
 .. sourcecode:: bash
 
    > python manage.py generate_postfix_maps --destdir <path> --force-overwrite
-                
+
 Then, modify postfix's configuration as follows::
 
   smtpd_sender_login_maps =
@@ -603,7 +615,7 @@ your :file:`settings.py` file, make sure it looks like this::
 
 .. warning::
 
-   Do not follow the regular upgrade procedure for this version.   
+   Do not follow the regular upgrade procedure for this version.
 
 Some extension have been moved back into the main repository. The main
 reason for that is that using Modoboa without them doesn't make sense.
@@ -628,7 +640,7 @@ Then, apply the following steps:
    $ pip uninstall modoboa-admin modoboa-admin-limits modoboa-admin-relaydomains
 
 #. Install all extension updates using pip (check the *Modoboa > Information* page)
-   
+
 #. Manually migrate database::
 
    $ cd <instance_dir>
@@ -648,7 +660,7 @@ This version also introduces a REST API. To enable it:
 #. Add ``'rest_framework.authtoken'`` to the ``INSTALLED_APPS`` variable
 
 #. Add the following configuration inside ``settings.py``::
-        
+
      # Rest framework settings
 
      REST_FRAMEWORK = {
@@ -780,7 +792,7 @@ versions. To activate it, you need to update the
 ``TEMPLATE_CONTEXT_PROCESSORS`` variable like this::
 
   from django.conf import global_settings
-  
+
   TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'modoboa.core.context_processors.top_notifications',
   )
