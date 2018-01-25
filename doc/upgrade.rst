@@ -127,6 +127,7 @@ Update postfix map files as follows:
 
 .. sourcecode:: bash
 
+   > rm -f <path>/modoboa-postfix-maps.chk
    > python manage.py generate_postfix_maps --force --destdir <path>
 
 Then, modify postfix's configuration as follows::
