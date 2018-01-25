@@ -1,9 +1,9 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+  - '2.7'
+  - '3.4'
+  - '3.5'
+  - '3.6'
 
 env:
   global:
@@ -15,8 +15,8 @@ env:
 sudo: false
 
 addons:
-  postgresql: "9.3"
-  mysql: "5.5"
+  postgresql: '9.3'
+  mysql: '5.5'
   apt:
     packages:
       - ldap-utils
@@ -51,3 +51,20 @@ script:
 
 after_success:
   - codecov
+
+before_deploy:
+  - cd ../modoboa
+  - django-admin compilemessages
+  - cd ..
+
+deploy:
+  provider: pypi
+  user: tonio
+  password:
+    secure: SKFrH4cri56YQziqMZ4uvbh5Vto9YrQuBlYRnO9BwcjXbcp6jMpZ+9j+aytMdvcN+xG5of6DmgSIiZsLCOl4LDoPn2oPwWMzZA9T8knSVYt9v1uiBTwDmssIt9QH3wD/o3edpTsSoKw+O2cTT2GaE75+3aTK01+CX4ZsUtkGbTk=
+  skip_cleanup: true
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    python: '3.6'
+    condition: "$DB == POSTGRESQL"
