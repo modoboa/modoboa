@@ -94,13 +94,54 @@ Specific instructions
 1.10.0
 ======
 
+.. warning::
+
+   Upgrade installed extensions BEFORE running ``check`` or
+   ``migrate`` commands.
+
+Upgrade all your installed plugins to the following versions:
+
+.. warning::
+
+   If you use the amavis plugin, make sure to include its
+   configuration as follows into :file:`settings.py`:
+
+   .. sourcecode:: python
+
+      from modoboa_amavis import settings as modoboa_amavis_settings
+      modoboa_amavis_settings.apply(globals())
+
++------------------------------+------------------------------+
+|Name                          |Version                       |
++==============================+==============================+
+|modoboa-amavis                |1.2.0                         |
++------------------------------+------------------------------+
+|modoboa-contacts              |0.5.0                         |
++------------------------------+------------------------------+
+|modoboa-dmarc                 |1.1.0                         |
++------------------------------+------------------------------+
+|modoboa-imap-migration        |1.2.0                         |
++------------------------------+------------------------------+
+|modoboa-pdfcredentials        |1.3.0                         |
++------------------------------+------------------------------+
+|modoboa-postfix-autoreply     |1.4.0                         |
++------------------------------+------------------------------+
+|modoboa-radicale              |1.2.0                         |
++------------------------------+------------------------------+
+|modoboa-sievefilters          |1.4.0                         |
++------------------------------+------------------------------+
+|modoboa-stats                 |1.4.0                         |
++------------------------------+------------------------------+
+|modoboa-webmail               |1.4.0                         |
++------------------------------+------------------------------+
+
 Edit the :file:`settings.py` file and apply the following modifications.
 
-Add ``'modoboa.transport'`` to ``INSTALLED_APPS``:
+Add ``'modoboa.transport'`` to ``MODOBOA_APPS``:
 
 .. sourcecode:: python
 
-   INSTALLED_APPS = (
+   MODOBOA_APPS = (
       'modoboa',
       'modoboa.core',
       'modoboa.lib',
@@ -150,42 +191,6 @@ Add the following cron job in order to generate DKIM keys::
 
   # Generate DKIM keys (they will belong to the user running this job)
   *       *       *       *       *       root    $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
-
-And finally, upgrade all your installed plugins to the following versions:
-
-.. warning::
-
-   If you use the amavis plugin, make sure to include its
-   configuration as follows into :file:`settings.py`:
-
-   .. sourcecode:: python
-
-      from modoboa_amavis import settings as modoboa_amavis_settings
-      modoboa_amavis_settings.apply(globals())
-
-+------------------------------+------------------------------+
-|Name                          |Version                       |
-+==============================+==============================+
-|modoboa-amavis                |1.2.0                         |
-+------------------------------+------------------------------+
-|modoboa-contacts              |0.5.0                         |
-+------------------------------+------------------------------+
-|modoboa-dmarc                 |1.1.0                         |
-+------------------------------+------------------------------+
-|modoboa-imap-migration        |1.2.0                         |
-+------------------------------+------------------------------+
-|modoboa-pdfcredentials        |1.3.0                         |
-+------------------------------+------------------------------+
-|modoboa-postfix-autoreply     |1.4.0                         |
-+------------------------------+------------------------------+
-|modoboa-radicale              |1.2.0                         |
-+------------------------------+------------------------------+
-|modoboa-sievefilters          |1.4.0                         |
-+------------------------------+------------------------------+
-|modoboa-stats                 |1.4.0                         |
-+------------------------------+------------------------------+
-|modoboa-webmail               |1.4.0                         |
-+------------------------------+------------------------------+
 
 1.9.0
 =====
