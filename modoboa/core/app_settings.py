@@ -72,13 +72,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
-    secret_key = forms.CharField(
-        label=ugettext_lazy("Secret key"),
-        initial=random_key(),
-        help_text=ugettext_lazy("Key used to encrypt/decrypt passwords"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-
     default_password = forms.CharField(
         label=ugettext_lazy("Default password"),
         initial="password",
@@ -347,13 +340,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     def __init__(self, *args, **kwargs):
         super(GeneralParametersForm, self).__init__(*args, **kwargs)
         self.fields["default_top_redirection"].choices = enabled_applications()
-
-    def clean_secret_key(self):
-        if len(self.cleaned_data["secret_key"]) not in [16, 24, 32]:
-            raise forms.ValidationError(
-                _("Key must be either 16, 24, or 32 bytes long")
-            )
-        return self.cleaned_data["secret_key"]
 
     def clean_ldap_user_dn_template(self):
         tpl = self.cleaned_data["ldap_user_dn_template"]

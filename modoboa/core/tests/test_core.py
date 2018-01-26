@@ -58,13 +58,6 @@ class ManagementCommandsTestCase(TestCase):
         self.assertTrue(
             self.client.login(username="modoadmin", password="password"))
 
-    def test_set_secret_key(self):
-        """Use dedicated option."""
-        management.call_command("load_initial_data")
-        lc = models.LocalConfig.objects.first()
-        self.assertIn("core", lc._parameters)
-        self.assertIn("secret_key", lc._parameters["core"])
-
     def test_clean_logs(self):
         """Run cleanlogs command."""
         log1 = factories.LogFactory()

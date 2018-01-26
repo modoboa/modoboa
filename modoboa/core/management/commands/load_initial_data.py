@@ -49,14 +49,6 @@ class Command(BaseCommand):
             models.ObjectAccess.objects.create(
                 user=admin, content_object=admin, is_owner=True)
 
-        lc = models.LocalConfig.objects.first()
-        condition = (
-            "core" not in lc._parameters or
-            "secret_key" not in lc._parameters["core"])
-        if condition:
-            lc.parameters.set_value("secret_key", random_key())
-            lc.save()
-
         groups = list(constants.PERMISSIONS.keys())
         for groupname in groups:
             group, created = Group.objects.get_or_create(name=groupname)
