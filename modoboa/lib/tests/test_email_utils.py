@@ -184,3 +184,20 @@ class EmailAddressParserTests(SimpleTestCase):
         ]
         output = prepare_addresses(value, usage="envelope")
         self.assertEqual(output, expected_output)
+
+    def test_prepare_addresses_usage_envelope2(self):
+        """Check a list of e-mail addresses is sepearted correctly."""
+        # value is one long string not 3 sepearte values, prepare_addresses
+        # should convert it to a list.
+        value = (
+            "\"Doe, John\" <doe.john@sub.example.com>;"
+            "\"John Smith\" <john.smith@sub.example.com>,"
+            "admin@sub.example.com"
+        )
+        expected_output = [
+            "doe.john@sub.example.com",
+            "john.smith@sub.example.com",
+            "admin@sub.example.com",
+        ]
+        output = prepare_addresses(value, usage="envelope")
+        self.assertEqual(output, expected_output)

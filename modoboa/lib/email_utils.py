@@ -346,6 +346,8 @@ def prepare_addresses(addresses, usage="header"):
     :return: a string or a list depending on usage value
     """
     result = []
+    if isinstance(addresses, six.text_type):
+        addresses = [addresses]
     for name, address in getaddresses(addresses):
         if not address:
             continue
