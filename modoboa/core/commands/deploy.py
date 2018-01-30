@@ -135,7 +135,7 @@ class DeployCommand(Command):
             info["NAME"] = "%s.db" % name
             return info
         if info["ENGINE"] == "postgres":
-            info["ENGINE"] = "django.db.backends.postgresql_psycopg2"
+            info["ENGINE"] = "django.db.backends.postgresql"
             default_port = 5432
         else:
             info["ENGINE"] = "django.db.backends.mysql"
