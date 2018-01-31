@@ -37,6 +37,7 @@ class RelayDomainFormGeneral(tr_forms.TransportForm):
         instance.pattern = domain.name
         instance.service = "relay"
         instance.save()
-        domain.transport = instance
-        domain.save(update_fields=["transport"])
+        if not domain.transport:
+            domain.transport = instance
+            domain.save(update_fields=["transport"])
         return instance
