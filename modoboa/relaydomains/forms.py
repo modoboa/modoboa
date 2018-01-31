@@ -30,12 +30,11 @@ class RelayDomainFormGeneral(tr_forms.TransportForm):
         """Custom save method."""
         domain = kwargs.pop("domain", None)
         if domain.type != "relaydomain":
-            # We don't want to recreate the transport we just deleted
+            # We don't want to recreate the transport we just deleted it
             # (post_save signal).
             return None
-        instance = super(RelayDomainFormGeneral, self).save(commit=False)
+        instance = super(RelayDomainFormGeneral, self).save()
         instance.pattern = domain.name
-        instance.service = "relay"
         instance.save()
         if not domain.transport:
             domain.transport = instance
