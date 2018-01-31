@@ -10,15 +10,18 @@ import re
 import smtplib
 import time
 
+import chardet
+import lxml.html
+from lxml.html.clean import Cleaner
+
+from django.template.loader import render_to_string
 from django.utils import six
 from django.utils.encoding import smart_str, smart_text
 from django.utils.html import conditional_escape, escape
-from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _
 
 from modoboa.lib import u2u_decode
-
-import lxml.html
-from lxml.html.clean import Cleaner
+from modoboa.lib.exceptions import InternalError
 
 
 # used by Email()
@@ -166,7 +169,8 @@ class Email(object):
 
         if content_type in ["plain", "html"]:
             encoding = msg.get_content_charset() or "utf-8"
-            mail_text = smart_text(msg.get_payload(decode=True), encoding=encoding, errors="replace")
+            mail_text_bytes = msg.get_payload(decode=True)
+            mail_text = decode(mail_text_bytes, encoding)
             self.contents[content_type] += mail_text
 
     def _parse_multipart(self, msg, level=0):
@@ -320,22 +324,30 @@ def split_mailbox(mailbox, return_extension=False):
     return (local_part, domain, extension)
 
 
-def decode(string, encodings=None, charset=None):
+def decode(value_bytes, encoding, append_to_error=""):
     """Try to decode the given string."""
-    if encodings is None:
-        encodings = ('utf8', 'latin1', 'windows-1252', 'ascii')
-    if charset is not None:
+    assert isinstance(value_bytes, six.binary_type),\
+        "value_bytes should be of type %s" % six.binary_type.__name__
+    if len(value_bytes) == 0:
+        # short circuit for empty strings
+        return ""
+    try:
+        value = value_bytes.decode(encoding)
+    except UnicodeDecodeError:
+        encoding = chardet.detect(value_bytes)
         try:
-            return string.decode(charset, 'ignore')
-        except LookupError:
-            pass
-
-    for encoding in encodings:
-        try:
-            return string.decode(encoding)
-        except UnicodeDecodeError:
-            pass
-    return string.decode('ascii', 'ignore')
+            value = value_bytes.decode(
+                encoding["encoding"], "replace"
+            )
+        except (TypeError, UnicodeDecodeError) as exc:
+            six.raise_from(
+                InternalError(
+                    _("unable to determine encoding of string")
+                    + append_to_error
+                ),
+                exc
+            )
+    return value
 
 
 def prepare_addresses(addresses, usage="header"):
