@@ -13,9 +13,9 @@ from .import_ import ImportDataForm, ImportIdentitiesForm
 from .export import ExportDataForm, ExportDomainsForm, ExportIdentitiesForm
 
 __all__ = [
-    'DomainFormGeneral', 'DomainFormOptions', 'DomainForm',
-    'AccountFormGeneral', 'AccountFormMail', 'AccountPermissionsForm',
-    'AccountForm', 'AliasForm', 'ImportDataForm', 'ImportIdentitiesForm',
-    'ExportDataForm', 'ExportDomainsForm', 'ExportIdentitiesForm',
-    'ForwardForm', 'DomainWizard', 'AccountWizard'
+    "DomainFormGeneral", "DomainFormOptions", "DomainForm",
+    "AccountFormGeneral", "AccountFormMail", "AccountPermissionsForm",
+    "AccountForm", "AliasForm", "ImportDataForm", "ImportIdentitiesForm",
+    "ExportDataForm", "ExportDomainsForm", "ExportIdentitiesForm",
+    "ForwardForm", "DomainWizard", "AccountWizard"
 ]

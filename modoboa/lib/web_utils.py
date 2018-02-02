@@ -88,7 +88,7 @@ def render_to_json_response(context, **response_kwargs):
     :return: ``HttpResponse`` object
     """
     data = json.dumps(context)
-    response_kwargs['content_type'] = 'application/json'
+    response_kwargs["content_type"] = "application/json"
     return HttpResponse(data, **response_kwargs)
 
 
@@ -136,8 +136,8 @@ class NavigationParameters(object):
     def __init__(self, request, sessionkey):
         self.request = request
         self.sessionkey = sessionkey
-        self.parameters = [('pattern', '', True),
-                           ('criteria', 'from_addr', False)]
+        self.parameters = [("pattern", "", True),
+                           ("criteria", "from_addr", False)]
 
     def __getitem__(self, key):
         """Retrieve an item."""

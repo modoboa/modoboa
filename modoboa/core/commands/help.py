@@ -13,8 +13,8 @@ class HelpCommand(Command):
 
     def __init__(self, *args, **kwargs):
         super(HelpCommand, self).__init__(*args, **kwargs)
-        self._parser.add_argument('name', type=str,
-                                  help='A command name')
+        self._parser.add_argument("name", type=str,
+                                  help="A command name")
 
     def handle(self, parsed_args):
         if parsed_args.name not in self._commands:

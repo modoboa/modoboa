@@ -28,7 +28,7 @@ class AuthenticationTestCase(ModoTestCase):
         cls.mb = factories.MailboxFactory(
             domain__name="test.com", address="user",
             user__username="user@test.com",
-            user__groups=('SimpleUsers',)
+            user__groups=("SimpleUsers",)
         )
 
     def test_authentication_unicode(self):
@@ -56,7 +56,7 @@ class AccountTestCase(ModoTestCase):
             username="tester@test.com", first_name="Tester", last_name="Toto",
             password1="Toto1234", password2="Toto1234", role="SimpleUsers",
             quota_act=True,
-            is_active=True, email="tester@test.com", stepid='step2'
+            is_active=True, email="tester@test.com", stepid="step2"
         )
         self.ajax_post(reverse("admin:account_add"), values)
 
@@ -459,8 +459,8 @@ class AccountTestCase(ModoTestCase):
 
 @skipIf(NO_LDAP, "No ldap module installed")
 @override_settings(AUTHENTICATION_BACKENDS=(
-    'modoboa.lib.authbackends.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "modoboa.lib.authbackends.LDAPBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ))
 class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
     """Check LDAP related code."""
@@ -597,7 +597,7 @@ class PermissionsTestCase(ModoTestCase):
 
         response = self.client.get(
             reverse("admin:account_change", args=[self.user.id]),
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertNotEqual(response["Content-Type"], "application/json")
 
     def test_domainadmin_deletes_superadmin(self):
@@ -611,7 +611,7 @@ class PermissionsTestCase(ModoTestCase):
             username="superadmin2@test.com", first_name="Super",
             last_name="Admin", password1="Toto1234", password2="Toto1234",
             role="SuperAdmins", is_active=True,
-            email="superadmin2@test.com", stepid='step2'
+            email="superadmin2@test.com", stepid="step2"
         )
         self.ajax_post(
             reverse("admin:account_add"),
@@ -641,7 +641,7 @@ class PermissionsTestCase(ModoTestCase):
             username="user10@test.com", first_name="Test",
             last_name="Test", password1="Toto1234", password2="Toto1234",
             role="SimpleUsers", is_active=True, master_user=True,
-            email="user10@test.com", stepid='step2'
+            email="user10@test.com", stepid="step2"
         )
         self.ajax_post(
             reverse("admin:account_add"),
@@ -656,7 +656,7 @@ class PermissionsTestCase(ModoTestCase):
         dom = models.Domain.objects.get(name="test.com")
         mb = factories.MailboxFactory(
             domain=dom, address="admin2",
-            user__username="admin2@test.com", user__groups=('DomainAdmins', ),
+            user__username="admin2@test.com", user__groups=("DomainAdmins", ),
             user__password="{PLAIN}toto")
         dom.add_admin(mb.user)
         self.client.logout()

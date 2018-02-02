@@ -39,8 +39,8 @@ def importdata(request, formclass=ImportDataForm):
     if form.is_valid():
         try:
             infile = io.TextIOWrapper(
-                request.FILES['sourcefile'].file, encoding="utf8")
-            reader = csv.reader(infile, delimiter=form.cleaned_data['sepchar'])
+                request.FILES["sourcefile"].file, encoding="utf8")
+            reader = csv.reader(infile, delimiter=form.cleaned_data["sepchar"])
         except csv.Error as inst:
             error = smart_text(inst)
         else:
@@ -63,7 +63,7 @@ def importdata(request, formclass=ImportDataForm):
                                 continue
                             raise Conflict(
                                 _("Object already exists: %s"
-                                  % form.cleaned_data['sepchar'].join(row[:2]))
+                                  % form.cleaned_data["sepchar"].join(row[:2]))
                             )
                     cpt += 1
                 msg = _("%d objects imported successfully" % cpt)

@@ -21,7 +21,7 @@ class PasswordSchemesTestCase(ModoTestCase):
             username="tester@test.com", first_name="Tester", last_name="Toto",
             password1="Toto1234", password2="Toto1234", role="SimpleUsers",
             quota_act=True,
-            is_active=True, email="tester@test.com", stepid='step2'
+            is_active=True, email="tester@test.com", stepid="step2"
         )
         self.ajax_post(
             reverse("admin:account_add"),
@@ -31,30 +31,30 @@ class PasswordSchemesTestCase(ModoTestCase):
     def _test_scheme(self, name, startpattern):
         self.set_global_parameter("password_scheme", name, app="core")
         self._create_account()
-        account = User.objects.get(username='tester@test.com')
+        account = User.objects.get(username="tester@test.com")
         self.assertTrue(account.password.startswith(startpattern))
-        self.assertTrue(account.check_password('Toto1234'))
+        self.assertTrue(account.check_password("Toto1234"))
 
     def test_bcrypt_scheme(self):
-        self._test_scheme('blfcrypt', '{BLF-CRYPT}')
+        self._test_scheme("blfcrypt", "{BLF-CRYPT}")
 
     def test_sha512crypt_scheme(self):
-        self._test_scheme('sha512crypt', '{SHA512-CRYPT}')
+        self._test_scheme("sha512crypt", "{SHA512-CRYPT}")
 
     def test_sha256crypt_scheme(self):
-        self._test_scheme('sha256crypt', '{SHA256-CRYPT}')
+        self._test_scheme("sha256crypt", "{SHA256-CRYPT}")
 
     def test_md5crypt_scheme(self):
-        self._test_scheme('md5crypt', '{MD5-CRYPT}')
+        self._test_scheme("md5crypt", "{MD5-CRYPT}")
 
     def test_sha256_scheme(self):
-        self._test_scheme('sha256', '{SHA256}')
+        self._test_scheme("sha256", "{SHA256}")
 
     def test_md5_scheme(self):
-        self._test_scheme('md5', '{MD5}')
+        self._test_scheme("md5", "{MD5}")
 
     def test_crypt(self):
-        self._test_scheme('crypt', '{CRYPT}')
+        self._test_scheme("crypt", "{CRYPT}")
 
     def test_plain(self):
-        self._test_scheme('plain', '{PLAIN}')
+        self._test_scheme("plain", "{PLAIN}")

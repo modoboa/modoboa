@@ -69,7 +69,7 @@ class DomainAPITestCase(ModoAPITestCase):
         self.assertIn("default_mailbox_quota", response.data)
 
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
         response = self.client.post(
             url, {"name": "test4.com", "default_mailbox_quota": 10})
         self.assertEqual(response.status_code, 403)
@@ -84,7 +84,7 @@ class DomainAPITestCase(ModoAPITestCase):
         reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers", ))
         token = Token.objects.create(user=reseller)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
         url = reverse("api:domain-list")
         mock_query.side_effect = utils.mock_dns_query_result
@@ -169,7 +169,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         self.assertEqual(len(response.data), 1)
 
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
         response = self.client.get(reverse("api:domain_alias-list"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 0)
@@ -191,7 +191,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         self.assertEqual(dalias.target, target)
 
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
         response = self.client.post(
             url, {"name": "dalias4.com", "target": target.pk}, format="json")
         self.assertEqual(response.status_code, 403)
@@ -389,7 +389,7 @@ class AccountAPITestCase(ModoAPITestCase):
     def test_create_account_as_domadmin(self):
         """As DomainAdmin, try to create a new account."""
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["mailbox"]["quota"] = 1000
         url = reverse("api:account-list")
@@ -604,7 +604,7 @@ class AliasAPITestCase(ModoAPITestCase):
         response = self.client.post(url, self.ALIAS_DATA, format="json")
         self.assertEqual(response.status_code, 201)
 
-        alias = json.loads(response.content.decode('utf-8'))
+        alias = json.loads(response.content.decode("utf-8"))
         alias = models.Alias.objects.filter(pk=alias["pk"]).first()
         domadmin = core_models.User.objects.get(username="admin@test.com")
         self.assertTrue(domadmin.can_access(alias))
@@ -626,7 +626,7 @@ class AliasAPITestCase(ModoAPITestCase):
     def test_create_alias_as_domadmin(self):
         """As DomainAdmin, try to create a new alias."""
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
         url = reverse("api:alias-list")
         response = self.client.post(url, self.ALIAS_DATA, format="json")
         self.assertEqual(response.status_code, 201)
@@ -723,7 +723,7 @@ class SenderAddressAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 201)
 
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
         data = {"address": "user@test2.com", "mailbox": mbox.pk}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 400)

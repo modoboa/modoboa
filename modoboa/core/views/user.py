@@ -27,7 +27,7 @@ def index(request, tplname="core/user_index.html"):
 
 
 @login_required
-def profile(request, tplname='core/user_profile.html'):
+def profile(request, tplname="core/user_profile.html"):
     """Profile detail/update view."""
     update_password = True
     results = signals.allow_password_change.send(
@@ -50,7 +50,7 @@ def profile(request, tplname='core/user_profile.html'):
                 request.user.language)
             return render_to_json_response(_("Profile updated"))
         return render_to_json_response(
-            {'form_errors': form.errors}, status=400)
+            {"form_errors": form.errors}, status=400)
 
     form = ProfileForm(update_password, instance=request.user)
     return render_to_json_response({

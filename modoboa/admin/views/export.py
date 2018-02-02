@@ -52,7 +52,7 @@ def export_identities(request):
         fp = six.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         identities = get_identities(
-            request.user, **request.session['identities_filters'])
+            request.user, **request.session["identities_filters"])
         for ident in identities:
             ident.to_csv(csvwriter)
         content = fp.getvalue()
@@ -80,7 +80,7 @@ def export_domains(request):
         fp = six.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         for dom in get_domains(request.user,
-                               **request.session['domains_filters']):
+                               **request.session["domains_filters"]):
             dom.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()

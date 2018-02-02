@@ -86,7 +86,7 @@ try:
                 if grp.strip() in ldap_user.group_names:
                     group = "DomainAdmins"
                     break
-            if group == 'SimpleUsers':
+            if group == "SimpleUsers":
                 lpart, domain = split_mailbox(username)
                 if domain is None:
                     return None

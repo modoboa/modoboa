@@ -30,7 +30,7 @@ class ImportCommand(BaseCommand):
             help="Separator used in file.")
         parser.add_argument(
             "--continue-if-exists", action="store_true",
-            dest='continue_if_exists', default=False,
+            dest="continue_if_exists", default=False,
             help="Continue even if an entry already exists.")
         parser.add_argument(
             "--crypt-password", action="store_true",

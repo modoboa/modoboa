@@ -40,7 +40,7 @@ def forward(request, tplname="admin/forward.html"):
             return render_to_json_response(_("Forward updated"))
 
         return render_to_json_response(
-            {'form_errors': form.errors}, status=400
+            {"form_errors": form.errors}, status=400
         )
 
     form = ForwardForm()

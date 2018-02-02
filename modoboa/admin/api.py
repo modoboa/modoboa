@@ -81,7 +81,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         user = self.request.user
         ids = user.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(user)) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         queryset = core_models.User.objects.filter(pk__in=ids)
         domain = self.request.query_params.get("domain")
         if domain:
@@ -139,7 +139,7 @@ class AliasViewSet(viewsets.ModelViewSet):
         ids = (
             user.objectaccess_set.filter(
                 content_type=ContentType.objects.get_for_model(models.Alias))
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         )
         queryset = models.Alias.objects.filter(pk__in=ids)
         domain = self.request.query_params.get("domain")

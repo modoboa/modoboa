@@ -27,7 +27,7 @@ from .. import constants
 class Domain(AdminObject):
     """Mail domain."""
 
-    name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
+    name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
     quota = models.PositiveIntegerField(
         default=0,
@@ -45,7 +45,7 @@ class Domain(AdminObject):
         )
     )
     enabled = models.BooleanField(
-        ugettext_lazy('enabled'),
+        ugettext_lazy("enabled"),
         help_text=ugettext_lazy("Check to activate this domain"),
         default=True
     )

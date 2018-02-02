@@ -82,7 +82,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         """Check unicity and more."""
         name = self.cleaned_data["name"]
         label = lib.check_if_domain_exists(
-            name, [(DomainAlias, _('domain alias'))])
+            name, [(DomainAlias, _("domain alias"))])
         if label is not None:
             raise forms.ValidationError(
                 _("A %s with this name already exists") % force_text(label))

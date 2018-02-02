@@ -80,7 +80,7 @@ class Command(BaseCommand):
             )
             if not code:
                 return False
-        with open(path, 'w') as fp:
+        with open(path, "w") as fp:
             print(os.getpid(), file=fp)
         return True
 

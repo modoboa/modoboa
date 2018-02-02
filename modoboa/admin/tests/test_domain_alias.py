@@ -17,7 +17,7 @@ class DomainAliasTestCase(ModoTestCase):
         """Create test data."""
         super(DomainAliasTestCase, cls).setUpTestData()
         factories.populate_database()
-        cls.dom = Domain.objects.get(name='test.com')
+        cls.dom = Domain.objects.get(name="test.com")
 
     def test_model(self):
         dom = Domain.objects.get(name="test.com")

@@ -37,17 +37,17 @@ from .. import signals
 )
 def _identities(request):
     filters = dict((fname, request.GET.get(fname, None))
-                   for fname in ['searchquery', 'idtfilter', 'grpfilter'])
-    request.session['identities_filters'] = filters
+                   for fname in ["searchquery", "idtfilter", "grpfilter"])
+    request.session["identities_filters"] = filters
     idents_list = get_identities(request.user, **filters)
     sort_order, sort_dir = get_sort_order(request.GET, "identity",
                                           ["identity", "name_or_rcpt", "tags"])
     if sort_order in ["identity", "name_or_rcpt"]:
         objects = sorted(idents_list, key=lambda o: getattr(o, sort_order),
-                         reverse=sort_dir == '-')
+                         reverse=sort_dir == "-")
     else:
         objects = sorted(idents_list, key=lambda o: o.tags[0],
-                         reverse=sort_dir == '-')
+                         reverse=sort_dir == "-")
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
             "handle_mailboxes", raise_exception=False)
@@ -104,7 +104,7 @@ def list_quotas(request):
                     "* 1048576)) * 100"
                 )
             mboxes = mboxes.extra(
-                select={'quota_usage': select},
+                select={"quota_usage": select},
                 where=["admin_quota.username=%s" % where],
                 tables=["admin_quota", "admin_domain"],
                 order_by=["%s%s" % (sort_dir, sort_order)]
@@ -157,7 +157,7 @@ def identities(request, tplname="admin/identities.html"):
 @permission_required("core.add_user")
 def accounts_list(request):
     accs = User.objects.filter(is_superuser=False) \
-        .exclude(groups__name='SimpleUsers')
+        .exclude(groups__name="SimpleUsers")
     res = [a.username for a in accs.all()]
     return render_to_json_response(res)
 

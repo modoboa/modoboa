@@ -90,10 +90,10 @@ def handle_command_line():
         epilog="""Available commands:
 %s
 """ % "\n".join(["\t%s" % c for c in sorted(commands)]))
-    parser.add_argument('--verbose', action='store_true',
-                        help='Activate verbose output')
-    parser.add_argument('command', type=str,
-                        help='A valid command name')
+    parser.add_argument("--verbose", action="store_true",
+                        help="Activate verbose output")
+    parser.add_argument("command", type=str,
+                        help="A valid command name")
     (args, remaining) = parser.parse_known_args()
 
     if args.command not in commands:

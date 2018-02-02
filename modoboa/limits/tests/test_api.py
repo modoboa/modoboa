@@ -41,7 +41,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
     def test_domadmins_limit(self):
         """Check domain admins limit."""
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.r_token.key)
+            HTTP_AUTHORIZATION="Token " + self.r_token.key)
 
         limit = self.reseller.userobjectlimit_set.get(name="domain_admins")
         url = reverse("api:account-list")
@@ -82,7 +82,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
     def test_domains_limit(self):
         """Check domains limit."""
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.r_token.key)
+            HTTP_AUTHORIZATION="Token " + self.r_token.key)
         limit = self.reseller.userobjectlimit_set.get(name="domains")
         quota = self.reseller.userobjectlimit_set.get(name="quota")
         quota.max_value = 3
@@ -104,7 +104,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 403)
         self.assertEqual(
-            response.content.decode('utf-8'), '"Domains: limit reached"'
+            response.content.decode("utf-8"), '"Domains: limit reached"'
         )
 
         self.client.delete(
@@ -120,7 +120,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
     def test_domain_aliases_limit(self):
         """Check domain aliases limit."""
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.r_token.key)
+            HTTP_AUTHORIZATION="Token " + self.r_token.key)
         domain = Domain.objects.get(name="test.com")
         domain.add_admin(self.reseller)
         limit = self.reseller.userobjectlimit_set.get(name="domain_aliases")
@@ -142,7 +142,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
     def test_mailboxes_limit(self):
         """Check mailboxes limit."""
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailboxes")
         url = reverse("api:account-list")
@@ -173,7 +173,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
     def test_aliases_limit(self):
         """Check mailbox aliases limit."""
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.da_token.key)
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailbox_aliases")
         url = reverse("api:alias-list")

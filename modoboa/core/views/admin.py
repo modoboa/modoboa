@@ -22,7 +22,7 @@ from .. import signals
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewsettings(request, tplname='core/settings_header.html'):
+def viewsettings(request, tplname="core/settings_header.html"):
     return render(request, tplname, {
         "selection": "settings"
     })
@@ -71,7 +71,7 @@ def get_logs_page(request, page_id=None):
     """Return a page of logs."""
     sort_order, sort_dir = get_sort_order(
         request.GET, "date_created",
-        allowed_values=['date_created', 'level', 'logger', 'message']
+        allowed_values=["date_created", "level", "logger", "message"]
     )
     if page_id is None:
         page_id = request.GET.get("page", None)
