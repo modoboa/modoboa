@@ -1,5 +1,7 @@
 """Transport forms."""
 
+from __future__ import unicode_literals
+
 from django import forms
 
 from . import backends, models
