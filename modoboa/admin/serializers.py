@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _, ugettext_lazy
@@ -308,6 +309,8 @@ class WritableAccountSerializer(AccountSerializer):
         else:
             password = validated_data.pop("password")
         user.set_password(password)
+        if "language" not in validated_data:
+            user.language = settings.LANGUAGE_CODE
         user.save(creator=creator)
         if mailbox_data:
             self._create_mailbox(creator, user, mailbox_data)

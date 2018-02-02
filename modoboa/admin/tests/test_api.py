@@ -10,6 +10,7 @@ import json
 import dns.resolver
 from mock import patch
 
+from django.test import override_settings
 from django.urls import reverse
 
 from rest_framework.authtoken.models import Token
@@ -89,7 +90,8 @@ class DomainAPITestCase(ModoAPITestCase):
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         response = self.client.post(
-            url, {"name": "no-mx.example.com", "quota": 0, "default_mailbox_quota": 10}
+            url, {"name": "no-mx.example.com", "quota": 0,
+                  "default_mailbox_quota": 10}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -304,6 +306,25 @@ class AccountAPITestCase(ModoAPITestCase):
         del data["password"]
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
+
+    @override_settings(LANGUAGE_CODE="fr")
+    def test_create_account_default_lang(self):
+        """Try to create a new account with(out) language."""
+        url = reverse("api:account-list")
+        data = dict(self.ACCOUNT_DATA)
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+        account = response.json()
+        user = core_models.User.objects.filter(pk=account["pk"]).first()
+        self.assertEqual(user.language, "fr")
+
+        user.delete()
+        data["language"] = "pl_PL"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+        account = response.json()
+        user = core_models.User.objects.filter(pk=account["pk"]).first()
+        self.assertEqual(user.language, data["language"])
 
     def test_create_domainadmin_account(self):
         """Try to create a domain admin."""

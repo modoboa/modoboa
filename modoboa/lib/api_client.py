@@ -66,9 +66,7 @@ class ModoAPIClient(object):
         """Update instance and send stats."""
         url = "{}instances/{}/".format(self._api_url, pk)
         response = requests.put(url, data=data)
-        if response.status_code != 200:
-            return False
-        return True
+        response.raise_for_status()
 
     def versions(self):
         """Fetch core and extension versions."""
