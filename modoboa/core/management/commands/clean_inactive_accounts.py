@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Inactive accounts cleanup tool."""
 
 from __future__ import print_function, unicode_literals

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """
 This module extra functions/shortcuts to communicate with the system

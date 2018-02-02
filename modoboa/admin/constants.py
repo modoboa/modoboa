@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Admin constants."""
 
 from __future__ import unicode_literals

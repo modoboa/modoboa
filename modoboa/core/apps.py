@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Core config for admin."""
 
 from __future__ import unicode_literals

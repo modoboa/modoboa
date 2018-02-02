@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Django signal handlers for admin."""
 
 from __future__ import unicode_literals

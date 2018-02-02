@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """SimpleUsers views."""
 
 from __future__ import unicode_literals

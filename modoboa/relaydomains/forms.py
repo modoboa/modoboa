@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Postfix relay domains extension forms."""
 
 from __future__ import unicode_literals

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Repair command tests"""
 
 from __future__ import unicode_literals

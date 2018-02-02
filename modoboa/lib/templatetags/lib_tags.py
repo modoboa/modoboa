@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """Custom template tags."""
 
 from __future__ import unicode_literals

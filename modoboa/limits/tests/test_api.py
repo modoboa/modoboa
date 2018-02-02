@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """Test cases for the limits extension."""
 
 from __future__ import unicode_literals

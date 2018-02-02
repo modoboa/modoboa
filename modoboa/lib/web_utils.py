@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """
 This module contains extra functions/shortcuts used to render HTML.

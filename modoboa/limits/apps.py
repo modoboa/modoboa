@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """App config for limits."""
 
 from __future__ import unicode_literals

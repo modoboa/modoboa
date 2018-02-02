@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator

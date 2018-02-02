@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Core views test cases."""
 
 from __future__ import unicode_literals

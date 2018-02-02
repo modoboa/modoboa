@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Transport handlers."""
 
 from __future__ import unicode_literals

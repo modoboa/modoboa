@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """RelayDomain viewsets."""
 
 from __future__ import unicode_literals

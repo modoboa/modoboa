@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """User related tests."""
 
 from __future__ import unicode_literals

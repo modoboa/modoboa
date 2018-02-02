@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Modoboa limits constants."""
 
 from __future__ import unicode_literals
