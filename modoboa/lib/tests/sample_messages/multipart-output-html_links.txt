@@ -12,5 +12,9 @@
 someone
 <a class="moz-txt-link-abbreviated" href="mailto:someone@example.net" target="_blank" rel="nofollow">someone@example.net</a></pre>
   </body>
-<p>
-&#65533;&#65533;</p></div>
+<span><b>Some <i>HTML</i> text</b>, a <a href="http://example.net" target="_blank" rel="nofollow">link</a>, an&#13;&#13;
+embedded image and an external image.<br>&#13;&#13;
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAF0lEQVQY02NgYGD4//8/ThKfHASMRN0AfaqVa6MQxIQAAAAASUVORK5CYII=" target="_blank"><br>&#13;&#13;
+<img src="http://example.net/image.png" target="_blank"><br>&#13;&#13;
+Nifty!</span>&#13;
+</div>

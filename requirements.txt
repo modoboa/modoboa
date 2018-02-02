@@ -28,3 +28,4 @@ requests
 rfc6266
 lxml
 backports.csv
+chardet
