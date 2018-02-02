@@ -62,7 +62,8 @@ class DomainAlias(AdminObject):
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row
 
-        Expected format: ["domainalias", domain alias name, targeted domain, enabled]
+        Expected format: ["domainalias", domain alias name, targeted domain,
+                          enabled]
 
         :param user: a ``User`` object
         :param row: a list containing the alias definition
@@ -90,5 +91,6 @@ class DomainAlias(AdminObject):
         """
         csvwriter.writerow(["domainalias", self.name,
                             self.target.name, self.enabled])
+
 
 reversion.register(DomainAlias)

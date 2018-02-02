@@ -93,7 +93,13 @@ class CRYPTHasher(PasswordHasher):
 
     def _encrypt(self, clearvalue, salt=None):
         if salt is None:
-            salt = "".join(Random().sample(string.ascii_letters + string.digits, 2))
+            salt = "".join(
+                Random().sample(
+                    string.ascii_letters +
+                    string.digits,
+                    2
+                )
+            )
         return crypt.crypt(clearvalue, salt)
 
 

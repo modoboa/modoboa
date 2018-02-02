@@ -179,7 +179,8 @@ class Email(object):
             if content_type == "text":
                 self._parse_text(part, level=level)
             else:
-                # I'm  a dumb mail parser and treat all non-text parts as attachments
+                # I'm  a dumb mail parser and treat all non-text parts as
+                # attachments
                 self._parse_inline_image(part, level=level)
 
     def _parse_inline_image(self, msg, level=0):
@@ -225,13 +226,13 @@ class Email(object):
             html.rewrite_links(lambda x: None)
 
         cleaner = Cleaner(
-                scripts=True,
-                javascript=True,
-                links=True,
-                page_structure=True,
-                embedded=True,
-                frames=True,
-                add_nofollow=True)
+            scripts=True,
+            javascript=True,
+            links=True,
+            page_structure=True,
+            embedded=True,
+            frames=True,
+            add_nofollow=True)
         mail_text = lxml.html.tostring(cleaner.clean_html(html))
         self.contents["html"] = smart_text(mail_text)
 
@@ -289,18 +290,18 @@ def split_local_part(local_part, delimiter=None):
         # never split these special addresses
         pass
     elif (
-        delimiter == "-"
-        and (local_part.startswith("owner-")
-             or local_part.endswith("-request"))
+        delimiter == "-" and
+         (local_part.startswith("owner-") or
+          local_part.endswith("-request"))
     ):
         # don't split owner-* or *-request if - is the delimiter, they are
         # special addresses used by mail lists.
         pass
     elif (
-        delimiter
-        and delimiter in local_part
-        and local_part[0] != delimiter
-        and local_part[-1] != delimiter
+        delimiter and
+        delimiter in local_part and
+        local_part[0] != delimiter and
+        local_part[-1] != delimiter
     ):
         local_part, extension = local_part.split(delimiter, 1)
 
@@ -341,8 +342,8 @@ def decode(value_bytes, encoding, append_to_error=""):
         except (TypeError, UnicodeDecodeError) as exc:
             six.raise_from(
                 InternalError(
-                    _("unable to determine encoding of string")
-                    + append_to_error
+                    _("unable to determine encoding of string") +
+                    append_to_error
                 ),
                 exc
             )

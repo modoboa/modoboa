@@ -23,7 +23,8 @@ if DB == "MYSQL":
             # such as data truncation upon insertion, by escalating warnings
             # into errors. It is strongly recommended you activate it.
             # MySQL >= 5.7 set STRICT_TRANS_TABLES by default
-            # See: https://docs.djangoproject.com/en/1.11/ref/databases/#mysql-sql-mode
+            # See:
+            # https://docs.djangoproject.com/en/1.11/ref/databases/#mysql-sql-mode
             "OPTIONS": {
                 "init_command": 'SET sql_mode=\'STRICT_TRANS_TABLES\'',
             },

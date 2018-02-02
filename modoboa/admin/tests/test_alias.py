@@ -12,9 +12,6 @@ from ..models import Alias, AliasRecipient, Domain
 """Admin test cases."""
 
 
-
-
-
 class AliasTestCase(ModoTestCase):
 
     @classmethod

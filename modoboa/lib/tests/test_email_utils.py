@@ -65,9 +65,10 @@ class EmailTests(SimpleTestCase):
             EmailTestImplementation("text_plain", links="0")
 
             ex_message = cm.exception.messages
-            self.assertEqual(ex_message,
-                             "links == \"0\" is not valid, did you mean True or "
-                             "False?")
+            self.assertEqual(
+                ex_message,
+                "links == \"0\" is not valid, did you mean True or False?"
+            )
 
     def test_links_value_for_webmail(self):
         """modoboa-webmail sets links = 0 or 1
@@ -106,7 +107,7 @@ class EmailTests(SimpleTestCase):
         self._test_email("multipart", dformat="html", links=True)
 
     def test_email_multipart_without_links(self):
-        """display the text/html part of a multipart message with links removed"""
+        """display the text/html part of a multipart message without links"""
         self._test_email("multipart", dformat="html", links=False)
 
 

@@ -111,7 +111,10 @@ class Repair(BaseCommand):
         # Load known problems from extensions.
         for ext in settings.MODOBOA_APPS:
             try:
-                __import__(ext, locals(), globals(), [smart_str("known_problems")])
+                __import__(
+                    ext, locals(), globals(),
+                    [smart_str("known_problems")]
+                )
             except ImportError:
                 pass
         for func in known_problems:

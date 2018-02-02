@@ -19,4 +19,5 @@ class StupidExtension1(extensions.ModoExtension):
     def load_initial_data(self):
         raise RuntimeError
 
+
 extensions.exts_pool.register_extension(StupidExtension1)

@@ -134,7 +134,7 @@ alias; alias1@test.com; True; user1@test.com
 forward; alias2@test.com; True; user1+ext@test.com
 forward; fwd1@test.com; True; user@extdomain.com
 dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
@@ -200,7 +200,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         """Try to import an account for nonlocal domain."""
         f = ContentFile(b"""
 account; user1@nonlocal.com; toto; User; One; True; SimpleUsers; user1@nonlocal.com; 0
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
@@ -211,7 +211,7 @@ account; user1@nonlocal.com; toto; User; One; True; SimpleUsers; user1@nonlocal.
     def test_import_invalid_quota(self):
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; test.com
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         resp = self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
@@ -229,7 +229,9 @@ domain; domain2.com; 1000; 200; False
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn("You are not allowed to import domains", resp.content.decode())
+        self.assertIn(
+            "You are not allowed to import domains",
+            resp.content.decode())
         f = ContentFile(b"""
 domainalias; domalias1.com; test.com; True
 """, name="identities.csv")
@@ -238,7 +240,8 @@ domainalias; domalias1.com; test.com; True
             {"sourcefile": f, "crypt_password": True}
         )
         self.assertIn(
-            "You are not allowed to import domain aliases", resp.content.decode())
+            "You are not allowed to import domain aliases",
+            resp.content.decode())
 
     def test_import_quota_too_big(self):
         self.client.logout()
@@ -270,7 +273,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
         f = ContentFile("""
 account; admin@test.com; toto; Admin; ; True; DomainAdmins; admin@test.com; 0; test.com
 account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0; test.com
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
@@ -291,7 +294,7 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0;
         )
         f = ContentFile(b"""
 account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com; 50
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,

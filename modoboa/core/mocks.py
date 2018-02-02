@@ -6,6 +6,7 @@ import httmock
 
 # Modoboa API mocks
 
+
 @httmock.urlmatch(
     netloc=r"api\.modoboa\.org$", path=r"^/1/instances/search/", method="post")
 def modo_api_instance_search(url, request):
