@@ -42,9 +42,9 @@ def check_for_updates(request):
                 continue
             extension["last_version"] = api_extension["version"]
             if (
-                parse_version(api_extension["version"])
-                > parse_version(extension["version"])
-               ):
+                parse_version(api_extension["version"]) >
+                parse_version(extension["version"])
+            ):
                 extension["update"] = True
                 extension["changelog_url"] = api_extension["url"]
                 update_avail = True

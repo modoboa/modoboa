@@ -185,8 +185,8 @@ def get_domain_mx_list(domain):
         logger.error(_("No working name servers found"), exc_info=e)
     except dns.resolver.Timeout as e:
         logger.warning(
-            _("DNS resolution timeout, unable to query %s at the moment") % domain,
-            exc_info=e)
+            _("DNS resolution timeout, unable to query %s at the moment") %
+            domain, exc_info=e)
     else:
         for dns_answer in dns_answers:
             try:

@@ -35,7 +35,7 @@ def alert(msg, typ):
     t = Template("""<div class="alert alert-{{ type }}" role="alert">
 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 {{ msg }}
-</div>""")
+</div>""")  # NOQA:E501
     return t.render(Context({"type": typ, "msg": msg}))
 
 
@@ -50,7 +50,7 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 {% for attr, value in link.extra_attributes.items %} {{ attr }}="{{ value }}"{% endfor %}
 >
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
-{{ link.label }}</a>""")
+{{ link.label }}</a>""")  # NOQA:E501
     return t.render(Context({"link": linkdef, "mdclass": mdclass}))
 
 
@@ -76,7 +76,7 @@ def render_tags(tags):
   <a href="#" class="filter {{ tag.type }}" name="{{ tag.name }}">{{ tag.label }}</a>
 </span>
 {% endfor %}
-""")
+""")  # NOQA:E501
     return t.render(Context({"tags": tags}))
 
 

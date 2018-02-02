@@ -68,7 +68,7 @@ domainalias; domalias2.com; {domain}; True
         self.assertTrue(limit.is_exceeded())
 
         f = ContentFile("""account; admin3@{domain}; toto; User; One; True; DomainAdmins; admin3@{domain}; 5; {domain}
-""".format(domain=self.domain), name="domain_admins.csv")
+""".format(domain=self.domain), name="domain_admins.csv")  # NOQA:E501
         response = self.client.post(
             reverse("admin:identity_import"), {
                 "sourcefile": f

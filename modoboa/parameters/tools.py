@@ -96,6 +96,7 @@ class Registry(object):
             raise NotDefined(app)
         return self._registry[level][app]["defaults"]
 
+
 registry = Registry()
 
 

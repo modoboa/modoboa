@@ -61,8 +61,8 @@ class DomainSerializer(serializers.ModelSerializer):
         domain = models.Domain(**validated_data)
         creator = self.context["request"].user
         core_signals.can_create_object.send(
-                sender=self.__class__, context=creator,
-                klass=models.Domain, instance=domain)
+            sender=self.__class__, context=creator,
+            klass=models.Domain, instance=domain)
         domain.save(creator=creator)
         return domain
 
