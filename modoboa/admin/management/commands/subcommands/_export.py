@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Django management command to export admin objects."""
 
 from __future__ import unicode_literals

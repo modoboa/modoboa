@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Admin models."""
 
 from __future__ import unicode_literals

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """
 Unstructured rfc2047 header to unicode.

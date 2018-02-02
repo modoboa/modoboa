@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """A management command to apply mailbox operations."""
 
 from __future__ import print_function, unicode_literals

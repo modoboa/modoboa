@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Custom context processors."""
 
 from __future__ import unicode_literals

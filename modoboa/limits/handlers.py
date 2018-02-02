@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Django signal handlers for limits."""
 
 from __future__ import unicode_literals

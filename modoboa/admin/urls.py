@@ -1,4 +1,5 @@
-# pylint: disable=invalid-name, protected-access
+# -*- coding: utf-8 -*-
+
 """Admin urls."""
 
 from __future__ import unicode_literals

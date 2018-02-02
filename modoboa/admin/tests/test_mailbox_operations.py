@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Management command tests."""
 
 from __future__ import unicode_literals

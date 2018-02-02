@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Mocks used for testing."""
 
 from __future__ import unicode_literals

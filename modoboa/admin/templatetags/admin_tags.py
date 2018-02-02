@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Admin extension tags."""
 
 from __future__ import unicode_literals

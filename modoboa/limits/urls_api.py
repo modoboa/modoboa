@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Limits API urls."""
 
 from __future__ import unicode_literals
