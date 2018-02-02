@@ -6,8 +6,9 @@ from collections import OrderedDict
 from functools import reduce
 
 from django import forms
-from django.urls import reverse
+from django.conf import settings
 from django.http import QueryDict
+from django.urls import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from django.contrib.auth import password_validation
@@ -202,6 +203,8 @@ class AccountFormGeneral(forms.ModelForm):
         if self.user == account and not self.cleaned_data["is_active"]:
             raise lib_exceptions.PermDeniedException(
                 _("You can't disable your own account"))
+        if not account.pk:
+            account.language = settings.LANGUAGE_CODE
         if commit:
             if self.cleaned_data.get("password2", "") != "":
                 account.set_password(self.cleaned_data["password2"])

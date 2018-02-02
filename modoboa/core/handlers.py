@@ -4,9 +4,9 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.urls import reverse
 from django.db.models import signals
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 

@@ -50,5 +50,4 @@ class Command(BaseCommand):
                 admin_models.Alias.objects.filter(internal=False).count()),
             "extensions": extensions
         }
-        if not self.client.update_instance(local_config.api_pk, data):
-            raise CommandError("Failed to update instance.")
+        self.client.update_instance(local_config.api_pk, data)
