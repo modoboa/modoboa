@@ -8,4 +8,3 @@ class TransportConfig(AppConfig):
 
     def ready(self):
         from . import handlers
-        

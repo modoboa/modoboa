@@ -6,12 +6,10 @@ from __future__ import unicode_literals
 from django.conf.urls import url
 
 from . import views
-from .views import import_ as import_views
-from .views import alias as alias_views
-from .views import domain as domain_views
-from .views import export as export_views
-from .views import identity as identity_views
-
+from .views import (
+    alias as alias_views, domain as domain_views, export as export_views,
+    identity as identity_views, import_ as import_views
+)
 
 urlpatterns = [
     url(r'^$', domain_views.index, name="index"),

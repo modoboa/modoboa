@@ -14,11 +14,7 @@ from django.core.management.base import BaseCommand
 
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.permissions import add_permissions_to_group
-
-from ... import constants
-from ... import extensions
-from ... import models
-from ... import signals
+from ... import constants, extensions, models, signals
 
 
 class Command(BaseCommand):

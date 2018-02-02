@@ -2,23 +2,19 @@
 
 from __future__ import unicode_literals
 
-from django.urls import reverse
+from reversion import revisions as reversion
+
+from django.contrib.auth import mixins as auth_mixins
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db import IntegrityError
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 
-from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth.decorators import (
-    login_required, permission_required
-)
-
-from reversion import revisions as reversion
-
 from modoboa.core import signals as core_signals
-from modoboa.lib.exceptions import PermDeniedException, Conflict
+from modoboa.lib.exceptions import Conflict, PermDeniedException
 from modoboa.lib.web_utils import render_to_json_response
-
 from ..forms import AliasForm
 from ..models import Alias
 

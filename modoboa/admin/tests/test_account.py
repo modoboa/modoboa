@@ -4,18 +4,15 @@ from __future__ import unicode_literals
 
 from unittest import skipIf
 
-from django.urls import reverse
 from django.test import override_settings
+from django.urls import reverse
 
 from modoboa.core import factories as core_factories
-from modoboa.core.tests import test_ldap
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase
-from modoboa.lib.tests import NO_LDAP
+from modoboa.core.tests import test_ldap
+from modoboa.lib.tests import NO_LDAP, ModoTestCase
 from modoboa.limits import utils as limits_utils
-
-from .. import factories
-from .. import models
+from .. import factories, models
 
 
 class AuthenticationTestCase(ModoTestCase):

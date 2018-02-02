@@ -6,8 +6,7 @@ from django.utils.translation import ugettext as _
 
 from modoboa.admin import models as admin_models
 from modoboa.lib.exceptions import BadRequest
-from modoboa.transport import backends as tr_backends
-from modoboa.transport import models as tr_models
+from modoboa.transport import backends as tr_backends, models as tr_models
 
 
 def import_relaydomain(user, row, formopts):

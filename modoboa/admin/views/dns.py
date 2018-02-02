@@ -2,11 +2,9 @@
 
 from __future__ import unicode_literals
 
-from django.views import generic
-
-from django.utils.translation import ugettext as _
-
 from django.contrib.auth import mixins as auth_mixins
+from django.utils.translation import ugettext as _
+from django.views import generic
 
 from .. import models
 

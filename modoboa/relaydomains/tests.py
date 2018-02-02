@@ -5,18 +5,15 @@ from __future__ import unicode_literals
 import json
 
 from django.core.files.base import ContentFile
-from django.urls import reverse
 from django.test import TestCase
+from django.urls import reverse
 
-from modoboa.admin import factories as admin_factories
-from modoboa.admin import models as admin_models
+from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.core.factories import UserFactory
-from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
 from modoboa.lib.test_utils import MapFilesTestCaseMixin
+from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
 from modoboa.limits import utils as limits_utils
-from modoboa.transport import factories as tr_factories
-from modoboa.transport import models as tr_models
-
+from modoboa.transport import factories as tr_factories, models as tr_models
 from . import models
 
 

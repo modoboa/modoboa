@@ -8,7 +8,7 @@ import socket
 
 from dns.name import Name
 from dns.rdtypes.ANY.MX import MX
-from dns.resolver import NoAnswer, NoNameservers, NXDOMAIN, Timeout
+from dns.resolver import NXDOMAIN, NoAnswer, NoNameservers, Timeout
 
 _MX_RECORD_1 = MX("IN", "MX", 10, Name("mx.example.com".split(".")))
 _MX_RECORD_2 = MX("IN", "MX", 10, Name("mx2.example.com".split(".")))

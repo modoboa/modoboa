@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 import os
 import pwd
 
+from reversion import revisions as reversion
+
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
@@ -12,14 +14,11 @@ from django.db.models.manager import Manager
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from reversion import revisions as reversion
-
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
-
 from .base import AdminObject
 from .domain import Domain
 

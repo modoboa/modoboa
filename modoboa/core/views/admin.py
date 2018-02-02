@@ -4,19 +4,16 @@ from __future__ import unicode_literals
 
 from functools import reduce
 
-from django.contrib.auth.decorators import (
-    login_required, user_passes_test
-)
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
 from modoboa.core.models import Log
 from modoboa.core.utils import check_for_updates
-from modoboa.lib.listing import get_sort_order, get_listing_page
+from modoboa.lib.listing import get_listing_page, get_sort_order
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
-
 from .. import signals
 
 

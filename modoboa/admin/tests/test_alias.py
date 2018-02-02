@@ -2,15 +2,17 @@
 
 from __future__ import unicode_literals
 
-"""Admin test cases."""
-
 from django.urls import reverse
 
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
-
 from .. import factories
 from ..models import Alias, AliasRecipient, Domain
+
+"""Admin test cases."""
+
+
+
 
 
 class AliasTestCase(ModoTestCase):

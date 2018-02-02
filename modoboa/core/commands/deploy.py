@@ -2,7 +2,7 @@
 
 """A shortcut to deploy a fresh modoboa instance."""
 
-from __future__ import unicode_literals, print_function
+from __future__ import print_function, unicode_literals
 
 import codecs
 import getpass
@@ -10,8 +10,17 @@ import os
 import shutil
 import subprocess
 import sys
-
 from os.path import isfile
+
+import dj_database_url
+
+import django
+from django.core import management
+from django.template import Context, Template
+from django.utils.encoding import smart_str
+
+from modoboa.core.commands import Command
+from modoboa.lib.api_client import ModoAPIClient
 
 try:
     import pip
@@ -19,14 +28,7 @@ except ImportError:
     sys.stderr.write("Error: pip is required to install extensions.\n")
     sys.exit(2)
 
-import django
-from django.core import management
-from django.template import Context, Template
-from django.utils.encoding import smart_str
-import dj_database_url
 
-from modoboa.core.commands import Command
-from modoboa.lib.api_client import ModoAPIClient
 
 if sys.version_info < (3, 0, 0):
     input = raw_input

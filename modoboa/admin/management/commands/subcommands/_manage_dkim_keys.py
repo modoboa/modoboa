@@ -9,7 +9,6 @@ from django.utils.encoding import smart_text
 
 from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
-
 from .... import models
 
 

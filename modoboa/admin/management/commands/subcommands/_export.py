@@ -2,13 +2,14 @@
 
 from __future__ import unicode_literals
 
-from backports import csv
 import sys
+
+from backports import csv
 
 from django.core.management.base import BaseCommand
 
-from modoboa.core.models import User
 from modoboa.core.extensions import exts_pool
+from modoboa.core.models import User
 from .... import models
 
 

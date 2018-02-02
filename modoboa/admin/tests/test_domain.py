@@ -20,10 +20,9 @@ from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
-
 from . import utils
 from .. import factories
-from ..models import Domain, Alias
+from ..models import Alias, Domain
 
 
 class DomainTestCase(ModoTestCase):

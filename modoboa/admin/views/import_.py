@@ -2,25 +2,23 @@
 
 from __future__ import unicode_literals
 
-from backports import csv
-
 import io
+
+from backports import csv
+from reversion import revisions as reversion
 
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.urls import reverse
 from django.db import transaction
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 
-from reversion import revisions as reversion
-
-from modoboa.lib.exceptions import ModoboaException, Conflict
-
-from ..forms import ImportIdentitiesForm, ImportDataForm
+from modoboa.lib.exceptions import Conflict, ModoboaException
 from .. import signals
+from ..forms import ImportDataForm, ImportIdentitiesForm
 
 
 @reversion.create_revision()

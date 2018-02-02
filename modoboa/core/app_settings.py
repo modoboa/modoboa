@@ -4,18 +4,15 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.conf import settings
-from django.utils.translation import ugettext as _, ugettext_lazy
-
 from django.contrib.auth import password_validation
+from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
-    YesNoField, SeparatorField, HorizontalRadioSelect
+    HorizontalRadioSelect, SeparatorField, YesNoField
 )
-from modoboa.parameters import forms as param_forms
-from modoboa.parameters import tools as param_tools
-
+from modoboa.parameters import forms as param_forms, tools as param_tools
 from . import constants
 
 

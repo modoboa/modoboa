@@ -9,11 +9,11 @@ from __future__ import unicode_literals
 import base64
 import crypt
 import hashlib
-from random import Random
 import string
+from random import Random
 
 from django.utils.crypto import constant_time_compare
-from django.utils.encoding import force_text, force_bytes
+from django.utils.encoding import force_bytes, force_text
 
 
 class PasswordHasher(object):

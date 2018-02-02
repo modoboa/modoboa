@@ -10,7 +10,6 @@ from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib import tests as lib_tests
-
 from .. import utils
 
 

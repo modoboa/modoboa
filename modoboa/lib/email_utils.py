@@ -3,12 +3,12 @@
 from __future__ import unicode_literals
 
 import email
-from email.header import Header
-from email.mime.text import MIMEText
-from email.utils import make_msgid, formataddr, formatdate, getaddresses
 import re
 import smtplib
 import time
+from email.header import Header
+from email.mime.text import MIMEText
+from email.utils import formataddr, formatdate, getaddresses, make_msgid
 
 import chardet
 import lxml.html
@@ -22,7 +22,6 @@ from django.utils.translation import ugettext as _
 
 from modoboa.lib import u2u_decode
 from modoboa.lib.exceptions import InternalError
-
 
 # used by Email()
 _RE_REMOVE_EXTRA_WHITESPACE = re.compile(r"\n\s*\n")

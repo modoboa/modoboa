@@ -12,11 +12,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 from __future__ import unicode_literals
 
-from logging.handlers import SysLogHandler
 import os
+from logging.handlers import SysLogHandler
 
 from modoboa.test_settings import *  # noqa
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))

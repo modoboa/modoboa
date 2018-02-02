@@ -16,13 +16,10 @@ from django.urls import reverse
 from rest_framework.authtoken.models import Token
 
 from modoboa.admin import models as admin_models
-from modoboa.core import factories as core_factories
-from modoboa.core import models as core_models
+from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.tests import ModoAPITestCase
-
 from . import utils
-from .. import factories
-from .. import models
+from .. import factories, models
 
 
 class DomainAPITestCase(ModoAPITestCase):

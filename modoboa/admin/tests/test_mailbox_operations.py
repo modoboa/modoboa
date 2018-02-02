@@ -9,13 +9,11 @@ import tempfile
 import mock
 
 from django.core.management import call_command
-from django.urls import reverse
 from django.test import override_settings
+from django.urls import reverse
 
 from modoboa.lib.tests import ModoTestCase
-
-from .. import factories
-from .. import models
+from .. import factories, models
 
 
 @override_settings(

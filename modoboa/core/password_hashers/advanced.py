@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
 
 from modoboa.parameters import tools as param_tools
-
 from .base import PasswordHasher
 
 

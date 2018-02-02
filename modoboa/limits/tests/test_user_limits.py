@@ -10,7 +10,6 @@ from modoboa.admin.models import Alias, Domain
 from modoboa.core.factories import UserFactory
 from modoboa.core.models import User
 from modoboa.lib import tests as lib_tests
-
 from .. import utils
 
 

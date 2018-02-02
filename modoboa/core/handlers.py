@@ -4,24 +4,19 @@ from __future__ import unicode_literals
 
 import logging
 
+from reversion import revisions as reversion
+from reversion.models import Version
+
+from django.contrib.sites import models as sites_models
 from django.db.models import signals
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 
-from django.contrib.sites import models as sites_models
-
-from reversion import revisions as reversion
-from reversion.models import Version
-
-from modoboa.lib import exceptions
-from modoboa.lib import permissions
+from modoboa.lib import exceptions, permissions
 from modoboa.lib.signals import get_request
-
-from . import models
-from . import signals as core_signals
-from . import utils
+from . import models, signals as core_signals, utils
 
 
 @receiver(reversion.post_revision_commit)

@@ -3,19 +3,18 @@
 from __future__ import unicode_literals
 
 from backports import csv
-
 from rfc6266 import build_header
 
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.urls import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.utils.translation import ugettext as _
+from django.urls import reverse
 from django.utils import six
+from django.utils.translation import ugettext as _
 
-from ..forms import ExportIdentitiesForm, ExportDomainsForm
+from ..forms import ExportDomainsForm, ExportIdentitiesForm
 from ..lib import get_domains, get_identities
 
 

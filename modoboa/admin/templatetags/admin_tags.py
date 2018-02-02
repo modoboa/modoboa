@@ -5,15 +5,14 @@ from __future__ import unicode_literals
 from functools import reduce
 
 from django import template
-from django.urls import reverse
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.templatetags.lib_tags import render_link
 from modoboa.lib.web_utils import render_actions
-
 from .. import signals
 
 register = template.Library()

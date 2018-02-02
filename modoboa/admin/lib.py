@@ -4,30 +4,28 @@
 
 from __future__ import unicode_literals
 
-from functools import wraps
 import ipaddress
-from itertools import chain
 import logging
 import random
 import socket
 import string
+from functools import wraps
+from itertools import chain
 
-from dns.name import IDNA_2008_UTS_46
 import dns.resolver
+from dns.name import IDNA_2008_UTS_46
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
+from modoboa.core.models import User
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.parameters import tools as param_tools
-
-from .models import Domain, DomainAlias, Alias
-
 from . import signals
+from .models import Alias, Domain, DomainAlias
 
 
 def needs_mailbox():

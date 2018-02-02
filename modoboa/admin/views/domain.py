@@ -4,31 +4,29 @@ from __future__ import unicode_literals
 
 from functools import reduce
 
-from django.urls import reverse
-from django.db.models import Sum
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _, ungettext
-from django.views import generic
-from django.views.decorators.csrf import ensure_csrf_cookie
+from reversion import revisions as reversion
 
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-
-from reversion import revisions as reversion
+from django.db.models import Sum
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.translation import ugettext as _, ungettext
+from django.views import generic
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from modoboa.core import signals as core_signals
-from modoboa.lib.web_utils import render_to_json_response
 from modoboa.lib.exceptions import PermDeniedException
-from modoboa.lib.listing import get_sort_order, get_listing_page
-
+from modoboa.lib.listing import get_listing_page, get_sort_order
+from modoboa.lib.web_utils import render_to_json_response
+from .. import signals
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
 from ..models import Domain, Mailbox
-from .. import signals
 
 
 @login_required

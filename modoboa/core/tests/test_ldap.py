@@ -4,16 +4,13 @@ from __future__ import unicode_literals
 
 from unittest import skipIf
 
-from django.urls import reverse
 from django.test import override_settings
+from django.urls import reverse
 from django.utils.functional import cached_property
 
 from modoboa.lib import exceptions
-from modoboa.lib.tests import ModoTestCase
-from modoboa.lib.tests import NO_LDAP
-
-from .. import factories
-from .. import models
+from modoboa.lib.tests import NO_LDAP, ModoTestCase
+from .. import factories, models
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
