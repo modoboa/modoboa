@@ -25,7 +25,7 @@ from modoboa.parameters import tools as param_tools
 class CheckMXRecords(BaseCommand):
     """Command class."""
 
-    help = "Check defined domains."  # noqa:A003
+    help = "Check defined domains."  # NOQA:A003
 
     @cached_property
     def providers(self):

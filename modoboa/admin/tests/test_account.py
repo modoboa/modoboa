@@ -19,7 +19,7 @@ class AuthenticationTestCase(ModoTestCase):
     """Check authentication."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.mb = factories.MailboxFactory(
@@ -43,18 +43,18 @@ class AuthenticationTestCase(ModoTestCase):
 class AccountTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AccountTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def test_crud(self):
-        values = dict(
-            username="tester@test.com", first_name="Tester", last_name="Toto",
-            password1="Toto1234", password2="Toto1234", role="SimpleUsers",
-            quota_act=True,
-            is_active=True, email="tester@test.com", stepid="step2"
-        )
+        values = {
+            "username": "tester@test.com", "first_name": "Tester",
+            "last_name": "Toto", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": "tester@test.com", "stepid": "step2"
+        }
         self.ajax_post(reverse("admin:account_add"), values)
 
         account = User.objects.get(username="tester@test.com")
@@ -341,12 +341,12 @@ class AccountTestCase(ModoTestCase):
 
     def test_utf8_username(self):
         """Create an account with non-ASCII characters."""
-        values = dict(
-            username="téster@test.com", first_name="Tester", last_name="Toto",
-            password1="Toto1234", password2="Toto1234", role="SimpleUsers",
-            quota_act=True,
-            is_active=True, email="téster@test.com", stepid="step2"
-        )
+        values = {
+            "username": "téster@test.com", "first_name": "Tester",
+            "last_name": "Toto", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": "téster@test.com", "stepid": "step2"
+        }
         self.ajax_post(reverse("admin:account_add"), values)
 
     def _set_quota(self, email, value, expected_status=200):
@@ -478,11 +478,11 @@ class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
 class PermissionsTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(PermissionsTestCase, cls).setUpTestData()
         parameters = {}
-        for name, tpl in limits_utils.get_user_limit_templates():
+        for name, _definition in limits_utils.get_user_limit_templates():
             parameters["deflt_user_{0}_limit".format(name)] = 2
         cls.localconfig.parameters.set_values(parameters, app="limits")
         cls.localconfig.save()
@@ -604,12 +604,12 @@ class PermissionsTestCase(ModoTestCase):
         for the associated domain, this domain admin must not be able
         to access the super admin.
         """
-        values = dict(
-            username="superadmin2@test.com", first_name="Super",
-            last_name="Admin", password1="Toto1234", password2="Toto1234",
-            role="SuperAdmins", is_active=True,
-            email="superadmin2@test.com", stepid="step2"
-        )
+        values = {
+            "username": "superadmin2@test.com", "first_name": "Super",
+            "last_name": "Admin", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SuperAdmins", "is_active": True,
+            "email": "superadmin2@test.com", "stepid": "step2"
+        }
         self.ajax_post(
             reverse("admin:account_add"),
             values
@@ -624,22 +624,22 @@ class PermissionsTestCase(ModoTestCase):
     def test_domainadmin_dlist_local_domain_not_owned(self):
         """Check if a domain admin can use a local mailbox he can't
         access as a recipient in a distribution list"""
-        values = dict(
-            address="all@test.com",
-            recipients="user@test.com",
-            recipients_1="user@test2.com",
-            enabled=True
-        )
+        values = {
+            "address": "all@test.com",
+            "recipients": "user@test.com",
+            "recipients_1": "user@test2.com",
+            "enabled": True
+        }
         self.ajax_post(reverse("admin:alias_add"), values)
 
     def test_domainadmin_master_user(self):
         """Check domain administrator is not allowed to access this feature."""
-        values = dict(
-            username="user10@test.com", first_name="Test",
-            last_name="Test", password1="Toto1234", password2="Toto1234",
-            role="SimpleUsers", is_active=True, master_user=True,
-            email="user10@test.com", stepid="step2"
-        )
+        values = {
+            "username": "user10@test.com", "first_name": "Test",
+            "last_name": "Test", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "is_active": True,
+            "master_user": True, "email": "user10@test.com", "stepid": "step2"
+        }
         self.ajax_post(
             reverse("admin:account_add"),
             values, status=400

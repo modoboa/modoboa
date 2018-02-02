@@ -41,7 +41,7 @@ class Quota(models.Model):
     """Keeps track of Mailbox current quota."""
 
     username = models.EmailField(primary_key=True, max_length=254)
-    bytes = models.BigIntegerField(default=0)
+    bytes = models.BigIntegerField(default=0)  # NOQA:A003
     messages = models.IntegerField(default=0)
 
     objects = QuotaManager()
@@ -374,7 +374,7 @@ class MailboxOperation(models.Model):
 
     mailbox = models.ForeignKey(Mailbox, blank=True, null=True,
                                 on_delete=models.CASCADE)
-    type = models.CharField(
+    type = models.CharField(  # NOQA:A003
         max_length=20, choices=(("rename", "rename"), ("delete", "delete"))
     )
     argument = models.TextField()

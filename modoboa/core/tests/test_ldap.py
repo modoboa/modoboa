@@ -130,7 +130,7 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
     """Profile related tests."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(ProfileTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(

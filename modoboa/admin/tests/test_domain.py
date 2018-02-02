@@ -29,7 +29,7 @@ class DomainTestCase(ModoTestCase):
     """Test case for Domain."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DomainTestCase, cls).setUpTestData()
         factories.populate_database()
@@ -361,7 +361,7 @@ class DKIMTestCase(ModoTestCase):
     """Test case for DKIM."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DKIMTestCase, cls).setUpTestData()
         factories.populate_database()

@@ -22,7 +22,7 @@ class MailboxOperationTestCase(ModoTestCase):
     """Test management command."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(MailboxOperationTestCase, cls).setUpTestData()
         factories.populate_database()

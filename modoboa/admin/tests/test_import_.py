@@ -19,7 +19,7 @@ from ..models import Alias, Domain, DomainAlias
 class ImportTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):  # noqa:N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(ImportTestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(

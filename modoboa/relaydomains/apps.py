@@ -13,5 +13,5 @@ class RelayDomainsConfig(AppConfig):
     verbose_name = "Modoboa relay domains"
 
     def ready(self):
-        from . import handlers
-        from . import transport
+        from . import handlers  # NOQA:F401
+        from . import transport  # NOQA:F401

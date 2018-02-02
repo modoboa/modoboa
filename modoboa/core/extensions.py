@@ -60,7 +60,7 @@ class ExtensionsPool(object):
         :param ext: a class inheriting from ``Extension``
         :param show: list the extension or not
         """
-        self.extensions[ext.name] = dict(cls=ext, show=show)
+        self.extensions[ext.name] = {"cls": ext, "show": show}
 
     def get_extension(self, name):
         """Retrieve the current instance of an extension."""

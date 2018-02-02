@@ -20,7 +20,7 @@ class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
@@ -101,7 +101,7 @@ class ProfileTestCase(ModoTestCase):
     """Profile related tests."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(ProfileTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
@@ -160,7 +160,7 @@ class APIAccessFormTestCase(ModoTestCase):
     """Check form access."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(APIAccessFormTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(

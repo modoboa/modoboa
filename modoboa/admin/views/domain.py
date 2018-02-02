@@ -45,10 +45,10 @@ def _domains(request):
     if extra_filters:
         extra_filters = reduce(
             lambda a, b: a + b, [result[1] for result in extra_filters])
-    filters = dict(
-        (flt, request.GET.get(flt, None))
+    filters = {
+        flt: request.GET.get(flt, None)
         for flt in ["domfilter", "searchquery"] + extra_filters
-    )
+    }
     request.session["domains_filters"] = filters
     domainlist = get_domains(request.user, **filters)
     if sort_order == "name":
@@ -116,8 +116,6 @@ def domains_list(request):
 @login_required
 @permission_required("admin.add_domain")
 def list_quotas(request):
-    from modoboa.lib.db_utils import db_type
-
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     domains = Domain.objects.get_for_admin(request.user)
     domains = domains.exclude(quota=0)
@@ -162,7 +160,7 @@ def editdomain(request, dom_id):
     if not request.user.can_access(domain):
         raise PermDeniedException
 
-    instances = dict(general=domain)
+    instances = {"general": domain}
     results = signals.get_domain_form_instances.send(
         sender="editdomain", user=request.user, domain=domain)
     for result in results:
@@ -215,7 +213,7 @@ class DomainDetailView(
             "enable_mx_checks": parameters.get_value("enable_mx_checks"),
             "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
         })
-        for receiver, widgets in result:
+        for _receiver, widgets in result:
             for widget in widgets:
                 context["templates"][widget["column"]].append(
                     widget["template"])

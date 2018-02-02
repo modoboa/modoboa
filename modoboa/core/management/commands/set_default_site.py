@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     """Management command to set the default site."""
 
-    help = "Set default site (see django.contrib.sites)"
+    help = "Set default site (see django.contrib.sites)"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Define command arguments."""

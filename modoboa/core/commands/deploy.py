@@ -18,6 +18,7 @@ import django
 from django.core import management
 from django.template import Context, Template
 from django.utils.encoding import smart_str
+from django.utils.six.moves import input
 
 from modoboa.core.commands import Command
 from modoboa.lib.api_client import ModoAPIClient
@@ -28,10 +29,6 @@ except ImportError:
     sys.stderr.write("Error: pip is required to install extensions.\n")
     sys.exit(2)
 
-
-
-if sys.version_info < (3, 0, 0):
-    input = raw_input
 
 DBCONN_TPL = """
     '{{ conn_name }}': {
@@ -53,7 +50,7 @@ class DeployCommand(Command):
 
     """The ``deploy`` command."""
 
-    help = (
+    help = (  # NOQA:A003
         "Create a fresh django project (calling startproject)"
         " and apply Modoboa specific settings."
     )

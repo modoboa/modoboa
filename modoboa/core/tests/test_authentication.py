@@ -21,7 +21,7 @@ class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
@@ -67,7 +67,7 @@ class PasswordResetTestCase(ModoTestCase):
     """Test password reset service."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(PasswordResetTestCase, cls).setUpTestData()
         cls.account_ok = factories.UserFactory(

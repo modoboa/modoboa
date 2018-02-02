@@ -36,7 +36,7 @@ def alert(msg, typ):
 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 {{ msg }}
 </div>""")
-    return t.render(Context(dict(type=typ, msg=msg)))
+    return t.render(Context({"type": typ, "msg": msg}))
 
 
 @register.simple_tag
@@ -51,7 +51,7 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 >
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
 {{ link.label }}</a>""")
-    return t.render(Context(dict(link=linkdef, mdclass=mdclass)))
+    return t.render(Context({"link": linkdef, "mdclass": mdclass}))
 
 
 @register.simple_tag

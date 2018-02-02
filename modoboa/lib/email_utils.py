@@ -387,7 +387,7 @@ def set_email_headers(msg, subject, sender, rcpt):
     msg["Date"] = formatdate(time.time(), True)
 
 
-def __sendmail(sender, rcpt, msgstring, server="localhost", port=25):
+def _sendmail(sender, rcpt, msgstring, server="localhost", port=25):
     """Message sending
 
     Return a tuple (True, None) on success, (False, error message)
@@ -426,7 +426,7 @@ def sendmail_simple(
     """
     msg = MIMEText(content, _charset="utf-8")
     set_email_headers(msg, subject, sender, rcpt)
-    return __sendmail(sender, rcpt, msg.as_string(), **kwargs)
+    return _sendmail(sender, rcpt, msg.as_string(), **kwargs)
 
 
 def sendmail_fromfile(sender, rcpt, fname):
@@ -452,4 +452,4 @@ To: %s
     content += fp.read()
     fp.close()
 
-    return __sendmail(sender, rcpt, content)
+    return _sendmail(sender, rcpt, content)

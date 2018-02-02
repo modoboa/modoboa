@@ -30,8 +30,10 @@ from ..models import Domain, Mailbox
     u.has_perm("admin.add_alias")
 )
 def _identities(request):
-    filters = dict((fname, request.GET.get(fname, None))
-                   for fname in ["searchquery", "idtfilter", "grpfilter"])
+    filters = {
+        fname: request.GET.get(fname, None)
+        for fname in ["searchquery", "idtfilter", "grpfilter"]
+    }
     request.session["identities_filters"] = filters
     idents_list = get_identities(request.user, **filters)
     sort_order, sort_dir = get_sort_order(request.GET, "identity",
@@ -173,8 +175,9 @@ def editaccount(request, pk):
         raise PermDeniedException
     mb = account.mailbox if hasattr(account, "mailbox") else None
 
-    instances = dict(
-        general=account, profile=account, mail=mb, perms=account)
+    instances = {
+        "general": account, "profile": account, "mail": mb, "perms": account
+    }
     results = signals.get_account_form_instances.send(
         sender="editaccount", user=request.user, account=account)
     for result in results:
@@ -232,7 +235,7 @@ class AccountDetailView(
         result = signals.extra_account_dashboard_widgets.send(
             self.__class__, user=self.request.user, account=self.object)
         context["templates"] = {"left": [], "right": []}
-        for receiver, widgets in result:
+        for _receiver, widgets in result:
             for widget in widgets:
                 context["templates"][widget["column"]].append(
                     widget["template"])

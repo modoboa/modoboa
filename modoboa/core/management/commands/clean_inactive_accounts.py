@@ -15,7 +15,7 @@ from ... import models
 class Command(BaseCommand):
     """Management command to clean inactive accounts."""
 
-    help = "Inactive accounts cleanup"
+    help = "Inactive accounts cleanup"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command line."""

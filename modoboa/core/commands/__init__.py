@@ -17,7 +17,7 @@ class Command(object):
     A valid administrative command must inherit from this class.
     """
 
-    help = "No help available."
+    help = "No help available."  # NOQA:A003
 
     def __init__(self, commands, verbose=False):
         self._commands = commands

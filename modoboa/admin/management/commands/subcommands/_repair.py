@@ -95,7 +95,7 @@ def sometimes_mailbox_have_no_alias(**options):
 class Repair(BaseCommand):
     """Command class."""
 
-    help = "Check and fix known problems."
+    help = "Check and fix known problems."  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""

@@ -13,7 +13,7 @@ from ... import models
 class Command(BaseCommand):
     """Command class."""
 
-    help = "Communicate with Modoboa public API."
+    help = "Communicate with Modoboa public API."  # NOQA:A003
 
     def handle(self, *args, **options):
         """Command entry point."""

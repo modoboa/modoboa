@@ -13,7 +13,7 @@ class RepairTestCase(ModoTestCase):
     """TestCase for repair command."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(RepairTestCase, cls).setUpTestData()
         factories.populate_database()

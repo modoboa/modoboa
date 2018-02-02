@@ -72,7 +72,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
         # Extra widgets
         result = signals.extra_admin_dashboard_widgets.send(
             sender=self.__class__, user=self.request.user)
-        for receiver, widgets in result:
+        for _receiver, widgets in result:
             for widget in widgets:
                 context["widgets"][widget["column"]].append(
                     widget["template"])
