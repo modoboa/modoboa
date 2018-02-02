@@ -16,7 +16,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def join(items, sep=','):
+def join(items, sep=","):
     res = ""
     for k, v in list(items.items()):
         if res != "":
@@ -100,7 +100,7 @@ def extra_static_content(caller, st_type, user):
     )
 
 
-@register.filter(name='localize_header_name')
+@register.filter(name="localize_header_name")
 def localize_header_name(headername):
     """ Localizes the header names """
     names = {

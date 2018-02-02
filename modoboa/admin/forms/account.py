@@ -527,9 +527,9 @@ class AccountForm(TabForms):
     def extra_context(self, context):
         account = self.instances["general"]
         context.update({
-            'title': account.username,
-            'formid': 'accountform',
-            'action': reverse("admin:account_change",
+            "title": account.username,
+            "formid": "accountform",
+            "action": reverse("admin:account_change",
                               args=[account.id]),
         })
 
@@ -604,9 +604,9 @@ class AccountWizard(WizardForm):
 
     def extra_context(self, context):
         context.update({
-            'title': _("New account"),
-            'action': reverse("admin:account_add"),
-            'formid': 'newaccount_form'
+            "title": _("New account"),
+            "action": reverse("admin:account_add"),
+            "formid": "newaccount_form"
         })
 
     def done(self):

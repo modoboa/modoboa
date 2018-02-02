@@ -40,8 +40,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     authentication_type = forms.ChoiceField(
         label=ugettext_lazy("Authentication type"),
-        choices=[('local', ugettext_lazy("Local")),
-                 ('ldap', "LDAP")],
+        choices=[("local", ugettext_lazy("Local")),
+                 ("ldap", "LDAP")],
         initial="local",
         help_text=ugettext_lazy("The backend used for authentication"),
         widget=HorizontalRadioSelect()
@@ -115,16 +115,16 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     ldap_auth_method = forms.ChoiceField(
         label=ugettext_lazy("Authentication method"),
-        choices=[('searchbind', ugettext_lazy("Search and bind")),
-                 ('directbind', ugettext_lazy("Direct bind"))],
-        initial='searchbind',
+        choices=[("searchbind", ugettext_lazy("Search and bind")),
+                 ("directbind", ugettext_lazy("Direct bind"))],
+        initial="searchbind",
         help_text=ugettext_lazy("Choose the authentication method to use"),
         widget=forms.Select(attrs={"class": "form-control"})
     )
 
     ldap_bind_dn = forms.CharField(
         label=ugettext_lazy("Bind DN"),
-        initial='',
+        initial="",
         help_text=ugettext_lazy(
             "The distinguished name to use when binding to the LDAP server. "
             "Leave empty for an anonymous bind"
@@ -135,7 +135,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     ldap_bind_password = forms.CharField(
         label=ugettext_lazy("Bind password"),
-        initial='',
+        initial="",
         help_text=ugettext_lazy(
             "The password to use when binding to the LDAP server "
             "(with 'Bind DN')"

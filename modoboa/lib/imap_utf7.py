@@ -61,13 +61,13 @@ PRINTABLE = set(range(0x20, 0x26)) | set(range(0x27, 0x7f))
 
 
 def modified_utf7(s):
-    s_utf7 = s.encode('utf-7')
-    return s_utf7[1:-1].replace(b'/', b',')
+    s_utf7 = s.encode("utf-7")
+    return s_utf7[1:-1].replace(b"/", b",")
 
 
 def doB64(_in, r):
     if _in:
-        r.extend([b'&', modified_utf7(''.join(_in)), b'-'])
+        r.extend([b"&", modified_utf7("".join(_in)), b"-"])
         del _in[:]
 
 
@@ -78,32 +78,32 @@ def encoder(s):
         if ord(c) in PRINTABLE:
             doB64(_in, r)
             r.append(c.encode())
-        elif c == '&':
+        elif c == "&":
             doB64(_in, r)
-            r.append(b'&-')
+            r.append(b"&-")
         else:
             _in.append(c)
     doB64(_in, r)
-    return (b''.join(r), len(s))
+    return (b"".join(r), len(s))
 
 
 # decoding
 
 
 def modified_unutf7(s):
-    s_utf7 = b'+' + s.replace(b',', b'/') + b'-'
-    return s_utf7.decode('utf-7')
+    s_utf7 = b"+" + s.replace(b",", b"/") + b"-"
+    return s_utf7.decode("utf-7")
 
 
 def decoder(s):
     r = []
     decoded = bytearray()
     for c in s:
-        if c == ord('&') and not decoded:
-            decoded.append(ord('&'))
-        elif c == ord('-') and decoded:
+        if c == ord("&") and not decoded:
+            decoded.append(ord("&"))
+        elif c == ord("-") and decoded:
             if len(decoded) == 1:
-                r.append('&')
+                r.append("&")
             else:
                 r.append(modified_unutf7(decoded[1:]))
             decoded = bytearray()
@@ -113,22 +113,22 @@ def decoder(s):
             r.append(chr(c))
     if decoded:
         r.append(modified_unutf7(decoded[1:]))
-    bin_str = ''.join(r)
+    bin_str = "".join(r)
     return (bin_str, len(s))
 
 
 class StreamReader(codecs.StreamReader):
-    def decode(self, s, errors='strict'):
+    def decode(self, s, errors="strict"):
         return decoder(s)
 
 
 class StreamWriter(codecs.StreamWriter):
-    def decode(self, s, errors='strict'):
+    def decode(self, s, errors="strict"):
         return encoder(s)
 
 
 def imap4_utf_7(name):
-    if name == 'imap4-utf-7':
+    if name == "imap4-utf-7":
         return (encoder, decoder, StreamReader, StreamWriter)
 
 
@@ -139,7 +139,7 @@ codecs.register(imap4_utf_7)
 
 def imapUTF7Encode(ust):
     "Returns imap utf-7 encoded version of string"
-    return ust.encode('imap4-utf-7')
+    return ust.encode("imap4-utf-7")
 
 
 def imapUTF7EncodeSequence(seq):
@@ -149,7 +149,7 @@ def imapUTF7EncodeSequence(seq):
 
 def imapUTF7Decode(st):
     "Returns utf7 encoded version of imap utf-7 string"
-    return st.decode('imap4-utf-7')
+    return st.decode("imap4-utf-7")
 
 
 def imapUTF7DecodeSequence(seq):
@@ -159,17 +159,17 @@ def imapUTF7DecodeSequence(seq):
 
 def utf8Decode(st):
     "Returns utf7 encoded version of imap utf-7 string"
-    return st.decode('utf-8')
+    return st.decode("utf-8")
 
 
 def utf7SequenceToUTF8(seq):
     "Returns utf7 encoded version of imap utf-7 strings in sequence"
-    return [itm.decode('imap4-utf-7').encode('utf-8') for itm in seq]
+    return [itm.decode("imap4-utf-7").encode("utf-8") for itm in seq]
 
 
-__all__ = ['imapUTF7Encode', 'imapUTF7Decode', ]
+__all__ = ["imapUTF7Encode", "imapUTF7Decode", ]
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # print u'bøx'.encode('imap4-utf-7')
     # print 'expected b&APg-x'
@@ -177,29 +177,29 @@ if __name__ == '__main__':
     # print u'båx'.encode('imap4-utf-7')
     # print 'expected b&AOU-x'
 
-    print('#######')
-    print('bøx')
+    print("#######")
+    print("bøx")
     e = imapUTF7Encode(u'bøx')
     print(e)
-    print(imapUTF7Decode(e).encode('latin-1'))
+    print(imapUTF7Decode(e).encode("latin-1"))
 
-    print('#######')
-    print('båx')
+    print("#######")
+    print("båx")
     e = imapUTF7Encode(u'båx')
     print(e)
-    print(imapUTF7Decode(e).encode('latin-1'))
+    print(imapUTF7Decode(e).encode("latin-1"))
 
-    print('#######')
-    print('~/bågø')
+    print("#######")
+    print("~/bågø")
     e = imapUTF7Encode(u'~/bågø')
     print(e)
-    print(imapUTF7Decode(e).encode('latin-1'))
+    print(imapUTF7Decode(e).encode("latin-1"))
 
-    print('#######')
-    print('Ting & Såger')
+    print("#######")
+    print("Ting & Såger")
     e = imapUTF7Encode(u'Ting & Såger')
     print(e)
-    print(imapUTF7Decode(e).encode('latin-1'))
+    print(imapUTF7Decode(e).encode("latin-1"))
 
     # e = imapUTF7Decode('b&AOU-x')
     # print e.encode('latin-1')
@@ -207,13 +207,13 @@ if __name__ == '__main__':
     # e = imapUTF7Decode('b&APg-x')
     # print e.encode('latin-1')
 
-    print('#######')
-    print('~/Følder/mailbåx & stuff + more')
+    print("#######")
+    print("~/Følder/mailbåx & stuff + more")
     n = u'~/Følder/mailbåx & stuff + more'
     e = imapUTF7Encode(n)
     print(e)
-    print(imapUTF7Decode(e).encode('latin-1'))
+    print(imapUTF7Decode(e).encode("latin-1"))
 
-    print('#######')
-    print('~peter/mail/&ZeVnLIqe-/&U,BTFw-')
-    print(imapUTF7Decode('~peter/mail/&ZeVnLIqe-/&U,BTFw-').encode('utf-8'))
+    print("#######")
+    print("~peter/mail/&ZeVnLIqe-/&U,BTFw-")
+    print(imapUTF7Decode("~peter/mail/&ZeVnLIqe-/&U,BTFw-").encode("utf-8"))

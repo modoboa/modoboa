@@ -22,7 +22,7 @@ class BLFCRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{BLF-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{BLF-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash
@@ -50,7 +50,7 @@ class MD5CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{MD5-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{MD5-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash
@@ -72,7 +72,7 @@ class SHA256CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{SHA256-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{SHA256-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash
@@ -96,7 +96,7 @@ class SHA512CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{SHA512-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{SHA512-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash

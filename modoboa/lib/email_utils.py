@@ -128,7 +128,7 @@ class Email(object):
         # msg parameter to maintain compatibility with
         # modoboa_webmail.lib.imapemail.ImapEmail
         if header in msg:
-            return "".join([smart_text(v, encoding=(e or 'ascii'))
+            return "".join([smart_text(v, encoding=(e or "ascii"))
                             for v, e in email.header.decode_header(msg[header])
                             ])
         return ""
@@ -188,7 +188,7 @@ class Email(object):
         cid = None
         if "Content-ID" in msg:
             cid = msg["Content-ID"]
-            if cid.startswith('<') and cid.endswith('>'):
+            if cid.startswith("<") and cid.endswith(">"):
                 cid = cid[1:-1]
         else:
             matches = _RE_CID.match(msg["Content-Type"])
@@ -379,7 +379,7 @@ def set_email_headers(msg, subject, sender, rcpt):
     """
     import pkg_resources
 
-    msg["Subject"] = Header(subject, 'utf8')
+    msg["Subject"] = Header(subject, "utf8")
     msg["From"] = sender
     msg["To"] = prepare_addresses(rcpt)
     msg["Message-ID"] = make_msgid()
@@ -388,7 +388,7 @@ def set_email_headers(msg, subject, sender, rcpt):
     msg["Date"] = formatdate(time.time(), True)
 
 
-def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
+def __sendmail(sender, rcpt, msgstring, server="localhost", port=25):
     """Message sending
 
     Return a tuple (True, None) on success, (False, error message)
@@ -425,7 +425,7 @@ def sendmail_simple(
     :param content: message's content
     :return: tuple
     """
-    msg = MIMEText(content, _charset='utf-8')
+    msg = MIMEText(content, _charset="utf-8")
     set_email_headers(msg, subject, sender, rcpt)
     return __sendmail(sender, rcpt, msg.as_string(), **kwargs)
 

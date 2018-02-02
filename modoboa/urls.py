@@ -17,17 +17,17 @@ from modoboa.core import signals as core_signals
 from modoboa.core import views as core_views
 from modoboa.core.extensions import exts_pool
 
-API_TITLE = 'Modoboa API'
+API_TITLE = "Modoboa API"
 
 urlpatterns = [
-    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name="javascript-catalog"),
     url(r'^ckeditor/upload/', login_required(cku_views.upload),
         name="ckeditor_upload"),
     url(r'^ckeditor/browse/', login_required(cku_views.browse),
         name="ckeditor_browse"),
-    url('', include('modoboa.core.urls', namespace="core")),
-    url('^user/forward/', forward, name="user_forward"),
-    url('admin/', include('modoboa.admin.urls', namespace="admin")),
+    url("", include("modoboa.core.urls", namespace="core")),
+    url("^user/forward/", forward, name="user_forward"),
+    url("admin/", include("modoboa.admin.urls", namespace="admin")),
     # No namespace
     url(r'^accounts/password_reset/$', core_views.password_reset,
         name="password_reset"),

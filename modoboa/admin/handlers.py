@@ -161,7 +161,7 @@ def account_auto_created(sender, user, **kwargs):
     if not param_tools.get_global_parameter("auto_create_domain_and_mailbox"):
         return
     localpart, domname = split_mailbox(user.username)
-    if user.role != 'SimpleUsers' and domname is None:
+    if user.role != "SimpleUsers" and domname is None:
         return
     sadmins = core_models.User.objects.filter(is_superuser=True)
     try:

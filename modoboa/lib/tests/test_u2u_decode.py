@@ -49,12 +49,12 @@ class U2UTestCase(TestCase):
         )
         mailsploit_sample = (
             '"=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?="\n'
-            '<=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?='
-            '@mailsploit.com>')
+            "<=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?="
+            "@mailsploit.com>")
         expected_result = (
-            'potus@whitehouse.gov',
-            '=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??='
-            '@mailsploit.com')
+            "potus@whitehouse.gov",
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??="
+            "@mailsploit.com")
         self.assertEqual(
             u2u_decode.decode_address(mailsploit_sample),
             expected_result)

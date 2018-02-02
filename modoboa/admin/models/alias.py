@@ -48,7 +48,7 @@ class Alias(AdminObject):
         ugettext_lazy("Description"), blank=True)
     expire_at = models.DateTimeField(
         ugettext_lazy("Expire at"), blank=True, null=True)
-    _objectname = 'MailboxAlias'
+    _objectname = "MailboxAlias"
 
     class Meta:
         permissions = (
@@ -139,7 +139,7 @@ class Alias(AdminObject):
                     domain=domain, address=local_part).first()
                 if rcpt is None:
                     rcpt = Alias.objects.filter(
-                        address='%s@%s' % (local_part, domname)
+                        address="%s@%s" % (local_part, domname)
                     ).first()
                     if rcpt is None:
                         raise NotFound(

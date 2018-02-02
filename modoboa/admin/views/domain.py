@@ -51,16 +51,16 @@ def _domains(request):
         (flt, request.GET.get(flt, None))
         for flt in ["domfilter", "searchquery"] + extra_filters
     )
-    request.session['domains_filters'] = filters
+    request.session["domains_filters"] = filters
     domainlist = get_domains(request.user, **filters)
-    if sort_order == 'name':
+    if sort_order == "name":
         domainlist = sorted(
             domainlist,
-            key=lambda d: getattr(d, sort_order), reverse=sort_dir == '-'
+            key=lambda d: getattr(d, sort_order), reverse=sort_dir == "-"
         )
     else:
         domainlist = sorted(domainlist, key=lambda d: d.tags[0]["name"],
-                            reverse=sort_dir == '-')
+                            reverse=sort_dir == "-")
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
             "handle_mailboxes", raise_exception=False),

@@ -28,7 +28,7 @@ class AuthenticationTestCase(ModoTestCase):
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_authentication(self):
@@ -75,10 +75,10 @@ class PasswordResetTestCase(ModoTestCase):
         super(PasswordResetTestCase, cls).setUpTestData()
         cls.account_ok = factories.UserFactory(
             username="user@test.com", secondary_email="test@ext.com",
-            groups=('SimpleUsers',)
+            groups=("SimpleUsers",)
         )
         cls.account_ko = factories.UserFactory(
-            username="user2@test.com", groups=('SimpleUsers',)
+            username="user2@test.com", groups=("SimpleUsers",)
         )
 
     def test_reset_password(self):
@@ -104,7 +104,7 @@ class PasswordResetTestCase(ModoTestCase):
         self.assertEqual(len(mail.outbox), 0)
 
 
-@skipIf(NO_SMTP, 'No SMTP server available')
+@skipIf(NO_SMTP, "No SMTP server available")
 @override_settings(AUTHENTICATION_BACKENDS=(
     "modoboa.lib.authbackends.SMTPBackend",
     "django.contrib.auth.backends.ModelBackend"

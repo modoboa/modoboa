@@ -72,7 +72,7 @@ class LDAPAuthBackend(object):
         """Get a connection from the server."""
         kwargs = {}
         if six.PY3:
-            kwargs['bytes_mode'] = False
+            kwargs["bytes_mode"] = False
         conn = ldap.initialize(self.server_uri, **kwargs)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
@@ -121,7 +121,7 @@ class LDAPAuthBackend(object):
         user_dn = self._find_user_dn(user)
         if self.ldap_ad:
             newpassword = (
-                ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
+                ('"%s"' % newpassword).encode("utf-16").lstrip("\377\376")
             )
         ldif = [(ldap.MOD_REPLACE,
                  self.pwd_attr,

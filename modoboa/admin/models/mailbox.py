@@ -66,9 +66,9 @@ class MailboxManager(Manager):
         """
         qf = None
         if squery is not None:
-            if '@' in squery:
-                parts = squery.split('@')
-                addrfilter = '@'.join(parts[:-1])
+            if "@" in squery:
+                parts = squery.split("@")
+                addrfilter = "@".join(parts[:-1])
                 domfilter = parts[-1]
                 qf = (
                     Q(address__contains=addrfilter) &
@@ -81,7 +81,7 @@ class MailboxManager(Manager):
                 )
         ids = admin.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(Mailbox)) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         if qf is not None:
             qf = Q(pk__in=ids) & qf
         else:
@@ -94,7 +94,7 @@ class Mailbox(AdminObject):
     """User mailbox."""
 
     address = models.CharField(
-        ugettext_lazy('address'), max_length=252,
+        ugettext_lazy("address"), max_length=252,
         help_text=ugettext_lazy(
             "Mailbox address (without the @domain.tld part)")
     )
@@ -376,7 +376,7 @@ class MailboxOperation(models.Model):
     mailbox = models.ForeignKey(Mailbox, blank=True, null=True,
                                 on_delete=models.CASCADE)
     type = models.CharField(
-        max_length=20, choices=(('rename', 'rename'), ('delete', 'delete'))
+        max_length=20, choices=(("rename", "rename"), ("delete", "delete"))
     )
     argument = models.TextField()
 
@@ -384,6 +384,6 @@ class MailboxOperation(models.Model):
         app_label = "admin"
 
     def __str__(self):
-        if self.type == 'rename':
-            return 'Rename %s -> %s' % (self.argument, self.mailbox.mail_home)
-        return 'Delete %s' % self.argument
+        if self.type == "rename":
+            return "Rename %s -> %s" % (self.argument, self.mailbox.mail_home)
+        return "Delete %s" % self.argument

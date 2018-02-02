@@ -75,7 +75,7 @@ def domains_menu(selection, user, ajax_mode=True):
              "modalcb": "admin.exportform_cb"}
         ]
 
-    return render_to_string('common/menulist.html', {
+    return render_to_string("common/menulist.html", {
         "entries": entries,
         "selection": selection,
         "user": user
@@ -123,7 +123,7 @@ def identities_menu(user, selection=None, ajax_mode=True):
          "modalcb": "admin.exportform_cb"}
     ]
 
-    return render_to_string('common/menulist.html', {
+    return render_to_string("common/menulist.html", {
         "entries": entries,
         "user": user
     })
@@ -229,15 +229,15 @@ def domain_aliases(domain):
     :rtype: str
     """
     if not domain.aliases.count():
-        return '---'
-    res = ''
+        return "---"
+    res = ""
     for alias in domain.aliases.all():
-        res += '%s<br/>' % alias.name
+        res += "%s<br/>" % alias.name
     return mark_safe(res)
 
 
 @register.simple_tag
-def identity_modify_link(identity, active_tab='default'):
+def identity_modify_link(identity, active_tab="default"):
     """Return the appropriate modification link.
 
     According to the identity type, a specific modification link (URL)

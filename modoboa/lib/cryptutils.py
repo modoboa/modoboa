@@ -15,7 +15,7 @@ from cryptography.fernet import Fernet
 
 def random_key(length=16):
     """Generate a new key used to encrypt user passwords in session storage."""
-    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+    chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
     return get_random_string(length, chars)
 
 

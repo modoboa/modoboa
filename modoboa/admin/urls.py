@@ -27,7 +27,7 @@ urlpatterns = [
         name="domain_quota_list"),
     url(r'^domains/flatlist/$', domain_views.domains_list,
         name="domain_flat_list"),
-    url(r'^domains/new/', domain_views.newdomain, name='domain_add'),
+    url(r'^domains/new/', domain_views.newdomain, name="domain_add"),
     url(r'^domains/(?P<dom_id>\d+)/edit/$', domain_views.editdomain,
         name="domain_change"),
     url(r'^domains/(?P<dom_id>\d+)/delete/$', domain_views.deldomain,

@@ -28,7 +28,7 @@ class AuthenticationTestCase(ModoTestCase):
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_authentication(self):
@@ -109,7 +109,7 @@ class ProfileTestCase(ModoTestCase):
         """Create test data."""
         super(ProfileTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_update_profile(self):
@@ -168,7 +168,7 @@ class APIAccessFormTestCase(ModoTestCase):
         """Create test data."""
         super(APIAccessFormTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_form_access(self):

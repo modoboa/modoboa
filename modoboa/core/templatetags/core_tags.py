@@ -72,7 +72,7 @@ def admin_menu(selection, user):
          "img": "",
          "label": _("Parameters")},
     ]
-    return render_to_string('common/menu.html', {
+    return render_to_string("common/menu.html", {
         "entries": entries,
         "css": "nav nav-sidebar",
         "selection": selection,
@@ -163,7 +163,7 @@ def tohtml(message):
 
 @register.simple_tag
 def visirule(field):
-    if not hasattr(field, 'form') or \
+    if not hasattr(field, "form") or \
             not hasattr(field.form, "visirules") or \
             field.html_name not in field.form.visirules:
         return ""
@@ -191,7 +191,7 @@ class ConnectedUsers(template.Node):
         # Build a list of user ids from that query
         for session in sessions:
             data = session.get_decoded()
-            uid = data.get('_auth_user_id', None)
+            uid = data.get("_auth_user_id", None)
             if uid:
                 uid_list.append(uid)
 
@@ -202,7 +202,7 @@ class ConnectedUsers(template.Node):
                 context[self.varname].append(User.objects.get(pk=uid))
             except User.DoesNotExist:
                 pass
-        return ''
+        return ""
 
 
 @register.tag
@@ -211,7 +211,7 @@ def connected_users(parser, token):
         tag, a, varname = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError(
-            'connected_users usage: {% connected_users as users %}'
+            "connected_users usage: {% connected_users as users %}"
         )
     return ConnectedUsers(varname)
 

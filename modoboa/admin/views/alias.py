@@ -37,7 +37,7 @@ def _validate_alias(request, form, successmsg, callback=None):
             callback(request.user, alias)
         return render_to_json_response(successmsg)
 
-    return render_to_json_response({'form_errors': form.errors}, status=400)
+    return render_to_json_response({"form_errors": form.errors}, status=400)
 
 
 def _new_alias(request, title, action, successmsg,
@@ -87,12 +87,12 @@ def editalias(request, alid, tplname="admin/aliasform.html"):
         return _validate_alias(request, form, successmsg)
 
     ctx = {
-        'action': reverse("admin:alias_change", args=[alias.id]),
-        'formid': 'aliasform',
-        'title': alias.address,
-        'action_label': _('Update'),
-        'action_classes': 'submit',
-        'form': AliasForm(request.user, instance=alias)
+        "action": reverse("admin:alias_change", args=[alias.id]),
+        "formid": "aliasform",
+        "title": alias.address,
+        "action_label": _("Update"),
+        "action_classes": "submit",
+        "form": AliasForm(request.user, instance=alias)
     }
     return render(request, tplname, ctx)
 

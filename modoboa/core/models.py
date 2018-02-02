@@ -83,7 +83,7 @@ class User(AbstractUser):
     class Meta(object):
         ordering = ["username"]
         index_together = [
-            ['email', 'is_active']
+            ["email", "is_active"]
         ]
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
@@ -412,7 +412,7 @@ class ObjectAccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey("content_type", "object_id")
     is_owner = models.BooleanField(default=False)
 
     class Meta(object):

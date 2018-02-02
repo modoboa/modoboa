@@ -217,7 +217,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; t
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn('wrong quota value', resp.content.decode())
+        self.assertIn("wrong quota value", resp.content.decode())
 
     def test_import_domain_by_domainadmin(self):
         """Check if a domain admin is not allowed to import a domain."""

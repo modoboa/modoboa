@@ -59,7 +59,7 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
     if idtfilter is None or not idtfilter or idtfilter == "account":
         ids = user.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(user)) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         q = Q(pk__in=ids)
         if searchquery is not None:
             q &= Q(username__icontains=searchquery) \
@@ -76,7 +76,7 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
             or (idtfilter in ["alias", "forward", "dlist"]):
         alct = ContentType.objects.get_for_model(Alias)
         ids = user.objectaccess_set.filter(content_type=alct) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         q = Q(pk__in=ids, internal=False)
         if searchquery is not None:
             q &= (

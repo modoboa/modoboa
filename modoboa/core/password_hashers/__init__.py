@@ -22,8 +22,8 @@ def get_password_hasher(scheme):
     :return: The hasher class
     """
     try:
-        scheme = scheme.replace('-', '')
-        hasher = globals()['%sHasher' % scheme.upper()]
+        scheme = scheme.replace("-", "")
+        hasher = globals()["%sHasher" % scheme.upper()]
     except KeyError:
         hasher = PLAINHasher
     return hasher

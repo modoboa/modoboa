@@ -16,7 +16,7 @@ from .. import factories
 from .. import models
 
 
-@skipIf(NO_LDAP, 'No ldap module installed')
+@skipIf(NO_LDAP, "No ldap module installed")
 class LDAPTestCaseMixin(object):
     """Set of methods used to test LDAP features."""
 
@@ -71,8 +71,8 @@ class LDAPTestCaseMixin(object):
 
 
 @override_settings(AUTHENTICATION_BACKENDS=(
-    'modoboa.lib.authbackends.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend'
+    "modoboa.lib.authbackends.LDAPBackend",
+    "django.contrib.auth.backends.ModelBackend"
 ))
 class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
     """Validate LDAP authentication scenarios."""
@@ -137,12 +137,12 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
         """Create test data."""
         super(ProfileTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     @override_settings(AUTHENTICATION_BACKENDS=(
-        'modoboa.lib.authbackends.LDAPBackend',
-        'django.contrib.auth.backends.ModelBackend'
+        "modoboa.lib.authbackends.LDAPBackend",
+        "django.contrib.auth.backends.ModelBackend"
     ))
     def test_update_password_ldap(self):
         """Update password for an LDAP user."""

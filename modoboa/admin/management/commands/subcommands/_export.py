@@ -46,12 +46,12 @@ class ExportCommand(BaseCommand):
             dumped_aliases += [alias.pk]
         qset = (
             models.Alias.objects.exclude(pk__in=dumped_aliases)
-            .prefetch_related('aliasrecipient_set')
+            .prefetch_related("aliasrecipient_set")
         )
         for alias in qset:
             alias.to_csv(self.csvwriter)
 
     def handle(self, *args, **options):
         exts_pool.load_all()
-        self.csvwriter = csv.writer(sys.stdout, delimiter=options['sepchar'])
+        self.csvwriter = csv.writer(sys.stdout, delimiter=options["sepchar"])
         getattr(self, "export_{}".format(options["objtype"]))()
