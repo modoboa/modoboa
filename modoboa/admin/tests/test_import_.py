@@ -11,10 +11,9 @@ from django.urls import reverse
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
-
 from . import utils
 from .. import factories
-from ..models import Domain, Alias, DomainAlias
+from ..models import Alias, Domain, DomainAlias
 
 
 class ImportTestCase(ModoTestCase):

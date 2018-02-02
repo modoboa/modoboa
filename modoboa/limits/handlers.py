@@ -2,25 +2,17 @@
 
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import signals
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-
-from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 
-from modoboa.admin import models as admin_models
-from modoboa.admin import signals as admin_signals
-from modoboa.core import models as core_models
-from modoboa.core import signals as core_signals
-from modoboa.lib import signals as lib_signals
-from modoboa.lib import permissions
+from modoboa.admin import models as admin_models, signals as admin_signals
+from modoboa.core import models as core_models, signals as core_signals
+from modoboa.lib import permissions, signals as lib_signals
 from modoboa.parameters import tools as param_tools
-
-from . import forms
-from . import lib
-from . import models
-from . import utils
+from . import forms, lib, models, utils
 
 
 @receiver(core_signals.can_create_object)

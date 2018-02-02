@@ -2,19 +2,18 @@ from __future__ import unicode_literals
 
 from functools import reduce
 
+from ckeditor_uploader import views as cku_views
+
 from django.conf import settings
 from django.conf.urls import include, url
-from django.views.i18n import JavaScriptCatalog
-
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.views.i18n import JavaScriptCatalog
 
-from ckeditor_uploader import views as cku_views
 from rest_framework.documentation import include_docs_urls
 
 from modoboa.admin.views.user import forward
-from modoboa.core import signals as core_signals
-from modoboa.core import views as core_views
+from modoboa.core import signals as core_signals, views as core_views
 from modoboa.core.extensions import exts_pool
 
 API_TITLE = "Modoboa API"

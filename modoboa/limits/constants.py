@@ -6,7 +6,6 @@ import collections
 
 from django.utils.translation import ugettext_lazy as _
 
-
 DEFAULT_USER_LIMITS = collections.OrderedDict((
     ("domains", {
         "content_type": "admin.domain", "label": _("Domains"),

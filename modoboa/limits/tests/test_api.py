@@ -13,9 +13,7 @@ from modoboa.admin.factories import populate_database
 from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
-from modoboa.lib import permissions
-from modoboa.lib import tests as lib_tests
-
+from modoboa.lib import permissions, tests as lib_tests
 from .. import utils
 
 

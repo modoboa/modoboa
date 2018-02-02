@@ -8,9 +8,8 @@ from django import forms
 from django.utils.translation import ugettext as _
 
 from modoboa.lib.permissions import get_object_owner
-
-from .lib import allocate_resources_from_user
 from . import utils
+from .lib import allocate_resources_from_user
 
 
 class ResourcePoolForm(forms.Form):

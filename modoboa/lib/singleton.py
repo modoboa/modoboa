@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+
 # works in Python 2 & 3
 class _Singleton(type):
     _instances = {}

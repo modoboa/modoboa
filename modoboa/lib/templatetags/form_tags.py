@@ -4,11 +4,10 @@ Form rendering tags.
 
 from __future__ import unicode_literals
 
-from django import forms
-from django import template
+from django import forms, template
+from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from django.utils.safestring import mark_safe
-from django.template.loader import render_to_string
 
 from modoboa.lib.form_utils import SeparatorField
 

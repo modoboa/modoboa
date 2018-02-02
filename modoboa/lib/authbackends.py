@@ -6,7 +6,7 @@ import smtplib
 
 from django.conf import settings
 
-from modoboa.core.models import populate_callback, User
+from modoboa.core.models import User, populate_callback
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.parameters import tools as param_tools
 

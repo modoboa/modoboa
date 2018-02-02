@@ -8,12 +8,8 @@ from django import forms
 from django.urls import reverse
 
 from modoboa.lib.tests import ModoTestCase
-from modoboa.parameters import forms as param_forms
-from modoboa.parameters import tools as param_tools
-
-from .. import factories
-from .. import models
-from .. import signals
+from modoboa.parameters import forms as param_forms, tools as param_tools
+from .. import factories, models, signals
 
 SETTINGS_SAMPLE = {
     "core-check_new_versions": "True",

@@ -2,32 +2,26 @@
 
 from __future__ import unicode_literals
 
+from reversion import revisions as reversion
+
+from django.contrib.auth import mixins as auth_mixins
+from django.contrib.auth.decorators import (
+    login_required, permission_required, user_passes_test
+)
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth.decorators import (
-    login_required, permission_required, user_passes_test
-)
-
-from reversion import revisions as reversion
-
 from modoboa.core.models import User
-from modoboa.lib.exceptions import (
-    PermDeniedException, BadRequest
-)
-from modoboa.lib.listing import (
-    get_sort_order, get_listing_page
-)
+from modoboa.lib.exceptions import BadRequest, PermDeniedException
+from modoboa.lib.listing import get_listing_page, get_sort_order
 from modoboa.lib.web_utils import render_to_json_response
-
+from .. import signals
 from ..forms import AccountForm, AccountWizard
 from ..lib import get_identities
-from ..models import Mailbox, Domain
-from .. import signals
+from ..models import Domain, Mailbox
 
 
 @login_required

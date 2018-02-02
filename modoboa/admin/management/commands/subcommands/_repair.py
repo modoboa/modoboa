@@ -6,11 +6,9 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils.encoding import smart_str
 
-from modoboa.lib.permissions import grant_access_to_object
-from modoboa.lib.permissions import get_object_owner
-
-from modoboa.core.models import User
 from modoboa.admin import models
+from modoboa.core.models import User
+from modoboa.lib.permissions import get_object_owner, grant_access_to_object
 
 known_problems = []
 

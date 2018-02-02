@@ -2,14 +2,13 @@
 
 from __future__ import unicode_literals
 
-from dateutil import parser
 import feedparser
 import requests
+from dateutil import parser
 from requests.exceptions import RequestException
 
-from django.views import generic
-
 from django.contrib.auth import mixins as auth_mixins
+from django.views import generic
 
 from .. import signals
 

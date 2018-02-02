@@ -8,9 +8,7 @@ from django.urls import reverse
 from django.utils.encoding import force_text
 
 from modoboa.lib.tests import ModoTestCase
-
-from .. import factories
-from .. import models
+from .. import factories, models
 
 
 class ExportTestCase(ModoTestCase):

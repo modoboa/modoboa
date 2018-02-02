@@ -3,20 +3,16 @@
 from __future__ import unicode_literals
 
 import httmock
-
 from dateutil.relativedelta import relativedelta
 from six import StringIO
 
 from django.core import management
-from django.urls import reverse
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 
 from modoboa.lib.tests import ModoTestCase
-
-from .. import factories
-from .. import mocks
-from .. import models
+from .. import factories, mocks, models
 
 
 class AuthenticationTestCase(ModoTestCase):

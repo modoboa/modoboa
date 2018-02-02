@@ -7,9 +7,8 @@ See `https://docs.djangoproject.com/en/dev/ref/contrib/sites/`_.
 
 from __future__ import unicode_literals
 
-from django.core.management.base import BaseCommand, CommandError
-
 from django.contrib.sites.models import Site
+from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):

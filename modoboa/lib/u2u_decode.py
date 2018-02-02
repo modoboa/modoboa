@@ -9,9 +9,9 @@ A stupid (and not accurate) answer to https://bugs.python.org/issue1079.
 
 from __future__ import unicode_literals
 
+import re
 from email.header import decode_header, make_header
 from email.utils import parseaddr
-import re
 
 from django.utils.encoding import smart_text
 

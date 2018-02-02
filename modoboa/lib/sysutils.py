@@ -7,9 +7,9 @@ This module extra functions/shortcuts to communicate with the system
 
 from __future__ import unicode_literals
 
-import subprocess
 import inspect
 import re
+import subprocess
 
 
 def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):

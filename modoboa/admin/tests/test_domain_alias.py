@@ -5,9 +5,8 @@ from __future__ import unicode_literals
 from django.urls import reverse
 
 from modoboa.lib.tests import ModoTestCase
-
 from .. import factories
-from ..models import Domain, DomainAlias, Alias
+from ..models import Alias, Domain, DomainAlias
 
 
 class DomainAliasTestCase(ModoTestCase):

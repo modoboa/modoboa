@@ -2,18 +2,17 @@
 
 from __future__ import unicode_literals
 
-from backports import csv
 import io
 import os
 
 import progressbar
+from backports import csv
 
 from django.core.management.base import BaseCommand, CommandError
 
 from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.exceptions import Conflict
-
 from .... import signals
 
 

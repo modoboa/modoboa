@@ -5,20 +5,19 @@ from __future__ import unicode_literals
 
 import logging
 
-from django.urls import reverse
+from django.contrib.auth import (
+    authenticate, login, logout, views as auth_views
+)
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import views as auth_views
-
 from modoboa.core import forms
-
-from .base import find_nextlocation
 from .. import signals
+from .base import find_nextlocation
 
 logger = logging.getLogger("modoboa.auth")
 

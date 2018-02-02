@@ -8,7 +8,6 @@ from django.utils.translation import ugettext as _
 
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.api_client import ModoAPIClient
-
 from . import models
 
 

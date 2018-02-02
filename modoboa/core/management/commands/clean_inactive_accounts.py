@@ -9,7 +9,6 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from modoboa.parameters import tools as param_tools
-
 from ... import models
 
 

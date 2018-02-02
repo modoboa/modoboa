@@ -3,21 +3,21 @@
 
 from __future__ import unicode_literals
 
-from functools import reduce
 import os
-import pkg_resources
 import re
+from functools import reduce
+
+import pkg_resources
 
 from django import template
 from django.conf import settings
-from django.urls import reverse
+from django.contrib.sessions.models import Session
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import smart_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language, ugettext as _
-
-from django.contrib.sessions.models import Session
 
 from .. import signals
 

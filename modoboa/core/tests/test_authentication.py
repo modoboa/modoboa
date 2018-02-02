@@ -5,19 +5,16 @@
 from __future__ import unicode_literals
 
 import smtplib
-
 from unittest import skipIf
+
 from mock import patch
 
 from django.core import mail
-from django.urls import reverse
 from django.test import override_settings
+from django.urls import reverse
 
-from modoboa.lib.tests import ModoTestCase
-from modoboa.lib.tests import NO_SMTP
-
-from .. import factories
-from .. import models
+from modoboa.lib.tests import NO_SMTP, ModoTestCase
+from .. import factories, models
 
 
 class AuthenticationTestCase(ModoTestCase):

@@ -8,19 +8,16 @@ import dns.resolver
 from mock import patch
 from testfixtures import LogCapture
 
-from django.core import mail
-from django.core import management
+from django.core import mail, management
 from django.test import override_settings
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
 from modoboa.core import factories as core_factories
 from modoboa.lib.tests import ModoTestCase
-
 from . import utils
-from .. import factories
+from .. import factories, models
 from ..lib import get_domain_mx_list
-from .. import models
 
 
 class MXTestCase(ModoTestCase):

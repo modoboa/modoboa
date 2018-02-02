@@ -5,8 +5,8 @@
 from __future__ import unicode_literals
 
 import abc
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 
 from django.forms import TypedChoiceField
 from django.forms.fields import Field
@@ -17,7 +17,6 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.web_utils import render_to_json_response
-
 
 ABC = abc.ABCMeta(force_str("ABC"), (object,), {})
 

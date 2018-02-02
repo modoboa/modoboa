@@ -6,16 +6,15 @@ import hashlib
 import os
 import sys
 
+import dj_database_url
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.template import Context, Template
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 
-import dj_database_url
-
-from ... import signals
-from ... import utils
+from ... import signals, utils
 
 MAP_FILE_TEMPLATE = """# This file was generated on {{ date }} by running:
 # {{ commandline }}

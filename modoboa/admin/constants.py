@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
 
-
 DNSBL_PROVIDERS = [
     "aspews.ext.sorbs.net",
     "b.barracudacentral.org",

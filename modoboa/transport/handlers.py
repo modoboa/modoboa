@@ -6,10 +6,7 @@ from django.db.models import signals
 from django.dispatch import receiver
 
 from modoboa.core import signals as core_signals
-
-from . import backends
-from . import models
-from . import postfix_maps
+from . import backends, models, postfix_maps
 
 
 @receiver(core_signals.register_postfix_maps)

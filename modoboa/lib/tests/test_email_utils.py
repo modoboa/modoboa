@@ -10,7 +10,8 @@ from django.test import SimpleTestCase
 from django.utils.encoding import smart_bytes, smart_text
 
 from ..email_utils import (
-    Email, prepare_addresses, split_address, split_local_part)
+    Email, prepare_addresses, split_address, split_local_part
+)
 
 SAMPLES_DIR = os.path.realpath(
     os.path.join(os.path.dirname(__file__), "sample_messages"))

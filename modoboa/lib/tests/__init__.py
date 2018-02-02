@@ -13,7 +13,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
 from modoboa.core import models as core_models
-
 from .. import sysutils
 
 try:

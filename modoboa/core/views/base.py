@@ -2,11 +2,10 @@
 
 from __future__ import unicode_literals
 
+from django.contrib.auth import mixins as auth_mixins
 from django.urls import reverse
 from django.utils.http import is_safe_url
 from django.views import generic
-
-from django.contrib.auth import mixins as auth_mixins
 
 from ..extensions import exts_pool
 

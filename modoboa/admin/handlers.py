@@ -2,26 +2,18 @@
 
 from __future__ import unicode_literals
 
-from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import signals
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 
-from django.contrib.contenttypes.models import ContentType
-
-from modoboa.core import models as core_models
-from modoboa.core import signals as core_signals
+from modoboa.core import models as core_models, signals as core_signals
+from modoboa.lib import exceptions, permissions, signals as lib_signals
 from modoboa.lib.cryptutils import encrypt
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib import exceptions
-from modoboa.lib import permissions
-from modoboa.lib import signals as lib_signals
 from modoboa.parameters import tools as param_tools
-
-from . import signals as admin_signals
-from . import lib
-from . import models
-from . import postfix_maps
+from . import lib, models, postfix_maps, signals as admin_signals
 
 
 @receiver(signals.post_save, sender=models.Domain)

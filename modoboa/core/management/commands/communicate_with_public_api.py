@@ -7,7 +7,6 @@ from django.core.management.base import BaseCommand, CommandError
 from modoboa.admin import models as admin_models
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import api_client
-
 from ... import models
 
 

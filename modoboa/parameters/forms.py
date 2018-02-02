@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 
 from django import forms
 
-from modoboa.lib import db_utils
-from modoboa.lib import form_utils
+from modoboa.lib import db_utils, form_utils
 
 
 class GenericParametersForm(forms.Form):

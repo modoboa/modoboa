@@ -7,17 +7,15 @@ from functools import reduce
 
 from django import forms
 from django.conf import settings
+from django.contrib.auth import password_validation
 from django.http import QueryDict
 from django.urls import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from django.contrib.auth import password_validation
-
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
+from modoboa.lib import exceptions as lib_exceptions, fields as lib_fields
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib import exceptions as lib_exceptions
-from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     DynamicForm, TabForms, WizardForm, WizardStep
 )
@@ -25,10 +23,7 @@ from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.validators import validate_utf8_email
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
-
-from .. import lib
-from .. import models
-from .. import signals
+from .. import lib, models, signals
 
 
 class AccountFormGeneral(forms.ModelForm):

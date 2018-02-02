@@ -4,12 +4,9 @@ from __future__ import unicode_literals
 
 from django.core import management
 
-from modoboa.lib.permissions import get_object_owner
-from modoboa.lib.permissions import ObjectAccess
+from modoboa.lib.permissions import ObjectAccess, get_object_owner
 from modoboa.lib.tests import ModoTestCase
-
-from .. import factories
-from .. import models
+from .. import factories, models
 
 
 class RepairTestCase(ModoTestCase):

@@ -5,11 +5,11 @@
 from __future__ import unicode_literals
 
 from django.http import HttpResponseRedirect
-from django.utils.encoding import smart_text
 from django.utils.deprecation import MiddlewareMixin
+from django.utils.encoding import smart_text
 
-from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib import signals as lib_signals
+from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.web_utils import (
     _render_error, ajax_response, render_to_json_response
 )

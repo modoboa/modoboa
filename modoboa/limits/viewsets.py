@@ -5,10 +5,9 @@ from __future__ import unicode_literals
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import mixins, viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 
 from modoboa.core import models as core_models
-
 from . import serializers
 
 

@@ -5,12 +5,9 @@ from __future__ import unicode_literals
 from django.core.files.base import ContentFile
 from django.urls import reverse
 
-from modoboa.admin import factories as admin_factories
-from modoboa.admin import models as admin_models
-from modoboa.core import factories as core_factories
-from modoboa.core import models as core_models
+from modoboa.admin import factories as admin_factories, models as admin_models
+from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.tests import ModoTestCase
-
 from .. import utils
 
 

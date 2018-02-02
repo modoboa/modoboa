@@ -1,16 +1,16 @@
 from __future__ import unicode_literals
 
-from .domain import (
-    DomainFormGeneral, DomainFormOptions, DomainForm, DomainWizard
-)
 from .account import (
-    AccountFormGeneral, AccountFormMail, AccountPermissionsForm,
-    AccountForm, AccountWizard
+    AccountForm, AccountFormGeneral, AccountFormMail, AccountPermissionsForm,
+    AccountWizard
 )
 from .alias import AliasForm
+from .domain import (
+    DomainForm, DomainFormGeneral, DomainFormOptions, DomainWizard
+)
+from .export import ExportDataForm, ExportDomainsForm, ExportIdentitiesForm
 from .forward import ForwardForm
 from .import_ import ImportDataForm, ImportIdentitiesForm
-from .export import ExportDataForm, ExportDomainsForm, ExportIdentitiesForm
 
 __all__ = [
     "DomainFormGeneral", "DomainFormOptions", "DomainForm",

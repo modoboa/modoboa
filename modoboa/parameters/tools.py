@@ -4,9 +4,7 @@ from __future__ import unicode_literals
 
 import copy
 
-from modoboa.lib import exceptions
-from modoboa.lib import form_utils
-from modoboa.lib import signals
+from modoboa.lib import exceptions, form_utils, signals
 from modoboa.lib.sysutils import guess_extension_name
 
 

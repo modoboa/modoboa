@@ -4,23 +4,22 @@ from __future__ import unicode_literals
 
 import datetime
 
+from reversion import revisions as reversion
+
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import (
-    python_2_unicode_compatible, smart_text, force_text
+    force_text, python_2_unicode_compatible, smart_text
 )
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
-
-from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
-
-from .base import AdminObject
 from .. import constants
+from .base import AdminObject
 
 
 @python_2_unicode_compatible

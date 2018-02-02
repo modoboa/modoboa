@@ -2,9 +2,7 @@
 
 from django import forms
 
-from . import backends
-from . import models
-
+from . import backends, models
 
 TYPE_TO_FIELD_MAP = {
     "int": forms.IntegerField,

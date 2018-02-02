@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 
 from django import template
-from django.template import Template, Context
+from django.template import Context, Template
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 

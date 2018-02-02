@@ -11,9 +11,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
 from modoboa.core import models as core_models
-
-from . import lib
-from . import utils
+from . import lib, utils
 
 
 class ObjectLimitMixin(object):

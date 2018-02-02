@@ -6,11 +6,11 @@ from __future__ import unicode_literals
 
 import base64
 
+from cryptography.fernet import Fernet
+
 from django.conf import settings
 from django.utils.crypto import get_random_string
 from django.utils.encoding import smart_bytes, smart_text
-
-from cryptography.fernet import Fernet
 
 
 def random_key(length=16):

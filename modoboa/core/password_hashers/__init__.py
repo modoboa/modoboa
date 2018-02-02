@@ -4,11 +4,11 @@ Password hashers for Modoboa.
 
 from __future__ import unicode_literals
 
-from modoboa.core.password_hashers.base import (
-    PLAINHasher, CRYPTHasher, MD5Hasher, SHA256Hasher
-)
 from modoboa.core.password_hashers.advanced import (
     BLFCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher
+)
+from modoboa.core.password_hashers.base import (
+    CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher
 )
 
 
