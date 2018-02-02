@@ -107,6 +107,25 @@ class AccountTestCase(ModoTestCase):
                 alias__internal=True).exists()
         )
 
+    @override_settings(LANGUAGE_CODE="fr")
+    def test_create_account_default_lang(self):
+        """Check if default language is applied."""
+        values = {
+            "username": "tester@test.com",
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "tester@test.com",
+            "stepid": "step2"
+        }
+        self.ajax_post(reverse("admin:account_add"), values)
+        account = User.objects.get(username=values["username"])
+        self.assertEqual(account.language, "fr")
+
     def test_aliases_update_on_rename(self):
         """Check if aliases are updated on mailbox rename."""
         account = User.objects.get(username="user@test.com")

@@ -5,8 +5,9 @@ from __future__ import unicode_literals
 from email.header import Header
 import re
 
-from django.urls import reverse
+from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils.encoding import (
     python_2_unicode_compatible, smart_bytes, smart_text, force_str
 )
@@ -349,6 +350,7 @@ class User(AbstractUser):
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
         self.is_active = (row[5].strip().lower() in ["true", "1", "yes", "y"])
+        self.language = settings.LANGUAGE_CODE
         self.save()
         self.role = desired_role
         self.post_create(user)

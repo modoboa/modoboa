@@ -40,7 +40,9 @@ class SMTPBackend(object):
         """
         user, created = User.objects.get_or_create(
             username__iexact=username, defaults={
-                "username": username.lower(), "email": username.lower()
+                "username": username.lower(),
+                "email": username.lower(),
+                "language": settings.LANGUAGE_CODE
             }
         )
         if created:
@@ -90,7 +92,11 @@ try:
                     return None
             user, created = User.objects.get_or_create(
                 username__iexact=username,
-                defaults={'username': username.lower(), 'is_local': False}
+                defaults={
+                    "username": username.lower(),
+                    "is_local": False,
+                    "language": settings.LANGUAGE_CODE
+                }
             )
             if created:
                 populate_callback(user, group)
