@@ -12,7 +12,7 @@ from ..models import Alias, Domain, DomainAlias
 class DomainAliasTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DomainAliasTestCase, cls).setUpTestData()
         factories.populate_database()

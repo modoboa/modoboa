@@ -19,7 +19,7 @@ class ComplexityValidator(object):
         special_characters = "~!@#$%^&*()_+{}\":;,'[]"
         condition = (
             self.digits > 0 and
-            sum([1 for char in password if char.isdigit()]) < self.digits)
+            sum(1 for char in password if char.isdigit()) < self.digits)
         if condition:
             raise ValidationError(
                 ungettext(
@@ -29,7 +29,7 @@ class ComplexityValidator(object):
                 ).format(self.digits))
         condition = (
             self.lower > 0 and
-            sum([1 for char in password if char.islower()]) < self.lower)
+            sum(1 for char in password if char.islower()) < self.lower)
         if condition:
             raise ValidationError(
                 ungettext(
@@ -40,7 +40,7 @@ class ComplexityValidator(object):
                 .format(self.lower))
         condition = (
             self.upper > 0 and
-            sum([1 for char in password if char.isupper()]) < self.upper)
+            sum(1 for char in password if char.isupper()) < self.upper)
         if condition:
             raise ValidationError(
                 ungettext(
@@ -51,7 +51,7 @@ class ComplexityValidator(object):
                 .format(self.upper))
         condition = (
             self.specials > 0 and
-            sum([1 for char in password if char in special_characters]) <
+            sum(1 for char in password if char in special_characters) <
             self.specials)
         if condition:
             raise ValidationError(

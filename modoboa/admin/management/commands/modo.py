@@ -17,7 +17,7 @@ class Command(SubcommandCommand):
     $ python manage.py modo
     """
 
-    help = "Modoboa top management command."
+    help = "Modoboa top management command."  # NOQA:A003
 
     subcommands = {
         "export": ExportCommand,

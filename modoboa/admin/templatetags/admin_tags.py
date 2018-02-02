@@ -156,7 +156,7 @@ def domain_actions(user, domain):
 
     responses = signals.extra_domain_actions.send(
         sender=None, user=user, domain=domain)
-    for receiver, response in responses:
+    for _receiver, response in responses:
         if response:
             actions += response
 

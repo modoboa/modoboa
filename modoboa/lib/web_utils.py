@@ -29,7 +29,7 @@ def render_actions(actions):
     t = template.Template("""{% load lib_tags %}
 {% for a in actions %}{% render_link a %}{% endfor %}
 """)
-    return t.render(template.Context(dict(actions=actions)))
+    return t.render(template.Context({"actions": actions}))
 
 
 def getctx(status, level=1, callback=None, **kwargs):

@@ -18,19 +18,19 @@ from ..models import Alias, AliasRecipient, Domain
 class AliasTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AliasTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def test_alias(self):
         user = User.objects.get(username="user@test.com")
-        values = dict(
-            username="user@test.com", role=user.role,
-            is_active=user.is_active, email="user@test.com",
-            aliases="toto@test.com", aliases_1="titi@test.com",
-            language="en"
-        )
+        values = {
+            "username": "user@test.com", "role": user.role,
+            "is_active": user.is_active, "email": "user@test.com",
+            "aliases": "toto@test.com", "aliases_1": "titi@test.com",
+            "language": "en"
+        }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
             values
@@ -68,11 +68,11 @@ class AliasTestCase(ModoTestCase):
     def test_upper_case_alias(self):
         """Try to create an upper case alias."""
         user = User.objects.get(username="user@test.com")
-        values = dict(
-            username="user@test.com", role=user.role,
-            is_active=user.is_active, email="user@test.com",
-            aliases="Toto@test.com", language="en"
-        )
+        values = {
+            "username": "user@test.com", "role": user.role,
+            "is_active": user.is_active, "email": "user@test.com",
+            "aliases": "Toto@test.com", "language": "en"
+        }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
             values
@@ -98,11 +98,11 @@ class AliasTestCase(ModoTestCase):
     def test_append_alias_with_tag(self):
         """Try to create a alias with tag in recipient address"""
         user = User.objects.get(username="user@test.com")
-        values = dict(
-            username="user@test.com", role=user.role,
-            is_active=user.is_active, email="user@test.com",
-            language="en"
-        )
+        values = {
+            "username": "user@test.com", "role": user.role,
+            "is_active": user.is_active, "email": "user@test.com",
+            "language": "en"
+        }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
             values
@@ -122,11 +122,13 @@ class AliasTestCase(ModoTestCase):
 
     def test_utf8_alias(self):
         """Test alias with non-ASCII characters."""
-        values = dict(address="testé@test.com",
-                      recipients="user@test.com",
-                      recipients_1="admin@test.com",
-                      recipients_2="ext@titi.com",
-                      enabled=True)
+        values = {
+            "address": "testé@test.com",
+            "recipients": "user@test.com",
+            "recipients_1": "admin@test.com",
+            "recipients_2": "ext@titi.com",
+            "enabled": True
+        }
         self.ajax_post(
             reverse("admin:alias_add"), values
         )
@@ -170,7 +172,7 @@ class AliasTestCase(ModoTestCase):
             Alias.DoesNotExist, Alias.objects.get, address="all@test.com")
 
     def test_forward(self):
-        values = dict(address="forward2@test.com", recipients="rcpt@dest.com")
+        values = {"address": "forward2@test.com", "recipients": "rcpt@dest.com"}
         self.ajax_post(
             reverse("admin:alias_add"), values
         )
@@ -193,7 +195,7 @@ class AliasTestCase(ModoTestCase):
             Alias.DoesNotExist, Alias.objects.get, address="forward2@test.com")
 
     def test_forward_and_local_copies(self):
-        values = dict(address="user@test.com", recipients="rcpt@dest.com")
+        values = {"address": "user@test.com", "recipients": "rcpt@dest.com"}
         self.ajax_post(
             reverse("admin:alias_add"), values
         )
@@ -244,21 +246,23 @@ class AliasTestCase(ModoTestCase):
            changed.
 
         """
-        values = dict(address="list@test.com",
-                      recipients="user@test.com",
-                      recipients_1="admin@test.com",
-                      enabled=True)
+        values = {
+            "address": "list@test.com",
+            "recipients": "user@test.com",
+            "recipients_1": "admin@test.com",
+            "enabled": True
+        }
         self.ajax_post(
             reverse("admin:alias_add"), values
         )
 
         user = User.objects.get(username="user@test.com")
-        values = dict(
-            username=user.username, first_name="Tester", last_name="Toto",
-            password1="Toto1234", password2="Toto1234", role="SimpleUsers",
-            quota_act=True, is_active=True, email=user.email,
-            language="en"
-        )
+        values = {
+            "username": user.username, "first_name": "Tester",
+            "last_name": "Toto", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": user.email, "language": "en"
+        }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
 
         self.assertEqual(
@@ -279,12 +283,12 @@ class AliasTestCase(ModoTestCase):
         self.client.force_login(admin)
 
         user = User.objects.get(username="user@test.com")
-        values = dict(
-            username="user@test.com", role=user.role,
-            is_active=user.is_active, email="user@test.com",
-            aliases="toto@test.com", aliases_1="titi@test2.com",
-            language="en"
-        )
+        values = {
+            "username": "user@test.com", "role": user.role,
+            "is_active": user.is_active, "email": "user@test.com",
+            "aliases": "toto@test.com", "aliases_1": "titi@test2.com",
+            "language": "en"
+        }
         response = self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
             values, 400

@@ -19,7 +19,7 @@ class AjaxLoginRedirect(MiddlewareMixin):
 
     def process_response(self, request, response):
         if request.is_ajax():
-            if type(response) == HttpResponseRedirect:
+            if isinstance(response, HttpResponseRedirect):
                 response.status_code = 278
         return response
 
@@ -41,7 +41,7 @@ class CommonExceptionCatcher(MiddlewareMixin):
                 smart_text(exception), status=exception.http_code
             )
         return _render_error(
-            request, user_context=dict(error=smart_text(exception))
+            request, user_context={"error": smart_text(exception)}
         )
 
 

@@ -25,7 +25,7 @@ MAP_FILE_TEMPLATE = """# This file was generated on {{ date }} by running:
 class Command(BaseCommand):
     """Command class."""
 
-    help = "Generate/update postfix map files."
+    help = "Generate/update postfix map files."  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments."""

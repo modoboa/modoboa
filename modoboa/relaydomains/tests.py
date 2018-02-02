@@ -64,15 +64,15 @@ class Operations(object):
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
-        l = self.user.userobjectlimit_set.get(name=name)
-        self.assertEqual(l.current_value, curvalue)
-        self.assertEqual(l.max_value, maxvalue)
+        limit = self.user.userobjectlimit_set.get(name=name)
+        self.assertEqual(limit.current_value, curvalue)
+        self.assertEqual(limit.max_value, maxvalue)
 
 
 class RelayDomainsTestCase(ModoTestCase, Operations):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(RelayDomainsTestCase, cls).setUpTestData()
         admin_factories.populate_database()
@@ -305,10 +305,10 @@ class ImportTestCase(ModoTestCase):
 class LimitsTestCase(ModoTestCase, Operations):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(LimitsTestCase, cls).setUpTestData()
-        for name, tpl in limits_utils.get_user_limit_templates():
+        for name, _definition in limits_utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(
                 "deflt_user_{0}_limit".format(name), 2, app="limits")
         cls.localconfig.save()
@@ -371,7 +371,7 @@ class DataMixin(object):
     """A mixin to provide test data."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         super(DataMixin, cls).setUpTestData()
         transport = tr_factories.TransportFactory(
             pattern="test.com", _settings={

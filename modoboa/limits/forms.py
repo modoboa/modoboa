@@ -51,16 +51,16 @@ class ResourcePoolForm(forms.Form):
 
     def save(self):
         owner = get_object_owner(self.account)
-        for name, ltpl in utils.get_user_limit_templates():
+        for name, _definition in utils.get_user_limit_templates():
             fieldname = "{}_limit".format(name)
             if fieldname not in self.cleaned_data:
                 continue
-            l = self.account.userobjectlimit_set.get(name=name)
+            limit = self.account.userobjectlimit_set.get(name=name)
             if not owner.is_superuser:
                 allocate_resources_from_user(
-                    l, owner, self.cleaned_data[fieldname])
-            l.max_value = self.cleaned_data[fieldname]
-            l.save(update_fields=["max_value"])
+                    limit, owner, self.cleaned_data[fieldname])
+            limit.max_value = self.cleaned_data[fieldname]
+            limit.save(update_fields=["max_value"])
 
 
 class DomainLimitsForm(forms.Form):
@@ -93,10 +93,10 @@ class DomainLimitsForm(forms.Form):
 
     def save(self, user, **kwargs):
         """Set limits."""
-        for name, ltpl in utils.get_domain_limit_templates():
+        for name, _definition in utils.get_domain_limit_templates():
             fieldname = "{}_limit".format(name)
             if fieldname not in self.cleaned_data:
                 continue
-            l = self.domain.domainobjectlimit_set.get(name=name)
-            l.max_value = self.cleaned_data[fieldname]
-            l.save()
+            limit = self.domain.domainobjectlimit_set.get(name=name)
+            limit.max_value = self.cleaned_data[fieldname]
+            limit.save()

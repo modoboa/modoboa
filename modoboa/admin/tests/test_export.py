@@ -15,7 +15,7 @@ class ExportTestCase(ModoTestCase):
     """Test case for export operations."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(ExportTestCase, cls).setUpTestData()
         factories.populate_database()
@@ -38,7 +38,7 @@ class ExportTestCase(ModoTestCase):
             {"filename": "test.csv"}
         )
 
-    def assertListEqual(self, list1, list2):
+    def assertListEqual(self, list1, list2):  # NOQA:N802
         list1 = force_text(list1).split("\r\n")
         list2 = force_text(list2).split("\r\n")
         self.assertEqual(len(list1), len(list2))

@@ -9,7 +9,7 @@ from . import Command
 
 class HelpCommand(Command):
 
-    help = "Display the help message associated to a specific command"
+    help = "Display the help message associated to a specific command"  # NOQA:A003
 
     def __init__(self, *args, **kwargs):
         super(HelpCommand, self).__init__(*args, **kwargs)

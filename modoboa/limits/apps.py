@@ -24,4 +24,4 @@ class LimitsConfig(AppConfig):
     def ready(self):
         load_limits_settings()
 
-        from . import handlers
+        from . import handlers  # NOQA:F401

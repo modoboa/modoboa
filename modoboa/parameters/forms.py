@@ -70,7 +70,7 @@ class AdminParametersForm(GenericParametersForm):
         """Save parameters to database."""
         parameters = {}
         for name, value in list(self.cleaned_data.items()):
-            if type(self.fields[name]) is form_utils.SeparatorField:
+            if isinstance(self.fields[name], form_utils.SeparatorField):
                 continue
             parameters[name] = value
         self.localconfig.parameters.set_values(parameters, app=self.app)
@@ -101,7 +101,7 @@ class UserParametersForm(GenericParametersForm):
         """Save new values."""
         parameters = {}
         for name, value in list(self.cleaned_data.items()):
-            if type(self.fields[name]) is form_utils.SeparatorField:
+            if isinstance(self.fields[name], form_utils.SeparatorField):
                 continue
             parameters[name] = value
         self.user.parameters.set_values(parameters, app=self.app)

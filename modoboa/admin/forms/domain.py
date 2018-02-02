@@ -26,7 +26,7 @@ from ..models import Alias, Domain, DomainAlias, Mailbox
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
     """A form to create/edit a domain."""
 
-    type = forms.ChoiceField(
+    type = forms.ChoiceField(  # NOQA:A003
         label=ugettext_lazy("Type"),
     )
     aliases = DomainNameField(

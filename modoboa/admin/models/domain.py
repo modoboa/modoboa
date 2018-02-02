@@ -48,7 +48,7 @@ class Domain(AdminObject):
         help_text=ugettext_lazy("Check to activate this domain"),
         default=True
     )
-    type = models.CharField(default="domain", max_length=20)
+    type = models.CharField(default="domain", max_length=20)  # NOQA:A003
     enable_dns_checks = models.BooleanField(
         ugettext_lazy("Enable DNS checks"), default=True,
         help_text=ugettext_lazy("Check to enable DNS checks for this domain")
@@ -244,9 +244,9 @@ class Domain(AdminObject):
     def save(self, *args, **kwargs):
         """Store current data if domain is renamed."""
         if self.oldname != self.name:
-            self.old_mail_homes = (
-                dict((mb.id, mb.mail_home) for mb in self.mailbox_set.all())
-            )
+            self.old_mail_homes = {
+                mb.id: mb.mail_home for mb in self.mailbox_set.all()
+            }
         super(Domain, self).save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):

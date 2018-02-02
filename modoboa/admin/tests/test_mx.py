@@ -24,7 +24,7 @@ class MXTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa:N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(MXTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
@@ -138,7 +138,7 @@ class DNSBLTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa:N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(DNSBLTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")

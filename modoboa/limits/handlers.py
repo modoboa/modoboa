@@ -62,7 +62,7 @@ def create_domain_limits(sender, instance, **kwargs):
     if not kwargs.get("created"):
         return
     global_params = dict(param_tools.get_global_parameters("limits"))
-    for name, definition in utils.get_domain_limit_templates():
+    for name, _definition in utils.get_domain_limit_templates():
         max_value = global_params["deflt_domain_{0}_limit".format(name)]
         models.DomainObjectLimit.objects.create(
             domain=instance, name=name, max_value=max_value)
@@ -267,7 +267,7 @@ def display_pool_usage(sender, user, location, currentpage, **kwargs):
         return []
     return [
         render_to_string("limits/poolusage.html",
-                         dict(limits=limits))
+                         {"limits": limits})
     ]
 
 

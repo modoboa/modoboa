@@ -24,7 +24,7 @@ class OperationError(Exception):
 class Command(BaseCommand):
     """Command definition"""
 
-    help = "Handles rename and delete operations on mailboxes"
+    help = "Handles rename and delete operations on mailboxes"  # NOQA:A003
 
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)

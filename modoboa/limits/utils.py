@@ -21,10 +21,10 @@ def move_pool_resource(owner, user):
     When an account doesn't need a pool anymore, we move the
     associated resource to the pool of its owner.
     """
-    for name, ltpl in get_user_limit_templates():
-        l = user.userobjectlimit_set.get(name=name)
-        if l.max_value < 0:
+    for name, _definition in get_user_limit_templates():
+        user_limit = user.userobjectlimit_set.get(name=name)
+        if user_limit.max_value < 0:
             continue
-        ol = owner.userobjectlimit_set.get(name=name)
-        ol.max_value += l.max_value
-        ol.save()
+        owner_limit = owner.userobjectlimit_set.get(name=name)
+        owner_limit.max_value += user_limit.max_value
+        owner_limit.save()

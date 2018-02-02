@@ -26,7 +26,7 @@ class DomainAPITestCase(ModoAPITestCase):
     """Check API."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DomainAPITestCase, cls).setUpTestData()
         factories.populate_database()
@@ -137,7 +137,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
     """Check DomainAlias API."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DomainAliasAPITestCase, cls).setUpTestData()
         factories.populate_database()
@@ -231,7 +231,7 @@ class AccountAPITestCase(ModoAPITestCase):
     }
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AccountAPITestCase, cls).setUpTestData()
         factories.populate_database()
@@ -563,7 +563,7 @@ class AliasAPITestCase(ModoAPITestCase):
     }
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AliasAPITestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(
@@ -686,7 +686,7 @@ class SenderAddressAPITestCase(ModoAPITestCase):
     """Check SenderAddress API."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(SenderAddressAPITestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(

@@ -42,10 +42,10 @@ class Registry(object):
 
     def _load_default_values(self, level):
         """Load default values."""
-        for app, data in list(self._registry[level].items()):
+        for _app, data in list(self._registry[level].items()):
             form = data["formclass"](load_values_from_db=False)
             for name, field in list(form.fields.items()):
-                if type(field) is form_utils.SeparatorField:
+                if isinstance(field, form_utils.SeparatorField):
                     continue
                 data["defaults"][name] = field.initial
 
@@ -56,8 +56,10 @@ class Registry(object):
         if first_app in self._registry[level]:
             sorted_apps.append(first_app)
         sorted_apps += sorted(
-            [a for a in list(self._registry[level].keys())
-             if a != first_app],
+            (
+                a for a in self._registry[level]
+                if a != first_app
+            ),
             key=lambda a: self._registry[level][a]["label"]
         )
         result = []

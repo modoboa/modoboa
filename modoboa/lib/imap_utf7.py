@@ -65,7 +65,7 @@ def modified_utf7(s):
     return s_utf7[1:-1].replace(b"/", b",")
 
 
-def doB64(_in, r):
+def doB64(_in, r):  # NOQA:N802
     if _in:
         r.extend([b"&", modified_utf7("".join(_in)), b"-"])
         del _in[:]
@@ -137,32 +137,32 @@ codecs.register(imap4_utf_7)
 
 # testing methods
 
-def imapUTF7Encode(ust):
+def imapUTF7Encode(ust):  # NOQA:N802
     "Returns imap utf-7 encoded version of string"
     return ust.encode("imap4-utf-7")
 
 
-def imapUTF7EncodeSequence(seq):
+def imapUTF7EncodeSequence(seq):  # NOQA:N802
     "Returns imap utf-7 encoded version of strings in sequence"
     return [imapUTF7Encode(itm) for itm in seq]
 
 
-def imapUTF7Decode(st):
+def imapUTF7Decode(st):  # NOQA:N802
     "Returns utf7 encoded version of imap utf-7 string"
     return st.decode("imap4-utf-7")
 
 
-def imapUTF7DecodeSequence(seq):
+def imapUTF7DecodeSequence(seq):  # NOQA:N802
     "Returns utf7 encoded version of imap utf-7 strings in sequence"
     return [imapUTF7Decode(itm) for itm in seq]
 
 
-def utf8Decode(st):
+def utf8Decode(st):  # NOQA:N802
     "Returns utf7 encoded version of imap utf-7 string"
     return st.decode("utf-8")
 
 
-def utf7SequenceToUTF8(seq):
+def utf7SequenceToUTF8(seq):  # NOQA:N802
     "Returns utf7 encoded version of imap utf-7 strings in sequence"
     return [itm.decode("imap4-utf-7").encode("utf-8") for itm in seq]
 
@@ -171,33 +171,33 @@ __all__ = ["imapUTF7Encode", "imapUTF7Decode", ]
 
 if __name__ == "__main__":
 
-    # print u'bøx'.encode('imap4-utf-7')
+    # print u'bÃ¸x'.encode('imap4-utf-7')
     # print 'expected b&APg-x'
 
-    # print u'båx'.encode('imap4-utf-7')
+    # print u'bÃ¥x'.encode('imap4-utf-7')
     # print 'expected b&AOU-x'
 
     print("#######")
-    print("bøx")
-    e = imapUTF7Encode(u'bøx')
+    print("bÃ¸x")
+    e = imapUTF7Encode(u'bÃ¸x')
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
     print("#######")
-    print("båx")
-    e = imapUTF7Encode(u'båx')
+    print("bÃ¥x")
+    e = imapUTF7Encode(u'bÃ¥x')
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
     print("#######")
-    print("~/bågø")
-    e = imapUTF7Encode(u'~/bågø')
+    print("~/bÃ¥gÃ¸")
+    e = imapUTF7Encode(u'~/bÃ¥gÃ¸')
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
     print("#######")
-    print("Ting & Såger")
-    e = imapUTF7Encode(u'Ting & Såger')
+    print("Ting & SÃ¥ger")
+    e = imapUTF7Encode(u'Ting & SÃ¥ger')
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
@@ -208,8 +208,8 @@ if __name__ == "__main__":
     # print e.encode('latin-1')
 
     print("#######")
-    print("~/Følder/mailbåx & stuff + more")
-    n = u'~/Følder/mailbåx & stuff + more'
+    print("~/FÃ¸lder/mailbÃ¥x & stuff + more")
+    n = u'~/FÃ¸lder/mailbÃ¥x & stuff + more'
     e = imapUTF7Encode(n)
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))

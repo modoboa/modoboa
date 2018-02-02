@@ -12,7 +12,6 @@ from functools import reduce
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-from modoboa.lib.cryptutils import random_key
 from modoboa.lib.permissions import add_permissions_to_group
 from ... import constants, extensions, models, signals
 
@@ -20,7 +19,7 @@ from ... import constants, extensions, models, signals
 class Command(BaseCommand):
     """Command definition."""
 
-    help = "Load Modoboa initial data"
+    help = "Load Modoboa initial data"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""

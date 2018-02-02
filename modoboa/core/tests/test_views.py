@@ -89,7 +89,7 @@ class DashboardTestCase(ModoTestCase):
     """Dashboard tests."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(DashboardTestCase, cls).setUpTestData()
         cls.dadmin = factories.UserFactory(

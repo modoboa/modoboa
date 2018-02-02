@@ -8,7 +8,6 @@ from django.contrib.auth import password_validation
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.lib import fields as lib_fields
-from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
     HorizontalRadioSelect, SeparatorField, YesNoField
 )
@@ -341,7 +340,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     def clean_ldap_user_dn_template(self):
         tpl = self.cleaned_data["ldap_user_dn_template"]
         try:
-            test = tpl % {"user": "toto"}
+            tpl % {"user": "toto"}
         except (KeyError, ValueError):
             raise forms.ValidationError(_("Invalid syntax"))
         return tpl

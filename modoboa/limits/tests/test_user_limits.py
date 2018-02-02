@@ -16,7 +16,7 @@ from .. import utils
 class PermissionsTestCase(lib_tests.ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(PermissionsTestCase, cls).setUpTestData()
         populate_database()
@@ -26,11 +26,12 @@ class PermissionsTestCase(lib_tests.ModoTestCase):
 
         Expected result: no.
         """
-        values = dict(
-            username="reseller@test.com", first_name="Reseller", last_name="",
-            password1="Toto1234", password2="Toto1234", role="Resellers",
-            is_active=True, email="reseller@test.com", stepid="step2"
-        )
+        values = {
+            "username": "reseller@test.com", "first_name": "Reseller",
+            "last_name": "", "password1": "Toto1234", "password2": "Toto1234",
+            "role": "Resellers", "is_active": True,
+            "email": "reseller@test.com", "stepid": "step2"
+        }
         self.ajax_post(reverse("admin:account_add"), values)
         account = User.objects.get(username="reseller@test.com")
         self.client.logout()
@@ -45,14 +46,14 @@ class PermissionsTestCase(lib_tests.ModoTestCase):
 class ResourceTestCase(lib_tests.ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Custom setUpTestData method."""
         super(ResourceTestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_values({
             "enable_admin_limits": True,
             "enable_domain_limits": False
         })
-        for name, tpl in utils.get_user_limit_templates():
+        for name, _definition in utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(
                 "deflt_user_{0}_limit".format(name), 2)
         cls.localconfig.save()
@@ -60,21 +61,21 @@ class ResourceTestCase(lib_tests.ModoTestCase):
 
     def _create_account(
             self, username, role="SimpleUsers", status=200, **kwargs):
-        values = dict(
-            username=username, first_name="Tester", last_name="Toto",
-            password1="Toto1234", password2="Toto1234", role=role,
-            quota_act=True,
-            is_active=True, email=username, stepid="step2",
-        )
+        values = {
+            "username": username, "first_name": "Tester", "last_name": "Toto",
+            "password1": "Toto1234", "password2": "Toto1234", "role": role,
+            "quota_act": True, "is_active": True, "email": username,
+            "stepid": "step2"
+        }
         values.update(kwargs)
         return self.ajax_post(
             reverse("admin:account_add"), values, status
         )
 
     def _create_alias(self, email, rcpt="user@test.com", status=200):
-        values = dict(
-            address=email, recipients=rcpt, enabled=True
-        )
+        values = {
+            "address": email, "recipients": rcpt, "enabled": True
+        }
         return self.ajax_post(
             reverse("admin:alias_add"), values, status
         )
@@ -118,15 +119,15 @@ class ResourceTestCase(lib_tests.ModoTestCase):
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
-        l = self.user.userobjectlimit_set.get(name=name)
-        self.assertEqual(l.current_value, curvalue)
-        self.assertEqual(l.max_value, maxvalue)
+        limit = self.user.userobjectlimit_set.get(name=name)
+        self.assertEqual(limit.current_value, curvalue)
+        self.assertEqual(limit.max_value, maxvalue)
 
 
 class DomainAdminTestCase(ResourceTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DomainAdminTestCase, cls).setUpTestData()
         cls.user = User.objects.get(username="admin@test.com")
@@ -173,12 +174,12 @@ class DomainAdminTestCase(ResourceTestCase):
 
     def test_aliases_limit_through_account_form(self):
         user = User.objects.get(username="user@test.com")
-        values = dict(
-            username=user.username, role=user.role,
-            is_active=user.is_active, email=user.email, quota_act=True,
-            aliases="alias1@test.com", aliases_1="alias2@test.com",
-            language="en"
-        )
+        values = {
+            "username": user.username, "role": user.role,
+            "is_active": user.is_active, "email": user.email, "quota_act": True,
+            "aliases": "alias1@test.com", "aliases_1": "alias2@test.com",
+            "language": "en"
+        }
         self.ajax_post(
             reverse("admin:account_change", args=[user.id]),
             values
@@ -190,7 +191,7 @@ class DomainAdminTestCase(ResourceTestCase):
 class ResellerTestCase(ResourceTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(ResellerTestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value("deflt_user_quota_limit", 1000)
