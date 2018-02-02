@@ -1,5 +1,7 @@
 """Transport factories."""
 
+from __future__ import unicode_literals
+
 import factory
 
 from . import models

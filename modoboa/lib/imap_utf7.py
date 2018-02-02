@@ -171,33 +171,33 @@ __all__ = ["imapUTF7Encode", "imapUTF7Decode", ]
 
 if __name__ == "__main__":
 
-    # print u'bøx'.encode('imap4-utf-7')
+    # print 'bøx'.encode('imap4-utf-7')
     # print 'expected b&APg-x'
 
-    # print u'båx'.encode('imap4-utf-7')
+    # print 'båx'.encode('imap4-utf-7')
     # print 'expected b&AOU-x'
 
     print("#######")
     print("bøx")
-    e = imapUTF7Encode(u'bøx')
+    e = imapUTF7Encode("bøx")
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
     print("#######")
     print("båx")
-    e = imapUTF7Encode(u'båx')
+    e = imapUTF7Encode("båx")
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
     print("#######")
     print("~/bågø")
-    e = imapUTF7Encode(u'~/bågø')
+    e = imapUTF7Encode("~/bågø")
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
     print("#######")
     print("Ting & Såger")
-    e = imapUTF7Encode(u'Ting & Såger')
+    e = imapUTF7Encode("Ting & Såger")
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
 
@@ -209,7 +209,7 @@ if __name__ == "__main__":
 
     print("#######")
     print("~/Følder/mailbåx & stuff + more")
-    n = u'~/Følder/mailbåx & stuff + more'
+    n = "~/Følder/mailbåx & stuff + more"
     e = imapUTF7Encode(n)
     print(e)
     print(imapUTF7Decode(e).encode("latin-1"))
