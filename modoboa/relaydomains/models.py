@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Relay domain related models."""
 
 from __future__ import unicode_literals

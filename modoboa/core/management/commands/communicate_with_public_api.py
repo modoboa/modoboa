@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Management command to communicate with public API."""
 
 from __future__ import unicode_literals
@@ -7,14 +9,13 @@ from django.core.management.base import BaseCommand, CommandError
 from modoboa.admin import models as admin_models
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import api_client
-
 from ... import models
 
 
 class Command(BaseCommand):
     """Command class."""
 
-    help = "Communicate with Modoboa public API."
+    help = "Communicate with Modoboa public API."  # NOQA:A003
 
     def handle(self, *args, **options):
         """Command entry point."""

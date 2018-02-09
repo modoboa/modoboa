@@ -1,34 +1,31 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """Tests for core application."""
 
 from __future__ import unicode_literals
 
 import smtplib
-
 from unittest import skipIf
+
 from mock import patch
 
 from django.core import mail
-from django.urls import reverse
 from django.test import override_settings
+from django.urls import reverse
 
-from modoboa.lib.tests import ModoTestCase
-from modoboa.lib.tests import NO_SMTP
-
-from .. import factories
-from .. import models
+from modoboa.lib.tests import NO_SMTP, ModoTestCase
+from .. import factories, models
 
 
 class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_authentication(self):
@@ -70,15 +67,15 @@ class PasswordResetTestCase(ModoTestCase):
     """Test password reset service."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(PasswordResetTestCase, cls).setUpTestData()
         cls.account_ok = factories.UserFactory(
             username="user@test.com", secondary_email="test@ext.com",
-            groups=('SimpleUsers',)
+            groups=("SimpleUsers",)
         )
         cls.account_ko = factories.UserFactory(
-            username="user2@test.com", groups=('SimpleUsers',)
+            username="user2@test.com", groups=("SimpleUsers",)
         )
 
     def test_reset_password(self):
@@ -104,7 +101,7 @@ class PasswordResetTestCase(ModoTestCase):
         self.assertEqual(len(mail.outbox), 0)
 
 
-@skipIf(NO_SMTP, 'No SMTP server available')
+@skipIf(NO_SMTP, "No SMTP server available")
 @override_settings(AUTHENTICATION_BACKENDS=(
     "modoboa.lib.authbackends.SMTPBackend",
     "django.contrib.auth.backends.ModelBackend"

@@ -1,27 +1,28 @@
+# -*- coding: utf-8 -*-
+
 """Admin serializers."""
 
 from __future__ import unicode_literals
 
 from django.conf import settings
+from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.encoding import force_text
-
-from django.contrib.auth import password_validation
+from django.utils.translation import ugettext as _, ugettext_lazy
 
 from rest_framework import serializers
 
 from modoboa.admin import models as admin_models
-from modoboa.core import constants as core_constants
-from modoboa.core import models as core_models
-from modoboa.core import signals as core_signals
-from modoboa.lib import exceptions as lib_exceptions
-from modoboa.lib import permissions, email_utils, fields as lib_fields
+from modoboa.core import (
+    constants as core_constants, models as core_models, signals as core_signals
+)
+from modoboa.lib import (
+    email_utils, exceptions as lib_exceptions, fields as lib_fields,
+    permissions
+)
 from modoboa.parameters import tools as param_tools
-
-from . import lib
-from . import models
+from . import lib, models
 
 
 class DomainSerializer(serializers.ModelSerializer):
@@ -62,8 +63,8 @@ class DomainSerializer(serializers.ModelSerializer):
         domain = models.Domain(**validated_data)
         creator = self.context["request"].user
         core_signals.can_create_object.send(
-                sender=self.__class__, context=creator,
-                klass=models.Domain, instance=domain)
+            sender=self.__class__, context=creator,
+            klass=models.Domain, instance=domain)
         domain.save(creator=creator)
         return domain
 

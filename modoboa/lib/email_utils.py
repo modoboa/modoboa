@@ -3,12 +3,12 @@
 from __future__ import unicode_literals
 
 import email
-from email.header import Header
-from email.mime.text import MIMEText
-from email.utils import make_msgid, formataddr, formatdate, getaddresses
 import re
 import smtplib
 import time
+from email.header import Header
+from email.mime.text import MIMEText
+from email.utils import formataddr, formatdate, getaddresses, make_msgid
 
 import chardet
 import lxml.html
@@ -22,7 +22,6 @@ from django.utils.translation import ugettext as _
 
 from modoboa.lib import u2u_decode
 from modoboa.lib.exceptions import InternalError
-
 
 # used by Email()
 _RE_REMOVE_EXTRA_WHITESPACE = re.compile(r"\n\s*\n")
@@ -128,7 +127,7 @@ class Email(object):
         # msg parameter to maintain compatibility with
         # modoboa_webmail.lib.imapemail.ImapEmail
         if header in msg:
-            return "".join([smart_text(v, encoding=(e or 'ascii'))
+            return "".join([smart_text(v, encoding=(e or "ascii"))
                             for v, e in email.header.decode_header(msg[header])
                             ])
         return ""
@@ -180,7 +179,8 @@ class Email(object):
             if content_type == "text":
                 self._parse_text(part, level=level)
             else:
-                # I'm  a dumb mail parser and treat all non-text parts as attachments
+                # I'm  a dumb mail parser and treat all non-text parts as
+                # attachments
                 self._parse_inline_image(part, level=level)
 
     def _parse_inline_image(self, msg, level=0):
@@ -188,7 +188,7 @@ class Email(object):
         cid = None
         if "Content-ID" in msg:
             cid = msg["Content-ID"]
-            if cid.startswith('<') and cid.endswith('>'):
+            if cid.startswith("<") and cid.endswith(">"):
                 cid = cid[1:-1]
         else:
             matches = _RE_CID.match(msg["Content-Type"])
@@ -226,13 +226,13 @@ class Email(object):
             html.rewrite_links(lambda x: None)
 
         cleaner = Cleaner(
-                scripts=True,
-                javascript=True,
-                links=True,
-                page_structure=True,
-                embedded=True,
-                frames=True,
-                add_nofollow=True)
+            scripts=True,
+            javascript=True,
+            links=True,
+            page_structure=True,
+            embedded=True,
+            frames=True,
+            add_nofollow=True)
         mail_text = lxml.html.tostring(cleaner.clean_html(html))
         self.contents["html"] = smart_text(mail_text)
 
@@ -290,18 +290,18 @@ def split_local_part(local_part, delimiter=None):
         # never split these special addresses
         pass
     elif (
-        delimiter == "-"
-        and (local_part.startswith("owner-")
-             or local_part.endswith("-request"))
+        delimiter == "-" and
+         (local_part.startswith("owner-") or
+          local_part.endswith("-request"))
     ):
         # don't split owner-* or *-request if - is the delimiter, they are
         # special addresses used by mail lists.
         pass
     elif (
-        delimiter
-        and delimiter in local_part
-        and local_part[0] != delimiter
-        and local_part[-1] != delimiter
+        delimiter and
+        delimiter in local_part and
+        local_part[0] != delimiter and
+        local_part[-1] != delimiter
     ):
         local_part, extension = local_part.split(delimiter, 1)
 
@@ -342,8 +342,8 @@ def decode(value_bytes, encoding, append_to_error=""):
         except (TypeError, UnicodeDecodeError) as exc:
             six.raise_from(
                 InternalError(
-                    _("unable to determine encoding of string")
-                    + append_to_error
+                    _("unable to determine encoding of string") +
+                    append_to_error
                 ),
                 exc
             )
@@ -379,7 +379,7 @@ def set_email_headers(msg, subject, sender, rcpt):
     """
     import pkg_resources
 
-    msg["Subject"] = Header(subject, 'utf8')
+    msg["Subject"] = Header(subject, "utf8")
     msg["From"] = sender
     msg["To"] = prepare_addresses(rcpt)
     msg["Message-ID"] = make_msgid()
@@ -388,7 +388,7 @@ def set_email_headers(msg, subject, sender, rcpt):
     msg["Date"] = formatdate(time.time(), True)
 
 
-def __sendmail(sender, rcpt, msgstring, server='localhost', port=25):
+def _sendmail(sender, rcpt, msgstring, server="localhost", port=25):
     """Message sending
 
     Return a tuple (True, None) on success, (False, error message)
@@ -425,9 +425,9 @@ def sendmail_simple(
     :param content: message's content
     :return: tuple
     """
-    msg = MIMEText(content, _charset='utf-8')
+    msg = MIMEText(content, _charset="utf-8")
     set_email_headers(msg, subject, sender, rcpt)
-    return __sendmail(sender, rcpt, msg.as_string(), **kwargs)
+    return _sendmail(sender, rcpt, msg.as_string(), **kwargs)
 
 
 def sendmail_fromfile(sender, rcpt, fname):
@@ -453,4 +453,4 @@ To: %s
     content += fp.read()
     fp.close()
 
-    return __sendmail(sender, rcpt, content)
+    return _sendmail(sender, rcpt, content)

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals
 
@@ -15,7 +15,7 @@ from modoboa.parameters import tools as param_tools
 class Command(BaseCommand):
     """Command class."""
 
-    help = "Log table cleanup"
+    help = "Log table cleanup"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command line."""
@@ -33,9 +33,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options["debug"]:
-            l = logging.getLogger("django.db.backends")
-            l.setLevel(logging.DEBUG)
-            l.addHandler(logging.StreamHandler())
+            log = logging.getLogger("django.db.backends")
+            log.setLevel(logging.DEBUG)
+            log.addHandler(logging.StreamHandler())
         self.verbose = options["verbose"]
 
         log_maximum_age = param_tools.get_global_parameter("log_maximum_age")

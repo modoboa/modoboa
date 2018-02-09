@@ -1,16 +1,13 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
 from django.core.files.base import ContentFile
 from django.urls import reverse
 
-from modoboa.admin import factories as admin_factories
-from modoboa.admin import models as admin_models
-from modoboa.core import factories as core_factories
-from modoboa.core import models as core_models
+from modoboa.admin import factories as admin_factories, models as admin_models
+from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.tests import ModoTestCase
-
 from .. import utils
 
 
@@ -18,7 +15,7 @@ class LimitImportTestCase(ModoTestCase):
     """Base class to test limits."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(LimitImportTestCase, cls).setUpTestData()
         admin_factories.populate_database()
@@ -71,7 +68,7 @@ domainalias; domalias2.com; {domain}; True
         self.assertTrue(limit.is_exceeded())
 
         f = ContentFile("""account; admin3@{domain}; toto; User; One; True; DomainAdmins; admin3@{domain}; 5; {domain}
-""".format(domain=self.domain), name="domain_admins.csv")
+""".format(domain=self.domain), name="domain_admins.csv")  # NOQA:E501
         response = self.client.post(
             reverse("admin:identity_import"), {
                 "sourcefile": f
@@ -135,10 +132,10 @@ alias; alias3@{domain}; True; user@{domain}
 class UserLimitImportTestCase(LimitImportTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         localconfig = core_models.LocalConfig.objects.first()
-        for name, tpl in utils.get_user_limit_templates():
+        for name, _definition in utils.get_user_limit_templates():
             localconfig.parameters.set_value(
                 "deflt_user_{0}_limit".format(name), 2)
         localconfig.save()
@@ -201,14 +198,14 @@ domain; domain3.com; 1000; 100; True
 class DomainLimitImportTestCase(LimitImportTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         localconfig = core_models.LocalConfig.objects.first()
         localconfig.parameters.set_values({
             "enable_domain_limits": True,
             "enable_admin_limits": False
         })
-        for name, tpl in utils.get_domain_limit_templates():
+        for name, _definition in utils.get_domain_limit_templates():
             localconfig.parameters.set_value(
                 "deflt_domain_{0}_limit".format(name), 2)
         localconfig.save()

@@ -20,17 +20,16 @@ from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
-
 from . import utils
 from .. import factories
-from ..models import Domain, Alias
+from ..models import Alias, Domain
 
 
 class DomainTestCase(ModoTestCase):
     """Test case for Domain."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DomainTestCase, cls).setUpTestData()
         factories.populate_database()
@@ -176,7 +175,7 @@ class DomainTestCase(ModoTestCase):
         values = {
             "name": "pouet.com", "quota": 10, "default_mailbox_quota": 100,
             "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": 'step3'
+            "create_aliases": True, "type": "domain", "stepid": "step3"
         }
         response = self.ajax_post(
             reverse("admin:domain_add"),
@@ -347,13 +346,13 @@ class DomainTestCase(ModoTestCase):
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Global statistics", response.content.decode('utf-8'))
+        self.assertIn("Global statistics", response.content.decode("utf-8"))
 
         self.client.force_login(
             User.objects.get(username="admin@test.com"))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        content = response.content.decode('utf-8')
+        content = response.content.decode("utf-8")
         self.assertNotIn("Global statistics", content)
         self.assertIn("Per-domain statistics", content)
 
@@ -362,7 +361,7 @@ class DKIMTestCase(ModoTestCase):
     """Test case for DKIM."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa: N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DKIMTestCase, cls).setUpTestData()
         factories.populate_database()

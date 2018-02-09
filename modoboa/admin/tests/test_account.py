@@ -1,34 +1,31 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
 from unittest import skipIf
 
-from django.urls import reverse
 from django.test import override_settings
+from django.urls import reverse
 
 from modoboa.core import factories as core_factories
-from modoboa.core.tests import test_ldap
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase
-from modoboa.lib.tests import NO_LDAP
+from modoboa.core.tests import test_ldap
+from modoboa.lib.tests import NO_LDAP, ModoTestCase
 from modoboa.limits import utils as limits_utils
-
-from .. import factories
-from .. import models
+from .. import factories, models
 
 
 class AuthenticationTestCase(ModoTestCase):
     """Check authentication."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.mb = factories.MailboxFactory(
             domain__name="test.com", address="user",
             user__username="user@test.com",
-            user__groups=('SimpleUsers',)
+            user__groups=("SimpleUsers",)
         )
 
     def test_authentication_unicode(self):
@@ -46,18 +43,18 @@ class AuthenticationTestCase(ModoTestCase):
 class AccountTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AccountTestCase, cls).setUpTestData()
         factories.populate_database()
 
     def test_crud(self):
-        values = dict(
-            username="tester@test.com", first_name="Tester", last_name="Toto",
-            password1="Toto1234", password2="Toto1234", role="SimpleUsers",
-            quota_act=True,
-            is_active=True, email="tester@test.com", stepid='step2'
-        )
+        values = {
+            "username": "tester@test.com", "first_name": "Tester",
+            "last_name": "Toto", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": "tester@test.com", "stepid": "step2"
+        }
         self.ajax_post(reverse("admin:account_add"), values)
 
         account = User.objects.get(username="tester@test.com")
@@ -344,12 +341,12 @@ class AccountTestCase(ModoTestCase):
 
     def test_utf8_username(self):
         """Create an account with non-ASCII characters."""
-        values = dict(
-            username="téster@test.com", first_name="Tester", last_name="Toto",
-            password1="Toto1234", password2="Toto1234", role="SimpleUsers",
-            quota_act=True,
-            is_active=True, email="téster@test.com", stepid="step2"
-        )
+        values = {
+            "username": "téster@test.com", "first_name": "Tester",
+            "last_name": "Toto", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
+            "is_active": True, "email": "téster@test.com", "stepid": "step2"
+        }
         self.ajax_post(reverse("admin:account_add"), values)
 
     def _set_quota(self, email, value, expected_status=200):
@@ -459,8 +456,8 @@ class AccountTestCase(ModoTestCase):
 
 @skipIf(NO_LDAP, "No ldap module installed")
 @override_settings(AUTHENTICATION_BACKENDS=(
-    'modoboa.lib.authbackends.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "modoboa.lib.authbackends.LDAPBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ))
 class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
     """Check LDAP related code."""
@@ -481,11 +478,11 @@ class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
 class PermissionsTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(PermissionsTestCase, cls).setUpTestData()
         parameters = {}
-        for name, tpl in limits_utils.get_user_limit_templates():
+        for name, _definition in limits_utils.get_user_limit_templates():
             parameters["deflt_user_{0}_limit".format(name)] = 2
         cls.localconfig.parameters.set_values(parameters, app="limits")
         cls.localconfig.save()
@@ -597,7 +594,7 @@ class PermissionsTestCase(ModoTestCase):
 
         response = self.client.get(
             reverse("admin:account_change", args=[self.user.id]),
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertNotEqual(response["Content-Type"], "application/json")
 
     def test_domainadmin_deletes_superadmin(self):
@@ -607,12 +604,12 @@ class PermissionsTestCase(ModoTestCase):
         for the associated domain, this domain admin must not be able
         to access the super admin.
         """
-        values = dict(
-            username="superadmin2@test.com", first_name="Super",
-            last_name="Admin", password1="Toto1234", password2="Toto1234",
-            role="SuperAdmins", is_active=True,
-            email="superadmin2@test.com", stepid='step2'
-        )
+        values = {
+            "username": "superadmin2@test.com", "first_name": "Super",
+            "last_name": "Admin", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SuperAdmins", "is_active": True,
+            "email": "superadmin2@test.com", "stepid": "step2"
+        }
         self.ajax_post(
             reverse("admin:account_add"),
             values
@@ -627,22 +624,22 @@ class PermissionsTestCase(ModoTestCase):
     def test_domainadmin_dlist_local_domain_not_owned(self):
         """Check if a domain admin can use a local mailbox he can't
         access as a recipient in a distribution list"""
-        values = dict(
-            address="all@test.com",
-            recipients="user@test.com",
-            recipients_1="user@test2.com",
-            enabled=True
-        )
+        values = {
+            "address": "all@test.com",
+            "recipients": "user@test.com",
+            "recipients_1": "user@test2.com",
+            "enabled": True
+        }
         self.ajax_post(reverse("admin:alias_add"), values)
 
     def test_domainadmin_master_user(self):
         """Check domain administrator is not allowed to access this feature."""
-        values = dict(
-            username="user10@test.com", first_name="Test",
-            last_name="Test", password1="Toto1234", password2="Toto1234",
-            role="SimpleUsers", is_active=True, master_user=True,
-            email="user10@test.com", stepid='step2'
-        )
+        values = {
+            "username": "user10@test.com", "first_name": "Test",
+            "last_name": "Test", "password1": "Toto1234",
+            "password2": "Toto1234", "role": "SimpleUsers", "is_active": True,
+            "master_user": True, "email": "user10@test.com", "stepid": "step2"
+        }
         self.ajax_post(
             reverse("admin:account_add"),
             values, status=400
@@ -656,7 +653,7 @@ class PermissionsTestCase(ModoTestCase):
         dom = models.Domain.objects.get(name="test.com")
         mb = factories.MailboxFactory(
             domain=dom, address="admin2",
-            user__username="admin2@test.com", user__groups=('DomainAdmins', ),
+            user__username="admin2@test.com", user__groups=("DomainAdmins", ),
             user__password="{PLAIN}toto")
         dom.add_admin(mb.user)
         self.client.logout()

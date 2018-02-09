@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Advanced (ie. stronger) password hashers.
 
@@ -9,7 +11,6 @@ from __future__ import unicode_literals
 from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
 
 from modoboa.parameters import tools as param_tools
-
 from .base import PasswordHasher
 
 
@@ -22,7 +23,7 @@ class BLFCRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{BLF-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{BLF-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash
@@ -50,7 +51,7 @@ class MD5CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{MD5-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{MD5-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash
@@ -72,7 +73,7 @@ class SHA256CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{SHA256-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{SHA256-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash
@@ -96,7 +97,7 @@ class SHA512CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{SHA512-CRYPT}' if self._target == 'local' else '{CRYPT}'
+        return "{SHA512-CRYPT}" if self._target == "local" else "{CRYPT}"
 
     def _b64encode(self, pwhash):
         return pwhash

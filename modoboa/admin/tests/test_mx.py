@@ -8,26 +8,23 @@ import dns.resolver
 from mock import patch
 from testfixtures import LogCapture
 
-from django.core import mail
-from django.core import management
+from django.core import mail, management
 from django.test import override_settings
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
 from modoboa.core import factories as core_factories
 from modoboa.lib.tests import ModoTestCase
-
 from . import utils
-from .. import factories
+from .. import factories, models
 from ..lib import get_domain_mx_list
-from .. import models
 
 
 class MXTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa:N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(MXTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
@@ -56,7 +53,7 @@ class MXTestCase(ModoTestCase):
     @patch("socket.getaddrinfo")
     @patch.object(dns.resolver.Resolver, "query")
     def test_management_command(
-         self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -84,7 +81,7 @@ class MXTestCase(ModoTestCase):
     @patch("socket.getaddrinfo")
     @patch.object(dns.resolver.Resolver, "query")
     def test_single_domain_update(
-         self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Update only one domain."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -133,7 +130,7 @@ class MXTestCase(ModoTestCase):
             ("modoboa.admin", "WARNING",
                 _("Invalid IP address format for %(domain)s; %(addr)s")
                 % {"domain": "bad-response.example.com", "addr": "BAD"}),
-            )
+        )
 
 
 @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])
@@ -141,7 +138,7 @@ class DNSBLTestCase(ModoTestCase):
     """TestCase for DNSBL related features."""
 
     @classmethod
-    def setUpTestData(cls):  # noqa:N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(DNSBLTestCase, cls).setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
@@ -156,7 +153,7 @@ class DNSBLTestCase(ModoTestCase):
     @patch("socket.getaddrinfo")
     @patch.object(dns.resolver.Resolver, "query")
     def test_management_command(
-         self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -177,7 +174,7 @@ class DNSBLTestCase(ModoTestCase):
     @patch("socket.getaddrinfo")
     @patch.object(dns.resolver.Resolver, "query")
     def test_notifications(
-         self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check notifications."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -193,7 +190,7 @@ class DNSBLTestCase(ModoTestCase):
     @patch("socket.getaddrinfo")
     @patch.object(dns.resolver.Resolver, "query")
     def test_management_command_no_dnsbl(
-         self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine without dnsbl."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result

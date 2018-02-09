@@ -1,26 +1,26 @@
+# -*- coding: utf-8 -*-
+
 """Import related views."""
 
 from __future__ import unicode_literals
 
-from backports import csv
-
 import io
+
+from backports import csv
+from reversion import revisions as reversion
 
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.urls import reverse
 from django.db import transaction
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 
-from reversion import revisions as reversion
-
-from modoboa.lib.exceptions import ModoboaException, Conflict
-
-from ..forms import ImportIdentitiesForm, ImportDataForm
+from modoboa.lib.exceptions import Conflict, ModoboaException
 from .. import signals
+from ..forms import ImportDataForm, ImportIdentitiesForm
 
 
 @reversion.create_revision()
@@ -39,8 +39,8 @@ def importdata(request, formclass=ImportDataForm):
     if form.is_valid():
         try:
             infile = io.TextIOWrapper(
-                request.FILES['sourcefile'].file, encoding="utf8")
-            reader = csv.reader(infile, delimiter=form.cleaned_data['sepchar'])
+                request.FILES["sourcefile"].file, encoding="utf8")
+            reader = csv.reader(infile, delimiter=form.cleaned_data["sepchar"])
         except csv.Error as inst:
             error = smart_text(inst)
         else:
@@ -63,7 +63,7 @@ def importdata(request, formclass=ImportDataForm):
                                 continue
                             raise Conflict(
                                 _("Object already exists: %s"
-                                  % form.cleaned_data['sepchar'].join(row[:2]))
+                                  % form.cleaned_data["sepchar"].join(row[:2]))
                             )
                     cpt += 1
                 msg = _("%d objects imported successfully" % cpt)

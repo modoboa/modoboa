@@ -1,8 +1,8 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """A shortcut to deploy a fresh modoboa instance."""
 
-from __future__ import unicode_literals, print_function
+from __future__ import print_function, unicode_literals
 
 import codecs
 import getpass
@@ -10,8 +10,18 @@ import os
 import shutil
 import subprocess
 import sys
-
 from os.path import isfile
+
+import dj_database_url
+
+import django
+from django.core import management
+from django.template import Context, Template
+from django.utils.encoding import smart_str
+from django.utils.six.moves import input
+
+from modoboa.core.commands import Command
+from modoboa.lib.api_client import ModoAPIClient
 
 try:
     import pip
@@ -19,17 +29,6 @@ except ImportError:
     sys.stderr.write("Error: pip is required to install extensions.\n")
     sys.exit(2)
 
-import django
-from django.core import management
-from django.template import Context, Template
-from django.utils.encoding import smart_str
-import dj_database_url
-
-from modoboa.core.commands import Command
-from modoboa.lib.api_client import ModoAPIClient
-
-if sys.version_info < (3, 0, 0):
-    input = raw_input
 
 DBCONN_TPL = """
     '{{ conn_name }}': {
@@ -51,47 +50,47 @@ class DeployCommand(Command):
 
     """The ``deploy`` command."""
 
-    help = (
+    help = (  # NOQA:A003
         "Create a fresh django project (calling startproject)"
         " and apply Modoboa specific settings."
     )
 
     def __init__(self, *args, **kwargs):
         super(DeployCommand, self).__init__(*args, **kwargs)
-        self._parser.add_argument('name', type=str,
-                                  help='The name of your Modoboa instance')
+        self._parser.add_argument("name", type=str,
+                                  help="The name of your Modoboa instance")
         self._parser.add_argument(
-            '--collectstatic', action='store_true', default=False,
-            help='Run django collectstatic command'
+            "--collectstatic", action="store_true", default=False,
+            help="Run django collectstatic command"
         )
         self._parser.add_argument(
-            '--dburl', type=str, nargs="+", default=None,
-            help='A database-url with a name')
+            "--dburl", type=str, nargs="+", default=None,
+            help="A database-url with a name")
         self._parser.add_argument(
-            '--domain', type=str, default=None,
-            help='The domain under which you want to deploy modoboa')
+            "--domain", type=str, default=None,
+            help="The domain under which you want to deploy modoboa")
         self._parser.add_argument(
-            '--lang', type=str, default="en-us",
+            "--lang", type=str, default="en-us",
             help="Set the default language"
         )
         self._parser.add_argument(
-            '--timezone', type=str, default="UTC",
+            "--timezone", type=str, default="UTC",
             help="Set the local timezone"
         )
         self._parser.add_argument(
-            '--devel', action='store_true', default=False,
-            help='Create a development instance'
+            "--devel", action="store_true", default=False,
+            help="Create a development instance"
         )
         self._parser.add_argument(
-            '--extensions', type=str, nargs='*',
+            "--extensions", type=str, nargs="*",
             help="The list of extension to deploy"
         )
         self._parser.add_argument(
-            '--dont-install-extensions', action='store_true', default=False,
-            help='Do not install extensions using pip'
+            "--dont-install-extensions", action="store_true", default=False,
+            help="Do not install extensions using pip"
         )
         self._parser.add_argument(
-            '--admin-username', default='admin',
+            "--admin-username", default="admin",
             help="Username of the initial super administrator"
         )
 
@@ -101,7 +100,7 @@ class DeployCommand(Command):
         :param name: the command name
         :param cwd: the directory where the command must be executed
         """
-        cmd = [sys.executable, 'manage.py', name]
+        cmd = [sys.executable, "manage.py", name]
         cmd.extend(args)
         if not self._verbose:
             p = subprocess.Popen(
@@ -120,7 +119,7 @@ class DeployCommand(Command):
                 )
             print("%s failed, check your configuration" % cmd, file=sys.stderr)
 
-    def ask_db_info(self, name='default'):
+    def ask_db_info(self, name="default"):
         """Prompt the user for database information
 
         Gather all information required to create a new database
@@ -130,33 +129,33 @@ class DeployCommand(Command):
         """
         print("Configuring database connection: %s" % name)
         info = {
-            'conn_name': name,
-            'ENGINE': input(
-                'Database type (mysql, postgres or sqlite3): ')
+            "conn_name": name,
+            "ENGINE": input(
+                "Database type (mysql, postgres or sqlite3): ")
         }
-        if info['ENGINE'] not in ['mysql', 'postgres', 'sqlite3']:
-            raise RuntimeError('Unsupported database engine')
+        if info["ENGINE"] not in ["mysql", "postgres", "sqlite3"]:
+            raise RuntimeError("Unsupported database engine")
 
-        if info['ENGINE'] == 'sqlite3':
-            info['ENGINE'] = 'django.db.backends.sqlite3'
-            info['NAME'] = '%s.db' % name
+        if info["ENGINE"] == "sqlite3":
+            info["ENGINE"] = "django.db.backends.sqlite3"
+            info["NAME"] = "%s.db" % name
             return info
-        if info['ENGINE'] == 'postgres':
-            info['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+        if info["ENGINE"] == "postgres":
+            info["ENGINE"] = "django.db.backends.postgresql_psycopg2"
             default_port = 5432
         else:
-            info['ENGINE'] = 'django.db.backends.mysql'
+            info["ENGINE"] = "django.db.backends.mysql"
             default_port = 3306
-        info['HOST'] = input("Database host (default: 'localhost'): ")
-        info['PORT'] = input(
+        info["HOST"] = input("Database host (default: 'localhost'): ")
+        info["PORT"] = input(
             "Database port (default: '%s'): " % default_port)
         # leave port setting empty, if default value is supplied and
         # leave it to django
-        if info['PORT'] == default_port:
-            info['PORT'] = ''
-        info['NAME'] = input('Database name: ')
-        info['USER'] = input('Username: ')
-        info['PASSWORD'] = getpass.getpass('Password: ')
+        if info["PORT"] == default_port:
+            info["PORT"] = ""
+        info["NAME"] = input("Database name: ")
+        info["USER"] = input("Username: ")
+        info["PASSWORD"] = getpass.getpass("Password: ")
         return info
 
     def _get_extension_list(self):
@@ -188,9 +187,9 @@ class DeployCommand(Command):
     def handle(self, parsed_args):
         django.setup()
         management.call_command(
-            'startproject', parsed_args.name, verbosity=False
+            "startproject", parsed_args.name, verbosity=False
         )
-        path = "%(name)s/%(name)s" % {'name': parsed_args.name}
+        path = "%(name)s/%(name)s" % {"name": parsed_args.name}
         sys.path.append(parsed_args.name)
 
         conn_tpl = Template(DBCONN_TPL)
@@ -206,7 +205,7 @@ class DeployCommand(Command):
                     info = self.ask_db_info(conn_name)
                 # If we set this earlier, our fallback method will never
                 # be triggered
-                info['conn_name'] = conn_name
+                info["conn_name"] = conn_name
                 connections[conn_name] = conn_tpl.render(Context(info))
         else:
             connections["default"] = conn_tpl.render(
@@ -216,7 +215,7 @@ class DeployCommand(Command):
             allowed_host = parsed_args.domain
         else:
             allowed_host = input(
-                'What will be the hostname used to access Modoboa? ')
+                "What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
         extra_settings = []
@@ -238,20 +237,20 @@ class DeployCommand(Command):
         )
 
         mod = __import__(
-            parsed_args.name, globals(), locals(), [smart_str('settings')]
+            parsed_args.name, globals(), locals(), [smart_str("settings")]
         )
         tpl = self._render_template(
             "%s/settings.py.tpl" % self._templates_dir, {
-                'db_connections': connections,
-                'secret_key': mod.settings.SECRET_KEY,
-                'name': parsed_args.name,
-                'allowed_host': allowed_host,
-                'lang': parsed_args.lang,
-                'timezone': parsed_args.timezone,
-                'bower_components_dir': bower_components_dir,
-                'devmode': parsed_args.devel,
-                'extensions': extensions,
-                'extra_settings': extra_settings
+                "db_connections": connections,
+                "secret_key": mod.settings.SECRET_KEY,
+                "name": parsed_args.name,
+                "allowed_host": allowed_host,
+                "lang": parsed_args.lang,
+                "timezone": parsed_args.timezone,
+                "bower_components_dir": bower_components_dir,
+                "devmode": parsed_args.devel,
+                "extensions": extensions,
+                "extra_settings": extra_settings
             }
         )
         with codecs.open("%s/settings.py" % path, "w", "utf-8") as fp:
@@ -264,7 +263,7 @@ class DeployCommand(Command):
         if isfile("%s/settings.pyc" % path):
             os.unlink("%s/settings.pyc" % path)
         self._exec_django_command(
-            "migrate", parsed_args.name, '--noinput'
+            "migrate", parsed_args.name, "--noinput"
         )
         self._exec_django_command(
             "load_initial_data", parsed_args.name,
@@ -272,7 +271,7 @@ class DeployCommand(Command):
         )
         if parsed_args.collectstatic:
             self._exec_django_command(
-                "collectstatic", parsed_args.name, '--noinput'
+                "collectstatic", parsed_args.name, "--noinput"
             )
         self._exec_django_command(
             "set_default_site", parsed_args.name, allowed_host

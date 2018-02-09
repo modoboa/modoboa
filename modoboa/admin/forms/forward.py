@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Forms related to forwards management."""
 
 from __future__ import unicode_literals

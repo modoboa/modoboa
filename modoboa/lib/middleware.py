@@ -1,15 +1,15 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """Custom middlewares."""
 
 from __future__ import unicode_literals
 
 from django.http import HttpResponseRedirect
-from django.utils.encoding import smart_text
 from django.utils.deprecation import MiddlewareMixin
+from django.utils.encoding import smart_text
 
-from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib import signals as lib_signals
+from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.web_utils import (
     _render_error, ajax_response, render_to_json_response
 )
@@ -19,7 +19,7 @@ class AjaxLoginRedirect(MiddlewareMixin):
 
     def process_response(self, request, response):
         if request.is_ajax():
-            if type(response) == HttpResponseRedirect:
+            if isinstance(response, HttpResponseRedirect):
                 response.status_code = 278
         return response
 
@@ -41,7 +41,7 @@ class CommonExceptionCatcher(MiddlewareMixin):
                 smart_text(exception), status=exception.http_code
             )
         return _render_error(
-            request, user_context=dict(error=smart_text(exception))
+            request, user_context={"error": smart_text(exception)}
         )
 
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Forms related to domains management."""
 
 from __future__ import unicode_literals
@@ -5,34 +7,28 @@ from __future__ import unicode_literals
 from functools import reduce
 
 from django import forms
-from django.urls import reverse
 from django.http import QueryDict
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.urls import reverse
 from django.utils.encoding import force_text
+from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
 from modoboa.lib.exceptions import Conflict
 from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
-    YesNoField, WizardForm, WizardStep, DynamicForm, TabForms
+    DynamicForm, TabForms, WizardForm, WizardStep, YesNoField
 )
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
-
-from .. import constants
-from .. import lib
-from .. import signals
-
-from ..models import (
-    Domain, DomainAlias, Mailbox, Alias
-)
+from .. import constants, lib, signals
+from ..models import Alias, Domain, DomainAlias, Mailbox
 
 
 class DomainFormGeneral(forms.ModelForm, DynamicForm):
     """A form to create/edit a domain."""
 
-    type = forms.ChoiceField(
+    type = forms.ChoiceField(  # NOQA:A003
         label=ugettext_lazy("Type"),
     )
     aliases = DomainNameField(
@@ -82,7 +78,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         """Check unicity and more."""
         name = self.cleaned_data["name"]
         label = lib.check_if_domain_exists(
-            name, [(DomainAlias, _('domain alias'))])
+            name, [(DomainAlias, _("domain alias"))])
         if label is not None:
             raise forms.ValidationError(
                 _("A %s with this name already exists") % force_text(label))

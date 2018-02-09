@@ -1,33 +1,29 @@
+# -*- coding: utf-8 -*-
+
 """Identity related views."""
 
 from __future__ import unicode_literals
 
+from reversion import revisions as reversion
+
+from django.contrib.auth import mixins as auth_mixins
+from django.contrib.auth.decorators import (
+    login_required, permission_required, user_passes_test
+)
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth.decorators import (
-    login_required, permission_required, user_passes_test
-)
-
-from reversion import revisions as reversion
-
 from modoboa.core.models import User
-from modoboa.lib.exceptions import (
-    PermDeniedException, BadRequest
-)
-from modoboa.lib.listing import (
-    get_sort_order, get_listing_page
-)
+from modoboa.lib.exceptions import BadRequest, PermDeniedException
+from modoboa.lib.listing import get_listing_page, get_sort_order
 from modoboa.lib.web_utils import render_to_json_response
-
+from .. import signals
 from ..forms import AccountForm, AccountWizard
 from ..lib import get_identities
-from ..models import Mailbox, Domain
-from .. import signals
+from ..models import Domain, Mailbox
 
 
 @login_required
@@ -36,18 +32,20 @@ from .. import signals
     u.has_perm("admin.add_alias")
 )
 def _identities(request):
-    filters = dict((fname, request.GET.get(fname, None))
-                   for fname in ['searchquery', 'idtfilter', 'grpfilter'])
-    request.session['identities_filters'] = filters
+    filters = {
+        fname: request.GET.get(fname, None)
+        for fname in ["searchquery", "idtfilter", "grpfilter"]
+    }
+    request.session["identities_filters"] = filters
     idents_list = get_identities(request.user, **filters)
     sort_order, sort_dir = get_sort_order(request.GET, "identity",
                                           ["identity", "name_or_rcpt", "tags"])
     if sort_order in ["identity", "name_or_rcpt"]:
         objects = sorted(idents_list, key=lambda o: getattr(o, sort_order),
-                         reverse=sort_dir == '-')
+                         reverse=sort_dir == "-")
     else:
         objects = sorted(idents_list, key=lambda o: o.tags[0],
-                         reverse=sort_dir == '-')
+                         reverse=sort_dir == "-")
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
             "handle_mailboxes", raise_exception=False)
@@ -104,7 +102,7 @@ def list_quotas(request):
                     "* 1048576)) * 100"
                 )
             mboxes = mboxes.extra(
-                select={'quota_usage': select},
+                select={"quota_usage": select},
                 where=["admin_quota.username=%s" % where],
                 tables=["admin_quota", "admin_domain"],
                 order_by=["%s%s" % (sort_dir, sort_order)]
@@ -157,7 +155,7 @@ def identities(request, tplname="admin/identities.html"):
 @permission_required("core.add_user")
 def accounts_list(request):
     accs = User.objects.filter(is_superuser=False) \
-        .exclude(groups__name='SimpleUsers')
+        .exclude(groups__name="SimpleUsers")
     res = [a.username for a in accs.all()]
     return render_to_json_response(res)
 
@@ -179,8 +177,9 @@ def editaccount(request, pk):
         raise PermDeniedException
     mb = account.mailbox if hasattr(account, "mailbox") else None
 
-    instances = dict(
-        general=account, profile=account, mail=mb, perms=account)
+    instances = {
+        "general": account, "profile": account, "mail": mb, "perms": account
+    }
     results = signals.get_account_form_instances.send(
         sender="editaccount", user=request.user, account=account)
     for result in results:
@@ -238,7 +237,7 @@ class AccountDetailView(
         result = signals.extra_account_dashboard_widgets.send(
             self.__class__, user=self.request.user, account=self.object)
         context["templates"] = {"left": [], "right": []}
-        for receiver, widgets in result:
+        for _receiver, widgets in result:
             for widget in widgets:
                 context["templates"][widget["column"]].append(
                     widget["template"])

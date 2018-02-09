@@ -1,24 +1,22 @@
+# -*- coding: utf-8 -*-
+
 """Alias related views."""
 
 from __future__ import unicode_literals
 
-from django.urls import reverse
+from reversion import revisions as reversion
+
+from django.contrib.auth import mixins as auth_mixins
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db import IntegrityError
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 
-from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth.decorators import (
-    login_required, permission_required
-)
-
-from reversion import revisions as reversion
-
 from modoboa.core import signals as core_signals
-from modoboa.lib.exceptions import PermDeniedException, Conflict
+from modoboa.lib.exceptions import Conflict, PermDeniedException
 from modoboa.lib.web_utils import render_to_json_response
-
 from ..forms import AliasForm
 from ..models import Alias
 
@@ -37,7 +35,7 @@ def _validate_alias(request, form, successmsg, callback=None):
             callback(request.user, alias)
         return render_to_json_response(successmsg)
 
-    return render_to_json_response({'form_errors': form.errors}, status=400)
+    return render_to_json_response({"form_errors": form.errors}, status=400)
 
 
 def _new_alias(request, title, action, successmsg,
@@ -87,12 +85,12 @@ def editalias(request, alid, tplname="admin/aliasform.html"):
         return _validate_alias(request, form, successmsg)
 
     ctx = {
-        'action': reverse("admin:alias_change", args=[alias.id]),
-        'formid': 'aliasform',
-        'title': alias.address,
-        'action_label': _('Update'),
-        'action_classes': 'submit',
-        'form': AliasForm(request.user, instance=alias)
+        "action": reverse("admin:alias_change", args=[alias.id]),
+        "formid": "aliasform",
+        "title": alias.address,
+        "action_label": _("Update"),
+        "action_classes": "submit",
+        "form": AliasForm(request.user, instance=alias)
     }
     return render(request, tplname, ctx)
 

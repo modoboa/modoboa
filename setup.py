@@ -12,8 +12,9 @@ from __future__ import unicode_literals
 
 import io
 from os import path
+
 from pip.req import parse_requirements
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 
 def get_requirements(requirements_file):

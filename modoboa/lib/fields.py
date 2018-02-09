@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Custom form fields."""
 
 from __future__ import unicode_literals

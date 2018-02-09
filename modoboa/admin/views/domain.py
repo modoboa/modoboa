@@ -1,34 +1,34 @@
+# -*- coding: utf-8 -*-
+
 """Domain related views."""
 
 from __future__ import unicode_literals
 
 from functools import reduce
 
-from django.urls import reverse
-from django.db.models import Sum
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _, ungettext
-from django.views import generic
-from django.views.decorators.csrf import ensure_csrf_cookie
+from reversion import revisions as reversion
 
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-
-from reversion import revisions as reversion
+from django.db.models import Sum
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.translation import ugettext as _, ungettext
+from django.views import generic
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from modoboa.core import signals as core_signals
-from modoboa.lib.web_utils import render_to_json_response
 from modoboa.lib.exceptions import PermDeniedException
-from modoboa.lib.listing import get_sort_order, get_listing_page
-
+from modoboa.lib.listing import get_listing_page, get_sort_order
+from modoboa.lib.web_utils import render_to_json_response
+from .. import signals
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
 from ..models import Domain, Mailbox
-from .. import signals
 
 
 @login_required
@@ -47,20 +47,20 @@ def _domains(request):
     if extra_filters:
         extra_filters = reduce(
             lambda a, b: a + b, [result[1] for result in extra_filters])
-    filters = dict(
-        (flt, request.GET.get(flt, None))
+    filters = {
+        flt: request.GET.get(flt, None)
         for flt in ["domfilter", "searchquery"] + extra_filters
-    )
-    request.session['domains_filters'] = filters
+    }
+    request.session["domains_filters"] = filters
     domainlist = get_domains(request.user, **filters)
-    if sort_order == 'name':
+    if sort_order == "name":
         domainlist = sorted(
             domainlist,
-            key=lambda d: getattr(d, sort_order), reverse=sort_dir == '-'
+            key=lambda d: getattr(d, sort_order), reverse=sort_dir == "-"
         )
     else:
         domainlist = sorted(domainlist, key=lambda d: d.tags[0]["name"],
-                            reverse=sort_dir == '-')
+                            reverse=sort_dir == "-")
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
             "handle_mailboxes", raise_exception=False),
@@ -118,8 +118,6 @@ def domains_list(request):
 @login_required
 @permission_required("admin.add_domain")
 def list_quotas(request):
-    from modoboa.lib.db_utils import db_type
-
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     domains = Domain.objects.get_for_admin(request.user)
     domains = domains.exclude(quota=0)
@@ -164,7 +162,7 @@ def editdomain(request, dom_id):
     if not request.user.can_access(domain):
         raise PermDeniedException
 
-    instances = dict(general=domain)
+    instances = {"general": domain}
     results = signals.get_domain_form_instances.send(
         sender="editdomain", user=request.user, domain=domain)
     for result in results:
@@ -217,7 +215,7 @@ class DomainDetailView(
             "enable_mx_checks": parameters.get_value("enable_mx_checks"),
             "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
         })
-        for receiver, widgets in result:
+        for _receiver, widgets in result:
             for widget in widgets:
                 context["templates"][widget["column"]].append(
                     widget["template"])

@@ -1,13 +1,14 @@
+# -*- coding: utf-8 -*-
+
 """Transport models."""
 
 from __future__ import unicode_literals
 
+import jsonfield
 from reversion import revisions as reversion
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-import jsonfield
 
 from . import backends
 

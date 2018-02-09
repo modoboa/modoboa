@@ -1,19 +1,20 @@
+# -*- coding: utf-8 -*-
+
 """Django management command to import admin objects."""
 
 from __future__ import unicode_literals
 
-from backports import csv
 import io
 import os
 
 import progressbar
+from backports import csv
 
 from django.core.management.base import BaseCommand, CommandError
 
 from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.exceptions import Conflict
-
 from .... import signals
 
 
@@ -21,7 +22,7 @@ class ImportCommand(BaseCommand):
     """Command class."""
 
     args = "csvfile"
-    help = "Import identities from a csv file"  # noqa:A003
+    help = "Import identities from a csv file"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""
@@ -30,7 +31,7 @@ class ImportCommand(BaseCommand):
             help="Separator used in file.")
         parser.add_argument(
             "--continue-if-exists", action="store_true",
-            dest='continue_if_exists', default=False,
+            dest="continue_if_exists", default=False,
             help="Continue even if an entry already exists.")
         parser.add_argument(
             "--crypt-password", action="store_true",

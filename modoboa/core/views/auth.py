@@ -1,24 +1,24 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """Core authentication views."""
 
 from __future__ import unicode_literals
 
 import logging
 
-from django.urls import reverse
+from django.contrib.auth import (
+    authenticate, login, logout, views as auth_views
+)
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import views as auth_views
-
 from modoboa.core import forms
-
-from .base import find_nextlocation
 from .. import signals
+from .base import find_nextlocation
 
 logger = logging.getLogger("modoboa.auth")
 
@@ -29,7 +29,7 @@ def dologin(request):
     if request.method == "POST":
         form = forms.LoginForm(request.POST)
         if form.is_valid():
-            logger = logging.getLogger('modoboa.auth')
+            logger = logging.getLogger("modoboa.auth")
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:

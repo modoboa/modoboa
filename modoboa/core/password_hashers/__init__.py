@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
+
 """
 Password hashers for Modoboa.
 """
 
 from __future__ import unicode_literals
 
-from modoboa.core.password_hashers.base import (
-    PLAINHasher, CRYPTHasher, MD5Hasher, SHA256Hasher
-)
-from modoboa.core.password_hashers.advanced import (
+from modoboa.core.password_hashers.advanced import (  # NOQA:F401
     BLFCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher
+)
+from modoboa.core.password_hashers.base import (  # NOQA:F401
+    CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher
 )
 
 
@@ -22,8 +24,8 @@ def get_password_hasher(scheme):
     :return: The hasher class
     """
     try:
-        scheme = scheme.replace('-', '')
-        hasher = globals()['%sHasher' % scheme.upper()]
+        scheme = scheme.replace("-", "")
+        hasher = globals()["%sHasher" % scheme.upper()]
     except KeyError:
         hasher = PLAINHasher
     return hasher

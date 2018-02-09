@@ -1,17 +1,15 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """Core forms."""
 
 from __future__ import unicode_literals
 
 from django import forms
+from django.contrib.auth import (
+    forms as auth_forms, get_user_model, password_validation
+)
 from django.db.models import Q
 from django.utils.translation import ugettext as _, ugettext_lazy
-
-from django.contrib.auth import forms as auth_forms
-from django.contrib.auth import get_user_model
-
-from django.contrib.auth import password_validation
 
 from modoboa.core.models import User
 from modoboa.parameters import tools as param_tools
