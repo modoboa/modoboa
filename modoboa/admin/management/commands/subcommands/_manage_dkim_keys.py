@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Management command to create DKIM keys."""
 
 from __future__ import print_function, unicode_literals
@@ -9,7 +11,6 @@ from django.utils.encoding import smart_text
 
 from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
-
 from .... import models
 
 

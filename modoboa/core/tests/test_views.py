@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Core views test cases."""
 
 from __future__ import unicode_literals
@@ -8,12 +10,8 @@ from django import forms
 from django.urls import reverse
 
 from modoboa.lib.tests import ModoTestCase
-from modoboa.parameters import forms as param_forms
-from modoboa.parameters import tools as param_tools
-
-from .. import factories
-from .. import models
-from .. import signals
+from modoboa.parameters import forms as param_forms, tools as param_tools
+from .. import factories, models, signals
 
 SETTINGS_SAMPLE = {
     "core-check_new_versions": "True",
@@ -93,7 +91,7 @@ class DashboardTestCase(ModoTestCase):
     """Dashboard tests."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(DashboardTestCase, cls).setUpTestData()
         cls.dadmin = factories.UserFactory(
@@ -108,12 +106,12 @@ class DashboardTestCase(ModoTestCase):
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", response.content.decode('utf-8'))
+        self.assertIn("Latest news", response.content.decode("utf-8"))
         self.client.logout()
         self.client.login(username=self.dadmin.username, password="toto")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Latest news", response.content.decode('utf-8'))
+        self.assertIn("Latest news", response.content.decode("utf-8"))
         self.client.logout()
         self.client.login(username=self.user.username, password="toto")
         response = self.client.get(url)

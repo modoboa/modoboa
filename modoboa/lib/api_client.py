@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
 """A client for Modoboa's public API."""
 
 from __future__ import unicode_literals
 
 import os
-import pkg_resources
 
+import pkg_resources
 import requests
 from requests.exceptions import RequestException
 

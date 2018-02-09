@@ -1,19 +1,18 @@
+# -*- coding: utf-8 -*-
+
 """Models related to domain aliases management."""
 
 from __future__ import unicode_literals
 
+from reversion import revisions as reversion
+
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from django.contrib.contenttypes.fields import GenericRelation
-
-from reversion import revisions as reversion
-
-from modoboa.core import models as core_models
-from modoboa.core import signals as core_signals
+from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib.exceptions import BadRequest, Conflict
-
 from .base import AdminObject
 from .domain import Domain
 
@@ -39,12 +38,12 @@ class DomainAlias(AdminObject):
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The alias name"))
     target = models.ForeignKey(
-        Domain, verbose_name=ugettext_lazy('target'),
+        Domain, verbose_name=ugettext_lazy("target"),
         help_text=ugettext_lazy("The domain this alias points to"),
         on_delete=models.CASCADE
     )
     enabled = models.BooleanField(
-        ugettext_lazy('enabled'),
+        ugettext_lazy("enabled"),
         help_text=ugettext_lazy("Check to activate this alias"),
         default=True
     )
@@ -65,7 +64,8 @@ class DomainAlias(AdminObject):
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row
 
-        Expected format: ["domainalias", domain alias name, targeted domain, enabled]
+        Expected format: ["domainalias", domain alias name, targeted domain,
+                          enabled]
 
         :param user: a ``User`` object
         :param row: a list containing the alias definition
@@ -93,5 +93,6 @@ class DomainAlias(AdminObject):
         """
         csvwriter.writerow(["domainalias", self.name,
                             self.target.name, self.enabled])
+
 
 reversion.register(DomainAlias)

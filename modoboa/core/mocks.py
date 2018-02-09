@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+
 """Mocks used for testing."""
 
 from __future__ import unicode_literals
 
 import httmock
 
-
 # Modoboa API mocks
+
 
 @httmock.urlmatch(
     netloc=r"api\.modoboa\.org$", path=r"^/1/instances/search/", method="post")

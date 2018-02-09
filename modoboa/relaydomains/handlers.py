@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Django signal handlers for relaydomains."""
 
 from __future__ import unicode_literals
@@ -6,16 +8,11 @@ from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 
-from modoboa.admin import models as admin_models
-from modoboa.admin import signals as admin_signals
+from modoboa.admin import models as admin_models, signals as admin_signals
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.transport import models as tr_models
-
-from . import forms
-from . import lib
-from . import models
-from . import postfix_maps
+from . import forms, lib, models, postfix_maps
 
 
 @receiver(admin_signals.use_external_recipients)

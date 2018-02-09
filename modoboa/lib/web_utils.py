@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """
 This module contains extra functions/shortcuts used to render HTML.
@@ -29,7 +29,7 @@ def render_actions(actions):
     t = template.Template("""{% load lib_tags %}
 {% for a in actions %}{% render_link a %}{% endfor %}
 """)
-    return t.render(template.Context(dict(actions=actions)))
+    return t.render(template.Context({"actions": actions}))
 
 
 def getctx(status, level=1, callback=None, **kwargs):
@@ -88,7 +88,7 @@ def render_to_json_response(context, **response_kwargs):
     :return: ``HttpResponse`` object
     """
     data = json.dumps(context)
-    response_kwargs['content_type'] = 'application/json'
+    response_kwargs["content_type"] = "application/json"
     return HttpResponse(data, **response_kwargs)
 
 
@@ -136,8 +136,8 @@ class NavigationParameters(object):
     def __init__(self, request, sessionkey):
         self.request = request
         self.sessionkey = sessionkey
-        self.parameters = [('pattern', '', True),
-                           ('criteria', 'from_addr', False)]
+        self.parameters = [("pattern", "", True),
+                           ("criteria", "from_addr", False)]
 
     def __getitem__(self, key):
         """Retrieve an item."""

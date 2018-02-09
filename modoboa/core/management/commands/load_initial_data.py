@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """A management command to load Modoboa initial data:
 
 * Create a default super admin if none exists
@@ -12,19 +14,14 @@ from functools import reduce
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-from modoboa.lib.cryptutils import random_key
 from modoboa.lib.permissions import add_permissions_to_group
-
-from ... import constants
-from ... import extensions
-from ... import models
-from ... import signals
+from ... import constants, extensions, models, signals
 
 
 class Command(BaseCommand):
     """Command definition."""
 
-    help = "Load Modoboa initial data"
+    help = "Load Modoboa initial data"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""

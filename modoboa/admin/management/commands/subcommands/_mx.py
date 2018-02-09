@@ -18,15 +18,14 @@ from django.utils.encoding import smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
-from modoboa.admin import constants
-from modoboa.admin import models
+from modoboa.admin import constants, models
 from modoboa.parameters import tools as param_tools
 
 
 class CheckMXRecords(BaseCommand):
     """Command class."""
 
-    help = "Check defined domains."  # noqa:A003
+    help = "Check defined domains."  # NOQA:A003
 
     @cached_property
     def providers(self):

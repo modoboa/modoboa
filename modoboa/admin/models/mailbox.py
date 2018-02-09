@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+
 """Models related to mailboxes management."""
 
 from __future__ import unicode_literals
 
 import os
 import pwd
+
+from reversion import revisions as reversion
 
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -12,14 +16,11 @@ from django.db.models.manager import Manager
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from reversion import revisions as reversion
-
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
-
 from .base import AdminObject
 from .domain import Domain
 
@@ -42,7 +43,7 @@ class Quota(models.Model):
     """Keeps track of Mailbox current quota."""
 
     username = models.EmailField(primary_key=True, max_length=254)
-    bytes = models.BigIntegerField(default=0)
+    bytes = models.BigIntegerField(default=0)  # NOQA:A003
     messages = models.IntegerField(default=0)
 
     objects = QuotaManager()
@@ -66,9 +67,9 @@ class MailboxManager(Manager):
         """
         qf = None
         if squery is not None:
-            if '@' in squery:
-                parts = squery.split('@')
-                addrfilter = '@'.join(parts[:-1])
+            if "@" in squery:
+                parts = squery.split("@")
+                addrfilter = "@".join(parts[:-1])
                 domfilter = parts[-1]
                 qf = (
                     Q(address__contains=addrfilter) &
@@ -81,7 +82,7 @@ class MailboxManager(Manager):
                 )
         ids = admin.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(Mailbox)) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         if qf is not None:
             qf = Q(pk__in=ids) & qf
         else:
@@ -94,7 +95,7 @@ class Mailbox(AdminObject):
     """User mailbox."""
 
     address = models.CharField(
-        ugettext_lazy('address'), max_length=252,
+        ugettext_lazy("address"), max_length=252,
         help_text=ugettext_lazy(
             "Mailbox address (without the @domain.tld part)")
     )
@@ -375,8 +376,8 @@ class MailboxOperation(models.Model):
 
     mailbox = models.ForeignKey(Mailbox, blank=True, null=True,
                                 on_delete=models.CASCADE)
-    type = models.CharField(
-        max_length=20, choices=(('rename', 'rename'), ('delete', 'delete'))
+    type = models.CharField(  # NOQA:A003
+        max_length=20, choices=(("rename", "rename"), ("delete", "delete"))
     )
     argument = models.TextField()
 
@@ -384,6 +385,6 @@ class MailboxOperation(models.Model):
         app_label = "admin"
 
     def __str__(self):
-        if self.type == 'rename':
-            return 'Rename %s -> %s' % (self.argument, self.mailbox.mail_home)
-        return 'Delete %s' % self.argument
+        if self.type == "rename":
+            return "Rename %s -> %s" % (self.argument, self.mailbox.mail_home)
+        return "Delete %s" % self.argument

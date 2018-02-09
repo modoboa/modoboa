@@ -4,30 +4,28 @@
 
 from __future__ import unicode_literals
 
-from functools import wraps
 import ipaddress
-from itertools import chain
 import logging
 import random
 import socket
 import string
+from functools import wraps
+from itertools import chain
 
-from dns.name import IDNA_2008_UTS_46
 import dns.resolver
+from dns.name import IDNA_2008_UTS_46
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 
-from modoboa.core.models import User
 from modoboa.core import signals as core_signals
+from modoboa.core.models import User
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.parameters import tools as param_tools
-
-from .models import Domain, DomainAlias, Alias
-
 from . import signals
+from .models import Alias, Domain, DomainAlias
 
 
 def needs_mailbox():
@@ -59,7 +57,7 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
     if idtfilter is None or not idtfilter or idtfilter == "account":
         ids = user.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(user)) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         q = Q(pk__in=ids)
         if searchquery is not None:
             q &= Q(username__icontains=searchquery) \
@@ -76,7 +74,7 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
             or (idtfilter in ["alias", "forward", "dlist"]):
         alct = ContentType.objects.get_for_model(Alias)
         ids = user.objectaccess_set.filter(content_type=alct) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         q = Q(pk__in=ids, internal=False)
         if searchquery is not None:
             q &= (
@@ -187,8 +185,8 @@ def get_domain_mx_list(domain):
         logger.error(_("No working name servers found"), exc_info=e)
     except dns.resolver.Timeout as e:
         logger.warning(
-            _("DNS resolution timeout, unable to query %s at the moment") % domain,
-            exc_info=e)
+            _("DNS resolution timeout, unable to query %s at the moment") %
+            domain, exc_info=e)
     else:
         for dns_answer in dns_answers:
             try:
@@ -225,7 +223,7 @@ def domain_has_authorized_mx(name):
     valid_mxs = [ipaddress.ip_network(smart_text(v.strip()))
                  for v in valid_mxs.split() if v.strip()]
     domain_mxs = get_domain_mx_list(name)
-    for mx_addr, mx_ip_addr in domain_mxs:  # noqa:B007
+    for _mx_addr, mx_ip_addr in domain_mxs:
         for subnet in valid_mxs:
             if mx_ip_addr in subnet:
                 return True

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Fixtures factories.
 """
@@ -18,7 +20,7 @@ class DomainFactory(PermissionFactory):
         model = models.Domain
         django_get_or_create = ("name", )
 
-    type = "domain"
+    type = "domain"  # NOQA:A003
     quota = 0
     default_mailbox_quota = 10
     enabled = True
@@ -79,44 +81,44 @@ def populate_database():
     """
     dom = DomainFactory(name="test.com", quota=50)
     admin = UserFactory(
-        username="admin@test.com", groups=('DomainAdmins', ),
-        password='{PLAIN}toto'
+        username="admin@test.com", groups=("DomainAdmins", ),
+        password="{PLAIN}toto"
     )
-    MailboxFactory(address='admin', domain=dom, user=admin)
+    MailboxFactory(address="admin", domain=dom, user=admin)
     account = UserFactory.create(
-        username="user@test.com", groups=('SimpleUsers',),
+        username="user@test.com", groups=("SimpleUsers",),
     )
-    MailboxFactory.create(address='user', domain=dom, user=account)
+    MailboxFactory.create(address="user", domain=dom, user=account)
 
     al = AliasFactory.create(
-        address='forward@test.com', domain=dom
+        address="forward@test.com", domain=dom
     )
     AliasRecipientFactory.create(
-        address='user@external.com', alias=al)
+        address="user@external.com", alias=al)
 
     al = AliasFactory.create(
-        address='alias@test.com', domain=dom
+        address="alias@test.com", domain=dom
     )
     mb = account.mailbox
     AliasRecipientFactory.create(
         address=mb.full_address, alias=al, r_mailbox=mb)
 
     al = AliasFactory.create(
-        address='postmaster@test.com', domain=dom
+        address="postmaster@test.com", domain=dom
     )
-    for address in ['toto@titi.com', 'test@truc.fr']:
+    for address in ["toto@titi.com", "test@truc.fr"]:
         AliasRecipientFactory.create(address=address, alias=al)
 
     dom.add_admin(admin)
 
-    dom2 = DomainFactory.create(name='test2.com', default_mailbox_quota=0)
+    dom2 = DomainFactory.create(name="test2.com", default_mailbox_quota=0)
     admin = UserFactory.create(
-        username='admin@test2.com', groups=('DomainAdmins',),
-        password='{PLAIN}toto'
+        username="admin@test2.com", groups=("DomainAdmins",),
+        password="{PLAIN}toto"
     )
-    MailboxFactory.create(address='admin', domain=dom2, user=admin)
+    MailboxFactory.create(address="admin", domain=dom2, user=admin)
     u = UserFactory.create(
-        username='user@test2.com', groups=('SimpleUsers',)
+        username="user@test2.com", groups=("SimpleUsers",)
     )
-    MailboxFactory.create(address='user', domain=dom2, user=u)
+    MailboxFactory.create(address="user", domain=dom2, user=u)
     dom2.add_admin(admin)

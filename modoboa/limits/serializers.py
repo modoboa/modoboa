@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Limits serializers."""
 
 from __future__ import unicode_literals
@@ -19,9 +21,10 @@ class ResourcesSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         """Return limits."""
-        return dict(
+        return [
             (limit.name, limit.max_value)
-            for limit in instance.userobjectlimit_set.all())
+            for limit in instance.userobjectlimit_set.all()
+        ]
 
     def update(self, instance, validated_data):
         """Update limits."""

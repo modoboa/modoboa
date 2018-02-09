@@ -1,35 +1,33 @@
+# -*- coding: utf-8 -*-
+
 """Core models."""
 
 from __future__ import unicode_literals
 
-from email.header import Header
 import re
-
-from django.conf import settings
-from django.db import models
-from django.urls import reverse
-from django.utils.encoding import (
-    python_2_unicode_compatible, smart_bytes, smart_text, force_str
-)
-from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _, ugettext_lazy
-
-from django.contrib.auth.models import Group, AbstractUser
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
+from email.header import Header
 
 import jsonfield
 from reversion import revisions as reversion
 
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
+from django.urls import reverse
+from django.utils.encoding import (
+    force_str, python_2_unicode_compatible, smart_bytes, smart_text
+)
+from django.utils.functional import cached_property
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import (
-    PermDeniedException, InternalError, BadRequest, Conflict
+    BadRequest, Conflict, InternalError, PermDeniedException
 )
 from modoboa.parameters import tools as param_tools
-
-from . import constants
-from . import signals
-
+from . import constants, signals
 
 try:
     from modoboa.lib.ldap_utils import LDAPAuthBackend
@@ -83,7 +81,7 @@ class User(AbstractUser):
     class Meta(object):
         ordering = ["username"]
         index_together = [
-            ['email', 'is_active']
+            ["email", "is_active"]
         ]
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
@@ -412,7 +410,7 @@ class ObjectAccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey("content_type", "object_id")
     is_owner = models.BooleanField(default=False)
 
     class Meta(object):

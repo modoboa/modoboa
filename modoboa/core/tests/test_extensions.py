@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Extensions management related test cases."""
 
 from __future__ import unicode_literals

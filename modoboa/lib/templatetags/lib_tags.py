@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """Custom template tags."""
 
 from __future__ import unicode_literals
@@ -6,7 +7,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 
 from django import template
-from django.template import Template, Context
+from django.template import Context, Template
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
@@ -16,7 +17,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def join(items, sep=','):
+def join(items, sep=","):
     res = ""
     for k, v in list(items.items()):
         if res != "":
@@ -35,8 +36,8 @@ def alert(msg, typ):
     t = Template("""<div class="alert alert-{{ type }}" role="alert">
 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 {{ msg }}
-</div>""")
-    return t.render(Context(dict(type=typ, msg=msg)))
+</div>""")  # NOQA:E501
+    return t.render(Context({"type": typ, "msg": msg}))
 
 
 @register.simple_tag
@@ -50,8 +51,8 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 {% for attr, value in link.extra_attributes.items %} {{ attr }}="{{ value }}"{% endfor %}
 >
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
-{{ link.label }}</a>""")
-    return t.render(Context(dict(link=linkdef, mdclass=mdclass)))
+{{ link.label }}</a>""")  # NOQA:E501
+    return t.render(Context({"link": linkdef, "mdclass": mdclass}))
 
 
 @register.simple_tag
@@ -76,7 +77,7 @@ def render_tags(tags):
   <a href="#" class="filter {{ tag.type }}" name="{{ tag.name }}">{{ tag.label }}</a>
 </span>
 {% endfor %}
-""")
+""")  # NOQA:E501
     return t.render(Context({"tags": tags}))
 
 
@@ -100,7 +101,7 @@ def extra_static_content(caller, st_type, user):
     )
 
 
-@register.filter(name='localize_header_name')
+@register.filter(name="localize_header_name")
 def localize_header_name(headername):
     """ Localizes the header names """
     names = {

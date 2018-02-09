@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
@@ -25,7 +25,7 @@ def db_type(cname="default"):
     if cname not in settings.DATABASES:
         raise InternalError(
             _("Connection to database %s not configured" % cname))
-    for t in ['postgres', 'mysql', 'sqlite']:
-        if settings.DATABASES[cname]['ENGINE'].find(t) != -1:
+    for t in ["postgres", "mysql", "sqlite"]:
+        if settings.DATABASES[cname]["ENGINE"].find(t) != -1:
             return t
     return None

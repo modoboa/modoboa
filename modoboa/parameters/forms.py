@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
+
 """Parameters forms."""
 
 from __future__ import unicode_literals
 
 from django import forms
 
-from modoboa.lib import db_utils
-from modoboa.lib import form_utils
+from modoboa.lib import db_utils, form_utils
 
 
 class GenericParametersForm(forms.Form):
@@ -71,7 +72,7 @@ class AdminParametersForm(GenericParametersForm):
         """Save parameters to database."""
         parameters = {}
         for name, value in list(self.cleaned_data.items()):
-            if type(self.fields[name]) is form_utils.SeparatorField:
+            if isinstance(self.fields[name], form_utils.SeparatorField):
                 continue
             parameters[name] = value
         self.localconfig.parameters.set_values(parameters, app=self.app)
@@ -102,7 +103,7 @@ class UserParametersForm(GenericParametersForm):
         """Save new values."""
         parameters = {}
         for name, value in list(self.cleaned_data.items()):
-            if type(self.fields[name]) is form_utils.SeparatorField:
+            if isinstance(self.fields[name], form_utils.SeparatorField):
                 continue
             parameters[name] = value
         self.user.parameters.set_values(parameters, app=self.app)

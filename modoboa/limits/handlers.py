@@ -1,26 +1,20 @@
+# -*- coding: utf-8 -*-
+
 """Django signal handlers for limits."""
 
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import signals
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-
-from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 
-from modoboa.admin import models as admin_models
-from modoboa.admin import signals as admin_signals
-from modoboa.core import models as core_models
-from modoboa.core import signals as core_signals
-from modoboa.lib import signals as lib_signals
-from modoboa.lib import permissions
+from modoboa.admin import models as admin_models, signals as admin_signals
+from modoboa.core import models as core_models, signals as core_signals
+from modoboa.lib import permissions, signals as lib_signals
 from modoboa.parameters import tools as param_tools
-
-from . import forms
-from . import lib
-from . import models
-from . import utils
+from . import forms, lib, models, utils
 
 
 @receiver(core_signals.can_create_object)
@@ -70,7 +64,7 @@ def create_domain_limits(sender, instance, **kwargs):
     if not kwargs.get("created"):
         return
     global_params = dict(param_tools.get_global_parameters("limits"))
-    for name, definition in utils.get_domain_limit_templates():
+    for name, _definition in utils.get_domain_limit_templates():
         max_value = global_params["deflt_domain_{0}_limit".format(name)]
         models.DomainObjectLimit.objects.create(
             domain=instance, name=name, max_value=max_value)
@@ -275,7 +269,7 @@ def display_pool_usage(sender, user, location, currentpage, **kwargs):
         return []
     return [
         render_to_string("limits/poolusage.html",
-                         dict(limits=limits))
+                         {"limits": limits})
     ]
 
 

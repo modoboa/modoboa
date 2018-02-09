@@ -1,22 +1,20 @@
+# -*- coding: utf-8 -*-
+
 """Tests for core application."""
 
 from __future__ import unicode_literals
 
 import httmock
-
 from dateutil.relativedelta import relativedelta
 from six import StringIO
 
 from django.core import management
-from django.urls import reverse
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 
 from modoboa.lib.tests import ModoTestCase
-
-from .. import factories
-from .. import mocks
-from .. import models
+from .. import factories, mocks, models
 
 
 class AuthenticationTestCase(ModoTestCase):
@@ -24,11 +22,11 @@ class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_authentication(self):
@@ -105,11 +103,11 @@ class ProfileTestCase(ModoTestCase):
     """Profile related tests."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(ProfileTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_update_profile(self):
@@ -164,11 +162,11 @@ class APIAccessFormTestCase(ModoTestCase):
     """Check form access."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(APIAccessFormTestCase, cls).setUpTestData()
         cls.account = factories.UserFactory(
-            username="user@test.com", groups=('SimpleUsers',)
+            username="user@test.com", groups=("SimpleUsers",)
         )
 
     def test_form_access(self):

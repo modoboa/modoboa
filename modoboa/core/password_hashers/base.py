@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Base password hashers.
 
@@ -9,11 +11,11 @@ from __future__ import unicode_literals
 import base64
 import crypt
 import hashlib
-from random import Random
 import string
+from random import Random
 
 from django.utils.crypto import constant_time_compare
-from django.utils.encoding import force_text, force_bytes
+from django.utils.encoding import force_bytes, force_text
 
 
 class PasswordHasher(object):
@@ -22,7 +24,7 @@ class PasswordHasher(object):
     Base class of all hashers.
     """
 
-    def __init__(self, target='local'):
+    def __init__(self, target="local"):
         self._target = target
 
     def _encrypt(self, clearvalue, salt=None):
@@ -34,7 +36,7 @@ class PasswordHasher(object):
         :param str pwhash: password hash
         :return: base64 encoded hash or original hash
         """
-        if self._target == 'ldap':
+        if self._target == "ldap":
             return base64.b64encode(pwhash)
         return pwhash
 
@@ -52,7 +54,7 @@ class PasswordHasher(object):
         :return: encrypted password
         """
         pwhash = self._b64encode(self._encrypt(force_text(clearvalue)))
-        return '%s%s' % (self.scheme, force_text(pwhash))
+        return "%s%s" % (self.scheme, force_text(pwhash))
 
     def verify(self, clearvalue, hashed_value):
         """Verify a password against a hashed value.
@@ -74,7 +76,7 @@ class PLAINHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{PLAIN}'
+        return "{PLAIN}"
 
     def _encrypt(self, clearvalue, salt=None):
         return clearvalue
@@ -89,11 +91,17 @@ class CRYPTHasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{CRYPT}'
+        return "{CRYPT}"
 
     def _encrypt(self, clearvalue, salt=None):
         if salt is None:
-            salt = "".join(Random().sample(string.ascii_letters + string.digits, 2))
+            salt = "".join(
+                Random().sample(
+                    string.ascii_letters +
+                    string.digits,
+                    2
+                )
+            )
         return crypt.crypt(clearvalue, salt)
 
 
@@ -106,7 +114,7 @@ class MD5Hasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{MD5}'
+        return "{MD5}"
 
     def _encrypt(self, clearvalue, salt=None):
         obj = hashlib.md5(force_bytes(clearvalue))
@@ -122,7 +130,7 @@ class SHA256Hasher(PasswordHasher):
     """
     @property
     def scheme(self):
-        return '{SHA256}'
+        return "{SHA256}"
 
     def _encrypt(self, clearvalue, salt=None):
         return hashlib.sha256(force_bytes(clearvalue)).digest()

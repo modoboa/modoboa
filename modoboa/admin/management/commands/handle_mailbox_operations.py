@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 """A management command to apply mailbox operations."""
 
-from __future__ import unicode_literals, print_function
+from __future__ import print_function, unicode_literals
 
 import logging
 import os
@@ -8,10 +10,9 @@ import shutil
 
 from django.core.management.base import BaseCommand
 
-from modoboa.parameters import tools as param_tools
-from modoboa.lib.sysutils import exec_cmd
 from modoboa.lib.exceptions import InternalError
-
+from modoboa.lib.sysutils import exec_cmd
+from modoboa.parameters import tools as param_tools
 from ...app_settings import load_admin_settings
 from ...models import MailboxOperation
 
@@ -25,7 +26,7 @@ class OperationError(Exception):
 class Command(BaseCommand):
     """Command definition"""
 
-    help = "Handles rename and delete operations on mailboxes"
+    help = "Handles rename and delete operations on mailboxes"  # NOQA:A003
 
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
@@ -80,7 +81,7 @@ class Command(BaseCommand):
             )
             if not code:
                 return False
-        with open(path, 'w') as fp:
+        with open(path, "w") as fp:
             print(os.getpid(), file=fp)
         return True
 

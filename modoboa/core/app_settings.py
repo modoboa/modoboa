@@ -1,21 +1,17 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
 from django import forms
 from django.conf import settings
+from django.contrib.auth import password_validation
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from django.contrib.auth import password_validation
-
 from modoboa.lib import fields as lib_fields
-from modoboa.lib.cryptutils import random_key
 from modoboa.lib.form_utils import (
-    YesNoField, SeparatorField, HorizontalRadioSelect
+    HorizontalRadioSelect, SeparatorField, YesNoField
 )
-from modoboa.parameters import forms as param_forms
-from modoboa.parameters import tools as param_tools
-
+from modoboa.parameters import forms as param_forms, tools as param_tools
 from . import constants
 
 
@@ -40,8 +36,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     authentication_type = forms.ChoiceField(
         label=ugettext_lazy("Authentication type"),
-        choices=[('local', ugettext_lazy("Local")),
-                 ('ldap', "LDAP")],
+        choices=[("local", ugettext_lazy("Local")),
+                 ("ldap", "LDAP")],
         initial="local",
         help_text=ugettext_lazy("The backend used for authentication"),
         widget=HorizontalRadioSelect()
@@ -115,16 +111,16 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     ldap_auth_method = forms.ChoiceField(
         label=ugettext_lazy("Authentication method"),
-        choices=[('searchbind', ugettext_lazy("Search and bind")),
-                 ('directbind', ugettext_lazy("Direct bind"))],
-        initial='searchbind',
+        choices=[("searchbind", ugettext_lazy("Search and bind")),
+                 ("directbind", ugettext_lazy("Direct bind"))],
+        initial="searchbind",
         help_text=ugettext_lazy("Choose the authentication method to use"),
         widget=forms.Select(attrs={"class": "form-control"})
     )
 
     ldap_bind_dn = forms.CharField(
         label=ugettext_lazy("Bind DN"),
-        initial='',
+        initial="",
         help_text=ugettext_lazy(
             "The distinguished name to use when binding to the LDAP server. "
             "Leave empty for an anonymous bind"
@@ -135,7 +131,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     ldap_bind_password = forms.CharField(
         label=ugettext_lazy("Bind password"),
-        initial='',
+        initial="",
         help_text=ugettext_lazy(
             "The password to use when binding to the LDAP server "
             "(with 'Bind DN')"
@@ -344,7 +340,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     def clean_ldap_user_dn_template(self):
         tpl = self.cleaned_data["ldap_user_dn_template"]
         try:
-            test = tpl % {"user": "toto"}
+            tpl % {"user": "toto"}
         except (KeyError, ValueError):
             raise forms.ValidationError(_("Invalid syntax"))
         return tpl
