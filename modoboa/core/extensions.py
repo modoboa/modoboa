@@ -25,6 +25,8 @@ class ModoExtension(object):
     always_active = False
     url = None
     topredirection_url = None
+    # TODO: remove `url_namespace_required` when all extensions have been fixed.
+    url_namespace_required = True
 
     def get_url(self):
         """Return extension base url."""
@@ -113,8 +115,11 @@ class ExtensionsPool(object):
                 pattern = "{}.urls_api"
             else:
                 root = r"^{}/".format(ext.get_url())
-                options.update({"namespace": ext_name})
                 pattern = "{}.urls"
+                # TODO remove `url_namespace_required` when all extensions have
+                # been fixed.
+                if ext.url_namespace_required:
+                    options["namespace"] = ext_name
             try:
                 result.append(
                     url(root, include(pattern.format(ext_name), **options))

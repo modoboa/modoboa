@@ -14,6 +14,7 @@ class StupidExtension2(extensions.ModoExtension):
     label = "Stupid extension"
     version = "1.0.0"
     description = "A stupid extension"
+    url_namespace_required = False
 
 
 extensions.exts_pool.register_extension(StupidExtension2, show=False)
