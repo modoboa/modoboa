@@ -260,10 +260,10 @@ Logging authentication
 
 To trace login attempts to the web interface, Modoboa uses python
 `SysLogHandler <https://docs.python.org/3/library/logging.handlers.html#logging.handlers.SysLogHandler>`_
-and so you can see in you syslog authentication log file
+so you can see them in your syslog authentication log file
 (`/var/log/auth.log` in most cases).
 
-Depending to your configuration, you may have to edit the :file:`settings.py` file
+Depending on your configuration, you may have to edit the :file:`settings.py` file
 and add `'address': '/dev/log'` to the logging section::
 
     'syslog-auth': {
