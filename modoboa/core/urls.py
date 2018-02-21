@@ -8,6 +8,8 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = "core"
+
 urlpatterns = [
     url(r'^$', views.RootDispatchView.as_view(), name="root"),
     url(r'^dashboard/$', views.DashboardView.as_view(), name="dashboard"),

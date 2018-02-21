@@ -12,6 +12,8 @@ from .views import (
     identity as identity_views, import_ as import_views
 )
 
+app_name = "admin"
+
 urlpatterns = [
     url(r'^$', domain_views.index, name="index"),
     url(r'^domains/$', domain_views.domains, name="domain_list"),

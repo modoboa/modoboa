@@ -8,6 +8,8 @@ from django.conf.urls import include, url
 
 from modoboa.core.extensions import exts_pool
 
+app_name = "api"
+
 urlpatterns = [
     url("", include("modoboa.admin.urls_api")),
     url("", include("modoboa.limits.urls_api")),

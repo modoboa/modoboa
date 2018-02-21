@@ -26,9 +26,9 @@ urlpatterns = [
         name="ckeditor_upload"),
     url(r'^ckeditor/browse/', login_required(cku_views.browse),
         name="ckeditor_browse"),
-    url("", include("modoboa.core.urls", namespace="core")),
+    url("", include("modoboa.core.urls")),
     url("^user/forward/", forward, name="user_forward"),
-    url("admin/", include("modoboa.admin.urls", namespace="admin")),
+    url("admin/", include("modoboa.admin.urls")),
     # No namespace
     url(r'^accounts/password_reset/$', core_views.password_reset,
         name="password_reset"),
@@ -53,7 +53,7 @@ if extra_routes:
 # API urls
 urlpatterns += [
     url("^docs/api/", include_docs_urls(title=API_TITLE, public=False)),
-    url("^api/v1/", include("modoboa.urls_api", namespace="api")),
+    url("^api/v1/", include("modoboa.urls_api")),
 ]
 
 if settings.DEBUG:
