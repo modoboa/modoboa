@@ -36,13 +36,15 @@ TwocolsNav.prototype = {
                 success_cb: $.proxy(this.save_cb, this)
             });
         }, this));
-        $(document).on('submit', '#parameters_form', $.proxy(function(evt) {
+        var formId = 'parameters_form';
+        $(document).on('submit', '#' + formId, $.proxy(function(evt) {
             simple_ajax_form_post(evt, {
-                formid: $(this).attr('id'),
+                formid: formId,
                 modal: false,
                 reload_on_success: false,
                 success_cb: $.proxy(this.save_cb, this),
                 error_cb: function(data) {
+                    window.scrollTo(0, 0);
                     $('a[data-app="' + data.prefix + '"]').tab('show');
                 }
             });
