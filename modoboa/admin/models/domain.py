@@ -206,8 +206,11 @@ class Domain(AdminObject):
     @property
     def bind_format_dkim_public_key(self):
         """Return DKIM public key using Bind format."""
-        return "{}._domainkey 10800 IN TXT \"v=DKIM1; k=rsa; p={}\"".format(
-            self.dkim_key_selector, self.dkim_public_key)
+        parts = self.name.split(".")
+        subdomain = (
+            "" if len(parts) == 2 else ".{}".format(".".join(parts[:-2])))
+        return "{}._domainkey{} 10800 IN TXT \"v=DKIM1; k=rsa; p={}\"".format(
+            self.dkim_key_selector, subdomain, self.dkim_public_key)
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
