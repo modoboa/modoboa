@@ -136,6 +136,7 @@ function display_form_errors(formid, data) {
         var $widget = $("#" + formid + " #" + fullid);
         var spanid = fullid + "-error";
         var $span = $("#" + spanid);
+        var error = value.join(' ');
 
         if (!$widget.parents(".form-group").hasClass("has-error")) {
             $widget.parents(".form-group").addClass("has-error");
@@ -143,12 +144,12 @@ function display_form_errors(formid, data) {
         if (!$span.length) {
             $span = $("<span />", {
                 "class": "help-block",
-                "html": value[0],
+                "html": error,
                 "id": spanid
             });
             $widget.parents(".form-group").append($span);
         } else {
-            $span.html(value[0]);
+            $span.html(error);
         }
     });
 }
