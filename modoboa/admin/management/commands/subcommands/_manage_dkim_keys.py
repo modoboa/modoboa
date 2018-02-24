@@ -11,7 +11,9 @@ from django.utils.encoding import smart_text
 
 from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
+
 from .... import models
+from .... import signals
 
 
 class ManageDKIMKeys(BaseCommand):
@@ -51,3 +53,5 @@ class ManageDKIMKeys(BaseCommand):
             enable_dkim=True, dkim_private_key_path="")
         for domain in qset:
             self.create_new_dkim_key(domain)
+        if qset.exists():
+            signals.new_dkim_keys.send(sender=self.__class__, domains=qset)
