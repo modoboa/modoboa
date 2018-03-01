@@ -31,6 +31,8 @@ urlpatterns = [
         name="domain_change"),
     url(r'^domains/(?P<dom_id>\d+)/delete/$', domain_views.deldomain,
         name="domain_delete"),
+    url(r'^domains/page/$', domain_views.get_next_page,
+        name="domain_page"),
 ]
 
 urlpatterns += [

@@ -109,6 +109,19 @@ def domains(request, tplname="admin/domains.html"):
 
 
 @login_required
+@user_passes_test(
+    lambda u: u.has_perm("admin.view_domains") or
+    u.has_perm("admin.view_mailboxes") or
+    u.has_perm("admin.add_domain")
+)
+def get_next_page(request):
+    """Return the next page of the domain or quota list."""
+    if request.GET.get("objtype", "domain") == "domain":
+        return _domains(request)
+    return list_quotas(request)
+
+
+@login_required
 @permission_required("core.add_user")
 def domains_list(request):
     doms = [dom.name for dom in Domain.objects.get_for_admin(request.user)]

@@ -356,6 +356,14 @@ class DomainTestCase(ModoTestCase):
         self.assertNotIn("Global statistics", content)
         self.assertIn("Per-domain statistics", content)
 
+    def test_page_loader(self):
+        """Test page loader view."""
+        url = reverse("admin:domain_page")
+        response = self.ajax_get(url)
+        self.assertIn("handle_mailboxes", response)
+        response = self.ajax_get("{}?objtype=quota".format(url))
+        self.assertIn("progress-bar", response["rows"])
+
 
 class DKIMTestCase(ModoTestCase):
     """Test case for DKIM."""
