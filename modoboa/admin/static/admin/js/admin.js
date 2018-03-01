@@ -162,6 +162,24 @@ Domains.prototype = {
     },
 
     /**
+     * Add a type to let the server know what kind of object we expect.
+     *
+     * @this Listing
+     */
+    get_load_page_args: function() {
+        var args = Admin.prototype.get_load_page_args.call(this);
+
+        if (this.navobj.getbaseurl() === "list") {
+            args.objtype = "domain";
+            this.options.eor_message = gettext("No more domain to show");
+        } else {
+            args.objtype = "quota";
+            this.options.eor_message = gettext("No more quota to show");
+        }
+        return args;
+    },
+
+    /**
      * Navigation callback: default.
      *
      * @param {Object} data - response of the ajax call (JSON)
