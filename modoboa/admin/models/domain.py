@@ -206,8 +206,21 @@ class Domain(AdminObject):
     @property
     def bind_format_dkim_public_key(self):
         """Return DKIM public key using Bind format."""
-        return "{}._domainkey.{}. 10800 IN TXT \"v=DKIM1; k=rsa; p={}\"".format(
-            self.dkim_key_selector, self.name, self.dkim_public_key)
+        record = "v=DKIM1;k=rsa;p=%s" % self.dkim_public_key
+        # TXT records longer than 255 characters need split into chunks
+        # split record into 74 character chunks (+2 for indent, +2 for quotes(")
+        # == 78 characters) to make more readable in text editors.
+        split_record = []
+        while record:
+            if len(record) > 74:
+                split_record.append("  \"%s\"" % record[:74])
+                record = record[74:]
+            else:
+                split_record.append("  \"%s\"" % record)
+                break
+        record = "\n".join(split_record)
+        return "{}._domainkey.{}. 10800 IN TXT (\n{})".format(
+            self.dkim_key_selector, self.name, record)
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
