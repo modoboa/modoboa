@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="modal-dialog {% block modal_css_classes %}{% endblock %}">
+<div class="modal-dialog modal-lg">
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans "Close" %}</span></button>
@@ -13,7 +13,7 @@
       </div>
       <div class="alert alert-info" style="overflow-wrap: break-word;">
         <strong>{% trans "Bind/named format" %}</strong><br>
-        {{ domain.bind_format_dkim_public_key }}
+        <span style="white-space: pre">{{ domain.bind_format_dkim_public_key }}</span>
       </div>
     </div>
     <div class="modal-footer">
