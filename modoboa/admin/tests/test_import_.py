@@ -2,10 +2,15 @@
 
 from __future__ import unicode_literals
 
+import os
+
 import dns.resolver
+import mock
 from mock import patch
 
 from django.core.files.base import ContentFile
+from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.urls import reverse
 
 from modoboa.core import factories as core_factories
@@ -345,5 +350,65 @@ dómain; dómªin2.com; 1000; 100; True
         dom = Domain.objects.get(name="dómªin1.com")
         self.assertEqual(dom.quota, 1000)
         self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+    def test_import_command_missing_file(self):
+        with mock.patch("os.path.isfile") as mock_isfile:
+            mock_isfile.return_value = False
+            with self.assertRaises(CommandError) as cm:
+                call_command("modo", "import", "test.csv")
+                ex_message = cm.exception.messages
+                self.assertEqual(ex_message, "File not found")
+
+    def test_import_command(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains.csv"
+        )
+        call_command("modo", "import", test_file)
+
+        admin = User.objects.get(username="admin")
+
+        dom = Domain.objects.get(name="domain1.com")
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+        dom = Domain.objects.get(name="dómain2.com")
+        self.assertEqual(dom.quota, 2000)
+        self.assertEqual(dom.default_mailbox_quota, 200)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+    def test_import_command_duplicates(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains_duplicates.csv"
+        )
+        with self.assertRaises(CommandError) as cm:
+            call_command("modo", "import", test_file)
+            ex_message = cm.exception.messages
+            self.assertTrue(ex_message.startswith("Object already exists: "))
+
+    def test_import_command_duplicates_continue(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains_duplicates.csv"
+        )
+        call_command("modo", "import", "--continue-if-exists", test_file)
+
+        admin = User.objects.get(username="admin")
+
+        dom = Domain.objects.get(name="domain1.com")
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+        dom = Domain.objects.get(name="dómain2.com")
+        self.assertEqual(dom.quota, 2000)
+        self.assertEqual(dom.default_mailbox_quota, 200)
         self.assertTrue(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
