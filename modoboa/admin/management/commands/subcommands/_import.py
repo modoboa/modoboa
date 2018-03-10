@@ -11,6 +11,7 @@ import progressbar
 from backports import csv
 
 from django.core.management.base import BaseCommand, CommandError
+from django.utils import six
 
 from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
@@ -27,7 +28,7 @@ class ImportCommand(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command."""
         parser.add_argument(
-            "--sepchar", type=str, default=";",
+            "--sepchar", type=six.text_type, default=";",
             help="Separator used in file.")
         parser.add_argument(
             "--continue-if-exists", action="store_true",
@@ -37,23 +38,25 @@ class ImportCommand(BaseCommand):
             "--crypt-password", action="store_true",
             default=False, help="Encrypt provided passwords.")
         parser.add_argument(
-            "files", type=str, nargs="+", help="CSV files to import.")
+            "files", type=six.text_type, nargs="+", help="CSV files to import.")
 
     def _import(self, filename, options):
         """Import domains or identities."""
         superadmin = (
             core_models.User.objects.filter(is_superuser=True).first()
         )
-        if not os.path.exists(filename):
+        if not os.path.isfile(filename):
             raise CommandError("File not found")
 
-        num_lines = sum(1 for line in open(filename) if line)
+        num_lines = sum(
+            1 for line in io.open(filename, encoding="utf-8") if line
+        )
         pbar = progressbar.ProgressBar(
             widgets=[
                 progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()
             ], maxval=num_lines
         ).start()
-        with io.open(filename, encoding="utf8") as f:
+        with io.open(filename, encoding="utf-8", newline="") as f:
             reader = csv.reader(f, delimiter=options["sepchar"])
             i = 0
             for row in reader:
