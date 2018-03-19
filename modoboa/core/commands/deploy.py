@@ -22,13 +22,7 @@ from django.utils.six.moves import input
 
 from modoboa.core.commands import Command
 from modoboa.lib.api_client import ModoAPIClient
-
-try:
-    import pip
-except ImportError:
-    sys.stderr.write("Error: pip is required to install extensions.\n")
-    sys.exit(2)
-
+from modoboa.lib.sysutils import exec_cmd
 
 DBCONN_TPL = """
     '{{ conn_name }}': {
@@ -226,9 +220,12 @@ class DeployCommand(Command):
             extensions = [(extension, extension.replace("-", "_"))
                           for extension in extensions]
             if not parsed_args.dont_install_extensions:
-                pip_args = (
-                    ["install"] + [extension[0] for extension in extensions])
-                pip.main(pip_args)
+                cmd = (
+                    sys.executable +
+                    " -m pip install " +
+                    " ".join([extension[0] for extension in extensions])
+                )
+                exec_cmd(cmd, capture_output=False)
             extra_settings = self.find_extra_settings(extensions)
             extensions = [extension[1] for extension in extensions]
 
