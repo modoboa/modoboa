@@ -8,7 +8,6 @@ import io
 import os
 
 import progressbar
-from backports import csv
 
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import six
@@ -17,6 +16,11 @@ from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.exceptions import Conflict
 from .... import signals
+
+if six.PY2:
+    from backports import csv
+else:
+    import csv
 
 
 class ImportCommand(BaseCommand):

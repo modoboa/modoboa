@@ -26,5 +26,5 @@ pytz
 requests
 rfc6266
 lxml
-backports.csv
+backports.csv; python_version < '3'
 chardet
