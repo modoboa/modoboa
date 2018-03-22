@@ -11,13 +11,12 @@ coreapi==2.3.3
 coreapi-cli==1.0.6
 djangorestframework==3.7.3
 
-argparse
 # bcrypt requires libffi-dev
 bcrypt==3.1.4
 dnspython==1.15.0
 feedparser==5.2.1
 gevent==1.2.2
-ipaddress
+ipaddress; python_version < '3.3'
 jsonfield==2.0.2
 passlib==1.7.1
 progressbar33==2.4
