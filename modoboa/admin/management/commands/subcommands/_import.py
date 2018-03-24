@@ -8,9 +8,12 @@ import io
 import os
 
 import progressbar
+from chardet.universaldetector import UniversalDetector
 
 from django.core.management.base import BaseCommand, CommandError
+from django.db import transaction
 from django.utils import six
+from django.utils.translation import ugettext as _
 
 from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
@@ -44,7 +47,7 @@ class ImportCommand(BaseCommand):
         parser.add_argument(
             "files", type=six.text_type, nargs="+", help="CSV files to import.")
 
-    def _import(self, filename, options):
+    def _import(self, filename, options, encoding="utf-8"):
         """Import domains or identities."""
         superadmin = (
             core_models.User.objects.filter(is_superuser=True).first()
@@ -53,14 +56,14 @@ class ImportCommand(BaseCommand):
             raise CommandError("File not found")
 
         num_lines = sum(
-            1 for line in io.open(filename, encoding="utf-8") if line
+            1 for line in io.open(filename, encoding=encoding) if line
         )
         pbar = progressbar.ProgressBar(
             widgets=[
                 progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()
             ], maxval=num_lines
         ).start()
-        with io.open(filename, encoding="utf-8", newline="") as f:
+        with io.open(filename, encoding=encoding, newline="") as f:
             reader = csv.reader(f, delimiter=options["sepchar"])
             i = 0
             for row in reader:
@@ -89,4 +92,39 @@ class ImportCommand(BaseCommand):
         """Command entry point."""
         exts_pool.load_all()
         for filename in options["files"]:
-            self._import(filename, options)
+            try:
+                with transaction.atomic():
+                    self._import(filename, options)
+            except CommandError as exc:
+                raise exc
+            except UnicodeDecodeError:
+                self.stdout.write(self.style.NOTICE(
+                    _("CSV file is not encoded in UTF-8, attempting to guess "
+                      "encoding")
+                ))
+                detector = UniversalDetector()
+                with io.open(filename, "rb") as fp:
+                    for line in fp:
+                        detector.feed(line)
+                        if detector.done:
+                            break
+                    detector.close()
+
+                self.stdout.write(self.style.NOTICE(
+                    _("Reading CSV file using %(encoding)s encoding") %
+                    detector.result
+                ))
+                try:
+                    with transaction.atomic():
+                        self._import(
+                            filename, options,
+                            encoding=detector.result["encoding"]
+                        )
+                except UnicodeDecodeError as exc:
+                    six.raise_from(
+                        CommandError(
+                            _("Unable to decode CSV file using %(encoding)s "
+                              "encoding") % detector.result
+                        ),
+                        exc
+                    )
