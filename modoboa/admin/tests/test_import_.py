@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 import dns.resolver
-from mock import patch
 
 from django.core.files.base import ContentFile
 from django.urls import reverse
@@ -14,6 +13,13 @@ from modoboa.lib.tests import ModoTestCase
 from . import utils
 from .. import factories
 from ..models import Alias, Domain, DomainAlias
+
+try:
+    # mock is part of the Python (>= 3.3) standard library
+    from unittest import mock
+except ImportError:
+    # fall back to the mock backport
+    import mock
 
 
 class ImportTestCase(ModoTestCase):
@@ -78,8 +84,8 @@ domainalias; domalias1.com; domain1.com; True
             response,
             "Default mailbox quota cannot be greater than domain quota")
 
-    @patch.object(dns.resolver.Resolver, "query")
-    @patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("socket.getaddrinfo")
     def test_domain_import_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain import when MX check is enabled."""
         reseller = core_factories.UserFactory(
