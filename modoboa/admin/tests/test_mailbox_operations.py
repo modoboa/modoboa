@@ -8,14 +8,19 @@ import os
 import shutil
 import tempfile
 
-import mock
-
 from django.core.management import call_command
 from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.lib.tests import ModoTestCase
 from .. import factories, models
+
+try:
+    # mock is part of the Python (>= 3.3) standard library
+    from unittest import mock
+except ImportError:
+    # fall back to the mock backport
+    import mock
 
 
 @override_settings(
