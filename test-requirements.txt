@@ -1,5 +1,5 @@
 factory-boy>=2.4
-mock==2.0.0
+mock==2.0.0; python_version < '3.3'
 httmock==1.2.5
 testfixtures==4.7.0
 tox
