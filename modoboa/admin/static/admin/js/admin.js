@@ -323,7 +323,7 @@ Domains.prototype = {
             },
             success_callback: $.proxy(this.reload_listing, this)
         });
-        $(document).trigger('domform_init');
+        $(document).trigger('domwizard_init');
     },
 
     domainform_cb: function() {
