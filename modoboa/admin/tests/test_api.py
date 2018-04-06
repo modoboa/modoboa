@@ -8,7 +8,6 @@ import copy
 import json
 
 import dns.resolver
-from mock import patch
 
 from django.test import override_settings
 from django.urls import reverse
@@ -20,6 +19,13 @@ from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 from . import utils
 from .. import factories, models
+
+try:
+    # mock is part of the Python (>= 3.3) standard library
+    from unittest import mock
+except ImportError:
+    # fall back to the mock backport
+    import mock
 
 
 class DomainAPITestCase(ModoAPITestCase):
@@ -71,8 +77,8 @@ class DomainAPITestCase(ModoAPITestCase):
             url, {"name": "test4.com", "default_mailbox_quota": 10})
         self.assertEqual(response.status_code, 403)
 
-    @patch.object(dns.resolver.Resolver, "query")
-    @patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("socket.getaddrinfo")
     def test_create_domain_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain creation when MX check is activated."""
         self.set_global_parameter("enable_admin_limits", False, app="limits")

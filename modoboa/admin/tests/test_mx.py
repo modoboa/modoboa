@@ -5,7 +5,6 @@
 from __future__ import unicode_literals
 
 import dns.resolver
-from mock import patch
 from testfixtures import LogCapture
 
 from django.core import mail, management
@@ -18,6 +17,13 @@ from modoboa.lib.tests import ModoTestCase
 from . import utils
 from .. import factories, models
 from ..lib import get_domain_mx_list
+
+try:
+    # mock is part of the Python (>= 3.3) standard library
+    from unittest import mock
+except ImportError:
+    # fall back to the mock backport
+    import mock
 
 
 class MXTestCase(ModoTestCase):
@@ -49,9 +55,9 @@ class MXTestCase(ModoTestCase):
         cls.localconfig.save()
         models.MXRecord.objects.all().delete()
 
-    @patch("gevent.socket.gethostbyname")
-    @patch("socket.getaddrinfo")
-    @patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
     def test_management_command(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
@@ -77,9 +83,9 @@ class MXTestCase(ModoTestCase):
         qs = models.MXRecord.objects.filter(domain=self.domain)
         self.assertEqual(id_, qs[0].id)
 
-    @patch("gevent.socket.gethostbyname")
-    @patch("socket.getaddrinfo")
-    @patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
     def test_single_domain_update(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Update only one domain."""
@@ -102,8 +108,8 @@ class MXTestCase(ModoTestCase):
         management.call_command(
             "modo", "check_mx", "--domain", "toto.com")
 
-    @patch("socket.getaddrinfo")
-    @patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
     def test_get_domain_mx_list_logging(self, mock_query, mock_getaddrinfo):
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -149,9 +155,9 @@ class DNSBLTestCase(ModoTestCase):
             name="modoboa.com", enable_dns_checks=False)
         models.DNSBLResult.objects.all().delete()
 
-    @patch("gevent.socket.gethostbyname")
-    @patch("socket.getaddrinfo")
-    @patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
     def test_management_command(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
@@ -170,9 +176,9 @@ class DNSBLTestCase(ModoTestCase):
         self.assertFalse(self.domain.uses_a_reserved_tld)
         self.assertTrue(self.domain2.uses_a_reserved_tld)
 
-    @patch("gevent.socket.gethostbyname")
-    @patch("socket.getaddrinfo")
-    @patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
     def test_notifications(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check notifications."""
@@ -186,9 +192,9 @@ class DNSBLTestCase(ModoTestCase):
                 print(message.subject)
         self.assertEqual(len(mail.outbox), 2)
 
-    @patch("gevent.socket.gethostbyname")
-    @patch("socket.getaddrinfo")
-    @patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
     def test_management_command_no_dnsbl(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine without dnsbl."""

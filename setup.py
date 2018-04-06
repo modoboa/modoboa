@@ -13,21 +13,26 @@ from __future__ import unicode_literals
 import io
 from os import path
 
-from packaging.requirements import Requirement
+try:
+    from pip.req import parse_requirements
+except ImportError:
+    # pip >= 10
+    from pip._internal.req import parse_requirements
+
 from setuptools import find_packages, setup
 
 
 def get_requirements(requirements_file):
-    """Parse requirements file."""
+    """Use pip to parse requirements file."""
     requirements = []
     if path.isfile(requirements_file):
-        with io.open(requirements_file, encoding="utf-8") as fp:
-            for line in fp:
-                if line.startswith("#") or line.strip() == "":
-                    continue
-                req = Requirement(line)
-                if req.marker is None or req.marker.evaluate():
-                    requirements.append('%s%s' % (req.name, req.specifier))
+        for req in parse_requirements(requirements_file, session="hack"):
+            # check markers, such as
+            #
+            #     rope_py3k    ; python_version >= '3.0'
+            #
+            if req.match_markers():
+                requirements.append(str(req.req))
     return requirements
 
 

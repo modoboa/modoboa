@@ -7,14 +7,19 @@ from __future__ import unicode_literals
 import smtplib
 from unittest import skipIf
 
-from mock import patch
-
 from django.core import mail
 from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
+
+try:
+    # mock is part of the Python (>= 3.3) standard library
+    from unittest import mock
+except ImportError:
+    # fall back to the mock backport
+    import mock
 
 
 class AuthenticationTestCase(ModoTestCase):
@@ -123,24 +128,24 @@ class SMTPAuthenticationTestCase(ModoTestCase):
         self.assertTrue(
             models.User.objects.filter(username=username).exists())
 
-    @patch("smtplib.SMTP")
+    @mock.patch("smtplib.SMTP")
     def test_smtp_authentication(self, mock_smtp):
         """Check simple SMTP authentication."""
         self._test_smtp_authentication(mock_smtp)
 
-    @patch("smtplib.SMTP_SSL")
+    @mock.patch("smtplib.SMTP_SSL")
     @override_settings(AUTH_SMTP_SECURED_MODE="ssl")
     def test_smtp_authentication_over_ssl(self, mock_smtp):
         """Check SMTP authentication over SSL."""
         self._test_smtp_authentication(mock_smtp)
 
-    @patch("smtplib.SMTP")
+    @mock.patch("smtplib.SMTP")
     @override_settings(AUTH_SMTP_SECURED_MODE="starttls")
     def test_smtp_authentication_over_starttls(self, mock_smtp):
         """Check SMTP authentication over STARTTLS."""
         self._test_smtp_authentication(mock_smtp)
 
-    @patch("smtplib.SMTP")
+    @mock.patch("smtplib.SMTP")
     def test_smtp_authentication_failure(self, mock_smtp):
         """Check SMTP authentication failure."""
         instance = mock_smtp.return_value
