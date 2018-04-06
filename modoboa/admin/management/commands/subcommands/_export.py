@@ -6,13 +6,17 @@ from __future__ import unicode_literals
 
 import sys
 
-from backports import csv
-
 from django.core.management.base import BaseCommand
+from django.utils import six
 
 from modoboa.core.extensions import exts_pool
 from modoboa.core.models import User
 from .... import models
+
+if six.PY2:
+    from backports import csv
+else:
+    import csv
 
 
 class ExportCommand(BaseCommand):
