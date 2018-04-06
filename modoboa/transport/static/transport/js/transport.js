@@ -21,5 +21,6 @@ function transportFormCallback () {
 }
 
 $(document).ready(function () {
+    $(this).bind('domwizard_init', transportFormCallback);
     $(this).bind('domform_init', transportFormCallback);
 });

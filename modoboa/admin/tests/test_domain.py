@@ -9,7 +9,6 @@ import shutil
 import tempfile
 
 import dns.resolver
-from mock import patch
 from testfixtures import compare
 
 from django.core.management import call_command
@@ -23,6 +22,13 @@ from modoboa.lib.tests import ModoTestCase
 from . import utils
 from .. import factories
 from ..models import Alias, Domain
+
+try:
+    # mock is part of the Python (>= 3.3) standard library
+    from unittest import mock
+except ImportError:
+    # fall back to the mock backport
+    import mock
 
 
 class DomainTestCase(ModoTestCase):
@@ -205,8 +211,8 @@ class DomainTestCase(ModoTestCase):
         self.assertContains(response, "value=\"500\"")
         self.assertContains(response, "value=\"50\"")
 
-    @patch.object(dns.resolver.Resolver, "query")
-    @patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("socket.getaddrinfo")
     def test_create_and_check_mx(self, mock_getaddrinfo, mock_query):
         """Check for authorized MX record."""
         reseller = core_factories.UserFactory(
