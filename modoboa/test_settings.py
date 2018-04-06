@@ -26,7 +26,15 @@ if DB == "MYSQL":
             # See:
             # https://docs.djangoproject.com/en/1.11/ref/databases/#mysql-sql-mode
             "OPTIONS": {
-                "init_command": 'SET sql_mode=\'STRICT_TRANS_TABLES\'',
+                "init_command": (
+                    "SET sql_mode = 'STRICT_TRANS_TABLES';"
+                    "SET innodb_strict_mode = ON;"
+                ),
+                "charset": "utf8",
+            },
+            "TEST": {
+                "CHARSET": "utf8",
+                "COLLATION": "utf8_unicode_ci",
             },
         },
     }
@@ -49,5 +57,11 @@ else:
             "HOST": "localhost",
             "PORT": "",
             "ATOMIC_REQUESTS": True,
+            "OPTIONS": {
+                    "client_encoding": "UTF8",
+            },
+            "TEST": {
+                "CHARSET": "UTF8",
+            },
         },
     }
