@@ -4,7 +4,6 @@
 
 from __future__ import unicode_literals
 
-from backports import csv
 from rfc6266 import build_header
 
 from django.contrib.auth.decorators import (
@@ -18,6 +17,11 @@ from django.utils.translation import ugettext as _
 
 from ..forms import ExportDomainsForm, ExportIdentitiesForm
 from ..lib import get_domains, get_identities
+
+if six.PY2:
+    from backports import csv
+else:
+    import csv
 
 
 def _export(content, filename):
