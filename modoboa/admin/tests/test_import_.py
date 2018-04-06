@@ -387,6 +387,15 @@ dómain; dómªin2.com; 1000; 100; True
         self.assertTrue(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
 
+    def test_import_command_non_utf8(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains_iso8859.csv"
+        )
+        call_command("modo", "import", test_file)
+        dom = Domain.objects.get(name="dómain2.com")
+        self.assertEqual(dom.quota, 2000)
+
     def test_import_command_duplicates(self):
         test_file = os.path.join(
             os.path.dirname(__file__),
