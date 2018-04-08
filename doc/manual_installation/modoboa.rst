@@ -32,15 +32,25 @@ Modoboa depends on external tools and some of them require compilation
 so you need a compiler and a few C libraries. Make sure to install the
 following system packages according to your distribution:
 
-+------------------------------+------------------------------+
-|Debian/Ubuntu                 |CentOS                        |
-+==============================+==============================+
-|build-essential, python-dev,  |gcc, gcc-c++, python-devel,   |
-|libxml2-dev, libxslt-dev,     |libxml2-devel, libxslt-devel, |
-|libjpeg-dev, librrd-dev,      |libjpeg-turbo-devel,          |
-|rrdtool, libffi-dev           |rrdtool-devel, rrdtool,       |
-|                              |libffi-devel                  |
-+------------------------------+------------------------------+
++------------------------------+
+|Debian / Ubuntu               |
++==============================+
+|build-essential python-dev    |
+|libxml2-dev libxslt-dev       |
+|libjpeg-dev librrd-dev        |
+|rrdtool libffi-dev            |
+|                              |
++------------------------------+
+
++------------------------------+
+|CentOS                        |
++==============================+
+|gcc gcc-c++ python-devel      |
+|libxml2-devel libxslt-devel   |
+|libjpeg-turbo-devel           |
+|rrdtool-devel rrdtool         |
+|libffi-devel                  |
++------------------------------+
 
 Then, install Modoboa:
 
