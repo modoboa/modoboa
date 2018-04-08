@@ -34,7 +34,7 @@ before_install:
   - pip install codecov
 
 install:
-  - if [ $TRAVIS_PYTHON_VERSION = 3.7-dev ]; then pip install https://github.com/gevent/gevent/archive/1.3a2.tar.gz ; fi
+  - if [ $TRAVIS_PYTHON_VERSION = 3.7-dev ]; then pip install -U "setuptools" ; fi
   - pip install -r requirements.txt
   - pip install -r ldap-requirements.txt
   - pip install -r test-requirements.txt
