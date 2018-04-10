@@ -13,37 +13,11 @@ from __future__ import unicode_literals
 import io
 from os import path
 
-try:
-    from pip.req import parse_requirements
-except ImportError:
-    # pip >= 10
-    from pip._internal.req import parse_requirements
-
 from setuptools import find_packages, setup
-
-
-def get_requirements(requirements_file):
-    """Use pip to parse requirements file."""
-    requirements = []
-    if path.isfile(requirements_file):
-        for req in parse_requirements(requirements_file, session="hack"):
-            # check markers, such as
-            #
-            #     rope_py3k    ; python_version >= '3.0'
-            #
-            if req.match_markers():
-                requirements.append(str(req.req))
-    return requirements
 
 
 if __name__ == "__main__":
     HERE = path.abspath(path.dirname(__file__))
-    INSTALL_REQUIRES = get_requirements(path.join(HERE, "requirements.txt"))
-    MYSQL_REQUIRES = get_requirements(path.join(HERE, "mysql-requirements.txt"))
-    POSTGRESQL_REQUIRES = get_requirements(
-        path.join(HERE, "postgresql-requirements.txt"))
-    LDAP_REQUIRES = get_requirements(path.join(HERE, "ldap-requirements.txt"))
-
     with io.open(path.join(HERE, "README.rst"), encoding="utf-8") as readme:
         LONG_DESCRIPTION = readme.read()
 
@@ -76,12 +50,54 @@ if __name__ == "__main__":
         include_package_data=True,
         zip_safe=False,
         scripts=["bin/modoboa-admin.py"],
-        install_requires=INSTALL_REQUIRES,
+        install_requires=[
+            "django>=1.11.8,<=1.11.99",
+            "django-ckeditor==5.2.2",  # Django 1.11 support
+            "django-reversion>=2.0.9",  # Django 1.11 support
+            "django-subcommand2",
+            "django-xforwardedfor-middleware>=2.0",  # Django >= 1.10 support
+            "dj-database-url",
+            "djangorestframework>=3.7.7",  # 3.7.4 - 3.7.6 had packaging issues
+            "coreapi>=2.3.3",  # Required by Django Rest Framework
+            "dnspython>=1.15.0",  # Improved PY3 support
+            "feedparser",
+            "gevent",
+            "ipaddress; python_version < '3.3'",
+            "jsonfield",
+            "passlib>=1.7.0",
+            "bcrypt",  # Optional dependency for passlib
+            "progressbar33",
+            "py-dateutil",
+            "cryptography",
+            "pytz",
+            "requests",
+            "rfc6266",
+            "lxml",
+            "backports.csv; python_version < '3.3'",
+            "chardet",
+        ],
         use_scm_version=True,
         setup_requires=["setuptools_scm"],
         extras_require={
-            "ldap": LDAP_REQUIRES,
-            "mysql": MYSQL_REQUIRES,
-            "postgresql": POSTGRESQL_REQUIRES,
+            "ldap": [
+                "django-auth-ldap>=1.3.0",
+            ],
+            "mysql": [
+                "mysqlclient>=1.3.11",  # MariaDB >= 10.2 support
+            ],
+            "postgresql": [
+                "psycopg2-binary>=2.7.4",  # Required by Django >= 1.11
+            ],
+            "dev": [
+                "django-bower",
+                "django-debug-toolbar",
+            ],
+            "test": [
+                "factory-boy>=2.4",
+                "mock; python_version < '3.3'",
+                "httmock",
+                "testfixtures",
+                "tox",
+            ],
         },
     )
