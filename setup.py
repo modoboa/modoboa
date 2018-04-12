@@ -27,12 +27,10 @@ def get_requirements(requirements_file):
     requirements = []
     if path.isfile(requirements_file):
         for req in parse_requirements(requirements_file, session="hack"):
-            # check markers, such as
-            #
-            #     rope_py3k    ; python_version >= '3.0'
-            #
-            if req.match_markers():
-                requirements.append(str(req.req))
+            if req.markers:
+                requirements.append("%s;%s" % (req.req, req.markers))
+            else:
+                requirements.append("%s" % req.req)
     return requirements
 
 
