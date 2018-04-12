@@ -299,6 +299,10 @@ SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
 ]
 
+# Load admin settings
+from modoboa.admin import settings as admin_settings
+admin_settings.apply(globals())
+
 # Load settings from extensions
 {% for extension in extra_settings %}
 try:
