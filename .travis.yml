@@ -1,16 +1,23 @@
 language: python
 python:
   - '2.7'
-  - '3.4'
-  - '3.5'
-  - '3.6'
 
 env:
+  - TOXENV=py27-dj111-sqlite
+  - TOXENV=py27-dj111-postgres
+  - TOXENV=py27-dj111-mysql
+  - TOXENV=py34-dj111-postgres
+  - TOXENV=py35-dj111-sqlite
+  - TOXENV=py35-dj111-postgres
+  - TOXENV=py35-dj111-mysql
+  - TOXENV=py35-dj20-postgres
+  - TOXENV=py35-dj20-mysql
+  - TOXENV=py36-dj111-postgres
+  - TOXENV=py36-dj20-sqlite
+  - TOXENV=py36-dj20-postgres
+  - TOXENV=py36-dj20-mysql
   global:
     - PYTHONWARNINGS="default,ignore::PendingDeprecationWarning,ignore::ResourceWarning"
-  matrix:
-    - DB="POSTGRESQL"
-    - DB="MYSQL"
 
 sudo: false
 
@@ -33,12 +40,7 @@ before_install:
   - pip install codecov
 
 install:
-  - pip install -r requirements.txt
-  - pip install -r ldap-requirements.txt
-  - pip install -r test-requirements.txt
-  - if [ $DB = POSTGRESQL ]; then pip install -r postgresql-requirements.txt ; fi
-  - if [ $DB = MYSQL ]; then pip install -r mysql-requirements.txt ; fi
-  - python setup.py develop
+  - pip install tox
 
 before_script:
   - mkdir /tmp/slapd
@@ -47,9 +49,7 @@ before_script:
   - ldapadd -h localhost:3389 -D cn=admin,dc=example,dc=com -w test -f test_data/base.ldif
 
 script:
-  - python ./tests.py
-  - cd test_project
-  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains
+  - tox -e $TOXENV
 
 after_success:
   - codecov
