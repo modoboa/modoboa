@@ -16,3 +16,8 @@ modoboa_test
 .coverage
 build/
 dist/
+
+# JS stuff
+node_modules
+/static/dist
+/frontend/webpack-stats.json
