@@ -3,5 +3,3 @@ mock==2.0.0; python_version < '3.3'
 httmock==1.2.5
 testfixtures==4.7.0
 tox
-psycopg2-binary>=2.7.4
-mysqlclient>=1.3.3
