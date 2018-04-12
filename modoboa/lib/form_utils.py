@@ -1,12 +1,12 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """Form management utilities."""
 
 from __future__ import unicode_literals
 
 import abc
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 
 from django.forms import TypedChoiceField
 from django.forms.fields import Field
@@ -18,8 +18,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.web_utils import render_to_json_response
 
-
-ABC = abc.ABCMeta(force_str('ABC'), (object,), {})
+ABC = abc.ABCMeta(force_str("ABC"), (object,), {})
 
 
 class WizardStep(object):
@@ -87,7 +86,7 @@ class WizardForm(ABC):
         result = {}
         for step in self.steps:
             for name, value in list(step.form.errors.items()):
-                if name == '__all__':
+                if name == "__all__":
                     continue
                 result[name] = value
         return result
@@ -283,8 +282,8 @@ class TabForms(object):
         """
         result = {}
         for f in self.forms:
-            for name, value in list(f['instance'].errors.items()):
-                if name == '__all__':
+            for name, value in list(f["instance"].errors.items()):
+                if name == "__all__":
                     continue
                 result[name] = value
         return result
@@ -298,9 +297,9 @@ class TabForms(object):
         to_remove = []
         for f in self.forms:
             if mandatory_only and \
-               ('mandatory' not in f or not f["mandatory"]):
+               ("mandatory" not in f or not f["mandatory"]):
                 continue
-            elif optional_only and ('mandatory' in f and f["mandatory"]):
+            elif optional_only and ("mandatory" in f and f["mandatory"]):
                 continue
             if not self._before_is_valid(f):
                 to_remove.append(f)
@@ -349,7 +348,7 @@ class TabForms(object):
                 self.save()
                 return self.done()
             return render_to_json_response(
-                {'form_errors': self.errors}, status=400
+                {"form_errors": self.errors}, status=400
             )
         context = {
             "tabs": self,

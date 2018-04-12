@@ -1,16 +1,16 @@
+# -*- coding: utf-8 -*-
+
 """SimpleUsers views."""
 
 from __future__ import unicode_literals
 
+from reversion import revisions as reversion
+
+from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
-from django.contrib.auth.decorators import login_required
-
-from reversion import revisions as reversion
-
 from modoboa.lib.web_utils import render_to_json_response
-
 from ..forms import ForwardForm
 from ..lib import needs_mailbox
 from ..models import Alias
@@ -40,7 +40,7 @@ def forward(request, tplname="admin/forward.html"):
             return render_to_json_response(_("Forward updated"))
 
         return render_to_json_response(
-            {'form_errors': form.errors}, status=400
+            {"form_errors": form.errors}, status=400
         )
 
     form = ForwardForm()

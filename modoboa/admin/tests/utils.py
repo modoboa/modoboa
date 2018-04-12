@@ -8,12 +8,13 @@ import socket
 
 from dns.name import Name
 from dns.rdtypes.ANY.MX import MX
-from dns.resolver import NoAnswer, NoNameservers, NXDOMAIN, Timeout
+from dns.resolver import NXDOMAIN, NoAnswer, NoNameservers, Timeout
 
 _MX_RECORD_1 = MX("IN", "MX", 10, Name("mx.example.com".split(".")))
 _MX_RECORD_2 = MX("IN", "MX", 10, Name("mx2.example.com".split(".")))
 _BAD_MX_RECORD = MX("IN", "MX", 10, Name("bad-response.example.com".split(".")))
-_DNE_MX_RECORD = MX("IN", "MX", 10, Name("does-not-exist.example.com".split(".")))
+_DNE_MX_RECORD = MX("IN", "MX", 10, Name(
+    "does-not-exist.example.com".split(".")))
 _MX_RECORDS = [_MX_RECORD_1]
 
 _IPV4_RECORD_1 = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("192.0.2.1", 25))

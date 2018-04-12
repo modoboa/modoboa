@@ -1,22 +1,21 @@
+# -*- coding: utf-8 -*-
+
 """Repair command tests"""
 
 from __future__ import unicode_literals
 
 from django.core import management
 
-from modoboa.lib.permissions import get_object_owner
-from modoboa.lib.permissions import ObjectAccess
+from modoboa.lib.permissions import ObjectAccess, get_object_owner
 from modoboa.lib.tests import ModoTestCase
-
-from .. import factories
-from .. import models
+from .. import factories, models
 
 
 class RepairTestCase(ModoTestCase):
     """TestCase for repair command."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
         super(RepairTestCase, cls).setUpTestData()
         factories.populate_database()
@@ -49,7 +48,7 @@ class RepairTestCase(ModoTestCase):
 
     def test_management_command_with_nul_domain(self):
         """Just assume nothing raise when an alias has no domain."""
-        models.Alias.objects.create(address='@modoboa.xxx')
+        models.Alias.objects.create(address="@modoboa.xxx")
         ret = management.call_command("modo", "repair", "--quiet")
         assert ret is None
 

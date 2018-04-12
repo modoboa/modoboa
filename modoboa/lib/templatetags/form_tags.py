@@ -1,14 +1,15 @@
+# -*- coding: utf-8 -*-
+
 """
 Form rendering tags.
 """
 
 from __future__ import unicode_literals
 
-from django import forms
-from django import template
+from django import forms, template
+from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from django.utils.safestring import mark_safe
-from django.template.loader import render_to_string
 
 from modoboa.lib.form_utils import SeparatorField
 
@@ -19,7 +20,7 @@ register = template.Library()
 def render_form(form, tpl=None):
     """Render a form."""
     if tpl is not None:
-        return render_to_string(tpl, dict(form=form))
+        return render_to_string(tpl, {"form": form})
 
     ret = ""
     for field in form:
@@ -45,7 +46,7 @@ def render_field(
     """Render a field."""
     from modoboa.core.templatetags.core_tags import visirule
 
-    if type(field.field) is SeparatorField:
+    if isinstance(field.field, SeparatorField):
         return "<h5%s>%s</h5>" % (visirule(field), smart_text(field.label))
     configure_field_classes(field)
     context = {
@@ -76,10 +77,11 @@ def render_fields_group(form, pattern):
         group += [bfield]
         cpt += 1
 
-    return render_to_string("common/generic_fields_group.html", dict(
-        label=label, help_text=first.help_text, group=group, haserror=haserror,
-        pattern=pattern
-    ))
+    return render_to_string(
+        "common/generic_fields_group.html",
+        {"label": label, "help_text": first.help_text, "group": group,
+         "haserror": haserror, "pattern": pattern}
+    )
 
 
 @register.simple_tag

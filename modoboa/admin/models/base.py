@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
+
 """Base admin models."""
 
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils import timezone
-
-from django.contrib.contenttypes.fields import GenericRelation
 
 from modoboa.core import models as core_models
 from modoboa.lib.permissions import (

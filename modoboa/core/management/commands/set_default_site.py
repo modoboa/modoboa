@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """
 A simple managemenent command to update the default site.
 
@@ -7,16 +8,15 @@ See `https://docs.djangoproject.com/en/dev/ref/contrib/sites/`_.
 
 from __future__ import unicode_literals
 
-from django.core.management.base import BaseCommand, CommandError
-
 from django.contrib.sites.models import Site
+from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
 
     """Management command to set the default site."""
 
-    help = "Set default site (see django.contrib.sites)"
+    help = "Set default site (see django.contrib.sites)"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Define command arguments."""

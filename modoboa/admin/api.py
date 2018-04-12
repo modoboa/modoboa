@@ -1,21 +1,20 @@
+# -*- coding: utf-8 -*-
+
 """Admin API."""
 
 from __future__ import unicode_literals
 
 from django import http
-
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.exceptions import ParseError
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
 
 from modoboa.core import models as core_models
-
-from . import models
-from . import serializers
+from . import models, serializers
 
 
 class DomainViewSet(viewsets.ModelViewSet):
@@ -81,7 +80,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         user = self.request.user
         ids = user.objectaccess_set \
             .filter(content_type=ContentType.objects.get_for_model(user)) \
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         queryset = core_models.User.objects.filter(pk__in=ids)
         domain = self.request.query_params.get("domain")
         if domain:
@@ -139,7 +138,7 @@ class AliasViewSet(viewsets.ModelViewSet):
         ids = (
             user.objectaccess_set.filter(
                 content_type=ContentType.objects.get_for_model(models.Alias))
-            .values_list('object_id', flat=True)
+            .values_list("object_id", flat=True)
         )
         queryset = models.Alias.objects.filter(pk__in=ids)
         domain = self.request.query_params.get("domain")

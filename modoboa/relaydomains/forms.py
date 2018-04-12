@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
+
 """Postfix relay domains extension forms."""
 
 from __future__ import unicode_literals
 
 from modoboa.lib.form_utils import WizardStep
-from modoboa.transport import forms as tr_forms
-from modoboa.transport import models as tr_models
+from modoboa.transport import forms as tr_forms, models as tr_models
 
 
 class RelayDomainWizardStep(WizardStep):

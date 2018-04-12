@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Forms related to aliases management."""
 
 from __future__ import unicode_literals
@@ -9,14 +11,10 @@ from django.http import QueryDict
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core import signals as core_signals
-from modoboa.lib import exceptions as lib_exceptions
+from modoboa.lib import exceptions as lib_exceptions, fields as lib_fields
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib import fields as lib_fields
-from modoboa.lib.form_utils import (
-    DynamicForm
-)
-
-from ..models import Domain, Alias
+from modoboa.lib.form_utils import DynamicForm
+from ..models import Alias, Domain
 
 
 class AliasForm(forms.ModelForm, DynamicForm):

@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """
 :mod:`exceptions` --- Custom Modoboa exceptions
 -----------------------------------------------
@@ -17,9 +18,9 @@ class ModoboaException(Exception):
     http_code = None
 
     def __init__(self, *args, **kwargs):
-        if 'http_code' in kwargs:
-            self.http_code = kwargs['http_code']
-            del kwargs['http_code']
+        if "http_code" in kwargs:
+            self.http_code = kwargs["http_code"]
+            del kwargs["http_code"]
         super(ModoboaException, self).__init__(*args, **kwargs)
 
 

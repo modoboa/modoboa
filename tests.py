@@ -1,4 +1,6 @@
 # coding: utf-8
+from __future__ import unicode_literals
+
 import os
 import tempfile
 import unittest
@@ -25,7 +27,7 @@ class DeployTest(unittest.TestCase):
         cmd = (
             "modoboa-admin.py deploy --collectstatic "
             "--dburl %s --domain %s --admin-username admin %s"
-            % (dburl, 'localhost', self.projname)
+            % (dburl, "localhost", self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)
         self.assertEqual(code, 0)

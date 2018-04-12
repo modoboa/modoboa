@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 """Management command to generate/update postfix map files."""
+
 from __future__ import print_function, unicode_literals
 
 import copy
@@ -6,16 +9,15 @@ import hashlib
 import os
 import sys
 
+import dj_database_url
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.template import Context, Template
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 
-import dj_database_url
-
-from ... import signals
-from ... import utils
+from ... import signals, utils
 
 MAP_FILE_TEMPLATE = """# This file was generated on {{ date }} by running:
 # {{ commandline }}
@@ -26,7 +28,7 @@ MAP_FILE_TEMPLATE = """# This file was generated on {{ date }} by running:
 class Command(BaseCommand):
     """Command class."""
 
-    help = "Generate/update postfix map files."
+    help = "Generate/update postfix map files."  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments."""

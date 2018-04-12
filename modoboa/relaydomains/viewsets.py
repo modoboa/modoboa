@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
+
 """RelayDomain viewsets."""
 
+from __future__ import unicode_literals
+
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 
 from modoboa.admin import models as admin_models
-
 from . import serializers
 
 

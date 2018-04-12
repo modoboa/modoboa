@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
 """Transport forms."""
+
+from __future__ import unicode_literals
 
 from django import forms
 
-from . import backends
-from . import models
-
+from . import backends, models
 
 TYPE_TO_FIELD_MAP = {
     "int": forms.IntegerField,

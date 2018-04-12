@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Core middlewares."""
 
 from __future__ import unicode_literals

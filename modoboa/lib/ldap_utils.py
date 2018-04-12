@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 """
 A collection of LDAP based classes/functions.
@@ -38,9 +38,9 @@ from __future__ import unicode_literals
 import ldap
 
 from django.conf import settings
-from django.utils.translation import ugettext as _
-from django.utils.encoding import force_bytes
 from django.utils import six
+from django.utils.encoding import force_bytes, force_str
+from django.utils.translation import ugettext as _
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import InternalError
@@ -70,13 +70,12 @@ class LDAPAuthBackend(object):
 
     def _get_conn(self, dn, password):
         """Get a connection from the server."""
-        kwargs = {}
-        if six.PY3:
-            kwargs['bytes_mode'] = False
-        conn = ldap.initialize(self.server_uri, **kwargs)
+        conn = ldap.initialize(self.server_uri, bytes_mode=six.PY2)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
-        conn.simple_bind_s(dn, password)
+        conn.simple_bind_s(
+            force_str(dn), force_str(password)
+        )
         return conn
 
     def connect_to_server(self, user, password):
@@ -98,7 +97,9 @@ class LDAPAuthBackend(object):
         sbase = self.global_params["ldap_search_base"]
         sfilter = self.global_params["ldap_search_filter"]
         sfilter = sfilter % {"user": user}
-        res = self.conn.search_s(sbase, ldap.SCOPE_SUBTREE, sfilter)
+        res = self.conn.search_s(
+            force_str(sbase), ldap.SCOPE_SUBTREE, force_str(sfilter)
+        )
         try:
             dn = res[0][0]
         except IndexError:
@@ -121,13 +122,13 @@ class LDAPAuthBackend(object):
         user_dn = self._find_user_dn(user)
         if self.ldap_ad:
             newpassword = (
-                ('"%s"' % newpassword).encode('utf-16').lstrip('\377\376')
+                ('"%s"' % newpassword).encode("utf-16").lstrip("\377\376")
             )
         ldif = [(ldap.MOD_REPLACE,
-                 self.pwd_attr,
+                 force_str(self.pwd_attr),
                  force_bytes(self._crypt_password(newpassword)))]
         try:
-            self.conn.modify_s(user_dn, ldif)
+            self.conn.modify_s(force_str(user_dn), ldif)
         except ldap.LDAPError as e:
             raise InternalError(
                 _("Failed to update password: {}").format(e))

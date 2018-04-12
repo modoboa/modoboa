@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Map file definitions for postfix."""
 
 from __future__ import unicode_literals
@@ -7,7 +9,7 @@ class DomainsMap(object):
 
     """Map to list all domains."""
 
-    filename = 'sql-domains.cf'
+    filename = "sql-domains.cf"
     mysql = (
         "SELECT name FROM admin_domain "
         "WHERE name='%s' AND type='domain' AND enabled=1"
@@ -26,7 +28,7 @@ class DomainsAliasesMap(object):
 
     """Map to list all domain aliases."""
 
-    filename = 'sql-domain-aliases.cf'
+    filename = "sql-domain-aliases.cf"
     mysql = (
         "SELECT dom.name FROM admin_domain dom "
         "INNER JOIN admin_domainalias domal ON dom.id=domal.target_id "
@@ -48,7 +50,7 @@ class AliasesMap(object):
 
     """A map to list all mailbox aliases."""
 
-    filename = 'sql-aliases.cf'
+    filename = "sql-aliases.cf"
     mysql = (
         "SELECT alr.address FROM modoboa_admin_aliasrecipient AS alr "
         "INNER JOIN admin_alias AS al ON alr.alias_id=al.id "
@@ -73,7 +75,7 @@ class MaintainMap(object):
 
     """Map files to list non available mailboxes."""
 
-    filename = 'sql-maintain.cf'
+    filename = "sql-maintain.cf"
     mysql = (
         "SELECT '450 Requested mail action not taken: mailbox unavailable' "
         "FROM admin_mailbox mb INNER JOIN admin_domain dom "

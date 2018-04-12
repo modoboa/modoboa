@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """relaydomains unit tests."""
 
 from __future__ import unicode_literals
@@ -5,18 +7,15 @@ from __future__ import unicode_literals
 import json
 
 from django.core.files.base import ContentFile
-from django.urls import reverse
 from django.test import TestCase
+from django.urls import reverse
 
-from modoboa.admin import factories as admin_factories
-from modoboa.admin import models as admin_models
+from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.core.factories import UserFactory
-from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
 from modoboa.lib.test_utils import MapFilesTestCaseMixin
+from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
 from modoboa.limits import utils as limits_utils
-from modoboa.transport import factories as tr_factories
-from modoboa.transport import models as tr_models
-
+from modoboa.transport import factories as tr_factories, models as tr_models
 from . import models
 
 
@@ -53,12 +52,12 @@ class Operations(object):
             "default_mailbox_quota": domain.default_mailbox_quota
         }
         aliases = [alias.name for alias in domain.domainalias_set.all()]
-        if optype == 'add':
+        if optype == "add":
             aliases.append(name)
         else:
             aliases.remove(name)
         for cpt, alias in enumerate(aliases):
-            fname = 'aliases' if not cpt else 'aliases_%d' % cpt
+            fname = "aliases" if not cpt else "aliases_%d" % cpt
             values[fname] = alias
         return self.ajax_post(
             reverse("admin:domain_change",
@@ -67,15 +66,15 @@ class Operations(object):
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
-        l = self.user.userobjectlimit_set.get(name=name)
-        self.assertEqual(l.current_value, curvalue)
-        self.assertEqual(l.max_value, maxvalue)
+        limit = self.user.userobjectlimit_set.get(name=name)
+        self.assertEqual(limit.current_value, curvalue)
+        self.assertEqual(limit.max_value, maxvalue)
 
 
 class RelayDomainsTestCase(ModoTestCase, Operations):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(RelayDomainsTestCase, cls).setUpTestData()
         admin_factories.populate_database()
@@ -115,20 +114,20 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
 
         FIXME: add a check for domain alias.
         """
-        self._create_relay_domain('relaydomain1.tld')
-        transport = tr_models.Transport.objects.get(pattern='relaydomain1.tld')
+        self._create_relay_domain("relaydomain1.tld")
+        transport = tr_models.Transport.objects.get(pattern="relaydomain1.tld")
         self.assertEqual(
-            transport._settings["relay_target_host"], 'external.host.tld')
+            transport._settings["relay_target_host"], "external.host.tld")
         self.assertEqual(
             transport._settings["relay_verify_recipients"], False)
 
-        resp = self._create_relay_domain('test.com', 400)
-        self.assertEqual(resp['form_errors']['name'][0],
-                         'Domain with this Name already exists.')
-        resp = self._create_relay_domain('relaydomainalias.tld', 400)
+        resp = self._create_relay_domain("test.com", 400)
+        self.assertEqual(resp["form_errors"]["name"][0],
+                         "Domain with this Name already exists.")
+        resp = self._create_relay_domain("relaydomainalias.tld", 400)
         self.assertEqual(
-            resp['form_errors']['name'][0],
-            'A domain alias with this name already exists'
+            resp["form_errors"]["name"][0],
+            "A domain alias with this name already exists"
         )
 
     def test_create_relaydomainalias(self):
@@ -140,21 +139,21 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         FIXME: add a check for domain alias.
         """
         self._relay_domain_alias_operation(
-            'add', self.dom, 'relaydomainalias1.tld'
+            "add", self.dom, "relaydomainalias1.tld"
         )
         resp = self._relay_domain_alias_operation(
-            'add', self.dom, 'test.com', 400
+            "add", self.dom, "test.com", 400
         )
         self.assertEqual(
-            resp['form_errors']['aliases_2'][0],
-            'A domain with this name already exists'
+            resp["form_errors"]["aliases_2"][0],
+            "A domain with this name already exists"
         )
         resp = self._relay_domain_alias_operation(
-            'add', self.dom, self.dom.name, 400
+            "add", self.dom, self.dom.name, 400
         )
         self.assertEqual(
-            resp['form_errors']['aliases_2'][0],
-            'A domain with this name already exists'
+            resp["form_errors"]["aliases_2"][0],
+            "A domain with this name already exists"
         )
 
     def test_edit_relaydomain(self):
@@ -238,12 +237,12 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "quota": 0, "default_mailbox_quota": 0
         }
         self.ajax_post(
-            reverse('admin:domain_change', args=[self.dom.id]),
+            reverse("admin:domain_change", args=[self.dom.id]),
             values
         )
-        admin_models.DomainAlias.objects.get(name='relaydomainalias.net')
+        admin_models.DomainAlias.objects.get(name="relaydomainalias.net")
         with self.assertRaises(admin_models.DomainAlias.DoesNotExist):
-            admin_models.DomainAlias.objects.get(name='relaydomainalias.tld')
+            admin_models.DomainAlias.objects.get(name="relaydomainalias.tld")
 
     def test_delete_relaydomain(self):
         """Test the removal of a relay domain."""
@@ -308,15 +307,15 @@ class ImportTestCase(ModoTestCase):
 class LimitsTestCase(ModoTestCase, Operations):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(LimitsTestCase, cls).setUpTestData()
-        for name, tpl in limits_utils.get_user_limit_templates():
+        for name, _definition in limits_utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(
                 "deflt_user_{0}_limit".format(name), 2, app="limits")
         cls.localconfig.save()
         cls.user = UserFactory.create(
-            username='reseller', groups=('Resellers',)
+            username="reseller", groups=("Resellers",)
         )
 
     def setUp(self):
@@ -326,38 +325,38 @@ class LimitsTestCase(ModoTestCase, Operations):
 
     def test_relay_domains_limit(self):
         self._create_relay_domain(
-            'relaydomain1.tld', quota=1, default_mailbox_quota=1)
-        self._check_limit('domains', 1, 2)
+            "relaydomain1.tld", quota=1, default_mailbox_quota=1)
+        self._check_limit("domains", 1, 2)
         self._create_relay_domain(
-            'relaydomain2.tld', quota=1, default_mailbox_quota=1)
-        self._check_limit('domains', 2, 2)
-        self._create_relay_domain('relaydomain3.tld', 403)
-        self._check_limit('domains', 2, 2)
-        domid = admin_models.Domain.objects.get(name='relaydomain2.tld').id
+            "relaydomain2.tld", quota=1, default_mailbox_quota=1)
+        self._check_limit("domains", 2, 2)
+        self._create_relay_domain("relaydomain3.tld", 403)
+        self._check_limit("domains", 2, 2)
+        domid = admin_models.Domain.objects.get(name="relaydomain2.tld").id
         self.ajax_post(
-            reverse('admin:domain_delete', args=[domid]), {})
-        self._check_limit('domains', 1, 2)
+            reverse("admin:domain_delete", args=[domid]), {})
+        self._check_limit("domains", 1, 2)
 
     def test_relay_domain_aliases_limit(self):
         self._create_relay_domain(
-            'relaydomain1.tld', quota=1, default_mailbox_quota=1)
+            "relaydomain1.tld", quota=1, default_mailbox_quota=1)
         domain = admin_models.Domain.objects.get(name="relaydomain1.tld")
         self._relay_domain_alias_operation(
-            'add', domain, 'relay-domain-alias1.tld'
+            "add", domain, "relay-domain-alias1.tld"
         )
-        self._check_limit('domain_aliases', 1, 2)
+        self._check_limit("domain_aliases", 1, 2)
         self._relay_domain_alias_operation(
-            'add', domain, 'relay-domain-alias2.tld'
+            "add", domain, "relay-domain-alias2.tld"
         )
-        self._check_limit('domain_aliases', 2, 2)
+        self._check_limit("domain_aliases", 2, 2)
         self._relay_domain_alias_operation(
-            'add', domain, 'relay-domain-alias3.tld', 403
+            "add", domain, "relay-domain-alias3.tld", 403
         )
-        self._check_limit('domain_aliases', 2, 2)
+        self._check_limit("domain_aliases", 2, 2)
         self._relay_domain_alias_operation(
-            'delete', domain, 'relay-domain-alias2.tld'
+            "delete", domain, "relay-domain-alias2.tld"
         )
-        self._check_limit('domain_aliases', 1, 2)
+        self._check_limit("domain_aliases", 1, 2)
 
 
 class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
@@ -374,7 +373,7 @@ class DataMixin(object):
     """A mixin to provide test data."""
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         super(DataMixin, cls).setUpTestData()
         transport = tr_factories.TransportFactory(
             pattern="test.com", _settings={

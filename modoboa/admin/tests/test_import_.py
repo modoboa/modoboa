@@ -2,25 +2,34 @@
 
 from __future__ import unicode_literals
 
+import os
+
 import dns.resolver
-from mock import patch
 
 from django.core.files.base import ContentFile
+from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.urls import reverse
 
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
-
 from . import utils
 from .. import factories
-from ..models import Domain, Alias, DomainAlias
+from ..models import Alias, Domain, DomainAlias
+
+try:
+    # mock is part of the Python (>= 3.3) standard library
+    from unittest import mock
+except ImportError:
+    # fall back to the mock backport
+    import mock
 
 
 class ImportTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):  # noqa:N802
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(ImportTestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value(
@@ -79,8 +88,8 @@ domainalias; domalias1.com; domain1.com; True
             response,
             "Default mailbox quota cannot be greater than domain quota")
 
-    @patch.object(dns.resolver.Resolver, "query")
-    @patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch("socket.getaddrinfo")
     def test_domain_import_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain import when MX check is enabled."""
         reseller = core_factories.UserFactory(
@@ -135,7 +144,7 @@ alias; alias1@test.com; True; user1@test.com
 forward; alias2@test.com; True; user1+ext@test.com
 forward; fwd1@test.com; True; user@extdomain.com
 dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
@@ -201,7 +210,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         """Try to import an account for nonlocal domain."""
         f = ContentFile(b"""
 account; user1@nonlocal.com; toto; User; One; True; SimpleUsers; user1@nonlocal.com; 0
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
@@ -212,12 +221,12 @@ account; user1@nonlocal.com; toto; User; One; True; SimpleUsers; user1@nonlocal.
     def test_import_invalid_quota(self):
         f = ContentFile(b"""
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; test.com
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         resp = self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn('wrong quota value', resp.content.decode())
+        self.assertIn("wrong quota value", resp.content.decode())
 
     def test_import_domain_by_domainadmin(self):
         """Check if a domain admin is not allowed to import a domain."""
@@ -230,7 +239,9 @@ domain; domain2.com; 1000; 200; False
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn("You are not allowed to import domains", resp.content.decode())
+        self.assertIn(
+            "You are not allowed to import domains",
+            resp.content.decode())
         f = ContentFile(b"""
 domainalias; domalias1.com; test.com; True
 """, name="identities.csv")
@@ -239,7 +250,8 @@ domainalias; domalias1.com; test.com; True
             {"sourcefile": f, "crypt_password": True}
         )
         self.assertIn(
-            "You are not allowed to import domain aliases", resp.content.decode())
+            "You are not allowed to import domain aliases",
+            resp.content.decode())
 
     def test_import_quota_too_big(self):
         self.client.logout()
@@ -271,7 +283,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
         f = ContentFile("""
 account; admin@test.com; toto; Admin; ; True; DomainAdmins; admin@test.com; 0; test.com
 account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0; test.com
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
@@ -292,7 +304,7 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0;
         )
         f = ContentFile(b"""
 account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com; 50
-""", name="identities.csv")
+""", name="identities.csv")  # NOQA:E501
         self.client.post(
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True,
@@ -343,5 +355,74 @@ dómain; dómªin2.com; 1000; 100; True
         dom = Domain.objects.get(name="dómªin1.com")
         self.assertEqual(dom.quota, 1000)
         self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+    def test_import_command_missing_file(self):
+        with mock.patch("os.path.isfile") as mock_isfile:
+            mock_isfile.return_value = False
+            with self.assertRaises(CommandError) as cm:
+                call_command("modo", "import", "test.csv")
+                ex_message = cm.exception.messages
+                self.assertEqual(ex_message, "File not found")
+
+    def test_import_command(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains.csv"
+        )
+        call_command("modo", "import", test_file)
+
+        admin = User.objects.get(username="admin")
+
+        dom = Domain.objects.get(name="domain1.com")
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+        dom = Domain.objects.get(name="dómain2.com")
+        self.assertEqual(dom.quota, 2000)
+        self.assertEqual(dom.default_mailbox_quota, 200)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+    def test_import_command_non_utf8(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains_iso8859.csv"
+        )
+        call_command("modo", "import", test_file)
+        dom = Domain.objects.get(name="dómain2.com")
+        self.assertEqual(dom.quota, 2000)
+
+    def test_import_command_duplicates(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains_duplicates.csv"
+        )
+        with self.assertRaises(CommandError) as cm:
+            call_command("modo", "import", test_file)
+            ex_message = cm.exception.messages
+            self.assertTrue(ex_message.startswith("Object already exists: "))
+
+    def test_import_command_duplicates_continue(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_domains_duplicates.csv"
+        )
+        call_command("modo", "import", "--continue-if-exists", test_file)
+
+        admin = User.objects.get(username="admin")
+
+        dom = Domain.objects.get(name="domain1.com")
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+        dom = Domain.objects.get(name="dómain2.com")
+        self.assertEqual(dom.quota, 2000)
+        self.assertEqual(dom.default_mailbox_quota, 200)
         self.assertTrue(dom.enabled)
         self.assertTrue(admin.is_owner(dom))

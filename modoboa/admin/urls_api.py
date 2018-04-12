@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Admin API urls."""
 
 from __future__ import unicode_literals
@@ -5,7 +7,6 @@ from __future__ import unicode_literals
 from rest_framework import routers
 
 from . import api
-
 
 router = routers.SimpleRouter()
 router.register(r"domains", api.DomainViewSet, base_name="domain")

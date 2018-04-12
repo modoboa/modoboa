@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+
 """Transport backend."""
+
+from __future__ import unicode_literals
 
 from django import forms
 from django.core import validators
@@ -76,10 +80,13 @@ class TransportBackendManager(object):
 
     def get_backend_list(self):
         """Return known backend list."""
-        return sorted([
-            (key, key)
-            for key, backend in self.backends.items()
-        ], key=lambda i: i[1])
+        return sorted(
+            (
+                (key, key)
+                for key, backend in self.backends.items()
+            ),
+            key=lambda i: i[1]
+        )
 
     def get_backend_settings(self, name):
         """Return backend settings."""
