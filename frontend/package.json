@@ -13,6 +13,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@mdi/font": "^2.2.43",
     "buefy": "^0.6.5",
     "js-cookie": "^2.2.0",
     "vue": "^2.5.2",
