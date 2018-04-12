@@ -9,10 +9,10 @@
             </p>
             <ul class="menu-list">
               <router-link tag="li" :to="{ name: 'DomainList' }">
-                <a><b-icon pack="fas" icon="user"></b-icon> Domains</a>
+                <a>Domains</a>
               </router-link>
               <router-link tag="li" :to="{ name: 'DomainList' }">
-                <a>Identities</a>
+                <a><b-icon icon="account"></b-icon>Identities</a>
               </router-link>
               <router-link tag="li" :to="{ name: 'DomainList' }">
                 <a>Logs</a>
