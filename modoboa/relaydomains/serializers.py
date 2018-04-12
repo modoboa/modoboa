@@ -45,7 +45,11 @@ class RelayDomainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = admin_models.Domain
-        fields = ("pk", "name", "enabled", "transport")
+        fields = (
+            "pk", "name", "enabled", "transport", "enable_dkim",
+            "dkim_key_selector", "dkim_public_key"
+        )
+        read_only_fields = ("pk", "dkim_public_key", )
 
     def create(self, validated_data):
         """Use backend to serialize data."""
