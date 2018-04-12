@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Field validators."""
 
 from __future__ import unicode_literals
@@ -49,7 +51,8 @@ class UTF8EmailValidator(EmailValidator):
         # dot-atom
         r"^[" + ascii_set + ul + r"]+(\.[" + ascii_set + ul + r"]+)*\Z"
         # quoted-string
-        r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-\011\013\014\016-\177])*"\Z)'
+        r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|'
+        r'\\[\001-\011\013\014\016-\177])*"\Z)'
     )
     user_regex = re.compile(r"(" + user_regex_raw, re.IGNORECASE)
 

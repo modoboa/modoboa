@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """User related tests."""
 
 from __future__ import unicode_literals
@@ -6,7 +8,6 @@ from django.urls import reverse
 
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoTestCase
-
 from ..factories import populate_database
 from ..models import Alias
 

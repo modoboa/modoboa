@@ -168,15 +168,8 @@ uwsgi:
 
 .. warning:: 
 
-   Some distributions, including Debian and Ubuntu, ship an outdated
-   version of uWSGI that does not conform to the WSGI
-   specification. Versions prior to 1.2.6 do not call close on the
-   response object after handling a request. In those cases the
-   request_finished signal isn’t sent. This can result in idle
-   connections to database and memcache servers.
-
-Use uwsgi 1.2.6 or newer. If you do not, you *will* run into
-problems. Modoboa will fail in obscure ways.
+   Use uwsgi 1.2.6 or newer. If you do not, you *will* run into
+   problems. Modoboa will fail in obscure ways.
 
 To use this setup, first `download and install uwsgi
 <http://uwsgi-docs.readthedocs.org/en/latest/WSGIquickstart.html>`_.

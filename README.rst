@@ -30,11 +30,11 @@ Main features
 * Reputation protection: `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ checks, `DMARC <https://dmarc.org/>`_ `reports <https://github.com/modoboa/modoboa-dmarc>`_ and more
 * `Amavis <http://www.amavis.org>`_ `frontend <https://github.com/modoboa/modoboa-amavis>`_
 * `Webmail <https://github.com/modoboa/modoboa-webmail>`_
+* `Calendar <https://github.com/modoboa/modoboa-radicale>`_
 * `Address book <https://github.com/modoboa/modoboa-contacts>`_
 * `Per-user Sieve filters <https://github.com/modoboa/modoboa-sievefilters>`_
 * `Autoreply messages for Postfix <https://github.com/modoboa/modoboa-postfix-autoreply>`_
 * `Graphical statistics about email traffic <https://github.com/modoboa/modoboa-stats>`_
-* `Radicale <http://radicale.org/>`_ `management frontend <https://github.com/modoboa/modoboa-radicale>`_
 
 *************
 Documentation

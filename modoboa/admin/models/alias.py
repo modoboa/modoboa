@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Models related to aliases management."""
 
 from __future__ import unicode_literals
@@ -5,25 +7,24 @@ from __future__ import unicode_literals
 import hashlib
 import random
 
-from django.urls import reverse
+from reversion import revisions as reversion
+
 from django.db import models
+from django.urls import reverse
 from django.utils.encoding import (
-    python_2_unicode_compatible, smart_text, force_str, force_bytes
+    force_bytes, force_str, python_2_unicode_compatible, smart_text
 )
 from django.utils.translation import ugettext as _, ugettext_lazy
-
-from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import (
-    PermDeniedException, BadRequest, Conflict, NotFound
+    BadRequest, Conflict, NotFound, PermDeniedException
 )
-
+from .. import signals
 from .base import AdminObject
 from .domain import Domain
 from .mailbox import Mailbox
-from .. import signals
 
 
 @python_2_unicode_compatible
@@ -48,7 +49,7 @@ class Alias(AdminObject):
         ugettext_lazy("Description"), blank=True)
     expire_at = models.DateTimeField(
         ugettext_lazy("Expire at"), blank=True, null=True)
-    _objectname = 'MailboxAlias'
+    _objectname = "MailboxAlias"
 
     class Meta:
         permissions = (
@@ -139,7 +140,7 @@ class Alias(AdminObject):
                     domain=domain, address=local_part).first()
                 if rcpt is None:
                     rcpt = Alias.objects.filter(
-                        address='%s@%s' % (local_part, domname)
+                        address="%s@%s" % (local_part, domname)
                     ).first()
                     if rcpt is None:
                         raise NotFound(

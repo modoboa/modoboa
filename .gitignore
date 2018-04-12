@@ -11,6 +11,7 @@ DEV
 .ropeproject
 modoboa.iml
 .tox
+.eggs/
 modoboa_test
 .coverage
 build/

@@ -1,23 +1,22 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
 from django.urls import reverse
 
 from modoboa.lib.tests import ModoTestCase
-
 from .. import factories
-from ..models import Domain, DomainAlias, Alias
+from ..models import Alias, Domain, DomainAlias
 
 
 class DomainAliasTestCase(ModoTestCase):
 
     @classmethod
-    def setUpTestData(cls):
+    def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(DomainAliasTestCase, cls).setUpTestData()
         factories.populate_database()
-        cls.dom = Domain.objects.get(name='test.com')
+        cls.dom = Domain.objects.get(name="test.com")
 
     def test_model(self):
         dom = Domain.objects.get(name="test.com")

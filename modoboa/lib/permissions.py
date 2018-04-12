@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
 """Object level permissions."""
 
 from __future__ import unicode_literals
@@ -6,8 +7,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
-from modoboa.core import constants as core_constants
-from modoboa.core import signals as core_signals
+from modoboa.core import constants as core_constants, signals as core_signals
 from modoboa.core.models import ObjectAccess, User
 
 

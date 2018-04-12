@@ -1,33 +1,34 @@
+# -*- coding: utf-8 -*-
+
 """Models related to domains management."""
 
 from __future__ import unicode_literals
 
 import datetime
 
+from reversion import revisions as reversion
+
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import (
-    python_2_unicode_compatible, smart_text, force_text
+    force_text, python_2_unicode_compatible, smart_text
 )
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
-
-from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
-
-from .base import AdminObject
 from .. import constants
+from .base import AdminObject
 
 
 @python_2_unicode_compatible
 class Domain(AdminObject):
     """Mail domain."""
 
-    name = models.CharField(ugettext_lazy('name'), max_length=100, unique=True,
+    name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
     quota = models.PositiveIntegerField(
         default=0,
@@ -45,11 +46,11 @@ class Domain(AdminObject):
         )
     )
     enabled = models.BooleanField(
-        ugettext_lazy('enabled'),
+        ugettext_lazy("enabled"),
         help_text=ugettext_lazy("Check to activate this domain"),
         default=True
     )
-    type = models.CharField(default="domain", max_length=20)
+    type = models.CharField(default="domain", max_length=20)  # NOQA:A003
     enable_dns_checks = models.BooleanField(
         ugettext_lazy("Enable DNS checks"), default=True,
         help_text=ugettext_lazy("Check to enable DNS checks for this domain")
@@ -205,8 +206,21 @@ class Domain(AdminObject):
     @property
     def bind_format_dkim_public_key(self):
         """Return DKIM public key using Bind format."""
-        return "{}._domainkey 10800 IN TXT \"v=DKIM1; k=rsa; p={}\"".format(
-            self.dkim_key_selector, self.dkim_public_key)
+        record = "v=DKIM1;k=rsa;p=%s" % self.dkim_public_key
+        # TXT records longer than 255 characters need split into chunks
+        # split record into 74 character chunks (+2 for indent, +2 for quotes(")
+        # == 78 characters) to make more readable in text editors.
+        split_record = []
+        while record:
+            if len(record) > 74:
+                split_record.append("  \"%s\"" % record[:74])
+                record = record[74:]
+            else:
+                split_record.append("  \"%s\"" % record)
+                break
+        record = "\n".join(split_record)
+        return "{}._domainkey.{}. 10800 IN TXT (\n{})".format(
+            self.dkim_key_selector, self.name, record)
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
@@ -245,9 +259,9 @@ class Domain(AdminObject):
     def save(self, *args, **kwargs):
         """Store current data if domain is renamed."""
         if self.oldname != self.name:
-            self.old_mail_homes = (
-                dict((mb.id, mb.mail_home) for mb in self.mailbox_set.all())
-            )
+            self.old_mail_homes = {
+                mb.id: mb.mail_home for mb in self.mailbox_set.all()
+            }
         super(Domain, self).save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):

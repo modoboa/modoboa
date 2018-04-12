@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Management command to check and fix known problems."""
 
 from __future__ import print_function, unicode_literals
@@ -6,11 +8,9 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils.encoding import smart_str
 
-from modoboa.lib.permissions import grant_access_to_object
-from modoboa.lib.permissions import get_object_owner
-
-from modoboa.core.models import User
 from modoboa.admin import models
+from modoboa.core.models import User
+from modoboa.lib.permissions import get_object_owner, grant_access_to_object
 
 known_problems = []
 
@@ -97,7 +97,7 @@ def sometimes_mailbox_have_no_alias(**options):
 class Repair(BaseCommand):
     """Command class."""
 
-    help = "Check and fix known problems."
+    help = "Check and fix known problems."  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command."""
@@ -113,7 +113,10 @@ class Repair(BaseCommand):
         # Load known problems from extensions.
         for ext in settings.MODOBOA_APPS:
             try:
-                __import__(ext, locals(), globals(), [smart_str("known_problems")])
+                __import__(
+                    ext, locals(), globals(),
+                    [smart_str("known_problems")]
+                )
             except ImportError:
                 pass
         for func in known_problems:

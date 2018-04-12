@@ -185,6 +185,12 @@ Replace ``<driver>`` and ``<path>`` by your values.
 
 If ``transport_maps`` contains ``sql-relaydomains-transport.cf``, remove it.
 
+.. warning::
+
+   If you make use of postfix's `proxymap server
+   <http://www.postfix.org/proxymap.8.html>`_, you must also update
+   the ``proxy_read_maps`` setting.
+
 Reload postfix.
 
 Add the following cron job in order to generate DKIM keys::

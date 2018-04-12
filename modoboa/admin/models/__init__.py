@@ -1,13 +1,15 @@
+# -*- coding: utf-8 -*-
+
 """Admin models."""
 
 from __future__ import unicode_literals
 
+from .alias import Alias, AliasRecipient
 from .base import AdminObject
 from .domain import Domain
 from .domain_alias import DomainAlias
-from .mailbox import Mailbox, Quota, MailboxOperation, SenderAddress
+from .mailbox import Mailbox, MailboxOperation, Quota, SenderAddress
 from .mxrecord import DNSBLResult, MXRecord
-from .alias import Alias, AliasRecipient
 
 __all__ = [
     "AdminObject",

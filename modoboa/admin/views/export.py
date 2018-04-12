@@ -1,22 +1,27 @@
+# -*- coding: utf-8 -*-
+
 """Export related views."""
 
 from __future__ import unicode_literals
-
-from backports import csv
 
 from rfc6266 import build_header
 
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.urls import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.utils.translation import ugettext as _
+from django.urls import reverse
 from django.utils import six
+from django.utils.translation import ugettext as _
 
-from ..forms import ExportIdentitiesForm, ExportDomainsForm
+from ..forms import ExportDomainsForm, ExportIdentitiesForm
 from ..lib import get_domains, get_identities
+
+if six.PY2:
+    from backports import csv
+else:
+    import csv
 
 
 def _export(content, filename):
@@ -52,7 +57,7 @@ def export_identities(request):
         fp = six.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         identities = get_identities(
-            request.user, **request.session['identities_filters'])
+            request.user, **request.session["identities_filters"])
         for ident in identities:
             ident.to_csv(csvwriter)
         content = fp.getvalue()
@@ -80,7 +85,7 @@ def export_domains(request):
         fp = six.StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         for dom in get_domains(request.user,
-                               **request.session['domains_filters']):
+                               **request.session["domains_filters"]):
             dom.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()

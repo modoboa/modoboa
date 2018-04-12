@@ -1,28 +1,27 @@
+# -*- coding: utf-8 -*-
+
 """Views available to super administrators only."""
 
 from __future__ import unicode_literals
 
 from functools import reduce
 
-from django.contrib.auth.decorators import (
-    login_required, user_passes_test
-)
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 
 from modoboa.core.models import Log
 from modoboa.core.utils import check_for_updates
-from modoboa.lib.listing import get_sort_order, get_listing_page
+from modoboa.lib.listing import get_listing_page, get_sort_order
 from modoboa.lib.web_utils import render_to_json_response
 from modoboa.parameters import tools as param_tools
-
 from .. import signals
 
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def viewsettings(request, tplname='core/settings_header.html'):
+def viewsettings(request, tplname="core/settings_header.html"):
     return render(request, tplname, {
         "selection": "settings"
     })
@@ -71,7 +70,7 @@ def get_logs_page(request, page_id=None):
     """Return a page of logs."""
     sort_order, sort_dir = get_sort_order(
         request.GET, "date_created",
-        allowed_values=['date_created', 'level', 'logger', 'message']
+        allowed_values=["date_created", "level", "logger", "message"]
     )
     if page_id is None:
         page_id = request.GET.get("page", None)

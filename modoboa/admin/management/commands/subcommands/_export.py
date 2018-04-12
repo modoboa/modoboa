@@ -1,21 +1,28 @@
+# -*- coding: utf-8 -*-
+
 """Django management command to export admin objects."""
 
 from __future__ import unicode_literals
 
-from backports import csv
 import sys
 
 from django.core.management.base import BaseCommand
+from django.utils import six
 
-from modoboa.core.models import User
 from modoboa.core.extensions import exts_pool
+from modoboa.core.models import User
 from .... import models
+
+if six.PY2:
+    from backports import csv
+else:
+    import csv
 
 
 class ExportCommand(BaseCommand):
     """Command class."""
 
-    help = "Export domains or identities using CSV format"  # noqa:A003
+    help = "Export domains or identities using CSV format"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add arguments to command."""
@@ -46,12 +53,12 @@ class ExportCommand(BaseCommand):
             dumped_aliases += [alias.pk]
         qset = (
             models.Alias.objects.exclude(pk__in=dumped_aliases)
-            .prefetch_related('aliasrecipient_set')
+            .prefetch_related("aliasrecipient_set")
         )
         for alias in qset:
             alias.to_csv(self.csvwriter)
 
     def handle(self, *args, **options):
         exts_pool.load_all()
-        self.csvwriter = csv.writer(sys.stdout, delimiter=options['sepchar'])
+        self.csvwriter = csv.writer(sys.stdout, delimiter=options["sepchar"])
         getattr(self, "export_{}".format(options["objtype"]))()

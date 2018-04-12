@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Custom authentication backends."""
 
 from __future__ import unicode_literals
@@ -6,7 +8,7 @@ import smtplib
 
 from django.conf import settings
 
-from modoboa.core.models import populate_callback, User
+from modoboa.core.models import User, populate_callback
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.parameters import tools as param_tools
 
@@ -86,7 +88,7 @@ try:
                 if grp.strip() in ldap_user.group_names:
                     group = "DomainAdmins"
                     break
-            if group == 'SimpleUsers':
+            if group == "SimpleUsers":
                 lpart, domain = split_mailbox(username)
                 if domain is None:
                     return None

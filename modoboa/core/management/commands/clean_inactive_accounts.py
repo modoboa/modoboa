@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Inactive accounts cleanup tool."""
 
 from __future__ import print_function, unicode_literals
@@ -9,14 +11,13 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from modoboa.parameters import tools as param_tools
-
 from ... import models
 
 
 class Command(BaseCommand):
     """Management command to clean inactive accounts."""
 
-    help = "Inactive accounts cleanup"
+    help = "Inactive accounts cleanup"  # NOQA:A003
 
     def add_arguments(self, parser):
         """Add extra arguments to command line."""

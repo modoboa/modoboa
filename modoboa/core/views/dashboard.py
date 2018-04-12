@@ -1,15 +1,16 @@
+# -*- coding: utf-8 -*-
+
 """Core dashboard views."""
 
 from __future__ import unicode_literals
 
-from dateutil import parser
 import feedparser
 import requests
+from dateutil import parser
 from requests.exceptions import RequestException
 
-from django.views import generic
-
 from django.contrib.auth import mixins as auth_mixins
+from django.views import generic
 
 from .. import signals
 
@@ -73,7 +74,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
         # Extra widgets
         result = signals.extra_admin_dashboard_widgets.send(
             sender=self.__class__, user=self.request.user)
-        for receiver, widgets in result:
+        for _receiver, widgets in result:
             for widget in widgets:
                 context["widgets"][widget["column"]].append(
                     widget["template"])

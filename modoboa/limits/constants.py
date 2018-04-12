@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Modoboa limits constants."""
 
 from __future__ import unicode_literals
@@ -5,7 +7,6 @@ from __future__ import unicode_literals
 import collections
 
 from django.utils.translation import ugettext_lazy as _
-
 
 DEFAULT_USER_LIMITS = collections.OrderedDict((
     ("domains", {
