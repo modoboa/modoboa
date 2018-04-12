@@ -9,11 +9,13 @@ from django.conf.urls import url
 from . import views
 from .views import (
     alias as alias_views, domain as domain_views, export as export_views,
-    identity as identity_views, import_ as import_views
+    identity as identity_views, import_ as import_views,
+    base as base_views
 )
 
 urlpatterns = [
-    url(r'^$', domain_views.index, name="index"),
+    # url(r'^$', domain_views.index, name="index"),
+    url(r'^$', base_views.AdminIndexView.as_view(), name="index"),
     url(r'^domains/$', domain_views.domains, name="domain_list"),
     url(r'^domains/(?P<pk>\d+)/$', views.DomainDetailView.as_view(),
         name="domain_detail"),
