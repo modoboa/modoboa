@@ -14,7 +14,7 @@ modoboa.iml
 .eggs/
 modoboa_test
 .coverage
-build/
+./build/
 dist/
 
 # JS stuff
