@@ -9,10 +9,16 @@
             </p>
             <ul class="menu-list">
               <router-link tag="li" :to="{ name: 'DomainList' }">
-                <a>Domains</a>
+                <a><b-icon pack="fas" icon="user"></b-icon> Domains</a>
               </router-link>
               <router-link tag="li" :to="{ name: 'DomainList' }">
                 <a>Identities</a>
+              </router-link>
+              <router-link tag="li" :to="{ name: 'DomainList' }">
+                <a>Logs</a>
+              </router-link>
+              <router-link tag="li" :to="{ name: 'DomainList' }">
+                <a>Settings</a>
               </router-link>
             </ul>
           </aside>

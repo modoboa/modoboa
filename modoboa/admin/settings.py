@@ -18,7 +18,7 @@ def apply(settings):
     if "webpack_loader" not in settings["INSTALLED_APPS"]:
         settings["INSTALLED_APPS"] += ("webpack_loader", )
     settings["WEBPACK_LOADER"] = {
-        "CALENDAR": {
+        "ADMIN": {
             "CACHE": not DEBUG,
             "BUNDLE_DIR_NAME": "admin/",
             "STATS_FILE": ADMIN_STATS_FILES.get("dev" if DEBUG else "prod"),
