@@ -84,8 +84,8 @@ query = {{ query|safe }}
 """
         else:
             tplcontent += """user = {{ dbuser }}
-password = {{ dbpass }}
-dbname = {{ dbname }}
+password = {{ dbpass|safe }}
+dbname = {{ dbname|safe }}
 hosts = {{ dbhost }}
 query = {{ query|safe }}
 """
