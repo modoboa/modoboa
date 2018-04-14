@@ -57,6 +57,7 @@ if __name__ == "__main__":
             "Development Status :: 5 - Production/Stable",
             "Environment :: Web Environment",
             "Framework :: Django :: 1.11",
+            "Framework :: Django :: 2.0",
             "Intended Audience :: System Administrators",
             "License :: OSI Approved :: ISC License (ISCL)",
             "Operating System :: OS Independent",
