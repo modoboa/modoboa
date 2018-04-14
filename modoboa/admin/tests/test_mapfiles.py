@@ -46,7 +46,8 @@ class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
         for f in self.MAP_FILES:
             mapcontent = parse_map_file(os.path.join(self.workdir, f))
             if dbsettings["ENGINE"] == "django.db.backends.sqlite3":
-                self.assertEqual(mapcontent["dbpath"], dbsettings["NAME"])
+                dbs_name = dbsettings["NAME"].replace('&', '&amp;')
+                self.assertEqual(mapcontent["dbpath"], dbs_name)
             else:
                 self.assertEqual(mapcontent["user"], dbsettings["USER"])
                 self.assertEqual(

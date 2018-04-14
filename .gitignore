@@ -2,6 +2,7 @@
 *.pyc
 *.mo
 modoboa_test.db
+test_project/modoboa.db
 modoboa.egg-info
 doc/.build
 doc/.static
