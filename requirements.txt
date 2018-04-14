@@ -15,7 +15,11 @@ djangorestframework==3.7.3
 bcrypt==3.1.4
 dnspython==1.15.0
 feedparser==5.2.1
-gevent==1.2.2
+
+# gevent for Python 3.7 is in alpha stage
+gevent==1.2.2 ; python_version <= '3.6'
+gevent==1.3a2 ; python_version > '3.6'
+
 ipaddress; python_version < '3.3'
 jsonfield==2.0.2
 passlib==1.7.1

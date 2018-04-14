@@ -4,6 +4,7 @@ python:
   - '3.4'
   - '3.5'
   - '3.6'
+  - '3.7-dev'
 
 env:
   global:
@@ -33,6 +34,7 @@ before_install:
   - pip install codecov
 
 install:
+  - if [ $TRAVIS_PYTHON_VERSION = 3.7-dev ]; then pip install -U "setuptools" ; fi
   - pip install -r requirements.txt
   - pip install -r ldap-requirements.txt
   - pip install -r test-requirements.txt
