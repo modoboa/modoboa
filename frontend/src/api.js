@@ -12,3 +12,7 @@ export const getDomains = () => {
 export const createDomain = (data) => {
     return domainResource.save(data)
 }
+
+export const updateDomain = (data) => {
+    return domainResource.update({pk: data.pk}, data)
+}

@@ -16,6 +16,12 @@ export default new Router({
             path: '/domains/add/',
             name: 'DomainAdd',
             component: DomainForm
+        },
+        {
+            path: '/domains/:domainPk([0-9]+)/',
+            name: 'DomainEdit',
+            component: DomainForm
         }
+
     ]
 })
