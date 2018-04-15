@@ -7,6 +7,7 @@ import Cookies from 'js-cookie'
 
 import App from './App'
 import router from './router'
+import store from './store'
 
 Vue.use(Buefy)
 
@@ -20,6 +21,7 @@ Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 new Vue({
     el: '#app',
     router,
+    store,
     components: { App },
     template: '<App/>'
 })
