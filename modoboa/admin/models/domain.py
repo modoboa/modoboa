@@ -159,6 +159,27 @@ class Domain(AdminObject):
         return False
 
     @cached_property
+    def dns_status(self):
+        """Return information about current DNS status."""
+        if not self.enable_dns_checks or self.uses_a_reserved_tld:
+            return {"checks": "disabled"}
+        elif self.awaiting_checks():
+            return {"checks": "pending"}
+        result = {"checks": "active"}
+        config = dict(param_tools.get_global_parameters("admin"))
+        if config["enable_mx_checks"]:
+            result["mx"] = "ok" if self.mxrecord_set.has_valids() else "ko"
+        if config["enable_dnsbl_checks"]:
+            if not self.dnsblresult_set.exists():
+                status = "unknown"
+            elif self.dnsblresult_set.blacklisted().exists():
+                status = "ko"
+            else:
+                status = "ok"
+            result["dnsbl"] = status
+        return result
+
+    @cached_property
     def dnsbl_status_color(self):
         """Shortcut to DNSBL results."""
         if not self.dnsblresult_set.exists():

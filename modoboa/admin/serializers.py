@@ -37,7 +37,9 @@ class DomainSerializer(serializers.ModelSerializer):
             "mailbox_count", "mbalias_count", "domainalias_count"
         )
         read_only_fields = (
-            "pk", "mailbox_count", "mbalias_count", "domainalias_count"
+            "pk", "dkim_public_key", "dns_status", "allocated_quota_in_percent"
+            "mailbox_count", "mbalias_count", "domainalias_count",
+            "enable_dns_checks"
         )
 
     def validate_name(self, value):
