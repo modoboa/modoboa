@@ -21,3 +21,7 @@ dist/
 node_modules
 /static/dist
 /frontend/webpack-stats.json
+
+# TOX stuff
+.eggs/
+test_project/modoboa.db
