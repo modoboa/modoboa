@@ -6,6 +6,14 @@
       </div>
       <div class="column">
         <router-link :to="{ name: 'DomainAdd' }" class="button is-primary">Add</router-link>
+        <b-dropdown>
+          <button class="button" slot="trigger">
+            <span>Actions</span>
+            <b-icon icon="menu-down"></b-icon>
+          </button>
+          <b-dropdown-item>Import</b-dropdown-item>
+          <b-dropdown-item>Export</b-dropdown-item>
+        </b-dropdown>
       </div>
       <div class="column">
         <b-field>
