@@ -57,36 +57,33 @@
 import { mapGetters } from 'vuex'
 
 export default {
-    computed: mapGetters([
-        'domains'
-    ]),
-    data () {
-        return {
-        }
-    },
-    created () {
-        this.$store.dispatch('getDomains')
-    },
-    methods: {
-        confirmDelete (domain) {
-            this.$dialog.prompt({
-                message: `Delete domain ${domain.name}?`,
-                inputAttrs: {
-                    type: 'checkbox',
-                    placeholder: 'Keep mailboxes on filesystem'
-                },
-                onConfirm: (value) => this.$toast.open(`Your age is: ${value}`)
-            })
+  computed: mapGetters(['domains']),
+  data() {
+    return {}
+  },
+  created() {
+    this.$store.dispatch('getDomains')
+  },
+  methods: {
+    confirmDelete(domain) {
+      this.$dialog.prompt({
+        message: `Delete domain ${domain.name}?`,
+        inputAttrs: {
+          type: 'checkbox',
+          placeholder: 'Keep mailboxes on filesystem'
         },
-        getDNSTagType (value) {
-            if (value === 'unknown') {
-                return 'is-warning'
-            } else if (value === 'ok') {
-                return 'is-danger'
-            } else {
-                return 'is-success'
-            }
-        }
+        onConfirm: value => this.$toast.open(`Your age is: ${value}`)
+      })
+    },
+    getDNSTagType(value) {
+      if (value === 'unknown') {
+        return 'is-warning'
+      } else if (value === 'ok') {
+        return 'is-danger'
+      } else {
+        return 'is-success'
+      }
     }
+  }
 }
 </script>
