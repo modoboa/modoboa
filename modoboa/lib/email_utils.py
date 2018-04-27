@@ -159,9 +159,11 @@ class Email(object):
             self._parse_inline_image(msg, level)
 
         if self.contents["plain"]:
-            self._post_process_plain()
+            self.contents["plain"] = self._post_process_plain(
+                self.contents["plain"])
         if self.contents["html"]:
-            self._post_process_html()
+            self.contents["html"] = self._post_process_html(
+                self.contents["html"])
 
     def _parse_text(self, msg, level=0):
         content_type = msg.get_content_subtype()
@@ -208,14 +210,15 @@ class Email(object):
         self._images[cid] = "data:%s;base64,%s" % (
             content_type, "".join(msg.get_payload().splitlines(False)))
 
-    def _post_process_plain(self):
-        mail_text = _RE_REMOVE_EXTRA_WHITESPACE \
-            .sub("\n\n", self.contents["plain"]).strip()
+    def _post_process_plain(self, content):
+        mail_text = (
+            _RE_REMOVE_EXTRA_WHITESPACE.sub("\n\n", content).strip()
+        )
         mail_text = escape(mail_text)
-        self.contents["plain"] = smart_text(mail_text)
+        return smart_text(mail_text)
 
-    def _post_process_html(self):
-        html = lxml.html.fromstring(self.contents["html"])
+    def _post_process_html(self, content):
+        html = lxml.html.fromstring(content)
 
         if self.links:
             html.rewrite_links(self._map_cid)
@@ -234,7 +237,7 @@ class Email(object):
             frames=True,
             add_nofollow=True)
         mail_text = lxml.html.tostring(cleaner.clean_html(html))
-        self.contents["html"] = smart_text(mail_text)
+        return smart_text(mail_text)
 
     def _map_cid(self, url):
         if url.startswith("cid:"):
