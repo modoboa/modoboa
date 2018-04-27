@@ -177,6 +177,8 @@ def account_auto_created(sender, user, **kwargs):
         )
         mb.set_quota(override_rules=True)
         mb.save(creator=sadmins[0])
+        user.email = mb.full_address
+        user.save(update_fields=["email"])
         for su in sadmins[1:]:
             permissions.grant_access_to_object(su, mb)
 
