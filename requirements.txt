@@ -19,6 +19,7 @@ gevent==1.2.2
 ipaddress; python_version < '3.3'
 jsonfield==2.0.2
 passlib==1.7.1
+Pillow  # Optional dependency for django-ckeditor
 progressbar33==2.4
 py-dateutil==2.2
 cryptography
