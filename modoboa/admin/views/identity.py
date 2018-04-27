@@ -44,7 +44,7 @@ def _identities(request):
         objects = sorted(idents_list, key=lambda o: getattr(o, sort_order),
                          reverse=sort_dir == "-")
     else:
-        objects = sorted(idents_list, key=lambda o: o.tags[0],
+        objects = sorted(idents_list, key=lambda o: o.tags[0]["label"],
                          reverse=sort_dir == "-")
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
