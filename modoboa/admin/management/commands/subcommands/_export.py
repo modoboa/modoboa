@@ -8,6 +8,7 @@ import sys
 
 from django.core.management.base import BaseCommand
 from django.utils import six
+from django.utils.encoding import smart_text
 
 from modoboa.core.extensions import exts_pool
 from modoboa.core.models import User
@@ -60,5 +61,6 @@ class ExportCommand(BaseCommand):
 
     def handle(self, *args, **options):
         exts_pool.load_all()
-        self.csvwriter = csv.writer(sys.stdout, delimiter=options["sepchar"])
+        self.csvwriter = csv.writer(
+            self.stdout, delimiter=smart_text(options["sepchar"]))
         getattr(self, "export_{}".format(options["objtype"]))()
