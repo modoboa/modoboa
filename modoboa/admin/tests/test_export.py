@@ -4,6 +4,11 @@
 
 from __future__ import unicode_literals
 
+import sys
+
+from six.moves import StringIO
+
+from django.core.management import call_command
 from django.urls import reverse
 from django.utils.encoding import force_text
 
@@ -62,12 +67,17 @@ class ExportTestCase(ModoTestCase):
             response.content.strip()
         )
 
+        # Test management command too.
+        stdout_backup, sys.stdout = sys.stdout, StringIO()
+        call_command("modo", "export", "domains")
+        response = sys.stdout.getvalue()
+        sys.stdout = stdout_backup
+        self.assertListEqual("\r\n".join(expected_response), response.strip())
+
     def test_export_identities(self):
         response = self.__export_identities()
-        self.assertListEqual(
-            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com\r\n",  # NOQA:E501
-            response.content.strip()
-        )
+        expected_response = "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com\r\n"  # NOQA:E501
+        self.assertListEqual(expected_response, response.content.strip())
 
     def test_export_simpleusers(self):
         factories.MailboxFactory(
