@@ -22,7 +22,7 @@ class DisableSignals(object):
             self.disconnect(signal)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        for signal in self.stashed_signals.keys():
+        for signal in list(self.stashed_signals.keys()):
             self.reconnect(signal)
 
     def disconnect(self, signal):
