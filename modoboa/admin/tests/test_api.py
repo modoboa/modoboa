@@ -130,6 +130,15 @@ class DomainAPITestCase(ModoAPITestCase):
             models.Mailbox.objects.filter(
                 address="user", domain__name="test42.com").exists())
 
+    def test_patch_domain(self):
+        """Check domain partial update."""
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("api:domain-detail", args=[domain.pk])
+        response = self.client.put(url, {"name": "toto.test"})
+        self.assertEqual(response.status_code, 200)
+        domain.refresh_from_db()
+        self.assertEqual(domain.name, "toto.test")
+
     def test_delete_domain(self):
         """Try to delete a domain."""
         domain = models.Domain.objects.get(name="test.com")

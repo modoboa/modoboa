@@ -31,7 +31,6 @@ class DomainViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer
-    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

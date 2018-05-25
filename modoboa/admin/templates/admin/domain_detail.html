@@ -106,6 +106,7 @@
               <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#domain_dkim_key">
                 {% trans "Show key" %}
               </button>
+              <a id="refresh_dkim_key" class="btn btn-default btn-xs" href="#" title="{% trans 'Generate new key' %}"><span class="fa fa-refresh"></span></a>
             {% else %}
               {% trans "Not generated" %}
             {% endif %}
@@ -147,4 +148,26 @@
       {% include "admin/_domain_dkim_key.html" %}
     </div>
   {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script type="text/javascript">
+  $(document).ready(function () {
+      $('#refresh_dkim_key').click(function (evt) {
+          evt.preventDefault();
+          var $this = $(this);
+          $.ajax({
+              url: '/api/v1/domains/{{ domain.pk }}/',
+              method: 'PATCH',
+              data: {
+                  dkim_public_key: '',
+                  dkim_private_key_path: ''
+              }
+          }).done(function (response) {
+              window.location.reload();
+          });
+      });
+  });
+  </script>
 {% endblock %}
