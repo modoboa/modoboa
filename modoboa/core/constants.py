@@ -55,6 +55,11 @@ LDAP_SECURE_MODES = [
     ("ssl", "SSL/TLS")
 ]
 
+LDAP_AUTH_METHODS = [
+    ("searchbind", ugettext_lazy("Search and bind")),
+    ("directbind", ugettext_lazy("Direct bind"))
+]
+
 PERMISSIONS = {
     "SimpleUsers": [],
     "DomainAdmins": [

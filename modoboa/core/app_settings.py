@@ -7,6 +7,8 @@ from django.conf import settings
 from django.contrib.auth import password_validation
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from rest_framework import serializers
+
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     HorizontalRadioSelect, SeparatorField, YesNoField
@@ -441,3 +443,180 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                 })
             else:
                 settings.AUTH_LDAP_GLOBAL_OPTIONS[ldap.OPT_REFERRALS] = False
+
+
+GLOBAL_PARAMETERS = {
+    "authentication": {
+        "label": ugettext_lazy("Authentication"),
+        "params": {
+            "authentication_type": {
+                "field": serializers.ChoiceField(
+                    choices=[("local", ugettext_lazy("Local")),
+                             ("ldap", "LDAP")],
+                    default="local"
+                ),
+                "label": ugettext_lazy("Authentication type"),
+                "help_text": ugettext_lazy(
+                    "The backend used for authentication"),
+            },
+            "password_scheme": {
+                "label": ugettext_lazy("Default password scheme"),
+                "field": serializers.ChoiceField(
+                    choices=[("sha512crypt", "sha512crypt"),
+                             ("sha256crypt", "sha256crypt"),
+                             ("blfcrypt", "bcrypt"),
+                             ("md5crypt", ugettext_lazy("md5crypt (weak)")),
+                             ("sha256", ugettext_lazy("sha256 (weak)")),
+                             ("md5", ugettext_lazy("md5 (weak)")),
+                             ("crypt", ugettext_lazy("crypt (weak)")),
+                             ("plain", ugettext_lazy("plain (weak)"))],
+                    default="sha512crypt"
+                ),
+                "help_text": ugettext_lazy(
+                    "Scheme used to crypt mailbox passwords"),
+            },
+            "rounds_number": {
+                "label": ugettext_lazy("Rounds"),
+                "field": serializers.IntegerField(default=70000),
+                "help_text": ugettext_lazy(
+                    "Number of rounds to use (only used by sha256crypt and "
+                    "sha512crypt). Must be between 1000 and 999999999, "
+                    "inclusive."
+                )
+            },
+            "default_password": {
+                "label": ugettext_lazy("Default password"),
+                "field": serializers.CharField(default="password"),
+                "help_text": ugettext_lazy(
+                    "Default password for automatically created accounts.")
+            },
+            "random_password_length": {
+                "label": ugettext_lazy("Random password length"),
+                "field": serializers.IntegerField(min_value=8, default=8),
+                "help_text": ugettext_lazy(
+                    "Length of randomly generated passwords.")
+            }
+        }
+    },
+    "ldap": {
+        "label": _("LDAP"),
+        "display": "authentication_type=ldap",
+        "params": {
+            "ldap_server_address": {
+                "label": ugettext_lazy("Server address"),
+                "field": serializers.CharField(default="localhost"),
+                "help_text": ugettext_lazy(
+                    "The IP address or the DNS name of the LDAP server"),
+            },
+            "ldap_server_port": {
+                "label": ugettext_lazy("Server port"),
+                "field": serializers.IntegerField(default=389),
+                "help_text": ugettext_lazy(
+                    "The TCP port number used by the LDAP server")
+            },
+            "ldap_secured": {
+                "label": ugettext_lazy("Use a secured connection"),
+                "field": serializers.ChoiceField(
+                    choices=constants.LDAP_SECURE_MODES,
+                    default="none"
+                ),
+                "help_text": ugettext_lazy(
+                    "Use an SSL/STARTTLS connection to access the LDAP server")
+            },
+            "ldap_auth_method": {
+                "label": ugettext_lazy("Authentication method"),
+                "field": serializers.ChoiceField(
+                    choices=constants.LDAP_AUTH_METHODS,
+                    default="searchbind",
+                ),
+                "help_text": ugettext_lazy(
+                    "Choose the authentication method to use"),
+            },
+            "ldap_bind_dn": {
+                "label": ugettext_lazy("Bind DN"),
+                "field": serializers.CharField(default="", required=False),
+                "help_text": ugettext_lazy(
+                    "The distinguished name to use when binding to the LDAP "
+                    "server. Leave empty for an anonymous bind"
+                ),
+                "display": "ldap_auth_method=searchbind"
+            },
+            "ldap_bind_password": {
+                "label": ugettext_lazy("Bind password"),
+                "field": serializers.CharField(default="", required=False),
+                "help_text": ugettext_lazy(
+                    "The password to use when binding to the LDAP server "
+                    "(with 'Bind DN')"
+                ),
+                "display": "ldap_auth_method=searchbind"
+            },
+            "ldap_search_base": {
+                "label": ugettext_lazy("Users search base"),
+                "field": serializers.CharField(default="", required=False),
+                "help_text": ugettext_lazy(
+                    "The distinguished name of the search base used to find "
+                    "users"
+                ),
+                "display": "ldap_auth_method=searchbind"
+            },
+            "ldap_search_filter": {
+                "label": ugettext_lazy("Search filter"),
+                "field": serializers.CharField(
+                    default="(mail=%(user)s)", required=False),
+                "help_text": ugettext_lazy(
+                    "An optional filter string (e.g. '(objectClass=person)'). "
+                    "In order to be valid, it must be enclosed in parentheses."
+                ),
+                "display": "ldap_auth_method=searchbind"
+            },
+            "ldap_user_dn_template": {
+                "label": ugettext_lazy("User DN template"),
+                "field": serializers.CharField(default="", required=False),
+                "help_text": ugettext_lazy(
+                    "The template used to construct a user's DN. It should "
+                    "contain one placeholder (ie. %(user)s)"
+                ),
+                "display": "ldap_auth_method=directbind"
+            },
+            "ldap_password_attribute": {
+                "label": ugettext_lazy("Password attribute"),
+                "field": serializers.CharField(default="userPassword"),
+                "help_text": ugettext_lazy(
+                    "The attribute used to store user passwords"),
+            },
+            "ldap_is_active_directory": {
+                "label": ugettext_lazy("Active Directory"),
+                "field": serializers.BooleanField(default=False),
+                "help_text": ugettext_lazy(
+                    "Tell if the LDAP server is an Active Directory one")
+            },
+            "ldap_admin_groups": {
+                "label": ugettext_lazy("Administrator groups"),
+                "field": serializers.CharField(default="", required=False),
+                "help_text": ugettext_lazy(
+                    "Members of those LDAP Posix groups will be created as "
+                    "domain administrators. Use ';' characters to separate "
+                    "groups."
+                )
+            },
+            "ldap_group_type": {
+                "label": ugettext_lazy("Group type"),
+                "field": serializers.ChoiceField(
+                    default="posixgroup",
+                    choices=constants.LDAP_GROUP_TYPES
+                ),
+                "help_text": ugettext_lazy(
+                    "The LDAP group type to use with your directory."
+                )
+            },
+            "ldap_groups_search_base": {
+                "label": ugettext_lazy("Groups search base"),
+                "field": serializers.CharField(default="", required=False),
+                "help_text": ugettext_lazy(
+                    "The distinguished name of the search base used to find "
+                    "groups"
+                )
+            }
+        }
+    }
+}

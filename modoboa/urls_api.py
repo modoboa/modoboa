@@ -10,6 +10,7 @@ from modoboa.core.extensions import exts_pool
 
 urlpatterns = [
     url("", include("modoboa.admin.urls_api")),
+    url("", include("modoboa.parameters.urls_api")),
     url("", include("modoboa.limits.urls_api")),
     url("", include("modoboa.relaydomains.urls_api")),
 ]
