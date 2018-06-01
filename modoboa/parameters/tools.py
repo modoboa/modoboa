@@ -35,11 +35,21 @@ class Registry(object):
             "global": {},
             "user": {}
         }
+        self._registry2 = {
+            "global": {},
+            "user": {}
+        }
 
     def add(self, level, formclass, label):
         """Add a new class containing parameters."""
         self._registry[level][formclass.app] = {
             "label": label, "formclass": formclass, "defaults": {}
+        }
+
+    def add2(self, level, app, label, params):
+        """Add new parameters for given app and level."""
+        self._registry2[level][app] = {
+            "label": label, "params": params
         }
 
     def _load_default_values(self, level):
@@ -74,6 +84,39 @@ class Registry(object):
                 "label": data["label"],
                 "form": data["formclass"](*args, **kwargs)
             })
+        return result
+
+    def get_fields(self, level, *args, **kwargs):
+        """Return fields to include in serializer."""
+        result = []
+        for app, fields in list(self._registry2[level].items()):
+            for section, sconfig in list(fields["params"].items()):
+                for name, config in list(sconfig["params"].items()):
+                    result.append(("{}-{}".format(app, name), config["field"]))
+        return result
+
+    def get_structure(self, level):
+        """Return fields structure."""
+        result = []
+        for app, fields in list(self._registry2[level].items()):
+            for section, sconfig in list(fields["params"].items()):
+                result.append({
+                    "type": "section",
+                    "label": sconfig["label"],
+                    "display": sconfig.get("display", "")
+                })
+                for name, config in list(sconfig["params"].items()):
+                    data = {
+                        "type": "field",
+                        "name": "{}-{}".format(app, name),
+                        "label": config["label"],
+                        "help_text": config.get("help_text", ""),
+                        "display": config.get("display", ""),
+                        "widget": config["field"].__class__.__name__,
+                    }
+                    if data["widget"] == "ChoiceField":
+                        data["choices"] = config["field"].choices
+                    result.append(data)
         return result
 
     def exists(self, level, app, parameter=None):
@@ -136,6 +179,15 @@ class Manager(object):
             if app in self._parameters:
                 value = self._parameters[app].get(parameter, value)
             yield (parameter, value)
+
+    def get_values_dict(self, app=None):
+        """Return all values for the given app as a dictionary."""
+        if app is None:
+            app = guess_extension_name()
+        values = registry.get_defaults(self._level, app)
+        return {
+            parameter: value for parameter, value in list(values.items())
+        }
 
     def set_value(self, parameter, value, app=None):
         """Set parameter for the given app."""

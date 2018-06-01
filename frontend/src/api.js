@@ -16,3 +16,16 @@ export const createDomain = data => {
 export const updateDomain = data => {
   return domainResource.update({ pk: data.pk }, data)
 }
+
+var customParametersActions = {
+    structure: {method: 'GET', url: '/api/v1/parameters/structure/'}
+}
+var parametersResource = Vue.resource('/api/v1/parameters/', {}, customParametersActions)
+
+export const getParameters = () => {
+    return parametersResource.get()
+}
+
+export const getParametersStructure = () => {
+    return parametersResource.structure()
+}

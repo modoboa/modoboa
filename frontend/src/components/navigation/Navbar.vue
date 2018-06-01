@@ -59,9 +59,9 @@ export default {
           label: 'Logs'
         },
         {
-          route: 'DomainList',
+          route: 'ParametersEdit',
           icon: 'tune',
-          label: 'Settings'
+          label: 'Parameters'
         }
       ]
     }
