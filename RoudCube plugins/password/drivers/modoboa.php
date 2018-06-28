@@ -3,9 +3,6 @@
 /**
  * Modoboa Password Driver
  *
- * Payload is json string containing username, oldPassword and newPassword
- * Return value is a json string saying result: true if success.
- *
  * @version 1.0
  * @author stephane @actionweb
  *
