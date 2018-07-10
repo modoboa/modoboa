@@ -30,8 +30,8 @@ PostgreSQL
      FROM admin_domain WHERE enable_dkim
    );
 
- MySQL/MariaDB
- -------------
+MySQL/MariaDB
+-------------
 
 ::
    
