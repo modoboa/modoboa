@@ -7,6 +7,11 @@ Modoboa can generate `DKIM
 the hosted domains but it won't sign or check messages. To do that,
 you need a dedicated software like `OpenDKIM <http://opendkim.org/>`_.
 
+.. note::
+
+   The cron job in charge of creating DKIM keys must be run using the
+   same user than OpenDKIM (ie. opendkim in most cases).
+
 Database
 ========
 
@@ -14,7 +19,7 @@ Since keys related information is stored in Modoboa's database, you
 need to tell OpenDKIM how it can access it.
 
 First, make sure to install the required additional packages on your
-system (``libopendbx1`` on debian based distributions or ``opendbx``
+system (``libopendbx1-*`` on debian based distributions or ``opendbx-*``
 on CentOS, the complete name depends on your database engine).
 
 Then, insert the following SQL view into Modoboa's database:
@@ -53,7 +58,8 @@ Add the following content to it::
   Socket                inet:12345@localhost
 
 Replace values between ``<>`` by yours. Accepted values for ``driver``
-are ``pgsql`` or ``mysql``.
+are ``pgsql`` or ``mysql``. Make sure the user you specify has read
+permission on the view created previously.
 
 If you run a debian based system, make sure to adjust the following
 setting in the :file:`/etc/default/opendkim` file::
