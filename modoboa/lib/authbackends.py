@@ -16,7 +16,7 @@ from modoboa.parameters import tools as param_tools
 class SMTPBackend(object):
     """A backend to authenticate against an SMTP server."""
 
-    def authenticate(self, username=None, password=None):
+    def authenticate(self, request, username=None, password=None):
         """Check the username/password and return a User."""
         host = getattr(settings, "AUTH_SMTP_SERVER_ADDRESS", "localhost")
         port = getattr(settings, "AUTH_SMTP_SERVER_PORT", 25)
@@ -113,10 +113,9 @@ try:
                 pass
             return user
 
-        def authenticate(self, username, password):
+        def authenticate(self, *args, **kwargs):
             if self.global_params["authentication_type"] == "ldap":
-                return super(LDAPBackend, self).authenticate(
-                    username=username, password=password)
+                return super(LDAPBackend, self).authenticate(*args, **kwargs)
             return None
 
 except ImportError:
