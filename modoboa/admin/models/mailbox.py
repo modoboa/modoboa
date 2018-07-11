@@ -318,12 +318,13 @@ class Mailbox(AdminObject):
                 raise lib_exceptions.PermDeniedException
         if "use_domain_quota" in values:
             self.use_domain_quota = values["use_domain_quota"]
-        override_rules = (
-            not self.quota or user.is_superuser or
-            user.has_perm("admin.add_domain") and
-            not user.userobjectlimit_set.get(name="quota").max_value
-        )
-        self.set_quota(values["quota"], override_rules)
+        if "use_domain_quota" in values or "quota" in values:
+            override_rules = (
+                not self.quota or user.is_superuser or
+                user.has_perm("admin.add_domain") and
+                not user.userobjectlimit_set.get(name="quota").max_value
+            )
+            self.set_quota(values["quota"], override_rules)
         if newaddress:
             self.rename(local_part, domain)
         self.save()
