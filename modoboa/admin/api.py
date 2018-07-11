@@ -61,7 +61,6 @@ class AccountViewSet(viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
     filter_backends = [filters.SearchFilter]
-    http_method_names = ["get", "post", "put", "delete"]
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     search_fields = ("^first_name", "^last_name", "^email")
 
