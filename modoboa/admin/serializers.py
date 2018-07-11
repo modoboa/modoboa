@@ -26,7 +26,6 @@ from . import lib, models
 
 
 class DomainSerializer(serializers.ModelSerializer):
-
     """Base Domain serializer."""
 
     class Meta:
@@ -34,9 +33,12 @@ class DomainSerializer(serializers.ModelSerializer):
         fields = (
             "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
             "enable_dkim", "dkim_key_selector", "dkim_key_length",
-            "dkim_public_key", "dkim_private_key_path"
+            "dkim_public_key", "dkim_private_key_path",
+            "mailbox_count", "mbalias_count", "domainalias_count"
         )
-        read_only_fields = ("pk", )
+        read_only_fields = (
+            "pk", "mailbox_count", "mbalias_count", "domainalias_count"
+        )
 
     def validate_name(self, value):
         """Check name constraints."""
