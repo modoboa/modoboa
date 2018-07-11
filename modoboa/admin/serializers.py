@@ -227,14 +227,16 @@ class WritableAccountSerializer(AccountSerializer):
         if role == "SimpleUsers":
             mailbox = data.get("mailbox")
             if mailbox is None:
-                data["mailbox"] = {
-                    "full_address": data["username"], "use_domain_quota": True
-                }
+                if not self.instance:
+                    data["mailbox"] = {
+                        "full_address": data["username"],
+                        "use_domain_quota": True
+                    }
             elif mailbox["full_address"] != data["username"]:
                 raise serializers.ValidationError({
                     "username": _("Must be equal to mailbox full_address")
                 })
-        if not data["random_password"]:
+        if not data.get("random_password"):
             password = data.get("password")
             if password:
                 try:
@@ -333,15 +335,17 @@ class WritableAccountSerializer(AccountSerializer):
             setattr(instance, key, value)
         if password:
             instance.set_password(password)
-        instance.save()
         if mailbox_data:
             creator = self.context["request"].user
             if instance.mailbox:
-                # FIXME: compat, to remove ASAP.
-                mailbox_data["email"] = mailbox_data["full_address"]
+                if "full_address" in mailbox_data:
+                    # FIXME: compat, to remove ASAP.
+                    mailbox_data["email"] = mailbox_data["full_address"]
+                    instance.email = mailbox_data["full_address"]
                 instance.mailbox.update_from_dict(creator, mailbox_data)
             else:
                 self._create_mailbox(creator, instance, mailbox_data)
+        instance.save()
         self.set_permissions(instance, domains)
         return instance
 
