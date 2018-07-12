@@ -1,0 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Andrei-Ilie Olteanu <andrei@flashsoft.ro>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"PO-Revision-Date: 2018-06-12 10:39+0000\n"
+"Last-Translator: Andrei-Ilie Olteanu <andrei@flashsoft.ro>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/language/ro_RO/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"
+
+#: core/static/core/js/settings.js:16
+msgid "No more log entry to show"
+msgstr "Nu mai exită alte rezultate de înregistrări pentru afișare"
+
+#: static/js/confirmation.js:44
+msgid "Warning"
+msgstr "Avertizare"
+
+#: static/js/confirmation.js:59
+msgid "Cancel"
+msgstr "Anulare"
+
+#: static/js/global.js:341
+msgid "Internal error"
+msgstr "Eroare internă"
+
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "Nu mai există alte elemente ce pot fi afișate"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Caută"
+
+#: static/js/searchbar.js:28
+msgid "Search..."
+msgstr "Caută..."
