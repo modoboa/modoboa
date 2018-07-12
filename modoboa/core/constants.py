@@ -37,8 +37,10 @@ LANGUAGES = (
     ("pt_PT", u"português"),
     ("pt_BR", u"português (BR)"),
     ("pl_PL", u"polski"),
+    ("ro_RO", u"Română"),
     ("ru", u"русский"),
     ("sv", u"svenska"),
+    ("zh_TW", u"中文（台灣）"),
 )
 
 

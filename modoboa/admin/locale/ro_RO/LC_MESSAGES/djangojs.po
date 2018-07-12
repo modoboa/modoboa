@@ -1,0 +1,53 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Andrei-Ilie Olteanu <andrei@flashsoft.ro>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"PO-Revision-Date: 2018-06-12 11:38+0000\n"
+"Last-Translator: Andrei-Ilie Olteanu <andrei@flashsoft.ro>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/language/ro_RO/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+
+#: admin/static/admin/js/admin.js:131
+msgid "No more domain to show"
+msgstr "Nu mai sunt domenii de afișat"
+
+#: admin/static/admin/js/admin.js:150
+msgid "Do not delete domain directory"
+msgstr "Nu sterge directorul pentru domeniu"
+
+#: admin/static/admin/js/admin.js:152
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Această operațiune va șterge toată informația asociată cu acest domeniu."
+
+#: admin/static/admin/js/admin.js:153
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "Această operațiune va șterge toată informația asociată cu acest domeniu, cu excepția conturilor."
+
+#: admin/static/admin/js/admin.js:236
+msgid "No domain administrator defined"
+msgstr "Nu există configurat un administartor de domeniu"
+
+#: admin/static/admin/js/admin.js:291 admin/static/admin/js/admin.js:359
+msgid "No more identity to show"
+msgstr "Nu mai sunt identități de afișat"
+
+#: admin/static/admin/js/admin.js:333
+msgid "Do not delete mailbox directory"
+msgstr "Nu sterge directorul mailbox"
+
+#: admin/static/admin/js/admin.js:362
+msgid "No more quota to show"
+msgstr "Nu mai există cote de afișat"
