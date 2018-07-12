@@ -20,6 +20,7 @@ from django.utils.encoding import smart_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language, ugettext as _
 
+from .. import models
 from .. import signals
 
 register = template.Library()
@@ -185,8 +186,6 @@ class ConnectedUsers(template.Node):
         self.varname = varname
 
     def render(self, context):
-        from modoboa.core.models import User
-
         sessions = Session.objects.filter(expire_date__gte=timezone.now())
         uid_list = []
         # Build a list of user ids from that query
@@ -197,12 +196,8 @@ class ConnectedUsers(template.Node):
                 uid_list.append(uid)
 
         # Query all logged in users based on id list
-        context[self.varname] = []
-        for uid in uid_list:
-            try:
-                context[self.varname].append(User.objects.get(pk=uid))
-            except User.DoesNotExist:
-                pass
+        context[self.varname] = (
+            models.User.objects.filter(pk__in=uid_list).distinct())
         return ""
 
 
