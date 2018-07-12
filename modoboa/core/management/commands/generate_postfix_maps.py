@@ -99,7 +99,7 @@ query = {{ query|safe }}
             if dburl else settings.DATABASES["default"])
         if "sqlite" in db_settings["ENGINE"]:
             dbtype = "sqlite"
-        elif "psycopg2" in db_settings["ENGINE"]:
+        elif "postgresql" in db_settings["ENGINE"]:
             dbtype = "postgres"
         else:
             dbtype = "mysql"
