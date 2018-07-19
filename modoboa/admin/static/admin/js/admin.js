@@ -560,18 +560,25 @@ Identities.prototype = {
      */
     emailChanged: function(event) {
         var $target = get_target(event);
+        var $username = $('#id_username');
 
         if ($target.val() !== this.originalEmail) {
             $('#id_create_alias_with_old_address').parents(".form-group").show();
         }
+        if ($username.val() !== $target.val()) {
+            $username.val($target.val());
+        }
     },
 
     generalform_init: function(notrigger) {
-        $("#id_role").change($.proxy(function(e) {
+        var $role = $('#id_role');
+
+        $role.change($.proxy(function(e) {
             var $this = $(e.target);
             var value = $this.val();
+            var email = $('#id_email').val();
 
-            if (value == "SimpleUsers" || value === "") {
+            if (value === 'SimpleUsers' || email !== '') {
                 this.simpleuser_mode();
             } else {
                 this.normal_mode(value);
@@ -581,12 +588,12 @@ Identities.prototype = {
             var $this = $(e.target);
             this.togglePasswordInputs(!$this.prop('checked'));
         }, this));
-        this.toggle_master_user($("#id_role").val());
+        this.toggle_master_user($role.val());
         $('#id_create_alias_with_old_address').parents('.form-group').hide();
         if (notrigger !== undefined && notrigger) {
             return;
         }
-        $("#id_role").trigger("change");
+        $role.trigger("change");
     },
 
     mailform_init: function() {
@@ -657,7 +664,7 @@ Identities.prototype = {
         $("#wizard").cwizard({
             formid: "newaccount_form",
             transition_callbacks: {
-                "mail": this.mailform_prefill
+                mail: this.mailform_prefill
             },
             success_callback: $.proxy(this.reload_listing, this)
         });

@@ -147,13 +147,14 @@ class AccountFormGeneral(forms.ModelForm):
 
     def clean_username(self):
         """username must be a valid email address for simple users."""
+        username = self.cleaned_data["username"]
         if "role" not in self.cleaned_data:
-            return self.cleaned_data["username"]
-        if self.cleaned_data["role"] != "SimpleUsers":
-            return self.cleaned_data["username"]
-        uname = self.cleaned_data["username"].lower()
-        validate_utf8_email(uname)
-        return uname
+            return username
+        if self.cleaned_data["role"] != "SimpleUsers" and "@" not in username:
+            return username
+        username = username.lower()
+        validate_utf8_email(username)
+        return username
 
     def clean(self):
         """Check master user mode."""
