@@ -3,7 +3,10 @@
 /**
  * Modoboa Password Driver
  *
- * @version 1.0
+ * Payload is json string containing username, oldPassword and newPassword
+ * Return value is a json string saying result: true if success.
+ *
+ * @version 1.0.1
  * @author stephane @actionweb
  *
  * Copyright (C) 2018, The Roundcube Dev Team
@@ -21,11 +24,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see http://www.gnu.org/licenses/.
  *
+ * The driver need modoboa core 1.10.6 or later 
+ *
  * You need to define in plugin/password/config.inc.php theses variables:
  *
  * $config['password_driver'] = 'modoboa'; // use modoboa as driver
  * $config['token_api_modoboa'] = ''; // put token number from Modoboa server
- * $config['password_minimum_length'] = 8; // select same numbar as in Modoboa server
+ * $config['password_minimum_length'] = 8; // select same number as in Modoboa server
  * 
  */
 
@@ -81,7 +86,6 @@ class rcube_modoboa_password
 
         // Encode json with new password
         $ret['username'] = $decoded[0]->username;
-        $ret['mailbox'] = $decoded[0]->mailbox; // API doc wrong, needed.
         $ret['role'] = $decoded[0]->role;
         $ret['password'] = $passwd; // new password
         $encoded = json_encode($ret);
