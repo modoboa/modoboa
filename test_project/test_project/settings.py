@@ -30,8 +30,6 @@ SECRET_KEY = "!8o(-dbbl3e+*bh7nx-^xysdt)1gso*%@4ze4-9_9o+i&amp;t--u_"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "DEBUG" in os.environ
 
-TEMPLATE_DEBUG = DEBUG
-
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
@@ -122,7 +120,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "modoboa.core.context_processors.top_notifications",
             ],
-            "debug": TEMPLATE_DEBUG,
+            "debug": DEBUG,
         },
     },
 ]

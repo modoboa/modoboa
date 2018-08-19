@@ -1,0 +1,11 @@
+build
+dist
+frontend/node_modules
+modoboa.egg-info
+
+.tox
+
+**/.python-version
+**/__pycache__
+**/*.pyc
+**/.ropeproject
