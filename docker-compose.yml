@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    environment:
+      PYTHONPATH: ".."
+      DB: "SQLITE"
+      DEBUG: "True"
+    command: sh -c "cd test_project && python3 manage.py migrate && python3 manage.py load_initial_data && python3 manage.py runserver 0:8000"
+    volumes:
+      - .:/code
