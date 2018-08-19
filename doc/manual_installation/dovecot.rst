@@ -328,8 +328,7 @@ As indicated on `Dovecot's wiki
 <http://wiki2.dovecot.org/Quota/Dict>`_, you need a trigger to
 properly update the quota.
 
-A working copy of this trigger is available on `Modoboa's website
-<http://modoboa.org/resources/modoboa_postgres_trigger.sql>`_.
+A working copy of this trigger is available on `Github <https://raw.githubusercontent.com/modoboa/modoboa-installer/master/modoboa_installer/scripts/files/dovecot/install_modoboa_postgres_trigger.sql>`_.
 
 Download this file and copy it on the server running postgres. Then,
 execute the following commands::
