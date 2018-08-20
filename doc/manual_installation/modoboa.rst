@@ -193,6 +193,7 @@ following content inside::
 
   # Logs parsing
   */5     *       *       *       *       root    $PYTHON $INSTANCE/manage.py logparser &> /dev/null
+  0       *       *       *       *       root    $PYTHON $INSTANCE/manage.py update_statistics
 
   # DNSBL checks
   */30    *       *       *       *       root    $PYTHON $INSTANCE/manage.py modo check_mx
