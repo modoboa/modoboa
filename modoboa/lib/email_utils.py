@@ -12,6 +12,7 @@ from email.utils import formataddr, formatdate, getaddresses, make_msgid
 
 import chardet
 import lxml.html
+from lxml.html import defs
 from lxml.html.clean import Cleaner
 
 from django.template.loader import render_to_string
@@ -219,7 +220,6 @@ class Email(object):
 
     def _post_process_html(self, content):
         html = lxml.html.fromstring(content)
-
         if self.links:
             html.rewrite_links(self._map_cid)
 
@@ -227,7 +227,7 @@ class Email(object):
                 link[0].set("target", "_blank")
         else:
             html.rewrite_links(lambda x: None)
-
+        safe_attrs = list(defs.safe_attrs) + ["class", "style"]
         cleaner = Cleaner(
             scripts=True,
             javascript=True,
@@ -235,7 +235,9 @@ class Email(object):
             page_structure=True,
             embedded=True,
             frames=True,
-            add_nofollow=True)
+            add_nofollow=True,
+            safe_attrs=safe_attrs
+        )
         mail_text = lxml.html.tostring(cleaner.clean_html(html))
         return smart_text(mail_text)
 
@@ -336,7 +338,7 @@ def decode(value_bytes, encoding, append_to_error=""):
         return ""
     try:
         value = value_bytes.decode(encoding)
-    except UnicodeDecodeError:
+    except (UnicodeDecodeError, LookupError):
         encoding = chardet.detect(value_bytes)
         try:
             value = value_bytes.decode(
