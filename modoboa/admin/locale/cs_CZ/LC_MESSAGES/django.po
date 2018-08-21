@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Miroslav Abrahám <miris@kunago.com>, 2013-2015
+# Peter Sveter, 2016-2017
+# Jarda Tesar <intossh@gmail.com>, 2017-2018
+# miky <kuba@ufiseru.cz>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-25 09:09+0100\n"
-"PO-Revision-Date: 2015-01-06 10:05+0000\n"
-"Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
-"Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
-"modoboa/language/cs_CZ/)\n"
-"Language: cs_CZ\n"
+"PO-Revision-Date: 2018-08-10 11:53+0000\n"
+"Last-Translator: Jarda Tesar <intossh@gmail.com>\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/modoboa/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: admin/app_settings.py:22 admin/handlers.py:269
 #: admin/templates/admin/_global_statistics_widget.html:11
@@ -27,58 +28,58 @@ msgstr "Domény"
 
 #: admin/app_settings.py:25
 msgid "Enable MX checks"
-msgstr ""
+msgstr "Povolit MX kontroly"
 
 #: admin/app_settings.py:28
 msgid "Check that every domain has a valid MX record"
-msgstr ""
+msgstr "Ověřit, zda má každá doména platný MX záznam"
 
 #: admin/app_settings.py:33
 msgid "Valid MXs"
-msgstr ""
+msgstr "Platné MX záznamy"
 
 #: admin/app_settings.py:36
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "Seznam IP nebo síťových adres, které by každý MX záznam měl obsahovat. Pokud toto záznam nerespektuje, bude odesláno varování."
 
 #: admin/app_settings.py:44
 msgid "New domains must use authorized MX(s)"
-msgstr ""
+msgstr "Nové domény musí používat autorizovaný/é MX záznam(y)"
 
 #: admin/app_settings.py:47
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr ""
+msgstr "Zamezit vytvoření nové domény, pokud její MX záznamy neodpovídají jedné ze zadaných adres."
 
 #: admin/app_settings.py:53
 msgid "Enable DNSBL checks"
-msgstr ""
+msgstr "Povolit DNSBL kontroly"
 
 #: admin/app_settings.py:56
 msgid "Check every domain against major DNSBL providers"
-msgstr ""
+msgstr "Ověřit každou doménu vůči hlavním DNSBL providerům"
 
 #: admin/app_settings.py:61
 msgid "DKIM keys storage directory"
-msgstr ""
+msgstr "Složka pro uložení DKIM klíčů"
 
 #: admin/app_settings.py:64
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
+msgstr "Absolutní cesta ke složce, kde budou uloženy privátní DKIM klíče. Ujistěte se, že vytvořená složka patří uživateli root a není možné z ní číst okolním světem."
 
 #: admin/app_settings.py:72
 msgid "Default DKIM key length"
-msgstr ""
+msgstr "Výchozí délka DKIM klíče"
 
 #: admin/app_settings.py:76
 msgid "Default length in bits for newly generated DKIM keys."
-msgstr ""
+msgstr "Výchozí délka v bitech pro nově vygenerované DKIM klíče."
 
 #: admin/app_settings.py:80 admin/templates/admin/domain_detail.html:41
 msgid "Mailboxes"
@@ -92,9 +93,7 @@ msgstr "Spravovat schránky v souborovém systému"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr ""
-"Přejmenovat nebo odstranit schránky v souborovém systému, pokud jsou "
-"přejmenovány nebo odstraněny v Modoboa"
+msgstr "Přejmenovat nebo odstranit schránky v souborovém systému, pokud jsou přejmenovány nebo odstraněny v Modoboa"
 
 #: admin/app_settings.py:92
 msgid "Mailboxes owner"
@@ -112,28 +111,18 @@ msgstr "Výchozí kvóta domény"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
-"Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
-"hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
+msgstr "Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
 
 #: admin/app_settings.py:109 admin/models/domain.py:40
 #: admin/templates/admin/domain_detail.html:64
-#, fuzzy
-#| msgid "Default domain quota"
 msgid "Default mailbox quota"
-msgstr "Výchozí kvóta domény"
+msgstr "Výchozí kvóta schránky"
 
 #: admin/app_settings.py:112
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
-"hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
+msgstr "Výchozí kvóta mailové schránky (v MB) aplikovaná nově vytvořeným doménám, které nemají specifikovanou vlastní hodnotu. Hodnota 0 znamená neomezenou kvótu."
 
 #: admin/app_settings.py:118
 msgid "Automatic account removal"
@@ -148,16 +137,17 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automatické vytvoření domény/schránky"
 
 #: admin/app_settings.py:128
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr "Při založení účtu automaticky vytvořit doménu a schránku."
 
 #: admin/app_settings.py:134
 msgid "Create an alias when a mailbox is renamed"
-msgstr ""
+msgstr "Vytvořit alias, pokud je mailová schránka přejmenována"
 
 #: admin/app_settings.py:137
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
+msgstr "Vytvořit alias použitím původní adresy, pokud je mailová schránka přejmenována."
 
 #: admin/app_settings.py:186 admin/app_settings.py:194
 #: admin/forms/account.py:331
@@ -165,18 +155,16 @@ msgid "Must be a positive integer"
 msgstr "Musí se jednat o kladné číslo"
 
 #: admin/app_settings.py:204
-#, fuzzy
-#| msgid "Domain modified"
 msgid "Directory not found."
-msgstr "Doména upravena"
+msgstr "Složka nenalezena."
 
 #: admin/app_settings.py:210
 msgid "openssl not found, please make sure it is installed."
-msgstr ""
+msgstr "openssl nenalezeno, prosím ujistěte se, že je nainstalováno."
 
 #: admin/app_settings.py:224
 msgid "Define at least one authorized network / address"
-msgstr ""
+msgstr "Definujte alespoň jednu autorizovanou síť / adresu"
 
 #: admin/app_settings.py:234
 msgid "Administration"
@@ -189,10 +177,8 @@ msgid "Domain"
 msgstr "Doména"
 
 #: admin/constants.py:100
-#, fuzzy
-#| msgid "New domain"
 msgid "Relay domain"
-msgstr "Nová doména"
+msgstr "Relay doména"
 
 #: admin/forms/account.py:38 admin/templates/admin/domain_detail.html:120
 msgid "Username"
@@ -202,9 +188,7 @@ msgstr "Uživatelské jméno"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr ""
-"Název uživatele. U běžných uživatelů musí být uvedena platná e-mailová "
-"adresa nebo u administrátorů schránka."
+msgstr "Název uživatele. U běžných uživatelů musí být uvedena platná e-mailová adresa nebo u administrátorů schránka."
 
 #: admin/forms/account.py:45 admin/templates/admin/account_detail.html:29
 msgid "Role"
@@ -219,16 +203,14 @@ msgid "What level of permission this user will have"
 msgstr "Jaká úroveň oprávnění bude tomuto uživateli nastavena"
 
 #: admin/forms/account.py:50 admin/forms/domain.py:227
-#, fuzzy
-#| msgid "Invalid request"
 msgid "Random password"
-msgstr "Neplatný požadavek"
+msgstr "Náhodné heslo"
 
 #: admin/forms/account.py:52
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
-msgstr ""
+msgstr "Vygenerovat náhodné heslo. Pokud upravujete tento účet a zaškrtnete tuto položku, bude vygenerováno nové heslo."
 
 #: admin/forms/account.py:58
 msgid "Password"
@@ -248,15 +230,13 @@ msgstr "Povoleno"
 
 #: admin/forms/account.py:172
 msgid "Only super administrators are allowed for this mode"
-msgstr ""
+msgstr "Pouze super správci jsou oprávnění pro tento režim"
 
 #: admin/forms/account.py:183 admin/forms/account.py:185
 #: admin/forms/domain.py:144 admin/forms/domain.py:273
 #: admin/forms/domain.py:276 admin/serializers.py:241
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "This field is required."
-msgstr "Schránka je vyžadována"
+msgstr "Toto pole je vyžadováno."
 
 #: admin/forms/account.py:191
 msgid "The two password fields didn't match."
@@ -272,7 +252,7 @@ msgstr "E-mail"
 
 #: admin/forms/account.py:227
 msgid "Create an alias using the old address"
-msgstr ""
+msgstr "Vytvořit alias použitím původní adresy"
 
 #: admin/forms/account.py:232 admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:49
@@ -284,10 +264,7 @@ msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
 "administrators)."
-msgstr ""
-"Kvóta pro tuto chránku v MB. Definujte vlastní hodnotu nebo použijte výchozí "
-"hodnotu domény. Ponechejte prázdné pro neomezenou kvótu (není povoleno "
-"správcům domény)."
+msgstr "Kvóta pro tuto chránku v MB. Definujte vlastní hodnotu nebo použijte výchozí hodnotu domény. Ponechejte prázdné pro neomezenou kvótu (není povoleno správcům domény)."
 
 #: admin/forms/account.py:242 admin/forms/domain.py:39
 #: admin/templates/admin/domain_headers.html:4
@@ -295,39 +272,22 @@ msgid "Alias(es)"
 msgstr "Alias(y)"
 
 #: admin/forms/account.py:245
-#, fuzzy
-#| msgid ""
-#| "Alias(es) of this mailbox. Indicate only one address per input, press "
-#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
-#| "alias (ex: *@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Alias(y) této schránky. Vložte pouze jeden alias na řádek, stiskněte ENTER "
-"pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte '*' (např. "
-"*@domena.cz)."
+msgstr "Alias(y) této schránky. V rámci vstupu vložte pouze jeden alias, stiskněte ENTER pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte '*' (např. *@domena.cz)."
 
 #: admin/forms/account.py:251
-#, fuzzy
-#| msgid "Invalid request"
 msgid "Sender addresses"
-msgstr "Neplatný požadavek"
+msgstr "Adresa odesílatele"
 
 #: admin/forms/account.py:254
-#, fuzzy
-#| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr ""
-"Schránka/Schránky, na kterou/které bude tento alias odkazovat. Uveďte na "
-"řádek pouze jednu adresu; pro vložení další adresy stiskněte po vložení "
-"ENTER."
+msgstr "Další adresa(y) odesílatele pro tento účet. Uživatel bude moci posílat e-maily pomocí této adresy, a to i v případě, že neexistuje lokálně. V rámci vstupu vložte pouze jednu adresu. Stiskněte ENTER pro vložení další adresy."
 
 #: admin/forms/account.py:309 admin/forms/alias.py:94
 #: admin/models/mailbox.py:315
@@ -335,10 +295,8 @@ msgid "Domain does not exist"
 msgstr "Doména neexistuje"
 
 #: admin/forms/account.py:341
-#, fuzzy
-#| msgid "Domain does not exist"
 msgid "Local domain does not exist"
-msgstr "Doména neexistuje"
+msgstr "Lokální doména neexistuje"
 
 #: admin/forms/account.py:345 admin/forms/account.py:353
 #: admin/forms/alias.py:97
@@ -360,7 +318,7 @@ msgstr "Obecné"
 
 #: admin/forms/account.py:504
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: admin/forms/account.py:508 admin/forms/account.py:596
 msgid "Mail"
@@ -383,49 +341,32 @@ msgid "Account created"
 msgstr "Účet vytvořen"
 
 #: admin/forms/alias.py:26
-#, fuzzy
-#| msgid "Invalid request"
 msgid "Random address"
-msgstr "Neplatný požadavek"
+msgstr "Náhodná adresa"
 
 #: admin/forms/alias.py:29
 msgid "Email address"
 msgstr "Emailová adresa"
 
 #: admin/forms/alias.py:31
-#, fuzzy
-#| msgid ""
-#| "The alias address (without the domain part). For a 'catch-all' address, "
-#| "just enter an * character."
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Alias adresy (bez části označující doménu). Pro vytvoření doménového koše "
-"vložte znak '*'."
+msgstr "Alias adresy. Pro vytvoření doménového koše vložte '*' (např. *@domena.cz)."
 
 #: admin/forms/alias.py:37 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Příjemci"
 
 #: admin/forms/alias.py:39
-#, fuzzy
-#| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"Schránka/Schránky, na kterou/které bude tento alias odkazovat. Uveďte na "
-"řádek pouze jednu adresu; pro vložení další adresy stiskněte po vložení "
-"ENTER."
+msgstr "Adresy na které bude tento alias ukazovat. Adresy zadávejte jednotlivo, stisknutím klávesy ENTER přidáte nový vstup."
 
 #: admin/forms/alias.py:114 admin/forms/alias.py:116
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "This field is required"
-msgstr "Schránka je vyžadována"
+msgstr "Toto pole je vyžadováno"
 
 #: admin/forms/alias.py:120
 msgid "No recipient defined"
@@ -440,38 +381,37 @@ msgstr "Typ"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr ""
-"Alias(y) této domény. Uveďte na řádek pouze jeden alias; pro vložení dalšího "
-"aliasu stiskněte po vložení ENTER."
+msgstr "Alias(y) této domény. Uveďte na řádek pouze jeden alias; pro vložení dalšího aliasu stiskněte po vložení ENTER."
 
 #: admin/forms/domain.py:47
 msgid "Key selector"
-msgstr ""
+msgstr "Identifikátor klíče"
 
 #: admin/forms/domain.py:85 admin/handlers.py:171
 msgid "domain alias"
 msgstr "doménový alias"
 
-#: admin/forms/domain.py:88 admin/forms/domain.py:155 admin/forms/domain.py:163
+#: admin/forms/domain.py:88 admin/forms/domain.py:155
+#: admin/forms/domain.py:163
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "%s s tímto názvem již existuje"
 
 #: admin/forms/domain.py:96 admin/serializers.py:45
 msgid "No authorized MX record found for this domain"
-msgstr ""
+msgstr "Nebyly nalezeny žádné autorizované MX záznamy pro tuto doménu"
 
 #: admin/forms/domain.py:108
 msgid "DKIM keys storage directory not configured"
-msgstr ""
+msgstr "Není nastavena složka pro ukládání DKIM klíčů"
 
 #: admin/forms/domain.py:129 admin/serializers.py:55
 msgid "Cannot be greater than domain quota"
-msgstr ""
+msgstr "Nemůže být vyšší než kvóta domény"
 
 #: admin/forms/domain.py:134
 msgid "You can't define an unlimited quota."
-msgstr ""
+msgstr "Neomezená kvóta nelze definovat."
 
 #: admin/forms/domain.py:155 admin/forms/domain.py:160
 msgid "domain"
@@ -496,24 +436,19 @@ msgstr "Jméno"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr ""
-"Jméno správce. Nevkládejte sem název domény, název bude automaticky doplněn."
+msgstr "Jméno správce. Nevkládejte sem název domény, název bude automaticky doplněn."
 
 #: admin/forms/domain.py:230
-#, fuzzy
-#| msgid "Create a domain administrator"
 msgid "Generate a random password for the administrator."
-msgstr "Vytvořit správce domény"
+msgstr "Generovat náhodné heslo pro administrátora."
 
 #: admin/forms/domain.py:236
 msgid "With a mailbox"
-msgstr ""
+msgstr "S mailovou schránkou"
 
 #: admin/forms/domain.py:239
-#, fuzzy
-#| msgid "Create a domain administrator"
 msgid "Create a mailbox for the administrator."
-msgstr "Vytvořit správce domény"
+msgstr "Vytvořit mailovou schránku pro administrátora."
 
 #: admin/forms/domain.py:245
 msgid "Create aliases"
@@ -598,10 +533,8 @@ msgid "Account import failed (%s): domain does not exist"
 msgstr "Import účtu nebyl úspěšný (%s): doména neexistuje"
 
 #: admin/handlers.py:231 admin/models/mailbox.py:342
-#, fuzzy
-#| msgid "Mailbox %s already exists"
 msgid "Mailbox {} already exists"
-msgstr "Schránka %s již existuje"
+msgstr "Schránka {} již existuje"
 
 #: admin/handlers.py:239
 #, python-format
@@ -624,70 +557,66 @@ msgid "A mailbox is required"
 msgstr "Schránka je vyžadována"
 
 #: admin/lib.py:134
-#, fuzzy
-#| msgid "You can't delete your own domain"
 msgid "You are not allowed to import domains"
-msgstr "Nemůžete smazat vlastní doménu"
+msgstr "Nemáte oprávnění pro import domén"
 
 #: admin/lib.py:145
 msgid "You are not allowed to import domain aliases."
-msgstr ""
+msgstr "Nemáte oprávnění pri import doménových aliasů"
 
 #: admin/lib.py:183 admin/tests/test_mx.py:122
 #, python-format
 msgid "No DNS records found for %s"
-msgstr ""
+msgstr "Nenalezeny žádné DNS záznamy pro %s"
 
 #: admin/lib.py:185 admin/tests/test_mx.py:125
 #, python-format
 msgid "No MX record for %s"
-msgstr ""
+msgstr "Žádný MX záznam pro %s"
 
 #: admin/lib.py:187 admin/tests/test_mx.py:126
 msgid "No working name servers found"
-msgstr ""
+msgstr "Nenalezeny žádné funkční DNS servery"
 
 #: admin/lib.py:190 admin/tests/test_mx.py:128
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
+msgstr "Vypršel časový limit DNS požadavku, nelze získat %s v tuto chvíli"
 
 #: admin/lib.py:201 admin/tests/test_mx.py:131
 #, python-format
 msgid "Unable to lookup ip addresses for %(domain)s; %(error)s"
-msgstr ""
+msgstr "Nelze vyhledat IP adresy pro %(domain)s; %(error)s"
 
 #: admin/lib.py:212 admin/tests/test_mx.py:134
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
-msgstr ""
+msgstr "Neplatný formát IP adresy pro %(domain)s; %(addr)s"
 
 #: admin/management/commands/subcommands/_mx.py:136
 msgid "[modoboa] DNSBL issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] DNSBL problém(y) pro doménu {}"
 
 #: admin/management/commands/subcommands/_mx.py:156
 msgid "Domain {} has no MX record"
-msgstr ""
+msgstr "Doména {} nemá MX záznam"
 
 #: admin/management/commands/subcommands/_mx.py:167
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
-msgstr ""
+msgstr "MX záznam pro doménu {0} je neplatný: {1}"
 
 #: admin/management/commands/subcommands/_mx.py:184
 msgid "[modoboa] MX issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] MX problém(y) pro doménu {}"
 
 #: admin/models/alias.py:35 admin/models/mailbox.py:97
 msgid "address"
 msgstr "adresa"
 
 #: admin/models/alias.py:37
-#, fuzzy
-#| msgid "The alias name"
 msgid "The alias address."
-msgstr "Název aliasu"
+msgstr "Adresa aliasu."
 
 #: admin/models/alias.py:42 admin/models/domain.py:48
 #: admin/models/domain_alias.py:47
@@ -700,27 +629,23 @@ msgstr "Zatrhněte pole pro povolení tohoto aliasu"
 
 #: admin/models/alias.py:48 admin/templates/admin/alias_detail.html:32
 msgid "Description"
-msgstr ""
+msgstr "Popis"
 
 #: admin/models/alias.py:50 admin/templates/admin/alias_detail.html:29
 msgid "Expire at"
-msgstr ""
+msgstr "Vyprší o"
 
 #: admin/models/alias.py:93
 msgid "alias"
 msgstr "alias"
 
 #: admin/models/alias.py:125
-#, fuzzy
-#| msgid "Invalid request"
 msgid "Invalid address"
-msgstr "Neplatný požadavek"
+msgstr "Neplatná adresa"
 
 #: admin/models/alias.py:146
-#, fuzzy
-#| msgid "Local recipient %s not found"
 msgid "Local recipient {}@{} not found"
-msgstr "Místní příjemce %s nebyl nalezen"
+msgstr "Lokální příjemce {}@{} nebyl nalezen"
 
 #: admin/models/alias.py:176
 #, python-format
@@ -741,24 +666,12 @@ msgid "The domain name"
 msgstr "Doménové jméno"
 
 #: admin/models/domain.py:35
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr ""
-"Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
-"hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
+msgstr "Kvóta v MB sdílená mezi schránky. Hodnota 0 = žádná kvóta."
 
 #: admin/models/domain.py:43
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
-"hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
+msgstr "Výchozí kvóta v MB pro schránky. Hodnota 0 = žádná kvóta."
 
 #: admin/models/domain.py:49
 msgid "Check to activate this domain"
@@ -766,26 +679,24 @@ msgstr "Zatrhněte pole pro povolení této domény"
 
 #: admin/models/domain.py:54
 msgid "Enable DNS checks"
-msgstr ""
+msgstr "Zapnout kontrolu DNS"
 
 #: admin/models/domain.py:55
-#, fuzzy
-#| msgid "Check to activate this domain"
 msgid "Check to enable DNS checks for this domain"
-msgstr "Zatrhněte pole pro povolení této domény"
+msgstr "Zaškrtněte pro zapnutí kontroly DNS pro tuto doménu"
 
 #: admin/models/domain.py:62
 msgid "Enable DKIM signing"
-msgstr ""
+msgstr "Povolit DKIM podepisování"
 
 #: admin/models/domain.py:64
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
+msgstr "Pokud povolíte tuto možnost, bude vygenerován DKIM klíč pro tuto doménu."
 
 #: admin/models/domain.py:70
 msgid "Key length"
-msgstr ""
+msgstr "Délka klíče"
 
 #: admin/models/domain.py:285 admin/models/domain_alias.py:74
 msgid "Invalid line"
@@ -793,23 +704,19 @@ msgstr "Neplatný řádek"
 
 #: admin/models/domain.py:295
 msgid "No authorized MX record found for domain {}"
-msgstr ""
+msgstr "Nenalezeny žádný autorizovaný MX záznam pro doménu {}"
 
 #: admin/models/domain.py:302
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
 msgid "Invalid quota value for domain '{}'"
-msgstr "Neplatná hodnota kvóty u domény '%s'"
+msgstr "Neplatná hodnota kvóty pro doménu '{}'"
 
 #: admin/models/domain.py:309
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
 msgid "Invalid default mailbox quota value for domain '{}'"
-msgstr "Neplatná hodnota kvóty u domény '%s'"
+msgstr "Neplatná výchozí hodnota kvóty schránky pro doménu '{}'"
 
 #: admin/models/domain.py:314
 msgid "Default mailbox quota cannot be greater than domain quota"
-msgstr ""
+msgstr "Výchozí kvóta mailové schránky nemůže být větší než kvóta domény"
 
 #: admin/models/domain_alias.py:40
 msgid "The alias name"
@@ -842,96 +749,76 @@ msgid "A quota is required"
 msgstr "Kvóta je vyžadována"
 
 #: admin/models/mailbox.py:264
-#, fuzzy
-#| msgid "Domain created"
 msgid "Domain quota exceeded"
-msgstr "Doména vytvořena"
+msgstr "Kvóta domény byla překročena"
 
 #: admin/serializers.py:80 admin/serializers.py:266 admin/serializers.py:360
-#, fuzzy
-#| msgid "Permissions"
 msgid "Permission denied."
-msgstr "Oprávnění"
+msgstr "Přístup zamítnut."
 
 #: admin/serializers.py:118
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr ""
+msgstr "Zobrazit spravované domény (jenom distributori a správci domén)"
 
 #: admin/serializers.py:218
 msgid "Not allowed for this role."
-msgstr ""
+msgstr "Není povoleno pro tuto roli."
 
 #: admin/serializers.py:228
 msgid "Must be equal to mailbox full_address"
-msgstr ""
+msgstr "Musí být rovno hodnote schránky celá_adresa"
 
 #: admin/serializers.py:253
-#, fuzzy
-#| msgid "Domain does not exist"
 msgid "Local domain {} does not exist"
-msgstr "Doména neexistuje"
+msgstr "Lokální doména {} neexistuje"
 
 #: admin/serializers.py:347
 msgid "A list of recipient"
-msgstr ""
+msgstr "Seznam příjemců"
 
 #: admin/serializers.py:358
-#, fuzzy
-#| msgid "Domain modified"
 msgid "Domain not found."
-msgstr "Doména upravena"
+msgstr "Doména nebyla nalezena."
 
 #: admin/serializers.py:407
-#, fuzzy
-#| msgid "You don't have access to this domain"
 msgid "You don't have access to this domain."
-msgstr "Nemáte oprávnění k přístupu k této doméně"
+msgstr "K této doméně nemáte přístup."
 
 #: admin/serializers.py:415
-#, fuzzy
-#| msgid "You don't have access to this domain"
 msgid "You don't have access to this mailbox."
-msgstr "Nemáte oprávnění k přístupu k této doméně"
+msgstr "K této schránce nemáte přístup."
 
 #: admin/templates/admin/_domain_dkim_key.html:6
 #: admin/templates/admin/_domain_dkim_key.html:20
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #: admin/templates/admin/_domain_dkim_key.html:7
 #, python-format
 msgid "DKIM public key for %(domain)s"
-msgstr ""
+msgstr "Veřejný DKIM klíč pro %(domain)s"
 
 #: admin/templates/admin/_domain_dkim_key.html:11
-#, fuzzy
-#| msgid "Invalid format"
 msgid "Raw format"
-msgstr "Neplatný formát"
+msgstr "Raw formát"
 
 #: admin/templates/admin/_domain_dkim_key.html:15
-#, fuzzy
-#| msgid "Invalid format"
 msgid "Bind/named format"
-msgstr "Neplatný formát"
+msgstr "Bind/named formát"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:4
-#, fuzzy
-#| msgid "disabled"
 msgctxt "checks"
 msgid "Disabled"
-msgstr "zákázáno"
+msgstr "Zákázáno"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
-msgstr ""
+msgstr "Čeká na kontrolu"
 
 #: admin/templates/admin/_global_statistics_widget.html:4
-#, fuzzy
-#| msgid "Statistics"
 msgid "Global statistics"
-msgstr "Statistiky"
+msgstr "Globální statistiky"
 
 #: admin/templates/admin/_global_statistics_widget.html:8
 msgid "Quantity"
@@ -944,89 +831,71 @@ msgid "Domain aliases"
 msgstr "Doménové aliasy"
 
 #: admin/templates/admin/_per_domain_statistics_widget.html:4
-#, fuzzy
-#| msgid "Per-domain counters"
 msgid "Per-domain statistics"
-msgstr "Počitadla dle domén"
+msgstr "Statistiky pro jednotlivé domény"
 
 #: admin/templates/admin/account_detail.html:16
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/domain_detail.html:19
 #: admin/templates/admin/identities_table.html:7
-#, fuzzy
-#| msgid "disabled"
 msgid "(disabled)"
-msgstr "zákázáno"
+msgstr "(zákázáno)"
 
 #: admin/templates/admin/account_detail.html:22
 #: admin/templates/admin/alias_detail.html:22
 #: admin/templates/admin/domain_detail.html:25
 msgid "Summary"
-msgstr ""
+msgstr "Shrnutí"
 
 #: admin/templates/admin/account_detail.html:26
-#, fuzzy
-#| msgid "File name"
 msgid "Full name"
-msgstr "Název souboru"
+msgstr "Celé jméno"
 
 #: admin/templates/admin/account_detail.html:32
 #: admin/templates/admin/alias_detail.html:26
-#, fuzzy
-#| msgid "Create"
 msgid "Created"
-msgstr "Vytvořit"
+msgstr "Vytvořeno"
 
 #: admin/templates/admin/account_detail.html:35
 msgid "Last login"
-msgstr ""
+msgstr "Poslední přihlášení"
 
 #: admin/templates/admin/account_detail.html:38
 msgid "Secondary email"
-msgstr ""
+msgstr "Sekundární email"
 
 #: admin/templates/admin/account_detail.html:38
 #: admin/templates/admin/account_detail.html:41
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "Not defined"
-msgstr "Nebyl určen příjemce"
+msgstr "Není definováno"
 
 #: admin/templates/admin/account_detail.html:41
 msgid "Phone number"
-msgstr ""
+msgstr "Telefonní číslo"
 
 #: admin/templates/admin/account_detail.html:55
-#, fuzzy
-#| msgid "Administration"
 msgid "Administered domains"
-msgstr "Správa"
+msgstr "Spravované domény"
 
 #: admin/templates/admin/account_detail.html:61
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "No domain defined."
-msgstr "Nebyl určen příjemce"
+msgstr "Není vytvořena žádná doména."
 
 #: admin/templates/admin/account_detail.html:75
-#, fuzzy
-#| msgid "Alias(es)"
 msgid "Aliases"
-msgstr "Alias(y)"
+msgstr "Aliasy"
 
 #: admin/templates/admin/account_detail.html:81
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "No alias defined"
-msgstr "Nebyl určen příjemce"
+msgstr "Není vytvořen žádný alias"
 
 #: admin/templates/admin/account_detail.html:87
 msgid "Additional sender addresses"
-msgstr ""
+msgstr "Další adresa odesílatele"
 
 #: admin/templates/admin/account_detail.html:93
 msgid "No sender address defined"
-msgstr ""
+msgstr "Není uvedena žádná adresa odesílatele"
 
 #: admin/templates/admin/account_general_form.html:12
 #: admin/templates/admin/aliasform.html:13
@@ -1035,20 +904,16 @@ msgstr "Doména je zakázána"
 
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/identities.html:33
-#, fuzzy
-#| msgid "alias"
 msgid "Alias"
-msgstr "alias"
+msgstr "Alias"
 
 #: admin/templates/admin/alias_detail.html:27
-#, fuzzy
-#| msgid "Alias modified"
 msgid "Modified"
-msgstr "Alias upraven"
+msgstr "Upraveno"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"
-msgstr ""
+msgstr "Poskytovatel"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
 #: admin/templates/admin/identities_quota_headers.html:2
@@ -1058,22 +923,20 @@ msgstr "Adresa"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:12
 #: admin/templates/admin/domain_detail.html:96
-#, fuzzy
-#| msgid "Statistics"
 msgid "Status"
-msgstr "Statistiky"
+msgstr "Stav"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
-msgstr ""
+msgstr "v seznamu"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
-msgstr ""
+msgstr "Všechno je v pořádku, doména není v seznamu."
 
 #: admin/templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
-msgstr ""
+msgstr "Pro tuto doménu nejsou k dispozici žádné informace."
 
 #: admin/templates/admin/domain_detail.html:29
 msgid "Creation date"
@@ -1101,39 +964,35 @@ msgid "MB"
 msgstr "MB"
 
 #: admin/templates/admin/domain_detail.html:54
-#, fuzzy
-#| msgid "Usage (%%)"
 msgid "Usage"
-msgstr "Využití (%%)"
+msgstr "Využití"
 
 #: admin/templates/admin/domain_detail.html:57
 #: admin/templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
-msgstr ""
+msgstr "využito"
 
 #: admin/templates/admin/domain_detail.html:58
 #: admin/templates/admin/domains_quotas.html:12
 msgid "allocated"
-msgstr ""
+msgstr "alokováno"
 
 #: admin/templates/admin/domain_detail.html:91
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: admin/templates/admin/domain_detail.html:103
 msgid "DKIM key"
-msgstr ""
+msgstr "DKIM klíč"
 
 #: admin/templates/admin/domain_detail.html:107
 msgid "Show key"
-msgstr ""
+msgstr "Zobrazit klíč"
 
 #: admin/templates/admin/domain_detail.html:110
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "Not generated"
-msgstr "Nebyl určen příjemce"
+msgstr "Nevygenerováno"
 
 #: admin/templates/admin/domain_detail.html:117
 msgid "Administrators"
@@ -1145,10 +1004,8 @@ msgid "Remove this permission"
 msgstr "Odstranit toto oprávnění"
 
 #: admin/templates/admin/domain_detail.html:134
-#, fuzzy
-#| msgid "No domain administrator defined"
 msgid "No domain administrator defined yet."
-msgstr " Nebyl určen správce domény"
+msgstr "Dosud nebyl určen správce domény."
 
 #: admin/templates/admin/domain_headers.html:5
 #: admin/templates/admin/identity_headers.html:4
@@ -1156,10 +1013,8 @@ msgid "Tags"
 msgstr "Značky"
 
 #: admin/templates/admin/domain_headers.html:7
-#, fuzzy
-#| msgid "Statistics"
 msgid "DNS status"
-msgstr "Statistiky"
+msgstr "DNS stav"
 
 #: admin/templates/admin/domain_headers.html:9
 #: admin/templates/admin/identity_headers.html:5
@@ -1172,10 +1027,8 @@ msgstr "Nemůžete vytvořit nového správce domény"
 
 #: admin/templates/admin/domains.html:28
 #: admin/templates/admin/identities.html:29
-#, fuzzy
-#| msgid "Address"
 msgid "Add"
-msgstr "Adresa"
+msgstr "Přidat"
 
 #: admin/templates/admin/domains_quota_headers.html:3
 #: admin/templates/admin/identities_quota_headers.html:4
@@ -1184,13 +1037,11 @@ msgstr "Omezení"
 
 #: admin/templates/admin/domains_quota_headers.html:4
 msgid "Used"
-msgstr ""
+msgstr "Použito"
 
 #: admin/templates/admin/domains_quota_headers.html:5
-#, fuzzy
-#| msgid "Alias created"
 msgid "Allocated"
-msgstr "Alias vytvořen"
+msgstr "Alokováno"
 
 #: admin/templates/admin/domains_quota_headers.html:6
 #: admin/templates/admin/identities_quota_headers.html:5
@@ -1211,10 +1062,8 @@ msgid "Update"
 msgstr "Aktualizovat"
 
 #: admin/templates/admin/identities.html:32
-#, fuzzy
-#| msgid "Add account"
 msgid "Account"
-msgstr "Přidat účet"
+msgstr "Účet"
 
 #: admin/templates/admin/identities_quota_headers.html:3
 msgid "Value"
@@ -1225,17 +1074,6 @@ msgid "Fullname/Recipient"
 msgstr "Celé jméno/Příjemce"
 
 #: admin/templates/admin/import_domains_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "  <li><em>domain; name; quota; enabled</em></li>\n"
-#| "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-#| "  %s\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one "
-#| "of the previous values.</p>\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
@@ -1244,53 +1082,17 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr ""
-"Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených "
-"formátů:\n"
-"<ul>\n"
-"<li><em>domain; název; kvóta, povoleno</em></li>\n"
-"<li><em>domainalias; název; cílová doména; povoleno</em></li>\n"
-"%s\n"
-"</ul>\n"
-"<p>První element každého řádku je povinný a musí být shodný s některou z "
-"předchozích hodnot.</p>\n"
-"<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
+msgstr "Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených formátů: <ul><li><em>doména; název; kvóta, výchotí_kvóta schránky; povoleno</em></li><li><em>doménový_alias; název; cílová_doména; povoleno</em></li><li><em>relay_doména; název; cílový_host; cílový_port; služba; povoleno; ověřit_příjemce</em></li> </ul> <p>První element každého řádku je povinný a musí být shodný s některou z předchozích hodnot.</p><p>Můžete také použít jiný oddělovač hodnot.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "<li><em>account; loginname; password; first name; last name; enabled; "
-#| "group; address; quota; [, domain, ...]</em></li>\n"
-#| "<li><em>alias; address; enabled; internal recipient</em></li>\n"
-#| "<li><em>forward; address; enabled; external recipient</em></li>\n"
-#| "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one "
-#| "of the previous values.</p>\n"
-#| "\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených "
-"formátů:\n"
-"<ul>\n"
-"<li><em>account; přihlašovací jméno; heslo; křestní jméno; příjmení; "
-"povoleno; skupina; adresa; kvóta; [, doména, ...]</em></li>\n"
-"<li><em>alias; adresa; povoleno; interní příjemce</em></li>\n"
-"<li><em>forward; adresa; povoleno; externí příjemce</em></li>\n"
-"<li><em>dlist; adresa; povoleno; příjemce; příjemce; ...</em></li>\n"
-"</ul>\n"
-"<p>První element každého řádku je povinný a musí být shodný s některou z "
-"předchozích hodnot.</p>\n"
-"<p>Můžete také použít jiný oddělovač hodnot.</p>\n"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
+msgstr "Nahrajte CSV soubor, který bude mít jednotlivé řádky v některém z uvedených formátů:\n<ul><li><em>uživatelské_konto; přihlašovací_jméno; heslo; křestní_jméno; příjmení; povoleno; skupina; adresa; kvóta; [, doména, ...]</em></li><li><em>alias; adresa; povoleno; příjemce; příjemce; ...</em></li><ul><p>První element každého řádku je povinný a musí být shodný s některou z předchozích hodnot.</p><p>Můžete také použít jiný oddělovač hodnot.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1302,7 +1104,7 @@ msgstr "Importuji..."
 
 #: admin/templates/admin/index.html:6
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: admin/templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
@@ -1313,37 +1115,35 @@ msgid "Use domain default value"
 msgstr "Použít výchozí hodnotu domény"
 
 #: admin/templates/admin/mx_domain_detail.html:11
-#, fuzzy
-#| msgid "Update"
 msgid "Updated"
-msgstr "Aktualizovat"
+msgstr "Aktualizováno"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
+msgstr "Tato IP neodpovídá žádnému z platných MX-ů zadefinovaných v možnostech"
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
-msgstr ""
+msgstr "Pro tuto doménu nebyl nalezen žádný MX záznam."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr ""
+msgstr "Modoboa zjistilo, že doména %(domain)s je uvedena v seznamu u následujících poskytovatelů DNSBL:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
+msgstr "Reputace domény bude ovlivněna, a je možné, že e-maily přicházející z ní jsou považovány za spam. Měli byste kontaktovat tyto poskytovatele a požádat je o odstranění IP adresy (adres) ze seznamu."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
+msgstr "Modoboa zjistilo, že doména %(domain)s nemá platný MX záznam:"
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1386,7 +1186,7 @@ msgstr "Zobrazit seznam identit domény"
 #: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:187
 #: admin/templatetags/admin_tags.py:200
 msgid "Edit {}"
-msgstr ""
+msgstr "Upravit {}"
 
 #: admin/templatetags/admin_tags.py:154 admin/templatetags/admin_tags.py:191
 #: admin/templatetags/admin_tags.py:205
@@ -1415,21 +1215,20 @@ msgid "Alias modified"
 msgstr "Alias upraven"
 
 #: admin/views/alias.py:109
-#, fuzzy
-#| msgid "Alias created"
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
-msgstr[0] "Alias vytvořen"
-msgstr[1] "Alias vytvořen"
-msgstr[2] "Alias vytvořen"
+msgstr[0] "Alias smazán"
+msgstr[1] "Alias smazán"
+msgstr[2] "Aliasy smazány"
+msgstr[3] "Aliasy smazány"
 
 #: admin/views/dns.py:32
 msgid "MX records of {}"
-msgstr ""
+msgstr "MX záznamy pro {}"
 
 #: admin/views/dns.py:55
 msgid "DNSBL summary for {}"
-msgstr ""
+msgstr "DNSBL přehled pro {}"
 
 #: admin/views/domain.py:188
 msgid "You can't delete your own domain"
@@ -1441,6 +1240,7 @@ msgid_plural "Domains deleted"
 msgstr[0] "Doména smazána"
 msgstr[1] "Domény smazány"
 msgstr[2] "Domén smazáno"
+msgstr[3] "Domén smazáno"
 
 #: admin/views/export.py:42
 msgid "Export identities"
@@ -1461,6 +1261,7 @@ msgid_plural "Accounts deleted"
 msgstr[0] "Účet smazán"
 msgstr[1] "Účty smazány"
 msgstr[2] "Účtů smazáno"
+msgstr[3] "Účtů smazáno"
 
 #: admin/views/import_.py:65
 #, python-format
@@ -1483,75 +1284,3 @@ msgstr "Importovat identity"
 #: admin/views/user.py:40
 msgid "Forward updated"
 msgstr "Přeposílání aktualizováno"
-
-#~ msgid ""
-#~ "Default quota in MB applied to mailboxes. Leave empty to use the default "
-#~ "value."
-#~ msgstr ""
-#~ "Výchozí kvóta v MB pro schránky. Ponechejte prázdné pro výchozí nastavení "
-#~ "kvóty."
-
-#~ msgid ""
-#~ "You can't define a forward to a local destination. Please ask your "
-#~ "administrator to create an alias instead."
-#~ msgstr ""
-#~ "Nemůžete nastavit přeposílání na místní adresu. Požádejte správce o "
-#~ "vytvoření aliasu."
-
-#~ msgid "Quota is greater than the allowed domain's limit (%dM)"
-#~ msgstr "Zvolená kvóta je větší než povolené omezení domény (%dM)"
-
-#~ msgid "Domains and identities"
-#~ msgstr "Domény a identity"
-
-#~ msgid "Global counters"
-#~ msgstr "Globální počitadla"
-
-#~ msgid "distribution list"
-#~ msgstr "distribuční seznam"
-
-#~ msgid "forward"
-#~ msgstr "přeposlat"
-
-#, fuzzy
-#~| msgid "Confirmation"
-#~ msgid "Information"
-#~ msgstr "Potvrzení"
-
-#~ msgid "Add domain"
-#~ msgstr "Přidat doménu"
-
-#~ msgid "Add alias"
-#~ msgstr "Přidat alias"
-
-#~ msgid "Add forward"
-#~ msgstr "Přidat přeposílání"
-
-#~ msgid "Add distribution list"
-#~ msgstr "Přidat distribuční seznam"
-
-#~ msgid "New distribution list"
-#~ msgstr "Nový distribuční seznam"
-
-#~ msgid "Distribution list created"
-#~ msgstr "Distribuční seznam vytvořen"
-
-#~ msgid "New forward"
-#~ msgstr "Nové přeposílání"
-
-#~ msgid "Forward created"
-#~ msgstr "Přeposílání vytvořeno"
-
-#~ msgid "Distribution list modified"
-#~ msgstr "Distribuční seznam upraven"
-
-#~ msgid "Forward modified"
-#~ msgstr "Přeposílání upraveno"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Různé"
-
-#, fuzzy
-#~| msgid "Create a domain administrator"
-#~ msgid "Domain administrator"
-#~ msgstr "Vytvořit správce domény"
