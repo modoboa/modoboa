@@ -18,14 +18,24 @@ export const updateDomain = data => {
 }
 
 var customParametersActions = {
+    applications: {method: 'GET', url: '/api/v1/parameters/applications/'},
     structure: {method: 'GET', url: '/api/v1/parameters/structure/'}
 }
-var parametersResource = Vue.resource('/api/v1/parameters/', {}, customParametersActions)
+var parametersResource = Vue.resource(
+    '/api/v1/parameters{/app}/', {}, customParametersActions)
 
-export const getParameters = () => {
-    return parametersResource.get()
+export const getParametersForApplication = (app) => {
+    return parametersResource.get({app: app})
 }
 
-export const getParametersStructure = () => {
-    return parametersResource.structure()
+export const getParametersApplications = () => {
+    return parametersResource.applications()
+}
+
+export const getParametersStructure = (app) => {
+    return parametersResource.structure({app: app})
+}
+
+export const saveParametersForApplication = (app, values) => {
+    return parametersResource.update({app: app}, values)
 }
