@@ -34,7 +34,8 @@ class DomainSerializer(serializers.ModelSerializer):
             "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
             "enable_dkim", "dkim_key_selector", "dkim_key_length",
             "dkim_public_key", "dkim_private_key_path",
-            "mailbox_count", "mbalias_count", "domainalias_count"
+            "mailbox_count", "mbalias_count", "domainalias_count",
+            "dns_status"
         )
         read_only_fields = (
             "pk", "dkim_public_key", "dns_status", "allocated_quota_in_percent"

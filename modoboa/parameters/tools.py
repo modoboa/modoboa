@@ -100,14 +100,13 @@ class Registry(object):
         result = []
         for app, fields in list(self._registry2[level].items()):
             for section, sconfig in list(fields["params"].items()):
-                result.append({
-                    "type": "section",
+                item = {
                     "label": sconfig["label"],
-                    "display": sconfig.get("display", "")
-                })
+                    "display": sconfig.get("display", ""),
+                    "parameters": []
+                }
                 for name, config in list(sconfig["params"].items()):
                     data = {
-                        "type": "field",
                         "name": "{}-{}".format(app, name),
                         "label": config["label"],
                         "help_text": config.get("help_text", ""),
@@ -115,8 +114,12 @@ class Registry(object):
                         "widget": config["field"].__class__.__name__,
                     }
                     if data["widget"] == "ChoiceField":
-                        data["choices"] = config["field"].choices
-                    result.append(data)
+                        data["choices"] = [
+                            {"text": value, "value": key}
+                            for key, value in config["field"].choices.items()
+                        ]
+                    item["parameters"].append(data)
+                result.append(item)
         return result
 
     def exists(self, level, app, parameter=None):

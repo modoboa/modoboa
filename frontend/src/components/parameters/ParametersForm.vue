@@ -1,27 +1,38 @@
 <template>
-  <div>
-    <h1 class="title">Parameters</h1>
-    <form>
-      <h2 class="subtitle" v-for="(element, index) in structure"
-          v-if="element.type === 'section'" :key="index">
-        {{ element.label }}
-      </h2>
-      <b-field v-else :label="element.label" horizontal>
-        <b-input v-if="element.widget === 'CharField' || element.widget === 'IntegerField'"
-                 v-model="parameters[element.name]">
-        </b-input>
-        <b-checkbox v-else-if="element.widget === 'BooleanField'"
-                    v-model="parameters[element.name]"></b-checkbox>
-        <b-select v-else-if="element.widget === 'ChoiceField'"
-                  v-model="parameters[element.name]">
-          <option v-for="choice in Object.entries(element.choices)"
-                  :value="choice[0]" :key="choice[0]">
-            {{ choice[1] }}
-          </option>
-        </b-select>
-      </b-field>
-    </form>
-  </div>
+  <v-layout>
+    <v-flex>
+      <h1 class="title">Parameters</h1>
+      <v-expansion-panel>
+        <v-expansion-panel-content
+            v-for="(element, index) in structure"
+            :key="index"
+        >
+          <div slot="header">{{ element.label }}</div>
+          <v-card>
+            <v-card-text>
+              <v-text-field v-for="(param, index) in element.parameters"
+                            :label="param.label"
+                            :key="index"
+                            :hint="param.help_text"
+                            v-model="parameters[param.name]"
+                            v-if="param.widget === 'CharField' || param.widget === 'IntegerField'">
+              </v-text-field>
+              <v-checkbox :label="param.label"
+                          v-model="parameters[param.name]"
+                          v-else-if="param.widget === 'BooleanField'"
+              >
+              </v-checkbox>
+              <v-select :label="param.label"
+                        v-model="parameters[param.name]"
+                        :items="param.choices"
+                        v-else-if="param.widget === 'ChoiceField'">
+              </v-select>
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

@@ -6,10 +6,10 @@ import domains from './modules/domains'
 Vue.use(Vuex)
 
 const options = {
-  modules: {
-    domains
-  },
-  strict: process.env.NODE_ENV !== 'production'
+    modules: {
+        domains
+    },
+    strict: process.env.NODE_ENV !== 'production'
 }
 
 export default new Vuex.Store(options)
