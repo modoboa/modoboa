@@ -124,22 +124,16 @@ def size2integer(value):
     :return: the corresponding integer value
     """
     m = re.match(r"(\d+)\s*(\w+)", value)
-
     if m is None:
         return 0
-
+    if re.match(r"\d+$", value) is not None:
+        return int(value)
     if m.group(2)[0] in ["K", "k"]:
         return int(m.group(1)) * 2 ** 10
     if m.group(2)[0] in ["M", "m"]:
         return int(m.group(1)) * 2 ** 20
     if m.group(2)[0] in ["G", "g"]:
         return int(m.group(1)) * 2 ** 30
-
-    try:
-        int(value)
-        return int(value)
-    except ValueError:
-        return 0
     return 0
 
 
