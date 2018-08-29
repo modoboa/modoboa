@@ -115,7 +115,7 @@ def size2integer(value):
     :return: the corresponding integer value
     """
     m = re.match(r"(\d+)\s*(\w+)", value)
-    if m is None:
+    if m.group(2)[0] == "0":
         if re.match(r"\d+", value):
             return int(value)
         return 0
