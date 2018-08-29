@@ -10,7 +10,8 @@ class ParametersSerializer(serializers.Serializer):
 
     def __init__(self, *args, **kwargs):
         """Generate serializer."""
+        app = kwargs.pop("app")
         super(ParametersSerializer, self).__init__(*args, **kwargs)
-        for name, field in tools.registry.get_fields("global"):
+        for name, field in tools.registry.get_fields("global", app):
             field.source = None
             self.fields[name] = field

@@ -24,7 +24,7 @@ export default new Router({
             component: DomainForm
         },
         {
-            path: '/parameters/',
+            path: '/parameters/:app',
             name: 'ParametersEdit',
             component: ParametersForm
         }

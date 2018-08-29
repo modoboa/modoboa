@@ -17,12 +17,14 @@ def load_core_settings():
     """
     from modoboa.parameters import tools as param_tools
     from . import app_settings
+    from . import serializers
 
     param_tools.registry.add(
         "global", app_settings.GeneralParametersForm, ugettext_lazy("General"))
     param_tools.registry.add2(
         "global", "core", ugettext_lazy("General"),
-        app_settings.GLOBAL_PARAMETERS)
+        app_settings.GLOBAL_PARAMETERS_STRUCT,
+        serializers.CoreGlobalParametersSerializer)
 
 
 class CoreConfig(AppConfig):

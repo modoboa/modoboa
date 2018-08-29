@@ -25,8 +25,8 @@
             v-else-if="item.children"
             v-model="item.model"
             :key="item.text"
-            :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon=""
+            :prepend-icon="item.icon"
+            :append-icon="item['icon-alt']"
         >
           <v-list-tile slot="activator">
             <v-list-tile-content>
@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import * as api from '@/api'
+
 export default {
     data () {
         return {
@@ -78,8 +80,7 @@ export default {
                 {
                     text: 'Domains',
                     to: { name: 'DomainList' },
-                    icon: 'domain',
-                    model: true
+                    icon: 'domain'
                 },
                 {
                     text: 'Identities',
@@ -90,12 +91,22 @@ export default {
                     text: 'Logs'
                 },
                 {
-                    to: { name: 'ParametersEdit' },
                     icon: 'settings',
-                    text: 'Parameters'
+                    text: 'Parameters',
+                    children: []
                 }
             ]
         }
+    },
+    created () {
+        api.getParametersApplications().then(response => {
+            response.data.forEach(item => {
+                this.items[4].children.push({
+                    text: item.label,
+                    to: { name: 'ParametersEdit', params: {app: item.name} }
+                })
+            })
+        })
     }
 }
 </script>

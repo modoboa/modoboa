@@ -46,10 +46,11 @@ class Registry(object):
             "label": label, "formclass": formclass, "defaults": {}
         }
 
-    def add2(self, level, app, label, params):
+    def add2(self, level, app, label, structure, serializer_class):
         """Add new parameters for given app and level."""
         self._registry2[level][app] = {
-            "label": label, "params": params
+            "label": label, "structure": structure,
+            "serializer_class": serializer_class
         }
 
     def _load_default_values(self, level):
@@ -60,6 +61,12 @@ class Registry(object):
                 if isinstance(field, form_utils.SeparatorField):
                     continue
                 data["defaults"][name] = field.initial
+
+    def get_applications(self, level):
+        """Return all applications registered for level."""
+        result = [{"name": key, "label": value["label"]}
+                  for key, value in self._registry2[level].items()]
+        return result
 
     def get_forms(self, level, *args, **kwargs):
         """Return form instances for all app of the given level."""
@@ -86,37 +93,49 @@ class Registry(object):
             })
         return result
 
-    def get_fields(self, level, *args, **kwargs):
+    def get_fields(self, level, for_app=None):
         """Return fields to include in serializer."""
         result = []
         for app, fields in list(self._registry2[level].items()):
-            for section, sconfig in list(fields["params"].items()):
+            if app and for_app != app:
+                continue
+            for section, sconfig in list(fields["structure"].items()):
                 for name, config in list(sconfig["params"].items()):
                     result.append(("{}-{}".format(app, name), config["field"]))
         return result
 
-    def get_structure(self, level):
+    def get_serializer_class(self, level, app):
+        """Return serializer class for given level and app."""
+        if app not in self._registry2[level]:
+            raise NotDefined(app)
+        return self._registry2[level][app]["serializer_class"]
+
+    def get_structure(self, level, for_app=None):
         """Return fields structure."""
         result = []
         for app, fields in list(self._registry2[level].items()):
-            for section, sconfig in list(fields["params"].items()):
+            if for_app and for_app != app:
+                continue
+            serializer = fields["serializer_class"]()
+            for section, sconfig in list(fields["structure"].items()):
                 item = {
                     "label": sconfig["label"],
                     "display": sconfig.get("display", ""),
                     "parameters": []
                 }
                 for name, config in list(sconfig["params"].items()):
+                    field = serializer.fields[name]
                     data = {
-                        "name": "{}-{}".format(app, name),
+                        "name": name,
                         "label": config["label"],
                         "help_text": config.get("help_text", ""),
                         "display": config.get("display", ""),
-                        "widget": config["field"].__class__.__name__,
+                        "widget": field.__class__.__name__,
                     }
                     if data["widget"] == "ChoiceField":
                         data["choices"] = [
                             {"text": value, "value": key}
-                            for key, value in config["field"].choices.items()
+                            for key, value in field.choices.items()
                         ]
                     item["parameters"].append(data)
                 result.append(item)
@@ -188,9 +207,10 @@ class Manager(object):
         if app is None:
             app = guess_extension_name()
         values = registry.get_defaults(self._level, app)
-        return {
-            parameter: value for parameter, value in list(values.items())
-        }
+        for parameter, value in list(values.items()):
+            if app in self._parameters:
+                values[parameter] = self._parameters[app].get(parameter, value)
+        return values
 
     def set_value(self, parameter, value, app=None):
         """Set parameter for the given app."""
