@@ -14,11 +14,12 @@
   },
   "dependencies": {
     "@mdi/font": "^2.2.43",
-    "buefy": "^0.6.5",
     "js-cookie": "^2.2.0",
+    "material-design-icons-iconfont": "^3.0.3",
     "vue": "^2.5.2",
     "vue-resource": "^1.5.0",
     "vue-router": "^3.0.1",
+    "vuetify": "^1.2.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -54,6 +55,7 @@
     "jest": "^22.0.4",
     "jest-serializer-vue": "^0.3.0",
     "node-notifier": "^5.1.2",
+    "node-sass": "^4.9.0",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
@@ -61,8 +63,10 @@
     "postcss-loader": "^2.0.8",
     "postcss-url": "^7.2.1",
     "rimraf": "^2.6.0",
+    "sass-loader": "^7.0.3",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
+    "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
     "vue-jest": "^1.0.2",
