@@ -114,17 +114,32 @@ def size2integer(value):
     :param value: the string to convert
     :return: the corresponding integer value
     """
+    """Try to convert a string representing a size to an integer value
+    in bytes.
+    Supported formats:
+    * K|k for KB
+    * M|m for MB
+    * G|g for GB
+    :param value: the string to convert
+    :return: the corresponding integer value
+    """
     m = re.match(r"(\d+)\s*(\w+)", value)
-    if m.group(2)[0] == "0":
-        if re.match(r"\d+", value):
-            return int(value)
+
+    if m is None:
         return 0
+
     if m.group(2)[0] in ["K", "k"]:
         return int(m.group(1)) * 2 ** 10
     if m.group(2)[0] in ["M", "m"]:
         return int(m.group(1)) * 2 ** 20
     if m.group(2)[0] in ["G", "g"]:
         return int(m.group(1)) * 2 ** 30
+
+    try:
+        int(value)
+        return int(value)
+    except ValueError:
+        return 0
     return 0
 
 
