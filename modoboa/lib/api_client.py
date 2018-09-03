@@ -40,8 +40,11 @@ class ModoAPIClient(object):
     def local_core_version(self):
         """Return the version installed locally."""
         if self._local_core_version is None:
-            self._local_core_version = pkg_resources.get_distribution(
-                "modoboa").version
+            try:
+                self._local_core_version = pkg_resources.get_distribution(
+                    "modoboa").version
+            except pkg_resources.DistributionNotFound:
+                self._local_core_version = "unknown"
         return self._local_core_version
 
     def list_extensions(self):

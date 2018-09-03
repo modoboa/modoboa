@@ -575,5 +575,24 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 )
             })
         ])
-    })
+    }),
+    ("dashboard", {
+        "label": ugettext_lazy("Dashboard"),
+        "params": collections.OrderedDict([
+            ("rss_feed_url", {
+                "label": ugettext_lazy("Custom RSS feed"),
+                "help_text": ugettext_lazy(
+                    "Display custom RSS feed to resellers and domain "
+                    "administrators"
+                )
+            }),
+            ("hide_features_widget", {
+                "label": ugettext_lazy("Hide features widget"),
+                "help_text": ugettext_lazy(
+                    "Hide features widget for resellers and domain "
+                    "administrators"
+                )
+            }),
+        ])
+    }),
 ])

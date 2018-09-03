@@ -6,6 +6,8 @@ from django.contrib.auth import password_validation
 
 from rest_framework import serializers
 
+from modoboa.lib import fields as lib_fields
+
 from . import constants
 
 
@@ -65,6 +67,27 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
     ldap_groups_search_base = serializers.CharField(
         default="", required=False, allow_blank=True)
+
+    # Dashboard settings
+    rss_feed_url = serializers.URLField(allow_blank=True)
+    hide_features_widget = serializers.BooleanField(default=False)
+
+    # Notification settings
+    sender_address = lib_fields.DRFEmailFieldUTF8(
+        default="noreply@yourdomain.test")
+
+    # API settings
+    enable_api_communication = serializers.BooleanField(default=True)
+    check_new_versions = serializers.BooleanField(default=True)
+    send_statistics = serializers.BooleanField(default=True)
+
+    # Misc settings
+    inactive_account_threshold = serializers.IntegerField(default=30)
+    top_notifications_check_interval = serializers.IntegerField(default=30)
+    log_maximum_age = serializers.IntegerField(default=365)
+    items_per_page = serializers.IntegerField(default=30)
+    default_top_redirection = serializers.ChoiceField(
+        default="user", choices=[])
 
     def validate_ldap_user_dn_template(self, value):
         try:
