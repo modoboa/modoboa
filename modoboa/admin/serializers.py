@@ -22,7 +22,8 @@ from modoboa.lib import (
     permissions
 )
 from modoboa.parameters import tools as param_tools
-from . import lib, models
+
+from . import constants, lib, models
 
 
 class DomainSerializer(serializers.ModelSerializer):
@@ -443,3 +444,25 @@ class SenderAddressSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 _("You don't have access to this mailbox."))
         return value
+
+
+class AdminGlobalParametersSerializer(serializers.Serializer):
+    """A serializer for global parameters."""
+
+    # Domain settings
+    enable_mx_checks = serializers.BooleanField(default=True)
+    valid_mxs = serializers.CharField(allow_blank=True)
+    domains_must_have_authorized_mx = serializers.BooleanField(default=False)
+    enable_dnsbl_checks = serializers.BooleanField(default=True)
+    dkim_keys_storage_dir = serializers.CharField(allow_blank=True)
+    dkim_default_key_length = serializers.ChoiceField(
+        default=2048, choices=constants.DKIM_KEY_LENGTHS)
+
+    # Mailboxes settings
+    handle_mailboxes = serializers.BooleanField(default=False)
+    mailboxes_owner = serializers.CharField(default="vmail")
+    default_domain_quota = serializers.IntegerField(default=0)
+    default_mailbox_quota = serializers.IntegerField(default=0)
+    auto_account_removal = serializers.BooleanField(default=False)
+    auto_create_domain_and_mailbox = serializers.BooleanField(default=True)
+    create_alias_on_mbox_rename = serializers.BooleanField(default=False)

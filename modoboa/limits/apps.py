@@ -11,9 +11,14 @@ from django.utils.translation import ugettext as _
 def load_limits_settings():
     """Load settings."""
     from modoboa.parameters import tools as param_tools
-    from .app_settings import ParametersForm
+    from . import app_settings
+    from . import serializers
 
-    param_tools.registry.add("global", ParametersForm, _("Limits"))
+    param_tools.registry.add("global", app_settings.ParametersForm, _("Limits"))
+    param_tools.registry.add2(
+        "global", "limits", _("Limits"), app_settings.GLOBAL_PARAMETERS_STRUCT,
+        serializers.LimitsGlobalParemetersSerializer
+    )
 
 
 class LimitsConfig(AppConfig):

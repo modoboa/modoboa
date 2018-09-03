@@ -18,18 +18,11 @@
           >
             <v-card>
               <v-card-text>
-                <v-text-field v-for="(param, index) in element.parameters"
-                              :label="param.label"
-                              :key="index"
-                              :hint="param.help_text"
-                              v-model="parameters[param.name]"
-                              :error="formErrors[param.name] !== undefined"
-                              :error-messages="formErrors[param.name]"
-                              v-if="(param.widget === 'CharField' || param.widget === 'IntegerField') && display(param)">
-                </v-text-field>
-                <v-checkbox :label="param.label"
+                <v-checkbox v-for="(param, index) in element.parameters"
+                            :key="index"
+                            :label="param.label"
                             v-model="parameters[param.name]"
-                            v-else-if="param.widget === 'BooleanField' && display(param)"
+                            v-if="param.widget === 'BooleanField' && display(param)"
                 >
                 </v-checkbox>
                 <v-select :label="param.label"
@@ -37,6 +30,15 @@
                           :items="param.choices"
                           v-else-if="param.widget === 'ChoiceField' && display(param)">
                 </v-select>
+                <v-text-field
+                    :label="param.label"
+                    :hint="param.help_text"
+                    v-model="parameters[param.name]"
+                    :error="formErrors[param.name] !== undefined"
+                    :error-messages="formErrors[param.name]"
+                    v-else-if="display(param)"
+                >
+                </v-text-field>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -69,20 +71,30 @@ export default {
         }
     },
     created () {
-        var app = this.$route.params.app
-        api.getParametersStructure(app).then(response => {
-            this.structure = response.data
-        })
-        api.getParametersForApplication(app).then(response => {
-            this.parameters = response.data
-        })
+        this.loadParams(this.$route.params.app)
+    },
+    watch: {
+        '$route' (to, from) {
+            this.loadParams(to.params.app)
+        }
     },
     methods: {
+        loadParams (app) {
+            api.getParametersStructure(app).then(response => {
+                this.structure = response.data
+            })
+            api.getParametersForApplication(app).then(response => {
+                this.parameters = response.data
+            })
+        },
         display (element) {
             if (element.display === '') {
                 return true
             }
             var [field, value] = element.display.split('=')
+            if (value === 'true' || value === 'false') {
+                value = Boolean(value)
+            }
             return this.parameters[field] === value
         },
         save () {

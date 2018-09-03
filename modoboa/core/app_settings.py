@@ -595,4 +595,71 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
             }),
         ])
     }),
+    ("notifications", {
+        "label": ugettext_lazy("Notifications"),
+        "params": collections.OrderedDict([
+            ("sender_address", {
+                "label": ugettext_lazy("Sender address"),
+                "help_text": ugettext_lazy(
+                    "Email address used to send notifications.")
+            })
+        ])
+    }),
+    ("api", {
+        "label": ugettext_lazy("Public API"),
+        "params": collections.OrderedDict([
+            ("enable_api_communication", {
+                "label": ugettext_lazy("Enable communication"),
+                "help_text": ugettext_lazy(
+                    "Automatically checks if a newer version is available")
+            }),
+            ("check_new_versions", {
+                "label": ugettext_lazy("Check new versions"),
+                "display": "enable_api_communication=true",
+                "help_text": ugettext_lazy(
+                    "Automatically checks if a newer version is available")
+            }),
+            ("send_statistics", {
+                "label": ugettext_lazy("Send statistics"),
+                "display": "enable_api_communication=true",
+                "help_text": ugettext_lazy(
+                    "Send statistics to Modoboa public API "
+                    "(counters and used extensions)")
+            })
+        ])
+    }),
+    ("misc", {
+        "label": ugettext_lazy("Miscellaneous"),
+        "params": collections.OrderedDict([
+            ("inactive_account_threshold", {
+                "label": ugettext_lazy("Inactive account threshold"),
+                "help_text": ugettext_lazy(
+                    "An account with a last login date greater than this "
+                    "threshold (in days) will be considered as inactive"
+                )
+            }),
+            ("top_notifications_check_interval", {
+                "label": ugettext_lazy("Top notifications check interval"),
+                "help_text": ugettext_lazy(
+                    "Interval between two top notification checks (in seconds)"
+                ),
+            }),
+            ("log_maximum_age", {
+                "label": ugettext_lazy("Maximum log record age"),
+                "help_text": ugettext_lazy(
+                    "The maximum age in days of a log record"),
+            }),
+            ("items_per_page", {
+                "label": ugettext_lazy("Items per page"),
+                "help_text": ugettext_lazy("Number of displayed items per page")
+            }),
+            ("default_top_redirection", {
+                "label": ugettext_lazy("Default top redirection"),
+                "help_text": ugettext_lazy(
+                    "The default redirection used when no application is "
+                    "specified"
+                ),
+            })
+        ])
+    })
 ])
