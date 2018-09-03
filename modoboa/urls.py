@@ -28,7 +28,7 @@ urlpatterns = [
         name="ckeditor_browse"),
     url("", include("modoboa.core.urls", namespace="core")),
     url("^user/forward/", forward, name="user_forward"),
-    url("admin/", include("modoboa.admin.urls", namespace="admin")),
+    url("^admin/", include("modoboa.admin.urls", namespace="admin")),
     # No namespace
     url(r'^accounts/password_reset/$', core_views.password_reset,
         name="password_reset"),
