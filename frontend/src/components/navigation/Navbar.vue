@@ -88,7 +88,8 @@ export default {
                 },
                 {
                     icon: 'search',
-                    text: 'Logs'
+                    text: 'Logs',
+                    to: { name: 'LogList' }
                 },
                 {
                     icon: 'settings',

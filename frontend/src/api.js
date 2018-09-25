@@ -39,3 +39,9 @@ export const getParametersStructure = (app) => {
 export const saveParametersForApplication = (app, values) => {
     return parametersResource.update({app: app}, values)
 }
+
+var logResource = Vue.resource('/api/v1/logs{/pk}/')
+
+export const getLogs = () => {
+    return logResource.get()
+}
