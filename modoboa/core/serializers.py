@@ -1,5 +1,6 @@
 """Core serializers."""
 
+from django.utils import formats
 from django.utils.translation import ugettext_lazy, ugettext as _
 
 from django.contrib.auth import password_validation
@@ -9,6 +10,7 @@ from rest_framework import serializers
 from modoboa.lib import fields as lib_fields
 
 from . import constants
+from . import models
 
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
@@ -125,3 +127,16 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         if len(errors):
             raise serializers.ValidationError(errors)
         return data
+
+
+class LogSerializer(serializers.ModelSerializer):
+    """Log serializer."""
+
+    date_created = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Log
+        fields = ("date_created", "message", "level", "logger")
+
+    def get_date_created(self, log):
+        return formats.date_format(log.date_created, "SHORT_DATETIME_FORMAT")

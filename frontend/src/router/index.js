@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import DomainList from '@/components/domains/DomainList'
 import DomainForm from '@/components/domains/DomainForm'
 import ParametersForm from '@/components/parameters/ParametersForm'
+import LogList from '@/components/logs/LogList'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
             path: '/parameters/:app',
             name: 'ParametersEdit',
             component: ParametersForm
+        },
+        {
+            path: '/logs/',
+            name: 'LogList',
+            component: LogList
         }
     ]
 })
