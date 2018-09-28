@@ -16,7 +16,8 @@ from . import backends
 class Transport(models.Model):
     """Transport table."""
 
-    pattern = models.CharField(_("pattern"), unique=True, max_length=254)
+    pattern = models.CharField(
+        _("pattern"), unique=True, max_length=253, db_index=True)
     service = models.CharField(_("service"), max_length=30)
     next_hop = models.CharField(_("next hop"), max_length=100, blank=True)
 
