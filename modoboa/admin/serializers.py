@@ -46,6 +46,7 @@ class DomainSerializer(serializers.ModelSerializer):
             param_tools.get_global_parameter("domains_must_have_authorized_mx")
         )
         user = self.context["request"].user
+        value = value.lower()
         if domains_must_have_authorized_mx and not user.is_superuser:
             if not lib.domain_has_authorized_mx(value):
                 raise serializers.ValidationError(
@@ -87,6 +88,10 @@ class DomainAliasSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(_("Permission denied."))
         return value
 
+    def validate_name(self, value):
+        """Lower case name."""
+        return value.lower()
+
     def create(self, validated_data):
         """Custom creation."""
         domain_alias = models.DomainAlias(**validated_data)
@@ -113,6 +118,10 @@ class MailboxSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Mailbox
         fields = ("pk", "full_address", "use_domain_quota", "quota", )
+
+    def validate_full_address(self, value):
+        """Lower case address."""
+        return value.lower()
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -215,6 +224,10 @@ class WritableAccountSerializer(AccountSerializer):
             choices=permissions.get_account_roles(user))
         self.fields["domains"] = serializers.ListField(
             child=serializers.CharField(), allow_empty=False, required=False)
+
+    def validate_username(self, value):
+        """Lower case username."""
+        return value.lower()
 
     def validate(self, data):
         """Check constraints."""

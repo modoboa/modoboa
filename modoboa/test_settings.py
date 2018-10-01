@@ -15,7 +15,7 @@ if DB == "MYSQL":
             "ENGINE": "django.db.backends.mysql",
             "NAME": "modoboa",
             "USER": "root",
-            "PASSWORD": "",
+            "PASSWORD": "Toto1234",
             "HOST": "localhost",
             "PORT": "",
             "ATOMIC_REQUESTS": True,

@@ -175,7 +175,7 @@ class Alias(AdminObject):
         """Create a new alias from a CSV file entry."""
         if len(row) < expected_elements:
             raise BadRequest(_("Invalid line: %s" % row))
-        address = row[1].strip()
+        address = row[1].strip().lower()
         localpart, domname = split_mailbox(address)
         try:
             domain = Domain.objects.get(name=domname)
