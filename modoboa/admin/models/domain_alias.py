@@ -72,7 +72,7 @@ class DomainAlias(AdminObject):
         """
         if len(row) < 4:
             raise BadRequest(_("Invalid line"))
-        self.name = row[1].strip()
+        self.name = row[1].strip().lower()
         for model in [DomainAlias, Domain]:
             if model.objects.filter(name=self.name).exists():
                 raise Conflict

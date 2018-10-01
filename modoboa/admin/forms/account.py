@@ -147,7 +147,7 @@ class AccountFormGeneral(forms.ModelForm):
 
     def clean_username(self):
         """username must be a valid email address for simple users."""
-        username = self.cleaned_data["username"]
+        username = self.cleaned_data["username"].lower()
         if "role" not in self.cleaned_data:
             return username
         if self.cleaned_data["role"] != "SimpleUsers" and "@" not in username:
