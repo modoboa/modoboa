@@ -96,7 +96,7 @@ modoboa-postfix-autoreply 1.5.0
 
 Edit the :file:`/etc/postfix/main.cf` file and remove the
 ``sql-autoreplies-transport.cf`` map from the ``transport_maps`` if
-present.
+present. Remove the corresponding ``proxy_read_maps`` entry if relevant.
 
 Reload postfix.
 
