@@ -91,6 +91,15 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+modoboa-postfix-autoreply 1.5.0
+===============================
+
+Edit the :file:`/etc/postfix/main.cf` file and remove the
+``sql-autoreplies-transport.cf`` map from the ``transport_maps`` if
+present.
+
+Reload postfix.
+
 1.10.0
 ======
 
