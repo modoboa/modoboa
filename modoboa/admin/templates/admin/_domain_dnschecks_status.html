@@ -11,4 +11,8 @@
   {% if enable_dnsbl_checks %}
     <span class="label label-mini label-{{ domain.dnsbl_status_color }}"><a href="{% url 'admin:dnsbl_domain_detail' domain.pk %}" data-toggle="ajaxmodal">DNSBL</a></span>
   {% endif %}
+  <span class="label label-mini label-success">SPF</span>
+  <span class="label label-mini label-success">DKIM</span>
+  <span class="label label-mini label-success">DMARC</span>
+  <span class="label label-mini label-success">CONFIG</span>
 {% endif %}

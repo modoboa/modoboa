@@ -297,7 +297,7 @@ class Domain(AdminObject):
 
         if len(row) < 5:
             raise BadRequest(_("Invalid line"))
-        self.name = row[1].strip()
+        self.name = row[1].strip().lower()
         if Domain.objects.filter(name=self.name).exists():
             raise Conflict
         domains_must_have_authorized_mx = (
