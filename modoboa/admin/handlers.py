@@ -25,6 +25,10 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
         return
     instance.mailbox_set.filter(use_domain_quota=True).update(
         quota=instance.default_mailbox_quota)
+    if instance.old_dkim_key_length != instance.dkim_key_length:
+        instance.dkim_public_key = ""
+        instance.dkim_private_key_path = ""
+        instance.save()
     if instance.old_mail_homes is None:
         return
     qset = (
