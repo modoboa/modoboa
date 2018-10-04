@@ -1,7 +1,7 @@
 .*~$
 *.pyc
 *.mo
-modoboa_test.db
+*.db
 modoboa.egg-info
 doc/.build
 doc/.static
