@@ -53,6 +53,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     def __init__(self, user, *args, **kwargs):
         self.oldname = None
         if "instance" in kwargs:
+            self.old_dkim_key_length = kwargs["instance"].dkim_key_length
             self.oldname = kwargs["instance"].name
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
         params = dict(param_tools.get_global_parameters("admin"))
@@ -375,6 +376,7 @@ class DomainForm(TabForms):
         """
         if "general" in self.instances:
             self.instances["general"].oldname = self.instances["general"].name
+            self.instances["general"].old_dkim_key_length  = self.instances["general"].dkim_key_length
         return super(DomainForm, self).is_valid()
 
     def save(self):
