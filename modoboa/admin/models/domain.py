@@ -263,6 +263,9 @@ class Domain(AdminObject):
             self.old_mail_homes = {
                 mb.id: mb.mail_home for mb in self.mailbox_set.all()
             }
+        if self.old_dkim_key_length != self.dkim_key_length:
+            self.dkim_public_key = ""
+            self.dkim_private_key_path = ""       
         super(Domain, self).save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):
