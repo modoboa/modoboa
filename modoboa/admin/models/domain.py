@@ -87,6 +87,7 @@ class Domain(AdminObject):
         super(Domain, self).__init__(*args, **kwargs)
         self.old_mail_homes = None
         self.oldname = self.name
+        self.old_dkim_key_length = self.dkim_key_length
 
     @property
     def domainalias_count(self):

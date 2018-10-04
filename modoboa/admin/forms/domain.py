@@ -376,7 +376,7 @@ class DomainForm(TabForms):
         """
         if "general" in self.instances:
             self.instances["general"].oldname = self.instances["general"].name
-            self.instances["general"].old_dkim_key_length  = self.instances["general"].dkim_key_length
+            self.instances["general"].old_dkim_key_length = self.instances["general"].dkim_key_length
         return super(DomainForm, self).is_valid()
 
     def save(self):
