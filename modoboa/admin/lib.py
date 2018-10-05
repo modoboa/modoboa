@@ -175,10 +175,9 @@ def get_domain_mx_list(domain):
     """Return a list of MX IP address for domain."""
     result = []
     logger = logging.getLogger("modoboa.admin")
-    
-    use_specific_dns_server = param_tools.get_global_parameter("use_specific_dns_server")
-    if use_specific_dns_server :
-      dns.resolver.default_resolver.nameservers = [use_specific_dns_server]
+    dns_server = param_tools.get_global_parameter("use_specific_dns_server")
+    if dns_server:
+        dns.resolver.default_resolver.nameservers = [dns_server]
 
     try:
         dns_answers = dns.resolver.query(domain, "MX")
