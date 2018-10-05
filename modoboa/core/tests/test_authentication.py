@@ -12,6 +12,7 @@ from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
+from modoboa.core.password_hashers import get_password_hasher
 from .. import factories, models
 
 try:
@@ -66,6 +67,33 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+
+    def test_password_scheme(self):
+        """Validate password scheme changes."""
+        url = reverse("core:parameters")
+        username = "user@test.com"
+        password = "toto"
+        data = {"username": username, "password": password}
+        user = models.User.objects.get(username=username)
+        pw_hash = get_password_hasher('fallback_scheme')()
+
+        self.client.logout()
+        self.set_global_parameter("password_scheme", "sha512crypt")
+        response = self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith("{SHA512-CRYPT}"))
+
+        self.client.logout()
+        self.set_global_parameter("password_scheme", "sha256")
+        response = self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith("{SHA256}"))
+
+        self.client.logout()
+        self.set_global_parameter("password_scheme", "fallback_scheme")
+        response = self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith(pw_hash.scheme))
 
 
 class PasswordResetTestCase(ModoTestCase):
