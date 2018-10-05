@@ -68,6 +68,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
+    update_scheme = YesNoField(
+        label=ugettext_lazy("Update password scheme"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Update user password at login to use the default password scheme"
+        )
+    )
+
     default_password = forms.CharField(
         label=ugettext_lazy("Default password"),
         initial="password",

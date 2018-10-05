@@ -35,20 +35,22 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
-                # check if password scheme is correct
-                scheme = param_tools.get_global_parameter("password_scheme",
-                                                          raise_exception=False)
-                # use SHA512CRYPT as default fallback
-                if scheme is None:
-                    pwhash = get_password_hasher('sha512crypt')()
-                else:
-                    pwhash = get_password_hasher(scheme)()
-                if not user.password.startswith(pwhash.scheme):
-                    logging.info(
-                        _("Password scheme mismatch. Updating %s password") % user.username
-                    )
-                    user.set_password(form.cleaned_data["password"])
-                    user.save()
+                if param_tools.get_global_parameter("update_scheme",
+                                                    raise_exception=False):
+                    # check if password scheme is correct
+                    scheme = param_tools.get_global_parameter("password_scheme",
+                                                              raise_exception=False)
+                    # use SHA512CRYPT as default fallback
+                    if scheme is None:
+                        pwhash = get_password_hasher('sha512crypt')()
+                    else:
+                        pwhash = get_password_hasher(scheme)()
+                    if not user.password.startswith(pwhash.scheme):
+                        logging.info(
+                            _("Password scheme mismatch. Updating %s password") % user.username
+                        )
+                        user.set_password(form.cleaned_data["password"])
+                        user.save()
 
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:

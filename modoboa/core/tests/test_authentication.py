@@ -95,6 +95,13 @@ class AuthenticationTestCase(ModoTestCase):
         user.refresh_from_db()
         self.assertTrue(user.password.startswith(pw_hash.scheme))
 
+        self.client.logout()
+        self.set_global_parameter("password_scheme", "sha256crypt")
+        self.set_global_parameter("update_scheme", False)
+        response = self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith(pw_hash.scheme))
+
 
 class PasswordResetTestCase(ModoTestCase):
     """Test password reset service."""
