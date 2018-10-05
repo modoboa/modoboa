@@ -36,6 +36,7 @@ SETTINGS_SAMPLE = {
     "csrfmiddlewaretoken": "SGgMVZsA4TPqoiV786TMST6xgOlhAf4F",
     "limits-deflt_user_mailboxes_limit": "0",
     "core-password_scheme": "sha512crypt",
+    "core-update_scheme": True,
     "core-items_per_page": "30",
     "limits-deflt_user_mailbox_aliases_limit": "0",
     "limits-deflt_domain_mailboxes_limit": "0",
