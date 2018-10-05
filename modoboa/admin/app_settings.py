@@ -83,7 +83,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         label=ugettext_lazy("Use specific DNS server"),
         required=False,
         help_text=ugettext_lazy(
-            "Give specific DNS server instead of local server configuration"
+            "Use a specific DNS server instead of local server configuration"
         )
     )
 
