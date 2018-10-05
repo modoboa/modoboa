@@ -67,7 +67,8 @@ SETTINGS_SAMPLE = {
     "core-random_password_length": "8",
     "admin-create_alias_on_mbox_rename": False,
     "admin-dkim_keys_storage_dir": "",
-    "admin-dkim_default_key_length": 1024
+    "admin-dkim_default_key_length": 1024,
+    "admin-use_specific_dns_server": "193.43.55.67"
 }
 
 
