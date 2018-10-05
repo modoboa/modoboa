@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Martin Persson <martin.jens.persson@gmail.com>, 2014
 # Olle Gustafsson <olle@dalnix.se>, 2013,2015-2018
@@ -9,40 +9,41 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
+"POT-Creation-Date: 2018-10-05 16:08+0200\n"
 "PO-Revision-Date: 2018-08-14 08:23+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
-"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
+"sv/)\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/handlers.py:68
+#: relaydomains/handlers.py:65
 msgid "Transport settings"
 msgstr "Transport inställningar"
 
-#: relaydomains/handlers.py:92
+#: relaydomains/handlers.py:89
 msgid "Transport"
 msgstr "Transport"
 
-#: relaydomains/lib.py:16
+#: relaydomains/lib.py:17
 msgid "Invalid line"
 msgstr "Ogiltig rad"
 
-#: relaydomains/serializers.py:26
+#: relaydomains/serializers.py:29
 msgid "Unsupported service"
 msgstr "Tjänsten stöds inte"
 
-#: relaydomains/transport.py:14
+#: relaydomains/transport.py:18
 msgid "target host address"
 msgstr "mål värdadress"
 
-#: relaydomains/transport.py:16
+#: relaydomains/transport.py:20
 msgid "target host port"
 msgstr "mål värd port"
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:22
 msgid "verify recipients"
 msgstr "verifiera mottagare"
