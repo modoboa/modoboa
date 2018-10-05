@@ -10,6 +10,7 @@ from django import forms
 from django.conf import settings
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.forms.fields import GenericIPAddressField
 
 from modoboa.lib.form_utils import SeparatorField, YesNoField
 from modoboa.lib.sysutils import exec_cmd
@@ -75,6 +76,14 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         choices=constants.DKIM_KEY_LENGTHS,
         help_text=ugettext_lazy(
             "Default length in bits for newly generated DKIM keys."
+        )
+    )
+
+    use_specific_dns_server = GenericIPAddressField(
+        label=ugettext_lazy("Use specific DNS server"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Give specific DNS server instead of local server configuration"
         )
     )
 
