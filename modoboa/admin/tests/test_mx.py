@@ -14,7 +14,6 @@ from django.utils.translation import ugettext as _
 
 from modoboa.core import factories as core_factories
 from modoboa.lib.tests import ModoTestCase
-from modoboa.parameters import tools as param_tools
 from . import utils
 from .. import factories, models
 from ..lib import get_domain_mx_list
@@ -108,15 +107,16 @@ class MXTestCase(ModoTestCase):
 
         management.call_command(
             "modo", "check_mx", "--domain", "toto.com")
-        
+
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "query")
-    def test_get_domain_mx_list_with_dsn_server(self, mock_query, mock_getaddrinfo):
-      mock_query.side_effect = utils.mock_dns_query_result
-      mock_getaddrinfo.side_effect = utils.mock_ip_query_result
-      self.set_global_parameter("use_specific_dns_server","123.45.67.89")
-      get_domain_mx_list("does-not-exist.example.com")
-    
+    def test_get_domain_mx_list_dsn_server(self, mock_query, mock_getaddrinfo):
+        """Test to get mx list from specific DNS server."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
+        self.set_global_parameter("use_specific_dns_server", "123.45.67.89")
+        get_domain_mx_list("does-not-exist.example.com")
+
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "query")
     def test_get_domain_mx_list_logging(self, mock_query, mock_getaddrinfo):
