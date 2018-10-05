@@ -432,3 +432,25 @@ class DKIMTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertContains(
             response, escape(domain.bind_format_dkim_public_key))
+
+    def test_dkim_key_length_modification(self):
+        """ """
+        self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
+        values = {
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": False, "type": "domain", "stepid": "step3",
+            "enable_dkim": True, "dkim_key_selector": "default"
+        }
+        self.ajax_post(reverse("admin:domain_add"), values)
+        call_command("modo", "manage_dkim_keys")
+        key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
+        self.assertTrue(os.path.exists(key_path))
+        dom = Domain.objects.get(name="pouet.com")
+        values["dkim_key_length"] = 4096
+        self.ajax_post(reverse("admin:domain_change", args=[dom.pk]), values)
+        dom.refresh_from_db()
+        self.assertEqual(dom.dkim_private_key_path, "")
+        os.unlink(key_path)
+        call_command("modo", "manage_dkim_keys")
+        self.assertTrue(os.path.exists(key_path))
+        
