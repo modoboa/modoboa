@@ -110,7 +110,7 @@ class MXTestCase(ModoTestCase):
 
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "query")
-    def test_get_domain_mx_list_dsn_server(self, mock_query, mock_getaddrinfo):
+    def test_get_mx_list_dsn_server(self, mock_query, mock_getaddrinfo):
         """Test to get mx list from specific DNS server."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
