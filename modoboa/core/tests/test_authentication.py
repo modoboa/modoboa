@@ -70,7 +70,6 @@ class AuthenticationTestCase(ModoTestCase):
 
     def test_password_scheme(self):
         """Validate password scheme changes."""
-        url = reverse("core:parameters")
         username = "user@test.com"
         password = "toto"
         data = {"username": username, "password": password}
@@ -79,26 +78,26 @@ class AuthenticationTestCase(ModoTestCase):
 
         self.client.logout()
         self.set_global_parameter("password_scheme", "sha512crypt")
-        response = self.client.post(reverse("core:login"), data)
+        self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith("{SHA512-CRYPT}"))
 
         self.client.logout()
         self.set_global_parameter("password_scheme", "sha256")
-        response = self.client.post(reverse("core:login"), data)
+        self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith("{SHA256}"))
 
         self.client.logout()
         self.set_global_parameter("password_scheme", "fallback_scheme")
-        response = self.client.post(reverse("core:login"), data)
+        self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith(pw_hash.scheme))
 
         self.client.logout()
         self.set_global_parameter("password_scheme", "sha256crypt")
         self.set_global_parameter("update_scheme", False)
-        response = self.client.post(reverse("core:login"), data)
+        self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith(pw_hash.scheme))
 
