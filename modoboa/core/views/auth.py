@@ -38,8 +38,8 @@ def dologin(request):
                 if param_tools.get_global_parameter("update_scheme",
                                                     raise_exception=False):
                     # check if password scheme is correct
-                    scheme = param_tools.get_global_parameter("password_scheme",
-                                                          raise_exception=False)
+                    scheme = param_tools.get_global_parameter(
+                        "password_scheme", raise_exception=False)
                     # use SHA512CRYPT as default fallback
                     if scheme is None:
                         pwhash = get_password_hasher('sha512crypt')()
