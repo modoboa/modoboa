@@ -39,7 +39,7 @@ def dologin(request):
                                                     raise_exception=False):
                     # check if password scheme is correct
                     scheme = param_tools.get_global_parameter("password_scheme",
-                                                              raise_exception=False)
+                                                          raise_exception=False)
                     # use SHA512CRYPT as default fallback
                     if scheme is None:
                         pwhash = get_password_hasher('sha512crypt')()
@@ -47,7 +47,8 @@ def dologin(request):
                         pwhash = get_password_hasher(scheme)()
                     if not user.password.startswith(pwhash.scheme):
                         logging.info(
-                            _("Password scheme mismatch. Updating %s password") % user.username
+                            _("Password scheme mismatch. Updating %s password"),
+                            user.username
                         )
                         user.set_password(form.cleaned_data["password"])
                         user.save()
