@@ -11,8 +11,8 @@ from django.core import mail
 from django.test import override_settings
 from django.urls import reverse
 
-from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from modoboa.core.password_hashers import get_password_hasher
+from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
 try:
