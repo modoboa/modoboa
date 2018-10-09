@@ -80,8 +80,8 @@ msgstr ""
 "être compris entre 1000 et 999999999 inclue."
 
 #: core/app_settings.py:72
-msgid "Update password scheme"
-msgstr "Mettre à jour le chiffrement des mots de passe"
+msgid "Update password scheme at login"
+msgstr "Mettre à jour le chiffrement des mots de passe à la connexion"
 
 #: core/app_settings.py:75
 msgid "Update user password at login to use the default password scheme"

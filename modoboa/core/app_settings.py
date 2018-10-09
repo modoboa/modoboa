@@ -69,7 +69,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     update_scheme = YesNoField(
-        label=ugettext_lazy("Update password scheme"),
+        label=ugettext_lazy("Update password scheme at login"),
         initial=True,
         help_text=ugettext_lazy(
             "Update user password at login to use the default password scheme"
