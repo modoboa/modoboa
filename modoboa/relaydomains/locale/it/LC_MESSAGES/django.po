@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
+"POT-Creation-Date: 2018-10-05 16:08+0200\n"
 "PO-Revision-Date: 2013-12-23 00:56+0100\n"
 "Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
 "Language-Team: ITALIANO <LL@li.org>\n"
@@ -17,37 +17,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: relaydomains/handlers.py:68
+#: relaydomains/handlers.py:65
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Transport settings"
 msgstr "Domini relè"
 
-#: relaydomains/handlers.py:92
+#: relaydomains/handlers.py:89
 msgid "Transport"
 msgstr ""
 
-#: relaydomains/lib.py:16
+#: relaydomains/lib.py:17
 msgid "Invalid line"
 msgstr "Riga non valida"
 
-#: relaydomains/serializers.py:26
+#: relaydomains/serializers.py:29
 msgid "Unsupported service"
 msgstr ""
 
-#: relaydomains/transport.py:14
+#: relaydomains/transport.py:18
 #, fuzzy
 #| msgid "target host"
 msgid "target host address"
 msgstr "destinazione"
 
-#: relaydomains/transport.py:16
+#: relaydomains/transport.py:20
 #, fuzzy
 #| msgid "target host"
 msgid "target host port"
 msgstr "destinazione"
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:22
 msgid "verify recipients"
 msgstr "Verifica destinatari"
 

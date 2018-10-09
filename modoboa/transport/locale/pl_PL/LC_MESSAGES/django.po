@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
+"POT-Creation-Date: 2018-10-05 16:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/tonio/teams/13749/"
 "pl_PL/)\n"
@@ -20,22 +20,22 @@ msgstr ""
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: transport/backends.py:40
+#: transport/backends.py:44
 msgid "This field is required"
 msgstr ""
 
-#: transport/backends.py:55
+#: transport/backends.py:59
 msgid "Invalid value"
 msgstr ""
 
-#: transport/models.py:18
+#: transport/models.py:20
 msgid "pattern"
 msgstr ""
 
-#: transport/models.py:19
+#: transport/models.py:21
 msgid "service"
 msgstr ""
 
-#: transport/models.py:20
+#: transport/models.py:22
 msgid "next hop"
 msgstr ""

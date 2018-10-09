@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
+"POT-Creation-Date: 2018-10-05 16:08+0200\n"
 "PO-Revision-Date: 2015-01-06 10:05+0000\n"
 "Last-Translator: Miroslav Abrahám <miris@kunago.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/"
@@ -19,37 +19,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: relaydomains/handlers.py:68
+#: relaydomains/handlers.py:65
 #, fuzzy
 #| msgid "Relay domains"
 msgid "Transport settings"
 msgstr "Relay domény"
 
-#: relaydomains/handlers.py:92
+#: relaydomains/handlers.py:89
 msgid "Transport"
 msgstr ""
 
-#: relaydomains/lib.py:16
+#: relaydomains/lib.py:17
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: relaydomains/serializers.py:26
+#: relaydomains/serializers.py:29
 msgid "Unsupported service"
 msgstr ""
 
-#: relaydomains/transport.py:14
+#: relaydomains/transport.py:18
 #, fuzzy
 #| msgid "target host"
 msgid "target host address"
 msgstr "cílový server"
 
-#: relaydomains/transport.py:16
+#: relaydomains/transport.py:20
 #, fuzzy
 #| msgid "target host"
 msgid "target host port"
 msgstr "cílový server"
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:22
 msgid "verify recipients"
 msgstr "ověřit příjemce"
 
