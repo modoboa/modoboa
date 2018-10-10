@@ -17,7 +17,7 @@ from modoboa.core.password_hashers.base import (  # NOQA:F401
 def get_password_hasher(scheme):
     """Retrieve the hasher corresponding to :keyword:`scheme`.
 
-    If no class is found, `PLAINHasher` is returned.
+    If no class is found, `SHA512CRYPTHasher` is returned.
 
     :param str scheme: a valid scheme name
     :rtype: PasswordHasher sub class
@@ -27,5 +27,5 @@ def get_password_hasher(scheme):
         scheme = scheme.replace("-", "")
         hasher = globals()["%sHasher" % scheme.upper()]
     except KeyError:
-        hasher = PLAINHasher
+        hasher = SHA512CRYPTHasher
     return hasher
