@@ -128,9 +128,26 @@ class Email(object):
         # msg parameter to maintain compatibility with
         # modoboa_webmail.lib.imapemail.ImapEmail
         if header in msg:
-            return "".join([smart_text(v, encoding=(e or "ascii"))
-                            for v, e in email.header.decode_header(msg[header])
-                            ])
+            decoded_values = []
+            for value, encoding in email.header.decode_header(msg[header]):
+                if encoding:
+                    value = smart_text(value, encoding=encoding)
+                elif isinstance(value, six.binary_type):
+                    # SMTPUTF8 fallback (most of the time)
+                    # Address contains non ASCII chars but is not RFC2047
+                    # encoded...
+                    encoding = chardet.detect(value)
+                    try:
+                        value = value.decode(encoding["encoding"], "replace")
+                    except (TypeError, UnicodeDecodeError) as exc:
+                        six.raise_from(
+                            InternalError(
+                                _("unable to determine encoding of string")
+                            ),
+                            exc
+                        )
+                decoded_values.append(value)
+            return "".join(decoded_values)
         return ""
 
     def _fetch_message(self):
