@@ -130,6 +130,8 @@ class Email(object):
         if header in msg:
             decoded_values = []
             for value, encoding in email.header.decode_header(msg[header]):
+                if not len(value):
+                    continue
                 if encoding:
                     value = smart_text(value, encoding=encoding)
                 elif isinstance(value, six.binary_type):
