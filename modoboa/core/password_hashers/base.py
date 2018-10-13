@@ -68,12 +68,19 @@ class PasswordHasher(object):
             hashed_value
         )
 
+    @classmethod
+    def get_password_hashers(cls):
+        return cls.__subclasses__()
+
 
 class PLAINHasher(PasswordHasher):
 
     """
     Plain (ie. clear) password hasher.
     """
+    name = "plain"
+    label = "plain (weak)"
+
     @property
     def scheme(self):
         return "{PLAIN}"
@@ -89,6 +96,9 @@ class CRYPTHasher(PasswordHasher):
 
     Uses python `crypt` standard module.
     """
+    name = "crypt"
+    label = "crypt (weak)"
+
     @property
     def scheme(self):
         return "{CRYPT}"
@@ -112,6 +122,9 @@ class MD5Hasher(PasswordHasher):
 
     Uses python `hashlib` standard module.
     """
+    name = "md5"
+    label = "md5 (weak)"
+
     @property
     def scheme(self):
         return "{MD5}"
@@ -128,6 +141,9 @@ class SHA256Hasher(PasswordHasher):
 
     Uses python `hashlib` and `base64` standard modules.
     """
+    name = "sha256"
+    label = "sha256 (weak)"
+
     @property
     def scheme(self):
         return "{SHA256}"
