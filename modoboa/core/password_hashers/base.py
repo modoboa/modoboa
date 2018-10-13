@@ -70,6 +70,7 @@ class PasswordHasher(object):
 
     @classmethod
     def get_password_hashers(cls):
+        """Return all the PasswordHasher supported by Modoboa"""
         return cls.__subclasses__()
 
 
