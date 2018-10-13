@@ -48,8 +48,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     password_scheme = forms.ChoiceField(
         label=ugettext_lazy("Default password scheme"),
         choices=[(hasher.name, ugettext_lazy(hasher.label))
-            for hasher in PasswordHasher.get_password_hashers()
-            if hasher().scheme in get_dovecot_schemes()],
+                 for hasher in PasswordHasher.get_password_hashers()
+                 if hasher().scheme in get_dovecot_schemes()],
         initial="sha512crypt",
         help_text=ugettext_lazy("Scheme used to crypt mailbox passwords"),
         widget=forms.Select(attrs={"class": "form-control"})

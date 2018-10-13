@@ -53,6 +53,7 @@ def get_dovecot_schemes():
         except OSError:
             pass
         else:
-            supported_schemes = ["{{{}}}".format(scheme) for scheme in force_text(schemes).split()]
+            supported_schemes = ["{{{}}}".format(scheme)
+                                 for scheme in force_text(schemes).split()]
 
     return supported_schemes
