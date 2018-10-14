@@ -36,7 +36,7 @@ def get_dovecot_schemes():
     """Return schemes supported by dovecot"""
     supported_schemes = None
     try:
-        code, schemes = doveadm_cmd("pw -l")
+        _, schemes = doveadm_cmd("pw -l")
     except OSError:
         pass
     else:
