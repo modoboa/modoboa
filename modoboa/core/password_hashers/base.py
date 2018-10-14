@@ -17,8 +17,27 @@ from random import Random
 from django.utils.crypto import constant_time_compare
 from django.utils.encoding import force_bytes, force_text
 
+from six import with_metaclass
 
-class PasswordHasher(object):
+
+class MetaHasher(type):
+    """
+    PasswordHasher Metaclass
+    
+    Allow classmethod to be properties
+    """
+    @property
+    def name(cls):
+        """Returns the name of the hasher"""
+        return cls.__name__.rstrip('Hasher').lower()
+
+    @property
+    def label(cls):
+        """Returns the label of the hasher"""
+        return cls.name if not cls._weak else "{} (weak)".format(cls.name)
+
+
+class PasswordHasher(with_metaclass(MetaHasher, object)):
     """
     Base class of all hashers.
     """
@@ -26,16 +45,6 @@ class PasswordHasher(object):
 
     def __init__(self, target="local"):
         self._target = target
-
-    class __metaclass__(type):
-        """class properties"""
-        @property
-        def name(cls):
-            return cls.__name__.rstrip('Hasher').lower()
-
-        @property
-        def label(cls):
-            return cls.name if not cls._weak else "{} (weak)".format(cls.name)
 
     def _encrypt(self, clearvalue, salt=None):
         raise NotImplementedError
