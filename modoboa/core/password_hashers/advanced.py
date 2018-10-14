@@ -21,8 +21,6 @@ class BLFCRYPTHasher(PasswordHasher):
     Supports rounds and provides compatibility with dovecot on
     *BSD systems.
     """
-    name = "blfcrypt"
-    label = "blfcrypt"
 
     @property
     def scheme(self):
@@ -46,14 +44,12 @@ class BLFCRYPTHasher(PasswordHasher):
 
 
 class MD5CRYPTHasher(PasswordHasher):
-
     """
     MD5-CRYPT password hasher.
 
     This scheme can't be considered as secure anymore.
     """
-    name = "md5crypt"
-    label = "md5crypt"
+    _weak = True
 
     @property
     def scheme(self):
@@ -70,15 +66,12 @@ class MD5CRYPTHasher(PasswordHasher):
 
 
 class SHA256CRYPTHasher(PasswordHasher):
-
     """
     SHA256-CRYPT password hasher.
 
     Supports rounds and is a good compromise between security and
     performance.
     """
-    name = "sha256crypt"
-    label = "sha256crypt"
 
     @property
     def scheme(self):
@@ -97,15 +90,12 @@ class SHA256CRYPTHasher(PasswordHasher):
 
 
 class SHA512CRYPTHasher(PasswordHasher):
-
     """
     SHA512-CRYPT password hasher.
 
     Supports rounds and is the strongest scheme provided by
     Modoboa. Requires more resource than SHA256-CRYPT.
     """
-    name = "sha512crypt"
-    label = "sha512crypt"
 
     @property
     def scheme(self):

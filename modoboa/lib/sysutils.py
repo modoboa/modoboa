@@ -8,8 +8,12 @@ This module extra functions/shortcuts to communicate with the system
 from __future__ import unicode_literals
 
 import inspect
+import os
 import re
 import subprocess
+
+from django.conf import settings
+from django.utils.encoding import force_text
 
 
 def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
@@ -40,6 +44,42 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
         output = None
         process.wait()
     return process.returncode, output
+
+
+def doveadm_cmd(params, sudo_user=None, pinput=None, capture_output=True, **kwargs):
+    """Execute doveadm command.
+
+    Run doveadm command using the current user. Set :keyword:`sudo_user` if
+    you need different privileges.
+
+    :param str params: the parameters to give to doveadm
+    :param str sudo_user: a valid system username
+    :param str pinput: data to send to process's stdin
+    :param bool capture_output: capture process output or not
+    :rtype: tuple
+    :return: return code, command output
+    """
+    dpath = None
+    code, output = exec_cmd("which doveadm")
+    if not code:
+        dpath = force_text(output).strip()
+    else:
+        known_paths = getattr(
+            settings, "DOVEADM_LOOKUP_PATH",
+            ("/usr/bin/doveadm", "/usr/local/bin/doveadm")
+        )
+        for fpath in known_paths:
+            if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
+                dpath = fpath
+                break
+    if dpath:
+        return exec_cmd("{} {}".format(dpath, params),
+                        sudo_user=sudo_user,
+                        pinput=pinput,
+                        capture_output=capture_output,
+                        **kwargs)
+    else:
+        raise OSError("doveadm command not found")
 
 
 def guess_extension_name():

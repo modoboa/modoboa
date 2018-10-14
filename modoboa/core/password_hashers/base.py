@@ -19,13 +19,23 @@ from django.utils.encoding import force_bytes, force_text
 
 
 class PasswordHasher(object):
-
     """
     Base class of all hashers.
     """
+    _weak = False
 
     def __init__(self, target="local"):
         self._target = target
+
+    class __metaclass__(type):
+        """class properties"""
+        @property
+        def name(cls):
+            return cls.__name__.rstrip('Hasher').lower()
+
+        @property
+        def label(cls):
+            return cls.name if not cls._weak else "{} (weak)".format(cls.name)
 
     def _encrypt(self, clearvalue, salt=None):
         raise NotImplementedError
@@ -75,12 +85,10 @@ class PasswordHasher(object):
 
 
 class PLAINHasher(PasswordHasher):
-
     """
     Plain (ie. clear) password hasher.
     """
-    name = "plain"
-    label = "plain (weak)"
+    _weak = True
 
     @property
     def scheme(self):
@@ -91,14 +99,12 @@ class PLAINHasher(PasswordHasher):
 
 
 class CRYPTHasher(PasswordHasher):
-
     """
     crypt password hasher.
 
     Uses python `crypt` standard module.
     """
-    name = "crypt"
-    label = "crypt (weak)"
+    _weak = True
 
     @property
     def scheme(self):
@@ -117,14 +123,12 @@ class CRYPTHasher(PasswordHasher):
 
 
 class MD5Hasher(PasswordHasher):
-
     """
     MD5 password hasher.
 
     Uses python `hashlib` standard module.
     """
-    name = "md5"
-    label = "md5 (weak)"
+    _weak = True
 
     @property
     def scheme(self):
@@ -136,14 +140,12 @@ class MD5Hasher(PasswordHasher):
 
 
 class SHA256Hasher(PasswordHasher):
-
     """
     SHA256 password hasher.
 
     Uses python `hashlib` and `base64` standard modules.
     """
-    name = "sha256"
-    label = "sha256 (weak)"
+    _weak = True
 
     @property
     def scheme(self):
