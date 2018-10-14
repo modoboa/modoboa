@@ -25,7 +25,7 @@ except ImportError:
 
 
 @override_settings(
-    DOVECOT_LOOKUP_PATH=["{}/doveadm".format(os.path.dirname(__file__))])
+    DOVEADM_LOOKUP_PATH=["{}/doveadm".format(os.path.dirname(__file__))])
 class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
