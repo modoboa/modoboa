@@ -47,7 +47,7 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
 
 
 def doveadm_cmd(params, sudo_user=None, pinput=None,
-        capture_output=True, **kwargs):
+                capture_output=True, **kwargs):
     """Execute doveadm command.
 
     Run doveadm command using the current user. Set :keyword:`sudo_user` if

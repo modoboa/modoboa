@@ -23,7 +23,6 @@ from six import with_metaclass
 class MetaHasher(type):
     """
     PasswordHasher Metaclass
-    
     Allow classmethod to be properties
     """
     @property
