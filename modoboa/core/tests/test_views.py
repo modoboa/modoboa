@@ -35,7 +35,7 @@ SETTINGS_SAMPLE = {
     "limits-enable_domain_limits": "False",
     "csrfmiddlewaretoken": "SGgMVZsA4TPqoiV786TMST6xgOlhAf4F",
     "limits-deflt_user_mailboxes_limit": "0",
-    "core-password_scheme": "sha512crypt",
+    "core-password_scheme": "plain",
     "core-update_scheme": True,
     "core-items_per_page": "30",
     "limits-deflt_user_mailbox_aliases_limit": "0",
@@ -175,6 +175,15 @@ class SettingsTestCase(ModoTestCase):
         settings = SETTINGS_SAMPLE.copy()
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
+        settings["core-password_scheme"] = "sha512crypt"
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        compare(response.json(), {
+            "form_errors": {"password_scheme": ["Select a valid choice. \
+sha512crypt is not one of the available choices."]},
+            "prefix": "core"
+        })
+        settings["core-password_scheme"] = "plain"
         settings["core-rounds_number"] = ""
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
