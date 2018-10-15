@@ -7,6 +7,8 @@ from django.conf import settings
 from django.contrib.auth import password_validation
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from modoboa.core.password_hashers import get_dovecot_schemes
+from modoboa.core.password_hashers.base import PasswordHasher
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     HorizontalRadioSelect, SeparatorField, YesNoField
@@ -45,14 +47,9 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     password_scheme = forms.ChoiceField(
         label=ugettext_lazy("Default password scheme"),
-        choices=[("sha512crypt", "sha512crypt"),
-                 ("sha256crypt", "sha256crypt"),
-                 ("blfcrypt", "bcrypt"),
-                 ("md5crypt", ugettext_lazy("md5crypt (weak)")),
-                 ("sha256", ugettext_lazy("sha256 (weak)")),
-                 ("md5", ugettext_lazy("md5 (weak)")),
-                 ("crypt", ugettext_lazy("crypt (weak)")),
-                 ("plain", ugettext_lazy("plain (weak)"))],
+        choices=[(hasher.name, ugettext_lazy(hasher.label))
+                 for hasher in PasswordHasher.get_password_hashers()
+                 if hasher().scheme in get_dovecot_schemes()],
         initial="sha512crypt",
         help_text=ugettext_lazy("Scheme used to crypt mailbox passwords"),
         widget=forms.Select(attrs={"class": "form-control"})

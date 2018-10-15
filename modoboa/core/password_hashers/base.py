@@ -17,12 +17,30 @@ from random import Random
 from django.utils.crypto import constant_time_compare
 from django.utils.encoding import force_bytes, force_text
 
+from six import with_metaclass
 
-class PasswordHasher(object):
 
+class MetaHasher(type):
+    """
+    PasswordHasher Metaclass
+    Allow classmethod to be properties
+    """
+    @property
+    def name(cls):
+        """Returns the name of the hasher"""
+        return cls.__name__.rstrip('Hasher').lower()
+
+    @property
+    def label(cls):
+        """Returns the label of the hasher"""
+        return cls.name if not cls._weak else "{} (weak)".format(cls.name)
+
+
+class PasswordHasher(with_metaclass(MetaHasher, object)):
     """
     Base class of all hashers.
     """
+    _weak = False
 
     def __init__(self, target="local"):
         self._target = target
@@ -68,12 +86,18 @@ class PasswordHasher(object):
             hashed_value
         )
 
+    @classmethod
+    def get_password_hashers(cls):
+        """Return all the PasswordHasher supported by Modoboa"""
+        return cls.__subclasses__()
+
 
 class PLAINHasher(PasswordHasher):
-
     """
     Plain (ie. clear) password hasher.
     """
+    _weak = True
+
     @property
     def scheme(self):
         return "{PLAIN}"
@@ -83,12 +107,13 @@ class PLAINHasher(PasswordHasher):
 
 
 class CRYPTHasher(PasswordHasher):
-
     """
     crypt password hasher.
 
     Uses python `crypt` standard module.
     """
+    _weak = True
+
     @property
     def scheme(self):
         return "{CRYPT}"
@@ -106,12 +131,13 @@ class CRYPTHasher(PasswordHasher):
 
 
 class MD5Hasher(PasswordHasher):
-
     """
     MD5 password hasher.
 
     Uses python `hashlib` standard module.
     """
+    _weak = True
+
     @property
     def scheme(self):
         return "{MD5}"
@@ -122,12 +148,13 @@ class MD5Hasher(PasswordHasher):
 
 
 class SHA256Hasher(PasswordHasher):
-
     """
     SHA256 password hasher.
 
     Uses python `hashlib` and `base64` standard modules.
     """
+    _weak = True
+
     @property
     def scheme(self):
         return "{SHA256}"
