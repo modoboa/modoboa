@@ -175,6 +175,10 @@ def get_domain_mx_list(domain):
     """Return a list of MX IP address for domain."""
     result = []
     logger = logging.getLogger("modoboa.admin")
+    dns_server = param_tools.get_global_parameter("use_specific_dns_server")
+    if dns_server:
+        dns.resolver.default_resolver.nameservers = [dns_server]
+
     try:
         dns_answers = dns.resolver.query(domain, "MX")
     except dns.resolver.NXDOMAIN as e:
@@ -192,28 +196,26 @@ def get_domain_mx_list(domain):
             try:
                 mx_domain = dns_answer.exchange.to_unicode(
                     omit_final_dot=True, idna_codec=IDNA_2008_UTS_46)
-                ip_answers = socket.getaddrinfo(
-                    mx_domain, 25, 0, socket.SOCK_STREAM)
-            except socket.gaierror as e:
-                logger.warning(
-                    _("Unable to lookup ip addresses for %(domain)s; "
-                      "%(error)s")
-                    % {"domain": mx_domain, "error": str(e)},
-                    exc_info=e)
+                ip_answers = dns.resolver.query(mx_domain)
+            except dns.resolver.NXDOMAIN as e:
+                logger.error(_("No DNS records found without MX for %s")
+                             % domain, exc_info=e)
             else:
                 for ip_answer in ip_answers:
-                    try:
-                        mx_ip = ipaddress.ip_address(
-                            smart_text(ip_answer[4][0]))
-                    except ValueError as e:
-                        logger.warning(
-                            _("Invalid IP address format for %(domain)s; "
-                              "%(addr)s")
-                            % {"domain": mx_domain,
-                               "addr": smart_text(ip_answer[4][0])},
-                            exc_info=e)
-                    else:
-                        result.append((mx_domain, mx_ip))
+                    for answer_set in ip_answer.response.answer:
+                        for address in answer_set:
+                            try:
+                                address_smart = smart_text(address)
+                                mx_ip = ipaddress.ip_address(address_smart)
+                            except ValueError as e:
+                                logger.warning(
+                                    _("Invalid IP address format for "
+                                      "%(domain)s; %(addr)s")
+                                    % {"domain": mx_domain,
+                                       "addr": smart_text(address)},
+                                    exc_info=e)
+                            else:
+                                result.append((mx_domain, mx_ip))
     return result
 
 
