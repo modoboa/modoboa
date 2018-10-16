@@ -66,9 +66,9 @@
     <script src="{% static 'jquery/jquery.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
     <script type="text/javascript" src="{% static 'moment/min/moment.min.js' %}"></script>
+    {% if LANGUAGE_CODE != "en" %}<script src="{{ STATIC_URL }}moment/locale/{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
     <script src="{% static 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'selectize/dist/js/standalone/selectize.min.js' %}" type="text/javascript"></script>
-    {% if LANGUAGE_CODE != "en" %}<script src="{{ STATIC_URL }}moment/locale/{{ LANGUAGE_CODE }}.js" type="text/javascript"></script>{% endif %}
     {% if TEMPLATE_DEBUG %}
       <script src="//maxcdn.bootstrapcdn.com/bootlint/0.4.0/bootlint.min.js"></script>
     {% endif %}
