@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals
 
+import os
 import smtplib
 from unittest import skipIf
 
@@ -23,6 +24,8 @@ except ImportError:
     import mock
 
 
+@override_settings(
+    DOVEADM_LOOKUP_PATH=["{}/doveadm".format(os.path.dirname(__file__))])
 class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
