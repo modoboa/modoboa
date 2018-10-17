@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 09:25+0200\n"
+"POT-Creation-Date: 2018-10-17 13:41+0200\n"
 "PO-Revision-Date: 2018-07-09 04:17+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
@@ -125,7 +125,7 @@ msgid ""
 "specified. A value of 0 means no quota."
 msgstr "預設配額（以MB為單位）應用於未指定值的創立網域。值為0表示沒有配額。"
 
-#: app_settings.py:119 models/domain.py:41
+#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "預設信箱配額"
@@ -161,7 +161,7 @@ msgstr "當信箱更名時會建立別名"
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "當信箱更名時建立別名並使用在舊的位址。"
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:332
+#: app_settings.py:196 app_settings.py:204 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "必須是正整數"
 
@@ -213,7 +213,7 @@ msgstr "選擇"
 msgid "What level of permission this user will have"
 msgstr "這個使用者有什麼樣的權限等級"
 
-#: forms/account.py:48 forms/domain.py:224
+#: forms/account.py:48 forms/domain.py:249
 msgid "Random password"
 msgstr "隨機密碼"
 
@@ -243,8 +243,8 @@ msgstr "已啟用"
 msgid "Only super administrators are allowed for this mode"
 msgstr "只有超級管理員在這個模式下是允許的"
 
-#: forms/account.py:182 forms/account.py:184 forms/domain.py:141
-#: forms/domain.py:270 forms/domain.py:273 serializers.py:263
+#: forms/account.py:182 forms/account.py:184 forms/domain.py:166
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
 msgid "This field is required."
 msgstr "這個欄位是必填的"
 
@@ -264,26 +264,31 @@ msgstr "電郵"
 msgid "Create an alias using the old address"
 msgstr "用舊的位址來建立別名"
 
-#: forms/account.py:233 templates/admin/account_detail.html:45
-#: templates/admin/domain_detail.html:49
+#: forms/account.py:233 forms/domain.py:45
+#: templates/admin/account_detail.html:45 templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr "配額"
 
-#: forms/account.py:235
+#: forms/account.py:236
+#, fuzzy
+#| msgid ""
+#| "Quota in MB for this mailbox. Define a custom value or use domain's "
+#| "default one. Leave empty to define an unlimited value (not allowed for "
+#| "domain administrators)."
 msgid ""
-"Quota in MB for this mailbox. Define a custom value or use domain's default "
-"one. Leave empty to define an unlimited value (not allowed for domain "
-"administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
 "這個信箱有多少 MB 的配額。定義一個自訂的值或使用網域的預設值。保持空白是定義"
 "為無限制 (不允許網域管理者)。"
 
-#: forms/account.py:243 forms/domain.py:35
+#: forms/account.py:246 forms/domain.py:35
 #: templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "別名(是)"
 
-#: forms/account.py:246
+#: forms/account.py:249
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
@@ -292,11 +297,11 @@ msgstr ""
 "這個信箱的別名(es)。一行只能輸入一個電子郵件，按 Enter 新增新的一行，要建立抓"
 "取別名，只要輸入網域名稱 (@domain.tld)。"
 
-#: forms/account.py:252
+#: forms/account.py:255
 msgid "Sender addresses"
 msgstr "傳送地址"
 
-#: forms/account.py:255
+#: forms/account.py:258
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
@@ -305,52 +310,52 @@ msgstr ""
 "新增這個帳號的寄件地址(es)。此使用者將會允許使用這個位址寄送郵件，即使這個不"
 "在本機。一行輸入一個位址。按 Enter 新增新的一行。"
 
-#: forms/account.py:310 forms/alias.py:92 models/mailbox.py:317
+#: forms/account.py:313 forms/alias.py:92 models/mailbox.py:317
 msgid "Domain does not exist"
 msgstr "網域不存在"
 
-#: forms/account.py:342
+#: forms/account.py:349
 msgid "Local domain does not exist"
 msgstr "本地網域不存在"
 
-#: forms/account.py:346 forms/account.py:354 forms/alias.py:95
+#: forms/account.py:353 forms/account.py:361 forms/alias.py:95
 msgid "You don't have access to this domain"
 msgstr "您無權訪問此網域"
 
-#: forms/account.py:453
+#: forms/account.py:460
 msgid "Domain(s)"
 msgstr "網域"
 
-#: forms/account.py:455
+#: forms/account.py:462
 msgid "Domain(s) that user administrates"
 msgstr "系統管理者網域(S)"
 
-#: forms/account.py:501 forms/account.py:591 forms/domain.py:341
-#: forms/domain.py:412
+#: forms/account.py:508 forms/account.py:598 forms/domain.py:366
+#: forms/domain.py:437
 msgid "General"
 msgstr "一般"
 
-#: forms/account.py:505
+#: forms/account.py:512
 msgid "Profile"
 msgstr "檔案"
 
-#: forms/account.py:509 forms/account.py:597
+#: forms/account.py:516 forms/account.py:604
 msgid "Mail"
 msgstr "電子郵件"
 
-#: forms/account.py:512
+#: forms/account.py:519
 msgid "Permissions"
 msgstr "權限"
 
-#: forms/account.py:580
+#: forms/account.py:587
 msgid "Account updated"
 msgstr "帳號已更新"
 
-#: forms/account.py:605
+#: forms/account.py:612
 msgid "New account"
 msgstr "新帳號"
 
-#: forms/account.py:615
+#: forms/account.py:622
 msgid "Account created"
 msgstr "帳號已建立"
 
@@ -401,98 +406,116 @@ msgstr "這個網域的別名(es)。一行只能輸入一個電子郵件，按 E
 msgid "Key selector"
 msgstr "Key selector"
 
-#: forms/domain.py:82 handlers.py:165
+#: forms/domain.py:48 models/domain.py:36
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
+
+#: forms/domain.py:56
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
+
+#: forms/domain.py:98 handlers.py:165
 msgid "domain alias"
 msgstr "網域別名"
 
-#: forms/domain.py:85 forms/domain.py:152 forms/domain.py:160
+#: forms/domain.py:101 forms/domain.py:177 forms/domain.py:185
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "此 %s 及這個名稱已存在"
 
-#: forms/domain.py:93 serializers.py:53
+#: forms/domain.py:109 serializers.py:56
 msgid "No authorized MX record found for this domain"
 msgstr "沒有找到這個網域已驗證過的 MX 紀錄"
 
-#: forms/domain.py:105
+#: forms/domain.py:121
 msgid "DKIM keys storage directory not configured"
 msgstr "未設置 DKIM 金鑰儲存目錄"
 
-#: forms/domain.py:126 serializers.py:63
+#: forms/domain.py:151 serializers.py:74
 msgid "Cannot be greater than domain quota"
 msgstr "不可以超過網域配額"
 
-#: forms/domain.py:131
+#: forms/domain.py:156
 msgid "You can't define an unlimited quota."
 msgstr "您不可以定義無限制配額。"
 
-#: forms/domain.py:152 forms/domain.py:157
+#: forms/domain.py:177 forms/domain.py:182
 msgid "domain"
 msgstr "網域"
 
-#: forms/domain.py:206
+#: forms/domain.py:231
 msgid "Create a domain administrator"
 msgstr "建立網域管理者"
 
-#: forms/domain.py:209
+#: forms/domain.py:234
 msgid "Automatically create an administrator for this domain"
 msgstr "自動建立這個網域的管理者"
 
-#: forms/domain.py:214 templates/admin/domain_detail.html:121
+#: forms/domain.py:239 templates/admin/domain_detail.html:121
 #: templates/admin/domain_headers.html:3
 #: templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "名稱"
 
-#: forms/domain.py:217
+#: forms/domain.py:242
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
 msgstr "管理者的名稱。不可以包括這裡的網域名稱，這將會自動附加。"
 
-#: forms/domain.py:227
+#: forms/domain.py:252
 msgid "Generate a random password for the administrator."
 msgstr "產生隨機密碼給管理員。"
 
-#: forms/domain.py:233
+#: forms/domain.py:258
 msgid "With a mailbox"
 msgstr "有附信箱"
 
-#: forms/domain.py:236
+#: forms/domain.py:261
 msgid "Create a mailbox for the administrator."
 msgstr "建立信箱給管理員"
 
-#: forms/domain.py:242
+#: forms/domain.py:267
 msgid "Create aliases"
 msgstr "建立別名"
 
-#: forms/domain.py:245
+#: forms/domain.py:270
 msgid "Automatically create standard aliases for this domain"
 msgstr "自動建立這個網域的標準別名"
 
-#: forms/domain.py:261
+#: forms/domain.py:286
 msgid "Invalid format"
 msgstr "無效格式"
 
-#: forms/domain.py:290
+#: forms/domain.py:315
 #, python-format
 msgid "User '%s' already exists"
 msgstr "使用者 '%s' 已存在"
 
-#: forms/domain.py:402
+#: forms/domain.py:427
 msgid "Domain modified"
 msgstr "網域已修改"
 
-#: forms/domain.py:423
+#: forms/domain.py:448
 msgid "Options"
 msgstr "選項"
 
-#: forms/domain.py:431
+#: forms/domain.py:456
 msgid "New domain"
 msgstr "新網域"
 
-#: forms/domain.py:444
+#: forms/domain.py:469
 msgid "Domain created"
 msgstr "網域已建立"
 
@@ -692,10 +715,6 @@ msgstr "名稱"
 msgid "The domain name"
 msgstr "網域名稱"
 
-#: models/domain.py:36
-msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr "信箱之間共用幾 MB 的配額。值為0表示沒配額。"
-
 #: models/domain.py:44
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
@@ -779,40 +798,40 @@ msgstr "配額是必要的"
 msgid "Domain quota exceeded"
 msgstr "網域配額已超過"
 
-#: serializers.py:88 serializers.py:288 serializers.py:386
+#: serializers.py:99 serializers.py:304 serializers.py:402
 msgid "Permission denied."
 msgstr "權限不足"
 
-#: serializers.py:134
+#: serializers.py:150
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "管理員網域列表 (只有經銷商和網域管理員)。"
 
-#: serializers.py:238
+#: serializers.py:254
 msgid "Not allowed for this role."
 msgstr "不允許這個身份"
 
-#: serializers.py:250
+#: serializers.py:266
 msgid "Must be equal to mailbox full_address"
 msgstr "必須跟信箱完整位址一樣"
 
-#: serializers.py:275
+#: serializers.py:291
 msgid "Local domain {} does not exist"
 msgstr "本機網域 {} 不存在"
 
-#: serializers.py:373
+#: serializers.py:389
 msgid "A list of recipient"
 msgstr "收件人列表"
 
-#: serializers.py:384
+#: serializers.py:400
 msgid "Domain not found."
 msgstr "網域不存在。"
 
-#: serializers.py:433
+#: serializers.py:449
 msgid "You don't have access to this domain."
 msgstr "您不能存取這個網域。"
 
-#: serializers.py:441
+#: serializers.py:457
 msgid "You don't have access to this mailbox."
 msgstr "您不能存取這個信箱。"
 
@@ -974,11 +993,8 @@ msgstr "信箱別名"
 
 #: templates/admin/domain_detail.html:50 templates/admin/domain_detail.html:57
 #: templates/admin/domain_detail.html:58 templates/admin/domain_detail.html:65
-#: templates/admin/domain_general_form.html:4
-#: templates/admin/domain_general_form.html:5
 #: templates/admin/domains_quotas.html:11
-#: templates/admin/domains_quotas.html:12 templates/admin/mailform.html:7
-#: templates/admin/newdomainform.html:3
+#: templates/admin/domains_quotas.html:12 templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "MB"
 
@@ -1321,6 +1337,9 @@ msgstr "匯入使用者"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "轉寄已更新"
+
+#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
+#~ msgstr "信箱之間共用幾 MB 的配額。值為0表示沒配額。"
 
 #, fuzzy
 #~| msgid "No DNS records found for %s"

@@ -33,8 +33,8 @@ class Domain(AdminObject):
     quota = models.PositiveIntegerField(
         default=0,
         help_text=ugettext_lazy(
-            "Quota in MB shared between mailboxes. A value of 0 means "
-            "no quota."
+            "Quota shared between mailboxes. Can be expressed in KB, "
+            "MB (default) or GB. A value of 0 means no quota."
         )
     )
     default_mailbox_quota = models.PositiveIntegerField(
