@@ -19,8 +19,9 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.sysutils import exec_cmd
+from modoboa.lib.sysutils import doveadm_cmd
 from modoboa.parameters import tools as param_tools
+
 from .base import AdminObject
 from .domain import Domain
 
@@ -158,8 +159,8 @@ class Mailbox(AdminObject):
             options = {}
             if curuser != mbowner:
                 options["sudo_user"] = mbowner
-            code, output = exec_cmd(
-                "doveadm user -f home %s" % self.full_address, **options
+            code, output = doveadm_cmd(
+                "user -f home %s" % self.full_address, **options
             )
             if code:
                 raise lib_exceptions.InternalError(

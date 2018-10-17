@@ -59,6 +59,14 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    custom_dns_server = GenericIPAddressField(
+        label=ugettext_lazy("Custom DNS server"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Use a custom DNS server instead of local server configuration"
+        )
+    )
+
     dkim_keys_storage_dir = forms.CharField(
         label=ugettext_lazy("DKIM keys storage directory"),
         initial="",
@@ -76,14 +84,6 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         choices=constants.DKIM_KEY_LENGTHS,
         help_text=ugettext_lazy(
             "Default length in bits for newly generated DKIM keys."
-        )
-    )
-
-    use_specific_dns_server = GenericIPAddressField(
-        label=ugettext_lazy("Use specific DNS server"),
-        required=False,
-        help_text=ugettext_lazy(
-            "Use a specific DNS server instead of local server configuration"
         )
     )
 
