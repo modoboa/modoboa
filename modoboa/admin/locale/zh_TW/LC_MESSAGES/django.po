@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2018-10-17 08:44+0200\n"
 "PO-Revision-Date: 2018-07-09 04:17+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
@@ -21,54 +21,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: admin/app_settings.py:23 admin/handlers.py:265
-#: admin/templates/admin/_global_statistics_widget.html:11
-#: admin/templates/admin/domains.html:5
+#: app_settings.py:24 handlers.py:265
+#: templates/admin/_global_statistics_widget.html:11
+#: templates/admin/domains.html:5
 msgid "Domains"
 msgstr "網域"
 
-#: admin/app_settings.py:26
+#: app_settings.py:27
 msgid "Enable MX checks"
 msgstr "啟用 MX 檢查"
 
-#: admin/app_settings.py:29
+#: app_settings.py:30
 msgid "Check that every domain has a valid MX record"
 msgstr "檢查每個網域都有正確的 MX 紀錄"
 
-#: admin/app_settings.py:34
+#: app_settings.py:35
 msgid "Valid MXs"
 msgstr "正確的 MX"
 
-#: admin/app_settings.py:37
+#: app_settings.py:38
 msgid ""
 "A list of IP or network address every MX record should match. A warning will "
 "be sent if a record does not respect it."
 msgstr ""
 "每個 MX 紀錄應該要跟列出來的 IP 或網路位址一樣。假如紀錄不同的會有警告送出。"
 
-#: admin/app_settings.py:45
+#: app_settings.py:46
 msgid "New domains must use authorized MX(s)"
 msgstr "新的網域必須要有已驗立的 MX(s)"
 
-#: admin/app_settings.py:48
+#: app_settings.py:49
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
 msgstr "假如 MX 紀錄未使用定義的位址請避免建立新的網域。"
 
-#: admin/app_settings.py:54
+#: app_settings.py:55
 msgid "Enable DNSBL checks"
 msgstr "啟用 DNSBL 檢查"
 
-#: admin/app_settings.py:57
+#: app_settings.py:58
 msgid "Check every domain against major DNSBL providers"
 msgstr "針對每個 DNSBL 供應商來檢查每個網域"
 
-#: admin/app_settings.py:62
+#: app_settings.py:63
+msgid "Custom DNS server"
+msgstr ""
+
+#: app_settings.py:66
+msgid "Use a custom DNS server instead of local server configuration"
+msgstr ""
+
+#: app_settings.py:71
 msgid "DKIM keys storage directory"
 msgstr "DKIM 金鑰儲存目錄"
 
-#: admin/app_settings.py:65
+#: app_settings.py:74
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
@@ -77,193 +85,191 @@ msgstr ""
 "絕對路徑的目錄將會給 DKIM 私鑰儲存。確認這個目錄屬於 root 使用者並且外面的世"
 "界無法讀取。"
 
-#: admin/app_settings.py:73
+#: app_settings.py:82
 msgid "Default DKIM key length"
 msgstr "預設 DKIM 金鑰長度"
 
-#: admin/app_settings.py:77
+#: app_settings.py:86
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr "預設長度是給新產生的 DKIM 金鑰用。"
 
-#: admin/app_settings.py:81 admin/templates/admin/domain_detail.html:41
+#: app_settings.py:90 templates/admin/domain_detail.html:41
 msgid "Mailboxes"
 msgstr "信箱"
 
-#: admin/app_settings.py:84
+#: app_settings.py:93
 msgid "Handle mailboxes on filesystem"
 msgstr "在檔案系統上處理信箱"
 
-#: admin/app_settings.py:87
+#: app_settings.py:96
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
 msgstr "當他要在 Modoboa 上取得更名或移除就會在檔案系統上更名或移除信箱"
 
-#: admin/app_settings.py:93
+#: app_settings.py:102
 msgid "Mailboxes owner"
 msgstr "信箱擁有者"
 
-#: admin/app_settings.py:96
+#: app_settings.py:105
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "UNIX 帳號是檔案系統上擁有的信箱"
 
-#: admin/app_settings.py:101
+#: app_settings.py:110
 msgid "Default domain quota"
 msgstr "預設網域配額"
 
-#: admin/app_settings.py:104
+#: app_settings.py:113
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr "預設配額（以MB為單位）應用於未指定值的創立網域。值為0表示沒有配額。"
 
-#: admin/app_settings.py:110 admin/models/domain.py:41
-#: admin/templates/admin/domain_detail.html:64
+#: app_settings.py:119 models/domain.py:41
+#: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "預設信箱配額"
 
-#: admin/app_settings.py:113
+#: app_settings.py:122
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
 msgstr ""
 "預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
 
-#: admin/app_settings.py:119
+#: app_settings.py:128
 msgid "Automatic account removal"
 msgstr "自動刪除帳號"
 
-#: admin/app_settings.py:122
+#: app_settings.py:131
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "當信箱移除時，也會移除關聯的帳號"
 
-#: admin/app_settings.py:126
+#: app_settings.py:135
 msgid "Automatic domain/mailbox creation"
 msgstr "自動建立網域/信箱"
 
-#: admin/app_settings.py:129
+#: app_settings.py:138
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "當帳號自動建立後會建立網域和一個信箱。"
 
-#: admin/app_settings.py:135
+#: app_settings.py:144
 msgid "Create an alias when a mailbox is renamed"
 msgstr "當信箱更名時會建立別名"
 
-#: admin/app_settings.py:138
+#: app_settings.py:147
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "當信箱更名時建立別名並使用在舊的位址。"
 
-#: admin/app_settings.py:187 admin/app_settings.py:195
-#: admin/forms/account.py:332
+#: app_settings.py:196 app_settings.py:204 forms/account.py:332
 msgid "Must be a positive integer"
 msgstr "必須是正整數"
 
-#: admin/app_settings.py:205
+#: app_settings.py:214
 msgid "Directory not found."
 msgstr "目錄不存在"
 
-#: admin/app_settings.py:211
+#: app_settings.py:220
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl 找不到，請確認已安裝。"
 
-#: admin/app_settings.py:225
+#: app_settings.py:234
 msgid "Define at least one authorized network / address"
 msgstr "定義至少一個已驗證網路/位址"
 
-#: admin/app_settings.py:235
+#: app_settings.py:244
 msgid "Administration"
 msgstr "管理員"
 
-#: admin/constants.py:98 admin/forms/alias.py:47
-#: admin/templates/admin/_per_domain_statistics_widget.html:7
-#: admin/templates/admin/domains_quota_headers.html:2
+#: constants.py:98 forms/alias.py:47
+#: templates/admin/_per_domain_statistics_widget.html:7
+#: templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr "網域"
 
-#: admin/constants.py:99
+#: constants.py:99
 msgid "Relay domain"
 msgstr "網域轉送"
 
-#: admin/forms/account.py:36 admin/templates/admin/domain_detail.html:121
+#: forms/account.py:36 templates/admin/domain_detail.html:121
 msgid "Username"
 msgstr "使用者名稱"
 
-#: admin/forms/account.py:38
+#: forms/account.py:38
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
 msgstr "使用者名稱。必須是單純使用者的正確電子郵件地址或是管理員的信箱。"
 
-#: admin/forms/account.py:43 admin/templates/admin/account_detail.html:29
+#: forms/account.py:43 templates/admin/account_detail.html:29
 msgid "Role"
 msgstr "身份"
 
-#: admin/forms/account.py:44
+#: forms/account.py:44
 msgid "Choose"
 msgstr "選擇"
 
-#: admin/forms/account.py:45
+#: forms/account.py:45
 msgid "What level of permission this user will have"
 msgstr "這個使用者有什麼樣的權限等級"
 
-#: admin/forms/account.py:48 admin/forms/domain.py:223
+#: forms/account.py:48 forms/domain.py:224
 msgid "Random password"
 msgstr "隨機密碼"
 
-#: admin/forms/account.py:50
+#: forms/account.py:50
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
 msgstr "產生一個隨機密碼。假如您更新這個帳號也勾選這個選項，新的密碼就會產生。"
 
-#: admin/forms/account.py:56
+#: forms/account.py:56
 msgid "Password"
 msgstr "密碼"
 
-#: admin/forms/account.py:61
+#: forms/account.py:61
 msgid "Confirmation"
 msgstr "確認"
 
-#: admin/forms/account.py:64
+#: forms/account.py:64
 msgid "Enter the same password as above, for verification."
 msgstr "為了驗證，在下方輸入相同的密碼。"
 
-#: admin/forms/account.py:76
+#: forms/account.py:76
 msgid "Enabled"
 msgstr "已啟用"
 
-#: admin/forms/account.py:171
+#: forms/account.py:171
 msgid "Only super administrators are allowed for this mode"
 msgstr "只有超級管理員在這個模式下是允許的"
 
-#: admin/forms/account.py:182 admin/forms/account.py:184
-#: admin/forms/domain.py:140 admin/forms/domain.py:269
-#: admin/forms/domain.py:272 admin/serializers.py:263
+#: forms/account.py:182 forms/account.py:184 forms/domain.py:141
+#: forms/domain.py:270 forms/domain.py:273 serializers.py:263
 msgid "This field is required."
 msgstr "這個欄位是必填的"
 
-#: admin/forms/account.py:190
+#: forms/account.py:190
 msgid "The two password fields didn't match."
 msgstr "兩次鍵入的密碼不相符。"
 
-#: admin/forms/account.py:203
+#: forms/account.py:203
 msgid "You can't disable your own account"
 msgstr "您不可以停用您擁有的帳號"
 
-#: admin/forms/account.py:226
+#: forms/account.py:226
 msgid "E-mail"
 msgstr "電郵"
 
-#: admin/forms/account.py:228
+#: forms/account.py:228
 msgid "Create an alias using the old address"
 msgstr "用舊的位址來建立別名"
 
-#: admin/forms/account.py:233 admin/templates/admin/account_detail.html:45
-#: admin/templates/admin/domain_detail.html:49
+#: forms/account.py:233 templates/admin/account_detail.html:45
+#: templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr "配額"
 
-#: admin/forms/account.py:235
+#: forms/account.py:235
 msgid ""
 "Quota in MB for this mailbox. Define a custom value or use domain's default "
 "one. Leave empty to define an unlimited value (not allowed for domain "
@@ -272,12 +278,12 @@ msgstr ""
 "這個信箱有多少 MB 的配額。定義一個自訂的值或使用網域的預設值。保持空白是定義"
 "為無限制 (不允許網域管理者)。"
 
-#: admin/forms/account.py:243 admin/forms/domain.py:35
-#: admin/templates/admin/domain_headers.html:4
+#: forms/account.py:243 forms/domain.py:35
+#: templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "別名(是)"
 
-#: admin/forms/account.py:246
+#: forms/account.py:246
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
@@ -286,11 +292,11 @@ msgstr ""
 "這個信箱的別名(es)。一行只能輸入一個電子郵件，按 Enter 新增新的一行，要建立抓"
 "取別名，只要輸入網域名稱 (@domain.tld)。"
 
-#: admin/forms/account.py:252
+#: forms/account.py:252
 msgid "Sender addresses"
 msgstr "傳送地址"
 
-#: admin/forms/account.py:255
+#: forms/account.py:255
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
@@ -299,809 +305,793 @@ msgstr ""
 "新增這個帳號的寄件地址(es)。此使用者將會允許使用這個位址寄送郵件，即使這個不"
 "在本機。一行輸入一個位址。按 Enter 新增新的一行。"
 
-#: admin/forms/account.py:310 admin/forms/alias.py:92
-#: admin/models/mailbox.py:316
+#: forms/account.py:310 forms/alias.py:92 models/mailbox.py:317
 msgid "Domain does not exist"
 msgstr "網域不存在"
 
-#: admin/forms/account.py:342
+#: forms/account.py:342
 msgid "Local domain does not exist"
 msgstr "本地網域不存在"
 
-#: admin/forms/account.py:346 admin/forms/account.py:354
-#: admin/forms/alias.py:95
+#: forms/account.py:346 forms/account.py:354 forms/alias.py:95
 msgid "You don't have access to this domain"
 msgstr "您無權訪問此網域"
 
-#: admin/forms/account.py:453
+#: forms/account.py:453
 msgid "Domain(s)"
 msgstr "網域"
 
-#: admin/forms/account.py:455
+#: forms/account.py:455
 msgid "Domain(s) that user administrates"
 msgstr "系統管理者網域(S)"
 
-#: admin/forms/account.py:501 admin/forms/account.py:591
-#: admin/forms/domain.py:340 admin/forms/domain.py:410
+#: forms/account.py:501 forms/account.py:591 forms/domain.py:341
+#: forms/domain.py:412
 msgid "General"
 msgstr "一般"
 
-#: admin/forms/account.py:505
+#: forms/account.py:505
 msgid "Profile"
 msgstr "檔案"
 
-#: admin/forms/account.py:509 admin/forms/account.py:597
+#: forms/account.py:509 forms/account.py:597
 msgid "Mail"
 msgstr "電子郵件"
 
-#: admin/forms/account.py:512
+#: forms/account.py:512
 msgid "Permissions"
 msgstr "權限"
 
-#: admin/forms/account.py:580
+#: forms/account.py:580
 msgid "Account updated"
 msgstr "帳號已更新"
 
-#: admin/forms/account.py:605
+#: forms/account.py:605
 msgid "New account"
 msgstr "新帳號"
 
-#: admin/forms/account.py:615
+#: forms/account.py:615
 msgid "Account created"
 msgstr "帳號已建立"
 
-#: admin/forms/alias.py:24
+#: forms/alias.py:24
 msgid "Random address"
 msgstr "隨機位址"
 
-#: admin/forms/alias.py:27
+#: forms/alias.py:27
 msgid "Email address"
 msgstr "電郵地址"
 
-#: admin/forms/alias.py:29
+#: forms/alias.py:29
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
 msgstr "此別名位址。要建立抓取別名，只要輸入網域名稱 (@domain.tld)。"
 
-#: admin/forms/alias.py:35 admin/templates/admin/alias_detail.html:37
+#: forms/alias.py:35 templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "收件人"
 
-#: admin/forms/alias.py:37
+#: forms/alias.py:37
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
 msgstr ""
 "這個別名的位址將會指到這。一行只能輸入一個電子郵件，按 Enter 新增新的一行。"
 
-#: admin/forms/alias.py:112 admin/forms/alias.py:114
+#: forms/alias.py:112 forms/alias.py:114
 msgid "This field is required"
 msgstr "這個欄位是必填的"
 
-#: admin/forms/alias.py:118
+#: forms/alias.py:118
 msgid "No recipient defined"
 msgstr "沒有定義收件人"
 
-#: admin/forms/domain.py:32
-#: admin/templates/admin/_global_statistics_widget.html:7
+#: forms/domain.py:32 templates/admin/_global_statistics_widget.html:7
 msgid "Type"
 msgstr "類型"
 
-#: admin/forms/domain.py:38
+#: forms/domain.py:38
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
 msgstr "這個網域的別名(es)。一行只能輸入一個電子郵件，按 Enter 新增新的一行。"
 
-#: admin/forms/domain.py:43
+#: forms/domain.py:43
 msgid "Key selector"
 msgstr "Key selector"
 
-#: admin/forms/domain.py:81 admin/handlers.py:165
+#: forms/domain.py:82 handlers.py:165
 msgid "domain alias"
 msgstr "網域別名"
 
-#: admin/forms/domain.py:84 admin/forms/domain.py:151 admin/forms/domain.py:159
+#: forms/domain.py:85 forms/domain.py:152 forms/domain.py:160
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "此 %s 及這個名稱已存在"
 
-#: admin/forms/domain.py:92 admin/serializers.py:53
+#: forms/domain.py:93 serializers.py:53
 msgid "No authorized MX record found for this domain"
 msgstr "沒有找到這個網域已驗證過的 MX 紀錄"
 
-#: admin/forms/domain.py:104
+#: forms/domain.py:105
 msgid "DKIM keys storage directory not configured"
 msgstr "未設置 DKIM 金鑰儲存目錄"
 
-#: admin/forms/domain.py:125 admin/serializers.py:63
+#: forms/domain.py:126 serializers.py:63
 msgid "Cannot be greater than domain quota"
 msgstr "不可以超過網域配額"
 
-#: admin/forms/domain.py:130
+#: forms/domain.py:131
 msgid "You can't define an unlimited quota."
 msgstr "您不可以定義無限制配額。"
 
-#: admin/forms/domain.py:151 admin/forms/domain.py:156
+#: forms/domain.py:152 forms/domain.py:157
 msgid "domain"
 msgstr "網域"
 
-#: admin/forms/domain.py:205
+#: forms/domain.py:206
 msgid "Create a domain administrator"
 msgstr "建立網域管理者"
 
-#: admin/forms/domain.py:208
+#: forms/domain.py:209
 msgid "Automatically create an administrator for this domain"
 msgstr "自動建立這個網域的管理者"
 
-#: admin/forms/domain.py:213 admin/templates/admin/domain_detail.html:121
-#: admin/templates/admin/domain_headers.html:3
-#: admin/templates/admin/identity_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:9
+#: forms/domain.py:214 templates/admin/domain_detail.html:121
+#: templates/admin/domain_headers.html:3
+#: templates/admin/identity_headers.html:2
+#: templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "名稱"
 
-#: admin/forms/domain.py:216
+#: forms/domain.py:217
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
 msgstr "管理者的名稱。不可以包括這裡的網域名稱，這將會自動附加。"
 
-#: admin/forms/domain.py:226
+#: forms/domain.py:227
 msgid "Generate a random password for the administrator."
 msgstr "產生隨機密碼給管理員。"
 
-#: admin/forms/domain.py:232
+#: forms/domain.py:233
 msgid "With a mailbox"
 msgstr "有附信箱"
 
-#: admin/forms/domain.py:235
+#: forms/domain.py:236
 msgid "Create a mailbox for the administrator."
 msgstr "建立信箱給管理員"
 
-#: admin/forms/domain.py:241
+#: forms/domain.py:242
 msgid "Create aliases"
 msgstr "建立別名"
 
-#: admin/forms/domain.py:244
+#: forms/domain.py:245
 msgid "Automatically create standard aliases for this domain"
 msgstr "自動建立這個網域的標準別名"
 
-#: admin/forms/domain.py:260
+#: forms/domain.py:261
 msgid "Invalid format"
 msgstr "無效格式"
 
-#: admin/forms/domain.py:289
+#: forms/domain.py:290
 #, python-format
 msgid "User '%s' already exists"
 msgstr "使用者 '%s' 已存在"
 
-#: admin/forms/domain.py:400
+#: forms/domain.py:402
 msgid "Domain modified"
 msgstr "網域已修改"
 
-#: admin/forms/domain.py:421
+#: forms/domain.py:423
 msgid "Options"
 msgstr "選項"
 
-#: admin/forms/domain.py:429
+#: forms/domain.py:431
 msgid "New domain"
 msgstr "新網域"
 
-#: admin/forms/domain.py:442
+#: forms/domain.py:444
 msgid "Domain created"
 msgstr "網域已建立"
 
-#: admin/forms/export.py:11
+#: forms/export.py:11
 msgid "File name"
 msgstr "檔案名稱"
 
-#: admin/forms/export.py:17 admin/forms/import_.py:17
+#: forms/export.py:17 forms/import_.py:17
 msgid "Separator"
 msgstr "分開"
 
-#: admin/forms/forward.py:16
+#: forms/forward.py:16
 msgid "Recipient(s)"
 msgstr "收件人"
 
-#: admin/forms/forward.py:20
+#: forms/forward.py:20
 msgid "Indicate one or more recipients separated by a ','"
 msgstr "指定一個或多個收件人並用 ',' 來分開"
 
-#: admin/forms/forward.py:23
+#: forms/forward.py:23
 msgid "Keep local copies"
 msgstr "本機儲存"
 
-#: admin/forms/forward.py:26
+#: forms/forward.py:26
 msgid "Forward messages and store copies into your local mailbox"
 msgstr "轉寄郵件及儲存一份到您的本機信箱"
 
-#: admin/forms/import_.py:15
+#: forms/import_.py:15
 msgid "Select a file"
 msgstr "選擇檔案"
 
-#: admin/forms/import_.py:23
+#: forms/import_.py:23
 msgid "Continue on error"
 msgstr "錯誤時仍繼續"
 
-#: admin/forms/import_.py:24
+#: forms/import_.py:24
 msgid "Don't treat duplicated objects as error"
 msgstr "錯誤時不用處理重複的物件"
 
-#: admin/forms/import_.py:42
+#: forms/import_.py:42
 msgid "Crypt passwords"
 msgstr "加密密碼"
 
-#: admin/forms/import_.py:44
+#: forms/import_.py:44
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr "假如密碼包含在您的檔案且未加密時請勾選這個選項"
 
-#: admin/handlers.py:214
+#: handlers.py:214
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "帳號匯入失敗 (%s): 網域不存在"
 
-#: admin/handlers.py:227 admin/models/mailbox.py:344
+#: handlers.py:227 models/mailbox.py:345
 msgid "Mailbox {} already exists"
 msgstr "信箱 {} 已存在"
 
-#: admin/handlers.py:235
+#: handlers.py:235
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "帳號匯入失敗 (%s): 錯誤配額"
 
-#: admin/handlers.py:275
-#: admin/templates/admin/_global_statistics_widget.html:17
-#: admin/templates/admin/_per_domain_statistics_widget.html:8
-#: admin/templates/admin/identities.html:5
+#: handlers.py:275 templates/admin/_global_statistics_widget.html:17
+#: templates/admin/_per_domain_statistics_widget.html:8
+#: templates/admin/identities.html:5
 msgid "Identities"
 msgstr "使用者"
 
-#: admin/handlers.py:291 admin/templates/admin/forward.html:2
+#: handlers.py:291 templates/admin/forward.html:2
 msgid "Forward"
 msgstr "轉發"
 
-#: admin/lib.py:42
+#: lib.py:41
 msgid "A mailbox is required"
 msgstr "信箱是必要的"
 
-#: admin/lib.py:132
+#: lib.py:131
 msgid "You are not allowed to import domains"
 msgstr "您未允許匯入網域"
 
-#: admin/lib.py:143
+#: lib.py:142
 msgid "You are not allowed to import domain aliases."
 msgstr "您未允許匯入網域別名。"
 
-#: admin/lib.py:181 admin/tests/test_mx.py:125
+#: lib.py:187 tests/test_mx.py:135
 #, python-format
 msgid "No DNS records found for %s"
 msgstr "沒有找到 %s 的 DNS 紀錄"
 
-#: admin/lib.py:183 admin/tests/test_mx.py:128
+#: lib.py:189 tests/test_mx.py:138
 #, python-format
 msgid "No MX record for %s"
 msgstr "沒有 %s 的 MX 紀錄"
 
-#: admin/lib.py:185 admin/tests/test_mx.py:129
+#: lib.py:191 tests/test_mx.py:139
 msgid "No working name servers found"
 msgstr "沒有找到執行中的名稱伺服器"
 
-#: admin/lib.py:188 admin/tests/test_mx.py:131
+#: lib.py:194 tests/test_mx.py:141
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS 解析逾時，無法查詢 %s 在這個時間點"
 
-#: admin/lib.py:199 admin/tests/test_mx.py:134
-#, python-format
-msgid "Unable to lookup ip addresses for %(domain)s; %(error)s"
-msgstr "無法查詢此 IP 位址 %(domain)s; %(error)s"
+#: lib.py:204
+#, fuzzy, python-format
+#| msgid "No DNS records found for %s"
+msgid "No %(type)s record found for MX %(mx)s"
+msgstr "沒有找到 %s 的 DNS 紀錄"
 
-#: admin/lib.py:210 admin/tests/test_mx.py:137
+#: lib.py:213 tests/test_mx.py:150 tests/test_mx.py:153
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr "無效的 IP 位址格式 %(domain)s; %(addr)s"
 
-#: admin/management/commands/subcommands/_import.py:102
+#: management/commands/subcommands/_import.py:102
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
 msgstr ""
 
-#: admin/management/commands/subcommands/_import.py:114
+#: management/commands/subcommands/_import.py:114
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: admin/management/commands/subcommands/_import.py:126
+#: management/commands/subcommands/_import.py:126
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: admin/management/commands/subcommands/_mx.py:135
+#: management/commands/subcommands/_mx.py:135
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] 此網域的 DNSBL 問題(s) {}"
 
-#: admin/management/commands/subcommands/_mx.py:155
+#: management/commands/subcommands/_mx.py:155
 msgid "Domain {} has no MX record"
 msgstr "網域 {} 沒有 MX 紀錄"
 
-#: admin/management/commands/subcommands/_mx.py:166
+#: management/commands/subcommands/_mx.py:166
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "此網域的 MX 紀錄 {0} 是無效的: {1}"
 
-#: admin/management/commands/subcommands/_mx.py:183
+#: management/commands/subcommands/_mx.py:183
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] 此網域的 MX 問題(s) {}"
 
-#: admin/models/alias.py:36 admin/models/mailbox.py:98
+#: models/alias.py:36 models/mailbox.py:99
 msgid "address"
 msgstr "地址"
 
-#: admin/models/alias.py:38
+#: models/alias.py:38
 msgid "The alias address."
 msgstr "別名位址。"
 
-#: admin/models/alias.py:43 admin/models/domain.py:49
-#: admin/models/domain_alias.py:46
+#: models/alias.py:43 models/domain.py:49 models/domain_alias.py:46
 msgid "enabled"
 msgstr "已啟用"
 
-#: admin/models/alias.py:44 admin/models/domain_alias.py:47
+#: models/alias.py:44 models/domain_alias.py:47
 msgid "Check to activate this alias"
 msgstr "點擊啟用這個別名"
 
-#: admin/models/alias.py:49 admin/templates/admin/alias_detail.html:32
+#: models/alias.py:49 templates/admin/alias_detail.html:32
 msgid "Description"
 msgstr "描述"
 
-#: admin/models/alias.py:51 admin/templates/admin/alias_detail.html:29
+#: models/alias.py:51 templates/admin/alias_detail.html:29
 msgid "Expire at"
 msgstr "過期在"
 
-#: admin/models/alias.py:94
+#: models/alias.py:94
 msgid "alias"
 msgstr "別名"
 
-#: admin/models/alias.py:126
+#: models/alias.py:126
 msgid "Invalid address"
 msgstr "無效位址"
 
-#: admin/models/alias.py:147
+#: models/alias.py:147
 msgid "Local recipient {}@{} not found"
 msgstr "本機收件人 {}@{} 未找到"
 
-#: admin/models/alias.py:177
+#: models/alias.py:177
 #, python-format
 msgid "Invalid line: %s"
 msgstr "無效行: %s"
 
-#: admin/models/alias.py:183
+#: models/alias.py:183
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "網域 '%s' 不存在"
 
-#: admin/models/domain.py:31 admin/models/domain_alias.py:38
+#: models/domain.py:31 models/domain_alias.py:38
 msgid "name"
 msgstr "名稱"
 
-#: admin/models/domain.py:32
+#: models/domain.py:32
 msgid "The domain name"
 msgstr "網域名稱"
 
-#: admin/models/domain.py:36
+#: models/domain.py:36
 msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
 msgstr "信箱之間共用幾 MB 的配額。值為0表示沒配額。"
 
-#: admin/models/domain.py:44
+#: models/domain.py:44
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
 
-#: admin/models/domain.py:50
+#: models/domain.py:50
 msgid "Check to activate this domain"
 msgstr "點擊啟用這個網域"
 
-#: admin/models/domain.py:55
+#: models/domain.py:55
 msgid "Enable DNS checks"
 msgstr "啟用 DNS 檢查"
 
-#: admin/models/domain.py:56
+#: models/domain.py:56
 msgid "Check to enable DNS checks for this domain"
 msgstr "點擊啟用這個網域的 DNS 檢查"
 
-#: admin/models/domain.py:63
+#: models/domain.py:63
 msgid "Enable DKIM signing"
 msgstr "啟用 DKIM 簽署"
 
-#: admin/models/domain.py:65
+#: models/domain.py:65
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr "假如您啟用這個功能，DKIM 金鑰將會產生給這個網域。"
 
-#: admin/models/domain.py:71
+#: models/domain.py:71
 msgid "Key length"
 msgstr "金鑰長度"
 
-#: admin/models/domain.py:299 admin/models/domain_alias.py:74
+#: models/domain.py:303 models/domain_alias.py:74
 msgid "Invalid line"
 msgstr "無效的行"
 
-#: admin/models/domain.py:309
+#: models/domain.py:313
 msgid "No authorized MX record found for domain {}"
 msgstr "沒有找到這個網域已驗證過的 MX 紀錄 {}"
 
-#: admin/models/domain.py:316
+#: models/domain.py:320
 msgid "Invalid quota value for domain '{}'"
 msgstr "此網域有無效的配額值 '{}'"
 
-#: admin/models/domain.py:323
+#: models/domain.py:327
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr "此網域有無效的預設信箱配額值 '{}'"
 
-#: admin/models/domain.py:328
+#: models/domain.py:332
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr "預設的信箱配額不可以超過網域配額"
 
-#: admin/models/domain_alias.py:39
+#: models/domain_alias.py:39
 msgid "The alias name"
 msgstr "別名名稱"
 
-#: admin/models/domain_alias.py:41
+#: models/domain_alias.py:41
 msgid "target"
 msgstr "目標"
 
-#: admin/models/domain_alias.py:42
+#: models/domain_alias.py:42
 msgid "The domain this alias points to"
 msgstr "此網域的這個別名指到"
 
-#: admin/models/domain_alias.py:83
+#: models/domain_alias.py:83
 #, python-format
 msgid "Unknown domain %s"
 msgstr "未知網域 %s"
 
-#: admin/models/mailbox.py:100
+#: models/mailbox.py:101
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "信箱位址 (不要有 @domain.tld 這個部份)"
 
-#: admin/models/mailbox.py:166
+#: models/mailbox.py:167
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "無法收回信箱位置 (%s)"
 
-#: admin/models/mailbox.py:259
+#: models/mailbox.py:260
 msgid "A quota is required"
 msgstr "配額是必要的"
 
-#: admin/models/mailbox.py:265
+#: models/mailbox.py:266
 msgid "Domain quota exceeded"
 msgstr "網域配額已超過"
 
-#: admin/serializers.py:88 admin/serializers.py:288 admin/serializers.py:386
+#: serializers.py:88 serializers.py:288 serializers.py:386
 msgid "Permission denied."
 msgstr "權限不足"
 
-#: admin/serializers.py:134
+#: serializers.py:134
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "管理員網域列表 (只有經銷商和網域管理員)。"
 
-#: admin/serializers.py:238
+#: serializers.py:238
 msgid "Not allowed for this role."
 msgstr "不允許這個身份"
 
-#: admin/serializers.py:250
+#: serializers.py:250
 msgid "Must be equal to mailbox full_address"
 msgstr "必須跟信箱完整位址一樣"
 
-#: admin/serializers.py:275
+#: serializers.py:275
 msgid "Local domain {} does not exist"
 msgstr "本機網域 {} 不存在"
 
-#: admin/serializers.py:373
+#: serializers.py:373
 msgid "A list of recipient"
 msgstr "收件人列表"
 
-#: admin/serializers.py:384
+#: serializers.py:384
 msgid "Domain not found."
 msgstr "網域不存在。"
 
-#: admin/serializers.py:433
+#: serializers.py:433
 msgid "You don't have access to this domain."
 msgstr "您不能存取這個網域。"
 
-#: admin/serializers.py:441
+#: serializers.py:441
 msgid "You don't have access to this mailbox."
 msgstr "您不能存取這個信箱。"
 
-#: admin/templates/admin/_domain_dkim_key.html:6
-#: admin/templates/admin/_domain_dkim_key.html:20
+#: templates/admin/_domain_dkim_key.html:6
+#: templates/admin/_domain_dkim_key.html:20
 msgid "Close"
 msgstr "關閉"
 
-#: admin/templates/admin/_domain_dkim_key.html:7
+#: templates/admin/_domain_dkim_key.html:7
 #, python-format
 msgid "DKIM public key for %(domain)s"
 msgstr "DKIM 公鑰給 %(domain)s"
 
-#: admin/templates/admin/_domain_dkim_key.html:11
+#: templates/admin/_domain_dkim_key.html:11
 msgid "Raw format"
 msgstr "Raw 格式"
 
-#: admin/templates/admin/_domain_dkim_key.html:15
+#: templates/admin/_domain_dkim_key.html:15
 msgid "Bind/named format"
 msgstr "Bind/named 格式"
 
-#: admin/templates/admin/_domain_dnschecks_status.html:4
+#: templates/admin/_domain_dnschecks_status.html:4
 msgctxt "checks"
 msgid "Disabled"
 msgstr "已停用"
 
-#: admin/templates/admin/_domain_dnschecks_status.html:6
+#: templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
 msgstr "等待檢查"
 
-#: admin/templates/admin/_global_statistics_widget.html:4
+#: templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
 msgstr "全域狀態"
 
-#: admin/templates/admin/_global_statistics_widget.html:8
+#: templates/admin/_global_statistics_widget.html:8
 msgid "Quantity"
 msgstr "數量"
 
-#: admin/templates/admin/_global_statistics_widget.html:14
-#: admin/templates/admin/domain_detail.html:37
-#: admin/templates/admin/domain_detail.html:73
+#: templates/admin/_global_statistics_widget.html:14
+#: templates/admin/domain_detail.html:37 templates/admin/domain_detail.html:73
 msgid "Domain aliases"
 msgstr "網域別名"
 
-#: admin/templates/admin/_per_domain_statistics_widget.html:4
+#: templates/admin/_per_domain_statistics_widget.html:4
 msgid "Per-domain statistics"
 msgstr "每個網域狀態"
 
-#: admin/templates/admin/account_detail.html:16
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/domain_detail.html:19
-#: admin/templates/admin/identities_table.html:7
+#: templates/admin/account_detail.html:16 templates/admin/alias_detail.html:16
+#: templates/admin/domain_detail.html:19
+#: templates/admin/identities_table.html:7
 msgid "(disabled)"
 msgstr "(已停用)"
 
-#: admin/templates/admin/account_detail.html:22
-#: admin/templates/admin/alias_detail.html:22
-#: admin/templates/admin/domain_detail.html:25
+#: templates/admin/account_detail.html:22 templates/admin/alias_detail.html:22
+#: templates/admin/domain_detail.html:25
 msgid "Summary"
 msgstr "摘要"
 
-#: admin/templates/admin/account_detail.html:26
+#: templates/admin/account_detail.html:26
 msgid "Full name"
 msgstr "全名"
 
-#: admin/templates/admin/account_detail.html:32
-#: admin/templates/admin/alias_detail.html:26
+#: templates/admin/account_detail.html:32 templates/admin/alias_detail.html:26
 msgid "Created"
 msgstr "已建立"
 
-#: admin/templates/admin/account_detail.html:35
+#: templates/admin/account_detail.html:35
 msgid "Last login"
 msgstr "最後登入"
 
-#: admin/templates/admin/account_detail.html:38
+#: templates/admin/account_detail.html:38
 msgid "Secondary email"
 msgstr "次要電子郵件"
 
-#: admin/templates/admin/account_detail.html:38
-#: admin/templates/admin/account_detail.html:41
+#: templates/admin/account_detail.html:38
+#: templates/admin/account_detail.html:41
 msgid "Not defined"
 msgstr "未定義"
 
-#: admin/templates/admin/account_detail.html:41
+#: templates/admin/account_detail.html:41
 msgid "Phone number"
 msgstr "電話號碼"
 
-#: admin/templates/admin/account_detail.html:55
+#: templates/admin/account_detail.html:55
 msgid "Administered domains"
 msgstr "管理員網域"
 
-#: admin/templates/admin/account_detail.html:61
+#: templates/admin/account_detail.html:61
 msgid "No domain defined."
 msgstr "未定義網域"
 
-#: admin/templates/admin/account_detail.html:75
+#: templates/admin/account_detail.html:75
 msgid "Aliases"
 msgstr "別名"
 
-#: admin/templates/admin/account_detail.html:81
+#: templates/admin/account_detail.html:81
 msgid "No alias defined"
 msgstr "未定義別名"
 
-#: admin/templates/admin/account_detail.html:87
+#: templates/admin/account_detail.html:87
 msgid "Additional sender addresses"
 msgstr "新增寄件者地址"
 
-#: admin/templates/admin/account_detail.html:93
+#: templates/admin/account_detail.html:93
 msgid "No sender address defined"
 msgstr "未定義寄件者地址"
 
-#: admin/templates/admin/account_general_form.html:12
-#: admin/templates/admin/aliasform.html:13
+#: templates/admin/account_general_form.html:12
+#: templates/admin/aliasform.html:13
 msgid "Domain is disabled"
 msgstr "網域已停用"
 
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/identities.html:33
+#: templates/admin/alias_detail.html:16 templates/admin/identities.html:33
 msgid "Alias"
 msgstr "別名"
 
-#: admin/templates/admin/alias_detail.html:27
+#: templates/admin/alias_detail.html:27
 msgid "Modified"
 msgstr "已修改"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:10
+#: templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"
 msgstr "提供者"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:11
-#: admin/templates/admin/identities_quota_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:10
+#: templates/admin/dnsbl_domain_detail.html:11
+#: templates/admin/identities_quota_headers.html:2
+#: templates/admin/mx_domain_detail.html:10
 msgid "Address"
 msgstr "地址"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:12
-#: admin/templates/admin/domain_detail.html:96
+#: templates/admin/dnsbl_domain_detail.html:12
+#: templates/admin/domain_detail.html:96
 msgid "Status"
 msgstr "狀態"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:21
+#: templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
 msgstr "已列表"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:29
+#: templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
 msgstr "所有都正常，這個網域未列出。"
 
-#: admin/templates/admin/dnsbl_domain_detail.html:32
+#: templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
 msgstr "沒有這個網域的有效資訊。"
 
-#: admin/templates/admin/domain_detail.html:29
+#: templates/admin/domain_detail.html:29
 msgid "Creation date"
 msgstr "建立日期"
 
-#: admin/templates/admin/domain_detail.html:33
+#: templates/admin/domain_detail.html:33
 msgid "Last modification date"
 msgstr "最後修改日期"
 
-#: admin/templates/admin/domain_detail.html:45
+#: templates/admin/domain_detail.html:45
 msgid "Mailbox aliases"
 msgstr "信箱別名"
 
-#: admin/templates/admin/domain_detail.html:50
-#: admin/templates/admin/domain_detail.html:57
-#: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domain_detail.html:65
-#: admin/templates/admin/domain_general_form.html:4
-#: admin/templates/admin/domain_general_form.html:5
-#: admin/templates/admin/domains_quotas.html:11
-#: admin/templates/admin/domains_quotas.html:12
-#: admin/templates/admin/mailform.html:7
-#: admin/templates/admin/newdomainform.html:3
+#: templates/admin/domain_detail.html:50 templates/admin/domain_detail.html:57
+#: templates/admin/domain_detail.html:58 templates/admin/domain_detail.html:65
+#: templates/admin/domain_general_form.html:4
+#: templates/admin/domain_general_form.html:5
+#: templates/admin/domains_quotas.html:11
+#: templates/admin/domains_quotas.html:12 templates/admin/mailform.html:7
+#: templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "MB"
 
-#: admin/templates/admin/domain_detail.html:54
+#: templates/admin/domain_detail.html:54
 msgid "Usage"
 msgstr "使用率"
 
-#: admin/templates/admin/domain_detail.html:57
-#: admin/templates/admin/domains_quotas.html:11
+#: templates/admin/domain_detail.html:57 templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
 msgstr "已使用"
 
-#: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domains_quotas.html:12
+#: templates/admin/domain_detail.html:58 templates/admin/domains_quotas.html:12
 msgid "allocated"
 msgstr "分配"
 
-#: admin/templates/admin/domain_detail.html:91
+#: templates/admin/domain_detail.html:91
 msgid "DNS"
 msgstr "DNS"
 
-#: admin/templates/admin/domain_detail.html:103
+#: templates/admin/domain_detail.html:103
 msgid "DKIM key"
 msgstr "DKIM 金鑰"
 
-#: admin/templates/admin/domain_detail.html:107
+#: templates/admin/domain_detail.html:107
 msgid "Show key"
 msgstr "顯示金鑰"
 
-#: admin/templates/admin/domain_detail.html:109
+#: templates/admin/domain_detail.html:109
 msgid "Generate new key"
 msgstr ""
 
-#: admin/templates/admin/domain_detail.html:111
+#: templates/admin/domain_detail.html:111
 msgid "Not generated"
 msgstr "沒有產生"
 
-#: admin/templates/admin/domain_detail.html:118
+#: templates/admin/domain_detail.html:118
 msgid "Administrators"
 msgstr "管理員"
 
-#: admin/templates/admin/domain_detail.html:130
-#: admin/templatetags/admin_tags.py:269
+#: templates/admin/domain_detail.html:130 templatetags/admin_tags.py:269
 msgid "Remove this permission"
 msgstr "移除這個權限"
 
-#: admin/templates/admin/domain_detail.html:135
+#: templates/admin/domain_detail.html:135
 msgid "No domain administrator defined yet."
 msgstr "沒有定義網域管理員。"
 
-#: admin/templates/admin/domain_headers.html:5
-#: admin/templates/admin/identity_headers.html:4
+#: templates/admin/domain_headers.html:5
+#: templates/admin/identity_headers.html:4
 msgid "Tags"
 msgstr "標籤"
 
-#: admin/templates/admin/domain_headers.html:7
+#: templates/admin/domain_headers.html:7
 msgid "DNS status"
 msgstr "DNS 狀態"
 
-#: admin/templates/admin/domain_headers.html:9
-#: admin/templates/admin/identity_headers.html:5
+#: templates/admin/domain_headers.html:9
+#: templates/admin/identity_headers.html:5
 msgid "Actions"
 msgstr "動作"
 
-#: admin/templates/admin/domain_options_form.html:10
+#: templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
 msgstr "您不可能建立新的網域管理員"
 
-#: admin/templates/admin/domains.html:28
-#: admin/templates/admin/identities.html:29
+#: templates/admin/domains.html:28 templates/admin/identities.html:29
 msgid "Add"
 msgstr "新增"
 
-#: admin/templates/admin/domains_quota_headers.html:3
-#: admin/templates/admin/identities_quota_headers.html:4
+#: templates/admin/domains_quota_headers.html:3
+#: templates/admin/identities_quota_headers.html:4
 msgid "Limit"
 msgstr "限制"
 
-#: admin/templates/admin/domains_quota_headers.html:4
+#: templates/admin/domains_quota_headers.html:4
 msgid "Used"
 msgstr "已使用"
 
-#: admin/templates/admin/domains_quota_headers.html:5
+#: templates/admin/domains_quota_headers.html:5
 msgid "Allocated"
 msgstr "分配"
 
-#: admin/templates/admin/domains_quota_headers.html:6
-#: admin/templates/admin/identities_quota_headers.html:5
+#: templates/admin/domains_quota_headers.html:6
+#: templates/admin/identities_quota_headers.html:5
 #, python-format
 msgid "Usage (%%)"
 msgstr "使用率 (%%)"
 
-#: admin/templates/admin/domains_table.html:5
+#: templates/admin/domains_table.html:5
 msgid "disabled"
 msgstr "已停用"
 
-#: admin/templates/admin/forward.html:2
+#: templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
 msgstr "自動轉寄郵件到其他位址"
 
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:91
+#: templates/admin/forward.html:9 views/alias.py:91
 msgid "Update"
 msgstr "更新"
 
-#: admin/templates/admin/identities.html:32
+#: templates/admin/identities.html:32
 msgid "Account"
 msgstr "帳號"
 
-#: admin/templates/admin/identities_quota_headers.html:3
+#: templates/admin/identities_quota_headers.html:3
 msgid "Value"
 msgstr "值"
 
-#: admin/templates/admin/identity_headers.html:3
+#: templates/admin/identity_headers.html:3
 msgid "Fullname/Recipient"
 msgstr "完整名稱/收件人"
 
-#: admin/templates/admin/import_domains_form.html:6
+#: templates/admin/import_domains_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
@@ -1117,7 +1107,7 @@ msgstr ""
 "li> </ul> <p>每一行的第一個元件都是強制性的且必須跟之前值是一樣的。</p> <p>您"
 "可以使用不同的字元來分開。</p>"
 
-#: admin/templates/admin/import_identities_form.html:6
+#: templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>account; loginname; password; first name; last name; enabled; group; "
@@ -1131,46 +1121,46 @@ msgstr ""
 "用; 收件人; 收件人; ...</em></li> </ul> <p>每一行的第一個元件都是強制性的且必"
 "須跟之前值是一樣的。</p> <p>您可以使用不同的字元來分開。</p>"
 
-#: admin/templates/admin/importform.html:6
+#: templates/admin/importform.html:6
 msgid "Help"
 msgstr "幫助"
 
-#: admin/templates/admin/importform.html:13
+#: templates/admin/importform.html:13
 msgid "Importing..."
 msgstr "匯入中..."
 
-#: admin/templates/admin/index.html:6
+#: templates/admin/index.html:6
 msgid "Admin"
 msgstr "管理"
 
-#: admin/templates/admin/mailboxes_raw.html:3
+#: templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
 msgstr "選擇一個值"
 
-#: admin/templates/admin/mailform.html:7
+#: templates/admin/mailform.html:7
 msgid "Use domain default value"
 msgstr "使用網域預設值"
 
-#: admin/templates/admin/mx_domain_detail.html:11
+#: templates/admin/mx_domain_detail.html:11
 msgid "Updated"
 msgstr "已更新"
 
-#: admin/templates/admin/mx_domain_detail.html:23
+#: templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
 msgstr "這個 IP 與參數中定義任何有效 MX 不正確"
 
-#: admin/templates/admin/mx_domain_detail.html:36
+#: templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
 msgstr "沒有找到這個網域的 MX 紀錄。"
 
-#: admin/templates/admin/notifications/domain_in_dnsbl.html:3
+#: templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
 msgstr "Modoboa 已偵測到網域 %(domain)s 是列表在以下的 DNSBL 提供者:"
 
-#: admin/templates/admin/notifications/domain_in_dnsbl.html:11
+#: templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
@@ -1179,138 +1169,162 @@ msgstr ""
 "此網域的信用將有機會影響從這裡寄出的郵件被當作垃圾郵件。您應該聯絡提供者並要"
 "求他們取消 IP 位址(es) 的偵測列表。"
 
-#: admin/templates/admin/notifications/domain_invalid_mx.html:3
+#: templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
 msgstr "Modoboa 已偵測到網域 %(domain)s 沒有正確的 MX 紀錄:"
 
-#: admin/templates/admin/searchform.html:6
+#: templates/admin/searchform.html:6
 msgid "Search"
 msgstr "搜尋"
 
-#: admin/templatetags/admin_tags.py:23
+#: templatetags/admin_tags.py:23
 msgid "enabled_m"
 msgstr "enabled_m"
 
-#: admin/templatetags/admin_tags.py:23
+#: templatetags/admin_tags.py:23
 msgid "enabled_f"
 msgstr "enabled_f"
 
-#: admin/templatetags/admin_tags.py:49
+#: templatetags/admin_tags.py:49
 msgid "List domains"
 msgstr "網域清單"
 
-#: admin/templatetags/admin_tags.py:54 admin/templatetags/admin_tags.py:109
+#: templatetags/admin_tags.py:54 templatetags/admin_tags.py:109
 msgid "List quotas"
 msgstr "配額清單"
 
-#: admin/templatetags/admin_tags.py:66 admin/templatetags/admin_tags.py:114
-#: admin/views/import_.py:94 admin/views/import_.py:116
+#: templatetags/admin_tags.py:66 templatetags/admin_tags.py:114
+#: views/import_.py:94 views/import_.py:116
 msgid "Import"
 msgstr "匯入"
 
-#: admin/templatetags/admin_tags.py:72 admin/templatetags/admin_tags.py:120
-#: admin/views/export.py:48 admin/views/export.py:76
+#: templatetags/admin_tags.py:72 templatetags/admin_tags.py:120
+#: views/export.py:48 views/export.py:76
 msgid "Export"
 msgstr "匯出"
 
-#: admin/templatetags/admin_tags.py:104
+#: templatetags/admin_tags.py:104
 msgid "List identities"
 msgstr "使用者清單"
 
-#: admin/templatetags/admin_tags.py:139
+#: templatetags/admin_tags.py:139
 msgid "View the domain's identities"
 msgstr "查看網域使用者"
 
-#: admin/templatetags/admin_tags.py:145 admin/templatetags/admin_tags.py:188
-#: admin/templatetags/admin_tags.py:201
+#: templatetags/admin_tags.py:145 templatetags/admin_tags.py:188
+#: templatetags/admin_tags.py:201
 msgid "Edit {}"
 msgstr "編輯 {}"
 
-#: admin/templatetags/admin_tags.py:155 admin/templatetags/admin_tags.py:192
-#: admin/templatetags/admin_tags.py:206
+#: templatetags/admin_tags.py:155 templatetags/admin_tags.py:192
+#: templatetags/admin_tags.py:206
 #, python-format
 msgid "Delete %s?"
 msgstr "刪除 %s?"
 
-#: admin/views/alias.py:33
+#: tests/test_mx.py:144
+#, fuzzy, python-format
+#| msgid "No MX record found for this domain."
+msgid "No A record found for MX %(domain)s"
+msgstr "沒有找到這個網域的 MX 紀錄。"
+
+#: tests/test_mx.py:147
+#, fuzzy, python-format
+#| msgid "No MX record found for this domain."
+msgid "No AAAA record found for MX %(domain)s"
+msgstr "沒有找到這個網域的 MX 紀錄。"
+
+#: views/alias.py:33
 msgid "Alias with this name already exists"
 msgstr "這個名稱的別名已存在"
 
-#: admin/views/alias.py:58
+#: views/alias.py:58
 msgid "Create"
 msgstr "建立"
 
-#: admin/views/alias.py:70
+#: views/alias.py:70
 msgid "New alias"
 msgstr "新的別名"
 
-#: admin/views/alias.py:71
+#: views/alias.py:71
 msgid "Alias created"
 msgstr "別名已建立"
 
-#: admin/views/alias.py:83
+#: views/alias.py:83
 msgid "Alias modified"
 msgstr "別名已修改"
 
-#: admin/views/alias.py:107
+#: views/alias.py:107
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
 msgstr[0] "別名已刪除"
 
-#: admin/views/dns.py:32
+#: views/dns.py:32
 msgid "MX records of {}"
 msgstr "MX 紀錄 {}"
 
-#: admin/views/dns.py:55
+#: views/dns.py:55
 msgid "DNSBL summary for {}"
 msgstr "DNSBL 摘要 {}"
 
-#: admin/views/domain.py:199
+#: views/domain.py:199
 msgid "You can't delete your own domain"
 msgstr "您不可以刪除您擁有的網域"
 
-#: admin/views/domain.py:202
+#: views/domain.py:202
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "網域移除"
 
-#: admin/views/export.py:47
+#: views/export.py:47
 msgid "Export identities"
 msgstr "匯出使用者"
 
-#: admin/views/export.py:75
+#: views/export.py:75
 msgid "Export domains"
 msgstr "匯出網域"
 
-#: admin/views/identity.py:111 admin/views/identity.py:205
-#: admin/views/identity.py:210
+#: views/identity.py:111 views/identity.py:205 views/identity.py:210
 msgid "Invalid request"
 msgstr "無效請求"
 
-#: admin/views/identity.py:195
+#: views/identity.py:195
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "帳號已刪除"
 
-#: admin/views/import_.py:70
+#: views/import_.py:70
 #, python-format
 msgid "Object already exists: %s"
 msgstr "元件已存在: %s"
 
-#: admin/views/import_.py:74
+#: views/import_.py:74
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d 元件已匯入成功"
 
-#: admin/views/import_.py:93
+#: views/import_.py:93
 msgid "Import domains"
 msgstr "匯入網域"
 
-#: admin/views/import_.py:115
+#: views/import_.py:115
 msgid "Import identities"
 msgstr "匯入使用者"
 
-#: admin/views/user.py:40
+#: views/user.py:40
 msgid "Forward updated"
 msgstr "轉寄已更新"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No DNS records found without MX for %s"
+#~ msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No DNS records found without MX for %(domain)s"
+#~ msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#~ msgid "Unable to lookup ip addresses for %(domain)s; %(error)s"
+#~ msgstr "無法查詢此 IP 位址 %(domain)s; %(error)s"

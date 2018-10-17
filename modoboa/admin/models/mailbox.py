@@ -19,7 +19,7 @@ from django.utils.translation import ugettext as _, ugettext_lazy
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.sysutils import doveadm_cmd, exec_cmd
+from modoboa.lib.sysutils import doveadm_cmd
 from modoboa.parameters import tools as param_tools
 
 from .base import AdminObject
