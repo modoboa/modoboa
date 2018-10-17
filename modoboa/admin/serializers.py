@@ -28,8 +28,20 @@ from . import lib, models
 class DomainSerializer(serializers.ModelSerializer):
     """Base Domain serializer."""
 
-    quota = serializers.CharField()
-    default_mailbox_quota = serializers.CharField()
+    quota = serializers.CharField(
+        required=False,
+        help_text=ugettext_lazy(
+            "Quota shared between mailboxes. Can be expressed in KB, "
+            "MB (default) or GB. A value of 0 means no quota."
+        )
+    )
+    default_mailbox_quota = serializers.CharField(
+        required=False,
+        help_text=ugettext_lazy(
+            "Default quota in MB applied to mailboxes. A value of 0 means "
+            "no quota."
+        )
+    )
 
     class Meta:
         model = models.Domain
