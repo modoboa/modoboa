@@ -23,7 +23,7 @@ from modoboa.lib.form_utils import (
 )
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.validators import validate_utf8_email
-from modoboa.lib.web_utils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response, size2integer
 from modoboa.parameters import tools as param_tools
 from .. import lib, models, signals
 
@@ -229,13 +229,16 @@ class AccountFormMail(forms.Form, DynamicForm):
         required=False,
         initial=False
     )
-    quota = forms.IntegerField(
+    quota = forms.CharField(
         label=ugettext_lazy("Quota"),
         required=False,
-        help_text=_("Quota in MB for this mailbox. Define a custom value or "
-                    "use domain's default one. Leave empty to define an "
-                    "unlimited value (not allowed for domain "
-                    "administrators)."),
+        help_text=_(
+            "Quota for this mailbox, can be expressed in KB, MB (default) or "
+            "GB. Define a custom value or "
+            "use domain's default one. Leave empty to define an "
+            "unlimited value (not allowed for domain "
+            "administrators)."
+        ),
         widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
     quota_act = forms.BooleanField(required=False)
@@ -316,6 +319,10 @@ class AccountFormMail(forms.Form, DynamicForm):
             except lib_exceptions.ModoboaException as inst:
                 raise forms.ValidationError(inst)
         return email
+
+    def clean_quota(self):
+        """Convert quota to Bytes."""
+        return size2integer(self.cleaned_data["quota"], output_unit="MB")
 
     def clean(self):
         """Custom fields validation.

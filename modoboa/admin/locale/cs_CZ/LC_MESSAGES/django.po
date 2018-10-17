@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 09:25+0200\n"
+"POT-Creation-Date: 2018-10-17 13:41+0200\n"
 "PO-Revision-Date: 2018-08-10 11:53+0000\n"
 "Last-Translator: Jarda Tesar <intossh@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/"
@@ -134,7 +134,7 @@ msgstr ""
 "Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
 "hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
 
-#: app_settings.py:119 models/domain.py:41
+#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Výchozí kvóta schránky"
@@ -174,7 +174,7 @@ msgstr ""
 "Vytvořit alias použitím původní adresy, pokud je mailová schránka "
 "přejmenována."
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:332
+#: app_settings.py:196 app_settings.py:204 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "Musí se jednat o kladné číslo"
 
@@ -228,7 +228,7 @@ msgstr "Vybrat"
 msgid "What level of permission this user will have"
 msgstr "Jaká úroveň oprávnění bude tomuto uživateli nastavena"
 
-#: forms/account.py:48 forms/domain.py:224
+#: forms/account.py:48 forms/domain.py:249
 msgid "Random password"
 msgstr "Náhodné heslo"
 
@@ -260,8 +260,8 @@ msgstr "Povoleno"
 msgid "Only super administrators are allowed for this mode"
 msgstr "Pouze super správci jsou oprávnění pro tento režim"
 
-#: forms/account.py:182 forms/account.py:184 forms/domain.py:141
-#: forms/domain.py:270 forms/domain.py:273 serializers.py:263
+#: forms/account.py:182 forms/account.py:184 forms/domain.py:166
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
 msgid "This field is required."
 msgstr "Toto pole je vyžadováno."
 
@@ -281,27 +281,32 @@ msgstr "E-mail"
 msgid "Create an alias using the old address"
 msgstr "Vytvořit alias použitím původní adresy"
 
-#: forms/account.py:233 templates/admin/account_detail.html:45
-#: templates/admin/domain_detail.html:49
+#: forms/account.py:233 forms/domain.py:45
+#: templates/admin/account_detail.html:45 templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr "Kvóta"
 
-#: forms/account.py:235
+#: forms/account.py:236
+#, fuzzy
+#| msgid ""
+#| "Quota in MB for this mailbox. Define a custom value or use domain's "
+#| "default one. Leave empty to define an unlimited value (not allowed for "
+#| "domain administrators)."
 msgid ""
-"Quota in MB for this mailbox. Define a custom value or use domain's default "
-"one. Leave empty to define an unlimited value (not allowed for domain "
-"administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
 "Kvóta pro tuto chránku v MB. Definujte vlastní hodnotu nebo použijte výchozí "
 "hodnotu domény. Ponechejte prázdné pro neomezenou kvótu (není povoleno "
 "správcům domény)."
 
-#: forms/account.py:243 forms/domain.py:35
+#: forms/account.py:246 forms/domain.py:35
 #: templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Alias(y)"
 
-#: forms/account.py:246
+#: forms/account.py:249
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
@@ -311,11 +316,11 @@ msgstr ""
 "ENTER pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte "
 "'*' (např. *@domena.cz)."
 
-#: forms/account.py:252
+#: forms/account.py:255
 msgid "Sender addresses"
 msgstr "Adresa odesílatele"
 
-#: forms/account.py:255
+#: forms/account.py:258
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
@@ -325,52 +330,52 @@ msgstr ""
 "maily pomocí této adresy, a to i v případě, že neexistuje lokálně. V rámci "
 "vstupu vložte pouze jednu adresu. Stiskněte ENTER pro vložení další adresy."
 
-#: forms/account.py:310 forms/alias.py:92 models/mailbox.py:317
+#: forms/account.py:313 forms/alias.py:92 models/mailbox.py:317
 msgid "Domain does not exist"
 msgstr "Doména neexistuje"
 
-#: forms/account.py:342
+#: forms/account.py:349
 msgid "Local domain does not exist"
 msgstr "Lokální doména neexistuje"
 
-#: forms/account.py:346 forms/account.py:354 forms/alias.py:95
+#: forms/account.py:353 forms/account.py:361 forms/alias.py:95
 msgid "You don't have access to this domain"
 msgstr "Nemáte oprávnění k přístupu k této doméně"
 
-#: forms/account.py:453
+#: forms/account.py:460
 msgid "Domain(s)"
 msgstr "Doména(y)"
 
-#: forms/account.py:455
+#: forms/account.py:462
 msgid "Domain(s) that user administrates"
 msgstr "Doména(y) pod správou uživatele"
 
-#: forms/account.py:501 forms/account.py:591 forms/domain.py:341
-#: forms/domain.py:412
+#: forms/account.py:508 forms/account.py:598 forms/domain.py:366
+#: forms/domain.py:437
 msgid "General"
 msgstr "Obecné"
 
-#: forms/account.py:505
+#: forms/account.py:512
 msgid "Profile"
 msgstr "Profil"
 
-#: forms/account.py:509 forms/account.py:597
+#: forms/account.py:516 forms/account.py:604
 msgid "Mail"
 msgstr "Mail"
 
-#: forms/account.py:512
+#: forms/account.py:519
 msgid "Permissions"
 msgstr "Oprávnění"
 
-#: forms/account.py:580
+#: forms/account.py:587
 msgid "Account updated"
 msgstr "Účet aktualizován"
 
-#: forms/account.py:605
+#: forms/account.py:612
 msgid "New account"
 msgstr "Nový účet"
 
-#: forms/account.py:615
+#: forms/account.py:622
 msgid "Account created"
 msgstr "Účet vytvořen"
 
@@ -425,99 +430,117 @@ msgstr ""
 msgid "Key selector"
 msgstr "Identifikátor klíče"
 
-#: forms/domain.py:82 handlers.py:165
+#: forms/domain.py:48 models/domain.py:36
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr "Výchozí kvóta v MB pro schránky. Hodnota 0 = žádná kvóta."
+
+#: forms/domain.py:56
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr "Výchozí kvóta v MB pro schránky. Hodnota 0 = žádná kvóta."
+
+#: forms/domain.py:98 handlers.py:165
 msgid "domain alias"
 msgstr "doménový alias"
 
-#: forms/domain.py:85 forms/domain.py:152 forms/domain.py:160
+#: forms/domain.py:101 forms/domain.py:177 forms/domain.py:185
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "%s s tímto názvem již existuje"
 
-#: forms/domain.py:93 serializers.py:53
+#: forms/domain.py:109 serializers.py:56
 msgid "No authorized MX record found for this domain"
 msgstr "Nebyly nalezeny žádné autorizované MX záznamy pro tuto doménu"
 
-#: forms/domain.py:105
+#: forms/domain.py:121
 msgid "DKIM keys storage directory not configured"
 msgstr "Není nastavena složka pro ukládání DKIM klíčů"
 
-#: forms/domain.py:126 serializers.py:63
+#: forms/domain.py:151 serializers.py:74
 msgid "Cannot be greater than domain quota"
 msgstr "Nemůže být vyšší než kvóta domény"
 
-#: forms/domain.py:131
+#: forms/domain.py:156
 msgid "You can't define an unlimited quota."
 msgstr "Neomezená kvóta nelze definovat."
 
-#: forms/domain.py:152 forms/domain.py:157
+#: forms/domain.py:177 forms/domain.py:182
 msgid "domain"
 msgstr "doména"
 
-#: forms/domain.py:206
+#: forms/domain.py:231
 msgid "Create a domain administrator"
 msgstr "Vytvořit správce domény"
 
-#: forms/domain.py:209
+#: forms/domain.py:234
 msgid "Automatically create an administrator for this domain"
 msgstr "Automaticky vytvořit správce této domény"
 
-#: forms/domain.py:214 templates/admin/domain_detail.html:121
+#: forms/domain.py:239 templates/admin/domain_detail.html:121
 #: templates/admin/domain_headers.html:3
 #: templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Jméno"
 
-#: forms/domain.py:217
+#: forms/domain.py:242
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
 msgstr ""
 "Jméno správce. Nevkládejte sem název domény, název bude automaticky doplněn."
 
-#: forms/domain.py:227
+#: forms/domain.py:252
 msgid "Generate a random password for the administrator."
 msgstr "Generovat náhodné heslo pro administrátora."
 
-#: forms/domain.py:233
+#: forms/domain.py:258
 msgid "With a mailbox"
 msgstr "S mailovou schránkou"
 
-#: forms/domain.py:236
+#: forms/domain.py:261
 msgid "Create a mailbox for the administrator."
 msgstr "Vytvořit mailovou schránku pro administrátora."
 
-#: forms/domain.py:242
+#: forms/domain.py:267
 msgid "Create aliases"
 msgstr "Vytvořit aliasy"
 
-#: forms/domain.py:245
+#: forms/domain.py:270
 msgid "Automatically create standard aliases for this domain"
 msgstr "Automaticky vytvořit běžné aliasy pro tuto doménu"
 
-#: forms/domain.py:261
+#: forms/domain.py:286
 msgid "Invalid format"
 msgstr "Neplatný formát"
 
-#: forms/domain.py:290
+#: forms/domain.py:315
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Uživatel '%s' již existuje"
 
-#: forms/domain.py:402
+#: forms/domain.py:427
 msgid "Domain modified"
 msgstr "Doména upravena"
 
-#: forms/domain.py:423
+#: forms/domain.py:448
 msgid "Options"
 msgstr "Možnosti"
 
-#: forms/domain.py:431
+#: forms/domain.py:456
 msgid "New domain"
 msgstr "Nová doména"
 
-#: forms/domain.py:444
+#: forms/domain.py:469
 msgid "Domain created"
 msgstr "Doména vytvořena"
 
@@ -717,10 +740,6 @@ msgstr "název"
 msgid "The domain name"
 msgstr "Doménové jméno"
 
-#: models/domain.py:36
-msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr "Kvóta v MB sdílená mezi schránky. Hodnota 0 = žádná kvóta."
-
 #: models/domain.py:44
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr "Výchozí kvóta v MB pro schránky. Hodnota 0 = žádná kvóta."
@@ -805,40 +824,40 @@ msgstr "Kvóta je vyžadována"
 msgid "Domain quota exceeded"
 msgstr "Kvóta domény byla překročena"
 
-#: serializers.py:88 serializers.py:288 serializers.py:386
+#: serializers.py:99 serializers.py:304 serializers.py:402
 msgid "Permission denied."
 msgstr "Přístup zamítnut."
 
-#: serializers.py:134
+#: serializers.py:150
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Zobrazit spravované domény (jenom distributori a správci domén)"
 
-#: serializers.py:238
+#: serializers.py:254
 msgid "Not allowed for this role."
 msgstr "Není povoleno pro tuto roli."
 
-#: serializers.py:250
+#: serializers.py:266
 msgid "Must be equal to mailbox full_address"
 msgstr "Musí být rovno hodnote schránky celá_adresa"
 
-#: serializers.py:275
+#: serializers.py:291
 msgid "Local domain {} does not exist"
 msgstr "Lokální doména {} neexistuje"
 
-#: serializers.py:373
+#: serializers.py:389
 msgid "A list of recipient"
 msgstr "Seznam příjemců"
 
-#: serializers.py:384
+#: serializers.py:400
 msgid "Domain not found."
 msgstr "Doména nebyla nalezena."
 
-#: serializers.py:433
+#: serializers.py:449
 msgid "You don't have access to this domain."
 msgstr "K této doméně nemáte přístup."
 
-#: serializers.py:441
+#: serializers.py:457
 msgid "You don't have access to this mailbox."
 msgstr "K této schránce nemáte přístup."
 
@@ -1000,11 +1019,8 @@ msgstr "Aliasy schránek"
 
 #: templates/admin/domain_detail.html:50 templates/admin/domain_detail.html:57
 #: templates/admin/domain_detail.html:58 templates/admin/domain_detail.html:65
-#: templates/admin/domain_general_form.html:4
-#: templates/admin/domain_general_form.html:5
 #: templates/admin/domains_quotas.html:11
-#: templates/admin/domains_quotas.html:12 templates/admin/mailform.html:7
-#: templates/admin/newdomainform.html:3
+#: templates/admin/domains_quotas.html:12 templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "MB"
 
@@ -1365,6 +1381,9 @@ msgstr "Importovat identity"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "Přeposílání aktualizováno"
+
+#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
+#~ msgstr "Kvóta v MB sdílená mezi schránky. Hodnota 0 = žádná kvóta."
 
 #, fuzzy
 #~| msgid "No DNS records found for %s"

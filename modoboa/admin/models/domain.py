@@ -32,18 +32,10 @@ class Domain(AdminObject):
                             help_text=ugettext_lazy("The domain name"))
     quota = models.PositiveIntegerField(
         default=0,
-        help_text=ugettext_lazy(
-            "Quota in MB shared between mailboxes. A value of 0 means "
-            "no quota."
-        )
     )
     default_mailbox_quota = models.PositiveIntegerField(
         verbose_name=ugettext_lazy("Default mailbox quota"),
-        default=0,
-        help_text=ugettext_lazy(
-            "Default quota in MB applied to mailboxes. A value of 0 means "
-            "no quota."
-        )
+        default=0
     )
     enabled = models.BooleanField(
         ugettext_lazy("enabled"),
