@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 08:44+0200\n"
+"POT-Creation-Date: 2018-10-17 09:25+0200\n"
 "PO-Revision-Date: 2018-08-14 08:35+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -617,15 +617,16 @@ msgstr "Inga fungerande namnservrar hittades"
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS-upplösning timeout, kan inte fråga %s för tillfället"
 
-#: lib.py:204
-#, fuzzy, python-format
+#: lib.py:205
+#, fuzzy, python-brace-format
 #| msgid "No DNS records found for %s"
-msgid "No %(type)s record found for MX %(mx)s"
+msgid "No {type} record found for MX {mx}"
 msgstr "Inga DNS-poster hittades för %s"
 
-#: lib.py:213 tests/test_mx.py:150 tests/test_mx.py:153
-#, python-format
-msgid "Invalid IP address format for %(domain)s; %(addr)s"
+#: lib.py:214
+#, fuzzy, python-brace-format
+#| msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Ogiltigt IP-adress format för %(domain)s; %(addr)s"
 
 #: management/commands/subcommands/_import.py:102
@@ -1267,6 +1268,11 @@ msgstr "Inget MX record funnet för denna domän."
 #| msgid "No MX record found for this domain."
 msgid "No AAAA record found for MX %(domain)s"
 msgstr "Inget MX record funnet för denna domän."
+
+#: tests/test_mx.py:150 tests/test_mx.py:153
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgstr "Ogiltigt IP-adress format för %(domain)s; %(addr)s"
 
 #: views/alias.py:33
 msgid "Alias with this name already exists"
