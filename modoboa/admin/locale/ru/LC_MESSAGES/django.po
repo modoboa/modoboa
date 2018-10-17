@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 08:44+0200\n"
+"POT-Creation-Date: 2018-10-17 09:25+0200\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -645,14 +645,14 @@ msgstr ""
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 
-#: lib.py:204
-#, python-format
-msgid "No %(type)s record found for MX %(mx)s"
+#: lib.py:205
+#, python-brace-format
+msgid "No {type} record found for MX {mx}"
 msgstr ""
 
-#: lib.py:213 tests/test_mx.py:150 tests/test_mx.py:153
-#, python-format
-msgid "Invalid IP address format for %(domain)s; %(addr)s"
+#: lib.py:214
+#, python-brace-format
+msgid "Invalid IP address format for {domain}; {addr}"
 msgstr ""
 
 #: management/commands/subcommands/_import.py:102
@@ -1336,6 +1336,11 @@ msgstr ""
 #: tests/test_mx.py:147
 #, python-format
 msgid "No AAAA record found for MX %(domain)s"
+msgstr ""
+
+#: tests/test_mx.py:150 tests/test_mx.py:153
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr ""
 
 #: views/alias.py:33

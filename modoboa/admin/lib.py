@@ -201,8 +201,9 @@ def get_domain_mx_list(domain):
                         omit_final_dot=True, idna_codec=IDNA_2008_UTS_46)
                     ip_answers = resolver.query(mx_domain, rtype)
                 except dns.resolver.NXDOMAIN as e:
-                    logger.error(_("No %(type)s record found for MX %(mx)s")
-                                 % {"type": rtype, "mx": domain}, exc_info=e)
+                    logger.error(
+                        _("No {type} record found for MX {mx}").format(
+                            type=rtype, mx=domain), exc_info=e)
                 else:
                     for ip_answer in ip_answers:
                         try:
@@ -211,10 +212,10 @@ def get_domain_mx_list(domain):
                         except ValueError as e:
                             logger.warning(
                                 _("Invalid IP address format for "
-                                  "%(domain)s; %(addr)s")
-                                % {"domain": mx_domain,
-                                   "addr": smart_text(ip_answer.address)},
-                                exc_info=e)
+                                  "{domain}; {addr}").format(
+                                      domain=mx_domain,
+                                      addr=smart_text(ip_answer.address)
+                                  ), exc_info=e)
                         else:
                             result.append((mx_domain, mx_ip))
     return result

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 08:44+0200\n"
+"POT-Creation-Date: 2018-10-17 09:25+0200\n"
 "PO-Revision-Date: 2018-09-25 03:25+0000\n"
 "Last-Translator: Rafael Barretto <ch3yd@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
@@ -630,16 +630,17 @@ msgstr ""
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 
-#: lib.py:204
-#, fuzzy, python-format
+#: lib.py:205
+#, fuzzy, python-brace-format
 #| msgid "No MX record found for this domain."
-msgid "No %(type)s record found for MX %(mx)s"
+msgid "No {type} record found for MX {mx}"
 msgstr "Nenhum registro MX foi encontrado para este domínio."
 
-#: lib.py:213 tests/test_mx.py:150 tests/test_mx.py:153
-#, python-format
-msgid "Invalid IP address format for %(domain)s; %(addr)s"
-msgstr ""
+#: lib.py:214
+#, fuzzy, python-brace-format
+#| msgid "Invalid quota value for domain '{}'"
+msgid "Invalid IP address format for {domain}; {addr}"
+msgstr "Valor de cota inválida para o domínio '{}'"
 
 #: management/commands/subcommands/_import.py:102
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
@@ -1286,6 +1287,11 @@ msgstr "Nenhum registro MX foi encontrado para este domínio."
 #| msgid "No MX record found for this domain."
 msgid "No AAAA record found for MX %(domain)s"
 msgstr "Nenhum registro MX foi encontrado para este domínio."
+
+#: tests/test_mx.py:150 tests/test_mx.py:153
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgstr ""
 
 #: views/alias.py:33
 msgid "Alias with this name already exists"

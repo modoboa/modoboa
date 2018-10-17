@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 08:44+0200\n"
+"POT-Creation-Date: 2018-10-17 09:25+0200\n"
 "PO-Revision-Date: 2018-08-10 11:53+0000\n"
 "Last-Translator: Jarda Tesar <intossh@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/"
@@ -620,15 +620,16 @@ msgstr "Nenalezeny žádné funkční DNS servery"
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "Vypršel časový limit DNS požadavku, nelze získat %s v tuto chvíli"
 
-#: lib.py:204
-#, fuzzy, python-format
+#: lib.py:205
+#, fuzzy, python-brace-format
 #| msgid "No DNS records found for %s"
-msgid "No %(type)s record found for MX %(mx)s"
+msgid "No {type} record found for MX {mx}"
 msgstr "Nenalezeny žádné DNS záznamy pro %s"
 
-#: lib.py:213 tests/test_mx.py:150 tests/test_mx.py:153
-#, python-format
-msgid "Invalid IP address format for %(domain)s; %(addr)s"
+#: lib.py:214
+#, fuzzy, python-brace-format
+#| msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Neplatný formát IP adresy pro %(domain)s; %(addr)s"
 
 #: management/commands/subcommands/_import.py:102
@@ -1269,6 +1270,11 @@ msgstr "Pro tuto doménu nebyl nalezen žádný MX záznam."
 #| msgid "No MX record found for this domain."
 msgid "No AAAA record found for MX %(domain)s"
 msgstr "Pro tuto doménu nebyl nalezen žádný MX záznam."
+
+#: tests/test_mx.py:150 tests/test_mx.py:153
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgstr "Neplatný formát IP adresy pro %(domain)s; %(addr)s"
 
 #: views/alias.py:33
 msgid "Alias with this name already exists"

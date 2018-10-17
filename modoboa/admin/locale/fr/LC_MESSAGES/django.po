@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 08:44+0200\n"
+"POT-Creation-Date: 2018-10-17 09:25+0200\n"
 "PO-Revision-Date: 2018-01-25 09:18+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -628,15 +628,15 @@ msgstr "Aucun serveur de noms fonctionnel trouvé"
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "Timeout de résolution DNS, impossible de requêter %s pour l'instant"
 
-#: lib.py:204
-#, python-format
-msgid "No %(type)s record found for MX %(mx)s"
-msgstr "Aucun enregistrement %(type)s trouvé pour le MX %(mx)s."
+#: lib.py:205
+#, python-brace-format
+msgid "No {type} record found for MX {mx}"
+msgstr "Aucun enregistrement {type} trouvé pour le MX {mx}."
 
-#: lib.py:213 tests/test_mx.py:150 tests/test_mx.py:153
-#, python-format
-msgid "Invalid IP address format for %(domain)s; %(addr)s"
-msgstr "Format d'adresse IP incorrect pour %(domain)s; %(addr)s"
+#: lib.py:214
+#, python-brace-format
+msgid "Invalid IP address format for {domain}; {addr}"
+msgstr "Format d'adresse IP incorrect pour {domain}; {addr}"
 
 #: management/commands/subcommands/_import.py:102
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
@@ -1287,6 +1287,11 @@ msgstr "Aucun enregistrement A trouvé pour le MX %(domain)s."
 #, python-format
 msgid "No AAAA record found for MX %(domain)s"
 msgstr "Aucun enregistrement AAAA trouvé pour le MX %(domain)s."
+
+#: tests/test_mx.py:150 tests/test_mx.py:153
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgstr "Format d'adresse IP incorrect pour %(domain)s; %(addr)s"
 
 #: views/alias.py:33
 msgid "Alias with this name already exists"
