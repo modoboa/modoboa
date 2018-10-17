@@ -69,7 +69,7 @@ SETTINGS_SAMPLE = {
     "admin-create_alias_on_mbox_rename": False,
     "admin-dkim_keys_storage_dir": "",
     "admin-dkim_default_key_length": 1024,
-    "admin-use_specific_dns_server": "193.43.55.67"
+    "admin-custom_dns_server": "193.43.55.67"
 }
 
 

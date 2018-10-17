@@ -114,7 +114,7 @@ class MXTestCase(ModoTestCase):
         """Test to get mx list from specific DNS server."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
-        self.set_global_parameter("use_specific_dns_server", "123.45.67.89")
+        self.set_global_parameter("custom_dns_server", "123.45.67.89")
         get_domain_mx_list("does-not-exist.example.com")
 
     @mock.patch("ipaddress.ip_address")
@@ -139,13 +139,19 @@ class MXTestCase(ModoTestCase):
             ("modoboa.admin", "ERROR", _("No working name servers found")),
             ("modoboa.admin", "WARNING",
                 _("DNS resolution timeout, unable to query %s at the moment")
-                % "timeout.example.com"),
+             % "timeout.example.com"),
             ("modoboa.admin", "ERROR",
-            _("No DNS records found without MX for %(domain)s")
+             _("No A record found for MX %(domain)s")
+             % {"domain": "no-lookup.example.com"}),
+            ("modoboa.admin", "ERROR",
+             _("No AAAA record found for MX %(domain)s")
              % {"domain": "no-lookup.example.com"}),
             ("modoboa.admin", "WARNING",
-            _("Invalid IP address format for %(domain)s; %(addr)s")
-            % {"domain": "bad-response.example.com", "addr": "000.0.0.0"}),
+             _("Invalid IP address format for %(domain)s; %(addr)s")
+             % {"domain": "bad-response.example.com", "addr": "000.0.0.0"}),
+            ("modoboa.admin", "WARNING",
+             _("Invalid IP address format for %(domain)s; %(addr)s")
+             % {"domain": "bad-response.example.com", "addr": "000.0.0.0"}),
         )
 
 
