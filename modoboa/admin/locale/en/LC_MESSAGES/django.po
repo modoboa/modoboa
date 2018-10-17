@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 09:25+0200\n"
+"POT-Creation-Date: 2018-10-17 13:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,7 +118,7 @@ msgid ""
 "specified. A value of 0 means no quota."
 msgstr ""
 
-#: app_settings.py:119 models/domain.py:41
+#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr ""
@@ -153,7 +153,7 @@ msgstr ""
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:332
+#: app_settings.py:196 app_settings.py:204 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "What level of permission this user will have"
 msgstr ""
 
-#: forms/account.py:48 forms/domain.py:224
+#: forms/account.py:48 forms/domain.py:249
 msgid "Random password"
 msgstr ""
 
@@ -235,8 +235,8 @@ msgstr ""
 msgid "Only super administrators are allowed for this mode"
 msgstr ""
 
-#: forms/account.py:182 forms/account.py:184 forms/domain.py:141
-#: forms/domain.py:270 forms/domain.py:273 serializers.py:263
+#: forms/account.py:182 forms/account.py:184 forms/domain.py:166
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
 msgid "This field is required."
 msgstr ""
 
@@ -256,87 +256,87 @@ msgstr ""
 msgid "Create an alias using the old address"
 msgstr ""
 
-#: forms/account.py:233 templates/admin/account_detail.html:45
-#: templates/admin/domain_detail.html:49
+#: forms/account.py:233 forms/domain.py:45
+#: templates/admin/account_detail.html:45 templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr ""
 
-#: forms/account.py:235
+#: forms/account.py:236
 msgid ""
-"Quota in MB for this mailbox. Define a custom value or use domain's default "
-"one. Leave empty to define an unlimited value (not allowed for domain "
-"administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
 
-#: forms/account.py:243 forms/domain.py:35
+#: forms/account.py:246 forms/domain.py:35
 #: templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr ""
 
-#: forms/account.py:246
+#: forms/account.py:249
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
 msgstr ""
 
-#: forms/account.py:252
+#: forms/account.py:255
 msgid "Sender addresses"
 msgstr ""
 
-#: forms/account.py:255
+#: forms/account.py:258
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
 msgstr ""
 
-#: forms/account.py:310 forms/alias.py:92 models/mailbox.py:317
+#: forms/account.py:313 forms/alias.py:92 models/mailbox.py:317
 msgid "Domain does not exist"
 msgstr ""
 
-#: forms/account.py:342
+#: forms/account.py:349
 msgid "Local domain does not exist"
 msgstr ""
 
-#: forms/account.py:346 forms/account.py:354 forms/alias.py:95
+#: forms/account.py:353 forms/account.py:361 forms/alias.py:95
 msgid "You don't have access to this domain"
 msgstr ""
 
-#: forms/account.py:453
+#: forms/account.py:460
 msgid "Domain(s)"
 msgstr ""
 
-#: forms/account.py:455
+#: forms/account.py:462
 msgid "Domain(s) that user administrates"
 msgstr ""
 
-#: forms/account.py:501 forms/account.py:591 forms/domain.py:341
-#: forms/domain.py:412
+#: forms/account.py:508 forms/account.py:598 forms/domain.py:366
+#: forms/domain.py:437
 msgid "General"
 msgstr ""
 
-#: forms/account.py:505
+#: forms/account.py:512
 msgid "Profile"
 msgstr ""
 
-#: forms/account.py:509 forms/account.py:597
+#: forms/account.py:516 forms/account.py:604
 msgid "Mail"
 msgstr ""
 
-#: forms/account.py:512
+#: forms/account.py:519
 msgid "Permissions"
 msgstr ""
 
-#: forms/account.py:580
+#: forms/account.py:587
 msgid "Account updated"
 msgstr ""
 
-#: forms/account.py:605
+#: forms/account.py:612
 msgid "New account"
 msgstr ""
 
-#: forms/account.py:615
+#: forms/account.py:622
 msgid "Account created"
 msgstr ""
 
@@ -386,98 +386,110 @@ msgstr ""
 msgid "Key selector"
 msgstr ""
 
-#: forms/domain.py:82 handlers.py:165
+#: forms/domain.py:48 models/domain.py:36
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr ""
+
+#: forms/domain.py:56
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr ""
+
+#: forms/domain.py:98 handlers.py:165
 msgid "domain alias"
 msgstr ""
 
-#: forms/domain.py:85 forms/domain.py:152 forms/domain.py:160
+#: forms/domain.py:101 forms/domain.py:177 forms/domain.py:185
 #, python-format
 msgid "A %s with this name already exists"
 msgstr ""
 
-#: forms/domain.py:93 serializers.py:53
+#: forms/domain.py:109 serializers.py:56
 msgid "No authorized MX record found for this domain"
 msgstr ""
 
-#: forms/domain.py:105
+#: forms/domain.py:121
 msgid "DKIM keys storage directory not configured"
 msgstr ""
 
-#: forms/domain.py:126 serializers.py:63
+#: forms/domain.py:151 serializers.py:74
 msgid "Cannot be greater than domain quota"
 msgstr ""
 
-#: forms/domain.py:131
+#: forms/domain.py:156
 msgid "You can't define an unlimited quota."
 msgstr ""
 
-#: forms/domain.py:152 forms/domain.py:157
+#: forms/domain.py:177 forms/domain.py:182
 msgid "domain"
 msgstr ""
 
-#: forms/domain.py:206
+#: forms/domain.py:231
 msgid "Create a domain administrator"
 msgstr ""
 
-#: forms/domain.py:209
+#: forms/domain.py:234
 msgid "Automatically create an administrator for this domain"
 msgstr ""
 
-#: forms/domain.py:214 templates/admin/domain_detail.html:121
+#: forms/domain.py:239 templates/admin/domain_detail.html:121
 #: templates/admin/domain_headers.html:3
 #: templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr ""
 
-#: forms/domain.py:217
+#: forms/domain.py:242
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
 msgstr ""
 
-#: forms/domain.py:227
+#: forms/domain.py:252
 msgid "Generate a random password for the administrator."
 msgstr ""
 
-#: forms/domain.py:233
+#: forms/domain.py:258
 msgid "With a mailbox"
 msgstr ""
 
-#: forms/domain.py:236
+#: forms/domain.py:261
 msgid "Create a mailbox for the administrator."
 msgstr ""
 
-#: forms/domain.py:242
+#: forms/domain.py:267
 msgid "Create aliases"
 msgstr ""
 
-#: forms/domain.py:245
+#: forms/domain.py:270
 msgid "Automatically create standard aliases for this domain"
 msgstr ""
 
-#: forms/domain.py:261
+#: forms/domain.py:286
 msgid "Invalid format"
 msgstr ""
 
-#: forms/domain.py:290
+#: forms/domain.py:315
 #, python-format
 msgid "User '%s' already exists"
 msgstr ""
 
-#: forms/domain.py:402
+#: forms/domain.py:427
 msgid "Domain modified"
 msgstr ""
 
-#: forms/domain.py:423
+#: forms/domain.py:448
 msgid "Options"
 msgstr ""
 
-#: forms/domain.py:431
+#: forms/domain.py:456
 msgid "New domain"
 msgstr ""
 
-#: forms/domain.py:444
+#: forms/domain.py:469
 msgid "Domain created"
 msgstr ""
 
@@ -675,10 +687,6 @@ msgstr ""
 msgid "The domain name"
 msgstr ""
 
-#: models/domain.py:36
-msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr ""
-
 #: models/domain.py:44
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr ""
@@ -762,40 +770,40 @@ msgstr ""
 msgid "Domain quota exceeded"
 msgstr ""
 
-#: serializers.py:88 serializers.py:288 serializers.py:386
+#: serializers.py:99 serializers.py:304 serializers.py:402
 msgid "Permission denied."
 msgstr ""
 
-#: serializers.py:134
+#: serializers.py:150
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: serializers.py:238
+#: serializers.py:254
 msgid "Not allowed for this role."
 msgstr ""
 
-#: serializers.py:250
+#: serializers.py:266
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: serializers.py:275
+#: serializers.py:291
 msgid "Local domain {} does not exist"
 msgstr ""
 
-#: serializers.py:373
+#: serializers.py:389
 msgid "A list of recipient"
 msgstr ""
 
-#: serializers.py:384
+#: serializers.py:400
 msgid "Domain not found."
 msgstr ""
 
-#: serializers.py:433
+#: serializers.py:449
 msgid "You don't have access to this domain."
 msgstr ""
 
-#: serializers.py:441
+#: serializers.py:457
 msgid "You don't have access to this mailbox."
 msgstr ""
 
@@ -957,11 +965,8 @@ msgstr ""
 
 #: templates/admin/domain_detail.html:50 templates/admin/domain_detail.html:57
 #: templates/admin/domain_detail.html:58 templates/admin/domain_detail.html:65
-#: templates/admin/domain_general_form.html:4
-#: templates/admin/domain_general_form.html:5
 #: templates/admin/domains_quotas.html:11
-#: templates/admin/domains_quotas.html:12 templates/admin/mailform.html:7
-#: templates/admin/newdomainform.html:3
+#: templates/admin/domains_quotas.html:12 templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr ""
 

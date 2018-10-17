@@ -19,7 +19,7 @@ from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
     DynamicForm, TabForms, WizardForm, WizardStep, YesNoField
 )
-from modoboa.lib.web_utils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response, size2integer
 from modoboa.parameters import tools as param_tools
 from .. import constants, lib, signals
 from ..models import Alias, Domain, DomainAlias, Mailbox
@@ -41,6 +41,22 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     )
     dkim_key_selector = forms.CharField(
         label=ugettext_lazy("Key selector"), required=False)
+    quota = forms.CharField(
+        label=ugettext_lazy("Quota"),
+        initial=0,
+        help_text=ugettext_lazy(
+            "Quota shared between mailboxes. Can be expressed in KB, "
+            "MB (default) or GB. A value of 0 means no quota."
+        )
+    )
+    default_mailbox_quota = forms.CharField(
+        label=ugettext_lazy("Default mailbox quota"),
+        initial=0,
+        help_text=ugettext_lazy(
+            "Default quota applied to mailboxes. Can be expressed in KB, MB "
+            "(default) or GB. A value of 0 means no quota."
+        )
+    )
 
     class Meta:
         model = Domain
@@ -104,6 +120,15 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             raise forms.ValidationError(
                 _("DKIM keys storage directory not configured"))
         return enabled
+
+    def clean_quota(self):
+        """Return proper quota value."""
+        return size2integer(self.cleaned_data["quota"], output_unit="MB")
+
+    def clean_default_mailbox_quota(self):
+        """Return proper quota value."""
+        return size2integer(
+            self.cleaned_data["default_mailbox_quota"], output_unit="MB")
 
     def clean(self):
         """Custom fields validation.

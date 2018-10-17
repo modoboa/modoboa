@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 09:25+0200\n"
+"POT-Creation-Date: 2018-10-17 13:41+0200\n"
 "PO-Revision-Date: 2018-07-03 13:17+0000\n"
 "Last-Translator: Andrei-Ilie Olteanu <andrei@flashsoft.ro>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
@@ -134,7 +134,7 @@ msgstr ""
 "Cota implicită (în MB) aplicată domeniilor nou create, care nu au nicio "
 "valoare specificată. O valoare de 0 înseamnă că nu există o cotă."
 
-#: app_settings.py:119 models/domain.py:41
+#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Cota implicită pentru cutia poștală"
@@ -175,7 +175,7 @@ msgstr ""
 "Creați un alias utilizând vechea adresă atunci când o cutie poștală este "
 "redenumită."
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:332
+#: app_settings.py:196 app_settings.py:204 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "Trebuie să fie un număr întreg pozitiv"
 
@@ -229,7 +229,7 @@ msgstr "Alege"
 msgid "What level of permission this user will have"
 msgstr "Ce nivel de permisiune va avea acest utilizator"
 
-#: forms/account.py:48 forms/domain.py:224
+#: forms/account.py:48 forms/domain.py:249
 msgid "Random password"
 msgstr "Parolă aleatorie"
 
@@ -261,8 +261,8 @@ msgstr "Activat"
 msgid "Only super administrators are allowed for this mode"
 msgstr "Numai superadministratorii sunt permiși la acest mod"
 
-#: forms/account.py:182 forms/account.py:184 forms/domain.py:141
-#: forms/domain.py:270 forms/domain.py:273 serializers.py:263
+#: forms/account.py:182 forms/account.py:184 forms/domain.py:166
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
 msgid "This field is required."
 msgstr "Acest câmp este necesar."
 
@@ -282,27 +282,32 @@ msgstr "E-mail"
 msgid "Create an alias using the old address"
 msgstr "Crează un alias folosind vechea adresă"
 
-#: forms/account.py:233 templates/admin/account_detail.html:45
-#: templates/admin/domain_detail.html:49
+#: forms/account.py:233 forms/domain.py:45
+#: templates/admin/account_detail.html:45 templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr "Cotă-parte"
 
-#: forms/account.py:235
+#: forms/account.py:236
+#, fuzzy
+#| msgid ""
+#| "Quota in MB for this mailbox. Define a custom value or use domain's "
+#| "default one. Leave empty to define an unlimited value (not allowed for "
+#| "domain administrators)."
 msgid ""
-"Quota in MB for this mailbox. Define a custom value or use domain's default "
-"one. Leave empty to define an unlimited value (not allowed for domain "
-"administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
 "Cota în MB pentru această căsuță poștală. Definiți o valoare particularizată "
 "sau utilizați valurea prestabilită a domeniului. Lăsați gol pentru a defini "
 "o valoare nelimitată (nu este permisă pentru administratorii de domeniu)."
 
-#: forms/account.py:243 forms/domain.py:35
+#: forms/account.py:246 forms/domain.py:35
 #: templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Alias(uri)"
 
-#: forms/account.py:246
+#: forms/account.py:249
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
@@ -313,11 +318,11 @@ msgstr ""
 "un alias de captură care sa prindă toate emailurile, trebuie doar să "
 "introduceți numele domeniului (@ domain.tld)."
 
-#: forms/account.py:252
+#: forms/account.py:255
 msgid "Sender addresses"
 msgstr "Adresa expeditorului"
 
-#: forms/account.py:255
+#: forms/account.py:258
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
@@ -328,52 +333,52 @@ msgstr ""
 "există pe plan local. Indicați o adresă pentru fiecare intrare. Apăsați "
 "ENTER pentru a adăuga o intrare nouă."
 
-#: forms/account.py:310 forms/alias.py:92 models/mailbox.py:317
+#: forms/account.py:313 forms/alias.py:92 models/mailbox.py:317
 msgid "Domain does not exist"
 msgstr "Domeniul nu există"
 
-#: forms/account.py:342
+#: forms/account.py:349
 msgid "Local domain does not exist"
 msgstr "Domeniul local nu există"
 
-#: forms/account.py:346 forms/account.py:354 forms/alias.py:95
+#: forms/account.py:353 forms/account.py:361 forms/alias.py:95
 msgid "You don't have access to this domain"
 msgstr "Nu aveți acces la acest domeniu"
 
-#: forms/account.py:453
+#: forms/account.py:460
 msgid "Domain(s)"
 msgstr "Domeniu(ii)"
 
-#: forms/account.py:455
+#: forms/account.py:462
 msgid "Domain(s) that user administrates"
 msgstr "Domeniu(ii) pe care utilizatorul le administrează"
 
-#: forms/account.py:501 forms/account.py:591 forms/domain.py:341
-#: forms/domain.py:412
+#: forms/account.py:508 forms/account.py:598 forms/domain.py:366
+#: forms/domain.py:437
 msgid "General"
 msgstr "General"
 
-#: forms/account.py:505
+#: forms/account.py:512
 msgid "Profile"
 msgstr "Profil"
 
-#: forms/account.py:509 forms/account.py:597
+#: forms/account.py:516 forms/account.py:604
 msgid "Mail"
 msgstr "Mail"
 
-#: forms/account.py:512
+#: forms/account.py:519
 msgid "Permissions"
 msgstr "Permisiuni"
 
-#: forms/account.py:580
+#: forms/account.py:587
 msgid "Account updated"
 msgstr "Cont actualizat"
 
-#: forms/account.py:605
+#: forms/account.py:612
 msgid "New account"
 msgstr "Cont nou"
 
-#: forms/account.py:615
+#: forms/account.py:622
 msgid "Account created"
 msgstr "Cont creat"
 
@@ -429,51 +434,73 @@ msgstr ""
 msgid "Key selector"
 msgstr "Selector cheie"
 
-#: forms/domain.py:82 handlers.py:165
+#: forms/domain.py:48 models/domain.py:36
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr ""
+"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
+"înseamnă fără cotă."
+
+#: forms/domain.py:56
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr ""
+"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
+"înseamnă fără cotă."
+
+#: forms/domain.py:98 handlers.py:165
 msgid "domain alias"
 msgstr "alias domeniu"
 
-#: forms/domain.py:85 forms/domain.py:152 forms/domain.py:160
+#: forms/domain.py:101 forms/domain.py:177 forms/domain.py:185
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "Itemul%s cu acest nume există"
 
-#: forms/domain.py:93 serializers.py:53
+#: forms/domain.py:109 serializers.py:56
 msgid "No authorized MX record found for this domain"
 msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu"
 
-#: forms/domain.py:105
+#: forms/domain.py:121
 msgid "DKIM keys storage directory not configured"
 msgstr "Folderul de stocare a cheilor DKIM nu este configurat"
 
-#: forms/domain.py:126 serializers.py:63
+#: forms/domain.py:151 serializers.py:74
 msgid "Cannot be greater than domain quota"
 msgstr "Nu poate fi mai mare decat cota domeniului"
 
-#: forms/domain.py:131
+#: forms/domain.py:156
 msgid "You can't define an unlimited quota."
 msgstr "Nu poți sa definești o cotă nelimitată"
 
-#: forms/domain.py:152 forms/domain.py:157
+#: forms/domain.py:177 forms/domain.py:182
 msgid "domain"
 msgstr "domeniu"
 
-#: forms/domain.py:206
+#: forms/domain.py:231
 msgid "Create a domain administrator"
 msgstr "Creați un administrator de domeniu"
 
-#: forms/domain.py:209
+#: forms/domain.py:234
 msgid "Automatically create an administrator for this domain"
 msgstr "Creează automat un administrator pentru acest domeniu"
 
-#: forms/domain.py:214 templates/admin/domain_detail.html:121
+#: forms/domain.py:239 templates/admin/domain_detail.html:121
 #: templates/admin/domain_headers.html:3
 #: templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Nume"
 
-#: forms/domain.py:217
+#: forms/domain.py:242
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
@@ -481,48 +508,48 @@ msgstr ""
 "Numele administratorului. Nu include aici si numele domeniului, el va fi "
 "automat alipit. "
 
-#: forms/domain.py:227
+#: forms/domain.py:252
 msgid "Generate a random password for the administrator."
 msgstr "Generează o parolă aleatorie pentru administrator."
 
-#: forms/domain.py:233
+#: forms/domain.py:258
 msgid "With a mailbox"
 msgstr "Cu casuță postală"
 
-#: forms/domain.py:236
+#: forms/domain.py:261
 msgid "Create a mailbox for the administrator."
 msgstr "Creează o căsuță postală pentru administrator. "
 
-#: forms/domain.py:242
+#: forms/domain.py:267
 msgid "Create aliases"
 msgstr "Crează aliasuri "
 
-#: forms/domain.py:245
+#: forms/domain.py:270
 msgid "Automatically create standard aliases for this domain"
 msgstr "Creează automat aliasuri standard pentru acest domeniu"
 
-#: forms/domain.py:261
+#: forms/domain.py:286
 msgid "Invalid format"
 msgstr "Format invalid"
 
-#: forms/domain.py:290
+#: forms/domain.py:315
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Utilizatorul '%s'  exista deja"
 
-#: forms/domain.py:402
+#: forms/domain.py:427
 msgid "Domain modified"
 msgstr "Domeniu modficat"
 
-#: forms/domain.py:423
+#: forms/domain.py:448
 msgid "Options"
 msgstr "Opțiuni"
 
-#: forms/domain.py:431
+#: forms/domain.py:456
 msgid "New domain"
 msgstr "Domeniu nou"
 
-#: forms/domain.py:444
+#: forms/domain.py:469
 msgid "Domain created"
 msgstr "Domeniu creat"
 
@@ -727,11 +754,6 @@ msgstr "nume"
 msgid "The domain name"
 msgstr "Numele domeniului"
 
-#: models/domain.py:36
-msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr ""
-"Cota în MB impărțită între cutiile poștale. O valuare 0 înseamnă fără cotă."
-
 #: models/domain.py:44
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr ""
@@ -821,41 +843,41 @@ msgstr "O cotă este necesară"
 msgid "Domain quota exceeded"
 msgstr "Cota pentru domeniu a fost depașită"
 
-#: serializers.py:88 serializers.py:288 serializers.py:386
+#: serializers.py:99 serializers.py:304 serializers.py:402
 msgid "Permission denied."
 msgstr "Permisiune refuzată."
 
-#: serializers.py:134
+#: serializers.py:150
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista domenilor administrate (doar reselleri și administratori de domeniu)"
 
-#: serializers.py:238
+#: serializers.py:254
 msgid "Not allowed for this role."
 msgstr "Ne permis pentru acest rol."
 
-#: serializers.py:250
+#: serializers.py:266
 msgid "Must be equal to mailbox full_address"
 msgstr "Trebuie să fie egal cu mailbox full_address"
 
-#: serializers.py:275
+#: serializers.py:291
 msgid "Local domain {} does not exist"
 msgstr "Domeniu local {} nu există"
 
-#: serializers.py:373
+#: serializers.py:389
 msgid "A list of recipient"
 msgstr "O listă de destinatari"
 
-#: serializers.py:384
+#: serializers.py:400
 msgid "Domain not found."
 msgstr "Domeniu negăsit"
 
-#: serializers.py:433
+#: serializers.py:449
 msgid "You don't have access to this domain."
 msgstr "Nu ai acces la acest domeniu."
 
-#: serializers.py:441
+#: serializers.py:457
 msgid "You don't have access to this mailbox."
 msgstr "Nu ai acces la această cutie postală"
 
@@ -1017,11 +1039,8 @@ msgstr "Alias-uri cutii poștale"
 
 #: templates/admin/domain_detail.html:50 templates/admin/domain_detail.html:57
 #: templates/admin/domain_detail.html:58 templates/admin/domain_detail.html:65
-#: templates/admin/domain_general_form.html:4
-#: templates/admin/domain_general_form.html:5
 #: templates/admin/domains_quotas.html:11
-#: templates/admin/domains_quotas.html:12 templates/admin/mailform.html:7
-#: templates/admin/newdomainform.html:3
+#: templates/admin/domains_quotas.html:12 templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "MB"
 
@@ -1380,6 +1399,11 @@ msgstr "Importă identități"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "Redirecționare actualizată"
+
+#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
+#~ msgstr ""
+#~ "Cota în MB impărțită între cutiile poștale. O valuare 0 înseamnă fără "
+#~ "cotă."
 
 #, fuzzy
 #~| msgid "No DNS records found for %s"
