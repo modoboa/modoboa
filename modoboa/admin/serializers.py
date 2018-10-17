@@ -19,7 +19,7 @@ from modoboa.core import (
 )
 from modoboa.lib import (
     email_utils, exceptions as lib_exceptions, fields as lib_fields,
-    permissions
+    permissions, web_utils
 )
 from modoboa.parameters import tools as param_tools
 from . import lib, models
@@ -27,6 +27,9 @@ from . import lib, models
 
 class DomainSerializer(serializers.ModelSerializer):
     """Base Domain serializer."""
+
+    quota = serializers.CharField()
+    default_mailbox_quota = serializers.CharField()
 
     class Meta:
         model = models.Domain
@@ -52,6 +55,14 @@ class DomainSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     _("No authorized MX record found for this domain"))
         return value
+
+    def validate_quota(self, value):
+        """Convert quota to MB."""
+        return web_utils.size2integer(value, output_unit="MB")
+
+    def validate_default_mailbox_quota(self, value):
+        """Convert quota to MB."""
+        return web_utils.size2integer(value, output_unit="MB")
 
     def validate(self, data):
         """Check quota values."""
@@ -114,6 +125,7 @@ class MailboxSerializer(serializers.ModelSerializer):
     """Base mailbox serializer."""
 
     full_address = lib_fields.DRFEmailFieldUTF8()
+    quota = serializers.CharField()
 
     class Meta:
         model = models.Mailbox
@@ -122,6 +134,10 @@ class MailboxSerializer(serializers.ModelSerializer):
     def validate_full_address(self, value):
         """Lower case address."""
         return value.lower()
+
+    def validate_quota(self, value):
+        """Convert quota to MB."""
+        return web_utils.size2integer(value, output_unit="MB")
 
 
 class AccountSerializer(serializers.ModelSerializer):

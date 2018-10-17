@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 09:25+0200\n"
+"POT-Creation-Date: 2018-10-17 13:41+0200\n"
 "PO-Revision-Date: 2018-01-25 09:18+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -133,7 +133,7 @@ msgstr ""
 "Quota par défaut (en Mo) appliqué aux domaines fraichement créés et ne "
 "spécifiant pas de valeur. 0 signifie qu'aucun quota ne sera appliqué."
 
-#: app_settings.py:119 models/domain.py:41
+#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Quota par défaut pour une boîte aux lettres"
@@ -176,7 +176,7 @@ msgstr ""
 "Créer un alias en utilisant l'ancienne adresse quand une boite aux lettres "
 "est renommée."
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:332
+#: app_settings.py:196 app_settings.py:204 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "Doit être un entier positif"
 
@@ -231,7 +231,7 @@ msgstr "Choisir"
 msgid "What level of permission this user will have"
 msgstr "Quel niveau de permission cet utilisateur aura"
 
-#: forms/account.py:48 forms/domain.py:224
+#: forms/account.py:48 forms/domain.py:249
 msgid "Random password"
 msgstr "Mot de passe aléatoire"
 
@@ -263,8 +263,8 @@ msgstr "Activé"
 msgid "Only super administrators are allowed for this mode"
 msgstr "Seuls les super administrateurs sont autorisés pour ce mode"
 
-#: forms/account.py:182 forms/account.py:184 forms/domain.py:141
-#: forms/domain.py:270 forms/domain.py:273 serializers.py:263
+#: forms/account.py:182 forms/account.py:184 forms/domain.py:166
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
 msgid "This field is required."
 msgstr "Ce champ est requis."
 
@@ -284,27 +284,28 @@ msgstr "E-mail"
 msgid "Create an alias using the old address"
 msgstr "Créer un alias en utilisant l'ancienne adresse"
 
-#: forms/account.py:233 templates/admin/account_detail.html:45
-#: templates/admin/domain_detail.html:49
+#: forms/account.py:233 forms/domain.py:45
+#: templates/admin/account_detail.html:45 templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr "Quota"
 
-#: forms/account.py:235
+#: forms/account.py:236
 msgid ""
-"Quota in MB for this mailbox. Define a custom value or use domain's default "
-"one. Leave empty to define an unlimited value (not allowed for domain "
-"administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
-"Quota en Mo pour cette boite. Définir une valeur spécifique ou utiliser la "
-"valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée "
-"(interdit pour les admins. de domaine)."
+"Quota pour cette boite. Peut être exprimé en Ko, Mo (défaut) ou Go. Définir "
+"une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser "
+"vide pour définir une valeur illimitée (interdit pour les admins. de "
+"domaine)."
 
-#: forms/account.py:243 forms/domain.py:35
+#: forms/account.py:246 forms/domain.py:35
 #: templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Alias"
 
-#: forms/account.py:246
+#: forms/account.py:249
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
@@ -314,11 +315,11 @@ msgstr ""
 "sur ENTREE pour ajouter un nouveau champ. Pour créer un alias 'fourre-tout', "
 "entrer seulement le nom du domaine (@domain.tld)."
 
-#: forms/account.py:252
+#: forms/account.py:255
 msgid "Sender addresses"
 msgstr "Adresses d'envoi"
 
-#: forms/account.py:255
+#: forms/account.py:258
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
@@ -329,52 +330,52 @@ msgstr ""
 "même si elle(s) n'existe(nt) pas localement. Indiquer une adresse par champ. "
 "Appuyer sur ENTREE pour ajouter un nouveau champ."
 
-#: forms/account.py:310 forms/alias.py:92 models/mailbox.py:317
+#: forms/account.py:313 forms/alias.py:92 models/mailbox.py:317
 msgid "Domain does not exist"
 msgstr "Domaine inexistant"
 
-#: forms/account.py:342
+#: forms/account.py:349
 msgid "Local domain does not exist"
 msgstr "Le domaine local n'existe pas"
 
-#: forms/account.py:346 forms/account.py:354 forms/alias.py:95
+#: forms/account.py:353 forms/account.py:361 forms/alias.py:95
 msgid "You don't have access to this domain"
 msgstr "Vous n'avez pas accès à ce domaine"
 
-#: forms/account.py:453
+#: forms/account.py:460
 msgid "Domain(s)"
 msgstr "Domaine(s)"
 
-#: forms/account.py:455
+#: forms/account.py:462
 msgid "Domain(s) that user administrates"
 msgstr "Domaine(s) que cet utilisateur administre"
 
-#: forms/account.py:501 forms/account.py:591 forms/domain.py:341
-#: forms/domain.py:412
+#: forms/account.py:508 forms/account.py:598 forms/domain.py:366
+#: forms/domain.py:437
 msgid "General"
 msgstr "Général"
 
-#: forms/account.py:505
+#: forms/account.py:512
 msgid "Profile"
 msgstr "Profil"
 
-#: forms/account.py:509 forms/account.py:597
+#: forms/account.py:516 forms/account.py:604
 msgid "Mail"
 msgstr "Courrier"
 
-#: forms/account.py:512
+#: forms/account.py:519
 msgid "Permissions"
 msgstr "Permissions"
 
-#: forms/account.py:580
+#: forms/account.py:587
 msgid "Account updated"
 msgstr "Compte mis à jour"
 
-#: forms/account.py:605
+#: forms/account.py:612
 msgid "New account"
 msgstr "Nouveau compte"
 
-#: forms/account.py:615
+#: forms/account.py:622
 msgid "Account created"
 msgstr "Compte créé"
 
@@ -430,51 +431,67 @@ msgstr ""
 msgid "Key selector"
 msgstr "Sélecteur de clé"
 
-#: forms/domain.py:82 handlers.py:165
+#: forms/domain.py:48 models/domain.py:36
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr ""
+"Quota partagé entre les boîtes aux lettres. Peut être exprimé en Ko, "
+"Mo (défaut) ou Go. Une valeur à 0 signifie pas de quota."
+
+#: forms/domain.py:56
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr ""
+"Quota par défaut appliqué aux boîtes aux lettres. Peut être exprimé en Ko, "
+"Mo (défaut) ou Go. Une valeur à 0 signifie pas de quota."
+
+#: forms/domain.py:98 handlers.py:165
 msgid "domain alias"
 msgstr "alias de domaine"
 
-#: forms/domain.py:85 forms/domain.py:152 forms/domain.py:160
+#: forms/domain.py:101 forms/domain.py:177 forms/domain.py:185
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "Un %s de ce nom existe déjà"
 
-#: forms/domain.py:93 serializers.py:53
+#: forms/domain.py:109 serializers.py:56
 msgid "No authorized MX record found for this domain"
 msgstr "Aucun enregistrement MX autorisé trouvé pour ce domaine"
 
-#: forms/domain.py:105
+#: forms/domain.py:121
 msgid "DKIM keys storage directory not configured"
 msgstr "Répertoire de stockage des clés DKIM non configuré"
 
-#: forms/domain.py:126 serializers.py:63
+#: forms/domain.py:151 serializers.py:74
 msgid "Cannot be greater than domain quota"
 msgstr "Ne peut pas être supérieur au quota du domaine"
 
-#: forms/domain.py:131
+#: forms/domain.py:156
 msgid "You can't define an unlimited quota."
 msgstr "Vous ne pouvez pas définir de quota illimité"
 
-#: forms/domain.py:152 forms/domain.py:157
+#: forms/domain.py:177 forms/domain.py:182
 msgid "domain"
 msgstr "domaine"
 
-#: forms/domain.py:206
+#: forms/domain.py:231
 msgid "Create a domain administrator"
 msgstr "Créer un administrateur de domaine"
 
-#: forms/domain.py:209
+#: forms/domain.py:234
 msgid "Automatically create an administrator for this domain"
 msgstr "Créer automatiquement un administrateur pour ce domaine"
 
-#: forms/domain.py:214 templates/admin/domain_detail.html:121
+#: forms/domain.py:239 templates/admin/domain_detail.html:121
 #: templates/admin/domain_headers.html:3
 #: templates/admin/identity_headers.html:2
 #: templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Nom"
 
-#: forms/domain.py:217
+#: forms/domain.py:242
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
@@ -482,48 +499,48 @@ msgstr ""
 "Le nom de l'administrateur. Ne pas include un nom de domaine ici, il sera "
 "ajouté automatiquement."
 
-#: forms/domain.py:227
+#: forms/domain.py:252
 msgid "Generate a random password for the administrator."
 msgstr "Générer un mot de passe aléatoire pour cet administrateur."
 
-#: forms/domain.py:233
+#: forms/domain.py:258
 msgid "With a mailbox"
 msgstr "Avec une boite aux lettres"
 
-#: forms/domain.py:236
+#: forms/domain.py:261
 msgid "Create a mailbox for the administrator."
 msgstr "Créer une boite aux lettres pour l'administrateur"
 
-#: forms/domain.py:242
+#: forms/domain.py:267
 msgid "Create aliases"
 msgstr "Créer des alias"
 
-#: forms/domain.py:245
+#: forms/domain.py:270
 msgid "Automatically create standard aliases for this domain"
 msgstr "Créer automatiquement des alias standard pour ce domaine"
 
-#: forms/domain.py:261
+#: forms/domain.py:286
 msgid "Invalid format"
 msgstr "Format invalide"
 
-#: forms/domain.py:290
+#: forms/domain.py:315
 #, python-format
 msgid "User '%s' already exists"
 msgstr "L'utilisateur '%s' existe déjà"
 
-#: forms/domain.py:402
+#: forms/domain.py:427
 msgid "Domain modified"
 msgstr "Domaine modifié"
 
-#: forms/domain.py:423
+#: forms/domain.py:448
 msgid "Options"
 msgstr "Options"
 
-#: forms/domain.py:431
+#: forms/domain.py:456
 msgid "New domain"
 msgstr "Nouveau domaine"
 
-#: forms/domain.py:444
+#: forms/domain.py:469
 msgid "Domain created"
 msgstr "Domaine créé"
 
@@ -723,12 +740,6 @@ msgstr "Nom"
 msgid "The domain name"
 msgstr "Le nom du domaine"
 
-#: models/domain.py:36
-msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr ""
-"Quota en Mo partagé entre les boîtes aux lettres. Une valeur à 0 signifie "
-"pas de quota."
-
 #: models/domain.py:44
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr ""
@@ -819,42 +830,42 @@ msgstr "Un quota est requis"
 msgid "Domain quota exceeded"
 msgstr "Quota du domaine dépassé"
 
-#: serializers.py:88 serializers.py:288 serializers.py:386
+#: serializers.py:99 serializers.py:304 serializers.py:402
 msgid "Permission denied."
 msgstr "Permission refusée."
 
-#: serializers.py:134
+#: serializers.py:150
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Liste des domaines administrés (revendeurs et administrateurs de domaine "
 "seulement)."
 
-#: serializers.py:238
+#: serializers.py:254
 msgid "Not allowed for this role."
 msgstr "Non autorisé pour ce rôle."
 
-#: serializers.py:250
+#: serializers.py:266
 msgid "Must be equal to mailbox full_address"
 msgstr "Doit être égale au champ full_address dans mailbox"
 
-#: serializers.py:275
+#: serializers.py:291
 msgid "Local domain {} does not exist"
 msgstr "Le domaine local {} n'existe pas"
 
-#: serializers.py:373
+#: serializers.py:389
 msgid "A list of recipient"
 msgstr "Une liste de destinataire"
 
-#: serializers.py:384
+#: serializers.py:400
 msgid "Domain not found."
 msgstr "Domaine introuvable."
 
-#: serializers.py:433
+#: serializers.py:449
 msgid "You don't have access to this domain."
 msgstr "Vous n'avez pas accès à ce domaine."
 
-#: serializers.py:441
+#: serializers.py:457
 msgid "You don't have access to this mailbox."
 msgstr "Vous n'avez pas accès à cette boîtes aux lettres."
 
@@ -1016,11 +1027,8 @@ msgstr "Alias de boite."
 
 #: templates/admin/domain_detail.html:50 templates/admin/domain_detail.html:57
 #: templates/admin/domain_detail.html:58 templates/admin/domain_detail.html:65
-#: templates/admin/domain_general_form.html:4
-#: templates/admin/domain_general_form.html:5
 #: templates/admin/domains_quotas.html:11
-#: templates/admin/domains_quotas.html:12 templates/admin/mailform.html:7
-#: templates/admin/newdomainform.html:3
+#: templates/admin/domains_quotas.html:12 templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "Mo"
 
@@ -1376,3 +1384,8 @@ msgstr "Importer des identités"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "Transfert mis à jour"
+
+#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
+#~ msgstr ""
+#~ "Quota en Mo partagé entre les boîtes aux lettres. Une valeur à 0 signifie "
+#~ "pas de quota."
