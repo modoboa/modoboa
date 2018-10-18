@@ -129,6 +129,7 @@ class MXTestCase(ModoTestCase):
             get_domain_mx_list("no-ns-servers.example.com")
             get_domain_mx_list("timeout.example.com")
             get_domain_mx_list("no-lookup.example.com")
+            get_domain_mx_list("no-answer.example.Com")
             get_domain_mx_list("bad-response.example.com")
         log.check(
             ("modoboa.admin", "ERROR",
