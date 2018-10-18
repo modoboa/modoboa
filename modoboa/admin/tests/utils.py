@@ -45,12 +45,14 @@ _POSSIBLE_DNS_RESULTS = {
     "no-ns-servers.example.com": NoNameservers(),
     "bad-response.example.com": [_BAD_MX_RECORD],
     "no-lookup.example.com": [_DNE_MX_RECORD],
+    "no-answer.example.com": [_DNE_MX_RECORD],
 }
 
 _POSSIBLE_DNS_RESULTS_NO_MX = {
     "does-not-exist.example.com": NXDOMAIN(),
     "mx2.example.com": NXDOMAIN(),
     "no-lookup.example.com": NXDOMAIN(),
+    "no-answer.example.com": NoAnswer(),
     "bad-response.example.com": [RRsetInvalid()],
 }
 _POSSIBLE_IP_RESULTS = {
