@@ -6,6 +6,8 @@ Password hashers for Modoboa.
 
 from __future__ import unicode_literals
 
+from django.utils.encoding import smart_text
+
 from modoboa.core.password_hashers.advanced import (  # NOQA:F401
     BLFCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher
 )
@@ -40,7 +42,7 @@ def get_dovecot_schemes():
     except OSError:
         pass
     else:
-        supported_schemes = ["{{{}}}".format(scheme)
+        supported_schemes = ["{{{}}}".format(smart_text(scheme))
                              for scheme in schemes.split()]
 
     if not supported_schemes:
