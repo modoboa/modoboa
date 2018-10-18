@@ -204,6 +204,8 @@ def get_domain_mx_list(domain):
                     logger.error(
                         _("No {type} record found for MX {mx}").format(
                             type=rtype, mx=domain), exc_info=e)
+                except dns.resolver.NoAnswer:
+                    pass
                 else:
                     for ip_answer in ip_answers:
                         try:
