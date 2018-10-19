@@ -12,7 +12,7 @@ from django.core import mail
 from django.test import override_settings
 from django.urls import reverse
 
-from modoboa.core.password_hashers import get_password_hasher
+from modoboa.core.password_hashers import get_password_hasher, get_dovecot_schemes
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
@@ -71,7 +71,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
-    def test_password_scheme(self):
+    def test_password_schemes(self):
         """Validate password scheme changes."""
         username = "user@test.com"
         password = "toto"
@@ -103,6 +103,41 @@ class AuthenticationTestCase(ModoTestCase):
         self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith(pw_hash.scheme))
+
+    def test_supported_schemes(self):
+        """Validate dovecot supported schemes."""
+        supported_schemes = get_dovecot_schemes()
+        self.assertEqual(supported_schemes,
+                         ["{MD5}",
+                          "{MD5-CRYPT}",
+                          "{SHA}",
+                          "{SHA1}",
+                          "{SHA256}",
+                          "{SHA512}",
+                          "{SMD5}",
+                          "{SSHA}",
+                          "{SSHA256}",
+                          "{SSHA512}",
+                          "{PLAIN}",
+                          "{CLEAR}",
+                          "{CLEARTEXT}",
+                          "{PLAIN-TRUNC}",
+                          "{CRAM-MD5}",
+                          "{SCRAM-SHA-1}",
+                          "{HMAC-MD5}",
+                          "{DIGEST-MD5}",
+                          "{PLAIN-MD4}",
+                          "{PLAIN-MD5}",
+                          "{LDAP-MD5}",
+                          "{LANMAN}",
+                          "{NTLM}",
+                          "{OTP}",
+                          "{SKEY}",
+                          "{RPA}",
+                          "{PBKDF2}",
+                          "{CRYPT}",
+                          "{SHA256-CRYPT}",
+                          "{SHA512-CRYPT}"])
 
 
 class PasswordResetTestCase(ModoTestCase):
