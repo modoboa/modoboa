@@ -5,6 +5,23 @@ Useful tips
 You would like to work on Modoboa but you don't know where to start?
 You're at the right place! Browse this page to learn useful tips.
 
+Docker
+======
+
+A docker image is available for developers. To use it, you must
+install `docker <https://docs.docker.com/install/>`_ and
+`docker-compose <https://docs.docker.com/compose/install/>`_ first.
+
+Then, just run the following command::
+
+  $ docker-compose up
+
+It will start the docker environment and make a Modoboa instance
+available at ``http://localhost:8000``.
+
+If you don't want to use docker or need a more complex development
+setup, go to the next section.
+
 .. _venv_for_dev:
 
 Prepare a virtual environment
