@@ -220,11 +220,8 @@ class DeployCommand(Command):
             extensions = [(extension, extension.replace("-", "_"))
                           for extension in extensions]
             if not parsed_args.dont_install_extensions:
-                cmd = (
-                    sys.executable +
-                    " -m pip install " +
-                    " ".join([extension[0] for extension in extensions])
-                )
+                cmd = [sys.executable, "-m", "pip", "install"]
+                cmd.extend((extension[0] for extension in extensions))
                 exec_cmd(cmd, capture_output=False)
             extra_settings = self.find_extra_settings(extensions)
             extensions = [extension[1] for extension in extensions]

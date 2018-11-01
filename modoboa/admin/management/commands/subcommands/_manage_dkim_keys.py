@@ -27,13 +27,13 @@ class ManageDKIMKeys(BaseCommand):
             domain.dkim_key_length if domain.dkim_key_length
             else self.default_key_length)
         code, output = sysutils.exec_cmd(
-            "openssl genrsa -out {} {}".format(pkey_path, key_size))
+            ("openssl", "genrsa", "-out", pkey_path, str(key_size)))
         if code:
             print("Failed to generate DKIM private key for domain {}: {}"
                   .format(domain.name, smart_text(output)))
         domain.dkim_private_key_path = pkey_path
         code, output = sysutils.exec_cmd(
-            "openssl rsa -in {} -pubout".format(pkey_path))
+            ("openssl", "rsa", "-in", pkey_path, "-pubout"))
         if code:
             print("Failed to generate DKIM public key for domain {}: {}"
                   .format(domain.name, smart_text(output)))

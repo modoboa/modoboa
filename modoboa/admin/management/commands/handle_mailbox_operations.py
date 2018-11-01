@@ -50,7 +50,7 @@ class Command(BaseCommand):
             except os.error as e:
                 raise OperationError(str(e))
         code, output = exec_cmd(
-            "mv %s %s" % (operation.argument, new_mail_home)
+            ("mv", operation.argument, new_mail_home)
         )
         if code:
             raise OperationError(output)
@@ -77,7 +77,7 @@ class Command(BaseCommand):
             with open(path) as fp:
                 pid = fp.read().strip()
             code, output = exec_cmd(
-                "grep handle_mailbox_operations /proc/%s/cmdline" % pid
+                ("grep", "handle_mailbox_operations", "/proc/%s/cmdline" % pid)
             )
             if not code:
                 return False
