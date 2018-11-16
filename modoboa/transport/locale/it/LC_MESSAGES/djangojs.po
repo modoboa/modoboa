@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2017-11-24 16:44+0100\n"
 "PO-Revision-Date: 2017-12-07 08:37+0000\n"
 "Last-Translator: marcotrevisan <mrctrevisan@yahoo.it>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/tonio/teams/13749/it/)\n"
@@ -21,22 +21,6 @@ msgstr ""
 "Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: transport/backends.py:44
-msgid "This field is required"
-msgstr "Questo campo è obbligatorio"
-
-#: transport/backends.py:59
-msgid "Invalid value"
-msgstr "Valore non valido"
-
-#: transport/models.py:20
-msgid "pattern"
-msgstr "pattern"
-
-#: transport/models.py:21
-msgid "service"
-msgstr "servizio"
-
-#: transport/models.py:22
-msgid "next hop"
-msgstr "prossimo salto"
+#: static/transport/js/transport.js:36
+msgid "Search"
+msgstr "Cerca"

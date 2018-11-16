@@ -1,31 +1,32 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Giancarlo Gaifas <lallo@artiemestieri.tn.it>, 2013.
-#
+# 
+# Translators:
+# Giancarlo Gaifas <lallo@artiemestieri.tn.it>, 2013
+# marcotrevisan <mrctrevisan@yahoo.it>, 2018
+# Rocco <mors10@hotmail.com>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-05 16:08+0200\n"
-"PO-Revision-Date: 2013-12-23 00:56+0100\n"
-"Last-Translator: Alberto Berti <alberto@metapensiero.it>\n"
-"Language-Team: ITALIANO <LL@li.org>\n"
-"Language: it\n"
+"PO-Revision-Date: 2018-11-02 14:37+0000\n"
+"Last-Translator: marcotrevisan <mrctrevisan@yahoo.it>\n"
+"Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: relaydomains/handlers.py:65
-#, fuzzy
-#| msgid "Relay domains"
 msgid "Transport settings"
-msgstr "Domini relè"
+msgstr "Impostazioni di trasporto"
 
 #: relaydomains/handlers.py:89
 msgid "Transport"
-msgstr ""
+msgstr "Trasporto"
 
 #: relaydomains/lib.py:17
 msgid "Invalid line"
@@ -33,88 +34,16 @@ msgstr "Riga non valida"
 
 #: relaydomains/serializers.py:29
 msgid "Unsupported service"
-msgstr ""
+msgstr "Servizio non supportato"
 
 #: relaydomains/transport.py:18
-#, fuzzy
-#| msgid "target host"
 msgid "target host address"
-msgstr "destinazione"
+msgstr "Indirizzo dell'host di destinazione "
 
 #: relaydomains/transport.py:20
-#, fuzzy
-#| msgid "target host"
 msgid "target host port"
-msgstr "destinazione"
+msgstr "Porta dell'host di destinazione"
 
 #: relaydomains/transport.py:22
 msgid "verify recipients"
 msgstr "Verifica destinatari"
-
-#~ msgid "General"
-#~ msgstr "Generale"
-
-#~ msgid "Postfix's master.cf path"
-#~ msgstr "Percorso del file master.cf di Postfix"
-
-#~ msgid "Path to the master.cf configuration file"
-#~ msgstr "Percorso del file di configurazione master.cf"
-
-#~ msgid "Relay domains"
-#~ msgstr "Domini relè"
-
-#, fuzzy
-#~| msgid "Invalid line"
-#~ msgid "Invalid value"
-#~ msgstr "Riga non valida"
-
-#, fuzzy
-#~| msgid "Relay domains"
-#~ msgid "Relay domain"
-#~ msgstr "Domini relè"
-
-#~ msgid "name"
-#~ msgstr "nome"
-
-#~ msgid "The service name"
-#~ msgstr "Il nome del servizio"
-
-#, fuzzy
-#~| msgid "Remote destination of this domain"
-#~ msgid "Remote address (hostname or IP) of this domain"
-#~ msgstr "Destinazione remota per questo dominio"
-
-#, fuzzy
-#~| msgid "Remote destination of this domain"
-#~ msgid "Remote port of this domain"
-#~ msgstr "Destinazione remota per questo dominio"
-
-#~ msgid "Check for valid recipients"
-#~ msgstr "Verifica validità destinatari"
-
-#~ msgid "Relay Domain"
-#~ msgstr "Dominio relè"
-
-#~ msgid "Scan"
-#~ msgstr "Cerca"
-
-#, fuzzy
-#~| msgid "The domain name"
-#~ msgid "The relay domain name"
-#~ msgstr "Il nome del dominio"
-
-#, fuzzy
-#~| msgid ""
-#~| "\n"
-#~| "<li><em>relaydomain; name; target host; service; enabled; verify "
-#~| "recipients</em></li>\n"
-#~| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
-#~ msgid ""
-#~ "\n"
-#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
-#~ "recipients</em></li>\n"
-#~ msgstr ""
-#~ "\n"
-#~ "<li><em>dominio relè; nome; host di destinazione; servizio; abilitato; "
-#~ "verifica caselle</em></li>\n"
-#~ "<li><em> alias dominio relè; nome; destinazione; abilitato</em></li>\n"
