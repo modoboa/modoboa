@@ -1,0 +1,24 @@
+{% extends "common/generic_modal.html" %}
+
+{% load i18n %}
+
+{% block modalbody %}
+  {% if object.autoconfig_record %}
+    <div class="alert alert-success">
+      {% trans "autoconfig record (Mozilla) found: "%} {{ object.autoconfig_record.value }}.
+    </div>
+  {% else %}
+    <div class="alert alert-warning">
+      {% trans "autoconfig record (Mozilla) not found." %}
+    </div>
+  {% endif %}
+  {% if object.autodiscover_record %}
+    <div class="alert alert-success">
+      {% trans "autodiscover record (Microsoft) found: " %} {{ object.autodiscover_record.value }}.
+    </div>
+  {% else %}
+    <div class="alert alert-warning">
+      {% trans "autodiscover record (Microsoft) not found." %}
+    </div>
+  {% endif %}
+{% endblock %}

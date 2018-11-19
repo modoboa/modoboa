@@ -51,6 +51,39 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    enable_spf_checks = YesNoField(
+        label=ugettext_lazy("Enable SPF checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid SPF record"
+        )
+    )
+
+    enable_dkim_checks = YesNoField(
+        label=ugettext_lazy("Enable DKIM checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain with DKIM signin enabled has a valid DNS "
+            "record"
+        )
+    )
+
+    enable_dmarc_checks = YesNoField(
+        label=ugettext_lazy("Enable DMARC checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid DMARC record"
+        )
+    )
+
+    enable_autoconfig_checks = YesNoField(
+        label=ugettext_lazy("Enable autoconfig checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid records for autoconfiguration"
+        )
+    )
+
     enable_dnsbl_checks = YesNoField(
         label=ugettext_lazy("Enable DNSBL checks"),
         initial=True,

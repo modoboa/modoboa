@@ -69,23 +69,25 @@ def _domains(request):
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
     parameters = request.localconfig.parameters
+    dns_checks = {
+        "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+        "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+        "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+        "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+        "enable_autoconfig_checks": (
+            parameters.get_value("enable_autoconfig_checks")),
+        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
+    }
     context["headers"] = render_to_string(
-        "admin/domain_headers.html", {
-            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
-            "enable_dnsbl_checks": (
-                parameters.get_value("enable_dnsbl_checks"))
-        }, request
+        "admin/domain_headers.html", dns_checks, request
     )
     if page is None:
         context["length"] = 0
     else:
+        tpl_context = {"domains": page.object_list}
+        tpl_context.update(dns_checks)
         context["rows"] = render_to_string(
-            "admin/domains_table.html", {
-                "domains": page.object_list,
-                "enable_mx_checks": parameters.get_value("enable_mx_checks"),
-                "enable_dnsbl_checks": (
-                    parameters.get_value("enable_dnsbl_checks"))
-            }, request
+            "admin/domains_table.html", tpl_context, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
@@ -104,6 +106,11 @@ def domains(request, tplname="admin/domains.html"):
     return render(request, tplname, {
         "selection": "domains",
         "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+        "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+        "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+        "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+        "enable_autoconfig_checks": (
+            parameters.get_value("enable_autoconfig_checks")),
         "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
     })
 
@@ -226,6 +233,11 @@ class DomainDetailView(
         context.update({
             "templates": {"left": [], "right": []},
             "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+            "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+            "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+            "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+            "enable_autoconfig_checks": (
+                parameters.get_value("enable_autoconfig_checks")),
             "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
         })
         for _receiver, widgets in result:
