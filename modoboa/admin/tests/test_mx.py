@@ -110,7 +110,7 @@ class MXTestCase(ModoTestCase):
 
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "query")
-    def test_get_mx_list_dsn_server(self, mock_query, mock_getaddrinfo):
+    def test_get_mx_list_dns_server(self, mock_query, mock_getaddrinfo):
         """Test to get mx list from specific DNS server."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -133,7 +133,7 @@ class MXTestCase(ModoTestCase):
             get_domain_mx_list("bad-response.example.com")
         log.check(
             ("modoboa.admin", "ERROR",
-                _("No DNS records found for %s")
+                _("No DNS record found for %s")
                 % "does-not-exist.example.com"),
             ("modoboa.admin", "ERROR",
                 _("No MX record for %s") % "no-mx.example.com"),
@@ -142,11 +142,11 @@ class MXTestCase(ModoTestCase):
                 _("DNS resolution timeout, unable to query %s at the moment")
              % "timeout.example.com"),
             ("modoboa.admin", "ERROR",
-             _("No A record found for MX %(domain)s")
-             % {"domain": "no-lookup.example.com"}),
+             _("No DNS record found for %s")
+             % "does-not-exist.example.com"),
             ("modoboa.admin", "ERROR",
-             _("No AAAA record found for MX %(domain)s")
-             % {"domain": "no-lookup.example.com"}),
+             _("No DNS record found for %s")
+             % "does-not-exist.example.com"),
             ("modoboa.admin", "WARNING",
              _("Invalid IP address format for %(domain)s; %(addr)s")
              % {"domain": "bad-response.example.com", "addr": "000.0.0.0"}),
