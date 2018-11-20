@@ -22,6 +22,8 @@
   {% if enable_dkim_checks and domain.enable_dkim %}
     {% if not domain.dkim_public_key %}
       <span class="label label-mini label-default" title="{% trans 'Waiting for key to be generated' %}">DKIM</span>
+    {% elif not domain.dkim_record %}
+      <span class="label label-mini label-danger" title="{% trans 'No record found' %}">DKIM</span>
     {% else %}
       <span class="label label-mini label-{% if not domain.dkim_record %}danger{% elif not domain.dkim_record.is_valid %}warning{% else %}success{% endif %}">
         <a href="{% url 'dnstools:dns_record_detail' domain.dkim_record.pk %}" data-toggle="ajaxmodal">DKIM</a></span>

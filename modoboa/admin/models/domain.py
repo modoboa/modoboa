@@ -237,7 +237,7 @@ class Domain(AdminObject):
                 split_record.append("  \"%s\"" % record)
                 break
         record = "\n".join(split_record)
-        return "{}._domainkey.{}. 10800 IN TXT (\n{})".format(
+        return "{}._domainkey.{}. IN TXT (\n{})".format(
             self.dkim_key_selector, self.name, record)
 
     def add_admin(self, account):

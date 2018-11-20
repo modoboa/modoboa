@@ -148,3 +148,9 @@ class ViewsTestCase(ModoTestCase):
         self.assertContains(response, "autoconfig record (Mozilla) found")
         self.assertContains(
             response, "autodiscover record (Microsoft) not found")
+
+    def test_domain_dns_configuration(self):
+        url = reverse(
+            "dnstools:domain_dns_configuration", args=[self.ac_rec.domain.pk])
+        response = self.client.get(url)
+        self.assertContains(response, "[IP address of your Modoboa server]")

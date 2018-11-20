@@ -88,7 +88,11 @@
   <div class="col-xs-12 col-sm-6">
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">{% trans "DNS" %}</h3>
+        <h3 class="panel-title">
+          {% trans "DNS" %}
+          <a href="{% url 'dnstools:domain_dns_configuration' domain.pk %}"
+             data-toggle="ajaxmodal"><span class="fa fa-info-circle"></span></a>
+        </h3>
       </div>
       <table class="table">
         {% if enable_mx_checks or enable_dnsbl_checks %}
