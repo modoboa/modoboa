@@ -91,6 +91,25 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.13.0
+======
+
+Add ``'modoboa.dnstools'`` to ``MODOBOA_APPS``:
+
+.. sourcecode:: python
+
+   MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+      'modoboa.dnstools',
+   )
+
 modoboa-postfix-autoreply 1.5.0
 ===============================
 
