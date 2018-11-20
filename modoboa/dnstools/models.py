@@ -43,7 +43,7 @@ class DNSRecord(models.Model):
 
     domain = models.ForeignKey("admin.Domain", on_delete=models.CASCADE)
     type = models.CharField(
-        max_length=10, choices=constants.DNS_RECORD_TYPES)
+        max_length=15, choices=constants.DNS_RECORD_TYPES)
     value = models.TextField(blank=True)
     is_valid = models.BooleanField(default=False)
     error = models.CharField(max_length=50, null=True, blank=True)
