@@ -85,7 +85,7 @@ def check_spf_ip4(value):
     if len(parts) != 2:
         raise DNSSyntaxError(_("Wrong ip4 mechanism syntax"))
     try:
-        ipaddress.ip_address(parts[1])
+        ipaddress.ip_network(parts[1], False)
     except ValueError:
         raise DNSSyntaxError(_("Wrong IPv4 address format"))
 
@@ -96,7 +96,7 @@ def check_spf_ip6(value):
         raise DNSSyntaxError(_("Wrong ip6 mechanism syntax"))
     value = value.replace("ip6:", "")
     try:
-        ipaddress.ip_address(value)
+        ipaddress.ip_network(value, False)
     except ValueError:
         raise DNSSyntaxError(_("Wrong IPv6 address format"))
 

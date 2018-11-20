@@ -192,7 +192,10 @@ def get_dns_records(name, typ, resolver=None):
     except dns.resolver.NXDOMAIN as e:
         logger.error(_("No DNS record found for %s") % name, exc_info=e)
     except dns.resolver.NoAnswer as e:
-        logger.error(_("No %s record for %s") % (typ, name), exc_info=e)
+        logger.error(
+            _("No %(type)s record for %(name)s") % {"type": typ, "name": name},
+            exc_info=e
+        )
     except dns.resolver.NoNameservers as e:
         logger.error(_("No working name servers found"), exc_info=e)
     except dns.resolver.Timeout as e:

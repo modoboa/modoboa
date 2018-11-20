@@ -225,3 +225,35 @@ class DNSBLTestCase(ModoTestCase):
         response = self.client.get(
             reverse("admin:dnsbl_domain_detail", args=[self.domain.pk]))
         self.assertEqual(response.status_code, 200)
+
+
+class DNSChecksTestCase(ModoTestCase):
+    """A test case for DNS checks."""
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create some data."""
+        super(DNSChecksTestCase, cls).setUpTestData()
+        cls.domain = factories.DomainFactory(name="dns-checks.com")
+
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
+    def test_management_command(
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+        """Check that command works fine."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
+        mock_g_gethostbyname.return_value = "1.2.3.4"
+
+        self.domain.enable_dkim = True
+        self.domain.dkim_public_key = "XXXXX"
+        self.domain.save(update_fields=["enable_dkim", "dkim_public_key"])
+
+        management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=0")
+
+        self.assertIsNot(self.domain.spf_record, None)
+        self.assertIsNot(self.domain.dkim_record, None)
+        self.assertIsNot(self.domain.dmarc_record, None)
+        self.assertIsNot(self.domain.autoconfig_record, None)
+        self.assertIsNot(self.domain.autodiscover_record, None)

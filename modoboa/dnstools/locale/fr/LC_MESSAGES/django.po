@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-20 10:22+0100\n"
+"PO-Revision-Date: 2018-11-20 10:31+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib.py:86
+msgid "Wrong ip4 mechanism syntax"
+msgstr "Mauvaise syntaxe de mécanisme ip4"
+
+#: lib.py:90
+msgid "Wrong IPv4 address format"
+msgstr "Mauvais format d'adresse IPv4"
+
+#: lib.py:96
+msgid "Wrong ip6 mechanism syntax"
+msgstr "Mauvaise syntaxe de mécanisme ip6"
+
+#: lib.py:101
+msgid "Wrong IPv6 address format"
+msgstr "Mauvais format d'adresse IPv6"
+
+#: lib.py:116 lib.py:142
+msgid "Invalid syntax for {} mechanism"
+msgstr "Mauvaise syntaxe de mécanisme {}"
+
+#: lib.py:118
+msgid "Invalid mask found {}"
+msgstr "Masque incorrect trouvé {}"
+
+#: lib.py:163
+msgid "Not an SPF record"
+msgstr "Ce n'est pas un enregistrement SPF"
+
+#: lib.py:183
+msgid "Unknown mechanism {}"
+msgstr "Mécanisme inconnu {}"
+
+#: lib.py:185
+msgid "Unknown modifier {}"
+msgstr "Modificateur inconnu {}"
+
+#: lib.py:188
+msgid "Duplicate modifier {} found"
+msgstr "Modificateur dupliqué {} trouvé"
+
+#: lib.py:192
+msgid "No mechanism found"
+msgstr "Aucun mécanisme trouvé"
+
+#: lib.py:199
+msgid "Not a valid DKIM record"
+msgstr "Ce n'est pas un enregistrement DKIM"
+
+#: lib.py:205 lib.py:256
+msgid "Invalid tag {}"
+msgstr "Tag incorrect {}"
+
+#: lib.py:210
+msgid "No key found in record"
+msgstr "Pas de clé trouvée dans l'enregistrement"
+
+#: lib.py:217
+msgid "Wrong value {} for tag {}"
+msgstr "Mauvaise valeur {} pour le tag {}"
+
+#: lib.py:232
+msgid "Wrong value {} for tag {}:"
+msgstr "Mauvaise valuer {} pour le tag {} :"
+
+#: lib.py:236
+msgid " not an integer"
+msgstr " ce n'est pas un entier"
+
+#: lib.py:239
+msgid " less than {}"
+msgstr " inférieur à {}"
+
+#: lib.py:242
+msgid " greater than {}"
+msgstr " supérieur à {}"
+
+#: lib.py:250
+msgid "Not a valid DMARC record"
+msgstr "Ce n'est pas un enregistrement DMARC"
+
+#: lib.py:259
+msgid "Unknown tag {}"
+msgstr "Tag inconnu {}"
+
+#: lib.py:264
+msgid "Missing required p tag"
+msgstr "Tag obligatoire p introuvable"
+
+#: models.py:79
+msgid "Public key mismatchs"
+msgstr "La clé publique ne correspond pas"
+
+#: templates/dnstools/autoconfig_records_status.html:8
+msgid "autoconfig record (Mozilla) found: "
+msgstr "Enregistrement autoconfig (Mozilla) trouvé :"
+
+#: templates/dnstools/autoconfig_records_status.html:12
+msgid "autoconfig record (Mozilla) not found."
+msgstr "Enregistrement autoconfig (Mozilla) introuvable."
+
+#: templates/dnstools/autoconfig_records_status.html:17
+msgid "autodiscover record (Microsoft) found: "
+msgstr "Enregistrement autodiscover (Microsoft) trouvé :"
+
+#: templates/dnstools/autoconfig_records_status.html:21
+msgid "autodiscover record (Microsoft) not found."
+msgstr "Enregistrement autodiscover (Microsoft) introuvable."
+
+#: templates/dnstools/dns_record_detail.html:8
+msgid "A DNS record has been found and is valid."
+msgstr "Un enregistrement DNS a été trouvé et est correct."
+
+#: templates/dnstools/dns_record_detail.html:12
+msgid "A DNS record has been found but its syntax is not valid:"
+msgstr "Un enregistrement DNS a été trouvé mais sa syntaxe est incorrecte :"
+
+#: views.py:36
+msgid "{} record of {}"
+msgstr "Enregistrement {} de {}"
+
+#: views.py:64
+msgid "Auto configuration records for {}"
+msgstr "Enregistrements d'autoconfiguration pour {}"

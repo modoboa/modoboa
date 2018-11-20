@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 13:41+0200\n"
+"POT-Creation-Date: 2018-11-20 10:32+0100\n"
 "PO-Revision-Date: 2017-10-12 08:13+0000\n"
 "Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/"
@@ -59,49 +59,97 @@ msgstr ""
 "είδη ορισμένες διευθύνσεις."
 
 #: app_settings.py:55
+#, fuzzy
+#| msgid "Enable DNS checks"
+msgid "Enable SPF checks"
+msgstr "Ενεργοποίση ελέγχου DNS"
+
+#: app_settings.py:58
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid SPF record"
+msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
+
+#: app_settings.py:63
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DKIM checks"
+msgstr "Ενεργοποίηση ελέγχου MX"
+
+#: app_settings.py:66
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
+
+#: app_settings.py:72
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DMARC checks"
+msgstr "Ενεργοποίηση ελέγχου MX"
+
+#: app_settings.py:75
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid DMARC record"
+msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
+
+#: app_settings.py:80
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable autoconfig checks"
+msgstr "Ενεργοποίηση ελέγχου MX"
+
+#: app_settings.py:83
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
+
+#: app_settings.py:88
 msgid "Enable DNSBL checks"
 msgstr "Ενεργοποίηση ελέγχου DNSBL"
 
-#: app_settings.py:58
+#: app_settings.py:91
 msgid "Check every domain against major DNSBL providers"
 msgstr "Έλεγχος κάθε domain κατά κύριους DNSBL πάροχους"
 
-#: app_settings.py:63
+#: app_settings.py:96
 msgid "Custom DNS server"
 msgstr ""
 
-#: app_settings.py:66
+#: app_settings.py:99
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr ""
 
-#: app_settings.py:71
+#: app_settings.py:104
 msgid "DKIM keys storage directory"
 msgstr ""
 
-#: app_settings.py:74
+#: app_settings.py:107
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
 msgstr ""
 
-#: app_settings.py:82
+#: app_settings.py:115
 msgid "Default DKIM key length"
 msgstr ""
 
-#: app_settings.py:86
+#: app_settings.py:119
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr ""
 
-#: app_settings.py:90 templates/admin/domain_detail.html:41
+#: app_settings.py:123 templates/admin/domain_detail.html:41
 msgid "Mailboxes"
 msgstr "Γραμματοκιβώτια"
 
-#: app_settings.py:93
+#: app_settings.py:126
 msgid "Handle mailboxes on filesystem"
 msgstr "Χειριστείτε γραμματοκιβώτια στο σύστημα αρχείων"
 
-#: app_settings.py:96
+#: app_settings.py:129
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -109,21 +157,21 @@ msgstr ""
 "Μετονομασία και διαγραφή γραμματοκιβωτίων στο σύστημα αρχείων, όταν "
 "μετονομάζονται ή διαγράφονται από το Medaboa "
 
-#: app_settings.py:102
+#: app_settings.py:135
 msgid "Mailboxes owner"
 msgstr "Ο ιδιοκτήτης των γραμματοκιβωτίων"
 
-#: app_settings.py:105
+#: app_settings.py:138
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr ""
 "Ο UNIX λογαριασμός που είναι ιδιοκτήτης των γραμματοκιβωτίων στο σύστημα "
 "αρχείων"
 
-#: app_settings.py:110
+#: app_settings.py:143
 msgid "Default domain quota"
 msgstr "Προκαθορισμένο domain quota"
 
-#: app_settings.py:113
+#: app_settings.py:146
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
@@ -131,12 +179,12 @@ msgstr ""
 "Προκαθορισμένο quota (σε MB) που εφαρμόζεται στα νέα domains χωρίς "
 "προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota. "
 
-#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
+#: app_settings.py:152 forms/domain.py:53 models/domain.py:37
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Προκαθορισμένο quota γραμματοκιβωτίου "
 
-#: app_settings.py:122
+#: app_settings.py:155
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
@@ -144,64 +192,64 @@ msgstr ""
 "Προκαθορισμένο quota γραμματοκιβωτίου (σε MB) που εφαρμόζεται στα νέα "
 "domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota. "
 
-#: app_settings.py:128
+#: app_settings.py:161
 msgid "Automatic account removal"
 msgstr "Αυτόματη αφαίρεση λογαριασμών"
 
-#: app_settings.py:131
+#: app_settings.py:164
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr ""
 "Όταν αφαιρείται ένα γραμματοκιβώτιο, να αφαιρείται και ο σχετικός λογαριασμός"
 
-#: app_settings.py:135
+#: app_settings.py:168
 msgid "Automatic domain/mailbox creation"
 msgstr "Αυτόματη δημιουργία domain/γραμματοκιβωτίων"
 
-#: app_settings.py:138
+#: app_settings.py:171
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Δημιουργία domain και γραμματοκιβωτίου κατά την αυτόματη δημιουργία "
 "λογαριασμού"
 
-#: app_settings.py:144
+#: app_settings.py:177
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Δημιουργία ενός ψευδώνυμου κατά τη μετονομασία ενός γραμματοκιβωτίου"
 
-#: app_settings.py:147
+#: app_settings.py:180
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 "Δημιουργήστε ένα ψευδώνυμο χρησιμοποιώντας την παλιά διεύθυνση όταν "
 "μετονομάζεται ένα γραμματοκιβώτιο."
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:339
+#: app_settings.py:229 app_settings.py:237 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "Πρέπει να είναι θετικός ακέραιος"
 
-#: app_settings.py:214
+#: app_settings.py:247
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Directory not found."
 msgstr "To domain δεν βρέθηκε."
 
-#: app_settings.py:220
+#: app_settings.py:253
 msgid "openssl not found, please make sure it is installed."
 msgstr ""
 
-#: app_settings.py:234
+#: app_settings.py:267
 msgid "Define at least one authorized network / address"
 msgstr "Ορίστε τουλάχιστον μια εξουσιοδοτημένη διεύθυνση / δίκτυο"
 
-#: app_settings.py:244
+#: app_settings.py:277
 msgid "Administration"
 msgstr "Διαχείριση"
 
-#: constants.py:98 forms/alias.py:47
+#: constants.py:96 forms/alias.py:47
 #: templates/admin/_per_domain_statistics_widget.html:7
 #: templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr "Domain"
 
-#: constants.py:99
+#: constants.py:97
 #, fuzzy
 #| msgid "New domain"
 msgid "Relay domain"
@@ -264,7 +312,7 @@ msgid "Only super administrators are allowed for this mode"
 msgstr "Μόνο σε super διαχειριστές επιτρέπεται αυτή η λειτουργία. "
 
 #: forms/account.py:182 forms/account.py:184 forms/domain.py:166
-#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:291
 msgid "This field is required."
 msgstr "Αυτό το πεδίο απαιτείτε."
 
@@ -435,7 +483,7 @@ msgstr ""
 msgid "Key selector"
 msgstr ""
 
-#: forms/domain.py:48 models/domain.py:36
+#: forms/domain.py:48 serializers.py:34
 #, fuzzy
 #| msgid ""
 #| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -466,7 +514,7 @@ msgstr "Ψευδώνυμα (alias) domain "
 msgid "A %s with this name already exists"
 msgstr "Το '%s' με αυτό το όνομα υπάρχει ήδη"
 
-#: forms/domain.py:109 serializers.py:56
+#: forms/domain.py:109 serializers.py:68
 msgid "No authorized MX record found for this domain"
 msgstr "Δεν υπάρχουν ΜΧ έγραφες για αυτό το domain "
 
@@ -474,7 +522,7 @@ msgstr "Δεν υπάρχουν ΜΧ έγραφες για αυτό το domain 
 msgid "DKIM keys storage directory not configured"
 msgstr ""
 
-#: forms/domain.py:151 serializers.py:74
+#: forms/domain.py:151 serializers.py:86
 msgid "Cannot be greater than domain quota"
 msgstr "Δεν μπορεί να είναι μεγαλύτερο από το domain quota."
 
@@ -624,46 +672,40 @@ msgstr "Ταυτότητες"
 msgid "Forward"
 msgstr "Προώθηση"
 
-#: lib.py:41
+#: lib.py:42
 msgid "A mailbox is required"
 msgstr "Απαιτείται γραμματοκιβώτιο"
 
-#: lib.py:131
+#: lib.py:132
 msgid "You are not allowed to import domains"
 msgstr "Δεν έχετε δικαίωμα εισαγωγής domain"
 
-#: lib.py:142
+#: lib.py:143
 msgid "You are not allowed to import domain aliases."
 msgstr "Δεν επιτρέπεται να εισαγάγετε ψευδώνυμα στο domain."
 
-#: lib.py:187 tests/test_mx.py:135
+#: lib.py:193 tests/test_mx.py:136 tests/test_mx.py:145 tests/test_mx.py:148
 #, fuzzy, python-format
 #| msgid "No MX record found for this domain."
-msgid "No DNS records found for %s"
+msgid "No DNS record found for %s"
 msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
 
-#: lib.py:189 tests/test_mx.py:138
+#: lib.py:196
 #, fuzzy, python-format
 #| msgid "MX records of {}"
-msgid "No MX record for %s"
+msgid "No %(type)s record for %(name)s"
 msgstr "Έγραφες MX από{}"
 
-#: lib.py:191 tests/test_mx.py:139
+#: lib.py:200 tests/test_mx.py:140
 msgid "No working name servers found"
 msgstr ""
 
-#: lib.py:194 tests/test_mx.py:141
+#: lib.py:203 tests/test_mx.py:142
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 
-#: lib.py:205
-#, fuzzy, python-brace-format
-#| msgid "No MX record found for this domain."
-msgid "No {type} record found for MX {mx}"
-msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#: lib.py:214
+#: lib.py:231
 #, fuzzy, python-brace-format
 #| msgid "Invalid quota value for domain '{}'"
 msgid "Invalid IP address format for {domain}; {addr}"
@@ -683,20 +725,20 @@ msgstr ""
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:135
+#: management/commands/subcommands/_mx.py:136
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL ζήτημα(τα) για το domain {}"
 
-#: management/commands/subcommands/_mx.py:155
+#: management/commands/subcommands/_mx.py:156
 msgid "Domain {} has no MX record"
 msgstr "Το Domain {} δεν έχει εγγραφή MX "
 
-#: management/commands/subcommands/_mx.py:166
+#: management/commands/subcommands/_mx.py:167
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "Η εγγραφή MX για το domain  {0} δεν είναι έγκυρη: {1} "
 
-#: management/commands/subcommands/_mx.py:183
+#: management/commands/subcommands/_mx.py:184
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] MX ζήτημα(τα) για το domain {}"
 
@@ -708,7 +750,7 @@ msgstr "διεύθυνση"
 msgid "The alias address."
 msgstr "Η εναλλακτική διεύθυνση."
 
-#: models/alias.py:43 models/domain.py:49 models/domain_alias.py:46
+#: models/alias.py:43 models/domain.py:41 models/domain_alias.py:46
 msgid "enabled"
 msgstr "ενεργοποιημένο"
 
@@ -754,55 +796,49 @@ msgstr "όνομα"
 msgid "The domain name"
 msgstr "Το όνομα του domain"
 
-#: models/domain.py:44
-msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Προκαθορισμένο quota σε MB που εφαρμόζεται στα γραμματοκιβώτια. Μια τιμή 0 "
-"σημαίνει ότι δεν υπάρχει quota.  "
-
-#: models/domain.py:50
+#: models/domain.py:42
 msgid "Check to activate this domain"
 msgstr "Επιλέξτε για να ενεργοποιηθεί αυτό το domain"
 
-#: models/domain.py:55
+#: models/domain.py:47
 msgid "Enable DNS checks"
 msgstr "Ενεργοποίση ελέγχου DNS"
 
-#: models/domain.py:56
+#: models/domain.py:48
 msgid "Check to enable DNS checks for this domain"
 msgstr "Επιλέξτε για να ενεργοποιήσετε τους ελέγχους DNS για αυτόν το domain"
 
-#: models/domain.py:63
+#: models/domain.py:55
 msgid "Enable DKIM signing"
 msgstr ""
 
-#: models/domain.py:65
+#: models/domain.py:57
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 
-#: models/domain.py:71
+#: models/domain.py:63
 msgid "Key length"
 msgstr ""
 
-#: models/domain.py:303 models/domain_alias.py:74
+#: models/domain.py:320 models/domain_alias.py:74
 msgid "Invalid line"
 msgstr "Λάθος γραμμή"
 
-#: models/domain.py:313
+#: models/domain.py:330
 msgid "No authorized MX record found for domain {}"
 msgstr "Δεν βρέθηκε εξουσιοδοτημένη εγγραφή MX για το domain {}"
 
-#: models/domain.py:320
+#: models/domain.py:337
 msgid "Invalid quota value for domain '{}'"
 msgstr "Μη έγκυρη τιμή quota για το domain '{}'"
 
-#: models/domain.py:327
+#: models/domain.py:344
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr ""
 "Μη έγκυρη τιμή quota για το προεπιλεγμένο γραμματοκιβώτιο για το domain '{}'"
 
-#: models/domain.py:332
+#: models/domain.py:349
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr ""
 "Το προεπιλεγμένο quota για το γραμματοκιβώτιο δεν πρέπει να είναι μεγαλύτερο "
@@ -842,44 +878,50 @@ msgstr "Ένα quota απαιτείται "
 msgid "Domain quota exceeded"
 msgstr "Υπέρβαση του domain quota"
 
-#: serializers.py:99 serializers.py:304 serializers.py:402
+#: serializers.py:41
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr ""
+"Προκαθορισμένο quota σε MB που εφαρμόζεται στα γραμματοκιβώτια. Μια τιμή 0 "
+"σημαίνει ότι δεν υπάρχει quota.  "
+
+#: serializers.py:111 serializers.py:316 serializers.py:414
 msgid "Permission denied."
 msgstr "Η άδεια απορρίφθηκε."
 
-#: serializers.py:150
+#: serializers.py:162
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Λίστα διαχειριζόμενων domains (αφορά μόνο μεταπωλητές και διαχειριστές "
 "domain)"
 
-#: serializers.py:254
+#: serializers.py:266
 msgid "Not allowed for this role."
 msgstr "Δεν επιτρέπεται για αυτόν τον ρόλο."
 
-#: serializers.py:266
+#: serializers.py:278
 msgid "Must be equal to mailbox full_address"
 msgstr "Πρέπει να είναι ίσο με την full_address του γραμματοκιβωτίου"
 
-#: serializers.py:291
+#: serializers.py:303
 msgid "Local domain {} does not exist"
 msgstr "Το τοπικός domain {} δεν υπάρχει"
 
-#: serializers.py:389
+#: serializers.py:401
 msgid "A list of recipient"
 msgstr "Λίστα παραληπτών"
 
-#: serializers.py:400
+#: serializers.py:412
 msgid "Domain not found."
 msgstr "To domain δεν βρέθηκε."
 
-#: serializers.py:449
+#: serializers.py:461
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this domain."
 msgstr "Δεν έχετε πρόσβαση σε αυτό το domain"
 
-#: serializers.py:457
+#: serializers.py:469
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this mailbox."
@@ -915,6 +957,18 @@ msgstr "Απενεργοποιήθηκε "
 #: templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
 msgstr "Αναμονή ελέγχων"
+
+#: templates/admin/_domain_dnschecks_status.html:16
+#: templates/admin/_domain_dnschecks_status.html:32
+#: templates/admin/_domain_dnschecks_status.html:40
+#, fuzzy
+#| msgid "No MX record found for this domain."
+msgid "No record found"
+msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
+
+#: templates/admin/_domain_dnschecks_status.html:24
+msgid "Waiting for key to be generated"
+msgstr ""
 
 #: templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
@@ -1310,19 +1364,13 @@ msgstr "Επεξεργασία{}"
 msgid "Delete %s?"
 msgstr "Διαγραφή %s;"
 
-#: tests/test_mx.py:144
+#: tests/test_mx.py:139
 #, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No A record found for MX %(domain)s"
-msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
+#| msgid "MX records of {}"
+msgid "No MX record for %s"
+msgstr "Έγραφες MX από{}"
 
-#: tests/test_mx.py:147
-#, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No AAAA record found for MX %(domain)s"
-msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#: tests/test_mx.py:150 tests/test_mx.py:153
+#: tests/test_mx.py:151 tests/test_mx.py:154
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr ""
@@ -1361,11 +1409,11 @@ msgstr "Έγραφες MX από{}"
 msgid "DNSBL summary for {}"
 msgstr "Περίληψη DNSBL για{}"
 
-#: views/domain.py:199
+#: views/domain.py:206
 msgid "You can't delete your own domain"
 msgstr "Δεν μπορείτε να σβήσετε το δικό σας domain"
 
-#: views/domain.py:202
+#: views/domain.py:209
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Το domain διαφράφηκε"
@@ -1410,6 +1458,21 @@ msgstr "Εισαγωγή ταυτοτήτων"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "Η προώθηση ενημερώθηκε"
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No {type} record found for MX {mx}"
+#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No A record found for MX %(domain)s"
+#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No AAAA record found for MX %(domain)s"
+#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
 
 #~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
 #~ msgstr ""

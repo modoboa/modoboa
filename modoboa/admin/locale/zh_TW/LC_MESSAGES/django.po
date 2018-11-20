@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 13:41+0200\n"
+"POT-Creation-Date: 2018-11-20 10:32+0100\n"
 "PO-Revision-Date: 2018-07-09 04:17+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
@@ -57,26 +57,74 @@ msgid ""
 msgstr "假如 MX 紀錄未使用定義的位址請避免建立新的網域。"
 
 #: app_settings.py:55
+#, fuzzy
+#| msgid "Enable DNS checks"
+msgid "Enable SPF checks"
+msgstr "啟用 DNS 檢查"
+
+#: app_settings.py:58
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid SPF record"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: app_settings.py:63
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DKIM checks"
+msgstr "啟用 MX 檢查"
+
+#: app_settings.py:66
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: app_settings.py:72
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DMARC checks"
+msgstr "啟用 MX 檢查"
+
+#: app_settings.py:75
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid DMARC record"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: app_settings.py:80
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable autoconfig checks"
+msgstr "啟用 MX 檢查"
+
+#: app_settings.py:83
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: app_settings.py:88
 msgid "Enable DNSBL checks"
 msgstr "啟用 DNSBL 檢查"
 
-#: app_settings.py:58
+#: app_settings.py:91
 msgid "Check every domain against major DNSBL providers"
 msgstr "針對每個 DNSBL 供應商來檢查每個網域"
 
-#: app_settings.py:63
+#: app_settings.py:96
 msgid "Custom DNS server"
 msgstr ""
 
-#: app_settings.py:66
+#: app_settings.py:99
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr ""
 
-#: app_settings.py:71
+#: app_settings.py:104
 msgid "DKIM keys storage directory"
 msgstr "DKIM 金鑰儲存目錄"
 
-#: app_settings.py:74
+#: app_settings.py:107
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
@@ -85,109 +133,109 @@ msgstr ""
 "絕對路徑的目錄將會給 DKIM 私鑰儲存。確認這個目錄屬於 root 使用者並且外面的世"
 "界無法讀取。"
 
-#: app_settings.py:82
+#: app_settings.py:115
 msgid "Default DKIM key length"
 msgstr "預設 DKIM 金鑰長度"
 
-#: app_settings.py:86
+#: app_settings.py:119
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr "預設長度是給新產生的 DKIM 金鑰用。"
 
-#: app_settings.py:90 templates/admin/domain_detail.html:41
+#: app_settings.py:123 templates/admin/domain_detail.html:41
 msgid "Mailboxes"
 msgstr "信箱"
 
-#: app_settings.py:93
+#: app_settings.py:126
 msgid "Handle mailboxes on filesystem"
 msgstr "在檔案系統上處理信箱"
 
-#: app_settings.py:96
+#: app_settings.py:129
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
 msgstr "當他要在 Modoboa 上取得更名或移除就會在檔案系統上更名或移除信箱"
 
-#: app_settings.py:102
+#: app_settings.py:135
 msgid "Mailboxes owner"
 msgstr "信箱擁有者"
 
-#: app_settings.py:105
+#: app_settings.py:138
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "UNIX 帳號是檔案系統上擁有的信箱"
 
-#: app_settings.py:110
+#: app_settings.py:143
 msgid "Default domain quota"
 msgstr "預設網域配額"
 
-#: app_settings.py:113
+#: app_settings.py:146
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr "預設配額（以MB為單位）應用於未指定值的創立網域。值為0表示沒有配額。"
 
-#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
+#: app_settings.py:152 forms/domain.py:53 models/domain.py:37
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "預設信箱配額"
 
-#: app_settings.py:122
+#: app_settings.py:155
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
 msgstr ""
 "預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
 
-#: app_settings.py:128
+#: app_settings.py:161
 msgid "Automatic account removal"
 msgstr "自動刪除帳號"
 
-#: app_settings.py:131
+#: app_settings.py:164
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "當信箱移除時，也會移除關聯的帳號"
 
-#: app_settings.py:135
+#: app_settings.py:168
 msgid "Automatic domain/mailbox creation"
 msgstr "自動建立網域/信箱"
 
-#: app_settings.py:138
+#: app_settings.py:171
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "當帳號自動建立後會建立網域和一個信箱。"
 
-#: app_settings.py:144
+#: app_settings.py:177
 msgid "Create an alias when a mailbox is renamed"
 msgstr "當信箱更名時會建立別名"
 
-#: app_settings.py:147
+#: app_settings.py:180
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "當信箱更名時建立別名並使用在舊的位址。"
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:339
+#: app_settings.py:229 app_settings.py:237 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "必須是正整數"
 
-#: app_settings.py:214
+#: app_settings.py:247
 msgid "Directory not found."
 msgstr "目錄不存在"
 
-#: app_settings.py:220
+#: app_settings.py:253
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl 找不到，請確認已安裝。"
 
-#: app_settings.py:234
+#: app_settings.py:267
 msgid "Define at least one authorized network / address"
 msgstr "定義至少一個已驗證網路/位址"
 
-#: app_settings.py:244
+#: app_settings.py:277
 msgid "Administration"
 msgstr "管理員"
 
-#: constants.py:98 forms/alias.py:47
+#: constants.py:96 forms/alias.py:47
 #: templates/admin/_per_domain_statistics_widget.html:7
 #: templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr "網域"
 
-#: constants.py:99
+#: constants.py:97
 msgid "Relay domain"
 msgstr "網域轉送"
 
@@ -244,7 +292,7 @@ msgid "Only super administrators are allowed for this mode"
 msgstr "只有超級管理員在這個模式下是允許的"
 
 #: forms/account.py:182 forms/account.py:184 forms/domain.py:166
-#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:291
 msgid "This field is required."
 msgstr "這個欄位是必填的"
 
@@ -406,7 +454,7 @@ msgstr "這個網域的別名(es)。一行只能輸入一個電子郵件，按 E
 msgid "Key selector"
 msgstr "Key selector"
 
-#: forms/domain.py:48 models/domain.py:36
+#: forms/domain.py:48 serializers.py:34
 #, fuzzy
 #| msgid ""
 #| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -433,7 +481,7 @@ msgstr "網域別名"
 msgid "A %s with this name already exists"
 msgstr "此 %s 及這個名稱已存在"
 
-#: forms/domain.py:109 serializers.py:56
+#: forms/domain.py:109 serializers.py:68
 msgid "No authorized MX record found for this domain"
 msgstr "沒有找到這個網域已驗證過的 MX 紀錄"
 
@@ -441,7 +489,7 @@ msgstr "沒有找到這個網域已驗證過的 MX 紀錄"
 msgid "DKIM keys storage directory not configured"
 msgstr "未設置 DKIM 金鑰儲存目錄"
 
-#: forms/domain.py:151 serializers.py:74
+#: forms/domain.py:151 serializers.py:86
 msgid "Cannot be greater than domain quota"
 msgstr "不可以超過網域配額"
 
@@ -587,44 +635,40 @@ msgstr "使用者"
 msgid "Forward"
 msgstr "轉發"
 
-#: lib.py:41
+#: lib.py:42
 msgid "A mailbox is required"
 msgstr "信箱是必要的"
 
-#: lib.py:131
+#: lib.py:132
 msgid "You are not allowed to import domains"
 msgstr "您未允許匯入網域"
 
-#: lib.py:142
+#: lib.py:143
 msgid "You are not allowed to import domain aliases."
 msgstr "您未允許匯入網域別名。"
 
-#: lib.py:187 tests/test_mx.py:135
-#, python-format
-msgid "No DNS records found for %s"
+#: lib.py:193 tests/test_mx.py:136 tests/test_mx.py:145 tests/test_mx.py:148
+#, fuzzy, python-format
+#| msgid "No DNS records found for %s"
+msgid "No DNS record found for %s"
 msgstr "沒有找到 %s 的 DNS 紀錄"
 
-#: lib.py:189 tests/test_mx.py:138
-#, python-format
-msgid "No MX record for %s"
+#: lib.py:196
+#, fuzzy, python-format
+#| msgid "No MX record for %s"
+msgid "No %(type)s record for %(name)s"
 msgstr "沒有 %s 的 MX 紀錄"
 
-#: lib.py:191 tests/test_mx.py:139
+#: lib.py:200 tests/test_mx.py:140
 msgid "No working name servers found"
 msgstr "沒有找到執行中的名稱伺服器"
 
-#: lib.py:194 tests/test_mx.py:141
+#: lib.py:203 tests/test_mx.py:142
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS 解析逾時，無法查詢 %s 在這個時間點"
 
-#: lib.py:205
-#, fuzzy, python-brace-format
-#| msgid "No DNS records found for %s"
-msgid "No {type} record found for MX {mx}"
-msgstr "沒有找到 %s 的 DNS 紀錄"
-
-#: lib.py:214
+#: lib.py:231
 #, fuzzy, python-brace-format
 #| msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgid "Invalid IP address format for {domain}; {addr}"
@@ -644,20 +688,20 @@ msgstr ""
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:135
+#: management/commands/subcommands/_mx.py:136
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] 此網域的 DNSBL 問題(s) {}"
 
-#: management/commands/subcommands/_mx.py:155
+#: management/commands/subcommands/_mx.py:156
 msgid "Domain {} has no MX record"
 msgstr "網域 {} 沒有 MX 紀錄"
 
-#: management/commands/subcommands/_mx.py:166
+#: management/commands/subcommands/_mx.py:167
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "此網域的 MX 紀錄 {0} 是無效的: {1}"
 
-#: management/commands/subcommands/_mx.py:183
+#: management/commands/subcommands/_mx.py:184
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] 此網域的 MX 問題(s) {}"
 
@@ -669,7 +713,7 @@ msgstr "地址"
 msgid "The alias address."
 msgstr "別名位址。"
 
-#: models/alias.py:43 models/domain.py:49 models/domain_alias.py:46
+#: models/alias.py:43 models/domain.py:41 models/domain_alias.py:46
 msgid "enabled"
 msgstr "已啟用"
 
@@ -715,52 +759,48 @@ msgstr "名稱"
 msgid "The domain name"
 msgstr "網域名稱"
 
-#: models/domain.py:44
-msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
-
-#: models/domain.py:50
+#: models/domain.py:42
 msgid "Check to activate this domain"
 msgstr "點擊啟用這個網域"
 
-#: models/domain.py:55
+#: models/domain.py:47
 msgid "Enable DNS checks"
 msgstr "啟用 DNS 檢查"
 
-#: models/domain.py:56
+#: models/domain.py:48
 msgid "Check to enable DNS checks for this domain"
 msgstr "點擊啟用這個網域的 DNS 檢查"
 
-#: models/domain.py:63
+#: models/domain.py:55
 msgid "Enable DKIM signing"
 msgstr "啟用 DKIM 簽署"
 
-#: models/domain.py:65
+#: models/domain.py:57
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr "假如您啟用這個功能，DKIM 金鑰將會產生給這個網域。"
 
-#: models/domain.py:71
+#: models/domain.py:63
 msgid "Key length"
 msgstr "金鑰長度"
 
-#: models/domain.py:303 models/domain_alias.py:74
+#: models/domain.py:320 models/domain_alias.py:74
 msgid "Invalid line"
 msgstr "無效的行"
 
-#: models/domain.py:313
+#: models/domain.py:330
 msgid "No authorized MX record found for domain {}"
 msgstr "沒有找到這個網域已驗證過的 MX 紀錄 {}"
 
-#: models/domain.py:320
+#: models/domain.py:337
 msgid "Invalid quota value for domain '{}'"
 msgstr "此網域有無效的配額值 '{}'"
 
-#: models/domain.py:327
+#: models/domain.py:344
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr "此網域有無效的預設信箱配額值 '{}'"
 
-#: models/domain.py:332
+#: models/domain.py:349
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr "預設的信箱配額不可以超過網域配額"
 
@@ -798,40 +838,44 @@ msgstr "配額是必要的"
 msgid "Domain quota exceeded"
 msgstr "網域配額已超過"
 
-#: serializers.py:99 serializers.py:304 serializers.py:402
+#: serializers.py:41
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
+
+#: serializers.py:111 serializers.py:316 serializers.py:414
 msgid "Permission denied."
 msgstr "權限不足"
 
-#: serializers.py:150
+#: serializers.py:162
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "管理員網域列表 (只有經銷商和網域管理員)。"
 
-#: serializers.py:254
+#: serializers.py:266
 msgid "Not allowed for this role."
 msgstr "不允許這個身份"
 
-#: serializers.py:266
+#: serializers.py:278
 msgid "Must be equal to mailbox full_address"
 msgstr "必須跟信箱完整位址一樣"
 
-#: serializers.py:291
+#: serializers.py:303
 msgid "Local domain {} does not exist"
 msgstr "本機網域 {} 不存在"
 
-#: serializers.py:389
+#: serializers.py:401
 msgid "A list of recipient"
 msgstr "收件人列表"
 
-#: serializers.py:400
+#: serializers.py:412
 msgid "Domain not found."
 msgstr "網域不存在。"
 
-#: serializers.py:449
+#: serializers.py:461
 msgid "You don't have access to this domain."
 msgstr "您不能存取這個網域。"
 
-#: serializers.py:457
+#: serializers.py:469
 msgid "You don't have access to this mailbox."
 msgstr "您不能存取這個信箱。"
 
@@ -861,6 +905,18 @@ msgstr "已停用"
 #: templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
 msgstr "等待檢查"
+
+#: templates/admin/_domain_dnschecks_status.html:16
+#: templates/admin/_domain_dnschecks_status.html:32
+#: templates/admin/_domain_dnschecks_status.html:40
+#, fuzzy
+#| msgid "No DNS records found for %s"
+msgid "No record found"
+msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#: templates/admin/_domain_dnschecks_status.html:24
+msgid "Waiting for key to be generated"
+msgstr ""
 
 #: templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
@@ -1240,19 +1296,12 @@ msgstr "編輯 {}"
 msgid "Delete %s?"
 msgstr "刪除 %s?"
 
-#: tests/test_mx.py:144
-#, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No A record found for MX %(domain)s"
-msgstr "沒有找到這個網域的 MX 紀錄。"
+#: tests/test_mx.py:139
+#, python-format
+msgid "No MX record for %s"
+msgstr "沒有 %s 的 MX 紀錄"
 
-#: tests/test_mx.py:147
-#, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No AAAA record found for MX %(domain)s"
-msgstr "沒有找到這個網域的 MX 紀錄。"
-
-#: tests/test_mx.py:150 tests/test_mx.py:153
+#: tests/test_mx.py:151 tests/test_mx.py:154
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr "無效的 IP 位址格式 %(domain)s; %(addr)s"
@@ -1290,11 +1339,11 @@ msgstr "MX 紀錄 {}"
 msgid "DNSBL summary for {}"
 msgstr "DNSBL 摘要 {}"
 
-#: views/domain.py:199
+#: views/domain.py:206
 msgid "You can't delete your own domain"
 msgstr "您不可以刪除您擁有的網域"
 
-#: views/domain.py:202
+#: views/domain.py:209
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "網域移除"
@@ -1337,6 +1386,21 @@ msgstr "匯入使用者"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "轉寄已更新"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No {type} record found for MX {mx}"
+#~ msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No A record found for MX %(domain)s"
+#~ msgstr "沒有找到這個網域的 MX 紀錄。"
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No AAAA record found for MX %(domain)s"
+#~ msgstr "沒有找到這個網域的 MX 紀錄。"
 
 #~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
 #~ msgstr "信箱之間共用幾 MB 的配額。值為0表示沒配額。"
