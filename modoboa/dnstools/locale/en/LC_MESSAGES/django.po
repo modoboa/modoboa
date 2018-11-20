@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-20 10:22+0100\n"
+"POT-Creation-Date: 2018-11-20 16:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,10 +133,33 @@ msgstr ""
 msgid "A DNS record has been found but its syntax is not valid:"
 msgstr ""
 
+#: templates/dnstools/domain_dns_configuration.html:7
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace value between "
+"[ ] by the appropriate ones."
+msgstr ""
+
+#: templates/dnstools/domain_dns_configuration.html:15
+msgid "IP address of your Modoboa server"
+msgstr ""
+
+#: templates/dnstools/domain_dns_configuration.html:28
+msgid "Auto configuration"
+msgstr ""
+
+#: templates/dnstools/domain_dns_configuration.html:30
+#: templates/dnstools/domain_dns_configuration.html:31
+msgid "hostname of your automx server"
+msgstr ""
+
 #: views.py:36
 msgid "{} record of {}"
 msgstr ""
 
 #: views.py:64
 msgid "Auto configuration records for {}"
+msgstr ""
+
+#: views.py:84
+msgid "DNS configuration for {}"
 msgstr ""
