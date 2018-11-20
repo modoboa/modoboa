@@ -40,7 +40,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         )
     )
     dkim_key_selector = forms.CharField(
-        label=ugettext_lazy("Key selector"), required=False)
+        label=ugettext_lazy("Key selector"), initial="modoboa", required=False)
     quota = forms.CharField(
         label=ugettext_lazy("Quota"),
         initial=0,

@@ -65,3 +65,22 @@ class AutoConfigRecordsStatusView(
                 self.object.name)
         })
         return context
+
+
+class DomainDNSConfigurationView(
+        auth_mixins.LoginRequiredMixin,
+        DomainAccessRequiredMixin,
+        generic.DetailView):
+    """Page to display DNS configuration for a domain."""
+
+    model = admin_models.Domain
+    template_name = "dnstools/domain_dns_configuration.html"
+
+    def get_context_data(self, **kwargs):
+        """Add extra variables."""
+        context = super(DomainDNSConfigurationView, self).get_context_data(
+            **kwargs)
+        context.update({
+            "title": _("DNS configuration for {}").format(self.object)
+        })
+        return context
