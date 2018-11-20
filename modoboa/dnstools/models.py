@@ -75,7 +75,7 @@ class DNSRecord(models.Model):
         except AttributeError:
             pass
 
-        if self.type == "dkim" and result != self.dkim_public_key:
+        if self.type == "dkim" and result != self.domain.dkim_public_key:
             self.error = _("Public key mismatchs")
             self.updated = timezone.now()
             return
