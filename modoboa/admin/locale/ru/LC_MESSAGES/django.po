@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 13:41+0200\n"
+"POT-Creation-Date: 2018-11-20 10:32+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -54,49 +54,81 @@ msgid ""
 msgstr ""
 
 #: app_settings.py:55
-msgid "Enable DNSBL checks"
+msgid "Enable SPF checks"
 msgstr ""
 
 #: app_settings.py:58
-msgid "Check every domain against major DNSBL providers"
+msgid "Check if every domain has a valid SPF record"
 msgstr ""
 
 #: app_settings.py:63
-msgid "Custom DNS server"
+msgid "Enable DKIM checks"
 msgstr ""
 
 #: app_settings.py:66
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr ""
+
+#: app_settings.py:72
+msgid "Enable DMARC checks"
+msgstr ""
+
+#: app_settings.py:75
+msgid "Check if every domain has a valid DMARC record"
+msgstr ""
+
+#: app_settings.py:80
+msgid "Enable autoconfig checks"
+msgstr ""
+
+#: app_settings.py:83
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr ""
+
+#: app_settings.py:88
+msgid "Enable DNSBL checks"
+msgstr ""
+
+#: app_settings.py:91
+msgid "Check every domain against major DNSBL providers"
+msgstr ""
+
+#: app_settings.py:96
+msgid "Custom DNS server"
+msgstr ""
+
+#: app_settings.py:99
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr ""
 
-#: app_settings.py:71
+#: app_settings.py:104
 msgid "DKIM keys storage directory"
 msgstr ""
 
-#: app_settings.py:74
+#: app_settings.py:107
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
 msgstr ""
 
-#: app_settings.py:82
+#: app_settings.py:115
 msgid "Default DKIM key length"
 msgstr ""
 
-#: app_settings.py:86
+#: app_settings.py:119
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr ""
 
-#: app_settings.py:90 templates/admin/domain_detail.html:41
+#: app_settings.py:123 templates/admin/domain_detail.html:41
 msgid "Mailboxes"
 msgstr "Почтовые ящики"
 
-#: app_settings.py:93
+#: app_settings.py:126
 msgid "Handle mailboxes on filesystem"
 msgstr "Обрабатывать почтовые ящики на диске"
 
-#: app_settings.py:96
+#: app_settings.py:129
 #, fuzzy
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
@@ -105,89 +137,89 @@ msgstr ""
 "Удалять или переименовывать почтовые ящики на диске, если они удалены или "
 "переименованы в Modoboa"
 
-#: app_settings.py:102
+#: app_settings.py:135
 msgid "Mailboxes owner"
 msgstr "Почтовые ящики закончились"
 
-#: app_settings.py:105
+#: app_settings.py:138
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "UNIX аккаунт владельца почтового ящика на диске"
 
-#: app_settings.py:110
+#: app_settings.py:143
 msgid "Default domain quota"
 msgstr ""
 
-#: app_settings.py:113
+#: app_settings.py:146
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr ""
 
-#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
+#: app_settings.py:152 forms/domain.py:53 models/domain.py:37
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr ""
 
-#: app_settings.py:122
+#: app_settings.py:155
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
 msgstr ""
 
-#: app_settings.py:128
+#: app_settings.py:161
 msgid "Automatic account removal"
 msgstr "Автоматическое удаление аккаунта"
 
-#: app_settings.py:131
+#: app_settings.py:164
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "При удалении почтового ящика, так же удалять и аккаунт владельца"
 
-#: app_settings.py:135
+#: app_settings.py:168
 #, fuzzy
 msgid "Automatic domain/mailbox creation"
 msgstr "Домен создан"
 
-#: app_settings.py:138
+#: app_settings.py:171
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 
-#: app_settings.py:144
+#: app_settings.py:177
 msgid "Create an alias when a mailbox is renamed"
 msgstr ""
 
-#: app_settings.py:147
+#: app_settings.py:180
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:339
+#: app_settings.py:229 app_settings.py:237 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr ""
 
-#: app_settings.py:214
+#: app_settings.py:247
 #, fuzzy
 #| msgid "Domain modified"
 msgid "Directory not found."
 msgstr "Домен изменен"
 
-#: app_settings.py:220
+#: app_settings.py:253
 msgid "openssl not found, please make sure it is installed."
 msgstr ""
 
-#: app_settings.py:234
+#: app_settings.py:267
 msgid "Define at least one authorized network / address"
 msgstr ""
 
-#: app_settings.py:244
+#: app_settings.py:277
 msgid "Administration"
 msgstr ""
 
-#: constants.py:98 forms/alias.py:47
+#: constants.py:96 forms/alias.py:47
 #: templates/admin/_per_domain_statistics_widget.html:7
 #: templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr ""
 
-#: constants.py:99
+#: constants.py:97
 #, fuzzy
 #| msgid "New domain"
 msgid "Relay domain"
@@ -248,7 +280,7 @@ msgid "Only super administrators are allowed for this mode"
 msgstr ""
 
 #: forms/account.py:182 forms/account.py:184 forms/domain.py:166
-#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:291
 #, fuzzy
 #| msgid "A quota is required"
 msgid "This field is required."
@@ -444,7 +476,7 @@ msgstr ""
 msgid "Key selector"
 msgstr ""
 
-#: forms/domain.py:48 models/domain.py:36
+#: forms/domain.py:48 serializers.py:34
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
@@ -465,7 +497,7 @@ msgstr ""
 msgid "A %s with this name already exists"
 msgstr ""
 
-#: forms/domain.py:109 serializers.py:56
+#: forms/domain.py:109 serializers.py:68
 msgid "No authorized MX record found for this domain"
 msgstr ""
 
@@ -473,7 +505,7 @@ msgstr ""
 msgid "DKIM keys storage directory not configured"
 msgstr ""
 
-#: forms/domain.py:151 serializers.py:74
+#: forms/domain.py:151 serializers.py:86
 msgid "Cannot be greater than domain quota"
 msgstr ""
 
@@ -629,45 +661,40 @@ msgstr "Пользователи"
 msgid "Forward"
 msgstr "Перенаправленые"
 
-#: lib.py:41
+#: lib.py:42
 msgid "A mailbox is required"
 msgstr ""
 
-#: lib.py:131
+#: lib.py:132
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You are not allowed to import domains"
 msgstr "Вы не можете удалить собственный домен"
 
-#: lib.py:142
+#: lib.py:143
 msgid "You are not allowed to import domain aliases."
 msgstr ""
 
-#: lib.py:187 tests/test_mx.py:135
+#: lib.py:193 tests/test_mx.py:136 tests/test_mx.py:145 tests/test_mx.py:148
 #, python-format
-msgid "No DNS records found for %s"
+msgid "No DNS record found for %s"
 msgstr ""
 
-#: lib.py:189 tests/test_mx.py:138
+#: lib.py:196
 #, python-format
-msgid "No MX record for %s"
+msgid "No %(type)s record for %(name)s"
 msgstr ""
 
-#: lib.py:191 tests/test_mx.py:139
+#: lib.py:200 tests/test_mx.py:140
 msgid "No working name servers found"
 msgstr ""
 
-#: lib.py:194 tests/test_mx.py:141
+#: lib.py:203 tests/test_mx.py:142
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 
-#: lib.py:205
-#, python-brace-format
-msgid "No {type} record found for MX {mx}"
-msgstr ""
-
-#: lib.py:214
+#: lib.py:231
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr ""
@@ -686,20 +713,20 @@ msgstr ""
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:135
+#: management/commands/subcommands/_mx.py:136
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:155
+#: management/commands/subcommands/_mx.py:156
 msgid "Domain {} has no MX record"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:166
+#: management/commands/subcommands/_mx.py:167
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:183
+#: management/commands/subcommands/_mx.py:184
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr ""
 
@@ -713,7 +740,7 @@ msgstr "адрес"
 msgid "The alias address."
 msgstr "Имя синонима"
 
-#: models/alias.py:43 models/domain.py:49 models/domain_alias.py:46
+#: models/alias.py:43 models/domain.py:41 models/domain_alias.py:46
 msgid "enabled"
 msgstr "Разрешен"
 
@@ -763,54 +790,50 @@ msgstr "имя"
 msgid "The domain name"
 msgstr "Имя домена"
 
-#: models/domain.py:44
-msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-
-#: models/domain.py:50
+#: models/domain.py:42
 msgid "Check to activate this domain"
 msgstr "Отметить для активации этого домена"
 
-#: models/domain.py:55
+#: models/domain.py:47
 msgid "Enable DNS checks"
 msgstr ""
 
-#: models/domain.py:56
+#: models/domain.py:48
 #, fuzzy
 #| msgid "Check to activate this domain"
 msgid "Check to enable DNS checks for this domain"
 msgstr "Отметить для активации этого домена"
 
-#: models/domain.py:63
+#: models/domain.py:55
 msgid "Enable DKIM signing"
 msgstr ""
 
-#: models/domain.py:65
+#: models/domain.py:57
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 
-#: models/domain.py:71
+#: models/domain.py:63
 msgid "Key length"
 msgstr ""
 
-#: models/domain.py:303 models/domain_alias.py:74
+#: models/domain.py:320 models/domain_alias.py:74
 msgid "Invalid line"
 msgstr "Ошибочная строка"
 
-#: models/domain.py:313
+#: models/domain.py:330
 msgid "No authorized MX record found for domain {}"
 msgstr ""
 
-#: models/domain.py:320
+#: models/domain.py:337
 msgid "Invalid quota value for domain '{}'"
 msgstr ""
 
-#: models/domain.py:327
+#: models/domain.py:344
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr ""
 
-#: models/domain.py:332
+#: models/domain.py:349
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr ""
 
@@ -850,48 +873,52 @@ msgstr "Требуется квота"
 msgid "Domain quota exceeded"
 msgstr "Домен создан"
 
-#: serializers.py:99 serializers.py:304 serializers.py:402
+#: serializers.py:41
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr ""
+
+#: serializers.py:111 serializers.py:316 serializers.py:414
 #, fuzzy
 #| msgid "Permissions"
 msgid "Permission denied."
 msgstr "Права"
 
-#: serializers.py:150
+#: serializers.py:162
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: serializers.py:254
+#: serializers.py:266
 msgid "Not allowed for this role."
 msgstr ""
 
-#: serializers.py:266
+#: serializers.py:278
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: serializers.py:291
+#: serializers.py:303
 #, fuzzy
 #| msgid "Domain does not exist"
 msgid "Local domain {} does not exist"
 msgstr "Домен не существует"
 
-#: serializers.py:389
+#: serializers.py:401
 msgid "A list of recipient"
 msgstr ""
 
-#: serializers.py:400
+#: serializers.py:412
 #, fuzzy
 #| msgid "Domain modified"
 msgid "Domain not found."
 msgstr "Домен изменен"
 
-#: serializers.py:449
+#: serializers.py:461
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this domain."
 msgstr "Вы не имеете права доступа к этому домену"
 
-#: serializers.py:457
+#: serializers.py:469
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this mailbox."
@@ -927,6 +954,18 @@ msgstr "Разрешен"
 
 #: templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
+msgstr ""
+
+#: templates/admin/_domain_dnschecks_status.html:16
+#: templates/admin/_domain_dnschecks_status.html:32
+#: templates/admin/_domain_dnschecks_status.html:40
+#, fuzzy
+#| msgid "Domain modified"
+msgid "No record found"
+msgstr "Домен изменен"
+
+#: templates/admin/_domain_dnschecks_status.html:24
+msgid "Waiting for key to be generated"
 msgstr ""
 
 #: templates/admin/_global_statistics_widget.html:4
@@ -1338,17 +1377,12 @@ msgstr ""
 msgid "Delete %s?"
 msgstr "Удалить %s?"
 
-#: tests/test_mx.py:144
+#: tests/test_mx.py:139
 #, python-format
-msgid "No A record found for MX %(domain)s"
+msgid "No MX record for %s"
 msgstr ""
 
-#: tests/test_mx.py:147
-#, python-format
-msgid "No AAAA record found for MX %(domain)s"
-msgstr ""
-
-#: tests/test_mx.py:150 tests/test_mx.py:153
+#: tests/test_mx.py:151 tests/test_mx.py:154
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr ""
@@ -1390,11 +1424,11 @@ msgstr ""
 msgid "DNSBL summary for {}"
 msgstr ""
 
-#: views/domain.py:199
+#: views/domain.py:206
 msgid "You can't delete your own domain"
 msgstr "Вы не можете удалить собственный домен"
 
-#: views/domain.py:202
+#: views/domain.py:209
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Домен удален"
