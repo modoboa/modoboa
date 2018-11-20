@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-20 10:22+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib.py:86
+msgid "Wrong ip4 mechanism syntax"
+msgstr ""
+
+#: lib.py:90
+msgid "Wrong IPv4 address format"
+msgstr ""
+
+#: lib.py:96
+msgid "Wrong ip6 mechanism syntax"
+msgstr ""
+
+#: lib.py:101
+msgid "Wrong IPv6 address format"
+msgstr ""
+
+#: lib.py:116 lib.py:142
+msgid "Invalid syntax for {} mechanism"
+msgstr ""
+
+#: lib.py:118
+msgid "Invalid mask found {}"
+msgstr ""
+
+#: lib.py:163
+msgid "Not an SPF record"
+msgstr ""
+
+#: lib.py:183
+msgid "Unknown mechanism {}"
+msgstr ""
+
+#: lib.py:185
+msgid "Unknown modifier {}"
+msgstr ""
+
+#: lib.py:188
+msgid "Duplicate modifier {} found"
+msgstr ""
+
+#: lib.py:192
+msgid "No mechanism found"
+msgstr ""
+
+#: lib.py:199
+msgid "Not a valid DKIM record"
+msgstr ""
+
+#: lib.py:205 lib.py:256
+msgid "Invalid tag {}"
+msgstr ""
+
+#: lib.py:210
+msgid "No key found in record"
+msgstr ""
+
+#: lib.py:217
+msgid "Wrong value {} for tag {}"
+msgstr ""
+
+#: lib.py:232
+msgid "Wrong value {} for tag {}:"
+msgstr ""
+
+#: lib.py:236
+msgid " not an integer"
+msgstr ""
+
+#: lib.py:239
+msgid " less than {}"
+msgstr ""
+
+#: lib.py:242
+msgid " greater than {}"
+msgstr ""
+
+#: lib.py:250
+msgid "Not a valid DMARC record"
+msgstr ""
+
+#: lib.py:259
+msgid "Unknown tag {}"
+msgstr ""
+
+#: lib.py:264
+msgid "Missing required p tag"
+msgstr ""
+
+#: models.py:79
+msgid "Public key mismatchs"
+msgstr ""
+
+#: templates/dnstools/autoconfig_records_status.html:8
+msgid "autoconfig record (Mozilla) found: "
+msgstr ""
+
+#: templates/dnstools/autoconfig_records_status.html:12
+msgid "autoconfig record (Mozilla) not found."
+msgstr ""
+
+#: templates/dnstools/autoconfig_records_status.html:17
+msgid "autodiscover record (Microsoft) found: "
+msgstr ""
+
+#: templates/dnstools/autoconfig_records_status.html:21
+msgid "autodiscover record (Microsoft) not found."
+msgstr ""
+
+#: templates/dnstools/dns_record_detail.html:8
+msgid "A DNS record has been found and is valid."
+msgstr ""
+
+#: templates/dnstools/dns_record_detail.html:12
+msgid "A DNS record has been found but its syntax is not valid:"
+msgstr ""
+
+#: views.py:36
+msgid "{} record of {}"
+msgstr ""
+
+#: views.py:64
+msgid "Auto configuration records for {}"
+msgstr ""

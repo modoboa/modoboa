@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 13:41+0200\n"
+"POT-Creation-Date: 2018-11-20 10:32+0100\n"
 "PO-Revision-Date: 2018-08-14 08:35+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
@@ -60,26 +60,74 @@ msgstr ""
 "fördefinerat."
 
 #: app_settings.py:55
+#, fuzzy
+#| msgid "Enable DNS checks"
+msgid "Enable SPF checks"
+msgstr "Aktivera DNS kontroller"
+
+#: app_settings.py:58
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid SPF record"
+msgstr "Kontrollera att varje domän har ett giltigt MX record"
+
+#: app_settings.py:63
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DKIM checks"
+msgstr "Aktivera MX kontroll"
+
+#: app_settings.py:66
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr "Kontrollera att varje domän har ett giltigt MX record"
+
+#: app_settings.py:72
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DMARC checks"
+msgstr "Aktivera MX kontroll"
+
+#: app_settings.py:75
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid DMARC record"
+msgstr "Kontrollera att varje domän har ett giltigt MX record"
+
+#: app_settings.py:80
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable autoconfig checks"
+msgstr "Aktivera MX kontroll"
+
+#: app_settings.py:83
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr "Kontrollera att varje domän har ett giltigt MX record"
+
+#: app_settings.py:88
 msgid "Enable DNSBL checks"
 msgstr "Aktivera DNSBL kontroller"
 
-#: app_settings.py:58
+#: app_settings.py:91
 msgid "Check every domain against major DNSBL providers"
 msgstr "Kontrollera varje domän mot större DNSBL leverantörer"
 
-#: app_settings.py:63
+#: app_settings.py:96
 msgid "Custom DNS server"
 msgstr ""
 
-#: app_settings.py:66
+#: app_settings.py:99
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr ""
 
-#: app_settings.py:71
+#: app_settings.py:104
 msgid "DKIM keys storage directory"
 msgstr "DKIM nycklar lagrings katalog"
 
-#: app_settings.py:74
+#: app_settings.py:107
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
@@ -89,23 +137,23 @@ msgstr ""
 "till att den här katalogen ägs av root-användaren och inte kan läsas av "
 "utomstående."
 
-#: app_settings.py:82
+#: app_settings.py:115
 msgid "Default DKIM key length"
 msgstr "Standard DKIM nyckellängd"
 
-#: app_settings.py:86
+#: app_settings.py:119
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr "Standardlängd i bitar för genererade DKIM nycklar."
 
-#: app_settings.py:90 templates/admin/domain_detail.html:41
+#: app_settings.py:123 templates/admin/domain_detail.html:41
 msgid "Mailboxes"
 msgstr "Brevlådor"
 
-#: app_settings.py:93
+#: app_settings.py:126
 msgid "Handle mailboxes on filesystem"
 msgstr "Hantera brevlådor på filsystem"
 
-#: app_settings.py:96
+#: app_settings.py:129
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -113,19 +161,19 @@ msgstr ""
 "Byt namn på eller ta bort brevlådor på filsystemet när de kommer byta namn "
 "eller tas bort inom Modoboa"
 
-#: app_settings.py:102
+#: app_settings.py:135
 msgid "Mailboxes owner"
 msgstr "Brevlådans ägare"
 
-#: app_settings.py:105
+#: app_settings.py:138
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr "Den UNIX-konto som äger brevlådor på filsystemet"
 
-#: app_settings.py:110
+#: app_settings.py:143
 msgid "Default domain quota"
 msgstr "Standard domän kvota"
 
-#: app_settings.py:113
+#: app_settings.py:146
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
@@ -133,12 +181,12 @@ msgstr ""
 "Standard kvota (i MB) applicerad på nyskapade domäner som inte har något "
 "värde specificerat. Ett värde på 0 betyder ingen kvota."
 
-#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
+#: app_settings.py:152 forms/domain.py:53 models/domain.py:37
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Standard brevlåde kvota"
 
-#: app_settings.py:122
+#: app_settings.py:155
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
@@ -146,57 +194,57 @@ msgstr ""
 "Standard brevlåde kvota (i MB) applicerad på nyligen skapade domäner där "
 "inget värde angetts. 0 betyder ingen kvota."
 
-#: app_settings.py:128
+#: app_settings.py:161
 msgid "Automatic account removal"
 msgstr "Automatisk konto borttagning"
 
-#: app_settings.py:131
+#: app_settings.py:164
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "När en brevlåda raderas, radera också tillhörande konto"
 
-#: app_settings.py:135
+#: app_settings.py:168
 msgid "Automatic domain/mailbox creation"
 msgstr "Automatisk skapande av domän/brevlåda"
 
-#: app_settings.py:138
+#: app_settings.py:171
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "Skapa en domän och en brevlåda när ett konto skapas automatiskt."
 
-#: app_settings.py:144
+#: app_settings.py:177
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Skapa ett alias när en brevlåda döps om"
 
-#: app_settings.py:147
+#: app_settings.py:180
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "Skapa ett alias med den gamla adressen när en brevlåda bytt namn."
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:339
+#: app_settings.py:229 app_settings.py:237 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "Måste vara ett positivt heltal"
 
-#: app_settings.py:214
+#: app_settings.py:247
 msgid "Directory not found."
 msgstr "Katalog kunde ej hittas."
 
-#: app_settings.py:220
+#: app_settings.py:253
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl hittades inte, kontroller att det är installerat."
 
-#: app_settings.py:234
+#: app_settings.py:267
 msgid "Define at least one authorized network / address"
 msgstr "Ange åtminstonde en auktoriserad nätverk / adress"
 
-#: app_settings.py:244
+#: app_settings.py:277
 msgid "Administration"
 msgstr "Administration"
 
-#: constants.py:98 forms/alias.py:47
+#: constants.py:96 forms/alias.py:47
 #: templates/admin/_per_domain_statistics_widget.html:7
 #: templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr "Domän"
 
-#: constants.py:99
+#: constants.py:97
 msgid "Relay domain"
 msgstr "Relay domän"
 
@@ -257,7 +305,7 @@ msgid "Only super administrators are allowed for this mode"
 msgstr "Endast superadmininstratörer tillåts åtkomst till det här läget"
 
 #: forms/account.py:182 forms/account.py:184 forms/domain.py:166
-#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:291
 msgid "This field is required."
 msgstr "Detta fält krävs."
 
@@ -426,7 +474,7 @@ msgstr ""
 msgid "Key selector"
 msgstr "Nyckelväljare"
 
-#: forms/domain.py:48 models/domain.py:36
+#: forms/domain.py:48 serializers.py:34
 #, fuzzy
 #| msgid ""
 #| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -453,7 +501,7 @@ msgstr "domän alias"
 msgid "A %s with this name already exists"
 msgstr "En %s med detta namn finns redan"
 
-#: forms/domain.py:109 serializers.py:56
+#: forms/domain.py:109 serializers.py:68
 msgid "No authorized MX record found for this domain"
 msgstr "Inga auktoriserade MX inlägg finns för denna domänen"
 
@@ -461,7 +509,7 @@ msgstr "Inga auktoriserade MX inlägg finns för denna domänen"
 msgid "DKIM keys storage directory not configured"
 msgstr "DKIM nycklar lagringskatalog ej konfigurerad"
 
-#: forms/domain.py:151 serializers.py:74
+#: forms/domain.py:151 serializers.py:86
 msgid "Cannot be greater than domain quota"
 msgstr "Får inte vara större än domän kvot"
 
@@ -609,44 +657,40 @@ msgstr "Konton"
 msgid "Forward"
 msgstr "Vidarebefordra"
 
-#: lib.py:41
+#: lib.py:42
 msgid "A mailbox is required"
 msgstr "En brevlåda krävs"
 
-#: lib.py:131
+#: lib.py:132
 msgid "You are not allowed to import domains"
 msgstr "Du tillåts inte att importera domäner"
 
-#: lib.py:142
+#: lib.py:143
 msgid "You are not allowed to import domain aliases."
 msgstr "Du tillåts inte att importera domän alias."
 
-#: lib.py:187 tests/test_mx.py:135
-#, python-format
-msgid "No DNS records found for %s"
+#: lib.py:193 tests/test_mx.py:136 tests/test_mx.py:145 tests/test_mx.py:148
+#, fuzzy, python-format
+#| msgid "No DNS records found for %s"
+msgid "No DNS record found for %s"
 msgstr "Inga DNS-poster hittades för %s"
 
-#: lib.py:189 tests/test_mx.py:138
-#, python-format
-msgid "No MX record for %s"
+#: lib.py:196
+#, fuzzy, python-format
+#| msgid "No MX record for %s"
+msgid "No %(type)s record for %(name)s"
 msgstr "Ingen MX-post för %s"
 
-#: lib.py:191 tests/test_mx.py:139
+#: lib.py:200 tests/test_mx.py:140
 msgid "No working name servers found"
 msgstr "Inga fungerande namnservrar hittades"
 
-#: lib.py:194 tests/test_mx.py:141
+#: lib.py:203 tests/test_mx.py:142
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS-upplösning timeout, kan inte fråga %s för tillfället"
 
-#: lib.py:205
-#, fuzzy, python-brace-format
-#| msgid "No DNS records found for %s"
-msgid "No {type} record found for MX {mx}"
-msgstr "Inga DNS-poster hittades för %s"
-
-#: lib.py:214
+#: lib.py:231
 #, fuzzy, python-brace-format
 #| msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgid "Invalid IP address format for {domain}; {addr}"
@@ -666,20 +710,20 @@ msgstr ""
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:135
+#: management/commands/subcommands/_mx.py:136
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL fråga(or) för domän {}"
 
-#: management/commands/subcommands/_mx.py:155
+#: management/commands/subcommands/_mx.py:156
 msgid "Domain {} has no MX record"
 msgstr "Domän {} saknar MX record"
 
-#: management/commands/subcommands/_mx.py:166
+#: management/commands/subcommands/_mx.py:167
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "MX record för domän {0} är ogiltig: {1}"
 
-#: management/commands/subcommands/_mx.py:183
+#: management/commands/subcommands/_mx.py:184
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] MX problem för domän {}"
 
@@ -691,7 +735,7 @@ msgstr "adress"
 msgid "The alias address."
 msgstr "Alias adressen."
 
-#: models/alias.py:43 models/domain.py:49 models/domain_alias.py:46
+#: models/alias.py:43 models/domain.py:41 models/domain_alias.py:46
 msgid "enabled"
 msgstr "aktiverad"
 
@@ -737,54 +781,50 @@ msgstr "namn"
 msgid "The domain name"
 msgstr "Domännamnet"
 
-#: models/domain.py:44
-msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr "Standardkvota i MB applicerad på nya brevlådor. 0 betyder ingen kvota."
-
-#: models/domain.py:50
+#: models/domain.py:42
 msgid "Check to activate this domain"
 msgstr "Markera för att aktivera denna domän"
 
-#: models/domain.py:55
+#: models/domain.py:47
 msgid "Enable DNS checks"
 msgstr "Aktivera DNS kontroller"
 
-#: models/domain.py:56
+#: models/domain.py:48
 msgid "Check to enable DNS checks for this domain"
 msgstr "Markera för att aktivera DNS kontroller för den här domänen"
 
-#: models/domain.py:63
+#: models/domain.py:55
 msgid "Enable DKIM signing"
 msgstr "Aktivera DKIM-signering"
 
-#: models/domain.py:65
+#: models/domain.py:57
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Om du aktiverar den här funktionen genereras en DKIM-nyckel för den här "
 "domänen."
 
-#: models/domain.py:71
+#: models/domain.py:63
 msgid "Key length"
 msgstr "Nyckellängd"
 
-#: models/domain.py:303 models/domain_alias.py:74
+#: models/domain.py:320 models/domain_alias.py:74
 msgid "Invalid line"
 msgstr "Ogiltig rad"
 
-#: models/domain.py:313
+#: models/domain.py:330
 msgid "No authorized MX record found for domain {}"
 msgstr "Inga auktoriserade MX inlägg finns för domänen {}"
 
-#: models/domain.py:320
+#: models/domain.py:337
 msgid "Invalid quota value for domain '{}'"
 msgstr "Ogiltig kvota värd för domän '{}'"
 
-#: models/domain.py:327
+#: models/domain.py:344
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr "Ogiltig standard brevlådekvota för domän '{}'"
 
-#: models/domain.py:332
+#: models/domain.py:349
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr "Standard brevlådekvota kan inte vara större än domänkvotan"
 
@@ -822,42 +862,46 @@ msgstr "En kvota krävs"
 msgid "Domain quota exceeded"
 msgstr "Domänkvota överskriden"
 
-#: serializers.py:99 serializers.py:304 serializers.py:402
+#: serializers.py:41
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr "Standardkvota i MB applicerad på nya brevlådor. 0 betyder ingen kvota."
+
+#: serializers.py:111 serializers.py:316 serializers.py:414
 msgid "Permission denied."
 msgstr "Åtskomst nekad."
 
-#: serializers.py:150
+#: serializers.py:162
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista över administrerade domäner (endast återförsäljare och "
 "domänadministratörer)."
 
-#: serializers.py:254
+#: serializers.py:266
 msgid "Not allowed for this role."
 msgstr "Inte tillåtet för denna roll."
 
-#: serializers.py:266
+#: serializers.py:278
 msgid "Must be equal to mailbox full_address"
 msgstr "Måste vara lika med brevlådans full_address"
 
-#: serializers.py:291
+#: serializers.py:303
 msgid "Local domain {} does not exist"
 msgstr "Lokal domän {} finns inte"
 
-#: serializers.py:389
+#: serializers.py:401
 msgid "A list of recipient"
 msgstr "En lista på mottagare"
 
-#: serializers.py:400
+#: serializers.py:412
 msgid "Domain not found."
 msgstr "Domän kunde ej hittas."
 
-#: serializers.py:449
+#: serializers.py:461
 msgid "You don't have access to this domain."
 msgstr "Du har inte åtkomst till denna domän."
 
-#: serializers.py:457
+#: serializers.py:469
 msgid "You don't have access to this mailbox."
 msgstr "Du har inte åtkomst till denna brevlåda."
 
@@ -887,6 +931,18 @@ msgstr "Inaktiverad"
 #: templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
 msgstr "Väntar kontroll"
+
+#: templates/admin/_domain_dnschecks_status.html:16
+#: templates/admin/_domain_dnschecks_status.html:32
+#: templates/admin/_domain_dnschecks_status.html:40
+#, fuzzy
+#| msgid "No DNS records found for %s"
+msgid "No record found"
+msgstr "Inga DNS-poster hittades för %s"
+
+#: templates/admin/_domain_dnschecks_status.html:24
+msgid "Waiting for key to be generated"
+msgstr ""
 
 #: templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
@@ -1273,19 +1329,12 @@ msgstr "Redigera {}"
 msgid "Delete %s?"
 msgstr "Radera %s?"
 
-#: tests/test_mx.py:144
-#, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No A record found for MX %(domain)s"
-msgstr "Inget MX record funnet för denna domän."
+#: tests/test_mx.py:139
+#, python-format
+msgid "No MX record for %s"
+msgstr "Ingen MX-post för %s"
 
-#: tests/test_mx.py:147
-#, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No AAAA record found for MX %(domain)s"
-msgstr "Inget MX record funnet för denna domän."
-
-#: tests/test_mx.py:150 tests/test_mx.py:153
+#: tests/test_mx.py:151 tests/test_mx.py:154
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr "Ogiltigt IP-adress format för %(domain)s; %(addr)s"
@@ -1324,11 +1373,11 @@ msgstr "MX record för {}"
 msgid "DNSBL summary for {}"
 msgstr "DNSBL summering för {}"
 
-#: views/domain.py:199
+#: views/domain.py:206
 msgid "You can't delete your own domain"
 msgstr "Du kan inte radera din egen domän"
 
-#: views/domain.py:202
+#: views/domain.py:209
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domän raderad"
@@ -1373,6 +1422,21 @@ msgstr "Importera konton"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "Vidarebefordring uppdaterad"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No {type} record found for MX {mx}"
+#~ msgstr "Inga DNS-poster hittades för %s"
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No A record found for MX %(domain)s"
+#~ msgstr "Inget MX record funnet för denna domän."
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No AAAA record found for MX %(domain)s"
+#~ msgstr "Inget MX record funnet för denna domän."
 
 #~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
 #~ msgstr "Kvota i MB delade mellan brevlådor. 0 betyder ingen kvota."
