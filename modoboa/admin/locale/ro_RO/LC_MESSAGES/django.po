@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 13:41+0200\n"
+"POT-Creation-Date: 2018-11-20 10:32+0100\n"
 "PO-Revision-Date: 2018-07-03 13:17+0000\n"
 "Last-Translator: Andrei-Ilie Olteanu <andrei@flashsoft.ro>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
@@ -60,26 +60,74 @@ msgstr ""
 "dintre adresele definite."
 
 #: app_settings.py:55
+#, fuzzy
+#| msgid "Enable DNS checks"
+msgid "Enable SPF checks"
+msgstr "Activează verificările DNS"
+
+#: app_settings.py:58
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid SPF record"
+msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+
+#: app_settings.py:63
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DKIM checks"
+msgstr "Activează verificările MX"
+
+#: app_settings.py:66
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+
+#: app_settings.py:72
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DMARC checks"
+msgstr "Activează verificările MX"
+
+#: app_settings.py:75
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid DMARC record"
+msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+
+#: app_settings.py:80
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable autoconfig checks"
+msgstr "Activează verificările MX"
+
+#: app_settings.py:83
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+
+#: app_settings.py:88
 msgid "Enable DNSBL checks"
 msgstr "Activează verificările DNSBL"
 
-#: app_settings.py:58
+#: app_settings.py:91
 msgid "Check every domain against major DNSBL providers"
 msgstr "Verificați fiecare domeniu folosind furnizorii DNSBL majori"
 
-#: app_settings.py:63
+#: app_settings.py:96
 msgid "Custom DNS server"
 msgstr ""
 
-#: app_settings.py:66
+#: app_settings.py:99
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr ""
 
-#: app_settings.py:71
+#: app_settings.py:104
 msgid "DKIM keys storage directory"
 msgstr "Folderul de stocare pentru cheile DKIM"
 
-#: app_settings.py:74
+#: app_settings.py:107
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
@@ -89,23 +137,23 @@ msgstr ""
 "Asigurați-vă că acest director aparține utilizatorului root și nu poate fi "
 "citit de orice user."
 
-#: app_settings.py:82
+#: app_settings.py:115
 msgid "Default DKIM key length"
 msgstr "Mărimea implicită în caractere a chei DKIM"
 
-#: app_settings.py:86
+#: app_settings.py:119
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr "Mărimea implicită în biți pentru o cheie DKIM nou generată"
 
-#: app_settings.py:90 templates/admin/domain_detail.html:41
+#: app_settings.py:123 templates/admin/domain_detail.html:41
 msgid "Mailboxes"
 msgstr "Cutii poștale"
 
-#: app_settings.py:93
+#: app_settings.py:126
 msgid "Handle mailboxes on filesystem"
 msgstr "Gestionați cutiile poștale în sistemul de fișiere"
 
-#: app_settings.py:96
+#: app_settings.py:129
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -113,20 +161,20 @@ msgstr ""
 "Redenumește sau eliminează căsuțele poștale din sistemul de fișiere atunci "
 "când se redenumesc sau se elimină în Modoboa"
 
-#: app_settings.py:102
+#: app_settings.py:135
 msgid "Mailboxes owner"
 msgstr "Propietarul cutiilor postale"
 
-#: app_settings.py:105
+#: app_settings.py:138
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr ""
 "Contul UNIX care are in propietate casuțele poștale în sistemul de fișiere"
 
-#: app_settings.py:110
+#: app_settings.py:143
 msgid "Default domain quota"
 msgstr "Cota-parte implicită a domeniului"
 
-#: app_settings.py:113
+#: app_settings.py:146
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
@@ -134,12 +182,12 @@ msgstr ""
 "Cota implicită (în MB) aplicată domeniilor nou create, care nu au nicio "
 "valoare specificată. O valoare de 0 înseamnă că nu există o cotă."
 
-#: app_settings.py:119 forms/domain.py:53 models/domain.py:41
+#: app_settings.py:152 forms/domain.py:53 models/domain.py:37
 #: templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Cota implicită pentru cutia poștală"
 
-#: app_settings.py:122
+#: app_settings.py:155
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
@@ -148,60 +196,60 @@ msgstr ""
 "care nu au nicio valoare specificată. O valoare de 0 înseamnă că nu există o "
 "cotă."
 
-#: app_settings.py:128
+#: app_settings.py:161
 msgid "Automatic account removal"
 msgstr "Ștergere automată a contului"
 
-#: app_settings.py:131
+#: app_settings.py:164
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "Când se șterge o cutie poștală, șterge, de asemenea și contul asociat"
 
-#: app_settings.py:135
+#: app_settings.py:168
 msgid "Automatic domain/mailbox creation"
 msgstr "Crearea automată a domeniului / cutiei poștale"
 
-#: app_settings.py:138
+#: app_settings.py:171
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Creați un domeniu și o căsuță poștală atunci când un cont este creat automat."
 
-#: app_settings.py:144
+#: app_settings.py:177
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Creați un alias când o cutie poștală este redenumită"
 
-#: app_settings.py:147
+#: app_settings.py:180
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 "Creați un alias utilizând vechea adresă atunci când o cutie poștală este "
 "redenumită."
 
-#: app_settings.py:196 app_settings.py:204 forms/account.py:339
+#: app_settings.py:229 app_settings.py:237 forms/account.py:339
 msgid "Must be a positive integer"
 msgstr "Trebuie să fie un număr întreg pozitiv"
 
-#: app_settings.py:214
+#: app_settings.py:247
 msgid "Directory not found."
 msgstr "Directorul nu a fost găsit."
 
-#: app_settings.py:220
+#: app_settings.py:253
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl nu a fost găsit, asigurați-vă că este instalat."
 
-#: app_settings.py:234
+#: app_settings.py:267
 msgid "Define at least one authorized network / address"
 msgstr "Definiți cel puțin o adresă de rețea autorizată"
 
-#: app_settings.py:244
+#: app_settings.py:277
 msgid "Administration"
 msgstr "Administrare"
 
-#: constants.py:98 forms/alias.py:47
+#: constants.py:96 forms/alias.py:47
 #: templates/admin/_per_domain_statistics_widget.html:7
 #: templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr "Domeniu"
 
-#: constants.py:99
+#: constants.py:97
 msgid "Relay domain"
 msgstr "Domeniu de relay"
 
@@ -262,7 +310,7 @@ msgid "Only super administrators are allowed for this mode"
 msgstr "Numai superadministratorii sunt permiși la acest mod"
 
 #: forms/account.py:182 forms/account.py:184 forms/domain.py:166
-#: forms/domain.py:295 forms/domain.py:298 serializers.py:279
+#: forms/domain.py:295 forms/domain.py:298 serializers.py:291
 msgid "This field is required."
 msgstr "Acest câmp este necesar."
 
@@ -434,7 +482,7 @@ msgstr ""
 msgid "Key selector"
 msgstr "Selector cheie"
 
-#: forms/domain.py:48 models/domain.py:36
+#: forms/domain.py:48 serializers.py:34
 #, fuzzy
 #| msgid ""
 #| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -465,7 +513,7 @@ msgstr "alias domeniu"
 msgid "A %s with this name already exists"
 msgstr "Itemul%s cu acest nume există"
 
-#: forms/domain.py:109 serializers.py:56
+#: forms/domain.py:109 serializers.py:68
 msgid "No authorized MX record found for this domain"
 msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu"
 
@@ -473,7 +521,7 @@ msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu"
 msgid "DKIM keys storage directory not configured"
 msgstr "Folderul de stocare a cheilor DKIM nu este configurat"
 
-#: forms/domain.py:151 serializers.py:74
+#: forms/domain.py:151 serializers.py:86
 msgid "Cannot be greater than domain quota"
 msgstr "Nu poate fi mai mare decat cota domeniului"
 
@@ -624,46 +672,42 @@ msgstr "Identități"
 msgid "Forward"
 msgstr "Redirecționează"
 
-#: lib.py:41
+#: lib.py:42
 msgid "A mailbox is required"
 msgstr "O căsuță poștală este necesară"
 
-#: lib.py:131
+#: lib.py:132
 msgid "You are not allowed to import domains"
 msgstr "Nu ești autorizat să imporți domenii"
 
-#: lib.py:142
+#: lib.py:143
 msgid "You are not allowed to import domain aliases."
 msgstr "Nu ești autorizat să imporți aliasuri de domenii"
 
-#: lib.py:187 tests/test_mx.py:135
-#, python-format
-msgid "No DNS records found for %s"
+#: lib.py:193 tests/test_mx.py:136 tests/test_mx.py:145 tests/test_mx.py:148
+#, fuzzy, python-format
+#| msgid "No DNS records found for %s"
+msgid "No DNS record found for %s"
 msgstr "Nu s-au găsit înregistrări DNS pentru %s"
 
-#: lib.py:189 tests/test_mx.py:138
-#, python-format
-msgid "No MX record for %s"
+#: lib.py:196
+#, fuzzy, python-format
+#| msgid "No MX record for %s"
+msgid "No %(type)s record for %(name)s"
 msgstr "Nu există înregidtrări MX pentru %s"
 
-#: lib.py:191 tests/test_mx.py:139
+#: lib.py:200 tests/test_mx.py:140
 msgid "No working name servers found"
 msgstr "Nu s-au găsit NS-uri funcționale"
 
-#: lib.py:194 tests/test_mx.py:141
+#: lib.py:203 tests/test_mx.py:142
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 "Timeout întâmpinat la rezolvarea cererii DNS, imposibilă de interogat %s în "
 "acest moment"
 
-#: lib.py:205
-#, fuzzy, python-brace-format
-#| msgid "No DNS records found for %s"
-msgid "No {type} record found for MX {mx}"
-msgstr "Nu s-au găsit înregistrări DNS pentru %s"
-
-#: lib.py:214
+#: lib.py:231
 #, fuzzy, python-brace-format
 #| msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgid "Invalid IP address format for {domain}; {addr}"
@@ -683,20 +727,20 @@ msgstr ""
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: management/commands/subcommands/_mx.py:135
+#: management/commands/subcommands/_mx.py:136
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problemă(e) DNSBL pentru domeniul {}  "
 
-#: management/commands/subcommands/_mx.py:155
+#: management/commands/subcommands/_mx.py:156
 msgid "Domain {} has no MX record"
 msgstr "Domeniul {} nu are înregistrări MX"
 
-#: management/commands/subcommands/_mx.py:166
+#: management/commands/subcommands/_mx.py:167
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "Înregistrarea MX pentru domeniul {0} este invalidă: {1}"
 
-#: management/commands/subcommands/_mx.py:183
+#: management/commands/subcommands/_mx.py:184
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] Problemă(e) MX pentru domeniul {}"
 
@@ -708,7 +752,7 @@ msgstr "adresă"
 msgid "The alias address."
 msgstr "Adresă alias."
 
-#: models/alias.py:43 models/domain.py:49 models/domain_alias.py:46
+#: models/alias.py:43 models/domain.py:41 models/domain_alias.py:46
 msgid "enabled"
 msgstr "activat"
 
@@ -754,56 +798,50 @@ msgstr "nume"
 msgid "The domain name"
 msgstr "Numele domeniului"
 
-#: models/domain.py:44
-msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
-"înseamnă fără cotă."
-
-#: models/domain.py:50
+#: models/domain.py:42
 msgid "Check to activate this domain"
 msgstr "Bifează pentru a activa domeniul"
 
-#: models/domain.py:55
+#: models/domain.py:47
 msgid "Enable DNS checks"
 msgstr "Activează verificările DNS"
 
-#: models/domain.py:56
+#: models/domain.py:48
 msgid "Check to enable DNS checks for this domain"
 msgstr "Bifează pentru a activa verificările DNS pentru acest domeniu"
 
-#: models/domain.py:63
+#: models/domain.py:55
 msgid "Enable DKIM signing"
 msgstr "Activează semnarea DKIM"
 
-#: models/domain.py:65
+#: models/domain.py:57
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Dacă activezi această facilitate, o chieie DKIM se va genera pt acest "
 "domeniu."
 
-#: models/domain.py:71
+#: models/domain.py:63
 msgid "Key length"
 msgstr "Mărime cheie"
 
-#: models/domain.py:303 models/domain_alias.py:74
+#: models/domain.py:320 models/domain_alias.py:74
 msgid "Invalid line"
 msgstr "Linie invalidă"
 
-#: models/domain.py:313
+#: models/domain.py:330
 msgid "No authorized MX record found for domain {}"
 msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu {}"
 
-#: models/domain.py:320
+#: models/domain.py:337
 msgid "Invalid quota value for domain '{}'"
 msgstr "Valuare de cotă invalidă pentru domeniul '{}'"
 
-#: models/domain.py:327
+#: models/domain.py:344
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr "Valuare implicită de cotă invalidă pentru domeniul '{}'"
 
-#: models/domain.py:332
+#: models/domain.py:349
 msgid "Default mailbox quota cannot be greater than domain quota"
 msgstr ""
 "Valuarea de cotă implicită a unei cutii poștale nu poate fi mai mare decât "
@@ -843,41 +881,47 @@ msgstr "O cotă este necesară"
 msgid "Domain quota exceeded"
 msgstr "Cota pentru domeniu a fost depașită"
 
-#: serializers.py:99 serializers.py:304 serializers.py:402
+#: serializers.py:41
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr ""
+"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
+"înseamnă fără cotă."
+
+#: serializers.py:111 serializers.py:316 serializers.py:414
 msgid "Permission denied."
 msgstr "Permisiune refuzată."
 
-#: serializers.py:150
+#: serializers.py:162
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista domenilor administrate (doar reselleri și administratori de domeniu)"
 
-#: serializers.py:254
+#: serializers.py:266
 msgid "Not allowed for this role."
 msgstr "Ne permis pentru acest rol."
 
-#: serializers.py:266
+#: serializers.py:278
 msgid "Must be equal to mailbox full_address"
 msgstr "Trebuie să fie egal cu mailbox full_address"
 
-#: serializers.py:291
+#: serializers.py:303
 msgid "Local domain {} does not exist"
 msgstr "Domeniu local {} nu există"
 
-#: serializers.py:389
+#: serializers.py:401
 msgid "A list of recipient"
 msgstr "O listă de destinatari"
 
-#: serializers.py:400
+#: serializers.py:412
 msgid "Domain not found."
 msgstr "Domeniu negăsit"
 
-#: serializers.py:449
+#: serializers.py:461
 msgid "You don't have access to this domain."
 msgstr "Nu ai acces la acest domeniu."
 
-#: serializers.py:457
+#: serializers.py:469
 msgid "You don't have access to this mailbox."
 msgstr "Nu ai acces la această cutie postală"
 
@@ -907,6 +951,18 @@ msgstr "Dezactivat"
 #: templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
 msgstr "Se așteaptă verificările"
+
+#: templates/admin/_domain_dnschecks_status.html:16
+#: templates/admin/_domain_dnschecks_status.html:32
+#: templates/admin/_domain_dnschecks_status.html:40
+#, fuzzy
+#| msgid "No DNS records found for %s"
+msgid "No record found"
+msgstr "Nu s-au găsit înregistrări DNS pentru %s"
+
+#: templates/admin/_domain_dnschecks_status.html:24
+msgid "Waiting for key to be generated"
+msgstr ""
 
 #: templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
@@ -1296,19 +1352,12 @@ msgstr "Editează {}"
 msgid "Delete %s?"
 msgstr "Șterge %s?"
 
-#: tests/test_mx.py:144
-#, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No A record found for MX %(domain)s"
-msgstr "Nu există înregistrări MX pentru acest domeniu."
+#: tests/test_mx.py:139
+#, python-format
+msgid "No MX record for %s"
+msgstr "Nu există înregidtrări MX pentru %s"
 
-#: tests/test_mx.py:147
-#, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No AAAA record found for MX %(domain)s"
-msgstr "Nu există înregistrări MX pentru acest domeniu."
-
-#: tests/test_mx.py:150 tests/test_mx.py:153
+#: tests/test_mx.py:151 tests/test_mx.py:154
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr "Format invalid de IP pentru %(domain)s; %(addr)s "
@@ -1348,11 +1397,11 @@ msgstr "Înregistrări MX ale {}"
 msgid "DNSBL summary for {}"
 msgstr "Sumar DNSBL pentru {}"
 
-#: views/domain.py:199
+#: views/domain.py:206
 msgid "You can't delete your own domain"
 msgstr "Nu poți să îți ștergi propriul domeniu"
 
-#: views/domain.py:202
+#: views/domain.py:209
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domeniu șters"
@@ -1399,6 +1448,21 @@ msgstr "Importă identități"
 #: views/user.py:40
 msgid "Forward updated"
 msgstr "Redirecționare actualizată"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No {type} record found for MX {mx}"
+#~ msgstr "Nu s-au găsit înregistrări DNS pentru %s"
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No A record found for MX %(domain)s"
+#~ msgstr "Nu există înregistrări MX pentru acest domeniu."
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No AAAA record found for MX %(domain)s"
+#~ msgstr "Nu există înregistrări MX pentru acest domeniu."
 
 #~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
 #~ msgstr ""

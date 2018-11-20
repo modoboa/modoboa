@@ -19,6 +19,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
 from modoboa.admin import constants, models
+from modoboa.dnstools import models as dns_models
 from modoboa.parameters import tools as param_tools
 
 
@@ -192,6 +193,25 @@ class CheckMXRecords(BaseCommand):
 
         if param_tools.get_global_parameter("enable_mx_checks"):
             self.check_valid_mx(domain, mx_list, **options)
+
+        if param_tools.get_global_parameter("enable_spf_checks"):
+            dns_models.DNSRecord.objects.get_or_create_for_domain(
+                domain, "spf", ttl)
+        condition = (
+            param_tools.get_global_parameter("enable_dkim_checks") and
+            domain.dkim_public_key
+        )
+        if condition:
+            dns_models.DNSRecord.objects.get_or_create_for_domain(
+                domain, "dkim", ttl)
+        if param_tools.get_global_parameter("enable_dmarc_checks"):
+            dns_models.DNSRecord.objects.get_or_create_for_domain(
+                domain, "dmarc", ttl)
+        if param_tools.get_global_parameter("enable_autoconfig_checks"):
+            dns_models.DNSRecord.objects.get_or_create_for_domain(
+                domain, "autoconfig", ttl)
+            dns_models.DNSRecord.objects.get_or_create_for_domain(
+                domain, "autodiscover", ttl)
 
         condition = (
             not param_tools.get_global_parameter("enable_dnsbl_checks") or

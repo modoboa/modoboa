@@ -453,4 +453,3 @@ class DKIMTestCase(ModoTestCase):
         os.unlink(key_path)
         call_command("modo", "manage_dkim_keys")
         self.assertTrue(os.path.exists(key_path))
-        

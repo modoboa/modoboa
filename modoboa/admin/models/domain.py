@@ -162,6 +162,31 @@ class Domain(AdminObject):
             return "success"
 
     @cached_property
+    def spf_record(self):
+        """Return SPF record."""
+        return self.dnsrecord_set.filter(type="spf").first()
+
+    @cached_property
+    def dkim_record(self):
+        """Return DKIM record."""
+        return self.dnsrecord_set.filter(type="dkim").first()
+
+    @cached_property
+    def dmarc_record(self):
+        """Return DMARC record."""
+        return self.dnsrecord_set.filter(type="dmarc").first()
+
+    @cached_property
+    def autoconfig_record(self):
+        """Return autoconfig record."""
+        return self.dnsrecord_set.filter(type="autoconfig").first()
+
+    @cached_property
+    def autodiscover_record(self):
+        """Return autodiscover record."""
+        return self.dnsrecord_set.filter(type="autodiscover").first()
+
+    @cached_property
     def allocated_quota(self):
         """Return current quota allocation."""
         if not self.quota:
@@ -257,7 +282,7 @@ class Domain(AdminObject):
             }
         if self.old_dkim_key_length != self.dkim_key_length:
             self.dkim_public_key = ""
-            self.dkim_private_key_path = ""       
+            self.dkim_private_key_path = ""
         super(Domain, self).save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):

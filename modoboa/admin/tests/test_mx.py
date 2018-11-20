@@ -110,7 +110,7 @@ class MXTestCase(ModoTestCase):
 
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "query")
-    def test_get_mx_list_dsn_server(self, mock_query, mock_getaddrinfo):
+    def test_get_mx_list_dns_server(self, mock_query, mock_getaddrinfo):
         """Test to get mx list from specific DNS server."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -133,7 +133,7 @@ class MXTestCase(ModoTestCase):
             get_domain_mx_list("bad-response.example.com")
         log.check(
             ("modoboa.admin", "ERROR",
-                _("No DNS records found for %s")
+                _("No DNS record found for %s")
                 % "does-not-exist.example.com"),
             ("modoboa.admin", "ERROR",
                 _("No MX record for %s") % "no-mx.example.com"),
@@ -142,11 +142,11 @@ class MXTestCase(ModoTestCase):
                 _("DNS resolution timeout, unable to query %s at the moment")
              % "timeout.example.com"),
             ("modoboa.admin", "ERROR",
-             _("No A record found for MX %(domain)s")
-             % {"domain": "no-lookup.example.com"}),
+             _("No DNS record found for %s")
+             % "does-not-exist.example.com"),
             ("modoboa.admin", "ERROR",
-             _("No AAAA record found for MX %(domain)s")
-             % {"domain": "no-lookup.example.com"}),
+             _("No DNS record found for %s")
+             % "does-not-exist.example.com"),
             ("modoboa.admin", "WARNING",
              _("Invalid IP address format for %(domain)s; %(addr)s")
              % {"domain": "bad-response.example.com", "addr": "000.0.0.0"}),
@@ -225,3 +225,35 @@ class DNSBLTestCase(ModoTestCase):
         response = self.client.get(
             reverse("admin:dnsbl_domain_detail", args=[self.domain.pk]))
         self.assertEqual(response.status_code, 200)
+
+
+class DNSChecksTestCase(ModoTestCase):
+    """A test case for DNS checks."""
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create some data."""
+        super(DNSChecksTestCase, cls).setUpTestData()
+        cls.domain = factories.DomainFactory(name="dns-checks.com")
+
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
+    def test_management_command(
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+        """Check that command works fine."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
+        mock_g_gethostbyname.return_value = "1.2.3.4"
+
+        self.domain.enable_dkim = True
+        self.domain.dkim_public_key = "XXXXX"
+        self.domain.save(update_fields=["enable_dkim", "dkim_public_key"])
+
+        management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=0")
+
+        self.assertIsNot(self.domain.spf_record, None)
+        self.assertIsNot(self.domain.dkim_record, None)
+        self.assertIsNot(self.domain.dmarc_record, None)
+        self.assertIsNot(self.domain.autoconfig_record, None)
+        self.assertIsNot(self.domain.autodiscover_record, None)
