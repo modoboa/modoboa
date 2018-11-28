@@ -110,6 +110,13 @@ Add ``'modoboa.dnstools'`` to ``MODOBOA_APPS``:
       'modoboa.dnstools',
    )
 
+Add the following new settings:
+
+.. sourcecode:: python
+
+   CSRF_COOKIE_SECURE = True
+   SESSION_COOKIE_SECURE = True
+
 modoboa-postfix-autoreply 1.5.0
 ===============================
 
