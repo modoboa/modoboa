@@ -120,7 +120,10 @@ class SenderLoginMap(object):
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_domainalias adom ON adom.target_id=dom.id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND (al.address='%s' OR (adom.name='@d' AND al.address='%u'||'@'||dom.name)))"
+        "WHERE al.enabled=1 AND ("
+        "  al.address='%s' OR ("
+        "    adom.name='@d' AND al.address='%u'||'@'||dom.name"
+        ")))"
     )
     postgres = (
         "(SELECT email FROM core_user WHERE email='%s' AND is_active) "
@@ -135,7 +138,10 @@ class SenderLoginMap(object):
         " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
         " INNER JOIN admin_domainalias adom ON adom.target_id=dom.id"
         " INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled AND (al.address='%s' OR (adom.name='@d' AND al.address='%u'||'@'||dom.name)))"
+        "WHERE al.enabled AND ("
+        "  al.address='%s' OR ("
+        "    adom.name='@d' AND al.address='%u'||'@'||dom.name"
+        ")))"
     )
     sqlite = (
         "SELECT email FROM core_user WHERE email='%s' AND is_active=1 "
@@ -150,5 +156,8 @@ class SenderLoginMap(object):
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "INNER JOIN admin_domainalias adom ON adom.target_id=dom.id "
         "INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND (al.address='%s' OR (adom.name='@d' AND al.address='%u'||'@'||dom.name))"
+        "WHERE al.enabled=1 AND ("
+        "  al.address='%s' OR ("
+        "    adom.name='@d' AND al.address='%u'||'@'||dom.name"
+        "))"
     )
