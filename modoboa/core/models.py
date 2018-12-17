@@ -159,9 +159,14 @@ class User(AbstractUser):
 
     @property
     def fullname(self):
-        if self.first_name != u"":
-            return u"%s %s" % (self.first_name, self.last_name)
-        return self.username
+        result = self.username
+        if self.first_name != "":
+            result = self.first_name
+        if self.last_name != "":
+            if result != "":
+                result += " "
+            result += self.last_name
+        return result
 
     @property
     def identity(self):
