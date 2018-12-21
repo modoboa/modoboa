@@ -38,11 +38,11 @@
           <td>{{ domain.domainalias_count }}</td>
         </tr>
         <tr>
-          <th><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}">{% trans "Mailboxes" %}</a></th>
+          <th><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}&idtfilter=account">{% trans "Mailboxes" %}</a></th>
           <td>{{ domain.mailbox_count }}</td>
         </tr>
         <tr>
-          <th><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}">{% trans "Mailbox aliases" %}</a></th>
+          <th><a href="{% url 'admin:identity_list' %}#list/?searchquery=@{{ object.name }}&idtfilter=alias">{% trans "Mailbox aliases" %}</a></th>
           <td>{{ domain.mbalias_count }}</td>
         </tr>
         <tr>
