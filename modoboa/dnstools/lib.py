@@ -200,7 +200,7 @@ def check_dkim_syntax(record):
     key = None
     for tag in record.split(";")[1:]:
         tag = tag.strip(" ")
-        parts = tag.split("=",1)
+        parts = tag.split("=", 1)
         if len(parts) != 2:
             raise DNSSyntaxError(_("Invalid tag {}").format(tag))
         name = parts[0].strip(" ")
