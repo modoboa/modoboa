@@ -44,7 +44,7 @@ GOOD_SPF_RECORDS = [
     "v=spf1 ptr -all",
     "v=spf1 ptr:otherdomain.com -all",
     "v=spf1 exists:example.com -all",
-    "v=spf1 include:example.com -all",
+    "v=spf1 include:example.com  -all",
     "v=spf1 ?include:example.com -all",
     "v=spf1 redirect=example.com",
     "v=spf1 exp=example.com",

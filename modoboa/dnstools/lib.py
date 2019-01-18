@@ -165,6 +165,8 @@ def check_spf_syntax(record):
     modifiers = []
     mechanisms = []
     for part in parts:
+        if part == "":
+            continue
         qualifier = None
         if part[0] in ["+", "-", "~", "?"]:
             qualifier = part[0]
@@ -200,6 +202,8 @@ def check_dkim_syntax(record):
     key = None
     for tag in record.split(";")[1:]:
         tag = tag.strip(" ")
+        if tag == "":
+            continue
         parts = tag.split("=", 1)
         if len(parts) != 2:
             raise DNSSyntaxError(_("Invalid tag {}").format(tag))
@@ -250,6 +254,8 @@ def check_dmarc_syntax(record):
         raise DNSSyntaxError(_("Not a valid DMARC record"))
     tags = {}
     for tag in record.split(";")[1:]:
+        if tag == "":
+            continue
         tag = tag.strip(" ")
         parts = tag.split("=")
         if len(parts) != 2:
