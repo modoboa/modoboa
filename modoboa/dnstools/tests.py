@@ -44,7 +44,7 @@ GOOD_SPF_RECORDS = [
     "v=spf1 ptr -all",
     "v=spf1 ptr:otherdomain.com -all",
     "v=spf1 exists:example.com -all",
-    "v=spf1 include:example.com -all",
+    "v=spf1 include:example.com  -all",
     "v=spf1 ?include:example.com -all",
     "v=spf1 redirect=example.com",
     "v=spf1 exp=example.com",
@@ -65,7 +65,7 @@ BAD_DMARC_RECORDS = [
 ]
 
 GOOD_DMARC_RECORDS = [
-    "v=DMARC1; p=reject; pct=100",
+    "v=DMARC1; p=reject;; pct=100",
     "v=DMARC1; p=quarantine; sp=none; adkim=s; aspf=s; "
     "rua=mailto:dmarc-aggrep@ngyn.org; ruf=mailto:toto@test.com!24m; "
     "rf=afrf; pct=100; ri=86400"
@@ -74,7 +74,7 @@ GOOD_DMARC_RECORDS = [
 BAD_DKIM_RECORDS = [
     ("", "Not a valid DKIM record"),
     ("v=DKIM1; toto;p=XXX", "Invalid tag toto"),
-    ("v=DKIM1;k=rsa", "No key found in record"),
+    ("v=DKIM1;;k=rsa", "No key found in record"),
 ]
 
 
