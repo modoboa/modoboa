@@ -136,7 +136,7 @@ def domains_list(request):
 
 
 @login_required
-@permission_required("admin.add_domain")
+@permission_required("admin.view_domain")
 def list_quotas(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     domains = Domain.objects.get_for_admin(request.user)
