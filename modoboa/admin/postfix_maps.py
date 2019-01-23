@@ -122,7 +122,7 @@ class SenderLoginMap(object):
         "LEFT JOIN admin_domainalias adom ON adom.target_id=dom.id "
         "WHERE al.enabled=1 AND ("
         "  al.address='%s' OR ("
-        "    adom.name='@d' AND al.address='%u'||'@'||dom.name"
+        "    adom.name='%d' AND al.address='%u'||'@'||dom.name"
         ")))"
     )
     postgres = (
@@ -140,7 +140,7 @@ class SenderLoginMap(object):
         "LEFT JOIN admin_domainalias adom ON adom.target_id=dom.id "
         "WHERE al.enabled AND ("
         "  al.address='%s' OR ("
-        "    adom.name='@d' AND al.address='%u'||'@'||dom.name"
+        "    adom.name='%d' AND al.address='%u'||'@'||dom.name"
         ")))"
     )
     sqlite = (
@@ -158,6 +158,6 @@ class SenderLoginMap(object):
         "LEFT JOIN admin_domainalias adom ON adom.target_id=dom.id "
         "WHERE al.enabled=1 AND ("
         "  al.address='%s' OR ("
-        "    adom.name='@d' AND al.address='%u'||'@'||dom.name"
+        "    adom.name='%d' AND al.address='%u'||'@'||dom.name"
         "))"
     )
