@@ -119,10 +119,11 @@ class SenderLoginMap(object):
         "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "LEFT JOIN admin_domainalias adom ON adom.target_id=dom.id "
+        "LEFT JOIN admin_domainalias adoma ON adoma.target_id=al.domain_id "
+        "LEFT JOIN admin_domain adom ON adom.id=adoma.target_id "
         "WHERE al.enabled=1 AND ("
         "  al.address='%s' OR ("
-        "    adom.name='%d' AND al.address='%u'||'@'||dom.name"
+        "    adoma.name='%d' AND al.address=concat('%u', '@', adom.name)"
         ")))"
     )
     postgres = (
@@ -137,10 +138,11 @@ class SenderLoginMap(object):
         "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "LEFT JOIN admin_domainalias adom ON adom.target_id=dom.id "
+        "LEFT JOIN admin_domainalias adoma ON adoma.target_id=al.domain_id "
+        "LEFT JOIN admin_domain adom ON adom.id=adoma.target_id "
         "WHERE al.enabled AND ("
         "  al.address='%s' OR ("
-        "    adom.name='%d' AND al.address='%u'||'@'||dom.name"
+        "    adoma.name='%d' AND al.address='%u'||'@'||adom.name"
         ")))"
     )
     sqlite = (
@@ -155,9 +157,10 @@ class SenderLoginMap(object):
         "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "LEFT JOIN admin_domainalias adom ON adom.target_id=dom.id "
+        "LEFT JOIN admin_domainalias adoma ON adoma.target_id=al.domain_id "
+        "LEFT JOIN admin_domain adom ON adom.id=adoma.target_id "
         "WHERE al.enabled=1 AND ("
         "  al.address='%s' OR ("
-        "    adom.name='%d' AND al.address='%u'||'@'||dom.name"
+        "    adoma.name='%d' AND al.address='%u'||'@'||adom.name"
         "))"
     )
