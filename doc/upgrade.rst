@@ -91,6 +91,16 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.13.1
+======
+
+Upgrade postfix maps files as follows:
+
+.. sourcecode:: bash
+
+   > python manage.py generate_postfix_maps --destdir <path> --force-overwrite
+
+
 1.13.0
 ======
 
