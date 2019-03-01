@@ -36,8 +36,7 @@ class BLFCRYPTHasher(PasswordHasher):
         # rounds = parameters.get_global_parameter("rounds_number")
         # To get around this, I use the default of 12.
         rounds = 12
-        bcrypt.using(rounds=rounds)
-        return bcrypt.hash(clearvalue)
+        return bcrypt.hash(clearvalue, rounds=rounds)
 
     def verify(self, clearvalue, hashed_value):
         return bcrypt.verify(clearvalue, hashed_value)
@@ -82,8 +81,7 @@ class SHA256CRYPTHasher(PasswordHasher):
 
     def _encrypt(self, clearvalue, salt=None):
         rounds = param_tools.get_global_parameter("rounds_number")
-        sha256_crypt.using(rounds=rounds)
-        return sha256_crypt.hash(clearvalue)
+        return sha256_crypt.hash(clearvalue, rounds=rounds)
 
     def verify(self, clearvalue, hashed_value):
         return sha256_crypt.verify(clearvalue, hashed_value)
@@ -106,8 +104,7 @@ class SHA512CRYPTHasher(PasswordHasher):
 
     def _encrypt(self, clearvalue, salt=None):
         rounds = param_tools.get_global_parameter("rounds_number")
-        sha512_crypt.using(rounds=rounds)
-        return sha512_crypt.hash(clearvalue)
+        return sha512_crypt.hash(clearvalue, rounds=rounds)
 
     def verify(self, clearvalue, hashed_value):
         return sha512_crypt.verify(clearvalue, hashed_value)
