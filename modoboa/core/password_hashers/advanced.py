@@ -9,6 +9,9 @@ This module relies on `passlib` to provide more secure hashers.
 from __future__ import unicode_literals
 
 from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
+from argon2 import PasswordHasher as argon2_hasher
+
+from django.conf import settings
 
 from modoboa.parameters import tools as param_tools
 from .base import PasswordHasher
@@ -91,8 +94,7 @@ class SHA512CRYPTHasher(PasswordHasher):
     """
     SHA512-CRYPT password hasher.
 
-    Supports rounds and is the strongest scheme provided by
-    Modoboa. Requires more resource than SHA256-CRYPT.
+    Supports rounds. Requires more resource than SHA256-CRYPT.
     """
 
     @property
@@ -108,3 +110,48 @@ class SHA512CRYPTHasher(PasswordHasher):
 
     def verify(self, clearvalue, hashed_value):
         return sha512_crypt.verify(clearvalue, hashed_value)
+
+
+class ARGON2IDHasher(PasswordHasher):
+    """
+    argon2 password hasher.
+
+    Supports rounds, memory and number of threads. To be set in settings.py.
+    It is the strongest scheme provided by modoboa
+    but can only be used with dovecot >= 2.3 and libsodium >= 1.0.13
+    """
+
+    def __init__(self,):
+        super(ARGON2IDHasher, self).__init__()
+
+        parameters = dict()
+
+        if hasattr(settings, "MODOBOA_ARGON2_TIME_COST"):
+            parameters["time_cost"] = settings.MODOBOA_ARGON2_TIME_COST
+
+        if hasattr(settings, "MODOBOA_ARGON2_MEMORY_COST"):
+            parameters["memory_cost"] = settings.MODOBOA_ARGON2_MEMORY_COST
+
+        if hasattr(settings, "MODOBOA_ARGON2_PARALLELISM"):
+            parameters["parallelism"] = settings.MODOBOA_ARGON2_PARALLELISM
+
+        self.hasher = argon2_hasher(**parameters)
+
+    @property
+    def scheme(self):
+        return "{ARGON2ID}" if self._target == "local" else "{CRYPT}"
+
+    def _b64encode(self, pwhash):
+        return pwhash
+
+    def _encrypt(self, clearvalue, salt=None):
+        return self.hasher.hash(clearvalue)
+
+    def verify(self, clearvalue, hashed_value):
+        try:
+            return self.hasher.verify(hashed_value, clearvalue)
+        except argon2_hasher.exceptions.VerifyMismatchError:
+            return False
+
+    def needs_rehash(self, hashed_value):
+        return self.hasher.check_needs_rehash(hashed_value.strip(self.scheme))
