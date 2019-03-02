@@ -92,6 +92,12 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(user.password.startswith("{SHA256}"))
 
         self.client.logout()
+        self.set_global_parameter("password_scheme", "argon2id")
+        self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith("{ARGON2ID}"))
+
+        self.client.logout()
         self.set_global_parameter("password_scheme", "fallback_scheme")
         self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
