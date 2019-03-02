@@ -52,6 +52,14 @@ def dologin(request):
                         )
                         user.set_password(form.cleaned_data["password"])
                         user.save()
+                    if pwhash.needs_rehash(user.password):
+                        logging.info(
+                            _("Password hash parameter missmatch. "
+                              "Updating %s password"),
+                            user.username
+                        )
+                        user.set_password(form.cleaned_data["password"])
+                        user.save()
 
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
