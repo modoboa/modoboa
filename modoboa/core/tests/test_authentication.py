@@ -122,12 +122,11 @@ class AuthenticationTestCase(ModoTestCase):
 
         self.client.logout()
         with self.settings(
-                MODOBOA_ARGON2_TIME_COST=4,
-                MODOBOA_ARGON2_MEMORY_COST=10000,
-                MODOBOA_ARGON2_PARALLELISM=4):
+            MODOBOA_ARGON2_TIME_COST=4,
+            MODOBOA_ARGON2_MEMORY_COST=10000,
+            MODOBOA_ARGON2_PARALLELISM=4):
             self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
-        print(user.password)
         self.assertTrue(user.password.startswith("{ARGON2ID}"))
         parameters = argon2.extract_parameters(user.password.lstrip("{ARGON2ID}"))
         self.assertEqual(parameters.time_cost, 4)
@@ -136,13 +135,14 @@ class AuthenticationTestCase(ModoTestCase):
 
         self.client.logout()
         with self.settings(
-                MODOBOA_ARGON2_TIME_COST=3,
-                MODOBOA_ARGON2_MEMORY_COST=1000,
-                MODOBOA_ARGON2_PARALLELISM=2):
+            MODOBOA_ARGON2_TIME_COST=3,
+            MODOBOA_ARGON2_MEMORY_COST=1000,
+            MODOBOA_ARGON2_PARALLELISM=2):
             self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith("{ARGON2ID}"))
-        parameters = argon2.extract_parameters(user.password.lstrip("{ARGON2ID}"))
+        parameters = argon2.extract_parameters(
+            user.password.lstrip("{ARGON2ID}"))
         self.assertEqual(parameters.time_cost, 3)
         self.assertEqual(parameters.memory_cost, 1000)
         self.assertEqual(parameters.parallelism, 2)
