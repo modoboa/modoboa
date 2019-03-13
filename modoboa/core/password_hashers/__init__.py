@@ -9,7 +9,8 @@ from __future__ import unicode_literals
 from django.utils.encoding import smart_text
 
 from modoboa.core.password_hashers.advanced import (  # NOQA:F401
-    BLFCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher, ARGON2IDHasher
+    BLFCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher,
+    ARGON2IDHasher
 )
 from modoboa.core.password_hashers.base import (  # NOQA:F401
     CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher
