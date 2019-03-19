@@ -86,6 +86,16 @@ class PasswordHasher(with_metaclass(MetaHasher, object)):
             hashed_value
         )
 
+    def needs_rehash(self, hashed_value):
+        """Check if the provided hash needs rehasing accoring to the current
+        parameters
+
+        :param str hashed_value: hased password
+        :rtype bool
+        :return: True if the password needs rehash, false otherwise
+        """
+        return False
+
     @classmethod
     def get_password_hashers(cls):
         """Return all the PasswordHasher supported by Modoboa"""

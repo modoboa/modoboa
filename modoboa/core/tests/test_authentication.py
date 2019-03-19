@@ -12,6 +12,8 @@ from django.core import mail
 from django.test import override_settings
 from django.urls import reverse
 
+import argon2
+
 from modoboa.core.password_hashers import get_password_hasher, get_dovecot_schemes
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
@@ -92,6 +94,12 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(user.password.startswith("{SHA256}"))
 
         self.client.logout()
+        self.set_global_parameter("password_scheme", "argon2id")
+        self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith("{ARGON2ID}"))
+
+        self.client.logout()
         self.set_global_parameter("password_scheme", "fallback_scheme")
         self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
@@ -103,6 +111,41 @@ class AuthenticationTestCase(ModoTestCase):
         self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith(pw_hash.scheme))
+
+    def test_password_parameter_change(self):
+        """Validate hash parameter update on login works"""
+        username = "user@test.com"
+        password = "toto"
+        data = {"username": username, "password": password}
+        user = models.User.objects.get(username=username)
+        self.set_global_parameter("password_scheme", "argon2id")
+
+        self.client.logout()
+        with self.settings(
+            MODOBOA_ARGON2_TIME_COST=4,
+            MODOBOA_ARGON2_MEMORY_COST=10000,
+            MODOBOA_ARGON2_PARALLELISM=4):
+            self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith("{ARGON2ID}"))
+        parameters = argon2.extract_parameters(user.password.lstrip("{ARGON2ID}"))
+        self.assertEqual(parameters.time_cost, 4)
+        self.assertEqual(parameters.memory_cost, 10000)
+        self.assertEqual(parameters.parallelism, 4)
+
+        self.client.logout()
+        with self.settings(
+            MODOBOA_ARGON2_TIME_COST=3,
+            MODOBOA_ARGON2_MEMORY_COST=1000,
+            MODOBOA_ARGON2_PARALLELISM=2):
+            self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith("{ARGON2ID}"))
+        parameters = argon2.extract_parameters(
+            user.password.lstrip("{ARGON2ID}"))
+        self.assertEqual(parameters.time_cost, 3)
+        self.assertEqual(parameters.memory_cost, 1000)
+        self.assertEqual(parameters.parallelism, 2)
 
     def test_supported_schemes(self):
         """Validate dovecot supported schemes."""
