@@ -9,7 +9,6 @@ from django.utils.translation import ugettext_lazy as _
 DNSBL_PROVIDERS = [
     "aspews.ext.sorbs.net",
     "b.barracudacentral.org",
-    "bad.psky.me",
     "bl.deadbeef.com",
     "bl.emailbasura.org",
     "bl.spamcop.net",
