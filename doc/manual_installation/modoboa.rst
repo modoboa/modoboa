@@ -18,12 +18,12 @@ First of all, we recommand the following context:
   dependencies) from the rest of your system
 
 The following example illustrates how to realize this (Debian like system):
-  
+
 .. sourcecode:: bash
 
   > sudo apt-get install python-virtualenv python-pip
   > sudo useradd modoboa
-  > sudo -i modoboa
+  > sudo -i -u modoboa
   > virtualenv env
   > source env/bin/activate
   (env)> pip install -U pip
@@ -59,7 +59,7 @@ Then, install Modoboa:
   (env)> pip install modoboa
 
 .. _database:
-  
+
 Database
 --------
 
@@ -73,7 +73,7 @@ Thanks to Django, Modoboa is compatible with the following databases:
 
 * PostgreSQL
 * MySQL / MariaDB
-* SQLite    
+* SQLite
 
 Since the last one does not require particular actions, only the first
 two ones are described.
@@ -91,7 +91,7 @@ Then, create a user and a database:
 
 .. sourcecode:: bash
 
-  > sudo -i postgres
+  > sudo -i -u postgres
   >
 
 MySQL / MariaDB
