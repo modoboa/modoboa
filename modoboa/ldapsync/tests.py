@@ -6,6 +6,7 @@ from unittest import skipIf
 
 import ldap
 
+from django.utils import six
 from django.utils.encoding import force_bytes, force_str
 
 from modoboa.core import factories as core_factories
@@ -37,7 +38,8 @@ class LDAPSyncTestCase(ModoTestCase):
         dn = self.config["ldap_sync_account_dn_template"] % {
             "user": username}
         try:
-            self.conn.delete_s(force_bytes(dn))
+            tmp_dn = force_bytes(dn) if six.PY2 else dn
+            self.conn.delete_s(tmp_dn)
         except ldap.NO_SUCH_OBJECT:
             pass
         user = core_factories.UserFactory(
