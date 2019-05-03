@@ -23,7 +23,6 @@ class LDAPSyncTestCase(ModoTestCase):
         super(LDAPSyncTestCase, self).setUp()
         self.set_global_parameters({
             "ldap_enable_sync": True,
-            "ldap_server_address": "192.168.30.17",
             "ldap_server_port": 3389,
             "ldap_sync_bind_dn": "cn=admin,dc=example,dc=com",
             "ldap_sync_bind_password": "test",
