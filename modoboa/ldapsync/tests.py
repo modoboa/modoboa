@@ -37,7 +37,7 @@ class LDAPSyncTestCase(ModoTestCase):
         dn = self.config["ldap_sync_account_dn_template"] % {
             "user": username}
         try:
-            self.conn.delete_s(dn)
+            self.conn.delete_s(force_bytes(dn))
         except ldap.NO_SUCH_OBJECT:
             pass
         user = core_factories.UserFactory(
