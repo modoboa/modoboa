@@ -47,7 +47,7 @@ def create_ldap_account(user, dn, conn):
     }
     ldif = modlist.addModlist(attrs)
     try:
-        conn.add_s(dn, ldif)
+        conn.add_s(force_bytes(dn), ldif)
     except ldap.LDAPError as e:
         raise InternalError(
             _("Failed to create LDAP account: {}").format(e)
