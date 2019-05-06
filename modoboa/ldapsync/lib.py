@@ -33,21 +33,24 @@ def get_connection(config):
 def create_ldap_account(user, dn, conn):
     """Create new account."""
     attrs = {
-        "objectClass": [
+        force_bytes("objectClass"): [
             force_bytes("inetOrgPerson"), force_bytes("organizationalPerson")
         ],
-        "uid": [force_bytes(user.username)],
-        "sn": [force_bytes(user.last_name)],
-        "givenName": [force_bytes(user.first_name)],
-        "cn": [force_bytes(user.username)],
-        "displayName": [force_bytes(user.fullname)],
-        "mail": [force_bytes(user.email), force_bytes(user.secondary_email)],
-        "homePhone": [force_bytes(user.phone_number)],
-        "userPassword": base64.b64encode(force_bytes(user.password))
+        force_bytes("uid"): [force_bytes(user.username)],
+        force_bytes("sn"): [force_bytes(user.last_name)],
+        force_bytes("givenName"): [force_bytes(user.first_name)],
+        force_bytes("cn"): [force_bytes(user.username)],
+        force_bytes("displayName"): [force_bytes(user.fullname)],
+        force_bytes("mail"): [
+            force_bytes(user.email), force_bytes(user.secondary_email)],
+        force_bytes("homePhone"): [force_bytes(user.phone_number)],
+        force_bytes("userPassword"): (
+            base64.b64encode(force_bytes(user.password))
+        )
     }
     ldif = modlist.addModlist(attrs)
     try:
-        conn.add_s(force_bytes(dn), ldif)
+        conn.add_s(force_bytes(dn) if six.PY2 else dn, ldif)
     except ldap.LDAPError as e:
         raise InternalError(
             _("Failed to create LDAP account: {}").format(e)
