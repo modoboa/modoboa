@@ -443,8 +443,24 @@ LDAP synchronization
 ********************
 
 Modoboa can synchronize accounts with an LDAP directory (tested with
-OpenLDAP). This feature is not enabled by default but you can control
-its state thanks to online parameters.
+OpenLDAP) but this feature is not enabled by default. To activate it,
+add ``modoboa.ldapsync`` to ``MODOBOA_APPS`` in the
+:file:`settings.py` file::
+
+    MODOBOA_APPS = (
+        'modoboa',
+        'modoboa.core',
+        'modoboa.lib',
+        'modoboa.admin',
+        'modoboa.transport',
+        'modoboa.relaydomains',
+        'modoboa.limits',
+        'modoboa.parameters',
+        'modoboa.dnstools',
+        'modoboa.ldapsync',
+    )
+
+and enable it from the admin panel.
 
 .. warning::
 

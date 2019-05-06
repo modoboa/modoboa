@@ -229,6 +229,17 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "LDAP directory")
     )
 
+    ldap_sync_delete_remote_account = YesNoField(
+        label=ugettext_lazy(
+            "Delete remote LDAP account when local account is deleted"
+        ),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Delete remote LDAP account when local account is deleted, "
+            "otherwise it will be disabled."
+        )
+    )
+
     ldap_sync_bind_dn = forms.CharField(
         label=ugettext_lazy("Bind DN"),
         initial="",

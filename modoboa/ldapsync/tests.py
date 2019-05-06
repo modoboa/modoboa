@@ -32,27 +32,61 @@ class LDAPSyncTestCase(ModoTestCase):
         }, app="core")
         self.config = dict(param_tools.get_global_parameters("core"))
         self.conn = lib.get_connection(self.config)
+        self.username = "testldap@test.com"
+        self.dn = self.config["ldap_sync_account_dn_template"] % {
+            "user": self.username}
 
-    def test_sync_user(self):
-        username = "testldap@test.com"
-        dn = self.config["ldap_sync_account_dn_template"] % {
-            "user": username}
+    def reset_ldap_directory(self):
         try:
-            tmp_dn = force_bytes(dn) if six.PY2 else dn
+            tmp_dn = force_bytes(self.dn) if six.PY2 else self.dn
             self.conn.delete_s(tmp_dn)
         except ldap.NO_SUCH_OBJECT:
             pass
+
+    def test_sync_user(self):
+        self.reset_ldap_directory()
         user = core_factories.UserFactory(
-            username=username,
+            username=self.username,
             first_name="Test",
             last_name="LDAP"
         )
-        self.assertTrue(lib.check_if_dn_exists(self.conn, dn))
+        self.assertTrue(lib.check_if_dn_exists(self.conn, self.dn))
+
+        lib.get_connection(self.config, self.dn, "toto")
+
         user.last_name = "LDAP Modif"
         user.save()
+        lib.get_connection(self.config, self.dn, "toto")
 
         res = self.conn.search_s(
-            force_str(dn), ldap.SCOPE_SUBTREE,
+            force_str(self.dn), ldap.SCOPE_SUBTREE,
             force_str("(&(objectClass=inetOrgPerson))")
         )
         self.assertIn(force_bytes(user.last_name), res[0][1]["sn"])
+
+    def test_delete_user(self):
+        self.reset_ldap_directory()
+        user = core_factories.UserFactory(
+            username=self.username,
+            first_name="Test",
+            last_name="LDAP"
+        )
+        user.delete()
+        ldap_record = self.conn.search_s(
+            force_str(self.dn), ldap.SCOPE_SUBTREE,
+            force_str("(&(objectClass=inetOrgPerson))")
+        )
+        password = ldap_record[0][1]["userPassword"][0].split(b"}")[1]
+        self.assertTrue(password.startswith(b"#"))
+        with self.assertRaises(ldap.INVALID_CREDENTIALS):
+            lib.get_connection(self.config, self.dn, "toto")
+
+        user = core_factories.UserFactory(
+            username=self.username,
+            first_name="Test",
+            last_name="LDAP"
+        )
+        self.set_global_parameter(
+            "ldap_sync_delete_remote_account", True, app="core")
+        user.delete()
+        self.assertFalse(lib.check_if_dn_exists(self.conn, self.dn))
