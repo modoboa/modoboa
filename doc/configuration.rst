@@ -438,6 +438,9 @@ SMTP server location can be customized using the following settings:
    AUTH_SMTP_SERVER_PORT = 25
    AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
 
+
+.. ldap_sync::
+
 ********************
 LDAP synchronization
 ********************
