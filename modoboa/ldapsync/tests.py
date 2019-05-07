@@ -72,7 +72,7 @@ class LDAPSyncTestCase(ModoTestCase):
             last_name="LDAP",
             groups=("DomainAdmins", )
         )
-        self.assertTrue(lib.check_if_dn_exists(self.conn, self.dn))
+        self.assertFalse(lib.check_if_dn_exists(self.conn, self.dn))
 
     def test_delete_user(self):
         self.reset_ldap_directory()
