@@ -48,7 +48,8 @@ class LDAPSyncTestCase(ModoTestCase):
         user = core_factories.UserFactory(
             username=self.username,
             first_name="Test",
-            last_name="LDAP"
+            last_name="LDAP",
+            groups=("SimpleUsers",)
         )
         self.assertTrue(lib.check_if_dn_exists(self.conn, self.dn))
 
@@ -79,7 +80,8 @@ class LDAPSyncTestCase(ModoTestCase):
         user = core_factories.UserFactory(
             username=self.username,
             first_name="Test",
-            last_name="LDAP"
+            last_name="LDAP",
+            groups=("SimpleUsers",)
         )
         user.delete()
         ldap_record = self.conn.search_s(
@@ -94,7 +96,8 @@ class LDAPSyncTestCase(ModoTestCase):
         user = core_factories.UserFactory(
             username=self.username,
             first_name="Test",
-            last_name="LDAP"
+            last_name="LDAP",
+            groups=("SimpleUsers",)
         )
         self.set_global_parameter(
             "ldap_sync_delete_remote_account", True, app="core")
