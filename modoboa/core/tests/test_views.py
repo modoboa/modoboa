@@ -74,6 +74,11 @@ SETTINGS_SAMPLE = {
     "admin-enable_dkim_checks": True,
     "admin-enable_dmarc_checks": True,
     "admin-enable_autoconfig_checks": True,
+    "core-ldap_enable_sync": False,
+    "core-ldap_sync_bind_dn": "",
+    "core-ldap_sync_bind_password": "",
+    "core-ldap_sync_account_dn_template": "",
+    "core-ldap_sync_delete_remote_account": False
 }
 
 
