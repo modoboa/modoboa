@@ -114,6 +114,17 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Use an SSL/STARTTLS connection to access the LDAP server")
     )
 
+    ldap_is_active_directory = YesNoField(
+        label=ugettext_lazy("Active Directory"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Tell if the LDAP server is an Active Directory one")
+    )
+
+    # LDAP authentication settings
+    ldap_auth_sep = SeparatorField(
+        label=ugettext_lazy("LDAP authentication settings"))
+
     ldap_auth_method = forms.ChoiceField(
         label=ugettext_lazy("Authentication method"),
         choices=[("searchbind", ugettext_lazy("Search and bind")),
@@ -178,20 +189,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
-    ldap_password_attribute = forms.CharField(
-        label=ugettext_lazy("Password attribute"),
-        initial="userPassword",
-        help_text=ugettext_lazy("The attribute used to store user passwords"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
-    )
-
-    ldap_is_active_directory = YesNoField(
-        label=ugettext_lazy("Active Directory"),
-        initial=False,
-        help_text=ugettext_lazy(
-            "Tell if the LDAP server is an Active Directory one")
-    )
-
     ldap_admin_groups = forms.CharField(
         label=ugettext_lazy("Administrator groups"),
         initial="",
@@ -218,6 +215,67 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "The distinguished name of the search base used to find groups"
         ),
         required=False
+    )
+
+    # LDAP sync. settings
+    ldap_sync_sep = SeparatorField(
+        label=ugettext_lazy("LDAP synchronization settings"))
+
+    ldap_enable_sync = YesNoField(
+        label=ugettext_lazy("Enable LDAP synchronization"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Enable automatic synchronization between local database and "
+            "LDAP directory")
+    )
+
+    ldap_sync_delete_remote_account = YesNoField(
+        label=ugettext_lazy(
+            "Delete remote LDAP account when local account is deleted"
+        ),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Delete remote LDAP account when local account is deleted, "
+            "otherwise it will be disabled."
+        )
+    )
+
+    ldap_sync_bind_dn = forms.CharField(
+        label=ugettext_lazy("Bind DN"),
+        initial="",
+        help_text=ugettext_lazy(
+            "The distinguished name to use when binding to the LDAP server. "
+            "Leave empty for an anonymous bind"
+        ),
+        required=False,
+    )
+
+    ldap_sync_bind_password = forms.CharField(
+        label=ugettext_lazy("Bind password"),
+        initial="",
+        help_text=ugettext_lazy(
+            "The password to use when binding to the LDAP server "
+            "(with 'Bind DN')"
+        ),
+        widget=forms.PasswordInput(render_value=True),
+        required=False
+    )
+
+    ldap_sync_account_dn_template = forms.CharField(
+        label=ugettext_lazy("Account DN template"),
+        initial="",
+        help_text=ugettext_lazy(
+            "The template used to construct an account's DN. It should contain "
+            "one placeholder (ie. %(user)s)"
+        ),
+        required=False
+    )
+
+    ldap_password_attribute = forms.CharField(
+        label=ugettext_lazy("Password attribute"),
+        initial="userPassword",
+        help_text=ugettext_lazy("The attribute used to store user passwords"),
+        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     dash_sep = SeparatorField(label=ugettext_lazy("Dashboard"))
@@ -319,18 +377,13 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     # Visibility rules
     visibility_rules = {
-        "ldap_sep": "authentication_type=ldap",
-        "ldap_server_address": "authentication_type=ldap",
-        "ldap_server_port": "authentication_type=ldap",
-        "ldap_secured": "authentication_type=ldap",
+        "ldap_auth_sep": "authentication_type=ldap",
         "ldap_auth_method": "authentication_type=ldap",
         "ldap_bind_dn": "ldap_auth_method=searchbind",
         "ldap_bind_password": "ldap_auth_method=searchbind",
         "ldap_search_base": "ldap_auth_method=searchbind",
         "ldap_search_filter": "ldap_auth_method=searchbind",
         "ldap_user_dn_template": "ldap_auth_method=directbind",
-        "ldap_password_attribute": "authentication_type=ldap",
-        "ldap_is_active_directory": "authentication_type=ldap",
         "ldap_admin_groups": "authentication_type=ldap",
         "ldap_group_type": "authentication_type=ldap",
         "ldap_groups_search_base": "authentication_type=ldap",
@@ -344,6 +397,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     def clean_ldap_user_dn_template(self):
         tpl = self.cleaned_data["ldap_user_dn_template"]
+        try:
+            tpl % {"user": "toto"}
+        except (KeyError, ValueError):
+            raise forms.ValidationError(_("Invalid syntax"))
+        return tpl
+
+    def clean_ldap_sync_account_dn_template(self):
+        tpl = self.cleaned_data["ldap_sync_account_dn_template"]
         try:
             tpl % {"user": "toto"}
         except (KeyError, ValueError):
