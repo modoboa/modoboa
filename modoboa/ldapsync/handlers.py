@@ -17,6 +17,8 @@ def sync_ldap_account(sender, instance, created, **kwargs):
         return
     if created:
         return
+    if instance.role != "SimpleUsers":
+        return
     update_fields = kwargs.get("update_fields")
     if update_fields and "last_login" in update_fields:
         return
@@ -28,5 +30,7 @@ def delete_ldap_account(sender, instance, **kwargs):
     """Delete LDAP account if needed."""
     config = dict(param_tools.get_global_parameters("core"))
     if not config["ldap_enable_sync"]:
+        return
+    if instance.role != "SimpleUsers":
         return
     lib.delete_ldap_account(instance, config)

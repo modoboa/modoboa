@@ -64,6 +64,16 @@ class LDAPSyncTestCase(ModoTestCase):
         )
         self.assertIn(force_bytes(user.last_name), res[0][1]["sn"])
 
+    def test_sync_domainadmin(self):
+        self.reset_ldap_directory()
+        core_factories.UserFactory(
+            username=self.username,
+            first_name="Test",
+            last_name="LDAP",
+            groups=("DomainAdmins", )
+        )
+        self.assertTrue(lib.check_if_dn_exists(self.conn, self.dn))
+
     def test_delete_user(self):
         self.reset_ldap_directory()
         user = core_factories.UserFactory(
