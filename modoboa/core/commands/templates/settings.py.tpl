@@ -83,7 +83,6 @@ MODOBOA_APPS = (
     'modoboa.limits',
     'modoboa.parameters',
     'modoboa.dnstools',
-    'modoboa.ldapsync',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}
