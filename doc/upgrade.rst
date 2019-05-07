@@ -91,6 +91,12 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.14.0
+======
+
+This release introduces an optional LDAP synchronization process. If
+you want to use it, please follow the :ref:`dedicated procedure <ldap_sync>`.
+
 1.13.1
 ======
 
