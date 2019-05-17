@@ -81,5 +81,6 @@ if __name__ == "__main__":
             "ldap": LDAP_REQUIRES,
             "mysql": MYSQL_REQUIRES,
             "postgresql": POSTGRESQL_REQUIRES,
+            "argon2": ["argon2-cffi >= 16.1.0"],
         },
     )
