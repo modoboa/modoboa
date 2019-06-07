@@ -40,7 +40,6 @@ def get_user_password(user, disable=False):
 
 def create_ldap_account(user, dn, conn):
     """Create new account."""
-    scheme, password = user.password.split("}")
     attrs = {
         "objectClass": [
             force_bytes("inetOrgPerson"), force_bytes("organizationalPerson")
@@ -53,8 +52,10 @@ def create_ldap_account(user, dn, conn):
         "mail": [
             force_bytes(user.email), force_bytes(user.secondary_email)],
         "homePhone": [force_bytes(user.phone_number)],
-        "userPassword": [get_user_password(user)]
     }
+    if user.password:
+        scheme, password = user.password.split("}")
+        attrs["userPassword"] = [get_user_password(user)]
     ldif = modlist.addModlist(attrs)
     try:
         conn.add_s(dn, ldif)
@@ -84,7 +85,6 @@ def update_ldap_account(user, config):
     if not check_if_dn_exists(conn, dn):
         create_ldap_account(user, dn, conn)
         return
-    password = get_user_password(user, not user.is_active)
     ldif = [
         (ldap.MOD_REPLACE, "uid", force_bytes(user.username)),
         (ldap.MOD_REPLACE, "sn", force_bytes(user.last_name)),
@@ -93,8 +93,10 @@ def update_ldap_account(user, config):
         (ldap.MOD_REPLACE, "displayName", force_bytes(user.fullname)),
         (ldap.MOD_REPLACE, "mail", force_bytes(user.email)),
         (ldap.MOD_REPLACE, "homePhone", force_bytes(user.phone_number)),
-        (ldap.MOD_REPLACE, "userPassword", password)
     ]
+    if user.password:
+        password = get_user_password(user, not user.is_active)
+        ldif.append((ldap.MOD_REPLACE, "userPassword", password))
     try:
         conn.modify_s(dn, ldif)
     except ldap.LDAPError as e:
