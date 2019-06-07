@@ -119,7 +119,8 @@ class User(AbstractUser):
         :param raw_value: the new password's value
         :param curvalue: the current password (for LDAP authentication)
         """
-        if self.is_local:
+        ldap_sync_enable = param_tools.get_global_parameter("ldap_enable_sync")
+        if self.is_local or ldap_sync_enable:
             self.password = self._crypt_password(raw_value)
         else:
             if not ldap_available:
