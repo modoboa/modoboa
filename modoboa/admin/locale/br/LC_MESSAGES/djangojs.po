@@ -3,52 +3,51 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ravil Kadyrbayev, 2015
-# Yuriy Matskanyuk <umackanuk@gmail.com>, 2018
+# Irriep Nala Novram <allannkorh@yahoo.fr>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-04 22:08+0100\n"
-"PO-Revision-Date: 2018-11-27 17:54+0000\n"
-"Last-Translator: Yuriy Matskanyuk <umackanuk@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/tonio/modoboa/language/ru/)\n"
+"PO-Revision-Date: 2019-03-08 09:15+0000\n"
+"Last-Translator: Irriep Nala Novram <allannkorh@yahoo.fr>\n"
+"Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: br\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 && n % 1000000 == 0) ? 3 : 4);\n"
 
 #: admin/static/admin/js/admin.js:131
 msgid "No more domain to show"
-msgstr "Нет больше доменов для показа"
+msgstr "Domani ebet ken da ziskouez"
 
 #: admin/static/admin/js/admin.js:150
 msgid "Do not delete domain directory"
-msgstr "Не удаляйте каталог домена"
+msgstr "Na zilamit ket ar c'havlec'h domanioù"
 
 #: admin/static/admin/js/admin.js:152
 msgid "This operation will remove ALL data associated to this domain."
-msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом."
+msgstr "An oberiadenn-mañ a zilamo an HOLL roadennoù stag ouzh an domani-mañ."
 
 #: admin/static/admin/js/admin.js:153
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением аккаунтов."
+msgstr "An oberiadenn-mañ a zilamo an HOLL roadennoù stag ouzh an domani-mañ, paneve ar c'hontoù."
 
 #: admin/static/admin/js/admin.js:236
 msgid "No domain administrator defined"
-msgstr "Не указан администратор домена"
+msgstr "Merour domani ebet termenet"
 
 #: admin/static/admin/js/admin.js:291 admin/static/admin/js/admin.js:359
 msgid "No more identity to show"
-msgstr "Нет личности для показа"
+msgstr "Identelezh ebet ken da ziskouez"
 
 #: admin/static/admin/js/admin.js:333
 msgid "Do not delete mailbox directory"
-msgstr "Не удаляйте каталог почтовых ящиков"
+msgstr "Na zilamit ket kavlec'h ar voest-posteloù"
 
 #: admin/static/admin/js/admin.js:362
 msgid "No more quota to show"
-msgstr "Нет больше квоты для показа"
+msgstr "Kota ebet ken da ziskouez"

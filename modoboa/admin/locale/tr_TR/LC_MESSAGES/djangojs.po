@@ -3,52 +3,51 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ravil Kadyrbayev, 2015
-# Yuriy Matskanyuk <umackanuk@gmail.com>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-04 22:08+0100\n"
-"PO-Revision-Date: 2018-11-27 17:54+0000\n"
-"Last-Translator: Yuriy Matskanyuk <umackanuk@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/tonio/modoboa/language/ru/)\n"
+"PO-Revision-Date: 2017-09-22 09:50+0000\n"
+"Last-Translator: Ediz Duman <neps1192@gmail.com>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/tonio/modoboa/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: tr_TR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: admin/static/admin/js/admin.js:131
 msgid "No more domain to show"
-msgstr "Нет больше доменов для показа"
+msgstr "Gösterilecek başka domain yok"
 
 #: admin/static/admin/js/admin.js:150
 msgid "Do not delete domain directory"
-msgstr "Не удаляйте каталог домена"
+msgstr "Domain dizini silmeyin"
 
 #: admin/static/admin/js/admin.js:152
 msgid "This operation will remove ALL data associated to this domain."
-msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом."
+msgstr "Bu işlem, bu domain ilişkili TÜM verileri kaldıracaktır."
 
 #: admin/static/admin/js/admin.js:153
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением аккаунтов."
+msgstr "Bu işlem hesap dışında bu domain ilişkili tüm verileri kaldıracaktır."
 
 #: admin/static/admin/js/admin.js:236
 msgid "No domain administrator defined"
-msgstr "Не указан администратор домена"
+msgstr "domain yöneticisi tanımlanmadı"
 
 #: admin/static/admin/js/admin.js:291 admin/static/admin/js/admin.js:359
 msgid "No more identity to show"
-msgstr "Нет личности для показа"
+msgstr "Gösterilecek daha fazla kimlik yok"
 
 #: admin/static/admin/js/admin.js:333
 msgid "Do not delete mailbox directory"
-msgstr "Не удаляйте каталог почтовых ящиков"
+msgstr "Posta kutusu dizini silmeyin"
 
 #: admin/static/admin/js/admin.js:362
 msgid "No more quota to show"
-msgstr "Нет больше квоты для показа"
+msgstr "Gösterilecek  kota yok"
