@@ -9,7 +9,11 @@ This module relies on `passlib` to provide more secure hashers.
 from __future__ import unicode_literals
 
 from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
-from argon2 import PasswordHasher as argon2_hasher
+
+try:
+    from argon2 import PasswordHasher as argon2_hasher
+except ImportError:
+    argon2_hasher = None
 
 from django.conf import settings
 
@@ -112,46 +116,52 @@ class SHA512CRYPTHasher(PasswordHasher):
         return sha512_crypt.verify(clearvalue, hashed_value)
 
 
-class ARGON2IDHasher(PasswordHasher):
-    """
-    argon2 password hasher.
+if argon2_hasher is not None:
+    class ARGON2IDHasher(PasswordHasher):
+        """
+        argon2 password hasher.
 
-    Supports rounds, memory and number of threads. To be set in settings.py.
-    It is the strongest scheme provided by modoboa
-    but can only be used with dovecot >= 2.3 and libsodium >= 1.0.13
-    """
+        Supports rounds, memory and number of threads. To be set in settings.py.
+        It is the strongest scheme provided by modoboa
+        but can only be used with dovecot >= 2.3 and libsodium >= 1.0.13
+        """
 
-    def __init__(self,):
-        super(ARGON2IDHasher, self).__init__()
+        def __init__(self,):
+            super(ARGON2IDHasher, self).__init__()
 
-        parameters = dict()
+            parameters = dict()
 
-        if hasattr(settings, "MODOBOA_ARGON2_TIME_COST"):
-            parameters["time_cost"] = settings.MODOBOA_ARGON2_TIME_COST
+            if hasattr(settings, "MODOBOA_ARGON2_TIME_COST"):
+                parameters["time_cost"] = settings.MODOBOA_ARGON2_TIME_COST
 
-        if hasattr(settings, "MODOBOA_ARGON2_MEMORY_COST"):
-            parameters["memory_cost"] = settings.MODOBOA_ARGON2_MEMORY_COST
+            if hasattr(settings, "MODOBOA_ARGON2_MEMORY_COST"):
+                parameters["memory_cost"] = settings.MODOBOA_ARGON2_MEMORY_COST
 
-        if hasattr(settings, "MODOBOA_ARGON2_PARALLELISM"):
-            parameters["parallelism"] = settings.MODOBOA_ARGON2_PARALLELISM
+            if hasattr(settings, "MODOBOA_ARGON2_PARALLELISM"):
+                parameters["parallelism"] = settings.MODOBOA_ARGON2_PARALLELISM
 
-        self.hasher = argon2_hasher(**parameters)
+            self.hasher = argon2_hasher(**parameters)
 
-    @property
-    def scheme(self):
-        return "{ARGON2ID}" if self._target == "local" else "{CRYPT}"
+        @property
+        def scheme(self):
+            return "{ARGON2ID}" if self._target == "local" else "{CRYPT}"
 
-    def _b64encode(self, pwhash):
-        return pwhash
+        def _b64encode(self, pwhash):
+            return pwhash
 
-    def _encrypt(self, clearvalue, salt=None):
-        return self.hasher.hash(clearvalue)
+        def _encrypt(self, clearvalue, salt=None):
+            return self.hasher.hash(clearvalue)
 
-    def verify(self, clearvalue, hashed_value):
-        try:
-            return self.hasher.verify(hashed_value, clearvalue)
-        except argon2_hasher.exceptions.VerifyMismatchError:
-            return False
+        def verify(self, clearvalue, hashed_value):
+            try:
+                return self.hasher.verify(hashed_value, clearvalue)
+            except argon2_hasher.exceptions.VerifyMismatchError:
+                return False
 
-    def needs_rehash(self, hashed_value):
-        return self.hasher.check_needs_rehash(hashed_value.strip(self.scheme))
+        def needs_rehash(self, hashed_value):
+            return self.hasher.check_needs_rehash(
+                hashed_value.strip(self.scheme)
+            )
+else:
+    class ARGON2IDHasher:
+        pass

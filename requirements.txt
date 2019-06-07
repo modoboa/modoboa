@@ -29,4 +29,3 @@ rfc6266
 lxml
 backports.csv; python_version < '3'
 chardet
-argon2_cffi
