@@ -1,59 +1,55 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# Harrie v.d. Vegt <hvdvegt@gmail.com>, 2016
 # TuxBrother <vrijwilligerswerk@wij.rs>, 2014
-# TuxBrother <vrijwilligerswerk@wij.rs>, 2014
+# Tuxis Internet Engineering V.O.F. <info@tuxis.nl>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-04 22:08+0100\n"
-"PO-Revision-Date: 2014-12-31 11:42+0000\n"
-"Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
-"modoboa/language/nl_NL/)\n"
-"Language: nl_NL\n"
+"PO-Revision-Date: 2017-09-23 21:20+0000\n"
+"Last-Translator: Tuxis Internet Engineering V.O.F. <info@tuxis.nl>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/static/admin/js/admin.js:131
 msgid "No more domain to show"
-msgstr "Geen domein meer om te weergeven"
+msgstr "Geen domeinen meer om weer te geven"
 
 #: admin/static/admin/js/admin.js:150
 msgid "Do not delete domain directory"
-msgstr "De map van dit domein niet verwijderen (Zal de data ervan behouden)"
+msgstr "De map van dit domein niet verwijderen"
 
 #: admin/static/admin/js/admin.js:152
 msgid "This operation will remove ALL data associated to this domain."
-msgstr ""
-"Deze actie zal ALLE data verwijderen die bij dit domein hoort. Wilt u "
-"doorgaan?"
+msgstr "Deze actie zal ALLE data verwijderen die bij dit domein hoort."
 
 #: admin/static/admin/js/admin.js:153
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr ""
-"Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de "
-"gebruikers."
+msgstr "Deze actie zal alle data die bij dit domein hoort verwijderen, behalve de accounts."
 
 #: admin/static/admin/js/admin.js:236
 msgid "No domain administrator defined"
-msgstr "Geen administrator toegewezen"
+msgstr "Geen domeinbeheerder toegewezen"
 
 #: admin/static/admin/js/admin.js:291 admin/static/admin/js/admin.js:359
 msgid "No more identity to show"
-msgstr "Geen identiteiten meer om te weergeven"
+msgstr "Geen identiteiten meer om weer te geven"
 
 #: admin/static/admin/js/admin.js:333
 msgid "Do not delete mailbox directory"
-msgstr "Verwijder de map van deze mailbox niet (zal de data ervan behouden)"
+msgstr "Verwijder de map van deze mailbox niet"
 
 #: admin/static/admin/js/admin.js:362
 msgid "No more quota to show"
-msgstr "Geen quota meer om te weergeven"
+msgstr "Geen quotum meer om weer te geven"

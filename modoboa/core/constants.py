@@ -25,6 +25,7 @@ ADMIN_GROUPS = [
 ]
 
 LANGUAGES = (
+    ("br", u"breton"),
     ("cs", u"čeština"),
     ("de", u"deutsch"),
     ("en", u"english"),
@@ -40,6 +41,7 @@ LANGUAGES = (
     ("ro_RO", u"Română"),
     ("ru", u"русский"),
     ("sv", u"svenska"),
+    ("tr_TR", u"türk"),
     ("zh_TW", u"中文（台灣）"),
 )
 
