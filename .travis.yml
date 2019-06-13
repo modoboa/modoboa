@@ -15,7 +15,7 @@ env:
 sudo: false
 
 addons:
-  postgresql: '9.3'
+  postgresql: '9.6'
   mysql: '5.5'
   apt:
     packages:
