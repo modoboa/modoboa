@@ -500,6 +500,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                 settings, "AUTH_LDAP_USER_DN_TEMPLATE",
                 values["ldap_user_dn_template"]
             )
+            setattr(
+                settings, "AUTH_LDAP_BIND_AS_AUTHENTICATING_USER", True)
         if values["ldap_is_active_directory"]:
             if not hasattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS"):
                 setattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS", {
