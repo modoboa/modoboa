@@ -432,7 +432,7 @@ class Log(models.Model):
     """Simple log in database."""
 
     date_created = models.DateTimeField(auto_now_add=True)
-    message = models.CharField(max_length=255)
+    message = models.TextField()
     level = models.CharField(max_length=15)
     logger = models.CharField(max_length=30)
 
