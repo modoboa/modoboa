@@ -439,7 +439,7 @@ SMTP server location can be customized using the following settings:
    AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
 
 
-.. ldap_sync::
+.. _ldap_sync:
 
 ********************
 LDAP synchronization
