@@ -30,7 +30,7 @@ def get_dkim_record(domain, selector):
     if records is None:
         return None
     for record in records:
-        value = str(record).strip('"')
+        value = str(record).strip('"').replace('" "', '')
         if value.startswith("v=DKIM1"):
             return value
     return None
