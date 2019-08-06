@@ -9,7 +9,7 @@ dj-database-url
 
 coreapi==2.3.3
 coreapi-cli==1.0.6
-djangorestframework==3.7.3
+djangorestframework==3.9.1
 
 # bcrypt requires libffi-dev
 bcrypt==3.1.4
