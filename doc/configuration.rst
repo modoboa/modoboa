@@ -470,7 +470,7 @@ and enable it from the admin panel.
    Make sure to install additional :ref:`requirements <ldap_auth>`
    otherwise it won't work.
 
-The following parameters are available and must be filled::
+The following parameters are available and must be filled:
 
 +--------------------+---------------------------------+--------------------+
 |Name                |Description                      |Default value       |
