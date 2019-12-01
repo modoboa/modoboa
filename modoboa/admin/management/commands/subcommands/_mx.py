@@ -155,6 +155,9 @@ class CheckMXRecords(BaseCommand):
         if not mxs:
             alerts.append(_("Domain {} has no MX record").format(domain))
         elif valid_mxs:
+            for mx, addr in mxs:
+                mx.managed = False
+                mx.save()
             for subnet in valid_mxs:
                 for mx, addr in mxs:
                     if addr in subnet:
