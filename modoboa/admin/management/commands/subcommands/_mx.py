@@ -22,6 +22,8 @@ from modoboa.admin import constants, models
 from modoboa.dnstools import models as dns_models
 from modoboa.parameters import tools as param_tools
 
+from modoboa.admin.lib import get_dns_resolver, get_dns_records, smart_text
+
 
 class CheckMXRecords(BaseCommand):
     """Command class."""
@@ -141,6 +143,47 @@ class CheckMXRecords(BaseCommand):
                 )
                 msg.send()
 
+    def _get_nexthop(self, domain):
+        """Strip out next hop address for a relay domain."""
+        next_hop = domain.transport.next_hop
+        if ':' in next_hop:
+            next_hop, next_hop_port = next_hop.split(':')
+        if next_hop.startswith('['):
+            next_hop = next_hop[1:-1]
+        return next_hop
+
+    def _get_relevant_mxs(self, domain):
+        """Return the valid MXs for a domain.
+
+        If the domain is a relay domain, than it is the next hop.
+        If the domain is a normal domain, than it is the MX list setted up
+        in the settings.
+        """
+        if domain.type == 'relaydomain':
+            addresses = []
+            next_hop = self._get_nexthop(domain)
+
+            try:
+                # try if the next hop is a valid IP address
+                addresses.append( ipaddress.ip_network(next_hop) )
+            except:
+                # next hop is a FQDN, so resolv it first
+                resolver = get_dns_resolver()
+                # resolv both IPv4 and IPv6 address
+                for rtype in ["A", "AAAA"]:
+                    ip_answers = get_dns_records(next_hop, rtype, resolver)
+                    if not ip_answers:
+                        continue
+                    for ip_answer in ip_answers:
+                        address_smart = smart_text(ip_answer.address)
+                        host_ip = ipaddress.ip_network(address_smart)
+                        addresses.append(host_ip)
+
+            return addresses
+
+        else:
+            return self.valid_mxs
+
     def check_valid_mx(self, domain, mx_list, **options):
         """Check that domain's MX record exist.
 
@@ -151,7 +194,7 @@ class CheckMXRecords(BaseCommand):
         check = False
         mxs = [(mx, ipaddress.ip_address("%s" % mx.address))
                for mx in mx_list]
-        valid_mxs = self.valid_mxs
+        valid_mxs = self._get_relevant_mxs(domain)
         if not mxs:
             alerts.append(_("Domain {} has no MX record").format(domain))
         elif valid_mxs:
