@@ -203,7 +203,10 @@ class CheckMXRecords(BaseCommand):
                 mx.save()
             for subnet in valid_mxs:
                 for mx, addr in mxs:
-                    if addr in subnet:
+                    if domain.type == 'relaydomain' and mx.name == self._get_nexthop(domain):
+                        mx.managed = check = True
+                        mx.save()
+                    elif addr in subnet:
                         mx.managed = check = True
                         mx.save()
             if check is False:
