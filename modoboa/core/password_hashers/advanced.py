@@ -12,6 +12,7 @@ from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
 
 try:
     from argon2 import PasswordHasher as argon2_hasher
+    from argon2 import exceptions as argon2_exceptions
 except ImportError:
     argon2_hasher = None
 
@@ -155,7 +156,7 @@ if argon2_hasher is not None:
         def verify(self, clearvalue, hashed_value):
             try:
                 return self.hasher.verify(hashed_value, clearvalue)
-            except argon2_hasher.exceptions.VerifyMismatchError:
+            except argon2_exceptions.VerifyMismatchError:
                 return False
 
         def needs_rehash(self, hashed_value):
