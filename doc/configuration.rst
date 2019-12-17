@@ -386,7 +386,7 @@ Modoboa should connect to your LDAP server. They are described just below:
 +--------------------+---------------------------------+--------------------+
 
 
-If you need additional parameters, you will find a detailled
+If you need additional parameters, you will find a detailed
 documentation `here <http://packages.python.org/django-auth-ldap/>`_.
 
 Once the authentication is properly configured, the users defined in
