@@ -4,8 +4,6 @@ from __future__ import unicode_literals
 
 from unittest import skipIf
 
-import ldap
-
 from django.utils import six
 from django.utils.encoding import force_bytes, force_str
 
@@ -13,7 +11,9 @@ from modoboa.core import factories as core_factories
 from modoboa.lib.tests import NO_LDAP, ModoTestCase
 from modoboa.parameters import tools as param_tools
 
-from . import lib
+if not NO_LDAP:
+    import ldap
+    from . import lib
 
 
 @skipIf(NO_LDAP, "No ldap module installed")

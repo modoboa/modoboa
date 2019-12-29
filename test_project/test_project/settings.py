@@ -70,9 +70,15 @@ MODOBOA_APPS = (
     "modoboa.limits",
     "modoboa.parameters",
     "modoboa.dnstools",
-    "modoboa.ldapsync",
     # Modoboa extensions here.
 )
+
+try:
+    import ldap  # noqa: F401
+except ImportError:
+    pass
+else:
+    MODOBOA_APPS += ("modoboa.ldapsync",)
 
 INSTALLED_APPS += MODOBOA_APPS
 
