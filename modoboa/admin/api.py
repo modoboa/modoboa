@@ -8,7 +8,7 @@ from django import http
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import filters, status, viewsets
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
@@ -86,7 +86,7 @@ class AccountViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(mailbox__domain__name=domain)
         return queryset
 
-    @detail_route(methods=["put"])
+    @action(methods=["put"], detail=True)
     def password(self, request, pk=None):
         """Change account password."""
         try:
@@ -100,7 +100,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         return Response(
             serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @list_route()
+    @action(detail=False)
     def exists(self, request):
         """Check if account exists.
 

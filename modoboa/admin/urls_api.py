@@ -9,12 +9,12 @@ from rest_framework import routers
 from . import api
 
 router = routers.SimpleRouter()
-router.register(r"domains", api.DomainViewSet, base_name="domain")
+router.register(r"domains", api.DomainViewSet, basename="domain")
 router.register(
-    r"domainaliases", api.DomainAliasViewSet, base_name="domain_alias")
-router.register(r"accounts", api.AccountViewSet, base_name="account")
-router.register(r"aliases", api.AliasViewSet, base_name="alias")
+    r"domainaliases", api.DomainAliasViewSet, basename="domain_alias")
+router.register(r"accounts", api.AccountViewSet, basename="account")
+router.register(r"aliases", api.AliasViewSet, basename="alias")
 router.register(
-    r"senderaddresses", api.SenderAddressViewSet, base_name="sender_address")
+    r"senderaddresses", api.SenderAddressViewSet, basename="sender_address")
 
 urlpatterns = router.urls
