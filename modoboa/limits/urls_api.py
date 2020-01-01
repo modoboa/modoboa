@@ -10,6 +10,6 @@ from . import viewsets
 
 router = routers.SimpleRouter()
 router.register(
-    r"resources", viewsets.ResourcesViewSet, base_name="resources")
+    r"resources", viewsets.ResourcesViewSet, basename="resources")
 
 urlpatterns = router.urls
