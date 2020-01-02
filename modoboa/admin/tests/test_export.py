@@ -1,8 +1,7 @@
 """Export related test cases."""
 
 import sys
-
-from six.moves import StringIO
+from io import StringIO
 
 from django.core.management import call_command
 from django.urls import reverse
