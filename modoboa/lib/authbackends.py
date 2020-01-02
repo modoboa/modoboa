@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Custom authentication backends."""
 
 import smtplib

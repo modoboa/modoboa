@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """RelayDomain serializers."""
 
 import json

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """A client for Modoboa's public API."""
 
 import os

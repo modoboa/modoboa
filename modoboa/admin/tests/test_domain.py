@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Domain related test cases."""
 
 import os

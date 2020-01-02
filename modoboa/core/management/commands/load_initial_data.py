@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """A management command to load Modoboa initial data:
 
 * Create a default super admin if none exists

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Extensions management related test cases."""
 
 import os

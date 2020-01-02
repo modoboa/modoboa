@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Management command tests."""
 
 import os

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import email
 import re
 import smtplib

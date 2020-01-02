@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Form rendering tags.
 """

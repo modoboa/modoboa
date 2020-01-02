@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Forms related to aliases management."""
 
 from collections import OrderedDict

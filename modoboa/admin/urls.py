@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Admin urls."""
 
 from django.conf.urls import url

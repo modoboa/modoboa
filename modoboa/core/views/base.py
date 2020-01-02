@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Base core views."""
 
 from django.contrib.auth import mixins as auth_mixins

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """A management command to apply mailbox operations."""
 
 import logging

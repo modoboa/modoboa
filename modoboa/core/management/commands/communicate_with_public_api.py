@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Management command to communicate with public API."""
 
 from django.core.management.base import BaseCommand, CommandError

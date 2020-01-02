@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """relaydomains unit tests."""
 
 import json

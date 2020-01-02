@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Custom password validators."""
 
 from django.core.exceptions import ValidationError

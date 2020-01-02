@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Internal library for admin."""
 
 import ipaddress

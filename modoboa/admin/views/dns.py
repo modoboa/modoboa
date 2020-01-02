@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """DNSBL related views."""
 
 from django.contrib.auth import mixins as auth_mixins

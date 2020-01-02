@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Crypto related utilities."""
 
 import base64

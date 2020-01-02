@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Tests for crypto utility functions."""
 
 from django.test import SimpleTestCase

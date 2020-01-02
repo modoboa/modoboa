@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Core middlewares."""
 
 from django.utils.deprecation import MiddlewareMixin

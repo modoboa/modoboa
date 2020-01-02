@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Parameters forms."""
 
 from django import forms

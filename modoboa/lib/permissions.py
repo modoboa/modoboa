@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Object level permissions."""
 
 from django.contrib.auth.models import Group, Permission

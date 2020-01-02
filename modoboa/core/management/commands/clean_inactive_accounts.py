@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Inactive accounts cleanup tool."""
 
 from dateutil.relativedelta import relativedelta

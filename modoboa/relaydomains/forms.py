@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Postfix relay domains extension forms."""
 
 from django.db.models.signals import pre_save, post_save

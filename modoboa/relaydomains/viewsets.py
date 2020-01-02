@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """RelayDomain viewsets."""
 
 from rest_framework import viewsets

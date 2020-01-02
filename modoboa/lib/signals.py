@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Custom signals."""
 
 from threading import local

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Management command to generate/update postfix map files."""
 
 import copy

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Models related to domain aliases management."""
 
 from reversion import revisions as reversion

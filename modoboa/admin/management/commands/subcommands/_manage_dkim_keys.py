@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Management command to create DKIM keys."""
 
 import os

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Export related test cases."""
 
 import sys

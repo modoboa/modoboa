@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from .account import (
     AccountForm, AccountFormGeneral, AccountFormMail, AccountPermissionsForm,
     AccountWizard

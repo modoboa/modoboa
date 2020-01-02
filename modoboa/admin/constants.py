@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Admin constants."""
 
 from django.utils.translation import ugettext_lazy as _

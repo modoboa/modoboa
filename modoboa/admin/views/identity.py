@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Identity related views."""
 
 from reversion import revisions as reversion

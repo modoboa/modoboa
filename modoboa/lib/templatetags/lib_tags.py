@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Custom template tags."""
 
 from datetime import datetime

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Transport handlers."""
 
 from django.db.models import signals

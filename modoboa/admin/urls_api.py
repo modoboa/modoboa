@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Admin API urls."""
 
 from rest_framework import routers

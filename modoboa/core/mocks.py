@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Mocks used for testing."""
 
 import httmock

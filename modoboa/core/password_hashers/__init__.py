@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Password hashers for Modoboa.
 """

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module extra functions/shortcuts to communicate with the system
 (executing commands, etc.)

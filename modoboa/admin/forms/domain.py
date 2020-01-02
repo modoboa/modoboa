@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Forms related to domains management."""
 
 from functools import reduce

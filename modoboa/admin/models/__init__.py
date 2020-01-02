@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Admin models."""
 
 from .alias import Alias, AliasRecipient

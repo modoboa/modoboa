@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Custom settings."""
 
 from django import forms

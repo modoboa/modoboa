@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Limits API."""
 
 from django.contrib.contenttypes.models import ContentType

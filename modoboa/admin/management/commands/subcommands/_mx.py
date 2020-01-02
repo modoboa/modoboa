@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Management command to check defined domains."""
 
 import ipaddress

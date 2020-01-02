@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Admin serializers."""
 
 from django.conf import settings

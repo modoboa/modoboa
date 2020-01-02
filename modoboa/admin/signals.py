@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Modoboa admin signals."""
 
 import django.dispatch

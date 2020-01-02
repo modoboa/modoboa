@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Utility functions."""
 
 from pkg_resources import parse_version
