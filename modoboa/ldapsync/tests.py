@@ -2,7 +2,6 @@
 
 from unittest import skipIf
 
-from django.utils import six
 from django.utils.encoding import force_bytes, force_str
 
 from modoboa.core import factories as core_factories
@@ -36,8 +35,7 @@ class LDAPSyncTestCase(ModoTestCase):
 
     def reset_ldap_directory(self):
         try:
-            tmp_dn = force_bytes(self.dn) if six.PY2 else self.dn
-            self.conn.delete_s(tmp_dn)
+            self.conn.delete_s(self.dn)
         except ldap.NO_SUCH_OBJECT:
             pass
 

@@ -14,7 +14,6 @@ import django
 from django.core import management
 from django.template import Context, Template
 from django.utils.encoding import smart_str
-from django.utils.six.moves import input
 
 from modoboa.core.commands import Command
 from modoboa.lib.api_client import ModoAPIClient

@@ -1,7 +1,6 @@
 """Inactive accounts cleanup tool."""
 
 from dateutil.relativedelta import relativedelta
-from six.moves import input
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
