@@ -1,6 +1,5 @@
 """A shortcut to deploy a fresh modoboa instance."""
 
-import codecs
 import getpass
 import os
 import shutil
@@ -245,7 +244,7 @@ class DeployCommand(Command):
                 "extra_settings": extra_settings
             }
         )
-        with codecs.open("%s/settings.py" % path, "w", "utf-8") as fp:
+        with open("%s/settings.py" % path, "w") as fp:
             fp.write(tpl)
         shutil.copyfile(
             "%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path
