@@ -2,8 +2,6 @@
 
 """Export related views."""
 
-from __future__ import unicode_literals
-
 from rfc6266 import build_header
 
 from django.contrib.auth.decorators import (

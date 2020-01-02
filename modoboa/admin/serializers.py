@@ -2,8 +2,6 @@
 
 """Admin serializers."""
 
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError

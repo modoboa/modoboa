@@ -2,8 +2,6 @@
 
 """Django signal handlers for relaydomains."""
 
-from __future__ import unicode_literals
-
 from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _

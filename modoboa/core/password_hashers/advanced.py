@@ -6,8 +6,6 @@ Advanced (ie. stronger) password hashers.
 This module relies on `passlib` to provide more secure hashers.
 """
 
-from __future__ import unicode_literals
-
 from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
 
 try:

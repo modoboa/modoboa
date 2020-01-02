@@ -2,8 +2,6 @@
 
 """Core views test cases."""
 
-from __future__ import unicode_literals
-
 from testfixtures import compare
 
 from django import forms

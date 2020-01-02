@@ -2,8 +2,6 @@
 
 """Form management utilities."""
 
-from __future__ import unicode_literals
-
 import abc
 import re
 from collections import OrderedDict

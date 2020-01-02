@@ -2,8 +2,6 @@
 
 """Postfix relay domains extension forms."""
 
-from __future__ import unicode_literals
-
 from django.db.models.signals import pre_save, post_save
 
 from modoboa.lib.form_utils import WizardStep

@@ -2,8 +2,6 @@
 
 """Transport handlers."""
 
-from __future__ import unicode_literals
-
 from django.db.models import signals
 from django.dispatch import receiver
 

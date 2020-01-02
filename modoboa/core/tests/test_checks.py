@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-
 from django.test import SimpleTestCase
 from django.test.utils import override_settings
 

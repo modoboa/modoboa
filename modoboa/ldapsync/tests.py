@@ -1,7 +1,5 @@
 """LDAP sync. related tests."""
 
-from __future__ import unicode_literals
-
 from unittest import skipIf
 
 from django.utils import six

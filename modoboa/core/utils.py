@@ -2,8 +2,6 @@
 
 """Utility functions."""
 
-from __future__ import unicode_literals
-
 from pkg_resources import parse_version
 
 from django.utils.translation import ugettext as _

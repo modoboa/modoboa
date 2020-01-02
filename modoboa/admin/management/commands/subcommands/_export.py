@@ -2,8 +2,6 @@
 
 """Django management command to export admin objects."""
 
-from __future__ import unicode_literals
-
 import sys
 
 from django.core.management.base import BaseCommand

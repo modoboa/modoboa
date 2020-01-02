@@ -2,8 +2,6 @@
 
 """Extension management."""
 
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.conf.urls import include, url
 from django.utils.encoding import smart_str

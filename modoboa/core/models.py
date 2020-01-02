@@ -2,8 +2,6 @@
 
 """Core models."""
 
-from __future__ import unicode_literals
-
 import re
 from email.header import Header
 

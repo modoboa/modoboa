@@ -2,8 +2,6 @@
 
 """Limits API."""
 
-from __future__ import unicode_literals
-
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import mixins, viewsets

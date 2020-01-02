@@ -2,8 +2,6 @@
 
 """Core middlewares."""
 
-from __future__ import unicode_literals
-
 from django.utils.deprecation import MiddlewareMixin
 
 from . import models

@@ -2,8 +2,6 @@
 
 """Admin models."""
 
-from __future__ import unicode_literals
-
 from .alias import Alias, AliasRecipient
 from .base import AdminObject
 from .domain import Domain

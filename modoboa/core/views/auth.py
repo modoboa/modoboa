@@ -2,8 +2,6 @@
 
 """Core authentication views."""
 
-from __future__ import unicode_literals
-
 import logging
 
 from django.contrib.auth import (

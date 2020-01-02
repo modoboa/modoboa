@@ -2,8 +2,6 @@
 
 """Tests for email_utils."""
 
-from __future__ import unicode_literals
-
 import os
 
 from django.test import SimpleTestCase

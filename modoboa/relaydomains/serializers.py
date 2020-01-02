@@ -2,8 +2,6 @@
 
 """RelayDomain serializers."""
 
-from __future__ import unicode_literals
-
 import json
 
 from django.utils.translation import ugettext as _

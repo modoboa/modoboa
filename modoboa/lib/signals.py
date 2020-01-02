@@ -2,8 +2,6 @@
 
 """Custom signals."""
 
-from __future__ import unicode_literals
-
 from threading import local
 
 _local_store = local()

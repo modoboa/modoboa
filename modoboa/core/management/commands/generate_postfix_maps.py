@@ -2,8 +2,6 @@
 
 """Management command to generate/update postfix map files."""
 
-from __future__ import print_function, unicode_literals
-
 import copy
 import hashlib
 import os

@@ -2,8 +2,6 @@
 
 """Forms related to domains management."""
 
-from __future__ import unicode_literals
-
 from functools import reduce
 
 from django import forms

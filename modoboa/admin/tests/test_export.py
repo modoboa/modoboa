@@ -2,8 +2,6 @@
 
 """Export related test cases."""
 
-from __future__ import unicode_literals
-
 import sys
 
 from six.moves import StringIO
