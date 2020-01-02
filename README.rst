@@ -17,7 +17,7 @@ is used as a central point of communication between all components.
 Modoboa is developed with modularity in mind, expanding it is really
 easy. Actually, all current features are extensions.
 
-It is written in Python and uses the `Django
+It is written in Python 3 and uses the `Django
 <https://www.djangoproject.com>`_, `jQuery <http://jquery.com>`_ and
 `Bootstrap <http://getbootstrap.com/>`_
 frameworks.
