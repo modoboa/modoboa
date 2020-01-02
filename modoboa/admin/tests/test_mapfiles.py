@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Test map files generation."""
 
 import os

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """A stupid extension used for tests."""
 
 from modoboa.core import extensions

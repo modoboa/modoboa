@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """AppConfig for relaydomains."""
 
 from django.apps import AppConfig

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Relay domain related models."""
 
 from django.db import models

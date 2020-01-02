@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Core application constants."""
 
 from django.utils.translation import ugettext_lazy

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Forms related to forwards management."""
 
 from django import forms

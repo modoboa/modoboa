@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """User related tests."""
 
 from django.urls import reverse

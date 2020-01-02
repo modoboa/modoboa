@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """App config for limits."""
 
 from django.apps import AppConfig

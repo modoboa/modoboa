@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """AppConfig for admin."""
 
 from django.apps import AppConfig

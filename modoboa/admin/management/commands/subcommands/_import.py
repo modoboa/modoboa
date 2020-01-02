@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Django management command to import admin objects."""
 
 import io

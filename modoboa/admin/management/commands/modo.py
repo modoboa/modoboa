@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Modoboa main management command."""
 
 from subcommand.base import SubcommandCommand

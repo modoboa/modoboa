@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Tools for top level testing (ie. when ran by Travis)."""
 
 import os

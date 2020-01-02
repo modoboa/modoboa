@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Export related views."""
 
 from rfc6266 import build_header

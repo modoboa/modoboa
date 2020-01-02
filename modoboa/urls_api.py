@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """External API urls."""
 
 from django.conf.urls import include, url

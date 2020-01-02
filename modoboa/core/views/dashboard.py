@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Core dashboard views."""
 
 import feedparser

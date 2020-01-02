@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Django management command to export admin objects."""
 
 import sys

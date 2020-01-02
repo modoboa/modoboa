@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Models related to aliases management."""
 
 import hashlib

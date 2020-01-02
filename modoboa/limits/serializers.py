@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Limits serializers."""
 
 from rest_framework import serializers

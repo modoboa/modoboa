@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Core urls."""
 
 from django.conf.urls import url

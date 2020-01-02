@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 A simple managemenent command to update the default site.
 

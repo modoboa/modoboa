@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Admin API related tests."""
 
 import copy

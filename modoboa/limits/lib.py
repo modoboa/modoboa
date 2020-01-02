@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 :mod:`lib` --- public functions
 -------------------------------

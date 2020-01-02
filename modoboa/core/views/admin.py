@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Views available to super administrators only."""
 
 from functools import reduce

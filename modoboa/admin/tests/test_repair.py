@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Repair command tests"""
 
 from django.core import management

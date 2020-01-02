@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Modoboa limits utilities."""
 
 from . import constants

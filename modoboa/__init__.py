@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Modoboa - Mail hosting made simple."""
 
 from pkg_resources import DistributionNotFound, get_distribution

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Custom urls."""
 
 from django.conf.urls import url

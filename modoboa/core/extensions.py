@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Extension management."""
 
 from django.conf import settings

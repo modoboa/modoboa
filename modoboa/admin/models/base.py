@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Base admin models."""
 
 from django.contrib.contenttypes.fields import GenericRelation

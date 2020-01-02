@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Django signal handlers for limits."""
 
 from django.contrib.contenttypes.models import ContentType

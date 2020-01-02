@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Django signal handlers for relaydomains."""
 
 from django.db.models import signals

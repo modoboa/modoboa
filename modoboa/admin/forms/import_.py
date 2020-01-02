@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Forms related to import operations."""
 
 from django import forms

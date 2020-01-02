@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.conf import settings
 from django.core.checks import Warning, register
 from django.utils.translation import ugettext as _

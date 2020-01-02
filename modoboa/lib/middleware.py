@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Custom middlewares."""
 
 from django.http import HttpResponseRedirect

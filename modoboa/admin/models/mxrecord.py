@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """MX records storage."""
 
 import datetime

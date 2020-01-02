@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Factories for core application."""
 
 import factory

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Limits API urls."""
 
 from rest_framework import routers

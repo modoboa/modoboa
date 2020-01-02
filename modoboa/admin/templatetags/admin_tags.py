@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Admin extension tags."""
 
 from functools import reduce

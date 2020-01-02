@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """DNSBL related tests."""
 
 from unittest import mock

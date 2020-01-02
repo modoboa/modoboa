@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Test cases for the limits extension."""
 
 from testfixtures import compare

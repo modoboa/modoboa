@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Core views."""
 
 from .admin import (

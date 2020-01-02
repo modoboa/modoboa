@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Models related to domains management."""
 
 import datetime

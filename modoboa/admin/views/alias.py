@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Alias related views."""
 
 from reversion import revisions as reversion

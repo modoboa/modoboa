@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Management command to check and fix known problems."""
 
 from django.conf import settings

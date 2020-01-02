@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Transport backend."""
 
 from django import forms

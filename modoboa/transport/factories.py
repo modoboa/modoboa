@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Transport factories."""
 
 import factory

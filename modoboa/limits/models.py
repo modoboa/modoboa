@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Models for the limits extensions."""
 
 from django.conf import settings

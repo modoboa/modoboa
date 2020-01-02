@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 # works in Python 2 & 3
 class _Singleton(type):
     _instances = {}

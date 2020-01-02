@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Map file definitions for postfix."""
 
 class DomainsMap(object):
