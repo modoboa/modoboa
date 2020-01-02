@@ -2,8 +2,6 @@
 
 """Django management command to import admin objects."""
 
-from __future__ import unicode_literals
-
 import io
 import os
 

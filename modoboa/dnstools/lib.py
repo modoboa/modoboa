@@ -1,7 +1,5 @@
 """dnstools library."""
 
-from __future__ import unicode_literals
-
 import ipaddress
 
 from django.utils.translation import ugettext as _

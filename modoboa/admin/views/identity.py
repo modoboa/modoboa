@@ -2,8 +2,6 @@
 
 """Identity related views."""
 
-from __future__ import unicode_literals
-
 from reversion import revisions as reversion
 
 from django.contrib.auth import mixins as auth_mixins

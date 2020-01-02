@@ -2,8 +2,6 @@
 
 """A shortcut to deploy a fresh modoboa instance."""
 
-from __future__ import print_function, unicode_literals
-
 import codecs
 import getpass
 import os

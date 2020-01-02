@@ -2,9 +2,6 @@
 
 """Map file definitions for postfix."""
 
-from __future__ import unicode_literals
-
-
 class RelayDomainsMap(object):
 
     """Map file to list all relay domains."""

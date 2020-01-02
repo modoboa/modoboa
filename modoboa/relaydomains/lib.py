@@ -2,8 +2,6 @@
 
 """Internal library."""
 
-from __future__ import unicode_literals
-
 from django.utils.translation import ugettext as _
 
 from modoboa.admin import models as admin_models

@@ -2,8 +2,6 @@
 
 """Modoboa admin signals."""
 
-from __future__ import unicode_literals
-
 import django.dispatch
 
 check_extra_account_form = django.dispatch.Signal(

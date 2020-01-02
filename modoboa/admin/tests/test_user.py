@@ -2,8 +2,6 @@
 
 """User related tests."""
 
-from __future__ import unicode_literals
-
 from django.urls import reverse
 
 from modoboa.core.models import User

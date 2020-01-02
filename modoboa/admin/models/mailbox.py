@@ -2,8 +2,6 @@
 
 """Models related to mailboxes management."""
 
-from __future__ import unicode_literals
-
 import os
 import pwd
 

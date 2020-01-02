@@ -4,8 +4,6 @@
 Fixtures factories.
 """
 
-from __future__ import unicode_literals
-
 import factory
 
 from modoboa.core.factories import PermissionFactory, UserFactory

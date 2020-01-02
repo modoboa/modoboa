@@ -2,8 +2,6 @@
 
 """Testing utilities."""
 
-from __future__ import unicode_literals
-
 import socket
 
 from django.core import management

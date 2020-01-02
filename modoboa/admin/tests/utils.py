@@ -2,8 +2,6 @@
 
 """Test utilities."""
 
-from __future__ import unicode_literals
-
 import socket
 
 from dns.name import Name

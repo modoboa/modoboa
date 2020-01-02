@@ -2,8 +2,6 @@
 
 """Custom context processors."""
 
-from __future__ import unicode_literals
-
 from functools import reduce
 
 from . import signals

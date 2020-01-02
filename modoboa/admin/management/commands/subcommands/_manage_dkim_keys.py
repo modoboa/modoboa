@@ -2,8 +2,6 @@
 
 """Management command to create DKIM keys."""
 
-from __future__ import print_function, unicode_literals
-
 import os
 
 from django.core.management.base import BaseCommand

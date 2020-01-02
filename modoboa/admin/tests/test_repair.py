@@ -2,8 +2,6 @@
 
 """Repair command tests"""
 
-from __future__ import unicode_literals
-
 from django.core import management
 
 from modoboa.lib.permissions import ObjectAccess, get_object_owner

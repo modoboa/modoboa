@@ -2,8 +2,6 @@
 
 """Parameters management."""
 
-from __future__ import unicode_literals
-
 import copy
 
 from modoboa.lib import exceptions, form_utils, signals

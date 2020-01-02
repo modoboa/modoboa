@@ -2,8 +2,6 @@
 
 """SimpleUsers views."""
 
-from __future__ import unicode_literals
-
 from reversion import revisions as reversion
 
 from django.contrib.auth.decorators import login_required

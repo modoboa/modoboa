@@ -2,8 +2,6 @@
 
 """Test cases for the limits extension."""
 
-from __future__ import unicode_literals
-
 from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories

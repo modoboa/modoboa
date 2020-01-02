@@ -2,8 +2,6 @@
 
 """Views available to super administrators only."""
 
-from __future__ import unicode_literals
-
 from functools import reduce
 
 from django.contrib.auth.decorators import login_required, user_passes_test

@@ -2,8 +2,6 @@
 
 """Test cases for the limits extension."""
 
-from __future__ import unicode_literals
-
 from testfixtures import compare
 
 from django.urls import reverse

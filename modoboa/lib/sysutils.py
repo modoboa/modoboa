@@ -5,8 +5,6 @@ This module extra functions/shortcuts to communicate with the system
 (executing commands, etc.)
 """
 
-from __future__ import unicode_literals
-
 import inspect
 import os
 import re

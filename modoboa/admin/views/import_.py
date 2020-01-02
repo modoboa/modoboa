@@ -2,8 +2,6 @@
 
 """Import related views."""
 
-from __future__ import unicode_literals
-
 import io
 
 from reversion import revisions as reversion

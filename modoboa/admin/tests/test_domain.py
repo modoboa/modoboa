@@ -2,11 +2,10 @@
 
 """Domain related test cases."""
 
-from __future__ import unicode_literals
-
 import os
 import shutil
 import tempfile
+from unittest import mock
 
 import dns.resolver
 from testfixtures import compare
@@ -22,13 +21,6 @@ from modoboa.lib.tests import ModoTestCase
 from . import utils
 from .. import factories
 from ..models import Alias, Domain
-
-try:
-    # mock is part of the Python (>= 3.3) standard library
-    from unittest import mock
-except ImportError:
-    # fall back to the mock backport
-    import mock
 
 
 class DomainTestCase(ModoTestCase):
