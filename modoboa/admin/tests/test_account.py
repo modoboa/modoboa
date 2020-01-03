@@ -504,19 +504,50 @@ class PermissionsTestCase(ModoTestCase):
         self.client.logout()
 
     def test_domain_admins(self):
+        factories.DomainFactory(name="test2.com")
+
         self.ajax_post(
             reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
         self.assertEqual(self.user.role, "DomainAdmins")
 
+        self.values["mailboxes_limit"] = "0"
+        self.values["mailbox_aliases_limit"] = "0"
+        self.values["domains"] = ""
+        self.values["domains_1"] = "test.com"
+        self.values["domains_2"] = "test2.com"
+        self.ajax_post(
+            reverse("admin:account_change", args=[self.user.id]),
+            self.values
+        )
+        self.assertIn(
+            self.user, models.Domain.objects.get(name="test.com").admins.all()
+        )
+        self.assertIn(
+            self.user, models.Domain.objects.get(name="test2.com").admins.all()
+        )
+
+        del self.values["domains_2"]
+        self.ajax_post(
+            reverse("admin:account_change", args=[self.user.id]),
+            self.values
+        )
+        self.assertIn(
+            self.user, models.Domain.objects.get(name="test.com").admins.all()
+        )
+        self.assertNotIn(
+            self.user, models.Domain.objects.get(name="test2.com").admins.all()
+        )
+
         self.values["role"] = "SimpleUsers"
         self.ajax_post(
             reverse("admin:account_change", args=[self.user.id]),
             self.values
         )
-        self.assertNotEqual(
-            self.user.groups.first().name, "DomainAdmins")
+        self.assertFalse(
+            self.user.groups.filter(name="DomainAdmins").exists()
+        )
 
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
