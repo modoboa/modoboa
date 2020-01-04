@@ -6,15 +6,15 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 
-from rest_framework.documentation import include_docs_urls
+from rest_framework.renderers import JSONOpenAPIRenderer
+from rest_framework.schemas import get_schema_view
 
 from modoboa.admin.views.user import forward
 from modoboa.core import signals as core_signals, views as core_views
 from modoboa.core.extensions import exts_pool
-
-API_TITLE = "Modoboa API"
 
 urlpatterns = [
     url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name="javascript-catalog"),
@@ -48,8 +48,16 @@ if extra_routes:
     urlpatterns += extra_routes
 
 # API urls
+schema_view = get_schema_view(
+    title="Modoboa API",
+    version="1.0.0",
+    public=False,
+    renderer_classes=[JSONOpenAPIRenderer],
+)
 urlpatterns += [
-    url("^docs/api/", include_docs_urls(title=API_TITLE, public=False)),
+    url(r'^docs/openapi.json$', schema_view, name="openapi_schema"),
+    url(r'^docs/api/', login_required(
+            TemplateView.as_view(template_name="swagger-ui.html"))),
     url("^api/v1/", include("modoboa.urls_api", namespace="api")),
 ]
 
