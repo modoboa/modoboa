@@ -7,9 +7,8 @@ django-xforwardedfor-middleware==2.0
 
 dj-database-url
 
-coreapi==2.3.3
-coreapi-cli==1.0.9
-djangorestframework>=3.9,<3.10
+djangorestframework>=3.11,<3.12
+uritemplate
 
 passlib==1.7.2
 bcrypt  # Requires libffi-dev and python-dev
