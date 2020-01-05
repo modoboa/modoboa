@@ -3,39 +3,41 @@ from functools import reduce
 from ckeditor_uploader import views as cku_views
 
 from django.conf import settings
-from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.urls import include, path
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 
 from rest_framework.renderers import JSONOpenAPIRenderer
 from rest_framework.schemas import get_schema_view
 
-from modoboa.admin.views.user import forward
+from modoboa.admin.views import user as user_views
 from modoboa.core import signals as core_signals, views as core_views
 from modoboa.core.extensions import exts_pool
 
 urlpatterns = [
-    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name="javascript-catalog"),
-    url(r'^ckeditor/upload/', login_required(cku_views.upload),
-        name="ckeditor_upload"),
-    url(r'^ckeditor/browse/', login_required(cku_views.browse),
-        name="ckeditor_browse"),
-    url("", include("modoboa.core.urls", namespace="core")),
-    url("^user/forward/", forward, name="user_forward"),
-    url("admin/", include("modoboa.admin.urls", namespace="admin")),
-    url("dnstools/", include("modoboa.dnstools.urls", namespace="dnstools")),
-    # No namespace
-    url(r'^accounts/password_reset/$', core_views.password_reset,
-        name="password_reset"),
-    url(r'^accounts/password_reset/done/$', auth_views.password_reset_done,
-        name="password_reset_done"),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',  # noqa
-        auth_views.password_reset_confirm, name="password_reset_confirm"),
-    url(r'^reset/done/$', auth_views.password_reset_complete,
-        name="password_reset_complete"),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name="javascript-catalog"),
 
+    path('ckeditor/upload/', login_required(cku_views.upload),
+         name="ckeditor_upload"),
+    path('ckeditor/browse/', login_required(cku_views.browse),
+         name="ckeditor_browse"),
+
+    path('', include("modoboa.core.urls")),
+    path('admin/', include("modoboa.admin.urls")),
+    path('dnstools/', include("modoboa.dnstools.urls")),
+
+    path('user/forward/', user_views.forward, name="user_forward"),
+
+    path('accounts/password_reset/', core_views.password_reset,
+         name="password_reset"),
+    path('accounts/password_reset/done/', auth_views.password_reset_done,
+         name="password_reset_done"),
+    path('reset/<uidb64>/<token>/', auth_views.password_reset_confirm,
+         name="password_reset_confirm"),
+    path('reset/done/', auth_views.password_reset_complete,
+         name="password_reset_complete"),
 ]
 
 exts_pool.load_all()
@@ -55,10 +57,10 @@ schema_view = get_schema_view(
     renderer_classes=[JSONOpenAPIRenderer],
 )
 urlpatterns += [
-    url(r'^docs/openapi.json$', schema_view, name="openapi_schema"),
-    url(r'^docs/api/', login_required(
+    path('docs/openapi.json', schema_view, name="openapi_schema"),
+    path('docs/api/', login_required(
             TemplateView.as_view(template_name="swagger-ui.html"))),
-    url("^api/v1/", include("modoboa.urls_api", namespace="api")),
+    path('api/v1/', include("modoboa.urls_api")),
 ]
 
 if settings.DEBUG:
