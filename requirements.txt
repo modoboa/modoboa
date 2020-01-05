@@ -1,4 +1,4 @@
-django>=1.11.8,<=1.11.99
+django>=2.0,<2.1
 django-braces==1.14.0
 django-ckeditor==5.8.0
 django-reversion==3.0.5
