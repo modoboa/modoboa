@@ -494,8 +494,7 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                 domain.add_admin(self.account)
 
         for domain in models.Domain.objects.get_for_admin(self.account):
-            if not filter(lambda name: self.cleaned_data[name] == domain.name,
-                          self.cleaned_data.keys()):
+            if domain.name not in self.cleaned_data.values():
                 domain.remove_admin(self.account)
 
 
