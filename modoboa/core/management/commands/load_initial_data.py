@@ -61,9 +61,18 @@ class Command(BaseCommand):
 
         for extname in list(extensions.exts_pool.extensions.keys()):
             extension = extensions.exts_pool.get_extension(extname)
-            extension.load_initial_data()
-            signals.initial_data_loaded.send(
-                sender=self.__class__, extname=extname)
+            try:
+                extension.load_initial_data()
+            except Exception as e:
+                self.stderr.write(
+                    "Unable to load initial data for '{}' ({}).".format(
+                        extname, str(e)
+                    )
+                )
+            else:
+                signals.initial_data_loaded.send(
+                    sender=self.__class__, extname=extname
+                )
 
         if options["extra_fixtures"]:
             from modoboa.admin import factories
