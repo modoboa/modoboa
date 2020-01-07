@@ -19,7 +19,9 @@ class StupidExtension1(extensions.ModoExtension):
         pass
 
     def load_initial_data(self):
-        raise RuntimeError
+        from modoboa.admin.factories import DomainFactory
+
+        DomainFactory(name="stupid_1.com")
 
 
 extensions.exts_pool.register_extension(StupidExtension1)
