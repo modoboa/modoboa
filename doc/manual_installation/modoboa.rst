@@ -38,7 +38,7 @@ following system packages according to your distribution:
 |build-essential python-dev    |
 |libxml2-dev libxslt-dev       |
 |libjpeg-dev librrd-dev        |
-|rrdtool libffi-dev            |
+|rrdtool libffi-dev libssl-dev |
 |                              |
 +------------------------------+
 
