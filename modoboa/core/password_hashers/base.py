@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """
 Base password hashers.
 
 Contains weak hashers (the original ones) available with Modoboa.
 """
-
-from __future__ import unicode_literals
 
 import base64
 import crypt
@@ -16,8 +12,6 @@ from random import Random
 
 from django.utils.crypto import constant_time_compare
 from django.utils.encoding import force_bytes, force_text
-
-from six import with_metaclass
 
 
 class MetaHasher(type):
@@ -36,7 +30,7 @@ class MetaHasher(type):
         return cls.name if not cls._weak else "{} (weak)".format(cls.name)
 
 
-class PasswordHasher(with_metaclass(MetaHasher, object)):
+class PasswordHasher(metaclass=MetaHasher):
     """
     Base class of all hashers.
     """

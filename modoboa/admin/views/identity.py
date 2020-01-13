@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Identity related views."""
-
-from __future__ import unicode_literals
 
 from reversion import revisions as reversion
 

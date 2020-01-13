@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
 Fixtures factories.
 """
-
-from __future__ import unicode_literals
 
 import factory
 

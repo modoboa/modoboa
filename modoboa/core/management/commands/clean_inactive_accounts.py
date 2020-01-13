@@ -1,11 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Inactive accounts cleanup tool."""
 
-from __future__ import print_function, unicode_literals
-
 from dateutil.relativedelta import relativedelta
-from six.moves import input
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone

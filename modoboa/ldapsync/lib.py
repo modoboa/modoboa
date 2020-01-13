@@ -1,7 +1,5 @@
 """LDAP related functions."""
 
-from __future__ import unicode_literals
-
 import ldap
 import ldap.modlist as modlist
 

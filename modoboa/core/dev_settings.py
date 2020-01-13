@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 # Development settings
-
-from __future__ import unicode_literals
 
 import os
 

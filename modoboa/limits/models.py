@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Models for the limits extensions."""
-
-from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import models

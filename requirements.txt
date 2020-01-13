@@ -1,24 +1,23 @@
 django>=1.11.8,<=1.11.99
-django-braces==1.11.0
-django-ckeditor==5.2.2
-django-reversion==2.0.12
+django-braces==1.14.0
+django-ckeditor==5.8.0
+django-reversion==3.0.5
 django-subcommand2==0.1.1
 django-xforwardedfor-middleware==2.0
 
 dj-database-url
 
 coreapi==2.3.3
-coreapi-cli==1.0.6
-djangorestframework==3.7.3
+coreapi-cli==1.0.9
+djangorestframework>=3.9,<3.10
 
-# bcrypt requires libffi-dev
-bcrypt==3.1.4
-dnspython==1.15.0
+passlib==1.7.2
+bcrypt  # Requires libffi-dev and python-dev
+
+dnspython==1.16.0
 feedparser==5.2.1
 gevent==1.4.0
-ipaddress; python_version < '3.3'
 jsonfield==2.0.2
-passlib==1.7.1
 Pillow  # Optional dependency for django-ckeditor
 progressbar33==2.4
 py-dateutil==2.2
@@ -27,5 +26,4 @@ pytz
 requests
 rfc6266
 lxml
-backports.csv; python_version < '3'
 chardet

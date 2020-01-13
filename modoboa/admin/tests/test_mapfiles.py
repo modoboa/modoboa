@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Test map files generation."""
-
-from __future__ import unicode_literals
 
 import os
 

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Core dashboard views."""
-
-from __future__ import unicode_literals
 
 import feedparser
 import requests

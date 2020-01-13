@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Tests for core application."""
-
-from __future__ import unicode_literals
 
 import os
 import smtplib
-from unittest import skipIf, skipUnless
+from unittest import mock, skipIf, skipUnless
 
 from django.core import mail
 from django.test import override_settings
@@ -22,13 +18,6 @@ from modoboa.core.password_hashers import (
 )
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
-
-try:
-    # mock is part of the Python (>= 3.3) standard library
-    from unittest import mock
-except ImportError:
-    # fall back to the mock backport
-    import mock
 
 
 @override_settings(

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Internal library for admin."""
-
-from __future__ import unicode_literals
 
 import ipaddress
 import logging

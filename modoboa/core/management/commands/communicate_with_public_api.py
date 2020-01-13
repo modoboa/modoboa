@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Management command to communicate with public API."""
-
-from __future__ import unicode_literals
 
 from django.core.management.base import BaseCommand, CommandError
 

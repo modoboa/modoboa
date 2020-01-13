@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-
 """Export related views."""
 
-from __future__ import unicode_literals
+import csv
+from io import StringIO
 
 from rfc6266 import build_header
 
@@ -12,16 +11,10 @@ from django.contrib.auth.decorators import (
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils import six
 from django.utils.translation import ugettext as _
 
 from ..forms import ExportDomainsForm, ExportIdentitiesForm
 from ..lib import get_domains, get_identities
-
-if six.PY2:
-    from backports import csv
-else:
-    import csv
 
 
 def _export(content, filename):
@@ -54,7 +47,7 @@ def export_identities(request):
     if request.method == "POST":
         form = ExportIdentitiesForm(request.POST)
         form.is_valid()
-        fp = six.StringIO()
+        fp = StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         identities = get_identities(
             request.user, **request.session["identities_filters"])
@@ -82,7 +75,7 @@ def export_domains(request):
     if request.method == "POST":
         form = ExportDomainsForm(request.POST)
         form.is_valid()
-        fp = six.StringIO()
+        fp = StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         for dom in get_domains(request.user,
                                **request.session["domains_filters"]):

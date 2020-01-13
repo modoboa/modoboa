@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import os
+from unittest import mock
 
 import dns.resolver
 
@@ -17,13 +14,6 @@ from modoboa.lib.tests import ModoTestCase
 from . import utils
 from .. import factories
 from ..models import Alias, Domain, DomainAlias
-
-try:
-    # mock is part of the Python (>= 3.3) standard library
-    from unittest import mock
-except ImportError:
-    # fall back to the mock backport
-    import mock
 
 
 class ImportTestCase(ModoTestCase):

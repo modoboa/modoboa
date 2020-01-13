@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Models related to domain aliases management."""
-
-from __future__ import unicode_literals
 
 from reversion import revisions as reversion
 
