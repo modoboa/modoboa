@@ -9,42 +9,36 @@ from modoboa.admin import lib as admin_lib
 from . import constants
 
 
-def get_spf_record(domain):
-    """Return SPF record for domain (if any)."""
-    records = admin_lib.get_dns_records(domain, "TXT")
+def _get_record_type_value(records, rr_type):
     if records is None:
         return None
     for record in records:
-        value = str(record).strip('"')
-        if value.startswith("v=spf1"):
+        # Multiple strings are separated by a space as described in:
+        # https://tools.ietf.org/html/rfc4408#section-3.1.3
+        value = str(record).replace('" "', '').strip('"')
+        if value.startswith('v={}'.format(rr_type)):
             return value
     return None
+
+
+def get_spf_record(domain):
+    """Return SPF record for domain (if any)."""
+    records = admin_lib.get_dns_records(domain, "TXT")
+    return _get_record_type_value(records, 'spf1')
 
 
 def get_dkim_record(domain, selector):
     """Return DKIM records form domain (if any)."""
     name = "{}._domainkey.{}".format(selector, domain)
     records = admin_lib.get_dns_records(name, "TXT")
-    if records is None:
-        return None
-    for record in records:
-        value = str(record).strip('"')
-        if value.startswith("v=DKIM1"):
-            return value
-    return None
+    return _get_record_type_value(records, 'DKIM1')
 
 
 def get_dmarc_record(domain):
     """Return DMARC record for domain (if any)."""
     name = "_dmarc.{}".format(domain)
     records = admin_lib.get_dns_records(name, "TXT")
-    if records is None:
-        return None
-    for record in records:
-        value = str(record).strip('"')
-        if value.startswith("v=DMARC1"):
-            return value
-    return None
+    return _get_record_type_value(records, 'DMARC1')
 
 
 def _get_simple_record(name):
