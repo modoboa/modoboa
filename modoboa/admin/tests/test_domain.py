@@ -318,8 +318,7 @@ class DomainTestCase(ModoTestCase):
         domain = Domain.objects.get(name="test2.com")
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith("/accounts/login"))
+        self.assertEqual(response.status_code, 403)
 
     def test_domain_quota_list_view(self):
         """Test quota list view."""

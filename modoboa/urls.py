@@ -30,13 +30,15 @@ urlpatterns = [
 
     path('user/forward/', user_views.forward, name="user_forward"),
 
-    path('accounts/password_reset/', core_views.password_reset,
+    path('accounts/password_reset/', core_views.PasswordResetView.as_view(),
          name="password_reset"),
-    path('accounts/password_reset/done/', auth_views.password_reset_done,
+    path('accounts/password_reset/done/',
+         auth_views.PasswordResetDoneView.as_view(),
          name="password_reset_done"),
-    path('reset/<uidb64>/<token>/', auth_views.password_reset_confirm,
+    path('reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(),
          name="password_reset_confirm"),
-    path('reset/done/', auth_views.password_reset_complete,
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(),
          name="password_reset_complete"),
 ]
 
