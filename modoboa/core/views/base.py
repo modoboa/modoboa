@@ -16,7 +16,7 @@ def find_nextlocation(request, user):
     nextlocation = request.POST.get("next", request.GET.get("next"))
     condition = (
         nextlocation and
-        is_safe_url(nextlocation, host=request.get_host())
+        is_safe_url(nextlocation, request.get_host())
     )
     if condition:
         return nextlocation
