@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Domain related views."""
-
-from __future__ import unicode_literals
 
 from functools import reduce
 

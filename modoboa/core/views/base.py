@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Base core views."""
-
-from __future__ import unicode_literals
 
 from django.contrib.auth import mixins as auth_mixins
 from django.urls import reverse

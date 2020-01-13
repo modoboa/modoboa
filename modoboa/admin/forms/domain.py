@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Forms related to domains management."""
-
-from __future__ import unicode_literals
 
 from functools import reduce
 

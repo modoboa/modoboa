@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """A management command to load Modoboa initial data:
 
 * Create a default super admin if none exists
 * Create groups and permissions
 
 """
-
-from __future__ import unicode_literals
 
 from functools import reduce
 

@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """DNSBL related tests."""
 
-from __future__ import unicode_literals
+from unittest import mock
 
 import dns.resolver
 from testfixtures import LogCapture
@@ -17,13 +15,6 @@ from modoboa.lib.tests import ModoTestCase
 from . import utils
 from .. import factories, models
 from ..lib import get_domain_mx_list
-
-try:
-    # mock is part of the Python (>= 3.3) standard library
-    from unittest import mock
-except ImportError:
-    # fall back to the mock backport
-    import mock
 
 
 class MXTestCase(ModoTestCase):

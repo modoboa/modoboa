@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """
 A simple managemenent command to update the default site.
 
 See `https://docs.djangoproject.com/en/dev/ref/contrib/sites/`_.
 """
-
-from __future__ import unicode_literals
 
 from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand, CommandError

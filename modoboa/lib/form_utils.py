@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Form management utilities."""
-
-from __future__ import unicode_literals
 
 import abc
 import re

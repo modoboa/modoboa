@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Admin API related tests."""
-
-from __future__ import unicode_literals
 
 import copy
 import json
+from unittest import mock
 
 import dns.resolver
 
@@ -19,13 +16,6 @@ from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 from . import utils
 from .. import factories, models
-
-try:
-    # mock is part of the Python (>= 3.3) standard library
-    from unittest import mock
-except ImportError:
-    # fall back to the mock backport
-    import mock
 
 
 class DomainAPITestCase(ModoAPITestCase):

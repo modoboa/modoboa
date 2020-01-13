@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Transport models."""
-
-from __future__ import unicode_literals
 
 import jsonfield
 from reversion import revisions as reversion

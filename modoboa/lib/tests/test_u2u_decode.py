@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Tests for u2u_decode."""
-
-from __future__ import unicode_literals
 
 from django.test import TestCase
 

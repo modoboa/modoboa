@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Forms related to aliases management."""
-
-from __future__ import unicode_literals
 
 from collections import OrderedDict
 

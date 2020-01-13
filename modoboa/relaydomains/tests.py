@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """relaydomains unit tests."""
-
-from __future__ import unicode_literals
 
 import json
 

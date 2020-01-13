@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-
 """A shortcut to deploy a fresh modoboa instance."""
 
-from __future__ import print_function, unicode_literals
-
-import codecs
 import getpass
 import os
 import shutil
@@ -18,7 +13,6 @@ import django
 from django.core import management
 from django.template import Context, Template
 from django.utils.encoding import smart_str
-from django.utils.six.moves import input
 
 from modoboa.core.commands import Command
 from modoboa.lib.api_client import ModoAPIClient
@@ -250,7 +244,7 @@ class DeployCommand(Command):
                 "extra_settings": extra_settings
             }
         )
-        with codecs.open("%s/settings.py" % path, "w", "utf-8") as fp:
+        with open("%s/settings.py" % path, "w") as fp:
             fp.write(tpl)
         shutil.copyfile(
             "%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path

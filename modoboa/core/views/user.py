@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Simple user views."""
-
-from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Management command to check defined domains."""
-
-from __future__ import print_function, unicode_literals
 
 import ipaddress
 

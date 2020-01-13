@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
 Password hashers for Modoboa.
 """
-
-from __future__ import unicode_literals
 
 from django.utils.encoding import smart_text
 

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Models related to aliases management."""
-
-from __future__ import unicode_literals
 
 import hashlib
 import random

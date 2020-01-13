@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """Tests for core application."""
 
-from __future__ import unicode_literals
+from io import StringIO
 
 import httmock
 from dateutil.relativedelta import relativedelta
-from six import StringIO
 
 from django.core import management
 from django.test import TestCase

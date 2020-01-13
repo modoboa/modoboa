@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 A setuptools based setup module.
@@ -8,9 +7,6 @@ See:
 https://packaging.python.org/en/latest/distributing.html
 """
 
-from __future__ import unicode_literals
-
-import io
 from os import path
 
 try:
@@ -42,7 +38,7 @@ if __name__ == "__main__":
         path.join(HERE, "postgresql-requirements.txt"))
     LDAP_REQUIRES = get_requirements(path.join(HERE, "ldap-requirements.txt"))
 
-    with io.open(path.join(HERE, "README.rst"), encoding="utf-8") as readme:
+    with open(path.join(HERE, "README.rst")) as readme:
         LONG_DESCRIPTION = readme.read()
 
     setup(
@@ -60,12 +56,10 @@ if __name__ == "__main__":
             "Intended Audience :: System Administrators",
             "License :: OSI Approved :: ISC License (ISCL)",
             "Operating System :: OS Independent",
-            "Programming Language :: Python :: 2",
-            "Programming Language :: Python :: 2.7",
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.4",
             "Programming Language :: Python :: 3.5",
             "Programming Language :: Python :: 3.6",
+            "Programming Language :: Python :: 3.7",
             "Topic :: Communications :: Email",
             "Topic :: Internet :: WWW/HTTP",
         ],
@@ -76,6 +70,7 @@ if __name__ == "__main__":
         scripts=["bin/modoboa-admin.py"],
         install_requires=INSTALL_REQUIRES,
         use_scm_version=True,
+        python_requires=">=3.4",
         setup_requires=["setuptools_scm"],
         extras_require={
             "ldap": LDAP_REQUIRES,

@@ -50,7 +50,7 @@ This is just one possible configuration.
 To use mod_wsgi daemon mode, add the two following directives just
 under ``WSGIScriptAlias``::
 
-  WSGIDaemonProcess example.com python-path=<modoboa_instance>:<virtualenv path>/lib/python2.7/site-packages
+  WSGIDaemonProcess example.com python-path=<modoboa_instance>:<virtualenv path>/lib/python3.7/site-packages
   WSGIProcessGroup example.com
 
 Replace values between ``<>`` with yours. If you don't use a

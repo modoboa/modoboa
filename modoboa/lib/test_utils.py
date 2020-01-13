@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Tools for top level testing (ie. when ran by Travis)."""
-
-from __future__ import unicode_literals
 
 import os
 import shutil

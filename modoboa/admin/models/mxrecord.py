@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """MX records storage."""
-
-from __future__ import unicode_literals
 
 import datetime
 

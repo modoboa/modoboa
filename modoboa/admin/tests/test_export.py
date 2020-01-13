@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-
 """Export related test cases."""
 
-from __future__ import unicode_literals
-
 import sys
-
-from six.moves import StringIO
+from io import StringIO
 
 from django.core.management import call_command
 from django.urls import reverse
