@@ -254,7 +254,7 @@ def admin_menu(sender, location, user, **kwargs):
     if location != "top_menu":
         return []
     entries = []
-    if user.has_perm("admin.view_domains"):
+    if user.has_perm("admin.view_domain"):
         entries += [
             {"name": "domains",
              "url": reverse("admin:domain_list"),

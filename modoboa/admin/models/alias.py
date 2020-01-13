@@ -48,9 +48,6 @@ class Alias(AdminObject):
     _objectname = "MailboxAlias"
 
     class Meta:
-        permissions = (
-            ("view_aliases", "View aliases"),
-        )
         ordering = ["address"]
         unique_together = (("address", "internal"), )
         app_label = "admin"
