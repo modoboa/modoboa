@@ -115,11 +115,13 @@ def dologout(request):
     return HttpResponseRedirect(reverse("core:login"))
 
 
-def password_reset(request, **kwargs):
+class PasswordResetView(auth_views.PasswordResetView):
     """Custom view to override form."""
-    kwargs.update({
-        "from_email": (
-            request.localconfig.parameters.get_value("sender_address")),
-        "password_reset_form": forms.PasswordResetForm
-    })
-    return auth_views.password_reset(request, **kwargs)
+
+    form_class = forms.PasswordResetForm
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.from_email = request.localconfig.parameters.get_value(
+            "sender_address"
+        )
