@@ -2,7 +2,6 @@ django>=2.0,<2.1
 django-braces==1.14.0
 django-ckeditor==5.8.0
 django-reversion==3.0.5
-django-subcommand2==0.1.1
 django-xforwardedfor-middleware==2.0
 
 dj-database-url
