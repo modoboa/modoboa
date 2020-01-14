@@ -544,6 +544,9 @@ class PermissionsTestCase(ModoTestCase):
         self.assertFalse(
             self.user.groups.filter(name="DomainAdmins").exists()
         )
+        self.assertNotIn(
+            self.user, models.Domain.objects.get(name="test.com").admins.all()
+        )
 
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
