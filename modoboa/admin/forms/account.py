@@ -476,6 +476,8 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                 args[0], "domains", lib_fields.DomainNameField)
 
     def save(self):
+        if self.account.role == "SimpleUsers":
+            return
         current_domains = [
             dom.name for dom in
             models.Domain.objects.get_for_admin(self.account)
