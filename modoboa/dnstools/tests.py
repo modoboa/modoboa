@@ -1,7 +1,11 @@
 """App related tests."""
 
+from unittest import mock
+
 from django.urls import reverse
 from django.test import SimpleTestCase
+
+from dns.rdtypes.ANY.TXT import TXT
 
 from modoboa.lib.tests import ModoTestCase
 
@@ -78,8 +82,25 @@ BAD_DKIM_RECORDS = [
 ]
 
 
-class TestCase(SimpleTestCase):
-    """Test test library."""
+class LibTestCase(SimpleTestCase):
+    """TestCase for library methods."""
+
+    @mock.patch('modoboa.admin.lib.get_dns_records')
+    def test_get_record_type_value(self, mock_get_dns_records):
+        mock_get_dns_records.return_value = [
+            TXT("IN", "TXT", ["v=spf1 mx -all"]),
+            TXT("IN", "TXT", ["v=DKIM1 p=XXXXX", "YYYYY"]),
+            TXT("IN", "TXT", ["v=DMARC1 p=reject"]),
+        ]
+        self.assertEqual(
+            lib.get_spf_record("example.com"), "v=spf1 mx -all"
+        )
+        self.assertEqual(
+            lib.get_dkim_record("example.com", "mail"), "v=DKIM1 p=XXXXXYYYYY"
+        )
+        self.assertEqual(
+            lib.get_dmarc_record("example.com"), "v=DMARC1 p=reject"
+        )
 
     def test_check_spf_syntax(self):
         for record in BAD_SPF_RECORDS:
