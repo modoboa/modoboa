@@ -259,7 +259,7 @@ class User(AbstractUser):
         if role == "SuperAdmins":
             self.is_superuser = True
         else:
-            if self.is_superuser or self.has_perm("core.add_user"):
+            if self.is_superuser or role == "SimpleUsers":
                 ObjectAccess.objects.filter(user=self).delete()
             self.is_superuser = False
             try:
