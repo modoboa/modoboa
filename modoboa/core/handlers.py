@@ -122,7 +122,7 @@ def check_for_new_versions(sender, include_all, **kwargs):
     request = get_request()
     if not request.user.is_superuser:
         return []
-    status, extensions = utils.check_for_updates(request)
+    status, extensions = utils.check_for_updates()
     if not status:
         return [{"id": "newversionavailable"}] if include_all else []
     return [{

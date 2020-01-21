@@ -5,6 +5,7 @@ from io import StringIO
 import httmock
 from dateutil.relativedelta import relativedelta
 
+from django.core import mail
 from django.core import management
 from django.test import TestCase
 from django.urls import reverse
@@ -198,7 +199,37 @@ class APICommunicationTestCase(ModoTestCase):
                 mocks.modo_api_versions):
             management.call_command("communicate_with_public_api")
         self.assertEqual(models.LocalConfig.objects.first().api_pk, 100)
+        self.assertEqual(len(mail.outbox), 0)
 
         url = reverse("core:information")
         response = self.ajax_request("get", url)
         self.assertIn("9.0.0", response["content"])
+
+        # Enable notifications
+        self.set_global_parameter("send_new_versions_email", True)
+        with httmock.HTTMock(
+                mocks.modo_api_instance_search,
+                mocks.modo_api_instance_create,
+                mocks.modo_api_instance_update,
+                mocks.modo_api_versions):
+            management.call_command("communicate_with_public_api")
+        self.assertEqual(len(mail.outbox), 1)
+
+        # Call once again and check no new notification has been sent
+        self.set_global_parameter("send_new_versions_email", True)
+        with httmock.HTTMock(
+                mocks.modo_api_instance_search,
+                mocks.modo_api_instance_create,
+                mocks.modo_api_instance_update,
+                mocks.modo_api_versions):
+            management.call_command("communicate_with_public_api")
+        self.assertEqual(len(mail.outbox), 1)
+
+        # Make sure no new notification is sent when no updates
+        with httmock.HTTMock(
+                mocks.modo_api_instance_search,
+                mocks.modo_api_instance_create,
+                mocks.modo_api_instance_update,
+                mocks.modo_api_versions_no_update):
+            management.call_command("communicate_with_public_api")
+        self.assertEqual(len(mail.outbox), 1)
