@@ -103,17 +103,15 @@ class ExtensionsPool(object):
         result = []
         for ext_name in list(self.extensions.keys()):
             ext = self.get_extension(ext_name)
-            options = {}
             if category == "api":
                 root = ""
                 pattern = "{}.urls_api"
             else:
                 root = r"^{}/".format(ext.get_url())
-                options.update({"namespace": ext_name})
                 pattern = "{}.urls"
             try:
                 result.append(
-                    url(root, include(pattern.format(ext_name), **options))
+                    url(root, include(pattern.format(ext_name)))
                 )
             except ImportError:
                 # No urls for this extension

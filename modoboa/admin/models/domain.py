@@ -63,10 +63,6 @@ class Domain(AdminObject):
     dkim_private_key_path = models.CharField(max_length=254, blank=True)
 
     class Meta:
-        permissions = (
-            ("view_domain", "View domain"),
-            ("view_domains", "View domains"),
-        )
         ordering = ["name"]
         app_label = "admin"
 

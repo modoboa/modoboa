@@ -34,8 +34,8 @@ def index(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains") or
-    u.has_perm("admin.view_mailboxes")
+    lambda u: u.has_perm("admin.view_domain") or
+    u.has_perm("admin.view_mailbox")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
@@ -92,8 +92,8 @@ def _domains(request):
 @login_required
 @ensure_csrf_cookie
 def domains(request, tplname="admin/domains.html"):
-    if not request.user.has_perm("admin.view_domains"):
-        if request.user.has_perm("admin.view_mailboxes"):
+    if not request.user.has_perm("admin.view_domain"):
+        if request.user.has_perm("admin.view_mailbox"):
             return HttpResponseRedirect(
                 reverse("admin:identity_list")
             )
@@ -113,8 +113,8 @@ def domains(request, tplname="admin/domains.html"):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains") or
-    u.has_perm("admin.view_mailboxes") or
+    lambda u: u.has_perm("admin.view_domain") or
+    u.has_perm("admin.view_mailbox") or
     u.has_perm("admin.add_domain")
 )
 def get_next_page(request):
@@ -170,7 +170,7 @@ def newdomain(request):
 
 
 @login_required
-@permission_required("admin.view_domains")
+@permission_required("admin.view_domain")
 @reversion.create_revision()
 def editdomain(request, dom_id):
     """Edit domain view."""

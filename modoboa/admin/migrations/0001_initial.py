@@ -19,7 +19,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['address'],
-                'permissions': (('view_aliases', 'View aliases'),),
             },
             bases=(models.Model,),
         ),
@@ -47,7 +46,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['name'],
-                'permissions': (('view_domain', 'View domain'), ('view_domains', 'View domains')),
             },
             bases=(models.Model,),
         ),
@@ -58,9 +56,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text='The alias name', unique=True, max_length=100, verbose_name='name')),
                 ('enabled', models.BooleanField(default=True, help_text='Check to activate this alias', verbose_name='enabled')),
             ],
-            options={
-                'permissions': (('view_domaliases', 'View domain aliases'),),
-            },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
@@ -71,9 +66,6 @@ class Migration(migrations.Migration):
                 ('quota', models.PositiveIntegerField()),
                 ('use_domain_quota', models.BooleanField(default=False)),
             ],
-            options={
-                'permissions': (('view_mailboxes', 'View mailboxes'),),
-            },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
