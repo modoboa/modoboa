@@ -53,7 +53,7 @@ def parameters(request, tplname="core/parameters.html"):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def information(request, tplname="core/information.html"):
-    status, extensions = check_for_updates(request)
+    status, extensions = check_for_updates()
     return render_to_json_response({
         "content": render_to_string(tplname, {
             "update_avail": status,

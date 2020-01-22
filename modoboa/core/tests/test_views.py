@@ -74,7 +74,9 @@ SETTINGS_SAMPLE = {
     "core-ldap_sync_bind_dn": "",
     "core-ldap_sync_bind_password": "",
     "core-ldap_sync_account_dn_template": "",
-    "core-ldap_sync_delete_remote_account": False
+    "core-ldap_sync_delete_remote_account": False,
+    "core-send_new_versions_email": False,
+    "core-new_versions_email_rcpt": "postmaster@domain.test"
 }
 
 

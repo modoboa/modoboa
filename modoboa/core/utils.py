@@ -21,7 +21,7 @@ def parse_map_file(path):
     return content
 
 
-def check_for_updates(request):
+def check_for_updates():
     """Check if a new version of Modoboa is available."""
     local_config = models.LocalConfig.objects.first()
     client = ModoAPIClient()

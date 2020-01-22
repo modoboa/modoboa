@@ -39,3 +39,15 @@ def modo_api_versions(url, request):
             {"name": "modoboa", "version": "9.0.0", "url": ""},
         ]
     }
+
+
+@httmock.urlmatch(
+    netloc=r"api\.modoboa\.org$", path=r"^/1/versions/", method="get")
+def modo_api_versions_no_update(url, request):
+    """Simulate versions check."""
+    return {
+        "status_code": 200,
+        "content": [
+            {"name": "modoboa", "version": "0.0.0", "url": ""},
+        ]
+    }
