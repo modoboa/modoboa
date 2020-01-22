@@ -15,4 +15,5 @@ BOWER_INSTALLED_APPS = (
     "font-awesome#4.7.0",
     "c3#0.4.10",
     "selectize#0.12.4",
+    "swagger-ui#3.24.3",
 )

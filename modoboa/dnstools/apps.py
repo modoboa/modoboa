@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class DnstoolsConfig(AppConfig):
-    name = 'dnstools'
+    name = 'modoboa.dnstools'

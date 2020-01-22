@@ -49,9 +49,6 @@ class DomainAlias(AdminObject):
     objects = DomainAliasManager()
 
     class Meta:
-        permissions = (
-            ("view_domaliases", "View domain aliases"),
-        )
         app_label = "admin"
 
     def __str__(self):

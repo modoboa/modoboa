@@ -104,9 +104,6 @@ class Mailbox(AdminObject):
     objects = MailboxManager()
 
     class Meta:
-        permissions = (
-            ("view_mailboxes", "View mailboxes"),
-        )
         app_label = "admin"
 
     def __init__(self, *args, **kwargs):
