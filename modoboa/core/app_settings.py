@@ -318,6 +318,21 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Automatically checks if a newer version is available")
     )
 
+    send_new_versions_email = YesNoField(
+        label=ugettext_lazy("Send an email when new versions are found"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Send an email to notify admins about new versions"
+        )
+    )
+    new_versions_email_rcpt = lib_fields.UTF8EmailField(
+        label=_("Recipient"),
+        initial="postmaster@yourdomain.test",
+        help_text=_(
+            "Recipient of new versions notification emails."
+        )
+    )
+
     send_statistics = YesNoField(
         label=ugettext_lazy("Send statistics"),
         initial=True,
@@ -385,6 +400,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         "ldap_groups_search_base": "authentication_type=ldap",
         "check_new_versions": "enable_api_communication=True",
         "send_statistics": "enable_api_communication=True",
+        "send_new_versions_email": "check_new_versions=True",
+        "new_versions_email_rcpt": "check_new_versions=True"
     }
 
     def __init__(self, *args, **kwargs):

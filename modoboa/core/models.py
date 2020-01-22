@@ -448,3 +448,16 @@ class LocalConfig(models.Model):
         """Load parameter manager."""
         super(LocalConfig, self).__init__(*args, **kwargs)
         self.parameters = param_tools.Manager("global", self._parameters)
+
+
+class ExtensionUpdateHistory(models.Model):
+    """Keeps track of update notifications."""
+
+    extension = models.CharField(max_length=100)
+    version = models.CharField(max_length=30)
+
+    class Meta:
+        unique_together = [("extension", "version")]
+
+    def __str__(self):
+        return "{}: {}".format(self.extension, self.name)
