@@ -122,9 +122,10 @@ try:
                 return super().authenticate(*args, **kwargs)
             return None
 
-        def setting_fullname(self, setting):
+        @classmethod
+        def setting_fullname(cls, setting):
             """Return fullname for given setting."""
-            return "{}{}".format(self.setting, self.settings_prefix)
+            return "{}{}".format(cls.settings_prefix, setting)
 
 
     class LDAPBackend(LDAPBackendBase):
