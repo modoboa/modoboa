@@ -471,7 +471,9 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         """Apply configuration for given backend."""
         import ldap
         from django_auth_ldap.config import (
-            LDAPSearch, PosixGroupType, GroupOfNamesType)
+            LDAPSearch, PosixGroupType, GroupOfNamesType,
+            ActiveDirectoryGroupType
+        )
 
         if not hasattr(settings, backend.setting_fullname("USER_ATTR_MAP")):
             setattr(settings, backend.setting_fullname("USER_ATTR_MAP"), {
@@ -488,9 +490,13 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         if values["ldap_secured"] == "starttls":
             setattr(settings, backend.setting_fullname("START_TLS"), True)
 
-        if values["ldap_group_type"] == "groupofnames":
-            setattr(settings, backend.setting_fullname("GROUP_TYPE"),
-                    GroupOfNamesType())
+        if values["ldap_is_active_directory"]:
+            setattr(
+                settings, "AUTH_LDAP_GROUP_TYPE", ActiveDirectoryGroupType()
+            )
+            searchfilter = "(objectClass=group)"
+        elif values["ldap_group_type"] == "groupofnames":
+            setattr(settings, "AUTH_LDAP_GROUP_TYPE", GroupOfNamesType())
             searchfilter = "(objectClass=groupOfNames)"
         else:
             setattr(settings, backend.setting_fullname("GROUP_TYPE"),
