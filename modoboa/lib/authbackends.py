@@ -62,7 +62,7 @@ try:
         LDAPBackend as orig_LDAPBackend, _LDAPUser
     )
 
-    class LDAPBackend(orig_LDAPBackend):
+    class LDAPBackendBase(orig_LDAPBackend):
 
         def __init__(self, *args, **kwargs):
             """Load LDAP settings."""
@@ -121,6 +121,27 @@ try:
             if self.global_params["authentication_type"] == "ldap":
                 return super(LDAPBackend, self).authenticate(*args, **kwargs)
             return None
+
+        def setting_fullname(self, setting):
+            """Return fullname for given setting."""
+            return "{}{}".format(self.setting, self.settings_prefix)
+
+
+    class LDAPBackend(LDAPBackendBase):
+        """Primary LDAP backend."""
+
+        settings_prefix = "AUTH_LDAP_"
+        srv_address_setting_name = "ldap_server_address"
+        srv_port_setting_name = "ldap_server_port"
+
+
+    class LDAPSecondaryBackend(LDAPBackendBase):
+        """Secondary LDAP backend."""
+
+        settings_prefix = "AUTH_LDAP_2_"
+        srv_address_setting_name = "ldap_secondary_server_address"
+        srv_port_setting_name = "ldap_secondary_server_port"
+
 
 except ImportError:
     pass
