@@ -87,7 +87,15 @@ try:
             if group == "SimpleUsers":
                 lpart, domain = split_mailbox(username)
                 if domain is None:
-                    return None
+                    # Try to find associated email
+                    email = None
+                    for attr in ['mail', 'userPrincipalName']:
+                        if attr in ldap_user.attrs:
+                            email = ldap_user.attrs[attr][0]
+                            break
+                    if email is None:
+                        return None
+                    username = email
             user, created = User.objects.get_or_create(
                 username__iexact=username,
                 defaults={

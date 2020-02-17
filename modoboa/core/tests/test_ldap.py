@@ -107,11 +107,9 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.client.logout()
         self.directbind_mode()
 
-        # 1: must fail because usernames of simple users must be email
-        # addresses
         username = "testuser"
-        with self.assertRaises(TypeError):
-            self.client.login(username=username, password="test")
+        self.client.login(username=username, password="test")
+        self.check_created_user(username + "@example.com")
 
         # 1: must work because usernames of domain admins are not
         # always email addresses
