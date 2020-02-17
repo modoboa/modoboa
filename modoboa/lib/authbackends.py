@@ -67,7 +67,7 @@ try:
         def __init__(self, *args, **kwargs):
             """Load LDAP settings."""
             param_tools.apply_to_django_settings()
-            super(LDAPBackend, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             self.global_params = dict(
                 param_tools.get_global_parameters("core"))
 
@@ -119,7 +119,7 @@ try:
 
         def authenticate(self, *args, **kwargs):
             if self.global_params["authentication_type"] == "ldap":
-                return super(LDAPBackend, self).authenticate(*args, **kwargs)
+                return super().authenticate(*args, **kwargs)
             return None
 
         def setting_fullname(self, setting):
