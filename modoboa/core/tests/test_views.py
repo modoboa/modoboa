@@ -76,7 +76,10 @@ SETTINGS_SAMPLE = {
     "core-ldap_sync_account_dn_template": "",
     "core-ldap_sync_delete_remote_account": False,
     "core-send_new_versions_email": False,
-    "core-new_versions_email_rcpt": "postmaster@domain.test"
+    "core-new_versions_email_rcpt": "postmaster@domain.test",
+    "core-ldap_enable_secondary_server": False,
+    "core-ldap_secondary_server_address": "localhost",
+    "core-ldap_secondary_server_port": 389,
 }
 
 

@@ -48,7 +48,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                  if hasher().scheme in get_dovecot_schemes()],
         initial="sha512crypt",
         help_text=ugettext_lazy("Scheme used to crypt mailbox passwords"),
-        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     rounds_number = forms.IntegerField(
@@ -58,7 +57,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Number of rounds to use (only used by sha256crypt and "
             "sha512crypt). Must be between 1000 and 999999999, inclusive."
         ),
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     update_scheme = YesNoField(
@@ -92,14 +90,35 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         initial="localhost",
         help_text=ugettext_lazy(
             "The IP address or the DNS name of the LDAP server"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_server_port = forms.IntegerField(
         label=ugettext_lazy("Server port"),
         initial=389,
         help_text=ugettext_lazy("The TCP port number used by the LDAP server"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+
+    ldap_enable_secondary_server = YesNoField(
+        label=ugettext_lazy("Enable secondary server (fallback)"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Enable a secondary LDAP server which will be used "
+            "if the primary one fails"
+        )
+    )
+
+    ldap_secondary_server_address = forms.CharField(
+        label=ugettext_lazy("Secondary server address"),
+        initial="localhost",
+        help_text=ugettext_lazy(
+            "The IP address or the DNS name of the seondary LDAP server"),
+    )
+
+    ldap_secondary_server_port = forms.IntegerField(
+        label=ugettext_lazy("Secondary server port"),
+        initial=389,
+        help_text=ugettext_lazy(
+            "The TCP port number used by the LDAP secondary server"),
     )
 
     ldap_secured = forms.ChoiceField(
@@ -127,7 +146,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                  ("directbind", ugettext_lazy("Direct bind"))],
         initial="searchbind",
         help_text=ugettext_lazy("Choose the authentication method to use"),
-        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     ldap_bind_dn = forms.CharField(
@@ -138,7 +156,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Leave empty for an anonymous bind"
         ),
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_bind_password = forms.CharField(
@@ -148,8 +165,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "The password to use when binding to the LDAP server "
             "(with 'Bind DN')"
         ),
-        widget=forms.PasswordInput(
-            attrs={"class": "form-control"}, render_value=True),
+        widget=forms.PasswordInput(render_value=True),
         required=False
     )
 
@@ -160,7 +176,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "The distinguished name of the search base used to find users"
         ),
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_search_filter = forms.CharField(
@@ -171,7 +186,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "In order to be valid, it must be enclosed in parentheses."
         ),
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_user_dn_template = forms.CharField(
@@ -182,7 +196,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "one placeholder (ie. %(user)s)"
         ),
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     ldap_admin_groups = forms.CharField(
@@ -271,7 +284,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         label=ugettext_lazy("Password attribute"),
         initial="userPassword",
         help_text=ugettext_lazy("The attribute used to store user passwords"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     dash_sep = SeparatorField(label=ugettext_lazy("Dashboard"))
@@ -350,7 +362,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "An account with a last login date greater than this threshold "
             "(in days) will be considered as inactive"
         ),
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     top_notifications_check_interval = forms.IntegerField(
@@ -359,21 +370,18 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         help_text=_(
             "Interval between two top notification checks (in seconds)"
         ),
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     log_maximum_age = forms.IntegerField(
         label=ugettext_lazy("Maximum log record age"),
         initial=365,
         help_text=ugettext_lazy("The maximum age in days of a log record"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     items_per_page = forms.IntegerField(
         label=ugettext_lazy("Items per page"),
         initial=30,
         help_text=ugettext_lazy("Number of displayed items per page"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
     )
 
     default_top_redirection = forms.ChoiceField(
@@ -383,11 +391,12 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         help_text=ugettext_lazy(
             "The default redirection used when no application is specified"
         ),
-        widget=forms.Select(attrs={"class": "form-control"})
     )
 
     # Visibility rules
     visibility_rules = {
+        "ldap_secondary_server_address": "ldap_enable_secondary_server=True",
+        "ldap_secondary_server_port": "ldap_enable_secondary_server=True",
         "ldap_auth_sep": "authentication_type=ldap",
         "ldap_auth_method": "authentication_type=ldap",
         "ldap_bind_dn": "ldap_auth_method=searchbind",
@@ -458,6 +467,68 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
         return cleaned_data
 
+    def _apply_ldap_settings(self, values, backend):
+        """Apply configuration for given backend."""
+        import ldap
+        from django_auth_ldap.config import (
+            LDAPSearch, PosixGroupType, GroupOfNamesType)
+
+        if not hasattr(settings, backend.setting_fullname("USER_ATTR_MAP")):
+            setattr(settings, backend.setting_fullname("USER_ATTR_MAP"), {
+                "first_name": "givenName",
+                "email": "mail",
+                "last_name": "sn"
+            })
+        ldap_uri = "ldaps://" if values["ldap_secured"] == "ssl" else "ldap://"
+        ldap_uri += "%s:%s" % (
+            values[backend.srv_address_setting_name],
+            values[backend.srv_port_setting_name]
+        )
+        setattr(settings, backend.setting_fullname("SERVER_URI"), ldap_uri)
+        if values["ldap_secured"] == "starttls":
+            setattr(settings, backend.setting_fullname("START_TLS"), True)
+
+        if values["ldap_group_type"] == "groupofnames":
+            setattr(settings, backend.setting_fullname("GROUP_TYPE"),
+                    GroupOfNamesType())
+            searchfilter = "(objectClass=groupOfNames)"
+        else:
+            setattr(settings, backend.setting_fullname("GROUP_TYPE"),
+                    PosixGroupType())
+            searchfilter = "(objectClass=posixGroup)"
+        setattr(settings, backend.setting_fullname("GROUP_SEARCH"), LDAPSearch(
+            values["ldap_groups_search_base"], ldap.SCOPE_SUBTREE,
+            searchfilter
+        ))
+        if values["ldap_auth_method"] == "searchbind":
+            setattr(settings, backend.setting_fullname("BIND_DN"),
+                    values["ldap_bind_dn"])
+            setattr(
+                settings, backend.setting_fullname("BIND_PASSWORD"),
+                values["ldap_bind_password"]
+            )
+            search = LDAPSearch(
+                values["ldap_search_base"], ldap.SCOPE_SUBTREE,
+                values["ldap_search_filter"]
+            )
+            setattr(settings, backend.setting_fullname("USER_SEARCH"), search)
+        else:
+            setattr(
+                settings, backend.setting_fullname("USER_DN_TEMPLATE"),
+                values["ldap_user_dn_template"]
+            )
+            setattr(
+                settings,
+                backend.setting_fullname("BIND_AS_AUTHENTICATING_USER"), True)
+        if values["ldap_is_active_directory"]:
+            setting = backend.setting_fullname("GLOBAL_OPTIONS")
+            if not hasattr(settings, setting):
+                setattr(settings, setting, {
+                    ldap.OPT_REFERRALS: False
+                })
+            else:
+                getattr(settings, setting)[ldap.OPT_REFERRALS] = False
+
     def to_django_settings(self):
         """Apply LDAP related parameters to Django settings.
 
@@ -465,8 +536,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         """
         try:
             import ldap
-            from django_auth_ldap.config import (
-                LDAPSearch, PosixGroupType, GroupOfNamesType)
             ldap_available = True
         except ImportError:
             ldap_available = False
@@ -474,51 +543,12 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         values = dict(param_tools.get_global_parameters("core"))
         if not ldap_available or values["authentication_type"] != "ldap":
             return
-        if not hasattr(settings, "AUTH_LDAP_USER_ATTR_MAP"):
-            setattr(settings, "AUTH_LDAP_USER_ATTR_MAP", {
-                "first_name": "givenName",
-                "email": "mail",
-                "last_name": "sn"
-            })
-        ldap_uri = "ldaps://" if values["ldap_secured"] == "ssl" else "ldap://"
-        ldap_uri += "%s:%s" % (
-            values["ldap_server_address"], values["ldap_server_port"])
-        setattr(settings, "AUTH_LDAP_SERVER_URI", ldap_uri)
-        if values["ldap_secured"] == "starttls":
-            setattr(settings, "AUTH_LDAP_START_TLS", True)
 
-        if values["ldap_group_type"] == "groupofnames":
-            setattr(settings, "AUTH_LDAP_GROUP_TYPE", GroupOfNamesType())
-            searchfilter = "(objectClass=groupOfNames)"
-        else:
-            setattr(settings, "AUTH_LDAP_GROUP_TYPE", PosixGroupType())
-            searchfilter = "(objectClass=posixGroup)"
-        setattr(settings, "AUTH_LDAP_GROUP_SEARCH", LDAPSearch(
-            values["ldap_groups_search_base"], ldap.SCOPE_SUBTREE,
-            searchfilter
-        ))
-        if values["ldap_auth_method"] == "searchbind":
-            setattr(settings, "AUTH_LDAP_BIND_DN", values["ldap_bind_dn"])
-            setattr(
-                settings, "AUTH_LDAP_BIND_PASSWORD",
-                values["ldap_bind_password"]
-            )
-            search = LDAPSearch(
-                values["ldap_search_base"], ldap.SCOPE_SUBTREE,
-                values["ldap_search_filter"]
-            )
-            setattr(settings, "AUTH_LDAP_USER_SEARCH", search)
-        else:
-            setattr(
-                settings, "AUTH_LDAP_USER_DN_TEMPLATE",
-                values["ldap_user_dn_template"]
-            )
-            setattr(
-                settings, "AUTH_LDAP_BIND_AS_AUTHENTICATING_USER", True)
-        if values["ldap_is_active_directory"]:
-            if not hasattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS"):
-                setattr(settings, "AUTH_LDAP_GLOBAL_OPTIONS", {
-                    ldap.OPT_REFERRALS: False
-                })
-            else:
-                settings.AUTH_LDAP_GLOBAL_OPTIONS[ldap.OPT_REFERRALS] = False
+        from modoboa.lib.authbackends import LDAPBackend
+        self._apply_ldap_settings(values, LDAPBackend)
+
+        if not values["ldap_enable_secondary_server"]:
+            return
+
+        from modoboa.lib.authbackends import LDAPSecondaryBackend
+        self._apply_ldap_settings(values, LDAPSecondaryBackend)
