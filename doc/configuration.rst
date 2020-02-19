@@ -297,6 +297,7 @@ like this::
 
     AUTHENTICATION_BACKENDS = (
       'modoboa.lib.authbackends.LDAPBackend',
+      # 'modoboa.lib.authbackends.LDAPSecondaryBackend',  # Useful for a fallback mechanism
       'django.contrib.auth.backends.ModelBackend',
     )
 

@@ -62,12 +62,12 @@ try:
         LDAPBackend as orig_LDAPBackend, _LDAPUser
     )
 
-    class LDAPBackend(orig_LDAPBackend):
+    class LDAPBackendBase(orig_LDAPBackend):
 
         def __init__(self, *args, **kwargs):
             """Load LDAP settings."""
             param_tools.apply_to_django_settings()
-            super(LDAPBackend, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             self.global_params = dict(
                 param_tools.get_global_parameters("core"))
 
@@ -119,8 +119,30 @@ try:
 
         def authenticate(self, *args, **kwargs):
             if self.global_params["authentication_type"] == "ldap":
-                return super(LDAPBackend, self).authenticate(*args, **kwargs)
+                return super().authenticate(*args, **kwargs)
             return None
+
+        @classmethod
+        def setting_fullname(cls, setting):
+            """Return fullname for given setting."""
+            return "{}{}".format(cls.settings_prefix, setting)
+
+
+    class LDAPBackend(LDAPBackendBase):
+        """Primary LDAP backend."""
+
+        settings_prefix = "AUTH_LDAP_"
+        srv_address_setting_name = "ldap_server_address"
+        srv_port_setting_name = "ldap_server_port"
+
+
+    class LDAPSecondaryBackend(LDAPBackendBase):
+        """Secondary LDAP backend."""
+
+        settings_prefix = "AUTH_LDAP_2_"
+        srv_address_setting_name = "ldap_secondary_server_address"
+        srv_port_setting_name = "ldap_secondary_server_port"
+
 
 except ImportError:
     pass

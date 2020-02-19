@@ -9,10 +9,9 @@ from django.utils.translation import ugettext as _
 from modoboa.lib.exceptions import InternalError
 
 
-def get_connection(config, username=None, password=None):
-    """Get a new connection to the LDAP directory."""
-    uri = "{}:{}".format(
-        config["ldap_server_address"], config["ldap_server_port"])
+def create_connection(srv_address, srv_port, config, username, password):
+    """Create a new connection with given server."""
+    uri = "{}:{}".format(srv_address, srv_port)
     uri = "{}://{}".format(
         "ldaps" if config["ldap_secured"] == "ssl" else "ldap", uri)
     conn = ldap.initialize(uri)
@@ -22,6 +21,24 @@ def get_connection(config, username=None, password=None):
         force_str(username if username else config["ldap_sync_bind_dn"]),
         force_str(password if password else config["ldap_sync_bind_password"])
     )
+    return conn
+
+
+def get_connection(config, username=None, password=None):
+    """Get a new connection to the LDAP directory."""
+    try:
+        conn = create_connection(
+            config["ldap_server_address"], config["ldap_server_port"],
+            config, username, password
+        )
+    except ldap.LDAPError:
+        if not config["ldap_enable_secondary_server"]:
+            raise
+        conn = create_connection(
+            config["ldap_secondary_server_address"],
+            config["ldap_secondary_server_port"],
+            config, username, password
+        )
     return conn
 
 
