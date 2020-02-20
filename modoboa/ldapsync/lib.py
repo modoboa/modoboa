@@ -169,7 +169,10 @@ def find_user_groups(conn, config, dn, entry):
     for dn, entry in result:
         if not dn:
             continue
-        groups.append(dn.split(',')[0].split('=')[1])
+        if "," in groups:
+            groups.append(dn.split(',')[0].split('=')[1])
+        else:
+            groups.append(dn)
     return groups
 
 
