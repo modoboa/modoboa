@@ -3,9 +3,12 @@
 import ldap
 import ldap.modlist as modlist
 
+from django.conf import settings
 from django.utils.encoding import force_bytes, force_str
 from django.utils.translation import ugettext as _
 
+from modoboa.core import models as core_models
+from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import InternalError
 
 
@@ -15,8 +18,10 @@ def create_connection(srv_address, srv_port, config, username, password):
     uri = "{}://{}".format(
         "ldaps" if config["ldap_secured"] == "ssl" else "ldap", uri)
     conn = ldap.initialize(uri)
+    conn.protocol_version = 3
     conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
     conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
+    conn.set_option(ldap.OPT_REFERRALS, 0)
     conn.simple_bind_s(
         force_str(username if username else config["ldap_sync_bind_dn"]),
         force_str(password if password else config["ldap_sync_bind_password"])
@@ -142,3 +147,92 @@ def delete_ldap_account(user, config):
         except ldap.LDAPError as e:
             raise InternalError(
                 _("Failed to disable LDAP account: {}").format(e))
+
+
+def find_user_groups(conn, config, dn, entry):
+    """Retrieve groups for given user."""
+    condition = (
+        config["ldap_is_active_directory"] or
+        config["ldap_group_type"] == "groupofnames"
+    )
+    if condition:
+        flt = "(member={})"
+    elif config["ldap_group_type"] == "posixgroup":
+        flt = "(memberUid={})"
+
+    result = conn.search_s(
+        config["ldap_groups_search_base"],
+        ldap.SCOPE_SUBTREE,
+        flt.format(dn)
+    )
+    groups = []
+    for dn, entry in result:
+        if not dn:
+            continue
+        groups.append(dn.split(',')[0].split('=')[1])
+    return groups
+
+
+def user_is_disabled(config, entry):
+    """Check if LDAP user is disabled or not."""
+    if config["ldap_is_active_directory"]:
+        if "userAccountControl" in entry:
+            value = int(force_str(entry["userAccountControl"][0]))
+            return value == 514
+    # FIXME: is there a way to detect a disabled user with OpenLDAP?
+    return False
+
+
+def import_accounts_from_ldap(config):
+    """Import user accounts from LDAP directory."""
+    conn = get_connection(config)
+    result = conn.search_s(
+        config["ldap_import_search_base"],
+        ldap.SCOPE_SUBTREE,
+        config["ldap_import_search_filter"]
+    )
+    admin_groups = config["ldap_admin_groups"].split(";")
+    for dn, entry in result:
+        role = "SimpleUsers"
+        groups = find_user_groups(conn, config, dn, entry)
+        for grp in admin_groups:
+            if grp.strip() in groups:
+                role = "DomainAdmins"
+                break
+        username = force_str(entry[config["ldap_import_username_attr"]][0])
+        if role == "SimpleUsers":
+            lpart, domain = split_mailbox(username)
+            if domain is None:
+                # Try to find associated email
+                username = None
+                for attr in ["mail", "userPrincipalName"]:
+                    if attr in entry:
+                        username = force_str(entry[attr][0])
+                        break
+                if username is None:
+                    print("Skipping {} because no email found".format(dn))
+                    continue
+        defaults = {
+            "username": username.lower(),
+            "is_local": False,
+            "language": settings.LANGUAGE_CODE
+        }
+        user, created = core_models.User.objects.get_or_create(
+            username__iexact=username,
+            defaults=defaults
+        )
+        if created:
+            core_models.populate_callback(user, role)
+
+        attr_map = {
+            "first_name": "givenName",
+            "email": "mail",
+            "last_name": "sn"
+        }
+        for attr, ldap_attr in attr_map.items():
+            if ldap_attr in entry:
+                setattr(user, attr, force_str(entry[ldap_attr][0]))
+            user.is_active = not user_is_disabled(config, entry)
+            user.save()
+
+        # FIXME: handle delete and rename operations?
