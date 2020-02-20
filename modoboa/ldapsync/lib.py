@@ -156,23 +156,20 @@ def find_user_groups(conn, config, dn, entry):
         config["ldap_group_type"] == "groupofnames"
     )
     if condition:
-        flt = "(member={})"
+        flt = "(member={})".format(dn)
     elif config["ldap_group_type"] == "posixgroup":
-        flt = "(memberUid={})"
+        flt = "(memberUid={})".format(force_str(entry["uid"][0]))
 
     result = conn.search_s(
         config["ldap_groups_search_base"],
         ldap.SCOPE_SUBTREE,
-        flt.format(dn)
+        flt
     )
     groups = []
     for dn, entry in result:
         if not dn:
             continue
-        if "," in groups:
-            groups.append(dn.split(',')[0].split('=')[1])
-        else:
-            groups.append(dn)
+        groups.append(dn.split(',')[0].split('=')[1])
     return groups
 
 

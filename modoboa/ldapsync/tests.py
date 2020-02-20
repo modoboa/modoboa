@@ -127,6 +127,5 @@ class LDAPImportTestCase(ModoTestCase):
         call_command("import_from_ldap_directory")
         self.assertTrue(core_models.User.objects.filter(
             username="testuser@example.com").exists())
-        admin = core_models.User.objects.get(
-            username="mailadmin@example.com")
+        admin = core_models.User.objects.get(username="mailadmin")
         self.assertEqual(admin.role, "DomainAdmins")
