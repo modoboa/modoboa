@@ -116,6 +116,7 @@ class LDAPImportTestCase(ModoTestCase):
             "ldap_sync_bind_password": "test",
             "ldap_import_search_base": "ou=users,dc=example,dc=com",
             "ldap_import_search_filter": "(objectClass=person)",
+            "ldap_groups_search_base": "ou=groups,dc=example,dc=com",
         }, app="core")
         self.config = dict(param_tools.get_global_parameters("core"))
         self.conn = lib.get_connection(self.config)

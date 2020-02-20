@@ -80,6 +80,9 @@ SETTINGS_SAMPLE = {
     "core-ldap_enable_secondary_server": False,
     "core-ldap_secondary_server_address": "localhost",
     "core-ldap_secondary_server_port": 389,
+    "core_ldap_enable_import": False,
+    "core-ldap_import_search_base": "",
+    "core-ldap_import_search_filter": "",
 }
 
 
