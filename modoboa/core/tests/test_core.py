@@ -165,11 +165,11 @@ class ProfileTestCase(ModoTestCase):
         self.client.force_login(non_local_user)
         url = reverse("core:user_profile")
         response = self.client.get(url)
-        self.assertContains(response, url)
+        self.assertContains(response, "http://update.password")
 
         self.client.force_login(self.account)
         response = self.client.get(url)
-        self.assertNotContains(response, url)
+        self.assertNotContains(response, "http://update.password")
 
 
 class APIAccessFormTestCase(ModoTestCase):

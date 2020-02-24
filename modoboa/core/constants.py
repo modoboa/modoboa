@@ -24,7 +24,7 @@ LANGUAGES = (
     ("br", u"breton"),
     ("cs", u"čeština"),
     ("de", u"deutsch"),
-    ("en-us", u"english"),
+    ("en", u"english"),
     ("el_GR", u"ελληνικά"),
     ("es", u"español"),
     ("fr", u"français"),
