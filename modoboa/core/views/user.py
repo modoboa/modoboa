@@ -30,6 +30,12 @@ def profile(request, tplname="core/user_profile.html"):
         sender="profile", user=request.user)
     if True in [result[1] for result in results]:
         update_password = False
+    password_url = request.localconfig.parameters.get_value(
+        "update_password_url")
+    show_password_url = False
+    if not request.user.is_local and password_url:
+        show_password_url = True
+        update_password = False
 
     if request.method == "POST":
         form = ProfileForm(
@@ -51,7 +57,9 @@ def profile(request, tplname="core/user_profile.html"):
     form = ProfileForm(update_password, instance=request.user)
     return render_to_json_response({
         "content": render_to_string(tplname, {
-            "form": form
+            "form": form,
+            "show_password_url": show_password_url,
+            "password_url": password_url
         }, request)
     })
 
