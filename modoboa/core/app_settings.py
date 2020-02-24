@@ -136,6 +136,40 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Tell if the LDAP server is an Active Directory one")
     )
 
+    ldap_admin_groups = forms.CharField(
+        label=ugettext_lazy("Administrator groups"),
+        initial="",
+        help_text=ugettext_lazy(
+            "Members of those LDAP Posix groups will be created as domain "
+            "administrators. Use ';' characters to separate groups."
+        ),
+        required=False
+    )
+
+    ldap_group_type = forms.ChoiceField(
+        label=ugettext_lazy("Group type"),
+        initial="posixgroup",
+        choices=constants.LDAP_GROUP_TYPES,
+        help_text=ugettext_lazy(
+            "The LDAP group type to use with your directory."
+        )
+    )
+
+    ldap_groups_search_base = forms.CharField(
+        label=ugettext_lazy("Groups search base"),
+        initial="",
+        help_text=ugettext_lazy(
+            "The distinguished name of the search base used to find groups"
+        ),
+        required=False
+    )
+
+    ldap_password_attribute = forms.CharField(
+        label=ugettext_lazy("Password attribute"),
+        initial="userPassword",
+        help_text=ugettext_lazy("The attribute used to store user passwords"),
+    )
+
     # LDAP authentication settings
     ldap_auth_sep = SeparatorField(
         label=ugettext_lazy("LDAP authentication settings"))
@@ -198,56 +232,9 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         required=False,
     )
 
-    ldap_admin_groups = forms.CharField(
-        label=ugettext_lazy("Administrator groups"),
-        initial="",
-        help_text=ugettext_lazy(
-            "Members of those LDAP Posix groups will be created as domain "
-            "administrators. Use ';' characters to separate groups."
-        ),
-        required=False
-    )
-
-    ldap_group_type = forms.ChoiceField(
-        label=ugettext_lazy("Group type"),
-        initial="posixgroup",
-        choices=constants.LDAP_GROUP_TYPES,
-        help_text=ugettext_lazy(
-            "The LDAP group type to use with your directory."
-        )
-    )
-
-    ldap_groups_search_base = forms.CharField(
-        label=ugettext_lazy("Groups search base"),
-        initial="",
-        help_text=ugettext_lazy(
-            "The distinguished name of the search base used to find groups"
-        ),
-        required=False
-    )
-
     # LDAP sync. settings
     ldap_sync_sep = SeparatorField(
         label=ugettext_lazy("LDAP synchronization settings"))
-
-    ldap_enable_sync = YesNoField(
-        label=ugettext_lazy("Enable LDAP synchronization"),
-        initial=False,
-        help_text=ugettext_lazy(
-            "Enable automatic synchronization between local database and "
-            "LDAP directory")
-    )
-
-    ldap_sync_delete_remote_account = YesNoField(
-        label=ugettext_lazy(
-            "Delete remote LDAP account when local account is deleted"
-        ),
-        initial=False,
-        help_text=ugettext_lazy(
-            "Delete remote LDAP account when local account is deleted, "
-            "otherwise it will be disabled."
-        )
-    )
 
     ldap_sync_bind_dn = forms.CharField(
         label=ugettext_lazy("Bind DN"),
@@ -270,6 +257,25 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         required=False
     )
 
+    ldap_enable_sync = YesNoField(
+        label=ugettext_lazy("Enable export to LDAP"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Enable automatic synchronization between local database and "
+            "LDAP directory")
+    )
+
+    ldap_sync_delete_remote_account = YesNoField(
+        label=ugettext_lazy(
+            "Delete remote LDAP account when local account is deleted"
+        ),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Delete remote LDAP account when local account is deleted, "
+            "otherwise it will be disabled."
+        )
+    )
+
     ldap_sync_account_dn_template = forms.CharField(
         label=ugettext_lazy("Account DN template"),
         initial="",
@@ -280,10 +286,40 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         required=False
     )
 
-    ldap_password_attribute = forms.CharField(
-        label=ugettext_lazy("Password attribute"),
-        initial="userPassword",
-        help_text=ugettext_lazy("The attribute used to store user passwords"),
+    ldap_enable_import = YesNoField(
+        label=ugettext_lazy("Enable import from LDAP"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Enable account synchronization from LDAP directory to local "
+            "database"
+        )
+    )
+
+    ldap_import_search_base = forms.CharField(
+        label=ugettext_lazy("Users search base"),
+        initial="",
+        help_text=ugettext_lazy(
+            "The distinguished name of the search base used to find users"
+        ),
+        required=False,
+    )
+
+    ldap_import_search_filter = forms.CharField(
+        label=ugettext_lazy("Search filter"),
+        initial="(cn=*)",
+        help_text=ugettext_lazy(
+            "An optional filter string (e.g. '(objectClass=person)'). "
+            "In order to be valid, it must be enclosed in parentheses."
+        ),
+        required=False,
+    )
+
+    ldap_import_username_attr = forms.CharField(
+        label=ugettext_lazy("Username attribute"),
+        initial="cn",
+        help_text=ugettext_lazy(
+            "The name of the LDAP attribute where the username can be found."
+        ),
     )
 
     dash_sep = SeparatorField(label=ugettext_lazy("Dashboard"))
@@ -407,6 +443,11 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         "ldap_admin_groups": "authentication_type=ldap",
         "ldap_group_type": "authentication_type=ldap",
         "ldap_groups_search_base": "authentication_type=ldap",
+        "ldap_sync_delete_remote_account": "ldap_enable_sync=True",
+        "ldap_sync_account_dn_template": "ldap_enable_sync=True",
+        "ldap_import_search_base": "ldap_enable_import=True",
+        "ldap_import_search_filter": "ldap_enable_import=True",
+        "ldap_import_username_attr": "ldap_enable_import=True",
         "check_new_versions": "enable_api_communication=True",
         "send_statistics": "enable_api_communication=True",
         "send_new_versions_email": "check_new_versions=True",
