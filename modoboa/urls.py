@@ -61,7 +61,8 @@ schema_view = get_schema_view(
 urlpatterns += [
     path('docs/openapi.json', schema_view, name="openapi_schema"),
     path('docs/api/', login_required(
-            TemplateView.as_view(template_name="swagger-ui.html"))),
+            TemplateView.as_view(template_name="swagger-ui.html")),
+         name="docs-index"),
     path('api/v1/', include("modoboa.urls_api")),
 ]
 

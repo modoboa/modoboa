@@ -58,7 +58,7 @@ class DeployCommand(Command):
             "--domain", type=str, default=None,
             help="The domain under which you want to deploy modoboa")
         self._parser.add_argument(
-            "--lang", type=str, default="en-us",
+            "--lang", type=str, default="en",
             help="Set the default language"
         )
         self._parser.add_argument(
