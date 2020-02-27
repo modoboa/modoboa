@@ -1,7 +1,7 @@
 import os
 
 # Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DB = os.environ.get("DB", "POSTGRESQL")
 
@@ -20,7 +20,7 @@ if DB == "MYSQL":
             # into errors. It is strongly recommended you activate it.
             # MySQL >= 5.7 set STRICT_TRANS_TABLES by default
             # See:
-            # https://docs.djangoproject.com/en/1.11/ref/databases/#mysql-sql-mode
+            # https://docs.djangoproject.com/en/2.2/ref/databases/#mysql-sql-mode
             "OPTIONS": {
                 "init_command": (
                     "SET sql_mode = 'STRICT_TRANS_TABLES';"
