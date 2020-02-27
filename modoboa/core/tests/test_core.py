@@ -154,6 +154,23 @@ class ProfileTestCase(ModoTestCase):
             self.client.login(username="user@test.com", password="Toto1234")
         )
 
+    def test_update_password_url(self):
+        """Check if external is used when defined."""
+        self.set_global_parameter(
+            "update_password_url", "http://update.password")
+        non_local_user = factories.UserFactory(
+            username="user@external.com", groups=("SimpleUsers",),
+            is_local=False
+        )
+        self.client.force_login(non_local_user)
+        url = reverse("core:user_profile")
+        response = self.client.get(url)
+        self.assertContains(response, "http://update.password")
+
+        self.client.force_login(self.account)
+        response = self.client.get(url)
+        self.assertNotContains(response, "http://update.password")
+
 
 class APIAccessFormTestCase(ModoTestCase):
 

@@ -82,6 +82,18 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             "Length of randomly generated passwords.")
     )
 
+    update_password_url = forms.URLField(
+        label=ugettext_lazy("Update password service URL"),
+        initial="",
+        required=False,
+        help_text=ugettext_lazy(
+            "The URL of an external page where users will be able"
+            " to update their password. It applies only to non local"
+            " users, ie. those automatically created after a successful"
+            " external authentication (LDAP, SMTP)."
+        )
+    )
+
     # LDAP specific settings
     ldap_sep = SeparatorField(label=ugettext_lazy("LDAP settings"))
 
