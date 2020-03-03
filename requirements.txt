@@ -22,6 +22,5 @@ py-dateutil==2.2
 cryptography
 pytz
 requests
-rfc6266
 lxml
 chardet
