@@ -69,7 +69,7 @@ def doB64(_in, r):  # NOQA:N802
         del _in[:]
 
 
-def encoder(s):
+def encoder(s, *args, **kwargs):
     r = []
     _in = []
     for c in s:
@@ -93,7 +93,7 @@ def modified_unutf7(s):
     return s_utf7.decode("utf-7")
 
 
-def decoder(s):
+def decoder(s, *args, **kwargs):
     r = []
     decoded = bytearray()
     for c in s:
