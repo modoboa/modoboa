@@ -119,7 +119,12 @@ class SenderLoginMap(object):
         "WHERE al.enabled=1 AND ("
         "  al.address='%s' OR ("
         "    adoma.name='%d' AND al.address=concat('%u', '@', adom.name)"
-        ")))"
+        "))) "
+        "UNION "
+        "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address=concat('@','%d')) "
     )
     postgres = (
         "(SELECT email FROM core_user WHERE email='%s' AND is_active) "
@@ -138,7 +143,12 @@ class SenderLoginMap(object):
         "WHERE al.enabled AND ("
         "  al.address='%s' OR ("
         "    adoma.name='%d' AND al.address='%u'||'@'||adom.name"
-        ")))"
+        "))) "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='@'||'%d') "
     )
     sqlite = (
         "SELECT email FROM core_user WHERE email='%s' AND is_active=1 "
@@ -157,5 +167,10 @@ class SenderLoginMap(object):
         "WHERE al.enabled=1 AND ("
         "  al.address='%s' OR ("
         "    adoma.name='%d' AND al.address='%u'||'@'||adom.name"
-        "))"
+        ")) "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='@'||'%d') "
     )
