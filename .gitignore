@@ -16,3 +16,5 @@ modoboa_test
 .coverage
 build/
 dist/
+/.project
+/.pydevproject
