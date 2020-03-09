@@ -70,5 +70,5 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    python: '3.6'
+    python: '3.7'
     condition: "$DB = POSTGRESQL"
