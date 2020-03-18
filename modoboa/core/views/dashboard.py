@@ -8,6 +8,8 @@ from requests.exceptions import RequestException
 from django.contrib.auth import mixins as auth_mixins
 from django.views import generic
 
+from django.conf import settings
+
 from .. import signals
 
 MODOBOA_WEBSITE_URL = "https://modoboa.org/"
@@ -43,11 +45,13 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
                 self.request.localconfig.parameters.get_value("rss_feed_url"))
             if custom_feed_url:
                 feed_url = custom_feed_url
-        posts = feedparser.parse(feed_url)
+        if not settings.DISABLE_RSS:
+            posts = feedparser.parse(feed_url)
         entries = []
-        for entry in posts["entries"][:5]:
-            entry["published"] = parser.parse(entry["published"])
-            entries.append(entry)
+        if not settings.DISABLE_RSS:
+            for entry in posts["entries"][:5]:
+                entry["published"] = parser.parse(entry["published"])
+                entries.append(entry)
         context["widgets"]["left"].append("core/_latest_news_widget.html")
         context.update({"news": entries})
 
@@ -57,13 +61,14 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
             url = "{}{}/api/projects/?featured=true".format(
                 MODOBOA_WEBSITE_URL, lang)
             features = []
-            try:
-                response = requests.get(url)
-            except RequestException:
-                pass
-            else:
-                if response.status_code == 200:
-                    features = response.json()
+            if not settings.DISABLE_RSS:
+                try:
+                    response = requests.get(url)
+                except RequestException:
+                    pass
+                else:
+                    if response.status_code == 200:
+                        features = response.json()
             context["widgets"]["right"].append("core/_current_features.html")
             context.update({"features": features})
 
