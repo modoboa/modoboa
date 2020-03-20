@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-20 16:48+0100\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2018-11-20 16:50+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,149 +17,151 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib.py:86
+#: dnstools/lib.py:78
 msgid "Wrong ip4 mechanism syntax"
 msgstr "Mauvaise syntaxe de mécanisme ip4"
 
-#: lib.py:90
+#: dnstools/lib.py:82
 msgid "Wrong IPv4 address format"
 msgstr "Mauvais format d'adresse IPv4"
 
-#: lib.py:96
+#: dnstools/lib.py:88
 msgid "Wrong ip6 mechanism syntax"
 msgstr "Mauvaise syntaxe de mécanisme ip6"
 
-#: lib.py:101
+#: dnstools/lib.py:93
 msgid "Wrong IPv6 address format"
 msgstr "Mauvais format d'adresse IPv6"
 
-#: lib.py:116 lib.py:142
+#: dnstools/lib.py:108 dnstools/lib.py:134
 msgid "Invalid syntax for {} mechanism"
 msgstr "Mauvaise syntaxe de mécanisme {}"
 
-#: lib.py:118
+#: dnstools/lib.py:110
 msgid "Invalid mask found {}"
 msgstr "Masque incorrect trouvé {}"
 
-#: lib.py:163
+#: dnstools/lib.py:155
 msgid "Not an SPF record"
 msgstr "Ce n'est pas un enregistrement SPF"
 
-#: lib.py:183
+#: dnstools/lib.py:177
 msgid "Unknown mechanism {}"
 msgstr "Mécanisme inconnu {}"
 
-#: lib.py:185
+#: dnstools/lib.py:179
 msgid "Unknown modifier {}"
 msgstr "Modificateur inconnu {}"
 
-#: lib.py:188
+#: dnstools/lib.py:182
 msgid "Duplicate modifier {} found"
 msgstr "Modificateur dupliqué {} trouvé"
 
-#: lib.py:192
+#: dnstools/lib.py:186
 msgid "No mechanism found"
 msgstr "Aucun mécanisme trouvé"
 
-#: lib.py:199
+#: dnstools/lib.py:193
 msgid "Not a valid DKIM record"
 msgstr "Ce n'est pas un enregistrement DKIM"
 
-#: lib.py:205 lib.py:256
+#: dnstools/lib.py:201 dnstools/lib.py:254
 msgid "Invalid tag {}"
 msgstr "Tag incorrect {}"
 
-#: lib.py:210
+#: dnstools/lib.py:206
 msgid "No key found in record"
 msgstr "Pas de clé trouvée dans l'enregistrement"
 
-#: lib.py:217
+#: dnstools/lib.py:213
 msgid "Wrong value {} for tag {}"
 msgstr "Mauvaise valeur {} pour le tag {}"
 
-#: lib.py:232
+#: dnstools/lib.py:228
 msgid "Wrong value {} for tag {}:"
 msgstr "Mauvaise valuer {} pour le tag {} :"
 
-#: lib.py:236
+#: dnstools/lib.py:232
 msgid " not an integer"
 msgstr " ce n'est pas un entier"
 
-#: lib.py:239
+#: dnstools/lib.py:235
 msgid " less than {}"
 msgstr " inférieur à {}"
 
-#: lib.py:242
+#: dnstools/lib.py:238
 msgid " greater than {}"
 msgstr " supérieur à {}"
 
-#: lib.py:250
+#: dnstools/lib.py:246
 msgid "Not a valid DMARC record"
 msgstr "Ce n'est pas un enregistrement DMARC"
 
-#: lib.py:259
+#: dnstools/lib.py:257
 msgid "Unknown tag {}"
 msgstr "Tag inconnu {}"
 
-#: lib.py:264
+#: dnstools/lib.py:262
 msgid "Missing required p tag"
 msgstr "Tag obligatoire p introuvable"
 
-#: models.py:79
+#: dnstools/models.py:77
 msgid "Public key mismatchs"
 msgstr "La clé publique ne correspond pas"
 
-#: templates/dnstools/autoconfig_records_status.html:8
+#: dnstools/templates/dnstools/autoconfig_records_status.html:8
 msgid "autoconfig record (Mozilla) found: "
 msgstr "Enregistrement autoconfig (Mozilla) trouvé :"
 
-#: templates/dnstools/autoconfig_records_status.html:12
+#: dnstools/templates/dnstools/autoconfig_records_status.html:12
 msgid "autoconfig record (Mozilla) not found."
 msgstr "Enregistrement autoconfig (Mozilla) introuvable."
 
-#: templates/dnstools/autoconfig_records_status.html:17
+#: dnstools/templates/dnstools/autoconfig_records_status.html:17
 msgid "autodiscover record (Microsoft) found: "
 msgstr "Enregistrement autodiscover (Microsoft) trouvé :"
 
-#: templates/dnstools/autoconfig_records_status.html:21
+#: dnstools/templates/dnstools/autoconfig_records_status.html:21
 msgid "autodiscover record (Microsoft) not found."
 msgstr "Enregistrement autodiscover (Microsoft) introuvable."
 
-#: templates/dnstools/dns_record_detail.html:8
+#: dnstools/templates/dnstools/dns_record_detail.html:8
 msgid "A DNS record has been found and is valid."
 msgstr "Un enregistrement DNS a été trouvé et est correct."
 
-#: templates/dnstools/dns_record_detail.html:12
+#: dnstools/templates/dnstools/dns_record_detail.html:12
 msgid "A DNS record has been found but its syntax is not valid:"
 msgstr "Un enregistrement DNS a été trouvé mais sa syntaxe est incorrecte :"
 
-#: templates/dnstools/domain_dns_configuration.html:7
+#: dnstools/templates/dnstools/domain_dns_configuration.html:7
 msgid ""
 "Here is an example of DNS configuration (bind format). Replace value between "
 "[ ] by the appropriate ones."
-msgstr "Voici un exemple de configuration DNS (format bind). Remplacez les valeurs entre [ ] par celles appropriées."
+msgstr ""
+"Voici un exemple de configuration DNS (format bind). Remplacez les valeurs "
+"entre [ ] par celles appropriées."
 
-#: templates/dnstools/domain_dns_configuration.html:15
+#: dnstools/templates/dnstools/domain_dns_configuration.html:15
 msgid "IP address of your Modoboa server"
 msgstr "Adresse IP de votre serveur Modoboa"
 
-#: templates/dnstools/domain_dns_configuration.html:28
+#: dnstools/templates/dnstools/domain_dns_configuration.html:28
 msgid "Auto configuration"
 msgstr "Configuration automatique"
 
-#: templates/dnstools/domain_dns_configuration.html:30
-#: templates/dnstools/domain_dns_configuration.html:31
+#: dnstools/templates/dnstools/domain_dns_configuration.html:30
+#: dnstools/templates/dnstools/domain_dns_configuration.html:31
 msgid "hostname of your automx server"
 msgstr "Nom d'hôte de votre serveur automx"
 
-#: views.py:36
+#: dnstools/views.py:36
 msgid "{} record of {}"
 msgstr "Enregistrement {} de {}"
 
-#: views.py:64
+#: dnstools/views.py:64
 msgid "Auto configuration records for {}"
 msgstr "Enregistrements d'autoconfiguration pour {}"
 
-#: views.py:84
+#: dnstools/views.py:84
 msgid "DNS configuration for {}"
 msgstr "Configuration DNS pour {}"

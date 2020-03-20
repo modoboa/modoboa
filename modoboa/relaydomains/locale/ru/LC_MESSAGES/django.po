@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2013-12-03 09:35+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/modoboa/language/"
@@ -19,31 +19,31 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: relaydomains/handlers.py:65
+#: relaydomains/handlers.py:61
 msgid "Transport settings"
 msgstr ""
 
-#: relaydomains/handlers.py:89
+#: relaydomains/handlers.py:85
 msgid "Transport"
 msgstr ""
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Ошибочная строка"
 
-#: relaydomains/serializers.py:29
+#: relaydomains/serializers.py:25
 msgid "Unsupported service"
 msgstr ""
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:14
 msgid "target host address"
 msgstr ""
 
-#: relaydomains/transport.py:20
+#: relaydomains/transport.py:16
 msgid "target host port"
 msgstr ""
 
-#: relaydomains/transport.py:22
+#: relaydomains/transport.py:18
 msgid "verify recipients"
 msgstr ""
 

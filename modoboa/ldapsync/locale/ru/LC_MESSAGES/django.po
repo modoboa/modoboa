@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-07 10:50+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,18 +19,19 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
-#: ldapsync/lib.py:63
+
+#: ldapsync/lib.py:84
 msgid "Failed to create LDAP account: {}"
 msgstr ""
 
-#: ldapsync/lib.py:102
+#: ldapsync/lib.py:124
 msgid "Failed to update LDAP account: {}"
 msgstr ""
 
-#: ldapsync/lib.py:116
+#: ldapsync/lib.py:138
 msgid "Failed to delete LDAP account: {}"
 msgstr ""
 
-#: ldapsync/lib.py:127
+#: ldapsync/lib.py:149
 msgid "Failed to disable LDAP account: {}"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: relaydomains/handlers.py:65
+#: relaydomains/handlers.py:61
 msgid "Transport settings"
 msgstr ""
 
-#: relaydomains/handlers.py:89
+#: relaydomains/handlers.py:85
 msgid "Transport"
 msgstr ""
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr ""
 
-#: relaydomains/serializers.py:29
+#: relaydomains/serializers.py:25
 msgid "Unsupported service"
 msgstr ""
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:14
 msgid "target host address"
 msgstr ""
 
-#: relaydomains/transport.py:20
+#: relaydomains/transport.py:16
 msgid "target host port"
 msgstr ""
 
-#: relaydomains/transport.py:22
+#: relaydomains/transport.py:18
 msgid "verify recipients"
 msgstr ""

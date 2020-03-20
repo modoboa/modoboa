@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2016-04-27 20:00+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/tonio/modoboa/"
@@ -28,6 +28,10 @@ msgstr ""
 msgid "'"
 msgstr ""
 
+#: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
+msgid "operation"
+msgstr ""
+
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
 msgstr "Não há mais entradas do registo para mostrar"
@@ -40,7 +44,7 @@ msgstr "Aviso"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: static/js/global.js:341
+#: static/js/global.js:342
 msgid "Internal error"
 msgstr "Erro interno"
 
