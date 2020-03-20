@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2018-09-25 03:25+0000\n"
 "Last-Translator: Rafael Barretto <ch3yd@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
@@ -22,30 +22,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: relaydomains/handlers.py:65
+#: relaydomains/handlers.py:61
 msgid "Transport settings"
 msgstr "Configurações de transporte"
 
-#: relaydomains/handlers.py:89
+#: relaydomains/handlers.py:85
 msgid "Transport"
 msgstr "Transporte"
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: relaydomains/serializers.py:29
+#: relaydomains/serializers.py:25
 msgid "Unsupported service"
 msgstr "Serviço não suportado"
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:14
 msgid "target host address"
 msgstr "Endereço do host alvo"
 
-#: relaydomains/transport.py:20
+#: relaydomains/transport.py:16
 msgid "target host port"
 msgstr "Porta do host alvo"
 
-#: relaydomains/transport.py:22
+#: relaydomains/transport.py:18
 msgid "verify recipients"
 msgstr "verificar destinatários"

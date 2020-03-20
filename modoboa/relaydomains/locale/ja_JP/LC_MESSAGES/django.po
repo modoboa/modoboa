@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2016-06-07 07:27+0000\n"
 "Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -19,37 +19,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: relaydomains/handlers.py:65
+#: relaydomains/handlers.py:61
 #, fuzzy
 #| msgid "Relay settings"
 msgid "Transport settings"
 msgstr "リレー設定"
 
-#: relaydomains/handlers.py:89
+#: relaydomains/handlers.py:85
 msgid "Transport"
 msgstr ""
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: relaydomains/serializers.py:29
+#: relaydomains/serializers.py:25
 msgid "Unsupported service"
 msgstr ""
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:14
 #, fuzzy
 #| msgid "target host"
 msgid "target host address"
 msgstr "ターゲットホスト"
 
-#: relaydomains/transport.py:20
+#: relaydomains/transport.py:16
 #, fuzzy
 #| msgid "target host"
 msgid "target host port"
 msgstr "ターゲットホスト"
 
-#: relaydomains/transport.py:22
+#: relaydomains/transport.py:18
 msgid "verify recipients"
 msgstr "受信者を確認"
 

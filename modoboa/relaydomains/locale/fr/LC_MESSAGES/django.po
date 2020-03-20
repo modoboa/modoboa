@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2018-01-25 09:19+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -19,31 +19,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: relaydomains/handlers.py:65
+#: relaydomains/handlers.py:61
 msgid "Transport settings"
 msgstr "Paramètres du transport"
 
-#: relaydomains/handlers.py:89
+#: relaydomains/handlers.py:85
 msgid "Transport"
 msgstr "Transport"
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Ligne invalide"
 
-#: relaydomains/serializers.py:29
+#: relaydomains/serializers.py:25
 msgid "Unsupported service"
 msgstr "Service non supporté"
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:14
 msgid "target host address"
 msgstr "Adresse de l'hôte cible"
 
-#: relaydomains/transport.py:20
+#: relaydomains/transport.py:16
 msgid "target host port"
 msgstr "Port de l'hôte cible"
 
-#: relaydomains/transport.py:22
+#: relaydomains/transport.py:18
 msgid "verify recipients"
 msgstr "Vérifier les destinataires"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-20 16:48+0100\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,149 +17,149 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib.py:86
+#: dnstools/lib.py:78
 msgid "Wrong ip4 mechanism syntax"
 msgstr ""
 
-#: lib.py:90
+#: dnstools/lib.py:82
 msgid "Wrong IPv4 address format"
 msgstr ""
 
-#: lib.py:96
+#: dnstools/lib.py:88
 msgid "Wrong ip6 mechanism syntax"
 msgstr ""
 
-#: lib.py:101
+#: dnstools/lib.py:93
 msgid "Wrong IPv6 address format"
 msgstr ""
 
-#: lib.py:116 lib.py:142
+#: dnstools/lib.py:108 dnstools/lib.py:134
 msgid "Invalid syntax for {} mechanism"
 msgstr ""
 
-#: lib.py:118
+#: dnstools/lib.py:110
 msgid "Invalid mask found {}"
 msgstr ""
 
-#: lib.py:163
+#: dnstools/lib.py:155
 msgid "Not an SPF record"
 msgstr ""
 
-#: lib.py:183
+#: dnstools/lib.py:177
 msgid "Unknown mechanism {}"
 msgstr ""
 
-#: lib.py:185
+#: dnstools/lib.py:179
 msgid "Unknown modifier {}"
 msgstr ""
 
-#: lib.py:188
+#: dnstools/lib.py:182
 msgid "Duplicate modifier {} found"
 msgstr ""
 
-#: lib.py:192
+#: dnstools/lib.py:186
 msgid "No mechanism found"
 msgstr ""
 
-#: lib.py:199
+#: dnstools/lib.py:193
 msgid "Not a valid DKIM record"
 msgstr ""
 
-#: lib.py:205 lib.py:256
+#: dnstools/lib.py:201 dnstools/lib.py:254
 msgid "Invalid tag {}"
 msgstr ""
 
-#: lib.py:210
+#: dnstools/lib.py:206
 msgid "No key found in record"
 msgstr ""
 
-#: lib.py:217
+#: dnstools/lib.py:213
 msgid "Wrong value {} for tag {}"
 msgstr ""
 
-#: lib.py:232
+#: dnstools/lib.py:228
 msgid "Wrong value {} for tag {}:"
 msgstr ""
 
-#: lib.py:236
+#: dnstools/lib.py:232
 msgid " not an integer"
 msgstr ""
 
-#: lib.py:239
+#: dnstools/lib.py:235
 msgid " less than {}"
 msgstr ""
 
-#: lib.py:242
+#: dnstools/lib.py:238
 msgid " greater than {}"
 msgstr ""
 
-#: lib.py:250
+#: dnstools/lib.py:246
 msgid "Not a valid DMARC record"
 msgstr ""
 
-#: lib.py:259
+#: dnstools/lib.py:257
 msgid "Unknown tag {}"
 msgstr ""
 
-#: lib.py:264
+#: dnstools/lib.py:262
 msgid "Missing required p tag"
 msgstr ""
 
-#: models.py:79
+#: dnstools/models.py:77
 msgid "Public key mismatchs"
 msgstr ""
 
-#: templates/dnstools/autoconfig_records_status.html:8
+#: dnstools/templates/dnstools/autoconfig_records_status.html:8
 msgid "autoconfig record (Mozilla) found: "
 msgstr ""
 
-#: templates/dnstools/autoconfig_records_status.html:12
+#: dnstools/templates/dnstools/autoconfig_records_status.html:12
 msgid "autoconfig record (Mozilla) not found."
 msgstr ""
 
-#: templates/dnstools/autoconfig_records_status.html:17
+#: dnstools/templates/dnstools/autoconfig_records_status.html:17
 msgid "autodiscover record (Microsoft) found: "
 msgstr ""
 
-#: templates/dnstools/autoconfig_records_status.html:21
+#: dnstools/templates/dnstools/autoconfig_records_status.html:21
 msgid "autodiscover record (Microsoft) not found."
 msgstr ""
 
-#: templates/dnstools/dns_record_detail.html:8
+#: dnstools/templates/dnstools/dns_record_detail.html:8
 msgid "A DNS record has been found and is valid."
 msgstr ""
 
-#: templates/dnstools/dns_record_detail.html:12
+#: dnstools/templates/dnstools/dns_record_detail.html:12
 msgid "A DNS record has been found but its syntax is not valid:"
 msgstr ""
 
-#: templates/dnstools/domain_dns_configuration.html:7
+#: dnstools/templates/dnstools/domain_dns_configuration.html:7
 msgid ""
 "Here is an example of DNS configuration (bind format). Replace value between "
 "[ ] by the appropriate ones."
 msgstr ""
 
-#: templates/dnstools/domain_dns_configuration.html:15
+#: dnstools/templates/dnstools/domain_dns_configuration.html:15
 msgid "IP address of your Modoboa server"
 msgstr ""
 
-#: templates/dnstools/domain_dns_configuration.html:28
+#: dnstools/templates/dnstools/domain_dns_configuration.html:28
 msgid "Auto configuration"
 msgstr ""
 
-#: templates/dnstools/domain_dns_configuration.html:30
-#: templates/dnstools/domain_dns_configuration.html:31
+#: dnstools/templates/dnstools/domain_dns_configuration.html:30
+#: dnstools/templates/dnstools/domain_dns_configuration.html:31
 msgid "hostname of your automx server"
 msgstr ""
 
-#: views.py:36
+#: dnstools/views.py:36
 msgid "{} record of {}"
 msgstr ""
 
-#: views.py:64
+#: dnstools/views.py:64
 msgid "Auto configuration records for {}"
 msgstr ""
 
-#: views.py:84
+#: dnstools/views.py:84
 msgid "DNS configuration for {}"
 msgstr ""

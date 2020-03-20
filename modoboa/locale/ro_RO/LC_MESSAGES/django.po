@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-07 10:50+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2018-06-21 09:10+0000\n"
 "Last-Translator: Andrei-Ilie Olteanu <andrei@flashsoft.ro>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
@@ -20,39 +20,39 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
 "2:1));\n"
 
-#: core/app_settings.py:24
+#: core/app_settings.py:20
 msgid "User profile"
 msgstr "Profil utilizator"
 
-#: core/app_settings.py:37
+#: core/app_settings.py:33
 msgid "Authentication"
 msgstr "Autentificare"
 
-#: core/app_settings.py:40
+#: core/app_settings.py:36
 msgid "Authentication type"
 msgstr "Tip autentificare"
 
-#: core/app_settings.py:41
+#: core/app_settings.py:37
 msgid "Local"
 msgstr "Local"
 
-#: core/app_settings.py:44
+#: core/app_settings.py:40
 msgid "The backend used for authentication"
 msgstr "Tehnologia backend folosită pentru autentificare "
 
-#: core/app_settings.py:49
+#: core/app_settings.py:45
 msgid "Default password scheme"
 msgstr "Schema pentru parola implicită"
 
-#: core/app_settings.py:54
+#: core/app_settings.py:50
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Schema de criptare pentru parole"
 
-#: core/app_settings.py:59
+#: core/app_settings.py:54
 msgid "Rounds"
 msgstr "Iterații"
 
-#: core/app_settings.py:62
+#: core/app_settings.py:57
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -61,96 +61,178 @@ msgstr ""
 "sha512crypt) Trebuie să fie un număr cuprins între 1000 și 999999999 "
 "inclusiv."
 
-#: core/app_settings.py:69
+#: core/app_settings.py:63
 #, fuzzy
 #| msgid "Default password scheme"
 msgid "Update password scheme at login"
 msgstr "Schema pentru parola implicită"
 
-#: core/app_settings.py:72
+#: core/app_settings.py:66
 msgid "Update user password at login to use the default password scheme"
 msgstr ""
 
-#: core/app_settings.py:77
+#: core/app_settings.py:71
 msgid "Default password"
 msgstr "Parola implicită"
 
-#: core/app_settings.py:80
+#: core/app_settings.py:74
 msgid "Default password for automatically created accounts."
 msgstr "Parola implicită setată pentru conturile create automat."
 
-#: core/app_settings.py:84
+#: core/app_settings.py:78
 msgid "Random password length"
 msgstr "Mărime parolă aleatorie"
 
-#: core/app_settings.py:88
+#: core/app_settings.py:82
 msgid "Length of randomly generated passwords."
 msgstr "Mărimea parolelor generate aleator."
 
-#: core/app_settings.py:92
+#: core/app_settings.py:86
+#, fuzzy
+#| msgid "Default password scheme"
+msgid "Update password service URL"
+msgstr "Schema pentru parola implicită"
+
+#: core/app_settings.py:90
+msgid ""
+"The URL of an external page where users will be able to update their "
+"password. It applies only to non local users, ie. those automatically "
+"created after a successful external authentication (LDAP, SMTP)."
+msgstr ""
+
+#: core/app_settings.py:98
 msgid "LDAP settings"
 msgstr "Setări LDAP"
 
-#: core/app_settings.py:95
+#: core/app_settings.py:101
 msgid "Server address"
 msgstr "Adresă server"
 
-#: core/app_settings.py:98
+#: core/app_settings.py:104
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "Adresa IP sau adresa DNS a serverului LDAP"
 
-#: core/app_settings.py:103
+#: core/app_settings.py:108
 msgid "Server port"
 msgstr "Port server"
 
-#: core/app_settings.py:105
+#: core/app_settings.py:110
 msgid "The TCP port number used by the LDAP server"
 msgstr "Numărul de port TCP folosit de serverul LDAP"
 
-#: core/app_settings.py:110
+#: core/app_settings.py:114
+msgid "Enable secondary server (fallback)"
+msgstr ""
+
+#: core/app_settings.py:117
+msgid ""
+"Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr ""
+
+#: core/app_settings.py:123
+#, fuzzy
+#| msgid "Server address"
+msgid "Secondary server address"
+msgstr "Adresă server"
+
+#: core/app_settings.py:126
+#, fuzzy
+#| msgid "The IP address or the DNS name of the LDAP server"
+msgid "The IP address or the DNS name of the seondary LDAP server"
+msgstr "Adresa IP sau adresa DNS a serverului LDAP"
+
+#: core/app_settings.py:130
+#, fuzzy
+#| msgid "Server port"
+msgid "Secondary server port"
+msgstr "Port server"
+
+#: core/app_settings.py:133
+#, fuzzy
+#| msgid "The TCP port number used by the LDAP server"
+msgid "The TCP port number used by the LDAP secondary server"
+msgstr "Numărul de port TCP folosit de serverul LDAP"
+
+#: core/app_settings.py:137
 msgid "Use a secured connection"
 msgstr "Folosește o conexiune securizată"
 
-#: core/app_settings.py:114
+#: core/app_settings.py:141
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgstr ""
 "Folosește o conexiune de tip SSL/STARTTLS pentru a accesa serverul LDAP"
 
-#: core/app_settings.py:118
+#: core/app_settings.py:145
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:121
+#: core/app_settings.py:148
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Specifică daca serverul LDAP este unul de tip  Active Directory"
 
-#: core/app_settings.py:126
+#: core/app_settings.py:152
+msgid "Administrator groups"
+msgstr "Grupuri administrator"
+
+#: core/app_settings.py:155
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr ""
+"Membrii acelor grupuri LDAP Posix vor fi create ca administratori de "
+"domeniu. Folosește caracterul ';' pentru a separa grupurile."
+
+#: core/app_settings.py:162
+msgid "Group type"
+msgstr "Tipul de grup"
+
+#: core/app_settings.py:166
+msgid "The LDAP group type to use with your directory."
+msgstr "Tipul grupului LDAP pe care îl utilizați cu directorul selectat."
+
+#: core/app_settings.py:171
+msgid "Groups search base"
+msgstr "Baza pentru căutare grupuri"
+
+#: core/app_settings.py:174
+msgid "The distinguished name of the search base used to find groups"
+msgstr "Numele ales al bazei de căutare utilizat pentru a găsi grupuri"
+
+#: core/app_settings.py:180
+msgid "Password attribute"
+msgstr "Atributul parolă"
+
+#: core/app_settings.py:182
+msgid "The attribute used to store user passwords"
+msgstr "Atributul folosit pentru a stoca parola utilizatorului"
+
+#: core/app_settings.py:187
 #, fuzzy
 #| msgid "Authentication method"
 msgid "LDAP authentication settings"
 msgstr "Metoda de autentificare"
 
-#: core/app_settings.py:129
+#: core/app_settings.py:190
 msgid "Authentication method"
 msgstr "Metoda de autentificare"
 
-#: core/app_settings.py:130
+#: core/app_settings.py:191
 msgid "Search and bind"
 msgstr "Căutare și atribuire"
 
-#: core/app_settings.py:131
+#: core/app_settings.py:192
 msgid "Direct bind"
 msgstr "Atribuire directă"
 
-#: core/app_settings.py:133
+#: core/app_settings.py:194
 msgid "Choose the authentication method to use"
 msgstr "Alege metodă folosită pentru autentificare"
 
-#: core/app_settings.py:138 core/app_settings.py:244
+#: core/app_settings.py:198 core/app_settings.py:252
 msgid "Bind DN"
 msgstr "Atribuie DN"
 
-#: core/app_settings.py:141 core/app_settings.py:247
+#: core/app_settings.py:201 core/app_settings.py:255
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -158,28 +240,28 @@ msgstr ""
 "Numele ales folosit la atribuirea cu servarul LDAP. Câpul necompletat se "
 "foloseste în cazul atribuirii anonime"
 
-#: core/app_settings.py:149 core/app_settings.py:254
+#: core/app_settings.py:208 core/app_settings.py:262
 msgid "Bind password"
 msgstr "Parola de atribuire"
 
-#: core/app_settings.py:152 core/app_settings.py:257
+#: core/app_settings.py:211 core/app_settings.py:265
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Parola folosită la momentul atribuiri cu servarul LDAP (vezi 'Atribuie DB')"
 
-#: core/app_settings.py:161
+#: core/app_settings.py:219 core/app_settings.py:311
 msgid "Users search base"
 msgstr "Căutare bază de utilizatori"
 
-#: core/app_settings.py:164
+#: core/app_settings.py:222 core/app_settings.py:314
 msgid "The distinguished name of the search base used to find users"
 msgstr "Numele ales al bazei de căutare utilizat pentru a găsi utilizatori"
 
-#: core/app_settings.py:171
+#: core/app_settings.py:228 core/app_settings.py:320
 msgid "Search filter"
 msgstr "Filtru de căutare"
 
-#: core/app_settings.py:174
+#: core/app_settings.py:231 core/app_settings.py:323
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -187,11 +269,11 @@ msgstr ""
 "Un filtru opțional  (de ex. '(ObjectClass = persoană)'). Pentru a fi valid, "
 "trebuie să fie închis în paranteze."
 
-#: core/app_settings.py:182
+#: core/app_settings.py:238
 msgid "User DN template"
 msgstr "Templateul DN pt utilizator"
 
-#: core/app_settings.py:185
+#: core/app_settings.py:241
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -200,68 +282,38 @@ msgstr ""
 "Templateul folosit pentru a construi un utilizator DN. Ar trebui să conțină "
 "un substituent (de ex. %(user)s)"
 
-#: core/app_settings.py:193
-msgid "Administrator groups"
-msgstr "Grupuri administrator"
-
-#: core/app_settings.py:196
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Membrii acelor grupuri LDAP Posix vor fi create ca administratori de "
-"domeniu. Folosește caracterul ';' pentru a separa grupurile."
-
-#: core/app_settings.py:203
-msgid "Group type"
-msgstr "Tipul de grup"
-
-#: core/app_settings.py:207
-msgid "The LDAP group type to use with your directory."
-msgstr "Tipul grupului LDAP pe care îl utilizați cu directorul selectat."
-
-#: core/app_settings.py:212
-msgid "Groups search base"
-msgstr "Baza pentru căutare grupuri"
-
-#: core/app_settings.py:215
-msgid "The distinguished name of the search base used to find groups"
-msgstr "Numele ales al bazei de căutare utilizat pentru a găsi grupuri"
-
-#: core/app_settings.py:222
+#: core/app_settings.py:249
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "LDAP synchronization settings"
 msgstr "Setări LDAP"
 
-#: core/app_settings.py:225
-#, fuzzy
-#| msgid "Enable communication"
-msgid "Enable LDAP synchronization"
-msgstr "Activați comunicarea"
+#: core/app_settings.py:273
+msgid "Enable export to LDAP"
+msgstr ""
 
-#: core/app_settings.py:228
+#: core/app_settings.py:276
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 
-#: core/app_settings.py:234
+#: core/app_settings.py:282
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr ""
 
-#: core/app_settings.py:238
+#: core/app_settings.py:286
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
 msgstr ""
 
-#: core/app_settings.py:265
+#: core/app_settings.py:292
 #, fuzzy
 #| msgid "User DN template"
 msgid "Account DN template"
 msgstr "Templateul DN pt utilizator"
 
-#: core/app_settings.py:268
+#: core/app_settings.py:295
 #, fuzzy, python-format
 #| msgid ""
 #| "The template used to construct a user's DN. It should contain one "
@@ -273,88 +325,114 @@ msgstr ""
 "Templateul folosit pentru a construi un utilizator DN. Ar trebui să conțină "
 "un substituent (de ex. %(user)s)"
 
-#: core/app_settings.py:275
-msgid "Password attribute"
+#: core/app_settings.py:302
+msgid "Enable import from LDAP"
+msgstr ""
+
+#: core/app_settings.py:305
+msgid "Enable account synchronization from LDAP directory to local database"
+msgstr ""
+
+#: core/app_settings.py:330
+#, fuzzy
+#| msgid "Password attribute"
+msgid "Username attribute"
 msgstr "Atributul parolă"
 
-#: core/app_settings.py:277
-msgid "The attribute used to store user passwords"
-msgstr "Atributul folosit pentru a stoca parola utilizatorului"
+#: core/app_settings.py:333
+msgid "The name of the LDAP attribute where the username can be found."
+msgstr ""
 
-#: core/app_settings.py:281 core/templates/core/dashboard.html:5
+#: core/app_settings.py:337 core/templates/core/dashboard.html:5
 msgid "Dashboard"
 msgstr "Bord"
 
-#: core/app_settings.py:284
+#: core/app_settings.py:340
 msgid "Custom RSS feed"
 msgstr "Feedul RSS personalizat"
 
-#: core/app_settings.py:287
+#: core/app_settings.py:343
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr ""
 "Afișează feedul RSS personalizat la reselleri și administratori de domeniu"
 
-#: core/app_settings.py:292
+#: core/app_settings.py:348
 msgid "Hide features widget"
 msgstr "Ascunde widgetul de caracteristici "
 
-#: core/app_settings.py:295
+#: core/app_settings.py:351
 msgid "Hide features widget for resellers and domain administrators"
 msgstr ""
 "Ascunde widgetul de caracteristici pentru reselleri și administratori de "
 "domeniu"
 
-#: core/app_settings.py:299
+#: core/app_settings.py:355
 msgid "Notifications"
 msgstr "Notificări"
 
-#: core/app_settings.py:302
+#: core/app_settings.py:358
 msgid "Sender address"
 msgstr "Adresa expeditorului"
 
-#: core/app_settings.py:305
+#: core/app_settings.py:361
 msgid "Email address used to send notifications."
 msgstr "Adresa de email folosită pentru trimiterea notificărilor."
 
-#: core/app_settings.py:309
+#: core/app_settings.py:365
 msgid "Public API"
 msgstr "API public"
 
-#: core/app_settings.py:312
+#: core/app_settings.py:368
 msgid "Enable communication"
 msgstr "Activați comunicarea"
 
-#: core/app_settings.py:315
+#: core/app_settings.py:371
 msgid "Enable communication with Modoboa public API"
 msgstr "Activați comunicarea cu API-ul public Modoboa"
 
-#: core/app_settings.py:319
+#: core/app_settings.py:375
 msgid "Check new versions"
 msgstr "Verifică dacă există noi versiuni"
 
-#: core/app_settings.py:322
+#: core/app_settings.py:378
 msgid "Automatically checks if a newer version is available"
 msgstr "Verifică automat dacă este disponibilă o versiune mai nouă"
 
-#: core/app_settings.py:326
+#: core/app_settings.py:382
+msgid "Send an email when new versions are found"
+msgstr ""
+
+#: core/app_settings.py:385
+msgid "Send an email to notify admins about new versions"
+msgstr ""
+
+#: core/app_settings.py:389
+msgid "Recipient"
+msgstr ""
+
+#: core/app_settings.py:392
+msgid "Recipient of new versions notification emails."
+msgstr ""
+
+#: core/app_settings.py:397
 msgid "Send statistics"
 msgstr "Trimite statistici"
 
-#: core/app_settings.py:329
+#: core/app_settings.py:400
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Trimiteți statistici către API-ul public Modoboa (contoare și extensii "
 "utilizate)"
 
-#: core/app_settings.py:333
+#: core/app_settings.py:404
 msgid "Miscellaneous"
 msgstr "Diverse"
 
-#: core/app_settings.py:336
+#: core/app_settings.py:407
 msgid "Inactive account threshold"
 msgstr "Pragul pentru cont invalid"
 
-#: core/app_settings.py:339
+#: core/app_settings.py:410
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -362,58 +440,58 @@ msgstr ""
 "Un cont cu o ultima data de conectare mai mare decat acest prag (in zile) va "
 "fi considerat inactiv"
 
-#: core/app_settings.py:346
+#: core/app_settings.py:416
 msgid "Top notifications check interval"
 msgstr "Intervalul de verificare a notificărilor"
 
-#: core/app_settings.py:349
+#: core/app_settings.py:419
 msgid "Interval between two top notification checks (in seconds)"
 msgstr ""
 "Intervalul dintre două verificări de notificare principală (în secunde)"
 
-#: core/app_settings.py:355
+#: core/app_settings.py:424
 msgid "Maximum log record age"
 msgstr "Vechimea maximă a înregistrărilor log"
 
-#: core/app_settings.py:357
+#: core/app_settings.py:426
 msgid "The maximum age in days of a log record"
 msgstr "Vechimea maximă în zilele de înregistrare a intrărilor în jurnal"
 
-#: core/app_settings.py:362
+#: core/app_settings.py:430
 msgid "Items per page"
 msgstr "Număr de itemi per pagină"
 
-#: core/app_settings.py:364
+#: core/app_settings.py:432
 msgid "Number of displayed items per page"
 msgstr "Numărul de itemi afișați pe o pagină"
 
-#: core/app_settings.py:369
+#: core/app_settings.py:436
 msgid "Default top redirection"
 msgstr "Redirecționarea principală implicită"
 
-#: core/app_settings.py:373
+#: core/app_settings.py:440
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "Redirecționarea implicită utilizată atunci când nu este specificată nici o "
 "aplicație"
 
-#: core/app_settings.py:403 core/app_settings.py:411
+#: core/app_settings.py:478 core/app_settings.py:486
 msgid "Invalid syntax"
 msgstr "Sintaxă invalidă"
 
-#: core/app_settings.py:417
+#: core/app_settings.py:492
 msgid "Invalid rounds number"
 msgstr "Număr invalid de iterații"
 
-#: core/app_settings.py:444
+#: core/app_settings.py:519
 msgid "This field is required"
 msgstr "Acest câmp este necesar"
 
-#: core/apps.py:22
+#: core/apps.py:18
 msgid "General"
 msgstr "General"
 
-#: core/checks/settings_checks.py:10
+#: core/checks/settings_checks.py:6
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -423,193 +501,199 @@ msgstr ""
 "tranzițiilor între timul de vara / iarna (adică același timp local care "
 "apare de două ori ca urmare a modificării ceasului)."
 
-#: core/checks/settings_checks.py:13
+#: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Setează  `USE_TZ = True` în settings.py"
 
-#: core/constants.py:9
+#: core/constants.py:5
 msgid "Simple user"
 msgstr "Utilizator simplu"
 
-#: core/constants.py:10
+#: core/constants.py:6
 msgid "Domain administrator"
 msgstr "Administrator de domeniu"
 
-#: core/constants.py:11
+#: core/constants.py:7
 msgid "Reseller"
 msgstr "Reseller"
 
-#: core/constants.py:12
+#: core/constants.py:8
 msgid "Super administrator"
 msgstr "Super administrator"
 
-#: core/constants.py:53 lib/form_utils.py:393
+#: core/constants.py:51 lib/form_utils.py:389
 msgid "No"
 msgstr "Nu"
 
-#: core/forms.py:22
+#: core/forms.py:18
 msgid "Username"
 msgstr "Utilizator"
 
-#: core/forms.py:26
+#: core/forms.py:22
 msgid "Password"
 msgstr "Parolă"
 
-#: core/forms.py:39
+#: core/forms.py:35
 msgid "Old password"
 msgstr "Vechea parolă"
 
-#: core/forms.py:43
+#: core/forms.py:39
 msgid "New password"
 msgstr "Noua parolă"
 
-#: core/forms.py:47
+#: core/forms.py:43
 msgid "Confirmation"
 msgstr "Confirmare"
 
-#: core/forms.py:75
+#: core/forms.py:71
 msgid "Old password mismatchs"
 msgstr "Parola veche nu se potivește"
 
-#: core/forms.py:84
+#: core/forms.py:80
 msgid "Passwords mismatch"
 msgstr "Parolele nu se potrivesc"
 
-#: core/forms.py:104
+#: core/forms.py:100
 msgid "Enable API access"
 msgstr "Activează accesul API"
 
-#: core/handlers.py:40
+#: core/handlers.py:36
 msgid "added"
 msgstr "adăugat"
 
-#: core/handlers.py:43
+#: core/handlers.py:39
 msgid "modified"
 msgstr "modificat"
 
-#: core/handlers.py:45
+#: core/handlers.py:41
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s de utilizatorul %(user)s"
 
-#: core/handlers.py:67
+#: core/handlers.py:63
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s de"
 
-#: core/handlers.py:69
+#: core/handlers.py:65
 msgid "deleted"
 msgstr "sterș"
 
-#: core/handlers.py:73
+#: core/handlers.py:69
 msgid "user {}"
 msgstr "utilizator {}"
 
-#: core/handlers.py:75
+#: core/handlers.py:71
 msgid "management command"
 msgstr "comandă de management"
 
-#: core/handlers.py:99
+#: core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "Nu poți să îți ștergi propriul cont"
 
-#: core/handlers.py:135
+#: core/handlers.py:131
 msgid "One or more updates are available"
 msgstr "Sunt disponibile una sau mai multe actualizări"
 
-#: core/models.py:57
+#: core/management/commands/communicate_with_public_api.py:44
+#, fuzzy
+#| msgid "One or more updates are available"
+msgid "[modoboa] Update(s) available"
+msgstr "Sunt disponibile una sau mai multe actualizări"
+
+#: core/models.py:53
 msgid "Allow mailboxes access"
 msgstr "Permiteți accesul la cutiile poștale"
 
-#: core/models.py:59
+#: core/models.py:55
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 "Permiteți acestui administrator să acceseze cutiile poștale ale "
 "utilizatorilor"
 
-#: core/models.py:62
+#: core/models.py:58
 msgid "password"
 msgstr "parolă"
 
-#: core/models.py:65
+#: core/models.py:61
 msgid "language"
 msgstr "limbă"
 
-#: core/models.py:68
+#: core/models.py:64
 msgid "Prefered language to display pages."
 msgstr "Limba preferată pentru afișarea paginilor."
 
-#: core/models.py:72
+#: core/models.py:68
 msgid "Phone number"
 msgstr "Numar de telefon"
 
-#: core/models.py:74
+#: core/models.py:70
 msgid "Secondary email"
 msgstr "Email secundar"
 
-#: core/models.py:77
+#: core/models.py:73
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "O adresă de e-mail alternativă poate fi utilizată pentru recuperare."
 
-#: core/models.py:127
+#: core/models.py:124
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Eroare la actualizarea parolei: modulul LDAP nu este instalat"
 
-#: core/models.py:156
+#: core/models.py:153
 msgid "account"
 msgstr "cont"
 
-#: core/models.py:283
+#: core/models.py:280
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: core/models.py:317
+#: core/models.py:314
 msgid "Invalid line"
 msgstr "Linie invalidă"
 
-#: core/models.py:325
+#: core/models.py:322
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nu puteți importa un cont cu un rol mai mare decât al dvs."
 
-#: core/models.py:340
+#: core/models.py:337
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Utilizatorul simplu '%s' trebuie să aibă o adresă de e-mail validă"
 
-#: core/models.py:345
+#: core/models.py:342
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "câmpului de utilizator și e-mail nu trebuie să difere pentru '%s'"
 
-#: core/password_validation.py:28
+#: core/password_validation.py:24
 msgid "Password must contain at least {} digit."
 msgid_plural "Password must contain at least {} digits."
 msgstr[0] "Parola trebuie să conțină cel puțin {} cifră."
 msgstr[1] "Parola trebuie să conțină cel puțin {} cifre."
 msgstr[2] "Parola trebuie să conțină cel puțin {} cifre."
 
-#: core/password_validation.py:38
+#: core/password_validation.py:34
 msgid "Password must contain at least {} lowercase letter."
 msgid_plural "Password must contain at least {} lowercase letters."
 msgstr[0] "Parola trebuie să conțină cel puțin {} literă mică."
 msgstr[1] "Parola trebuie să conțină cel puțin {} litere mici."
 msgstr[2] "Parola trebuie să conțină cel puțin {} litere mici."
 
-#: core/password_validation.py:49
+#: core/password_validation.py:45
 msgid "Password must contain at least {} uppercase letter."
 msgid_plural "Password must contain at least {} uppercase letters."
 msgstr[0] "Parola trebuie să conțină cel puțin {} majusculă."
 msgstr[1] "Parola trebuie să conțină cel puțin {} majuscule."
 msgstr[2] "Parola trebuie să conțină cel puțin {} majuscule."
 
-#: core/password_validation.py:61
+#: core/password_validation.py:57
 msgid "Password must contain at least {} special character."
 msgid_plural "Password must contain at least {} special characters."
 msgstr[0] "Parola trebuie să conțină cel puțin {} caracter special."
 msgstr[1] "Parola trebuie să conțină cel puțin {} caractere speciale."
 msgstr[2] "Parola trebuie să conțină cel puțin {} caractere speciale."
 
-#: core/password_validation.py:69
+#: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
 msgstr ""
 "Parola dvs. trebuie să conțină o combinație de tipuri diferite de caractere."
@@ -664,7 +748,7 @@ msgid "API access token"
 msgstr "Token de accesare API"
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:358
+#: core/templates/core/user_profile.html:19 lib/form_utils.py:354
 msgid "Update"
 msgstr "Actualizare"
 
@@ -673,7 +757,7 @@ msgstr "Actualizare"
 msgid "Hello %(user)s."
 msgstr "Bună ziua %(user)s."
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:66
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:62
 msgid "Information"
 msgstr "Informatie"
 
@@ -724,7 +808,7 @@ msgstr "Rol"
 msgid "Last login"
 msgstr "Ultima autentificare"
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:70
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:66
 msgid "Logs"
 msgstr "Loguri"
 
@@ -732,7 +816,7 @@ msgstr "Loguri"
 msgid "Previously on Modoboa..."
 msgstr "Anterior pe Modoboa ..."
 
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:110
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:106
 msgid "Date"
 msgstr "Dată"
 
@@ -748,7 +832,20 @@ msgstr "Logger"
 msgid "Message"
 msgstr "Mesaj"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:75
+#: core/templates/core/notifications/update_available.html:3
+#, fuzzy
+#| msgid "One or more updates are available"
+msgid ""
+"\n"
+"  The following update is available:\n"
+msgid_plural ""
+"\n"
+"  The following updates are available:\n"
+msgstr[0] "Sunt disponibile una sau mai multe actualizări"
+msgstr[1] "Sunt disponibile una sau mai multe actualizări"
+msgstr[2] "Sunt disponibile una sau mai multe actualizări"
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
 msgid "Parameters"
 msgstr "Parametrii"
 
@@ -765,12 +862,12 @@ msgstr "Salvează"
 msgid "Modoboa settings"
 msgstr "Setări Modoboa "
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:94
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:90
 msgid "Settings"
 msgstr "Setări"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:124
+#: core/templatetags/core_tags.py:120
 msgid "Preferences"
 msgstr "Preferințe"
 
@@ -782,7 +879,7 @@ msgstr "Personalizați Modoboa"
 msgid "No preferences available."
 msgstr "Nu există preferințe disponibile."
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:120
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:116
 msgid "Profile"
 msgstr "Profil"
 
@@ -790,115 +887,121 @@ msgstr "Profil"
 msgid "Update your personal information"
 msgstr "Actualizați-vă informațiile personale"
 
-#: core/templatetags/core_tags.py:38
+#: core/templates/core/user_profile.html:13
+#, fuzzy
+#| msgid "Failed to update password: {}"
+msgid "Click here to update your password"
+msgstr "Eroare la actualizarea parolei: {}"
+
+#: core/templatetags/core_tags.py:34
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:106
+#: core/templatetags/core_tags.py:102
 msgid "Logout"
 msgstr "Deconectare"
 
-#: core/templatetags/core_tags.py:131
+#: core/templatetags/core_tags.py:127
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:36
+#: core/utils.py:32
 msgid "The core part of Modoboa"
 msgstr "Partea de nucleu a Modoboa"
 
-#: core/views/admin.py:47
+#: core/views/admin.py:43
 msgid "Parameters saved"
 msgstr "Parametrii au fost salvați"
 
-#: core/views/auth.py:50
+#: core/views/auth.py:46
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:57
+#: core/views/auth.py:53
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:73
+#: core/views/auth.py:69
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Utilizatorul '%s' conectat cu succes"
 
-#: core/views/auth.py:81
+#: core/views/auth.py:77
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 "Numele de utilizator și parola nu s-au potrivit. Vă rugăm să încercați din "
 "nou."
 
-#: core/views/auth.py:116
+#: core/views/auth.py:112
 msgid "User '{}' successfully logged out"
 msgstr "Utilizatorul '{}' sa deconectat cu succes"
 
-#: core/views/user.py:51
+#: core/views/user.py:53
 msgid "Profile updated"
 msgstr "Profil actualizat"
 
-#: core/views/user.py:77
+#: core/views/user.py:81
 msgid "Preferences saved"
 msgstr "Preferințele au fost salvate"
 
-#: core/views/user.py:99
+#: core/views/user.py:103
 msgid "Access updated"
 msgstr "Accesul a fost actualizat"
 
-#: lib/db_utils.py:27
+#: lib/db_utils.py:23
 #, python-format
 msgid "Connection to database %s not configured"
 msgstr "Conexiunea la baza de date %s nu a fost configurată"
 
-#: lib/email_utils.py:147 lib/email_utils.py:369
+#: lib/email_utils.py:141 lib/email_utils.py:360
 msgid "unable to determine encoding of string"
 msgstr ""
 
-#: lib/exceptions.py:71
+#: lib/exceptions.py:67
 #, python-format
 msgid "Permission denied: %s"
 msgstr "Permisiune refuzată: %s"
 
-#: lib/exceptions.py:72
+#: lib/exceptions.py:68
 msgid "Permission denied"
 msgstr "Permisiune refuzată"
 
-#: lib/fields.py:19 lib/validators.py:18
+#: lib/fields.py:15 lib/validators.py:14
 msgid "Enter a valid domain name"
 msgstr "Introduceți un nume de domeniu valid"
 
-#: lib/fields.py:48 lib/fields.py:62
+#: lib/fields.py:44 lib/fields.py:58
 msgid "Enter a valid email address."
 msgstr "Introduceți o adresă de email validă."
 
-#: lib/form_utils.py:81 templates/registration/password_reset_confirm.html:12
+#: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:12
 #: templates/registration/password_reset_form.html:11
 msgid "Submit"
 msgstr "Trimite"
 
-#: lib/form_utils.py:114 lib/form_utils.py:117
+#: lib/form_utils.py:110 lib/form_utils.py:113
 msgid "Invalid request"
 msgstr "Cerere invalidă"
 
-#: lib/form_utils.py:392
+#: lib/form_utils.py:388
 msgid "Yes"
 msgstr "Da"
 
-#: lib/ldap_utils.py:134
+#: lib/ldap_utils.py:129
 msgid "Failed to update password: {}"
 msgstr "Eroare la actualizarea parolei: {}"
 
-#: lib/templatetags/lib_tags.py:108
+#: lib/templatetags/lib_tags.py:104
 msgid "From"
 msgstr "De la"
 
-#: lib/templatetags/lib_tags.py:109
+#: lib/templatetags/lib_tags.py:105
 msgid "To"
 msgstr "Către"
 
-#: lib/templatetags/lib_tags.py:111 templates/common/email_searchbar.html:17
+#: lib/templatetags/lib_tags.py:107 templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "Subiect"
 
@@ -1022,6 +1125,11 @@ msgstr "Cu sinceritate, Echipa Modoboa."
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
 msgstr "Resetare parola Modoboa"
+
+#, fuzzy
+#~| msgid "Enable communication"
+#~ msgid "Enable LDAP synchronization"
+#~ msgstr "Activați comunicarea"
 
 #~ msgid "md5crypt (weak)"
 #~ msgstr "md5crypt (protecție slabă)"

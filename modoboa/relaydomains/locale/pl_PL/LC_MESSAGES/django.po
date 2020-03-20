@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2017-12-01 16:11+0000\n"
 "Last-Translator: Tomasz Proć <tomasz.proc@gmail.com>\n"
 "Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/"
@@ -22,33 +22,33 @@ msgstr ""
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: relaydomains/handlers.py:65
+#: relaydomains/handlers.py:61
 #, fuzzy
 #| msgid "Relay settings"
 msgid "Transport settings"
 msgstr "Ustawienia przekazywania"
 
-#: relaydomains/handlers.py:89
+#: relaydomains/handlers.py:85
 msgid "Transport"
 msgstr ""
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Nieprawidłowa linia"
 
-#: relaydomains/serializers.py:29
+#: relaydomains/serializers.py:25
 msgid "Unsupported service"
 msgstr ""
 
-#: relaydomains/transport.py:18
+#: relaydomains/transport.py:14
 msgid "target host address"
 msgstr "adres hosta docelowego"
 
-#: relaydomains/transport.py:20
+#: relaydomains/transport.py:16
 msgid "target host port"
 msgstr "docelowy port hosta"
 
-#: relaydomains/transport.py:22
+#: relaydomains/transport.py:18
 msgid "verify recipients"
 msgstr "sprawdź odbiorców"
 

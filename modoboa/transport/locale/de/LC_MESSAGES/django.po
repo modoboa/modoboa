@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 16:08+0200\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: transport/backends.py:44
+
+#: transport/backends.py:40
 msgid "This field is required"
 msgstr ""
 
-#: transport/backends.py:59
+#: transport/backends.py:55
 msgid "Invalid value"
 msgstr ""
 
-#: transport/models.py:20
+#: transport/models.py:16
 msgid "pattern"
 msgstr ""
 
-#: transport/models.py:21
+#: transport/models.py:17
 msgid "service"
 msgstr ""
 
-#: transport/models.py:22
+#: transport/models.py:18
 msgid "next hop"
 msgstr ""
