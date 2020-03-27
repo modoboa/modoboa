@@ -369,6 +369,23 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         ),
     )
 
+    ldap_dovecot_sync = YesNoField(
+        label=ugettext_lazy("Enable Dovecot LDAP sync"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Enable synchronisation of Dovecot LDAP parameters from Modoboa."
+        )
+    )
+
+    ldap_dovecot_conf_file = forms.CharField(
+        label=ugettext_lazy("Dovecot LDAP config file"),
+        initial="/etc/dovecot/dovecot-modoboa.conf",
+        required=False,
+        help_text=ugettext_lazy(
+            "Dovecot LDAP configuration file location"
+        )
+    )
+
     dash_sep = SeparatorField(label=ugettext_lazy("Dashboard"))
 
     rss_feed_url = forms.URLField(
@@ -495,6 +512,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         "ldap_import_search_base": "ldap_enable_import=True",
         "ldap_import_search_filter": "ldap_enable_import=True",
         "ldap_import_username_attr": "ldap_enable_import=True",
+        "ldap_dovecot_conf_file": "ldap_dovecot_sync=True",
         "check_new_versions": "enable_api_communication=True",
         "send_statistics": "enable_api_communication=True",
         "send_new_versions_email": "check_new_versions=True",
