@@ -193,6 +193,8 @@ def import_accounts_from_ldap(config):
     )
     admin_groups = config["ldap_admin_groups"].split(";")
     for dn, entry in result:
+        if dn is None:
+            continue
         role = "SimpleUsers"
         groups = find_user_groups(conn, config, dn, entry)
         for grp in admin_groups:
