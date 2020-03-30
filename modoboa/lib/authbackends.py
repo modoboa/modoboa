@@ -92,9 +92,13 @@ try:
                     if attr in ldap_user.attrs:
                         email = ldap_user.attrs[attr][0]
                         break
-                if email is None and group == "SimpleUsers":
-                    return None
-                username = email
+                if email is None:
+                    if group == "SimpleUsers":
+                        # Only DomainAdmins can have a username which
+                        # is not an email address
+                        return None
+                else:
+                    username = email
             user, created = User.objects.get_or_create(
                 username__iexact=username,
                 defaults={

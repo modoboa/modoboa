@@ -119,7 +119,7 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         })
         username = "mailadmin"
         self.authenticate(username, "test", False)
-        self.check_created_user(username, "DomainAdmins", False)
+        self.check_created_user("mailadmin@example.com", "DomainAdmins", False)
 
 
 class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
