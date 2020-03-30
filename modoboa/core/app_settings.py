@@ -545,11 +545,13 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
         if values["ldap_is_active_directory"]:
             setattr(
-                settings, "GROUP_TYPE", ActiveDirectoryGroupType()
+                settings, backend.setting_fullname("GROUP_TYPE"),
+                ActiveDirectoryGroupType()
             )
             searchfilter = "(objectClass=group)"
         elif values["ldap_group_type"] == "groupofnames":
-            setattr(settings, "GROUP_TYPE", GroupOfNamesType())
+            setattr(settings, backend.setting_fullname("GROUP_TYPE"),
+                    GroupOfNamesType())
             searchfilter = "(objectClass=groupOfNames)"
         else:
             setattr(settings, backend.setting_fullname("GROUP_TYPE"),
