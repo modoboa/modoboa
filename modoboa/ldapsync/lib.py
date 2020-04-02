@@ -202,18 +202,20 @@ def import_accounts_from_ldap(config):
                 role = "DomainAdmins"
                 break
         username = force_str(entry[config["ldap_import_username_attr"]][0])
-        if role == "SimpleUsers":
-            lpart, domain = split_mailbox(username)
-            if domain is None:
-                # Try to find associated email
-                username = None
-                for attr in ["mail", "userPrincipalName"]:
-                    if attr in entry:
-                        username = force_str(entry[attr][0])
-                        break
-                if username is None:
+        lpart, domain = split_mailbox(username)
+        if domain is None:
+            # Try to find associated email
+            email = None
+            for attr in ["mail", "userPrincipalName"]:
+                if attr in entry:
+                    email = force_str(entry[attr][0])
+                    break
+            if email is None:
+                if grp == "SimpleUsers":
                     print("Skipping {} because no email found".format(dn))
                     continue
+            else:
+                username = email
         defaults = {
             "username": username.lower(),
             "is_local": False,
