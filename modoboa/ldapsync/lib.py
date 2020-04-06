@@ -240,3 +240,42 @@ def import_accounts_from_ldap(config):
             user.save()
 
         # FIXME: handle delete and rename operations?
+
+def update_dovecot_config_file(config):
+    "Update dovecot configuration file from LDAP parameters"
+   
+    conf_file = config["ldap_dovecot_conf_file"]
+    
+    # Hosts conf
+    prim_host = config["ldap_server_address"]
+    if config["ldap_enable_secondary_server"]:
+        second_host = config["ldap_secondary_server_address"]
+    if config["ldap_secured"]=="ssl":
+        uris = "ldaps://"+prim_host
+        if second_host:
+            uris += " ldaps://"+second_host
+    else :
+        uris = "ldap://"+prim_host
+        if second_host:
+            uris += " ldap://"+second_host
+   
+    # Auth conf
+    bind_dn = config["ldap_bind_dn"]
+    bind_pwd = config["ldap_bind_password"]
+    
+    # Search conf
+    base = config["ldap_search_base"]
+    user_filter = config["ldap_search_filter"].replace("(user)s","u")
+
+    f = open(conf_file, "w")
+
+    f.write(
+        "uris = "+uris+"\n"+
+        "dn = \""+bind_dn+"\"\n"+
+        "dnpass = \'"+bind_pwd+"'\n"+
+        "base = "+base+"\n"+
+        "user_filter = "+user_filter+"\n"+
+        "pass_filter = "+user_filter+"\n"
+    )
+
+    f.close()
