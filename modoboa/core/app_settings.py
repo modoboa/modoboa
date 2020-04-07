@@ -486,6 +486,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             raise forms.ValidationError(_("Invalid syntax"))
         return tpl
 
+    def clean_ldap_search_filter(self):
+        ldap_filter = self.cleaned_data["ldap_search_filter"]
+        try:
+            ldap_filter % {"user": "toto"}
+        except (KeyError, ValueError, TypeError):
+            raise forms.ValidationError(_("Invalid syntax"))
+        return ldap_filter
+
     def clean_rounds_number(self):
         value = self.cleaned_data["rounds_number"]
         if value < 1000 or value > 999999999:
