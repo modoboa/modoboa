@@ -33,6 +33,7 @@ def parameters(request, tplname="core/parameters.html"):
         for formdef in forms:
             form = formdef["form"]
             if form.is_valid():
+                form.to_dovecot_settings()
                 form.save()
                 form.to_django_settings()
                 continue
