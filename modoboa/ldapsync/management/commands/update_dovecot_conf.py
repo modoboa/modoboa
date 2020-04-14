@@ -19,9 +19,8 @@ class Command(BaseCommand):
 
         if need_dovecot_update.state:
             config = dict(param_tools.get_global_parameters("core"))
-            if config["authentication_type"] != "ldap" or not config["ldap_dovecot_sync"]:
-                return
-            lib.update_dovecot_config_file(config)
+            if config["authentication_type"] == "ldap" and config["ldap_dovecot_sync"]:
+                lib.update_dovecot_config_file(config)
 
             need_dovecot_update.state = False
             need_dovecot_update.save()
