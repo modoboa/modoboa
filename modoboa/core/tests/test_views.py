@@ -160,16 +160,16 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertNotContains(response, "Features looking for sponsoring")
 
-    @override_settings(DISABLE_RSS=False)
-    def test_enable_rss(self):
-        """Load dashboard with DISABLE_RSS = False"""
+    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=False)
+    def test_enable_dashboard_external_queries(self):
+        """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = False"""
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertContains(response, 'href="https://modoboa.org/en/weblog/')
 
-    @override_settings(DISABLE_RSS=True)
-    def test_disable_rss(self):
-        """Load dashboard with DISABLE_RSS = True"""
+    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=True)
+    def test_disable_dashboard_external_queries(self):
+        """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = True"""
         url = reverse("core:dashboard")
         response = self.client.get(url)
         self.assertNotContains(response, 'https://modoboa.org/en/weblog/')
