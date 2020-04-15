@@ -292,4 +292,5 @@ SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
 ]
 
+DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
 # Load settings from extensions
