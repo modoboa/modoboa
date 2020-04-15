@@ -45,10 +45,9 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
                 self.request.localconfig.parameters.get_value("rss_feed_url"))
             if custom_feed_url:
                 feed_url = custom_feed_url
-        if not settings.DISABLE_RSS:
-            posts = feedparser.parse(feed_url)
         entries = []
-        if not settings.DISABLE_RSS:
+        if not settings.DISABLE_DASHBOARD_EXTERNAL_QUERIES:
+            posts = feedparser.parse(feed_url)
             for entry in posts["entries"][:5]:
                 entry["published"] = parser.parse(entry["published"])
                 entries.append(entry)
@@ -61,7 +60,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
             url = "{}{}/api/projects/?featured=true".format(
                 MODOBOA_WEBSITE_URL, lang)
             features = []
-            if not settings.DISABLE_RSS:
+            if not settings.DISABLE_DASHBOARD_EXTERNAL_QUERIES:
                 try:
                     response = requests.get(url)
                 except RequestException:
