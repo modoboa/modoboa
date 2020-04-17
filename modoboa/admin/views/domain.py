@@ -161,42 +161,6 @@ def list_quotas(request):
 
 
 @login_required
-@permission_required("admin.view_domain")
-def messages_log(request):
-    # page = get_listing_page(domains, request.GET.get("page", 1))
-    page = [
-        {"id": "6EE64E00AE",
-         "date": "19/03/2020 11:00:00",
-         "from": "antoine@modoboa.com",
-         "to": "user@example.test",
-         "status": "sent"},
-        {"id": "6EE64E00AF",
-         "date": "19/03/2020 12:00:00",
-         "from": "antoine@modoboa.com",
-         "to": "user@example.test",
-         "status": "sent"},
-        {"id": "6EE64E00AD",
-         "date": "19/03/2020 14:00:00",
-         "from": "antoine@modoboa.com",
-         "to": "user@example.test",
-         "status": "sent"}
-    ]
-    context = {
-        "headers": render_to_string(
-            "admin/messages_log_headers.html", {}, request
-        )
-    }
-    if page is None:
-        context["length"] = 0
-    else:
-        context["rows"] = render_to_string(
-            "admin/messages_log.html", {"messages": page}, request
-        )
-        # context["pages"] = [page.number]
-    return render_to_json_response(context)
-
-
-@login_required
 @permission_required("admin.add_domain")
 @reversion.create_revision()
 def newdomain(request):
