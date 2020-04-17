@@ -148,8 +148,8 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         label=ugettext_lazy("Default mailbox quota"),
         initial=0,
         help_text=ugettext_lazy(
-            "Default mailbox quota (in MB) applied to freshly created domains "
-            "with no value specified. A value of 0 means no quota."
+            "Default mailbox quota (in MB) applied to freshly created "
+            "mailboxes with no value specified. A value of 0 means no quota."
         )
     )
 

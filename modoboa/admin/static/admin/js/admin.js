@@ -172,9 +172,12 @@ Domains.prototype = {
         if (this.navobj.getbaseurl() === "list") {
             args.objtype = "domain";
             this.options.eor_message = gettext("No more domain to show");
-        } else {
+        } else if (this.navobj.getbaseurl() === "quota") {
             args.objtype = "quota";
             this.options.eor_message = gettext("No more quota to show");
+        } else {
+            args.objtype = "messages";
+            this.options.eor_message = gettext("No more message to show");
         }
         return args;
     },
@@ -217,7 +220,7 @@ Domains.prototype = {
      * A new page has been received, inject it.
      *
      * @param {Object} data - page content
-     * @param {string} direction - 
+     * @param {string} direction -
      */
     add_new_page: function(data, direction) {
         Admin.prototype.add_new_page.call(this, data, direction);
@@ -439,7 +442,7 @@ Identities.prototype = {
      * A new page has been received, inject it.
      *
      * @param {Object} data - page content
-     * @param {string} direction - 
+     * @param {string} direction -
      */
     add_new_page: function(data, direction) {
         Admin.prototype.add_new_page.call(this, data, direction);
