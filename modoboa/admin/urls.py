@@ -22,8 +22,6 @@ urlpatterns = [
     path('domains/list/', domain_views._domains, name="_domain_list"),
     path('domains/quotas/', domain_views.list_quotas,
          name="domain_quota_list"),
-    path('domains/messages/', domain_views.messages_log,
-         name="domain_messages_log"),
     path('domains/flatlist/', domain_views.domains_list,
          name="domain_flat_list"),
     path('domains/new/', domain_views.newdomain, name="domain_add"),

@@ -172,12 +172,9 @@ Domains.prototype = {
         if (this.navobj.getbaseurl() === "list") {
             args.objtype = "domain";
             this.options.eor_message = gettext("No more domain to show");
-        } else if (this.navobj.getbaseurl() === "quota") {
+        } else {
             args.objtype = "quota";
             this.options.eor_message = gettext("No more quota to show");
-        } else {
-            args.objtype = "messages";
-            this.options.eor_message = gettext("No more message to show");
         }
         return args;
     },
