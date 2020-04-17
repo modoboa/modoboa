@@ -4,6 +4,7 @@ from testfixtures import compare
 
 from django import forms
 from django.urls import reverse
+from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase
 from modoboa.parameters import forms as param_forms, tools as param_tools
@@ -158,6 +159,20 @@ class DashboardTestCase(ModoTestCase):
         self.set_global_parameter("hide_features_widget", True)
         response = self.client.get(url)
         self.assertNotContains(response, "Features looking for sponsoring")
+
+    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=False)
+    def test_enable_dashboard_external_queries(self):
+        """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = False"""
+        url = reverse("core:dashboard")
+        response = self.client.get(url)
+        self.assertContains(response, 'href="https://modoboa.org/en/weblog/')
+
+    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=True)
+    def test_disable_dashboard_external_queries(self):
+        """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = True"""
+        url = reverse("core:dashboard")
+        response = self.client.get(url)
+        self.assertNotContains(response, 'https://modoboa.org/en/weblog/')
 
     def test_root_dispatch(self):
         """Check root dispatching."""
