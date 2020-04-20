@@ -247,9 +247,9 @@ def update_dovecot_config_file(config):
     conf_file = config["ldap_dovecot_conf_file"]
     
     # Hosts conf
-    prim_host = config["ldap_server_address"]
+    prim_host = config["ldap_server_address"]+":"+config["ldap_server_port"]
     if config["ldap_enable_secondary_server"]:
-        second_host = config["ldap_secondary_server_address"]
+        second_host = config["ldap_secondary_server_address"]+":"+config["ldap_secondary_server_port"]
     if config["ldap_secured"]=="ssl":
         uris = "ldaps://"+prim_host
         if second_host:
@@ -272,7 +272,7 @@ def update_dovecot_config_file(config):
     f.write(
         "uris = "+uris+"\n"+
         "dn = \""+bind_dn+"\"\n"+
-        "dnpass = \'"+bind_pwd+"'\n"+
+        "dnpass = \'"+bind_pwd+"\'\n"+
         "base = "+base+"\n"+
         "user_filter = "+user_filter+"\n"+
         "pass_filter = "+user_filter+"\n"
