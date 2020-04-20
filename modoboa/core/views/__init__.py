@@ -4,10 +4,11 @@ from .admin import (
     check_top_notifications, information, logs, logs_page, parameters,
     viewsettings
 )
-from .auth import PasswordResetView, dologin, dologout
+from .auth import (
+    PasswordResetView, dologin, dologout, TwoFactorCodeVerifyView)
 from .base import RootDispatchView
 from .dashboard import DashboardView
-from .user import api_access, index, preferences, profile
+from .user import api_access, index, preferences, profile, security
 
 __all__ = [
     "DashboardView",
@@ -17,6 +18,7 @@ __all__ = [
     "check_top_notifications",
     "dologin",
     "dologout",
+    "TwoFactorCodeVerifyView",
     "index",
     "information",
     "logs",
@@ -25,4 +27,5 @@ __all__ = [
     "preferences",
     "profile",
     "viewsettings",
+    "security",
 ]

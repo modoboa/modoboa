@@ -1,0 +1,29 @@
+{% load static %}
+<h2>Security</h2>
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Two-Factor authentication</h3>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-4">
+        <img src="{% static 'core/img/qrcode.svg' %}">
+      </div>
+      <div class="col-sm-6">
+        <div class="alert alert-info">
+          Install a soft token authenticator like FreeOTP or Google
+          Authenticator from your application repository and use that
+          app to scan this QR code.
+        </div>
+        <form>
+          <div class="form-group">
+            <label class="control-label">Pin code</label>
+            <input class="form-control"></div>
+            <button class="btn btn-primary col-sm-12" type="submit">Register</button>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>

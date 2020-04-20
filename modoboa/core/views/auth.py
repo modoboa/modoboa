@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import ugettext as _
+from django.views import generic
 from django.views.decorators.cache import never_cache
 
 from modoboa.core import forms
@@ -125,3 +126,8 @@ class PasswordResetView(auth_views.PasswordResetView):
         self.from_email = request.localconfig.parameters.get_value(
             "sender_address"
         )
+
+
+class TwoFactorCodeVerifyView(generic.TemplateView):
+
+    template_name = "registration/twofactor_code_verify.html"

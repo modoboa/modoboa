@@ -109,3 +109,11 @@ def api_access(request):
         "content": render_to_string(
             "core/api_access.html", {"form": form}, request)
     })
+
+
+@login_required
+def security(request):
+    return render_to_json_response({
+        "content": render_to_string("core/user_security.html", {
+        }, request),
+    })
