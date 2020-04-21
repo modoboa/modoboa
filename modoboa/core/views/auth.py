@@ -170,7 +170,7 @@ class PasswordResetView(auth_views.PasswordResetView):
             "Please use the following code to recover your Modoboa password: {}"
             .format(code)
         )
-        if not backend.send(text, [user.phone_number]):
+        if not backend.send(text, [str(user.phone_number)]):
             return super().form_valid(form)
         self.request.session["user_pk"] = user.pk
         self.request.session["totp_secret"] = secret

@@ -590,9 +590,9 @@ class AccountAPITestCase(ModoAPITestCase):
 
         account.phone_number = "+33612345678"
         account.save()
-        response = self.client.post(url, data, format="json")
         client_get.return_value = ["service"]
         client_post.return_value = {"totalCreditsRemoved": 1}
+        response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
 
