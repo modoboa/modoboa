@@ -1,3 +1,7 @@
+"""Core settings."""
+
+from collections import OrderedDict
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth import password_validation
@@ -10,7 +14,9 @@ from modoboa.lib.form_utils import (
     HorizontalRadioSelect, SeparatorField, YesNoField
 )
 from modoboa.parameters import forms as param_forms, tools as param_tools
+
 from . import constants
+from . import sms_backends
 
 
 def enabled_applications():
@@ -92,6 +98,35 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
             " users, ie. those automatically created after a successful"
             " external authentication (LDAP, SMTP)."
         )
+    )
+
+    password_recovery_msg = forms.CharField(
+        label=ugettext_lazy("Password recovery announcement"),
+        initial="",
+        required=False,
+        widget=forms.widgets.Textarea(),
+        help_text=ugettext_lazy(
+            "A temporary message that will be displayed on the "
+            "reset password page."
+        )
+    )
+
+    sms_password_recovery = YesNoField(
+        label=ugettext_lazy("Enable password recovery by SMS"),
+        initial=False,
+        help_text=ugettext_lazy(
+            "Enable password recovery by SMS for users who filled "
+            "a phone number."
+        )
+    )
+
+    sms_provider = forms.ChoiceField(
+        label=ugettext_lazy("SMS provider"),
+        choices=constants.SMS_BACKENDS,
+        help_text=ugettext_lazy(
+            "Choose a provider to sens password recovery SMS"
+        ),
+        required=False
     )
 
     # LDAP specific settings
@@ -463,12 +498,27 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         "check_new_versions": "enable_api_communication=True",
         "send_statistics": "enable_api_communication=True",
         "send_new_versions_email": "check_new_versions=True",
-        "new_versions_email_rcpt": "check_new_versions=True"
+        "new_versions_email_rcpt": "check_new_versions=True",
+        "sms_provider": "sms_password_recovery=True",
     }
 
     def __init__(self, *args, **kwargs):
         super(GeneralParametersForm, self).__init__(*args, **kwargs)
         self.fields["default_top_redirection"].choices = enabled_applications()
+        self._add_visibilty_rules(
+            sms_backends.get_all_backend_visibility_rules()
+        )
+
+    def _add_dynamic_fields(self):
+        new_fields = OrderedDict()
+        for field, value in self.fields.items():
+            new_fields[field] = value
+            if field == "sms_provider":
+                sms_backend_fields = sms_backends.get_all_backend_settings()
+                for field, definition in sms_backend_fields.items():
+                    new_fields[field] = definition["type"](
+                        **definition["attrs"])
+        self.fields = new_fields
 
     def clean_ldap_user_dn_template(self):
         tpl = self.cleaned_data["ldap_user_dn_template"]
@@ -512,7 +562,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         Depending on 'ldap_auth_method' value, we check for different
         required parameters.
         """
-        super(GeneralParametersForm, self).clean()
+        super().clean()
         cleaned_data = self.cleaned_data
         if cleaned_data["authentication_type"] != "ldap":
             return cleaned_data
@@ -525,6 +575,17 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         for f in required_fields:
             if f not in cleaned_data or cleaned_data[f] == u'':
                 self.add_error(f, _("This field is required"))
+
+        if cleaned_data["sms_password_recovery"]:
+            provider = cleaned_data.get("sms_provider")
+            if provider:
+                sms_settings = sms_backends.get_backend_settings(provider)
+                if sms_settings:
+                    for name in sms_settings.keys():
+                        if not cleaned_data.get(name):
+                            self.add_error(name, _("This field is required"))
+            else:
+                self.add_error("sms_provider", _("This field is required"))
 
         return cleaned_data
 
