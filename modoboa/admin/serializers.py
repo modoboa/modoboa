@@ -464,3 +464,9 @@ class SenderAddressSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 _("You don't have access to this mailbox."))
         return value
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    """Serializer by the reset password endpoint."""
+
+    email = lib_fields.DRFEmailFieldUTF8()
