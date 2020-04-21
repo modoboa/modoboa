@@ -226,6 +226,21 @@ sha512crypt is not one of the available choices."]},
             "prefix": "core"
         })
 
+    def test_sms_settings_clean(self):
+        """Check sms settings validation."""
+        url = reverse("core:parameters")
+        settings = SETTINGS_SAMPLE.copy()
+        settings["core-sms_password_recovery"] = True
+        settings["core-sms_provider"] = ""
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        settings["core-sms_provider"] = "ovh"
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        errors = response.json()
+        self.assertIn(
+            "sms_ovh_application_secret", errors["form_errors"])
+
 
 class UserSettings(param_forms.UserParametersForm):
     """Stupid user settings form."""
