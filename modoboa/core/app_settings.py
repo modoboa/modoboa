@@ -564,17 +564,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         """
         super().clean()
         cleaned_data = self.cleaned_data
-        if cleaned_data["authentication_type"] != "ldap":
-            return cleaned_data
-
-        if cleaned_data["ldap_auth_method"] == "searchbind":
-            required_fields = ["ldap_search_base", "ldap_search_filter"]
-        else:
-            required_fields = ["ldap_user_dn_template"]
-
-        for f in required_fields:
-            if f not in cleaned_data or cleaned_data[f] == u'':
-                self.add_error(f, _("This field is required"))
 
         if cleaned_data["sms_password_recovery"]:
             provider = cleaned_data.get("sms_provider")
@@ -586,6 +575,17 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                             self.add_error(name, _("This field is required"))
             else:
                 self.add_error("sms_provider", _("This field is required"))
+        if cleaned_data["authentication_type"] != "ldap":
+            return cleaned_data
+
+        if cleaned_data["ldap_auth_method"] == "searchbind":
+            required_fields = ["ldap_search_base", "ldap_search_filter"]
+        else:
+            required_fields = ["ldap_user_dn_template"]
+
+        for f in required_fields:
+            if f not in cleaned_data or cleaned_data[f] == u'':
+                self.add_error(f, _("This field is required"))
 
         return cleaned_data
 

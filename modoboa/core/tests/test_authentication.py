@@ -221,6 +221,15 @@ class PasswordResetTestCase(ModoTestCase):
             "We've emailed you instructions for setting your password")
         self.assertEqual(len(mail.outbox), 0)
 
+    def test_reset_password_announcement(self):
+        """Check if announcement is showing."""
+        self.client.logout()
+        url = reverse("password_reset")
+        msg = "Announcement"
+        self.set_global_parameter("password_recovery_msg", msg)
+        response = self.client.get(url)
+        self.assertContains(response, msg)
+
     @mock.patch("oath.accept_totp")
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
