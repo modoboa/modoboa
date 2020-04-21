@@ -563,6 +563,38 @@ class AccountAPITestCase(ModoAPITestCase):
         account.refresh_from_db()
         self.assertTrue(account.check_password("Toto1234"))
 
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password(self, client_post, client_get):
+        url = reverse("api:account-reset-password")
+        # SMS password recovery not enabled
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 404)
+
+        self.set_global_parameters({
+            "sms_password_recovery": True,
+            "sms_provider": "ovh",
+            "sms_ovh_application_key": "key",
+            "sms_ovh_application_secret": "secret",
+            "sms_ovh_consumer_key": "consumer"
+        }, app="core")
+        # No email provided
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 400)
+
+        account = core_models.User.objects.get(username="user@test.com")
+        data = {"email": account.email}
+        # No phone number
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+
+        account.phone_number = "+33612345678"
+        account.save()
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+
 
 class AliasAPITestCase(ModoAPITestCase):
     """Check Alias API."""

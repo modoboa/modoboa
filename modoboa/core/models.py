@@ -3,13 +3,7 @@
 import re
 from email.header import Header
 
-import jsonfield
-from reversion import revisions as reversion
-
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser, Group
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import (
@@ -17,6 +11,14 @@ from django.utils.encoding import (
 )
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
+
+from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+
+import jsonfield
+from phonenumber_field.modelfields import PhoneNumberField
+from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import (
@@ -64,8 +66,8 @@ class User(AbstractUser):
             "Prefered language to display pages."
         )
     )
-    phone_number = models.CharField(
-        ugettext_lazy("Phone number"), max_length=128, blank=True, null=True)
+    phone_number = PhoneNumberField(
+        ugettext_lazy("Phone number"), blank=True, null=True)
     secondary_email = models.EmailField(
         ugettext_lazy("Secondary email"), max_length=254,
         blank=True, null=True,

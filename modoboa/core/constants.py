@@ -1,5 +1,6 @@
 """Core application constants."""
 
+from django.conf import settings
 from django.utils.translation import ugettext_lazy
 
 SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
@@ -96,3 +97,11 @@ PERMISSIONS = {
         ["admin", "domainalias", "delete_domainalias"],
     ]
 }
+
+SMS_BACKENDS = [
+    ("", ugettext_lazy("Choose a provider")),
+    ("ovh", "OVH"),
+]
+
+if settings.DEBUG:
+    SMS_BACKENDS.insert(1, ("dummy", ugettext_lazy("Dummy")))

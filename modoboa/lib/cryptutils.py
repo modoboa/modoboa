@@ -1,8 +1,13 @@
 """Crypto related utilities."""
 
 import base64
+import time
 
 from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.twofactor import InvalidToken
+from cryptography.hazmat.primitives.twofactor.totp import TOTP
+from cryptography.hazmat.primitives.hashes import SHA1
 
 from django.conf import settings
 from django.utils.crypto import get_random_string
@@ -12,6 +17,12 @@ from django.utils.encoding import smart_bytes, smart_text
 def random_key(length=16):
     """Generate a new key used to encrypt user passwords in session storage."""
     chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+    return get_random_string(length, chars)
+
+
+def random_hex_key(length=16):
+    """Generate a new hexadecimal key."""
+    chars = "abcdefABCDEF0123456789"
     return get_random_string(length, chars)
 
 

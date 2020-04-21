@@ -35,19 +35,23 @@
     <div id="swagger-ui"></div>
     <script src="{% static 'swagger-ui/dist/swagger-ui-bundle.js' %}"></script>
     <script>
-      window.onload = function() {
+    window.onload = function() {
         const ui = SwaggerUIBundle({
-          url: "{% url 'openapi_schema' %}",
-          dom_id: '#swagger-ui',
-          deepLinking: true,
-          presets: [
-            SwaggerUIBundle.presets.apis
-          ],
-          layout: "BaseLayout"
+            url: "{% url 'openapi_schema' %}",
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis
+            ],
+            layout: "BaseLayout",
+            requestInterceptor: (request) => {
+                request.headers['X-CSRFToken'] = "{{ csrf_token }}"
+                return request;
+            }
         });
 
         window.ui = ui;
-      };
+    };
     </script>
   </body>
 </html>

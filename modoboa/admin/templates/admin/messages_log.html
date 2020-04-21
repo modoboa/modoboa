@@ -1,0 +1,11 @@
+{% for message in messages %}
+  <tr>
+    <td name="name">{{ message.id }}</td>
+    <td>{{ message.date }}</td>
+    <td>{{ message.from }}</td>
+    <td>{{ message.to }}</td>
+    <td name="quota">
+      {{ message.status }}
+    </td>
+  </tr>
+{% endfor %}

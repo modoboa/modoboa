@@ -1,5 +1,8 @@
 """Core forms."""
 
+# import pyotp
+import oath
+
 from django import forms
 from django.contrib.auth import (
     forms as auth_forms, get_user_model, password_validation
@@ -125,3 +128,22 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
         super(PasswordResetForm, self).send_mail(
             subject_template_name, email_template_name,
             context, from_email, to_email, html_email_template_name)
+
+
+class VerifySMSCodeForm(forms.Form):
+    """A form to verify a code received by SMS."""
+
+    code = forms.CharField(
+        label=ugettext_lazy("Verification code"),
+        widget=forms.widgets.TextInput(attrs={"class": "form-control"})
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.totp_secret = kwargs.pop("totp_secret")
+        super().__init__(*args, **kwargs)
+
+    def clean_code(self):
+        code = self.cleaned_data["code"]
+        if not oath.accept_totp(self.totp_secret, code)[0]:
+            raise forms.ValidationError(_("Invalid code"))
+        return code
