@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'ckeditor_uploader',
     'rest_framework',
     'rest_framework.authtoken',
+    'phonenumber_field',
 {% if devmode %}    'djangobower',{% endif %}
 )
 
@@ -191,6 +192,8 @@ REST_FRAMEWORK = {
 
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
+DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -297,7 +300,7 @@ SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
 ]
 
-DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
 # Load settings from extensions
 {% for extension in extra_settings %}

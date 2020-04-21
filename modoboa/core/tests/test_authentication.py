@@ -192,6 +192,7 @@ class PasswordResetTestCase(ModoTestCase):
         super(PasswordResetTestCase, cls).setUpTestData()
         cls.account_ok = factories.UserFactory(
             username="user@test.com", secondary_email="test@ext.com",
+            phone_number="+33612345678",
             groups=("SimpleUsers",)
         )
         cls.account_ko = factories.UserFactory(
@@ -219,6 +220,26 @@ class PasswordResetTestCase(ModoTestCase):
             response,
             "We've emailed you instructions for setting your password")
         self.assertEqual(len(mail.outbox), 0)
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password_sms(self, client_post, client_get):
+        """Test reset password by SMS."""
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.set_global_parameters({
+            "sms_password_recovery": True,
+            "sms_provider": "ovh",
+            "sms_ovh_application_key": "key",
+            "sms_ovh_application_secret": "secret",
+            "sms_ovh_consumer_key": "consumer"
+        })
+        self.client.logout()
+        url = reverse("password_reset")
+        data = {"email": self.account_ok.email}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("password_reset_confirm_code"))
 
 
 @skipIf(NO_SMTP, "No SMTP server available")

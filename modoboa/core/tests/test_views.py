@@ -84,7 +84,11 @@ SETTINGS_SAMPLE = {
     "core-ldap_enable_import": False,
     "core-ldap_import_search_base": "",
     "core-ldap_import_search_filter": "",
-    "core-ldap_import_username_attr": "cn"
+    "core-ldap_import_username_attr": "cn",
+    "core-sms_password_recovery": False,
+    "core-sms_provider": "",
+    "core-sms_ovh_endpoint": "ovh-eu",
+    "core-password_recovery_msg": ""
 }
 
 
