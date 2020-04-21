@@ -112,7 +112,7 @@ class ProfileTestCase(ModoTestCase):
         """Update profile without password."""
         data = {
             "first_name": "Homer", "last_name": "Simpson",
-            "phone_number": "123445", "language": "en"
+            "phone_number": "+33612345678", "language": "en"
         }
         self.ajax_post(reverse("core:user_profile"), data)
         admin = models.User.objects.get(username="admin")

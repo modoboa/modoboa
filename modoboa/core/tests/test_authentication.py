@@ -221,9 +221,10 @@ class PasswordResetTestCase(ModoTestCase):
             "We've emailed you instructions for setting your password")
         self.assertEqual(len(mail.outbox), 0)
 
+    @mock.patch("oath.accept_totp")
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
-    def test_reset_password_sms(self, client_post, client_get):
+    def test_reset_password_sms(self, client_post, client_get, accept_totp):
         """Test reset password by SMS."""
         client_get.return_value = ["service"]
         client_post.return_value = {"totalCreditsRemoved": 1}
@@ -240,6 +241,15 @@ class PasswordResetTestCase(ModoTestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse("password_reset_confirm_code"))
+
+        data = {"code": "123456"}
+        url = reverse("password_reset_confirm_code")
+        accept_totp.return_value = (False, "")
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 200)
+        accept_totp.return_value = (True, "")
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
 
 
 @skipIf(NO_SMTP, "No SMTP server available")
