@@ -251,6 +251,35 @@ class PasswordResetTestCase(ModoTestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
 
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_resend_reset_code(self, client_post, client_get):
+        """Test resend code service."""
+        url = reverse("password_reset_resend_code")
+        # SMS password recovery not enabled
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+        self.set_global_parameters({
+            "sms_password_recovery": True,
+            "sms_provider": "ovh",
+            "sms_ovh_application_key": "key",
+            "sms_ovh_application_secret": "secret",
+            "sms_ovh_consumer_key": "consumer"
+        }, app="core")
+        # No user pk in session
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+        session = self.client.session
+        session["user_pk"] = self.account_ok.pk
+        session.save()
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("totp_secret", self.client.session)
+
 
 @skipIf(NO_SMTP, "No SMTP server available")
 @override_settings(AUTHENTICATION_BACKENDS=(
