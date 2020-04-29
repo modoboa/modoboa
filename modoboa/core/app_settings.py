@@ -18,9 +18,6 @@ from modoboa.parameters import forms as param_forms, tools as param_tools
 from . import constants
 from . import sms_backends
 
-from modoboa.admin.models import NeedDovecotUpdate
-
-
 def enabled_applications():
     """Return the list of installed extensions."""
     from modoboa.core.extensions import exts_pool
@@ -704,6 +701,5 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         self._apply_ldap_settings(values, LDAPSecondaryBackend)
 
     def to_dovecot_settings(self):
-        need_dovecot_update = NeedDovecotUpdate.load()
-        need_dovecot_update.state = True
-        need_dovecot_update.save()
+        self.localconfig.need_dovecot_update = True
+        self.localconfig.save()

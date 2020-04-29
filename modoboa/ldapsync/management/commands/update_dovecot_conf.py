@@ -4,9 +4,9 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from modoboa.parameters import tools as param_tools
-from modoboa.admin.models import NeedDovecotUpdate
 
 from ... import lib
+from modoboa.core import models
 
 class Command(BaseCommand):
     """Command definition."""
@@ -15,12 +15,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
-        need_dovecot_update = NeedDovecotUpdate.load()
+        localconfig = models.LocalConfig.objects.first()
 
-        if need_dovecot_update.state:
+        if localconfig.need_dovecot_update:
             config = dict(param_tools.get_global_parameters("core"))
             if config["authentication_type"] == "ldap" and config["ldap_dovecot_sync"]:
                 lib.update_dovecot_config_file(config)
-
-            need_dovecot_update.state = False
-            need_dovecot_update.save()
+            localconfig.need_dovecot_update = False
+            localconfig.save()
