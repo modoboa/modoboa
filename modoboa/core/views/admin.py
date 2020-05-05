@@ -35,6 +35,7 @@ def parameters(request, tplname="core/parameters.html"):
             if form.is_valid():
                 form.save()
                 form.to_django_settings()
+                form.to_dovecot_settings()
                 continue
             return render_to_json_response(
                 {"form_errors": form.errors, "prefix": form.app}, status=400
