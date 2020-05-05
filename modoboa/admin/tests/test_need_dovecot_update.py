@@ -3,19 +3,15 @@
 import os
 import shutil
 import tempfile
-from unittest import mock
 
 from django.core.management import call_command
-from django.test import override_settings
 from django.urls import reverse
-from django.db import transaction
 
 from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 
 from modoboa.lib.tests import ModoTestCase
-from .. import factories, models
+from .. import factories
 
-from modoboa.core import models as core_models
 
 class NeedDovecotUpdateTestCase(ModoTestCase):
     """Test need dovecot ldap update command."""
@@ -49,7 +45,7 @@ class NeedDovecotUpdateTestCase(ModoTestCase):
         self.localconfig.need_dovecot_update = True
         self.localconfig.save()
         self.assertTrue(self.localconfig.need_dovecot_update)
-        
+
         tmp_file = os.path.join(self.workdir, "test-dovecot-ldap.conf")
         self.set_global_parameters({
             "authentication_type": "ldap",
@@ -79,6 +75,6 @@ class NeedDovecotUpdateTestCase(ModoTestCase):
         self.assertIn("base = CN=Users,DC=test,DC=lan", content)
         self.assertIn("user_filter = (& (objectClass=user) (|(mail=%u)(sAMAccountName=%u)) )", content)
         self.assertIn("pass_filter = (& (objectClass=user) (|(mail=%u)(sAMAccountName=%u)) )", content)
-        
+
         self.localconfig.refresh_from_db()
         self.assertFalse(self.localconfig.need_dovecot_update)
