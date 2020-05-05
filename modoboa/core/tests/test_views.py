@@ -88,7 +88,8 @@ SETTINGS_SAMPLE = {
     "core-sms_password_recovery": False,
     "core-sms_provider": "",
     "core-sms_ovh_endpoint": "ovh-eu",
-    "core-password_recovery_msg": ""
+    "core-password_recovery_msg": "",
+    "core-ldap_dovecot_sync": False
 }
 
 
