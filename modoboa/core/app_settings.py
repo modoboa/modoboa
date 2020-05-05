@@ -18,6 +18,7 @@ from modoboa.parameters import forms as param_forms, tools as param_tools
 from . import constants
 from . import sms_backends
 
+
 def enabled_applications():
     """Return the list of installed extensions."""
     from modoboa.core.extensions import exts_pool
@@ -372,7 +373,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         label=ugettext_lazy("Enable Dovecot LDAP sync"),
         initial=False,
         help_text=ugettext_lazy(
-            "Enable synchronisation of Dovecot LDAP parameters from Modoboa."
+            "LDAP authentication settings will be applied to Dovecot "
+            "configuration."
         )
     )
 
@@ -381,7 +383,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         initial="/etc/dovecot/dovecot-modoboa.conf",
         required=False,
         help_text=ugettext_lazy(
-            "Dovecot LDAP configuration file location"
+            "Location of the configuration file which contains "
+            "Dovecot LDAP settings."
         )
     )
 
@@ -700,6 +703,8 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         from modoboa.lib.authbackends import LDAPSecondaryBackend
         self._apply_ldap_settings(values, LDAPSecondaryBackend)
 
-    def to_dovecot_settings(self):
+    def save(self):
+        """Extra save actions."""
+        super().save()
         self.localconfig.need_dovecot_update = True
-        self.localconfig.save()
+        self.localconfig.save(update_fields=["need_dovecot_update"])
