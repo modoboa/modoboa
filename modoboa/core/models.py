@@ -446,6 +446,9 @@ class LocalConfig(models.Model):
 
     _parameters = jsonfield.JSONField(default={})
 
+    # Dovecot LDAP update
+    need_dovecot_update = models.BooleanField(default=False)
+
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""
         super(LocalConfig, self).__init__(*args, **kwargs)
