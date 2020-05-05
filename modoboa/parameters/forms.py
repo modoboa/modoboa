@@ -87,6 +87,9 @@ class AdminParametersForm(GenericParametersForm):
         """Inject parameters into django settings module."""
         pass
 
+    def to_dovecot_settings(self):
+        pass
+
 
 class UserParametersForm(GenericParametersForm):
     """Base form to declare user level parameters."""
