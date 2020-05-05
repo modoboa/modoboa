@@ -124,7 +124,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         label=ugettext_lazy("SMS provider"),
         choices=constants.SMS_BACKENDS,
         help_text=ugettext_lazy(
-            "Choose a provider to sens password recovery SMS"
+            "Choose a provider to send password recovery SMS"
         ),
         required=False
     )
