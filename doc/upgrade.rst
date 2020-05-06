@@ -103,6 +103,8 @@ This version drops Python 2 support.
    existing virtual environment and replace it by the new one so you
    won't have to modify your configuration files.
 
+You will also need to upgrade your pip version to 20.0.2 or newer.
+
 1.14.0
 ======
 

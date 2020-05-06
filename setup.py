@@ -9,11 +9,7 @@ https://packaging.python.org/en/latest/distributing.html
 
 from os import path
 
-try:
-    from pip.req import parse_requirements
-except ImportError:
-    # pip >= 10
-    from pip._internal.req import parse_requirements
+from pip._internal.req import parse_requirements
 
 from setuptools import find_packages, setup
 
@@ -23,10 +19,7 @@ def get_requirements(requirements_file):
     requirements = []
     if path.isfile(requirements_file):
         for req in parse_requirements(requirements_file, session="hack"):
-            if req.markers:
-                requirements.append("%s;%s" % (req.req, req.markers))
-            else:
-                requirements.append("%s" % req.req)
+            requirements.append("%s" % req.requirement)
     return requirements
 
 
