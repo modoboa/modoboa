@@ -28,17 +28,12 @@ Prepare a virtual environment
 =============================
 
 A `virtual environment
-<http://virtualenv.readthedocs.org/en/latest/>`_ is a good way to
+<https://docs.python.org/fr/3/library/venv.html>`_ is a good way to
 setup a development environment on your machine.
-
-.. note::
-
-   ``virtualenv`` is available on all major distributions, just
-   install it using your favorite packages manager.
 
 To do so, run the following commands::
 
-  $ virtualenv <path>
+  $ python3 -m venv <path>
   $ source <path>/bin/activate
   $ git clone https://github.com/modoboa/modoboa.git
   $ cd modoboa
@@ -119,7 +114,7 @@ If you need to modify the documenation and want to see the result, you
 can build it as follows:
 
 .. sourcecode:: bash
-     
+
    > tox -e doc
    > firefox .tox/doc/tmp/html/index.html
 
