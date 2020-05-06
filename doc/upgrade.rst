@@ -91,6 +91,18 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.15.0
+======
+
+This version drops Python 2 support.
+
+.. warning::
+
+   If you upgrade an existing python 2 installation, you will need to
+   create a new Python 3 virtual environment. You can remove the
+   existing virtual environment and replace it by the new one so you
+   won't have to modify your configuration files.
+
 1.14.0
 ======
 
