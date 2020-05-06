@@ -24,7 +24,7 @@ def get_requirements(requirements_file):
     if path.isfile(requirements_file):
         for req in parse_requirements(requirements_file, session="hack"):
             try:
-                if req.requirements.match_markers():
+                if req.match_markers():
                     requirements.append("%s;%s" % (req.req, req.markers))
                 else:
                     requirements.append("%s" % req.req)
