@@ -2,7 +2,7 @@
 `Modoboa <http://modoboa.org/>`_
 ################################
 
-|travis| |codecov| |codacy| |latest-version|
+|travis| |codecov| |latest-version|
 
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
@@ -57,7 +57,7 @@ The following external libraries are provided with Modoboa:
 
 * `jQuery version 1.9.1 <http://www.jquery.org/>`_
 * `jQuery-UI 1.10+ <http://jqueryui.com/>`_
-* `Bootstrap version 3.3.5 <http://getbootstrap.com/>`_
+* `Bootstrap version 3.3.7 <http://getbootstrap.com/>`_
 * `Bootstrap datetimepicker <http://eonasdan.github.io/bootstrap-datetimepicker/>`_
 
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
@@ -67,5 +67,3 @@ The following external libraries are provided with Modoboa:
    :target: https://travis-ci.org/modoboa/modoboa
 .. |codecov| image:: http://codecov.io/github/modoboa/modoboa/coverage.svg?branch=master
    :target: http://codecov.io/github/modoboa/modoboa?branch=master
-.. |codacy| image:: https://api.codacy.com/project/badge/Grade/82fd10127ac3468899ca75f04e9862b6
-    :target: https://www.codacy.com/app/modoboa/modoboa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=modoboa/modoboa&amp;utm_campaign=Badge_Grade
