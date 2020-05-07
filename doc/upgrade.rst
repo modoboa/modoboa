@@ -103,6 +103,12 @@ This version drops Python 2 support.
    existing virtual environment and replace it by the new one so you
    won't have to modify your configuration files.
 
+Add the following new setting::
+
+.. sourcecode:: python
+
+   DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
+
 1.14.0
 ======
 
