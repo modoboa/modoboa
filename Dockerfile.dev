@@ -1,4 +1,3 @@
-
 FROM python:3.6-alpine as base
 
 MAINTAINER Antoine Nguyen <tonio@ngyn.org>
@@ -17,6 +16,6 @@ COPY --from=base /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
 RUN apk add --no-cache --update libxml2-dev libxslt-dev\
     && rm -rf /var/cache/apk/*
-    
+
 RUN mkdir /code
 WORKDIR /code
