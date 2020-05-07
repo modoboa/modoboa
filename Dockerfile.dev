@@ -1,4 +1,5 @@
-FROM python:3.6-alpine
+
+FROM python:3.6-alpine as base
 
 MAINTAINER Antoine Nguyen <tonio@ngyn.org>
 
@@ -9,7 +10,13 @@ RUN apk add --update openssl python3-dev libffi-dev gcc musl-dev libxml2-dev lib
 WORKDIR /tmp
 COPY requirements.txt /tmp
 COPY test-requirements.txt /tmp
-RUN pip install -r requirements.txt -r test-requirements.txt
+RUN pip install --user  -r requirements.txt --user -r test-requirements.txt
 
+FROM python:3.6-alpine
+COPY --from=base /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+RUN apk add --no-cache --update libxml2-dev libxslt-dev\
+    && rm -rf /var/cache/apk/*
+    
 RUN mkdir /code
 WORKDIR /code
