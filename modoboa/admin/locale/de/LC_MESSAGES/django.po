@@ -1,28 +1,37 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# Alexander Dube <adube@layerwerks.net>, 2017
+# Arledrian <hvuzgr@gmail.com>, 2017
 # Arvedui <arvedui@posteo.de>, 2014
-# controlc.de, 2015
+# Boris Andratzek <BAndratzek@LBV-net.de>, 2018
+# controlcde, 2015
+# CURETIX <curetix@protonmail.com>, 2017
+# Michael Cramer <michael@bigmichi1.de>, 2020
+# Nico Enking <nico.enking@gmail.com>, 2019
 # Patrick Koetter <p@state-of-mind.de>, 2010
+# Sascha Klauder <klauder@nt.ag>, 2019
+# Tobias Strobel, 2016
+# Tristan <tr@ewu-software.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2015-09-09 09:33+0000\n"
-"Last-Translator: controlc.de\n"
+"PO-Revision-Date: 2020-05-10 15:27+0000\n"
+"Last-Translator: Michael Cramer <michael@bigmichi1.de>\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/api.py:142
 msgid "Here is your new Modoboa password: {}"
-msgstr ""
+msgstr "Hier ist Ihr neues Modoboa Passwort: {}"
 
 #: admin/app_settings.py:20 admin/handlers.py:261
 #: admin/templates/admin/_global_statistics_widget.html:11
@@ -32,98 +41,98 @@ msgstr "Domains"
 
 #: admin/app_settings.py:23
 msgid "Enable MX checks"
-msgstr ""
+msgstr "Aktiviere MX Prüfungen"
 
 #: admin/app_settings.py:26
 msgid "Check that every domain has a valid MX record"
-msgstr ""
+msgstr "Überprüfe jede Domain auf einen gültigen MX Eintrag"
 
 #: admin/app_settings.py:31
 msgid "Valid MXs"
-msgstr ""
+msgstr "Gültige MX-Einträge"
 
 #: admin/app_settings.py:34
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "Liste gültiger MX-Records. Eine Warnmeldung wird versandt, falls versucht wird, andere Einträge zu verwenden."
 
 #: admin/app_settings.py:42
 msgid "New domains must use authorized MX(s)"
-msgstr ""
+msgstr "gültige MX-Einträge für neue Domains erforderlich"
 
 #: admin/app_settings.py:45
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr ""
+msgstr "Verwendung gültiger MX-Einträge wird für neue Domains erzwungen."
 
 #: admin/app_settings.py:51
 msgid "Enable SPF checks"
-msgstr ""
+msgstr "Aktiviere SPF-Prüfungen"
 
 #: admin/app_settings.py:54
 msgid "Check if every domain has a valid SPF record"
-msgstr ""
+msgstr "Überprüfe jede Domain auf einen gültigen SPF Eintrag"
 
 #: admin/app_settings.py:59
 msgid "Enable DKIM checks"
-msgstr ""
+msgstr "Aktiviere DKIM-Prüfungen"
 
 #: admin/app_settings.py:62
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
-msgstr ""
+msgstr "Überprüfe jede Domain mit aktivierter DKIM Signierung auf einen gültigen DNS Eintrag"
 
 #: admin/app_settings.py:68
 msgid "Enable DMARC checks"
-msgstr ""
+msgstr "Aktiviere DMARC-Prüfungen"
 
 #: admin/app_settings.py:71
 msgid "Check if every domain has a valid DMARC record"
-msgstr ""
+msgstr "Überprüfe jede Domain auf einen gültigen DMARC Eintrag"
 
 #: admin/app_settings.py:76
 msgid "Enable autoconfig checks"
-msgstr ""
+msgstr "Aktiviere autoconfig-Prüfungen"
 
 #: admin/app_settings.py:79
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr ""
+msgstr "Überprüfe jede Domain auf einen gültigen autoconfiguration Eintrag"
 
 #: admin/app_settings.py:84
 msgid "Enable DNSBL checks"
-msgstr ""
+msgstr "Aktiviere DNSBL-Prüfungen"
 
 #: admin/app_settings.py:87
 msgid "Check every domain against major DNSBL providers"
-msgstr ""
+msgstr "Prüfe jede Domain gegen die wichtigsten DNSBL-Anbieter"
 
 #: admin/app_settings.py:92
 msgid "Custom DNS server"
-msgstr ""
+msgstr "Benutzerdefinierter DNS Server"
 
 #: admin/app_settings.py:95
 msgid "Use a custom DNS server instead of local server configuration"
-msgstr ""
+msgstr "eigener DNS-Server umgeht die lokale Namensauflösung"
 
 #: admin/app_settings.py:100
 msgid "DKIM keys storage directory"
-msgstr ""
+msgstr "Verzeichnis für DKIM-Keys"
 
 #: admin/app_settings.py:103
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
+msgstr "Absoluter Pfad des Verzeichnisses zur Aufbewahrung von DKIM-Keys. Das Verzeichnis sollte nur dem root-User zugänglich sein."
 
 #: admin/app_settings.py:111
 msgid "Default DKIM key length"
-msgstr ""
+msgstr "voreingestellte DKIM Schlüssellänge"
 
 #: admin/app_settings.py:115
 msgid "Default length in bits for newly generated DKIM keys."
-msgstr ""
+msgstr "Voreingestellte Länge in Bits neu zu generierender DKIM-Keys."
 
 #: admin/app_settings.py:119 admin/templates/admin/domain_detail.html:41
 msgid "Mailboxes"
@@ -137,9 +146,7 @@ msgstr "Postfächer im Dateisystem verwalten"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr ""
-"Postfächer auch in Dateisystem umbenennen oder entfernen wenn sie in Modoboa "
-"umbenannt oder entfernt werden"
+msgstr "Postfächer auch im Dateisystem umbenennen oder entfernen wenn sie in Modoboa umbenannt oder entfernt werden"
 
 #: admin/app_settings.py:131
 msgid "Mailboxes owner"
@@ -147,9 +154,7 @@ msgstr "Postfach-Besitzer"
 
 #: admin/app_settings.py:134
 msgid "The UNIX account who owns mailboxes on the filesystem"
-msgstr ""
-"UID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen und "
-"Nachrichten im Dateisystem ist."
+msgstr "UID des virtuellen Benutzers, der Besitzer der Domains, Mailboxen und Nachrichten im Dateisystem ist."
 
 #: admin/app_settings.py:139
 msgid "Default domain quota"
@@ -159,28 +164,18 @@ msgstr "Standard-Domainquota"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
-"Standardquota (in MB) für neu erstelle Domains ohne explizite Wertangabe. "
-"Der Wert 0 bedeutet „Kein Quota“"
+msgstr "Standardquota (in MB) für neu erstelle Domains ohne explizite Wertangabe. Der Wert 0 bedeutet „Keine Quota“"
 
-#: admin/app_settings.py:148 admin/forms/domain.py:49 admin/models/domain.py:33
-#: admin/templates/admin/domain_detail.html:64
-#, fuzzy
-#| msgid "Default domain quota"
+#: admin/app_settings.py:148 admin/forms/domain.py:49
+#: admin/models/domain.py:33 admin/templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
-msgstr "Standard-Domainquota"
+msgstr "Standard Postfach Kontingent"
 
 #: admin/app_settings.py:151
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created mailboxes with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"Standardquota (in MB) für neu erstelle Domains ohne explizite Wertangabe. "
-"Der Wert 0 bedeutet „Kein Quota“"
+msgstr "Standardquota (in MB) für neu erstelle Postfächer ohne explizite Wertangabe. Der Wert 0 bedeutet „Keine Quota“"
 
 #: admin/app_settings.py:157
 msgid "Automatic account removal"
@@ -195,18 +190,17 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automatische Domain- /Postfach-Erstellung"
 
 #: admin/app_settings.py:167
-msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr ""
-"Erstelle eine Domain und ein Postfach, wenn ein Konto automatisch erstellt "
-"wurde."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr "Erstelle eine Domain und ein Postfach, wenn ein Konto automatisch erstellt wurde."
 
 #: admin/app_settings.py:173
 msgid "Create an alias when a mailbox is renamed"
-msgstr ""
+msgstr "Erzeuge Alias, wenn Mailbox umbenannt wird."
 
 #: admin/app_settings.py:176
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
+msgstr "Erzeuge Alias mit der bisherigen Adresse, wenn ein Postfach umbenannt wurde."
 
 #: admin/app_settings.py:225 admin/app_settings.py:233
 #: admin/forms/account.py:335
@@ -214,18 +208,16 @@ msgid "Must be a positive integer"
 msgstr "Muss eine positive Ganzzahl sein"
 
 #: admin/app_settings.py:243
-#, fuzzy
-#| msgid "Domain modified"
 msgid "Directory not found."
-msgstr "Domain verändert"
+msgstr "Verzeichnis nicht gefunden."
 
 #: admin/app_settings.py:249
 msgid "openssl not found, please make sure it is installed."
-msgstr ""
+msgstr "openssl nicht gefunden, bitte sicherstellen, dass es installiert ist"
 
 #: admin/app_settings.py:263
 msgid "Define at least one authorized network / address"
-msgstr ""
+msgstr "Mindestens ein authorisiertes Netzwerk/IP-Adresse muss definiert sein"
 
 #: admin/app_settings.py:273
 msgid "Administration"
@@ -238,10 +230,8 @@ msgid "Domain"
 msgstr "Domain"
 
 #: admin/constants.py:29
-#, fuzzy
-#| msgid "New domain"
 msgid "Relay domain"
-msgstr "Neue Domain"
+msgstr "Relay-Domain"
 
 #: admin/forms/account.py:32 admin/templates/admin/domain_detail.html:125
 msgid "Username"
@@ -251,9 +241,7 @@ msgstr "Benutzername"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr ""
-"Der Benutzername. Muss eine gültige E-Mail-Adresse für 'Normale Benutzer' "
-"oder Administratoren mit einer Mailbox sein."
+msgstr "Der Benutzername. Muss eine gültige E-Mail-Adresse für 'Normale Benutzer' oder Administratoren mit einer Mailbox sein."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 msgid "Role"
@@ -268,16 +256,14 @@ msgid "What level of permission this user will have"
 msgstr "Rechte, die der Benutzer haben wird"
 
 #: admin/forms/account.py:44 admin/forms/domain.py:245
-#, fuzzy
-#| msgid "Invalid address"
 msgid "Random password"
-msgstr "Ungültige Adresse"
+msgstr "Zufälliges Passwort"
 
 #: admin/forms/account.py:46
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
-msgstr ""
+msgstr "Generiere ein zufälliges Password. Wenn du dieses Konto aktualisierst und diese Checkbox aktivierst, wird ein neues Passwort generiert"
 
 #: admin/forms/account.py:52
 msgid "Password"
@@ -302,10 +288,8 @@ msgstr "Nur Super-Administratoren dürfen diesen Modus benutzen."
 #: admin/forms/account.py:178 admin/forms/account.py:180
 #: admin/forms/domain.py:162 admin/forms/domain.py:291
 #: admin/forms/domain.py:294 admin/serializers.py:287
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "This field is required."
-msgstr "Ein Postfach ist erforderlich"
+msgstr "Dieses Feld ist erforderlich"
 
 #: admin/forms/account.py:186
 msgid "The two password fields didn't match."
@@ -321,7 +305,7 @@ msgstr "E-Mail"
 
 #: admin/forms/account.py:224
 msgid "Create an alias using the old address"
-msgstr ""
+msgstr "Erzeuge Alias mit der bisherigen Adresse"
 
 #: admin/forms/account.py:229 admin/forms/domain.py:41
 #: admin/templates/admin/account_detail.html:45
@@ -330,19 +314,11 @@ msgid "Quota"
 msgstr "Quota"
 
 #: admin/forms/account.py:232
-#, fuzzy
-#| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's "
-#| "default one. Leave empty to define an unlimited value (not allowed for "
-#| "domain administrators)."
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Quota in MB für dieses Postfach. Geben Sie einen individuellen Wert an oder "
-"nutzen Sie den Standardwert der Domain. Lassen Sie das Feld leer für "
-"unbegrenztes Quota (Domain-Administratoren ist dies nicht gestattet)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr "Quota dieses Postfachs. Kann in KB, MB (Voreinstellung) oder GB angegeben werden. Eigenen Wert eingeben oder Voreinstellung der Domain verwenden lassen. Frei lassen, um Quota auf unlimitiert zu setzen (nur Super-Administratoren)."
 
 #: admin/forms/account.py:242 admin/forms/domain.py:31
 #: admin/templates/admin/domain_headers.html:4
@@ -350,38 +326,22 @@ msgid "Alias(es)"
 msgstr "Alias(e)"
 
 #: admin/forms/account.py:245
-#, fuzzy
-#| msgid ""
-#| "Alias(es) of this mailbox. Indicate only one address per input, press "
-#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
-#| "alias (ex: *@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Alias(e) für dieses Postfach. Geben Sie jeweils nur eine Adresse pro Eingabe "
-"an. Bestätigen Sie die Eingabe mit ENTER. Geben Sie '*' an, um einen "
-"'catchall'-Alias (Bsp: *@example.com) zu erstellen."
+msgstr "Alias(e) dieses Postfachs. Jeweils eine Adresse eingeben, ENTER drücken für eine weitere. Den Domainnamen (@domain.tld) eingeben, um einen Catchall zu erstellen. "
 
 #: admin/forms/account.py:251
-#, fuzzy
-#| msgid "Invalid address"
 msgid "Sender addresses"
-msgstr "Ungültige Adresse"
+msgstr "Ab­sen­der­ad­res­sen "
 
 #: admin/forms/account.py:254
-#, fuzzy
-#| msgid ""
-#| "Addresses this alias will point to. Indicate only one address per input, "
-#| "press ENTER to add a new input."
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr ""
-"Adressen, auf die der Alias verweist. Geben Sie jeweils nur eine Adresse ein "
-"und bestätigen Sie mit ENTER."
+msgstr "Zusätzliche Absenderadresse(n) für dieses Postfach. Der Benutzer darf diese Adresse(n) verwenden, selbst wenn diese nicht lokal vorhanden sind. Jeweils eine Adresse eingeben, ENTER drücken für weitere."
 
 #: admin/forms/account.py:309 admin/forms/alias.py:88
 #: admin/models/mailbox.py:310
@@ -389,10 +349,8 @@ msgid "Domain does not exist"
 msgstr "Domain existiert nicht"
 
 #: admin/forms/account.py:345
-#, fuzzy
-#| msgid "Domain does not exist"
 msgid "Local domain does not exist"
-msgstr "Domain existiert nicht"
+msgstr "Lokale Domain existiert nicht"
 
 #: admin/forms/account.py:349 admin/forms/account.py:357
 #: admin/forms/alias.py:91
@@ -414,7 +372,7 @@ msgstr "Allgemein"
 
 #: admin/forms/account.py:509
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: admin/forms/account.py:513 admin/forms/account.py:601
 msgid "Mail"
@@ -437,10 +395,8 @@ msgid "Account created"
 msgstr "Konto erstellt"
 
 #: admin/forms/alias.py:20
-#, fuzzy
-#| msgid "Invalid address"
 msgid "Random address"
-msgstr "Ungültige Adresse"
+msgstr "Zufällige Adresse"
 
 #: admin/forms/alias.py:23
 msgid "Email address"
@@ -450,9 +406,7 @@ msgstr "E-Mail Adresse"
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Die Alias-Adresse. Geben Sie nur den Domainnamen (@domain.tld) für eine "
-"'catch-all' Alias an."
+msgstr "Die Alias-Adresse. Geben Sie nur den Domainnamen (@domain.tld) ein, um einen Catchall-Alias anzulegen."
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -462,15 +416,11 @@ msgstr "Empfänger"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"Adressen, auf die der Alias verweist. Geben Sie jeweils nur eine Adresse ein "
-"und bestätigen Sie mit ENTER."
+msgstr "Adressen, auf die der Alias verweist. Geben Sie jeweils nur eine Adresse ein und bestätigen Sie mit ENTER."
 
 #: admin/forms/alias.py:108 admin/forms/alias.py:110
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "This field is required"
-msgstr "Ein Postfach ist erforderlich"
+msgstr "Dieses Feld ist erforderlich"
 
 #: admin/forms/alias.py:114
 msgid "No recipient defined"
@@ -485,63 +435,49 @@ msgstr "Typ"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr ""
-"Alias(e) für diese Domain. Geben Sie jeweils nur eine Adresse pro "
-"Eingabefeld an. Bestätigen Sie mit ENTER, um ein neues Eingabefeld zu "
-"erhalten."
+msgstr "Alias(e) für diese Domain. Geben Sie jeweils nur eine Adresse pro Eingabefeld an. Bestätigen Sie mit ENTER, um ein neues Eingabefeld zu erhalten."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
-msgstr ""
+msgstr "DKIM Selector"
 
 #: admin/forms/domain.py:44 admin/serializers.py:30
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr ""
-"Standardquota (in MB) für neu erstelle Domains ohne explizite Wertangabe. "
-"Der Wert 0 bedeutet „Kein Quota“"
+msgstr "Von Postfächern gemeinsam genutzte Quota/Speicherplatz. Kann in KB, MB (Voreinstellung) oder GB angegeben werden. 0 eingeben, um keine Quota zu verwenden."
 
 #: admin/forms/domain.py:52
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
 "GB. A value of 0 means no quota."
-msgstr ""
-"Standardquota (in MB) für neu erstelle Domains ohne explizite Wertangabe. "
-"Der Wert 0 bedeutet „Kein Quota“"
+msgstr "Auf Postfächer angewendete Quota. Kann in KB, MB (Voreinstellung) oder GB angegeben werden. 0 eingeben, um keine Quota zu verwenden."
 
 #: admin/forms/domain.py:94 admin/handlers.py:161
 msgid "domain alias"
 msgstr "Domain-Alias"
 
-#: admin/forms/domain.py:97 admin/forms/domain.py:173 admin/forms/domain.py:181
+#: admin/forms/domain.py:97 admin/forms/domain.py:173
+#: admin/forms/domain.py:181
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "Ein %s mit diesem Namen existiert bereits"
 
 #: admin/forms/domain.py:105 admin/serializers.py:64
 msgid "No authorized MX record found for this domain"
-msgstr ""
+msgstr "Kein autorisierter MX-Eintrag für diese Domain gefunden."
 
 #: admin/forms/domain.py:117
 msgid "DKIM keys storage directory not configured"
-msgstr ""
+msgstr "Verzeichnis für DKIM-Keys nicht konfiguriert."
 
 #: admin/forms/domain.py:147 admin/serializers.py:82
 msgid "Cannot be greater than domain quota"
-msgstr ""
+msgstr "Kann nicht größer als Domain Kontingent sein"
 
 #: admin/forms/domain.py:152
 msgid "You can't define an unlimited quota."
-msgstr ""
+msgstr "Ein unlimitiertes Kontingent ist nicht möglich."
 
 #: admin/forms/domain.py:173 admin/forms/domain.py:178
 msgid "domain"
@@ -566,25 +502,19 @@ msgstr "Name"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr ""
-"Name des Administrators. Geben Sie nicht den Domainnamen mit an. Er wird "
-"automatisch angehängt."
+msgstr "Name des Administrators. Geben Sie nicht den Domainnamen mit an. Er wird automatisch angehängt."
 
 #: admin/forms/domain.py:248
-#, fuzzy
-#| msgid "Create a domain administrator"
 msgid "Generate a random password for the administrator."
-msgstr "Domain-Administrator erstellen"
+msgstr "Zufällig generiertes Passwort für den Administrator verwenden."
 
 #: admin/forms/domain.py:254
 msgid "With a mailbox"
-msgstr ""
+msgstr "Mit einem Postfach"
 
 #: admin/forms/domain.py:257
-#, fuzzy
-#| msgid "Create a domain administrator"
 msgid "Create a mailbox for the administrator."
-msgstr "Domain-Administrator erstellen"
+msgstr "Erzeuge Postfach für den Administrator."
 
 #: admin/forms/domain.py:263
 msgid "Create aliases"
@@ -665,10 +595,8 @@ msgid "Account import failed (%s): domain does not exist"
 msgstr "Kann Konto nicht importieren (%s): Die Domain existiert nicht"
 
 #: admin/handlers.py:223 admin/models/mailbox.py:338
-#, fuzzy
-#| msgid "Mailbox %s already exists"
 msgid "Mailbox {} already exists"
-msgstr "Postfach %s existiert bereits"
+msgstr "Postfach {} existiert bereits"
 
 #: admin/handlers.py:231
 #, python-format
@@ -696,65 +624,63 @@ msgstr "Sie verfügen nicht über ausreichend Rechte, um Domains zu importieren.
 
 #: admin/lib.py:139
 msgid "You are not allowed to import domain aliases."
-msgstr ""
-"Sie verfügen nicht über ausreichend Rechte, um Domain Aliase zu importieren."
+msgstr "Sie verfügen nicht über ausreichend Rechte, um Domain Aliase zu importieren."
 
 #: admin/lib.py:189 admin/tests/test_mx.py:127 admin/tests/test_mx.py:136
 #: admin/tests/test_mx.py:139
 #, python-format
 msgid "No DNS record found for %s"
-msgstr ""
+msgstr "Kein DNS Eintrag für %s gefunden"
 
 #: admin/lib.py:192
 #, python-format
 msgid "No %(type)s record for %(name)s"
-msgstr ""
+msgstr "Kein %(type)s Eintrag für %(name)s"
 
 #: admin/lib.py:196 admin/tests/test_mx.py:131
 msgid "No working name servers found"
-msgstr ""
+msgstr "Keine funktionierenden Namensserver gefunden"
 
 #: admin/lib.py:199 admin/tests/test_mx.py:133
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
+msgstr "DNS Error bei der Auflösung, konnte %s nicht auflösen"
 
 #: admin/lib.py:227
-#, fuzzy, python-brace-format
-#| msgid "Invalid quota value for domain '%s'"
+#, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
-msgstr "Ungültiger Quota-Wert für Domain '%s'"
+msgstr "Fehlerhaftes IP-Adressformat für {domain}; {addr}"
 
 #: admin/management/commands/subcommands/_import.py:93
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
+msgstr "CSV Datei nicht in UTF-8 enkodiert, versuche das Encoding zu erraten"
 
 #: admin/management/commands/subcommands/_import.py:105
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
-msgstr ""
+msgstr "Lese CSV Datei mit %(encoding)s Enkodierung"
 
 #: admin/management/commands/subcommands/_import.py:116
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
-msgstr ""
+msgstr "Konnte CSV Datei nicht mit %(encoding)s Enkodierung dekodieren"
 
 #: admin/management/commands/subcommands/_mx.py:132
 msgid "[modoboa] DNSBL issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] DNSBL Problem(e) für Domain {}"
 
 #: admin/management/commands/subcommands/_mx.py:152
 msgid "Domain {} has no MX record"
-msgstr ""
+msgstr "Domain {} hat keinen MX-Eintrag"
 
 #: admin/management/commands/subcommands/_mx.py:163
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
-msgstr ""
+msgstr "MX-Eingrag für Domain {0} ist ungültig: {1}"
 
 #: admin/management/commands/subcommands/_mx.py:180
 msgid "[modoboa] MX issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] MX Problem(e) für Domain {}"
 
 #: admin/models/alias.py:32 admin/models/mailbox.py:95
 msgid "address"
@@ -775,11 +701,11 @@ msgstr "Auswählen, um den Alias zu aktivieren"
 
 #: admin/models/alias.py:45 admin/templates/admin/alias_detail.html:32
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: admin/models/alias.py:47 admin/templates/admin/alias_detail.html:29
 msgid "Expire at"
-msgstr ""
+msgstr "Läuft ab am"
 
 #: admin/models/alias.py:87
 msgid "alias"
@@ -817,26 +743,24 @@ msgstr "Auswählen, um diese Domain zu aktivieren"
 
 #: admin/models/domain.py:43
 msgid "Enable DNS checks"
-msgstr ""
+msgstr "Aktiviere DNS Prüfungen"
 
 #: admin/models/domain.py:44
-#, fuzzy
-#| msgid "Check to activate this domain"
 msgid "Check to enable DNS checks for this domain"
-msgstr "Auswählen, um diese Domain zu aktivieren"
+msgstr "Das Anhaken dieser Box aktiviert die DNS-Überprüfungen für diese Domain"
 
 #: admin/models/domain.py:51
 msgid "Enable DKIM signing"
-msgstr ""
+msgstr "Aktiviere DKIM Signierung"
 
 #: admin/models/domain.py:53
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
+msgstr "Wenn Sie dieses Feature aktivieren wird die DKIM Keygenerierung für diese Domain aktiviert."
 
 #: admin/models/domain.py:59
 msgid "Key length"
-msgstr ""
+msgstr "Schlüssel-Länge"
 
 #: admin/models/domain.py:312 admin/models/domain_alias.py:67
 msgid "Invalid line"
@@ -844,23 +768,19 @@ msgstr "Ungültige Zeile"
 
 #: admin/models/domain.py:322
 msgid "No authorized MX record found for domain {}"
-msgstr ""
+msgstr "Kein autorisierter MX Eintrag für die Domain {} gefunden"
 
 #: admin/models/domain.py:329
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
 msgid "Invalid quota value for domain '{}'"
-msgstr "Ungültiger Quota-Wert für Domain '%s'"
+msgstr "Fehlerhafter Kontingentwert für die Domain '{}'"
 
 #: admin/models/domain.py:336
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
 msgid "Invalid default mailbox quota value for domain '{}'"
-msgstr "Ungültiger Quota-Wert für Domain '%s'"
+msgstr "Fehlerhafter Standardwert für das Mailboxkontingent der Domain '{}'"
 
 #: admin/models/domain.py:341
 msgid "Default mailbox quota cannot be greater than domain quota"
-msgstr ""
+msgstr "Der Standardkontingentwert einer Mailbox kann nicht größer als der Standardkontingentwert der domain sein"
 
 #: admin/models/domain_alias.py:35
 msgid "The alias name"
@@ -893,119 +813,91 @@ msgid "A quota is required"
 msgstr "Ein Quota ist erforderlich"
 
 #: admin/models/mailbox.py:259
-#, fuzzy
-#| msgid "Domain created"
 msgid "Domain quota exceeded"
-msgstr "Domain erstellt."
+msgstr "Domain Kontingent überschritten"
 
 #: admin/serializers.py:37
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Standardquota (in MB) für neu erstelle Domains ohne explizite Wertangabe. "
-"Der Wert 0 bedeutet „Kein Quota“"
+msgstr "Standardkontingent in MB welches die Mailboxen erhalten. Der Wert 0 bedeutet unlimitiertes Kontingent."
 
 #: admin/serializers.py:107 admin/serializers.py:312 admin/serializers.py:410
-#, fuzzy
-#| msgid "Permissions"
 msgid "Permission denied."
-msgstr "Berechtigungen"
+msgstr "Zugriff verweigert."
 
 #: admin/serializers.py:158
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr ""
+msgstr "Liste der verwalteten Domains (nur für Reseller und Domain Administratoren)."
 
 #: admin/serializers.py:262
 msgid "Not allowed for this role."
-msgstr ""
+msgstr "Nicht erlaubt für diese Rolle."
 
 #: admin/serializers.py:274
 msgid "Must be equal to mailbox full_address"
-msgstr ""
+msgstr "Muss mit mailbox full_address übereinstimmen"
 
 #: admin/serializers.py:299
-#, fuzzy
-#| msgid "Domain does not exist"
 msgid "Local domain {} does not exist"
-msgstr "Domain existiert nicht"
+msgstr "Lokale Domain {} existiert nicht."
 
 #: admin/serializers.py:397
 msgid "A list of recipient"
-msgstr ""
+msgstr "Eine Liste der Empfänger"
 
 #: admin/serializers.py:408
-#, fuzzy
-#| msgid "Domain modified"
 msgid "Domain not found."
-msgstr "Domain verändert"
+msgstr "Domain nicht gefunden."
 
 #: admin/serializers.py:457
-#, fuzzy
-#| msgid "You don't have access to this domain"
 msgid "You don't have access to this domain."
-msgstr "Der Zugriff auf diese Domain ist Ihnen nicht gestattet"
+msgstr "Sie haben keinen Zugriff auf diese Domain."
 
 #: admin/serializers.py:465
-#, fuzzy
-#| msgid "You don't have access to this domain"
 msgid "You don't have access to this mailbox."
-msgstr "Der Zugriff auf diese Domain ist Ihnen nicht gestattet"
+msgstr "Sie haben keinen Zugriff auf diese Mailbox."
 
 #: admin/templates/admin/_domain_dkim_key.html:6
 #: admin/templates/admin/_domain_dkim_key.html:20
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: admin/templates/admin/_domain_dkim_key.html:7
 #, python-format
 msgid "DKIM public key for %(domain)s"
-msgstr ""
+msgstr "Öffentlicher DKIM Schlüssel für %(domain)s"
 
 #: admin/templates/admin/_domain_dkim_key.html:11
-#, fuzzy
-#| msgid "Invalid format"
 msgid "Raw format"
-msgstr "Ungültiges Format"
+msgstr "Rohformat"
 
 #: admin/templates/admin/_domain_dkim_key.html:15
-#, fuzzy
-#| msgid "Invalid format"
 msgid "Bind/named format"
-msgstr "Ungültiges Format"
+msgstr "Gebundenes Format"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:4
-#, fuzzy
-#| msgid "disabled"
 msgctxt "checks"
 msgid "Disabled"
-msgstr "deaktiviert"
+msgstr "Deaktiviert"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
-msgstr ""
+msgstr "Erwarte Prüfungen"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:16
 #: admin/templates/admin/_domain_dnschecks_status.html:26
 #: admin/templates/admin/_domain_dnschecks_status.html:34
 #: admin/templates/admin/_domain_dnschecks_status.html:42
-#, fuzzy
-#| msgid "Domain modified"
 msgid "No record found"
-msgstr "Domain verändert"
+msgstr "Kein Eintrag gefunden"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:24
 msgid "Waiting for key to be generated"
-msgstr ""
+msgstr "Warten auf Schlüsselerzeugung"
 
 #: admin/templates/admin/_global_statistics_widget.html:4
-#, fuzzy
-#| msgid "Statistics"
 msgid "Global statistics"
-msgstr "Statistiken"
+msgstr "Globale Statistiken"
 
 #: admin/templates/admin/_global_statistics_widget.html:8
 msgid "Quantity"
@@ -1018,89 +910,71 @@ msgid "Domain aliases"
 msgstr "Domain-Aliase"
 
 #: admin/templates/admin/_per_domain_statistics_widget.html:4
-#, fuzzy
-#| msgid "Per-domain counters"
 msgid "Per-domain statistics"
-msgstr "pro Domain"
+msgstr "Pro-Domain Statistiken"
 
 #: admin/templates/admin/account_detail.html:16
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/domain_detail.html:19
 #: admin/templates/admin/identities_table.html:7
-#, fuzzy
-#| msgid "disabled"
 msgid "(disabled)"
-msgstr "deaktiviert"
+msgstr "(deaktiviert)"
 
 #: admin/templates/admin/account_detail.html:22
 #: admin/templates/admin/alias_detail.html:22
 #: admin/templates/admin/domain_detail.html:25
 msgid "Summary"
-msgstr ""
+msgstr "Zusammenfassung"
 
 #: admin/templates/admin/account_detail.html:26
-#, fuzzy
-#| msgid "File name"
 msgid "Full name"
-msgstr "Dateiname"
+msgstr "Vollständiger Name"
 
 #: admin/templates/admin/account_detail.html:32
 #: admin/templates/admin/alias_detail.html:26
-#, fuzzy
-#| msgid "Create"
 msgid "Created"
-msgstr "Erstellen"
+msgstr "Erstellt"
 
 #: admin/templates/admin/account_detail.html:35
 msgid "Last login"
-msgstr ""
+msgstr "Letzte Anmeldung"
 
 #: admin/templates/admin/account_detail.html:38
 msgid "Secondary email"
-msgstr ""
+msgstr "Zweite E-Mail Adresse"
 
 #: admin/templates/admin/account_detail.html:38
 #: admin/templates/admin/account_detail.html:41
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "Not defined"
-msgstr "Keine Empfänger angegeben"
+msgstr "Nicht definiert"
 
 #: admin/templates/admin/account_detail.html:41
 msgid "Phone number"
-msgstr ""
+msgstr "Telefonnummer"
 
 #: admin/templates/admin/account_detail.html:55
-#, fuzzy
-#| msgid "Administration"
 msgid "Administered domains"
-msgstr "Verwaltung"
+msgstr "Administrierte Domains"
 
 #: admin/templates/admin/account_detail.html:61
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "No domain defined."
-msgstr "Keine Empfänger angegeben"
+msgstr "Keine Domain angegeben."
 
 #: admin/templates/admin/account_detail.html:75
-#, fuzzy
-#| msgid "Alias(es)"
 msgid "Aliases"
-msgstr "Alias(e)"
+msgstr "Aliase"
 
 #: admin/templates/admin/account_detail.html:81
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "No alias defined"
-msgstr "Keine Empfänger angegeben"
+msgstr "Kein Alias definiert"
 
 #: admin/templates/admin/account_detail.html:87
 msgid "Additional sender addresses"
-msgstr ""
+msgstr "Zusätzliche Absenderadressen"
 
 #: admin/templates/admin/account_detail.html:93
 msgid "No sender address defined"
-msgstr ""
+msgstr "Keine Absenderadresse definiert"
 
 #: admin/templates/admin/account_general_form.html:12
 #: admin/templates/admin/aliasform.html:13
@@ -1109,20 +983,16 @@ msgstr "Domain ist deaktiviert"
 
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/identities.html:33
-#, fuzzy
-#| msgid "alias"
 msgid "Alias"
 msgstr "Alias"
 
 #: admin/templates/admin/alias_detail.html:27
-#, fuzzy
-#| msgid "Alias modified"
 msgid "Modified"
-msgstr "Alias verändert"
+msgstr "Verändert"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"
-msgstr ""
+msgstr "Anbieter"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
 #: admin/templates/admin/identities_quota_headers.html:2
@@ -1133,22 +1003,20 @@ msgstr "Adresse"
 #: admin/templates/admin/dnsbl_domain_detail.html:12
 #: admin/templates/admin/domain_detail.html:100
 #: admin/templates/admin/messages_log_headers.html:6
-#, fuzzy
-#| msgid "Statistics"
 msgid "Status"
-msgstr "Statistiken"
+msgstr "Status"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
-msgstr ""
+msgstr "aufgelistet"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
-msgstr ""
+msgstr "Alles in Ordnung, diese Domain ist nicht gelistet."
 
 #: admin/templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
-msgstr ""
+msgstr "Keine Informationen verfügbar für diese Domain."
 
 #: admin/templates/admin/domain_detail.html:29
 msgid "Creation date"
@@ -1173,43 +1041,39 @@ msgid "MB"
 msgstr "MB"
 
 #: admin/templates/admin/domain_detail.html:54
-#, fuzzy
-#| msgid "Usage (%%)"
 msgid "Usage"
-msgstr "Verwendung (%%)"
+msgstr "Verwendung"
 
 #: admin/templates/admin/domain_detail.html:57
 #: admin/templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
-msgstr ""
+msgstr "benutzt"
 
 #: admin/templates/admin/domain_detail.html:58
 #: admin/templates/admin/domains_quotas.html:12
 msgid "allocated"
-msgstr ""
+msgstr "allokiert"
 
 #: admin/templates/admin/domain_detail.html:92
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: admin/templates/admin/domain_detail.html:107
 msgid "DKIM key"
-msgstr ""
+msgstr "DKIM Schlüssel"
 
 #: admin/templates/admin/domain_detail.html:111
 msgid "Show key"
-msgstr ""
+msgstr "Zeige Schlüssel"
 
 #: admin/templates/admin/domain_detail.html:113
 msgid "Generate new key"
-msgstr ""
+msgstr "Neuen Schlüssel generieren"
 
 #: admin/templates/admin/domain_detail.html:115
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "Not generated"
-msgstr "Keine Empfänger angegeben"
+msgstr "Nicht generiert"
 
 #: admin/templates/admin/domain_detail.html:122
 msgid "Administrators"
@@ -1221,10 +1085,8 @@ msgid "Remove this permission"
 msgstr "Diese Berechtigung entfernen"
 
 #: admin/templates/admin/domain_detail.html:139
-#, fuzzy
-#| msgid "No domain administrator defined"
 msgid "No domain administrator defined yet."
-msgstr "Kein Domain-Administrator definiert"
+msgstr "Es wurde noch kein Domain Administrator definiert."
 
 #: admin/templates/admin/domain_headers.html:5
 #: admin/templates/admin/identity_headers.html:4
@@ -1232,10 +1094,8 @@ msgid "Tags"
 msgstr "Tags"
 
 #: admin/templates/admin/domain_headers.html:7
-#, fuzzy
-#| msgid "Statistics"
 msgid "DNS status"
-msgstr "Statistiken"
+msgstr "DNS Status"
 
 #: admin/templates/admin/domain_headers.html:9
 #: admin/templates/admin/identity_headers.html:5
@@ -1248,10 +1108,8 @@ msgstr "Sie können keinen neuen Domain-Administrator erstellen"
 
 #: admin/templates/admin/domains.html:28
 #: admin/templates/admin/identities.html:29
-#, fuzzy
-#| msgid "Address"
 msgid "Add"
-msgstr "Adresse"
+msgstr "Hinzufügen"
 
 #: admin/templates/admin/domains_quota_headers.html:3
 #: admin/templates/admin/identities_quota_headers.html:4
@@ -1260,13 +1118,11 @@ msgstr "Limit"
 
 #: admin/templates/admin/domains_quota_headers.html:4
 msgid "Used"
-msgstr ""
+msgstr "Benutzt"
 
 #: admin/templates/admin/domains_quota_headers.html:5
-#, fuzzy
-#| msgid "Alias created"
 msgid "Allocated"
-msgstr "Alias erstellt"
+msgstr "Allokiert"
 
 #: admin/templates/admin/domains_quota_headers.html:6
 #: admin/templates/admin/identities_quota_headers.html:5
@@ -1287,10 +1143,8 @@ msgid "Update"
 msgstr "Aktualisieren"
 
 #: admin/templates/admin/identities.html:32
-#, fuzzy
-#| msgid "Add account"
 msgid "Account"
-msgstr "Konto hinzufügen"
+msgstr "Konto"
 
 #: admin/templates/admin/identities_quota_headers.html:3
 msgid "Value"
@@ -1301,17 +1155,6 @@ msgid "Fullname/Recipient"
 msgstr "Name/Empfänger"
 
 #: admin/templates/admin/import_domains_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "  <li><em>domain; name; quota; enabled</em></li>\n"
-#| "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-#| "  %s\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one "
-#| "of the previous values.</p>\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
@@ -1321,51 +1164,16 @@ msgid ""
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
 msgstr ""
-"Verwenden sie eine CSV-Datei mit einem der folgenden Formate:\n"
-"<ul>\n"
-"  <li><em>domain; name; quota; enabled</em></li>\n"
-"  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-"  %s\n"
-"</ul>\n"
-"<p>Das erste Element jeder Zeile ist zwingend und muss gleich zum "
-"vorhergehenden sein.</p>\n"
-"<p>Ein anderes Zeichen als Trenner ist gestattet.</p>\n"
 
 #: admin/templates/admin/import_identities_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "<li><em>account; loginname; password; first name; last name; enabled; "
-#| "group; address; quota; [, domain, ...]</em></li>\n"
-#| "<li><em>alias; address; enabled; internal recipient</em></li>\n"
-#| "<li><em>forward; address; enabled; external recipient</em></li>\n"
-#| "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one "
-#| "of the previous values.</p>\n"
-#| "\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
 msgstr ""
-"Verwenden sie eine CSV-Datei in einem der folgenden Formate:\n"
-"<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li>\n"
-"<li><em>alias; address; enabled; internal recipient</em></li>\n"
-"<li><em>forward; address; enabled; external recipient</em></li>\n"
-"<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
-"</ul>\n"
-"<p>Das erste Element einer Zeile ist zwingend und muss gleich mit einem der "
-"vorhergehenden sein.</p>\n"
-"\n"
-"<p>Ein anderes Zeichen als Separator ist gestattet.</p>\n"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1377,7 +1185,7 @@ msgstr "Importiere…"
 
 #: admin/templates/admin/index.html:6
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: admin/templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
@@ -1389,52 +1197,50 @@ msgstr "Standardwert der Domain verwenden"
 
 #: admin/templates/admin/messages_log_headers.html:2
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: admin/templates/admin/messages_log_headers.html:3
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: admin/templates/admin/messages_log_headers.html:4
 msgid "From"
-msgstr ""
+msgstr "Von"
 
 #: admin/templates/admin/messages_log_headers.html:5
 msgid "To"
-msgstr ""
+msgstr "Bis"
 
 #: admin/templates/admin/mx_domain_detail.html:11
-#, fuzzy
-#| msgid "Update"
 msgid "Updated"
 msgstr "Aktualisieren"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
+msgstr "Die IP-Adressen passen zu keinem der in den Parametern definierten MX-Einträge"
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
-msgstr ""
+msgstr "Kein MX Eintrag für diese Domain gefunden."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr ""
+msgstr "Modoboa hat festgestellt , dass die Domain %(domain)s bei den folgenden DNSBL-Anbieter aufgelistet ist:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
+msgstr "Die Reputation der Domain wird betroffen sein. Es kann sein, dass von ihr kommende E-Mails als Spam betrachtet werden. Sie sollten diese Anbieter kontaktieren und darum bitten, ihre erfasste(n) IP-Adresse(n) zu entfernen."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
+msgstr "Modoboa hat erkannt, dass für die Domain %(domain)s kein valider MX Eintrag vorliegt:"
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1477,7 +1283,7 @@ msgstr "Domain-Identitäten anzeigen"
 #: admin/templatetags/admin_tags.py:141 admin/templatetags/admin_tags.py:184
 #: admin/templatetags/admin_tags.py:197
 msgid "Edit {}"
-msgstr ""
+msgstr "{} bearbeiten"
 
 #: admin/templatetags/admin_tags.py:151 admin/templatetags/admin_tags.py:188
 #: admin/templatetags/admin_tags.py:202
@@ -1488,12 +1294,12 @@ msgstr "%s löschen?"
 #: admin/tests/test_mx.py:130
 #, python-format
 msgid "No MX record for %s"
-msgstr ""
+msgstr "Kein MX Eintrag für %s"
 
 #: admin/tests/test_mx.py:142 admin/tests/test_mx.py:145
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
-msgstr ""
+msgstr "Ferhlerhaftes IP-Adressformat für %(domain)s; %(addr)s"
 
 #: admin/views/alias.py:29
 msgid "Alias with this name already exists"
@@ -1516,20 +1322,18 @@ msgid "Alias modified"
 msgstr "Alias verändert"
 
 #: admin/views/alias.py:103
-#, fuzzy
-#| msgid "Alias created"
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
-msgstr[0] "Alias erstellt"
-msgstr[1] "Alias erstellt"
+msgstr[0] "Alias gelöscht"
+msgstr[1] "Aliase gelöscht"
 
 #: admin/views/dns.py:28
 msgid "MX records of {}"
-msgstr ""
+msgstr "MX Einträge für {}"
 
 #: admin/views/dns.py:51
 msgid "DNSBL summary for {}"
-msgstr ""
+msgstr "DNSBL Zusammenfassung für {}"
 
 #: admin/views/domain.py:202
 msgid "You can't delete your own domain"
@@ -1581,85 +1385,3 @@ msgstr "Identitäten importieren"
 #: admin/views/user.py:36
 msgid "Forward updated"
 msgstr "Weiterleitung aktualisiert"
-
-#~ msgid "File name"
-#~ msgstr "Dateiname"
-
-#, fuzzy
-#~| msgid ""
-#~| "Default quota (in MB) applied to freshly created domains with no value "
-#~| "specified. A value of 0 means no quota."
-#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-#~ msgstr ""
-#~ "Standardquota (in MB) für neu erstelle Domains ohne explizite Wertangabe. "
-#~ "Der Wert 0 bedeutet „Kein Quota“"
-
-#~ msgid ""
-#~ "Default quota in MB applied to mailboxes. Leave empty to use the default "
-#~ "value."
-#~ msgstr ""
-#~ "Standardquota in MB für Mailboxen. Bei leerem Feld wird der Domain-"
-#~ "Standard genutzt."
-
-#~ msgid ""
-#~ "You can't define a forward to a local destination. Please ask your "
-#~ "administrator to create an alias instead."
-#~ msgstr ""
-#~ "Sie können keine Weiterleitung auf ein lokales Ziel anlegen. Bitten Sie "
-#~ "Ihren Administrator stattdessen einen Alias anzulegen."
-
-#~ msgid "Quota is greater than the allowed domain's limit (%dM)"
-#~ msgstr "Das Quota ist größer als das maximale Quota der Domain (%dM)"
-
-#~ msgid "Domains and identities"
-#~ msgstr "Domains und Identitäten"
-
-#~ msgid "Global counters"
-#~ msgstr "Zentrale Zähler"
-
-#~ msgid "distribution list"
-#~ msgstr "Verteilerliste"
-
-#~ msgid "forward"
-#~ msgstr "Weiterleitung"
-
-#, fuzzy
-#~| msgid "Confirmation"
-#~ msgid "Information"
-#~ msgstr "Bestätigung"
-
-#~ msgid "Add domain"
-#~ msgstr "Domain hinzufügen"
-
-#~ msgid "Add alias"
-#~ msgstr "Alias hinzufügen"
-
-#~ msgid "Add forward"
-#~ msgstr "Weiterleitung hinzufügen"
-
-#~ msgid "Add distribution list"
-#~ msgstr "Verteilerliste hinzufügen"
-
-#~ msgid "New distribution list"
-#~ msgstr "Neue Verteilerliste"
-
-#~ msgid "Distribution list created"
-#~ msgstr "Verteilerliste erstellt"
-
-#~ msgid "New forward"
-#~ msgstr "Neue Weiterleitung"
-
-#~ msgid "Forward created"
-#~ msgstr "Weiterleitung erstellt"
-
-#~ msgid "Distribution list modified"
-#~ msgstr "Verteilerliste verändert"
-
-#~ msgid "Forward modified"
-#~ msgstr "Weiterleitung verändert"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Verschiedenes"
-
-#~ msgid "Domain administrator"
-#~ msgstr "Domain Administrator"
