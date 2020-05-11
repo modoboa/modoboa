@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 # Translators:
-# Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
-# Kostas Moumouris <moumouriskostas@gmail.com>, 2017
+# Antoine Nguyen <tonio@ngyn.org>, 2020
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2017-10-11 19:02+0000\n"
-"Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
-"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/"
-"language/el_GR/)\n"
-"Language: el_GR\n"
+"PO-Revision-Date: 2020-05-11 11:36+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2020\n"
+"Language-Team: Greek (Greece) (https://www.transifex.com/tonio/teams/13749/el_GR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: el_GR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: limits/app_settings.py:15
@@ -64,8 +65,8 @@ msgstr "Ψευδώνυμα Domain"
 
 #: limits/app_settings.py:48
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα για domain, για νέους "
 "διαχειριστές. (Το 0 δεν επιτρέπει κανένα, το -1 επιτρέπει απεριόριστα) "
@@ -105,8 +106,8 @@ msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
 msgstr ""
-"To quota που ένας μεταπωλητής επιτρέπεται να μοιράζει μεταξύ των domains που "
-"δημιουργεί. (0 σημαίνει χωρίς quota)"
+"To quota που ένας μεταπωλητής επιτρέπεται να μοιράζει μεταξύ των domains που"
+" δημιουργεί. (0 σημαίνει χωρίς quota)"
 
 #: limits/app_settings.py:86
 msgid "Default per-domain limits"
@@ -122,8 +123,8 @@ msgstr "Ενεργοποίηση ή απενεργοποίηση ορίων αν
 
 #: limits/app_settings.py:98
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενους διαχειριστές domain για ένα νέο domain. "
 "(0 απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
@@ -146,8 +147,8 @@ msgstr ""
 
 #: limits/app_settings.py:130
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα  για ένα νέο domain. (0 "
 "απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
@@ -202,8 +203,8 @@ msgstr ""
 #: limits/constants.py:50
 msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr ""
-"Μέγιστος αριθμός από ψευδώνυμα γραμματοκιβωτίων που επιτρέπονται για αυτό το "
-"domain. "
+"Μέγιστος αριθμός από ψευδώνυμα γραμματοκιβωτίων που επιτρέπονται για αυτό το"
+" domain. "
 
 #: limits/constants.py:55
 msgid "Maximum number of domain admins allowed for this domain."
