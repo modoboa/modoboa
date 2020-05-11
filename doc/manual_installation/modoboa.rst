@@ -142,11 +142,14 @@ database owned by a ``modoboa`` user, run the following SQL commands:
 Deploy an instance
 ------------------
 
-``modoboa-admin.py``, a command line tool, lets you deploy a
-*ready-to-use* Modoboa site using only one instruction::
+``modoboa-admin.py`` is a command line tool that lets you deploy a
+*ready-to-use* Modoboa site. To create a new instance into ``./instance``,
+you just have to run the following command:
 
-  (env)> modoboa-admin.py deploy instance --collectstatic \
-           --domain <hostname of your server> --dburl default:database-url
+.. code-block:: console
+
+   (env)$ modoboa-admin.py deploy instance --collectstatic \
+            --domain <hostname of your server> --dburl default:<database url>
 
 .. note::
 
@@ -186,12 +189,14 @@ done.
 
 If you need a **silent installation** (e.g. if you're using
 Salt-Stack, Ansible or whatever), it's possible to supply the database
-credentials as commandline arguments.
+credentials as command line arguments.
 
 You can consult the complete option list by running the following
-command::
+command:
 
-  $ modoboa-admin.py help deploy
+.. code-block:: console
+
+   (env)$ modoboa-admin.py help deploy
 
 Cron jobs
 ---------
