@@ -200,35 +200,30 @@ A few recurring jobs must be configured to make Modoboa works as
 expected.
 
 Create a new file, for example :file:`/etc/cron.d/modoboa` and put the
-following content inside::
+following content inside:
 
-  #
-  # Modoboa specific cron jobs
-  #
-  PYTHON=<PATH TO PYTHON BINARY>
-  INSTANCE=<PATH TO MODOBOA INSTANCE>
+.. sourcecode:: bash
 
-  # Operations on mailboxes
-  *       *       *       *       *       vmail   $PYTHON $INSTANCE/manage.py handle_mailbox_operations
+   #
+   # Modoboa specific cron jobs
+   #
+   PYTHON=<path to Python binary inside the virtual environment>
+   INSTANCE=<path to Modoboa instance>
 
-  # Sessions table cleanup
-  0       0       *       *       *       root    $PYTHON $INSTANCE/manage.py clearsessions
+   # Operations on mailboxes
+   *     *  *  *  *  vmail    $PYTHON $INSTANCE/manage.py handle_mailbox_operations
 
-  # Logs table cleanup
-  0       0       *       *       *       root    $PYTHON $INSTANCE/manage.py cleanlogs
+   # Generate DKIM keys (they will belong to the user running this job)
+   *     *  *  *  *  root     umask 077 && $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
 
-  # Logs parsing
-  */5     *       *       *       *       root    $PYTHON $INSTANCE/manage.py logparser &> /dev/null
-  0       *       *       *       *       root    $PYTHON $INSTANCE/manage.py update_statistics
-
-  # DNSBL checks
-  */30    *       *       *       *       root    $PYTHON $INSTANCE/manage.py modo check_mx
-
-  # Public API communication
-  0       *       *       *       *       root    $PYTHON $INSTANCE/manage.py communicate_with_public_api
-
-  # Generate DKIM keys (they will belong to the user running this job)
-  *       *       *       *       *       root    umask 077 && $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
+   # Sessions table cleanup
+   0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py clearsessions
+   # Logs table cleanup
+   0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py cleanlogs
+   # DNSBL checks
+   */30  *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py modo check_mx
+   # Public API communication
+   0     *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py communicate_with_public_api
 
 
 Now you can continue to the :ref:`webserver` section.
