@@ -109,6 +109,18 @@ Add the following new setting:
 
    DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
 
+Reload uwsgi/gunicorn/apache depending on your setup.
+
+Finally, Make sure to use root privileges and run the following
+command:
+
+.. sourcecode:: bash
+
+   > python manage.py generate_postfix_maps --destdir <directory>
+
+Then, reload postfix.
+
+
 1.14.0
 ======
 
