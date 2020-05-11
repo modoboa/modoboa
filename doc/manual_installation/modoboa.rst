@@ -77,42 +77,52 @@ Thanks to Django, Modoboa is compatible with the following databases:
 * SQLite
 
 Since the last one does not require particular actions, only the first
-two ones are described.
+two ones are described. You should also read the notes for those database
+backends on the `official Django documentation
+<https://docs.djangoproject.com/en/stable/ref/databases/>`_.
 
 PostgreSQL
 **********
 
 Install the corresponding Python binding:
 
-.. sourcecode:: bash
+.. code-block:: console
 
-  (env)> pip install psycopg2
+   (env)$ pip install psycopg2
 
-Then, create a user and a database:
 
-.. sourcecode:: bash
 
-  > sudo -i -u postgres
-  >
+Then, create a user and a database. For example, to create the ``modoboa``
+database owned by a ``modoboa`` user, run the following commands on your
+PostgreSQL server:
+
+.. code-block:: console
+
+   # sudo -l -u postgres createuser --no-createdb modoboa
+   # sudo -l -u postgres createdb --owner=modoboa modoboa
 
 MySQL / MariaDB
 ***************
 
 Install the corresponding Python binding:
 
-.. sourcecode:: bash
+.. code-block:: console
 
-  (env)> pip install mysqlclient
+   (env)$ pip install mysqlclient
+
 
 .. note::
 
    MariaDB 10.2 (and newer) require mysqlclient 1.3.11 (or newer).
 
-Then, create a user and a database:
+Then, create a user and a database. For example, to create the ``modoboa``
+database owned by a ``modoboa`` user, run the following SQL commands:
 
-.. sourcecode:: bash
+.. code-block:: mysql
 
-  > mysqladmin -u root -p create modoboa
+   CREATE DATABASE modoboa;
+   CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'my-strong-password-here';
+   GRANT ALL PRIVILEGES ON modoboa.* TO 'modoboa'@'localhost';
 
 Deploy an instance
 ------------------
