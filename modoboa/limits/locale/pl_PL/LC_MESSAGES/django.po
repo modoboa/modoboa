@@ -1,26 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 # Translators:
-# sin88 <sin@sin.waw.pl>, 2016
-# Tomasz Proć <tomasz.proc@gmail.com>, 2017
+# Antoine Nguyen <tonio@ngyn.org>, 2020
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2017-12-01 15:11+0000\n"
-"Last-Translator: Tomasz Proć <tomasz.proc@gmail.com>\n"
-"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/"
-"language/pl_PL/)\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: 2020-05-11 11:36+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2020\n"
+"Language-Team: Polish (Poland) (https://www.transifex.com/tonio/teams/13749/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
-"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
-"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: limits/app_settings.py:15
 msgid "Default per-admin limits"
@@ -44,8 +43,8 @@ msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
 msgstr ""
-"Maksymalna dozwolona liczba administratorów domen dla nowego administratora. "
-"(0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
+"Maksymalna dozwolona liczba administratorów domen dla nowego administratora."
+" (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:35 limits/constants.py:9
 msgid "Domains"
@@ -56,8 +55,8 @@ msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
-"Maksymalna dozwolona ilość domen dla nowego administratora. (0 dla tworzenie "
-"niedozwolone, -1 nielimitowana ilość)"
+"Maksymalna dozwolona ilość domen dla nowego administratora. (0 dla tworzenie"
+" niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:45 limits/app_settings.py:106 limits/constants.py:13
 #: limits/constants.py:41
@@ -66,8 +65,8 @@ msgstr "Aliasy domen"
 
 #: limits/app_settings.py:48
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Maksymalna dozwolona ilość aliasów domen dla nowego administratora. (0 dla "
 "tworzenie niedozwolone, -1 nielimitowana ilość)"
@@ -124,8 +123,8 @@ msgstr "Włącz lub wyłącz limity per domena"
 
 #: limits/app_settings.py:98
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Max liczba administratrów nowej domeny. (0 tworzenie niedozwolone, -1 dla "
 "braku limitu)"
@@ -148,8 +147,8 @@ msgstr ""
 
 #: limits/app_settings.py:130
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr ""
 "Max liczba aliasów dla nowej domeny. (0 tworzenie niedozwolone, -1 "
 "nielimitowana ilość)"
