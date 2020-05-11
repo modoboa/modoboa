@@ -10,53 +10,54 @@ This section describes the installation of the web interface (a
 Prepare the system
 ------------------
 
-First of all, we recommand the following context:
+First of all, we recommend the following context:
 
-* Use a dedicated system user
-* Use a `virtualenv <http://www.virtualenv.org/en/latest/>`_ to
-  install the application because it will isolate it (and its
+* A dedicated system user
+* A `virtual environment
+  <https://packaging.python.org/tutorials/installing-packages/#creating-virtual-environments>`_
+  to install the application because it will isolate it (and its
   dependencies) from the rest of your system
 
-The following example illustrates how to realize this (Debian like system):
+The following example illustrates how to realize this on Debian-based
+distributions using `virtualenv <https://virtualenv.pypa.io/en/stable/>`_:
 
-.. sourcecode:: bash
+.. code-block:: console
 
-  > sudo apt-get install python-virtualenv python-pip
-  > sudo useradd modoboa
-  > sudo -i -u modoboa
-  > virtualenv env
-  > source env/bin/activate
-  (env)> pip install -U pip
+   # apt-get install virtualenv python3-pip
+   # useradd modoboa  # create a dedicated user
+   # su -l modoboa    # log in as the newly created user
+   $ virtualenv --python python3 ./env  # create the virtual environment
+   $ source ./env/bin/activate          # activate the virtual environment
 
 Modoboa depends on external tools and some of them require compilation
 so you need a compiler and a few C libraries. Make sure to install the
 following system packages according to your distribution:
 
-+------------------------------+
-|Debian / Ubuntu               |
-+==============================+
-|build-essential python-dev    |
-|libxml2-dev libxslt-dev       |
-|libjpeg-dev librrd-dev        |
-|rrdtool libffi-dev libssl-dev |
-|                              |
-+------------------------------+
++-------------------------------+
+| Debian / Ubuntu               |
++===============================+
+| build-essential python3-dev   |
+| libxml2-dev libxslt-dev       |
+| libjpeg-dev librrd-dev        |
+| rrdtool libffi-dev libssl-dev |
++-------------------------------+
 
-+------------------------------+
-|CentOS                        |
-+==============================+
-|gcc gcc-c++ python-devel      |
-|libxml2-devel libxslt-devel   |
-|libjpeg-turbo-devel           |
-|rrdtool-devel rrdtool         |
-|libffi-devel                  |
-+------------------------------+
++-----------------------------+
+| CentOS                      |
++=============================+
+| gcc gcc-c++ python3-devel   |
+| libxml2-devel libxslt-devel |
+| libjpeg-turbo-devel         |
+| rrdtool-devel rrdtool       |
+| libffi-devel                |
++-----------------------------+
 
-Then, install Modoboa:
 
-.. sourcecode:: bash
+Then, install Modoboa by running:
 
-  (env)> pip install modoboa
+.. code-block:: console
+
+   (env)$ pip install modoboa
 
 .. _database:
 
