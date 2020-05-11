@@ -1,21 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 # Translators:
-# Antoine Nguyen <tonio@ngyn.org>, 2016-2017
+# Antoine Nguyen <tonio@ngyn.org>, 2020
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2017-03-03 08:05+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
-"Language: fr\n"
+"PO-Revision-Date: 2020-05-11 11:36+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2020\n"
+"Language-Team: French (https://www.transifex.com/tonio/teams/13749/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: limits/app_settings.py:15
@@ -62,8 +65,8 @@ msgstr "Alias de domaine"
 
 #: limits/app_settings.py:48
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Nombre maximal d'alias de domaine pour un nouvel administrateur. (0 pour "
 "interdire toute création, -1 pour autoriser les créations illimitées)"
@@ -120,8 +123,8 @@ msgstr "Activer ou désactiver les limites par domaine"
 
 #: limits/app_settings.py:98
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Nombre maximal d'administrateurs de domaine autorisés pour un nouveau "
 "domaine (0 pour interdire toute création, -1 pour autoriser les créations "
@@ -132,8 +135,8 @@ msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
-"Nombre maximal d'alias de domaine autorisés pour un nouveau domaine. (0 pour "
-"interdire toute création, -1 pour autoriser les créations illimitées)"
+"Nombre maximal d'alias de domaine autorisés pour un nouveau domaine. (0 pour"
+" interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:120
 msgid ""
@@ -145,8 +148,8 @@ msgstr ""
 
 #: limits/app_settings.py:130
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr ""
 "Nombre maximal d'alias autorisés pour un nouveau domaine. (0 pour interdire "
 "toute création, -1 pour autoriser les créations illimitées)"
@@ -193,7 +196,8 @@ msgstr "Nombre maximal d'alias autorisés pour ce domaine."
 
 #: limits/constants.py:55
 msgid "Maximum number of domain admins allowed for this domain."
-msgstr "Nombre maximal d'administrateurs de domaine autorisés pour ce domaine."
+msgstr ""
+"Nombre maximal d'administrateurs de domaine autorisés pour ce domaine."
 
 #: limits/forms.py:38 limits/forms.py:87
 msgid "Invalid limit"
