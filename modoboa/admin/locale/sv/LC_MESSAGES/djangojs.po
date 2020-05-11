@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Olle Gustafsson <olle@dalnix.se>, 2013,2015
+# Olle Gustafsson <olle@dalnix.se>, 2013
+# Olle Gustafsson <olle@dalnix.se>, 2013,2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-09 16:48+0100\n"
-"PO-Revision-Date: 2017-09-22 09:50+0000\n"
+"PO-Revision-Date: 2020-05-11 11:39+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
-"sv/)\n"
-"Language: sv\n"
+"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
@@ -35,9 +35,7 @@ msgstr "Denna åtgärd kommer radera ALL data associerad med den här domänen."
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr ""
-"Den här operationen raderar all data som är associerad med denna domän, "
-"förutom konton."
+msgstr "Den här operationen raderar all data som är associerad med denna domän, förutom konton."
 
 #: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:433
 msgid "No more quota to show"
