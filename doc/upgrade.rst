@@ -94,7 +94,8 @@ Specific instructions
 1.15.0
 ======
 
-This version drops Python 2 support.
+This version drops Python 2 support so don't forget to update all the
+extensions you use.
 
 .. warning::
 
