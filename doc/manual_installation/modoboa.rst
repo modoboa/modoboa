@@ -52,6 +52,12 @@ following system packages according to your distribution:
 | libffi-devel                |
 +-----------------------------+
 
+.. note::
+
+   Alternatively, you could rely on your distribution packages for the Modoboa
+   dependencies which require compilation - e.g. ``psycopg2`` - if the version
+   is compatible. In this case, you have to create your virtual environment
+   with the ``--system-site-packages`` option.
 
 Then, install Modoboa by running:
 
@@ -90,7 +96,11 @@ Install the corresponding Python binding:
 
    (env)$ pip install psycopg2
 
+.. note::
 
+   Alternatively, you can install the ``python3-psycopg2`` package instead on
+   Debian-based distributions if your virtual environment was created with
+   ``--system-site-packages`` option.
 
 Then, create a user and a database. For example, to create the ``modoboa``
 database owned by a ``modoboa`` user, run the following commands on your
@@ -110,6 +120,11 @@ Install the corresponding Python binding:
 
    (env)$ pip install mysqlclient
 
+.. note::
+
+   Alternatively, you can install the ``python3-mysqldb`` package instead on
+   Debian-based distributions if your virtual environment was created with
+   ``--system-site-packages`` option.
 
 .. note::
 
