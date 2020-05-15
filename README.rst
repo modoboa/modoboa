@@ -49,6 +49,16 @@ Demo Installation
 
 If you want to try out Modoboa, check out our `demo installation <https://demo.modoboa.org/>`_.
 
+************
+Getting help
+************
+
+If you have any question, you can use the following ways to get help:
+
+* IRC: join the ``#modoboa`` channel on Freenode
+* Mailing list: join the ``modoboa-users`` group on Google Groups
+* Github: open an issue if you found a bug
+
 *************
 External code
 *************
