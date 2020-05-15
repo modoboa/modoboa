@@ -56,7 +56,7 @@ Getting help
 If you have any question, you can use the following ways to get help:
 
 * IRC: join the ``#modoboa`` channel on Freenode
-* Mailing list: join the ``modoboa-users`` group on Google Groups
+* Mailing list: join the `modoboa-users <https://groups.google.com/forum/#!forum/modoboa-users>`_ group on Google Groups
 * Github: open an issue if you found a bug
 
 *************
