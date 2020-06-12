@@ -6,9 +6,7 @@ from reversion import revisions as reversion
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import (
-    force_text, python_2_unicode_compatible, smart_text
-)
+from django.utils.encoding import force_text, smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -16,12 +14,13 @@ from modoboa.core import signals as core_signals
 from modoboa.core.models import User
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
+
 from .. import constants
 from .base import AdminObject
+from . import mixins
 
 
-@python_2_unicode_compatible
-class Domain(AdminObject):
+class Domain(mixins.MessageLimitMixin, AdminObject):
     """Mail domain."""
 
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
@@ -32,6 +31,13 @@ class Domain(AdminObject):
     default_mailbox_quota = models.PositiveIntegerField(
         verbose_name=ugettext_lazy("Default mailbox quota"),
         default=0
+    )
+    message_limit = models.PositiveIntegerField(
+        ugettext_lazy("Message sending limit"),
+        null=True, blank=True,
+        help_text=ugettext_lazy(
+            "Number of messages this domain can send per day"
+        )
     )
     enabled = models.BooleanField(
         ugettext_lazy("enabled"),
@@ -212,6 +218,11 @@ class Domain(AdminObject):
         if not self.allocated_quota:
             return 0
         return int(self.used_quota / float(self.quota) * 100)
+
+    @property
+    def message_counter_key(self):
+        """Return the key used to store messages count."""
+        return self.name
 
     @property
     def bind_format_dkim_public_key(self):

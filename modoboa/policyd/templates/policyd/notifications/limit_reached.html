@@ -1,0 +1,5 @@
+{% load i18n %}
+
+{% blocktrans trimmed with ltype=ltype name=name %}
+  Daily limit of the following {{ ltype }} has been reached: {{ name }}.
+{% endblocktrans %}
