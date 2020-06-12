@@ -27,6 +27,7 @@ cache: pip
 services:
   - postgres
   - mysql
+  - redis-server
 
 before_install:
   - pip install codecov
