@@ -30,18 +30,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Entry point."""
-        queue = asyncio.Queue()
         loop = asyncio.get_event_loop()
-        coro = loop.create_server(
-            lambda: core.APDProtocol(queue=queue),
-            options["host"], options["port"]
+        coro = asyncio.start_server(
+            core.handle_connection, options["host"], options["port"], loop=loop
         )
         server = loop.run_until_complete(coro)
 
-        loop.create_task(core.process_messages(queue))
-
         # Schedule reset task
-        core.start_reset_counters_coro(loop)
+        core.start_reset_counters_coro()
 
         for signame in {'SIGINT', 'SIGTERM'}:
             loop.add_signal_handler(
