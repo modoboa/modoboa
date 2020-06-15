@@ -22,7 +22,6 @@ from . import constants
 
 
 def start_policy_daemon():
-    db.connections.close_all()
     call_command("policy_daemon")
 
 
@@ -52,6 +51,7 @@ class PolicyDaemonTestCase(ModoTestCase):
         )
         self.rclient.set_response_callback("HGET", int)
         self.rclient.delete(constants.REDIS_HASHNAME)
+        db.connections.close_all()
         patcher = patch("aiosmtplib.send")
         self.send_mock = patcher.start()
         self.process = Process(target=start_policy_daemon)
