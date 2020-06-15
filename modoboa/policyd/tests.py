@@ -10,6 +10,7 @@ import redis
 
 from django.conf import settings
 from django.core.management import call_command
+from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
@@ -24,7 +25,21 @@ def start_policy_daemon():
     call_command("policy_daemon")
 
 
-class PolicyDaemonTestCase(ModoTestCase):
+class RedisTestCaseMixin:
+    """Mixin to provide a redis client."""
+
+    def setUp(self):
+        super().setUp()
+        self.rclient = redis.Redis(
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT,
+            db=settings.REDIS_QUOTA_DB
+        )
+        self.rclient.set_response_callback("HGET", int)
+        self.rclient.delete(constants.REDIS_HASHNAME)
+
+
+class PolicyDaemonTestCase(RedisTestCaseMixin, ModoTestCase):
     """Test cases for policy daemon.
 
     A redis instance is required to run those tests.
@@ -43,13 +58,6 @@ class PolicyDaemonTestCase(ModoTestCase):
 
     def setUp(self):
         super().setUp()
-        self.rclient = redis.Redis(
-            host=settings.REDIS_HOST,
-            port=settings.REDIS_PORT,
-            db=settings.REDIS_QUOTA_DB
-        )
-        self.rclient.set_response_callback("HGET", int)
-        self.rclient.delete(constants.REDIS_HASHNAME)
         patcher = patch("aiosmtplib.send")
         self.send_mock = patcher.start()
         self.process = Process(target=start_policy_daemon)
@@ -201,3 +209,55 @@ sasl_username=user@test.com
             self.rclient.hget(constants.REDIS_HASHNAME, domain.name), 20)
         self.assertEqual(
             self.rclient.hget(constants.REDIS_HASHNAME, account.email), 10)
+
+
+class ModelsTestCase(RedisTestCaseMixin, ModoTestCase):
+    """Admin models test cases."""
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        admin_factories.populate_database()
+
+    def test_domain_detail_view(self):
+        domain = admin_models.Domain.objects.get(name="test.com")
+        domain.message_limit = 10
+        domain.save()
+        url = reverse("admin:domain_detail", args=[domain.pk])
+        response = self.client.get(url)
+        self.assertContains(response, "Message sending limit")
+
+    def test_account_detail_view(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        mb = account.mailbox
+        mb.message_limit = 10
+        mb.save()
+
+        url = reverse("admin:account_detail", args=[account.pk])
+        response = self.client.get(url)
+        self.assertContains(response, "Message sending limit")
+
+    def test_domain_signal_handler(self):
+        domain = admin_models.Domain.objects.get(name="test.com")
+        domain.message_limit = 10
+        domain.save()
+        self.assertEqual(
+            self.rclient.hget(constants.REDIS_HASHNAME, domain.name),
+            domain.message_limit
+        )
+
+        # Force constructor call to fill _loaded_values
+        domain = admin_models.Domain.objects.get(name="test.com")
+        domain.message_limit = 50
+        domain.save()
+        self.assertEqual(
+            self.rclient.hget(constants.REDIS_HASHNAME, domain.name),
+            domain.message_limit
+        )
+
+        domain.message_limit = None
+        domain.save()
+        self.assertFalse(
+            self.rclient.hexists(constants.REDIS_HASHNAME, domain.name)
+        )
