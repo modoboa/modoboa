@@ -53,6 +53,7 @@ script:
   - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd
 
 after_success:
+  - coverage combine
   - coverage xml
   - codecov
   - python-codacy-coverage -r coverage.xml
