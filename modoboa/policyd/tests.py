@@ -8,7 +8,6 @@ import time
 
 import redis
 
-from django import db
 from django.conf import settings
 from django.core.management import call_command
 
@@ -51,7 +50,6 @@ class PolicyDaemonTestCase(ModoTestCase):
         )
         self.rclient.set_response_callback("HGET", int)
         self.rclient.delete(constants.REDIS_HASHNAME)
-        db.connections.close_all()
         patcher = patch("aiosmtplib.send")
         self.send_mock = patcher.start()
         self.process = Process(target=start_policy_daemon)
@@ -75,7 +73,6 @@ class PolicyDaemonTestCase(ModoTestCase):
         """Set daily limit for account."""
         account = core_models.User.objects.get(username=name)
         mb = account.mailbox
-        self.rclient.hdel(constants.REDIS_HASHNAME, account.email)
         mb.message_limit = value
         mb.save()
         self.assertEqual(

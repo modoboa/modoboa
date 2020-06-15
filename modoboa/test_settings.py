@@ -54,7 +54,8 @@ else:
             "PORT": "",
             "ATOMIC_REQUESTS": True,
             "OPTIONS": {
-                "client_encoding": "UTF8"
+                "client_encoding": "UTF8",
+                "sslmode": "disable"
             },
             "TEST": {
                 "CHARSET": "UTF8",
