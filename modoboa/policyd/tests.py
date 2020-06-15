@@ -8,6 +8,7 @@ import time
 
 import redis
 
+from django import db
 from django.conf import settings
 from django.core.management import call_command
 
@@ -21,6 +22,7 @@ from . import constants
 
 
 def start_policy_daemon():
+    db.connections.close_all()
     call_command("policy_daemon")
 
 
