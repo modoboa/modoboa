@@ -130,21 +130,24 @@ async def apply_policies(attributes):
 
 async def handle_connection(reader, writer):
     """Coroutine to handle a new connection to the server."""
-    data = await reader.read(1024)
-    attributes = {}
-    for line in data.decode().split("\n"):
-        if not line:
-            continue
-        try:
-            name, value = line.split("=")
-        except ValueError:
-            continue
-        attributes[name] = value
-
     action = SUCCESS_ACTION
-    state = attributes.get("protocol_state")
-    if state == "RCPT":
-        action = await apply_policies(attributes)
+    try:
+        data = await reader.readuntil(b"\n\n")
+    except asyncio.IncompleteReadError:
+        pass
+    else:
+        attributes = {}
+        for line in data.decode().split("\n"):
+            if not line:
+                continue
+            try:
+                name, value = line.split("=")
+            except ValueError:
+                continue
+            attributes[name] = value
+        state = attributes.get("protocol_state")
+        if state == "RCPT":
+            action = await apply_policies(attributes)
     writer.write(b"action=" + action + b"\n\n")
     await writer.drain()
     writer.close()
