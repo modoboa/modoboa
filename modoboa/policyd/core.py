@@ -42,10 +42,10 @@ async def wait_for(dt):
     await asyncio.sleep(remaining)
 
 
-async def run_at(dt, coro):
+async def run_at(dt, coro, *args):
     """Run coroutine at given datetime."""
     await wait_for(dt)
-    return await coro()
+    return await coro(*args)
 
 
 def get_local_config():
@@ -69,7 +69,7 @@ async def notify_limit_reached(ltype, name):
     }
     # We're going to execute sync code so we need an executor
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
-    loop = asyncio.get_running_loop()
+    loop = asyncio.get_event_loop()
     futures = [
         loop.run_in_executor(executor, get_local_config),
         loop.run_in_executor(executor, get_notification_recipients)
@@ -96,8 +96,7 @@ async def decrement_limit(rclient, ltype, name):
     new_counter = await rclient.hincrby(constants.REDIS_HASHNAME, name, -1)
     if new_counter <= 0:
         logger.info("Limit reached for {} {}".format(ltype, name))
-        loop = asyncio.get_running_loop()
-        loop.create_task(notify_limit_reached(ltype, name))
+        asyncio.ensure_future(notify_limit_reached(ltype, name))
 
 
 async def apply_policies(attributes):
@@ -129,45 +128,26 @@ async def apply_policies(attributes):
     return SUCCESS_ACTION
 
 
-async def process_messages(queue):
-    """Pull from queue and process messages."""
-    while True:
-        transport, message = await queue.get()
-        result = await apply_policies(message)
-        transport.write(b"action=" + result + b"\n\n")
-        queue.task_done()
+async def handle_connection(reader, writer):
+    """Coroutine to handle a new connection to the server."""
+    data = await reader.read(1024)
+    attributes = {}
+    for line in data.decode().split("\n"):
+        if not line:
+            continue
+        try:
+            name, value = line.split("=")
+        except ValueError:
+            continue
+        attributes[name] = value
 
-
-class APDProtocol(asyncio.Protocol):
-    """Access Policy Delegation protocol (postfix)."""
-
-    def __init__(self, *args, **kwargs):
-        """Store queue."""
-        self.queue = kwargs.pop("queue")
-        super().__init__(*args, **kwargs)
-
-    def connection_made(self, transport):
-        peername = transport.get_extra_info("peername")
-        logger.info("Connection from {}".format(peername))
-        self.transport = transport
-
-    def data_received(self, data):
-        attributes = {}
-        for line in data.decode().split("\n"):
-            if not line:
-                continue
-            try:
-                name, value = line.split("=")
-            except ValueError:
-                continue
-            attributes[name] = value
-
-        # action = SUCCESS_ACTION
-        state = attributes.get("protocol_state")
-        if state == "RCPT":
-            self.queue.put_nowait((self.transport, attributes))
-        else:
-            self.transport.write(b"action=" + SUCCESS_ACTION + b"\n\n")
+    action = SUCCESS_ACTION
+    state = attributes.get("protocol_state")
+    if state == "RCPT":
+        action = await apply_policies(attributes)
+    writer.write(b"action=" + action + b"\n\n")
+    await writer.drain()
+    writer.close()
 
 
 def get_next_execution_dt():
@@ -195,7 +175,7 @@ async def reset_counters():
     logger.info("Resetting all counters")
     # We're going to execute sync code so we need an executor
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
-    loop = asyncio.get_running_loop()
+    loop = asyncio.get_event_loop()
     futures = [
         loop.run_in_executor(executor, get_domains_to_reset),
         loop.run_in_executor(executor, get_mailboxes_to_reset)
@@ -208,12 +188,11 @@ async def reset_counters():
         rclient.hset(
             constants.REDIS_HASHNAME, mb.full_address, mb.message_limit)
     # reschedule
-    loop = asyncio.get_running_loop()
-    loop.create_task(run_at(get_next_execution_dt(), reset_counters))
+    asyncio.ensure_future(run_at(get_next_execution_dt(), reset_counters))
 
 
-def start_reset_counters_coro(loop):
+def start_reset_counters_coro():
     """Start coroutine."""
     first_time = (timezone.now() + relativedelta(days=1)).replace(
         hour=0, minute=0, second=0)
-    loop.create_task(run_at(first_time, reset_counters))
+    asyncio.ensure_future(run_at(first_time, reset_counters))

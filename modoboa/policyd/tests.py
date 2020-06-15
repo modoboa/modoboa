@@ -113,9 +113,11 @@ sasl_username=user@test.com
             self.rclient.hget(constants.REDIS_HASHNAME, domain.name),
             domain.message_limit - 1
         )
+        s.close()
 
         # This one will be accepted and will trigger a notification
         # but I can't check it yet
+        s = self.connect_to_daemon()
         s.send(b"""protocol_state=RCPT
 sasl_username=user@test.com
 
@@ -123,8 +125,10 @@ sasl_username=user@test.com
         time.sleep(0.1)
         res = s.recv(1024)
         self.assertEqual(res, b"action=dunno\n\n")
+        s.close()
 
         # This one will be denied
+        s = self.connect_to_daemon()
         s.send(b"""protocol_state=RCPT
 sasl_username=user@test.com
 
@@ -151,9 +155,11 @@ sasl_username=user@test.com
             self.rclient.hget(constants.REDIS_HASHNAME, account.email),
             account.mailbox.message_limit - 1
         )
+        s.close()
 
         # This one will be accepted and will trigger a notification
         # but I can't check it yet
+        s = self.connect_to_daemon()
         s.send(b"""protocol_state=RCPT
 sasl_username=user@test.com
 
@@ -161,8 +167,10 @@ sasl_username=user@test.com
         time.sleep(0.1)
         res = s.recv(1024)
         self.assertEqual(res, b"action=dunno\n\n")
+        s.close()
 
         # This one will be denied
+        s = self.connect_to_daemon()
         s.send(b"""protocol_state=RCPT
 sasl_username=user@test.com
 
