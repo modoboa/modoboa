@@ -1,7 +1,8 @@
 """Policy daemon related tests."""
 
 import asyncio
-from mock import patch
+# from mock import patch
+from asynctest import patch
 from multiprocessing import Process
 import socket
 import time
