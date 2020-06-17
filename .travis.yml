@@ -31,7 +31,6 @@ services:
 
 before_install:
   - pip install codecov
-  - pip install codacy-coverage
 
 install:
   - pip install -r requirements.txt
@@ -54,9 +53,7 @@ script:
 
 after_success:
   - coverage combine
-  - coverage xml
   - codecov
-  - python-codacy-coverage -r coverage.xml
 
 before_deploy:
   - cd ../modoboa
