@@ -189,10 +189,10 @@ MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
 # REDIS
 
-REDIS_URL = 'redis://localhost/0'
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_QUOTA_DB = 0
+REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
