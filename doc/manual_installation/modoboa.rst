@@ -204,5 +204,38 @@ following content inside::
   # Generate DKIM keys (they will belong to the user running this job)
   *       *       *       *       *       root    umask 077 && $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
 
+.. _policy_daemon:
+
+Policy daemon
+-------------
+
+Modoboa comes with a built-in `Policy Daemon for Postfix <http://www.postfix.org/SMTPD_POLICY_README.html>`_. Current features are:
+
+* Define daily sending limits for domains and/or accounts
+
+A `redis server <https://redis.io/>`_ is required to run this new daemon.
+
+You can launch it manually using the following command:
+
+.. sourcecode:: bash
+
+   (env)> python manage.py policy_daemon
+
+But we recommend an automatic start using ``systemd`` or
+``supervisor``. Here is a configuration example for ``supervisor``:
+
+.. sourcecode:: ini
+
+   [program:policyd]
+   autostart=true
+   autorestart=true
+   command=/srv/modoboa/env/bin/python /srv/modoboa/instance/manage.py policy_daemon
+   directory=/srv/modoboa
+   redirect_stderr=true
+   user=modoboa
+   numprocs=1
+
+It will listen by default on ``127.0.0.1`` and port ``9999``. The
+policy daemon won't do anything unless you tell :ref:`postfix <policyd_config>` to use it.
 
 Now you can continue to the :ref:`webserver` section.
