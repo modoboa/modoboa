@@ -280,6 +280,11 @@ LOGGING = {
             'facility': SysLogHandler.LOG_AUTH,
             'formatter': 'syslog'
         },
+        'syslog-mail': {
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': SysLogHandler.LOG_MAIL,
+            'formatter': 'syslog'
+        },
         'modoboa': {
             'class': 'modoboa.core.loggers.SQLHandler',
         }
@@ -297,6 +302,11 @@ LOGGING = {
         },
         'modoboa.admin': {
             'handlers': ['modoboa'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'modoboa.policyd': {
+            'handlers': ['syslog-mail'],
             'level': 'INFO',
             'propagate': False
         }
