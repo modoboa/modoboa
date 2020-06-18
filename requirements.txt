@@ -27,3 +27,7 @@ lxml
 chardet
 ovh
 oath
+redis
+
+aiosmtplib
+aioredis

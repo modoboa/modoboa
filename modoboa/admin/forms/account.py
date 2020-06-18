@@ -238,6 +238,13 @@ class AccountFormMail(forms.Form, DynamicForm):
         widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
     quota_act = forms.BooleanField(required=False)
+    message_limit = forms.IntegerField(
+        label=ugettext_lazy("Message sending limit"),
+        required=False,
+        min_value=0,
+        help_text=ugettext_lazy(
+            "Number of messages this mailbox can send per day")
+    )
     aliases = lib_fields.UTF8AndEmptyUserEmailField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
@@ -261,7 +268,7 @@ class AccountFormMail(forms.Form, DynamicForm):
     def __init__(self, user, *args, **kwargs):
         self.mb = kwargs.pop("instance", None)
         self.user = user
-        super(AccountFormMail, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.field_widths = {
             "quota": 3
         }
@@ -282,6 +289,8 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.fields["quota_act"].initial = self.mb.use_domain_quota
             if not self.mb.use_domain_quota and self.mb.quota:
                 self.fields["quota"].initial = self.mb.quota
+            if self.mb.message_limit:
+                self.fields["message_limit"].initial = self.mb.message_limit
             self.fields["create_alias_with_old_address"].initial = (
                 param_tools.get_global_parameter(
                     "create_alias_on_mbox_rename")
@@ -367,7 +376,9 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.__class__, context=user, klass=models.Mailbox)
         self.mb = models.Mailbox(
             address=self.locpart, domain=self.domain, user=account,
-            use_domain_quota=self.cleaned_data["quota_act"])
+            use_domain_quota=self.cleaned_data["quota_act"],
+            message_limit=self.cleaned_data.get("message_limit")
+        )
         override_rules = (
             user.is_superuser or
             user.has_perm("admin.add_domain") and

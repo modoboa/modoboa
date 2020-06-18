@@ -20,6 +20,7 @@ from modoboa.parameters import tools as param_tools
 
 from .base import AdminObject
 from .domain import Domain
+from . import mixins
 
 
 class QuotaManager(models.Manager):
@@ -87,8 +88,7 @@ class MailboxManager(Manager):
         return self.get_queryset().select_related().filter(qf)
 
 
-@python_2_unicode_compatible
-class Mailbox(AdminObject):
+class Mailbox(mixins.MessageLimitMixin, AdminObject):
     """User mailbox."""
 
     address = models.CharField(
@@ -98,6 +98,11 @@ class Mailbox(AdminObject):
     )
     quota = models.PositiveIntegerField(default=0)
     use_domain_quota = models.BooleanField(default=False)
+    message_limit = models.PositiveIntegerField(
+        ugettext_lazy("Message sending limit"), null=True, blank=True,
+        help_text=ugettext_lazy(
+            "Number of messages this mailbox can send per day")
+    )
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -107,9 +112,10 @@ class Mailbox(AdminObject):
         app_label = "admin"
 
     def __init__(self, *args, **kwargs):
-        super(Mailbox, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__mail_home = None
         self.old_full_address = self.full_address
+        self.old_message_limit = self.message_limit
 
     def __str__(self):
         return smart_text(self.full_address)
@@ -189,6 +195,11 @@ class Mailbox(AdminObject):
     def quota_value(self, instance):
         """Set the ``Quota`` for this mailbox."""
         self._quota_value = instance
+
+    @property
+    def message_counter_key(self):
+        """Return the key used to store messages count."""
+        return self.full_address
 
     def rename_dir(self, old_mail_home):
         """Rename local directory if needed."""
@@ -319,6 +330,7 @@ class Mailbox(AdminObject):
                 not user.userobjectlimit_set.get(name="quota").max_value
             )
             self.set_quota(values["quota"], override_rules)
+        self.message_limit = values.get("message_limit")
         if newaddress:
             self.rename(local_part, domain)
         self.save()
