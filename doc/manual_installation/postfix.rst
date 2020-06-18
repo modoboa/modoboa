@@ -65,3 +65,23 @@ Use the following configuration in the :file:`/etc/postfix/main.cf` file
 Replace ``<driver>`` by the name of the database you use.
 
 Restart Postfix.
+
+.. _policyd_config:
+
+Policy daemon
+-------------
+
+If you want to enable the built-in policy daemon, add the following
+content to the :file:`/etc/postfix/main.cf` file::
+
+    smtpd_recipient_restrictions =
+        # ...
+        check_policy_service inet:127.0.0.1:9999
+        # ...
+
+And reload postfix.
+
+.. note::
+
+   The ``check_policy_service`` line must be placed before the
+   ``permit_mynetworks`` one, otherwise the daemon won't be called.

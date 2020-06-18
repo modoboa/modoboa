@@ -43,13 +43,13 @@ class AdminObject(models.Model):
 
     def __init__(self, *args, **kwargs):
         """Custom constructor."""
-        super(AdminObject, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._loaded_values = {}
 
     @classmethod
     def from_db(cls, db, field_names, values):
         """Store loaded values."""
-        instance = super(AdminObject, cls).from_db(db, field_names, values)
+        instance = super().from_db(db, field_names, values)
         instance._loaded_values = dict(zip(field_names, values))
         return instance
 

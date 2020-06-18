@@ -27,10 +27,10 @@ cache: pip
 services:
   - postgres
   - mysql
+  - redis-server
 
 before_install:
   - pip install codecov
-  - pip install codacy-coverage
 
 install:
   - pip install -r requirements.txt
@@ -49,12 +49,11 @@ before_script:
 script:
   - python ./tests.py
   - cd test_project
-  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync
+  - coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd
 
 after_success:
-  - coverage xml
+  - coverage combine
   - codecov
-  - python-codacy-coverage -r coverage.xml
 
 before_deploy:
   - cd ../modoboa

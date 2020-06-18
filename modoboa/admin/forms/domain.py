@@ -57,8 +57,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     class Meta:
         model = Domain
         fields = (
-            "name", "type", "quota", "default_mailbox_quota", "aliases",
-            "enabled", "enable_dns_checks", "enable_dkim",
+            "name", "type", "quota", "default_mailbox_quota", "message_limit",
+            "aliases", "enabled", "enable_dns_checks", "enable_dkim",
             "dkim_key_selector", "dkim_key_length"
         )
 

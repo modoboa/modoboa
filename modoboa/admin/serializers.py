@@ -45,7 +45,8 @@ class DomainSerializer(serializers.ModelSerializer):
             "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
             "enable_dkim", "dkim_key_selector", "dkim_key_length",
             "dkim_public_key", "dkim_private_key_path",
-            "mailbox_count", "mbalias_count", "domainalias_count"
+            "mailbox_count", "mbalias_count", "domainalias_count",
+            "message_limit"
         )
         read_only_fields = (
             "pk", "mailbox_count", "mbalias_count", "domainalias_count"
@@ -137,7 +138,9 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Mailbox
-        fields = ("pk", "full_address", "use_domain_quota", "quota", )
+        fields = (
+            "pk", "full_address", "use_domain_quota", "quota", "message_limit"
+        )
 
     def validate_full_address(self, value):
         """Lower case address."""
