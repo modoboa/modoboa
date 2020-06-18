@@ -94,16 +94,35 @@ Specific instructions
 1.16.0
 ======
 
-A new :ref:`policy daemon <policy_daemon>` has been added. Make sure
-to have a Redis instance running on your server, then add the following
-settings to your ``settings.py`` file:
+A new :ref:`policy daemon <policy_daemon>` has been added.
+
+Make sure to have a Redis instance running on your server.
+
+Add ``'modoboa.policyd'`` to ``MODOBOA_APPS``:
 
 .. sourcecode:: python
 
-REDIS_HOST = '<IP or hostname here>'
-REDIS_PORT = 6379
-REDIS_QUOTA_DB = 0
-REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
+   MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+      'modoboa.dnstools',
+      'modoboa.policyd'
+   )
+
+Add the following settings to your ``settings.py`` file:
+
+.. sourcecode:: python
+
+   REDIS_HOST = '<IP or hostname here>'
+   REDIS_PORT = 6379
+   REDIS_QUOTA_DB = 0
+   REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
 1.15.0
 ======
