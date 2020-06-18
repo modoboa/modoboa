@@ -52,8 +52,8 @@ script:
   - coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd
 
 after_success:
-  - coverage report
   - coverage combine
+  - coverage report
   - codecov
 
 before_deploy:
