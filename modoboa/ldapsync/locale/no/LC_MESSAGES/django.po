@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Antoine Nguyen <tonio@ngyn.org>, 2020
+# Nils Otto Lillegrein <post@activeweb.no>, 2020
 # 
 #, fuzzy
 msgid ""
@@ -13,26 +13,26 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
 "PO-Revision-Date: 2020-05-11 18:45+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2020\n"
-"Language-Team: French (https://www.transifex.com/tonio/teams/13749/fr/)\n"
+"Last-Translator: Nils Otto Lillegrein <post@activeweb.no>, 2020\n"
+"Language-Team: Norwegian (https://www.transifex.com/tonio/teams/13749/no/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: no\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ldapsync/lib.py:84
 msgid "Failed to create LDAP account: {}"
-msgstr "Impossible de créer le compte LDAP : {}"
+msgstr "Kunne ikke opprette LDAP-konto: {}"
 
 #: ldapsync/lib.py:124
 msgid "Failed to update LDAP account: {}"
-msgstr "Impossible de mettre à jour le compte LDAP : {}"
+msgstr "Kunne ikke oppdatere LDAP-konto: {}"
 
 #: ldapsync/lib.py:138
 msgid "Failed to delete LDAP account: {}"
-msgstr "Impossible de supprimer le compte LDAP : {}"
+msgstr "Kunne ikke slette LDAP-konto: {}"
 
 #: ldapsync/lib.py:149
 msgid "Failed to disable LDAP account: {}"
-msgstr "Impossible de désactiver le compte LDAP : {}"
+msgstr "Kunne ikke deaktivere LDAP-konto: {}"
