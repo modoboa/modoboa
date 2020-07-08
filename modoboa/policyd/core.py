@@ -125,6 +125,9 @@ async def apply_policies(attributes):
         await decrement_limit(rclient, "domain", domain)
     if decr_user:
         await decrement_limit(rclient, "account", sasl_username)
+    rclient.close()
+    await rclient.wait_closed()
+    logger.debug("Let it pass")
     return SUCCESS_ACTION
 
 
@@ -132,6 +135,7 @@ async def handle_connection(reader, writer):
     """Coroutine to handle a new connection to the server."""
     action = SUCCESS_ACTION
     try:
+        logger.debug("Reading data")
         data = await reader.readuntil(b"\n\n")
     except asyncio.IncompleteReadError:
         pass
@@ -147,10 +151,25 @@ async def handle_connection(reader, writer):
             attributes[name] = value
         state = attributes.get("protocol_state")
         if state == "RCPT":
+            logger.debug("Applying policies")
             action = await apply_policies(attributes)
+            logger.debug("Done")
+    logger.debug("Sending action %s", action)
     writer.write(b"action=" + action + b"\n\n")
     await writer.drain()
-    writer.close()
+
+
+async def new_connection(reader, writer):
+    try:
+        await asyncio.wait_for(handle_connection(reader, writer), timeout=5)
+    except asyncio.TimeoutError as err:
+        logger.warning("Timeout received while handling connection: %s", err)
+    finally:
+        writer.close()
+        if hasattr(writer, "wait_closed"):
+            # Python 3.7+ only
+            await writer.wait_closed()
+        logger.info("exit")
 
 
 def get_next_execution_dt():

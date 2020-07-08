@@ -27,12 +27,14 @@ class Command(BaseCommand):
         """Add command line arguments."""
         parser.add_argument("--host", type=str, default="127.0.0.1")
         parser.add_argument("--port", type=int, default=9999)
+        parser.add_argument("--debug", action="store_true",
+                            help="Enable debug mode")
 
     def handle(self, *args, **options):
         """Entry point."""
         loop = asyncio.get_event_loop()
         coro = asyncio.start_server(
-            core.handle_connection, options["host"], options["port"], loop=loop
+            core.new_connection, options["host"], options["port"], loop=loop
         )
         server = loop.run_until_complete(coro)
 
@@ -46,6 +48,10 @@ class Command(BaseCommand):
             )
 
         logger.info("Serving on {}".format(server.sockets[0].getsockname()))
+
+        if options["debug"]:
+            loop.set_debug(True)
+            logging.getLogger('asyncio').setLevel(logging.DEBUG)
 
         loop.run_forever()
 
