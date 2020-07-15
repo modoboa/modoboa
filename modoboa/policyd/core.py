@@ -209,6 +209,8 @@ async def reset_counters():
     for mb in mboxes:
         rclient.hset(
             constants.REDIS_HASHNAME, mb.full_address, mb.message_limit)
+    rclient.close()
+    await rclient.wait_closed()
     # reschedule
     asyncio.ensure_future(run_at(get_next_execution_dt(), reset_counters))
 
