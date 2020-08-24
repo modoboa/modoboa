@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.db.models.manager import Manager
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text, force_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core.models import User
@@ -164,7 +164,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
             if code:
                 raise lib_exceptions.InternalError(
                     _("Failed to retrieve mailbox location (%s)") % output)
-            self.__mail_home = output.strip()
+            self.__mail_home = force_text(output.strip())
         return self.__mail_home
 
     @property
@@ -357,7 +357,6 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
 reversion.register(Mailbox)
 
 
-@python_2_unicode_compatible
 class SenderAddress(models.Model):
     """Extra sender address for Mailbox."""
 
