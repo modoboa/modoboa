@@ -34,3 +34,11 @@ DKIM_KEY_LENGTHS = [
     (2048, "2048"),
     (4096, "4096"),
 ]
+
+ALARM_OPENED = 1
+ALARM_CLOSED = 2
+
+ALARM_STATUSES = [
+    (ALARM_OPENED, _("Opened")),
+    (ALARM_CLOSED, _("Closed")),
+]

@@ -11,12 +11,13 @@ import redis
 
 from django.conf import settings
 from django.core.management import call_command
+from django.test import TransactionTestCase
 from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import ModoTestCase, ParametersMixin
 from modoboa.policyd import core as policyd_core
 
 from . import constants
@@ -40,25 +41,20 @@ class RedisTestCaseMixin:
         self.rclient.delete(constants.REDIS_HASHNAME)
 
 
-class PolicyDaemonTestCase(RedisTestCaseMixin, ModoTestCase):
+class PolicyDaemonTestCase(
+        RedisTestCaseMixin, ParametersMixin, TransactionTestCase):
     """Test cases for policy daemon.
 
     A redis instance is required to run those tests.
     """
 
-    @classmethod
-    def setUpTestData(cls):  # NOQA:N802
-        """Create test data."""
-        super().setUpTestData()
-        admin_factories.populate_database()
-        # FIXME: all database modifications must be made before the
-        # daemon is started otherwise they won't be seen by the other
-        # process. I think it's just a sqlite issue...
-        cls.admin = core_models.User.objects.get(username="user@test2.com")
-        cls.admin.role = "SuperAdmins"
-
     def setUp(self):
         super().setUp()
+        call_command("load_initial_data")
+        admin_factories.populate_database()
+        self.admin = core_models.User.objects.get(username="user@test2.com")
+        self.admin.role = "SuperAdmins"
+
         patcher = patch("aiosmtplib.send")
         self.send_mock = patcher.start()
         self.process = Process(target=start_policy_daemon)
