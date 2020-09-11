@@ -30,6 +30,23 @@ SUCCESS_ACTION = b"dunno"
 FAILURE_ACTION = b"defer_if_permit Daily limit reached, retry later"
 
 
+def close_db_connections(func, *args, **kwargs):
+    """
+    Make sure to close all connections to DB.
+
+    To use in threads.
+    """
+    def _close_db_connections(*args, **kwargs):
+        ret = None
+        try:
+            ret = func(*args, **kwargs)
+        finally:
+            for conn in connections.all():
+                conn.close()
+        return ret
+    return _close_db_connections
+
+
 async def wait_for(dt):
     """sleep until the specified datetime."""
     one_day = 86400
@@ -50,11 +67,13 @@ async def run_at(dt, coro, *args):
     return await coro(*args)
 
 
+@close_db_connections
 def get_local_config():
     """Return local configuration."""
     return core_models.LocalConfig.objects.first()
 
 
+@close_db_connections
 def get_notification_recipients():
     """Return superadmins with a mailbox."""
     return (
@@ -63,6 +82,7 @@ def get_notification_recipients():
     )
 
 
+@close_db_connections
 def create_alarm(ltype, name):
     """Create a new alarm."""
     title = _("Daily sending limit reached")
@@ -76,8 +96,6 @@ def create_alarm(ltype, name):
             address=localpart, domain__name=domain)
         mailbox.alarms.create(
             domain=mailbox.domain, title=title, internal_name=internal_name)
-    for connection in connections.all():
-        connection.close()
 
 
 async def notify_limit_reached(ltype, name):
@@ -198,6 +216,7 @@ def get_next_execution_dt():
         hour=0, minute=0, second=0)
 
 
+@close_db_connections
 def get_domains_to_reset():
     """
     Return a list of domain to reset.
@@ -211,6 +230,7 @@ def get_domains_to_reset():
     return qset
 
 
+@close_db_connections
 def get_mailboxes_to_reset():
     """
     Return a list of mailboxes to reset.
