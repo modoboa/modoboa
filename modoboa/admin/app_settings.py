@@ -116,6 +116,24 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    default_domain_quota = forms.IntegerField(
+        label=ugettext_lazy("Default domain quota"),
+        initial=0,
+        help_text=ugettext_lazy(
+            "Default quota (in MB) applied to freshly created domains with no "
+            "value specified. A value of 0 means no quota."
+        )
+    )
+
+    default_domain_message_limit = forms.IntegerField(
+        label=ugettext_lazy("Default domain sending limit"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Number of messages freshly created domains will be "
+            "allowed to send per day. Leave empty for no limit."
+        )
+    )
+
     mbsep = SeparatorField(label=ugettext_lazy("Mailboxes"))
 
     handle_mailboxes = YesNoField(
@@ -135,21 +153,21 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
-    default_domain_quota = forms.IntegerField(
-        label=ugettext_lazy("Default domain quota"),
-        initial=0,
-        help_text=ugettext_lazy(
-            "Default quota (in MB) applied to freshly created domains with no "
-            "value specified. A value of 0 means no quota."
-        )
-    )
-
     default_mailbox_quota = forms.IntegerField(
         label=ugettext_lazy("Default mailbox quota"),
         initial=0,
         help_text=ugettext_lazy(
             "Default mailbox quota (in MB) applied to freshly created "
             "mailboxes with no value specified. A value of 0 means no quota."
+        )
+    )
+
+    default_mailbox_message_limit = forms.IntegerField(
+        label=ugettext_lazy("Default mailbox sending limit"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Number of messages freshly created mailboxes will be "
+            "allowed to send per day. Leave empty for no limit."
         )
     )
 
