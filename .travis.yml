@@ -3,6 +3,7 @@ python:
   - '3.5'
   - '3.6'
   - '3.7'
+  - '3.8'
 
 env:
   global:
@@ -70,5 +71,5 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    python: '3.7'
+    python: '3.8'
     condition: "$DB = POSTGRESQL"

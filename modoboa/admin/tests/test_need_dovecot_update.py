@@ -19,20 +19,21 @@ class NeedDovecotUpdateTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        super(NeedDovecotUpdateTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def setUp(self):
         """Initiate initial env."""
-        super(NeedDovecotUpdateTestCase, self).setUp()
+        super().setUp()
         self.workdir = tempfile.mkdtemp()
+        self.localconfig.need_dovecot_update = False
+        self.localconfig.save()
 
     def tearDown(self):
         """Reset test env."""
         shutil.rmtree(self.workdir)
 
     def test_update_dovecot_update_state_valid_form(self):
-        self.assertFalse(self.localconfig.need_dovecot_update)
         url = reverse("core:parameters")
         settings = SETTINGS_SAMPLE.copy()
         response = self.client.post(url, settings, format="json")
