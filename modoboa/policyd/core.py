@@ -112,7 +112,7 @@ async def notify_limit_reached(ltype, name):
         loop.run_in_executor(executor, get_notification_recipients),
         loop.run_in_executor(executor, create_alarm, ltype, name),
     ]
-    lc, recipients = await asyncio.gather(*futures)
+    lc, recipients, junk = await asyncio.gather(*futures)
     sender = lc.parameters.get_value("sender_address", app="core")
     for recipient in recipients:
         with translation.override(recipient.language):

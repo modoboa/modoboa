@@ -137,9 +137,9 @@ def domain_actions(user, domain):
     ]
     if domain.alarms.opened().exists():
         actions.append({
-            "name": "listalerts",
+            "name": "listalarms",
             "url": reverse("admin:domain_alarms", args=[domain.pk]),
-            "title": _("View domain's alerts"),
+            "title": _("View domain's alarms"),
             "img": "fa fa-bell"
         })
     if user.has_perm("admin.change_domain"):

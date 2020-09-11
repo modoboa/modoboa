@@ -353,9 +353,12 @@ class DomainTestCase(ModoTestCase):
 
     def test_page_loader(self):
         """Test page loader view."""
+        factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
         url = reverse("admin:domain_page")
         response = self.ajax_get(url)
         self.assertIn("handle_mailboxes", response)
+        self.assertIn("listalarms", response["rows"])
         response = self.ajax_get("{}?objtype=quota".format(url))
         self.assertIn("progress-bar", response["rows"])
 
