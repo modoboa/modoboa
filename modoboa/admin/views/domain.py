@@ -244,3 +244,19 @@ class DomainDetailView(
                 context.update(widget["context"])
 
         return context
+
+
+class DomainAlarmsView(
+        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+    """A view to list domain alarms."""
+
+    model = Domain
+    permission_required = "admin.view_domain"
+    template_name = "admin/domain_alarms.html"
+
+    def get_queryset(self):
+        """Add some prefetching."""
+        return (
+            Domain.objects.get_for_admin(self.request.user)
+            .prefetch_related("alarms")
+        )

@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.utils import translation
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from modoboa.admin import constants as admin_constants
 from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
 from modoboa.lib.email_utils import split_mailbox
@@ -61,6 +62,21 @@ def get_notification_recipients():
     )
 
 
+def create_alarm(ltype, name):
+    """Create a new alarm."""
+    title = _("Daily sending limit reached")
+    internal_name = "sending_limit"
+    if ltype == "domain":
+        domain = admin_models.Domain.objects.get(name=name)
+        domain.alarms.create(title=title, internal_name=internal_name)
+    else:
+        localpart, domain = split_mailbox(name)
+        mailbox = admin_models.Mailbox.objects.get(
+            address=localpart, domain__name=domain)
+        mailbox.alarms.create(
+            domain=mailbox.domain, title=title, internal_name=internal_name)
+
+
 async def notify_limit_reached(ltype, name):
     """Send a notification to super admins about item."""
     ltype_translations = {
@@ -72,7 +88,8 @@ async def notify_limit_reached(ltype, name):
     loop = asyncio.get_event_loop()
     futures = [
         loop.run_in_executor(executor, get_local_config),
-        loop.run_in_executor(executor, get_notification_recipients)
+        loop.run_in_executor(executor, get_notification_recipients),
+        loop.run_in_executor(executor, create_alarm, ltype, name),
     ]
     lc, recipients = await asyncio.gather(*futures)
     sender = lc.parameters.get_value("sender_address", app="core")
@@ -179,16 +196,32 @@ def get_next_execution_dt():
 
 
 def get_domains_to_reset():
-    """Return a list of domain to reset."""
-    return admin_models.Domain.objects.filter(message_limit__isnull=False)
+    """
+    Return a list of domain to reset.
+
+    We also close all associated alarms.
+    """
+    qset = admin_models.Domain.objects.filter(message_limit__isnull=False)
+    admin_models.Alarm.objects.filter(
+        internal_name="limit_reached", domain__in=qset).update(
+            status=admin_constants.ALARM_CLOSED, closed=timezone.now())
+    return qset
 
 
 def get_mailboxes_to_reset():
-    """Return a list of mailboxes to reset."""
-    return (
+    """
+    Return a list of mailboxes to reset.
+
+    We also close all associated alarms.
+    """
+    qset = (
         admin_models.Mailbox.objects.filter(message_limit__isnull=False)
         .select_related("domain")
     )
+    admin_models.Alarm.objects.filter(
+        internal_name="limit_reached", mailbox__in=qset).update(
+            status=admin_constants.ALARM_CLOSED, closed=timezone.now())
+    return qset
 
 
 async def reset_counters():

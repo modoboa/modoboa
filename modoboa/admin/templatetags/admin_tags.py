@@ -133,8 +133,15 @@ def domain_actions(user, domain):
          "url": u"{0}#list/?searchquery=@{1}".format(
              reverse("admin:identity_list"), domain.name),
          "title": _("View the domain's identities"),
-         "img": "fa fa-user"}
+         "img": "fa fa-user"},
     ]
+    if domain.alarms.opened().exists():
+        actions.append({
+            "name": "listalerts",
+            "url": reverse("admin:domain_alarms", args=[domain.pk]),
+            "title": _("View domain's alerts"),
+            "img": "fa fa-bell"
+        })
     if user.has_perm("admin.change_domain"):
         actions.append({
             "name": "editdomain",
