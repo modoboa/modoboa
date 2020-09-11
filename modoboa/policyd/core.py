@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 import aioredis
 
 from django.conf import settings
+from django.db import connections
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils import translation
@@ -75,6 +76,8 @@ def create_alarm(ltype, name):
             address=localpart, domain__name=domain)
         mailbox.alarms.create(
             domain=mailbox.domain, title=title, internal_name=internal_name)
+    for connection in connections.all():
+        connection.close()
 
 
 async def notify_limit_reached(ltype, name):
