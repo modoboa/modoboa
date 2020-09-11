@@ -15,6 +15,8 @@ urlpatterns = [
     path('domains/', domain_views.domains, name="domain_list"),
     path('domains/<int:pk>/', views.DomainDetailView.as_view(),
          name="domain_detail"),
+    path('domains/<int:pk>/alarms/', views.DomainAlarmsView.as_view(),
+         name="domain_alarms"),
     path('domains/<int:pk>/dnsbl/', views.DNSBLDomainDetailView.as_view(),
          name="dnsbl_domain_detail"),
     path('domains/<int:pk>/mx/', views.MXDomainDetailView.as_view(),

@@ -6,9 +6,7 @@ from email.header import Header
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django.utils.encoding import (
-    force_str, python_2_unicode_compatible, smart_bytes, smart_text
-)
+from django.utils.encoding import force_str, smart_bytes, smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -34,7 +32,6 @@ except ImportError:
     ldap_available = False
 
 
-@python_2_unicode_compatible
 class User(AbstractUser):
 
     """Custom User model.
@@ -409,7 +406,6 @@ def populate_callback(user, group="SimpleUsers"):
         sender="populate_callback", user=user)
 
 
-@python_2_unicode_compatible
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)

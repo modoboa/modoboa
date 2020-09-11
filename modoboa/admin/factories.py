@@ -70,6 +70,16 @@ class SenderAddressFactory(factory.django.DjangoModelFactory):
         model = models.SenderAddress
 
 
+class AlarmFactory(factory.django.DjangoModelFactory):
+    """Factory for Alarm model."""
+
+    domain = factory.SubFactory(DomainFactory)
+    mailbox = factory.SubFactory(MailboxFactory)
+
+    class Meta:
+        model = models.Alarm
+
+
 def populate_database():
     """Create test data.
 
