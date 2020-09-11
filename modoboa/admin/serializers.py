@@ -86,7 +86,14 @@ class DomainSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Set permissions."""
+        params = dict(param_tools.get_global_parameters("admin"))
         domain = models.Domain(**validated_data)
+        condition = (
+            params["default_domain_message_limit"] is not None and
+            "message_limit" not in validated_data
+        )
+        if condition:
+            domain.message_limit = params["default_domain_message_limit"]
         creator = self.context["request"].user
         core_signals.can_create_object.send(
             sender=self.__class__, context=creator,
@@ -327,6 +334,10 @@ class WritableAccountSerializer(AccountSerializer):
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
         mb.set_quota(quota, creator.has_perm("admin.add_domain"))
+        default_msg_limit = param_tools.get_global_parameter(
+            "default_mailbox_message_limit")
+        if default_msg_limit is not None:
+            mb.message_limit = default_msg_limit
         mb.save(creator=creator)
         account.email = full_address
         return mb

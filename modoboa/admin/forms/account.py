@@ -272,6 +272,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         self.field_widths = {
             "quota": 3
         }
+        params = dict(param_tools.get_global_parameters("admin"))
         if self.mb is not None:
             self.fields["email"].required = True
             qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
@@ -292,12 +293,14 @@ class AccountFormMail(forms.Form, DynamicForm):
             if self.mb.message_limit:
                 self.fields["message_limit"].initial = self.mb.message_limit
             self.fields["create_alias_with_old_address"].initial = (
-                param_tools.get_global_parameter(
-                    "create_alias_on_mbox_rename")
+                params["create_alias_on_mbox_rename"]
             )
         else:
             del self.fields["create_alias_with_old_address"]
             self.fields["quota_act"].initial = True
+            if params["default_mailbox_message_limit"] is not None:
+                self.fields["message_limit"].initial = (
+                    params["default_mailbox_message_limit"])
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(

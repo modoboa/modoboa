@@ -70,6 +70,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
         params = dict(param_tools.get_global_parameters("admin"))
         self.fields["quota"].initial = params["default_domain_quota"]
+        if params["default_domain_message_limit"] is not None:
+            self.fields["message_limit"].initial = (
+                params["default_domain_message_limit"])
         self.fields["default_mailbox_quota"].initial = (
             params["default_mailbox_quota"])
         self.fields["type"].choices = constants.DOMAIN_TYPES
