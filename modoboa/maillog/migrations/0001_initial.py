@@ -24,8 +24,8 @@ class Migration(migrations.Migration):
                 ('original_rcpt', models.EmailField(max_length=254, null=True)),
                 ('size', models.PositiveIntegerField()),
                 ('status', models.CharField(max_length=15)),
-                ('from_domain', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='sent_messages', to='admin.Domain')),
-                ('to_domain', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='recv_messages', to='admin.Domain')),
+                ('from_domain', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='sent_messages_log', to='admin.Domain')),
+                ('to_domain', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='recv_messages_log', to='admin.Domain')),
             ],
             options={
                 'ordering': ['date'],

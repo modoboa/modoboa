@@ -16,11 +16,11 @@ class Maillog(models.Model):
 
     from_domain = models.ForeignKey(
         "admin.Domain", on_delete=models.SET_NULL, null=True,
-        related_name="sent_messages"
+        related_name="sent_messages_log"
     )
     to_domain = models.ForeignKey(
         "admin.Domain", on_delete=models.SET_NULL, null=True,
-        related_name="recv_messages"
+        related_name="recv_messages_log"
     )
 
     class Meta:
