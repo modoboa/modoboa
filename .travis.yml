@@ -22,6 +22,8 @@ addons:
       - ldap-utils
       - postfix
       - slapd
+      - librrd-dev
+      - rrdtool
 
 cache: pip
 
@@ -50,7 +52,7 @@ before_script:
 script:
   - python ./tests.py
   - cd test_project
-  - coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd
+  - coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
 
 after_success:
   - coverage combine

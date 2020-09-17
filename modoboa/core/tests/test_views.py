@@ -89,7 +89,10 @@ SETTINGS_SAMPLE = {
     "core-sms_provider": "",
     "core-sms_ovh_endpoint": "ovh-eu",
     "core-password_recovery_msg": "",
-    "core-ldap_dovecot_sync": False
+    "core-ldap_dovecot_sync": False,
+    "maillog-logfile": "/var/log/mail.log",
+    "maillog-rrd_rootdir": "/tmp",
+    "maillog-greylist": False,
 }
 
 

@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# sin88 <sin@sin.waw.pl>, 2016
+# Tomasz Proć <tomasz.proc@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-17 11:24+0200\n"
+"PO-Revision-Date: 2017-12-01 16:06+0000\n"
+"Last-Translator: Tomasz Proć <tomasz.proc@gmail.com>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/"
+"language/pl_PL/)\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: forms.py:20
+msgid "General"
+msgstr "Ogólne"
+
+#: forms.py:23
+msgid "Path to the log file"
+msgstr "Ścieżka do pliku z logiem"
+
+#: forms.py:25
+msgid "Path to log file used to collect statistics"
+msgstr "Sćieżka do pliku z logiem dla colect "
+
+#: forms.py:30
+msgid "Directory to store RRD files"
+msgstr "Katalog do przechowywania plików RRD"
+
+#: forms.py:33
+msgid "Path to directory where RRD files are stored"
+msgstr "Katalog gdzie przechowywane są pliki RRD"
+
+#: forms.py:38
+msgid "Show greylisted messages"
+msgstr "Pokaż greylistowane wiadomości"
+
+#: forms.py:41
+msgid "Differentiate between hard and soft rejects (greylisting)"
+msgstr "Rozróżniaj twarde i miękkie odrzuty (greylisting)"
+
+#: forms.py:59 handlers.py:22
+msgid "Statistics"
+msgstr "Statystyki"
+
+#: graphics.py:95
+msgid "Failed to locate rrdtool binary."
+msgstr "Nie znaleziono binarki rrdtool."
+
+#: graphics.py:174
+msgid "Average traffic (msgs/min)"
+msgstr "Średni ruch (wiadomości/minutę)"
+
+#: graphics.py:177
+msgid "sent messages"
+msgstr "Wysłane wiadomości"
+
+#: graphics.py:178
+msgid "received messages"
+msgstr "Odebrane wiadomości"
+
+#: graphics.py:179
+msgid "bounced messages"
+msgstr "Odbite wiadomości"
+
+#: graphics.py:180
+msgid "rejected messages"
+msgstr "Odrzucone wiadomości"
+
+#: graphics.py:181
+msgid "virus messages"
+msgstr "wiadomości zawirusowane"
+
+#: graphics.py:182
+msgid "spam messages"
+msgstr "wiadomości spam"
+
+#: graphics.py:189
+msgid "greylisted messages"
+msgstr "wiadomości opóźnione (greylisting)"
+
+#: graphics.py:200
+msgid "Average normal traffic size (bytes/min)"
+msgstr "Średnia normalna wielkość ruchu (bajtów/min)"
+
+#: graphics.py:203
+msgid "received size"
+msgstr "Ilość odebranych danych"
+
+#: graphics.py:205
+msgid "sent size"
+msgstr "Ilość wysłanych danych"
+
+#: graphics.py:213
+msgid "Mail traffic"
+msgstr "Ruch e-mail"
+
+#: graphics.py:258
+msgid "Average account creation (account/hour)"
+msgstr "Średnia ilość tworzonych kont (konto/godzina)"
+
+#: graphics.py:261
+msgid "New accounts"
+msgstr "Nowe konta"
+
+#: graphics.py:268
+msgid "Accounts"
+msgstr "Konta"
+
+#: templates/maillog/index.html:4
+msgid "Graphical statistics"
+msgstr "Graficzne statytyki"
+
+#: templates/maillog/index.html:44
+msgid "Search a domain"
+msgstr "Wyszukaj domenę"
+
+#: templates/maillog/index.html:77
+msgid "Apply"
+msgstr "Zastosuj"
+
+#: views.py:33
+msgid "No statistics available"
+msgstr "Brak dostępnych statysty"
+
+#: views.py:40
+msgid "Day"
+msgstr "Dzień"
+
+#: views.py:41
+msgid "Week"
+msgstr "Tydzień"
+
+#: views.py:42
+msgid "Month"
+msgstr "Miesiąc"
+
+#: views.py:43
+msgid "Year"
+msgstr "Rok"
+
+#: views.py:44
+msgid "Custom"
+msgstr "Własne"
+
+#: views.py:63
+msgid "Unknown graphic set"
+msgstr "Unknown graphic set"
+
+#: views.py:68
+#, fuzzy
+#| msgid "Unknown graphic set"
+msgid "Unknown domain"
+msgstr "Unknown graphic set"
+
+#: views.py:73
+msgid "Bad custom period"
+msgstr "Nieprawudłowy przedział czasowy"
+
+#~ msgid "Graphical statistics about emails traffic using RRDtool"
+#~ msgstr "Graficzne statystyki wiadomości z wykorzystaniem "
