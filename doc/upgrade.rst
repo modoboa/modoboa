@@ -124,6 +124,28 @@ Add the following settings to your ``settings.py`` file:
    REDIS_QUOTA_DB = 0
    REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
+The ``modoboa-stats`` plugin has been merged into the core.
+
+Add ``'modoboa.maillog'`` to ``MODOBOA_APPS``:
+
+.. sourcecode:: python
+
+   MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+      'modoboa.dnstools',
+      'modoboa.policyd',
+      'modoboa.maillog',
+   )
+
+And remove any reference to ``modoboa_stats`` in this same variable.
+
 1.15.0
 ======
 
