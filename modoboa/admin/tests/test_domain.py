@@ -16,6 +16,8 @@ from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
+from modoboa.maillog import factories as ml_factories
+
 from . import utils
 from .. import factories
 from ..models import Alias, Domain
@@ -334,6 +336,30 @@ class DomainTestCase(ModoTestCase):
         self.assertNotEqual(old_rows, response["rows"])
 
         response = self.ajax_get("{}?sort_order=allocated_quota".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+    def test_domain_logs_list_view(self):
+        """Test logs list view."""
+        domain = Domain.objects.get(name="test.com")
+        ml_factories.MaillogFactory(from_domain=domain)
+        ml_factories.MaillogFactory(to_domain=domain, status="received")
+        ml_factories.MaillogFactory()
+        ml_factories.MaillogFactory()
+        url = reverse("admin:domain_logs_list")
+        response = self.ajax_get(url)
+        self.assertIn("ID1", response["rows"])
+
+        old_rows = response["rows"]
+        response = self.ajax_get("{}?sort_order=-sender".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+        response = self.ajax_get("{}?searchquery=ID1".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+        admin = User.objects.get(username="admin@test.com")
+        self.client.force_login(admin)
+        url = reverse("admin:domain_logs_list")
+        response = self.ajax_get(url)
         self.assertNotEqual(old_rows, response["rows"])
 
     def test_statitics_widget(self):

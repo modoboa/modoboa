@@ -28,6 +28,7 @@ chardet
 ovh
 oath
 redis
+rrdtool>=0.1.11
 
 aiosmtplib
 aioredis

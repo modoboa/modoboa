@@ -79,6 +79,7 @@ MODOBOA_APPS = (
     'modoboa.parameters',
     'modoboa.dnstools',
     'modoboa.policyd',
+    'modoboa.maillog',
     # Modoboa extensions here.
 )
 

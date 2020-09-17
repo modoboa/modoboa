@@ -36,10 +36,12 @@ def domains_menu(selection, user, ajax_mode=True):
     if ajax_mode:
         domain_list_url = "list/"
         quota_list_url = "quotas/"
+        logs_url = "logs/"
         nav_classes += " ajaxnav"
     else:
         domain_list_url = reverse("admin:domain_list")
         quota_list_url = domain_list_url + "#quotas/"
+        logs_url = domain_list_url + "#logs/"
     entries = [
         {"name": "domains",
          "label": _("List domains"),
@@ -51,6 +53,11 @@ def domains_menu(selection, user, ajax_mode=True):
          "img": "fa fa-hdd-o",
          "class": "ajaxnav navigation",
          "url": quota_list_url},
+        {"name": "logs",
+         "label": _("Message logs"),
+         "img": "fa fa-list",
+         "class": "ajaxnav navigation",
+         "url": logs_url},
     ]
     if user.has_perm("admin.add_domain"):
         extra_entries = signals.extra_domain_menu_entries.send(

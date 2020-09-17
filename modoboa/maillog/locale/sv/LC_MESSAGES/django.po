@@ -1,0 +1,179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Martin Persson <martin.jens.persson@gmail.com>, 2014
+# Olle Gustafsson <olle@dalnix.se>, 2013
+# Olle Gustafsson <olle@dalnix.se>, 2013,2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-17 11:24+0200\n"
+"PO-Revision-Date: 2015-01-13 15:18+0000\n"
+"Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
+"Language-Team: Swedish (http://www.transifex.com/projects/p/modoboa/language/"
+"sv/)\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:20
+msgid "General"
+msgstr "Generellt"
+
+#: forms.py:23
+msgid "Path to the log file"
+msgstr "Sökväg till loggfil"
+
+#: forms.py:25
+msgid "Path to log file used to collect statistics"
+msgstr "Sökväg till loggfil som används för att samla in statistik"
+
+#: forms.py:30
+msgid "Directory to store RRD files"
+msgstr "Katalog för lagring av RRD filer"
+
+#: forms.py:33
+msgid "Path to directory where RRD files are stored"
+msgstr "Sökväg till katalog där RRD filer lagras"
+
+#: forms.py:38
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Show greylisted messages"
+msgstr "avvisade meddelanden"
+
+#: forms.py:41
+msgid "Differentiate between hard and soft rejects (greylisting)"
+msgstr ""
+
+#: forms.py:59 handlers.py:22
+msgid "Statistics"
+msgstr "Statistik"
+
+#: graphics.py:95
+msgid "Failed to locate rrdtool binary."
+msgstr ""
+
+#: graphics.py:174
+msgid "Average traffic (msgs/min)"
+msgstr "Genomsnittlig trafik (meddelanden/min)"
+
+#: graphics.py:177
+msgid "sent messages"
+msgstr "skickade meddelanden"
+
+#: graphics.py:178
+msgid "received messages"
+msgstr "mottagna meddelande"
+
+#: graphics.py:179
+msgid "bounced messages"
+msgstr "studsade meddelanden"
+
+#: graphics.py:180
+msgid "rejected messages"
+msgstr "avvisade meddelanden"
+
+#: graphics.py:181
+#, fuzzy
+#| msgid "sent messages"
+msgid "virus messages"
+msgstr "skickade meddelanden"
+
+#: graphics.py:182
+#, fuzzy
+#| msgid "sent messages"
+msgid "spam messages"
+msgstr "skickade meddelanden"
+
+#: graphics.py:189
+#, fuzzy
+#| msgid "rejected messages"
+msgid "greylisted messages"
+msgstr "avvisade meddelanden"
+
+#: graphics.py:200
+msgid "Average normal traffic size (bytes/min)"
+msgstr "Genomsnittlig normal trafik (bytes/min)"
+
+#: graphics.py:203
+msgid "received size"
+msgstr "mottagen storlek"
+
+#: graphics.py:205
+msgid "sent size"
+msgstr "sänd storlek"
+
+#: graphics.py:213
+msgid "Mail traffic"
+msgstr "Mail trafik"
+
+#: graphics.py:258
+msgid "Average account creation (account/hour)"
+msgstr ""
+
+#: graphics.py:261
+msgid "New accounts"
+msgstr ""
+
+#: graphics.py:268
+msgid "Accounts"
+msgstr ""
+
+#: templates/maillog/index.html:4
+msgid "Graphical statistics"
+msgstr "Grafisk statistik"
+
+#: templates/maillog/index.html:44
+msgid "Search a domain"
+msgstr "Sök en domän"
+
+#: templates/maillog/index.html:77
+msgid "Apply"
+msgstr "Applicera"
+
+#: views.py:33
+msgid "No statistics available"
+msgstr "Ingen statistik tillgänglig"
+
+#: views.py:40
+msgid "Day"
+msgstr "Dag"
+
+#: views.py:41
+msgid "Week"
+msgstr "Vecka"
+
+#: views.py:42
+msgid "Month"
+msgstr "Månad"
+
+#: views.py:43
+msgid "Year"
+msgstr "År"
+
+#: views.py:44
+msgid "Custom"
+msgstr "Anpassad"
+
+#: views.py:63
+msgid "Unknown graphic set"
+msgstr "Okänt grafisk uppsättning"
+
+#: views.py:68
+#, fuzzy
+#| msgid "Unknown graphic set"
+msgid "Unknown domain"
+msgstr "Okänt grafisk uppsättning"
+
+#: views.py:73
+msgid "Bad custom period"
+msgstr "Ogiltig anpassad tid"
+
+#~ msgid "Graphical statistics about emails traffic using RRDtool"
+#~ msgstr "Grafisk statistik om e-post trafik med hjälp av RRDtool"
