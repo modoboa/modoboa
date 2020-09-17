@@ -1,0 +1,519 @@
+%(day)s 11:00:20 server postfix/cleanup[28945]: A0320E00C3: message-id=<cm.2100050552286.huticd.jyidyhxuy.y@cmail19.com>
+%(day)s 11:00:20 server postfix/qmgr[26163]: A0320E00C3: from=<visitbrussels-huticd1jyidyhxuy1y@cmail19.com>, size=142646, nrcpt=1 (queue active)
+%(day)s 11:00:20 server postfix/smtpd[28944]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:00:20 server amavis[14540]: (14540-09) Passed CLEAN {RelayedInbound}, [103.28.42.139]:56540 [103.28.42.139] <visitbrussels-huticd1jyidyhxuy1y@cmail19.com> -> <user@test.com>, Message-ID: <cm.2100050552286.huticd.jyidyhxuy.y@cmail19.com>, Hits: -1.481, size: 142067, queued_as: A0320E00C3, dkim_sd=cm:mailing.agenda.be, 10172 ms
+%(day)s 11:00:20 server postfix/smtpd[28914]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as A0320E00C3; from=<visitbrussels-huticd1jyidyhxuy1y@cmail19.com> to=<user@test.com> proto=ESMTP helo=<mx139.g.outbound.createsend.com>
+%(day)s 11:00:20 server dovecot: lmtp(30301): Connect from local
+%(day)s 11:00:20 server postfix/smtpd[28914]: disconnect from mx139.g.outbound.createsend.com[103.28.42.139] ehlo=1 mail=1 rcpt=1 data=1 quit=1 commands=5
+%(day)s 11:00:20 server dovecot: lmtp(user@test.com): z5FOLrRhDVpddgAABvoInA: sieve: msgid=<cm.2100050552286.huticd.jyidyhxuy.y@cmail19.com>: stored mail into mailbox 'notifications'
+%(day)s 11:00:20 server postfix/lmtp[28946]: A0320E00C3: to=<user@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.32, delays=0.11/0.01/0.01/0.2, dsn=2.0.0, status=sent (250 2.0.0 <user@test.com> z5FOLrRhDVpddgAABvoInA Saved)
+%(day)s 11:00:20 server dovecot: lmtp(30301): Disconnect from local: Successful quit
+%(day)s 11:00:20 server postfix/qmgr[26163]: A0320E00C3: removed
+%(day)s 11:03:05 server postfix/postscreen[30620]: CONNECT from [207.154.235.157]:54810 to [94.23.45.181]:25
+%(day)s 11:03:11 server postfix/postscreen[30620]: PASS OLD [207.154.235.157]:54810
+%(day)s 11:03:12 server postfix/smtpd[30624]: connect from misas5.babino.pl[207.154.235.157]
+%(day)s 11:03:12 server postfix/smtpd[30624]: warning: 157.235.154.207.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=157.235.154.207.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:03:12 server postfix/cleanup[30637]: 2847EE008E: message-id=<20171116100312.2847EE008E@mail.koalabs.org>
+%(day)s 11:03:12 server postfix/qmgr[26163]: 2847EE008E: from=<double-bounce@mail.koalabs.org>, size=271, nrcpt=1 (queue active)
+%(day)s 11:03:12 server policyd-spf[30640]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.154.235.157; helo=misas5.babino.pl; envelope-from=zwroty@babino.pl; receiver=<UNKNOWN>
+%(day)s 11:03:12 server postfix/smtpd[30624]: NOQUEUE: client=misas5.babino.pl[207.154.235.157]
+%(day)s 11:03:15 server postfix/smtpd[30647]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:03:15 server postfix/smtpd[30647]: 1FEB7E00C4: client=localhost.localdomain[127.0.0.1], orig_client=misas5.babino.pl[207.154.235.157]
+%(day)s 11:03:15 server postfix/cleanup[30637]: 1FEB7E00C4: message-id=<de35d4cf3b0862e276fc1afc2f0c14d6@link.crazygecko.pl>
+%(day)s 11:03:15 server postfix/qmgr[26163]: 1FEB7E00C4: from=<zwroty@babino.pl>, size=53549, nrcpt=1 (queue active)
+%(day)s 11:03:15 server postfix/smtpd[30647]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:03:15 server amavis[19749]: (19749-18) Passed SPAM {RelayedTaggedInbound}, [207.154.235.157]:54810 [207.154.235.157] <zwroty@babino.pl> -> <info@test2.com>, Message-ID: <de35d4cf3b0862e276fc1afc2f0c14d6@link.crazygecko.pl>, Hits: 6.89, size: 52477, queued_as: 1FEB7E00C4, dkim_sd=1509955623.babino:babino.pl, 2365 ms
+%(day)s 11:03:15 server postfix/smtpd[30624]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 1FEB7E00C4; from=<zwroty@babino.pl> to=<info@test2.com> proto=ESMTP helo=<misas5.babino.pl>
+%(day)s 11:03:15 server postfix/smtpd[30624]: disconnect from misas5.babino.pl[207.154.235.157] ehlo=1 mail=1 rcpt=1 data=1 quit=1 commands=5
+%(day)s 11:03:18 server postfix/smtp[30639]: Anonymous TLS connection established to mail.domain.test[94.23.191.34]:25: TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:03:18 server postfix/smtp[30639]: 2847EE008E: to=<info@test2.com>, relay=mail.domain.test[94.23.191.34]:25, delay=6.3, delays=0.04/0.01/6/0.19, dsn=2.1.5, status=deliverable (250 2.1.5 Ok)
+%(day)s 11:03:18 server postfix/qmgr[26163]: 2847EE008E: removed
+%(day)s 11:03:21 server postfix/smtp[30648]: Anonymous TLS connection established to mail.domain.test[94.23.191.34]:25: TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:03:26 server postfix/smtp[30648]: 1FEB7E00C4: to=<info@test2.com>, relay=mail.domain.test[94.23.191.34]:25, delay=11, delays=0.05/0.01/6.1/5.2, dsn=2.0.0, status=sent (250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 5DDDA1F30002)
+%(day)s 11:03:26 server postfix/qmgr[26163]: 1FEB7E00C4: removed
+%(day)s 11:04:01 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=30726, secured, session=<QlNHvRZeMMd/AAAB>
+%(day)s 11:04:01 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:04:01 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=30742, secured, session=<2fBIvRZeMcd/AAAB>
+%(day)s 11:04:01 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:04:01 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=30754, secured, session=<YFdKvRZeMsd/AAAB>
+%(day)s 11:04:01 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:04:15 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=30828, secured, session=<zUgbvhZeXcd/AAAB>
+%(day)s 11:04:18 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=30866, secured, session=<XKFHvhZeasd/AAAB>
+%(day)s 11:04:32 server postfix/postscreen[30620]: CONNECT from [127.0.0.1]:53903 to [127.0.0.1]:25
+%(day)s 11:04:32 server postfix/postscreen[30620]: WHITELISTED [127.0.0.1]:53903
+%(day)s 11:04:32 server postfix/smtpd[30624]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server opendmarc[4245]: ignoring connection from localhost.localdomain
+%(day)s 11:04:32 server postfix/smtpd[30624]: NOQUEUE: client=localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server postfix/smtpd[30647]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server postfix/smtpd[30647]: 8D1B3E008E: client=localhost.localdomain[127.0.0.1], orig_client=localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server postfix/cleanup[30637]: 8D1B3E008E: message-id=<20171116100432.10564.83744@server.ngyn.org>
+%(day)s 11:04:32 server postfix/smtpd[30647]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:04:32 server postfix/qmgr[26163]: 8D1B3E008E: from=<root@localhost>, size=18506, nrcpt=1 (queue active)
+%(day)s 11:04:32 server amavis[21816]: (21816-19) Passed CLEAN {RelayedInternal}, MYNETS LOCAL [127.0.0.1]:53903 <root@localhost> -> <admin@test.com>, Message-ID: <20171116100432.10564.83744@server.ngyn.org>, Hits: -, size: 18043, queued_as: 8D1B3E008E, 102 ms
+%(day)s 11:04:32 server postfix/smtpd[30624]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 8D1B3E008E; from=<root@localhost> to=<admin@test.com> proto=ESMTP helo=<server.ngyn.org>
+%(day)s 11:04:32 server postfix/smtpd[30624]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 mail=1 rcpt=1 data=1 quit=1 commands=5
+%(day)s 11:04:32 server dovecot: lmtp(30933): Connect from local
+%(day)s 11:04:32 server postfix/postscreen[30620]: CONNECT from [127.0.0.1]:53914 to [127.0.0.1]:25
+%(day)s 11:04:32 server postfix/postscreen[30620]: WHITELISTED [127.0.0.1]:53914
+%(day)s 11:04:32 server postfix/smtpd[30624]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server opendmarc[4245]: ignoring connection from localhost.localdomain
+%(day)s 11:04:32 server postfix/smtpd[30624]: NOQUEUE: client=localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server postfix/smtpd[30647]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server postfix/smtpd[30647]: AA7FDE00C4: client=localhost.localdomain[127.0.0.1], orig_client=localhost.localdomain[127.0.0.1]
+%(day)s 11:04:32 server postfix/cleanup[30637]: AA7FDE00C4: message-id=<20171116100432.10564.58862@server.ngyn.org>
+%(day)s 11:04:32 server postfix/smtpd[30647]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:04:32 server postfix/qmgr[26163]: AA7FDE00C4: from=<root@localhost>, size=18506, nrcpt=1 (queue active)
+%(day)s 11:04:32 server amavis[5246]: (05246-16) Passed CLEAN {RelayedInternal}, MYNETS LOCAL [127.0.0.1]:53914 <root@localhost> -> <admin@test.com>, Message-ID: <20171116100432.10564.58862@server.ngyn.org>, Hits: -, size: 18043, queued_as: AA7FDE00C4, 79 ms
+%(day)s 11:04:32 server postfix/smtpd[30624]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as AA7FDE00C4; from=<root@localhost> to=<admin@test.com> proto=ESMTP helo=<server.ngyn.org>
+%(day)s 11:04:32 server postfix/smtpd[30624]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 mail=1 rcpt=1 data=1 quit=1 commands=5
+%(day)s 11:04:32 server dovecot: lmtp(30937): Connect from local
+%(day)s 11:04:32 server dovecot: lmtp(admin@test.com): cqWOJrBiDVrVeAAABvoInA: sieve: msgid=<20171116100432.10564.83744@server.ngyn.org>: stored mail into mailbox 'Koalabs'
+%(day)s 11:04:32 server dovecot: lmtp(30933): Disconnect from local: Successful quit
+%(day)s 11:04:32 server postfix/lmtp[30932]: 8D1B3E008E: to=<admin@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.26, delays=0.06/0.01/0.01/0.19, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> cqWOJrBiDVrVeAAABvoInA Saved)
+%(day)s 11:04:32 server postfix/qmgr[26163]: 8D1B3E008E: removed
+%(day)s 11:04:32 server dovecot: lmtp(admin@test.com): ES02LbBiDVrZeAAABvoInA: sieve: msgid=<20171116100432.10564.58862@server.ngyn.org>: stored mail into mailbox 'Koalabs'
+%(day)s 11:04:32 server dovecot: lmtp(30937): Disconnect from local: Successful quit
+%(day)s 11:04:32 server postfix/lmtp[30936]: AA7FDE00C4: to=<admin@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.22, delays=0.05/0/0.01/0.16, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> ES02LbBiDVrZeAAABvoInA Saved)
+%(day)s 11:04:32 server postfix/qmgr[26163]: AA7FDE00C4: removed
+%(day)s 11:06:45 server postfix/postscreen[31171]: CONNECT from [185.5.53.87]:58092 to [94.23.45.181]:25
+%(day)s 11:06:45 server postfix/postscreen[31171]: PASS OLD [185.5.53.87]:58092
+%(day)s 11:06:45 server postfix/smtpd[31172]: connect from main.nope.org.es[185.5.53.87]
+%(day)s 11:06:45 server postfix/smtpd[31172]: Anonymous TLS connection established from main.nope.org.es[185.5.53.87]: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:06:45 server postfix/smtpd[31172]: warning: 87.53.5.185.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=87.53.5.185.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:06:46 server policyd-spf[31184]: prepend Received-SPF: None (no SPF record) identity=no SPF record; client-ip=185.5.53.87; helo=main.nope.org.es; envelope-from=<>; receiver=<UNKNOWN>
+%(day)s 11:06:46 server postfix/smtpd[31172]: NOQUEUE: client=main.nope.org.es[185.5.53.87]
+%(day)s 11:06:51 server postfix/smtpd[31201]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:06:51 server postfix/smtpd[31201]: AA3E6E00C3: client=localhost.localdomain[127.0.0.1], orig_client=main.nope.org.es[185.5.53.87]
+%(day)s 11:06:51 server postfix/cleanup[31202]: AA3E6E00C3: message-id=<201711161006.vAGA6jpH019527@main.nope.org.es>
+%(day)s 11:06:51 server postfix/smtpd[31201]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:06:51 server postfix/qmgr[26163]: AA3E6E00C3: from=<>, size=3194, nrcpt=1 (queue active)
+%(day)s 11:06:51 server amavis[14540]: (14540-10) Passed CLEAN {RelayedInbound}, [185.5.53.87]:58092 [185.5.53.87] <> -> <noreply@modoboa.org>, Message-ID: <201711161006.vAGA6jpH019527@main.nope.org.es>, Hits: -1.889, size: 2718, queued_as: AA3E6E00C3, 5178 ms
+%(day)s 11:06:51 server postfix/smtpd[31172]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as AA3E6E00C3; from=<> to=<noreply@modoboa.org> proto=ESMTP helo=<main.nope.org.es>
+%(day)s 11:06:51 server dovecot: lmtp(31204): Connect from local
+%(day)s 11:06:51 server dovecot: lmtp(admin@test.com): wUc3LDtjDVrkeQAABvoInA: sieve: msgid=<201711161006.vAGA6jpH019527@main.nope.org.es>: not sending reject message to <>
+%(day)s 11:06:51 server postfix/lmtp[31203]: AA3E6E00C3: to=<admin@test.com>, orig_to=<noreply@modoboa.org>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.07, delays=0.04/0.01/0.01/0.01, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> wUc3LDtjDVrkeQAABvoInA Saved)
+%(day)s 11:06:51 server dovecot: lmtp(31204): Disconnect from local: Successful quit
+%(day)s 11:06:51 server postfix/qmgr[26163]: AA3E6E00C3: removed
+%(day)s 11:06:52 server policyd-spf[31184]: prepend Received-SPF: None (no SPF record) identity=no SPF record; client-ip=185.5.53.87; helo=main.nope.org.es; envelope-from=<>; receiver=<UNKNOWN>
+%(day)s 11:06:52 server postfix/smtpd[31172]: NOQUEUE: client=main.nope.org.es[185.5.53.87]
+%(day)s 11:06:54 server postfix/smtpd[31201]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:06:54 server postfix/smtpd[31201]: 94D70E00C3: client=localhost.localdomain[127.0.0.1], orig_client=main.nope.org.es[185.5.53.87]
+%(day)s 11:06:54 server postfix/cleanup[31202]: 94D70E00C3: message-id=<201711161006.vAGA6jpI019527@main.nope.org.es>
+%(day)s 11:06:54 server postfix/smtpd[31201]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:06:54 server postfix/qmgr[26163]: 94D70E00C3: from=<>, size=2988, nrcpt=1 (queue active)
+%(day)s 11:06:54 server dovecot: lmtp(31204): Connect from local
+%(day)s 11:06:54 server dovecot: lmtp(admin@test.com): AQQ5Jz5jDVrkeQAABvoInA: sieve: msgid=<201711161006.vAGA6jpI019527@main.nope.org.es>: not sending reject message to <>
+%(day)s 11:06:54 server postfix/lmtp[31203]: 94D70E00C3: to=<admin@test.com>, orig_to=<noreply@modoboa.org>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.05, delays=0.05/0/0/0, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> AQQ5Jz5jDVrkeQAABvoInA Saved)
+%(day)s 11:06:54 server dovecot: lmtp(31204): Disconnect from local: Successful quit
+%(day)s 11:06:54 server postfix/qmgr[26163]: 94D70E00C3: removed
+%(day)s 11:06:54 server amavis[19749]: (19749-19) Passed CLEAN {RelayedInbound}, [185.5.53.87]:58092 [185.5.53.87] <> -> <noreply@modoboa.org>, Message-ID: <201711161006.vAGA6jpI019527@main.nope.org.es>, Hits: -1.889, size: 2512, queued_as: 94D70E00C3, 2262 ms
+%(day)s 11:06:54 server postfix/smtpd[31172]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 94D70E00C3; from=<> to=<noreply@modoboa.org> proto=ESMTP helo=<main.nope.org.es>
+%(day)s 11:06:54 server postfix/smtpd[31172]: disconnect from main.nope.org.es[185.5.53.87] ehlo=2 starttls=1 mail=2 rcpt=2 data=2 rset=1 quit=1 commands=11
+%(day)s 11:09:09 server postfix/anvil[28916]: statistics: max connection rate 1/60s for (smtpd:192.254.112.99) at %(day)s 10:59:09
+%(day)s 11:09:09 server postfix/anvil[28916]: statistics: max connection count 1 for (smtpd:192.254.112.99) at %(day)s 10:59:09
+%(day)s 11:09:09 server postfix/anvil[28916]: statistics: max cache size 3 at %(day)s 11:00:08
+%(day)s 11:10:02 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=31600, secured, session=<uVXK0hZeLMh/AAAB>
+%(day)s 11:10:02 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:10:02 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=31618, secured, session=<VhXM0hZeLch/AAAB>
+%(day)s 11:10:02 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:10:02 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=31630, secured, session=<n4HN0hZeLsh/AAAB>
+%(day)s 11:10:02 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:14:42 server postfix/postscreen[32096]: CONNECT from [51.15.3.241]:35169 to [94.23.45.181]:25
+%(day)s 11:14:42 server postfix/postscreen[32096]: PASS OLD [51.15.3.241]:35169
+%(day)s 11:14:42 server postfix/smtpd[32097]: warning: hostname 51-15-3-241.rev.poneytelecom.eu does not resolve to address 51.15.3.241: Name or service not known
+%(day)s 11:14:42 server postfix/smtpd[32097]: connect from unknown[51.15.3.241]
+%(day)s 11:14:42 server postfix/smtpd[32097]: Anonymous TLS connection established from unknown[51.15.3.241]: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:14:42 server postfix/smtpd[32097]: warning: 241.3.15.51.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=241.3.15.51.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:14:43 server policyd-spf[32112]: prepend Received-SPF: None (mailfrom) identity=mailfrom; client-ip=51.15.3.241; helo=intra.logikap.com; envelope-from=gitlab@intra.logikap.com; receiver=<UNKNOWN>
+%(day)s 11:14:43 server postfix/smtpd[32097]: NOQUEUE: client=unknown[51.15.3.241]
+%(day)s 11:14:45 server postfix/smtpd[32119]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:14:45 server postfix/smtpd[32119]: 339B2E00C3: client=localhost.localdomain[127.0.0.1], orig_client=unknown[51.15.3.241]
+%(day)s 11:14:45 server postfix/cleanup[32120]: 339B2E00C3: message-id=<31819cf6c71e45f4569b94888ea90ead@gitlab.intra.logikap.com>
+%(day)s 11:14:45 server postfix/smtpd[32119]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:14:45 server postfix/qmgr[26163]: 339B2E00C3: from=<gitlab@intra.logikap.com>, size=3772, nrcpt=1 (queue active)
+%(day)s 11:14:45 server amavis[14540]: (14540-11) Passed CLEAN {RelayedInbound}, [51.15.3.241]:35169 [51.15.3.241] <gitlab@intra.logikap.com> -> <admin@test.com>, Message-ID: <31819cf6c71e45f4569b94888ea90ead@gitlab.intra.logikap.com>, Hits: -1.105, size: 3307, queued_as: 339B2E00C3, 1891 ms
+%(day)s 11:14:45 server postfix/smtpd[32097]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 339B2E00C3; from=<gitlab@intra.logikap.com> to=<admin@test.com> proto=ESMTP helo=<intra.logikap.com>
+%(day)s 11:14:45 server postfix/smtpd[32097]: disconnect from unknown[51.15.3.241] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:14:45 server dovecot: lmtp(32122): Connect from local
+%(day)s 11:14:45 server dovecot: lmtp(admin@test.com): +NuIEBVlDVp6fQAABvoInA: sieve: msgid=<31819cf6c71e45f4569b94888ea90ead@gitlab.intra.logikap.com>: stored mail into mailbox 'INBOX'
+%(day)s 11:14:45 server postfix/lmtp[32121]: 339B2E00C3: to=<admin@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.23, delays=0.06/0.01/0.01/0.16, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> +NuIEBVlDVp6fQAABvoInA Saved)
+%(day)s 11:14:45 server dovecot: lmtp(32122): Disconnect from local: Successful quit
+%(day)s 11:14:45 server postfix/qmgr[26163]: 339B2E00C3: removed
+%(day)s 11:16:01 server dovecot: imap(admin@test.com): Logged out in=3056 out=66597
+%(day)s 11:16:01 server dovecot: managesieve-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=32316, secured, session=<efcy6BZeE8h/AAAB>
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Loading modules from directory: /usr/lib/dovecot/modules
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Module loaded: /usr/lib/dovecot/modules/lib10_quota_plugin.so
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Added userdb setting: plugin/quota_rule=*:bytes=2048M
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Effective uid=1010, gid=1010, home=/srv/vmail/ngyn.org/tonio
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Quota root: name=User quota backend=dict args=:proxy::quota
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Quota rule: root=User quota mailbox=* bytes=2147483648 messages=0
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Quota grace: root=User quota bytes=214748364 (10%%)
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: dict quota: user=admin@test.com, uri=proxy::quota, noenforcing=0
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: Namespace inbox: type=private, prefix=, sep=, inbox=yes, hidden=no, list=yes, subscriptions=yes location=maildir:~/.maildir
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: maildir++: root=/srv/vmail/ngyn.org/tonio/.maildir, index=, indexpvt=, control=, inbox=/srv/vmail/ngyn.org/tonio/.maildir, alt=
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: quota: quota_over_flag check: STORAGE ret=1 value=989542 limit=2097152
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: quota: quota_over_flag check: MESSAGE ret=0 value=47722 limit=0
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: quota: quota_over_flag=0((null)) vs currently overquota=0
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: sieve: Pigeonhole version 0.4.16 (fed8554) initializing
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: sieve: file storage: Using active Sieve script path: /srv/vmail/ngyn.org/tonio/.dovecot.sieve
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: sieve: file storage: Using script storage path: /srv/vmail/ngyn.org/tonio/sieve
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: sieve: file storage: Using permissions from /srv/vmail/ngyn.org/tonio/sieve: mode=0750 gid=-1
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: sieve: file storage: Relative path to sieve storage in active link: sieve/
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Debug: sieve: file storage: sync: Synchronization active
+%(day)s 11:16:01 server dovecot: managesieve(admin@test.com): Disconnected: Logged out bytes=6/41
+%(day)s 11:16:01 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=32327, secured, session=<Tc826BZe1ch/AAAB>
+%(day)s 11:16:01 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:16:01 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=32345, secured, session=<2d046BZe1sh/AAAB>
+%(day)s 11:16:01 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:16:02 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=32359, secured, session=<XWM66BZe28h/AAAB>
+%(day)s 11:16:02 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:16:03 server postfix/postscreen[32096]: CONNECT from [81.92.113.114]:60750 to [94.23.45.181]:25
+%(day)s 11:16:03 server postfix/postscreen[32096]: PASS OLD [81.92.113.114]:60750
+%(day)s 11:16:03 server postfix/smtpd[32097]: connect from mta1.news.tarsus.fr[81.92.113.114]
+%(day)s 11:16:03 server postfix/smtpd[32097]: warning: 114.113.92.81.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=114.113.92.81.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:16:03 server policyd-spf[32112]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=81.92.113.114; helo=mta1.news.tarsus.fr; envelope-from=marketing@info.opensourcesummit.paris; receiver=<UNKNOWN>
+%(day)s 11:16:03 server postfix/smtpd[32097]: NOQUEUE: client=mta1.news.tarsus.fr[81.92.113.114]
+%(day)s 11:16:04 server postfix/smtpd[32119]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:16:04 server postfix/smtpd[32119]: F39BCE00C3: client=localhost.localdomain[127.0.0.1], orig_client=mta1.news.tarsus.fr[81.92.113.114]
+%(day)s 11:16:04 server postfix/cleanup[32120]: F39BCE00C3: message-id=<2.1.4.1101006021.4688801.152618499@info.opensourcesummit.paris>
+%(day)s 11:16:05 server postfix/smtpd[32119]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:16:05 server postfix/qmgr[26163]: F39BCE00C3: from=<marketing@info.opensourcesummit.paris>, size=55627, nrcpt=1 (queue active)
+%(day)s 11:16:05 server amavis[19749]: (19749-20) Passed CLEAN {RelayedInbound}, [81.92.113.114]:60750 [81.92.113.114] <marketing@info.opensourcesummit.paris> -> <user@test.com>, Message-ID: <2.1.4.1101006021.4688801.152618499@info.opensourcesummit.paris>, Hits: 3.698, size: 54587, queued_as: F39BCE00C3, dkim_sd=emv:info.opensourcesummit.paris, 1310 ms
+%(day)s 11:16:05 server postfix/smtpd[32097]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as F39BCE00C3; from=<marketing@info.opensourcesummit.paris> to=<user@test.com> proto=ESMTP helo=<mta1.news.tarsus.fr>
+%(day)s 11:16:05 server dovecot: lmtp(32392): Connect from local
+%(day)s 11:16:05 server postfix/smtpd[32097]: disconnect from mta1.news.tarsus.fr[81.92.113.114] ehlo=1 mail=1 rcpt=1 data=1 quit=1 commands=5
+%(day)s 11:16:05 server dovecot: lmtp(user@test.com): d8zmAmVlDVqIfgAABvoInA: sieve: msgid=<2.1.4.1101006021.4688801.152618499@info.opensourcesummit.paris>: stored mail into mailbox 'INBOX'
+%(day)s 11:16:05 server postfix/lmtp[32121]: F39BCE00C3: to=<user@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.23, delays=0.04/0.01/0.01/0.17, dsn=2.0.0, status=sent (250 2.0.0 <user@test.com> d8zmAmVlDVqIfgAABvoInA Saved)
+%(day)s 11:16:05 server dovecot: lmtp(32392): Disconnect from local: Successful quit
+%(day)s 11:16:05 server postfix/qmgr[26163]: F39BCE00C3: removed
+%(day)s 11:16:45 server dovecot: pop3-login: Login: user=<imhotep@koalabs.org>, method=PLAIN, rip=209.85.216.158, lip=94.23.45.181, mpid=32406, TLS, session=<AgHS6hZe1JnRVdie>
+%(day)s 11:16:45 server dovecot: pop3(imhotep@koalabs.org): Disconnected: Logged out top=0/0, retr=0/0, del=0/141, size=8023766
+%(day)s 11:17:01 server postfix/postscreen[32096]: CONNECT from [13.111.20.45]:47742 to [94.23.45.181]:25
+%(day)s 11:17:01 server postfix/postscreen[32096]: WHITELISTED [13.111.20.45]:47742
+%(day)s 11:17:01 server postfix/smtpd[32097]: connect from mta4.email.tfl.gov.uk[13.111.20.45]
+%(day)s 11:17:02 server postfix/smtpd[32097]: Anonymous TLS connection established from mta4.email.tfl.gov.uk[13.111.20.45]: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:17:02 server postfix/smtpd[32097]: warning: 45.20.111.13.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=45.20.111.13.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:17:03 server policyd-spf[32112]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=13.111.20.45; helo=mta4.email.tfl.gov.uk; envelope-from=bounce-150_html-21457874-18921-100001609-123@bounce.email.tfl.gov.uk; receiver=<UNKNOWN>
+%(day)s 11:17:03 server postfix/smtpd[32097]: NOQUEUE: client=mta4.email.tfl.gov.uk[13.111.20.45]
+%(day)s 11:17:06 server postfix/smtpd[32119]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:17:06 server postfix/smtpd[32119]: 9E1C3E00C3: client=localhost.localdomain[127.0.0.1], orig_client=mta4.email.tfl.gov.uk[13.111.20.45]
+%(day)s 11:17:06 server postfix/cleanup[32120]: 9E1C3E00C3: message-id=<42e8ad52-02fb-45f5-a7fe-763c52409f6c@dfw1s10mta44.xt.local>
+%(day)s 11:17:08 server postfix/smtpd[32119]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:17:08 server postfix/qmgr[26163]: 9E1C3E00C3: from=<bounce-150_HTML-21457874-18921-100001609-123@bounce.email.tfl.gov.uk>, size=71561, nrcpt=1 (queue active)
+%(day)s 11:17:08 server amavis[5246]: (05246-17) Passed CLEAN {RelayedInbound}, [13.111.20.45]:47742 [13.111.20.45] <bounce-150_HTML-21457874-18921-100001609-123@bounce.email.tfl.gov.uk> -> <user@test.com>, Message-ID: <42e8ad52-02fb-45f5-a7fe-763c52409f6c@dfw1s10mta44.xt.local>, Hits: 2.492, size: 70304, queued_as: 9E1C3E00C3, dkim_sd=10dkim1:email.tfl.gov.uk, 3667 ms
+%(day)s 11:17:08 server postfix/smtpd[32097]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 9E1C3E00C3; from=<bounce-150_HTML-21457874-18921-100001609-123@bounce.email.tfl.gov.uk> to=<user@test.com> proto=ESMTP helo=<mta4.email.tfl.gov.uk>
+%(day)s 11:17:08 server dovecot: lmtp(32482): Connect from local
+%(day)s 11:17:08 server dovecot: lmtp(user@test.com): +IarBqRlDVrifgAABvoInA: sieve: msgid=<42e8ad52-02fb-45f5-a7fe-763c52409f6c@dfw1s10mta44.xt.local>: stored mail into mailbox 'INBOX'
+%(day)s 11:17:08 server postfix/lmtp[32121]: 9E1C3E00C3: to=<user@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=1.6, delays=1.5/0.01/0.01/0.17, dsn=2.0.0, status=sent (250 2.0.0 <user@test.com> +IarBqRlDVrifgAABvoInA Saved)
+%(day)s 11:17:08 server dovecot: lmtp(32482): Disconnect from local: Successful quit
+%(day)s 11:17:08 server postfix/qmgr[26163]: 9E1C3E00C3: removed
+%(day)s 11:17:08 server postfix/smtpd[32097]: disconnect from mta4.email.tfl.gov.uk[13.111.20.45] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:17:27 server postfix/postscreen[32096]: CONNECT from [51.254.143.19]:34827 to [94.23.45.181]:25
+%(day)s 11:17:33 server postfix/postscreen[32096]: NOQUEUE: reject: RCPT from [51.254.143.19]:34827: 450 4.3.2 Service currently unavailable; from=<szkoleniamanagerskie@machconsulting.eu>, to=<info@test2.com>, proto=ESMTP, helo=<vps373177.ovh.net>
+%(day)s 11:17:33 server postfix/postscreen[32096]: PASS NEW [51.254.143.19]:34827
+%(day)s 11:17:33 server postfix/postscreen[32096]: DISCONNECT [51.254.143.19]:34827
+%(day)s 11:17:43 server postfix/postscreen[32096]: CONNECT from [172.110.9.131]:37348 to [94.23.45.181]:25
+%(day)s 11:17:43 server postfix/postscreen[32096]: PASS OLD [172.110.9.131]:37348
+%(day)s 11:17:43 server postfix/smtpd[32097]: connect from unknown[172.110.9.131]
+%(day)s 11:17:43 server postfix/smtpd[32097]: Anonymous TLS connection established from unknown[172.110.9.131]: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:17:43 server postfix/smtpd[32097]: warning: 131.9.110.172.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=131.9.110.172.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:17:44 server policyd-spf[32112]: prepend Received-SPF: None (no SPF record) identity=no SPF record; client-ip=172.110.9.131; helo=mailstore.paxi.cf; envelope-from=<>; receiver=<UNKNOWN>
+%(day)s 11:17:44 server postfix/smtpd[32097]: NOQUEUE: client=unknown[172.110.9.131]
+%(day)s 11:17:45 server postfix/smtpd[32119]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:17:45 server postfix/smtpd[32119]: 34B20E00C3: client=localhost.localdomain[127.0.0.1], orig_client=unknown[172.110.9.131]
+%(day)s 11:17:45 server postfix/cleanup[32120]: 34B20E00C3: message-id=<20171116101742.C6A924DCECC6@mailstore.paxi.cf>
+%(day)s 11:17:45 server postfix/smtpd[32119]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:17:45 server postfix/qmgr[26163]: 34B20E00C3: from=<>, size=4102, nrcpt=1 (queue active)
+%(day)s 11:17:45 server amavis[21816]: (21816-20) Passed CLEAN {RelayedInbound}, [172.110.9.131]:37348 [172.110.9.131] <> -> <noreply@modoboa.org>, Message-ID: <20171116101742.C6A924DCECC6@mailstore.paxi.cf>, Hits: -1.106, size: 3626, queued_as: 34B20E00C3, 1017 ms
+%(day)s 11:17:45 server dovecot: lmtp(32482): Connect from local
+%(day)s 11:17:45 server postfix/smtpd[32097]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 34B20E00C3; from=<> to=<noreply@modoboa.org> proto=ESMTP helo=<mailstore.paxi.cf>
+%(day)s 11:17:45 server dovecot: lmtp(admin@test.com): WQg7D8llDVrifgAABvoInA: sieve: msgid=<20171116101742.C6A924DCECC6@mailstore.paxi.cf>: not sending reject message to <>
+%(day)s 11:17:45 server postfix/lmtp[32121]: 34B20E00C3: to=<admin@test.com>, orig_to=<noreply@modoboa.org>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.05, delays=0.04/0.01/0/0, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> WQg7D8llDVrifgAABvoInA Saved)
+%(day)s 11:17:45 server dovecot: lmtp(32482): Disconnect from local: Successful quit
+%(day)s 11:17:45 server postfix/qmgr[26163]: 34B20E00C3: removed
+%(day)s 11:17:45 server postfix/postscreen[32096]: CONNECT from [108.174.3.154]:54018 to [94.23.45.181]:25
+%(day)s 11:17:45 server postfix/postscreen[32096]: WHITELISTED [108.174.3.154]:54018
+%(day)s 11:17:45 server postfix/smtpd[32097]: disconnect from unknown[172.110.9.131] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:17:45 server postfix/smtpd[32502]: connect from mailb-bb.linkedin.com[108.174.3.154]
+%(day)s 11:17:45 server postfix/smtpd[32502]: Anonymous TLS connection established from mailb-bb.linkedin.com[108.174.3.154]: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:17:46 server postfix/smtpd[32502]: warning: 154.3.174.108.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=154.3.174.108.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:17:46 server policyd-spf[32505]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=108.174.3.154; helo=mailb-bb.linkedin.com; envelope-from=m-i58nvfj318qraba58ra9m2nttnwbk7s0evxwduql0g5d0pa6k36@bounce.linkedin.com; receiver=<UNKNOWN>
+%(day)s 11:17:46 server postfix/smtpd[32502]: NOQUEUE: client=mailb-bb.linkedin.com[108.174.3.154]
+%(day)s 11:17:47 server postfix/postscreen[32096]: CONNECT from [81.92.113.115]:43100 to [94.23.45.181]:25
+%(day)s 11:17:47 server postfix/postscreen[32096]: PASS OLD [81.92.113.115]:43100
+%(day)s 11:17:47 server postfix/smtpd[32097]: connect from mta2.news.tarsus.fr[81.92.113.115]
+%(day)s 11:17:47 server postfix/smtpd[32097]: warning: 115.113.92.81.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=115.113.92.81.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:17:48 server policyd-spf[32112]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=81.92.113.115; helo=mta2.news.tarsus.fr; envelope-from=marketing@info.opensourcesummit.paris; receiver=<UNKNOWN>
+%(day)s 11:17:48 server postfix/smtpd[32097]: NOQUEUE: client=mta2.news.tarsus.fr[81.92.113.115]
+%(day)s 11:17:52 server postfix/smtpd[32119]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:17:52 server postfix/smtpd[32119]: 69E9BE00C4: client=localhost.localdomain[127.0.0.1], orig_client=mailb-bb.linkedin.com[108.174.3.154]
+%(day)s 11:17:52 server postfix/cleanup[32120]: 69E9BE00C4: message-id=<205549081.609208.1510827464487.JavaMail.app@lor1-app2315.prod.linkedin.com>
+%(day)s 11:17:52 server postfix/smtpd[32119]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:17:52 server postfix/qmgr[26163]: 69E9BE00C4: from=<m-i58nvfj318qraba58ra9m2nttnwbk7s0evxwduql0g5d0pa6k36@bounce.linkedin.com>, size=35732, nrcpt=1 (queue active)
+%(day)s 11:17:52 server amavis[14540]: (14540-12) Passed CLEAN {RelayedInbound}, [108.174.3.154]:54018 [108.174.3.154] <m-i58nvfj318qraba58ra9m2nttnwbk7s0evxwduql0g5d0pa6k36@bounce.linkedin.com> -> <user@test.com>, Message-ID: <205549081.609208.1510827464487.JavaMail.app@lor1-app2315.prod.linkedin.com>, Hits: -7.019, size: 35066, queued_as: 69E9BE00C4, dkim_sd=proddkim1024:linkedin.com,proddkim1024:mailb.linkedin.com, 5477 ms
+%(day)s 11:17:52 server dovecot: lmtp(32482): Connect from local
+%(day)s 11:17:52 server postfix/smtpd[32502]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 69E9BE00C4; from=<m-i58nvfj318qraba58ra9m2nttnwbk7s0evxwduql0g5d0pa6k36@bounce.linkedin.com> to=<user@test.com> proto=ESMTP helo=<mailb-bb.linkedin.com>
+%(day)s 11:17:52 server dovecot: lmtp(user@test.com): UdRqG9BlDVrifgAABvoInA: sieve: msgid=<205549081.609208.1510827464487.JavaMail.app@lor1-app2315.prod.linkedin.com>: stored mail into mailbox 'INBOX'
+%(day)s 11:17:52 server postfix/lmtp[32121]: 69E9BE00C4: to=<user@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.16, delays=0.03/0.01/0/0.13, dsn=2.0.0, status=sent (250 2.0.0 <user@test.com> UdRqG9BlDVrifgAABvoInA Saved)
+%(day)s 11:17:52 server dovecot: lmtp(32482): Disconnect from local: Successful quit
+%(day)s 11:17:52 server postfix/qmgr[26163]: 69E9BE00C4: removed
+%(day)s 11:17:54 server postfix/smtpd[32119]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:17:54 server postfix/smtpd[32119]: 0EC0CE00C4: client=localhost.localdomain[127.0.0.1], orig_client=mta2.news.tarsus.fr[81.92.113.115]
+%(day)s 11:17:54 server postfix/cleanup[32120]: 0EC0CE00C4: message-id=<2.1.4.1101006021.4688801.3909372752@info.opensourcesummit.paris>
+%(day)s 11:17:54 server postfix/qmgr[26163]: 0EC0CE00C4: from=<marketing@info.opensourcesummit.paris>, size=55600, nrcpt=1 (queue active)
+%(day)s 11:17:54 server amavis[32393]: (32393-01) Passed CLEAN {RelayedInbound}, [81.92.113.115]:43100 [81.92.113.115] <marketing@info.opensourcesummit.paris> -> <admin@test.com>, Message-ID: <2.1.4.1101006021.4688801.3909372752@info.opensourcesummit.paris>, Hits: 3.507, size: 54590, queued_as: 0EC0CE00C4, dkim_sd=emv:info.opensourcesummit.paris, 5899 ms
+%(day)s 11:17:54 server dovecot: lmtp(32482): Connect from local
+%(day)s 11:17:54 server postfix/smtpd[32097]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 0EC0CE00C4; from=<marketing@info.opensourcesummit.paris> to=<admin@test.com> proto=ESMTP helo=<mta2.news.tarsus.fr>
+%(day)s 11:17:54 server postfix/smtpd[32097]: disconnect from mta2.news.tarsus.fr[81.92.113.115] ehlo=1 mail=1 rcpt=1 data=1 quit=1 commands=5
+%(day)s 11:17:54 server dovecot: lmtp(admin@test.com): kRSZCNJlDVrifgAABvoInA: sieve: msgid=<2.1.4.1101006021.4688801.3909372752@info.opensourcesummit.paris>: stored mail into mailbox 'INBOX'
+%(day)s 11:17:54 server postfix/lmtp[32121]: 0EC0CE00C4: to=<admin@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.26, delays=0.09/0.01/0/0.17, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> kRSZCNJlDVrifgAABvoInA Saved)
+%(day)s 11:17:54 server dovecot: lmtp(32482): Disconnect from local: Successful quit
+%(day)s 11:17:54 server postfix/qmgr[26163]: 0EC0CE00C4: removed
+%(day)s 11:17:57 server postfix/smtpd[32502]: disconnect from mailb-bb.linkedin.com[108.174.3.154] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:18:26 server postfix/postscreen[32096]: CONNECT from [209.85.223.201]:46671 to [94.23.45.181]:25
+%(day)s 11:18:26 server postfix/postscreen[32096]: WHITELISTED [209.85.223.201]:46671
+%(day)s 11:18:26 server postfix/smtpd[32097]: connect from mail-io0-f201.google.com[209.85.223.201]
+%(day)s 11:18:26 server postfix/smtpd[32097]: Anonymous TLS connection established from mail-io0-f201.google.com[209.85.223.201]: TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)
+%(day)s 11:18:26 server postfix/smtpd[32097]: warning: 201.223.85.209.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=201.223.85.209.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:18:26 server postfix/cleanup[32120]: E8BF5E00C4: message-id=<20171116101826.E8BF5E00C4@mail.koalabs.org>
+%(day)s 11:18:26 server postfix/qmgr[26163]: E8BF5E00C4: from=<double-bounce@mail.koalabs.org>, size=271, nrcpt=1 (queue active)
+%(day)s 11:18:27 server postfix/pipe[32592]: E8BF5E00C4: to=<dmarc-aggrep@ngyn.org>, relay=dmarc-rua, delay=0.04, delays=0.03/0.01/0/0.01, dsn=2.0.0, status=deliverable (delivers to command: /srv/modoboa/env/bin/python)
+%(day)s 11:18:27 server postfix/qmgr[26163]: E8BF5E00C4: removed
+%(day)s 11:18:27 server policyd-spf[32112]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.223.201; helo=mail-io0-f201.google.com; envelope-from=noreply-dmarc-support@google.com; receiver=<UNKNOWN>
+%(day)s 11:18:27 server postfix/smtpd[32097]: NOQUEUE: client=mail-io0-f201.google.com[209.85.223.201]
+%(day)s 11:18:28 server postfix/smtpd[32601]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:18:28 server postfix/smtpd[32601]: 5E852E00C4: client=localhost.localdomain[127.0.0.1], orig_client=mail-io0-f201.google.com[209.85.223.201]
+%(day)s 11:18:28 server postfix/cleanup[32120]: 5E852E00C4: message-id=<5520130506303437380@google.com>
+%(day)s 11:18:28 server postfix/smtpd[32601]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:18:28 server postfix/qmgr[26163]: 5E852E00C4: from=<noreply-dmarc-support@google.com>, size=4390, nrcpt=1 (queue active)
+%(day)s 11:18:28 server amavis[5246]: (05246-18) Passed CLEAN {RelayedInbound}, [209.85.223.201]:46671 [209.85.223.201] <noreply-dmarc-support@google.com> -> <dmarc-aggrep@ngyn.org>, Message-ID: <5520130506303437380@google.com>, Hits: 0.715, size: 3807, queued_as: 5E852E00C4, dkim_sd=20161025:google.com, 907 ms
+%(day)s 11:18:28 server postfix/smtpd[32097]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 5E852E00C4; from=<noreply-dmarc-support@google.com> to=<dmarc-aggrep@ngyn.org> proto=ESMTP helo=<mail-io0-f201.google.com>
+%(day)s 11:18:28 server postfix/smtpd[32097]: disconnect from mail-io0-f201.google.com[209.85.223.201] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:18:29 server postfix/pipe[32592]: 5E852E00C4: to=<dmarc-aggrep@ngyn.org>, relay=dmarc-rua, delay=0.85, delays=0.04/0/0/0.81, dsn=2.0.0, status=sent (delivered via dmarc-rua service (Importing report 5520130506303437380 received from google.com))
+%(day)s 11:18:29 server postfix/qmgr[26163]: 5E852E00C4: removed
+%(day)s 11:18:30 server postfix/postscreen[32096]: CONNECT from [193.105.248.56]:62968 to [94.23.45.181]:25
+%(day)s 11:18:36 server postfix/tlsproxy[32611]: CONNECT from [193.105.248.56]:62968
+%(day)s 11:18:38 server postfix/tlsproxy[32611]: Anonymous TLS connection established from [193.105.248.56]:62968: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:18:38 server postfix/postscreen[32096]: NOQUEUE: reject: RCPT from [193.105.248.56]:62968: 450 4.3.2 Service currently unavailable; from=<Kontakt@nestbank.pl>, to=<marcin.jurgielewicz@test2.com>, proto=ESMTP, helo=<mx01.nestbank.pl>
+%(day)s 11:18:38 server postfix/postscreen[32096]: PASS NEW [193.105.248.56]:62968
+%(day)s 11:18:38 server postfix/postscreen[32096]: DISCONNECT [193.105.248.56]:62968
+%(day)s 11:18:38 server postfix/tlsproxy[32611]: DISCONNECT [193.105.248.56]:62968
+%(day)s 11:19:59 server postfix/postscreen[32096]: CONNECT from [192.254.112.98]:6107 to [94.23.45.181]:25
+%(day)s 11:19:59 server postfix/postscreen[32096]: WHITELISTED [192.254.112.98]:6107
+%(day)s 11:19:59 server postfix/smtpd[32097]: connect from o3.sgmail.github.com[192.254.112.98]
+%(day)s 11:19:59 server postfix/smtpd[32097]: Anonymous TLS connection established from o3.sgmail.github.com[192.254.112.98]: TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)
+%(day)s 11:20:00 server postfix/smtpd[32097]: warning: 98.112.254.192.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=98.112.254.192.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:20:00 server policyd-spf[32112]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.254.112.98; helo=o3.sgmail.github.com; envelope-from=bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com; receiver=<UNKNOWN>
+%(day)s 11:20:00 server postfix/smtpd[32097]: NOQUEUE: client=o3.sgmail.github.com[192.254.112.98]
+%(day)s 11:20:07 server postfix/smtpd[32601]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:20:07 server postfix/smtpd[32601]: D9EA5E00C3: client=localhost.localdomain[127.0.0.1], orig_client=o3.sgmail.github.com[192.254.112.98]
+%(day)s 11:20:07 server postfix/cleanup[32120]: D9EA5E00C3: message-id=<Spicesoft/tandoori/pull/3047@github.com>
+%(day)s 11:20:07 server postfix/smtpd[32601]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:20:07 server postfix/qmgr[26163]: D9EA5E00C3: from=<bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com>, size=12574, nrcpt=1 (queue active)
+%(day)s 11:20:07 server amavis[14540]: (14540-13) Passed CLEAN {RelayedInbound}, [192.254.112.98]:6107 [192.30.253.17] <bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com> -> <admin@test.com>, Message-ID: <Spicesoft/tandoori/pull/3047@github.com>, Hits: -2.029, size: 11999, queued_as: D9EA5E00C3, dkim_sd=s20150108:github.com, 6918 ms
+%(day)s 11:20:07 server postfix/smtpd[32097]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as D9EA5E00C3; from=<bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com> to=<admin@test.com> proto=ESMTP helo=<o3.sgmail.github.com>
+%(day)s 11:20:07 server dovecot: lmtp(323): Connect from local
+%(day)s 11:20:08 server dovecot: lmtp(admin@test.com): ZLuaN1dmDVpDAQAABvoInA: sieve: msgid=<Spicesoft/tandoori/pull/3047@github.com>: stored mail into mailbox 'Listes.Tandoori'
+%(day)s 11:20:08 server postfix/lmtp[322]: D9EA5E00C3: to=<admin@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.22, delays=0.03/0.01/0.01/0.17, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> ZLuaN1dmDVpDAQAABvoInA Saved)
+%(day)s 11:20:08 server dovecot: lmtp(323): Disconnect from local: Successful quit
+%(day)s 11:20:08 server postfix/qmgr[26163]: D9EA5E00C3: removed
+%(day)s 11:20:09 server postfix/smtpd[32097]: disconnect from o3.sgmail.github.com[192.254.112.98] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:20:50 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=336, secured, session=<BOJl+RZeUcl/AAAB>
+%(day)s 11:20:50 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 11:20:50 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=350, secured, session=<W99o+RZeVMl/AAAB>
+%(day)s 11:20:50 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 11:21:48 server dovecot: imap-login: Login: user=<mowee@modoboa.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=436, secured, session=<ZYje/BZeXcl/AAAB>
+%(day)s 11:21:48 server dovecot: imap(mowee@modoboa.com): Logged out in=12 out=431
+%(day)s 11:22:01 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=514, secured, session=<zeWs/RZeYsl/AAAB>
+%(day)s 11:22:01 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:22:01 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=526, secured, session=<UKKu/RZeY8l/AAAB>
+%(day)s 11:22:02 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:22:02 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=538, secured, session=<jSmw/RZeZMl/AAAB>
+%(day)s 11:22:02 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:22:54 server postfix/smtpd[32119]: timeout after END-OF-MESSAGE from localhost.localdomain[127.0.0.1]
+%(day)s 11:22:54 server postfix/smtpd[32119]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 commands=5
+%(day)s 11:23:29 server postfix/anvil[32099]: statistics: max connection rate 1/60s for (smtpd:51.15.3.241) at %(day)s 11:14:42
+%(day)s 11:23:29 server postfix/anvil[32099]: statistics: max connection count 1 for (smtpd:51.15.3.241) at %(day)s 11:14:42
+%(day)s 11:23:29 server postfix/anvil[32099]: statistics: max cache size 4 at %(day)s 11:17:47
+%(day)s 11:26:26 server postfix/postscreen[916]: CONNECT from [167.89.55.170]:3520 to [94.23.45.181]:25
+%(day)s 11:26:26 server postfix/postscreen[916]: WHITELISTED [167.89.55.170]:3520
+%(day)s 11:26:26 server postfix/smtpd[917]: connect from o9.sendgrid.meetup.com[167.89.55.170]
+%(day)s 11:26:27 server postfix/smtpd[917]: Anonymous TLS connection established from o9.sendgrid.meetup.com[167.89.55.170]: TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)
+%(day)s 11:26:28 server postfix/smtpd[917]: warning: 170.55.89.167.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=170.55.89.167.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:26:28 server policyd-spf[932]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=167.89.55.170; helo=o9.sendgrid.meetup.com; envelope-from=bounces+3922699-145a-tonio=ngyn.org@sendgrid.meetup.com; receiver=<UNKNOWN>
+%(day)s 11:26:28 server postfix/smtpd[917]: NOQUEUE: client=o9.sendgrid.meetup.com[167.89.55.170]
+%(day)s 11:26:36 server postfix/smtpd[944]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:26:36 server postfix/smtpd[944]: 61F9DE00C3: client=localhost.localdomain[127.0.0.1], orig_client=o9.sendgrid.meetup.com[167.89.55.170]
+%(day)s 11:26:36 server postfix/cleanup[945]: 61F9DE00C3: message-id=<710800146.1510827986412.JavaMail.root@1c1b55d0dbe0>
+%(day)s 11:26:36 server postfix/smtpd[944]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:26:36 server postfix/qmgr[26163]: 61F9DE00C3: from=<bounces+3922699-145a-tonio=ngyn.org@sendgrid.meetup.com>, size=72067, nrcpt=1 (queue active)
+%(day)s 11:26:36 server amavis[32393]: (32393-02) Passed CLEAN {RelayedInbound}, [167.89.55.170]:3520 [34.196.236.240] <bounces+3922699-145a-tonio=ngyn.org@sendgrid.meetup.com> -> <admin@test.com>, Message-ID: <710800146.1510827986412.JavaMail.root@1c1b55d0dbe0>, Hits: -2.221, size: 71500, queued_as: 61F9DE00C3, dkim_sd=s1:meetup.com, 7334 ms
+%(day)s 11:26:36 server postfix/smtpd[917]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 61F9DE00C3; from=<bounces+3922699-145a-tonio=ngyn.org@sendgrid.meetup.com> to=<admin@test.com> proto=ESMTP helo=<o9.sendgrid.meetup.com>
+%(day)s 11:26:36 server dovecot: lmtp(947): Connect from local
+%(day)s 11:26:36 server dovecot: lmtp(admin@test.com): f7GkHNxnDVqzAwAABvoInA: sieve: msgid=<710800146.1510827986412.JavaMail.root@1c1b55d0dbe0>: stored mail into mailbox 'INBOX'
+%(day)s 11:26:36 server postfix/lmtp[946]: 61F9DE00C3: to=<admin@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.28, delays=0.07/0.01/0.01/0.19, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> f7GkHNxnDVqzAwAABvoInA Saved)
+%(day)s 11:26:36 server dovecot: lmtp(947): Disconnect from local: Successful quit
+%(day)s 11:26:36 server postfix/qmgr[26163]: 61F9DE00C3: removed
+%(day)s 11:26:38 server postfix/smtpd[917]: disconnect from o9.sendgrid.meetup.com[167.89.55.170] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:28:01 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1109, secured, session=<CnAfExdevsl/AAAB>
+%(day)s 11:28:01 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:28:01 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1125, secured, session=<fhohExdev8l/AAAB>
+%(day)s 11:28:01 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:28:01 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1137, secured, session=<+4AiExdewMl/AAAB>
+%(day)s 11:28:01 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:29:58 server postfix/anvil[919]: statistics: max connection rate 1/60s for (smtpd:167.89.55.170) at %(day)s 11:26:26
+%(day)s 11:29:58 server postfix/anvil[919]: statistics: max connection count 1 for (smtpd:167.89.55.170) at %(day)s 11:26:26
+%(day)s 11:29:58 server postfix/anvil[919]: statistics: max cache size 1 at %(day)s 11:26:26
+%(day)s 11:30:30 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1406, secured, session=<CJn8Gxde5cl/AAAB>
+%(day)s 11:30:30 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 11:30:30 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1420, secured, session=<rR4AHBde6Ml/AAAB>
+%(day)s 11:30:30 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 11:30:34 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1436, secured, session=<lPE2HBde6cl/AAAB>
+%(day)s 11:30:34 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 11:30:34 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1448, secured, session=<rfA6HBde6sl/AAAB>
+%(day)s 11:30:34 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 11:32:47 server postfix/postscreen[1625]: CONNECT from [197.155.150.177]:16256 to [94.23.45.181]:25
+%(day)s 11:32:59 server postfix/postscreen[1625]: NOQUEUE: reject: RCPT from [197.155.150.177]:16256: 450 4.3.2 Service currently unavailable; from=<sion@sicli.ch>, to=<andrzej.patejuk@test2.com>, proto=ESMTP, helo=<[197.155.150.177]>
+%(day)s 11:32:59 server postfix/postscreen[1625]: HANGUP after 6.6 from [197.155.150.177]:16256 in tests after SMTP handshake
+%(day)s 11:32:59 server postfix/postscreen[1625]: PASS NEW [197.155.150.177]:16256
+%(day)s 11:32:59 server postfix/postscreen[1625]: DISCONNECT [197.155.150.177]:16256
+%(day)s 11:34:02 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1769, secured, session=<EIWbKBdeCMp/AAAB>
+%(day)s 11:34:02 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:34:02 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1785, secured, session=<rDGdKBdeCcp/AAAB>
+%(day)s 11:34:02 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:34:02 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=1797, secured, session=<8peeKBdeCsp/AAAB>
+%(day)s 11:34:02 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:35:07 server postfix/postscreen[1912]: CONNECT from [14.173.93.73]:55595 to [94.23.45.181]:25
+%(day)s 11:35:14 server postfix/postscreen[1912]: NOQUEUE: reject: RCPT from [14.173.93.73]:55595: 450 4.3.2 Service currently unavailable; from=<srdjan.sipus@sk.t-com.hr>, to=<andrzej.patejuk@test2.com>, proto=ESMTP, helo=<static.vnpt.vn>
+%(day)s 11:35:15 server postfix/postscreen[1912]: HANGUP after 1.4 from [14.173.93.73]:55595 in tests after SMTP handshake
+%(day)s 11:35:15 server postfix/postscreen[1912]: PASS NEW [14.173.93.73]:55595
+%(day)s 11:35:15 server postfix/postscreen[1912]: DISCONNECT [14.173.93.73]:55595
+%(day)s 11:36:00 server postfix/postscreen[1912]: CONNECT from [185.83.51.33]:58639 to [94.23.45.181]:25
+%(day)s 11:36:06 server postfix/tlsproxy[2011]: CONNECT from [185.83.51.33]:58639
+%(day)s 11:36:06 server postfix/tlsproxy[2011]: Anonymous TLS connection established from [185.83.51.33]:58639: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:36:07 server postfix/postscreen[1912]: NOQUEUE: reject: RCPT from [185.83.51.33]:58639: 450 4.3.2 Service currently unavailable; from=<mailreturn@smtp24.ymlpsvr.com>, to=<comercial@jm-motores.es>, proto=ESMTP, helo=<smtp24.ymlpsvr.com>
+%(day)s 11:36:07 server postfix/postscreen[1912]: PASS NEW [185.83.51.33]:58639
+%(day)s 11:36:07 server postfix/tlsproxy[2011]: DISCONNECT [185.83.51.33]:58639
+%(day)s 11:36:07 server postfix/postscreen[1912]: DISCONNECT [185.83.51.33]:58639
+%(day)s 11:36:45 server postfix/postscreen[1912]: CONNECT from [185.5.53.87]:50522 to [94.23.45.181]:25
+%(day)s 11:36:45 server postfix/postscreen[1912]: PASS OLD [185.5.53.87]:50522
+%(day)s 11:36:45 server postfix/smtpd[2027]: connect from main.nope.org.es[185.5.53.87]
+%(day)s 11:36:45 server postfix/smtpd[2027]: Anonymous TLS connection established from main.nope.org.es[185.5.53.87]: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:36:46 server postfix/smtpd[2027]: warning: 87.53.5.185.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=87.53.5.185.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:36:46 server policyd-spf[2042]: prepend Received-SPF: None (no SPF record) identity=no SPF record; client-ip=185.5.53.87; helo=main.nope.org.es; envelope-from=<>; receiver=<UNKNOWN>
+%(day)s 11:36:46 server postfix/smtpd[2027]: NOQUEUE: client=main.nope.org.es[185.5.53.87]
+%(day)s 11:36:47 server postfix/smtpd[2051]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:36:47 server postfix/smtpd[2051]: E0B74E00C3: client=localhost.localdomain[127.0.0.1], orig_client=main.nope.org.es[185.5.53.87]
+%(day)s 11:36:47 server postfix/cleanup[2052]: E0B74E00C3: message-id=<201711161036.vAGAajZS022777@main.nope.org.es>
+%(day)s 11:36:47 server postfix/smtpd[2051]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:36:47 server postfix/qmgr[26163]: E0B74E00C3: from=<>, size=3195, nrcpt=1 (queue active)
+%(day)s 11:36:47 server amavis[14540]: (14540-14) Passed CLEAN {RelayedInbound}, [185.5.53.87]:50522 [185.5.53.87] <> -> <noreply@modoboa.org>, Message-ID: <201711161036.vAGAajZS022777@main.nope.org.es>, Hits: -1.889, size: 2719, queued_as: E0B74E00C3, 1212 ms
+%(day)s 11:36:47 server postfix/smtpd[2027]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as E0B74E00C3; from=<> to=<noreply@modoboa.org> proto=ESMTP helo=<main.nope.org.es>
+%(day)s 11:36:47 server dovecot: lmtp(2054): Connect from local
+%(day)s 11:36:47 server dovecot: lmtp(admin@test.com): e4pnOj9qDVoGCAAABvoInA: sieve: msgid=<201711161036.vAGAajZS022777@main.nope.org.es>: not sending reject message to <>
+%(day)s 11:36:47 server dovecot: lmtp(2054): Disconnect from local: Successful quit
+%(day)s 11:36:47 server postfix/lmtp[2053]: E0B74E00C3: to=<admin@test.com>, orig_to=<noreply@modoboa.org>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.08, delays=0.05/0.01/0.01/0.01, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> e4pnOj9qDVoGCAAABvoInA Saved)
+%(day)s 11:36:47 server postfix/qmgr[26163]: E0B74E00C3: removed
+%(day)s 11:36:48 server policyd-spf[2042]: prepend Received-SPF: None (no SPF record) identity=no SPF record; client-ip=185.5.53.87; helo=main.nope.org.es; envelope-from=<>; receiver=<UNKNOWN>
+%(day)s 11:36:48 server postfix/smtpd[2027]: NOQUEUE: client=main.nope.org.es[185.5.53.87]
+%(day)s 11:36:49 server postfix/smtpd[2051]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:36:49 server postfix/smtpd[2051]: 62D9BE00C3: client=localhost.localdomain[127.0.0.1], orig_client=main.nope.org.es[185.5.53.87]
+%(day)s 11:36:49 server postfix/cleanup[2052]: 62D9BE00C3: message-id=<201711161036.vAGAajZT022777@main.nope.org.es>
+%(day)s 11:36:49 server postfix/smtpd[2051]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:36:49 server postfix/qmgr[26163]: 62D9BE00C3: from=<>, size=2989, nrcpt=1 (queue active)
+%(day)s 11:36:49 server dovecot: lmtp(2054): Connect from local
+%(day)s 11:36:49 server dovecot: lmtp(admin@test.com): aVPzGUFqDVoGCAAABvoInA: sieve: msgid=<201711161036.vAGAajZT022777@main.nope.org.es>: not sending reject message to <>
+%(day)s 11:36:49 server postfix/lmtp[2053]: 62D9BE00C3: to=<admin@test.com>, orig_to=<noreply@modoboa.org>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.03, delays=0.03/0/0/0, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> aVPzGUFqDVoGCAAABvoInA Saved)
+%(day)s 11:36:49 server dovecot: lmtp(2054): Disconnect from local: Successful quit
+%(day)s 11:36:49 server postfix/qmgr[26163]: 62D9BE00C3: removed
+%(day)s 11:36:49 server amavis[32393]: (32393-03) Passed CLEAN {RelayedInbound}, [185.5.53.87]:50522 [185.5.53.87] <> -> <noreply@modoboa.org>, Message-ID: <201711161036.vAGAajZT022777@main.nope.org.es>, Hits: -1.889, size: 2513, queued_as: 62D9BE00C3, 955 ms
+%(day)s 11:36:49 server postfix/smtpd[2027]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 62D9BE00C3; from=<> to=<noreply@modoboa.org> proto=ESMTP helo=<main.nope.org.es>
+%(day)s 11:36:49 server postfix/smtpd[2027]: disconnect from main.nope.org.es[185.5.53.87] ehlo=2 starttls=1 mail=2 rcpt=2 data=2 rset=1 quit=1 commands=11
+%(day)s 11:38:49 server dovecot: imap-login: Login: user=<mowee@modoboa.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=2280, secured, session=<x0i8ORdeUsp/AAAB>
+%(day)s 11:38:49 server dovecot: imap(mowee@modoboa.com): Logged out in=12 out=431
+%(day)s 11:40:02 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=2474, secured, session=<MyUUPhdeYsp/AAAB>
+%(day)s 11:40:02 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:40:02 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=2490, secured, session=<oScWPhdeZcp/AAAB>
+%(day)s 11:40:02 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:40:02 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=2502, secured, session=<3Y0XPhdeZsp/AAAB>
+%(day)s 11:40:02 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:40:09 server postfix/anvil[2029]: statistics: max connection rate 1/60s for (smtpd:185.5.53.87) at %(day)s 11:36:45
+%(day)s 11:40:09 server postfix/anvil[2029]: statistics: max connection count 1 for (smtpd:185.5.53.87) at %(day)s 11:36:45
+%(day)s 11:40:09 server postfix/anvil[2029]: statistics: max cache size 1 at %(day)s 11:36:45
+%(day)s 11:43:42 server dovecot: imap(admin@test.com): Disconnected for inactivity in=1797 out=54357
+%(day)s 11:44:20 server postfix/postscreen[2852]: CONNECT from [192.254.113.101]:53977 to [94.23.45.181]:25
+%(day)s 11:44:20 server postfix/postscreen[2852]: WHITELISTED [192.254.113.101]:53977
+%(day)s 11:44:20 server postfix/smtpd[2853]: connect from o6.sgmail.github.com[192.254.113.101]
+%(day)s 11:44:20 server postfix/smtpd[2853]: Anonymous TLS connection established from o6.sgmail.github.com[192.254.113.101]: TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)
+%(day)s 11:44:21 server postfix/smtpd[2853]: warning: 101.113.254.192.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=101.113.254.192.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:44:21 server policyd-spf[2868]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.254.113.101; helo=o6.sgmail.github.com; envelope-from=bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com; receiver=<UNKNOWN>
+%(day)s 11:44:21 server postfix/smtpd[2853]: NOQUEUE: client=o6.sgmail.github.com[192.254.113.101]
+%(day)s 11:44:31 server postfix/smtpd[2878]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:44:31 server postfix/smtpd[2878]: 70959E00C3: client=localhost.localdomain[127.0.0.1], orig_client=o6.sgmail.github.com[192.254.113.101]
+%(day)s 11:44:31 server postfix/cleanup[2879]: 70959E00C3: message-id=<Spicesoft/tandoori/pull/3047/c344885124@github.com>
+%(day)s 11:44:31 server postfix/smtpd[2878]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:44:31 server postfix/qmgr[26163]: 70959E00C3: from=<bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com>, size=9954, nrcpt=1 (queue active)
+%(day)s 11:44:31 server amavis[14540]: (14540-15) Passed CLEAN {RelayedInbound}, [192.254.113.101]:53977 [192.30.253.16] <bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com> -> <admin@test.com>, Message-ID: <Spicesoft/tandoori/pull/3047/c344885124@github.com>, Hits: -2.22, size: 9378, queued_as: 70959E00C3, dkim_sd=s20150108:github.com, 9468 ms
+%(day)s 11:44:31 server postfix/smtpd[2853]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 70959E00C3; from=<bounces+848413-16c5-tonio=ngyn.org@sgmail.github.com> to=<admin@test.com> proto=ESMTP helo=<o6.sgmail.github.com>
+%(day)s 11:44:31 server dovecot: lmtp(2881): Connect from local
+%(day)s 11:44:31 server dovecot: lmtp(admin@test.com): FmU3Hg9sDVpBCwAABvoInA: sieve: msgid=<Spicesoft/tandoori/pull/3047/c344885124@github.com>: stored mail into mailbox 'Listes.Tandoori'
+%(day)s 11:44:31 server postfix/lmtp[2880]: 70959E00C3: to=<admin@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.2, delays=0.04/0.01/0.01/0.14, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> FmU3Hg9sDVpBCwAABvoInA Saved)
+%(day)s 11:44:31 server dovecot: lmtp(2881): Disconnect from local: Successful quit
+%(day)s 11:44:31 server postfix/qmgr[26163]: 70959E00C3: removed
+%(day)s 11:44:33 server postfix/smtpd[2853]: disconnect from o6.sgmail.github.com[192.254.113.101] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:46:01 server dovecot: imap-login: Login: user=<anomalie@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=3041, secured, session=<wWyAUxdeusp/AAAB>
+%(day)s 11:46:01 server dovecot: imap(anomalie@test2.com): Logged out in=86 out=892
+%(day)s 11:46:01 server dovecot: imap-login: Login: user=<evolution@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=3057, secured, session=<YASCUxdeu8p/AAAB>
+%(day)s 11:46:01 server dovecot: imap(evolution@test2.com): Logged out in=86 out=891
+%(day)s 11:46:01 server dovecot: imap-login: Login: user=<question@test2.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=3069, secured, session=<6mqDUxdevMp/AAAB>
+%(day)s 11:46:02 server dovecot: imap(question@test2.com): Logged out in=86 out=891
+%(day)s 11:47:16 server postfix/postscreen[3161]: CONNECT from [37.187.155.42]:33450 to [94.23.45.181]:25
+%(day)s 11:47:22 server postfix/tlsproxy[3164]: CONNECT from [37.187.155.42]:33450
+%(day)s 11:47:22 server postfix/tlsproxy[3164]: Anonymous TLS connection established from [37.187.155.42]:33450: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:47:22 server postfix/postscreen[3161]: NOQUEUE: reject: RCPT from [37.187.155.42]:33450: 450 4.3.2 Service currently unavailable; from=<rebotes@cursosfemxa.es>, to=<comercial@jm-motores.es>, proto=ESMTP, helo=<cursosfemxa.es>
+%(day)s 11:47:22 server postfix/postscreen[3161]: PASS NEW [37.187.155.42]:33450
+%(day)s 11:47:22 server postfix/postscreen[3161]: DISCONNECT [37.187.155.42]:33450
+%(day)s 11:47:22 server postfix/tlsproxy[3164]: DISCONNECT [37.187.155.42]:33450
+%(day)s 11:47:42 server postfix/postscreen[3161]: CONNECT from [172.110.9.131]:58398 to [94.23.45.181]:25
+%(day)s 11:47:42 server postfix/postscreen[3161]: PASS OLD [172.110.9.131]:58398
+%(day)s 11:47:43 server postfix/smtpd[3182]: connect from unknown[172.110.9.131]
+%(day)s 11:47:43 server postfix/smtpd[3182]: Anonymous TLS connection established from unknown[172.110.9.131]: TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits)
+%(day)s 11:47:43 server postfix/smtpd[3182]: warning: 131.9.110.172.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=131.9.110.172.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 11:47:44 server policyd-spf[3195]: prepend Received-SPF: None (no SPF record) identity=no SPF record; client-ip=172.110.9.131; helo=mailstore.paxi.cf; envelope-from=<>; receiver=<UNKNOWN>
+%(day)s 11:47:44 server postfix/smtpd[3182]: NOQUEUE: client=unknown[172.110.9.131]
+%(day)s 11:47:45 server postfix/smtpd[3202]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 11:47:45 server postfix/smtpd[3202]: E81D5E00C3: client=localhost.localdomain[127.0.0.1], orig_client=unknown[172.110.9.131]
+%(day)s 11:47:45 server postfix/cleanup[3203]: E81D5E00C3: message-id=<20171116104742.7CC0E4DCECC7@mailstore.paxi.cf>
+%(day)s 11:47:45 server postfix/smtpd[3202]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 11:47:45 server postfix/qmgr[26163]: E81D5E00C3: from=<>, size=4166, nrcpt=1 (queue active)
+%(day)s 11:47:45 server amavis[32393]: (32393-04) Passed CLEAN {RelayedInbound}, [172.110.9.131]:58398 [172.110.9.131] <> -> <noreply@modoboa.org>, Message-ID: <20171116104742.7CC0E4DCECC7@mailstore.paxi.cf>, Hits: -1.106, size: 3690, queued_as: E81D5E00C3, 1410 ms
+%(day)s 11:47:45 server postfix/smtpd[3182]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as E81D5E00C3; from=<> to=<noreply@modoboa.org> proto=ESMTP helo=<mailstore.paxi.cf>
+%(day)s 11:47:46 server dovecot: lmtp(3205): Connect from local
+%(day)s 11:47:46 server dovecot: lmtp(admin@test.com): RTETANJsDVqFDAAABvoInA: sieve: msgid=<20171116104742.7CC0E4DCECC7@mailstore.paxi.cf>: not sending reject message to <>
+%(day)s 11:47:46 server postfix/lmtp[3204]: E81D5E00C3: to=<admin@test.com>, orig_to=<noreply@modoboa.org>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.07, delays=0.04/0.01/0.01/0, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> RTETANJsDVqFDAAABvoInA Saved)
+%(day)s 11:47:46 server dovecot: lmtp(3205): Disconnect from local: Successful quit
+%(day)s 11:47:46 server postfix/qmgr[26163]: E81D5E00C3: removed
+%(day)s 11:47:46 server postfix/smtpd[3182]: disconnect from unknown[172.110.9.131] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+%(day)s 11:50:50 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=3536, secured, session=<PwOvZBdeI8t/AAAB>
+%(day)s 11:50:50 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 11:50:50 server dovecot: imap-login: Login: user=<admin@test.com>, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, mpid=3551, secured, session=<0rGyZBdeJst/AAAB>
+%(day)s 11:50:50 server dovecot: imap(admin@test.com): Logged out in=12 out=431
+%(day)s 14:40:58 server postfix/postscreen[27044]: CONNECT from [188.213.142.238]:42388 to [94.23.45.181]:25
+%(day)s 14:40:58 server postfix/postscreen[27044]: PASS OLD [188.213.142.238]:42388
+%(day)s 14:40:58 server postfix/smtpd[27045]: connect from c264-2.lesmails.info[188.213.142.238]
+%(day)s 14:40:58 server postfix/smtpd[27045]: warning: 238.142.213.188.zen.spamhaus.org: RBL lookup error: Host or domain name not found. Name service error for name=238.142.213.188.zen.spamhaus.org type=A: Host not found, try again
+%(day)s 14:40:59 server policyd-spf[27066]: prepend Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=188.213.142.238; helo=sender.234.com; envelope-from=no-reply@mailing-lowcost.fr; receiver=<UNKNOWN>
+%(day)s 14:40:59 server postfix/smtpd[27045]: NOQUEUE: client=c264-2.lesmails.info[188.213.142.238]
+%(day)s 14:41:00 server postfix/smtpd[27073]: connect from localhost.localdomain[127.0.0.1]
+%(day)s 14:41:00 server postfix/smtpd[27073]: C2E3BE00C3: client=localhost.localdomain[127.0.0.1], orig_client=c264-2.lesmails.info[188.213.142.238]
+%(day)s 14:41:00 server postfix/cleanup[27074]: C2E3BE00C3: message-id=<20171116131143.F75320333C@JM6_EVENTS.home>
+%(day)s 14:41:00 server postfix/smtpd[27073]: disconnect from localhost.localdomain[127.0.0.1] ehlo=1 xforward=1 mail=1 rcpt=1 data=1 quit=1 commands=6
+%(day)s 14:41:00 server postfix/qmgr[26163]: C2E3BE00C3: from=<no-reply@mailing-lowcost.fr>, size=97952, nrcpt=1 (queue active)
+%(day)s 14:41:00 server amavis[8518]: (08518-10) Passed SPAM {RelayedTaggedInbound}, [188.213.142.238]:42388 [188.213.142.238] <no-reply@mailing-lowcost.fr> -> <alias@test.com>, Message-ID: <20171116131143.F75320333C@jm6_events.home>, Hits: 13.086, size: 96743, queued_as: C2E3BE00C3, 1258 ms
+%(day)s 14:41:00 server postfix/smtpd[27045]: proxy-accept: END-OF-MESSAGE: 250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as C2E3BE00C3; from=<no-reply@mailing-lowcost.fr> to=<alias@test.com> proto=ESMTP helo=<sender.234.com>
+%(day)s 14:41:00 server postfix/smtpd[27045]: disconnect from c264-2.lesmails.info[188.213.142.238] ehlo=1 mail=1 rcpt=1 data=1 quit=1 commands=5
+%(day)s 14:41:00 server dovecot: lmtp(27260): Connect from local
+%(day)s 14:41:01 server dovecot: lmtp(admin@test.com): +TSvNWyVDVp8agAABvoInA: sieve: msgid=<20171116131143.F75320333C@JM6_EVENTS.home>: stored mail into mailbox 'Junk'
+%(day)s 14:41:01 server postfix/lmtp[27075]: C2E3BE00C3: to=<admin@test.com>, orig_to=<alias@test.com>, relay=mail.koalabs.org[private/dovecot-lmtp], delay=0.29, delays=0.09/0.01/0.01/0.18, dsn=2.0.0, status=sent (250 2.0.0 <admin@test.com> +TSvNWyVDVp8agAABvoInA Saved)
+%(day)s 14:41:01 server dovecot: lmtp(27260): Disconnect from local: Successful quit
+%(day)s 14:41:01 server postfix/qmgr[26163]: C2E3BE00C3: removed

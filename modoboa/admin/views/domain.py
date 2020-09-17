@@ -8,7 +8,7 @@ from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -21,6 +21,8 @@ from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.listing import get_listing_page, get_sort_order
 from modoboa.lib.web_utils import render_to_json_response
+from modoboa.maillog import models as ml_models
+
 from .. import signals
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
@@ -119,9 +121,12 @@ def domains(request, tplname="admin/domains.html"):
 )
 def get_next_page(request):
     """Return the next page of the domain or quota list."""
-    if request.GET.get("objtype", "domain") == "domain":
+    objtype = request.GET.get("objtype", "domain")
+    if objtype == "domain":
         return _domains(request)
-    return list_quotas(request)
+    if objtype == "quota":
+        return list_quotas(request)
+    return list_logs(request)
 
 
 @login_required
@@ -155,6 +160,42 @@ def list_quotas(request):
     else:
         context["rows"] = render_to_string(
             "admin/domains_quotas.html", {"domains": page}, request
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
+
+
+@login_required
+@permission_required("admin.view_domain")
+def list_logs(request):
+    """List all Maillog entries."""
+    sort_order, sort_dir = get_sort_order(request.GET, "date")
+    search = request.GET.get("searchquery")
+    if not request.user.is_superuser:
+        domains = Domain.objects.get_for_admin(request.user)
+        logs = ml_models.Maillog.objects.filter(
+            Q(from_domain__in=domains) | Q(to_domain__in=domains)
+        )
+    else:
+        logs = ml_models.Maillog.objects.all()
+    logs = logs.order_by("{}{}".format(sort_dir, sort_order))
+    if search:
+        logs = logs.filter(
+            Q(sender__icontains=search) |
+            Q(rcpt__icontains=search) |
+            Q(queue_id__icontains=search)
+        )
+    page = get_listing_page(logs, request.GET.get("page", 1))
+    context = {
+        "headers": render_to_string(
+            "admin/domains_log_headers.html", {}, request
+        )
+    }
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = render_to_string(
+            "admin/domains_logs.html", {"logs": page}, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)

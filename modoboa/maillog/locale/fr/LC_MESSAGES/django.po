@@ -1,0 +1,170 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Antoine Nguyen <tonio@ngyn.org>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-17 11:24+0200\n"
+"PO-Revision-Date: 2017-08-09 08:17+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: forms.py:20
+msgid "General"
+msgstr "Général"
+
+#: forms.py:23
+msgid "Path to the log file"
+msgstr "Chemin d'accès vers le journal"
+
+#: forms.py:25
+msgid "Path to log file used to collect statistics"
+msgstr "Emplacement du log utilisé pour collecter les statistiques"
+
+#: forms.py:30
+msgid "Directory to store RRD files"
+msgstr "Répertoire où stocker les fichiers RRD"
+
+#: forms.py:33
+msgid "Path to directory where RRD files are stored"
+msgstr "Emplacement du répertoire de stockage des fichiers RRD"
+
+#: forms.py:38
+msgid "Show greylisted messages"
+msgstr "Afficher les messages greylistés"
+
+#: forms.py:41
+msgid "Differentiate between hard and soft rejects (greylisting)"
+msgstr "Différencie les rejets en douceur des rejets durs (greylisting)"
+
+#: forms.py:59 handlers.py:22
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: graphics.py:95
+msgid "Failed to locate rrdtool binary."
+msgstr "Impossible de trouver le binaire rrdtool"
+
+#: graphics.py:174
+msgid "Average traffic (msgs/min)"
+msgstr "Trafic moyen (msgs/min)"
+
+#: graphics.py:177
+msgid "sent messages"
+msgstr "messages envoyés"
+
+#: graphics.py:178
+msgid "received messages"
+msgstr "messages reçus"
+
+#: graphics.py:179
+msgid "bounced messages"
+msgstr "messages non remis"
+
+#: graphics.py:180
+msgid "rejected messages"
+msgstr "messages rejetés"
+
+#: graphics.py:181
+msgid "virus messages"
+msgstr "messages de type virus"
+
+#: graphics.py:182
+msgid "spam messages"
+msgstr "messages de type spam"
+
+#: graphics.py:189
+msgid "greylisted messages"
+msgstr "Messages greylistés"
+
+#: graphics.py:200
+msgid "Average normal traffic size (bytes/min)"
+msgstr "Taille moyenne du trafic normal (octets/min)"
+
+#: graphics.py:203
+msgid "received size"
+msgstr "taille reçue"
+
+#: graphics.py:205
+msgid "sent size"
+msgstr "taille envoyée"
+
+#: graphics.py:213
+msgid "Mail traffic"
+msgstr "Trafic messagerie"
+
+#: graphics.py:258
+msgid "Average account creation (account/hour)"
+msgstr "Moyenne des créations de compte (compte/heure)"
+
+#: graphics.py:261
+msgid "New accounts"
+msgstr "Nouveaux comptes"
+
+#: graphics.py:268
+msgid "Accounts"
+msgstr "Comptes"
+
+#: templates/maillog/index.html:4
+msgid "Graphical statistics"
+msgstr "Statistiques graphiques"
+
+#: templates/maillog/index.html:44
+msgid "Search a domain"
+msgstr "Chercher un domaine"
+
+#: templates/maillog/index.html:77
+msgid "Apply"
+msgstr "Appliquer"
+
+#: views.py:33
+msgid "No statistics available"
+msgstr "Aucune statistique disponible"
+
+#: views.py:40
+msgid "Day"
+msgstr "Jour"
+
+#: views.py:41
+msgid "Week"
+msgstr "Semaine"
+
+#: views.py:42
+msgid "Month"
+msgstr "Mois"
+
+#: views.py:43
+msgid "Year"
+msgstr "Année"
+
+#: views.py:44
+msgid "Custom"
+msgstr "Personnalisée"
+
+#: views.py:63
+msgid "Unknown graphic set"
+msgstr "Jeu de graphiques inconnu"
+
+#: views.py:68
+#, fuzzy
+#| msgid "Unknown graphic set"
+msgid "Unknown domain"
+msgstr "Jeu de graphiques inconnu"
+
+#: views.py:73
+msgid "Bad custom period"
+msgstr "Mauvaise période personnalisée"
+
+#~ msgid "Graphical statistics about emails traffic using RRDtool"
+#~ msgstr ""
+#~ "Statistiques graphiques concernant le trafic des messages utilisant "
+#~ "RRDtool"

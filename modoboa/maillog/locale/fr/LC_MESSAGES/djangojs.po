@@ -1,0 +1,22 @@
+# Modoboa french translation
+# Copyright (C) 2009-2013
+# This file is distributed under the same license as the Modoboa package.
+# Antoine Nguyen <tonio@ngyn.org>, 2009-2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: modoboa-1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-03 09:37+0100\n"
+"PO-Revision-Date: 2011-01-07 10:00+0100\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: FR <tonio@ngyn.org>\n"
+"Language: Français\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "Checher un domaine"
