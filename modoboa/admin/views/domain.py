@@ -183,7 +183,8 @@ def list_logs(request):
         logs = logs.filter(
             Q(sender__icontains=search) |
             Q(rcpt__icontains=search) |
-            Q(queue_id__icontains=search)
+            Q(queue_id__icontains=search) |
+            Q(status__icontains=search)
         )
     page = get_listing_page(logs, request.GET.get("page", 1))
     context = {
