@@ -22,6 +22,8 @@ addons:
       - ldap-utils
       - postfix
       - slapd
+      - librrd-dev
+      - rrdtool
 
 cache: pip
 
