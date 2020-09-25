@@ -6,10 +6,10 @@ import gevent
 from gevent import socket
 
 from django.conf import settings
-from django.core import mail
 from django.core.mail import EmailMessage
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.encoding import smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
@@ -71,7 +71,7 @@ class CheckMXRecords(BaseCommand):
         for ip, mxs in mx_list.items():
             try:
                 ip = ipaddress.ip_address(smart_text(ip))
-            except ValueError as e:
+            except ValueError:
                 continue
             else:
                 delim = "." if ip.version == 4 else ":"
@@ -86,8 +86,11 @@ class CheckMXRecords(BaseCommand):
         return provider, results
 
     def store_dnsbl_result(self, domain, provider, results, **options):
-        """Store DNSBL provider results for domain."""
-        alerts = {}
+        """Store DNSBL provider results for domain.
+
+        Return a list of alerts.
+        """
+        alerts = []
         to_create = []
         for mx, result in list(results.items()):
             if not result:
@@ -108,13 +111,29 @@ class CheckMXRecords(BaseCommand):
                 dnsbl_result.save()
                 if not dnsbl_result.status and result:
                     trigger = True
+            alarm_name = "domain_mx_in_dnsbl_{}".format(provider)
             if trigger:
-                if domain not in alerts:
-                    alerts[domain] = []
-                alerts[domain].append((provider, mx))
+                title = _("MX {} listed by DNSBL provider {}").format(
+                    mx.name, provider)
+                domain.alarms.create(
+                    internal_name=alarm_name,
+                    status=constants.ALARM_OPENED,
+                    title=title
+                )
+                alerts.append((provider, mx.name))
+            else:
+                domain.alarms.filter(
+                    internal_name=alarm_name,
+                    status=constants.ALARM_OPENED
+                ).update(
+                    status=constants.ALARM_CLOSED,
+                    closed=timezone.now()
+                )
         models.DNSBLResult.objects.bulk_create(to_create)
-        if not alerts:
-            return
+        return alerts
+
+    def send_alert_notifications(self, domain, alerts, subject, tpl, **options):
+        """Send email notifications about given alerts."""
         emails = list(options["email"])
         if not options["skip_admin_emails"]:
             emails.extend(
@@ -123,19 +142,9 @@ class CheckMXRecords(BaseCommand):
             )
         if not len(emails):
             return
-        with mail.get_connection() as connection:
-            for domain, providers in list(alerts.items()):
-                content = render_to_string(
-                    "admin/notifications/domain_in_dnsbl.html", {
-                        "domain": domain, "alerts": providers
-                    })
-                subject = _("[modoboa] DNSBL issue(s) for domain {}").format(
-                    domain.name)
-                msg = EmailMessage(
-                    subject, content.strip(), self.sender, emails,
-                    connection=connection
-                )
-                msg.send()
+        content = render_to_string(tpl, {"domain": domain, "alerts": alerts})
+        msg = EmailMessage(subject, content.strip(), self.sender, emails)
+        msg.send()
 
     def check_valid_mx(self, domain, mx_list, **options):
         """Check that domain's MX record exist.
@@ -149,38 +158,57 @@ class CheckMXRecords(BaseCommand):
                for mx in mx_list]
         valid_mxs = self.valid_mxs
         if not mxs:
-            alerts.append(_("Domain {} has no MX record").format(domain))
-        elif valid_mxs:
-            for subnet in valid_mxs:
-                for mx, addr in mxs:
-                    if addr in subnet:
-                        mx.managed = check = True
-                        mx.save()
-            if check is False:
-                mx_names = [
-                    "{0.name} ({0.address})".format(mx) for mx in mx_list]
+            alarm, created = domain.alarms.get_or_create(
+                internal_name="domain_has_no_mx",
+                status=constants.ALARM_OPENED,
+                defaults={"title": _("Domain has no MX record")}
+            )
+            if created:
                 alerts.append(
-                    _("MX record for domain {0} is invalid: {1}").format(
-                        domain, ", ".join(mx_names))
-                )
+                    _("Domain {} has no MX record").format(domain.name))
+        else:
+            # Close opened alarm
+            domain.alarms.filter(
+                internal_name="domain_has_no_mx",
+                status=constants.ALARM_OPENED).update(
+                    status=constants.ALARM_CLOSED, closed=timezone.now())
+            if valid_mxs:
+                for subnet in valid_mxs:
+                    for mx, addr in mxs:
+                        if addr in subnet:
+                            mx.managed = check = True
+                            mx.save()
+                if check is False:
+                    mx_names = [
+                        "{0.name} ({0.address})".format(mx) for mx in mx_list]
+                    alarm, created = domain.alarms.get_or_create(
+                        internal_name="domain_invalid_mx",
+                        status=constants.ALARM_OPENED,
+                        defaults={
+                            "title": _("Invalid MX record: {}").format(
+                                ", ".join(mx_names))
+                        }
+                    )
+                    if created:
+                        alerts.append(
+                            _("MX record for domain {0} is invalid: {1}")
+                            .format(domain, ", ".join(mx_names))
+                        )
+                else:
+                    # Close opened alarm
+                    domain.alarms.filter(
+                        internal_name="domain_invalid_mx",
+                        status=constants.ALARM_OPENED
+                    ).update(
+                        status=constants.ALARM_CLOSED,
+                        closed=timezone.now()
+                    )
         if not alerts:
             return
-        emails = list(options["email"])
-        if not options["skip_admin_emails"]:
-            emails.extend(
-                domain.admins.exclude(mailbox__isnull=True)
-                .values_list("email", flat=True)
-            )
-        if not len(emails):
-            return
-        content = render_to_string(
-            "admin/notifications/domain_invalid_mx.html", {
-                "domain": domain, "alerts": alerts
-            })
         subject = _("[modoboa] MX issue(s) for domain {}").format(
             domain.name)
-        msg = EmailMessage(subject, content.strip(), self.sender, emails)
-        msg.send()
+        tpl = "admin/notifications/domain_invalid_mx.html"
+        self.send_alert_notifications(domain, alerts, subject, tpl, **options)
 
     def check_domain(self, domain, timeout=3, ttl=7200, **options):
         """Check specified domain."""
@@ -226,11 +254,19 @@ class CheckMXRecords(BaseCommand):
             gevent.spawn(self.query_dnsbl, mx_by_ip, provider)
             for provider in self.providers]
         gevent.joinall(jobs, timeout)
+        alerts = []
         for job in jobs:
             if not job.successful():
                 continue
             provider, results = job.value
-            self.store_dnsbl_result(domain, provider, results, **options)
+            alerts += self.store_dnsbl_result(
+                domain, provider, results, **options)
+        if not alerts:
+            return
+        subject = _("[modoboa] DNSBL issue(s) for domain {}").format(
+            domain.name)
+        tpl = "admin/notifications/domain_in_dnsbl.html"
+        self.send_alert_notifications(domain, alerts, subject, tpl, **options)
 
     def handle(self, *args, **options):
         """Command entry point."""

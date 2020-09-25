@@ -99,6 +99,31 @@ class MXTestCase(ModoTestCase):
         management.call_command(
             "modo", "check_mx", "--domain", "toto.com")
 
+    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "query")
+    def test_invalid_mx(
+            self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
+        """Test to check if invalid MX records are detected."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
+        mock_g_gethostbyname.return_value = "1.2.3.4"
+        domain = factories.DomainFactory(name="invalid-mx.com")
+        # Add domain admin with mailbox
+        mb = factories.MailboxFactory(
+            address="admin", domain=domain,
+            user__username="admin@{}".format(domain.name),
+            user__groups=("DomainAdmins", )
+        )
+        domain.add_admin(mb.user)
+        management.call_command(
+            "modo", "check_mx", "--domain", domain.name, "--no-dnsbl")
+        self.assertEqual(domain.alarms.count(), 1)
+        management.call_command(
+            "modo", "check_mx", "--domain", domain.name, "--no-dnsbl")
+        self.assertEqual(domain.alarms.count(), 1)
+        self.assertEqual(len(mail.outbox), 1)
+
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "query")
     def test_get_mx_list_dns_server(self, mock_query, mock_getaddrinfo):
@@ -154,7 +179,7 @@ class DNSBLTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
-        super(DNSBLTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
         factories.DomainFactory(name="does-not-exist.example.com")
         cls.domain2 = factories.DomainFactory(
@@ -195,9 +220,6 @@ class DNSBLTestCase(ModoTestCase):
         mock_g_gethostbyname.return_value = "1.2.3.4"
         management.call_command(
             "modo", "check_mx", "--email", "user@example.test")
-        if len(mail.outbox) != 2:
-            for message in mail.outbox:
-                print(message.subject)
         self.assertEqual(len(mail.outbox), 2)
 
     @mock.patch("gevent.socket.gethostbyname")
