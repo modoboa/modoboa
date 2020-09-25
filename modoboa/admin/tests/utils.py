@@ -24,6 +24,7 @@ class RRsetInvalid(object):
 _A_RECORD = A("IN", "A", "1.2.3.4")
 _MX_RECORD_1 = MX("IN", "MX", 10, Name("mx.example.com".split(".")))
 _MX_RECORD_2 = MX("IN", "MX", 10, Name("mx2.example.com".split(".")))
+_MX_RECORD_3 = MX("IN", "MX", 10, Name("mx3.example.com".split(".")))
 _SPF_RECORD = TXT("IN", "TXT", ["v=spf1 mx -all"])
 _DMARC_RECORD = TXT("IN", "TXT", ["v=DMARC1 p=reject"])
 _DKIM_RECORD = TXT("IN", "TXT", ["v=DKIM1 p=XXXXX"])
@@ -49,6 +50,7 @@ _POSSIBLE_DNS_RESULTS = {
     "no-lookup.example.com": [_DNE_MX_RECORD],
     "no-answer.example.com": [_DNE_MX_RECORD],
     "dns-checks.com": [_MX_RECORD_2],
+    "invalid-mx.com": [_MX_RECORD_3]
 }
 
 _POSSIBLE_DNS_RESULTS_NO_MX = {
@@ -62,6 +64,7 @@ _POSSIBLE_DNS_RESULTS_NO_MX = {
     "_dmarc.dns-checks.com": [_DMARC_RECORD, ],
     "autoconfig.dns-checks.com": [_A_RECORD],
     "autodiscover.dns-checks.com": [_A_RECORD],
+    "mx3.example.com": [_A_RECORD]
 }
 _POSSIBLE_IP_RESULTS = {
     "test3.com": [_IPV4_RECORD_2],
@@ -79,10 +82,9 @@ def mock_dns_query_result(qname, *args, **kwargs):
         if qname in _POSSIBLE_DNS_RESULTS:
             return get_mock_dns_query_response(_POSSIBLE_DNS_RESULTS, qname)
         return _MX_RECORDS
-    elif qname in _POSSIBLE_DNS_RESULTS_NO_MX:
+    if qname in _POSSIBLE_DNS_RESULTS_NO_MX:
         return get_mock_dns_query_response(_POSSIBLE_DNS_RESULTS_NO_MX, qname)
-    else:
-        return _IP_SET_RECORDS
+    return _IP_SET_RECORDS
 
 
 def get_mock_dns_query_response(responses, attributeName):

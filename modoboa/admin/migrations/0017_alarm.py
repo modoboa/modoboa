@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('closed', models.DateTimeField(blank=True, null=True)),
                 ('status', models.IntegerField(choices=[(1, 'Opened'), (2, 'Closed')], db_index=True, default=1)),
                 ('title', models.CharField(max_length=150)),
-                ('internal_name', models.CharField(max_length=15)),
+                ('internal_name', models.CharField(max_length=120)),
                 ('domain', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='alarms', to='admin.Domain')),
                 ('mailbox', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='alarms', to='admin.Mailbox')),
             ],

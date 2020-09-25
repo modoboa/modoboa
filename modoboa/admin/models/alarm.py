@@ -34,7 +34,7 @@ class Alarm(models.Model):
     )
 
     title = models.CharField(max_length=150)
-    internal_name = models.CharField(max_length=15)
+    internal_name = models.CharField(max_length=120)
 
     objects = models.Manager.from_queryset(AlarmQuerySet)()
 
