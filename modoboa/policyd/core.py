@@ -225,8 +225,11 @@ def get_domains_to_reset():
     """
     qset = admin_models.Domain.objects.filter(message_limit__isnull=False)
     admin_models.Alarm.objects.filter(
-        internal_name="limit_reached", domain__in=qset).update(
-            status=admin_constants.ALARM_CLOSED, closed=timezone.now())
+        internal_name="limit_reached", domain__in=qset,
+        status=admin_constants.ALARM_OPENED
+    ).update(
+        status=admin_constants.ALARM_CLOSED, closed=timezone.now()
+    )
     return qset
 
 
@@ -242,8 +245,11 @@ def get_mailboxes_to_reset():
         .select_related("domain")
     )
     admin_models.Alarm.objects.filter(
-        internal_name="limit_reached", mailbox__in=qset).update(
-            status=admin_constants.ALARM_CLOSED, closed=timezone.now())
+        internal_name="limit_reached", mailbox__in=qset,
+        status=admin_constants.ALARM_OPENED
+    ).update(
+        status=admin_constants.ALARM_CLOSED, closed=timezone.now()
+    )
     return qset
 
 
