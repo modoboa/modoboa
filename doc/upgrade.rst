@@ -124,6 +124,15 @@ Add the following settings to your ``settings.py`` file:
    REDIS_QUOTA_DB = 0
    REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
+Once done, you can start the policy daemon using the following commands:
+
+.. sourcecode:: bash
+
+   > python manage.py policy_daemon
+
+Don't forget to configure :ref:`_policyd_config <postfix>` if you want
+to use this feature.
+
 The ``modoboa-stats`` plugin has been merged into the core.
 
 Add ``'modoboa.maillog'`` to ``MODOBOA_APPS``:
