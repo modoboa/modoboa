@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-11 20:26+0200\n"
-"PO-Revision-Date: 2020-06-11 20:27+0200\n"
+"POT-Creation-Date: 2020-10-02 15:31+0200\n"
+"PO-Revision-Date: 2020-10-02 15:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,19 +17,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: core.py:74
+#: policyd/core.py:88
+msgid "Daily sending limit reached"
+msgstr "Limite d'envoi quotidienne atteinte"
+
+#: policyd/core.py:104
 msgid "account"
 msgstr "compte"
 
-#: core.py:75
+#: policyd/core.py:105
 msgid "domain"
 msgstr "domaine"
 
-#: core.py:92
+#: policyd/core.py:123
 msgid "[modoboa] Sending limit reached"
 msgstr "[modoboa] Limite d'envoi atteinte"
 
-#: templates/policyd/notifications/limit_reached.html:3
+#: policyd/templates/policyd/notifications/limit_reached.html:3
 #, python-format
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr "La limite journalière du %(ltype)s suivant a été atteinte : %(name)s."
