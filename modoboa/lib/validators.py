@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Field validators."""
-
-from __future__ import unicode_literals
 
 import re
 

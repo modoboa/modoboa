@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """
 :mod:`exceptions` --- Custom Modoboa exceptions
 -----------------------------------------------
 
 """
-
-from __future__ import unicode_literals
 
 from django.utils.translation import ugettext as _
 

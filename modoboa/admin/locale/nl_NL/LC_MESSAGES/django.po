@@ -4,92 +4,166 @@
 #
 # Translators:
 # Andrew <buddha@cryptolab.net>, 2014
+# Chris de Gelder <chrisdegelder@gmail.com>, 2017
+# Harrie v.d. Vegt <hvdvegt@gmail.com>, 2016
+# MC Moerkerk <contact@melluh.me>, 2019
+# Peter van den Heuvel <peter@pvandenheuvel.nl>, 2017
+# Remco de Hiep <remco.de.hiep@reto.nl>, 2017
+# R Kloosterman <randx@zeelandnet.nl>, 2016
+# Ronald Otto <ronald@tuxis.nl>, 2017
 # TuxBrother <vrijwilligerswerk@wij.rs>, 2014
+# Tuxis Internet Engineering V.O.F. <info@tuxis.nl>, 2016
+# Tuxis Internet Engineering V.O.F. <info@tuxis.nl>, 2017-2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
-"PO-Revision-Date: 2014-12-31 11:37+0000\n"
-"Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
-"modoboa/language/nl_NL/)\n"
+"POT-Creation-Date: 2020-05-06 13:15+0200\n"
+"PO-Revision-Date: 2019-05-30 07:01+0000\n"
+"Last-Translator: MC Moerkerk <contact@melluh.me>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
+"language/nl_NL/)\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/app_settings.py:22 admin/handlers.py:269
+#: admin/api.py:142
+msgid "Here is your new Modoboa password: {}"
+msgstr ""
+
+#: admin/app_settings.py:20 admin/handlers.py:261
 #: admin/templates/admin/_global_statistics_widget.html:11
 #: admin/templates/admin/domains.html:5
 msgid "Domains"
 msgstr "Domeinen"
 
-#: admin/app_settings.py:25
+#: admin/app_settings.py:23
 msgid "Enable MX checks"
-msgstr ""
+msgstr "MX Controles inschakelen"
 
-#: admin/app_settings.py:28
+#: admin/app_settings.py:26
 msgid "Check that every domain has a valid MX record"
-msgstr "Controlleer of ieder domein een valide MX record heeft"
+msgstr "Controleer dat ieder domein een geldig MX-record heeft"
 
-#: admin/app_settings.py:33
+#: admin/app_settings.py:31
 msgid "Valid MXs"
-msgstr "Correcte MX-records"
+msgstr "Geldige MX'en"
 
-#: admin/app_settings.py:36
+#: admin/app_settings.py:34
 msgid ""
 "A list of IP or network address every MX record should match. A warning will "
 "be sent if a record does not respect it."
 msgstr ""
+"Een lijst van IP-adressen waaraan alle MX-records moeten voldoen. Er zal een "
+"waarschuwing getoont worden voor records die niet overeenkomen."
 
-#: admin/app_settings.py:44
+#: admin/app_settings.py:42
 msgid "New domains must use authorized MX(s)"
-msgstr ""
+msgstr "Nieuwe domeinen moeten geauthoriseerde MX-record(s) gebruiken."
 
-#: admin/app_settings.py:47
+#: admin/app_settings.py:45
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr ""
+msgstr "Een domein niet aanmaken als het MX-record het adres niet gebruikt."
 
-#: admin/app_settings.py:53
+#: admin/app_settings.py:51
+#, fuzzy
+#| msgid "Enable DNS checks"
+msgid "Enable SPF checks"
+msgstr "Schakel DNS checks in."
+
+#: admin/app_settings.py:54
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid SPF record"
+msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+
+#: admin/app_settings.py:59
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DKIM checks"
+msgstr "MX Controles inschakelen"
+
+#: admin/app_settings.py:62
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+
+#: admin/app_settings.py:68
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DMARC checks"
+msgstr "MX Controles inschakelen"
+
+#: admin/app_settings.py:71
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid DMARC record"
+msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+
+#: admin/app_settings.py:76
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable autoconfig checks"
+msgstr "MX Controles inschakelen"
+
+#: admin/app_settings.py:79
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+
+#: admin/app_settings.py:84
 msgid "Enable DNSBL checks"
-msgstr "Zet DNSBL controle aan"
+msgstr "DNSBL Controles inschakelen"
 
-#: admin/app_settings.py:56
+#: admin/app_settings.py:87
 msgid "Check every domain against major DNSBL providers"
-msgstr "Controlleer ieder domein bij de grote DNSBL providers"
+msgstr "Controleer ieder domein tegen de bekende DNSBL providers"
 
-#: admin/app_settings.py:61
+#: admin/app_settings.py:92
+msgid "Custom DNS server"
+msgstr "Eigen DNS server"
+
+#: admin/app_settings.py:95
+msgid "Use a custom DNS server instead of local server configuration"
+msgstr "Gebruik een eigen DNS server in plaats van lokale server configuratie"
+
+#: admin/app_settings.py:100
 msgid "DKIM keys storage directory"
-msgstr ""
+msgstr "DKIM Key opslagdirectory"
 
-#: admin/app_settings.py:64
+#: admin/app_settings.py:103
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
 msgstr ""
+"Absolute pad van de directory waar DKIM private keys worden opgeslagen. "
+"Verzeker u ervan dat deze directory van de user root is en niet leesbaar "
+"voor andere gebruikers."
 
-#: admin/app_settings.py:72
+#: admin/app_settings.py:111
 msgid "Default DKIM key length"
-msgstr ""
+msgstr "Standaard DKIM key lengte"
 
-#: admin/app_settings.py:76
+#: admin/app_settings.py:115
 msgid "Default length in bits for newly generated DKIM keys."
-msgstr ""
+msgstr "Standaard lengte in bits voor nieuw gegenereerde DKIM keys."
 
-#: admin/app_settings.py:80 admin/templates/admin/domain_detail.html:41
+#: admin/app_settings.py:119 admin/templates/admin/domain_detail.html:41
 msgid "Mailboxes"
 msgstr "Mailboxen"
 
-#: admin/app_settings.py:83
+#: admin/app_settings.py:122
 msgid "Handle mailboxes on filesystem"
 msgstr "Pas mailboxen op het bestandssysteem aan"
 
-#: admin/app_settings.py:86
+#: admin/app_settings.py:125
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -97,113 +171,107 @@ msgstr ""
 "Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of "
 "verwijderd worden in Modoboa."
 
-#: admin/app_settings.py:92
+#: admin/app_settings.py:131
 msgid "Mailboxes owner"
 msgstr "Eigenaar van de mailboxen"
 
-#: admin/app_settings.py:95
+#: admin/app_settings.py:134
 msgid "The UNIX account who owns mailboxes on the filesystem"
 msgstr ""
 "De UNIX account die de rechten heeft tot de mailboxen op het bestandssysteem"
 
-#: admin/app_settings.py:100
+#: admin/app_settings.py:139
 msgid "Default domain quota"
 msgstr "Standaard domein quota"
 
-#: admin/app_settings.py:103
+#: admin/app_settings.py:142
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr ""
 "Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe "
-"te passen. Een waarde van 0 betekend geen quota."
+"te passen. Een waarde van 0 betekent geen quota."
 
-#: admin/app_settings.py:109 admin/models/domain.py:40
+#: admin/app_settings.py:148 admin/forms/domain.py:49 admin/models/domain.py:33
 #: admin/templates/admin/domain_detail.html:64
-#, fuzzy
-#| msgid "Default domain quota"
 msgid "Default mailbox quota"
-msgstr "Standaard domein quota"
+msgstr "Standaard mailbox quota"
 
-#: admin/app_settings.py:112
+#: admin/app_settings.py:151
 #, fuzzy
 #| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
+#| "Default mailbox quota (in MB) applied to freshly created domains with no "
+#| "value specified. A value of 0 means no quota."
 msgid ""
-"Default mailbox quota (in MB) applied to freshly created domains with no "
+"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
 "value specified. A value of 0 means no quota."
 msgstr ""
-"Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe "
-"te passen. Een waarde van 0 betekend geen quota."
+"Standaard mailbox-quota (in MB) toegepast op nieuw aangemaakte domeinen "
+"zonder waarde gespecificeerd. Een waarde van 0 betekent geen quota."
 
-#: admin/app_settings.py:118
+#: admin/app_settings.py:157
 msgid "Automatic account removal"
 msgstr "Automatish een account verwijderen"
 
-#: admin/app_settings.py:121
+#: admin/app_settings.py:160
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr ""
-"Als een mailbox word verwijderd, verwijder dan ook de bijbehorende account"
+"Als een mailbox wordt verwijderd, verwijder dan ook het bijbehorende account"
 
-#: admin/app_settings.py:125
+#: admin/app_settings.py:164
 msgid "Automatic domain/mailbox creation"
 msgstr "Domein en mailbox automatisch aanmaken"
 
-#: admin/app_settings.py:128
+#: admin/app_settings.py:167
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
 
-#: admin/app_settings.py:134
+#: admin/app_settings.py:173
 msgid "Create an alias when a mailbox is renamed"
-msgstr "Maak een alias aan wanneer een mailbox word hernoemd"
+msgstr "Maak een alias aan als een mailbox hernoemd wordt."
 
-#: admin/app_settings.py:137
+#: admin/app_settings.py:176
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
-"Maak een alias aan met het oude adres wanneer een mailbox word hernoemd"
+msgstr "Maak een alias aan voor het oude adres als een mailbox hernoemd wordt."
 
-#: admin/app_settings.py:186 admin/app_settings.py:194
-#: admin/forms/account.py:331
+#: admin/app_settings.py:225 admin/app_settings.py:233
+#: admin/forms/account.py:335
 msgid "Must be a positive integer"
 msgstr "Dit moet een positive integer zijn."
 
-#: admin/app_settings.py:204
-#, fuzzy
-#| msgid "Domain modified"
+#: admin/app_settings.py:243
 msgid "Directory not found."
-msgstr "Domein gewijzigd"
+msgstr "Directory niet gevonden."
 
-#: admin/app_settings.py:210
+#: admin/app_settings.py:249
 msgid "openssl not found, please make sure it is installed."
 msgstr ""
+"Openssl kan niet gevonden worden. Verzeker u ervan dat dit geinstalleerd is."
 
-#: admin/app_settings.py:224
+#: admin/app_settings.py:263
 msgid "Define at least one authorized network / address"
-msgstr ""
+msgstr "Definieer ten minste 1 geautoriseerd netwerk / adres"
 
-#: admin/app_settings.py:234
+#: admin/app_settings.py:273
 msgid "Administration"
 msgstr "Administratie"
 
-#: admin/constants.py:99 admin/forms/alias.py:49
+#: admin/constants.py:28 admin/forms/alias.py:43
 #: admin/templates/admin/_per_domain_statistics_widget.html:7
 #: admin/templates/admin/domains_quota_headers.html:2
 msgid "Domain"
 msgstr "Domein"
 
-#: admin/constants.py:100
-#, fuzzy
-#| msgid "New domain"
+#: admin/constants.py:29
 msgid "Relay domain"
-msgstr "Nieuw domein"
+msgstr "Doorstuur domein"
 
-#: admin/forms/account.py:38 admin/templates/admin/domain_detail.html:120
+#: admin/forms/account.py:32 admin/templates/admin/domain_detail.html:125
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: admin/forms/account.py:40
+#: admin/forms/account.py:34
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
@@ -211,235 +279,212 @@ msgstr ""
 "De naam van de gebruiker. Moet een geldig e-mail adres zijn voor gebruikers "
 "of administrators met een mailbox."
 
-#: admin/forms/account.py:45 admin/templates/admin/account_detail.html:29
+#: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 msgid "Role"
-msgstr "Rol"
+msgstr "Regel"
 
-#: admin/forms/account.py:46
+#: admin/forms/account.py:40
 msgid "Choose"
 msgstr "Kiezen"
 
-#: admin/forms/account.py:47
+#: admin/forms/account.py:41
 msgid "What level of permission this user will have"
 msgstr "Welk niveau van rechten deze gebruiker zal hebben"
 
-#: admin/forms/account.py:50 admin/forms/domain.py:227
-#, fuzzy
-#| msgid "Invalid request"
+#: admin/forms/account.py:44 admin/forms/domain.py:245
 msgid "Random password"
-msgstr "Willekeuring wachtwoord"
+msgstr "Willekeurig wachtwoord"
 
-#: admin/forms/account.py:52
+#: admin/forms/account.py:46
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
 msgstr ""
+"Genereer een willekeurig wachtwoord. Als u dit account bijwerkt en deze "
+"optie aanvinkt wordt een nieuw wachtwoord gegenereerd."
 
-#: admin/forms/account.py:58
+#: admin/forms/account.py:52
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: admin/forms/account.py:63
+#: admin/forms/account.py:57
 msgid "Confirmation"
 msgstr "Bevestiging"
 
-#: admin/forms/account.py:66
+#: admin/forms/account.py:60
 msgid "Enter the same password as above, for verification."
-msgstr "Herhaal wachtwoord ter verificatie"
+msgstr "Herhaal wachtwoord (voor verificatie)"
 
-#: admin/forms/account.py:78
+#: admin/forms/account.py:72
 msgid "Enabled"
 msgstr "Actief"
 
-#: admin/forms/account.py:172
+#: admin/forms/account.py:167
 msgid "Only super administrators are allowed for this mode"
-msgstr "Alleen super administrators mogen dit"
+msgstr "Alleen hoofdbeheerders hebben toegang tot deze modus"
 
-#: admin/forms/account.py:183 admin/forms/account.py:185
-#: admin/forms/domain.py:144 admin/forms/domain.py:273
-#: admin/forms/domain.py:276 admin/serializers.py:241
-#, fuzzy
-#| msgid "A mailbox is required"
+#: admin/forms/account.py:178 admin/forms/account.py:180
+#: admin/forms/domain.py:162 admin/forms/domain.py:291
+#: admin/forms/domain.py:294 admin/serializers.py:287
 msgid "This field is required."
-msgstr "Een mailbox is benodigd"
+msgstr "Dit veld is benodigd."
 
-#: admin/forms/account.py:191
+#: admin/forms/account.py:186
 msgid "The two password fields didn't match."
 msgstr "De wachtwoorden komen niet overeen."
 
-#: admin/forms/account.py:204
+#: admin/forms/account.py:199
 msgid "You can't disable your own account"
 msgstr "U kunt uw eigen account niet uitschakelen"
 
-#: admin/forms/account.py:225
+#: admin/forms/account.py:222
 msgid "E-mail"
 msgstr "E-mail"
 
-#: admin/forms/account.py:227
+#: admin/forms/account.py:224
 msgid "Create an alias using the old address"
-msgstr "Maak een alias aan met het oude adres"
+msgstr "Maak een alias aan voor het oude adres"
 
-#: admin/forms/account.py:232 admin/templates/admin/account_detail.html:45
+#: admin/forms/account.py:229 admin/forms/domain.py:41
+#: admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr "Quota"
 
-#: admin/forms/account.py:234
+#: admin/forms/account.py:232
 msgid ""
-"Quota in MB for this mailbox. Define a custom value or use domain's default "
-"one. Leave empty to define an unlimited value (not allowed for domain "
-"administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
-"Quota in MB voor deze mailbox. Geef een aangepaste waarde of gebruik de "
-"stanaard waarde van het domein. Laat leeg om een ongelimiteerde waarde te "
-"definieren (niet toegestaan voor domein administrators)."
+"Quota voor deze mailbox kan uitgedrukt worden ik KB, MB (standaard) of GB. "
+"Geef een aangepaste waarde of gebruik de standaard voor dit domein. Laat dit "
+"leeg voor een ongelimiteerde waarde (niet toegestaan voor domein "
+"administrators)."
 
-#: admin/forms/account.py:242 admin/forms/domain.py:39
+#: admin/forms/account.py:242 admin/forms/domain.py:31
 #: admin/templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Alias(sen)"
 
 #: admin/forms/account.py:245
-#, fuzzy
-#| msgid ""
-#| "Alias(es) of this mailbox. Indicate only one address per input, press "
-#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
-#| "alias (ex: *@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
 msgstr ""
 "Alias(en) van deze mailbox. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen. Gebruik een wildcard '*' om een 'catch-"
-"all' adres te maken (bijvoorbeeld: *@domein.tld)."
+"ENTER om een nieuwe regel te krijgen. Om een 'catch-all'-adres te maken "
+"voert u alleen het domein in (bijvoorbeeld: @domein.tld)."
 
 #: admin/forms/account.py:251
-#, fuzzy
-#| msgid "Invalid request"
 msgid "Sender addresses"
-msgstr "Ongeldig verzoek"
+msgstr "Afzenderadressen"
 
 #: admin/forms/account.py:254
-#, fuzzy
-#| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
 msgstr ""
-"Mailbox(en) waarnaar deze alias zal verwijzen. Geef slechts een adres per "
-"regel op, en toets ENTER om een nieuwe regel te krijgen."
+"Extra afzenderadres(sen) voor dit account. De gebruiker wordt toegestaan om "
+"dit adres als verzender te gebruiken voor uitgaande berichten, ook al "
+"bestaat dit adres niet lokaal. Geef slechts een adres per regel op, en toets "
+"ENTER om een nieuwe regel te krijgen."
 
-#: admin/forms/account.py:309 admin/forms/alias.py:94
-#: admin/models/mailbox.py:315
+#: admin/forms/account.py:309 admin/forms/alias.py:88
+#: admin/models/mailbox.py:310
 msgid "Domain does not exist"
 msgstr "Domein bestaat niet"
 
-#: admin/forms/account.py:341
-#, fuzzy
-#| msgid "Domain does not exist"
+#: admin/forms/account.py:345
 msgid "Local domain does not exist"
-msgstr "Domein bestaat niet"
+msgstr "Domein bestaat niet lokaal"
 
-#: admin/forms/account.py:345 admin/forms/account.py:353
-#: admin/forms/alias.py:97
+#: admin/forms/account.py:349 admin/forms/account.py:357
+#: admin/forms/alias.py:91
 msgid "You don't have access to this domain"
 msgstr "U heeft geen toegang tot dit domein"
 
-#: admin/forms/account.py:452
+#: admin/forms/account.py:456
 msgid "Domain(s)"
 msgstr "Domein(en)"
 
-#: admin/forms/account.py:454
+#: admin/forms/account.py:458
 msgid "Domain(s) that user administrates"
 msgstr "Domein(en) die gebruiker mag beheren"
 
-#: admin/forms/account.py:500 admin/forms/account.py:590
-#: admin/forms/domain.py:344 admin/forms/domain.py:414
+#: admin/forms/account.py:505 admin/forms/account.py:595
+#: admin/forms/domain.py:362 admin/forms/domain.py:433
 msgid "General"
 msgstr "Algemeen"
 
-#: admin/forms/account.py:504
+#: admin/forms/account.py:509
 msgid "Profile"
 msgstr "Profiel"
 
-#: admin/forms/account.py:508 admin/forms/account.py:596
+#: admin/forms/account.py:513 admin/forms/account.py:601
 msgid "Mail"
 msgstr "Mail"
 
-#: admin/forms/account.py:511
+#: admin/forms/account.py:516
 msgid "Permissions"
 msgstr "Rechten"
 
-#: admin/forms/account.py:579
+#: admin/forms/account.py:584
 msgid "Account updated"
 msgstr "Account aangepast"
 
-#: admin/forms/account.py:604
+#: admin/forms/account.py:609
 msgid "New account"
-msgstr "Nieuw account"
+msgstr "Nieuwe account"
 
-#: admin/forms/account.py:614
+#: admin/forms/account.py:619
 msgid "Account created"
 msgstr "Account aangemaakt"
 
-#: admin/forms/alias.py:26
-#, fuzzy
-#| msgid "Invalid request"
+#: admin/forms/alias.py:20
 msgid "Random address"
-msgstr "Willekeuring adres"
+msgstr "Willekeurig adres"
 
-#: admin/forms/alias.py:29
+#: admin/forms/alias.py:23
 msgid "Email address"
-msgstr "Email adres"
+msgstr "E-mail adres"
 
-#: admin/forms/alias.py:31
-#, fuzzy
-#| msgid ""
-#| "The alias address (without the domain part). For a 'catch-all' address, "
-#| "just enter an * character."
+#: admin/forms/alias.py:25
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
 msgstr ""
-"Het alias adres (zonder het domein deel). Voor een 'catch-all' adres, vul "
-"een * in."
+"Het alias-adres. Om een 'catch-all'-adres te maken voert u alleen het domein "
+"in (bijvoorbeeld: @domein.tld)."
 
-#: admin/forms/alias.py:37 admin/templates/admin/alias_detail.html:37
+#: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Ontvangers"
 
-#: admin/forms/alias.py:39
-#, fuzzy
-#| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
+#: admin/forms/alias.py:33
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
 msgstr ""
-"Mailbox(en) waarnaar deze alias zal verwijzen. Geef slechts een adres per "
-"regel op, en toets ENTER om een nieuwe regel te krijgen."
+"Adressen waarnaar deze alias zal verwijzen. Geef slechts een adres per regel "
+"op, en toets ENTER om een nieuwe regel te krijgen."
 
-#: admin/forms/alias.py:114 admin/forms/alias.py:116
-#, fuzzy
-#| msgid "A mailbox is required"
+#: admin/forms/alias.py:108 admin/forms/alias.py:110
 msgid "This field is required"
-msgstr "Een mailbox is benodigd"
+msgstr "Dit veld is benodigd"
 
-#: admin/forms/alias.py:120
+#: admin/forms/alias.py:114
 msgid "No recipient defined"
 msgstr "Geen ontvanger opgegeven"
 
-#: admin/forms/domain.py:36
+#: admin/forms/domain.py:28
 #: admin/templates/admin/_global_statistics_widget.html:7
 msgid "Type"
 msgstr "Type"
 
-#: admin/forms/domain.py:42
+#: admin/forms/domain.py:34
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
@@ -447,497 +492,479 @@ msgstr ""
 "Alias(sen) van dit domein. Geef slechts een adres per regel op, en toets "
 "ENTER om een nieuwe regel te krijgen."
 
-#: admin/forms/domain.py:47
+#: admin/forms/domain.py:39
 msgid "Key selector"
-msgstr ""
+msgstr "Key selector"
 
-#: admin/forms/domain.py:85 admin/handlers.py:171
+#: admin/forms/domain.py:44 admin/serializers.py:30
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr ""
+"Quota gedeeld tussen mailboxen. Kan uitgedrukt worden in KB, MB (standaard) "
+"of GB. Een waarde van 0 betekent geen quota."
+
+#: admin/forms/domain.py:52
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr ""
+"Standaard quota toegepast op alle mailboxen. Kan uitgedrukt worden in KB, MB "
+"(standaard) of GB. Een waarde van 0 betekent geen quota."
+
+#: admin/forms/domain.py:94 admin/handlers.py:161
 msgid "domain alias"
 msgstr "domein alias"
 
-#: admin/forms/domain.py:88 admin/forms/domain.py:155 admin/forms/domain.py:163
+#: admin/forms/domain.py:97 admin/forms/domain.py:173 admin/forms/domain.py:181
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "Een %s met deze naam bestaat al"
 
-#: admin/forms/domain.py:96 admin/serializers.py:45
+#: admin/forms/domain.py:105 admin/serializers.py:64
 msgid "No authorized MX record found for this domain"
-msgstr ""
+msgstr "Geen geauthoriseerd MX record gevonden voor dit domein"
 
-#: admin/forms/domain.py:108
+#: admin/forms/domain.py:117
 msgid "DKIM keys storage directory not configured"
-msgstr ""
+msgstr "DKIM Key opslagdirectory niet geconfigureerd"
 
-#: admin/forms/domain.py:129 admin/serializers.py:55
+#: admin/forms/domain.py:147 admin/serializers.py:82
 msgid "Cannot be greater than domain quota"
-msgstr ""
+msgstr "Kan niet groter zijn dan domein quota"
 
-#: admin/forms/domain.py:134
+#: admin/forms/domain.py:152
 msgid "You can't define an unlimited quota."
-msgstr ""
+msgstr "U kunt geen onbeperkt quotum definiëren."
 
-#: admin/forms/domain.py:155 admin/forms/domain.py:160
+#: admin/forms/domain.py:173 admin/forms/domain.py:178
 msgid "domain"
 msgstr "domein"
 
-#: admin/forms/domain.py:209
+#: admin/forms/domain.py:227
 msgid "Create a domain administrator"
-msgstr "Maak een domein administrator aan"
+msgstr "Maak een domeinbeheerder aan"
 
-#: admin/forms/domain.py:212
+#: admin/forms/domain.py:230
 msgid "Automatically create an administrator for this domain"
-msgstr "Automatisch een administrator aanmaken voor dit domein"
+msgstr "Automatisch een beheerder aanmaken voor dit domein"
 
-#: admin/forms/domain.py:217 admin/templates/admin/domain_detail.html:120
+#: admin/forms/domain.py:235 admin/templates/admin/domain_detail.html:125
 #: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Naam"
 
-#: admin/forms/domain.py:220
+#: admin/forms/domain.py:238
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr ""
-"De naam van de administrator. De domeinnaam word automatisch toegevoegd."
+msgstr "De naam van de beheerder. De domeinnaam word automatisch toegevoegd."
 
-#: admin/forms/domain.py:230
-#, fuzzy
-#| msgid "Create a domain administrator"
+#: admin/forms/domain.py:248
 msgid "Generate a random password for the administrator."
-msgstr "Maak een domein administrator aan"
+msgstr "Genereer een willekeurig wachtwoord voor de beheerder."
 
-#: admin/forms/domain.py:236
+#: admin/forms/domain.py:254
 msgid "With a mailbox"
 msgstr "Met een mailbox"
 
-#: admin/forms/domain.py:239
-#, fuzzy
-#| msgid "Create a domain administrator"
+#: admin/forms/domain.py:257
 msgid "Create a mailbox for the administrator."
-msgstr "Maak een domein administrator aan"
+msgstr "Maak een postbus voor de beheerder."
 
-#: admin/forms/domain.py:245
+#: admin/forms/domain.py:263
 msgid "Create aliases"
 msgstr "Aliassen aanmaken"
 
-#: admin/forms/domain.py:248
+#: admin/forms/domain.py:266
 msgid "Automatically create standard aliases for this domain"
 msgstr "Automatisch een standaard alias voor dit domein aanmaken"
 
-#: admin/forms/domain.py:264
+#: admin/forms/domain.py:282
 msgid "Invalid format"
 msgstr "Verkeerd formaat"
 
-#: admin/forms/domain.py:293
+#: admin/forms/domain.py:311
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Gebruiker '%s' bestaat al"
 
-#: admin/forms/domain.py:404
+#: admin/forms/domain.py:423
 msgid "Domain modified"
 msgstr "Domein gewijzigd"
 
-#: admin/forms/domain.py:425
+#: admin/forms/domain.py:444
 msgid "Options"
 msgstr "Opties"
 
-#: admin/forms/domain.py:433
+#: admin/forms/domain.py:452
 msgid "New domain"
 msgstr "Nieuw domein"
 
-#: admin/forms/domain.py:446
+#: admin/forms/domain.py:465
 msgid "Domain created"
 msgstr "Domein aangemaakt"
 
-#: admin/forms/export.py:9
-msgid "File name"
-msgstr "Bestandsnaam"
-
-#: admin/forms/export.py:15 admin/forms/import_.py:15
+#: admin/forms/export.py:9 admin/forms/import_.py:13
 msgid "Separator"
 msgstr "Scheidingsteken"
 
-#: admin/forms/forward.py:14
+#: admin/forms/forward.py:12
 msgid "Recipient(s)"
 msgstr "Ontvanger(s)"
 
-#: admin/forms/forward.py:18
+#: admin/forms/forward.py:16
 msgid "Indicate one or more recipients separated by a ','"
 msgstr "Geef een of meer ontvangers op, gescheiden door een komma"
 
-#: admin/forms/forward.py:21
+#: admin/forms/forward.py:19
 msgid "Keep local copies"
 msgstr "Lokale kopie behouden"
 
-#: admin/forms/forward.py:24
+#: admin/forms/forward.py:22
 msgid "Forward messages and store copies into your local mailbox"
 msgstr "Stuur berichten door en sla een kopie op in uw mailbox"
 
-#: admin/forms/import_.py:13
+#: admin/forms/import_.py:11
 msgid "Select a file"
 msgstr "Bestand selecteren"
 
-#: admin/forms/import_.py:21
+#: admin/forms/import_.py:19
 msgid "Continue on error"
 msgstr "Doorgaan als er een fout optreed"
 
-#: admin/forms/import_.py:22
+#: admin/forms/import_.py:20
 msgid "Don't treat duplicated objects as error"
 msgstr "Zie duplicaten niet als fout"
 
-#: admin/forms/import_.py:40
+#: admin/forms/import_.py:38
 msgid "Crypt passwords"
 msgstr "Versleutel wachtwoorden"
 
-#: admin/forms/import_.py:42
+#: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr ""
 "Vink deze optie aan als wachtwoorden in uw bestand niet versleuteld zijn"
 
-#: admin/handlers.py:218
+#: admin/handlers.py:210
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Accounts importeren mislukt (%s): domein bestaat niet"
 
-#: admin/handlers.py:231 admin/models/mailbox.py:342
-#, fuzzy
-#| msgid "Mailbox %s already exists"
+#: admin/handlers.py:223 admin/models/mailbox.py:338
 msgid "Mailbox {} already exists"
-msgstr "Mailbox %s bestaat al"
+msgstr "Mailbox {} bestaat al"
 
-#: admin/handlers.py:239
+#: admin/handlers.py:231
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Account import is mislukt (%s): verkeerd quotum waarde"
 
-#: admin/handlers.py:279
+#: admin/handlers.py:271
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
 msgstr "Identiteiten"
 
-#: admin/handlers.py:295 admin/templates/admin/forward.html:2
+#: admin/handlers.py:287 admin/templates/admin/forward.html:2
 msgid "Forward"
 msgstr "Doorsturen"
 
-#: admin/lib.py:44
+#: admin/lib.py:38
 msgid "A mailbox is required"
 msgstr "Een mailbox is benodigd"
 
-#: admin/lib.py:134
-#, fuzzy
-#| msgid "You can't delete your own domain"
+#: admin/lib.py:128
 msgid "You are not allowed to import domains"
-msgstr "U kunt uw eigen domein niet verwijderen"
+msgstr "U mag geen domeinen importeren"
 
-#: admin/lib.py:145
+#: admin/lib.py:139
 msgid "You are not allowed to import domain aliases."
-msgstr "U bent niet gemachtigd om domein aliassen te importeren."
+msgstr "U heeft geen rechten om domeinaliassen te importeren."
 
-#: admin/lib.py:183 admin/tests/test_mx.py:122
+#: admin/lib.py:189 admin/tests/test_mx.py:127 admin/tests/test_mx.py:136
+#: admin/tests/test_mx.py:139
 #, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No DNS records found for %s"
-msgstr "Geen mx record gevonden voor dit domein"
+#| msgid "No DNS records found for %s"
+msgid "No DNS record found for %s"
+msgstr "Geen DNS records gevonden voor %s"
 
-#: admin/lib.py:185 admin/tests/test_mx.py:125
+#: admin/lib.py:192
 #, fuzzy, python-format
-#| msgid "No MX record found for this domain."
-msgid "No MX record for %s"
-msgstr "Geen mx record gevonden voor dit domein"
+#| msgid "No MX record for %s"
+msgid "No %(type)s record for %(name)s"
+msgstr "Geen MX record voor %s"
 
-#: admin/lib.py:187 admin/tests/test_mx.py:126
+#: admin/lib.py:196 admin/tests/test_mx.py:131
 msgid "No working name servers found"
-msgstr ""
+msgstr "Geen werkende nameservers gevonden"
 
-#: admin/lib.py:190 admin/tests/test_mx.py:128
+#: admin/lib.py:199 admin/tests/test_mx.py:133
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
+msgstr "DNS timeout, het was niet mogelijk om %s op te zoeken"
 
-#: admin/lib.py:201 admin/tests/test_mx.py:131
+#: admin/lib.py:227
+#, python-brace-format
+msgid "Invalid IP address format for {domain}; {addr}"
+msgstr "Ongeldig IP-adres formaat voor {domain}; {addr}"
+
+#: admin/management/commands/subcommands/_import.py:93
+msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
+msgstr ""
+"CSV bestand is niet gecodeerd in UTF-8, aan het proberen om de codering te "
+"raden"
+
+#: admin/management/commands/subcommands/_import.py:105
 #, python-format
-msgid "Unable to lookup ip addresses for %(domain)s; %(error)s"
-msgstr ""
+msgid "Reading CSV file using %(encoding)s encoding"
+msgstr "CSV bestand aan het lezen met %(encoding)scodering"
 
-#: admin/lib.py:212 admin/tests/test_mx.py:134
+#: admin/management/commands/subcommands/_import.py:116
 #, python-format
-msgid "Invalid IP address format for %(domain)s; %(addr)s"
-msgstr ""
+msgid "Unable to decode CSV file using %(encoding)s encoding"
+msgstr "Kan CSV bestand niet decoderen met %(encoding)scodering"
 
-#: admin/management/commands/subcommands/_mx.py:136
+#: admin/management/commands/subcommands/_mx.py:132
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL problemen voor domein {}"
 
-#: admin/management/commands/subcommands/_mx.py:156
+#: admin/management/commands/subcommands/_mx.py:152
 msgid "Domain {} has no MX record"
-msgstr "Domein {} heeft geen MX record(s)"
+msgstr "Domein {} heeft geen MX-record"
 
-#: admin/management/commands/subcommands/_mx.py:167
+#: admin/management/commands/subcommands/_mx.py:163
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
-msgstr "MX record voor domein {0} is ongeldig: {1}"
+msgstr "MX-record voor domein {0} is onjuist: {1}"
 
-#: admin/management/commands/subcommands/_mx.py:184
+#: admin/management/commands/subcommands/_mx.py:180
 msgid "[modoboa] MX issue(s) for domain {}"
-msgstr "[modoboa] MX probleem met domein {}"
+msgstr "[modoboa] MX problemen voor domein {}"
 
-#: admin/models/alias.py:35 admin/models/mailbox.py:97
+#: admin/models/alias.py:32 admin/models/mailbox.py:95
 msgid "address"
 msgstr "adres"
 
-#: admin/models/alias.py:37
-#, fuzzy
-#| msgid "The alias name"
+#: admin/models/alias.py:34
 msgid "The alias address."
-msgstr "De alias naam"
+msgstr "Het alias adres"
 
-#: admin/models/alias.py:42 admin/models/domain.py:48
-#: admin/models/domain_alias.py:47
+#: admin/models/alias.py:39 admin/models/domain.py:37
+#: admin/models/domain_alias.py:42
 msgid "enabled"
 msgstr "actief"
 
-#: admin/models/alias.py:43 admin/models/domain_alias.py:48
+#: admin/models/alias.py:40 admin/models/domain_alias.py:43
 msgid "Check to activate this alias"
-msgstr "Aanvinken om deze alias te activeren"
+msgstr "Selecteer om deze alias te activeren"
 
-#: admin/models/alias.py:48 admin/templates/admin/alias_detail.html:32
+#: admin/models/alias.py:45 admin/templates/admin/alias_detail.html:32
 msgid "Description"
 msgstr "Omschrijving"
 
-#: admin/models/alias.py:50 admin/templates/admin/alias_detail.html:29
+#: admin/models/alias.py:47 admin/templates/admin/alias_detail.html:29
 msgid "Expire at"
-msgstr "Verloopt op"
+msgstr "Verloop op"
 
-#: admin/models/alias.py:93
+#: admin/models/alias.py:87
 msgid "alias"
 msgstr "alias"
 
-#: admin/models/alias.py:125
-#, fuzzy
-#| msgid "Invalid request"
+#: admin/models/alias.py:119
 msgid "Invalid address"
-msgstr "Ongeldig verzoek"
+msgstr "Ongeldig adres"
 
-#: admin/models/alias.py:146
-#, fuzzy
-#| msgid "Local recipient %s not found"
+#: admin/models/alias.py:140
 msgid "Local recipient {}@{} not found"
-msgstr "Lokale ontvanger %s niet gevonden"
+msgstr "Lokale ontvanger {}@{} niet gevonden"
 
-#: admin/models/alias.py:176
+#: admin/models/alias.py:170
 #, python-format
 msgid "Invalid line: %s"
 msgstr "Ongeldige regel: %s"
 
-#: admin/models/alias.py:182
+#: admin/models/alias.py:176
 #, python-format
 msgid "Domain '%s' does not exist"
 msgstr "Domein '%s' bestaat niet"
 
-#: admin/models/domain.py:30 admin/models/domain_alias.py:39
+#: admin/models/domain.py:27 admin/models/domain_alias.py:34
 msgid "name"
 msgstr "naam"
 
-#: admin/models/domain.py:31
+#: admin/models/domain.py:28
 msgid "The domain name"
 msgstr "De domeinnaam"
 
-#: admin/models/domain.py:35
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
-msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-msgstr ""
-"Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe "
-"te passen. Een waarde van 0 betekend geen quota."
+#: admin/models/domain.py:38
+msgid "Check to activate this domain"
+msgstr "Selecteer om dit domein te activeren"
 
 #: admin/models/domain.py:43
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
-msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe "
-"te passen. Een waarde van 0 betekend geen quota."
-
-#: admin/models/domain.py:49
-msgid "Check to activate this domain"
-msgstr "Aanvinken om dit domein te activeren"
-
-#: admin/models/domain.py:54
 msgid "Enable DNS checks"
-msgstr "Activeer DNS checks"
+msgstr "Schakel DNS checks in."
 
-#: admin/models/domain.py:55
-#, fuzzy
-#| msgid "Check to activate this domain"
+#: admin/models/domain.py:44
 msgid "Check to enable DNS checks for this domain"
-msgstr "Aanvinken om dit domein te activeren"
+msgstr "Schakel in om DNS controles voor dit domein uit te voeren. "
 
-#: admin/models/domain.py:62
+#: admin/models/domain.py:51
 msgid "Enable DKIM signing"
-msgstr ""
+msgstr "Zet DKIM ondertekening aan"
 
-#: admin/models/domain.py:64
+#: admin/models/domain.py:53
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
+"Als u deze functie aanzet, zal er een DKIM key gegenereerd worden voor dit "
+"domein."
 
-#: admin/models/domain.py:70
+#: admin/models/domain.py:59
 msgid "Key length"
-msgstr ""
+msgstr "Key lengte"
 
-#: admin/models/domain.py:285 admin/models/domain_alias.py:74
+#: admin/models/domain.py:312 admin/models/domain_alias.py:67
 msgid "Invalid line"
 msgstr "Verkeerde regel"
 
-#: admin/models/domain.py:295
+#: admin/models/domain.py:322
 msgid "No authorized MX record found for domain {}"
-msgstr ""
+msgstr "Geen geauthoriseerd MX record gevonden voor domein {}"
 
-#: admin/models/domain.py:302
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
+#: admin/models/domain.py:329
 msgid "Invalid quota value for domain '{}'"
-msgstr "Verkeerde quota waarde voor domein '%s'"
+msgstr "Ongeldige quota waarde voor domein '{}'"
 
-#: admin/models/domain.py:309
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
+#: admin/models/domain.py:336
 msgid "Invalid default mailbox quota value for domain '{}'"
-msgstr "Verkeerde quota waarde voor domein '%s'"
+msgstr "Ongeldige standaard mailbox quota waarde voor domein '{}'"
 
-#: admin/models/domain.py:314
+#: admin/models/domain.py:341
 msgid "Default mailbox quota cannot be greater than domain quota"
-msgstr ""
+msgstr "Standaard mailboxquotum kan niet groter zijn dan het domeinquotum"
 
-#: admin/models/domain_alias.py:40
+#: admin/models/domain_alias.py:35
 msgid "The alias name"
-msgstr "De alias naam"
+msgstr "De aliasnaam"
 
-#: admin/models/domain_alias.py:42
+#: admin/models/domain_alias.py:37
 msgid "target"
 msgstr "doel"
 
-#: admin/models/domain_alias.py:43
+#: admin/models/domain_alias.py:38
 msgid "The domain this alias points to"
-msgstr "De domein alias verwijst naar"
+msgstr "De domeinalias verwijst naar"
 
-#: admin/models/domain_alias.py:83
+#: admin/models/domain_alias.py:76
 #, python-format
 msgid "Unknown domain %s"
 msgstr "Onbekend domein %s"
 
-#: admin/models/mailbox.py:99
+#: admin/models/mailbox.py:97
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Mailbox adres (zonder het @domein.naam deel)"
 
-#: admin/models/mailbox.py:165
+#: admin/models/mailbox.py:160
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Mislukt om de mailbox locatie te verkijgen (%s)"
 
-#: admin/models/mailbox.py:258
+#: admin/models/mailbox.py:253
 msgid "A quota is required"
 msgstr "Een quota is vereist"
 
-#: admin/models/mailbox.py:264
-#, fuzzy
-#| msgid "Domain created"
+#: admin/models/mailbox.py:259
 msgid "Domain quota exceeded"
-msgstr "Domein aangemaakt"
+msgstr "Domein quota overschreden"
 
-#: admin/serializers.py:80 admin/serializers.py:266 admin/serializers.py:360
-#, fuzzy
-#| msgid "Permissions"
+#: admin/serializers.py:37
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr "Standaard quotum in MB per mailbox. 0 Betekent geen quotum."
+
+#: admin/serializers.py:107 admin/serializers.py:312 admin/serializers.py:410
 msgid "Permission denied."
-msgstr "Toegang geweigerd"
+msgstr "Toegang geweigerd."
 
-#: admin/serializers.py:118
+#: admin/serializers.py:158
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr ""
+msgstr "Lijst van beheerde domeinen (alleen resellers en domeinbeheerders)."
 
-#: admin/serializers.py:218
+#: admin/serializers.py:262
 msgid "Not allowed for this role."
-msgstr "Niet toegestaan met deze rol"
+msgstr "Niet toegestaan voor deze rol."
 
-#: admin/serializers.py:228
+#: admin/serializers.py:274
 msgid "Must be equal to mailbox full_address"
-msgstr "Moet gelijk zijn aan het volledige e-mail adres"
+msgstr "Moet gelijk zijn aan de mailbox full_address"
 
-#: admin/serializers.py:253
-#, fuzzy
-#| msgid "Domain does not exist"
+#: admin/serializers.py:299
 msgid "Local domain {} does not exist"
-msgstr "Domein bestaat niet"
+msgstr "Lokaal domein {} bestaat niet"
 
-#: admin/serializers.py:347
+#: admin/serializers.py:397
 msgid "A list of recipient"
-msgstr "Een lijst van ontvangers"
+msgstr "Lijst ontvangers."
 
-#: admin/serializers.py:358
-#, fuzzy
-#| msgid "Domain modified"
+#: admin/serializers.py:408
 msgid "Domain not found."
-msgstr "Domein gewijzigd"
+msgstr "Domein niet gevonden."
 
-#: admin/serializers.py:407
-#, fuzzy
-#| msgid "You don't have access to this domain"
+#: admin/serializers.py:457
 msgid "You don't have access to this domain."
-msgstr "U heeft geen toegang tot dit domein"
+msgstr "U hebt geen toegang tot dit domein."
 
-#: admin/serializers.py:415
-#, fuzzy
-#| msgid "You don't have access to this domain"
+#: admin/serializers.py:465
 msgid "You don't have access to this mailbox."
-msgstr "U heeft geen toegang tot dit domein"
+msgstr "U hebt geen toegang tot deze mailbox."
 
 #: admin/templates/admin/_domain_dkim_key.html:6
 #: admin/templates/admin/_domain_dkim_key.html:20
 msgid "Close"
-msgstr ""
+msgstr "Sluiten"
 
 #: admin/templates/admin/_domain_dkim_key.html:7
 #, python-format
 msgid "DKIM public key for %(domain)s"
-msgstr ""
+msgstr "DKIM publieke key voor %(domain)s"
 
 #: admin/templates/admin/_domain_dkim_key.html:11
-#, fuzzy
-#| msgid "Invalid format"
 msgid "Raw format"
-msgstr "Verkeerd formaat"
+msgstr "Ruwe formaat"
 
 #: admin/templates/admin/_domain_dkim_key.html:15
-#, fuzzy
-#| msgid "Invalid format"
 msgid "Bind/named format"
-msgstr "Verkeerd formaat"
+msgstr "Bind/named formaat"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:4
-#, fuzzy
-#| msgid "disabled"
 msgctxt "checks"
 msgid "Disabled"
-msgstr "uitgeschakeld"
+msgstr "Uitgeschakeld"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
-msgstr "Controles afwachten"
+msgstr "In afwachting van controles"
+
+#: admin/templates/admin/_domain_dnschecks_status.html:16
+#: admin/templates/admin/_domain_dnschecks_status.html:26
+#: admin/templates/admin/_domain_dnschecks_status.html:34
+#: admin/templates/admin/_domain_dnschecks_status.html:42
+#, fuzzy
+#| msgid "No DNS records found for %s"
+msgid "No record found"
+msgstr "Geen DNS records gevonden voor %s"
+
+#: admin/templates/admin/_domain_dnschecks_status.html:24
+msgid "Waiting for key to be generated"
+msgstr ""
 
 #: admin/templates/admin/_global_statistics_widget.html:4
-#, fuzzy
-#| msgid "Statistics"
 msgid "Global statistics"
-msgstr "Statistieken"
+msgstr "Globale statistieken"
 
 #: admin/templates/admin/_global_statistics_widget.html:8
 msgid "Quantity"
@@ -947,11 +974,9 @@ msgstr "Hoeveelheid"
 #: admin/templates/admin/domain_detail.html:37
 #: admin/templates/admin/domain_detail.html:73
 msgid "Domain aliases"
-msgstr "Domein aliassen"
+msgstr "Domeinaliassen"
 
 #: admin/templates/admin/_per_domain_statistics_widget.html:4
-#, fuzzy
-#| msgid "Per-domain counters"
 msgid "Per-domain statistics"
 msgstr "Statistieken per domein"
 
@@ -959,29 +984,23 @@ msgstr "Statistieken per domein"
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/domain_detail.html:19
 #: admin/templates/admin/identities_table.html:7
-#, fuzzy
-#| msgid "disabled"
 msgid "(disabled)"
-msgstr "uitgeschakeld"
+msgstr "(uitgeschakeld)"
 
 #: admin/templates/admin/account_detail.html:22
 #: admin/templates/admin/alias_detail.html:22
 #: admin/templates/admin/domain_detail.html:25
 msgid "Summary"
-msgstr ""
+msgstr "Overzicht"
 
 #: admin/templates/admin/account_detail.html:26
-#, fuzzy
-#| msgid "File name"
 msgid "Full name"
-msgstr "Bestandsnaam"
+msgstr "Naam"
 
 #: admin/templates/admin/account_detail.html:32
 #: admin/templates/admin/alias_detail.html:26
-#, fuzzy
-#| msgid "Create"
 msgid "Created"
-msgstr "Aanmaken"
+msgstr "Aangemaakt"
 
 #: admin/templates/admin/account_detail.html:35
 msgid "Last login"
@@ -989,50 +1008,40 @@ msgstr "Laatste login"
 
 #: admin/templates/admin/account_detail.html:38
 msgid "Secondary email"
-msgstr "Tweede email"
+msgstr "Tweede e-mailadres"
 
 #: admin/templates/admin/account_detail.html:38
 #: admin/templates/admin/account_detail.html:41
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "Not defined"
-msgstr "Geen ontvanger opgegeven"
+msgstr "Niet opgegeven"
 
 #: admin/templates/admin/account_detail.html:41
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
 #: admin/templates/admin/account_detail.html:55
-#, fuzzy
-#| msgid "Administration"
 msgid "Administered domains"
-msgstr "Administratie"
+msgstr "Beheerde domeinen"
 
 #: admin/templates/admin/account_detail.html:61
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "No domain defined."
-msgstr "Geen ontvanger opgegeven"
+msgstr "Geen domein opgegeven."
 
 #: admin/templates/admin/account_detail.html:75
-#, fuzzy
-#| msgid "Alias(es)"
 msgid "Aliases"
-msgstr "Alias(sen)"
+msgstr "Aliassen"
 
 #: admin/templates/admin/account_detail.html:81
-#, fuzzy
-#| msgid "No recipient defined"
 msgid "No alias defined"
-msgstr "Geen ontvanger opgegeven"
+msgstr "Geen alias opgegeven"
 
 #: admin/templates/admin/account_detail.html:87
 msgid "Additional sender addresses"
-msgstr "Overige verstuur adressen"
+msgstr "Extra afzenderadressen"
 
 #: admin/templates/admin/account_detail.html:93
 msgid "No sender address defined"
-msgstr "Er is geen verzendadres gedefineerd"
+msgstr "Geen afzenderadres opgegeven"
 
 #: admin/templates/admin/account_general_form.html:12
 #: admin/templates/admin/aliasform.html:13
@@ -1041,20 +1050,16 @@ msgstr "Domein is gedeactiveerd"
 
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/identities.html:33
-#, fuzzy
-#| msgid "alias"
 msgid "Alias"
-msgstr "alias"
+msgstr "Alias"
 
 #: admin/templates/admin/alias_detail.html:27
-#, fuzzy
-#| msgid "Alias modified"
 msgid "Modified"
-msgstr "Alias aangepast"
+msgstr "Aangepast"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"
-msgstr ""
+msgstr "Provider"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
 #: admin/templates/admin/identities_quota_headers.html:2
@@ -1063,23 +1068,22 @@ msgid "Address"
 msgstr "Adres"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:12
-#: admin/templates/admin/domain_detail.html:96
-#, fuzzy
-#| msgid "Statistics"
+#: admin/templates/admin/domain_detail.html:100
+#: admin/templates/admin/messages_log_headers.html:6
 msgid "Status"
-msgstr "Statistieken"
+msgstr "Status"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
-msgstr ""
+msgstr "Staat op de lijst"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
-msgstr "Alles OK, dit domein komt niet voor in de lijst"
+msgstr "Alles is prima, dit domein staat niet op de lijst."
 
 #: admin/templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
-msgstr "Geen informatie beschikbaar voor dit domein"
+msgstr "Geen informatie beschikbaar over dit domein."
 
 #: admin/templates/admin/domain_detail.html:29
 msgid "Creation date"
@@ -1097,64 +1101,59 @@ msgstr "Mailbox aliassen"
 #: admin/templates/admin/domain_detail.html:57
 #: admin/templates/admin/domain_detail.html:58
 #: admin/templates/admin/domain_detail.html:65
-#: admin/templates/admin/domain_general_form.html:4
-#: admin/templates/admin/domain_general_form.html:5
 #: admin/templates/admin/domains_quotas.html:11
 #: admin/templates/admin/domains_quotas.html:12
-#: admin/templates/admin/mailform.html:7
 #: admin/templates/admin/newdomainform.html:3
 msgid "MB"
 msgstr "MB"
 
 #: admin/templates/admin/domain_detail.html:54
-#, fuzzy
-#| msgid "Usage (%%)"
 msgid "Usage"
-msgstr "Gebruik (%%)"
+msgstr "Gebruik"
 
 #: admin/templates/admin/domain_detail.html:57
 #: admin/templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
-msgstr ""
+msgstr "gebruikt"
 
 #: admin/templates/admin/domain_detail.html:58
 #: admin/templates/admin/domains_quotas.html:12
 msgid "allocated"
-msgstr ""
+msgstr "toegewezen"
 
-#: admin/templates/admin/domain_detail.html:91
+#: admin/templates/admin/domain_detail.html:92
 msgid "DNS"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:103
-msgid "DKIM key"
-msgstr ""
+msgstr "DNS"
 
 #: admin/templates/admin/domain_detail.html:107
+msgid "DKIM key"
+msgstr "DKIM key"
+
+#: admin/templates/admin/domain_detail.html:111
 msgid "Show key"
-msgstr ""
+msgstr "Toon key"
 
-#: admin/templates/admin/domain_detail.html:110
-#, fuzzy
-#| msgid "No recipient defined"
+#: admin/templates/admin/domain_detail.html:113
+msgid "Generate new key"
+msgstr "Nieuwe sleutel genereren"
+
+#: admin/templates/admin/domain_detail.html:115
 msgid "Not generated"
-msgstr "Geen ontvanger opgegeven"
+msgstr "Niet gegenereerd"
 
-#: admin/templates/admin/domain_detail.html:117
+#: admin/templates/admin/domain_detail.html:122
 msgid "Administrators"
-msgstr "Administrators"
+msgstr "Beheerders"
 
-#: admin/templates/admin/domain_detail.html:129
-#: admin/templatetags/admin_tags.py:268
+#: admin/templates/admin/domain_detail.html:134
+#: admin/templatetags/admin_tags.py:265
 msgid "Remove this permission"
 msgstr "Deze bevoegdheid verwijderen"
 
-#: admin/templates/admin/domain_detail.html:134
-#, fuzzy
-#| msgid "No domain administrator defined"
+#: admin/templates/admin/domain_detail.html:139
 msgid "No domain administrator defined yet."
-msgstr "Geen domein administrator toegewezen"
+msgstr "Nog geen domeinbeheerder opgegeven"
 
 #: admin/templates/admin/domain_headers.html:5
 #: admin/templates/admin/identity_headers.html:4
@@ -1162,10 +1161,8 @@ msgid "Tags"
 msgstr "Labels"
 
 #: admin/templates/admin/domain_headers.html:7
-#, fuzzy
-#| msgid "Statistics"
 msgid "DNS status"
-msgstr "Statistieken"
+msgstr "DNS status"
 
 #: admin/templates/admin/domain_headers.html:9
 #: admin/templates/admin/identity_headers.html:5
@@ -1174,14 +1171,12 @@ msgstr "Acties"
 
 #: admin/templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
-msgstr "U kunt geen nieuwe domein administrator aanmaken"
+msgstr "U kunt geen nieuwe domeinbeheerder aanmaken"
 
 #: admin/templates/admin/domains.html:28
 #: admin/templates/admin/identities.html:29
-#, fuzzy
-#| msgid "Address"
 msgid "Add"
-msgstr "Adres"
+msgstr "Toevoegen"
 
 #: admin/templates/admin/domains_quota_headers.html:3
 #: admin/templates/admin/identities_quota_headers.html:4
@@ -1190,13 +1185,11 @@ msgstr "Limiet"
 
 #: admin/templates/admin/domains_quota_headers.html:4
 msgid "Used"
-msgstr ""
+msgstr "Gebruikt"
 
 #: admin/templates/admin/domains_quota_headers.html:5
-#, fuzzy
-#| msgid "Alias created"
 msgid "Allocated"
-msgstr "Alias aangemaakt"
+msgstr "Toegewezen"
 
 #: admin/templates/admin/domains_quota_headers.html:6
 #: admin/templates/admin/identities_quota_headers.html:5
@@ -1210,17 +1203,15 @@ msgstr "uitgeschakeld"
 
 #: admin/templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
-msgstr "Automatisch mails doorsturen naar een ander adres"
+msgstr "Mail automatisch doorsturen naar een ander adres"
 
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:93
+#: admin/templates/admin/forward.html:9 admin/views/alias.py:87
 msgid "Update"
 msgstr "Toepassen"
 
 #: admin/templates/admin/identities.html:32
-#, fuzzy
-#| msgid "Add account"
 msgid "Account"
-msgstr "Account aanmaken"
+msgstr "Account"
 
 #: admin/templates/admin/identities_quota_headers.html:3
 msgid "Value"
@@ -1231,17 +1222,6 @@ msgid "Fullname/Recipient"
 msgstr "Volledige naam/Ontvanger"
 
 #: admin/templates/admin/import_domains_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "  <li><em>domain; name; quota; enabled</em></li>\n"
-#| "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-#| "  %s\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one "
-#| "of the previous values.</p>\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
@@ -1252,34 +1232,14 @@ msgid ""
 "use a different character as separator.</p>"
 msgstr ""
 "Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende "
-"formaten:\n"
-"<ul>\n"
-"<li><em>domain; name; quota; enabled</em></li>\n"
-"<li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-"%s\n"
-"</ul>\n"
-"<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan "
-"een van de vorige waarden.</p>\n"
-"<p>U kunt een eigen scheidingsteken gebruiken.</p>\n"
-"<p>Let op! Zorg dat het 'line-encoding format' Unix is - anders gaat het "
-"importeren mis</p>\n"
-"\n"
+"formaten: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</"
+"em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> "
+"<li><em>relaydomain; name; target host; target port; service; enabled; "
+"verify recipients</em></li> </ul> <p>Het eerste element van elke regel is "
+"verplicht en moet gelijk zijn aan een van de vorige waarden.</p> <p>U kunt "
+"een eigen scheidingsteken gebruiken.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "<li><em>account; loginname; password; first name; last name; enabled; "
-#| "group; address; quota; [, domain, ...]</em></li>\n"
-#| "<li><em>alias; address; enabled; internal recipient</em></li>\n"
-#| "<li><em>forward; address; enabled; external recipient</em></li>\n"
-#| "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one "
-#| "of the previous values.</p>\n"
-#| "\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>account; loginname; password; first name; last name; enabled; group; "
@@ -1299,9 +1259,7 @@ msgstr ""
 "</ul>\n"
 "<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan "
 "een van de vorige waarden.</p>\n"
-"<p>U kunt een eigen scheidingsteken gebruiken.</p>\n"
-"<p>Let op! Zorg dat het 'line-encoding format' Unix is - anders gaat het "
-"importeren mis</p>\n"
+"<p>U kunt een eigen scheidingsteken gebruiken.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1313,7 +1271,7 @@ msgstr "Importeren..."
 
 #: admin/templates/admin/index.html:6
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: admin/templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
@@ -1323,19 +1281,35 @@ msgstr "Kies een waarde"
 msgid "Use domain default value"
 msgstr "Gebruik de standaard waarde van dit domein"
 
+#: admin/templates/admin/messages_log_headers.html:2
+msgid "ID"
+msgstr ""
+
+#: admin/templates/admin/messages_log_headers.html:3
+msgid "Date"
+msgstr ""
+
+#: admin/templates/admin/messages_log_headers.html:4
+msgid "From"
+msgstr ""
+
+#: admin/templates/admin/messages_log_headers.html:5
+msgid "To"
+msgstr ""
+
 #: admin/templates/admin/mx_domain_detail.html:11
-#, fuzzy
-#| msgid "Update"
 msgid "Updated"
-msgstr "Toepassen"
+msgstr "Bijgewerkt"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
 msgstr ""
+"Dit IP-adres komt niet overeen met een van de valide MX'en zoals "
+"gedefinieerd in de instellingen"
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
-msgstr "Geen mx record gevonden voor dit domein"
+msgstr "Geen geldig MX-record voor dit domein gevonden."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
@@ -1343,6 +1317,8 @@ msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
 msgstr ""
+"Modoboa heeft vastgesteld dat het domein %(domain)s op de volgende DNSBL "
+"lijsten staat:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
@@ -1350,216 +1326,169 @@ msgid ""
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
 msgstr ""
+"De reputatie van dit domein wordt hierdoor aangetast er bestaat een kans dat "
+"e-mail van dit domein als spam wordt gezien. U zou contact moeten opnemen "
+"met deze providers en hen vragen om deze IP adressen van de lijst te halen."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
 msgstr ""
+"Modoboa heeft vastgesteld dat het domein %(domain)s geen geldig MX-record "
+"heeft:"
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
 msgstr "Zoeken"
 
-#: admin/templatetags/admin_tags.py:22
+#: admin/templatetags/admin_tags.py:19
 msgid "enabled_m"
 msgstr "geactiveerd_m"
 
-#: admin/templatetags/admin_tags.py:22
+#: admin/templatetags/admin_tags.py:19
 msgid "enabled_f"
 msgstr "geactiveerd_f"
 
-#: admin/templatetags/admin_tags.py:48
+#: admin/templatetags/admin_tags.py:45
 msgid "List domains"
-msgstr "Weergeef domeinen"
+msgstr "Toon domeinen"
 
-#: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:108
+#: admin/templatetags/admin_tags.py:50 admin/templatetags/admin_tags.py:105
 msgid "List quotas"
-msgstr "Weergeef quota's"
+msgstr "Toon quota's"
 
-#: admin/templatetags/admin_tags.py:65 admin/templatetags/admin_tags.py:113
-#: admin/views/import_.py:89 admin/views/import_.py:111
+#: admin/templatetags/admin_tags.py:62 admin/templatetags/admin_tags.py:110
+#: admin/views/import_.py:85 admin/views/import_.py:107
 msgid "Import"
 msgstr "Importeren"
 
-#: admin/templatetags/admin_tags.py:71 admin/templatetags/admin_tags.py:119
-#: admin/views/export.py:43 admin/views/export.py:71
+#: admin/templatetags/admin_tags.py:68 admin/templatetags/admin_tags.py:116
+#: admin/views/export.py:39 admin/views/export.py:67
 msgid "Export"
 msgstr "Exporteren"
 
-#: admin/templatetags/admin_tags.py:103
+#: admin/templatetags/admin_tags.py:100
 msgid "List identities"
-msgstr "Weergeef identiteiten"
+msgstr "Toon identiteiten"
 
-#: admin/templatetags/admin_tags.py:138
+#: admin/templatetags/admin_tags.py:135
 msgid "View the domain's identities"
-msgstr "Weergeef de identiteiten van dit domein"
+msgstr "Toon de identiteiten van dit domein"
 
-#: admin/templatetags/admin_tags.py:144 admin/templatetags/admin_tags.py:187
-#: admin/templatetags/admin_tags.py:200
+#: admin/templatetags/admin_tags.py:141 admin/templatetags/admin_tags.py:184
+#: admin/templatetags/admin_tags.py:197
 msgid "Edit {}"
-msgstr ""
+msgstr "Bewerk {}"
 
-#: admin/templatetags/admin_tags.py:154 admin/templatetags/admin_tags.py:191
-#: admin/templatetags/admin_tags.py:205
+#: admin/templatetags/admin_tags.py:151 admin/templatetags/admin_tags.py:188
+#: admin/templatetags/admin_tags.py:202
 #, python-format
 msgid "Delete %s?"
 msgstr "Verwijder %s?"
 
-#: admin/views/alias.py:35
+#: admin/tests/test_mx.py:130
+#, python-format
+msgid "No MX record for %s"
+msgstr "Geen MX record voor %s"
+
+#: admin/tests/test_mx.py:142 admin/tests/test_mx.py:145
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgstr "Onjuist IP adres voor %(domain)s: %(addr)s"
+
+#: admin/views/alias.py:29
 msgid "Alias with this name already exists"
 msgstr "Een alias met deze naam bestaat al"
 
-#: admin/views/alias.py:60
+#: admin/views/alias.py:54
 msgid "Create"
 msgstr "Aanmaken"
 
-#: admin/views/alias.py:72
+#: admin/views/alias.py:66
 msgid "New alias"
 msgstr "Nieuwe alias"
 
-#: admin/views/alias.py:73
+#: admin/views/alias.py:67
 msgid "Alias created"
 msgstr "Alias aangemaakt"
 
-#: admin/views/alias.py:85
+#: admin/views/alias.py:79
 msgid "Alias modified"
 msgstr "Alias aangepast"
 
-#: admin/views/alias.py:109
-#, fuzzy
-#| msgid "Alias created"
+#: admin/views/alias.py:103
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
-msgstr[0] "Alias aangemaakt"
-msgstr[1] "Alias aangemaakt"
+msgstr[0] "Alias verwijderd"
+msgstr[1] "Aliasen verwijderd"
 
-#: admin/views/dns.py:32
+#: admin/views/dns.py:28
 msgid "MX records of {}"
-msgstr ""
+msgstr "MX-records van {}"
 
-#: admin/views/dns.py:55
+#: admin/views/dns.py:51
 msgid "DNSBL summary for {}"
-msgstr "DNSBL samenvatting voor {}"
+msgstr "DNSBL overzicht voor {}"
 
-#: admin/views/domain.py:188
+#: admin/views/domain.py:202
 msgid "You can't delete your own domain"
 msgstr "U kunt uw eigen domein niet verwijderen"
 
-#: admin/views/domain.py:191
+#: admin/views/domain.py:205
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domeinen verwijderd"
 msgstr[1] "Domeinen verwijderd"
 
-#: admin/views/export.py:42
+#: admin/views/export.py:38
 msgid "Export identities"
 msgstr "Identiteiten exporteren"
 
-#: admin/views/export.py:70
+#: admin/views/export.py:66
 msgid "Export domains"
 msgstr "Exporteer domeinen"
 
-#: admin/views/identity.py:113 admin/views/identity.py:206
-#: admin/views/identity.py:211
+#: admin/views/identity.py:107 admin/views/identity.py:201
+#: admin/views/identity.py:206
 msgid "Invalid request"
 msgstr "Ongeldig verzoek"
 
-#: admin/views/identity.py:196
+#: admin/views/identity.py:191
 msgid "Account deleted"
 msgid_plural "Accounts deleted"
 msgstr[0] "Account verwijderd"
 msgstr[1] "Accounts verwijderd"
 
-#: admin/views/import_.py:65
+#: admin/views/import_.py:61
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Object bestaat al: %s"
 
-#: admin/views/import_.py:69
+#: admin/views/import_.py:65
 #, python-format
 msgid "%d objects imported successfully"
-msgstr "%d objecten successvol geimporteerd"
+msgstr "%d objecten succesvol geïmporteerd"
 
-#: admin/views/import_.py:88
+#: admin/views/import_.py:84
 msgid "Import domains"
 msgstr "Importeer domeinen"
 
-#: admin/views/import_.py:110
+#: admin/views/import_.py:106
 msgid "Import identities"
-msgstr "Identiteiten importeren"
+msgstr "Importeer identiteiten"
 
-#: admin/views/user.py:40
+#: admin/views/user.py:36
 msgid "Forward updated"
 msgstr "Doorstuuradres aangepast"
 
-#~ msgid ""
-#~ "Default quota in MB applied to mailboxes. Leave empty to use the default "
-#~ "value."
-#~ msgstr ""
-#~ "Standaard quota in MB toegepast op mailboxen. Laat leeg om de standaard "
-#~ "waarde te gebruiken."
+#~ msgid "File name"
+#~ msgstr "Bestandsnaam"
 
-#~ msgid ""
-#~ "You can't define a forward to a local destination. Please ask your "
-#~ "administrator to create an alias instead."
-#~ msgstr ""
-#~ "U kunt mail niet doorsturen naar een lokaal adres. Vraag uw "
-#~ "systeembeheerder om een alias voor u aan te maken."
+#~ msgid "No {type} record found for MX {mx}"
+#~ msgstr "Geen {type} record gevonden voor MX {mx}"
 
-#~ msgid "Quota is greater than the allowed domain's limit (%dM)"
-#~ msgstr "Quota is groter dan de maximaal toegestane domein limiet (%dM)"
+#~ msgid "No A record found for MX %(domain)s"
+#~ msgstr "Geen A record gevonden voor MX %(domain)s"
 
-#~ msgid "Domains and identities"
-#~ msgstr "Domeinen en identiteiten"
-
-#~ msgid "Global counters"
-#~ msgstr "Globale statistieken"
-
-#~ msgid "distribution list"
-#~ msgstr "distributie lijst"
-
-#~ msgid "forward"
-#~ msgstr "doorsturen"
-
-#, fuzzy
-#~| msgid "Confirmation"
-#~ msgid "Information"
-#~ msgstr "Bevestiging"
-
-#~ msgid "Add domain"
-#~ msgstr "Domein toevoegen"
-
-#~ msgid "Add alias"
-#~ msgstr "Alias toevoegen"
-
-#~ msgid "Add forward"
-#~ msgstr "Doorsuurregel toevoegen"
-
-#~ msgid "Add distribution list"
-#~ msgstr "Distributielijst toevoegen"
-
-#~ msgid "New distribution list"
-#~ msgstr "Nieuwe distributie lijst"
-
-#~ msgid "Distribution list created"
-#~ msgstr "Distributielijst aangemaakt"
-
-#~ msgid "New forward"
-#~ msgstr "Nieuwe doorstuurregel"
-
-#~ msgid "Forward created"
-#~ msgstr "Doorstuurregel aangemaakt"
-
-#~ msgid "Distribution list modified"
-#~ msgstr "Distributielijst aangepast"
-
-#~ msgid "Forward modified"
-#~ msgstr "Doorstuurregel aangepast"
-
-#~ msgid "Miscellaneous"
-#~ msgstr "Diversen"
-
-#, fuzzy
-#~| msgid "Create a domain administrator"
-#~ msgid "Domain administrator"
-#~ msgstr "Maak een domein administrator aan"
+#~ msgid "No AAAA record found for MX %(domain)s"
+#~ msgstr "Geen AAAA record gevonden voor MX%(domain)s"

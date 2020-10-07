@@ -1,0 +1,23 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Radium <ztl8702@126.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-03 09:37+0100\n"
+"PO-Revision-Date: 2017-09-23 14:31+0000\n"
+"Last-Translator: Radium <ztl8702@126.com>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/language/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "搜尋一個網域"

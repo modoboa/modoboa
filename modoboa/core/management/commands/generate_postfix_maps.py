@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Management command to generate/update postfix map files."""
-
-from __future__ import print_function, unicode_literals
 
 import copy
 import hashlib
@@ -79,7 +75,7 @@ class Command(BaseCommand):
         """Return map file template."""
         tplcontent = MAP_FILE_TEMPLATE
         if dbtype == "sqlite":
-            tplcontent += """dbpath = {{ dbname }}
+            tplcontent += """dbpath = {{ dbname|safe }}
 query = {{ query|safe }}
 """
         else:

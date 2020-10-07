@@ -1,35 +1,51 @@
 {
-  "name": "bootstrap-datetimepicker",
-  "main": "src/js/bootstrap-datetimepicker.js",
-  "version": "3.1.3",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eonasdan/bootstrap-datetimepicker.git"
+  "author": {
+    "name": "Jonathan Peterson"
   },
   "bugs": {
     "url": "https://github.com/eonasdan/bootstrap-datetimepicker/issues"
   },
+  "peerDependencies": {
+    "bootstrap": "^3.3",
+    "jquery": "^1.8.3 || ^2.0 || ^3.0",
+    "moment": "^2.10",
+    "moment-timezone": "^0.4.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3",
+    "jquery": "^1.8.3 || ^2.0 || ^3.0",
+    "moment": "^2.10",
+    "moment-timezone": "^0.4.0"
+  },
+  "description": "A date/time picker component designed to work with Bootstrap 3 and Momentjs. For usage, installation and demos see Project Site on GitHub",
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-contrib-connect": "^1.0.1",
+    "grunt-contrib-jasmine": "^1.0.3",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-less": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-env": "^0.4.4",
+    "grunt-jscs": "latest",
+    "grunt-nuget": "^0.1.5",
+    "grunt-string-replace": "latest",
+    "load-grunt-tasks": "latest"
+  },
+  "homepage": "http://eonasdan.github.io/bootstrap-datetimepicker/",
   "keywords": [
     "twitter-bootstrap",
     "bootstrap",
     "datepicker",
     "datetimepicker",
     "timepicker",
-	  "moment"
+    "moment"
   ],
-  "dependencies": {
-      "moment": "~2.8.1",
-      "bootstrap": "^3.0",
-      "jquery": "^1.8.3"
+  "license": "MIT",
+  "main": "src/js/bootstrap-datetimepicker.js",
+  "name": "eonasdan-bootstrap-datetimepicker",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eonasdan/bootstrap-datetimepicker.git"
   },
-  "devDependencies": {
-    "grunt": "latest",
-    "grunt-contrib-jshint": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-jscs": "latest",
-    "load-grunt-tasks": "latest",
-    "grunt-string-replace": "latest",
-    "grunt-contrib-less": "latest",
-    "bootstrap": "latest"
-  }
+  "version": "4.17.47"
 }

@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """
 Unstructured rfc2047 header to unicode.
 
 A stupid (and not accurate) answer to https://bugs.python.org/issue1079.
 
 """
-
-from __future__ import unicode_literals
 
 import re
 from email.header import decode_header, make_header

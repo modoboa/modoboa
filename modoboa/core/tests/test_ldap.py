@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Tests for core application."""
-
-from __future__ import unicode_literals
 
 from unittest import skipIf
 
@@ -111,11 +107,9 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.client.logout()
         self.directbind_mode()
 
-        # 1: must fail because usernames of simple users must be email
-        # addresses
         username = "testuser"
-        with self.assertRaises(TypeError):
-            self.client.login(username=username, password="test")
+        self.client.login(username=username, password="test")
+        self.check_created_user(username + "@example.com")
 
         # 1: must work because usernames of domain admins are not
         # always email addresses
@@ -125,7 +119,7 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         })
         username = "mailadmin"
         self.authenticate(username, "test", False)
-        self.check_created_user(username, "DomainAdmins", False)
+        self.check_created_user("mailadmin@example.com", "DomainAdmins", False)
 
 
 class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):

@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Django management command to import admin objects."""
 
-from __future__ import unicode_literals
-
+import csv
 import io
 import os
 
@@ -12,18 +9,12 @@ from chardet.universaldetector import UniversalDetector
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
-from django.utils import six
 from django.utils.translation import ugettext as _
 
 from modoboa.core import models as core_models
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.exceptions import Conflict
 from .... import signals
-
-if six.PY2:
-    from backports import csv
-else:
-    import csv
 
 
 class ImportCommand(BaseCommand):
@@ -35,7 +26,7 @@ class ImportCommand(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command."""
         parser.add_argument(
-            "--sepchar", type=six.text_type, default=";",
+            "--sepchar", type=str, default=";",
             help="Separator used in file.")
         parser.add_argument(
             "--continue-if-exists", action="store_true",
@@ -45,7 +36,7 @@ class ImportCommand(BaseCommand):
             "--crypt-password", action="store_true",
             default=False, help="Encrypt provided passwords.")
         parser.add_argument(
-            "files", type=six.text_type, nargs="+", help="CSV files to import.")
+            "files", type=str, nargs="+", help="CSV files to import.")
 
     def _import(self, filename, options, encoding="utf-8"):
         """Import domains or identities."""
@@ -121,10 +112,7 @@ class ImportCommand(BaseCommand):
                             encoding=detector.result["encoding"]
                         )
                 except UnicodeDecodeError as exc:
-                    six.raise_from(
-                        CommandError(
-                            _("Unable to decode CSV file using %(encoding)s "
-                              "encoding") % detector.result
-                        ),
-                        exc
-                    )
+                    raise CommandError(
+                        _("Unable to decode CSV file using %(encoding)s "
+                          "encoding") % detector.result
+                    ) from exc

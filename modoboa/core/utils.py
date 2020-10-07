@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Utility functions."""
-
-from __future__ import unicode_literals
 
 from pkg_resources import parse_version
 
@@ -25,7 +21,7 @@ def parse_map_file(path):
     return content
 
 
-def check_for_updates(request):
+def check_for_updates():
     """Check if a new version of Modoboa is available."""
     local_config = models.LocalConfig.objects.first()
     client = ModoAPIClient()

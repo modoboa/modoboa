@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Modoboa admin settings."""
-
-from __future__ import unicode_literals
 
 import collections
 import os
@@ -11,6 +7,7 @@ from django import forms
 from django.conf import settings
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _, ugettext_lazy
+from django.forms.fields import GenericIPAddressField
 
 from modoboa.lib.form_utils import SeparatorField, YesNoField
 from modoboa.lib.sysutils import exec_cmd
@@ -52,11 +49,52 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    enable_spf_checks = YesNoField(
+        label=ugettext_lazy("Enable SPF checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid SPF record"
+        )
+    )
+
+    enable_dkim_checks = YesNoField(
+        label=ugettext_lazy("Enable DKIM checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain with DKIM signin enabled has a valid DNS "
+            "record"
+        )
+    )
+
+    enable_dmarc_checks = YesNoField(
+        label=ugettext_lazy("Enable DMARC checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid DMARC record"
+        )
+    )
+
+    enable_autoconfig_checks = YesNoField(
+        label=ugettext_lazy("Enable autoconfig checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid records for autoconfiguration"
+        )
+    )
+
     enable_dnsbl_checks = YesNoField(
         label=ugettext_lazy("Enable DNSBL checks"),
         initial=True,
         help_text=ugettext_lazy(
             "Check every domain against major DNSBL providers"
+        )
+    )
+
+    custom_dns_server = GenericIPAddressField(
+        label=ugettext_lazy("Custom DNS server"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Use a custom DNS server instead of local server configuration"
         )
     )
 
@@ -80,6 +118,24 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    default_domain_quota = forms.IntegerField(
+        label=ugettext_lazy("Default domain quota"),
+        initial=0,
+        help_text=ugettext_lazy(
+            "Default quota (in MB) applied to freshly created domains with no "
+            "value specified. A value of 0 means no quota."
+        )
+    )
+
+    default_domain_message_limit = forms.IntegerField(
+        label=ugettext_lazy("Default domain sending limit"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Number of messages freshly created domains will be "
+            "allowed to send per day. Leave empty for no limit."
+        )
+    )
+
     mbsep = SeparatorField(label=ugettext_lazy("Mailboxes"))
 
     handle_mailboxes = YesNoField(
@@ -99,21 +155,21 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
-    default_domain_quota = forms.IntegerField(
-        label=ugettext_lazy("Default domain quota"),
-        initial=0,
-        help_text=ugettext_lazy(
-            "Default quota (in MB) applied to freshly created domains with no "
-            "value specified. A value of 0 means no quota."
-        )
-    )
-
     default_mailbox_quota = forms.IntegerField(
         label=ugettext_lazy("Default mailbox quota"),
         initial=0,
         help_text=ugettext_lazy(
-            "Default mailbox quota (in MB) applied to freshly created domains "
-            "with no value specified. A value of 0 means no quota."
+            "Default mailbox quota (in MB) applied to freshly created "
+            "mailboxes with no value specified. A value of 0 means no quota."
+        )
+    )
+
+    default_mailbox_message_limit = forms.IntegerField(
+        label=ugettext_lazy("Default mailbox sending limit"),
+        required=False,
+        help_text=ugettext_lazy(
+            "Number of messages freshly created mailboxes will be "
+            "allowed to send per day. Leave empty for no limit."
         )
     )
 

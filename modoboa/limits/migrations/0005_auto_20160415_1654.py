@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import migrations, models
-import modoboa.limits.models
+from django.db import migrations
 
 from .. import utils
 
@@ -27,24 +23,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='DomainObjectLimit',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=254)),
-                ('max_value', models.IntegerField(default=0)),
-                ('domain', models.ForeignKey(to='admin.Domain', on_delete=models.CASCADE)),
-            ],
-            bases=(modoboa.limits.models.ObjectLimitMixin, models.Model),
-        ),
-        migrations.AlterField(
-            model_name='userobjectlimit',
-            name='max_value',
-            field=models.IntegerField(default=0),
-        ),
-        migrations.AlterUniqueTogether(
-            name='domainobjectlimit',
-            unique_together=set([('domain', 'name')]),
-        ),
         migrations.RunPython(create_limits)
     ]

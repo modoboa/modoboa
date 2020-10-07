@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """A client for Modoboa's public API."""
-
-from __future__ import unicode_literals
 
 import os
 

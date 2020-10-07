@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Custom authentication backends."""
-
-from __future__ import unicode_literals
 
 import smtplib
 
@@ -66,12 +62,12 @@ try:
         LDAPBackend as orig_LDAPBackend, _LDAPUser
     )
 
-    class LDAPBackend(orig_LDAPBackend):
+    class LDAPBackendBase(orig_LDAPBackend):
 
         def __init__(self, *args, **kwargs):
             """Load LDAP settings."""
             param_tools.apply_to_django_settings()
-            super(LDAPBackend, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
             self.global_params = dict(
                 param_tools.get_global_parameters("core"))
 
@@ -88,10 +84,21 @@ try:
                 if grp.strip() in ldap_user.group_names:
                     group = "DomainAdmins"
                     break
-            if group == "SimpleUsers":
-                lpart, domain = split_mailbox(username)
-                if domain is None:
-                    return None
+            lpart, domain = split_mailbox(username)
+            if domain is None:
+                # Try to find associated email
+                email = None
+                for attr in ['mail', 'userPrincipalName']:
+                    if attr in ldap_user.attrs:
+                        email = ldap_user.attrs[attr][0]
+                        break
+                if email is None:
+                    if group == "SimpleUsers":
+                        # Only DomainAdmins can have a username which
+                        # is not an email address
+                        return None
+                else:
+                    username = email
             user, created = User.objects.get_or_create(
                 username__iexact=username,
                 defaults={
@@ -115,8 +122,30 @@ try:
 
         def authenticate(self, *args, **kwargs):
             if self.global_params["authentication_type"] == "ldap":
-                return super(LDAPBackend, self).authenticate(*args, **kwargs)
+                return super().authenticate(*args, **kwargs)
             return None
+
+        @classmethod
+        def setting_fullname(cls, setting):
+            """Return fullname for given setting."""
+            return "{}{}".format(cls.settings_prefix, setting)
+
+
+    class LDAPBackend(LDAPBackendBase):
+        """Primary LDAP backend."""
+
+        settings_prefix = "AUTH_LDAP_"
+        srv_address_setting_name = "ldap_server_address"
+        srv_port_setting_name = "ldap_server_port"
+
+
+    class LDAPSecondaryBackend(LDAPBackendBase):
+        """Secondary LDAP backend."""
+
+        settings_prefix = "AUTH_LDAP_2_"
+        srv_address_setting_name = "ldap_secondary_server_address"
+        srv_port_setting_name = "ldap_secondary_server_port"
+
 
 except ImportError:
     pass

@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Core application constants."""
 
-from __future__ import unicode_literals
-
+from django.conf import settings
 from django.utils.translation import ugettext_lazy
 
 SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
@@ -25,6 +22,7 @@ ADMIN_GROUPS = [
 ]
 
 LANGUAGES = (
+    ("br", u"breton"),
     ("cs", u"čeština"),
     ("de", u"deutsch"),
     ("en", u"english"),
@@ -40,6 +38,7 @@ LANGUAGES = (
     ("ro_RO", u"Română"),
     ("ru", u"русский"),
     ("sv", u"svenska"),
+    ("tr_TR", u"türk"),
     ("zh_TW", u"中文（台灣）"),
 )
 
@@ -66,16 +65,15 @@ PERMISSIONS = {
         ["core", "user", "add_user"],
         ["core", "user", "change_user"],
         ["core", "user", "delete_user"],
-        ["admin", "domain", "view_domains"],
         ["admin", "domain", "view_domain"],
         ["admin", "mailbox", "add_mailbox"],
         ["admin", "mailbox", "change_mailbox"],
         ["admin", "mailbox", "delete_mailbox"],
-        ["admin", "mailbox", "view_mailboxes"],
+        ["admin", "mailbox", "view_mailbox"],
         ["admin", "alias", "add_alias"],
         ["admin", "alias", "change_alias"],
         ["admin", "alias", "delete_alias"],
-        ["admin", "alias", "view_aliases"],
+        ["admin", "alias", "view_alias"],
         ["admin", "senderaddress", "add_senderaddress"],
         ["admin", "senderaddress", "change_senderaddress"],
         ["admin", "senderaddress", "delete_senderaddress"],
@@ -84,25 +82,31 @@ PERMISSIONS = {
         ["core", "user", "add_user"],
         ["core", "user", "change_user"],
         ["core", "user", "delete_user"],
-        ["admin", "domain", "view_domains"],
-        ["admin", "domain", "view_domain"],
         ["admin", "mailbox", "add_mailbox"],
         ["admin", "mailbox", "change_mailbox"],
         ["admin", "mailbox", "delete_mailbox"],
-        ["admin", "mailbox", "view_mailboxes"],
+        ["admin", "mailbox", "view_mailbox"],
         ["admin", "alias", "add_alias"],
         ["admin", "alias", "change_alias"],
         ["admin", "alias", "delete_alias"],
-        ["admin", "alias", "view_aliases"],
+        ["admin", "alias", "view_alias"],
         ["admin", "senderaddress", "add_senderaddress"],
         ["admin", "senderaddress", "change_senderaddress"],
         ["admin", "senderaddress", "delete_senderaddress"],
-        ["admin", "domain", "view_domains"],
         ["admin", "domain", "add_domain"],
         ["admin", "domain", "change_domain"],
         ["admin", "domain", "delete_domain"],
+        ["admin", "domain", "view_domain"],
         ["admin", "domainalias", "add_domainalias"],
         ["admin", "domainalias", "change_domainalias"],
         ["admin", "domainalias", "delete_domainalias"],
     ]
 }
+
+SMS_BACKENDS = [
+    ("", ugettext_lazy("Choose a provider")),
+    ("ovh", "OVH"),
+]
+
+if settings.DEBUG:
+    SMS_BACKENDS.insert(1, ("dummy", ugettext_lazy("Dummy")))

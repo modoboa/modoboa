@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Test cases for the limits extension."""
-
-from __future__ import unicode_literals
 
 from django.urls import reverse
 
@@ -35,8 +31,8 @@ class PermissionsTestCase(lib_tests.ModoTestCase):
         }
         self.ajax_post(reverse("admin:account_add"), values)
         account = User.objects.get(username="reseller@test.com")
-        self.client.logout()
-        self.client.login(username="admin@test.com", password="toto")
+        admin = User.objects.get(username="admin@test.com")
+        self.client.force_login(admin)
         resp = self.ajax_post(
             reverse("admin:account_delete", args=[account.id]),
             {}, status=403

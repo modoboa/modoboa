@@ -1,18 +1,17 @@
-# -*- coding: utf-8 -*-
-
 """External API urls."""
 
-from __future__ import unicode_literals
-
-from django.conf.urls import include, url
+from django.urls import include, path
 
 from modoboa.core.extensions import exts_pool
 
+app_name = "api"
+
 urlpatterns = [
-    url("", include("modoboa.core.urls_api")),
-    url("", include("modoboa.admin.urls_api")),
-    url("", include("modoboa.parameters.urls_api")),
-    url("", include("modoboa.limits.urls_api")),
-    url("", include("modoboa.relaydomains.urls_api")),
+    path('', include("modoboa.core.urls_api")),
+    path('', include("modoboa.admin.urls_api")),
+    path('', include("modoboa.parameters.urls_api")),
+    path('', include("modoboa.limits.urls_api")),
+    path('', include("modoboa.relaydomains.urls_api")),
 ]
+
 urlpatterns += exts_pool.get_urls(category="api")

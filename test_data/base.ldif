@@ -14,7 +14,7 @@ ou: users
 dn: cn=admins,ou=groups,dc=example,dc=com
 cn: admins
 gidnumber: 10001
-memberuid: mailadmin 
+memberuid: mailadmin
 objectclass: posixGroup
 objectclass: top
 
@@ -36,6 +36,7 @@ objectClass: organizationalPerson
 objectClass: person
 objectClass: top
 cn: testuser
+uid: testuser
 givenName: Test
 sn: User
 mail: testuser@example.com

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Models related to domain aliases management."""
-
-from __future__ import unicode_literals
 
 from reversion import revisions as reversion
 
@@ -53,9 +49,6 @@ class DomainAlias(AdminObject):
     objects = DomainAliasManager()
 
     class Meta:
-        permissions = (
-            ("view_domaliases", "View domain aliases"),
-        )
         app_label = "admin"
 
     def __str__(self):

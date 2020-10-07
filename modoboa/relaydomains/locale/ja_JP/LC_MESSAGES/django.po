@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
+"POT-Creation-Date: 2020-05-06 13:15+0200\n"
 "PO-Revision-Date: 2016-06-07 07:27+0000\n"
 "Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -19,21 +19,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: relaydomains/handlers.py:68
+#: relaydomains/handlers.py:61
 #, fuzzy
 #| msgid "Relay settings"
 msgid "Transport settings"
 msgstr "リレー設定"
 
-#: relaydomains/handlers.py:92
+#: relaydomains/handlers.py:85
 msgid "Transport"
 msgstr ""
 
-#: relaydomains/lib.py:16
+#: relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "不正な行"
 
-#: relaydomains/serializers.py:26
+#: relaydomains/serializers.py:25
 msgid "Unsupported service"
 msgstr ""
 

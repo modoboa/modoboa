@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Nils Otto Lillegrein <post@activeweb.no>, 2020
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
+"PO-Revision-Date: 2020-05-11 18:45+0000\n"
+"Last-Translator: Nils Otto Lillegrein <post@activeweb.no>, 2020\n"
+"Language-Team: Norwegian (https://www.transifex.com/tonio/teams/13749/no/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: no\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"
+
+#: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
+msgid "operation"
+msgstr "operasjon"
+
+#: core/static/core/js/settings.js:16
+msgid "No more log entry to show"
+msgstr "Ingen flere loggoppføringer å vise"
+
+#: static/js/confirmation.js:44
+msgid "Warning"
+msgstr "Advarsel"
+
+#: static/js/confirmation.js:59
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: static/js/global.js:342
+msgid "Internal error"
+msgstr "Intern feil"
+
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "Ingen flere oppføringer å vise"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Søk"
+
+#: static/js/searchbar.js:28
+msgid "Search..."
+msgstr "Søk..."

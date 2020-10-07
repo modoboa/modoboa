@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Parameters forms."""
-
-from __future__ import unicode_literals
 
 from django import forms
 
@@ -26,17 +22,27 @@ class GenericParametersForm(forms.Form):
         load_values_from_db = kwargs.pop("load_values_from_db", True)
         super(GenericParametersForm, self).__init__(*args, **kwargs)
 
+        self._add_dynamic_fields()
+
         self.visirules = {}
         if self.visibility_rules is not None:
-            for key, rule in list(self.visibility_rules.items()):
-                field, value = rule.split("=")
-                visibility = {
-                    "field": "id_%s-%s" % (self.app, field), "value": value
-                }
-                self.visirules["%s-%s" % (self.app, key)] = visibility
+            self._add_visibilty_rules(self.visibility_rules)
 
         if not args and load_values_from_db:
             self._load_initial_values()
+
+    def _add_visibilty_rules(self, rules):
+        """Add visibility rules to this form."""
+        for key, rule in list(rules.items()):
+            field, value = rule.split("=")
+            visibility = {
+                "field": "id_%s-%s" % (self.app, field), "value": value
+            }
+            self.visirules["%s-%s" % (self.app, key)] = visibility
+
+    def _add_dynamic_fields(self):
+        """Add dynamic fields to this form."""
+        pass
 
     def _load_initial_values(self):
         raise NotImplementedError

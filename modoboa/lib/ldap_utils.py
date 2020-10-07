@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 A collection of LDAP based classes/functions.
 
@@ -33,12 +31,9 @@ Extracted from `this blog
 
 """
 
-from __future__ import unicode_literals
-
 import ldap
 
 from django.conf import settings
-from django.utils import six
 from django.utils.encoding import force_bytes, force_str
 from django.utils.translation import ugettext as _
 
@@ -70,7 +65,7 @@ class LDAPAuthBackend(object):
 
     def _get_conn(self, dn, password):
         """Get a connection from the server."""
-        conn = ldap.initialize(self.server_uri, bytes_mode=six.PY2)
+        conn = ldap.initialize(self.server_uri)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
         conn.simple_bind_s(

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Models related to domains management."""
-
-from __future__ import unicode_literals
 
 import datetime
 
@@ -10,9 +6,7 @@ from reversion import revisions as reversion
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import (
-    force_text, python_2_unicode_compatible, smart_text
-)
+from django.utils.encoding import force_text, smart_text
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -20,29 +14,29 @@ from modoboa.core import signals as core_signals
 from modoboa.core.models import User
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
+
 from .. import constants
 from .base import AdminObject
+from . import mixins
 
 
-@python_2_unicode_compatible
-class Domain(AdminObject):
+class Domain(mixins.MessageLimitMixin, AdminObject):
     """Mail domain."""
 
     name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
                             help_text=ugettext_lazy("The domain name"))
     quota = models.PositiveIntegerField(
         default=0,
-        help_text=ugettext_lazy(
-            "Quota in MB shared between mailboxes. A value of 0 means "
-            "no quota."
-        )
     )
     default_mailbox_quota = models.PositiveIntegerField(
         verbose_name=ugettext_lazy("Default mailbox quota"),
-        default=0,
+        default=0
+    )
+    message_limit = models.PositiveIntegerField(
+        ugettext_lazy("Message sending limit"),
+        null=True, blank=True,
         help_text=ugettext_lazy(
-            "Default quota in MB applied to mailboxes. A value of 0 means "
-            "no quota."
+            "Number of messages this domain can send per day"
         )
     )
     enabled = models.BooleanField(
@@ -75,10 +69,6 @@ class Domain(AdminObject):
     dkim_private_key_path = models.CharField(max_length=254, blank=True)
 
     class Meta:
-        permissions = (
-            ("view_domain", "View domain"),
-            ("view_domains", "View domains"),
-        )
         ordering = ["name"]
         app_label = "admin"
 
@@ -87,6 +77,7 @@ class Domain(AdminObject):
         super(Domain, self).__init__(*args, **kwargs)
         self.old_mail_homes = None
         self.oldname = self.name
+        self.old_dkim_key_length = self.dkim_key_length
 
     @property
     def domainalias_count(self):
@@ -190,6 +181,31 @@ class Domain(AdminObject):
             return "success"
 
     @cached_property
+    def spf_record(self):
+        """Return SPF record."""
+        return self.dnsrecord_set.filter(type="spf").first()
+
+    @cached_property
+    def dkim_record(self):
+        """Return DKIM record."""
+        return self.dnsrecord_set.filter(type="dkim").first()
+
+    @cached_property
+    def dmarc_record(self):
+        """Return DMARC record."""
+        return self.dnsrecord_set.filter(type="dmarc").first()
+
+    @cached_property
+    def autoconfig_record(self):
+        """Return autoconfig record."""
+        return self.dnsrecord_set.filter(type="autoconfig").first()
+
+    @cached_property
+    def autodiscover_record(self):
+        """Return autodiscover record."""
+        return self.dnsrecord_set.filter(type="autodiscover").first()
+
+    @cached_property
     def allocated_quota(self):
         """Return current quota allocation."""
         if not self.quota:
@@ -225,6 +241,11 @@ class Domain(AdminObject):
         return int(self.used_quota / float(self.quota) * 100)
 
     @property
+    def message_counter_key(self):
+        """Return the key used to store messages count."""
+        return self.name
+
+    @property
     def bind_format_dkim_public_key(self):
         """Return DKIM public key using Bind format."""
         record = "v=DKIM1;k=rsa;p=%s" % self.dkim_public_key
@@ -240,7 +261,7 @@ class Domain(AdminObject):
                 split_record.append("  \"%s\"" % record)
                 break
         record = "\n".join(split_record)
-        return "{}._domainkey.{}. 10800 IN TXT (\n{})".format(
+        return "{}._domainkey.{}. IN TXT (\n{})".format(
             self.dkim_key_selector, self.name, record)
 
     def add_admin(self, account):
@@ -283,6 +304,9 @@ class Domain(AdminObject):
             self.old_mail_homes = {
                 mb.id: mb.mail_home for mb in self.mailbox_set.all()
             }
+        if self.old_dkim_key_length != self.dkim_key_length:
+            self.dkim_public_key = ""
+            self.dkim_private_key_path = ""
         super(Domain, self).save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):

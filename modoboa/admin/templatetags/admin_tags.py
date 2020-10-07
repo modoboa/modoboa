@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Admin extension tags."""
-
-from __future__ import unicode_literals
 
 from functools import reduce
 
@@ -40,10 +36,12 @@ def domains_menu(selection, user, ajax_mode=True):
     if ajax_mode:
         domain_list_url = "list/"
         quota_list_url = "quotas/"
+        logs_url = "logs/"
         nav_classes += " ajaxnav"
     else:
         domain_list_url = reverse("admin:domain_list")
         quota_list_url = domain_list_url + "#quotas/"
+        logs_url = domain_list_url + "#logs/"
     entries = [
         {"name": "domains",
          "label": _("List domains"),
@@ -55,6 +53,11 @@ def domains_menu(selection, user, ajax_mode=True):
          "img": "fa fa-hdd-o",
          "class": "ajaxnav navigation",
          "url": quota_list_url},
+        {"name": "logs",
+         "label": _("Message logs"),
+         "img": "fa fa-list",
+         "class": "ajaxnav navigation",
+         "url": logs_url},
     ]
     if user.has_perm("admin.add_domain"):
         extra_entries = signals.extra_domain_menu_entries.send(
@@ -137,8 +140,15 @@ def domain_actions(user, domain):
          "url": u"{0}#list/?searchquery=@{1}".format(
              reverse("admin:identity_list"), domain.name),
          "title": _("View the domain's identities"),
-         "img": "fa fa-user"}
+         "img": "fa fa-user"},
     ]
+    if domain.alarms.opened().exists():
+        actions.append({
+            "name": "listalarms",
+            "url": reverse("admin:domain_alarms", args=[domain.pk]),
+            "title": _("View domain's alarms"),
+            "img": "fa fa-bell"
+        })
     if user.has_perm("admin.change_domain"):
         actions.append({
             "name": "editdomain",

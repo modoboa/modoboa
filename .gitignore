@@ -23,5 +23,7 @@ node_modules
 /frontend/webpack-stats.json
 
 # TOX stuff
-.eggs/
 test_project/modoboa.db
+
+/.project
+/.pydevproject

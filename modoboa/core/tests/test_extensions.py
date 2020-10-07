@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
-
 """Extensions management related test cases."""
-
-from __future__ import unicode_literals
 
 import os
 import sys
+from io import StringIO
 
 from testfixtures import compare
 
 from django.core import management
 from django.test import TestCase, override_settings
 
-from .. import extensions
+from modoboa.admin.models import Domain
+from .. import extensions, signals
 
 sys.path.append(os.path.dirname(__file__))
 
@@ -74,8 +72,21 @@ class ExtensionTestCase(TestCase):
 
     def test_load_initial_data(self):
         """Check if method is called."""
-        with self.assertRaises(RuntimeError):
-            management.call_command("load_initial_data")
+        self.signal_called = 0
+
+        def handler(sender, extname, **kwargs):
+            self.assertEqual(extname, "stupid_extension_1")
+            self.signal_called += 1
+
+        signals.initial_data_loaded.connect(handler)
+
+        stderr_out = StringIO()
+        management.call_command("load_initial_data", stderr=stderr_out)
+        self.assertTrue(Domain.objects.filter(name="stupid_1.com").exists())
+        self.assertIn("stupid_extension_2", stderr_out.getvalue())
+        self.assertEqual(self.signal_called, 1)
+
+        signals.initial_data_loaded.disconnect(handler)
 
     def test_get_urls(self):
         """Load extensions urls."""

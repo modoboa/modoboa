@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Map file definitions for postfix."""
-
-from __future__ import unicode_literals
-
 
 class DomainsMap(object):
 
@@ -116,10 +111,20 @@ class SenderLoginMap(object):
         "WHERE sad.address='%s') "
         "UNION "
         "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
-        "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
-        " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
-        " INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s')"
+        "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "INNER JOIN admin_alias al ON alr.alias_id=al.id "
+        "LEFT JOIN admin_domainalias adoma ON adoma.target_id=al.domain_id "
+        "LEFT JOIN admin_domain adom ON adom.id=adoma.target_id "
+        "WHERE al.enabled=1 AND ("
+        "  al.address='%s' OR ("
+        "    adoma.name='%d' AND al.address=concat('%u', '@', adom.name)"
+        "))) "
+        "UNION "
+        "(SELECT concat(mb.address, '@', dom.name) FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address=concat('@','%d')) "
     )
     postgres = (
         "(SELECT email FROM core_user WHERE email='%s' AND is_active) "
@@ -130,10 +135,20 @@ class SenderLoginMap(object):
         "WHERE sad.address='%s') "
         "UNION "
         "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
-        "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id"
-        " INNER JOIN admin_domain dom ON dom.id=mb.domain_id"
-        " INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled AND al.address='%s')"
+        "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "INNER JOIN admin_alias al ON alr.alias_id=al.id "
+        "LEFT JOIN admin_domainalias adoma ON adoma.target_id=al.domain_id "
+        "LEFT JOIN admin_domain adom ON adom.id=adoma.target_id "
+        "WHERE al.enabled AND ("
+        "  al.address='%s' OR ("
+        "    adoma.name='%d' AND al.address='%u'||'@'||adom.name"
+        "))) "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='@'||'%d') "
     )
     sqlite = (
         "SELECT email FROM core_user WHERE email='%s' AND is_active=1 "
@@ -147,5 +162,15 @@ class SenderLoginMap(object):
         "INNER JOIN modoboa_admin_aliasrecipient alr ON alr.r_mailbox_id=mb.id "
         "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
         "INNER JOIN admin_alias al ON alr.alias_id=al.id "
-        "WHERE al.enabled=1 AND al.address='%s'"
+        "LEFT JOIN admin_domainalias adoma ON adoma.target_id=al.domain_id "
+        "LEFT JOIN admin_domain adom ON adom.id=adoma.target_id "
+        "WHERE al.enabled=1 AND ("
+        "  al.address='%s' OR ("
+        "    adoma.name='%d' AND al.address='%u'||'@'||adom.name"
+        ")) "
+        "UNION "
+        "(SELECT mb.address || '@' || dom.name FROM admin_mailbox mb "
+        "INNER JOIN admin_senderaddress sad ON sad.mailbox_id=mb.id "
+        "INNER JOIN admin_domain dom ON dom.id=mb.domain_id "
+        "WHERE sad.address='@'||'%d') "
     )

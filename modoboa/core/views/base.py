@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Base core views."""
-
-from __future__ import unicode_literals
 
 from django.contrib.auth import mixins as auth_mixins
 from django.urls import reverse
@@ -20,7 +16,7 @@ def find_nextlocation(request, user):
     nextlocation = request.POST.get("next", request.GET.get("next"))
     condition = (
         nextlocation and
-        is_safe_url(nextlocation, host=request.get_host())
+        is_safe_url(nextlocation, request.get_host())
     )
     if condition:
         return nextlocation

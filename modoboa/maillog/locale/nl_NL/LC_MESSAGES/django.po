@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Andrew <buddha@cryptolab.net>, 2014
+# TuxBrother <vrijwilligerswerk@wij.rs>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-17 11:24+0200\n"
+"PO-Revision-Date: 2014-12-31 11:37+0000\n"
+"Last-Translator: TuxBrother <vrijwilligerswerk@wij.rs>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
+"modoboa/language/nl_NL/)\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:20
+msgid "General"
+msgstr "Algemeen"
+
+#: forms.py:23
+msgid "Path to the log file"
+msgstr "Locatie van logbestand"
+
+#: forms.py:25
+msgid "Path to log file used to collect statistics"
+msgstr "Locatie van logbestand gebruik om statistieken te maken"
+
+#: forms.py:30
+msgid "Directory to store RRD files"
+msgstr "Map om RRD bestanden op te slaan"
+
+#: forms.py:33
+msgid "Path to directory where RRD files are stored"
+msgstr "Locatie van map waar RRD bestanden staan"
+
+#: forms.py:38
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Show greylisted messages"
+msgstr "geweigerde berichten"
+
+#: forms.py:41
+msgid "Differentiate between hard and soft rejects (greylisting)"
+msgstr ""
+
+#: forms.py:59 handlers.py:22
+msgid "Statistics"
+msgstr "Statistieken"
+
+#: graphics.py:95
+msgid "Failed to locate rrdtool binary."
+msgstr ""
+
+#: graphics.py:174
+msgid "Average traffic (msgs/min)"
+msgstr "Gemiddeld verkeer per minuut (berichten)"
+
+#: graphics.py:177
+msgid "sent messages"
+msgstr "verstuurde berichten"
+
+#: graphics.py:178
+msgid "received messages"
+msgstr "ontvangen berichten"
+
+#: graphics.py:179
+msgid "bounced messages"
+msgstr "geweigerde berichten"
+
+#: graphics.py:180
+msgid "rejected messages"
+msgstr "geweigerde berichten"
+
+#: graphics.py:181
+#, fuzzy
+#| msgid "sent messages"
+msgid "virus messages"
+msgstr "verstuurde berichten"
+
+#: graphics.py:182
+#, fuzzy
+#| msgid "sent messages"
+msgid "spam messages"
+msgstr "verstuurde berichten"
+
+#: graphics.py:189
+#, fuzzy
+#| msgid "rejected messages"
+msgid "greylisted messages"
+msgstr "geweigerde berichten"
+
+#: graphics.py:200
+msgid "Average normal traffic size (bytes/min)"
+msgstr "Gemiddelde bandbreette per minuut (bytes)"
+
+#: graphics.py:203
+msgid "received size"
+msgstr "ontvangen grootte"
+
+#: graphics.py:205
+msgid "sent size"
+msgstr "verstuurde grootte"
+
+#: graphics.py:213
+msgid "Mail traffic"
+msgstr "Mailverkeer"
+
+#: graphics.py:258
+msgid "Average account creation (account/hour)"
+msgstr ""
+
+#: graphics.py:261
+msgid "New accounts"
+msgstr ""
+
+#: graphics.py:268
+msgid "Accounts"
+msgstr ""
+
+#: templates/maillog/index.html:4
+msgid "Graphical statistics"
+msgstr "Grafische statistieken"
+
+#: templates/maillog/index.html:44
+msgid "Search a domain"
+msgstr "Zoek een domein"
+
+#: templates/maillog/index.html:77
+msgid "Apply"
+msgstr "Toepassen"
+
+#: views.py:33
+msgid "No statistics available"
+msgstr "Geen statistieken beschikbaar"
+
+#: views.py:40
+msgid "Day"
+msgstr "Dag"
+
+#: views.py:41
+msgid "Week"
+msgstr "Week"
+
+#: views.py:42
+msgid "Month"
+msgstr "Maand"
+
+#: views.py:43
+msgid "Year"
+msgstr "Jaar"
+
+#: views.py:44
+msgid "Custom"
+msgstr "Aangepast"
+
+#: views.py:63
+msgid "Unknown graphic set"
+msgstr "Onbekende grafische set"
+
+#: views.py:68
+#, fuzzy
+#| msgid "Unknown graphic set"
+msgid "Unknown domain"
+msgstr "Onbekende grafische set"
+
+#: views.py:73
+msgid "Bad custom period"
+msgstr "Ongeldige aangepaste periode"
+
+#~ msgid "Graphical statistics about emails traffic using RRDtool"
+#~ msgstr "Grafische statistieken over emailverkeer dmv. RRDtool"

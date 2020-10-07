@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
 Form rendering tags.
 """
-
-from __future__ import unicode_literals
 
 from django import forms, template
 from django.template.loader import render_to_string

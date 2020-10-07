@@ -1,0 +1,91 @@
+{% extends "twocols.html" %}
+{% load i18n static %}
+
+{% block pagetitle %}{% trans "Graphical statistics" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'maillog/css/stats.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/history.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/autocompleter.js' %}"></script>
+<script type="text/javascript" src="{% static 'd3/d3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'maillog/js/d3.legend.js' %}"></script>
+<script type="text/javascript" src="{% static 'maillog/js/graphic.js' %}"></script>
+<script type="text/javascript" src="{% static 'maillog/js/stats.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var stats = new Stats({
+        graphurl: "{% url 'maillog:graph_list' %}",
+        domain_list_url: "{% url 'maillog:domain_list' %}",
+        deflocation: "{{ deflocation|safe }}",
+        language: "{{ LANGUAGE_CODE }}"
+    });
+});
+</script>
+{% endblock %}
+
+{% block leftcol %}
+<ul class="nav nav-sidebar">
+  {% for id, gset in graph_sets.items %}
+    <li id="menu_{{ gset.html_id }}">
+      <a href="#graphs?gset={{ gset.html_id }}">{{ gset.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+{% block apparea %}
+<div id="menubar" class="row">
+  <div id="domain-selector" class="col-sm-5">
+    <form class="form-horizontal" role="form">
+      <div class="form-group has-feedback">
+        <input class="form-control" id="searchquery" type="text" value="{% trans 'Search a domain' %}">
+        <span class="fa fa-search form-control-feedback"></span>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-sm-7">
+    <div class="btn-group" data-toggle="buttons">
+      {% for p in periods %}
+      <label class="btn btn-primary period_selector">
+        <input type="radio" data-period="{{ p.name }}"> {% trans p.label %}
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div id="custom_period" class="row hidden">
+  <div class="col-sm-7">
+    <form class="form-inline">
+      <span id="custom-period">
+        <div class="form-group">
+          <div class="input-group datetime_picker">
+            <div class="input-group-addon"><span class="fa fa-outdent"></span></div>
+            <input id="id_from" name="date_form" class="form-control" value="{{ start }}" type="text" readonly="readonly">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group datetime_picker">
+            <div class="input-group-addon"><span class="fa fa-outdent"></span></div>
+            <input id="id_to" name="date_to" value="{{ end }}" class="form-control" type="text" readonly="readonly" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="customsend">{% trans "Apply" %}</button>
+      </span>
+    </form>
+  </div>
+</div>
+
+<div id="graphs">
+  {% for id, gset in graph_sets.items %}
+  <div class="tab-pane {% if forloop.first %}active{% endif %}" id="graphs_{{ gset.html_id }}">
+    <div id="gset"></div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

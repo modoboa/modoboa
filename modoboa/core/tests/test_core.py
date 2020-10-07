@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """Tests for core application."""
 
-from __future__ import unicode_literals
+from io import StringIO
 
 import httmock
 from dateutil.relativedelta import relativedelta
-from six import StringIO
 
+from django.core import mail
 from django.core import management
 from django.test import TestCase
 from django.urls import reverse
@@ -114,7 +112,7 @@ class ProfileTestCase(ModoTestCase):
         """Update profile without password."""
         data = {
             "first_name": "Homer", "last_name": "Simpson",
-            "phone_number": "123445", "language": "en"
+            "phone_number": "+33612345678", "language": "en"
         }
         self.ajax_post(reverse("core:user_profile"), data)
         admin = models.User.objects.get(username="admin")
@@ -155,6 +153,23 @@ class ProfileTestCase(ModoTestCase):
         self.assertTrue(
             self.client.login(username="user@test.com", password="Toto1234")
         )
+
+    def test_update_password_url(self):
+        """Check if external is used when defined."""
+        self.set_global_parameter(
+            "update_password_url", "http://update.password")
+        non_local_user = factories.UserFactory(
+            username="user@external.com", groups=("SimpleUsers",),
+            is_local=False
+        )
+        self.client.force_login(non_local_user)
+        url = reverse("core:user_profile")
+        response = self.client.get(url)
+        self.assertContains(response, "http://update.password")
+
+        self.client.force_login(self.account)
+        response = self.client.get(url)
+        self.assertNotContains(response, "http://update.password")
 
 
 class APIAccessFormTestCase(ModoTestCase):
@@ -201,7 +216,37 @@ class APICommunicationTestCase(ModoTestCase):
                 mocks.modo_api_versions):
             management.call_command("communicate_with_public_api")
         self.assertEqual(models.LocalConfig.objects.first().api_pk, 100)
+        self.assertEqual(len(mail.outbox), 0)
 
         url = reverse("core:information")
         response = self.ajax_request("get", url)
         self.assertIn("9.0.0", response["content"])
+
+        # Enable notifications
+        self.set_global_parameter("send_new_versions_email", True)
+        with httmock.HTTMock(
+                mocks.modo_api_instance_search,
+                mocks.modo_api_instance_create,
+                mocks.modo_api_instance_update,
+                mocks.modo_api_versions):
+            management.call_command("communicate_with_public_api")
+        self.assertEqual(len(mail.outbox), 1)
+
+        # Call once again and check no new notification has been sent
+        self.set_global_parameter("send_new_versions_email", True)
+        with httmock.HTTMock(
+                mocks.modo_api_instance_search,
+                mocks.modo_api_instance_create,
+                mocks.modo_api_instance_update,
+                mocks.modo_api_versions):
+            management.call_command("communicate_with_public_api")
+        self.assertEqual(len(mail.outbox), 1)
+
+        # Make sure no new notification is sent when no updates
+        with httmock.HTTMock(
+                mocks.modo_api_instance_search,
+                mocks.modo_api_instance_create,
+                mocks.modo_api_instance_update,
+                mocks.modo_api_versions_no_update):
+            management.call_command("communicate_with_public_api")
+        self.assertEqual(len(mail.outbox), 1)

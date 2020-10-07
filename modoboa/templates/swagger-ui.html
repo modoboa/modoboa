@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modoboa API</title>
+    <link rel="stylesheet" href="{% static 'swagger-ui/dist/swagger-ui.css' %}">
+    <style>
+      html {
+        box-sizing: border-box;
+        overflow: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
+
+      .swagger-ui .highlight-code .download-contents {
+        right: 20px;
+        height: auto;
+        width: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="{% static 'swagger-ui/dist/swagger-ui-bundle.js' %}"></script>
+    <script>
+    window.onload = function() {
+        const ui = SwaggerUIBundle({
+            url: "{% url 'openapi_schema' %}",
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis
+            ],
+            layout: "BaseLayout",
+            requestInterceptor: (request) => {
+                request.headers['X-CSRFToken'] = "{{ csrf_token }}"
+                return request;
+            }
+        });
+
+        window.ui = ui;
+    };
+    </script>
+  </body>
+</html>

@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Domain related views."""
-
-from __future__ import unicode_literals
 
 from functools import reduce
 
@@ -12,7 +8,7 @@ from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -25,6 +21,8 @@ from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import PermDeniedException
 from modoboa.lib.listing import get_listing_page, get_sort_order
 from modoboa.lib.web_utils import render_to_json_response
+from modoboa.maillog import models as ml_models
+
 from .. import signals
 from ..forms import DomainForm, DomainWizard
 from ..lib import get_domains
@@ -38,8 +36,8 @@ def index(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains") or
-    u.has_perm("admin.view_mailboxes")
+    lambda u: u.has_perm("admin.view_domain") or
+    u.has_perm("admin.view_mailbox")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
@@ -69,23 +67,25 @@ def _domains(request):
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
     parameters = request.localconfig.parameters
+    dns_checks = {
+        "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+        "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+        "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+        "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+        "enable_autoconfig_checks": (
+            parameters.get_value("enable_autoconfig_checks")),
+        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
+    }
     context["headers"] = render_to_string(
-        "admin/domain_headers.html", {
-            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
-            "enable_dnsbl_checks": (
-                parameters.get_value("enable_dnsbl_checks"))
-        }, request
+        "admin/domain_headers.html", dns_checks, request
     )
     if page is None:
         context["length"] = 0
     else:
+        tpl_context = {"domains": page.object_list}
+        tpl_context.update(dns_checks)
         context["rows"] = render_to_string(
-            "admin/domains_table.html", {
-                "domains": page.object_list,
-                "enable_mx_checks": parameters.get_value("enable_mx_checks"),
-                "enable_dnsbl_checks": (
-                    parameters.get_value("enable_dnsbl_checks"))
-            }, request
+            "admin/domains_table.html", tpl_context, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
@@ -94,8 +94,8 @@ def _domains(request):
 @login_required
 @ensure_csrf_cookie
 def domains(request, tplname="admin/domains.html"):
-    if not request.user.has_perm("admin.view_domains"):
-        if request.user.has_perm("admin.view_mailboxes"):
+    if not request.user.has_perm("admin.view_domain"):
+        if request.user.has_perm("admin.view_mailbox"):
             return HttpResponseRedirect(
                 reverse("admin:identity_list")
             )
@@ -104,21 +104,29 @@ def domains(request, tplname="admin/domains.html"):
     return render(request, tplname, {
         "selection": "domains",
         "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+        "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+        "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+        "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+        "enable_autoconfig_checks": (
+            parameters.get_value("enable_autoconfig_checks")),
         "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
     })
 
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domains") or
-    u.has_perm("admin.view_mailboxes") or
+    lambda u: u.has_perm("admin.view_domain") or
+    u.has_perm("admin.view_mailbox") or
     u.has_perm("admin.add_domain")
 )
 def get_next_page(request):
     """Return the next page of the domain or quota list."""
-    if request.GET.get("objtype", "domain") == "domain":
+    objtype = request.GET.get("objtype", "domain")
+    if objtype == "domain":
         return _domains(request)
-    return list_quotas(request)
+    if objtype == "quota":
+        return list_quotas(request)
+    return list_logs(request)
 
 
 @login_required
@@ -129,7 +137,7 @@ def domains_list(request):
 
 
 @login_required
-@permission_required("admin.add_domain")
+@permission_required("admin.view_domain")
 def list_quotas(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     domains = Domain.objects.get_for_admin(request.user)
@@ -158,6 +166,43 @@ def list_quotas(request):
 
 
 @login_required
+@permission_required("admin.view_domain")
+def list_logs(request):
+    """List all Maillog entries."""
+    sort_order, sort_dir = get_sort_order(request.GET, "date")
+    search = request.GET.get("searchquery")
+    if not request.user.is_superuser:
+        domains = Domain.objects.get_for_admin(request.user)
+        logs = ml_models.Maillog.objects.filter(
+            Q(from_domain__in=domains) | Q(to_domain__in=domains)
+        )
+    else:
+        logs = ml_models.Maillog.objects.all()
+    logs = logs.order_by("{}{}".format(sort_dir, sort_order))
+    if search:
+        logs = logs.filter(
+            Q(sender__icontains=search) |
+            Q(rcpt__icontains=search) |
+            Q(queue_id__icontains=search) |
+            Q(status__icontains=search)
+        )
+    page = get_listing_page(logs, request.GET.get("page", 1))
+    context = {
+        "headers": render_to_string(
+            "admin/domains_log_headers.html", {}, request
+        )
+    }
+    if page is None:
+        context["length"] = 0
+    else:
+        context["rows"] = render_to_string(
+            "admin/domains_logs.html", {"logs": page}, request
+        )
+        context["pages"] = [page.number]
+    return render_to_json_response(context)
+
+
+@login_required
 @permission_required("admin.add_domain")
 @reversion.create_revision()
 def newdomain(request):
@@ -167,7 +212,7 @@ def newdomain(request):
 
 
 @login_required
-@permission_required("admin.view_domains")
+@permission_required("admin.view_domain")
 @reversion.create_revision()
 def editdomain(request, dom_id):
     """Edit domain view."""
@@ -226,6 +271,11 @@ class DomainDetailView(
         context.update({
             "templates": {"left": [], "right": []},
             "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+            "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+            "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+            "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+            "enable_autoconfig_checks": (
+                parameters.get_value("enable_autoconfig_checks")),
             "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
         })
         for _receiver, widgets in result:
@@ -236,3 +286,19 @@ class DomainDetailView(
                 context.update(widget["context"])
 
         return context
+
+
+class DomainAlarmsView(
+        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+    """A view to list domain alarms."""
+
+    model = Domain
+    permission_required = "admin.view_domain"
+    template_name = "admin/domain_alarms.html"
+
+    def get_queryset(self):
+        """Add some prefetching."""
+        return (
+            Domain.objects.get_for_admin(self.request.user)
+            .prefetch_related("alarms")
+        )

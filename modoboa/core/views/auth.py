@@ -1,22 +1,33 @@
-# -*- coding: utf-8 -*-
-
 """Core authentication views."""
 
-from __future__ import unicode_literals
-
 import logging
+
+import oath
+
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils import translation
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.utils.translation import ugettext as _
+from django.views import generic
+from django.views.decorators.cache import never_cache
 
 from django.contrib.auth import (
     authenticate, login, logout, views as auth_views
 )
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template.loader import render_to_string
-from django.urls import reverse
-from django.utils import translation
-from django.utils.translation import ugettext as _
-from django.views.decorators.cache import never_cache
+from django.contrib.auth.tokens import default_token_generator
+
+from braces.views import JSONResponseMixin
 
 from modoboa.core import forms
+from modoboa.core.password_hashers import get_password_hasher
+from modoboa.lib import cryptutils
+from modoboa.parameters import tools as param_tools
+
+from .. import models
+from .. import sms_backends
 from .. import signals
 from .base import find_nextlocation
 
@@ -33,6 +44,32 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
+                if param_tools.get_global_parameter("update_scheme",
+                                                    raise_exception=False):
+                    # check if password scheme is correct
+                    scheme = param_tools.get_global_parameter(
+                        "password_scheme", raise_exception=False)
+                    # use SHA512CRYPT as default fallback
+                    if scheme is None:
+                        pwhash = get_password_hasher('sha512crypt')()
+                    else:
+                        pwhash = get_password_hasher(scheme)()
+                    if not user.password.startswith(pwhash.scheme):
+                        logging.info(
+                            _("Password scheme mismatch. Updating %s password"),
+                            user.username
+                        )
+                        user.set_password(form.cleaned_data["password"])
+                        user.save()
+                    if pwhash.needs_rehash(user.password):
+                        logging.info(
+                            _("Password hash parameter missmatch. "
+                              "Updating %s password"),
+                            user.username
+                        )
+                        user.set_password(form.cleaned_data["password"])
+                        user.save()
+
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
@@ -91,11 +128,104 @@ def dologout(request):
     return HttpResponseRedirect(reverse("core:login"))
 
 
-def password_reset(request, **kwargs):
+class PasswordResetView(auth_views.PasswordResetView):
     """Custom view to override form."""
-    kwargs.update({
-        "from_email": (
-            request.localconfig.parameters.get_value("sender_address")),
-        "password_reset_form": forms.PasswordResetForm
-    })
-    return auth_views.password_reset(request, **kwargs)
+
+    form_class = forms.PasswordResetForm
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.from_email = request.localconfig.parameters.get_value(
+            "sender_address"
+        )
+
+    def get_context_data(self, **kwargs):
+        """Include help text."""
+        context = super().get_context_data(**kwargs)
+        context["announcement"] = (
+            self.request.localconfig.parameters
+            .get_value("password_recovery_msg")
+        )
+        return context
+
+    def form_valid(self, form):
+        """Redirect to code verification page if needed."""
+        sms_password_recovery = (
+            self.request.localconfig.parameters
+            .get_value("sms_password_recovery")
+        )
+        if not sms_password_recovery:
+            return super().form_valid(form)
+        user = models.User._default_manager.filter(
+            email=form.cleaned_data["email"], phone_number__isnull=False
+        ).first()
+        if not user:
+            # Fallback to email
+            return super().form_valid(form)
+        backend = sms_backends.get_active_backend(
+            self.request.localconfig.parameters)
+        secret = cryptutils.random_hex_key(20)
+        code = oath.totp(secret)
+        text = _(
+            "Please use the following code to recover your Modoboa password: {}"
+            .format(code)
+        )
+        if not backend.send(text, [str(user.phone_number)]):
+            return super().form_valid(form)
+        self.request.session["user_pk"] = user.pk
+        self.request.session["totp_secret"] = secret
+        return HttpResponseRedirect(reverse("password_reset_confirm_code"))
+
+
+class VerifySMSCodeView(generic.FormView):
+    """View to verify a code received by SMS."""
+
+    form_class = forms.VerifySMSCodeForm
+    template_name = "registration/password_reset_confirm_code.html"
+
+    def get_form_kwargs(self):
+        """Include totp secret in kwargs."""
+        kwargs = super().get_form_kwargs()
+        try:
+            kwargs.update({"totp_secret": self.request.session["totp_secret"]})
+        except KeyError:
+            raise Http404
+        return kwargs
+
+    def form_valid(self, form):
+        """Redirect to reset password form."""
+        user = models.User.objects.get(pk=self.request.session.pop("user_pk"))
+        self.request.session.pop("totp_secret")
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        url = reverse("password_reset_confirm", args=[uid, token])
+        return HttpResponseRedirect(url)
+
+
+class ResendSMSCodeView(JSONResponseMixin, generic.View):
+    """A view to resend validation code."""
+
+    def get(self, request, *args, **kwargs):
+        sms_password_recovery = (
+            self.request.localconfig.parameters
+            .get_value("sms_password_recovery")
+        )
+        if not sms_password_recovery:
+            raise Http404
+        try:
+            user = models.User._default_manager.get(
+                pk=self.request.session["user_pk"])
+        except KeyError:
+            raise Http404
+        backend = sms_backends.get_active_backend(
+            self.request.localconfig.parameters)
+        secret = cryptutils.random_hex_key(20)
+        code = oath.totp(secret)
+        text = _(
+            "Please use the following code to recover your Modoboa password: {}"
+            .format(code)
+        )
+        if not backend.send(text, [user.phone_number]):
+            raise Http404
+        self.request.session["totp_secret"] = secret
+        return self.render_json_response({"status": "ok"})

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
+"POT-Creation-Date: 2020-05-06 13:15+0200\n"
 "PO-Revision-Date: 2017-11-24 17:22+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,15 +25,15 @@ msgstr "Ce champ est requis"
 msgid "Invalid value"
 msgstr "Valeur incorrecte"
 
-#: transport/models.py:18
+#: transport/models.py:16
 msgid "pattern"
 msgstr "patron"
 
-#: transport/models.py:19
+#: transport/models.py:17
 msgid "service"
 msgstr "service"
 
-#: transport/models.py:20
+#: transport/models.py:18
 msgid "next hop"
 msgstr "saut suivant"
 
