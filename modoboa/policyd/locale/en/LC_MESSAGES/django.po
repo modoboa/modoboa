@@ -1,0 +1,40 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-02 15:31+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: policyd/core.py:88
+msgid "Daily sending limit reached"
+msgstr ""
+
+#: policyd/core.py:104
+msgid "account"
+msgstr ""
+
+#: policyd/core.py:105
+msgid "domain"
+msgstr ""
+
+#: policyd/core.py:123
+msgid "[modoboa] Sending limit reached"
+msgstr ""
+
+#: policyd/templates/policyd/notifications/limit_reached.html:3
+#, python-format
+msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
+msgstr ""

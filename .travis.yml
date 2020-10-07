@@ -1,9 +1,9 @@
 language: python
 python:
-  - '2.7'
-  - '3.4'
   - '3.5'
   - '3.6'
+  - '3.7'
+  - '3.8'
 
 env:
   global:
@@ -15,23 +15,25 @@ env:
 sudo: false
 
 addons:
-  postgresql: '9.3'
+  postgresql: '9.6'
   mysql: '5.5'
   apt:
     packages:
       - ldap-utils
       - postfix
       - slapd
+      - librrd-dev
+      - rrdtool
 
 cache: pip
 
 services:
   - postgres
   - mysql
+  - redis-server
 
 before_install:
   - pip install codecov
-  - pip install codacy-coverage
 
 install:
   - pip install -r requirements.txt
@@ -50,12 +52,12 @@ before_script:
 script:
   - python ./tests.py
   - cd test_project
-  - coverage run --source ../modoboa manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains
+  - coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
 
 after_success:
-  - coverage xml
+  - coverage combine
+  - coverage report
   - codecov
-  - python-codacy-coverage -r coverage.xml
 
 before_deploy:
   - cd ../modoboa
@@ -71,5 +73,5 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    python: '3.6'
+    python: '3.8'
     condition: "$DB = POSTGRESQL"

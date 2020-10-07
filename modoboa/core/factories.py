@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Factories for core application."""
-
-from __future__ import unicode_literals
 
 import factory
 

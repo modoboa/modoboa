@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-04 22:08+0100\n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2016-06-07 07:01+0000\n"
 "Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
@@ -19,19 +19,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: admin/static/admin/js/admin.js:131
+#: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
 msgstr "表示するドメインはありません。"
 
-#: admin/static/admin/js/admin.js:150
+#: admin/static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
 msgstr "ドメインディレクトリを削除しないでください"
 
-#: admin/static/admin/js/admin.js:152
+#: admin/static/admin/js/admin.js:151
 msgid "This operation will remove ALL data associated to this domain."
 msgstr "この操作は、このドメインに関連するすべてのデータを削除します。"
 
-#: admin/static/admin/js/admin.js:153
+#: admin/static/admin/js/admin.js:152
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -39,18 +39,18 @@ msgstr ""
 "この操作は、アカウントを除いたこのドメインに関連するすべてのデータを削除しま"
 "す。"
 
-#: admin/static/admin/js/admin.js:236
+#: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:433
+msgid "No more quota to show"
+msgstr "表示するクォータはありません"
+
+#: admin/static/admin/js/admin.js:306
 msgid "No domain administrator defined"
 msgstr "ドメイン管理者が指定されていません"
 
-#: admin/static/admin/js/admin.js:291 admin/static/admin/js/admin.js:359
+#: admin/static/admin/js/admin.js:362 admin/static/admin/js/admin.js:430
 msgid "No more identity to show"
 msgstr "表示する ID はありません"
 
-#: admin/static/admin/js/admin.js:333
+#: admin/static/admin/js/admin.js:404
 msgid "Do not delete mailbox directory"
 msgstr "メールボックスディレクトリを削除しないでください"
-
-#: admin/static/admin/js/admin.js:362
-msgid "No more quota to show"
-msgstr "表示するクォータはありません"

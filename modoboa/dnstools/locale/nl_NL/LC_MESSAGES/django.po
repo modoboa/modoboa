@@ -1,0 +1,165 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 13:15+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: dnstools/lib.py:78
+msgid "Wrong ip4 mechanism syntax"
+msgstr ""
+
+#: dnstools/lib.py:82
+msgid "Wrong IPv4 address format"
+msgstr ""
+
+#: dnstools/lib.py:88
+msgid "Wrong ip6 mechanism syntax"
+msgstr ""
+
+#: dnstools/lib.py:93
+msgid "Wrong IPv6 address format"
+msgstr ""
+
+#: dnstools/lib.py:108 dnstools/lib.py:134
+msgid "Invalid syntax for {} mechanism"
+msgstr ""
+
+#: dnstools/lib.py:110
+msgid "Invalid mask found {}"
+msgstr ""
+
+#: dnstools/lib.py:155
+msgid "Not an SPF record"
+msgstr ""
+
+#: dnstools/lib.py:177
+msgid "Unknown mechanism {}"
+msgstr ""
+
+#: dnstools/lib.py:179
+msgid "Unknown modifier {}"
+msgstr ""
+
+#: dnstools/lib.py:182
+msgid "Duplicate modifier {} found"
+msgstr ""
+
+#: dnstools/lib.py:186
+msgid "No mechanism found"
+msgstr ""
+
+#: dnstools/lib.py:193
+msgid "Not a valid DKIM record"
+msgstr ""
+
+#: dnstools/lib.py:201 dnstools/lib.py:254
+msgid "Invalid tag {}"
+msgstr ""
+
+#: dnstools/lib.py:206
+msgid "No key found in record"
+msgstr ""
+
+#: dnstools/lib.py:213
+msgid "Wrong value {} for tag {}"
+msgstr ""
+
+#: dnstools/lib.py:228
+msgid "Wrong value {} for tag {}:"
+msgstr ""
+
+#: dnstools/lib.py:232
+msgid " not an integer"
+msgstr ""
+
+#: dnstools/lib.py:235
+msgid " less than {}"
+msgstr ""
+
+#: dnstools/lib.py:238
+msgid " greater than {}"
+msgstr ""
+
+#: dnstools/lib.py:246
+msgid "Not a valid DMARC record"
+msgstr ""
+
+#: dnstools/lib.py:257
+msgid "Unknown tag {}"
+msgstr ""
+
+#: dnstools/lib.py:262
+msgid "Missing required p tag"
+msgstr ""
+
+#: dnstools/models.py:77
+msgid "Public key mismatchs"
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:8
+msgid "autoconfig record (Mozilla) found: "
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:12
+msgid "autoconfig record (Mozilla) not found."
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:17
+msgid "autodiscover record (Microsoft) found: "
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:21
+msgid "autodiscover record (Microsoft) not found."
+msgstr ""
+
+#: dnstools/templates/dnstools/dns_record_detail.html:8
+msgid "A DNS record has been found and is valid."
+msgstr ""
+
+#: dnstools/templates/dnstools/dns_record_detail.html:12
+msgid "A DNS record has been found but its syntax is not valid:"
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:7
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace value between "
+"[ ] by the appropriate ones."
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:15
+msgid "IP address of your Modoboa server"
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:28
+msgid "Auto configuration"
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:30
+#: dnstools/templates/dnstools/domain_dns_configuration.html:31
+msgid "hostname of your automx server"
+msgstr ""
+
+#: dnstools/views.py:36
+msgid "{} record of {}"
+msgstr ""
+
+#: dnstools/views.py:64
+msgid "Auto configuration records for {}"
+msgstr ""
+
+#: dnstools/views.py:84
+msgid "DNS configuration for {}"
+msgstr ""

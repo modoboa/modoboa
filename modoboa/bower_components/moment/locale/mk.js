@@ -1,17 +1,14 @@
-// moment.js locale configuration
-// locale : macedonian (mk)
-// author : Borislav Mickov : https://github.com/B0k0
+//! moment.js locale configuration
 
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['moment'], factory); // AMD
-    } else if (typeof exports === 'object') {
-        module.exports = factory(require('../moment')); // Node
-    } else {
-        factory((typeof global !== 'undefined' ? global : this).moment); // node or other global
-    }
-}(function (moment) {
-    return moment.defineLocale('mk', {
+;(function (global, factory) {
+   typeof exports === 'object' && typeof module !== 'undefined'
+       && typeof require === 'function' ? factory(require('../moment')) :
+   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
+   factory(global.moment)
+}(this, (function (moment) { 'use strict';
+
+
+    var mk = moment.defineLocale('mk', {
         months : 'јануари_февруари_март_април_мај_јуни_јули_август_септември_октомври_ноември_декември'.split('_'),
         monthsShort : 'јан_фев_мар_апр_мај_јун_јул_авг_сеп_окт_ное_дек'.split('_'),
         weekdays : 'недела_понеделник_вторник_среда_четврток_петок_сабота'.split('_'),
@@ -19,28 +16,28 @@
         weekdaysMin : 'нe_пo_вт_ср_че_пе_сa'.split('_'),
         longDateFormat : {
             LT : 'H:mm',
-            LTS : 'LT:ss',
+            LTS : 'H:mm:ss',
             L : 'D.MM.YYYY',
             LL : 'D MMMM YYYY',
-            LLL : 'D MMMM YYYY LT',
-            LLLL : 'dddd, D MMMM YYYY LT'
+            LLL : 'D MMMM YYYY H:mm',
+            LLLL : 'dddd, D MMMM YYYY H:mm'
         },
         calendar : {
             sameDay : '[Денес во] LT',
             nextDay : '[Утре во] LT',
-            nextWeek : 'dddd [во] LT',
+            nextWeek : '[Во] dddd [во] LT',
             lastDay : '[Вчера во] LT',
             lastWeek : function () {
                 switch (this.day()) {
-                case 0:
-                case 3:
-                case 6:
-                    return '[Во изминатата] dddd [во] LT';
-                case 1:
-                case 2:
-                case 4:
-                case 5:
-                    return '[Во изминатиот] dddd [во] LT';
+                    case 0:
+                    case 3:
+                    case 6:
+                        return '[Изминатата] dddd [во] LT';
+                    case 1:
+                    case 2:
+                    case 4:
+                    case 5:
+                        return '[Изминатиот] dddd [во] LT';
                 }
             },
             sameElse : 'L'
@@ -49,6 +46,7 @@
             future : 'после %s',
             past : 'пред %s',
             s : 'неколку секунди',
+            ss : '%d секунди',
             m : 'минута',
             mm : '%d минути',
             h : 'час',
@@ -60,7 +58,7 @@
             y : 'година',
             yy : '%d години'
         },
-        ordinalParse: /\d{1,2}-(ев|ен|ти|ви|ри|ми)/,
+        dayOfMonthOrdinalParse: /\d{1,2}-(ев|ен|ти|ви|ри|ми)/,
         ordinal : function (number) {
             var lastDigit = number % 10,
                 last2Digits = number % 100;
@@ -85,4 +83,7 @@
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
-}));
+
+    return mk;
+
+})));

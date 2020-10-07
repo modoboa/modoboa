@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
 Fixtures factories.
 """
-
-from __future__ import unicode_literals
 
 import factory
 
@@ -20,6 +16,7 @@ class DomainFactory(PermissionFactory):
         model = models.Domain
         django_get_or_create = ("name", )
 
+    name = factory.Sequence(lambda n: "domain{}.test".format(n))
     type = "domain"  # NOQA:A003
     quota = 0
     default_mailbox_quota = 10
@@ -72,6 +69,16 @@ class SenderAddressFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.SenderAddress
+
+
+class AlarmFactory(factory.django.DjangoModelFactory):
+    """Factory for Alarm model."""
+
+    domain = factory.SubFactory(DomainFactory)
+    mailbox = factory.SubFactory(MailboxFactory)
+
+    class Meta:
+        model = models.Alarm
 
 
 def populate_database():

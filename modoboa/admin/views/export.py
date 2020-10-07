@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-
 """Export related views."""
 
-from __future__ import unicode_literals
-
-from rfc6266 import build_header
+import csv
+from io import StringIO
 
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
@@ -12,16 +9,10 @@ from django.contrib.auth.decorators import (
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils import six
 from django.utils.translation import ugettext as _
 
-from ..forms import ExportDomainsForm, ExportIdentitiesForm
+from ..forms import ExportDataForm
 from ..lib import get_domains, get_identities
-
-if six.PY2:
-    from backports import csv
-else:
-    import csv
 
 
 def _export(content, filename):
@@ -34,7 +25,7 @@ def _export(content, filename):
     resp = HttpResponse(content)
     resp["Content-Type"] = "text/csv"
     resp["Content-Length"] = len(content)
-    resp["Content-Disposition"] = build_header(filename)
+    resp["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
     return resp
 
 
@@ -52,9 +43,9 @@ def export_identities(request):
     }
 
     if request.method == "POST":
-        form = ExportIdentitiesForm(request.POST)
+        form = ExportDataForm(request.POST)
         form.is_valid()
-        fp = six.StringIO()
+        fp = StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         identities = get_identities(
             request.user, **request.session["identities_filters"])
@@ -62,9 +53,9 @@ def export_identities(request):
             ident.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()
-        return _export(content, form.cleaned_data["filename"])
+        return _export(content, "modoboa-identities.csv")
 
-    ctx["form"] = ExportIdentitiesForm()
+    ctx["form"] = ExportDataForm()
     return render(request, "common/generic_modal_form.html", ctx)
 
 
@@ -80,16 +71,16 @@ def export_domains(request):
     }
 
     if request.method == "POST":
-        form = ExportDomainsForm(request.POST)
+        form = ExportDataForm(request.POST)
         form.is_valid()
-        fp = six.StringIO()
+        fp = StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         for dom in get_domains(request.user,
                                **request.session["domains_filters"]):
             dom.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()
-        return _export(content, form.cleaned_data["filename"])
+        return _export(content, "modoboa-domains.csv")
 
-    ctx["form"] = ExportDomainsForm()
+    ctx["form"] = ExportDataForm()
     return render(request, "common/generic_modal_form.html", ctx)

@@ -1,26 +1,22 @@
-# -*- coding: utf-8 -*-
-
 """Core models."""
-
-from __future__ import unicode_literals
 
 import re
 from email.header import Header
 
-import jsonfield
-from reversion import revisions as reversion
-
 from django.conf import settings
+from django.db import models
+from django.urls import reverse
+from django.utils.encoding import force_str, smart_bytes, smart_text
+from django.utils.functional import cached_property
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.db import models
-from django.urls import reverse
-from django.utils.encoding import (
-    force_str, python_2_unicode_compatible, smart_bytes, smart_text
-)
-from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _, ugettext_lazy
+
+import jsonfield
+from phonenumber_field.modelfields import PhoneNumberField
+from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import (
@@ -36,7 +32,6 @@ except ImportError:
     ldap_available = False
 
 
-@python_2_unicode_compatible
 class User(AbstractUser):
 
     """Custom User model.
@@ -68,8 +63,8 @@ class User(AbstractUser):
             "Prefered language to display pages."
         )
     )
-    phone_number = models.CharField(
-        ugettext_lazy("Phone number"), max_length=128, blank=True, null=True)
+    phone_number = PhoneNumberField(
+        ugettext_lazy("Phone number"), blank=True, null=True)
     secondary_email = models.EmailField(
         ugettext_lazy("Secondary email"), max_length=254,
         blank=True, null=True,
@@ -119,7 +114,8 @@ class User(AbstractUser):
         :param raw_value: the new password's value
         :param curvalue: the current password (for LDAP authentication)
         """
-        if self.is_local:
+        ldap_sync_enable = param_tools.get_global_parameter("ldap_enable_sync")
+        if self.is_local or ldap_sync_enable:
             self.password = self._crypt_password(raw_value)
         else:
             if not ldap_available:
@@ -159,9 +155,14 @@ class User(AbstractUser):
 
     @property
     def fullname(self):
-        if self.first_name != u"":
-            return u"%s %s" % (self.first_name, self.last_name)
-        return self.username
+        result = self.username
+        if self.first_name != "":
+            result = self.first_name
+        if self.last_name != "":
+            if result != "":
+                result += " "
+            result += self.last_name
+        return result
 
     @property
     def identity(self):
@@ -257,7 +258,7 @@ class User(AbstractUser):
         if role == "SuperAdmins":
             self.is_superuser = True
         else:
-            if self.is_superuser:
+            if self.is_superuser or role == "SimpleUsers":
                 ObjectAccess.objects.filter(user=self).delete()
             self.is_superuser = False
             try:
@@ -405,7 +406,6 @@ def populate_callback(user, group="SimpleUsers"):
         sender="populate_callback", user=user)
 
 
-@python_2_unicode_compatible
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -426,7 +426,7 @@ class Log(models.Model):
     """Simple log in database."""
 
     date_created = models.DateTimeField(auto_now_add=True)
-    message = models.CharField(max_length=255)
+    message = models.TextField()
     level = models.CharField(max_length=15)
     logger = models.CharField(max_length=30)
 
@@ -442,7 +442,23 @@ class LocalConfig(models.Model):
 
     _parameters = jsonfield.JSONField(default={})
 
+    # Dovecot LDAP update
+    need_dovecot_update = models.BooleanField(default=False)
+
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""
         super(LocalConfig, self).__init__(*args, **kwargs)
         self.parameters = param_tools.Manager("global", self._parameters)
+
+
+class ExtensionUpdateHistory(models.Model):
+    """Keeps track of update notifications."""
+
+    extension = models.CharField(max_length=100)
+    version = models.CharField(max_length=30)
+
+    class Meta:
+        unique_together = [("extension", "version")]
+
+    def __str__(self):
+        return "{}: {}".format(self.extension, self.name)

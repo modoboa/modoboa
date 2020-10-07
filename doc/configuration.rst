@@ -14,7 +14,7 @@ are two available levels:
 
 * User level: per user customization. Available at *User > Settings >
   Preferences*
- 
+
 Regardless level, parameters are displayed using tabs, each tab
 corresponding to one application.
 
@@ -297,6 +297,7 @@ like this::
 
     AUTHENTICATION_BACKENDS = (
       'modoboa.lib.authbackends.LDAPBackend',
+      # 'modoboa.lib.authbackends.LDAPSecondaryBackend',  # Useful for a fallback mechanism
       'django.contrib.auth.backends.ModelBackend',
     )
 
@@ -386,7 +387,7 @@ Modoboa should connect to your LDAP server. They are described just below:
 +--------------------+---------------------------------+--------------------+
 
 
-If you need additional parameters, you will find a detailled
+If you need additional parameters, you will find a detailed
 documentation `here <http://packages.python.org/django-auth-ldap/>`_.
 
 Once the authentication is properly configured, the users defined in
@@ -405,7 +406,7 @@ group. In this case, the username is not necessarily an email address.
 Users will also be able to update their LDAP password directly from
 Modoboa.
 
-.. note:: 
+.. note::
 
    Modoboa doesn't provide any synchronization mechanism once a user
    is registered into the database. Any modification done from the
@@ -437,6 +438,61 @@ SMTP server location can be customized using the following settings:
    AUTH_SMTP_SERVER_ADDRESS = 'localhost'
    AUTH_SMTP_SERVER_PORT = 25
    AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
+
+
+.. _ldap_sync:
+
+********************
+LDAP synchronization
+********************
+
+Modoboa can synchronize accounts with an LDAP directory (tested with
+OpenLDAP) but this feature is not enabled by default. To activate it,
+add ``modoboa.ldapsync`` to ``MODOBOA_APPS`` in the
+:file:`settings.py` file::
+
+    MODOBOA_APPS = (
+        'modoboa',
+        'modoboa.core',
+        'modoboa.lib',
+        'modoboa.admin',
+        'modoboa.transport',
+        'modoboa.relaydomains',
+        'modoboa.limits',
+        'modoboa.parameters',
+        'modoboa.dnstools',
+        'modoboa.ldapsync',
+    )
+
+and enable it from the admin panel.
+
+.. warning::
+
+   Make sure to install additional :ref:`requirements <ldap_auth>`
+   otherwise it won't work.
+
+The following parameters are available and must be filled:
+
++--------------------+---------------------------------+--------------------+
+|Name                |Description                      |Default value       |
++====================+=================================+====================+
+|Enable LDAP         |Control LDAP synchronization     |no                  |
+|synchronization     |state                            |                    |
+|                    |                                 |                    |
++--------------------+---------------------------------+--------------------+
+|Bind DN             |The DN of a user with write      |                    |
+|                    |permission to create/update      |                    |
+|                    |accounts                         |                    |
++--------------------+---------------------------------+--------------------+
+|Bind password       |The associated password          |                    |
+|                    |                                 |                    |
+|                    |                                 |                    |
++--------------------+---------------------------------+--------------------+
+|Account DN template |The template used to build       |                    |
+|                    |account DNs (must contain a      |                    |
+|                    |%(user)s placeholder             |                    |
++--------------------+---------------------------------+--------------------+
+
 
 ********************
 Database maintenance

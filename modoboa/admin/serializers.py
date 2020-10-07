@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Admin serializers."""
-
-from __future__ import unicode_literals
 
 from django.conf import settings
 from django.contrib.auth import password_validation
@@ -19,7 +15,7 @@ from modoboa.core import (
 )
 from modoboa.lib import (
     email_utils, exceptions as lib_exceptions, fields as lib_fields,
-    permissions
+    permissions, web_utils
 )
 from modoboa.parameters import tools as param_tools
 
@@ -29,6 +25,21 @@ from . import constants, lib, models
 class DomainSerializer(serializers.ModelSerializer):
     """Base Domain serializer."""
 
+    quota = serializers.CharField(
+        required=False,
+        help_text=ugettext_lazy(
+            "Quota shared between mailboxes. Can be expressed in KB, "
+            "MB (default) or GB. A value of 0 means no quota."
+        )
+    )
+    default_mailbox_quota = serializers.CharField(
+        required=False,
+        help_text=ugettext_lazy(
+            "Default quota in MB applied to mailboxes. A value of 0 means "
+            "no quota."
+        )
+    )
+
     class Meta:
         model = models.Domain
         fields = (
@@ -36,7 +47,7 @@ class DomainSerializer(serializers.ModelSerializer):
             "enable_dkim", "dkim_key_selector", "dkim_key_length",
             "dkim_public_key", "dkim_private_key_path",
             "mailbox_count", "mbalias_count", "domainalias_count",
-            "dns_status"
+            "dns_status", "message_limit"
         )
         read_only_fields = (
             "pk", "dkim_public_key", "dns_status", "allocated_quota_in_percent"
@@ -57,6 +68,14 @@ class DomainSerializer(serializers.ModelSerializer):
                     _("No authorized MX record found for this domain"))
         return value
 
+    def validate_quota(self, value):
+        """Convert quota to MB."""
+        return web_utils.size2integer(value, output_unit="MB")
+
+    def validate_default_mailbox_quota(self, value):
+        """Convert quota to MB."""
+        return web_utils.size2integer(value, output_unit="MB")
+
     def validate(self, data):
         """Check quota values."""
         quota = data.get("quota", 0)
@@ -70,7 +89,14 @@ class DomainSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Set permissions."""
+        params = dict(param_tools.get_global_parameters("admin"))
         domain = models.Domain(**validated_data)
+        condition = (
+            params["default_domain_message_limit"] is not None and
+            "message_limit" not in validated_data
+        )
+        if condition:
+            domain.message_limit = params["default_domain_message_limit"]
         creator = self.context["request"].user
         core_signals.can_create_object.send(
             sender=self.__class__, context=creator,
@@ -118,14 +144,21 @@ class MailboxSerializer(serializers.ModelSerializer):
     """Base mailbox serializer."""
 
     full_address = lib_fields.DRFEmailFieldUTF8()
+    quota = serializers.CharField()
 
     class Meta:
         model = models.Mailbox
-        fields = ("pk", "full_address", "use_domain_quota", "quota", )
+        fields = (
+            "pk", "full_address", "use_domain_quota", "quota", "message_limit"
+        )
 
     def validate_full_address(self, value):
         """Lower case address."""
         return value.lower()
+
+    def validate_quota(self, value):
+        """Convert quota to MB."""
+        return web_utils.size2integer(value, output_unit="MB")
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -304,6 +337,10 @@ class WritableAccountSerializer(AccountSerializer):
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
         mb.set_quota(quota, creator.has_perm("admin.add_domain"))
+        default_msg_limit = param_tools.get_global_parameter(
+            "default_mailbox_message_limit")
+        if default_msg_limit is not None:
+            mb.message_limit = default_msg_limit
         mb.save(creator=creator)
         account.email = full_address
         return mb
@@ -466,3 +503,9 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     auto_account_removal = serializers.BooleanField(default=False)
     auto_create_domain_and_mailbox = serializers.BooleanField(default=True)
     create_alias_on_mbox_rename = serializers.BooleanField(default=False)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    """Serializer by the reset password endpoint."""
+
+    email = lib_fields.DRFEmailFieldUTF8()

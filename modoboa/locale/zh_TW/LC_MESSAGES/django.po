@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # akong <akong@aspa.idv.tw>, 2018
 # freedom lee <a74218@gmail.com>, 2018
@@ -10,14 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-25 09:09+0100\n"
+"POT-Creation-Date: 2020-05-06 13:15+0200\n"
 "PO-Revision-Date: 2018-07-06 08:26+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/language/zh_TW/)\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
+"language/zh_TW/)\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: core/app_settings.py:26
@@ -44,508 +45,729 @@ msgstr "此背景程式已用於驗證"
 msgid "Default password scheme"
 msgstr "預設密碼方案"
 
-#: core/app_settings.py:55
-msgid "md5crypt (weak)"
-msgstr "md5crypt (弱)"
-
 #: core/app_settings.py:56
-msgid "sha256 (weak)"
-msgstr "sha256 (弱)"
-
-#: core/app_settings.py:57
-msgid "md5 (weak)"
-msgstr "md5 (弱)"
-
-#: core/app_settings.py:58
-msgid "crypt (weak)"
-msgstr "crypt (弱)"
-
-#: core/app_settings.py:59
-msgid "plain (weak)"
-msgstr "plain (弱)"
-
-#: core/app_settings.py:61
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "方案已使用於加密信箱密碼"
 
-#: core/app_settings.py:66
+#: core/app_settings.py:60
 msgid "Rounds"
 msgstr "輪"
 
-#: core/app_settings.py:69
+#: core/app_settings.py:63
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr "重複幾輪產生 (只能用於 sha256crypt 和 sha512crypt). 必須介於 1000 到 999999999, 包括."
+msgstr ""
+"重複幾輪產生 (只能用於 sha256crypt 和 sha512crypt). 必須介於 1000 到 "
+"999999999, 包括."
 
-#: core/app_settings.py:76
-msgid "Secret key"
-msgstr "密鑰"
+#: core/app_settings.py:69
+#, fuzzy
+#| msgid "Default password scheme"
+msgid "Update password scheme at login"
+msgstr "預設密碼方案"
 
-#: core/app_settings.py:78
-msgid "Key used to encrypt/decrypt passwords"
-msgstr "金鑰用於加密/解密"
+#: core/app_settings.py:72
+msgid "Update user password at login to use the default password scheme"
+msgstr ""
 
-#: core/app_settings.py:83
+#: core/app_settings.py:77
 msgid "Default password"
 msgstr "預設密碼"
 
-#: core/app_settings.py:86
+#: core/app_settings.py:80
 msgid "Default password for automatically created accounts."
 msgstr "預設密碼是給自動產生帳號用。"
 
-#: core/app_settings.py:90
+#: core/app_settings.py:84
 msgid "Random password length"
 msgstr "隨機密碼長度"
 
-#: core/app_settings.py:94
+#: core/app_settings.py:88
 msgid "Length of randomly generated passwords."
 msgstr "隨機產生密碼的長度。"
 
-#: core/app_settings.py:98
+#: core/app_settings.py:92
+#, fuzzy
+#| msgid "Default password scheme"
+msgid "Update password service URL"
+msgstr "預設密碼方案"
+
+#: core/app_settings.py:96
+msgid ""
+"The URL of an external page where users will be able to update their "
+"password. It applies only to non local users, ie. those automatically "
+"created after a successful external authentication (LDAP, SMTP)."
+msgstr ""
+
+#: core/app_settings.py:104
+msgid "Password recovery announcement"
+msgstr ""
+
+#: core/app_settings.py:109
+msgid "A temporary message that will be displayed on the reset password page."
+msgstr ""
+
+#: core/app_settings.py:115
+msgid "Enable password recovery by SMS"
+msgstr ""
+
+#: core/app_settings.py:118
+msgid "Enable password recovery by SMS for users who filled a phone number."
+msgstr ""
+
+#: core/app_settings.py:124
+msgid "SMS provider"
+msgstr ""
+
+#: core/app_settings.py:127
+msgid "Choose a provider to send password recovery SMS"
+msgstr ""
+
+#: core/app_settings.py:133
 msgid "LDAP settings"
 msgstr "LDAP 設定"
 
-#: core/app_settings.py:101
+#: core/app_settings.py:136
 msgid "Server address"
 msgstr "伺服器地址"
 
-#: core/app_settings.py:104
+#: core/app_settings.py:139
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "LDAP 伺服器的 IP 或 DNS 名稱"
 
-#: core/app_settings.py:109
+#: core/app_settings.py:143
 msgid "Server port"
 msgstr "伺服器連接埠"
 
-#: core/app_settings.py:111
+#: core/app_settings.py:145
 msgid "The TCP port number used by the LDAP server"
 msgstr "LDAP 伺服器所使用的 TCP 連接埠"
 
-#: core/app_settings.py:116
+#: core/app_settings.py:149
+msgid "Enable secondary server (fallback)"
+msgstr ""
+
+#: core/app_settings.py:152
+msgid ""
+"Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr ""
+
+#: core/app_settings.py:158
+#, fuzzy
+#| msgid "Server address"
+msgid "Secondary server address"
+msgstr "伺服器地址"
+
+#: core/app_settings.py:161
+#, fuzzy
+#| msgid "The IP address or the DNS name of the LDAP server"
+msgid "The IP address or the DNS name of the seondary LDAP server"
+msgstr "LDAP 伺服器的 IP 或 DNS 名稱"
+
+#: core/app_settings.py:165
+#, fuzzy
+#| msgid "Server port"
+msgid "Secondary server port"
+msgstr "伺服器連接埠"
+
+#: core/app_settings.py:168
+#, fuzzy
+#| msgid "The TCP port number used by the LDAP server"
+msgid "The TCP port number used by the LDAP secondary server"
+msgstr "LDAP 伺服器所使用的 TCP 連接埠"
+
+#: core/app_settings.py:172
 msgid "Use a secured connection"
 msgstr "使用安全的連接"
 
-#: core/app_settings.py:120
+#: core/app_settings.py:176
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgstr "使用 SSL/STARTTLS 連線到 LDAP 伺服器"
 
-#: core/app_settings.py:124
+#: core/app_settings.py:180
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: core/app_settings.py:183
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr "判斷 LDAP 伺服器是否是 Active Directory 伺服器"
+
+#: core/app_settings.py:187
+msgid "Administrator groups"
+msgstr "管理者群組"
+
+#: core/app_settings.py:190
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr "這些 LDAP 群組的成員將會建立為網域管理者。使用 ';' 字元來分開群組"
+
+#: core/app_settings.py:197
+msgid "Group type"
+msgstr "群組類型"
+
+#: core/app_settings.py:201
+msgid "The LDAP group type to use with your directory."
+msgstr "此 LDAP 群組類型會使用您的目錄"
+
+#: core/app_settings.py:206
+msgid "Groups search base"
+msgstr "群組搜尋基準"
+
+#: core/app_settings.py:209
+msgid "The distinguished name of the search base used to find groups"
+msgstr "搜尋基準使用醒目的名稱來找到群組"
+
+#: core/app_settings.py:215
+msgid "Password attribute"
+msgstr "密碼屬性"
+
+#: core/app_settings.py:217
+msgid "The attribute used to store user passwords"
+msgstr "此屬性使用在儲存使用者密碼"
+
+#: core/app_settings.py:222
+#, fuzzy
+#| msgid "Authentication method"
+msgid "LDAP authentication settings"
+msgstr "身份驗證方法"
+
+#: core/app_settings.py:225
 msgid "Authentication method"
 msgstr "身份驗證方法"
 
-#: core/app_settings.py:125
+#: core/app_settings.py:226
 msgid "Search and bind"
 msgstr "搜尋和 bind"
 
-#: core/app_settings.py:126
+#: core/app_settings.py:227
 msgid "Direct bind"
 msgstr "直接 bind"
 
-#: core/app_settings.py:128
+#: core/app_settings.py:229
 msgid "Choose the authentication method to use"
 msgstr "選擇驗證模組來使用"
 
-#: core/app_settings.py:133
+#: core/app_settings.py:233 core/app_settings.py:287
 msgid "Bind DN"
 msgstr "Bind DN"
 
-#: core/app_settings.py:136
+#: core/app_settings.py:236 core/app_settings.py:290
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
 msgstr "當對應到 LDAP 伺服器請使用醒目的名稱。保留空白為匿名 bind"
 
-#: core/app_settings.py:144
+#: core/app_settings.py:243 core/app_settings.py:297
 msgid "Bind password"
 msgstr "Bind 密碼"
 
-#: core/app_settings.py:147
+#: core/app_settings.py:246 core/app_settings.py:300
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr "此密碼使用於當綁定到 LDAP 伺服器 (有 'Bind DN')"
 
-#: core/app_settings.py:156
+#: core/app_settings.py:254 core/app_settings.py:346
 msgid "Users search base"
 msgstr "使用者搜尋基準"
 
-#: core/app_settings.py:159
+#: core/app_settings.py:257 core/app_settings.py:349
 msgid "The distinguished name of the search base used to find users"
 msgstr "搜尋基準使用醒目的名稱來找到使用者"
 
-#: core/app_settings.py:166
+#: core/app_settings.py:263 core/app_settings.py:355
 msgid "Search filter"
 msgstr "搜尋過濾器"
 
-#: core/app_settings.py:169
+#: core/app_settings.py:266 core/app_settings.py:358
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr "過濾字串的選 (例如 '(objectClass=person)'). 要能正常使用，這必須括在括號內。"
+msgstr ""
+"過濾字串的選 (例如 '(objectClass=person)'). 要能正常使用，這必須括在括號內。"
 
-#: core/app_settings.py:177
+#: core/app_settings.py:273
 msgid "User DN template"
 msgstr "使用者 DN 範本"
 
-#: core/app_settings.py:180
+#: core/app_settings.py:276
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr "此範本已使用結構化使用者的 DN. 他應該包含一個佔位符 (例如 %(user)s)"
 
-#: core/app_settings.py:188
-msgid "Password attribute"
-msgstr "密碼屬性"
-
-#: core/app_settings.py:190
-msgid "The attribute used to store user passwords"
-msgstr "此屬性使用在儲存使用者密碼"
-
-#: core/app_settings.py:195
-msgid "Active Directory"
-msgstr "Active Directory"
-
-#: core/app_settings.py:198
-msgid "Tell if the LDAP server is an Active Directory one"
-msgstr "判斷 LDAP 伺服器是否是 Active Directory 伺服器"
-
-#: core/app_settings.py:202
-msgid "Administrator groups"
-msgstr "管理者群組"
-
-#: core/app_settings.py:205
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators."
-" Use ';' characters to separate groups."
-msgstr "這些 LDAP 群組的成員將會建立為網域管理者。使用 ';' 字元來分開群組"
-
-#: core/app_settings.py:212
-msgid "Group type"
-msgstr "群組類型"
-
-#: core/app_settings.py:216
-msgid "The LDAP group type to use with your directory."
-msgstr "此 LDAP 群組類型會使用您的目錄"
-
-#: core/app_settings.py:221
-msgid "Groups search base"
-msgstr "群組搜尋基準"
-
-#: core/app_settings.py:224
-msgid "The distinguished name of the search base used to find groups"
-msgstr "搜尋基準使用醒目的名稱來找到群組"
-
-#: core/app_settings.py:229 core/templates/core/dashboard.html:5
-msgid "Dashboard"
-msgstr "儀表板"
-
-#: core/app_settings.py:232
-msgid "Custom RSS feed"
-msgstr "自訂 RSS 來源"
-
-#: core/app_settings.py:235
-msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr "顯示自訂的 RSS 來源給經銷商和網域管理者"
-
-#: core/app_settings.py:240
-msgid "Hide features widget"
-msgstr "隱藏功能物件"
-
-#: core/app_settings.py:243
-msgid "Hide features widget for resellers and domain administrators"
-msgstr "隱藏功能物件給經銷商和網域管理者"
-
-#: core/app_settings.py:247
-msgid "Notifications"
-msgstr "通知"
-
-#: core/app_settings.py:250
-msgid "Sender address"
-msgstr "伺服器位址"
-
-#: core/app_settings.py:253
-msgid "Email address used to send notifications."
-msgstr "郵件地址用於寄送通知。"
-
-#: core/app_settings.py:257
-msgid "Public API"
-msgstr "公用 API"
-
-#: core/app_settings.py:260
-msgid "Enable communication"
-msgstr "啟用通訊"
-
-#: core/app_settings.py:263
-msgid "Enable communication with Modoboa public API"
-msgstr "開啟 Modoboa 公用 API 的通訊"
-
-#: core/app_settings.py:267
-msgid "Check new versions"
-msgstr "檢查新的版本"
-
-#: core/app_settings.py:270
-msgid "Automatically checks if a newer version is available"
-msgstr "假如有新的版本就自動檢查"
-
-#: core/app_settings.py:274
-msgid "Send statistics"
-msgstr "寄送狀態"
-
-#: core/app_settings.py:277
-msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr "寄送狀態到 Modoboa 公用 API (計數器及已使用的外掛)"
-
-#: core/app_settings.py:281
-msgid "Miscellaneous"
-msgstr "雜項"
-
 #: core/app_settings.py:284
-msgid "Inactive account threshold"
-msgstr "未啟用帳號上限"
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "LDAP synchronization settings"
+msgstr "LDAP 設定"
 
-#: core/app_settings.py:287
-msgid ""
-"An account with a last login date greater than this threshold (in days) will"
-" be considered as inactive"
-msgstr "這個帳號最後一次登錄日期超過這個上限 (在幾天) 將考慮停用"
-
-#: core/app_settings.py:294
-msgid "Top notifications check interval"
-msgstr "檢查提醒間隔"
-
-#: core/app_settings.py:297
-msgid "Interval between two top notification checks (in seconds)"
-msgstr "兩次檢查提醒間隔 (在幾秒)"
-
-#: core/app_settings.py:303
-msgid "Maximum log record age"
-msgstr "最大日誌紀錄時間"
-
-#: core/app_settings.py:305
-msgid "The maximum age in days of a log record"
+#: core/app_settings.py:308
+msgid "Enable export to LDAP"
 msgstr ""
 
-#: core/app_settings.py:310
-msgid "Items per page"
-msgstr "每頁的條目數量"
-
-#: core/app_settings.py:312
-msgid "Number of displayed items per page"
+#: core/app_settings.py:311
+msgid ""
+"Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 
 #: core/app_settings.py:317
-msgid "Default top redirection"
+msgid "Delete remote LDAP account when local account is deleted"
 msgstr ""
 
 #: core/app_settings.py:321
+msgid ""
+"Delete remote LDAP account when local account is deleted, otherwise it will "
+"be disabled."
+msgstr ""
+
+#: core/app_settings.py:327
+#, fuzzy
+#| msgid "User DN template"
+msgid "Account DN template"
+msgstr "使用者 DN 範本"
+
+#: core/app_settings.py:330
+#, fuzzy, python-format
+#| msgid ""
+#| "The template used to construct a user's DN. It should contain one "
+#| "placeholder (ie. %(user)s)"
+msgid ""
+"The template used to construct an account's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr "此範本已使用結構化使用者的 DN. 他應該包含一個佔位符 (例如 %(user)s)"
+
+#: core/app_settings.py:337
+msgid "Enable import from LDAP"
+msgstr ""
+
+#: core/app_settings.py:340
+msgid "Enable account synchronization from LDAP directory to local database"
+msgstr ""
+
+#: core/app_settings.py:365
+#, fuzzy
+#| msgid "Password attribute"
+msgid "Username attribute"
+msgstr "密碼屬性"
+
+#: core/app_settings.py:368
+msgid "The name of the LDAP attribute where the username can be found."
+msgstr ""
+
+#: core/app_settings.py:373
+#, fuzzy
+#| msgid "Enable communication"
+msgid "Enable Dovecot LDAP sync"
+msgstr "啟用通訊"
+
+#: core/app_settings.py:376
+msgid "LDAP authentication settings will be applied to Dovecot configuration."
+msgstr ""
+
+#: core/app_settings.py:382
+msgid "Dovecot LDAP config file"
+msgstr ""
+
+#: core/app_settings.py:386
+msgid ""
+"Location of the configuration file which contains Dovecot LDAP settings."
+msgstr ""
+
+#: core/app_settings.py:391 core/templates/core/dashboard.html:5
+msgid "Dashboard"
+msgstr "儀表板"
+
+#: core/app_settings.py:394
+msgid "Custom RSS feed"
+msgstr "自訂 RSS 來源"
+
+#: core/app_settings.py:397
+msgid "Display custom RSS feed to resellers and domain administrators"
+msgstr "顯示自訂的 RSS 來源給經銷商和網域管理者"
+
+#: core/app_settings.py:402
+msgid "Hide features widget"
+msgstr "隱藏功能物件"
+
+#: core/app_settings.py:405
+msgid "Hide features widget for resellers and domain administrators"
+msgstr "隱藏功能物件給經銷商和網域管理者"
+
+#: core/app_settings.py:409
+msgid "Notifications"
+msgstr "通知"
+
+#: core/app_settings.py:412
+msgid "Sender address"
+msgstr "伺服器位址"
+
+#: core/app_settings.py:415
+msgid "Email address used to send notifications."
+msgstr "郵件地址用於寄送通知。"
+
+#: core/app_settings.py:419
+msgid "Public API"
+msgstr "公用 API"
+
+#: core/app_settings.py:422
+msgid "Enable communication"
+msgstr "啟用通訊"
+
+#: core/app_settings.py:425
+msgid "Enable communication with Modoboa public API"
+msgstr "開啟 Modoboa 公用 API 的通訊"
+
+#: core/app_settings.py:429
+msgid "Check new versions"
+msgstr "檢查新的版本"
+
+#: core/app_settings.py:432
+msgid "Automatically checks if a newer version is available"
+msgstr "假如有新的版本就自動檢查"
+
+#: core/app_settings.py:436
+msgid "Send an email when new versions are found"
+msgstr ""
+
+#: core/app_settings.py:439
+msgid "Send an email to notify admins about new versions"
+msgstr ""
+
+#: core/app_settings.py:443
+msgid "Recipient"
+msgstr ""
+
+#: core/app_settings.py:446
+msgid "Recipient of new versions notification emails."
+msgstr ""
+
+#: core/app_settings.py:451
+msgid "Send statistics"
+msgstr "寄送狀態"
+
+#: core/app_settings.py:454
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr "寄送狀態到 Modoboa 公用 API (計數器及已使用的外掛)"
+
+#: core/app_settings.py:458
+msgid "Miscellaneous"
+msgstr "雜項"
+
+#: core/app_settings.py:461
+msgid "Inactive account threshold"
+msgstr "未啟用帳號上限"
+
+#: core/app_settings.py:464
+msgid ""
+"An account with a last login date greater than this threshold (in days) will "
+"be considered as inactive"
+msgstr "這個帳號最後一次登錄日期超過這個上限 (在幾天) 將考慮停用"
+
+#: core/app_settings.py:470
+msgid "Top notifications check interval"
+msgstr "檢查提醒間隔"
+
+#: core/app_settings.py:473
+msgid "Interval between two top notification checks (in seconds)"
+msgstr "兩次檢查提醒間隔 (在幾秒)"
+
+#: core/app_settings.py:478
+msgid "Maximum log record age"
+msgstr "最大日誌紀錄時間"
+
+#: core/app_settings.py:480
+msgid "The maximum age in days of a log record"
+msgstr ""
+
+#: core/app_settings.py:484
+msgid "Items per page"
+msgstr "每頁的條目數量"
+
+#: core/app_settings.py:486
+msgid "Number of displayed items per page"
+msgstr ""
+
+#: core/app_settings.py:490
+msgid "Default top redirection"
+msgstr ""
+
+#: core/app_settings.py:494
 msgid "The default redirection used when no application is specified"
 msgstr ""
 
-#: core/app_settings.py:354
-msgid "Key must be either 16, 24, or 32 bytes long"
-msgstr ""
-
-#: core/app_settings.py:363
+#: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
 msgid "Invalid syntax"
 msgstr ""
 
-#: core/app_settings.py:369
+#: core/app_settings.py:570
 msgid "Invalid rounds number"
 msgstr ""
 
-#: core/app_settings.py:396
+#: core/app_settings.py:595 core/app_settings.py:597 core/app_settings.py:608
 msgid "This field is required"
 msgstr ""
 
-#: core/apps.py:20
+#: core/apps.py:18
 msgid "General"
 msgstr ""
 
-#: core/checks/settings_checks.py:11
+#: core/checks/settings_checks.py:6
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
 msgstr ""
 
-#: core/checks/settings_checks.py:14
+#: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr ""
 
-#: core/constants.py:9
+#: core/constants.py:6
 msgid "Simple user"
 msgstr "簡易用戶"
 
-#: core/constants.py:10
+#: core/constants.py:7
 msgid "Domain administrator"
 msgstr "網域管理員"
 
-#: core/constants.py:11
+#: core/constants.py:8
 msgid "Reseller"
 msgstr "經銷商"
 
-#: core/constants.py:12
+#: core/constants.py:9
 msgid "Super administrator"
 msgstr "超級管理員"
 
-#: core/constants.py:51 lib/form_utils.py:394
+#: core/constants.py:52 lib/form_utils.py:389
 msgid "No"
 msgstr "否"
 
-#: core/forms.py:24
+#: core/constants.py:102
+msgid "Choose a provider"
+msgstr ""
+
+#: core/constants.py:107
+msgid "Dummy"
+msgstr ""
+
+#: core/forms.py:21
 msgid "Username"
 msgstr "使用者名稱"
 
-#: core/forms.py:28
+#: core/forms.py:25
 msgid "Password"
 msgstr "密碼"
 
-#: core/forms.py:41
+#: core/forms.py:38
 msgid "Old password"
 msgstr "舊密碼"
 
-#: core/forms.py:45
+#: core/forms.py:42
 msgid "New password"
 msgstr "新密碼"
 
-#: core/forms.py:49
+#: core/forms.py:46
 msgid "Confirmation"
 msgstr "確認"
 
-#: core/forms.py:77
+#: core/forms.py:74
 msgid "Old password mismatchs"
 msgstr "舊密碼不相符"
 
-#: core/forms.py:86
+#: core/forms.py:83
 msgid "Passwords mismatch"
 msgstr "密碼不相符"
 
-#: core/forms.py:106
+#: core/forms.py:103
 msgid "Enable API access"
 msgstr "啟用 API 存取"
 
-#: core/handlers.py:43
+#: core/forms.py:137
+#, fuzzy
+#| msgid "Notifications"
+msgid "Verification code"
+msgstr "通知"
+
+#: core/forms.py:148
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Invalid code"
+msgstr "無效的線"
+
+#: core/handlers.py:36
 msgid "added"
 msgstr "已增加"
 
-#: core/handlers.py:46
+#: core/handlers.py:39
 msgid "modified"
 msgstr "已修改"
 
-#: core/handlers.py:48
+#: core/handlers.py:41
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr ""
 
-#: core/handlers.py:70
+#: core/handlers.py:63
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr ""
 
-#: core/handlers.py:72
+#: core/handlers.py:65
 msgid "deleted"
 msgstr "已移除"
 
-#: core/handlers.py:76
+#: core/handlers.py:69
 msgid "user {}"
 msgstr "使用者 {}"
 
-#: core/handlers.py:78
+#: core/handlers.py:71
 msgid "management command"
 msgstr "管理指令"
 
-#: core/handlers.py:102
+#: core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "您不可以刪除您擁有的帳號"
 
-#: core/handlers.py:138
+#: core/handlers.py:131
 msgid "One or more updates are available"
 msgstr "一個或多個可用的更新"
 
-#: core/models.py:58
+#: core/management/commands/communicate_with_public_api.py:44
+#, fuzzy
+#| msgid "One or more updates are available"
+msgid "[modoboa] Update(s) available"
+msgstr "一個或多個可用的更新"
+
+#: core/models.py:55
 msgid "Allow mailboxes access"
 msgstr "允許信箱存取"
 
-#: core/models.py:60
+#: core/models.py:57
 msgid "Allow this administrator to access user mailboxes"
 msgstr "允許這個管理者來存取使用者信箱"
 
-#: core/models.py:63
+#: core/models.py:60
 msgid "password"
 msgstr "密碼"
 
-#: core/models.py:66
+#: core/models.py:63
 msgid "language"
 msgstr "語言"
 
-#: core/models.py:69
+#: core/models.py:66
 msgid "Prefered language to display pages."
 msgstr "顯示頁面的預設語言"
 
-#: core/models.py:73
+#: core/models.py:70
 msgid "Phone number"
 msgstr "電話號碼"
 
-#: core/models.py:75
+#: core/models.py:72
 msgid "Secondary email"
 msgstr "次要電子郵件"
 
-#: core/models.py:78
+#: core/models.py:75
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "替代的電子郵件，可以使用在需要回復的時候。"
 
-#: core/models.py:128
+#: core/models.py:126
 msgid "Failed to update password: LDAP module not installed"
 msgstr "更新密碼失敗: LDAP 模組未安裝"
 
-#: core/models.py:157
+#: core/models.py:155
 msgid "account"
 msgstr "帳號"
 
-#: core/models.py:279
+#: core/models.py:282
 msgid "Unknown"
 msgstr "未知"
 
-#: core/models.py:313
+#: core/models.py:316
 msgid "Invalid line"
 msgstr "無效的線"
 
-#: core/models.py:321
+#: core/models.py:324
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 
-#: core/models.py:336
+#: core/models.py:339
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 
-#: core/models.py:341
+#: core/models.py:344
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
 
-#: core/password_validation.py:26
+#: core/password_validation.py:24
 msgid "Password must contain at least {} digit."
 msgid_plural "Password must contain at least {} digits."
 msgstr[0] ""
 
-#: core/password_validation.py:36
+#: core/password_validation.py:34
 msgid "Password must contain at least {} lowercase letter."
 msgid_plural "Password must contain at least {} lowercase letters."
 msgstr[0] ""
 
-#: core/password_validation.py:47
+#: core/password_validation.py:45
 msgid "Password must contain at least {} uppercase letter."
 msgid_plural "Password must contain at least {} uppercase letters."
 msgstr[0] ""
 
-#: core/password_validation.py:59
+#: core/password_validation.py:57
 msgid "Password must contain at least {} special character."
 msgid_plural "Password must contain at least {} special characters."
 msgstr[0] ""
 
-#: core/password_validation.py:67
+#: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
+msgstr ""
+
+#: core/sms_backends/ovh.py:19
+msgid "API endpoint"
+msgstr ""
+
+#: core/sms_backends/ovh.py:22
+msgid "OVH Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:23
+msgid "OVH US"
+msgstr ""
+
+#: core/sms_backends/ovh.py:24
+msgid "OVH North-America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:25
+msgid "So you Start Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:26
+msgid "So you Start North America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:27
+msgid "Kimsufi Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:28
+msgid "Kimsufi North America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:35
+msgid "Application key"
+msgstr ""
+
+#: core/sms_backends/ovh.py:42
+msgid "Application secret"
+msgstr ""
+
+#: core/sms_backends/ovh.py:50
+msgid "Consumer key"
 msgstr ""
 
 #: core/templates/core/_current_features.html:6
@@ -585,8 +807,8 @@ msgstr ""
 #: core/templates/core/api_access.html:7
 #, python-format
 msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
+"A documentation of the API is available <strong><a href=\"%(url)s\" target="
+"\"_blank\">here</a></strong>."
 msgstr ""
 
 #: core/templates/core/api_access.html:14
@@ -594,7 +816,7 @@ msgid "API access token"
 msgstr ""
 
 #: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:10 lib/form_utils.py:359
+#: core/templates/core/user_profile.html:19 lib/form_utils.py:354
 msgid "Update"
 msgstr ""
 
@@ -603,7 +825,7 @@ msgstr ""
 msgid "Hello %(user)s."
 msgstr ""
 
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:64
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:62
 msgid "Information"
 msgstr ""
 
@@ -652,7 +874,7 @@ msgstr ""
 msgid "Last login"
 msgstr ""
 
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:68
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:66
 msgid "Logs"
 msgstr "記錄"
 
@@ -660,7 +882,7 @@ msgstr "記錄"
 msgid "Previously on Modoboa..."
 msgstr ""
 
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:109
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:106
 msgid "Date"
 msgstr "日期"
 
@@ -676,7 +898,18 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:73
+#: core/templates/core/notifications/update_available.html:3
+#, fuzzy
+#| msgid "One or more updates are available"
+msgid ""
+"\n"
+"  The following update is available:\n"
+msgid_plural ""
+"\n"
+"  The following updates are available:\n"
+msgstr[0] "一個或多個可用的更新"
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
 msgid "Parameters"
 msgstr "參數"
 
@@ -693,12 +926,12 @@ msgstr "儲存"
 msgid "Modoboa settings"
 msgstr "Modoboa 設定"
 
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:92
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:90
 msgid "Settings"
 msgstr "設定"
 
 #: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:122
+#: core/templatetags/core_tags.py:120
 msgid "Preferences"
 msgstr "偏好選項"
 
@@ -710,7 +943,7 @@ msgstr ""
 msgid "No preferences available."
 msgstr "沒有可用的狀態"
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:118
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:116
 msgid "Profile"
 msgstr "檔案"
 
@@ -718,99 +951,124 @@ msgstr "檔案"
 msgid "Update your personal information"
 msgstr "更新你的個人信息"
 
-#: core/templatetags/core_tags.py:36
+#: core/templates/core/user_profile.html:13
+#, fuzzy
+#| msgid "Failed to update password: {}"
+msgid "Click here to update your password"
+msgstr "更新密碼失敗: {}"
+
+#: core/templatetags/core_tags.py:34
 msgid "Modoboa"
 msgstr "Modoboa"
 
-#: core/templatetags/core_tags.py:104
+#: core/templatetags/core_tags.py:102
 msgid "Logout"
 msgstr "登出"
 
-#: core/templatetags/core_tags.py:129
+#: core/templatetags/core_tags.py:127
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:35
+#: core/utils.py:32
 msgid "The core part of Modoboa"
 msgstr "Modoboa 的核心部分"
 
-#: core/views/admin.py:48
+#: core/views/admin.py:43
 msgid "Parameters saved"
 msgstr "參數已儲存"
 
-#: core/views/auth.py:45
+#: core/views/auth.py:59
+#, python-format
+msgid "Password scheme mismatch. Updating %s password"
+msgstr ""
+
+#: core/views/auth.py:66
+#, python-format
+msgid "Password hash parameter missmatch. Updating %s password"
+msgstr ""
+
+#: core/views/auth.py:82
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr ""
 
-#: core/views/auth.py:53
+#: core/views/auth.py:90
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 
-#: core/views/auth.py:88
+#: core/views/auth.py:125
 msgid "User '{}' successfully logged out"
 msgstr ""
 
-#: core/views/user.py:51
+#: core/views/auth.py:170 core/views/auth.py:225
+msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr ""
+
+#: core/views/user.py:53
 msgid "Profile updated"
 msgstr "個人設定已更新"
 
-#: core/views/user.py:77
+#: core/views/user.py:81
 msgid "Preferences saved"
 msgstr "參數已儲存"
 
-#: core/views/user.py:99
+#: core/views/user.py:103
 msgid "Access updated"
 msgstr "存取已更新"
 
-#: lib/db_utils.py:27
+#: lib/db_utils.py:23
 #, python-format
 msgid "Connection to database %s not configured"
 msgstr "連線到資料庫 %s 未設置"
 
-#: lib/exceptions.py:70
+#: lib/email_utils.py:141 lib/email_utils.py:360
+msgid "unable to determine encoding of string"
+msgstr ""
+
+#: lib/exceptions.py:67
 #, python-format
 msgid "Permission denied: %s"
 msgstr "權限不足: %s"
 
-#: lib/exceptions.py:71
+#: lib/exceptions.py:68
 msgid "Permission denied"
 msgstr "權限不足"
 
-#: lib/fields.py:17 lib/validators.py:16
+#: lib/fields.py:15 lib/validators.py:14
 msgid "Enter a valid domain name"
 msgstr "輸入有效的網域名稱"
 
-#: lib/fields.py:46 lib/fields.py:60
+#: lib/fields.py:44 lib/fields.py:58
 msgid "Enter a valid email address."
 msgstr "輸入有效的電子郵件"
 
-#: lib/form_utils.py:82 templates/registration/password_reset_confirm.html:12
-#: templates/registration/password_reset_form.html:11
+#: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_confirm_code.html:25
+#: templates/registration/password_reset_form.html:29
 msgid "Submit"
 msgstr "執行"
 
-#: lib/form_utils.py:115 lib/form_utils.py:118
+#: lib/form_utils.py:110 lib/form_utils.py:113
 msgid "Invalid request"
 msgstr ""
 
-#: lib/form_utils.py:393
+#: lib/form_utils.py:388
 msgid "Yes"
 msgstr "是"
 
-#: lib/ldap_utils.py:133
+#: lib/ldap_utils.py:129
 msgid "Failed to update password: {}"
 msgstr "更新密碼失敗: {}"
 
-#: lib/templatetags/lib_tags.py:107
+#: lib/templatetags/lib_tags.py:104
 msgid "From"
 msgstr "寄件人"
 
-#: lib/templatetags/lib_tags.py:108
+#: lib/templatetags/lib_tags.py:105
 msgid "To"
 msgstr "收件人"
 
-#: lib/templatetags/lib_tags.py:110 templates/common/email_searchbar.html:17
+#: lib/templatetags/lib_tags.py:107 templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "主題"
 
@@ -847,9 +1105,8 @@ msgstr "錯誤："
 msgid "Help:"
 msgstr "幫助："
 
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "關閉"
 
@@ -874,7 +1131,7 @@ msgid "Log in"
 msgstr "登入"
 
 #: templates/registration/login.html:24
-#: templates/registration/password_reset_form.html:6
+#: templates/registration/password_reset_form.html:17
 msgid "Forgot password?"
 msgstr "忘記密碼?"
 
@@ -893,6 +1150,14 @@ msgstr ""
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
+msgstr ""
+
+#: templates/registration/password_reset_confirm_code.html:20
+msgid "Enter the code you've just received by SMS"
+msgstr ""
+
+#: templates/registration/password_reset_confirm_code.html:27
+msgid "Resend code"
 msgstr ""
 
 #: templates/registration/password_reset_done.html:7
@@ -920,6 +1185,31 @@ msgstr ""
 msgid "Sincerely, The Modoboa Team."
 msgstr ""
 
+#: templates/registration/password_reset_form.html:24
+msgid "Please fill-in your primary email address"
+msgstr ""
+
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
 msgstr "Modoboa 密碼重設"
+
+#~ msgid "md5crypt (weak)"
+#~ msgstr "md5crypt (弱)"
+
+#~ msgid "sha256 (weak)"
+#~ msgstr "sha256 (弱)"
+
+#~ msgid "md5 (weak)"
+#~ msgstr "md5 (弱)"
+
+#~ msgid "crypt (weak)"
+#~ msgstr "crypt (弱)"
+
+#~ msgid "plain (weak)"
+#~ msgstr "plain (弱)"
+
+#~ msgid "Secret key"
+#~ msgstr "密鑰"
+
+#~ msgid "Key used to encrypt/decrypt passwords"
+#~ msgstr "金鑰用於加密/解密"

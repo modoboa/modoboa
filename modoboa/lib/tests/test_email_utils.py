@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Tests for email_utils."""
-
-from __future__ import unicode_literals
 
 import os
 

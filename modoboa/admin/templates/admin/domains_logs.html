@@ -1,0 +1,9 @@
+{% for log in logs %}
+  <tr>
+    <td>{{ log.queue_id }}</td>
+    <td>{{ log.date|date:"SHORT_DATETIME_FORMAT" }}</td>
+    <td><span title="{{ log.sender }}">{{ log.sender|truncatechars:30 }}</span></td>
+    <td>{{ log.rcpt }}</td>
+    <td>{{ log.status }}</td>
+  </tr>
+{% endfor %}

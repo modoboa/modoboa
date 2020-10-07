@@ -5,23 +5,35 @@ Useful tips
 You would like to work on Modoboa but you don't know where to start?
 You're at the right place! Browse this page to learn useful tips.
 
+Docker
+======
+
+A docker image is available for developers. To use it, you must
+install `docker <https://docs.docker.com/install/>`_ and
+`docker-compose <https://docs.docker.com/compose/install/>`_ first.
+
+Then, just run the following command::
+
+  $ docker-compose up
+
+It will start the docker environment and make a Modoboa instance
+available at ``http://localhost:8000``.
+
+If you don't want to use docker or need a more complex development
+setup, go to the next section.
+
 .. _venv_for_dev:
 
 Prepare a virtual environment
 =============================
 
 A `virtual environment
-<http://virtualenv.readthedocs.org/en/latest/>`_ is a good way to
+<https://docs.python.org/fr/3/library/venv.html>`_ is a good way to
 setup a development environment on your machine.
-
-.. note::
-
-   ``virtualenv`` is available on all major distributions, just
-   install it using your favorite packages manager.
 
 To do so, run the following commands::
 
-  $ virtualenv <path>
+  $ python3 -m venv <path>
   $ source <path>/bin/activate
   $ git clone https://github.com/modoboa/modoboa.git
   $ cd modoboa
@@ -102,7 +114,7 @@ If you need to modify the documenation and want to see the result, you
 can build it as follows:
 
 .. sourcecode:: bash
-     
+
    > tox -e doc
    > firefox .tox/doc/tmp/html/index.html
 

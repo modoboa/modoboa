@@ -1,0 +1,11 @@
+{% load i18n %}
+
+{% blocktrans count counter=updates|length %}
+  The following update is available:
+{% plural %}
+  The following updates are available:
+{% endblocktrans %}
+
+{% for extension, version in updates.items %}
+  {{ extension }}: {{ version }}
+{% endfor %}

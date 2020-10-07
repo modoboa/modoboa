@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Forms related to accounts management."""
-
-from __future__ import unicode_literals
 
 from collections import OrderedDict
 from functools import reduce
@@ -23,7 +19,7 @@ from modoboa.lib.form_utils import (
 )
 from modoboa.lib.permissions import get_account_roles
 from modoboa.lib.validators import validate_utf8_email
-from modoboa.lib.web_utils import render_to_json_response
+from modoboa.lib.web_utils import render_to_json_response, size2integer
 from modoboa.parameters import tools as param_tools
 from .. import lib, models, signals
 
@@ -229,16 +225,26 @@ class AccountFormMail(forms.Form, DynamicForm):
         required=False,
         initial=False
     )
-    quota = forms.IntegerField(
+    quota = forms.CharField(
         label=ugettext_lazy("Quota"),
         required=False,
-        help_text=_("Quota in MB for this mailbox. Define a custom value or "
-                    "use domain's default one. Leave empty to define an "
-                    "unlimited value (not allowed for domain "
-                    "administrators)."),
+        help_text=_(
+            "Quota for this mailbox, can be expressed in KB, MB (default) or "
+            "GB. Define a custom value or "
+            "use domain's default one. Leave empty to define an "
+            "unlimited value (not allowed for domain "
+            "administrators)."
+        ),
         widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
     quota_act = forms.BooleanField(required=False)
+    message_limit = forms.IntegerField(
+        label=ugettext_lazy("Message sending limit"),
+        required=False,
+        min_value=0,
+        help_text=ugettext_lazy(
+            "Number of messages this mailbox can send per day")
+    )
     aliases = lib_fields.UTF8AndEmptyUserEmailField(
         label=ugettext_lazy("Alias(es)"),
         required=False,
@@ -262,10 +268,11 @@ class AccountFormMail(forms.Form, DynamicForm):
     def __init__(self, user, *args, **kwargs):
         self.mb = kwargs.pop("instance", None)
         self.user = user
-        super(AccountFormMail, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.field_widths = {
             "quota": 3
         }
+        params = dict(param_tools.get_global_parameters("admin"))
         if self.mb is not None:
             self.fields["email"].required = True
             qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
@@ -283,13 +290,17 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.fields["quota_act"].initial = self.mb.use_domain_quota
             if not self.mb.use_domain_quota and self.mb.quota:
                 self.fields["quota"].initial = self.mb.quota
+            if self.mb.message_limit:
+                self.fields["message_limit"].initial = self.mb.message_limit
             self.fields["create_alias_with_old_address"].initial = (
-                param_tools.get_global_parameter(
-                    "create_alias_on_mbox_rename")
+                params["create_alias_on_mbox_rename"]
             )
         else:
             del self.fields["create_alias_with_old_address"]
             self.fields["quota_act"].initial = True
+            if params["default_mailbox_message_limit"] is not None:
+                self.fields["message_limit"].initial = (
+                    params["default_mailbox_message_limit"])
 
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(
@@ -316,6 +327,10 @@ class AccountFormMail(forms.Form, DynamicForm):
             except lib_exceptions.ModoboaException as inst:
                 raise forms.ValidationError(inst)
         return email
+
+    def clean_quota(self):
+        """Convert quota to Bytes."""
+        return size2integer(self.cleaned_data["quota"], output_unit="MB")
 
     def clean(self):
         """Custom fields validation.
@@ -364,7 +379,9 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.__class__, context=user, klass=models.Mailbox)
         self.mb = models.Mailbox(
             address=self.locpart, domain=self.domain, user=account,
-            use_domain_quota=self.cleaned_data["quota_act"])
+            use_domain_quota=self.cleaned_data["quota_act"],
+            message_limit=self.cleaned_data.get("message_limit")
+        )
         override_rules = (
             user.is_superuser or
             user.has_perm("admin.add_domain") and
@@ -473,6 +490,8 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                 args[0], "domains", lib_fields.DomainNameField)
 
     def save(self):
+        if self.account.role == "SimpleUsers":
+            return
         current_domains = [
             dom.name for dom in
             models.Domain.objects.get_for_admin(self.account)
@@ -487,8 +506,7 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
                 domain.add_admin(self.account)
 
         for domain in models.Domain.objects.get_for_admin(self.account):
-            if not filter(lambda name: self.cleaned_data[name] == domain.name,
-                          self.cleaned_data.keys()):
+            if domain.name not in self.cleaned_data.values():
                 domain.remove_admin(self.account)
 
 

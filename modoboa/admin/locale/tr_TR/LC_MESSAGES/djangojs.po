@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Ediz Duman <neps1192@gmail.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-09 16:48+0100\n"
+"PO-Revision-Date: 2017-09-22 09:50+0000\n"
+"Last-Translator: Ediz Duman <neps1192@gmail.com>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/tonio/modoboa/"
+"language/tr_TR/)\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Gösterilecek başka domain yok"
+
+#: admin/static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Domain dizini silmeyin"
+
+#: admin/static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Bu işlem, bu domain ilişkili TÜM verileri kaldıracaktır."
+
+#: admin/static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "Bu işlem hesap dışında bu domain ilişkili tüm verileri kaldıracaktır."
+
+#: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:433
+msgid "No more quota to show"
+msgstr "Gösterilecek  kota yok"
+
+#: admin/static/admin/js/admin.js:306
+msgid "No domain administrator defined"
+msgstr "domain yöneticisi tanımlanmadı"
+
+#: admin/static/admin/js/admin.js:362 admin/static/admin/js/admin.js:430
+msgid "No more identity to show"
+msgstr "Gösterilecek daha fazla kimlik yok"
+
+#: admin/static/admin/js/admin.js:404
+msgid "Do not delete mailbox directory"
+msgstr "Posta kutusu dizini silmeyin"

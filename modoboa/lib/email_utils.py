@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import email
 import re
 import smtplib
@@ -15,12 +11,13 @@ import lxml.html
 from lxml.html import defs
 from lxml.html.clean import Cleaner
 
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from django.utils import six
 from django.utils.encoding import smart_str, smart_text
 from django.utils.html import conditional_escape, escape
 from django.utils.translation import ugettext as _
 
+from modoboa.core import models as core_models
 from modoboa.lib import u2u_decode
 from modoboa.lib.exceptions import InternalError
 
@@ -128,9 +125,25 @@ class Email(object):
         # msg parameter to maintain compatibility with
         # modoboa_webmail.lib.imapemail.ImapEmail
         if header in msg:
-            return "".join([smart_text(v, encoding=(e or "ascii"))
-                            for v, e in email.header.decode_header(msg[header])
-                            ])
+            decoded_values = []
+            for value, encoding in email.header.decode_header(msg[header]):
+                if not len(value):
+                    continue
+                if encoding:
+                    value = smart_text(value, encoding=encoding)
+                elif isinstance(value, bytes):
+                    # SMTPUTF8 fallback (most of the time)
+                    # Address contains non ASCII chars but is not RFC2047
+                    # encoded...
+                    encoding = chardet.detect(value)
+                    try:
+                        value = value.decode(encoding["encoding"], "replace")
+                    except (TypeError, UnicodeDecodeError) as exc:
+                        raise InternalError(
+                            _("unable to determine encoding of string")
+                        ) from exc
+                decoded_values.append(value)
+            return "".join(decoded_values)
         return ""
 
     def _fetch_message(self):
@@ -274,8 +287,8 @@ class Email(object):
 
 def split_address(address):
     """Split an e-mail address into local part and domain."""
-    assert isinstance(address, six.text_type),\
-        "address should be of type %s" % six.text_type.__name__
+    assert isinstance(address, str),\
+        "address should be of type str"
     if "@" not in address:
         local_part = address
         domain = None
@@ -286,10 +299,10 @@ def split_address(address):
 
 def split_local_part(local_part, delimiter=None):
     """Split a local part into local part and extension."""
-    assert isinstance(local_part, six.text_type),\
-        "local_part should be of type %s" % six.text_type.__name__
-    assert isinstance(delimiter, six.text_type) or delimiter is None,\
-        "delimiter should be of type %s" % six.text_type.__name__
+    assert isinstance(local_part, str),\
+        "local_part should be of type str"
+    assert isinstance(delimiter, str) or delimiter is None,\
+        "delimiter should be of type str"
     extension = None
     if local_part.lower() in ["mailer-daemon", "double-bounce"]:
         # never split these special addresses
@@ -331,8 +344,8 @@ def split_mailbox(mailbox, return_extension=False):
 
 def decode(value_bytes, encoding, append_to_error=""):
     """Try to decode the given string."""
-    assert isinstance(value_bytes, six.binary_type),\
-        "value_bytes should be of type %s" % six.binary_type.__name__
+    assert isinstance(value_bytes, bytes),\
+        "value_bytes should be of type bytes"
     if len(value_bytes) == 0:
         # short circuit for empty strings
         return ""
@@ -345,13 +358,10 @@ def decode(value_bytes, encoding, append_to_error=""):
                 encoding["encoding"], "replace"
             )
         except (TypeError, UnicodeDecodeError) as exc:
-            six.raise_from(
-                InternalError(
-                    _("unable to determine encoding of string") +
-                    append_to_error
-                ),
-                exc
-            )
+            raise InternalError(
+                _("unable to determine encoding of string") +
+                append_to_error
+            ) from exc
     return value
 
 
@@ -363,7 +373,7 @@ def prepare_addresses(addresses, usage="header"):
     :return: a string or a list depending on usage value
     """
     result = []
-    if isinstance(addresses, six.text_type):
+    if isinstance(addresses, str):
         addresses = [addresses]
     for name, address in getaddresses(addresses):
         if not address:
@@ -459,3 +469,16 @@ To: %s
     fp.close()
 
     return _sendmail(sender, rcpt, content)
+
+
+def send_notification(recipient, subject, tpl, sender=None, **kwargs):
+    """Send notification by email."""
+    if not sender:
+        local_config = (
+            core_models.LocalConfig.objects.select_related("site").first())
+        sender = local_config.parameters.get_value("sender_address")
+    content = render_to_string(tpl, kwargs)
+    msg = EmailMessage(
+        subject, content.strip(), sender, [recipient],
+    )
+    msg.send()

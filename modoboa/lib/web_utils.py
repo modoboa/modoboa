@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
 This module contains extra functions/shortcuts used to render HTML.
 """
-
-from __future__ import unicode_literals
 
 import json
 import re
@@ -102,9 +98,9 @@ def static_url(path):
     return "%s%s" % (settings.STATIC_URL, path)
 
 
-def size2integer(value):
+def size2integer(value, output_unit="B"):
     """Try to convert a string representing a size to an integer value
-    in bytes.
+    in bytes or megabytes.
 
     Supported formats:
     * K|k for KB
@@ -112,19 +108,30 @@ def size2integer(value):
     * G|g for GB
 
     :param value: the string to convert
+    :param output_unit: result's unit (defaults to Bytes)
     :return: the corresponding integer value
     """
-    m = re.match(r"(\d+)\s*(\w+)", value)
+    m = re.match(r"(\d+)\s*([a-zA-Z]+)", value)
     if m is None:
         if re.match(r"\d+", value):
             return int(value)
         return 0
-    if m.group(2)[0] in ["K", "k"]:
-        return int(m.group(1)) * 2 ** 10
-    if m.group(2)[0] in ["M", "m"]:
-        return int(m.group(1)) * 2 ** 20
-    if m.group(2)[0] in ["G", "g"]:
-        return int(m.group(1)) * 2 ** 30
+    if output_unit == "B":
+        if m.group(2)[0] in ["K", "k"]:
+            return int(m.group(1)) * 2 ** 10
+        if m.group(2)[0] in ["M", "m"]:
+            return int(m.group(1)) * 2 ** 20
+        if m.group(2)[0] in ["G", "g"]:
+            return int(m.group(1)) * 2 ** 30
+    elif output_unit == "MB":
+        if m.group(2)[0] in ["K", "k"]:
+            return int(int(m.group(1)) / 2 ** 10)
+        if m.group(2)[0] in ["M", "m"]:
+            return int(m.group(1))
+        if m.group(2)[0] in ["G", "g"]:
+            return int(m.group(1)) * 2 ** 10
+    else:
+        raise ValueError("Unsupported output unit {}".format(output_unit))
     return 0
 
 

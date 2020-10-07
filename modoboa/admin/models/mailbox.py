@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Models related to mailboxes management."""
-
-from __future__ import unicode_literals
 
 import os
 import pwd
@@ -13,16 +9,18 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.db.models.manager import Manager
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text, force_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.sysutils import exec_cmd
+from modoboa.lib.sysutils import doveadm_cmd
 from modoboa.parameters import tools as param_tools
+
 from .base import AdminObject
 from .domain import Domain
+from . import mixins
 
 
 class QuotaManager(models.Manager):
@@ -90,8 +88,7 @@ class MailboxManager(Manager):
         return self.get_queryset().select_related().filter(qf)
 
 
-@python_2_unicode_compatible
-class Mailbox(AdminObject):
+class Mailbox(mixins.MessageLimitMixin, AdminObject):
     """User mailbox."""
 
     address = models.CharField(
@@ -101,21 +98,24 @@ class Mailbox(AdminObject):
     )
     quota = models.PositiveIntegerField(default=0)
     use_domain_quota = models.BooleanField(default=False)
+    message_limit = models.PositiveIntegerField(
+        ugettext_lazy("Message sending limit"), null=True, blank=True,
+        help_text=ugettext_lazy(
+            "Number of messages this mailbox can send per day")
+    )
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     objects = MailboxManager()
 
     class Meta:
-        permissions = (
-            ("view_mailboxes", "View mailboxes"),
-        )
         app_label = "admin"
 
     def __init__(self, *args, **kwargs):
-        super(Mailbox, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__mail_home = None
         self.old_full_address = self.full_address
+        self.old_message_limit = self.message_limit
 
     def __str__(self):
         return smart_text(self.full_address)
@@ -158,13 +158,13 @@ class Mailbox(AdminObject):
             options = {}
             if curuser != mbowner:
                 options["sudo_user"] = mbowner
-            code, output = exec_cmd(
-                "doveadm user -f home %s" % self.full_address, **options
+            code, output = doveadm_cmd(
+                "user -f home %s" % self.full_address, **options
             )
             if code:
                 raise lib_exceptions.InternalError(
                     _("Failed to retrieve mailbox location (%s)") % output)
-            self.__mail_home = output.strip()
+            self.__mail_home = force_text(output.strip())
         return self.__mail_home
 
     @property
@@ -195,6 +195,11 @@ class Mailbox(AdminObject):
     def quota_value(self, instance):
         """Set the ``Quota`` for this mailbox."""
         self._quota_value = instance
+
+    @property
+    def message_counter_key(self):
+        """Return the key used to store messages count."""
+        return self.full_address
 
     def rename_dir(self, old_mail_home):
         """Rename local directory if needed."""
@@ -325,6 +330,7 @@ class Mailbox(AdminObject):
                 not user.userobjectlimit_set.get(name="quota").max_value
             )
             self.set_quota(values["quota"], override_rules)
+        self.message_limit = values.get("message_limit")
         if newaddress:
             self.rename(local_part, domain)
         self.save()
@@ -351,7 +357,6 @@ class Mailbox(AdminObject):
 reversion.register(Mailbox)
 
 
-@python_2_unicode_compatible
 class SenderAddress(models.Model):
     """Extra sender address for Mailbox."""
 

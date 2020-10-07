@@ -1,0 +1,33 @@
+{% extends "common/generic_modal.html" %}
+
+{% load i18n %}
+
+{% block modalbody %}
+  <div class="alert alert-info">
+    {% blocktrans trimmed %}
+      Here is an example of DNS configuration (bind format). Replace value between
+      [ ] by the appropriate ones.
+    {% endblocktrans %}
+  </div>
+
+  MX
+  <pre>
+mail.{{ domain.name }}. IN A <strong>[{% trans "IP address of your Modoboa server" %}]</strong>
+@ IN MX 10 mail.{{ domain.name }}.</pre>
+  SPF
+  <pre>
+@ IN TXT "v=spf1 mx ~all"</pre>
+  {% if domain.enable_dkim and domain.dkim_public_key %}
+    DKIM
+    <pre>
+{{ domain.bind_format_dkim_public_key }}</pre>
+  {% endif %}
+  DMARC
+  <pre>
+_dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100"</pre>
+  {% trans "Auto configuration" %}
+  <pre>
+autoconfig.{{ domain.name }}. IN CNAME <strong>[{% trans "hostname of your automx server" %}]</strong>
+autodiscover.{{ domain.name }}. IN CNAME <strong>[{% trans "hostname of your automx server" %}]</strong></pre>
+ 
+{% endblock %}

@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """Domain related test cases."""
-
-from __future__ import unicode_literals
 
 import os
 import shutil
 import tempfile
+from unittest import mock
 
 import dns.resolver
 from testfixtures import compare
@@ -19,16 +16,11 @@ from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
+from modoboa.maillog import factories as ml_factories
+
 from . import utils
 from .. import factories
 from ..models import Alias, Domain
-
-try:
-    # mock is part of the Python (>= 3.3) standard library
-    from unittest import mock
-except ImportError:
-    # fall back to the mock backport
-    import mock
 
 
 class DomainTestCase(ModoTestCase):
@@ -328,8 +320,7 @@ class DomainTestCase(ModoTestCase):
         domain = Domain.objects.get(name="test2.com")
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith("/accounts/login"))
+        self.assertEqual(response.status_code, 403)
 
     def test_domain_quota_list_view(self):
         """Test quota list view."""
@@ -345,6 +336,30 @@ class DomainTestCase(ModoTestCase):
         self.assertNotEqual(old_rows, response["rows"])
 
         response = self.ajax_get("{}?sort_order=allocated_quota".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+    def test_domain_logs_list_view(self):
+        """Test logs list view."""
+        domain = Domain.objects.get(name="test.com")
+        ml_factories.MaillogFactory(from_domain=domain)
+        ml_factories.MaillogFactory(to_domain=domain, status="received")
+        ml_factories.MaillogFactory()
+        ml_factories.MaillogFactory()
+        url = reverse("admin:domain_logs_list")
+        response = self.ajax_get(url)
+        self.assertIn("ID1", response["rows"])
+
+        old_rows = response["rows"]
+        response = self.ajax_get("{}?sort_order=-sender".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+        response = self.ajax_get("{}?searchquery=ID1".format(url))
+        self.assertNotEqual(old_rows, response["rows"])
+
+        admin = User.objects.get(username="admin@test.com")
+        self.client.force_login(admin)
+        url = reverse("admin:domain_logs_list")
+        response = self.ajax_get(url)
         self.assertNotEqual(old_rows, response["rows"])
 
     def test_statitics_widget(self):
@@ -364,9 +379,12 @@ class DomainTestCase(ModoTestCase):
 
     def test_page_loader(self):
         """Test page loader view."""
+        factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
         url = reverse("admin:domain_page")
         response = self.ajax_get(url)
         self.assertIn("handle_mailboxes", response)
+        self.assertIn("listalarms", response["rows"])
         response = self.ajax_get("{}?objtype=quota".format(url))
         self.assertIn("progress-bar", response["rows"])
 
@@ -432,3 +450,24 @@ class DKIMTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertContains(
             response, escape(domain.bind_format_dkim_public_key))
+
+    def test_dkim_key_length_modification(self):
+        """ """
+        self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
+        values = {
+            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
+            "create_dom_admin": False, "type": "domain", "stepid": "step3",
+            "enable_dkim": True, "dkim_key_selector": "default"
+        }
+        self.ajax_post(reverse("admin:domain_add"), values)
+        call_command("modo", "manage_dkim_keys")
+        key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
+        self.assertTrue(os.path.exists(key_path))
+        dom = Domain.objects.get(name="pouet.com")
+        values["dkim_key_length"] = 4096
+        self.ajax_post(reverse("admin:domain_change", args=[dom.pk]), values)
+        dom.refresh_from_db()
+        self.assertEqual(dom.dkim_private_key_path, "")
+        os.unlink(key_path)
+        call_command("modo", "manage_dkim_keys")
+        self.assertTrue(os.path.exists(key_path))

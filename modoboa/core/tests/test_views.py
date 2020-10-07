@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
-
 """Core views test cases."""
-
-from __future__ import unicode_literals
 
 from testfixtures import compare
 
 from django import forms
 from django.urls import reverse
+from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase
 from modoboa.parameters import forms as param_forms, tools as param_tools
@@ -35,7 +32,8 @@ SETTINGS_SAMPLE = {
     "limits-enable_domain_limits": "False",
     "csrfmiddlewaretoken": "SGgMVZsA4TPqoiV786TMST6xgOlhAf4F",
     "limits-deflt_user_mailboxes_limit": "0",
-    "core-password_scheme": "sha512crypt",
+    "core-password_scheme": "plain",
+    "core-update_scheme": True,
     "core-items_per_page": "30",
     "limits-deflt_user_mailbox_aliases_limit": "0",
     "limits-deflt_domain_mailboxes_limit": "0",
@@ -67,7 +65,34 @@ SETTINGS_SAMPLE = {
     "core-random_password_length": "8",
     "admin-create_alias_on_mbox_rename": False,
     "admin-dkim_keys_storage_dir": "",
-    "admin-dkim_default_key_length": 1024
+    "admin-dkim_default_key_length": 1024,
+    "admin-custom_dns_server": "193.43.55.67",
+    "admin-enable_spf_checks": True,
+    "admin-enable_dkim_checks": True,
+    "admin-enable_dmarc_checks": True,
+    "admin-enable_autoconfig_checks": True,
+    "core-ldap_enable_sync": False,
+    "core-ldap_sync_bind_dn": "",
+    "core-ldap_sync_bind_password": "",
+    "core-ldap_sync_account_dn_template": "",
+    "core-ldap_sync_delete_remote_account": False,
+    "core-send_new_versions_email": False,
+    "core-new_versions_email_rcpt": "postmaster@domain.test",
+    "core-ldap_enable_secondary_server": False,
+    "core-ldap_secondary_server_address": "localhost",
+    "core-ldap_secondary_server_port": 389,
+    "core-ldap_enable_import": False,
+    "core-ldap_import_search_base": "",
+    "core-ldap_import_search_filter": "",
+    "core-ldap_import_username_attr": "cn",
+    "core-sms_password_recovery": False,
+    "core-sms_provider": "",
+    "core-sms_ovh_endpoint": "ovh-eu",
+    "core-password_recovery_msg": "",
+    "core-ldap_dovecot_sync": False,
+    "maillog-logfile": "/var/log/mail.log",
+    "maillog-rrd_rootdir": "/tmp",
+    "maillog-greylist": False,
 }
 
 
@@ -115,7 +140,7 @@ class DashboardTestCase(ModoTestCase):
         self.client.logout()
         self.client.login(username=self.user.username, password="toto")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 403)
 
     def test_custom_news(self):
         """Check that custom news are displayed."""
@@ -142,6 +167,20 @@ class DashboardTestCase(ModoTestCase):
         self.set_global_parameter("hide_features_widget", True)
         response = self.client.get(url)
         self.assertNotContains(response, "Features looking for sponsoring")
+
+    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=False)
+    def test_enable_dashboard_external_queries(self):
+        """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = False"""
+        url = reverse("core:dashboard")
+        response = self.client.get(url)
+        self.assertContains(response, 'href="https://modoboa.org/en/weblog/')
+
+    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=True)
+    def test_disable_dashboard_external_queries(self):
+        """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = True"""
+        url = reverse("core:dashboard")
+        response = self.client.get(url)
+        self.assertNotContains(response, 'https://modoboa.org/en/weblog/')
 
     def test_root_dispatch(self):
         """Check root dispatching."""
@@ -174,6 +213,15 @@ class SettingsTestCase(ModoTestCase):
         settings = SETTINGS_SAMPLE.copy()
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
+        settings["core-password_scheme"] = "sha512crypt"
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        compare(response.json(), {
+            "form_errors": {"password_scheme": ["Select a valid choice. \
+sha512crypt is not one of the available choices."]},
+            "prefix": "core"
+        })
+        settings["core-password_scheme"] = "plain"
         settings["core-rounds_number"] = ""
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
@@ -181,6 +229,21 @@ class SettingsTestCase(ModoTestCase):
             "form_errors": {"rounds_number": ["This field is required."]},
             "prefix": "core"
         })
+
+    def test_sms_settings_clean(self):
+        """Check sms settings validation."""
+        url = reverse("core:parameters")
+        settings = SETTINGS_SAMPLE.copy()
+        settings["core-sms_password_recovery"] = True
+        settings["core-sms_provider"] = ""
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        settings["core-sms_provider"] = "ovh"
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        errors = response.json()
+        self.assertIn(
+            "sms_ovh_application_secret", errors["form_errors"])
 
 
 class UserSettings(param_forms.UserParametersForm):

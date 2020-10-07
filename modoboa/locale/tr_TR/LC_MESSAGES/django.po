@@ -1,0 +1,1202 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Caner Başaran <basaran.caner@protonmail.com>, 2015
+# Ediz Duman <neps1192@gmail.com>, 2018
+# Gökhan Kalayci <gkmediagokhan@gmail.com>, 2017
+# Guven Atbakan <guven@atbakan.com>, 2016
+# Süleyman ADALI <mail@suleymanadali.com>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 13:15+0200\n"
+"PO-Revision-Date: 2018-11-22 19:31+0000\n"
+"Last-Translator: Ediz Duman <neps1192@gmail.com>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/tonio/modoboa/"
+"language/tr_TR/)\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: core/app_settings.py:26
+msgid "User profile"
+msgstr "Kullanıcı profili"
+
+#: core/app_settings.py:39
+msgid "Authentication"
+msgstr "Yetkilendirme"
+
+#: core/app_settings.py:42
+msgid "Authentication type"
+msgstr "Yetkilendirme türü"
+
+#: core/app_settings.py:43
+msgid "Local"
+msgstr "Yerel"
+
+#: core/app_settings.py:46
+msgid "The backend used for authentication"
+msgstr ""
+
+#: core/app_settings.py:51
+msgid "Default password scheme"
+msgstr "Varsayılan parola şeması"
+
+#: core/app_settings.py:56
+msgid "Scheme used to crypt mailbox passwords"
+msgstr "Mailbox parolalarını şifrelemek için kullanılacak şema"
+
+#: core/app_settings.py:60
+msgid "Rounds"
+msgstr ""
+
+#: core/app_settings.py:63
+msgid ""
+"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
+"between 1000 and 999999999, inclusive."
+msgstr ""
+
+#: core/app_settings.py:69
+#, fuzzy
+#| msgid "Update password scheme"
+msgid "Update password scheme at login"
+msgstr "Şifre şemasını güncelle"
+
+#: core/app_settings.py:72
+msgid "Update user password at login to use the default password scheme"
+msgstr ""
+
+#: core/app_settings.py:77
+msgid "Default password"
+msgstr "Varsayılan parola"
+
+#: core/app_settings.py:80
+msgid "Default password for automatically created accounts."
+msgstr "Otomatik oluşturulan hesaplar için varsayılan parola."
+
+#: core/app_settings.py:84
+msgid "Random password length"
+msgstr "Rastgele şifre uzunluğu"
+
+#: core/app_settings.py:88
+msgid "Length of randomly generated passwords."
+msgstr ""
+
+#: core/app_settings.py:92
+#, fuzzy
+#| msgid "Update password scheme"
+msgid "Update password service URL"
+msgstr "Şifre şemasını güncelle"
+
+#: core/app_settings.py:96
+msgid ""
+"The URL of an external page where users will be able to update their "
+"password. It applies only to non local users, ie. those automatically "
+"created after a successful external authentication (LDAP, SMTP)."
+msgstr ""
+
+#: core/app_settings.py:104
+msgid "Password recovery announcement"
+msgstr ""
+
+#: core/app_settings.py:109
+msgid "A temporary message that will be displayed on the reset password page."
+msgstr ""
+
+#: core/app_settings.py:115
+msgid "Enable password recovery by SMS"
+msgstr ""
+
+#: core/app_settings.py:118
+msgid "Enable password recovery by SMS for users who filled a phone number."
+msgstr ""
+
+#: core/app_settings.py:124
+msgid "SMS provider"
+msgstr ""
+
+#: core/app_settings.py:127
+msgid "Choose a provider to send password recovery SMS"
+msgstr ""
+
+#: core/app_settings.py:133
+msgid "LDAP settings"
+msgstr "LDAP ayarları"
+
+#: core/app_settings.py:136
+msgid "Server address"
+msgstr "Sunucu adresi"
+
+#: core/app_settings.py:139
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "LDAP sunucusunun adresi (DNS) ya da ip adresi"
+
+#: core/app_settings.py:143
+msgid "Server port"
+msgstr "Sunucu portu"
+
+#: core/app_settings.py:145
+msgid "The TCP port number used by the LDAP server"
+msgstr "LDAP sunucu tarafından kullanılan TCP portu"
+
+#: core/app_settings.py:149
+msgid "Enable secondary server (fallback)"
+msgstr ""
+
+#: core/app_settings.py:152
+msgid ""
+"Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr ""
+
+#: core/app_settings.py:158
+#, fuzzy
+#| msgid "Server address"
+msgid "Secondary server address"
+msgstr "Sunucu adresi"
+
+#: core/app_settings.py:161
+#, fuzzy
+#| msgid "The IP address or the DNS name of the LDAP server"
+msgid "The IP address or the DNS name of the seondary LDAP server"
+msgstr "LDAP sunucusunun adresi (DNS) ya da ip adresi"
+
+#: core/app_settings.py:165
+#, fuzzy
+#| msgid "Server port"
+msgid "Secondary server port"
+msgstr "Sunucu portu"
+
+#: core/app_settings.py:168
+#, fuzzy
+#| msgid "The TCP port number used by the LDAP server"
+msgid "The TCP port number used by the LDAP secondary server"
+msgstr "LDAP sunucu tarafından kullanılan TCP portu"
+
+#: core/app_settings.py:172
+msgid "Use a secured connection"
+msgstr "Güvenli bir bağlantı kullan"
+
+#: core/app_settings.py:176
+msgid "Use an SSL/STARTTLS connection to access the LDAP server"
+msgstr ""
+
+#: core/app_settings.py:180
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: core/app_settings.py:183
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr "LDAP sunucu bir Active Directory ise"
+
+#: core/app_settings.py:187
+msgid "Administrator groups"
+msgstr "Yönetici grupları"
+
+#: core/app_settings.py:190
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr ""
+
+#: core/app_settings.py:197
+msgid "Group type"
+msgstr "Grup türü"
+
+#: core/app_settings.py:201
+msgid "The LDAP group type to use with your directory."
+msgstr ""
+
+#: core/app_settings.py:206
+msgid "Groups search base"
+msgstr ""
+
+#: core/app_settings.py:209
+msgid "The distinguished name of the search base used to find groups"
+msgstr ""
+
+#: core/app_settings.py:215
+msgid "Password attribute"
+msgstr "Parola özelliği"
+
+#: core/app_settings.py:217
+msgid "The attribute used to store user passwords"
+msgstr "Kullanıcı parolalarını saklamak için kullanılacak özellik"
+
+#: core/app_settings.py:222
+#, fuzzy
+#| msgid "Authentication method"
+msgid "LDAP authentication settings"
+msgstr "Yetkilendirme metodu"
+
+#: core/app_settings.py:225
+msgid "Authentication method"
+msgstr "Yetkilendirme metodu"
+
+#: core/app_settings.py:226
+msgid "Search and bind"
+msgstr ""
+
+#: core/app_settings.py:227
+msgid "Direct bind"
+msgstr ""
+
+#: core/app_settings.py:229
+msgid "Choose the authentication method to use"
+msgstr "Kullanılacak yetkilendirme metodunu seçin"
+
+#: core/app_settings.py:233 core/app_settings.py:287
+msgid "Bind DN"
+msgstr ""
+
+#: core/app_settings.py:236 core/app_settings.py:290
+msgid ""
+"The distinguished name to use when binding to the LDAP server. Leave empty "
+"for an anonymous bind"
+msgstr ""
+
+#: core/app_settings.py:243 core/app_settings.py:297
+msgid "Bind password"
+msgstr ""
+
+#: core/app_settings.py:246 core/app_settings.py:300
+msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
+msgstr ""
+
+#: core/app_settings.py:254 core/app_settings.py:346
+msgid "Users search base"
+msgstr ""
+
+#: core/app_settings.py:257 core/app_settings.py:349
+msgid "The distinguished name of the search base used to find users"
+msgstr ""
+
+#: core/app_settings.py:263 core/app_settings.py:355
+msgid "Search filter"
+msgstr "Arama filtresi"
+
+#: core/app_settings.py:266 core/app_settings.py:358
+msgid ""
+"An optional filter string (e.g. '(objectClass=person)'). In order to be "
+"valid, it must be enclosed in parentheses."
+msgstr ""
+
+#: core/app_settings.py:273
+msgid "User DN template"
+msgstr ""
+
+#: core/app_settings.py:276
+#, python-format
+msgid ""
+"The template used to construct a user's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr ""
+
+#: core/app_settings.py:284
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "LDAP synchronization settings"
+msgstr "LDAP ayarları"
+
+#: core/app_settings.py:308
+msgid "Enable export to LDAP"
+msgstr ""
+
+#: core/app_settings.py:311
+msgid ""
+"Enable automatic synchronization between local database and LDAP directory"
+msgstr ""
+
+#: core/app_settings.py:317
+msgid "Delete remote LDAP account when local account is deleted"
+msgstr ""
+
+#: core/app_settings.py:321
+msgid ""
+"Delete remote LDAP account when local account is deleted, otherwise it will "
+"be disabled."
+msgstr ""
+
+#: core/app_settings.py:327
+msgid "Account DN template"
+msgstr ""
+
+#: core/app_settings.py:330
+#, python-format
+msgid ""
+"The template used to construct an account's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr ""
+
+#: core/app_settings.py:337
+msgid "Enable import from LDAP"
+msgstr ""
+
+#: core/app_settings.py:340
+msgid "Enable account synchronization from LDAP directory to local database"
+msgstr ""
+
+#: core/app_settings.py:365
+#, fuzzy
+#| msgid "Password attribute"
+msgid "Username attribute"
+msgstr "Parola özelliği"
+
+#: core/app_settings.py:368
+msgid "The name of the LDAP attribute where the username can be found."
+msgstr ""
+
+#: core/app_settings.py:373
+msgid "Enable Dovecot LDAP sync"
+msgstr ""
+
+#: core/app_settings.py:376
+msgid "LDAP authentication settings will be applied to Dovecot configuration."
+msgstr ""
+
+#: core/app_settings.py:382
+msgid "Dovecot LDAP config file"
+msgstr ""
+
+#: core/app_settings.py:386
+msgid ""
+"Location of the configuration file which contains Dovecot LDAP settings."
+msgstr ""
+
+#: core/app_settings.py:391 core/templates/core/dashboard.html:5
+msgid "Dashboard"
+msgstr "gösterge Paneli"
+
+#: core/app_settings.py:394
+msgid "Custom RSS feed"
+msgstr ""
+
+#: core/app_settings.py:397
+msgid "Display custom RSS feed to resellers and domain administrators"
+msgstr ""
+
+#: core/app_settings.py:402
+msgid "Hide features widget"
+msgstr ""
+
+#: core/app_settings.py:405
+msgid "Hide features widget for resellers and domain administrators"
+msgstr ""
+
+#: core/app_settings.py:409
+msgid "Notifications"
+msgstr "Bildirimler"
+
+#: core/app_settings.py:412
+msgid "Sender address"
+msgstr "Gönderici adresi"
+
+#: core/app_settings.py:415
+msgid "Email address used to send notifications."
+msgstr "Bildirimlerin gönderileceği email adresi"
+
+#: core/app_settings.py:419
+msgid "Public API"
+msgstr "Genel API"
+
+#: core/app_settings.py:422
+msgid "Enable communication"
+msgstr ""
+
+#: core/app_settings.py:425
+msgid "Enable communication with Modoboa public API"
+msgstr ""
+
+#: core/app_settings.py:429
+msgid "Check new versions"
+msgstr "Yeni versiyonları kontrol et"
+
+#: core/app_settings.py:432
+msgid "Automatically checks if a newer version is available"
+msgstr ""
+
+#: core/app_settings.py:436
+msgid "Send an email when new versions are found"
+msgstr ""
+
+#: core/app_settings.py:439
+msgid "Send an email to notify admins about new versions"
+msgstr ""
+
+#: core/app_settings.py:443
+msgid "Recipient"
+msgstr ""
+
+#: core/app_settings.py:446
+msgid "Recipient of new versions notification emails."
+msgstr ""
+
+#: core/app_settings.py:451
+msgid "Send statistics"
+msgstr "İstatistikleri gönder"
+
+#: core/app_settings.py:454
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr ""
+
+#: core/app_settings.py:458
+msgid "Miscellaneous"
+msgstr "Çeşitli"
+
+#: core/app_settings.py:461
+msgid "Inactive account threshold"
+msgstr ""
+
+#: core/app_settings.py:464
+msgid ""
+"An account with a last login date greater than this threshold (in days) will "
+"be considered as inactive"
+msgstr ""
+
+#: core/app_settings.py:470
+msgid "Top notifications check interval"
+msgstr ""
+
+#: core/app_settings.py:473
+msgid "Interval between two top notification checks (in seconds)"
+msgstr ""
+
+#: core/app_settings.py:478
+msgid "Maximum log record age"
+msgstr "Maksimum günlük kayıt yaşı"
+
+#: core/app_settings.py:480
+msgid "The maximum age in days of a log record"
+msgstr ""
+
+#: core/app_settings.py:484
+msgid "Items per page"
+msgstr "Sayfa başına öğe"
+
+#: core/app_settings.py:486
+msgid "Number of displayed items per page"
+msgstr ""
+
+#: core/app_settings.py:490
+msgid "Default top redirection"
+msgstr ""
+
+#: core/app_settings.py:494
+msgid "The default redirection used when no application is specified"
+msgstr ""
+
+#: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
+msgid "Invalid syntax"
+msgstr ""
+
+#: core/app_settings.py:570
+msgid "Invalid rounds number"
+msgstr ""
+
+#: core/app_settings.py:595 core/app_settings.py:597 core/app_settings.py:608
+msgid "This field is required"
+msgstr ""
+
+#: core/apps.py:18
+msgid "General"
+msgstr "Genel"
+
+#: core/checks/settings_checks.py:6
+msgid ""
+"You have USE_TZ set to False, this may result in issues during transitions "
+"between summer/winter time (ie the same local time occuring twice due to "
+"clock change)."
+msgstr ""
+
+#: core/checks/settings_checks.py:9
+msgid "Set `USE_TZ = True` in settings.py"
+msgstr ""
+
+#: core/constants.py:6
+msgid "Simple user"
+msgstr ""
+
+#: core/constants.py:7
+msgid "Domain administrator"
+msgstr ""
+
+#: core/constants.py:8
+msgid "Reseller"
+msgstr ""
+
+#: core/constants.py:9
+msgid "Super administrator"
+msgstr ""
+
+#: core/constants.py:52 lib/form_utils.py:389
+msgid "No"
+msgstr ""
+
+#: core/constants.py:102
+msgid "Choose a provider"
+msgstr ""
+
+#: core/constants.py:107
+msgid "Dummy"
+msgstr ""
+
+#: core/forms.py:21
+msgid "Username"
+msgstr "Kullanıcı adı"
+
+#: core/forms.py:25
+msgid "Password"
+msgstr "Parola"
+
+#: core/forms.py:38
+msgid "Old password"
+msgstr "Eski parola"
+
+#: core/forms.py:42
+msgid "New password"
+msgstr "Yeni parola"
+
+#: core/forms.py:46
+msgid "Confirmation"
+msgstr "Şifre tekrar"
+
+#: core/forms.py:74
+msgid "Old password mismatchs"
+msgstr ""
+
+#: core/forms.py:83
+msgid "Passwords mismatch"
+msgstr ""
+
+#: core/forms.py:103
+msgid "Enable API access"
+msgstr ""
+
+#: core/forms.py:137
+#, fuzzy
+#| msgid "Notifications"
+msgid "Verification code"
+msgstr "Bildirimler"
+
+#: core/forms.py:148
+msgid "Invalid code"
+msgstr ""
+
+#: core/handlers.py:36
+msgid "added"
+msgstr ""
+
+#: core/handlers.py:39
+msgid "modified"
+msgstr ""
+
+#: core/handlers.py:41
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr ""
+
+#: core/handlers.py:63
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by "
+msgstr ""
+
+#: core/handlers.py:65
+msgid "deleted"
+msgstr ""
+
+#: core/handlers.py:69
+msgid "user {}"
+msgstr ""
+
+#: core/handlers.py:71
+msgid "management command"
+msgstr ""
+
+#: core/handlers.py:95
+msgid "You can't delete your own account"
+msgstr ""
+
+#: core/handlers.py:131
+msgid "One or more updates are available"
+msgstr "Bir veya daha fazla güncelleme mevcut"
+
+#: core/management/commands/communicate_with_public_api.py:44
+#, fuzzy
+#| msgid "One or more updates are available"
+msgid "[modoboa] Update(s) available"
+msgstr "Bir veya daha fazla güncelleme mevcut"
+
+#: core/models.py:55
+msgid "Allow mailboxes access"
+msgstr ""
+
+#: core/models.py:57
+msgid "Allow this administrator to access user mailboxes"
+msgstr ""
+
+#: core/models.py:60
+msgid "password"
+msgstr "parola"
+
+#: core/models.py:63
+msgid "language"
+msgstr ""
+
+#: core/models.py:66
+msgid "Prefered language to display pages."
+msgstr ""
+
+#: core/models.py:70
+msgid "Phone number"
+msgstr ""
+
+#: core/models.py:72
+msgid "Secondary email"
+msgstr ""
+
+#: core/models.py:75
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr ""
+
+#: core/models.py:126
+msgid "Failed to update password: LDAP module not installed"
+msgstr ""
+
+#: core/models.py:155
+msgid "account"
+msgstr ""
+
+#: core/models.py:282
+msgid "Unknown"
+msgstr ""
+
+#: core/models.py:316
+msgid "Invalid line"
+msgstr ""
+
+#: core/models.py:324
+msgid "You can't import an account with a role greater than yours"
+msgstr ""
+
+#: core/models.py:339
+#, python-format
+msgid "The simple user '%s' must have a valid email address"
+msgstr ""
+
+#: core/models.py:344
+#, python-format
+msgid "username and email fields must not differ for '%s'"
+msgstr ""
+
+#: core/password_validation.py:24
+msgid "Password must contain at least {} digit."
+msgid_plural "Password must contain at least {} digits."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:34
+msgid "Password must contain at least {} lowercase letter."
+msgid_plural "Password must contain at least {} lowercase letters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:45
+msgid "Password must contain at least {} uppercase letter."
+msgid_plural "Password must contain at least {} uppercase letters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:57
+msgid "Password must contain at least {} special character."
+msgid_plural "Password must contain at least {} special characters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/password_validation.py:65
+msgid "Your password must contain a combination of different character types."
+msgstr ""
+
+#: core/sms_backends/ovh.py:19
+msgid "API endpoint"
+msgstr ""
+
+#: core/sms_backends/ovh.py:22
+msgid "OVH Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:23
+msgid "OVH US"
+msgstr ""
+
+#: core/sms_backends/ovh.py:24
+msgid "OVH North-America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:25
+msgid "So you Start Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:26
+msgid "So you Start North America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:27
+msgid "Kimsufi Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:28
+msgid "Kimsufi North America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:35
+msgid "Application key"
+msgstr ""
+
+#: core/sms_backends/ovh.py:42
+msgid "Application secret"
+msgstr ""
+
+#: core/sms_backends/ovh.py:50
+msgid "Consumer key"
+msgstr ""
+
+#: core/templates/core/_current_features.html:6
+msgid "Features looking for sponsoring"
+msgstr ""
+
+#: core/templates/core/_current_features.html:12
+msgid "Goal:"
+msgstr ""
+
+#: core/templates/core/_current_features.html:18
+msgid "More"
+msgstr ""
+
+#: core/templates/core/_current_features.html:22
+msgid "Nothing to sponsor yet."
+msgstr ""
+
+#: core/templates/core/_latest_news_widget.html:5
+msgid "Latest news"
+msgstr ""
+
+#: core/templates/core/_latest_news_widget.html:19
+msgid ""
+"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
+"weblog</a> for more information."
+msgstr ""
+
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr ""
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr ""
+
+#: core/templates/core/api_access.html:7
+#, python-format
+msgid ""
+"A documentation of the API is available <strong><a href=\"%(url)s\" target="
+"\"_blank\">here</a></strong>."
+msgstr ""
+
+#: core/templates/core/api_access.html:14
+msgid "API access token"
+msgstr ""
+
+#: core/templates/core/api_access.html:35
+#: core/templates/core/user_profile.html:19 lib/form_utils.py:354
+msgid "Update"
+msgstr "Güncelle"
+
+#: core/templates/core/dashboard.html:11
+#, python-format
+msgid "Hello %(user)s."
+msgstr ""
+
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:62
+msgid "Information"
+msgstr ""
+
+#: core/templates/core/information.html:2
+msgid "Various information about Modoboa"
+msgstr ""
+
+#: core/templates/core/information.html:5
+msgid "One or more updates are available!"
+msgstr ""
+
+#: core/templates/core/information.html:6
+msgid "Check the following list to find the component(s) that can be updated."
+msgstr ""
+
+#: core/templates/core/information.html:10
+msgid "Applications"
+msgstr ""
+
+#: core/templates/core/information.html:14
+#: core/templates/core/information.html:36
+msgid "Name"
+msgstr "Ad"
+
+#: core/templates/core/information.html:15
+msgid "Installed version"
+msgstr ""
+
+#: core/templates/core/information.html:16
+msgid "Last version"
+msgstr ""
+
+#: core/templates/core/information.html:17
+msgid "Description"
+msgstr ""
+
+#: core/templates/core/information.html:32
+msgid "Active users"
+msgstr ""
+
+#: core/templates/core/information.html:37
+msgid "Role"
+msgstr ""
+
+#: core/templates/core/information.html:38
+msgid "Last login"
+msgstr "Son giriş"
+
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:66
+msgid "Logs"
+msgstr ""
+
+#: core/templates/core/logs.html:2
+msgid "Previously on Modoboa..."
+msgstr ""
+
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:106
+msgid "Date"
+msgstr ""
+
+#: core/templates/core/logs.html:7
+msgid "Level"
+msgstr ""
+
+#: core/templates/core/logs.html:8
+msgid "Logger"
+msgstr ""
+
+#: core/templates/core/logs.html:9
+msgid "Message"
+msgstr ""
+
+#: core/templates/core/notifications/update_available.html:3
+#, fuzzy
+#| msgid "One or more updates are available"
+msgid ""
+"\n"
+"  The following update is available:\n"
+msgid_plural ""
+"\n"
+"  The following updates are available:\n"
+msgstr[0] "Bir veya daha fazla güncelleme mevcut"
+msgstr[1] "Bir veya daha fazla güncelleme mevcut"
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
+msgid "Parameters"
+msgstr ""
+
+#: core/templates/core/parameters.html:2
+msgid "Configure Modoboa"
+msgstr ""
+
+#: core/templates/core/parameters.html:6
+#: core/templates/core/user_preferences.html:10
+msgid "Save"
+msgstr ""
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr ""
+
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:90
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: core/templates/core/user_preferences.html:2
+#: core/templatetags/core_tags.py:120
+msgid "Preferences"
+msgstr ""
+
+#: core/templates/core/user_preferences.html:2
+msgid "Customize Modoboa"
+msgstr ""
+
+#: core/templates/core/user_preferences.html:14
+msgid "No preferences available."
+msgstr ""
+
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:116
+msgid "Profile"
+msgstr "Kullanıcı Bilgisi"
+
+#: core/templates/core/user_profile.html:3
+msgid "Update your personal information"
+msgstr "Kişisel bilgilerinizi güncelleyin"
+
+#: core/templates/core/user_profile.html:13
+msgid "Click here to update your password"
+msgstr ""
+
+#: core/templatetags/core_tags.py:34
+msgid "Modoboa"
+msgstr ""
+
+#: core/templatetags/core_tags.py:102
+msgid "Logout"
+msgstr "Çıkış"
+
+#: core/templatetags/core_tags.py:127
+msgid "API"
+msgstr ""
+
+#: core/utils.py:32
+msgid "The core part of Modoboa"
+msgstr ""
+
+#: core/views/admin.py:43
+msgid "Parameters saved"
+msgstr ""
+
+#: core/views/auth.py:59
+#, python-format
+msgid "Password scheme mismatch. Updating %s password"
+msgstr ""
+
+#: core/views/auth.py:66
+#, python-format
+msgid "Password hash parameter missmatch. Updating %s password"
+msgstr ""
+
+#: core/views/auth.py:82
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr ""
+
+#: core/views/auth.py:90
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+
+#: core/views/auth.py:125
+msgid "User '{}' successfully logged out"
+msgstr ""
+
+#: core/views/auth.py:170 core/views/auth.py:225
+msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr ""
+
+#: core/views/user.py:53
+msgid "Profile updated"
+msgstr "Kullanıcı bilgileri güncellendi"
+
+#: core/views/user.py:81
+msgid "Preferences saved"
+msgstr ""
+
+#: core/views/user.py:103
+msgid "Access updated"
+msgstr ""
+
+#: lib/db_utils.py:23
+#, python-format
+msgid "Connection to database %s not configured"
+msgstr ""
+
+#: lib/email_utils.py:141 lib/email_utils.py:360
+msgid "unable to determine encoding of string"
+msgstr ""
+
+#: lib/exceptions.py:67
+#, python-format
+msgid "Permission denied: %s"
+msgstr ""
+
+#: lib/exceptions.py:68
+msgid "Permission denied"
+msgstr ""
+
+#: lib/fields.py:15 lib/validators.py:14
+msgid "Enter a valid domain name"
+msgstr ""
+
+#: lib/fields.py:44 lib/fields.py:58
+msgid "Enter a valid email address."
+msgstr ""
+
+#: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_confirm_code.html:25
+#: templates/registration/password_reset_form.html:29
+msgid "Submit"
+msgstr "Gönder"
+
+#: lib/form_utils.py:110 lib/form_utils.py:113
+msgid "Invalid request"
+msgstr ""
+
+#: lib/form_utils.py:388
+msgid "Yes"
+msgstr ""
+
+#: lib/ldap_utils.py:129
+msgid "Failed to update password: {}"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:104
+msgid "From"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:105
+msgid "To"
+msgstr ""
+
+#: lib/templatetags/lib_tags.py:107 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Konu"
+
+#: templates/404.html:4 templates/500.html:4
+msgid "Sorry"
+msgstr ""
+
+#: templates/404.html:5
+msgid "The requested page does not exist."
+msgstr ""
+
+#: templates/500.html:5
+msgid "An internal error occured."
+msgstr ""
+
+#: templates/common/email_searchbar.html:5
+msgid "Search..."
+msgstr "Ara..."
+
+#: templates/common/email_searchbar.html:10
+msgid "From address"
+msgstr ""
+
+#: templates/common/email_searchbar.html:33
+msgid "Both"
+msgstr ""
+
+#: templates/common/error.html:4
+msgid "Error:"
+msgstr ""
+
+#: templates/common/generic_field.html:11
+#: templates/common/generic_fields_group.html:8
+msgid "Help:"
+msgstr ""
+
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "Kapat"
+
+#: templates/common/wizard_forms.html:31
+msgid "Previous"
+msgstr "Geri"
+
+#: templates/common/wizard_forms.html:32
+msgid "Next"
+msgstr "İleri"
+
+#: templates/registration/base.html:8
+msgid "Welcome to Modoboa"
+msgstr "Modoboa'ya Hoşgeldiniz"
+
+#: templates/registration/login.html:21
+msgid "Remember me"
+msgstr "Beni hatırla"
+
+#: templates/registration/login.html:23
+msgid "Log in"
+msgstr "Giriş"
+
+#: templates/registration/login.html:24
+#: templates/registration/password_reset_form.html:17
+msgid "Forgot password?"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:8
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
+"in</a> now."
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:7
+msgid "Change password"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:17
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr ""
+
+#: templates/registration/password_reset_confirm_code.html:20
+msgid "Enter the code you've just received by SMS"
+msgstr ""
+
+#: templates/registration/password_reset_confirm_code.html:27
+msgid "Resend code"
+msgstr ""
+
+#: templates/registration/password_reset_done.html:7
+msgid ""
+"<p>We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly.</p> "
+"<p>If you don't receive an email, please make sure you've entered your "
+"primary address, and check your spam folder.</p>"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:4
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(username)s Modoboa "
+"account, click the link below:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:10
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr ""
+
+#: templates/registration/password_reset_email.html:14
+msgid "Sincerely, The Modoboa Team."
+msgstr ""
+
+#: templates/registration/password_reset_form.html:24
+msgid "Please fill-in your primary email address"
+msgstr ""
+
+#: templates/registration/password_reset_subject.txt:3
+msgid "Modoboa password reset"
+msgstr ""
+
+#~ msgid "md5crypt (weak)"
+#~ msgstr "md5crypt (zayıf)"
+
+#~ msgid "sha256 (weak)"
+#~ msgstr "sha256 (zayıf)"
+
+#~ msgid "md5 (weak)"
+#~ msgstr "md5 (zayıf)"
+
+#~ msgid "crypt (weak)"
+#~ msgstr "crypt (zayıf)"
+
+#~ msgid "plain (weak)"
+#~ msgstr "düz metin (zayıf)"
