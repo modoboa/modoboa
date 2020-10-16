@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'ckeditor_uploader',
     'rest_framework',
     'rest_framework.authtoken',
+    'phonenumber_field',
 {% if devmode %}    'djangobower',{% endif %}
 )
 
@@ -80,6 +81,8 @@ MODOBOA_APPS = (
     'modoboa.limits',
     'modoboa.parameters',
     'modoboa.dnstools',
+    'modoboa.policyd',
+    'modoboa.maillog',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}
@@ -191,6 +194,15 @@ REST_FRAMEWORK = {
 
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
+DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
+
+# REDIS
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_QUOTA_DB = 0
+REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -270,6 +282,11 @@ LOGGING = {
             'facility': SysLogHandler.LOG_AUTH,
             'formatter': 'syslog'
         },
+        'syslog-mail': {
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': SysLogHandler.LOG_MAIL,
+            'formatter': 'syslog'
+        },
         'modoboa': {
             'class': 'modoboa.core.loggers.SQLHandler',
         }
@@ -289,6 +306,11 @@ LOGGING = {
             'handlers': ['modoboa'],
             'level': 'INFO',
             'propagate': False
+        },
+        'modoboa.policyd': {
+            'handlers': ['syslog-mail'],
+            'level': 'INFO',
+            'propagate': False
         }
     }
 }
@@ -297,7 +319,7 @@ SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
 ]
 
-DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
 # Load settings from extensions
 {% for extension in extra_settings %}

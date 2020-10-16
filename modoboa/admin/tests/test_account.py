@@ -74,7 +74,7 @@ class AccountTestCase(ModoTestCase):
         values.update({
             "username": "pouet@test.com", "language": "en",
             "secondary_email": "homer@simpson.com",
-            "phone_number": "123456789"
+            "phone_number": "+33612345678"
         })
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]), values

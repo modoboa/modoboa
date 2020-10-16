@@ -57,8 +57,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     class Meta:
         model = Domain
         fields = (
-            "name", "type", "quota", "default_mailbox_quota", "aliases",
-            "enabled", "enable_dns_checks", "enable_dkim",
+            "name", "type", "quota", "default_mailbox_quota", "message_limit",
+            "aliases", "enabled", "enable_dns_checks", "enable_dkim",
             "dkim_key_selector", "dkim_key_length"
         )
 
@@ -70,6 +70,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         super(DomainFormGeneral, self).__init__(*args, **kwargs)
         params = dict(param_tools.get_global_parameters("admin"))
         self.fields["quota"].initial = params["default_domain_quota"]
+        if params["default_domain_message_limit"] is not None:
+            self.fields["message_limit"].initial = (
+                params["default_domain_message_limit"])
         self.fields["default_mailbox_quota"].initial = (
             params["default_mailbox_quota"])
         self.fields["type"].choices = constants.DOMAIN_TYPES

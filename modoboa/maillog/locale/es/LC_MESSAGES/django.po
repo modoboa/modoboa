@@ -1,0 +1,171 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Carlos L <carlos.latorre.sanchez@openmailbox.org>, 2017
+# Evilham <github@evilham.com>, 2017
+# Pedro Gracia <lasarux@neuroomante.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-17 11:24+0200\n"
+"PO-Revision-Date: 2017-11-23 16:41+0000\n"
+"Last-Translator: Evilham <github@evilham.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/tonio/modoboa/language/"
+"es/)\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:20
+msgid "General"
+msgstr "General"
+
+#: forms.py:23
+msgid "Path to the log file"
+msgstr "Ruta del fichero de log"
+
+#: forms.py:25
+msgid "Path to log file used to collect statistics"
+msgstr "Ruta al fichero de log usado para recolectar estadísticas"
+
+#: forms.py:30
+msgid "Directory to store RRD files"
+msgstr "Directorio para guardar los ficheros RRD"
+
+#: forms.py:33
+msgid "Path to directory where RRD files are stored"
+msgstr "Ruta al directorio dónde están almacenados los ficheros RRD"
+
+#: forms.py:38
+msgid "Show greylisted messages"
+msgstr ""
+
+#: forms.py:41
+msgid "Differentiate between hard and soft rejects (greylisting)"
+msgstr ""
+
+#: forms.py:59 handlers.py:22
+msgid "Statistics"
+msgstr "Estadísticas"
+
+#: graphics.py:95
+msgid "Failed to locate rrdtool binary."
+msgstr "Fallo al localizar el binario rrdtool"
+
+#: graphics.py:174
+msgid "Average traffic (msgs/min)"
+msgstr "Media del tráfico (msgs/min)"
+
+#: graphics.py:177
+msgid "sent messages"
+msgstr "mensajes enviados"
+
+#: graphics.py:178
+msgid "received messages"
+msgstr "mensajes recibidos"
+
+#: graphics.py:179
+msgid "bounced messages"
+msgstr "mensajes rebotados"
+
+#: graphics.py:180
+msgid "rejected messages"
+msgstr "mensajes bloqueados"
+
+#: graphics.py:181
+msgid "virus messages"
+msgstr "mensajes con virus"
+
+#: graphics.py:182
+msgid "spam messages"
+msgstr "Mensajes Basura"
+
+#: graphics.py:189
+msgid "greylisted messages"
+msgstr ""
+
+#: graphics.py:200
+msgid "Average normal traffic size (bytes/min)"
+msgstr "Media normal del tamaño del tráfico (bytes/min)"
+
+#: graphics.py:203
+msgid "received size"
+msgstr "tamaño recibido"
+
+#: graphics.py:205
+msgid "sent size"
+msgstr "tamaño enviado"
+
+#: graphics.py:213
+msgid "Mail traffic"
+msgstr "Tráfico de correo"
+
+#: graphics.py:258
+msgid "Average account creation (account/hour)"
+msgstr "Creación promedio de cuentas (cuentas/hora)"
+
+#: graphics.py:261
+msgid "New accounts"
+msgstr "Cuentas nuevos"
+
+#: graphics.py:268
+msgid "Accounts"
+msgstr "Cuentas"
+
+#: templates/maillog/index.html:4
+msgid "Graphical statistics"
+msgstr "Estadísticas gráficas"
+
+#: templates/maillog/index.html:44
+msgid "Search a domain"
+msgstr "Buscar un dominio"
+
+#: templates/maillog/index.html:77
+msgid "Apply"
+msgstr "Aplicar"
+
+#: views.py:33
+msgid "No statistics available"
+msgstr "No hay estadísticas disponibles"
+
+#: views.py:40
+msgid "Day"
+msgstr "Día"
+
+#: views.py:41
+msgid "Week"
+msgstr "Semana"
+
+#: views.py:42
+msgid "Month"
+msgstr "Mes"
+
+#: views.py:43
+msgid "Year"
+msgstr "Año"
+
+#: views.py:44
+msgid "Custom"
+msgstr "A medida"
+
+#: views.py:63
+msgid "Unknown graphic set"
+msgstr "Conjunto gráfico desconocido"
+
+#: views.py:68
+#, fuzzy
+#| msgid "Unknown graphic set"
+msgid "Unknown domain"
+msgstr "Conjunto gráfico desconocido"
+
+#: views.py:73
+msgid "Bad custom period"
+msgstr "Período elegido erróneo"
+
+#~ msgid "Graphical statistics about emails traffic using RRDtool"
+#~ msgstr "Estadísticas gráficas del tráfico de emails usando RRDtool"

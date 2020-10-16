@@ -5,7 +5,9 @@ from .admin import (
     viewsettings
 )
 from .auth import (
-    PasswordResetView, dologin, dologout, TwoFactorCodeVerifyView)
+    PasswordResetView, dologin, dologout, VerifySMSCodeView,
+    ResendSMSCodeView, TwoFactorCodeVerifyView
+)
 from .base import RootDispatchView
 from .dashboard import DashboardView
 from .user import api_access, index, preferences, profile, security
@@ -13,7 +15,9 @@ from .user import api_access, index, preferences, profile, security
 __all__ = [
     "DashboardView",
     "PasswordResetView",
+    "ResendSMSCodeView",
     "RootDispatchView",
+    "VerifySMSCodeView",
     "api_access",
     "check_top_notifications",
     "dologin",

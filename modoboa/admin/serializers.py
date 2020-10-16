@@ -45,7 +45,8 @@ class DomainSerializer(serializers.ModelSerializer):
             "pk", "name", "quota", "default_mailbox_quota", "enabled", "type",
             "enable_dkim", "dkim_key_selector", "dkim_key_length",
             "dkim_public_key", "dkim_private_key_path",
-            "mailbox_count", "mbalias_count", "domainalias_count"
+            "mailbox_count", "mbalias_count", "domainalias_count",
+            "message_limit"
         )
         read_only_fields = (
             "pk", "mailbox_count", "mbalias_count", "domainalias_count"
@@ -85,7 +86,14 @@ class DomainSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Set permissions."""
+        params = dict(param_tools.get_global_parameters("admin"))
         domain = models.Domain(**validated_data)
+        condition = (
+            params["default_domain_message_limit"] is not None and
+            "message_limit" not in validated_data
+        )
+        if condition:
+            domain.message_limit = params["default_domain_message_limit"]
         creator = self.context["request"].user
         core_signals.can_create_object.send(
             sender=self.__class__, context=creator,
@@ -137,7 +145,9 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Mailbox
-        fields = ("pk", "full_address", "use_domain_quota", "quota", )
+        fields = (
+            "pk", "full_address", "use_domain_quota", "quota", "message_limit"
+        )
 
     def validate_full_address(self, value):
         """Lower case address."""
@@ -324,6 +334,10 @@ class WritableAccountSerializer(AccountSerializer):
         mb = admin_models.Mailbox(
             user=account, address=address, domain=domain, **data)
         mb.set_quota(quota, creator.has_perm("admin.add_domain"))
+        default_msg_limit = param_tools.get_global_parameter(
+            "default_mailbox_message_limit")
+        if default_msg_limit is not None:
+            mb.message_limit = default_msg_limit
         mb.save(creator=creator)
         account.email = full_address
         return mb
@@ -464,3 +478,9 @@ class SenderAddressSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 _("You don't have access to this mailbox."))
         return value
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    """Serializer by the reset password endpoint."""
+
+    email = lib_fields.DRFEmailFieldUTF8()

@@ -84,7 +84,15 @@ SETTINGS_SAMPLE = {
     "core-ldap_enable_import": False,
     "core-ldap_import_search_base": "",
     "core-ldap_import_search_filter": "",
-    "core-ldap_import_username_attr": "cn"
+    "core-ldap_import_username_attr": "cn",
+    "core-sms_password_recovery": False,
+    "core-sms_provider": "",
+    "core-sms_ovh_endpoint": "ovh-eu",
+    "core-password_recovery_msg": "",
+    "core-ldap_dovecot_sync": False,
+    "maillog-logfile": "/var/log/mail.log",
+    "maillog-rrd_rootdir": "/tmp",
+    "maillog-greylist": False,
 }
 
 
@@ -221,6 +229,21 @@ sha512crypt is not one of the available choices."]},
             "form_errors": {"rounds_number": ["This field is required."]},
             "prefix": "core"
         })
+
+    def test_sms_settings_clean(self):
+        """Check sms settings validation."""
+        url = reverse("core:parameters")
+        settings = SETTINGS_SAMPLE.copy()
+        settings["core-sms_password_recovery"] = True
+        settings["core-sms_provider"] = ""
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        settings["core-sms_provider"] = "ovh"
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 400)
+        errors = response.json()
+        self.assertIn(
+            "sms_ovh_application_secret", errors["form_errors"])
 
 
 class UserSettings(param_forms.UserParametersForm):

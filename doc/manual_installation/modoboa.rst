@@ -10,53 +10,60 @@ This section describes the installation of the web interface (a
 Prepare the system
 ------------------
 
-First of all, we recommand the following context:
+First of all, we recommend the following context:
 
-* Use a dedicated system user
-* Use a `virtualenv <http://www.virtualenv.org/en/latest/>`_ to
-  install the application because it will isolate it (and its
+* A dedicated system user
+* A `virtual environment
+  <https://packaging.python.org/tutorials/installing-packages/#creating-virtual-environments>`_
+  to install the application because it will isolate it (and its
   dependencies) from the rest of your system
 
-The following example illustrates how to realize this (Debian like system):
+The following example illustrates how to realize this on Debian-based
+distributions using `virtualenv <https://virtualenv.pypa.io/en/stable/>`_:
 
-.. sourcecode:: bash
+.. code-block:: console
 
-  > sudo apt-get install python-virtualenv python-pip
-  > sudo useradd modoboa
-  > sudo -i -u modoboa
-  > virtualenv env
-  > source env/bin/activate
-  (env)> pip install -U pip
+   # apt-get install virtualenv python3-pip
+   # useradd modoboa  # create a dedicated user
+   # su -l modoboa    # log in as the newly created user
+   $ virtualenv --python python3 ./env  # create the virtual environment
+   $ source ./env/bin/activate          # activate the virtual environment
 
 Modoboa depends on external tools and some of them require compilation
 so you need a compiler and a few C libraries. Make sure to install the
 following system packages according to your distribution:
 
-+------------------------------+
-|Debian / Ubuntu               |
-+==============================+
-|build-essential python-dev    |
-|libxml2-dev libxslt-dev       |
-|libjpeg-dev librrd-dev        |
-|rrdtool libffi-dev libssl-dev |
-|                              |
-+------------------------------+
++-------------------------------+
+| Debian / Ubuntu               |
++===============================+
+| build-essential python3-dev   |
+| libxml2-dev libxslt-dev       |
+| libjpeg-dev librrd-dev        |
+| rrdtool libffi-dev libssl-dev |
++-------------------------------+
 
-+------------------------------+
-|CentOS                        |
-+==============================+
-|gcc gcc-c++ python-devel      |
-|libxml2-devel libxslt-devel   |
-|libjpeg-turbo-devel           |
-|rrdtool-devel rrdtool         |
-|libffi-devel                  |
-+------------------------------+
++-----------------------------+
+| CentOS                      |
++=============================+
+| gcc gcc-c++ python3-devel   |
+| libxml2-devel libxslt-devel |
+| libjpeg-turbo-devel         |
+| rrdtool-devel rrdtool       |
+| libffi-devel                |
++-----------------------------+
 
-Then, install Modoboa:
+.. note::
 
-.. sourcecode:: bash
+   Alternatively, you could rely on your distribution packages for the Modoboa
+   dependencies which require compilation - e.g. ``psycopg2`` - if the version
+   is compatible. In this case, you have to create your virtual environment
+   with the ``--system-site-packages`` option.
 
-  (env)> pip install modoboa
+Then, install Modoboa by running:
+
+.. code-block:: console
+
+   (env)$ pip install modoboa
 
 .. _database:
 
@@ -76,51 +83,73 @@ Thanks to Django, Modoboa is compatible with the following databases:
 * SQLite
 
 Since the last one does not require particular actions, only the first
-two ones are described.
+two ones are described. You should also read the notes for those database
+backends on the `official Django documentation
+<https://docs.djangoproject.com/en/stable/ref/databases/>`_.
 
 PostgreSQL
 **********
 
 Install the corresponding Python binding:
 
-.. sourcecode:: bash
+.. code-block:: console
 
-  (env)> pip install psycopg2
+   (env)$ pip install psycopg2
 
-Then, create a user and a database:
+.. note::
 
-.. sourcecode:: bash
+   Alternatively, you can install the ``python3-psycopg2`` package instead on
+   Debian-based distributions if your virtual environment was created with
+   ``--system-site-packages`` option.
 
-  > sudo -i -u postgres
-  >
+Then, create a user and a database. For example, to create the ``modoboa``
+database owned by a ``modoboa`` user, run the following commands on your
+PostgreSQL server:
+
+.. code-block:: console
+
+   # sudo -l -u postgres createuser --no-createdb modoboa
+   # sudo -l -u postgres createdb --owner=modoboa modoboa
 
 MySQL / MariaDB
 ***************
 
 Install the corresponding Python binding:
 
-.. sourcecode:: bash
+.. code-block:: console
 
-  (env)> pip install mysqlclient
+   (env)$ pip install mysqlclient
+
+.. note::
+
+   Alternatively, you can install the ``python3-mysqldb`` package instead on
+   Debian-based distributions if your virtual environment was created with
+   ``--system-site-packages`` option.
 
 .. note::
 
    MariaDB 10.2 (and newer) require mysqlclient 1.3.11 (or newer).
 
-Then, create a user and a database:
+Then, create a user and a database. For example, to create the ``modoboa``
+database owned by a ``modoboa`` user, run the following SQL commands:
 
-.. sourcecode:: bash
+.. code-block:: mysql
 
-  > mysqladmin -u root -p create modoboa
+   CREATE DATABASE modoboa;
+   CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'my-strong-password-here';
+   GRANT ALL PRIVILEGES ON modoboa.* TO 'modoboa'@'localhost';
 
 Deploy an instance
 ------------------
 
-``modoboa-admin.py``, a command line tool, lets you deploy a
-*ready-to-use* Modoboa site using only one instruction::
+``modoboa-admin.py`` is a command line tool that lets you deploy a
+*ready-to-use* Modoboa site. To create a new instance into ``./instance``,
+you just have to run the following command:
 
-  (env)> modoboa-admin.py deploy instance --collectstatic \
-           --domain <hostname of your server> --dburl default:database-url
+.. code-block:: console
+
+   (env)$ modoboa-admin.py deploy instance --collectstatic \
+            --domain <hostname of your server> --dburl default:<database url>
 
 .. note::
 
@@ -160,12 +189,14 @@ done.
 
 If you need a **silent installation** (e.g. if you're using
 Salt-Stack, Ansible or whatever), it's possible to supply the database
-credentials as commandline arguments.
+credentials as command line arguments.
 
 You can consult the complete option list by running the following
-command::
+command:
 
-  $ modoboa-admin.py help deploy
+.. code-block:: console
+
+   (env)$ modoboa-admin.py help deploy
 
 Cron jobs
 ---------
@@ -174,35 +205,63 @@ A few recurring jobs must be configured to make Modoboa works as
 expected.
 
 Create a new file, for example :file:`/etc/cron.d/modoboa` and put the
-following content inside::
+following content inside:
 
-  #
-  # Modoboa specific cron jobs
-  #
-  PYTHON=<PATH TO PYTHON BINARY>
-  INSTANCE=<PATH TO MODOBOA INSTANCE>
+.. sourcecode:: bash
 
-  # Operations on mailboxes
-  *       *       *       *       *       vmail   $PYTHON $INSTANCE/manage.py handle_mailbox_operations
+   #
+   # Modoboa specific cron jobs
+   #
+   PYTHON=<path to Python binary inside the virtual environment>
+   INSTANCE=<path to Modoboa instance>
 
-  # Sessions table cleanup
-  0       0       *       *       *       root    $PYTHON $INSTANCE/manage.py clearsessions
+   # Operations on mailboxes
+   *     *  *  *  *  vmail    $PYTHON $INSTANCE/manage.py handle_mailbox_operations
 
-  # Logs table cleanup
-  0       0       *       *       *       root    $PYTHON $INSTANCE/manage.py cleanlogs
+   # Generate DKIM keys (they will belong to the user running this job)
+   *     *  *  *  *  root     umask 077 && $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
 
-  # Logs parsing
-  */5     *       *       *       *       root    $PYTHON $INSTANCE/manage.py logparser &> /dev/null
-  0       *       *       *       *       root    $PYTHON $INSTANCE/manage.py update_statistics
+   # Sessions table cleanup
+   0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py clearsessions
+   # Logs table cleanup
+   0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py cleanlogs
+   # DNSBL checks
+   */30  *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py modo check_mx
+   # Public API communication
+   0     *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py communicate_with_public_api
 
-  # DNSBL checks
-  */30    *       *       *       *       root    $PYTHON $INSTANCE/manage.py modo check_mx
+.. _policy_daemon:
 
-  # Public API communication
-  0       *       *       *       *       root    $PYTHON $INSTANCE/manage.py communicate_with_public_api
+Policy daemon
+-------------
 
-  # Generate DKIM keys (they will belong to the user running this job)
-  *       *       *       *       *       root    umask 077 && $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
+Modoboa comes with a built-in `Policy Daemon for Postfix <http://www.postfix.org/SMTPD_POLICY_README.html>`_. Current features are:
 
+* Define daily sending limits for domains and/or accounts
+
+A `redis server <https://redis.io/>`_ is required to run this new daemon.
+
+You can launch it manually using the following command:
+
+.. sourcecode:: bash
+
+   (env)> python manage.py policy_daemon
+
+But we recommend an automatic start using ``systemd`` or
+``supervisor``. Here is a configuration example for ``supervisor``:
+
+.. sourcecode:: ini
+
+   [program:policyd]
+   autostart=true
+   autorestart=true
+   command=/srv/modoboa/env/bin/python /srv/modoboa/instance/manage.py policy_daemon
+   directory=/srv/modoboa
+   redirect_stderr=true
+   user=modoboa
+   numprocs=1
+
+It will listen by default on ``127.0.0.1`` and port ``9999``. The
+policy daemon won't do anything unless you tell :ref:`postfix <policyd_config>` to use it.
 
 Now you can continue to the :ref:`webserver` section.

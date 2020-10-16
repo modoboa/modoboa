@@ -193,6 +193,49 @@ SQLite users
 
    Replace values between ``<>`` with yours.
 
+
+LDAP
+====
+To make the LDAP authentication work, edit the :file:`conf.d/10-auth.conf` and
+uncomment the following line at the end::
+
+   !include auth-ldap.conf.ext
+
+Then edit the :file:`conf.d/auth-ldap.conf.ext` and edit the passdb section as following.
+You should comment the userdb section, which will be managed by SQL with modoboa database.::
+
+   passdb {
+      driver = ldap
+
+      # Path for LDAP configuration file, see example-config/dovecot-ldap.conf.ext
+      args = /etc/dovecot/dovecot-ldap.conf.ext
+   }
+
+   #userdb {                                                                
+      #driver = ldap                                                         
+      #args = /etc/dovecot/dovecot-ldap.conf.ext                             
+                                                                                
+      # Default fields can be used to specify defaults that LDAP may override
+      #default_fields = home=/home/virtual/%u                                
+   #}
+
+Your own dovecot LDAP configuration file is now :file:`/etc/dovecot/dovecot-ldap.conf.ext`.
+You can add your default LDAP conf in it, following the `official documentation <https://doc.dovecot.org/configuration_manual/authentication/ldap/>`_.
+
+Synchronize dovecot LDAP conf with modoboa LDAP conf
+----------------------------------------------------
+
+To make dovecot LDAP configuration synchronized with modoboa LDAP configuration, you should create a dedicated dovecot conf file.
+At the end of your dovecot configuration file (:file:`dovecot-ldap.conf.ext`), add the following line::
+   
+   !include_try dovecot-modoboa.conf.ext
+
+Then, set modoboa parameter *Enable Dovecot LDAP sync* to *Yes*.
+Then set the *Dovecot LDAP config file* following the previous step (*/etc/dovecot/dovecot-modoboa.conf.ext* in the example)
+
+The last step is to add the command **update_dovecot_conf** to the cron job of modoboa.
+Then, each time your modoboa LDAP configuration is updated, your dovecot LDAP configuration will also be.
+
 LMTP
 ====
 

@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include("modoboa.core.urls")),
     path('admin/', include("modoboa.admin.urls")),
     path('dnstools/', include("modoboa.dnstools.urls")),
+    path('stats/', include("modoboa.maillog.urls")),
 
     path('user/forward/', user_views.forward, name="user_forward"),
 
@@ -35,6 +36,12 @@ urlpatterns = [
     path('accounts/password_reset/done/',
          auth_views.PasswordResetDoneView.as_view(),
          name="password_reset_done"),
+    path('reset/confirm_code/',
+         core_views.VerifySMSCodeView.as_view(),
+         name="password_reset_confirm_code"),
+    path('reset/resend_code/',
+         core_views.ResendSMSCodeView.as_view(),
+         name="password_reset_resend_code"),
     path('reset/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(),
          name="password_reset_confirm"),

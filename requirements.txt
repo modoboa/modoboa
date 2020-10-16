@@ -1,6 +1,7 @@
 django>=2.2,<2.3
 django-braces==1.14.0
 django-ckeditor==5.8.0
+django-phonenumber-field[phonenumbers]==4.0.0
 django-reversion==3.0.5
 django-xforwardedfor-middleware==2.0
 
@@ -14,7 +15,8 @@ bcrypt  # Requires libffi-dev and python-dev
 
 dnspython==1.16.0
 feedparser==5.2.1
-gevent==1.4.0
+greenlet==0.4.16
+gevent==1.5.0
 jsonfield==2.0.2
 Pillow  # Optional dependency for django-ckeditor
 progressbar33==2.4
@@ -24,3 +26,10 @@ pytz
 requests
 lxml
 chardet
+ovh
+oath
+redis
+rrdtool>=0.1.11
+
+aiosmtplib
+aioredis

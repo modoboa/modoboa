@@ -91,6 +91,101 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.16.0
+======
+
+A new :ref:`policy daemon <policy_daemon>` has been added.
+
+Make sure to have a Redis instance running on your server.
+
+Add ``'modoboa.policyd'`` to ``MODOBOA_APPS``:
+
+.. sourcecode:: python
+
+   MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+      'modoboa.dnstools',
+      'modoboa.policyd'
+   )
+
+Add the following settings to your ``settings.py`` file:
+
+.. sourcecode:: python
+
+   REDIS_HOST = '<IP or hostname here>'
+   REDIS_PORT = 6379
+   REDIS_QUOTA_DB = 0
+   REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
+
+Once done, you can start the policy daemon using the following commands:
+
+.. sourcecode:: bash
+
+   > python manage.py policy_daemon
+
+Don't forget to configure :ref:`_policyd_config <postfix>` if you want
+to use this feature.
+
+The ``modoboa-stats`` plugin has been merged into the core.
+
+Add ``'modoboa.maillog'`` to ``MODOBOA_APPS``:
+
+.. sourcecode:: python
+
+   MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+      'modoboa.dnstools',
+      'modoboa.policyd',
+      'modoboa.maillog',
+   )
+
+And remove any reference to ``modoboa_stats`` in this same variable.
+
+1.15.0
+======
+
+This version drops Python 2 support so don't forget to update all the
+extensions you use.
+
+.. warning::
+
+   If you upgrade an existing python 2 installation, you will need to
+   create a new Python 3 virtual environment. You can remove the
+   existing virtual environment and replace it by the new one so you
+   won't have to modify your configuration files.
+
+Add the following new setting:
+
+.. sourcecode:: python
+
+   DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
+
+Reload uwsgi/gunicorn/apache depending on your setup.
+
+Finally, Make sure to use root privileges and run the following
+command:
+
+.. sourcecode:: bash
+
+   > python manage.py generate_postfix_maps --destdir <directory>
+
+Then, reload postfix.
+
+
 1.14.0
 ======
 

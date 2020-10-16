@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Fulup <fulup.jakez@gmail.com>, 2016,2018
 # Irriep Nala Novram <allannkorh@yahoo.fr>, 2019
@@ -9,482 +9,473 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 16:48+0100\n"
-"PO-Revision-Date: 2019-03-11 18:07+0000\n"
-"Last-Translator: Irriep Nala Novram <allannkorh@yahoo.fr>\n"
+"POT-Creation-Date: 2020-05-06 13:15+0200\n"
+"PO-Revision-Date: 2020-05-06 11:16+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
-"Language: br\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !"
-"=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n"
-"%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > "
-"19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 "
-"&& n % 1000000 == 0) ? 3 : 4);\n"
+"Language: br\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 && n % 1000000 == 0) ? 3 : 4);\n"
 
-#: core/app_settings.py:20
+#: core/app_settings.py:26
 msgid "User profile"
 msgstr "Profil implijer"
 
-#: core/app_settings.py:33
+#: core/app_settings.py:39
 msgid "Authentication"
 msgstr "O vezañ anavezet"
 
-#: core/app_settings.py:36
+#: core/app_settings.py:42
 msgid "Authentication type"
 msgstr "Doare anavezadur"
 
-#: core/app_settings.py:37
+#: core/app_settings.py:43
 msgid "Local"
 msgstr "Lec'hel"
 
-#: core/app_settings.py:40
+#: core/app_settings.py:46
 msgid "The backend used for authentication"
 msgstr "Drekleur implijet evit bezañ anavezet"
 
-#: core/app_settings.py:45
+#: core/app_settings.py:51
 msgid "Default password scheme"
 msgstr "Ger-tremen dre ziouer ar brastres"
 
-#: core/app_settings.py:50
+#: core/app_settings.py:56
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Brastres implijet evit enrinegañ gerioù-tremen ar postelerezh"
 
-#: core/app_settings.py:54
+#: core/app_settings.py:60
 msgid "Rounds"
 msgstr "Troiadoù"
 
-#: core/app_settings.py:57
+#: core/app_settings.py:63
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Niver a droiadoù d'ober ganto (implijet gant sha256crypt ha sha512crypt "
-"hepken). Bez' e rank bezañ etre 1000 ha 999999999, e-barzh."
+msgstr "Niver a droiadoù d'ober ganto (implijet gant sha256crypt ha sha512crypt hepken). Bez' e rank bezañ etre 1000 ha 999999999, e-barzh."
 
-#: core/app_settings.py:63
-#, fuzzy
-#| msgid "Update password scheme"
+#: core/app_settings.py:69
 msgid "Update password scheme at login"
-msgstr "Hiziavaat ar brastres ger-tremen"
-
-#: core/app_settings.py:66
-msgid "Update user password at login to use the default password scheme"
 msgstr ""
-"Hizivait ger-tremen an implijer d'ar mare kevreaén evit implijout ar "
-"brastres ger-tremen dre-ziouer"
 
-#: core/app_settings.py:71
+#: core/app_settings.py:72
+msgid "Update user password at login to use the default password scheme"
+msgstr "Hizivait ger-tremen an implijer d'ar mare kevreaén evit implijout ar brastres ger-tremen dre-ziouer"
+
+#: core/app_settings.py:77
 msgid "Default password"
 msgstr "Ger-tremen dre-ziouer"
 
-#: core/app_settings.py:74
+#: core/app_settings.py:80
 msgid "Default password for automatically created accounts."
 msgstr "Ger-tremen dre-ziouer evit ar gontoù em-grouet."
 
-#: core/app_settings.py:78
+#: core/app_settings.py:84
 msgid "Random password length"
 msgstr "Hirder dre-zegouezh ger-tremen"
 
-#: core/app_settings.py:82
+#: core/app_settings.py:88
 msgid "Length of randomly generated passwords."
 msgstr "Hirder ar gerioù-tremen em-c'hanet."
 
-#: core/app_settings.py:86
-#, fuzzy
-#| msgid "Update password scheme"
+#: core/app_settings.py:92
 msgid "Update password service URL"
-msgstr "Hiziavaat ar brastres ger-tremen"
+msgstr ""
 
-#: core/app_settings.py:90
+#: core/app_settings.py:96
 msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
 msgstr ""
 
-#: core/app_settings.py:98
+#: core/app_settings.py:104
+msgid "Password recovery announcement"
+msgstr ""
+
+#: core/app_settings.py:109
+msgid "A temporary message that will be displayed on the reset password page."
+msgstr ""
+
+#: core/app_settings.py:115
+msgid "Enable password recovery by SMS"
+msgstr ""
+
+#: core/app_settings.py:118
+msgid "Enable password recovery by SMS for users who filled a phone number."
+msgstr ""
+
+#: core/app_settings.py:124
+msgid "SMS provider"
+msgstr ""
+
+#: core/app_settings.py:127
+msgid "Choose a provider to send password recovery SMS"
+msgstr ""
+
+#: core/app_settings.py:133
 msgid "LDAP settings"
 msgstr "Arventennoù LDAP"
 
-#: core/app_settings.py:101
+#: core/app_settings.py:136
 msgid "Server address"
 msgstr "Chomlec'h ar servijer"
 
-#: core/app_settings.py:104
+#: core/app_settings.py:139
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "Chomlec'h IP pe anv DNS ar servijer LDAP"
 
-#: core/app_settings.py:108
+#: core/app_settings.py:143
 msgid "Server port"
 msgstr "Porzh ar servijer"
 
-#: core/app_settings.py:110
+#: core/app_settings.py:145
 msgid "The TCP port number used by the LDAP server"
 msgstr "Niverenn borzh TCP implijet gant ar servijer LDAP"
 
-#: core/app_settings.py:114
+#: core/app_settings.py:149
 msgid "Enable secondary server (fallback)"
 msgstr ""
 
-#: core/app_settings.py:117
+#: core/app_settings.py:152
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
 msgstr ""
 
-#: core/app_settings.py:123
-#, fuzzy
-#| msgid "Server address"
+#: core/app_settings.py:158
 msgid "Secondary server address"
-msgstr "Chomlec'h ar servijer"
+msgstr ""
 
-#: core/app_settings.py:126
-#, fuzzy
-#| msgid "The IP address or the DNS name of the LDAP server"
+#: core/app_settings.py:161
 msgid "The IP address or the DNS name of the seondary LDAP server"
-msgstr "Chomlec'h IP pe anv DNS ar servijer LDAP"
+msgstr ""
 
-#: core/app_settings.py:130
-#, fuzzy
-#| msgid "Server port"
+#: core/app_settings.py:165
 msgid "Secondary server port"
-msgstr "Porzh ar servijer"
+msgstr ""
 
-#: core/app_settings.py:133
-#, fuzzy
-#| msgid "The TCP port number used by the LDAP server"
+#: core/app_settings.py:168
 msgid "The TCP port number used by the LDAP secondary server"
-msgstr "Niverenn borzh TCP implijet gant ar servijer LDAP"
+msgstr ""
 
-#: core/app_settings.py:137
+#: core/app_settings.py:172
 msgid "Use a secured connection"
 msgstr "Ober gant ur gevreadenn suraet"
 
-#: core/app_settings.py:141
+#: core/app_settings.py:176
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
-msgstr ""
-"Implijit ur gevreadenn SSL/STARTTLS evit gellet tizhout ar servijer LDAP"
+msgstr "Implijit ur gevreadenn SSL/STARTTLS evit gellet tizhout ar servijer LDAP"
 
-#: core/app_settings.py:145
+#: core/app_settings.py:180
 msgid "Active Directory"
 msgstr "Kavlec'h oberiant"
 
-#: core/app_settings.py:148
+#: core/app_settings.py:183
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Lavarout a ra hag-eñ e vez ar servijer LDAP ur C'havlec'h Oberiant"
 
-#: core/app_settings.py:152
+#: core/app_settings.py:187
 msgid "Administrator groups"
 msgstr "Strolladoù merañ"
 
-#: core/app_settings.py:155
+#: core/app_settings.py:190
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Izili ar strolladoù LDAP Posix a vo krouet evel bezañ merourien domani. "
-"Implijit an arouezoù ';' evit gellet skejañ ar strolladoù."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Izili ar strolladoù LDAP Posix a vo krouet evel bezañ merourien domani. Implijit an arouezoù ';' evit gellet skejañ ar strolladoù."
 
-#: core/app_settings.py:162
+#: core/app_settings.py:197
 msgid "Group type"
 msgstr "Doare ar strollad"
 
-#: core/app_settings.py:166
+#: core/app_settings.py:201
 msgid "The LDAP group type to use with your directory."
 msgstr "An doare strollad LDAP da implijout gant ho kavlec'h."
 
-#: core/app_settings.py:171
+#: core/app_settings.py:206
 msgid "Groups search base"
 msgstr "Diazez klask ar strolladoù"
 
-#: core/app_settings.py:174
+#: core/app_settings.py:209
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Anv dibar an diaz klask implijet evit kavout strolladoù"
 
-#: core/app_settings.py:180
+#: core/app_settings.py:215
 msgid "Password attribute"
 msgstr "Perzhioù ar ger-tremen"
 
-#: core/app_settings.py:182
+#: core/app_settings.py:217
 msgid "The attribute used to store user passwords"
 msgstr "Ar perzhioù implijet evit stokiñ ar gerioù-tremen implijer"
 
-#: core/app_settings.py:187
-#, fuzzy
-#| msgid "Authentication method"
+#: core/app_settings.py:222
 msgid "LDAP authentication settings"
-msgstr "Doare dilesañ"
+msgstr ""
 
-#: core/app_settings.py:190
+#: core/app_settings.py:225
 msgid "Authentication method"
 msgstr "Doare dilesañ"
 
-#: core/app_settings.py:191
+#: core/app_settings.py:226
 msgid "Search and bind"
 msgstr "Klask ha liammañ"
 
-#: core/app_settings.py:192
+#: core/app_settings.py:227
 msgid "Direct bind"
 msgstr "liamm eeun"
 
-#: core/app_settings.py:194
+#: core/app_settings.py:229
 msgid "Choose the authentication method to use"
 msgstr "Dibabit an doare anavezadur da vezañ implijet"
 
-#: core/app_settings.py:198 core/app_settings.py:252
+#: core/app_settings.py:233 core/app_settings.py:287
 msgid "Bind DN"
 msgstr "Liammañ DN"
 
-#: core/app_settings.py:201 core/app_settings.py:255
+#: core/app_settings.py:236 core/app_settings.py:290
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"An anv dibar da vezañ implijet evit en em liammañ ouzh ar servijer LDAP. "
-"Lezel goullo evit un liamm dizanv."
+msgstr "An anv dibar da vezañ implijet evit en em liammañ ouzh ar servijer LDAP. Lezel goullo evit un liamm dizanv."
 
-#: core/app_settings.py:208 core/app_settings.py:262
+#: core/app_settings.py:243 core/app_settings.py:297
 msgid "Bind password"
 msgstr "Liammañ ur ger-tremen"
 
-#: core/app_settings.py:211 core/app_settings.py:265
+#: core/app_settings.py:246 core/app_settings.py:300
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Ar ger-tremen d'ober gantañ evit kevreañ ouzh ar servijer LDAP (gant "
-"'kevreadenn DN')"
+msgstr "Ar ger-tremen d'ober gantañ evit kevreañ ouzh ar servijer LDAP (gant 'kevreadenn DN')"
 
-#: core/app_settings.py:219 core/app_settings.py:311
+#: core/app_settings.py:254 core/app_settings.py:346
 msgid "Users search base"
 msgstr "Diazez enklask an implijerien"
 
-#: core/app_settings.py:222 core/app_settings.py:314
+#: core/app_settings.py:257 core/app_settings.py:349
 msgid "The distinguished name of the search base used to find users"
 msgstr "Anv dibar an diaz enklask implijet evit kavout implijerien"
 
-#: core/app_settings.py:228 core/app_settings.py:320
+#: core/app_settings.py:263 core/app_settings.py:355
 msgid "Search filter"
 msgstr "Sil klask"
 
-#: core/app_settings.py:231 core/app_settings.py:323
+#: core/app_settings.py:266 core/app_settings.py:358
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Ur chadenn sil diret (d.sk. '(objedKlas = person)'). Evit bezañ reizh, e "
-"rank bezañ enklozet etre krommelloù."
+msgstr "Ur chadenn sil diret (d.sk. '(objedKlas = person)'). Evit bezañ reizh, e rank bezañ enklozet etre krommelloù."
 
-#: core/app_settings.py:238
+#: core/app_settings.py:273
 msgid "User DN template"
 msgstr "Patrom implijer DN"
 
-#: core/app_settings.py:241
+#: core/app_settings.py:276
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Ar skouer implijet evit sevel DN un implijer. Rankout a rafe enderc'hel ur "
-"spas miret (d.l.e %(user)s)"
+msgstr "Ar skouer implijet evit sevel DN un implijer. Rankout a rafe enderc'hel ur spas miret (d.l.e %(user)s)"
 
-#: core/app_settings.py:249
-#, fuzzy
-#| msgid "LDAP settings"
+#: core/app_settings.py:284
 msgid "LDAP synchronization settings"
-msgstr "Arventennoù LDAP"
+msgstr ""
 
-#: core/app_settings.py:273
+#: core/app_settings.py:308
 msgid "Enable export to LDAP"
 msgstr ""
 
-#: core/app_settings.py:276
+#: core/app_settings.py:311
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 
-#: core/app_settings.py:282
+#: core/app_settings.py:317
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr ""
 
-#: core/app_settings.py:286
+#: core/app_settings.py:321
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
 msgstr ""
 
-#: core/app_settings.py:292
-#, fuzzy
-#| msgid "User DN template"
+#: core/app_settings.py:327
 msgid "Account DN template"
-msgstr "Patrom implijer DN"
+msgstr ""
 
-#: core/app_settings.py:295
-#, fuzzy, python-format
-#| msgid ""
-#| "The template used to construct a user's DN. It should contain one "
-#| "placeholder (ie. %(user)s)"
+#: core/app_settings.py:330
+#, python-format
 msgid ""
 "The template used to construct an account's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr ""
-"Ar skouer implijet evit sevel DN un implijer. Rankout a rafe enderc'hel ur "
-"spas miret (d.l.e %(user)s)"
 
-#: core/app_settings.py:302
+#: core/app_settings.py:337
 msgid "Enable import from LDAP"
 msgstr ""
 
-#: core/app_settings.py:305
+#: core/app_settings.py:340
 msgid "Enable account synchronization from LDAP directory to local database"
 msgstr ""
 
-#: core/app_settings.py:330
-#, fuzzy
-#| msgid "Password attribute"
+#: core/app_settings.py:365
 msgid "Username attribute"
-msgstr "Perzhioù ar ger-tremen"
+msgstr ""
 
-#: core/app_settings.py:333
+#: core/app_settings.py:368
 msgid "The name of the LDAP attribute where the username can be found."
 msgstr ""
 
-#: core/app_settings.py:337 core/templates/core/dashboard.html:5
+#: core/app_settings.py:373
+msgid "Enable Dovecot LDAP sync"
+msgstr ""
+
+#: core/app_settings.py:376
+msgid "LDAP authentication settings will be applied to Dovecot configuration."
+msgstr ""
+
+#: core/app_settings.py:382
+msgid "Dovecot LDAP config file"
+msgstr ""
+
+#: core/app_settings.py:386
+msgid ""
+"Location of the configuration file which contains Dovecot LDAP settings."
+msgstr ""
+
+#: core/app_settings.py:391 core/templates/core/dashboard.html:5
 msgid "Dashboard"
 msgstr "Taolenn-stur"
 
-#: core/app_settings.py:340
+#: core/app_settings.py:394
 msgid "Custom RSS feed"
 msgstr "Froud RSS personel"
 
-#: core/app_settings.py:343
+#: core/app_settings.py:397
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Diskouez froudoù RSS personnel d'an eilgwerzherien ha merourien an domani"
+msgstr "Diskouez froudoù RSS personnel d'an eilgwerzherien ha merourien an domani"
 
-#: core/app_settings.py:348
+#: core/app_settings.py:402
 msgid "Hide features widget"
 msgstr "Kuzhat an arc'hweladurioù objed"
 
-#: core/app_settings.py:351
+#: core/app_settings.py:405
 msgid "Hide features widget for resellers and domain administrators"
-msgstr ""
-"Kuzhat an arc'hweladurioù objed d'an eilgwerzherien ha merourien an domani"
+msgstr "Kuzhat an arc'hweladurioù objed d'an eilgwerzherien ha merourien an domani"
 
-#: core/app_settings.py:355
+#: core/app_settings.py:409
 msgid "Notifications"
 msgstr "Kemennadennoù"
 
-#: core/app_settings.py:358
+#: core/app_settings.py:412
 msgid "Sender address"
 msgstr "Chomlec'h ar c'haser"
 
-#: core/app_settings.py:361
+#: core/app_settings.py:415
 msgid "Email address used to send notifications."
 msgstr "Chomlec'h postel implijet da gas kemmennoù."
 
-#: core/app_settings.py:365
+#: core/app_settings.py:419
 msgid "Public API"
 msgstr "API foran"
 
-#: core/app_settings.py:368
+#: core/app_settings.py:422
 msgid "Enable communication"
 msgstr "Enaouiñ ar c'hehentiñ"
 
-#: core/app_settings.py:371
+#: core/app_settings.py:425
 msgid "Enable communication with Modoboa public API"
 msgstr "Enaouiñ ar c'hehentiñ dre API foran Modoboa "
 
-#: core/app_settings.py:375
+#: core/app_settings.py:429
 msgid "Check new versions"
 msgstr "Klask stummoù nevez"
 
-#: core/app_settings.py:378
+#: core/app_settings.py:432
 msgid "Automatically checks if a newer version is available"
 msgstr "Em-wiriañ ma vez ur stumm nevez hegerz"
 
-#: core/app_settings.py:382
+#: core/app_settings.py:436
 msgid "Send an email when new versions are found"
 msgstr ""
 
-#: core/app_settings.py:385
+#: core/app_settings.py:439
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 
-#: core/app_settings.py:389
+#: core/app_settings.py:443
 msgid "Recipient"
 msgstr ""
 
-#: core/app_settings.py:392
+#: core/app_settings.py:446
 msgid "Recipient of new versions notification emails."
 msgstr ""
 
-#: core/app_settings.py:397
+#: core/app_settings.py:451
 msgid "Send statistics"
 msgstr "Kas statistikoù"
 
-#: core/app_settings.py:400
+#: core/app_settings.py:454
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Kas ar statistikoù da API foran Modoboa (kontourioù hag an astennoù "
-"impliljet)"
+msgstr "Kas ar statistikoù da API foran Modoboa (kontourioù hag an astennoù impliljet)"
 
-#: core/app_settings.py:404
+#: core/app_settings.py:458
 msgid "Miscellaneous"
 msgstr "A-bep seurt"
 
-#: core/app_settings.py:407
+#: core/app_settings.py:461
 msgid "Inactive account threshold"
 msgstr "Treuzoù ar c'hontoù dioberiant"
 
-#: core/app_settings.py:410
+#: core/app_settings.py:464
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Ur gont gant un deiziad kevreañ koshoc'h evit an treuzoù-se (e devezhioù) a "
-"vo kontet evel bezañ dioberiant"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
+msgstr "Ur gont gant un deiziad kevreañ koshoc'h evit an treuzoù-se (e devezhioù) a vo kontet evel bezañ dioberiant"
 
-#: core/app_settings.py:416
+#: core/app_settings.py:470
 msgid "Top notifications check interval"
 msgstr "Padelezh etre ar c'hemennoù gwiriañ pennañ"
 
-#: core/app_settings.py:419
+#: core/app_settings.py:473
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Padelezh etre div gwiriadenn gemennoù pennañ (en eilennoù)"
 
-#: core/app_settings.py:424
+#: core/app_settings.py:478
 msgid "Maximum log record age"
 msgstr "Oad enrollañ maksimom ar marilhoù"
 
-#: core/app_settings.py:426
+#: core/app_settings.py:480
 msgid "The maximum age in days of a log record"
 msgstr "Oad brasañ e devezhioù un enrollodenn renabl"
 
-#: core/app_settings.py:430
+#: core/app_settings.py:484
 msgid "Items per page"
 msgstr "Elfennoù dre bajenn"
 
-#: core/app_settings.py:432
+#: core/app_settings.py:486
 msgid "Number of displayed items per page"
 msgstr "Niver a elfennoù diskouezet dre bajenn"
 
-#: core/app_settings.py:436
+#: core/app_settings.py:490
 msgid "Default top redirection"
 msgstr "Adhenchañ pennañ dre-ziouer"
 
-#: core/app_settings.py:440
+#: core/app_settings.py:494
 msgid "The default redirection used when no application is specified"
 msgstr "An adheñchañ dre-ziouer implijet pa n'eus arload ebet spisaet"
 
-#: core/app_settings.py:478 core/app_settings.py:486
+#: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
 msgid "Invalid syntax"
 msgstr "Sintaks direizh"
 
-#: core/app_settings.py:492
+#: core/app_settings.py:570
 msgid "Invalid rounds number"
 msgstr "Niveroù ront direizh"
 
-#: core/app_settings.py:519
+#: core/app_settings.py:595 core/app_settings.py:597 core/app_settings.py:608
 msgid "This field is required"
 msgstr "Rekis eo leuniañ ar vaezienn"
 
@@ -497,66 +488,79 @@ msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
-msgstr ""
-"Bez ho peus lakaet USE_TZ da Gaou, gellout a ra degas kudennoù da vare an "
-"tremennadennoù eurvezh hañv/eurvezh goañv (d.l.e ar memes eurvezh lec'hel a "
-"c'hoarvez div wech abalamour d'ur cheñchamant horolaj)."
+msgstr "Bez ho peus lakaet USE_TZ da Gaou, gellout a ra degas kudennoù da vare an tremennadennoù eurvezh hañv/eurvezh goañv (d.l.e ar memes eurvezh lec'hel a c'hoarvez div wech abalamour d'ur cheñchamant horolaj)."
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Lakaat `USE_TZ = Gwir e-barzh`arventennoù.py"
 
-#: core/constants.py:5
+#: core/constants.py:6
 msgid "Simple user"
 msgstr "Implijer diazez"
 
-#: core/constants.py:6
+#: core/constants.py:7
 msgid "Domain administrator"
 msgstr "Merour an domani"
 
-#: core/constants.py:7
+#: core/constants.py:8
 msgid "Reseller"
 msgstr "Eilgwerzher"
 
-#: core/constants.py:8
+#: core/constants.py:9
 msgid "Super administrator"
 msgstr "Dreist-merour"
 
-#: core/constants.py:51 lib/form_utils.py:389
+#: core/constants.py:52 lib/form_utils.py:389
 msgid "No"
 msgstr "Ket"
 
-#: core/forms.py:18
+#: core/constants.py:102
+msgid "Choose a provider"
+msgstr ""
+
+#: core/constants.py:107
+msgid "Dummy"
+msgstr ""
+
+#: core/forms.py:21
 msgid "Username"
 msgstr "Anv implier"
 
-#: core/forms.py:22
+#: core/forms.py:25
 msgid "Password"
 msgstr "Ger-tremen"
 
-#: core/forms.py:35
+#: core/forms.py:38
 msgid "Old password"
 msgstr "Ger-tremen kozh"
 
-#: core/forms.py:39
+#: core/forms.py:42
 msgid "New password"
 msgstr "Ger-termen nevez"
 
-#: core/forms.py:43
+#: core/forms.py:46
 msgid "Confirmation"
 msgstr "Kadarnaat"
 
-#: core/forms.py:71
+#: core/forms.py:74
 msgid "Old password mismatchs"
 msgstr "Disklotadurioù ar ger-tremen kozh"
 
-#: core/forms.py:80
+#: core/forms.py:83
 msgid "Passwords mismatch"
 msgstr "Disklotadurioù gerioù-tremen"
 
-#: core/forms.py:100
+#: core/forms.py:103
 msgid "Enable API access"
 msgstr "Aotren moned an API"
+
+#: core/forms.py:137
+msgid "Verification code"
+msgstr ""
+
+#: core/forms.py:148
+msgid "Invalid code"
+msgstr ""
 
 #: core/handlers.py:36
 msgid "added"
@@ -597,76 +601,70 @@ msgid "One or more updates are available"
 msgstr "Hegerz ez eus un hizivadenn pe muioc'h"
 
 #: core/management/commands/communicate_with_public_api.py:44
-#, fuzzy
-#| msgid "One or more updates are available"
 msgid "[modoboa] Update(s) available"
-msgstr "Hegerz ez eus un hizivadenn pe muioc'h"
+msgstr ""
 
-#: core/models.py:53
+#: core/models.py:55
 msgid "Allow mailboxes access"
 msgstr "Aotren ar moned d'ar boestoù-post"
 
-#: core/models.py:55
+#: core/models.py:57
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Aotren an implijer-mañ da vont e boestoù-post an implijerien"
 
-#: core/models.py:58
+#: core/models.py:60
 msgid "password"
 msgstr "Ger-tremen"
 
-#: core/models.py:61
+#: core/models.py:63
 msgid "language"
 msgstr "yezh"
 
-#: core/models.py:64
+#: core/models.py:66
 msgid "Prefered language to display pages."
 msgstr "Yezh karetañ evit diskwel ar pajenoù"
 
-#: core/models.py:68
+#: core/models.py:70
 msgid "Phone number"
 msgstr "Niverenn bellgomz"
 
-#: core/models.py:70
+#: core/models.py:72
 msgid "Secondary email"
 msgstr "Eil chomlec'h postel"
 
-#: core/models.py:73
+#: core/models.py:75
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr ""
-"Gallout a reer ober gant un eil chomlec'h postel evit ezhommoù adtapout"
+msgstr "Gallout a reer ober gant un eil chomlec'h postel evit ezhommoù adtapout"
 
-#: core/models.py:124
+#: core/models.py:126
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Hizivadur ger-tremen c'hwitet: modulenn LDAP nann-staliet"
 
-#: core/models.py:153
+#: core/models.py:155
 msgid "account"
 msgstr "kont"
 
-#: core/models.py:280
+#: core/models.py:282
 msgid "Unknown"
 msgstr "Dizanv"
 
-#: core/models.py:314
+#: core/models.py:316
 msgid "Invalid line"
 msgstr "Linenn direizh"
 
-#: core/models.py:322
+#: core/models.py:324
 msgid "You can't import an account with a role greater than yours"
-msgstr ""
-"N'hallit ket emporzhiañ ur gont gant ur rol pouezusoc'h evit hoc'h hini "
-"deoc'h-c'hwi"
+msgstr "N'hallit ket emporzhiañ ur gont gant ur rol pouezusoc'h evit hoc'h hini deoc'h-c'hwi"
 
-#: core/models.py:337
+#: core/models.py:339
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "An implijer eeun '%s' a rank kaout ur chomlec'h postel reizh"
 
-#: core/models.py:342
+#: core/models.py:344
 #, python-format
 msgid "username and email fields must not differ for '%s'"
-msgstr ""
-"ar maeziennoù anv-implijer hag ar postel a rank bezañ disheñvel diouzh '%s'"
+msgstr "ar maeziennoù anv-implijer hag ar postel a rank bezañ disheñvel diouzh '%s'"
 
 #: core/password_validation.py:24
 msgid "Password must contain at least {} digit."
@@ -706,8 +704,51 @@ msgstr[4] "Ar ger-tremen a rank enderc'hel da vihanañ {} arouez ispisial."
 
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
+msgstr "Rankout a ra enderc'hel ho ker-tremen ur c'henaozadur a arouezioù disheñvel."
+
+#: core/sms_backends/ovh.py:19
+msgid "API endpoint"
 msgstr ""
-"Rankout a ra enderc'hel ho ker-tremen ur c'henaozadur a arouezioù disheñvel."
+
+#: core/sms_backends/ovh.py:22
+msgid "OVH Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:23
+msgid "OVH US"
+msgstr ""
+
+#: core/sms_backends/ovh.py:24
+msgid "OVH North-America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:25
+msgid "So you Start Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:26
+msgid "So you Start North America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:27
+msgid "Kimsufi Europe"
+msgstr ""
+
+#: core/sms_backends/ovh.py:28
+msgid "Kimsufi North America"
+msgstr ""
+
+#: core/sms_backends/ovh.py:35
+msgid "Application key"
+msgstr ""
+
+#: core/sms_backends/ovh.py:42
+msgid "Application secret"
+msgstr ""
+
+#: core/sms_backends/ovh.py:50
+msgid "Consumer key"
+msgstr ""
 
 #: core/templates/core/_current_features.html:6
 msgid "Features looking for sponsoring"
@@ -733,9 +774,7 @@ msgstr "Keleier diwezhañ"
 msgid ""
 "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
 "weblog</a> for more information."
-msgstr ""
-"Kit d'ober un dro war ar <a href=\"https://modoboa.org/blog/\" target="
-"\"_blank\">weblog ofisiel</a> evit kaout muioc'h a ditouroù."
+msgstr "Kit d'ober un dro war ar <a href=\"https://modoboa.org/blog/\" target=\"_blank\">weblog ofisiel</a> evit kaout muioc'h a ditouroù."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -748,11 +787,9 @@ msgstr "Merit ho moned da API Modoboa"
 #: core/templates/core/api_access.html:7
 #, python-format
 msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" target="
-"\"_blank\">here</a></strong>."
-msgstr ""
-"Un teuliadur diwar-benn an API a vez hegerzh <strong><a href=\"%(url)s\" "
-"target=\"_blank\">amañ</a></strong>."
+"A documentation of the API is available <strong><a href=\"%(url)s\" "
+"target=\"_blank\">here</a></strong>."
+msgstr "Un teuliadur diwar-benn an API a vez hegerzh <strong><a href=\"%(url)s\" target=\"_blank\">amañ</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -782,9 +819,7 @@ msgstr "Un hizivadenn pe muioc'h a zo hegerz!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Sellit ouzh al listenn da-heul da welet hag-eñ e c'hall bezañ hizivaet ar "
-"parzh(ioù)."
+msgstr "Sellit ouzh al listenn da-heul da welet hag-eñ e c'hall bezañ hizivaet ar parzh(ioù)."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -844,19 +879,17 @@ msgid "Message"
 msgstr "Kemennadenn"
 
 #: core/templates/core/notifications/update_available.html:3
-#, fuzzy
-#| msgid "One or more updates are available"
 msgid ""
 "\n"
 "  The following update is available:\n"
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] "Hegerz ez eus un hizivadenn pe muioc'h"
-msgstr[1] "Hegerz ez eus un hizivadenn pe muioc'h"
-msgstr[2] "Hegerz ez eus un hizivadenn pe muioc'h"
-msgstr[3] "Hegerz ez eus un hizivadenn pe muioc'h"
-msgstr[4] "Hegerz ez eus un hizivadenn pe muioc'h"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
 
 #: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
 msgid "Parameters"
@@ -901,10 +934,8 @@ msgid "Update your personal information"
 msgstr "Hizivaat ho titouroù personel"
 
 #: core/templates/core/user_profile.html:13
-#, fuzzy
-#| msgid "Failed to update password: {}"
 msgid "Click here to update your password"
-msgstr "C'hwitet ez eus bet war hizivadur ar ger-tremen: {}"
+msgstr ""
 
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
@@ -926,31 +957,32 @@ msgstr "Lodenn greiz Modoboa"
 msgid "Parameters saved"
 msgstr "Arventennoù enrollet"
 
-#: core/views/auth.py:46
+#: core/views/auth.py:59
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Dizemglev gant brastres ar ger-tremen. Oc'h hizivat ar ger-tremen %s"
 
-#: core/views/auth.py:53
-#, fuzzy, python-format
-#| msgid "Password scheme mismatch. Updating %s password"
+#: core/views/auth.py:66
+#, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
-msgstr "Dizemglev gant brastres ar ger-tremen. Oc'h hizivat ar ger-tremen %s"
+msgstr ""
 
-#: core/views/auth.py:69
+#: core/views/auth.py:82
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Implijer '%s' kevreet gant berzh"
 
-#: core/views/auth.py:77
+#: core/views/auth.py:90
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Hoc'h anv-implijer hag ho ker-tremen na genglotont ket. Klaskit en-dro, mar "
-"plij."
+msgstr "Hoc'h anv-implijer hag ho ker-tremen na genglotont ket. Klaskit en-dro, mar plij."
 
-#: core/views/auth.py:112
+#: core/views/auth.py:125
 msgid "User '{}' successfully logged out"
 msgstr "Implijer '{}' digevreet gant berzh"
+
+#: core/views/auth.py:170 core/views/auth.py:225
+msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr ""
 
 #: core/views/user.py:53
 msgid "Profile updated"
@@ -991,7 +1023,8 @@ msgid "Enter a valid email address."
 msgstr "Ebarzhit ur chomlec'h postel reizh."
 
 #: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:12
-#: templates/registration/password_reset_form.html:11
+#: templates/registration/password_reset_confirm_code.html:25
+#: templates/registration/password_reset_form.html:29
 msgid "Submit"
 msgstr "Kas"
 
@@ -1052,8 +1085,9 @@ msgstr "Fazi:"
 msgid "Help:"
 msgstr "Skoazell:"
 
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Serriñ"
 
@@ -1078,7 +1112,7 @@ msgid "Log in"
 msgstr "Kevreañ"
 
 #: templates/registration/login.html:24
-#: templates/registration/password_reset_form.html:6
+#: templates/registration/password_reset_form.html:17
 msgid "Forgot password?"
 msgstr "Ger-tremen ankouaeet?"
 
@@ -1087,9 +1121,7 @@ msgstr "Ger-tremen ankouaeet?"
 msgid ""
 "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
 "in</a> now."
-msgstr ""
-"Termenet eo bet ho ker-tremen. Gellout a rit mont war-raok ha <a href="
-"\"%(url)s\">kevreañ</a> bremañ."
+msgstr "Termenet eo bet ho ker-tremen. Gellout a rit mont war-raok ha <a href=\"%(url)s\">kevreañ</a> bremañ."
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
@@ -1099,10 +1131,15 @@ msgstr "Cheñch ger-tremen"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
+msgstr "Al liamm adderaouaekaat a oa direizh anezhañ, sur a-walc'h abalamour m'eo bet implijet endeo. Goulennit war-lerc'h un adderaouekadur ger-tremen nevez mar plij."
+
+#: templates/registration/password_reset_confirm_code.html:20
+msgid "Enter the code you've just received by SMS"
 msgstr ""
-"Al liamm adderaouaekaat a oa direizh anezhañ, sur a-walc'h abalamour m'eo "
-"bet implijet endeo. Goulennit war-lerc'h un adderaouekadur ger-tremen nevez "
-"mar plij."
+
+#: templates/registration/password_reset_confirm_code.html:27
+msgid "Resend code"
+msgstr ""
 
 #: templates/registration/password_reset_done.html:7
 msgid ""
@@ -1110,48 +1147,29 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>Postelet hon eus deoc'h pazennoù evit diazezañ ker-tremen, ma vez ur gont "
-"gant ar postel ho peus ebarzhet. Resevet e vint ganeoc'h a-benn nebeud.</p> "
-"<p>Ma ne resevit tamm postel ebet, bezit asur da vezañ bet skrivet ho "
-"chomlec'h postel pennañ, ha taolit ur sell ouzh an doser strob.</p>"
+msgstr "<p>Postelet hon eus deoc'h pazennoù evit diazezañ ker-tremen, ma vez ur gont gant ar postel ho peus ebarzhet. Resevet e vint ganeoc'h a-benn nebeud.</p> <p>Ma ne resevit tamm postel ebet, bezit asur da vezañ bet skrivet ho chomlec'h postel pennañ, ha taolit ur sell ouzh an doser strob.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #, python-format
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
-msgstr ""
-"%(username)s, evit loc'hañ an argerzh adderaouekaat ger-tremen evit ho kont "
-"Modoboa, klikit war al liamm dindan:"
+msgstr "%(username)s, evit loc'hañ an argerzh adderaouekaat ger-tremen evit ho kont Modoboa, klikit war al liamm dindan:"
 
 #: templates/registration/password_reset_email.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
-msgstr ""
-"Ma ne 'z a ket en-dro klikañ war al liamm dindan, eilit pe pegit an URL e-"
-"barzh ur prenestr merdeer nevez e-plas."
+msgstr "Ma ne 'z a ket en-dro klikañ war al liamm dindan, eilit pe pegit an URL e-barzh ur prenestr merdeer nevez e-plas."
 
 #: templates/registration/password_reset_email.html:14
 msgid "Sincerely, The Modoboa Team."
 msgstr "A galon, skipailh Modoboa."
 
+#: templates/registration/password_reset_form.html:24
+msgid "Please fill-in your primary email address"
+msgstr ""
+
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
 msgstr "Ger-tremen Modoboa adderaouekaet"
-
-#~ msgid "md5crypt (weak)"
-#~ msgstr "md5crypt (gwan)"
-
-#~ msgid "sha256 (weak)"
-#~ msgstr "sha256 (gwan)"
-
-#~ msgid "md5 (weak)"
-#~ msgstr "md5 (gwan)"
-
-#~ msgid "crypt (weak)"
-#~ msgstr "crypt (gwan)"
-
-#~ msgid "plain (weak)"
-#~ msgstr "plaen (gwan)"

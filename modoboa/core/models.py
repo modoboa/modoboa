@@ -3,20 +3,20 @@
 import re
 from email.header import Header
 
-import jsonfield
-from reversion import revisions as reversion
-
 from django.conf import settings
+from django.db import models
+from django.urls import reverse
+from django.utils.encoding import force_str, smart_bytes, smart_text
+from django.utils.functional import cached_property
+from django.utils.translation import ugettext as _, ugettext_lazy
+
 from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.db import models
-from django.urls import reverse
-from django.utils.encoding import (
-    force_str, python_2_unicode_compatible, smart_bytes, smart_text
-)
-from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _, ugettext_lazy
+
+import jsonfield
+from phonenumber_field.modelfields import PhoneNumberField
+from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import (
@@ -32,7 +32,6 @@ except ImportError:
     ldap_available = False
 
 
-@python_2_unicode_compatible
 class User(AbstractUser):
 
     """Custom User model.
@@ -64,8 +63,8 @@ class User(AbstractUser):
             "Prefered language to display pages."
         )
     )
-    phone_number = models.CharField(
-        ugettext_lazy("Phone number"), max_length=128, blank=True, null=True)
+    phone_number = PhoneNumberField(
+        ugettext_lazy("Phone number"), blank=True, null=True)
     secondary_email = models.EmailField(
         ugettext_lazy("Secondary email"), max_length=254,
         blank=True, null=True,
@@ -407,7 +406,6 @@ def populate_callback(user, group="SimpleUsers"):
         sender="populate_callback", user=user)
 
 
-@python_2_unicode_compatible
 class ObjectAccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -443,6 +441,9 @@ class LocalConfig(models.Model):
     api_versions = jsonfield.JSONField()
 
     _parameters = jsonfield.JSONField(default={})
+
+    # Dovecot LDAP update
+    need_dovecot_update = models.BooleanField(default=False)
 
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""

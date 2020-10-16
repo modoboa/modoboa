@@ -23,10 +23,14 @@ def get_requirements(requirements_file):
     requirements = []
     if path.isfile(requirements_file):
         for req in parse_requirements(requirements_file, session="hack"):
-            if req.markers:
-                requirements.append("%s;%s" % (req.req, req.markers))
-            else:
-                requirements.append("%s" % req.req)
+            try:
+                if req.markers:
+                    requirements.append("%s;%s" % (req.req, req.markers))
+                else:
+                    requirements.append("%s" % req.req)
+            except AttributeError:
+                # pip >= 20.0.2
+                requirements.append(req.requirement)
     return requirements
 
 
@@ -52,7 +56,7 @@ if __name__ == "__main__":
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "Environment :: Web Environment",
-            "Framework :: Django :: 1.11",
+            "Framework :: Django :: 2.2",
             "Intended Audience :: System Administrators",
             "License :: OSI Approved :: ISC License (ISCL)",
             "Operating System :: OS Independent",
@@ -60,6 +64,7 @@ if __name__ == "__main__":
             "Programming Language :: Python :: 3.5",
             "Programming Language :: Python :: 3.6",
             "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.8",
             "Topic :: Communications :: Email",
             "Topic :: Internet :: WWW/HTTP",
         ],

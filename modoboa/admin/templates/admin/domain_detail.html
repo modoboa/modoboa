@@ -64,6 +64,20 @@
           <th>{% trans "Default mailbox quota" %}</a></th>
           <td>{{ domain.default_mailbox_quota }} {% trans "MB" %}</td>
         </tr>
+        {% if domain.message_limit != None %}
+          <tr>
+            <th>{% trans "Message sending limit" %}</a></th>
+            <td>{{ domain.message_limit }} {% trans "per day" %}</td>
+          </tr>
+          <tr>
+            <th>{% trans "Usage" %}</a></th>
+            <td>
+              <div class="progress">
+                <div class="{% progress_color domain.sent_messages_in_percent %}" style="width: {{ domain.sent_messages_in_percent }}%" title="{{ domain.sent_messages_in_percent }}% ({{ domain.sent_messages }}) {% trans 'used' context 'message count' %}"></div>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
       </table>
     </div>
 
@@ -141,7 +155,7 @@
         </tbody>
       </table>
     </div>
-    
+
     {% for template in templates.right %}
       {% include template %}
     {% endfor %}

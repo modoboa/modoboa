@@ -11,11 +11,13 @@ import lxml.html
 from lxml.html import defs
 from lxml.html.clean import Cleaner
 
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_str, smart_text
 from django.utils.html import conditional_escape, escape
 from django.utils.translation import ugettext as _
 
+from modoboa.core import models as core_models
 from modoboa.lib import u2u_decode
 from modoboa.lib.exceptions import InternalError
 
@@ -467,3 +469,16 @@ To: %s
     fp.close()
 
     return _sendmail(sender, rcpt, content)
+
+
+def send_notification(recipient, subject, tpl, sender=None, **kwargs):
+    """Send notification by email."""
+    if not sender:
+        local_config = (
+            core_models.LocalConfig.objects.select_related("site").first())
+        sender = local_config.parameters.get_value("sender_address")
+    content = render_to_string(tpl, kwargs)
+    msg = EmailMessage(
+        subject, content.strip(), sender, [recipient],
+    )
+    msg.send()

@@ -2,6 +2,7 @@
 
 from django import http
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import ugettext as _
 
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
@@ -10,7 +11,9 @@ from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
 
 from modoboa.core import models as core_models
-from . import models, serializers
+from modoboa.core import sms_backends
+
+from . import lib, models, serializers
 
 
 class DomainViewSet(viewsets.ModelViewSet):
@@ -65,7 +68,8 @@ class AccountViewSet(viewsets.ModelViewSet):
         action_dict = {
             "list": serializers.AccountSerializer,
             "retrieve": serializers.AccountSerializer,
-            "password": serializers.AccountPasswordSerializer
+            "password": serializers.AccountPasswordSerializer,
+            "reset_password": serializers.ResetPasswordSerializer,
         }
         return action_dict.get(
             self.action, serializers.WritableAccountSerializer)
@@ -114,6 +118,37 @@ class AccountViewSet(viewsets.ModelViewSet):
             data = {"exists": True}
         serializer = serializers.AccountExistsSerializer(data)
         return Response(serializer.data)
+
+    @action(methods=["post"], detail=False)
+    def reset_password(self, request):
+        """Reset account password and send a new one by SMS."""
+        sms_password_recovery = (
+            request.localconfig.parameters
+            .get_value("sms_password_recovery", app="core")
+        )
+        if not sms_password_recovery:
+            return Response(status=404)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = core_models.User.objects.filter(
+            email=serializer.validated_data["email"]).first()
+        if not user or not user.phone_number:
+            return Response(status=404)
+        backend = sms_backends.get_active_backend(
+            request.localconfig.parameters)
+        if not backend:
+            return Response(status=404)
+        password = lib.make_password()
+        content = _("Here is your new Modoboa password: {}").format(
+            password)
+        if not backend.send(content, [str(user.phone_number)]):
+            body = {"status": "ko"}
+        else:
+            # SMS was sent, now we can set the new password.
+            body = {"status": "ok"}
+            user.set_password(password)
+            user.save(update_fields=["password"])
+        return Response(body)
 
 
 class AliasViewSet(viewsets.ModelViewSet):

@@ -45,6 +45,12 @@
               <th>{% trans "Quota" %}</th>
               <td>{% include "common/progressbar.html" with id='quotabar' value=object.mailbox.get_quota_in_percent %}</td>
             </tr>
+            {% if object.mailbox.message_limit is not None %}
+              <tr>
+                <th>{% trans "Message sending limit" %}</a></th>
+                <td>{% include "common/progressbar.html" with id='messagelimitbar' value=object.mailbox.sent_messages_in_percent %}</td>
+              </tr>
+            {% endif %}
           {% endif %}
         </table>
       </div>
@@ -59,7 +65,7 @@
             <tr><td>{{ domain }}</td></tr>
           {% empty %}
             <tr><td>{% trans "No domain defined." %}</td></tr>
-          {% endfor %}          
+          {% endfor %}
         </table>
       </div>
       {% endif %}
