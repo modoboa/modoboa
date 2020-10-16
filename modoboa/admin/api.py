@@ -67,6 +67,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         """Return a serializer."""
         action_dict = {
             "list": serializers.AccountSerializer,
+            "me": serializers.AccountSerializer,
             "retrieve": serializers.AccountSerializer,
             "password": serializers.AccountPasswordSerializer,
             "reset_password": serializers.ResetPasswordSerializer,
@@ -85,6 +86,12 @@ class AccountViewSet(viewsets.ModelViewSet):
         if domain:
             queryset = queryset.filter(mailbox__domain__name=domain)
         return queryset
+
+    @action(methods=["get"], detail=False)
+    def me(self, request):
+        """Return information about connected user."""
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
     @action(methods=["put"], detail=True)
     def password(self, request, pk=None):

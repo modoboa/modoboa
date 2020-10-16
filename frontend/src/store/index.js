@@ -1,16 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import domains from './modules/domains'
+import auth from '@/store/modules/auth'
+import domains from '@/store/modules/domains'
 
 Vue.use(Vuex)
 
-const options = {
-    modules: {
-        domains
-    },
-    strict: process.env.NODE_ENV !== 'production'
-}
-
-export default new Vuex.Store(options)
-export { options }
+export default new Vuex.Store({
+  modules: {
+    auth,
+    domains
+  },
+  strict: process.env.NODE_ENV !== 'production'
+})

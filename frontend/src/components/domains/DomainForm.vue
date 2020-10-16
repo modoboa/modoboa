@@ -52,10 +52,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="cancel">
+          <v-btn color="blue darken-1" text @click="cancel">
             Cancel
           </v-btn>
-          <v-btn color="blue darken-1" flat @click="save">
+          <v-btn color="blue darken-1" text @click="save">
             Save
           </v-btn>
         </v-card-actions>
@@ -65,56 +65,63 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-    data () {
-        return {
-            formErrors: {},
-            domain: {}
-        }
-    },
-    mounted () {
-        var domainPk = this.$route.params.domainPk
-        if (domainPk) {
-            if (!this.$store.state.domainsLoaded) {
-                this.$store.dispatch('getDomains').then(response => {
-                    this.loadDomain(domainPk)
-                })
-            } else {
-                this.loadDomain(domainPk)
-            }
-        }
-    },
-    methods: {
-        loadDomain (pk) {
-            this.domain = JSON.parse(
-                JSON.stringify(this.$store.getters.getDomainByPk(pk))
-            )
-        },
-        onSaveError (response) {
-            this.formErrors = response.data
-        },
-        save () {
-            var action
-            var msg
-            if (this.domain.pk) {
-                action = 'updateDomain'
-                msg = 'Domain updated.'
-            } else {
-                action = 'createDomain'
-                msg = 'Domain created.'
-            }
-            this.$store.dispatch(action, this.domain).then(response => {
-                this.$router.push({ name: 'DomainList' })
-                this.$toast.open({
-                    message: msg,
-                    type: 'is-success',
-                    position: 'is-bottom'
-                })
-            }, this.onSaveError)
-        },
-        cancel () {
-            this.$router.push({ name: 'DomainList' })
-        }
+  data () {
+    return {
+      formErrors: {},
+      domain: {}
     }
+  },
+  computed: {
+    ...mapGetters({
+      getDomainByPk: 'domains/getDomainByPk'
+    })
+  },
+  mounted () {
+    var domainPk = this.$route.params.domainPk
+    if (domainPk) {
+      if (!this.$store.state.domainsLoaded) {
+        this.$store.dispatch('domains/getDomains').then(response => {
+          this.loadDomain(domainPk)
+        })
+      } else {
+        this.loadDomain(domainPk)
+      }
+    }
+  },
+  methods: {
+    loadDomain (pk) {
+      this.domain = JSON.parse(
+        JSON.stringify(this.getDomainByPk(pk))
+      )
+    },
+    onSaveError (response) {
+      this.formErrors = response.data
+    },
+    save () {
+      var action
+      var msg
+      if (this.domain.pk) {
+        action = 'domains/updateDomain'
+        msg = 'Domain updated.'
+      } else {
+        action = 'domains/createDomain'
+        msg = 'Domain created.'
+      }
+      this.$store.dispatch(action, this.domain).then(response => {
+        this.$router.push({ name: 'DomainList' })
+        this.$toast.open({
+          message: msg,
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      }, this.onSaveError)
+    },
+    cancel () {
+      this.$router.push({ name: 'DomainList' })
+    }
+  }
 }
 </script>

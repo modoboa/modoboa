@@ -1,6 +1,7 @@
 """Parameters viewsets."""
 
-from rest_framework import decorators, response, viewsets
+from rest_framework import response, viewsets
+from rest_framework.decorators import action
 
 from . import tools
 
@@ -10,13 +11,13 @@ class ParametersViewSet(viewsets.ViewSet):
 
     lookup_value_regex = r"\w+"
 
-    @decorators.list_route(methods=["get"])
+    @action(methods=["get"], detail=False)
     def applications(self, request):
         """Return application list."""
         applications = tools.registry.get_applications("global")
         return response.Response(applications)
 
-    @decorators.list_route(methods=["get"])
+    @action(methods=["get"], detail=False)
     def structure(self, request):
         """Return parameter schema."""
         app = request.GET.get("app")
