@@ -1,31 +1,43 @@
 <template>
-  <v-app>
-    <navbar ref="navbar"></navbar>
-    <v-toolbar
-        :clipped-left="$vuetify.breakpoint.lgAndUp"
-        color="blue darken-3"
-        dark
-        app
-    >
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
-        <v-toolbar-side-icon @click.stop="$refs.navbar.drawer = !$refs.navbar.drawer">
-        </v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Modoboa</span>
-      </v-toolbar-title>
-    </v-toolbar>
-    <v-content>
-      <v-container fluid>
-        <router-view/>
-      </v-container>
-    </v-content>
-  </v-app>
+<v-app v-if="!isAuthenticated">
+  <v-main>
+    <v-container fluid fill-height>
+      <router-view />
+    </v-container>
+  </v-main>
+</v-app>
+<v-app v-else>
+  <topbar />
+  <navbar />
+  <v-main>
+    <v-container fluid>
+      <router-view/>
+    </v-container>
+  </v-main>
+</v-app>
 </template>
 
 <script>
-import Navbar from './components/navigation/Navbar'
+import { mapGetters } from 'vuex'
+import Navbar from '@/components/layout/Navbar'
+import Topbar from '@/components/layout/Topbar'
 
 export default {
-    name: 'App',
-    components: { Navbar }
+  name: 'App',
+  computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated'
+    })
+  },
+  components: {
+    Navbar,
+    Topbar
+  },
+  // created () {
+  //   this.$store.dispatch('auth/initialize')
+  // },
+  data: () => ({
+    //
+  })
 }
 </script>

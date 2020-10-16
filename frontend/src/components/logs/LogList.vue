@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
         <v-text-field
             v-model="search"
-            append-icon="search"
+            append-icon="mdi-magnify"
             label="Search"
             single-line
             hide-details
@@ -17,7 +17,7 @@
                     :items="logs"
                     :search="search"
                     class="elevation-1"
-                    v-bind:pagination.sync="pagination"
+                    :options.sync="pagination"
       >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.date_created }}</td>
@@ -44,32 +44,27 @@
 </template>
 
 <script>
-import * as api from '@/api'
-
 export default {
-    data () {
-        return {
-            logs: [],
-            headers: [
-                { text: 'Date', value: 'date_created' },
-                { text: 'Level', value: 'level' },
-                { text: 'Logger', value: 'logger' },
-                { text: 'Message', value: 'message' }
-            ],
-            loading: true,
-            pagination: {
-                sortBy: 'date_created',
-                descending: true,
-                rowsPerPage: 10
-            },
-            search: ''
-        }
-    },
-    created () {
-        api.getLogs().then(response => {
-            this.logs = response.data
-            this.loading = false
-        })
+  data () {
+    return {
+      logs: [],
+      headers: [
+        { text: 'Date', value: 'date_created' },
+        { text: 'Level', value: 'level' },
+        { text: 'Logger', value: 'logger' },
+        { text: 'Message', value: 'message' }
+      ],
+      loading: true,
+      pagination: {
+      },
+      search: ''
     }
+  },
+  created () {
+    this.$axios.get('/logs/').then(response => {
+      this.logs = response.data
+      this.loading = false
+    })
+  }
 }
 </script>

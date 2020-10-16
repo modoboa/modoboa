@@ -7,5 +7,5 @@ from . import viewsets
 
 router = routers.SimpleRouter()
 router.register(
-    r"parameters", viewsets.ParametersViewSet, base_name="parameter")
+    r"parameters", viewsets.ParametersViewSet, basename="parameter")
 urlpatterns = router.urls
