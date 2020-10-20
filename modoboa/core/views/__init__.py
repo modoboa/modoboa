@@ -10,7 +10,8 @@ from .auth import (
 )
 from .base import RootDispatchView
 from .dashboard import DashboardView
-from .user import api_access, index, preferences, profile, security
+from .user import (
+    api_access, index, preferences, profile, security)
 
 __all__ = [
     "DashboardView",
@@ -31,5 +32,5 @@ __all__ = [
     "preferences",
     "profile",
     "viewsettings",
-    "security",
+    "security"
 ]
