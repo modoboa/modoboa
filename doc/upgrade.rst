@@ -91,6 +91,12 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.17.0
+======
+
+Modoboa now supports Two-Factor authentication using TOTP
+applications.
+
 1.16.0
 ======
 
