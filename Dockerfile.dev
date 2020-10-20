@@ -2,8 +2,8 @@ FROM python:3.6-alpine as base
 
 MAINTAINER Antoine Nguyen <tonio@ngyn.org>
 
-RUN apk add --update openssl python3-dev libffi-dev gcc musl-dev libxml2-dev libxslt-dev \
-    libressl-dev jpeg-dev \
+RUN apk add --update openssl librrd python3-dev libffi-dev gcc musl-dev libxml2-dev libxslt-dev \
+    libressl-dev jpeg-dev rrdtool-dev file make \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /tmp
