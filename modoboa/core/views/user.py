@@ -1,12 +1,19 @@
 """Simple user views."""
 
-from django.contrib.auth.decorators import login_required, user_passes_test
+import io
+
+import qrcode
+import qrcode.image.svg
+
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _
 
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+import django_otp
 from rest_framework.authtoken.models import Token
 
 from modoboa.lib.cryptutils import encrypt
@@ -109,3 +116,31 @@ def api_access(request):
         "content": render_to_string(
             "core/api_access.html", {"form": form}, request)
     })
+
+
+@login_required
+def security(request):
+    """View to manage security settings."""
+    context = {"user_has_device": django_otp.user_has_device(request.user)}
+    if not request.user.tfa_enabled:
+        device = request.user.staticdevice_set.first()
+        if device:
+            tokens = device.token_set.all().values_list("token", flat=True)
+            context.update({"tokens": tokens})
+            # Set enable flag to True so we can't go here anymore
+            request.user.tfa_enabled = True
+            request.user.save()
+        else:
+            device = request.user.totpdevice_set.first()
+            if device:
+                factory = qrcode.image.svg.SvgPathImage
+                img = qrcode.make(device.config_url, image_factory=factory)
+                buf = io.BytesIO()
+                img.save(buf)
+                context.update({"qrcode": buf.getvalue().decode()})
+    resp = {
+        "content": render_to_string(
+            "core/user_security.html", context, request),
+        "callback": "security"
+    }
+    return render_to_json_response(resp)

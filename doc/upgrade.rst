@@ -91,6 +91,71 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+1.17.0
+======
+
+Modoboa now supports Two-Factor authentication using TOTP
+applications.
+
+To enable it, install the following new requirement in your
+virtualenv:
+
+.. sourcecode:: bash
+
+   (env)> pip install django-otp qrcode
+
+Then, open the :file:`settings.py` file and add ``django_otp``
+packages to ``INSTALLED_APPS``:
+
+.. sourcecode:: python
+
+   INSTALLED_APPS = (
+       'django.contrib.auth',
+       'django.contrib.contenttypes',
+       'django.contrib.sessions',
+       'django.contrib.messages',
+       'django.contrib.sites',
+       'django.contrib.staticfiles',
+       'reversion',
+       'ckeditor',
+       'ckeditor_uploader',
+       'rest_framework',
+       'rest_framework.authtoken',
+       'django_otp',
+       'django_otp.plugins.otp_totp',
+       'django_otp.plugins.otp_static',
+   )
+
+Add new middlewares to ``MIDDLEWARE``:
+
+.. sourcecode:: python
+
+   MIDDLEWARE = (
+       'x_forwarded_for.middleware.XForwardedForMiddleware',
+       'django.contrib.sessions.middleware.SessionMiddleware',
+       'django.middleware.common.CommonMiddleware',
+       'django.middleware.csrf.CsrfViewMiddleware',
+       'django.contrib.auth.middleware.AuthenticationMiddleware',
+       'django_otp.middleware.OTPMiddleware',
+       'modoboa.core.middleware.TwoFAMiddleware',
+       'django.contrib.messages.middleware.MessageMiddleware',
+       'django.middleware.locale.LocaleMiddleware',
+       'django.middleware.clickjacking.XFrameOptionsMiddleware',
+       'modoboa.core.middleware.LocalConfigMiddleware',
+       'modoboa.lib.middleware.AjaxLoginRedirect',
+       'modoboa.lib.middleware.CommonExceptionCatcher',
+       'modoboa.lib.middleware.RequestCatcherMiddleware',
+   )
+
+And add the following new setting:
+
+.. sourcecode:: python
+
+   # 2FA
+
+   OTP_TOTP_ISSUER = "<your server hostname here>"
+
+
 1.16.0
 ======
 

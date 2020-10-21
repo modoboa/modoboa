@@ -51,7 +51,7 @@ Settings.prototype = {
             $("#toggle_extensions_sel").prop("checked", true);
         }
     },
-    
+
     /**
      * Select or unselect all extensions in on click.
      */

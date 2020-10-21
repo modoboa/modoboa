@@ -12,6 +12,9 @@ urlpatterns = [
 
     path('accounts/login/', views.dologin, name="login"),
     path('accounts/logout/', views.dologout, name="logout"),
+    path('accounts/2fa_verify/',
+         views.TwoFactorCodeVerifyView.as_view(),
+         name='2fa_verify'),
 
     path('core/', views.viewsettings, name="index"),
     path('core/parameters/', views.parameters, name="parameters"),
@@ -27,4 +30,5 @@ urlpatterns = [
          name="user_preferences"),
     path('user/profile/', views.profile, name="user_profile"),
     path('user/api/', views.api_access, name="user_api_access"),
+    path('user/security/', views.security, name="user_security"),
 ]
