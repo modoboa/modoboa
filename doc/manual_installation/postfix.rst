@@ -76,7 +76,7 @@ content to the :file:`/etc/postfix/main.cf` file::
 
     smtpd_recipient_restrictions =
         # ...
-        check_policy_service inet:127.0.0.1:9999
+        check_policy_service inet:localhost:9999
         # ...
 
 And reload postfix.
