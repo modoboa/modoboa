@@ -102,7 +102,7 @@ virtualenv:
 
 .. sourcecode:: bash
 
-   (env)> pip install django-otp
+   (env)> pip install django-otp qrcode
 
 Then, open the :file:`settings.py` file and add ``django_otp``
 packages to ``INSTALLED_APPS``:
