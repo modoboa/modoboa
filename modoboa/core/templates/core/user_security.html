@@ -1,0 +1,103 @@
+{% load i18n static %}
+<h2>{% trans "Security" %}</h2>
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{% trans "Two-Factor authentication" %}</h3>
+  </div>
+
+  <div class="panel-body">
+    {% if qrcode %}
+      <div class="row">
+        <div class="col-sm-4">
+          {{ qrcode|safe }}
+        </div>
+        <div class="col-sm-6">
+          <div class="alert alert-info">
+            {% blocktrans trimmed %}
+              Install a soft token authenticator like FreeOTP or Google
+              Authenticator from your application repository and use that
+              app to scan this QR code.
+            {% endblocktrans %}
+          </div>
+          <form>
+            <div class="form-group">
+              <label class="control-label">{% trans "Pin code" %}</label>
+              <input id="pin-code" class="form-control">
+            </div>
+            <button id="finalize-tfa-setup" class="btn btn-primary col-sm-12">{% trans "Register" %}</button>
+          </form>
+        </div>
+    {% elif tokens %}
+        <div class="alert alert-success">
+          {% blocktrans trimmed %}
+            Congratulations! Two-Factor Authentication is now enabled for your account.
+          {% endblocktrans %}
+        </div>
+        <p>
+          {% blocktrans trimmed %}
+            The following recovery codes can be used one time each to
+            let you regain access to your account, in case you lose your
+            phone for example. Make sure to save them in a safe place,
+            otherwise you won't be able to access your account anymore.
+          {% endblocktrans %}
+        </p>
+        <br>
+        <ul>
+          {% for token in tokens %}
+            <li>{{ token }}</li>
+          {% endfor %}
+        </ul>
+    {% elif user.tfa_enabled %}
+        <div class="alert alert-info">
+          {% blocktrans trimmed %}
+            Two-Factor Authentication is enabled for your account.
+          {% endblocktrans %}
+        </div>
+        <a id="deactivate-tfa" class="btn btn-danger" href="{% url 'api:account-tfa-disable' %}">
+          {% trans "Disable 2FA" %}
+        </a>
+        <a id="tfa-refresh-codes" class="btn btn-default" href="{% url 'api:account-tfa-reset-codes' %}">
+          {% trans "Reset recovery codes" %}
+        </a>
+    {% else %}
+        <div class="alert alert-info text-center">
+          {% blocktrans trimmed %}
+            Two-Factor Authentication (2FA) is not yet activated for
+            your account. Enabling this feature will increase your
+            account's security.
+          {% endblocktrans %}
+        </div>
+        <div class="text-center">
+          <button id="start-tfa-setup" class="btn btn-success">
+            {% trans "Enable 2FA" %}
+          </button>
+        </div>
+    {% endif %}
+      </div>
+  </div>
+  <div id="codes-modal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans "Close" %}</span></button>
+          <h3 class="modal-title">{% trans "New recovery codes" %}</h3>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" style="overflow-wrap: break-word;">
+            <strong>{% trans "Here are your new recovery codes. " %}</strong><br>
+            {% blocktrans trimmed %}
+              The following recovery codes can be used one time each to
+              let you regain access to your account, in case you lose your
+              phone for example. Make sure to save them in a safe place,
+              otherwise you won't be able to access your account anymore.
+            {% endblocktrans %}
+          </div>
+          <div id="tfa-codes-area"></div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</a>
+        </div>
+      </div>
+    </div>
+  </div>

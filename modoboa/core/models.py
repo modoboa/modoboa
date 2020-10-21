@@ -71,6 +71,9 @@ class User(AbstractUser):
         help_text=ugettext_lazy(
             "An alternative e-mail address, can be used for recovery needs.")
     )
+
+    tfa_enabled = models.BooleanField(default=False)
+
     _parameters = jsonfield.JSONField(default={})
 
     class Meta(object):

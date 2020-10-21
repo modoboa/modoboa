@@ -1,6 +1,5 @@
 """Core forms."""
 
-# import pyotp
 import oath
 
 from django import forms
@@ -9,6 +8,9 @@ from django.contrib.auth import (
 )
 from django.db.models import Q
 from django.utils.translation import ugettext as _, ugettext_lazy
+
+from braces.forms import UserKwargModelFormMixin
+import django_otp
 
 from modoboa.core.models import User
 from modoboa.parameters import tools as param_tools
@@ -147,3 +149,16 @@ class VerifySMSCodeForm(forms.Form):
         if not oath.accept_totp(self.totp_secret, code)[0]:
             raise forms.ValidationError(_("Invalid code"))
         return code
+
+
+class Verify2FACodeForm(UserKwargModelFormMixin, forms.Form):
+    """A form to verify 2FA codes validity."""
+
+    tfa_code = forms.CharField()
+
+    def clean_tfa_code(self):
+        code = self.cleaned_data["tfa_code"]
+        device = django_otp.match_token(self.user, code)
+        if device is None:
+            raise forms.ValidationError(_("This code is invalid"))
+        return device

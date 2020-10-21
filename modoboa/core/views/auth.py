@@ -19,7 +19,9 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.tokens import default_token_generator
 
-from braces.views import JSONResponseMixin
+from braces.views import (
+    JSONResponseMixin, LoginRequiredMixin, UserFormKwargsMixin)
+import django_otp
 
 from modoboa.core import forms
 from modoboa.core.password_hashers import get_password_hasher
@@ -229,3 +231,19 @@ class ResendSMSCodeView(JSONResponseMixin, generic.View):
             raise Http404
         self.request.session["totp_secret"] = secret
         return self.render_json_response({"status": "ok"})
+
+
+class TwoFactorCodeVerifyView(LoginRequiredMixin,
+                              UserFormKwargsMixin,
+                              generic.FormView):
+    """View to verify a 2FA code after login."""
+
+    form_class = forms.Verify2FACodeForm
+    template_name = "registration/twofactor_code_verify.html"
+
+    def form_valid(self, form):
+        """Login user."""
+        django_otp.login(self.request, form.cleaned_data["tfa_code"])
+        return HttpResponseRedirect(
+            find_nextlocation(self.request, self.request.user)
+        )

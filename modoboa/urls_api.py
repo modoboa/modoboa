@@ -7,6 +7,7 @@ from modoboa.core.extensions import exts_pool
 app_name = "api"
 
 urlpatterns = [
+    path('', include("modoboa.core.urls_api")),
     path('', include("modoboa.admin.urls_api")),
     path('', include("modoboa.limits.urls_api")),
     path('', include("modoboa.relaydomains.urls_api")),

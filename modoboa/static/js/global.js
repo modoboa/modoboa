@@ -126,6 +126,25 @@ function clean_form_errors(formid) {
     $("#" + formid + " span.help-block").remove();
 }
 
+function display_field_error($field, error) {
+    var spanid = $field.attr('id') + "-error";
+    var $span = $("#" + spanid);
+
+    if (!$field.parents(".form-group").hasClass("has-error")) {
+        $field.parents(".form-group").addClass("has-error");
+    }
+    if (!$span.length) {
+        $span = $("<span />", {
+            class: "help-block",
+            html: error,
+            id: spanid
+        });
+        $field.parents(".form-group").append($span);
+    } else {
+        $span.html(error);
+    }
+}
+
 /*
  * Display validation errors for a given form.
  */
@@ -134,23 +153,9 @@ function display_form_errors(formid, data) {
     $.each(data.form_errors, function(id, value) {
         var fullid = "id_" + (data.prefix ? data.prefix + "-" : "") + id;
         var $widget = $("#" + formid + " #" + fullid);
-        var spanid = fullid + "-error";
-        var $span = $("#" + spanid);
         var error = value.join(' ');
 
-        if (!$widget.parents(".form-group").hasClass("has-error")) {
-            $widget.parents(".form-group").addClass("has-error");
-        }
-        if (!$span.length) {
-            $span = $("<span />", {
-                "class": "help-block",
-                "html": error,
-                "id": spanid
-            });
-            $widget.parents(".form-group").append($span);
-        } else {
-            $span.html(error);
-        }
+        display_field_error($widget, error);
     });
 }
 
