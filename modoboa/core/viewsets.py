@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 import django_otp
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from django_otp.plugins.otp_totp.models import TOTPDevice
-from rest_framework import response, viewsets
+from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 
 from . import serializers
@@ -16,6 +16,8 @@ class AccountViewSet(viewsets.ViewSet):
 
     Contains endpoints used to manipulate current user's account.
     """
+
+    permission_classes = (permissions.IsAuthenticated, )
 
     @action(methods=["post"], detail=False, url_path="tfa/setup")
     def tfa_setup(self, request):
@@ -40,7 +42,7 @@ class AccountViewSet(viewsets.ViewSet):
         for cpt in range(10):
             token = StaticToken.random_token()
             device.token_set.create(token=token)
-        django_otp.login(self.request, serializer.validated_data["pin_code"])
+        django_otp.login(self.request, request.user.totpdevice_set.first())
         return response.Response()
 
     @action(methods=["post"], detail=False, url_path="tfa/disable")

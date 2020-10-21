@@ -19,8 +19,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         admin_factories.populate_database()
 
     @mock.patch("django_otp.plugins.otp_totp.models.TOTPDevice.verify_token")
-    @mock.patch("django_otp.login")
-    def test_tfa_setup_process(self, login_mock, verify_mock):
+    def test_tfa_setup_process(self, verify_mock):
         admin = models.User.objects.get(username="admin")
         self.client.force_login(admin)
 
