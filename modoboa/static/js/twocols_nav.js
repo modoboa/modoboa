@@ -23,6 +23,8 @@ TwocolsNav.prototype = {
         this.options.defcallback = $.proxy(this.default_cb, this);
         Listing.prototype.initialize.call(this, this.options);
         this.listen();
+        this.navobj.register_callback(
+            "security", $.proxy(this.security_callback, this));
     },
 
     listen: function() {
@@ -154,6 +156,70 @@ TwocolsNav.prototype = {
     default_cb: function(data) {
         this.select_left_menu();
         this.update_content(data);
+    },
+
+    /**
+     * Navigation callback: security.
+     */
+    security_callback: function (data) {
+        this.select_left_menu();
+        this.update_content(data);
+        $('#start-tfa-setup').click(this.startTFASetup);
+        $('#finalize-tfa-setup').click(this.finalizeTFASetup);
+        $('#deactivate-tfa').confirm({
+            question: gettext('Are you sure?'),
+            warning: gettext('This will invalidate your registered application.'),
+            method: 'POST'
+        });
+        $('#tfa-refresh-codes').click(this.resetTFARecoveryCodes);
+    },
+
+    startTFASetup: function (evt) {
+        evt.preventDefault();
+        $.ajax({
+            url: '/api/v1/account/tfa/setup/',
+            type: 'post',
+            contentType: 'application/json'
+        }).done(function (resp) {
+            window.location.reload();
+        });
+    },
+
+    finalizeTFASetup: function (evt) {
+        evt.preventDefault();
+        var data = {
+            pin_code: $('#pin-code').val()
+        };
+        $.ajax({
+            url: '/api/v1/account/tfa/setup/check/',
+            type: 'post',
+            global: false,
+            data: JSON.stringify(data),
+            contentType: 'application/json'
+        }).done(function (resp) {
+            window.location.reload();
+        }).fail(function (jqxhr) {
+            var errors = JSON.parse(jqxhr.responseText);
+            display_field_error($('#pin-code'), errors.pin_code.join(' '));
+        });
+    },
+
+    resetTFARecoveryCodes: function (evt) {
+        evt.preventDefault();
+        $.ajax({
+            url: $(this).attr('href'),
+            type: 'post',
+            contentType: 'application/json'
+        }).done(function (resp) {
+            var $container = $('#tfa-codes-area');
+            var $ul = $('<ul>');
+            $.each(resp.tokens, function (index, value) {
+                var $li = $('<li />', { html: value });
+                $ul.append($li);
+            });
+            $container.append($ul);
+            $('#codes-modal').modal();
+        });
     }
 };
 
