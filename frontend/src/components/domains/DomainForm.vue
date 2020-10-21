@@ -13,6 +13,7 @@
                         :error-messages="formErrors['name']"
           >
           </v-text-field>
+          <v-select label="Type" :items="domainTypes" />
           <v-text-field label="Quota"
                         v-model="domain.quota"
                         suffix="MB"
@@ -25,6 +26,13 @@
                         suffix="MB"
                         :error="formErrors['default_mailbox_quota']"
                         :error-messages="formErrors['default_mailbox_quota']"
+          >
+          </v-text-field>
+          <v-text-field label="Message sending limit"
+                        v-model="domain.message_limit"
+                        suffix="per day"
+                        :error="formErrors['message_limit']"
+                        :error-messages="formErrors['message_limit']"
           >
           </v-text-field>
           <v-checkbox label="Enabled"
@@ -71,7 +79,8 @@ export default {
   data () {
     return {
       formErrors: {},
-      domain: {}
+      domain: {},
+      domainTypes: ['Domain', 'Relay domain']
     }
   },
   computed: {

@@ -7,7 +7,7 @@ function setupAxios (token) {
 }
 
 function fetchUser (commit) {
-  return Vue.prototype.$axios.get('/accounts/me').then(resp => {
+  return Vue.prototype.$axios.get('/account/me').then(resp => {
     commit('SET_AUTH_USER', { authUser: resp.data, isAuthenticated: true })
   })
 }
