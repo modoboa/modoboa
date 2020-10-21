@@ -11,7 +11,7 @@ dj-database-url
 djangorestframework>=3.11,<3.12
 uritemplate
 
-passlib==1.7.2
+passlib~=1.7.3
 bcrypt  # Requires libffi-dev and python-dev
 
 dnspython==1.16.0
