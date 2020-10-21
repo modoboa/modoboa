@@ -46,8 +46,8 @@ SITE_ID = 1
 # Security settings
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 # Application definition
 
