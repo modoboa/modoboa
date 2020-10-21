@@ -1,0 +1,30 @@
+{% extends "registration/base.html" %}
+
+{% load i18n core_tags lib_tags form_tags static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
+{% endblock %}
+
+{% block main_content %}
+  <div class="row">
+    <div class="col-sm-offset-4 col-sm-6">
+      <form method="post" action="{% url 'core:2fa_verify' %}" class="login-form">
+        {% csrf_token %}
+        <div class="form-group{% if form.tfa_code.errors %} has-error{% endif %}">
+          <label class="control-label">Two-Factor authentication code</label>
+          <input id="id_tfa_code" name="tfa_code" class="form-control">
+          <span class="help-block">
+            {{ form.tfa_code.errors }}
+          </span>
+          <p class="help-block">
+            Enter the code from the two-factor app on your mobile
+            device. If you've lost your device, you may enter one of your
+            recovery codes.
+          </p>
+        </div>
+        <button class="btn btn-primary col-sm-12" type="submit">Verify code</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
