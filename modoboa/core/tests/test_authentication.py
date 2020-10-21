@@ -49,6 +49,28 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
+    @mock.patch("django_otp.match_token")
+    @mock.patch("django_otp.login")
+    def test_authentication_with_2fa(self, login_mock, match_mock):
+        user = models.User.objects.get(username="user@test.com")
+        user.totpdevice_set.create(name="Device")
+        user.tfa_enabled = True
+        user.save()
+        data = {"username": "user@test.com", "password": "toto"}
+        response = self.client.post(reverse("core:login"), data)
+
+        response = self.client.get(response.url)
+        self.assertEqual(response.status_code, 302)
+        url = reverse("core:2fa_verify")
+        self.assertTrue(response.url.endswith(url))
+
+        match_mock.side_effect = [None, user.totpdevice_set.first()]
+        data = {"tfa_code": "1234"}
+        response = self.client.post(url, data)
+        self.assertContains(response, "This code is invalid")
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+
     def test_open_redirect(self):
         """Check that open redirect is not allowed."""
         self.client.logout()

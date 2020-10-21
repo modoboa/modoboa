@@ -118,6 +118,10 @@ def uprefs_menu(selection, user):
          "class": "ajaxnav",
          "url": "preferences/",
          "label": _("Preferences")},
+        {"name": "security",
+         "class": "ajaxnav",
+         "url": "security/",
+         "label": _("Security")},
     ]
     if user.is_superuser:
         entries.append({

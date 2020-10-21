@@ -65,6 +65,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'phonenumber_field',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_static',
 {% if devmode %}    'djangobower',{% endif %}
 )
 
@@ -98,6 +101,8 @@ MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
+    'modoboa.core.middleware.TwoFAMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -229,6 +234,10 @@ AUTH_PASSWORD_VALIDATORS = [
         }
     },
 ]
+
+# 2FA
+
+OTP_TOTP_ISSUER = "{{ allowed_host }}"
 
 # CKeditor
 
