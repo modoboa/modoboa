@@ -34,9 +34,22 @@ class ForwardTestCase(ModoTestCase):
         domadmin = User.objects.get(username="admin@test.com")
         self.assertTrue(domadmin.can_access(forward))
 
+        selfalias = Alias.objects.get(address="user@test.com", internal=True)
+        self.assertTrue(selfalias.enabled)
+
+        # Deactivate local copies
+        self.ajax_post(
+            url,
+            {"dest": "user@extdomain.com", "keepcopies": False}
+        )
+        selfalias.refresh_from_db()
+        self.assertFalse(selfalias.enabled)
+
         # Now, empty forward
         self.ajax_post(url, {"dest": "", "keepcopies": False})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         content = response.json()
         self.assertNotIn("user@extdomain.com", content["content"])
+        selfalias.refresh_from_db()
+        self.assertTrue(selfalias.enabled)
