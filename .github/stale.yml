@@ -12,7 +12,7 @@ exemptLabels:
   - looking-for-sponsors
   - documentation
 # Label to use when marking an issue as stale
-staleLabel: wontfix
+staleLabel: stale
 # Set to true to ignore issues in a milestone (defaults to false)
 exemptMilestones: true
 # Set to true to ignore issues with an assignee (defaults to false)
