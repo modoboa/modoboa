@@ -119,6 +119,29 @@ class AccountTestCase(ModoTestCase):
         account = User.objects.get(username=values["username"])
         self.assertEqual(account.language, "fr")
 
+    def test_forward_updated_on_edit(self):
+        account = User.objects.get(username="user@test.com")
+        forward = models.Alias.objects.create(address=account.email, internal=False)
+        values = {
+            "username": "user@test.com",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": False,
+            "email": "user@test.com",
+            "language": "en"
+        }
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.id]), values
+        )
+        forward.refresh_from_db()
+        self.assertFalse(forward.enabled)
+        values["is_active"] = True
+        self.ajax_post(
+            reverse("admin:account_change", args=[account.id]), values
+        )
+        forward.refresh_from_db()
+        self.assertTrue(forward.enabled)
+
     def test_aliases_update_on_rename(self):
         """Check if aliases are updated on mailbox rename."""
         account = User.objects.get(username="user@test.com")
