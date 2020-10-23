@@ -204,6 +204,11 @@ class AccountFormGeneral(forms.ModelForm):
                 account.set_password(self.cleaned_data["password2"])
             account.save()
             account.role = self.cleaned_data["role"]
+            if hasattr(account, "mailbox"):
+                # Update forward status according to account status
+                models.Alias.objects.filter(
+                    address=account.email, internal=False).update(
+                        enabled=account.is_active)
         return account
 
 
