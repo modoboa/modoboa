@@ -1,19 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# sin88 <sin@sin.waw.pl>, 2016
-# sin88 <sin@sin.waw.pl>, 2016
-# Wojtek Gajda <vac@milowice.net>, 2018
+# Antoine Nguyen <tonio@ngyn.org>, 2020
+# Pedro M <zamowienia@ittf.pl>, 2020
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-03-09 16:48+0100\n"
-"PO-Revision-Date: 2020-03-09 15:49+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/language/pl_PL/)\n"
+"PO-Revision-Date: 2020-05-11 18:45+0000\n"
+"Last-Translator: Pedro M <zamowienia@ittf.pl>, 2020\n"
+"Language-Team: Polish (Poland) (https://www.transifex.com/tonio/teams/13749/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,7 +28,7 @@ msgstr "'"
 
 #: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
 msgid "operation"
-msgstr ""
+msgstr "działanie"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
