@@ -1,0 +1,44 @@
+pull_request_rules:
+  - name: automatic merge on CI success and review
+    conditions:
+      - check-success=Travis CI - Pull Request
+      - "#approved-reviews-by>=1"
+      - "#review-requested=0"
+      - "#changes-requested-reviews-by=0"
+      - "#commented-reviews-by=0"
+      - label=ready-to-merge
+    actions:
+      merge:
+        method: squash
+        strict: true
+        strict_method: rebase
+  - name: delete head branch after merge
+    conditions: []
+    actions:
+      delete_head_branch: {}
+  - name: automatic merge for pyUp pull requests
+    conditions:
+      - author=pyup-bot
+      - check-success=Travis CI - Pull Request
+      - label=dependencies
+    actions:
+      merge:
+        method: squash
+        strict: true
+        strict_method: rebase
+  - name: automatic merge for dependabot pull requests
+    conditions:
+      - author~=^dependabot(|-preview)\[bot\]$
+      - check-success=Travis CI - Pull Request
+      - label=dependencies
+    actions:
+      merge:
+        method: squash
+        strict: true
+        strict_method: rebasepull_request_rules:
+  - name: Automatic merge on approval
+    conditions:
+      - "#approved-reviews-by>=1"
+    actions:
+      merge:
+        method: merge
