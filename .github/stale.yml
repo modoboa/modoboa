@@ -13,9 +13,9 @@ exemptLabels:
 # Label to use when marking an issue as stale
 staleLabel: wontfix
 # Set to true to ignore issues in a milestone (defaults to false)
-exemptMilestones: false
+exemptMilestones: true
 # Set to true to ignore issues with an assignee (defaults to false)
-exemptAssignees: false
+exemptAssignees: true
 # Limit to only `issues` or `pulls`
 only: issues
 # Comment to post when marking an issue as stale. Set to `false` to disable
