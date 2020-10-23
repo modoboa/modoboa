@@ -8,6 +8,7 @@ exemptLabels:
   - security
   - bug
   - dependencies
+  - enhancement
   - looking-for-sponsors
   - documentation
 # Label to use when marking an issue as stale
