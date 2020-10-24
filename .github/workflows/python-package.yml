@@ -1,0 +1,48 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get install ldap-utils postfix slapd librrd-dev rrdtool
+        python -m pip install --upgrade pip
+        pip install codecov
+        pip install -r requirements.txt
+        pip install -r ldap-requirements.txt
+        pip install -r test-requirements.txt
+        if [ $DB = POSTGRESQL ]; then pip install -r postgresql-requirements.txt ; fi
+        if [ $DB = MYSQL ]; then pip install -r mysql-requirements.txt ; fi
+        python setup.py develop
+    - name: Activate service
+      run: |
+        mkdir /tmp/slapd
+        slapd -f test_data/slapd.conf -h ldap://localhost:3389 &
+        sleep 3
+        ldapadd -h localhost:3389 -D cn=admin,dc=example,dc=com -w test -f test_data/base.ldif
+    - name: Test with pytest
+      run: |
+        python ./tests.py
+        cd test_project
+        coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+
