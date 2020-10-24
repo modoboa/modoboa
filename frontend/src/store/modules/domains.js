@@ -4,11 +4,13 @@ import Vue from 'vue'
 const SET_DOMAINS = 'SET_DOMAINS'
 const ADD_DOMAIN = 'ADD_DOMAIN'
 const UPDATE_DOMAIN = 'UPDATE_DOMAIN'
+const SET_DOMAIN_ALIASES = 'SET_DOMAIN_ALIASES'
 
 // initial state
 const state = {
   domainsLoaded: false,
-  domains: []
+  domains: [],
+  domainAliases: []
 }
 
 // getters
@@ -21,7 +23,8 @@ const getters = {
       }
     }
     return null
-  }
+  },
+  domainAliases: state => state.domainAliases
 }
 
 // actions
@@ -39,6 +42,11 @@ const actions = {
   updateDomain ({ commit }, data) {
     return Vue.prototype.$axios.put(`/domains/${data.pk}/`, data).then(response => {
       commit(UPDATE_DOMAIN, { domain: response.data })
+    })
+  },
+  getDomainAliases ({ commit }) {
+    return Vue.prototype.$axios.get('/domainaliases/').then(response => {
+      commit(SET_DOMAIN_ALIASES, response.data)
     })
   }
 }
@@ -58,6 +66,9 @@ const mutations = {
         Vue.set(state.domains, pos, domain)
       }
     })
+  },
+  [SET_DOMAIN_ALIASES] (state, domainAliases) {
+    state.domainAliases = domainAliases
   }
 }
 
