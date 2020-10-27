@@ -10,6 +10,8 @@ if DB.lower() == "postgres":
 else:
     PORT = os.environ.get("MYSQL_PORT", "3306")
 
+print('Database port: %s' % PORT)
+
 
 class DeployTest(unittest.TestCase):
     dbtype = DB.lower()
