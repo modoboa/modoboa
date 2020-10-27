@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'ckeditor_uploader',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_spectacular',
     'phonenumber_field',
     'django_otp',
     'django_otp.plugins.otp_totp',
@@ -190,6 +191,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+}
+
+SPECTACULAR_SETTINGS = {
+    'SCHEMA_PATH_PREFIX': r'/api/v1',
+    'TITLE': 'Modoboa API',
+    'VERSION': '1.0.0'
 }
 
 # Modoboa settings

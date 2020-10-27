@@ -18,14 +18,13 @@ from . import lib, models, serializers
 
 class DomainViewSet(viewsets.ModelViewSet):
     """
-    retrieve:
-    Return the given domain.
+    Domain viewset.
 
-    list:
-    Return a list of all existing domains.
+    retrieve: Return the given domain.
 
-    create:
-    Create a new domain instance.
+    list: Return a list of all existing domains.
+
+    create: Create a new domain instance.
     """
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
