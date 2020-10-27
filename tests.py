@@ -10,6 +10,7 @@ if DB.lower() == "postgres":
 else:
     PORT = os.environ.get("MYSQL_PORT", "3306")
 
+print('Database type: %s' % DB)
 print('Database port: %s' % PORT)
 
 
@@ -28,6 +29,7 @@ class DeployTest(unittest.TestCase):
         dburl = "default:%s://%s:%s@%s:%s/%s" \
             % (self.dbtype, self.dbuser, self.dbpassword,
                self.dbhost, self.dbport, self.projname)
+        print('dburl: %s' % dburl)
         cmd = (
             "modoboa-admin.py deploy --collectstatic "
             "--dburl %s --domain %s --admin-username admin %s"
