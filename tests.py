@@ -7,20 +7,22 @@ from modoboa.lib.sysutils import exec_cmd
 DB = os.environ.get("DB", "postgres")
 if DB.lower() == "postgres":
     PORT = os.environ.get("POSTGRES_PORT", "5432")
+    DB = "postgres"
 else:
     PORT = os.environ.get("MYSQL_PORT", "3306")
+    DB = "mysql"
 
 print('Database type: %s' % DB)
 print('Database port: %s' % PORT)
 
 
 class DeployTest(unittest.TestCase):
-    dbtype = DB.lower()
+    dbtype = DB
     dbhost = "localhost"
     dbport = PORT
     projname = "modoboa_test"
-    dbuser = DB == "MYSQL" and "modoboa" or "postgres"
-    dbpassword = DB == "MYSQL" and "modoboa" or ""
+    dbuser = DB == "mysql" and "modoboa" or "postgres"
+    dbpassword = DB == "mysql" and "modoboa" or ""
 
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
