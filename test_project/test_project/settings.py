@@ -308,3 +308,5 @@ SILENCED_SYSTEM_CHECKS = [
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
 # Load settings from extensions
+
+LDAP_SERVER_PORT = os.environ('LDAP_PORT', 3389)

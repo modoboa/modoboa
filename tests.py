@@ -12,9 +12,6 @@ else:
     PORT = os.environ.get("MYSQL_PORT", "3306")
     DB = "mysql"
 
-print('Database type: %s' % DB)
-print('Database port: %s' % PORT)
-
 
 class DeployTest(unittest.TestCase):
     dbtype = DB
