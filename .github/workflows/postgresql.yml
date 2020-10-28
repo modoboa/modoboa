@@ -37,7 +37,7 @@ jobs:
         env:
           LDAP_DOMAIN: example.com
         volumes:
-          - ./test_data/base.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom
+          - test_data/base.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
 
     strategy:
       matrix:
