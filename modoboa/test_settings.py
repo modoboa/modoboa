@@ -55,7 +55,7 @@ else:
             "ENGINE": "django.db.backends.postgresql",
             "NAME": "modoboa",
             "USER": "postgres",
-            "PASSWORD": "",
+            "PASSWORD": "postgres",
             "HOST": "localhost",
             "PORT": PORT,
             "ATOMIC_REQUESTS": True,
