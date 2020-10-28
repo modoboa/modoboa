@@ -51,12 +51,12 @@ jobs:
         pip install -r test-requirements.txt
         pip install -r postgresql-requirements.txt
         python setup.py develop
-    # - name: Activate service
-    #   run: |
-    #     mkdir /tmp/slapd
-    #     slapd -f test_data/slapd.conf -h ldap://localhost:3389 &
-    #     sleep 3
-    #     ldapadd -h localhost:3389 -D cn=admin,dc=example,dc=com -w test -f test_data/base.ldif
+    - name: Activate service
+      run: |
+        mkdir /tmp/slapd
+        slapd -f test_data/slapd.conf -h ldap://localhost:3389 &
+        sleep 3
+        ldapadd -h localhost:3389 -D cn=admin,dc=example,dc=com -w test -f test_data/base.ldif
     - name: Test with pytest
       run: |
         python ./tests.py
