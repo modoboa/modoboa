@@ -31,14 +31,11 @@ jobs:
         ports:
           - 6379/tcp
       openldap:
-        image: osixia/openldap
+        image: docker.pkg.github.com/modoboa/docker-openldap/docker-openldap
         ports:
           - 389/tcp
         env:
           LDAP_DOMAIN: example.com
-          LDAP_SEED_INTERNAL_LDIF_PATH: "/github/workspace/test_data"
-        volumes:
-          - ${{ github.workspace }}:/github/workspace
 
     strategy:
       matrix:
