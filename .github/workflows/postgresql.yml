@@ -30,6 +30,15 @@ jobs:
         image: redis
         ports:
           - 6379/tcp
+      openldap:
+        image: osixia/openldap
+        ports:
+          - 389/tcp
+        env:
+          LDAP_DOMAIN: example.com
+        volumes:
+          - test_data/base.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+        options: --copy-service
 
     strategy:
       matrix:
@@ -43,7 +52,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        sudo apt-get install ldap-utils postfix slapd librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
+        sudo apt-get install postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
         python -m pip install --upgrade pip
         pip install codecov
         pip install -r requirements.txt
@@ -51,12 +60,6 @@ jobs:
         pip install -r test-requirements.txt
         pip install -r postgresql-requirements.txt
         python setup.py develop
-    - name: Activate service
-      run: |
-        mkdir /tmp/slapd
-        slapd -f test_data/slapd.conf -h ldap://localhost:3389 &
-        sleep 3
-        ldapadd -h localhost:3389 -D cn=admin,dc=example,dc=com -w test -f test_data/base.ldif
     - name: Test with pytest
       run: |
         python ./tests.py
@@ -68,3 +71,4 @@ jobs:
         POSTGRES_HOST: localhost
         POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+        LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
