@@ -302,10 +302,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False
         },
-        'django_auth_ldap': {
-            'level': 'DEBUG',
-            'handlers': ['console']
-        },
+        # 'django_auth_ldap': {
+        #     'level': 'DEBUG',
+        #     'handlers': ['console']
+        # },
     }
 }
 
