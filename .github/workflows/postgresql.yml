@@ -71,4 +71,4 @@ jobs:
         POSTGRES_HOST: localhost
         POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
-        LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
+        LDAP_PORT: ${{ job.services.openldap.ports[389] }}
