@@ -24,7 +24,6 @@ class LDAPTestCaseMixin(object):
 
     def activate_ldap_authentication(self):
         """Modify settings."""
-        print("LDAP server port: {}".format(settings.LDAP_SERVER_PORT))
         self.set_global_parameters({
             "authentication_type": "ldap",
             "ldap_server_port": settings.LDAP_SERVER_PORT
