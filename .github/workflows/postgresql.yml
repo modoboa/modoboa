@@ -36,6 +36,7 @@ jobs:
           - 389/tcp
         env:
           LDAP_DOMAIN: example.com
+          LDAP_ADMIN_PASSWORD: test
         credentials:
           username: tonioo
           password: ${{ secrets.GITHUB_TOKEN }}
