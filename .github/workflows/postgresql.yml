@@ -36,7 +36,7 @@ jobs:
           - 389/tcp
         env:
           LDAP_DOMAIN: example.com
-        options:
+        volumes:
           - $GITHUB_WORKSPACE/test_data/base.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
 
     strategy:
