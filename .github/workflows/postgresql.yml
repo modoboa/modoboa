@@ -36,6 +36,9 @@ jobs:
           - 389/tcp
         env:
           LDAP_DOMAIN: example.com
+        credentials:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     strategy:
       matrix:
