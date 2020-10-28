@@ -37,8 +37,8 @@ jobs:
         env:
           LDAP_DOMAIN: example.com
         credentials:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: tonioo
+          password: ${{ secrets.GITHUB_TOKEN }}
 
     strategy:
       matrix:
