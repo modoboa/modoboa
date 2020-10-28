@@ -62,6 +62,7 @@ jobs:
         python setup.py develop
     - name: Test with pytest
       run: |
+        docker logs "${{ job.services.openldap.id }}"
         python ./tests.py
         cd test_project
         sleep 3
