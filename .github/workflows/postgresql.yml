@@ -40,6 +40,7 @@ jobs:
         credentials:
           username: tonioo
           password: ${{ secrets.GITHUB_TOKEN }}
+        options: --loglevel debug
 
     strategy:
       matrix:
@@ -63,6 +64,7 @@ jobs:
         python setup.py develop
     - name: Test with pytest
       run: |
+        docker logs "${{ job.services.openldap.id }}"
         python ./tests.py
         cd test_project
         coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog

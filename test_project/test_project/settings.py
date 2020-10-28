@@ -281,6 +281,9 @@ LOGGING = {
         },
         'modoboa': {
             'class': 'modoboa.core.loggers.SQLHandler',
+        },
+        'console': {
+            'class': 'logging.StreamHandler'
         }
     },
     'loggers': {
@@ -298,7 +301,11 @@ LOGGING = {
             'handlers': ['modoboa'],
             'level': 'INFO',
             'propagate': False
-        }
+        },
+        'django_auth_ldap': {
+            'level': 'DEBUG',
+            'handlers': ['console']
+        },
     }
 }
 
