@@ -3,13 +3,7 @@ import os
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DB = os.environ.get("DB", "postgres")
-if DB.lower() == "postgres":
-    PORT = os.environ.get("POSTGRES_PORT", "5432")
-    DB = "postgres"
-else:
-    PORT = os.environ.get("MYSQL_PORT", "3306")
-    DB = "mysql"
+DB = os.environ.get("DB", "postgres").lower()
 
 if DB == "mysql":
     DATABASES = {
@@ -19,7 +13,7 @@ if DB == "mysql":
             "USER": "root",
             "PASSWORD": "",
             "HOST": "localhost",
-            "PORT": PORT,
+            "PORT": os.environ.get("MYSQL_PORT", "3306"),
             "ATOMIC_REQUESTS": True,
             # MySQL's Strict Mode fixes many data integrity problems in MySQL,
             # such as data truncation upon insertion, by escalating warnings
@@ -40,7 +34,7 @@ if DB == "mysql":
             },
         },
     }
-elif DB == "SQLITE":
+elif DB == "sqlite":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -57,7 +51,7 @@ else:
             "USER": "postgres",
             "PASSWORD": "postgres",
             "HOST": "localhost",
-            "PORT": PORT,
+            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
             "ATOMIC_REQUESTS": True,
             "OPTIONS": {
                 "client_encoding": "UTF8",
