@@ -64,6 +64,7 @@ jobs:
       run: |
         python ./tests.py
         cd test_project
+        sleep 3
         coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
       env:
         # use localhost for the host here because we are running the job on the VM.
@@ -71,4 +72,4 @@ jobs:
         POSTGRES_HOST: localhost
         POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
-        LDAP_PORT: ${{ job.services.openldap.ports[389] }}
+        LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
