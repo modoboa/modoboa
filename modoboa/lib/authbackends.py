@@ -81,6 +81,9 @@ try:
             group = "SimpleUsers"
             admin_groups = self.global_params["ldap_admin_groups"].split(";")
             for grp in admin_groups:
+                print(username)
+                print("Configured groups", admin_groups)
+                print("User groups", ldap_user.group_names)
                 if grp.strip() in ldap_user.group_names:
                     group = "DomainAdmins"
                     break
