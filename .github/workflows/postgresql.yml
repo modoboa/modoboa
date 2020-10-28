@@ -31,7 +31,7 @@ jobs:
         ports:
           - 6379/tcp
       openldap:
-        image: docker.pkg.github.com/modoboa/docker-openldap/docker-openldap
+        image: docker.pkg.github.com/modoboa/docker-openldap/docker-openldap:main
         ports:
           - 389/tcp
         env:
