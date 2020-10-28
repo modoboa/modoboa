@@ -36,8 +36,9 @@ jobs:
           - 389/tcp
         env:
           LDAP_DOMAIN: example.com
+          LDAP_SEED_INTERNAL_LDIF_PATH: "/github/workspace/test_data/base.ldif"
         volumes:
-          - ${{ github.workspace }}/test_data/base.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+          - ${{ github.workspace }}:/github/workspace
 
     strategy:
       matrix:
