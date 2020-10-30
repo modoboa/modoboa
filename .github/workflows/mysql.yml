@@ -21,7 +21,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_USER: modoboa
           MYSQL_PASSWORD: modoboa
-          MYSQL_DATABASE: test_modoboa
+          MYSQL_DATABASE: modoboa
         ports:
           - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -71,7 +71,7 @@ jobs:
         DB: mysql
         MYSQL_HOST: 127.0.0.1
         MYSQL_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
-        MYSQL_USER: modoboa
-        MYSQL_PASSWORD: modoboa
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
         LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
