@@ -28,7 +28,6 @@ if DB == "mysql":
                 ),
                 "charset": "utf8",
                 "connect_timeout": 10,
-                "wait_timeout": 10,
             },
             "TEST": {
                 "CHARSET": "utf8",
