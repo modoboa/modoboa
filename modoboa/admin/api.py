@@ -4,7 +4,8 @@ from django import http
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 
-from rest_framework import filters, status, viewsets
+from django_filters import rest_framework as dj_filters
+from rest_framework import filters, renderers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
@@ -12,6 +13,8 @@ from rest_framework.response import Response
 
 from modoboa.core import models as core_models
 from modoboa.core import sms_backends
+from modoboa.lib import renderers as lib_renderers
+from modoboa.lib import viewsets as lib_viewsets
 
 from . import lib, models, serializers
 
@@ -40,20 +43,34 @@ class DomainViewSet(viewsets.ModelViewSet):
         instance.delete(self.request.user)
 
 
-class DomainAliasViewSet(viewsets.ModelViewSet):
+class DomainAliasFilterSet(dj_filters.FilterSet):
+    """Custom FilterSet for DomainAlias."""
+
+    domain = dj_filters.CharFilter(field_name="target__name")
+
+    class Meta:
+        model = models.DomainAlias
+        fields = ["domain"]
+
+
+class DomainAliasViewSet(lib_viewsets.ExpandableModelViewSet):
     """ViewSet for DomainAlias."""
 
+    filter_backends = (dj_filters.DjangoFilterBackend, )
+    filterset_class = DomainAliasFilterSet
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    renderer_classes = (renderers.JSONRenderer, lib_renderers.CSVRenderer)
+    serializer_expanded_fields = ["target"]
     serializer_class = serializers.DomainAliasSerializer
-    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
-        queryset = models.DomainAlias.objects.get_for_admin(self.request.user)
-        domain = self.request.query_params.get("domain")
-        if domain:
-            queryset = queryset.filter(target__name=domain)
-        return queryset
+        return models.DomainAlias.objects.get_for_admin(self.request.user)
+
+    def get_renderer_context(self):
+        context = super().get_renderer_context()
+        context["headers"] = ["name", "target__name", "enabled"]
+        return context
 
 
 class AccountViewSet(viewsets.ModelViewSet):

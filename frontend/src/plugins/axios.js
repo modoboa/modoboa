@@ -48,7 +48,6 @@ _axios.interceptors.response.use(
       return Promise.reject(error)
     }
     return _axios.post('/token/refresh/', { refresh: refreshToken }).then(resp => {
-      console.log('OK')
       Cookies.set('token', resp.data.access, { sameSite: 'strict' })
       _axios.defaults.headers.common.Authorization = `Bearer ${resp.data.access}`
       const config = error.config
