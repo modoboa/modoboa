@@ -21,6 +21,7 @@ pull_request_rules:
       - author=pyup-bot
       - check-success=Travis CI - Pull Request
       - label=dependencies
+      - "#approved-reviews-by>=1"
     actions:
       merge:
         method: squash
@@ -31,6 +32,7 @@ pull_request_rules:
       - author~=^dependabot(|-preview)\[bot\]$
       - check-success=Travis CI - Pull Request
       - label=dependencies
+      - "#approved-reviews-by>=1"
     actions:
       merge:
         method: squash
