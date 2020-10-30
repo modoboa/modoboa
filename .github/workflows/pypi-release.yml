@@ -31,6 +31,9 @@ jobs:
         pip install -r requirements.txt
         pip install -r ldap-requirements.txt
         pip install -r test-requirements.txt
+        cd ../modoboa
+        django-admin compilemessages
+        cd ..
         python setup.py sdist bdist_wheel
     - name: Publish to Test PyPI
       # if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
