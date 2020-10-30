@@ -5,6 +5,9 @@ const SET_DOMAINS = 'SET_DOMAINS'
 const ADD_DOMAIN = 'ADD_DOMAIN'
 const UPDATE_DOMAIN = 'UPDATE_DOMAIN'
 const SET_DOMAIN_ALIASES = 'SET_DOMAIN_ALIASES'
+const ADD_DOMAIN_ALIAS = 'ADD_DOMAIN_ALIAS'
+const UPDATE_DOMAIN_ALIAS = 'UPDATE_DOMAIN_ALIAS'
+const REMOVE_DOMAIN_ALIAS = 'REMOVE_DOMAIN_ALIAS'
 
 // initial state
 const state = {
@@ -45,8 +48,23 @@ const actions = {
     })
   },
   getDomainAliases ({ commit }) {
-    return Vue.prototype.$axios.get('/domainaliases/').then(response => {
+    return Vue.prototype.$axios.get('/domainaliases/?expand=target').then(response => {
       commit(SET_DOMAIN_ALIASES, response.data)
+    })
+  },
+  addDomainAlias ({ commit }, data) {
+    return Vue.prototype.$axios.post('/domainaliases/', data).then(response => {
+      commit(ADD_DOMAIN_ALIAS, response.data)
+    })
+  },
+  updateDomainAlias ({ commit }, { id, data }) {
+    return Vue.prototype.$axios.put(`/domainaliases/${id}/`, data).then(response => {
+      commit(UPDATE_DOMAIN_ALIAS, response.data)
+    })
+  },
+  deleteDomainAlias ({ commit }, domainAliasId) {
+    return Vue.prototype.$axios.delete(`/domainaliases/${domainAliasId}/`).then(response => {
+      commit(REMOVE_DOMAIN_ALIAS, domainAliasId)
     })
   }
 }
@@ -69,6 +87,19 @@ const mutations = {
   },
   [SET_DOMAIN_ALIASES] (state, domainAliases) {
     state.domainAliases = domainAliases
+  },
+  [ADD_DOMAIN_ALIAS] (state, domainAlias) {
+    state.domainAliases.push(domainAlias)
+  },
+  [UPDATE_DOMAIN_ALIAS] (state, domainAlias) {
+    state.domainAliases.filter((item, pos) => {
+      if (item.pk === domainAlias.pk) {
+        Vue.set(state.domainAliases, pos, domainAlias)
+      }
+    })
+  },
+  [REMOVE_DOMAIN_ALIAS] (state, domainAliasId) {
+    state.domainAliases = state.domainAliases.filter(item => item.pk !== domainAliasId)
   }
 }
 

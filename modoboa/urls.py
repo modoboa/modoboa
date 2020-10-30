@@ -70,7 +70,8 @@ urlpatterns += [
     path('docs/api/', login_required(
             TemplateView.as_view(template_name="swagger-ui.html")),
          name="docs-index"),
-    path('api/v1/', include("modoboa.urls_api")),
+    path('api/v1/', include("modoboa.urls_api", namespace="v1")),
+    path('api/v2/', include("modoboa.urls_api", namespace="v2")),
 ]
 
 if settings.DEBUG:

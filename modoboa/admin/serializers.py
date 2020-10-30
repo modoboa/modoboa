@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from rest_flex_fields import FlexFieldsModelSerializer
 from rest_framework import serializers
 
 from modoboa.admin import models as admin_models
@@ -105,12 +106,15 @@ class DomainSerializer(serializers.ModelSerializer):
         return domain
 
 
-class DomainAliasSerializer(serializers.ModelSerializer):
+class DomainAliasSerializer(FlexFieldsModelSerializer):
     """Base DomainAlias serializer."""
 
     class Meta:
         model = admin_models.DomainAlias
         fields = ("pk", "name", "target", "enabled", )
+        expandable_fields = {
+            "target": DomainSerializer
+        }
 
     def validate_target(self, value):
         """Check target domain."""
