@@ -38,6 +38,7 @@ jobs:
         user: __token__
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
+        skip_existing: true
     # Uncomment this when ready to merge in master
     # - name: Publish distribution 📦 to PyPI
     #   if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
