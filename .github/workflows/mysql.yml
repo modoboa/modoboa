@@ -19,6 +19,8 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: root
+          MYSQL_USER: modoboa
+          MYSQL_PASSWORD: modoboa
           MYSQL_DATABASE: modoboa
         ports:
           - 3306/tcp
@@ -67,7 +69,9 @@ jobs:
         # use localhost for the host here because we are running the job on the VM.
         # If we were running the job on in a container this would be postgres
         DB: mysql
-        MYSQL_HOST: localhost
+        MYSQL_HOST: 127.0.0.1
         MYSQL_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
+        MYSQL_USER: modoboa
+        MYSQL_PASSWORD: modoboa
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
         LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
