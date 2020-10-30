@@ -29,7 +29,6 @@ if DB == "mysql":
                 "charset": "utf8",
                 "connect_timeout": 10,
             },
-            "CONN_MAX_AGE": 60,
             "TEST": {
                 "CHARSET": "utf8",
                 "COLLATION": "utf8_unicode_ci",
