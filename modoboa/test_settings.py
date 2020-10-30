@@ -12,7 +12,7 @@ if DB == "mysql":
             "NAME": "modoboa",
             "USER": "root",
             "PASSWORD": "root",
-            "HOST": "localhost",
+            "HOST": "127.0.0.1",
             "PORT": os.environ.get("MYSQL_PORT", "3306"),
             "ATOMIC_REQUESTS": True,
             # MySQL's Strict Mode fixes many data integrity problems in MySQL,
