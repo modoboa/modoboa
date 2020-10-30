@@ -2,10 +2,11 @@ name: Pypi Release
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  # Comment this before merge
+    branches:
+      - master
+  release:
+    types:
+      - created
 
 jobs:
   build:
@@ -39,10 +40,9 @@ jobs:
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
         skip_existing: true
-    # Uncomment this when ready to merge in master
-    # - name: Publish distribution 📦 to PyPI
-    #   if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-    #   uses: pypa/gh-action-pypi-publish@master
-    #   with:
-    #     user: __token__
-    #     password: ${{ secrets.pypi_password }}
+    - name: Publish distribution 📦 to PyPI
+      if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_password }}
