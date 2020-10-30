@@ -27,6 +27,8 @@ if DB == "mysql":
                     "SET innodb_strict_mode = ON;"
                 ),
                 "charset": "utf8",
+                "connect_timeout": 10,
+                "wait_timeout": 10,
             },
             "TEST": {
                 "CHARSET": "utf8",
