@@ -1,7 +1,5 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python MySQL
+name: Coverage
 
 on:
   push:
@@ -10,21 +8,22 @@ on:
     branches: [ master ]
 
 jobs:
-  testmy:
+  coverage:
 
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql:8.0
+      postgres:
+        image: postgres:11
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_USER: modoboa
-          MYSQL_PASSWORD: modoboa
-          MYSQL_DATABASE: modoboa
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
         ports:
-          - 3306/tcp
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        # will assign a random free host port
+        - 5432/tcp
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
         image: redis
         ports:
@@ -42,7 +41,8 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.8]
+      fail-fast: false
 
     steps:
     - uses: actions/checkout@v2
@@ -54,23 +54,24 @@ jobs:
       run: |
         sudo apt-get install postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
         python -m pip install --upgrade pip
+        pip install codecov
         pip install -r requirements.txt
         pip install -r ldap-requirements.txt
         pip install -r test-requirements.txt
-        pip install -r mysql-requirements.txt
+        pip install -r postgresql-requirements.txt
         python setup.py develop
     - name: Test with pytest
       run: |
         python ./tests.py
         cd test_project
-        manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+        coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+        coverage combine
+        coverage report
+        codecov
       env:
         # use localhost for the host here because we are running the job on the VM.
         # If we were running the job on in a container this would be postgres
-        DB: mysql
-        MYSQL_HOST: 127.0.0.1
-        MYSQL_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
-        MYSQL_USER: root
-        MYSQL_PASSWORD: root
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
         LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}

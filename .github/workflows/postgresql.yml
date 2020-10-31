@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  testpg:
 
     runs-on: ubuntu-latest
 
@@ -56,7 +56,6 @@ jobs:
       run: |
         sudo apt-get install postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
         python -m pip install --upgrade pip
-        pip install codecov
         pip install -r requirements.txt
         pip install -r ldap-requirements.txt
         pip install -r test-requirements.txt
@@ -66,10 +65,7 @@ jobs:
       run: |
         python ./tests.py
         cd test_project
-        coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
-        coverage combine
-        coverage report
-        codecov
+        manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
       env:
         # use localhost for the host here because we are running the job on the VM.
         # If we were running the job on in a container this would be postgres
