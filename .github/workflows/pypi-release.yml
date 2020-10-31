@@ -3,15 +3,9 @@ name: Pypi Release
 on:
   workflow_run:
     workflows: ['Python PostgreSQL', 'Python MySQL']
-    branches: [master]
+    # branches: [master]
     types:
       - completed
-  push:
-    branches:
-      - master
-  release:
-    types:
-      - created
 
 jobs:
   build:
