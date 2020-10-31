@@ -114,6 +114,5 @@ jobs:
           name: coverage-results
       - name: Report coverage
         run: |
-          cd test_project
           coverage report
           codecov
