@@ -62,6 +62,7 @@ jobs:
         pip install -r postgresql-requirements.txt
         python setup.py develop
     - name: Test with pytest
+      if: ${{ matrix.python-version }} != '3.8'
       run: |
         python ./tests.py
         cd test_project
@@ -73,3 +74,45 @@ jobs:
         POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
         LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
+
+    - name: Test with pytext and coverage
+      if: ${{ matrix.python-version }} == '3.8'
+      run: |
+        python ./tests.py
+        cd test_project
+        coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+      env:
+        # use localhost for the host here because we are running the job on the VM.
+        # If we were running the job on in a container this would be postgres
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+        REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+        LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
+    - name: Upload coverage result
+      if: ${{ matrix.python-version }} == '3.8'
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-results
+        path: .coverage*
+
+  coverage:
+    needs: testpg
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          pip install codecov
+      - name: Download coverage results
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage-results
+      - name: Report coverage
+        run: |
+          coverage combine
+          coverage report
+          codecov
