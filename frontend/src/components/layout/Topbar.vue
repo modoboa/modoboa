@@ -50,7 +50,7 @@ export default {
     return {
       items: [
         {
-          text: 'Logout',
+          text: this.$gettext('Logout'),
           icon: 'mdi-logout',
           click: this.logout
         }

@@ -11,14 +11,14 @@
         text
         @click="cancel"
         >
-        No
+        <translate>No</translate>
       </v-btn>
       <v-btn
         color="primary"
         text
         @click="confirm"
         >
-        Yes
+        <translate>Yes</translate>
       </v-btn>
     </v-card-actions>
   </v-card>

@@ -68,26 +68,26 @@ export default {
       drawer: true,
       items: [
         {
-          text: 'Dashboard',
+          text: this.$gettext('Dashboard'),
           icon: 'mdi-view-dashboard'
         },
         {
-          text: 'Domains',
+          text: this.$gettext('Domains'),
           to: { name: 'DomainList' },
           icon: 'mdi-domain'
         },
         {
-          text: 'Identities',
+          text: this.$gettext('Identities'),
           icon: 'mdi-account'
         },
         {
           icon: 'mdi-magnify',
-          text: 'Logs',
+          text: this.$gettext('Logs'),
           to: { name: 'LogList' }
         },
         {
           icon: 'mdi-cog',
-          text: 'Parameters',
+          text: this.$gettext('Parameters'),
           children: []
         }
       ]

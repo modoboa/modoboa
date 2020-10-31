@@ -24,7 +24,11 @@
         <v-btn icon small :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
           <v-icon>mdi-circle-edit-outline</v-icon>
         </v-btn>
-        <v-btn icon small title="Remove" @click="confirmDelete(item)">
+        <v-btn
+          icon
+          small
+          :title="'Delete this domain' | translate"
+          @click="confirmDelete(item)">
           <v-icon>mdi-delete-outline</v-icon>
         </v-btn>
       </template>
@@ -34,13 +38,13 @@
         </router-link>
       </template>
       <template v-slot:item.tags="{ }">
-        <v-chip label x-small>Domain</v-chip>
+        <v-chip label x-small><translate>Domain</translate></v-chip>
       </template>
       <template v-slot:item.dns_status="{ item }">
         <v-chip v-if="item.dns_status.checks === 'disabled'"
-                label x-small>Disabled</v-chip>
+                label x-small><translate>Disabled</translate></v-chip>
         <v-chip v-if="item.dns_status.checks === 'pending'"
-                color="secondary" label x-small>Pending</v-chip>
+                color="secondary" label x-small><translate>Pending</translate></v-chip>
         <span v-if="item.dns_status.checks === 'active'">
           <v-chip v-if="item.dns_status.mx"
                   :color="getDNSTagType(item.dns_status.mx)"
@@ -90,7 +94,7 @@ export default {
         { text: 'DNS status', value: 'dns_status', sortable: false },
         { text: 'Quota', value: 'allocated_quota_in_percent' }
       ],
-      deleteDomainMsg: 'Confirm deletion?',
+      deleteDomainMsg: this.$gettext('Confirm deletion?'),
       selectedDomain: null,
       showConfirmDialog: false,
       search: ''
