@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import './plugins/axios'
 import './plugins/vue-cookie'
+import './plugins/vue-gettext'
 import App from './App.vue'
 import router from './router'
 import store from './store'
