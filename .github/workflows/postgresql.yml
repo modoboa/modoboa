@@ -75,7 +75,7 @@ jobs:
         REDIS_PORT: ${{ job.services.redis.ports[6379] }}
         LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
     - name: Codecov
-        run: |
-          coverage combine
-          coverage report
-          codecov
+      run: |
+        coverage combine
+        coverage report
+        codecov
