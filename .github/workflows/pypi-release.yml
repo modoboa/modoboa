@@ -1,6 +1,11 @@
 name: Pypi Release
 
 on:
+  workflow_run:
+    workflows: ['Python PostgreSQL', 'Python MySQL']
+    branches: [master]
+    types:
+      - completed
   push:
     branches:
       - master
@@ -10,43 +15,36 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8]
-
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        sudo apt-get install ldap-utils postfix slapd librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
-        python -m pip install --upgrade pip setuptools wheel
-        pip install -r requirements.txt
-        pip install -r ldap-requirements.txt
-        pip install -r test-requirements.txt
-        cd ../modoboa
-        django-admin compilemessages
-        cd ..
-        python setup.py sdist bdist_wheel
-    - name: Publish to Test PyPI
-      # if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: __token__
-        password: ${{ secrets.test_pypi_password }}
-        repository_url: https://test.pypi.org/legacy/
-        skip_existing: true
-    - name: Publish distribution 📦 to PyPI
-      if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: __token__
-        password: ${{ secrets.pypi_password }}
-        skip_existing: true
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          sudo apt-get install librrd-dev rrdtool libssl-dev
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+          cd modoboa
+          django-admin compilemessages
+          cd ..
+          python setup.py sdist bdist_wheel
+      - name: Publish to Test PyPI
+        # if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.test_pypi_password }}
+          repository_url: https://test.pypi.org/legacy/
+          skip_existing: true
+      - name: Publish distribution to PyPI
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
+          skip_existing: true
