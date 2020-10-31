@@ -9,11 +9,12 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  POSTGRES_HOST: localhost
+
 jobs:
   testpg:
-
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:11
@@ -47,53 +48,52 @@ jobs:
       fail-fast: false
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        sudo apt-get install postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r ldap-requirements.txt
-        pip install -r test-requirements.txt
-        pip install -r postgresql-requirements.txt
-        python setup.py develop
-    - name: Test with pytest
-      if: ${{ matrix.python-version }} != '3.8'
-      run: |
-        python ./tests.py
-        cd test_project
-        python3 manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
-      env:
-        # use localhost for the host here because we are running the job on the VM.
-        # If we were running the job on in a container this would be postgres
-        POSTGRES_HOST: localhost
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
-        REDIS_PORT: ${{ job.services.redis.ports[6379] }}
-        LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          sudo apt-get install postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r ldap-requirements.txt
+          pip install -r test-requirements.txt
+          pip install -r postgresql-requirements.txt
+          python setup.py develop
+          pip install coverage
+      - name: Test with pytest
+        if: ${{ matrix.python-version != '3.8' }}
+        run: |
+          python ./tests.py
+          cd test_project
+          python3 manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+        env:
+          # use localhost for the host here because we are running the job on the VM.
+          # If we were running the job on in a container this would be postgres
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+          LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
 
-    - name: Test with pytext and coverage
-      if: ${{ matrix.python-version }} == '3.8'
-      run: |
-        python ./tests.py
-        cd test_project
-        coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
-      env:
-        # use localhost for the host here because we are running the job on the VM.
-        # If we were running the job on in a container this would be postgres
-        POSTGRES_HOST: localhost
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
-        REDIS_PORT: ${{ job.services.redis.ports[6379] }}
-        LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
-    - name: Upload coverage result
-      if: ${{ matrix.python-version }} == '3.8'
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-results
-        path: .coverage*
+      - name: Test with pytest and coverage
+        if: ${{ matrix.python-version == '3.8' }}
+        run: |
+          python ./tests.py
+          cd test_project
+          coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+        env:
+          # use localhost for the host here because we are running the job on the VM.
+          # If we were running the job on in a container this would be postgres
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+          LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
+      - name: Upload coverage result
+        if: ${{ matrix.python-version == '3.8' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-results
+          path: .coverage*
 
   coverage:
     needs: testpg
