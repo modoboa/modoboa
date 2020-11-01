@@ -4,6 +4,9 @@ on:
   workflow_run:
     workflows:
       - "Python PostgreSQL"
+    branches-ignore:
+      - master
+      - main
     # branches: [master]
     types:
       - completed
