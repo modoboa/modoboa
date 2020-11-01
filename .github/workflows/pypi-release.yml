@@ -3,7 +3,7 @@ name: Pypi Release
 on:
   workflow_run:
     workflows:
-      - 'Python PostgreSQL'
+      - "Python PostgreSQL"
     # branches: [master]
     types:
       - completed
