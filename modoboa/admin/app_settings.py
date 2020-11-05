@@ -210,7 +210,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         }
         hide_fields = False
         dpath = None
-        code, output = exec_cmd("which dovecot")
+        code, output = exec_cmd(("which", "dovecot"))
         if not code:
             dpath = force_text(output).strip()
         else:
@@ -223,7 +223,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                     dpath = fpath
         if dpath:
             try:
-                code, version = exec_cmd("%s --version" % dpath)
+                code, version = exec_cmd((dpath, "--version"))
             except OSError:
                 hide_fields = True
             else:
@@ -260,7 +260,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                 raise forms.ValidationError(
                     ugettext_lazy("Directory not found.")
                 )
-            code, output = exec_cmd("which openssl")
+            code, output = exec_cmd(("which", "openssl"))
             if code:
                 raise forms.ValidationError(
                     ugettext_lazy(

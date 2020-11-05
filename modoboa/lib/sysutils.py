@@ -18,7 +18,7 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     Run a command using the current user. Set :keyword:`sudo_user` if
     you need different privileges.
 
-    :param str cmd: the command to execute
+    :param collections.abc.Iterable cmd: the command to execute
     :param str sudo_user: a valid system username
     :param str pinput: data to send to process's stdin
     :param bool capture_output: capture process output or not
@@ -26,8 +26,8 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     :return: return code, command output
     """
     if sudo_user is not None:
-        cmd = "sudo -u %s %s" % (sudo_user, cmd)
-    kwargs["shell"] = True
+        cmd = ["sudo", "-u", sudo_user] + list(cmd)
+    kwargs["shell"] = False
     if pinput is not None:
         kwargs["stdin"] = subprocess.PIPE
     if capture_output:
@@ -49,7 +49,7 @@ def doveadm_cmd(params, sudo_user=None, pinput=None,
     Run doveadm command using the current user. Set :keyword:`sudo_user` if
     you need different privileges.
 
-    :param str params: the parameters to give to doveadm
+    :param collections.abs.Iterable params: the parameters to pass to doveadm
     :param str sudo_user: a valid system username
     :param str pinput: data to send to process's stdin
     :param bool capture_output: capture process output or not
@@ -57,7 +57,7 @@ def doveadm_cmd(params, sudo_user=None, pinput=None,
     :return: return code, command output
     """
     dpath = None
-    code, output = exec_cmd("which doveadm")
+    code, output = exec_cmd(("which", "doveadm"))
     if not code:
         dpath = force_text(output).strip()
     else:
@@ -70,7 +70,7 @@ def doveadm_cmd(params, sudo_user=None, pinput=None,
                 dpath = fpath
                 break
     if dpath:
-        return exec_cmd("{} {}".format(dpath, params),
+        return exec_cmd([dpath] + list(params),
                         sudo_user=sudo_user,
                         pinput=pinput,
                         capture_output=capture_output,
