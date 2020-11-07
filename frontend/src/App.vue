@@ -7,7 +7,6 @@
   </v-main>
 </v-app>
 <v-app v-else>
-  <topbar />
   <navbar />
   <v-main>
     <v-container fluid>
@@ -20,7 +19,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import Navbar from '@/components/layout/Navbar'
-import Topbar from '@/components/layout/Topbar'
 
 export default {
   name: 'App',
@@ -30,8 +28,7 @@ export default {
     })
   },
   components: {
-    Navbar,
-    Topbar
+    Navbar
   },
   // created () {
   //   this.$store.dispatch('auth/initialize')
