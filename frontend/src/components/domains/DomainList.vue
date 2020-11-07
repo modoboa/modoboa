@@ -15,23 +15,11 @@
       <v-btn class="mr-2" fab small>
         <v-icon>mdi-file-export-outline</v-icon>
       </v-btn>
-      <v-btn fab small color="primary" :to="{ name: 'DomainAdd' }">
+      <v-btn fab small color="secondary" :to="{ name: 'DomainAdd' }">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-toolbar>
     <v-data-table :headers="headers" :items="domains" :search="search" class="elevation-1">
-      <template v-slot:item.actions="{ item }">
-        <v-btn icon small :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
-          <v-icon>mdi-circle-edit-outline</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          small
-          :title="'Delete this domain' | translate"
-          @click="confirmDelete(item)">
-          <v-icon>mdi-delete-outline</v-icon>
-        </v-btn>
-      </template>
       <template v-slot:item.name="{ item }">
         <router-link :to="{ name: 'DomainDetail', params: { pk: item.pk } }">
           {{ item.name }}
@@ -66,6 +54,20 @@
       <template v-slot:item.allocated_quota_in_percent="{ item }">
         <v-progress-linear v-model="item.allocated_quota_in_percent" />
       </template>
+      <template v-slot:item.actions="{ item }">
+        <div class="text-right">
+          <v-btn icon x-small :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
+            <v-icon>mdi-circle-edit-outline</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            x-small
+            :title="'Delete this domain' | translate"
+            @click="confirmDelete(item)">
+            <v-icon>mdi-delete-outline</v-icon>
+          </v-btn>
+        </div>
+      </template>
     </v-data-table>
 
   <confirm-dialog v-model="showConfirmDialog"
@@ -88,11 +90,11 @@ export default {
   data () {
     return {
       headers: [
-        { text: '', value: 'actions', sortable: false },
         { text: 'Name', value: 'name' },
         { text: 'Tags', value: 'tags' },
         { text: 'DNS status', value: 'dns_status', sortable: false },
-        { text: 'Quota', value: 'allocated_quota_in_percent' }
+        { text: 'Quota', value: 'allocated_quota_in_percent' },
+        { text: this.$gettext('Actions'), value: 'actions', sortable: false }
       ],
       deleteDomainMsg: this.$gettext('Confirm deletion?'),
       selectedDomain: null,
