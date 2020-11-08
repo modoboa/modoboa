@@ -82,7 +82,7 @@ jobs:
         if: ${{ matrix.database == 'mysql' }}
         run: |
           pip install -r mysql-requirements.txt
-          echo "DB=mysql >> $GITHUB_ENV"
+          echo "DB=mysql" >> $GITHUB_ENV
       - name: Test with pytest
         if: ${{ matrix.python-version != '3.8' || matrix.database != 'postgres' }}
         run: |
