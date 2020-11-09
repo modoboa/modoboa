@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.urls import include, path
 from django.views.i18n import JavaScriptCatalog
 
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from drf_spectacular.views import (
+    SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+)
 
 from modoboa.admin.views import user as user_views
 from modoboa.core import signals as core_signals, views as core_views
@@ -62,6 +64,8 @@ urlpatterns += [
     path('docs/api/',
          SpectacularSwaggerView.as_view(url_name='schema'),
          name='docs-index'),
+    path('docs/api/redoc/', SpectacularRedocView.as_view(url_name='schema'),
+         name='redoc'),
     path('api/v1/', include("modoboa.urls_api")),
 ]
 
