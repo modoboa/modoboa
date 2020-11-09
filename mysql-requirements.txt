@@ -1,1 +1,1 @@
-mysqlclient<=1.4.99
+mysqlclient<2.0.2
