@@ -2,6 +2,7 @@
 
 from unittest import skipIf
 
+from django.conf import settings
 from django.core.management import call_command
 from django.utils.encoding import force_bytes, force_str
 
@@ -23,7 +24,7 @@ class LDAPExportTestCase(ModoTestCase):
         super().setUp()
         self.set_global_parameters({
             "ldap_enable_sync": True,
-            "ldap_server_port": 3389,
+            "ldap_server_port": settings.LDAP_SERVER_PORT,
             "ldap_sync_bind_dn": "cn=admin,dc=example,dc=com",
             "ldap_sync_bind_password": "test",
             "ldap_sync_account_dn_template": (
@@ -111,7 +112,7 @@ class LDAPImportTestCase(ModoTestCase):
         super().setUp()
         self.set_global_parameters({
             "ldap_enable_import": True,
-            "ldap_server_port": 3389,
+            "ldap_server_port": settings.LDAP_SERVER_PORT,
             "ldap_sync_bind_dn": "cn=admin,dc=example,dc=com",
             "ldap_sync_bind_password": "test",
             "ldap_import_search_base": "ou=users,dc=example,dc=com",
