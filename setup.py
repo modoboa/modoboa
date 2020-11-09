@@ -45,6 +45,11 @@ if __name__ == "__main__":
     with open(path.join(HERE, "README.rst")) as readme:
         LONG_DESCRIPTION = readme.read()
 
+    def local_scheme(version):
+        """Skip the local version (eg. +xyz of 0.6.1.dev4+gdf99fe2)
+            to be able to upload to Test PyPI"""
+        return ""
+
     setup(
         name="modoboa",
         description="Mail hosting made simple",
@@ -74,7 +79,7 @@ if __name__ == "__main__":
         zip_safe=False,
         scripts=["bin/modoboa-admin.py"],
         install_requires=INSTALL_REQUIRES,
-        use_scm_version=True,
+        use_scm_version={"local_scheme": local_scheme},
         python_requires=">=3.4",
         setup_requires=["setuptools_scm"],
         extras_require={

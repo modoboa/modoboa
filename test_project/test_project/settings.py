@@ -196,7 +196,7 @@ MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 # REDIS
 
 REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
 REDIS_QUOTA_DB = 0
 REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
@@ -281,6 +281,9 @@ LOGGING = {
         },
         'modoboa': {
             'class': 'modoboa.core.loggers.SQLHandler',
+        },
+        'console': {
+            'class': 'logging.StreamHandler'
         }
     },
     'loggers': {
@@ -298,7 +301,11 @@ LOGGING = {
             'handlers': ['modoboa'],
             'level': 'INFO',
             'propagate': False
-        }
+        },
+        # 'django_auth_ldap': {
+        #     'level': 'DEBUG',
+        #     'handlers': ['console']
+        # },
     }
 }
 
@@ -308,3 +315,5 @@ SILENCED_SYSTEM_CHECKS = [
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
 # Load settings from extensions
+
+LDAP_SERVER_PORT = os.environ.get('LDAP_SERVER_PORT', 3389)
