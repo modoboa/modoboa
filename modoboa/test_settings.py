@@ -3,17 +3,17 @@ import os
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DB = os.environ.get("DB", "POSTGRESQL")
+DB = os.environ.get("DB", "postgres").lower()
 
-if DB == "MYSQL":
+if DB == "mysql":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
             "NAME": "modoboa",
-            "USER": "root",
-            "PASSWORD": "",
-            "HOST": "localhost",
-            "PORT": "",
+            "USER": os.environ.get("MYSQL_USER", "root"),
+            "PASSWORD": os.environ.get("MYSQL_PASSWORD", "root"),
+            "HOST": "127.0.0.1",
+            "PORT": os.environ.get("MYSQL_PORT", "3306"),
             "ATOMIC_REQUESTS": True,
             # MySQL's Strict Mode fixes many data integrity problems in MySQL,
             # such as data truncation upon insertion, by escalating warnings
@@ -27,6 +27,7 @@ if DB == "MYSQL":
                     "SET innodb_strict_mode = ON;"
                 ),
                 "charset": "utf8",
+                "connect_timeout": 10,
             },
             "TEST": {
                 "CHARSET": "utf8",
@@ -34,7 +35,7 @@ if DB == "MYSQL":
             },
         },
     }
-elif DB == "SQLITE":
+elif DB == "sqlite":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -49,9 +50,9 @@ else:
             "ENGINE": "django.db.backends.postgresql",
             "NAME": "modoboa",
             "USER": "postgres",
-            "PASSWORD": "",
+            "PASSWORD": "postgres",
             "HOST": "localhost",
-            "PORT": "",
+            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
             "ATOMIC_REQUESTS": True,
             "OPTIONS": {
                 "client_encoding": "UTF8",

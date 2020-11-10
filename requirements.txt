@@ -9,6 +9,7 @@ django-otp==1.0.2
 dj-database-url
 
 djangorestframework>=3.11,<3.12
+drf-spectacular
 uritemplate
 
 passlib~=1.7.4

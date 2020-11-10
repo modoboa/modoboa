@@ -7,6 +7,7 @@ from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
+from drf_spectacular.utils import extend_schema
 
 from . import serializers
 
@@ -28,6 +29,9 @@ class AccountViewSet(viewsets.ViewSet):
         )
         return response.Response()
 
+    @extend_schema(
+        request=serializers.CheckTFASetupSerializer
+    )
     @action(methods=["post"], detail=False, url_path="tfa/setup/check")
     def tfa_setup_check(self, request):
         """Check TFA setup."""
@@ -57,6 +61,7 @@ class AccountViewSet(viewsets.ViewSet):
         request.user.save()
         return response.Response()
 
+    @extend_schema(tags=['account'])
     @action(methods=["post"], detail=False, url_path="tfa/reset_codes")
     def tfa_reset_codes(self, request, *args, **kwargs):
         """Reset recovery codes."""
