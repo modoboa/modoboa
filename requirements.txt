@@ -19,7 +19,7 @@ dnspython==1.16.0
 feedparser==6.0.2
 greenlet==0.4.17
 gevent==20.9.0
-jsonfield==2.0.2
+jsonfield==3.1.0
 Pillow  # Optional dependency for django-ckeditor
 progressbar33==2.4
 py-dateutil==2.2
