@@ -9,7 +9,7 @@ from django.urls import include, path
 from django.views.i18n import JavaScriptCatalog
 
 from drf_spectacular.views import (
-    SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+    SpectacularJSONAPIView, SpectacularSwaggerView, SpectacularRedocView
 )
 
 from modoboa.admin.views import user as user_views
@@ -60,7 +60,7 @@ if extra_routes:
 
 # API urls
 urlpatterns += [
-    path('docs/openapi.json', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/openapi.json', SpectacularJSONAPIView.as_view(), name='schema'),
     path('docs/api/',
          SpectacularSwaggerView.as_view(url_name='schema'),
          name='docs-index'),
