@@ -1,7 +1,7 @@
 pull_request_rules:
   - name: automatic merge on CI success and review
     conditions:
-      - check-success=Travis CI - Pull Request
+      - check-success=test (postgres, 3.7)
       - "#approved-reviews-by>=1"
       - "#review-requested=0"
       - "#changes-requested-reviews-by=0"
@@ -19,7 +19,7 @@ pull_request_rules:
   - name: automatic merge for pyUp pull requests
     conditions:
       - author=pyup-bot
-      - check-success=Travis CI - Pull Request
+      - check-success=test (postgres, 3.7)
       - label=dependencies
       - "#approved-reviews-by>=1"
     actions:
@@ -30,7 +30,7 @@ pull_request_rules:
   - name: automatic merge for dependabot pull requests
     conditions:
       - author~=^dependabot(|-preview)\[bot\]$
-      - check-success=Travis CI - Pull Request
+      - check-success=test (postgres, 3.7)
       - label=dependencies
       - "#approved-reviews-by>=1"
     actions:
