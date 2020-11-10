@@ -9,6 +9,7 @@ import time
 
 import redis
 
+from django import db
 from django.conf import settings
 from django.core.management import call_command
 from django.test import TransactionTestCase
@@ -55,6 +56,7 @@ class PolicyDaemonTestCase(
         self.admin = core_models.User.objects.get(username="user@test2.com")
         self.admin.role = "SuperAdmins"
 
+        db.connections.close_all()
         patcher = patch("aiosmtplib.send")
         self.send_mock = patcher.start()
         self.process = Process(target=start_policy_daemon)
