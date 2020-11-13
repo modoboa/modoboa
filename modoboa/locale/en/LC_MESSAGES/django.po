@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 13:15+0200\n"
+"POT-Creation-Date: 2020-11-05 15:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -520,44 +520,48 @@ msgstr ""
 msgid "Dummy"
 msgstr ""
 
-#: core/forms.py:21
+#: core/forms.py:23
 msgid "Username"
 msgstr ""
 
-#: core/forms.py:25
+#: core/forms.py:27
 msgid "Password"
 msgstr ""
 
-#: core/forms.py:38
+#: core/forms.py:40
 msgid "Old password"
 msgstr ""
 
-#: core/forms.py:42
+#: core/forms.py:44
 msgid "New password"
 msgstr ""
 
-#: core/forms.py:46
+#: core/forms.py:48
 msgid "Confirmation"
 msgstr ""
 
-#: core/forms.py:74
+#: core/forms.py:76
 msgid "Old password mismatchs"
 msgstr ""
 
-#: core/forms.py:83
+#: core/forms.py:85
 msgid "Passwords mismatch"
 msgstr ""
 
-#: core/forms.py:103
+#: core/forms.py:105
 msgid "Enable API access"
 msgstr ""
 
-#: core/forms.py:137
+#: core/forms.py:139
 msgid "Verification code"
 msgstr ""
 
-#: core/forms.py:148
+#: core/forms.py:150
 msgid "Invalid code"
+msgstr ""
+
+#: core/forms.py:163
+msgid "This code is invalid"
 msgstr ""
 
 #: core/handlers.py:36
@@ -602,35 +606,35 @@ msgstr ""
 msgid "[modoboa] Update(s) available"
 msgstr ""
 
-#: core/models.py:55
+#: core/models.py:52
 msgid "Allow mailboxes access"
 msgstr ""
 
-#: core/models.py:57
+#: core/models.py:54
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:60
+#: core/models.py:57
 msgid "password"
 msgstr ""
 
-#: core/models.py:63
+#: core/models.py:60
 msgid "language"
 msgstr ""
 
-#: core/models.py:66
+#: core/models.py:63
 msgid "Prefered language to display pages."
 msgstr ""
 
-#: core/models.py:70
+#: core/models.py:67
 msgid "Phone number"
 msgstr ""
 
-#: core/models.py:72
+#: core/models.py:69
 msgid "Secondary email"
 msgstr ""
 
-#: core/models.py:75
+#: core/models.py:72
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
@@ -690,6 +694,14 @@ msgstr[1] ""
 
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
+msgstr ""
+
+#: core/serializers.py:15
+msgid "Invalid PIN code"
+msgstr ""
+
+#: core/serializers.py:21
+msgid "2FA is already enabled"
 msgstr ""
 
 #: core/sms_backends/ovh.py:19
@@ -920,6 +932,79 @@ msgstr ""
 msgid "Click here to update your password"
 msgstr ""
 
+#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:124
+msgid "Security"
+msgstr ""
+
+#: core/templates/core/user_security.html:6
+msgid "Two-Factor authentication"
+msgstr ""
+
+#: core/templates/core/user_security.html:17
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from "
+"your application repository and use that app to scan this QR code."
+msgstr ""
+
+#: core/templates/core/user_security.html:25
+msgid "Pin code"
+msgstr ""
+
+#: core/templates/core/user_security.html:28
+msgid "Register"
+msgstr ""
+
+#: core/templates/core/user_security.html:33
+msgid ""
+"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr ""
+
+#: core/templates/core/user_security.html:38
+#: core/templates/core/user_security.html:89
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr ""
+
+#: core/templates/core/user_security.html:53
+msgid "Two-Factor Authentication is enabled for your account."
+msgstr ""
+
+#: core/templates/core/user_security.html:58
+msgid "Disable 2FA"
+msgstr ""
+
+#: core/templates/core/user_security.html:61
+msgid "Reset recovery codes"
+msgstr ""
+
+#: core/templates/core/user_security.html:65
+msgid ""
+"Two-Factor Authentication (2FA) is not yet activated for your account. "
+"Enabling this feature will increase your account's security."
+msgstr ""
+
+#: core/templates/core/user_security.html:73
+msgid "Enable 2FA"
+msgstr ""
+
+#: core/templates/core/user_security.html:83
+#: core/templates/core/user_security.html:99
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr ""
+
+#: core/templates/core/user_security.html:84
+msgid "New recovery codes"
+msgstr ""
+
+#: core/templates/core/user_security.html:88
+msgid "Here are your new recovery codes. "
+msgstr ""
+
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
 msgstr ""
@@ -928,7 +1013,7 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: core/templatetags/core_tags.py:127
+#: core/templatetags/core_tags.py:131
 msgid "API"
 msgstr ""
 
@@ -940,43 +1025,47 @@ msgstr ""
 msgid "Parameters saved"
 msgstr ""
 
-#: core/views/auth.py:59
+#: core/views/auth.py:61
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:66
+#: core/views/auth.py:68
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:82
+#: core/views/auth.py:84
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr ""
 
-#: core/views/auth.py:90
+#: core/views/auth.py:92
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 
-#: core/views/auth.py:125
+#: core/views/auth.py:127
 msgid "User '{}' successfully logged out"
 msgstr ""
 
-#: core/views/auth.py:170 core/views/auth.py:225
+#: core/views/auth.py:172 core/views/auth.py:227
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
-#: core/views/user.py:53
+#: core/views/user.py:60
 msgid "Profile updated"
 msgstr ""
 
-#: core/views/user.py:81
+#: core/views/user.py:88
 msgid "Preferences saved"
 msgstr ""
 
-#: core/views/user.py:103
+#: core/views/user.py:110
 msgid "Access updated"
+msgstr ""
+
+#: core/viewsets.py:52
+msgid "2FA is not enabled"
 msgstr ""
 
 #: lib/db_utils.py:23
@@ -984,7 +1073,7 @@ msgstr ""
 msgid "Connection to database %s not configured"
 msgstr ""
 
-#: lib/email_utils.py:141 lib/email_utils.py:360
+#: lib/email_utils.py:143 lib/email_utils.py:362
 msgid "unable to determine encoding of string"
 msgstr ""
 
@@ -1066,11 +1155,6 @@ msgstr ""
 #: templates/common/generic_field.html:11
 #: templates/common/generic_fields_group.html:8
 msgid "Help:"
-msgstr ""
-
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
-msgid "Close"
 msgstr ""
 
 #: templates/common/wizard_forms.html:31

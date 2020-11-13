@@ -2,7 +2,7 @@
 `Modoboa <http://modoboa.org/>`_
 ################################
 
-|travis| |codecov| |latest-version|
+|workflow| |codecov| |latest-version|
 
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
@@ -73,7 +73,6 @@ The following external libraries are provided with Modoboa:
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
-.. |travis| image:: https://travis-ci.org/modoboa/modoboa.png?branch=master
-   :target: https://travis-ci.org/modoboa/modoboa
+.. |workflow| image:: https://github.com/modoboa/modoboa/workflows/Modoboa%20App/badge.svg
 .. |codecov| image:: http://codecov.io/github/modoboa/modoboa/coverage.svg?branch=master
    :target: http://codecov.io/github/modoboa/modoboa?branch=master

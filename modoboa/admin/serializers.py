@@ -8,6 +8,8 @@ from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from rest_flex_fields import FlexFieldsModelSerializer
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from modoboa.admin import models as admin_models
@@ -193,6 +195,7 @@ class AccountSerializer(serializers.ModelSerializer):
         if not user.is_superuser:
             del self.fields["master_user"]
 
+    @extend_schema_field(OpenApiTypes.STR)
     def get_role(self, account):
         """Return role."""
         return account.role

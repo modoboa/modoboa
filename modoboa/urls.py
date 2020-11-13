@@ -6,11 +6,11 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.urls import include, path
-from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog
 
-from rest_framework.renderers import JSONOpenAPIRenderer
-from rest_framework.schemas import get_schema_view
+from drf_spectacular.views import (
+    SpectacularJSONAPIView, SpectacularSwaggerView, SpectacularRedocView
+)
 
 from modoboa.admin.views import user as user_views
 from modoboa.core import signals as core_signals, views as core_views
@@ -59,17 +59,13 @@ if extra_routes:
     urlpatterns += extra_routes
 
 # API urls
-schema_view = get_schema_view(
-    title="Modoboa API",
-    version="1.0.0",
-    public=False,
-    renderer_classes=[JSONOpenAPIRenderer],
-)
 urlpatterns += [
-    path('docs/openapi.json', schema_view, name="openapi_schema"),
-    path('docs/api/', login_required(
-            TemplateView.as_view(template_name="swagger-ui.html")),
-         name="docs-index"),
+    path('docs/openapi.json', SpectacularJSONAPIView.as_view(), name='schema'),
+    path('docs/api/',
+         SpectacularSwaggerView.as_view(url_name='schema'),
+         name='docs-index'),
+    path('docs/api/redoc/', SpectacularRedocView.as_view(url_name='schema'),
+         name='redoc'),
     path('api/v1/', include("modoboa.urls_api", namespace="v1")),
     path('api/v2/', include("modoboa.urls_api", namespace="v2")),
 ]

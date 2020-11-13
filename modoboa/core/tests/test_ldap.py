@@ -2,6 +2,7 @@
 
 from unittest import skipIf
 
+from django.conf import settings
 from django.test import override_settings
 from django.urls import reverse
 from django.utils.functional import cached_property
@@ -25,7 +26,7 @@ class LDAPTestCaseMixin(object):
         """Modify settings."""
         self.set_global_parameters({
             "authentication_type": "ldap",
-            "ldap_server_port": 3389
+            "ldap_server_port": settings.LDAP_SERVER_PORT
         })
 
     def restore_user_password(self, username, new_password):

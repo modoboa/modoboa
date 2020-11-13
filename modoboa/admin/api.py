@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 
 from django_filters import rest_framework as dj_filters
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import filters, renderers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
@@ -19,17 +20,22 @@ from modoboa.lib import viewsets as lib_viewsets
 from . import lib, models, serializers
 
 
+@extend_schema_view(
+    retrieve=extend_schema(
+        description="Retrieve a particular domain",
+        summary="Retrieve a particular domain"
+    ),
+    list=extend_schema(
+        description="Retrieve a list of domains",
+        summary="Retrieve a list of domains"
+    ),
+    create=extend_schema(
+        description="Create a new domain",
+        summary="Create a new domain"
+    )
+)
 class DomainViewSet(viewsets.ModelViewSet):
-    """
-    retrieve:
-    Return the given domain.
-
-    list:
-    Return a list of all existing domains.
-
-    create:
-    Create a new domain instance.
-    """
+    """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer

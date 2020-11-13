@@ -25,7 +25,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         """Add command line arguments."""
-        parser.add_argument("--host", type=str, default="127.0.0.1")
+        parser.add_argument("--host", type=str, default="localhost")
         parser.add_argument("--port", type=int, default=9999)
         parser.add_argument("--debug", action="store_true",
                             help="Enable debug mode")

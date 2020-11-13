@@ -53,10 +53,6 @@ It is extensible by nature and comes with a lot of additional extensions:
 |`modoboa-sievefilters                                    |A Sieve filters (rules)  |https://modoboa-sievefilters.readthedocs.io           |
 |<https://github.com/modoboa/modoboa-sievefilters>`_      |editor                   |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-stats                                           |Graphical statistics     |https://modoboa-stats.readthedocs.io                  |
-|<https://github.com/modoboa/modoboa-stats>`_             |(message traffic and     |                                                      |
-|                                                         |more)                    |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
 |`modoboa-webmail                                         |A simple webmail         |https://modoboa-webmail.readthedocs.io                |
 |<https://github.com/modoboa/modoboa-webmail>`_           |                         |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
@@ -74,4 +70,3 @@ Table of contents
    rest_api
    contributing
    contributors
-

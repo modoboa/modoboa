@@ -1,25 +1,26 @@
 django>=2.2,<2.3
 django-braces==1.14.0
-django-ckeditor==5.8.0
-django-phonenumber-field[phonenumbers]==4.0.0
-django-reversion==3.0.5
+django-ckeditor==6.0.0
+django-phonenumber-field[phonenumbers]==5.0.0
+django-reversion==3.0.8
 django-xforwardedfor-middleware==2.0
 django-webpack-loader
-django-otp==1.0.1
+django-otp==1.0.2
 
 dj-database-url
 
-djangorestframework>=3.11,<3.12
+djangorestframework>=3.11,<3.13
+drf-spectacular
 uritemplate
 
-passlib==1.7.2
+passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev
 
 dnspython==1.16.0
-feedparser==5.2.1
-greenlet==0.4.16
-gevent==1.5.0
-jsonfield==2.0.2
+feedparser==6.0.2
+greenlet==0.4.17
+gevent==20.9.0
+jsonfield==3.1.0
 Pillow  # Optional dependency for django-ckeditor
 progressbar33==2.4
 py-dateutil==2.2
