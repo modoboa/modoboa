@@ -13,7 +13,7 @@
     </div>
 
     <v-list>
-      <template v-for="item in items">
+      <template v-for="item in mainMenuItems">
         <v-list-item
           v-if="!item.children"
           class="menu-item"
@@ -67,12 +67,32 @@
       </template>
     </v-list>
     <template v-slot:append>
-      <div class="user-box justify-end white--text">
-        <v-avatar size="40" color="primary">
-          <span class="white--text headline">AN</span>
-        </v-avatar>
-        <span class="mx-2">{{ authUser.first_name }} {{ authUser.last_name }}</span>
-      </div>
+      <v-menu rounded="lg" offset-y top>
+        <template v-slot:activator="{ attrs, on }">
+          <div class="user-box justify-end white--text" v-bind="attrs" v-on="on">
+            <v-avatar size="40" color="primary">
+              <span class="white--text headline">AN</span>
+            </v-avatar>
+            <span class="mx-2">{{ authUser.first_name }} {{ authUser.last_name }}</span>
+            <v-icon class="float-right">mdi-chevron-up</v-icon>
+          </div>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="item in userMenuItems"
+            :key="item.text"
+            @click="item.click"
+            link
+            >
+            <v-list-item-icon v-if="item.icon">
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </template>
   </v-navigation-drawer>
 </template>
@@ -90,7 +110,7 @@ export default {
   data () {
     return {
       drawer: true,
-      items: [
+      mainMenuItems: [
         {
           text: this.$gettext('Dashboard'),
           icon: 'mdi-view-dashboard-outline'
@@ -114,18 +134,32 @@ export default {
           text: this.$gettext('Parameters'),
           children: []
         }
+      ],
+      userMenuItems: [
+        {
+          text: this.$gettext('Logout'),
+          icon: 'mdi-logout',
+          click: this.logout
+        }
       ]
     }
   },
   created () {
     this.$axios.get('/parameters/applications/').then(response => {
       response.data.forEach(item => {
-        this.items[4].children.push({
+        this.mainMenuItems[4].children.push({
           text: item.label,
           to: { name: 'ParametersEdit', params: { app: item.name } }
         })
       })
     })
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('auth/logout').then(() => {
+        this.$router.push('/login')
+      })
+    }
   }
 }
 </script>
