@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 16:48+0100\n"
+"POT-Creation-Date: 2020-11-05 15:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: static/js/global.js:342
+#: static/js/global.js:347
 msgid "Internal error"
 msgstr ""
 
@@ -51,4 +51,12 @@ msgstr ""
 
 #: static/js/searchbar.js:28
 msgid "Search..."
+msgstr ""
+
+#: static/js/twocols_nav.js:170
+msgid "Are you sure?"
+msgstr ""
+
+#: static/js/twocols_nav.js:171
+msgid "This will invalidate your registered application."
 msgstr ""

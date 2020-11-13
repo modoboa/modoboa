@@ -48,8 +48,8 @@ SITE_ID = 1
 # Security settings
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 # Application definition
 
@@ -65,6 +65,7 @@ INSTALLED_APPS = (
     'ckeditor_uploader',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_spectacular',
     'django_otp',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_static',
@@ -186,6 +187,14 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'SCHEMA_PATH_PREFIX': r'/api/v1',
+    'TITLE': 'Modoboa API',
+    'VERSION': '1.0.0',
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
 }
 
 # Modoboa settings
@@ -198,7 +207,7 @@ MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 # REDIS
 
 REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
 REDIS_QUOTA_DB = 0
 REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
@@ -283,6 +292,9 @@ LOGGING = {
         },
         'modoboa': {
             'class': 'modoboa.core.loggers.SQLHandler',
+        },
+        'console': {
+            'class': 'logging.StreamHandler'
         }
     },
     'loggers': {
@@ -300,7 +312,11 @@ LOGGING = {
             'handlers': ['modoboa'],
             'level': 'INFO',
             'propagate': False
-        }
+        },
+        # 'django_auth_ldap': {
+        #     'level': 'DEBUG',
+        #     'handlers': ['console']
+        # },
     }
 }
 
@@ -315,3 +331,5 @@ from modoboa.admin import settings as admin_settings  # noqa
 admin_settings.apply(globals())
 
 # Load settings from extensions
+
+LDAP_SERVER_PORT = os.environ.get('LDAP_SERVER_PORT', 3389)

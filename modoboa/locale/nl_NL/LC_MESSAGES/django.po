@@ -4,9 +4,10 @@
 # 
 # Translators:
 # Andrew <buddha@cryptolab.net>, 2014
-# Chris de Gelder <chrisdegelder@gmail.com>, 2017
+# ABC, 2017
 # Fred Durst <adriaan.conijn@gmail.com>, 2019
 # Harrie v.d. Vegt <hvdvegt@gmail.com>, 2016
+# J Rosier <vertalen@tagora.nl>, 2020
 # Peter van den Heuvel <peter@pvandenheuvel.nl>, 2017
 # Remco de Hiep <remco.de.hiep@reto.nl>, 2017
 # R Kloosterman <randx@zeelandnet.nl>, 2016
@@ -19,8 +20,8 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2020-05-06 11:16+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"PO-Revision-Date: 2020-10-03 09:44+0000\n"
+"Last-Translator: J Rosier <vertalen@tagora.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +69,7 @@ msgstr "Nummer van te gebruiken randomizeringsrondes (alleen bij sha256crypt en 
 
 #: core/app_settings.py:69
 msgid "Update password scheme at login"
-msgstr ""
+msgstr "Update wachtwoordschema bij inloggen"
 
 #: core/app_settings.py:72
 msgid "Update user password at login to use the default password scheme"
@@ -84,7 +85,7 @@ msgstr "Standaard wachtwoord voor automatisch gecreëerde accounts."
 
 #: core/app_settings.py:84
 msgid "Random password length"
-msgstr "Lengte willekeurig wachtwoord"
+msgstr "Lengte van willekeurig wachtwoord"
 
 #: core/app_settings.py:88
 msgid "Length of randomly generated passwords."
@@ -92,38 +93,38 @@ msgstr "Lengte van willekeurig gegenereerde wachtwoorden"
 
 #: core/app_settings.py:92
 msgid "Update password service URL"
-msgstr ""
+msgstr "Service-url voor wachtwoorden updaten"
 
 #: core/app_settings.py:96
 msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
+msgstr "De URL van een externe pagina waar gebruikers hun wachtwoord kunnen bijwerken. Alleen van toepassing op niet-lokale gebruikers die automatisch worden aangemaakt na een succesvolle externe authenticatie (LDAP, SMTP)."
 
 #: core/app_settings.py:104
 msgid "Password recovery announcement"
-msgstr ""
+msgstr "Melding wachtwoordherstel"
 
 #: core/app_settings.py:109
 msgid "A temporary message that will be displayed on the reset password page."
-msgstr ""
+msgstr "Een tijdelijke melding die wordt getoond op de wachtwoordresetpagina."
 
 #: core/app_settings.py:115
 msgid "Enable password recovery by SMS"
-msgstr ""
+msgstr "Wachtwoordherstel via SMS activeren"
 
 #: core/app_settings.py:118
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
+msgstr "Wachtwoordherstel via SMS activeren voor gebruikers die een telefoonnummer hebben ingevuld."
 
 #: core/app_settings.py:124
 msgid "SMS provider"
-msgstr ""
+msgstr "SMS provider"
 
 #: core/app_settings.py:127
 msgid "Choose a provider to send password recovery SMS"
-msgstr ""
+msgstr "Kies een provider voor het sturen van een SMS voor wachtwoordherstel."
 
 #: core/app_settings.py:133
 msgid "LDAP settings"
@@ -147,28 +148,28 @@ msgstr "Het TCP poortnummer van de LDAP-server"
 
 #: core/app_settings.py:149
 msgid "Enable secondary server (fallback)"
-msgstr ""
+msgstr "Secundaire server activeren (fallback)"
 
 #: core/app_settings.py:152
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
+msgstr "Activeer secundaire LDAP server, te gebruiken als de primaire server wegvalt"
 
 #: core/app_settings.py:158
 msgid "Secondary server address"
-msgstr ""
+msgstr "Adres van secundaire server"
 
 #: core/app_settings.py:161
 msgid "The IP address or the DNS name of the seondary LDAP server"
-msgstr ""
+msgstr "Het IP adres of DNS naam van de secundaire LDAP server"
 
 #: core/app_settings.py:165
 msgid "Secondary server port"
-msgstr ""
+msgstr "secundaire-serverpoort"
 
 #: core/app_settings.py:168
 msgid "The TCP port number used by the LDAP secondary server"
-msgstr ""
+msgstr "TCP poortnummer van de secundaire LDAP server"
 
 #: core/app_settings.py:172
 msgid "Use a secured connection"
@@ -222,7 +223,7 @@ msgstr "Het attribuut dat gebruikt wordt om wachtwoorden op te slaan"
 
 #: core/app_settings.py:222
 msgid "LDAP authentication settings"
-msgstr ""
+msgstr "LDAP authenticatie-instellingen"
 
 #: core/app_settings.py:225
 msgid "Authentication method"
@@ -289,70 +290,70 @@ msgstr "Het template dat gebruikt wordt om een gebruiker zijn/haar DN op te bouw
 
 #: core/app_settings.py:284
 msgid "LDAP synchronization settings"
-msgstr ""
+msgstr "LDAP synchronisatie-instellingen"
 
 #: core/app_settings.py:308
 msgid "Enable export to LDAP"
-msgstr ""
+msgstr "Activeer export naar LDAP"
 
 #: core/app_settings.py:311
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
+msgstr "Activeer automatische synchronisatie tussen lokale database en LDAP directory"
 
 #: core/app_settings.py:317
 msgid "Delete remote LDAP account when local account is deleted"
-msgstr ""
+msgstr "Verwijder extern LDAP account als het lokale account wordt verwijderd"
 
 #: core/app_settings.py:321
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
-msgstr ""
+msgstr "Verwijder extern LDAP account als het lokale account wordt verwijderd. Zo niet, dan wordt het gedeactiveerd."
 
 #: core/app_settings.py:327
 msgid "Account DN template"
-msgstr ""
+msgstr "Account DN sjabloon"
 
 #: core/app_settings.py:330
 #, python-format
 msgid ""
 "The template used to construct an account's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
+msgstr "Het sjabloon voor het opbouwen van het DN (distinguishedname). Het moet een tijdelijke aanduiding (placeholder) bevatten (bijvoorbeeld %(user)s)"
 
 #: core/app_settings.py:337
 msgid "Enable import from LDAP"
-msgstr ""
+msgstr "Activeer import van LDAP"
 
 #: core/app_settings.py:340
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr ""
+msgstr "Activeer accountsynchronisatie van LDAP directory naar lokale database"
 
 #: core/app_settings.py:365
 msgid "Username attribute"
-msgstr ""
+msgstr "Gebruikersnaamattribuut"
 
 #: core/app_settings.py:368
 msgid "The name of the LDAP attribute where the username can be found."
-msgstr ""
+msgstr "De naam van het LDAP-attribuut waar de gebruikersnaam staat."
 
 #: core/app_settings.py:373
 msgid "Enable Dovecot LDAP sync"
-msgstr ""
+msgstr "Activeer Dovecot LDAP synchronisatie"
 
 #: core/app_settings.py:376
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
+msgstr "LDAP authenticatie-instellingen worden toegepast op Dovecot-configuratie."
 
 #: core/app_settings.py:382
 msgid "Dovecot LDAP config file"
-msgstr ""
+msgstr "Dovecot LDAP configuratiebestand"
 
 #: core/app_settings.py:386
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
-msgstr ""
+msgstr "Locatie van het configuratiebestand met Dovecot LDAP-instellingen."
 
 #: core/app_settings.py:391 core/templates/core/dashboard.html:5
 msgid "Dashboard"
@@ -408,19 +409,19 @@ msgstr "Controleert automatisch of een nieuwere versie beschikbaar is"
 
 #: core/app_settings.py:436
 msgid "Send an email when new versions are found"
-msgstr ""
+msgstr "Stuur een e-mail als er nieuwe versies worden gevonden"
 
 #: core/app_settings.py:439
 msgid "Send an email to notify admins about new versions"
-msgstr ""
+msgstr "Stuur een e-mail naar administrators over nieuwe versies"
 
 #: core/app_settings.py:443
 msgid "Recipient"
-msgstr ""
+msgstr "Ontvanger"
 
 #: core/app_settings.py:446
 msgid "Recipient of new versions notification emails."
-msgstr ""
+msgstr "Ontvanger van notificatiemails over nieuwe versies"
 
 #: core/app_settings.py:451
 msgid "Send statistics"
@@ -525,11 +526,11 @@ msgstr "Nee"
 
 #: core/constants.py:102
 msgid "Choose a provider"
-msgstr ""
+msgstr "Kies een provider"
 
 #: core/constants.py:107
 msgid "Dummy"
-msgstr ""
+msgstr "Dummy"
 
 #: core/forms.py:21
 msgid "Username"
@@ -565,11 +566,11 @@ msgstr "Activeer API-toegang"
 
 #: core/forms.py:137
 msgid "Verification code"
-msgstr ""
+msgstr "Verificatiecode"
 
 #: core/forms.py:148
 msgid "Invalid code"
-msgstr ""
+msgstr "Ongeldige code"
 
 #: core/handlers.py:36
 msgid "added"
@@ -595,7 +596,7 @@ msgstr "verwijderd"
 
 #: core/handlers.py:69
 msgid "user {}"
-msgstr "gebruiker{}"
+msgstr "gebruiker {}"
 
 #: core/handlers.py:71
 msgid "management command"
@@ -611,7 +612,7 @@ msgstr "Er zijn een of meer updates beschikbaar"
 
 #: core/management/commands/communicate_with_public_api.py:44
 msgid "[modoboa] Update(s) available"
-msgstr ""
+msgstr "[modoboa] update(s) beschikbaar"
 
 #: core/models.py:55
 msgid "Allow mailboxes access"
@@ -705,47 +706,47 @@ msgstr "Uw wachtwoord moet verschillende tekens bevatten."
 
 #: core/sms_backends/ovh.py:19
 msgid "API endpoint"
-msgstr ""
+msgstr "API eindpunt"
 
 #: core/sms_backends/ovh.py:22
 msgid "OVH Europe"
-msgstr ""
+msgstr "OVH Europa"
 
 #: core/sms_backends/ovh.py:23
 msgid "OVH US"
-msgstr ""
+msgstr "OVH Verenigde Staten"
 
 #: core/sms_backends/ovh.py:24
 msgid "OVH North-America"
-msgstr ""
+msgstr "OVH Noord-Amerika"
 
 #: core/sms_backends/ovh.py:25
 msgid "So you Start Europe"
-msgstr ""
+msgstr "So you Start Europa"
 
 #: core/sms_backends/ovh.py:26
 msgid "So you Start North America"
-msgstr ""
+msgstr "So you Start Noord-Amerika"
 
 #: core/sms_backends/ovh.py:27
 msgid "Kimsufi Europe"
-msgstr ""
+msgstr "Kimsufi Europa"
 
 #: core/sms_backends/ovh.py:28
 msgid "Kimsufi North America"
-msgstr ""
+msgstr "Kimsufi Noord-Amerika"
 
 #: core/sms_backends/ovh.py:35
 msgid "Application key"
-msgstr ""
+msgstr "Applicatiesleutel"
 
 #: core/sms_backends/ovh.py:42
 msgid "Application secret"
-msgstr ""
+msgstr "Applicatiegeheim"
 
 #: core/sms_backends/ovh.py:50
 msgid "Consumer key"
-msgstr ""
+msgstr "Consumentensleutel"
 
 #: core/templates/core/_current_features.html:6
 msgid "Features looking for sponsoring"
@@ -882,8 +883,8 @@ msgid ""
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "\n  De volgende update is beschikbaar:\n"
+msgstr[1] "\nDe volgende updates zijn beschikbaar:\n"
 
 #: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
 msgid "Parameters"
@@ -929,7 +930,7 @@ msgstr "Persoonlijke informatie aanpassen"
 
 #: core/templates/core/user_profile.html:13
 msgid "Click here to update your password"
-msgstr ""
+msgstr "Klik hier om je wachtwoord te wijzigen"
 
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
@@ -959,7 +960,7 @@ msgstr "Wachtwoord schema matcht niet. Updating %s wachtwoord"
 #: core/views/auth.py:66
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
-msgstr ""
+msgstr "Hashparameter van het wachtwoord klopt niet. Wachtwoord  %s wijzigen"
 
 #: core/views/auth.py:82
 #, python-format
@@ -976,7 +977,7 @@ msgstr "Gebruiker '{}' is uitgelogd."
 
 #: core/views/auth.py:170 core/views/auth.py:225
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
+msgstr "Gebruik de volgende code om het Modoboa wachtwoord te herstellen: {}"
 
 #: core/views/user.py:53
 msgid "Profile updated"
@@ -1129,11 +1130,11 @@ msgstr "Deze wachtwoord herstel link is ongeldig, misschien is hij al gebruikt. 
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
-msgstr ""
+msgstr "Voer SMS code in"
 
 #: templates/registration/password_reset_confirm_code.html:27
 msgid "Resend code"
-msgstr ""
+msgstr "Stuur de code opnieuw"
 
 #: templates/registration/password_reset_done.html:7
 msgid ""
@@ -1162,7 +1163,7 @@ msgstr "Met vriendelijke groet,  Het Modoboa Team,"
 
 #: templates/registration/password_reset_form.html:24
 msgid "Please fill-in your primary email address"
-msgstr ""
+msgstr "Vul uw primaire e-mailadres in"
 
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
