@@ -33,7 +33,7 @@ class Alarm(models.Model):
         db_index=True
     )
 
-    title = models.CharField(max_length=150)
+    title = models.TextField()
     internal_name = models.CharField(max_length=120)
 
     objects = models.Manager.from_queryset(AlarmQuerySet)()
