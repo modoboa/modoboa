@@ -1,5 +1,7 @@
 """Admin serializers."""
 
+from typing import List
+
 from django.conf import settings
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
@@ -200,7 +202,7 @@ class AccountSerializer(serializers.ModelSerializer):
         """Return role."""
         return account.role
 
-    def get_domains(self, account):
+    def get_domains(self, account) -> List[str]:
         """Return domains administered by this account."""
         if account.role not in ["DomainAdmins", "Resellers"]:
             return []

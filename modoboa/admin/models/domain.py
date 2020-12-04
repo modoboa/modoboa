@@ -80,15 +80,15 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         self.old_dkim_key_length = self.dkim_key_length
 
     @property
-    def domainalias_count(self):
+    def domainalias_count(self) -> int:
         return self.domainalias_set.count()
 
     @property
-    def mailbox_count(self):
+    def mailbox_count(self) -> int:
         return self.mailbox_set.count()
 
     @property
-    def mbalias_count(self):
+    def mbalias_count(self) -> int:
         return self.alias_set.filter(internal=False).count()
 
     @property
@@ -150,7 +150,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         return False
 
     @cached_property
-    def dns_status(self):
+    def dns_status(self) -> dict:
         """Return information about current DNS status."""
         if not self.enable_dns_checks or self.uses_a_reserved_tld:
             return {"checks": "disabled"}
