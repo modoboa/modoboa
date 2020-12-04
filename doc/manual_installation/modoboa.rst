@@ -96,12 +96,6 @@ Install the corresponding Python binding:
 
    (env)$ pip install psycopg2
 
-.. note::
-
-   Alternatively, you can install the ``python3-psycopg2`` package instead on
-   Debian-based distributions if your virtual environment was created with
-   ``--system-site-packages`` option.
-
 Then, create a user and a database. For example, to create the ``modoboa``
 database owned by a ``modoboa`` user, run the following commands on your
 PostgreSQL server:
