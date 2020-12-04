@@ -60,12 +60,21 @@ if extra_routes:
 
 # API urls
 urlpatterns += [
-    path('docs/openapi.json', SpectacularJSONAPIView.as_view(), name='schema'),
-    path('docs/api/',
-         SpectacularSwaggerView.as_view(url_name='schema'),
-         name='docs-index'),
-    path('docs/api/redoc/', SpectacularRedocView.as_view(url_name='schema'),
-         name='redoc'),
+    path('api/schema-v1/',
+         SpectacularJSONAPIView.as_view(api_version="v1"), name='schema-v1'),
+    path('api/schema-v1/swagger/',
+         SpectacularSwaggerView.as_view(url_name='schema-v1'),
+         name='docs-index-v1'),
+    path('api/schema-v1/redoc/',
+         SpectacularRedocView.as_view(url_name='schema-v1')),
+
+    path('api/schema-v2/',
+         SpectacularJSONAPIView.as_view(api_version="v2"), name='schema-v2'),
+    path('api/schema-v2/swagger/',
+         SpectacularSwaggerView.as_view(url_name='schema-v2'),
+         name='docs-index-v2'),
+    path('api/schema-v2/redoc/',
+         SpectacularRedocView.as_view(url_name='schema-v2')),
     path('api/v1/', include("modoboa.urls_api", namespace="v1")),
     path('api/v2/', include("modoboa.urls_api", namespace="v2")),
 ]

@@ -138,7 +138,7 @@ class LogSerializer(serializers.ModelSerializer):
         model = models.Log
         fields = ("date_created", "message", "level", "logger")
 
-    def get_date_created(self, log):
+    def get_date_created(self, log) -> str:
         return formats.date_format(log.date_created, "SHORT_DATETIME_FORMAT")
 
 
