@@ -183,6 +183,9 @@ you just have to run the following command:
    A database url should meet the following syntax
    ``<mysql|postgres>://[user:pass@][host:port]/dbname`` **OR**
    ``sqlite:////full/path/to/your/database/file.sqlite``.
+   
+   Fox example, if you were using postgres, you could setup your command like this:
+   ``modoboa-admin.py deploy instance_name --collectstatic --domain example.com --dburl default:postgres://user:pass@[localhost]/modoboa``
 
 The command will ask you a few questions, answer them and you're
 done.
