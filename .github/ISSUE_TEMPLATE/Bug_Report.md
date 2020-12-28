@@ -1,8 +1,16 @@
+---
+name: 'Bug Report'
+about: 'Report a reproducible bug in the framework.'
+title: ''
+labels: ''
+assignees: ''
+---
+
 # Impacted versions
 
 * OS Type: Debian/Ubuntu, Centos/Redhat, Arch, Gentoo, Slack, ...
 * OS Version: Number or Name
-* Database Type: PostgreSQL/MySQL
+* Database Type: PostgreSQL / MySQL
 * Database version: X.y
 * Modoboa: X.X.x
 * installer used: Yes/No ?
@@ -11,6 +19,13 @@
 # Steps to reproduce
 
 # Current behavior
+
+<!--
+
+  Explain the behavior you're seeing that you think is a bug, and explain how you
+  think things should behave instead.
+
+-->
 
 # Expected behavior
 
