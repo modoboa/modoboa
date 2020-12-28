@@ -1,6 +1,6 @@
 ---
 name: 'Bug Report'
-about: 'Report a reproducible bug in the framework.'
+about: 'Report a reproducible bug in the software.'
 title: ''
 labels: ''
 assignees: ''
