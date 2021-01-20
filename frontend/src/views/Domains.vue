@@ -1,32 +1,31 @@
 <template>
 <div>
-  <v-tabs v-model="tab">
-    <v-tab>Domains</v-tab>
-    <v-tab>Aliases</v-tab>
-  </v-tabs>
-  <v-tabs-items v-model="tab">
-    <v-tab-item>
-      <domain-list />
-    </v-tab-item>
-    <v-tab-item>
-      <domain-alias-list />
-    </v-tab-item>
-  </v-tabs-items>
+  <v-toolbar flat>
+    <v-toolbar-title><translate>Domains</translate></v-toolbar-title>
+    <v-spacer />
+    <v-btn class="mr-2">
+      <v-icon>mdi-file-import-outline</v-icon>
+    </v-btn>
+    <v-btn class="mr-2">
+      <v-icon>mdi-file-export-outline</v-icon>
+    </v-btn>
+    <v-btn color="primary" :to="{ name: 'DomainAdd' }">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-toolbar>
+  <domain-list />
 </div>
 </template>
 
 <script>
 import DomainList from '@/components/domains/DomainList'
-import DomainAliasList from '@/components/domains/DomainAliasList'
 
 export default {
   components: {
-    DomainList,
-    DomainAliasList
+    DomainList
   },
   data () {
     return {
-      tab: null
     }
   }
 }
