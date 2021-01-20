@@ -125,7 +125,7 @@ export default {
           icon: 'mdi-account'
         },
         {
-          icon: 'mdi-magnify',
+          icon: 'mdi-history',
           text: this.$gettext('Logs'),
           to: { name: 'LogList' }
         },
@@ -167,7 +167,8 @@ export default {
 <style lang="scss" scoped>
 .v-list-item {
   &--active {
-    background: rgba(0, 0, 0, 0.30) !important;
+    background: rgba(0, 0, 0, 0.25);
+
   }
 }
 
