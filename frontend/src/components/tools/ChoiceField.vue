@@ -7,7 +7,7 @@
          class="choice rounded pa-10 mr-4 text-center"
          :class="{ 'choice--selected': currentChoice === choice.value }"
          @click="selectChoice(choice.value)">
-      <v-icon v-if="choice.icon" class="d-block mb-2" color="primary" x-large>{{ choice.icon }}</v-icon>
+      <v-icon v-if="choice.icon" class="d-block mb-2" :color="iconColor(choice.value)" x-large>{{ choice.icon }}</v-icon>
       <translate class="grey--text text--darken-1">{{ choice.label }}</translate>
     </div>
   </div>
@@ -23,6 +23,9 @@ export default {
     }
   },
   methods: {
+    iconColor (value) {
+      return (value === this.currentChoice) ? 'primary' : ''
+    },
     selectChoice (value) {
       this.currentChoice = value
       this.$emit('input', value)
