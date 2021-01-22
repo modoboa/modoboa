@@ -1,7 +1,15 @@
 <template>
-  <div class="mt-6">
-    <v-toolbar flat color="white">
-      <v-spacer></v-spacer>
+  <v-card class="mt-6">
+    <v-toolbar flat>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" small>
+            Actions <v-icon right>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list dense>
+        </v-list>
+      </v-menu>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -10,6 +18,7 @@
         filled
         outlined
         dense
+        hide-details
         ></v-text-field>
     </v-toolbar>
     <v-data-table v-model="selected"
@@ -106,7 +115,7 @@
   <confirm-dialog v-model="showConfirmDialog"
                   :message="deleteDomainMsg"
                   @confirm="deleteDomain" />
-</div>
+</v-card>
 </template>
 
 <script>
@@ -168,7 +177,6 @@ export default {
       })
     },
     showAliases (item) {
-      console.log(item)
       this.expanded = [{ item }]
     }
   }
