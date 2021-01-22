@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import './plugins/axios'
+import './plugins/vee-validate'
 import './plugins/vue-cookie'
 import './plugins/vue-gettext'
 import App from './App.vue'
