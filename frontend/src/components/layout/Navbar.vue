@@ -167,8 +167,10 @@ export default {
 <style lang="scss" scoped>
 .v-list-item {
   &--active {
-    background: rgba(0, 0, 0, 0.25);
-
+    &::before {
+      background-color: #000;
+      opacity: 0.3;
+    }
   }
 }
 
