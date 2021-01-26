@@ -19,9 +19,9 @@ from modoboa.core.password_hashers import (
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
+DOVEADM_TEST_PATH = "{}/doveadm".format(os.path.dirname(__file__))
 
-@override_settings(
-    DOVEADM_LOOKUP_PATH=["{}/doveadm".format(os.path.dirname(__file__))])
+
 class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
@@ -89,6 +89,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
+    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH])
     def test_password_schemes(self):
         """Validate password scheme changes."""
         username = "user@test.com"
@@ -130,6 +131,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(user.password.startswith(pw_hash.scheme))
 
     @skipUnless(argon2, "argon2-cffi not installed")
+    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH])
     def test_password_argon2_parameter_change(self):
         """Validate hash parameter update on login works with argon2."""
         username = "user@test.com"
@@ -169,8 +171,9 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(parameters.memory_cost, 1000)
         self.assertEqual(parameters.parallelism, 2)
 
-    def test_supported_schemes(self):
-        """Validate dovecot supported schemes."""
+    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH])
+    def test_dovecot_supported_schemes(self):
+        """Validate dovecot supported schemes with fake output."""
         supported_schemes = get_dovecot_schemes()
         self.assertEqual(supported_schemes,
                          ["{MD5}",
@@ -203,6 +206,11 @@ class AuthenticationTestCase(ModoTestCase):
                           "{CRYPT}",
                           "{SHA256-CRYPT}",
                           "{SHA512-CRYPT}"])
+
+    def test_dovecot_default_schemes(self):
+        """Check default scheme if doveadm is not found."""
+        supported_schemes = get_dovecot_schemes()
+        self.assertEqual(supported_schemes, ["{MD5-CRYPT}", "{PLAIN}"])
 
 
 class PasswordResetTestCase(ModoTestCase):
