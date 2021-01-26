@@ -55,9 +55,15 @@ following system packages according to your distribution:
 .. note::
 
    Alternatively, you could rely on your distribution packages for the Modoboa
-   dependencies which require compilation - e.g. ``psycopg2`` - if the version
+   dependencies which require compilation - e.g. ``rrdtool`` - if the version
    is compatible. In this case, you have to create your virtual environment
-   with the ``--system-site-packages`` option.
+   with the ``--system-site-packages`` option, and the required system
+   packages will be:
+
+    +--------------------------------+
+    | python3-greenlet python3-wheel |
+    | python3-rrdtool rrdtool        |
+    +--------------------------------+
 
 Then, install Modoboa by running:
 
