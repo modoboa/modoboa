@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Modoboa Support
+    url: https://github.com/modoboa/modoboa/discussions
+    about: Please ask and answer questions here.
+  - name: Sponsoring
+    ur: https://modoboa.org/en/sponsoring/
+    about: You love Modoboa and want to sponsor it
