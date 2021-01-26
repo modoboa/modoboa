@@ -43,6 +43,6 @@ def get_dovecot_schemes():
                              for scheme in schemes.split()]
 
     if not supported_schemes:
-        supported_schemes = ['{PLAIN}']
+        supported_schemes = ['{MD5-CRYPT}', '{PLAIN}']
 
     return supported_schemes
