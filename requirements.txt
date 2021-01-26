@@ -31,7 +31,7 @@ chardet
 ovh
 oath
 redis
-rrdtool>=0.1.11
+rrdtool>=0.1.10
 qrcode
 
 aiosmtplib
