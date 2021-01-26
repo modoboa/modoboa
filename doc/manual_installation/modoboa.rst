@@ -55,9 +55,14 @@ following system packages according to your distribution:
 .. note::
 
    Alternatively, you could rely on your distribution packages for the Modoboa
-   dependencies which require compilation - e.g. ``psycopg2`` - if the version
+   dependencies which require compilation - e.g. ``rrdtool`` - if the version
    is compatible. In this case, you have to create your virtual environment
-   with the ``--system-site-packages`` option.
+   with the ``--system-site-packages`` option, and the required system
+   packages will be:
+
+    +---------------------------------------+
+    | python3-wheel python3-rrdtool rrdtool |
+    +---------------------------------------+
 
 Then, install Modoboa by running:
 
@@ -183,7 +188,7 @@ you just have to run the following command:
    A database url should meet the following syntax
    ``<mysql|postgres>://[user:pass@][host:port]/dbname`` **OR**
    ``sqlite:////full/path/to/your/database/file.sqlite``.
-   
+
    Fox example, if you were using postgres, you could setup your command like this:
    ``modoboa-admin.py deploy instance_name --collectstatic --domain example.com --dburl default:postgres://user:pass@[localhost]/modoboa``
 
