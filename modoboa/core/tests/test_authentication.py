@@ -173,7 +173,7 @@ class AuthenticationTestCase(ModoTestCase):
 
     @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH])
     def test_dovecot_supported_schemes(self):
-        """Validate dovecot supported schemes with fake output."""
+        """Validate Dovecot supported schemes with fake command output."""
         supported_schemes = get_dovecot_schemes()
         self.assertEqual(supported_schemes,
                          ["{MD5}",
@@ -206,6 +206,12 @@ class AuthenticationTestCase(ModoTestCase):
                           "{CRYPT}",
                           "{SHA256-CRYPT}",
                           "{SHA512-CRYPT}"])
+
+    @override_settings(DOVECOT_SUPPORTED_SCHEMES="SHA1 SHA512-CRYPT")
+    def test_dovecot_supported_schemes_from_settings(self):
+        """Validate dovecot supported schemes from the settings."""
+        supported_schemes = get_dovecot_schemes()
+        self.assertEqual(supported_schemes, ["{SHA1}", "{SHA512-CRYPT}"])
 
     def test_dovecot_default_schemes(self):
         """Check default scheme if doveadm is not found."""
