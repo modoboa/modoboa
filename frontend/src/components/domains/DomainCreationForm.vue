@@ -1,7 +1,7 @@
 <template>
 <div class="d-flex justify-center inner">
   <v-stepper v-model="step">
-    <v-stepper-header class=" align-center">
+    <v-stepper-header class="align-center px-10">
       <v-img
         src="../../assets/Modoboa_RVB-ORANGE-SANS.png"
         max-width="190"
@@ -15,7 +15,7 @@
       <v-stepper-step :complete="step > 3" step="3">
         <translate>Limitations</translate>
       </v-stepper-step>
-      <v-stepper-step step="4">
+      <v-stepper-step :complete="step > 4" step="4">
         <translate>Options</translate>
       </v-stepper-step>
       <v-stepper-step step="5">
@@ -25,8 +25,12 @@
         <v-icon color="primary" x-large>mdi-close</v-icon>
       </v-btn>
     </v-stepper-header>
-    <v-stepper-items class="mx-16 mt-4">
-      <v-stepper-content step="1">
+    <v-stepper-items class="mt-4 d-flex justify-center">
+      <v-stepper-content step="1" class="flex-grow-0">
+        <div class="mb-6 text-h5">
+          <translate class="grey--text text--darken-1">New domain</translate> /
+          <translate>General</translate>
+        </div>
         <validation-observer ref="observer_1">
           <validation-provider
             v-slot="{ errors }"
@@ -61,17 +65,21 @@
           </v-btn>
         </div>
       </v-stepper-content>
-      <v-stepper-content step="2">
+      <v-stepper-content step="2" class="flex-grow-0">
+        <div class="mb-6 text-h5">
+          <translate class="grey--text text--darken-1">New domain</translate> /
+          <translate>DNS</translate>
+        </div>
         <v-switch
-          label="Enable DNS checks"
+          :label="'Enable DNS checks' | translate"
           v-model="domain.enable_dns_checks"
           />
         <v-switch
-          label="Enable DKIM signing"
+          :label="'Enable DKIM signing' | translate"
           v-model="domain.enable_dkim"
           />
         <v-text-field
-          label="DKIM key selector"
+          :label="'DKIM key selector' | translate"
           v-model="domain.dkim_key_selector"
           :disabled="!domain.enable_dkim"
           outlined
@@ -80,6 +88,7 @@
           v-model="domain.dkim_key_length"
           :label="'DKIM key length' | translate"
           :choices="dkimKeyLengths"
+          :disabled="!domain.enable_dkim"
           />
         <div class="d-flex justify-center mt-8">
           <v-btn @click="step = 1" class="mr-10" text>
@@ -94,31 +103,47 @@
           </v-btn>
         </div>
       </v-stepper-content>
-      <v-stepper-content step="3">
+      <v-stepper-content step="3" class="flex-grow-0">
+        <div class="mb-6 text-h5">
+          <translate class="grey--text text--darken-1">New domain</translate> /
+          <translate>Limitations</translate>
+        </div>
         <validation-observer ref="observer_3">
-          <v-text-field
-            :label="'Quota' | translate"
-            :hint="'Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
-            persistent-hint
-            v-model="domain.quota"
-            :error-messages="errors"
-            outlined
-            />
-          <v-text-field
-            :label="'Default mailbox quota' | translate"
-            :hint="'Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
-            persistent-hint
-            v-model="domain.default_mailbox_quota"
-            :error-messages="errors"
-            outlined
-            />
           <validation-provider
             v-slot="{ errors }"
-            rules="number"
+            rules="required"
+            >
+            <v-text-field
+              :label="'Quota' | translate"
+              :hint="'Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
+              persistent-hint
+              v-model="domain.quota"
+              :error-messages="errors"
+              class="mb-4"
+              outlined
+              />
+          </validation-provider>
+          <validation-provider
+            v-slot="{ errors }"
+            rules="required"
+            >
+            <v-text-field
+              :label="'Default mailbox quota' | translate"
+              :hint="'Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
+              persistent-hint
+              v-model="domain.default_mailbox_quota"
+              :error-messages="errors"
+              class="mb-4"
+              outlined
+              />
+          </validation-provider>
+          <validation-provider
+            v-slot="{ errors }"
+            rules="numeric"
             >
             <v-text-field
               :label="'Message sending limit' | translate"
-              :hint="'Number of messages this domain can send per day.' | translate"
+              :hint="'Number of messages this domain can send per day. Leave empty for no limit.' | translate"
               persistent-hint
               v-model="domain.message_sending_limit"
               :error-messages="errors"
@@ -139,33 +164,43 @@
           </v-btn>
         </div>
       </v-stepper-content>
-      <v-stepper-content step="4">
+      <v-stepper-content step="4" class="flex-grow-0">
+        <div class="mb-6 text-h5">
+          <translate class="grey--text text--darken-1">New domain</translate> /
+          <translate>Options</translate>
+        </div>
         <validation-observer ref="observer_4">
           <v-switch v-model="createAdmin"
                     :label="'Create a domain administrator' | translate"
                     />
-          <v-text-field
-            :label="'Name' | translate"
-            :hint="'Name of the administrator' | translate"
-            persistent-hint
-            v-model="domain.dom_admin_username"
-            :error-messages="errors"
-            outlined
-            :disabled="!createAdmin"
-            />
-          <v-switch v-model="domain.dom_admin_random_password"
+          <validation-provider
+            v-slot="{ errors }"
+            :rules="(createAdmin) ? 'required' : ''"
+            >
+            <v-text-field
+              :label="'Name' | translate"
+              :hint="'Name of the administrator' | translate"
+              persistent-hint
+              v-model="domain.domain_admin.username"
+              :error-messages="errors"
+              outlined
+              :disabled="!createAdmin"
+              :suffix="`@${domain.name}`"
+              />
+          </validation-provider>
+          <v-switch v-model="domain.domain_admin.with_random_password"
                     :label="'Random password' | translate"
                     :disabled="!createAdmin"
                     :hint="'Generate a random password for the administrator.' | translate"
                     persistent-hint
                     />
-          <v-switch v-model="domain.dom_admin_with_mailbox"
+          <v-switch v-model="domain.domain_admin.with_mailbox"
                     :label="'With a mailbox' | translate"
                     :disabled="!createAdmin"
                     :hint="'Create a mailbox for the administrator.' | translate"
                     persistent-hint
                     />
-          <v-switch v-model="domain.dom_admin_create_aliases"
+          <v-switch v-model="domain.domain_admin.with_aliases"
                     :label="'Create aliases' | translate"
                     :disabled="!createAdmin"
                     :hint="'Create standard aliases for the domain.' | translate"
@@ -186,10 +221,11 @@
           </v-btn>
         </div>
       </v-stepper-content>
-      <v-stepper-content step="5">
+      <v-stepper-content step="5" class="flex-grow-0">
         <div class="text-center text-h3"><translate>Summary</translate></div>
-        <div class="subtitle text-subtitle-1 mt-4">
-          <translate>General</translate>
+        <div class="subtitle mt-4 d-flex">
+          <translate class="text-h6">General</translate>
+          <a href="#" class="edit-link ml-auto" @click="step = 1"><translate>Modify</translate></a>
         </div>
         <v-row dense>
           <v-col><translate class="grey--text">Name</translate></v-col>
@@ -201,18 +237,19 @@
         </v-row>
         <v-row dense>
           <v-col><translate class="grey--text">Enabled</translate></v-col>
-          <v-col class="text-right">{{ domain.enabled }}</v-col>
+          <v-col class="text-right">{{ domain.enabled|yesno }}</v-col>
         </v-row>
-        <div class="subtitle text-subtitle-1 mt-4">
-          <translate>DNS</translate>
+        <div class="subtitle mt-4 d-flex">
+          <translate class="text-h6">DNS</translate>
+          <a href="#" class="edit-link ml-auto" @click="step = 2"><translate>Modify</translate></a>
         </div>
         <v-row dense>
           <v-col><translate class="grey--text">Enable DNS checks</translate></v-col>
-          <v-col class="text-right">{{ domain.enable_dns_checks }}</v-col>
+          <v-col class="text-right">{{ domain.enable_dns_checks|yesno }}</v-col>
         </v-row>
         <v-row dense>
           <v-col><translate class="grey--text">Enable DKIM signing</translate></v-col>
-          <v-col class="text-right">{{ domain.enable_dkim }}</v-col>
+          <v-col class="text-right">{{ domain.enable_dkim|yesno }}</v-col>
         </v-row>
         <v-row dense v-if="domain.enable_dkim">
           <v-col><translate class="grey--text">DKIM key selector</translate></v-col>
@@ -222,8 +259,9 @@
           <v-col><translate class="grey--text">DKIM key length</translate></v-col>
           <v-col class="text-right">{{ domain.dkim_key_length }}</v-col>
         </v-row>
-        <div class="subtitle text-subtitle-1 mt-4">
-          <translate>Limitations</translate>
+        <div class="subtitle mt-4 d-flex">
+          <translate class="text-h6">Limitations</translate>
+          <a href="#" class="edit-link ml-auto" @click="step = 3"><translate>Modify</translate></a>
         </div>
         <v-row dense>
           <v-col><translate class="grey--text">Quota</translate></v-col>
@@ -237,29 +275,30 @@
           <v-col><translate class="grey--text">Message sending limit</translate></v-col>
           <v-col class="text-right">{{ domain.message_sending_limit }}</v-col>
         </v-row>
-        <div class="subtitle text-subtitle-1 mt-4">
-          <translate>Options</translate>
+        <div class="subtitle mt-4 d-flex">
+          <translate class="text-h6">Options</translate>
+          <a href="#" class="edit-link ml-auto" @click="step = 4"><translate>Modify</translate></a>
         </div>
         <v-row dense>
           <v-col><translate class="grey--text">Create a domain administrator</translate></v-col>
-          <v-col class="text-right">{{ createAdmin }}</v-col>
+          <v-col class="text-right">{{ createAdmin|yesno }}</v-col>
         </v-row>
         <div v-if="createAdmin">
           <v-row dense>
             <v-col><translate class="grey--text">Administrator name</translate></v-col>
-            <v-col class="text-right">{{ domain.dom_admin_username }}</v-col>
+            <v-col class="text-right">{{ domain.domain_admin.username }}</v-col>
           </v-row>
           <v-row dense>
             <v-col><translate class="grey--text">Random password</translate></v-col>
-            <v-col class="text-right">{{ domain.dom_admin_random_password }}</v-col>
+            <v-col class="text-right">{{ domain.domain_admin.with_random_password|yesno }}</v-col>
           </v-row>
           <v-row dense>
             <v-col><translate class="grey--text">With mailbox</translate></v-col>
-            <v-col class="text-right">{{ domain.dom_admin_with_mailbox }}</v-col>
+            <v-col class="text-right">{{ domain.domain_admin.with_mailbox|yesno }}</v-col>
           </v-row>
           <v-row dense>
             <v-col><translate class="grey--text">Create aliases</translate></v-col>
-            <v-col class="text-right">{{ domain.dom_admin_create_aliases }}</v-col>
+            <v-col class="text-right">{{ domain.domain_admin.with_aliases|yesno }}</v-col>
           </v-row>
         </div>
         <div class="d-flex justify-center mt-8">
@@ -278,7 +317,9 @@
 </template>
 
 <script>
+import { bus } from '@/main'
 import ChoiceField from '@/components/tools/ChoiceField'
+
 export default {
   props: ['value'],
   components: {
@@ -287,7 +328,9 @@ export default {
   data () {
     return {
       createAdmin: false,
-      domain: {},
+      domain: {
+        domain_admin: {}
+      },
       domainTypes: [
         {
           label: 'Domain',
@@ -324,6 +367,7 @@ export default {
   methods: {
     initDomain () {
       this.domain = {
+        name: '',
         type: 'domain',
         enabled: true,
         enable_dns_checks: true,
@@ -331,10 +375,12 @@ export default {
         dkim_key_selector: 'modoboa',
         quota: 0,
         default_mailbox_quota: 0,
-        dom_admin_username: 'admin',
-        dom_admin_random_password: false,
-        dom_admin_with_mailbox: false,
-        dom_admin_create_aliases: false
+        domain_admin: {
+          username: 'admin',
+          with_random_password: false,
+          with_mailbox: false,
+          with_aliases: false
+        }
       }
     },
     close () {
@@ -350,7 +396,12 @@ export default {
       this.step = next
     },
     submit () {
-      this.$store.dispatch('domains/createDomain', this.domain).then(resp => {
+      const data = JSON.parse(JSON.stringify(this.domain))
+      if (!this.createAdmin) {
+        delete data.domain_admin
+      }
+      this.$store.dispatch('domains/createDomain', data).then(resp => {
+        bus.$emit('notification', { msg: this.$gettext('Domain created') })
         this.close()
       })
     }
@@ -358,17 +409,28 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .inner {
-  height: 100%;
   background-color: #fff;
 }
 .v-stepper {
-  height: 100%;
-  width: 70%;
+  width: 100%;
+  overflow: auto;
+
+  &__content {
+    width: 60%;
+  }
+
+  &__items {
+    overflow-y: auto;
+  }
 }
 .subtitle {
   color: #000;
   border-bottom: 1px solid #DBDDDF;
+}
+
+.edit-link {
+  text-decoration: none;
 }
 </style>

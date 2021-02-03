@@ -110,6 +110,85 @@ class DomainSerializer(serializers.ModelSerializer):
         return domain
 
 
+class CreateDomainAdminSerializer(serializers.Serializer):
+    """Sub serializer for domain administrator creation."""
+
+    username = serializers.CharField()
+    with_random_password = serializers.BooleanField(default=False)
+    with_mailbox = serializers.BooleanField(default=False)
+    with_aliases = serializers.BooleanField(default=False)
+
+
+class DomainSerializerV2(DomainSerializer):
+    """Domain serializer for v2 API."""
+
+    domain_admin = CreateDomainAdminSerializer(required=False)
+
+    class Meta(DomainSerializer.Meta):
+        fields = DomainSerializer.Meta.fields + (
+            "domain_admin",
+        )
+
+    def create(self, validated_data):
+        """Create administrator and other stuff if needed."""
+        domain_admin = validated_data.pop("domain_admin", None)
+        domain = super().create(validated_data)
+        if not domain_admin:
+            return domain
+
+        # 1. Create a domain administrator
+        username = "%s@%s" % (domain_admin["username"], domain.name)
+        try:
+            da = core_models.User.objects.get(username=username)
+        except core_models.User.DoesNotExist:
+            pass
+        else:
+            raise lib_exceptions.Conflict(
+                _("User '%s' already exists") % username)
+        user = self.context["request"].user
+        core_signals.can_create_object.send(
+            self.__class__, context=user, klass=models.Mailbox)
+        da = core_models.User(username=username, email=username, is_active=True)
+        if domain_admin["with_random_password"]:
+            password = lib.make_password()
+        else:
+            password = param_tools.get_global_parameter(
+                "default_password", app="core")
+        da.set_password(password)
+        da.save()
+        da.role = "DomainAdmins"
+        da.post_create(user)
+
+        # 2. Create mailbox if needed
+        if domain_admin["with_mailbox"]:
+            dom_admin_username = domain_admin["username"]
+            mb = models.Mailbox(
+                address=dom_admin_username, domain=domain,
+                user=da, use_domain_quota=True
+            )
+            mb.set_quota(
+                override_rules=user.has_perm("admin.change_domain"))
+            mb.save(creator=user)
+
+            # 3. Create aliases if needed
+            condition = (
+                domain.type == "domain" and
+                domain_admin["with_aliases"] and
+                dom_admin_username != "postmaster"
+            )
+            if condition:
+                core_signals.can_create_object.send(
+                    self.__class__, context=user, klass=models.Alias)
+                address = u"postmaster@{}".format(domain.name)
+                alias = models.Alias.objects.create(
+                    address=address, domain=domain, enabled=True)
+                alias.set_recipients([mb.full_address])
+                alias.post_create(user)
+
+        domain.add_admin(da)
+        return domain
+
+
 class DomainAliasSerializer(FlexFieldsModelSerializer):
     """Base DomainAlias serializer."""
 
