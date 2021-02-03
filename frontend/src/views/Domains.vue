@@ -30,6 +30,7 @@
   <v-dialog
     v-model="showDomainWizard"
     fullscreen
+    scrollable
     transition="dialog-bottom-transition"
     >
     <domain-creation-form @close="showDomainWizard = false" />

@@ -38,11 +38,15 @@ class DomainViewSet(viewsets.ModelViewSet):
     """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
-    serializer_class = serializers.DomainSerializer
 
     def get_queryset(self):
         """Filter queryset based on current user."""
         return models.Domain.objects.get_for_admin(self.request.user)
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.request.version == "v2" and self.action == "create":
+            return serializers.DomainSerializerV2
+        return serializers.DomainSerializer
 
     def perform_destroy(self, instance):
         """Add custom args to delete call."""
