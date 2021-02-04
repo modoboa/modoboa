@@ -23,7 +23,7 @@ from . import mixins
 class Domain(mixins.MessageLimitMixin, AdminObject):
     """Mail domain."""
 
-    name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
+    name = models.CharField(ugettext_lazy("name"), max_length=253, unique=True,
                             help_text=ugettext_lazy("The domain name"))
     quota = models.PositiveIntegerField(
         default=0,
