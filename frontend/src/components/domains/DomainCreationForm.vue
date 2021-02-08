@@ -3,7 +3,7 @@
   <v-stepper v-model="step">
     <v-stepper-header class="align-center px-10">
       <v-img
-        src="../../assets/Modoboa_RVB-ORANGE-SANS.png"
+        src="../../assets/Modoboa_RVB-BLEU-SANS.png"
         max-width="190"
         />
       <v-stepper-step :complete="step > 1" step="1">
@@ -37,7 +37,7 @@
             rules="required"
             >
             <v-text-field
-              :label="'Name' | translate"
+              :label="'Domain name (ex: domain.tld)' | translate"
               v-model="domain.name"
               :error-messages="errors"
               outlined
@@ -53,9 +53,14 @@
                           :error-messages="errors"
                           />
           </validation-provider>
-          <v-switch :label="'Enabled' | translate" v-model="domain.enabled" />
+          <v-switch
+            :label="'Enabled' | translate"
+            v-model="domain.enabled"
+            :hint="'Control if this domain will be allowed to send and receive messages' | translate"
+            persistent-hint
+            />
         </validation-observer>
-        <div class="d-flex justify-center">
+        <div class="d-flex justify-end">
           <v-btn
             color="primary"
             @click="goToNextStep(1, 2)"
@@ -90,7 +95,7 @@
           :choices="dkimKeyLengths"
           :disabled="!domain.enable_dkim"
           />
-        <div class="d-flex justify-center mt-8">
+        <div class="d-flex justify-end mt-8">
           <v-btn @click="step = 1" class="mr-10" text>
             <translate>Back</translate>
           </v-btn>
@@ -151,7 +156,7 @@
               />
           </validation-provider>
         </validation-observer>
-        <div class="d-flex justify-center mt-8">
+        <div class="d-flex justify-end mt-8">
           <v-btn @click="step = 2" class="mr-10" text>
             <translate>Back</translate>
           </v-btn>
@@ -208,7 +213,7 @@
                     />
 
         </validation-observer>
-        <div class="d-flex justify-center mt-8">
+        <div class="d-flex justify-end mt-8">
           <v-btn @click="step = 3" class="mr-10" text>
             <translate>Back</translate>
           </v-btn>
@@ -313,17 +318,20 @@
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
+  <confirm-dialog ref="confirm" />
 </div>
 </template>
 
 <script>
 import { bus } from '@/main'
 import ChoiceField from '@/components/tools/ChoiceField'
+import ConfirmDialog from '@/components/layout/ConfirmDialog'
 
 export default {
   props: ['value'],
   components: {
-    ChoiceField
+    ChoiceField,
+    ConfirmDialog
   },
   data () {
     return {
@@ -383,10 +391,25 @@ export default {
         }
       }
     },
-    close () {
+    async close (withConfirm) {
+      if (withConfirm) {
+        const confirm = await this.$refs.confirm.open(
+          this.$gettext('Warning'),
+          this.$gettext('If you close this form now, your modifications won\'t be saved. Do you confirm?'),
+          {
+            color: 'error'
+          }
+        )
+        if (!confirm) {
+          return
+        }
+      }
       this.$emit('close')
       this.initDomain()
       this.step = 1
+      this.$refs.observer_1.reset()
+      this.$refs.observer_3.reset()
+      this.$refs.observer_4.reset()
     },
     async goToNextStep (current, next) {
       const valid = await this.$refs[`observer_${current}`].validate()
@@ -423,6 +446,10 @@ export default {
 
   &__items {
     overflow-y: auto;
+  }
+
+  &__wrapper {
+    padding: 0 10px;
   }
 }
 .subtitle {

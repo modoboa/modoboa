@@ -1,6 +1,8 @@
 <template>
 <div>
-  <div class="text-subtitle-1 grey--text text--darken-1 mb-4"><translate>{{ label }}</translate></div>
+  <div class="text-subtitle-1 grey--text text--darken-1 mb-4" :class="{ 'label--disabled': disabled }">
+    <translate>{{ label }}</translate>
+  </div>
   <div class="d-flex">
     <div v-for="(choice, index) in choices"
          :key="index"
@@ -66,6 +68,10 @@ export default {
 
   &--disabled {
     cursor: unset;
+    opacity: .5;
   }
+}
+.label--disabled {
+  opacity: .5;
 }
 </style>
