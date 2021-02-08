@@ -45,28 +45,11 @@
       <template v-slot:item.domainalias_count="{ item }">
         {{ item.domainalias_count }} aliases
       </template>
-      <template v-slot:item.dns_status="{ item }">
-        <v-chip v-if="item.dns_status.checks === 'disabled'"
-                label x-small><translate>Disabled</translate></v-chip>
-        <v-chip v-if="item.dns_status.checks === 'pending'"
-                color="secondary" label x-small><translate>Pending</translate></v-chip>
-        <span v-if="item.dns_status.checks === 'active'">
-          <v-chip v-if="item.dns_status.mx"
-                  :color="getDNSTagType(item.dns_status.mx)"
-                  class="mr-1"
-                  label
-                  x-small
-                  >
-            MX
-          </v-chip>
-          <v-chip v-if="item.dns_status.dnsbl"
-                  :color="getDNSTagType(item.dns_status.dnsbl)"
-                  label
-                  x-small
-                  >
-            DNSBL
-          </v-chip>
-        </span>
+      <template v-slot:item.dns_global_status="{ item }">
+        <v-chip :color="getDNSTagType(item.dns_global_status)"
+                small>
+          {{ getDNSLabel(item.dns_global_status) }}
+        </v-chip>
       </template>
       <template v-slot:item.message_limit="{ item }">
         <v-progress-linear v-model="item.allocated_quota_in_percent" />
@@ -131,12 +114,11 @@ export default {
       headers: [
         { text: 'Name', value: 'name' },
         { text: 'Aliases', value: 'domainalias_count' },
-        { text: 'DNS status', value: 'dns_status', sortable: false },
+        { text: 'DNS status', value: 'dns_global_status', sortable: false, align: 'center' },
         { text: 'Sending limit', value: 'message_limit' },
         { text: 'Quota', value: 'allocated_quota_in_percent' },
         { text: this.$gettext('Actions'), value: 'actions', sortable: false, align: 'right' }
       ],
-      deleteDomainMsg: this.$gettext('Confirm deletion?'),
       selectedDomain: null,
       showConfirmDialog: false,
       search: '',
@@ -164,14 +146,35 @@ export default {
         }
       )
     },
-    getDNSTagType (value) {
-      if (value === 'unknown') {
-        return 'orange'
+    getDNSLabel (value) {
+      if (value === 'disabled') {
+        return this.$gettext('Disabled')
+      }
+      if (value === 'pending') {
+        return this.$gettext('Pending')
+      }
+      if (value === 'critical') {
+        return this.$gettext('Problem')
       }
       if (value === 'ok') {
-        return 'warning'
+        return this.$gettext('Valid')
       }
-      return 'success'
+      return this.$gettext('Unknown')
+    },
+    getDNSTagType (value) {
+      if (value === 'disabled') {
+        return ''
+      }
+      if (value === 'pending') {
+        return 'info'
+      }
+      if (value === 'critical') {
+        return 'error'
+      }
+      if (value === 'ok') {
+        return 'success'
+      }
+      return 'warning'
     },
     loadAliases ({ item, value }) {
       if (!value) {

@@ -149,26 +149,34 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             return True
         return False
 
-    @cached_property
-    def dns_status(self) -> dict:
-        """Return information about current DNS status."""
+    @property
+    def dns_global_status(self) -> str:
+        """Return global DNS status."""
         if not self.enable_dns_checks or self.uses_a_reserved_tld:
-            return {"checks": "disabled"}
+            return "disabled"
         elif self.awaiting_checks():
-            return {"checks": "pending"}
-        result = {"checks": "active"}
+            return "pending"
         config = dict(param_tools.get_global_parameters("admin"))
-        if config["enable_mx_checks"]:
-            result["mx"] = "ok" if self.mxrecord_set.has_valids() else "ko"
-        if config["enable_dnsbl_checks"]:
-            if not self.dnsblresult_set.exists():
-                status = "unknown"
-            elif self.dnsblresult_set.blacklisted().exists():
-                status = "ko"
-            else:
-                status = "ok"
-            result["dnsbl"] = status
-        return result
+        errors = []
+        if config["enable_mx_checks"] and not self.mxrecord_set.has_valids():
+            errors.append("mx")
+        if config["enable_dnsbl_checks"] and self.dnsblresult_set.blacklisted().exists():
+            errors.append("dnsbl")
+        if config["enable_spf_checks"]:
+            if self.spf_record is None or not self.spf_record.is_valid():
+                errors.append("spf")
+            if self.dkim_record is None or not self.dkim_record.is_valid():
+                errors.append("dkim")
+            if self.dmarc_record is None or not self.dmarc_record.is_valid():
+                errors.append("dmarc")
+        if config["enable_autoconfig_checks"]:
+            if self.autoconfig_record is None:
+                errors.append("autoconfig")
+            if self.autodiscover_record is None:
+                errors.append("autodiscover")
+        if len(errors) == 0:
+            return "ok"
+        return "critical"
 
     @cached_property
     def dnsbl_status_color(self):
