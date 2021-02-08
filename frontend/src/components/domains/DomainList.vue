@@ -91,7 +91,7 @@
                   <v-list-item-title><translate>Edit</translate></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item @click="confirmDelete(item)" color="red">
+              <v-list-item @click="deleteDomain(item)" color="red">
                 <v-list-item-icon>
                   <v-icon color="red">mdi-delete-outline</v-icon>
                 </v-list-item-icon>
@@ -111,10 +111,7 @@
         </td>
       </template>
     </v-data-table>
-
-  <confirm-dialog v-model="showConfirmDialog"
-                  :message="deleteDomainMsg"
-                  @confirm="deleteDomain" />
+  <confirm-dialog ref="confirm" />
 </v-card>
 </template>
 
@@ -156,8 +153,16 @@ export default {
       this.selectedDomain = domain
       this.showConfirmDialog = true
     },
-    deleteDomain () {
-
+    async deleteDomain (domain) {
+      await this.$refs.confirm.open(
+        this.$gettext('Warning'),
+        this.$gettext(`Do you really want to delete the domain ${domain.name}?`),
+        {
+          color: 'error',
+          cancelLabel: this.$gettext('No'),
+          agreeLabel: this.$gettext('Yes')
+        }
+      )
     },
     getDNSTagType (value) {
       if (value === 'unknown') {
