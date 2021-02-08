@@ -10,6 +10,7 @@ from django.test import override_settings
 from django.urls import reverse
 
 from rest_framework.authtoken.models import Token
+from reversion.models import Version
 
 from modoboa.admin import models as admin_models
 from modoboa.core import factories as core_factories, models as core_models
@@ -51,8 +52,9 @@ class DomainAPITestCase(ModoAPITestCase):
             url, {"name": "test3.com", "quota": 0, "default_mailbox_quota": 10}
         )
         self.assertEqual(response.status_code, 201)
-        self.assertTrue(
-            models.Domain.objects.filter(name="test3.com").exists())
+        domain = models.Domain.objects.get(name="test3.com")
+        self.assertEqual(Version.objects.get_for_object(domain).count(), 1)
+
         response = self.client.post(url, {})
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", response.data)
