@@ -198,6 +198,8 @@ def get_dns_records(name, typ, resolver=None):
         logger.warning(
             _("DNS resolution timeout, unable to query %s at the moment") %
             name, exc_info=e)
+    except dns.name.NameTooLong as e:
+        logger.error(_("DNS name is too long: %s" % name), exc_info=e)
     else:
         return dns_answers
     return None
