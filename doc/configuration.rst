@@ -31,7 +31,7 @@ The *admin* application exposes several parameters, they are presented below:
 |Authentication type |General              |The backend used for           |Local               |
 |                    |                     |authentication                 |                    |
 +--------------------+---------------------+-------------------------------+--------------------+
-|Default password    |General              |Scheme used to crypt           |crypt               |
+|Default password    |General              |Scheme used to crypt           |sha512crypt         |
 |scheme              |                     |mailbox passwords              |                    |
 +--------------------+---------------------+-------------------------------+--------------------+
 |Rounds              |General              |Number of rounds (only used by |70000               |
@@ -144,6 +144,13 @@ The *admin* application exposes several parameters, they are presented below:
 |                    |                     |                               |                    |
 +--------------------+---------------------+-------------------------------+--------------------+
 
+.. warning::
+
+    If Dovecot is not running on the same host than Modoboa, you will have
+    to define which password schemes are supported. To do so, open the
+    :file:`settings.py` file and add a ``DOVECOT_SUPPORTED_SCHEMES``
+    variable with the output of the command: ``doveadm pw -l``.
+
 .. note::
 
    If you are not familiar with virtual domain hosting, you should
@@ -202,7 +209,11 @@ Host configuration
 .. note::
 
   This section is only relevant when Modoboa handles mailboxes
-  renaming and removal from the filesystem.
+  renaming and removal from the filesystem, which requires that
+  Dovecot is installed and running on this host. If it is installed
+  at a non-standard directory, paths to its binaries can be set in the
+  :file:`settings.py` file with the ``DOVECOT_LOOKUP_PATH`` and
+  ``DOVEADM_LOOKUP_PATH`` variables.
 
 To manipulate mailboxes on the filesystem, you must allow the user who
 runs Modoboa to execute commands as the user who owns mailboxes.
