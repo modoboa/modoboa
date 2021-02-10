@@ -2,6 +2,7 @@
 Password hashers for Modoboa.
 """
 
+from django.conf import settings
 from django.utils.encoding import smart_text
 
 from modoboa.core.password_hashers.advanced import (  # NOQA:F401
@@ -32,17 +33,21 @@ def get_password_hasher(scheme):
 
 
 def get_dovecot_schemes():
-    """Return schemes supported by dovecot"""
-    supported_schemes = None
-    try:
-        _, schemes = doveadm_cmd("pw -l")
-    except OSError:
-        pass
-    else:
-        supported_schemes = ["{{{}}}".format(smart_text(scheme))
-                             for scheme in schemes.split()]
+    """Return schemes supported by Dovecot.
 
-    if not supported_schemes:
-        supported_schemes = ['{PLAIN}']
+    It first try to get supported schemes fron the settings, then from the
+    doveadm output, and fallback to {MD5-CRYPT} and {PLAIN} if the command
+    is not found.
 
-    return supported_schemes
+    :return: A list of supported '{SCHEME}'
+    """
+    schemes = getattr(settings, "DOVECOT_SUPPORTED_SCHEMES", None)
+
+    if not schemes:
+        try:
+            _, schemes = doveadm_cmd("pw -l")
+        except OSError:
+            schemes = "MD5-CRYPT PLAIN"
+
+    return ["{{{}}}".format(smart_text(scheme))
+            for scheme in schemes.split()]
