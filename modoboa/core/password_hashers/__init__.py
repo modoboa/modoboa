@@ -42,12 +42,16 @@ def get_dovecot_schemes():
     :return: A list of supported '{SCHEME}'
     """
     schemes = getattr(settings, "DOVECOT_SUPPORTED_SCHEMES", None)
+    default_schemes = "MD5-CRYPT PLAIN"
 
     if not schemes:
         try:
-            _, schemes = doveadm_cmd("pw -l")
+            retcode, schemes = doveadm_cmd("pw -l")
         except OSError:
-            schemes = "MD5-CRYPT PLAIN"
+            schemes = default_schemes
+        else:
+            if retcode:
+                schemes = default_schemes
 
     return ["{{{}}}".format(smart_text(scheme))
             for scheme in schemes.split()]
