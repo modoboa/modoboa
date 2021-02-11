@@ -5,6 +5,7 @@ This module extra functions/shortcuts to communicate with the system
 
 import inspect
 import os
+import pwd
 import re
 import subprocess
 
@@ -42,8 +43,7 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     return process.returncode, output
 
 
-def doveadm_cmd(params, sudo_user=None, pinput=None,
-                capture_output=True, **kwargs):
+def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     """Execute doveadm command.
 
     Run doveadm command using the current user. Set :keyword:`sudo_user` if
@@ -69,14 +69,17 @@ def doveadm_cmd(params, sudo_user=None, pinput=None,
             if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
                 dpath = fpath
                 break
+    dovecot_user = getattr(settings, "DOVECOT_USER", "vmail")
+    curuser = pwd.getpwuid(os.getuid()).pw_name
+    sudo_user = dovecot_user if curuser != dovecot_user else None
     if dpath:
         return exec_cmd("{} {}".format(dpath, params),
                         sudo_user=sudo_user,
                         pinput=pinput,
                         capture_output=capture_output,
                         **kwargs)
-    else:
-        raise OSError("doveadm command not found")
+
+    raise OSError("doveadm command not found")
 
 
 def guess_extension_name():

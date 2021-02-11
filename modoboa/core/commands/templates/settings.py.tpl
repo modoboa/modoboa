@@ -212,6 +212,8 @@ SPECTACULAR_SETTINGS = {
 # List of supported schemes if doveadm is not available, given by: doveadm pw -l
 #DOVECOT_SUPPORTED_SCHEMES = 'SHA512-CRYPT SHA256-CRYPT'
 
+# DOVECOT_USER = 'vmail'
+
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
