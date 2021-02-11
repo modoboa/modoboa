@@ -19,7 +19,7 @@ def update_disabled_accounts_aliases(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0017_alarm'),
+        ('admin', '0018_auto_20201204_0935'),
         ('core', '0022_user_tfa_enabled'),
     ]
 
