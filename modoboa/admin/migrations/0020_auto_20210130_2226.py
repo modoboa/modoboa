@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0018_update_disabled_accounts_aliases'),
+        ('admin', '0019_update_disabled_accounts_aliases'),
     ]
 
     operations = [
