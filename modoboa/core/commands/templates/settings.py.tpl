@@ -197,6 +197,8 @@ REST_FRAMEWORK = {
 
 # DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
 
+# DOVECOT_USER = 'vmail'
+
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
