@@ -1,8 +1,5 @@
 """Models related to mailboxes management."""
 
-import os
-import pwd
-
 from reversion import revisions as reversion
 
 from django.contrib.contenttypes.models import ContentType
@@ -153,14 +150,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         if not admin_params.get("handle_mailboxes"):
             return None
         if self.__mail_home is None:
-            curuser = pwd.getpwuid(os.getuid()).pw_name
-            mbowner = admin_params["mailboxes_owner"]
-            options = {}
-            if curuser != mbowner:
-                options["sudo_user"] = mbowner
-            code, output = doveadm_cmd(
-                "user -f home %s" % self.full_address, **options
-            )
+            code, output = doveadm_cmd("user -f home %s" % self.full_address)
             if code:
                 raise lib_exceptions.InternalError(
                     _("Failed to retrieve mailbox location (%s)") % output)
