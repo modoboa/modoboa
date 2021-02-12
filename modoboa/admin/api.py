@@ -13,6 +13,7 @@ from rest_framework.response import Response
 
 from modoboa.core import models as core_models
 from modoboa.core import sms_backends
+from modoboa.lib.viewsets import RevisionModelMixin
 
 from . import lib, models, serializers
 
@@ -31,7 +32,7 @@ from . import lib, models, serializers
         summary="Create a new domain"
     )
 )
-class DomainViewSet(viewsets.ModelViewSet):
+class DomainViewSet(RevisionModelMixin, viewsets.ModelViewSet):
     """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
@@ -46,7 +47,7 @@ class DomainViewSet(viewsets.ModelViewSet):
         instance.delete(self.request.user)
 
 
-class DomainAliasViewSet(viewsets.ModelViewSet):
+class DomainAliasViewSet(RevisionModelMixin, viewsets.ModelViewSet):
     """ViewSet for DomainAlias."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
@@ -62,7 +63,7 @@ class DomainAliasViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class AccountViewSet(viewsets.ModelViewSet):
+class AccountViewSet(RevisionModelMixin, viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
     filter_backends = [filters.SearchFilter]
@@ -157,7 +158,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         return Response(body)
 
 
-class AliasViewSet(viewsets.ModelViewSet):
+class AliasViewSet(RevisionModelMixin, viewsets.ModelViewSet):
     """
     create:
     Create a new alias instance.
@@ -182,7 +183,7 @@ class AliasViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class SenderAddressViewSet(viewsets.ModelViewSet):
+class SenderAddressViewSet(RevisionModelMixin, viewsets.ModelViewSet):
     """View set for SenderAddress model."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
