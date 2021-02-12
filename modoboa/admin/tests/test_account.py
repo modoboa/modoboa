@@ -119,8 +119,10 @@ class AccountTestCase(ModoTestCase):
         account = User.objects.get(username=values["username"])
         self.assertEqual(account.language, "fr")
 
-    def test_forward_updated_on_edit(self):
+    def test_aliases_update_on_disable(self):
+        """Check if aliases are updated when account is disabled."""
         account = User.objects.get(username="user@test.com")
+        internal = models.Alias.objects.get(address=account.email, internal=True)
         forward = models.Alias.objects.create(address=account.email, internal=False)
         values = {
             "username": "user@test.com",
@@ -133,12 +135,16 @@ class AccountTestCase(ModoTestCase):
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]), values
         )
+        internal.refresh_from_db()
+        self.assertFalse(internal.enabled)
         forward.refresh_from_db()
         self.assertFalse(forward.enabled)
         values["is_active"] = True
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]), values
         )
+        internal.refresh_from_db()
+        self.assertTrue(internal.enabled)
         forward.refresh_from_db()
         self.assertTrue(forward.enabled)
 

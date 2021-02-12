@@ -114,15 +114,15 @@ MIDDLEWARE = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    # 'modoboa.lib.authbackends.LDAPBackend',
-    # 'modoboa.lib.authbackends.SMTPBackend',
+    #'modoboa.lib.authbackends.LDAPBackend',
+    #'modoboa.lib.authbackends.SMTPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 # SMTP authentication
-# AUTH_SMTP_SERVER_ADDRESS = 'localhost'
-# AUTH_SMTP_SERVER_PORT = 25
-# AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
+#AUTH_SMTP_SERVER_ADDRESS = 'localhost'
+#AUTH_SMTP_SERVER_PORT = 25
+#AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
 
 
 TEMPLATES = [
@@ -205,9 +205,17 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Modoboa settings
-# MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
 
-# DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
+#MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
+
+# Path to Dovecot binaries in case of a non-standard installation
+#DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
+#DOVEADM_LOOKUP_PATH = ('/path/to/doveadm', )
+
+# List of supported schemes if doveadm is not available, given by: doveadm pw -l
+#DOVECOT_SUPPORTED_SCHEMES = 'SHA512-CRYPT SHA256-CRYPT'
+
+# DOVECOT_USER = 'vmail'
 
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 

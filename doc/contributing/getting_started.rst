@@ -24,6 +24,12 @@ setup, go to the next section.
 
 .. _venv_for_dev:
 
+Prerequisites For Development
+=============================
+If you encounter errors about missing tools, please ensure you have them installed with the foollowing:
+
+   $ sudo apt install librrd-dev
+
 Prepare a virtual environment
 =============================
 

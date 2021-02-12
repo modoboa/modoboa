@@ -13,6 +13,7 @@ RUN python3 -m venv $VIRTUAL_ENV
 WORKDIR /tmp
 COPY requirements.txt /tmp
 COPY test-requirements.txt /tmp
+RUN python -m pip install -U pip 
 RUN pip install -r requirements.txt -r test-requirements.txt
 
 FROM base as run

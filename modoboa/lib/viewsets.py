@@ -1,6 +1,7 @@
 """ViewSet related mixins and tools."""
 
 from rest_framework import viewsets
+from reversion.views import RevisionMixin
 
 
 class ExpandableSerializerMixin:
@@ -29,6 +30,14 @@ class ExpandableModelViewSet(ExpandableSerializerMixin,
     """
     A ModelViewSet version which provides an expanded serializer
     output for create/update actions.
+    """
+
+    pass
+
+
+class RevisionModelMixin(RevisionMixin):
+    """
+    A mixin to wrap every request in a revision block.
     """
 
     pass

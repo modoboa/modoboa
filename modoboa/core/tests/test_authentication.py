@@ -19,9 +19,9 @@ from modoboa.core.password_hashers import (
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
+DOVEADM_TEST_PATH = "{}/doveadm".format(os.path.dirname(__file__))
 
-@override_settings(
-    DOVEADM_LOOKUP_PATH=["{}/doveadm".format(os.path.dirname(__file__))])
+
 class AuthenticationTestCase(ModoTestCase):
     """Validate authentication scenarios."""
 
@@ -89,6 +89,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
+    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH])
     def test_password_schemes(self):
         """Validate password scheme changes."""
         username = "user@test.com"
@@ -130,6 +131,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(user.password.startswith(pw_hash.scheme))
 
     @skipUnless(argon2, "argon2-cffi not installed")
+    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH])
     def test_password_argon2_parameter_change(self):
         """Validate hash parameter update on login works with argon2."""
         username = "user@test.com"
@@ -169,8 +171,16 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertEqual(parameters.memory_cost, 1000)
         self.assertEqual(parameters.parallelism, 2)
 
-    def test_supported_schemes(self):
-        """Validate dovecot supported schemes."""
+    @mock.patch("modoboa.lib.sysutils.exec_cmd")
+    def test_dovecot_supported_schemes(self, exec_cmd_mock):
+        """Validate Dovecot supported schemes with fake command output."""
+        exec_cmd_mock.return_value = (
+            0,
+            "MD5 MD5-CRYPT SHA SHA1 SHA256 SHA512 SMD5 SSHA SSHA256 SSHA512 "
+            "PLAIN CLEAR CLEARTEXT PLAIN-TRUNC CRAM-MD5 SCRAM-SHA-1 HMAC-MD5 "
+            "DIGEST-MD5 PLAIN-MD4 PLAIN-MD5 LDAP-MD5 LANMAN NTLM OTP SKEY RPA "
+            "PBKDF2 CRYPT SHA256-CRYPT SHA512-CRYPT"
+        )
         supported_schemes = get_dovecot_schemes()
         self.assertEqual(supported_schemes,
                          ["{MD5}",
@@ -203,6 +213,17 @@ class AuthenticationTestCase(ModoTestCase):
                           "{CRYPT}",
                           "{SHA256-CRYPT}",
                           "{SHA512-CRYPT}"])
+
+    @override_settings(DOVECOT_SUPPORTED_SCHEMES="SHA1 SHA512-CRYPT")
+    def test_dovecot_supported_schemes_from_settings(self):
+        """Validate dovecot supported schemes from the settings."""
+        supported_schemes = get_dovecot_schemes()
+        self.assertEqual(supported_schemes, ["{SHA1}", "{SHA512-CRYPT}"])
+
+    def test_dovecot_default_schemes(self):
+        """Check default scheme if doveadm is not found."""
+        supported_schemes = get_dovecot_schemes()
+        self.assertEqual(supported_schemes, ["{MD5-CRYPT}", "{PLAIN}"])
 
 
 class PasswordResetTestCase(ModoTestCase):
