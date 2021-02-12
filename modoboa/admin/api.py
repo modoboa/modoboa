@@ -34,7 +34,7 @@ from . import lib, models, serializers
         summary="Create a new domain"
     )
 )
-class DomainViewSet(viewsets.ModelViewSet):
+class DomainViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
@@ -63,7 +63,8 @@ class DomainAliasFilterSet(dj_filters.FilterSet):
         fields = ["domain"]
 
 
-class DomainAliasViewSet(lib_viewsets.ExpandableModelViewSet):
+class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
+                         lib_viewsets.ExpandableModelViewSet):
     """ViewSet for DomainAlias."""
 
     filter_backends = (dj_filters.DjangoFilterBackend, )
@@ -83,7 +84,7 @@ class DomainAliasViewSet(lib_viewsets.ExpandableModelViewSet):
         return context
 
 
-class AccountViewSet(viewsets.ModelViewSet):
+class AccountViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
     filter_backends = [filters.SearchFilter]
@@ -178,7 +179,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         return Response(body)
 
 
-class AliasViewSet(viewsets.ModelViewSet):
+class AliasViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """
     create:
     Create a new alias instance.
@@ -203,7 +204,8 @@ class AliasViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class SenderAddressViewSet(viewsets.ModelViewSet):
+class SenderAddressViewSet(lib_viewsets.RevisionModelMixin,
+                           viewsets.ModelViewSet):
     """View set for SenderAddress model."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]

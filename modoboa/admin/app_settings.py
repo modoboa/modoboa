@@ -147,14 +147,6 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
-    mailboxes_owner = forms.CharField(
-        label=ugettext_lazy("Mailboxes owner"),
-        initial="vmail",
-        help_text=ugettext_lazy(
-            "The UNIX account who owns mailboxes on the filesystem"
-        )
-    )
-
     default_mailbox_quota = forms.IntegerField(
         label=ugettext_lazy("Default mailbox quota"),
         initial=0,
@@ -200,8 +192,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     # Visibility rules
     visibility_rules = {
         "valid_mxs": "enable_mx_checks=True",
-        "domains_must_have_authorized_mx": "enable_mx_checks=True",
-        "mailboxes_owner": "handle_mailboxes=True",
+        "domains_must_have_authorized_mx": "enable_mx_checks=True"
     }
 
     def __init__(self, *args, **kwargs):
@@ -236,7 +227,6 @@ class AdminParametersForm(param_forms.AdminParametersForm):
             hide_fields = True
         if hide_fields:
             del self.fields["handle_mailboxes"]
-            del self.fields["mailboxes_owner"]
 
     def clean_default_domain_quota(self):
         """Ensure quota is a positive integer."""

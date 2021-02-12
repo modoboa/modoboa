@@ -66,7 +66,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          sudo apt-get install postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
+          sudo apt-get update -y \
+          && sudo apt-get install -y \
+            postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r ldap-requirements.txt
