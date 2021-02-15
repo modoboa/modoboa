@@ -29,69 +29,81 @@
                   class="elevation-1"
                   show-select
                   single-expand
-                  show-expand
                   :expanded.sync="expanded"
                   @item-expanded="loadAliases"
                   @click:row="showAliases"
                   >
-      <template v-slot:item.select="{ }">
-        <v-checkbox />
-      </template>
-      <template v-slot:item.name="{ item }">
-        <router-link :to="{ name: 'DomainDetail', params: { pk: item.pk } }">
-          {{ item.name }}
-        </router-link>
-      </template>
-      <template v-slot:item.domainalias_count="{ item }">
-        {{ item.domainalias_count }} aliases
-      </template>
-      <template v-slot:item.dns_global_status="{ item }">
-        <v-chip :color="getDNSTagType(item.dns_global_status)"
-                small>
-          {{ getDNSLabel(item.dns_global_status) }}
-        </v-chip>
-      </template>
-      <template v-slot:item.message_limit="{ item }">
-        <v-progress-linear v-model="item.allocated_quota_in_percent" />
-      </template>
-      <template v-slot:item.allocated_quota_in_percent="{ item }">
-        <v-progress-linear v-model="item.allocated_quota_in_percent" />
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <div class="text-right">
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
-            </template>
-            <v-list dense>
-              <v-list-item :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
-                <v-list-item-icon>
-                  <v-icon>mdi-circle-edit-outline</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title><translate>Edit</translate></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item @click="deleteDomain(item)" color="red">
-                <v-list-item-icon>
-                  <v-icon color="red">mdi-delete-outline</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title><translate>Delete</translate></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
+      <template v-slot:item="{ item, isExpanded, expand }">
+        <tr>
+          <td>
+            <v-checkbox />
+          </td>
+          <td>
+            <router-link :to="{ name: 'DomainDetail', params: { pk: item.pk } }">
+              {{ item.name }}
+            </router-link>
+          </td>
+          <td>
+            {{ item.domainalias_count }} aliases
+            <v-btn v-if="item.domainalias_count"
+                   icon
+                   @click="expand(!isExpanded)"
+                   >
+              <v-icon v-if="!isExpanded">mdi-chevron-down</v-icon>
+              <v-icon v-else>mdi-chevron-up</v-icon>
+            </v-btn>
+          </td>
+          <td>
+            <v-chip :color="getDNSTagType(item.dns_global_status)"
+                    small>
+              {{ getDNSLabel(item.dns_global_status) }}
+            </v-chip>
+          </td>
+          <td>
+            <v-progress-linear v-model="item.allocated_quota_in_percent" />
+          </td>
+          <td>
+            <v-progress-linear v-model="item.allocated_quota_in_percent" />
+          </td>
+          <td>
+            <div class="text-right">
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-horizontal</v-icon>
+                  </v-btn>
+                </template>
+                <v-list dense>
+                  <v-list-item :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
+                    <v-list-item-icon>
+                      <v-icon>mdi-circle-edit-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title><translate>Edit</translate></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item @click="deleteDomain(item)" color="red">
+                    <v-list-item-icon>
+                      <v-icon color="red">mdi-delete-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title><translate>Delete</translate></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </td>
+        </tr>
       </template>
       <template v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length">
-          <span class="mr-4" v-for="alias in aliases[item.name]" :key="alias.name">
-            {{ alias.name }} <v-chip color="success" label x-small>DNS OK</v-chip>
-          </span>
-        </td>
+        <tr>
+          <td :colspan="headers.length">
+            <span class="mr-4" v-for="alias in aliases[item.name]" :key="alias.name">
+              {{ alias.name }} <v-chip color="success" label x-small>DNS OK</v-chip>
+            </span>
+          </td>
+        </tr>
       </template>
     </v-data-table>
   <confirm-dialog ref="confirm" />
