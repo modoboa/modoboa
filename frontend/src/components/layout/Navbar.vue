@@ -5,7 +5,7 @@
     app
     dark
     >
-    <div class="d-flex justify-center">
+    <div class="d-flex justify-start">
       <v-img
         src="../../assets/Modoboa_RVB-BLANC-SANS.png"
         max-width="190"

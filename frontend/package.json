@@ -11,6 +11,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
+    "luxon": "^1.26.0",
     "vee-validate": "^3.4.5",
     "vue": "^2.6.11",
     "vue-cookie": "^1.1.4",

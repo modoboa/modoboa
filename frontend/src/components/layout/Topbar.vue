@@ -5,7 +5,7 @@
   app
   clipped-left
   >
-  <div class="d-flex">
+  <div class="d-flex justify-start">
     <v-img
       class="mx-2"
       src="../../assets/Modoboa_RVB-BLANC-SANS.png"

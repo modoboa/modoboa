@@ -7,6 +7,9 @@ export default {
   getDomains () {
     return repository.get(`/${domainResource}/`)
   },
+  getDomainDNSDetail (domainId) {
+    return repository.get(`/${domainResource}/${domainId}/dns_detail/`)
+  },
   getDomainAliases (domain) {
     let url = `/${domainAliasResource}/`
     if (domain !== undefined) {
