@@ -1,13 +1,15 @@
-import Vue from 'vue'
 import Cookies from 'js-cookie'
 
+import repository from '@/api/repository'
+import account from '@/api/account'
+
 function setupAxios (token) {
-  Vue.prototype.$axios.defaults.headers.common.Authorization = `Bearer ${token}`
-  Vue.prototype.$axios.defaults.headers.post['Content-Type'] = 'application/json'
+  repository.defaults.headers.common.Authorization = `Bearer ${token}`
+  repository.defaults.headers.post['Content-Type'] = 'application/json'
 }
 
 function fetchUser (commit) {
-  return Vue.prototype.$axios.get('/account/me/').then(resp => {
+  return account.getMe().then(resp => {
     commit('SET_AUTH_USER', { authUser: resp.data, isAuthenticated: true })
   })
 }
@@ -47,7 +49,7 @@ const actions = {
   },
   logout ({ commit }) {
     return new Promise((resolve, reject) => {
-      delete Vue.prototype.$axios.defaults.headers.common.Authorization
+      delete repository.defaults.headers.common.Authorization
       Cookies.remove('token')
       Cookies.remove('refreshToken')
       commit('LOGOUT_USER')

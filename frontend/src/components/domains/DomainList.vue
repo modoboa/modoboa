@@ -99,9 +99,17 @@
       <template v-slot:expanded-item="{ headers, item }">
         <tr>
           <td :colspan="headers.length">
-            <span class="mr-4" v-for="alias in aliases[item.name]" :key="alias.name">
-              {{ alias.name }} <v-chip color="success" label x-small>DNS OK</v-chip>
-            </span>
+            <v-chip v-for="alias in aliases[item.name]"
+                    :key="alias.name"
+                    class="mr-2"
+                    pill
+                    title="DNS OK"
+                    >
+              <v-icon left color="success">mdi-server-network</v-icon>
+              {{ alias.name }}
+              <v-btn class="ml-4" x-small icon><v-icon>mdi-circle-edit-outline</v-icon></v-btn>
+              <v-btn x-small icon color="error"><v-icon>mdi-delete-outline</v-icon></v-btn>
+            </v-chip>
           </td>
         </tr>
       </template>
@@ -112,6 +120,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import domainApi from '@/api/domains'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 
 export default {
@@ -192,7 +201,7 @@ export default {
       if (!value) {
         return
       }
-      this.$axios.get(`/domainaliases/?domain=${item.name}`).then(resp => {
+      domainApi.getDomainAliases(item.name).then(resp => {
         this.$set(this.aliases, item.name, resp.data)
       })
     },
