@@ -36,6 +36,7 @@
 <script>
 import Cookies from 'js-cookie'
 import { mapGetters } from 'vuex'
+import auth from '@/api/auth'
 
 export default {
   computed: {
@@ -56,7 +57,7 @@ export default {
         username: this.username,
         password: this.password
       }
-      this.$axios.post('/token/', payload).then(resp => {
+      auth.requestToken(payload).then(resp => {
         Cookies.set('token', resp.data.access, { sameSite: 'strict' })
         Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
         this.$store.dispatch('auth/initialize').then(() => {

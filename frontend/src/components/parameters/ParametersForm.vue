@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import parameters from '@/api/parameters'
+
 export default {
   data () {
     return {
@@ -67,7 +69,6 @@ export default {
   },
   computed: {
     displayableElements () {
-      console.log(this.structure)
       const result = this.structure.filter(element => this.display(element))
       return result
     }
@@ -82,10 +83,10 @@ export default {
   },
   methods: {
     loadParams (app) {
-      this.$axios.get(`/parameters/structure/?app=${app}`).then(response => {
+      parameters.getApplicationStructure(app).then(response => {
         this.structure = response.data
       })
-      this.$axios.get(`/parameters/${app}/`).then(response => {
+      parameters.getApplication(app).then(response => {
         this.parameters = response.data
       })
     },
@@ -103,7 +104,7 @@ export default {
       return params.filter(param => this.display(param))
     },
     save () {
-      this.$axios.post(`/parameters/${this.$route.params.app}/`, this.parameters).then(response => {
+      parameters.saveApplication(this.$route.params.app, this.parameters).then(response => {
       }, response => {
         this.formErrors = response.data
       })

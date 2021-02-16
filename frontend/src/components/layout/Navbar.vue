@@ -98,7 +98,7 @@
 </template>
 
 <script>
-// import * as api from '@/api'
+import parameters from '@/api/parameters'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -145,7 +145,7 @@ export default {
     }
   },
   created () {
-    this.$axios.get('/parameters/applications/').then(response => {
+    parameters.getApplications().then(response => {
       response.data.forEach(item => {
         this.mainMenuItems[4].children.push({
           text: item.label,

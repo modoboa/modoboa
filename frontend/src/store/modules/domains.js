@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import domainApi from '@/api/domains'
 
 // mutation types
 const SET_DOMAINS = 'SET_DOMAINS'
@@ -33,17 +34,17 @@ const getters = {
 // actions
 const actions = {
   getDomains ({ commit }) {
-    return Vue.prototype.$axios.get('/domains/').then(response => {
+    return domainApi.getDomains().then(response => {
       commit(SET_DOMAINS, { domains: response.data })
     })
   },
   createDomain ({ commit }, data) {
-    return Vue.prototype.$axios.post('/domains/', data).then(response => {
+    return domainApi.createDomain(data).then(response => {
       commit(ADD_DOMAIN, { domain: response.data })
     })
   },
   updateDomain ({ commit }, data) {
-    return Vue.prototype.$axios.put(`/domains/${data.pk}/`, data).then(response => {
+    return domainApi.updateDomain(data.pk, data).then(response => {
       commit(UPDATE_DOMAIN, { domain: response.data })
     })
   },
@@ -53,17 +54,17 @@ const actions = {
     })
   },
   addDomainAlias ({ commit }, data) {
-    return Vue.prototype.$axios.post('/domainaliases/', data).then(response => {
+    return domainApi.createDomainAlias(data).then(response => {
       commit(ADD_DOMAIN_ALIAS, response.data)
     })
   },
   updateDomainAlias ({ commit }, { id, data }) {
-    return Vue.prototype.$axios.put(`/domainaliases/${id}/`, data).then(response => {
+    return domainApi.updateDomainAlias(id, data).then(response => {
       commit(UPDATE_DOMAIN_ALIAS, response.data)
     })
   },
   deleteDomainAlias ({ commit }, domainAliasId) {
-    return Vue.prototype.$axios.delete(`/domainaliases/${domainAliasId}/`).then(response => {
+    return domainApi.deleteDomainAlias(domainAliasId).then(response => {
       commit(REMOVE_DOMAIN_ALIAS, domainAliasId)
     })
   }

@@ -1,24 +1,11 @@
-'use strict'
-
-import Vue from 'vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import router from '../router'
 import store from '../store'
 
-// Full config:  https://github.com/axios/axios#request-config
-axios.defaults.baseURL = process.VUE_APP_API_BASE_URL || ''
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
-const config = {
-  baseURL: process.env.VUE_APP_API_BASE_URL || ''
-  // timeout: 60 * 1000 // Timeout
-  // withCredentials: true // Check cross-site Access-Control
-}
-
-const _axios = axios.create(config)
+const baseURL = process.env.VUE_APP_API_BASE_URL || ''
+const _axios = axios.create({ baseURL })
 
 _axios.interceptors.request.use(
   function (config) {
@@ -65,23 +52,4 @@ _axios.interceptors.response.use(
   }
 )
 
-Plugin.install = function (Vue, options) {
-  Vue.axios = _axios
-  window.axios = _axios
-  Object.defineProperties(Vue.prototype, {
-    axios: {
-      get () {
-        return _axios
-      }
-    },
-    $axios: {
-      get () {
-        return _axios
-      }
-    }
-  })
-}
-
-Vue.use(Plugin)
-
-export default Plugin
+export default _axios

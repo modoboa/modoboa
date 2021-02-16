@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import logs from '@/api/logs'
+
 export default {
   data () {
     return {
@@ -61,7 +63,7 @@ export default {
     }
   },
   created () {
-    this.$axios.get('/logs/').then(response => {
+    logs.getAll().then(response => {
       this.logs = response.data
       this.loading = false
     })
