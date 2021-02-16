@@ -163,11 +163,11 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         if config["enable_dnsbl_checks"] and self.dnsblresult_set.blacklisted().exists():
             errors.append("dnsbl")
         if config["enable_spf_checks"]:
-            if self.spf_record is None or not self.spf_record.is_valid():
+            if self.spf_record is None or not self.spf_record.is_valid:
                 errors.append("spf")
-            if self.dkim_record is None or not self.dkim_record.is_valid():
+            if self.dkim_record is None or not self.dkim_record.is_valid:
                 errors.append("dkim")
-            if self.dmarc_record is None or not self.dmarc_record.is_valid():
+            if self.dmarc_record is None or not self.dmarc_record.is_valid:
                 errors.append("dmarc")
         if config["enable_autoconfig_checks"]:
             if self.autoconfig_record is None:

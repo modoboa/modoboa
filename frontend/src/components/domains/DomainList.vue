@@ -1,120 +1,122 @@
 <template>
-  <v-card class="mt-6">
-    <v-toolbar flat>
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" small>
-            Actions <v-icon right>mdi-chevron-down</v-icon>
+<v-card class="mt-6">
+  <v-toolbar flat>
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on" small>
+          Actions <v-icon right>mdi-chevron-down</v-icon>
+        </v-btn>
+      </template>
+      <v-list dense>
+      </v-list>
+    </v-menu>
+    <v-spacer></v-spacer>
+    <v-text-field
+      v-model="search"
+      prepend-inner-icon="mdi-magnify"
+      placeholder="Search"
+      filled
+      outlined
+      dense
+      hide-details
+      ></v-text-field>
+  </v-toolbar>
+  <v-data-table v-model="selected"
+                :headers="headers"
+                :items="domains"
+                :search="search"
+                item-key="name"
+                class="elevation-1"
+                show-select
+                single-expand
+                :expanded.sync="expanded"
+                @item-expanded="loadAliases"
+                @click:row="showAliases"
+                >
+    <template v-slot:item="{ item, isExpanded, expand }">
+      <tr>
+        <td>
+          <v-checkbox />
+        </td>
+        <td>
+          <router-link :to="{ name: 'DomainDetail', params: { pk: item.pk } }">
+            {{ item.name }}
+          </router-link>
+        </td>
+        <td>
+          {{ item.domainalias_count }} aliases
+          <v-btn v-if="item.domainalias_count"
+                 icon
+                 @click="expand(!isExpanded)"
+                 >
+            <v-icon v-if="!isExpanded">mdi-chevron-down</v-icon>
+            <v-icon v-else>mdi-chevron-up</v-icon>
           </v-btn>
-        </template>
-        <v-list dense>
-        </v-list>
-      </v-menu>
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        prepend-inner-icon="mdi-magnify"
-        placeholder="Search"
-        filled
-        outlined
-        dense
-        hide-details
-        ></v-text-field>
-    </v-toolbar>
-    <v-data-table v-model="selected"
-                  :headers="headers"
-                  :items="domains"
-                  :search="search"
-                  item-key="name"
-                  class="elevation-1"
-                  show-select
-                  single-expand
-                  :expanded.sync="expanded"
-                  @item-expanded="loadAliases"
-                  @click:row="showAliases"
-                  >
-      <template v-slot:item="{ item, isExpanded, expand }">
-        <tr>
-          <td>
-            <v-checkbox />
-          </td>
-          <td>
-            <router-link :to="{ name: 'DomainDetail', params: { pk: item.pk } }">
-              {{ item.name }}
-            </router-link>
-          </td>
-          <td>
-            {{ item.domainalias_count }} aliases
-            <v-btn v-if="item.domainalias_count"
-                   icon
-                   @click="expand(!isExpanded)"
-                   >
-              <v-icon v-if="!isExpanded">mdi-chevron-down</v-icon>
-              <v-icon v-else>mdi-chevron-up</v-icon>
-            </v-btn>
-          </td>
-          <td>
-            <v-chip :color="getDNSTagType(item.dns_global_status)"
-                    small>
-              {{ getDNSLabel(item.dns_global_status) }}
-            </v-chip>
-          </td>
-          <td>
-            <v-progress-linear v-model="item.allocated_quota_in_percent" />
-          </td>
-          <td>
-            <v-progress-linear v-model="item.allocated_quota_in_percent" />
-          </td>
-          <td>
-            <div class="text-right">
-              <v-menu offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn icon v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-horizontal</v-icon>
-                  </v-btn>
-                </template>
-                <v-list dense>
-                  <v-list-item :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
-                    <v-list-item-icon>
-                      <v-icon>mdi-circle-edit-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title><translate>Edit</translate></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item @click="deleteDomain(item)" color="red">
-                    <v-list-item-icon>
-                      <v-icon color="red">mdi-delete-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title><translate>Delete</translate></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </div>
-          </td>
-        </tr>
-      </template>
-      <template v-slot:expanded-item="{ headers, item }">
-        <tr>
-          <td :colspan="headers.length">
-            <v-chip v-for="alias in aliases[item.name]"
-                    :key="alias.name"
-                    class="mr-2"
-                    pill
-                    title="DNS OK"
-                    >
-              <v-icon left color="success">mdi-server-network</v-icon>
-              {{ alias.name }}
-              <v-btn class="ml-4" x-small icon><v-icon>mdi-circle-edit-outline</v-icon></v-btn>
-              <v-btn x-small icon color="error"><v-icon>mdi-delete-outline</v-icon></v-btn>
-            </v-chip>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
+        </td>
+        <td>
+          <v-chip :color="getDNSTagType(item.dns_global_status)"
+                  @click="openDNSDetail(item)"
+                  small>
+            {{ getDNSLabel(item.dns_global_status) }}
+          </v-chip>
+        </td>
+        <td>
+          <v-progress-linear v-model="item.allocated_quota_in_percent" />
+        </td>
+        <td>
+          <v-progress-linear v-model="item.allocated_quota_in_percent" />
+        </td>
+        <td>
+          <div class="text-right">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon v-bind="attrs" v-on="on">
+                  <v-icon>mdi-dots-horizontal</v-icon>
+                </v-btn>
+              </template>
+              <v-list dense>
+                <v-list-item :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
+                  <v-list-item-icon>
+                    <v-icon>mdi-circle-edit-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title><translate>Edit</translate></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="deleteDomain(item)" color="red">
+                  <v-list-item-icon>
+                    <v-icon color="red">mdi-delete-outline</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title><translate>Delete</translate></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+        </td>
+      </tr>
+    </template>
+    <template v-slot:expanded-item="{ headers, item }">
+      <tr class="grey lighten-4">
+        <td :colspan="headers.length">
+          <span v-for="alias in aliases[item.name]"
+               :key="alias.name"
+               class="mr-4"
+               >
+            <a href="#" class="mr-2">{{ alias.name }}</a>
+            <v-chip x-small color="success">DNS OK</v-chip>
+          </span>
+        </td>
+      </tr>
+    </template>
+  </v-data-table>
   <confirm-dialog ref="confirm" />
+  <v-dialog v-model="showDNSdetail"
+            persistent
+            max-width="800px">
+    <dns-detail @close="showDNSdetail = false" :domain="selectedDomain" />
+  </v-dialog>
 </v-card>
 </template>
 
@@ -122,10 +124,12 @@
 import { mapGetters } from 'vuex'
 import domainApi from '@/api/domains'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
+import DNSDetail from '@/components/domains/DNSDetail'
 
 export default {
   components: {
-    ConfirmDialog
+    ConfirmDialog,
+    'dns-detail': DNSDetail
   },
   computed: mapGetters({
     domains: 'domains/domains'
@@ -142,6 +146,7 @@ export default {
       ],
       selectedDomain: null,
       showConfirmDialog: false,
+      showDNSdetail: false,
       search: '',
       selected: [],
       expanded: [],
@@ -204,6 +209,10 @@ export default {
       domainApi.getDomainAliases(item.name).then(resp => {
         this.$set(this.aliases, item.name, resp.data)
       })
+    },
+    openDNSDetail (domain) {
+      this.selectedDomain = domain
+      this.showDNSdetail = true
     },
     showAliases (item) {
       this.expanded = [{ item }]

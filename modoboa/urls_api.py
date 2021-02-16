@@ -20,6 +20,7 @@ urlpatterns = [
     path('', include("modoboa.parameters.urls_api")),
     path('', include("modoboa.limits.urls_api")),
     path('', include("modoboa.relaydomains.urls_api")),
+    path('', include("modoboa.dnstools.urls_api")),
 ]
 
 urlpatterns += exts_pool.get_urls(category="api")
