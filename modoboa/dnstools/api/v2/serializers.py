@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from modoboa.admin import models as admin_models
 
-from . import models
+from ... import models
 
 
 class MXRecordSerializer(serializers.ModelSerializer):

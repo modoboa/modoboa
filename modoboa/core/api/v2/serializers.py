@@ -1,4 +1,4 @@
-"""Core API serializers."""
+"""Core API v2 serializers."""
 
 from django.utils import formats
 from django.utils.translation import ugettext_lazy, ugettext as _
@@ -9,8 +9,8 @@ from rest_framework import serializers
 
 from modoboa.lib import fields as lib_fields
 
-from . import constants
-from . import models
+from ... import constants
+from ... import models
 
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
@@ -140,21 +140,3 @@ class LogSerializer(serializers.ModelSerializer):
 
     def get_date_created(self, log) -> str:
         return formats.date_format(log.date_created, "SHORT_DATETIME_FORMAT")
-
-
-class CheckTFASetupSerializer(serializers.Serializer):
-    """Serializer used to finalize 2FA setup."""
-
-    pin_code = serializers.CharField()
-
-    def validate_pin_code(self, value):
-        device = self.context["user"].totpdevice_set.first()
-        if not device.verify_token(value):
-            raise serializers.ValidationError(_("Invalid PIN code"))
-        return value
-
-    def validate(self, data):
-        user = self.context["user"]
-        if user.tfa_enabled or user.staticdevice_set.exists():
-            raise serializers.ValidationError(_("2FA is already enabled"))
-        return data

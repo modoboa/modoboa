@@ -9,9 +9,6 @@ from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 from drf_spectacular.utils import extend_schema
 
-from modoboa.admin import serializers as admin_serializers
-
-from . import models
 from . import serializers
 
 
@@ -22,12 +19,6 @@ class AccountViewSet(viewsets.ViewSet):
     """
 
     permission_classes = (permissions.IsAuthenticated, )
-
-    @action(methods=["get"], detail=False)
-    def me(self, request):
-        """Return information about connected user."""
-        serializer = admin_serializers.AccountSerializer(request.user)
-        return response.Response(serializer.data)
 
     @action(methods=["post"], detail=False, url_path="tfa/setup")
     def tfa_setup(self, request):
@@ -84,14 +75,3 @@ class AccountViewSet(viewsets.ViewSet):
         return response.Response({
             "tokens": device.token_set.all().values_list("token", flat=True)
         })
-
-
-class LogViewSet(viewsets.ReadOnlyModelViewSet):
-    """Log viewset."""
-
-    permission_classes = (
-        permissions.IsAuthenticated,
-        permissions.DjangoModelPermissions,
-    )
-    queryset = models.Log.objects.all()
-    serializer_class = serializers.LogSerializer
