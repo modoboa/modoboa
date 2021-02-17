@@ -7,6 +7,9 @@ export default {
   getDomains () {
     return repository.get(`/${domainResource}/`)
   },
+  getDomain (domainId) {
+    return repository.get(`/${domainResource}/${domainId}/`)
+  },
   getDomainDNSDetail (domainId) {
     return repository.get(`/${domainResource}/${domainId}/dns_detail/`)
   },

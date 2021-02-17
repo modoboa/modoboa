@@ -104,7 +104,7 @@
                :key="alias.name"
                class="mr-4"
                >
-            <a href="#" class="mr-2">{{ alias.name }}</a>
+            <a href="#" class="mr-2" @click="editDomainAlias(item, alias)">{{ alias.name }}</a>
             <v-chip x-small color="success">DNS OK</v-chip>
           </span>
         </td>
@@ -117,6 +117,15 @@
             max-width="800px">
     <dns-detail @close="showDNSdetail = false" :domain="selectedDomain" />
   </v-dialog>
+  <v-dialog v-model="showAliasForm"
+            persistent
+            max-width="800px">
+    <domain-alias-form
+      @close="closeDomainAliasForm"
+      :domain-alias="selectedDomainAlias"
+      @alias-deleted="domainAliasDeleted"
+      />
+  </v-dialog>
 </v-card>
 </template>
 
@@ -125,11 +134,13 @@ import { mapGetters } from 'vuex'
 import domainApi from '@/api/domains'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import DNSDetail from '@/components/domains/DNSDetail'
+import DomainAliasForm from '@/components/domains/DomainAliasForm'
 
 export default {
   components: {
     ConfirmDialog,
-    'dns-detail': DNSDetail
+    'dns-detail': DNSDetail,
+    DomainAliasForm
   },
   computed: mapGetters({
     domains: 'domains/domains'
@@ -145,7 +156,9 @@ export default {
         { text: this.$gettext('Actions'), value: 'actions', sortable: false, align: 'right' }
       ],
       selectedDomain: null,
+      selectedDomainAlias: null,
       showConfirmDialog: false,
+      showAliasForm: false,
       showDNSdetail: false,
       search: '',
       selected: [],
@@ -157,6 +170,11 @@ export default {
     this.$store.dispatch('domains/getDomains')
   },
   methods: {
+    closeDomainAliasForm () {
+      this.showAliasForm = false
+      this.selectedDomain = null
+      this.selectedDomainAlias = null
+    },
     confirmDelete (domain) {
       this.selectedDomain = domain
       this.showConfirmDialog = true
@@ -171,6 +189,18 @@ export default {
           agreeLabel: this.$gettext('Yes')
         }
       )
+    },
+    domainAliasDeleted () {
+      const newList = this.aliases[this.selectedDomain.name].filter(alias => {
+        return alias.pk !== this.selectedDomainAlias.pk
+      })
+      this.$set(this.aliases, this.selectedDomain.name, newList)
+      this.closeDomainAliasForm()
+    },
+    editDomainAlias (domain, alias) {
+      this.selectedDomain = domain
+      this.selectedDomainAlias = alias
+      this.showAliasForm = true
     },
     getDNSLabel (value) {
       if (value === 'disabled') {
