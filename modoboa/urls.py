@@ -75,8 +75,8 @@ urlpatterns += [
          name='docs-index-v2'),
     path('api/schema-v2/redoc/',
          SpectacularRedocView.as_view(url_name='schema-v2')),
-    path('api/v1/', include("modoboa.urls_api", namespace="v1")),
-    path('api/v2/', include("modoboa.urls_api", namespace="v2")),
+    path('api/v1/', include("modoboa.urls_api_v1", namespace="v1")),
+    path('api/v2/', include("modoboa.urls_api_v2", namespace="v2")),
 ]
 
 if settings.DEBUG:
