@@ -168,9 +168,11 @@ export default {
 .v-list-item {
   &--active {
     &::before {
-      background-color: #000;
-      opacity: 0.3;
+      opacity: 0;
     }
+    background-color: #034bad;
+    color: white;
+    opacity: 1;
   }
 }
 

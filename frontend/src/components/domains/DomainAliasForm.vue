@@ -41,11 +41,19 @@
   <v-card-actions>
     <v-spacer></v-spacer>
     <v-btn
-      color="gray darken-1"
+      color="grey darken-1"
       text
       @click="close"
       >
-      Close
+      <translate>Close</translate>
+    </v-btn>
+    <v-btn
+      v-if="domainAlias.pk"
+      color="error"
+      text
+      @click="deleteAlias"
+      >
+      <translate>Delete</translate>
     </v-btn>
     <v-btn
       color="primary darken-1"
@@ -61,6 +69,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { bus } from '@/main'
+import domains from '@/api/domains'
 
 export default {
   props: {
@@ -71,10 +80,10 @@ export default {
       domains: 'domains/domains'
     }),
     submitLabel () {
-      return (this.domainAlias) ? 'Update' : 'Add'
+      return (this.domainAlias) ? this.$gettext('Update') : this.$gettext('Add')
     },
     title () {
-      return (this.domainAlias) ? 'Edit domain alias' : 'Add a new domain alias'
+      return (this.domainAlias) ? this.$gettext('Edit domain alias') : this.$gettext('Add a new domain alias')
     }
   },
   data () {
@@ -88,6 +97,12 @@ export default {
     close () {
       this.$emit('close')
       this.form = {}
+    },
+    deleteAlias () {
+      domains.deleteDomainAlias(this.domainAlias.pk).then(resp => {
+        this.$emit('alias-deleted')
+        bus.$emit('notification', { msg: this.$gettext('Domain alias deleted') })
+      })
     },
     async submit () {
       const valid = await this.$refs.observer.validate()
