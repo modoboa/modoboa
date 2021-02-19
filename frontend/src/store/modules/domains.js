@@ -5,6 +5,7 @@ import domainApi from '@/api/domains'
 const SET_DOMAINS = 'SET_DOMAINS'
 const ADD_DOMAIN = 'ADD_DOMAIN'
 const UPDATE_DOMAIN = 'UPDATE_DOMAIN'
+const DELETE_DOMAIN = 'DELETE_DOMAIN'
 const SET_DOMAIN_ALIASES = 'SET_DOMAIN_ALIASES'
 const ADD_DOMAIN_ALIAS = 'ADD_DOMAIN_ALIAS'
 const UPDATE_DOMAIN_ALIAS = 'UPDATE_DOMAIN_ALIAS'
@@ -48,6 +49,11 @@ const actions = {
       commit(UPDATE_DOMAIN, { domain: response.data })
     })
   },
+  deleteDomain ({ commit }, { id, data }) {
+    return domainApi.deleteDomain(id, data).then(resp => {
+      commit(DELETE_DOMAIN, id)
+    })
+  },
   getDomainAliases ({ commit }) {
     return Vue.prototype.$axios.get('/domainaliases/?expand=target').then(response => {
       commit(SET_DOMAIN_ALIASES, response.data)
@@ -85,6 +91,9 @@ const mutations = {
         Vue.set(state.domains, pos, domain)
       }
     })
+  },
+  [DELETE_DOMAIN] (state, domainId) {
+    state.domains = state.domains.filter(item => item.pk !== domainId)
   },
   [SET_DOMAIN_ALIASES] (state, domainAliases) {
     state.domainAliases = domainAliases

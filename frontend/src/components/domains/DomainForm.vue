@@ -3,68 +3,122 @@
     <v-flex>
       <v-card>
         <v-card-title>
-          <h1 class="title" v-if="!domain.pk">Add domain</h1>
-          <h1 class="title" v-else>Edit domain</h1>
+          <h1 class="headline"><translate>Edit domain</translate></h1>
         </v-card-title>
         <v-card-text>
-          <v-text-field label="Name"
-                        v-model="domain.name"
-                        :error="formErrors['name'] !== undefined"
-                        :error-messages="formErrors['name']"
-          >
-          </v-text-field>
-          <v-select label="Type" :items="domainTypes" />
-          <v-text-field label="Quota"
-                        v-model="domain.quota"
-                        suffix="MB"
-                        :error="formErrors['quota'] !== undefined"
-                        :error-messages="formErrors['quota']"
-          >
-          </v-text-field>
-          <v-text-field label="Default mailbox quota"
-                        v-model="domain.default_mailbox_quota"
-                        suffix="MB"
-                        :error="formErrors['default_mailbox_quota']"
-                        :error-messages="formErrors['default_mailbox_quota']"
-          >
-          </v-text-field>
-          <v-text-field label="Message sending limit"
-                        v-model="domain.message_limit"
-                        suffix="per day"
-                        :error="formErrors['message_limit']"
-                        :error-messages="formErrors['message_limit']"
-          >
-          </v-text-field>
-          <v-checkbox label="Enabled"
-                      v-model="domain.enabled"
-          >
-          </v-checkbox>
-          <v-checkbox label="Enable DNS checks"
-                      v-model="domain.enable_dns_checks"
-          >
-          </v-checkbox>
-          <v-checkbox label="Enable DKIM signing"
-                      v-model="domain.enable_dkim"
-          >
-          </v-checkbox>
-          <v-text-field label="DKIM key selector"
-                        v-model="domain.dkim_key_selector"
-                        v-if="domain.enable_dkim"
-          >
-          </v-text-field>
-          <v-text-field label="DKIM key length"
-                        v-model="domain.dkim_key_length"
-                        v-if="domain.enable_dkim"
-          >
-          </v-text-field>
+          <v-expansion-panels v-model="panel">
+            <v-expansion-panel>
+              <v-expansion-panel-header v-slot="{ open }">
+                <v-row no-gutters>
+                  <v-col cols="4">
+                    <translate>General</translate>
+                  </v-col>
+                  <v-col
+                    cols="8"
+                    class="text--secondary"
+                    >
+                    <v-fade-transition leave-absolute>
+                      <span v-if="open"></span>
+                      <v-row
+                        v-else
+                        no-gutters
+                        style="width: 100%"
+                        >
+                        <v-col cols="6">
+                          <translate>Name: </translate> {{ editedDomain.name }}
+                        </v-col>
+                        <v-col cols="6">
+                          <translate>Type: </translate> {{ editedDomain.type }}
+                        </v-col>
+                      </v-row>
+                    </v-fade-transition>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <domain-general-form ref="generalForm" :domain="editedDomain" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header v-slot="{ open }">
+                <v-row no-gutters>
+                  <v-col cols="4">
+                    <translate>DNS</translate>
+                  </v-col>
+                  <v-col
+                    cols="8"
+                    class="text--secondary"
+                    >
+                    <v-fade-transition leave-absolute>
+                      <span v-if="open"></span>
+                      <v-row
+                        v-else
+                        no-gutters
+                        style="width: 100%"
+                        >
+                        <v-col cols="6">
+                          <translate class="mr-2">DNS checks</translate>
+                          <v-icon color="success" v-if="editedDomain.enable_dns_checks">mdi-check-circle-outline</v-icon>
+                          <v-icon v-else>mdi-close-circle-outline</v-icon>
+                        </v-col>
+                        <v-col cols="6">
+                          <translate class="mr-2">DKIM signing</translate>
+                          <v-icon color="success" v-if="editedDomain.enable_dkim">mdi-check-circle-outline</v-icon>
+                          <v-icon v-else>mdi-close-circle-outline</v-icon>
+                        </v-col>
+                      </v-row>
+                    </v-fade-transition>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <domain-dns-form ref="dnsForm" :domain="editedDomain" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header v-slot="{ open }">
+                <v-row no-gutters>
+                  <v-col cols="4">
+                    <translate>Limitations</translate>
+                  </v-col>
+                  <v-col
+                    cols="8"
+                    class="text--secondary"
+                    >
+                    <v-fade-transition leave-absolute>
+                      <span v-if="open"></span>
+                      <v-row
+                        v-else
+                        no-gutters
+                        style="width: 100%"
+                        >
+                        <v-col cols="6">
+                          <translate class="mr-2">Quota: </translate> {{ domain.quota }}
+                        </v-col>
+                        <v-col cols="6" v-if="domain.message_sending_limit">
+                          <translate class="mr-2">Sending limit: </translate> {{ domain.message_sending_limit }}
+                        </v-col>
+                        <v-col cols="6" v-else>
+                          <translate class="mr-2">No sending limit</translate>
+                        </v-col>
+                      </v-row>
+                    </v-fade-transition>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <domain-limitations-form :domain="editedDomain" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="cancel">
-            Cancel
+          <v-btn color="grey darken-1" text @click="close">
+            <translate>Cancel</translate>
           </v-btn>
-          <v-btn color="blue darken-1" text @click="save">
-            Save
+          <v-btn color="primary darken-1" text @click="save">
+            <translate>Save</translate>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -73,63 +127,51 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { bus } from '@/main'
+import DomainDNSForm from './DomainDNSForm'
+import DomainGeneralForm from './DomainGeneralForm'
+import DomainLimitationsForm from './DomainLimitationsForm'
 
 export default {
+  components: {
+    'domain-dns-form': DomainDNSForm,
+    DomainGeneralForm,
+    DomainLimitationsForm
+  },
+  props: ['domain'],
   data () {
     return {
-      formErrors: {},
-      domain: {},
-      domainTypes: ['Domain', 'Relay domain']
-    }
-  },
-  computed: {
-    ...mapGetters({
-      getDomainByPk: 'domains/getDomainByPk'
-    })
-  },
-  mounted () {
-    var domainPk = this.$route.params.domainPk
-    if (domainPk) {
-      if (!this.$store.state.domainsLoaded) {
-        this.$store.dispatch('domains/getDomains').then(response => {
-          this.loadDomain(domainPk)
-        })
-      } else {
-        this.loadDomain(domainPk)
-      }
+      editedDomain: {},
+      panel: 0
     }
   },
   methods: {
-    loadDomain (pk) {
-      this.domain = JSON.parse(
-        JSON.stringify(this.getDomainByPk(pk))
-      )
+    close () {
+      this.$emit('close')
+      this.editedDomain = {}
+      this.panel = 0
     },
-    onSaveError (response) {
-      this.formErrors = response.data
-    },
-    save () {
-      var action
-      var msg
-      if (this.domain.pk) {
-        action = 'domains/updateDomain'
-        msg = 'Domain updated.'
-      } else {
-        action = 'domains/createDomain'
-        msg = 'Domain created.'
+    async save () {
+      if (this.$refs.generalForm !== undefined) {
+        const valid = await this.$refs.generalForm.$refs.observer.validate()
+        if (!valid) {
+          return
+        }
       }
-      this.$store.dispatch(action, this.domain).then(response => {
-        this.$router.push({ name: 'DomainList' })
-        this.$toast.open({
-          message: msg,
-          type: 'is-success',
-          position: 'is-bottom'
-        })
-      }, this.onSaveError)
-    },
-    cancel () {
-      this.$router.push({ name: 'DomainList' })
+      this.$store.dispatch('domains/updateDomain', this.editedDomain).then(resp => {
+        this.close()
+        bus.$emit('notification', { msg: this.$gettext('Domain updated') })
+      })
+    }
+  },
+  watch: {
+    domain: {
+      handler: function (val) {
+        if (val) {
+          this.editedDomain = JSON.parse(JSON.stringify(val))
+        }
+      },
+      immediate: true
     }
   }
 }

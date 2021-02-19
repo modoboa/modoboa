@@ -48,7 +48,7 @@
       <translate>Close</translate>
     </v-btn>
     <v-btn
-      v-if="domainAlias.pk"
+      v-if="domainAlias && domainAlias.pk"
       color="error"
       text
       @click="deleteAlias"
@@ -73,7 +73,10 @@ import domains from '@/api/domains'
 
 export default {
   props: {
-    domainAlias: Object
+    domainAlias: {
+      type: Object,
+      default: () => null
+    }
   },
   computed: {
     ...mapGetters({
@@ -96,7 +99,9 @@ export default {
   methods: {
     close () {
       this.$emit('close')
-      this.form = {}
+      this.form = {
+        enabled: true
+      }
     },
     deleteAlias () {
       domains.deleteDomainAlias(this.domainAlias.pk).then(resp => {

@@ -26,6 +26,9 @@ export default {
   updateDomain (domainId, data) {
     return repository.put(`/${domainResource}/${domainId}/`, data)
   },
+  deleteDomain (domainId, data) {
+    return repository.post(`/${domainResource}/${domainId}/delete/`, data)
+  },
   createDomainAlias (data) {
     return repository.post(`/${domainAliasResource}/`, data)
   },

@@ -17,7 +17,8 @@ from modoboa.core import sms_backends
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
 
-from . import lib, models, serializers
+from ... import lib, models
+from . import serializers
 
 
 @extend_schema_view(
@@ -38,15 +39,11 @@ class DomainViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    serializer_class = serializers.DomainSerializer
 
     def get_queryset(self):
         """Filter queryset based on current user."""
         return models.Domain.objects.get_for_admin(self.request.user)
-
-    def get_serializer_class(self, *args, **kwargs):
-        if self.request.version == "v2" and self.action == "create":
-            return serializers.DomainSerializerV2
-        return serializers.DomainSerializer
 
     def perform_destroy(self, instance):
         """Add custom args to delete call."""
