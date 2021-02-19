@@ -16,7 +16,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(),
          name='token_refresh'),
     path('', include("modoboa.core.api.v2.urls")),
-    path('', include("modoboa.admin.urls_api")),
+    path('', include("modoboa.admin.api.v2.urls")),
     path('', include("modoboa.parameters.api.v2.urls")),
     path('', include("modoboa.limits.urls_api")),
     path('', include("modoboa.relaydomains.urls_api")),

@@ -75,7 +75,7 @@
                 </v-btn>
               </template>
               <v-list dense>
-                <v-list-item :to="{ name: 'DomainEdit', params: { domainPk: item.pk }}">
+                <v-list-item @click="editDomain(item)">
                   <v-list-item-icon>
                     <v-icon>mdi-circle-edit-outline</v-icon>
                   </v-list-item-icon>
@@ -117,6 +117,12 @@
             max-width="800px">
     <dns-detail @close="showDNSdetail = false" :domain="selectedDomain" />
   </v-dialog>
+  <v-dialog v-model="showDomainForm"
+            persistent
+            max-width="800px"
+            >
+    <domain-form :domain="selectedDomain" @close="showDomainForm = false" />
+  </v-dialog>
   <v-dialog v-model="showAliasForm"
             persistent
             max-width="800px">
@@ -131,16 +137,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { bus } from '@/main'
 import domainApi from '@/api/domains'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import DNSDetail from '@/components/domains/DNSDetail'
 import DomainAliasForm from '@/components/domains/DomainAliasForm'
+import DomainForm from '@/components/domains/DomainForm'
 
 export default {
   components: {
     ConfirmDialog,
     'dns-detail': DNSDetail,
-    DomainAliasForm
+    DomainAliasForm,
+    DomainForm
   },
   computed: mapGetters({
     domains: 'domains/domains'
@@ -160,6 +169,7 @@ export default {
       showConfirmDialog: false,
       showAliasForm: false,
       showDNSdetail: false,
+      showDomainForm: false,
       search: '',
       selected: [],
       expanded: [],
@@ -175,12 +185,8 @@ export default {
       this.selectedDomain = null
       this.selectedDomainAlias = null
     },
-    confirmDelete (domain) {
-      this.selectedDomain = domain
-      this.showConfirmDialog = true
-    },
     async deleteDomain (domain) {
-      await this.$refs.confirm.open(
+      const confirm = await this.$refs.confirm.open(
         this.$gettext('Warning'),
         this.$gettext(`Do you really want to delete the domain ${domain.name}?`),
         {
@@ -189,6 +195,12 @@ export default {
           agreeLabel: this.$gettext('Yes')
         }
       )
+      if (!confirm) {
+        return
+      }
+      this.$store.dispatch('domains/deleteDomain', { id: domain.pk }).then(resp => {
+        bus.$emit('notification', { msg: this.$gettext('Domain delete') })
+      })
     },
     domainAliasDeleted () {
       const newList = this.aliases[this.selectedDomain.name].filter(alias => {
@@ -196,6 +208,10 @@ export default {
       })
       this.$set(this.aliases, this.selectedDomain.name, newList)
       this.closeDomainAliasForm()
+    },
+    editDomain (domain) {
+      this.selectedDomain = domain
+      this.showDomainForm = true
     },
     editDomainAlias (domain, alias) {
       this.selectedDomain = domain

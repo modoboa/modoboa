@@ -31,35 +31,7 @@
           <translate class="grey--text text--darken-1">New domain</translate> /
           <translate>General</translate>
         </div>
-        <validation-observer ref="observer_1">
-          <validation-provider
-            v-slot="{ errors }"
-            rules="required"
-            >
-            <v-text-field
-              :label="'Domain name (ex: domain.tld)' | translate"
-              v-model="domain.name"
-              :error-messages="errors"
-              outlined
-              />
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            rules="required"
-            >
-            <choice-field v-model="domain.type"
-                          :label="'Type' | translate"
-                          :choices="domainTypes"
-                          :error-messages="errors"
-                          />
-          </validation-provider>
-          <v-switch
-            :label="'Enabled' | translate"
-            v-model="domain.enabled"
-            :hint="'Control if this domain will be allowed to send and receive messages' | translate"
-            persistent-hint
-            />
-        </validation-observer>
+        <domain-general-form ref="form_1" :domain="domain" />
         <div class="d-flex justify-end">
           <v-btn
             color="primary"
@@ -75,26 +47,7 @@
           <translate class="grey--text text--darken-1">New domain</translate> /
           <translate>DNS</translate>
         </div>
-        <v-switch
-          :label="'Enable DNS checks' | translate"
-          v-model="domain.enable_dns_checks"
-          />
-        <v-switch
-          :label="'Enable DKIM signing' | translate"
-          v-model="domain.enable_dkim"
-          />
-        <v-text-field
-          :label="'DKIM key selector' | translate"
-          v-model="domain.dkim_key_selector"
-          :disabled="!domain.enable_dkim"
-          outlined
-          />
-        <choice-field
-          v-model="domain.dkim_key_length"
-          :label="'DKIM key length' | translate"
-          :choices="dkimKeyLengths"
-          :disabled="!domain.enable_dkim"
-          />
+        <domain-dns-form ref="form_2" :domain="domain" />
         <div class="d-flex justify-end mt-8">
           <v-btn @click="step = 1" class="mr-10" text>
             <translate>Back</translate>
@@ -113,49 +66,7 @@
           <translate class="grey--text text--darken-1">New domain</translate> /
           <translate>Limitations</translate>
         </div>
-        <validation-observer ref="observer_3">
-          <validation-provider
-            v-slot="{ errors }"
-            rules="required"
-            >
-            <v-text-field
-              :label="'Quota' | translate"
-              :hint="'Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
-              persistent-hint
-              v-model="domain.quota"
-              :error-messages="errors"
-              class="mb-4"
-              outlined
-              />
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            rules="required"
-            >
-            <v-text-field
-              :label="'Default mailbox quota' | translate"
-              :hint="'Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
-              persistent-hint
-              v-model="domain.default_mailbox_quota"
-              :error-messages="errors"
-              class="mb-4"
-              outlined
-              />
-          </validation-provider>
-          <validation-provider
-            v-slot="{ errors }"
-            rules="numeric"
-            >
-            <v-text-field
-              :label="'Message sending limit' | translate"
-              :hint="'Number of messages this domain can send per day. Leave empty for no limit.' | translate"
-              persistent-hint
-              v-model="domain.message_sending_limit"
-              :error-messages="errors"
-              outlined
-              />
-          </validation-provider>
-        </validation-observer>
+        <domain-limitations-form ref="form_3" :domain="domain" />
         <div class="d-flex justify-end mt-8">
           <v-btn @click="step = 2" class="mr-10" text>
             <translate>Back</translate>
@@ -174,45 +85,7 @@
           <translate class="grey--text text--darken-1">New domain</translate> /
           <translate>Options</translate>
         </div>
-        <validation-observer ref="observer_4">
-          <v-switch v-model="createAdmin"
-                    :label="'Create a domain administrator' | translate"
-                    />
-          <validation-provider
-            v-slot="{ errors }"
-            :rules="(createAdmin) ? 'required' : ''"
-            >
-            <v-text-field
-              :label="'Name' | translate"
-              :hint="'Name of the administrator' | translate"
-              persistent-hint
-              v-model="domain.domain_admin.username"
-              :error-messages="errors"
-              outlined
-              :disabled="!createAdmin"
-              :suffix="`@${domain.name}`"
-              />
-          </validation-provider>
-          <v-switch v-model="domain.domain_admin.with_random_password"
-                    :label="'Random password' | translate"
-                    :disabled="!createAdmin"
-                    :hint="'Generate a random password for the administrator.' | translate"
-                    persistent-hint
-                    />
-          <v-switch v-model="domain.domain_admin.with_mailbox"
-                    :label="'With a mailbox' | translate"
-                    :disabled="!createAdmin"
-                    :hint="'Create a mailbox for the administrator.' | translate"
-                    persistent-hint
-                    />
-          <v-switch v-model="domain.domain_admin.with_aliases"
-                    :label="'Create aliases' | translate"
-                    :disabled="!createAdmin"
-                    :hint="'Create standard aliases for the domain.' | translate"
-                    persistent-hint
-                    />
-
-        </validation-observer>
+        <domain-options-form ref="form_4" :domain="domain" @createAdmin="updateCreateAdmin" />
         <div class="d-flex justify-end mt-8">
           <v-btn @click="step = 3" class="mr-10" text>
             <translate>Back</translate>
@@ -324,14 +197,20 @@
 
 <script>
 import { bus } from '@/main'
-import ChoiceField from '@/components/tools/ChoiceField'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
+import DomainDNSForm from './DomainDNSForm'
+import DomainGeneralForm from './DomainGeneralForm'
+import DomainLimitationsForm from './DomainLimitationsForm'
+import DomainOptionsForm from './DomainOptionsForm'
 
 export default {
   props: ['value'],
   components: {
-    ChoiceField,
-    ConfirmDialog
+    ConfirmDialog,
+    'domain-dns-form': DomainDNSForm,
+    DomainGeneralForm,
+    DomainLimitationsForm,
+    DomainOptionsForm
   },
   data () {
     return {
@@ -339,32 +218,6 @@ export default {
       domain: {
         domain_admin: {}
       },
-      domainTypes: [
-        {
-          label: 'Domain',
-          icon: 'mdi-earth',
-          value: 'domain'
-        },
-        {
-          label: 'Relay domain',
-          icon: 'mdi-earth',
-          value: 'relaydomain'
-        }
-      ],
-      dkimKeyLengths: [
-        {
-          label: '1024',
-          value: 1024
-        },
-        {
-          label: '2048',
-          value: 2048
-        },
-        {
-          label: '4096',
-          value: 4096
-        }
-      ],
       formErrors: {},
       step: 1
     }
@@ -412,11 +265,14 @@ export default {
       this.$refs.observer_4.reset()
     },
     async goToNextStep (current, next) {
-      const valid = await this.$refs[`observer_${current}`].validate()
+      const valid = await this.$refs[`form_${current}`].$refs.observer.validate()
       if (!valid) {
         return
       }
       this.step = next
+    },
+    updateCreateAdmin (value) {
+      this.createAdmin = value
     },
     submit () {
       const data = JSON.parse(JSON.stringify(this.domain))

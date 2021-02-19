@@ -385,7 +385,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
 def load_admin_settings():
     """Load admin settings."""
     from modoboa.parameters import tools as param_tools
-    from . import serializers
+    from .api.v2 import serializers
 
     param_tools.registry.add(
         "global", AdminParametersForm, ugettext_lazy("Administration"))
