@@ -10,7 +10,7 @@ router = routers.SimpleRouter()
 router.register(r"domains", viewsets.DomainViewSet, basename="domain")
 router.register(
     r"domainaliases", v1_viewsets.DomainAliasViewSet, basename="domain_alias")
-router.register(r"accounts", v1_viewsets.AccountViewSet, basename="account")
+router.register(r"accounts", viewsets.AccountViewSet, basename="account")
 router.register(r"aliases", v1_viewsets.AliasViewSet, basename="alias")
 router.register(
     r"senderaddresses", v1_viewsets.SenderAddressViewSet,

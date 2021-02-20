@@ -20,6 +20,15 @@ export default {
     }
     return repository.get(url)
   },
+  getDomainAdministrators (domainId) {
+    return repository.get(`/${domainResource}/${domainId}/administrators/`)
+  },
+  addDomainAdministrator (domainId, accountId) {
+    return repository.post(`/${domainResource}/${domainId}/administrators/add/`, { account: accountId })
+  },
+  removeDomainAdministrator (domainId, accountId) {
+    return repository.post(`/${domainResource}/${domainId}/administrators/remove/`, { account: accountId })
+  },
   createDomain (data) {
     return repository.post(`/${domainResource}/`, data)
   },

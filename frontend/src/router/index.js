@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 
 import store from '@/store'
 
-import DomainForm from '@/components/domains/DomainForm'
 import ParametersForm from '@/components/parameters/ParametersForm'
 import LogList from '@/components/logs/LogList'
 
@@ -22,22 +21,6 @@ const routes = [
     path: '/domains/',
     name: 'DomainList',
     component: () => import('../views/Domains.vue'),
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/domains/add/',
-    name: 'DomainAdd',
-    component: DomainForm,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/domains/:domainPk([0-9]+)/',
-    name: 'DomainEdit',
-    component: DomainForm,
     meta: {
       requiresAuth: true
     }

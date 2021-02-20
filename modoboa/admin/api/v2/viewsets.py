@@ -2,12 +2,20 @@
 
 from django.utils.translation import ugettext as _
 
+from django.contrib.contenttypes.models import ContentType
+
+from django_filters import rest_framework as dj_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import mixins, permissions, response, status, viewsets
+from rest_framework import (
+    filters, mixins, permissions, response, status, viewsets
+)
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
-from modoboa.admin.api.v1 import serializers as v1_serializers
+from modoboa.admin.api.v1 import (
+    serializers as v1_serializers, viewsets as v1_viewsets
+)
+from modoboa.core import models as core_models
 from modoboa.lib import viewsets as lib_viewsets
 
 from ... import models
@@ -30,7 +38,7 @@ from . import serializers
     delete=extend_schema(
         description="Delete a particular domain",
         summary="Delete a particular domain"
-    )
+    ),
 )
 class DomainViewSet(lib_viewsets.RevisionModelMixin,
                     mixins.ListModelMixin,
@@ -53,6 +61,10 @@ class DomainViewSet(lib_viewsets.RevisionModelMixin,
             return serializers.DomainSerializer
         if self.action == "delete":
             return serializers.DeleteDomainSerializer
+        if self.action == "administrators":
+            return serializers.DomainAdminSerializer
+        if self.action in ["add_administrator", "remove_administrator"]:
+            return serializers.SimpleDomainAdminSerializer
         return v1_serializers.DomainSerializer
 
     @action(methods=["post"], detail=True)
@@ -68,3 +80,67 @@ class DomainViewSet(lib_viewsets.RevisionModelMixin,
         serializer.is_valid(raise_exception=True)
         domain.delete(request.user, serializer.validated_data["keep_folder"])
         return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["get"], detail=True)
+    def administrators(self, request, **kwargs):
+        """Retrieve all administrators of a domain."""
+        domain = self.get_object()
+        serializer = self.get_serializer(domain.admins, many=True)
+        return response.Response(serializer.data)
+
+    @action(methods=["post"], detail=True, url_path="administrators/add")
+    def add_administrator(self, request, **kwargs):
+        """Add an administrator to a domain."""
+        domain = self.get_object()
+        context = self.get_serializer_context()
+        context["domain"] = domain
+        serializer = self.get_serializer(data=request.data, context=context)
+        serializer.is_valid(raise_exception=True)
+        domain.add_admin(serializer.validated_data["account"])
+        return response.Response()
+
+    @action(methods=["post"], detail=True, url_path="administrators/remove")
+    def remove_administrator(self, request, **kwargs):
+        """Remove an administrator from a domain."""
+        domain = self.get_object()
+        context = self.get_serializer_context()
+        context["domain"] = domain
+        serializer = self.get_serializer(data=request.data, context=context)
+        serializer.is_valid(raise_exception=True)
+        domain.remove_admin(serializer.validated_data["account"])
+        return response.Response()
+
+
+class AccountFilterSet(dj_filters.FilterSet):
+    """Custom FilterSet for Account."""
+
+    domain = dj_filters.ModelChoiceFilter(
+        queryset=lambda request: models.Domain.objects.get_for_admin(
+            request.user),
+        field_name="mailbox__domain"
+    )
+    role = dj_filters.CharFilter(method="filter_role")
+
+    class Meta:
+        model = core_models.User
+        fields = ["domain", "role"]
+
+    def filter_role(self, queryset, name, value):
+        return queryset.filter(groups__name=value)
+
+
+class AccountViewSet(v1_viewsets.AccountViewSet):
+    """ViewSet for User/Mailbox."""
+
+    filter_backends = (filters.SearchFilter, dj_filters.DjangoFilterBackend)
+    filterset_class = AccountFilterSet
+
+    def get_queryset(self):
+        """Filter queryset based on current user."""
+        user = self.request.user
+        ids = (
+            user.objectaccess_set
+            .filter(content_type=ContentType.objects.get_for_model(user))
+            .values_list("object_id", flat=True)
+        )
+        return core_models.User.objects.filter(pk__in=ids)

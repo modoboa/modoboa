@@ -116,3 +116,19 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     auto_account_removal = serializers.BooleanField(default=False)
     auto_create_domain_and_mailbox = serializers.BooleanField(default=True)
     create_alias_on_mbox_rename = serializers.BooleanField(default=False)
+
+
+class DomainAdminSerializer(serializers.ModelSerializer):
+    """Serializer used for administrator related routes."""
+
+    class Meta:
+        model = core_models.User
+        fields = ("id", "username", "first_name", "last_name")
+
+
+class SimpleDomainAdminSerializer(serializers.Serializer):
+    """Serializer used for add/remove operations."""
+
+    account = serializers.PrimaryKeyRelatedField(
+        queryset=core_models.User.objects.all()
+    )

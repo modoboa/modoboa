@@ -84,7 +84,7 @@ class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
 class AccountViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
-    filter_backends = [filters.SearchFilter]
+    filter_backends = (filters.SearchFilter, )
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     search_fields = ("^first_name", "^last_name", "^email")
 
