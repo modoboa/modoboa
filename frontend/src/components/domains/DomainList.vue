@@ -74,24 +74,7 @@
                   <v-icon>mdi-dots-horizontal</v-icon>
                 </v-btn>
               </template>
-              <v-list dense>
-                <v-list-item @click="editDomain(item)">
-                  <v-list-item-icon>
-                    <v-icon>mdi-circle-edit-outline</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title><translate>Edit</translate></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item @click="deleteDomain(item)" color="red">
-                  <v-list-item-icon>
-                    <v-icon color="red">mdi-delete-outline</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title><translate>Delete</translate></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
+              <menu-items :items="domainMenuItems" :object="item" />
             </v-menu>
           </div>
         </td>
@@ -132,6 +115,15 @@
       @alias-deleted="domainAliasDeleted"
       />
   </v-dialog>
+  <v-dialog v-model="showAdminList"
+            persistent
+            max-width="800px"
+            >
+    <administrator-list
+      :domain="selectedDomain"
+      @close="showAdminList = false"
+      />
+  </v-dialog>
 </v-card>
 </template>
 
@@ -139,23 +131,32 @@
 import { mapGetters } from 'vuex'
 import { bus } from '@/main'
 import domainApi from '@/api/domains'
+import AdministratorList from './AdministratorList'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import DNSDetail from '@/components/domains/DNSDetail'
 import DomainAliasForm from '@/components/domains/DomainAliasForm'
 import DomainForm from '@/components/domains/DomainForm'
+import MenuItems from '@/components/tools/MenuItems'
 
 export default {
   components: {
+    AdministratorList,
     ConfirmDialog,
     'dns-detail': DNSDetail,
     DomainAliasForm,
-    DomainForm
+    DomainForm,
+    MenuItems
   },
   computed: mapGetters({
     domains: 'domains/domains'
   }),
   data () {
     return {
+      domainMenuItems: [
+        { label: this.$gettext('Administrators'), icon: 'mdi-account-supervisor', onClick: this.openAdminList },
+        { label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editDomain },
+        { label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteDomain, color: 'red' }
+      ],
       headers: [
         { text: 'Name', value: 'name' },
         { text: 'Aliases', value: 'domainalias_count' },
@@ -166,6 +167,7 @@ export default {
       ],
       selectedDomain: null,
       selectedDomainAlias: null,
+      showAdminList: false,
       showConfirmDialog: false,
       showAliasForm: false,
       showDNSdetail: false,
@@ -259,6 +261,10 @@ export default {
     openDNSDetail (domain) {
       this.selectedDomain = domain
       this.showDNSdetail = true
+    },
+    openAdminList (domain) {
+      this.selectedDomain = domain
+      this.showAdminList = true
     },
     showAliases (item) {
       this.expanded = [{ item }]
