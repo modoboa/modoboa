@@ -43,16 +43,17 @@
         </v-btn>
       </template>
     </v-data-table>
+    <v-btn v-if="!hideAddBtn"
+           small
+           color="primary"
+           outlined
+           @click="addRow"
+           >
+      <v-icon small>mdi-plus</v-icon> <translate>Add administrator</translate>
+    </v-btn>
   </v-card-text>
   <v-card-actions>
     <v-spacer></v-spacer>
-    <v-btn
-      color="primary darken-1"
-      text
-      @click="addRow"
-      >
-      <translate>Add</translate>
-    </v-btn>
     <v-btn
       color="grey darken-1"
       text
@@ -80,15 +81,18 @@ export default {
         { text: this.$gettext('Name'), value: 'name' },
         { text: '', value: 'actions', align: 'right', sortable: false }
       ],
+      hideAddBtn: false,
       selectedAccount: null
     }
   },
   methods: {
     addRow () {
       this.administrators.push({})
+      this.hideAddBtn = true
     },
     close () {
       this.$emit('close')
+      this.hideAddBtn = false
     },
     fetchAdministrators (domain) {
       domains.getDomainAdministrators(domain.pk).then(resp => {
@@ -107,6 +111,7 @@ export default {
         this.fetchAdministrators(this.domain)
         this.accounts = this.accounts.filter(account => account.pk !== this.selectedAccount.pk)
         this.selectedAccount = null
+        this.hideAddBtn = false
         bus.$emit('notification', { msg: this.$gettext('Administrator added') })
       })
     },
