@@ -26,8 +26,7 @@ def render_form(form, tpl=None):
 
 def configure_field_classes(field):
     """Add required CSS classes to field."""
-    if isinstance(field.field.widget, forms.CheckboxInput) or \
-       isinstance(field.field.widget, forms.RadioSelect):
+    if isinstance(field.field.widget, (forms.CheckboxInput, forms.RadioSelect)):
         return
     if "class" in field.field.widget.attrs:
         field.field.widget.attrs["class"] += " form-control"
