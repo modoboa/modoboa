@@ -56,7 +56,7 @@ class Graphic:
         """Constructor."""
         self._curves = []
         try:
-            order = getattr(self, "order")
+            order = self.order
         except AttributeError:
             for member in inspect.getmembers(self):
                 if isinstance(member[1], Curve):
