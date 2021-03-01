@@ -284,7 +284,7 @@ def domadmin_actions(daid, domid):
 @register.filter
 def gender(value, target):
     if value in genders:
-        trans = target == "m" and genders[value][0] or genders[value][1]
+        trans = genders[value][0] if target == "m" else genders[value][1]
         if trans.find("_") == -1:
             return trans
     return value
