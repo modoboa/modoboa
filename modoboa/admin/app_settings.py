@@ -334,13 +334,6 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     " renamed or removed within Modoboa"
                 )
             }),
-            ("mailboxes_owner", {
-                "label": ugettext_lazy("Mailboxes owner"),
-                "display": "handle_mailboxes=true",
-                "help_text": ugettext_lazy(
-                    "The UNIX account who owns mailboxes on the filesystem"
-                )
-            }),
             ("default_domain_quota", {
                 "label": ugettext_lazy("Default domain quota"),
                 "help_text": ugettext_lazy(

@@ -14,23 +14,23 @@
     </v-container>
   </v-main>
   <v-snackbar
-  v-model="snackbar"
-  :color="notificationColor"
-  :timeout="notificationTimeout"
-  top
-  >
-  {{ notification }}
+    v-model="snackbar"
+    :color="notificationColor"
+    :timeout="notificationTimeout"
+    top
+    >
+    {{ notification }}
 
-  <template v-slot:action="{ attrs }">
-    <v-btn
-      color="white"
-      text
-      v-bind="attrs"
-      @click="snackbar = false"
-      >
-      <translate>Close</translate>
-    </v-btn>
-  </template>
+    <template v-slot:action="{ attrs }">
+      <v-btn
+        color="white"
+        text
+        v-bind="attrs"
+        @click="snackbar = false"
+        >
+        <translate>Close</translate>
+      </v-btn>
+    </template>
   </v-snackbar>
 </v-app>
 </template>

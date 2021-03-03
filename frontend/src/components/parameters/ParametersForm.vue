@@ -15,24 +15,32 @@
           <v-card>
             <v-card-text>
               <template v-for="(param, index) in displayableParams(element.parameters)">
-                <v-checkbox :key="index"
-                            :label="param.label"
-                            v-model="parameters[param.name]"
-                            v-if="param.widget === 'BooleanField'"
-                            />
+                <v-switch :key="index"
+                          :label="param.label"
+                          v-model="parameters[param.name]"
+                          :hint="param.help_text"
+                          persistent-hint
+                          class="my-2"
+                          v-if="param.widget === 'BooleanField'"
+                          />
                 <v-select :key="index"
                           :label="param.label"
                           v-model="parameters[param.name]"
                           :items="param.choices"
+                          :hint="param.help_text"
+                          persistent-hint
+                          class="my-2"
                           v-else-if="param.widget === 'ChoiceField'"
                           />
                 <v-text-field
                   :key="index"
                   :label="param.label"
                   :hint="param.help_text"
+                  persistent-hint
                   v-model="parameters[param.name]"
                   :error="formErrors[param.name] !== undefined"
                   :error-messages="formErrors[param.name]"
+                  class="my-2"
                   v-else
                   />
               </template>
