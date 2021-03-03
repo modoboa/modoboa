@@ -26,6 +26,14 @@ const routes = [
     }
   },
   {
+    path: '/domains/:id',
+    name: 'DomainDetail',
+    component: () => import('../views/Domain.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/parameters/:app',
     name: 'ParametersEdit',
     component: ParametersForm,

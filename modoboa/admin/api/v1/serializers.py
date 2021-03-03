@@ -52,12 +52,13 @@ class DomainSerializer(serializers.ModelSerializer):
             "enable_dkim", "dkim_key_selector", "dkim_key_length",
             "dkim_public_key", "dkim_private_key_path",
             "mailbox_count", "mbalias_count", "domainalias_count",
-            "dns_global_status", "message_limit"
+            "dns_global_status", "message_limit", "creation",
+            "last_modification"
         )
         read_only_fields = (
             "pk", "dkim_public_key", "dns_global_status", "allocated_quota_in_percent"
             "mailbox_count", "mbalias_count", "domainalias_count",
-            "enable_dns_checks"
+            "enable_dns_checks", "creation", "last_modification"
         )
 
     def validate_name(self, value):

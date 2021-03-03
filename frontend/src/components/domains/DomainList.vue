@@ -39,9 +39,10 @@
           <v-checkbox />
         </td>
         <td>
-          <router-link :to="{ name: 'DomainDetail', params: { pk: item.pk } }">
+          <router-link :to="{ name: 'DomainDetail', params: { id: item.pk } }">
             {{ item.name }}
           </router-link>
+          <translate v-if="!item.enabled" class="ml-2 grey--text">(disabled)</translate>
         </td>
         <td>
           {{ item.domainalias_count }} aliases
@@ -54,11 +55,7 @@
           </v-btn>
         </td>
         <td>
-          <v-chip :color="getDNSTagType(item.dns_global_status)"
-                  @click="openDNSDetail(item)"
-                  small>
-            {{ getDNSLabel(item.dns_global_status) }}
-          </v-chip>
+          <dns-status-chip :status="item.dns_global_status" @click="openDNSDetail(item)" />
         </td>
         <td>
           <v-progress-linear v-model="item.allocated_quota_in_percent" />
@@ -94,7 +91,12 @@
       </tr>
     </template>
   </v-data-table>
-  <confirm-dialog ref="confirm" />
+  <confirm-dialog ref="confirm">
+    <v-checkbox v-model="keepDomainFolder"
+                :label="'Do not delete domain folder'|translate"
+                hide-details
+                />
+  </confirm-dialog>
   <v-dialog v-model="showDNSdetail"
             persistent
             max-width="800px">
@@ -134,6 +136,7 @@ import domainApi from '@/api/domains'
 import AdministratorList from './AdministratorList'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import DNSDetail from '@/components/domains/DNSDetail'
+import DNSStatusChip from './DNSStatusChip'
 import DomainAliasForm from '@/components/domains/DomainAliasForm'
 import DomainForm from '@/components/domains/DomainForm'
 import MenuItems from '@/components/tools/MenuItems'
@@ -143,6 +146,7 @@ export default {
     AdministratorList,
     ConfirmDialog,
     'dns-detail': DNSDetail,
+    'dns-status-chip': DNSStatusChip,
     DomainAliasForm,
     DomainForm,
     MenuItems
@@ -158,13 +162,14 @@ export default {
         { label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteDomain, color: 'red' }
       ],
       headers: [
-        { text: 'Name', value: 'name' },
-        { text: 'Aliases', value: 'domainalias_count' },
-        { text: 'DNS status', value: 'dns_global_status', sortable: false, align: 'center' },
-        { text: 'Sending limit', value: 'message_limit' },
-        { text: 'Quota', value: 'allocated_quota_in_percent' },
+        { text: this.$gettext('Name'), value: 'name' },
+        { text: this.$gettext('Aliases'), value: 'domainalias_count' },
+        { text: this.$gettext('DNS status'), value: 'dns_global_status', sortable: false, align: 'center' },
+        { text: this.$gettext('Sending limit'), value: 'message_limit' },
+        { text: this.$gettext('Quota'), value: 'allocated_quota_in_percent' },
         { text: this.$gettext('Actions'), value: 'actions', sortable: false, align: 'right' }
       ],
+      keepDomainFolder: false,
       selectedDomain: null,
       selectedDomainAlias: null,
       showAdminList: false,
@@ -200,8 +205,10 @@ export default {
       if (!confirm) {
         return
       }
-      this.$store.dispatch('domains/deleteDomain', { id: domain.pk }).then(resp => {
-        bus.$emit('notification', { msg: this.$gettext('Domain delete') })
+      const data = { keep_folder: this.keepDomainFolder }
+      this.$store.dispatch('domains/deleteDomain', { id: domain.pk, data }).then(resp => {
+        bus.$emit('notification', { msg: this.$gettext('Domain deleted') })
+        this.keepDomainFolder = false
       })
     },
     domainAliasDeleted () {
@@ -219,36 +226,6 @@ export default {
       this.selectedDomain = domain
       this.selectedDomainAlias = alias
       this.showAliasForm = true
-    },
-    getDNSLabel (value) {
-      if (value === 'disabled') {
-        return this.$gettext('Disabled')
-      }
-      if (value === 'pending') {
-        return this.$gettext('Pending')
-      }
-      if (value === 'critical') {
-        return this.$gettext('Problem')
-      }
-      if (value === 'ok') {
-        return this.$gettext('Valid')
-      }
-      return this.$gettext('Unknown')
-    },
-    getDNSTagType (value) {
-      if (value === 'disabled') {
-        return ''
-      }
-      if (value === 'pending') {
-        return 'info'
-      }
-      if (value === 'critical') {
-        return 'error'
-      }
-      if (value === 'ok') {
-        return 'success'
-      }
-      return 'warning'
     },
     loadAliases ({ item, value }) {
       if (!value) {
@@ -276,5 +253,8 @@ export default {
 <style scoped>
 .v-text-field--outlined >>> fieldset {
   border-color: #BFC5D2;
+}
+.v-input--checkbox >>> .v-label {
+  font-size: 0.875rem !important;
 }
 </style>

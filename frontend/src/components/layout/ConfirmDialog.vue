@@ -14,18 +14,20 @@
     <v-card-text
       v-show="!!message"
       class="pa-4"
-      v-html="message"
-      ></v-card-text>
+      >
+      {{ message }}
+      <slot></slot>
+    </v-card-text>
     <v-card-actions class="pt-3">
       <v-spacer></v-spacer>
       <v-btn
         v-if="!options.noconfirm"
-        :color="this.options.color"
         @click.native="cancel"
         >
         {{ options.cancelLabel }}
       </v-btn>
       <v-btn
+        :color="this.options.color"
         @click.native="agree">
         {{ options.agreeLabel }}
       </v-btn>
