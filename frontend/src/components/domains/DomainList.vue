@@ -55,7 +55,7 @@
           </v-btn>
         </td>
         <td>
-          <dns-status-chip :status="item.dns_global_status" @click="openDNSDetail(item)" />
+          <dns-status-chip :status="item.dns_global_status" />
         </td>
         <td>
           <v-progress-linear v-model="item.allocated_quota_in_percent" />
@@ -102,12 +102,6 @@
             max-width="800px">
     <dns-detail @close="showDNSdetail = false" :domain="selectedDomain" />
   </v-dialog>
-  <v-dialog v-model="showDomainForm"
-            persistent
-            max-width="800px"
-            >
-    <domain-form :domain="selectedDomain" @close="showDomainForm = false" />
-  </v-dialog>
   <v-dialog v-model="showAliasForm"
             persistent
             max-width="800px">
@@ -124,6 +118,7 @@
     <administrator-list
       :domain="selectedDomain"
       @close="showAdminList = false"
+      dialog-mode
       />
   </v-dialog>
 </v-card>
@@ -138,7 +133,6 @@ import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import DNSDetail from '@/components/domains/DNSDetail'
 import DNSStatusChip from './DNSStatusChip'
 import DomainAliasForm from '@/components/domains/DomainAliasForm'
-import DomainForm from '@/components/domains/DomainForm'
 import MenuItems from '@/components/tools/MenuItems'
 
 export default {
@@ -148,7 +142,6 @@ export default {
     'dns-detail': DNSDetail,
     'dns-status-chip': DNSStatusChip,
     DomainAliasForm,
-    DomainForm,
     MenuItems
   },
   computed: mapGetters({
@@ -176,7 +169,6 @@ export default {
       showConfirmDialog: false,
       showAliasForm: false,
       showDNSdetail: false,
-      showDomainForm: false,
       search: '',
       selected: [],
       expanded: [],
@@ -219,8 +211,7 @@ export default {
       this.closeDomainAliasForm()
     },
     editDomain (domain) {
-      this.selectedDomain = domain
-      this.showDomainForm = true
+      this.$router.push({ name: 'DomainEdit', params: { id: domain.pk } })
     },
     editDomainAlias (domain, alias) {
       this.selectedDomain = domain

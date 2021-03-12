@@ -2,8 +2,8 @@
 <v-card>
   <v-card-title>
     <span class="headline">
-      <translate class="headline">Administrators of </translate>
-      {{ domain.name }}
+      <translate v-if="dialogMode" class="headline">Administrators of {{ domain.name }}</translate>
+      <translate v-else class="headline">Administrators</translate>
     </span>
   </v-card-title>
   <v-card-text>
@@ -52,7 +52,7 @@
       <v-icon small>mdi-plus</v-icon> <translate>Add administrator</translate>
     </v-btn>
   </v-card-text>
-  <v-card-actions>
+  <v-card-actions v-if="dialogMode">
     <v-spacer></v-spacer>
     <v-btn
       color="grey darken-1"
@@ -71,7 +71,13 @@ import domains from '@/api/domains'
 import { bus } from '@/main'
 
 export default {
-  props: ['domain'],
+  props: {
+    domain: Object,
+    dialogMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       accounts: [],

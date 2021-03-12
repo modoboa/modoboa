@@ -34,6 +34,14 @@ const routes = [
     }
   },
   {
+    path: '/domains/:id/edit',
+    name: 'DomainEdit',
+    component: () => import('../views/DomainEdit.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/parameters/:app',
     name: 'ParametersEdit',
     component: ParametersForm,

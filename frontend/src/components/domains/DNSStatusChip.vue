@@ -1,7 +1,5 @@
 <template>
-<v-chip :color="chipType"
-        @click="$emit('click', $event)"
-        small>
+<v-chip :color="chipType" small>
   {{ label }}
 </v-chip>
 </template>

@@ -1,7 +1,10 @@
 <template>
 <v-card>
   <v-card-title>
-    <translate class="headline">DNS configuration overview for {{ domain.name }}</translate>
+    <span class="headline">DNS</span>
+    <v-btn icon :title="'DNS configuration help'|translate" @click="showConfigHelp = true">
+      <v-icon>mdi-information-outline</v-icon>
+    </v-btn>
   </v-card-title>
   <v-card-text>
     <translate class="overline">MX records</translate>
@@ -90,25 +93,37 @@
         </v-chip>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="6"><translate>DKIM key</translate></v-col>
+      <v-col cols="6">
+        <div v-if="domain.dkim_public_key">
+          <v-btn color="primary" small>
+            <translate>Show key</translate>
+          </v-btn>
+          <v-btn icon><v-icon>mdi-refresh</v-icon></v-btn>
+        </div>
+        <translate v-else>Not generated</translate>
+      </v-col>
+    </v-row>
   </v-card-text>
-  <v-card-actions>
-    <v-spacer></v-spacer>
-    <v-btn
-      color="grey darken-1"
-      text
-      @click="close"
-      >
-      <translate>Close</translate>
-    </v-btn>
-  </v-card-actions>
+  <v-dialog v-model="showConfigHelp"
+            max-width="800px"
+            persistent
+            >
+    <domain-dns-config :domain="domain" @close="showConfigHelp = false" />
+  </v-dialog>
 </v-card>
 </template>
 
 <script>
 import domains from '@/api/domains'
+import DomainDNSConfig from './DomainDNSConfig'
 
 export default {
   props: ['domain'],
+  components: {
+    'domain-dns-config': DomainDNSConfig
+  },
   data () {
     return {
       detail: {},
@@ -116,14 +131,11 @@ export default {
         { text: this.$gettext('Name'), value: 'name' },
         { text: this.$gettext('Address'), value: 'address' },
         { text: this.$gettext('Updated'), value: 'updated' }
-      ]
+      ],
+      showConfigHelp: false
     }
   },
   methods: {
-    close () {
-      this.$emit('close')
-      this.detail = {}
-    }
   },
   watch: {
     domain: {
