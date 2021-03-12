@@ -11,8 +11,19 @@
     <v-row>
       <v-col cols="6">
         <domain-summary :domain="domain" />
-        <div class="mt-4" />
+      </v-col>
+      <v-col cols="6">
         <domain-dns-summary :domain="domain" />
+      </v-col>
+    </v-row>
+  </v-layout>
+  <v-layout>
+    <v-row>
+      <v-col cols="12">
+        <time-serie-chart :domain="domain" graphic-set="mailtraffic" graphic-name="averagetraffic" />
+      </v-col>
+      <v-col cols="12">
+        <time-serie-chart :domain="domain" graphic-set="mailtraffic" graphic-name="averagetrafficsize" />
       </v-col>
     </v-row>
   </v-layout>
@@ -40,13 +51,15 @@ import AdministratorList from '@/components/domains/AdministratorList'
 import DomainForm from '@/components/domains/DomainForm'
 import DomainDNSSummary from '@/components/domains/DomainDNSSummary'
 import DomainSummary from '@/components/domains/DomainSummary'
+import TimeSerieChart from '@/components/tools/TimeSerieChart'
 
 export default {
   components: {
     AdministratorList,
     DomainForm,
     'domain-dns-summary': DomainDNSSummary,
-    DomainSummary
+    DomainSummary,
+    TimeSerieChart
   },
   data () {
     return {
@@ -54,6 +67,8 @@ export default {
       showEditForm: false,
       showAdminList: false
     }
+  },
+  methods: {
   },
   mounted () {
     domains.getDomain(this.$route.params.id).then(resp => {

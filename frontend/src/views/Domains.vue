@@ -12,7 +12,8 @@
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" v-bind="attrs" v-on="on">
-          <v-icon left>mdi-plus</v-icon> <translate>New</translate>
+          <v-icon left>mdi-plus</v-icon>
+          <translate>New</translate>
         </v-btn>
       </template>
       <v-list dense>
