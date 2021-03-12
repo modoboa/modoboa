@@ -1,5 +1,8 @@
 <template>
 <v-card>
+  <v-card-title>
+    <translate class="headline">General information</translate>
+  </v-card-title>
   <v-card-text>
     <v-row>
       <v-col cols="6"><translate>Creation date</translate></v-col>

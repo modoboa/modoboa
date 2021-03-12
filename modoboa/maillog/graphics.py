@@ -1,11 +1,10 @@
 """Classes to define graphics."""
 
+import datetime
+import json
 import inspect
 from itertools import chain
 import os
-
-from lxml import etree
-import six
 
 from django.conf import settings
 from django.utils.encoding import smart_bytes, smart_text
@@ -18,7 +17,6 @@ from modoboa.parameters import tools as param_tools
 
 
 class Curve:
-
     """Graphic curve.
 
     Simple way to represent a graphic curve.
@@ -96,36 +94,33 @@ class Graphic:
         return smart_text(dpath)
 
     def export(self, rrdfile, start, end):
-        """Export data to XML using rrdtool and convert it to JSON."""
+        """Export data to JSON using rrdtool."""
         result = []
         cmdargs = []
         for curve in self._curves:
             result += [{
                 "name": str(curve.legend),
-                "color": curve.color, "data": []
+                "backgroundColor": curve.color, "data": []
             }]
             cmdargs += curve.to_rrd_command_args(rrdfile)
         code = 0
 
-        cmd = "{} xport --start {} --end {} ".format(
+        cmd = "{} xport --json -t --start {} --end {} ".format(
             self.rrdtool_binary, str(start), str(end))
         cmd += " ".join(cmdargs)
         code, output = exec_cmd(smart_bytes(cmd))
         if code:
             return []
 
-        tree = etree.fromstring(output)
-        timestamp = int(tree.xpath('/xport/meta/start')[0].text)
-        step = int(tree.xpath('/xport/meta/step')[0].text)
-        for row in tree.xpath('/xport/data/row'):
-            for vindex, value in enumerate(row.findall('v')):
-                if value.text == 'NaN':
-                    result[vindex]['data'].append({'x': timestamp, 'y': 0})
-                else:
-                    result[vindex]['data'].append(
-                        {'x': timestamp, 'y': float(value.text)}
-                    )
-            timestamp += step
+        xport = json.loads(output)
+        for row in xport['data']:
+            timestamp = int(row[0])
+            date = datetime.datetime.fromtimestamp(timestamp).isoformat(sep=' ')
+            for (vindex, value) in enumerate(row[1:]):
+                result[vindex]['data'].append(
+                    {'x': date, 'y': value, 'timestamp': timestamp}
+                )
+
         return result
 
 
@@ -158,13 +153,14 @@ class GraphicSet(object):
         """Return database file name."""
         return self.file_name
 
-    def export(self, rrdfile, start, end):
+    def export(self, rrdfile, start, end, graphic=None):
         result = {}
         for graph in self.graphics:
-            result[graph.display_name] = {
-                "title": six.text_type(graph.title),
-                "curves": graph.export(rrdfile, start, end)
-            }
+            if graphic is None or graphic == graph.display_name:
+                result[graph.display_name] = {
+                    "title": graph.title,
+                    "series": graph.export(rrdfile, start, end)
+                }
         return result
 
 
@@ -246,10 +242,9 @@ class MailTraffic(GraphicSet):
             raise exceptions.PermDeniedException
         return results[0].name
 
-    def get_file_name(self, request):
+    def get_file_name(self, user, searchq):
         """Retrieve file name according to user and args."""
-        searchq = request.GET.get("searchquery", None)
-        return self._check_domain_access(request.user, searchq)
+        return self._check_domain_access(user, searchq)
 
 
 class AccountCreationGraphic(Graphic):
