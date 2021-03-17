@@ -122,6 +122,7 @@ export default {
         },
         {
           text: this.$gettext('Identities'),
+          to: { name: 'Identities' },
           icon: 'mdi-account'
         },
         {

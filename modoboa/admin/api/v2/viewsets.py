@@ -18,6 +18,7 @@ from modoboa.admin.api.v1 import (
 from modoboa.core import models as core_models
 from modoboa.lib import viewsets as lib_viewsets
 
+from ... import lib
 from ... import models
 from . import serializers
 
@@ -144,3 +145,15 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
             .values_list("object_id", flat=True)
         )
         return core_models.User.objects.filter(pk__in=ids)
+
+
+class IdentityViewSet(viewsets.ViewSet):
+    """Viewset for identities."""
+
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def list(self, request, **kwargs):
+        """Return all identities."""
+        serializer = serializers.IdentitySerializer(
+            lib.get_identities(request.user), many=True)
+        return response.Response(serializer.data)

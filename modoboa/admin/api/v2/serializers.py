@@ -132,3 +132,19 @@ class SimpleDomainAdminSerializer(serializers.Serializer):
     account = serializers.PrimaryKeyRelatedField(
         queryset=core_models.User.objects.all()
     )
+
+
+class TagSerializer(serializers.Serializer):
+    """Serializer used to represent a tag."""
+
+    name = serializers.CharField()
+    label = serializers.CharField()
+    type = serializers.CharField()
+
+
+class IdentitySerializer(serializers.Serializer):
+    """Serializer used for identities."""
+
+    identity = serializers.CharField()
+    name_or_rcpt = serializers.CharField()
+    tags = TagSerializer(many=True)
