@@ -18,7 +18,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   {
-    path: '/domains/',
+    path: '/domains',
     name: 'DomainList',
     component: () => import('../views/Domains.vue'),
     meta: {
@@ -37,6 +37,14 @@ const routes = [
     path: '/domains/:id/edit',
     name: 'DomainEdit',
     component: () => import('../views/DomainEdit.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/identities',
+    name: 'Identities',
+    component: () => import('../views/identities/Identities.vue'),
     meta: {
       requiresAuth: true
     }
