@@ -1,5 +1,4 @@
 django>=2.2,<2.3
-django-braces==1.14.0
 django-ckeditor==6.0.0
 django-phonenumber-field[phonenumbers]==5.0.0
 django-reversion==3.0.9
