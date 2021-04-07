@@ -360,6 +360,14 @@ class TabForms(object):
             context["tabs"].active_id = active_tab_id
         return render(self.request, self.template_name, context)
 
+
+class UserKwargModelFormMixin:
+    """Simple form mixin to add support for user kwargs in constructor."""
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+
 #
 # Custom fields from here
 #

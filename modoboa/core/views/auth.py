@@ -4,7 +4,8 @@ import logging
 
 import oath
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import (
+    HttpResponse, HttpResponseRedirect, Http404, JsonResponse)
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import translation
@@ -17,15 +18,15 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth import (
     authenticate, login, logout, views as auth_views
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 
-from braces.views import (
-    JSONResponseMixin, LoginRequiredMixin, UserFormKwargsMixin)
 import django_otp
 
 from modoboa.core import forms
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import cryptutils
+from modoboa.lib.views import UserFormKwargsMixin
 from modoboa.parameters import tools as param_tools
 
 from .. import models
@@ -204,7 +205,7 @@ class VerifySMSCodeView(generic.FormView):
         return HttpResponseRedirect(url)
 
 
-class ResendSMSCodeView(JSONResponseMixin, generic.View):
+class ResendSMSCodeView(generic.View):
     """A view to resend validation code."""
 
     def get(self, request, *args, **kwargs):
@@ -230,7 +231,7 @@ class ResendSMSCodeView(JSONResponseMixin, generic.View):
         if not backend.send(text, [user.phone_number]):
             raise Http404
         self.request.session["totp_secret"] = secret
-        return self.render_json_response({"status": "ok"})
+        return JsonResponse({"status": "ok"})
 
 
 class TwoFactorCodeVerifyView(LoginRequiredMixin,
