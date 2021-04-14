@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Taras Havryliuk <admin@web4u.in.ua>, 2021
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-05 15:47+0100\n"
+"PO-Revision-Date: 2020-05-11 18:45+0000\n"
+"Last-Translator: Taras Havryliuk <admin@web4u.in.ua>, 2021\n"
+"Language-Team: Ukrainian (https://www.transifex.com/tonio/teams/13749/uk/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: uk\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"
+
+#: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
+msgid "operation"
+msgstr "операції"
+
+#: core/static/core/js/settings.js:16
+msgid "No more log entry to show"
+msgstr "Більше немає запису в журналі для показу"
+
+#: static/js/confirmation.js:44
+msgid "Warning"
+msgstr "Увага"
+
+#: static/js/confirmation.js:59
+msgid "Cancel"
+msgstr "Відміна"
+
+#: static/js/global.js:347
+msgid "Internal error"
+msgstr "Внутрішня помилка"
+
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "Немає більше записів для показу"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Пошук"
+
+#: static/js/searchbar.js:28
+msgid "Search..."
+msgstr "Пошук..."
+
+#: static/js/twocols_nav.js:170
+msgid "Are you sure?"
+msgstr "Ви впевнені?"
+
+#: static/js/twocols_nav.js:171
+msgid "This will invalidate your registered application."
+msgstr "Це призведе до втрати вашої зареєстрованої програми."
