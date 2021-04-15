@@ -153,7 +153,7 @@ class MailboxSerializer(serializers.ModelSerializer):
     """Base mailbox serializer."""
 
     full_address = lib_fields.DRFEmailFieldUTF8()
-    quota = serializers.CharField()
+    quota = serializers.CharField(required=False)
 
     class Meta:
         model = models.Mailbox
@@ -168,6 +168,15 @@ class MailboxSerializer(serializers.ModelSerializer):
     def validate_quota(self, value):
         """Convert quota to MB."""
         return web_utils.size2integer(value, output_unit="MB")
+
+    def validate(self, data):
+        """Check if quota is required."""
+        if not data.get("use_domain_quota", False):
+            if "quota" not in data:
+                raise serializers.ValidationError({
+                    "quota": _("This field is required")
+                })
+        return data
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -262,7 +271,7 @@ class WritableAccountSerializer(AccountSerializer):
 
     def __init__(self, *args, **kwargs):
         """Adapt fields to current user."""
-        super(WritableAccountSerializer, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         request = self.context.get("request")
         if not request:
             return
@@ -292,11 +301,11 @@ class WritableAccountSerializer(AccountSerializer):
                         "full_address": data["username"],
                         "use_domain_quota": True
                     }
-            elif mailbox["full_address"] != data["username"]:
+            elif "full_address" in mailbox and mailbox["full_address"] != data["username"]:
                 raise serializers.ValidationError({
                     "username": _("Must be equal to mailbox full_address")
                 })
-        if not data.get("random_password"):
+        if not self.partial and not data.get("random_password"):
             password = data.get("password")
             if password:
                 try:
@@ -415,45 +424,32 @@ class WritableAccountSerializer(AccountSerializer):
 
 
 class AliasSerializer(serializers.ModelSerializer):
-    """Base Alias serializer."""
+    """Alias serializer."""
 
     address = lib_fields.DRFEmailFieldUTF8AndEmptyUser()
     recipients = serializers.ListField(
         child=lib_fields.DRFEmailFieldUTF8AndEmptyUser(),
         allow_empty=False,
-        help_text=ugettext_lazy("A list of recipient"))
+        help_text=ugettext_lazy("A list of recipient")
+    )
 
     class Meta:
         model = admin_models.Alias
-        fields = ("pk", "address", "enabled", "internal", "recipients")
+        fields = (
+            "pk", "address", "enabled", "internal", "recipients"
+        )
 
     def validate_address(self, value):
         """Check domain."""
-        local_part, domain = email_utils.split_mailbox(value)
-        self.domain = admin_models.Domain.objects.filter(name=domain).first()
-        if self.domain is None:
-            raise serializers.ValidationError(_("Domain not found."))
-        if not self.context["request"].user.can_access(self.domain):
-            raise serializers.ValidationError(_("Permission denied."))
+        local_part, self.domain = admin_models.validate_alias_address(
+            value, self.context["request"].user)
         return value
 
     def create(self, validated_data):
         """Create appropriate objects."""
         creator = self.context["request"].user
-        try:
-            core_signals.can_create_object.send(
-                sender=self.__class__, context=creator,
-                klass=admin_models.Alias)
-            core_signals.can_create_object.send(
-                sender=self.__class__, context=self.domain,
-                object_type="mailbox_aliases")
-        except lib_exceptions.ModoboaException as inst:
-            raise serializers.ValidationError(force_text(inst))
-        recipients = validated_data.pop("recipients", None)
-        alias = admin_models.Alias(domain=self.domain, **validated_data)
-        alias.save(creator=creator)
-        alias.set_recipients(recipients)
-        return alias
+        return admin_models.Alias.objects.create(
+            creator=creator, domain=self.domain, **validated_data)
 
     def update(self, instance, validated_data):
         """Update objects."""

@@ -1,7 +1,7 @@
 """Admin models."""
 
 from .alarm import Alarm
-from .alias import Alias, AliasRecipient
+from .alias import Alias, AliasRecipient, validate_alias_address
 from .base import AdminObject
 from .domain import Domain
 from .domain_alias import DomainAlias
@@ -21,4 +21,5 @@ __all__ = [
     "MXRecord",
     "Quota",
     "SenderAddress",
+    "validate_alias_address",
 ]

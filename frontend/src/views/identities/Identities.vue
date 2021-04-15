@@ -26,15 +26,16 @@
       </v-list>
     </v-menu>
   </v-toolbar>
-  <identity-list />
+  <identity-list ref="identities" />
 
   <v-dialog
     v-model="showCreationWizard"
     fullscreen
     scrollable
     transition="dialog-bottom-transition"
+    persistent
     >
-    <account-creation-form @close="closeCreationWizard" />
+    <account-creation-form @close="closeCreationWizard" @created="updateIdentities" />
   </v-dialog>
 </div>
 </template>
@@ -56,6 +57,9 @@ export default {
   methods: {
     closeCreationWizard () {
       this.showCreationWizard = false
+    },
+    updateIdentities () {
+      this.$refs.identities.fetchIdentities()
     }
   }
 }

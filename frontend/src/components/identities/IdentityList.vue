@@ -76,10 +76,15 @@ export default {
       selected: []
     }
   },
+  methods: {
+    fetchIdentities () {
+      identities.getAll().then(resp => {
+        this.identities = resp.data
+      })
+    }
+  },
   mounted () {
-    identities.getAll().then(resp => {
-      this.identities = resp.data
-    })
+    this.fetchIdentities()
   }
 }
 </script>

@@ -3,8 +3,7 @@
 import hashlib
 import random
 
-from reversion import revisions as reversion
-
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import (
@@ -12,10 +11,12 @@ from django.utils.encoding import (
 )
 from django.utils.translation import ugettext as _, ugettext_lazy
 
+from reversion import revisions as reversion
+
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import (
-    BadRequest, Conflict, NotFound, PermDeniedException
+    BadRequest, Conflict, NotFound, ModoboaException
 )
 from .. import signals
 from .base import AdminObject
@@ -23,9 +24,43 @@ from .domain import Domain
 from .mailbox import Mailbox
 
 
-@python_2_unicode_compatible
-class Alias(AdminObject):
+def validate_alias_address(address, creator, internal=False):
+    """Check if the given alias address can be created by creator."""
+    local_part, domain = split_mailbox(address)
+    domain = Domain.objects.filter(name=domain).first()
+    if domain is None:
+        raise ValidationError(_("Domain not found."))
+    if not creator.can_access(domain):
+        raise ValidationError(_("Permission denied."))
+    if Alias.objects.filter(address=address, internal=internal).exists():
+        raise ValidationError(_("An alias with this name already exists."))
+    try:
+        # Check creator limits
+        core_signals.can_create_object.send(
+            sender="validate_alias_address", context=creator, klass=Alias)
+        # Check domain limits
+        core_signals.can_create_object.send(
+            sender="validate_alias_address", context=domain,
+            object_type="mailbox_aliases")
+    except ModoboaException as inst:
+        raise ValidationError(str(inst))
+    return local_part, domain
 
+
+class AliasManager(models.Manager):
+    """Custom manager for Alias."""
+
+    def create(self, *args, **kwargs):
+        """Custom create method."""
+        creator = kwargs.pop("creator")
+        recipients = kwargs.pop("recipients")
+        alias = super().create(*args, **kwargs)
+        alias.post_create(creator)
+        alias.set_recipients(recipients)
+        return alias
+
+
+class Alias(AdminObject):
     """Mailbox alias."""
 
     address = models.CharField(
@@ -47,13 +82,15 @@ class Alias(AdminObject):
         ugettext_lazy("Expire at"), blank=True, null=True)
     _objectname = "MailboxAlias"
 
+    objects = AliasManager()
+
     class Meta:
         ordering = ["address"]
         unique_together = (("address", "internal"), )
         app_label = "admin"
 
     def __str__(self):
-        return smart_text(self.address)
+        return self.address
 
     @classmethod
     def generate_random_address(cls):
@@ -167,23 +204,11 @@ class Alias(AdminObject):
     def from_csv(self, user, row, expected_elements=5):
         """Create a new alias from a CSV file entry."""
         if len(row) < expected_elements:
-            raise BadRequest(_("Invalid line: %s" % row))
-        address = row[1].strip().lower()
-        localpart, domname = split_mailbox(address)
-        try:
-            domain = Domain.objects.get(name=domname)
-        except Domain.DoesNotExist:
-            raise BadRequest(_("Domain '%s' does not exist" % domname))
-        if not user.can_access(domain):
-            raise PermDeniedException
-        core_signals.can_create_object.send(
-            sender="import", context=user, klass=Alias)
-        core_signals.can_create_object.send(
-            sender="import", context=domain, object_type="mailbox_aliases")
-        if Alias.objects.filter(address=address, internal=False).exists():
+            raise BadRequest(_("Invalid line: {}").format(row))
+        self.address = row[1].strip().lower()
+        local_part, self.domain = validate_alias_address(self.address, user)
+        if Alias.objects.filter(address=self.address, internal=False).exists():
             raise Conflict
-        self.address = address
-        self.domain = domain
         self.enabled = (row[2].strip().lower() in ["true", "1", "yes", "y"])
         self.save()
         self.set_recipients([raddress.strip() for raddress in row[3:]])
