@@ -1,14 +1,15 @@
 <template>
 <div>
   <div class="text-subtitle-1 grey--text text--darken-1 mb-4" :class="{ 'label--disabled': disabled }">
-    <translate>{{ label }}</translate>
+    <label class="v-label">{{ label }}</label>
   </div>
-  <div class="d-flex">
-    <div v-for="(choice, index) in choices"
-         :key="index"
-         class="choice rounded pa-10 mr-4 text-center"
+  <div class="d-flex" v-for="(lineChoices, index1) in formatedChoices" :key="index1">
+    <div v-for="(choice, index2) in lineChoices"
+         :key="index2"
+         class="choice rounded pa-10 mr-4 text-center flex-grow-0 mb-4"
          :class="{ 'choice--disabled': disabled, 'choice--selected': !disabled && currentChoice === choice.value }"
-         @click="selectChoice(choice.value)">
+         @click="selectChoice(choice.value)"
+         >
       <v-icon v-if="choice.icon" class="d-block mb-2" :color="iconColor(choice.value)" x-large>{{ choice.icon }}</v-icon>
       <translate class="grey--text text--darken-1">{{ choice.label }}</translate>
     </div>
@@ -25,14 +26,28 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    choicesPerLine: Number
   },
   data () {
     return {
-      currentChoice: null
+      currentChoice: null,
+      formatedChoices: []
     }
   },
   methods: {
+    formatChoices () {
+      if (this.choicesPerLine) {
+        let sliceIndex = 0
+        while (sliceIndex < this.choices.length) {
+          const result = this.choices.slice(sliceIndex, sliceIndex + this.choicesPerLine)
+          this.formatedChoices.push(result)
+          sliceIndex += this.choicesPerLine
+        }
+      } else {
+        this.formatedChoices.push(this.choices)
+      }
+    },
     iconColor (value) {
       return (!this.disabled && value === this.currentChoice) ? 'primary' : ''
     },
@@ -43,6 +58,9 @@ export default {
       this.currentChoice = value
       this.$emit('input', value)
     }
+  },
+  mounted () {
+    this.formatChoices()
   },
   watch: {
     value: {
@@ -57,7 +75,8 @@ export default {
 
 <style lang="scss" scoped>
 .choice {
-  width: 200px;
+  // width: 200px;
+  flex-basis: 200px;
   background-color: #F2F5F7;
   border: 1px solid #DBDDDF;
   cursor: pointer;

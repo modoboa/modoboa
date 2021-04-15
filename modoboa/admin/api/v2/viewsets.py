@@ -136,6 +136,11 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
     filter_backends = (filters.SearchFilter, dj_filters.DjangoFilterBackend)
     filterset_class = AccountFilterSet
 
+    def get_serializer_class(self):
+        if self.action in ["create", "validate"]:
+            return serializers.WritableAccountSerializer
+        return super().get_serializer_class()
+
     def get_queryset(self):
         """Filter queryset based on current user."""
         user = self.request.user
@@ -145,6 +150,16 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
             .values_list("object_id", flat=True)
         )
         return core_models.User.objects.filter(pk__in=ids)
+
+    @action(methods=["post"], detail=False)
+    def validate(self, request, **kwargs):
+        """Validate given alias without creating it."""
+        serializer = self.get_serializer(
+            data=request.data,
+            context=self.get_serializer_context(),
+            partial=True)
+        serializer.is_valid(raise_exception=True)
+        return response.Response(status=204)
 
 
 class IdentityViewSet(viewsets.ViewSet):

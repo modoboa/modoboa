@@ -7,6 +7,7 @@ from rest_framework import serializers
 from modoboa.admin.api.v1 import serializers as v1_serializers
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib import exceptions as lib_exceptions
+from modoboa.lib import fields as lib_fields
 from modoboa.parameters import tools as param_tools
 
 from ... import constants, lib, models
@@ -148,3 +149,49 @@ class IdentitySerializer(serializers.Serializer):
     identity = serializers.CharField()
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)
+
+
+class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
+    """Add support for aliases and sender addresses."""
+
+    aliases = serializers.ListField(
+        child=lib_fields.DRFEmailFieldUTF8(),
+        required=False
+    )
+
+    class Meta(v1_serializers.WritableAccountSerializer.Meta):
+        fields = v1_serializers.WritableAccountSerializer.Meta.fields + (
+            "aliases",
+        )
+
+    def validate_aliases(self, value):
+        """Check if required domains are locals and user can access them."""
+        aliases = []
+        for alias in value:
+            localpart, domain = models.validate_alias_address(
+                alias, self.context["request"].user)
+            aliases.append({"localpart": localpart, "domain": domain})
+        return aliases
+
+    def create(self, validated_data):
+        """Handle aliases."""
+        user = self.context["request"].user
+        aliases = validated_data.pop("aliases", None)
+        user = super().create(validated_data)
+        if aliases:
+            for alias in aliases:
+                models.Alias.objects.create(
+                    creator=user,
+                    domain=alias.domain,
+                    address=alias.localpart,
+                    recipients=[validated_data["mailbox"]["full_address"]]
+                )
+        return user
+
+
+class AliasSerializer(v1_serializers.AliasSerializer):
+    """Alias serializer for v2 API."""
+
+    class Meta(v1_serializers.AliasSerializer.Meta):
+        # We remove 'internal' field
+        fields = ("pk", "address", "enabled", "internal", "recipients")
