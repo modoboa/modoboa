@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="text-subtitle-1 grey--text text--darken-1 mb-4" :class="{ 'label--disabled': disabled }">
-    <label class="v-label">{{ label }}</label>
+    <label class="m-label">{{ label }}</label>
   </div>
   <div class="d-flex" v-for="(lineChoices, index1) in formatedChoices" :key="index1">
     <div v-for="(choice, index2) in lineChoices"

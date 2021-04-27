@@ -10,29 +10,38 @@
       :error-messages="errors"
       :disabled="account.role === 'SimpleUsers'"
       outlined
+      dense
       />
   </validation-provider>
-  <div class="d-flex">
+  <label class="m-label">{{ $gettext('Quota') }}</label>
+  <v-switch
+    v-model="account.mailbox.use_domain_quota"
+    :label="useDomainQuotaLabel"
+    />
+  <validation-provider
+    v-if="!account.mailbox.use_domain_quota"
+    v-slot="{ errors }"
+    rules=""
+    vid="quota"
+    >
     <v-text-field
       v-model="account.mailbox.quota"
-      :label="'Quota' | translate"
+      :placeholder="'Ex: 10MB. Leave empty for no limit'|translate"
       :hint="'Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain\'s default one. Leave empty to define an unlimited value (not allowed for domain administrators).' | translate"
       persistent-hint
-      class="mr-4 quota"
-      :disabled="account.mailbox.use_domain_quota"
       outlined
+      :error-messages="errors"
+      dense
       />
-    <v-switch
-      v-model="account.mailbox.use_domain_quota"
-      :label="useDomainQuotaLabel"
-      />
-  </div>
+  </validation-provider>
+  <label class="m-label">{{ $gettext('Daily message sending limit') }}</label>
   <v-text-field
     v-model="account.mailbox.message_limit"
-    :label="'Message sending limit' | translate"
+    :placeholder="'Leave empty for no limit' | translate"
     :hint="'Number of messages this mailbox can send per day. Leave empty for no limit.' | translate"
     persistent-hint
     outlined
+    dense
     />
 </validation-observer>
 </template>

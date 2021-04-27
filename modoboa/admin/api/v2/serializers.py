@@ -160,9 +160,11 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
     )
 
     class Meta(v1_serializers.WritableAccountSerializer.Meta):
-        fields = v1_serializers.WritableAccountSerializer.Meta.fields + (
-            "aliases",
-        )
+        fields = tuple(
+            field
+            for field in v1_serializers.WritableAccountSerializer.Meta.fields
+            if field != "random_password"
+        ) + ("aliases", )
 
     def validate_aliases(self, value):
         """Check if required domains are locals and user can access them."""

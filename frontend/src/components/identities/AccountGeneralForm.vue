@@ -5,23 +5,26 @@
     rules="required"
     vid="username"
     >
+    <label class="m-label">{{ $gettext('Username') }}</label>
     <email-field
       v-model="account.username"
-      :label="'Username' | translate"
       :error-messages="errors"
+      :placeholder="usernamePlaceholder"
       outlined
-      class="mt-4"
+      dense
       />
   </validation-provider>
+  <label class="m-label">{{ $gettext('First name') }}</label>
   <v-text-field
     v-model="account.first_name"
-    :label="'First name' | translate"
     outlined
+    dense
     />
+  <label class="m-label">{{ $gettext('Last name') }}</label>
   <v-text-field
     v-model="account.last_name"
-    :label="'Last name' | translate"
     outlined
+    dense
     />
   <v-switch
     v-model="account.random_password"
@@ -32,13 +35,15 @@
     v-if="!account.random_password"
     v-slot="{ errors }"
     rules="required"
+    vid="password"
     >
+    <label class="m-label">{{ $gettext('Password') }}</label>
     <v-text-field
       v-model="account.password"
-      :label="'Password' | translate"
       :error-messages="errors"
       outlined
       type="password"
+      dense
       />
   </validation-provider>
   <validation-provider
@@ -46,12 +51,13 @@
     v-slot="{ errors }"
     rules="required"
     >
+    <label class="m-label">{{ $gettext('Confirmation') }}</label>
     <v-text-field
       v-model="account.password_confirmation"
-      :label="'Confirmation' | translate"
       :error-messages="errors"
       outlined
       type="password"
+      dense
       />
   </validation-provider>
   <v-switch
@@ -70,6 +76,14 @@ export default {
     EmailField
   },
   props: ['account'],
+  computed: {
+    usernamePlaceholder () {
+      if (this.account.role === 'SimpleUsers') {
+        return this.$gettext('Enter an email address')
+      }
+      return this.$gettext('Enter a simple username or an email address')
+    }
+  },
   data () {
     return {
     }
