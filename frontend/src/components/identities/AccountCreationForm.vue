@@ -104,7 +104,26 @@
         <creation-summary
           :sections="summarySections"
           @modify-step="val => step = val"
-          />
+          >
+          <template v-slot:item.random_password="{ item }">
+            <v-col cols="12" class="highligth white--text">
+              <v-row>
+                <v-col><span>{{ item.key }}</span></v-col>
+                <v-col class="text-right" v-if="item.type === 'yesno'">
+                  {{ item.value|yesno }}
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col class="text-right py-1">
+                  {{ account.password }}
+                  <v-btn icon color="white" :title="'Copy to clipboard'|translate" @click="copyPassword">
+                    <v-icon>mdi-clipboard-multiple-outline</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </template>
+        </creation-summary>
         <div class="d-flex justify-center mt-8">
           <v-btn
             color="primary"
@@ -156,6 +175,7 @@ export default {
             { key: this.$gettext('First name'), value: this.account.first_name },
             { key: this.$gettext('Last name'), value: this.account.last_name },
             {
+              name: 'random_password',
               key: this.$gettext('Random password'),
               value: this.account.random_password,
               type: 'yesno'
@@ -204,6 +224,11 @@ export default {
     }
   },
   methods: {
+    copyPassword () {
+      navigator.clipboard.writeText(this.account.password).then(() => {
+        bus.$emit('notification', { msg: this.$gettext('Password copied to clipboard') })
+      })
+    },
     getInitialForm () {
       return {
         aliases: [],
@@ -211,7 +236,8 @@ export default {
         role: 'SimpleUsers',
         mailbox: {
           use_domain_quota: true
-        }
+        },
+        random_password: true
       }
     },
     async close (withConfirm) {
@@ -241,6 +267,11 @@ export default {
       } catch (error) {
         this.$refs[`form_${current}`].$refs.observer.setErrors(error.response.data)
         return
+      }
+      if (next === 5 && this.account.random_password) {
+        accounts.getRandomPassword().then(resp => {
+          this.$set(this.account, 'password', resp.data.password)
+        })
       }
       this.step = next
     },
@@ -285,5 +316,8 @@ export default {
 
 .edit-link {
   text-decoration: none;
+}
+.highligth {
+  background-color: #515D78;
 }
 </style>

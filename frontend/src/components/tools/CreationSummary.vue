@@ -10,12 +10,14 @@
            dense
            >
       <template v-if="item.value !== undefined">
-        <v-col><span class="grey--text">{{ item.key }}</span></v-col>
-        <v-col class="text-right" v-if="item.type === 'yesno'">{{ item.value|yesno }}</v-col>
-        <v-col class="text-right" v-else-if="item.type === 'list'">
-          {{ displayList(item.value) }}
-        </v-col>
-        <v-col class="text-right" v-else>{{ item.value }}</v-col>
+        <slot :name="`item.${item.name}`" v-bind:item="item" v-bind:displayList="displayList">
+          <v-col><span class="grey--text">{{ item.key }}</span></v-col>
+          <v-col class="text-right" v-if="item.type === 'yesno'">{{ item.value|yesno }}</v-col>
+          <v-col class="text-right" v-else-if="item.type === 'list'">
+            {{ displayList(item.value) }}
+          </v-col>
+          <v-col class="text-right" v-else>{{ item.value }}</v-col>
+        </slot>
       </template>
     </v-row>
   </div>

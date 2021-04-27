@@ -6,6 +6,9 @@ export default {
   getAll ({ domain, role }) {
     return repository.get(`/${resource}/`, { params: { domain, role } })
   },
+  getRandomPassword () {
+    return repository.get(`${resource}/random_password`)
+  },
   validate (data) {
     return repository.post(`${resource}/validate/`, data)
   },

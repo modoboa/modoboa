@@ -161,6 +161,12 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         serializer.is_valid(raise_exception=True)
         return response.Response(status=204)
 
+    @action(methods=["get"], detail=False)
+    def random_password(self, request, **kwargs):
+        """Generate a random password."""
+        password = lib.make_password()
+        return response.Response({"password": password})
+
 
 class IdentityViewSet(viewsets.ViewSet):
     """Viewset for identities."""

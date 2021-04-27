@@ -305,7 +305,13 @@ class WritableAccountSerializer(AccountSerializer):
                 raise serializers.ValidationError({
                     "username": _("Must be equal to mailbox full_address")
                 })
-        if not self.partial and not data.get("random_password"):
+        condition = (
+            not data.get("random_password") and (
+                data.get("password") or
+                not self.partial
+            )
+        )
+        if condition:
             password = data.get("password")
             if password:
                 try:
