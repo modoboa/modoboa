@@ -1,28 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Andrei-Ilie Olteanu <andrei@flashsoft.ro>, 2018
+# Crc Darkplague <crc@nuamchefazi.ro>, 2019
+# Simona Iacob <s@zp1.net>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2018-07-03 13:17+0000\n"
-"Last-Translator: Andrei-Ilie Olteanu <andrei@flashsoft.ro>\n"
-"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
-"language/ro_RO/)\n"
-"Language: ro_RO\n"
+"POT-Creation-Date: 2020-10-02 15:31+0200\n"
+"PO-Revision-Date: 2021-04-19 18:58+0000\n"
+"Last-Translator: Simona Iacob <s@zp1.net>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
 #: admin/api.py:142
 msgid "Here is your new Modoboa password: {}"
-msgstr ""
+msgstr "Aici este noua ta parolă Modoboa: {}"
 
 #: admin/app_settings.py:20 admin/handlers.py:261
 #: admin/templates/admin/_global_statistics_widget.html:11
@@ -44,12 +44,9 @@ msgstr "MX-uri valide"
 
 #: admin/app_settings.py:34
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"O listă de IP-uri sau de adrese de rețea care pentru fiecare înregistrare MX "
-"ar trebui să se potrivească. O avertizare va fi trimisă dacă o înregistrare "
-"nu respectă această conformitate."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "O listă de IP-uri sau de adrese de rețea care pentru fiecare înregistrare MX ar trebui să se potrivească. O avertizare va fi trimisă dacă o înregistrare nu respectă această conformitate."
 
 #: admin/app_settings.py:42
 msgid "New domains must use authorized MX(s)"
@@ -59,57 +56,39 @@ msgstr "Domeniile noi trebuie să utilizeze MX(-uri) autorizate"
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr ""
-"Împiedică crearea unui nou domeniu dacă înregistrarea MX nu utilizează una "
-"dintre adresele definite."
+msgstr "Împiedică crearea unui nou domeniu dacă înregistrarea MX nu utilizează una dintre adresele definite."
 
 #: admin/app_settings.py:51
-#, fuzzy
-#| msgid "Enable DNS checks"
 msgid "Enable SPF checks"
-msgstr "Activează verificările DNS"
+msgstr "Activează verificările SPF"
 
 #: admin/app_settings.py:54
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid SPF record"
-msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+msgstr "Verificați dacă fiecare domeniu are o înregistrare SPF validă"
 
 #: admin/app_settings.py:59
-#, fuzzy
-#| msgid "Enable MX checks"
 msgid "Enable DKIM checks"
-msgstr "Activează verificările MX"
+msgstr "Activați verificările DKIM"
 
 #: admin/app_settings.py:62
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
-msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+msgstr "Verificați dacă fiecare domeniu cu autentificarea DKIM activată are o înregistrare DNS validă."
 
 #: admin/app_settings.py:68
-#, fuzzy
-#| msgid "Enable MX checks"
 msgid "Enable DMARC checks"
-msgstr "Activează verificările MX"
+msgstr "Activați verificările DMARC"
 
 #: admin/app_settings.py:71
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid DMARC record"
-msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+msgstr "Verificați dacă fiecare domeniu are o înregistrare DMARC validă"
 
 #: admin/app_settings.py:76
-#, fuzzy
-#| msgid "Enable MX checks"
 msgid "Enable autoconfig checks"
-msgstr "Activează verificările MX"
+msgstr "Activați verificările de autoconfigurare"
 
 #: admin/app_settings.py:79
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr "Verifică ca fiecare domeniu are asociat un MX valid"
+msgstr "Verificați dacă fiecare domeniu are o înregistrare validă pentru autoconfigurare"
 
 #: admin/app_settings.py:84
 msgid "Enable DNSBL checks"
@@ -121,11 +100,11 @@ msgstr "Verificați fiecare domeniu folosind furnizorii DNSBL majori"
 
 #: admin/app_settings.py:92
 msgid "Custom DNS server"
-msgstr ""
+msgstr "Servere DNS personalizate"
 
 #: admin/app_settings.py:95
 msgid "Use a custom DNS server instead of local server configuration"
-msgstr ""
+msgstr "Utilizează un server DNS personalizat in locul celui local"
 
 #: admin/app_settings.py:100
 msgid "DKIM keys storage directory"
@@ -136,10 +115,7 @@ msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
-"Calea absolută a directorului în care vor fi stocate cheile private DKIM. "
-"Asigurați-vă că acest director aparține utilizatorului root și nu poate fi "
-"citit de orice user."
+msgstr "Calea absolută a directorului în care vor fi stocate cheile private DKIM. Asigurați-vă că acest director aparține utilizatorului root și nu poate fi citit de orice user."
 
 #: admin/app_settings.py:111
 msgid "Default DKIM key length"
@@ -149,106 +125,112 @@ msgstr "Mărimea implicită în caractere a chei DKIM"
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr "Mărimea implicită în biți pentru o cheie DKIM nou generată"
 
-#: admin/app_settings.py:119 admin/templates/admin/domain_detail.html:41
-msgid "Mailboxes"
-msgstr "Cutii poștale"
-
-#: admin/app_settings.py:122
-msgid "Handle mailboxes on filesystem"
-msgstr "Gestionați cutiile poștale în sistemul de fișiere"
-
-#: admin/app_settings.py:125
-msgid ""
-"Rename or remove mailboxes on the filesystem when they get renamed or "
-"removed within Modoboa"
-msgstr ""
-"Redenumește sau eliminează căsuțele poștale din sistemul de fișiere atunci "
-"când se redenumesc sau se elimină în Modoboa"
-
-#: admin/app_settings.py:131
-msgid "Mailboxes owner"
-msgstr "Propietarul cutiilor postale"
-
-#: admin/app_settings.py:134
-msgid "The UNIX account who owns mailboxes on the filesystem"
-msgstr ""
-"Contul UNIX care are in propietate casuțele poștale în sistemul de fișiere"
-
-#: admin/app_settings.py:139
+#: admin/app_settings.py:120
 msgid "Default domain quota"
 msgstr "Cota-parte implicită a domeniului"
 
-#: admin/app_settings.py:142
+#: admin/app_settings.py:123
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
-"Cota implicită (în MB) aplicată domeniilor nou create, care nu au nicio "
-"valoare specificată. O valoare de 0 înseamnă că nu există o cotă."
+msgstr "Cota implicită (în MB) aplicată domeniilor nou create, care nu au nicio valoare specificată. O valoare de 0 înseamnă că nu există o cotă."
 
-#: admin/app_settings.py:148 admin/forms/domain.py:49 admin/models/domain.py:33
-#: admin/templates/admin/domain_detail.html:64
+#: admin/app_settings.py:129
+msgid "Default domain sending limit"
+msgstr "Limita implicită de trimitere a domeniului"
+
+#: admin/app_settings.py:132
+msgid ""
+"Number of messages freshly created domains will be allowed to send per day. "
+"Leave empty for no limit."
+msgstr "Numărul de mesaje pe care domeniile nou create vor putea să le trimită pe zi. Lăsați gol pentru nicio limită."
+
+#: admin/app_settings.py:137 admin/templates/admin/domain_detail.html:41
+msgid "Mailboxes"
+msgstr "Cutii poștale"
+
+#: admin/app_settings.py:140
+msgid "Handle mailboxes on filesystem"
+msgstr "Gestionați cutiile poștale în sistemul de fișiere"
+
+#: admin/app_settings.py:143
+msgid ""
+"Rename or remove mailboxes on the filesystem when they get renamed or "
+"removed within Modoboa"
+msgstr "Redenumește sau eliminează căsuțele poștale din sistemul de fișiere atunci când se redenumesc sau se elimină în Modoboa"
+
+#: admin/app_settings.py:149
+msgid "Mailboxes owner"
+msgstr "Propietarul cutiilor postale"
+
+#: admin/app_settings.py:152
+msgid "The UNIX account who owns mailboxes on the filesystem"
+msgstr "Contul UNIX care are in propietate casuțele poștale în sistemul de fișiere"
+
+#: admin/app_settings.py:157 admin/forms/domain.py:49
+#: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Cota implicită pentru cutia poștală"
 
-#: admin/app_settings.py:151
-#, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
+#: admin/app_settings.py:160
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created mailboxes with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"Cota implicită pentru cutia poștală (în MB) aplicată domeniilor nou create, "
-"care nu au nicio valoare specificată. O valoare de 0 înseamnă că nu există o "
-"cotă."
+msgstr "Cota implicită a căsuței poștale (în MB) aplicată căsuțelor poștale nou create fără a fi specificată nicio valoare. O valoare de 0 înseamnă că nu există cotă."
 
-#: admin/app_settings.py:157
+#: admin/app_settings.py:166
+msgid "Default mailbox sending limit"
+msgstr "Limita implicită de trimitere a căsuței poștale"
+
+#: admin/app_settings.py:169
+msgid ""
+"Number of messages freshly created mailboxes will be allowed to send per "
+"day. Leave empty for no limit."
+msgstr "Numărul de mesaje pe care cutiile poștale nou create vor putea să le trimită pe zi. Lăsați gol pentru nicio limită."
+
+#: admin/app_settings.py:175
 msgid "Automatic account removal"
 msgstr "Ștergere automată a contului"
 
-#: admin/app_settings.py:160
+#: admin/app_settings.py:178
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "Când se șterge o cutie poștală, șterge, de asemenea și contul asociat"
 
-#: admin/app_settings.py:164
+#: admin/app_settings.py:182
 msgid "Automatic domain/mailbox creation"
 msgstr "Crearea automată a domeniului / cutiei poștale"
 
-#: admin/app_settings.py:167
-msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr ""
-"Creați un domeniu și o căsuță poștală atunci când un cont este creat automat."
+#: admin/app_settings.py:185
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr "Creați un domeniu și o căsuță poștală atunci când un cont este creat automat."
 
-#: admin/app_settings.py:173
+#: admin/app_settings.py:191
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Creați un alias când o cutie poștală este redenumită"
 
-#: admin/app_settings.py:176
+#: admin/app_settings.py:194
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
-"Creați un alias utilizând vechea adresă atunci când o cutie poștală este "
-"redenumită."
+msgstr "Creați un alias utilizând vechea adresă atunci când o cutie poștală este redenumită."
 
-#: admin/app_settings.py:225 admin/app_settings.py:233
-#: admin/forms/account.py:335
+#: admin/app_settings.py:243 admin/app_settings.py:251
+#: admin/forms/account.py:347
 msgid "Must be a positive integer"
 msgstr "Trebuie să fie un număr întreg pozitiv"
 
-#: admin/app_settings.py:243
+#: admin/app_settings.py:261
 msgid "Directory not found."
 msgstr "Directorul nu a fost găsit."
 
-#: admin/app_settings.py:249
+#: admin/app_settings.py:267
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl nu a fost găsit, asigurați-vă că este instalat."
 
-#: admin/app_settings.py:263
+#: admin/app_settings.py:281
 msgid "Define at least one authorized network / address"
 msgstr "Definiți cel puțin o adresă de rețea autorizată"
 
-#: admin/app_settings.py:273
+#: admin/app_settings.py:291
 msgid "Administration"
 msgstr "Administrare"
 
@@ -262,7 +244,15 @@ msgstr "Domeniu"
 msgid "Relay domain"
 msgstr "Domeniu de relay"
 
-#: admin/forms/account.py:32 admin/templates/admin/domain_detail.html:125
+#: admin/constants.py:42
+msgid "Opened"
+msgstr "Deschis"
+
+#: admin/constants.py:43
+msgid "Closed"
+msgstr "Închis"
+
+#: admin/forms/account.py:32 admin/templates/admin/domain_detail.html:139
 msgid "Username"
 msgstr "Username"
 
@@ -270,9 +260,7 @@ msgstr "Username"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr ""
-"Numele de utilizator. Trebuie sa fie o adresa de e-mail valida pentru "
-"tilizatori simpli sau pentru administratori care au casuță poștală."
+msgstr "Numele de utilizator. Trebuie sa fie o adresa de e-mail valida pentru tilizatori simpli sau pentru administratori care au casuță poștală."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 msgid "Role"
@@ -286,7 +274,7 @@ msgstr "Alege"
 msgid "What level of permission this user will have"
 msgstr "Ce nivel de permisiune va avea acest utilizator"
 
-#: admin/forms/account.py:44 admin/forms/domain.py:245
+#: admin/forms/account.py:44 admin/forms/domain.py:248
 msgid "Random password"
 msgstr "Parolă aleatorie"
 
@@ -294,9 +282,7 @@ msgstr "Parolă aleatorie"
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
-msgstr ""
-"Generați o parolă aleatorie. Dacă actualizați acest cont și bifați această "
-"casetă, va fi generată o nouă parolă."
+msgstr "Generați o parolă aleatorie. Dacă actualizați acest cont și bifați această casetă, va fi generată o nouă parolă."
 
 #: admin/forms/account.py:52
 msgid "Password"
@@ -319,8 +305,8 @@ msgid "Only super administrators are allowed for this mode"
 msgstr "Numai superadministratorii sunt permiși la acest mod"
 
 #: admin/forms/account.py:178 admin/forms/account.py:180
-#: admin/forms/domain.py:162 admin/forms/domain.py:291
-#: admin/forms/domain.py:294 admin/serializers.py:287
+#: admin/forms/domain.py:165 admin/forms/domain.py:294
+#: admin/forms/domain.py:297 admin/serializers.py:297
 msgid "This field is required."
 msgstr "Acest câmp este necesar."
 
@@ -347,99 +333,93 @@ msgid "Quota"
 msgstr "Cotă-parte"
 
 #: admin/forms/account.py:232
-#, fuzzy
-#| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's "
-#| "default one. Leave empty to define an unlimited value (not allowed for "
-#| "domain administrators)."
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Cota în MB pentru această căsuță poștală. Definiți o valoare particularizată "
-"sau utilizați valurea prestabilită a domeniului. Lăsați gol pentru a defini "
-"o valoare nelimitată (nu este permisă pentru administratorii de domeniu)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr "Limita pentru această căsuță poștală, poate fi exprimată in KB, MB (implicit) sau GB. Defineste o valoare particularizată sau folosește valoarea implicită a domeniului. Lăsati necompletat pentru a defini o valoare nelimitată (nu este permis pentru administratorii de domeniu)."
 
-#: admin/forms/account.py:242 admin/forms/domain.py:31
+#: admin/forms/account.py:242 admin/models/domain.py:36
+#: admin/models/mailbox.py:102 admin/templates/admin/account_detail.html:50
+#: admin/templates/admin/domain_detail.html:69
+msgid "Message sending limit"
+msgstr "Limita de trimitere a mesajelor"
+
+#: admin/forms/account.py:246 admin/models/mailbox.py:104
+msgid "Number of messages this mailbox can send per day"
+msgstr "Numărul de mesaje pe care această căsuță poștală le poate trimite pe zi"
+
+#: admin/forms/account.py:249 admin/forms/domain.py:31
 #: admin/templates/admin/domain_headers.html:4
 msgid "Alias(es)"
 msgstr "Alias(uri)"
 
-#: admin/forms/account.py:245
+#: admin/forms/account.py:252
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Alias(uri) la această căsuță poștală. Indicați numai o singură adresă pentru "
-"fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă. Pentru a crea "
-"un alias de captură care sa prindă toate emailurile, trebuie doar să "
-"introduceți numele domeniului (@ domain.tld)."
+msgstr "Alias(uri) la această căsuță poștală. Indicați numai o singură adresă pentru fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă. Pentru a crea un alias de captură care sa prindă toate emailurile, trebuie doar să introduceți numele domeniului (@ domain.tld)."
 
-#: admin/forms/account.py:251
+#: admin/forms/account.py:258
 msgid "Sender addresses"
 msgstr "Adresa expeditorului"
 
-#: admin/forms/account.py:254
+#: admin/forms/account.py:261
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr ""
-"Adresa(e) suplimentare a expeditorului pentru acest cont. Utilizatorului i "
-"se va permite să trimită e-mailuri utilizând această adresă, chiar dacă nu "
-"există pe plan local. Indicați o adresă pentru fiecare intrare. Apăsați "
-"ENTER pentru a adăuga o intrare nouă."
+msgstr "Adresa(e) suplimentare a expeditorului pentru acest cont. Utilizatorului i se va permite să trimită e-mailuri utilizând această adresă, chiar dacă nu există pe plan local. Indicați o adresă pentru fiecare intrare. Apăsați ENTER pentru a adăuga o intrare nouă."
 
-#: admin/forms/account.py:309 admin/forms/alias.py:88
-#: admin/models/mailbox.py:310
+#: admin/forms/account.py:321 admin/forms/alias.py:88
+#: admin/models/mailbox.py:321
 msgid "Domain does not exist"
 msgstr "Domeniul nu există"
 
-#: admin/forms/account.py:345
+#: admin/forms/account.py:357
 msgid "Local domain does not exist"
 msgstr "Domeniul local nu există"
 
-#: admin/forms/account.py:349 admin/forms/account.py:357
+#: admin/forms/account.py:361 admin/forms/account.py:369
 #: admin/forms/alias.py:91
 msgid "You don't have access to this domain"
 msgstr "Nu aveți acces la acest domeniu"
 
-#: admin/forms/account.py:456
+#: admin/forms/account.py:470
 msgid "Domain(s)"
 msgstr "Domeniu(ii)"
 
-#: admin/forms/account.py:458
+#: admin/forms/account.py:472
 msgid "Domain(s) that user administrates"
 msgstr "Domeniu(ii) pe care utilizatorul le administrează"
 
-#: admin/forms/account.py:505 admin/forms/account.py:595
-#: admin/forms/domain.py:362 admin/forms/domain.py:433
+#: admin/forms/account.py:519 admin/forms/account.py:609
+#: admin/forms/domain.py:365 admin/forms/domain.py:436
 msgid "General"
 msgstr "General"
 
-#: admin/forms/account.py:509
+#: admin/forms/account.py:523
 msgid "Profile"
 msgstr "Profil"
 
-#: admin/forms/account.py:513 admin/forms/account.py:601
+#: admin/forms/account.py:527 admin/forms/account.py:615
 msgid "Mail"
 msgstr "Mail"
 
-#: admin/forms/account.py:516
+#: admin/forms/account.py:530
 msgid "Permissions"
 msgstr "Permisiuni"
 
-#: admin/forms/account.py:584
+#: admin/forms/account.py:598
 msgid "Account updated"
 msgstr "Cont actualizat"
 
-#: admin/forms/account.py:609
+#: admin/forms/account.py:623
 msgid "New account"
 msgstr "Cont nou"
 
-#: admin/forms/account.py:619
+#: admin/forms/account.py:633
 msgid "Account created"
 msgstr "Cont creat"
 
@@ -455,9 +435,7 @@ msgstr "Adresă email"
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Adresa aliasului. Pentru a crea un alias care caputrează tot, trebuie doar "
-"să introduceți numele domeniului (@ domain.tld)."
+msgstr "Adresa aliasului. Pentru a crea un alias care caputrează tot, trebuie doar să introduceți numele domeniului (@ domain.tld)."
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -467,9 +445,7 @@ msgstr "Destinatarii"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"Adresele pe care sunt asociate cu acest alias. Indicați numai o singură "
-"adresă pentru fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă."
+msgstr "Adresele pe care sunt asociate cu acest alias. Indicați numai o singură adresă pentru fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă."
 
 #: admin/forms/alias.py:108 admin/forms/alias.py:110
 msgid "This field is required"
@@ -488,130 +464,117 @@ msgstr "Tip"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr ""
-"Alias (uri) la acest domeniu. Indicați un singur nume pe fiecare intrare, "
-"apăsați ENTER pentru a adăuga o intrare nouă."
+msgstr "Alias (uri) la acest domeniu. Indicați un singur nume pe fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
 msgstr "Selector cheie"
 
 #: admin/forms/domain.py:44 admin/serializers.py:30
-#, fuzzy
-#| msgid ""
-#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr ""
-"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
-"înseamnă fără cotă."
+msgstr "Limită distribuită intre căsuțele postale. Poate fi exprimată in KB, MB (implicit) sau GB. Valoarea 0 reprezintă nelimitat."
 
 #: admin/forms/domain.py:52
-#, fuzzy
-#| msgid ""
-#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgid ""
 "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
 "GB. A value of 0 means no quota."
-msgstr ""
-"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
-"înseamnă fără cotă."
+msgstr "Limita implicită aplicată căsuțelor postale. Poate fi exprimată in KB, MB (implicit) sau GB. Valoarea 0 reprezintă nelimitat."
 
-#: admin/forms/domain.py:94 admin/handlers.py:161
+#: admin/forms/domain.py:97 admin/handlers.py:161
 msgid "domain alias"
 msgstr "alias domeniu"
 
-#: admin/forms/domain.py:97 admin/forms/domain.py:173 admin/forms/domain.py:181
+#: admin/forms/domain.py:100 admin/forms/domain.py:176
+#: admin/forms/domain.py:184
 #, python-format
 msgid "A %s with this name already exists"
 msgstr "Itemul%s cu acest nume există"
 
-#: admin/forms/domain.py:105 admin/serializers.py:64
+#: admin/forms/domain.py:108 admin/serializers.py:65
 msgid "No authorized MX record found for this domain"
 msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu"
 
-#: admin/forms/domain.py:117
+#: admin/forms/domain.py:120
 msgid "DKIM keys storage directory not configured"
 msgstr "Folderul de stocare a cheilor DKIM nu este configurat"
 
-#: admin/forms/domain.py:147 admin/serializers.py:82
+#: admin/forms/domain.py:150 admin/serializers.py:83
 msgid "Cannot be greater than domain quota"
 msgstr "Nu poate fi mai mare decat cota domeniului"
 
-#: admin/forms/domain.py:152
+#: admin/forms/domain.py:155
 msgid "You can't define an unlimited quota."
 msgstr "Nu poți sa definești o cotă nelimitată"
 
-#: admin/forms/domain.py:173 admin/forms/domain.py:178
+#: admin/forms/domain.py:176 admin/forms/domain.py:181
 msgid "domain"
 msgstr "domeniu"
 
-#: admin/forms/domain.py:227
+#: admin/forms/domain.py:230
 msgid "Create a domain administrator"
 msgstr "Creați un administrator de domeniu"
 
-#: admin/forms/domain.py:230
+#: admin/forms/domain.py:233
 msgid "Automatically create an administrator for this domain"
 msgstr "Creează automat un administrator pentru acest domeniu"
 
-#: admin/forms/domain.py:235 admin/templates/admin/domain_detail.html:125
+#: admin/forms/domain.py:238 admin/templates/admin/domain_detail.html:139
 #: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
 msgid "Name"
 msgstr "Nume"
 
-#: admin/forms/domain.py:238
+#: admin/forms/domain.py:241
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr ""
-"Numele administratorului. Nu include aici si numele domeniului, el va fi "
-"automat alipit. "
+msgstr "Numele administratorului. Nu include aici si numele domeniului, el va fi automat alipit. "
 
-#: admin/forms/domain.py:248
+#: admin/forms/domain.py:251
 msgid "Generate a random password for the administrator."
 msgstr "Generează o parolă aleatorie pentru administrator."
 
-#: admin/forms/domain.py:254
+#: admin/forms/domain.py:257
 msgid "With a mailbox"
 msgstr "Cu casuță postală"
 
-#: admin/forms/domain.py:257
+#: admin/forms/domain.py:260
 msgid "Create a mailbox for the administrator."
 msgstr "Creează o căsuță postală pentru administrator. "
 
-#: admin/forms/domain.py:263
+#: admin/forms/domain.py:266
 msgid "Create aliases"
 msgstr "Crează aliasuri "
 
-#: admin/forms/domain.py:266
+#: admin/forms/domain.py:269
 msgid "Automatically create standard aliases for this domain"
 msgstr "Creează automat aliasuri standard pentru acest domeniu"
 
-#: admin/forms/domain.py:282
+#: admin/forms/domain.py:285
 msgid "Invalid format"
 msgstr "Format invalid"
 
-#: admin/forms/domain.py:311
+#: admin/forms/domain.py:314
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Utilizatorul '%s'  exista deja"
 
-#: admin/forms/domain.py:423
+#: admin/forms/domain.py:426
 msgid "Domain modified"
 msgstr "Domeniu modficat"
 
-#: admin/forms/domain.py:444
+#: admin/forms/domain.py:447
 msgid "Options"
 msgstr "Opțiuni"
 
-#: admin/forms/domain.py:452
+#: admin/forms/domain.py:455
 msgid "New domain"
 msgstr "Domeniu nou"
 
-#: admin/forms/domain.py:465
+#: admin/forms/domain.py:468
 msgid "Domain created"
 msgstr "Domeniu creat"
 
@@ -633,8 +596,7 @@ msgstr "Ține o copii locale"
 
 #: admin/forms/forward.py:22
 msgid "Forward messages and store copies into your local mailbox"
-msgstr ""
-"Redirecționează mesajele și stochează copiile în căsuța postală locală "
+msgstr "Redirecționează mesajele și stochează copiile în căsuța postală locală "
 
 #: admin/forms/import_.py:11
 msgid "Select a file"
@@ -654,16 +616,14 @@ msgstr "Encriptează parola"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Bifeaza această opțune dacă parolele conținute în fșierul tău nu sunt "
-"encriptate"
+msgstr "Bifeaza această opțune dacă parolele conținute în fșierul tău nu sunt encriptate"
 
 #: admin/handlers.py:210
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Importul de cont a esuat (%s): domeniul nu există"
 
-#: admin/handlers.py:223 admin/models/mailbox.py:338
+#: admin/handlers.py:223 admin/models/mailbox.py:350
 msgid "Mailbox {} already exists"
 msgstr "Căsuța poștală {} deja există"
 
@@ -695,66 +655,73 @@ msgstr "Nu ești autorizat să imporți domenii"
 msgid "You are not allowed to import domain aliases."
 msgstr "Nu ești autorizat să imporți aliasuri de domenii"
 
-#: admin/lib.py:189 admin/tests/test_mx.py:127 admin/tests/test_mx.py:136
-#: admin/tests/test_mx.py:139
-#, fuzzy, python-format
-#| msgid "No DNS records found for %s"
+#: admin/lib.py:189 admin/tests/test_mx.py:152 admin/tests/test_mx.py:161
+#: admin/tests/test_mx.py:164
+#, python-format
 msgid "No DNS record found for %s"
-msgstr "Nu s-au găsit înregistrări DNS pentru %s"
+msgstr " Nu s-a găsit nicio înregistrare DNS pentru %s"
 
 #: admin/lib.py:192
-#, fuzzy, python-format
-#| msgid "No MX record for %s"
+#, python-format
 msgid "No %(type)s record for %(name)s"
-msgstr "Nu există înregidtrări MX pentru %s"
+msgstr "Nu %(type)sînregistrati pentru  %(name)s"
 
-#: admin/lib.py:196 admin/tests/test_mx.py:131
+#: admin/lib.py:196 admin/tests/test_mx.py:156
 msgid "No working name servers found"
 msgstr "Nu s-au găsit NS-uri funcționale"
 
-#: admin/lib.py:199 admin/tests/test_mx.py:133
+#: admin/lib.py:199 admin/tests/test_mx.py:158
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
-"Timeout întâmpinat la rezolvarea cererii DNS, imposibilă de interogat %s în "
-"acest moment"
+msgstr "Timeout întâmpinat la rezolvarea cererii DNS, imposibilă de interogat %s în acest moment"
 
 #: admin/lib.py:227
-#, fuzzy, python-brace-format
-#| msgid "Invalid IP address format for %(domain)s; %(addr)s"
+#, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
-msgstr "Format invalid de IP pentru %(domain)s; %(addr)s "
+msgstr "Adresă IP invalidă pentru {domain}; {addr}"
 
 #: admin/management/commands/subcommands/_import.py:93
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
+msgstr "Fișierul CSV nu este codat UTF-8, incercăm să determinăm codarea automat"
 
 #: admin/management/commands/subcommands/_import.py:105
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
-msgstr ""
+msgstr "Citim fișierul CSV folosind codarea %(encoding)s"
 
 #: admin/management/commands/subcommands/_import.py:116
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
-msgstr ""
+msgstr "Imposibil de decodat fișierul CSV folosind codarea %(encoding)s"
 
-#: admin/management/commands/subcommands/_mx.py:132
-msgid "[modoboa] DNSBL issue(s) for domain {}"
-msgstr "[modoboa] Problemă(e) DNSBL pentru domeniul {}  "
+#: admin/management/commands/subcommands/_mx.py:116
+msgid "MX {} listed by DNSBL provider {}"
+msgstr "MX {} listat de furnizorul DNSBL {}"
 
-#: admin/management/commands/subcommands/_mx.py:152
+#: admin/management/commands/subcommands/_mx.py:164
+msgid "Domain has no MX record"
+msgstr "Domeniul nu are înregistrare MX"
+
+#: admin/management/commands/subcommands/_mx.py:168
 msgid "Domain {} has no MX record"
 msgstr "Domeniul {} nu are înregistrări MX"
 
-#: admin/management/commands/subcommands/_mx.py:163
+#: admin/management/commands/subcommands/_mx.py:188
+msgid "Invalid MX record: {}"
+msgstr "Înregistrare MX invalidă: {}"
+
+#: admin/management/commands/subcommands/_mx.py:194
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
 msgstr "Înregistrarea MX pentru domeniul {0} este invalidă: {1}"
 
-#: admin/management/commands/subcommands/_mx.py:180
+#: admin/management/commands/subcommands/_mx.py:208
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] Problemă(e) MX pentru domeniul {}"
+
+#: admin/management/commands/subcommands/_mx.py:266
+msgid "[modoboa] DNSBL issue(s) for domain {}"
+msgstr "[modoboa] Problemă(e) DNSBL pentru domeniul {}  "
 
 #: admin/models/alias.py:32 admin/models/mailbox.py:95
 msgid "address"
@@ -764,7 +731,7 @@ msgstr "adresă"
 msgid "The alias address."
 msgstr "Adresă alias."
 
-#: admin/models/alias.py:39 admin/models/domain.py:37
+#: admin/models/alias.py:39 admin/models/domain.py:43
 #: admin/models/domain_alias.py:42
 msgid "enabled"
 msgstr "activat"
@@ -803,62 +770,62 @@ msgstr "Linie invalidă: %s"
 msgid "Domain '%s' does not exist"
 msgstr "Domeniul '%s' nu există"
 
-#: admin/models/domain.py:27 admin/models/domain_alias.py:34
+#: admin/models/domain.py:26 admin/models/domain_alias.py:34
 msgid "name"
 msgstr "nume"
 
-#: admin/models/domain.py:28
+#: admin/models/domain.py:27
 msgid "The domain name"
 msgstr "Numele domeniului"
 
-#: admin/models/domain.py:38
+#: admin/models/domain.py:39
+msgid "Number of messages this domain can send per day"
+msgstr "Numărul de mesaje pe care acest domeniu le poate trimite pe zi"
+
+#: admin/models/domain.py:44
 msgid "Check to activate this domain"
 msgstr "Bifează pentru a activa domeniul"
 
-#: admin/models/domain.py:43
+#: admin/models/domain.py:49
 msgid "Enable DNS checks"
 msgstr "Activează verificările DNS"
 
-#: admin/models/domain.py:44
+#: admin/models/domain.py:50
 msgid "Check to enable DNS checks for this domain"
 msgstr "Bifează pentru a activa verificările DNS pentru acest domeniu"
 
-#: admin/models/domain.py:51
+#: admin/models/domain.py:57
 msgid "Enable DKIM signing"
 msgstr "Activează semnarea DKIM"
 
-#: admin/models/domain.py:53
+#: admin/models/domain.py:59
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Dacă activezi această facilitate, o chieie DKIM se va genera pt acest "
-"domeniu."
+msgstr "Dacă activezi această facilitate, o chieie DKIM se va genera pt acest domeniu."
 
-#: admin/models/domain.py:59
+#: admin/models/domain.py:65
 msgid "Key length"
 msgstr "Mărime cheie"
 
-#: admin/models/domain.py:312 admin/models/domain_alias.py:67
+#: admin/models/domain.py:323 admin/models/domain_alias.py:67
 msgid "Invalid line"
 msgstr "Linie invalidă"
 
-#: admin/models/domain.py:322
+#: admin/models/domain.py:333
 msgid "No authorized MX record found for domain {}"
 msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu {}"
 
-#: admin/models/domain.py:329
+#: admin/models/domain.py:340
 msgid "Invalid quota value for domain '{}'"
 msgstr "Valuare de cotă invalidă pentru domeniul '{}'"
 
-#: admin/models/domain.py:336
+#: admin/models/domain.py:347
 msgid "Invalid default mailbox quota value for domain '{}'"
 msgstr "Valuare implicită de cotă invalidă pentru domeniul '{}'"
 
-#: admin/models/domain.py:341
+#: admin/models/domain.py:352
 msgid "Default mailbox quota cannot be greater than domain quota"
-msgstr ""
-"Valuarea de cotă implicită a unei cutii poștale nu poate fi mai mare decât "
-"cota de domeniu"
+msgstr "Valuarea de cotă implicită a unei cutii poștale nu poate fi mai mare decât cota de domeniu"
 
 #: admin/models/domain_alias.py:35
 msgid "The alias name"
@@ -881,60 +848,57 @@ msgstr "Domeniu necunoscut %s"
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adresa de email (fără partea @domeniu)"
 
-#: admin/models/mailbox.py:160
+#: admin/models/mailbox.py:166
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Nu s-a reușit preluarea locației pentru cutia poștală (%s)"
 
-#: admin/models/mailbox.py:253
+#: admin/models/mailbox.py:264
 msgid "A quota is required"
 msgstr "O cotă este necesară"
 
-#: admin/models/mailbox.py:259
+#: admin/models/mailbox.py:270
 msgid "Domain quota exceeded"
 msgstr "Cota pentru domeniu a fost depașită"
 
 #: admin/serializers.py:37
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
-"înseamnă fără cotă."
+msgstr "Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 înseamnă fără cotă."
 
-#: admin/serializers.py:107 admin/serializers.py:312 admin/serializers.py:410
+#: admin/serializers.py:115 admin/serializers.py:322 admin/serializers.py:424
 msgid "Permission denied."
 msgstr "Permisiune refuzată."
 
-#: admin/serializers.py:158
+#: admin/serializers.py:168
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr ""
-"Lista domenilor administrate (doar reselleri și administratori de domeniu)"
+msgstr "Lista domenilor administrate (doar reselleri și administratori de domeniu)"
 
-#: admin/serializers.py:262
+#: admin/serializers.py:272
 msgid "Not allowed for this role."
 msgstr "Ne permis pentru acest rol."
 
-#: admin/serializers.py:274
+#: admin/serializers.py:284
 msgid "Must be equal to mailbox full_address"
 msgstr "Trebuie să fie egal cu mailbox full_address"
 
-#: admin/serializers.py:299
+#: admin/serializers.py:309
 msgid "Local domain {} does not exist"
 msgstr "Domeniu local {} nu există"
 
-#: admin/serializers.py:397
+#: admin/serializers.py:411
 msgid "A list of recipient"
 msgstr "O listă de destinatari"
 
-#: admin/serializers.py:408
+#: admin/serializers.py:422
 msgid "Domain not found."
 msgstr "Domeniu negăsit"
 
-#: admin/serializers.py:457
+#: admin/serializers.py:471
 msgid "You don't have access to this domain."
 msgstr "Nu ai acces la acest domeniu."
 
-#: admin/serializers.py:465
+#: admin/serializers.py:479
 msgid "You don't have access to this mailbox."
 msgstr "Nu ai acces la această cutie postală"
 
@@ -969,14 +933,12 @@ msgstr "Se așteaptă verificările"
 #: admin/templates/admin/_domain_dnschecks_status.html:26
 #: admin/templates/admin/_domain_dnschecks_status.html:34
 #: admin/templates/admin/_domain_dnschecks_status.html:42
-#, fuzzy
-#| msgid "No DNS records found for %s"
 msgid "No record found"
-msgstr "Nu s-au găsit înregistrări DNS pentru %s"
+msgstr "Nu s-a găsit nicio înregistrare"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:24
 msgid "Waiting for key to be generated"
-msgstr ""
+msgstr "Așteptarea generării cheii"
 
 #: admin/templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
@@ -988,7 +950,7 @@ msgstr "Cantitate"
 
 #: admin/templates/admin/_global_statistics_widget.html:14
 #: admin/templates/admin/domain_detail.html:37
-#: admin/templates/admin/domain_detail.html:73
+#: admin/templates/admin/domain_detail.html:87
 msgid "Domain aliases"
 msgstr "Aliasuri de domeniu"
 
@@ -1035,27 +997,27 @@ msgstr "Nedefinit"
 msgid "Phone number"
 msgstr "Număr telefon"
 
-#: admin/templates/admin/account_detail.html:55
+#: admin/templates/admin/account_detail.html:61
 msgid "Administered domains"
 msgstr "Domenii administrate"
 
-#: admin/templates/admin/account_detail.html:61
+#: admin/templates/admin/account_detail.html:67
 msgid "No domain defined."
 msgstr "Nu există domenii administrate"
 
-#: admin/templates/admin/account_detail.html:75
+#: admin/templates/admin/account_detail.html:81
 msgid "Aliases"
 msgstr "Aliasuri"
 
-#: admin/templates/admin/account_detail.html:81
+#: admin/templates/admin/account_detail.html:87
 msgid "No alias defined"
 msgstr "Ne există alias definit"
 
-#: admin/templates/admin/account_detail.html:87
+#: admin/templates/admin/account_detail.html:93
 msgid "Additional sender addresses"
 msgstr "Adresa adițională a expeditorului"
 
-#: admin/templates/admin/account_detail.html:93
+#: admin/templates/admin/account_detail.html:99
 msgid "No sender address defined"
 msgstr "Nu există o adresă a expeditorului definită"
 
@@ -1084,7 +1046,8 @@ msgid "Address"
 msgstr "Adresă"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:12
-#: admin/templates/admin/domain_detail.html:100
+#: admin/templates/admin/domain_detail.html:114
+#: admin/templates/admin/domains_log_headers.html:6
 #: admin/templates/admin/messages_log_headers.html:6
 msgid "Status"
 msgstr "Statut"
@@ -1100,6 +1063,28 @@ msgstr "Totul este în regulă, domeniul este nelistat."
 #: admin/templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
 msgstr "Nu există informații valabile pentru acest domeniu."
+
+#: admin/templates/admin/domain_alarms.html:19
+msgid "Opened alarms for"
+msgstr "Alarme deschise pentru"
+
+#: admin/templates/admin/domain_alarms.html:25
+#: admin/templates/admin/domains_log_headers.html:3
+#: admin/templates/admin/messages_log_headers.html:3
+msgid "Date"
+msgstr "Data"
+
+#: admin/templates/admin/domain_alarms.html:26
+msgid "Message"
+msgstr "Mesaj"
+
+#: admin/templates/admin/domain_alarms.html:27
+msgid "Mailbox"
+msgstr "Căsuța poștală"
+
+#: admin/templates/admin/domain_alarms.html:40
+msgid "No opened alarm"
+msgstr "Nicio alarmă deschisă"
 
 #: admin/templates/admin/domain_detail.html:29
 msgid "Creation date"
@@ -1124,6 +1109,7 @@ msgid "MB"
 msgstr "MB"
 
 #: admin/templates/admin/domain_detail.html:54
+#: admin/templates/admin/domain_detail.html:73
 msgid "Usage"
 msgstr "Utilizare"
 
@@ -1138,36 +1124,45 @@ msgstr "utilizat"
 msgid "allocated"
 msgstr "alocat"
 
-#: admin/templates/admin/domain_detail.html:92
+#: admin/templates/admin/domain_detail.html:70
+msgid "per day"
+msgstr "pe zi"
+
+#: admin/templates/admin/domain_detail.html:76
+msgctxt "message count"
+msgid "used"
+msgstr "folosit"
+
+#: admin/templates/admin/domain_detail.html:106
 msgid "DNS"
 msgstr "DNS"
 
-#: admin/templates/admin/domain_detail.html:107
+#: admin/templates/admin/domain_detail.html:121
 msgid "DKIM key"
 msgstr "Cheie DKIM"
 
-#: admin/templates/admin/domain_detail.html:111
+#: admin/templates/admin/domain_detail.html:125
 msgid "Show key"
 msgstr "Arată cheia"
 
-#: admin/templates/admin/domain_detail.html:113
+#: admin/templates/admin/domain_detail.html:127
 msgid "Generate new key"
-msgstr ""
+msgstr "Generează o cheie nouă"
 
-#: admin/templates/admin/domain_detail.html:115
+#: admin/templates/admin/domain_detail.html:129
 msgid "Not generated"
 msgstr "Negenerat"
 
-#: admin/templates/admin/domain_detail.html:122
+#: admin/templates/admin/domain_detail.html:136
 msgid "Administrators"
 msgstr "Administratori"
 
-#: admin/templates/admin/domain_detail.html:134
-#: admin/templatetags/admin_tags.py:265
+#: admin/templates/admin/domain_detail.html:148
+#: admin/templatetags/admin_tags.py:279
 msgid "Remove this permission"
 msgstr "Elimină această permisie"
 
-#: admin/templates/admin/domain_detail.html:139
+#: admin/templates/admin/domain_detail.html:153
 msgid "No domain administrator defined yet."
 msgstr "Nu există un domeniu de administrator definit incă"
 
@@ -1193,6 +1188,20 @@ msgstr "Nu puteți crea un nou administrator de domeniu"
 #: admin/templates/admin/identities.html:29
 msgid "Add"
 msgstr "Adaugă"
+
+#: admin/templates/admin/domains_log_headers.html:2
+msgid "Queue ID"
+msgstr "Queue ID"
+
+#: admin/templates/admin/domains_log_headers.html:4
+#: admin/templates/admin/messages_log_headers.html:4
+msgid "From"
+msgstr "De la"
+
+#: admin/templates/admin/domains_log_headers.html:5
+#: admin/templates/admin/messages_log_headers.html:5
+msgid "To"
+msgstr "Către"
 
 #: admin/templates/admin/domains_quota_headers.html:3
 #: admin/templates/admin/identities_quota_headers.html:4
@@ -1246,31 +1255,17 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr ""
-"Furnizați un fișier CSV unde liniile respectă unul dintre următoarele "
-"formate<ul>: <li><em>domain; name; quota; default mailbox quota; enabled </"
-"em></li><li><em>domainalias; name; targeted domain; enabled</em></"
-"li><li><em> relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul>Primul element al fiecărei linii este "
-"obligatoriu și trebuie să fie egal cu una dintre valorile anterioare. Puteți "
-"utiliza un caracter diferit ca separator."
+msgstr "Furnizați un fișier CSV unde liniile respectă unul dintre următoarele formate<ul>: <li><em>domain; name; quota; default mailbox quota; enabled </em></li><li><em>domainalias; name; targeted domain; enabled</em></li><li><em> relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul>Primul element al fiecărei linii este obligatoriu și trebuie să fie egal cu una dintre valorile anterioare. Puteți utiliza un caracter diferit ca separator."
 
 #: admin/templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Furnizați un fișier CSV unde liniile respectă unul dintre următoarele "
-"formate:<ul><li><em> account; loginname; password; first name; last name; "
-"enabled; group; address; quota; [, domain, ...] </em></li><li><em>alias; "
-"address; enabled; recipient; recipient; ... </em></li></ul><p>Primul element "
-"al fiecărei linii este obligatoriu și trebuie să fie egal cu una dintre "
-"valorile anterioare.</p><p> Puteți utiliza un caracter diferit ca separator."
-"</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
+msgstr "Furnizați un fișier CSV unde liniile respectă unul dintre următoarele formate:<ul><li><em> account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...] </em></li><li><em>alias; address; enabled; recipient; recipient; ... </em></li></ul><p>Primul element al fiecărei linii este obligatoriu și trebuie să fie egal cu una dintre valorile anterioare.</p><p> Puteți utiliza un caracter diferit ca separator.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1294,19 +1289,7 @@ msgstr "Folosește valuarea implicită a domeniului"
 
 #: admin/templates/admin/messages_log_headers.html:2
 msgid "ID"
-msgstr ""
-
-#: admin/templates/admin/messages_log_headers.html:3
-msgid "Date"
-msgstr ""
-
-#: admin/templates/admin/messages_log_headers.html:4
-msgid "From"
-msgstr ""
-
-#: admin/templates/admin/messages_log_headers.html:5
-msgid "To"
-msgstr ""
+msgstr "ID"
 
 #: admin/templates/admin/mx_domain_detail.html:11
 msgid "Updated"
@@ -1314,8 +1297,7 @@ msgstr "Actualizat"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
-"Acest IP nu se potrivește cu nicio înregistrare MX definită în parametrii"
+msgstr "Acest IP nu se potrivește cu nicio înregistrare MX definită în parametrii"
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
@@ -1326,25 +1308,19 @@ msgstr "Nu există înregistrări MX pentru acest domeniu."
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr ""
-"Modoboa a detectat ca domeniul %(domain)s este listat sub DNSBL la urmatorii "
-"furnizori DNSBL:"
+msgstr "Modoboa a detectat ca domeniul %(domain)s este listat sub DNSBL la urmatorii furnizori DNSBL:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
-"Reputația domeniului va fi afectată și există șansa ca e-mailurile provenite "
-"de la acestă adresă să fie considerate spam. Ar trebui să contactați acești "
-"furnizori și să îi solicitați să elimine adresele(sau adresa) IP detectate."
+msgstr "Reputația domeniului va fi afectată și există șansa ca e-mailurile provenite de la acestă adresă să fie considerate spam. Ar trebui să contactați acești furnizori și să îi solicitați să elimine adresele(sau adresa) IP detectate."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
-"Modoboa a detectat ca domeniul %(domain)s nu are înregistrări MX valide: "
+msgstr "Modoboa a detectat ca domeniul %(domain)s nu are înregistrări MX valide: "
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1358,49 +1334,57 @@ msgstr "activat_m"
 msgid "enabled_f"
 msgstr "activat_f"
 
-#: admin/templatetags/admin_tags.py:45
+#: admin/templatetags/admin_tags.py:47
 msgid "List domains"
 msgstr "Listă domenii"
 
-#: admin/templatetags/admin_tags.py:50 admin/templatetags/admin_tags.py:105
+#: admin/templatetags/admin_tags.py:52 admin/templatetags/admin_tags.py:112
 msgid "List quotas"
 msgstr "Listă cote"
 
-#: admin/templatetags/admin_tags.py:62 admin/templatetags/admin_tags.py:110
+#: admin/templatetags/admin_tags.py:57
+msgid "Message logs"
+msgstr "Jurnalele de mesaje"
+
+#: admin/templatetags/admin_tags.py:69 admin/templatetags/admin_tags.py:117
 #: admin/views/import_.py:85 admin/views/import_.py:107
 msgid "Import"
 msgstr "Import"
 
-#: admin/templatetags/admin_tags.py:68 admin/templatetags/admin_tags.py:116
+#: admin/templatetags/admin_tags.py:75 admin/templatetags/admin_tags.py:123
 #: admin/views/export.py:39 admin/views/export.py:67
 msgid "Export"
 msgstr "Export"
 
-#: admin/templatetags/admin_tags.py:100
+#: admin/templatetags/admin_tags.py:107
 msgid "List identities"
 msgstr "Listare identități"
 
-#: admin/templatetags/admin_tags.py:135
+#: admin/templatetags/admin_tags.py:142
 msgid "View the domain's identities"
 msgstr "Afișare identități domeniului"
 
-#: admin/templatetags/admin_tags.py:141 admin/templatetags/admin_tags.py:184
-#: admin/templatetags/admin_tags.py:197
+#: admin/templatetags/admin_tags.py:149
+msgid "View domain's alarms"
+msgstr "Vezi alarmele domeniului"
+
+#: admin/templatetags/admin_tags.py:155 admin/templatetags/admin_tags.py:198
+#: admin/templatetags/admin_tags.py:211
 msgid "Edit {}"
 msgstr "Editează {}"
 
-#: admin/templatetags/admin_tags.py:151 admin/templatetags/admin_tags.py:188
-#: admin/templatetags/admin_tags.py:202
+#: admin/templatetags/admin_tags.py:165 admin/templatetags/admin_tags.py:202
+#: admin/templatetags/admin_tags.py:216
 #, python-format
 msgid "Delete %s?"
 msgstr "Șterge %s?"
 
-#: admin/tests/test_mx.py:130
+#: admin/tests/test_mx.py:155
 #, python-format
 msgid "No MX record for %s"
-msgstr "Nu există înregidtrări MX pentru %s"
+msgstr "Nu există înregistrări MX pentru %s"
 
-#: admin/tests/test_mx.py:142 admin/tests/test_mx.py:145
+#: admin/tests/test_mx.py:167 admin/tests/test_mx.py:170
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr "Format invalid de IP pentru %(domain)s; %(addr)s "
@@ -1440,11 +1424,11 @@ msgstr "Înregistrări MX ale {}"
 msgid "DNSBL summary for {}"
 msgstr "Sumar DNSBL pentru {}"
 
-#: admin/views/domain.py:202
+#: admin/views/domain.py:244
 msgid "You can't delete your own domain"
 msgstr "Nu poți să îți ștergi propriul domeniu"
 
-#: admin/views/domain.py:205
+#: admin/views/domain.py:247
 msgid "Domain deleted"
 msgid_plural "Domains deleted"
 msgstr[0] "Domeniu șters"
@@ -1492,39 +1476,3 @@ msgstr "Importă identități"
 #: admin/views/user.py:36
 msgid "Forward updated"
 msgstr "Redirecționare actualizată"
-
-#~ msgid "File name"
-#~ msgstr "Nume fișier"
-
-#, fuzzy
-#~| msgid "No DNS records found for %s"
-#~ msgid "No {type} record found for MX {mx}"
-#~ msgstr "Nu s-au găsit înregistrări DNS pentru %s"
-
-#, fuzzy
-#~| msgid "No MX record found for this domain."
-#~ msgid "No A record found for MX %(domain)s"
-#~ msgstr "Nu există înregistrări MX pentru acest domeniu."
-
-#, fuzzy
-#~| msgid "No MX record found for this domain."
-#~ msgid "No AAAA record found for MX %(domain)s"
-#~ msgstr "Nu există înregistrări MX pentru acest domeniu."
-
-#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-#~ msgstr ""
-#~ "Cota în MB impărțită între cutiile poștale. O valuare 0 înseamnă fără "
-#~ "cotă."
-
-#, fuzzy
-#~| msgid "No DNS records found for %s"
-#~ msgid "No DNS records found without MX for %s"
-#~ msgstr "Nu s-au găsit înregistrări DNS pentru %s"
-
-#, fuzzy
-#~| msgid "No DNS records found for %s"
-#~ msgid "No DNS records found without MX for %(domain)s"
-#~ msgstr "Nu s-au găsit înregistrări DNS pentru %s"
-
-#~ msgid "Unable to lookup ip addresses for %(domain)s; %(error)s"
-#~ msgstr "Nu s-a reușit căutarea adreselor IP pentru %(domain)s;%(error)s"
