@@ -325,7 +325,7 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(user.language, "fr")
 
         user.delete()
-        data["language"] = "pl_PL"
+        data["language"] = "pl"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         account = response.json()
