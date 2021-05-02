@@ -1,19 +1,17 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-# Translators:
-# Antoine Nguyen <tonio@ngyn.org>, 2020
-# Simona Iacob <s@zp1.net>, 2021
-# 
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 15:47+0100\n"
-"PO-Revision-Date: 2020-05-11 18:45+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: Simona Iacob <s@zp1.net>, 2021\n"
 "Language-Team: Romanian (Romania) (https://www.transifex.com/tonio/teams/13749/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +30,7 @@ msgstr "operațiune"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
-msgstr "Nu mai exită alte rezultate de înregistrări pentru afișare"
+msgstr "Nu se mai afișează nicio intrare în jurnal"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -48,15 +46,15 @@ msgstr "Eroare internă"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr "Nu mai există alte elemente ce pot fi afișate"
+msgstr "Nu mai sunt mesaje de afișat"
 
 #: static/js/listing.js:46
 msgid "Search"
-msgstr "Caută"
+msgstr "Căutare"
 
 #: static/js/searchbar.js:28
 msgid "Search..."
-msgstr "Caută..."
+msgstr "Căutare..."
 
 #: static/js/twocols_nav.js:170
 msgid "Are you sure?"
