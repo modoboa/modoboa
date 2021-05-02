@@ -101,84 +101,10 @@
       </v-stepper-content>
       <v-stepper-content step="5" class="flex-grow-0">
         <div class="text-center text-h3"><translate>Summary</translate></div>
-        <div class="subtitle mt-4 d-flex">
-          <translate class="text-h6">General</translate>
-          <a href="#" class="edit-link ml-auto" @click="step = 1"><translate>Modify</translate></a>
-        </div>
-        <v-row dense>
-          <v-col><translate class="grey--text">Name</translate></v-col>
-          <v-col class="text-right">{{ domain.name }}</v-col>
-        </v-row>
-        <v-row dense>
-          <v-col><translate class="grey--text">Type</translate></v-col>
-          <v-col class="text-right">{{ domain.type }}</v-col>
-        </v-row>
-        <v-row dense>
-          <v-col><translate class="grey--text">Enabled</translate></v-col>
-          <v-col class="text-right">{{ domain.enabled|yesno }}</v-col>
-        </v-row>
-        <div class="subtitle mt-4 d-flex">
-          <translate class="text-h6">DNS</translate>
-          <a href="#" class="edit-link ml-auto" @click="step = 2"><translate>Modify</translate></a>
-        </div>
-        <v-row dense>
-          <v-col><translate class="grey--text">Enable DNS checks</translate></v-col>
-          <v-col class="text-right">{{ domain.enable_dns_checks|yesno }}</v-col>
-        </v-row>
-        <v-row dense>
-          <v-col><translate class="grey--text">Enable DKIM signing</translate></v-col>
-          <v-col class="text-right">{{ domain.enable_dkim|yesno }}</v-col>
-        </v-row>
-        <v-row dense v-if="domain.enable_dkim">
-          <v-col><translate class="grey--text">DKIM key selector</translate></v-col>
-          <v-col class="text-right">{{ domain.dkim_key_selector }}</v-col>
-        </v-row>
-        <v-row dense v-if="domain.enable_dkim">
-          <v-col><translate class="grey--text">DKIM key length</translate></v-col>
-          <v-col class="text-right">{{ domain.dkim_key_length }}</v-col>
-        </v-row>
-        <div class="subtitle mt-4 d-flex">
-          <translate class="text-h6">Limitations</translate>
-          <a href="#" class="edit-link ml-auto" @click="step = 3"><translate>Modify</translate></a>
-        </div>
-        <v-row dense>
-          <v-col><translate class="grey--text">Quota</translate></v-col>
-          <v-col class="text-right">{{ domain.quota }}</v-col>
-        </v-row>
-        <v-row dense>
-          <v-col><translate class="grey--text">Default mailbox quota</translate></v-col>
-          <v-col class="text-right">{{ domain.default_mailbox_quota }}</v-col>
-        </v-row>
-        <v-row dense>
-          <v-col><translate class="grey--text">Message sending limit</translate></v-col>
-          <v-col class="text-right">{{ domain.message_sending_limit }}</v-col>
-        </v-row>
-        <div class="subtitle mt-4 d-flex">
-          <translate class="text-h6">Options</translate>
-          <a href="#" class="edit-link ml-auto" @click="step = 4"><translate>Modify</translate></a>
-        </div>
-        <v-row dense>
-          <v-col><translate class="grey--text">Create a domain administrator</translate></v-col>
-          <v-col class="text-right">{{ createAdmin|yesno }}</v-col>
-        </v-row>
-        <div v-if="createAdmin">
-          <v-row dense>
-            <v-col><translate class="grey--text">Administrator name</translate></v-col>
-            <v-col class="text-right">{{ domain.domain_admin.username }}</v-col>
-          </v-row>
-          <v-row dense>
-            <v-col><translate class="grey--text">Random password</translate></v-col>
-            <v-col class="text-right">{{ domain.domain_admin.with_random_password|yesno }}</v-col>
-          </v-row>
-          <v-row dense>
-            <v-col><translate class="grey--text">With mailbox</translate></v-col>
-            <v-col class="text-right">{{ domain.domain_admin.with_mailbox|yesno }}</v-col>
-          </v-row>
-          <v-row dense>
-            <v-col><translate class="grey--text">Create aliases</translate></v-col>
-            <v-col class="text-right">{{ domain.domain_admin.with_aliases|yesno }}</v-col>
-          </v-row>
-        </div>
+        <creation-summary
+          :sections="summarySections"
+          @modify-step="val => step = val"
+          />
         <div class="d-flex justify-center mt-8">
           <v-btn
             color="primary"
@@ -198,6 +124,7 @@
 <script>
 import { bus } from '@/main'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
+import CreationSummary from '@/components/tools/CreationSummary'
 import DomainDNSForm from './DomainDNSForm'
 import DomainGeneralForm from './DomainGeneralForm'
 import DomainLimitationsForm from './DomainLimitationsForm'
@@ -207,10 +134,69 @@ export default {
   props: ['value'],
   components: {
     ConfirmDialog,
+    CreationSummary,
     'domain-dns-form': DomainDNSForm,
     DomainGeneralForm,
     DomainLimitationsForm,
     DomainOptionsForm
+  },
+  computed: {
+    summarySections () {
+      const result = [
+        {
+          title: this.$gettext('General'),
+          items: [
+            { key: this.$gettext('Name'), value: this.domain.name },
+            { key: this.$gettext('Type'), value: this.domain.type },
+            { key: this.$gettext('Enabled'), value: this.domain.enabled, type: 'yesno' }
+          ]
+        },
+        {
+          title: this.$gettext('DNS'),
+          items: [
+            { key: this.$gettext('Enable DNS checks'), value: this.domain.enable_dns_checks, type: 'yesno' },
+            { key: this.$gettext('Enable DKIM signing'), value: this.domain.enable_dkim, type: 'yesno' }
+          ]
+        },
+        {
+          title: this.$gettext('Limitations'),
+          items: [
+            { key: this.$gettext('Quota'), value: this.domain.quota },
+            { key: this.$gettext('Default mailbox quota'), value: this.domain.default_mailbox_quota },
+            { key: this.$gettext('Message sending limit'), value: this.domain.message_sending_limit }
+          ]
+        },
+        {
+          title: this.$gettext('Options'),
+          items: [
+            { key: this.$gettext('Create a domain administrator'), value: this.createAdmin, type: 'yesno' }
+          ]
+        }
+      ]
+      if (this.domain.enable_dkim) {
+        result[1].items.push({ key: this.$gettext('DKIM key selector'), value: this.domain.dkim_key_selector })
+        result[1].items.push({ key: this.$gettext('DKIM key length'), value: this.domain.dkim_key_length })
+      }
+      if (this.createAdmin) {
+        result[3].items.push({ key: this.$gettext('Administrator name'), value: this.domain.domain_admin.username })
+        result[3].items.push({
+          key: this.$gettext('Random password'),
+          value: this.domain.domain_admin.with_random_password,
+          type: 'yesno'
+        })
+        result[3].items.push({
+          key: this.$gettext('With mailbox'),
+          value: this.domain.domain_admin.with_mailbox,
+          type: 'yesno'
+        })
+        result[3].items.push({
+          key: this.$gettext('Create aliases'),
+          value: this.domain.domain_admin.with_aliases,
+          type: 'yesno'
+        })
+      }
+      return result
+    }
   },
   data () {
     return {
