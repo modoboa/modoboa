@@ -265,13 +265,13 @@ export default {
       try {
         await accounts.validate(this.account)
       } catch (error) {
+        if (error.response.data.mailbox && error.response.data.mailbox.full_address) {
+          this.$refs[`form_${current}`].$refs.observer.setErrors({
+            username: error.response.data.mailbox.full_address
+          })
+        }
         this.$refs[`form_${current}`].$refs.observer.setErrors(error.response.data)
         return
-      }
-      if (next === 5 && this.account.random_password) {
-        accounts.getRandomPassword().then(resp => {
-          this.$set(this.account, 'password', resp.data.password)
-        })
       }
       this.step = next
     },

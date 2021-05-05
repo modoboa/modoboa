@@ -49,7 +49,7 @@
               <v-icon>mdi-dots-horizontal</v-icon>
             </v-btn>
           </template>
-          <menu-items :items="menuItems" :object="item" />
+          <menu-items :items="getMenuItems(item)" :object="item" />
         </v-menu>
       </div>
     </template>
@@ -60,11 +60,14 @@
 
 <script>
 import identities from '@/api/identities'
+import MenuItems from '@/components/tools/MenuItems'
 
 export default {
+  components: {
+    MenuItems
+  },
   data () {
     return {
-      menuItems: [],
       headers: [
         { text: this.$gettext('Name'), value: 'identity' },
         { text: this.$gettext('Fullname/recipient'), value: 'name_or_rcpt' },
@@ -77,10 +80,18 @@ export default {
     }
   },
   methods: {
+    editAccount (account) {
+      this.$router.push({ name: 'AccountEdit', params: { id: account.pk } })
+    },
     fetchIdentities () {
       identities.getAll().then(resp => {
         this.identities = resp.data
       })
+    },
+    getMenuItems (item) {
+      return [
+        { label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editAccount }
+      ]
     }
   },
   mounted () {

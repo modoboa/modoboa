@@ -1,18 +1,5 @@
 <template>
 <validation-observer ref="observer">
-  <validation-provider
-    v-slot="{ errors }"
-    rules="required"
-    >
-    <v-text-field
-      v-model="account.mailbox.full_address"
-      :label="'Email' | translate"
-      :error-messages="errors"
-      :disabled="account.role === 'SimpleUsers'"
-      outlined
-      dense
-      />
-  </validation-provider>
   <label class="m-label">{{ $gettext('Quota') }}</label>
   <v-switch
     v-model="account.mailbox.use_domain_quota"

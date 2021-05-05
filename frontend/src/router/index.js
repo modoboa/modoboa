@@ -50,6 +50,15 @@ const routes = [
     }
   },
   {
+    path: '/identities/accounts/:id/edit',
+    name: 'AccountEdit',
+    component: () => import('../views/identities/AccountEdit.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+
+  {
     path: '/parameters/:app',
     name: 'ParametersEdit',
     component: ParametersForm,

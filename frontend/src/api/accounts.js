@@ -6,6 +6,9 @@ export default {
   getAll ({ domain, role }) {
     return repository.get(`/${resource}/`, { params: { domain, role } })
   },
+  get (accountId) {
+    return repository.get(`${resource}/${accountId}/`)
+  },
   getRandomPassword () {
     return repository.get(`${resource}/random_password`)
   },
@@ -14,5 +17,8 @@ export default {
   },
   create (data) {
     return repository.post(`${resource}/`, data)
+  },
+  patch (accountId, data) {
+    return repository.patch(`${resource}/${accountId}/`, data)
   }
 }
