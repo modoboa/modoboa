@@ -20,7 +20,7 @@ from modoboa.core import (
 )
 from modoboa.lib import (
     email_utils, exceptions as lib_exceptions, fields as lib_fields,
-    permissions, web_utils
+    permissions, validators, web_utils
 )
 from modoboa.parameters import tools as param_tools
 
@@ -294,14 +294,20 @@ class WritableAccountSerializer(AccountSerializer):
                 "master_user": _("Not allowed for this role.")
             })
         if role == "SimpleUsers":
+            username = data.get("username")
+            if username:
+                try:
+                    validators.UTF8EmailValidator()(username)
+                except ValidationError as err:
+                    raise ValidationError({"username": err.message})
             mailbox = data.get("mailbox")
             if mailbox is None:
                 if not self.instance:
                     data["mailbox"] = {
-                        "full_address": data["username"],
+                        "full_address": username,
                         "use_domain_quota": True
                     }
-            elif "full_address" in mailbox and mailbox["full_address"] != data["username"]:
+            elif "full_address" in mailbox and mailbox["full_address"] != username:
                 raise serializers.ValidationError({
                     "username": _("Must be equal to mailbox full_address")
                 })

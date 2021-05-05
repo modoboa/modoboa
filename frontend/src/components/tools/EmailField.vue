@@ -126,7 +126,9 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('resize', this.onResize)
+    // window.addEventListener('resize', this.onResize)
+  },
+  updated () {
     this.$nextTick(() => {
       this.updateMinWidthProperty()
     })

@@ -146,6 +146,7 @@ class TagSerializer(serializers.Serializer):
 class IdentitySerializer(serializers.Serializer):
     """Serializer used for identities."""
 
+    pk = serializers.IntegerField()
     identity = serializers.CharField()
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)

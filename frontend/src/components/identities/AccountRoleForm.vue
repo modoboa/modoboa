@@ -7,7 +7,7 @@
     <v-row>
       <v-col cols="7">
         <choice-field v-model="account.role"
-                      :label="'Role' | translate"
+                      :label="'Choose a role' | translate"
                       :choices="accountRoles"
                       :error-messages="errors"
                       :choices-per-line="2"
@@ -35,10 +35,12 @@ export default {
   props: ['account'],
   computed: {
     roleLabel () {
-      return this.accountRoles.find(role => role.value === this.account.role).label
+      const role = this.accountRoles.find(role => role.value === this.account.role)
+      return role !== undefined ? role.label : ''
     },
     roleHelp () {
-      return this.accountRoles.find(role => role.value === this.account.role).help
+      const role = this.accountRoles.find(role => role.value === this.account.role)
+      return role !== undefined ? role.help : ''
     }
   },
   data () {
