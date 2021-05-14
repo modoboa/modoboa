@@ -57,7 +57,14 @@ const routes = [
       requiresAuth: true
     }
   },
-
+  {
+    path: '/identities/aliases/:id/edit',
+    name: 'AliasEdit',
+    component: () => import('../views/identities/AliasEdit.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   {
     path: '/parameters/:app',
     name: 'ParametersEdit',

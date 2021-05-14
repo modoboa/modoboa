@@ -1,6 +1,10 @@
 """Admin API v2 serializers."""
 
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
+
+from django.contrib.auth import password_validation
 
 from rest_framework import serializers
 
@@ -8,6 +12,7 @@ from modoboa.admin.api.v1 import serializers as v1_serializers
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
+from modoboa.lib import validators, web_utils
 from modoboa.parameters import tools as param_tools
 
 from ... import constants, lib, models
@@ -105,15 +110,24 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     enable_mx_checks = serializers.BooleanField(default=True)
     valid_mxs = serializers.CharField(allow_blank=True)
     domains_must_have_authorized_mx = serializers.BooleanField(default=False)
+    enable_spf_checks = serializers.BooleanField(default=True)
+    enable_dkim_checks = serializers.BooleanField(default=True)
+    enable_dmarc_checks = serializers.BooleanField(default=True)
+    enable_autoconfig_checks = serializers.BooleanField(default=True)
+    custom_dns_server = serializers.IPAddressField(allow_blank=True)
     enable_dnsbl_checks = serializers.BooleanField(default=True)
     dkim_keys_storage_dir = serializers.CharField(allow_blank=True)
     dkim_default_key_length = serializers.ChoiceField(
         default=2048, choices=constants.DKIM_KEY_LENGTHS)
+    default_domain_quota = serializers.IntegerField(default=0)
+    default_domain_message_limit = serializers.IntegerField(
+        required=False, allow_null=True)
 
     # Mailboxes settings
     handle_mailboxes = serializers.BooleanField(default=False)
-    default_domain_quota = serializers.IntegerField(default=0)
     default_mailbox_quota = serializers.IntegerField(default=0)
+    default_mailbox_message_limit = serializers.IntegerField(
+        required=False, allow_null=True)
     auto_account_removal = serializers.BooleanField(default=False)
     auto_create_domain_and_mailbox = serializers.BooleanField(default=True)
     create_alias_on_mbox_rename = serializers.BooleanField(default=False)
@@ -147,9 +161,35 @@ class IdentitySerializer(serializers.Serializer):
     """Serializer used for identities."""
 
     pk = serializers.IntegerField()
+    type = serializers.CharField()
     identity = serializers.CharField()
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)
+
+
+class MailboxSerializer(serializers.ModelSerializer):
+    """Base mailbox serializer."""
+
+    quota = serializers.CharField(required=False)
+
+    class Meta:
+        model = models.Mailbox
+        fields = (
+            "pk", "use_domain_quota", "quota", "message_limit"
+        )
+
+    def validate_quota(self, value):
+        """Convert quota to MB."""
+        return web_utils.size2integer(value, output_unit="MB")
+
+    def validate(self, data):
+        """Check if quota is required."""
+        if not data.get("use_domain_quota", False):
+            if "quota" not in data:
+                raise serializers.ValidationError({
+                    "quota": _("This field is required")
+                })
+        return data
 
 
 class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
@@ -159,6 +199,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         child=lib_fields.DRFEmailFieldUTF8(),
         required=False
     )
+    mailbox = MailboxSerializer(required=False)
 
     class Meta(v1_serializers.WritableAccountSerializer.Meta):
         fields = tuple(
@@ -176,20 +217,98 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             aliases.append({"localpart": localpart, "domain": domain})
         return aliases
 
+    def validate(self, data):
+        """Check constraints."""
+        master_user = data.get("master_user", False)
+        role = data.get("role")
+        if master_user and role != "SuperAdmins":
+            raise serializers.ValidationError({
+                "master_user": _("Not allowed for this role.")
+            })
+        if role == "SimpleUsers":
+            username = data.get("username")
+            if username:
+                try:
+                    validators.UTF8EmailValidator()(username)
+                except ValidationError as err:
+                    raise ValidationError({"username": err.message})
+            mailbox = data.get("mailbox")
+            if mailbox is None:
+                if not self.instance:
+                    data["mailbox"] = {
+                        "use_domain_quota": True
+                    }
+        condition = (
+            not data.get("random_password") and (
+                data.get("password") or
+                not self.partial
+            )
+        )
+        if condition:
+            password = data.get("password")
+            if password:
+                try:
+                    password_validation.validate_password(
+                        data["password"], self.instance)
+                except ValidationError as exc:
+                    raise serializers.ValidationError({
+                        "password": exc.messages[0]})
+            elif not self.instance:
+                raise serializers.ValidationError({
+                    "password": _("This field is required.")
+                })
+        domain_names = data.get("domains")
+        if not domain_names:
+            return data
+        domains = []
+        for name in domain_names:
+            domain = models.Domain.objects.filter(name=name).first()
+            if domain:
+                domains.append(domain)
+                continue
+            raise serializers.ValidationError({
+                "domains": _("Local domain {} does not exist").format(name)
+            })
+        data["domains"] = domains
+        return data
+
     def create(self, validated_data):
-        """Handle aliases."""
-        user = self.context["request"].user
+        """Create account, mailbox and aliases."""
+        creator = self.context["request"].user
+        mailbox_data = validated_data.pop("mailbox", None)
+        role = validated_data.pop("role")
+        domains = validated_data.pop("domains", [])
+        random_password = validated_data.pop("random_password", False)
         aliases = validated_data.pop("aliases", None)
-        user = super().create(validated_data)
+        user = core_models.User(**validated_data)
+        if random_password:
+            password = lib.make_password()
+        else:
+            password = validated_data.pop("password")
+        user.set_password(password)
+        if "language" not in validated_data:
+            user.language = settings.LANGUAGE_CODE
+        user.save(creator=creator)
+        if mailbox_data:
+            mailbox_data["full_address"] = user.username
+            self._create_mailbox(creator, user, mailbox_data)
+        user.role = role
+        self.set_permissions(user, domains)
         if aliases:
             for alias in aliases:
                 models.Alias.objects.create(
-                    creator=user,
+                    creator=creator,
                     domain=alias.domain,
                     address=alias.localpart,
-                    recipients=[validated_data["mailbox"]["full_address"]]
+                    recipients=[user.username]
                 )
         return user
+
+
+class DeleteAccountSerializer(serializers.Serializer):
+    """Serializer used with delete operation."""
+
+    keepdir = serializers.BooleanField(default=False)
 
 
 class AliasSerializer(v1_serializers.AliasSerializer):
@@ -197,4 +316,8 @@ class AliasSerializer(v1_serializers.AliasSerializer):
 
     class Meta(v1_serializers.AliasSerializer.Meta):
         # We remove 'internal' field
-        fields = ("pk", "address", "enabled", "internal", "recipients")
+        fields = tuple(
+            field
+            for field in v1_serializers.AliasSerializer.Meta.fields
+            if field != "internal"
+        ) + ("expire_at", "description")

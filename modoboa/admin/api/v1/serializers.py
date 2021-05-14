@@ -454,7 +454,7 @@ class AliasSerializer(serializers.ModelSerializer):
     def validate_address(self, value):
         """Check domain."""
         local_part, self.domain = admin_models.validate_alias_address(
-            value, self.context["request"].user)
+            value, self.context["request"].user, instance=self.instance)
         return value
 
     def create(self, validated_data):

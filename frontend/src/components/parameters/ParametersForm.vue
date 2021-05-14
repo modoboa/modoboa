@@ -15,34 +15,39 @@
           <v-card>
             <v-card-text>
               <template v-for="(param, index) in displayableParams(element.parameters)">
-                <v-switch :key="index"
-                          :label="param.label"
-                          v-model="parameters[param.name]"
-                          :hint="param.help_text"
-                          persistent-hint
-                          class="my-2"
-                          v-if="param.widget === 'BooleanField'"
-                          />
-                <v-select :key="index"
-                          :label="param.label"
-                          v-model="parameters[param.name]"
-                          :items="param.choices"
-                          :hint="param.help_text"
-                          persistent-hint
-                          class="my-2"
-                          v-else-if="param.widget === 'ChoiceField'"
-                          />
-                <v-text-field
-                  :key="index"
-                  :label="param.label"
-                  :hint="param.help_text"
-                  persistent-hint
-                  v-model="parameters[param.name]"
-                  :error="formErrors[param.name] !== undefined"
-                  :error-messages="formErrors[param.name]"
-                  class="my-2"
-                  v-else
-                  />
+                <div class="my-4" :key="index">
+                <template v-if="param.widget === 'BooleanField'">
+                  <v-switch
+                    v-model="parameters[param.name]"
+                    :label="param.label"
+                    :hint="param.help_text"
+                    persistent-hint
+                    v-if="param.widget === 'BooleanField'"
+                    />
+                </template>
+                <template v-else>
+                  <label class="m-label">{{ param.label }}</label>
+                  <v-select
+                    v-model="parameters[param.name]"
+                    :items="param.choices"
+                    :hint="param.help_text"
+                    persistent-hint
+                    v-if="param.widget === 'ChoiceField'"
+                    dense
+                    outlined
+                    />
+                  <v-text-field
+                    :hint="param.help_text"
+                    persistent-hint
+                    v-model="parameters[param.name]"
+                    :error="formErrors[param.name] !== undefined"
+                    :error-messages="formErrors[param.name]"
+                    v-else
+                    dense
+                    outlined
+                    />
+                </template>
+                </div>
               </template>
             </v-card-text>
           </v-card>
@@ -64,6 +69,7 @@
 </template>
 
 <script>
+import { bus } from '@/main'
 import parameters from '@/api/parameters'
 
 export default {
@@ -112,9 +118,10 @@ export default {
       return params.filter(param => this.display(param))
     },
     save () {
-      parameters.saveApplication(this.$route.params.app, this.parameters).then(response => {
-      }, response => {
-        this.formErrors = response.data
+      parameters.saveApplication(this.$route.params.app, this.parameters).then(() => {
+        bus.$emit('notification', { msg: this.$gettext('Parameters updated') })
+      }).catch(error => {
+        this.formErrors = error.response.data
       })
     }
   }

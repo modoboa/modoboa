@@ -184,7 +184,6 @@ class AliasViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.AliasSerializer
-    http_method_names = ["get", "post", "put", "delete"]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

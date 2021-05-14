@@ -20,5 +20,8 @@ export default {
   },
   patch (accountId, data) {
     return repository.patch(`${resource}/${accountId}/`, data)
+  },
+  delete (accountId, data) {
+    return repository.post(`${resource}/${accountId}/delete/`, data)
   }
 }

@@ -111,11 +111,13 @@ def mailbox_deleted_handler(sender, **kwargs):
             alias.delete()
     models.Quota.objects.filter(username=mb.full_address).delete()
     request = lib_signals.get_request()
+    print(request)
     if request:
         if not request.localconfig.parameters.get_value(
                 "handle_mailboxes", raise_exception=False):
             return
         keepdir = request.POST.get("keepdir", "false") == "true"
+        print(keepdir)
         if keepdir:
             return
         mb.delete_dir()
