@@ -139,6 +139,8 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
     def get_serializer_class(self):
         if self.action in ["create", "validate"]:
             return serializers.WritableAccountSerializer
+        if self.action == "delete":
+            return serializers.DeleteAccountSerializer
         return super().get_serializer_class()
 
     def get_queryset(self):
@@ -153,7 +155,7 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
 
     @action(methods=["post"], detail=False)
     def validate(self, request, **kwargs):
-        """Validate given alias without creating it."""
+        """Validate given account without creating it."""
         serializer = self.get_serializer(
             data=request.data,
             context=self.get_serializer_context(),
@@ -167,6 +169,15 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         password = lib.make_password()
         return response.Response({"password": password})
 
+    @action(methods=["post"], detail=True)
+    def delete(self, request, **kwargs):
+        """Custom delete method that accepts body arguments."""
+        account = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        account.delete()
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class IdentityViewSet(viewsets.ViewSet):
     """Viewset for identities."""
@@ -178,3 +189,25 @@ class IdentityViewSet(viewsets.ViewSet):
         serializer = serializers.IdentitySerializer(
             lib.get_identities(request.user), many=True)
         return response.Response(serializer.data)
+
+
+class AliasViewSet(v1_viewsets.AliasViewSet):
+    """Viewset for Alias."""
+
+    serializer_class = serializers.AliasSerializer
+
+    @action(methods=["post"], detail=False)
+    def validate(self, request, **kwargs):
+        """Validate given alias without creating it."""
+        serializer = self.get_serializer(
+            data=request.data,
+            context=self.get_serializer_context(),
+            partial=True)
+        serializer.is_valid(raise_exception=True)
+        return response.Response(status=204)
+
+    @action(methods=["get"], detail=False)
+    def random_address(self, request, **kwargs):
+        return response.Response({
+            "address": models.Alias.generate_random_address()
+        })

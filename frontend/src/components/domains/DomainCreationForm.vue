@@ -1,130 +1,31 @@
 <template>
-<div class="d-flex justify-center inner">
-  <v-stepper v-model="step">
-    <v-stepper-header class="align-center px-10">
-      <v-img
-        src="../../assets/Modoboa_RVB-BLEU-SANS.png"
-        max-width="190"
-        />
-      <v-stepper-step :complete="step > 1" step="1">
-        <translate>General</translate>
-      </v-stepper-step>
-      <v-stepper-step :complete="step > 2" step="2">
-        <translate>DNS</translate>
-      </v-stepper-step>
-      <v-stepper-step :complete="step > 3" step="3">
-        <translate>Limitations</translate>
-      </v-stepper-step>
-      <v-stepper-step :complete="step > 4" step="4">
-        <translate>Options</translate>
-      </v-stepper-step>
-      <v-stepper-step step="5">
-        <translate>Summary</translate>
-      </v-stepper-step>
-      <v-btn icon @click="close">
-        <v-icon color="primary" x-large>mdi-close</v-icon>
-      </v-btn>
-    </v-stepper-header>
-    <v-stepper-items class="mt-4 d-flex justify-center">
-      <v-stepper-content step="1" class="flex-grow-0">
-        <div class="mb-6 text-h5">
-          <translate class="grey--text text--darken-1">New domain</translate> /
-          <translate>General</translate>
-        </div>
-        <domain-general-form ref="form_1" :domain="domain" />
-        <div class="d-flex justify-end">
-          <v-btn
-            color="primary"
-            @click="goToNextStep(1, 2)"
-            large
-            >
-            <translate>Next</translate>
-          </v-btn>
-        </div>
-      </v-stepper-content>
-      <v-stepper-content step="2" class="flex-grow-0">
-        <div class="mb-6 text-h5">
-          <translate class="grey--text text--darken-1">New domain</translate> /
-          <translate>DNS</translate>
-        </div>
-        <domain-dns-form ref="form_2" :domain="domain" />
-        <div class="d-flex justify-end mt-8">
-          <v-btn @click="step = 1" class="mr-10" text>
-            <translate>Back</translate>
-          </v-btn>
-          <v-btn
-            color="primary"
-            @click="step = 3"
-            large
-            >
-            <translate>Next</translate>
-          </v-btn>
-        </div>
-      </v-stepper-content>
-      <v-stepper-content step="3" class="flex-grow-0">
-        <div class="mb-6 text-h5">
-          <translate class="grey--text text--darken-1">New domain</translate> /
-          <translate>Limitations</translate>
-        </div>
-        <domain-limitations-form ref="form_3" :domain="domain" />
-        <div class="d-flex justify-end mt-8">
-          <v-btn @click="step = 2" class="mr-10" text>
-            <translate>Back</translate>
-          </v-btn>
-          <v-btn
-            color="primary"
-            @click="goToNextStep(3, 4)"
-            large
-            >
-            <translate>Next</translate>
-          </v-btn>
-        </div>
-      </v-stepper-content>
-      <v-stepper-content step="4" class="flex-grow-0">
-        <div class="mb-6 text-h5">
-          <translate class="grey--text text--darken-1">New domain</translate> /
-          <translate>Options</translate>
-        </div>
-        <domain-options-form ref="form_4" :domain="domain" @createAdmin="updateCreateAdmin" />
-        <div class="d-flex justify-end mt-8">
-          <v-btn @click="step = 3" class="mr-10" text>
-            <translate>Back</translate>
-          </v-btn>
-          <v-btn
-            color="primary"
-            @click="goToNextStep(4, 5)"
-            large
-            >
-            <translate>Next</translate>
-          </v-btn>
-        </div>
-      </v-stepper-content>
-      <v-stepper-content step="5" class="flex-grow-0">
-        <div class="text-center text-h3"><translate>Summary</translate></div>
-        <creation-summary
-          :sections="summarySections"
-          @modify-step="val => step = val"
-          />
-        <div class="d-flex justify-center mt-8">
-          <v-btn
-            color="primary"
-            @click="submit"
-            large
-            >
-            <translate>Confirm and create</translate>
-          </v-btn>
-        </div>
-      </v-stepper-content>
-    </v-stepper-items>
-  </v-stepper>
-  <confirm-dialog ref="confirm" />
-</div>
+<creation-form
+  :title="'New domain'|translate"
+  :steps="steps"
+  :form-observer-getter="getObserver"
+  :validate-object="validateDomain"
+  :summary-sections="summarySections"
+  @close="close"
+  @create="submit"
+  >
+  <template v-slot:form.general="{ step }">
+    <domain-general-form :ref="`form_${step}`" :domain="domain" />
+  </template>
+  <template v-slot:form.dns="{ step }">
+    <domain-dns-form :ref="`form_${step}`" :domain="domain" />
+  </template>
+  <template v-slot:form.limitations="{ step }">
+    <domain-limitations-form :ref="`form_${step}`" :domain="domain" />
+  </template>
+  <template v-slot:form.options="{ step }">
+    <domain-options-form :ref="`form_${step}`" :domain="domain" @createAdmin="updateCreateAdmin" />
+  </template>
+</creation-form>
 </template>
 
 <script>
 import { bus } from '@/main'
-import ConfirmDialog from '@/components/layout/ConfirmDialog'
-import CreationSummary from '@/components/tools/CreationSummary'
+import CreationForm from '@/components/tools/CreationForm'
 import DomainDNSForm from './DomainDNSForm'
 import DomainGeneralForm from './DomainGeneralForm'
 import DomainLimitationsForm from './DomainLimitationsForm'
@@ -133,8 +34,7 @@ import DomainOptionsForm from './DomainOptionsForm'
 export default {
   props: ['value'],
   components: {
-    ConfirmDialog,
-    CreationSummary,
+    CreationForm,
     'domain-dns-form': DomainDNSForm,
     DomainGeneralForm,
     DomainLimitationsForm,
@@ -205,7 +105,12 @@ export default {
         domain_admin: {}
       },
       formErrors: {},
-      step: 1
+      steps: [
+        { name: 'general', title: this.$gettext('General') },
+        { name: 'dns', title: this.$gettext('DNS') },
+        { name: 'limitations', title: this.$gettext('Limitations') },
+        { name: 'options', title: this.$gettext('Options') }
+      ]
     }
   },
   mounted () {
@@ -230,32 +135,15 @@ export default {
         }
       }
     },
-    async close (withConfirm) {
-      if (withConfirm) {
-        const confirm = await this.$refs.confirm.open(
-          this.$gettext('Warning'),
-          this.$gettext('If you close this form now, your modifications won\'t be saved. Do you confirm?'),
-          {
-            color: 'error'
-          }
-        )
-        if (!confirm) {
-          return
-        }
-      }
-      this.$emit('close')
+    close () {
       this.initDomain()
-      this.step = 1
-      this.$refs.observer_1.reset()
-      this.$refs.observer_3.reset()
-      this.$refs.observer_4.reset()
+      this.$emit('close')
     },
-    async goToNextStep (current, next) {
-      const valid = await this.$refs[`form_${current}`].$refs.observer.validate()
-      if (!valid) {
-        return
-      }
-      this.step = next
+    getObserver (step) {
+      return this.$refs[`form_${step}`].$refs.observer
+    },
+    validateDomain () {
+
     },
     updateCreateAdmin (value) {
       this.createAdmin = value
@@ -273,33 +161,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.inner {
-  background-color: #fff;
-}
-.v-stepper {
-  width: 100%;
-  overflow: auto;
-
-  &__content {
-    width: 60%;
-  }
-
-  &__items {
-    overflow-y: auto;
-  }
-
-  &__wrapper {
-    padding: 0 10px;
-  }
-}
-.subtitle {
-  color: #000;
-  border-bottom: 1px solid #DBDDDF;
-}
-
-.edit-link {
-  text-decoration: none;
-}
-</style>

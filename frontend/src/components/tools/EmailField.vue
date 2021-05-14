@@ -4,6 +4,7 @@
     ref="input"
     v-model="input"
     outlined
+    dense
     v-bind="$attrs"
     v-on="$listeners"
     @input="update"
@@ -31,7 +32,13 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  props: ['value'],
+  props: {
+    value: String,
+    allowAdd: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     ...mapGetters({
       domains: 'identities/domains'
@@ -75,6 +82,8 @@ export default {
         // on enter or tab
         if (this.filteredDomains.length > 0) {
           this.selectDomain(this.filteredDomains[this.selectionIndex])
+        } else if (this.allowAdd) {
+          this.selectDomain()
         }
         e.preventDefault()
       } else if (keyCode === 27) {
@@ -100,7 +109,9 @@ export default {
       }
     },
     selectDomain (domain) {
-      this.input = this.input.split('@')[0] + '@' + domain.name
+      if (domain !== undefined) {
+        this.input = this.input.split('@')[0] + '@' + domain.name
+      }
       this.showMenu = false
       this.$emit('input', this.input)
       this.$emit('domain-selected')
@@ -108,7 +119,11 @@ export default {
     update (value) {
       if (this.input.indexOf('@') !== -1) {
         this.domainSearch = this.input.split('@')[1]
-        this.showMenu = true
+        if (this.allowAdd) {
+          this.showMenu = this.filteredDomains.length > 0
+        } else {
+          this.showMenu = true
+        }
       } else {
         this.showMenu = false
       }
@@ -132,6 +147,11 @@ export default {
     this.$nextTick(() => {
       this.updateMinWidthProperty()
     })
+  },
+  watch: {
+    value (newValue) {
+      this.input = newValue
+    }
   }
 }
 </script>

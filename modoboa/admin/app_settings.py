@@ -302,10 +302,43 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     "does not use one of the defined addresses."
                 )
             }),
+            ("enable_spf_checks", {
+                "label": ugettext_lazy("Enable SPF checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain has a valid SPF record"
+                )
+            }),
+            ("enable_dkim_checks", {
+                "label": ugettext_lazy("Enable DKIM checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain with DKIM signin enabled "
+                    "has a valid DNS record"
+                )
+            }),
+            ("enable_dmarc_checks", {
+                "label": ugettext_lazy("Enable DMARC checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain has a valid DMARC record"
+                )
+            }),
+            ("enable_autoconfig_checks", {
+                "label": ugettext_lazy("Enable SPF checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain has a valid records for "
+                    "autoconfiguration"
+                )
+            }),
             ("enable_dnsbl_checks", {
                 "label": ugettext_lazy("Enable DNSBL checks"),
                 "help_text": ugettext_lazy(
                     "Check every domain against major DNSBL providers"
+                )
+            }),
+            ("custom_dns_server", {
+                "label": ugettext_lazy("Custom DNS server"),
+                "help_text": ugettext_lazy(
+                    "Use a custom DNS server instead of local server "
+                    "configuration"
                 )
             }),
             ("dkim_keys_storage_dir", {
@@ -322,6 +355,20 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     "Default length in bits for newly generated DKIM keys."
                 )
             }),
+            ("default_domain_quota", {
+                "label": ugettext_lazy("Default domain quota"),
+                "help_text": ugettext_lazy(
+                    "Default quota (in MB) applied to freshly created domains "
+                    "with no value specified. A value of 0 means no quota."
+                )
+            }),
+            ("default_domain_message_limit", {
+                "label": ugettext_lazy("Default domain sending limit"),
+                "help_text": ugettext_lazy(
+                    "Number of messages freshly created domains will be "
+                    "allowed to send per day. Leave empty for no limit."
+                )
+            }),
         ])
     }),
     ("mailboxes", {
@@ -334,19 +381,19 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     " renamed or removed within Modoboa"
                 )
             }),
-            ("default_domain_quota", {
-                "label": ugettext_lazy("Default domain quota"),
-                "help_text": ugettext_lazy(
-                    "Default quota (in MB) applied to freshly created domains "
-                    "with no value specified. A value of 0 means no quota."
-                )
-            }),
             ("default_mailbox_quota", {
                 "label": ugettext_lazy("Default mailbox quota"),
                 "help_text": ugettext_lazy(
                     "Default mailbox quota (in MB) applied to freshly created "
                     "domains with no value specified. A value of 0 means no "
                     "quota."
+                )
+            }),
+            ("default_mailbox_message_limit", {
+                "label": ugettext_lazy("Default mailbox sending limit"),
+                "help_text": ugettext_lazy(
+                    "Number of messages freshly created mailboxes will be "
+                    "allowed to send per day. Leave empty for no limit."
                 )
             }),
             ("auto_account_removal", {

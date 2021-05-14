@@ -10,9 +10,11 @@
         name="name"
         rules="required"
         >
+        <label class="m-label">{{ $gettext('Name') }}</label>
         <v-text-field
           v-model="form.name"
-          :label="'Name' | translate"
+          dense
+          outlined
           :error-messages="errors"
           />
       </validation-provider>
@@ -21,14 +23,16 @@
         name="target"
         rules="required"
         >
+        <label class="m-label">{{ $gettext('Choose a domain') }}</label>
         <v-select
           v-model="form.target"
           :items="domains"
           item-text="name"
           item-value="pk"
-          :label="'Choose a domain' | translate"
           :error-messages="errors"
           single-line
+          dense
+          outlined
           />
       </validation-provider>
       <v-switch

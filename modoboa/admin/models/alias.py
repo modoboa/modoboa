@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import (
-    force_bytes, force_str, python_2_unicode_compatible, smart_text
+    force_bytes, force_str, smart_text
 )
 from django.utils.translation import ugettext as _, ugettext_lazy
 
@@ -24,7 +24,7 @@ from .domain import Domain
 from .mailbox import Mailbox
 
 
-def validate_alias_address(address, creator, internal=False):
+def validate_alias_address(address, creator, internal=False, instance=None):
     """Check if the given alias address can be created by creator."""
     local_part, domain = split_mailbox(address)
     domain = Domain.objects.filter(name=domain).first()
@@ -32,18 +32,20 @@ def validate_alias_address(address, creator, internal=False):
         raise ValidationError(_("Domain not found."))
     if not creator.can_access(domain):
         raise ValidationError(_("Permission denied."))
-    if Alias.objects.filter(address=address, internal=internal).exists():
-        raise ValidationError(_("An alias with this name already exists."))
-    try:
-        # Check creator limits
-        core_signals.can_create_object.send(
-            sender="validate_alias_address", context=creator, klass=Alias)
-        # Check domain limits
-        core_signals.can_create_object.send(
-            sender="validate_alias_address", context=domain,
-            object_type="mailbox_aliases")
-    except ModoboaException as inst:
-        raise ValidationError(str(inst))
+    if instance and instance.address != address:
+        if Alias.objects.filter(address=address, internal=internal).exists():
+            raise ValidationError(_("An alias with this name already exists."))
+    if instance is None:
+        try:
+            # Check creator limits
+            core_signals.can_create_object.send(
+                sender="validate_alias_address", context=creator, klass=Alias)
+            # Check domain limits
+            core_signals.can_create_object.send(
+                sender="validate_alias_address", context=domain,
+                object_type="mailbox_aliases")
+        except ModoboaException as inst:
+            raise ValidationError(str(inst))
     return local_part, domain
 
 
@@ -116,7 +118,6 @@ class Alias(AdminObject):
 
     @property
     def type(self):
-        """FIXME: deprecated."""
         return "alias"
 
     @property
@@ -223,7 +224,6 @@ class Alias(AdminObject):
 reversion.register(Alias)
 
 
-@python_2_unicode_compatible
 class AliasRecipient(models.Model):
 
     """An alias recipient."""

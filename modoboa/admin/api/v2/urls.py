@@ -11,7 +11,7 @@ router.register(r"domains", viewsets.DomainViewSet, basename="domain")
 router.register(
     r"domainaliases", v1_viewsets.DomainAliasViewSet, basename="domain_alias")
 router.register(r"accounts", viewsets.AccountViewSet, basename="account")
-router.register(r"aliases", v1_viewsets.AliasViewSet, basename="alias")
+router.register(r"aliases", viewsets.AliasViewSet, basename="alias")
 router.register(
     r"senderaddresses", v1_viewsets.SenderAddressViewSet,
     basename="sender_address")
