@@ -14,62 +14,64 @@
 
     <v-list>
       <template v-for="item in mainMenuItems">
-        <v-list-item
-          v-if="!item.children"
-          class="menu-item"
-          :to="item.to"
-          link
-          :key="item.title"
-          >
-          <v-list-item-icon v-if="item.icon">
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <template v-if="item.roles === undefined || item.roles.indexOf(authUser.role) !== -1">
+          <v-list-item
+            v-if="!item.children"
+            class="menu-item"
+            :to="item.to"
+            link
+            :key="item.title"
+            :exact="item.exact"
+            >
+            <v-list-item-icon v-if="item.icon">
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-group v-else
+                        color="white"
+                        :key="item.text"
+                        :prepend-icon="item.icon"
+                        no-action>
+            <template v-slot:activator>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </template>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-group v-else
-                      color="white"
-                      :key="item.text"
-                      :prepend-icon="item.icon"
-                      no-action>
-          <template v-slot:activator>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </template>
-
-          <template v-for="subitem in item.children">
-            <v-list-item v-if="!subitem.children"
-                         :key="subitem.text"
-                         :to="subitem.to"
-                         link>
-              <v-list-item-content>
-                <v-list-item-title>{{ subitem.text }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-group v-else
-                          :key="subitem.text"
-                          :value="true"
-                          no-action
-                          sub-group>
-              <template v-slot:activator>
-                <v-list-item-title>{{ subitem.text }}</v-list-item-title>
-              </template>
-              <v-list-item v-for="subsubitem in subitem.children"
-                           :key="subsubitem.text"
-                           :to="subsubitem.to"
+            <template v-for="subitem in item.children">
+              <v-list-item v-if="!subitem.children"
+                           :key="subitem.text"
+                           :to="subitem.to"
                            link>
-                <v-list-item-title>{{ subsubitem.text }}</v-list-item-title>
+                <v-list-item-content>
+                  <v-list-item-title>{{ subitem.text }}</v-list-item-title>
+                </v-list-item-content>
               </v-list-item>
-            </v-list-group>
-          </template>
-        </v-list-group>
+              <v-list-group v-else
+                            :key="subitem.text"
+                            :value="true"
+                            no-action
+                            sub-group>
+                <template v-slot:activator>
+                  <v-list-item-title>{{ subitem.text }}</v-list-item-title>
+                </template>
+                <v-list-item v-for="subsubitem in subitem.children"
+                             :key="subsubitem.text"
+                             :to="subsubitem.to"
+                             link>
+                  <v-list-item-title>{{ subsubitem.text }}</v-list-item-title>
+                </v-list-item>
+              </v-list-group>
+            </template>
+          </v-list-group>
+        </template>
       </template>
     </v-list>
     <template v-slot:append>
       <v-menu rounded="lg" offset-y top>
         <template v-slot:activator="{ attrs, on }">
-          <div class="user-box justify-end white--text" v-bind="attrs" v-on="on">
+          <div class="d-flex user-box justify-center align-center white--text py-2" v-bind="attrs" v-on="on">
             <v-avatar size="40" color="primary">
               <span class="white--text headline">AN</span>
             </v-avatar>
@@ -113,27 +115,33 @@ export default {
       mainMenuItems: [
         {
           text: this.$gettext('Dashboard'),
-          icon: 'mdi-view-dashboard-outline'
+          to: { name: 'Dashboard' },
+          icon: 'mdi-view-dashboard-outline',
+          exact: true
         },
         {
           text: this.$gettext('Domains'),
           to: { name: 'DomainList' },
-          icon: 'mdi-domain'
+          icon: 'mdi-domain',
+          roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
         },
         {
           text: this.$gettext('Identities'),
           to: { name: 'Identities' },
-          icon: 'mdi-account'
+          icon: 'mdi-account',
+          roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
         },
         {
           icon: 'mdi-history',
           text: this.$gettext('Logs'),
-          to: { name: 'LogList' }
+          to: { name: 'AuditTrail' },
+          roles: ['SuperAdmins']
         },
         {
           icon: 'mdi-cog',
           text: this.$gettext('Parameters'),
-          children: []
+          children: [],
+          roles: ['SuperAdmins']
         }
       ],
       userMenuItems: [
@@ -158,7 +166,7 @@ export default {
   methods: {
     logout () {
       this.$store.dispatch('auth/logout').then(() => {
-        this.$router.push('/login')
+        this.$router.push({ name: 'Login' })
       })
     }
   }
@@ -178,10 +186,6 @@ export default {
 }
 
 .user-box {
-  box-sizing: border-box;
-  border: 1px solid #979797;
-  width: 100%;
   background: rgba(0, 0, 0, 0.25);
-  padding: 5px;
 }
 </style>

@@ -1,9 +1,7 @@
 <template>
 <v-app v-if="!isAuthenticated">
   <v-main>
-    <v-container fluid fill-height>
-      <router-view />
-    </v-container>
+    <router-view />
   </v-main>
 </v-app>
 <v-app v-else>

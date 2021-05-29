@@ -20,6 +20,28 @@
   <template v-slot:form.options="{ step }">
     <domain-options-form :ref="`form_${step}`" :domain="domain" @createAdmin="updateCreateAdmin" />
   </template>
+  <template v-slot:item.with_random_password="{ item }">
+    <template v-if="item.value">
+      <v-col cols="12" class="highligth white--text">
+        <v-row>
+          <v-col><span>{{ item.key }}</span></v-col>
+          <v-col class="text-right">{{ item.value|yesno }}</v-col>
+        </v-row>
+        <v-row>
+          <v-col class="text-right py-1">
+            {{ domain.domain_admin.password }}
+            <v-btn icon color="white" :title="'Copy to clipboard'|translate" @click="copyPassword">
+              <v-icon>mdi-clipboard-multiple-outline</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+    </template>
+    <template v-else>
+      <v-col><span class="grey--text">{{ item.key }}</span></v-col>
+      <v-col class="text-right">{{ item.value|yesno }}</v-col>
+    </template>
+  </template>
 </creation-form>
 </template>
 
@@ -80,6 +102,7 @@ export default {
       if (this.createAdmin) {
         result[3].items.push({ key: this.$gettext('Administrator name'), value: this.domain.domain_admin.username })
         result[3].items.push({
+          name: 'with_random_password',
           key: this.$gettext('Random password'),
           value: this.domain.domain_admin.with_random_password,
           type: 'yesno'
@@ -117,6 +140,11 @@ export default {
     this.initDomain()
   },
   methods: {
+    copyPassword () {
+      navigator.clipboard.writeText(this.domain.domain_admin.password).then(() => {
+        bus.$emit('notification', { msg: this.$gettext('Password copied to clipboard') })
+      })
+    },
     initDomain () {
       this.domain = {
         name: '',
@@ -154,6 +182,7 @@ export default {
         delete data.domain_admin
       }
       this.$store.dispatch('domains/createDomain', data).then(resp => {
+        this.$router.push({ name: 'DomainDetail', params: { id: resp.data.pk } })
         bus.$emit('notification', { msg: this.$gettext('Domain created') })
         this.close()
       })
@@ -161,3 +190,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.highligth {
+  background-color: #515D78;
+}
+</style>

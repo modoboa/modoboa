@@ -23,6 +23,7 @@
             :label="'Random password' | translate"
             :disabled="!createAdmin"
             :hint="'Generate a random password for the administrator.' | translate"
+            @change="updatePassword"
             persistent-hint
             />
   <v-switch v-model="domain.domain_admin.with_mailbox"
@@ -41,6 +42,8 @@
 </template>
 
 <script>
+import accounts from '@/api/accounts'
+
 export default {
   props: ['domain'],
   data () {
@@ -49,6 +52,16 @@ export default {
     }
   },
   methods: {
+    updatePassword (value) {
+      if (value) {
+        accounts.getRandomPassword().then(resp => {
+          this.$set(this.domain.domain_admin, 'password', resp.data.password)
+        })
+      } else {
+        delete this.domain.domain_admin.password
+      }
+    },
+
     update (val) {
       this.$emit('createAdmin', val)
     }

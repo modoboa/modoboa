@@ -21,22 +21,28 @@
     <account-alias-form v-if="step >= 4" :ref="`form_${step}`" :account="account" />
   </template>
   <template v-slot:item.random_password="{ item }">
-    <v-col cols="12" class="highligth white--text">
-      <v-row>
-        <v-col><span>{{ item.key }}</span></v-col>
-        <v-col class="text-right" v-if="item.type === 'yesno'">
-          {{ item.value|yesno }}
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="text-right py-1">
-          {{ account.password }}
-          <v-btn icon color="white" :title="'Copy to clipboard'|translate" @click="copyPassword">
-            <v-icon>mdi-clipboard-multiple-outline</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-col>
+    <template v-if="item.value">
+      <v-col cols="12" class="highligth white--text">
+        <v-row>
+          <v-col><span>{{ item.key }}</span></v-col>
+          <v-col class="text-right" v-if="item.type === 'yesno'">
+            {{ item.value|yesno }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="text-right py-1">
+            {{ account.password }}
+            <v-btn icon color="white" :title="'Copy to clipboard'|translate" @click="copyPassword">
+              <v-icon>mdi-clipboard-multiple-outline</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+    </template>
+    <template v-else>
+      <v-col><span class="grey--text">{{ item.key }}</span></v-col>
+      <v-col class="text-right" v-if="item.type === 'yesno'">{{ item.value|yesno }}</v-col>
+    </template>
   </template>
 </creation-form>
 </template>

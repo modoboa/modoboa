@@ -737,6 +737,13 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     "inclusive."
                 )
             }),
+            ("update_scheme", {
+                "label": ugettext_lazy("Update password scheme at login"),
+                "help_text": ugettext_lazy(
+                    "Update user password at login to use the default "
+                    "password scheme"
+                )
+            }),
             ("default_password", {
                 "label": ugettext_lazy("Default password"),
                 "help_text": ugettext_lazy(
@@ -746,12 +753,41 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 "label": ugettext_lazy("Random password length"),
                 "help_text": ugettext_lazy(
                     "Length of randomly generated passwords.")
-            })
+            }),
+            ("update_password_url", {
+                "label": ugettext_lazy("Update password service URL"),
+                "help_text": ugettext_lazy(
+                    "The URL of an external page where users will be able"
+                    " to update their password. It applies only to non local"
+                    " users, ie. those automatically created after a successful"
+                    " external authentication (LDAP, SMTP)."
+                )
+            }),
+            ("password_recovery_msg", {
+                "label": ugettext_lazy("Password recovery announcement"),
+                "help_text": ugettext_lazy(
+                    "A temporary message that will be displayed on the "
+                    "reset password page."
+                )
+            }),
+            ("sms_password_recovery", {
+                "label": ugettext_lazy("Enable password recovery by SMS"),
+                "help_text": ugettext_lazy(
+                    "Enable password recovery by SMS for users who filled "
+                    "a phone number."
+                )
+            }),
+            ("sms_provider", {
+                "label": ugettext_lazy("SMS provider"),
+                "display": "sms_password_recovery=true",
+                "help_text": ugettext_lazy(
+                    "Choose a provider to send password recovery SMS"
+                )
+            }),
         ])
     }),
     ("ldap", {
         "label": _("LDAP"),
-        "display": "authentication_type=ldap",
         "params": collections.OrderedDict([
             ("ldap_server_address", {
                 "label": ugettext_lazy("Server address"),
@@ -763,60 +799,31 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 "help_text": ugettext_lazy(
                     "The TCP port number used by the LDAP server")
             }),
+            ("ldap_enable_secondary_server", {
+                "label": ugettext_lazy("Enable secondary server (fallback)"),
+                "help_text": ugettext_lazy(
+                    "Enable a secondary LDAP server which will be used "
+                    "if the primary one fails"
+                )
+            }),
+            ("ldap_secondary_server_address", {
+                "label": ugettext_lazy("Secondary server address"),
+                "display": "ldap_enable_secondary_server=true",
+                "help_text": ugettext_lazy(
+                    "The IP address or the DNS name of the seondary LDAP server"
+                )
+            }),
+            ("ldap_secondary_server_port", {
+                "label": ugettext_lazy("Secondary server port"),
+                "display": "ldap_enable_secondary_server=true",
+                "help_text": ugettext_lazy(
+                    "The TCP port number used by the LDAP secondary server"
+                )
+            }),
             ("ldap_secured", {
                 "label": ugettext_lazy("Use a secured connection"),
                 "help_text": ugettext_lazy(
                     "Use an SSL/STARTTLS connection to access the LDAP server")
-            }),
-            ("ldap_auth_method", {
-                "label": ugettext_lazy("Authentication method"),
-                "help_text": ugettext_lazy(
-                    "Choose the authentication method to use"),
-            }),
-            ("ldap_bind_dn", {
-                "label": ugettext_lazy("Bind DN"),
-                "help_text": ugettext_lazy(
-                    "The distinguished name to use when binding to the LDAP "
-                    "server. Leave empty for an anonymous bind"
-                ),
-                "display": "ldap_auth_method=searchbind"
-            }),
-            ("ldap_bind_password", {
-                "label": ugettext_lazy("Bind password"),
-                "help_text": ugettext_lazy(
-                    "The password to use when binding to the LDAP server "
-                    "(with 'Bind DN')"
-                ),
-                "display": "ldap_auth_method=searchbind"
-            }),
-            ("ldap_search_base", {
-                "label": ugettext_lazy("Users search base"),
-                "help_text": ugettext_lazy(
-                    "The distinguished name of the search base used to find "
-                    "users"
-                ),
-                "display": "ldap_auth_method=searchbind"
-            }),
-            ("ldap_search_filter", {
-                "label": ugettext_lazy("Search filter"),
-                "help_text": ugettext_lazy(
-                    "An optional filter string (e.g. '(objectClass=person)'). "
-                    "In order to be valid, it must be enclosed in parentheses."
-                ),
-                "display": "ldap_auth_method=searchbind"
-            }),
-            ("ldap_user_dn_template", {
-                "label": ugettext_lazy("User DN template"),
-                "help_text": ugettext_lazy(
-                    "The template used to construct a user's DN. It should "
-                    "contain one placeholder (ie. %(user)s)"
-                ),
-                "display": "ldap_auth_method=directbind"
-            }),
-            ("ldap_password_attribute", {
-                "label": ugettext_lazy("Password attribute"),
-                "help_text": ugettext_lazy(
-                    "The attribute used to store user passwords"),
             }),
             ("ldap_is_active_directory", {
                 "label": ugettext_lazy("Active Directory"),
@@ -843,7 +850,154 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     "The distinguished name of the search base used to find "
                     "groups"
                 )
-            })
+            }),
+            ("ldap_password_attribute", {
+                "label": ugettext_lazy("Password attribute"),
+                "help_text": ugettext_lazy(
+                    "The attribute used to store user passwords"),
+            }),
+            ("ldap_auth_sep", {
+                "label": ugettext_lazy("LDAP authentication settings"),
+                "display": "authentication_type=ldap",
+                "separator": True
+            }),
+            ("ldap_auth_method", {
+                "label": ugettext_lazy("Authentication method"),
+                "display": "authentication_type=ldap",
+                "help_text": ugettext_lazy(
+                    "Choose the authentication method to use"),
+            }),
+            ("ldap_bind_dn", {
+                "label": ugettext_lazy("Bind DN"),
+                "help_text": ugettext_lazy(
+                    "The distinguished name to use when binding to the LDAP "
+                    "server. Leave empty for an anonymous bind"
+                ),
+                "display": "authentication_type=ldap&ldap_auth_method=searchbind"
+            }),
+            ("ldap_bind_password", {
+                "label": ugettext_lazy("Bind password"),
+                "help_text": ugettext_lazy(
+                    "The password to use when binding to the LDAP server "
+                    "(with 'Bind DN')"
+                ),
+                "display": "authentication_type=ldap&ldap_auth_method=searchbind",
+                "password": True
+            }),
+            ("ldap_search_base", {
+                "label": ugettext_lazy("Users search base"),
+                "help_text": ugettext_lazy(
+                    "The distinguished name of the search base used to find "
+                    "users"
+                ),
+                "display": "authentication_type=ldap&ldap_auth_method=searchbind"
+            }),
+            ("ldap_search_filter", {
+                "label": ugettext_lazy("Search filter"),
+                "help_text": ugettext_lazy(
+                    "An optional filter string (e.g. '(objectClass=person)'). "
+                    "In order to be valid, it must be enclosed in parentheses."
+                ),
+                "display": "authentication_type=ldap&ldap_auth_method=searchbind"
+            }),
+            ("ldap_user_dn_template", {
+                "label": ugettext_lazy("User DN template"),
+                "help_text": ugettext_lazy(
+                    "The template used to construct a user's DN. It should "
+                    "contain one placeholder (ie. %(user)s)"
+                ),
+                "display": "authentication_type=ldap&ldap_auth_method=directbind"
+            }),
+            ("ldap_sync_sep", {
+                "label": ugettext_lazy("LDAP synchronization settings"),
+                "separator": True
+            }),
+            ("ldap_sync_bind_dn", {
+                "label": ugettext_lazy("Bind DN"),
+                "help_text": ugettext_lazy(
+                    "The distinguished name to use when binding to the LDAP server. "
+                    "Leave empty for an anonymous bind"
+                )
+            }),
+            ("ldap_sync_bind_password", {
+                "label": ugettext_lazy("Bind password"),
+                "help_text": ugettext_lazy(
+                    "The password to use when binding to the LDAP server "
+                    "(with 'Bind DN')"
+                ),
+                "password": True
+            }),
+            ("ldap_enable_sync", {
+                "label": ugettext_lazy("Enable export to LDAP"),
+                "help_text": ugettext_lazy(
+                    "Enable automatic synchronization between local database "
+                    "and LDAP directory"
+                )
+            }),
+            ("ldap_sync_delete_remote_account", {
+                "label": ugettext_lazy(
+                    "Delete remote LDAP account when local account is deleted"),
+                "help_text": ugettext_lazy(
+                    "Delete remote LDAP account when local account is deleted, "
+                    "otherwise it will be disabled."
+                ),
+                "display": "ldap_enable_sync=true"
+            }),
+            ("ldap_sync_account_dn_template", {
+                "label": ugettext_lazy("Account DN template"),
+                "help_text": ugettext_lazy(
+                    "The template used to construct an account's DN. It should "
+                    "contain one placeholder (ie. %(user)s)"
+                ),
+                "display": "ldap_enable_sync=true"
+            }),
+            ("ldap_enable_import", {
+                "label": ugettext_lazy("Enable import from LDAP"),
+                "help_text": ugettext_lazy(
+                    "Enable account synchronization from LDAP directory to "
+                    "local database"
+                )
+            }),
+            ("ldap_import_search_base", {
+                "label": ugettext_lazy("Users search base"),
+                "help_text": ugettext_lazy(
+                    "The distinguished name of the search base used to find "
+                    "users"
+                ),
+                "display": "ldap_enable_import=true"
+            }),
+            ("ldap_import_search_filter", {
+                "label": ugettext_lazy("Search filter"),
+                "help_text": ugettext_lazy(
+                    "An optional filter string (e.g. '(objectClass=person)'). "
+                    "In order to be valid, it must be enclosed in parentheses."
+                ),
+                "display": "ldap_enable_import=true"
+            }),
+            ("ldap_import_username_attr", {
+                "label": ugettext_lazy("Username attribute"),
+                "help_text": ugettext_lazy(
+                    "The name of the LDAP attribute where the username can be "
+                    "found."
+                ),
+                "display": "ldap_enable_import=true"
+            }),
+            ("ldap_dovecot_sync", {
+                "label": ugettext_lazy("Enable Dovecot LDAP sync"),
+                "help_text": ugettext_lazy(
+                    "LDAP authentication settings will be applied to Dovecot "
+                    "configuration."
+                )
+            }),
+            ("ldap_dovecot_conf_file", {
+                "label": ugettext_lazy("Dovecot LDAP config file"),
+                "help_text": ugettext_lazy(
+                    "Location of the configuration file which contains "
+                    "Dovecot LDAP settings."
+                ),
+                "display": "ldap_dovecot_sync=true"
+            }),
+
         ])
     }),
     ("dashboard", {
@@ -888,6 +1042,21 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 "display": "enable_api_communication=true",
                 "help_text": ugettext_lazy(
                     "Automatically checks if a newer version is available")
+            }),
+            ("send_new_versions_email", {
+                "label": ugettext_lazy(
+                    "Send an email when new versions are found"),
+                "display": "check_new_versions=true",
+                "help_text": ugettext_lazy(
+                    "Send an email to notify admins about new versions"
+                )
+            }),
+            ("new_versions_email_rcpt", {
+                "label": ugettext_lazy("Recipient"),
+                "display": "check_new_versions=true",
+                "help_text": ugettext_lazy(
+                    "Recipient of new versions notification emails."
+                )
             }),
             ("send_statistics", {
                 "label": ugettext_lazy("Send statistics"),

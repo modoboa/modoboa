@@ -57,7 +57,7 @@ export default {
   },
   data () {
     return {
-      domain: {},
+      domain: { pk: this.$route.params.id },
       showEditForm: false,
       showAdminList: false
     }

@@ -137,7 +137,7 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
     filterset_class = AccountFilterSet
 
     def get_serializer_class(self):
-        if self.action in ["create", "validate"]:
+        if self.action in ["create", "validate", "update", "partial_update"]:
             return serializers.WritableAccountSerializer
         if self.action == "delete":
             return serializers.DeleteAccountSerializer

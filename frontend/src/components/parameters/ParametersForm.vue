@@ -1,22 +1,28 @@
 <template>
-<v-layout>
-  <v-flex>
-    <v-tabs v-model="active">
-      <v-tab v-for="(element, index) in displayableElements"
-             :key="index"
-             >
-        {{ element.label }}
-      </v-tab>
-      <v-tabs-items v-model="active">
-        <v-tab-item
-          v-for="(element, index) in displayableElements"
-          :key="index"
-          >
-          <v-card>
-            <v-card-text>
-              <template v-for="(param, index) in displayableParams(element.parameters)">
-                <div class="my-4" :key="index">
-                <template v-if="param.widget === 'BooleanField'">
+<div>
+  <v-toolbar flat>
+    <v-toolbar-title>{{ title }}</v-toolbar-title>
+  </v-toolbar>
+
+  <v-tabs v-model="active">
+    <v-tab v-for="(element, index) in displayableElements"
+           :key="index"
+           >
+      {{ element.label }}
+    </v-tab>
+    <v-tabs-items v-model="active">
+      <v-tab-item
+        v-for="(element, index) in displayableElements"
+        :key="index"
+        >
+        <v-card>
+          <v-card-text>
+            <template v-for="(param, index) in displayableParams(element.parameters)">
+              <div class="my-4" :key="index">
+                <template v-if="param.widget === 'SeparatorField'">
+                  <h2>{{ param.label }}</h2>
+                </template>
+                <template v-else-if="param.widget === 'BooleanField'">
                   <v-switch
                     v-model="parameters[param.name]"
                     :label="param.label"
@@ -42,30 +48,30 @@
                     v-model="parameters[param.name]"
                     :error="formErrors[param.name] !== undefined"
                     :error-messages="formErrors[param.name]"
+                    :type="param.widget === 'PasswordField' ? 'password' : 'text'"
                     v-else
                     dense
                     outlined
                     />
                 </template>
-                </div>
-              </template>
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-tabs>
-    <v-btn fixed
-           dark
-           fab
-           bottom
-           right
-           color="green"
-           @click="save"
-           >
-      <v-icon>mdi-content-save</v-icon>
-    </v-btn>
-  </v-flex>
-</v-layout>
+              </div>
+            </template>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-tabs>
+  <v-btn fixed
+         dark
+         fab
+         bottom
+         right
+         color="green"
+         @click="save"
+         >
+    <v-icon>mdi-content-save</v-icon>
+  </v-btn>
+</div>
 </template>
 
 <script>
@@ -84,6 +90,17 @@ export default {
   computed: {
     displayableElements () {
       const result = this.structure.filter(element => this.display(element))
+      return result
+    },
+    title () {
+      let result = this.$gettext('Parameters: ')
+      if (this.$route.params.app === 'core') {
+        result += this.$gettext('General')
+      } else if (this.$route.params.app === 'admin') {
+        result += this.$gettext('Administration')
+      } else if (this.$route.params.app === 'limits') {
+        result += this.$gettext('Limitations')
+      }
       return result
     }
   },
@@ -108,11 +125,15 @@ export default {
       if (element.display === '') {
         return true
       }
-      var [field, value] = element.display.split('=')
-      if (value === 'true' || value === 'false') {
-        value = Boolean(value)
-      }
-      return this.parameters[field] === value
+      let result = true
+      element.display.split('&').forEach(rule => {
+        var [field, value] = rule.split('=')
+        if (value === 'true' || value === 'false') {
+          value = Boolean(value)
+        }
+        result &= this.parameters[field] === value
+      })
+      return result
     },
     displayableParams (params) {
       return params.filter(param => this.display(param))
@@ -127,3 +148,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-toolbar {
+  background-color: #f7f8fa !important;
+}
+</style>

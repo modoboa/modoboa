@@ -194,7 +194,7 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = (
             "pk", "username", "first_name", "last_name", "is_active",
             "master_user", "mailbox", "role", "language", "phone_number",
-            "secondary_email", "domains",
+            "secondary_email", "domains"
         )
 
     def __init__(self, *args, **kwargs):
