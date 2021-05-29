@@ -4,11 +4,18 @@ import VueRouter from 'vue-router'
 import store from '@/store'
 
 import ParametersForm from '@/components/parameters/ParametersForm'
-import LogList from '@/components/logs/LogList'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    name: 'Dashboard',
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   {
     path: '/login',
     name: 'Login',
@@ -18,27 +25,35 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   {
+    path: '/twofa',
+    name: 'TwoFA',
+    component: () => import('../views/TwoFA.vue')
+  },
+  {
     path: '/domains',
     name: 'DomainList',
-    component: () => import('../views/Domains.vue'),
+    component: () => import('../views/domains/Domains.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
     }
   },
   {
     path: '/domains/:id',
     name: 'DomainDetail',
-    component: () => import('../views/Domain.vue'),
+    component: () => import('../views/domains/Domain.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
     }
   },
   {
     path: '/domains/:id/edit',
     name: 'DomainEdit',
-    component: () => import('../views/DomainEdit.vue'),
+    component: () => import('../views/domains/DomainEdit.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
     }
   },
   {
@@ -46,7 +61,8 @@ const routes = [
     name: 'Identities',
     component: () => import('../views/identities/Identities.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
     }
   },
   {
@@ -54,7 +70,8 @@ const routes = [
     name: 'AccountEdit',
     component: () => import('../views/identities/AccountEdit.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
     }
   },
   {
@@ -62,7 +79,8 @@ const routes = [
     name: 'AliasEdit',
     component: () => import('../views/identities/AliasEdit.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
     }
   },
   {
@@ -70,15 +88,17 @@ const routes = [
     name: 'ParametersEdit',
     component: ParametersForm,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['SuperAdmins']
     }
   },
   {
     path: '/logs/',
-    name: 'LogList',
-    component: LogList,
+    name: 'AuditTrail',
+    component: () => import('../views/logs/AuditTrail.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      allowedRoles: ['SuperAdmins']
     }
   }
 ]
@@ -93,8 +113,14 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     store.dispatch('auth/initialize').then(() => {
       if (!store.getters['auth/isAuthenticated']) {
-        next('/login/')
+        next({ name: 'Login' })
       } else {
+        if (to.meta.allowedRoles !== undefined) {
+          if (to.meta.allowedRoles.indexOf(store.getters['auth/authUser'].role) === -1) {
+            next({ name: 'Dashboard' })
+            return
+          }
+        }
         next()
       }
     })

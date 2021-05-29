@@ -25,13 +25,17 @@ _axios.interceptors.response.use(
     return response
   },
   function (error) {
-    if (error.response.status !== 401) {
+    if (error.response.status === 418) {
+      router.push({ name: 'TwoFA' })
+      return Promise.reject(error)
+    }
+    if (error.response.status !== 401 || router.currentRoute.path === '/login/') {
       return Promise.reject(error)
     }
     const refreshToken = Cookies.get('refreshToken')
     if (error.config.url.endsWith('/token/refresh/') || !refreshToken) {
       store.dispatch('auth/logout')
-      router.push('/login/')
+      router.push({ name: 'Login' })
       return Promise.reject(error)
     }
     return _axios.post('/token/refresh/', { refresh: refreshToken }).then(resp => {

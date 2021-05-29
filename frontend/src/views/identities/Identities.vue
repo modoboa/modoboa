@@ -79,3 +79,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-toolbar {
+  background-color: #f7f8fa !important;
+}
+</style>

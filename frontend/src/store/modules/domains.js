@@ -40,8 +40,13 @@ const actions = {
     })
   },
   createDomain ({ commit }, data) {
-    return domainApi.createDomain(data).then(response => {
-      commit(ADD_DOMAIN, { domain: response.data })
+    return new Promise((resolve, reject) => {
+      domainApi.createDomain(data).then(response => {
+        commit(ADD_DOMAIN, { domain: response.data })
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
     })
   },
   updateDomain ({ commit }, data) {

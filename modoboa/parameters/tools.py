@@ -120,19 +120,25 @@ class Registry(object):
                     "parameters": []
                 }
                 for name, config in list(sconfig["params"].items()):
-                    field = serializer.fields[name]
                     data = {
                         "name": name,
                         "label": config["label"],
                         "help_text": config.get("help_text", ""),
                         "display": config.get("display", ""),
-                        "widget": field.__class__.__name__,
                     }
-                    if data["widget"] == "ChoiceField":
-                        data["choices"] = [
-                            {"text": value, "value": key}
-                            for key, value in field.choices.items()
-                        ]
+                    if config.get("separator"):
+                        data["widget"] = "SeparatorField"
+                    else:
+                        field = serializer.fields[name]
+                        if config.get("password"):
+                            data["widget"] = "PasswordField"
+                        else:
+                            data["widget"] = field.__class__.__name__
+                            if data["widget"] == "ChoiceField":
+                                data["choices"] = [
+                                    {"text": value, "value": key}
+                                    for key, value in field.choices.items()
+                                ]
                     item["parameters"].append(data)
                 result.append(item)
         return result

@@ -1,5 +1,7 @@
 """Admin API v2 serializers."""
 
+import os
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
@@ -13,6 +15,7 @@ from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
 from modoboa.lib import validators, web_utils
+from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
 
 from ... import constants, lib, models
@@ -22,7 +25,7 @@ class CreateDomainAdminSerializer(serializers.Serializer):
     """Sub serializer for domain administrator creation."""
 
     username = serializers.CharField()
-    with_random_password = serializers.BooleanField(default=False)
+    password = serializers.CharField(required=False)
     with_mailbox = serializers.BooleanField(default=False)
     with_aliases = serializers.BooleanField(default=False)
 
@@ -57,9 +60,8 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         core_signals.can_create_object.send(
             self.__class__, context=user, klass=models.Mailbox)
         da = core_models.User(username=username, email=username, is_active=True)
-        if domain_admin["with_random_password"]:
-            password = lib.make_password()
-        else:
+        password = domain_admin.get("password")
+        if password is None:
             password = param_tools.get_global_parameter(
                 "default_password", app="core")
         da.set_password(password)
@@ -132,6 +134,48 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     auto_create_domain_and_mailbox = serializers.BooleanField(default=True)
     create_alias_on_mbox_rename = serializers.BooleanField(default=False)
 
+    def validate_default_domain_quota(self, value):
+        """Ensure quota is a positive integer."""
+        if value < 0:
+            raise serializers.ValidationError(
+                _("Must be a positive integer")
+            )
+        return value
+
+    def validate_default_mailbox_quota(self, value):
+        """Ensure quota is a positive integer."""
+        if value < 0:
+            raise serializers.ValidationError(
+                _("Must be a positive integer")
+            )
+        return value
+
+    def validate_dkim_keys_storage_dir(self, value):
+        """Check that directory exists."""
+        if value:
+            if not os.path.isdir(value):
+                raise serializers.ValidationError(
+                    _("Directory not found.")
+                )
+            code, output = exec_cmd("which openssl")
+            if code:
+                raise serializers.ValidationError(
+                    _("openssl not found, please make sure it is installed.")
+                )
+        return value
+
+    def validate(self, data):
+        """Check MX options."""
+        condition = (
+            data.get("enable_mx_checks") and
+            data.get("domains_must_have_authorized_mx") and
+            not data.get("valid_mxs"))
+        if condition:
+            raise serializers.ValidationError({
+                "valid_mxs": _("Define at least one authorized network / address")
+            })
+        return data
+
 
 class DomainAdminSerializer(serializers.ModelSerializer):
     """Serializer used for administrator related routes."""
@@ -184,8 +228,9 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Check if quota is required."""
+        method = self.context["request"].method
         if not data.get("use_domain_quota", False):
-            if "quota" not in data:
+            if "quota" not in data and method != "PATCH":
                 raise serializers.ValidationError({
                     "quota": _("This field is required")
                 })
