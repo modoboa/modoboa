@@ -54,11 +54,13 @@ class AliasManager(models.Manager):
 
     def create(self, *args, **kwargs):
         """Custom create method."""
-        creator = kwargs.pop("creator")
-        recipients = kwargs.pop("recipients")
+        creator = kwargs.pop("creator", None)
+        recipients = kwargs.pop("recipients", None)
         alias = super().create(*args, **kwargs)
-        alias.post_create(creator)
-        alias.set_recipients(recipients)
+        if creator:
+            alias.post_create(creator)
+        if recipients:
+            alias.set_recipients(recipients)
         return alias
 
 
@@ -208,8 +210,6 @@ class Alias(AdminObject):
             raise BadRequest(_("Invalid line: {}").format(row))
         self.address = row[1].strip().lower()
         local_part, self.domain = validate_alias_address(self.address, user)
-        if Alias.objects.filter(address=self.address, internal=False).exists():
-            raise Conflict
         self.enabled = (row[2].strip().lower() in ["true", "1", "yes", "y"])
         self.save()
         self.set_recipients([raddress.strip() for raddress in row[3:]])

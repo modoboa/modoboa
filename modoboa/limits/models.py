@@ -2,7 +2,6 @@
 
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 
@@ -59,7 +58,6 @@ class ObjectLimitMixin(object):
         return "{}%".format(self.usage)
 
 
-@python_2_unicode_compatible
 class UserObjectLimit(ObjectLimitMixin, models.Model):
     """Object level limit."""
 

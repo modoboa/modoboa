@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from . import lib
+from ... import lib
 
 
 class ResourcesSerializer(serializers.Serializer):
@@ -32,23 +32,3 @@ class ResourcesSerializer(serializers.Serializer):
             limit.max_value = max_value
             limit.save(update_fields=["max_value"])
         return instance
-
-
-class LimitsGlobalParemetersSerializer(serializers.Serializer):
-    """A serializer for global parameters."""
-
-    # Per-admin limits
-    enable_admin_limits = serializers.BooleanField(default=True)
-    deflt_user_domain_admins_limit = serializers.IntegerField(default=0)
-    deflt_user_domains_limit = serializers.IntegerField(default=0)
-    deflt_user_domain_aliases_limit = serializers.IntegerField(default=0)
-    deflt_user_mailboxes_limit = serializers.IntegerField(default=0)
-    deflt_user_mailbox_aliases_limit = serializers.IntegerField(default=0)
-    deflt_user_quota_limit = serializers.IntegerField(default=0)
-
-    # Per-domain limits
-    enable_domain_limits = serializers.BooleanField(default=False)
-    deflt_domain_domain_admins_limit = serializers.IntegerField(default=0)
-    deflt_domain_domain_aliases_limit = serializers.IntegerField(default=0)
-    deflt_domain_mailboxes_limit = serializers.IntegerField(default=0)
-    deflt_domain_mailbox_aliases_limit = serializers.IntegerField(default=0)

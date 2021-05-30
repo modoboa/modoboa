@@ -60,6 +60,10 @@ if extra_routes:
 
 # API urls
 urlpatterns += [
+    # FIXME: legacy, to remove ASAP
+    path('docs/openapi.json',
+         SpectacularJSONAPIView.as_view(api_version="v1"), name='schema-v1-legacy'),
+
     path('api/schema-v1/',
          SpectacularJSONAPIView.as_view(api_version="v1"), name='schema-v1'),
     path('api/schema-v1/swagger/',

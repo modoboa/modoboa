@@ -1,3 +1,4 @@
+from django.core import exceptions
 from django.core.files.base import ContentFile
 from django.urls import reverse
 
@@ -107,7 +108,7 @@ account; user3@{domain}; toto; User; One; True; SimpleUsers; user3@{domain}; 5
         f = ContentFile("""alias; alias1@{domain}; True; user@{domain}
 alias; alias2@{domain}; True; user@{domain}
 """.format(domain=self.domain), name="aliases.csv")
-        response = self.client.post(
+        self.client.post(
             reverse("admin:identity_import"), {
                 "sourcefile": f
             }
@@ -117,12 +118,12 @@ alias; alias2@{domain}; True; user@{domain}
         f = ContentFile("""
 alias; alias3@{domain}; True; user@{domain}
 """.format(domain=self.domain), name="aliases.csv")
-        response = self.client.post(
-            reverse("admin:identity_import"), {
-                "sourcefile": f
-            }
-        )
-        self.assertContains(response, "Mailbox aliases: limit reached")
+        with self.assertRaises(exceptions.ValidationError):
+            self.client.post(
+                reverse("admin:identity_import"), {
+                    "sourcefile": f
+                }
+            )
 
 
 class UserLimitImportTestCase(LimitImportTestCase):

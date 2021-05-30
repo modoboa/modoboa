@@ -11,7 +11,7 @@ from modoboa.admin.models import Domain
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib import permissions, tests as lib_tests
-from .. import utils
+from ... import utils
 
 
 class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
@@ -39,7 +39,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION="Token " + self.r_token.key)
 
         limit = self.reseller.userobjectlimit_set.get(name="domain_admins")
-        url = reverse("api:account-list")
+        url = reverse("v1:account-list")
         data = {
             "username": "fromapi@test.com",
             "role": "DomainAdmins",
@@ -61,7 +61,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         user = User.objects.get(username="user@test.com")
         domain = Domain.objects.get(name="test.com")
         domain.add_admin(self.reseller)
-        url = reverse("api:account-detail", args=[user.pk])
+        url = reverse("v1:account-detail", args=[user.pk])
         data = {
             "username": user.username,
             "role": "DomainAdmins",
@@ -82,7 +82,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         quota = self.reseller.userobjectlimit_set.get(name="quota")
         quota.max_value = 3
         quota.save(update_fields=["max_value"])
-        url = reverse("api:domain-list")
+        url = reverse("v1:domain-list")
         data = {"name": "test3.com", "quota": 1}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -102,9 +102,10 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             response.content.decode("utf-8"), '"Domains: limit reached"'
         )
 
-        self.client.delete(
-            reverse("api:domain-detail",
+        resp = self.client.delete(
+            reverse("v1:domain-detail",
                     args=[Domain.objects.get(name="test4.com").pk]))
+        self.assertEqual(resp.status_code, 204)
         data["quota"] = 0
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
@@ -119,7 +120,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         domain = Domain.objects.get(name="test.com")
         domain.add_admin(self.reseller)
         limit = self.reseller.userobjectlimit_set.get(name="domain_aliases")
-        url = reverse("api:domain_alias-list")
+        url = reverse("v1:domain_alias-list")
         data = {"name": "dalias1.com", "target": domain.pk}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -140,7 +141,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailboxes")
-        url = reverse("api:account-list")
+        url = reverse("v1:account-list")
         data = {
             "username": "fromapi@test.com",
             "role": "SimpleUsers",
@@ -171,7 +172,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailbox_aliases")
-        url = reverse("api:alias-list")
+        url = reverse("v1:alias-list")
         data = {
             "address": "alias_fromapi@test.com",
             "recipients": [
@@ -212,7 +213,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="mailboxes")
         self.assertTrue(limit.is_exceeded())
-        url = reverse("api:account-list")
+        url = reverse("v1:account-list")
         data = {
             "username": "fromapi@test.com",
             "role": "SimpleUsers",
@@ -229,7 +230,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         """Check domain_aliases limit."""
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="domain_aliases")
-        url = reverse("api:domain_alias-list")
+        url = reverse("v1:domain_alias-list")
         data = {"name": "dalias1.com", "target": domain.pk}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -246,7 +247,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         domain = Domain.objects.get(name="test.com")
         limit = domain.domainobjectlimit_set.get(name="mailbox_aliases")
         self.assertTrue(limit.is_exceeded())
-        url = reverse("api:alias-list")
+        url = reverse("v1:alias-list")
         data = {
             "address": "alias_fromapi@test.com",
             "recipients": [
@@ -278,7 +279,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
 
     def test_get_admin_resources(self):
         """Retrieve admin resources."""
-        url = reverse("api:resources-detail", args=[self.user.pk])
+        url = reverse("v1:resources-detail", args=[self.user.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         expected = {
@@ -305,7 +306,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
 
     def test_update_resources(self):
         """Update resources."""
-        url = reverse("api:resources-detail", args=[self.reseller.pk])
+        url = reverse("v1:resources-detail", args=[self.reseller.pk])
         response = self.client.get(url)
         resources = response.data
         resources.update({"domains": 1000, "mailboxes": 1000})
@@ -319,7 +320,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
         resources.update({"domains": 2, "mailboxes": 2})
-        url = reverse("api:resources-detail", args=[self.user.pk])
+        url = reverse("v1:resources-detail", args=[self.user.pk])
         response = self.client.put(url, resources)
         self.assertEqual(response.status_code, 404)
 
@@ -328,7 +329,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
         resources.update({"domains": 500, "mailboxes": 500})
-        url = reverse("api:resources-detail", args=[self.user.pk])
+        url = reverse("v1:resources-detail", args=[self.user.pk])
         response = self.client.put(url, resources)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
