@@ -55,6 +55,7 @@ def index(request):
 @user_passes_test(lambda u: u.role != "SimpleUsers")
 def graphs(request):
     gset = request.GET.get("gset", None)
+    searchq = request.GET.get("searchquery", None)
     graph_sets = {}
     for result in signals.get_graph_sets.send(
             sender="index", user=request.user):
@@ -63,7 +64,7 @@ def graphs(request):
         raise NotFound(_("Unknown graphic set"))
     period = request.GET.get("period", "day")
     tplvars = {"graphs": {}, "period": period}
-    fname = graph_sets[gset].get_file_name(request)
+    fname = graph_sets[gset].get_file_name(request.user, searchq)
     if fname is None:
         raise BadRequest(_("Unknown domain"))
     tplvars["fname"] = fname

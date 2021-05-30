@@ -149,7 +149,7 @@ class GraphicSet(object):
     def get_graphic_names(self):
         return [graphic.display_name for graphic in self._graphics]
 
-    def get_file_name(self, request):
+    def get_file_name(self, request, searchq):
         """Return database file name."""
         return self.file_name
 
@@ -158,7 +158,7 @@ class GraphicSet(object):
         for graph in self.graphics:
             if graphic is None or graphic == graph.display_name:
                 result[graph.display_name] = {
-                    "title": graph.title,
+                    "title": str(graph.title),
                     "series": graph.export(rrdfile, start, end)
                 }
         return result
