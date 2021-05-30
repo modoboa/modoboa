@@ -9,10 +9,10 @@ from django.contrib.auth import (
 from django.db.models import Q
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from braces.forms import UserKwargModelFormMixin
 import django_otp
 
 from modoboa.core.models import User
+from modoboa.lib.form_utils import UserKwargModelFormMixin
 from modoboa.parameters import tools as param_tools
 
 

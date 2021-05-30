@@ -1,17 +1,19 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# 
-# Translators:
-# Andrei-Ilie Olteanu <andrei@flashsoft.ro>, 2018
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 16:48+0100\n"
-"PO-Revision-Date: 2020-03-09 15:49+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/language/ro_RO/)\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-10-02 13:39+0000\n"
+"Last-Translator: Simona Iacob <s@zp1.net>, 2021\n"
+"Language-Team: Romanian (Romania) (https://www.transifex.com/tonio/teams/13749/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,11 +26,11 @@ msgstr "'"
 
 #: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
 msgid "operation"
-msgstr ""
+msgstr "operațiune"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
-msgstr "Nu mai exită alte rezultate de înregistrări pentru afișare"
+msgstr "Nu se mai afișează nicio intrare în jurnal"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -38,18 +40,26 @@ msgstr "Avertizare"
 msgid "Cancel"
 msgstr "Anulare"
 
-#: static/js/global.js:342
+#: static/js/global.js:347
 msgid "Internal error"
 msgstr "Eroare internă"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr "Nu mai există alte elemente ce pot fi afișate"
+msgstr "Nu mai sunt mesaje de afișat"
 
 #: static/js/listing.js:46
 msgid "Search"
-msgstr "Caută"
+msgstr "Căutare"
 
 #: static/js/searchbar.js:28
 msgid "Search..."
-msgstr "Caută..."
+msgstr "Căutare..."
+
+#: static/js/twocols_nav.js:170
+msgid "Are you sure?"
+msgstr "Sunteți sigur?"
+
+#: static/js/twocols_nav.js:171
+msgid "This will invalidate your registered application."
+msgstr "This will invalidate your registered application."
