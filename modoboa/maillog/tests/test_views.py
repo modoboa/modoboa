@@ -110,7 +110,7 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
         url = reverse("maillog:graph_list")
         response = self.ajax_get("{}?gset=accountgraphicset".format(url))
         data = (
-            response["graphs"]["accountcreationgraphic"]["curves"][0]["data"])
+            response["graphs"]["accountcreationgraphic"]["series"][0]["data"])
         self.assertEqual(data[-1]["y"], 5.0)
 
     def test_graphs_as_domainadmin(self):
