@@ -4,7 +4,7 @@ from modoboa.lib.tests import ModoTestCase
 
 
 class OpenAPITestCase(ModoTestCase):
-    openapi_schema_url = reverse_lazy('schema')
+    openapi_schema_url = reverse_lazy('schema-v1-legacy')
 
     def test_unauthorized(self):
         self.client.logout()

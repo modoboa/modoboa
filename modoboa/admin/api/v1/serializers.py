@@ -171,8 +171,9 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Check if quota is required."""
+        method = self.context["request"].method
         if not data.get("use_domain_quota", False):
-            if "quota" not in data:
+            if "quota" not in data and method != "PATCH":
                 raise serializers.ValidationError({
                     "quota": _("This field is required")
                 })

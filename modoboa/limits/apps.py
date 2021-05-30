@@ -8,7 +8,7 @@ def load_limits_settings():
     """Load settings."""
     from modoboa.parameters import tools as param_tools
     from . import app_settings
-    from . import serializers
+    from .api.v2 import serializers
 
     param_tools.registry.add("global", app_settings.ParametersForm, _("Limits"))
     param_tools.registry.add2(
