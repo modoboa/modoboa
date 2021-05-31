@@ -200,7 +200,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
     'TITLE': 'Modoboa API',
-    'VERSION': '1.0.0',
+    'VERSION': None,
     'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
 }
 

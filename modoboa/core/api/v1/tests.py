@@ -19,5 +19,5 @@ class OpenAPITestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['info'], {
             'title': "Modoboa API",
-            'version': "1.0.0",
+            'version': "v1",
         })
