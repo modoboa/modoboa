@@ -39,7 +39,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     update_scheme = serializers.BooleanField(default=True)
     default_password = serializers.CharField(default="password")
     random_password_length = serializers.IntegerField(min_value=8, default=8)
-    update_password_url = serializers.URLField(required=False)
+    update_password_url = serializers.URLField(required=False, allow_blank=True)
     password_recovery_msg = serializers.CharField(
         required=False, allow_blank=True)
     sms_password_recovery = serializers.BooleanField(default=False)
@@ -86,14 +86,16 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         default="", required=False, allow_blank=True)
 
     # LDAP sync settings
-    ldap_sync_bind_dn = serializers.CharField(required=False)
-    ldap_sync_bind_password = serializers.CharField(required=False)
+    ldap_sync_bind_dn = serializers.CharField(required=False, allow_blank=True)
+    ldap_sync_bind_password = serializers.CharField(
+        required=False, allow_blank=True)
     ldap_enable_sync = serializers.BooleanField(default=False)
     ldap_sync_delete_remote_account = serializers.BooleanField(default=False)
     ldap_sync_account_dn_template = serializers.CharField(
         required=False, allow_blank=True)
     ldap_enable_import = serializers.BooleanField(default=False)
-    ldap_import_search_base = serializers.CharField(required=False)
+    ldap_import_search_base = serializers.CharField(
+        required=False, allow_blank=True)
     ldap_import_search_filter = serializers.CharField(
         default="(cn=*)", required=False
     )
@@ -124,7 +126,14 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     log_maximum_age = serializers.IntegerField(default=365)
     items_per_page = serializers.IntegerField(default=30)
     default_top_redirection = serializers.ChoiceField(
-        default="user", choices=[])
+        default="user", choices=[""])
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        sms_backend_fields = sms_backends.get_all_backend_serializer_settings()
+        for field, definition in sms_backend_fields.items():
+            self.fields[field] = definition["type"](
+                **definition["attrs"])
 
     def validate_ldap_user_dn_template(self, value):
         try:
@@ -175,15 +184,14 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
             else:
                 errors["sms_provider"] = _("This field is required")
 
-        if data["authentication_type"] != "ldap":
-            return data
-        if data["ldap_auth_method"] == "searchbind":
-            required_fields = ["ldap_search_base", "ldap_search_filter"]
-        else:
-            required_fields = ["ldap_user_dn_template"]
-        for f in required_fields:
-            if data.get(f, u"") == u"":
-                errors[f] = _("This field is required")
+        if data["authentication_type"] == "ldap":
+            if data["ldap_auth_method"] == "searchbind":
+                required_fields = ["ldap_search_base", "ldap_search_filter"]
+            else:
+                required_fields = ["ldap_user_dn_template"]
+            for f in required_fields:
+                if data.get(f, "") == "":
+                    errors[f] = _("This field is required")
         if len(errors):
             raise serializers.ValidationError(errors)
         return data

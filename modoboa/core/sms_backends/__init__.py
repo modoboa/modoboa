@@ -8,7 +8,9 @@ from .. import constants
 class SMSBackend:
     """Base class of every SMS backend."""
 
+    serializer_settings = {}
     settings = {}
+    structure = []
     visibility_rules = {}
 
     def __init__(self, params):
@@ -52,6 +54,48 @@ def get_all_backend_settings():
         if b_settings:
             settings.update(b_settings)
     return settings
+
+
+def get_backend_serializer_settings(name):
+    """Return serializer settings of given backend."""
+    backend_class = get_backend_class(name)
+    if not backend_class:
+        return None
+    return backend_class.serializer_settings
+
+
+def get_all_backend_serializer_settings():
+    """Return serializer settings of all backends."""
+    settings = {}
+    for backend in constants.SMS_BACKENDS:
+        name = backend[0]
+        if not name:
+            continue
+        b_settings = get_backend_serializer_settings(name)
+        if b_settings:
+            settings.update(b_settings)
+    return settings
+
+
+def get_backend_structure(name):
+    """Return parameters structure of given backend."""
+    backend_class = get_backend_class(name)
+    if not backend_class:
+        return None
+    return backend_class.structure
+
+
+def get_all_backend_structures():
+    """Return parameters structure for all backends."""
+    structure = []
+    for backend in constants.SMS_BACKENDS:
+        name = backend[0]
+        if not name:
+            continue
+        b_structure = get_backend_structure(name)
+        if b_structure:
+            structure += b_structure
+    return structure
 
 
 def get_all_backend_visibility_rules():

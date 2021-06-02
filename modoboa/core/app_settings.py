@@ -784,6 +784,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     "Choose a provider to send password recovery SMS"
                 )
             }),
+            *sms_backends.get_all_backend_structures()
         ])
     }),
     ("ldap", {
