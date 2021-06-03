@@ -89,17 +89,6 @@ class Registry(object):
             })
         return result
 
-    def get_fields(self, level, for_app=None):
-        """Return fields to include in serializer."""
-        result = []
-        for app, fields in list(self._registry2[level].items()):
-            if app and for_app != app:
-                continue
-            for section, sconfig in list(fields["structure"].items()):
-                for name, config in list(sconfig["params"].items()):
-                    result.append(("{}-{}".format(app, name), config["field"]))
-        return result
-
     def get_serializer_class(self, level, app):
         """Return serializer class for given level and app."""
         if app not in self._registry2[level]:
@@ -169,7 +158,7 @@ class Registry(object):
 registry = Registry()
 
 
-class Manager(object):
+class Manager:
     """A manager for parameters."""
 
     def __init__(self, level, parameters):
