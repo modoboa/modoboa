@@ -1,9 +1,11 @@
 """Core API related tests."""
 
 import copy
+from unittest import mock
 
 from django.urls import reverse
 
+from modoboa.core import models
 from modoboa.lib.tests import ModoAPITestCase
 
 CORE_SETTINGS = {
@@ -105,4 +107,67 @@ class ParametersAPITestCase(ModoAPITestCase):
             "ldap_search_filter": "mail=%(user)s"
         })
         resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+
+class AccountViewSetTestCase(ModoAPITestCase):
+
+    def test_me(self):
+        url = reverse("v2:account-me")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        me = resp.json()
+        self.assertEqual(me["pk"], 1)
+
+    @mock.patch("django_otp.match_token")
+    def test_tfa_verify_code(self, match_mock):
+        user = models.User.objects.get(username="admin")
+        user.totpdevice_set.create(name="Device")
+        user.tfa_enabled = True
+        user.save()
+
+        url = reverse("v2:account-tfa-verify-code")
+        match_mock.side_effect = [user.totpdevice_set.first()]
+        data = {"code": "1234"}
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("access", resp.json())
+
+
+class AuthenticationTestCase(ModoAPITestCase):
+
+    @mock.patch("django_otp.match_token")
+    def test_2fa(self, match_mock):
+        url = reverse("v2:token_obtain_pair")
+        me_url = reverse("v2:account-me")
+        data = {
+            "username": "admin",
+            "password": "password"
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"]))
+        resp = self.client.get(me_url)
+        self.assertEqual(resp.status_code, 200)
+
+        # Now we enable 2FA
+        user = models.User.objects.get(username="admin")
+        user.totpdevice_set.create(name="Device")
+        user.tfa_enabled = True
+        user.save()
+        resp = self.client.get(me_url)
+        self.assertEqual(resp.status_code, 418)
+
+        # Verify code
+        url = reverse("v2:account-tfa-verify-code")
+        match_mock.side_effect = [user.totpdevice_set.first()]
+        data = {"code": "1234"}
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"]))
+        resp = self.client.get(me_url)
         self.assertEqual(resp.status_code, 200)

@@ -97,11 +97,6 @@
                 hide-details
                 />
   </confirm-dialog>
-  <v-dialog v-model="showDNSdetail"
-            persistent
-            max-width="800px">
-    <dns-detail @close="showDNSdetail = false" :domain="selectedDomain" />
-  </v-dialog>
   <v-dialog v-model="showAliasForm"
             persistent
             max-width="800px">
@@ -130,7 +125,6 @@ import { bus } from '@/main'
 import domainApi from '@/api/domains'
 import AdministratorList from './AdministratorList'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
-import DNSDetail from '@/components/domains/DNSDetail'
 import DNSStatusChip from './DNSStatusChip'
 import DomainAliasForm from '@/components/domains/DomainAliasForm'
 import MenuItems from '@/components/tools/MenuItems'
@@ -139,7 +133,6 @@ export default {
   components: {
     AdministratorList,
     ConfirmDialog,
-    'dns-detail': DNSDetail,
     'dns-status-chip': DNSStatusChip,
     DomainAliasForm,
     MenuItems
@@ -168,7 +161,6 @@ export default {
       showAdminList: false,
       showConfirmDialog: false,
       showAliasForm: false,
-      showDNSdetail: false,
       search: '',
       selected: [],
       expanded: [],
@@ -225,10 +217,6 @@ export default {
       domainApi.getDomainAliases(item.name).then(resp => {
         this.$set(this.aliases, item.name, resp.data)
       })
-    },
-    openDNSDetail (domain) {
-      this.selectedDomain = domain
-      this.showDNSdetail = true
     },
     openAdminList (domain) {
       this.selectedDomain = domain
