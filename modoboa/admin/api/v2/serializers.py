@@ -283,13 +283,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     data["mailbox"] = {
                         "use_domain_quota": True
                     }
-        condition = (
-            not data.get("random_password") and (
-                data.get("password") or
-                not self.partial
-            )
-        )
-        if condition:
+        if data.get("password") or not self.partial:
             password = data.get("password")
             if password:
                 try:
@@ -302,6 +296,11 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 raise serializers.ValidationError({
                     "password": _("This field is required.")
                 })
+        aliases = data.get("aliases")
+        if aliases and "mailbox" not in data:
+            raise serializers.ValidationError({
+                "aliases": _("A mailbox is required to create aliases.")
+            })
         domain_names = data.get("domains")
         if not domain_names:
             return data
@@ -323,13 +322,9 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         mailbox_data = validated_data.pop("mailbox", None)
         role = validated_data.pop("role")
         domains = validated_data.pop("domains", [])
-        random_password = validated_data.pop("random_password", False)
         aliases = validated_data.pop("aliases", None)
         user = core_models.User(**validated_data)
-        if random_password:
-            password = lib.make_password()
-        else:
-            password = validated_data.pop("password")
+        password = validated_data.pop("password")
         user.set_password(password)
         if "language" not in validated_data:
             user.language = settings.LANGUAGE_CODE
@@ -343,8 +338,8 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             for alias in aliases:
                 models.Alias.objects.create(
                     creator=creator,
-                    domain=alias.domain,
-                    address=alias.localpart,
+                    domain=alias["domain"],
+                    address="{}@{}".format(alias["localpart"], alias["domain"]),
                     recipients=[user.username]
                 )
         return user
