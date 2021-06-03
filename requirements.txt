@@ -12,7 +12,9 @@ dj-database-url
 djangorestframework>=3.11,<3.13
 drf-spectacular
 uritemplate
-djangorestframework-simplejwt==4.4
+# We fix jwt package versions because of python3.6
+djangorestframework-simplejwt==4.4.0
+pyjwt==1.7.1
 drf-flex-fields
 
 passlib~=1.7.4
