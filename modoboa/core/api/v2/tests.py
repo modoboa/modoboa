@@ -117,7 +117,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         me = resp.json()
-        self.assertEqual(me["pk"], 1)
+        self.assertEqual(me["username"], "admin")
 
     @mock.patch("django_otp.match_token")
     def test_tfa_verify_code(self, match_mock):
