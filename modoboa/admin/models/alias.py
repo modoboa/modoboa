@@ -32,7 +32,7 @@ def validate_alias_address(address, creator, internal=False, instance=None):
         raise ValidationError(_("Domain not found."))
     if not creator.can_access(domain):
         raise ValidationError(_("Permission denied."))
-    if instance and instance.address != address:
+    if not instance or instance.address != address:
         if Alias.objects.filter(address=address, internal=internal).exists():
             raise ValidationError(_("An alias with this name already exists."))
     if instance is None:
