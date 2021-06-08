@@ -4,7 +4,6 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 
 from modoboa.parameters import tools as param_tools
 
@@ -52,7 +51,6 @@ class MXRecordManager(models.Manager):
             yield record
 
 
-@python_2_unicode_compatible
 class MXRecord(models.Model):
     """A model used to store MX records for Domain."""
 
