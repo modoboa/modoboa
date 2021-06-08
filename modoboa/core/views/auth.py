@@ -34,6 +34,8 @@ from .. import sms_backends
 from .. import signals
 from .base import find_nextlocation
 
+import os
+
 logger = logging.getLogger("modoboa.auth")
 
 
@@ -44,11 +46,16 @@ def dologin(request):
         form = forms.LoginForm(request.POST)
         if form.is_valid():
             logger = logging.getLogger("modoboa.auth")
+            if not '@' in form.cleaned_data["username"]:
+                domain = param_tools.get_global_parameter("default_domain",
+                                                          raise_exception=False)
+                if domain is not "none":
+                    form.cleaned_data["username"] += '@' + domain
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
                 if param_tools.get_global_parameter("update_scheme",
-                                                    raise_exception=False):
+                                                    raise_exception=False) or not user.is_local:
                     # check if password scheme is correct
                     scheme = param_tools.get_global_parameter(
                         "password_scheme", raise_exception=False)
@@ -64,6 +71,9 @@ def dologin(request):
                         )
                         user.set_password(form.cleaned_data["password"])
                         user.save()
+                    elif not user.is_local:
+                        user.set_password(form.cleaned_data["password"])
+                        user.save()
                     if pwhash.needs_rehash(user.password):
                         logging.info(
                             _("Password hash parameter missmatch. "
@@ -72,7 +82,6 @@ def dologin(request):
                         )
                         user.set_password(form.cleaned_data["password"])
                         user.save()
-
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)
@@ -205,7 +214,7 @@ class VerifySMSCodeView(generic.FormView):
         return HttpResponseRedirect(url)
 
 
-class ResendSMSCodeView(generic.View):
+class ResendSMSCodeView(JSONResponseMixin, generic.View):
     """A view to resend validation code."""
 
     def get(self, request, *args, **kwargs):
@@ -231,7 +240,7 @@ class ResendSMSCodeView(generic.View):
         if not backend.send(text, [user.phone_number]):
             raise Http404
         self.request.session["totp_secret"] = secret
-        return JsonResponse({"status": "ok"})
+        return self.render_json_response({"status": "ok"})
 
 
 class TwoFactorCodeVerifyView(LoginRequiredMixin,

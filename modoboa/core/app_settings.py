@@ -18,6 +18,7 @@ from modoboa.parameters import forms as param_forms, tools as param_tools
 from . import constants
 from . import sms_backends
 
+from modoboa.admin.models import Domain
 
 def enabled_applications():
     """Return the list of installed extensions."""
@@ -37,6 +38,18 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     app = "core"
 
     sep1 = SeparatorField(label=ugettext_lazy("Authentication"))
+
+    domains = [("none", "none")]
+    for domain in Domain.objects.all():
+        domains.append((domain.name, domain.name))
+
+    default_domain = forms.ChoiceField(
+        label=ugettext_lazy("Default domain"),
+        choices=domains,
+        initial="none",
+        help_text=ugettext_lazy(
+            "Default domain to use for accounts.")
+    )
 
     authentication_type = forms.ChoiceField(
         label=ugettext_lazy("Authentication type"),
@@ -526,11 +539,6 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         self._add_visibilty_rules(
             sms_backends.get_all_backend_visibility_rules()
         )
-        self.fields["password_scheme"].choices = [
-            (hasher.name, ugettext_lazy(hasher.label))
-            for hasher in PasswordHasher.get_password_hashers()
-            if hasher().scheme in get_dovecot_schemes()
-        ]
 
     def _add_dynamic_fields(self):
         new_fields = OrderedDict()
