@@ -188,27 +188,27 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         else:
             return "success"
 
-    @cached_property
+    @property
     def spf_record(self):
         """Return SPF record."""
         return self.dnsrecord_set.filter(type="spf").first()
 
-    @cached_property
+    @property
     def dkim_record(self):
         """Return DKIM record."""
         return self.dnsrecord_set.filter(type="dkim").first()
 
-    @cached_property
+    @property
     def dmarc_record(self):
         """Return DMARC record."""
         return self.dnsrecord_set.filter(type="dmarc").first()
 
-    @cached_property
+    @property
     def autoconfig_record(self):
         """Return autoconfig record."""
         return self.dnsrecord_set.filter(type="autoconfig").first()
 
-    @cached_property
+    @property
     def autodiscover_record(self):
         """Return autodiscover record."""
         return self.dnsrecord_set.filter(type="autodiscover").first()
