@@ -47,8 +47,12 @@ def dologin(request):
             user = authenticate(username=form.cleaned_data["username"],
                                 password=form.cleaned_data["password"])
             if user and user.is_active:
-                if param_tools.get_global_parameter("update_scheme",
-                                                    raise_exception=False):
+                condition = (
+                    user.is_local and
+                    param_tools.get_global_parameter(
+                        "update_scheme", raise_exception=False)
+                )
+                if condition:
                     # check if password scheme is correct
                     scheme = param_tools.get_global_parameter(
                         "password_scheme", raise_exception=False)
