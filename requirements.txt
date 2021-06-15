@@ -15,7 +15,7 @@ passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev
 
 dnspython==1.16.0
-feedparser==6.0.2
+feedparser==6.0.5
 greenlet==0.4.17
 gevent==20.9.0
 jsonfield==3.1.0
