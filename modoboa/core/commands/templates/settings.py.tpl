@@ -350,10 +350,6 @@ SILENCED_SYSTEM_CHECKS = [
 
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
-# Load admin settings
-from modoboa.admin import settings as admin_settings
-admin_settings.apply(globals())
-
 # Load settings from extensions
 {% for extension in extra_settings %}
 try:

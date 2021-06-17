@@ -17,7 +17,8 @@
     :items="logs"
     :search="search"
     class="elevation-1"
-    :options.sync="pagination"
+    :options.sync="options"
+    :server-items-length="total"
     >
     <template v-slot:item.level="{ item }">
       <v-chip :color="getLevelColor(item.level)" text-color="white" small>
@@ -42,16 +43,10 @@ export default {
         { text: 'Message', value: 'message' }
       ],
       loading: true,
-      pagination: {
-      },
-      search: ''
+      options: {},
+      search: '',
+      total: 0
     }
-  },
-  created () {
-    logs.getAll().then(response => {
-      this.logs = response.data
-      this.loading = false
-    })
   },
   methods: {
     getLevelColor (level) {
@@ -65,6 +60,35 @@ export default {
         return 'red'
       }
       return ''
+    },
+    fetchLogs () {
+      let order
+      if (this.options.sortBy.length) {
+        order = (this.options.sortDesc[0] ? '-' : '') + this.options.sortBy[0]
+      }
+      const params = {
+        ordering: order,
+        page: this.options.page,
+        page_size: this.options.itemsPerPage,
+        search: this.search
+      }
+      this.loading = true
+      logs.getAll(params).then(response => {
+        this.logs = response.data.results
+        this.total = response.data.count
+        this.loading = false
+      })
+    }
+  },
+  watch: {
+    options: {
+      handler () {
+        this.fetchLogs()
+      },
+      deep: true
+    },
+    search (val) {
+      this.fetchLogs()
     }
   }
 }
