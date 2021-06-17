@@ -327,10 +327,6 @@ SILENCED_SYSTEM_CHECKS = [
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
 
-# Load admin settings
-from modoboa.admin import settings as admin_settings  # noqa
-admin_settings.apply(globals())
-
 # Load settings from extensions
 
 LDAP_SERVER_PORT = os.environ.get('LDAP_SERVER_PORT', 3389)
