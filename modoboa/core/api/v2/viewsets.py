@@ -1,7 +1,7 @@
 """Core API v2 viewsets."""
 
 from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, response, viewsets
+from rest_framework import filters, pagination, permissions, response, viewsets
 from rest_framework.decorators import action
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -38,12 +38,21 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         })
 
 
+class CustomPageNumberPagination(pagination.PageNumberPagination):
+    page_size_query_param = "page_size"
+
+
 class LogViewSet(viewsets.ReadOnlyModelViewSet):
     """Log viewset."""
 
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    ordering = ["-date_created"]
+    ordering_fields = "__all__"
+    pagination_class = CustomPageNumberPagination
     permission_classes = (
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
     )
     queryset = models.Log.objects.all()
+    search_fields = ["logger", "level", "message"]
     serializer_class = serializers.LogSerializer

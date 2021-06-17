@@ -1,15 +1,16 @@
+import Vue from 'vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import router from '../router'
 import store from '../store'
 
-const baseURL = process.env.VUE_APP_API_BASE_URL || ''
-const _axios = axios.create({ baseURL })
+const _axios = axios.create()
 
 _axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    config.baseURL = Vue.prototype.$config.API_BASE_URL
     return config
   },
   function (error) {

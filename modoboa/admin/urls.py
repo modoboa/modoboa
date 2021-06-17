@@ -5,15 +5,13 @@ from django.urls import path
 from . import views
 from .views import (
     alias as alias_views, domain as domain_views, export as export_views,
-    identity as identity_views, import_ as import_views,
-    base as base_views
+    identity as identity_views, import_ as import_views
 )
 
 app_name = "admin"
 
 urlpatterns = [
-    # path('', domain_views.index, name="index"),
-    path('', base_views.AdminIndexView.as_view(), name="index"),
+    path('', domain_views.index, name="index"),
     path('domains/', domain_views.domains, name="domain_list"),
     path('domains/<int:pk>/', views.DomainDetailView.as_view(),
          name="domain_detail"),
