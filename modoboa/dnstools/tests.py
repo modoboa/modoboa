@@ -2,11 +2,14 @@
 
 from unittest import mock
 
-from django.urls import reverse
 from django.test import SimpleTestCase
+from django.urls import reverse
+from django.utils import timezone
 
 from dns.rdtypes.ANY.TXT import TXT
 
+from modoboa.admin import factories as admin_factories
+from modoboa.admin import models as admin_models
 from modoboa.lib.tests import ModoTestCase
 
 from . import factories
@@ -175,3 +178,43 @@ class ViewsTestCase(ModoTestCase):
             "dnstools:domain_dns_configuration", args=[self.ac_rec.domain.pk])
         response = self.client.get(url)
         self.assertContains(response, "[IP address of your Modoboa server]")
+
+
+class DomainTestCase(ModoTestCase):
+
+    def test_dns_global_status(self):
+        admin_factories.MXRecordFactory.create(
+            domain__name="test.com", name="mail.test.com",
+            updated=timezone.now())
+        domain = admin_models.Domain.objects.get(name="test.com")
+        self.assertEqual(domain.dns_global_status, "critical")
+
+        factories.DNSRecordFactory.create(
+            type="spf", value="v=SPF1 mx -all", is_valid=True,
+            domain__name="test.com"
+        )
+        self.assertEqual(domain.dns_global_status, "critical")
+
+        factories.DNSRecordFactory(
+            type="dkim", value="12345", is_valid=True,
+            domain__name="test.com"
+        )
+        self.assertEqual(domain.dns_global_status, "critical")
+
+        factories.DNSRecordFactory(
+            type="dmarc", value="XXX", is_valid=True,
+            domain__name="test.com"
+        )
+        self.assertEqual(domain.dns_global_status, "critical")
+
+        factories.DNSRecordFactory(
+            type="autoconfig", value="1.2.3.4", is_valid=True,
+            domain__name="test.com"
+        )
+        self.assertEqual(domain.dns_global_status, "critical")
+
+        factories.DNSRecordFactory(
+            type="autodiscover", value="1.2.3.4", is_valid=True,
+            domain__name="test.com"
+        )
+        self.assertEqual(domain.dns_global_status, "ok")

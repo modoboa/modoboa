@@ -6,6 +6,8 @@ from django import forms
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
+from rest_framework import serializers
+
 from . import SMSBackend
 
 
@@ -53,6 +55,63 @@ class OVHBackend(SMSBackend):
             }
         }
     }
+
+    serializer_settings = {
+        "sms_ovh_endpoint": {
+            "type": serializers.ChoiceField,
+            "attrs": {
+                "default": "ovh-eu",
+                "choices": (
+                    ("ovh-eu", _("OVH Europe")),
+                    ("ovh-us", _("OVH US")),
+                    ("ovh-ca", _("OVH North-America")),
+                    ("soyoustart-eu", _("So you Start Europe")),
+                    ("soyoustart-ca", _("So you Start North America")),
+                    ("kimsufi-eu", _("Kimsufi Europe")),
+                    ("kimsufi-ca", _("Kimsufi North America")),
+                )
+            }
+        },
+        "sms_ovh_application_key": {
+            "type": serializers.CharField,
+            "attrs": {
+                "required": False
+            }
+        },
+        "sms_ovh_application_secret": {
+            "type": serializers.CharField,
+            "attrs": {
+                "required": False
+            }
+        },
+        "sms_ovh_consumer_key": {
+            "type": serializers.CharField,
+            "attrs": {
+                "required": False
+            }
+        }
+    }
+
+    structure = [
+        ("sms_ovh_endpoint", {
+            "label": _("API endpoint"),
+            "display": "sms_password_recovery=true&sms_provider=ovh",
+        }),
+        ("sms_ovh_application_key", {
+            "label": _("Application key"),
+            "display": "sms_password_recovery=true&sms_provider=ovh"
+        }),
+        ("sms_ovh_application_secret", {
+            "label": _("Appication secret"),
+            "display": "sms_password_recovery=true&sms_provider=ovh",
+            "password": True
+        }),
+        ("sms_ovh_consumer_key", {
+            "label": _("Consumer key"),
+            "display": "sms_password_recovery=true&sms_provider=ovh",
+            "password": True
+        }),
+    ]
 
     visibility_rules = {
         "sms_ovh_endpoint": "sms_provider=ovh",

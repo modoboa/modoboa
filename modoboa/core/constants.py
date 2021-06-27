@@ -54,6 +54,11 @@ LDAP_SECURE_MODES = [
     ("ssl", "SSL/TLS")
 ]
 
+LDAP_AUTH_METHODS = [
+    ("searchbind", ugettext_lazy("Search and bind")),
+    ("directbind", ugettext_lazy("Direct bind"))
+]
+
 PERMISSIONS = {
     "SimpleUsers": [],
     "DomainAdmins": [
@@ -105,3 +110,5 @@ SMS_BACKENDS = [
 
 if settings.DEBUG:
     SMS_BACKENDS.insert(1, ("dummy", ugettext_lazy("Dummy")))
+
+TFA_DEVICE_TOKEN_KEY = "otp_device_id"

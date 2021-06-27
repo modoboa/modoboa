@@ -151,6 +151,10 @@ class User(AbstractUser):
         return reverse("admin:account_detail", args=[self.pk])
 
     @property
+    def type(self):
+        return "account"
+
+    @property
     def tags(self):
         return [{"name": "account", "label": _("account"), "type": "idt"},
                 {"name": self.role, "label": self.role,

@@ -188,16 +188,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'modoboa.core.drf_authentication.JWTAuthenticationWith2FA',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+
 }
 
 SPECTACULAR_SETTINGS = {
-    'SCHEMA_PATH_PREFIX': r'/api/v1',
+    'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
     'TITLE': 'Modoboa API',
-    'VERSION': '1.0.0',
+    'VERSION': None,
     'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
 }
 

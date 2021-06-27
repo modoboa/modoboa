@@ -12,10 +12,15 @@ def load_core_settings():
     order to load base settings.
     """
     from modoboa.parameters import tools as param_tools
-    from .app_settings import GeneralParametersForm
+    from . import app_settings
+    from .api.v2 import serializers
 
     param_tools.registry.add(
-        "global", GeneralParametersForm, ugettext_lazy("General"))
+        "global", app_settings.GeneralParametersForm, ugettext_lazy("General"))
+    param_tools.registry.add2(
+        "global", "core", ugettext_lazy("General"),
+        app_settings.GLOBAL_PARAMETERS_STRUCT,
+        serializers.CoreGlobalParametersSerializer)
 
 
 class CoreConfig(AppConfig):
