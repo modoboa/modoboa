@@ -90,7 +90,7 @@ jobs:
         run: |
           python ./tests.py
           cd test_project
-          python3 manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+          python3 manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog modoboa.parameters
         env:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
@@ -106,7 +106,7 @@ jobs:
         run: |
           python ./tests.py
           cd test_project
-          coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog
+          coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog modoboa.parameters
           coverage combine
         env:
           # use localhost for the host here because we are running the job on the VM.
@@ -156,7 +156,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-      - name: Install dependencies
+      - name: Build frontend
+        shell: bash -l {0}
+        run: |
+          cd frontend
+          nvm install 12
+          yarn install
+          yarn build
+          cd ..
+      - name: Build packages
         run: |
           sudo apt-get install librrd-dev rrdtool libssl-dev gettext
           python -m pip install --upgrade pip setuptools wheel

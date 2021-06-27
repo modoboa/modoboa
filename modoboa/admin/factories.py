@@ -81,6 +81,16 @@ class AlarmFactory(factory.django.DjangoModelFactory):
         model = models.Alarm
 
 
+class MXRecordFactory(factory.django.DjangoModelFactory):
+    """Factory for MXRecord model."""
+
+    domain = factory.SubFactory(DomainFactory)
+    address = "127.0.0.1"
+
+    class Meta:
+        model = models.MXRecord
+
+
 def populate_database():
     """Create test data.
 

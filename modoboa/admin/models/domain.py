@@ -80,15 +80,15 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         self.old_dkim_key_length = self.dkim_key_length
 
     @property
-    def domainalias_count(self):
+    def domainalias_count(self) -> int:
         return self.domainalias_set.count()
 
     @property
-    def mailbox_count(self):
+    def mailbox_count(self) -> int:
         return self.mailbox_set.count()
 
     @property
-    def mbalias_count(self):
+    def mbalias_count(self) -> int:
         return self.alias_set.filter(internal=False).count()
 
     @property
@@ -149,6 +149,35 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             return True
         return False
 
+    @property
+    def dns_global_status(self) -> str:
+        """Return global DNS status."""
+        if not self.enable_dns_checks or self.uses_a_reserved_tld:
+            return "disabled"
+        elif self.awaiting_checks():
+            return "pending"
+        config = dict(param_tools.get_global_parameters("admin"))
+        errors = []
+        if config["enable_mx_checks"] and not self.mxrecord_set.has_valids():
+            errors.append("mx")
+        if config["enable_dnsbl_checks"] and self.dnsblresult_set.blacklisted().exists():
+            errors.append("dnsbl")
+        if config["enable_spf_checks"]:
+            if self.spf_record is None or not self.spf_record.is_valid:
+                errors.append("spf")
+            if self.dkim_record is None or not self.dkim_record.is_valid:
+                errors.append("dkim")
+            if self.dmarc_record is None or not self.dmarc_record.is_valid:
+                errors.append("dmarc")
+        if config["enable_autoconfig_checks"]:
+            if self.autoconfig_record is None:
+                errors.append("autoconfig")
+            if self.autodiscover_record is None:
+                errors.append("autodiscover")
+        if len(errors) == 0:
+            return "ok"
+        return "critical"
+
     @cached_property
     def dnsbl_status_color(self):
         """Shortcut to DNSBL results."""
@@ -159,27 +188,27 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         else:
             return "success"
 
-    @cached_property
+    @property
     def spf_record(self):
         """Return SPF record."""
         return self.dnsrecord_set.filter(type="spf").first()
 
-    @cached_property
+    @property
     def dkim_record(self):
         """Return DKIM record."""
         return self.dnsrecord_set.filter(type="dkim").first()
 
-    @cached_property
+    @property
     def dmarc_record(self):
         """Return DMARC record."""
         return self.dnsrecord_set.filter(type="dmarc").first()
 
-    @cached_property
+    @property
     def autoconfig_record(self):
         """Return autoconfig record."""
         return self.dnsrecord_set.filter(type="autoconfig").first()
 
-    @cached_property
+    @property
     def autodiscover_record(self):
         """Return autodiscover record."""
         return self.dnsrecord_set.filter(type="autodiscover").first()

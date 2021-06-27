@@ -32,6 +32,8 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
+INTERNAL_IPS = ['127.0.0.1']
+
 SITE_ID = 1
 
 # A list of all the people who get code error notifications. When DEBUG=False
@@ -182,6 +184,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'modoboa.core.drf_authentication.JWTAuthenticationWith2FA',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
@@ -191,7 +194,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'SCHEMA_PATH_PREFIX': r'/api/v1',
     'TITLE': 'Modoboa API',
-    'VERSION': '1.0.0',
+    'VERSION': None,
     'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
 }
 
@@ -323,6 +326,7 @@ SILENCED_SYSTEM_CHECKS = [
 ]
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
+
 # Load settings from extensions
 
 LDAP_SERVER_PORT = os.environ.get('LDAP_SERVER_PORT', 3389)

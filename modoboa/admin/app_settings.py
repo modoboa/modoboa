@@ -1,5 +1,6 @@
 """Modoboa admin settings."""
 
+import collections
 import os
 
 from django import forms
@@ -11,6 +12,7 @@ from django.forms.fields import GenericIPAddressField
 from modoboa.lib.form_utils import SeparatorField, YesNoField
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import forms as param_forms
+
 from . import constants
 
 
@@ -273,9 +275,161 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         return cleaned_data
 
 
+GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
+    ("domains", {
+        "label": ugettext_lazy("Domains"),
+        "params": collections.OrderedDict([
+            ("enable_mx_checks", {
+                "label": ugettext_lazy("Enable MX checks"),
+                "help_text": ugettext_lazy(
+                    "Check that every domain has a valid MX record"
+                )
+            }),
+            ("valid_mxs", {
+                "label": ugettext_lazy("Valid MXs"),
+                "display": "enable_mx_checks=true",
+                "help_text": ugettext_lazy(
+                    "A list of IP or network address every MX record should "
+                    "match. A warning will be sent if a record does not "
+                    "respect it."
+                ),
+            }),
+            ("domains_must_have_authorized_mx", {
+                "label": ugettext_lazy("New domains must use authorized MX(s)"),
+                "display": "enable_mx_checks=true",
+                "help_text": ugettext_lazy(
+                    "Prevent the creation of a new domain if its MX record "
+                    "does not use one of the defined addresses."
+                )
+            }),
+            ("enable_spf_checks", {
+                "label": ugettext_lazy("Enable SPF checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain has a valid SPF record"
+                )
+            }),
+            ("enable_dkim_checks", {
+                "label": ugettext_lazy("Enable DKIM checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain with DKIM signin enabled "
+                    "has a valid DNS record"
+                )
+            }),
+            ("enable_dmarc_checks", {
+                "label": ugettext_lazy("Enable DMARC checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain has a valid DMARC record"
+                )
+            }),
+            ("enable_autoconfig_checks", {
+                "label": ugettext_lazy("Enable SPF checks"),
+                "help_text": ugettext_lazy(
+                    "Check if every domain has a valid records for "
+                    "autoconfiguration"
+                )
+            }),
+            ("enable_dnsbl_checks", {
+                "label": ugettext_lazy("Enable DNSBL checks"),
+                "help_text": ugettext_lazy(
+                    "Check every domain against major DNSBL providers"
+                )
+            }),
+            ("custom_dns_server", {
+                "label": ugettext_lazy("Custom DNS server"),
+                "help_text": ugettext_lazy(
+                    "Use a custom DNS server instead of local server "
+                    "configuration"
+                )
+            }),
+            ("dkim_keys_storage_dir", {
+                "label": ugettext_lazy("DKIM keys storage directory"),
+                "help_text": ugettext_lazy(
+                    "Absolute path of the directory where DKIM private keys "
+                    "will be stored. Make sure this directory belongs to root "
+                    "user and is not readable by the outside world."
+                ),
+            }),
+            ("dkim_default_key_length", {
+                "label": ugettext_lazy("Default DKIM key length"),
+                "help_text": ugettext_lazy(
+                    "Default length in bits for newly generated DKIM keys."
+                )
+            }),
+            ("default_domain_quota", {
+                "label": ugettext_lazy("Default domain quota"),
+                "help_text": ugettext_lazy(
+                    "Default quota (in MB) applied to freshly created domains "
+                    "with no value specified. A value of 0 means no quota."
+                )
+            }),
+            ("default_domain_message_limit", {
+                "label": ugettext_lazy("Default domain sending limit"),
+                "help_text": ugettext_lazy(
+                    "Number of messages freshly created domains will be "
+                    "allowed to send per day. Leave empty for no limit."
+                )
+            }),
+        ])
+    }),
+    ("mailboxes", {
+        "label": ugettext_lazy("Mailboxes"),
+        "params": collections.OrderedDict([
+            ("handle_mailboxes", {
+                "label": ugettext_lazy("Handle mailboxes on filesystem"),
+                "help_text": ugettext_lazy(
+                    "Rename or remove mailboxes on the filesystem when they get"
+                    " renamed or removed within Modoboa"
+                )
+            }),
+            ("default_mailbox_quota", {
+                "label": ugettext_lazy("Default mailbox quota"),
+                "help_text": ugettext_lazy(
+                    "Default mailbox quota (in MB) applied to freshly created "
+                    "domains with no value specified. A value of 0 means no "
+                    "quota."
+                )
+            }),
+            ("default_mailbox_message_limit", {
+                "label": ugettext_lazy("Default mailbox sending limit"),
+                "help_text": ugettext_lazy(
+                    "Number of messages freshly created mailboxes will be "
+                    "allowed to send per day. Leave empty for no limit."
+                )
+            }),
+            ("auto_account_removal", {
+                "label": ugettext_lazy("Automatic account removal"),
+                "help_text": ugettext_lazy(
+                    "When a mailbox is removed, also remove the associated "
+                    "account")
+            }),
+            ("auto_create_domain_and_mailbox", {
+                "label": ugettext_lazy("Automatic domain/mailbox creation"),
+                "help_text": ugettext_lazy(
+                    "Create a domain and a mailbox when an account is "
+                    "automatically created."
+                )
+            }),
+            ("create_alias_on_mbox_rename", {
+                "label": ugettext_lazy(
+                    "Create an alias when a mailbox is renamed"),
+                "help_text": ugettext_lazy(
+                    "Create an alias using the old address when a mailbox is "
+                    "renamed."
+                )
+            })
+        ])
+    }),
+])
+
+
 def load_admin_settings():
     """Load admin settings."""
     from modoboa.parameters import tools as param_tools
+    from .api.v2 import serializers
 
     param_tools.registry.add(
         "global", AdminParametersForm, ugettext_lazy("Administration"))
+    param_tools.registry.add2(
+        "global", "admin", ugettext_lazy("Administration"),
+        GLOBAL_PARAMETERS_STRUCT,
+        serializers.AdminGlobalParametersSerializer)

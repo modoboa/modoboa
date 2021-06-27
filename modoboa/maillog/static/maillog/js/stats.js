@@ -149,7 +149,7 @@ Stats.prototype = {
         $.each(data.graphs, $.proxy(function(id, graphdef) {
             if (this.charts.hasOwnProperty(id)) {
                 this.charts[id].update(graphdef);
-            } else if (graphdef.curves.length) {
+            } else if (graphdef.series.length) {
                 var mychart = ModoChart("#gset");
                 this.charts[id] = mychart;
                 mychart(graphdef);

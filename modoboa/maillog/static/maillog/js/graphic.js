@@ -1,10 +1,10 @@
 /**
  * Creates an instance of ModoChart.
- * 
+ *
  * @constructor
  * @this {ModoChart}
  * @param {string} selection add chart to this DOM element.
- * 
+ *
  */
 function ModoChart(selection) {
     var width = 0,
@@ -57,11 +57,11 @@ function ModoChart(selection) {
             .on("brush", brushed);
 
         x.domain(
-            d3.extent(data.curves[0].data.map(function(d) { return d.x * 1000; }))
+            d3.extent(data.series[0].data.map(function(d) { return d.x * 1000; }))
         );
         y.domain(
-            [d3.min(data.curves, function(d) { return d3.min(d.data, function(v) { return v.y; }); }),
-             d3.max(data.curves, function(d) { return d3.max(d.data, function(v) { return v.y; }); })
+            [d3.min(data.series, function(d) { return d3.min(d.data, function(v) { return v.y; }); }),
+             d3.max(data.series, function(d) { return d3.max(d.data, function(v) { return v.y; }); })
             ]
         );
         x2.domain(x.domain());
@@ -92,11 +92,11 @@ function ModoChart(selection) {
         var curvegroup = focus.append("g")
             .attr('clip-path', 'url(#clip)');
         var curve = curvegroup.selectAll(".curve")
-            .data(data.curves)
+            .data(data.series)
             .enter().append("g")
             .attr("class", "curve");
         var curve2 = context.selectAll(".curve")
-            .data(data.curves)
+            .data(data.series)
             .enter().append("g")
                 .attr("class", "curve");
 
@@ -136,10 +136,10 @@ function ModoChart(selection) {
                 return area(d.data);
             })
             .attr("data-legend", function(d) { return d.name; })
-            .attr("stroke", function(d) { return d.color; })
+            .attr("stroke", function(d) { return d.backgroundColor; })
             .attr("stroke-width", "2px")
             .attr("stroke-opacity", 0.8)
-            .style("fill", function(d) { return d.color; });
+            .style("fill", function(d) { return d.backgroundColor; });
 
         var xrules = make_x_axis();
 
@@ -147,7 +147,7 @@ function ModoChart(selection) {
             .attr("class", "grid")
             .attr("transform", "translate(0," + height + ")")
             .call(xrules);
-        focus.append("g")         
+        focus.append("g")
             .attr("class", "grid")
             .call(make_y_axis);
         focus.append("g")
@@ -161,13 +161,13 @@ function ModoChart(selection) {
         rect.on("mouseover", function(d) {
             line.style("display", "block");
             tooltip.style("display", "block");
-            data.curves.forEach(function(d, cid) {
+            data.series.forEach(function(d, cid) {
                 var display = d3.selectAll("[data-legend='" + d.name + "']")
                     .style("display");
                 if (display == "none") {
                     return;
                 }
-                focus.select(".tracker-" + cid).style("display", "block");    
+                focus.select(".tracker-" + cid).style("display", "block");
             });
         }).on("mousemove", function(d) {
             var mousex = d3.mouse(this)[0],
@@ -176,7 +176,7 @@ function ModoChart(selection) {
             var text = "";
 
             line.attr("x1", mousex).attr("x2", mousex);
-            data.curves.forEach(function(d, cid) {
+            data.series.forEach(function(d, cid) {
                 var display = d3.selectAll("[data-legend='" + d.name + "']")
                     .style("display");
                 if (display == "none") {
@@ -192,7 +192,7 @@ function ModoChart(selection) {
                     tracker_y = y(point.y);
 
                 focus.selectAll(".tracker-" + cid)
-                    .style("fill", d.color)
+                    .style("fill", d.backgroundColor)
                     .attr("cx", tracker_x)
                     .attr("cy", tracker_y);
             });
@@ -214,15 +214,15 @@ function ModoChart(selection) {
             .attr("transform", "translate(50,10)")
             .style("font-size", "0.8em")
             .call(d3.legend);
-   
+
         curve2.append("path")
             .attr("class", "area2")
             .attr("d", function(d) { return area2(d.data); })
-            .attr("stroke", function(d) { return d.color; })
+            .attr("stroke", function(d) { return d.backgroundColor; })
             .attr("stroke-width", "2px")
             .attr("stroke-opacity", 0.8)
             .attr("data-legend", function(d) { return d.name; })
-            .style("fill", function(d) { return d.color; });
+            .style("fill", function(d) { return d.backgroundColor; });
 
         context.append("g")
             .attr("class", "x axis")
@@ -279,7 +279,7 @@ function ModoChart(selection) {
 
     /**
      * Set or get chart's width.
-     * 
+     *
      * @this {ModoChart}
      * @param {integer} value new width.
      * @return {number} current width.
@@ -292,7 +292,7 @@ function ModoChart(selection) {
 
     /**
      * Set or get chart's height.
-     * 
+     *
      * @this {ModoChart}
      * @param {integer} value new height.
      * @return {number} current height.
@@ -305,7 +305,7 @@ function ModoChart(selection) {
 
     /**
      * Set or get chart's margin.
-     * 
+     *
      * @this {ModoChart}
      * @param {Object} value new margin.
      * @return {Object} current margin.
@@ -318,12 +318,12 @@ function ModoChart(selection) {
 
     /**
      * Compute and return chart's total height.
-     * 
+     *
      * @this {ModoChart}
      * @return {integer} total height.
      */
     my.totalHeight = function() {
-        return height + 2 * margin.top 
+        return height + 2 * margin.top
             + 2 * margin.bottom + preview_height
             + brush_height;
     };

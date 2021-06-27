@@ -4,12 +4,17 @@ django-phonenumber-field[phonenumbers]==5.1.0
 django-reversion==3.0.9
 django-xforwardedfor-middleware==2.0
 django-otp==1.0.5
+django-filter
 
 dj-database-url
 
 djangorestframework>=3.11,<3.13
 drf-spectacular
 uritemplate
+# We fix jwt package versions because of python3.6
+djangorestframework-simplejwt==4.4.0
+pyjwt==1.7.1
+drf-flex-fields
 
 passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev

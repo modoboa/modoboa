@@ -14,7 +14,16 @@ modoboa.iml
 .eggs/
 modoboa_test
 .coverage
-build/
+./build/
 dist/
+
+# JS stuff
+node_modules
+/static/dist
+/frontend/webpack-stats.json
+
+# TOX stuff
+test_project/modoboa.db
+
 /.project
 /.pydevproject
