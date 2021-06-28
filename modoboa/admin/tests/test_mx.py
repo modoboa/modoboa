@@ -48,7 +48,7 @@ class MXTestCase(ModoTestCase):
 
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_management_command(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
@@ -76,7 +76,7 @@ class MXTestCase(ModoTestCase):
 
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_single_domain_update(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Update only one domain."""
@@ -101,7 +101,7 @@ class MXTestCase(ModoTestCase):
 
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_invalid_mx(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Test to check if invalid MX records are detected."""
@@ -125,7 +125,7 @@ class MXTestCase(ModoTestCase):
         self.assertEqual(len(mail.outbox), 1)
 
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_get_mx_list_dns_server(self, mock_query, mock_getaddrinfo):
         """Test to get mx list from specific DNS server."""
         mock_query.side_effect = utils.mock_dns_query_result
@@ -134,7 +134,7 @@ class MXTestCase(ModoTestCase):
         get_domain_mx_list("does-not-exist.example.com")
 
     @mock.patch("ipaddress.ip_address")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_get_domain_mx_list_logging(self, mock_query, mock_ip_address):
         """Test to get error loggins from specific DNS server."""
         mock_query.side_effect = utils.mock_dns_query_result
@@ -190,7 +190,7 @@ class DNSBLTestCase(ModoTestCase):
 
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_management_command(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
@@ -211,7 +211,7 @@ class DNSBLTestCase(ModoTestCase):
 
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_notifications(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check notifications."""
@@ -224,7 +224,7 @@ class DNSBLTestCase(ModoTestCase):
 
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_management_command_no_dnsbl(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine without dnsbl."""
@@ -251,7 +251,7 @@ class DNSChecksTestCase(ModoTestCase):
 
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_management_command(
             self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""

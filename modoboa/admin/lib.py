@@ -184,7 +184,7 @@ def get_dns_records(name, typ, resolver=None):
     if not resolver:
         resolver = get_dns_resolver()
     try:
-        dns_answers = resolver.query(name, typ)
+        dns_answers = resolver.resolve(name, typ, search=True)
     except dns.resolver.NXDOMAIN as e:
         logger.error(_("No DNS record found for %s") % name, exc_info=e)
     except dns.resolver.NoAnswer as e:
