@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 from . import models
 
 
-class PermissionFactory(factory.DjangoModelFactory):
+class PermissionFactory(factory.django.DjangoModelFactory):
 
     """A base factory to handle permissions."""
 
@@ -21,7 +21,7 @@ class PermissionFactory(factory.DjangoModelFactory):
         self.post_create(models.User.objects.filter(is_superuser=True).first())
 
 
-class GroupFactory(factory.DjangoModelFactory):
+class GroupFactory(factory.django.DjangoModelFactory):
 
     """A factory to create Group instances."""
 
@@ -52,7 +52,7 @@ class UserFactory(PermissionFactory):
                 self.groups.add(Group.objects.get(name=group))
 
 
-class LogFactory(factory.DjangoModelFactory):
+class LogFactory(factory.django.DjangoModelFactory):
     """Factory for Log."""
 
     class Meta(object):

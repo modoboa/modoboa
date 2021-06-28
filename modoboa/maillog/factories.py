@@ -9,7 +9,7 @@ from modoboa.admin import factories as admin_factories
 from . import models
 
 
-class MaillogFactory(factory.DjangoModelFactory):
+class MaillogFactory(factory.django.DjangoModelFactory):
     """Factory class for Maillog."""
 
     class Meta:
