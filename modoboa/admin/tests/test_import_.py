@@ -78,7 +78,7 @@ domainalias; domalias1.com; domain1.com; True
             response,
             "Default mailbox quota cannot be greater than domain quota")
 
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     @mock.patch("socket.getaddrinfo")
     def test_domain_import_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain import when MX check is enabled."""

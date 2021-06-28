@@ -41,7 +41,13 @@
         />
     </validation-observer>
     <div class="d-flex justify-center">
-      <v-btn class="flex-grow-1" color="primary" large @click="authenticate">
+      <v-btn
+        class="flex-grow-1"
+        color="primary"
+        large
+        @click="authenticate"
+        :loading="loading"
+        >
         <translate>Connect</translate>
       </v-btn>
     </div>
@@ -56,6 +62,7 @@ import auth from '@/api/auth'
 export default {
   data () {
     return {
+      loading: false,
       rememberMe: false,
       username: '',
       password: '',
@@ -72,13 +79,15 @@ export default {
         username: this.username,
         password: this.password
       }
+      this.loading = true
       auth.requestToken(payload).then(resp => {
         Cookies.set('token', resp.data.access, { sameSite: 'strict' })
         Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
         this.$store.dispatch('auth/initialize').then(() => {
-          this.$router.push({ name: 'Dashboard' })
+          this.$router.push({ name: 'DomainList' })
         })
       }).catch(err => {
+        this.loading = false
         if (err.response.status === 401) {
           this.$refs.observer.setErrors({
             password: this.$gettext('Invalid username and/or password')
