@@ -51,6 +51,13 @@
             {% endif %}
             {% load_optionalmenu user %}
             <li class="divider"></li>
+            {% if user.is_admin %}
+              <li>
+                <a name="newadmin" href="/new-admin" target="_blank">
+                  {% trans "New admin" %}
+                </a>
+              </li>
+            {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}

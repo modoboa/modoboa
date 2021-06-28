@@ -4,7 +4,7 @@
 Web server
 ##########
 
-.. note:: 
+.. note::
 
    The following instructions are meant to help you get your site up
    and running quickly. However it is not possible for the people
@@ -128,6 +128,17 @@ following configuration::
                 autoindex on;
         }
 
+        location ^~ /new-admin {
+                alias  <modoboa_instance_path>/frontend/;
+                index  index.html;
+
+                expires -1;
+                add_header Pragma "no-cache";
+                add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+
+                try_files $uri $uri/ /index.html = 404;
+        }
+
         location / {
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header Host $http_host;
@@ -166,7 +177,7 @@ optimize their configuration for your site.
 The Django documentation includes the following warning regarding
 uwsgi:
 
-.. warning:: 
+.. warning::
 
    Use uwsgi 1.2.6 or newer. If you do not, you *will* run into
    problems. Modoboa will fail in obscure ways.

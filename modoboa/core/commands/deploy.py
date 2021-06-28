@@ -2,10 +2,10 @@
 
 import getpass
 import os
+from os.path import isfile
 import shutil
 import subprocess
 import sys
-from os.path import isfile
 
 import dj_database_url
 
@@ -267,3 +267,14 @@ class DeployCommand(Command):
         self._exec_django_command(
             "set_default_site", parsed_args.name, allowed_host
         )
+
+        base_frontend_dir = os.path.join(
+            os.path.dirname(__file__), "../../../frontend/dist/")
+        frontend_target_dir = "{}/frontend".format(parsed_args.name)
+        shutil.copytree(base_frontend_dir, frontend_target_dir)
+
+        with open("{}/config.json".format(frontend_target_dir), "w") as fp:
+            fp.write("""{
+    "API_BASE_URL": "https://%s/api/v2"
+}
+""" % allowed_host)
