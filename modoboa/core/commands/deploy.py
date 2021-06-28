@@ -270,6 +270,8 @@ class DeployCommand(Command):
 
         base_frontend_dir = os.path.join(
             os.path.dirname(__file__), "../../../frontend/dist/")
+        if not os.path.exists(base_frontend_dir):
+            return
         frontend_target_dir = "{}/frontend".format(parsed_args.name)
         shutil.copytree(base_frontend_dir, frontend_target_dir)
 
