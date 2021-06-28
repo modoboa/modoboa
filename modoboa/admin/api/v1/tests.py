@@ -71,7 +71,7 @@ class DomainAPITestCase(ModoAPITestCase):
             url, {"name": "test4.com", "default_mailbox_quota": 10})
         self.assertEqual(response.status_code, 403)
 
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     @mock.patch("socket.getaddrinfo")
     def test_create_domain_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain creation when MX check is activated."""

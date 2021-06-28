@@ -203,7 +203,7 @@ class DomainTestCase(ModoTestCase):
         self.assertContains(response, "value=\"500\"")
         self.assertContains(response, "value=\"50\"")
 
-    @mock.patch.object(dns.resolver.Resolver, "query")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
     @mock.patch("socket.getaddrinfo")
     def test_create_and_check_mx(self, mock_getaddrinfo, mock_query):
         """Check for authorized MX record."""
