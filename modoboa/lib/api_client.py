@@ -1,10 +1,15 @@
 """A client for Modoboa's public API."""
 
+import logging
 import os
 
 import pkg_resources
 import requests
 from requests.exceptions import RequestException
+
+from django.utils.translation import ugettext as _
+
+logger = logging.getLogger("modoboa.admin")
 
 
 class ModoAPIClient(object):
@@ -26,7 +31,10 @@ class ModoAPIClient(object):
             params = {}
         try:
             resp = requests.get(url, params=params)
-        except RequestException:
+        except RequestException as err:
+            logger.critical(
+                _("Failed to communicate with public API: %s"), str(err)
+            )
             return None
         if resp.status_code != 200:
             return None
@@ -57,7 +65,13 @@ class ModoAPIClient(object):
             url = "{}instances/".format(self._api_url)
             data = {
                 "hostname": hostname, "known_version": self.local_core_version}
-            response = requests.post(url, data=data)
+            try:
+                response = requests.post(url, data=data)
+            except RequestException as err:
+                logger.critical(
+                    _("Failed to communicate with public API: %s"), str(err)
+                )
+                return None
             if response.status_code != 201:
                 return None
             instance = response.json()
@@ -66,8 +80,16 @@ class ModoAPIClient(object):
     def update_instance(self, pk, data):
         """Update instance and send stats."""
         url = "{}instances/{}/".format(self._api_url, pk)
-        response = requests.put(url, data=data)
-        response.raise_for_status()
+        try:
+            response = requests.put(url, data=data)
+        except RequestException as err:
+            logger.critical(
+                _("Failed to communicate with public API: %s"), str(err)
+            )
+        if response.status_code != 200:
+            logger.critical(
+                _("Failed to communicate with public API: %s"), response.text
+            )
 
     def versions(self):
         """Fetch core and extension versions."""

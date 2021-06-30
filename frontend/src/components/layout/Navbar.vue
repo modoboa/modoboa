@@ -73,9 +73,9 @@
         <template v-slot:activator="{ attrs, on }">
           <div class="d-flex user-box justify-center align-center white--text py-2" v-bind="attrs" v-on="on">
             <v-avatar size="40" color="primary">
-              <span class="white--text headline">AN</span>
+              <span class="white--text headline">{{ userInitials }}</span>
             </v-avatar>
-            <span class="mx-2">{{ authUser.first_name }} {{ authUser.last_name }}</span>
+            <span class="mx-2">{{ displayName }}</span>
             <v-icon class="float-right">mdi-chevron-up</v-icon>
           </div>
         </template>
@@ -107,7 +107,25 @@ export default {
   computed: {
     ...mapGetters({
       authUser: 'auth/authUser'
-    })
+    }),
+    userInitials () {
+      let initials = null
+      if (this.authUser.first_name) {
+        initials = this.authUser.first_name[0]
+      }
+      if (this.authUser.last_name) {
+        initials = initials ? initials + this.authUser.last_name[0] : this.authUser.last_name[0]
+      }
+      if (!initials) {
+        initials = this.authUser.this.authUsername[0]
+      }
+      return initials
+    },
+    displayName () {
+      return (this.authUser.first_name || this.authUser.last_name)
+        ? `${this.authUser.first_name} ${this.authUser.last_name}`
+        : this.authUser.username
+    }
   },
   data () {
     return {
