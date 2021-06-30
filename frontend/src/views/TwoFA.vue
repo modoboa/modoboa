@@ -1,5 +1,5 @@
 <template>
-<v-row style="height: 100%; width: 80%; margin: 0 auto">
+<v-row style="height: 100%; margin: 0 auto">
   <v-col cols="0" sm="6" class="primary" style="height: 100%">
     <v-img
       src="../assets/Modoboa_RVB-BLANC-SANS.png"

@@ -10,7 +10,7 @@
     elevation="2"
     class="mt-10"
     >
-    <translate tag="p">This page is still in construction.</translate>
+    <translate tag="p">This page is still under construction.</translate>
     <translate tag="p">
       It will present a summary of your Modoboa server's status and
       some useful information about the product.
