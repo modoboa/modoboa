@@ -21,7 +21,7 @@
     </v-row>
   </v-layout>
   <v-layout>
-    <v-row>
+    <v-row class="mt-2">
       <v-col cols="12">
         <time-serie-chart :domain="domain" graphic-set="mailtraffic" graphic-name="averagetraffic" />
       </v-col>

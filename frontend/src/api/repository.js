@@ -11,6 +11,9 @@ _axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
     config.baseURL = Vue.prototype.$config.API_BASE_URL
+    if (store.state.auth.isAuthenticated) {
+      config.headers['Accept-Language'] = store.state.auth.authUser.language
+    }
     return config
   },
   function (error) {
