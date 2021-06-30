@@ -13,7 +13,7 @@ drf-spectacular
 uritemplate
 # We fix jwt package versions because of python3.6
 djangorestframework-simplejwt==4.4.0
-pyjwt==1.7.1
+pyjwt==2.1.0
 drf-flex-fields
 
 passlib~=1.7.4
