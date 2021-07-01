@@ -11,7 +11,7 @@
          @click="selectChoice(choice.value)"
          >
       <v-icon v-if="choice.icon" class="d-block mb-2" :color="iconColor(choice.value)" x-large>{{ choice.icon }}</v-icon>
-      <translate class="grey--text text--darken-1">{{ choice.label }}</translate>
+      <span class="grey--text text--darken-1">{{ choice.label }}</span>
     </div>
   </div>
 </div>

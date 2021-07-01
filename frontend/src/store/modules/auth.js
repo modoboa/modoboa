@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import Vue from 'vue'
 
 import repository from '@/api/repository'
 import account from '@/api/account'
@@ -28,6 +29,7 @@ const mutations = {
   SET_AUTH_USER (state, { authUser, isAuthenticated }) {
     state.authUser = authUser
     state.isAuthenticated = isAuthenticated
+    Vue.config.language = authUser.language
   },
   LOGOUT_USER (state) {
     state.authUser = null

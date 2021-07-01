@@ -95,7 +95,10 @@ export default {
     async deleteAlias (alias) {
       const confirm = await this.$refs.confirmAlias.open(
         this.$gettext('Warning'),
-        this.$gettext(`Do you really want to delete the alias ${alias.identity}?`),
+        this.$gettext(
+          'Do you really want to delete the alias %{ alias }?',
+          { alias: alias.identity }
+        ),
         {
           color: 'error',
           cancelLabel: this.$gettext('No'),
@@ -113,7 +116,10 @@ export default {
     async deleteAccount (account) {
       const confirm = await this.$refs.confirmAccount.open(
         this.$gettext('Warning'),
-        this.$gettext(`Do you really want to delete the account ${account.identity}?`),
+        this.$gettextInterpolate(
+          'Do you really want to delete the account %{ account }?',
+          { account: account.identity }
+        ),
         {
           color: 'error',
           cancelLabel: this.$gettext('No'),
