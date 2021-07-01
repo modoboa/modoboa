@@ -127,7 +127,7 @@ export default {
         initials = initials ? initials + this.authUser.last_name[0] : this.authUser.last_name[0]
       }
       if (!initials) {
-        initials = this.authUser.this.authUsername[0]
+        initials = this.authUser.username[0]
       }
       return initials
     },
