@@ -13,3 +13,11 @@ Vue.filter('yesno', function (value) {
 Vue.filter('date', function (value) {
   return DateTime.fromISO(value).setLocale('en').toLocaleString(DateTime.DATETIME_MED)
 })
+
+/*
+** Truncate given string.
+*/
+Vue.filter('truncate', function (text, length, clamp) {
+  clamp = clamp || '...'
+  return text.length > length ? text.slice(0, length) + clamp : text
+})

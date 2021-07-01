@@ -152,8 +152,19 @@ export default {
         {
           icon: 'mdi-history',
           text: this.$gettext('Logs'),
-          to: { name: 'AuditTrail' },
-          roles: ['SuperAdmins']
+          roles: ['SuperAdmins', 'Resellers', 'DomainAdmins'],
+          children: [
+            {
+              text: this.$gettext('Audit trail'),
+              to: { name: 'AuditTrail' },
+              roles: ['SuperAdmins']
+            },
+            {
+              text: this.$gettext('Messages'),
+              to: { name: 'MessageLog' },
+              roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
+            }
+          ]
         },
         {
           icon: 'mdi-cog',

@@ -14,16 +14,17 @@
   </v-toolbar>
   <v-data-table
     :headers="headers"
-    :items="logs"
+    :items="messages"
     :search="search"
     class="elevation-1"
     :options.sync="options"
     :server-items-length="total"
     >
-    <template v-slot:item.level="{ item }">
-      <v-chip :color="getLevelColor(item.level)" text-color="white" small>
-        {{ item.level }}
-      </v-chip>
+    <template v-slot:item.date="{ item }">
+      {{ item.date|date }}
+    </template>
+    <template v-slot:item.sender="{ item }">
+      {{ item.sender|truncate(50) }}
     </template>
   </v-data-table>
 </v-card>
@@ -35,12 +36,13 @@ import logs from '@/api/logs'
 export default {
   data () {
     return {
-      logs: [],
+      messages: [],
       headers: [
-        { text: this.$gettext('Date'), value: 'date_created' },
-        { text: this.$gettext('Level'), value: 'level' },
-        { text: this.$gettext('Logger'), value: 'logger' },
-        { text: this.$gettext('Message'), value: 'message' }
+        { text: this.$gettext('Queue ID'), value: 'queue_id' },
+        { text: this.$gettext('Date'), value: 'date', width: '20%' },
+        { text: this.$gettext('Status'), value: 'status' },
+        { text: this.$gettext('To'), value: 'rcpt' },
+        { text: this.$gettext('From'), value: 'sender' }
       ],
       loading: true,
       options: {},
@@ -49,19 +51,7 @@ export default {
     }
   },
   methods: {
-    getLevelColor (level) {
-      if (level === 'INFO') {
-        return 'primary'
-      }
-      if (level === 'WARNING') {
-        return 'orange'
-      }
-      if (level === 'CRITICAL' || level === 'ERROR') {
-        return 'red'
-      }
-      return ''
-    },
-    fetchLogs () {
+    fetchMessages () {
       let order
       if (this.options.sortBy.length) {
         order = (this.options.sortDesc[0] ? '-' : '') + this.options.sortBy[0]
@@ -73,8 +63,8 @@ export default {
         search: this.search
       }
       this.loading = true
-      logs.getAuditTrail(params).then(response => {
-        this.logs = response.data.results
+      logs.getMessages(params).then(response => {
+        this.messages = response.data.results
         this.total = response.data.count
         this.loading = false
       })
@@ -83,12 +73,12 @@ export default {
   watch: {
     options: {
       handler () {
-        this.fetchLogs()
+        this.fetchMessages()
       },
       deep: true
     },
     search (val) {
-      this.fetchLogs()
+      this.fetchMessages()
     }
   }
 }

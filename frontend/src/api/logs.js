@@ -3,7 +3,10 @@ import repository from './repository'
 const resource = 'logs'
 
 export default {
-  getAll (params) {
-    return repository.get(`/${resource}/`, { params })
+  getAuditTrail (params) {
+    return repository.get(`/${resource}/audit-trail/`, { params })
+  },
+  getMessages (params) {
+    return repository.get(`/${resource}/messages/`, { params })
   }
 }
