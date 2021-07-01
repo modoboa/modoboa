@@ -1,15 +1,23 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
+    :mini-variant.sync="mini"
+    permanent
     color="primary"
     app
     dark
     >
-    <div class="d-flex justify-start">
+    <div class="d-flex align-center">
       <v-img
         src="../../assets/Modoboa_RVB-BLANC-SANS.png"
         max-width="190"
         />
+      <v-btn
+        icon
+        @click.stop="mini = !mini"
+        >
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
     </div>
 
     <v-list>
@@ -75,8 +83,10 @@
             <v-avatar size="40" color="primary">
               <span class="white--text headline">{{ userInitials }}</span>
             </v-avatar>
-            <span class="mx-2">{{ displayName }}</span>
-            <v-icon class="float-right">mdi-chevron-up</v-icon>
+            <template v-if="!mini">
+              <span class="mx-2">{{ displayName }}</span>
+              <v-icon class="float-right">mdi-chevron-up</v-icon>
+            </template>
           </div>
         </template>
         <v-list>
@@ -173,6 +183,7 @@ export default {
           roles: ['SuperAdmins']
         }
       ],
+      mini: false,
       userMenuItems: [
         {
           text: this.$gettext('Logout'),

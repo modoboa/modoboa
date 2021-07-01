@@ -27,8 +27,8 @@
         class="flex-grow-0"
         >
         <div class="mb-6 text-h5">
-          <translate class="grey--text text--darken-1">{{ title }}</translate> /
-          <translate>{{ step.title }}</translate>
+          <span class="grey--text text--darken-1">{{ title }}</span> /
+          {{ step.title }}
         </div>
         <slot :name="`form.${step.name}`" v-bind:step="index + 1" />
         <div class="d-flex justify-end mt-4">

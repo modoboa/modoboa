@@ -179,7 +179,10 @@ export default {
     async deleteDomain (domain) {
       const confirm = await this.$refs.confirm.open(
         this.$gettext('Warning'),
-        this.$gettext(`Do you really want to delete the domain ${domain.name}?`),
+        this.$gettextInterpolate(
+          'Do you really want to delete the domain %{ domain }?',
+          { domain: domain.name }
+        ),
         {
           color: 'error',
           cancelLabel: this.$gettext('No'),
