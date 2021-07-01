@@ -23,3 +23,11 @@ class StatisticsViewSetTestCase(ModoAPITestCase):
             "?gset=mailtraffic&period=custom&start=2021-05-01&end=2021-05-02"
         )
         self.assertEqual(resp.status_code, 200)
+
+
+class MaillogViewSetTestCase(ModoAPITestCase):
+
+    def test_list(self):
+        url = reverse("v2:maillog-list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)

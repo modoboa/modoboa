@@ -2,9 +2,15 @@
 
 import time
 
-from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, response, viewsets
+from django.db.models import Q
 
+from drf_spectacular.utils import extend_schema
+from rest_framework import filters, permissions, response, viewsets
+
+from modoboa.admin import models as admin_models
+from modoboa.lib import pagination
+
+from ... import models
 from ... import signals
 from . import serializers
 
@@ -43,3 +49,22 @@ class StatisticsViewSet(viewsets.ViewSet):
             fname, start, end, serializer.validated_data.get("graphic")
         )
         return response.Response({"graphs": graphs})
+
+
+class MaillogViewSet(viewsets.ReadOnlyModelViewSet):
+    """Simple viewset to access message log."""
+
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    ordering = ["-date"]
+    ordering_fields = "__all__"
+    pagination_class = pagination.CustomPageNumberPagination
+    permissions = (permissions.IsAuthenticated, )
+    search_fields = ["queue_id", "sender", "rcpt", "original_rcpt", "status"]
+    serializer_class = serializers.MaillogSerializer
+
+    def get_queryset(self):
+        """Filter queryset based on current user."""
+        domains = admin_models.Domain.objects.get_for_admin(self.request.user)
+        return models.Maillog.objects.filter(
+            Q(from_domain__in=domains) | Q(to_domain__in=domains)
+        )

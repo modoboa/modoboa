@@ -93,12 +93,21 @@ const routes = [
     }
   },
   {
-    path: '/logs/',
+    path: '/logs/audit_trail',
     name: 'AuditTrail',
     component: () => import('../views/logs/AuditTrail.vue'),
     meta: {
       requiresAuth: true,
       allowedRoles: ['SuperAdmins']
+    }
+  },
+  {
+    path: '/logs/messages',
+    name: 'MessageLog',
+    component: () => import('../views/logs/Messages.vue'),
+    meta: {
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'SuperAdmins']
     }
   }
 ]

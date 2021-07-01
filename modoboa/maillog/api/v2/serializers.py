@@ -4,6 +4,8 @@ from django.utils.translation import ugettext as _
 
 from rest_framework import serializers
 
+from ... import models
+
 
 PERIODS = [
     ("day", "Day"),
@@ -62,3 +64,14 @@ class StatisticsSerializer(serializers.Serializer):
     """Serializer to return statistics."""
 
     graphs = GraphSerializer(many=True)
+
+
+class MaillogSerializer(serializers.ModelSerializer):
+    """Serializer for Maillog model."""
+
+    class Meta:
+        fields = (
+            "id", "queue_id", "date", "sender", "rcpt", "original_rcpt",
+            "size", "status"
+        )
+        model = models.Maillog

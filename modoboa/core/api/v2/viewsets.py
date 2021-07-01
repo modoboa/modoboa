@@ -1,12 +1,13 @@
 """Core API v2 viewsets."""
 
 from drf_spectacular.utils import extend_schema
-from rest_framework import filters, pagination, permissions, response, viewsets
+from rest_framework import filters, permissions, response, viewsets
 from rest_framework.decorators import action
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
+from modoboa.lib import pagination
 
 from ... import constants
 from ... import models
@@ -38,17 +39,13 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         })
 
 
-class CustomPageNumberPagination(pagination.PageNumberPagination):
-    page_size_query_param = "page_size"
-
-
 class LogViewSet(viewsets.ReadOnlyModelViewSet):
     """Log viewset."""
 
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     ordering = ["-date_created"]
     ordering_fields = "__all__"
-    pagination_class = CustomPageNumberPagination
+    pagination_class = pagination.CustomPageNumberPagination
     permission_classes = (
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
