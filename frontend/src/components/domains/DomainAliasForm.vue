@@ -120,14 +120,15 @@ export default {
       }
       try {
         if (!this.form.pk) {
-          await this.$store.dispatch('domains/addDomainAlias', this.form).then(resp => {
+          await domains.createDomainAlias(this.form).then(resp => {
             bus.$emit('notification', { msg: this.$gettext('Domain alias created') })
+            this.$emit('alias-created', resp.data)
             this.close()
           })
         } else {
           const data = JSON.parse(JSON.stringify(this.form))
           data.target = data.target.pk
-          await this.$store.dispatch('domains/updateDomainAlias', { id: this.form.pk, data: data }).then(resp => {
+          await domains.updateDomainAlias(this.form.pk, data).then(resp => {
             bus.$emit('notification', { msg: this.$gettext('Domain alias updated') })
             this.close()
           })
