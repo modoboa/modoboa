@@ -103,6 +103,7 @@
     <domain-alias-form
       @close="closeDomainAliasForm"
       :domain-alias="selectedDomainAlias"
+      @alias-created="domainAliasCreated"
       @alias-deleted="domainAliasDeleted"
       />
   </v-dialog>
@@ -198,11 +199,18 @@ export default {
         this.keepDomainFolder = false
       })
     },
+    domainAliasCreated (domainAlias) {
+      this.$store.dispatch('domains/getDomains')
+    },
     domainAliasDeleted () {
       const newList = this.aliases[this.selectedDomain.name].filter(alias => {
         return alias.pk !== this.selectedDomainAlias.pk
       })
       this.$set(this.aliases, this.selectedDomain.name, newList)
+      if (!newList.length) {
+        this.expanded = []
+      }
+      this.$store.dispatch('domains/getDomains')
       this.closeDomainAliasForm()
     },
     editDomain (domain) {

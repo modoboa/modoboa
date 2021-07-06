@@ -10,10 +10,13 @@ from itertools import chain
 import dns.resolver
 from dns.name import IDNA_2008_UTS_46
 
-from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
+
+from django.contrib.auth import password_validation
+from django.contrib.contenttypes.models import ContentType
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
@@ -254,6 +257,12 @@ def make_password():
     length = int(
         param_tools.get_global_parameter("random_password_length", app="core")
     )
-    return "".join(
-        random.SystemRandom().choice(
-            string.ascii_letters + string.digits) for _ in range(length))
+    while True:
+        password = "".join(
+            random.SystemRandom().choice(
+                string.ascii_letters + string.digits) for _ in range(length))
+        try:
+            password_validation.validate_password(password)
+        except ValidationError:
+            continue
+        return password

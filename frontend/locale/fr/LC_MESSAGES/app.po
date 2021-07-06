@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-01 17:06+0200\n"
+"POT-Creation-Date: 2021-07-06 16:14+0200\n"
 "PO-Revision-Date: 2021-07-01 16:15+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -62,7 +62,7 @@ msgstr "Compte mis à jour"
 
 #: src/components/domains/DomainList.vue:34
 #: src/components/identities/IdentityList.vue:19
-#: src/components/domains/DomainList.vue:156
+#: src/components/domains/DomainList.vue:157
 #: src/components/identities/IdentityList.vue:86
 msgid "Actions"
 msgstr "Actions"
@@ -114,7 +114,7 @@ msgstr ""
 
 #: src/components/domains/AdministratorList.vue:5
 #: src/components/domains/DomainList.vue:24
-#: src/components/domains/DomainList.vue:146
+#: src/components/domains/DomainList.vue:147
 msgid "Administrators"
 msgstr "Administrateurs"
 
@@ -151,7 +151,7 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:62
 #: src/components/identities/AccountCreationForm.vue:65
 #: src/components/identities/AccountCreationForm.vue:93
-#: src/components/domains/DomainList.vue:152
+#: src/components/domains/DomainList.vue:153
 #: src/components/identities/AccountCreationForm.vue:112
 #: src/components/identities/AccountCreationForm.vue:115
 #: src/components/identities/AccountCreationForm.vue:143
@@ -163,7 +163,7 @@ msgid "Apply"
 msgstr "Appliquer"
 
 #: src/components/layout/Navbar.vue:56 src/views/logs/AuditTrail.vue:3
-#: src/components/layout/Navbar.vue:162
+#: src/components/layout/Navbar.vue:168
 msgid "Audit trail"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "Daily sending limit"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:33 src/components/layout/Navbar.vue:139
+#: src/components/layout/Navbar.vue:33 src/components/layout/Navbar.vue:145
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -306,7 +306,7 @@ msgstr "Quota par défaut appliqué aux boîtes aux lettres. Peut être exprimé
 #: src/components/domains/DomainList.vue:26
 #: src/components/identities/IdentityList.vue:89
 #: src/components/identities/IdentityList.vue:92
-#: src/components/domains/DomainList.vue:148
+#: src/components/domains/DomainList.vue:149
 #: src/components/identities/IdentityList.vue:156
 #: src/components/identities/IdentityList.vue:159
 msgid "Delete"
@@ -381,7 +381,7 @@ msgid "DNS configuration help"
 msgstr ""
 
 #: src/components/domains/DomainList.vue:31
-#: src/components/domains/DomainList.vue:153
+#: src/components/domains/DomainList.vue:154
 msgid "DNS status"
 msgstr "Statut DNS"
 
@@ -418,8 +418,8 @@ msgstr ""
 msgid "Domain alias deleted"
 msgstr ""
 
-#: src/components/domains/DomainAliasForm.vue:58
-#: src/components/domains/DomainAliasForm.vue:131
+#: src/components/domains/DomainAliasForm.vue:59
+#: src/components/domains/DomainAliasForm.vue:132
 msgid "Domain alias updated"
 msgstr ""
 
@@ -434,7 +434,7 @@ msgid "Domain default value"
 msgstr ""
 
 #: src/components/domains/DomainList.vue:75
-#: src/components/domains/DomainList.vue:197
+#: src/components/domains/DomainList.vue:198
 msgid "Domain deleted"
 msgstr ""
 
@@ -453,14 +453,14 @@ msgid "domain's default value"
 msgstr ""
 
 #: src/components/layout/Navbar.vue:39 src/views/domains/Domains.vue:3
-#: src/components/layout/Navbar.vue:145
+#: src/components/layout/Navbar.vue:151
 msgid "Domains"
 msgstr "Domaines"
 
 #: src/components/domains/DomainList.vue:25
 #: src/components/identities/IdentityList.vue:88
 #: src/components/identities/IdentityList.vue:91
-#: src/components/domains/DomainList.vue:147
+#: src/components/domains/DomainList.vue:148
 #: src/components/identities/IdentityList.vue:155
 #: src/components/identities/IdentityList.vue:158
 msgid "Edit"
@@ -607,7 +607,7 @@ msgid "Identification"
 msgstr ""
 
 #: src/components/layout/Navbar.vue:45 src/views/identities/Identities.vue:3
-#: src/components/layout/Navbar.vue:151
+#: src/components/layout/Navbar.vue:157
 msgid "Identities"
 msgstr "Identités"
 
@@ -666,11 +666,11 @@ msgid "Logger"
 msgstr "Logger"
 
 #: src/components/layout/Navbar.vue:77 src/components/layout/Topbar.vue:6
-#: src/components/layout/Navbar.vue:183 src/components/layout/Topbar.vue:53
+#: src/components/layout/Navbar.vue:189 src/components/layout/Topbar.vue:53
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: src/components/layout/Navbar.vue:52 src/components/layout/Navbar.vue:158
+#: src/components/layout/Navbar.vue:52 src/components/layout/Navbar.vue:164
 msgid "Logs"
 msgstr "Journaux"
 
@@ -707,7 +707,7 @@ msgstr "Limite d'envoi des messages"
 msgid "messages"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:61 src/components/layout/Navbar.vue:167
+#: src/components/layout/Navbar.vue:61 src/components/layout/Navbar.vue:173
 msgid "Messages"
 msgstr ""
 
@@ -734,7 +734,7 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:71
 #: src/components/domains/AdministratorList.vue:87
 #: src/components/domains/DNSDetail.vue:131
-#: src/components/domains/DomainList.vue:151
+#: src/components/domains/DomainList.vue:152
 #: src/components/domains/DomainAliasForm.vue:13
 #: src/components/identities/IdentityList.vue:83
 msgid "Name"
@@ -772,7 +772,9 @@ msgstr "Suivant"
 #: src/components/domains/DomainList.vue:66
 #: src/components/identities/IdentityList.vue:37
 #: src/components/identities/IdentityList.vue:58
-#: src/components/domains/DomainList.vue:188
+#: src/components/tools/CreationForm.vue:30
+#: src/components/domains/DomainList.vue:189
+#: src/components/tools/CreationForm.vue:103
 #: src/components/identities/IdentityList.vue:104
 #: src/components/identities/IdentityList.vue:125
 msgid "No"
@@ -805,18 +807,9 @@ msgstr ""
 msgid "Options"
 msgstr "Options"
 
-#: src/components/layout/Navbar.vue:69 src/components/layout/Navbar.vue:175
-msgid "Parameters"
-msgstr "Paramètres"
-
 #: src/components/parameters/ParametersForm.vue:66
 #: src/components/parameters/ParametersForm.vue:143
 msgid "Parameters updated"
-msgstr ""
-
-#: src/components/parameters/ParametersForm.vue:19
-#: src/components/parameters/ParametersForm.vue:96
-msgid "Parameters: "
 msgstr ""
 
 #: src/components/identities/AccountGeneralForm.vue:103 src/views/Login.vue:13
@@ -859,7 +852,7 @@ msgstr "ID de file"
 #: src/components/identities/AccountCreationForm.vue:50
 #: src/components/identities/AccountMailboxForm.vue:14
 #: src/components/domains/DomainCreationForm.vue:86
-#: src/components/domains/DomainList.vue:155
+#: src/components/domains/DomainList.vue:156
 #: src/components/identities/AccountMailboxForm.vue:3
 #: src/components/identities/AccountCreationForm.vue:100
 msgid "Quota"
@@ -951,12 +944,21 @@ msgid "Select an account"
 msgstr ""
 
 #: src/components/domains/DomainList.vue:32
-#: src/components/domains/DomainList.vue:154
+#: src/components/domains/DomainList.vue:155
 msgid "Sending limit"
 msgstr ""
 
 #: src/components/domains/DomainForm.vue:71
 msgid "Sending limit:"
+msgstr ""
+
+#: src/components/layout/Navbar.vue:69 src/components/layout/Navbar.vue:181
+msgid "Settings"
+msgstr "Configuration"
+
+#: src/components/parameters/ParametersForm.vue:19
+#: src/components/parameters/ParametersForm.vue:96
+msgid "Settings: "
 msgstr ""
 
 #: src/components/domains/DNSDetail.vue:66
@@ -1080,7 +1082,7 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:30
 #: src/components/identities/IdentityList.vue:51
 #: src/components/tools/CreationForm.vue:25
-#: src/components/domains/DomainList.vue:181
+#: src/components/domains/DomainList.vue:182
 #: src/components/tools/CreationForm.vue:98
 #: src/components/identities/IdentityList.vue:97
 #: src/components/identities/IdentityList.vue:118
@@ -1113,7 +1115,9 @@ msgstr "Année"
 #: src/components/domains/DomainList.vue:67
 #: src/components/identities/IdentityList.vue:38
 #: src/components/identities/IdentityList.vue:59
-#: src/components/domains/DomainList.vue:189
+#: src/components/tools/CreationForm.vue:29
+#: src/components/domains/DomainList.vue:190
+#: src/components/tools/CreationForm.vue:102
 #: src/components/identities/IdentityList.vue:105
 #: src/components/identities/IdentityList.vue:126
 msgid "Yes"

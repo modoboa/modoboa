@@ -98,7 +98,9 @@ export default {
           this.$gettext('Warning'),
           this.$gettext('If you close this form now, your modifications won\'t be saved. Do you confirm?'),
           {
-            color: 'error'
+            color: 'warning',
+            agreeLabel: this.$gettext('Yes'),
+            cancelLabel: this.$gettext('No')
           }
         )
         if (!confirm) {

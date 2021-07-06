@@ -18,7 +18,7 @@ from modoboa.lib import validators, web_utils
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
 
-from ... import constants, lib, models
+from ... import constants, models
 
 
 class CreateDomainAdminSerializer(serializers.Serializer):

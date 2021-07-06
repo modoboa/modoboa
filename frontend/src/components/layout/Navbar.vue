@@ -178,7 +178,7 @@ export default {
         },
         {
           icon: 'mdi-cog',
-          text: this.$gettext('Parameters'),
+          text: this.$gettext('Settings'),
           children: [],
           roles: ['SuperAdmins']
         }

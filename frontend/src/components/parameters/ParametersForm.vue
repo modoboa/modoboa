@@ -93,7 +93,7 @@ export default {
       return result
     },
     title () {
-      let result = this.$gettext('Parameters: ')
+      let result = this.$gettext('Settings: ')
       if (this.$route.params.app === 'core') {
         result += this.$gettext('General')
       } else if (this.$route.params.app === 'admin') {
