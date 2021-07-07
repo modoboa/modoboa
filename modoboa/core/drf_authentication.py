@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from django_otp.models import Device
+from drf_spectacular.contrib.rest_framework_simplejwt import SimpleJWTScheme
 from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -44,3 +45,8 @@ class JWTAuthenticationWith2FA(JWTAuthentication):
         if user.tfa_enabled:
             self.verify_user(request, user)
         return user, token
+
+
+class SimpleJWTWith2FAScheme(SimpleJWTScheme):
+    target_class = 'modoboa.core.drf_authentication.JWTAuthenticationWith2FA'
+    name = 'jwt2FAAuth'

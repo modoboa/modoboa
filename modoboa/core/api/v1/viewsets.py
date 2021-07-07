@@ -19,6 +19,7 @@ class AccountViewSet(viewsets.ViewSet):
     """
 
     permission_classes = (permissions.IsAuthenticated, )
+    serializer_class = None
 
     @action(methods=["post"], detail=False, url_path="tfa/setup")
     def tfa_setup(self, request):
