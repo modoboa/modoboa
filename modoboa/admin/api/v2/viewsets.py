@@ -183,6 +183,7 @@ class IdentityViewSet(viewsets.ViewSet):
     """Viewset for identities."""
 
     permission_classes = (permissions.IsAuthenticated, )
+    serializer_class = None
 
     def list(self, request, **kwargs):
         """Return all identities."""

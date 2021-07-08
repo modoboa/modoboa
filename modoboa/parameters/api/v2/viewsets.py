@@ -12,6 +12,7 @@ class ParametersViewSet(viewsets.ViewSet):
     """Parameter viewset."""
 
     lookup_value_regex = r"\w+"
+    serializer_class = None
 
     @extend_schema(responses=serializers.ApplicationSerializer(many=True))
     @action(methods=["get"], detail=False)
