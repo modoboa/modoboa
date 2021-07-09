@@ -91,6 +91,85 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+2.0.0-beta.1
+============
+
+First beta release of the 2.0 which brings a new admin interface and a
+new version of the API.
+
+Add the two following items: ``drf_spectacular`` and
+``phonenumber_field`` to ``INSTALLED_APPS`` in the :file:`settings.py`
+file, as follows:
+
+.. sourcecode:: python
+
+   INSTALLED_APPS = (
+       'django.contrib.auth',
+       'django.contrib.contenttypes',
+       'django.contrib.sessions',
+       'django.contrib.messages',
+       'django.contrib.sites',
+       'django.contrib.staticfiles',
+       'reversion',
+       'ckeditor',
+       'ckeditor_uploader',
+       'rest_framework',
+       'rest_framework.authtoken',
+       'drf_spectacular',
+       'phonenumber_field',
+       'django_otp',
+       'django_otp.plugins.otp_totp',
+       'django_otp.plugins.otp_static',
+   )
+
+Modify the ``REST_FRAMEWORK`` setting as follows:
+
+.. sourcecode:: python
+
+   REST_FRAMEWORK = {
+       'DEFAULT_AUTHENTICATION_CLASSES': (
+           'modoboa.core.drf_authentication.JWTAuthenticationWith2FA',
+           'rest_framework.authentication.TokenAuthentication',
+           'rest_framework.authentication.SessionAuthentication',
+       ),
+       'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+       'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+   }
+
+Add the new following settings:
+
+.. sourcecode:: python
+
+   SPECTACULAR_SETTINGS = {
+       'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
+       'TITLE': 'Modoboa API',
+       'VERSION': None,
+       'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+   }
+
+   PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
+
+To use the new interface, you need to update the configuration of your
+web server. See the example for :ref:`nginx <nginx_label>`.
+
+Then, copy the frontend files in the folder you specified in your web
+server configuration. If you used the installer, the folder should be
+``/srv/modoboa/instance/frontend``:
+
+.. sourcecode:: bash
+
+   mkdir /srv/modoboa/instance/frontend
+   cp -r /srv/modoboa/env/lib/pythonX.X/site-packages/frontend/dist/* /srv/modoboa/instance/frontend
+
+Finally, edit the :file:`/srv/modoboa/instance/frontend/config.json`
+and update the ``API_BASE_URL`` setting according to the hostname of your server::
+
+.. sourcecode:: json
+
+   {
+       "API_BASE_URL": "https://<hostname of your server>/api/v2"
+   }
+
 1.17.0
 ======
 
