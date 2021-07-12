@@ -64,12 +64,17 @@ test instance and run it::
 You're ready to go! You should be able to access Modoboa at
 ``http://localhost:8000`` using ``admin:password`` as credentials.
 
-Manage static files
--------------------
+Frontend
+========
 
-Modoboa uses `bower <http://bower.io/>`_ (thanks to `django-bower
-<https://github.com/nvbn/django-bower>`_) to manage its CSS and
-javascript dependencies.
+Legacy interface
+----------------
+
+The Django templates and views are used to render this interface, which
+is served by the uWSGI application - or the local server in development.
+`bower <http://bower.io/>`_  is used to manage the CSS and JavaScript
+dependencies - i.e. Boostrap, jQuery - thanks to `django-bower
+<https://github.com/nvbn/django-bower>`_.
 
 Those dependencies are listed in a file called :file:`dev_settings.py`
 located inside the :file:`<path_to_local_copy>/modoboa/core`
@@ -82,6 +87,23 @@ If you want to add a new dependency, just complete the
 
 It will download and store the required files into the
 :file:`<path_to_local_copy>/modoboa/bower_components` directory.
+
+New Vue.js interface
+--------------------
+
+The 2.0 version of Modoboa introduces a completely new interface written
+with the `Vue.js <https://vuejs.org/>`_ framework. The source files are
+located in the :file:`frontend/` directory.
+
+To set it up, you will need to install NodeJS and Yarn - to manage the
+dependencies. Then, navigate to the :file:`frontend/` directory and run::
+
+  $ yarn install
+
+You can now build it and serve it - while running your instance too to
+serve the API - with::
+
+  $ yarn serve
 
 Tests
 =====
@@ -111,7 +133,7 @@ any deployment - e.g. to preview some changes - by running::
 Documentation
 =============
 
-The source files are located in the ``doc/`` folder and are written
+The source files are located in the file:`doc/` folder and are written
 in reStructuredText (reST). They are formatted in HTML and compiled
 thanks to `Sphinx <https://www.sphinx-doc.org/en/master/>`_.
 
