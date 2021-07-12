@@ -144,6 +144,8 @@ database owned by a ``modoboa`` user, run the following SQL commands:
    CREATE USER 'modoboa'@'localhost' IDENTIFIED BY 'my-strong-password-here';
    GRANT ALL PRIVILEGES ON modoboa.* TO 'modoboa'@'localhost';
 
+.. _deployment:
+
 Deploy an instance
 ------------------
 
