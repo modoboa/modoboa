@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@mdi/font": "^5.9.55",
     "apexcharts": "^3.25.0",
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
