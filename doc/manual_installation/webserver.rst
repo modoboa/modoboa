@@ -128,17 +128,6 @@ following configuration::
                 autoindex on;
         }
 
-        location ^~ /new-admin {
-                alias  <modoboa_instance_path>/frontend/;
-                index  index.html;
-
-                expires -1;
-                add_header Pragma "no-cache";
-                add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
-
-                try_files $uri $uri/ /index.html = 404;
-        }
-
         location / {
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header Host $http_host;

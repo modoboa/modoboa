@@ -94,12 +94,8 @@ Specific instructions
 2.0.0-beta.1
 ============
 
-First beta release of the 2.0 which brings a new admin interface and a
-new version of the API.
-
-Add the two following items: ``drf_spectacular`` and
-``phonenumber_field`` to ``INSTALLED_APPS`` in the :file:`settings.py`
-file, as follows:
+Add ``drf_spectacular`` and ``phonenumber_field`` to ``INSTALLED_APPS``
+in the :file:`settings.py` file, as follows:
 
 .. sourcecode:: python
 
@@ -149,11 +145,16 @@ Add the new following settings:
 
    PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
-To use the new interface, you need to update the configuration of your
-web server. See the example for :ref:`nginx <nginx_label>`.
+New admin interface
+-------------------
 
-Then, copy the frontend files in the folder you specified in your web
-server configuration. If you used the installer, the folder should be
+This new release brings a new admin interface written with Vue.js framework.
+It is a work in progress and all features are not yet implemented - i.e.
+extensions integration - but you could give it a try. It uses a new API
+version but the old one is still available.
+
+You will need to copy the frontend files in the folder you specified in your
+web server configuration. If you used the installer, the folder should be
 ``/srv/modoboa/instance/frontend``:
 
 .. sourcecode:: bash
@@ -161,13 +162,29 @@ server configuration. If you used the installer, the folder should be
    mkdir /srv/modoboa/instance/frontend
    cp -r /srv/modoboa/env/lib/pythonX.X/site-packages/frontend/dist/* /srv/modoboa/instance/frontend
 
-Finally, edit the :file:`/srv/modoboa/instance/frontend/config.json`
-and update the ``API_BASE_URL`` setting according to the hostname of your server::
+Then, edit the :file:`/srv/modoboa/instance/frontend/config.json`
+and update the ``API_BASE_URL`` setting according to the hostname of your server:
 
 .. sourcecode:: json
 
    {
        "API_BASE_URL": "https://<hostname of your server>/api/v2"
+   }
+
+Finally, update the configuration of your web server to serve the frontend
+files. For NGINX, you should add the following in the ``server`` block:
+
+.. sourcecode:: nginx
+
+   location ^~ /new-admin {
+       alias  /srv/modoboa/instance/frontend/;
+       index  index.html;
+
+       expires -1;
+       add_header Pragma "no-cache";
+       add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+
+       try_files $uri $uri/ /index.html = 404;
    }
 
 1.17.0
