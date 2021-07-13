@@ -911,6 +911,11 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
+"@fontsource/rubik@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/rubik/-/rubik-4.5.0.tgz#e6e86606903d7102c565eec4b1339298308c3acb"
+  integrity sha512-evvN6wFvc4gH9X3PuRkAfaWXJya5jcZxbMpAsiQIfq8KUCSBx74Rknm5M6hpRuB9AdxdchF/A3p18VkR9RZy2g==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
