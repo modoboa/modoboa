@@ -2,40 +2,42 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Tomasz Proć <tomasz.proc@gmail.com>, 2017
+# Kacper Teterka <kacper.teterka@gmail.com>, 2021
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Language-Team: Polish (Poland) (https://www.transifex.com/tonio/teams/13749/"
-"pl_PL/)\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: 2017-12-07 08:37+0000\n"
+"Last-Translator: Kacper Teterka <kacper.teterka@gmail.com>, 2021\n"
+"Language-Team: Polish (Poland) (https://www.transifex.com/tonio/teams/13749/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
-"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
-"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: transport/backends.py:40
 msgid "This field is required"
-msgstr ""
+msgstr "To pole jest wymagane"
 
 #: transport/backends.py:55
 msgid "Invalid value"
-msgstr ""
+msgstr "Nieprawidłowa wartość"
 
 #: transport/models.py:16
 msgid "pattern"
-msgstr ""
+msgstr "wzorzec"
 
 #: transport/models.py:17
 msgid "service"
-msgstr ""
+msgstr "usługa"
 
 #: transport/models.py:18
 msgid "next hop"
-msgstr ""
+msgstr "następny krok"
