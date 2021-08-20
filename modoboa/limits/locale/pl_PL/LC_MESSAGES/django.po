@@ -1,8 +1,9 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
+# Kacper Teterka <kacper.teterka@gmail.com>, 2021
 # sin88 <sin@sin.waw.pl>, 2016
 # Tomasz Proć <tomasz.proc@gmail.com>, 2017
 msgid ""
@@ -10,29 +11,26 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2017-12-01 15:11+0000\n"
-"Last-Translator: Tomasz Proć <tomasz.proc@gmail.com>\n"
-"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/"
-"language/pl_PL/)\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: 2021-07-09 10:55+0000\n"
+"Last-Translator: Kacper Teterka <kacper.teterka@gmail.com>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
-"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
-"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: limits/app_settings.py:15
 msgid "Default per-admin limits"
-msgstr "Domyślne limity per admin"
+msgstr "Domyślne limity na admina"
 
 #: limits/app_settings.py:18
 msgid "Enable per-admin limits"
-msgstr "Włącz limity per admin"
+msgstr "Włącz limity na admina"
 
 #: limits/app_settings.py:20
 msgid "Enable or disable per-admin limits"
-msgstr "Włącz lub wyłącz limity per admin"
+msgstr "Włącz lub wyłącz limity na admina"
 
 #: limits/app_settings.py:24 limits/app_settings.py:95 limits/constants.py:24
 #: limits/constants.py:54
@@ -43,9 +41,7 @@ msgstr "Administratorzy domeny"
 msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona liczba administratorów domen dla nowego administratora. "
-"(0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona liczba administratorów domen dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:35 limits/constants.py:9
 msgid "Domains"
@@ -55,9 +51,7 @@ msgstr "Domeny"
 msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona ilość domen dla nowego administratora. (0 dla tworzenie "
-"niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona ilość domen dla nowego administratora. (0 dla tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:45 limits/app_settings.py:106 limits/constants.py:13
 #: limits/constants.py:41
@@ -66,11 +60,9 @@ msgstr "Aliasy domen"
 
 #: limits/app_settings.py:48
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona ilość aliasów domen dla nowego administratora. (0 dla "
-"tworzenie niedozwolone, -1 nielimitowana ilość)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "Maksymalna dozwolona ilość aliasów domen dla nowego administratora. (0 dla tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:56 limits/app_settings.py:117 limits/constants.py:17
 #: limits/constants.py:45
@@ -81,9 +73,7 @@ msgstr "Skrzynki pocztowe"
 msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona liczba skrzynek dla nowego administratora. (0 - "
-"tworzenie niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona liczba skrzynek dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:66 limits/app_settings.py:127 limits/constants.py:20
 #: limits/constants.py:48
@@ -94,9 +84,7 @@ msgstr "Aliasy skrzynek pocztowych"
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona liczba aliasów dla nowego administratora. (0 - "
-"tworzenie niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona liczba aliasów dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:76 limits/constants.py:30
 msgid "Quota"
@@ -106,53 +94,43 @@ msgstr "Pojemność"
 msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
-msgstr ""
-"Pojemność jaką reseller może dzielić między domenami które utworzy. (0 "
-"oznacza brak limitu)"
+msgstr "Pojemność jaką reseller może dzielić między domenami które utworzy. (0 oznacza brak limitu)"
 
 #: limits/app_settings.py:86
 msgid "Default per-domain limits"
-msgstr "Domyślne limity per domena"
+msgstr "Domyślne limity na domenę"
 
 #: limits/app_settings.py:89
 msgid "Enable per-domain limits"
-msgstr "Włącz limity per domena"
+msgstr "Włącz limity na domenę"
 
 #: limits/app_settings.py:91
 msgid "Enable or disable per-domain limits"
-msgstr "Włącz lub wyłącz limity per domena"
+msgstr "Włącz lub wyłącz limity na domenę"
 
 #: limits/app_settings.py:98
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max liczba administratrów nowej domeny. (0 tworzenie niedozwolone, -1 dla "
-"braku limitu)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "Max liczba administratrów nowej domeny. (0 tworzenie niedozwolone, -1 dla braku limitu)"
 
 #: limits/app_settings.py:109
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max liczba aliasów domen nowej domeny. (0 tworzenie niedozwolone, -1 "
-"nielimitowana ilość)"
+msgstr "Max liczba aliasów domen nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:120
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max liczba skrzynek dla nowej domeny. (0 tworzenie niedozwolone, -1 "
-"nielimitowana ilość)"
+msgstr "Max liczba skrzynek dla nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:130
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
-msgstr ""
-"Max liczba aliasów dla nowej domeny. (0 tworzenie niedozwolone, -1 "
-"nielimitowana ilość)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
+msgstr "Max liczba aliasów dla nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/apps.py:12
 msgid "Limits"
@@ -176,8 +154,7 @@ msgstr "Maksymalna liczba aliasów skrzynek, które może stworzyć użytkownik"
 
 #: limits/constants.py:25
 msgid "Maximum number of domain administrators this user can create"
-msgstr ""
-"Maksymalna liczba kont aministratorów domen, które może stworzyć użytkownik"
+msgstr "Maksymalna liczba kont aministratorów domen, które może stworzyć użytkownik"
 
 #: limits/constants.py:31
 msgid "Quota shared between domains of this reseller"
