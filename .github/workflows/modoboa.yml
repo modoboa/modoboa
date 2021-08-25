@@ -8,6 +8,8 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  release:
+    branches: [ master ]
 
 env:
   POSTGRES_HOST: localhost
