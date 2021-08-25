@@ -73,7 +73,8 @@ if __name__ == "__main__":
             "Topic :: Internet :: WWW/HTTP",
         ],
         keywords="email",
-        packages=find_packages(exclude=["doc", "test_data", "test_project"]),
+        packages=find_packages(
+            exclude=["doc", "test_data", "test_project", "frontend"]),
         include_package_data=True,
         zip_safe=False,
         scripts=["bin/modoboa-admin.py"],

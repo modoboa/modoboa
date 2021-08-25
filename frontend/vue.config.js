@@ -8,5 +8,9 @@ module.exports = {
   },
   transpileDependencies: [
     'vuetify'
-  ]
+  ],
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/new-admin/'
+    : '/',
+  outputDir: '../modoboa/frontend_dist'
 }
