@@ -160,7 +160,7 @@ web server configuration. If you used the installer, the folder should be
 .. sourcecode:: bash
 
    mkdir /srv/modoboa/instance/frontend
-   cp -r /srv/modoboa/env/lib/pythonX.X/site-packages/frontend/dist/* /srv/modoboa/instance/frontend
+   cp -r /srv/modoboa/env/lib/pythonX.X/site-packages/modoboa/frontend_dist/* /srv/modoboa/instance/frontend
 
 Then, edit the :file:`/srv/modoboa/instance/frontend/config.json`
 and update the ``API_BASE_URL`` setting according to the hostname of your server:
