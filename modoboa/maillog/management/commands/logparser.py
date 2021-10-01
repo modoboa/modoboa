@@ -53,11 +53,6 @@ class LogParser:
         self.logfile = options["logfile"]
         self.debug = options["debug"]
         self.verbose = options["verbose"]
-        try:
-            self.f = io.open(self.logfile, encoding="utf-8")
-        except IOError as errno:
-            self._dprint("%s" % errno)
-            sys.exit(1)
         self.workdir = workdir
         self.__year = year
         self.cfs = ["AVERAGE", "MAX"]
@@ -595,8 +590,13 @@ class LogParser:
         We parse it and then generate standard graphics (day, week,
         month).
         """
-        for line in self.f.readlines():
-            self._parse_line(line)
+        try:
+            with open(self.logfile, encoding="utf-8", errors="ignore") as fp:
+                for line in fp:
+                    self._parse_line(line)
+        except IOError as errno:
+            self._dprint("%s" % errno)
+            sys.exit(1)
 
         for dom, data in self.data.items():
             self._dprint("[rrd] dealing with domain %s" % dom)
