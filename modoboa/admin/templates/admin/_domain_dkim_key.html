@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n convert2textfield %}
 
 <div class="modal-dialog modal-lg">
   <div class="modal-content">
@@ -13,7 +13,7 @@
       </div>
       <div class="alert alert-info" style="overflow-wrap: break-word;">
         <strong>{% trans "Bind/named format" %}</strong><br>
-        <span style="white-space: pre">{{ domain.bind_format_dkim_public_key }}</span>
+        <span style="white-space: pre">{{ domain.bind_format_dkim_public_key|convert2textfield }}</span>
       </div>
     </div>
     <div class="modal-footer">
