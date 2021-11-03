@@ -23,7 +23,7 @@ the plugin:
 
 The communication between both applications is provided by `Django
 signals
-<https://docs.djangoproject.com/en/1.9/topics/signals/>`_.
+<https://docs.djangoproject.com/en/2.2/topics/signals/>`_.
 
 The following subsections describe the plugin architecture and explain
 how you can create your own.
