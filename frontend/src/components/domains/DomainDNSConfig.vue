@@ -40,7 +40,7 @@ mail.{{ domain.name }}. IN A <strong>[<translate>IP address of your Modoboa serv
       >
       <div class="title">DMARC</div>
       <pre>
-_dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100"</pre>
+_dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre>
     </v-alert>
     <v-alert
       border="left"
