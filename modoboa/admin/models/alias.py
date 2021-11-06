@@ -97,8 +97,8 @@ class Alias(AdminObject):
             for admin in self.domain.admins:
                 grant_access_to_object(admin, self)
 
-    def set_recipients(self, address_list):
-        """Set recipients for this alias.
+    def add_recipients(self, address_list):
+        """Add recipients for this alias.
 
         Special recipients:
         * local mailbox + extension: r_mailbox will be set to local mailbox
@@ -146,6 +146,11 @@ class Alias(AdminObject):
                 else:
                     kwargs["r_mailbox"] = rcpt
             AliasRecipient(**kwargs).save()
+
+    def set_recipients(self, address_list):
+        """Set recipients for this alias."""
+
+        self.add_recipients(address_list)
 
         # Remove old recipients
         self.aliasrecipient_set.exclude(
