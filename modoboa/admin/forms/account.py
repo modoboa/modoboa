@@ -425,7 +425,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                 domain=models.Domain.objects.get(name=domname),
                 defaults={'enabled': account.is_active},
             )
-            al.set_recipients([self.mb.full_address])
+            al.add_recipients([self.mb.full_address])
             al.post_create(user)
 
     def _update_sender_addresses(self):

@@ -133,6 +133,7 @@ class AccountTestCase(ModoTestCase):
             "aliases": "alias@test.com",
         }
         self.ajax_post(reverse("admin:account_add"), values)
+        self.assertTrue(alias.aliasrecipient_set.count() == 2)
 
     def test_aliases_update_on_disable(self):
         """Check if aliases are updated when account is disabled."""
