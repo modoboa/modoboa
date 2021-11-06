@@ -420,9 +420,11 @@ class AccountFormMail(forms.Form, DynamicForm):
                     alias__address=alias).exists():
                 continue
             local_part, domname = split_mailbox(alias)
-            al = models.Alias(address=alias, enabled=account.is_active)
-            al.domain = models.Domain.objects.get(name=domname)
-            al.save()
+            al, _ = models.Alias.objects.get_or_create(
+                address=alias,
+                domain=models.Domain.objects.get(name=domname),
+                defaults={'enabled': account.is_active},
+            )
             al.set_recipients([self.mb.full_address])
             al.post_create(user)
 
