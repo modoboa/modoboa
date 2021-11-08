@@ -7,7 +7,7 @@ class Maillog(models.Model):
     """A model to store message logs."""
 
     queue_id = models.CharField(max_length=50)
-    date = models.DateTimeField()
+    date = models.DateTimeField(db_index=True)
     sender = models.EmailField()
     rcpt = models.EmailField()
     original_rcpt = models.EmailField(null=True)
