@@ -3,6 +3,7 @@
 import os
 import shutil
 import tempfile
+import time
 from unittest import mock
 
 import dns.resolver
@@ -342,6 +343,7 @@ class DomainTestCase(ModoTestCase):
         """Test logs list view."""
         domain = Domain.objects.get(name="test.com")
         ml_factories.MaillogFactory(from_domain=domain)
+        time.sleep(0.1)
         ml_factories.MaillogFactory(to_domain=domain, status="received")
         ml_factories.MaillogFactory()
         ml_factories.MaillogFactory()
@@ -399,7 +401,7 @@ class DKIMTestCase(ModoTestCase):
         factories.populate_database()
 
     def setUp(self):
-        super(DKIMTestCase, self).setUp()
+        super().setUp()
         self.workdir = tempfile.mkdtemp()
 
     def tearDown(self):
