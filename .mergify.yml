@@ -1,3 +1,9 @@
+queue_rules:
+  - name: default
+    conditions:
+      - check-success=test (postgres, 3.7)
+
+
 pull_request_rules:
   - name: automatic merge on CI success and review
     conditions:
@@ -8,10 +14,9 @@ pull_request_rules:
       - "#commented-reviews-by=0"
       - label=ready-to-merge
     actions:
-      merge:
+      queue:
         method: squash
-        strict: true
-        strict_method: rebase
+        name: default
   - name: delete head branch after merge
     conditions: []
     actions:
@@ -23,10 +28,9 @@ pull_request_rules:
       - label=dependencies
       - "#approved-reviews-by>=1"
     actions:
-      merge:
+      queue:
         method: squash
-        strict: true
-        strict_method: rebase
+        name: default
   - name: automatic merge for dependabot pull requests
     conditions:
       - author~=^dependabot(|-preview)\[bot\]$
@@ -34,7 +38,6 @@ pull_request_rules:
       - label=dependencies
       - "#approved-reviews-by>=1"
     actions:
-      merge:
+      queue:
         method: squash
-        strict: true
-        strict_method: rebase
+        name: default
