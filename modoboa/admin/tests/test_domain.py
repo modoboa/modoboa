@@ -3,14 +3,15 @@
 import os
 import shutil
 import tempfile
-import time
 from unittest import mock
 
+from dateutil.relativedelta import relativedelta
 import dns.resolver
 from testfixtures import compare
 
 from django.core.management import call_command
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.html import escape
 
 from modoboa.core import factories as core_factories
@@ -343,10 +344,11 @@ class DomainTestCase(ModoTestCase):
         """Test logs list view."""
         domain = Domain.objects.get(name="test.com")
         ml_factories.MaillogFactory(from_domain=domain)
-        time.sleep(0.1)
-        ml_factories.MaillogFactory(to_domain=domain, status="received")
-        ml_factories.MaillogFactory()
-        ml_factories.MaillogFactory()
+        ml_factories.MaillogFactory(
+            to_domain=domain, status="received",
+            date=timezone.now() + relativedelta(days=1))
+        ml_factories.MaillogFactory(date=timezone.now() + relativedelta(days=2))
+        ml_factories.MaillogFactory(date=timezone.now() + relativedelta(days=3))
         url = reverse("admin:domain_logs_list")
         response = self.ajax_get(url)
         self.assertIn("ID1", response["rows"])
