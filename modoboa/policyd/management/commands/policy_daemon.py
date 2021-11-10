@@ -60,7 +60,7 @@ class Command(BaseCommand):
         server.close()
         loop.run_until_complete(server.wait_closed())
         # Cancel pending tasks
-        for task in asyncio.Task.all_tasks():
+        for task in asyncio.all_tasks(loop):
             task.cancel()
             # Await task to execute it's cancellation. Cancelled task
             # raises asyncio.CancelledError that we can suppress
