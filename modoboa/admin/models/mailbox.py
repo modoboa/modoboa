@@ -279,7 +279,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
-        super(Mailbox, self).post_create(creator)
+        super().post_create(creator)
         conditions = (
             creator.has_perm("admin.add_mailbox"),
             not self.user.has_perm("admin.add_domain")
@@ -341,7 +341,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         if self.quota_value is None:
             self.quota_value, created = Quota.objects.get_or_create(
                 username=self.full_address)
-        super(Mailbox, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 reversion.register(Mailbox)

@@ -16,7 +16,7 @@ class LocalConfigMiddleware(MiddlewareMixin):
 
 
 class TwoFAMiddleware:
-    """Custom 2FA middleware to enforce verification is used has TFA enabled."""
+    """Custom 2FA middleware to enforce verification if user has TFA enabled."""
 
     def __init__(self, get_response=None):
         self.get_response = get_response
@@ -32,6 +32,7 @@ class TwoFAMiddleware:
             user and
             not user.is_anonymous and
             user.tfa_enabled and
+            not request.path.startswith('/api/') and
             request.path not in url_exceptions and
             not user.is_verified()
         )
