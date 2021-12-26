@@ -139,7 +139,7 @@ export default {
   methods: {
     async save () {
       if (this.$refs.generalForm !== undefined) {
-        const valid = await this.$refs.generalForm.$refs.observer.validate()
+        const valid = await this.$refs.generalForm.validateForm()
         if (!valid) {
           return
         }

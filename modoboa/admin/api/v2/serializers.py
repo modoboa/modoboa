@@ -344,6 +344,28 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 )
         return user
 
+    def update(self, instance, validated_data):
+        """Update account and associated objects."""
+        mailbox_data = validated_data.pop("mailbox", None)
+        password = validated_data.pop("password", None)
+        domains = validated_data.pop("domains", [])
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        if password:
+            instance.set_password(password)
+        if mailbox_data:
+            creator = self.context["request"].user
+            if instance.mailbox:
+                if "username" in validated_data:
+                    mailbox_data["email"] = validated_data["username"]
+                    instance.email = validated_data["username"]
+                instance.mailbox.update_from_dict(creator, mailbox_data)
+            else:
+                self._create_mailbox(creator, instance, mailbox_data)
+        instance.save()
+        self.set_permissions(instance, domains)
+        return instance
+
 
 class DeleteAccountSerializer(serializers.Serializer):
     """Serializer used with delete operation."""
