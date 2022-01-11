@@ -25,5 +25,8 @@ export default {
   },
   disableTFA () {
     return repository.post(`${resource}/tfa/disable/`)
+  },
+  resetRecoveryCodes () {
+    return repository.post(`${resource}/tfa/reset_codes/`)
   }
 }
