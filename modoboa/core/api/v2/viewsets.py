@@ -5,7 +5,6 @@ import io
 import qrcode
 import qrcode.image.svg
 
-import django_otp
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, permissions, response, viewsets

@@ -28,5 +28,11 @@ export default {
   },
   resetRecoveryCodes () {
     return repository.post(`${resource}/tfa/reset_codes/`)
+  },
+  getForward () {
+    return repository.get(`${resource}/forward/`)
+  },
+  setForward (data) {
+    return repository.post(`${resource}/forward/`, data)
   }
 }

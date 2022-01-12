@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-card>
+  <v-card flat>
     <v-card-title>
       <span class="text-subtitle-1"><translate>Two factor authentication</translate></span>
     </v-card-title>

@@ -127,6 +127,15 @@ const routes = [
       requiresAuth: true,
       layout: 'user'
     }
+  },
+  {
+    path: '/user/forward',
+    name: 'UserForward',
+    component: () => import('../views/user/Forward.vue'),
+    meta: {
+      requiresAuth: true,
+      layout: 'user'
+    }
   }
 ]
 

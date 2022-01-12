@@ -173,7 +173,11 @@ export default {
       this.$emit('close')
     },
     submit () {
-      accounts.create(this.account).then(resp => {
+      const data = { ...this.account }
+      if (this.account.role === 'SuperAdmins' && this.account.username.indexOf('@') === -1) {
+        delete data.mailbox
+      }
+      accounts.create(data).then(resp => {
         bus.$emit('notification', { msg: this.$gettext('Account created') })
         this.$emit('created')
         this.close()
