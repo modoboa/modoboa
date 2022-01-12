@@ -158,7 +158,7 @@ WSGI_APPLICATION = 'test_project.wsgi.application'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
@@ -279,6 +279,10 @@ LOGGING = {
         'syslog': {
             'format': '%(name)s: %(levelname)s %(message)s'
         },
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[%(server_time)s] %(message)s',
+        }
     },
     'handlers': {
         'mail-admins': {
@@ -296,7 +300,12 @@ LOGGING = {
         },
         'console': {
             'class': 'logging.StreamHandler'
-        }
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
     },
     'loggers': {
         'django': {
@@ -313,6 +322,11 @@ LOGGING = {
             'handlers': ['modoboa'],
             'level': 'INFO',
             'propagate': False
+        },
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
         },
         # 'django_auth_ldap': {
         #     'level': 'DEBUG',

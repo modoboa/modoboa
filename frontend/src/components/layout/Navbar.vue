@@ -24,7 +24,7 @@
 
     <v-list>
       <template v-for="item in menuItems">
-        <template v-if="item.roles === undefined || item.roles.indexOf(authUser.role) !== -1">
+        <template v-if="displayMenuItem(item)">
           <v-list-item
             v-if="!item.children"
             class="menu-item"
@@ -213,13 +213,13 @@ export default {
         },
         {
           text: this.$gettext('Preferences'),
-          to: '',
           icon: 'mdi-tune',
           exact: true
         },
         {
           text: this.$gettext('Forward'),
-          to: '',
+          condition: () => this.authUser.mailbox !== null,
+          to: { name: 'UserForward' },
           icon: 'mdi-forward',
           exact: true
         }
@@ -250,6 +250,9 @@ export default {
     })
   },
   methods: {
+    displayMenuItem (item) {
+      return (item.roles === undefined || item.roles.indexOf(this.authUser.role) !== -1) && (item.condition === undefined || item.condition())
+    },
     logout () {
       this.$store.dispatch('auth/logout').then(() => {
         this.$router.push({ name: 'Login' })

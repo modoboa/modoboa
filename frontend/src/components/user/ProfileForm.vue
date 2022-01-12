@@ -115,6 +115,7 @@ export default {
     }
   },
   mounted () {
+    console.log('profile')
     this.initFormFromAccount(this.account)
     languages.getAll().then(resp => {
       this.languages = resp.data
