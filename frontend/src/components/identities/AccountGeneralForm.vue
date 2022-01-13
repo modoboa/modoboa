@@ -16,12 +16,14 @@
   <label class="m-label">{{ $gettext('First name') }}</label>
   <v-text-field
     v-model="account.first_name"
+    autocomplete="new-password"
     outlined
     dense
     />
   <label class="m-label">{{ $gettext('Last name') }}</label>
   <v-text-field
     v-model="account.last_name"
+    autocomplete="new-password"
     outlined
     dense
     />
