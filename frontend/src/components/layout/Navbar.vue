@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer
+<v-navigation-drawer
     v-model="drawer"
     :mini-variant.sync="mini"
     permanent
@@ -211,11 +211,11 @@ export default {
           icon: 'mdi-lock-outline',
           exact: true
         },
-        {
-          text: this.$gettext('Preferences'),
-          icon: 'mdi-tune',
-          exact: true
-        },
+        // {
+        //   text: this.$gettext('Preferences'),
+        //   icon: 'mdi-tune',
+        //   exact: true
+        // },
         {
           text: this.$gettext('Forward'),
           condition: () => this.authUser.mailbox !== null,

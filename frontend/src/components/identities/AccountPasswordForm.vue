@@ -119,8 +119,11 @@ export default {
     }
   },
   mounted () {
-    if (this.account && this.account.random_password) {
-      this.updatePassword(true)
+    if (this.account) {
+      this.form.random_password = this.account.random_password
+      if (this.form.random_password) {
+        this.updatePassword(true)
+      }
     }
   }
 }
