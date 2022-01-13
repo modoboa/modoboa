@@ -29,7 +29,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertIn("not yet activated for", response.json()["content"])
 
         # Start setup sequence
-        url = reverse("api:account-tfa-setup")
+        url = reverse("v1:account-tfa-setup")
         response = self.client.post(url)
         self.assertEqual(response.status_code, 200)
 
@@ -40,7 +40,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
 
         # Continue setup sequence
         verify_mock.side_effect = [True]
-        url = reverse("api:account-tfa-setup-check")
+        url = reverse("v1:account-tfa-setup-check")
         data = {"pin_code": "1234"}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
