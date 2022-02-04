@@ -158,6 +158,38 @@ class AccountViewSetTestCase(ModoAPITestCase):
         with self.assertRaises(core_models.User.DoesNotExist):
             account.refresh_from_db()
 
+    def test_update(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "username": "user@test.com",
+            "role": "SimpleUsers",
+            "password": "Toto12345",
+            "mailbox": {
+                "quota": 10
+            }
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+    def test_update_admin(self):
+        account = core_models.User.objects.get(username="admin")
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "username": "superadmin@test.com",
+            "role": "SuperAdmins",
+            "password": "Toto12345",
+            "mailbox": {
+                "quota": 10
+            }
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        account.refresh_from_db()
+        self.assertEqual(account.email, data["username"])
+        self.assertEqual(account.mailbox.full_address, data["username"])
+
 
 class IdentityViewSetTestCase(ModoAPITestCase):
 
@@ -234,6 +266,10 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
             models.Alias.objects.filter(address=self.da.username).count(),
             2
         )
+
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json()["keepcopies"])
 
         data = {"keepcopies": False}
         resp = self.client.post(url, data, format="json")

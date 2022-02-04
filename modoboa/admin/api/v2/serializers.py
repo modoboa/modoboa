@@ -356,12 +356,14 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             instance.set_password(password)
         if mailbox_data:
             creator = self.context["request"].user
-            if instance.mailbox:
+            if hasattr(instance, "mailbox"):
                 if "username" in validated_data:
                     mailbox_data["email"] = validated_data["username"]
                     instance.email = validated_data["username"]
                 instance.mailbox.update_from_dict(creator, mailbox_data)
-            else:
+            elif "username" in validated_data:
+                mailbox_data["full_address"] = validated_data["username"]
+                instance.email = validated_data["username"]
                 self._create_mailbox(creator, instance, mailbox_data)
         instance.save()
         self.set_permissions(instance, domains)
