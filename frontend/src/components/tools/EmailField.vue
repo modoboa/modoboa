@@ -5,6 +5,7 @@
     v-model="input"
     outlined
     dense
+    autocomplete="new-password"
     v-bind="$attrs"
     v-on="$listeners"
     @input="update"
@@ -150,6 +151,7 @@ export default {
   },
   watch: {
     value (newValue) {
+      console.log(newValue)
       this.input = newValue
     }
   }

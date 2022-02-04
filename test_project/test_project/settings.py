@@ -158,7 +158,7 @@ WSGI_APPLICATION = 'test_project.wsgi.application'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
@@ -189,10 +189,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
 }
 
 SPECTACULAR_SETTINGS = {
-    'SCHEMA_PATH_PREFIX': r'/api/v1',
+    'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
     'TITLE': 'Modoboa API',
     'VERSION': None,
     'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
@@ -279,6 +280,10 @@ LOGGING = {
         'syslog': {
             'format': '%(name)s: %(levelname)s %(message)s'
         },
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[%(server_time)s] %(message)s',
+        }
     },
     'handlers': {
         'mail-admins': {
@@ -296,7 +301,12 @@ LOGGING = {
         },
         'console': {
             'class': 'logging.StreamHandler'
-        }
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
     },
     'loggers': {
         'django': {
@@ -313,6 +323,11 @@ LOGGING = {
             'handlers': ['modoboa'],
             'level': 'INFO',
             'propagate': False
+        },
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
         },
         # 'django_auth_ldap': {
         #     'level': 'DEBUG',

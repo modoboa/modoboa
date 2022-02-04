@@ -1,9 +1,9 @@
 <template>
-  <v-navigation-drawer
+<v-navigation-drawer
     v-model="drawer"
     :mini-variant.sync="mini"
     permanent
-    color="primary"
+    :color="mainColor"
     app
     dark
     >
@@ -11,6 +11,8 @@
       <v-img
         src="../../assets/Modoboa_RVB-BLANC-SANS.png"
         max-width="190"
+        class="logo"
+        @click="$router.push('/')"
         />
       <v-btn
         icon
@@ -21,8 +23,8 @@
     </div>
 
     <v-list>
-      <template v-for="item in mainMenuItems">
-        <template v-if="item.roles === undefined || item.roles.indexOf(authUser.role) !== -1">
+      <template v-for="item in menuItems">
+        <template v-if="displayMenuItem(item)">
           <v-list-item
             v-if="!item.children"
             class="menu-item"
@@ -93,6 +95,7 @@
           <v-list-item
             v-for="item in userMenuItems"
             :key="item.text"
+            :to="item.to"
             @click="item.click"
             link
             >
@@ -135,6 +138,18 @@ export default {
       return (this.authUser.first_name || this.authUser.last_name)
         ? `${this.authUser.first_name} ${this.authUser.last_name}`
         : this.authUser.username
+    },
+    menuItems () {
+      if (this.$route.meta.layout === 'user') {
+        return this.userSettingsMenuItems
+      }
+      return this.mainMenuItems
+    },
+    mainColor () {
+      if (this.$route.meta.layout === 'user') {
+        return 'grey'
+      }
+      return 'primary'
     }
   },
   data () {
@@ -183,8 +198,39 @@ export default {
           roles: ['SuperAdmins']
         }
       ],
+      userSettingsMenuItems: [
+        {
+          text: this.$gettext('Profile'),
+          to: { name: 'UserProfile' },
+          icon: 'mdi-account-circle-outline',
+          exact: true
+        },
+        {
+          text: this.$gettext('Security'),
+          to: { name: 'UserSecurity' },
+          icon: 'mdi-lock-outline',
+          exact: true
+        },
+        // {
+        //   text: this.$gettext('Preferences'),
+        //   icon: 'mdi-tune',
+        //   exact: true
+        // },
+        {
+          text: this.$gettext('Forward'),
+          condition: () => this.authUser.mailbox !== null,
+          to: { name: 'UserForward' },
+          icon: 'mdi-forward',
+          exact: true
+        }
+      ],
       mini: false,
       userMenuItems: [
+        {
+          text: this.$gettext('Profile'),
+          icon: 'mdi-account-circle-outline',
+          to: { name: 'UserProfile' }
+        },
         {
           text: this.$gettext('Logout'),
           icon: 'mdi-logout',
@@ -204,6 +250,9 @@ export default {
     })
   },
   methods: {
+    displayMenuItem (item) {
+      return (item.roles === undefined || item.roles.indexOf(this.authUser.role) !== -1) && (item.condition === undefined || item.condition())
+    },
     logout () {
       this.$store.dispatch('auth/logout').then(() => {
         this.$router.push({ name: 'Login' })
@@ -227,5 +276,9 @@ export default {
 
 .user-box {
   background: rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+  cursor: pointer;
 }
 </style>

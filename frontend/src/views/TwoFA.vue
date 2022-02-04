@@ -15,16 +15,18 @@
         vid="code"
         rules="required"
         >
-        <label class="m-label"><translate>Two-factor authentication code</translate></label>
-        <v-text-field
-          v-model="code"
-          prepend-icon="mdi-numeric"
-          :error-messages="errors"
-          :hint="'Enter the code from the two-factor app on your mobile device. If you have lost your device, you may enter one of your recovery codes.'|translate"
-          persistent-hint
-          dense
-          outlined
-          />
+        <v-row>
+          <v-col cols="6" offset="3">
+            <label class="m-label"><translate>Two-factor authentication code</translate></label>
+            <v-otp-input
+              v-model="code"
+              length="6"
+              :error-messages="errors"
+              :hint="'Enter the code from the two-factor app on your mobile device. If you have lost your device, you may enter one of your recovery codes.'|translate"
+              persistent-hint
+              />
+          </v-col>
+        </v-row>
       </validation-provider>
     </validation-observer>
     <div class="d-flex justify-center mt-6">

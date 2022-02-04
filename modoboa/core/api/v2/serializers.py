@@ -220,3 +220,15 @@ class VerifyTFACodeSerializer(serializers.Serializer):
         if device is None:
             raise serializers.ValidationError(_("This code is invalid"))
         return device
+
+
+class CheckPasswordSerializer(serializers.Serializer):
+    """Simple serializer to check user password."""
+
+    password = serializers.CharField()
+
+    def validate_password(self, value):
+        user = self.context["user"]
+        if not user.check_password(value):
+            raise serializers.ValidationError(_("Invalid password"))
+        return value

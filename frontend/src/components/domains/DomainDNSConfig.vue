@@ -32,6 +32,19 @@ mail.{{ domain.name }}. IN A <strong>[<translate>IP address of your Modoboa serv
     </v-alert>
 
     <v-alert
+      v-if="domain.enable_dkim && domain.dkim_public_key"
+      border="left"
+      colored-border
+      color="primary lighten-3"
+      elevation="2"
+      dense
+      >
+      <div class="title">DKIM</div>
+      <pre>
+{{ domain.dkim_key_selector }}._domain_key.{{ domain.name }}. IN TXT (
+  {{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }}</pre>
+    </v-alert>
+    <v-alert
       border="left"
       colored-border
       color="primary lighten-3"
@@ -50,8 +63,8 @@ _dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre>
       dense
       >
       <div class="title">Auto configuration</div>
-  <pre>
-    autoconfig.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your automx server</translate>]</strong>
+      <pre>
+autoconfig.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your automx server</translate>]</strong>
 autodiscover.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your automx server</translate>]</strong></pre>
     </v-alert>
   </v-card-text>
@@ -70,6 +83,19 @@ export default {
   methods: {
     close () {
       this.$emit('close')
+    },
+    splitKey (value) {
+      let key = value
+      const result = []
+      while (key.length > 0) {
+        if (key.length > 74) {
+          result.push(`  "${key.substring(0, 74)}"`)
+          key = key.substring(74)
+        } else {
+          result.push(`  "${key}"`)
+        }
+      }
+      return result.join('\n')
     }
   }
 }

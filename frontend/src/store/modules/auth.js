@@ -9,12 +9,6 @@ function setupAxios (token) {
   repository.defaults.headers.post['Content-Type'] = 'application/json'
 }
 
-function fetchUser (commit) {
-  return account.getMe().then(resp => {
-    commit('SET_AUTH_USER', { authUser: resp.data, isAuthenticated: true })
-  })
-}
-
 const state = () => ({
   authUser: {},
   isAuthenticated: false
@@ -38,16 +32,18 @@ const mutations = {
 }
 
 const actions = {
-  initialize ({ commit, state }) {
-    if (state.isAuthenticated) {
-      return
-    }
+  fetchUser ({ commit }) {
+    return account.getMe().then(resp => {
+      commit('SET_AUTH_USER', { authUser: resp.data, isAuthenticated: true })
+    })
+  },
+  initialize ({ commit, dispatch, state }) {
     const token = Cookies.get('token')
     if (!token) {
       return
     }
     setupAxios(token)
-    return fetchUser(commit)
+    return dispatch('fetchUser')
   },
   logout ({ commit }) {
     return new Promise((resolve, reject) => {

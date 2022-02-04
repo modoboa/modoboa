@@ -107,7 +107,6 @@ export default {
           return
         }
       }
-      this.$emit('close')
       this.currentStep = 1
       this.steps.forEach((item, index) => {
         const observer = this.formObserverGetter(index + 1)
@@ -115,6 +114,7 @@ export default {
           observer.reset()
         }
       })
+      this.$emit('close')
     },
     async goToNextStep (current, next) {
       const observer = this.formObserverGetter(current)
