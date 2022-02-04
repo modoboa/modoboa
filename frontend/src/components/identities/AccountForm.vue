@@ -139,7 +139,7 @@ export default {
   methods: {
     async save () {
       if (this.$refs.generalForm !== undefined) {
-        const valid = await this.$refs.generalForm.$refs.observer.validate()
+        const valid = await this.$refs.generalForm.validateForm()
         if (!valid) {
           return
         }
@@ -178,7 +178,7 @@ export default {
     account: {
       handler: function (val) {
         if (val) {
-          this.editedAccount = JSON.parse(JSON.stringify(val))
+          this.editedAccount = { ...val }
           delete this.editedAccount.domains
           if (this.editedAccount.mailbox === null) {
             this.editedAccount.mailbox = {}

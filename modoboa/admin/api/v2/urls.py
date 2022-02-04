@@ -17,5 +17,7 @@ router.register(
     basename="sender_address")
 router.register(
     r"identities", viewsets.IdentityViewSet, basename="identities")
+router.register(
+    r"account", viewsets.UserAccountViewSet, basename="account")
 
 urlpatterns = router.urls

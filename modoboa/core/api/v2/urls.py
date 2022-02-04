@@ -13,6 +13,7 @@ from . import viewsets
 
 router = routers.SimpleRouter()
 router.register(r"account", viewsets.AccountViewSet, basename="account")
+router.register(r"languages", viewsets.LanguageViewSet, basename="language")
 router.register(r"logs/audit-trail", viewsets.LogViewSet)
 
 urlpatterns = router.urls

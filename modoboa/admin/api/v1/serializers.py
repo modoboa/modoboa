@@ -195,12 +195,12 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = (
             "pk", "username", "first_name", "last_name", "is_active",
             "master_user", "mailbox", "role", "language", "phone_number",
-            "secondary_email", "domains"
+            "secondary_email", "domains", "tfa_enabled"
         )
 
     def __init__(self, *args, **kwargs):
         """Adapt fields to current user."""
-        super(AccountSerializer, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         request = self.context.get("request")
         if not request:
             return

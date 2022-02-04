@@ -109,6 +109,33 @@ const routes = [
       requiresAuth: true,
       allowedRoles: ['DomainAdmins', 'SuperAdmins']
     }
+  },
+  {
+    path: '/user/profile',
+    name: 'UserProfile',
+    component: () => import('../views/user/Profile.vue'),
+    meta: {
+      requiresAuth: true,
+      layout: 'user'
+    }
+  },
+  {
+    path: '/user/security',
+    name: 'UserSecurity',
+    component: () => import('../views/user/Security.vue'),
+    meta: {
+      requiresAuth: true,
+      layout: 'user'
+    }
+  },
+  {
+    path: '/user/forward',
+    name: 'UserForward',
+    component: () => import('../views/user/Forward.vue'),
+    meta: {
+      requiresAuth: true,
+      layout: 'user'
+    }
   }
 ]
 

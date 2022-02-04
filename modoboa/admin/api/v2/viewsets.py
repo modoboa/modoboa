@@ -212,3 +212,56 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
         return response.Response({
             "address": models.Alias.generate_random_address()
         })
+
+
+class UserAccountViewSet(viewsets.ViewSet):
+    """Viewset for current user operations."""
+
+    @action(methods=["get", "post"], detail=False)
+    def forward(self, request, **kwargs):
+        """Get or define user forward."""
+        mb = request.user.mailbox
+        alias = models.Alias.objects.filter(
+            address=mb.full_address, internal=False).first()
+        data = {}
+        if request.method == "GET":
+            if alias is not None and alias.recipients:
+                recipients = list(alias.recipients)
+                if alias.aliasrecipient_set.filter(r_mailbox=mb).exists():
+                    data["keepcopies"] = True
+                    recipients.remove(mb.full_address)
+                data["recipients"] = "\n".join(recipients)
+            serializer = serializers.UserForwardSerializer(data)
+            return response.Response(serializer.data)
+        serializer = serializers.UserForwardSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        recipients = serializer.validated_data.get("recipients")
+        if not recipients:
+            models.Alias.objects.filter(
+                address=mb.full_address, internal=False).delete()
+            # Make sure internal self-alias is enabled
+            models.Alias.objects.filter(
+                address=mb.full_address, internal=True
+            ).update(enabled=True)
+        else:
+            if alias is None:
+                alias = models.Alias.objects.create(
+                    address=mb.full_address,
+                    domain=mb.domain,
+                    enabled=mb.user.is_active
+                )
+                alias.post_create(request.user)
+            if serializer.validated_data["keepcopies"]:
+                # Make sure internal self-alias is enabled
+                models.Alias.objects.filter(
+                    address=mb.full_address, internal=True
+                ).update(enabled=True)
+                recipients.append(mb.full_address)
+            else:
+                # Deactivate internal self-alias to avoid storing
+                # local copies...
+                models.Alias.objects.filter(
+                    address=mb.full_address, internal=True
+                ).update(enabled=False)
+            alias.set_recipients(recipients)
+        return response.Response(serializer.validated_data)
