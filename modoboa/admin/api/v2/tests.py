@@ -201,3 +201,44 @@ class AliasViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertIn("address", resp.json())
+
+
+class UserAccountViewSetTestCase(ModoAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+        cls.da = core_models.User.objects.get(username="admin@test.com")
+        cls.da_token = Token.objects.create(user=cls.da)
+
+    def test_forward(self):
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        url = reverse("v2:account-forward")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotIn("recipients", resp.json())
+
+        data = {"recipients": "user@domain.ext"}
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(self.da.mailbox.aliasrecipient_set.count(), 1)
+
+        data = {"recipients": "user@domain.ext", "keepcopies": True}
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertEqual(
+            models.Alias.objects.filter(address=self.da.username).count(),
+            2
+        )
+
+        data = {"keepcopies": False}
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            models.Alias.objects.filter(address=self.da.username).count(),
+            1
+        )

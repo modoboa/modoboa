@@ -119,6 +119,13 @@ class AccountViewSetTestCase(ModoAPITestCase):
         me = resp.json()
         self.assertEqual(me["username"], "admin")
 
+    def test_me_password(self):
+        url = reverse("v2:account-check-me-password")
+        resp = self.client.post(url, {"password": "Toto1234"}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(url, {"password": "password"}, format="json")
+        self.assertEqual(resp.status_code, 200)
+
     @mock.patch("django_otp.match_token")
     def test_tfa_verify_code(self, match_mock):
         user = models.User.objects.get(username="admin")
@@ -132,6 +139,43 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.assertIn("access", resp.json())
+
+    def test_tfa_setup_get_qr_code(self):
+        url = reverse("v2:account-tfa-setup-get-qr-code")
+
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 404)
+
+        user = models.User.objects.get(username="admin")
+        user.totpdevice_set.create(name="Device")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content_type, "application/xml")
+
+        user.tfa_enabled = True
+        user.save()
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 404)
+
+    @mock.patch("django_otp.plugins.otp_totp.models.TOTPDevice.verify_token")
+    def test_tfa_setup_check(self, verify_mock):
+        user = models.User.objects.get(username="admin")
+        user.totpdevice_set.create(name="Device")
+
+        url = reverse("v2:account-tfa-setup-check")
+        data = {"pin_code": 1234}
+        verify_mock.side_effect = [False]
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+
+        verify_mock.side_effect = [True]
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("tokens", resp.json())
+
+        verify_mock.side_effect = [True]
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
 
 
 class AuthenticationTestCase(ModoAPITestCase):
@@ -170,4 +214,12 @@ class AuthenticationTestCase(ModoAPITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"]))
         resp = self.client.get(me_url)
+        self.assertEqual(resp.status_code, 200)
+
+
+class LanguageViewSetTestCase(ModoAPITestCase):
+
+    def test_list(self):
+        url = reverse("v2:language-list")
+        resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)

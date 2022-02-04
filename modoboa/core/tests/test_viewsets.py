@@ -48,6 +48,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         # Display recovery tokens
         security_url = reverse("core:user_security")
         response = self.client.get(security_url)
+
         self.assertIn("recovery codes", response.json()["content"])
         admin.refresh_from_db()
         self.assertTrue(admin.tfa_enabled)

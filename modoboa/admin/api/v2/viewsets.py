@@ -260,7 +260,7 @@ class UserAccountViewSet(viewsets.ViewSet):
             else:
                 # Deactivate internal self-alias to avoid storing
                 # local copies...
-                models.AliasAlias.objects.filter(
+                models.Alias.objects.filter(
                     address=mb.full_address, internal=True
                 ).update(enabled=False)
             alias.set_recipients(recipients)
