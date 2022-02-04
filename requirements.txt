@@ -11,7 +11,7 @@ dj-database-url
 djangorestframework>=3.11,<3.13
 drf-spectacular
 uritemplate
-djangorestframework-simplejwt==4.8.0
+djangorestframework-simplejwt==5.0.0
 drf-flex-fields
 
 passlib~=1.7.4
