@@ -4,6 +4,7 @@ import os
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core import validators as dj_validators
 from django.utils.translation import ugettext as _
 
 from django.contrib.auth import password_validation
@@ -344,6 +345,30 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 )
         return user
 
+    def update(self, instance, validated_data):
+        """Update account and associated objects."""
+        mailbox_data = validated_data.pop("mailbox", None)
+        password = validated_data.pop("password", None)
+        domains = validated_data.pop("domains", [])
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        if password:
+            instance.set_password(password)
+        if mailbox_data:
+            creator = self.context["request"].user
+            if hasattr(instance, "mailbox"):
+                if "username" in validated_data:
+                    mailbox_data["email"] = validated_data["username"]
+                    instance.email = validated_data["username"]
+                instance.mailbox.update_from_dict(creator, mailbox_data)
+            elif "username" in validated_data:
+                mailbox_data["full_address"] = validated_data["username"]
+                instance.email = validated_data["username"]
+                self._create_mailbox(creator, instance, mailbox_data)
+        instance.save()
+        self.set_permissions(instance, domains)
+        return instance
+
 
 class DeleteAccountSerializer(serializers.Serializer):
     """Serializer used with delete operation."""
@@ -361,3 +386,20 @@ class AliasSerializer(v1_serializers.AliasSerializer):
             for field in v1_serializers.AliasSerializer.Meta.fields
             if field != "internal"
         ) + ("expire_at", "description")
+
+
+class UserForwardSerializer(serializers.Serializer):
+    """Serializer to define user forward."""
+
+    recipients = serializers.CharField(required=False)
+    keepcopies = serializers.BooleanField(default=False)
+
+    def validate_recipients(self, value):
+        value = value.strip()
+        recipients = []
+        if not value:
+            return recipients
+        for recipient in value.split(","):
+            dj_validators.validate_email(recipient)
+            recipients.append(recipient)
+        return recipients
