@@ -20,6 +20,9 @@
   <template v-slot:form.options="{ step }">
     <domain-options-form :ref="`form_${step}`" :domain="domain" @createAdmin="updateCreateAdmin" />
   </template>
+  <template v-slot:form.transport="{ step }">
+    <domain-transport-form :ref="`form_${step}`" :domain="domain" />
+  </template>
   <template v-slot:item.with_random_password="{ item }">
     <template v-if="item.value">
       <v-col cols="12" class="highligth white--text">
@@ -52,6 +55,7 @@ import DomainDNSForm from './DomainDNSForm'
 import DomainGeneralForm from './DomainGeneralForm'
 import DomainLimitationsForm from './DomainLimitationsForm'
 import DomainOptionsForm from './DomainOptionsForm'
+import DomainTransportForm from './DomainTransportForm'
 
 export default {
   props: ['value'],
@@ -60,7 +64,8 @@ export default {
     'domain-dns-form': DomainDNSForm,
     DomainGeneralForm,
     DomainLimitationsForm,
-    DomainOptionsForm
+    DomainOptionsForm,
+    DomainTransportForm
   },
   computed: {
     summarySections () {
@@ -87,12 +92,6 @@ export default {
             { key: this.$gettext('Default mailbox quota'), value: this.domain.default_mailbox_quota },
             { key: this.$gettext('Message sending limit'), value: this.domain.message_sending_limit }
           ]
-        },
-        {
-          title: this.$gettext('Options'),
-          items: [
-            { key: this.$gettext('Create a domain administrator'), value: this.createAdmin, type: 'yesno' }
-          ]
         }
       ]
       if (this.domain.enable_dkim) {
@@ -100,25 +99,53 @@ export default {
         result[1].items.push({ key: this.$gettext('DKIM key length'), value: this.domain.dkim_key_length })
       }
       if (this.createAdmin) {
-        result[3].items.push({ key: this.$gettext('Administrator name'), value: this.domain.domain_admin.username })
-        result[3].items.push({
-          name: 'with_random_password',
-          key: this.$gettext('Random password'),
-          value: this.domain.domain_admin.with_random_password,
-          type: 'yesno'
-        })
-        result[3].items.push({
-          key: this.$gettext('With mailbox'),
-          value: this.domain.domain_admin.with_mailbox,
-          type: 'yesno'
-        })
-        result[3].items.push({
-          key: this.$gettext('Create aliases'),
-          value: this.domain.domain_admin.with_aliases,
-          type: 'yesno'
+        result.push({
+          title: this.$gettext('Options'),
+          items: [
+            { key: this.$gettext('Create a domain administrator'), value: this.createAdmin, type: 'yesno' },
+            { key: this.$gettext('Administrator name'), value: this.domain.domain_admin.username },
+            {
+              name: 'with_random_password',
+              key: this.$gettext('Random password'),
+              value: this.domain.domain_admin.with_random_password,
+              type: 'yesno'
+            },
+            {
+              key: this.$gettext('With mailbox'),
+              value: this.domain.domain_admin.with_mailbox,
+              type: 'yesno'
+            },
+            {
+              key: this.$gettext('Create aliases'),
+              value: this.domain.domain_admin.with_aliases,
+              type: 'yesno'
+            }
+          ]
         })
       }
+      if (this.domain.type === 'relaydomain') {
+        const relayEntry = {
+          title: this.$gettext('Transport'),
+          items: [
+            { key: this.$gettext('Service'), value: this.domain.transport.service }
+          ]
+        }
+        if (this.$refs.form_4.service) {
+          const service = this.$refs.form_4.service
+          for (const setting of service.settings) {
+            const item = { key: setting.label, value: this.domain.transport.settings[`${service.name}_${setting.name}`] }
+            if (setting.type === 'boolean') {
+              item.type = 'yesno'
+            }
+            relayEntry.items.push(item)
+          }
+        }
+        result.push(relayEntry)
+      }
       return result
+    },
+    steps () {
+      return this.domain.type === 'domain' ? this.domainSteps : this.relaySteps
     }
   },
   data () {
@@ -128,11 +155,17 @@ export default {
         domain_admin: {}
       },
       formErrors: {},
-      steps: [
+      domainSteps: [
         { name: 'general', title: this.$gettext('General') },
         { name: 'dns', title: this.$gettext('DNS') },
         { name: 'limitations', title: this.$gettext('Limitations') },
         { name: 'options', title: this.$gettext('Options') }
+      ],
+      relaySteps: [
+        { name: 'general', title: this.$gettext('General') },
+        { name: 'dns', title: this.$gettext('DNS') },
+        { name: 'limitations', title: this.$gettext('Limitations') },
+        { name: 'transport', title: this.$gettext('Transport') }
       ]
     }
   },
@@ -160,7 +193,8 @@ export default {
           with_random_password: false,
           with_mailbox: false,
           with_aliases: false
-        }
+        },
+        transport: {}
       }
     },
     close () {
