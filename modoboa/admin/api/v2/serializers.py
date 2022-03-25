@@ -18,6 +18,8 @@ from modoboa.lib import fields as lib_fields
 from modoboa.lib import validators, web_utils
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
+from modoboa.transport import models as transport_models
+from modoboa.transport.api.v2 import serializers as transport_serializers
 
 from ... import constants, models
 
@@ -34,17 +36,33 @@ class CreateDomainAdminSerializer(serializers.Serializer):
 class DomainSerializer(v1_serializers.DomainSerializer):
     """Domain serializer for v2 API."""
 
-    domain_admin = CreateDomainAdminSerializer(required=False)
+    domain_admin = CreateDomainAdminSerializer(required=False, write_only=True)
+    transport = transport_serializers.TransportSerializer(required=False)
 
     class Meta(v1_serializers.DomainSerializer.Meta):
         fields = v1_serializers.DomainSerializer.Meta.fields + (
-            "domain_admin",
+            "domain_admin", "transport"
         )
+
+    def validate(self, data):
+        result = super().validate(data)
+        dtype = data.get("type", "domain")
+        if dtype == "relaydomain" and not data.get("transport"):
+            raise serializers.ValidationError({"transport": _("This field is required")})
+        return result
 
     def create(self, validated_data):
         """Create administrator and other stuff if needed."""
         domain_admin = validated_data.pop("domain_admin", None)
+        transport_def = validated_data.pop("transport", None)
         domain = super().create(validated_data)
+        if transport_def:
+            transport = transport_models.Transport(**transport_def)
+            transport.pattern = domain.name
+            transport.save()
+            domain.transport = transport
+            domain.save()
+
         if not domain_admin:
             return domain
 
@@ -98,6 +116,27 @@ class DomainSerializer(v1_serializers.DomainSerializer):
 
         domain.add_admin(da)
         return domain
+
+    def update(self, instance, validated_data):
+        """Update domain and create/update transport."""
+        transport_def = validated_data.pop("transport", None)
+        super().update(instance, validated_data)
+        if transport_def and instance.type == "relaydomain":
+            transport = getattr(instance, "transport", None)
+            created = False
+            if transport:
+                for key, value in transport_def.items():
+                    setattr(instance, key, value)
+                transport._settings = transport_def["_settings"]
+            else:
+                transport = transport_models.Transport(**transport_def)
+                created = True
+            transport.pattern = instance.name
+            transport.save()
+            if created:
+                instance.transport = transport
+                instance.save()
+        return instance
 
 
 class DeleteDomainSerializer(serializers.Serializer):

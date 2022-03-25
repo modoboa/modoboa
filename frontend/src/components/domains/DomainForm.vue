@@ -104,6 +104,35 @@
         <domain-limitations-form :domain="editedDomain" />
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-expansion-panel v-if="editedDomain.type === 'relaydomain'">
+      <v-expansion-panel-header v-slot="{ open }">
+        <v-row no-gutters>
+          <v-col cols="4">
+            <translate>Transport</translate>
+          </v-col>
+          <v-col
+            cols="8"
+            class="text--secondary"
+            >
+            <v-fade-transition leave-absolute>
+              <span v-if="open"></span>
+              <v-row
+                v-else
+                no-gutters
+                style="width: 100%"
+                >
+                <v-col cols="6">
+                  <translate class="mr-2">Service: </translate> {{ editedDomain.transport.service }}
+                </v-col>
+              </v-row>
+            </v-fade-transition>
+          </v-col>
+        </v-row>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <domain-transport-form ref="transportForm" :domain="editedDomain" />
+      </v-expansion-panel-content>
+    </v-expansion-panel>
   </v-expansion-panels>
   <div class="mt-4 d-flex justify-end">
     <v-btn color="grey lighten-1" @click="$router.go(-1)">
@@ -121,12 +150,14 @@ import { bus } from '@/main'
 import DomainDNSForm from './DomainDNSForm'
 import DomainGeneralForm from './DomainGeneralForm'
 import DomainLimitationsForm from './DomainLimitationsForm'
+import DomainTransportForm from './DomainTransportForm'
 
 export default {
   components: {
     'domain-dns-form': DomainDNSForm,
     DomainGeneralForm,
-    DomainLimitationsForm
+    DomainLimitationsForm,
+    DomainTransportForm
   },
   props: ['domain'],
   data () {
@@ -143,6 +174,9 @@ export default {
           return
         }
       }
+      if (this.editedDomain.type === 'relaydomain') {
+        this.$refs.transportForm.checkSettingTypes(this.editedDomain)
+      }
       this.$store.dispatch('domains/updateDomain', this.editedDomain).then(resp => {
         bus.$emit('notification', { msg: this.$gettext('Domain updated') })
       })
@@ -156,6 +190,11 @@ export default {
         }
       },
       immediate: true
+    },
+    'editedDomain.type' (val) {
+      if (val === 'relaydomain' && this.editedDomain.transport === null) {
+        this.$set(this.editedDomain, 'transport', {})
+      }
     }
   }
 }
