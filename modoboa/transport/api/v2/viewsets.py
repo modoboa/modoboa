@@ -20,6 +20,8 @@ class TransportViewSet(viewsets.ViewSet):
         all_settings = backends.manager.get_all_backend_settings()
         result = []
         for name, settings in all_settings.items():
-            serializer = serializers.TransportBackendSerializer({"name": name, "settings": settings})
+            serializer = serializers.TransportBackendSerializer(
+                {"name": name, "settings": settings}
+            )
             result.append(serializer.data)
         return response.Response(result)
