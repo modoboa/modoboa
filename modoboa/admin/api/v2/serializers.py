@@ -36,7 +36,7 @@ class CreateDomainAdminSerializer(serializers.Serializer):
 class DomainSerializer(v1_serializers.DomainSerializer):
     """Domain serializer for v2 API."""
 
-    domain_admin = CreateDomainAdminSerializer(required=False)
+    domain_admin = CreateDomainAdminSerializer(required=False, write_only=True)
     transport = transport_serializers.TransportSerializer(required=False)
 
     class Meta(v1_serializers.DomainSerializer.Meta):
@@ -46,7 +46,8 @@ class DomainSerializer(v1_serializers.DomainSerializer):
 
     def validate(self, data):
         result = super().validate(data)
-        if data["type"] == "relaydomain" and not data.get("transport"):
+        dtype = data.get("type", "domain")
+        if dtype == "relaydomain" and not data.get("transport"):
             raise serializers.ValidationError({"transport": _("This field is required")})
         return result
 
@@ -115,6 +116,27 @@ class DomainSerializer(v1_serializers.DomainSerializer):
 
         domain.add_admin(da)
         return domain
+
+    def update(self, instance, validated_data):
+        """Update domain and create/update transport."""
+        transport_def = validated_data.pop("transport", None)
+        super().update(instance, validated_data)
+        if transport_def and instance.type == "relaydomain":
+            transport = getattr(instance, "transport", None)
+            created = False
+            if transport:
+                for key, value in transport_def.items():
+                    setattr(instance, key, value)
+                transport._settings = transport_def["_settings"]
+            else:
+                transport = transport_models.Transport(**transport_def)
+                created = True
+            transport.pattern = instance.name
+            transport.save()
+            if created:
+                instance.transport = transport
+                instance.save()
+        return instance
 
 
 class DeleteDomainSerializer(serializers.Serializer):
