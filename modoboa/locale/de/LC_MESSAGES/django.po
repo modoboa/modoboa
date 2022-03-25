@@ -8,15 +8,23 @@
 # Andreas Morgenstern <murray2k@gmail.com>, 2016
 # Arledrian <hvuzgr@gmail.com>, 2017
 # Arvedui <arvedui@posteo.de>, 2014-2015
+# ChaotischerTV <jonnygem7@gmail.com>, 2021
+# Christian Meyer <cdjm@tectic.de>, 2020
 # Christian Wiegand, 2017
 # controlcde, 2014-2015
 # CURETIX <curetix@protonmail.com>, 2017
+# Dennis Staufer, 2020
 # Der Archivar <scp.archiv@gmail.com>, 2018
+# Jan-Philipp Sprung, 2021
+# Manfred Mueller, 2022
 # Michael Cramer <michael@bigmichi1.de>, 2020
+# Nicolas John, 2021
 # Olaf Probst <mail@olaf-probst.de>, 2017
 # Patrick Koetter <p@state-of-mind.de>, 2010
 # Patrick Koetter <p@state-of-mind.de>, 2010
 # Robin Kopp <robinkopp94@gmail.com>, 2019
+# seoni, 2020
+# Thomas K <thomaass04@gmail.com>, 2021
 # Tizian Reiter <hacker.anonymos@gmail.com>, 2017
 # Tobias Strobel, 2016
 # Tristan <tr@ewu-software.com>, 2016
@@ -24,9 +32,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2020-05-10 15:52+0000\n"
-"Last-Translator: Michael Cramer <michael@bigmichi1.de>\n"
+"POT-Creation-Date: 2020-11-05 15:36+0100\n"
+"PO-Revision-Date: 2022-02-17 15:08+0000\n"
+"Last-Translator: Manfred Mueller\n"
 "Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,22 +106,22 @@ msgstr "Länge von zufällig generierten Passwörtern"
 
 #: core/app_settings.py:92
 msgid "Update password service URL"
-msgstr ""
+msgstr "Aktualisiere Passwort-Service-URL"
 
 #: core/app_settings.py:96
 msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
+msgstr "Die URL der externen Webseite wo Benutzer ihr Kennwort aktualisieren können. Diese Einstellung trifft nur auf nicht lokale Benutzer zu, z.B: Benutzer die nach erfolgreicher externer Authentifizierung angelegt wurden (LDAP, SMTP)."
 
 #: core/app_settings.py:104
 msgid "Password recovery announcement"
-msgstr ""
+msgstr "Ankündigung zur Passwort-Wiederherstellung"
 
 #: core/app_settings.py:109
 msgid "A temporary message that will be displayed on the reset password page."
-msgstr ""
+msgstr "Eine temporäre Nachricht, die auf der Passwort-Wiederherstellungsseite angezeigt wird."
 
 #: core/app_settings.py:115
 msgid "Enable password recovery by SMS"
@@ -153,28 +161,28 @@ msgstr "Der TCP Port des LDAP-Servers"
 
 #: core/app_settings.py:149
 msgid "Enable secondary server (fallback)"
-msgstr ""
+msgstr "Aktiviere Ausfallsserver (Fallback)"
 
 #: core/app_settings.py:152
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
+msgstr "Aktiviere einen zweiten LDAP-Server, welcher verwendet wird, wenn der erste nicht erreichbar ist"
 
 #: core/app_settings.py:158
 msgid "Secondary server address"
-msgstr ""
+msgstr "Ausfallsserver-Adresse"
 
 #: core/app_settings.py:161
 msgid "The IP address or the DNS name of the seondary LDAP server"
-msgstr ""
+msgstr "Die IP-Adresse oder den DNS-Namen des zweiten LDAP-Servers"
 
 #: core/app_settings.py:165
 msgid "Secondary server port"
-msgstr ""
+msgstr "Ausfallsserver-Port"
 
 #: core/app_settings.py:168
 msgid "The TCP port number used by the LDAP secondary server"
-msgstr ""
+msgstr "Der TCP Port des sekundären LDAP-Servers"
 
 #: core/app_settings.py:172
 msgid "Use a secured connection"
@@ -216,7 +224,7 @@ msgstr "Gruppen Search Base"
 
 #: core/app_settings.py:209
 msgid "The distinguished name of the search base used to find groups"
-msgstr "Der DN der Search Base mit Gruppen gefunden werden"
+msgstr "Der DN der Search Base mit der Gruppen gefunden werden"
 
 #: core/app_settings.py:215
 msgid "Password attribute"
@@ -295,70 +303,70 @@ msgstr "Die Vorlage für einen User DN. Sie sollte einen Platzhalter, z.B. %(use
 
 #: core/app_settings.py:284
 msgid "LDAP synchronization settings"
-msgstr ""
+msgstr "LDAP Synchronisations Einstellungen"
 
 #: core/app_settings.py:308
 msgid "Enable export to LDAP"
-msgstr ""
+msgstr "Export zu LDAP aktivieren"
 
 #: core/app_settings.py:311
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
+msgstr "Automatische Synchronisation zwischen lokaler Datenbank und LDAP Verzeichnis aktivieren"
 
 #: core/app_settings.py:317
 msgid "Delete remote LDAP account when local account is deleted"
-msgstr ""
+msgstr "Remote LDAP Benutzer entfernen wenn lokaler Benutzer gelöscht wird"
 
 #: core/app_settings.py:321
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
-msgstr ""
+msgstr "Remote LDAP Benutzer löschen wenn lokaler Benutzer gelöscht wird, ansonsten wird der Benutzer deaktiviert."
 
 #: core/app_settings.py:327
 msgid "Account DN template"
-msgstr ""
+msgstr "Vorlage für User DN"
 
 #: core/app_settings.py:330
 #, python-format
 msgid ""
 "The template used to construct an account's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
+msgstr "Die Vorlage die verwendet wird um das User DN zu generieren. Es sollte mindestens einen Platzhalter beinhalten (z.B. %(user)s)"
 
 #: core/app_settings.py:337
 msgid "Enable import from LDAP"
-msgstr ""
+msgstr "Import von LDAP aktivieren"
 
 #: core/app_settings.py:340
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr ""
+msgstr "Automatische Kontensynchronisation vom LDAP Verzeichnis in die lokale Datenbank aktivieren"
 
 #: core/app_settings.py:365
 msgid "Username attribute"
-msgstr ""
+msgstr "Benutzernamenattribut"
 
 #: core/app_settings.py:368
 msgid "The name of the LDAP attribute where the username can be found."
-msgstr ""
+msgstr "Das LDAP-Attribut, in dem der Benutzername gefunden werden kann."
 
 #: core/app_settings.py:373
 msgid "Enable Dovecot LDAP sync"
-msgstr ""
+msgstr "Dovecot LDAP-Synchronisation aktivieren"
 
 #: core/app_settings.py:376
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
+msgstr "LDAP-Authentifizierungseinstellungen werden auf die Dovecot-Konfiguration angewendet."
 
 #: core/app_settings.py:382
 msgid "Dovecot LDAP config file"
-msgstr ""
+msgstr "Dovecot LDAP-Konfigurationsdatei"
 
 #: core/app_settings.py:386
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
-msgstr ""
+msgstr "Speicherort der Dovecot-Konfigurationsdatei für LDAP-Einstellungen."
 
 #: core/app_settings.py:391 core/templates/core/dashboard.html:5
 msgid "Dashboard"
@@ -535,47 +543,51 @@ msgstr "Wähle einen Provider"
 
 #: core/constants.py:107
 msgid "Dummy"
-msgstr ""
+msgstr "Platzhalter"
 
-#: core/forms.py:21
+#: core/forms.py:23
 msgid "Username"
 msgstr "Benutzername"
 
-#: core/forms.py:25
+#: core/forms.py:27
 msgid "Password"
 msgstr "Passwort"
 
-#: core/forms.py:38
+#: core/forms.py:40
 msgid "Old password"
 msgstr "Altes Passwort"
 
-#: core/forms.py:42
+#: core/forms.py:44
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: core/forms.py:46
+#: core/forms.py:48
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: core/forms.py:74
+#: core/forms.py:76
 msgid "Old password mismatchs"
 msgstr "Altes Passwort stimmt nicht überein"
 
-#: core/forms.py:83
+#: core/forms.py:85
 msgid "Passwords mismatch"
 msgstr "Passwörter stimmen nicht überein"
 
-#: core/forms.py:103
+#: core/forms.py:105
 msgid "Enable API access"
 msgstr "API Zugriff aktivieren"
 
-#: core/forms.py:137
+#: core/forms.py:139
 msgid "Verification code"
 msgstr "Bestätigungscode"
 
-#: core/forms.py:148
+#: core/forms.py:150
 msgid "Invalid code"
 msgstr "Ungültiger Code"
+
+#: core/forms.py:163
+msgid "This code is invalid"
+msgstr "Dieser Code ist Falsch"
 
 #: core/handlers.py:36
 msgid "added"
@@ -619,35 +631,35 @@ msgstr "Eine oder mehrere Aktualisierungen sind verfügbar"
 msgid "[modoboa] Update(s) available"
 msgstr "[modoboa] Update(s) verfügbar"
 
-#: core/models.py:55
+#: core/models.py:52
 msgid "Allow mailboxes access"
 msgstr "Erlaube den Postfach-Zugriff"
 
-#: core/models.py:57
+#: core/models.py:54
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Erlaubt dem Administrator auf Benutzer-Postfächer zuzugreifen"
 
-#: core/models.py:60
+#: core/models.py:57
 msgid "password"
 msgstr "Passwort"
 
-#: core/models.py:63
+#: core/models.py:60
 msgid "language"
 msgstr "Sprache"
 
-#: core/models.py:66
+#: core/models.py:63
 msgid "Prefered language to display pages."
 msgstr "Bevorzugte Anzeigesprache für Seiten."
 
-#: core/models.py:70
+#: core/models.py:67
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: core/models.py:72
+#: core/models.py:69
 msgid "Secondary email"
 msgstr "Sekundäre E-Mail-Adresse"
 
-#: core/models.py:75
+#: core/models.py:72
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "Eine alternative E-Mail-Adresse welche Wiederherstellungszwecken dient."
 
@@ -709,49 +721,57 @@ msgstr[1] "Das Passwort muss mindestens {} Sonderzeichen enthalten."
 msgid "Your password must contain a combination of different character types."
 msgstr "Ihr Passwort muss eine Kombination verschiedener Zeichentypen enthalten."
 
+#: core/serializers.py:15
+msgid "Invalid PIN code"
+msgstr "Ungültiger Pincode"
+
+#: core/serializers.py:21
+msgid "2FA is already enabled"
+msgstr "2FA ist bereits aktiviert"
+
 #: core/sms_backends/ovh.py:19
 msgid "API endpoint"
-msgstr ""
+msgstr "API-Endpunkt"
 
 #: core/sms_backends/ovh.py:22
 msgid "OVH Europe"
-msgstr ""
+msgstr "OVH Europa"
 
 #: core/sms_backends/ovh.py:23
 msgid "OVH US"
-msgstr ""
+msgstr "OVH US"
 
 #: core/sms_backends/ovh.py:24
 msgid "OVH North-America"
-msgstr ""
+msgstr "OVH Nordamerika"
 
 #: core/sms_backends/ovh.py:25
 msgid "So you Start Europe"
-msgstr ""
+msgstr "So you Start Europa"
 
 #: core/sms_backends/ovh.py:26
 msgid "So you Start North America"
-msgstr ""
+msgstr "So you Start Amerika"
 
 #: core/sms_backends/ovh.py:27
 msgid "Kimsufi Europe"
-msgstr ""
+msgstr "Kimsufi Europa"
 
 #: core/sms_backends/ovh.py:28
 msgid "Kimsufi North America"
-msgstr ""
+msgstr "Kimsufi Nordamerika"
 
 #: core/sms_backends/ovh.py:35
 msgid "Application key"
-msgstr ""
+msgstr "Applikationsschlüssel"
 
 #: core/sms_backends/ovh.py:42
 msgid "Application secret"
-msgstr ""
+msgstr "Applikationsgeheimnis"
 
 #: core/sms_backends/ovh.py:50
 msgid "Consumer key"
-msgstr ""
+msgstr "Verbraucherschlüssel"
 
 #: core/templates/core/_current_features.html:6
 msgid "Features looking for sponsoring"
@@ -937,6 +957,80 @@ msgstr "Aktualisieren Sie Ihre persönlichen Daten"
 msgid "Click here to update your password"
 msgstr "Hier klicken um das Passwort zu aktualisieren"
 
+#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:124
+msgid "Security"
+msgstr "Sicherheit"
+
+#: core/templates/core/user_security.html:6
+msgid "Two-Factor authentication"
+msgstr "Zwei-Faktor-Authentifizierung"
+
+#: core/templates/core/user_security.html:17
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+msgstr "Installiere ein soft-token Authenticator, wie FreeOTP oder Google Authenticator vom Appstore und scannen Sie den QR-Code."
+
+#: core/templates/core/user_security.html:25
+msgid "Pin code"
+msgstr "Pincode"
+
+#: core/templates/core/user_security.html:28
+msgid "Register"
+msgstr "Registrieren"
+
+#: core/templates/core/user_security.html:33
+msgid ""
+"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr "Glückwunsch! Die Zwei-Faktor-Authentifizierung ist nun für diesen Account aktiviert."
+
+#: core/templates/core/user_security.html:38
+#: core/templates/core/user_security.html:89
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr "Die folgenden Wiederherstellungscodes können einmalig benutzt werden, um den Zugriff auf ihr Konto wiederherzustellen, wenn sie zum Beispiel ihr Mobiltelefon verlieren. Achten sie darauf diese sicher aufzubewahren, sonst werden sie keine Möglichkeit mehr haben auf den Account zuzugreifen"
+
+#: core/templates/core/user_security.html:53
+msgid "Two-Factor Authentication is enabled for your account."
+msgstr "Zwei-Faktor-Authentifizierung ist für diesen Account aktiviert."
+
+#: core/templates/core/user_security.html:58
+msgid "Disable 2FA"
+msgstr "Deaktiviere 2-Faktor-Authentifizierung"
+
+#: core/templates/core/user_security.html:61
+msgid "Reset recovery codes"
+msgstr "Setze Wiederherstellungscodes zurück"
+
+#: core/templates/core/user_security.html:65
+msgid ""
+"Two-Factor Authentication (2FA) is not yet activated for your account. "
+"Enabling this feature will increase your account's security."
+msgstr "Zwei-Faktor-Authentifizierung (2FA) ist noch nicht für diesen Account aktiviert.\nAktiviere dieses Feature, um die Account-Sicherheit zu erhöhen."
+
+#: core/templates/core/user_security.html:73
+msgid "Enable 2FA"
+msgstr "Aktiviere 2FA"
+
+#: core/templates/core/user_security.html:83
+#: core/templates/core/user_security.html:99
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "Schließen"
+
+#: core/templates/core/user_security.html:84
+msgid "New recovery codes"
+msgstr "Neue Wiederherstellungscodes"
+
+#: core/templates/core/user_security.html:88
+msgid "Here are your new recovery codes. "
+msgstr "Hier sind Ihre neuen Wiederherstellungscodes."
+
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
 msgstr "Modoboa"
@@ -945,7 +1039,7 @@ msgstr "Modoboa"
 msgid "Logout"
 msgstr "Logout"
 
-#: core/templatetags/core_tags.py:127
+#: core/templatetags/core_tags.py:131
 msgid "API"
 msgstr "API"
 
@@ -957,51 +1051,55 @@ msgstr "Der Kern von Modoboa"
 msgid "Parameters saved"
 msgstr "Parameter gespeichert"
 
-#: core/views/auth.py:59
+#: core/views/auth.py:61
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Fehlanpassung des Passwortschemas. Passwort von %s wird  aktualisiert"
 
-#: core/views/auth.py:66
+#: core/views/auth.py:68
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Passwort-Hash Parameter Unterschied. Aktualisiere %s Passwort"
 
-#: core/views/auth.py:82
+#: core/views/auth.py:84
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Benutzer '%s' hat sich erfolgreich angemeldet"
 
-#: core/views/auth.py:90
+#: core/views/auth.py:92
 msgid "Your username and password didn't match. Please try again."
 msgstr "Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuchen Sie es noch einmal."
 
-#: core/views/auth.py:125
+#: core/views/auth.py:127
 msgid "User '{}' successfully logged out"
 msgstr "Benutzer '{}' erfolgreich abgemeldet"
 
-#: core/views/auth.py:170 core/views/auth.py:225
+#: core/views/auth.py:172 core/views/auth.py:227
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Bitte benutze den folgenden Code um das Modoboa Passwort wiederherzustellen: {}"
 
-#: core/views/user.py:53
+#: core/views/user.py:60
 msgid "Profile updated"
 msgstr "Profil aktualisiert"
 
-#: core/views/user.py:81
+#: core/views/user.py:88
 msgid "Preferences saved"
 msgstr "Einstellungen gespeichert"
 
-#: core/views/user.py:103
+#: core/views/user.py:110
 msgid "Access updated"
 msgstr "Zugriff aktualisiert"
+
+#: core/viewsets.py:52
+msgid "2FA is not enabled"
+msgstr "2-Faktor-Authentifizierung ist nicht aktiviert"
 
 #: lib/db_utils.py:23
 #, python-format
 msgid "Connection to database %s not configured"
 msgstr "Verbindung zu Datenbank %s nicht konfiguriert"
 
-#: lib/email_utils.py:141 lib/email_utils.py:360
+#: lib/email_utils.py:143 lib/email_utils.py:362
 msgid "unable to determine encoding of string"
 msgstr "Kodierung der Zeichenkette konnte nicht bestimmt werden"
 
@@ -1084,12 +1182,6 @@ msgstr "Fehler:"
 #: templates/common/generic_fields_group.html:8
 msgid "Help:"
 msgstr "Hilfe:"
-
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
-msgid "Close"
-msgstr "Schließen"
 
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
