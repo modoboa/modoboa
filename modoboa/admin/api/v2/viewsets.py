@@ -58,15 +58,13 @@ class DomainViewSet(lib_viewsets.RevisionModelMixin,
         return models.Domain.objects.get_for_admin(self.request.user)
 
     def get_serializer_class(self, *args, **kwargs):
-        if self.action == "create":
-            return serializers.DomainSerializer
         if self.action == "delete":
             return serializers.DeleteDomainSerializer
         if self.action == "administrators":
             return serializers.DomainAdminSerializer
         if self.action in ["add_administrator", "remove_administrator"]:
             return serializers.SimpleDomainAdminSerializer
-        return v1_serializers.DomainSerializer
+        return serializers.DomainSerializer
 
     @action(methods=["post"], detail=True)
     def delete(self, request, **kwargs):

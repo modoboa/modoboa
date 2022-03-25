@@ -79,11 +79,22 @@ export default {
           this.$set(this.domain.transport.settings, `${value.name}_${setting.name}`, defaultValue)
         }
       }
+    },
+    checkSettingTypes (data) {
+      for (const setting of this.service.settings) {
+        if (setting.type === 'int') {
+          const fullName = `${this.service.name}_${setting.name}`
+          data.transport.settings[fullName] = parseInt(data.transport.settings[fullName])
+        }
+      }
     }
   },
   mounted () {
     transports.getAll().then(resp => {
       this.backends = resp.data
+      if (this.domain) {
+        this.service = this.backends.find(backend => backend.name === this.domain.transport.service)
+      }
     })
   },
   watch: {

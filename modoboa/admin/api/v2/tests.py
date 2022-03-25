@@ -41,6 +41,33 @@ class DomainViewSetTestCase(ModoAPITestCase):
                 address="postmaster@domain.tld").exists()
         )
 
+    def test_update(self):
+        domain = models.Domain.objects.get(name="test2.com")
+        data = {
+            "name": "test2.com",
+            "type": "relaydomain",
+            "transport": {
+                "service": "relay",
+                "settings": {
+                    "relay_target_port": 25,
+                    "relay_target_host": "localhost"
+                }
+            }
+        }
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        domain.refresh_from_db()
+        self.assertEqual(domain.transport.service, data["transport"]["service"])
+        self.assertEqual(
+            domain.transport._settings["relay_target_host"],
+            data["transport"]["settings"]["relay_target_host"]
+        )
+
+        data["transport"]["relay_verify_recipients"] = True
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
     def test_delete(self):
         self.client.credentials(
             HTTP_AUTHORIZATION="Token " + self.da_token.key)
