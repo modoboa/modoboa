@@ -42,6 +42,14 @@
           <router-link :to="{ name: 'DomainDetail', params: { id: item.pk } }">
             {{ item.name }}
           </router-link>
+          <v-chip
+            v-if="item.type === 'relaydomain'"
+            small
+            color="primary"
+            class="ml-2"
+            >
+            <translate>Relay</translate>
+          </v-chip>
           <translate v-if="!item.enabled" class="ml-2 grey--text">(disabled)</translate>
         </td>
         <td>
