@@ -4,7 +4,7 @@
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on" small>
-          Actions <v-icon right>mdi-chevron-down</v-icon>
+          <translate>Actions</translate> <v-icon right>mdi-chevron-down</v-icon>
         </v-btn>
       </template>
       <v-list dense>
@@ -31,6 +31,16 @@
     class="elevation-1"
     show-select
     >
+    <template v-slot:item.identity="{ item }">
+      <template v-if="item.type === 'account'">
+        <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
+          {{ item.identity }}
+        </router-link>
+      </template>
+      <template v-else>
+        {{ item.identity }}
+      </template>
+    </template>
     <template v-slot:item.tags="{ item }">
       <v-chip v-for="(tag, index) in item.tags"
               :key="tag.name"
