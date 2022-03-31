@@ -18,6 +18,8 @@ from modoboa.lib import fields as lib_fields
 from modoboa.lib import validators, web_utils
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
+from modoboa.limits import constants as limits_constants
+from modoboa.limits import models as limits_models
 from modoboa.transport import models as transport_models
 from modoboa.transport.api.v2 import serializers as transport_serializers
 
@@ -251,6 +253,40 @@ class IdentitySerializer(serializers.Serializer):
     tags = TagSerializer(many=True)
 
 
+class ResourceSerializer(serializers.ModelSerializer):
+    """Serializer for user resource."""
+
+    class Meta:
+        fields = ("name", "label", "max_value", "current_value", "usage")
+        model = limits_models.UserObjectLimit
+
+
+class AccountSerializer(v1_serializers.AccountSerializer):
+    """Add support for user resources."""
+
+    aliases = serializers.ListField(
+        child=lib_fields.DRFEmailFieldUTF8(),
+        source="mailbox.alias_addresses"
+    )
+    resources = serializers.SerializerMethodField()
+
+    class Meta(v1_serializers.AccountSerializer.Meta):
+        fields = (
+            v1_serializers.AccountSerializer.Meta.fields
+            + ("aliases", "resources", )
+        )
+
+    def get_resources(self, account):
+        resources = []
+        for limit in account.userobjectlimit_set.all():
+            tpl = limits_constants.DEFAULT_USER_LIMITS[limit.name]
+            if "required_role" in tpl:
+                if account.role != tpl["required_role"]:
+                    continue
+            resources.append(limit)
+        return ResourceSerializer(resources, many=True).data
+
+
 class MailboxSerializer(serializers.ModelSerializer):
     """Base mailbox serializer."""
 
@@ -277,6 +313,14 @@ class MailboxSerializer(serializers.ModelSerializer):
         return data
 
 
+class WritableResourceSerializer(serializers.ModelSerializer):
+    """Serializer used to update resource."""
+
+    class Meta:
+        fields = ("name", "max_value")
+        model = limits_models.UserObjectLimit
+
+
 class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
     """Add support for aliases and sender addresses."""
 
@@ -285,13 +329,14 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         required=False
     )
     mailbox = MailboxSerializer(required=False)
+    resources = WritableResourceSerializer(many=True, required=False)
 
     class Meta(v1_serializers.WritableAccountSerializer.Meta):
         fields = tuple(
             field
             for field in v1_serializers.WritableAccountSerializer.Meta.fields
             if field != "random_password"
-        ) + ("aliases", )
+        ) + ("aliases", "resources")
 
     def validate_aliases(self, value):
         """Check if required domains are locals and user can access them."""
@@ -405,6 +450,12 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 instance.email = validated_data["username"]
                 self._create_mailbox(creator, instance, mailbox_data)
         instance.save()
+        resources = validated_data.get("resources")
+        if resources:
+            for resource in resources:
+                instance.userobjectlimit_set.filter(
+                    name=resource["name"]
+                ).update(max_value=resource["max_value"])
         self.set_permissions(instance, domains)
         return instance
 

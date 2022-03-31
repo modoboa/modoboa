@@ -12,9 +12,7 @@ from rest_framework import (
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
-from modoboa.admin.api.v1 import (
-    serializers as v1_serializers, viewsets as v1_viewsets
-)
+from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import models as core_models
 from modoboa.lib import viewsets as lib_viewsets
 
@@ -139,6 +137,8 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
             return serializers.WritableAccountSerializer
         if self.action == "delete":
             return serializers.DeleteAccountSerializer
+        if self.action in ["list", "retrieve"]:
+            return serializers.AccountSerializer
         return super().get_serializer_class()
 
     def get_queryset(self):
@@ -149,7 +149,10 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
             .filter(content_type=ContentType.objects.get_for_model(user))
             .values_list("object_id", flat=True)
         )
-        return core_models.User.objects.filter(pk__in=ids)
+        return (
+            core_models.User.objects.filter(pk__in=ids)
+            .prefetch_related("userobjectlimit_set")
+        )
 
     @action(methods=["post"], detail=False)
     def validate(self, request, **kwargs):
