@@ -217,6 +217,27 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(account.email, data["username"])
         self.assertEqual(account.mailbox.full_address, data["username"])
 
+    def test_update_resources(self):
+        account = core_models.User.objects.get(username="admin@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "resources": [
+                {"name": "mailboxes", "max_value": 10},
+                {"name": "mailbox_aliases", "max_value": 10}
+            ]
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        limit = account.userobjectlimit_set.get(name="mailboxes")
+        self.assertEqual(limit.max_value, 10)
+
+    def test_get_with_resources(self):
+        account = core_models.User.objects.get(username="admin@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        resp = self.client.get(url, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()["resources"]), 2)
+
 
 class IdentityViewSetTestCase(ModoAPITestCase):
 

@@ -98,6 +98,18 @@
         <account-mailbox-form ref="mailboxForm" :account="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-expansion-panel v-if="account.role !== 'SimpleUsers'">
+      <v-expansion-panel-header>
+        <v-row no-gutters>
+          <v-col cols="4">
+            <translate>Limits</translate>
+          </v-col>
+        </v-row>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <account-resources-form ref="resourcesForm" :account="editedAccount" />
+      </v-expansion-panel-content>
+    </v-expansion-panel>
   </v-expansion-panels>
   <div class="mt-4 d-flex justify-end">
     <v-btn color="grey lighten-1" @click="$router.go(-1)">
@@ -116,12 +128,14 @@ import { bus } from '@/main'
 import accounts from '@/api/accounts'
 import AccountGeneralForm from './AccountGeneralForm'
 import AccountMailboxForm from './AccountMailboxForm'
+import AccountResourcesForm from './AccountResourcesForm'
 import AccountRoleForm from './AccountRoleForm'
 
 export default {
   components: {
     AccountGeneralForm,
     AccountMailboxForm,
+    AccountResourcesForm,
     AccountRoleForm
   },
   props: ['account'],
@@ -144,6 +158,12 @@ export default {
           return
         }
       }
+      if (this.$refs.resourcesForm !== undefined) {
+        const valid = await this.$refs.resourcesForm.validateForm()
+        if (!valid) {
+          return
+        }
+      }
       try {
         const data = JSON.parse(JSON.stringify(this.editedAccount))
         if (this.usernameIsEmail) {
@@ -158,6 +178,9 @@ export default {
           delete data.password
           delete data.password_confirmation
         }
+        if (this.$refs.resourcesForm !== undefined) {
+          data.resources = this.$refs.resourcesForm.getPayload()
+        }
         await accounts.patch(this.editedAccount.pk, data).then(resp => {
           bus.$emit('notification', { msg: this.$gettext('Account updated') })
         })
@@ -167,6 +190,9 @@ export default {
         }
         if (this.$refs.mailboxForm) {
           this.$refs.mailboxForm.$refs.observer.setErrors(error.response.data)
+        }
+        if (this.$refs.resourcesForm) {
+          this.$refs.resourcesForm.$refs.observer.setErrors(error.response.data)
         }
       }
     }
