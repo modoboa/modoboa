@@ -68,6 +68,22 @@ class DomainViewSetTestCase(ModoAPITestCase):
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    def test_update_resources(self):
+        self.set_global_parameter("enable_domain_limits", True, app="limits")
+        domain = models.Domain.objects.get(name="test2.com")
+        data = {
+            "name": "test2.com",
+            "resources": [
+                {"name": "domain_aliases", "max_value": 20}
+            ]
+        }
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            domain.domainobjectlimit_set.get(name="domain_aliases").max_value, 20
+        )
+
     def test_delete(self):
         self.client.credentials(
             HTTP_AUTHORIZATION="Token " + self.da_token.key)

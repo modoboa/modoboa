@@ -47,14 +47,19 @@ class DomainSerializer(v1_serializers.DomainSerializer):
     """Domain serializer for v2 API."""
 
     domain_admin = CreateDomainAdminSerializer(required=False, write_only=True)
-    resources = DomainResourceSerializer(
-        many=True, source="domainobjectlimit_set", required=False
-    )
     transport = transport_serializers.TransportSerializer(required=False)
 
     class Meta(v1_serializers.DomainSerializer.Meta):
         fields = v1_serializers.DomainSerializer.Meta.fields + (
-            "domain_admin", "resources", "transport"
+            "domain_admin", "transport"
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not param_tools.get_global_parameter("enable_domain_limits", app="limits"):
+            return
+        self.fields["resources"] = DomainResourceSerializer(
+            many=True, source="domainobjectlimit_set", required=False
         )
 
     def validate(self, data):
@@ -285,13 +290,18 @@ class AccountSerializer(v1_serializers.AccountSerializer):
         child=lib_fields.DRFEmailFieldUTF8(),
         source="mailbox.alias_addresses"
     )
-    resources = serializers.SerializerMethodField()
 
     class Meta(v1_serializers.AccountSerializer.Meta):
         fields = (
             v1_serializers.AccountSerializer.Meta.fields
-            + ("aliases", "resources", )
+            + ("aliases", )
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
+            return
+        self.fields["resources"] = serializers.SerializerMethodField()
 
     def get_resources(self, account):
         if account.role == 'SimpleUsers':
@@ -348,14 +358,19 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         required=False
     )
     mailbox = MailboxSerializer(required=False)
-    resources = WritableResourceSerializer(many=True, required=False)
 
     class Meta(v1_serializers.WritableAccountSerializer.Meta):
         fields = tuple(
             field
             for field in v1_serializers.WritableAccountSerializer.Meta.fields
             if field != "random_password"
-        ) + ("aliases", "resources")
+        ) + ("aliases",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
+            return
+        self.fields["resources"] = WritableResourceSerializer(many=True, required=False)
 
     def validate_aliases(self, value):
         """Check if required domains are locals and user can access them."""
