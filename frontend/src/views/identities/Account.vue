@@ -11,9 +11,9 @@
       <account-summary :account="account" />
     </v-col>
     <v-col cols="6">
-      <account-resources
-        v-if="account.resources && account.resources.length"
-        :account="account"
+      <resources
+        v-if="limitsConfig.enable_admin_limits && account.resources && account.resources.length"
+        :resources="account.resources"
         />
       <account-aliases v-if="account.aliases" class="mt-2" :account="account" />
     </v-col>
@@ -29,25 +29,30 @@
 <script>
 import accounts from '@/api/accounts'
 import AccountAliases from '@/components/identities/AccountAliases'
-import AccountResources from '@/components/identities/AccountResources'
 import AccountSummary from '@/components/identities/AccountSummary'
 import DomainAdminDomains from '@/components/identities/DomainAdminDomains'
+import parameters from '@/api/parameters'
+import Resources from '@/components/tools/Resources'
 
 export default {
   components: {
     AccountAliases,
-    AccountResources,
     AccountSummary,
-    DomainAdminDomains
+    DomainAdminDomains,
+    Resources
   },
   data () {
     return {
-      account: { pk: this.$route.params.id }
+      account: { pk: this.$route.params.id },
+      limitsConfig: {}
     }
   },
   mounted () {
     accounts.get(this.$route.params.id).then(resp => {
       this.account = resp.data
+    })
+    parameters.getApplication('limits').then(resp => {
+      this.limitsConfig = resp.data
     })
   }
 }

@@ -17,6 +17,8 @@
       </v-col>
       <v-col cols="6">
         <dns-detail :domain="domain" />
+        <div class="mt-4" />
+        <resources v-if="limitsConfig.enable_domain_limits && domain.resources && domain.resources.length" :resources="domain.resources" />
       </v-col>
     </v-row>
   </v-layout>
@@ -45,6 +47,8 @@ import AdministratorList from '@/components/domains/AdministratorList'
 import DNSDetail from '@/components/domains/DNSDetail'
 import DomainForm from '@/components/domains/DomainForm'
 import DomainSummary from '@/components/domains/DomainSummary'
+import parameters from '@/api/parameters'
+import Resources from '@/components/tools/Resources'
 import TimeSerieChart from '@/components/tools/TimeSerieChart'
 
 export default {
@@ -53,11 +57,13 @@ export default {
     'dns-detail': DNSDetail,
     DomainForm,
     DomainSummary,
+    Resources,
     TimeSerieChart
   },
   data () {
     return {
       domain: { pk: this.$route.params.id },
+      limitsConfig: {},
       showEditForm: false,
       showAdminList: false
     }
@@ -65,6 +71,9 @@ export default {
   methods: {
   },
   mounted () {
+    parameters.getApplication('limits').then(resp => {
+      this.limitsConfig = resp.data
+    })
     domains.getDomain(this.$route.params.id).then(resp => {
       this.domain = resp.data
     })
