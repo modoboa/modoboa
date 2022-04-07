@@ -35,6 +35,14 @@ class CreateDomainAdminSerializer(serializers.Serializer):
     with_aliases = serializers.BooleanField(default=False)
 
 
+class DomainResourceSerializer(serializers.ModelSerializer):
+    """Serializer for domain resource."""
+
+    class Meta:
+        fields = ("name", "label", "max_value", "current_value", "usage")
+        model = limits_models.DomainObjectLimit
+
+
 class DomainSerializer(v1_serializers.DomainSerializer):
     """Domain serializer for v2 API."""
 
@@ -44,6 +52,14 @@ class DomainSerializer(v1_serializers.DomainSerializer):
     class Meta(v1_serializers.DomainSerializer.Meta):
         fields = v1_serializers.DomainSerializer.Meta.fields + (
             "domain_admin", "transport"
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not param_tools.get_global_parameter("enable_domain_limits", app="limits"):
+            return
+        self.fields["resources"] = DomainResourceSerializer(
+            many=True, source="domainobjectlimit_set", required=False
         )
 
     def validate(self, data):
@@ -122,6 +138,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
     def update(self, instance, validated_data):
         """Update domain and create/update transport."""
         transport_def = validated_data.pop("transport", None)
+        resources = validated_data.pop("domainobjectlimit_set", None)
         super().update(instance, validated_data)
         if transport_def and instance.type == "relaydomain":
             transport = getattr(instance, "transport", None)
@@ -138,6 +155,11 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             if created:
                 instance.transport = transport
                 instance.save()
+        if resources:
+            for resource in resources:
+                instance.domainobjectlimit_set.filter(
+                    name=resource["name"]
+                ).update(max_value=resource["max_value"])
         return instance
 
 
@@ -253,7 +275,7 @@ class IdentitySerializer(serializers.Serializer):
     tags = TagSerializer(many=True)
 
 
-class ResourceSerializer(serializers.ModelSerializer):
+class AccountResourceSerializer(serializers.ModelSerializer):
     """Serializer for user resource."""
 
     class Meta:
@@ -268,15 +290,22 @@ class AccountSerializer(v1_serializers.AccountSerializer):
         child=lib_fields.DRFEmailFieldUTF8(),
         source="mailbox.alias_addresses"
     )
-    resources = serializers.SerializerMethodField()
 
     class Meta(v1_serializers.AccountSerializer.Meta):
         fields = (
             v1_serializers.AccountSerializer.Meta.fields
-            + ("aliases", "resources", )
+            + ("aliases", )
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
+            return
+        self.fields["resources"] = serializers.SerializerMethodField()
+
     def get_resources(self, account):
+        if account.role == 'SimpleUsers':
+            return []
         resources = []
         for limit in account.userobjectlimit_set.all():
             tpl = limits_constants.DEFAULT_USER_LIMITS[limit.name]
@@ -284,7 +313,7 @@ class AccountSerializer(v1_serializers.AccountSerializer):
                 if account.role != tpl["required_role"]:
                     continue
             resources.append(limit)
-        return ResourceSerializer(resources, many=True).data
+        return AccountResourceSerializer(resources, many=True).data
 
 
 class MailboxSerializer(serializers.ModelSerializer):
@@ -329,14 +358,19 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         required=False
     )
     mailbox = MailboxSerializer(required=False)
-    resources = WritableResourceSerializer(many=True, required=False)
 
     class Meta(v1_serializers.WritableAccountSerializer.Meta):
         fields = tuple(
             field
             for field in v1_serializers.WritableAccountSerializer.Meta.fields
             if field != "random_password"
-        ) + ("aliases", "resources")
+        ) + ("aliases",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
+            return
+        self.fields["resources"] = WritableResourceSerializer(many=True, required=False)
 
     def validate_aliases(self, value):
         """Check if required domains are locals and user can access them."""

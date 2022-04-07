@@ -98,16 +98,16 @@
         <account-mailbox-form ref="mailboxForm" :account="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-expansion-panel v-if="account.role !== 'SimpleUsers'">
+    <v-expansion-panel v-if="limitsConfig.enable_admin_limits && account.role !== 'SimpleUsers'">
       <v-expansion-panel-header>
         <v-row no-gutters>
           <v-col cols="4">
-            <translate>Limits</translate>
+            <translate>Resources</translate>
           </v-col>
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <account-resources-form ref="resourcesForm" :account="editedAccount" />
+        <resources-form ref="resourcesForm" :resources="editedAccount.resources" />
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -128,15 +128,16 @@ import { bus } from '@/main'
 import accounts from '@/api/accounts'
 import AccountGeneralForm from './AccountGeneralForm'
 import AccountMailboxForm from './AccountMailboxForm'
-import AccountResourcesForm from './AccountResourcesForm'
 import AccountRoleForm from './AccountRoleForm'
+import ResourcesForm from '@/components/tools/ResourcesForm'
+import parameters from '@/api/parameters'
 
 export default {
   components: {
     AccountGeneralForm,
     AccountMailboxForm,
-    AccountResourcesForm,
-    AccountRoleForm
+    AccountRoleForm,
+    ResourcesForm
   },
   props: ['account'],
   computed: {
@@ -147,6 +148,7 @@ export default {
   data () {
     return {
       editedAccount: {},
+      limitsConfig: {},
       panel: 0
     }
   },
@@ -196,6 +198,11 @@ export default {
         }
       }
     }
+  },
+  created () {
+    parameters.getApplication('limits').then(resp => {
+      this.limitsConfig = resp.data
+    })
   },
   mounted () {
     this.$store.dispatch('identities/fetchDomains')
