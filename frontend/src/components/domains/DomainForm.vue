@@ -133,6 +133,18 @@
         <domain-transport-form ref="transportForm" :domain="editedDomain" />
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-expansion-panel v-if="limitsConfig.enable_domain_limits && (authUser.role === 'SuperAdmins' || authUser.role === 'Resellers')">
+      <v-expansion-panel-header>
+        <v-row no-gutters>
+          <v-col cols="4">
+            <translate>Resources</translate>
+          </v-col>
+        </v-row>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <resources-form ref="resourcesForm" :resources="domain.resources" />
+      </v-expansion-panel-content>
+    </v-expansion-panel>
   </v-expansion-panels>
   <div class="mt-4 d-flex justify-end">
     <v-btn color="grey lighten-1" @click="$router.go(-1)">
@@ -151,18 +163,28 @@ import DomainDNSForm from './DomainDNSForm'
 import DomainGeneralForm from './DomainGeneralForm'
 import DomainLimitationsForm from './DomainLimitationsForm'
 import DomainTransportForm from './DomainTransportForm'
+import { mapGetters } from 'vuex'
+import parameters from '@/api/parameters'
+import ResourcesForm from '@/components/tools/ResourcesForm'
 
 export default {
   components: {
     'domain-dns-form': DomainDNSForm,
     DomainGeneralForm,
     DomainLimitationsForm,
-    DomainTransportForm
+    DomainTransportForm,
+    ResourcesForm
   },
   props: ['domain'],
+  computed: {
+    ...mapGetters({
+      authUser: 'auth/authUser'
+    })
+  },
   data () {
     return {
       editedDomain: {},
+      limitsConfig: {},
       panel: 0
     }
   },
@@ -174,13 +196,28 @@ export default {
           return
         }
       }
-      if (this.editedDomain.type === 'relaydomain') {
-        this.$refs.transportForm.checkSettingTypes(this.editedDomain)
+      if (this.$refs.resourcesForm !== undefined) {
+        const valid = await this.$refs.resourcesForm.validateForm()
+        if (!valid) {
+          return
+        }
       }
-      this.$store.dispatch('domains/updateDomain', this.editedDomain).then(resp => {
+      const data = { ...this.editedDomain }
+      if (data.transport === null) {
+        delete data.transport
+      }
+      if (data.type === 'relaydomain') {
+        this.$refs.transportForm.checkSettingTypes(data)
+      }
+      this.$store.dispatch('domains/updateDomain', data).then(resp => {
         bus.$emit('notification', { msg: this.$gettext('Domain updated') })
       })
     }
+  },
+  created () {
+    parameters.getApplication('limits').then(resp => {
+      this.limitsConfig = resp.data
+    })
   },
   watch: {
     domain: {
