@@ -47,7 +47,9 @@ class DomainSerializer(v1_serializers.DomainSerializer):
     """Domain serializer for v2 API."""
 
     domain_admin = CreateDomainAdminSerializer(required=False, write_only=True)
-    resources = DomainResourceSerializer(many=True, source="domainobjectlimit_set")
+    resources = DomainResourceSerializer(
+        many=True, source="domainobjectlimit_set", required=False
+    )
     transport = transport_serializers.TransportSerializer(required=False)
 
     class Meta(v1_serializers.DomainSerializer.Meta):
