@@ -5,7 +5,7 @@
   </v-card-title>
   <v-card-text>
     <div
-      v-for="resource in account.resources"
+      v-for="resource in resources"
       :key="resource.name"
       class="mt-4"
       >
@@ -22,7 +22,7 @@
 <script>
 export default {
   props: {
-    account: Object
+    resources: Array
   },
   methods: {
     getProgressColor (value) {
