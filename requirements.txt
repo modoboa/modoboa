@@ -3,7 +3,7 @@ django-ckeditor==6.1.0
 django-phonenumber-field[phonenumbers]==5.2.0
 django-reversion==3.0.9
 django-xforwardedfor-middleware==2.0
-django-otp==1.1.1
+django-otp==1.1.3
 django-filter
 
 dj-database-url
