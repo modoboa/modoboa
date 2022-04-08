@@ -1,6 +1,6 @@
 argon2-cffi>=16.1.0
-factory-boy<=3.2.0
+factory-boy<3.3.0
 httmock==1.4.0
-testfixtures==6.18.3
+testfixtures==6.18.5
 tox
 asynctest
