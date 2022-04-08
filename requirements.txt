@@ -17,7 +17,7 @@ drf-flex-fields
 passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev
 
-dnspython==2.1.0
+dnspython==2.2.1
 feedparser==6.0.8
 greenlet==1.1.2
 gevent==21.8.0
