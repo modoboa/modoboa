@@ -12,10 +12,15 @@
     </v-col>
     <v-col cols="6">
       <resources
-        v-if="limitsConfig.enable_admin_limits && account.resources && account.resources.length"
+        v-if="limitsConfig.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
         :resources="account.resources"
         />
       <account-aliases v-if="account.aliases" class="mt-2" :account="account" />
+      <account-sender-addresses
+        v-if="account.mailbox"
+        class="mt-2"
+        :account="account"
+        />
     </v-col>
   </v-row>
   <v-row v-if="account.role === 'DomainAdmins'">
@@ -29,6 +34,7 @@
 <script>
 import accounts from '@/api/accounts'
 import AccountAliases from '@/components/identities/AccountAliases'
+import AccountSenderAddresses from '@/components/identities/AccountSenderAddresses'
 import AccountSummary from '@/components/identities/AccountSummary'
 import DomainAdminDomains from '@/components/identities/DomainAdminDomains'
 import parameters from '@/api/parameters'
@@ -37,6 +43,7 @@ import Resources from '@/components/tools/Resources'
 export default {
   components: {
     AccountAliases,
+    AccountSenderAddresses,
     AccountSummary,
     DomainAdminDomains,
     Resources
