@@ -200,10 +200,20 @@ class AliasViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
         return queryset
 
 
+class SenderAddressFilterSet(dj_filters.FilterSet):
+    """Custom FilterSet for SenderAddress."""
+
+    class Meta:
+        model = models.SenderAddress
+        fields = ["mailbox"]
+
+
 class SenderAddressViewSet(lib_viewsets.RevisionModelMixin,
                            viewsets.ModelViewSet):
     """View set for SenderAddress model."""
 
+    filter_backends = (dj_filters.DjangoFilterBackend, )
+    filterset_class = SenderAddressFilterSet
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.SenderAddressSerializer
 
