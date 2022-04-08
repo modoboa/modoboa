@@ -19,6 +19,7 @@ def check_object_limit(sender, context, **kwargs):
     if context.__class__.__name__ == "User":
         if not param_tools.get_global_parameter("enable_admin_limits"):
             return
+        # FIXME: Useless?
         if context.is_superuser:
             return True
         ct = ContentType.objects.get_for_model(kwargs.get("klass"))

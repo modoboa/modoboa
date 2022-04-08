@@ -98,7 +98,9 @@
         <account-mailbox-form ref="mailboxForm" :account="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-expansion-panel v-if="limitsConfig.enable_admin_limits && account.role !== 'SimpleUsers'">
+    <v-expansion-panel
+      v-if="limitsConfig.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
+      >
       <v-expansion-panel-header>
         <v-row no-gutters>
           <v-col cols="4">
@@ -182,6 +184,9 @@ export default {
         }
         if (this.$refs.resourcesForm !== undefined) {
           data.resources = this.$refs.resourcesForm.getPayload()
+        }
+        if (data.aliases === null) {
+          delete data.aliases
         }
         await accounts.patch(this.editedAccount.pk, data).then(resp => {
           bus.$emit('notification', { msg: this.$gettext('Account updated') })
