@@ -84,6 +84,15 @@ const routes = [
     }
   },
   {
+    path: '/identities/aliases/:id',
+    name: 'AliasDetail',
+    component: () => import('../views/identities/Alias.vue'),
+    meta: {
+      requiresAuth: true,
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
+    }
+  },
+  {
     path: '/identities/aliases/:id/edit',
     name: 'AliasEdit',
     component: () => import('../views/identities/AliasEdit.vue'),

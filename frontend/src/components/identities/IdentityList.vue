@@ -38,7 +38,9 @@
         </router-link>
       </template>
       <template v-else>
-        {{ item.identity }}
+        <router-link :to="{ name: 'AliasDetail', params: { id: item.pk } }">
+          {{ item.identity }}
+        </router-link>
       </template>
     </template>
     <template v-slot:item.tags="{ item }">

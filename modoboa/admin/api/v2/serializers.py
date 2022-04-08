@@ -509,7 +509,7 @@ class AliasSerializer(v1_serializers.AliasSerializer):
             field
             for field in v1_serializers.AliasSerializer.Meta.fields
             if field != "internal"
-        ) + ("expire_at", "description")
+        ) + ("expire_at", "description", "creation", "last_modification")
 
 
 class UserForwardSerializer(serializers.Serializer):
