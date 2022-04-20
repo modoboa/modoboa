@@ -163,14 +163,7 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     def validate_full_address(self, value):
         """Lower case address."""
-        value = value.lower()
-        address, domain_name = email_utils.split_mailbox(value)
-        domain = get_object_or_404(
-            admin_models.Domain, name=domain_name)
-        creator = self.context["request"].user
-        if not creator.can_access(domain):
-            raise serializers.ValidationError(_("Permission denied."))
-        return value
+        return value.lower()
 
     def validate_quota(self, value):
         """Convert quota to MB."""
@@ -320,6 +313,24 @@ class WritableAccountSerializer(AccountSerializer):
                 raise serializers.ValidationError({
                     "username": _("Must be equal to mailbox full_address")
                 })
+        if "mailbox" in data:
+            self.address, domain_name = email_utils.split_mailbox(data["mailbox"]["full_address"])
+            self.domain = get_object_or_404(
+                admin_models.Domain, name=domain_name)
+            creator = self.context["request"].user
+            if not creator.can_access(self.domain):
+                raise serializers.ValidationError({"mailbox": _("Permission denied.")})
+            if not self.instance:
+                try:
+                    core_signals.can_create_object.send(
+                        sender=self.__class__, context=creator,
+                        klass=admin_models.Mailbox)
+                    core_signals.can_create_object.send(
+                        sender=self.__class__, context=self.domain,
+                        object_type="mailboxes")
+                except lib_exceptions.ModoboaException as inst:
+                    raise serializers.ValidationError({
+                        "mailbox": force_text(inst)})
         condition = (
             not data.get("random_password") and (
                 data.get("password") or
@@ -357,22 +368,9 @@ class WritableAccountSerializer(AccountSerializer):
     def _create_mailbox(self, creator, account, data):
         """Create a new Mailbox instance."""
         full_address = data.pop("full_address")
-        address, domain_name = email_utils.split_mailbox(full_address)
-        domain = get_object_or_404(
-            admin_models.Domain, name=domain_name)
-        try:
-            core_signals.can_create_object.send(
-                sender=self.__class__, context=creator,
-                klass=admin_models.Mailbox)
-            core_signals.can_create_object.send(
-                sender=self.__class__, context=domain,
-                object_type="mailboxes")
-        except lib_exceptions.ModoboaException as inst:
-            raise serializers.ValidationError({
-                "domain": force_text(inst)})
         quota = data.pop("quota", None)
         mb = admin_models.Mailbox(
-            user=account, address=address, domain=domain, **data)
+            user=account, address=self.address, domain=self.domain, **data)
         mb.set_quota(quota, creator.has_perm("admin.add_domain"))
         default_msg_limit = param_tools.get_global_parameter(
             "default_mailbox_message_limit")
