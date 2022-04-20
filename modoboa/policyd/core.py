@@ -143,7 +143,7 @@ async def apply_policies(attributes):
     sasl_username = attributes.get("sasl_username")
     if not sasl_username:
         return SUCCESS_ACTION
-    rclient = await aioredis.create_redis_pool(settings.REDIS_URL)
+    rclient = aioredis.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
     decr_domain = False
     decr_user = False
     localpart, domain = split_mailbox(sasl_username)
@@ -164,8 +164,7 @@ async def apply_policies(attributes):
         await decrement_limit(rclient, "domain", domain)
     if decr_user:
         await decrement_limit(rclient, "account", sasl_username)
-    rclient.close()
-    await rclient.wait_closed()
+    await rclient.close()
     logger.debug("Let it pass")
     return SUCCESS_ACTION
 
@@ -258,16 +257,15 @@ def get_mailboxes_to_reset():
 
 async def reset_counters():
     """Reset all counters."""
-    rclient = await aioredis.create_redis_pool(settings.REDIS_URL)
+    rclient = aioredis.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
     logger.info("Resetting all counters")
     for domain in await get_domains_to_reset():
-        rclient.hset(
+        await rclient.hset(
             constants.REDIS_HASHNAME, domain.name, domain.message_limit)
     for mb in await get_mailboxes_to_reset():
-        rclient.hset(
+        await rclient.hset(
             constants.REDIS_HASHNAME, mb.full_address, mb.message_limit)
-    rclient.close()
-    await rclient.wait_closed()
+    await rclient.close()
     # reschedule
     asyncio.ensure_future(run_at(get_next_execution_dt(), reset_counters))
 
