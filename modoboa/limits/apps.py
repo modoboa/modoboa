@@ -18,9 +18,9 @@ def load_limits_settings():
 
 
 class LimitsConfig(AppConfig):
-
     """App configuration."""
 
+    default_auto_field = "django.db.models.BigAutoField"
     name = "modoboa.limits"
     verbose_name = "Modoboa admin limits"
 

@@ -4,7 +4,6 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 
 from . import constants
@@ -35,7 +34,6 @@ class DNSRecordManager(models.Manager):
         return record
 
 
-@python_2_unicode_compatible
 class DNSRecord(models.Model):
     """A model to store DNS records for Domain."""
 
