@@ -1,5 +1,6 @@
 """Core components of the policy daemon."""
 
+from asgiref.sync import sync_to_async
 import asyncio
 import concurrent.futures
 from email.message import EmailMessage
@@ -216,7 +217,7 @@ def get_next_execution_dt():
         hour=0, minute=0, second=0)
 
 
-@close_db_connections
+@sync_to_async
 def get_domains_to_reset():
     """
     Return a list of domain to reset.
@@ -230,10 +231,10 @@ def get_domains_to_reset():
     ).update(
         status=admin_constants.ALARM_CLOSED, closed=timezone.now()
     )
-    return qset
+    return list(qset)
 
 
-@close_db_connections
+@sync_to_async
 def get_mailboxes_to_reset():
     """
     Return a list of mailboxes to reset.
@@ -250,25 +251,17 @@ def get_mailboxes_to_reset():
     ).update(
         status=admin_constants.ALARM_CLOSED, closed=timezone.now()
     )
-    return qset
+    return list(qset)
 
 
 async def reset_counters():
     """Reset all counters."""
     rclient = await aioredis.create_redis_pool(settings.REDIS_URL)
     logger.info("Resetting all counters")
-    # We're going to execute sync code so we need an executor
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
-    loop = asyncio.get_event_loop()
-    futures = [
-        loop.run_in_executor(executor, get_domains_to_reset),
-        loop.run_in_executor(executor, get_mailboxes_to_reset)
-    ]
-    domains, mboxes = await asyncio.gather(*futures)
-    for domain in domains:
+    for domain in await get_domains_to_reset():
         rclient.hset(
             constants.REDIS_HASHNAME, domain.name, domain.message_limit)
-    for mb in mboxes:
+    for mb in await get_mailboxes_to_reset():
         rclient.hset(
             constants.REDIS_HASHNAME, mb.full_address, mb.message_limit)
     rclient.close()
