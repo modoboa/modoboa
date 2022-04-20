@@ -249,7 +249,7 @@ class AccountAPITestCase(ModoAPITestCase):
 
     def setUp(self):
         """Test setup."""
-        super(AccountAPITestCase, self).setUp()
+        super().setUp()
         self.set_global_parameters({
             "enable_admin_limits": False,
             "enable_domain_limits": False
@@ -400,15 +400,17 @@ class AccountAPITestCase(ModoAPITestCase):
         data["mailbox"]["quota"] = 1000
         url = reverse("v1:account-list")
         response = self.client.post(url, data, format="json")
+        # Should fail because domain quota is exceeded
         self.assertEqual(response.status_code, 400)
+
         data["username"] = "fromapi@test2.com"
         data["mailbox"].update({"full_address": "fromapi@test2.com",
                                 "quota": 10})
-        url = reverse("v1:account-list")
         response = self.client.post(url, data, format="json")
+        # Should fail because admin has no access to @test2.com domain
         self.assertEqual(response.status_code, 400)
         errors = response.json()
-        self.assertIn("domain", errors)
+        self.assertIn("mailbox", errors)
 
     def test_create_account_bad_master_user(self):
         """Try to create a new account."""

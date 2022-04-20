@@ -4,7 +4,7 @@ from reversion import revisions as reversion
 
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
 from modoboa.core import models as core_models, signals as core_signals
@@ -26,7 +26,6 @@ class DomainAliasManager(models.Manager):
         return self.get_queryset().filter(owners__user=admin)
 
 
-@python_2_unicode_compatible
 class DomainAlias(AdminObject):
 
     """Domain aliases."""
