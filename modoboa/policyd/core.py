@@ -218,6 +218,7 @@ def get_next_execution_dt():
 
 
 @sync_to_async
+@close_db_connections
 def get_domains_to_reset():
     """
     Return a list of domain to reset.
@@ -235,6 +236,7 @@ def get_domains_to_reset():
 
 
 @sync_to_async
+@close_db_connections
 def get_mailboxes_to_reset():
     """
     Return a list of mailboxes to reset.
