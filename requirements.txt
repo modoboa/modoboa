@@ -37,4 +37,4 @@ rrdtool>=0.1.10
 qrcode
 
 aiosmtplib
-aioredis==1.3.1
+aioredis==2.0.1
