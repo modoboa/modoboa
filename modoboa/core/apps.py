@@ -26,6 +26,7 @@ def load_core_settings():
 class CoreConfig(AppConfig):
     """App configuration."""
 
+    default_auto_field = "django.db.models.BigAutoField"
     name = "modoboa.core"
     verbose_name = "Modoboa core"
 

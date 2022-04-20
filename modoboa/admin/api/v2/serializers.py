@@ -5,6 +5,7 @@ import os
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core import validators as dj_validators
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 
 from django.contrib.auth import password_validation
@@ -13,6 +14,7 @@ from rest_framework import serializers
 
 from modoboa.admin.api.v1 import serializers as v1_serializers
 from modoboa.core import models as core_models, signals as core_signals
+from modoboa.lib import email_utils
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
 from modoboa.lib import validators, web_utils
@@ -402,6 +404,25 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     data["mailbox"] = {
                         "use_domain_quota": True
                     }
+        if "mailbox" in data:
+            self.address, domain_name = email_utils.split_mailbox(data["username"])
+            self.domain = get_object_or_404(
+                models.Domain, name=domain_name)
+            creator = self.context["request"].user
+            if not creator.can_access(self.domain):
+                raise serializers.ValidationError({"mailbox": _("Permission denied.")})
+            if not self.instance:
+                try:
+                    core_signals.can_create_object.send(
+                        sender=self.__class__, context=creator,
+                        klass=models.Mailbox)
+                    core_signals.can_create_object.send(
+                        sender=self.__class__, context=self.domain,
+                        object_type="mailboxes")
+                except lib_exceptions.ModoboaException as inst:
+                    raise serializers.ValidationError({
+                        "mailbox": force_text(inst)
+                    })
         if data.get("password") or not self.partial:
             password = data.get("password")
             if password:

@@ -56,7 +56,7 @@ def render_field(
 @register.simple_tag
 def render_fields_group(form, pattern):
     """Render a group of fields."""
-    first = forms.forms.BoundField(form, form.fields[pattern], pattern)
+    first = forms.BoundField(form, form.fields[pattern], pattern)
     configure_field_classes(first)
     label = first.label
     group = [first]
@@ -66,7 +66,7 @@ def render_fields_group(form, pattern):
         fname = "%s_%d" % (pattern, cpt)
         if fname not in form.fields:
             break
-        bfield = forms.forms.BoundField(form, form.fields[fname], fname)
+        bfield = forms.BoundField(form, form.fields[fname], fname)
         if len(bfield.errors):
             haserror = True
         configure_field_classes(bfield)

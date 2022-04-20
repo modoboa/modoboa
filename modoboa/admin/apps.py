@@ -6,9 +6,9 @@ from .app_settings import load_admin_settings
 
 
 class AdminConfig(AppConfig):
-
     """App configuration."""
 
+    default_auto_field = "django.db.models.BigAutoField"
     name = "modoboa.admin"
     verbose_name = "Modoboa admin console"
 
