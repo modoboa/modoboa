@@ -8,7 +8,7 @@ django-filter
 
 dj-database-url
 
-djangorestframework>=3.11,<3.13
+djangorestframework>=3.11,<3.14
 drf-spectacular
 uritemplate
 djangorestframework-simplejwt==5.1.0
