@@ -163,7 +163,14 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     def validate_full_address(self, value):
         """Lower case address."""
-        return value.lower()
+        value = value.lower()
+        address, domain_name = email_utils.split_mailbox(value)
+        domain = get_object_or_404(
+            admin_models.Domain, name=domain_name)
+        creator = self.context["request"].user
+        if not creator.can_access(domain):
+            raise serializers.ValidationError(_("Permission denied."))
+        return value
 
     def validate_quota(self, value):
         """Convert quota to MB."""
@@ -353,9 +360,6 @@ class WritableAccountSerializer(AccountSerializer):
         address, domain_name = email_utils.split_mailbox(full_address)
         domain = get_object_or_404(
             admin_models.Domain, name=domain_name)
-        if not creator.can_access(domain):
-            raise serializers.ValidationError({
-                "domain": _("Permission denied.")})
         try:
             core_signals.can_create_object.send(
                 sender=self.__class__, context=creator,
