@@ -97,7 +97,7 @@ gunicorn configuration (create a new file named
 To start gunicorn, execute the following commands::
 
   $ cd <modoboa dir>
-  $ gunicorn -c gunicorn.conf.py <modoboa dir>.wsgi:application
+  $ gunicorn -c gunicorn.conf.py <APP/INSTANCE Name>.wsgi:application
 
 Now the nginx part. Just create a new virtual host and use the
 following configuration::
