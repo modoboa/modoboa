@@ -46,5 +46,15 @@ export default {
   },
   deleteDomainAlias (aliasId) {
     return repository.delete(`/${domainAliasResource}/${aliasId}/`)
+  },
+  exportAll () {
+    return repository.get(`/${domainResource}/export/`)
+  },
+  importFromCSV (data) {
+    return repository.post(`/${domainResource}/import/`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   }
 }

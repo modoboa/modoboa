@@ -548,3 +548,11 @@ class UserForwardSerializer(serializers.Serializer):
             dj_validators.validate_email(recipient)
             recipients.append(recipient)
         return recipients
+
+
+class CSVImportSerializer(serializers.Serializer):
+    """Serializer for all CSV import endpoints."""
+
+    sourcefile = serializers.FileField()
+    sepchar = serializers.CharField(required=False, default=";")
+    continue_if_exists = serializers.BooleanField(default=False)

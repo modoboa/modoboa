@@ -1,5 +1,7 @@
 """Internal library for admin."""
 
+import csv
+import io
 import ipaddress
 import logging
 import random
@@ -11,6 +13,7 @@ import dns.resolver
 from dns.name import IDNA_2008_UTS_46
 
 from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.db.models import Q
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
@@ -18,9 +21,13 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth import password_validation
 from django.contrib.contenttypes.models import ContentType
 
+from reversion import revisions as reversion
+
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
-from modoboa.lib.exceptions import PermDeniedException
+from modoboa.lib.exceptions import (
+    Conflict, ModoboaException, PermDeniedException
+)
 from modoboa.parameters import tools as param_tools
 
 from . import signals
@@ -266,3 +273,45 @@ def make_password():
         except ValidationError:
             continue
         return password
+
+
+@reversion.create_revision()
+def import_data(user, file_object, options: dict):
+    """Generic import function
+
+    As the process of importing data from a CSV file is the same
+    whatever the type, we do a maximum of the work here.
+    """
+    try:
+        infile = io.TextIOWrapper(file_object.file, encoding="utf8")
+        reader = csv.reader(infile, delimiter=options["sepchar"])
+    except csv.Error as inst:
+        error = str(inst)
+    else:
+        try:
+            cpt = 0
+            for row in reader:
+                if not row:
+                    continue
+                fct = signals.import_object.send(
+                    sender="importdata", objtype=row[0].strip())
+                fct = [func for x_, func in fct if func is not None]
+                if not fct:
+                    continue
+                fct = fct[0]
+                with transaction.atomic():
+                    try:
+                        fct(user, row, options)
+                    except Conflict:
+                        if options["continue_if_exists"]:
+                            continue
+                        raise Conflict(
+                            _("Object already exists: %s")
+                            % options["sepchar"].join(row[:2])
+                        )
+                cpt += 1
+            msg = _("%d objects imported successfully") % cpt
+            return True, msg
+        except (ModoboaException) as e:
+            error = str(e)
+    return False, error
