@@ -9,7 +9,6 @@ from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _, ugettext_lazy
 
-from rest_flex_fields import FlexFieldsModelSerializer
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
@@ -111,7 +110,7 @@ class DomainSerializer(serializers.ModelSerializer):
         return domain
 
 
-class DomainAliasSerializer(FlexFieldsModelSerializer):
+class DomainAliasSerializer(serializers.ModelSerializer):
     """Base DomainAlias serializer."""
 
     class Meta:

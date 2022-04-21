@@ -220,10 +220,14 @@ class Alias(AdminObject):
         self.set_recipients([raddress.strip() for raddress in row[3:]])
         self.post_create(user)
 
-    def to_csv(self, csvwriter):
+    def to_csv_row(self):
+        """Return a row to include in a CSV file."""
         row = ["alias", force_str(self.address), self.enabled]
         row += self.recipients
-        csvwriter.writerow(row)
+        return row
+
+    def to_csv(self, csvwriter):
+        csvwriter.writerow(self.to_csv_row())
 
 
 reversion.register(Alias)

@@ -3,10 +3,18 @@
   <v-toolbar flat>
     <v-toolbar-title><translate>Domains</translate></v-toolbar-title>
     <v-spacer />
-    <v-btn class="mr-2">
+    <v-btn
+      class="mr-2"
+      :title="'Import domains and aliases from CSV file'|translate"
+      @click="showImportForm = true"
+      >
       <v-icon>mdi-file-import-outline</v-icon>
     </v-btn>
-    <v-btn class="mr-2">
+    <v-btn
+      class="mr-2"
+      :title="'Export domains and aliases to CSV'|translate"
+      @click="exportDomains"
+      >
       <v-icon>mdi-file-export-outline</v-icon>
     </v-btn>
     <v-menu offset-y>
@@ -41,28 +49,60 @@
             max-width="800px">
     <domain-alias-form @close="showAliasForm = false" />
   </v-dialog>
+  <v-dialog v-model="showImportForm"
+            persistent
+            max-width="800px">
+    <import-form
+      ref="importForm"
+      :title="'Import domains'|translate"
+      @submit="importDomains"
+      @close="showImportForm = false"
+      >
+      <template v-slot:help>
+        <ul>
+          <li><em>domain; name; quota; default mailbox quota; enabled</em></li>
+          <li><em>domainalias; name; targeted domain; enabled</em></li>
+          <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li>
+        </ul>
+      </template>
+    </import-form>
+  </v-dialog>
+
 </div>
 </template>
 
 <script>
+import domains from '@/api/domains'
 import DomainAliasForm from '@/components/domains/DomainAliasForm'
 import DomainCreationForm from '@/components/domains/DomainCreationForm'
 import DomainList from '@/components/domains/DomainList'
+import { importExportMixin } from '@/mixins/importExport'
+import ImportForm from '@/components/tools/ImportForm'
 
 export default {
+  mixins: [importExportMixin],
   components: {
     DomainAliasForm,
     DomainCreationForm,
-    DomainList
+    DomainList,
+    ImportForm
   },
   data () {
     return {
       showAliasForm: false,
-      showDomainWizard: false
+      showDomainWizard: false,
+      showImportForm: false
     }
   },
   methods: {
-
+    exportDomains () {
+      domains.exportAll().then(resp => {
+        this.exportContent(resp.data, 'domains')
+      })
+    },
+    importDomains (data) {
+      this.importContent(domains, data)
+    }
   }
 }
 </script>

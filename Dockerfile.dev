@@ -1,4 +1,4 @@
-FROM python:3.7-alpine as base
+FROM python:3.9-alpine as base
 
 MAINTAINER Antoine Nguyen <tonio@ngyn.org>
 ENV VIRTUAL_ENV=/opt/venv
@@ -13,7 +13,7 @@ RUN python3 -m venv $VIRTUAL_ENV
 WORKDIR /tmp
 COPY requirements.txt /tmp
 COPY test-requirements.txt /tmp
-RUN python -m pip install -U pip 
+RUN python -m pip install -U pip
 RUN pip install -r requirements.txt -r test-requirements.txt
 
 FROM base as run

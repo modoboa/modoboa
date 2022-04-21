@@ -15,6 +15,7 @@ from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 
 from modoboa.lib.exceptions import Conflict, ModoboaException
+from .. import lib
 from .. import signals
 from ..forms import ImportDataForm, ImportIdentitiesForm
 
@@ -30,47 +31,17 @@ def importdata(request, formclass=ImportDataForm):
     :param typ: a string indicating the object type being imported
     :return: a ``Response`` instance
     """
-    error = None
+    msg = None
     form = formclass(request.POST, request.FILES)
     if form.is_valid():
-        try:
-            infile = io.TextIOWrapper(
-                request.FILES["sourcefile"].file, encoding="utf8")
-            reader = csv.reader(infile, delimiter=form.cleaned_data["sepchar"])
-        except csv.Error as inst:
-            error = smart_text(inst)
-        else:
-            try:
-                cpt = 0
-                for row in reader:
-                    if not row:
-                        continue
-                    fct = signals.import_object.send(
-                        sender="importdata", objtype=row[0].strip())
-                    fct = [func for x_, func in fct if func is not None]
-                    if not fct:
-                        continue
-                    fct = fct[0]
-                    with transaction.atomic():
-                        try:
-                            fct(request.user, row, form.cleaned_data)
-                        except Conflict:
-                            if form.cleaned_data["continue_if_exists"]:
-                                continue
-                            raise Conflict(
-                                _("Object already exists: %s"
-                                  % form.cleaned_data["sepchar"].join(row[:2]))
-                            )
-                    cpt += 1
-                msg = _("%d objects imported successfully" % cpt)
-                return render(request, "admin/import_done.html", {
-                    "status": "ok", "msg": msg
-                })
-            except (ModoboaException) as e:
-                error = str(e)
-
+        status, msg = lib.import_data(
+            request.user, request.FILES["sourcefile"], form.cleaned_data)
+        if status:
+            return render(request, "admin/import_done.html", {
+                "status": "ok", "msg": msg
+            })
     return render(request, "admin/import_done.html", {
-        "status": "ko", "msg": error
+        "status": "ko", "msg": msg
     })
 
 
