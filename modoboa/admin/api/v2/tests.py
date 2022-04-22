@@ -163,7 +163,7 @@ domainalias; domalias1.com; domain1.com; True
             "domainalias,alias.test,test.com,True",
             "domain,test2.com,0,0,True",
         ]
-        self.assertListEqual(
+        self.assertCountEqual(
             expected_response,
             force_text(response.content.strip()).split("\r\n")
         )

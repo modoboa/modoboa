@@ -48,7 +48,7 @@ class ExportTestCase(ModoTestCase):
             "domainalias;alias.test;test.com;True",
             "domain;test2.com;0;0;True",
         ]
-        self.assertListEqual(
+        self.assertCountEqual(
             expected_response,
             force_text(response.content.strip()).split("\r\n")
         )
@@ -109,7 +109,7 @@ class ExportTestCase(ModoTestCase):
             idtfilter="account", grpfilter="DomainAdmins"
         )
         expected_response = "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com"  # NOQA:E501
-        self.assertListEqual(
+        self.assertCountEqual(
             expected_response.split("\r\n"),
             force_text(response.content.strip()).split("\r\n")
         )
