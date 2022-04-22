@@ -230,7 +230,7 @@ class IdentityViewSet(viewsets.ViewSet):
         return response.Response(result)
 
     @extend_schema(
-        request=serializers.CSVImportSerializer
+        request=serializers.CSVIdentityImportSerializer
     )
     @action(methods=["post"],
             detail=False,
@@ -238,7 +238,7 @@ class IdentityViewSet(viewsets.ViewSet):
             url_path="import")
     def import_from_csv(self, request, **kwargs):
         """Import accounts and aliases from CSV file."""
-        serializer = serializers.CSVImportSerializer(data=request.data)
+        serializer = serializers.CSVIdentityImportSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         status, msg = lib.import_data(
             request.user,
