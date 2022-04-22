@@ -58,7 +58,7 @@ class ExportTestCase(ModoTestCase):
         call_command("modo", "export", "domains")
         response = sys.stdout.getvalue()
         sys.stdout = stdout_backup
-        self.assertListEqual(
+        self.assertCountEqual(
             expected_response, force_text(response.strip()).split("\r\n"))
 
     def test_export_identities(self):
