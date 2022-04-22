@@ -26,6 +26,7 @@
           :error-messages="errors"
           truncate-length="15"
           outlined
+          dense
           />
       </validation-provider>
       <label class="m-label"><translate>Separator</translate></label>
@@ -33,12 +34,17 @@
         v-model="form.sepchar"
         :error-messages="errors"
         outlined
+        dense
         />
       <v-switch
         v-model="form.continue_if_exists"
         :label="'Continue on error'|translate"
         color="primary"
+        dense
+        :hint="'Don\'t treat duplicated objects as errors'|translate"
+        persistent-hint
         />
+      <slot name="extraFields" v-bind:form="form" />
     </validation-observer>
   </v-card-text>
   <v-card-actions>
@@ -88,6 +94,7 @@ export default {
       if (this.form.continue_if_exists) {
         data.append('continue_if_exists', this.form.continue_if_exists)
       }
+      this.$emit('beforeSubmit', data)
       this.$emit('submit', data)
     }
   }

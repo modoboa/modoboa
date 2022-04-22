@@ -60,6 +60,7 @@
     <import-form
       ref="importForm"
       :title="'Import identities'|translate"
+      @beforeSubmit="prepareData"
       @submit="importIdentities"
       @close="showImportForm = false"
       >
@@ -68,6 +69,16 @@
           <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>
           <li><em>alias; address; enabled; recipient; recipient; ...</em></li>
         </ul>
+      </template>
+      <template v-slot:extraFields="{ form }">
+        <v-switch
+          v-model="form.crypt_passwords"
+          :label="'Crypt passwords'|translate"
+          color="primary"
+          dense
+          :hint="'Check this option if passwords contained in your file are not crypted'|translate"
+          persistent-hint
+          />
       </template>
     </import-form>
   </v-dialog>
@@ -111,6 +122,9 @@ export default {
       identities.exportAll().then(resp => {
         this.exportContent(resp.data, 'identities')
       })
+    },
+    prepareData (data) {
+      data.append('crypt_passwords', this.form.crypt_passwords)
     },
     importIdentities (data) {
       this.importContent(identities, data)
