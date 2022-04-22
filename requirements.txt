@@ -12,7 +12,6 @@ djangorestframework>=3.11,<3.14
 drf-spectacular
 uritemplate
 djangorestframework-simplejwt==5.1.0
-drf-flex-fields
 
 passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev

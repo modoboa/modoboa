@@ -78,13 +78,17 @@ class DomainAlias(AdminObject):
         self.enabled = row[3].strip().lower() in ["true", "1", "yes", "y"]
         self.save(creator=user)
 
+    def to_csv_row(self):
+        """Export to row that can be included in a CSV file."""
+        return ["domainalias", self.name,
+                self.target.name, self.enabled]
+
     def to_csv(self, csvwriter):
         """Export a domain alias using CSV format
 
         :param csvwriter: a ``csv.writer`` object
         """
-        csvwriter.writerow(["domainalias", self.name,
-                            self.target.name, self.enabled])
+        csvwriter.writerow(self.to_csv_row())
 
 
 reversion.register(DomainAlias)

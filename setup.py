@@ -79,9 +79,11 @@ if __name__ == "__main__":
         zip_safe=False,
         scripts=["bin/modoboa-admin.py"],
         install_requires=INSTALL_REQUIRES,
-        use_scm_version={"local_scheme": local_scheme},
+        use_scm_version={
+            "local_scheme": local_scheme
+        },
         python_requires=">=3.7",
-        setup_requires=["setuptools_scm"],
+        setup_requires=["setuptools_scm>6.4"],
         extras_require={
             "ldap": LDAP_REQUIRES,
             "mysql": MYSQL_REQUIRES,
