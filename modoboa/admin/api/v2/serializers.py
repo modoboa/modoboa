@@ -551,8 +551,14 @@ class UserForwardSerializer(serializers.Serializer):
 
 
 class CSVImportSerializer(serializers.Serializer):
-    """Serializer for all CSV import endpoints."""
+    """Base serializer for all CSV import endpoints."""
 
     sourcefile = serializers.FileField()
     sepchar = serializers.CharField(required=False, default=";")
     continue_if_exists = serializers.BooleanField(default=False)
+
+
+class CSVIdentityImportSerializer(CSVImportSerializer):
+    """Custom serializer for identity import."""
+
+    crypt_password = serializers.BooleanField()

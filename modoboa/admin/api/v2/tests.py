@@ -1,6 +1,8 @@
 """API v2 tests."""
 
+from django.core.files.base import ContentFile
 from django.urls import reverse
+from django.utils.encoding import force_text
 
 from rest_framework.authtoken.models import Token
 
@@ -125,6 +127,46 @@ class DomainViewSetTestCase(ModoAPITestCase):
         data = {"account": account.pk}
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
+
+    def test_domains_import(self):
+        f = ContentFile(b"""domain; domain1.com; 1000; 100; True
+domain; domain2.com; 1000; 200; False
+domainalias; domalias1.com; domain1.com; True
+""", name="domains.csv")
+        self.client.post(
+            reverse("v2:domain-import-from-csv"), {
+                "sourcefile": f
+            }
+        )
+        admin = core_models.User.objects.get(username="admin")
+        dom = models.Domain.objects.get(name="domain1.com")
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+        domalias = models.DomainAlias.objects.get(name="domalias1.com")
+        self.assertEqual(domalias.target, dom)
+        self.assertTrue(dom.enabled)
+        self.assertTrue(admin.is_owner(domalias))
+        dom = models.Domain.objects.get(name="domain2.com")
+        self.assertEqual(dom.default_mailbox_quota, 200)
+        self.assertFalse(dom.enabled)
+        self.assertTrue(admin.is_owner(dom))
+
+    def test_export_domains(self):
+        """Check domain export."""
+        dom = models.Domain.objects.get(name="test.com")
+        factories.DomainAliasFactory(name="alias.test", target=dom)
+        response = self.client.get(reverse("v2:domain-export"))
+        expected_response = [
+            "domain,test.com,50,10,True",
+            "domainalias,alias.test,test.com,True",
+            "domain,test2.com,0,0,True",
+        ]
+        self.assertListEqual(
+            expected_response,
+            force_text(response.content.strip()).split("\r\n")
+        )
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
@@ -268,6 +310,89 @@ class IdentityViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()), 8)
+
+    def test_import(self):
+        f = ContentFile("""
+account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 0
+account; Truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 5; test.com
+alias; alias1@test.com; True; user1@test.com
+forward; alias2@test.com; True; user1+ext@test.com
+forward; fwd1@test.com; True; user@extdomain.com
+dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
+""", name="identities.csv")  # NOQA:E501
+        self.client.post(
+            reverse("v2:identities-import-from-csv"),
+            {"sourcefile": f, "crypt_password": True}
+        )
+        admin = core_models.User.objects.get(username="admin")
+        u1 = core_models.User.objects.get(username="user1@test.com")
+        mb1 = u1.mailbox
+        self.assertTrue(admin.is_owner(u1))
+        self.assertEqual(u1.email, "user1@test.com")
+        self.assertEqual(u1.first_name, "User")
+        self.assertEqual(u1.last_name, "One")
+        self.assertTrue(u1.is_active)
+        self.assertEqual(u1.role, "SimpleUsers")
+        self.assertTrue(mb1.use_domain_quota)
+        self.assertEqual(mb1.quota, 0)
+        self.assertTrue(admin.is_owner(mb1))
+        self.assertEqual(mb1.full_address, "user1@test.com")
+        self.assertTrue(
+            self.client.login(username="user1@test.com", password="toto")
+        )
+
+        da = core_models.User.objects.get(username="truc@test.com")
+        damb = da.mailbox
+        self.assertEqual(da.first_name, u"René")
+        self.assertEqual(da.role, "DomainAdmins")
+        self.assertEqual(damb.quota, 5)
+        self.assertFalse(damb.use_domain_quota)
+        self.assertEqual(damb.full_address, "truc@test.com")
+        dom = models.Domain.objects.get(name="test.com")
+        self.assertIn(da, dom.admins)
+        u = core_models.User.objects.get(username="user@test.com")
+        self.assertTrue(da.can_access(u))
+
+        al = models.Alias.objects.get(address="alias1@test.com")
+        self.assertTrue(
+            al.aliasrecipient_set
+            .filter(r_mailbox=u1.mailbox).exists()
+        )
+        self.assertTrue(admin.is_owner(al))
+
+        fwd = models.Alias.objects.get(address="fwd1@test.com")
+        self.assertTrue(
+            fwd.aliasrecipient_set
+            .filter(
+                address="user@extdomain.com", r_mailbox__isnull=True,
+                r_alias__isnull=True)
+            .exists()
+        )
+        self.assertTrue(admin.is_owner(fwd))
+
+        dlist = models.Alias.objects.get(address="dlist@test.com")
+        self.assertTrue(
+            dlist.aliasrecipient_set
+            .filter(r_mailbox=u1.mailbox).exists()
+        )
+        self.assertTrue(
+            dlist.aliasrecipient_set.filter(address="user@extdomain.com")
+            .exists()
+        )
+        self.assertTrue(admin.is_owner(dlist))
+
+    def test_export(self):
+        response = self.client.get(reverse("v2:identities-export"))
+        expected_response = "account,admin,,,,True,SuperAdmins,,\r\naccount,admin@test.com,{PLAIN}toto,,,True,DomainAdmins,admin@test.com,10,test.com\r\naccount,admin@test2.com,{PLAIN}toto,,,True,DomainAdmins,admin@test2.com,10,test2.com\r\naccount,user@test.com,{PLAIN}toto,,,True,SimpleUsers,user@test.com,10\r\naccount,user@test2.com,{PLAIN}toto,,,True,SimpleUsers,user@test2.com,10\r\nalias,alias@test.com,True,user@test.com\r\nalias,forward@test.com,True,user@external.com\r\nalias,postmaster@test.com,True,test@truc.fr,toto@titi.com\r\n"  # NOQA:E501
+        received_content = force_text(response.content.strip()).split("\r\n")
+        # Empty admin password because it is hashed using SHA512-CRYPT
+        admin_row = received_content[0].split(",")
+        admin_row[2] = ""
+        received_content[0] = ",".join(admin_row)
+        self.assertCountEqual(
+            expected_response.strip().split("\r\n"),
+            received_content
+        )
 
 
 class AliasViewSetTestCase(ModoAPITestCase):
