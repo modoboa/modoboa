@@ -38,15 +38,6 @@ class ExportTestCase(ModoTestCase):
             {"filename": "test.csv"}
         )
 
-    def assertListEqual(self, list1, list2):  # NOQA:N802
-        list1 = force_text(list1).split("\r\n")
-        list2 = force_text(list2).split("\r\n")
-        self.assertEqual(len(list1), len(list2))
-        for entry in list1:
-            if not entry:
-                continue
-            self.assertIn(entry, list2)
-
     def test_export_domains(self):
         """Check domain export."""
         dom = models.Domain.objects.get(name="test.com")
@@ -57,9 +48,9 @@ class ExportTestCase(ModoTestCase):
             "domainalias;alias.test;test.com;True",
             "domain;test2.com;0;0;True",
         ]
-        self.assertListEqual(
-            "\r\n".join(expected_response),
-            response.content.strip()
+        self.assertCountEqual(
+            expected_response,
+            force_text(response.content.strip()).split("\r\n")
         )
 
         # Test management command too.
@@ -67,12 +58,21 @@ class ExportTestCase(ModoTestCase):
         call_command("modo", "export", "domains")
         response = sys.stdout.getvalue()
         sys.stdout = stdout_backup
-        self.assertListEqual("\r\n".join(expected_response), response.strip())
+        self.assertCountEqual(
+            expected_response, force_text(response.strip()).split("\r\n"))
 
     def test_export_identities(self):
         response = self.__export_identities()
-        expected_response = "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com\r\n"  # NOQA:E501
-        self.assertListEqual(expected_response, response.content.strip())
+        expected_response = "account;admin;;;;True;SuperAdmins;;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com\r\n"  # NOQA:E501
+        received_content = force_text(response.content.strip()).split("\r\n")
+        # Empty admin password because it is hashed using SHA512-CRYPT
+        admin_row = received_content[0].split(";")
+        admin_row[2] = ""
+        received_content[0] = ";".join(admin_row)
+        self.assertCountEqual(
+            expected_response.strip().split("\r\n"),
+            received_content
+        )
 
     def test_export_simpleusers(self):
         factories.MailboxFactory(
@@ -83,9 +83,10 @@ class ExportTestCase(ModoTestCase):
         response = self.__export_identities(
             idtfilter="account", grpfilter="SimpleUsers"
         )
-        self.assertListEqual(
-            "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\naccount;toto@test.com;{PLAIN}toto;Léon;;True;SimpleUsers;toto@test.com;10",  # NOQA:E501
-            response.content.strip()
+        expected_response = "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\naccount;toto@test.com;{PLAIN}toto;Léon;;True;SimpleUsers;toto@test.com;10"  # NOQA:E501
+        self.assertCountEqual(
+            expected_response.split("\r\n"),
+            force_text(response.content.strip()).split("\r\n")
         )
 
     def test_export_superadmins(self):
@@ -107,9 +108,10 @@ class ExportTestCase(ModoTestCase):
         response = self.__export_identities(
             idtfilter="account", grpfilter="DomainAdmins"
         )
-        self.assertListEqual(
-            "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com",  # NOQA:E501
-            response.content.strip()
+        expected_response = "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com"  # NOQA:E501
+        self.assertCountEqual(
+            expected_response.split("\r\n"),
+            force_text(response.content.strip()).split("\r\n")
         )
 
     def test_export_aliases(self):

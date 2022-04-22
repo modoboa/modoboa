@@ -365,13 +365,8 @@ class User(AbstractUser):
         signals.account_imported.send(
             sender=self.__class__, user=user, account=self, row=row[7:])
 
-    def to_csv(self, csvwriter):
-        """Export this account.
-
-        The CSV format is used to export.
-
-        :param csvwriter: csv object
-        """
+    def to_csv_row(self):
+        """Return row that can be included in a CSV file."""
         row = [
             "account",
             smart_text(self.username),
@@ -386,7 +381,16 @@ class User(AbstractUser):
             sender=self.__class__, user=self)
         for result in results:
             row += result[1]
-        csvwriter.writerow(row)
+        return row
+
+    def to_csv(self, csvwriter):
+        """Export this account.
+
+        The CSV format is used to export.
+
+        :param csvwriter: csv object
+        """
+        csvwriter.writerow(self.to_csv_row())
 
 
 reversion.register(User)
