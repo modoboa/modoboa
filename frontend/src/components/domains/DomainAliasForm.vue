@@ -45,8 +45,6 @@
   <v-card-actions>
     <v-spacer></v-spacer>
     <v-btn
-      color="grey darken-1"
-      text
       @click="close"
       >
       <translate>Close</translate>
@@ -54,14 +52,12 @@
     <v-btn
       v-if="domainAlias && domainAlias.pk"
       color="error"
-      text
       @click="deleteAlias"
       >
       <translate>Delete</translate>
     </v-btn>
     <v-btn
-      color="primary darken-1"
-      text
+      color="primary"
       @click="submit"
       >
       {{ submitLabel }}

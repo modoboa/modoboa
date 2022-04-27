@@ -70,7 +70,7 @@ autodiscover.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your au
   </v-card-text>
   <v-card-actions>
     <v-spacer></v-spacer>
-    <v-btn color="grey darken-1" text @click="close">
+    <v-btn @click="close">
       <translate>Close</translate>
     </v-btn>
   </v-card-actions>
