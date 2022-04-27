@@ -70,7 +70,7 @@
     </v-expansion-panel>
   </v-expansion-panels>
   <div class="mt-4 d-flex justify-end">
-    <v-btn color="grey lighten-1" @click="$router.go(-1)">
+    <v-btn @click="$router.go(-1)">
       <translate>Cancel</translate>
     </v-btn>
     <v-btn class="ml-4" color="primary darken-1" @click="save">

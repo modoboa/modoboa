@@ -404,7 +404,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     data["mailbox"] = {
                         "use_domain_quota": True
                     }
-        if "mailbox" in data:
+        if "mailbox" in data and "username" in data:
             self.address, domain_name = email_utils.split_mailbox(data["username"])
             self.domain = get_object_or_404(
                 models.Domain, name=domain_name)
@@ -421,7 +421,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                         object_type="mailboxes")
                 except lib_exceptions.ModoboaException as inst:
                     raise serializers.ValidationError({
-                        "mailbox": force_text(inst)
+                        "mailbox": str(inst)
                     })
         if data.get("password") or not self.partial:
             password = data.get("password")
