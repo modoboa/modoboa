@@ -91,8 +91,8 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
-2.0.0-beta.1
-============
+2.0.0
+=====
 
 Add ``drf_spectacular`` and ``phonenumber_field`` to ``INSTALLED_APPS``
 in the :file:`settings.py` file, as follows:
@@ -144,6 +144,8 @@ Add the new following settings:
    }
 
    PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
+
+   DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 New admin interface
 -------------------
