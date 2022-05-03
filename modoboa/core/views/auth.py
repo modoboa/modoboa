@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import translation
 from django.utils.encoding import force_bytes
+from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import ugettext as _
 from django.views import generic
@@ -98,7 +99,7 @@ def dologin(request):
             logger.warning(
                 "Failed connection attempt from '%(addr)s' as user '%(user)s'"
                 % {"addr": request.META["REMOTE_ADDR"],
-                   "user": form.cleaned_data["username"]}
+                   "user": escape(form.cleaned_data["username"])}
             )
 
         nextlocation = request.POST.get("next", "")
