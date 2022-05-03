@@ -3,7 +3,7 @@
 <h2>{% trans "API access" %} <small>{% trans "Control your access to Modoboa API" %}</small></h2>
 <hr>
 <div class="alert alert-info">
-  {% url "docs-index" as api_doc_url %}
+  {% url "docs-index-v2" as api_doc_url %}
   {% blocktrans with url=api_doc_url trimmed %}
     A documentation of the API is available <strong><a href="{{ url }}" target="_blank">here</a></strong>.
   {% endblocktrans %}
