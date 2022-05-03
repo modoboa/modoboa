@@ -1,20 +1,19 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
+# Andrei-Ilie Olteanu <andrei@flashsoft.ro>, 2018
+# Crc Darkplague <crc@nuamchefazi.ro>, 2019
 # Simona Iacob <s@zp1.net>, 2021
-# 
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 15:36+0100\n"
-"PO-Revision-Date: 2020-10-02 13:39+0000\n"
-"Last-Translator: Simona Iacob <s@zp1.net>, 2021\n"
-"Language-Team: Romanian (Romania) (https://www.transifex.com/tonio/teams/13749/ro_RO/)\n"
+"PO-Revision-Date: 2021-10-04 13:27+0000\n"
+"Last-Translator: Simona Iacob <s@zp1.net>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,7 +22,7 @@ msgstr ""
 
 #: core/app_settings.py:26
 msgid "User profile"
-msgstr "Profilul utilizatorului"
+msgstr "Profil utilizator"
 
 #: core/app_settings.py:39
 msgid "Authentication"
@@ -31,7 +30,7 @@ msgstr "Autentificare"
 
 #: core/app_settings.py:42
 msgid "Authentication type"
-msgstr "Tipul de autentificare"
+msgstr "Tip autentificare"
 
 #: core/app_settings.py:43
 msgid "Local"
@@ -39,27 +38,25 @@ msgstr "Local"
 
 #: core/app_settings.py:46
 msgid "The backend used for authentication"
-msgstr "Backend-ul utilizat pentru autentificare"
+msgstr "Tehnologia backend folosită pentru autentificare "
 
 #: core/app_settings.py:51
 msgid "Default password scheme"
-msgstr "Schema implicită de parole"
+msgstr "Schema pentru parola implicită"
 
 #: core/app_settings.py:56
 msgid "Scheme used to crypt mailbox passwords"
-msgstr "Schema utilizată pentru a cripta parolele căsuțelor poștale"
+msgstr "Schema de criptare pentru parole"
 
 #: core/app_settings.py:60
 msgid "Rounds"
-msgstr "Rânduri"
+msgstr "Iterații"
 
 #: core/app_settings.py:63
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Numărul de runde de utilizat (utilizat numai de sha256crypt și sha512crypt)."
-" Trebuie să fie cuprins între 1000 și 99999999999, inclusiv."
+msgstr "Număr de iterații folosite (setare folosită doar de sha256crypt și sha512crypt) Trebuie să fie un număr cuprins între 1000 și 999999999 inclusiv."
 
 #: core/app_settings.py:69
 msgid "Update password scheme at login"
@@ -67,9 +64,7 @@ msgstr "Actualizarea schemei de parole la autentificare"
 
 #: core/app_settings.py:72
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Actualizarea parolei utilizatorului la conectare pentru a utiliza schema de "
-"parole implicită"
+msgstr "Modifică parola utilizatorului la autentificare pentru a utiliza noua schemă de parolă"
 
 #: core/app_settings.py:77
 msgid "Default password"
@@ -77,15 +72,15 @@ msgstr "Parola implicită"
 
 #: core/app_settings.py:80
 msgid "Default password for automatically created accounts."
-msgstr "Parola implicită pentru conturile create automat."
+msgstr "Parola implicită setată pentru conturile create automat."
 
 #: core/app_settings.py:84
 msgid "Random password length"
-msgstr "Lungime aleatorie a parolei"
+msgstr "Mărime parolă aleatorie"
 
 #: core/app_settings.py:88
 msgid "Length of randomly generated passwords."
-msgstr "Lungimea parolelor generate aleatoriu."
+msgstr "Mărimea parolelor generate aleator."
 
 #: core/app_settings.py:92
 msgid "Update password service URL"
@@ -96,10 +91,7 @@ msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"URL-ul unei pagini externe unde utilizatorii își vor putea actualiza parola."
-" Se aplică numai utilizatorilor care nu sunt locali, adică cei creați "
-"automat după o autentificare externă reușită (LDAP, SMTP)."
+msgstr "URL-ul unei pagini externe unde utilizatorii își vor putea actualiza parola. Se aplică numai utilizatorilor care nu sunt locali, adică cei creați automat după o autentificare externă reușită (LDAP, SMTP)."
 
 #: core/app_settings.py:104
 msgid "Password recovery announcement"
@@ -115,9 +107,7 @@ msgstr "Activați recuperarea parolei prin SMS"
 
 #: core/app_settings.py:118
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
-"Activați recuperarea parolei prin SMS pentru utilizatorii care au completat "
-"un număr de telefon."
+msgstr "Activați recuperarea parolei prin SMS pentru utilizatorii care au completat un număr de telefon."
 
 #: core/app_settings.py:124
 msgid "SMS provider"
@@ -133,7 +123,7 @@ msgstr "Setări LDAP"
 
 #: core/app_settings.py:136
 msgid "Server address"
-msgstr "Adresa serverului"
+msgstr "Adresă server"
 
 #: core/app_settings.py:139
 msgid "The IP address or the DNS name of the LDAP server"
@@ -141,11 +131,11 @@ msgstr "Adresa IP sau numele DNS al serverului LDAP"
 
 #: core/app_settings.py:143
 msgid "Server port"
-msgstr "Portul serverului"
+msgstr "Port server"
 
 #: core/app_settings.py:145
 msgid "The TCP port number used by the LDAP server"
-msgstr "Numărul portului TCP utilizat de serverul LDAP"
+msgstr "Numărul de port TCP folosit de serverul LDAP"
 
 #: core/app_settings.py:149
 msgid "Enable secondary server (fallback)"
@@ -154,9 +144,7 @@ msgstr "Activați serverul secundar (fallback)"
 #: core/app_settings.py:152
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
-"Activați un server LDAP secundar care va fi utilizat în cazul în care "
-"serverul principal eșuează"
+msgstr "Activați un server LDAP secundar care va fi utilizat în cazul în care serverul principal eșuează"
 
 #: core/app_settings.py:158
 msgid "Secondary server address"
@@ -180,8 +168,7 @@ msgstr "Folosește o conexiune securizată"
 
 #: core/app_settings.py:176
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
-msgstr ""
-"Folosește o conexiune de tip SSL/STARTTLS pentru a accesa serverul LDAP"
+msgstr "Folosește o conexiune de tip SSL/STARTTLS pentru a accesa serverul LDAP"
 
 #: core/app_settings.py:180
 msgid "Active Directory"
@@ -199,9 +186,7 @@ msgstr "Grupuri administrator"
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators."
 " Use ';' characters to separate groups."
-msgstr ""
-"Membrii acelor grupuri LDAP Posix vor fi create ca administratori de "
-"domeniu. Folosește caracterul ';' pentru a separa grupurile."
+msgstr "Membrii acelor grupuri LDAP Posix vor fi create ca administratori de domeniu. Folosește caracterul ';' pentru a separa grupurile."
 
 #: core/app_settings.py:197
 msgid "Group type"
@@ -213,15 +198,15 @@ msgstr "Tipul grupului LDAP pe care îl utilizați cu directorul selectat."
 
 #: core/app_settings.py:206
 msgid "Groups search base"
-msgstr "Baza de căutare a grupurilor"
+msgstr "Baza pentru căutare grupuri"
 
 #: core/app_settings.py:209
 msgid "The distinguished name of the search base used to find groups"
-msgstr "Numele distinct al bazei de căutare utilizate pentru a găsi grupuri"
+msgstr "Numele ales al bazei de căutare utilizat pentru a găsi grupuri"
 
 #: core/app_settings.py:215
 msgid "Password attribute"
-msgstr "Atributul parolei"
+msgstr "Atributul parolă"
 
 #: core/app_settings.py:217
 msgid "The attribute used to store user passwords"
@@ -255,27 +240,23 @@ msgstr "Atribuie DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"Numele distins care trebuie utilizat la conectarea la serverul LDAP. Se lasă"
-" gol pentru o legătură anonimă."
+msgstr "Numele ales folosit la atribuirea cu servarul LDAP. Câpul necompletat se foloseste în cazul atribuirii anonime"
 
 #: core/app_settings.py:243 core/app_settings.py:297
 msgid "Bind password"
-msgstr "Conectați parola"
+msgstr "Parola de atribuire"
 
 #: core/app_settings.py:246 core/app_settings.py:300
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Parola care trebuie utilizată la conectarea la serverul LDAP (with 'Bind "
-"DN')"
+msgstr "Parola folosită la momentul atribuiri cu servarul LDAP (vezi 'Atribuie DB')"
 
 #: core/app_settings.py:254 core/app_settings.py:346
 msgid "Users search base"
-msgstr "Baza de căutare a utilizatorilor"
+msgstr "Căutare bază de utilizatori"
 
 #: core/app_settings.py:257 core/app_settings.py:349
 msgid "The distinguished name of the search base used to find users"
-msgstr "Numele distinct al bazei de căutare utilizate pentru a găsi useri"
+msgstr "Numele ales al bazei de căutare utilizat pentru a găsi utilizatori"
 
 #: core/app_settings.py:263 core/app_settings.py:355
 msgid "Search filter"
@@ -285,22 +266,18 @@ msgstr "Filtru de căutare"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Un filtru opțional (e.g. '(objectClass=person)'). Pentru a fi valid, trebuie"
-" să fie închis în paranteze."
+msgstr "Un filtru opțional  (de ex. '(ObjectClass = persoană)'). Pentru a fi valid, trebuie să fie închis în paranteze."
 
 #: core/app_settings.py:273
 msgid "User DN template"
-msgstr "Șablon DN utilizator"
+msgstr "Templateul DN pt utilizator"
 
 #: core/app_settings.py:276
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-" Șablonul utilizat pentru a construi DN-ul unui utilizator. Acesta trebuie "
-"să conțină un spațiu rezervat (ie. %(user)s)"
+msgstr "Templateul folosit pentru a construi un utilizator DN. Ar trebui să conțină un substituent (de ex. %(user)s)"
 
 #: core/app_settings.py:284
 msgid "LDAP synchronization settings"
@@ -313,21 +290,17 @@ msgstr "Activați exportul către LDAP"
 #: core/app_settings.py:311
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
-"Activați sincronizarea automată între baza de date locală și directorul LDAP"
+msgstr "Activați sincronizarea automată între baza de date locală și directorul LDAP"
 
 #: core/app_settings.py:317
 msgid "Delete remote LDAP account when local account is deleted"
-msgstr ""
-"Ștergerea contului LDAP la distanță atunci când contul local este șters"
+msgstr "Ștergerea contului LDAP la distanță atunci când contul local este șters"
 
 #: core/app_settings.py:321
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
-msgstr ""
-"Ștergeți contul LDAP la distanță atunci când contul local este șters, altfel"
-" acesta va fi dezactivat."
+msgstr "Ștergeți contul LDAP la distanță atunci când contul local este șters, altfel acesta va fi dezactivat."
 
 #: core/app_settings.py:327
 msgid "Account DN template"
@@ -338,9 +311,7 @@ msgstr "Șablon de cont DN"
 msgid ""
 "The template used to construct an account's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-" Șablonul utilizat pentru a construi DN-ul unui cont. Acesta trebuie să "
-"conțină un spațiu rezervat (ie. %(user)s)"
+msgstr " Șablonul utilizat pentru a construi DN-ul unui cont. Acesta trebuie să conțină un spațiu rezervat (ie. %(user)s)"
 
 #: core/app_settings.py:337
 msgid "Enable import from LDAP"
@@ -348,8 +319,7 @@ msgstr "Activați importul din LDAP"
 
 #: core/app_settings.py:340
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr ""
-"Activați sincronizarea conturilor din directorul LDAP în baza de date locală"
+msgstr "Activați sincronizarea conturilor din directorul LDAP în baza de date locală"
 
 #: core/app_settings.py:365
 msgid "Username attribute"
@@ -365,8 +335,7 @@ msgstr "Activați sincronizarea Dovecot LDAP"
 
 #: core/app_settings.py:376
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
-"Setările de autentificare LDAP vor fi aplicate la configurația Dovecot."
+msgstr "Setările de autentificare LDAP vor fi aplicate la configurația Dovecot."
 
 #: core/app_settings.py:382
 msgid "Dovecot LDAP config file"
@@ -387,8 +356,7 @@ msgstr "Feedul RSS personalizat"
 
 #: core/app_settings.py:397
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Afișează feedul RSS personalizat la reselleri și administratori de domeniu"
+msgstr "Afișează feedul RSS personalizat la reselleri și administratori de domeniu"
 
 #: core/app_settings.py:402
 msgid "Hide features widget"
@@ -396,9 +364,7 @@ msgstr "Ascunde widgetul de caracteristici "
 
 #: core/app_settings.py:405
 msgid "Hide features widget for resellers and domain administrators"
-msgstr ""
-"Ascunde widgetul de caracteristici pentru reselleri și administratori de "
-"domeniu"
+msgstr "Ascunde widgetul de caracteristici pentru reselleri și administratori de domeniu"
 
 #: core/app_settings.py:409
 msgid "Notifications"
@@ -438,8 +404,7 @@ msgstr "Trimiteți un e-mail atunci când sunt găsite versiuni noi"
 
 #: core/app_settings.py:439
 msgid "Send an email to notify admins about new versions"
-msgstr ""
-"Trimiteți un e-mail pentru a notifica administratorii despre noile versiuni"
+msgstr "Trimiteți un e-mail pentru a notifica administratorii despre noile versiuni"
 
 #: core/app_settings.py:443
 msgid "Recipient"
@@ -455,9 +420,7 @@ msgstr "Trimite statistici"
 
 #: core/app_settings.py:454
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Trimiteți statistici către API-ul public Modoboa (contoare și extensii "
-"utilizate)"
+msgstr "Trimiteți statistici către API-ul public Modoboa (contoare și extensii utilizate)"
 
 #: core/app_settings.py:458
 msgid "Miscellaneous"
@@ -471,9 +434,7 @@ msgstr "Pragul pentru cont invalid"
 msgid ""
 "An account with a last login date greater than this threshold (in days) will"
 " be considered as inactive"
-msgstr ""
-"Un cont cu o ultima data de conectare mai mare decat acest prag (in zile) va"
-" fi considerat inactiv"
+msgstr "Un cont cu o ultima data de conectare mai mare decat acest prag (in zile) va fi considerat inactiv"
 
 #: core/app_settings.py:470
 msgid "Top notifications check interval"
@@ -481,8 +442,7 @@ msgstr "Intervalul de verificare a notificărilor"
 
 #: core/app_settings.py:473
 msgid "Interval between two top notification checks (in seconds)"
-msgstr ""
-"Intervalul dintre două verificări de notificare principală (în secunde)"
+msgstr "Intervalul dintre două verificări de notificare principală (în secunde)"
 
 #: core/app_settings.py:478
 msgid "Maximum log record age"
@@ -506,9 +466,7 @@ msgstr "Redirecționarea principală implicită"
 
 #: core/app_settings.py:494
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"Redirecționarea implicită utilizată atunci când nu este specificată nici o "
-"aplicație"
+msgstr "Redirecționarea implicită utilizată atunci când nu este specificată nici o aplicație"
 
 #: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
 msgid "Invalid syntax"
@@ -531,10 +489,7 @@ msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
-msgstr ""
-"Aveți USE_TZ setat la False, acest lucru poate duce la probleme în timpul "
-"tranzițiilor între timul de vara / iarna (adică același timp local care "
-"apare de două ori ca urmare a modificării ceasului)."
+msgstr "Aveți USE_TZ setat la False, acest lucru poate duce la probleme în timpul tranzițiilor între timul de vara / iarna (adică același timp local care apare de două ori ca urmare a modificării ceasului)."
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
@@ -550,7 +505,7 @@ msgstr "Administrator de domeniu"
 
 #: core/constants.py:8
 msgid "Reseller"
-msgstr "Distribuitor"
+msgstr "Reseller"
 
 #: core/constants.py:9
 msgid "Super administrator"
@@ -660,9 +615,7 @@ msgstr "Permiteți accesul la cutiile poștale"
 
 #: core/models.py:54
 msgid "Allow this administrator to access user mailboxes"
-msgstr ""
-"Permiteți acestui administrator să acceseze cutiile poștale ale "
-"utilizatorilor"
+msgstr "Permiteți acestui administrator să acceseze cutiile poștale ale utilizatorilor"
 
 #: core/models.py:57
 msgid "password"
@@ -721,35 +674,34 @@ msgstr "câmpului de utilizator și e-mail nu trebuie să difere pentru '%s'"
 #: core/password_validation.py:24
 msgid "Password must contain at least {} digit."
 msgid_plural "Password must contain at least {} digits."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Parola trebuie să conțină cel puțin {} cifră."
+msgstr[1] "Parola trebuie să conțină cel puțin {} cifre."
+msgstr[2] "Parola trebuie să conțină cel puțin {} cifre."
 
 #: core/password_validation.py:34
 msgid "Password must contain at least {} lowercase letter."
 msgid_plural "Password must contain at least {} lowercase letters."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Parola trebuie să conțină cel puțin {} literă mică."
+msgstr[1] "Parola trebuie să conțină cel puțin {} litere mici."
+msgstr[2] "Parola trebuie să conțină cel puțin {} litere mici."
 
 #: core/password_validation.py:45
 msgid "Password must contain at least {} uppercase letter."
 msgid_plural "Password must contain at least {} uppercase letters."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Parola trebuie să conțină cel puțin {} majusculă."
+msgstr[1] "Parola trebuie să conțină cel puțin {} majuscule."
+msgstr[2] "Parola trebuie să conțină cel puțin {} majuscule."
 
 #: core/password_validation.py:57
 msgid "Password must contain at least {} special character."
 msgid_plural "Password must contain at least {} special characters."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Parola trebuie să conțină cel puțin {} caracter special."
+msgstr[1] "Parola trebuie să conțină cel puțin {} caractere speciale."
+msgstr[2] "Parola trebuie să conțină cel puțin {} caractere speciale."
 
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
-msgstr ""
-"Parola dvs. trebuie să conțină o combinație de tipuri diferite de caractere."
+msgstr "Parola dvs. trebuie să conțină o combinație de tipuri diferite de caractere."
 
 #: core/serializers.py:15
 msgid "Invalid PIN code"
@@ -809,7 +761,7 @@ msgstr "Caracteristici în căutare de sponsorizare"
 
 #: core/templates/core/_current_features.html:12
 msgid "Goal:"
-msgstr "Scopul:"
+msgstr "Țel:"
 
 #: core/templates/core/_current_features.html:18
 msgid "More"
@@ -817,7 +769,7 @@ msgstr "Mai mult"
 
 #: core/templates/core/_current_features.html:22
 msgid "Nothing to sponsor yet."
-msgstr "Nimic de sponsorizat încă."
+msgstr "Nu este nimic ce poate fi sponsorizat momentan. "
 
 #: core/templates/core/_latest_news_widget.html:5
 msgid "Latest news"
@@ -827,9 +779,7 @@ msgstr "Ultimele știri"
 msgid ""
 "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
 "weblog</a> for more information."
-msgstr ""
-"Vizitează <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blogul "
-"oficial</a> pentru mai multe informații."
+msgstr "Vizitează <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blogul oficial</a> pentru mai multe informații."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -844,9 +794,7 @@ msgstr "Controlați-vă accesul la API-ul Modoboa"
 msgid ""
 "A documentation of the API is available <strong><a href=\"%(url)s\" "
 "target=\"_blank\">here</a></strong>."
-msgstr ""
-"Documentația API-ului este disponibilă <strong><a href=\"%(url)s\" "
-"target=\"_blank\">aici</a></strong>."
+msgstr "Documentația API-ului este disponibilă <strong><a href=\"%(url)s\" target=\"_blank\">aici</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -860,7 +808,7 @@ msgstr "Actualizare"
 #: core/templates/core/dashboard.html:11
 #, python-format
 msgid "Hello %(user)s."
-msgstr "Salut %(user)s."
+msgstr "Bună ziua %(user)s."
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:62
 msgid "Information"
@@ -876,9 +824,7 @@ msgstr "Sunt disponibile una sau mai multe actualizări!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Verificați lista următoare pentru a găsi componentele(ul) care pot fi "
-"actualizate."
+msgstr "Verificați lista următoare pentru a găsi componentele(ul) care pot fi actualizate."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -944,9 +890,9 @@ msgid ""
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "\n  Actualizarea următoare este disponibilă:\n"
+msgstr[1] "\n  Sunt disponibile următoarele actualizări:\n"
+msgstr[2] "\n  Sunt disponibile următoarele actualizări:\n"
 
 #: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
 msgid "Parameters"
@@ -1006,10 +952,7 @@ msgstr "Autentificare cu doi factori"
 msgid ""
 "Install a soft token authenticator like FreeOTP or Google Authenticator from"
 " your application repository and use that app to scan this QR code."
-msgstr ""
-"Instalați un autentificator soft token, cum ar fi FreeOTP sau Google "
-"Authenticator, din depozitul de aplicații și utilizați aplicația respectivă "
-"pentru a scana acest cod QR."
+msgstr "Instalați un autentificator soft token, cum ar fi FreeOTP sau Google Authenticator, din depozitul de aplicații și utilizați aplicația respectivă pentru a scana acest cod QR."
 
 #: core/templates/core/user_security.html:25
 msgid "Pin code"
@@ -1022,9 +965,7 @@ msgstr "Înregistrare"
 #: core/templates/core/user_security.html:33
 msgid ""
 "Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr ""
-"Felicitări! Autentificarea în doi factori este acum activată pentru contul "
-"dvs."
+msgstr "Felicitări! Autentificarea în doi factori este acum activată pentru contul dvs."
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
@@ -1033,16 +974,11 @@ msgid ""
 "access to your account, in case you lose your phone for example. Make sure "
 "to save them in a safe place, otherwise you won't be able to access your "
 "account anymore."
-msgstr ""
-"Următoarele coduri de recuperare pot fi folosite o singură dată pentru a vă "
-"permite să vă recâștigați accesul la cont, de exemplu, în cazul în care vă "
-"pierdeți telefonul. Asigură-te că le salvezi într-un loc sigur, altfel nu "
-"vei mai putea accesa contul tău."
+msgstr "Următoarele coduri de recuperare pot fi folosite o singură dată pentru a vă permite să vă recâștigați accesul la cont, de exemplu, în cazul în care vă pierdeți telefonul. Asigură-te că le salvezi într-un loc sigur, altfel nu vei mai putea accesa contul tău."
 
 #: core/templates/core/user_security.html:53
 msgid "Two-Factor Authentication is enabled for your account."
-msgstr ""
-"Autentificarea în doi factori este activată pentru contul dumneavoastră."
+msgstr "Autentificarea în doi factori este activată pentru contul dumneavoastră."
 
 #: core/templates/core/user_security.html:58
 msgid "Disable 2FA"
@@ -1056,9 +992,7 @@ msgstr "Resetarea codurilor de recuperare"
 msgid ""
 "Two-Factor Authentication (2FA) is not yet activated for your account. "
 "Enabling this feature will increase your account's security."
-msgstr ""
-"Autentificarea în doi factori (2FA) nu este încă activată pentru contul dvs."
-" Activarea acestei funcții va spori securitatea contului dvs."
+msgstr "Autentificarea în doi factori (2FA) nu este încă activată pentru contul dvs. Activarea acestei funcții va spori securitatea contului dvs."
 
 #: core/templates/core/user_security.html:73
 msgid "Enable 2FA"
@@ -1117,9 +1051,7 @@ msgstr "Utilizatorul '%s' conectat cu succes"
 
 #: core/views/auth.py:92
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Numele de utilizator și parola nu s-au potrivit. Vă rugăm să încercați din "
-"nou."
+msgstr "Numele de utilizator și parola nu s-au potrivit. Vă rugăm să încercați din nou."
 
 #: core/views/auth.py:127
 msgid "User '{}' successfully logged out"
@@ -1127,8 +1059,7 @@ msgstr "Utilizatorul '{}' sa deconectat cu succes"
 
 #: core/views/auth.py:172 core/views/auth.py:227
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
-"Vă rugăm să folosiți următorul cod pentru a vă recupera parola Modoboa: {}"
+msgstr "Vă rugăm să folosiți următorul cod pentru a vă recupera parola Modoboa: {}"
 
 #: core/views/user.py:60
 msgid "Profile updated"
@@ -1237,11 +1168,11 @@ msgstr "Ajutor:"
 
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
-msgstr "Anterior"
+msgstr "Înapoi"
 
 #: templates/common/wizard_forms.html:32
 msgid "Next"
-msgstr "Următorul"
+msgstr "Înainte"
 
 #: templates/registration/base.html:8
 msgid "Welcome to Modoboa"
@@ -1265,9 +1196,7 @@ msgstr "Ai uitat parola?"
 msgid ""
 "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
 "in</a> now."
-msgstr ""
-"Parola dvs. a fost setată. Puteți acum să va <a "
-"href=\"%(url)s\">autentificați</a> din nou."
+msgstr "Parola dvs. a fost setată. Puteți acum să va <a href=\"%(url)s\">autentificați</a> din nou."
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
@@ -1277,9 +1206,7 @@ msgstr "Schimbă parola"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr ""
-"Linkul de resetare a parolei este invalid, posibil din cauza faptului că a "
-"fost deja utilizat. Te rugăm solicită o nouă resetare a parolei. "
+msgstr "Linkul de resetare a parolei este invalid, posibil din cauza faptului că a fost deja utilizat. Te rugăm solicită o nouă resetare a parolei. "
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
@@ -1287,7 +1214,7 @@ msgstr "Introduceți codul pe care tocmai l-ați primit prin SMS"
 
 #: templates/registration/password_reset_confirm_code.html:27
 msgid "Resend code"
-msgstr "Retrimite codul"
+msgstr "Reîntoarceți codul"
 
 #: templates/registration/password_reset_done.html:7
 msgid ""
@@ -1295,28 +1222,20 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>V-am trimis prin e-mail instrucțiuni pentru setarea parolei, dacă există "
-"un cont cu adresa pe care ați introdus-o. Ar trebui să le primiți în scurt "
-"timp.</p><p>Dacă nu primiți un e-mail, asigurați-vă că ați introdus adresa "
-"dvs. principală și că verificați dosarul dvs. de spam.</p>"
+msgstr "<p>V-am trimis prin e-mail instrucțiuni pentru setarea parolei, dacă există un cont cu adresa pe care ați introdus-o. Ar trebui să le primiți în scurt timp.</p><p>Dacă nu primiți un e-mail, asigurați-vă că ați introdus adresa dvs. principală și că verificați dosarul dvs. de spam.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #, python-format
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
-msgstr ""
-"Pentru a iniția procesul de resetare a parolei pentru contul dvs. "
-"%(username)s Modoboa, faceți clic pe linkul de mai jos:"
+msgstr "Pentru a iniția procesul de resetare a parolei pentru contul dvs. %(username)s Modoboa, faceți clic pe linkul de mai jos:"
 
 #: templates/registration/password_reset_email.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
-msgstr ""
-"Dacă făcând click pe linkul de mai sus nu funcționează, copiați și lipiți "
-"adresa URL într-o fereastră nouă a browserului."
+msgstr "Dacă făcând click pe linkul de mai sus nu funcționează, copiați și lipiți adresa URL într-o fereastră nouă a browserului."
 
 #: templates/registration/password_reset_email.html:14
 msgid "Sincerely, The Modoboa Team."
