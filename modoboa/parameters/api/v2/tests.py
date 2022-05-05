@@ -46,5 +46,45 @@ class ParametersAPITestCase(ModoAPITestCase):
             "deflt_domain_mailbox_aliases_limit": 0
         }
         url = reverse("v2:parameter-detail", args=["limits"])
-        resp = self.client.put(url, json=data)
+        resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
+
+    def test_update_admin_settings(self):
+        data = {
+            "default_domain_quota": -1,
+            "default_mailbox_quota": -1,
+            "valid_mxs": "mail.test.com",
+            "custom_dns_server": "",
+            "dkim_keys_storage_dir": "/wrong"
+        }
+        url = reverse("v2:parameter-detail", args=["admin"])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        errors = resp.json()
+        self.assertEqual(
+            errors["valid_mxs"],
+            ["This field only allows valid IP addresses (or networks)"]
+        )
+        self.assertEqual(
+            errors["default_domain_quota"], ["Must be a positive integer"]
+        )
+        self.assertEqual(
+            errors["default_mailbox_quota"], ["Must be a positive integer"]
+        )
+        self.assertEqual(
+            errors["dkim_keys_storage_dir"], ["Directory not found."]
+        )
+
+        data = {
+            "enable_mx_checks": True,
+            "domains_must_have_authorized_mx": True,
+            "valid_mxs": "",
+            "custom_dns_server": "",
+            "dkim_keys_storage_dir": ""
+        }
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(
+            resp.json()["valid_mxs"],
+            ["Define at least one authorized network / address"]
+        )
