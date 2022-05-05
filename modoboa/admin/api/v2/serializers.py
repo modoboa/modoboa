@@ -1,5 +1,6 @@
 """Admin API v2 serializers."""
 
+import ipaddress
 import os
 
 from django.conf import settings
@@ -228,6 +229,21 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     _("openssl not found, please make sure it is installed.")
                 )
+        return value
+
+    def validate_valid_mxs(self, value):
+        """Make sure it only contains IP addresses."""
+        if not value:
+            return value
+        try:
+            ip_addresses = [
+                ipaddress.ip_network(v.strip())
+                for v in value.split() if v.strip()
+            ]
+        except ValueError:
+            raise serializers.ValidationError(
+                _("This field only allows valid IP addresses (or networks)")
+            )
         return value
 
     def validate(self, data):

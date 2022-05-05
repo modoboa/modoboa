@@ -1,6 +1,7 @@
 """Modoboa admin settings."""
 
 import collections
+import ipaddress
 import os
 
 from django import forms
@@ -196,7 +197,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     }
 
     def __init__(self, *args, **kwargs):
-        super(AdminParametersForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.field_widths = {
             "default_domain_quota": 2,
             "default_mailbox_quota": 2
@@ -259,6 +260,24 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                         "openssl not found, please make sure it is installed.")
                 )
         return storage_dir
+
+    def clean_valid_mxs(self):
+        """Make sure it only contains IP addresses."""
+        value = self.cleaned_data.get("valid_mxs")
+        if not value:
+            return value
+        try:
+            ip_addresses = [
+                ipaddress.ip_network(v.strip())
+                for v in value.split() if v.strip()
+            ]
+        except ValueError:
+            raise forms.ValidationError(
+                ugettext_lazy(
+                    "This field only allows valid IP addresses (or networks)"
+                )
+            )
+        return value
 
     def clean(self):
         """Check MX options."""
