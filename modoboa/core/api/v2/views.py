@@ -54,7 +54,7 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
                         _("Password scheme mismatch. Updating %s password"),
                         user.username
                     )
-                    user.set_password(serializer.data["password"])
+                    user.set_password(request.data["password"])
                     user.save()
                 if pwhash.needs_rehash(user.password):
                     logger.info(
