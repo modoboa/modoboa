@@ -217,6 +217,8 @@ export default {
       }
       if (data.type === 'relaydomain') {
         this.$refs.form_4.checkSettingTypes(data)
+      } else {
+        delete data.transport
       }
       this.$store.dispatch('domains/createDomain', data).then(resp => {
         this.$router.push({ name: 'DomainDetail', params: { id: resp.data.pk } })

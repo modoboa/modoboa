@@ -16,10 +16,10 @@
     "js-cookie": "^2.2.1",
     "luxon": "^1.26.0",
     "vee-validate": "^3.4.5",
-    "vue": "^2.6.11",
+    "vue": "^2.6.14",
     "vue-apexcharts": "^1.6.0",
     "vue-cookie": "^1.1.4",
-    "vue-gettext": "^2.1.10",
+    "vue-gettext": "^2.1.12",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
