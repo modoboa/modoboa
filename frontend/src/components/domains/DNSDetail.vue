@@ -21,10 +21,14 @@
     <v-row>
       <v-col>
         <v-chip
-          v-if="detail.autoconfig_record"
+          v-if="detail.autoconfig_record !== undefined"
           color="success"
           >
-          <translate>autoconfig record (Mozilla): {{ detail.autoconfig_record.value }}</translate>
+          <translate
+            :translate-params="{ value: detail.autoconfig_record.value }"
+            >
+            autoconfig record (Mozilla): %{ value }
+          </translate>
         </v-chip>
         <v-chip
           v-else
@@ -38,7 +42,11 @@
           v-if="detail.autodiscover_record"
           color="success"
           >
-          <translate>autodiscover record (Microsoft): {{ detail.autodiscover_record.value }}</translate>
+          <translate
+            :translate-params="{ value: detail.autodiscover_record.value }"
+            >
+            autodiscover record (Microsoft): %{ value }
+          </translate>
         </v-chip>
         <v-chip
           v-else
@@ -134,8 +142,6 @@ export default {
       ],
       showConfigHelp: false
     }
-  },
-  methods: {
   },
   watch: {
     domain: {

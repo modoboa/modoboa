@@ -3,6 +3,7 @@ import GetTextPlugin from 'vue-gettext'
 import translations from '@/translations.json'
 
 Vue.use(GetTextPlugin, {
+  autoAddKeyAttributes: true,
   availableLanguages: {
     en: 'English',
     fr: 'Français'
