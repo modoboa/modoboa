@@ -16,6 +16,7 @@ djangorestframework-simplejwt==5.1.0
 passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev
 
+asgiref
 dnspython==2.2.1
 feedparser==6.0.8
 greenlet==1.1.2

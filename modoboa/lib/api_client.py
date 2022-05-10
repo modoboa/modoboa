@@ -86,6 +86,7 @@ class ModoAPIClient(object):
             logger.critical(
                 _("Failed to communicate with public API: %s"), str(err)
             )
+            return
         if response.status_code != 200:
             logger.critical(
                 _("Failed to communicate with public API: %s"), response.text
