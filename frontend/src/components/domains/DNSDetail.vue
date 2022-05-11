@@ -21,7 +21,7 @@
     <v-row>
       <v-col>
         <v-chip
-          v-if="detail.autoconfig_record !== undefined"
+          v-if="detail.autoconfig_record"
           color="success"
           >
           <translate

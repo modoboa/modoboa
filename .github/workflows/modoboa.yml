@@ -164,7 +164,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd frontend
-          nvm install 12
+          nvm install 14
           yarn install
           yarn build
           cd ..
