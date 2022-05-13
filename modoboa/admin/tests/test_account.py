@@ -135,6 +135,26 @@ class AccountTestCase(ModoTestCase):
         self.ajax_post(reverse("admin:account_add"), values)
         self.assertTrue(alias.aliasrecipient_set.count() == 2)
 
+    def test_create_disabled_account(self):
+        """Check if account and alias are disabled."""
+        values = {
+            "username": "tester@test.com",
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": False,
+            "email": "tester@test.com",
+            "stepid": "step2"
+        }
+        self.ajax_post(reverse("admin:account_add"), values)
+        account = User.objects.get(username=values["username"])
+        self.assertEqual(account.enabled, False)
+        alias = models.Alias.objects.get(address=account.email)
+        self.assertEqual(alias.enabled, False)
+
     def test_aliases_update_on_disable(self):
         """Check if aliases are updated when account is disabled."""
         account = User.objects.get(username="user@test.com")
