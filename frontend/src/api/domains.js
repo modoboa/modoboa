@@ -35,6 +35,9 @@ export default {
   updateDomain (domainId, data) {
     return repository.put(`/${domainResource}/${domainId}/`, data)
   },
+  patchDomain (domainId, data) {
+    return repository.patch(`/${domainResource}/${domainId}/`, data)
+  },
   deleteDomain (domainId, data) {
     return repository.post(`/${domainResource}/${domainId}/delete/`, data)
   },
