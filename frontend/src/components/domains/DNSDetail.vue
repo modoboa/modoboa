@@ -101,14 +101,16 @@
         </v-chip>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="6"><translate>DKIM key</translate></v-col>
-      <v-col cols="6">
-        <div v-if="domain.dkim_public_key">
-          <v-btn color="primary" small>
+    <v-row v-if="domain.enable_dkim">
+      <v-col cols="3"><translate>DKIM key</translate></v-col>
+      <v-col cols="9">
+        <div v-if="domain.dkim_private_key_path && domain.dkim_public_key">
+          <v-btn color="primary" small @click="showDKIMKey = true">
             <translate>Show key</translate>
           </v-btn>
-          <v-btn icon><v-icon>mdi-refresh</v-icon></v-btn>
+          <v-btn icon :title="'Generate a new DKIM key'|translate" @click="generateNewKey">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
         </div>
         <translate v-else>Not generated</translate>
       </v-col>
@@ -120,16 +122,25 @@
             >
     <domain-dns-config :domain="domain" @close="showConfigHelp = false" />
   </v-dialog>
+  <v-dialog v-model="showDKIMKey"
+            max-width="800px"
+            persistent
+            >
+    <domain-dkim-key :domain="domain" @close="showDKIMKey = false" />
+  </v-dialog>
 </v-card>
 </template>
 
 <script>
+import { bus } from '@/main'
 import domains from '@/api/domains'
+import DomainDKIMKey from './DomainDKIMKey'
 import DomainDNSConfig from './DomainDNSConfig'
 
 export default {
   props: ['domain'],
   components: {
+    'domain-dkim-key': DomainDKIMKey,
     'domain-dns-config': DomainDNSConfig
   },
   data () {
@@ -140,7 +151,22 @@ export default {
         { text: this.$gettext('Address'), value: 'address' },
         { text: this.$gettext('Updated'), value: 'updated' }
       ],
-      showConfigHelp: false
+      showConfigHelp: false,
+      showDKIMKey: false
+    }
+  },
+  methods: {
+    generateNewKey () {
+      const payload = {
+        dkim_private_key_path: ''
+      }
+      domains.patchDomain(this.domain.pk, payload).then(resp => {
+        bus.$emit('notification', {
+          msg: this.$gettext('A new key will be generated soon. Refresh the page in a moment to see it.'),
+          type: 'success'
+        })
+        this.domain.dkim_private_key_path = ''
+      })
     }
   },
   watch: {

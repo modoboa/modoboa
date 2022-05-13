@@ -6,7 +6,7 @@
     </span>
   </v-card-title>
   <v-card-text>
-    <p>Here is an example of DNS configuration (bind format). Replace values between [ ] by the appropriate ones.</p>
+    <p><translate>Here is an example of DNS configuration (bind format). Replace values between [ ] by the appropriate ones.</translate></p>
     <v-alert
       border="left"
       colored-border
@@ -40,9 +40,7 @@ mail.{{ domain.name }}. IN A <strong>[<translate>IP address of your Modoboa serv
       dense
       >
       <div class="title">DKIM</div>
-      <pre>
-{{ domain.dkim_key_selector }}._domain_key.{{ domain.name }}. IN TXT (
-  {{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }}</pre>
+      <dkim-key-viewer :domain="domain" />
     </v-alert>
     <v-alert
       border="left"
@@ -62,7 +60,7 @@ _dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre>
       elevation="2"
       dense
       >
-      <div class="title">Auto configuration</div>
+      <div class="title"><translate>Auto configuration</translate></div>
       <pre>
 autoconfig.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your automx server</translate>]</strong>
 autodiscover.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your automx server</translate>]</strong></pre>
@@ -78,24 +76,18 @@ autodiscover.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your au
 </template>
 
 <script>
+import DKIMKeyViewer from './DKIMKeyViewer'
+
 export default {
-  props: ['domain'],
+  props: {
+    domain: Object
+  },
+  components: {
+    'dkim-key-viewer': DKIMKeyViewer
+  },
   methods: {
     close () {
       this.$emit('close')
-    },
-    splitKey (value) {
-      let key = value
-      const result = []
-      while (key.length > 0) {
-        if (key.length > 74) {
-          result.push(`  "${key.substring(0, 74)}"`)
-          key = key.substring(74)
-        } else {
-          result.push(`  "${key}"`)
-        }
-      }
-      return result.join('\n')
     }
   }
 }
