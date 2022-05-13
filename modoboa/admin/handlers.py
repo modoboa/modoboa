@@ -67,8 +67,13 @@ def manage_alias_for_mailbox(sender, instance, **kwargs):
     """Create or update a "self alias" for mailbox (catchall)."""
     if kwargs.get("created"):
         alias, created = models.Alias.objects.get_or_create(
-            address=instance.full_address, domain=instance.domain,
-            internal=True)
+            address=instance.full_address,
+            domain=instance.domain,
+            internal=True,
+            defaults={
+                "enabled": instance.user.enabled
+            }
+        )
         models.AliasRecipient.objects.create(
             address=instance.full_address, alias=alias, r_mailbox=instance)
         return
