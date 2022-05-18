@@ -147,6 +147,63 @@ Add the new following settings:
 
    DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+Migration issue for Postgres/OpenDKIM users
+-------------------------------------------
+
+The `migration will probably fail <https://github.com/modoboa/modoboa/issues/2508>`_ because of the
+additional view created for OpenDKIM.
+
+To make it work, you first need to drop the view:
+
+.. sourcecode:: bash
+
+   $ sudo su - postgres
+   $ psql
+   psql (12.10 (Ubuntu 12.10-0ubuntu0.20.04.1))
+   Type "help" for help.
+
+   postgres=# \c modoboa
+   You are now connected to database "modoboa" as user "postgres".
+   modoboa-# \d+ dkim
+                                         View "public.dkim"
+         Column      |          Type          | Collation | Nullable | Default | Storage  | Description
+   ------------------+------------------------+-----------+----------+---------+----------+-------------
+    id               | integer                |           |          |         | plain    |
+    domain_name      | character varying(100) |           |          |         | extended |
+    private_key_path | character varying(254) |           |          |         | extended |
+    selector         | character varying(30)  |           |          |         | extended |
+   View definition:
+    SELECT admin_domain.id,
+       admin_domain.name AS domain_name,
+       admin_domain.dkim_private_key_path AS private_key_path,
+       admin_domain.dkim_key_selector AS selector
+      FROM admin_domain
+     WHERE admin_domain.enable_dkim;
+
+   modoboa=# drop view dkim;
+   DROP VIEW
+
+Then, run the migration as usual:
+
+.. sourcecode:: bash
+
+   python manage.py migrate
+
+Finally, recreate the view:
+
+... sourcecode:: bash
+
+   modoboa=# CREATE OR REPLACE VIEW dkim AS
+   modoboa-#  SELECT admin_domain.id,
+   modoboa-#     admin_domain.name AS domain_name,
+   modoboa-#     admin_domain.dkim_private_key_path AS private_key_path,
+   modoboa-#     admin_domain.dkim_key_selector AS selector
+   modoboa-#    FROM admin_domain
+   modoboa-#   WHERE admin_domain.enable_dkim;
+   CREATE VIEW
+   modoboa=# grant select on dkim to opendkim;
+   GRANT
+
 New admin interface
 -------------------
 
