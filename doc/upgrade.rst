@@ -191,7 +191,7 @@ Then, run the migration as usual:
 
 Finally, recreate the view:
 
-... sourcecode:: bash
+.. sourcecode:: bash
 
    modoboa=# CREATE OR REPLACE VIEW dkim AS
    modoboa-#  SELECT admin_domain.id,
