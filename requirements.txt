@@ -18,7 +18,7 @@ bcrypt  # Requires libffi-dev and python-dev
 
 asgiref
 dnspython==2.2.1
-feedparser==6.0.8
+feedparser==6.0.9
 greenlet==1.1.2
 gevent==21.12.0
 jsonfield==3.1.0
