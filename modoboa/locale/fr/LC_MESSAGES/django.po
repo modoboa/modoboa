@@ -1,24 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2016-2017,2020
 # Christophe CHAUVET <christophe.chauvet@gmail.com>, 2018
+# Icarus Flight, 2022
+# Jan-Philipp Sprung, 2021
 # Jorg722, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-05 15:36+0100\n"
-"PO-Revision-Date: 2020-11-05 15:49+0100\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"PO-Revision-Date: 2011-07-01 08:15+0000\n"
+"Last-Translator: Icarus Flight, 2022\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: core/app_settings.py:26
 msgid "User profile"
@@ -46,8 +48,7 @@ msgstr "Méthode de chiffrement par défaut"
 
 #: core/app_settings.py:56
 msgid "Scheme used to crypt mailbox passwords"
-msgstr ""
-"Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+msgstr "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
 #: core/app_settings.py:60
 msgid "Rounds"
@@ -57,9 +58,7 @@ msgstr "Tours"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit "
-"être compris entre 1000 et 999999999 inclue."
+msgstr "Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit être compris entre 1000 et 999999999 inclue."
 
 #: core/app_settings.py:69
 msgid "Update password scheme at login"
@@ -67,9 +66,7 @@ msgstr "Mettre à jour la méthode de chiffrement du mot de passe à la connexio
 
 #: core/app_settings.py:72
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Mise à jour du mot de passe utilisateur lors d'une connexion pour utiliser "
-"la méthode de chiffrement par défaut"
+msgstr "Mise à jour du mot de passe utilisateur lors d'une connexion pour utiliser la méthode de chiffrement par défaut"
 
 #: core/app_settings.py:77
 msgid "Default password"
@@ -96,10 +93,7 @@ msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"L'URL d'une page externe où les utilisateurs pourront mettre à jour leur mot "
-"de passe. Elle s'applique uniquement aux utilisateurs non locaux, c'est à "
-"dire ceux créés après une authentification externe réussie (LDAP, SMTP)."
+msgstr "L'URL d'une page externe où les utilisateurs pourront mettre à jour leur mot de passe. Elle s'applique uniquement aux utilisateurs non locaux, c'est à dire ceux créés après une authentification externe réussie (LDAP, SMTP)."
 
 #: core/app_settings.py:104
 msgid "Password recovery announcement"
@@ -107,9 +101,7 @@ msgstr "Annonce pour la récupération de mot de passe"
 
 #: core/app_settings.py:109
 msgid "A temporary message that will be displayed on the reset password page."
-msgstr ""
-"Un message temporaire qui sera affiché sur la page de récupération de mot de "
-"passe"
+msgstr "Un message temporaire qui sera affiché sur la page de récupération de mot de passe"
 
 #: core/app_settings.py:115
 msgid "Enable password recovery by SMS"
@@ -117,9 +109,7 @@ msgstr "Activer la récupération de mot de passe par SMS"
 
 #: core/app_settings.py:118
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
-"Activer la récupération de mot de passe par SMS pour les utilisateurs ayant "
-"renseigné un numéro de téléphone"
+msgstr "Activer la récupération de mot de passe par SMS pour les utilisateurs ayant renseigné un numéro de téléphone"
 
 #: core/app_settings.py:124
 msgid "SMS provider"
@@ -127,8 +117,7 @@ msgstr "Fournisseur SMS"
 
 #: core/app_settings.py:127
 msgid "Choose a provider to send password recovery SMS"
-msgstr ""
-"Choisir un fournisseur pour envoyer les SMS de récupération de mot de passe"
+msgstr "Choisir un fournisseur pour envoyer les SMS de récupération de mot de passe"
 
 #: core/app_settings.py:133
 msgid "LDAP settings"
@@ -157,9 +146,7 @@ msgstr "Activer le serveur secondaire (secours)"
 #: core/app_settings.py:152
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
-"Activer un serveur LDAP secondaire qui sera utilisé si le principal est en "
-"échec"
+msgstr "Activer un serveur LDAP secondaire qui sera utilisé si le principal est en échec"
 
 #: core/app_settings.py:158
 msgid "Secondary server address"
@@ -199,12 +186,9 @@ msgstr "Groupes administrateurs"
 
 #: core/app_settings.py:190
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Les membres de ces groupes LDAP (Posix) seront créés en tant "
-"qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les "
-"groupes."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Les membres de ces groupes LDAP (Posix) seront créés en tant qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les groupes."
 
 #: core/app_settings.py:197
 msgid "Group type"
@@ -220,9 +204,7 @@ msgstr "Base de recherche des groupes"
 
 #: core/app_settings.py:209
 msgid "The distinguished name of the search base used to find groups"
-msgstr ""
-"Le nom distinctif de la base de recherche utilisée pour rechercher les "
-"groupes"
+msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les groupes"
 
 #: core/app_settings.py:215
 msgid "Password attribute"
@@ -260,9 +242,7 @@ msgstr "ND de connexion"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser "
-"vide pour une connexion anonyme"
+msgstr "Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser vide pour une connexion anonyme"
 
 #: core/app_settings.py:243 core/app_settings.py:297
 msgid "Bind password"
@@ -270,9 +250,7 @@ msgstr "Mot de passe de connexion"
 
 #: core/app_settings.py:246 core/app_settings.py:300
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de "
-"connexion')"
+msgstr "Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de connexion')"
 
 #: core/app_settings.py:254 core/app_settings.py:346
 msgid "Users search base"
@@ -280,9 +258,7 @@ msgstr "Base de recherche des utilisateurs"
 
 #: core/app_settings.py:257 core/app_settings.py:349
 msgid "The distinguished name of the search base used to find users"
-msgstr ""
-"Le nom distinctif de la base de recherche utilisée pour rechercher les "
-"utilisateurs"
+msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les utilisateurs"
 
 #: core/app_settings.py:263 core/app_settings.py:355
 msgid "Search filter"
@@ -292,9 +268,7 @@ msgstr "Filtre de recherche"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être "
-"valide, il doit être entouré de parenthèses."
+msgstr "Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être valide, il doit être entouré de parenthèses."
 
 #: core/app_settings.py:273
 msgid "User DN template"
@@ -305,9 +279,7 @@ msgstr "Modèle de nom distinctif utilisateur"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il "
-"doit contenir un espace réservé (ex. %(user)s)"
+msgstr "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il doit contenir un espace réservé (ex. %(user)s)"
 
 #: core/app_settings.py:284
 msgid "LDAP synchronization settings"
@@ -320,9 +292,7 @@ msgstr "Activer l'export LDAP"
 #: core/app_settings.py:311
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
-"Activer la synchronisation automatique entre la base de données locale et "
-"l'annuaire LDAP"
+msgstr "Activer la synchronisation automatique entre la base de données locale et l'annuaire LDAP"
 
 #: core/app_settings.py:317
 msgid "Delete remote LDAP account when local account is deleted"
@@ -332,9 +302,7 @@ msgstr "Supprimer un compte LDAP distant lorsqu'un compte local est supprimé"
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
-msgstr ""
-"Supprimer un compte LDAP distant lorsqu'un compte local supprimé, autrement "
-"il sera désactivé."
+msgstr "Supprimer un compte LDAP distant lorsqu'un compte local supprimé, autrement il sera désactivé."
 
 #: core/app_settings.py:327
 msgid "Account DN template"
@@ -345,9 +313,7 @@ msgstr "Modèle des DN de compte"
 msgid ""
 "The template used to construct an account's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Le modèle utilisé pour construite un DN de compte (nom unique). Il doit "
-"contenir un emplacement (c'est à dire 1%(user)s)"
+msgstr "Le modèle utilisé pour construite un DN de compte (nom unique). Il doit contenir un emplacement (c'est à dire 1%(user)s)"
 
 #: core/app_settings.py:337
 msgid "Enable import from LDAP"
@@ -355,9 +321,7 @@ msgstr "Activer l'import LDAP"
 
 #: core/app_settings.py:340
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr ""
-"Activer la synchronisation des comptes entre un annuaire LDAP et la base de "
-"données locale"
+msgstr "Activer la synchronisation des comptes entre un annuaire LDAP et la base de données locale"
 
 #: core/app_settings.py:365
 msgid "Username attribute"
@@ -365,8 +329,7 @@ msgstr "Attribut nom d'utilisateur"
 
 #: core/app_settings.py:368
 msgid "The name of the LDAP attribute where the username can be found."
-msgstr ""
-"Le nom de l'attribut LDAP dans lequel le nom d'utilisateur peut être trouvé."
+msgstr "Le nom de l'attribut LDAP dans lequel le nom d'utilisateur peut être trouvé."
 
 #: core/app_settings.py:373
 msgid "Enable Dovecot LDAP sync"
@@ -374,9 +337,7 @@ msgstr "Activer la synchronisation LDAP pour Dovecot"
 
 #: core/app_settings.py:376
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
-"Les paramètres d'authentification LDAP seront appliqués à la configuration "
-"de Dovecot."
+msgstr "Les paramètres d'authentification LDAP seront appliqués à la configuration de Dovecot."
 
 #: core/app_settings.py:382
 msgid "Dovecot LDAP config file"
@@ -385,9 +346,7 @@ msgstr "Fichier de configuration Dovecot pour LDAP"
 #: core/app_settings.py:386
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
-msgstr ""
-"Emplacement du fichier de configuration qui contient les paramètres LDAP de "
-"Dovecot"
+msgstr "Emplacement du fichier de configuration qui contient les paramètres LDAP de Dovecot"
 
 #: core/app_settings.py:391 core/templates/core/dashboard.html:5
 msgid "Dashboard"
@@ -399,9 +358,7 @@ msgstr "Flux RSS personnalisé"
 
 #: core/app_settings.py:397
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Afficher un flux RSS personnalisé aux revendeurs et administrateurs de "
-"domaine"
+msgstr "Afficher un flux RSS personnalisé aux revendeurs et administrateurs de domaine"
 
 #: core/app_settings.py:402
 msgid "Hide features widget"
@@ -409,9 +366,7 @@ msgstr "Masquer le widget des fonctionnalités"
 
 #: core/app_settings.py:405
 msgid "Hide features widget for resellers and domain administrators"
-msgstr ""
-"Masquer le widget des fonctionnalités pour les revendeurs et les "
-"administrateurs de domaine"
+msgstr "Masquer le widget des fonctionnalités pour les revendeurs et les administrateurs de domaine"
 
 #: core/app_settings.py:409
 msgid "Notifications"
@@ -451,9 +406,7 @@ msgstr "Envoyer un email quand de nouvelles versions sont trouvées"
 
 #: core/app_settings.py:439
 msgid "Send an email to notify admins about new versions"
-msgstr ""
-"Envoyer un email pour notifier les administrateurs à propos des nouvelles "
-"versions"
+msgstr "Envoyer un email pour notifier les administrateurs à propos des nouvelles versions"
 
 #: core/app_settings.py:443
 msgid "Recipient"
@@ -469,9 +422,7 @@ msgstr "Envoyer des statistiques"
 
 #: core/app_settings.py:454
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Envoyer des statistiques à l'API publique de Modoboa (compteurs et "
-"extensions utilisées)"
+msgstr "Envoyer des statistiques à l'API publique de Modoboa (compteurs et extensions utilisées)"
 
 #: core/app_settings.py:458
 msgid "Miscellaneous"
@@ -483,11 +434,9 @@ msgstr "Seuil des comptes inactifs"
 
 #: core/app_settings.py:464
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Un compte avec une date de dernière connexion antérieure à ce seuil sera "
-"considéré comme inactif"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
+msgstr "Un compte avec une date de dernière connexion antérieure à ce seuil sera considéré comme inactif"
 
 #: core/app_settings.py:470
 msgid "Top notifications check interval"
@@ -519,8 +468,7 @@ msgstr "Redirection par défaut"
 
 #: core/app_settings.py:494
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"La redirection appliquée par défaut quand aucune application n'est spécifiée"
+msgstr "La redirection appliquée par défaut quand aucune application n'est spécifiée"
 
 #: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
 msgid "Invalid syntax"
@@ -543,10 +491,7 @@ msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
-msgstr ""
-"Vous avez défini USE_TZ à False, ce qui peut entraîner des problèmes lors "
-"des transitions entre l'heure d'été et l'heure d'hiver (c.-à-d. La même "
-"heure locale se produisant deux fois en raison d'un changement d'horloge)."
+msgstr "Vous avez défini USE_TZ à False, ce qui peut entraîner des problèmes lors des transitions entre l'heure d'été et l'heure d'hiver (c.-à-d. La même heure locale se produisant deux fois en raison d'un changement d'horloge)."
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
@@ -622,7 +567,7 @@ msgstr "Code incorrect"
 
 #: core/forms.py:163
 msgid "This code is invalid"
-msgstr "Ce code est incorrect"
+msgstr "Ce code n'est pas valide"
 
 #: core/handlers.py:36
 msgid "added"
@@ -700,8 +645,7 @@ msgstr "Une adresse e-mail alternative ou de secours."
 
 #: core/models.py:126
 msgid "Failed to update password: LDAP module not installed"
-msgstr ""
-"Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
+msgstr "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
 
 #: core/models.py:155
 msgid "account"
@@ -734,38 +678,40 @@ msgid "Password must contain at least {} digit."
 msgid_plural "Password must contain at least {} digits."
 msgstr[0] "Le mot de passe doit contenir au moins {} chiffre."
 msgstr[1] "Le mot de passe doit contenir au moins {} chiffres."
+msgstr[2] "Le mot de passe doit contenir au moins {} chiffres."
 
 #: core/password_validation.py:34
 msgid "Password must contain at least {} lowercase letter."
 msgid_plural "Password must contain at least {} lowercase letters."
 msgstr[0] "Le mot de passe doit contenir au moins {} minuscule."
 msgstr[1] "Le mot de passe doit contenir au moins {} minuscules."
+msgstr[2] "Le mot de passe doit contenir au moins {} minuscules."
 
 #: core/password_validation.py:45
 msgid "Password must contain at least {} uppercase letter."
 msgid_plural "Password must contain at least {} uppercase letters."
 msgstr[0] "Le mot de passe doit contenir au moins {} majuscule."
 msgstr[1] "Le mot de passe doit contenir au moins {} majuscules."
+msgstr[2] "Le mot de passe doit contenir au moins {} majuscules."
 
 #: core/password_validation.py:57
 msgid "Password must contain at least {} special character."
 msgid_plural "Password must contain at least {} special characters."
 msgstr[0] "Le mot de passe doit contenir au moins {} caractère spécial."
 msgstr[1] "Le mot de passe doit contenir au moins {} caractères spéciaux."
+msgstr[2] "Le mot de passe doit contenir au moins {} caractères spéciaux."
 
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
-msgstr ""
-"Votre mot de passe doit contenir une combinaison de différents types de "
-"caractère."
+msgstr "Votre mot de passe doit contenir une combinaison de différents types de caractère."
 
 #: core/serializers.py:15
 msgid "Invalid PIN code"
-msgstr "Code PIN incorrect"
+msgstr "Code PIN non valide"
 
 #: core/serializers.py:21
 msgid "2FA is already enabled"
-msgstr "La 2FA est déjà activée"
+msgstr "2FA est déjà activf"
 
 #: core/sms_backends/ovh.py:19
 msgid "API endpoint"
@@ -835,9 +781,7 @@ msgstr "Dernières nouvelles"
 msgid ""
 "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
 "weblog</a> for more information."
-msgstr ""
-"Visitez le <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blog "
-"officiel</a> pour plus d'information."
+msgstr "Visitez le <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blog officiel</a> pour plus d'information."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -850,11 +794,9 @@ msgstr "Contrôlez votre accès à l'API de Modoboa"
 #: core/templates/core/api_access.html:7
 #, python-format
 msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" target="
-"\"_blank\">here</a></strong>."
-msgstr ""
-"Une documentation de l'API est disponible <strong><a href=\"%(url)s\" target="
-"\"_blank\">ici</a></strong>."
+"A documentation of the API is available <strong><a href=\"%(url)s\" "
+"target=\"_blank\">here</a></strong>."
+msgstr "Une documentation de l'API est disponible <strong><a href=\"%(url)s\" target=\"_blank\">ici</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -884,8 +826,7 @@ msgstr "Une ou plusieurs mises à jour sont disponibles!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
+msgstr "Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -951,12 +892,9 @@ msgid ""
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] ""
-"\n"
-"La mise à jour suivante est disponible :\n"
-msgstr[1] ""
-"\n"
-"Les mises à jour suivantes sont disponibles :\n"
+msgstr[0] "\nLa mise à jour suivante est disponible :\n"
+msgstr[1] "\nLes mises à jour suivantes sont disponibles :\n"
+msgstr[2] "\nLes mises à jour suivantes sont disponibles :\n"
 
 #: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
 msgid "Parameters"
@@ -1010,13 +948,13 @@ msgstr "Sécurité"
 
 #: core/templates/core/user_security.html:6
 msgid "Two-Factor authentication"
-msgstr "Authentification à double facteur"
+msgstr "Authentification à deux facteurs"
 
 #: core/templates/core/user_security.html:17
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
-msgstr "Installer une application de génération de mots de passe à usage unique comme FreeOTP ou Google Athenticator depuis votre magasin d'applications et utiliser le pour scanner ce code QR."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+msgstr "Installez une application d'authentification par jetons comme FreeOTP ou Google Authenticator à partir de votre appstore et utilisez-la pour scanner ce QR code."
 
 #: core/templates/core/user_security.html:25
 msgid "Pin code"
@@ -1024,12 +962,12 @@ msgstr "Code PIN"
 
 #: core/templates/core/user_security.html:28
 msgid "Register"
-msgstr "Enregistrer"
+msgstr "Enregistrement"
 
 #: core/templates/core/user_security.html:33
 msgid ""
 "Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr "Félicitations ! L'authentification à double facteur est activée pour votre compte."
+msgstr "Félicitations ! L'authentification à deux facteurs est maintenant activée pour votre compte."
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
@@ -1038,34 +976,35 @@ msgid ""
 "access to your account, in case you lose your phone for example. Make sure "
 "to save them in a safe place, otherwise you won't be able to access your "
 "account anymore."
-msgstr "Les codes de récuparation suivants peuvent être utilisés une fois chacun pour récupérer l'accès à votre compte, par exemple si vous perdez votre téléphone. Assurez vous de les sauvegarder dans un endroit sûr, autrement vous ne pourrez plus accéder à votre compte."
+msgstr "Les codes de récupération suivants peuvent être utilisés une fois chacun pour vous permettre de récupérer un accès à votre compte, au cas où vous perdriez votre téléphone par exemple. Assurez-vous de les conserver dans un lieu sûr, autrement vous ne serez définitivement plus en mesure d'accéder à votre compte."
 
 #: core/templates/core/user_security.html:53
 msgid "Two-Factor Authentication is enabled for your account."
-msgstr "L'authentication à double facteur est activée pour votre compte."
+msgstr "L'authentification à deux facteurs est activée pour votre compte."
 
 #: core/templates/core/user_security.html:58
 msgid "Disable 2FA"
-msgstr "Désactiver la 2FA"
+msgstr "Désactiver authentification à 2 facteurs."
 
 #: core/templates/core/user_security.html:61
 msgid "Reset recovery codes"
-msgstr "Réinitialiser les codes de récupération"
+msgstr "Réinitialiser les codes de récupération."
 
 #: core/templates/core/user_security.html:65
 msgid ""
 "Two-Factor Authentication (2FA) is not yet activated for your account. "
 "Enabling this feature will increase your account's security."
-msgstr "L'authentification à double facteur (2FA) n'est pas encore activée pour votre compte. Activer cette fonctionnalité améliorera la sécurité de votre compte."
+msgstr "L'authentification à 2 facteurs n'est pas encore activée pour votre compte. Activer cette fonctionnalité renforcera la sécurité de votre compte."
 
 #: core/templates/core/user_security.html:73
 msgid "Enable 2FA"
-msgstr "Activer la 2FA"
+msgstr "Activer authentification à 2 facteurs."
 
 #: core/templates/core/user_security.html:83
 #: core/templates/core/user_security.html:99
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Fermer"
 
@@ -1075,7 +1014,7 @@ msgstr "Nouveaux codes de récupération"
 
 #: core/templates/core/user_security.html:88
 msgid "Here are your new recovery codes. "
-msgstr "Voici vos nouveaux codes de récupération."
+msgstr "Vous trouverez ici vos nouveaux codes de récupération."
 
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
@@ -1100,14 +1039,12 @@ msgstr "Paramètres enregistrés"
 #: core/views/auth.py:61
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
-msgstr ""
-"La méthode de chiffrement du mot de passe diffère. Mise à jour du mot de "
-"passe de %s"
+msgstr "La méthode de chiffrement du mot de passe diffère. Mise à jour du mot de passe de %s"
 
 #: core/views/auth.py:68
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
-msgstr ""
+msgstr "Le paramètre de hash du mot de passe ne correspond pas. Mise à jour %s du mot de passe"
 
 #: core/views/auth.py:84
 #, python-format
@@ -1116,9 +1053,7 @@ msgstr "Utiliseur '%s' connecté avec succès"
 
 #: core/views/auth.py:92
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
-"réessayer."
+msgstr "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez réessayer."
 
 #: core/views/auth.py:127
 msgid "User '{}' successfully logged out"
@@ -1126,9 +1061,7 @@ msgstr "Utilisateur '{}' déconnecté avec succès"
 
 #: core/views/auth.py:172 core/views/auth.py:227
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
-"Veuillez utiliser le code suivant pour récupérer votre mot de passe "
-"Modoboa : {}"
+msgstr "Veuillez utiliser le code suivant pour récupérer votre mot de passe Modoboa : {}"
 
 #: core/views/user.py:60
 msgid "Profile updated"
@@ -1144,7 +1077,7 @@ msgstr "Accès mis à jour"
 
 #: core/viewsets.py:52
 msgid "2FA is not enabled"
-msgstr "La 2FA n'est pas activée"
+msgstr "Authentification 2 facteurs non activée"
 
 #: lib/db_utils.py:23
 #, python-format
@@ -1265,9 +1198,7 @@ msgstr "Mot de passe oublié ?"
 msgid ""
 "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
 "in</a> now."
-msgstr ""
-"Votre mot de passe a été défini. Vous pouvez continuer et vous <a href="
-"\"%(url)s\">connecter </a> dès maintenant."
+msgstr "Votre mot de passe a été défini. Vous pouvez continuer et vous <a href=\"%(url)s\">connecter </a> dès maintenant."
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
@@ -1277,10 +1208,7 @@ msgstr "Changer le mot de passe"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr ""
-"Le lien de réinitialisation du mot de passe était invalide, probablement "
-"parce qu'il a déjà été utilisé. Merci de demander une nouvelle "
-"réinitialisation de mot de passe."
+msgstr "Le lien de réinitialisation du mot de passe était invalide, probablement parce qu'il a déjà été utilisé. Merci de demander une nouvelle réinitialisation de mot de passe."
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
@@ -1296,29 +1224,20 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>Nous vous avons envoyé par email les instructions pour définir votre mot "
-"de passe, pour peu qu'un compte avec l'email que vous avez renseigné existe. "
-"Vous devriez les recevoir rapidement.</p><p>Si vous ne recevez pas d'email, "
-"merci de vérifier que vous avez renseigné votre adresse principale et de "
-"vérifier votre dossier spam.</p>"
+msgstr "<p>Nous vous avons envoyé par email les instructions pour définir votre mot de passe, pour peu qu'un compte avec l'email que vous avez renseigné existe. Vous devriez les recevoir rapidement.</p><p>Si vous ne recevez pas d'email, merci de vérifier que vous avez renseigné votre adresse principale et de vérifier votre dossier spam.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #, python-format
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
-msgstr ""
-"Pour initier la procédure de réinitialisation du mot de passe de votre "
-"compte Modoboa %(username)s, cliquez sur le lien ci-dessous :"
+msgstr "Pour initier la procédure de réinitialisation du mot de passe de votre compte Modoboa %(username)s, cliquez sur le lien ci-dessous :"
 
 #: templates/registration/password_reset_email.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
-msgstr ""
-"Si cliquer sur lien ci-dessous ne fonctionne pas, merci de copier / coller "
-"cette URL dans une nouvelle fenêtre navigateur à la place."
+msgstr "Si cliquer sur lien ci-dessous ne fonctionne pas, merci de copier / coller cette URL dans une nouvelle fenêtre navigateur à la place."
 
 #: templates/registration/password_reset_email.html:14
 msgid "Sincerely, The Modoboa Team."
