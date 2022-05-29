@@ -321,3 +321,18 @@ class UserAccountViewSet(viewsets.ViewSet):
                 ).update(enabled=False)
             alias.set_recipients(recipients)
         return response.Response(serializer.validated_data)
+
+
+class AlarmViewSet(viewsets.ReadOnlyModelViewSet):
+    """Viewset for Alarm."""
+
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    serializer_class = serializers.AlarmSerializer
+
+    def get_queryset(self):
+        return models.Alarm.objects.filter(
+            domain__in=models.Domain.objects.get_for_admin(
+                self.request.user)
+        )

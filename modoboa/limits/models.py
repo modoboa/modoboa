@@ -13,7 +13,7 @@ class ObjectLimitMixin(object):
     """Common methods."""
 
     @property
-    def label(self):
+    def label(self) -> str:
         """Return display name."""
         return self.definition["label"]
 
@@ -23,7 +23,7 @@ class ObjectLimitMixin(object):
         return self.definition.get("type", "count")
 
     @property
-    def usage(self):
+    def usage(self) -> int:
         """Return current limit usage in %."""
         if self.max_value < 0:
             return -1
@@ -79,7 +79,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
         return None
 
     @property
-    def current_value(self):
+    def current_value(self) -> int:
         """Return the current number of objects."""
         condition = (
             self.type == "count" and
@@ -107,7 +107,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
         return self.definition["label"]
 
     @cached_property
-    def usage(self):
+    def usage(self) -> int:
         """Return current limit usage in %."""
         if self.max_value < 0:
             return -1
@@ -141,7 +141,7 @@ class DomainObjectLimit(ObjectLimitMixin, models.Model):
         return None
 
     @property
-    def current_value(self):
+    def current_value(self) -> int:
         """Return the current number of objects."""
         definition = self.definition
         if not definition:
