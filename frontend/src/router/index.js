@@ -111,6 +111,14 @@ const routes = [
     }
   },
   {
+    path: '/alarms',
+    name: 'Alarms',
+    component: () => import('../views/alarms/Alarms.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/logs/audit_trail',
     name: 'AuditTrail',
     component: () => import('../views/logs/AuditTrail.vue'),

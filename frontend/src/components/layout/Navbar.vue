@@ -175,6 +175,11 @@ export default {
           roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
         },
         {
+          text: this.$gettext('Alarms'),
+          to: { name: 'Alarms' },
+          icon: 'mdi-bell'
+        },
+        {
           icon: 'mdi-history',
           text: this.$gettext('Logs'),
           roles: ['SuperAdmins', 'Resellers', 'DomainAdmins'],

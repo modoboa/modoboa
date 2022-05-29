@@ -75,11 +75,22 @@
           <div class="text-right">
             <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on">
+                <v-badge
+                  v-if="item.opened_alarms_count"
+                  bordered
+                  color="error"
+                  icon="mdi-bell"
+                  overlap
+                  >
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-horizontal</v-icon>
+                  </v-btn>
+                </v-badge>
+                <v-btn v-else icon v-bind="attrs" v-on="on">
                   <v-icon>mdi-dots-horizontal</v-icon>
                 </v-btn>
               </template>
-              <menu-items :items="domainMenuItems" :object="item" />
+              <menu-items :items="getDomainMenuItems(item)" :object="item" />
             </v-menu>
           </div>
         </td>
@@ -151,11 +162,6 @@ export default {
   }),
   data () {
     return {
-      domainMenuItems: [
-        { label: this.$gettext('Administrators'), icon: 'mdi-account-supervisor', onClick: this.openAdminList },
-        { label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editDomain },
-        { label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteDomain, color: 'red' }
-      ],
       headers: [
         { text: this.$gettext('Name'), value: 'name' },
         { text: this.$gettext('Aliases'), value: 'domainalias_count' },
@@ -243,6 +249,22 @@ export default {
     },
     showAliases (item) {
       this.expanded = [{ item }]
+    },
+    getDomainMenuItems (domain) {
+      const result = [
+        { label: this.$gettext('Administrators'), icon: 'mdi-account-supervisor', onClick: this.openAdminList },
+        { label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editDomain },
+        { label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteDomain, color: 'red' }
+      ]
+      if (domain.opened_alarms_count) {
+        result.push({
+          label: this.$gettext('Alarms'),
+          icon: 'mdi-bell',
+          color: 'red',
+          onClick: () => this.$router.push({ name: 'Alarms' })
+        })
+      }
+      return result
     }
   }
 }

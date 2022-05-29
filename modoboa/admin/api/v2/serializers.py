@@ -2,6 +2,7 @@
 
 import ipaddress
 import os
+from typing import List
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -54,7 +55,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
 
     class Meta(v1_serializers.DomainSerializer.Meta):
         fields = v1_serializers.DomainSerializer.Meta.fields + (
-            "domain_admin", "transport"
+            "domain_admin", "transport", "opened_alarms_count"
         )
 
     def __init__(self, *args, **kwargs):
@@ -321,7 +322,7 @@ class AccountSerializer(v1_serializers.AccountSerializer):
             return
         self.fields["resources"] = serializers.SerializerMethodField()
 
-    def get_resources(self, account):
+    def get_resources(self, account) -> List[AccountResourceSerializer]:
         if account.role == 'SimpleUsers':
             return []
         resources = []
@@ -578,3 +579,12 @@ class CSVIdentityImportSerializer(CSVImportSerializer):
     """Custom serializer for identity import."""
 
     crypt_password = serializers.BooleanField()
+
+
+class AlarmSerializer(serializers.ModelSerializer):
+    """Serializer for Alarm related endpoints."""
+
+    class Meta:
+        depth = 1
+        fields = "__all__"
+        model = models.Alarm
