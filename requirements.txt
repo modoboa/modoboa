@@ -1,5 +1,5 @@
 django<4.0
-django-ckeditor==6.3.0
+django-ckeditor==6.4.2
 django-phonenumber-field[phonenumbers]==6.1.0
 django-reversion==5.0.0
 django-xforwardedfor-middleware==2.0
