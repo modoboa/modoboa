@@ -467,3 +467,20 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
             models.Alias.objects.filter(address=self.da.username).count(),
             1
         )
+
+
+class AlarmViewSetTestCase(ModoAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+        factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
+
+    def test_list(self):
+        url = reverse("v2:alarm-list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()), 1)
