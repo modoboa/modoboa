@@ -92,11 +92,16 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         return self.alias_set.filter(internal=False).count()
 
     @property
-    def identities_count(self):
+    def identities_count(self) -> int:
         """Total number of identities in this domain."""
         return (
             self.mailbox_set.count() +
             self.alias_set.filter(internal=False).count())
+
+    @property
+    def opened_alarms_count(self) -> int:
+        """Number of alarms currently opened for this domain."""
+        return self.alarms.opened().count()
 
     @property
     def tags(self):

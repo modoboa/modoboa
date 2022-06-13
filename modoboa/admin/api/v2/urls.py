@@ -19,5 +19,7 @@ router.register(
     r"identities", viewsets.IdentityViewSet, basename="identities")
 router.register(
     r"account", viewsets.UserAccountViewSet, basename="account")
+router.register(
+    r"alarms", viewsets.AlarmViewSet, basename="alarm")
 
 urlpatterns = router.urls
