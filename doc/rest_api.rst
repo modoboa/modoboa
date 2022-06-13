@@ -10,8 +10,9 @@ documentation. You will find them using the following url patterns:
 
 * API: *http://<hostname>/api/v1/*
 * Documentation: *http://<hostname>/docs/api/*
+* New Docs: *https://<hostname>/api/schema-v2/swagger/*
 
-An `example <https://demo.modoboa.org/docs/api/>`_ of this
+An `old example <https://demo.modoboa.org/docs/api/>`_ of this and here: `new example <https://demo.modoboa.org/api/schema-v2/swagger/>`_
 documentation is available on the official demo.
 
 Using this API requires an authentication and for now, only a token
