@@ -598,7 +598,7 @@
         // bars
         $$.updateBar(durationForExit);
 
-        // lines, areas and cricles
+        // lines, areas and circles
         $$.updateLine(durationForExit);
         $$.updateArea(durationForExit);
         $$.updateCircle();

@@ -827,7 +827,7 @@ $.extend(Datepicker.prototype, {
 			inst.input.focus();
 		}
 
-		// deffered render of the years select (to avoid flashes on Firefox)
+		// deferred render of the years select (to avoid flashes on Firefox)
 		if( inst.yearshtml ){
 			origyearshtml = inst.yearshtml;
 			setTimeout(function(){
