@@ -8,11 +8,12 @@ Modoboa provides a REST API.
 Every installed instance comes with a ready-to-use API and a
 documentation. You will find them using the following url patterns:
 
-* API: *http://<hostname>/api/v1/*
-* Documentation: *http://<hostname>/docs/api/*
-* New Docs: *https://<hostname>/api/schema-v2/swagger/*
+* New API+Docs: *https://<hostname>/api/schema-v2/swagger/*
+* Old API: *http://<hostname>/api/v1/
+* (Old) Documentation: *http://<hostname>/docs/api/*
 
-An `old example <https://demo.modoboa.org/docs/api/>`_ of this and here: `new example <https://demo.modoboa.org/api/schema-v2/swagger/>`_
+`new example <https://demo.modoboa.org/api/schema-v2/swagger/>`_
+An `old example <https://demo.modoboa.org/docs/api/>`_ 
 documentation is available on the official demo.
 
 Using this API requires an authentication and for now, only a token
