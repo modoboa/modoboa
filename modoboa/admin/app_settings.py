@@ -341,7 +341,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 )
             }),
             ("enable_autoconfig_checks", {
-                "label": ugettext_lazy("Enable SPF checks"),
+                "label": ugettext_lazy("Enable autoconfig checks"),
                 "help_text": ugettext_lazy(
                     "Check if every domain has a valid records for "
                     "autoconfiguration"
