@@ -79,6 +79,9 @@ class CheckMXRecords(BaseCommand):
             pattern = "{}.{}.".format(reverse, provider)
             try:
                 result = socket.gethostbyname(pattern)
+                #Mitigate Spamhaus status error (these codes don't mean ip is listed)
+                if result == "127.255.255.254" or result == "127.255.255.255":
+                    result = False
             except socket.gaierror:
                 result = False
             for mx in mxs:
