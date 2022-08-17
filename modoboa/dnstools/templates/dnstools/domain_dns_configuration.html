@@ -14,6 +14,9 @@
   <pre>
 mail.{{ domain.name }}. IN A <strong>[{% trans "IP address of your Modoboa server" %}]</strong>
 @ IN MX 10 mail.{{ domain.name }}.</pre>
+  IPV6
+  <pre>
+mail.{{ domain.name }}. IN AAAA  <strong>[{% trans "IP address of your Modoboa server" %}]</strong></pre>
   SPF
   <pre>
 @ IN TXT "v=spf1 mx ~all"</pre>
@@ -29,5 +32,7 @@ _dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre>
   <pre>
 autoconfig.{{ domain.name }}. IN CNAME <strong>[{% trans "hostname of your automx server" %}]</strong>
 autodiscover.{{ domain.name }}. IN CNAME <strong>[{% trans "hostname of your automx server" %}]</strong></pre>
-
+  rDNS
+<pre>
+<strong>Please contact your VPS provider, or check your admin console</strong></pre>
 {% endblock %}

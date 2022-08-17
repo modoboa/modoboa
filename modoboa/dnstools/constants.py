@@ -9,6 +9,9 @@ DNS_RECORD_TYPES = [
     ("dmarc", "DMARC"),
     ("autoconfig", "Autoconfig"),
     ("autodiscover", "Autodiscover"),
+    ("ipv6", "IPV6"),
+    ("rdns4", "rDNS4"),
+    ("rdns6", "rDNS6")
 ]
 
 SPF_MECHANISMS = ["ip4", "ip6", "a", "mx", "ptr", "exists", "include"]

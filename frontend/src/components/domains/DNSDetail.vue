@@ -60,6 +60,20 @@
     <v-row>
       <v-col>
         <v-chip
+          v-if="detail.ipv6_record"
+          color="success"
+          >
+          <translate>IPV6 record found</translate>
+        </v-chip>
+        <v-chip
+          v-else
+          color="error"
+          >
+          <translate>IPV6 record not found</translate>
+        </v-chip>
+      </v-col>
+      <v-col>
+        <v-chip
           v-if="detail.spf_record"
           color="success"
           >
@@ -98,6 +112,20 @@
           color="error"
           >
           <translate>DMARC record not found</translate>
+        </v-chip>
+      </v-col>
+      <v-col>
+        <v-chip
+          v-if="detail.rdns_record"
+          color="success"
+          >
+          <translate>rDNS record found</translate>
+        </v-chip>
+        <v-chip
+          v-else
+          color="error"
+          >
+          <translate>rDNS record not found</translate>
         </v-chip>
       </v-col>
     </v-row>

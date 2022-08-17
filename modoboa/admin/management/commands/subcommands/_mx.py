@@ -221,6 +221,15 @@ class CheckMXRecords(BaseCommand):
         if param_tools.get_global_parameter("enable_spf_checks"):
             dns_models.DNSRecord.objects.get_or_create_for_domain(
                 domain, "spf", ttl)
+        if param_tools.get_global_parameter("enable_ipv6_checks"):
+            dns_models.DNSRecord.objects.get_or_create_for_domain(
+                domain, "ipv6", ttl)
+        if param_tools.get_global_parameter("enable_rdns_checks"):
+            dns_models.DNSRecord.objects.get_or_create_for_domain(
+                domain, "rdns4", ttl)
+            if param_tools.get_global_parameter("enable_ipv6_checks"):
+                dns_models.DNSRecord.objects.get_or_create_for_domain(
+                    domain, "rdns6", ttl)
         condition = (
             param_tools.get_global_parameter("enable_dkim_checks") and
             domain.dkim_public_key

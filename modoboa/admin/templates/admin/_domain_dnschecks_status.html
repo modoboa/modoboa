@@ -37,6 +37,37 @@
         <a href="{% url 'dnstools:dns_record_detail' domain.dmarc_record.pk %}" data-toggle="ajaxmodal">DMARC</a></span>
     {% endif %}
   {% endif %}
+  {% if enable_ipv6_checks %}
+    {% if not domain.ipv6_record %}
+      <span class="label label-mini label-danger" title="{% trans 'No record found' %}">IPV6</span>
+    {% else %}      
+      <span class="label label-mini label-{% if not domain.ipv6_record.is_valid %}warning{% else %}success{% endif %}">
+        <a href="{% url 'dnstools:dns_record_detail' domain.ipv6_record.pk %}" data-toggle="ajaxmodal">IPV6</a></span>
+    {% endif %}
+  {% endif %}
+  {% if enable_rdns_checks %}
+    {% if not domain.rdns4_record %}
+      <span class="label label-mini label-danger" title="{% trans 'No record found' %}">RDNS</span>
+    {% elif domain.rdns4_record and enable_rdns_checks and not domain.rdns6_record %}  
+    {% else %}
+      {% if domain.rdns4_record.is_valid %}
+        {% if enable_ipv6_check %}
+          {% if domain.rdns6_record.is_valid %} 
+            <span class="label label-mini label-success">
+          {% else %} 
+            <span class="label label-mini label-warning">  
+          {% endif %}
+          <a href="{% url 'dnstools:dns_record_detail' domain.rdns6_record.pk %}" data-toggle="ajaxmodal">RDNS</a></span>
+        {% else %} 
+        <span class="label label-mini label-success">
+          <a href="{% url 'dnstools:dns_record_detail' domain.rdns4_record.pk %}" data-toggle="ajaxmodal">RDNS</a></span>
+        {% endif %}
+      {% else %}
+        <span class="label label-mini label-warning">
+          <a href="{% url 'dnstools:dns_record_detail' domain.rdns4_record.pk %}" data-toggle="ajaxmodal">RDNS</a></span>
+      {% endif %}
+    {% endif %}
+  {% endif %}
   {% if enable_autoconfig_checks %}
     {% if not domain.autoconfig_record and not domain.autodiscover_record %}
       <span class="label label-mini label-danger" title="{% trans 'No record found' %}">autoconfig</span>

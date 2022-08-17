@@ -179,6 +179,15 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
                 errors.append("autoconfig")
             if self.autodiscover_record is None:
                 errors.append("autodiscover")
+        if config["enable_ipv6_checks"]:
+            if self.ipv6_record is None:
+                errors.append("ipv6")
+        if config["enable_rdns_checks"]:
+            if self.rdns4_record is None:
+                errors.append("rdns")
+            if config["enable_ipv6_checks"]:
+                if self.rdns6_record is None:
+                    errors.append("rdns")
         if len(errors) == 0:
             return "ok"
         return "critical"
@@ -212,6 +221,21 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
     def autoconfig_record(self):
         """Return autoconfig record."""
         return self.dnsrecord_set.filter(type="autoconfig").first()
+
+    @property
+    def ipv6_record(self):
+        """Return IPV6 record"""
+        return self.dnsrecord_set.filter(type="ipv6").first()
+
+    @property
+    def rdns4_record(self):
+        """Return rDNS record for ipv4"""
+        return self.dnsrecord_set.filter(type="rdns4").first()
+
+    @property
+    def rdns6_record(self):
+        """Return rDNS record for ipv6"""
+        return self.dnsrecord_set.filter(type="rdns6").first()
 
     @property
     def autodiscover_record(self):

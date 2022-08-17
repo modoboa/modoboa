@@ -32,6 +32,18 @@ mail.{{ domain.name }}. IN A <strong>[<translate>IP address of your Modoboa serv
     </v-alert>
 
     <v-alert
+      border="left"
+      colored-border
+      color="primary lighten-3"
+      elevation="2"
+      dense
+      >
+      <div class="title">IPV6</div>
+      <pre>
+mail.{{ domain.name }}. IN AAAA <strong>[<translate>IPv6 address of your Modoboa server</translate>]</strong></pre>
+    </v-alert>
+
+    <v-alert
       v-if="domain.enable_dkim && domain.dkim_public_key"
       border="left"
       colored-border
@@ -65,6 +77,19 @@ _dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre>
 autoconfig.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your automx server</translate>]</strong>
 autodiscover.{{ domain.name }}. IN CNAME <strong>[<translate>hostname of your automx server</translate>]</strong></pre>
     </v-alert>
+
+    <v-alert
+      border="left"
+      colored-border
+      color="primary lighten-3"
+      elevation="2"
+      dense
+      >
+      <div class="title">rDNS</div>
+      <pre>
+<strong>[<translate>Contact your VPS provider, or check your admin console</translate>]</strong></pre>
+    </v-alert>
+
   </v-card-text>
   <v-card-actions>
     <v-spacer></v-spacer>

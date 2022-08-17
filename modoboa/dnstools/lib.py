@@ -6,6 +6,8 @@ from django.utils.translation import ugettext as _
 
 from modoboa.admin import lib as admin_lib
 
+from dns import reversename
+
 from . import constants
 
 
@@ -54,6 +56,27 @@ def _get_simple_record(name):
         break
     return value
 
+def _get_ptr_record(name, rdtype):
+    """Return the ptr record for asked host and rdtype"""
+    ipaddr = admin_lib.get_dns_records(name, rdtype)
+    ip = None
+    for ips in ipaddr:
+        ip = str(ips).strip('"')
+        break
+    if ip is None:
+        return None
+
+    records = admin_lib.get_dns_records(reversename.from_address(ip), "PTR")
+    value = None
+    for record in records:
+        value = str(record).strip('"')
+        break
+
+    if name not in value:
+        value = None
+    
+    return value
+
 
 def get_autoconfig_record(domain):
     """Return autoconfig record for domain (if any)."""
@@ -63,6 +86,25 @@ def get_autoconfig_record(domain):
 def get_autodiscover_record(domain):
     """Return autodiscover record for domain (if any)."""
     return _get_simple_record("autodiscover.{}".format(domain))
+
+def get_ipv6_record(domain):
+    """Return ipv6 record for domain (if any)."""
+    name = "mail.{}".format(domain)
+    records = admin_lib.get_dns_records(name, "AAAA")
+    value = None
+    for record in records:
+        value = str(record).strip('"')
+        break
+    return value
+
+def get_rdns4_record(domain):
+    """Return rdns record for ipv4"""
+    return _get_ptr_record("mail.{}".format(domain), "A", domain)
+
+def get_rdns6_record(domain):
+    """Return rdns reocrd for ipv6"""
+    return _get_ptr_record("mail.{}".format(domain), "AAAA", domain)
+
 
 
 class DNSSyntaxError(Exception):
@@ -206,7 +248,6 @@ def check_dkim_syntax(record):
         raise DNSSyntaxError(_("No key found in record"))
     return key
 
-
 def check_dmarc_tag_string_value(tag, value):
     """Check if value is valid for tag."""
     tdef = constants.DMARC_TAGS[tag]
@@ -260,3 +301,21 @@ def check_dmarc_syntax(record):
         tags[name] = value
     if "p" not in tags:
         raise DNSSyntaxError(_("Missing required p tag"))
+
+def check_ipv6_syntax(record):
+    """Check if record has valid ipv6 syntax"""
+    try: 
+        ipaddress.ip_address(record)
+    except ValueError:
+        raise DNSSyntaxError(_("IPv6 syntax is not good"))
+
+def check_rdns4_syntax(record):
+    """Check that the record is not None"""
+    if not record:
+        raise DNSSyntaxError(_("Wrong rDNS for ipv4"))
+    
+def check_rdns6_syntax(record):
+    """Check that the record is not None"""
+    if not record:
+        raise DNSSyntaxError(_("Wrong rDNS for ipv6"))
+  

@@ -91,6 +91,23 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    enable_ipv6_checks = YesNoField(
+        label=ugettext_lazy("Enable IPV6 checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid AAAA record for IPV6"
+        )
+    )
+
+    enable_rdns_checks = YesNoField(
+        label=ugettext_lazy("Enable rDNS checks"),
+        initial=True,
+        help_text=ugettext_lazy(
+            "Check if every domain has a valid PTR record"
+        )
+    )
+
+
     custom_dns_server = GenericIPAddressField(
         label=ugettext_lazy("Custom DNS server"),
         required=False,

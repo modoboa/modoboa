@@ -1,7 +1,7 @@
 <template>
-<pre>
+<button @click="copySelToClipboard()"><pre>
 {{ domain.dkim_key_selector }}._domain_key.{{ domain.name }}. IN TXT (
-  {{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }})</pre>
+  {{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }})</pre></button>
 </template>
 
 <script>
@@ -10,6 +10,10 @@ export default {
     domain: Object
   },
   methods: {
+    copyToClipboard () {
+      const text = domain.dkim_key_selector + "_domain_key."+ domain.name + " . IN TXT " + "\"v=DKIM1;k=rsa;p=" + domain.dkim_public_key + "\""
+      navigator.clipboard.writeText(text)
+    },
     splitKey (value) {
       let key = value
       const result = []
