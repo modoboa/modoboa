@@ -77,7 +77,10 @@ def dologin(request):
                         )
                         user.set_password(form.cleaned_data["password"])
                         user.save()
-
+                from mfa.helpers import has_mfa
+                res =  has_mfa(username = user.username,request=request) # has_mfa returns false or HttpResponseRedirect
+                if res:
+                    return res
                 login(request, user)
                 if not form.cleaned_data["rememberme"]:
                     request.session.set_expiry(0)

@@ -1,6 +1,6 @@
 """Core urls."""
 
-from django.urls import path
+from django.urls import path, include
 from django.views.generic.base import TemplateView
 
 from . import views
@@ -33,4 +33,5 @@ urlpatterns = [
     path('user/api/', views.api_access, name="user_api_access"),
     path('user/security/', views.security, name="user_security"),
     path('robots.txt', TemplateView.as_view(template_name="core/robots.txt", content_type="text/plain")),
+    path('mfa/', include('mfa.urls'), name="mfa check"),
 ]
