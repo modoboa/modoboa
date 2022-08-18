@@ -9,20 +9,6 @@ export default {
     domain: Object
   },
   methods: {
-    splitKey (value) {
-      let key = value
-      const result = []
-      while (key.length > 0) {
-        if (key.length > 74) {
-          result.push(`  "${key.substring(0, 74)}"`)
-          key = key.substring(74)
-        } else {
-          result.push(`  "${key}"`)
-          break
-        }
-      }
-      return result.join('\n')
-    },
     copyDNSToClipboard () {
       const text = document.getElementById('dkimdns').textContent
       navigator.clipboard.writeText(text)
