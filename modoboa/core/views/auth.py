@@ -21,6 +21,7 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
 
 import django_otp
 
@@ -77,8 +78,9 @@ def dologin(request):
                         )
                         user.set_password(form.cleaned_data["password"])
                         user.save()
-                from mfa.helpers import has_mfa
-                res =  has_mfa(username = user.username,request=request) # has_mfa returns false or HttpResponseRedirect
+                if "mfa" in settings.INSTALLED_APPS:
+                    from mfa.helpers import has_mfa
+                    res =  has_mfa(username=form.cleaned_data["username"], request=request) # has_mfa returns false or HttpResponseRedirect
                 if res:
                     return res
                 login(request, user)
@@ -125,6 +127,30 @@ def dologin(request):
 
 
 dologin = never_cache(dologin)
+
+def loginCallback(request, username=None):
+    from modoboa.core.models import User
+    user=User.objects.get(username=username)
+    form = forms.LoginForm(request.POST)
+    if not username:
+        error = _("MFA verification failed. Please try again.")
+        logger.warning(
+                "Failed MFA attempt from '%(addr)s' as user '%(user)s'"
+                % {"addr": request.META["REMOTE_ADDR"],
+                   "user": escape(form.cleaned_data["username"])}
+            )
+    login(request, user)
+    if not form["rememberme"]:
+        request.session.set_expiry(0)
+
+    translation.activate(request.user.language)
+    request.session[translation.LANGUAGE_SESSION_KEY] = (request.user.language)
+
+    logger.info(_("User '%s' successfully logged in") % username)
+    signals.user_login.send(sender="dologin",
+                            username=form["username"],
+                            password=form["password"])
+    return HttpResponseRedirect(find_nextlocation(request, user))
 
 
 def dologout(request):

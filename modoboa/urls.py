@@ -6,11 +6,15 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.urls import include, path
+from django.conf.urls import url
 from django.views.i18n import JavaScriptCatalog
 
 from drf_spectacular.views import (
     SpectacularJSONAPIView, SpectacularSwaggerView, SpectacularRedocView
 )
+
+import mfa
+import mfa.TrustedDevice
 
 from modoboa.admin.views import user as user_views
 from modoboa.core import signals as core_signals, views as core_views
@@ -47,6 +51,8 @@ urlpatterns = [
          name="password_reset_confirm"),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(),
          name="password_reset_complete"),
+    url(r'^mfa/', include('mfa.urls')),
+    url(r'devices/add$', mfa.TrustedDevice.add,name="mfa_add_new_trusted_device"),
 ]
 
 exts_pool.load_all()

@@ -27,3 +27,4 @@ test_project/modoboa.db
 
 /.project
 /.pydevproject
+/test_project/sitestatic

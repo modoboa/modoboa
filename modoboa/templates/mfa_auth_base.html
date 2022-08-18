@@ -1,0 +1,20 @@
+{% extends "registration/base.html" %}
+
+{% load i18n core_tags lib_tags form_tags static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
+{% endblock %}
+{% block main_content %}
+{% block content %}{% endblock %}
+{% endblock %}
+
+{% block sub_content %}
+  {% for annoucement in annoucements %}
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ annoucement|safe }}</div>
+  {% endfor %}
+{% endblock %}
+
+{% block extra_js %}
+{% block head %}{% endblock %}
+{% endblock %}

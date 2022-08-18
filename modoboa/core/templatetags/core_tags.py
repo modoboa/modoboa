@@ -97,10 +97,15 @@ def user_menu(user, selection):
     extra_entries = reduce(
         lambda a, b: a + b, [entry[1] for entry in extra_entries])
     entries[0]["menu"] += (
-        extra_entries + [{"name": "logout",
-                          "url": reverse("core:logout"),
-                          "label": _("Logout"),
-                          "img": "fa fa-sign-out"}]
+        extra_entries + [{"name": "MFA",
+                        "url": "/mfa",
+                        "label": _("MFA"),
+                        "img": "fa fa-key"},
+                        {"name": "logout",
+                        "url": reverse("core:logout"),
+                        "label": _("Logout"),
+                        "img": "fa fa-sign-out"}
+                        ]
     )
     return render_to_string("common/menulist.html", {
         "selection": selection, "entries": entries, "user": user
