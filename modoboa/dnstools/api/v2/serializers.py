@@ -42,10 +42,14 @@ class DNSDetailSerializer(serializers.ModelSerializer):
     dkim_record = DNSRecordSerializer()
     dmarc_record = DNSRecordSerializer()
     dnsbl_results = DNSBLResultSerializer(many=True, source="dnsblresult_set")
+    rdns4_record = DNSRecordSerializer()
+    rdns6_record = DNSRecordSerializer()
+    ipv6_record = DNSRecordSerializer()
 
     class Meta:
         model = admin_models.Domain
         fields = (
             "mx_records", "dnsbl_results", "autoconfig_record",
-            "autodiscover_record", "spf_record", "dkim_record", "dmarc_record"
+            "autodiscover_record", "spf_record", "dkim_record", "dmarc_record",
+            "ipv6_record", "rdns4_record", "rdns6_record"
         )

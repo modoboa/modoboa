@@ -116,7 +116,7 @@
       </v-col>
       <v-col>
         <v-chip
-          v-if="detail.rdns_record"
+          v-if="(detail.rdns4_record && !domain.enable_ipv6) || (domain.enable_ipv6 && detail.rnds4_record && detail.rdns6_record)"
           color="success"
           >
           <translate>rDNS record found</translate>

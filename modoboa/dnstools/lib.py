@@ -99,11 +99,11 @@ def get_ipv6_record(domain):
 
 def get_rdns4_record(domain):
     """Return rdns record for ipv4"""
-    return _get_ptr_record("mail.{}".format(domain), "A", domain)
+    return _get_ptr_record("mail.{}".format(domain), "A")
 
 def get_rdns6_record(domain):
     """Return rdns reocrd for ipv6"""
-    return _get_ptr_record("mail.{}".format(domain), "AAAA", domain)
+    return _get_ptr_record("mail.{}".format(domain), "AAAA")
 
 
 
@@ -305,7 +305,7 @@ def check_dmarc_syntax(record):
 def check_ipv6_syntax(record):
     """Check if record has valid ipv6 syntax"""
     try: 
-        ipaddress.ip_address(record)
+        ipaddress.ip_network(record, False)
     except ValueError:
         raise DNSSyntaxError(_("IPv6 syntax is not good"))
 

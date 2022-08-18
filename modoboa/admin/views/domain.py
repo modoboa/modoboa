@@ -74,7 +74,9 @@ def _domains(request):
         "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
         "enable_autoconfig_checks": (
             parameters.get_value("enable_autoconfig_checks")),
-        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
+        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
+        "enable_ipv6_checks": parameters.get_value("enable_ipv6_checks"),
+        "enable_rdns_checks": parameters.get_value("enable_rdns_checks")
     }
     context["headers"] = render_to_string(
         "admin/domain_headers.html", dns_checks, request
@@ -109,7 +111,9 @@ def domains(request, tplname="admin/domains.html"):
         "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
         "enable_autoconfig_checks": (
             parameters.get_value("enable_autoconfig_checks")),
-        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
+        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
+        "enable_ipv6_checks": parameters.get_value("enable_ipv6_checks"),
+        "enable_rdns_checks": parameters.get_value("enable_rdns_checks")
     })
 
 
@@ -277,6 +281,8 @@ class DomainDetailView(
             "enable_autoconfig_checks": (
                 parameters.get_value("enable_autoconfig_checks")),
             "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
+            "enable_ipv6_checks": parameters.get_value("enable_ipv6_checks"),
+            "enable_rdns_checks": parameters.get_value("enable_rdns_checks")
         })
         for _receiver, widgets in result:
             for widget in widgets:
