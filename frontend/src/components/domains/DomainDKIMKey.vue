@@ -1,7 +1,4 @@
 <style>
-.v-alert {
-  word-break: break-all;
-}
 .dkimbutton {
   border-radius: 10px;
 }
@@ -15,7 +12,6 @@
 }
 .dkim {
   word-break: break-all;
-  overflow-wrap: anywhere;
 }
 </style>
 
