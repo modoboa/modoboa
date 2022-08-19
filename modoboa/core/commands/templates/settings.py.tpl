@@ -19,6 +19,12 @@ from modoboa.core.dev_settings import *  # noqa
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 
+# Allow simpler change of FQDN on a running instance
+BASE_URL = u"{{ allowed_host }}"
+
+#sender address for email totp
+EMAIL_FROM="security@example.com"
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -263,26 +269,25 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # 2FA
 
-OTP_TOTP_ISSUER = "{{ allowed_host }}"
+OTP_TOTP_ISSUER = BASE_URL
 
-MFA_UNALLOWED_METHODS=('Trusted_Devices',)   # Methods that shouldn't be allowed for the user
+MFA_UNALLOWED_METHODS=('Trusted_Devices','U2F')   # Methods that shouldn't be allowed for the user
 MFA_LOGIN_CALLBACK="modoboa.core.views.auth.loginCallback"      # A function that should be called by username to login the user in session
 MFA_RECHECK=True           # Allow random rechecking of the user
 MFA_REDIRECT_AFTER_REGISTRATION="mfa_home"   # Allows Changing the page after successful registeration
-MFA_SUCCESS_REGISTRATION_MSG = "Go back to mfa" # The text of the link
+MFA_SUCCESS_REGISTRATION_MSG = "Go back to MFA management" # The text of the link
 MFA_RECHECK_MIN=10         # Minimum interval in seconds
 MFA_RECHECK_MAX=30         # Maximum in seconds
 MFA_QUICKLOGIN=True        # Allow quick login for returning users by provide only their 2FA
-MFA_HIDE_DISABLE=('FIDO2',)     # Can the user disable his key (Added in 1.2.0).
+MFA_HIDE_DISABLE=()     # Can the user disable his key (Added in 1.2.0).
 MFA_OWNED_BY_ENTERPRISE = False  # Who owns security keys   
 
-TOKEN_ISSUER_NAME="{{ allowed_host }}"  #TOTP Issuer name
+TOKEN_ISSUER_NAME= BASE_URL  #TOTP Issuer name
 
-U2F_APPID="localhost"    #URL For U2F
-FIDO_SERVER_ID=u"{{ allowed_host }}"      # Server rp id for FIDO2, it the full domain of your project
-FIDO_SERVER_NAME=u"MODOBOA"
+FIDO_SERVER_ID= BASE_URL      # Server rp id for FIDO2, it the full domain of your project
+FIDO_SERVER_NAME= BASE_URL
 
-TOKEN_ISSUER_NAME="{{ allowed_host }}"  #TOTP Issuer name
+TOKEN_ISSUER_NAME= BASE_URL  #TOTP Issuer name
 
 # CKeditor
 

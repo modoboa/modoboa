@@ -1,20 +1,44 @@
-{% extends "registration/base.html" %}
-
-{% load i18n core_tags lib_tags form_tags static %}
-
-{% block extra_css %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
-{% endblock %}
-{% block main_content %}
-{% block content %}{% endblock %}
-{% endblock %}
-
-{% block sub_content %}
-  {% for annoucement in annoucements %}
-    <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ annoucement|safe }}</div>
-  {% endfor %}
-{% endblock %}
-
-{% block extra_js %}
-{% block head %}{% endblock %}
-{% endblock %}
+<!DOCTYPE html>
+{% load i18n core_tags static lib_tags form_tags %}
+<html lang="{{ LANGUAGE_CODE }}">
+   <!-- Javascript -->
+   <script type="text/javascript" src="{% static 'jquery/jquery.min.js' %}"></script>
+   <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+   {% if TEMPLATE_DEBUG %}
+   <script src="//maxcdn.bootstrapcdn.com/bootlint/0.4.0/bootlint.min.js"></script>
+   {% endif %}
+   <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{% trans "Welcome to Modoboa" %}</title>
+    <link rel="icon" type="image/png" href="{% static 'css/logo-icon.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/offline.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      <div id="box" class="col-lg-9 col-lg-offset-1">
+        <div id="logo" class="row">
+          <ul class="thumbnails">
+            <li>
+              <div class="col-lg-offset-4 col-lg-5 col-md-offset-4 col-md-5 col-sm-offset-4 col-sm-5">
+                <a href="#" class="thumbnail">
+                  <img src="{% get_modoboa_logo %}" />
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class=" divider"></div>
+        {% block content %}{% endblock %}
+      </div>
+      {% for annoucement in annoucements %}
+      <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ annoucement|safe }}</div>
+      {% endfor %}
+    </div>
+  </body>
+</html>
