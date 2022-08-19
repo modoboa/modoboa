@@ -187,5 +187,13 @@
           });
       });
   });
+  function copyRaw() {
+    const text = document.getElementById("copy_raw_dkim_key").textContent;
+    navigator.clipboard.writeText(text);
+  }
+  function copyDns() {
+    const text =document.getElementById("copy_dns_dkim_key").textContent;
+    navigator.clipboard.writeText(text);
+  }
   </script>
 {% endblock %}

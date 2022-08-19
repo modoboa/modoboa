@@ -8,12 +8,12 @@
     </div>
     <div class="modal-body">
       <div class="alert alert-info" style="overflow-wrap: break-word;">
-        <strong>{% trans "Raw format" %}</strong><br>
-        {{ domain.dkim_public_key }}
+        <strong>{% trans "Raw format. Click to copy" %}</strong><br>
+        <button onclick="copyRaw()" class="dkimbutton" id="copy_raw_dkim_key"><p class="dkim">{{ domain.dkim_public_key }}</p></button>
       </div>
       <div class="alert alert-info" style="overflow-wrap: break-word;">
-        <strong>{% trans "Bind/named format" %}</strong><br>
-        <span style="white-space: pre">{{ domain.bind_format_dkim_public_key }}</span>
+        <strong>{% trans "Bind/named format. Click to copy" %}</strong><br>
+        <button onclick="copyDns()" class="dkimbutton" id="copy_dns_dkim_key"><p class="dkim">{{ domain.bind_format_dkim_public_key }}</p></button>
       </div>
     </div>
     <div class="modal-footer">

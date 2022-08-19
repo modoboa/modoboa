@@ -289,16 +289,16 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         # TXT records longer than 255 characters need split into chunks
         # split record into 74 character chunks (+2 for indent, +2 for quotes(")
         # == 78 characters) to make more readable in text editors.
-        split_record = []
+        split_record = ""
         while record:
             if len(record) > 74:
-                split_record.append("  \"%s\"" % record[:74])
+                split_record += (" \"%s\"" % record[:74])
                 record = record[74:]
             else:
-                split_record.append("  \"%s\"" % record)
+                split_record += (" \"%s\"" % record)
                 break
-        record = "\n".join(split_record)
-        return "{}._domainkey.{}. IN TXT (\n{})".format(
+        record = split_record
+        return "{}._domainkey.{}. IN TXT ({})".format(
             self.dkim_key_selector, self.name, record)
 
     def add_admin(self, account):
