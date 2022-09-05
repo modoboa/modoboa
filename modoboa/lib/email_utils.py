@@ -253,8 +253,6 @@ class Email(object):
         )
         mail_text = lxml.html.tostring(
             cleaner.clean_html(html), encoding="unicode")
-        with open("/tmp/output.txt", "w") as fp:
-            fp.write(mail_text)
         return smart_text(mail_text)
 
     def _map_cid(self, url):
