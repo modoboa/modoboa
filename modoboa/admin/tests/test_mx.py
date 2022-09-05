@@ -217,7 +217,7 @@ class DNSBLTestCase(ModoTestCase):
         """Check notifications."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
-        mock_g_gethostbyname.return_value = "1.2.3.4"
+        mock_g_gethostbyname.return_value = "127.0.0.4"
         management.call_command(
             "modo", "check_mx", "--email", "user@example.test")
         self.assertEqual(len(mail.outbox), 2)
