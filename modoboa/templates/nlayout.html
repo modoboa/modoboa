@@ -87,6 +87,7 @@
     <script src="{% static 'js/top_notifications.js' %}" type="text/javascript"></script>
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     <script type="text/javascript">
+      var root_url = "{% url 'core:root' %}".replace(/\/$/, "");
       var top_notifications;
       var userLang = "{{ LANGUAGE_CODE }}";
 
