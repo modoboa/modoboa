@@ -79,8 +79,10 @@ class CheckMXRecords(BaseCommand):
             pattern = "{}.{}.".format(reverse, provider)
             try:
                 result = socket.gethostbyname(pattern)
-                #Mitigate Spamhaus status error (these codes don't mean ip is listed)
-                if result == "127.255.255.254" or result == "127.255.255.255":
+                #result from dnsbl is in ipv4 format
+                splited_result = result.split(".")
+                if int(splited_result[-1]) <= 15:
+                    #Typical dnsbl result : 127.255.255.[1-15] (depends on services)
                     result = False
             except socket.gaierror:
                 result = False
