@@ -177,7 +177,7 @@ TwocolsNav.prototype = {
     startTFASetup: function (evt) {
         evt.preventDefault();
         $.ajax({
-            url: '/api/v1/account/tfa/setup/',
+            url: window.root_url + '/api/v1/account/tfa/setup/',
             type: 'post',
             contentType: 'application/json'
         }).done(function (resp) {
@@ -191,7 +191,7 @@ TwocolsNav.prototype = {
             pin_code: $('#pin-code').val()
         };
         $.ajax({
-            url: '/api/v1/account/tfa/setup/check/',
+            url: window.root_url + '/api/v1/account/tfa/setup/check/',
             type: 'post',
             global: false,
             data: JSON.stringify(data),
