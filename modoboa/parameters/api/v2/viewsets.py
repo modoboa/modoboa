@@ -43,7 +43,8 @@ class ParametersViewSet(viewsets.ViewSet):
         parameters = request.localconfig.parameters.get_values_dict(pk)
         serializer = tools.registry.get_serializer_class("global", pk)(
             parameters)
-        return response.Response(serializer.data)
+        data = {"params":serializer.data, "label":tools.registry.get_label("global", pk)}
+        return response.Response(data)
 
     @extend_schema(
         parameters=[
