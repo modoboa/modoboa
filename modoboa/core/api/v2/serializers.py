@@ -13,6 +13,7 @@ from modoboa.lib import fields as lib_fields
 from ... import constants
 from ... import models
 from ... import sms_backends
+from ... import app_settings
 
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
@@ -106,7 +107,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # Dashboard settings
-    rss_feed_url = serializers.URLField(allow_blank=True)
+    rss_feed_url = serializers.URLField(allow_blank=True, required=False)
     hide_features_widget = serializers.BooleanField(default=False)
 
     # Notification settings
@@ -126,7 +127,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     log_maximum_age = serializers.IntegerField(default=365)
     items_per_page = serializers.IntegerField(default=30)
     default_top_redirection = serializers.ChoiceField(
-        default="user", choices=[""])
+        default="user", choices=app_settings.enabled_applications())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
