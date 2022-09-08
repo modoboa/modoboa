@@ -76,21 +76,24 @@ class OVHBackend(SMSBackend):
             "type": serializers.CharField,
             "attrs": {
                 "required": False,
-                "allow_blank": True
+                "allow_blank": True,
+                "allow_null": True,
             }
         },
         "sms_ovh_application_secret": {
             "type": serializers.CharField,
             "attrs": {
                 "required": False,
-                "allow_blank": True
+                "allow_blank": True,
+                "allow_null": True,
             }
         },
         "sms_ovh_consumer_key": {
             "type": serializers.CharField,
             "attrs": {
                 "required": False,
-                "allow_blank": True
+                "allow_blank": True,
+                "allow_null": True,
             }
         }
     }

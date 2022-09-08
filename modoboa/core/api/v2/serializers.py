@@ -45,7 +45,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         required=False, allow_blank=True)
     sms_password_recovery = serializers.BooleanField(default=False)
     sms_provider = serializers.ChoiceField(
-        choices=constants.SMS_BACKENDS, required=False)
+        choices=constants.SMS_BACKENDS, required=False, allow_null=True)
 
     # LDAP settings
     ldap_server_address = serializers.CharField(default="localhost")
@@ -107,7 +107,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # Dashboard settings
-    rss_feed_url = serializers.URLField(allow_blank=True, required=False)
+    rss_feed_url = serializers.URLField(allow_blank=True, required=False, allow_null=True)
     hide_features_widget = serializers.BooleanField(default=False)
 
     # Notification settings
@@ -127,7 +127,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     log_maximum_age = serializers.IntegerField(default=365)
     items_per_page = serializers.IntegerField(default=30)
     default_top_redirection = serializers.ChoiceField(
-        default="user", choices=app_settings.enabled_applications())
+        default="user", choices=app_settings.enabled_applications(), required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
