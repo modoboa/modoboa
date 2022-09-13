@@ -38,3 +38,4 @@ qrcode
 
 aiosmtplib
 aioredis==2.0.1
+python3-certbot-nginx # to fix issues like https://discord.com/channels/930814728928895078/936543858374873138/1019355699337236571
