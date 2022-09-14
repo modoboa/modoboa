@@ -107,7 +107,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # Dashboard settings
-    rss_feed_url = serializers.URLField(allow_blank=True, required=False, allow_null=True)
+    rss_feed_url = serializers.URLField(
+        allow_blank=True, required=False, allow_null=True)
     hide_features_widget = serializers.BooleanField(default=False)
 
     # Notification settings
@@ -135,7 +136,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         for field, definition in sms_backend_fields.items():
             self.fields[field] = definition["type"](
                 **definition["attrs"])
-        #Choices serializer for default_top_redirection field
+        # Choices serializer for default_top_redirection field
         self.fields["default_top_redirection"].choices = app_settings.enabled_applications()
 
     def validate_ldap_user_dn_template(self, value):
