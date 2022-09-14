@@ -127,7 +127,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     log_maximum_age = serializers.IntegerField(default=365)
     items_per_page = serializers.IntegerField(default=30)
     default_top_redirection = serializers.ChoiceField(
-        default="user", choices=app_settings.enabled_applications(), required=False)
+        default="user", choices=[("user", _("User profile"))], required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -135,6 +135,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         for field, definition in sms_backend_fields.items():
             self.fields[field] = definition["type"](
                 **definition["attrs"])
+        #Choices serializer for default_top_redirection field
+        self.fields["default_top_redirection"].choices = app_settings.enabled_applications()
 
     def validate_ldap_user_dn_template(self, value):
         try:
