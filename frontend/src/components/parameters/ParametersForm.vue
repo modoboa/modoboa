@@ -84,7 +84,8 @@ export default {
       active: 0,
       structure: [],
       parameters: {},
-      formErrors: {}
+      formErrors: {},
+      label: ''
     }
   },
   computed: {
@@ -93,15 +94,7 @@ export default {
       return result
     },
     title () {
-      let result = this.$gettext('Settings: ')
-      if (this.$route.params.app === 'core') {
-        result += this.$gettext('General')
-      } else if (this.$route.params.app === 'admin') {
-        result += this.$gettext('Administration')
-      } else if (this.$route.params.app === 'limits') {
-        result += this.$gettext('Limitations')
-      }
-      return result
+      return this.$gettext('Settings: ' + this.label)
     }
   },
   created () {
@@ -118,7 +111,8 @@ export default {
         this.structure = response.data
       })
       parameters.getApplication(app).then(response => {
-        this.parameters = response.data
+        this.parameters = response.data.params
+        this.label = response.data.label
       })
     },
     display (element) {
