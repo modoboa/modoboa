@@ -247,7 +247,7 @@ export default {
   created () {
     parameters.getApplications().then(response => {
       response.data.forEach(item => {
-        this.mainMenuItems[4].children.push({
+        this.mainMenuItems[5].children.push({
           text: item.label,
           to: { name: 'ParametersEdit', params: { app: item.name } }
         })

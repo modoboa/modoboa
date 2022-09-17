@@ -147,11 +147,22 @@ MySQL users
 
   default_pass_scheme = CRYPT
 
-  password_query = SELECT email AS user, password FROM core_user WHERE email='%Lu' and is_active=1
+  password_query = \
+    SELECT email AS user, password \
+    FROM core_user u \
+    INNER JOIN admin_mailbox mb ON u.id=mb.user_id \
+    INNER JOIN admin_domain dom ON mb.domain_id=dom.id \
+    WHERE u.email='%L{user}' AND u.is_active=1 AND dom.enabled=1
 
-   user_query = SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, <uid> as uid, <gid> as gid, concat('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%Ln' AND dom.name='%Ld'
+  user_query = \
+    SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, \
+      <uid> as uid, <gid> as gid, CONCAT('*:bytes=', mb.quota, 'M') AS quota_rule \
+    FROM admin_mailbox mb \
+    INNER JOIN admin_domain dom ON mb.domain_id=dom.id \
+    INNER JOIN core_user u ON mb.user_id=u.id \
+    WHERE mb.address='%L{username}' AND dom.name='%L{domain}' AND u.is_active=1 AND dom.enabled=1
 
-  iterate_query = SELECT email AS user FROM core_user
+  iterate_query = SELECT email AS user FROM core_user WHERE is_active
 
 .. _dovecot_pg_queries:
 
@@ -166,11 +177,22 @@ PostgreSQL users
 
   default_pass_scheme = CRYPT
 
-  password_query = SELECT email AS user, password FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE u.email='%Lu' AND u.is_active AND dom.enabled
+  password_query = \
+    SELECT email AS user, password \
+    FROM core_user u \
+    INNER JOIN admin_mailbox mb ON u.id=mb.user_id \
+    INNER JOIN admin_domain dom ON mb.domain_id=dom.id \
+    WHERE u.email='%L{user}' AND u.is_active AND dom.enabled
 
-  user_query = SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, <uid> as uid, <gid> as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE mb.address='%Ln' AND dom.name='%Ld'
+  user_query = \
+    SELECT '<mailboxes storage directory>/%Ld/%Ln' AS home, \
+      <uid> as uid, <gid> as gid, CONCAT('*:bytes=', mb.quota, 'M') AS quota_rule \
+    FROM admin_mailbox mb \
+    INNER JOIN admin_domain dom ON mb.domain_id=dom.id \
+    INNER JOIN core_user u ON mb.user_id=u.id \
+    WHERE mb.address='%L{username}' AND dom.name='%L{domain}' AND u.is_active AND dom.enabled
 
-  iterate_query = SELECT email AS user FROM core_user
+  iterate_query = SELECT email AS user FROM core_user WHERE is_active
 
 SQLite users
 ------------
