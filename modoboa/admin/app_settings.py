@@ -94,6 +94,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     custom_dns_server = GenericIPAddressField(
         label=ugettext_lazy("Custom DNS server"),
         required=False,
+        initial="",
         help_text=ugettext_lazy(
             "Use a custom DNS server instead of local server configuration"
         )
