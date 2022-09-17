@@ -34,7 +34,7 @@ class Command(BaseCommand):
         """Entry point."""
         loop = asyncio.get_event_loop()
         coro = asyncio.start_server(
-            core.new_connection, options["host"], options["port"], loop=loop
+            core.new_connection, options["host"], options["port"]
         )
         server = loop.run_until_complete(coro)
 

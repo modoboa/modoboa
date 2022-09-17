@@ -13,6 +13,7 @@ modoboa.iml
 .tox
 .eggs/
 modoboa_test
+bin/instance
 .coverage
 ./build/
 dist/

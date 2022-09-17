@@ -6,7 +6,7 @@
 
 Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
-as an administration panel or a webmail.
+as an administration panel and webmail.
 
 Modoboa integrates with well known software such as `Postfix
 <http://postfix.org/>`_ or `Dovecot <http://dovecot.org/>`_. A SQL
@@ -53,7 +53,7 @@ If you want to try out Modoboa, check out our `demo installation <https://demo.m
 Getting help
 ************
 
-If you have any question, you can use the following ways to get help:
+If you have any questions, you can get help through the following platforms:
 
 * `Discord <https://discord.gg/WuQ3v3PXGR>`_
 * Mailing list: join the `modoboa-users <https://groups.google.com/forum/#!forum/modoboa-users>`_ group on Google Groups

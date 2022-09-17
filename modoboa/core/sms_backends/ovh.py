@@ -75,19 +75,25 @@ class OVHBackend(SMSBackend):
         "sms_ovh_application_key": {
             "type": serializers.CharField,
             "attrs": {
-                "required": False
+                "required": False,
+                "allow_blank": True,
+                "allow_null": True,
             }
         },
         "sms_ovh_application_secret": {
             "type": serializers.CharField,
             "attrs": {
-                "required": False
+                "required": False,
+                "allow_blank": True,
+                "allow_null": True,
             }
         },
         "sms_ovh_consumer_key": {
             "type": serializers.CharField,
             "attrs": {
-                "required": False
+                "required": False,
+                "allow_blank": True,
+                "allow_null": True,
             }
         }
     }

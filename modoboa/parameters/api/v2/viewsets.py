@@ -36,14 +36,19 @@ class ParametersViewSet(viewsets.ViewSet):
                 description='A registered application name',
                 type=str, required=True
             ),
-        ]
+        ],
+        responses=serializers.AppParametersSerializer
     )
     def retrieve(self, request, pk: str):
         """Return all parameters for given app."""
         parameters = request.localconfig.parameters.get_values_dict(pk)
         serializer = tools.registry.get_serializer_class("global", pk)(
             parameters)
-        return response.Response(serializer.data)
+        result = serializers.AppParametersSerializer({
+            "label": tools.registry.get_label("global", pk),
+            "params": serializer.data
+        })
+        return response.Response(result.data)
 
     @extend_schema(
         parameters=[

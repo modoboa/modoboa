@@ -13,6 +13,7 @@ from modoboa.lib import fields as lib_fields
 from ... import constants
 from ... import models
 from ... import sms_backends
+from ... import app_settings
 
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
@@ -44,7 +45,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         required=False, allow_blank=True)
     sms_password_recovery = serializers.BooleanField(default=False)
     sms_provider = serializers.ChoiceField(
-        choices=constants.SMS_BACKENDS, required=False)
+        choices=constants.SMS_BACKENDS, required=False, allow_null=True)
 
     # LDAP settings
     ldap_server_address = serializers.CharField(default="localhost")
@@ -106,7 +107,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # Dashboard settings
-    rss_feed_url = serializers.URLField(allow_blank=True)
+    rss_feed_url = serializers.URLField(
+        allow_blank=True, required=False, allow_null=True)
     hide_features_widget = serializers.BooleanField(default=False)
 
     # Notification settings
@@ -126,7 +128,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     log_maximum_age = serializers.IntegerField(default=365)
     items_per_page = serializers.IntegerField(default=30)
     default_top_redirection = serializers.ChoiceField(
-        default="user", choices=[""])
+        default="user", choices=[("user", _("User profile"))], required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -134,6 +136,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         for field, definition in sms_backend_fields.items():
             self.fields[field] = definition["type"](
                 **definition["attrs"])
+        # Choices serializer for default_top_redirection field
+        self.fields["default_top_redirection"].choices = app_settings.enabled_applications()
 
     def validate_ldap_user_dn_template(self, value):
         try:

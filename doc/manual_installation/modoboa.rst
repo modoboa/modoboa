@@ -235,10 +235,22 @@ following content inside:
    0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py clearsessions
    # Logs table cleanup
    0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py cleanlogs
+   # Logs parsing
+   */15  *  *  *  *  root     $PYTHON $INSTANCE/manage.py logparser &> /dev/null
+   0     *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py update_statistics
    # DNSBL checks
    */30  *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py modo check_mx
    # Public API communication
    0     *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py communicate_with_public_api
+
+.. hint:: **🥵 potential high load configuration**
+
+   Please note that above crontab might not be ideal on high load systems.
+   If you receive a fairly high amount of emails per day, you may want to
+   run modoboas logparser tasks *once per night*.
+   
+   This has the down side that the statistic graph and message log within
+   the UI are updated once per day only.
 
 .. _policy_daemon:
 

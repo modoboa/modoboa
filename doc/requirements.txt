@@ -1,1 +1,1 @@
-docutils<0.19
+docutils<0.20
