@@ -34,3 +34,10 @@ class StructureSerializer(serializers.Serializer):
     name = serializers.CharField()
     display = serializers.CharField(help_text="Display rule")
     parameters = ParameterSerializer(many=True)
+
+
+class AppParametersSerializer(serializers.Serializer):
+    """Serializer for application parameters."""
+
+    label = serializers.CharField()
+    params = serializers.DictField()
