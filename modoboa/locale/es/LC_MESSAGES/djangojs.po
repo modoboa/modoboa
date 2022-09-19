@@ -1,24 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Adrian Araujo <ragtime.sp@gmail.com>, 2016
-# Pedro Gracia <lasarux@neuroomante.com>, 2011,2013
-# Pedro Gracia <pedro.gracia@impulzia.com>, 2010-2011
+# Antoine Nguyen <tonio@ngyn.org>, 2020
+# Enrique Saucedo Fuentes, 2022
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 16:48+0100\n"
-"PO-Revision-Date: 2020-03-09 15:49+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Spanish (http://www.transifex.com/tonio/modoboa/language/es/)\n"
+"POT-Creation-Date: 2020-11-05 15:47+0100\n"
+"PO-Revision-Date: 2020-05-11 18:45+0000\n"
+"Last-Translator: Enrique Saucedo Fuentes, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/tonio/teams/13749/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -26,7 +28,7 @@ msgstr "'"
 
 #: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
 msgid "operation"
-msgstr ""
+msgstr "operación"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
@@ -40,7 +42,7 @@ msgstr "Aviso"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: static/js/global.js:342
+#: static/js/global.js:347
 msgid "Internal error"
 msgstr "Error interno"
 
@@ -55,3 +57,11 @@ msgstr "Buscar"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Buscar..."
+
+#: static/js/twocols_nav.js:170
+msgid "Are you sure?"
+msgstr "¿Estás seguro?"
+
+#: static/js/twocols_nav.js:171
+msgid "This will invalidate your registered application."
+msgstr "Esto provocará que tu aplicación registrada no funcione."
