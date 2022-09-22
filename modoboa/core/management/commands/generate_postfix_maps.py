@@ -99,6 +99,11 @@ query = {{ query|safe }}
             dbtype = "postgres"
         else:
             dbtype = "mysql"
+        dbhost = db_settings.get("HOST", "127.0.0.1")
+        dbport = db_settings.get("PORT", "")
+        if len(dbport):
+            dbhost += ':' + dbport
+
         commandline = "{} {}".format(
             os.path.basename(sys.argv[0]), " ".join(sys.argv[1:]))
         context = {
@@ -108,7 +113,7 @@ query = {{ query|safe }}
             "dbuser": db_settings["USER"],
             "dbpass": db_settings["PASSWORD"],
             "dbname": db_settings["NAME"],
-            "dbhost": db_settings.get("HOST", "127.0.0.1"),
+            "dbhost": dbhost
         }
         return context
 
