@@ -75,8 +75,13 @@ export default {
       this.$emit('input', this.form)
     }
   },
-  mounted () {
-    this.form = { ...this.value }
+  watch: {
+    value: {
+      handler: function (newValue) {
+        this.form = { ...this.value }
+      },
+      immediate: true
+    }
   }
 }
 </script>

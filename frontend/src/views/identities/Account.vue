@@ -9,10 +9,16 @@
   <v-row>
     <v-col cols="6">
       <account-summary :account="account" />
+      <domain-admin-domains
+        v-if="account.role === 'DomainAdmins'"
+        class="mt-2"
+        :account="account"
+        />
+
     </v-col>
     <v-col cols="6">
       <resources
-        v-if="limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
+        v-if="limitsConfig.params && limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
         :resources="account.resources"
         />
       <account-aliases v-if="account.aliases" class="mt-2" :account="account" />
@@ -21,11 +27,6 @@
         class="mt-2"
         :account="account"
         />
-    </v-col>
-  </v-row>
-  <v-row v-if="account.role === 'DomainAdmins'">
-    <v-col cols="6">
-      <domain-admin-domains :account="account" />
     </v-col>
   </v-row>
 </div>

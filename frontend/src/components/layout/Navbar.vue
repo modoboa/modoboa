@@ -234,7 +234,8 @@ export default {
         {
           text: this.$gettext('Profile'),
           icon: 'mdi-account-circle-outline',
-          to: { name: 'UserProfile' }
+          to: { name: 'UserProfile' },
+          click: () => null
         },
         {
           text: this.$gettext('Logout'),
