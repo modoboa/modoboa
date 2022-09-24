@@ -2,23 +2,27 @@
 <div>
   <v-switch
     :label="'Enable DNS checks' | translate"
-    v-model="domain.enable_dns_checks"
+    v-model="form.enable_dns_checks"
+    @input="update"
     />
   <v-switch
     :label="'Enable DKIM signing' | translate"
-    v-model="domain.enable_dkim"
+    v-model="form.enable_dkim"
+    @input="update"
     />
   <v-text-field
     :label="'DKIM key selector' | translate"
-    v-model="domain.dkim_key_selector"
-    :disabled="!domain.enable_dkim"
+    v-model="form.dkim_key_selector"
+    :disabled="!form.enable_dkim"
     outlined
+    @input="update"
     />
   <choice-field
-    v-model="domain.dkim_key_length"
+    v-model="form.dkim_key_length"
           :label="'DKIM key length' | translate"
     :choices="dkimKeyLengths"
-    :disabled="!domain.enable_dkim"
+    :disabled="!form.enable_dkim"
+    @input="update"
     />
 </div>
 </template>
@@ -46,8 +50,17 @@ export default {
           label: '4096',
           value: 4096
         }
-      ]
+      ],
+      form: {}
     }
+  },
+  methods: {
+    update () {
+      this.$emit('input', this.form)
+    }
+  },
+  mounted () {
+    this.form = { ...this.value }
   }
 }
 </script>

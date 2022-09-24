@@ -2,7 +2,7 @@
 <validation-observer ref="observer">
   <v-switch v-model="createAdmin"
             :label="'Create a domain administrator' | translate"
-            @change="update"
+            @change="updateCreateAdmin"
             />
   <validation-provider
     v-slot="{ errors }"
@@ -12,31 +12,35 @@
       :label="'Name' | translate"
       :hint="'Name of the administrator' | translate"
       persistent-hint
-      v-model="domain.domain_admin.username"
+      v-model="form.domain_admin.username"
       :error-messages="errors"
       outlined
       :disabled="!createAdmin"
-      :suffix="`@${domain.name}`"
+      :suffix="`@${value.name}`"
+      @input="update"
       />
   </validation-provider>
-  <v-switch v-model="domain.domain_admin.with_random_password"
+  <v-switch v-model="form.domain_admin.with_random_password"
             :label="'Random password' | translate"
             :disabled="!createAdmin"
             :hint="'Generate a random password for the administrator.' | translate"
             @change="updatePassword"
             persistent-hint
+            @input="update"
             />
-  <v-switch v-model="domain.domain_admin.with_mailbox"
+  <v-switch v-model="form.domain_admin.with_mailbox"
             :label="'With a mailbox' | translate"
             :disabled="!createAdmin"
             :hint="'Create a mailbox for the administrator.' | translate"
             persistent-hint
+            @input="update"
             />
-  <v-switch v-model="domain.domain_admin.with_aliases"
+  <v-switch v-model="form.domain_admin.with_aliases"
             :label="'Create aliases' | translate"
             :disabled="!createAdmin"
             :hint="'Create standard aliases for the domain.' | translate"
             persistent-hint
+            @input="update"
             />
 </validation-observer>
 </template>
@@ -45,26 +49,34 @@
 import accounts from '@/api/accounts'
 
 export default {
-  props: ['domain'],
+  props: ['value'],
   data () {
     return {
-      createAdmin: false
+      createAdmin: false,
+      form: {}
     }
   },
   methods: {
     updatePassword (value) {
       if (value) {
         accounts.getRandomPassword().then(resp => {
-          this.$set(this.domain.domain_admin, 'password', resp.data.password)
+          this.$set(this.form.domain_admin, 'password', resp.data.password)
+          this.update()
         })
       } else {
-        delete this.domain.domain_admin.password
+        delete this.form.domain_admin.password
+        this.update()
       }
     },
-
-    update (val) {
+    updateCreateAdmin (val) {
       this.$emit('createAdmin', val)
+    },
+    update () {
+      this.$emit('input', this.form)
     }
+  },
+  mounted () {
+    this.form = { ...this.value }
   }
 }
 </script>

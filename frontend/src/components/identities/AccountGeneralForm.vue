@@ -7,37 +7,42 @@
     <label class="m-label">{{ $gettext('Username') }}</label>
     <email-field
       ref="username"
-      v-model="account.username"
+      v-model="form.username"
       :error-messages="errors"
       :placeholder="usernamePlaceholder"
       :type="usernameInputType"
+      @input="update"
       />
   </validation-provider>
   <label class="m-label">{{ $gettext('First name') }}</label>
   <v-text-field
-    v-model="account.first_name"
+    v-model="form.first_name"
     autocomplete="new-password"
     outlined
     dense
+    @input="update"
     />
   <label class="m-label">{{ $gettext('Last name') }}</label>
   <v-text-field
-    v-model="account.last_name"
+    v-model="form.last_name"
     autocomplete="new-password"
     outlined
     dense
+    @input="update"
     />
 
   <account-password-form
     ref="passwordForm"
-    v-model="account.password"
-    :account="account"
+    v-model="form.password"
+    :account="form"
+    @input="update"
     />
 
   <v-switch
-    v-model="account.is_active"
+    v-model="form.is_active"
     :label="'Enabled' | translate"
     dense
+    @input="update"
     />
 </validation-observer>
 </template>
@@ -51,22 +56,34 @@ export default {
     AccountPasswordForm,
     EmailField
   },
-  props: ['account'],
+  props: ['value', 'account'],
+  data () {
+    return {
+      form: {}
+    }
+  },
   computed: {
     usernamePlaceholder () {
-      if (this.account.role === 'SimpleUsers') {
+      if (this.form.role === 'SimpleUsers') {
         return this.$gettext('Enter an email address')
       }
       return this.$gettext('Enter a simple username or an email address')
     },
     usernameInputType () {
-      return (this.account.role === 'SimpleUsers') ? 'email' : 'text'
+      return (this.form.role === 'SimpleUsers') ? 'email' : 'text'
     }
   },
   methods: {
     async validateForm () {
       return await this.$refs.observer.validate() && await this.$refs.passwordForm.validate()
+    },
+    update () {
+      console.log(this.form)
+      this.$emit('input', this.form)
     }
+  },
+  mounted () {
+    this.form = { ...this.value }
   }
 }
 </script>

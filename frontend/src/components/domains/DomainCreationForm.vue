@@ -9,19 +9,19 @@
   @create="submit"
   >
   <template v-slot:form.general="{ step }">
-    <domain-general-form :ref="`form_${step}`" :domain="domain" />
+    <domain-general-form :ref="`form_${step}`" v-model="domain" />
   </template>
   <template v-slot:form.dns="{ step }">
-    <domain-dns-form :ref="`form_${step}`" :domain="domain" />
+    <domain-dns-form :ref="`form_${step}`" v-model="domain" />
   </template>
   <template v-slot:form.limitations="{ step }">
-    <domain-limitations-form :ref="`form_${step}`" :domain="domain" />
+    <domain-limitations-form :ref="`form_${step}`" v-model="domain" />
   </template>
   <template v-slot:form.options="{ step }">
-    <domain-options-form :ref="`form_${step}`" :domain="domain" @createAdmin="updateCreateAdmin" />
+    <domain-options-form :ref="`form_${step}`" v-model="domain" @createAdmin="updateCreateAdmin" />
   </template>
   <template v-slot:form.transport="{ step }">
-    <domain-transport-form :ref="`form_${step}`" :domain="domain" />
+    <domain-transport-form :ref="`form_${step}`" v-model="domain.transport" />
   </template>
   <template v-slot:item.with_random_password="{ item }">
     <template v-if="item.value">

@@ -17,7 +17,7 @@ const state = {
 const getters = {
   domains: state => state.domains,
   getDomainByPk: state => pk => {
-    for (var domain of state.domains) {
+    for (const domain of state.domains) {
       if (domain.pk === parseInt(pk, 10)) {
         return domain
       }
@@ -65,7 +65,7 @@ const mutations = {
     state.domains.push(domain)
   },
   [UPDATE_DOMAIN] (state, { domain }) {
-    state.domains.filter(function (item, pos) {
+    state.domains.forEach(function (item, pos) {
       if (item.pk === domain.pk) {
         Vue.set(state.domains, pos, domain)
       }

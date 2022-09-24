@@ -9,16 +9,16 @@
   @create="submit"
   >
   <template v-slot:form.role="{ step }">
-    <account-role-form :ref="`form_${step}`" :account="account" />
+    <account-role-form :ref="`form_${step}`" v-model="account.role" :account="account" />
   </template>
   <template v-slot:form.identification="{ step }">
-    <account-general-form v-if="step >= 2" :ref="`form_${step}`" :account="account" />
+    <account-general-form v-if="step >= 2" :ref="`form_${step}`" v-model="account" />
   </template>
   <template v-slot:form.mailbox="{ step }">
-    <account-mailbox-form :ref="`form_${step}`" :account="account" />
+    <account-mailbox-form :ref="`form_${step}`" v-model="account" />
   </template>
   <template v-slot:form.aliases="{ step }">
-    <account-alias-form v-if="step >= 4" :ref="`form_${step}`" :account="account" />
+    <account-alias-form v-if="step >= 4" :ref="`form_${step}`" v-model="account.aliases" />
   </template>
   <template v-slot:item.random_password="{ item }">
     <template v-if="item.value">

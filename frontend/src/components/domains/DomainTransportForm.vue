@@ -28,17 +28,19 @@
               >
               <label class="m-label">{{ setting.label }}</label>
               <v-text-field
-                v-model="domain.transport.settings[`${service.name}_${setting.name}`]"
+                v-model="form.transport.settings[`${service.name}_${setting.name}`]"
                 outlined
                 :error-messages="errors"
                 :type="setting.type === 'int' ? 'number' : 'text'"
+                @input="update"
                 />
             </template>
             <v-checkbox
               v-else-if="setting.type === 'boolean'"
-              v-model="domain.transport.settings[`${service.name}_${setting.name}`]"
+              v-model="form.transport.settings[`${service.name}_${setting.name}`]"
               :label="setting.label"
               :error-messages="errors"
+              @change="update"
               />
           </validation-provider>
         </div>
@@ -53,17 +55,18 @@ import transports from '@/api/transports'
 
 export default {
   props: {
-    domain: Object
+    value: Object
   },
   data () {
     return {
       backends: [],
+      form: {},
       service: null
     }
   },
   methods: {
     resetForm (value) {
-      this.$set(this.domain, 'transport', { service: value.name, settings: {} })
+      this.$set(this.form, 'transport', { service: value.name, settings: {} })
       for (const setting of value.settings) {
         if (setting.default) {
           let defaultValue = setting.default
@@ -76,7 +79,8 @@ export default {
               defaultValue = true
             }
           }
-          this.$set(this.domain.transport.settings, `${value.name}_${setting.name}`, defaultValue)
+          this.$set(this.form.transport.settings, `${value.name}_${setting.name}`, defaultValue)
+          this.update()
         }
       }
     },
@@ -87,13 +91,17 @@ export default {
           data.transport.settings[fullName] = parseInt(data.transport.settings[fullName])
         }
       }
+    },
+    update () {
+      this.$emit('input', this.form)
     }
   },
   mounted () {
+    this.form = { ...this.value }
     transports.getAll().then(resp => {
       this.backends = resp.data
-      if (this.domain) {
-        this.service = this.backends.find(backend => backend.name === this.domain.transport.service)
+      if (this.value) {
+        this.service = this.backends.find(backend => backend.name === this.form.transport.service)
       }
     })
   },

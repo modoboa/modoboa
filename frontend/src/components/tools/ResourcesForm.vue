@@ -13,6 +13,7 @@
       outlined
       dense
       :error-messages="errors"
+      @input="$emit('input', resources)"
       />
   </validation-provider>
 </validation-observer>
@@ -21,7 +22,12 @@
 <script>
 export default {
   props: {
-    resources: Array
+    value: Array
+  },
+  data () {
+    return {
+      resources: []
+    }
   },
   methods: {
     async validateForm () {
@@ -31,6 +37,14 @@ export default {
       return this.resources.map(r => {
         return { name: r.name, max_value: r.max_value }
       })
+    }
+  },
+  watch: {
+    value: {
+      handler: function (newValue) {
+        this.resources = [...newValue]
+      },
+      immediate: true
     }
   }
 }

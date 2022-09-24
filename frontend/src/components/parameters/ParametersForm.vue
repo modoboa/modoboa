@@ -121,7 +121,7 @@ export default {
       }
       let result = true
       element.display.split('&').forEach(rule => {
-        var [field, value] = rule.split('=')
+        let [field, value] = rule.split('=')
         if (value === 'true' || value === 'false') {
           value = Boolean(value)
         }

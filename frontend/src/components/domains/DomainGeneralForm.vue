@@ -6,26 +6,29 @@
     >
     <v-text-field
       :label="'Domain name (ex: domain.tld)' | translate"
-      v-model="domain.name"
+      v-model="form.name"
       :error-messages="errors"
       outlined
+      @input="update"
       />
   </validation-provider>
   <validation-provider
     v-slot="{ errors }"
     rules="required"
     >
-    <choice-field v-model="domain.type"
+    <choice-field v-model="form.type"
                   :label="'Type' | translate"
                   :choices="domainTypes"
                   :error-messages="errors"
+                  @input="update"
                   />
   </validation-provider>
   <v-switch
     :label="'Enabled' | translate"
-    v-model="domain.enabled"
+    v-model="form.enabled"
     :hint="'Control if this domain will be allowed to send and receive messages' | translate"
     persistent-hint
+    @change="update"
     />
 </validation-observer>
 </template>
@@ -37,7 +40,7 @@ export default {
   components: {
     ChoiceField
   },
-  props: ['domain'],
+  props: ['value'],
   data () {
     return {
       domainTypes: [
@@ -51,7 +54,21 @@ export default {
           icon: 'mdi-earth',
           value: 'relaydomain'
         }
-      ]
+      ],
+      form: {}
+    }
+  },
+  methods: {
+    update () {
+      this.$emit('input', this.form)
+    }
+  },
+  watch: {
+    value: {
+      handler: function (newValue) {
+        this.form = { ...newValue }
+      },
+      immediate: true
     }
   }
 }

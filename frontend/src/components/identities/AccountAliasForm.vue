@@ -15,11 +15,11 @@
       />
   </validation-provider>
   <v-chip
-    v-for="(alias, index) in account.aliases"
+    v-for="(alias, index) in aliases"
     :key="index"
     class="mr-2 mt-2"
     close
-    @click:close="account.aliases.splice(index, 1)"
+    @click:close="removeAlias(index)"
     >
     {{ alias }}
   </v-chip>
@@ -31,20 +31,21 @@ import accounts from '@/api/accounts'
 import EmailField from '@/components/tools/EmailField'
 
 export default {
-  props: ['account'],
+  props: ['value'],
   components: {
     EmailField
   },
   data () {
     return {
-      currentAlias: ''
+      currentAlias: '',
+      aliases: []
     }
   },
   methods: {
     async addAlias () {
       try {
         await accounts.validate({ aliases: [this.currentAlias] })
-        this.account.aliases.push(this.currentAlias)
+        this.aliases.push(this.currentAlias)
         this.$refs.aliasField.reset()
       } catch (error) {
         let errorMsg = null
@@ -55,7 +56,17 @@ export default {
         }
         this.$refs.observer.setErrors({ alias: errorMsg })
       }
+    },
+    removeAlias (index) {
+      this.aliases.splice(index, 1)
+      this.update()
+    },
+    update () {
+      this.$emit('input', this.aliases)
     }
+  },
+  mounted () {
+    this.aliases = [...this.value]
   }
 }
 </script>

@@ -27,7 +27,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <account-role-form ref="roleForm" :account="editedAccount" />
+        <account-role-form ref="roleForm" v-model="editedAccount.role" :account="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel>
@@ -61,7 +61,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <account-general-form ref="generalForm" :account="editedAccount" />
+        <account-general-form ref="generalForm" v-model="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel v-if="usernameIsEmail">
@@ -95,11 +95,11 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <account-mailbox-form ref="mailboxForm" :account="editedAccount" />
+        <account-mailbox-form ref="mailboxForm" v-model="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel
-      v-if="limitsConfig.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
+      v-if="limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
       >
       <v-expansion-panel-header>
         <v-row no-gutters>
@@ -144,7 +144,7 @@ export default {
   props: ['account'],
   computed: {
     usernameIsEmail () {
-      return this.editedAccount.username.indexOf('@') !== -1
+      return this.editedAccount.username && this.editedAccount.username.indexOf('@') !== -1
     }
   },
   data () {

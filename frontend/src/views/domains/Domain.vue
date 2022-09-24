@@ -16,9 +16,12 @@
           />
       </v-col>
       <v-col cols="6">
-        <dns-detail :domain="domain" />
+        <dns-detail v-model="domain" />
         <div class="mt-4" />
-        <resources v-if="limitsConfig.enable_domain_limits && domain.resources && domain.resources.length" :resources="domain.resources" />
+        <resources
+          v-if="limitsConfig.params && limitsConfig.params.enable_domain_limits && domain.resources && domain.resources.length"
+          :resources="domain.resources"
+          />
       </v-col>
     </v-row>
   </v-layout>

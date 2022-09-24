@@ -16,11 +16,11 @@
       />
   </validation-provider>
   <v-chip
-    v-for="(recipient, index) in alias.recipients"
+    v-for="(recipient, index) in recipients"
     :key="index"
     class="mr-2 mt-2"
     close
-    @click:close="alias.recipients.splice(index, 1)"
+    @click:close="removeRecipient(index)"
     >
     {{ recipient }}
   </v-chip>
@@ -31,19 +31,37 @@
 import EmailField from '@/components/tools/EmailField'
 
 export default {
-  props: ['alias'],
+  props: ['value'],
   components: {
     EmailField
   },
   data () {
     return {
-      recipient: ''
+      recipient: '',
+      recipients: []
     }
   },
   methods: {
     async addRecipient () {
-      this.alias.recipients.push(this.recipient)
+      this.recipients.push(this.recipient)
+      this.$emit('input', this.recipients)
       this.$refs.recipientField.reset()
+    },
+    removeRecipient (index) {
+      this.recipients.splice(index, 1)
+      this.$emit('input', this.recipients)
+    }
+  },
+  watch: {
+    value: {
+      handler: function (newValue) {
+        if (newValue) {
+          this.recipients = [...newValue]
+        } else {
+          this.recipients = []
+        }
+      },
+      immediate: true
     }
   }
 }

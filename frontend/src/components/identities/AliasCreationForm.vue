@@ -9,10 +9,10 @@
   @create="submit"
   >
   <template v-slot:form.general="{ step }">
-    <alias-general-form :ref="`form_${step}`" :alias="alias" />
+    <alias-general-form :ref="`form_${step}`" v-model="alias" />
   </template>
   <template v-slot:form.recipients="{ step }">
-    <alias-recipient-form :ref="`form_${step}`" :alias="alias" />
+    <alias-recipient-form :ref="`form_${step}`" v-model="alias.recipients" />
   </template>
 </creation-form>
 </template>
