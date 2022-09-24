@@ -30,7 +30,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <domain-general-form ref="generalForm" :domain="editedDomain" />
+        <domain-general-form ref="generalForm" v-model="editedDomain" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel>
@@ -66,7 +66,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <domain-dns-form ref="dnsForm" :domain="editedDomain" />
+        <domain-dns-form ref="dnsForm" v-model="editedDomain" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel>
@@ -101,7 +101,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <domain-limitations-form :domain="editedDomain" />
+        <domain-limitations-form v-model="editedDomain" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel v-if="editedDomain.type === 'relaydomain'">
@@ -130,10 +130,12 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <domain-transport-form ref="transportForm" :domain="editedDomain" />
+        <domain-transport-form ref="transportForm" v-model="editedDomain" />
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-expansion-panel v-if="limitsConfig.enable_domain_limits && (authUser.role === 'SuperAdmins' || authUser.role === 'Resellers')">
+    <v-expansion-panel
+      v-if="limitsConfig.params && limitsConfig.params.enable_domain_limits && (authUser.role === 'SuperAdmins' || authUser.role === 'Resellers')"
+      >
       <v-expansion-panel-header>
         <v-row no-gutters>
           <v-col cols="4">
@@ -142,7 +144,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <resources-form ref="resourcesForm" :resources="domain.resources" />
+        <resources-form ref="resourcesForm" v-model="editedDomain.resources" />
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -224,6 +226,7 @@ export default {
       handler: function (val) {
         if (val) {
           this.editedDomain = JSON.parse(JSON.stringify(val))
+          console.log(this.editedDomain)
         }
       },
       immediate: true

@@ -12,7 +12,7 @@
     </v-col>
     <v-col cols="6">
       <resources
-        v-if="limitsConfig.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
+        v-if="limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
         :resources="account.resources"
         />
       <account-aliases v-if="account.aliases" class="mt-2" :account="account" />

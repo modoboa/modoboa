@@ -32,7 +32,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <alias-general-form ref="generalForm" :alias="editedAlias" />
+        <alias-general-form ref="generalForm" v-model="editedAlias" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel>
@@ -65,7 +65,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <alias-recipient-form ref="recipientForm" :alias="editedAlias" />
+        <alias-recipient-form ref="recipientForm" v-model="editedAlias.recipients" />
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>

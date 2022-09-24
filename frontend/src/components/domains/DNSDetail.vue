@@ -1,5 +1,5 @@
 <template>
-<v-card>
+<v-card v-if="value">
   <v-card-title>
     <span class="headline">DNS</span>
     <v-btn icon :title="'DNS configuration help'|translate" @click="showConfigHelp = true">
@@ -101,10 +101,10 @@
         </v-chip>
       </v-col>
     </v-row>
-    <v-row v-if="domain.enable_dkim">
+    <v-row v-if="value.enable_dkim">
       <v-col cols="3"><translate>DKIM key</translate></v-col>
       <v-col cols="9">
-        <div v-if="domain.dkim_private_key_path && domain.dkim_public_key">
+        <div v-if="value.dkim_private_key_path && value.dkim_public_key">
           <v-btn color="primary" small @click="showDKIMKey = true">
             <translate>Show key</translate>
           </v-btn>
@@ -120,13 +120,13 @@
             max-width="800px"
             persistent
             >
-    <domain-dns-config :domain="domain" @close="showConfigHelp = false" />
+    <domain-dns-config :domain="value" @close="showConfigHelp = false" />
   </v-dialog>
   <v-dialog v-model="showDKIMKey"
             max-width="800px"
             persistent
             >
-    <domain-dkim-key :domain="domain" @close="showDKIMKey = false" />
+    <domain-dkim-key :domain="value" @close="showDKIMKey = false" />
   </v-dialog>
 </v-card>
 </template>
@@ -138,7 +138,7 @@ import DomainDKIMKey from './DomainDKIMKey'
 import DomainDNSConfig from './DomainDNSConfig'
 
 export default {
-  props: ['domain'],
+  props: ['value'],
   components: {
     'domain-dkim-key': DomainDKIMKey,
     'domain-dns-config': DomainDNSConfig
@@ -160,21 +160,25 @@ export default {
       const payload = {
         dkim_private_key_path: ''
       }
-      domains.patchDomain(this.domain.pk, payload).then(resp => {
+      domains.patchDomain(this.value.pk, payload).then(resp => {
         bus.$emit('notification', {
           msg: this.$gettext('A new key will be generated soon. Refresh the page in a moment to see it.'),
           type: 'success'
         })
-        this.domain.dkim_private_key_path = ''
+        const domain = { ...this.value }
+        domain.dkim_private_key_path = ''
+        this.$emit('input', domain)
       })
     }
   },
   watch: {
-    domain: {
+    value: {
       handler: function (val) {
-        domains.getDomainDNSDetail(val.pk).then(resp => {
-          this.detail = resp.data
-        })
+        if (val) {
+          domains.getDomainDNSDetail(val.pk).then(resp => {
+            this.detail = resp.data
+          })
+        }
       },
       immediate: true
     }

@@ -8,10 +8,11 @@
       :label="'Quota' | translate"
       :hint="'Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
       persistent-hint
-      v-model="domain.quota"
+      v-model="form.quota"
       :error-messages="errors"
       class="mb-4"
       outlined
+      @input="update"
       />
   </validation-provider>
   <validation-provider
@@ -22,10 +23,11 @@
       :label="'Default mailbox quota' | translate"
       :hint="'Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota.' | translate"
       persistent-hint
-      v-model="domain.default_mailbox_quota"
+      v-model="form.default_mailbox_quota"
       :error-messages="errors"
       class="mb-4"
       outlined
+      @input="update"
       />
   </validation-provider>
   <validation-provider
@@ -36,9 +38,10 @@
       :label="'Message sending limit' | translate"
       :hint="'Number of messages this domain can send per day. Leave empty for no limit.' | translate"
       persistent-hint
-      v-model="domain.message_sending_limit"
+      v-model="form.message_sending_limit"
       :error-messages="errors"
       outlined
+      @input="update"
       />
   </validation-provider>
 </validation-observer>
@@ -46,6 +49,21 @@
 
 <script>
 export default {
-  props: ['domain']
+  props: {
+    value: Object
+  },
+  data () {
+    return {
+      form: {}
+    }
+  },
+  methods: {
+    update () {
+      this.$emit('input', this.form)
+    }
+  },
+  mounted () {
+    this.form = { ...this.value }
+  }
 }
 </script>

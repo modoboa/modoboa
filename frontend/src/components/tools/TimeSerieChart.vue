@@ -72,12 +72,6 @@ export default {
         return this.statistics.title
       }
       return ''
-    },
-    colors () {
-      if (this.graphicName === 'averagetraffic') {
-        return ['#ff6347', '#ffff00', '#4682B4', '#7cfc00', '#ffa500', '#d3d3d3']
-      }
-      return ['#ffa500', '#41d1cc']
     }
   },
   data () {
@@ -85,7 +79,7 @@ export default {
       dateMenu: false,
       menu: false,
       options: {
-        colors: this.colors,
+        colors: [],
         chart: {
           type: 'area',
           stacked: false,
@@ -120,6 +114,12 @@ export default {
     }
   },
   methods: {
+    getColors () {
+      if (this.graphicName === 'averagetraffic') {
+        return ['#ff6347', '#ffff00', '#4682B4', '#7cfc00', '#ffa500', '#d3d3d3']
+      }
+      return ['#ffa500', '#41d1cc']
+    },
     setCustomPeriod () {
       this.period = 'custom'
       this.fetchStatistics()
@@ -148,6 +148,11 @@ export default {
   },
   mounted () {
     this.fetchStatistics()
+  },
+  watch: {
+    graphicName (newValue) {
+      this.$set(this.options, 'colors', this.getColors())
+    }
   }
 }
 </script>

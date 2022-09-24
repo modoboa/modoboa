@@ -151,7 +151,6 @@ export default {
   },
   watch: {
     value (newValue) {
-      console.log(newValue)
       this.input = newValue
     }
   }

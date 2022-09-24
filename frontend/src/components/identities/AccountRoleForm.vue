@@ -6,12 +6,14 @@
     >
     <v-row>
       <v-col cols="7">
-        <choice-field v-model="account.role"
-                      :label="'Choose a role' | translate"
-                      :choices="accountRoles"
-                      :error-messages="errors"
-                      :choices-per-line="2"
-                      />
+        <choice-field
+          :value="account.role"
+          :label="'Choose a role' | translate"
+          :choices="accountRoles"
+          :error-messages="errors"
+          :choices-per-line="2"
+          @input="value => $emit('input', value)"
+          />
       </v-col>
       <v-col cols="5">
         <v-alert text color="primary" class="mt-11 ml-4 rounded-lg">
@@ -32,7 +34,7 @@ export default {
   components: {
     ChoiceField
   },
-  props: ['account'],
+  props: ['value', 'account'],
   computed: {
     roleLabel () {
       const role = this.accountRoles.find(role => role.value === this.account.role)

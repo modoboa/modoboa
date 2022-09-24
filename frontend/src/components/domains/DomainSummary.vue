@@ -1,5 +1,5 @@
 <template>
-<v-card>
+<v-card v-if="domain">
   <v-card-title>
     <translate class="headline">General information</translate>
   </v-card-title>

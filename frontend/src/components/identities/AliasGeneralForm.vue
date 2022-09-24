@@ -1,12 +1,13 @@
 <template>
 <validation-observer ref="observer">
   <v-switch
-    v-if="!alias.pk"
-    v-model="alias.random"
+    v-if="!form.pk"
+    v-model="form.random"
     :label="'Random address'|translate"
+    @input="update"
     />
   <validation-provider
-    v-if="!alias.random"
+    v-if="!form.random"
     v-slot="{ errors }"
     name="address"
     rules="required"
@@ -14,21 +15,22 @@
     <label class="m-label">{{ $gettext('Email address') }}</label>
     <email-field
       ref="address"
-      v-model="alias.address"
+      v-model="form.address"
       :error-messages="errors"
       type="email"
       outlined
       dense
+      @input="update"
       />
   </validation-provider>
   <validation-provider
-    v-if="alias.random"
+    v-if="form.random"
     v-slot="{ errors }"
     rules="required"
     >
     <label class="m-label">{{ $gettext('Domain') }}</label>
     <v-select
-      v-model="alias.domain"
+      v-model="form.domain"
       :items="domains"
       :error-messages="errors"
       item-text="name"
@@ -36,24 +38,28 @@
       outlined
       dense
       @change="updateAddress"
+      @input="update"
       />
   </validation-provider>
   <v-switch
-    v-model="alias.enabled"
+    v-model="form.enabled"
     :label="'Enabled'|translate"
+    @input="update"
     />
   <label class="m-label">{{ $gettext('Expire at') }}</label>
   <v-text-field
-    v-model="alias.expire"
+    v-model="form.expire"
     outlined
     dense
+    @input="update"
     />
   <label class="m-label">{{ $gettext('Description') }}</label>
   <v-textarea
-    v-model="alias.description"
+    v-model="form.description"
     rows="2"
     outlined
     dense
+    @input="update"
     />
 
 </validation-observer>
@@ -68,23 +74,30 @@ export default {
   components: {
     EmailField
   },
-  props: ['alias'],
+  props: ['value'],
   computed: {
     ...mapGetters({
       domains: 'identities/domains'
     })
   },
+  data () {
+    return {
+      form: {}
+    }
+  },
   methods: {
     updateAddress (value) {
       aliases.getRandomAddress().then(resp => {
-        this.$set(this.alias, 'address', `${resp.data.address}@${value.name}`)
+        this.$set(this.form, 'address', `${resp.data.address}@${value.name}`)
+        this.update()
       })
+    },
+    update () {
+      this.$emit('input', this.form)
     }
   },
-  watch: {
-    alias (val) {
-      console.log(val)
-    }
+  mounted () {
+    this.form = { ...this.value }
   }
 }
 </script>
