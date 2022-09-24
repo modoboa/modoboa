@@ -5,6 +5,8 @@ import logging
 from django.utils.html import escape
 from django.utils.translation import ugettext as _
 
+from django.contrib.auth import login
+
 from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -31,6 +33,7 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
             raise InvalidToken(e.args[0])
 
         user = serializer.user
+        login(request, user)
         logger.info(
             _("User '%s' successfully logged in"), user.username
         )

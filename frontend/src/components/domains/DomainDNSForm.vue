@@ -34,7 +34,7 @@ export default {
   components: {
     ChoiceField
   },
-  props: ['domain'],
+  props: ['value'],
   data () {
     return {
       dkimKeyLengths: [
@@ -59,8 +59,13 @@ export default {
       this.$emit('input', this.form)
     }
   },
-  mounted () {
-    this.form = { ...this.value }
+  watch: {
+    value: {
+      handler: function (newValue) {
+        this.form = { ...newValue }
+      },
+      immediate: true
+    }
   }
 }
 </script>
