@@ -50,14 +50,14 @@ function ModoChart(selection) {
         var y = d3.scale.linear().range([height, 0]),
             y2 = d3.scale.linear().range([preview_height, 0]);
         var yAxis = d3.svg.axis().scale(y).orient("left");
-        var bisectDate = d3.bisector(function(d) { return d.x * 1000; }).left;
+        var bisectDate = d3.bisector(function(d) { return d.timestamp * 1000; }).left;
 
         var brush = d3.svg.brush()
             .x(x2)
             .on("brush", brushed);
 
         x.domain(
-            d3.extent(data.series[0].data.map(function(d) { return d.x * 1000; }))
+            d3.extent(data.series[0].data.map(function(d) { return d.timestamp * 1000; }))
         );
         y.domain(
             [d3.min(data.series, function(d) { return d3.min(d.data, function(v) { return v.y; }); }),
@@ -69,12 +69,12 @@ function ModoChart(selection) {
 
         var area = d3.svg.area()
             .interpolate("monotone")
-            .x(function(d) { return x(d.x * 1000); })
+            .x(function(d) { return x(d.timestamp * 1000); })
             .y0(height)
             .y1(function(d) { return y(d.y); });
         var area2 = d3.svg.area()
             .interpolate("monotone")
-            .x(function(d) { return x2(d.x * 1000); })
+            .x(function(d) { return x2(d.timestamp * 1000); })
             .y0(preview_height)
             .y1(function(d) { return y2(d.y); });
 
@@ -128,7 +128,7 @@ function ModoChart(selection) {
 
                 points[path] = {};
                 d.data.forEach(function(d) {
-                    points[path][d.x] = d.y;
+                    points[path][d.timestamp] = d.y;
                 });
                 focus.append("circle")
                     .attr("class", "tracker tracker-" + i)
