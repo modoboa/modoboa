@@ -8,7 +8,7 @@
   </v-card-title>
   <v-card-text>
     <translate class="overline">MX records</translate>
-    <template v-if="domain.dns_global_status=='pending'">
+    <template v-if="value.dns_global_status=='pending'">
       <v-row>
         <v-col>
           <v-chip color="info" small>
@@ -29,7 +29,7 @@
       </v-data-table>
     </template>
     <translate class="overline">Auto configuration</translate>
-    <template v-if="domain.dns_global_status=='pending'">
+    <template v-if="value.dns_global_status=='pending'">
       <v-row>
         <v-col>
           <v-chip color="info" small>
@@ -167,7 +167,6 @@ export default {
   },
   data () {
     return {
-      domain: { pk: this.$route.params.id },
       detail: {},
       mxRecordHeaders: [
         { text: this.$gettext('Name'), value: 'name' },
@@ -205,11 +204,6 @@ export default {
       },
       immediate: true
     }
-  },
-  mounted () {
-    domains.getDomain(this.$route.params.id).then(resp => {
-      this.domain = resp.data
-    })
   }
 }
 </script>
