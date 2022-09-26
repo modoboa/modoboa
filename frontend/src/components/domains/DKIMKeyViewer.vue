@@ -1,6 +1,7 @@
 <template>
-<button @click="copyDNSToClipboard()" class='dkimbutton'><p id='dkimdns' class='dkim'>
-{{ domain.dkim_key_selector }}._domain_key.{{ domain.name }}. IN TXT ({{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }})</p></button>
+<button @click="copyDNSToClipboard()" class='dkimbutton'>
+  <pre id='dkimdns' class='dkim'>{{ domain.dkim_key_selector }}._domain_key.{{ domain.name }}. IN TXT ({{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }})</pre>
+  </button>
 </template>
 
 <script>
