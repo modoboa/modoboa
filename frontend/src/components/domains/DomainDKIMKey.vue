@@ -11,6 +11,7 @@
     transition: all 0.2s
 }
 .dkim {
+  white-space: normal;
   word-break: break-all;
 }
 </style>
@@ -31,7 +32,7 @@
       elevation="2"
       dense
       >
-      <button @click="copyPubKeyToClipboard()" class='dkimbutton'><p id='dkimpub' class='dkim'>{{ domain.dkim_public_key }}</p></button>
+      <button @click="copyPubKeyToClipboard()" class='dkimbutton'><pre id='dkimpub' class='dkim'>{{ domain.dkim_public_key }}</pre></button>
     </v-alert>
   </v-card-text>
   <v-card-text>
