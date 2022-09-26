@@ -164,7 +164,7 @@ export default {
       const confirm = await this.$refs.confirm.open(
         this.$gettext('Warning'),
         this.$gettext(
-          'Do you really want to regenerate the DKIM keys set for this domain ?'
+          'DKIM keys already exist for this domain. Do you want to overwrite them?'
         ),
         {
           color: 'error',

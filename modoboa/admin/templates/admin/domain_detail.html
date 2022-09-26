@@ -130,17 +130,17 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="dkim_regenerate_dialog">{% trans "Regenerate ?" %}</h5>
+                            <h5 class="modal-title" id="dkim_regenerate_dialog">{% trans "Warning" %}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            {% trans "Are you sure you want to regenerate your DKIM key ?" %}
+                            {% trans "DKIM keys already exist for this domain. Do you want to overwrite them?" %}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
-                            <a id="refresh_dkim_key" class="btn btn-warning" href="#" title="{% trans 'Generate new key' %}" data-dismiss="modal">{% trans "Regenerate" %}</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "No" %}</button>
+                            <a id="refresh_dkim_key" class="btn btn-danger" href="#" title="{% trans 'Generate new key' %}" data-dismiss="modal">{% trans "Yes" %}</a>
                         </div>
                     </div>
                 </div>
@@ -207,12 +207,8 @@
           });
       });
   });
-  function copyRaw() {
-    const text = document.getElementById("copy_raw_dkim_key").textContent;
-    navigator.clipboard.writeText(text);
-  }
-  function copyDns() {
-    const text =document.getElementById("copy_dns_dkim_key").textContent;
+  function copy(id) {
+    const text = document.getElementById(id).textContent;
     navigator.clipboard.writeText(text);
   }
   </script>

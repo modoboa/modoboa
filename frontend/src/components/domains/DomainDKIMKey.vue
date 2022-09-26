@@ -32,7 +32,7 @@
       elevation="2"
       dense
       >
-      <button @click="copyPubKeyToClipboard()" class='dkimbutton'><pre id='dkimpub' class='dkim'>{{ domain.dkim_public_key }}</pre></button>
+      <button @click="copyPubDKIM()" class="dkimbutton"><pre id="dkimpub" class="dkim">{{ domain.dkim_public_key }}</pre></button>
     </v-alert>
   </v-card-text>
   <v-card-text>
@@ -70,9 +70,8 @@ export default {
     close () {
       this.$emit('close')
     },
-    copyPubKeyToClipboard () {
-      const text = document.getElementById('dkimpub').textContent
-      navigator.clipboard.writeText(text)
+    copyPubDKIM () {
+      navigator.clipboard.writeText(document.getElementById('dkimpub').textContent)
     }
   }
 }
