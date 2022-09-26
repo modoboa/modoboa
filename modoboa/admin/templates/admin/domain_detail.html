@@ -124,7 +124,27 @@
               <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#domain_dkim_key">
                 {% trans "Show key" %}
               </button>
-              <a id="refresh_dkim_key" class="btn btn-default btn-xs" href="#" title="{% trans 'Generate new key' %}"><span class="fa fa-refresh"></span></a>
+              <button data-toggle="modal" class="btn btn-default btn-xs" data-target="#dkim_regenerate_dialog"><span class="fa fa-refresh"></span></button>
+              
+              <div class="modal fade" id="dkim_regenerate_dialog" tabindex="-1" role="dialog" aria-labelledby="dkim_regenerate_dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="dkim_regenerate_dialog">{% trans "Regenerate ?" %}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {% trans "Are you sure you want to regenerate your DKIM key ?" %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                            <a id="refresh_dkim_key" class="btn btn-warning" href="#" title="{% trans 'Generate new key' %}" data-dismiss="modal">{% trans "Regenerate" %}</a>
+                        </div>
+                    </div>
+                </div>
+              </div>
             {% else %}
               {% trans "Not generated" %}
             {% endif %}
@@ -187,5 +207,13 @@
           });
       });
   });
+  function copyRaw() {
+    const text = document.getElementById("copy_raw_dkim_key").textContent;
+    navigator.clipboard.writeText(text);
+  }
+  function copyDns() {
+    const text =document.getElementById("copy_dns_dkim_key").textContent;
+    navigator.clipboard.writeText(text);
+  }
   </script>
 {% endblock %}

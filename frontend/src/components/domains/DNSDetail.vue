@@ -128,6 +128,8 @@
             >
     <domain-dkim-key :domain="value" @close="showDKIMKey = false" />
   </v-dialog>
+  <confirm-dialog ref="confirm">
+  </confirm-dialog>
 </v-card>
 </template>
 
@@ -136,12 +138,14 @@ import { bus } from '@/main'
 import domains from '@/api/domains'
 import DomainDKIMKey from './DomainDKIMKey'
 import DomainDNSConfig from './DomainDNSConfig'
+import ConfirmDialog from '@/components/layout/ConfirmDialog'
 
 export default {
   props: ['value'],
   components: {
     'domain-dkim-key': DomainDKIMKey,
-    'domain-dns-config': DomainDNSConfig
+    'domain-dns-config': DomainDNSConfig,
+    ConfirmDialog
   },
   data () {
     return {
@@ -156,7 +160,21 @@ export default {
     }
   },
   methods: {
-    generateNewKey () {
+    async generateNewKey (domain) {
+      const confirm = await this.$refs.confirm.open(
+        this.$gettext('Warning'),
+        this.$gettext(
+          'Do you really want to regenerate the DKIM keys set for this domain ?'
+        ),
+        {
+          color: 'error',
+          cancelLabel: this.$gettext('No'),
+          agreeLabel: this.$gettext('Yes')
+        }
+      )
+      if (!confirm) {
+        return
+      }
       const payload = {
         dkim_private_key_path: ''
       }
