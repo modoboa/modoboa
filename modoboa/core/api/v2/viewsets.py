@@ -8,7 +8,9 @@ import qrcode.image.svg
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, permissions, response, viewsets
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
@@ -24,8 +26,8 @@ from . import serializers
 class AccountViewSet(core_v1_viewsets.AccountViewSet):
     """Account viewset."""
 
-    @action(methods=["get"], detail=False)
     @extend_schema(responses=admin_v1_serializers.AccountSerializer)
+    @action(methods=["get"], detail=False)
     def me(self, request):
         """Return information about connected user."""
         serializer = admin_v1_serializers.AccountSerializer(request.user)
@@ -43,6 +45,47 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
             data=request.data, context={"user": request.user})
         serializer.is_valid(raise_exception=True)
         return response.Response()
+
+    @extend_schema(
+        description="Get current API token",
+        responses={200: serializers.UserAPITokenSerializer},
+        methods=["GET"]
+    )
+    @extend_schema(
+        description="Generate new API token",
+        responses={201: serializers.UserAPITokenSerializer},
+        methods=["POST"]
+    )
+    @extend_schema(
+        description="Delete current API token",
+        methods=["DELETE"]
+    )
+    @action(
+        methods=["get", "post", "delete"],
+        detail=False,
+        url_path="api_token",
+    )
+    def manage_api_token(self, request):
+        """Manage API token."""
+        if not request.user.is_superuser:
+            raise PermissionDenied(
+                "Only super administrators can have API tokens"
+            )
+        if request.method == "DELETE":
+            Token.objects.filter(user=request.user).delete()
+            return response.Response(status=204)
+        status = 200
+        if request.method == "POST":
+            token, created = Token.objects.get_or_create(user=request.user)
+            if created:
+                status = 201
+        else:
+            if hasattr(request.user, "auth_token"):
+                token = request.user.auth_token
+            else:
+                token = ""
+        serializer = serializers.UserAPITokenSerializer({"token": str(token)})
+        return response.Response(serializer.data, status=status)
 
     @action(methods=["post"], detail=False, url_path="tfa/verify")
     def tfa_verify_code(self, request):

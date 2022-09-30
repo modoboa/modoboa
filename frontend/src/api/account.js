@@ -34,5 +34,14 @@ export default {
   },
   setForward (data) {
     return repository.post(`${resource}/forward/`, data)
+  },
+  getAPIToken () {
+    return repository.get(`${resource}/api_token/`)
+  },
+  createAPIToken () {
+    return repository.post(`${resource}/api_token/`)
+  },
+  deleteAPIToken () {
+    return repository.delete(`${resource}/api_token/`)
   }
 }

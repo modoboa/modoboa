@@ -205,6 +205,13 @@ export default {
       ],
       userSettingsMenuItems: [
         {
+          text: this.$gettext('API'),
+          roles: ['SuperAdmins'],
+          to: { name: 'APISetup' },
+          icon: 'mdi-api',
+          exact: true
+        },
+        {
           text: this.$gettext('Profile'),
           to: { name: 'UserProfile' },
           icon: 'mdi-account-circle-outline',
