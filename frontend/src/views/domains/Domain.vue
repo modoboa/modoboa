@@ -28,10 +28,20 @@
   <v-layout>
     <v-row class="mt-2">
       <v-col cols="12">
-        <time-serie-chart :domain="domain" graphic-set="mailtraffic" graphic-name="averagetraffic" />
+        <time-serie-chart
+          v-if="domain.name"
+          :domain="domain"
+          graphic-set="mailtraffic"
+          graphic-name="averagetraffic"
+          />
       </v-col>
       <v-col cols="12">
-        <time-serie-chart :domain="domain" graphic-set="mailtraffic" graphic-name="averagetrafficsize" />
+        <time-serie-chart
+          v-if="domain.name"
+          :domain="domain"
+          graphic-set="mailtraffic"
+          graphic-name="averagetrafficsize"
+          />
       </v-col>
     </v-row>
   </v-layout>
