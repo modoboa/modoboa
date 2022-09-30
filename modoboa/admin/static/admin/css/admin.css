@@ -31,3 +31,19 @@ table tbody tr:hover {
     -webkit-border-radius:14px;-moz-border-radius:14px;border-radius:14px;
     padding-left: 14px;
 }
+
+.dkimbutton {
+    border-radius: 10px;
+}
+.dkimbutton:hover {
+    background-color: rgba(131, 131, 250, 0.283);
+    transition: all 0.8s
+}
+.dkimbutton:active {
+    background-color: rgba(60, 255, 60, 0.136);
+    transition: all 0.2s
+}
+.dkim {
+    white-space: normal;
+    word-break: break-all;
+}

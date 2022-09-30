@@ -1,7 +1,7 @@
 <template>
-<pre>
-{{ domain.dkim_key_selector }}._domain_key.{{ domain.name }}. IN TXT (
-  {{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }})</pre>
+  <button @click="copyDKIM()" class="dkimbutton">
+    <pre id="dkimdns" class="dkim">{{ domain.dkim_key_selector }}._domain_key.{{ domain.name }}. IN TXT ({{ splitKey(`v=DKIM1;k=rsa;p=${domain.dkim_public_key}`) }})</pre>
+  </button>
 </template>
 
 <script>
@@ -23,6 +23,9 @@ export default {
         }
       }
       return result.join('\n')
+    },
+    copyDKIM () {
+      navigator.clipboard.writeText(document.getElementById('dkimdns').textContent)
     }
   }
 }
