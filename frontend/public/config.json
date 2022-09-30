@@ -1,3 +1,4 @@
 {
-    "API_BASE_URL": "/api/v2/"
+    "API_BASE_URL": "/api/v2/",
+    "API_DOC_URL": "/api/schema-v2/swagger/"
 }
