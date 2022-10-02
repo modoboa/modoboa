@@ -236,3 +236,9 @@ class CheckPasswordSerializer(serializers.Serializer):
         if not user.check_password(value):
             raise serializers.ValidationError(_("Invalid password"))
         return value
+
+
+class UserAPITokenSerializer(serializers.Serializer):
+    """Serializer used by API access routes."""
+
+    token = serializers.CharField()

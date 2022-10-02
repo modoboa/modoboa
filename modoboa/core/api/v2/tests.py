@@ -177,6 +177,28 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
 
+    def test_api_token(self):
+        # 1. Obtain a JWT token so we can safely play with basic token
+        url = reverse("v2:token_obtain_pair")
+        data = {
+            "username": "admin",
+            "password": "password"
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"])
+        )
+
+        url = reverse("v2:account-manage-api-token")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["token"], self.token.key)
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 204)
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 201)
+
 
 class AuthenticationTestCase(ModoAPITestCase):
 
