@@ -1,9 +1,12 @@
 """Core authentication views."""
 
 import logging
+from operator import sub
 
+from django.conf import settings
 import oath
-
+from datetime import timezone, timedelta
+from django.template import loader
 from django.http import (
     HttpResponse, HttpResponseRedirect, Http404, JsonResponse)
 from django.template.loader import render_to_string
@@ -15,12 +18,18 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import ugettext as _
 from django.views import generic
 from django.views.decorators.cache import never_cache
+from django.core.mail import EmailMultiAlternatives
+from django.db.models import Q
 
 from django.contrib.auth import (
-    authenticate, login, logout, views as auth_views
+    authenticate, login, logout, views as auth_views, get_user_model
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
+from modoboa.core.api.v2.serializers import PasswordRecoverySerializer
+
+from rest_framework.views import APIView
+from rest_framework import response as rest_response
 
 import django_otp
 
@@ -34,9 +43,9 @@ from .. import models
 from .. import sms_backends
 from .. import signals
 from .base import find_nextlocation
+from ..forms import PasswordResetForm
 
 logger = logging.getLogger("modoboa.auth")
-
 
 def dologin(request):
     """Try to authenticate."""
@@ -253,3 +262,38 @@ class TwoFactorCodeVerifyView(LoginRequiredMixin,
         return HttpResponseRedirect(
             find_nextlocation(self.request, self.request.user)
         )
+
+class RestPasswordResetView(APIView):
+    """
+    An Api View which provides a method to request a password reset token based on an e-mail address
+
+    Sends a signal reset_password_token_created when a reset token was created
+
+    Heavily inspired from django-rest-passwordreset (https://github.com/anexia-it/django-rest-passwordreset)
+    """
+    throttle_classes = ()
+    permission_classes = ()
+    serializer_class = PasswordRecoverySerializer
+    authentication_classes = ()
+
+    def post(self, request, *args, **kwargs):
+        
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        email = serializer.validated_data["email"]
+
+        if len(get_user_model()._default_manager.filter(
+                email__iexact=email, is_active=True)
+            .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))) == 0:
+            return rest_response.Response( {"Status": "no_user"}, status=404)
+        
+        form = PasswordResetForm(data={"email" : email})
+        if not form.is_valid():
+            pass
+        #form.email = email
+
+        form.save(email_template_name="registration/password_reset_email_v2.html")
+
+        # let whoever receives this signal handle sending the email for the password reset
+        return rest_response.Response( {"Status": "email_sent"}, status=210)

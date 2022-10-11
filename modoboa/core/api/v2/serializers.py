@@ -242,3 +242,9 @@ class UserAPITokenSerializer(serializers.Serializer):
     """Serializer used by API access routes."""
 
     token = serializers.CharField()
+
+
+class PasswordRecoverySerializer(serializers.Serializer):
+    """Serializer used by password recovery route."""
+    
+    email = serializers.EmailField()

@@ -1,6 +1,6 @@
 """Core API urls."""
 
-from django.urls import path
+from django.urls import path, include
 
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
@@ -22,4 +22,8 @@ urlpatterns += [
          name="token_obtain_pair"),
     path('token/refresh/', TokenRefreshView.as_view(),
          name='token_refresh'),
+    path('password_reset/', views.PasswordResetView.as_view(),
+         name="password_reset"),
+    path('reset_confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(),
+          name="password_reset_confirm_v2"),
 ]

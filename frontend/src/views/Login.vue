@@ -34,7 +34,7 @@
           outlined
           />
       </validation-provider>
-      <a href="" class="float-right primary--text"><translate>Forgot password?</translate></a>
+      <a @click="recoverPass" class="float-right primary--text"><translate>Forgot password?</translate></a>
       <v-checkbox
         v-model="rememberMe"
         :label="'Remember me'|translate"
@@ -70,6 +70,9 @@ export default {
     }
   },
   methods: {
+    recoverPass () {
+      this.$router.push({ name: 'PasswordRecoveryForm' })
+    },
     async authenticate () {
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
