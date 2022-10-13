@@ -246,7 +246,7 @@ class UserAPITokenSerializer(serializers.Serializer):
 
 class PasswordRecoverySerializer(serializers.Serializer):
     """Serializer used by password recovery route."""
-    
+
     email = serializers.EmailField()
 
 
@@ -263,7 +263,7 @@ class PasswordRecoveryResetSerializer(serializers.Serializer):
 
         # Validate password
         if data["new_password1"] == "" or data["new_password1"] != data["new_password2"]:
-            raise serializers.ValidationError("Password empty or doesn't not correspond")
+            raise serializers.ValidationError(
+                "Password empty or doesn't not correspond")
 
         return data
-        

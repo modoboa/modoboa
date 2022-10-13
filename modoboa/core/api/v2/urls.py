@@ -1,6 +1,6 @@
 """Core API urls."""
 
-from django.urls import path, include
+from django.urls import path
 
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
@@ -25,5 +25,5 @@ urlpatterns += [
     path('password_reset/', views.PasswordResetView.as_view(),
          name="password_reset"),
     path('reset_confirm/', views.PasswordResetConfirmView.as_view(),
-          name="password_reset_confirm_v2"),
+         name="password_reset_confirm_v2"),
 ]

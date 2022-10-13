@@ -16,17 +16,18 @@ from django.db.models import Q
 from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from rest_framework.views import APIView 
+from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.parameters import tools as param_tools
 from modoboa.lib import cryptutils
 from modoboa.core.forms import PasswordResetForm
 
+from ... import sms_backends
+from .serializers import PasswordRecoverySerializer, PasswordRecoveryResetSerializer
+
 logger = logging.getLogger("modoboa.auth")
 
-from .serializers import PasswordRecoverySerializer, PasswordRecoveryResetSerializer
-from ... import sms_backends
 
 class TokenObtainPairView(jwt_views.TokenObtainPairView):
     """We overwrite this view to deal with password scheme update."""
@@ -94,18 +95,18 @@ class RestPasswordResetView(APIView):
     authentication_classes = ()
 
     def post(self, request, *args, **kwargs):
-        
+
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        
+
         email = serializer.validated_data["email"]
 
         if len(get_user_model()._default_manager.filter(
                 email__iexact=email, is_active=True)
-            .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))) == 0:
-            return response.Response( {"Status": "no_user"}, status=404)
-        
-        form = PasswordResetForm(data={"email" : email})
+               .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))) == 0:
+            return response.Response({"Status": "no_user"}, status=404)
+
+        form = PasswordResetForm(data={"email": email})
         if not form.is_valid():
             pass
         #form.email = email
@@ -113,10 +114,11 @@ class RestPasswordResetView(APIView):
         form.save(email_template_name="registration/password_reset_email_v2.html")
 
         # let whoever receives this signal handle sending the email for the password reset
-        return response.Response( {"Status": "email_sent"}, status=210)
+        return response.Response({"Status": "email_sent"}, status=210)
+
 
 class PasswordResetView(RestPasswordResetView):
-    
+
     def post(self, request, *args, **kwargs):
         """Recover password."""
         serializer = self.serializer_class(data=request.data)
@@ -155,14 +157,13 @@ class PasswordResetView(RestPasswordResetView):
         self.request.session["totp_secret"] = secret
         return response.Response({"status": "sms"}, status=233)
 
-INTERNAL_RESET_SESSION_TOKEN = '_password_reset_token'
 
 class PasswordResetConfirmView(APIView):
     throttle_classes = ()
     permission_classes = ()
     token_generator = PasswordResetTokenGenerator()
     authentication_classes = ()
-    
+
     def get_user(self, uidb64):
         try:
             # urlsafe_base64_decode() decodes to bytestring
@@ -177,8 +178,8 @@ class PasswordResetConfirmView(APIView):
         serializer = PasswordRecoveryResetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = self.get_user(serializer.data["id"])
-        
-        if user is None :
+
+        if user is None:
             return response.Response(data={"status": "user_not_found"}, status=404)
         token = serializer.data["token"]
 
@@ -187,10 +188,11 @@ class PasswordResetConfirmView(APIView):
             try:
                 password_validation.validate_password(password, user)
             except ValidationError as e:
-                    status_message = getattr(e, 'message', _("Password doesn't not comply with standards"))
-                    return response.Response(data={"status": status_message}, status=520)
+                status_message = getattr(e, 'message', _(
+                    "Password doesn't not comply with standards"))
+                return response.Response(data={"status": status_message}, status=520)
             user.set_password(password)
             user.save()
-            return response.Response(data={ "status": "success"}, status=200)
+            return response.Response(data={"status": "success"}, status=200)
 
-        return response.Response(data={ "status": "token_incorrect"}, status=401)
+        return response.Response(data={"status": "token_incorrect"}, status=401)
