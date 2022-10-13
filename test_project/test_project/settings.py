@@ -36,6 +36,8 @@ INTERNAL_IPS = ['127.0.0.1']
 
 SITE_ID = 1
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # A list of all the people who get code error notifications. When DEBUG=False
 # and a view raises an exception, Django will email these people with the full
 # exception information.

@@ -91,6 +91,16 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+2.0.3
+=====
+
+Update the new following setting in the :file:`settings.py` file:
+
+.. sourcecode:: python
+
+   DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+
 2.0.0
 =====
 
