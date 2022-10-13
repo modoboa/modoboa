@@ -179,7 +179,7 @@ const routes = [
     component: () => import('../views/user/PasswordRecoveryForm.vue')
   },
   {
-    path: '/password_recovery/confirm/:id/:token',
+    path: '/password_recovery/confirm/:id?/:token?/',
     name: 'PasswordRecoveryEmailForm',
     component: () => import('../views/user/PasswordRecoveryEmailForm.vue')
   },

@@ -7,7 +7,7 @@ export default {
   recoverPassword (data) {
     return repository.post('/password_reset/', data)
   },
-  changePassword (data, id, token) {
-    return repository.post('/reset_confirm/' + id + '/' + token, data)
+  changePassword (data) {
+    return repository.post('/reset_confirm/', data)
   }
 }

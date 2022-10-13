@@ -63,14 +63,27 @@ export default {
       loading: false,
       password: '',
       password_confirmed: '',
-      errors: {}
+      errors: {},
+      token: '',
+      id: ''
     }
   },
   methods: {
     checkUrl: function () {
-      const decodedId = atob(this.$route.params.id)
-      if (!/^\d+$/.test(decodedId) || this.$route.params.token !== 'set-password') {
-        this.$router.push({ name: 'Login' })
+      if (this.$route.params.token === undefined) {
+        if (this.token === '' || this.id === '') {
+          this.$router.push({ name: 'PasswordRecoveryForm' })
+        }
+      } else {
+        const decodedId = atob(this.$route.params.id)
+        if (!/^\d+$/.test(decodedId)) {
+          console.error('ID passed does not seems to be an int !')
+          this.$router.push({ name: 'PasswordRecoveryForm' })
+        } else {
+          this.id = this.$route.params.id
+          this.token = this.$route.params.token
+          this.$router.push({ name: 'PasswordRecoveryEmailForm' })
+        }
       }
     },
     returnLogin () {
@@ -83,10 +96,12 @@ export default {
       }
       const payload = {
         new_password1: this.password,
-        new_password2: this.password_confirmed
+        new_password2: this.password_confirmed,
+        token: this.token,
+        id: this.id
       }
       this.loading = true
-      auth.changePassword(payload, this.$route.params.id, this.$route.params.token).then(resp => {
+      auth.changePassword(payload).then(resp => {
         this.loading = false
         this.$router.push({ name: 'PasswordRecoveryDone', params: { data: { fail: false } } })
       }).catch(err => {
@@ -94,6 +109,10 @@ export default {
         if (err.response.status === 400) {
           this.$refs.observer.setErrors({
             email: this.$gettext('Invalid email')
+          })
+        } else if (err.response.status === 401) {
+          this.$refs.observer.setErrors({
+            email: this.$gettext('Invalid reset token')
           })
         }
       })
