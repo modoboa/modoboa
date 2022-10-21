@@ -11,7 +11,7 @@ dj-database-url
 djangorestframework>=3.11,<3.15
 drf-spectacular
 uritemplate
-djangorestframework-simplejwt==5.2.1
+djangorestframework-simplejwt==5.2.2
 
 passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev
