@@ -8,113 +8,135 @@
   </v-card-title>
   <v-card-text>
     <translate class="overline">MX records</translate>
-    <v-data-table
-      :headers="mxRecordHeaders"
-      :items="detail.mx_records"
-      hide-default-footer
-      >
-      <template v-slot:item.updated="{ item }">
-        {{ item.updated|date }}
-      </template>
-    </v-data-table>
+    <template v-if="value.dns_global_status=='pending'">
+      <v-row>
+        <v-col>
+          <v-chip color="info" small>
+            <translate>Pending</translate>
+          </v-chip>
+        </v-col>
+      </v-row>
+    </template>
+    <template v-else>
+      <v-data-table
+        :headers="mxRecordHeaders"
+        :items="detail.mx_records"
+        hide-default-footer
+        >
+        <template v-slot:item.updated="{ item }">
+          {{ item.updated|date }}
+        </template>
+      </v-data-table>
+    </template>
     <translate class="overline">Auto configuration</translate>
-    <v-row>
-      <v-col>
-        <v-chip
-          v-if="detail.autoconfig_record"
-          color="success"
-          >
-          <translate
-            :translate-params="{ value: detail.autoconfig_record.value }"
+    <template v-if="value.dns_global_status=='pending'">
+      <v-row>
+        <v-col>
+          <v-chip color="info" small>
+            <translate>Pending</translate>
+          </v-chip>
+        </v-col>
+      </v-row>
+    </template>
+    <template v-else>
+      <v-row>
+        <v-col>
+          <v-chip
+            v-if="detail.autoconfig_record"
+            color="success"
             >
-            autoconfig record (Mozilla): %{ value }
-          </translate>
-        </v-chip>
-        <v-chip
-          v-else
-          color="warning"
-          >
-          <translate>autoconfig record (Mozilla) not found</translate>
-        </v-chip>
-      </v-col>
-      <v-col>
-        <v-chip
-          v-if="detail.autodiscover_record"
-          color="success"
-          >
-          <translate
-            :translate-params="{ value: detail.autodiscover_record.value }"
+            <translate
+              :translate-params="{ value: detail.autoconfig_record.value }"
+              >
+              autoconfig record (Mozilla): %{ value }
+            </translate>
+          </v-chip>
+          <v-chip
+            v-else
+            color="warning"
             >
-            autodiscover record (Microsoft): %{ value }
-          </translate>
-        </v-chip>
-        <v-chip
-          v-else
-          color="warning"
-          >
-          <translate>autodiscover record (Microsoft) not found</translate>
-        </v-chip>
-      </v-col>
-    </v-row>
-    <translate class="overline">Authentication</translate>
-    <v-row>
-      <v-col>
-        <v-chip
-          v-if="detail.spf_record"
-          color="success"
-          >
-          <translate>SPF record found</translate>
-        </v-chip>
-        <v-chip
-          v-else
-          color="error"
-          >
-          <translate>SPF record not found</translate>
-        </v-chip>
-      </v-col>
-      <v-col>
-        <v-chip
-          v-if="detail.dkim_record"
-          color="success"
-          >
-          <translate>DKIM record found</translate>
-        </v-chip>
-        <v-chip
-          v-else
-          color="error"
-          >
-          <translate>DKIM record not found</translate>
-        </v-chip>
-      </v-col>
-      <v-col>
-        <v-chip
-          v-if="detail.dmarc_record"
-          color="success"
-          >
-          <translate>DMARC record found</translate>
-        </v-chip>
-        <v-chip
-          v-else
-          color="error"
-          >
-          <translate>DMARC record not found</translate>
-        </v-chip>
-      </v-col>
-    </v-row>
-    <v-row v-if="value.enable_dkim">
-      <v-col cols="3"><translate>DKIM key</translate></v-col>
-      <v-col cols="9">
-        <div v-if="value.dkim_private_key_path && value.dkim_public_key">
-          <v-btn color="primary" small @click="showDKIMKey = true">
-            <translate>Show key</translate>
-          </v-btn>
-          <v-btn icon :title="'Generate a new DKIM key'|translate" @click="generateNewKey">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-        </div>
-        <translate v-else>Not generated</translate>
-      </v-col>
-    </v-row>
+            <translate>autoconfig record (Mozilla) not found</translate>
+          </v-chip>
+        </v-col>
+        <v-col>
+          <v-chip
+            v-if="detail.autodiscover_record"
+            color="success"
+            >
+            <translate
+              :translate-params="{ value: detail.autodiscover_record.value }"
+              >
+              autodiscover record (Microsoft): %{ value }
+            </translate>
+          </v-chip>
+          <v-chip
+            v-else
+            color="warning"
+            >
+            <translate>autodiscover record (Microsoft) not found</translate>
+          </v-chip>
+        </v-col>
+      </v-row>
+      <translate class="overline">Authentication</translate>
+      <v-row>
+        <v-col>
+          <v-chip
+            v-if="detail.spf_record"
+            color="success"
+            >
+            <translate>SPF record found</translate>
+          </v-chip>
+          <v-chip
+            v-else
+            color="error"
+            >
+            <translate>SPF record not found</translate>
+          </v-chip>
+        </v-col>
+        <v-col>
+          <v-chip
+            v-if="detail.dkim_record"
+            color="success"
+            >
+            <translate>DKIM record found</translate>
+          </v-chip>
+          <v-chip
+            v-else
+            color="error"
+            >
+            <translate>DKIM record not found</translate>
+          </v-chip>
+        </v-col>
+        <v-col>
+          <v-chip
+            v-if="detail.dmarc_record"
+            color="success"
+            >
+            <translate>DMARC record found</translate>
+          </v-chip>
+          <v-chip
+            v-else
+            color="error"
+            >
+            <translate>DMARC record not found</translate>
+          </v-chip>
+        </v-col>
+      </v-row>
+      <v-row v-if="value.enable_dkim">
+        <v-col cols="3"><translate>DKIM key</translate></v-col>
+        <v-col cols="9">
+          <div v-if="value.dkim_private_key_path && value.dkim_public_key">
+            <v-btn color="primary" small @click="showDKIMKey = true">
+              <translate>Show key</translate>
+            </v-btn>
+            <v-btn icon :title="'Generate a new DKIM key'|translate" @click="generateNewKey">
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+          </div>
+          <translate v-else>Not generated</translate>
+        </v-col>
+      </v-row>
+    </template>
   </v-card-text>
   <v-dialog v-model="showConfigHelp"
             max-width="800px"
