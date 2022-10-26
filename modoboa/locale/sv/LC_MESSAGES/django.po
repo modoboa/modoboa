@@ -5,14 +5,14 @@
 # Translators:
 # Martin Persson <martin.jens.persson@gmail.com>, 2014,2017
 # Olle Gustafsson <olle@dalnix.se>, 2013
-# Olle Gustafsson <olle@dalnix.se>, 2013,2015-2018,2020
+# Olle Gustafsson <olle@dalnix.se>, 2013,2015-2018,2020,2022
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2020-10-02 18:56+0000\n"
-"Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
+"POT-Creation-Date: 2020-11-05 15:36+0100\n"
+"PO-Revision-Date: 2011-07-01 08:15+0000\n"
+"Last-Translator: Olle Gustafsson <olle@dalnix.se>, 2013,2015-2018,2020,2022\n"
 "Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -523,45 +523,49 @@ msgstr "Välj leverantör"
 msgid "Dummy"
 msgstr "Dummy"
 
-#: core/forms.py:21
+#: core/forms.py:23
 msgid "Username"
 msgstr "Användarnamn"
 
-#: core/forms.py:25
+#: core/forms.py:27
 msgid "Password"
 msgstr "Lösenord"
 
-#: core/forms.py:38
+#: core/forms.py:40
 msgid "Old password"
 msgstr "Gammalt lösenord"
 
-#: core/forms.py:42
+#: core/forms.py:44
 msgid "New password"
 msgstr "Nytt lösenord"
 
-#: core/forms.py:46
+#: core/forms.py:48
 msgid "Confirmation"
 msgstr "Bekräftelse"
 
-#: core/forms.py:74
+#: core/forms.py:76
 msgid "Old password mismatchs"
 msgstr "Gammalt lösenord matchar inte"
 
-#: core/forms.py:83
+#: core/forms.py:85
 msgid "Passwords mismatch"
 msgstr "Lösenord matchar inte"
 
-#: core/forms.py:103
+#: core/forms.py:105
 msgid "Enable API access"
 msgstr "Aktivera API access"
 
-#: core/forms.py:137
+#: core/forms.py:139
 msgid "Verification code"
 msgstr "Verifikationskod"
 
-#: core/forms.py:148
+#: core/forms.py:150
 msgid "Invalid code"
 msgstr "Ogiltig kod"
+
+#: core/forms.py:163
+msgid "This code is invalid"
+msgstr "Denna kod är ogiltig"
 
 #: core/handlers.py:36
 msgid "added"
@@ -605,35 +609,35 @@ msgstr "En eller fler uppdateringar finns tillgängliga"
 msgid "[modoboa] Update(s) available"
 msgstr "[modoboa] Uppdatering(ar) finns"
 
-#: core/models.py:55
+#: core/models.py:52
 msgid "Allow mailboxes access"
 msgstr "Tillåt åtkomst till brevlådor"
 
-#: core/models.py:57
+#: core/models.py:54
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Tillåt den här administratören att ändra användares brevlådor"
 
-#: core/models.py:60
+#: core/models.py:57
 msgid "password"
 msgstr "lösenord"
 
-#: core/models.py:63
+#: core/models.py:60
 msgid "language"
 msgstr "språk"
 
-#: core/models.py:66
+#: core/models.py:63
 msgid "Prefered language to display pages."
 msgstr "Önskat språk för att visa sidor."
 
-#: core/models.py:70
+#: core/models.py:67
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: core/models.py:72
+#: core/models.py:69
 msgid "Secondary email"
 msgstr "Sekundär e-post"
 
-#: core/models.py:75
+#: core/models.py:72
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "En alternativ e-post adress, kan användas för återställningsbehov."
 
@@ -694,6 +698,14 @@ msgstr[1] "Lösenord måste innehålla minst {} specialtecken."
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
 msgstr "Ditt lösenord måste innehålla en kombination av olika typer av tecken."
+
+#: core/serializers.py:15
+msgid "Invalid PIN code"
+msgstr "Ogiltig PIN-kod"
+
+#: core/serializers.py:21
+msgid "2FA is already enabled"
+msgstr "2FA redan aktiverat"
 
 #: core/sms_backends/ovh.py:19
 msgid "API endpoint"
@@ -923,6 +935,80 @@ msgstr "Uppdatera personlig information"
 msgid "Click here to update your password"
 msgstr "Klicka här för att uppdatera ditt lösenord"
 
+#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:124
+msgid "Security"
+msgstr "Säkerhet"
+
+#: core/templates/core/user_security.html:6
+msgid "Two-Factor authentication"
+msgstr "Tvåfaktorsautentisering"
+
+#: core/templates/core/user_security.html:17
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+msgstr "Installera en mjuk token-autentisering som FreeOTP eller Google Authenticator från ditt programförråd och använd den appen för att skanna den här QR-koden."
+
+#: core/templates/core/user_security.html:25
+msgid "Pin code"
+msgstr "Pinkod"
+
+#: core/templates/core/user_security.html:28
+msgid "Register"
+msgstr "Registrera"
+
+#: core/templates/core/user_security.html:33
+msgid ""
+"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr "Grattis! Tvåfaktorsautentisering är nu aktiverat för ditt konto."
+
+#: core/templates/core/user_security.html:38
+#: core/templates/core/user_security.html:89
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr "Följande återställningskoder kan användas en gång var för att låta dig återfå åtkomst till ditt konto, om du till exempel skulle tappa din telefon. Se till att spara dem på ett säkert ställe, annars kommer du inte att kunna komma åt ditt konto längre."
+
+#: core/templates/core/user_security.html:53
+msgid "Two-Factor Authentication is enabled for your account."
+msgstr "Tvåfaktorsautentisering är aktiverat för ditt konto."
+
+#: core/templates/core/user_security.html:58
+msgid "Disable 2FA"
+msgstr "Inaktivera 2FA"
+
+#: core/templates/core/user_security.html:61
+msgid "Reset recovery codes"
+msgstr "Återställ återställningskoder"
+
+#: core/templates/core/user_security.html:65
+msgid ""
+"Two-Factor Authentication (2FA) is not yet activated for your account. "
+"Enabling this feature will increase your account's security."
+msgstr "Tvåfaktorsautentisering (2FA) har inte aktiverats för ditt konto. Aktivering ökar ditt kontos säkerhet."
+
+#: core/templates/core/user_security.html:73
+msgid "Enable 2FA"
+msgstr "Aktivera 2FA"
+
+#: core/templates/core/user_security.html:83
+#: core/templates/core/user_security.html:99
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "Stäng"
+
+#: core/templates/core/user_security.html:84
+msgid "New recovery codes"
+msgstr "Nya återställningskoder"
+
+#: core/templates/core/user_security.html:88
+msgid "Here are your new recovery codes. "
+msgstr "Här är dina nya återställningskoder."
+
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
 msgstr "Modoboa"
@@ -931,7 +1017,7 @@ msgstr "Modoboa"
 msgid "Logout"
 msgstr "Logga ut"
 
-#: core/templatetags/core_tags.py:127
+#: core/templatetags/core_tags.py:131
 msgid "API"
 msgstr "API"
 
@@ -943,51 +1029,55 @@ msgstr "Kärnan av Modoboa"
 msgid "Parameters saved"
 msgstr "Parametrar sparade"
 
-#: core/views/auth.py:59
+#: core/views/auth.py:61
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Fel lösenordsschema. Uppdaterar %s lösenord"
 
-#: core/views/auth.py:66
+#: core/views/auth.py:68
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Fel lösenordshash. Uppdaterar %s lösenord"
 
-#: core/views/auth.py:82
+#: core/views/auth.py:84
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Användare '%s' har loggat in"
 
-#: core/views/auth.py:90
+#: core/views/auth.py:92
 msgid "Your username and password didn't match. Please try again."
 msgstr "Ditt användarnamn och lösenord matchar inte. Var vänlig försök igen."
 
-#: core/views/auth.py:125
+#: core/views/auth.py:127
 msgid "User '{}' successfully logged out"
 msgstr "Användare '{}' loggade ut framgångsrikt"
 
-#: core/views/auth.py:170 core/views/auth.py:225
+#: core/views/auth.py:172 core/views/auth.py:227
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Använd följande kod för att återställa ditt Modoboa lösenord: {}"
 
-#: core/views/user.py:53
+#: core/views/user.py:60
 msgid "Profile updated"
 msgstr "Profil uppdaterad"
 
-#: core/views/user.py:81
+#: core/views/user.py:88
 msgid "Preferences saved"
 msgstr "Inställningar sparade"
 
-#: core/views/user.py:103
+#: core/views/user.py:110
 msgid "Access updated"
 msgstr "Åtkomst uppdaterad"
+
+#: core/viewsets.py:52
+msgid "2FA is not enabled"
+msgstr "2FA är nu aktiverat"
 
 #: lib/db_utils.py:23
 #, python-format
 msgid "Connection to database %s not configured"
 msgstr "Anslutning till databasen %s är inte konfigurerad"
 
-#: lib/email_utils.py:141 lib/email_utils.py:360
+#: lib/email_utils.py:143 lib/email_utils.py:362
 msgid "unable to determine encoding of string"
 msgstr "kan inte bestämma kodning av sträng"
 
@@ -1070,12 +1160,6 @@ msgstr "Fel:"
 #: templates/common/generic_fields_group.html:8
 msgid "Help:"
 msgstr "Hjälp:"
-
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
-msgid "Close"
-msgstr "Stäng"
 
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
