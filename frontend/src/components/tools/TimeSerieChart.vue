@@ -79,7 +79,6 @@ export default {
       dateMenu: false,
       menu: false,
       options: {
-        colors: [],
         chart: {
           type: 'area',
           stacked: false,
