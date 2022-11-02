@@ -3,15 +3,19 @@
 import logging
 import oath
 
+from django.core.exceptions import ValidationError
+
+from django.utils.decorators import method_decorator
 from django.utils.html import escape
+from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import ugettext as _
+
+from django.views.decorators.cache import never_cache
+
+from django.db.models import Q
+
 from django.contrib.auth import login, get_user_model, password_validation
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.core.exceptions import ValidationError
-from django.views.decorators.cache import never_cache
-from django.utils.decorators import method_decorator
-from django.utils.http import urlsafe_base64_decode
-from django.db.models import Q
 
 from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
@@ -96,14 +100,14 @@ class RestPasswordResetView(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         email = serializer.validated_data["email"]
 
-        if len(get_user_model()._default_manager.filter(
+        if (get_user_model()._default_manager.filter(
                 email__iexact=email, is_active=True)
-               .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))) == 0:
+               .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))).count() == 0:
             return response.Response({"Status": "no_user"}, status=404)
 
         form = PasswordResetForm(data={"email": email})
