@@ -19,7 +19,7 @@ bcrypt  # Requires libffi-dev and python-dev
 asgiref
 dnspython==2.2.1
 feedparser==6.0.10
-greenlet==1.1.3.post0
+greenlet==2.0.0.post0
 gevent==22.10.1
 jsonfield==3.1.0
 Pillow  # Optional dependency for django-ckeditor
