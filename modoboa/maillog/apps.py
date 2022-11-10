@@ -8,7 +8,6 @@ from .forms import load_settings
 class MaillogConfig(AppConfig):
     """App configuration."""
 
-    default_auto_field = "django.db.models.BigAutoField"
     name = "modoboa.maillog"
     verbose_name = "Modoboa graphical statistics"
 

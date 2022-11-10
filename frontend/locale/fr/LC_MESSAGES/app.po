@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-30 17:47+0200\n"
+"POT-Creation-Date: 2022-10-27 16:52+0200\n"
 "PO-Revision-Date: 2021-07-01 16:15+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -27,7 +27,7 @@ msgid "A documentation of the API is available"
 msgstr ""
 
 #: src/components/domains/DNSDetail.vue:47
-#: src/components/domains/DNSDetail.vue:183
+#: src/components/domains/DNSDetail.vue:205
 msgid "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
 
@@ -102,7 +102,7 @@ msgstr "Adresse aléatoire"
 #: src/components/identities/AliasCreationForm.vue:20
 #: src/components/identities/AliasCreationForm.vue:40
 #: src/components/identities/AccountSenderAddresses.vue:63
-#: src/components/domains/DNSDetail.vue:155
+#: src/components/domains/DNSDetail.vue:177
 msgid "Address"
 msgstr "Adresse"
 
@@ -214,28 +214,33 @@ msgstr "Appliquer"
 msgid "Audit trail"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:38
+#: src/components/domains/DNSDetail.vue:59
+#: src/components/domains/DNSDetail.vue:23
 msgid "Authentication"
 msgstr "Authentification"
 
-#: src/components/domains/DNSDetail.vue:15
+#: src/components/domains/DNSDetail.vue:26
 #: src/components/domains/DomainDNSConfig.vue:31
 msgid "Auto configuration"
 msgstr "Configuration automatique"
 
-#: src/components/domains/DNSDetail.vue:24
+#: src/components/domains/DNSDetail.vue:45
+#: src/components/domains/DNSDetail.vue:9
 msgid "autoconfig record (Mozilla) not found"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:19
+#: src/components/domains/DNSDetail.vue:40
+#: src/components/domains/DNSDetail.vue:4
 msgid "autoconfig record (Mozilla): %{ value }"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:34
+#: src/components/domains/DNSDetail.vue:55
+#: src/components/domains/DNSDetail.vue:19
 msgid "autodiscover record (Microsoft) not found"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:29
+#: src/components/domains/DNSDetail.vue:50
+#: src/components/domains/DNSDetail.vue:14
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr ""
 
@@ -425,7 +430,8 @@ msgstr "Désactivés"
 msgid "Disabled"
 msgstr "Désactivés"
 
-#: src/components/domains/DNSDetail.vue:66
+#: src/components/domains/DNSDetail.vue:87
+#: src/components/domains/DNSDetail.vue:51
 msgid "DKIM key"
 msgstr "Clé DKIM"
 
@@ -442,7 +448,7 @@ msgid "DKIM key selector"
 msgstr ""
 
 #: src/components/domains/DNSDetail.vue:30
-#: src/components/domains/DNSDetail.vue:167
+#: src/components/domains/DNSDetail.vue:189
 msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr ""
 
@@ -450,11 +456,13 @@ msgstr ""
 msgid "DKIM public key for"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:50
+#: src/components/domains/DNSDetail.vue:71
+#: src/components/domains/DNSDetail.vue:35
 msgid "DKIM record found"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:53
+#: src/components/domains/DNSDetail.vue:74
+#: src/components/domains/DNSDetail.vue:38
 msgid "DKIM record not found"
 msgstr ""
 
@@ -462,11 +470,13 @@ msgstr ""
 msgid "DKIM signing"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:58
+#: src/components/domains/DNSDetail.vue:79
+#: src/components/domains/DNSDetail.vue:43
 msgid "DMARC record found"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:61
+#: src/components/domains/DNSDetail.vue:82
+#: src/components/domains/DNSDetail.vue:46
 msgid "DMARC record not found"
 msgstr ""
 
@@ -623,11 +633,6 @@ msgstr ""
 msgid "Enable 2FA"
 msgstr "Activé"
 
-#: src/components/user/APIAccessForm.vue:4
-#, fuzzy
-msgid "Enable API access"
-msgstr "Activer les tests DNS"
-
 #: src/components/domains/DomainCreationForm.vue:34
 #: src/components/domains/DomainDNSForm.vue:3
 #: src/components/domains/DomainCreationForm.vue:85
@@ -639,10 +644,6 @@ msgstr "Activer la signature DKIM"
 #: src/components/domains/DomainCreationForm.vue:84
 msgid "Enable DNS checks"
 msgstr "Activer les tests DNS"
-
-#: src/components/user/APIAccessForm.vue:4
-msgid "Enable to generate an API access token you will use with your requests"
-msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:27
 #: src/components/domains/DomainGeneralForm.vue:8
@@ -712,9 +713,7 @@ msgstr ""
 msgid "Forward messages and store copies into your local mailbox"
 msgstr ""
 
-#: src/components/user/APIAccessForm.vue:19
 #: src/components/user/ForwardForm.vue:19
-#: src/components/user/APIAccessForm.vue:44
 #: src/components/user/ForwardForm.vue:52
 #, fuzzy
 msgid "Forward updated"
@@ -766,7 +765,8 @@ msgstr "Général"
 msgid "Generate"
 msgstr "Général"
 
-#: src/components/domains/DNSDetail.vue:72
+#: src/components/domains/DNSDetail.vue:93
+#: src/components/domains/DNSDetail.vue:57
 msgid "Generate a new DKIM key"
 msgstr ""
 
@@ -979,7 +979,7 @@ msgstr ""
 #: src/components/domains/DomainOptionsForm.vue:4
 #: src/components/identities/IdentityList.vue:16
 #: src/components/identities/IdentityList.vue:95
-#: src/components/domains/DNSDetail.vue:154
+#: src/components/domains/DNSDetail.vue:176
 #: src/components/domains/DomainAliasForm.vue:13
 #: src/components/domains/DomainCreationForm.vue:76
 #: src/components/domains/AdministratorList.vue:87
@@ -1032,7 +1032,7 @@ msgstr "Suivant"
 #: src/components/tools/CreationForm.vue:103
 #: src/components/identities/IdentityList.vue:116
 #: src/components/identities/IdentityList.vue:137
-#: src/components/domains/DNSDetail.vue:171
+#: src/components/domains/DNSDetail.vue:193
 #: src/components/domains/DomainList.vue:203
 msgid "No"
 msgstr "Non"
@@ -1045,7 +1045,8 @@ msgstr ""
 msgid "No sending limit"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:76
+#: src/components/domains/DNSDetail.vue:97
+#: src/components/domains/DNSDetail.vue:61
 msgid "Not generated"
 msgstr "Non générée"
 
@@ -1099,6 +1100,9 @@ msgstr ""
 msgid "Password updated"
 msgstr "Mot de passe"
 
+#: src/components/domains/DNSDetail.vue:14
+#: src/components/domains/DNSDetail.vue:31
+#: src/components/domains/DNSDetail.vue:4
 #: src/components/domains/DNSStatusChip.vue:9
 #: src/components/domains/DNSStatusChip.vue:16
 msgid "Pending"
@@ -1350,7 +1354,8 @@ msgstr "Configuration"
 msgid "Settings: thislabel"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:70
+#: src/components/domains/DNSDetail.vue:91
+#: src/components/domains/DNSDetail.vue:55
 msgid "Show key"
 msgstr "Afficher la clé"
 
@@ -1365,11 +1370,13 @@ msgstr "Utilisateur simple"
 msgid "Specify an email address"
 msgstr "Adresse email"
 
-#: src/components/domains/DNSDetail.vue:42
+#: src/components/domains/DNSDetail.vue:63
+#: src/components/domains/DNSDetail.vue:27
 msgid "SPF record found"
 msgstr ""
 
-#: src/components/domains/DNSDetail.vue:45
+#: src/components/domains/DNSDetail.vue:66
+#: src/components/domains/DNSDetail.vue:30
 msgid "SPF record not found"
 msgstr ""
 
@@ -1472,7 +1479,6 @@ msgid "unlimited"
 msgstr "illimité"
 
 #: src/components/domains/DomainAliasForm.vue:17
-#: src/components/user/APIAccessForm.vue:8
 #: src/components/user/ForwardForm.vue:10
 #: src/components/domains/DomainAliasForm.vue:86
 msgid "Update"
@@ -1489,7 +1495,7 @@ msgid "Update settings"
 msgstr "Configuration"
 
 #: src/components/domains/DNSDetail.vue:20
-#: src/components/domains/DNSDetail.vue:156
+#: src/components/domains/DNSDetail.vue:178
 msgid "Updated"
 msgstr "Mis à jour"
 
@@ -1532,7 +1538,7 @@ msgstr ""
 #: src/components/tools/CreationForm.vue:98
 #: src/components/identities/IdentityList.vue:109
 #: src/components/identities/IdentityList.vue:130
-#: src/components/domains/DNSDetail.vue:165
+#: src/components/domains/DNSDetail.vue:187
 #: src/components/domains/DomainList.vue:196 src/views/user/APISetup.vue:81
 msgid "Warning"
 msgstr ""
@@ -1568,7 +1574,7 @@ msgstr "Année"
 #: src/components/tools/CreationForm.vue:102
 #: src/components/identities/IdentityList.vue:117
 #: src/components/identities/IdentityList.vue:138
-#: src/components/domains/DNSDetail.vue:172
+#: src/components/domains/DNSDetail.vue:194
 #: src/components/domains/DomainList.vue:204
 msgid "Yes"
 msgstr "Oui"
