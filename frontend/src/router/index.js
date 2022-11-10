@@ -180,13 +180,18 @@ const routes = [
   },
   {
     path: '/password_recovery/confirm/:id?/:token?/',
-    name: 'PasswordRecoveryEmailForm',
-    component: () => import('../views/user/PasswordRecoveryEmailForm.vue')
+    name: 'PasswordRecoveryChangeForm',
+    component: () => import('../views/user/PasswordRecoveryChangeForm.vue')
   },
   {
     path: '/password_recovery/done/',
     name: 'PasswordRecoveryDone',
     component: () => import('../views/user/PasswordRecoveryDone.vue')
+  },
+  {
+    path: '/password_recovery/sms_confirm',
+    name: 'PasswordRecoverySms',
+    component: () => import('../views/user/PasswordRecoverySmsTotpForm.vue')
   }
 ]
 

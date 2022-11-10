@@ -17,7 +17,7 @@
         <p>Everything alright</p>
       </div>
     </v-col>
->    <v-col>
+    <v-col>
       <div>
         <a @click="returnLogin" class="float-right primary--text"><translate>Return to login?</translate></a>
       </div>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import auth from '@/api/auth'
 
 export default {
   data () {
@@ -37,26 +36,6 @@ export default {
   methods: {
     returnLogin () {
       this.$router.push({ name: 'Login' })
-    },
-    async recoverPassword () {
-      const isValid = await this.$refs.observer.validate()
-      if (!isValid) {
-        return
-      }
-      const payload = {
-        password: this.password
-      }
-      this.loading = true
-      auth.recoverPassword(payload).then(resp => {
-        console.log('ok')
-      }).catch(err => {
-        this.loading = false
-        if (err.response.status === 400) {
-          this.$refs.observer.setErrors({
-            email: this.$gettext('Invalid email')
-          })
-        }
-      })
     }
   }
 }

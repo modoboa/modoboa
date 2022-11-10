@@ -77,12 +77,12 @@ export default {
       } else {
         const decodedId = atob(this.$route.params.id)
         if (!/^\d+$/.test(decodedId)) {
-          console.error('ID passed does not seems to be an int !')
+          console.error('ID passed does not seems to be an integer !')
           this.$router.push({ name: 'PasswordRecoveryForm' })
         } else {
           this.id = this.$route.params.id
           this.token = this.$route.params.token
-          this.$router.push({ name: 'PasswordRecoveryEmailForm' })
+          this.$router.push({ name: 'PasswordRecoveryChangeForm' })
         }
       }
     },
@@ -108,11 +108,15 @@ export default {
         this.loading = false
         if (err.response.status === 400) {
           this.$refs.observer.setErrors({
-            email: this.$gettext('Invalid email')
+            password_confirmed: this.$gettext('Invalid email.')
           })
         } else if (err.response.status === 401) {
           this.$refs.observer.setErrors({
-            email: this.$gettext('Invalid reset token')
+            password_confirmed: this.$gettext('Invalid reset token.')
+          })
+        } else if (err.response.status === 404) {
+          this.$refs.observer.setErrors({
+            password_confirmed: this.$gettext('User unknown.')
           })
         }
       })

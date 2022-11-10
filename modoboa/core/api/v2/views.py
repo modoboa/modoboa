@@ -1,21 +1,11 @@
 """Core API v2 views."""
 
 import logging
-import oath
 
-from django.core.exceptions import ValidationError
-
-from django.utils.decorators import method_decorator
 from django.utils.html import escape
-from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import ugettext as _
 
-from django.views.decorators.cache import never_cache
-
-from django.db.models import Q
-
-from django.contrib.auth import login, get_user_model, password_validation
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.auth import login
 
 from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
@@ -24,11 +14,8 @@ from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.parameters import tools as param_tools
-from modoboa.lib import cryptutils
-from modoboa.core.forms import PasswordResetForm
 
-from ... import sms_backends
-from .serializers import PasswordRecoverySerializer, PasswordRecoveryResetSerializer
+from .serializers import EmailPasswordRecoveryInitSerializer, SMSPasswordRecoveryInitSerializer, PasswordRecoveryConfirmSerializer, PasswordRecoverySmsSerializer, PasswordRecoverySmsResendSerializer
 
 logger = logging.getLogger("modoboa.auth")
 
@@ -92,111 +79,67 @@ class RestPasswordResetView(APIView):
     """
     An Api View which provides a method to request a password reset token based on an e-mail address
     """
-
-    throttle_classes = ()
-    permission_classes = ()
-    serializer_class = PasswordRecoverySerializer
-    authentication_classes = ()
+    serializer_class = EmailPasswordRecoveryInitSerializer
 
     def post(self, request, *args, **kwargs):
 
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(
+            data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
 
-        email = serializer.validated_data["email"]
+        serializer.save(request)
 
-        if (get_user_model()._default_manager.filter(
-                email__iexact=email, is_active=True)
-               .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))).count() == 0:
-            return response.Response({"Status": "no_user"}, status=404)
-
-        form = PasswordResetForm(data={"email": email})
-        if not form.is_valid():
-            pass
-        #form.email = email
-
-        form.save(email_template_name="registration/password_reset_email_v2.html")
-
-        # let whoever receives this signal handle sending the email for the password reset
-        return response.Response({"Status": "email_sent"}, status=210)
+        # Email response
+        return response.Response(status=210)
 
 
 class PasswordResetView(RestPasswordResetView):
+    """ 
+    Works with PasswordRecoveryForm.vue.
+    First checks if SMS recovery is available, else switch to super (Email recovery [with seconday email]).
+    """
 
     def post(self, request, *args, **kwargs):
         """Recover password."""
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer = SMSPasswordRecoveryInitSerializer(
+            data=request.data, context={'request': request})
 
-        if not request.localconfig.parameters.get_value("sms_password_recovery"):
-            rep = super().post(request, *args, **kwargs)
-            if rep.status_code == 400:
-                return response.Response({"status": "wrong_email"}, status=400)
-            else:
-                return rep
-        user = get_user_model()._default_manager.filter(
-            email=serializer.validated_data["email"], phone_number__isnull=False
-        ).first()
-        if not user:
-            rep = super().post(request, *args, **kwargs)
-            if rep.status_code == 400:
-                return response.Response({"status": "wrong_email"}, status=400)
-            else:
-                return rep
-        backend = sms_backends.get_active_backend(
-            request.localconfig.parameters)
-        secret = cryptutils.random_hex_key(20)
-        code = oath.totp(secret)
-        text = _(
-            "Please use the following code to recover your Modoboa password: {}"
-            .format(code)
-        )
-        if not backend.send(text, [str(user.phone_number)]):
-            rep = super().post(request, *args, **kwargs)
-            if rep.status_code == 400:
-                return response.Response({"status": "wrong_email"}, status=400)
-            else:
-                return rep
-        self.request.session["user_pk"] = user.pk
-        self.request.session["totp_secret"] = secret
-        return response.Response({"status": "sms"}, status=233)
+        if not serializer.is_valid(request, raise_exception=True):
+            super().post(request, *args, **kwargs)
+        # SMS response
+        return response.Response(status=233)
+
+
+class PasswordResetConfirmSmsCodeView(APIView):
+    """ Check SMS Totp code. """
+
+    def post(self, request, *args, **kwargs):
+        serializer = PasswordRecoverySmsSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if serializer.save():
+            payload = serializer.context["response"]
+            payload = {"token": payload[0], "id": payload[1]}
+            return response.Response(payload, 200)
+        else:
+            return response.Response(status=500)
 
 
 class PasswordResetConfirmView(APIView):
-    throttle_classes = ()
-    permission_classes = ()
-    token_generator = PasswordResetTokenGenerator()
-    authentication_classes = ()
+    """ Get and set new user password. """
 
-    def get_user(self, uidb64):
-        try:
-            # urlsafe_base64_decode() decodes to bytestring
-            uid = urlsafe_base64_decode(uidb64).decode()
-            user = get_user_model()._default_manager.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
-            user = None
-        return user
-
-    @method_decorator(never_cache)
     def post(self, request, *args, **kwargs):
-        serializer = PasswordRecoveryResetSerializer(data=request.data)
+        serializer = PasswordRecoveryConfirmSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = self.get_user(serializer.data["id"])
+        if serializer.save():
+            return response.Response(status=200)
 
-        if user is None:
-            return response.Response(data={"status": "user_not_found"}, status=404)
-        token = serializer.data["token"]
 
-        if self.token_generator.check_token(user, token):
-            password = serializer.data["new_password1"]
-            try:
-                password_validation.validate_password(password, user)
-            except ValidationError as e:
-                status_message = getattr(e, 'message', _(
-                    "Password doesn't not comply with standards"))
-                return response.Response(data={"status": status_message}, status=520)
-            user.set_password(password)
-            user.save()
-            return response.Response(data={"status": "success"}, status=200)
+class PasswordResetResendSmsCodeView(APIView):
 
-        return response.Response(data={"status": "token_incorrect"}, status=401)
+    def post(self, request, *args, **kwargs):
+        serializer = PasswordRecoverySmsResendSerializer(
+            data=request.data, context={"request": request})
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return response.Response(status=200)

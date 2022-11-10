@@ -8,6 +8,8 @@
         />
     </v-col>
     <v-col cols="12" sm="6" class="d-flex flex-column justify-center pa-10" @keyup.enter="recoverPassword">
+      <confirm-dialog ref="dialog_response">
+      </confirm-dialog>
       <span class="primary--text mb-6 text-h4"><translate>Forgot password?</translate></span>
       <validation-observer ref="observer">
         <validation-provider
@@ -43,8 +45,12 @@
 
 <script>
 import auth from '@/api/auth'
+import ConfirmDialog from '@/components/layout/ConfirmDialog'
 
 export default {
+  components: {
+    ConfirmDialog
+  },
   data () {
     return {
       loading: false,
@@ -67,13 +73,21 @@ export default {
       this.loading = true
       auth.recoverPassword(payload).then(resp => {
         this.loading = false
+        if (resp.response.status === 233) {
+          this.$router.push({ name: 'PasswordRecoverySmsTotpForm' })
+        } else if (resp.response.status === 210) {
+          // TODO: dialog email sent, advise to click on link
+        }
         this.returnLogin()
       }).catch(err => {
         this.loading = false
-        if (err.response.status === 400) {
+        if (err.response.status === 404) {
+          // User not found
           this.$refs.observer.setErrors({
             email: this.$gettext('Invalid email')
           })
+        } else if (err.response.status === 502) {
+          // TODO: dialog email failed to send, contact admin
         }
       })
     }
