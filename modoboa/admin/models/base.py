@@ -20,7 +20,7 @@ class AdminObjectManager(models.Manager):
         """
         if admin.is_superuser:
             return self.get_queryset()
-        return self.get_queryset().filter(owners__user=admin)
+        return self.get_queryset().prefetch_related("owners").filter(owners__user=admin)
 
 
 class AdminObject(models.Model):
