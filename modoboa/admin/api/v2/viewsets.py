@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django_filters import rest_framework as dj_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import (
-    filters, mixins, parsers, permissions, response, status, viewsets
+    filters, mixins, parsers, pagination, permissions, response, status, viewsets
 )
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -326,13 +326,17 @@ class UserAccountViewSet(viewsets.ViewSet):
 class AlarmViewSet(viewsets.ReadOnlyModelViewSet):
     """Viewset for Alarm."""
 
+    filter_backends = (filters.OrderingFilter, filters.SearchFilter, )
+    ordering_fields = ["created", "status", "title"]
+    pagination_class = pagination.PageNumberPagination
     permission_classes = (
         permissions.IsAuthenticated,
     )
+    search_fields = ["domain__name", "title"]
     serializer_class = serializers.AlarmSerializer
 
     def get_queryset(self):
-        return models.Alarm.objects.filter(
+        return models.Alarm.objects.select_related("domain").filter(
             domain__in=models.Domain.objects.get_for_admin(
                 self.request.user)
-        )
+        ).order_by("-created")
