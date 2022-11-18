@@ -16,7 +16,6 @@ from django.core.validators import validate_email
 
 import django_otp
 from rest_framework import serializers
-from rest_framework.exceptions import APIException
 
 from modoboa.lib import fields as lib_fields, cryptutils
 from modoboa.core.models import User
@@ -36,6 +35,9 @@ class NoUserFound(Exception):
     """ Raised when no valid user has been found (to have a proper 404 http code instead of 400."""
     pass
 
+class EmailFailedToSend(Exception):
+    """ Raised when a reset email has failed to send."""
+    pass
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
     """A serializer for global parameters."""
@@ -303,10 +305,11 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
         subject = ''.join(subject.splitlines())
         body = loader.render_to_string(
             "registration/password_reset_email_v2.html", context)
-
-        if send_mail(subject, body, None, [to_email]) == 0:
-            raise APIException("Email failed to send", 502)
-
+        try :
+            if send_mail(subject, body, None, [to_email]) == 0:
+                raise EmailFailedToSend()
+        except:
+            raise EmailFailedToSend()
 
 class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
 
@@ -366,7 +369,8 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
         if not oath.accept_totp(totp_secret, data["sms_totp"]):
             raise serializers.ValidationError("Wrong totp", 403)
 
-        self.user = get_user_model()._default_manager.get(
+        # Attempt to get user, will raise an error if pk is not valid
+        self.user = User.objects.get(
             pk=self.context["user_pk"])
 
         return data
@@ -393,8 +397,8 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         try:
             # urlsafe_base64_decode() decodes to bytestring
             uid = urlsafe_base64_decode(user_id).decode()
-            user = get_user_model()._default_manager.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
         return user
 
@@ -407,7 +411,8 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
 
         user = self.get_user(data["id"])
 
-        password_validation.validate_password(data["new_password1"], user)
+        # Check that the password works with set conditions
+        password_validation.validate_password(data["new_password1"], user)    
 
         if user is None:
             raise serializers.ValidationError("User not found", 404)
@@ -434,10 +439,10 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
             self.context["session"].totp_token
             return data
         except KeyError:
-            raise serializers.ValidationError("paylaod not right", 403)
+            raise serializers.ValidationError("No previous reset attempt recorded", 403)
 
     def save(self):
-        user = get_user_model()._default_manager.get(
+        user = User.objects.get(
             pk=self.context["session"].user_pk)
         request = self.context["request"]
         backend = sms_backends.get_active_backend(

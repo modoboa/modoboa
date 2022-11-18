@@ -91,8 +91,10 @@ class RestPasswordResetView(APIView):
         except NoUserFound:
             return response.Response({"status": "no valid user found"}, 404)
 
-        serializer.save()
-
+        try:
+            serializer.save()
+        except EmailFailedToSend:
+            return response.Response({"status": "Email failed to send, possibly a misconfiguration?"}, 502)
         # Email response
         return response.Response(status=210)
 

@@ -103,7 +103,7 @@ export default {
       this.loading = true
       auth.changePassword(payload).then(resp => {
         this.loading = false
-        this.$router.push({ name: 'PasswordRecoveryDone' })
+        this.returnLogin()
       }).catch(err => {
         this.loading = false
         if (err.response.status === 400) {
