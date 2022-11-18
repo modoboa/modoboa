@@ -8,8 +8,6 @@
         />
     </v-col>
     <v-col cols="12" sm="6" class="d-flex flex-column justify-center pa-10" @keyup.enter="recoverPassword">
-      <confirm-dialog ref="dialog_response">
-      </confirm-dialog>
       <span class="primary--text mb-6 text-h4"><translate>Forgot password?</translate></span>
       <validation-observer ref="observer">
         <validation-provider
@@ -40,6 +38,8 @@
         <a @click="returnLogin" class="float-right primary--text"><translate>Return to login?</translate></a>
       </div>
     </v-col>
+    <confirm-dialog ref="dialog_response">
+    </confirm-dialog>
   </v-row>
 </template>
 
@@ -62,6 +62,38 @@ export default {
     returnLogin () {
       this.$router.push({ name: 'Login' })
     },
+    async showDialogEmail () {
+      const confirm = await this.$refs.dialog_response.open(
+        this.$gettext('Info'),
+        this.$gettext(
+          'Email sent, please check your inbox'
+        ),
+        {
+          color: 'info',
+          cancelLabel: this.$gettext('Ok'),
+          agreeLabel: this.$gettext('Return to login')
+        })
+      if (!confirm) {
+        return
+      }
+      this.returnLogin()
+    },
+    async emailFailedToSend () {
+      const confirm = await this.$refs.dialog_response.open(
+        this.$gettext('Error'),
+        this.$gettext(
+          'Email failed to sent, please check with you administrator'
+        ),
+        {
+          color: 'error',
+          cancelLabel: this.$gettext('Ok'),
+          agreeLabel: this.$gettext('Return to login')
+        })
+      if (!confirm) {
+        return
+      }
+      this.returnLogin()
+    },
     async recoverPassword () {
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
@@ -73,21 +105,20 @@ export default {
       this.loading = true
       auth.recoverPassword(payload).then(resp => {
         this.loading = false
-        if (resp.response.status === 233) {
+        if (resp.status === 233) {
           this.$router.push({ name: 'PasswordRecoverySmsTotpForm' })
-        } else if (resp.response.status === 210) {
-          // TODO: dialog email sent, advise to click on link
+        } else if (resp.status === 210) {
+          this.showDialogEmail()
         }
-        this.returnLogin()
       }).catch(err => {
         this.loading = false
-        if (err.response.status === 404) {
+        if (err.status === 404) {
           // User not found
           this.$refs.observer.setErrors({
             email: this.$gettext('Invalid email')
           })
-        } else if (err.response.status === 502) {
-          // TODO: dialog email failed to send, contact admin
+        } else if (err.status === 502) {
+          this.emailFailedToSend()
         }
       })
     }

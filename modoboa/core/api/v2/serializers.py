@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy, ugettext as _
 
 from django.db.models import Q
 
-from django.contrib.auth import password_validation, get_user_model
+from django.contrib.auth import password_validation
 from django.template import loader
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -13,18 +13,28 @@ from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.core.validators import validate_email
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
 
 import django_otp
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 
 from modoboa.lib import fields as lib_fields, cryptutils
+from modoboa.core.models import User
 
 from ... import constants
 from ... import models
 from ... import sms_backends
 from ... import app_settings
+
+
+class NoSMSAvailible(Exception):
+    """ Raised when no sms totp is availible for password reset (to try email)."""
+    pass
+
+
+class NoUserFound(Exception):
+    """ Raised when no valid user has been found (to have a proper 404 http code instead of 400."""
+    pass
 
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
@@ -261,56 +271,66 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
     def validate(self, data):
-        if not validate_email(self.data["email"]):
-            clean_email = self.data["email"]
+        if not validate_email(data["email"]):
+            clean_email = data["email"]
 
-        self.users = (get_user_model()._default_manager.filter(
+        self.context["user"] = (User.objects.filter(
             email__iexact=clean_email, is_active=True)
-            .exclude(Q(secondary_email__isnull=True) | Q(secondary_email="")))
-        if self.users.count() == 0:
-            raise serializers.ValidationError("No valid user found", 404)
+            .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
+        ).first()
+        if self.context["user"] is None:
+            raise NoUserFound()
         return data
 
     def save(self):
-        for user in self.users:
-            to_email = user.secondary_email
-            current_site = get_current_site(self.context["request"])
-            site_name = current_site.name
-            domain = current_site.domain
-            context = {
-                'email': to_email,
-                'domain': domain,
-                'site_name': site_name,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'user': user,
-                'token': default_token_generator.make_token(user),
-                'protocol': 'https',
-            }
-            subject = loader.render_to_string(
-                "registration/password_reset_subject.txt", context)
-            # Email subject *must not* contain newlines
-            subject = ''.join(subject.splitlines())
-            body = loader.render_to_string(
-                "registration/password_reset_email_v2.html", context)
+        user = self.context["user"]
+        to_email = user.secondary_email
+        current_site = get_current_site(self.context["request"])
+        site_name = current_site.name
+        domain = current_site.domain
+        context = {
+            'email': to_email,
+            'domain': domain,
+            'site_name': site_name,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'user': user,
+            'token': default_token_generator.make_token(user),
+            'protocol': 'https',
+        }
+        subject = loader.render_to_string(
+            "registration/password_reset_subject.txt", context)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string(
+            "registration/password_reset_email_v2.html", context)
 
-            if send_mail(subject, body, None, [to_email]) == 0:
-                raise serializers.ErrorDetail("Email failed to send", 502)
+        if send_mail(subject, body, None, [to_email]) == 0:
+            raise APIException("Email failed to send", 502)
 
 
-class SMSPasswordRecoveryInitSerializer(EmailPasswordRecoveryInitSerializer):
+class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
+
+    email = serializers.EmailField()
 
     def validate(self, data, *args, **kwargs):
-        super().validate(data)
-
         request = self.context["request"]
 
+        if not validate_email(data["email"]):
+            clean_email = data["email"]
+
+        self.context["user"] = (User.objects.filter(
+            email__iexact=clean_email, is_active=True)
+            .exclude(Q(phone_number__isnull=True) | Q(phone_number=""))
+        ).first()
+        if self.context["user"] is None:
+            raise NoSMSAvailible()
+
         if not request.localconfig.parameters.get_value("sms_password_recovery"):
-            return False
+            raise NoSMSAvailible()
 
-        user = self.users.first()
+        user = self.context["user"]
         if not user:
-            return False
-
+            raise NoSMSAvailible()
         backend = sms_backends.get_active_backend(
             request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
@@ -320,7 +340,7 @@ class SMSPasswordRecoveryInitSerializer(EmailPasswordRecoveryInitSerializer):
             .format(code)
         )
         if not backend.send(text, [str(user.phone_number)]):
-            return False
+            raise NoSMSAvailible()
         request.session["totp_secret"] = secret
         request.session["user_pk"] = user.pk
         return data
@@ -390,7 +410,7 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         password_validation.validate_password(data["new_password1"], user)
 
         if user is None:
-            raise serializers.ValidationError("User not found", 400)
+            raise serializers.ValidationError("User not found", 404)
 
         if not default_token_generator.check_token(user, data["token"]):
             raise serializers.ValidationError("Token not valid", 403)
@@ -408,10 +428,12 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
 class PasswordRecoverySmsResendSerializer(serializers.Serializer):
 
     def validate(self, data):
-        if self.context["session"].user_pk == self.data["id"] \
-                and self.context["session"].totp_token is not None:
+
+        try:
+            self.context["session"].user_pk
+            self.context["session"].totp_token
             return data
-        else:
+        except KeyError:
             raise serializers.ValidationError("paylaod not right", 403)
 
     def save(self):

@@ -11,11 +11,12 @@ from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework.views import APIView
+from rest_framework.serializers import ValidationError
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.parameters import tools as param_tools
 
-from .serializers import EmailPasswordRecoveryInitSerializer, SMSPasswordRecoveryInitSerializer, PasswordRecoveryConfirmSerializer, PasswordRecoverySmsSerializer, PasswordRecoverySmsResendSerializer
+from .serializers import *
 
 logger = logging.getLogger("modoboa.auth")
 
@@ -77,17 +78,20 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
 
 class RestPasswordResetView(APIView):
     """
-    An Api View which provides a method to request a password reset token based on an e-mail address
+    An Api View which provides a method to request a password reset token based on an e-mail address.
     """
-    serializer_class = EmailPasswordRecoveryInitSerializer
 
     def post(self, request, *args, **kwargs):
 
-        serializer = self.get_serializer(
+        serializer = EmailPasswordRecoveryInitSerializer(
             data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
 
-        serializer.save(request)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except NoUserFound:
+            return response.Response({"status": "no valid user found"}, 404)
+
+        serializer.save()
 
         # Email response
         return response.Response(status=210)
@@ -103,9 +107,10 @@ class PasswordResetView(RestPasswordResetView):
         """Recover password."""
         serializer = SMSPasswordRecoveryInitSerializer(
             data=request.data, context={'request': request})
-
-        if not serializer.is_valid(request, raise_exception=True):
-            super().post(request, *args, **kwargs)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except NoSMSAvailible:
+            return super().post(request, *args, **kwargs)
         # SMS response
         return response.Response(status=233)
 
