@@ -1,6 +1,7 @@
 """Custom context processors."""
 
 from functools import reduce
+from django.conf import settings
 
 from . import signals
 
@@ -19,3 +20,12 @@ def top_notifications(request):
         "notifications_check_interval": interval * 1000,
         "top_notifications": notifications
     }
+
+def new_admin_url(request):
+    """A context processor to include new admin url."""
+    if request.user.is_anonymous:
+        return {}
+    return {
+        "new_admin": getattr(settings, "NEW_ADMIN_URL", "new_admin")
+    }
+    
