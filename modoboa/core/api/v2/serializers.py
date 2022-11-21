@@ -1,20 +1,23 @@
 """Core API v2 serializers."""
+import django_otp
 import oath
-from django.utils import formats
-from django.utils.translation import ugettext_lazy, ugettext as _
 
 from django.db.models import Q
 
 from django.contrib.auth import password_validation
-from django.template import loader
-from django.core.mail import send_mail
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
 from django.core.validators import validate_email
+from django.core.exceptions import ValidationError as djangoValidationError
 
-import django_otp
+from django.template import loader
+
+from django.utils import formats
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.utils.translation import ugettext_lazy, ugettext as _
+
 from rest_framework import serializers
 
 from modoboa.lib import fields as lib_fields, cryptutils
@@ -35,9 +38,24 @@ class NoUserFound(Exception):
     """ Raised when no valid user has been found (to have a proper 404 http code instead of 400."""
     pass
 
+
 class EmailFailedToSend(Exception):
     """ Raised when a reset email has failed to send."""
     pass
+
+
+class FailedPasswordRequirements(Exception):
+    """ Raised when django is not happy with password provided."""
+
+    def __init__(self, message_list, *args: object) -> None:
+        super().__init__(*args)
+        self.message_list = message_list
+
+
+class IncorrectToken(Exception):
+    """ Raised during password reset if token is not valid."""
+    pass
+
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
     """A serializer for global parameters."""
@@ -305,11 +323,12 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
         subject = ''.join(subject.splitlines())
         body = loader.render_to_string(
             "registration/password_reset_email_v2.html", context)
-        try :
+        try:
             if send_mail(subject, body, None, [to_email]) == 0:
                 raise EmailFailedToSend()
         except:
             raise EmailFailedToSend()
+
 
 class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
 
@@ -412,13 +431,16 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         user = self.get_user(data["id"])
 
         # Check that the password works with set conditions
-        password_validation.validate_password(data["new_password1"], user)    
+        try:
+            password_validation.validate_password(data["new_password1"], user)
+        except djangoValidationError as e:
+            raise FailedPasswordRequirements(e.error_list)
 
         if user is None:
-            raise serializers.ValidationError("User not found", 404)
+            raise NoUserFound
 
         if not default_token_generator.check_token(user, data["token"]):
-            raise serializers.ValidationError("Token not valid", 403)
+            raise IncorrectToken
 
         self.context["user"] = user
         return super().validate(data)
@@ -439,7 +461,8 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
             self.context["session"].totp_token
             return data
         except KeyError:
-            raise serializers.ValidationError("No previous reset attempt recorded", 403)
+            raise serializers.ValidationError(
+                "No previous reset attempt recorded", 403)
 
     def save(self):
         user = User.objects.get(

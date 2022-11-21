@@ -11,7 +11,6 @@ from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework.views import APIView
-from rest_framework.serializers import ValidationError
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.parameters import tools as param_tools
@@ -76,30 +75,27 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
             serializer.validated_data, status=status.HTTP_200_OK)
 
 
-class RestPasswordResetView(APIView):
+class EmailPasswordResetView(APIView):
     """
     An Api View which provides a method to request a password reset token based on an e-mail address.
     """
 
     def post(self, request, *args, **kwargs):
-
         serializer = EmailPasswordRecoveryInitSerializer(
             data=request.data, context={'request': request})
-
         try:
             serializer.is_valid(raise_exception=True)
         except NoUserFound:
-            return response.Response({"status": "no valid user found"}, 404)
-
+            return response.Response({"no valid user found"}, 404)
         try:
             serializer.save()
         except EmailFailedToSend:
-            return response.Response({"status": "Email failed to send, possibly a misconfiguration?"}, 502)
+            return response.Response({"Email failed to send, possibly a misconfiguration?"}, 502)
         # Email response
         return response.Response(status=210)
 
 
-class PasswordResetView(RestPasswordResetView):
+class DefaultPasswordResetView(EmailPasswordResetView):
     """ 
     Works with PasswordRecoveryForm.vue.
     First checks if SMS recovery is available, else switch to super (Email recovery [with seconday email]).
@@ -113,6 +109,7 @@ class PasswordResetView(RestPasswordResetView):
             serializer.is_valid(raise_exception=True)
         except NoSMSAvailible:
             return super().post(request, *args, **kwargs)
+        serializer.save()
         # SMS response
         return response.Response(status=233)
 
@@ -136,7 +133,18 @@ class PasswordResetConfirmView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = PasswordRecoveryConfirmSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except (FailedPasswordRequirements, NoUserFound, IncorrectToken) as e:
+            if type(e) == FailedPasswordRequirements:
+                errors = []
+                for element in e.message_list:
+                    errors.append(element)
+                return response.Response(errors, 455)
+            elif type(e) == NoUserFound:
+                return response.Response(status=404)
+            elif type(e) == IncorrectToken:
+                return response.Response(status=401)
         if serializer.save():
             return response.Response(status=200)
 

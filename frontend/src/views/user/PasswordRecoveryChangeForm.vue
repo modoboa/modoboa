@@ -15,6 +15,7 @@
           v-slot="{ errors }"
           rules="required"
         >
+        <p id="password_validation"></p>
         <label class="m-label"><translate>Change password</translate></label>
           <v-text-field
             v-model="password"
@@ -102,15 +103,12 @@ export default {
       }
       this.loading = true
       auth.changePassword(payload).then(resp => {
+        document.getElementById('password_validation').innerHTML = ''
         this.loading = false
         this.returnLogin()
       }).catch(err => {
         this.loading = false
-        if (err.response.status === 400) {
-          this.$refs.observer.setErrors({
-            password_confirmed: this.$gettext('Invalid email.')
-          })
-        } else if (err.response.status === 401) {
+        if (err.response.status === 401) {
           this.$refs.observer.setErrors({
             password_confirmed: this.$gettext('Invalid reset token.')
           })
@@ -118,6 +116,12 @@ export default {
           this.$refs.observer.setErrors({
             password_confirmed: this.$gettext('User unknown.')
           })
+        } else if (err.response.status === 455) {
+          let message = ''
+          err.response.data.forEach(element => {
+            message += this.$gettext(element) + '<br>'
+          })
+          document.getElementById('password_validation').innerHTML = message
         }
       })
     }
@@ -129,4 +133,7 @@ export default {
 </script>
 
 <style>
+#password_validation {
+  color:crimson;
+}
 </style>

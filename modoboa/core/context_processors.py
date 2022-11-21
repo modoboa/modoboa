@@ -21,11 +21,9 @@ def top_notifications(request):
         "top_notifications": notifications
     }
 
+
 def new_admin_url(request):
     """A context processor to include new admin url."""
-    if request.user.is_anonymous:
-        return {}
     return {
         "new_admin": getattr(settings, "NEW_ADMIN_URL", "new_admin")
     }
-    

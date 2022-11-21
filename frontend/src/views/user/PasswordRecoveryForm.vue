@@ -112,12 +112,12 @@ export default {
         }
       }).catch(err => {
         this.loading = false
-        if (err.status === 404) {
+        if (err.response.status === 404) {
           // User not found
           this.$refs.observer.setErrors({
             email: this.$gettext('Invalid email')
           })
-        } else if (err.status === 502) {
+        } else if (err.response.status === 502) {
           this.emailFailedToSend()
         }
       })

@@ -14,6 +14,6 @@ export default {
     return repository.post('/reset_confirm/', data)
   },
   resendSmsTotp (data) {
-    return repository.post('/reset_sms_resend/')
+    return repository.post('/reset_sms_resend/', data)
   }
 }
