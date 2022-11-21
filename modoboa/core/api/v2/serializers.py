@@ -20,13 +20,9 @@ from django.utils.translation import ugettext_lazy, ugettext as _
 
 from rest_framework import serializers
 
-from modoboa.lib import fields as lib_fields, cryptutils
+from modoboa.core import constants, models, sms_backends, app_settings, context_processors
 from modoboa.core.models import User
-
-from ... import constants
-from ... import models
-from ... import sms_backends
-from ... import app_settings
+from modoboa.lib import fields as lib_fields, cryptutils
 
 
 class NoSMSAvailible(Exception):
@@ -317,6 +313,7 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
             'token': default_token_generator.make_token(user),
             'protocol': 'https',
         }
+        context.update(context_processors.new_admin_url())
         subject = loader.render_to_string(
             "registration/password_reset_subject.txt", context)
         # Email subject *must not* contain newlines
