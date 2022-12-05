@@ -363,7 +363,7 @@ class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
 
 class PasswordRecoverySmsSerializer(serializers.Serializer):
 
-    sms_totp = serializers.CharField(min_lenght=6, max_length=6)
+    sms_totp = serializers.CharField(min_length=6, max_length=6)
 
     def validate(self, data):
         try:
