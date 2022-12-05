@@ -172,6 +172,21 @@ const routes = [
       requiresAuth: true,
       layout: 'user'
     }
+  },
+  {
+    path: '/password_recovery',
+    name: 'PasswordRecoveryForm',
+    component: () => import('../views/user/PasswordRecoveryForm.vue')
+  },
+  {
+    path: '/password_recovery/confirm/:id?/:token?/',
+    name: 'PasswordRecoveryChangeForm',
+    component: () => import('../views/user/PasswordRecoveryChangeForm.vue')
+  },
+  {
+    path: '/password_recovery/sms_confirm',
+    name: 'PasswordRecoverySms',
+    component: () => import('../views/user/PasswordRecoverySmsTotpForm.vue')
   }
 ]
 

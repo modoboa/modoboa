@@ -147,6 +147,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'modoboa.core.context_processors.top_notifications',
+                'modoboa.core.context_processors.new_admin_url'
             ],
             'debug': DEBUG,
         },
@@ -193,6 +194,9 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
 }
+
+# Uncomment if you need a custom sub url for new_admin interface
+# NEW_ADMIN_URL = 'new_admin'
 
 SPECTACULAR_SETTINGS = {
     'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
