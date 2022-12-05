@@ -5,7 +5,6 @@ from unittest import mock
 
 from django.urls import reverse
 
-
 from modoboa.admin import factories
 from modoboa.core import models
 from modoboa.lib.tests import ModoAPITestCase
@@ -236,7 +235,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         account.is_active = True
         account.save()
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 210)
+        self.assertEqual(response.status_code, 204)
         # Phone number
         account.phone_number = "+33612345678"
         account.save()

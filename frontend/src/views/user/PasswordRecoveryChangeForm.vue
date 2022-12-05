@@ -78,7 +78,7 @@ export default {
       } else {
         const decodedId = atob(this.$route.params.id)
         if (!/^\d+$/.test(decodedId)) {
-          console.error('ID passed does not seems to be an integer !')
+          console.error('Received ID is invalid')
           this.$router.push({ name: 'PasswordRecoveryForm' })
         } else {
           this.id = this.$route.params.id

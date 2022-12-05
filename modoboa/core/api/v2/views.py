@@ -85,14 +85,14 @@ class EmailPasswordResetView(APIView):
             data=request.data, context={'request': request})
         try:
             serializer.is_valid(raise_exception=True)
-        except NoUserFound:
+        except UserNotFound:
             return response.Response({"no valid user found"}, 404)
         try:
             serializer.save()
-        except EmailFailedToSend:
+        except EmailSendingFailure:
             return response.Response({"Email failed to send, possibly a misconfiguration?"}, 502)
         # Email response
-        return response.Response(status=210)
+        return response.Response(status=204)
 
 
 class DefaultPasswordResetView(EmailPasswordResetView):
@@ -107,7 +107,7 @@ class DefaultPasswordResetView(EmailPasswordResetView):
             data=request.data, context={'request': request})
         try:
             serializer.is_valid(raise_exception=True)
-        except NoSMSAvailible:
+        except NoSMSAvailable:
             return super().post(request, *args, **kwargs)
         # SMS response
         return response.Response(status=233)
@@ -119,13 +119,13 @@ class PasswordResetConfirmSmsCodeView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = PasswordRecoverySmsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if serializer.save():
-            payload = serializer.context["response"]
-            payload = {"token": payload[0], "id": payload[1]}
-            return response.Response(payload, 200)
-        else:
-            return response.Response(status=500)
-
+        serializer.save()
+        
+        payload = serializer.context["response"]
+        payload = {"token": payload[0], "id": payload[1]}
+        
+        return response.Response(payload, 200)
+      
 
 class PasswordResetConfirmView(APIView):
     """ Get and set new user password. """
@@ -134,18 +134,18 @@ class PasswordResetConfirmView(APIView):
         serializer = PasswordRecoveryConfirmSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
-        except (FailedPasswordRequirements, NoUserFound, IncorrectToken) as e:
-            if type(e) == FailedPasswordRequirements:
+        except (PasswordRequirementsFailure, UserNotFound, InvalidToken) as e:
+            if type(e) == PasswordRequirementsFailure:
                 errors = []
                 for element in e.message_list:
                     errors.append(element)
                 return response.Response(errors, 455)
-            elif type(e) == NoUserFound:
+            elif type(e) == UserNotFound:
                 return response.Response(status=404)
-            elif type(e) == IncorrectToken:
+            elif type(e) == InvalidToken:
                 return response.Response(status=401)
-        if serializer.save():
-            return response.Response(status=200)
+        serializer.save()
+        return response.Response(status=200)
 
 
 class PasswordResetResendSmsCodeView(APIView):
@@ -154,6 +154,6 @@ class PasswordResetResendSmsCodeView(APIView):
         serializer = PasswordRecoverySmsResendSerializer(
             data=request.data, context={"request": request})
 
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return response.Response(status=200)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response(status=200)

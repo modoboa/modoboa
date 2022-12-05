@@ -207,7 +207,7 @@ Then copy your logo file into the directory indicated by
 Custom new admin sub-url
 ========================
 
-You can edit the new admin sub-url (by default it is `/new_admin`).
+You can edit the new admin sub-url (by default it is `/new-admin`).
 
 To do so, open the :file:`settings.py` file and add (or uncomment) 
 ``NEW_ADMIN_URL`` variable. This variable must contain a relative url

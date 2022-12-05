@@ -82,7 +82,7 @@ export default {
       const confirm = await this.$refs.dialog_response.open(
         this.$gettext('Error'),
         this.$gettext(
-          'Email failed to sent, please check with you administrator'
+          'Failed to send email, please check with you administrator'
         ),
         {
           color: 'error',

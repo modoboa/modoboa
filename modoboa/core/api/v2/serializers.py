@@ -25,22 +25,22 @@ from modoboa.core.models import User
 from modoboa.lib import fields as lib_fields, cryptutils
 
 
-class NoSMSAvailible(Exception):
+class NoSMSAvailable(Exception):
     """ Raised when no sms totp is availible for password reset (to try email)."""
     pass
 
 
-class NoUserFound(Exception):
+class UserNotFound(Exception):
     """ Raised when no valid user has been found (to have a proper 404 http code instead of 400."""
     pass
 
 
-class EmailFailedToSend(Exception):
+class EmailSendingFailure(Exception):
     """ Raised when a reset email has failed to send."""
     pass
 
 
-class FailedPasswordRequirements(Exception):
+class PasswordRequirementsFailure(Exception):
     """ Raised when django is not happy with password provided."""
 
     def __init__(self, message_list, *args: object) -> None:
@@ -48,7 +48,7 @@ class FailedPasswordRequirements(Exception):
         self.message_list = message_list
 
 
-class IncorrectToken(Exception):
+class InvalidToken(Exception):
     """ Raised during password reset if token is not valid."""
     pass
 
@@ -287,15 +287,13 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
     def validate(self, data):
-        if not validate_email(data["email"]):
-            clean_email = data["email"]
-
+        clean_email = data["email"]
         self.context["user"] = (User.objects.filter(
             email__iexact=clean_email, is_active=True)
             .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
         ).first()
         if self.context["user"] is None:
-            raise NoUserFound()
+            raise UserNotFound()
         return data
 
     def save(self):
@@ -322,9 +320,9 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
             "registration/password_reset_email_v2.html", context)
         try:
             if send_mail(subject, body, None, [to_email]) == 0:
-                raise EmailFailedToSend()
+                raise EmailSendingFailure()
         except:
-            raise EmailFailedToSend()
+            raise EmailSendingFailure()
 
 
 class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
@@ -333,23 +331,21 @@ class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
 
     def validate(self, data, *args, **kwargs):
         request = self.context["request"]
-
-        if not validate_email(data["email"]):
-            clean_email = data["email"]
+        clean_email = data["email"]
 
         self.context["user"] = (User.objects.filter(
             email__iexact=clean_email, is_active=True)
             .exclude(Q(phone_number__isnull=True) | Q(phone_number=""))
         ).first()
         if self.context["user"] is None:
-            raise NoSMSAvailible()
+            raise NoSMSAvailable()
 
         if not request.localconfig.parameters.get_value("sms_password_recovery"):
-            raise NoSMSAvailible()
+            raise NoSMSAvailable()
 
         user = self.context["user"]
         if not user:
-            raise NoSMSAvailible()
+            raise NoSMSAvailable()
         backend = sms_backends.get_active_backend(
             request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
@@ -359,7 +355,7 @@ class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
             .format(code)
         )
         if not backend.send(text, [str(user.phone_number)]):
-            raise NoSMSAvailible()
+            raise NoSMSAvailable()
         request.session["totp_secret"] = secret
         request.session["user_pk"] = user.pk
         return data
@@ -367,14 +363,9 @@ class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
 
 class PasswordRecoverySmsSerializer(serializers.Serializer):
 
-    sms_totp = serializers.CharField()
+    sms_totp = serializers.CharField(min_lenght=6, max_length=6)
 
     def validate(self, data):
-
-        if len(data['sms_totp']) != 6:
-            raise serializers.ValidationError(
-                "Wrong totp, try resend")
-
         try:
             totp_secret = self.context["request"].session["totp_secret"]
             self.context["request"].session.pop("totp_secret")
@@ -423,21 +414,21 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         # Validate password
         if data["new_password1"] == "" or data["new_password1"] != data["new_password2"]:
             raise serializers.ValidationError(
-                "Password empty or doesn't not correspond")
+                "Password is empty or does not match")
 
         user = self.get_user(data["id"])
+
+        if user is None:
+            raise UserNotFound
+
+        if not default_token_generator.check_token(user, data["token"]):
+            raise InvalidToken
 
         # Check that the password works with set conditions
         try:
             password_validation.validate_password(data["new_password1"], user)
         except djangoValidationError as e:
-            raise FailedPasswordRequirements(e.error_list)
-
-        if user is None:
-            raise NoUserFound
-
-        if not default_token_generator.check_token(user, data["token"]):
-            raise IncorrectToken
+            raise PasswordRequirementsFailure(e.error_list)
 
         self.context["user"] = user
         return super().validate(data)
