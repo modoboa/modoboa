@@ -5,8 +5,10 @@ from unittest import mock
 
 from django.urls import reverse
 
+from modoboa.admin import factories
 from modoboa.core import models
 from modoboa.lib.tests import ModoAPITestCase
+from rest_framework.authtoken.models import Token
 
 CORE_SETTINGS = {
     "authentication_type": "local",
@@ -112,6 +114,14 @@ class ParametersAPITestCase(ModoAPITestCase):
 
 class AccountViewSetTestCase(ModoAPITestCase):
 
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+        cls.da_token = Token.objects.create(
+            user=models.User.objects.get(username="admin@test.com"))
+
     def test_me(self):
         url = reverse("v2:account-me")
         resp = self.client.get(url)
@@ -198,6 +208,41 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 204)
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 201)
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password(self, client_post, client_get):
+        url = reverse("v2:password_reset")
+        # No payload provided
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 400)
+
+        # SMS parameter
+        self.set_global_parameters({
+            "sms_password_recovery": True,
+            "sms_provider": "ovh",
+            "sms_ovh_application_key": "key",
+            "sms_ovh_application_secret": "secret",
+            "sms_ovh_consumer_key": "consumer"
+        }, app="core")
+        account = models.User.objects.get(username="user@test.com")
+        data = {"email": account.email}
+        # Provide a user w/o phone or secondary
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        # Secondary email for reset
+        account.secondary_email = "toto@test.com"
+        account.is_active = True
+        account.save()
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 204)
+        # Phone number
+        account.phone_number = "+33612345678"
+        account.save()
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 233)
 
 
 class AuthenticationTestCase(ModoAPITestCase):
