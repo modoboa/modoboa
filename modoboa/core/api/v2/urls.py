@@ -26,8 +26,6 @@ urlpatterns += [
          name="password_reset"),
     path('reset_confirm/', views.PasswordResetConfirmView.as_view(),
          name="password_reset_confirm_v2"),
-    path('confirm_sms_totp/', views.PasswordResetConfirmSmsCodeView.as_view(),
-         name="confirm_sms_totp"),
-    path('reset_sms_resend', views.PasswordResetResendSmsCodeView.as_view(),
-         name='reset_sms_resend'),
+    path('sms_totp/', views.PasswordResetSmsTOTP.as_view(),
+         name="sms_totp"),
 ]

@@ -8,35 +8,39 @@ from django.contrib.auth import password_validation
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django.core.validators import validate_email
 from django.core.exceptions import ValidationError as djangoValidationError
 
 from django.template import loader
 
 from django.utils import formats
+from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.utils.translation import ugettext_lazy, ugettext as _
 
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.exceptions import APIException
 
 from modoboa.core import constants, models, sms_backends, app_settings, context_processors
 from modoboa.core.models import User
 from modoboa.lib import fields as lib_fields, cryptutils
 
 
+class CustomValidationError(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = 'A server error occurred.'
+
+    def __init__(self, detail, status_code):
+        if status_code is not None:
+            self.status_code = status_code
+        if detail is not None:
+            self.detail = detail
+        else:
+            self.detail = {'detail': force_text(self.default_detail)}
+
+
 class NoSMSAvailable(Exception):
-    """ Raised when no sms totp is availible for password reset (to try email)."""
-    pass
-
-
-class UserNotFound(Exception):
-    """ Raised when no valid user has been found (to have a proper 404 http code instead of 400."""
-    pass
-
-
-class EmailSendingFailure(Exception):
-    """ Raised when a reset email has failed to send."""
+    """ Raised when no sms totp is available for password reset (to try email)."""
     pass
 
 
@@ -46,11 +50,6 @@ class PasswordRequirementsFailure(Exception):
     def __init__(self, message_list, *args: object) -> None:
         super().__init__(*args)
         self.message_list = message_list
-
-
-class InvalidToken(Exception):
-    """ Raised during password reset if token is not valid."""
-    pass
 
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
@@ -281,7 +280,7 @@ class UserAPITokenSerializer(serializers.Serializer):
     token = serializers.CharField()
 
 
-class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
+class PasswordRecoveryEmailSerializer(serializers.Serializer):
     """Serializer used by password recovery route."""
 
     email = serializers.EmailField()
@@ -293,7 +292,7 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
             .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
         ).first()
         if self.context["user"] is None:
-            raise UserNotFound()
+            raise CustomValidationError({"type": "email", "reason": "No valid user found."}, 404)
         return data
 
     def save(self):
@@ -318,20 +317,31 @@ class EmailPasswordRecoveryInitSerializer(serializers.Serializer):
         subject = ''.join(subject.splitlines())
         body = loader.render_to_string(
             "registration/password_reset_email_v2.html", context)
-        try:
-            if send_mail(subject, body, None, [to_email]) == 0:
-                raise EmailSendingFailure()
-        except:
-            raise EmailSendingFailure()
+        send_mail(subject, body, None, [to_email], fail_silently=False)
 
 
-class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
+def send_sms_code(secret, backend, user):
+    """ Send a sms containing a TOTP code for password reset. """
+    code = oath.totp(secret)
+    text = _(
+        "Please use the following code to recover your Modoboa password: {}"
+        .format(code)
+    )
+    if not backend.send(text, [str(user.phone_number)]):
+        raise NoSMSAvailable()
+
+
+class PasswordRecoverySmsSerializer(serializers.Serializer):
 
     email = serializers.EmailField()
 
     def validate(self, data, *args, **kwargs):
         request = self.context["request"]
         clean_email = data["email"]
+
+        user = User.objects.filter(email__iexact=clean_email, is_active=True).first()
+        if user is None:
+            raise CustomValidationError({"type": "sms", "reason": "No valid user found."}, 404)
 
         self.context["user"] = (User.objects.filter(
             email__iexact=clean_email, is_active=True)
@@ -349,45 +359,60 @@ class SMSPasswordRecoveryInitSerializer(serializers.Serializer):
         backend = sms_backends.get_active_backend(
             request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
-        code = oath.totp(secret)
-        text = _(
-            "Please use the following code to recover your Modoboa password: {}"
-            .format(code)
-        )
-        if not backend.send(text, [str(user.phone_number)]):
-            raise NoSMSAvailable()
+        send_sms_code(secret, backend, user)
         request.session["totp_secret"] = secret
         request.session["user_pk"] = user.pk
         return data
 
 
-class PasswordRecoverySmsSerializer(serializers.Serializer):
+class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
 
     sms_totp = serializers.CharField(min_length=6, max_length=6)
 
     def validate(self, data):
         try:
-            totp_secret = self.context["request"].session["totp_secret"]
-            self.context["request"].session.pop("totp_secret")
+            self.context["totp_secret"] = self.context["request"].session["totp_secret"]
         except KeyError:
-            raise serializers.ValidationError(
-                "totp secret not set in session", 403)
+            raise CustomValidationError(
+                {"reason": "totp secret not set in session"}, 403)
 
-        if not oath.accept_totp(totp_secret, data["sms_totp"]):
-            raise serializers.ValidationError("Wrong totp", 403)
+        if not oath.accept_totp(self.context["totp_secret"], data["sms_totp"])[0]:
+            raise CustomValidationError({"reason": "Wrong totp"}, 403)
 
         # Attempt to get user, will raise an error if pk is not valid
-        self.user = User.objects.get(
-            pk=self.context["user_pk"])
+        self.context["user"] = User.objects.get(
+            pk=self.context["request"].session["user_pk"])
 
         return data
 
     def save(self):
         self.context["request"].session.pop("totp_secret")
-        self.context["request"].session.pop("user")
-        token = default_token_generator.make_token(self.user)
-        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        user_pk = self.context["request"].session.pop("user_pk")
+        token = default_token_generator.make_token(self.context["user"])
+        uid = urlsafe_base64_encode(force_bytes(user_pk))
         self.context["response"] = (token, uid)
+        return True
+
+
+class PasswordRecoverySmsResendSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        try:
+            self.context["totp_secret"] = self.context["request"].session["totp_secret"]
+        except KeyError:
+            raise CustomValidationError(
+                {"reason": "totp secret not set in session"}, status.HTTP_403_FORBIDDEN)
+
+        # Attempt to get user, will raise an error if pk is not valid
+        self.context["user"] = User.objects.get(
+            pk=self.context["request"].session["user_pk"])
+
+        return data
+
+    def save(self):
+        backend = sms_backends.get_active_backend(
+            self.context["request"].localconfig.parameters)
+        send_sms_code(self.context["totp_secret"], backend, self.context["user"])
         return True
 
 
@@ -419,10 +444,10 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         user = self.get_user(data["id"])
 
         if user is None:
-            raise UserNotFound
+            raise CustomValidationError({"reason": "User not found."}, 404)
 
         if not default_token_generator.check_token(user, data["token"]):
-            raise InvalidToken
+            raise CustomValidationError({"reason": "Wrong reset token"}, 403)
 
         # Check that the password works with set conditions
         try:
@@ -440,31 +465,3 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         return True
 
 
-class PasswordRecoverySmsResendSerializer(serializers.Serializer):
-
-    def validate(self, data):
-
-        try:
-            self.context["session"].user_pk
-            self.context["session"].totp_token
-            return data
-        except KeyError:
-            raise serializers.ValidationError(
-                "No previous reset attempt recorded", 403)
-
-    def save(self):
-        user = User.objects.get(
-            pk=self.context["session"].user_pk)
-        request = self.context["request"]
-        backend = sms_backends.get_active_backend(
-            request.localconfig.parameters)
-        secret = cryptutils.random_hex_key(20)
-        code = oath.totp(secret)
-        text = _(
-            "Please use the following code to recover your Modoboa password: {}"
-            .format(code)
-        )
-        if not backend.send(text, [str(user.phone_number)]):
-            return False
-        request.session["totp_secret"] = secret
-        request.session["user_pk"] = user.pk

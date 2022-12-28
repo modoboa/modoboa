@@ -2,8 +2,11 @@
 
 import socket
 
+from django.conf import settings
 from django.core import management
 from django.test import TestCase
+
+from importlib import import_module
 
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
@@ -99,3 +102,10 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
         """Setup."""
         super(ModoAPITestCase, self).setUp()
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+
+    def create_session(self):
+        """Enable session storage across requests."""
+        session_engine = import_module(settings.SESSION_ENGINE)
+        store = session_engine.SessionStore()
+        store.save()
+        self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
