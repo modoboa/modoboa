@@ -104,11 +104,13 @@ export default {
       this.loading = true
       auth.changePassword(payload).then(resp => {
         document.getElementById('password_validation').innerHTML = ''
-        this.loading = false
-        this.returnLogin()
+        if (resp.status === 200) {
+          this.loading = false
+          this.returnLogin()
+        }
       }).catch(err => {
         this.loading = false
-        if (err.response.status === 401) {
+        if (err.response.status === 403) {
           this.$refs.observer.setErrors({
             password_confirmed: this.$gettext('Invalid reset token.')
           })
@@ -116,9 +118,9 @@ export default {
           this.$refs.observer.setErrors({
             password_confirmed: this.$gettext('User unknown.')
           })
-        } else if (err.response.status === 455) {
+        } else if (err.response.status === 400 && err.response.data.type === 'password_requirement') {
           let message = ''
-          err.response.data.forEach(element => {
+          err.response.data.errors.forEach(element => {
             message += this.$gettext(element) + '<br>'
           })
           document.getElementById('password_validation').innerHTML = message

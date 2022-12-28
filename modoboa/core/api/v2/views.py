@@ -4,6 +4,7 @@ import logging
 
 from django.utils.html import escape
 from django.utils.translation import ugettext as _
+from django.utils.datastructures import MultiValueDictKeyError
 
 from django.contrib.auth import login
 
@@ -14,6 +15,8 @@ from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.parameters import tools as param_tools
+
+from smtplib import SMTPException
 
 from .serializers import *
 
@@ -81,51 +84,60 @@ class EmailPasswordResetView(APIView):
     """
 
     def post(self, request, *args, **kwargs):
-        serializer = EmailPasswordRecoveryInitSerializer(
+        serializer = PasswordRecoveryEmailSerializer(
             data=request.data, context={'request': request})
-        try:
-            serializer.is_valid(raise_exception=True)
-        except UserNotFound:
-            return response.Response({"no valid user found"}, 404)
+        serializer.is_valid(raise_exception=True)
         try:
             serializer.save()
-        except EmailSendingFailure:
-            return response.Response({"Email failed to send, possibly a misconfiguration?"}, 502)
+        except SMTPException:
+            return response.Response({
+                                        "type": "email",
+                                        "reason": "Error while sending the email. Please contact an administrator."
+                                      },
+                                     503)
         # Email response
-        return response.Response(status=204)
+        return response.Response({"type": "email"}, 200)
 
 
 class DefaultPasswordResetView(EmailPasswordResetView):
-    """ 
+    """
     Works with PasswordRecoveryForm.vue.
-    First checks if SMS recovery is available, else switch to super (Email recovery [with seconday email]).
+    First checks if SMS recovery is available, else switch to super (Email recovery [with secondary email]).
     """
 
     def post(self, request, *args, **kwargs):
         """Recover password."""
-        serializer = SMSPasswordRecoveryInitSerializer(
+        serializer = PasswordRecoverySmsSerializer(
             data=request.data, context={'request': request})
         try:
             serializer.is_valid(raise_exception=True)
-        except NoSMSAvailable:
-            return super().post(request, *args, **kwargs)
+        except NoSMSAvailable as e:
+            if type(e) == NoSMSAvailable:
+                return super().post(request, *args, **kwargs)
         # SMS response
-        return response.Response(status=233)
+        return response.Response({"type": "sms"}, 200)
 
 
-class PasswordResetConfirmSmsCodeView(APIView):
+class PasswordResetSmsTOTP(APIView):
     """ Check SMS Totp code. """
 
     def post(self, request, *args, **kwargs):
-        serializer = PasswordRecoverySmsSerializer(data=request.data)
+        try:
+            if request.data["type"] == "confirm":
+                serializer = PasswordRecoverySmsConfirmSerializer(data=request.data, context={'request': request})
+            elif request.data["type"] == "resend":
+                serializer = PasswordRecoverySmsResendSerializer(data=request.data, context={'request': request})
+        except (MultiValueDictKeyError, KeyError):
+            return response.Response({"reason": "No type provided."}, 400)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        
-        payload = serializer.context["response"]
-        payload = {"token": payload[0], "id": payload[1]}
-        
+        payload = {"type": "resend"}
+        if request.data["type"] == "confirm":
+            serializer_response = serializer.context["response"]
+            payload.update({"token": serializer_response[0], "id": serializer_response[1], "type": "confirm"})
+
         return response.Response(payload, 200)
-      
+
 
 class PasswordResetConfirmView(APIView):
     """ Get and set new user password. """
@@ -134,26 +146,15 @@ class PasswordResetConfirmView(APIView):
         serializer = PasswordRecoveryConfirmSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
-        except (PasswordRequirementsFailure, UserNotFound, InvalidToken) as e:
+        except PasswordRequirementsFailure as e:
             if type(e) == PasswordRequirementsFailure:
+                data = {"type": "password_requirement"}
                 errors = []
                 for element in e.message_list:
                     errors.append(element)
-                return response.Response(errors, 455)
-            elif type(e) == UserNotFound:
-                return response.Response(status=404)
-            elif type(e) == InvalidToken:
-                return response.Response(status=401)
+                data.update({"errors": errors})
+                return response.Response(data, 400)
         serializer.save()
         return response.Response(status=200)
 
 
-class PasswordResetResendSmsCodeView(APIView):
-
-    def post(self, request, *args, **kwargs):
-        serializer = PasswordRecoverySmsResendSerializer(
-            data=request.data, context={"request": request})
-
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return response.Response(status=200)

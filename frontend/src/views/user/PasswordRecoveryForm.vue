@@ -62,30 +62,18 @@ export default {
     returnLogin () {
       this.$router.push({ name: 'Login' })
     },
-    async showDialogEmail () {
-      const confirm = await this.$refs.dialog_response.open(
-        this.$gettext('Info'),
-        this.$gettext(
-          'Email sent, please check your inbox'
-        ),
-        {
-          color: 'info',
-          cancelLabel: this.$gettext('Ok'),
-          agreeLabel: this.$gettext('Return to login')
-        })
-      if (!confirm) {
-        return
+    async showDialog (title, body, error = false) {
+      let color = 'info'
+      if (error) {
+        color = 'error'
       }
-      this.returnLogin()
-    },
-    async emailFailedToSend () {
       const confirm = await this.$refs.dialog_response.open(
-        this.$gettext('Error'),
+        this.$gettext(title),
         this.$gettext(
-          'Failed to send email, please check with you administrator'
+          body
         ),
         {
-          color: 'error',
+          color: color,
           cancelLabel: this.$gettext('Ok'),
           agreeLabel: this.$gettext('Return to login')
         })
@@ -105,20 +93,23 @@ export default {
       this.loading = true
       auth.recoverPassword(payload).then(resp => {
         this.loading = false
-        if (resp.status === 233) {
-          this.$router.push({ name: 'PasswordRecoverySmsTotpForm' })
-        } else if (resp.status === 210) {
-          this.showDialogEmail()
+        if (resp.status === 200) {
+          if (resp.data.type === 'sms') {
+            this.$router.push({ name: 'PasswordRecoverySmsTotpForm' })
+          } else if (resp.data.type === 'email') {
+            this.showDialog('Info', 'Email sent, please check your inbox')
+          }
         }
       }).catch(err => {
         this.loading = false
         if (err.response.status === 404) {
-          // User not found
-          this.$refs.observer.setErrors({
-            email: this.$gettext('Invalid email')
-          })
-        } else if (err.response.status === 502) {
-          this.emailFailedToSend()
+          if (err.response.data.type === 'sms' || err.response.data.type === 'email') {
+            this.$refs.observer.setErrors({
+              email: this.$gettext(err.response.data.reason)
+            })
+          }
+        } else if (err.response.status === 503 && err.response.data.type === 'email') {
+          this.showDialog('Error', err.response.data.reason, true)
         }
       })
     }

@@ -1,6 +1,7 @@
 """Core API related tests."""
 
 import copy
+import oath
 from unittest import mock
 
 from django.urls import reverse
@@ -114,14 +115,6 @@ class ParametersAPITestCase(ModoAPITestCase):
 
 class AccountViewSetTestCase(ModoAPITestCase):
 
-    @classmethod
-    def setUpTestData(cls):  # NOQA:N802
-        """Create test data."""
-        super().setUpTestData()
-        factories.populate_database()
-        cls.da_token = Token.objects.create(
-            user=models.User.objects.get(username="admin@test.com"))
-
     def test_me(self):
         url = reverse("v2:account-me")
         resp = self.client.get(url)
@@ -209,6 +202,21 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 201)
 
+
+class PasswordResetTestCase(ModoAPITestCase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.id = 0
+        self.sms_token = 0
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+        cls.da_token = Token.objects.create(
+            user=models.User.objects.get(username="admin@test.com"))
+
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
     def test_reset_password(self, client_post, client_get):
@@ -217,7 +225,29 @@ class AccountViewSetTestCase(ModoAPITestCase):
         response = self.client.post(url)
         self.assertEqual(response.status_code, 400)
 
-        # SMS parameter
+        # Invalid user
+        data = {"email": "doesntexist@whoami.com"}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json()["type"], "sms")
+
+        account = models.User.objects.get(username="user@test.com")
+
+        # Email reset test
+        # No secondary email
+        data = {"email": account.email}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json()["type"], "email")
+        # With secondary email
+        account.secondary_email = "toto@test.com"
+        account.is_active = True
+        account.save()
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["type"], "email")
+
+        # SMS reset test
         self.set_global_parameters({
             "sms_password_recovery": True,
             "sms_provider": "ovh",
@@ -225,24 +255,77 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "sms_ovh_application_secret": "secret",
             "sms_ovh_consumer_key": "consumer"
         }, app="core")
-        account = models.User.objects.get(username="user@test.com")
-        data = {"email": account.email}
-        # Provide a user w/o phone or secondary
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 404)
-        # Secondary email for reset
-        account.secondary_email = "toto@test.com"
-        account.is_active = True
-        account.save()
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 204)
+
         # Phone number
         account.phone_number = "+33612345678"
         account.save()
         client_get.return_value = ["service"]
         client_post.return_value = {"totalCreditsRemoved": 1}
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 233)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["type"], "sms")
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_password_reset_sms_totp(self, client_post, client_get):
+        """Test reset password by SMS."""
+        url_create_sms = reverse("v2:password_reset")
+        url_sms_totp = reverse("v2:sms_totp")
+
+        # Prepare account
+        account = models.User.objects.get(username="user@test.com")
+        account.phone_number = "+33612345678"
+        account.secondary_email = "toto@test.com"
+        account.is_active = True
+        account.save()
+
+        # Send sms
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.set_global_parameters({
+            "sms_password_recovery": True,
+            "sms_provider": "ovh",
+            "sms_ovh_application_key": "key",
+            "sms_ovh_application_secret": "secret",
+            "sms_ovh_consumer_key": "consumer"
+        })
+        self.client.logout()
+        self.create_session()
+        data = {"email": account.email}
+        response = self.client.post(url_create_sms, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["type"], "sms")
+        self.assertIn("totp_secret", self.client.session)
+
+        # Get the secret
+        session = self.client.session
+        secret = session["totp_secret"]
+
+        # Fail to provide type
+        data = {"sms_totp": "123456"}
+        response = self.client.post(url_sms_totp, data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+        # Resend sms
+        data = {"type": "resend"}
+        response = self.client.post(url_sms_totp, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["type"], "resend")
+
+        # False totp code
+        data = {"sms_totp": "123456", "type": "confirm"}
+        response = self.client.post(url_sms_totp, data, format="json")
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json()["reason"], "Wrong totp")
+
+        # Good totp code
+        data = {"sms_totp": oath.totp(secret), "type": "confirm"}
+        response = self.client.post(url_sms_totp, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("token", response.json())
+        self.assertIn("id", response.json())
+        self.sms_token = response.json()["token"]
+        self.id = response.json()["id"]
 
 
 class AuthenticationTestCase(ModoAPITestCase):

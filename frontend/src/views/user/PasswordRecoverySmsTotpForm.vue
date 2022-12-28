@@ -10,7 +10,7 @@
     <v-col cols="12" sm="6" class="d-flex flex-column justify-center pa-10" @keyup.enter="changePassword">
       <confirm-dialog ref="confirm_wrong_user">
       </confirm-dialog>
-      <span class="primary--text mb-6 text-h4"><translate>Password recovert</translate></span>
+      <span class="primary--text mb-6 text-h4"><translate>Password recovery</translate></span>
       <validation-observer ref="observer">
         <validation-provider
           vid="sms_totp"
@@ -31,7 +31,7 @@
           class="flex-grow-1"
           color="primary"
           large
-          @click="changePassword"
+          @click="checkSmsTotp"
           :loading="loading"
           >
           <translate>Submit</translate>
@@ -69,9 +69,9 @@ export default {
     },
     async userPkError () {
       const confirm = await this.$refs.confirm.open(
-        this.$gettext('Warning'),
+        this.$gettext('Error'),
         this.$gettext(
-          'User seems wrong, return to login or restart reset process?'
+          'User seems wrong, return to login or restart reset the process?'
         ),
         {
           color: 'error',
@@ -86,13 +86,18 @@ export default {
       }
     },
     async resendSms () {
-      auth.resendSmsTotp().then(resp => {
+      auth.checkSmsTotp({ type: 'resend' }).then(resp => {
         this.loading = false
-        // Reset done !
+        if (resp.status === 200) {
+          this.$refs.observer.setErrors({
+            password_confirmed: this.$gettext('TOTP resent.')
+          })
+        }
       }).catch(err => {
-        console.error(err)
-        this.loading = false
-        this.userPkError()
+        if (err.response.status === 400) {
+          this.loading = false
+          this.userPkError()
+        }
       })
     },
     async checkSmsTotp () {
@@ -101,12 +106,13 @@ export default {
         return
       }
       const payload = {
+        type: 'confirm',
         sms_totp: this.sms_totp
       }
       this.loading = true
       auth.checkSmsTotp(payload).then(resp => {
         this.loading = false
-        if (resp.response.status === 200) {
+        if (resp.status === 200) {
           // Code is good, redirecting to change password form.
           this.$router.push({ name: 'PasswordRecoveryChangeForm', data: resp.response.data })
         }
@@ -114,7 +120,7 @@ export default {
         this.loading = false
         if (err.response.status === 500) {
           this.$refs.observer.setErrors({
-            password_confirmed: this.$gettext('Invalid totp, try resend')
+            password_confirmed: this.$gettext('Invalid totp.')
           })
         }
       })
