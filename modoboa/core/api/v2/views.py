@@ -147,13 +147,12 @@ class PasswordResetConfirmView(APIView):
         try:
             serializer.is_valid(raise_exception=True)
         except PasswordRequirementsFailure as e:
-            if type(e) == PasswordRequirementsFailure:
-                data = {"type": "password_requirement"}
-                errors = []
-                for element in e.message_list:
-                    errors.append(element)
-                data.update({"errors": errors})
-                return response.Response(data, 400)
+            data = {"type": "password_requirement"}
+            errors = []
+            for element in e.message_list:
+                errors.append(element)
+            data.update({"errors": errors})
+            return response.Response(data, 400)
         serializer.save()
         return response.Response(status=200)
 

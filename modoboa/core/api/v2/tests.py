@@ -317,7 +317,7 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         # False totp code
         data = {"sms_totp": "123456", "type": "confirm"}
         response = self.client.post(url_sms_totp, data, format="json")
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()["reason"], "Wrong totp")
 
         # Good totp code

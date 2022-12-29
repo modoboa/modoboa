@@ -102,29 +102,25 @@ export default {
         id: this.id
       }
       this.loading = true
+      document.getElementById('password_validation').innerHTML = ''
       auth.changePassword(payload).then(resp => {
-        document.getElementById('password_validation').innerHTML = ''
         if (resp.status === 200) {
           this.loading = false
           this.returnLogin()
         }
       }).catch(err => {
+        let message = ''
         this.loading = false
         if (err.response.status === 403) {
-          this.$refs.observer.setErrors({
-            password_confirmed: this.$gettext('Invalid reset token.')
-          })
+          message = this.$gettext('Invalid reset token.')
         } else if (err.response.status === 404) {
-          this.$refs.observer.setErrors({
-            password_confirmed: this.$gettext('User unknown.')
-          })
+          message = this.$gettext('User unknown.')
         } else if (err.response.status === 400 && err.response.data.type === 'password_requirement') {
-          let message = ''
           err.response.data.errors.forEach(element => {
             message += this.$gettext(element) + '<br>'
           })
-          document.getElementById('password_validation').innerHTML = message
         }
+        document.getElementById('password_validation').innerHTML = message
       })
     }
   },
