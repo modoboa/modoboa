@@ -57,9 +57,6 @@ export default {
     return {
       loading: false,
       sms_totp: '',
-      password: '',
-      password_confirmed: '',
-      user_pk: -1,
       errors: {}
     }
   },
@@ -67,12 +64,10 @@ export default {
     returnLogin () {
       this.$router.push({ name: 'Login' })
     },
-    async userPkError () {
+    async showErrorDialog (body) {
       const confirm = await this.$refs.confirm.open(
         this.$gettext('Error'),
-        this.$gettext(
-          'User seems wrong, return to login or restart reset the process?'
-        ),
+        this.$gettext(body),
         {
           color: 'error',
           cancelLabel: this.$gettext('Return to login'),
@@ -96,7 +91,7 @@ export default {
       }).catch(err => {
         if (err.response.status === 400) {
           this.loading = false
-          this.userPkError()
+          this.showErrorDialog('User seems wrong, return to login or restart reset the process?')
         }
       })
     },
@@ -118,9 +113,11 @@ export default {
         }
       }).catch(err => {
         this.loading = false
-        if (err.response.status === 500) {
+        if (err.response.status === 403 && 'reason' in err.response.data) {
+          this.showErrorDialog(err.response.data.reason)
+        } else if (err.response.status === 400 && 'reason' in err.response.data) {
           this.$refs.observer.setErrors({
-            password_confirmed: this.$gettext('Invalid totp.')
+            sms_totp: this.$gettext(err.response.data.reason)
           })
         }
       })

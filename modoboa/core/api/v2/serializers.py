@@ -375,9 +375,8 @@ class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
         except KeyError:
             raise CustomValidationError(
                 {"reason": "totp secret not set in session"}, 403)
-
         if not oath.accept_totp(self.context["totp_secret"], data["sms_totp"])[0]:
-            raise CustomValidationError({"reason": "Wrong totp"}, 403)
+            raise CustomValidationError({"reason": "Wrong totp"}, 400)
 
         # Attempt to get user, will raise an error if pk is not valid
         self.context["user"] = User.objects.get(
@@ -453,8 +452,7 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         try:
             password_validation.validate_password(data["new_password1"], user)
         except djangoValidationError as e:
-            raise PasswordRequirementsFailure(e.error_list)
-
+            raise PasswordRequirementsFailure(e.messages)
         self.context["user"] = user
         return super().validate(data)
 
