@@ -78,7 +78,7 @@ use them:
 
 .. sourcecode:: bash
 
-   > sudo -u <modoboa_user> -i
+   > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
 
 Then, run the following commands:

@@ -41,7 +41,7 @@ To actually import such a file:
 
 .. sourcecode:: bash
 
-   > sudo -u <modoboa_user> -i
+   > sudo -u <modoboa_user> -i bash
    > source <virtualenv_path>/bin/activate
    > cd <modoboa_instance_dir>
    > python manage.py modo import <your file>
