@@ -14,7 +14,7 @@
     "apexcharts": "^3.25.0",
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
-    "luxon": "^1.26.0",
+    "luxon": "^2.5.2",
     "vee-validate": "^3.4.5",
     "vue": "^2.6.14",
     "vue-apexcharts": "^1.6.0",
