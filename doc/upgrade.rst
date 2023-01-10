@@ -20,7 +20,7 @@ use them:
 
 .. sourcecode:: bash
 
-   > sudo -u <modoboa_user> -i
+   > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
 
 Then, run the following commands:
@@ -62,7 +62,7 @@ use them:
 
 .. sourcecode:: bash
 
-   > sudo -u <modoboa_user> -i
+   > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
 
 Then, run the following commands:
@@ -605,7 +605,7 @@ Remove ``django-passwords`` from your system:
 
 .. sourcecode:: bash
 
-   > sudo -u <modoboa_user> -i
+   > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
    > pip uninstall django-passwords
 
@@ -743,7 +743,7 @@ If you used 1.7.0 for a fresh installation, please run the following commands:
 
 .. sourcecode:: bash
 
-   > sudo -u <modoboa_user> -i
+   > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
    > cd <modoboa_instance_dir>
    > python manage.py load_initial_data
@@ -846,7 +846,7 @@ Run the following commands (load virtualenv if you use one):
 
 .. sourcecode:: bash
 
-   > sudo -u <modoboa_user> -i
+   > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
    > cd <modoboa_instance_dir>
    > python manage.py migrate
