@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
-import { confirmed, numeric, required } from 'vee-validate/dist/rules'
+import { confirmed, email, numeric, required } from 'vee-validate/dist/rules'
 import { translate } from 'vue-gettext'
 import account from '@/api/account'
 
@@ -18,6 +18,10 @@ extend('numeric', {
 extend('required', {
   ...required,
   message: () => $gettext('This field is required')
+})
+extend('email', {
+  ...email,
+  message: () => $gettext('Specify an email address')
 })
 
 // Add custom rules here

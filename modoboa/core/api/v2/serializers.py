@@ -1,19 +1,55 @@
 """Core API v2 serializers."""
+import django_otp
+import oath
 
-from django.utils import formats
-from django.utils.translation import ugettext_lazy, ugettext as _
+from django.db.models import Q
 
 from django.contrib.auth import password_validation
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.core.exceptions import ValidationError as djangoValidationError
 
-import django_otp
-from rest_framework import serializers
+from django.template import loader
 
-from modoboa.lib import fields as lib_fields
+from django.utils import formats
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.utils.translation import ugettext_lazy, ugettext as _
 
-from ... import constants
-from ... import models
-from ... import sms_backends
-from ... import app_settings
+from rest_framework import serializers, status
+from rest_framework.exceptions import APIException
+
+from modoboa.core import constants, models, sms_backends, app_settings, context_processors
+from modoboa.core.models import User
+from modoboa.lib import fields as lib_fields, cryptutils
+
+
+class CustomValidationError(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = 'A server error occurred.'
+
+    def __init__(self, detail, status_code):
+        if status_code is not None:
+            self.status_code = status_code
+        if detail is not None:
+            self.detail = detail
+        else:
+            self.detail = {'detail': force_text(self.default_detail)}
+
+
+class NoSMSAvailable(Exception):
+    """ Raised when no sms totp is available for password reset (to try email)."""
+    pass
+
+
+class PasswordRequirementsFailure(Exception):
+    """ Raised when django is not happy with password provided."""
+
+    def __init__(self, message_list, *args: object) -> None:
+        super().__init__(*args)
+        self.message_list = message_list
 
 
 class CoreGlobalParametersSerializer(serializers.Serializer):
@@ -242,3 +278,193 @@ class UserAPITokenSerializer(serializers.Serializer):
     """Serializer used by API access routes."""
 
     token = serializers.CharField()
+
+
+class PasswordRecoveryEmailSerializer(serializers.Serializer):
+    """Serializer used by password recovery route."""
+
+    email = serializers.EmailField()
+
+    def validate(self, data):
+        clean_email = data["email"]
+        self.context["user"] = (User.objects.filter(
+            email__iexact=clean_email, is_active=True)
+            .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
+        ).first()
+        if self.context["user"] is None:
+            raise CustomValidationError({"type": "email", "reason": "No valid user found."}, 404)
+        return data
+
+    def save(self):
+        user = self.context["user"]
+        to_email = user.secondary_email
+        current_site = get_current_site(self.context["request"])
+        site_name = current_site.name
+        domain = current_site.domain
+        context = {
+            'email': to_email,
+            'domain': domain,
+            'site_name': site_name,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'user': user,
+            'token': default_token_generator.make_token(user),
+            'protocol': 'https',
+        }
+        context.update(context_processors.new_admin_url())
+        subject = loader.render_to_string(
+            "registration/password_reset_subject.txt", context)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string(
+            "registration/password_reset_email_v2.html", context)
+        send_mail(subject, body, None, [to_email], fail_silently=False)
+
+
+def send_sms_code(secret, backend, user):
+    """ Send a sms containing a TOTP code for password reset. """
+    code = oath.totp(secret)
+    text = _(
+        "Please use the following code to recover your Modoboa password: {}"
+        .format(code)
+    )
+    if not backend.send(text, [str(user.phone_number)]):
+        raise NoSMSAvailable()
+
+
+class PasswordRecoverySmsSerializer(serializers.Serializer):
+
+    email = serializers.EmailField()
+
+    def validate(self, data, *args, **kwargs):
+        request = self.context["request"]
+        clean_email = data["email"]
+
+        user = User.objects.filter(email__iexact=clean_email, is_active=True).first()
+        if user is None:
+            raise CustomValidationError({
+                "type": "sms", "reason": "No valid user found."
+            }, 404)
+
+        self.context["user"] = (
+            User.objects.filter(
+                email__iexact=clean_email, is_active=True)
+            .exclude(Q(phone_number__isnull=True) | Q(phone_number=""))
+        ).first()
+        if self.context["user"] is None:
+            raise NoSMSAvailable()
+
+        if not request.localconfig.parameters.get_value("sms_password_recovery"):
+            raise NoSMSAvailable()
+
+        user = self.context["user"]
+        if not user:
+            raise NoSMSAvailable()
+        backend = sms_backends.get_active_backend(
+            request.localconfig.parameters)
+        secret = cryptutils.random_hex_key(20)
+        send_sms_code(secret, backend, user)
+        request.session["totp_secret"] = secret
+        request.session["user_pk"] = user.pk
+        return data
+
+
+class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
+
+    sms_totp = serializers.CharField(min_length=6, max_length=6)
+
+    def validate(self, data):
+        try:
+            self.context["totp_secret"] = self.context["request"].session["totp_secret"]
+        except KeyError:
+            raise CustomValidationError(
+                {"reason": "totp secret not set in session"}, 403)
+        if not oath.accept_totp(self.context["totp_secret"], data["sms_totp"])[0]:
+            raise CustomValidationError({"reason": "Wrong totp"}, 400)
+
+        # Attempt to get user, will raise an error if pk is not valid
+        self.context["user"] = User.objects.filter(
+            pk=self.context["request"].session["user_pk"]).first()
+        if self.context["user"] is None:
+            raise CustomValidationError({"reason": "Invalid user"}, 400)
+
+        return data
+
+    def save(self):
+        self.context["request"].session.pop("totp_secret")
+        user_pk = self.context["request"].session.pop("user_pk")
+        token = default_token_generator.make_token(self.context["user"])
+        uid = urlsafe_base64_encode(force_bytes(user_pk))
+        self.context["response"] = (token, uid)
+        return True
+
+
+class PasswordRecoverySmsResendSerializer(serializers.Serializer):
+
+    def validate(self, data):
+        try:
+            self.context["totp_secret"] = self.context["request"].session["totp_secret"]
+        except KeyError:
+            raise CustomValidationError(
+                {"reason": "totp secret not set in session"}, status.HTTP_403_FORBIDDEN)
+
+        # Attempt to get user, will raise an error if pk is not valid
+        self.context["user"] = User.objects.filter(
+            pk=self.context["request"].session["user_pk"]).first()
+        if self.context["user"] is None:
+            raise CustomValidationError({"reason": "Invalid user"}, 400)
+
+        return data
+
+    def save(self):
+        backend = sms_backends.get_active_backend(
+            self.context["request"].localconfig.parameters)
+        send_sms_code(self.context["totp_secret"], backend, self.context["user"])
+        return True
+
+
+class PasswordRecoveryConfirmSerializer(serializers.Serializer):
+
+    new_password1 = serializers.CharField()
+    new_password2 = serializers.CharField()
+
+    token = serializers.CharField()
+
+    id = serializers.CharField()
+
+    def get_user(self, user_id):
+        try:
+            # urlsafe_base64_decode() decodes to bytestring
+            uid = urlsafe_base64_decode(user_id).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        return user
+
+    def validate(self, data):
+
+        # Validate password
+        if data["new_password1"] == "" or data["new_password1"] != data["new_password2"]:
+            raise serializers.ValidationError(
+                "Password is empty or does not match")
+
+        user = self.get_user(data["id"])
+
+        if user is None:
+            raise CustomValidationError({"reason": "User not found."}, 404)
+
+        if not default_token_generator.check_token(user, data["token"]):
+            raise CustomValidationError({"reason": "Wrong reset token"}, 403)
+
+        # Check that the password works with set conditions
+        try:
+            password_validation.validate_password(data["new_password1"], user)
+        except djangoValidationError as e:
+            raise PasswordRequirementsFailure(e.messages)
+        self.context["user"] = user
+        return super().validate(data)
+
+    def save(self):
+        user = self.context["user"]
+        user.set_password(self.validated_data["new_password1"])
+        user.save()
+        return True

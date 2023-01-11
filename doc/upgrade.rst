@@ -91,6 +91,41 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+2.0.4
+=====
+
+* Add ``'modoboa.core.context_processors.new_admin_url',`` at the end of `context_processors` list:
+
+.. sourcecode:: python
+
+   TEMPLATES = [
+       {
+           'BACKEND': 'django.template.backends.django.DjangoTemplates',
+           'DIRS': [],
+           'APP_DIRS': True,
+           'OPTIONS': {
+               'context_processors': [
+                   'django.template.context_processors.debug',
+                   'django.template.context_processors.request',
+                   'django.contrib.auth.context_processors.auth',
+                   'django.template.context_processors.i18n',
+                   'django.template.context_processors.media',
+                   'django.template.context_processors.static',
+                   'django.template.context_processors.tz',
+                   'django.contrib.messages.context_processors.messages',
+                   'modoboa.core.context_processors.top_notifications',
+                   'modoboa.core.context_processors.new_admin_url',
+               ],
+               'debug': False,
+           },
+       },
+   ]
+
+
+* You now have the possibility to customize the url of the new-admin interface.
+To do so please head up to :ref:`the custom configuration chapter <customization>` (advanced user).
+
+
 2.0.3
 =====
 
