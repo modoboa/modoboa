@@ -339,6 +339,12 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
         request = self.context["request"]
         clean_email = data["email"]
 
+        user = User.objects.filter(email__iexact=clean_email, is_active=True).first()
+        if user is None:
+            raise CustomValidationError({
+                "type": "sms", "reason": "No valid user found."
+            }, 404)
+
         self.context["user"] = (
             User.objects.filter(
                 email__iexact=clean_email, is_active=True)

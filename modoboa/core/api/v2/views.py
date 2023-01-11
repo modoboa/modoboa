@@ -18,7 +18,7 @@ from modoboa.parameters import tools as param_tools
 
 from smtplib import SMTPException
 
-from .serializers import *
+from . import serializers
 
 logger = logging.getLogger("modoboa.auth")
 
@@ -84,17 +84,16 @@ class EmailPasswordResetView(APIView):
     """
 
     def post(self, request, *args, **kwargs):
-        serializer = PasswordRecoveryEmailSerializer(
+        serializer = serializers.PasswordRecoveryEmailSerializer(
             data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         try:
             serializer.save()
         except SMTPException:
             return response.Response({
-                                        "type": "email",
-                                        "reason": "Error while sending the email. Please contact an administrator."
-                                      },
-                                     503)
+                "type": "email",
+                "reason": "Error while sending the email. Please contact an administrator."
+            }, 503)
         # Email response
         return response.Response({"type": "email"}, 200)
 
@@ -107,11 +106,11 @@ class DefaultPasswordResetView(EmailPasswordResetView):
 
     def post(self, request, *args, **kwargs):
         """Recover password."""
-        serializer = PasswordRecoverySmsSerializer(
+        serializer = serializers.PasswordRecoverySmsSerializer(
             data=request.data, context={'request': request})
         try:
             serializer.is_valid(raise_exception=True)
-        except NoSMSAvailable as e:
+        except serializers.NoSMSAvailable:
             return super().post(request, *args, **kwargs)
         # SMS response
         return response.Response({"type": "sms"}, 200)
@@ -123,9 +122,10 @@ class PasswordResetSmsTOTP(APIView):
     def post(self, request, *args, **kwargs):
         try:
             if request.data["type"] == "confirm":
-                serializer = PasswordRecoverySmsConfirmSerializer(data=request.data, context={'request': request})
+                klass = serializers.PasswordRecoverySmsConfirmSerializer
             elif request.data["type"] == "resend":
-                serializer = PasswordRecoverySmsResendSerializer(data=request.data, context={'request': request})
+                klass = serializers.PasswordRecoverySmsResendSerializer
+            serializer = klass(data=request.data, context={'request': request})
         except (MultiValueDictKeyError, KeyError):
             return response.Response({"reason": "No type provided."}, 400)
         serializer.is_valid(raise_exception=True)
@@ -133,8 +133,11 @@ class PasswordResetSmsTOTP(APIView):
         payload = {"type": "resend"}
         if request.data["type"] == "confirm":
             serializer_response = serializer.context["response"]
-            payload.update({"token": serializer_response[0], "id": serializer_response[1], "type": "confirm"})
-
+            payload.update({
+                "token": serializer_response[0],
+                "id": serializer_response[1],
+                "type": "confirm"
+            })
         return response.Response(payload, 200)
 
 
@@ -142,10 +145,10 @@ class PasswordResetConfirmView(APIView):
     """ Get and set new user password. """
 
     def post(self, request, *args, **kwargs):
-        serializer = PasswordRecoveryConfirmSerializer(data=request.data)
+        serializer = serializers.PasswordRecoveryConfirmSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
-        except PasswordRequirementsFailure as e:
+        except serializers.PasswordRequirementsFailure as e:
             data = {"type": "password_requirement"}
             errors = []
             for element in e.message_list:
