@@ -339,12 +339,9 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
         request = self.context["request"]
         clean_email = data["email"]
 
-        user = User.objects.filter(email__iexact=clean_email, is_active=True).first()
-        if user is None:
-            raise CustomValidationError({"type": "sms", "reason": "No valid user found."}, 404)
-
-        self.context["user"] = (User.objects.filter(
-            email__iexact=clean_email, is_active=True)
+        self.context["user"] = (
+            User.objects.filter(
+                email__iexact=clean_email, is_active=True)
             .exclude(Q(phone_number__isnull=True) | Q(phone_number=""))
         ).first()
         if self.context["user"] is None:
@@ -379,8 +376,10 @@ class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
             raise CustomValidationError({"reason": "Wrong totp"}, 400)
 
         # Attempt to get user, will raise an error if pk is not valid
-        self.context["user"] = User.objects.get(
-            pk=self.context["request"].session["user_pk"])
+        self.context["user"] = User.objects.filter(
+            pk=self.context["request"].session["user_pk"]).first()
+        if self.context["user"] is None:
+            raise CustomValidationError({"reason": "Invalid user"}, 400)
 
         return data
 
@@ -403,8 +402,10 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
                 {"reason": "totp secret not set in session"}, status.HTTP_403_FORBIDDEN)
 
         # Attempt to get user, will raise an error if pk is not valid
-        self.context["user"] = User.objects.get(
-            pk=self.context["request"].session["user_pk"])
+        self.context["user"] = User.objects.filter(
+            pk=self.context["request"].session["user_pk"]).first()
+        if self.context["user"] is None:
+            raise CustomValidationError({"reason": "Invalid user"}, 400)
 
         return data
 
@@ -461,5 +462,3 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         user.set_password(self.validated_data["new_password1"])
         user.save()
         return True
-
-

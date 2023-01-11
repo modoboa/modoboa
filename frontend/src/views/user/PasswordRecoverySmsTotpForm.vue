@@ -39,7 +39,7 @@
       </div>
       <div>
         <a @click="resendSms" class="float-left primary--text"><translate>Resend SMS.</translate></a>
-        <a @click="returnLogin" class="float-right primary--text"><translate>Return to login?</translate></a>
+        <router-link :to="{ name: 'Login' }" class="float-right primary--text"><translate>Return to login</translate></router-link>
       </div>
     </v-col>
   </v-row>
@@ -61,9 +61,6 @@ export default {
     }
   },
   methods: {
-    returnLogin () {
-      this.$router.push({ name: 'Login' })
-    },
     async showErrorDialog (body) {
       const confirm = await this.$refs.confirm.open(
         this.$gettext('Error'),
@@ -91,7 +88,7 @@ export default {
       }).catch(err => {
         if (err.response.status === 400) {
           this.loading = false
-          this.showErrorDialog('User seems wrong, return to login or restart reset the process?')
+          this.showErrorDialog(this.$t('User seems wrong, return to login or restart reset the process?'))
         }
       })
     },
