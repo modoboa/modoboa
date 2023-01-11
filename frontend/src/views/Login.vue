@@ -34,7 +34,9 @@
           outlined
           />
       </validation-provider>
-      <a href="" class="float-right primary--text"><translate>Forgot password?</translate></a>
+      <router-link :to="{ name: 'PasswordRecoveryForm' }" class="float-right primary--text">
+        <translate>Forgot password?</translate>
+      </router-link>
       <v-checkbox
         v-model="rememberMe"
         :label="'Remember me'|translate"
@@ -98,7 +100,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

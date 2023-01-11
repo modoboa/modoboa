@@ -21,5 +21,11 @@ urlpatterns += [
     path('token/', views.TokenObtainPairView.as_view(),
          name="token_obtain_pair"),
     path('token/refresh/', TokenRefreshView.as_view(),
-         name='token_refresh'),
+         name="token_refresh"),
+    path('password_reset/', views.DefaultPasswordResetView.as_view(),
+         name="password_reset"),
+    path('reset_confirm/', views.PasswordResetConfirmView.as_view(),
+         name="password_reset_confirm_v2"),
+    path('sms_totp/', views.PasswordResetSmsTOTP.as_view(),
+         name="sms_totp"),
 ]
