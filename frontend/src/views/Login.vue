@@ -34,7 +34,9 @@
           outlined
           />
       </validation-provider>
-      <a @click="recoverPass" class="float-right primary--text"><translate>Forgot password?</translate></a>
+      <router-link :to="{ name: 'PasswordRecoveryForm' }" class="float-right primary--text">
+        <translate>Forgot password?</translate>
+      </router-link>
       <v-checkbox
         v-model="rememberMe"
         :label="'Remember me'|translate"
@@ -70,9 +72,6 @@ export default {
     }
   },
   methods: {
-    recoverPass () {
-      this.$router.push({ name: 'PasswordRecoveryForm' })
-    },
     async authenticate () {
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
@@ -101,7 +100,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

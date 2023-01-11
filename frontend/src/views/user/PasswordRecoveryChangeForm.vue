@@ -15,7 +15,7 @@
           v-slot="{ errors }"
           rules="required"
         >
-        <p id="password_validation"></p>
+        <p id="password_validation">{{ password_validation_error }}</p>
         <label class="m-label"><translate>Change password</translate></label>
           <v-text-field
             v-model="password"
@@ -49,7 +49,9 @@
         </v-btn>
       </div>
       <div>
-        <a @click="returnLogin" class="float-right primary--text"><translate>Return to login?</translate></a>
+        <router-link :to="{ name: 'Login' }" class="float-right primary--text">
+          <translate>Return to login</translate>
+        </router-link>
       </div>
     </v-col>
   </v-row>
@@ -64,6 +66,7 @@ export default {
       loading: false,
       password: '',
       password_confirmed: '',
+      password_validation_error: '',
       errors: {},
       token: '',
       id: ''
@@ -87,9 +90,6 @@ export default {
         }
       }
     },
-    returnLogin () {
-      this.$router.push({ name: 'Login' })
-    },
     async changePassword () {
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
@@ -102,7 +102,7 @@ export default {
         id: this.id
       }
       this.loading = true
-      document.getElementById('password_validation').innerHTML = ''
+      this.password_validation_error = ''
       auth.changePassword(payload).then(resp => {
         if (resp.status === 200) {
           this.loading = false
@@ -120,7 +120,7 @@ export default {
             message += this.$gettext(element) + '<br>'
           })
         }
-        document.getElementById('password_validation').innerHTML = message
+        this.password_validation_error = message
       })
     }
   },
