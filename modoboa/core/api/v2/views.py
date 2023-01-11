@@ -112,8 +112,7 @@ class DefaultPasswordResetView(EmailPasswordResetView):
         try:
             serializer.is_valid(raise_exception=True)
         except NoSMSAvailable as e:
-            if type(e) == NoSMSAvailable:
-                return super().post(request, *args, **kwargs)
+            return super().post(request, *args, **kwargs)
         # SMS response
         return response.Response({"type": "sms"}, 200)
 
@@ -155,5 +154,3 @@ class PasswordResetConfirmView(APIView):
             return response.Response(data, 400)
         serializer.save()
         return response.Response(status=200)
-
-
