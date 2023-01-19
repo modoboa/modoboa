@@ -11,6 +11,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_http_methods
 
 from modoboa.core.models import User
 from modoboa.lib.exceptions import BadRequest, PermDeniedException
@@ -185,6 +186,7 @@ def editaccount(request, pk):
 
 @login_required
 @permission_required("core.delete_user")
+@require_http_methods(["POST"])
 def delaccount(request, pk):
     User.objects.get(pk=pk).delete()
     return render_to_json_response(
