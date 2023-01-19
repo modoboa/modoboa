@@ -16,6 +16,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_http_methods
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import PermDeniedException
@@ -230,6 +231,7 @@ def editdomain(request, dom_id):
 
 @login_required
 @permission_required("admin.delete_domain")
+@require_http_methods(["POST"])
 def deldomain(request, dom_id):
     keepdir = request.POST.get("keepdir", "false") == "true"
     try:
