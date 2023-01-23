@@ -162,10 +162,9 @@ class DomainAdminTestCase(ResourceTestCase):
             max_value=-1)
         self._create_alias("alias3@test.com")
         self._check_limit("mailbox_aliases", 3, -1)
-        self.ajax_post(
+        self.ajax_delete(
             reverse("admin:alias_delete") + "?selection=%d"
-            % Alias.objects.get(address="alias2@test.com").id,
-            {}
+            % Alias.objects.get(address="alias2@test.com").id
         )
         self._check_limit("mailbox_aliases", 2, -1)
 
