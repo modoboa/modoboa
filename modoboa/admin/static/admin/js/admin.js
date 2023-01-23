@@ -295,7 +295,7 @@ Domains.prototype = {
 
     optionsform_prefill: function() {
         var $span = $("#id_dom_admin_username").next("span");
-        $span.html("@" + $("#id_name").val());
+        $span.html("@" + htmlEncode($("#id_name").val()));
     },
 
     domadminsform_init: function() {
