@@ -366,7 +366,7 @@ class ResellerTestCase(ResourceTestCase):
         dom = Domain.objects.get(name="domain.tld")
         self.client.logout()
         self.client.login(username="admin", password="password")
-        self.ajax_get(
+        self.ajax_delete(
             "{0}?domid={1}&daid={2}".format(
                 reverse("admin:permission_remove"),
                 dom.id, self.user.id
