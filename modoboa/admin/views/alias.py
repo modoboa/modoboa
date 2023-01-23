@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import ugettext as _, ungettext
 from django.views import generic
+from django.views.decorators.http import require_http_methods
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import Conflict, PermDeniedException
@@ -93,6 +94,7 @@ def editalias(request, alid, tplname="admin/aliasform.html"):
 
 @login_required
 @permission_required("admin.delete_alias")
+@require_http_methods(["DELETE"])
 def delalias(request):
     selection = request.GET["selection"].split(",")
     for alid in selection:
