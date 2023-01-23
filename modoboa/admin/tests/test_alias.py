@@ -156,10 +156,9 @@ class AliasTestCase(ModoTestCase):
         )
         self.assertEqual(dlist.recipients_count, 2)
 
-        self.ajax_post(
+        self.ajax_delete(
             "{}?selection={}".format(
-                reverse("admin:alias_delete"), dlist.id),
-            {}
+                reverse("admin:alias_delete"), dlist.id)
         )
         self.assertRaises(
             Alias.DoesNotExist, Alias.objects.get, address="all@test.com")
@@ -180,7 +179,7 @@ class AliasTestCase(ModoTestCase):
         )
         self.assertEqual(fwd.recipients_count, 1)
 
-        self.ajax_post(
+        self.ajax_delete(
             reverse("admin:alias_delete") + "?selection=%d"
             % fwd.id, {}
         )
