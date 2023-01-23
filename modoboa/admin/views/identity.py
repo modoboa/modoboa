@@ -196,6 +196,7 @@ def delaccount(request, pk):
 
 @login_required
 @permission_required("admin.add_domain")
+@require_http_methods(["DELETE"])
 def remove_permission(request):
     domid = request.GET.get("domid", None)
     daid = request.GET.get("daid", None)

@@ -125,7 +125,7 @@
                 {% trans "Show key" %}
               </button>
               <button data-toggle="modal" class="btn btn-default btn-xs" data-target="#dkim_regenerate_dialog"><span class="fa fa-refresh"></span></button>
-              
+
               <div class="modal fade" id="dkim_regenerate_dialog" tabindex="-1" role="dialog" aria-labelledby="dkim_regenerate_dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -203,6 +203,16 @@
                   dkim_private_key_path: ''
               }
           }).done(function (response) {
+              window.location.reload();
+          });
+      });
+      $('a[name="removeperm"]').click(function (evt) {
+          evt.preventDefault();
+          var $this = $(this);
+          $.ajax({
+              url: $this.attr('href'),
+              method: 'DELETE'
+          }).done(function () {
               window.location.reload();
           });
       });
