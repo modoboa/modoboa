@@ -361,6 +361,15 @@ String.prototype.format = function() {
     });
 };
 
+/**
+ * Simple HTML escape function
+ */
+function htmlEncode(str) {
+    return String(str).replace(/[^\w. ]/gi, function(c) {
+        return '&#'+c.charCodeAt(0)+';';
+    });
+}
+
 $(document).ready(function() {
     $(document).ajaxSuccess(function(e, xhr, settings) { ajax_login_redirect(xhr); });
     $(document).ajaxError(defaultAjaxErrorHandler);
