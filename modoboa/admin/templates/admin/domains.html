@@ -13,11 +13,11 @@
   {{ block.super }}
   <script src="{% static 'transport/js/transport.js' %}" type="text/javascript"></script>
   <script type="text/javascript">
-   $(document).ready(function() {
-       admin = new Domains({
-           load_page_url: "{% url 'admin:domain_page' %}"
-       });
-   });
+  $(document).ready(function() {
+      admin = new Domains({
+          load_page_url: "{% url 'admin:domain_page' %}"
+      });
+  });
   </script>
 {% extra_static_content "domains" "js" user %}
 {% endblock %}

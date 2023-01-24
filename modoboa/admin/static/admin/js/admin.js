@@ -152,7 +152,7 @@ Domains.prototype = {
             : gettext("This operation will remove all data associated to this domain, excepting accounts.");
 
         $("a[name=deldomain]").confirm({
-            question: function() { return this.$element.attr('title'); },
+            question: function() { return htmlEncode(this.$element.attr('title')); },
             method: "POST",
             warning: warnmsg,
             checkboxes: deloptions,
@@ -295,7 +295,7 @@ Domains.prototype = {
 
     optionsform_prefill: function() {
         var $span = $("#id_dom_admin_username").next("span");
-        $span.html("@" + $("#id_name").val());
+        $span.html("@" + htmlEncode($("#id_name").val()));
     },
 
     domadminsform_init: function() {
