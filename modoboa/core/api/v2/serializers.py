@@ -468,3 +468,15 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         user.set_password(self.validated_data["new_password1"])
         user.save()
         return True
+
+
+class ModoboaComponentSerializer(serializers.Serializer):
+    """Serializer used for information endpoint."""
+
+    label = serializers.CharField()
+    name = serializers.CharField()
+    version = serializers.CharField()
+    last_version = serializers.CharField(required=False)
+    description = serializers.CharField()
+    update = serializers.BooleanField(default=False)
+    changelog_url = serializers.URLField(required=False)

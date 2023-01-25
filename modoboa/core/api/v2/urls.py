@@ -28,4 +28,6 @@ urlpatterns += [
          name="password_reset_confirm_v2"),
     path('sms_totp/', views.PasswordResetSmsTOTP.as_view(),
          name="sms_totp"),
+    path('admin/components/', views.ComponentsInformationAPIView.as_view(),
+         name="components_information"),
 ]
