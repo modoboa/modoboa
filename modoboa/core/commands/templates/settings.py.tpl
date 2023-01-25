@@ -230,6 +230,8 @@ MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
 
+PID_FILE_STORAGE_PATH = '/var/run'
+
 # REDIS
 
 REDIS_HOST = 'localhost'
