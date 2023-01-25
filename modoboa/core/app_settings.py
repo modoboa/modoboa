@@ -528,10 +528,11 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         self._add_visibilty_rules(
             sms_backends.get_all_backend_visibility_rules()
         )
+        available_schemes = get_dovecot_schemes()
         self.fields["password_scheme"].choices = [
             (hasher.name, ugettext_lazy(hasher.label))
             for hasher in PasswordHasher.get_password_hashers()
-            if hasher().scheme in get_dovecot_schemes()
+            if hasher().scheme in available_schemes
         ]
 
     def _add_dynamic_fields(self):

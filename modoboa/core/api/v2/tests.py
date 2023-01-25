@@ -441,3 +441,11 @@ class LanguageViewSetTestCase(ModoAPITestCase):
         url = reverse("v2:language-list")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
+
+
+class ComponentAPITestCase(ModoAPITestCase):
+
+    def test_information(self):
+        url = reverse("v2:components_information")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
