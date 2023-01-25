@@ -212,6 +212,8 @@ SPECTACULAR_SETTINGS = {
 
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
+PID_FILE_STORAGE_PATH = '/tmp'
+
 # REDIS
 
 REDIS_HOST = 'localhost'
