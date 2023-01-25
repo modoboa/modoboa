@@ -5,6 +5,7 @@ import os
 import shutil
 import tempfile
 
+from django.conf import settings
 from django.core.management import call_command
 from django.urls import reverse
 from django.test import override_settings
@@ -24,6 +25,9 @@ class RunCommandsMixin(object):
 
     def tearDown(self):
         shutil.rmtree(self.workdir)
+        pid_file = f"{settings.PID_FILE_STORAGE_PATH}/modoboa_logparser.pid"
+        if os.path.exists(pid_file):
+            os.remove(pid_file)
 
     def run_logparser(self):
         """Run logparser command."""
@@ -166,3 +170,10 @@ class ManagementCommandsTestCase(RunCommandsMixin, ModoTestCase):
         self.assertTrue(os.path.exists(path))
         self.run_update_statistics(rebuild=True)
         self.assertTrue(os.path.exists(path))
+
+    def test_locking(self):
+        with open(f"{settings.PID_FILE_STORAGE_PATH}/modoboa_logparser.pid", "w") as fp:
+            fp.write(f"{os.getpid()}\n")
+        with self.assertRaises(SystemExit) as inst:
+            self.run_logparser()
+        self.assertEqual(inst.exception.code, 2)

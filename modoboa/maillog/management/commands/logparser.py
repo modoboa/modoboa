@@ -27,6 +27,7 @@ import time
 
 import rrdtool
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 from django.utils import timezone
@@ -619,7 +620,27 @@ class Command(BaseCommand):
             "--debug", default=False, action="store_true",
             help="Set debug mode")
 
+    def can_start(self):
+        """Check if another process is already running or not."""
+        pidfile = f"{settings.PID_FILE_STORAGE_PATH}/modoboa_logparser.pid"
+        if os.path.exists(pidfile):
+            with open(pidfile) as fp:
+                pid = fp.read()
+            pid = int(pid.strip())
+            try:
+                os.kill(pid, 0)
+            except OSError:
+                pass
+            else:
+                return False
+        with open(pidfile, "w") as fp:
+            fp.write(f"{os.getpid()}\n")
+        return True
+
     def handle(self, *args, **options):
+        if not self.can_start():
+            print("Another process is already running, cannot start")
+            sys.exit(2)
         if options["logfile"] is None:
             options["logfile"] = param_tools.get_global_parameter(
                 "logfile", app="maillog")
