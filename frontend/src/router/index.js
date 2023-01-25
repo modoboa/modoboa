@@ -137,6 +137,15 @@ const routes = [
     }
   },
   {
+    path: '/information',
+    name: 'Information',
+    component: () => import('../views/admin/Information.vue'),
+    meta: {
+      requiresAuth: true,
+      allowedRoles: ['SuperAdmins']
+    }
+  },
+  {
     path: '/user/api',
     name: 'APISetup',
     component: () => import('../views/user/APISetup.vue'),
