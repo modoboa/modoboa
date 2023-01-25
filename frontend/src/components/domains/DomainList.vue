@@ -165,7 +165,7 @@ export default {
       headers: [
         { text: this.$gettext('Name'), value: 'name' },
         { text: this.$gettext('Aliases'), value: 'domainalias_count' },
-        { text: this.$gettext('DNS status'), value: 'dns_global_status', sortable: false, align: 'center' },
+        { text: this.$gettext('DNS status'), value: 'dns_global_status', sortable: false },
         { text: this.$gettext('Sending limit'), value: 'message_limit' },
         { text: this.$gettext('Quota'), value: 'allocated_quota_in_percent' },
         { text: this.$gettext('Actions'), value: 'actions', sortable: false, align: 'right' }

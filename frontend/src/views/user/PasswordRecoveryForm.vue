@@ -35,7 +35,7 @@
         </v-btn>
       </div>
       <div>
-        <a @click="returnLogin" class="float-right primary--text"><translate>Return to login?</translate></a>
+        <a @click="returnLogin" class="float-right primary--text"><translate>Return to login</translate></a>
       </div>
     </v-col>
     <confirm-dialog ref="dialog_response">

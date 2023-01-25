@@ -8,12 +8,14 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from django.contrib.auth import login
 
+from drf_spectacular.utils import extend_schema
 from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
+from modoboa.core.utils import check_for_updates
 from modoboa.parameters import tools as param_tools
 
 from smtplib import SMTPException
@@ -145,7 +147,8 @@ class PasswordResetConfirmView(APIView):
     """ Get and set new user password. """
 
     def post(self, request, *args, **kwargs):
-        serializer = serializers.PasswordRecoveryConfirmSerializer(data=request.data)
+        serializer = serializers.PasswordRecoveryConfirmSerializer(
+            data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
         except serializers.PasswordRequirementsFailure as e:
@@ -157,3 +160,15 @@ class PasswordResetConfirmView(APIView):
             return response.Response(data, 400)
         serializer.save()
         return response.Response(status=200)
+
+
+class ComponentsInformationAPIView(APIView):
+    """Retrieve information about installed components."""
+
+    @extend_schema(responses=serializers.ModoboaComponentSerializer(many=True))
+    def get(self, request, *args, **kwargs):
+        status, extensions = check_for_updates()
+        serializer = serializers.ModoboaComponentSerializer(
+            extensions, many=True
+        )
+        return response.Response(serializer.data)

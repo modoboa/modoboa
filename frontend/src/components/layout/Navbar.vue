@@ -201,6 +201,12 @@ export default {
           text: this.$gettext('Settings'),
           children: [],
           roles: ['SuperAdmins']
+        },
+        {
+          icon: 'mdi-information',
+          text: this.$gettext('Information'),
+          roles: ['SuperAdmins'],
+          to: { name: 'Information' }
         }
       ],
       userSettingsMenuItems: [
