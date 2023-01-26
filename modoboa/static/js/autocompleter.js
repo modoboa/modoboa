@@ -56,7 +56,7 @@
             $.each(this.choices, $.proxy(function(index, value) {
                 if (exp.test(value)) {
                     this.$menu.append(
-                        $('<li><a href="#" name="' + value + '">' + value + '</a></li>')
+                        $('<li><a href="#" name="' + htmlEncode(value) + '">' + htmlEncode(value) + '</a></li>')
                     );
                 }
             }, this));

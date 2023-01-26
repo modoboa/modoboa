@@ -408,7 +408,7 @@ Identities.prototype = {
         }
 
         $("a[name=delaccount]").confirm({
-            question: function() { return this.$element.attr('title'); },
+            question: function() { return htmlEncode(this.$element.attr('title')); },
             method: "POST",
             checkboxes: deloptions,
             success_cb: $.proxy(this.reload_listing, this)
