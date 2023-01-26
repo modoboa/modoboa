@@ -5,6 +5,6 @@
   <td>{{ l.date_created|date:"SHORT_DATETIME_FORMAT" }}</td>
   <td>{{ l.level|colorize_level|safe }}</td>
   <td>{{ l.logger }}</td>
-  <td>{{ l.message|tohtml|safe }}</td>
+  <td>{{ l.message }}</td>
 </tr>
 {% endfor %}
