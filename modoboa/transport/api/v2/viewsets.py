@@ -2,8 +2,9 @@
 
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, response, viewsets
+from rest_framework.throttling import UserRateThrottle
 
-from modoboa.lib.throttle import UserDosThrottleViewset
+from modoboa.lib.throttle import UserDdosPerView
 
 from . import serializers
 from ... import backends
@@ -13,7 +14,7 @@ class TransportViewSet(viewsets.ViewSet):
     """Viewset for Transport."""
 
     permissions = (permissions.IsAuthenticated, )
-    throttle_classes = [UserDosThrottleViewset]
+    throttle_classes = [UserDdosPerView, UserDdosPerView]
 
     @extend_schema(
         responses={200: serializers.TransportBackendSerializer}

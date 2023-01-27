@@ -5,9 +5,14 @@ from django.utils.translation import ugettext as _
 import django_otp
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from django_otp.plugins.otp_totp.models import TOTPDevice
+
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
+from rest_framework.throttling import UserRateThrottle
+
 from drf_spectacular.utils import extend_schema
+
+from modoboa.lib.throttle import UserDdosPerView
 
 from . import serializers
 
@@ -20,6 +25,7 @@ class AccountViewSet(viewsets.ViewSet):
 
     permission_classes = (permissions.IsAuthenticated, )
     serializer_class = None
+    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     @action(methods=["post"], detail=False, url_path="tfa/setup")
     def tfa_setup(self, request):

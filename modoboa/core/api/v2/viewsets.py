@@ -11,6 +11,7 @@ from rest_framework import filters, permissions, response, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.throttling import UserRateThrottle
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
@@ -162,6 +163,7 @@ class LogViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Log.objects.all()
     search_fields = ["logger", "level", "message"]
     serializer_class = serializers.LogSerializer
+    throttle_classes = [UserRateThrottle]
 
 
 class LanguageViewSet(viewsets.ViewSet):

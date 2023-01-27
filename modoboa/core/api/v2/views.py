@@ -12,10 +12,9 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from rest_framework.throttling import ScopedRateThrottle
+from rest_framework.throttling import ScopedRateThrottle, UserRateThrottle
 from rest_framework.views import APIView
 
-from modoboa.lib.throttle import UserDosThrottleView
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.utils import check_for_updates
 from modoboa.parameters import tools as param_tools
@@ -29,7 +28,7 @@ logger = logging.getLogger("modoboa.auth")
 
 class TokenObtainPairView(jwt_views.TokenObtainPairView):
     """We overwrite this view to deal with password scheme update."""
-    
+
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "login"
 
@@ -89,7 +88,7 @@ class EmailPasswordResetView(APIView):
     """
     An Api View which provides a method to request a password reset token based on an e-mail address.
     """
-    
+
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'password_recovery_request'
 
@@ -179,7 +178,7 @@ class PasswordResetConfirmView(APIView):
 class ComponentsInformationAPIView(APIView):
     """Retrieve information about installed components."""
 
-    throttle_classes = [UserDosThrottleView]
+    throttle_classes = [UserRateThrottle]
 
     @extend_schema(responses=serializers.ModoboaComponentSerializer(many=True))
     def get(self, request, *args, **kwargs):

@@ -194,9 +194,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/hour',
-        'login': '3/minute',
-        'ddos': '100/minute',
+        'user': '100/minute',
+        'ddos': '1/second',
         'password_recovery_request': '6/hour',
         'password_recovery_totp_check': '20/hour',
         'password_recovery_apply': '20/hour'
