@@ -28,6 +28,8 @@ logger = logging.getLogger("modoboa.auth")
 class TokenObtainPairView(jwt_views.TokenObtainPairView):
     """We overwrite this view to deal with password scheme update."""
 
+    throttle_classes = ["AnonRateThrottle"]
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         try:
@@ -84,6 +86,8 @@ class EmailPasswordResetView(APIView):
     """
     An Api View which provides a method to request a password reset token based on an e-mail address.
     """
+    
+    throttle_scope = 'password_recovery_request'
 
     def post(self, request, *args, **kwargs):
         serializer = serializers.PasswordRecoveryEmailSerializer(
@@ -121,6 +125,8 @@ class DefaultPasswordResetView(EmailPasswordResetView):
 class PasswordResetSmsTOTP(APIView):
     """ Check SMS Totp code. """
 
+    throttle_scope = 'password_recovery_totp_check'
+
     def post(self, request, *args, **kwargs):
         try:
             if request.data["type"] == "confirm":
@@ -145,6 +151,8 @@ class PasswordResetSmsTOTP(APIView):
 
 class PasswordResetConfirmView(APIView):
     """ Get and set new user password. """
+
+    throttle_scope = 'password_recovery_apply'
 
     def post(self, request, *args, **kwargs):
         serializer = serializers.PasswordRecoveryConfirmSerializer(
