@@ -11,11 +11,13 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
 
 from modoboa.core import models as core_models
 from modoboa.core import sms_backends
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
+from modoboa.lib.throttle import UserDdosPerView
 
 from ... import lib, models
 from . import serializers
@@ -40,6 +42,7 @@ class DomainViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer
+    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -69,6 +72,7 @@ class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     renderer_classes = (renderers.JSONRenderer, lib_renderers.CSVRenderer)
     serializer_class = serializers.DomainAliasSerializer
+    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -86,6 +90,7 @@ class AccountViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, )
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     search_fields = ("^first_name", "^last_name", "^email")
+    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_serializer_class(self):
         """Return a serializer."""
@@ -183,6 +188,7 @@ class AliasViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.AliasSerializer
+    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -215,6 +221,7 @@ class SenderAddressViewSet(lib_viewsets.RevisionModelMixin,
     filterset_class = SenderAddressFilterSet
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.SenderAddressSerializer
+    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

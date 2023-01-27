@@ -2,9 +2,10 @@
 
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
+from rest_framework.throttling import UserRateThrottle
 
 from modoboa.admin import models as admin_models
-from modoboa.lib.throttle import UserDosThrottleViewset
+from modoboa.lib.throttle import UserDdosPerView
 
 from . import serializers
 
@@ -13,7 +14,7 @@ class DNSViewSet(viewsets.GenericViewSet):
     """A viewset to provide extra routes related to DNS information."""
 
     permission_classes = (permissions.IsAuthenticated, )
-    throttle_classes = [UserDosThrottleViewset]
+    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
