@@ -1,23 +1,17 @@
-from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+from rest_framework.throttling import SimpleRateThrottle
 
-class UserDosThrottle(UserRateThrottle):
+class UserDosThrottle(SimpleRateThrottle):
     """Custom Throttle class for rest_framework. The throttling is applied on a per view basis for authentificated users."""
 
     scope = "ddos"
 
     def get_cache_key(self, request, view):
-        return "throttle_{viewid}_{indent}".format(
-            viewid=id(view),
-            indent=self.get_indent(request)
-        )
+        if request.user and request.user.is_authenticated:
+            ident = request.user.pk
+        else:
+            ident = self.get_ident(request)
 
-class AnonDosThrottle(AnonRateThrottle):
-    """Custom Throttle class for rest_framework. The throttling is applied on a per view basis for visitors."""
-
-    scope = "anon_ddos"
-
-    def get_cache_key(self, request, view):
-        return "throttle_{viewid}_{indent}".format(
-            viewid=id(view),
-            indent=self.get_indent(request)
-        )
+        return self.cache_format % {
+            'scope': id(view),
+            'ident': ident
+        }
