@@ -193,11 +193,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Rest framework settings
 
 REST_FRAMEWORK = {
-    'DEFAULT_THROTTLE_CLASSES': [
-    'rest_framework.throttling.AnonRateThrottle',
-    'rest_framework.throttling.ScopedRateThrottle',
-    'modoboa.lib.throttle.UserDosThrottle'
-    ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/hour',
         'login': '3/minute',

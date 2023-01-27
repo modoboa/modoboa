@@ -9,14 +9,14 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import (
     filters, mixins, parsers, pagination, permissions, response, status, viewsets
 )
-from rest_framework.decorators import action, throttle_classes
+from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import models as core_models
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
-from modoboa.lib.throttle import UserDosThrottle
+from modoboa.lib.throttle import UserDosThrottleViewset
 
 from ... import lib
 from ... import models
@@ -52,7 +52,7 @@ class DomainViewSet(lib_viewsets.RevisionModelMixin,
     permission_classes = (
         permissions.IsAuthenticated, permissions.DjangoModelPermissions,
     )
-    throttle_classes = [UserDosThrottle]
+    throttle_classes = [UserDosThrottleViewset]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -161,7 +161,7 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
 
     filter_backends = (filters.SearchFilter, dj_filters.DjangoFilterBackend)
     filterset_class = AccountFilterSet
-    throttle_classes = [UserDosThrottle]
+    throttle_classes = [UserDosThrottleViewset]
 
     def get_serializer_class(self):
         if self.action in ["create", "validate", "update", "partial_update"]:
@@ -216,7 +216,7 @@ class IdentityViewSet(viewsets.ViewSet):
 
     permission_classes = (permissions.IsAuthenticated, )
     serializer_class = None
-    throttle_classes = [UserDosThrottle]
+    throttle_classes = [UserDosThrottleViewset]
 
     def list(self, request, **kwargs):
         """Return all identities."""
@@ -256,7 +256,7 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
     """Viewset for Alias."""
 
     serializer_class = serializers.AliasSerializer
-    throttle_classes = [UserDosThrottle]
+    throttle_classes = [UserDosThrottleViewset]
 
     @action(methods=["post"], detail=False)
     def validate(self, request, **kwargs):
@@ -278,7 +278,7 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
 class UserAccountViewSet(viewsets.ViewSet):
     """Viewset for current user operations."""
 
-    throttle_classes = [UserDosThrottle]
+    throttle_classes = [UserDosThrottleViewset]
 
     @action(methods=["get", "post"], detail=False)
     def forward(self, request, **kwargs):
@@ -341,7 +341,7 @@ class AlarmViewSet(viewsets.ReadOnlyModelViewSet):
     )
     search_fields = ["domain__name", "title"]
     serializer_class = serializers.AlarmSerializer
-    throttle_classes = [UserDosThrottle]
+    throttle_classes = [UserDosThrottleViewset]
 
     def get_queryset(self):
         return models.Alarm.objects.select_related("domain").filter(
