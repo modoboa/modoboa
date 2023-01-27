@@ -224,10 +224,14 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertIn("password", resp.json())
 
     def test_validate(self):
+        """Test validate and throttling."""
         data = {"username": "toto@test.com"}
         url = reverse("v2:account-validate")
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 204)
+        for _ in range(500):
+            resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 429)
 
     def test_random_password(self):
         url = reverse("v2:account-random-password")

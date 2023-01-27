@@ -12,6 +12,6 @@ class UserDosThrottle(SimpleRateThrottle):
             ident = self.get_ident(request)
 
         return self.cache_format % {
-            'scope': id(view),
+            'scope': id(view.action),
             'ident': ident
         }
