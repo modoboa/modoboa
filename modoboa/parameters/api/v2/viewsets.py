@@ -4,7 +4,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
 
-from modoboa.lib.throttle import UserDosThrottle
+from modoboa.lib.throttle import UserDosThrottleViewset
 
 from . import serializers
 from ... import tools
@@ -15,7 +15,7 @@ class ParametersViewSet(viewsets.ViewSet):
 
     lookup_value_regex = r"\w+"
     serializer_class = None
-    throttle_classes = [UserDosThrottle]
+    throttle_classes = [UserDosThrottleViewset]
 
     @extend_schema(responses=serializers.ApplicationSerializer(many=True))
     @action(methods=["get"], detail=False)
