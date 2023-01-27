@@ -194,12 +194,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.ScopedRateThrottle'
+    'rest_framework.throttling.AnonRateThrottle',
+    'rest_framework.throttling.ScopedRateThrottle',
+    'modoboa.lib.throttle.UserDosThrottle',
+    'modoboa.lib.throttle.AnonDosThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/hour',
-        'login': '5/hour',
+        'login': '3/minute',
+        'ddos': '100/minute',
+        'anon_ddos': '10/minute',
         'password_recovery_request': '6/hour',
         'password_recovery_totp_check': '20/hour',
         'password_recovery_apply': '20/hour'
