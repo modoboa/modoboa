@@ -9,6 +9,7 @@ from rest_framework import filters, permissions, response, viewsets
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import pagination
+from modoboa.lib.throttle import UserDosThrottle
 
 from ... import models
 from ... import signals
@@ -19,6 +20,7 @@ class StatisticsViewSet(viewsets.ViewSet):
     """A viewset to provide extra route related to mail statistics."""
 
     permission_classes = (permissions.IsAuthenticated, )
+    throttle_classes = [UserDosThrottle]
 
     @extend_schema(
         parameters=[serializers.StatisticsInputSerializer],
@@ -61,6 +63,7 @@ class MaillogViewSet(viewsets.ReadOnlyModelViewSet):
     permissions = (permissions.IsAuthenticated, )
     search_fields = ["queue_id", "sender", "rcpt", "original_rcpt", "status"]
     serializer_class = serializers.MaillogSerializer
+    throttle_classes = [UserDosThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
