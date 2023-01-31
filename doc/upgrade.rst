@@ -94,6 +94,8 @@ Specific instructions
 2.0.4
 =====
 
+The following modifications must be applied to the :file:`settings.py` file:
+
 * Add ``'modoboa.core.context_processors.new_admin_url',`` at the end of `context_processors` list:
 
 .. sourcecode:: python
@@ -121,9 +123,27 @@ Specific instructions
        },
    ]
 
+* Add the following variable::
 
-* You now have the possibility to customize the url of the new-admin interface.
-To do so please head up to :ref:`the custom configuration chapter <customization>` (advanced user).
+.. sourcecode:: python
+
+   PID_FILE_STORAGE_PATH = '/var/run'
+
+* Update ``LOGGING`` variable to define an address for ``syslog-auth`` handler::
+
+.. sourcecode:: python
+
+   'syslog-auth': {
+       'class': 'logging.handlers.SysLogHandler',
+       'facility': SysLogHandler.LOG_AUTH,
+       'formatter': 'syslog',
+       'address': '/dev/log'
+   },
+
+
+You now have the possibility to customize the url of the new-admin
+interface.  To do so please head up to :ref:`the custom configuration
+chapter <customization>` (advanced user).
 
 
 2.0.3
