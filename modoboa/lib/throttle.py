@@ -10,9 +10,8 @@ class UserDdosPerView(SimpleRateThrottle):
             ident = request.user.pk
         else:
             ident = self.get_ident(request)
-
         return self.cache_format % {
-            'scope': hash(f"{view.basename}_{view.name}"),
+            'scope': hash(request.path),
             'ident': ident
         }
 
@@ -26,8 +25,7 @@ class UserLesserDdosUser(SimpleRateThrottle):
             ident = request.user.pk
         else:
             ident = self.get_ident(request)
-
         return self.cache_format % {
-            'scope': self.scope,
+            'scope': hash(request.path),
             'ident': ident
         }
