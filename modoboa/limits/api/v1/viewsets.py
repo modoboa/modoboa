@@ -7,7 +7,7 @@ from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.throttling import UserRateThrottle
 
 from modoboa.core import models as core_models
-from modoboa.lib.throttle import UserDdosPerView
+from modoboa.lib.throttle import UserLesserDdosUser
 from . import serializers
 
 
@@ -19,7 +19,7 @@ class ResourcesViewSet(
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
     serializer_class = serializers.ResourcesSerializer
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
+    throttle_classes = [UserLesserDdosUser, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
