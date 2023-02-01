@@ -74,7 +74,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
 
     def __init__(self, *args, **kwargs):
         """Save name for further use."""
-        super(Domain, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.old_mail_homes = None
         self.oldname = self.name
         self.old_dkim_key_length = self.dkim_key_length
@@ -320,7 +320,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         if self.old_dkim_key_length != self.dkim_key_length:
             self.dkim_public_key = ""
             self.dkim_private_key_path = ""
-        super(Domain, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):
         """Custom delete method."""
@@ -336,7 +336,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         elif self.mailbox_set.count():
             Quota.objects.filter(username__contains="@%s" % self.name).delete()
             ungrant_access_to_objects(self.mailbox_set.all())
-        super(Domain, self).delete()
+        super().delete()
 
     def __str__(self):
         return smart_text(self.name)
@@ -364,27 +364,27 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         if domains_must_have_authorized_mx and not user.is_superuser:
             if not lib.domain_has_authorized_mx(self.name):
                 raise BadRequest(
-                    _("No authorized MX record found for domain {}")
+                    _("{}: no authorized MX record found for domain")
                     .format(self.name)
                 )
         try:
             self.quota = int(row[2].strip())
         except ValueError:
             raise BadRequest(
-                _("Invalid quota value for domain '{}'")
+                _("{}: invalid quota value for domain")
                 .format(self.name)
             )
         try:
             self.default_mailbox_quota = int(row[3].strip())
         except ValueError:
             raise BadRequest(
-                _("Invalid default mailbox quota value for domain '{}'")
+                _("{}: invalid default mailbox quota value for domain")
                 .format(self.name)
             )
         if self.quota != 0 and self.default_mailbox_quota > self.quota:
             raise BadRequest(
-                _("Default mailbox quota cannot be greater than domain "
-                  "quota")
+                _("{}: default mailbox quota cannot be greater than domain "
+                  "quota").format(self.name)
             )
         self.enabled = (row[4].strip().lower() in ["true", "1", "yes", "y"])
         core_signals.can_create_object.send(
