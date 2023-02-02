@@ -66,17 +66,18 @@ domainalias; domalias1.com; domain1.com; True
         f = ContentFile("domain; domain1.com; XX; 100; True",
                         name="domains.csv")
         response = self.client.post(url, {"sourcefile": f})
-        self.assertContains(response, "Invalid quota value")
+        self.assertContains(response, "domain1.com: invalid quota value")
         f = ContentFile("domain; domain1.com; 100; XX; True",
                         name="domains.csv")
         response = self.client.post(url, {"sourcefile": f})
-        self.assertContains(response, "Invalid default mailbox quota")
+        self.assertContains(
+            response, "domain1.com: invalid default mailbox quota")
         f = ContentFile("domain; domain1.com; 10; 100; True",
                         name="domains.csv")
         response = self.client.post(url, {"sourcefile": f})
         self.assertContains(
             response,
-            "Default mailbox quota cannot be greater than domain quota")
+            "domain1.com: default mailbox quota cannot be greater than domain quota")
 
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     @mock.patch("socket.getaddrinfo")
@@ -97,7 +98,8 @@ domainalias; domalias1.com; domain1.com; True
                 "sourcefile": f
             }
         )
-        self.assertContains(resp, "No authorized MX record found for domain")
+        self.assertContains(
+            resp, "test3.com: no authorized MX record found for domain")
 
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         f = ContentFile(
@@ -253,7 +255,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 40
             reverse("admin:identity_import"),
             {"sourcefile": f, "crypt_password": True}
         )
-        self.assertIn("Domain quota exceeded", resp.content.decode())
+        self.assertIn("test.com: domain quota exceeded", resp.content.decode())
 
     def test_import_missing_quota(self):
         f = ContentFile(b"""
