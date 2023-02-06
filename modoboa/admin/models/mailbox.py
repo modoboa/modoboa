@@ -257,7 +257,9 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
             if old_quota:
                 quota_usage -= old_quota
             if quota_usage + self.quota > self.domain.quota:
-                raise lib_exceptions.BadRequest(_("Domain quota exceeded"))
+                raise lib_exceptions.BadRequest(
+                    _("{}: domain quota exceeded").format(self.domain.name)
+                )
 
     def get_quota(self):
         """Get quota limit.

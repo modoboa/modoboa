@@ -329,7 +329,8 @@ LOGGING = {
         'syslog-auth': {
             'class': 'logging.handlers.SysLogHandler',
             'facility': SysLogHandler.LOG_AUTH,
-            'formatter': 'syslog'
+            'formatter': 'syslog',
+            'address': '/dev/log'
         },
         'syslog-mail': {
             'class': 'logging.handlers.SysLogHandler',
