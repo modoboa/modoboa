@@ -28,9 +28,13 @@ from . import serializers
 class AccountViewSet(core_v1_viewsets.AccountViewSet):
     """Account viewset."""
 
+    throttle_classes = [UserRateThrottle]
+
     def get_throttles(self):
         if self.action in ['me']:
             self.throttle_classes.append(UserLesserDdosUser)
+        else:
+            self.throttle_classes.append(UserDdosPerView)
         return super().get_throttles()
 
 

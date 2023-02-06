@@ -17,7 +17,7 @@ from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.utils import check_for_updates
-from modoboa.lib.throttle import UserLesserDdosUser
+from modoboa.lib.throttle import UserLesserDdosUser, LoginThrottle, PasswordResetApplyThrottle, PasswordResetRequestThrottle, PasswordResetTotpThrottle
 from modoboa.parameters import tools as param_tools
 
 from smtplib import SMTPException
@@ -30,8 +30,7 @@ logger = logging.getLogger("modoboa.auth")
 class TokenObtainPairView(jwt_views.TokenObtainPairView):
     """We overwrite this view to deal with password scheme update."""
 
-    throttle_classes = [ScopedRateThrottle]
-    throttle_scope = "login"
+    throttle_classes = [LoginThrottle]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -47,6 +46,10 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
 
         user = serializer.user
         login(request, user)
+
+        # Reset login throttle
+        self.get_throttles()[0].reset_cache(request)
+
         logger.info(
             _("User '%s' successfully logged in"), user.username
         )
@@ -90,8 +93,7 @@ class EmailPasswordResetView(APIView):
     An Api View which provides a method to request a password reset token based on an e-mail address.
     """
 
-    throttle_classes = [ScopedRateThrottle]
-    throttle_scope = 'password_recovery_request'
+    throttle_classes = [PasswordResetRequestThrottle]
 
     def post(self, request, *args, **kwargs):
         serializer = serializers.PasswordRecoveryEmailSerializer(
@@ -104,6 +106,8 @@ class EmailPasswordResetView(APIView):
                 "type": "email",
                 "reason": "Error while sending the email. Please contact an administrator."
             }, 503)
+
+        self.get_throttles()[0].reset_cache(request)
         # Email response
         return response.Response({"type": "email"}, 200)
 
@@ -123,14 +127,14 @@ class DefaultPasswordResetView(EmailPasswordResetView):
         except serializers.NoSMSAvailable:
             return super().post(request, *args, **kwargs)
         # SMS response
+        self.get_throttles()[0].reset_cache(request)
         return response.Response({"type": "sms"}, 200)
 
 
 class PasswordResetSmsTOTP(APIView):
     """ Check SMS Totp code. """
 
-    throttle_classes = [ScopedRateThrottle]
-    throttle_scope = 'password_recovery_totp_check'
+    throttle_classes = [PasswordResetTotpThrottle]
 
     def post(self, request, *args, **kwargs):
         try:
@@ -151,14 +155,14 @@ class PasswordResetSmsTOTP(APIView):
                 "id": serializer_response[1],
                 "type": "confirm"
             })
+        self.get_throttles()[0].reset_cache(request)
         return response.Response(payload, 200)
 
 
 class PasswordResetConfirmView(APIView):
     """ Get and set new user password. """
 
-    throttle_classes = [ScopedRateThrottle]
-    throttle_scope = 'password_recovery_apply'
+    throttle_classes = [PasswordResetApplyThrottle]
 
     def post(self, request, *args, **kwargs):
         serializer = serializers.PasswordRecoveryConfirmSerializer(
@@ -173,6 +177,7 @@ class PasswordResetConfirmView(APIView):
             data.update({"errors": errors})
             return response.Response(data, 400)
         serializer.save()
+        self.get_throttles()[0].reset_cache(request)
         return response.Response(status=200)
 
 
