@@ -32,6 +32,7 @@ class UserLesserDdosUser(SimpleRateThrottle):
         }
 
 class LoginThrottle(SimpleRateThrottle):
+    """ Custom throttle to reset the cache counter on success. """
 
     scope = 'login'
 
