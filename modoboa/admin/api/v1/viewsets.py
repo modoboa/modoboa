@@ -17,7 +17,7 @@ from modoboa.core import models as core_models
 from modoboa.core import sms_backends
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
-from modoboa.lib.throttle import UserDdosPerView
+from modoboa.lib.throttle import UserDdosPerView, GetThrottleViewsetMixin, PasswordResetRequestThrottle
 
 from ... import lib, models
 from . import serializers
@@ -37,12 +37,11 @@ from . import serializers
         summary="Create a new domain"
     )
 )
-class DomainViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class DomainViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.DomainSerializer
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -63,7 +62,7 @@ class DomainAliasFilterSet(dj_filters.FilterSet):
         fields = ["domain"]
 
 
-class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
+class DomainAliasViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
                          viewsets.ModelViewSet):
     """ViewSet for DomainAlias."""
 
@@ -72,7 +71,6 @@ class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     renderer_classes = (renderers.JSONRenderer, lib_renderers.CSVRenderer)
     serializer_class = serializers.DomainAliasSerializer
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -84,13 +82,20 @@ class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
         return context
 
 
-class AccountViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
     filter_backends = (filters.SearchFilter, )
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     search_fields = ("^first_name", "^last_name", "^email")
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
+
+    def get_throttles(self):
+
+        throttle_classes = super().get_throttles()
+        if self.action == "reset_password":
+            throttle_classes.append(PasswordResetRequestThrottle())
+        
+        return throttle_classes
 
     def get_serializer_class(self):
         """Return a serializer."""
@@ -180,7 +185,7 @@ class AccountViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
         return Response(body)
 
 
-class AliasViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class AliasViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """
     create:
     Create a new alias instance.
@@ -188,7 +193,6 @@ class AliasViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.AliasSerializer
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -213,7 +217,7 @@ class SenderAddressFilterSet(dj_filters.FilterSet):
         fields = ["mailbox"]
 
 
-class SenderAddressViewSet(lib_viewsets.RevisionModelMixin,
+class SenderAddressViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
                            viewsets.ModelViewSet):
     """View set for SenderAddress model."""
 
@@ -221,7 +225,6 @@ class SenderAddressViewSet(lib_viewsets.RevisionModelMixin,
     filterset_class = SenderAddressFilterSet
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     serializer_class = serializers.SenderAddressSerializer
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

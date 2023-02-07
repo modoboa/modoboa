@@ -12,12 +12,12 @@ from rest_framework.throttling import UserRateThrottle
 
 from drf_spectacular.utils import extend_schema
 
-from modoboa.lib.throttle import UserDdosPerView
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from . import serializers
 
 
-class AccountViewSet(viewsets.ViewSet):
+class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Account viewset.
 
     Contains endpoints used to manipulate current user's account.
@@ -25,7 +25,6 @@ class AccountViewSet(viewsets.ViewSet):
 
     permission_classes = (permissions.IsAuthenticated, )
     serializer_class = None
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     @action(methods=["post"], detail=False, url_path="tfa/setup")
     def tfa_setup(self, request):

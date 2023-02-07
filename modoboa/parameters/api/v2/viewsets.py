@@ -5,18 +5,17 @@ from rest_framework import response, viewsets
 from rest_framework.decorators import action
 from rest_framework.throttling import UserRateThrottle
 
-from modoboa.lib.throttle import UserDdosPerView
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from . import serializers
 from ... import tools
 
 
-class ParametersViewSet(viewsets.ViewSet):
+class ParametersViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Parameter viewset."""
 
     lookup_value_regex = r"\w+"
     serializer_class = None
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     @extend_schema(responses=serializers.ApplicationSerializer(many=True))
     @action(methods=["get"], detail=False)
