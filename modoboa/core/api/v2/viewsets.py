@@ -18,7 +18,7 @@ from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
 from modoboa.lib import pagination
-from modoboa.lib.throttle import UserLesserDdosUser, UserDdosPerView
+from modoboa.lib.throttle import UserLesserDdosUser, UserDdosPerView, GetThrottleViewsetMixin
 
 from ... import constants
 from ... import models
@@ -27,16 +27,6 @@ from . import serializers
 
 class AccountViewSet(core_v1_viewsets.AccountViewSet):
     """Account viewset."""
-
-    throttle_classes = [UserRateThrottle]
-
-    def get_throttles(self):
-        if self.action in ['me']:
-            self.throttle_classes.append(UserLesserDdosUser)
-        else:
-            self.throttle_classes.append(UserDdosPerView)
-        return super().get_throttles()
-
 
     @extend_schema(responses=admin_v1_serializers.AccountSerializer)
     @action(methods=["get"], detail=False)

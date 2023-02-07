@@ -1,4 +1,4 @@
-from rest_framework.throttling import SimpleRateThrottle, AnonRateThrottle
+from rest_framework.throttling import SimpleRateThrottle, UserRateThrottle
 from django.urls import resolve
 
 class UserDdosPerView(SimpleRateThrottle):
@@ -16,6 +16,7 @@ class UserDdosPerView(SimpleRateThrottle):
             'ident': ident
         }
 
+
 class UserLesserDdosUser(SimpleRateThrottle):
     """Custom Throttle class for rest_framework. The throttling is applied on a per view basis for authentificated users."""
 
@@ -31,19 +32,20 @@ class UserLesserDdosUser(SimpleRateThrottle):
             'ident': ident
         }
 
+
 class LoginThrottle(SimpleRateThrottle):
     """ Custom throttle to reset the cache counter on success. """
 
     scope = 'login'
 
-    def get_cache_key(self, request, view = None):
+    def get_cache_key(self, request, view):
             return self.cache_format % {
             'scope': self.scope,
             'ident': self.get_ident(request)
         }
 
     def reset_cache(self, request):
-        self.key = self.get_cache_key(request)
+        self.key = self.get_cache_key(request, None)
         self.cache.delete(self.key)
 
 
@@ -61,3 +63,17 @@ class PasswordResetApplyThrottle(LoginThrottle):
 
     scope = 'password_recovery_apply'
 
+
+class GetThrottleViewsetMixin():
+    """Override default get_throttle behaviour to assign throttle classes to different actions."""
+
+    def get_throttles(self):
+        """Give lesser_ddos to GET type actions and ddos to others."""
+
+        throttle_classes = [UserRateThrottle()]
+    
+        if self.action in ["list", "retrieve", "validate", "dns_detail", "me", "dns_detail"]:
+            throttle_classes.append(UserLesserDdosUser())
+        else:
+            throttle_classes.append(UserDdosPerView())
+        return throttle_classes

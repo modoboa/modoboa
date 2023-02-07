@@ -6,22 +6,20 @@ from django.db.models import Q
 
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, permissions, response, viewsets
-from rest_framework.throttling import UserRateThrottle
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import pagination
-from modoboa.lib.throttle import UserDdosPerView
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import models
 from ... import signals
 from . import serializers
 
 
-class StatisticsViewSet(viewsets.ViewSet):
+class StatisticsViewSet(GetThrottleViewsetMixin,viewsets.ViewSet):
     """A viewset to provide extra route related to mail statistics."""
 
     permission_classes = (permissions.IsAuthenticated, )
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     @extend_schema(
         parameters=[serializers.StatisticsInputSerializer],
@@ -54,7 +52,7 @@ class StatisticsViewSet(viewsets.ViewSet):
         return response.Response({"graphs": graphs})
 
 
-class MaillogViewSet(viewsets.ReadOnlyModelViewSet):
+class MaillogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     """Simple viewset to access message log."""
 
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
@@ -64,7 +62,6 @@ class MaillogViewSet(viewsets.ReadOnlyModelViewSet):
     permissions = (permissions.IsAuthenticated, )
     search_fields = ["queue_id", "sender", "rcpt", "original_rcpt", "status"]
     serializer_class = serializers.MaillogSerializer
-    throttle_classes = [UserDdosPerView, UserRateThrottle]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

@@ -12,7 +12,6 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import response, status
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
@@ -25,6 +24,15 @@ from smtplib import SMTPException
 from . import serializers
 
 logger = logging.getLogger("modoboa.auth")
+
+
+def delete_cache_key(class_target, throttles, request):
+    """Attempt to delete cache key from throttling on login/password reset success."""
+    
+    for throttle in throttles:
+        if type(throttle) == class_target:
+            throttle.reset_cache(request)
+            return
 
 
 class TokenObtainPairView(jwt_views.TokenObtainPairView):
@@ -48,7 +56,7 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
         login(request, user)
 
         # Reset login throttle
-        self.get_throttles()[0].reset_cache(request)
+        delete_cache_key(LoginThrottle, self.get_throttles(), request)
 
         logger.info(
             _("User '%s' successfully logged in"), user.username
@@ -107,7 +115,6 @@ class EmailPasswordResetView(APIView):
                 "reason": "Error while sending the email. Please contact an administrator."
             }, 503)
 
-        self.get_throttles()[0].reset_cache(request)
         # Email response
         return response.Response({"type": "email"}, 200)
 
@@ -126,8 +133,8 @@ class DefaultPasswordResetView(EmailPasswordResetView):
             serializer.is_valid(raise_exception=True)
         except serializers.NoSMSAvailable:
             return super().post(request, *args, **kwargs)
+        
         # SMS response
-        self.get_throttles()[0].reset_cache(request)
         return response.Response({"type": "sms"}, 200)
 
 
@@ -155,7 +162,7 @@ class PasswordResetSmsTOTP(APIView):
                 "id": serializer_response[1],
                 "type": "confirm"
             })
-        self.get_throttles()[0].reset_cache(request)
+        delete_cache_key(PasswordResetTotpThrottle, self.get_throttles(), request)
         return response.Response(payload, 200)
 
 
@@ -177,7 +184,7 @@ class PasswordResetConfirmView(APIView):
             data.update({"errors": errors})
             return response.Response(data, 400)
         serializer.save()
-        self.get_throttles()[0].reset_cache(request)
+        delete_cache_key(PasswordResetApplyThrottle, self.get_throttles(), request)
         return response.Response(status=200)
 
 
