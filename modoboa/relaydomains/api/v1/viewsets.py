@@ -2,7 +2,6 @@
 
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
-from rest_framework.throttling import UserRateThrottle
 
 from modoboa.admin import models as admin_models
 from modoboa.lib.throttle import GetThrottleViewsetMixin

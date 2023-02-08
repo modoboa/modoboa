@@ -11,14 +11,13 @@ from rest_framework import filters, permissions, response, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.throttling import UserRateThrottle
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
 from modoboa.lib import pagination
-from modoboa.lib.throttle import UserLesserDdosUser, UserDdosPerView, GetThrottleViewsetMixin
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import constants
 from ... import models
@@ -150,7 +149,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         })
 
 
-class LogViewSet(viewsets.ReadOnlyModelViewSet):
+class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     """Log viewset."""
 
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
@@ -164,16 +163,14 @@ class LogViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Log.objects.all()
     search_fields = ["logger", "level", "message"]
     serializer_class = serializers.LogSerializer
-    throttle_classes = [UserRateThrottle]
 
 
-class LanguageViewSet(viewsets.ViewSet):
+class LanguageViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Language viewset."""
 
     permission_classes = (
         permissions.IsAuthenticated,
     )
-    throttle_classes = [UserRateThrottle]
 
     def list(self, request, *args, **kwargs):
         languages = [

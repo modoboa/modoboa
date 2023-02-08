@@ -8,7 +8,6 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
-from rest_framework.throttling import UserRateThrottle
 
 from drf_spectacular.utils import extend_schema
 

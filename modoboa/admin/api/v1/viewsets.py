@@ -11,13 +11,12 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.throttling import UserRateThrottle
 
 from modoboa.core import models as core_models
 from modoboa.core import sms_backends
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
-from modoboa.lib.throttle import UserDdosPerView, GetThrottleViewsetMixin, PasswordResetRequestThrottle
+from modoboa.lib.throttle import GetThrottleViewsetMixin, PasswordResetRequestThrottle
 
 from ... import lib, models
 from . import serializers
@@ -91,11 +90,11 @@ class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, v
 
     def get_throttles(self):
 
-        throttle_classes = super().get_throttles()
+        throttles = super().get_throttles()
         if self.action == "reset_password":
-            throttle_classes.append(PasswordResetRequestThrottle())
+            throttles.append(PasswordResetRequestThrottle())
         
-        return throttle_classes
+        return throttles
 
     def get_serializer_class(self):
         """Return a serializer."""
