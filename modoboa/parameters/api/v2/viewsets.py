@@ -3,7 +3,6 @@
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
-from rest_framework.throttling import UserRateThrottle
 
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 

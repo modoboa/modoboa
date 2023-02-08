@@ -11,13 +11,12 @@ from rest_framework import (
 )
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.throttling import UserRateThrottle
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import models as core_models
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
-from modoboa.lib.throttle import UserDdosPerView, UserLesserDdosUser, GetThrottleViewsetMixin
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import lib
 from ... import models

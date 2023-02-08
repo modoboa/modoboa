@@ -187,13 +187,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
-        'user': '400/minute',
-        'ddos': '100/second',
-        'ddos_lesser': '300/minute',
+        'user': '200/minute',
+        'ddos': '10/second',
+        'ddos_lesser': '200/minute',
         'login': '10/minute',
-        'password_recovery_request': '6/hour',
-        'password_recovery_totp_check': '40/hour',
-        'password_recovery_apply': '40/hour'
+        'password_recovery_request': '11/hour',
+        'password_recovery_totp_check': '25/hour',
+        'password_recovery_apply': '25/hour'
     },
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'modoboa.core.drf_authentication.JWTAuthenticationWith2FA',

@@ -70,10 +70,10 @@ class GetThrottleViewsetMixin():
     def get_throttles(self):
         """Give lesser_ddos to GET type actions and ddos to others."""
 
-        throttle_classes = [UserRateThrottle()]
+        throttles = [UserRateThrottle()]
     
-        if self.action in ["list", "retrieve", "validate", "dns_detail", "me", "dns_detail"]:
-            throttle_classes.append(UserLesserDdosUser())
+        if self.action in ["list", "retrieve", "validate", "dns_detail", "me", "dns_detail", "applications", "structure"]:
+            throttles.append(UserLesserDdosUser())
         else:
-            throttle_classes.append(UserDdosPerView())
-        return throttle_classes
+            throttles.append(UserDdosPerView())
+        return throttles

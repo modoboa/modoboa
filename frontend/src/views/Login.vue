@@ -89,6 +89,7 @@ export default {
           this.$router.push({ name: 'DomainList' })
         })
       }).catch(err => {
+        console.error(err)
         this.loading = false
         if (err.response.status === 401) {
           this.$refs.observer.setErrors({
