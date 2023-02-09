@@ -119,9 +119,7 @@ export default {
             message += this.$gettext(element) + '<br>'
           })
         } else if (err.response.status === 429) {
-          this.$refs.observer.setErrors({
-            password: this.$gettext('Too many unsuccessful attempts, please try later.')
-          })
+          message = this.$gettext('Too many unsuccessful attempts, please try later.')
         }
         this.password_validation_error = message
       })

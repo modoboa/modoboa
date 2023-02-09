@@ -82,7 +82,7 @@ export default {
         this.loading = false
         if (resp.status === 200) {
           this.$refs.observer.setErrors({
-            password_confirmed: this.$gettext('TOTP resent.')
+            sms_totp: this.$gettext('TOTP resent.')
           })
         }
       }).catch(err => {
@@ -91,7 +91,7 @@ export default {
           this.showErrorDialog(this.$t('User seems wrong, return to login or restart reset the process?'))
         } else if (err.response.status === 429) {
           this.$refs.observer.setErrors({
-            password: this.$gettext('Too many unsuccessful attempts, please try later.')
+            sms_totp: this.$gettext('Too many unsuccessful attempts, please try later.')
           })
         }
       })
