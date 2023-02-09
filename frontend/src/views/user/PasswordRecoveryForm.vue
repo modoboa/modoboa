@@ -112,7 +112,7 @@ export default {
           this.showDialog('Error', err.response.data.reason, true)
         } else if (err.response.status === 429) {
           this.$refs.observer.setErrors({
-            password: this.$gettext('Too many unsuccessful attempts, please try later.')
+            email: this.$gettext('Too many unsuccessful attempts, please try later.')
           })
         }
       })
