@@ -89,6 +89,10 @@ export default {
         if (err.response.status === 400) {
           this.loading = false
           this.showErrorDialog(this.$t('User seems wrong, return to login or restart reset the process?'))
+        } else if (err.response.status === 429) {
+          this.$refs.observer.setErrors({
+            password: this.$gettext('Too many unsuccessful attempts, please try later.')
+          })
         }
       })
     },
