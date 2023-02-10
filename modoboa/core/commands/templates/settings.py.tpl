@@ -193,6 +193,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Rest framework settings
 
 REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '300/minute',
+        'ddos': '5/second',
+        'ddos_lesser': '200/minute',
+        'login': '10/minute',
+        'password_recovery_request': '12/hour',
+        'password_recovery_totp_check': '25/hour',
+        'password_recovery_apply': '25/hour'
+    },
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'modoboa.core.drf_authentication.JWTAuthenticationWith2FA',
         'rest_framework.authentication.TokenAuthentication',

@@ -94,6 +94,10 @@ export default {
           this.$refs.observer.setErrors({
             password: this.$gettext('Invalid username and/or password')
           })
+        } else if (err.response.status === 429) {
+          this.$refs.observer.setErrors({
+            password: this.$gettext('Too many unsuccessful attempts, please try later.')
+          })
         }
       })
     }

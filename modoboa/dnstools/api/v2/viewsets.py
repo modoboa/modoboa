@@ -4,11 +4,12 @@ from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 
 from modoboa.admin import models as admin_models
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from . import serializers
 
 
-class DNSViewSet(viewsets.GenericViewSet):
+class DNSViewSet(GetThrottleViewsetMixin, viewsets.GenericViewSet):
     """A viewset to provide extra routes related to DNS information."""
 
     permission_classes = (permissions.IsAuthenticated, )

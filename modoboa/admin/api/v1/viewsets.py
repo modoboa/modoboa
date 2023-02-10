@@ -16,6 +16,7 @@ from modoboa.core import models as core_models
 from modoboa.core import sms_backends
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
+from modoboa.lib.throttle import GetThrottleViewsetMixin, PasswordResetRequestThrottle
 
 from ... import lib, models
 from . import serializers
@@ -35,7 +36,7 @@ from . import serializers
         summary="Create a new domain"
     )
 )
-class DomainViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class DomainViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
@@ -60,7 +61,7 @@ class DomainAliasFilterSet(dj_filters.FilterSet):
         fields = ["domain"]
 
 
-class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
+class DomainAliasViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
                          viewsets.ModelViewSet):
     """ViewSet for DomainAlias."""
 
@@ -80,12 +81,20 @@ class DomainAliasViewSet(lib_viewsets.RevisionModelMixin,
         return context
 
 
-class AccountViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """ViewSet for User/Mailbox."""
 
     filter_backends = (filters.SearchFilter, )
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
     search_fields = ("^first_name", "^last_name", "^email")
+
+    def get_throttles(self):
+
+        throttles = super().get_throttles()
+        if self.action == "reset_password":
+            throttles.append(PasswordResetRequestThrottle())
+        
+        return throttles
 
     def get_serializer_class(self):
         """Return a serializer."""
@@ -175,7 +184,7 @@ class AccountViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
         return Response(body)
 
 
-class AliasViewSet(lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class AliasViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
     """
     create:
     Create a new alias instance.
@@ -207,7 +216,7 @@ class SenderAddressFilterSet(dj_filters.FilterSet):
         fields = ["mailbox"]
 
 
-class SenderAddressViewSet(lib_viewsets.RevisionModelMixin,
+class SenderAddressViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
                            viewsets.ModelViewSet):
     """View set for SenderAddress model."""
 

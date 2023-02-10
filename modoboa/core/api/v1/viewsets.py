@@ -5,14 +5,18 @@ from django.utils.translation import ugettext as _
 import django_otp
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from django_otp.plugins.otp_totp.models import TOTPDevice
+
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
+
 from drf_spectacular.utils import extend_schema
+
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from . import serializers
 
 
-class AccountViewSet(viewsets.ViewSet):
+class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Account viewset.
 
     Contains endpoints used to manipulate current user's account.

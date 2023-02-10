@@ -3,11 +3,13 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, response, viewsets
 
+from modoboa.lib.throttle import GetThrottleViewsetMixin
+
 from . import serializers
 from ... import backends
 
 
-class TransportViewSet(viewsets.ViewSet):
+class TransportViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Viewset for Transport."""
 
     permissions = (permissions.IsAuthenticated, )

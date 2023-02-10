@@ -81,7 +81,6 @@ export default {
       } else {
         const decodedId = atob(this.$route.params.id)
         if (!/^\d+$/.test(decodedId)) {
-          console.error('Received ID is invalid')
           this.$router.push({ name: 'PasswordRecoveryForm' })
         } else {
           this.id = this.$route.params.id
@@ -119,6 +118,8 @@ export default {
           err.response.data.errors.forEach(element => {
             message += this.$gettext(element) + '<br>'
           })
+        } else if (err.response.status === 429) {
+          message = this.$gettext('Too many unsuccessful attempts, please try later.')
         }
         this.password_validation_error = message
       })

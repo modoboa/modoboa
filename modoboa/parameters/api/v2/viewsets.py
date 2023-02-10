@@ -4,11 +4,13 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
 
+from modoboa.lib.throttle import GetThrottleViewsetMixin
+
 from . import serializers
 from ... import tools
 
 
-class ParametersViewSet(viewsets.ViewSet):
+class ParametersViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Parameter viewset."""
 
     lookup_value_regex = r"\w+"
