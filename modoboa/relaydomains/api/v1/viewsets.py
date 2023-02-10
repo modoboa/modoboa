@@ -4,11 +4,12 @@ from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 
 from modoboa.admin import models as admin_models
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 from modoboa.lib.viewsets import RevisionModelMixin
 from . import serializers
 
 
-class RelayDomainViewSet(RevisionModelMixin, viewsets.ModelViewSet):
+class RelayDomainViewSet(GetThrottleViewsetMixin, RevisionModelMixin, viewsets.ModelViewSet):
     """RelayDomain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]

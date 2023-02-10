@@ -60,9 +60,11 @@ export default {
   }),
   methods: {
     showNotification (options) {
-      this.notification = options.msg
-      this.notificationColor = (options.type) ? options.type : 'success'
-      this.snackbar = true
+      if (this.isAuthenticated) {
+        this.notification = options.msg
+        this.notificationColor = (options.type) ? options.type : 'success'
+        this.snackbar = true
+      }
     }
   }
 }

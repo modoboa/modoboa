@@ -123,6 +123,7 @@ The following modifications must be applied to the :file:`settings.py` file:
        },
    ]
 
+
 * Add the following variable::
 
 .. sourcecode:: python
@@ -141,9 +142,39 @@ The following modifications must be applied to the :file:`settings.py` file:
    },
 
 
-You now have the possibility to customize the url of the new-admin
+* You now have the possibility to customize the url of the new-admin
 interface.  To do so please head up to :ref:`the custom configuration
 chapter <customization>` (advanced user).
+
+* Add ``DEFAULT_THROTTLE_RATES`` to ``REST_FRAMEWORK``:
+
+.. sourcecode:: python
+
+   REST_FRAMEWORK = {
+      'DEFAULT_THROTTLE_RATES': {
+         'user': '300/minute',
+         'ddos': '5/second',
+         'ddos_lesser': '200/minute',
+         'login': '10/minute',
+         'password_recovery_request': '12/hour',
+         'password_recovery_totp_check': '25/hour',
+         'password_recovery_apply': '25/hour'
+      },
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+         'modoboa.core.drf_authentication.JWTAuthenticationWith2FA',
+         'rest_framework.authentication.TokenAuthentication',
+         'rest_framework.authentication.SessionAuthentication',
+      ),
+      'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+      'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+   }
+
+* You can edit the ``DEFAULT_THROTTLE_RATES`` to whatever value suits you.
+   - `user` is for every endpoint, it is per user or per ip if not logged.
+   - `ddos` is per api endpoint and per user or per ip if not logged. 
+   - `ddos_lesser` is for per api endpoint and per user or per ip if not logged. This is for api endpoint that are lighter.
+   - `login` the number of time an ip can attempt to log. The counter will reset on login success.
+   - `password_` is for the recovery, it is divided per step in the recovery process.
 
 
 2.0.3

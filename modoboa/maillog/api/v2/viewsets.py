@@ -9,13 +9,14 @@ from rest_framework import filters, permissions, response, viewsets
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import pagination
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import models
 from ... import signals
 from . import serializers
 
 
-class StatisticsViewSet(viewsets.ViewSet):
+class StatisticsViewSet(GetThrottleViewsetMixin,viewsets.ViewSet):
     """A viewset to provide extra route related to mail statistics."""
 
     permission_classes = (permissions.IsAuthenticated, )
@@ -51,7 +52,7 @@ class StatisticsViewSet(viewsets.ViewSet):
         return response.Response({"graphs": graphs})
 
 
-class MaillogViewSet(viewsets.ReadOnlyModelViewSet):
+class MaillogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     """Simple viewset to access message log."""
 
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]

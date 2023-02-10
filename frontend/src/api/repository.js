@@ -3,8 +3,11 @@ import Cookies from 'js-cookie'
 
 import router from '../router'
 import store from '../store'
+import { translate } from 'vue-gettext'
+import { bus } from '@/main'
 
 const _axios = axios.create()
+const { gettext: $gettext } = translate
 
 _axios.interceptors.request.use(
   function (config) {
@@ -29,6 +32,10 @@ _axios.interceptors.response.use(
   function (error) {
     if (error.response.status === 418) {
       router.push({ name: 'TwoFA' })
+      return Promise.reject(error)
+    }
+    if (error.response.status === 429) {
+      bus.$emit('notification', { msg: $gettext('You are throttled, please try later.'), type: 'error' })
       return Promise.reject(error)
     }
     if (error.response.status !== 401 || router.currentRoute.path === '/login/') {

@@ -6,10 +6,11 @@ from rest_framework import mixins, viewsets
 from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 
 from modoboa.core import models as core_models
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 from . import serializers
 
 
-class ResourcesViewSet(
+class ResourcesViewSet(GetThrottleViewsetMixin,
         mixins.RetrieveModelMixin,
         mixins.UpdateModelMixin,
         viewsets.GenericViewSet):
