@@ -10,7 +10,8 @@ from modoboa.lib.throttle import GetThrottleViewsetMixin
 from . import serializers
 
 
-class ResourcesViewSet(GetThrottleViewsetMixin,
+class ResourcesViewSet(
+        GetThrottleViewsetMixin,
         mixins.RetrieveModelMixin,
         mixins.UpdateModelMixin,
         viewsets.GenericViewSet):
