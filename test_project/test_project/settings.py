@@ -205,7 +205,7 @@ REST_FRAMEWORK = {
 }
 
 # Uncomment if you need a custom sub url for new_admin interface
-# NEW_ADMIN_URL = 'new_admin'
+# NEW_ADMIN_URL = 'new-admin'
 
 SPECTACULAR_SETTINGS = {
     'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
