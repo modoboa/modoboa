@@ -273,7 +273,7 @@ class DeployCommand(Command):
         if not os.path.exists(base_frontend_dir):
             return
         frontend_target_dir = "{}/frontend".format(parsed_args.name)
-        shutil.copytree(base_frontend_dir, frontend_target_dir)
+        os.symlink(base_frontend_dir, frontend_target_dir, True)
 
         with open("{}/config.json".format(frontend_target_dir), "w") as fp:
             fp.write("""{

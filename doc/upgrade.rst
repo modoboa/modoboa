@@ -53,14 +53,17 @@ Then, reload postfix.
 New-admin interface
 ===================
 
-New admin interface won't update by itself. To do so, run the following commands:
+.. note::
+   You don't need to perform these actions if you installed modoboa after 2.0.5.
+
+New admin interface won't update by itself. To fix this, run the following commands (you need to perform this only one time):
 
 .. sourcecode:: bash
 
    > sudo -u <modoboa_user> -i bash
    > cd <modoboa_instance_dir>
    > rm -rf frontend
-   > cp -R <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
+   > ln -s <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
 
 Extensions
 **********
@@ -136,13 +139,13 @@ The following modifications must be applied to the :file:`settings.py` file:
    ]
 
 
-* Add the following variable::
+* Add the following variable:
 
 .. sourcecode:: python
 
    PID_FILE_STORAGE_PATH = '/var/run'
 
-* Update ``LOGGING`` variable to define an address for ``syslog-auth`` handler::
+* Update ``LOGGING`` variable to define an address for ``syslog-auth`` handler:
 
 .. sourcecode:: python
 
@@ -154,9 +157,8 @@ The following modifications must be applied to the :file:`settings.py` file:
    },
 
 
-* You now have the possibility to customize the url of the new-admin
-interface.  To do so please head up to :ref:`the custom configuration
-chapter <customization>` (advanced user).
+* You now have the possibility to customize the url of the new-admin interface.  
+   To do so please head up to :ref:`the custom configuration chapter <customization>` (advanced user).
 
 * Add ``DEFAULT_THROTTLE_RATES`` to ``REST_FRAMEWORK``:
 
