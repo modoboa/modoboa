@@ -50,6 +50,18 @@ Make sure to use root privileges and run the following command:
 
 Then, reload postfix.
 
+New-admin interface
+===================
+
+New admin interface won't update by itself. To do so, run the following commands:
+
+.. sourcecode:: bash
+
+   > sudo -u <modoboa_user> -i bash
+   > cd <modoboa_instance_dir>
+   > rm -rf frontend
+   > cp -R <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
+
 Extensions
 **********
 
