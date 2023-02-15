@@ -35,15 +35,19 @@ class ExportCommand(BaseCommand):
         for u in User.objects.all():
             u.to_csv(self.csvwriter)
         dumped_aliases = []
+        # Export aliases pointing to mailboxes first
         qset = (
-            models.Alias.objects.exclude(alias_recipient_aliases=None)
+            models.Alias.objects.filter(internal=False)
+            .exclude(alias_recipient_aliases=None)
             .distinct().prefetch_related("aliasrecipient_set")
         )
         for alias in qset:
             alias.to_csv(self.csvwriter)
             dumped_aliases += [alias.pk]
+        # Then export the rest
         qset = (
-            models.Alias.objects.exclude(pk__in=dumped_aliases)
+            models.Alias.objects.filter(internal=False)
+            .exclude(pk__in=dumped_aliases)
             .prefetch_related("aliasrecipient_set")
         )
         for alias in qset:
