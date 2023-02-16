@@ -59,7 +59,7 @@ class ProfileForm(forms.ModelForm):
         }
 
     def __init__(self, update_password, *args, **kwargs):
-        super(ProfileForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not update_password:
             del self.fields["oldpassword"]
             del self.fields["newpassword"]
@@ -76,18 +76,26 @@ class ProfileForm(forms.ModelForm):
             raise forms.ValidationError(_("Old password mismatchs"))
         return self.cleaned_data["oldpassword"]
 
-    def clean_confirmation(self):
-        newpassword = self.cleaned_data["newpassword"]
-        confirmation = self.cleaned_data["confirmation"]
-        if not newpassword and not confirmation:
-            return confirmation
-        if newpassword != confirmation:
-            raise forms.ValidationError(_("Passwords mismatch"))
-        password_validation.validate_password(confirmation, self.instance)
-        return confirmation
+    def clean(self):
+        super().clean()
+        if self.errors:
+            return self.cleaned_data
+        oldpassword = self.cleaned_data.get("oldpassword")
+        newpassword = self.cleaned_data.get("newpassword")
+        confirmation = self.cleaned_data.get("confirmation")
+        if newpassword and confirmation:
+            if oldpassword:
+                if newpassword != confirmation:
+                    self.add_error("confirmation", _("Passwords mismatch"))
+                else:
+                    password_validation.validate_password(
+                        confirmation, self.instance)
+            else:
+                self.add_error("oldpassword", _("This field is required."))
+        return self.cleaned_data
 
     def save(self, commit=True):
-        user = super(ProfileForm, self).save(commit=False)
+        user = super().save(commit=False)
         if commit:
             if self.cleaned_data.get("confirmation", "") != "":
                 user.set_password(
