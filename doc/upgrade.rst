@@ -50,6 +50,23 @@ Make sure to use root privileges and run the following command:
 
 Then, reload postfix.
 
+New-admin interface
+===================
+
+.. note::
+   You don't need to perform these actions if you use the installer to upgrade your instance.
+
+New admin interface won't update by itself. Run the following commands to update it:
+
+.. sourcecode:: bash
+
+   > sudo -u <modoboa_user> -i bash
+   > cd <modoboa_instance_dir>
+   > cp frontend/config.json ./
+   > rm -rf frontend
+   > cp -R <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
+   > cp ./config.json frontend/config.json
+ 
 Extensions
 **********
 
@@ -124,13 +141,13 @@ The following modifications must be applied to the :file:`settings.py` file:
    ]
 
 
-* Add the following variable::
+* Add the following variable:
 
 .. sourcecode:: python
 
    PID_FILE_STORAGE_PATH = '/var/run'
 
-* Update ``LOGGING`` variable to define an address for ``syslog-auth`` handler::
+* Update ``LOGGING`` variable to define an address for ``syslog-auth`` handler:
 
 .. sourcecode:: python
 
@@ -142,9 +159,8 @@ The following modifications must be applied to the :file:`settings.py` file:
    },
 
 
-* You now have the possibility to customize the url of the new-admin
-interface.  To do so please head up to :ref:`the custom configuration
-chapter <customization>` (advanced user).
+* You now have the possibility to customize the url of the new-admin interface.  
+   To do so please head up to :ref:`the custom configuration chapter <customization>` (advanced user).
 
 * Add ``DEFAULT_THROTTLE_RATES`` to ``REST_FRAMEWORK``:
 

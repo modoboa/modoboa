@@ -25,5 +25,5 @@ def top_notifications(request):
 def new_admin_url(*args):
     """A context processor to include new admin url."""
     return {
-        "new_admin": getattr(settings, "NEW_ADMIN_URL", "new_admin")
+        "new_admin": getattr(settings, "NEW_ADMIN_URL", "new-admin")
     }
