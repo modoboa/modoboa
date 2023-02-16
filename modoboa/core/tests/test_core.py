@@ -154,6 +154,19 @@ class ProfileTestCase(ModoTestCase):
             self.client.login(username="user@test.com", password="Toto1234")
         )
 
+    def test_update_password_restrictions(self):
+        self.ajax_post(
+            reverse("core:user_profile"),
+            {"language": "en", "oldpassword": "",
+             "newpassword": "12345Toi", "confirmation": "12345Toi"},
+            status=400
+        )
+        self.client.logout()
+
+        self.assertEqual(
+            self.client.login(username="admin", password="12345Toi"), False
+        )
+
     def test_update_password_url(self):
         """Check if external is used when defined."""
         self.set_global_parameter(
