@@ -1,0 +1,7 @@
+FROM node:16.10-alpine 
+
+ENV HOME=/home/node/
+
+WORKDIR $HOME
+
+RUN yarn install
