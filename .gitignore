@@ -28,3 +28,6 @@ test_project/modoboa.db
 
 /.project
 /.pydevproject
+
+# Misc
+.ash_history

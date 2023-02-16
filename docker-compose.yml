@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  web:
+  api:
     container_name: modoboa_api
     restart: always
     build:
@@ -17,12 +17,12 @@ services:
     volumes:
       - .:/code
 
-  new_admin:
-    container_name: modoboa_new_admin
+  front:
+    container_name: modoboa_front
     restart: always
     build:
       context: .
-      dockerfile: docker/Dockerfile.admin.dev
+      dockerfile: docker/Dockerfile.front.dev
     ports:
       - 8080:8080
     command: "" 
@@ -30,4 +30,4 @@ services:
       - ./frontend/:/home/node/
     command: "yarn serve"
     depends_on:
-      - web
+      - api
