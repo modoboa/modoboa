@@ -28,6 +28,7 @@ SECRET_KEY = '!8o(-dbbl3e+*bh7nx-^xysdt)1gso*%@4ze4-9_9o+i&amp;t--u_'
 DEBUG = 'DEBUG' in os.environ
 
 ALLOWED_HOSTS = [
+    'api',
     '127.0.0.1',
     'localhost',
 ]

@@ -29,5 +29,7 @@ services:
     volumes:
       - ./frontend/:/home/node/
     command: "yarn serve"
+    environment:
+      DOCKER: "yes"
     depends_on:
       - api
