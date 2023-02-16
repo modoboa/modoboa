@@ -54,17 +54,19 @@ New-admin interface
 ===================
 
 .. note::
-   You don't need to perform these actions if you installed modoboa after 2.0.5.
+   You don't need to perform these actions if you use the installer to upgrade your instance.
 
-New admin interface won't update by itself. To fix this, run the following commands (you need to perform this only one time):
+New admin interface won't update by itself. Run the following commands to update it:
 
 .. sourcecode:: bash
 
    > sudo -u <modoboa_user> -i bash
    > cd <modoboa_instance_dir>
+   > cp frontend/config.json ./
    > rm -rf frontend
-   > ln -s <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
-
+   > cp -R <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
+   > cp ./config.json frontend/config.json
+ 
 Extensions
 **********
 
