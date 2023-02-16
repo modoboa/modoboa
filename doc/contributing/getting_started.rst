@@ -17,7 +17,7 @@ Then, just run the following command::
   $ docker-compose up
 
 It will start the docker environment and make a Modoboa instance
-available at ``http://localhost:8000``.
+available at ``http://localhost:8000`` and the new admin interface at ``http://localhost:8080``
 
 If you don't want to use docker or need a more complex development
 setup, go to the next section.

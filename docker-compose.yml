@@ -2,13 +2,13 @@ version: '3'
 
 services:
   web:
+    container_name: modoboa_api
+    restart: always
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    expose:
-      - "8000"
+      dockerfile: docker/Dockerfile.dev
     ports:
-      - "8000:8000"
+      - 8000:8000
     environment:
       PYTHONPATH: ".."
       DB: "SQLITE"
@@ -16,3 +16,18 @@ services:
     command: sh -c "cd test_project && python3 manage.py migrate && python3 manage.py load_initial_data && python3 manage.py runserver 0:8000"
     volumes:
       - .:/code
+
+  new_admin:
+    container_name: modoboa_new_admin
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.admin.dev
+    ports:
+      - 8080:8080
+    command: "" 
+    volumes:
+      - ./frontend/:/home/node/
+    command: "yarn serve"
+    depends_on:
+      - web
