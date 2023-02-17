@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include("modoboa.core.urls")),
     path('admin/', include("modoboa.admin.urls")),
     path('dnstools/', include("modoboa.dnstools.urls")),
+    path('pdfcredentials', include("modoboa.pdfcredentials.urls")),
     path('stats/', include("modoboa.maillog.urls")),
 
     path('user/forward/', user_views.forward, name="user_forward"),

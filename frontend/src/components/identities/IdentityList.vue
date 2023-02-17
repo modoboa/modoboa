@@ -164,6 +164,17 @@ export default {
     getMenuItems (item) {
       const result = []
       if (item.type === 'account') {
+        item.possible_actions.forEach(element => {
+          result.push({
+            label: this.$gettext(element.label),
+            icon: element.icon,
+            link: element.url,
+            onClick: () => {
+              window.open(element.url)
+              this.fetchIdentities()
+            }
+          })
+        })
         result.push({ label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editAccount })
         result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAccount, color: 'red' })
       } else if (item.type === 'alias') {
