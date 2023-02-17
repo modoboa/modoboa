@@ -393,20 +393,20 @@ packages to ``INSTALLED_APPS``:
        'django_otp.plugins.otp_static',
    )
 
-Add new middlewares to ``MIDDLEWARE``:
+Add new middlewares to ``MIDDLEWARE``. It has to be after the SessionMiddleware and before the CommonMiddleware:
 
 .. sourcecode:: python
 
    MIDDLEWARE = (
        'x_forwarded_for.middleware.XForwardedForMiddleware',
        'django.contrib.sessions.middleware.SessionMiddleware',
+       'django.middleware.locale.LocaleMiddleware',
        'django.middleware.common.CommonMiddleware',
        'django.middleware.csrf.CsrfViewMiddleware',
        'django.contrib.auth.middleware.AuthenticationMiddleware',
        'django_otp.middleware.OTPMiddleware',
        'modoboa.core.middleware.TwoFAMiddleware',
        'django.contrib.messages.middleware.MessageMiddleware',
-       'django.middleware.locale.LocaleMiddleware',
        'django.middleware.clickjacking.XFrameOptionsMiddleware',
        'modoboa.core.middleware.LocalConfigMiddleware',
        'modoboa.lib.middleware.AjaxLoginRedirect',
