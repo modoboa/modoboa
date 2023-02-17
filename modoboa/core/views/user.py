@@ -59,7 +59,7 @@ def profile(request, tplname="core/user_profile.html"):
             response = render_to_json_response(_("Profile updated"))
             response.set_cookie(settings.LANGUAGE_COOKIE_NAME, request.user.language)
             return response
-        render_to_json_response({"form_errors": form.errors}, status=400)
+        return render_to_json_response({"form_errors": form.errors}, status=400)
 
     form = ProfileForm(update_password, instance=request.user)
     return render_to_json_response({
