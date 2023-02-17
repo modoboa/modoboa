@@ -1,0 +1,227 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-17 13:15+0200\n"
+"PO-Revision-Date: 2023-02-17 21:41+0200\n"
+"Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: limits/app_settings.py:15
+msgid "Default per-admin limits"
+msgstr "Oletusarvoiset järjestelmänvalvojakohtaiset rajoitukset"
+
+#: limits/app_settings.py:18
+msgid "Enable per-admin limits"
+msgstr "Ota käyttöön järjestelmänvalvojakohtaiset rajoitukset"
+
+#: limits/app_settings.py:20
+msgid "Enable or disable per-admin limits"
+msgstr ""
+"Ota käyttöön tai poista käytöstä järjestelmänvalvojakohtaiset rajoitukset"
+
+#: limits/app_settings.py:24 limits/app_settings.py:95 limits/constants.py:24
+#: limits/constants.py:54
+msgid "Domain admins"
+msgstr "Verkkotunnuksen ylläpitäjät"
+
+#: limits/app_settings.py:27
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden järjestelmänvalvojan sallittujen verkkotunnusten järjestelmänvalvojien "
+"enimmäismäärä. (0 kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän "
+"luomisen)"
+
+#: limits/app_settings.py:35 limits/constants.py:9
+msgid "Domains"
+msgstr "Sinulla ei ole oikeutta tuoda verkkotunnuksia"
+
+#: limits/app_settings.py:38
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden järjestelmänvalvojan sallittujen verkkotunnusten enimmäismäärä. (0 "
+"kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/app_settings.py:45 limits/app_settings.py:106 limits/constants.py:13
+#: limits/constants.py:41
+msgid "Domain aliases"
+msgstr "Verkkotunnuksen aliakset"
+
+#: limits/app_settings.py:48
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden järjestelmänvalvojan sallittujen verkkotunnusten enimmäismäärä. (0 "
+"kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/app_settings.py:56 limits/app_settings.py:117 limits/constants.py:17
+#: limits/constants.py:45
+msgid "Mailboxes"
+msgstr "Postilaatikot"
+
+#: limits/app_settings.py:59
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden järjestelmänvalvojan sallittujen postilaatikoiden enimmäismäärä. (0 "
+"kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/app_settings.py:66 limits/app_settings.py:127 limits/constants.py:20
+#: limits/constants.py:48
+msgid "Mailbox aliases"
+msgstr "Postilaatikon aliakset"
+
+#: limits/app_settings.py:69
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden järjestelmänvalvojan sallittujen aliasten enimmäismäärä. (0 kieltää "
+"kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/app_settings.py:76 limits/constants.py:30
+msgid "Quota"
+msgstr "Verkkotunnuksen oletuskiintiö"
+
+#: limits/app_settings.py:79
+msgid ""
+"The quota a reseller will be allowed to share between the domains he "
+"creates. (0 means no quota)"
+msgstr ""
+"Kiintiö, jonka jälleenmyyjä saa jakaa luomiensa verkkotunnusten kesken. (0 "
+"tarkoittaa, ettei kiintiötä ole)"
+
+#: limits/app_settings.py:86
+msgid "Default per-domain limits"
+msgstr "Oletusarvoiset verkkotunnuskohtaiset rajoitukset"
+
+#: limits/app_settings.py:89
+msgid "Enable per-domain limits"
+msgstr "Ota käyttöön verkkotunnuskohtaiset rajoitukset"
+
+#: limits/app_settings.py:91
+msgid "Enable or disable per-domain limits"
+msgstr "Ota käyttöön tai poista käytöstä verkkotunnuskohtaiset rajoitukset"
+
+#: limits/app_settings.py:98
+msgid ""
+"Maximum number of allowed domain administrators for a new domain. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden verkkotunnuksen sallittujen ylläpitäjien enimmäismäärä. (0 kieltää "
+"kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/app_settings.py:109
+msgid ""
+"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden verkkotunnuksen sallittujen aliasten enimmäismäärä. (0 kieltää kaiken "
+"luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/app_settings.py:120
+msgid ""
+"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr ""
+"Uuden verkkotunnuksen sallittujen postilaatikoiden enimmäismäärä. (0 kieltää "
+"kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/app_settings.py:130
+msgid ""
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
+"-1 to allow unlimited creations)"
+msgstr ""
+"Uuden verkkotunnuksen sallittujen aliasten enimmäismäärä. (0 kieltää kaiken "
+"luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+
+#: limits/apps.py:12
+msgid "Limits"
+msgstr "Rajoitukset"
+
+#: limits/constants.py:10
+msgid "Maximum number of domains this user can create"
+msgstr "Verkkotunnusten enimmäismäärä, jonka tämä käyttäjä voi luoda"
+
+#: limits/constants.py:14
+msgid "Maximum number of domain aliases this user can create"
+msgstr "Verkkotunnusten aliasten enimmäismäärä, jonka tämä käyttäjä voi luoda"
+
+#: limits/constants.py:18
+msgid "Maximum number of mailboxes this user can create"
+msgstr "Postilaatikoiden enimmäismäärä, jonka tämä käyttäjä voi luoda"
+
+#: limits/constants.py:21
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "Postilaatikon aliasten enimmäismäärä, jonka tämä käyttäjä voi luoda"
+
+#: limits/constants.py:25
+msgid "Maximum number of domain administrators this user can create"
+msgstr ""
+"Verkkotunnuksen ylläpitäjien enimmäismäärä, jonka tämä käyttäjä voi luoda"
+
+#: limits/constants.py:31
+msgid "Quota shared between domains of this reseller"
+msgstr "Tämän jälleenmyyjän verkkotunnusten kesken jaettu kiintiö"
+
+#: limits/constants.py:42
+msgid "Maximum number of domain aliases allowed for this domain."
+msgstr "Tämän verkkotunnuksen aliaksien enimmäismäärä."
+
+#: limits/constants.py:46
+msgid "Maximum number of mailboxes allowed for this domain."
+msgstr "Tämän verkkotunnuksen postilaatikoiden enimmäismäärä."
+
+#: limits/constants.py:50
+msgid "Maximum number of mailbox aliases allowed for this domain."
+msgstr "Tämän verkkotunnuksen postilaatikkoaliaksien enimmäismäärä."
+
+#: limits/constants.py:55
+msgid "Maximum number of domain admins allowed for this domain."
+msgstr "Tämän verkkotunnuksen ylläpitäjien enimmäismäärä."
+
+#: limits/forms.py:38 limits/forms.py:87
+msgid "Invalid limit"
+msgstr "Virheellinen raja"
+
+#: limits/handlers.py:117 limits/handlers.py:153
+msgid "Resources"
+msgstr "Resurssit"
+
+#: limits/lib.py:19
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s: raja saavutettu"
+
+#: limits/lib.py:29
+msgid "Not enough resources"
+msgstr "Resurssit eivät riitä"
+
+#: limits/lib.py:47 limits/models.py:48
+msgid "You're not allowed to define unlimited values"
+msgstr "Et saa määritellä rajoittamattomia arvoja"
+
+#: limits/models.py:58 limits/models.py:123
+msgid "unlimited"
+msgstr "rajoittamaton"
+
+#: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
+msgid "Resources usage"
+msgstr "Resurssien käyttö"
