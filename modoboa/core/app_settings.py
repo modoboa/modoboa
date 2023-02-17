@@ -1,7 +1,5 @@
 """Core settings."""
 
-from collections import OrderedDict
-
 import collections
 
 from django import forms
@@ -536,7 +534,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         ]
 
     def _add_dynamic_fields(self):
-        new_fields = OrderedDict()
+        new_fields = collections.OrderedDict()
         for field, value in self.fields.items():
             new_fields[field] = value
             if field == "sms_provider":
