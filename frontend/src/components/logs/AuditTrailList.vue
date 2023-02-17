@@ -31,7 +31,7 @@
 
 <script>
 import logs from '@/api/logs'
-
+import debounce from 'debounce'
 export default {
   data () {
     return {
@@ -79,6 +79,9 @@ export default {
         this.loading = false
       })
     }
+  },
+  created () {
+    this.fetchLogs = debounce(this.fetchLogs, 500)
   },
   watch: {
     options: {
