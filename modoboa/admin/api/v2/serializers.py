@@ -14,6 +14,7 @@ from django.contrib.auth import password_validation
 
 from rest_framework import serializers
 
+from modoboa.admin import signals as admin_signals
 from modoboa.admin.api.v1 import serializers as v1_serializers
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib import email_utils
@@ -284,6 +285,15 @@ class TagSerializer(serializers.Serializer):
     type = serializers.CharField()
 
 
+class IdPossibleActionsSerializer(serializers.Serializer):
+    """Serialiser used to get possible actions related to identities."""
+
+    name = serializers.CharField()
+    icon = serializers.CharField()
+    label = serializers.CharField()
+    url = serializers.URLField()
+
+
 class IdentitySerializer(serializers.Serializer):
     """Serializer used for identities."""
 
@@ -293,6 +303,24 @@ class IdentitySerializer(serializers.Serializer):
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)
 
+    def __init__(self, instance=None, data=..., **kwargs):
+        super().__init__(instance, data, **kwargs)
+        self.fields["possible_actions"] = serializers.SerializerMethodField()
+    
+    def get_possible_actions(self, identity):
+        if not isinstance(identity, core_models.User):
+            # Return empty action list if identity type is an alias (not used for now)
+            return []
+        actions = admin_signals.extra_account_identities_actions.send(
+            self.__class__, account=identity)
+        cleaned_actions = []
+        for action in actions:
+            try :
+                serialized_data = IdPossibleActionsSerializer(action[1]).data
+                cleaned_actions.append(serialized_data)
+            except (ValidationError, AttributeError):
+                continue
+        return cleaned_actions
 
 class AccountResourceSerializer(serializers.ModelSerializer):
     """Serializer for user resource."""
@@ -512,7 +540,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             instance.set_password(password)
         if mailbox_data:
             creator = self.context["request"].user
-            if hasattr(instance, "mailbox"):
+            if hasattr(instance, "mailbox") and "mailbox" in validated_data:
                 if "username" in validated_data:
                     mailbox_data["email"] = validated_data["username"]
                     instance.email = validated_data["username"]

@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
+# Kostas Moumouris <moumouriskostas@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-27 12:01+0200\n"
+"PO-Revision-Date: 2017-10-12 13:30+0000\n"
+"Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el_GR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: constants.py:7
+msgid "None"
+msgstr "Κανένας"
+
+#: documents.py:52 forms.py:53
+msgid "Personal account information"
+msgstr "Προσωπικές πληροφορίες λογαριασμού"
+
+#: documents.py:55
+msgid "Powered by Modoboa - Mail hosting made simple"
+msgstr "Powered by Modoboa - Mail hosting made simple"
+
+#: documents.py:69
+#, python-format
+msgid ""
+"\n"
+"Dear %s, this document contains the credentials you will need\n"
+"to connect to Modoboa. Learn the content and destroy\n"
+"the document as soon as possible.\n"
+msgstr "\nΑγαπητέ/ή %s, αυτό το έγγραφο περιέχει τα διαπιστευτήρια\nπου χρειάζεστε για να συνδεθείτε με το Modoboa.\nΑποστηθίστε το περιεχόμενο και διαγράψτε το έγγραφο\nτο συντομότερο δυνατόν.\n"
+
+#: documents.py:75
+msgid "Web panel:"
+msgstr "Web panel:"
+
+#: documents.py:78
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+#: documents.py:79
+msgid "Password"
+msgstr "Κωδικός"
+
+#: documents.py:89
+msgid ""
+"\n"
+"Here you can view your emails anytime online, create filters or manage\n"
+"your contacts.\n"
+msgstr "\nΕδώ μπορείτε να προβάλετε τα ηλεκτρονικά σας μηνύματα σε πραγματικό χρόνο, να δημιουργήσετε φίλτρα ή να διαχειριστείτε\n τις επαφές σας.\n"
+
+#: documents.py:96
+msgid "Please change your password!"
+msgstr "Παρακαλώ αλλάξτε το κωδικό σας!"
+
+#: documents.py:102
+msgid "PC/Tablet/Smartphone configuration:"
+msgstr "Ρυθμίσεις: PC/Tablet/Smartphone "
+
+#: documents.py:105 forms.py:79
+msgid "SMTP server address"
+msgstr "Διεύθυνση SMTP Server"
+
+#: documents.py:106 forms.py:84
+msgid "SMTP server port"
+msgstr "Θύρα SMTP server"
+
+#: documents.py:107 forms.py:90
+msgid "SMTP connection security"
+msgstr "Ασφάλεια σύνδεσης SMTP"
+
+#: documents.py:108 forms.py:97
+msgid "IMAP server address"
+msgstr "Διεύθυνση IMAP server"
+
+#: documents.py:109 forms.py:102
+msgid "IMAP server port"
+msgstr "θύρα IMAP Server"
+
+#: documents.py:110 forms.py:108
+msgid "IMAP connection security"
+msgstr "Ασφάλεια σύνδεσης IMAP"
+
+#: documents.py:120
+msgid "Use those settings for your computer, tablet or phone."
+msgstr "Χρησιμοποιήστε αυτές τις ρυθμίσεις για τον υπολογιστή, το tablet ή το τηλέφωνό σας."
+
+#: forms.py:20
+msgid "Documents storage"
+msgstr "Αποθηκευτικός χώρος εγγράφων"
+
+#: forms.py:23
+msgid "Directory to save documents into"
+msgstr "Κατάλογος αρχείων για την αποθήκευση εγγράφων"
+
+#: forms.py:25
+msgid "Path to a directory where PDF documents will be saved"
+msgstr "Κατάλογος αρχείων για την αποθήκευση PDF εγγράφων"
+
+#: forms.py:28
+msgid "Security options"
+msgstr "Ρυθμίσεις Ασφαλείας"
+
+#: forms.py:31
+msgid "Delete documents after the first download"
+msgstr "Διαγραφή εγγράφων μετά την πρώτη λήψη"
+
+#: forms.py:34
+msgid ""
+"Automatically delete a document just after its first download from this "
+"interface"
+msgstr "Αυτόματη διαγραφή εγγράφου μετά την πρώτη λήψη από αυτήν την διεπαφή"
+
+#: forms.py:40
+msgid "Generate documents only at account creation"
+msgstr "Δημιουργία εγγράφων μόνο κατά την δημιουργία λογαριασμού"
+
+#: forms.py:43
+msgid ""
+"Generate a new document only when a new account is created. If set to no, a "
+"new document will be created each time a password is updated."
+msgstr "Δημιουργία νέου εγγράφου μόνο κατά την δημιουργία νέου λογαριασμού. Εάν επιλέξετε όχι, ένα νέο έγγραφο θα δημιουργείται κάθε φορά που ο κωδικός χρήστη ενημερώνεται."
+
+#: forms.py:49
+msgid "Customization options"
+msgstr "Επιλογές προσαρμογής"
+
+#: forms.py:52
+msgid "Title"
+msgstr "Τίτλος"
+
+#: forms.py:54
+msgid "The document's title"
+msgstr "Ο τίτλος του εγγράφου"
+
+#: forms.py:58
+msgid "Web panel url"
+msgstr "Διεύθυνση Web panel"
+
+#: forms.py:59
+msgid "URL of the Modoboa web panel"
+msgstr "URL του Modoboa web panel"
+
+#: forms.py:63
+msgid "Custom message"
+msgstr "Προσαρμοσμένο μήνυμα"
+
+#: forms.py:65
+msgid "A custom message that will appear at the end of documents"
+msgstr "Ένα προσαρμοσμένο μήνυμα που θα εμφανιστεί στο τέλος των εγγράφων"
+
+#: forms.py:70
+msgid "Include mail client connection settings"
+msgstr "Συμπεριλάβε τις ρυθμίσεις σύνδεσης προγράμματος αλληλογραφίας"
+
+#: forms.py:73
+msgid ""
+"Include required SMTP and IMAP connection information to configure a mail "
+"client, a tablet or a phone"
+msgstr "Συμπεριέλαβε της απαιτούμενες ρυθμίσης  SMTP και IMAP για διασύνδεση με προγράμματα emai, τάμπλετ και τηλέφωνα"
+
+#: forms.py:80
+msgid "Address of the SMTP server (hostname or IP)"
+msgstr "Διεύθυνση από τον SMTP server (hostname ή IP)"
+
+#: forms.py:86
+msgid "Listening port of the SMTP server"
+msgstr "Οι θύρες που ακούει ό SMTP Server"
+
+#: forms.py:93 forms.py:111
+msgid "Connection security mechanism"
+msgstr "Μηχανισμός ασφαλείας σύνδεσης"
+
+#: forms.py:98
+msgid "Address of the IMAP server (hostname or IP)"
+msgstr "Διεύθυνση του IMAP server (hostname ή IP)"
+
+#: forms.py:104
+msgid "Listening port of the IMAP server"
+msgstr "Η θύρα που ακούει ο IMAP Server"
+
+#: handlers.py:46
+msgid "Retrieve user's credentials as a PDF document"
+msgstr "Ανάκτηση διαπιστευτηρίων χρήστη σε αρχείο PDF"
+
+#: lib.py:29
+#, python-format
+msgid "Failed to create the directory that will contain PDF documents (%s)"
+msgstr "Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων (%s)"
+
+#: modo_extension.py:16 modo_extension.py:24
+msgid "PDF credentials"
+msgstr "Διαπιστευτήρια PDF"
+
+#: modo_extension.py:19
+msgid "Generate PDF documents containing users' credentials"
+msgstr "Δημιουργία PDF εγγράφων που να περιέχουν τα διαπιστευτήρια χρηστών"
+
+#: views.py:30
+msgid "No document available for this user"
+msgstr "Δεν υπάρχουν διαθέσιμα έγγραφα για αυτόν τον χρήστη"
