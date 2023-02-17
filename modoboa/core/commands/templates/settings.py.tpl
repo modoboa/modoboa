@@ -97,15 +97,15 @@ INSTALLED_APPS += MODOBOA_APPS
 AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = (
-    'x_forwarded_for.middleware.XForwardedForMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'x_forwarded_for.middleware.XForwardedForMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django_otp.middleware.OTPMiddleware',
     'modoboa.core.middleware.TwoFAMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'modoboa.core.middleware.LocalConfigMiddleware',
     'modoboa.lib.middleware.AjaxLoginRedirect',
