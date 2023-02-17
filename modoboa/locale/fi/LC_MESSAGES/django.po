@@ -1,0 +1,1313 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-17 15:36+0100\n"
+"PO-Revision-Date: 2023-02-17 22:03+0200\n"
+"Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: core/app_settings.py:26
+msgid "User profile"
+msgstr "Käyttäjäprofiili"
+
+#: core/app_settings.py:39
+msgid "Authentication"
+msgstr "Tunnistautuminen"
+
+#: core/app_settings.py:42
+msgid "Authentication type"
+msgstr "Autentikointityyppi"
+
+#: core/app_settings.py:43
+msgid "Local"
+msgstr "Paikallinen"
+
+#: core/app_settings.py:46
+msgid "The backend used for authentication"
+msgstr "Tunnistautumiseen käytettävä taustajärjestelmä"
+
+#: core/app_settings.py:51
+msgid "Default password scheme"
+msgstr "Oletussalasanojen järjestelmä"
+
+#: core/app_settings.py:56
+msgid "Scheme used to crypt mailbox passwords"
+msgstr "Sähköpostilaatikon salasanojen salaamiseen käytetty järjestelmä"
+
+#: core/app_settings.py:60
+msgid "Rounds"
+msgstr "Kierrokset"
+
+#: core/app_settings.py:63
+msgid ""
+"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
+"between 1000 and 999999999, inclusive."
+msgstr ""
+"Käytettävien kierrosten määrä (vain sha256crypt ja sha512crypt käyttävät). "
+"Arvon on oltava välillä 1000 ja 99999999999."
+
+#: core/app_settings.py:69
+msgid "Update password scheme at login"
+msgstr "Päivitä salasanajärjestelmä kirjautumisen yhteydessä"
+
+#: core/app_settings.py:72
+msgid "Update user password at login to use the default password scheme"
+msgstr ""
+"Päivitä käyttäjän salasana sisäänkirjautumisen yhteydessä käyttämään "
+"oletussalasanajärjestelmää"
+
+#: core/app_settings.py:77
+msgid "Default password"
+msgstr "Oletussalasana"
+
+#: core/app_settings.py:80
+msgid "Default password for automatically created accounts."
+msgstr "Automaattisesti luotujen tilien oletussalasana."
+
+#: core/app_settings.py:84
+msgid "Random password length"
+msgstr "Satunnaisen salasanan pituus"
+
+#: core/app_settings.py:88
+msgid "Length of randomly generated passwords."
+msgstr "Satunnaisesti luotujen salasanojen pituus."
+
+#: core/app_settings.py:92
+msgid "Update password service URL"
+msgstr "Päivitä salasanapalvelun URL-osoite"
+
+#: core/app_settings.py:96
+msgid ""
+"The URL of an external page where users will be able to update their "
+"password. It applies only to non local users, ie. those automatically "
+"created after a successful external authentication (LDAP, SMTP)."
+msgstr ""
+"Ulkoisen sivun URL-osoite, jolla käyttäjät voivat päivittää salasanansa. "
+"Koskee vain muita kuin paikallisia käyttäjiä. Eli niitä, jotka luodaan "
+"automaattisesti onnistuneen ulkoisen todennuksen jälkeen (LDAP, SMTP)."
+
+#: core/app_settings.py:104
+msgid "Password recovery announcement"
+msgstr "Ilmoitus salasanan palautuksesta"
+
+#: core/app_settings.py:109
+msgid "A temporary message that will be displayed on the reset password page."
+msgstr "Väliaikainen viesti, joka näytetään salasanan nollaussivulla."
+
+#: core/app_settings.py:115
+msgid "Enable password recovery by SMS"
+msgstr "Ota salasanan palautus käyttöön tekstiviestillä"
+
+#: core/app_settings.py:118
+msgid "Enable password recovery by SMS for users who filled a phone number."
+msgstr ""
+"Ota käyttöön salasanan palautus tekstiviestillä käyttäjille, jotka ovat "
+"täyttäneet puhelinnumeron."
+
+#: core/app_settings.py:124
+msgid "SMS provider"
+msgstr "SMS-palveluntarjoaja"
+
+#: core/app_settings.py:127
+msgid "Choose a provider to send password recovery SMS"
+msgstr ""
+"Valitse palveluntarjoaja, joka lähettää salasanan palautustekstiviestin"
+
+#: core/app_settings.py:133
+msgid "LDAP settings"
+msgstr "LDAP-asetukset"
+
+#: core/app_settings.py:136
+msgid "Server address"
+msgstr "Palvelimen osoite"
+
+#: core/app_settings.py:139
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "LDAP-palvelimen IP-osoite tai DNS-nimi"
+
+#: core/app_settings.py:143
+msgid "Server port"
+msgstr "Palvelimen portti"
+
+#: core/app_settings.py:145
+msgid "The TCP port number used by the LDAP server"
+msgstr "LDAP-palvelimen käyttämän TCP-portin numero"
+
+#: core/app_settings.py:149
+msgid "Enable secondary server (fallback)"
+msgstr "Toisen palvelimen käyttöönotto (varapalvelin)"
+
+#: core/app_settings.py:152
+msgid ""
+"Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr ""
+"Ota käyttöön toissijainen LDAP-palvelin, jota käytetään, jos ensisijainen "
+"palvelin ei toimi"
+
+#: core/app_settings.py:158
+msgid "Secondary server address"
+msgstr "Toisen palvelimen osoite"
+
+#: core/app_settings.py:161
+msgid "The IP address or the DNS name of the seondary LDAP server"
+msgstr "Toisen LDAP-palvelimen IP-osoite tai DNS-nimi"
+
+#: core/app_settings.py:165
+msgid "Secondary server port"
+msgstr "Toisen palvelimen portti"
+
+#: core/app_settings.py:168
+msgid "The TCP port number used by the LDAP secondary server"
+msgstr "LDAP:n toissijaisen palvelimen käyttämä TCP-portin numero"
+
+#: core/app_settings.py:172
+msgid "Use a secured connection"
+msgstr "Käytä suojattua yhteyttä"
+
+#: core/app_settings.py:176
+msgid "Use an SSL/STARTTLS connection to access the LDAP server"
+msgstr "Käytä SSL/STARTTLS-yhteyttä LDAP-palvelimen käyttämiseen"
+
+#: core/app_settings.py:180
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: core/app_settings.py:183
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr "Kerro, onko LDAP-palvelin Active Directory -palvelin"
+
+#: core/app_settings.py:187
+msgid "Administrator groups"
+msgstr "Järjestelmänvalvojien ryhmät"
+
+#: core/app_settings.py:190
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr ""
+"Näiden LDAP Posix -ryhmien jäsenet luodaan verkkotunnuksen "
+"järjestelmänvalvojiksi. Käytä ';'-merkkejä ryhmien erottamiseen."
+
+#: core/app_settings.py:197
+msgid "Group type"
+msgstr "Ryhmän tyyppi"
+
+#: core/app_settings.py:201
+msgid "The LDAP group type to use with your directory."
+msgstr "LDAP-ryhmän tyyppi, jota käytetään hakemiston kanssa."
+
+#: core/app_settings.py:206
+msgid "Groups search base"
+msgstr "Ryhmien hakupohja"
+
+#: core/app_settings.py:209
+msgid "The distinguished name of the search base used to find groups"
+msgstr "Ryhmien etsimiseen käytettävän hakupohjan erottuva nimi"
+
+#: core/app_settings.py:215
+msgid "Password attribute"
+msgstr "Salasana-attribuutti"
+
+#: core/app_settings.py:217
+msgid "The attribute used to store user passwords"
+msgstr "Määrite, jota käytetään käyttäjien salasanojen tallentamiseen"
+
+#: core/app_settings.py:222
+msgid "LDAP authentication settings"
+msgstr "LDAP-todennusasetukset"
+
+#: core/app_settings.py:225
+msgid "Authentication method"
+msgstr "Tunnistusmenetelmä"
+
+#: core/app_settings.py:226
+msgid "Search and bind"
+msgstr "Etsi ja sido"
+
+#: core/app_settings.py:227
+msgid "Direct bind"
+msgstr "Suora sidonta"
+
+#: core/app_settings.py:229
+msgid "Choose the authentication method to use"
+msgstr "Valitse käytettävä todennusmenetelmä"
+
+#: core/app_settings.py:233 core/app_settings.py:287
+msgid "Bind DN"
+msgstr "Sido DN"
+
+#: core/app_settings.py:236 core/app_settings.py:290
+msgid ""
+"The distinguished name to use when binding to the LDAP server. Leave empty "
+"for an anonymous bind"
+msgstr ""
+"Erotusnimi, jota käytetään LDAP-palvelimeen sitoutumisessa. Jätä tyhjäksi "
+"anonyymiä sidontaa varten"
+
+#: core/app_settings.py:243 core/app_settings.py:297
+msgid "Bind password"
+msgstr "Sido salasana"
+
+#: core/app_settings.py:246 core/app_settings.py:300
+msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
+msgstr ""
+"Salasana, jota käytetään LDAP-palvelimeen sitoutumisessa (komennolla 'Bind "
+"DN')"
+
+#: core/app_settings.py:254 core/app_settings.py:346
+msgid "Users search base"
+msgstr "Käyttäjien hakupohja"
+
+#: core/app_settings.py:257 core/app_settings.py:349
+msgid "The distinguished name of the search base used to find users"
+msgstr "Käyttäjien etsimiseen käytettävän hakupohjan erisnimi"
+
+#: core/app_settings.py:263 core/app_settings.py:355
+msgid "Search filter"
+msgstr "Etsi suodatin"
+
+#: core/app_settings.py:266 core/app_settings.py:358
+msgid ""
+"An optional filter string (e.g. '(objectClass=person)'). In order to be "
+"valid, it must be enclosed in parentheses."
+msgstr ""
+"Valinnainen suodatinmerkkijono (esim. '(objectClass=person)'). Tämän on "
+"oltava suluissa."
+
+#: core/app_settings.py:273
+msgid "User DN template"
+msgstr "Käyttäjän DN-malli"
+
+#: core/app_settings.py:276
+#, python-format
+msgid ""
+"The template used to construct a user's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr ""
+"Käyttäjän DN:n rakentamiseen käytettävä malli. Sen tulisi sisältää yksi "
+"paikanvaraaja (eli %(user)s)"
+
+#: core/app_settings.py:284
+msgid "LDAP synchronization settings"
+msgstr "LDAP-synkronointiasetukset"
+
+#: core/app_settings.py:308
+msgid "Enable export to LDAP"
+msgstr "Ota käyttöön vienti LDAP:iin"
+
+#: core/app_settings.py:311
+msgid ""
+"Enable automatic synchronization between local database and LDAP directory"
+msgstr ""
+"Ota käyttöön automaattinen synkronointi paikallisen tietokannan ja LDAP-"
+"hakemiston välillä"
+
+#: core/app_settings.py:317
+msgid "Delete remote LDAP account when local account is deleted"
+msgstr "Etäisen LDAP-tilin poistaminen, kun paikallinen tili poistetaan"
+
+#: core/app_settings.py:321
+msgid ""
+"Delete remote LDAP account when local account is deleted, otherwise it will "
+"be disabled."
+msgstr ""
+"Poista etä-LDAP-tili, kun paikallinen tili poistetaan. Muuten se poistetaan "
+"käytöstä."
+
+#: core/app_settings.py:327
+msgid "Account DN template"
+msgstr "Tilin DN-malli"
+
+#: core/app_settings.py:330
+#, python-format
+msgid ""
+"The template used to construct an account's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr ""
+"Malli, jota käytetään tilin DN:n muodostamiseen. Sen tulisi sisältää yksi "
+"paikanvaraaja (eli %(user)s)"
+
+#: core/app_settings.py:337
+msgid "Enable import from LDAP"
+msgstr "Ota käyttöön tuonti LDAP:stä"
+
+#: core/app_settings.py:340
+msgid "Enable account synchronization from LDAP directory to local database"
+msgstr ""
+"Tilien synkronoinnin käyttöönotto LDAP-hakemistosta paikalliseen tietokantaan"
+
+#: core/app_settings.py:365
+msgid "Username attribute"
+msgstr "Käyttäjätunnus-määrite"
+
+#: core/app_settings.py:368
+msgid "The name of the LDAP attribute where the username can be found."
+msgstr "Sen LDAP-attribuutin nimi, josta käyttäjänimi löytyy."
+
+#: core/app_settings.py:373
+msgid "Enable Dovecot LDAP sync"
+msgstr "Ota Dovecot LDAP-synkronointi käyttöön"
+
+#: core/app_settings.py:376
+msgid "LDAP authentication settings will be applied to Dovecot configuration."
+msgstr "LDAP-todennusasetuksia sovelletaan Dovecot-konfiguraatioon."
+
+#: core/app_settings.py:382
+msgid "Dovecot LDAP config file"
+msgstr "Dovecot LDAP -asetustiedosto"
+
+#: core/app_settings.py:386
+msgid ""
+"Location of the configuration file which contains Dovecot LDAP settings."
+msgstr "Dovecotin LDAP-asetukset sisältävän määritystiedoston sijainti."
+
+#: core/app_settings.py:391 core/templates/core/dashboard.html:5
+msgid "Dashboard"
+msgstr "Työpöytä"
+
+#: core/app_settings.py:394
+msgid "Custom RSS feed"
+msgstr "Mukautettu RSS-syöte"
+
+#: core/app_settings.py:397
+msgid "Display custom RSS feed to resellers and domain administrators"
+msgstr ""
+"Näytä mukautettu RSS-syöte jälleenmyyjille ja verkkotunnuksen ylläpitäjille"
+
+#: core/app_settings.py:402
+msgid "Hide features widget"
+msgstr "Piilota ominaisuudet-widget"
+
+#: core/app_settings.py:405
+msgid "Hide features widget for resellers and domain administrators"
+msgstr ""
+"Piilota ominaisuudet-widget jälleenmyyjiltä ja verkkotunnuksen ylläpitäjiltä"
+
+#: core/app_settings.py:409
+msgid "Notifications"
+msgstr "Ilmoitukset"
+
+#: core/app_settings.py:412
+msgid "Sender address"
+msgstr "Lähettäjän osoite"
+
+#: core/app_settings.py:415
+msgid "Email address used to send notifications."
+msgstr "Ilmoitusten lähettämiseen käytettävä sähköpostiosoite."
+
+#: core/app_settings.py:419
+msgid "Public API"
+msgstr "Julkinen API"
+
+#: core/app_settings.py:422
+msgid "Enable communication"
+msgstr "Ota viestintä käyttöön"
+
+#: core/app_settings.py:425
+msgid "Enable communication with Modoboa public API"
+msgstr "Ota käyttöön viestintä Modoboan julkisen API:n kanssa"
+
+#: core/app_settings.py:429
+msgid "Check new versions"
+msgstr "Tarkista uudet versiot"
+
+#: core/app_settings.py:432
+msgid "Automatically checks if a newer version is available"
+msgstr "Tarkistaa automaattisesti, onko uudempi versio saatavana"
+
+#: core/app_settings.py:436
+msgid "Send an email when new versions are found"
+msgstr "Lähetä sähköpostia, kun uusia versioita löytyy"
+
+#: core/app_settings.py:439
+msgid "Send an email to notify admins about new versions"
+msgstr ""
+"Lähetä sähköpostiviesti, joka ilmoittaa ylläpitäjille uusista versioista"
+
+#: core/app_settings.py:443
+msgid "Recipient"
+msgstr "Vastaanottaja"
+
+#: core/app_settings.py:446
+msgid "Recipient of new versions notification emails."
+msgstr "Uusia versioita koskevien ilmoitussähköpostiviestien vastaanottaja."
+
+#: core/app_settings.py:451
+msgid "Send statistics"
+msgstr "Lähetä tilastot"
+
+#: core/app_settings.py:454
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr ""
+"Lähetä tilastoja Modoboan julkiseen API:han (laskurit ja käytetyt "
+"laajennukset)"
+
+#: core/app_settings.py:458
+msgid "Miscellaneous"
+msgstr "Sekalaiset"
+
+#: core/app_settings.py:461
+msgid "Inactive account threshold"
+msgstr "Inaktiivisen tilin kynnysarvo"
+
+#: core/app_settings.py:464
+msgid ""
+"An account with a last login date greater than this threshold (in days) will "
+"be considered as inactive"
+msgstr ""
+"Tiliä, jonka viimeisin kirjautumispäivä on suurempi kuin tämä kynnysarvo "
+"(päivinä), pidetään inaktiivisena"
+
+#: core/app_settings.py:470
+msgid "Top notifications check interval"
+msgstr "Ylimpien ilmoitusten tarkistusväli"
+
+#: core/app_settings.py:473
+msgid "Interval between two top notification checks (in seconds)"
+msgstr "Kahden ylimmän ilmoituksen tarkistuksen välinen aika (sekunteina)"
+
+#: core/app_settings.py:478
+msgid "Maximum log record age"
+msgstr "Lokitiedoston enimmäisikä"
+
+#: core/app_settings.py:480
+msgid "The maximum age in days of a log record"
+msgstr "Lokitietueen enimmäisikä päivinä"
+
+#: core/app_settings.py:484
+msgid "Items per page"
+msgstr "Kohteita per sivu"
+
+#: core/app_settings.py:486
+msgid "Number of displayed items per page"
+msgstr "Näytettävien kohteiden määrä sivua kohti"
+
+#: core/app_settings.py:490
+msgid "Default top redirection"
+msgstr "Oletusarvoinen ylhäältä uudelleenohjaus"
+
+#: core/app_settings.py:494
+msgid "The default redirection used when no application is specified"
+msgstr ""
+"Oletusarvoinen uudelleenohjaus, jota käytetään, kun sovellusta ei ole "
+"määritetty"
+
+#: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
+msgid "Invalid syntax"
+msgstr "Virheellinen syntaksi"
+
+#: core/app_settings.py:570
+msgid "Invalid rounds number"
+msgstr "Virheellinen kierrosluku"
+
+#: core/app_settings.py:595 core/app_settings.py:597 core/app_settings.py:608
+msgid "This field is required"
+msgstr "Tämä kenttä on pakollinen"
+
+#: core/apps.py:18
+msgid "General"
+msgstr "Yleiset"
+
+#: core/checks/settings_checks.py:6
+msgid ""
+"You have USE_TZ set to False, this may result in issues during transitions "
+"between summer/winter time (ie the same local time occuring twice due to "
+"clock change)."
+msgstr ""
+"Olet asettanut USE_TZ:n arvoksi False, mikä voi aiheuttaa ongelmia kesä- ja "
+"talviajan vaihtuessa. (Sama paikallinen aika esiintyy kahdesti kellon "
+"vaihtumisen vuoksi)."
+
+#: core/checks/settings_checks.py:9
+msgid "Set `USE_TZ = True` in settings.py"
+msgstr "Aseta `USE_TZ = True` tiedostossa settings.py"
+
+#: core/constants.py:6
+msgid "Simple user"
+msgstr "Yksinkertainen käyttäjä"
+
+#: core/constants.py:7
+msgid "Domain administrator"
+msgstr "Luo verkkotunnuksen ylläpitäjä"
+
+#: core/constants.py:8
+msgid "Reseller"
+msgstr "Jälleenmyyjä"
+
+#: core/constants.py:9
+msgid "Super administrator"
+msgstr "Pääylläpitäjä"
+
+#: core/constants.py:52 lib/form_utils.py:389
+msgid "No"
+msgstr "Ei"
+
+#: core/constants.py:102
+msgid "Choose a provider"
+msgstr "Valitse palveluntarjoaja"
+
+#: core/constants.py:107
+msgid "Dummy"
+msgstr "Harjoitus"
+
+#: core/forms.py:23
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: core/forms.py:27
+msgid "Password"
+msgstr "Salasana"
+
+#: core/forms.py:40
+msgid "Old password"
+msgstr "Vanha salasana"
+
+#: core/forms.py:44
+msgid "New password"
+msgstr "Uusi salasana"
+
+#: core/forms.py:48
+msgid "Confirmation"
+msgstr "Vahvistus"
+
+#: core/forms.py:76
+msgid "Old password mismatchs"
+msgstr "Vanhat salasanat eivät vastaa toisiaan"
+
+#: core/forms.py:85
+msgid "Passwords mismatch"
+msgstr "Salasanat eivät täsmää"
+
+#: core/forms.py:105
+msgid "Enable API access"
+msgstr "Ota API-yhteys käyttöön"
+
+#: core/forms.py:139
+msgid "Verification code"
+msgstr "Tarkistuskoodi"
+
+#: core/forms.py:150
+msgid "Invalid code"
+msgstr "Virheellinen koodi"
+
+#: core/forms.py:163
+msgid "This code is invalid"
+msgstr "Tämä koodi on virheellinen"
+
+#: core/handlers.py:36
+msgid "added"
+msgstr "lisätty"
+
+#: core/handlers.py:39
+msgid "modified"
+msgstr "muokattu"
+
+#: core/handlers.py:41
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s käyttäjältä %(user)s"
+
+#: core/handlers.py:63
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by "
+msgstr "%(object)s '%(name)s' %(action)s tekijänä "
+
+#: core/handlers.py:65
+msgid "deleted"
+msgstr "poistettu"
+
+#: core/handlers.py:69
+msgid "user {}"
+msgstr "käyttäjä {}"
+
+#: core/handlers.py:71
+msgid "management command"
+msgstr "hallintakomento"
+
+#: core/handlers.py:95
+msgid "You can't delete your own account"
+msgstr "Et voi poistaa omaa tiliäsi"
+
+#: core/handlers.py:131
+msgid "One or more updates are available"
+msgstr "Yksi tai useampi päivitys on saatavilla"
+
+#: core/management/commands/communicate_with_public_api.py:44
+msgid "[modoboa] Update(s) available"
+msgstr "[modoboa] Päivitys(kset) saatavilla"
+
+#: core/models.py:52
+msgid "Allow mailboxes access"
+msgstr "Salli postilaatikoiden käyttöoikeus"
+
+#: core/models.py:54
+msgid "Allow this administrator to access user mailboxes"
+msgstr "Salli tämän järjestelmänvalvojan pääsy käyttäjien postilaatikoihin"
+
+#: core/models.py:57
+msgid "password"
+msgstr "salasana"
+
+#: core/models.py:60
+msgid "language"
+msgstr "kieli"
+
+#: core/models.py:63
+msgid "Prefered language to display pages."
+msgstr "Suositeltava kieli sivujen näyttämiseen."
+
+#: core/models.py:67
+msgid "Phone number"
+msgstr "Puhelinnumero"
+
+#: core/models.py:69
+msgid "Secondary email"
+msgstr "Toissijainen sähköpostiosoite"
+
+#: core/models.py:72
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr "Vaihtoehtoista sähköpostiosoitetta voidaan käyttää palautukseen."
+
+#: core/models.py:126
+msgid "Failed to update password: LDAP module not installed"
+msgstr "Salasanan päivittäminen epäonnistui: LDAP-moduulia ei ole asennettu"
+
+#: core/models.py:155
+msgid "account"
+msgstr "tili"
+
+#: core/models.py:282
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: core/models.py:316
+msgid "Invalid line"
+msgstr "Virheellinen rivi"
+
+#: core/models.py:324
+msgid "You can't import an account with a role greater than yours"
+msgstr "Et voi tuoda tiliä, jonka rooli on suurempi kuin omasi"
+
+#: core/models.py:339
+#, python-format
+msgid "The simple user '%s' must have a valid email address"
+msgstr ""
+"Yksinkertaisella käyttäjällä '%s' on oltava voimassa oleva sähköpostiosoite"
+
+#: core/models.py:344
+#, python-format
+msgid "username and email fields must not differ for '%s'"
+msgstr ""
+"käyttäjätunnus ja sähköpostiosoite eivät saa erota toisistaan kentissä '%s'"
+
+#: core/password_validation.py:24
+msgid "Password must contain at least {} digit."
+msgid_plural "Password must contain at least {} digits."
+msgstr[0] "Salasanan on sisällettävä vähintään {}-numero."
+msgstr[1] "Salasanan on sisällettävä vähintään {} numeroa."
+
+#: core/password_validation.py:34
+msgid "Password must contain at least {} lowercase letter."
+msgid_plural "Password must contain at least {} lowercase letters."
+msgstr[0] "Salasanan on sisällettävä vähintään {} pientä kirjainta."
+msgstr[1] "Salasanan on sisällettävä vähintään {} pientä kirjainta."
+
+#: core/password_validation.py:45
+msgid "Password must contain at least {} uppercase letter."
+msgid_plural "Password must contain at least {} uppercase letters."
+msgstr[0] "Salasanan on sisällettävä vähintään {} isoa kirjainta."
+msgstr[1] "Salasanan on sisällettävä vähintään {} isoa kirjainta."
+
+#: core/password_validation.py:57
+msgid "Password must contain at least {} special character."
+msgid_plural "Password must contain at least {} special characters."
+msgstr[0] "Salasanan on sisällettävä vähintään {} erikoismerkki."
+msgstr[1] "Salasanan on sisällettävä vähintään {} erikoismerkkiä."
+
+#: core/password_validation.py:65
+msgid "Your password must contain a combination of different character types."
+msgstr "Salasanan on sisällettävä yhdistelmä erilaisia merkkejä."
+
+#: core/serializers.py:15
+msgid "Invalid PIN code"
+msgstr "Virheellinen PIN-koodi"
+
+#: core/serializers.py:21
+msgid "2FA is already enabled"
+msgstr "Kaksivaiheinen tunnistus (2FA) on jo käytössä"
+
+#: core/sms_backends/ovh.py:19
+msgid "API endpoint"
+msgstr "API-päätepiste"
+
+#: core/sms_backends/ovh.py:22
+msgid "OVH Europe"
+msgstr "OVH Europe"
+
+#: core/sms_backends/ovh.py:23
+msgid "OVH US"
+msgstr "OVH US"
+
+#: core/sms_backends/ovh.py:24
+msgid "OVH North-America"
+msgstr "OVH Pohjois-Amerikka"
+
+#: core/sms_backends/ovh.py:25
+msgid "So you Start Europe"
+msgstr "So you start Eurooppa"
+
+#: core/sms_backends/ovh.py:26
+msgid "So you Start North America"
+msgstr "So you Start Pohjois-Amerikka"
+
+#: core/sms_backends/ovh.py:27
+msgid "Kimsufi Europe"
+msgstr "Kimsufi Eurooppa"
+
+#: core/sms_backends/ovh.py:28
+msgid "Kimsufi North America"
+msgstr "Kimsufi Pohjois-Amerikka"
+
+#: core/sms_backends/ovh.py:35
+msgid "Application key"
+msgstr "Sovellusavain"
+
+#: core/sms_backends/ovh.py:42
+msgid "Application secret"
+msgstr "Sovelluksen salainen avain"
+
+#: core/sms_backends/ovh.py:50
+msgid "Consumer key"
+msgstr "Asiakkaan avain"
+
+#: core/templates/core/_current_features.html:6
+msgid "Features looking for sponsoring"
+msgstr "Ominaisuudet, jotka etsivät sponsoria"
+
+#: core/templates/core/_current_features.html:12
+msgid "Goal:"
+msgstr "Tavoite:"
+
+#: core/templates/core/_current_features.html:18
+msgid "More"
+msgstr "Lisää"
+
+#: core/templates/core/_current_features.html:22
+msgid "Nothing to sponsor yet."
+msgstr "Sponsoroitavaa ei löytynyt."
+
+#: core/templates/core/_latest_news_widget.html:5
+msgid "Latest news"
+msgstr "Ajankohtaista"
+
+#: core/templates/core/_latest_news_widget.html:19
+msgid ""
+"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
+"weblog</a> for more information."
+msgstr ""
+"Lisätietoja <a href=\"https://modoboa.org/blog/\" "
+"target=\"_blank\">virallisesta blogista</a>."
+
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr "API-pääsy"
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr "Hallitse Modoboa API:n käyttöä"
+
+#: core/templates/core/api_access.html:7
+#, python-format
+msgid ""
+"A documentation of the API is available <strong><a href=\"%(url)s\" "
+"target=\"_blank\">here</a></strong>."
+msgstr ""
+"API:n dokumentaatio on saatavilla <strong><a href=\"%(url)s\" "
+"target=\"_blank\">täällä</a></strong>."
+
+#: core/templates/core/api_access.html:14
+msgid "API access token"
+msgstr "API-käyttötunniste"
+
+#: core/templates/core/api_access.html:35
+#: core/templates/core/user_profile.html:19 lib/form_utils.py:354
+msgid "Update"
+msgstr "Päivitä"
+
+#: core/templates/core/dashboard.html:11
+#, python-format
+msgid "Hello %(user)s."
+msgstr "Hei %(user)s."
+
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:62
+msgid "Information"
+msgstr "Tiedot"
+
+#: core/templates/core/information.html:2
+msgid "Various information about Modoboa"
+msgstr "Tietoja Modoboasta"
+
+#: core/templates/core/information.html:5
+msgid "One or more updates are available!"
+msgstr "Yksi tai useampi päivitys on saatavilla!"
+
+#: core/templates/core/information.html:6
+msgid "Check the following list to find the component(s) that can be updated."
+msgstr ""
+"Tarkista seuraavasta luettelosta komponentti(t), jotka voidaan päivittää."
+
+#: core/templates/core/information.html:10
+msgid "Applications"
+msgstr "Sovellukset"
+
+#: core/templates/core/information.html:14
+#: core/templates/core/information.html:36
+msgid "Name"
+msgstr "Nimi"
+
+#: core/templates/core/information.html:15
+msgid "Installed version"
+msgstr "Asennettu versio"
+
+#: core/templates/core/information.html:16
+msgid "Last version"
+msgstr "Viimeisin versio"
+
+#: core/templates/core/information.html:17
+msgid "Description"
+msgstr "Kuvaus"
+
+#: core/templates/core/information.html:32
+msgid "Active users"
+msgstr "Aktiiviset käyttäjät"
+
+#: core/templates/core/information.html:37
+msgid "Role"
+msgstr "Rooli"
+
+#: core/templates/core/information.html:38
+msgid "Last login"
+msgstr "Viimeisin kirjautuminen"
+
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:66
+msgid "Logs"
+msgstr "Lokit"
+
+#: core/templates/core/logs.html:2
+msgid "Previously on Modoboa..."
+msgstr "Aiemmin Modoboassa..."
+
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:106
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: core/templates/core/logs.html:7
+msgid "Level"
+msgstr "Taso"
+
+#: core/templates/core/logs.html:8
+msgid "Logger"
+msgstr "Lokikirja"
+
+#: core/templates/core/logs.html:9
+msgid "Message"
+msgstr "Viesti"
+
+#: core/templates/core/notifications/update_available.html:3
+msgid ""
+"\n"
+"  The following update is available:\n"
+msgid_plural ""
+"\n"
+"  The following updates are available:\n"
+msgstr[0] ""
+"\n"
+"  Seuraava päivitys on saatavilla:\n"
+msgstr[1] ""
+"\n"
+"  Seuraavat päivitykset ovat saatavilla:\n"
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
+msgid "Parameters"
+msgstr "Parametrit"
+
+#: core/templates/core/parameters.html:2
+msgid "Configure Modoboa"
+msgstr "Modoboan määrittäminen"
+
+#: core/templates/core/parameters.html:6
+#: core/templates/core/user_preferences.html:10
+msgid "Save"
+msgstr "Tallenna"
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr "Modoboan asetukset"
+
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:90
+msgid "Settings"
+msgstr "Asetukset"
+
+#: core/templates/core/user_preferences.html:2
+#: core/templatetags/core_tags.py:120
+msgid "Preferences"
+msgstr "Asetukset"
+
+#: core/templates/core/user_preferences.html:2
+msgid "Customize Modoboa"
+msgstr "Mukauta Modoboaa"
+
+#: core/templates/core/user_preferences.html:14
+msgid "No preferences available."
+msgstr "Asetuksia ei ole saatavilla."
+
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:116
+msgid "Profile"
+msgstr "Profiili"
+
+#: core/templates/core/user_profile.html:3
+msgid "Update your personal information"
+msgstr "Päivitä henkilökohtaiset tietosi"
+
+#: core/templates/core/user_profile.html:13
+msgid "Click here to update your password"
+msgstr "Klikkaa tästä päivittääksesi salasanasi"
+
+#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:124
+msgid "Security"
+msgstr "Turvallisuus"
+
+#: core/templates/core/user_security.html:6
+msgid "Two-Factor authentication"
+msgstr "Kaksivaiheinen tunnistus"
+
+#: core/templates/core/user_security.html:17
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from "
+"your application repository and use that app to scan this QR code."
+msgstr ""
+"Asenna soft token -autentikointiohjelma, kuten FreeOTP tai Google\n"
+"                Authenticator sovelluskaupasta ja käytä \n"
+"                sovellusta QR-koodin skannaamiseen."
+
+#: core/templates/core/user_security.html:25
+msgid "Pin code"
+msgstr "Pin-koodi"
+
+#: core/templates/core/user_security.html:28
+msgid "Register"
+msgstr "Rekisteröidy"
+
+#: core/templates/core/user_security.html:33
+msgid ""
+"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr "Onnittelut! Kaksivaiheinen tunnistus on nyt käytössä tililläsi."
+
+#: core/templates/core/user_security.html:38
+#: core/templates/core/user_security.html:89
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr ""
+"Näitä palautuskoodeja voidaan käyttää kutakin kerran. Näin voit\n"
+"        saada tilisi takaisin, jos esimerkiksi kadotat puhelimesi.\n"
+"        Varmista, että tallennat ne turvalliseen paikkaan. Muutoin\n"
+"        et pääse enää käyttämään tiliäsi."
+
+#: core/templates/core/user_security.html:53
+msgid "Two-Factor Authentication is enabled for your account."
+msgstr "Kaksivaiheinen tunnistautuminen on käytössä tililläsi."
+
+#: core/templates/core/user_security.html:58
+msgid "Disable 2FA"
+msgstr "Poista kaksivaiheinen tunnistautuminen (2FA) käytöstä"
+
+#: core/templates/core/user_security.html:61
+msgid "Reset recovery codes"
+msgstr ""
+
+#: core/templates/core/user_security.html:65
+msgid ""
+"Two-Factor Authentication (2FA) is not yet activated for your account. "
+"Enabling this feature will increase your account's security."
+msgstr ""
+"Kaksivaiheista tunnistusta (2FA) ei ole vielä aktivoitu tilillesi. Tämän "
+"ominaisuuden käyttöönotto lisää tilisi turvallisuutta."
+
+#: core/templates/core/user_security.html:73
+msgid "Enable 2FA"
+msgstr "Ota käyttöön kaksivaiheinen tunnistus (2FA)"
+
+#: core/templates/core/user_security.html:83
+#: core/templates/core/user_security.html:99
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "Sulje"
+
+#: core/templates/core/user_security.html:84
+msgid "New recovery codes"
+msgstr "Uudet palautuskoodit"
+
+#: core/templates/core/user_security.html:88
+msgid "Here are your new recovery codes. "
+msgstr "Tässä ovat uudet palautuskoodit. "
+
+#: core/templatetags/core_tags.py:34
+msgid "Modoboa"
+msgstr "Modoboa"
+
+#: core/templatetags/core_tags.py:102
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
+#: core/templatetags/core_tags.py:131
+msgid "API"
+msgstr "API"
+
+#: core/utils.py:32
+msgid "The core part of Modoboa"
+msgstr "Modoboan ydinosa"
+
+#: core/views/admin.py:43
+msgid "Parameters saved"
+msgstr "Tallennetut parametrit"
+
+#: core/views/auth.py:61
+#, python-format
+msgid "Password scheme mismatch. Updating %s password"
+msgstr "Salasanajärjestelmä ei vastaa toisiaan. Salasanan %s päivittäminen"
+
+#: core/views/auth.py:68
+#, python-format
+msgid "Password hash parameter missmatch. Updating %s password"
+msgstr "Salasanan hash-parametrit eivät täsmää. Salasanan %s päivittäminen"
+
+#: core/views/auth.py:84
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr "Käyttäjä '%s' kirjautui onnistuneesti sisään"
+
+#: core/views/auth.py:92
+msgid "Your username and password didn't match. Please try again."
+msgstr "Käyttäjätunnuksesi ja salasanasi eivät täsmää. Yritä uudelleen."
+
+#: core/views/auth.py:127
+msgid "User '{}' successfully logged out"
+msgstr "Käyttäjä '{}' kirjautui onnistuneesti ulos"
+
+#: core/views/auth.py:172 core/views/auth.py:227
+msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr "Käytä seuraavaa koodia saadaksesi takaisin Modoboa-salasanasi: {}"
+
+#: core/views/user.py:60
+msgid "Profile updated"
+msgstr "Profiili päivitetty"
+
+#: core/views/user.py:88
+msgid "Preferences saved"
+msgstr "Asetukset tallennettu"
+
+#: core/views/user.py:110
+msgid "Access updated"
+msgstr "Oikeudet päivitetty"
+
+#: core/viewsets.py:52
+msgid "2FA is not enabled"
+msgstr "Kaksivaiheinen tunnistautuminen (2FA) ei ole käytössä"
+
+#: lib/db_utils.py:23
+#, python-format
+msgid "Connection to database %s not configured"
+msgstr "Yhteyttä tietokantaan %s ei ole määritetty"
+
+#: lib/email_utils.py:143 lib/email_utils.py:362
+msgid "unable to determine encoding of string"
+msgstr "ei pysty määrittämään merkkijonon koodausta"
+
+#: lib/exceptions.py:67
+#, python-format
+msgid "Permission denied: %s"
+msgstr "Lupa evätty: %s"
+
+#: lib/exceptions.py:68
+msgid "Permission denied"
+msgstr "Lupa evätty"
+
+#: lib/fields.py:15 lib/validators.py:14
+msgid "Enter a valid domain name"
+msgstr "Syötä kelvollinen verkkotunnus"
+
+#: lib/fields.py:44 lib/fields.py:58
+msgid "Enter a valid email address."
+msgstr "Syötä oikean muotoinen sähköpostiosoite."
+
+#: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_confirm_code.html:25
+#: templates/registration/password_reset_form.html:29
+msgid "Submit"
+msgstr "Lähetä"
+
+#: lib/form_utils.py:110 lib/form_utils.py:113
+msgid "Invalid request"
+msgstr "Virheellinen pyyntö"
+
+#: lib/form_utils.py:388
+msgid "Yes"
+msgstr "Kyllä"
+
+#: lib/ldap_utils.py:129
+msgid "Failed to update password: {}"
+msgstr "Salasanan päivitys epäonnistui: {}"
+
+#: lib/templatetags/lib_tags.py:104
+msgid "From"
+msgstr "Lähde"
+
+#: lib/templatetags/lib_tags.py:105
+msgid "To"
+msgstr "Vastaanottaja"
+
+#: lib/templatetags/lib_tags.py:107 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Aihe"
+
+#: templates/404.html:4 templates/500.html:4
+msgid "Sorry"
+msgstr "Pahoittelut"
+
+#: templates/404.html:5
+msgid "The requested page does not exist."
+msgstr "Pyydettyä sivua ei ole olemassa."
+
+#: templates/500.html:5
+msgid "An internal error occured."
+msgstr "Tapahtui sisäinen virhe."
+
+#: templates/common/email_searchbar.html:5
+msgid "Search..."
+msgstr "Etsi..."
+
+#: templates/common/email_searchbar.html:10
+msgid "From address"
+msgstr "Lähettäjän sähköpostiosoite"
+
+#: templates/common/email_searchbar.html:33
+msgid "Both"
+msgstr "Molemmat"
+
+#: templates/common/error.html:4
+msgid "Error:"
+msgstr "Virhe:"
+
+#: templates/common/generic_field.html:11
+#: templates/common/generic_fields_group.html:8
+msgid "Help:"
+msgstr "Ohje:"
+
+#: templates/common/wizard_forms.html:31
+msgid "Previous"
+msgstr "Edellinen"
+
+#: templates/common/wizard_forms.html:32
+msgid "Next"
+msgstr "Seuraava"
+
+#: templates/registration/base.html:8
+msgid "Welcome to Modoboa"
+msgstr "Tervetuloa Modoboaan"
+
+#: templates/registration/login.html:21
+msgid "Remember me"
+msgstr "Muista minut"
+
+#: templates/registration/login.html:23
+msgid "Log in"
+msgstr "Kirjaudu sisään"
+
+#: templates/registration/login.html:24
+#: templates/registration/password_reset_form.html:17
+msgid "Forgot password?"
+msgstr "Unohditko salasanasi?"
+
+#: templates/registration/password_reset_complete.html:8
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
+"in</a> now."
+msgstr ""
+"Salasanasi on asetettu. Voit nyt <a href=\"%(url)s\">kirjautua sisään</a>."
+
+#: templates/registration/password_reset_confirm.html:7
+msgid "Change password"
+msgstr "Vaihda salasana"
+
+#: templates/registration/password_reset_confirm.html:17
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr ""
+"Salasananvaihtolinkkisi vaikuttaa vialliselta. Tilaa uusi vaihtolinkki."
+
+#: templates/registration/password_reset_confirm_code.html:20
+msgid "Enter the code you've just received by SMS"
+msgstr "Kirjoita tekstiviestillä saamasi koodi"
+
+#: templates/registration/password_reset_confirm_code.html:27
+msgid "Resend code"
+msgstr "Lähetä koodi uudelleen"
+
+#: templates/registration/password_reset_done.html:7
+msgid ""
+"<p>We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly.</p> "
+"<p>If you don't receive an email, please make sure you've entered your "
+"primary address, and check your spam folder.</p>"
+msgstr ""
+"<p>Olemme lähettäneet sinulle sähköpostitse ohjeet salasanasi asettamista "
+"varten, jos tili on olemassa antamallasi sähköpostiosoitteella. Sinun "
+"pitäisi saada ne pian.</p> <p>Jos et saa sähköpostia, varmista, että olet "
+"syöttänyt ensisijaisen osoitteesi, ja tarkista roskapostikansiosi.</p>"
+
+#: templates/registration/password_reset_email.html:4
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(username)s Modoboa "
+"account, click the link below:"
+msgstr ""
+"Voit aloittaa %(username)s Modoboa-tilisi salasanan palautusprosessin "
+"klikkaamalla alla olevaa linkkiä:"
+
+#: templates/registration/password_reset_email.html:10
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr ""
+"Jos yllä olevaa linkkiä klikkaamalla ei onnistu, kopioi ja liitä URL-osoite "
+"uuteen selainikkunaan."
+
+#: templates/registration/password_reset_email.html:14
+msgid "Sincerely, The Modoboa Team."
+msgstr "Ystävällisin terveisin, Modoboa Team."
+
+#: templates/registration/password_reset_form.html:24
+msgid "Please fill-in your primary email address"
+msgstr "Täytä ensisijainen sähköpostiosoitteesi"
+
+#: templates/registration/password_reset_subject.txt:3
+msgid "Modoboa password reset"
+msgstr "Modoboa-salasanan palautus"
