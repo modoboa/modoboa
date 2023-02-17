@@ -1,0 +1,1613 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-27 16:52+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: easygettext\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/components/domains/DomainList.vue:28
+#: src/components/domains/DomainList.vue:12
+msgid "(disabled)"
+msgstr "(ei käytössä)"
+
+#: src/views/user/APISetup.vue:29
+msgid "A documentation of the API is available"
+msgstr "API:n dokumentaatio on saatavilla"
+
+#: src/components/domains/DNSDetail.vue:47
+#: src/components/domains/DNSDetail.vue:205
+msgid "A new key will be generated soon. Refresh the page in a moment to see it."
+msgstr "Uusi avain luodaan pian. Päivitä sivu hetken kuluttua nähdäksesi sen."
+
+#: src/components/identities/AccountRoleForm.vue:39
+#: src/components/identities/AccountRoleForm.vue:69
+msgid "A user with all privileges, can do anything. By default, such a user does not have a mailbox so he can't access end-user features."
+msgstr "Käyttäjä, jolla on kaikki oikeudet, voi tehdä mitä tahansa. Oletusarvoisesti tällaisella käyttäjällä ei ole postilaatikkoa, joten hän ei voi käyttää loppukäyttäjän ominaisuuksia."
+
+#: src/components/identities/AccountRoleForm.vue:34
+#: src/components/identities/AccountRoleForm.vue:64
+msgid "A user with no privileges but with a mailbox. He will be allowed to use all end-user features: webmail, calendar, contacts, filters."
+msgstr "Käyttäjä, jolla ei ole oikeuksia mutta jolla on postilaatikko. Hän saa käyttää kaikkia loppukäyttäjän ominaisuuksia: webmail, kalenteri, yhteystiedot, suodattimet."
+
+#: src/components/identities/AccountRoleForm.vue:24
+#: src/components/identities/AccountRoleForm.vue:54
+msgid "A user with privileges on one or more domain. He will be allowed to administer mailboxes and he can also have a mailbox."
+msgstr "Käyttäjä, jolla on oikeuksia yhdessä tai useammassa verkkotunnuksessa. Hänellä on oikeus hallinnoida postilaatikoita ja hänellä voi myös olla postilaatikko."
+
+#: src/components/tools/TimeSerieChart.vue:16
+msgid "Absolute time range"
+msgstr "Määrämittainen aikaraja"
+
+#: src/views/identities/Account.vue:3 src/views/identities/Identities.vue:20
+msgid "Account"
+msgstr "Tili"
+
+#: src/components/identities/AccountCreationForm.vue:131
+#: src/components/identities/AccountCreationForm.vue:181
+msgid "Account created"
+msgstr "Tili luotu"
+
+#: src/components/identities/IdentityList.vue:67
+#: src/components/identities/IdentityList.vue:146
+msgid "Account deleted"
+msgstr "Tili poistettu"
+
+#: src/components/identities/AccountForm.vue:65
+#: src/components/identities/AccountForm.vue:192
+msgid "Account updated"
+msgstr "Tili päivitetty"
+
+#: src/components/domains/DomainList.vue:29
+#: src/components/identities/IdentityList.vue:6
+#: src/components/identities/IdentityList.vue:2
+#: src/components/identities/IdentityList.vue:19
+#: src/components/identities/IdentityList.vue:98
+#: src/components/domains/DomainList.vue:171
+msgid "Actions"
+msgstr "Toiminnot"
+
+#: src/components/domains/DomainAliasForm.vue:17
+#: src/components/domains/DomainAliasForm.vue:86
+msgid "Add"
+msgstr "Lisää"
+
+#: src/components/domains/DomainAliasForm.vue:20
+#: src/components/domains/DomainAliasForm.vue:89
+msgid "Add a new domain alias"
+msgstr "Lisää uusi verkkotunnuksen alias"
+
+#: src/components/domains/AdministratorList.vue:30
+msgid "Add administrator"
+msgstr "Lisää järjestelmänvalvoja"
+
+#: src/components/identities/AccountSenderAddresses.vue:24
+msgid "Add sender address"
+msgstr "Lisää lähettäjän osoite"
+
+#: src/components/domains/DNSDetail.vue:19
+#: src/components/identities/AccountSenderAddresses.vue:12
+#: src/components/identities/AliasCreationForm.vue:20
+#: src/components/identities/AliasCreationForm.vue:40
+#: src/components/identities/AccountSenderAddresses.vue:63
+#: src/components/domains/DNSDetail.vue:177
+msgid "Address"
+msgstr "Osoite"
+
+#: src/components/identities/AliasForm.vue:14
+msgid "Address:"
+msgstr "Osoite:"
+
+#: src/components/identities/DomainAdminDomains.vue:3
+msgid "Administered domains"
+msgstr "Hallinnoidut verkkotunnukset"
+
+#: src/components/domains/AdministratorList.vue:53
+#: src/components/domains/AdministratorList.vue:121
+msgid "Administrator added"
+msgstr "Järjestelmänvalvoja lisäsi"
+
+#: src/components/domains/DomainCreationForm.vue:55
+#: src/components/domains/DomainCreationForm.vue:106
+msgid "Administrator name"
+msgstr "Järjestelmänvalvojan nimi"
+
+#: src/components/domains/AdministratorList.vue:60
+#: src/components/domains/AdministratorList.vue:128
+msgid "Administrator removed"
+msgstr "Järjestelmänvalvoja poistettu"
+
+#: src/components/domains/AdministratorList.vue:5
+#: src/components/domains/DomainList.vue:113
+#: src/components/domains/DomainList.vue:255
+msgid "Administrators"
+msgstr "Ylläpitäjät"
+
+#: src/components/domains/AdministratorList.vue:4
+msgid "Administrators of {{ domain.name }}"
+msgstr "{{ domain.name }}:n ylläpitäjät"
+
+#: src/components/domains/DomainList.vue:119
+#: src/components/layout/Navbar.vue:63 src/components/layout/Navbar.vue:178
+#: src/components/domains/DomainList.vue:261
+msgid "Alarms"
+msgstr "Hälytykset"
+
+#: src/views/domains/Domains.vue:23 src/views/identities/Alias.vue:3
+#: src/views/identities/Identities.vue:23
+msgid "Alias"
+msgstr "Alias"
+
+#: src/components/identities/AliasCreationForm.vue:82
+#: src/components/identities/AliasCreationForm.vue:102
+msgid "Alias created"
+msgstr "Alias luotu"
+
+#: src/components/identities/IdentityList.vue:45
+#: src/components/identities/IdentityList.vue:124
+msgid "Alias deleted"
+msgstr "Alias poistettu"
+
+#: src/components/identities/AliasForm.vue:28
+#: src/components/identities/AliasForm.vue:111
+msgid "Alias updated"
+msgstr "Alias päivitetty"
+
+#: src/components/identities/AccountAliasForm.vue:3
+#: src/components/identities/AliasRecipientForm.vue:3
+msgid "Alias(es) of this mailbox. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Tämän postilaatikon alias-nimet. Jos haluat luoda catchall-aliaksen, kirjoita vain verkkotunnus (@domain.tld)."
+
+#: src/components/domains/DomainList.vue:25
+#: src/components/domains/DomainSummary.vue:31
+#: src/components/identities/AccountAliases.vue:3
+#: src/components/identities/AccountCreationForm.vue:62
+#: src/components/identities/AccountCreationForm.vue:65
+#: src/components/identities/AccountCreationForm.vue:93
+#: src/components/identities/AccountCreationForm.vue:112
+#: src/components/identities/AccountCreationForm.vue:115
+#: src/components/identities/AccountCreationForm.vue:143
+#: src/components/domains/DomainList.vue:167
+msgid "Aliases"
+msgstr "Aliakset"
+
+#: src/components/layout/Navbar.vue:93 src/components/layout/Navbar.vue:208
+msgid "API"
+msgstr "API"
+
+#: src/views/user/APISetup.vue:3
+msgid "API access"
+msgstr "API-pääsy"
+
+#: src/views/user/APISetup.vue:24 src/views/user/APISetup.vue:65
+msgid "API token copied to your clipboard"
+msgstr "API-tunniste kopioitu leikepöydälle"
+
+#: src/views/user/APISetup.vue:33 src/views/user/APISetup.vue:74
+msgid "API token created"
+msgstr "API-tunniste luotu"
+
+#: src/views/user/APISetup.vue:55 src/views/user/APISetup.vue:96
+msgid "API token deleted"
+msgstr "API-tunniste poistettu"
+
+#: src/components/tools/TimeSerieChart.vue:19
+msgid "Apply"
+msgstr "Käytä"
+
+#: src/components/layout/Navbar.vue:73 src/views/logs/AuditTrail.vue:3
+#: src/components/layout/Navbar.vue:188
+msgid "Audit trail"
+msgstr "Tarkastusketju"
+
+#: src/components/domains/DNSDetail.vue:59
+#: src/components/domains/DNSDetail.vue:23
+msgid "Authentication"
+msgstr "Tunnistautuminen"
+
+#: src/components/domains/DNSDetail.vue:26
+#: src/components/domains/DomainDNSConfig.vue:31
+msgid "Auto configuration"
+msgstr "Automaattinen asetusten määrittäminen"
+
+#: src/components/domains/DNSDetail.vue:45
+#: src/components/domains/DNSDetail.vue:9
+msgid "autoconfig record (Mozilla) not found"
+msgstr "autoconfig-tallennetta (Mozilla) ei löydy"
+
+#: src/components/domains/DNSDetail.vue:40
+#: src/components/domains/DNSDetail.vue:4
+msgid "autoconfig record (Mozilla): %{ value }"
+msgstr "autoconfig-tietue (Mozilla): %{ value }"
+
+#: src/components/domains/DNSDetail.vue:55
+#: src/components/domains/DNSDetail.vue:19
+msgid "autodiscover record (Microsoft) not found"
+msgstr "autodiscover-tietuetta (Microsoft) ei löydy"
+
+#: src/components/domains/DNSDetail.vue:50
+#: src/components/domains/DNSDetail.vue:14
+msgid "autodiscover record (Microsoft): %{ value }"
+msgstr "autodiscover-tietue (Microsoft): %{ value }"
+
+#: src/components/tools/CreationForm.vue:24
+msgid "Back"
+msgstr "Takaisin"
+
+#: src/components/domains/DomainDKIMKey.vue:14
+msgid "Bind/named format. Click to copy"
+msgstr "Bind/nimetty muoto. Kopioi klikkaamalla"
+
+#: src/components/domains/DomainForm.vue:122
+#: src/components/identities/AccountForm.vue:94
+#: src/components/identities/AliasForm.vue:55
+#: src/components/layout/ConfirmDialog.vue:14 src/views/user/APISetup.vue:46
+#: src/components/layout/ConfirmDialog.vue:53 src/views/user/APISetup.vue:87
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: src/views/identities/Identities.vue:45 src/views/identities/Identities.vue:1
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr "Valitse tämä vaihtoehto, jos tiedostosi sisältämiä salasanoja ei ole salakirjoitettu"
+
+#: src/components/domains/DomainAliasForm.vue:56
+#: src/components/domains/DomainAliasForm.vue:26
+msgid "Choose a domain"
+msgstr "Valitse verkkotunnus"
+
+#: src/components/identities/AccountRoleForm.vue:5
+msgid "Choose a role"
+msgstr "Valitse käyttäjätyyppisi"
+
+#: src/App.vue:18 src/App.vue:2 src/components/domains/AdministratorList.vue:36
+#: src/components/domains/DomainAliasForm.vue:21
+#: src/components/domains/DomainDKIMKey.vue:22
+#: src/components/domains/DomainDNSConfig.vue:40
+#: src/components/tools/ImportForm.vue:26
+#: src/components/user/RecoveryCodesResetDialog.vue:23
+msgid "Close"
+msgstr "Sulje"
+
+#: src/components/tools/CreationForm.vue:40
+msgid "Confirm and create"
+msgstr "Vahvista ja luo"
+
+#: src/components/identities/AccountPasswordForm.vue:108
+#: src/components/identities/AccountPasswordForm.vue:58
+msgid "Confirmation"
+msgstr "Vahvistus"
+
+#: src/components/user/TwoFactorAuthForm.vue:34
+#: src/components/user/TwoFactorAuthForm.vue:2
+msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr "Onnittelut! Kaksivaiheinen tunnistus on nyt käytössä tililläsi."
+
+#: src/views/Login.vue:21
+msgid "Connect"
+msgstr "Yhdistä"
+
+#: src/components/tools/ImportForm.vue:19
+msgid "Continue on error"
+msgstr "Jatka virheestä"
+
+#: src/components/domains/DomainGeneralForm.vue:8
+msgid "Control if this domain will be allowed to send and receive messages"
+msgstr "Määritä, saako tämä verkkotunnus lähettää ja vastaanottaa viestejä"
+
+#: src/components/domains/DomainCreationForm.vue:27
+#: src/components/domains/DomainCreationForm.vue:10
+#: src/components/domains/DomainCreationForm.vue:9
+#: src/components/identities/AccountCreationForm.vue:26
+#: src/components/identities/AccountCreationForm.vue:12
+#: src/components/identities/AccountCreationForm.vue:11
+#: src/components/identities/AccountPasswordForm.vue:13
+#: src/components/identities/AccountPasswordForm.vue:3
+msgid "Copy to clipboard"
+msgstr "Kopioi leikepöydälle"
+
+#: src/views/user/APISetup.vue:20
+msgid "Copy token to clipboard"
+msgstr "Kopioi turvatunnus leikepöydälle"
+
+#: src/components/domains/DomainCreationForm.vue:54
+#: src/components/domains/DomainOptionsForm.vue:2
+#: src/components/domains/DomainCreationForm.vue:105
+msgid "Create a domain administrator"
+msgstr "Luo toimialueen ylläpitäjä"
+
+#: src/components/domains/DomainOptionsForm.vue:7
+msgid "Create a mailbox for the administrator."
+msgstr "Luo ylläpitäjän postilaatikko."
+
+#: src/components/domains/DomainCreationForm.vue:68
+#: src/components/domains/DomainOptionsForm.vue:8
+#: src/components/domains/DomainCreationForm.vue:119
+msgid "Create aliases"
+msgstr "Luo aliaksia"
+
+#: src/components/domains/DomainOptionsForm.vue:8
+msgid "Create standard aliases for the domain."
+msgstr "Luo verkkotunnuksen tavanomaiset aliakset."
+
+#: src/components/domains/DomainSummary.vue:7
+#: src/components/identities/AccountSummary.vue:7
+#: src/components/identities/AliasSummary.vue:7
+msgid "Creation date"
+msgstr "Luontipäivä"
+
+#: src/views/identities/Identities.vue:45 src/views/identities/Identities.vue:1
+msgid "Crypt passwords"
+msgstr "Salakirjoita salasanat"
+
+#: src/components/identities/AccountPasswordForm.vue:29
+#: src/components/identities/AccountPasswordForm.vue:11
+msgid "Current password"
+msgstr "Nykyinen salasana"
+
+#: src/components/identities/AccountMailboxForm.vue:43
+#: src/components/identities/AccountMailboxForm.vue:26
+msgid "Daily message sending limit"
+msgstr "Päivittäinen viestien lähetysraja"
+
+#: src/components/domains/DomainSummary.vue:23
+msgid "Daily sending limit"
+msgstr "Päivittäinen lähetysraja"
+
+#: src/components/layout/Navbar.vue:45 src/components/layout/Navbar.vue:160
+msgid "Dashboard"
+msgstr "Työpöytä"
+
+#: src/components/alarms/AlarmList.vue:8
+#: src/components/logs/AuditTrailList.vue:8
+#: src/components/logs/MessageList.vue:9 src/components/alarms/AlarmList.vue:48
+#: src/components/logs/AuditTrailList.vue:40
+#: src/components/logs/MessageList.vue:42
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: src/components/tools/TimeSerieChart.vue:51
+#: src/components/tools/TimeSerieChart.vue:109
+msgid "Day"
+msgstr "Päivä"
+
+#: src/components/domains/DomainCreationForm.vue:41
+#: src/components/domains/DomainLimitationsForm.vue:6
+#: src/components/domains/DomainSummary.vue:19
+#: src/components/domains/DomainCreationForm.vue:92
+msgid "Default mailbox quota"
+msgstr "Oletuspostilaatikkokiintiö"
+
+#: src/components/domains/DomainLimitationsForm.vue:6
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Postilaatikoihin sovellettava oletuskiintiö. Voidaan ilmaista kilotavuina, megatavuina (oletus) tai gigatavuina. Arvo 0 tarkoittaa, ettei kiintiötä ole."
+
+#: src/components/domains/DomainAliasForm.vue:24
+#: src/components/domains/DomainList.vue:115
+#: src/components/identities/IdentityList.vue:89
+#: src/components/identities/IdentityList.vue:92
+#: src/components/identities/IdentityList.vue:168
+#: src/components/identities/IdentityList.vue:171
+#: src/components/domains/DomainList.vue:257
+msgid "Delete"
+msgstr "Poista"
+
+#: src/views/user/APISetup.vue:23
+msgid "Delete token"
+msgstr "Poista avain"
+
+#: src/components/identities/AliasCreationForm.vue:31
+#: src/components/identities/AliasGeneralForm.vue:87
+#: src/components/identities/AliasSummary.vue:19
+#: src/components/identities/AliasCreationForm.vue:51
+#: src/components/identities/AliasGeneralForm.vue:56
+msgid "Description"
+msgstr "Kuvaus"
+
+#: src/components/user/TwoFactorAuthForm.vue:57
+#: src/components/user/TwoFactorAuthForm.vue:5
+msgid "Disable 2FA"
+msgstr "Poista kaksivaiheinen tunnistautuminen (2FA) käytöstä"
+
+#: src/components/domains/DNSStatusChip.vue:6
+#: src/components/domains/DNSStatusChip.vue:13
+msgid "Disabled"
+msgstr "Pois käytöstä"
+
+#: src/components/domains/DNSDetail.vue:87
+#: src/components/domains/DNSDetail.vue:51
+msgid "DKIM key"
+msgstr "DKIM-avain"
+
+#: src/components/domains/DomainCreationForm.vue:48
+#: src/components/domains/DomainDNSForm.vue:5
+#: src/components/domains/DomainCreationForm.vue:99
+msgid "DKIM key length"
+msgstr "DKIM-avaimen pituus"
+
+#: src/components/domains/DomainCreationForm.vue:47
+#: src/components/domains/DomainDNSForm.vue:4
+#: src/components/domains/DomainCreationForm.vue:98
+msgid "DKIM key selector"
+msgstr "DKIM-avaimen valitsin-tietue"
+
+#: src/components/domains/DNSDetail.vue:30
+#: src/components/domains/DNSDetail.vue:189
+msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgstr "DKIM-avaimet ovat jo olemassa tälle verkkotunnukselle. Haluatko korvata ne?"
+
+#: src/components/domains/DomainDKIMKey.vue:4
+msgid "DKIM public key for"
+msgstr "DKIM julkinen avain tietueelle"
+
+#: src/components/domains/DNSDetail.vue:71
+#: src/components/domains/DNSDetail.vue:35
+msgid "DKIM record found"
+msgstr "DKIM-tietue löydetty"
+
+#: src/components/domains/DNSDetail.vue:74
+#: src/components/domains/DNSDetail.vue:38
+msgid "DKIM record not found"
+msgstr "DKIM-tietuetta ei löydy"
+
+#: src/components/domains/DomainForm.vue:44
+msgid "DKIM signing"
+msgstr "DKIM-allekirjoitus"
+
+#: src/components/domains/DNSDetail.vue:79
+#: src/components/domains/DNSDetail.vue:43
+msgid "DMARC record found"
+msgstr "DMARC-tietue löydetty"
+
+#: src/components/domains/DNSDetail.vue:82
+#: src/components/domains/DNSDetail.vue:46
+msgid "DMARC record not found"
+msgstr "DMARC-tietuetta ei löydy"
+
+#: src/components/domains/DomainCreationForm.vue:31
+#: src/components/domains/DomainCreationForm.vue:109
+#: src/components/domains/DomainCreationForm.vue:115
+#: src/components/domains/DomainForm.vue:32
+#: src/components/domains/DomainCreationForm.vue:82
+#: src/components/domains/DomainCreationForm.vue:160
+#: src/components/domains/DomainCreationForm.vue:166
+msgid "DNS"
+msgstr "DNS"
+
+#: src/components/domains/DomainForm.vue:39
+msgid "DNS checks"
+msgstr "DNS-tarkistukset"
+
+#: src/components/domains/DomainDNSConfig.vue:4
+msgid "DNS configuration for"
+msgstr "DNS-määritykset"
+
+#: src/components/domains/DNSDetail.vue:4
+msgid "DNS configuration help"
+msgstr "DNS-määritysapu"
+
+#: src/components/domains/DomainList.vue:26
+#: src/components/domains/DomainList.vue:168
+msgid "DNS status"
+msgstr "DNS-tila"
+
+#: src/components/identities/IdentityList.vue:49
+msgid "Do not delete account folder"
+msgstr "Älä poista tilikansiota"
+
+#: src/components/domains/DomainList.vue:77
+msgid "Do not delete domain folder"
+msgstr "Älä poista verkkotunnuksen kansiota"
+
+#: src/components/identities/IdentityList.vue:31
+#: src/components/identities/IdentityList.vue:111
+msgid "Do you really want to delete the alias %{ alias }?"
+msgstr "Haluatko todella poistaa aliaksen %{ alias }?"
+
+#: src/components/alarms/AlarmList.vue:9
+#: src/components/identities/AliasGeneralForm.vue:56
+#: src/views/domains/Domain.vue:3 src/views/domains/Domains.vue:20
+#: src/components/identities/AliasGeneralForm.vue:31
+#: src/components/alarms/AlarmList.vue:49
+msgid "Domain"
+msgstr "Verkkotunnus"
+
+#: src/components/identities/AccountRoleForm.vue:22
+#: src/components/identities/AccountRoleForm.vue:52
+msgid "Domain administrator"
+msgstr "Verkkotunnuksen ylläpitäjä"
+
+#: src/components/domains/DomainAliasForm.vue:51
+#: src/components/domains/DomainAliasForm.vue:120
+msgid "Domain alias created"
+msgstr "Verkkotunnuksen alias luotu"
+
+#: src/components/domains/DomainAliasForm.vue:40
+#: src/components/domains/DomainAliasForm.vue:109
+msgid "Domain alias deleted"
+msgstr "Verkkotunnuksen alias poistettu"
+
+#: src/components/domains/DomainAliasForm.vue:59
+#: src/components/domains/DomainAliasForm.vue:128
+msgid "Domain alias updated"
+msgstr "Verkkotunnuksen alias päivitetty"
+
+#: src/components/domains/DomainCreationForm.vue:174
+#: src/components/domains/DomainCreationForm.vue:225
+msgid "Domain created"
+msgstr "Verkkotunnus luotu"
+
+#: src/components/identities/AccountCreationForm.vue:52
+#: src/components/identities/AccountCreationForm.vue:102
+msgid "Domain default value"
+msgstr "Verkkotunnuksen oletusarvo"
+
+#: src/components/domains/DomainList.vue:70
+#: src/components/domains/DomainList.vue:212
+msgid "Domain deleted"
+msgstr "Verkkotunnus poistettu"
+
+#: src/components/domains/DomainGeneralForm.vue:3
+msgid "Domain name (ex: domain.tld)"
+msgstr "Verkkotunnus (esim. domain.tld)"
+
+#: src/components/domains/DomainForm.vue:53
+#: src/components/domains/DomainForm.vue:215
+msgid "Domain updated"
+msgstr "Verkkotunnus päivitetty"
+
+#: src/components/identities/AccountForm.vue:64
+#: src/components/identities/AccountForm.vue:2
+msgid "domain's default value"
+msgstr "verkkotunnuksen oletusarvo"
+
+#: src/components/layout/Navbar.vue:51 src/views/domains/Domains.vue:3
+#: src/components/layout/Navbar.vue:166
+msgid "Domains"
+msgstr "Verkkotunnukset"
+
+#: src/components/tools/ImportForm.vue:19
+msgid "Don't treat duplicated objects as errors"
+msgstr "Älä käsittele päällekkäisiä objekteja virheinä"
+
+#: src/components/domains/DomainList.vue:114
+#: src/components/identities/IdentityList.vue:88
+#: src/components/identities/IdentityList.vue:91
+#: src/components/identities/IdentityList.vue:167
+#: src/components/identities/IdentityList.vue:170
+#: src/components/domains/DomainList.vue:256
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: src/views/identities/AccountEdit.vue:2
+msgid "Edit account"
+msgstr "Muokkaa tiliä"
+
+#: src/views/identities/AliasEdit.vue:2
+msgid "Edit alias"
+msgstr "Muokkaa aliasta"
+
+#: src/views/domains/DomainEdit.vue:2
+msgid "Edit domain"
+msgstr "Muokkaa verkkotunnusta"
+
+#: src/components/domains/DomainAliasForm.vue:20
+#: src/components/domains/DomainAliasForm.vue:89
+msgid "Edit domain alias"
+msgstr "Muokkaa verkkotunnusta"
+
+#: src/components/identities/AccountCreationForm.vue:48
+#: src/components/identities/AccountCreationForm.vue:98
+msgid "Email"
+msgstr "Sähköposti"
+
+#: src/components/identities/AliasGeneralForm.vue:35
+#: src/components/identities/AliasGeneralForm.vue:15
+msgid "Email address"
+msgstr "Sähköpostiosoite"
+
+#: src/components/tools/CreationSummary.vue:5
+#: src/components/tools/CreationSummary.vue:32
+msgid "Empty"
+msgstr "Tyhjä"
+
+#: src/components/user/TwoFactorAuthForm.vue:68
+#: src/components/user/TwoFactorAuthForm.vue:5
+msgid "Enable 2FA"
+msgstr "Salli 2FA"
+
+#: src/components/domains/DomainCreationForm.vue:34
+#: src/components/domains/DomainDNSForm.vue:3
+#: src/components/domains/DomainCreationForm.vue:85
+msgid "Enable DKIM signing"
+msgstr "Ota DKIM-allekirjoitus käyttöön"
+
+#: src/components/domains/DomainCreationForm.vue:33
+#: src/components/domains/DomainDNSForm.vue:2
+#: src/components/domains/DomainCreationForm.vue:84
+msgid "Enable DNS checks"
+msgstr "Ota DNS-tarkistukset käyttöön"
+
+#: src/components/domains/DomainCreationForm.vue:27
+#: src/components/domains/DomainGeneralForm.vue:8
+#: src/components/identities/AccountCreationForm.vue:39
+#: src/components/identities/AccountForm.vue:39
+#: src/components/identities/AccountGeneralForm.vue:13
+#: src/components/identities/AliasForm.vue:17
+#: src/components/identities/AliasGeneralForm.vue:11
+#: src/components/identities/AccountCreationForm.vue:89
+#: src/components/domains/DomainCreationForm.vue:78
+msgid "Enabled"
+msgstr "Käytössä"
+
+#: src/components/identities/AccountGeneralForm.vue:20
+#: src/components/identities/AccountGeneralForm.vue:70
+msgid "Enter a simple username or an email address"
+msgstr "Anna yksinkertainen käyttäjätunnus tai sähköpostiosoite"
+
+#: src/components/identities/AccountGeneralForm.vue:18
+#: src/components/identities/AccountGeneralForm.vue:68
+msgid "Enter an email address"
+msgstr "Syötä oikean muotoinen sähköpostiosoite"
+
+#: src/views/TwoFA.vue:12
+msgid "Enter the code from the two-factor app on your mobile device. If you have lost your device, you may enter one of your recovery codes."
+msgstr "Syötä koodi mobiililaitteesi kaksivaiheisen tunnistuksen sovelluksesta. Jos olet hukannut laitteesi, voit syöttää yhden palautuskoodeistasi."
+
+#: src/components/identities/AccountMailboxForm.vue:5
+msgid "Ex: 10MB. Leave empty for no limit"
+msgstr "Esim: 10 MB. Jätä tyhjäksi, jos et halua rajoitusta"
+
+#: src/components/identities/AliasCreationForm.vue:26
+#: src/components/identities/AliasGeneralForm.vue:79
+#: src/components/identities/AliasSummary.vue:15
+#: src/components/identities/AliasCreationForm.vue:46
+#: src/components/identities/AliasGeneralForm.vue:49
+msgid "Expire at"
+msgstr "Vanhenee"
+
+#: src/views/identities/Identities.vue:8
+msgid "Export accounts and aliases to CSV"
+msgstr "Vie tilit ja aliakset CSV-tiedostoon"
+
+#: src/views/domains/Domains.vue:8
+msgid "Export domains and aliases to CSV"
+msgstr "Vie verkkotunnukset ja aliakset CSV-tiedostoon"
+
+#: src/components/identities/AccountCreationForm.vue:30
+#: src/components/identities/AccountGeneralForm.vue:32
+#: src/components/user/ProfileForm.vue:45
+#: src/components/identities/AccountCreationForm.vue:80
+#: src/components/identities/AccountGeneralForm.vue:17
+#: src/components/user/ProfileForm.vue:9
+msgid "First name"
+msgstr "Etunimi"
+
+#: src/views/Login.vue:16
+msgid "Forgot password?"
+msgstr "Unohditko salasanasi?"
+
+#: src/components/layout/Navbar.vue:117 src/views/user/Forward.vue:3
+#: src/components/layout/Navbar.vue:232
+msgid "Forward"
+msgstr "Seuraava"
+
+#: src/components/user/ForwardForm.vue:6
+msgid "Forward messages and store copies into your local mailbox"
+msgstr "Välitä viestit ja tallenna kopiot paikalliseen postilaatikkoon"
+
+#: src/components/user/ForwardForm.vue:19
+#: src/components/user/ForwardForm.vue:52
+msgid "Forward updated"
+msgstr "Välitystieto päivitetty"
+
+#: src/components/logs/MessageList.vue:12
+#: src/components/tools/TimeSerieChart.vue:17
+#: src/components/logs/MessageList.vue:45
+msgid "From"
+msgstr "Lähde"
+
+#: src/components/identities/AccountSummary.vue:16
+msgid "Full name"
+msgstr "Koko nimi"
+
+#: src/components/identities/IdentityList.vue:17
+#: src/components/identities/IdentityList.vue:96
+msgid "Fullname/recipient"
+msgstr "Koko nimi/saaja"
+
+#: src/components/domains/DomainCreationForm.vue:23
+#: src/components/domains/DomainCreationForm.vue:108
+#: src/components/domains/DomainCreationForm.vue:114
+#: src/components/domains/DomainForm.vue:7
+#: src/components/identities/AliasCreationForm.vue:17
+#: src/components/identities/AliasCreationForm.vue:49
+#: src/components/identities/AliasForm.vue:7
+#: src/components/identities/AliasCreationForm.vue:37
+#: src/components/identities/AliasCreationForm.vue:69
+#: src/components/domains/DomainCreationForm.vue:74
+#: src/components/domains/DomainCreationForm.vue:159
+#: src/components/domains/DomainCreationForm.vue:165
+msgid "General"
+msgstr "Yleiset"
+
+#: src/components/domains/DomainSummary.vue:3
+#: src/components/identities/AccountSummary.vue:3
+#: src/components/identities/AliasSummary.vue:3
+msgid "General information"
+msgstr "Yleiset tiedot"
+
+#: src/components/user/ProfileForm.vue:3
+msgid "General settings"
+msgstr "Yleiset asetukset"
+
+#: src/views/user/APISetup.vue:12
+msgid "Generate"
+msgstr "Luo"
+
+#: src/components/domains/DNSDetail.vue:93
+#: src/components/domains/DNSDetail.vue:57
+msgid "Generate a new DKIM key"
+msgstr "Luo uusi DKIM-avain"
+
+#: src/components/domains/DomainOptionsForm.vue:6
+msgid "Generate a random password for the administrator."
+msgstr "Luo satunnainen salasana järjestelmänvalvojalle."
+
+#: src/components/identities/AccountRoleForm.vue:29
+#: src/components/identities/AccountRoleForm.vue:59
+msgid "help"
+msgstr "ohje"
+
+#: src/components/domains/DomainDNSConfig.vue:8
+msgid "Here is an example of DNS configuration (bind format). Replace values between [ ] by the appropriate ones."
+msgstr "Tässä on esimerkki DNS-määrityksistä (bind-muodossa). Korvaa [ ]:n välissä olevat arvot sopivilla arvoilla."
+
+#: src/components/domains/DomainDNSConfig.vue:33
+#: src/components/domains/DomainDNSConfig.vue:34
+msgid "hostname of your automx server"
+msgstr "automx-palvelimen nimi"
+
+#: src/components/identities/AccountCreationForm.vue:27
+#: src/components/identities/AccountCreationForm.vue:85
+#: src/components/identities/AccountForm.vue:29 src/views/Login.vue:6
+#: src/components/identities/AccountCreationForm.vue:77
+#: src/components/identities/AccountCreationForm.vue:135
+msgid "Identification"
+msgstr "Tunniste"
+
+#: src/components/layout/Navbar.vue:57 src/views/identities/Identities.vue:3
+#: src/components/layout/Navbar.vue:172
+msgid "Identities"
+msgstr "Identiteetit"
+
+#: src/components/tools/CreationForm.vue:26
+#: src/components/tools/CreationForm.vue:99
+msgid "If you close this form now, your modifications won't be saved. Do you confirm?"
+msgstr "Jos suljet tämän lomakkeen nyt, muutokset eivät tallennu. Vahvistatko?"
+
+#: src/components/tools/ImportForm.vue:29
+msgid "Import"
+msgstr "Tuo"
+
+#: src/views/identities/Identities.vue:5
+msgid "Import accounts and aliases from CSV file"
+msgstr "Tuo tilejä ja aliaksia CSV-tiedostosta"
+
+#: src/views/domains/Domains.vue:37
+msgid "Import domains"
+msgstr "Tuo verkkotunnuksia"
+
+#: src/views/domains/Domains.vue:5
+msgid "Import domains and aliases from CSV file"
+msgstr "Tuo verkkotunnukset ja aliakset CSV-tiedostosta"
+
+#: src/views/identities/Identities.vue:37
+msgid "Import identities"
+msgstr "Identiteettien tuonti"
+
+#: src/components/user/ForwardForm.vue:5
+msgid "Indicate one or more recipients separated by a comma (,)"
+msgstr "Ilmoita yksi tai useampi vastaanottaja pilkulla (,) erotettuna"
+
+#: src/components/user/TwoFactorAuthForm.vue:14
+#: src/components/user/TwoFactorAuthForm.vue:7
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google\n"
+"                Authenticator from your application repository and use that\n"
+"                app to scan this QR code."
+msgstr ""
+"Asenna soft token -autentikointiohjelma, kuten FreeOTP tai Google\n"
+"                Authenticator sovelluskaupasta ja käytä \n"
+"                sovellusta QR-koodin skannaamiseen."
+
+#: src/views/Login.vue:35 src/views/Login.vue:93
+msgid "Invalid username and/or password"
+msgstr "Virheellinen käyttäjätunnus ja/tai salasana"
+
+#: src/components/domains/DomainDNSConfig.vue:12
+msgid "IP address of your Modoboa server"
+msgstr "Modoboa-palvelimen IP-osoite"
+
+#: src/views/Dashboard.vue:7
+msgid ""
+"It will present a summary of your Modoboa server's status and\n"
+"      some useful information about the product."
+msgstr ""
+"Esittää yhteenvedon Modoboa-palvelimesi tilasta sekä\n"
+"      hyödyllisiä tietoja tuotteesta."
+
+#: src/components/user/ForwardForm.vue:6
+msgid "Keep local copies"
+msgstr "Säilytä paikallisia kopioita"
+
+#: src/components/user/ProfileForm.vue:59
+#: src/components/user/ProfileForm.vue:21
+msgid "Language"
+msgstr "Kieli"
+
+#: src/components/identities/AccountSummary.vue:11
+msgid "Last login date"
+msgstr "Viimeisin kirjautumispäivä"
+
+#: src/components/domains/DomainSummary.vue:11
+msgid "Last modification date"
+msgstr "Viimeisin muutospäivä"
+
+#: src/components/identities/AccountCreationForm.vue:31
+#: src/components/identities/AccountGeneralForm.vue:41
+#: src/components/user/ProfileForm.vue:52
+#: src/components/identities/AccountCreationForm.vue:81
+#: src/components/identities/AccountGeneralForm.vue:25
+#: src/components/user/ProfileForm.vue:15
+msgid "Last name"
+msgstr "Sukunimi"
+
+#: src/components/identities/AccountMailboxForm.vue:8
+msgid "Leave empty for no limit"
+msgstr "Jätä tyhjäksi, jos rajaa ei ole"
+
+#: src/components/logs/AuditTrailList.vue:9
+#: src/components/logs/AuditTrailList.vue:41
+msgid "Level"
+msgstr "Taso"
+
+#: src/components/domains/DomainCreationForm.vue:38
+#: src/components/domains/DomainCreationForm.vue:110
+#: src/components/domains/DomainCreationForm.vue:116
+#: src/components/domains/DomainForm.vue:61
+#: src/components/domains/DomainCreationForm.vue:89
+#: src/components/domains/DomainCreationForm.vue:161
+#: src/components/domains/DomainCreationForm.vue:167
+msgid "Limitations"
+msgstr "Rajoitukset"
+
+#: src/components/logs/AuditTrailList.vue:10
+#: src/components/logs/AuditTrailList.vue:42
+msgid "Logger"
+msgstr "Lokikirja"
+
+#: src/components/layout/Navbar.vue:133 src/components/layout/Topbar.vue:6
+#: src/components/layout/Navbar.vue:248 src/components/layout/Topbar.vue:53
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
+#: src/components/layout/Navbar.vue:69 src/components/layout/Navbar.vue:184
+msgid "Logs"
+msgstr "Lokit"
+
+#: src/components/alarms/AlarmList.vue:10
+#: src/components/identities/AccountCreationForm.vue:46
+#: src/components/identities/AccountCreationForm.vue:89
+#: src/components/identities/AccountForm.vue:56
+#: src/components/identities/AccountCreationForm.vue:96
+#: src/components/identities/AccountCreationForm.vue:139
+#: src/components/alarms/AlarmList.vue:50
+msgid "Mailbox"
+msgstr "Postilaatikko"
+
+#: src/components/domains/DomainSummary.vue:27
+msgid "Mailboxes"
+msgstr "Postilaatikot"
+
+#: src/components/alarms/AlarmList.vue:11
+#: src/components/logs/AuditTrailList.vue:11
+#: src/components/alarms/AlarmList.vue:51
+#: src/components/logs/AuditTrailList.vue:43
+msgid "Message"
+msgstr "Viesti"
+
+#: src/views/logs/Messages.vue:3
+msgid "Message history"
+msgstr "Viestien historia"
+
+#: src/components/domains/DomainCreationForm.vue:42
+#: src/components/domains/DomainLimitationsForm.vue:9
+#: src/components/identities/AccountCreationForm.vue:56
+#: src/components/identities/AccountCreationForm.vue:106
+#: src/components/domains/DomainCreationForm.vue:93
+msgid "Message sending limit"
+msgstr "Viestien lähetysraja"
+
+#: src/components/domains/DomainSummary.vue:24
+msgid "messages"
+msgstr "viestit"
+
+#: src/components/layout/Navbar.vue:78 src/components/layout/Navbar.vue:193
+msgid "Messages"
+msgstr "Viestit"
+
+#: src/components/identities/AliasSummary.vue:11
+msgid "Modified"
+msgstr "Muokattu"
+
+#: src/components/tools/CreationSummary.vue:5
+msgid "Modify"
+msgstr "Muokkaa"
+
+#: src/components/tools/TimeSerieChart.vue:53
+#: src/components/tools/TimeSerieChart.vue:111
+msgid "Month"
+msgstr "Kuukausi"
+
+#: src/components/domains/DNSDetail.vue:9
+msgid "MX records"
+msgstr "MX-tietueet"
+
+#: src/components/domains/AdministratorList.vue:19
+#: src/components/domains/DNSDetail.vue:18
+#: src/components/domains/DomainAliasForm.vue:40
+#: src/components/domains/DomainCreationForm.vue:25
+#: src/components/domains/DomainList.vue:24
+#: src/components/domains/DomainOptionsForm.vue:4
+#: src/components/identities/IdentityList.vue:16
+#: src/components/identities/IdentityList.vue:95
+#: src/components/domains/DNSDetail.vue:176
+#: src/components/domains/DomainAliasForm.vue:13
+#: src/components/domains/DomainCreationForm.vue:76
+#: src/components/domains/AdministratorList.vue:87
+#: src/components/domains/DomainList.vue:166
+msgid "Name"
+msgstr "Nimi"
+
+#: src/components/domains/DomainOptionsForm.vue:4
+msgid "Name of the administrator"
+msgstr "Ylläpitäjän nimi"
+
+#: src/components/domains/DomainForm.vue:14
+msgid "Name:"
+msgstr "Nimi:"
+
+#: src/components/identities/AccountSummary.vue:13
+msgid "Never logged-in"
+msgstr "Ei koskaan kirjautunut sisään"
+
+#: src/views/domains/Domains.vue:15 src/views/domains/Domains.vue:3
+#: src/views/identities/Identities.vue:15 src/views/identities/Identities.vue:3
+msgid "New"
+msgstr "Uusi"
+
+#: src/components/identities/AccountCreationForm.vue:1
+msgid "New account"
+msgstr "Uusi tili"
+
+#: src/components/identities/AliasCreationForm.vue:1
+msgid "New alias"
+msgstr "Uusi alias"
+
+#: src/components/domains/DomainCreationForm.vue:1
+msgid "New domain"
+msgstr "Uusi verkkotunnus"
+
+#: src/components/user/RecoveryCodesResetDialog.vue:3
+msgid "New recovery codes"
+msgstr "Uudet palautuskoodit"
+
+#: src/components/tools/CreationForm.vue:27
+msgid "Next"
+msgstr "Seuraava"
+
+#: src/components/domains/DNSDetail.vue:35
+#: src/components/domains/DomainList.vue:61
+#: src/components/identities/IdentityList.vue:37
+#: src/components/identities/IdentityList.vue:58
+#: src/components/tools/CreationForm.vue:30
+#: src/components/tools/CreationForm.vue:103
+#: src/components/identities/IdentityList.vue:116
+#: src/components/identities/IdentityList.vue:137
+#: src/components/domains/DNSDetail.vue:193
+#: src/components/domains/DomainList.vue:203
+msgid "No"
+msgstr "Ei"
+
+#: src/components/identities/AccountSenderAddresses.vue:6
+msgid "No sender address defined for this account"
+msgstr "Tälle tilille ei ole määritelty lähettäjän osoitetta"
+
+#: src/components/domains/DomainForm.vue:74
+msgid "No sending limit"
+msgstr "Ei lähetysrajaa"
+
+#: src/components/domains/DNSDetail.vue:97
+#: src/components/domains/DNSDetail.vue:61
+msgid "Not generated"
+msgstr "Ei luotu"
+
+#: src/components/domains/DomainLimitationsForm.vue:9
+msgid "Number of messages this domain can send per day. Leave empty for no limit."
+msgstr "Viestien määrä, jonka tämä verkkotunnus voi lähettää päivässä. Jätä tyhjäksi, jos et halua rajoitusta."
+
+#: src/components/identities/AccountMailboxForm.vue:8
+msgid "Number of messages this mailbox can send per day. Leave empty for no limit."
+msgstr "Viestien määrä, jonka tämä postilaatikko voi lähettää päivässä. Jätä tyhjäksi, jos et halua rajoitusta."
+
+#: src/components/layout/ConfirmDialog.vue:15
+#: src/components/layout/ConfirmDialog.vue:54
+msgid "OK"
+msgstr "OK"
+
+#: src/views/alarms/Alarms.vue:3
+msgid "Opened alarms"
+msgstr "Avatut hälytykset"
+
+#: src/components/domains/DomainCreationForm.vue:52
+#: src/components/domains/DomainCreationForm.vue:111
+#: src/components/domains/DomainCreationForm.vue:103
+#: src/components/domains/DomainCreationForm.vue:162
+msgid "Options"
+msgstr "Vaihtoehdot"
+
+#: src/components/parameters/ParametersForm.vue:60
+#: src/components/parameters/ParametersForm.vue:137
+msgid "Parameters updated"
+msgstr "Parametrit päivitetty"
+
+#: src/components/identities/AccountPasswordForm.vue:88
+#: src/components/user/ProfileForm.vue:21 src/views/Login.vue:13
+#: src/components/identities/AccountPasswordForm.vue:42
+msgid "Password"
+msgstr "Salasana"
+
+#: src/components/domains/DomainCreationForm.vue:127
+#: src/components/identities/AccountCreationForm.vue:101
+#: src/components/identities/AccountPasswordForm.vue:32
+#: src/components/identities/AccountCreationForm.vue:151
+#: src/components/identities/AccountPasswordForm.vue:103
+#: src/components/domains/DomainCreationForm.vue:178
+msgid "Password copied to clipboard"
+msgstr "Salasana kopioitu leikepöydälle"
+
+#: src/components/user/ProfileForm.vue:42
+#: src/components/user/ProfileForm.vue:112
+msgid "Password updated"
+msgstr "Salasana päivitetty"
+
+#: src/components/domains/DNSDetail.vue:14
+#: src/components/domains/DNSDetail.vue:31
+#: src/components/domains/DNSDetail.vue:4
+#: src/components/domains/DNSStatusChip.vue:9
+#: src/components/domains/DNSStatusChip.vue:16
+msgid "Pending"
+msgstr "Odottaa"
+
+#: src/components/tools/TimeSerieChart.vue:9
+#: src/components/tools/TimeSerieChart.vue:3
+msgid "Period"
+msgstr "Jakso"
+
+#: src/components/identities/AccountSummary.vue:28
+#: src/components/user/ProfileForm.vue:12
+#: src/components/user/ProfileForm.vue:69
+#: src/components/user/ProfileForm.vue:30
+msgid "Phone number"
+msgstr "Puhelinnumero"
+
+#: src/components/user/TwoFactorAuthForm.vue:20
+#: src/components/user/TwoFactorAuthForm.vue:13
+msgid "Pin code"
+msgstr "Pin-koodi"
+
+#: src/components/domains/DNSStatusChip.vue:12
+#: src/components/domains/DNSStatusChip.vue:19
+msgid "Problem"
+msgstr "Ongelma"
+
+#: src/views/user/APISetup.vue:47 src/views/user/APISetup.vue:88
+msgid "Proceed"
+msgstr "Jatka"
+
+#: src/components/layout/Navbar.vue:100 src/components/layout/Navbar.vue:127
+#: src/views/user/Profile.vue:3 src/components/layout/Navbar.vue:215
+#: src/components/layout/Navbar.vue:242
+msgid "Profile"
+msgstr "Profiili"
+
+#: src/components/user/ProfileForm.vue:33
+#: src/components/user/ProfileForm.vue:103
+msgid "Profile updated"
+msgstr "Profiili päivitetty"
+
+#: src/components/tools/ImportForm.vue:7
+msgid "Provide a CSV file where lines respect one of the following formats:"
+msgstr "Toimita CSV-tiedosto, jonka rivit ovat jossakin seuraavista muodoista:"
+
+#: src/components/logs/MessageList.vue:8 src/components/logs/MessageList.vue:41
+msgid "Queue ID"
+msgstr "Jonon ID"
+
+#: src/components/domains/DomainCreationForm.vue:40
+#: src/components/domains/DomainLimitationsForm.vue:3
+#: src/components/domains/DomainList.vue:28
+#: src/components/domains/DomainSummary.vue:15
+#: src/components/identities/AccountCreationForm.vue:50
+#: src/components/identities/AccountMailboxForm.vue:14
+#: src/components/identities/AccountCreationForm.vue:100
+#: src/components/identities/AccountMailboxForm.vue:3
+#: src/components/domains/DomainCreationForm.vue:91
+#: src/components/domains/DomainList.vue:170
+msgid "Quota"
+msgstr "Kiintiö"
+
+#: src/components/identities/AccountMailboxForm.vue:5
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Tämän postilaatikon kiintiö, joka voidaan ilmaista kilotavuina, megatavuina (oletus) tai gigatavuina. Määritä oma arvo tai käytä toimialueen oletusarvoa. Jätä tyhjäksi, jos haluat määrittää rajoittamattoman arvon (ei sallittu toimialueen ylläpitäjille)."
+
+#: src/components/domains/DomainLimitationsForm.vue:3
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Postilaatikoiden kesken jaettu kiintiö. Voidaan ilmaista kilotavuina (KB), megatavuina (MB) (oletus) tai gigatavuina (GB). Arvo 0 tarkoittaa, ettei kiintiötä ole."
+
+#: src/components/domains/DomainForm.vue:68
+#: src/components/identities/AccountForm.vue:64
+#: src/components/identities/AccountForm.vue:67
+#: src/components/identities/AccountForm.vue:2
+#: src/components/identities/AccountForm.vue:5
+msgid "Quota:"
+msgstr "Kiintiö:"
+
+#: src/components/identities/AliasCreationForm.vue:19
+#: src/components/identities/AliasGeneralForm.vue:2
+#: src/components/identities/AliasCreationForm.vue:39
+msgid "Random address"
+msgstr "Satunnainen osoite"
+
+#: src/components/domains/DomainCreationForm.vue:58
+#: src/components/domains/DomainOptionsForm.vue:6
+#: src/components/identities/AccountCreationForm.vue:34
+#: src/components/identities/AccountPasswordForm.vue:9
+#: src/components/identities/AccountCreationForm.vue:84
+#: src/components/domains/DomainCreationForm.vue:109
+msgid "Random password"
+msgstr "Satunnainen salasana"
+
+#: src/components/domains/DomainDKIMKey.vue:8
+msgid "Raw format. Click to copy"
+msgstr "Raakamuoto. Kopioi napsauttamalla"
+
+#: src/components/user/ForwardForm.vue:4
+msgid "Recipient(s)"
+msgstr "Vastaanottaja(t)"
+
+#: src/components/identities/AliasCreationForm.vue:35
+#: src/components/identities/AliasCreationForm.vue:37
+#: src/components/identities/AliasCreationForm.vue:53
+#: src/components/identities/AliasForm.vue:34
+#: src/components/identities/AliasRecipients.vue:3
+#: src/components/identities/AliasCreationForm.vue:55
+#: src/components/identities/AliasCreationForm.vue:57
+#: src/components/identities/AliasCreationForm.vue:73
+msgid "Recipients"
+msgstr "Vastaanottajat"
+
+#: src/components/user/TwoFactorAuthForm.vue:27
+#: src/components/user/TwoFactorAuthForm.vue:20
+msgid "Register"
+msgstr "Rekisteröidy"
+
+#: src/components/tools/TimeSerieChart.vue:22
+msgid "Relative time ranges"
+msgstr "Suhteelliset aikavälialueet"
+
+#: src/components/domains/DomainList.vue:26
+#: src/components/domains/DomainList.vue:10
+msgid "Relay"
+msgstr "Välitysrele"
+
+#: src/views/Login.vue:17
+msgid "Remember me"
+msgstr "Muista minut"
+
+#: src/components/identities/AccountSenderAddresses.vue:18
+#: src/components/identities/AccountSenderAddresses.vue:1
+msgid "Remove this address"
+msgstr "Poista tämä osoite"
+
+#: src/components/domains/AdministratorList.vue:24
+#: src/components/domains/AdministratorList.vue:1
+msgid "Remove this administrator"
+msgstr "Poista tämä ylläpitäjä"
+
+#: src/components/identities/AccountRoleForm.vue:27
+#: src/components/identities/AccountRoleForm.vue:57
+msgid "Reseller"
+msgstr "Jälleenmyyjä"
+
+#: src/components/user/TwoFactorAuthForm.vue:60
+#: src/components/user/TwoFactorAuthForm.vue:8
+msgid "Reset recovery codes"
+msgstr "Palautuskoodien nollaus"
+
+#: src/components/domains/DomainForm.vue:111
+#: src/components/identities/AccountForm.vue:83
+msgid "Resources"
+msgstr "Resurssit"
+
+#: src/components/tools/Resources.vue:3
+msgid "Resources usage"
+msgstr "Resurssien käyttö"
+
+#: src/components/identities/AccountCreationForm.vue:21
+#: src/components/identities/AccountCreationForm.vue:23
+#: src/components/identities/AccountCreationForm.vue:81
+#: src/components/identities/AccountForm.vue:7
+#: src/components/identities/AccountSummary.vue:20
+#: src/components/identities/AccountCreationForm.vue:71
+#: src/components/identities/AccountCreationForm.vue:73
+#: src/components/identities/AccountCreationForm.vue:131
+msgid "Role"
+msgstr "Rooli"
+
+#: src/components/domains/DomainForm.vue:125
+#: src/components/identities/AccountForm.vue:97
+#: src/components/identities/AliasForm.vue:58
+msgid "Save"
+msgstr "Tallenna"
+
+#: src/components/logs/AuditTrailList.vue:4
+#: src/components/logs/MessageList.vue:4
+msgid "Search"
+msgstr "Hae"
+
+#: src/components/identities/AccountSummary.vue:24
+#: src/components/user/ProfileForm.vue:77
+#: src/components/user/ProfileForm.vue:37
+msgid "Secondary email"
+msgstr "Toissijainen sähköpostiosoite"
+
+#: src/components/layout/Navbar.vue:106 src/views/user/Security.vue:3
+#: src/components/layout/Navbar.vue:221
+msgid "Security"
+msgstr "Turvallisuus"
+
+#: src/components/domains/AdministratorList.vue:12
+#: src/components/domains/AdministratorList.vue:2
+msgid "Select an account"
+msgstr "Valitse tili"
+
+#: src/components/tools/ImportForm.vue:14
+msgid "Select file"
+msgstr "Valitse tiedosto"
+
+#: src/components/identities/AccountSenderAddresses.vue:38
+#: src/components/identities/AccountSenderAddresses.vue:89
+msgid "Sender address added"
+msgstr "Lähettäjän osoite lisätty"
+
+#: src/components/identities/AccountSenderAddresses.vue:44
+#: src/components/identities/AccountSenderAddresses.vue:95
+msgid "Sender address deleted"
+msgstr "Lähettäjän osoite poistettu"
+
+#: src/components/identities/AccountSenderAddresses.vue:3
+msgid "Sender addresses"
+msgstr "Lähettäjän osoitteet"
+
+#: src/components/domains/DomainList.vue:27
+#: src/components/domains/DomainList.vue:169
+msgid "Sending limit"
+msgstr "Lähetysraja"
+
+#: src/components/domains/DomainForm.vue:71
+msgid "Sending limit:"
+msgstr "Lähetysraja:"
+
+#: src/components/tools/ImportForm.vue:17
+msgid "Separator"
+msgstr "Erotin"
+
+#: src/components/domains/DomainCreationForm.vue:79
+#: src/components/domains/DomainTransportForm.vue:3
+#: src/components/domains/DomainCreationForm.vue:130
+msgid "Service"
+msgstr "Palvelu"
+
+#: src/components/domains/DomainForm.vue:96
+msgid "Service:"
+msgstr "Palvelu:"
+
+#: src/components/layout/Navbar.vue:86 src/components/layout/Navbar.vue:201
+msgid "Settings"
+msgstr "Asetukset"
+
+#: src/components/parameters/ParametersForm.vue:20
+msgid "Settings: thislabel"
+msgstr "Asetukset: tämä etiketti"
+
+#: src/components/domains/DNSDetail.vue:91
+#: src/components/domains/DNSDetail.vue:55
+msgid "Show key"
+msgstr "Näytä avain"
+
+#: src/components/identities/AccountRoleForm.vue:32
+#: src/components/identities/AccountRoleForm.vue:62
+msgid "Simple user"
+msgstr "Yksinkertainen käyttäjä"
+
+#: src/components/identities/AccountSenderAddresses.vue:9
+#: src/components/identities/AccountSenderAddresses.vue:2
+msgid "Specify an email address"
+msgstr "Määritä sähköpostiosoite"
+
+#: src/components/domains/DNSDetail.vue:63
+#: src/components/domains/DNSDetail.vue:27
+msgid "SPF record found"
+msgstr "SPF-tietue löydetty"
+
+#: src/components/domains/DNSDetail.vue:66
+#: src/components/domains/DNSDetail.vue:30
+msgid "SPF record not found"
+msgstr "SPF-tietuetta ei löydy"
+
+#: src/components/identities/AccountAliasForm.vue:3
+#: src/components/identities/AliasRecipientForm.vue:3
+msgid "Start typing a name here..."
+msgstr "Aloita nimen kirjoittaminen tästä..."
+
+#: src/components/logs/MessageList.vue:10
+#: src/components/logs/MessageList.vue:43
+msgid "Status"
+msgstr "Tila"
+
+#: src/components/tools/CreationForm.vue:9
+#: src/components/tools/CreationForm.vue:32
+msgid "Summary"
+msgstr "Yhteenveto"
+
+#: src/components/identities/AccountRoleForm.vue:37
+#: src/components/identities/AccountRoleForm.vue:67
+msgid "Super administrator"
+msgstr "Pääylläpitäjä"
+
+#: src/components/identities/IdentityList.vue:18
+#: src/components/identities/IdentityList.vue:97
+msgid "Tags"
+msgstr "Tunnisteet"
+
+#: src/components/tools/ImportForm.vue:9
+msgid "The first element of each line is mandatory and must be equal to one of the previous values."
+msgstr "Kunkin rivin ensimmäinen elementti on pakollinen, ja sen on oltava yhtä suuri kuin jokin edellisistä arvoista."
+
+#: src/components/user/TwoFactorAuthForm.vue:39
+#: src/components/user/TwoFactorAuthForm.vue:7
+msgid ""
+"The following recovery codes can be used one time each to\n"
+"            let you regain access to your account, in case you lose your\n"
+"            phone for example. Make sure to save them in a safe place,\n"
+"            otherwise you won't be able to access your account anymore."
+msgstr ""
+"Seuraavia palautuskoodeja voidaan käyttää kerran kutakin seuraavista syistä\n"
+"            jotta voit saada tilisi uudelleen käyttöön, jos menetät tilisi\n"
+"            esimerkiksi puhelimesi. Muista tallentaa ne turvalliseen paikkaan,\n"
+"            muuten et pääse enää tilillesi."
+
+#: src/components/user/RecoveryCodesResetDialog.vue:7
+msgid ""
+"The following recovery codes can be used one time each to let\n"
+"        you regain access to your account, in case you lose your phone\n"
+"        for example. Make sure to save them in a safe place, otherwise\n"
+"        you won't be able to access your account anymore."
+msgstr ""
+"Seuraavia palautuskoodeja voidaan käyttää kerran kutakin, jotta\n"
+"        saada tilisi takaisin, jos kadotat puhelimesi\n"
+"        esimerkiksi. Varmista, että tallennat ne turvalliseen paikkaan, muutoin\n"
+"        et pääse enää käyttämään tiliäsi."
+
+#: src/views/Dashboard.vue:6
+msgid "This page is still under construction."
+msgstr "Tämä sivu on vielä rakenteilla."
+
+#: src/components/logs/MessageList.vue:11
+#: src/components/tools/TimeSerieChart.vue:18
+#: src/components/logs/MessageList.vue:44
+msgid "To"
+msgstr "Vastaanottaja"
+
+#: src/components/domains/DomainCreationForm.vue:77
+#: src/components/domains/DomainCreationForm.vue:117
+#: src/components/domains/DomainForm.vue:89
+#: src/components/domains/DomainCreationForm.vue:128
+#: src/components/domains/DomainCreationForm.vue:168
+msgid "Transport"
+msgstr "Siirto"
+
+#: src/components/user/TwoFactorAuthForm.vue:4
+msgid "Two factor authentication"
+msgstr "Kaksivaiheinent tunnistus"
+
+#: src/components/user/TwoFactorAuthForm.vue:64
+#: src/components/user/TwoFactorAuthForm.vue:1
+msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
+msgstr "Kaksivaiheista tunnistusta (2FA) ei ole vielä aktivoitu tilillesi. Tämän ominaisuuden käyttöönotto lisää tilisi turvallisuutta."
+
+#: src/views/TwoFA.vue:11
+msgid "Two-factor authentication code"
+msgstr "Kaksivaiheisen tunnistuksen koodi"
+
+#: src/components/domains/DomainCreationForm.vue:26
+#: src/components/domains/DomainGeneralForm.vue:6
+#: src/components/domains/DomainCreationForm.vue:77
+msgid "Type"
+msgstr "Tyyppi"
+
+#: src/components/domains/DomainForm.vue:17
+msgid "Type:"
+msgstr "Tyyppi:"
+
+#: src/components/domains/DNSStatusChip.vue:17
+#: src/components/domains/DNSStatusChip.vue:24
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: src/components/identities/AccountMailboxForm.vue:30
+#: src/components/identities/AccountMailboxForm.vue:69
+msgid "unlimited"
+msgstr "rajoittamaton"
+
+#: src/components/domains/DomainAliasForm.vue:17
+#: src/components/user/ForwardForm.vue:10
+#: src/components/domains/DomainAliasForm.vue:86
+msgid "Update"
+msgstr "Päivitä"
+
+#: src/components/user/ProfileForm.vue:25
+msgid "Update Password"
+msgstr "Vaihda salasana"
+
+#: src/components/user/ProfileForm.vue:16
+msgid "Update settings"
+msgstr "Päivitä asetukset"
+
+#: src/components/domains/DNSDetail.vue:20
+#: src/components/domains/DNSDetail.vue:178
+msgid "Updated"
+msgstr "Päivitetty"
+
+#: src/components/identities/AccountMailboxForm.vue:27
+#: src/components/identities/AccountMailboxForm.vue:66
+msgid "Use domain default value"
+msgstr "Käytä verkkotunnuksen oletusarvoa"
+
+#: src/components/domains/AdministratorList.vue:18
+#: src/components/identities/AccountCreationForm.vue:29
+#: src/components/identities/AccountGeneralForm.vue:19 src/views/Login.vue:9
+#: src/components/identities/AccountCreationForm.vue:79
+#: src/components/identities/AccountGeneralForm.vue:7
+#: src/components/domains/AdministratorList.vue:86
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: src/components/identities/AccountForm.vue:36
+msgid "Username:"
+msgstr "Käyttäjätunnus:"
+
+#: src/components/domains/DNSStatusChip.vue:15
+#: src/components/domains/DNSStatusChip.vue:22
+msgid "Valid"
+msgstr "Kelvollinen"
+
+#: src/views/TwoFA.vue:6
+msgid "Verification"
+msgstr "Vahvistus"
+
+#: src/views/TwoFA.vue:19
+msgid "Verify code"
+msgstr "Tarkista koodi"
+
+#: src/components/domains/DNSDetail.vue:29
+#: src/components/domains/DomainList.vue:54
+#: src/components/identities/IdentityList.vue:30
+#: src/components/identities/IdentityList.vue:51
+#: src/components/tools/CreationForm.vue:25 src/views/user/APISetup.vue:40
+#: src/components/tools/CreationForm.vue:98
+#: src/components/identities/IdentityList.vue:109
+#: src/components/identities/IdentityList.vue:130
+#: src/components/domains/DNSDetail.vue:187
+#: src/components/domains/DomainList.vue:196 src/views/user/APISetup.vue:81
+msgid "Warning"
+msgstr "Varoitus"
+
+#: src/components/tools/TimeSerieChart.vue:52
+#: src/components/tools/TimeSerieChart.vue:110
+msgid "Week"
+msgstr "Viikko"
+
+#: src/views/Dashboard.vue:3
+msgid "Welcome to Modoboa"
+msgstr "Tervetuloa Modoboaan"
+
+#: src/components/domains/DomainOptionsForm.vue:7
+msgid "With a mailbox"
+msgstr "Postilaatikolla"
+
+#: src/components/domains/DomainCreationForm.vue:63
+#: src/components/domains/DomainCreationForm.vue:114
+msgid "With mailbox"
+msgstr "Postilaatikolla"
+
+#: src/components/tools/TimeSerieChart.vue:54
+#: src/components/tools/TimeSerieChart.vue:112
+msgid "Year"
+msgstr "Vuosi"
+
+#: src/components/domains/DNSDetail.vue:36
+#: src/components/domains/DomainList.vue:62
+#: src/components/identities/IdentityList.vue:38
+#: src/components/identities/IdentityList.vue:59
+#: src/components/tools/CreationForm.vue:29
+#: src/components/tools/CreationForm.vue:102
+#: src/components/identities/IdentityList.vue:117
+#: src/components/identities/IdentityList.vue:138
+#: src/components/domains/DNSDetail.vue:194
+#: src/components/domains/DomainList.vue:204
+msgid "Yes"
+msgstr "Kyllä"
+
+#: src/views/user/APISetup.vue:41 src/views/user/APISetup.vue:83
+msgid "You are about to delete your API access token"
+msgstr "Olet poistamassa API-pääsytunnistetta"
+
+#: src/components/tools/ImportForm.vue:10
+msgid "You can use a different character as separator."
+msgstr "Voit käyttää erottimena eri merkkiä."
+
+#: src/views/user/APISetup.vue:8
+msgid "Your API token has not been generated yet."
+msgstr "API-pääsytunnistetta ei ole vielä luotu."
+
+#: src/views/user/APISetup.vue:18
+msgid "Your API token is:"
+msgstr "API-pääsytunnisteesi on:"
+
+#: src/filters/index.js:7
+msgid "yes"
+msgstr "kyllä"
+
+#: src/filters/index.js:7
+msgid "no"
+msgstr "ei"
+
+#: src/components/parameters/ParametersForm.vue:97
+msgid "Settings: "
+msgstr "Asetukset: "
+
+#: src/plugins/vee-validate.js:12
+msgid "Passwords mismatch"
+msgstr "Salasanat eivät täsmää"
+
+#: src/plugins/vee-validate.js:16
+msgid "This field must be a valid number"
+msgstr "Tämän kentän on oltava numero"
+
+#: src/plugins/vee-validate.js:20
+msgid "This field is required"
+msgstr "Tämä kenttä on pakollinen"
+
+#: src/plugins/vee-validate.js:33
+msgid "Invalid password"
+msgstr "Virheellinen salasana"
