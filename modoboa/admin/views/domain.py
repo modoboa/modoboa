@@ -8,7 +8,7 @@ from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
     login_required, permission_required, user_passes_test
 )
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Value
 from django.db.models.functions import Coalesce
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -148,8 +148,9 @@ def list_quotas(request):
         domains = domains.order_by("{}{}".format(sort_dir, sort_order))
     elif sort_order == "allocated_quota":
         domains = (
-            domains.annotate(
-                allocated_quota=Coalesce(Sum("mailbox__quota"), 0))
+            domains
+            .annotate(allocated_quota=Coalesce(
+                Sum("mailbox__quota"), Value(0)))
             .order_by("{}{}".format(sort_dir, sort_order))
         )
     page = get_listing_page(domains, request.GET.get("page", 1))
