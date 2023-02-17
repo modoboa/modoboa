@@ -4,6 +4,7 @@ import logging
 
 import oath
 
+from django.conf import settings
 from django.http import (
     HttpResponse, HttpResponseRedirect, Http404, JsonResponse)
 from django.template.loader import render_to_string
@@ -83,8 +84,6 @@ def dologin(request):
                     request.session.set_expiry(0)
 
                 translation.activate(request.user.language)
-                request.session[translation.LANGUAGE_SESSION_KEY] = (
-                    request.user.language)
 
                 logger.info(
                     _("User '%s' successfully logged in") % user.username
@@ -93,7 +92,10 @@ def dologin(request):
                     sender="dologin",
                     username=form.cleaned_data["username"],
                     password=form.cleaned_data["password"])
-                return HttpResponseRedirect(find_nextlocation(request, user))
+                response = HttpResponseRedirect(find_nextlocation(request, user))
+                response.set_cookie(settings.LANGUAGE_COOKIE_NAME, request.user.language)
+                return response
+
             error = _(
                 "Your username and password didn't match. Please try again.")
             logger.warning(
