@@ -89,6 +89,7 @@ MODOBOA_APPS = (
     'modoboa.dnstools',
     'modoboa.policyd',
     'modoboa.maillog',
+    'modoboa.pdfcredentials',
     # Modoboa extensions here.
 )
 
