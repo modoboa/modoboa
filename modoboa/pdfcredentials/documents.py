@@ -62,7 +62,9 @@ def credentials(account, password):
     buff = BytesIO()
     doc = SimpleDocTemplate(buff, pagesize=A4)
     story = []
-    story.append(resized_image(lib.get_document_logo(), 8*cm))
+    logo = lib.get_document_logo()
+    if logo is not None:
+        story.append(resized_image(logo, 8*cm))
     story.append(Spacer(1, 1 * cm))
     story.append(Paragraph(conf["title"], styles["Title"]))
     story.append(Spacer(1, 1 * cm))
