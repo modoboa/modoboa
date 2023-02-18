@@ -540,7 +540,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             instance.set_password(password)
         if mailbox_data:
             creator = self.context["request"].user
-            if hasattr(instance, "mailbox") and "mailbox" in validated_data:
+            if hasattr(instance, "mailbox"):
                 if "username" in validated_data:
                     mailbox_data["email"] = validated_data["username"]
                     instance.email = validated_data["username"]
