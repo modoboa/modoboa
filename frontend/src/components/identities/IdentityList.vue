@@ -8,6 +8,7 @@
         </v-btn>
       </template>
       <v-list dense>
+        <menu-items :items="getActionMenuItems()"/>
       </v-list>
     </v-menu>
     <v-spacer></v-spacer>
@@ -105,51 +106,91 @@ export default {
     }
   },
   methods: {
-    async deleteAlias (alias) {
-      const confirm = await this.$refs.confirmAlias.open(
-        this.$gettext('Warning'),
-        this.$gettext(
-          'Do you really want to delete the alias %{ alias }?',
-          { alias: alias.identity }
-        ),
-        {
-          color: 'error',
-          cancelLabel: this.$gettext('No'),
-          agreeLabel: this.$gettext('Yes')
+    sleep (milliseconds) {
+      return new Promise((resolve) => setTimeout(resolve, milliseconds))
+    },
+    async deleteAlias (alias, confirmDialog = true) {
+      if (confirmDialog) {
+        const confirm = await this.$refs.confirmAlias.open(
+          this.$gettext('Warning'),
+          this.$gettext(
+            'Do you really want to delete the alias %{ alias }?',
+            { alias: alias.identity }
+          ),
+          {
+            color: 'error',
+            cancelLabel: this.$gettext('No'),
+            agreeLabel: this.$gettext('Yes')
+          }
+        )
+        if (!confirm) {
+          return
         }
-      )
-      if (!confirm) {
-        return
       }
       aliases.delete(alias.pk).then(() => {
-        bus.$emit('notification', { msg: this.$gettext('Alias deleted') })
-        this.fetchIdentities()
+        if (confirmDialog) {
+          this.fetchIdentities()
+          bus.$emit('notification', { msg: this.$gettext('Alias deleted') })
+        }
       })
     },
-    async deleteAccount (account) {
-      const confirm = await this.$refs.confirmAccount.open(
-        this.$gettext('Warning'),
-        this.$gettextInterpolate(
-          'Do you really want to delete the account %{ account }?',
-          { account: account.identity }
-        ),
-        {
-          color: 'error',
-          cancelLabel: this.$gettext('No'),
-          agreeLabel: this.$gettext('Yes')
+    async deleteAccount (account, confirmDialog = true) {
+      if (confirmDialog) {
+        const confirm = await this.$refs.confirmAccount.open(
+          this.$gettext('Warning'),
+          this.$gettextInterpolate(
+            'Do you really want to delete the account %{ account }?',
+            { account: account.identity }
+          ),
+          {
+            color: 'error',
+            cancelLabel: this.$gettext('No'),
+            agreeLabel: this.$gettext('Yes')
+          }
+        )
+        if (!confirm) {
+          return
         }
-      )
-      if (!confirm) {
-        return
       }
       const data = { keepdir: this.keepAccountFolder }
       accounts.delete(account.pk, data).then(() => {
-        bus.$emit('notification', { msg: this.$gettext('Account deleted') })
         this.keepAccountFolder = false
-        this.fetchIdentities()
+        if (confirmDialog) {
+          bus.$emit('notification', { msg: this.$gettext('Account deleted') })
+          this.fetchIdentities()
+        }
       }).catch(error => {
         bus.$emit('notification', { msg: error.response.data, type: 'error' })
       })
+    },
+    async deleteIdentities () {
+      if (this.selected.length === 0) {
+        return
+      }
+      const confirm = await this.$refs.confirmAlias.open(
+        this.$gettext('Warning'),
+        this.$gettext(
+          'Do you really want to delete the selected identities?'
+        ),
+        {
+          color: 'error',
+          cancelLabel: this.$gettext('No'),
+          agreeLabel: this.$gettext('Yes')
+        }
+      )
+      if (!confirm) {
+        return
+      }
+      for (const item of this.selected) {
+        if (item.type === 'account') {
+          this.deleteAccount(item, false)
+        } else if (item.type === 'alias') {
+          this.deleteAlias(item, false)
+        }
+        await this.sleep(100)
+      }
+      bus.$emit('notification', { msg: this.$gettext('Identities deleted') })
+      this.fetchIdentities()
     },
     editAccount (account) {
       this.$router.push({ name: 'AccountEdit', params: { id: account.pk } })
@@ -182,6 +223,11 @@ export default {
         result.push({ label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editAlias })
         result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlias, color: 'red' })
       }
+      return result
+    },
+    getActionMenuItems () {
+      const result = []
+      result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteIdentities, color: 'red' })
       return result
     }
   },
