@@ -1,6 +1,5 @@
 """API v2 tests."""
 
-import tempfile
 import shutil
 import os
 
@@ -19,12 +18,6 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         """Create test data."""
         super().setUpTestData()
         factories.populate_database()
-
-    def setUp(self):
-        """Create temp. directory to store files."""
-        super().setUp()
-        self.workdir = tempfile.mkdtemp()
-        self.set_global_parameter("storage_dir", self.workdir)
 
     def tearDown(self):
         """Reset test env."""
