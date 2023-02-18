@@ -54,16 +54,17 @@
       </v-chip>
     </template>
     <template v-slot:item.actions="{ item }">
-      <div class="text-right">
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
-          </template>
-          <menu-items :items="getMenuItems(item)" :object="item" />
-        </v-menu>
-      </div>
+      <template v-if="item.possible_actions.length !== 0">
+        <v-icon size="2.5em" color="blue">mdi-circle-small</v-icon>
+      </template>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </template>
+        <menu-items :items="getMenuItems(item)" :object="item" />
+      </v-menu>
     </template>
   </v-data-table>
   <confirm-dialog ref="confirmAlias" />
