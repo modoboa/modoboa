@@ -201,6 +201,7 @@ export default {
     fetchIdentities () {
       identities.getAll().then(resp => {
         this.identities = resp.data
+        this.selected = []
       })
     },
     getMenuItems (item) {
@@ -228,6 +229,7 @@ export default {
     getActionMenuItems () {
       const result = []
       result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteIdentities, color: 'red' })
+      result.push({ label: 'Reload', icon: 'mdi-reload', onClick: this.fetchIdentities })
       return result
     }
   },
