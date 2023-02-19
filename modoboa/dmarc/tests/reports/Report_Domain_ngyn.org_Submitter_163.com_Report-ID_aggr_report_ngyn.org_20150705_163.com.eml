@@ -1,0 +1,67 @@
+Return-Path: <abuse@163.com>
+Delivered-To: <tonio@ngyn.org>
+Received: from mail.koalabs.org
+	by nelson.ngyn.org (Dovecot) with LMTP id IKPdD1ULmlXgLQAABvoInA
+	for <tonio@ngyn.org>; Mon, 06 Jul 2015 07:00:05 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.koalabs.org (Postfix) with ESMTP id 2645EE035B
+	for <postmaster@ngyn.org>; Mon,  6 Jul 2015 07:00:05 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.koalabs.org
+Received: from mail.koalabs.org ([127.0.0.1])
+	by localhost (nelson.ngyn.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP for <postmaster@ngyn.org>;
+	Mon,  6 Jul 2015 07:00:03 +0200 (CEST)
+Received: from m12-181.163.com (m12-181.163.com [220.181.12.181])
+	by mail.koalabs.org (Postfix) with ESMTP
+	for <postmaster@ngyn.org>; Mon,  6 Jul 2015 06:59:54 +0200 (CEST)
+Received: from 163.com (unknown [192.168.201.141])
+	by mfast1 (Coremail) with SMTP id tcCowEAJixEvC5pVHJvvLg--.53754S2;
+	Mon, 06 Jul 2015 12:59:27 +0800 (CST)
+Content-Type: multipart/mixed; boundary="===============2544031943362770105=="
+MIME-Version: 1.0
+From: <abuse@163.com>
+Date: Mon, 06 Jul 2015 12:59:25 +0800
+Subject: Report Domain: ngyn.org Submitter: 163.com Report-ID:
+ aggr_report_ngyn.org_20150705_163.com
+To: postmaster@ngyn.org
+X-CM-TRANSID:tcCowEAJixEvC5pVHJvvLg--.53754S2
+Message-Id:<559A0B30.EBEE1F.29746@m12-181.163.com>
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUnI7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wAa7VASzI0EjI02j7AqF2
+	xKxVCjxxvEa2IrM2AIxVAIcxkEcVAq07x20xvEncxIr21le4C267I2x7xF54xIwI1l5I8C
+	rVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VWrMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvEwIxGrwAKzVAC0xCFj2AI6cx7M4kE6xkIj40Ew7xC0wCjxxvEa2IrMxkIecxE
+	wVCm-wCY0x0Ix7I2Y4AK64vIr41l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8V
+	WrMxCjnVAqn7xvrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
+	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jr0_JrylIxkGc2Ij64vIr4
+	1l6VACY4xI67k04243AbIYCTnIWIevJa73UjIFyTuYvjTRClkVDUUUU
+X-Originating-IP: [192.168.201.141]
+X-CM-SenderInfo: 5dex2vi6rwjhhfrp/
+
+--===============2544031943362770105==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+This is a DMARC aggregate report for domain ngyn.org on 20150705. For more information please mail to abuse@163.com.
+--===============2544031943362770105==
+MIME-Version: 1.0
+Content-Type: application/zip;
+ name="163.com!ngyn.org!1436054400!1436140799.zip"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="163.com!ngyn.org!1436054400!1436140799.zip"
+
+UEsDBBQAAAAIAGxn5kZGEGLBdAEAAJQDAAAqAAAAMTYzLmNvbSFuZ3luLm9yZyExNDM2MDU0NDAw
+ITE0MzYxNDA3OTkueG1sbVNbbsMgEPzvKXICg5M4USSEehOEzdpBsQEBbpXbF4eHadovzOzs7Owu
+JiOA6PnwoB+HA7FgtPVsAc8F93zDAqrtxBRfgLaXUzPohaCCRAIsXM6U96uDz8KJYCQkXSkonybL
+0lVNT9VsUkfcdviKO1aS94QoENwAs1xNqWSAepikou35dMHd+YwxQRHJcVDiFW3P+Hq7BT8qi6Hf
+aqVa3TYxepbDk5m1n6W7QzGiQ1uKZutBKwIxysVDLtQRFD8S6Mz4wrYzQoYqrYAgk+4uAy4jZvC0
+C4RwvCz+ZyeMddA2O7P6u/Tu9GoHYNLQtu2aIz42l3CcguAeydxBr8rTlqD4keFUEL74vIZxiRzY
+ZiCd0U56qVWyXSMVb5vBGF5BIJRxpH7HFCgzqZp8qxn2k1sjUoDycpRgXUm7Axdg2Wj1Qtdm30yN
+J6E/6YSv/h7eo1tnvytWpvaV19L10tMD3xTSNNKltLXvHb2X28hxhwSVP/EHUEsBAhQDFAAAAAgA
+bGfmRkYQYsF0AQAAlAMAACoAAAAAAAAAAAAAAKSBAAAAADE2My5jb20hbmd5bi5vcmchMTQzNjA1
+NDQwMCExNDM2MTQwNzk5LnhtbFBLBQYAAAAAAQABAFgAAAC8AQAAAAA=
+--===============2544031943362770105==--
+

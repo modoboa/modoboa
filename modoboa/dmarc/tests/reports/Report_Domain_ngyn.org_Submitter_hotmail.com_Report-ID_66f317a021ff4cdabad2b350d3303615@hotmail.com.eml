@@ -1,0 +1,59 @@
+Return-Path: <dmarcrep@microsoft.com>
+Delivered-To: <tonio@ngyn.org>
+Received: from mail.koalabs.org
+	by nelson.ngyn.org (Dovecot) with LMTP id mL/aJNE4kFUCCAAABvoInA
+	for <tonio@ngyn.org>; Sun, 28 Jun 2015 20:11:29 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.koalabs.org (Postfix) with ESMTP id 7F4A2E035D
+	for <postmaster@ngyn.org>; Sun, 28 Jun 2015 20:11:29 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.koalabs.org
+Received: from mail.koalabs.org ([127.0.0.1])
+	by localhost (nelson.ngyn.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP for <postmaster@ngyn.org>;
+	Sun, 28 Jun 2015 20:11:28 +0200 (CEST)
+Received: from mail2.koalabs.org (alena.koalabs.org [66.175.223.133])
+	by mail.koalabs.org (Postfix) with ESMTP
+	for <postmaster@ngyn.org>; Sun, 28 Jun 2015 20:11:28 +0200 (CEST)
+Received: from BAY004-OMC4S15.hotmail.com (bay004-omc4s15.hotmail.com [65.54.190.217])
+	by mail2.koalabs.org (Postfix) with ESMTP id 63F8D46F66
+	for <postmaster@ngyn.org>; Sun, 28 Jun 2015 14:11:26 -0400 (EDT)
+Received: from BAY0-DTS-DRS01 ([65.54.190.200]) by BAY004-OMC4S15.hotmail.com with Microsoft SMTPSVC(7.5.7601.23008);
+	 Sun, 28 Jun 2015 11:11:18 -0700
+MIME-Version: 1.0
+From: dmarcrep@microsoft.com
+To: postmaster@ngyn.org
+Date: 28 Jun 2015 11:11:18 -0700
+Subject: =?utf-8?B?UmVwb3J0IERvbWFpbjogbmd5bi5vcmcgU3VibWl0dGVyOiBob3RtYWlsLmNvbSBSZXBvcnQtSUQ6IDw2NmYzMTdhMDIxZmY0Y2RhYmFkMmIzNTBkMzMwMzYxNUBob3RtYWlsLmNvbT4=?=
+Content-Type: multipart/mixed;
+ boundary=--boundary_32281_b52cf564-2a50-4f96-aeb0-ef5f83b05463
+Message-ID: <BAY004-OMC4S15A1cZU00000eb5@BAY004-OMC4S15.hotmail.com>
+X-OriginalArrivalTime: 28 Jun 2015 18:11:18.0588 (UTC) FILETIME=[D4889FC0:01D0B1CD]
+
+
+----boundary_32281_b52cf564-2a50-4f96-aeb0-ef5f83b05463
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+
+
+----boundary_32281_b52cf564-2a50-4f96-aeb0-ef5f83b05463
+Content-Type: application/zip; name=hotmail.com!ngyn.org!1435428000!1435514400.zip
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=hotmail.com!ngyn.org!1435428000!1435514400.zip
+
+UEsDBBQAAgAIAGlZ3EbQIUrLnQEAADsDAAAuAF0AaG90bWFpbC5jb20hbmd5bi5vcmchMTQz
+NTQyODAwMCExNDM1NTE0NDAwLnhtbFNESACMAAAAAAgAiyIcyGNkYGkRYWBgUGCAAB0gZmQE
+M1lF0NhMDAkMLCCegATDf0Z5BkYmiBxIryITdnEFsLgIRBxqlhADphjIfABVVA0AB8Y4kFXG
+OJBVxjiQVYWT226cMBCGX2W198WwwHYrTZxIue4zIGOPWSv4INvk8Gy96CP1FWrjsCGKqt7g
+8W/+mW/G8OfXb7h/1fPhGX1Q1twdm6o+HtBwK5SZ7o5LlN8ux3sKElGMjD9R8Oisj4PGyASL
+jIL102CYRvpTcW+DlfHwaL2rgNxOADVTMxWaeZ78D3p7s+JWAymnW2Yl6Pks2+Y7q0+NlB0X
+bGTiNLZ9Ldq2bs9N/3C1MXuK/cMHiQgHz8yUao44KUObru2706WuayBFATRilfum67Kc90D2
+VvKlSWdnxd8Gt4yzClfMpWwiMNRMb6ZKjaYERQAmnpSmAUgJgAUn121ewVFjDQJxFMIWpwAc
+j7RPclrS80s1j9z6vNqXZLSL5zgoR3901amtur5qLk3Kc9OB28VEmrQSbPz4zOYlNZr5VXA2
+qJiu/R1jr8DK7lhI4KWNTC/TzDOu/GDcZSQrnBJoopIqfVEUrsgE+kF6q3eT2qtAPhnYEq+D
+x7DMMZSa/x50eY1G1A69tz5f26q8Ixbu/9lLjzdnMZHPHGQbP7n9B38BUEsBAhcLFAACAAgA
+aVncRtAhSsudAQAAOwMAAC4AEQAAAAAAAQAgALaBAAAAAGhvdG1haWwuY29tIW5neW4ub3Jn
+ITE0MzU0MjgwMDAhMTQzNTUxNDQwMC54bWxTRAQAjAAAAFVUBQAHxjiQVVBLBQYAAAAAAQAB
+AG0AAABGAgAAAAA=
+----boundary_32281_b52cf564-2a50-4f96-aeb0-ef5f83b05463--
+
+

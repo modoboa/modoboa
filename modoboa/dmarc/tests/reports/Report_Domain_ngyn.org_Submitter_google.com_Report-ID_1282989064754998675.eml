@@ -1,0 +1,51 @@
+Return-Path: <noreply-dmarc-support@google.com>
+Delivered-To: <tonio@ngyn.org>
+Received: from mail.koalabs.org
+	by nelson.ngyn.org (Dovecot) with LMTP id dV+vEDEApVVCdQAABvoInA
+	for <tonio@ngyn.org>; Tue, 03 Jun 2021 14:27:34 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.koalabs.org (Postfix) with ESMTP id C28EFE035E
+	for <dmarc-aggrep@ngyn.org>; Tue, 03 Jun 2021 14:27:34 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.koalabs.org
+Received: from mail.koalabs.org ([127.0.0.1])
+	by localhost (nelson.ngyn.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP for <dmarc-aggrep@ngyn.org>;
+	Tue, 03 Jun 2021 14:27:32 +0200 (CEST)
+Received: from mail-vn0-f74.google.com (mail-vn0-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail.koalabs.org (Postfix) with ESMTPS
+	for <dmarc-aggrep@ngyn.org>; Tue, 03 Jun 2021 14:27:29 +0200 (CEST)
+Received: by vnbf7 with SMTP id f7so392460vnb.1
+        for <dmarc-aggrep@ngyn.org>; Tue, 03 Jun 2021 05:27:28 -0700 (PDT)
+MIME-Version: 1.0
+X-Received: by 10.52.251.34 with SMTP id zh2mr50557742vdc.8.1436869893195;
+ Tue, 03 Jun 2021 03:31:33 -0700 (PDT)
+Message-ID: <14872432101891615947@google.com>
+Date: Tue, 03 Jun 2021 10:31:33 +0000
+Subject: Report domain: ngyn.org Submitter: google.com Report-ID: 1282989064754998675
+From: noreply-dmarc-support@google.com
+To: dmarc-aggrep@ngyn.org
+Content-Type: application/zip; 
+	name="google.com!ngyn.org!1622592000!1622678399.zip"
+Content-Disposition: attachment; 
+	filename="google.com!ngyn.org!1622592000!1622678399.zip"
+Content-Transfer-Encoding: base64
+
+UEsDBBQDAAAIAMhzw1IU0YnahAIAAAQMAAAtAAAAZ29vZ2xlLmNvbSFuZ3luLm9yZyExNjIyNTky
+MDAwITE2MjI2NzgzOTkueG1s7ZbBctsgFEX3+QqP9wYJ24rUIaSrfkG71hDpWWYiAQM4if++WAJJ
+ressmridTrOSuPCu3rs+w5jev3Tt4gmMFUreLVOULBcgK1UL2dwtv339ssqXi3t2Q3cA9QOvHtnN
+YkENaGVc2YHjNXf8pHlVmaaUvAPWKNW0gCrVURzFcAY6LlomlXdoj6u646Za2YM+2X2el/XnYs2L
+M7yslHS8cqWQO8X2zmn7CeNQiqZSzDGX9hkMJpss2+YJxef1wTiMIWqWkpwUeZFkm9vtpijy7HZL
+8bgdjvtRoTRcNmEYLz1AIyRLM0K2BUkS/7FBifsg6343u83XRUExyGiGf3Sj+BeZUq1aUR1LfXho
+hd3D2Ijy6Ugmm6NEPl+KByHs8vpRdMxS3L9E0epdr/lnkDSTSgLFOqxtFGxUdOWYz8E/hhbP2hlY
+qJSJnRn1PM5u1cFUUArNSFKgfIsISVDmQ5g24tFKHaRjhOL+JcpxfHji7YG7OP4QgbBaWeE8taHr
+uTKd6yPYeZYontII4+7CxhhJgILbYBEld9TAWlXxthxaoriX5mc8eh343j3Qd5pbH3VUJmscveP6
+fMBBH2OkovYWYifA2LFsD7wGU+6M6mYMzNRoc1ZM+cHtSwP20LrJbwpmThe88E63sPJjIJKk2yQj
+a9Rwra3tnEZejtzNagdrNgQQFrPIoYXKKcOiH8VRmjKJ3cQf6WJnr7YQoAiL0XyiH/8cBcU9yb8D
+9Sa9DPXmWlD3Gb8K9b/BWXR+C00kTdbr9G00SXB/kaa0IChBBKXJKyit/zhLp40Pli6w9F7ff2eQ
+crRNPUcJWl9GKb0WSafL5/+4lU4DXY+kcCtdDSaKpz/03wFQSwECPwMUAwAACADIc8NSFNGJ2oQC
+AAAEDAAALQAkAAAAAAAAACCAtIEAAAAAZ29vZ2xlLmNvbSFuZ3luLm9yZyExNjIyNTkyMDAwITE2
+MjI2NzgzOTkueG1sCgAgAAAAAAABABgAgCVxNHRY1wGAJXE0dFjXAQBf60Z0WNcBUEsFBgAAAAAB
+AAEAfwAAAM8CAAAAAA==
+
