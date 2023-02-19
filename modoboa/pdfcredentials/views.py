@@ -14,7 +14,6 @@ from modoboa.lib.exceptions import ModoboaException, PermDeniedException
 from modoboa.parameters import tools as param_tools
 
 from .lib import decrypt_file, get_creds_filename
-from .rfc6266 import build_header
 
 
 @login_required
@@ -33,5 +32,5 @@ def get_account_credentials(request, accountid):
     resp = HttpResponse(content)
     resp["Content-Type"] = "application/pdf"
     resp["Content-Length"] = len(content)
-    resp["Content-Disposition"] = build_header(os.path.basename(fname))
+    resp["Content-Disposition"] = f"attachment; filename={fname};"
     return resp

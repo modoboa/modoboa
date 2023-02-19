@@ -7,7 +7,7 @@ from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.admin import factories
-from modoboa.core import models as core_models 
+from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
 
@@ -37,7 +37,26 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, expected_status)
         return data
-        
+
+    def test_pdfcredentials_disabled(self):
+        self.set_global_parameter("enabled_pdfcredentials", False)
+        values = self._create_account("leon5@test.com")
+        fname = os.path.join(self.workdir, "{}.pdf".format(values["username"]))
+        self.assertFalse(os.path.exists(fname))
+
+        # Check that link is not present in listing page
+        response = self.client.get(reverse("v2:identities-list"), format="json")
+        assert_action_in_response = False
+        for res_dict in response.json():
+            for action in res_dict["possible_actions"]:
+                try:
+                    if action.get("icon") == "mdi-file-download-outline":
+                        assert_action_in_response = True
+                        break
+                except KeyError:
+                    continue
+        self.assertFalse(assert_action_in_response)
+
     def test_password_updated(self):
         """Check that document is generated at account creation/update."""
         values = self._create_account("leon@test.com")
@@ -49,14 +68,14 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         response = self.client.get(reverse("v2:identities-list"), format="json")
         assert_action_in_response = False
         for res_dict in response.json():
-                for action in res_dict["possible_actions"]:
-                    try:
-                        if action.get("icon") == "mdi-file-download-outline":
-                            assert_action_in_response = True
-                            break
-                    except KeyError:
-                        continue
-        self.assertEqual(assert_action_in_response, True)
+            for action in res_dict["possible_actions"]:
+                try:
+                    if action.get("icon") == "mdi-file-download-outline":
+                        assert_action_in_response = True
+                        break
+                except KeyError:
+                    continue
+        self.assertTrue(assert_action_in_response)
 
         # Try to download the file
         response = self.client.get(
@@ -72,7 +91,8 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         response = self.client.get(
             reverse("v2:get-credentials",
                     args=[account.pk]))
-        self.assertEqual(response.json()["detail"], "No document available for this user")
+        self.assertEqual(response.json()["detail"],
+                         "No document available for this user")
 
         # Update account
         values.update({"language": "en"})

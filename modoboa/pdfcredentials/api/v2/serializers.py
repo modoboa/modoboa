@@ -23,7 +23,7 @@ class PDFCredentialsSettingsSerializer(serializers.Serializer):
 
     # Document storage
     storage_dir = serializers.CharField(default="/var/lib/modoboa/pdf_credentials")
-  
+
     # Security options
     delete_first_dl = serializers.BooleanField(default=True)
     generate_at_creation = serializers.BooleanField(default=True)
@@ -44,7 +44,7 @@ class PDFCredentialsSettingsSerializer(serializers.Serializer):
 class GetAccountCredentialsSerializer(serializers.Serializer):
     """A serializer for get account credential view."""
 
-    account_id = serializers.IntegerField() 
+    account_id = serializers.IntegerField()
 
     def validate(self, data):
         request = self.context["request"]
@@ -54,7 +54,6 @@ class GetAccountCredentialsSerializer(serializers.Serializer):
         self.context["account"] = account
         return data
 
-    
     def save(self):
         fname = get_creds_filename(self.context["account"])
         if not os.path.exists(fname):
