@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
+# Kostas Moumouris <moumouriskostas@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 14:05+0200\n"
+"PO-Revision-Date: 2017-10-12 09:55+0000\n"
+"Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/"
+"language/el_GR/)\n"
+"Language: el_GR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:35
+msgid "DNS settings"
+msgstr "Ρυθμίσεις DNS"
+
+#: forms.py:38
+msgid "Enable reverse lookups"
+msgstr "Ενεργοποίηση ανάστροφης αναζήτησης reverse lookups"
+
+#: forms.py:41
+msgid "Enable reverse DNS lookups (reports will be longer to display)"
+msgstr "Ενεργοποίηση reverse DNS lookups (η αναφορές θα καθυστερούν)"
+
+#: handlers.py:20
+msgid "Show DMARC report for {}"
+msgstr "Εμφάνιση της έκθεσης DMARC του {}"
+
+#: models.py:10 models.py:16
+msgid "None"
+msgstr "Κανένα"
+
+#: models.py:11
+msgid "Quarantine"
+msgstr "Καραντίνα"
+
+#: models.py:12
+msgid "Reject"
+msgstr "Απόρριψη"
+
+#: models.py:17
+msgid "Neutral"
+msgstr "Ουδέτερο"
+
+#: models.py:18
+msgid "Pass"
+msgstr "Εγκρίθηκε"
+
+#: models.py:19
+msgid "Fail"
+msgstr "Απορρίφθηκε"
+
+#: models.py:20
+msgid "Temporary error"
+msgstr "προσωρινό σφάλμα"
+
+#: models.py:21
+msgid "Permanent error"
+msgstr "Μόνιμο σφάλμα"
+
+#: models.py:25
+msgid "Policy"
+msgstr "Πολιτική"
+
+#: models.py:29
+msgid "Soft failure"
+msgstr "Πρόβλημα Soft"
+
+#: modo_extension.py:16
+msgid "DMARC tools"
+msgstr "Εργαλεία DMARC"
+
+#: modo_extension.py:19
+msgid "A set of tools to ease DMARC integration"
+msgstr "Ένα σετ εργαλείων για την απλοποίηση της ενσωμάτωσης του DMARC"
+
+#: templates/modoboa_dmarc/_result_detail.html:6
+msgid "Total"
+msgstr "Σύνολο"
+
+#: templates/modoboa_dmarc/domain_report.html:21
+#: templates/modoboa_dmarc/domain_report.html:26
+msgid "Fully aligned"
+msgstr "Πλήρως ευθυγραμμισμένο"
+
+#: templates/modoboa_dmarc/domain_report.html:22
+#: templates/modoboa_dmarc/domain_report.html:27
+msgid "Partially aligned"
+msgstr "Μερικός ευθυγραμισμένα"
+
+#: templates/modoboa_dmarc/domain_report.html:23
+#: templates/modoboa_dmarc/domain_report.html:28
+msgid "Failed"
+msgstr "Απέτυχε"
+
+#: templates/modoboa_dmarc/domain_report.html:50
+msgid "DMARC report for"
+msgstr "Έκθεση DMARC του"
+
+#: templates/modoboa_dmarc/domain_report.html:74
+msgid "processed"
+msgstr "Επεξεργάστηκε"
+
+#: templates/modoboa_dmarc/domain_report.html:83
+msgid "fully aligned"
+msgstr "πλήρως ευθυγραμμισμένο"
+
+#: templates/modoboa_dmarc/domain_report.html:92
+msgid "partially aligned"
+msgstr "Μερικώς ευθυγραμμισμένο"
+
+#: templates/modoboa_dmarc/domain_report.html:101
+msgid "failed"
+msgstr "απέτυχε"
+
+#: templates/modoboa_dmarc/domain_report.html:111
+msgid "Display details"
+msgstr "Προβολή λεπτομερειών"
+
+#: templates/modoboa_dmarc/domain_report.html:115
+msgid "Trusted sources"
+msgstr "Αξιόπιστες πηγές"
+
+#: templates/modoboa_dmarc/domain_report.html:123
+msgid "Unknown sources / Threats"
+msgstr "Άγνωστες πηγές / Απειλές"
+
+#: templatetags/dmarc_tags.py:59 views.py:120
+msgid "Not resolved"
+msgstr ""

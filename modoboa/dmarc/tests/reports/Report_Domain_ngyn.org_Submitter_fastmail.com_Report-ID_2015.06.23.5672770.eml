@@ -1,0 +1,90 @@
+Return-Path: <dmarc@fastmail.com>
+Delivered-To: <tonio@ngyn.org>
+Received: from mail.koalabs.org
+	by nelson.ngyn.org (Dovecot) with LMTP id MN7aCZgMilV1TAAABvoInA
+	for <tonio@ngyn.org>; Wed, 24 Jun 2015 03:49:12 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.koalabs.org (Postfix) with ESMTP id 0FF2EE035E
+	for <postmaster@ngyn.org>; Wed, 24 Jun 2015 03:49:12 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.koalabs.org
+Authentication-Results: nelson.ngyn.org (amavisd-new);
+	dkim=pass (1024-bit key) header.d=fastmail.com header.b=0Nj5GpwR;
+	dkim=pass (1024-bit key) header.d=messagingengine.com
+	header.b=W7jB990M
+Received: from mail.koalabs.org ([127.0.0.1])
+	by localhost (nelson.ngyn.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP for <postmaster@ngyn.org>;
+	Wed, 24 Jun 2015 03:49:11 +0200 (CEST)
+Received: from bulk2-smtp.messagingengine.com (bulk2-smtp.messagingengine.com [66.111.4.225])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.koalabs.org (Postfix) with ESMTPS
+	for <postmaster@ngyn.org>; Wed, 24 Jun 2015 03:49:11 +0200 (CEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+	by mailbulk.nyi.internal (Postfix) with ESMTP id D8DDDAFE;
+	Tue, 23 Jun 2015 21:49:03 -0400 (EDT)
+Received: from frontend1 ([10.202.2.160])
+  by compute6.internal (MEProxy); Tue, 23 Jun 2015 21:49:03 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=fastmail.com; h=
+	content-type:date:from:message-id:mime-version:subject:to
+	:x-sasl-enc:x-sasl-enc; s=mesmtp; bh=1t7zGOXcrQ9ovOrxVPikV8Cc8h4
+	=; b=0Nj5GpwRFukRLOhanfU0ZrV04k7RkzI1k4Ko8nC1WFOPbK43dzMSg6zZ1QM
+	+Hgb+WdYhPc1D1oInpbxoN5urVBNqOL43xyQY7Ul0fg+5kY8s8Pxndo2pFko2Sqf
+	YvTXeDN9IZJgxcT3Qy1/N38sE0q+Jt3uD+0gTJhJAOZqVlxY=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+	messagingengine.com; h=content-type:date:from:message-id
+	:mime-version:subject:to:x-sasl-enc:x-sasl-enc; s=smtpout; bh=1t
+	7zGOXcrQ9ovOrxVPikV8Cc8h4=; b=W7jB990M1394jwz9JB5XcuQlJ1qTn478nI
+	nG4+68z4YRi88Nl0Mwmq3LMkamLzim/HSrTSsN2dk2yWl+JxQZNis0Nh6nqq7f60
+	mkTmv74DLMnAKdqriTpkzN7PnzKTr/A4AumpPF0yFJ3DONjq1fqXFHOAx+T8xk7I
+	zf1/lQlPs=
+X-Sasl-enc: pVVGFLeGBqO3p41F4hif6WoWvBVprb8iTS5Hykw0gj6x 1435110543
+Received: from root1.messagingengine.com (unknown [66.111.4.4])
+	by mail.messagingengine.com (Postfix) with ESMTPA id A2C52C00288
+	for <postmaster@ngyn.org>; Tue, 23 Jun 2015 21:49:03 -0400 (EDT)
+From: dmarc@fastmail.com
+To: postmaster@ngyn.org
+Date: Tue, 23 Jun 2015 21:49:03 -0400
+Subject: Report Domain: ngyn.org Submitter: fastmail.com Report-ID:
+ 2015.06.23.5672770
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="1435110543.af000f16737.3591227"; charset="us-ascii"
+Message-Id: <20150624014903.A2C52C00288@frontend1.nyi.internal>
+
+
+--1435110543.af000f16737.3591227
+Date: Tue, 23 Jun 2015 21:49:03 -0400
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Disposition: inline
+
+
+This is a DMARC aggregate report for ngyn.org
+
+1 records.
+0 passed.
+1 failed.
+
+Submitted by FastMail Pty Ltd
+Generated with Mail::DMARC 1.20150611
+
+
+--1435110543.af000f16737.3591227
+Date: Tue, 23 Jun 2015 21:49:03 -0400
+MIME-Version: 1.0
+Content-Type: application/gzip; name="fastmail.com!ngyn.org!1435017600!1435103999!5672770.xml.gz"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="fastmail.com!ngyn.org!1435017600!1435103999!5672770.xml.gz"
+
+H4sIAI8MilUAA21TTXPbIBA9J7/Ck3uFlNTWuENJTjm1M/0HGgwrmYn4GEBu/O+7gCzZbk5i31t2
+31tW9PVTj5sT+KCs+fnUVPXTK3ukPYA8cPHBHh+oB2d97DRELnnkCC2Ykmy7a5/btqZkhVKC9UNn
+uAb2zkP8zdW4+RPPm19RUrJQKQ80ckxq7sVbj6kprITVlBQm53xGzzthTeQCG5jesmOMLvwg5PoK
+wTv/Z6YCKBs6z82Qez7QAwzKsOb7y7Zu2l2N4guSSTAyU039st/vsaYpjshNlcXv1Vios6MS585N
+h1GFI5R70qJAw8xwNhVaxzoFSByXH0qzQEk5ZCi4PiPpmwDHjDVAictRuIShxE5EtkUSP0nUFwrw
+rYT1RYu3f4vJYCcvoFOOtU3V7Ktmu6uatsWyC5HzhJ1MZM+UlEPG5h5w4uOEI8mVk08VnA0q4h7N
+Eq+ROSe57PG9kJwNZ0/9DM6eVyM3TXDmRT9VEkxUvcK1vTzaCUbroIuWwTdhRzucK8HT663EbWbv
+rWajOnjAUcV5527InH8ELsEXYH3DazQru1NE+RSPnYcwjXGWePG2bMRd73UtUrJAFUyn+jiVHBSi
+lGSOh5BWMAdlYpd9IXetU1pZAErW3/of7jTwqvgDAAA=
+
+--1435110543.af000f16737.3591227--
