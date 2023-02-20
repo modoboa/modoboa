@@ -20,7 +20,7 @@ class ReportOptionsForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         """Constructor."""
-        super(ReportOptionsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not args:
             year, week, day = timezone.now().isocalendar()
             self.fields["current_year"].initial = year
