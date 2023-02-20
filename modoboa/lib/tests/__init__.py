@@ -71,7 +71,6 @@ class ModoTestCase(ParametersMixin, TestCase):
             params = {}
         response = getattr(self.client, method)(
             url, params, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
-        print(response.content)
         self.assertEqual(response.status_code, status)
         return response.json()
 
