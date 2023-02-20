@@ -63,7 +63,7 @@
 
 <script>
 import alarms from '@/api/alarms'
-
+import debounce from 'debounce'
 export default {
   data () {
     return {
@@ -103,6 +103,9 @@ export default {
   },
   mounted () {
     this.fetchAlarms()
+  },
+  created () {
+    this.fetchAlarms = debounce(this.fetchAlarms, 500)
   },
   watch: {
     options: {
