@@ -255,9 +255,9 @@ Listing.prototype = {
     make_tag: function(text, type) {
         var $tag = $("<a />", {
             "name": type, "class" : "btn btn-default btn-xs",
-            "html": " " + text
+            "html": " " + htmlEncode(text)
         });
-        
+
         $("<span />", {"class" : "fa fa-remove"}).prependTo($tag);
         $tag.click($.proxy(this.remove_tag, this));
         return $tag;
