@@ -10,8 +10,9 @@ from django.contrib.auth import login
 
 from drf_spectacular.utils import extend_schema
 from rest_framework import response, status
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt import views as jwt_views
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
@@ -28,7 +29,7 @@ logger = logging.getLogger("modoboa.auth")
 
 def delete_cache_key(class_target, throttles, request):
     """Attempt to delete cache key from throttling on login/password reset success."""
-    
+
     for throttle in throttles:
         if type(throttle) == class_target:
             throttle.reset_cache(request)
@@ -44,11 +45,11 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
         serializer = self.get_serializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
-        except TokenError as e:
+        except AuthenticationFailed as e:
             logger.warning(
                 _("Failed connection attempt from '%s' as user '%s'"),
                 request.META["REMOTE_ADDR"],
-                escape(serializer.data["username"])
+                escape(serializer.initial_data["username"])
             )
             raise InvalidToken(e.args[0])
 
@@ -133,7 +134,7 @@ class DefaultPasswordResetView(EmailPasswordResetView):
             serializer.is_valid(raise_exception=True)
         except serializers.NoSMSAvailable:
             return super().post(request, *args, **kwargs)
-        
+
         # SMS response
         return response.Response({"type": "sms"}, 200)
 
