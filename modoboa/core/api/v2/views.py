@@ -49,7 +49,7 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
             logger.warning(
                 _("Failed connection attempt from '%s' as user '%s'"),
                 request.META["REMOTE_ADDR"],
-                escape(serializer.data["username"])
+                escape(serializer.initial_data["username"])
             )
             raise InvalidToken(e.args[0])
 
