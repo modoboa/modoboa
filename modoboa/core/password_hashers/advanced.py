@@ -113,6 +113,25 @@ class SHA512CRYPTHasher(PasswordHasher):
         return sha512_crypt.verify(clearvalue, hashed_value)
 
 
+class SSHAHasher(PasswordHasher):
+    """
+    Salted SHA1 password hasher.
+    """
+    _weak = True
+
+    @property
+    def scheme(self):
+        return "{SSHA}"
+
+    def _encrypt(self, clearvalue, salt=None):
+        # We have to remove the {SSHA} at the beginning of the string
+        return ldap_salted_sha1.hash(clearvalue)[6:]
+
+    def verify(self, clearvalue, hashed_value):
+        # We have to add the scheme for the hashed_value to be validated
+        return ldap_salted_sha1.verify(clearvalue, f'{{SSHA}}{hashed_value}')
+
+
 if argon2_hasher is not None:
     class ARGON2IDHasher(PasswordHasher):
         """
