@@ -1,25 +1,20 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Arkadiusz R, 2019
-# Dariusz Koryto <dariusz@koryto.eu>, 2016
-# Kacper Teterka <kacper.teterka@gmail.com>, 2021
-# Pedro M <zamowienia@ittf.pl>, 2017,2020
-# KrystianPlichta <polandtorros@gmail.com>, 2021
-# Arkadiusz R, 2019
-# sin88 <sin@sin.waw.pl>, 2016
-# Tomasz Proć <tomasz.proc@gmail.com>, 2017
-# Wojtek Gajda <vac@milowice.net>, 2018
+# Antoine Nguyen <tonio@ngyn.org>, 2023
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-02 15:31+0200\n"
-"PO-Revision-Date: 2021-07-14 06:20+0000\n"
-"Last-Translator: Kacper Teterka <kacper.teterka@gmail.com>\n"
-"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/language/pl_PL/)\n"
+"PO-Revision-Date: 2023-02-22 16:16+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2023\n"
+"Language-Team: Polish (Poland) (https://www.transifex.com/tonio/teams/13749/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,7 +47,9 @@ msgstr "Poprawne MXy"
 msgid ""
 "A list of IP or network address every MX record should match. A warning will"
 " be sent if a record does not respect it."
-msgstr "Lista adresów IP lub sieci dla każdego pasującego rekordu MX. Monit zostanie wysłany w przypadku błędu."
+msgstr ""
+"Lista adresów IP lub sieci dla każdego pasującego rekordu MX. Monit zostanie"
+" wysłany w przypadku błędu."
 
 #: admin/app_settings.py:42
 msgid "New domains must use authorized MX(s)"
@@ -62,7 +59,9 @@ msgstr "Nowe domeny muszą używać autoryzowanych MX'ów"
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr "Zapobiegaj tworzeniu nowych domen jeśli ich MXy nie są jednym ze zdefiniowanych adresów."
+msgstr ""
+"Zapobiegaj tworzeniu nowych domen jeśli ich MXy nie są jednym ze "
+"zdefiniowanych adresów."
 
 #: admin/app_settings.py:51
 msgid "Enable SPF checks"
@@ -94,7 +93,9 @@ msgstr "Włącz sprawdzanie poprawności autokonfiguracji"
 
 #: admin/app_settings.py:79
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr "Sprawdza, czy każda domena ma prawidłowe rekordy pozwalające na autokonfigurację"
+msgstr ""
+"Sprawdza, czy każda domena ma prawidłowe rekordy pozwalające na "
+"autokonfigurację"
 
 #: admin/app_settings.py:84
 msgid "Enable DNSBL checks"
@@ -121,7 +122,10 @@ msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr "Ścieżka bezwzględna do katalogu w którym będą trzymane klucze prywatne DKIM. Upewnij się że właścicielem katalogu jest \"użytkownik root\" i że katalog nie jest publicznie dostępny do odczytu."
+msgstr ""
+"Ścieżka bezwzględna do katalogu w którym będą trzymane klucze prywatne DKIM."
+" Upewnij się że właścicielem katalogu jest \"użytkownik root\" i że katalog "
+"nie jest publicznie dostępny do odczytu."
 
 #: admin/app_settings.py:111
 msgid "Default DKIM key length"
@@ -139,7 +143,9 @@ msgstr "Domyślne ograniczenie dla domeny"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr "Domyślne ograniczenie (w MB) dla nowych domen, gdy nie zostało podane. (0 - brak ograniczenia)"
+msgstr ""
+"Domyślne ograniczenie (w MB) dla nowych domen, gdy nie zostało podane. (0 - "
+"brak ograniczenia)"
 
 #: admin/app_settings.py:129
 msgid "Default domain sending limit"
@@ -149,7 +155,9 @@ msgstr "Domyślny limit wysyłania dla domey"
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
-msgstr "Liczba wiadomości, które świeżo utworzone domeny będą mogły wysłać dziennie. Pozostaw puste dla braku limitu."
+msgstr ""
+"Liczba wiadomości, które świeżo utworzone domeny będą mogły wysłać dziennie."
+" Pozostaw puste dla braku limitu."
 
 #: admin/app_settings.py:137 admin/templates/admin/domain_detail.html:41
 msgid "Mailboxes"
@@ -163,7 +171,9 @@ msgstr "Przechowuj skrzynka na filesystemie"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Zmieniaj lub usuwaj skrzynki na filesystemie jeśli zostały zmodyfikowane lub usuniętę przez Modoboa"
+msgstr ""
+"Zmieniaj lub usuwaj skrzynki na filesystemie jeśli zostały zmodyfikowane lub"
+" usuniętę przez Modoboa"
 
 #: admin/app_settings.py:149
 msgid "Mailboxes owner"
@@ -182,7 +192,9 @@ msgstr "Domyślna przestrzeń dla konta pocztowego"
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created mailboxes with no "
 "value specified. A value of 0 means no quota."
-msgstr "Domyślny limit skrzynki (w MB) stosowany dla świeżo utworzonych skrzynek, dla których nie podano wartości. Wartość 0 oznacza brak limitu."
+msgstr ""
+"Domyślny limit skrzynki (w MB) stosowany dla świeżo utworzonych skrzynek, "
+"dla których nie podano wartości. Wartość 0 oznacza brak limitu."
 
 #: admin/app_settings.py:166
 msgid "Default mailbox sending limit"
@@ -192,7 +204,9 @@ msgstr "Domyślny limit wysyłania skrzynki"
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
-msgstr "Liczba wiadomości, które będą mogły wysyłać świeżo utworzone skrzynki na dzień. Pozostaw puste dla braku limitu."
+msgstr ""
+"Liczba wiadomości, które będą mogły wysyłać świeżo utworzone skrzynki na "
+"dzień. Pozostaw puste dla braku limitu."
 
 #: admin/app_settings.py:175
 msgid "Automatic account removal"
@@ -266,7 +280,9 @@ msgstr "Username"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr "Username musi być poprawnym adresem e-mail dla zwykłych użytkowników i administratorów posiadających skrzynkę."
+msgstr ""
+"Username musi być poprawnym adresem e-mail dla zwykłych użytkowników i "
+"administratorów posiadających skrzynkę."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 msgid "Role"
@@ -288,7 +304,9 @@ msgstr "Losowe hasło"
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
-msgstr "Wygeneruj losowe hasło. Jeśli aktualizujesz to konto i zaznaczysz te pole, to zostanie wygenerowane nowe hasło."
+msgstr ""
+"Wygeneruj losowe hasło. Jeśli aktualizujesz to konto i zaznaczysz te pole, "
+"to zostanie wygenerowane nowe hasło."
 
 #: admin/forms/account.py:52
 msgid "Password"
@@ -343,7 +361,11 @@ msgid ""
 "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
 " custom value or use domain's default one. Leave empty to define an "
 "unlimited value (not allowed for domain administrators)."
-msgstr "Limit miejsca dla tej skrzynki. Może być wyrażony w KB, MB(domyślnie) lub GB. Podaj własną wartość lub użyj domyślnej wartości domeny. Brak limitu jeśli pozostawisz niewypełnione (opcja niedozwolona dla administratorów domen)"
+msgstr ""
+"Limit miejsca dla tej skrzynki. Może być wyrażony w KB, MB(domyślnie) lub "
+"GB. Podaj własną wartość lub użyj domyślnej wartości domeny. Brak limitu "
+"jeśli pozostawisz niewypełnione (opcja niedozwolona dla administratorów "
+"domen)"
 
 #: admin/forms/account.py:242 admin/models/domain.py:36
 #: admin/models/mailbox.py:102 admin/templates/admin/account_detail.html:50
@@ -365,7 +387,10 @@ msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr "Alias(y) dla tej skrzynki. Podaj jeden adres w polu. Naciśnij ENTER aby dodać kolejne pole. Aby stworzyć alias \"catchall\" po prostu podaj nazwę domeny (@domena.tld)."
+msgstr ""
+"Alias(y) dla tej skrzynki. Podaj jeden adres w polu. Naciśnij ENTER aby "
+"dodać kolejne pole. Aby stworzyć alias \"catchall\" po prostu podaj nazwę "
+"domeny (@domena.tld)."
 
 #: admin/forms/account.py:258
 msgid "Sender addresses"
@@ -376,7 +401,10 @@ msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr "Dodatkowe adresy nadawcy dla tego konta. Użytkownik będzie mógł tych adresów podczas wysyłania wiadomości, nawet jeśli taki nie istnieje lokalnie. Podaj jeden adres w polu. Naciśnij ENTER aby dodać nowe pole."
+msgstr ""
+"Dodatkowe adresy nadawcy dla tego konta. Użytkownik będzie mógł tych adresów"
+" podczas wysyłania wiadomości, nawet jeśli taki nie istnieje lokalnie. Podaj"
+" jeden adres w polu. Naciśnij ENTER aby dodać nowe pole."
 
 #: admin/forms/account.py:321 admin/forms/alias.py:88
 #: admin/models/mailbox.py:321
@@ -441,7 +469,9 @@ msgstr "Adres e-mail"
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr "Adres aliasu. W celu utworzenia aliasu typu catchall wprowadź jedynie nazwę domeny (np. @domena.pl)"
+msgstr ""
+"Adres aliasu. W celu utworzenia aliasu typu catchall wprowadź jedynie nazwę "
+"domeny (np. @domena.pl)"
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -451,7 +481,9 @@ msgstr "Odbiorcy"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr "Adres na który wskazuje alias. Wprowadź pojedynczo. Wciśnij ENTER aby dodać kolejny."
+msgstr ""
+"Adres na który wskazuje alias. Wprowadź pojedynczo. Wciśnij ENTER aby dodać "
+"kolejny."
 
 #: admin/forms/alias.py:108 admin/forms/alias.py:110
 msgid "This field is required"
@@ -470,7 +502,8 @@ msgstr "Typ"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr "Alias(y) tej domeny. Wprowadź pojedynczo. Wciśnij ENTER aby dodać kolejny."
+msgstr ""
+"Alias(y) tej domeny. Wprowadź pojedynczo. Wciśnij ENTER aby dodać kolejny."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
@@ -480,13 +513,17 @@ msgstr "Wybór klucza"
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr "Miejsce dzielone między skrzynki. Może być wyrażone w KB, MB (domyślnie) lub GB. Wartość 0 oznacza brak limitu."
+msgstr ""
+"Miejsce dzielone między skrzynki. Może być wyrażone w KB, MB (domyślnie) lub"
+" GB. Wartość 0 oznacza brak limitu."
 
 #: admin/forms/domain.py:52
 msgid ""
 "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
 "GB. A value of 0 means no quota."
-msgstr "Domyślne ograniczenie miejsca dla skrzynek. Może być wyrażone w KB, MB (domyślnie) lub GB.  Wartość 0 oznacza brak  ograniczenia."
+msgstr ""
+"Domyślne ograniczenie miejsca dla skrzynek. Może być wyrażone w KB, MB "
+"(domyślnie) lub GB.  Wartość 0 oznacza brak  ograniczenia."
 
 #: admin/forms/domain.py:97 admin/handlers.py:161
 msgid "domain alias"
@@ -537,7 +574,9 @@ msgstr "Nazwa"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr "Nazwa administratora. Nie dodawaj tutaj nazwy domeny, zostanie dodana automatycznie"
+msgstr ""
+"Nazwa administratora. Nie dodawaj tutaj nazwy domeny, zostanie dodana "
+"automatycznie"
 
 #: admin/forms/domain.py:251
 msgid "Generate a random password for the administrator."
@@ -679,7 +718,9 @@ msgstr "Znaleziono nie działające serwery nazw"
 #: admin/lib.py:199 admin/tests/test_mx.py:158
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr "Upłynąć czas na rozwiązanie nazwy w DNS, w tym momencie nie potrafię odpytać %s"
+msgstr ""
+"Upłynąć czas na rozwiązanie nazwy w DNS, w tym momencie nie potrafię odpytać"
+" %s"
 
 #: admin/lib.py:227
 #, python-brace-format
@@ -807,7 +848,9 @@ msgstr "Włącz podpisywanie DKIM"
 #: admin/models/domain.py:59
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
-msgstr "Jeśli włączysz tą funkcjonalność, dla tej domeny zostanie wygenerowany klucz DKIM"
+msgstr ""
+"Jeśli włączysz tą funkcjonalność, dla tej domeny zostanie wygenerowany klucz"
+" DKIM"
 
 #: admin/models/domain.py:65
 msgid "Key length"
@@ -831,7 +874,8 @@ msgstr "Niepoprawna wartość domyślna przydziału (quoty) dla domeny '{}'"
 
 #: admin/models/domain.py:352
 msgid "Default mailbox quota cannot be greater than domain quota"
-msgstr "Domyślna wartość przydziału (quota) nie może być wyższa niż przydział domeny"
+msgstr ""
+"Domyślna wartość przydziału (quota) nie może być wyższa niż przydział domeny"
 
 #: admin/models/domain_alias.py:35
 msgid "The alias name"
@@ -869,7 +913,9 @@ msgstr "Przekroczono limit przydziału"
 
 #: admin/serializers.py:37
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr "Domyślne ograniczenie (w MB) dla nowych skrzynek. Wartość 0 oznacza brak  ograniczenia."
+msgstr ""
+"Domyślne ograniczenie (w MB) dla nowych skrzynek. Wartość 0 oznacza brak  "
+"ograniczenia."
 
 #: admin/serializers.py:115 admin/serializers.py:322 admin/serializers.py:424
 msgid "Permission denied."
@@ -878,7 +924,8 @@ msgstr "Odmowa dostępu"
 #: admin/serializers.py:168
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr "Lista administratorów domen (tylko resellerów i administratorów domen)."
+msgstr ""
+"Lista administratorów domen (tylko resellerów i administratorów domen)."
 
 #: admin/serializers.py:272
 msgid "Not allowed for this role."
@@ -1261,7 +1308,14 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr "Przygotuj plik CSV gdzie linie są nastepującego formatu:\n<ul> <li><em>domain; nazwa; quota; domyślna quota skrzynki; enabled</em></li> \n<li><em>domainalias; nazwa; docelowa domena; enabled</em></li> \n<li><em>relaydomain; nazwa; docelowy host; docelowy port; service; enabled; verify recipients</em></li> </ul> \n\n<p>Pierwszy element każdej linii jest obowiązkowy i musi być zawierać jedną z powyższych wartości.</p> \n<p>Możesz użyc różnych znaków jako separatora pól.</p>"
+msgstr ""
+"Przygotuj plik CSV gdzie linie są nastepującego formatu:\n"
+"<ul> <li><em>domain; nazwa; quota; domyślna quota skrzynki; enabled</em></li> \n"
+"<li><em>domainalias; nazwa; docelowa domena; enabled</em></li> \n"
+"<li><em>relaydomain; nazwa; docelowy host; docelowy port; service; enabled; verify recipients</em></li> </ul> \n"
+"\n"
+"<p>Pierwszy element każdej linii jest obowiązkowy i musi być zawierać jedną z powyższych wartości.</p> \n"
+"<p>Możesz użyc różnych znaków jako separatora pól.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
 msgid ""
@@ -1271,7 +1325,14 @@ msgid ""
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
 "is mandatory and must be equal to one of the previous values.</p> <p>You can"
 " use a different character as separator.</p>"
-msgstr "Przygotuj plik CSV gdzie linie są następującego formatu:\n<ul> \n<li><em>konto; login; hasło; imię; nazwisko; enabled; grupa; addres; quota; [, domena, ...]</em></li> \n<li><em>alias; addres; enabled; recipient; recipient; ...</em></li> \n</ul> \n<p>Pierwszy element każdej linii jest obowiązkowy i musi być zawierać jedną z powyższych wartości.</p> \n<p>Możesz użyć różnych znaków jako separatora pól."
+msgstr ""
+"Przygotuj plik CSV gdzie linie są następującego formatu:\n"
+"<ul> \n"
+"<li><em>konto; login; hasło; imię; nazwisko; enabled; grupa; addres; quota; [, domena, ...]</em></li> \n"
+"<li><em>alias; addres; enabled; recipient; recipient; ...</em></li> \n"
+"</ul> \n"
+"<p>Pierwszy element każdej linii jest obowiązkowy i musi być zawierać jedną z powyższych wartości.</p> \n"
+"<p>Możesz użyć różnych znaków jako separatora pól."
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1303,7 +1364,8 @@ msgstr "Zaktualizowane"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr "Ten IP nie pasuje do żadnego poprawnego MX'a określonego w parametrach"
+msgstr ""
+"Ten IP nie pasuje do żadnego poprawnego MX'a określonego w parametrach"
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
@@ -1314,19 +1376,25 @@ msgstr "Nie znaleziono rekordu MX dla tej domeny"
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr "Modoboa znalazło tą domenę %(domain)s na liście DNSBL poniższych providerów:"
+msgstr ""
+"Modoboa znalazło tą domenę %(domain)s na liście DNSBL poniższych providerów:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr "Reputacja domeny zostanie naruszona i istnieje szansa, że wiadomości z niej pochodzące zostaną zakwalifikowane jako spam. Powinieneś skontaktować się z tymi dostawcami i poprosić o usunięcie wykrytych adresów (IP)."
+msgstr ""
+"Reputacja domeny zostanie naruszona i istnieje szansa, że wiadomości z niej "
+"pochodzące zostaną zakwalifikowane jako spam. Powinieneś skontaktować się z "
+"tymi dostawcami i poprosić o usunięcie wykrytych adresów (IP)."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr "Modoboa sygnalizuje że ta domena %(domain)s nie posiada poprawnego rekordu MX:"
+msgstr ""
+"Modoboa sygnalizuje że ta domena %(domain)s nie posiada poprawnego rekordu "
+"MX:"
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
