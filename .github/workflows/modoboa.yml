@@ -8,10 +8,14 @@ on:
     branches: [ master ]
     paths-ignore:
       - 'modoboa/**.po'
+      - 'frontend/**'
+      - 'doc/**'
   pull_request:
     branches: [ master ]
     paths-ignore:
       - 'modoboa/**.po'
+      - 'frontend/**'
+      - 'doc/**'
   release:
     branches: [ master ]
     types: [ published ]
