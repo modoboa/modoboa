@@ -2,20 +2,24 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Antoine Nguyen <tonio@ngyn.org>, 2023
+# 
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-06 13:15+0200\n"
-"PO-Revision-Date: 2018-11-20 16:50+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2023-02-22 17:40+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2023\n"
+"Language-Team: French (https://www.transifex.com/tonio/teams/13749/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: dnstools/lib.py:78
 msgid "Wrong ip4 mechanism syntax"
@@ -135,8 +139,8 @@ msgstr "Un enregistrement DNS a été trouvé mais sa syntaxe est incorrecte :"
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
 msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+"Here is an example of DNS configuration (bind format). Replace value between"
+" [ ] by the appropriate ones."
 msgstr ""
 "Voici un exemple de configuration DNS (format bind). Remplacez les valeurs "
 "entre [ ] par celles appropriées."
