@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-05 15:47+0100\n"
+"PO-Revision-Date: 2023-02-17 21:43+0200\n"
+"Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"
+
+#: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
+msgid "operation"
+msgstr "operaatio"
+
+#: core/static/core/js/settings.js:16
+msgid "No more log entry to show"
+msgstr "Ei enää lokimerkintää näytettäväksi"
+
+#: static/js/confirmation.js:44
+msgid "Warning"
+msgstr "Varoitus"
+
+#: static/js/confirmation.js:59
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: static/js/global.js:347
+msgid "Internal error"
+msgstr "Sisäinen virhe"
+
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "Ei enää merkintöjä näytettäväksi"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "Hae"
+
+#: static/js/searchbar.js:28
+msgid "Search..."
+msgstr "Etsi..."
+
+#: static/js/twocols_nav.js:170
+msgid "Are you sure?"
+msgstr "Oletko varma?"
+
+#: static/js/twocols_nav.js:171
+msgid "This will invalidate your registered application."
+msgstr "Tämä mitätöi rekisteröintisi."

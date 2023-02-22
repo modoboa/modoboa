@@ -1,0 +1,167 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-17 13:15+0200\n"
+"PO-Revision-Date: 2023-02-17 21:33+0200\n"
+"Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: dnstools/lib.py:78
+msgid "Wrong ip4 mechanism syntax"
+msgstr "Väärä ip4-mekanismin syntaksi"
+
+#: dnstools/lib.py:82
+msgid "Wrong IPv4 address format"
+msgstr "Väärä IPv4-osoitteen muoto"
+
+#: dnstools/lib.py:88
+msgid "Wrong ip6 mechanism syntax"
+msgstr "Väärä ip6-mekanismin syntaksi"
+
+#: dnstools/lib.py:93
+msgid "Wrong IPv6 address format"
+msgstr "Väärä IPv6-osoitteen muoto"
+
+#: dnstools/lib.py:108 dnstools/lib.py:134
+msgid "Invalid syntax for {} mechanism"
+msgstr "Virheellinen syntaksi {}-mekanismille"
+
+#: dnstools/lib.py:110
+msgid "Invalid mask found {}"
+msgstr "Virheellinen maski löydetty {}"
+
+#: dnstools/lib.py:155
+msgid "Not an SPF record"
+msgstr "Tämä ei ole SPF-tietue"
+
+#: dnstools/lib.py:177
+msgid "Unknown mechanism {}"
+msgstr "Tuntematon mekanismi {}"
+
+#: dnstools/lib.py:179
+msgid "Unknown modifier {}"
+msgstr "Tuntematon muunnin {}"
+
+#: dnstools/lib.py:182
+msgid "Duplicate modifier {} found"
+msgstr "Havaittu kaksoismuunnin {}"
+
+#: dnstools/lib.py:186
+msgid "No mechanism found"
+msgstr "Mekanismia ei löydetty"
+
+#: dnstools/lib.py:193
+msgid "Not a valid DKIM record"
+msgstr "DKIM-tietue ei kelpaa"
+
+#: dnstools/lib.py:201 dnstools/lib.py:254
+msgid "Invalid tag {}"
+msgstr "Virheellinen tunniste {}"
+
+#: dnstools/lib.py:206
+msgid "No key found in record"
+msgstr "Tietueesta ei löytynyt avainta"
+
+#: dnstools/lib.py:213
+msgid "Wrong value {} for tag {}"
+msgstr "Väärä arvo {} tunnisteelle {}"
+
+#: dnstools/lib.py:228
+msgid "Wrong value {} for tag {}:"
+msgstr "Väärä arvo {} tunnisteelle {}:"
+
+#: dnstools/lib.py:232
+msgid " not an integer"
+msgstr " ei kokonaisluku"
+
+#: dnstools/lib.py:235
+msgid " less than {}"
+msgstr " pienempi kuin {}"
+
+#: dnstools/lib.py:238
+msgid " greater than {}"
+msgstr " on suurempi kuin {}"
+
+#: dnstools/lib.py:246
+msgid "Not a valid DMARC record"
+msgstr "Epäkelpo DMARC-tietue"
+
+#: dnstools/lib.py:257
+msgid "Unknown tag {}"
+msgstr "Tuntematon tunniste {}"
+
+#: dnstools/lib.py:262
+msgid "Missing required p tag"
+msgstr "Puuttuu vaadittu p-tunniste"
+
+#: dnstools/models.py:77
+msgid "Public key mismatchs"
+msgstr "Julkiset avaimet eivät täsmää"
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:8
+msgid "autoconfig record (Mozilla) found: "
+msgstr "autoconfig-tietue (Mozilla) löytyi: "
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:12
+msgid "autoconfig record (Mozilla) not found."
+msgstr "autoconfig-tietuetta (Mozilla) ei löydy."
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:17
+msgid "autodiscover record (Microsoft) found: "
+msgstr "autodiscover-tietue (Microsoft) löytyi: "
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:21
+msgid "autodiscover record (Microsoft) not found."
+msgstr "autodiscover-tietuetta (Microsoft) ei löydy."
+
+#: dnstools/templates/dnstools/dns_record_detail.html:8
+msgid "A DNS record has been found and is valid."
+msgstr "DNS-tietue on löydetty ja se on voimassa."
+
+#: dnstools/templates/dnstools/dns_record_detail.html:12
+msgid "A DNS record has been found but its syntax is not valid:"
+msgstr "DNS-tietue on löydetty, mutta sen syntaksi ei ole oikein:"
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:7
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace value between "
+"[ ] by the appropriate ones."
+msgstr ""
+"Tässä on esimerkki DNS-konfiguraatiosta (bind-muodossa). Korvaa [ ]:n "
+"välissä olevat arvot sopivilla arvoilla."
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:15
+msgid "IP address of your Modoboa server"
+msgstr "Modoboa-palvelimen IP-osoite"
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:28
+msgid "Auto configuration"
+msgstr "Automaattinen asetusten määrittäminen"
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:30
+#: dnstools/templates/dnstools/domain_dns_configuration.html:31
+msgid "hostname of your automx server"
+msgstr "automx-palvelimen nimi"
+
+#: dnstools/views.py:36
+msgid "{} record of {}"
+msgstr "{} tietueesta {}"
+
+#: dnstools/views.py:64
+msgid "Auto configuration records for {}"
+msgstr "Automaattisen määrityksen asetukset {}"
+
+#: dnstools/views.py:84
+msgid "DNS configuration for {}"
+msgstr "DNS-määritykset"
