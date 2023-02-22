@@ -2,39 +2,41 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 16:48+0100\n"
+"POT-Creation-Date: 2023-02-22 18:52+0100\n"
 "PO-Revision-Date: 2023-02-22 16:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2023\n"
-"Language-Team: Romanian (Romania) (https://www.transifex.com/tonio/teams/13749/ro_RO/)\n"
+"Language-Team: Romanian (Romania) (https://www.transifex.com/tonio/"
+"teams/13749/ro_RO/)\n"
+"Language: ro_RO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro_RO\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
 
-#: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
 msgid "No more domain to show"
 msgstr "Nu mai sunt domenii de afișat"
 
-#: admin/static/admin/js/admin.js:149
+#: static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
 msgstr "Nu sterge directorul pentru domeniu"
 
-#: admin/static/admin/js/admin.js:151
+#: static/admin/js/admin.js:151
 msgid "This operation will remove ALL data associated to this domain."
 msgstr ""
 "Această operațiune va șterge toată informația asociată cu acest domeniu."
 
-#: admin/static/admin/js/admin.js:152
+#: static/admin/js/admin.js:152
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
@@ -42,18 +44,24 @@ msgstr ""
 "Această operațiune va șterge toată informația asociată cu acest domeniu, cu "
 "excepția conturilor."
 
-#: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:433
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
 msgid "No more quota to show"
 msgstr "Nu mai există cote de afișat"
 
-#: admin/static/admin/js/admin.js:306
+#: static/admin/js/admin.js:180
+#, fuzzy
+#| msgid "No more quota to show"
+msgid "No more log to show"
+msgstr "Nu mai există cote de afișat"
+
+#: static/admin/js/admin.js:309
 msgid "No domain administrator defined"
 msgstr "Nu există configurat un administartor de domeniu"
 
-#: admin/static/admin/js/admin.js:362 admin/static/admin/js/admin.js:430
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
 msgid "No more identity to show"
 msgstr "Nu mai sunt identități de afișat"
 
-#: admin/static/admin/js/admin.js:404
+#: static/admin/js/admin.js:407
 msgid "Do not delete mailbox directory"
 msgstr "Nu sterge directorul mailbox"
