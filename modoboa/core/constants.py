@@ -28,6 +28,7 @@ LANGUAGES = (
     ("en", u"english"),
     ("el", u"ελληνικά"),
     ("es", u"español"),
+    ("fi", "Suomalainen"),
     ("fr", u"français"),
     ("it", u"italiano"),
     ("ja", u"日本の"),
