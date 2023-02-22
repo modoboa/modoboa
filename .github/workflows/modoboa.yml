@@ -6,8 +6,12 @@ name: Modoboa App
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - 'modoboa/**.po'
   pull_request:
     branches: [ master ]
+    paths-ignore:
+      - 'modoboa/**.po'
   release:
     branches: [ master ]
     types: [ published ]
