@@ -4,7 +4,7 @@ Advanced (ie. stronger) password hashers.
 This module relies on `passlib` to provide more secure hashers.
 """
 
-from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt
+from passlib.hash import bcrypt, md5_crypt, sha256_crypt, sha512_crypt, ldap_salted_sha1
 
 try:
     from argon2 import PasswordHasher as argon2_hasher
