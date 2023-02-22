@@ -29,3 +29,38 @@ filters:
     source_language: en
     source_file: modoboa/limits/locale/en/LC_MESSAGES/django.po
     translation_files_expression: modoboa/limits/locale/<lang>/LC_MESSAGES/django.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/transport/locale/en/LC_MESSAGES/django.po
+    translation_files_expression: modoboa/transport/locale/<lang>/LC_MESSAGES/django.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/transport/locale/en/LC_MESSAGES/djangojs.po
+    translation_files_expression: modoboa/transport/locale/<lang>/LC_MESSAGES/djangojs.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/relaydomains/locale/en/LC_MESSAGES/django.po
+    translation_files_expression: modoboa/relaydomains/locale/<lang>/LC_MESSAGES/django.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/relaydomains/locale/en/LC_MESSAGES/djangojs.po
+    translation_files_expression: modoboa/relaydomains/locale/<lang>/LC_MESSAGES/djangojs.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/maillog/locale/en/LC_MESSAGES/django.po
+    translation_files_expression: modoboa/maillog/locale/<lang>/LC_MESSAGES/django.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/maillog/locale/en/LC_MESSAGES/djangojs.po
+    translation_files_expression: modoboa/maillog/locale/<lang>/LC_MESSAGES/djangojs.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/dnstools/locale/en/LC_MESSAGES/django.po
+    translation_files_expression: modoboa/dnstools/locale/<lang>/LC_MESSAGES/django.po
