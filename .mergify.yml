@@ -44,7 +44,6 @@ pull_request_rules:
   - name: automatic merge for transifex pull requests
     conditions:
       - author~=^transifex-integration\[bot\]$
-      - label=dependencies
       - "#approved-reviews-by>=1"
     actions:
       queue:
