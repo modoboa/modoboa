@@ -1,11 +1,12 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Andrew <buddha@cryptolab.net>, 2014
-# Chris de Gelder <chrisdegelder@gmail.com>, 2017
+# ABC, 2017
 # Harrie v.d. Vegt <hvdvegt@gmail.com>, 2016
+# J Rosier <vertalen@tagora.nl>, 2020,2023
 # MC Moerkerk <contact@melluh.me>, 2019
 # Peter van den Heuvel <peter@pvandenheuvel.nl>, 2017
 # Remco de Hiep <remco.de.hiep@reto.nl>, 2017
@@ -19,27 +20,24 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-22 18:52+0100\n"
-"PO-Revision-Date: 2019-05-30 07:01+0000\n"
-"Last-Translator: MC Moerkerk <contact@melluh.me>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
-"language/nl_NL/)\n"
-"Language: nl_NL\n"
+"PO-Revision-Date: 2015-06-03 15:45+0000\n"
+"Last-Translator: J Rosier <vertalen@tagora.nl>, 2020,2023\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: api/v1/serializers.py:35 forms/domain.py:44
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr ""
-"Quota gedeeld tussen mailboxen. Kan uitgedrukt worden in KB, MB (standaard) "
-"of GB. Een waarde van 0 betekent geen quota."
+msgstr "Quota gedeeld tussen mailboxen. Kan uitgedrukt worden in kB, MB (standaard) of GB. Een waarde van 0 betekent geen quota."
 
 #: api/v1/serializers.py:42
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr "Standaard quotum in MB per mailbox. 0 Betekent geen quotum."
+msgstr "Standaard quotum in MB per mailbox. 0 betekent geen quotum."
 
 #: api/v1/serializers.py:73 forms/domain.py:108
 msgid "No authorized MX record found for this domain"
@@ -54,10 +52,10 @@ msgstr "Kan niet groter zijn dan domein quota"
 msgid "Permission denied."
 msgstr "Toegang geweigerd."
 
-#: api/v1/serializers.py:177 api/v2/serializers.py:73 api/v2/serializers.py:359
-#: forms/alias.py:108 forms/alias.py:110
+#: api/v1/serializers.py:177 api/v2/serializers.py:73
+#: api/v2/serializers.py:359 forms/alias.py:108 forms/alias.py:110
 msgid "This field is required"
-msgstr "Dit veld is benodigd"
+msgstr "Dit veld is verplicht"
 
 #: api/v1/serializers.py:189
 msgid ""
@@ -76,7 +74,7 @@ msgstr "Moet gelijk zijn aan de mailbox full_address"
 #: forms/account.py:180 forms/domain.py:165 forms/domain.py:294
 #: forms/domain.py:297
 msgid "This field is required."
-msgstr "Dit veld is benodigd."
+msgstr "Dit veld is verplicht."
 
 #: api/v1/serializers.py:362 api/v2/serializers.py:471
 msgid "Local domain {} does not exist"
@@ -88,15 +86,15 @@ msgstr "Lijst ontvangers."
 
 #: api/v1/serializers.py:495
 msgid "You don't have access to this domain."
-msgstr "U hebt geen toegang tot dit domein."
+msgstr "Je hebt geen toegang tot dit domein."
 
 #: api/v1/serializers.py:503
 msgid "You don't have access to this mailbox."
-msgstr "U hebt geen toegang tot deze mailbox."
+msgstr "Je hebt geen toegang tot deze mailbox."
 
 #: api/v1/viewsets.py:175
 msgid "Here is your new Modoboa password: {}"
-msgstr ""
+msgstr "Hier is je nieuwe Modoboa wachtwoord:{}"
 
 #: api/v2/serializers.py:99 forms/domain.py:314
 #, python-format
@@ -106,39 +104,36 @@ msgstr "Gebruiker '%s' bestaat al"
 #: api/v2/serializers.py:209 api/v2/serializers.py:217 app_settings.py:237
 #: app_settings.py:245 forms/account.py:351
 msgid "Must be a positive integer"
-msgstr "Dit moet een positive integer zijn."
+msgstr "Dit moet een positief geheel getal zijn."
 
 #: api/v2/serializers.py:226 app_settings.py:255
 msgid "Directory not found."
-msgstr "Directory niet gevonden."
+msgstr "Map niet gevonden."
 
 #: api/v2/serializers.py:231 app_settings.py:261
 msgid "openssl not found, please make sure it is installed."
-msgstr ""
-"Openssl kan niet gevonden worden. Verzeker u ervan dat dit geinstalleerd is."
+msgstr "Openssl kan niet gevonden worden. Controleer of dit geïnstalleerd is."
 
 #: api/v2/serializers.py:246 app_settings.py:278
 msgid "This field only allows valid IP addresses (or networks)"
-msgstr ""
+msgstr "Dit veld laat alleen geldige IP-adressen (of netwerken) toe"
 
 #: api/v2/serializers.py:258 app_settings.py:293
 msgid "Define at least one authorized network / address"
 msgstr "Definieer ten minste 1 geautoriseerd netwerk / adres"
 
 #: api/v2/serializers.py:459
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
-msgstr "Een mailbox is benodigd"
+msgstr "Er is een mailbox vereist om een alias te creëren"
 
 #: api/v2/viewsets.py:74 forms/account.py:365 forms/account.py:373
 #: forms/alias.py:91
 msgid "You don't have access to this domain"
-msgstr "U heeft geen toegang tot dit domein"
+msgstr "Je hebt geen toegang tot dit domein"
 
 #: api/v2/viewsets.py:77 views/domain.py:246
 msgid "You can't delete your own domain"
-msgstr "U kunt uw eigen domein niet verwijderen"
+msgstr "Je kunt je eigen domein niet verwijderen"
 
 #: app_settings.py:23 app_settings.py:300 handlers.py:266
 #: templates/admin/_global_statistics_widget.html:11
@@ -152,7 +147,7 @@ msgstr "MX Controles inschakelen"
 
 #: app_settings.py:29 app_settings.py:305
 msgid "Check that every domain has a valid MX record"
-msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+msgstr "Controleer of ieder domein een geldig MX-record heeft"
 
 #: app_settings.py:34 app_settings.py:309
 msgid "Valid MXs"
@@ -160,11 +155,9 @@ msgstr "Geldige MX'en"
 
 #: app_settings.py:37 app_settings.py:312
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"Een lijst van IP-adressen waaraan alle MX-records moeten voldoen. Er zal een "
-"waarschuwing getoont worden voor records die niet overeenkomen."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "Een lijst van IP-adressen waaraan alle MX-records moeten voldoen. Er zal een waarschuwing getoond worden voor records die niet overeenkomen."
 
 #: app_settings.py:45 app_settings.py:318
 msgid "New domains must use authorized MX(s)"
@@ -177,52 +170,36 @@ msgid ""
 msgstr "Een domein niet aanmaken als het MX-record het adres niet gebruikt."
 
 #: app_settings.py:54 app_settings.py:326
-#, fuzzy
-#| msgid "Enable DNS checks"
 msgid "Enable SPF checks"
-msgstr "Schakel DNS checks in."
+msgstr "Activeer SPF controle"
 
 #: app_settings.py:57 app_settings.py:328
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid SPF record"
-msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+msgstr "Controleer of ieder domein een geldig SPF-record heeft"
 
 #: app_settings.py:62 app_settings.py:332
-#, fuzzy
-#| msgid "Enable MX checks"
 msgid "Enable DKIM checks"
-msgstr "MX Controles inschakelen"
+msgstr "Activeer DKIM-controle"
 
 #: app_settings.py:65 app_settings.py:334
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
-msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+msgstr "Controleer of ieder domein met geactiveerde DKIM een geldig DNS record heeft"
 
 #: app_settings.py:71 app_settings.py:339
-#, fuzzy
-#| msgid "Enable MX checks"
 msgid "Enable DMARC checks"
-msgstr "MX Controles inschakelen"
+msgstr "Activeer DMARC-controle"
 
 #: app_settings.py:74 app_settings.py:341
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid DMARC record"
-msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+msgstr "Controleer of ieder domein een geldig DMARC-record heeft"
 
 #: app_settings.py:79 app_settings.py:345
-#, fuzzy
-#| msgid "Enable MX checks"
 msgid "Enable autoconfig checks"
-msgstr "MX Controles inschakelen"
+msgstr "Activeer controle van automatische configuratie"
 
 #: app_settings.py:82 app_settings.py:347
-#, fuzzy
-#| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr "Controleer dat ieder domein een geldig MX-record heeft"
+msgstr "Controleer of ieder domein geldige records voor automatische configuratie heeft."
 
 #: app_settings.py:87 app_settings.py:352
 msgid "Enable DNSBL checks"
@@ -249,10 +226,7 @@ msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
-"Absolute pad van de directory waar DKIM private keys worden opgeslagen. "
-"Verzeker u ervan dat deze directory van de user root is en niet leesbaar "
-"voor andere gebruikers."
+msgstr "Absolute pad van de directory waar DKIM private keys worden opgeslagen. Let erop dat deze directory van de root-gebruiker is en niet leesbaar is voor andere gebruikers."
 
 #: app_settings.py:115 app_settings.py:373
 msgid "Default DKIM key length"
@@ -270,21 +244,17 @@ msgstr "Standaard domein quota"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
-"Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe "
-"te passen. Een waarde van 0 betekent geen quota."
+msgstr "Standaard quota (in MB) om op nieuw aangemaakte domeinen zonder waarde toe te passen. Een waarde van 0 betekent geen quota."
 
 #: app_settings.py:133 app_settings.py:386
-#, fuzzy
-#| msgid "Default domain quota"
 msgid "Default domain sending limit"
-msgstr "Standaard domein quota"
+msgstr "Standaard verzendlimiet per domein"
 
 #: app_settings.py:136 app_settings.py:388
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
-msgstr ""
+msgstr "Aantal mails dat nieuwe domeinen per dag mogen verzenden. Laat leeg voor geen limiet."
 
 #: app_settings.py:141 app_settings.py:395
 #: templates/admin/domain_detail.html:41
@@ -299,9 +269,7 @@ msgstr "Pas mailboxen op het bestandssysteem aan"
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr ""
-"Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of "
-"verwijderd worden in Modoboa."
+msgstr "Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of verwijderd worden in Modoboa."
 
 #: app_settings.py:153 app_settings.py:405 forms/domain.py:49
 #: models/domain.py:32 templates/admin/domain_detail.html:64
@@ -309,28 +277,20 @@ msgid "Default mailbox quota"
 msgstr "Standaard mailbox quota"
 
 #: app_settings.py:156
-#, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created mailboxes with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"Standaard mailbox-quota (in MB) toegepast op nieuw aangemaakte domeinen "
-"zonder waarde gespecificeerd. Een waarde van 0 betekent geen quota."
+msgstr "Standaard mailboxquota (in MB), toegepast op nieuwe mailboxen zonder gespecificeerde waarde. De waarde '0' betekent geen quotum."
 
 #: app_settings.py:162 app_settings.py:413
-#, fuzzy
-#| msgid "Default mailbox quota"
 msgid "Default mailbox sending limit"
-msgstr "Standaard mailbox quota"
+msgstr "Standaard verzendlimiet voor mailboxen"
 
 #: app_settings.py:165 app_settings.py:415
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
-msgstr ""
+msgstr "Aantal mails dat nieuwe mailboxen per dag mogen verzenden. Laat leeg voor geen limiet."
 
 #: app_settings.py:171 app_settings.py:420
 msgid "Automatic account removal"
@@ -338,17 +298,16 @@ msgstr "Automatish een account verwijderen"
 
 #: app_settings.py:174 app_settings.py:422
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr ""
-"Als een mailbox wordt verwijderd, verwijder dan ook het bijbehorende account"
+msgstr "Als een mailbox wordt verwijderd, verwijder dan ook het bijbehorende account"
 
 #: app_settings.py:178 app_settings.py:426
 msgid "Automatic domain/mailbox creation"
 msgstr "Domein en mailbox automatisch aanmaken"
 
 #: app_settings.py:181 app_settings.py:428
-msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr ""
-"Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr "Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
 
 #: app_settings.py:187 app_settings.py:434
 msgid "Create an alias when a mailbox is renamed"
@@ -359,20 +318,14 @@ msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "Maak een alias aan voor het oude adres als een mailbox hernoemd wordt."
 
 #: app_settings.py:407
-#, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"Standaard mailbox-quota (in MB) toegepast op nieuw aangemaakte domeinen "
-"zonder waarde gespecificeerd. Een waarde van 0 betekent geen quota."
+msgstr "Standaard mailboxquota (in MB) die worden toegepast op nieuwe domeinen zonder gespecificeerde waarde. Een 0 betekent geen quota."
 
 #: app_settings.py:451 app_settings.py:453
 msgid "Administration"
-msgstr "Administratie"
+msgstr "Beheer"
 
 #: constants.py:28 forms/alias.py:43
 #: templates/admin/_per_domain_statistics_widget.html:7
@@ -382,17 +335,15 @@ msgstr "Domein"
 
 #: constants.py:29
 msgid "Relay domain"
-msgstr "Doorstuur domein"
+msgstr "Doorstuurdomein"
 
 #: constants.py:42
 msgid "Opened"
-msgstr ""
+msgstr "Geopend"
 
 #: constants.py:43
-#, fuzzy
-#| msgid "Close"
 msgid "Closed"
-msgstr "Sluiten"
+msgstr "Gesloten"
 
 #: forms/account.py:32 templates/admin/domain_detail.html:159
 msgid "Username"
@@ -402,17 +353,15 @@ msgstr "Gebruikersnaam"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr ""
-"De naam van de gebruiker. Moet een geldig e-mail adres zijn voor gebruikers "
-"of administrators met een mailbox."
+msgstr "De naam van de gebruiker. Moet een geldig e-mailadres zijn voor gebruikers of administrators met een mailbox."
 
 #: forms/account.py:39 templates/admin/account_detail.html:29
 msgid "Role"
-msgstr "Regel"
+msgstr "Rol"
 
 #: forms/account.py:40
 msgid "Choose"
-msgstr "Kiezen"
+msgstr "Kies"
 
 #: forms/account.py:41
 msgid "What level of permission this user will have"
@@ -426,9 +375,7 @@ msgstr "Willekeurig wachtwoord"
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
-msgstr ""
-"Genereer een willekeurig wachtwoord. Als u dit account bijwerkt en deze "
-"optie aanvinkt wordt een nieuw wachtwoord gegenereerd."
+msgstr "Genereer een willekeurig wachtwoord. Als je dit account bijwerkt en deze optie aanvinkt wordt er een nieuw wachtwoord gegenereerd."
 
 #: forms/account.py:52
 msgid "Password"
@@ -456,40 +403,38 @@ msgstr "De wachtwoorden komen niet overeen."
 
 #: forms/account.py:199
 msgid "You can't disable your own account"
-msgstr "U kunt uw eigen account niet uitschakelen"
+msgstr "Je kunt je eigen account niet uitschakelen"
 
 #: forms/account.py:226
 msgid "E-mail"
-msgstr "E-mail"
+msgstr "mail"
 
 #: forms/account.py:228
 msgid "Create an alias using the old address"
-msgstr "Maak een alias aan voor het oude adres"
+msgstr "Maak een alias aan met het oude adres"
 
 #: forms/account.py:233 forms/domain.py:41
-#: templates/admin/account_detail.html:45 templates/admin/domain_detail.html:49
+#: templates/admin/account_detail.html:45
+#: templates/admin/domain_detail.html:49
 msgid "Quota"
 msgstr "Quota"
 
 #: forms/account.py:236
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Quota voor deze mailbox kan uitgedrukt worden ik KB, MB (standaard) of GB. "
-"Geef een aangepaste waarde of gebruik de standaard voor dit domein. Laat dit "
-"leeg voor een ongelimiteerde waarde (niet toegestaan voor domein "
-"administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr "Quotum voor deze mailbox; kan uitgedrukt worden in kB, MB (standaard) of GB. Geef een aangepaste waarde of gebruik de standaard voor dit domein. Laat dit leeg voor een ongelimiteerde waarde (niet toegestaan voor domeinadministrators)."
 
 #: forms/account.py:246 models/domain.py:36 models/mailbox.py:99
-#: templates/admin/account_detail.html:50 templates/admin/domain_detail.html:69
+#: templates/admin/account_detail.html:50
+#: templates/admin/domain_detail.html:69
 msgid "Message sending limit"
-msgstr ""
+msgstr "Verzendlimiet e-mails"
 
 #: forms/account.py:250 models/mailbox.py:101
 msgid "Number of messages this mailbox can send per day"
-msgstr ""
+msgstr "Aantal e-mails dat deze mailbox per dag mag verzenden"
 
 #: forms/account.py:253 forms/domain.py:31
 #: templates/admin/domain_headers.html:4
@@ -501,10 +446,7 @@ msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Alias(en) van deze mailbox. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen. Om een 'catch-all'-adres te maken "
-"voert u alleen het domein in (bijvoorbeeld: @domein.tld)."
+msgstr "Alias(en) van deze mailbox. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen. Om een 'catch-all'-adres te maken voer je alleen het domein in (bijvoorbeeld: @domein.tld)."
 
 #: forms/account.py:262
 msgid "Sender addresses"
@@ -515,11 +457,7 @@ msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr ""
-"Extra afzenderadres(sen) voor dit account. De gebruiker wordt toegestaan om "
-"dit adres als verzender te gebruiken voor uitgaande berichten, ook al "
-"bestaat dit adres niet lokaal. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen."
+msgstr "Extra afzenderadres(sen) voor dit account. De gebruiker wordt toegestaan om dit adres als verzender te gebruiken voor uitgaande berichten, ook al bestaat dit adres niet lokaal. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: forms/account.py:325 forms/alias.py:88 models/mailbox.py:313
 msgid "Domain does not exist"
@@ -548,7 +486,7 @@ msgstr "Profiel"
 
 #: forms/account.py:533 forms/account.py:621
 msgid "Mail"
-msgstr "Mail"
+msgstr "E-mail"
 
 #: forms/account.py:536
 msgid "Permissions"
@@ -560,7 +498,7 @@ msgstr "Account aangepast"
 
 #: forms/account.py:629
 msgid "New account"
-msgstr "Nieuwe account"
+msgstr "Nieuw account"
 
 #: forms/account.py:639
 msgid "Account created"
@@ -572,15 +510,13 @@ msgstr "Willekeurig adres"
 
 #: forms/alias.py:23
 msgid "Email address"
-msgstr "E-mail adres"
+msgstr "mailadres"
 
 #: forms/alias.py:25
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"Het alias-adres. Om een 'catch-all'-adres te maken voert u alleen het domein "
-"in (bijvoorbeeld: @domein.tld)."
+msgstr "Het alias-adres. Om een 'catch-all'-adres te maken voer je alleen het domein in (bijvoorbeeld: @domein.nl)."
 
 #: forms/alias.py:31 templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -590,9 +526,7 @@ msgstr "Ontvangers"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"Adressen waarnaar deze alias zal verwijzen. Geef slechts een adres per regel "
-"op, en toets ENTER om een nieuwe regel te krijgen."
+msgstr "Adressen waarnaar deze alias zal verwijzen. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: forms/alias.py:114
 msgid "No recipient defined"
@@ -606,9 +540,7 @@ msgstr "Type"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr ""
-"Alias(sen) van dit domein. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen."
+msgstr "Alias(sen) van dit domein. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: forms/domain.py:39
 msgid "Key selector"
@@ -618,13 +550,11 @@ msgstr "Key selector"
 msgid ""
 "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
 "GB. A value of 0 means no quota."
-msgstr ""
-"Standaard quota toegepast op alle mailboxen. Kan uitgedrukt worden in KB, MB "
-"(standaard) of GB. Een waarde van 0 betekent geen quota."
+msgstr "Standaard quotum toegepast op alle mailboxen. Kan uitgedrukt worden in kB, MB (standaard) of GB. Een waarde van 0 betekent geen quotum."
 
 #: forms/domain.py:97 handlers.py:166
 msgid "domain alias"
-msgstr "domein alias"
+msgstr "domeinalias"
 
 #: forms/domain.py:100 forms/domain.py:176 forms/domain.py:184
 #, python-format
@@ -637,7 +567,7 @@ msgstr "DKIM Key opslagdirectory niet geconfigureerd"
 
 #: forms/domain.py:155
 msgid "You can't define an unlimited quota."
-msgstr "U kunt geen onbeperkt quotum definiëren."
+msgstr "Je kunt geen onbeperkt quotum definiëren."
 
 #: forms/domain.py:176 forms/domain.py:181
 msgid "domain"
@@ -686,7 +616,7 @@ msgstr "Automatisch een standaard alias voor dit domein aanmaken"
 
 #: forms/domain.py:285
 msgid "Invalid format"
-msgstr "Verkeerd formaat"
+msgstr "Verkeerd format"
 
 #: forms/domain.py:426
 msgid "Domain modified"
@@ -722,7 +652,7 @@ msgstr "Lokale kopie behouden"
 
 #: forms/forward.py:22
 msgid "Forward messages and store copies into your local mailbox"
-msgstr "Stuur berichten door en sla een kopie op in uw mailbox"
+msgstr "Stuur berichten door en sla een kopie op in je mailbox"
 
 #: forms/import_.py:11
 msgid "Select a file"
@@ -730,7 +660,7 @@ msgstr "Bestand selecteren"
 
 #: forms/import_.py:19
 msgid "Continue on error"
-msgstr "Doorgaan als er een fout optreed"
+msgstr "Doorgaan als er een fout optreedt"
 
 #: forms/import_.py:20
 msgid "Don't treat duplicated objects as error"
@@ -742,8 +672,7 @@ msgstr "Versleutel wachtwoorden"
 
 #: forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Vink deze optie aan als wachtwoorden in uw bestand niet versleuteld zijn"
+msgstr "Vink deze optie aan als wachtwoorden in je bestand niet versleuteld zijn"
 
 #: handlers.py:215
 #, python-format
@@ -757,7 +686,7 @@ msgstr "Mailbox {} bestaat al"
 #: handlers.py:236
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
-msgstr "Account import is mislukt (%s): verkeerd quotum waarde"
+msgstr "Account import is mislukt (%s): verkeerde quotumwaarde"
 
 #: handlers.py:276 templates/admin/_global_statistics_widget.html:17
 #: templates/admin/_per_domain_statistics_widget.html:8
@@ -771,27 +700,25 @@ msgstr "Doorsturen"
 
 #: lib.py:48
 msgid "A mailbox is required"
-msgstr "Een mailbox is benodigd"
+msgstr "Er is een mailbox nodig"
 
 #: lib.py:138
 msgid "You are not allowed to import domains"
-msgstr "U mag geen domeinen importeren"
+msgstr "Je mag geen domeinen importeren"
 
 #: lib.py:149
 msgid "You are not allowed to import domain aliases."
-msgstr "U heeft geen rechten om domeinaliassen te importeren."
+msgstr "Je hebt geen rechten om domeinaliassen te importeren."
 
 #: lib.py:199 tests/test_mx.py:152 tests/test_mx.py:161 tests/test_mx.py:164
-#, fuzzy, python-format
-#| msgid "No DNS records found for %s"
+#, python-format
 msgid "No DNS record found for %s"
-msgstr "Geen DNS records gevonden voor %s"
+msgstr "Geen DNS record gevonden voor %s "
 
 #: lib.py:202
-#, fuzzy, python-format
-#| msgid "No MX record for %s"
+#, python-format
 msgid "No %(type)s record for %(name)s"
-msgstr "Geen MX record voor %s"
+msgstr "Geen %(type)s record voor %(name)s"
 
 #: lib.py:206 tests/test_mx.py:156
 msgid "No working name servers found"
@@ -805,12 +732,12 @@ msgstr "DNS timeout, het was niet mogelijk om %s op te zoeken"
 #: lib.py:212
 #, python-format
 msgid "DNS name is too long: %s"
-msgstr ""
+msgstr "DNS naam is te lang: %s"
 
 #: lib.py:239
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
-msgstr "Ongeldig IP-adres formaat voor {domain}; {addr}"
+msgstr "Ongeldig IP-adres format voor {domain}; {addr}"
 
 #: lib.py:309
 #, python-format
@@ -824,9 +751,7 @@ msgstr "%d objecten succesvol geïmporteerd"
 
 #: management/commands/subcommands/_import.py:93
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
-"CSV bestand is niet gecodeerd in UTF-8, aan het proberen om de codering te "
-"raden"
+msgstr "CSV bestand is niet gecodeerd in UTF-8, aan het proberen om de codering te raden"
 
 #: management/commands/subcommands/_import.py:105
 #, python-format
@@ -840,23 +765,19 @@ msgstr "Kan CSV bestand niet decoderen met %(encoding)scodering"
 
 #: management/commands/subcommands/_mx.py:121
 msgid "MX {} listed by DNSBL provider {}"
-msgstr ""
+msgstr "MX {} getoond door DNSBL provider {}"
 
 #: management/commands/subcommands/_mx.py:169
-#, fuzzy
-#| msgid "Domain {} has no MX record"
 msgid "Domain has no MX record"
-msgstr "Domein {} heeft geen MX-record"
+msgstr "Domein heeft geen MX record"
 
 #: management/commands/subcommands/_mx.py:173
 msgid "Domain {} has no MX record"
 msgstr "Domein {} heeft geen MX-record"
 
 #: management/commands/subcommands/_mx.py:193
-#, fuzzy
-#| msgid "MX records of {}"
 msgid "Invalid MX record: {}"
-msgstr "MX-records van {}"
+msgstr "Ongeldig MX record: {}"
 
 #: management/commands/subcommands/_mx.py:199
 #, python-brace-format
@@ -876,10 +797,8 @@ msgid "Domain not found."
 msgstr "Domein niet gevonden."
 
 #: models/alias.py:37
-#, fuzzy
-#| msgid "Alias with this name already exists"
 msgid "An alias with this name already exists."
-msgstr "Een alias met deze naam bestaat al"
+msgstr "Een alias met deze naam bestaat al."
 
 #: models/alias.py:71 models/mailbox.py:92
 msgid "address"
@@ -918,10 +837,8 @@ msgid "Local recipient {}@{} not found"
 msgstr "Lokale ontvanger {}@{} niet gevonden"
 
 #: models/alias.py:215
-#, fuzzy
-#| msgid "Invalid line: %s"
 msgid "Invalid line: {}"
-msgstr "Ongeldige regel: %s"
+msgstr "Ongeldige regel: {}"
 
 #: models/domain.py:26 models/domain_alias.py:33
 msgid "name"
@@ -933,7 +850,7 @@ msgstr "De domeinnaam"
 
 #: models/domain.py:39
 msgid "Number of messages this domain can send per day"
-msgstr ""
+msgstr "Aantal mails dat dit domein per dag mag verzenden"
 
 #: models/domain.py:44
 msgid "Check to activate this domain"
@@ -954,9 +871,7 @@ msgstr "Zet DKIM ondertekening aan"
 #: models/domain.py:59
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Als u deze functie aanzet, zal er een DKIM key gegenereerd worden voor dit "
-"domein."
+msgstr "Als u deze functie aanzet, zal er een DKIM key gegenereerd worden voor dit domein."
 
 #: models/domain.py:65
 msgid "Key length"
@@ -967,28 +882,20 @@ msgid "Invalid line"
 msgstr "Verkeerde regel"
 
 #: models/domain.py:367
-#, fuzzy
-#| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
-msgstr "Geen geauthoriseerd MX record gevonden voor domein {}"
+msgstr "{}: geen goedgekeurd MX record gevonden voor dit domein"
 
 #: models/domain.py:374
-#, fuzzy
-#| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
-msgstr "Ongeldige quota waarde voor domein '{}'"
+msgstr "{}: ongeldige quotawaarde voor dit domein"
 
 #: models/domain.py:381
-#, fuzzy
-#| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
-msgstr "Ongeldige standaard mailbox quota waarde voor domein '{}'"
+msgstr "{}: ongeldige standaard quotawaarde voor dit domein"
 
 #: models/domain.py:386
-#, fuzzy
-#| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
-msgstr "Standaard mailboxquotum kan niet groter zijn dan het domeinquotum"
+msgstr "{}: standaard mailboxquotum kan niet groter zijn dan domeinquotum"
 
 #: models/domain_alias.py:34
 msgid "The alias name"
@@ -1021,10 +928,8 @@ msgid "A quota is required"
 msgstr "Een quota is vereist"
 
 #: models/mailbox.py:261
-#, fuzzy
-#| msgid "Domain quota exceeded"
 msgid "{}: domain quota exceeded"
-msgstr "Domein quota overschreden"
+msgstr "{}: domeinquotum overschreden"
 
 #: templates/admin/_domain_dkim_key.html:6
 #: templates/admin/_domain_dkim_key.html:20
@@ -1038,13 +943,11 @@ msgstr "DKIM publieke key voor %(domain)s"
 
 #: templates/admin/_domain_dkim_key.html:11
 msgid "Raw format. Click to copy"
-msgstr ""
+msgstr "Ruw format. Klik om te kopiëren"
 
 #: templates/admin/_domain_dkim_key.html:15
-#, fuzzy
-#| msgid "Bind/named format"
 msgid "Bind/named format. Click to copy"
-msgstr "Bind/named formaat"
+msgstr "Blind/named format. Klik om te kopiëren"
 
 #: templates/admin/_domain_dnschecks_status.html:4
 msgctxt "checks"
@@ -1059,14 +962,12 @@ msgstr "In afwachting van controles"
 #: templates/admin/_domain_dnschecks_status.html:26
 #: templates/admin/_domain_dnschecks_status.html:34
 #: templates/admin/_domain_dnschecks_status.html:42
-#, fuzzy
-#| msgid "No DNS records found for %s"
 msgid "No record found"
-msgstr "Geen DNS records gevonden voor %s"
+msgstr "Geen record gevonden"
 
 #: templates/admin/_domain_dnschecks_status.html:24
 msgid "Waiting for key to be generated"
-msgstr ""
+msgstr "Wachten op het genereren van een sleutel"
 
 #: templates/admin/_global_statistics_widget.html:4
 msgid "Global statistics"
@@ -1189,29 +1090,25 @@ msgstr "Geen informatie beschikbaar over dit domein."
 
 #: templates/admin/domain_alarms.html:19
 msgid "Opened alarms for"
-msgstr ""
+msgstr "Geopende alarmen voor"
 
 #: templates/admin/domain_alarms.html:25
 #: templates/admin/domains_log_headers.html:3
 #: templates/admin/messages_log_headers.html:3
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: templates/admin/domain_alarms.html:26
-#, fuzzy
-#| msgid "Usage"
 msgid "Message"
-msgstr "Gebruik"
+msgstr "Bericht"
 
 #: templates/admin/domain_alarms.html:27
-#, fuzzy
-#| msgid "Mailboxes"
 msgid "Mailbox"
-msgstr "Mailboxen"
+msgstr "Mailbox"
 
 #: templates/admin/domain_alarms.html:40
 msgid "No opened alarm"
-msgstr ""
+msgstr "geen geopend alarm"
 
 #: templates/admin/domain_detail.html:29
 msgid "Creation date"
@@ -1236,23 +1133,22 @@ msgstr "MB"
 msgid "Usage"
 msgstr "Gebruik"
 
-#: templates/admin/domain_detail.html:57 templates/admin/domains_quotas.html:11
+#: templates/admin/domain_detail.html:57
+#: templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
 msgstr "gebruikt"
 
-#: templates/admin/domain_detail.html:58 templates/admin/domains_quotas.html:12
+#: templates/admin/domain_detail.html:58
+#: templates/admin/domains_quotas.html:12
 msgid "allocated"
 msgstr "toegewezen"
 
 #: templates/admin/domain_detail.html:70
 msgid "per day"
-msgstr ""
+msgstr "per dag"
 
 #: templates/admin/domain_detail.html:76
-#, fuzzy
-#| msgctxt "quota"
-#| msgid "used"
 msgctxt "message count"
 msgid "used"
 msgstr "gebruikt"
@@ -1263,23 +1159,24 @@ msgstr "DNS"
 
 #: templates/admin/domain_detail.html:121
 msgid "DKIM key"
-msgstr "DKIM key"
+msgstr "DKIM sleutel"
 
 #: templates/admin/domain_detail.html:125
 msgid "Show key"
-msgstr "Toon key"
+msgstr "Toon sleutel"
 
 #: templates/admin/domain_detail.html:133
 msgid "Warning"
-msgstr ""
+msgstr "Waarschuwing"
 
 #: templates/admin/domain_detail.html:139
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
-msgstr ""
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgstr "DKIM sleutels bestaan al voor dit domein. Wil je ze overschrijven?"
 
 #: templates/admin/domain_detail.html:142
 msgid "No"
-msgstr ""
+msgstr "Nee"
 
 #: templates/admin/domain_detail.html:143
 msgid "Generate new key"
@@ -1287,7 +1184,7 @@ msgstr "Nieuwe sleutel genereren"
 
 #: templates/admin/domain_detail.html:143
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: templates/admin/domain_detail.html:149
 msgid "Not generated"
@@ -1329,17 +1226,17 @@ msgstr "Toevoegen"
 
 #: templates/admin/domains_log_headers.html:2
 msgid "Queue ID"
-msgstr ""
+msgstr "Queue ID"
 
 #: templates/admin/domains_log_headers.html:4
 #: templates/admin/messages_log_headers.html:4
 msgid "From"
-msgstr ""
+msgstr "Van"
 
 #: templates/admin/domains_log_headers.html:5
 #: templates/admin/messages_log_headers.html:5
 msgid "To"
-msgstr ""
+msgstr "Aan"
 
 #: templates/admin/domains_quota_headers.html:3
 #: templates/admin/identities_quota_headers.html:4
@@ -1393,36 +1290,17 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr ""
-"Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende "
-"formaten: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</"
-"em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>Het eerste element van elke regel is "
-"verplicht en moet gelijk zijn aan een van de vorige waarden.</p> <p>U kunt "
-"een eigen scheidingsteken gebruiken.</p>"
+msgstr "Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende formaten: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan een van de vorige waarden.</p> <p>U kunt een eigen scheidingsteken gebruiken.</p>"
 
 #: templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende "
-"formaten:\n"
-"<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li>\n"
-"<li><em>alias; address; enabled; internal recipient</em></li>\n"
-"<li><em>forward; address; enabled; external recipient</em></li>\n"
-"<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
-"</ul>\n"
-"<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan "
-"een van de vorige waarden.</p>\n"
-"<p>U kunt een eigen scheidingsteken gebruiken.</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
+msgstr "Lever een CSV bestand en zorg dat de regels voldoen aan een van de volgende formaten:\n<ul>\n<li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>\n<li><em>alias; address; enabled; internal recipient</em></li>\n<li><em>forward; address; enabled; external recipient</em></li>\n<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n</ul>\n<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan een van de vorige waarden.</p>\n<p>U kunt een eigen scheidingsteken gebruiken.</p>"
 
 #: templates/admin/importform.html:6
 msgid "Help"
@@ -1442,7 +1320,7 @@ msgstr "Gebruik de standaard waarde van dit domein"
 
 #: templates/admin/messages_log_headers.html:2
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: templates/admin/mx_domain_detail.html:11
 msgid "Updated"
@@ -1450,9 +1328,7 @@ msgstr "Bijgewerkt"
 
 #: templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
-"Dit IP-adres komt niet overeen met een van de valide MX'en zoals "
-"gedefinieerd in de instellingen"
+msgstr "Dit IP-adres komt niet overeen met een van de valide MX'en zoals gedefinieerd in de instellingen"
 
 #: templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
@@ -1463,26 +1339,19 @@ msgstr "Geen geldig MX-record voor dit domein gevonden."
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr ""
-"Modoboa heeft vastgesteld dat het domein %(domain)s op de volgende DNSBL "
-"lijsten staat:"
+msgstr "Modoboa heeft vastgesteld dat het domein %(domain)s op de volgende DNSBL lijsten staat:"
 
 #: templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
-"De reputatie van dit domein wordt hierdoor aangetast er bestaat een kans dat "
-"e-mail van dit domein als spam wordt gezien. U zou contact moeten opnemen "
-"met deze providers en hen vragen om deze IP adressen van de lijst te halen."
+msgstr "De reputatie van dit domein wordt hierdoor aangetast er bestaat een kans dat e-mail van dit domein als spam wordt gezien. U zou contact moeten opnemen met deze providers en hen vragen om deze IP adressen van de lijst te halen."
 
 #: templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
-"Modoboa heeft vastgesteld dat het domein %(domain)s geen geldig MX-record "
-"heeft:"
+msgstr "Modoboa heeft vastgesteld dat het domein %(domain)s geen geldig MX-record heeft:"
 
 #: templates/admin/searchform.html:6
 msgid "Search"
@@ -1506,7 +1375,7 @@ msgstr "Toon quota's"
 
 #: templatetags/admin_tags.py:57
 msgid "Message logs"
-msgstr ""
+msgstr "Berichtenlogboek"
 
 #: templatetags/admin_tags.py:69 templatetags/admin_tags.py:117
 #: views/import_.py:56 views/import_.py:78
@@ -1527,10 +1396,8 @@ msgid "View the domain's identities"
 msgstr "Toon de identiteiten van dit domein"
 
 #: templatetags/admin_tags.py:149
-#, fuzzy
-#| msgid "domain alias"
 msgid "View domain's alarms"
-msgstr "domein alias"
+msgstr "Toon domeinalarmen"
 
 #: templatetags/admin_tags.py:155 templatetags/admin_tags.py:198
 #: templatetags/admin_tags.py:211
@@ -1622,33 +1489,3 @@ msgstr "Importeer identiteiten"
 #: views/user.py:52
 msgid "Forward updated"
 msgstr "Doorstuuradres aangepast"
-
-#~ msgid "Mailboxes owner"
-#~ msgstr "Eigenaar van de mailboxen"
-
-#~ msgid "The UNIX account who owns mailboxes on the filesystem"
-#~ msgstr ""
-#~ "De UNIX account die de rechten heeft tot de mailboxen op het "
-#~ "bestandssysteem"
-
-#, python-format
-#~ msgid "Domain '%s' does not exist"
-#~ msgstr "Domein '%s' bestaat niet"
-
-#~ msgid "Raw format"
-#~ msgstr "Ruwe formaat"
-
-#~ msgid "Admin"
-#~ msgstr "Admin"
-
-#~ msgid "File name"
-#~ msgstr "Bestandsnaam"
-
-#~ msgid "No {type} record found for MX {mx}"
-#~ msgstr "Geen {type} record gevonden voor MX {mx}"
-
-#~ msgid "No A record found for MX %(domain)s"
-#~ msgstr "Geen A record gevonden voor MX %(domain)s"
-
-#~ msgid "No AAAA record found for MX %(domain)s"
-#~ msgstr "Geen AAAA record gevonden voor MX%(domain)s"
