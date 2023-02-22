@@ -14,3 +14,13 @@ filters:
     source_language: en
     source_file: modoboa/ldapsync/locale/en/LC_MESSAGES/django.po
     translation_files_expression: modoboa/ldapsync/locale/<lang>/LC_MESSAGES/django.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/admin/locale/en/LC_MESSAGES/django.po
+    translation_files_expression: modoboa/admin/locale/<lang>/LC_MESSAGES/django.po
+  - filter_type: file
+    file_format: PO
+    source_language: en
+    source_file: modoboa/admin/locale/en/LC_MESSAGES/djangojs.po
+    translation_files_expression: modoboa/admin/locale/<lang>/LC_MESSAGES/djangojs.po
