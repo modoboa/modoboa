@@ -6,49 +6,77 @@
       <v-icon>mdi-circle-edit-outline</v-icon>
     </v-btn>
   </v-toolbar>
-  <v-layout>
-    <v-row>
-      <v-col cols="6">
-        <domain-summary :domain="domain" />
-        <div class="mt-4" />
-        <administrator-list
+
+  <v-tabs
+    v-model="tab"
+    >
+    <v-tab>
+      <translate>General</translate>
+    </v-tab>
+    <v-tab>
+      <translate>Statistics</translate>
+    </v-tab>
+    <v-tab>
+      <translate>DMARC</translate>
+    </v-tab>
+    <v-tabs-items
+      v-model="tab"
+      >
+      <v-tab-item>
+        <v-layout class="pa-2">
+          <v-row>
+            <v-col cols="6">
+              <domain-summary :domain="domain" />
+              <div class="mt-4" />
+              <administrator-list
+                :domain="domain"
+                />
+            </v-col>
+            <v-col cols="6">
+              <dns-detail v-model="domain" />
+              <div class="mt-4" />
+              <resources
+                v-if="limitsConfig.params && limitsConfig.params.enable_domain_limits && domain.resources && domain.resources.length"
+                :resources="domain.resources"
+                />
+            </v-col>
+          </v-row>
+        </v-layout>
+      </v-tab-item>
+      <v-tab-item>
+        <v-layout class="pa-2">
+          <v-row class="mt-2">
+            <v-col cols="12">
+              <time-serie-chart
+                v-if="domain.name"
+                :domain="domain"
+                graphic-set="mailtraffic"
+                graphic-name="averagetraffic"
+                />
+            </v-col>
+            <v-col cols="12">
+              <time-serie-chart
+                v-if="domain.name"
+                :domain="domain"
+                graphic-set="mailtraffic"
+                graphic-name="averagetrafficsize"
+                />
+            </v-col>
+          </v-row>
+        </v-layout>
+      </v-tab-item>
+      <v-tab-item>
+        <dmarc-aligment-chart
           :domain="domain"
           />
-      </v-col>
-      <v-col cols="6">
-        <dns-detail v-model="domain" />
-        <div class="mt-4" />
-        <resources
-          v-if="limitsConfig.params && limitsConfig.params.enable_domain_limits && domain.resources && domain.resources.length"
-          :resources="domain.resources"
-          />
-      </v-col>
-    </v-row>
-  </v-layout>
-  <v-layout>
-    <v-row class="mt-2">
-      <v-col cols="12">
-        <time-serie-chart
-          v-if="domain.name"
-          :domain="domain"
-          graphic-set="mailtraffic"
-          graphic-name="averagetraffic"
-          />
-      </v-col>
-      <v-col cols="12">
-        <time-serie-chart
-          v-if="domain.name"
-          :domain="domain"
-          graphic-set="mailtraffic"
-          graphic-name="averagetrafficsize"
-          />
-      </v-col>
-    </v-row>
-  </v-layout>
-  <v-dialog v-model="showEditForm"
-            persistent
-            max-width="800px"
-            >
+      </v-tab-item>
+    </v-tabs-items>
+  </v-tabs>
+  <v-dialog
+    v-model="showEditForm"
+    persistent
+    max-width="800px"
+    >
     <domain-form :domain="domain" @close="showEditForm = false" />
   </v-dialog>
 </div>
@@ -57,6 +85,7 @@
 <script>
 import domains from '@/api/domains'
 import AdministratorList from '@/components/domains/AdministratorList'
+import DmarcAligmentChart from '@/components/dmarc/DmarcAligmentChart'
 import DNSDetail from '@/components/domains/DNSDetail'
 import DomainForm from '@/components/domains/DomainForm'
 import DomainSummary from '@/components/domains/DomainSummary'
@@ -68,6 +97,7 @@ export default {
   components: {
     AdministratorList,
     'dns-detail': DNSDetail,
+    DmarcAligmentChart,
     DomainForm,
     DomainSummary,
     Resources,
@@ -78,7 +108,8 @@ export default {
       domain: { pk: this.$route.params.id },
       limitsConfig: {},
       showEditForm: false,
-      showAdminList: false
+      showAdminList: false,
+      tab: null
     }
   },
   methods: {
@@ -96,6 +127,9 @@ export default {
 
 <style scoped>
 .v-toolbar {
+  background-color: #f7f8fa !important;
+}
+.v-tabs-items {
   background-color: #f7f8fa !important;
 }
 </style>

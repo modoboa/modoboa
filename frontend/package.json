@@ -13,6 +13,7 @@
     "@mdi/font": "^5.9.55",
     "apexcharts": "^3.25.0",
     "core-js": "^3.6.5",
+    "debounce": "^1.2.1",
     "js-cookie": "^2.2.1",
     "luxon": "^1.28.1",
     "vee-validate": "^3.4.5",

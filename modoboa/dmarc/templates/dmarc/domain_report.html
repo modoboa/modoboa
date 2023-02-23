@@ -1,0 +1,159 @@
+{% extends "admin/domains.html" %}
+
+{% load i18n l10n %}
+{% load static %}
+{% load admin_tags %}
+{% load dmarc_tags %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}c3/c3.min.css" />
+{% endblock %}
+
+{% block extra_js %}
+  <script type="text/javascript" src="{{ STATIC_URL }}d3/d3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}c3/c3.min.js"></script>
+  <script type="text/javascript">
+   $(document).ready(function() {
+       var pie_chart = c3.generate({
+           bindto: '#global_distribution',
+           data: {
+               columns: [
+                   ['{% trans "Fully aligned" %}', {{ pie_data.faligned|unlocalize }}],
+                   ['{% trans "Partially aligned" %}', {{ pie_data.paligned|unlocalize }}],
+                   ['{% trans "Forwarded" %}', {{ pie_data.forwarded|unlocalize }}],
+                   ['{% trans "Failed" %}', {{ pie_data.failed|unlocalize }}]
+               ],
+               colors: {
+                   '{% trans "Fully aligned" %}': 'limegreen',
+                   '{% trans "Partially aligned" %}': 'gold',
+                   '{% trans "Forwarded" %}': 'lightskyblue',
+                   '{% trans "Failed" %}': 'lightcoral',
+               },
+               type : 'pie'
+           }
+       });
+       $("#show-report-detail").click(function(evt) {
+           $("#report-details").show();
+           $(this).remove();
+       });
+   });
+  </script>
+{% endblock %}
+
+{% block leftcol %}
+<ul class="nav nav-sidebar">
+  {% domains_menu "dmarc" user False %}
+</ul>
+{% endblock %}
+
+{% block apparea %}
+  <div class="row">
+    <div class="col-sm-7">
+      <h1><small>{% trans "DMARC report for" %} {{ domain }}</small></h1>
+    </div>
+    <div class="col-sm-5">
+      <div class="panel panel-default">
+        <div class="panel-body text-center">
+          <a href="{% url 'dmarc:domain_report' domain.pk %}?period={% previous_period period %}" name="prevweek"><span class="fa fa-chevron-left"></span></a>
+          {{ daterange.0|date }} - {{ daterange.1|date }}
+          <a href="{% url 'dmarc:domain_report' domain.pk %}?period={% next_period period %}" name="nextweek"><span class="fa fa-chevron-right"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-5">
+      <div id="global_distribution"></div>
+    </div>
+
+    <div class="col-sm-7">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="panel panel-primary text-center">
+            <div class="panel-body">
+              <h1 class="text-primary">{{ stats.total }}</h1>
+              <h4>{% trans "processed" %}</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-success text-center">
+            <div class="panel-body">
+              <h1 class="text-success" >{{ stats.aligned }}</h1>
+              <h4>{% trans "fully aligned" %}</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-warning text-center">
+            <div class="panel-body">
+              <h1 class="text-warning" >{{ stats.trusted }}</h1>
+              <h4>{% trans "partially aligned" %}</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-info text-center">
+            <div class="panel-body">
+              <h1 class="text-info" >{{ stats.forwarded }}</h1>
+              <h4>{% trans "forwarded" %}</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="panel panel-danger text-center">
+            <div class="panel-body">
+              <h1 class="text-danger">{{ stats.failed }}</h1>
+              <h4>{% trans "failed" %}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button id="show-report-detail" class="btn btn-primary">
+      {% trans "Display details" %}</button>
+  </div>
+
+  <div id="report-details" style="display: none">
+    <h1><small>{% trans "Trusted sources" %} <span class="text-success">{{ stats.aligned }}</span></small></h1>
+
+    <table class="table">
+      {% for domain, stats in aligned|domain_sorted_items %}
+        {% include "dmarc/_result_detail.html" with domain=domain stats=stats %}
+      {% endfor %}
+    </table>
+
+    <h1><small>{% trans "Partially trusted sources / Forwarders" %} <span class="text-warning">{{ stats.trusted }}</span></small></h1>
+
+    <table class="table">
+      {% for domain, stats in trusted|domain_sorted_items %}
+        {% include "dmarc/_result_detail.html" with domain=domain stats=stats %}
+      {% endfor %}
+    </table>
+
+    <h1><small>{% trans "Forwarders with ARC" %} <span class="text-info">{{ stats.forwarded }}</span></small></h1>
+
+    <table class="table">
+      {% for domain, stats in forwarded|domain_sorted_items %}
+        {% include "dmarc/_result_detail.html" with domain=domain stats=stats %}
+      {% endfor %}
+    </table>
+
+    <h1><small>{% trans "Unknown sources / Threats" %} <span class="text-danger">{{ stats.failed }}</span></small></h1>
+
+    <table class="table">
+      {% for domain, stats in threats|domain_sorted_items %}
+        {% include "dmarc/_result_detail.html" with domain=domain stats=stats only_failed=True %}
+      {% endfor %}
+    </table>
+  </div>
+
+{% endblock %}

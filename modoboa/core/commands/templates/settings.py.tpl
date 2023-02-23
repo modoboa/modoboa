@@ -88,6 +88,7 @@ MODOBOA_APPS = (
     'modoboa.policyd',
     'modoboa.maillog',
     'modoboa.pdfcredentials',
+    'modoboa.dmarc',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}

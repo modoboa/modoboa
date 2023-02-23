@@ -40,3 +40,8 @@ aioredis==2.0.1
 
 # PDF credentials
 reportlab
+
+# DMARC
+tldextract>=2.0.2
+defusedxml>=0.6.0
+python-magic>=0.4.24

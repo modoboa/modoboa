@@ -1,0 +1,60 @@
+Return-Path: <noreply-dmarc-support@google.com>
+Delivered-To: <tonio@ngyn.org>
+Received: from mail.koalabs.org
+	by nelson.ngyn.org (Dovecot) with LMTP id dV+vEDEApVVCdQAABvoInA
+	for <tonio@ngyn.org>; Tue, 14 Jul 2015 14:27:34 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.koalabs.org (Postfix) with ESMTP id C28EFE035E
+	for <dmarc-aggrep@ngyn.org>; Tue, 14 Jul 2015 14:27:34 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.koalabs.org
+Authentication-Results: nelson.ngyn.org (amavisd-new);
+	dkim=pass (2048-bit key) header.d=google.com
+Received: from mail.koalabs.org ([127.0.0.1])
+	by localhost (nelson.ngyn.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP for <dmarc-aggrep@ngyn.org>;
+	Tue, 14 Jul 2015 14:27:32 +0200 (CEST)
+Received: from mail-vn0-f74.google.com (mail-vn0-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail.koalabs.org (Postfix) with ESMTPS
+	for <dmarc-aggrep@ngyn.org>; Tue, 14 Jul 2015 14:27:29 +0200 (CEST)
+Received: by vnbf7 with SMTP id f7so392460vnb.1
+        for <dmarc-aggrep@ngyn.org>; Tue, 14 Jul 2015 05:27:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:message-id:date:subject:from:to:content-type
+         :content-disposition:content-transfer-encoding;
+        bh=28gVVTJdqkSuhoNLWpBiJ0mYAF1CETmzecT8+PvUARY=;
+        b=jahe/NPogONhyXBkFG2iEkgVoYJmOoXuXCsfTUiY4WtDacSfBxs4pHCYd9kv1iu7Rm
+         8TUOyMG0ftm+Bu3Ldctb75lcrEb6yf/X/LIhXUyPlWSOwowqU429D8+89Lz2234K+5Ps
+         9u4E4vSI4HvVKjqxs/eIkSSpmqZDZydFtqOiKg3Nj4fr9v2FzEHuiwOvqO6dU8lct3zs
+         cc9/NNNp9q2z+nJ02hujEKDDrqEW+U3Xm8uk+YE4eUDvvqQQyC5SFTRWcGiQ1visZmfm
+         OlHmv25II7saHmZ4VrGXFUZHE+8d0lXN+QOndSZ6aorsarKzSRlXvD2ISxKKo3Qw8UqJ
+         CCnA==
+MIME-Version: 1.0
+X-Received: by 10.52.251.34 with SMTP id zh2mr50557742vdc.8.1436869893195;
+ Tue, 14 Jul 2015 03:31:33 -0700 (PDT)
+Message-ID: <14872432101891615947@google.com>
+Date: Tue, 14 Jul 2015 10:31:33 +0000
+Subject: Report domain: ngyn.org Submitter: google.com Report-ID: 14872432101891615947
+From: noreply-dmarc-support@google.com
+To: dmarc-aggrep@ngyn.org
+Content-Type: application/zip; 
+	name="google.com!ngyn.org!1436745600!1436831999.zip"
+Content-Disposition: attachment; 
+	filename="google.com!ngyn.org!1436745600!1436831999.zip"
+Content-Transfer-Encoding: base64
+
+UEsDBAoAAAAIANhS7kbvUmeO+AEAANQEAAAtAAAAZ29vZ2xlLmNvbSFuZ3luLm9yZyExNDM2NzQ1
+NjAwITE0MzY4MzE5OTkueG1spVTLcqMwELznK1y+Gxkb27ClKDnlC3bPlCwGrApIKkkk8d/vYImH
+na1c9oTo6WlNN2PTl6+uXX2AdVKr53WabNcrUEJXUjXP6z+/3zb5evXCnmgNUJ25eGdPqxW1YLT1
+ZQeeV9zzAUNU26ZUvAPWaN20kAjdUTKBgQMdly1TGhXa66bquBUb15tB7nXZFnix58tbXgqtPBe+
+lKrW7OK9cb8Iia3J3Eo44cp9giW77Hg85FvU+t4fhKMNWbE0y0+7bL9Lt2lepMf0UGQnSuZ64KNX
+KC1XTXSD0BkaqbB9fzxlh+MWbwvIWAdV3ar5Pi2KAmdRoxi5V5tuW4ZKjW6luJamP7fSXWAaRGM8
+iqnmqhIMGLUCEKq8epcdc5SEQwSdqW/Y8AyQwe+ggBIT390IuBExwrMDEvBxG/Ff42CKQttxMqs/
+J+9O91ZAKQ0rsmS3T7JDkuYpyk/4yBS6V55hKRxGOF4HH7ztMaxqLAwJSGe0kx63Ng69RBa8IQHD
+HTqfw4hu61iYEolLwd1SAiF/NcAc70wLVal7T8kNWVJw8zrA0QcL4TQrknvJKcYHX8gbw6OyQglZ
+S/xdTm0X4BXYsra6W3z5JRplvjVT3vtLacH1rZ/1HvL4cadiMoNADC2+TJ6WavQ+0f9UnheWPPoY
+yGH5KJn/oP4CUEsBAgoACgAAAAgA2FLuRu9SZ474AQAA1AQAAC0AAAAAAAAAAAAAAAAAAAAAAGdv
+b2dsZS5jb20hbmd5bi5vcmchMTQzNjc0NTYwMCExNDM2ODMxOTk5LnhtbFBLBQYAAAAAAQABAFsA
+AABDAgAAAAA=

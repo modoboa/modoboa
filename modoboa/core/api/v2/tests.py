@@ -204,6 +204,25 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 201)
 
+    def test_failed_api_token(self):
+        """Simulate a failed login attempt and check that it is logged."""
+
+        url = reverse("v2:token_obtain_pair")
+        data = {
+            "username": "clearly_non_existent_user",
+            "password": "password"
+        }
+
+        with self.assertLogs(logger='modoboa.auth', level='WARNING') as log:
+
+            resp = self.client.post(url, data, format="json")
+            self.assertEqual(resp.status_code, 401)
+            self.assertIn(
+                "WARNING:modoboa.auth:Failed connection attempt from '127.0.0.1'"
+                " as user 'clearly_non_existent_user'",
+                log.output
+            )
+
 
 class PasswordResetTestCase(AccountViewSetTestCase):
     def __init__(self, *args, **kwargs):

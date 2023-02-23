@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include("modoboa.parameters.api.v2.urls")),
     path('', include("modoboa.limits.api.v1.urls")),
     path('', include("modoboa.relaydomains.api.v1.urls")),
+    path('', include("modoboa.dmarc.api.v2.urls")),
     path('', include("modoboa.dnstools.api.v2.urls")),
     path('', include("modoboa.maillog.api.v2.urls")),
     path('', include("modoboa.transport.api.v2.urls")),
