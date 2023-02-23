@@ -13,6 +13,7 @@
       <validation-provider
         v-slot="{ errors }"
         vid="code"
+        name="code"
         rules="required"
         >
         <v-row>
@@ -24,13 +25,14 @@
               :error-messages="errors"
               :hint="'Enter the code from the two-factor app on your mobile device. If you have lost your device, you may enter one of your recovery codes.'|translate"
               persistent-hint
+              @finish="verifyCode"
               />
           </v-col>
         </v-row>
       </validation-provider>
     </validation-observer>
     <div class="d-flex justify-center mt-6">
-      <v-btn class="flex-grow-1" color="primary" large @click="verifyCode">
+      <v-btn class="flex-grow-1" color="primary" large @click="verifyCode" :loading="loading">
         <translate>Verify code</translate>
       </v-btn>
     </div>
@@ -46,7 +48,8 @@ export default {
   data () {
     return {
       code: null,
-      errors: {}
+      errors: {},
+      loading: false
     }
   },
   methods: {
@@ -55,6 +58,7 @@ export default {
       if (!isValid) {
         return
       }
+      this.loading = true
       account.verifyTFACode(this.code).then(resp => {
         Cookies.set('token', resp.data.access, { sameSite: 'strict' })
         Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
@@ -63,6 +67,7 @@ export default {
         })
       }).catch(error => {
         this.$refs.observer.setErrors(error.response.data)
+        this.loading = false
       })
     }
   }
