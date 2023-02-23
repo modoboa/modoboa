@@ -4,17 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Antoine Nguyen <tonio@ngyn.org>, 2020
-# J Rosier <vertalen@tagora.nl>, 2020
+# J Rosier <vertalen@tagora.nl>, 2023
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-09 16:48+0100\n"
-"PO-Revision-Date: 2020-05-11 18:45+0000\n"
-"Last-Translator: J Rosier <vertalen@tagora.nl>, 2020\n"
+"POT-Creation-Date: 2020-11-05 15:47+0100\n"
+"PO-Revision-Date: 2020-10-02 13:39+0000\n"
+"Last-Translator: J Rosier <vertalen@tagora.nl>, 2023\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/tonio/teams/13749/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +31,7 @@ msgstr "bewerking"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
-msgstr "Geen log bericht meer om te weergeven"
+msgstr "Geen logboekvermelding meer om weer te geven"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -42,13 +41,13 @@ msgstr "Waarschuwing"
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: static/js/global.js:342
+#: static/js/global.js:347
 msgid "Internal error"
 msgstr "Interne fout"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr "Geen bericht meer om te weergeven"
+msgstr "Geen vermeldingen meer"
 
 #: static/js/listing.js:46
 msgid "Search"
@@ -57,3 +56,11 @@ msgstr "Zoeken"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Zoeken..."
+
+#: static/js/twocols_nav.js:170
+msgid "Are you sure?"
+msgstr "Weet je het zeker?"
+
+#: static/js/twocols_nav.js:171
+msgid "This will invalidate your registered application."
+msgstr "Dit zal je geregistreerde aanvraag ongeldig maken"
