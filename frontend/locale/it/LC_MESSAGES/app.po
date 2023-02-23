@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-23 11:26+0100\n"
+"POT-Creation-Date: 2023-02-23 18:08+0100\n"
 "PO-Revision-Date: 2023-02-23 11:26+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -28,22 +28,29 @@ msgstr ""
 
 #: src/components/domains/DNSDetail.vue:47
 #: src/components/domains/DNSDetail.vue:205
-msgid "A new key will be generated soon. Refresh the page in a moment to see it."
+msgid ""
+"A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
 
 #: src/components/identities/AccountRoleForm.vue:39
 #: src/components/identities/AccountRoleForm.vue:69
-msgid "A user with all privileges, can do anything. By default, such a user does not have a mailbox so he can't access end-user features."
+msgid ""
+"A user with all privileges, can do anything. By default, such a user does "
+"not have a mailbox so he can't access end-user features."
 msgstr ""
 
 #: src/components/identities/AccountRoleForm.vue:34
 #: src/components/identities/AccountRoleForm.vue:64
-msgid "A user with no privileges but with a mailbox. He will be allowed to use all end-user features: webmail, calendar, contacts, filters."
+msgid ""
+"A user with no privileges but with a mailbox. He will be allowed to use all "
+"end-user features: webmail, calendar, contacts, filters."
 msgstr ""
 
 #: src/components/identities/AccountRoleForm.vue:24
 #: src/components/identities/AccountRoleForm.vue:54
-msgid "A user with privileges on one or more domain. He will be allowed to administer mailboxes and he can also have a mailbox."
+msgid ""
+"A user with privileges on one or more domain. He will be allowed to "
+"administer mailboxes and he can also have a mailbox."
 msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:16
@@ -166,7 +173,9 @@ msgstr ""
 
 #: src/components/identities/AccountAliasForm.vue:3
 #: src/components/identities/AliasRecipientForm.vue:3
-msgid "Alias(es) of this mailbox. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgid ""
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
 msgstr ""
 
 #: src/components/domains/DomainList.vue:25
@@ -181,6 +190,10 @@ msgstr ""
 #: src/components/domains/DomainList.vue:167
 msgid "Aliases"
 msgstr "Alias"
+
+#: src/components/dmarc/DmarcAligmentChart.vue:4
+msgid "Alignment"
+msgstr ""
 
 #: src/components/layout/Navbar.vue:99 src/components/layout/Navbar.vue:214
 msgid "API"
@@ -270,9 +283,11 @@ msgstr "Cambia password"
 msgid "Check out the following list to find related components"
 msgstr ""
 
-#: src/views/identities/Identities.vue:45 src/views/identities/Identities.vue:1
+#: src/views/identities/Identities.vue:45
+#: src/views/identities/Identities.vue:1
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "Seleziona questa opzione se le password contenute nel file non sono criptate"
+msgstr ""
+"Seleziona questa opzione se le password contenute nel file non sono criptate"
 
 #: src/components/domains/DomainAliasForm.vue:56
 #: src/components/domains/DomainAliasForm.vue:26
@@ -283,7 +298,8 @@ msgstr ""
 msgid "Choose a role"
 msgstr ""
 
-#: src/App.vue:18 src/App.vue:2 src/components/domains/AdministratorList.vue:36
+#: src/App.vue:18 src/App.vue:2
+#: src/components/domains/AdministratorList.vue:36
 #: src/components/domains/DomainAliasForm.vue:21
 #: src/components/domains/DomainDKIMKey.vue:22
 #: src/components/domains/DomainDNSConfig.vue:40
@@ -292,7 +308,8 @@ msgstr ""
 msgid "Close"
 msgstr "Chiudi"
 
-#: src/components/alarms/AlarmList.vue:21 src/components/alarms/AlarmList.vue:5
+#: src/components/alarms/AlarmList.vue:21
+#: src/components/alarms/AlarmList.vue:5
 msgid "Closed"
 msgstr "Chiudi"
 
@@ -307,7 +324,8 @@ msgstr "Conferma"
 
 #: src/components/user/TwoFactorAuthForm.vue:34
 #: src/components/user/TwoFactorAuthForm.vue:2
-msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
+msgid ""
+"Congratulations! Two-Factor Authentication is now enabled for your account."
 msgstr ""
 
 #: src/views/Login.vue:23
@@ -363,7 +381,8 @@ msgstr ""
 msgid "Creation date"
 msgstr "Data di creazione"
 
-#: src/views/identities/Identities.vue:45 src/views/identities/Identities.vue:1
+#: src/views/identities/Identities.vue:45
+#: src/views/identities/Identities.vue:1
 msgid "Crypt passwords"
 msgstr "Cripta le password"
 
@@ -405,8 +424,13 @@ msgid "Default mailbox quota"
 msgstr "Dimensione massima predefinita per le mailbox"
 
 #: src/components/domains/DomainLimitationsForm.vue:6
-msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
-msgstr "Valore predefinito per lo spazio massimo confiviso tra le mailbox. Può essere espresso in KB, MB (predefinito) o GB. Il valore 0 indica nessun limite."
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr ""
+"Valore predefinito per lo spazio massimo confiviso tra le mailbox. Può "
+"essere espresso in KB, MB (predefinito) o GB. Il valore 0 indica nessun "
+"limite."
 
 #: src/components/domains/DomainAliasForm.vue:24
 #: src/components/domains/DomainList.vue:115
@@ -431,6 +455,10 @@ msgstr ""
 #: src/components/admin/ComponentsInformationTable.vue:54
 msgid "Description"
 msgstr "Descrizione"
+
+#: src/components/dmarc/DmarcAligmentChart.vue:37
+msgid "Detail"
+msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:57
 #: src/components/user/TwoFactorAuthForm.vue:5
@@ -461,7 +489,8 @@ msgstr ""
 
 #: src/components/domains/DNSDetail.vue:30
 #: src/components/domains/DNSDetail.vue:189
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr ""
 
 #: src/components/domains/DomainDKIMKey.vue:4
@@ -482,6 +511,10 @@ msgstr ""
 msgid "DKIM signing"
 msgstr ""
 
+#: src/views/domains/Domain.vue:17
+msgid "DMARC"
+msgstr ""
+
 #: src/components/domains/DNSDetail.vue:79
 #: src/components/domains/DNSDetail.vue:43
 msgid "DMARC record found"
@@ -490,6 +523,10 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:82
 #: src/components/domains/DNSDetail.vue:46
 msgid "DMARC record not found"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:50
+msgid "DMARC support does not seem to be enabled for this domain."
 msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:31
@@ -683,7 +720,9 @@ msgid "Enter an email address"
 msgstr ""
 
 #: src/views/TwoFA.vue:12
-msgid "Enter the code from the two-factor app on your mobile device. If you have lost your device, you may enter one of your recovery codes."
+msgid ""
+"Enter the code from the two-factor app on your mobile device. If you have "
+"lost your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:11
@@ -720,6 +759,13 @@ msgstr ""
 msgid "Export domains and aliases to CSV"
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:25
+#: src/components/dmarc/DmarcAligmentChart.vue:37
+#: src/components/dmarc/DmarcAligmentChart.vue:143
+#: src/components/dmarc/DmarcAligmentChart.vue:155
+msgid "Failed"
+msgstr "Fallito"
+
 #: src/components/identities/AccountCreationForm.vue:30
 #: src/components/identities/AccountGeneralForm.vue:32
 #: src/components/user/ProfileForm.vue:45
@@ -741,12 +787,25 @@ msgstr "Inoltra"
 
 #: src/components/user/ForwardForm.vue:6
 msgid "Forward messages and store copies into your local mailbox"
-msgstr "Inoltra i messaggi e memorizza le copie nella tua casella di posta locale"
+msgstr ""
+"Inoltra i messaggi e memorizza le copie nella tua casella di posta locale"
 
 #: src/components/user/ForwardForm.vue:19
 #: src/components/user/ForwardForm.vue:52
 msgid "Forward updated"
 msgstr "Inoltro aggiornato"
+
+#: src/components/dmarc/DmarcAligmentChart.vue:24
+#: src/components/dmarc/DmarcAligmentChart.vue:36
+#: src/components/dmarc/DmarcAligmentChart.vue:142
+#: src/components/dmarc/DmarcAligmentChart.vue:154
+#, fuzzy
+msgid "Forwarded"
+msgstr "Inoltra"
+
+#: src/components/dmarc/DmarcAligmentChart.vue:42
+msgid "Forwarders with ARC"
+msgstr ""
 
 #: src/components/logs/MessageList.vue:13
 #: src/components/tools/TimeSerieChart.vue:17
@@ -763,13 +822,21 @@ msgstr "Nome completo"
 msgid "Fullname/recipient"
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:22
+#: src/components/dmarc/DmarcAligmentChart.vue:34
+#: src/components/dmarc/DmarcAligmentChart.vue:140
+#: src/components/dmarc/DmarcAligmentChart.vue:152
+#, fuzzy
+msgid "Fully aligned"
+msgstr "Completamente allineato"
+
 #: src/components/domains/DomainCreationForm.vue:23
 #: src/components/domains/DomainCreationForm.vue:108
 #: src/components/domains/DomainCreationForm.vue:114
 #: src/components/domains/DomainForm.vue:7
 #: src/components/identities/AliasCreationForm.vue:17
 #: src/components/identities/AliasCreationForm.vue:49
-#: src/components/identities/AliasForm.vue:7
+#: src/components/identities/AliasForm.vue:7 src/views/domains/Domain.vue:11
 #: src/components/identities/AliasCreationForm.vue:37
 #: src/components/identities/AliasCreationForm.vue:69
 #: src/components/domains/DomainCreationForm.vue:74
@@ -807,7 +874,9 @@ msgid "help"
 msgstr ""
 
 #: src/components/domains/DomainDNSConfig.vue:8
-msgid "Here is an example of DNS configuration (bind format). Replace values between [ ] by the appropriate ones."
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace values "
+"between [ ] by the appropriate ones."
 msgstr ""
 
 #: src/components/domains/DomainDNSConfig.vue:33
@@ -830,7 +899,15 @@ msgstr "Identità"
 
 #: src/components/tools/CreationForm.vue:26
 #: src/components/tools/CreationForm.vue:99
-msgid "If you close this form now, your modifications won't be saved. Do you confirm?"
+msgid ""
+"If you close this form now, your modifications won't be saved. Do you "
+"confirm?"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:52
+msgid ""
+"If you configured it recently, please wait for the first report to be "
+"received and processed."
 msgstr ""
 
 #: src/components/tools/ImportForm.vue:29
@@ -1051,7 +1128,8 @@ msgid "Never logged-in"
 msgstr ""
 
 #: src/views/domains/Domains.vue:15 src/views/domains/Domains.vue:3
-#: src/views/identities/Identities.vue:15 src/views/identities/Identities.vue:3
+#: src/views/identities/Identities.vue:15
+#: src/views/identities/Identities.vue:3
 msgid "New"
 msgstr ""
 
@@ -1102,11 +1180,13 @@ msgid "Not generated"
 msgstr "Non generata"
 
 #: src/components/domains/DomainLimitationsForm.vue:9
-msgid "Number of messages this domain can send per day. Leave empty for no limit."
+msgid ""
+"Number of messages this domain can send per day. Leave empty for no limit."
 msgstr ""
 
 #: src/components/identities/AccountMailboxForm.vue:8
-msgid "Number of messages this mailbox can send per day. Leave empty for no limit."
+msgid ""
+"Number of messages this mailbox can send per day. Leave empty for no limit."
 msgstr ""
 
 #: src/views/user/PasswordRecoveryForm.vue:31
@@ -1123,7 +1203,8 @@ msgstr ""
 msgid "One or more updates are available"
 msgstr "Sono disponibili nuovi aggiornamenti"
 
-#: src/components/alarms/AlarmList.vue:18 src/components/alarms/AlarmList.vue:2
+#: src/components/alarms/AlarmList.vue:18
+#: src/components/alarms/AlarmList.vue:2
 msgid "Opened"
 msgstr ""
 
@@ -1141,6 +1222,17 @@ msgstr "Opzioni"
 #: src/components/parameters/ParametersForm.vue:60
 #: src/components/parameters/ParametersForm.vue:137
 msgid "Parameters updated"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:23
+#: src/components/dmarc/DmarcAligmentChart.vue:35
+#: src/components/dmarc/DmarcAligmentChart.vue:141
+#: src/components/dmarc/DmarcAligmentChart.vue:153
+msgid "Partially aligned"
+msgstr "Parzialmente allineato"
+
+#: src/components/dmarc/DmarcAligmentChart.vue:41
+msgid "Partially trusted sources / Forwarders"
 msgstr ""
 
 #: src/components/identities/AccountPasswordForm.vue:88
@@ -1220,7 +1312,8 @@ msgstr "Profilo aggiornato"
 msgid "Provide a CSV file where lines respect one of the following formats:"
 msgstr ""
 
-#: src/components/logs/MessageList.vue:9 src/components/logs/MessageList.vue:42
+#: src/components/logs/MessageList.vue:9
+#: src/components/logs/MessageList.vue:42
 msgid "Queue ID"
 msgstr ""
 
@@ -1238,12 +1331,23 @@ msgid "Quota"
 msgstr "Dimensione massima"
 
 #: src/components/identities/AccountMailboxForm.vue:5
-msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
-msgstr "Dimensione massima per questa mailbox, può essere espressa in KB, MB (predefinito) o GB. Definire un valore personalizzato o utilizzare quello predefinito per il dominio. Lasciare vuoto per specificare un valore non limitato (non permesso per amministratori di dominio)."
+msgid ""
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr ""
+"Dimensione massima per questa mailbox, può essere espressa in KB, MB "
+"(predefinito) o GB. Definire un valore personalizzato o utilizzare quello "
+"predefinito per il dominio. Lasciare vuoto per specificare un valore non "
+"limitato (non permesso per amministratori di dominio)."
 
 #: src/components/domains/DomainLimitationsForm.vue:3
-msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
-msgstr "Spazio massimo confiviso tra le mailbox. Può essere espresso in KB, MB (predefinito) o GB. Il valore 0 indica nessun limite."
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr ""
+"Spazio massimo confiviso tra le mailbox. Può essere espresso in KB, MB "
+"(predefinito) o GB. Il valore 0 indica nessun limite."
 
 #: src/components/domains/DomainForm.vue:68
 #: src/components/identities/AccountForm.vue:64
@@ -1470,7 +1574,13 @@ msgstr ""
 msgid "Start typing a name here..."
 msgstr ""
 
-#: src/components/alarms/AlarmList.vue:9 src/components/logs/MessageList.vue:11
+#: src/views/domains/Domain.vue:14
+#, fuzzy
+msgid "Statistics"
+msgstr "Statistiche"
+
+#: src/components/alarms/AlarmList.vue:9
+#: src/components/logs/MessageList.vue:11
 #: src/components/alarms/AlarmList.vue:73
 #: src/components/logs/MessageList.vue:44
 msgid "Status"
@@ -1498,7 +1608,9 @@ msgid "Tags"
 msgstr "Tag"
 
 #: src/components/tools/ImportForm.vue:9
-msgid "The first element of each line is mandatory and must be equal to one of the previous values."
+msgid ""
+"The first element of each line is mandatory and must be equal to one of the "
+"previous values."
 msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:39
@@ -1541,6 +1653,13 @@ msgstr ""
 msgid "Too many unsuccessful attempts, please try later."
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:33
+#: src/components/dmarc/DmarcSourceTable.vue:8
+#: src/components/dmarc/DmarcSourceTable.vue:3
+#: src/components/dmarc/DmarcAligmentChart.vue:151
+msgid "Total"
+msgstr "Totale"
+
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:37
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:85
 msgid "TOTP resent."
@@ -1554,9 +1673,15 @@ msgstr ""
 msgid "Transport"
 msgstr "Trasporto"
 
-#: src/components/alarms/AlarmList.vue:8 src/components/alarms/AlarmList.vue:72
+#: src/components/alarms/AlarmList.vue:8
+#: src/components/alarms/AlarmList.vue:72
 msgid "Triggered"
 msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:40
+#, fuzzy
+msgid "Trusted sources"
+msgstr "Fonti attendibili"
 
 #: src/components/user/TwoFactorAuthForm.vue:4
 msgid "Two factor authentication"
@@ -1564,7 +1689,9 @@ msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:64
 #: src/components/user/TwoFactorAuthForm.vue:1
-msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
+msgid ""
+"Two-Factor Authentication (2FA) is not yet activated for your account. "
+"Enabling this feature will increase your account's security."
 msgstr ""
 
 #: src/views/TwoFA.vue:11
@@ -1585,6 +1712,10 @@ msgstr ""
 #: src/components/domains/DNSStatusChip.vue:24
 msgid "Unknown"
 msgstr "Sconosciuto"
+
+#: src/components/dmarc/DmarcAligmentChart.vue:43
+msgid "Unknown sources / Threats"
+msgstr "Fonti sconosciute / Minaccie"
 
 #: src/components/identities/AccountMailboxForm.vue:30
 #: src/components/identities/AccountMailboxForm.vue:69

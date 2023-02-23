@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Irriep Nala Novram <allannkorh@yahoo.fr>, 2019
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 14:05+0200\n"
+"PO-Revision-Date: 2020-05-06 12:07+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: br\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 && n % 1000000 == 0) ? 3 : 4);\n"
+
+#: forms.py:35
+msgid "DNS settings"
+msgstr "Arventennoù DNS"
+
+#: forms.py:38
+msgid "Enable reverse lookups"
+msgstr "Enaouiñ an enklaskoù eilpennet"
+
+#: forms.py:41
+msgid "Enable reverse DNS lookups (reports will be longer to display)"
+msgstr "Enaouiñ an enklaskoù DNS eilpennet (danevelloù a vo hiroc'h da vezañ diskouezet)"
+
+#: handlers.py:20
+msgid "Show DMARC report for {}"
+msgstr "Diskouez an danevell DMARC evit {}"
+
+#: models.py:10 models.py:16
+msgid "None"
+msgstr "Hini ebet"
+
+#: models.py:11
+msgid "Quarantine"
+msgstr "Dispell"
+
+#: models.py:12
+msgid "Reject"
+msgstr "Nac'hañ"
+
+#: models.py:17
+msgid "Neutral"
+msgstr "Neptu"
+
+#: models.py:18
+msgid "Pass"
+msgstr "Tremen"
+
+#: models.py:19
+msgid "Fail"
+msgstr "Sac'hadenn"
+
+#: models.py:20
+msgid "Temporary error"
+msgstr "Fazi padennek"
+
+#: models.py:21
+msgid "Permanent error"
+msgstr "Fazi peurbadus"
+
+#: models.py:25
+msgid "Policy"
+msgstr "Politikerezh"
+
+#: models.py:29
+msgid "Soft failure"
+msgstr "Sac'hadenn wan"
+
+#: modo_extension.py:16
+msgid "DMARC tools"
+msgstr "Ostilhoù DMARC"
+
+#: modo_extension.py:19
+msgid "A set of tools to ease DMARC integration"
+msgstr "Un dastumad ostilhoù da aesaat enframmañ DMARC"
+
+#: templates/modoboa_dmarc/_result_detail.html:6
+msgid "Total"
+msgstr "Hollad"
+
+#: templates/modoboa_dmarc/domain_report.html:21
+#: templates/modoboa_dmarc/domain_report.html:26
+msgid "Fully aligned"
+msgstr "Linennet penn-da-benn"
+
+#: templates/modoboa_dmarc/domain_report.html:22
+#: templates/modoboa_dmarc/domain_report.html:27
+msgid "Partially aligned"
+msgstr "Linennet dre an hanter"
+
+#: templates/modoboa_dmarc/domain_report.html:23
+#: templates/modoboa_dmarc/domain_report.html:28
+msgid "Failed"
+msgstr "C'hwitet"
+
+#: templates/modoboa_dmarc/domain_report.html:50
+msgid "DMARC report for"
+msgstr "Danevell DMARC evit"
+
+#: templates/modoboa_dmarc/domain_report.html:74
+msgid "processed"
+msgstr "tretet"
+
+#: templates/modoboa_dmarc/domain_report.html:83
+msgid "fully aligned"
+msgstr "linennet penn-da-benn"
+
+#: templates/modoboa_dmarc/domain_report.html:92
+msgid "partially aligned"
+msgstr "linennet dre an hanter"
+
+#: templates/modoboa_dmarc/domain_report.html:101
+msgid "failed"
+msgstr "c'hwitet"
+
+#: templates/modoboa_dmarc/domain_report.html:111
+msgid "Display details"
+msgstr "Diskouez ar munudoù"
+
+#: templates/modoboa_dmarc/domain_report.html:115
+msgid "Trusted sources"
+msgstr "Mammennoù fizius"
+
+#: templates/modoboa_dmarc/domain_report.html:123
+msgid "Unknown sources / Threats"
+msgstr "Mammennoù dizanv/Gourdrouzioù"
+
+#: templatetags/dmarc_tags.py:59 views.py:120
+msgid "Not resolved"
+msgstr ""

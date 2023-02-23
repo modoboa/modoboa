@@ -66,7 +66,7 @@ New admin interface won't update by itself. Run the following commands to update
    > rm -rf frontend
    > cp -R <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
    > cp ./config.json frontend/config.json
- 
+
 Extensions
 **********
 
@@ -108,7 +108,40 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
-2.0.4
+2.1.0
+=====
+
+The ``modoboa-dmarc`` plugin has been merged into the core.
+
+Add ``'modoboa.dmarc'`` to ``MODOBOA_APPS``:
+
+.. sourcecode:: python
+
+   MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+      'modoboa.dnstools',
+      'modoboa.policyd',
+      'modoboa.maillog',
+      'modoboa.dmarc',
+   )
+
+And remove any reference to ``modoboa_dmarc`` in this same variable.
+
+FIXME: INSTALLATION django-rename-app
+
+.. sourcecode:: bash
+
+   python manage.py rename_app modoboa_dmarc dmarc
+
+
+2.0.4t
 =====
 
 The following modifications must be applied to the :file:`settings.py` file:
@@ -159,7 +192,7 @@ The following modifications must be applied to the :file:`settings.py` file:
    },
 
 
-* You now have the possibility to customize the url of the new-admin interface.  
+* You now have the possibility to customize the url of the new-admin interface.
    To do so please head up to :ref:`the custom configuration chapter <customization>` (advanced user).
 
 * Add ``DEFAULT_THROTTLE_RATES`` to ``REST_FRAMEWORK``:
@@ -187,7 +220,7 @@ The following modifications must be applied to the :file:`settings.py` file:
 
 * You can edit the ``DEFAULT_THROTTLE_RATES`` to whatever value suits you.
    - `user` is for every endpoint, it is per user or per ip if not logged.
-   - `ddos` is per api endpoint and per user or per ip if not logged. 
+   - `ddos` is per api endpoint and per user or per ip if not logged.
    - `ddos_lesser` is for per api endpoint and per user or per ip if not logged. This is for api endpoint that are lighter.
    - `login` the number of time an ip can attempt to log. The counter will reset on login success.
    - `password_` is for the recovery, it is divided per step in the recovery process.

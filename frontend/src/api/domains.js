@@ -13,6 +13,12 @@ export default {
   getDomainDNSDetail (domainId) {
     return repository.get(`/${domainResource}/${domainId}/dns_detail/`)
   },
+  getDomainDmarcAlignment (domainId, period) {
+    return repository.get(
+      `${domainResource}/${domainId}/dmarc/alignment_stats/`,
+      { params: { period } }
+    )
+  },
   getDomainAliases (domain) {
     let url = `/${domainAliasResource}/`
     if (domain !== undefined) {

@@ -1,0 +1,64 @@
+Return-Path: <noreply@dmarc.yahoo.com>
+Delivered-To: <tonio@ngyn.org>
+Received: from mail.koalabs.org
+	by nelson.ngyn.org (Dovecot) with LMTP id 53eANBaoilWVQwAABvoInA
+	for <tonio@ngyn.org>; Wed, 24 Jun 2015 14:52:38 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.koalabs.org (Postfix) with ESMTP id BD629E0360
+	for <postmaster@ngyn.org>; Wed, 24 Jun 2015 14:52:38 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.koalabs.org
+Authentication-Results: nelson.ngyn.org (amavisd-new);
+	dkim=pass (2048-bit key) header.d=yahoo.com
+Received: from mail.koalabs.org ([127.0.0.1])
+	by localhost (nelson.ngyn.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP for <postmaster@ngyn.org>;
+	Wed, 24 Jun 2015 14:52:37 +0200 (CEST)
+Received: from n1-vm5.bullet.mail.ne1.yahoo.com (n1-vm5.bullet.mail.ne1.yahoo.com [98.138.229.197])
+	(using TLSv1 with cipher ECDHE-RSA-RC4-SHA (128/128 bits))
+	(No client certificate requested)
+	by mail.koalabs.org (Postfix) with ESMTPS
+	for <postmaster@ngyn.org>; Wed, 24 Jun 2015 14:52:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1435150193; bh=s8fRltU+y/nfIjdSVEbtwFXKmxeW2BeOfADZ7qSc3i4=; h=Date:From:To:Subject:From:Subject; b=Masqn66+cIcv0cwUblZZjLPFOA+l0BfXvanLooG2xAWCwGItLHUToHXwfhsbw5QsyhpptvQSIFWFUBoZqS8T27ZcLVzkPRFl38h/Yo03pBDwL6njc1yQVN2RZxz3i7VO5MXEF2XFg9z2B19dfi+GRISCGLTPA0s+sAt32I+A8FZDSzqDxb3AKuU66QabM9BJiMn/XUGAr7At96sEFyWPDBWe2Q3+MzEN5pO54uWVhjd9qaIRB6Oc/FAFM+SFcVU9UrJFRN43rP/50xV70rrV00//lWrJH+4b3RdIHjy54Vy0qLwOJ8PRdKaDbJ/NJuxbKNiYJZvE+t+QvlEpbvd7/Q==
+Received: from [98.138.226.173] by n1.bullet.mail.ne1.yahoo.com with NNFMP; 24 Jun 2015 12:49:53 -0000
+Received: from [98.138.237.130] by t2.bullet.mail.ne1.yahoo.com with NNFMP; 24 Jun 2015 12:49:53 -0000
+Received: from [127.0.0.1] by launcher100.asd.mail.corp.ne1.yahoo.com with NNFMP; 24 Jun 2015 12:49:53 -0000
+X-Yahoo-Newman-Property: asdreport
+X-Yahoo-Newman-Id: 1435111091.916236
+MIME-Version: 1.0
+Content-Transfer-Encoding: binary
+Content-Type: multipart/mixed; boundary="_----------=_14351501937631101"
+X-Mailer: MIME::Lite 3.027 (F2.73; A2.04; B3.13; Q3.13)
+Date: Wed, 24 Jun 2015 05:49:53 -0700
+From: noreply@dmarc.yahoo.com
+To: postmaster@ngyn.org	
+Subject: Report Domain: ngyn.org Submitter: yahoo.com Report-ID: <1436111091.916236>
+Message-Id: <1435150193.404586@dmarc.yahoo.com>
+
+This is a multi-part message in MIME format.
+
+--_----------=_14351501937631101
+Content-Disposition: inline
+Content-Length: 44
+Content-Transfer-Encoding: binary
+Content-Type: text/plain
+
+This is an aggregate report from Yahoo! Inc.
+--_----------=_14351501937631101
+Content-Disposition: attachment; filename="yahoo.com!ngyn.org!1436017600!1436103999.zip"
+Content-Transfer-Encoding: base64
+Content-Type: application/x-zip-compressed; name="yahoo.com!ngyn.org!1436017600!1436103999.zip"
+
+UEsDBBQDAAAIAHhdTFUTlAO/pwEAABkEAAAsAAAAeWFob28uY29tIW5neW4ub3JnITE0MzYwMTc2
+MDAhMTQzNjEwMzk5OS54bWylU0uu2zAMXLenSN8BLKtpExhg9brtEboyFJt21Gd9QMmvze2rSIZk
+pNl15fFwOEMSNrz+0cvhHckra7698KZ9eRUfPsKEOF7k8Bbx4QCEzlLoNQY5yiATGWlLc2+kRvFT
+Xq39dPhhhgZYYTcVaqkW4awPWvqA9H3Ukobmdu9pBquBJUWS1yw1Cv7leOKctx1vOn76fDwBq8VN
+HcfBnqSZc1ziLjgrk7pbfj61LbDEVAGazbw9dl0X803xYw+GwJ7tDs4uarj1br0syl+xtMvxTWnh
+gWWwkd5NgoClZ6acIPyFQwDmNsZXKsJNNQTB7/PfQRrmaS4QDpbKDGR/11W9XWnAXjlx5g3vGv71
+1PDzGVgpVO1gVxNEvEcCld9C8V0uqwxl2Xx/5Z31KihrhLEGge2YvTDdY5JqAZbgrhTPslUiqrHs
+SW4u1A1BjWiCmhSSr51XlCNSP5HVwsw301iage3Y4vRvO8g1XHtCvy5hZ/k482i1VEYs6kK4KB/y
+h5zZvS4bCYNrIBk3zO9FUY5RT/EfKU56/yQim2b8uF2kytcDbPfX/wVQSwECPwMUAwAACAB4XUxV
+E5QDv6cBAAAZBAAALAAkAAAAAAAAACCApIEAAAAAeWFob28uY29tIW5neW4ub3JnITE0MzYwMTc2
+MDAhMTQzNjEwMzk5OS54bWwKACAAAAAAAAEAGACASwUgH97YAYBLBSAf3tgBAFhOMR/e2AFQSwUG
+AAAAAAEAAQB+AAAA8QEAAAAA
+
+--_----------=_14351501937631101--
