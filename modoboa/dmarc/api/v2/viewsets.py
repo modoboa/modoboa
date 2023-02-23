@@ -26,6 +26,8 @@ class DMARCViewSet(GetThrottleViewsetMixin, viewsets.GenericViewSet):
     )
     def alignment_stats(self, request, **kwargs):
         domain = self.get_object()
+        if not domain.record_set.exists():
+            return response.Response(status=204)
         try:
             stats = lib.get_aligment_stats(
                 domain, self.request.query_params.get("period")

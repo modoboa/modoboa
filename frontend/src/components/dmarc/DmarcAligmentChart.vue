@@ -1,8 +1,8 @@
 <template>
-<div>
+<div v-if="alignments">
   <v-card>
     <v-toolbar dense elevation="0" class="mr-2">
-      <v-toolbar-title><translate>Aligment</translate></v-toolbar-title>
+      <v-toolbar-title><translate>Alignment</translate></v-toolbar-title>
       <v-spacer />
       <v-btn
         icon
@@ -97,6 +97,22 @@
     </v-expansion-panel>
   </v-expansion-panels>
 </div>
+<div v-else>
+  <v-alert
+    v-if="dmarcDisabled"
+    type="info"
+    outlined
+    prominent
+    border="left"
+    class="mt-6"
+    >
+    <translate tag="div">
+      DMARC support does not seem to be enabled for this domain.</translate>
+    <translate tag="div">
+      If you configured it recently, please wait for the first report to be received and processed.
+    </translate>
+  </v-alert>
+</div>
 </template>
 
 <script>
@@ -130,7 +146,7 @@ export default {
           position: 'bottom'
         }
       },
-      alignments: {},
+      alignments: null,
       boxes: [
         { key: 'total', label: this.$gettext('Total'), color: 'primary lighten-2' },
         { key: 'aligned', label: this.$gettext('Fully aligned'), color: 'green lighten-2' },
@@ -140,6 +156,7 @@ export default {
       ],
       currentWeek: 0,
       currentYear: 0,
+      dmarcDisabled: false,
       loading: false,
       panel: null,
       series: [],
@@ -193,13 +210,18 @@ export default {
         this.currentWeek -= 1
       }
     },
-    fetchAligmentStats () {
+    fetchAlignmentStats () {
       if (this.loading) {
         return
       }
       const period = `${this.currentYear}-${this.currentWeek}`
       this.loading = true
-      domainsApi.getDomainDmarcAligment(this.domain.pk, period).then(resp => {
+      domainsApi.getDomainDmarcAlignment(this.domain.pk, period).then(resp => {
+        this.loading = false
+        if (resp.status === 204) {
+          this.dmarcDisabled = true
+          return
+        }
         this.stats = { total: 0 }
         this.alignments = resp.data
         this.series = []
@@ -214,7 +236,6 @@ export default {
           this.stats[key] = total
           this.series.push(total)
         }
-        this.loading = false
       })
     }
   },
@@ -224,14 +245,14 @@ export default {
     this.currentWeek = now.weekNumber
   },
   mounted () {
-    this.fetchAligmentStats()
+    this.fetchAlignmentStats()
   },
   watch: {
     currentWeek () {
-      this.fetchAligmentStats()
+      this.fetchAlignmentStats()
     },
     currentYear () {
-      this.fetchAligmentStats()
+      this.fetchAlignmentStats()
     }
   }
 }

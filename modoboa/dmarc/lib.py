@@ -263,8 +263,8 @@ def get_aligment_stats(domain, period=None) -> dict:
            report__end_date__lte=daterange[1])) &
         Q(header_from=domain)
     )
-    all_records = models.Record.objects.select_related().filter(qargs)
-    stats = {
+    all_records = models.Record.objects.filter(qargs)
+    stats: dict = {
         "aligned": {},
         "trusted": {},
         "forwarded": {},

@@ -13,7 +13,7 @@ export default {
   getDomainDNSDetail (domainId) {
     return repository.get(`/${domainResource}/${domainId}/dns_detail/`)
   },
-  getDomainDmarcAligment (domainId, period) {
+  getDomainDmarcAlignment (domainId, period) {
     return repository.get(
       `${domainResource}/${domainId}/dmarc/alignment_stats/`,
       { params: { period } }
