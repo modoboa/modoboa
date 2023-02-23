@@ -1,0 +1,50 @@
+Return-Path: postmaster@amazonses.com
+Delivered-To: <tonio@ngyn.org>
+Received: from mail.koalabs.org
+	by nelson.ngyn.org (Dovecot) with LMTP id dV+vEDEApVVCdQAABvoInA
+	for <tonio@ngyn.org>; Tue, 03 Jun 2021 14:27:34 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.koalabs.org (Postfix) with ESMTP id C28EFE035E
+	for <dmarc-aggrep@ngyn.org>; Tue, 03 Jun 2021 14:27:34 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail.koalabs.org
+Received: from mail.koalabs.org ([127.0.0.1])
+	by localhost (nelson.ngyn.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP for <dmarc-aggrep@ngyn.org>;
+	Tue, 03 Jun 2021 14:27:32 +0200 (CEST)
+Received: from a7-16.smtp-out.eu-west-1.amazonses.com (a7-16.smtp-out.eu-west-1.amazonses.com [54.240.7.16])
+	by mail.koalabs.org (Postfix) with ESMTPS
+	for <dmarc-aggrep@ngyn.org>; Mon, 7 Jun 2021 12:28:31 +0200 (CEST)
+	(envelope-from 01020179e5ffe776-2049ffa3-f9ed-4b84-8bed-26aec834960c-000000@eu-west-1.amazonses.com)
+Date: Mon, 7 Jun 2021 10:23:43 +0000
+From: postmaster@amazonses.com
+To: dmarc-aggrep@ngyn.org
+Message-ID: <01020179e5ffe776-2049ffa3-f9ed-4b84-8bed-26aec834960c-000000@eu-west-1.amazonses.com>
+Subject: Dmarc Aggregate Report Domain: {ngyn.org}  Submitter: {Amazon
+ SES}  Date: {2021-06-06}  Report-ID: {12007123-9847-4f23-a7d7-c6837cce89de}
+Content-Type: multipart/mixed;
+	boundary="----=_Part_8428_1073105148.1623061423987"
+MIME-Version: 1.0
+
+------=_Part_8428_1073105148.1623061423987
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+This MIME email was sent through Amazon SES.
+------=_Part_8428_1073105148.1623061423987
+Content-Type: application/octet-stream; 
+	name=amazonses.com!ngyn.org!1622937600!1623024000.xml.gz
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="amazonses.com!ngyn.org!1622937600!1623024000.xml.gz"
+
+H4sICA343WAAA2FtYXpvbnNlcy5jb20hbmd5bi5vcmchMTYyNDIzMzYwMCExNjI0MzIwMDAwLnht
+bAClU7ty2zAQrKWv4LgX3xalGQSOi5RJCndpOBBwlDAmAQ4AOnG+PgeCryhJlYp3u4e9WxxInn50
+bfQGxkqtPjxkcfrwRPekARAXxl/pfkcmkqZxRpI5QdxAr42rO3BMMMcQ2hFtrrViHdDnz8/fvn45
+vHx6IckC+gromGxpr63rmHVgPrKO/dTKgo257kgSeF856UtBszxNqywvDudTWR3KBiNWierAj6ei
+4hxOZwEkWev9aRwJasPUdWy7Ixe4SkWzY17mRXFMU5IEZCRBiZEqsJGnfO5Fkt9Ulhar5SgivW4l
+f6/74dJKewNBd4giLjQ6UVRd31WMN4BaAZhoJl5lRy1JQjCjtm9G0H8nrKdKK/TXLwB39BFz/HgE
+o/sRPGqAazOGPtHfQ4Sx1YPhUMuenss4L+LyMc5OuNoVnyu5HpSjSIVghqd28MbaAe9HzIQ3LS2u
+Vjr/RMLUW2RT5z33zKLVMVwZbzwQPppbJn/viRuZjREpQDnZSHygy7EbMAGmbozuNovYopPMH4cJ
+G9ytNmCH1q16d7P+a8VrRRCYDE3J4mmrRjZu/195EcOXdOfDF48PI4r2JFn/819WLGN5CQQAAA==
+
+------=_Part_8428_1073105148.1623061423987--

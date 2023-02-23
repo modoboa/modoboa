@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# cwatanab <chihiro.watanabe@live.jp>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 14:05+0200\n"
+"PO-Revision-Date: 2017-03-03 08:18+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
+"language/ja_JP/)\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: forms.py:35
+msgid "DNS settings"
+msgstr ""
+
+#: forms.py:38
+msgid "Enable reverse lookups"
+msgstr ""
+
+#: forms.py:41
+msgid "Enable reverse DNS lookups (reports will be longer to display)"
+msgstr ""
+
+#: handlers.py:20
+msgid "Show DMARC report for {}"
+msgstr "{} の DMARC レポートを表示"
+
+#: models.py:10 models.py:16
+msgid "None"
+msgstr "None"
+
+#: models.py:11
+msgid "Quarantine"
+msgstr "Quarantine"
+
+#: models.py:12
+msgid "Reject"
+msgstr "Reject"
+
+#: models.py:17
+msgid "Neutral"
+msgstr "Neutral"
+
+#: models.py:18
+msgid "Pass"
+msgstr "Pass"
+
+#: models.py:19
+msgid "Fail"
+msgstr "Fail"
+
+#: models.py:20
+msgid "Temporary error"
+msgstr "Temporary error"
+
+#: models.py:21
+msgid "Permanent error"
+msgstr "Permanent error"
+
+#: models.py:25
+msgid "Policy"
+msgstr "Policy"
+
+#: models.py:29
+msgid "Soft failure"
+msgstr "Soft failure"
+
+#: modo_extension.py:16
+msgid "DMARC tools"
+msgstr "DMARC ツール"
+
+#: modo_extension.py:19
+msgid "A set of tools to ease DMARC integration"
+msgstr "DMARC 統合のためのツールセット"
+
+#: templates/modoboa_dmarc/_result_detail.html:6
+msgid "Total"
+msgstr "Total"
+
+#: templates/modoboa_dmarc/domain_report.html:21
+#: templates/modoboa_dmarc/domain_report.html:26
+msgid "Fully aligned"
+msgstr "Fully aligned"
+
+#: templates/modoboa_dmarc/domain_report.html:22
+#: templates/modoboa_dmarc/domain_report.html:27
+msgid "Partially aligned"
+msgstr "Partially aligned"
+
+#: templates/modoboa_dmarc/domain_report.html:23
+#: templates/modoboa_dmarc/domain_report.html:28
+msgid "Failed"
+msgstr "Failed"
+
+#: templates/modoboa_dmarc/domain_report.html:50
+msgid "DMARC report for"
+msgstr "DMARC レポート"
+
+#: templates/modoboa_dmarc/domain_report.html:74
+msgid "processed"
+msgstr "processed"
+
+#: templates/modoboa_dmarc/domain_report.html:83
+msgid "fully aligned"
+msgstr "fully aligned"
+
+#: templates/modoboa_dmarc/domain_report.html:92
+msgid "partially aligned"
+msgstr "partially aligned"
+
+#: templates/modoboa_dmarc/domain_report.html:101
+msgid "failed"
+msgstr "failed"
+
+#: templates/modoboa_dmarc/domain_report.html:111
+msgid "Display details"
+msgstr "詳細を表示"
+
+#: templates/modoboa_dmarc/domain_report.html:115
+msgid "Trusted sources"
+msgstr "Trusted sources"
+
+#: templates/modoboa_dmarc/domain_report.html:123
+msgid "Unknown sources / Threats"
+msgstr "Unknown sources / Threats"
+
+#: templatetags/dmarc_tags.py:59 views.py:120
+msgid "Not resolved"
+msgstr ""

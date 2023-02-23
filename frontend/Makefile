@@ -8,7 +8,7 @@ INPUT_DIR = src
 OUTPUT_DIR = .
 
 # Available locales for the app.
-LOCALES = en fr
+LOCALES = br cs de el es en fi fr it ja nl pt pt-br pl po ru sv tr zh-hant
 
 # Name of the generated .po files for each available locale.
 LOCALE_FILES ?= $(patsubst %,$(OUTPUT_DIR)/locale/%/LC_MESSAGES/app.po,$(LOCALES))

@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Olle Gustafsson <olle@dalnix.se>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 14:05+0200\n"
+"PO-Revision-Date: 2017-03-03 08:18+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
+"sv/)\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:35
+msgid "DNS settings"
+msgstr ""
+
+#: forms.py:38
+msgid "Enable reverse lookups"
+msgstr ""
+
+#: forms.py:41
+msgid "Enable reverse DNS lookups (reports will be longer to display)"
+msgstr ""
+
+#: handlers.py:20
+msgid "Show DMARC report for {}"
+msgstr "Visa DMARC rapport för {}"
+
+#: models.py:10 models.py:16
+msgid "None"
+msgstr "Inga"
+
+#: models.py:11
+msgid "Quarantine"
+msgstr "Karantän"
+
+#: models.py:12
+msgid "Reject"
+msgstr "Avvisa"
+
+#: models.py:17
+msgid "Neutral"
+msgstr "Netural"
+
+#: models.py:18
+msgid "Pass"
+msgstr "Passera"
+
+#: models.py:19
+msgid "Fail"
+msgstr "Avslå"
+
+#: models.py:20
+msgid "Temporary error"
+msgstr "Tillfälligt fel"
+
+#: models.py:21
+msgid "Permanent error"
+msgstr "Permanent fel"
+
+#: models.py:25
+msgid "Policy"
+msgstr "Policy"
+
+#: models.py:29
+msgid "Soft failure"
+msgstr "Mjukt misslyckande"
+
+#: modo_extension.py:16
+msgid "DMARC tools"
+msgstr "DMARC verktyg"
+
+#: modo_extension.py:19
+msgid "A set of tools to ease DMARC integration"
+msgstr "En uppsättning verktyg för att underlätta DMARC integration"
+
+#: templates/modoboa_dmarc/_result_detail.html:6
+msgid "Total"
+msgstr "Totalt"
+
+#: templates/modoboa_dmarc/domain_report.html:21
+#: templates/modoboa_dmarc/domain_report.html:26
+msgid "Fully aligned"
+msgstr "Helt i linje"
+
+#: templates/modoboa_dmarc/domain_report.html:22
+#: templates/modoboa_dmarc/domain_report.html:27
+msgid "Partially aligned"
+msgstr "Delvis i linje"
+
+#: templates/modoboa_dmarc/domain_report.html:23
+#: templates/modoboa_dmarc/domain_report.html:28
+msgid "Failed"
+msgstr "Misslyckades"
+
+#: templates/modoboa_dmarc/domain_report.html:50
+msgid "DMARC report for"
+msgstr "DMARC rapport för"
+
+#: templates/modoboa_dmarc/domain_report.html:74
+msgid "processed"
+msgstr "bearbetats"
+
+#: templates/modoboa_dmarc/domain_report.html:83
+msgid "fully aligned"
+msgstr "helt i linje"
+
+#: templates/modoboa_dmarc/domain_report.html:92
+msgid "partially aligned"
+msgstr "delvis i linje"
+
+#: templates/modoboa_dmarc/domain_report.html:101
+msgid "failed"
+msgstr "misslyckades"
+
+#: templates/modoboa_dmarc/domain_report.html:111
+msgid "Display details"
+msgstr "Visa detaljer"
+
+#: templates/modoboa_dmarc/domain_report.html:115
+msgid "Trusted sources"
+msgstr "Betrodda källor"
+
+#: templates/modoboa_dmarc/domain_report.html:123
+msgid "Unknown sources / Threats"
+msgstr "Okända källor / Hot"
+
+#: templatetags/dmarc_tags.py:59 views.py:120
+msgid "Not resolved"
+msgstr ""

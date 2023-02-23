@@ -106,7 +106,8 @@ SETTINGS_SAMPLE = {
     "pdfcredentials-smtp_connection_security": "starttls",
     "pdfcredentials-imap_server_address": "127.0.0.1",
     "pdfcredentials-imap_server_port": 667,
-    "pdfcredentials-imap_connection_security": "starttls"
+    "pdfcredentials-imap_connection_security": "starttls",
+    "dmarc-enable_rlookups": False,
 }
 
 

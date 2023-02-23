@@ -110,6 +110,12 @@ class AuthenticationTestCase(ModoTestCase):
         user.refresh_from_db()
         self.assertTrue(user.password.startswith("{SHA256}"))
 
+        self.client.logout()
+        self.set_global_parameter("password_scheme", "ssha")
+        self.client.post(reverse("core:login"), data)
+        user.refresh_from_db()
+        self.assertTrue(user.password.startswith("{SSHA}"))
+
         if argon2 is not None:
             self.client.logout()
             self.set_global_parameter("password_scheme", "argon2id")
@@ -176,7 +182,7 @@ class AuthenticationTestCase(ModoTestCase):
         """Validate Dovecot supported schemes with fake command output."""
         exec_cmd_mock.return_value = (
             0,
-            "MD5 MD5-CRYPT SHA SHA1 SHA256 SHA512 SMD5 SSHA SSHA256 SSHA512 "
+            "MD5 MD5-CRYPT SHA SHA1 SSHA SHA256 SHA512 SMD5 SSHA SSHA256 SSHA512 "
             "PLAIN CLEAR CLEARTEXT PLAIN-TRUNC CRAM-MD5 SCRAM-SHA-1 HMAC-MD5 "
             "DIGEST-MD5 PLAIN-MD4 PLAIN-MD5 LDAP-MD5 LANMAN NTLM OTP SKEY RPA "
             "PBKDF2 CRYPT SHA256-CRYPT SHA512-CRYPT"
@@ -187,6 +193,7 @@ class AuthenticationTestCase(ModoTestCase):
                           "{MD5-CRYPT}",
                           "{SHA}",
                           "{SHA1}",
+                          "{SSHA}",
                           "{SHA256}",
                           "{SHA512}",
                           "{SMD5}",
