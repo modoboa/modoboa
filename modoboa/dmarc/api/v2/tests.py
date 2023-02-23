@@ -24,7 +24,13 @@ class DmarcViewSetTestCase(mixins.CallCommandMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["failed"]), 1)
 
+    def test_no_record(self):
+        url = reverse("v2:dmarc-alignment-stats", args=[self.domain.pk])
+        response = self.client.get(f"{url}?period=2015-26")
+        self.assertEqual(response.status_code, 204)
+
     def test_wrong_range(self):
+        self.import_reports()
         url = reverse("v2:dmarc-alignment-stats", args=[self.domain.pk])
         response = self.client.get(f"{url}?period=toto-titi")
         self.assertEqual(response.status_code, 400)
