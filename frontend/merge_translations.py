@@ -35,7 +35,8 @@ OLD_TRANSLATION_MODULES = [
     "maillog",
     "policyd",
     "relaydomains",
-    "transport"
+    "transport",
+    "dmarc",
 ]
 
 

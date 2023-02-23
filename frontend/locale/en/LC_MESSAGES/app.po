@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-22 19:25+0100\n"
+"POT-Creation-Date: 2023-02-23 18:08+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -175,6 +175,10 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:143
 #: src/components/domains/DomainList.vue:167
 msgid "Aliases"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:4
+msgid "Alignment"
 msgstr ""
 
 #: src/components/layout/Navbar.vue:99 src/components/layout/Navbar.vue:214
@@ -427,6 +431,10 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:37
+msgid "Detail"
+msgstr ""
+
 #: src/components/user/TwoFactorAuthForm.vue:57
 #: src/components/user/TwoFactorAuthForm.vue:5
 msgid "Disable 2FA"
@@ -477,6 +485,10 @@ msgstr ""
 msgid "DKIM signing"
 msgstr ""
 
+#: src/views/domains/Domain.vue:17
+msgid "DMARC"
+msgstr ""
+
 #: src/components/domains/DNSDetail.vue:79
 #: src/components/domains/DNSDetail.vue:43
 msgid "DMARC record found"
@@ -485,6 +497,10 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:82
 #: src/components/domains/DNSDetail.vue:46
 msgid "DMARC record not found"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:50
+msgid "DMARC support does not seem to be enabled for this domain."
 msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:31
@@ -715,6 +731,13 @@ msgstr ""
 msgid "Export domains and aliases to CSV"
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:25
+#: src/components/dmarc/DmarcAligmentChart.vue:37
+#: src/components/dmarc/DmarcAligmentChart.vue:143
+#: src/components/dmarc/DmarcAligmentChart.vue:155
+msgid "Failed"
+msgstr ""
+
 #: src/components/identities/AccountCreationForm.vue:30
 #: src/components/identities/AccountGeneralForm.vue:32
 #: src/components/user/ProfileForm.vue:45
@@ -743,6 +766,17 @@ msgstr ""
 msgid "Forward updated"
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:24
+#: src/components/dmarc/DmarcAligmentChart.vue:36
+#: src/components/dmarc/DmarcAligmentChart.vue:142
+#: src/components/dmarc/DmarcAligmentChart.vue:154
+msgid "Forwarded"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:42
+msgid "Forwarders with ARC"
+msgstr ""
+
 #: src/components/logs/MessageList.vue:13
 #: src/components/tools/TimeSerieChart.vue:17
 #: src/components/logs/MessageList.vue:46
@@ -758,13 +792,20 @@ msgstr ""
 msgid "Fullname/recipient"
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:22
+#: src/components/dmarc/DmarcAligmentChart.vue:34
+#: src/components/dmarc/DmarcAligmentChart.vue:140
+#: src/components/dmarc/DmarcAligmentChart.vue:152
+msgid "Fully aligned"
+msgstr ""
+
 #: src/components/domains/DomainCreationForm.vue:23
 #: src/components/domains/DomainCreationForm.vue:108
 #: src/components/domains/DomainCreationForm.vue:114
 #: src/components/domains/DomainForm.vue:7
 #: src/components/identities/AliasCreationForm.vue:17
 #: src/components/identities/AliasCreationForm.vue:49
-#: src/components/identities/AliasForm.vue:7
+#: src/components/identities/AliasForm.vue:7 src/views/domains/Domain.vue:11
 #: src/components/identities/AliasCreationForm.vue:37
 #: src/components/identities/AliasCreationForm.vue:69
 #: src/components/domains/DomainCreationForm.vue:74
@@ -826,6 +867,10 @@ msgstr ""
 #: src/components/tools/CreationForm.vue:26
 #: src/components/tools/CreationForm.vue:99
 msgid "If you close this form now, your modifications won't be saved. Do you confirm?"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:52
+msgid "If you configured it recently, please wait for the first report to be received and processed."
 msgstr ""
 
 #: src/components/tools/ImportForm.vue:29
@@ -1136,6 +1181,17 @@ msgstr ""
 #: src/components/parameters/ParametersForm.vue:60
 #: src/components/parameters/ParametersForm.vue:137
 msgid "Parameters updated"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:23
+#: src/components/dmarc/DmarcAligmentChart.vue:35
+#: src/components/dmarc/DmarcAligmentChart.vue:141
+#: src/components/dmarc/DmarcAligmentChart.vue:153
+msgid "Partially aligned"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:41
+msgid "Partially trusted sources / Forwarders"
 msgstr ""
 
 #: src/components/identities/AccountPasswordForm.vue:88
@@ -1465,6 +1521,10 @@ msgstr ""
 msgid "Start typing a name here..."
 msgstr ""
 
+#: src/views/domains/Domain.vue:14
+msgid "Statistics"
+msgstr ""
+
 #: src/components/alarms/AlarmList.vue:9 src/components/logs/MessageList.vue:11
 #: src/components/alarms/AlarmList.vue:73
 #: src/components/logs/MessageList.vue:44
@@ -1536,6 +1596,13 @@ msgstr ""
 msgid "Too many unsuccessful attempts, please try later."
 msgstr ""
 
+#: src/components/dmarc/DmarcAligmentChart.vue:33
+#: src/components/dmarc/DmarcSourceTable.vue:8
+#: src/components/dmarc/DmarcSourceTable.vue:3
+#: src/components/dmarc/DmarcAligmentChart.vue:151
+msgid "Total"
+msgstr ""
+
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:37
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:85
 msgid "TOTP resent."
@@ -1551,6 +1618,10 @@ msgstr ""
 
 #: src/components/alarms/AlarmList.vue:8 src/components/alarms/AlarmList.vue:72
 msgid "Triggered"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:40
+msgid "Trusted sources"
 msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:4
@@ -1579,6 +1650,10 @@ msgstr ""
 #: src/components/domains/DNSStatusChip.vue:17
 #: src/components/domains/DNSStatusChip.vue:24
 msgid "Unknown"
+msgstr ""
+
+#: src/components/dmarc/DmarcAligmentChart.vue:43
+msgid "Unknown sources / Threats"
 msgstr ""
 
 #: src/components/identities/AccountMailboxForm.vue:30
