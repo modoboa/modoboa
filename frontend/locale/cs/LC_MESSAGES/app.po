@@ -1,26 +1,26 @@
-# French translations for Modoboa package.
-# Copyright (C) 2021 THE Modoboa'S COPYRIGHT HOLDER
+# Czech translations for Modoboa package.
+# Copyright (C) 2023 THE Modoboa'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Modoboa package.
-# Automatically generated, 2021.
+# Automatically generated, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-22 19:25+0100\n"
-"PO-Revision-Date: 2021-07-01 16:15+0200\n"
+"POT-Creation-Date: 2023-02-23 11:26+0100\n"
+"PO-Revision-Date: 2023-02-23 11:26+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: fr\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: src/components/domains/DomainList.vue:28
 #: src/components/domains/DomainList.vue:12
 msgid "(disabled)"
-msgstr "(désactivé)"
+msgstr ""
 
 #: src/views/user/APISetup.vue:29
 msgid "A documentation of the API is available"
@@ -52,12 +52,12 @@ msgstr ""
 
 #: src/views/identities/Account.vue:3 src/views/identities/Identities.vue:20
 msgid "Account"
-msgstr "Compte"
+msgstr ""
 
 #: src/components/identities/AccountCreationForm.vue:131
 #: src/components/identities/AccountCreationForm.vue:181
 msgid "Account created"
-msgstr "Compte créé"
+msgstr ""
 
 #: src/components/identities/IdentityList.vue:67
 #: src/components/identities/IdentityList.vue:146
@@ -67,7 +67,7 @@ msgstr ""
 #: src/components/identities/AccountForm.vue:65
 #: src/components/identities/AccountForm.vue:192
 msgid "Account updated"
-msgstr "Compte mis à jour"
+msgstr ""
 
 #: src/components/domains/DomainList.vue:29
 #: src/components/identities/IdentityList.vue:6
@@ -76,12 +76,12 @@ msgstr "Compte mis à jour"
 #: src/components/identities/IdentityList.vue:98
 #: src/components/domains/DomainList.vue:171
 msgid "Actions"
-msgstr "Actions"
+msgstr ""
 
 #: src/components/domains/DomainAliasForm.vue:17
 #: src/components/domains/DomainAliasForm.vue:86
 msgid "Add"
-msgstr "Ajouter"
+msgstr ""
 
 #: src/components/domains/DomainAliasForm.vue:20
 #: src/components/domains/DomainAliasForm.vue:89
@@ -93,9 +93,8 @@ msgid "Add administrator"
 msgstr ""
 
 #: src/components/identities/AccountSenderAddresses.vue:24
-#, fuzzy
 msgid "Add sender address"
-msgstr "Adresse aléatoire"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:19
 #: src/components/identities/AccountSenderAddresses.vue:12
@@ -104,16 +103,15 @@ msgstr "Adresse aléatoire"
 #: src/components/identities/AccountSenderAddresses.vue:63
 #: src/components/domains/DNSDetail.vue:177
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 #: src/components/identities/AliasForm.vue:14
 msgid "Address:"
 msgstr ""
 
 #: src/components/identities/DomainAdminDomains.vue:3
-#, fuzzy
 msgid "Administered domains"
-msgstr "Domaines gérés"
+msgstr ""
 
 #: src/components/domains/AdministratorList.vue:53
 #: src/components/domains/AdministratorList.vue:121
@@ -134,7 +132,7 @@ msgstr ""
 #: src/components/domains/DomainList.vue:113
 #: src/components/domains/DomainList.vue:255
 msgid "Administrators"
-msgstr "Administrateurs"
+msgstr ""
 
 #: src/components/domains/AdministratorList.vue:4
 msgid "Administrators of {{ domain.name }}"
@@ -149,12 +147,12 @@ msgstr ""
 #: src/views/domains/Domains.vue:23 src/views/identities/Alias.vue:3
 #: src/views/identities/Identities.vue:23
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
 #: src/components/identities/AliasCreationForm.vue:82
 #: src/components/identities/AliasCreationForm.vue:102
 msgid "Alias created"
-msgstr "Alias créé"
+msgstr ""
 
 #: src/components/identities/IdentityList.vue:45
 #: src/components/identities/IdentityList.vue:124
@@ -182,24 +180,23 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:143
 #: src/components/domains/DomainList.vue:167
 msgid "Aliases"
-msgstr "Alias"
+msgstr ""
 
 #: src/components/layout/Navbar.vue:99 src/components/layout/Navbar.vue:214
 msgid "API"
-msgstr "API"
+msgstr ""
 
 #: src/views/user/APISetup.vue:3
 msgid "API access"
-msgstr "Accès API"
+msgstr ""
 
 #: src/views/user/APISetup.vue:24 src/views/user/APISetup.vue:65
 msgid "API token copied to your clipboard"
 msgstr ""
 
 #: src/views/user/APISetup.vue:33 src/views/user/APISetup.vue:74
-#, fuzzy
 msgid "API token created"
-msgstr "Compte créé"
+msgstr ""
 
 #: src/views/user/APISetup.vue:55 src/views/user/APISetup.vue:96
 msgid "API token deleted"
@@ -207,7 +204,7 @@ msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:19
 msgid "Apply"
-msgstr "Appliquer"
+msgstr ""
 
 #: src/components/layout/Navbar.vue:73 src/views/logs/AuditTrail.vue:3
 #: src/components/layout/Navbar.vue:188
@@ -217,12 +214,12 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:59
 #: src/components/domains/DNSDetail.vue:23
 msgid "Authentication"
-msgstr "Authentification"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:26
 #: src/components/domains/DomainDNSConfig.vue:31
 msgid "Auto configuration"
-msgstr "Configuration automatique"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:45
 #: src/components/domains/DNSDetail.vue:9
@@ -250,7 +247,7 @@ msgstr ""
 
 #: src/components/domains/DomainDKIMKey.vue:14
 msgid "Bind/named format. Click to copy"
-msgstr "Format bind/named. Cliquer pour copier"
+msgstr ""
 
 #: src/views/user/PasswordRecoveryForm.vue:26
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:19
@@ -266,9 +263,8 @@ msgid "Cancel"
 msgstr ""
 
 #: src/views/user/PasswordRecoveryChangeForm.vue:10
-#, fuzzy
 msgid "Change password"
-msgstr "Changer le mot de passe"
+msgstr ""
 
 #: src/components/admin/ComponentsInformationTable.vue:8
 msgid "Check out the following list to find related components"
@@ -276,7 +272,7 @@ msgstr ""
 
 #: src/views/identities/Identities.vue:45 src/views/identities/Identities.vue:1
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "Cocher cette option si les mots de passe contenus dans votre fichier ne sont pas chiffrés"
+msgstr ""
 
 #: src/components/domains/DomainAliasForm.vue:56
 #: src/components/domains/DomainAliasForm.vue:26
@@ -294,12 +290,11 @@ msgstr ""
 #: src/components/tools/ImportForm.vue:26
 #: src/components/user/RecoveryCodesResetDialog.vue:23
 msgid "Close"
-msgstr "Fermer"
+msgstr ""
 
 #: src/components/alarms/AlarmList.vue:21 src/components/alarms/AlarmList.vue:5
-#, fuzzy
 msgid "Closed"
-msgstr "Fermée"
+msgstr ""
 
 #: src/components/tools/CreationForm.vue:40
 msgid "Confirm and create"
@@ -308,12 +303,12 @@ msgstr ""
 #: src/components/identities/AccountPasswordForm.vue:108
 #: src/components/identities/AccountPasswordForm.vue:58
 msgid "Confirmation"
-msgstr "Confirmation"
+msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:34
 #: src/components/user/TwoFactorAuthForm.vue:2
 msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr "Félicitations ! L'authentification à deux facteurs est maintenant activée pour votre compte."
+msgstr ""
 
 #: src/views/Login.vue:23
 msgid "Connect"
@@ -321,7 +316,7 @@ msgstr ""
 
 #: src/components/tools/ImportForm.vue:19
 msgid "Continue on error"
-msgstr "Continuer en cas d'erreur"
+msgstr ""
 
 #: src/components/domains/DomainGeneralForm.vue:8
 msgid "Control if this domain will be allowed to send and receive messages"
@@ -346,17 +341,17 @@ msgstr ""
 #: src/components/domains/DomainOptionsForm.vue:2
 #: src/components/domains/DomainCreationForm.vue:105
 msgid "Create a domain administrator"
-msgstr "Créer un administrateur de domaine"
+msgstr ""
 
 #: src/components/domains/DomainOptionsForm.vue:7
 msgid "Create a mailbox for the administrator."
-msgstr "Créer une boite aux lettres pour l'administrateur"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:68
 #: src/components/domains/DomainOptionsForm.vue:8
 #: src/components/domains/DomainCreationForm.vue:119
 msgid "Create aliases"
-msgstr "Créer des alias"
+msgstr ""
 
 #: src/components/domains/DomainOptionsForm.vue:8
 msgid "Create standard aliases for the domain."
@@ -366,18 +361,16 @@ msgstr ""
 #: src/components/identities/AccountSummary.vue:7
 #: src/components/identities/AliasSummary.vue:7
 msgid "Creation date"
-msgstr "Date de création"
+msgstr ""
 
 #: src/views/identities/Identities.vue:45 src/views/identities/Identities.vue:1
-#, fuzzy
 msgid "Crypt passwords"
-msgstr "Chiffrer les mots de passe"
+msgstr ""
 
 #: src/components/identities/AccountPasswordForm.vue:29
 #: src/components/identities/AccountPasswordForm.vue:11
-#, fuzzy
 msgid "Current password"
-msgstr "Mot de passe oublié ?"
+msgstr ""
 
 #: src/components/identities/AccountMailboxForm.vue:43
 #: src/components/identities/AccountMailboxForm.vue:26
@@ -390,30 +383,30 @@ msgstr ""
 
 #: src/components/layout/Navbar.vue:45 src/components/layout/Navbar.vue:160
 msgid "Dashboard"
-msgstr "Tableau de bord"
+msgstr ""
 
 #: src/components/logs/AuditTrailList.vue:8
 #: src/components/logs/MessageList.vue:10
 #: src/components/logs/AuditTrailList.vue:40
 #: src/components/logs/MessageList.vue:43
 msgid "Date"
-msgstr "Date"
+msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:50
 #: src/components/tools/TimeSerieChart.vue:108
 msgid "Day"
-msgstr "Jour"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:41
 #: src/components/domains/DomainLimitationsForm.vue:6
 #: src/components/domains/DomainSummary.vue:19
 #: src/components/domains/DomainCreationForm.vue:92
 msgid "Default mailbox quota"
-msgstr "Quota par défaut pour une boîte aux lettres"
+msgstr ""
 
 #: src/components/domains/DomainLimitationsForm.vue:6
 msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
-msgstr "Quota par défaut appliqué aux boîtes aux lettres. Peut être exprimé en Ko, Mo (défaut) ou Go. Une valeur à 0 signifie pas de quota."
+msgstr ""
 
 #: src/components/domains/DomainAliasForm.vue:24
 #: src/components/domains/DomainList.vue:115
@@ -437,23 +430,22 @@ msgstr ""
 #: src/components/identities/AliasGeneralForm.vue:56
 #: src/components/admin/ComponentsInformationTable.vue:54
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:57
 #: src/components/user/TwoFactorAuthForm.vue:5
-#, fuzzy
 msgid "Disable 2FA"
-msgstr "Désactiver authentification à 2 facteurs."
+msgstr ""
 
 #: src/components/domains/DNSStatusChip.vue:6
 #: src/components/domains/DNSStatusChip.vue:13
 msgid "Disabled"
-msgstr "Désactivés"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:87
 #: src/components/domains/DNSDetail.vue:51
 msgid "DKIM key"
-msgstr "Clé DKIM"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:48
 #: src/components/domains/DomainDNSForm.vue:5
@@ -470,7 +462,7 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:30
 #: src/components/domains/DNSDetail.vue:189
 msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
-msgstr "Des clés DKIM existent déjà pour ce domaine. Voulez vous les écraser ?"
+msgstr ""
 
 #: src/components/domains/DomainDKIMKey.vue:4
 msgid "DKIM public key for"
@@ -508,7 +500,7 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:160
 #: src/components/domains/DomainCreationForm.vue:166
 msgid "DNS"
-msgstr "DNS"
+msgstr ""
 
 #: src/components/domains/DomainForm.vue:39
 msgid "DNS checks"
@@ -525,7 +517,7 @@ msgstr ""
 #: src/components/domains/DomainList.vue:26
 #: src/components/domains/DomainList.vue:168
 msgid "DNS status"
-msgstr "Statut DNS"
+msgstr ""
 
 #: src/components/identities/IdentityList.vue:49
 msgid "Do not delete account folder"
@@ -546,12 +538,12 @@ msgstr ""
 #: src/components/identities/AliasGeneralForm.vue:31
 #: src/components/alarms/AlarmList.vue:74
 msgid "Domain"
-msgstr "Domaine"
+msgstr ""
 
 #: src/components/identities/AccountRoleForm.vue:22
 #: src/components/identities/AccountRoleForm.vue:52
 msgid "Domain administrator"
-msgstr "Administrateur de domaine"
+msgstr ""
 
 #: src/components/domains/DomainAliasForm.vue:51
 #: src/components/domains/DomainAliasForm.vue:120
@@ -571,7 +563,7 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:174
 #: src/components/domains/DomainCreationForm.vue:225
 msgid "Domain created"
-msgstr "Domaine créé"
+msgstr ""
 
 #: src/components/identities/AccountCreationForm.vue:52
 #: src/components/identities/AccountCreationForm.vue:102
@@ -600,7 +592,7 @@ msgstr ""
 #: src/components/layout/Navbar.vue:51 src/views/domains/Domains.vue:3
 #: src/components/layout/Navbar.vue:166
 msgid "Domains"
-msgstr "Domaines"
+msgstr ""
 
 #: src/components/tools/ImportForm.vue:19
 msgid "Don't treat duplicated objects as errors"
@@ -644,7 +636,7 @@ msgstr ""
 #: src/components/identities/AliasGeneralForm.vue:35
 #: src/components/identities/AliasGeneralForm.vue:15
 msgid "Email address"
-msgstr "Adresse email"
+msgstr ""
 
 #: src/components/tools/CreationSummary.vue:5
 #: src/components/tools/CreationSummary.vue:32
@@ -653,21 +645,20 @@ msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:68
 #: src/components/user/TwoFactorAuthForm.vue:5
-#, fuzzy
 msgid "Enable 2FA"
-msgstr "Activer authentification à 2 facteurs."
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:34
 #: src/components/domains/DomainDNSForm.vue:3
 #: src/components/domains/DomainCreationForm.vue:85
 msgid "Enable DKIM signing"
-msgstr "Activer la signature DKIM"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:33
 #: src/components/domains/DomainDNSForm.vue:2
 #: src/components/domains/DomainCreationForm.vue:84
 msgid "Enable DNS checks"
-msgstr "Activer les tests DNS"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:27
 #: src/components/domains/DomainGeneralForm.vue:8
@@ -679,7 +670,7 @@ msgstr "Activer les tests DNS"
 #: src/components/identities/AccountCreationForm.vue:89
 #: src/components/domains/DomainCreationForm.vue:78
 msgid "Enabled"
-msgstr "Activé"
+msgstr ""
 
 #: src/components/identities/AccountGeneralForm.vue:20
 #: src/components/identities/AccountGeneralForm.vue:70
@@ -697,7 +688,7 @@ msgstr ""
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:11
 msgid "Enter the code you've just received by SMS"
-msgstr "Entrez le code que vous venez de recevoir par SMS"
+msgstr ""
 
 #: src/views/user/PasswordRecoveryForm.vue:62
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:73
@@ -719,7 +710,7 @@ msgstr ""
 #: src/components/identities/AliasCreationForm.vue:46
 #: src/components/identities/AliasGeneralForm.vue:49
 msgid "Expire at"
-msgstr "Expire le"
+msgstr ""
 
 #: src/views/identities/Identities.vue:8
 msgid "Export accounts and aliases to CSV"
@@ -741,32 +732,31 @@ msgstr ""
 #: src/views/Login.vue:17 src/views/user/PasswordRecoveryChangeForm.vue:6
 #: src/views/user/PasswordRecoveryForm.vue:6
 msgid "Forgot password?"
-msgstr "Mot de passe oublié ?"
+msgstr ""
 
 #: src/components/layout/Navbar.vue:123 src/views/user/Forward.vue:3
 #: src/components/layout/Navbar.vue:238
 msgid "Forward"
-msgstr "Transfert"
+msgstr ""
 
 #: src/components/user/ForwardForm.vue:6
 msgid "Forward messages and store copies into your local mailbox"
-msgstr "Transférer les messages et conserver une copie dans votre boite locale"
+msgstr ""
 
 #: src/components/user/ForwardForm.vue:19
 #: src/components/user/ForwardForm.vue:52
-#, fuzzy
 msgid "Forward updated"
-msgstr "Transfert mis à jour"
+msgstr ""
 
 #: src/components/logs/MessageList.vue:13
 #: src/components/tools/TimeSerieChart.vue:17
 #: src/components/logs/MessageList.vue:46
 msgid "From"
-msgstr "De"
+msgstr ""
 
 #: src/components/identities/AccountSummary.vue:16
 msgid "Full name"
-msgstr "Nom complet"
+msgstr ""
 
 #: src/components/identities/IdentityList.vue:17
 #: src/components/identities/IdentityList.vue:96
@@ -786,7 +776,7 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:159
 #: src/components/domains/DomainCreationForm.vue:165
 msgid "General"
-msgstr "Général"
+msgstr ""
 
 #: src/components/domains/DomainSummary.vue:3
 #: src/components/identities/AccountSummary.vue:3
@@ -795,14 +785,12 @@ msgid "General information"
 msgstr ""
 
 #: src/components/user/ProfileForm.vue:3
-#, fuzzy
 msgid "General settings"
-msgstr "Général"
+msgstr ""
 
 #: src/views/user/APISetup.vue:12
-#, fuzzy
 msgid "Generate"
-msgstr "Général"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:93
 #: src/components/domains/DNSDetail.vue:57
@@ -811,7 +799,7 @@ msgstr ""
 
 #: src/components/domains/DomainOptionsForm.vue:6
 msgid "Generate a random password for the administrator."
-msgstr "Générer un mot de passe aléatoire pour cet administrateur."
+msgstr ""
 
 #: src/components/identities/AccountRoleForm.vue:29
 #: src/components/identities/AccountRoleForm.vue:59
@@ -825,7 +813,7 @@ msgstr ""
 #: src/components/domains/DomainDNSConfig.vue:33
 #: src/components/domains/DomainDNSConfig.vue:34
 msgid "hostname of your automx server"
-msgstr "Nom d'hôte de votre serveur automx"
+msgstr ""
 
 #: src/components/identities/AccountCreationForm.vue:27
 #: src/components/identities/AccountCreationForm.vue:85
@@ -838,7 +826,7 @@ msgstr ""
 #: src/components/layout/Navbar.vue:57 src/views/identities/Identities.vue:3
 #: src/components/layout/Navbar.vue:172
 msgid "Identities"
-msgstr "Identités"
+msgstr ""
 
 #: src/components/tools/CreationForm.vue:26
 #: src/components/tools/CreationForm.vue:99
@@ -847,7 +835,7 @@ msgstr ""
 
 #: src/components/tools/ImportForm.vue:29
 msgid "Import"
-msgstr "Importer"
+msgstr ""
 
 #: src/views/identities/Identities.vue:5
 msgid "Import accounts and aliases from CSV file"
@@ -855,16 +843,15 @@ msgstr ""
 
 #: src/views/domains/Domains.vue:37
 msgid "Import domains"
-msgstr "Importer des domaines"
+msgstr ""
 
 #: src/views/domains/Domains.vue:5
 msgid "Import domains and aliases from CSV file"
 msgstr ""
 
 #: src/views/identities/Identities.vue:37
-#, fuzzy
 msgid "Import identities"
-msgstr "Importer des identités"
+msgstr ""
 
 #: src/components/user/ForwardForm.vue:5
 msgid "Indicate one or more recipients separated by a comma (,)"
@@ -872,9 +859,8 @@ msgstr ""
 
 #: src/components/layout/Navbar.vue:92 src/views/admin/Information.vue:3
 #: src/components/layout/Navbar.vue:207
-#, fuzzy
 msgid "Information"
-msgstr "Information"
+msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:14
 #: src/components/user/TwoFactorAuthForm.vue:7
@@ -891,7 +877,7 @@ msgstr ""
 #: src/components/admin/ComponentsInformationTable.vue:14
 #: src/components/admin/ComponentsInformationTable.vue:52
 msgid "Installed version"
-msgstr "Version installée"
+msgstr ""
 
 #: src/views/user/PasswordRecoveryChangeForm.vue:54
 #: src/views/user/PasswordRecoveryChangeForm.vue:114
@@ -904,7 +890,7 @@ msgstr ""
 
 #: src/components/domains/DomainDNSConfig.vue:12
 msgid "IP address of your Modoboa server"
-msgstr "Adresse IP de votre serveur Modoboa"
+msgstr ""
 
 #: src/views/Dashboard.vue:7
 msgid ""
@@ -914,7 +900,7 @@ msgstr ""
 
 #: src/components/user/ForwardForm.vue:6
 msgid "Keep local copies"
-msgstr "Conserver des copies locales"
+msgstr ""
 
 #: src/components/user/ProfileForm.vue:59
 #: src/components/user/ProfileForm.vue:21
@@ -922,13 +908,12 @@ msgid "Language"
 msgstr ""
 
 #: src/components/identities/AccountSummary.vue:11
-#, fuzzy
 msgid "Last login date"
-msgstr "Date de dernière modification"
+msgstr ""
 
 #: src/components/domains/DomainSummary.vue:11
 msgid "Last modification date"
-msgstr "Date de dernière modification"
+msgstr ""
 
 #: src/components/identities/AccountCreationForm.vue:31
 #: src/components/identities/AccountGeneralForm.vue:41
@@ -951,7 +936,7 @@ msgstr ""
 #: src/components/logs/AuditTrailList.vue:9
 #: src/components/logs/AuditTrailList.vue:41
 msgid "Level"
-msgstr "Niveau"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:38
 #: src/components/domains/DomainCreationForm.vue:110
@@ -966,16 +951,16 @@ msgstr ""
 #: src/components/logs/AuditTrailList.vue:10
 #: src/components/logs/AuditTrailList.vue:42
 msgid "Logger"
-msgstr "Logger"
+msgstr ""
 
 #: src/components/layout/Navbar.vue:139 src/components/layout/Topbar.vue:6
 #: src/components/layout/Navbar.vue:254 src/components/layout/Topbar.vue:53
 msgid "Logout"
-msgstr "Déconnexion"
+msgstr ""
 
 #: src/components/layout/Navbar.vue:69 src/components/layout/Navbar.vue:184
 msgid "Logs"
-msgstr "Journaux"
+msgstr ""
 
 #: src/components/alarms/AlarmList.vue:11
 #: src/components/identities/AccountCreationForm.vue:46
@@ -985,18 +970,18 @@ msgstr "Journaux"
 #: src/components/identities/AccountCreationForm.vue:139
 #: src/components/alarms/AlarmList.vue:75
 msgid "Mailbox"
-msgstr "Boîte aux lettres"
+msgstr ""
 
 #: src/components/domains/DomainSummary.vue:27
 msgid "Mailboxes"
-msgstr "Boites"
+msgstr ""
 
 #: src/components/alarms/AlarmList.vue:12
 #: src/components/logs/AuditTrailList.vue:11
 #: src/components/alarms/AlarmList.vue:76
 #: src/components/logs/AuditTrailList.vue:43
 msgid "Message"
-msgstr "Message"
+msgstr ""
 
 #: src/views/logs/Messages.vue:3
 msgid "Message history"
@@ -1008,7 +993,7 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:106
 #: src/components/domains/DomainCreationForm.vue:93
 msgid "Message sending limit"
-msgstr "Limite d'envoi des messages"
+msgstr ""
 
 #: src/components/domains/DomainSummary.vue:24
 msgid "messages"
@@ -1020,7 +1005,7 @@ msgstr ""
 
 #: src/components/identities/AliasSummary.vue:11
 msgid "Modified"
-msgstr "Modifié"
+msgstr ""
 
 #: src/components/tools/CreationSummary.vue:5
 msgid "Modify"
@@ -1029,7 +1014,7 @@ msgstr ""
 #: src/components/tools/TimeSerieChart.vue:52
 #: src/components/tools/TimeSerieChart.vue:110
 msgid "Month"
-msgstr "Mois"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:9
 msgid "MX records"
@@ -1051,7 +1036,7 @@ msgstr ""
 #: src/components/domains/DomainList.vue:166
 #: src/components/admin/ComponentsInformationTable.vue:51
 msgid "Name"
-msgstr "Nom"
+msgstr ""
 
 #: src/components/domains/DomainOptionsForm.vue:4
 msgid "Name of the administrator"
@@ -1072,23 +1057,23 @@ msgstr ""
 
 #: src/components/identities/AccountCreationForm.vue:1
 msgid "New account"
-msgstr "Nouveau compte"
+msgstr ""
 
 #: src/components/identities/AliasCreationForm.vue:1
 msgid "New alias"
-msgstr "Nouvel alias"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:1
 msgid "New domain"
-msgstr "Nouveau domaine"
+msgstr ""
 
 #: src/components/user/RecoveryCodesResetDialog.vue:3
 msgid "New recovery codes"
-msgstr "Nouveaux codes de récupération"
+msgstr ""
 
 #: src/components/tools/CreationForm.vue:27
 msgid "Next"
-msgstr "Suivant"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:35
 #: src/components/domains/DomainList.vue:61
@@ -1101,7 +1086,7 @@ msgstr "Suivant"
 #: src/components/domains/DNSDetail.vue:193
 #: src/components/domains/DomainList.vue:203
 msgid "No"
-msgstr "Non"
+msgstr ""
 
 #: src/components/identities/AccountSenderAddresses.vue:6
 msgid "No sender address defined for this account"
@@ -1114,7 +1099,7 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:97
 #: src/components/domains/DNSDetail.vue:61
 msgid "Not generated"
-msgstr "Non générée"
+msgstr ""
 
 #: src/components/domains/DomainLimitationsForm.vue:9
 msgid "Number of messages this domain can send per day. Leave empty for no limit."
@@ -1136,11 +1121,11 @@ msgstr ""
 
 #: src/components/admin/ComponentsInformationTable.vue:7
 msgid "One or more updates are available"
-msgstr "Une ou plusieurs mises à jour sont disponibles!"
+msgstr ""
 
 #: src/components/alarms/AlarmList.vue:18 src/components/alarms/AlarmList.vue:2
 msgid "Opened"
-msgstr "Ouverte"
+msgstr ""
 
 #: src/views/alarms/Alarms.vue:3
 msgid "Opened alarms"
@@ -1151,7 +1136,7 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:103
 #: src/components/domains/DomainCreationForm.vue:162
 msgid "Options"
-msgstr "Options"
+msgstr ""
 
 #: src/components/parameters/ParametersForm.vue:60
 #: src/components/parameters/ParametersForm.vue:137
@@ -1162,7 +1147,7 @@ msgstr ""
 #: src/components/user/ProfileForm.vue:21 src/views/Login.vue:13
 #: src/components/identities/AccountPasswordForm.vue:42
 msgid "Password"
-msgstr "Mot de passe"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:127
 #: src/components/identities/AccountCreationForm.vue:101
@@ -1174,15 +1159,13 @@ msgid "Password copied to clipboard"
 msgstr ""
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:8
-#, fuzzy
 msgid "Password recovery"
-msgstr "Mot de passe"
+msgstr ""
 
 #: src/components/user/ProfileForm.vue:42
 #: src/components/user/ProfileForm.vue:112
-#, fuzzy
 msgid "Password updated"
-msgstr "Mot de passe"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:14
 #: src/components/domains/DNSDetail.vue:31
@@ -1202,16 +1185,16 @@ msgstr ""
 #: src/components/user/ProfileForm.vue:69
 #: src/components/user/ProfileForm.vue:30
 msgid "Phone number"
-msgstr "Numéro de téléphone"
+msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:20
 #: src/components/user/TwoFactorAuthForm.vue:13
 msgid "Pin code"
-msgstr "Code PIN"
+msgstr ""
 
 #: src/views/user/PasswordRecoveryForm.vue:9
 msgid "Please fill-in your primary email address"
-msgstr "Veuillez remplir votre adresse de courriel principale"
+msgstr ""
 
 #: src/components/domains/DNSStatusChip.vue:12
 #: src/components/domains/DNSStatusChip.vue:19
@@ -1226,13 +1209,12 @@ msgstr ""
 #: src/views/user/Profile.vue:3 src/components/layout/Navbar.vue:221
 #: src/components/layout/Navbar.vue:248
 msgid "Profile"
-msgstr "Profil"
+msgstr ""
 
 #: src/components/user/ProfileForm.vue:33
 #: src/components/user/ProfileForm.vue:103
-#, fuzzy
 msgid "Profile updated"
-msgstr "Profil mis à jour"
+msgstr ""
 
 #: src/components/tools/ImportForm.vue:7
 msgid "Provide a CSV file where lines respect one of the following formats:"
@@ -1240,7 +1222,7 @@ msgstr ""
 
 #: src/components/logs/MessageList.vue:9 src/components/logs/MessageList.vue:42
 msgid "Queue ID"
-msgstr "ID de file"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:40
 #: src/components/domains/DomainLimitationsForm.vue:3
@@ -1253,15 +1235,15 @@ msgstr "ID de file"
 #: src/components/domains/DomainCreationForm.vue:91
 #: src/components/domains/DomainList.vue:170
 msgid "Quota"
-msgstr "Quota"
+msgstr ""
 
 #: src/components/identities/AccountMailboxForm.vue:5
 msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
-msgstr "Quota pour cette boite. Peut être exprimé en Ko, Mo (défaut) ou Go. Définir une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée (interdit pour les admins. de domaine)."
+msgstr ""
 
 #: src/components/domains/DomainLimitationsForm.vue:3
 msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
-msgstr "Quota partagé entre les boîtes aux lettres. Peut être exprimé en Ko, Mo (défaut) ou Go. Une valeur à 0 signifie pas de quota."
+msgstr ""
 
 #: src/components/domains/DomainForm.vue:68
 #: src/components/identities/AccountForm.vue:64
@@ -1275,7 +1257,7 @@ msgstr ""
 #: src/components/identities/AliasGeneralForm.vue:2
 #: src/components/identities/AliasCreationForm.vue:39
 msgid "Random address"
-msgstr "Adresse aléatoire"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:58
 #: src/components/domains/DomainOptionsForm.vue:6
@@ -1284,16 +1266,15 @@ msgstr "Adresse aléatoire"
 #: src/components/identities/AccountCreationForm.vue:84
 #: src/components/domains/DomainCreationForm.vue:109
 msgid "Random password"
-msgstr "Mot de passe aléatoire"
+msgstr ""
 
 #: src/components/domains/DomainDKIMKey.vue:8
 msgid "Raw format. Click to copy"
-msgstr "Format brut. Cliquer pour copier"
+msgstr ""
 
 #: src/components/user/ForwardForm.vue:4
-#, fuzzy
 msgid "Recipient(s)"
-msgstr "Destinataire(s)"
+msgstr ""
 
 #: src/components/identities/AliasCreationForm.vue:35
 #: src/components/identities/AliasCreationForm.vue:37
@@ -1304,12 +1285,12 @@ msgstr "Destinataire(s)"
 #: src/components/identities/AliasCreationForm.vue:57
 #: src/components/identities/AliasCreationForm.vue:73
 msgid "Recipients"
-msgstr "Destinataires"
+msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:27
 #: src/components/user/TwoFactorAuthForm.vue:20
 msgid "Register"
-msgstr "Enregistrement"
+msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:22
 msgid "Relative time ranges"
@@ -1322,13 +1303,12 @@ msgstr ""
 
 #: src/views/Login.vue:19
 msgid "Remember me"
-msgstr "Se souvenir de moi"
+msgstr ""
 
 #: src/components/identities/AccountSenderAddresses.vue:18
 #: src/components/identities/AccountSenderAddresses.vue:1
-#, fuzzy
 msgid "Remove this address"
-msgstr "Adresse email"
+msgstr ""
 
 #: src/components/domains/AdministratorList.vue:24
 #: src/components/domains/AdministratorList.vue:1
@@ -1338,7 +1318,7 @@ msgstr ""
 #: src/components/identities/AccountRoleForm.vue:27
 #: src/components/identities/AccountRoleForm.vue:57
 msgid "Reseller"
-msgstr "Revendeur"
+msgstr ""
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:21
 msgid "Resend SMS."
@@ -1347,16 +1327,16 @@ msgstr ""
 #: src/components/user/TwoFactorAuthForm.vue:60
 #: src/components/user/TwoFactorAuthForm.vue:8
 msgid "Reset recovery codes"
-msgstr "Réinitialiser les codes de récupération."
+msgstr ""
 
 #: src/components/domains/DomainForm.vue:111
 #: src/components/identities/AccountForm.vue:83
 msgid "Resources"
-msgstr "Ressources"
+msgstr ""
 
 #: src/components/tools/Resources.vue:3
 msgid "Resources usage"
-msgstr "Utilisation des ressources"
+msgstr ""
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:23
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:71
@@ -1381,29 +1361,29 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:73
 #: src/components/identities/AccountCreationForm.vue:131
 msgid "Role"
-msgstr "Rôle"
+msgstr ""
 
 #: src/components/domains/DomainForm.vue:125
 #: src/components/identities/AccountForm.vue:97
 #: src/components/identities/AliasForm.vue:58
 msgid "Save"
-msgstr "Enregistrer"
+msgstr ""
 
 #: src/components/logs/AuditTrailList.vue:4
 #: src/components/logs/MessageList.vue:4
 msgid "Search"
-msgstr "Chercher"
+msgstr ""
 
 #: src/components/identities/AccountSummary.vue:24
 #: src/components/user/ProfileForm.vue:77
 #: src/components/user/ProfileForm.vue:37
 msgid "Secondary email"
-msgstr "E-mail secondaire"
+msgstr ""
 
 #: src/components/layout/Navbar.vue:112 src/views/user/Security.vue:3
 #: src/components/layout/Navbar.vue:227
 msgid "Security"
-msgstr "Sécurité"
+msgstr ""
 
 #: src/components/domains/AdministratorList.vue:12
 #: src/components/domains/AdministratorList.vue:2
@@ -1425,9 +1405,8 @@ msgid "Sender address deleted"
 msgstr ""
 
 #: src/components/identities/AccountSenderAddresses.vue:3
-#, fuzzy
 msgid "Sender addresses"
-msgstr "Adresses d'envoi"
+msgstr ""
 
 #: src/components/domains/DomainList.vue:27
 #: src/components/domains/DomainList.vue:169
@@ -1440,7 +1419,7 @@ msgstr ""
 
 #: src/components/tools/ImportForm.vue:17
 msgid "Separator"
-msgstr "Séparateur"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:79
 #: src/components/domains/DomainTransportForm.vue:3
@@ -1454,7 +1433,7 @@ msgstr ""
 
 #: src/components/layout/Navbar.vue:86 src/components/layout/Navbar.vue:201
 msgid "Settings"
-msgstr "Configuration"
+msgstr ""
 
 #: src/components/parameters/ParametersForm.vue:20
 msgid "Settings: thislabel"
@@ -1463,19 +1442,18 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:91
 #: src/components/domains/DNSDetail.vue:55
 msgid "Show key"
-msgstr "Afficher la clé"
+msgstr ""
 
 #: src/components/identities/AccountRoleForm.vue:32
 #: src/components/identities/AccountRoleForm.vue:62
 msgid "Simple user"
-msgstr "Utilisateur simple"
+msgstr ""
 
 #: src/components/identities/AccountSenderAddresses.vue:9
 #: src/components/identities/AccountSenderAddresses.vue:2
 #: src/plugins/vee-validate.js:24
-#, fuzzy
 msgid "Specify an email address"
-msgstr "Adresse email"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:63
 #: src/components/domains/DNSDetail.vue:27
@@ -1496,28 +1474,28 @@ msgstr ""
 #: src/components/alarms/AlarmList.vue:73
 #: src/components/logs/MessageList.vue:44
 msgid "Status"
-msgstr "Statut"
+msgstr ""
 
 #: src/views/user/PasswordRecoveryChangeForm.vue:19
 #: src/views/user/PasswordRecoveryForm.vue:15
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:17
 msgid "Submit"
-msgstr "Soumettre"
+msgstr ""
 
 #: src/components/tools/CreationForm.vue:9
 #: src/components/tools/CreationForm.vue:32
 msgid "Summary"
-msgstr "Résumé"
+msgstr ""
 
 #: src/components/identities/AccountRoleForm.vue:37
 #: src/components/identities/AccountRoleForm.vue:67
 msgid "Super administrator"
-msgstr "Super administrateur"
+msgstr ""
 
 #: src/components/identities/IdentityList.vue:18
 #: src/components/identities/IdentityList.vue:97
 msgid "Tags"
-msgstr "Tags"
+msgstr ""
 
 #: src/components/tools/ImportForm.vue:9
 msgid "The first element of each line is mandatory and must be equal to one of the previous values."
@@ -1552,7 +1530,7 @@ msgstr ""
 #: src/components/tools/TimeSerieChart.vue:18
 #: src/components/logs/MessageList.vue:45
 msgid "To"
-msgstr "A"
+msgstr ""
 
 #: src/views/Login.vue:39 src/views/user/PasswordRecoveryChangeForm.vue:62
 #: src/views/user/PasswordRecoveryForm.vue:69
@@ -1574,21 +1552,20 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:128
 #: src/components/domains/DomainCreationForm.vue:168
 msgid "Transport"
-msgstr "Transport"
+msgstr ""
 
 #: src/components/alarms/AlarmList.vue:8 src/components/alarms/AlarmList.vue:72
 msgid "Triggered"
 msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:4
-#, fuzzy
 msgid "Two factor authentication"
-msgstr "Authentification"
+msgstr ""
 
 #: src/components/user/TwoFactorAuthForm.vue:64
 #: src/components/user/TwoFactorAuthForm.vue:1
 msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
-msgstr "L'authentification à 2 facteurs n'est pas encore activée pour votre compte. Activer cette fonctionnalité renforcera la sécurité de votre compte."
+msgstr ""
 
 #: src/views/TwoFA.vue:11
 msgid "Two-factor authentication code"
@@ -1598,7 +1575,7 @@ msgstr ""
 #: src/components/domains/DomainGeneralForm.vue:6
 #: src/components/domains/DomainCreationForm.vue:77
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #: src/components/domains/DomainForm.vue:17
 msgid "Type:"
@@ -1607,38 +1584,36 @@ msgstr ""
 #: src/components/domains/DNSStatusChip.vue:17
 #: src/components/domains/DNSStatusChip.vue:24
 msgid "Unknown"
-msgstr "Inconnu"
+msgstr ""
 
 #: src/components/identities/AccountMailboxForm.vue:30
 #: src/components/identities/AccountMailboxForm.vue:69
 msgid "unlimited"
-msgstr "illimité"
+msgstr ""
 
 #: src/components/domains/DomainAliasForm.vue:17
 #: src/components/user/ForwardForm.vue:10
 #: src/components/domains/DomainAliasForm.vue:86
 msgid "Update"
-msgstr "Mettre à jour"
+msgstr ""
 
 #: src/components/user/ProfileForm.vue:25
-#, fuzzy
 msgid "Update Password"
-msgstr "Mot de passe"
+msgstr ""
 
 #: src/components/user/ProfileForm.vue:16
-#, fuzzy
 msgid "Update settings"
-msgstr "Configuration"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:20
 #: src/components/domains/DNSDetail.vue:178
 msgid "Updated"
-msgstr "Mis à jour"
+msgstr ""
 
 #: src/components/identities/AccountMailboxForm.vue:27
 #: src/components/identities/AccountMailboxForm.vue:66
 msgid "Use domain default value"
-msgstr "Utiliser la valeur par défaut du domaine"
+msgstr ""
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:43
 msgid "User seems wrong, return to login or restart reset the process?"
@@ -1646,9 +1621,8 @@ msgstr ""
 
 #: src/views/user/PasswordRecoveryChangeForm.vue:56
 #: src/views/user/PasswordRecoveryChangeForm.vue:116
-#, fuzzy
 msgid "User unknown."
-msgstr "Inconnu"
+msgstr ""
 
 #: src/components/domains/AdministratorList.vue:18
 #: src/components/identities/AccountCreationForm.vue:29
@@ -1657,7 +1631,7 @@ msgstr "Inconnu"
 #: src/components/identities/AccountGeneralForm.vue:7
 #: src/components/domains/AdministratorList.vue:86
 msgid "Username"
-msgstr "Nom d'utilisateur"
+msgstr ""
 
 #: src/components/identities/AccountForm.vue:36
 msgid "Username:"
@@ -1687,20 +1661,20 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:187
 #: src/components/domains/DomainList.vue:196 src/views/user/APISetup.vue:81
 msgid "Warning"
-msgstr "Attention"
+msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:51
 #: src/components/tools/TimeSerieChart.vue:109
 msgid "Week"
-msgstr "Semaine"
+msgstr ""
 
 #: src/views/Dashboard.vue:3
 msgid "Welcome to Modoboa"
-msgstr "Bienvenue dans Modoboa"
+msgstr ""
 
 #: src/components/domains/DomainOptionsForm.vue:7
 msgid "With a mailbox"
-msgstr "Avec une boite aux lettres"
+msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:63
 #: src/components/domains/DomainCreationForm.vue:114
@@ -1710,7 +1684,7 @@ msgstr ""
 #: src/components/tools/TimeSerieChart.vue:53
 #: src/components/tools/TimeSerieChart.vue:111
 msgid "Year"
-msgstr "Année"
+msgstr ""
 
 #: src/components/domains/DNSDetail.vue:36
 #: src/components/domains/DomainList.vue:62
@@ -1723,7 +1697,7 @@ msgstr "Année"
 #: src/components/domains/DNSDetail.vue:194
 #: src/components/domains/DomainList.vue:204
 msgid "Yes"
-msgstr "Oui"
+msgstr ""
 
 #: src/views/user/APISetup.vue:41 src/views/user/APISetup.vue:83
 msgid "You are about to delete your API access token"
@@ -1754,9 +1728,8 @@ msgid "Settings: "
 msgstr ""
 
 #: src/plugins/vee-validate.js:12
-#, fuzzy
 msgid "Passwords mismatch"
-msgstr "Les mots de passe diffèrent"
+msgstr ""
 
 #: src/plugins/vee-validate.js:16
 msgid "This field must be a valid number"
@@ -1764,12 +1737,11 @@ msgstr ""
 
 #: src/plugins/vee-validate.js:20
 msgid "This field is required"
-msgstr "Ce champ est requis"
+msgstr ""
 
 #: src/plugins/vee-validate.js:37
-#, fuzzy
 msgid "Invalid password"
-msgstr "Mot de passe aléatoire"
+msgstr ""
 
 #: src/api/repository.js:38
 msgid "You are throttled, please try later."
