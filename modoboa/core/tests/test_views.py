@@ -93,6 +93,7 @@ SETTINGS_SAMPLE = {
     "maillog-logfile": "/var/log/mail.log",
     "maillog-rrd_rootdir": "/tmp",
     "maillog-greylist": False,
+    "dmarc-enable_rlookups": False,
 }
 
 
