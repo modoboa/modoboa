@@ -291,7 +291,7 @@ class IdPossibleActionsSerializer(serializers.Serializer):
     name = serializers.CharField()
     icon = serializers.CharField()
     label = serializers.CharField()
-    url = serializers.URLField()
+    body = serializers.DictField()
 
 
 class IdentitySerializer(serializers.Serializer):

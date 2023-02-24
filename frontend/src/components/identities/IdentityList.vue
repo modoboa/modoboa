@@ -83,6 +83,7 @@ import { bus } from '@/main'
 import identities from '@/api/identities'
 import accounts from '@/api/accounts'
 import aliases from '@/api/aliases'
+import credentials from '@/api/credentials'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import MenuItems from '@/components/tools/MenuItems'
 
@@ -211,10 +212,20 @@ export default {
           result.push({
             label: this.$gettext(element.label),
             icon: element.icon,
-            link: element.url,
             onClick: () => {
-              window.open(element.url)
-              this.fetchIdentities()
+              if (element.body.type === 'pdfcredentials') {
+                credentials.getCredentials(item.pk)
+                  .then((response) => {
+                    const blob = new Blob([response.data], {
+                      type: 'application/pdf'
+                    })
+                    const _url = window.URL.createObjectURL(blob)
+                    window.open(_url, '_blank').focus()
+                  }).catch((err) => {
+                    console.log(err)
+                  })
+                this.fetchIdentities()
+              }
             }
           })
         })
@@ -228,7 +239,9 @@ export default {
     },
     getActionMenuItems () {
       const result = []
-      result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteIdentities, color: 'red' })
+      if (this.selected.length > 0) {
+        result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteIdentities, color: 'red' })
+      }
       result.push({ label: 'Reload', icon: 'mdi-reload', onClick: this.fetchIdentities })
       return result
     }
