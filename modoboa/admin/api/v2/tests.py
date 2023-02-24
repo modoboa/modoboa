@@ -479,6 +479,8 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         factories.populate_database()
         factories.AlarmFactory(
             domain__name="test.com", mailbox=None, title="Test alarm")
+        cls.da_token = Token.objects.create(
+            user=core_models.User.objects.get(username="admin@test.com"))
 
     def test_list(self):
         url = reverse("v2:alarm-list")
@@ -489,10 +491,27 @@ class AlarmViewSetTestCase(ModoAPITestCase):
     def test_update_alarm(self):
         """Try updating alarm status and delete it afterward."""
 
-        domain = models.Domain.objects.filter(name="test.com")
+        domain = models.Domain.objects.get(name="test.com")
         alarm = models.Alarm.objects.create(
-            domain=domain.first(), mailbox=None, title="Test alarm 2")
+            domain=domain, mailbox=None, title="Test alarm 2")
         alarm.save()
+
+        # Try performing action on restricted domains
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        domain = models.Domain.objects.get(name="test2.com")
+        alarm_restricted = models.Alarm.objects.create(
+            domain=domain, mailbox=None, title="Test alarm 3")
+        alarm_restricted.save()
+        url = reverse("v2:alarm-switch", args=[alarm_restricted.pk])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 405)
+        url = reverse("v2:alarm-delete", args=[alarm_restricted.pk])
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 404)
+
+        # Perform actions as SuperAdmin
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
         # Switch status of the alarm to close
         url = reverse("v2:alarm-switch", args=[alarm.pk])
@@ -513,4 +532,5 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         url = reverse("v2:alarm-delete", args=[alarm.pk])
         resp = self.client.delete(url)
         self.assertEqual(resp.status_code, 204)
+
 

@@ -449,15 +449,15 @@ class DKIMTestCase(ModoTestCase):
         # Try generating a key to a protected directory
         self.set_global_parameter("dkim_keys_storage_dir", "/I_DONT_EXIST")
         call_command("modo", "manage_dkim_keys")
-        domain = Domain.objects.filter(name=values["name"])
+        domain = Domain.objects.get(name=values["name"])
 
         # Closing the alarm and retry generating dkim keys
-        Alarm.objects.get(domain__in=domain,
+        Alarm.objects.get(domain=domain,
                           internal_name=constants.DKIM_WRITE_ERROR
                           ).close()
         call_command("modo", "manage_dkim_keys")
         self.assertEqual(
-            Alarm.objects.get(domain__in=domain,
+            Alarm.objects.get(domain=domain,
                               internal_name=constants.DKIM_WRITE_ERROR).status,
             constants.ALARM_OPENED)
 
@@ -465,7 +465,7 @@ class DKIMTestCase(ModoTestCase):
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
         call_command("modo", "manage_dkim_keys")
         self.assertEqual(
-            Alarm.objects.get(domain__in=domain,
+            Alarm.objects.get(domain=domain,
                               internal_name=constants.DKIM_WRITE_ERROR).status,
             constants.ALARM_CLOSED)
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
