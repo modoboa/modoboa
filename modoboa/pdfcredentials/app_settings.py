@@ -82,32 +82,37 @@ PDF_CREDENTIALS_PARAMETERS_STRUCT = collections.OrderedDict([
             }),
             ("smtp_server_address", {
                 "label": _("SMTP server address"),
+                "display": "include_connection_settings=True",
                 "help_text": _("Address of the SMTP server (hostname or IP)")
             }),
             ("smtp_server_port", {
                 "label": _("SMTP server port"),
-                "help_port": _("Listening port of the SMTP server")
+                "display": "include_connection_settings=true",
+                "help_text": _("Listening port of the SMTP server")
             }),
             ("smtp_connection_security", {
                 "label": _("SMTP connection security"),
+                "display": "include_connection_settings=true",
                 "help_text": _("Connection security mechanism")
             }),
             ("imap_server_address", {
                 "label": _("IMAP server address"),
+                "display": "include_connection_settings=true",
                 "help_text": _("Address of the IMAP server (hostname or IP)")
             }),
             ("imap_server_port", {
                 "label": _("IMAP server port"),
+                "display": "include_connection_settings=true",
                 "help_text": _("Listening port of the IMAP server")
             }),
             ("imap_connection_security", {
                 "label": _("IMAP connection security"),
+                "display": "include_connection_settings=true",
                 "help_text": _("Connection security mechanism")
             })
         ])
     })
 ])
-
 
 
 class ParametersForm(param_forms.AdminParametersForm):
@@ -118,7 +123,7 @@ class ParametersForm(param_forms.AdminParametersForm):
     general = form_utils.SeparatorField(label=_("General"))
 
     enabled_pdfcredentials = form_utils.YesNoField(
-        label= _("Enable PDF credentials"),
+        label=_("Enable PDF credentials"),
         initial=True,
         help_text=_("Enabled PDF credentials document generation on account creation.")
     )
