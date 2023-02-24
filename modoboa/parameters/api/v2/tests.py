@@ -12,7 +12,7 @@ class ParametersAPITestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         # core, admin, limits, pdf credentials
-        self.assertEqual(len(resp.json()), 4)
+        self.assertEqual(len(resp.json()), 5)
 
     def test_get_structure(self):
         url = reverse("v2:parameter-structure")
