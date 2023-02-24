@@ -20,9 +20,10 @@ from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
 from modoboa.maillog import factories as ml_factories
 
+from ..import constants
 from . import utils
 from .. import factories
-from ..models import Alias, Domain
+from ..models import Alarm, Alias, Domain
 
 
 class DomainTestCase(ModoTestCase):
@@ -445,10 +446,24 @@ class DKIMTestCase(ModoTestCase):
         values["dkim_key_selector"] = "default"
         self.ajax_post(reverse("admin:domain_add"), values)
 
+        # Try generating a key to a protected directory
+        self.set_global_parameter("dkim_keys_storage_dir", "/I_DONT_EXIST")
         call_command("modo", "manage_dkim_keys")
+        domain = Domain.objects.filter(name=values["name"])
+        alarm = Alarm.objects.get(domain__in=domain,
+                                  internal_name=constants.DKIM_WRITE_ERROR)
+
+        # Closing the alarm and retry generating dkim keys
+        alarm.close()
+        call_command("modo", "manage_dkim_keys")
+        self.assertEqual(alarm.status, constants.ALARM_OPENED)
+
+        # Generate normally
+        self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
+        call_command("modo", "manage_dkim_keys")
+        self.assertEqual(alarm.status, constants.ALARM_CLOSED)
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
-
         domain = Domain.objects.get(name=values["name"])
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)

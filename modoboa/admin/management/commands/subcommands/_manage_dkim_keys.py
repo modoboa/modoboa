@@ -35,8 +35,7 @@ class ManageDKIMKeys(BaseCommand):
             else:
                 alarm = alarm_qset.first()
                 if alarm.status != ALARM_OPENED:
-                    alarm.status = ALARM_OPENED
-                    alarm.save()
+                    alarm.reopen()
             return
         elif alarm_qset:
             alarm_qset.first().close()
