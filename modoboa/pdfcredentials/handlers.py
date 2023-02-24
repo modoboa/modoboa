@@ -65,8 +65,7 @@ def extra_identities_actions(sender, account, **kwargs):
         return []
     return {
         "name": "get_credentials",
-        "url":  reverse("v2:get-credentials",
-                        args=[account.id]),
+        "body":  {"type": "pdfcredentials"},
         "icon": "mdi-file-download-outline",
         "label": _("Download PDF credentials")
     }
