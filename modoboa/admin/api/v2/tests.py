@@ -485,3 +485,32 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()), 1)
+
+    def test_update_alarm(self):
+        """Try updating alarm status and delete it afterward."""
+
+        domain = models.Domain.objects.filter(name="test.com")
+        alarm = models.Alarm.objects.create(
+            domain=domain.first(), mailbox=None, title="Test alarm 2")
+        alarm.save()
+
+        # Switch status of the alarm to close
+        url = reverse("v2:alarm-switch", args=[alarm.pk])
+        resp = self.client.patch(url, {"status": 2})
+        self.assertEqual(resp.status_code, 204)
+
+        # Check actual status
+        url = reverse("v2:alarm-detail", args=[alarm.pk])
+        resp = self.client.get(url)
+        self.assertEqual(resp.json()["status"], 2)
+
+        # Try to set an non-existant status
+        url = reverse("v2:alarm-switch", args=[alarm.pk])
+        resp = self.client.patch(url, {"status": 10})
+        self.assertEqual(resp.status_code, 400)
+
+        # Delete the alarm
+        url = reverse("v2:alarm-delete", args=[alarm.pk])
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 204)
+

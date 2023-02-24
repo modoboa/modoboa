@@ -10,7 +10,7 @@ from rest_framework import (
     filters, mixins, parsers, pagination, permissions, response, status, viewsets
 )
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework.exceptions import PermissionDenied
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import models as core_models
@@ -352,8 +352,6 @@ class AlarmViewSet(GetThrottleViewsetMixin,
         """Custom delete method that accepts body arguments."""
         alarm = self.get_object()
         domain = models.Domain.objects.filter(pk=alarm.domain.pk)
-        if not domain.exists():
-            alarm.delete()
         if not request.user.can_access(domain):
             raise PermissionDenied(_("You don't have access to this domain"))
         else:
@@ -367,9 +365,6 @@ class AlarmViewSet(GetThrottleViewsetMixin,
         serializer = serializers.AlarmSwitchStatusSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         domain = models.Domain.objects.filter(pk=alarm.domain.pk)
-        if not domain.exists():
-            alarm.delete()
-            raise ValidationError(_("No alarm found"))
         if not request.user.can_access(domain):
             raise PermissionDenied(_("You don't have access to this domain"))
         else:
