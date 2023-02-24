@@ -306,21 +306,23 @@ class IdentitySerializer(serializers.Serializer):
     def __init__(self, instance=None, data=..., **kwargs):
         super().__init__(instance, data, **kwargs)
         self.fields["possible_actions"] = serializers.SerializerMethodField()
-    
+
     def get_possible_actions(self, identity):
         if not isinstance(identity, core_models.User):
-            # Return empty action list if identity type is an alias (not used for now)
+            # Return empty action list if identity type is an alias
+            # (not used for now)
             return []
         actions = admin_signals.extra_account_identities_actions.send(
             self.__class__, account=identity)
         cleaned_actions = []
         for action in actions:
-            try :
+            try:
                 serialized_data = IdPossibleActionsSerializer(action[1]).data
                 cleaned_actions.append(serialized_data)
             except (ValidationError, AttributeError):
                 continue
         return cleaned_actions
+
 
 class AccountResourceSerializer(serializers.ModelSerializer):
     """Serializer for user resource."""

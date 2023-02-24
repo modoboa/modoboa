@@ -31,5 +31,5 @@ class PDFCredentialsConfig(AppConfig):
 
     def ready(self):
         from . import handlers
-        from .api.v2 import handlers
+
         load_pdfcredential_settings()
