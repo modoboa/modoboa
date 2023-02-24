@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { bus } from '@/main'
 import Cookies from 'js-cookie'
 import auth from '@/api/auth'
 
@@ -86,6 +87,7 @@ export default {
         Cookies.set('token', resp.data.access, { sameSite: 'strict' })
         Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
         this.$store.dispatch('auth/initialize').then(() => {
+          bus.$emit('logged')
           this.$router.push({ name: 'DomainList' })
         })
       }).catch(err => {

@@ -51,5 +51,11 @@ class Alarm(models.Model):
         self.closed = timezone.now()
         self.save()
 
+    def reopen(self):
+        """Reopen this alarm."""
+        self.status = constants.ALARM_OPENED
+        self.closed = None
+        self.save()
+
 
 reversion.register(Alarm)
