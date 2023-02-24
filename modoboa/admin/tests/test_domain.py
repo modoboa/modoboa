@@ -450,18 +450,24 @@ class DKIMTestCase(ModoTestCase):
         self.set_global_parameter("dkim_keys_storage_dir", "/I_DONT_EXIST")
         call_command("modo", "manage_dkim_keys")
         domain = Domain.objects.filter(name=values["name"])
-        alarm = Alarm.objects.get(domain__in=domain,
-                                  internal_name=constants.DKIM_WRITE_ERROR)
 
         # Closing the alarm and retry generating dkim keys
-        alarm.close()
+        Alarm.objects.get(domain__in=domain,
+                          internal_name=constants.DKIM_WRITE_ERROR
+                          ).close()
         call_command("modo", "manage_dkim_keys")
-        self.assertEqual(alarm.status, constants.ALARM_OPENED)
+        self.assertEqual(
+            Alarm.objects.get(domain__in=domain,
+                              internal_name=constants.DKIM_WRITE_ERROR).status,
+            constants.ALARM_OPENED)
 
         # Generate normally
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
         call_command("modo", "manage_dkim_keys")
-        self.assertEqual(alarm.status, constants.ALARM_CLOSED)
+        self.assertEqual(
+            Alarm.objects.get(domain__in=domain,
+                              internal_name=constants.DKIM_WRITE_ERROR).status,
+            constants.ALARM_CLOSED)
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
         domain = Domain.objects.get(name=values["name"])
