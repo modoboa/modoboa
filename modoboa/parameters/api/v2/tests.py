@@ -75,6 +75,18 @@ class ParametersAPITestCase(ModoAPITestCase):
             errors["dkim_keys_storage_dir"], ["Directory not found."]
         )
 
+        # Try to set dkim storage dir to a non-writable directory.
+        data = {
+            "dkim_keys_storage_dir": "/root"
+        }
+        url = reverse("v2:parameter-detail", args=["admin"])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        errors = resp.json()
+        self.assertEqual(
+            errors["dkim_keys_storage_dir"], ["Directory non-writable"]
+        )
+
         data = {
             "enable_mx_checks": True,
             "domains_must_have_authorized_mx": True,
