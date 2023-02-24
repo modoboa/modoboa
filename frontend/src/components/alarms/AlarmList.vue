@@ -8,6 +8,7 @@
         </v-btn>
       </template>
       <v-list dense>
+        <menu-items :items="getActionMenuItems()"/>
       </v-list>
     </v-menu>
     <v-spacer></v-spacer>
@@ -26,7 +27,7 @@
     :headers="headers"
     :items="alarms"
     :search="search"
-    item-key="pk"
+    item-key="id"
     :options.sync="options"
     :server-items-length="totalAlarms"
     :loading="loading"
@@ -53,18 +54,39 @@
       <template v-if="item.mailbox">
         {{ item.mailbox.address }}@{{ item.domain.name }}
       </template>
+      <template v-else>
+        /
+      </template>
     </template>
     <template v-slot:item.created="{ item }">
       {{ item.created|date }}
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <div class="text-right">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <menu-items :items="getMenuItems(item)" :object="item" />
+        </v-menu>
+      </div>
     </template>
   </v-data-table>
 </v-card>
 </template>
 
 <script>
+import { bus } from '@/main'
 import alarms from '@/api/alarms'
 import debounce from 'debounce'
+import MenuItems from '@/components/tools/MenuItems'
+
 export default {
+  components: {
+    MenuItems
+  },
   data () {
     return {
       alarms: [],
@@ -73,7 +95,8 @@ export default {
         { text: this.$gettext('Status'), value: 'status' },
         { text: this.$gettext('Domain'), value: 'domain.name', sortable: false },
         { text: this.$gettext('Mailbox'), value: 'mailbox', sortable: false },
-        { text: this.$gettext('Message'), value: 'title' }
+        { text: this.$gettext('Message'), value: 'title' },
+        { text: this.$gettext('Actions'), value: 'actions', sortable: false, align: 'right' }
       ],
       loading: true,
       options: {},
@@ -83,6 +106,9 @@ export default {
     }
   },
   methods: {
+    sleep (milliseconds) {
+      return new Promise((resolve) => setTimeout(resolve, milliseconds))
+    },
     fetchAlarms () {
       const params = {
         page: this.options.page
@@ -95,10 +121,57 @@ export default {
       }
       this.loading = true
       alarms.getAll(params).then(resp => {
-        this.alarms = resp.data.results
+        this.alarms = resp.data
         this.totalAlarms = resp.data.count
         this.loading = false
       })
+    },
+    async deleteAlarm (alarm, single = true) {
+      alarms.delete(alarm.id).then(() => {
+        if (single) {
+          bus.$emit('notification', { msg: this.$gettext('Alarm deleted') })
+          this.fetchAlarms()
+        }
+      })
+    },
+    async closeAlarm (alarm) {
+      alarms.switchStatus(alarm.id, { status: 2 }).then(() => {
+        bus.$emit('notification', { msg: this.$gettext('Alarm closed') })
+        this.fetchAlarms()
+      })
+    },
+    async openAlarm (alarm) {
+      alarms.switchStatus(alarm.id, { status: 1 }).then(() => {
+        bus.$emit('notification', { msg: this.$gettext('Alarm re-opened') })
+        this.fetchAlarms()
+      })
+    },
+    async deleteAlarms () {
+      for (const alarm of this.selected) {
+        this.deleteAlarm(alarm, false)
+        await this.sleep(100)
+      }
+      bus.$emit('notification', { msg: this.$gettext('Alarms deleted') })
+      this.selected = []
+      this.fetchAlarms()
+    },
+    getMenuItems (item) {
+      const result = []
+      result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlarm, color: 'red' })
+      if (item.status === 1) {
+        result.push({ label: this.$gettext('Close alarm'), icon: 'mdi-check', onClick: this.closeAlarm, color: 'green' })
+      } else {
+        result.push({ label: this.$gettext('Reopen alarm'), icon: 'mdi-alert-circle-outline', onClick: this.openAlarm, color: 'orange' })
+      }
+      return result
+    },
+    getActionMenuItems () {
+      const result = []
+      if (this.selected.length > 0) {
+        result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlarms, color: 'red' })
+      }
+      result.push({ label: 'Reload', icon: 'mdi-reload', onClick: this.fetchAlarms })
+      return result
     }
   },
   mounted () {

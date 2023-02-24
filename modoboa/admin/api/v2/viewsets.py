@@ -10,7 +10,7 @@ from rest_framework import (
     filters, mixins, parsers, pagination, permissions, response, status, viewsets
 )
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import models as core_models
@@ -20,6 +20,7 @@ from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import lib
 from ... import models
+from ... import constants
 from . import serializers
 
 
@@ -325,7 +326,10 @@ class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         return response.Response(serializer.validated_data)
 
 
-class AlarmViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
+class AlarmViewSet(GetThrottleViewsetMixin,
+                   mixins.ListModelMixin,
+                   mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
     """Viewset for Alarm."""
 
     filter_backends = (filters.OrderingFilter, filters.SearchFilter, )
@@ -342,3 +346,35 @@ class AlarmViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
             domain__in=models.Domain.objects.get_for_admin(
                 self.request.user)
         ).order_by("-created")
+
+    @action(methods=["delete"], detail=True)
+    def delete(self, request, **kwargs):
+        """Custom delete method that accepts body arguments."""
+        alarm = self.get_object()
+        domain = models.Domain.objects.filter(pk=alarm.domain.pk)
+        if not domain.exists():
+            alarm.delete()
+        if not request.user.can_access(domain):
+            raise PermissionDenied(_("You don't have access to this domain"))
+        else:
+            alarm.delete()
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['patch'], detail=True)
+    def switch(self, request, **kwargs):
+        """Custom update method that switch status of an alarm."""
+        alarm = self.get_object()
+        serializer = serializers.AlarmSwitchStatusSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        domain = models.Domain.objects.filter(pk=alarm.domain.pk)
+        if not domain.exists():
+            alarm.delete()
+            raise ValidationError(_("No alarm found"))
+        if not request.user.can_access(domain):
+            raise PermissionDenied(_("You don't have access to this domain"))
+        else:
+            if serializer.data["status"] == constants.ALARM_CLOSED:
+                alarm.close()
+            else:
+                alarm.reopen()
+        return response.Response(status=status.HTTP_204_NO_CONTENT)

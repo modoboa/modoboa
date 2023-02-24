@@ -35,6 +35,8 @@ DKIM_KEY_LENGTHS = [
     (4096, "4096"),
 ]
 
+DKIM_WRITE_ERROR = "DKIM path error"
+
 ALARM_OPENED = 1
 ALARM_CLOSED = 2
 
