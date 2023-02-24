@@ -351,7 +351,7 @@ class AlarmViewSet(GetThrottleViewsetMixin,
     def delete(self, request, **kwargs):
         """Custom delete method that accepts body arguments."""
         alarm = self.get_object()
-        domain = models.Domain.objects.filter(pk=alarm.domain.pk)
+        domain = models.Domain.objects.get(pk=alarm.domain.pk)
         if not request.user.can_access(domain):
             raise PermissionDenied(_("You don't have access to this domain"))
         else:
@@ -364,7 +364,7 @@ class AlarmViewSet(GetThrottleViewsetMixin,
         alarm = self.get_object()
         serializer = serializers.AlarmSwitchStatusSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        domain = models.Domain.objects.filter(pk=alarm.domain.pk)
+        domain = models.Domain.objects.get(pk=alarm.domain.pk)
         if not request.user.can_access(domain):
             raise PermissionDenied(_("You don't have access to this domain"))
         else:
