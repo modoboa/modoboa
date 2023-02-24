@@ -6,7 +6,7 @@ from django.utils.encoding import force_text
 
 from rest_framework.authtoken.models import Token
 
-from modoboa.admin import factories, models
+from modoboa.admin import factories, models, constants
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
@@ -492,16 +492,13 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         """Try updating alarm status and delete it afterward."""
 
         domain = models.Domain.objects.get(name="test.com")
-        alarm = models.Alarm.objects.create(
-            domain=domain, mailbox=None, title="Test alarm 2")
-        alarm.save()
 
         # Try performing action on restricted domains
         self.client.credentials(
             HTTP_AUTHORIZATION="Token " + self.da_token.key)
         domain = models.Domain.objects.get(name="test2.com")
         alarm_restricted = models.Alarm.objects.create(
-            domain=domain, mailbox=None, title="Test alarm 3")
+            domain=domain, mailbox=None, title="Test alarm 2")
         alarm_restricted.save()
         url = reverse("v2:alarm-switch", args=[alarm_restricted.pk])
         resp = self.client.post(url)
@@ -513,15 +510,29 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         # Perform actions as SuperAdmin
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
+        alarm = models.Alarm.objects.create(
+            domain=domain, mailbox=None, title="Test alarm 3")
+        alarm.save()
+
         # Switch status of the alarm to close
         url = reverse("v2:alarm-switch", args=[alarm.pk])
-        resp = self.client.patch(url, {"status": 2})
+        resp = self.client.patch(url, {"status": constants.ALARM_CLOSED})
         self.assertEqual(resp.status_code, 204)
 
         # Check actual status
         url = reverse("v2:alarm-detail", args=[alarm.pk])
         resp = self.client.get(url)
-        self.assertEqual(resp.json()["status"], 2)
+        self.assertEqual(resp.json()["status"], constants.ALARM_CLOSED)
+
+        # Switch status back to open
+        url = reverse("v2:alarm-switch", args=[alarm.pk])
+        resp = self.client.patch(url, {"status": constants.ALARM_OPENED})
+        self.assertEqual(resp.status_code, 204)
+
+        # Check actual status
+        url = reverse("v2:alarm-detail", args=[alarm.pk])
+        resp = self.client.get(url)
+        self.assertEqual(resp.json()["status"], constants.ALARM_OPENED)
 
         # Try to set an non-existant status
         url = reverse("v2:alarm-switch", args=[alarm.pk])
