@@ -45,6 +45,8 @@ class Command(BaseCommand):
         """Command entry point."""
         inactive_account_threshold = param_tools.get_global_parameter(
             "inactive_account_threshold")
+        if inactive_account_threshold < 0:
+            return
         qset = models.User.objects.filter(
             is_active=True, is_superuser=False,
             last_login__lt=timezone.now() -

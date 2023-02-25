@@ -462,7 +462,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         initial=30,
         help_text=_(
             "An account with a last login date greater than this threshold "
-            "(in days) will be considered as inactive"
+            "(in days) will be considered as inactive. Disabled if the number is negative."
         ),
     )
 
@@ -1076,7 +1076,8 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 "label": ugettext_lazy("Inactive account threshold"),
                 "help_text": ugettext_lazy(
                     "An account with a last login date greater than this "
-                    "threshold (in days) will be considered as inactive"
+                    "threshold (in days) will be considered as inactive. "
+                    "Disabled if the number is negative."
                 )
             }),
             ("top_notifications_check_interval", {
