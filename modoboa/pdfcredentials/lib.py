@@ -18,8 +18,13 @@ from modoboa.parameters import tools as param_tools
 def init_storage_dir():
     """Create the directory whare documents will be stored."""
     storage_dir = param_tools.get_global_parameter("storage_dir")
-    if os.path.exists(storage_dir):
+    if os.path.exists(storage_dir) and os.access(storage_dir, os.W_OK):
         return
+    elif not os.access(storage_dir, os.W_OK) and os.path.exists(storage_dir):
+        raise InternalError(
+            _("Can't write to selected directory to store PDF "
+                "documents")
+            )
     try:
         os.mkdir(storage_dir)
     except (OSError, IOError) as inst:
