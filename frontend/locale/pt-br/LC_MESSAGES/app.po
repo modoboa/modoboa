@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-24 18:00+0100\n"
+"POT-Creation-Date: 2023-02-26 14:37+0100\n"
 "PO-Revision-Date: 2023-02-23 11:26+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -414,13 +414,13 @@ msgstr ""
 
 #: src/components/domains/DomainAliasForm.vue:24
 #: src/components/domains/DomainList.vue:115
-#: src/components/identities/IdentityList.vue:152
-#: src/components/identities/IdentityList.vue:155
 #: src/components/identities/IdentityList.vue:162
+#: src/components/identities/IdentityList.vue:174
+#: src/components/identities/IdentityList.vue:185
 #: src/components/domains/DomainList.vue:257
-#: src/components/identities/IdentityList.vue:233
-#: src/components/identities/IdentityList.vue:236
 #: src/components/identities/IdentityList.vue:243
+#: src/components/identities/IdentityList.vue:255
+#: src/components/identities/IdentityList.vue:266
 msgid "Delete"
 msgstr ""
 
@@ -622,11 +622,11 @@ msgid "Don't treat duplicated objects as errors"
 msgstr ""
 
 #: src/components/domains/DomainList.vue:114
-#: src/components/identities/IdentityList.vue:151
-#: src/components/identities/IdentityList.vue:154
+#: src/components/identities/IdentityList.vue:157
+#: src/components/identities/IdentityList.vue:169
 #: src/components/domains/DomainList.vue:256
-#: src/components/identities/IdentityList.vue:232
-#: src/components/identities/IdentityList.vue:235
+#: src/components/identities/IdentityList.vue:238
+#: src/components/identities/IdentityList.vue:250
 msgid "Edit"
 msgstr ""
 
@@ -647,7 +647,6 @@ msgstr ""
 msgid "Edit domain alias"
 msgstr ""
 
-#: src/components/identities/IdentityList.vue:132
 #: src/views/user/PasswordRecoveryChangeForm.vue:59
 msgid "element"
 msgstr ""
@@ -1197,8 +1196,8 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: src/components/parameters/ParametersForm.vue:60
-#: src/components/parameters/ParametersForm.vue:137
+#: src/components/parameters/ParametersForm.vue:61
+#: src/components/parameters/ParametersForm.vue:138
 msgid "Parameters updated"
 msgstr ""
 
