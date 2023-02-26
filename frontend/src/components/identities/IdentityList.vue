@@ -83,9 +83,9 @@ import { bus } from '@/main'
 import identities from '@/api/identities'
 import accounts from '@/api/accounts'
 import aliases from '@/api/aliases'
-import credentials from '@/api/credentials'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import MenuItems from '@/components/tools/MenuItems'
+import repository from '@/api/repository'
 
 export default {
   components: {
@@ -205,35 +205,58 @@ export default {
         this.selected = []
       })
     },
+    downloadFile (options) {
+      repository.get(options.url).then(resp => {
+        const url = window.URL.createObjectURL(
+          new Blob([resp.data], { type: options.content_type }))
+        const link = document.createElement('a')
+        link.style.display = 'none'
+        link.href = url
+        link.download = options.filename
+        document.body.appendChild(link)
+        link.click()
+        window.URL.revokeObjectURL(link.href)
+        document.body.removeChild(link)
+      })
+    },
     getMenuItems (item) {
       const result = []
       if (item.type === 'account') {
         item.possible_actions.forEach(element => {
           result.push({
-            label: this.$gettext(element.label),
+            label: element.label,
             icon: element.icon,
             onClick: () => {
-              if (element.body.type === 'pdfcredentials') {
-                credentials.getCredentials(item.pk)
-                  .then((response) => {
-                    const blob = new Blob([response.data], {
-                      type: 'application/pdf'
-                    })
-                    const _url = window.URL.createObjectURL(blob)
-                    window.open(_url, '_blank').focus()
-                  }).catch((err) => {
-                    console.log(err)
-                  })
-                this.fetchIdentities()
+              if (element.type === 'download') {
+                this.downloadFile(element)
               }
+              this.fetchIdentities()
             }
           })
         })
-        result.push({ label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editAccount })
-        result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAccount, color: 'red' })
+        result.push({
+          label: this.$gettext('Edit'),
+          icon: 'mdi-circle-edit-outline',
+          onClick: this.editAccount
+        })
+        result.push({
+          label: this.$gettext('Delete'),
+          icon: 'mdi-delete-outline',
+          onClick: this.deleteAccount,
+          color: 'red'
+        })
       } else if (item.type === 'alias') {
-        result.push({ label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editAlias })
-        result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlias, color: 'red' })
+        result.push({
+          label: this.$gettext('Edit'),
+          icon: 'mdi-circle-edit-outline',
+          onClick: this.editAlias
+        })
+        result.push({
+          label: this.$gettext('Delete'),
+          icon: 'mdi-delete-outline',
+          onClick: this.deleteAlias,
+          color: 'red'
+        })
       }
       return result
     },

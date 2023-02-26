@@ -75,4 +75,3 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
                       shell=True,
                       stdout=PIPE,
                       stdin=PIPE).communicate(file.read(1024))[0].strip()
-
