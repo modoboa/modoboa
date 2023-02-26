@@ -63,7 +63,7 @@ class Registry(object):
         result = [{"name": key, "label": value["label"]}
                   for key, value in self._registry2[level].items()]
         return result
-    
+
     def get_label(self, level, app):
         return self._registry2[level][app]["label"]
 
