@@ -37,4 +37,4 @@ class Command(BaseCommand):
         elif options.get("imap"):
             lib.import_from_imap(options)
         else:
-            print("Nothing to do.")
+            print("Nothing to do.", file=self.stdout)
