@@ -12,6 +12,8 @@ from modoboa.admin.models import Domain
 
 from .serializers import GetAccountCredentialsSerializer
 
+from ...lib import rfc_6266_content_disposition
+
 
 class PDFCredentialView(APIView):
 
@@ -38,5 +40,5 @@ class PDFCredentialView(APIView):
         resp = HttpResponse(content)
         resp["Content-Type"] = "application/pdf"
         resp["Content-Length"] = len(content)
-        resp["Content-Disposition"] = f"attachment; filename={fname};"
+        resp["Content-Disposition"] = rfc_6266_content_disposition(fname)
         return resp

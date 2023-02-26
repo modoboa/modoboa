@@ -7,6 +7,8 @@ import struct
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
+from urllib.parse import quote
+
 from django.conf import settings
 from django.utils.encoding import force_bytes, smart_bytes
 from django.utils.translation import ugettext as _
@@ -105,3 +107,16 @@ def get_document_logo():
     if not os.path.isfile(logo):
         return None
     return logo
+
+
+def rfc_6266_content_disposition(filename):
+    """Copied from upcoming django 4.2. TBR on release."""
+    # TODO : remove me when updating to django 4.2
+    try:
+        filename.encode("ascii")
+        file_expr = 'filename="{}"'.format(
+            filename.replace("\\", "\\\\").replace('"', r"\"")
+        )
+    except UnicodeEncodeError:
+        file_expr = "filename*=utf-8''{}".format(quote(filename))
+    return f"attachment; {file_expr}"
