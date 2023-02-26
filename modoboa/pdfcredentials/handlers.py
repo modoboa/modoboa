@@ -63,9 +63,14 @@ def extra_identities_actions(sender, account, **kwargs):
     fname = get_creds_filename(account)
     if not os.path.exists(fname):
         return []
+    url: str = reverse("v2:get-credentials", args=[account.pk])
+    url = url.replace("/api/v2", "")
     return {
         "name": "get_credentials",
-        "body":  {"type": "pdfcredentials"},
         "icon": "mdi-file-download-outline",
-        "label": _("Download PDF credentials")
+        "label": _("Download PDF credentials"),
+        "type": "download",
+        "content_type": "application/pdf",
+        "url": url,
+        "filename": os.path.basename(fname)
     }
