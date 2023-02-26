@@ -291,7 +291,10 @@ class IdPossibleActionsSerializer(serializers.Serializer):
     name = serializers.CharField()
     icon = serializers.CharField()
     label = serializers.CharField()
-    body = serializers.DictField()
+    type = serializers.CharField()
+    content_type = serializers.CharField(required=False)
+    url = serializers.CharField(required=False)
+    filename = serializers.CharField(required=False)
 
 
 class IdentitySerializer(serializers.Serializer):

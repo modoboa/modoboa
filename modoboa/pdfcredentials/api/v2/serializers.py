@@ -79,4 +79,4 @@ class GetAccountCredentialsSerializer(serializers.Serializer):
         self.context["content"] = decrypt_file(fname)
         if param_tools.get_global_parameter("delete_first_dl"):
             os.remove(fname)
-        self.context["fname"] = fname
+        self.context["fname"] = os.path.basename(fname)
