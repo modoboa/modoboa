@@ -39,6 +39,7 @@ aiosmtplib
 aioredis==2.0.1
 
 # PDF credentials
+urllib
 reportlab
 
 # DMARC
