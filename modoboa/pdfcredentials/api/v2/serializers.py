@@ -42,6 +42,19 @@ class PDFCredentialsSettingsSerializer(serializers.Serializer):
     imap_connection_security = serializers.ChoiceField(
         choices=CONNECTION_SECURITY_MODES, default="starttls")
 
+    def validate_storage_dir(self, value):
+        """Check that directory exists."""
+        if value:
+            if not os.path.isdir(value):
+                raise serializers.ValidationError(
+                    _("Directory not found.")
+                    )
+            if not os.access(value, os.W_OK):
+                raise serializers.ValidationError(
+                    _("Directory is not writable")
+                    )
+        return value
+
 
 class GetAccountCredentialsSerializer(serializers.Serializer):
     """A serializer for get account credential view."""
