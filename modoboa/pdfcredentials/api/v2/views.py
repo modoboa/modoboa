@@ -1,5 +1,7 @@
 """PDF Credentials API v2 views."""
 
+import os
+
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
 
@@ -26,14 +28,15 @@ class PDFCredentialView(APIView):
     def get(self, request, *args, **kwargs):
         """View to download a document."""
         data = {"account_id": kwargs["account_id"]}
-        serializer = GetAccountCredentialsSerializer(data=data, context={'request': request})
+        serializer = GetAccountCredentialsSerializer(
+            data=data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         content = serializer.context["content"]
         fname = serializer.context["fname"]
         resp = HttpResponse(content)
-        resp["Content-Type"] = "application/pdf;base64"
+        resp["Content-Type"] = "application/pdf"
         resp["Content-Length"] = len(content)
         resp["Content-Disposition"] = f"attachment; filename={fname};"
         return resp
