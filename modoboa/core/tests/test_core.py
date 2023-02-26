@@ -84,14 +84,15 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
             "clean_inactive_accounts", "--verbose", "--dry-run", stdout=out)
         self.assertIn("user1@domain.test", out.getvalue())
 
-        # Set a negative number (means disabled)
-        self.set_global_parameter("inactive_account_threshold", -1)
+        # Disable account account threshold
+        self.set_global_parameter("enable_inactive_accounts", False)
         out = StringIO()
         management.call_command(
-            "clean_inactive_accounts", "--verbose", "--dry-run", stdout=out)
-        self.assertEqual("", out.getvalue())
+            "clean_inactive_accounts", "--verbose", stdout=out)
+        self.assertIn("Inactive accounts detection is disabled.",
+                      out.getvalue())
 
-        self.set_global_parameter("inactive_account_threshold", 30)
+        self.set_global_parameter("enable_inactive_accounts", True)
         management.call_command("clean_inactive_accounts", "--silent")
         account.refresh_from_db()
         self.assertFalse(account.is_active)

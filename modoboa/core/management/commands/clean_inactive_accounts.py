@@ -43,10 +43,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Command entry point."""
+        if not param_tools.get_global_parameter(
+                "enable_inactive_accounts"):
+            if options["verbose"]:
+                print("Inactive accounts detection is disabled.",
+                      file=self.stdout)
+            return
         inactive_account_threshold = param_tools.get_global_parameter(
             "inactive_account_threshold")
-        if inactive_account_threshold < 0:
-            return
         qset = models.User.objects.filter(
             is_active=True, is_superuser=False,
             last_login__lt=timezone.now() -
