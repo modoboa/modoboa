@@ -133,6 +133,7 @@ export default {
       return params.filter(param => this.display(param))
     },
     save () {
+      this.formErrors = {}
       parameters.saveApplication(this.$route.params.app, this.parameters).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Parameters updated') })
       }).catch(error => {
