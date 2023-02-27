@@ -74,6 +74,9 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.form = {}
+    },
     async validateForm () {
       return await this.$refs.observer.validate() && await this.$refs.passwordForm.validate()
     },

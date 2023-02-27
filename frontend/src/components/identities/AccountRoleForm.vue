@@ -45,6 +45,9 @@ export default {
       return role !== undefined ? role.help : ''
     }
   },
+  methods: {
+    reset () { }
+  },
   data () {
     return {
       accountRoles: [

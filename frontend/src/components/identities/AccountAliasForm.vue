@@ -42,6 +42,10 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.currentAlias = ''
+      this.aliases = []
+    },
     async addAlias () {
       try {
         await accounts.validate({ aliases: [this.currentAlias] })

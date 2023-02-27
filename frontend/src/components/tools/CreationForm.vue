@@ -84,6 +84,7 @@ export default {
     steps: Array,
     summarySections: Array,
     formObserverGetter: Function,
+    formGetter: Function,
     validateObject: Function
   },
   data () {
@@ -92,6 +93,19 @@ export default {
     }
   },
   methods: {
+    resetForm () {
+      this.currentStep = 1
+      this.steps.forEach((item, index) => {
+        const observer = this.formObserverGetter(index + 1)
+        if (observer !== undefined) {
+          observer.reset()
+        }
+        const form = this.formGetter(index + 1)
+        if (form !== undefined) {
+          form.reset()
+        }
+      })
+    },
     async close (withConfirm) {
       if (withConfirm) {
         const confirm = await this.$refs.confirm.open(
@@ -107,13 +121,7 @@ export default {
           return
         }
       }
-      this.currentStep = 1
-      this.steps.forEach((item, index) => {
-        const observer = this.formObserverGetter(index + 1)
-        if (observer !== undefined) {
-          observer.reset()
-        }
-      })
+      this.resetForm()
       this.$emit('close')
     },
     async goToNextStep (current, next) {
@@ -132,7 +140,6 @@ export default {
       }
       this.currentStep = next
     }
-
   }
 }
 </script>

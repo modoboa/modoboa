@@ -65,6 +65,9 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.form = {}
+    },
     resetForm (value) {
       this.$set(this.form, 'transport', { service: value.name, settings: {} })
       for (const setting of value.settings) {
