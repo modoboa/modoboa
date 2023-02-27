@@ -1,9 +1,12 @@
 """Custom forms."""
 
+import collections
+
 from django import forms
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from modoboa.dmarc.api.v2 import serializers
 from modoboa.lib import form_utils
 from modoboa.parameters import forms as param_forms
 
@@ -43,9 +46,29 @@ class ParametersForm(param_forms.AdminParametersForm):
     )
 
 
+GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
+    ("dns", {
+        "label": _("DNS settings"),
+        "params": collections.OrderedDict([
+            ("enable_rlookups", {
+                "label": _("Enable reverse lookups"),
+                "help_text": _(
+                    "Enable reverse DNS lookups (reports will be longer to display)"
+                )
+            })
+        ])
+    })
+])
+
+
 def load_settings():
     """Load app settings."""
     from modoboa.parameters import tools as param_tools
 
     param_tools.registry.add(
         "global", ParametersForm, _("DMARC"))
+    param_tools.registry.add2(
+        "global", "dmarc", _("DMARC"),
+        GLOBAL_PARAMETERS_STRUCT,
+        serializers.DmarcGlobalParametersSerializer
+    )

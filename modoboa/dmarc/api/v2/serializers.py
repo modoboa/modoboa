@@ -30,3 +30,9 @@ class DMARCAligmentSerializer(serializers.Serializer):
     failed = serializers.DictField(
         child=serializers.DictField(child=SourceSerializer())
     )
+
+
+class DmarcGlobalParametersSerializer(serializers.Serializer):
+    """Serializer for global parameters."""
+
+    enable_rlookups = serializers.BooleanField(default=False)

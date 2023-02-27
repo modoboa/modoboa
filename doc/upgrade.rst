@@ -111,9 +111,9 @@ Specific instructions
 2.1.0
 =====
 
-The ``modoboa-dmarc`` plugin has been merged into the core.
+The ``modoboa-dmarc`` and ``modoboa.pdfcredentials`` plugins have been merged into the core.
 
-Add ``'modoboa.dmarc'`` to ``MODOBOA_APPS``:
+Add ``'modoboa.dmarc'`` and ``'modoboa.pdfcredentials'`` to ``MODOBOA_APPS``:
 
 .. sourcecode:: python
 
@@ -130,18 +130,19 @@ Add ``'modoboa.dmarc'`` to ``MODOBOA_APPS``:
       'modoboa.policyd',
       'modoboa.maillog',
       'modoboa.dmarc',
+      'modoboa.pdfcredentials'
    )
 
-And remove any reference to ``modoboa_dmarc`` in this same variable.
+And remove any reference to ``'modoboa_dmarc'`` or ``'modoboa.pdfcredentials'`` in this same variable.
 
-FIXME: INSTALLATION django-rename-app
+After upgrading modoboa, run the following commands from your virtual environment:
 
 .. sourcecode:: bash
 
    python manage.py rename_app modoboa_dmarc dmarc
 
 
-2.0.4t
+2.0.4
 =====
 
 The following modifications must be applied to the :file:`settings.py` file:

@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Peter Sveter, 2016
+# Jarda Tesar <intossh@gmail.com>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-27 12:01+0200\n"
+"PO-Revision-Date: 2018-08-10 11:24+0000\n"
+"Last-Translator: Jarda Tesar <intossh@gmail.com>\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/modoboa/language/cs_CZ/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+
+#: constants.py:7
+msgid "None"
+msgstr "Žádné"
+
+#: documents.py:52 forms.py:53
+msgid "Personal account information"
+msgstr "Informace osobního účtu"
+
+#: documents.py:55
+msgid "Powered by Modoboa - Mail hosting made simple"
+msgstr "Běží na Modoboa - Poštovní hosting zjednodušeně"
+
+#: documents.py:69
+#, python-format
+msgid ""
+"\n"
+"Dear %s, this document contains the credentials you will need\n"
+"to connect to Modoboa. Learn the content and destroy\n"
+"the document as soon as possible.\n"
+msgstr "\nVážený %s, tento dokument obsahuje přístupové údaje potřebné\npro pripojení do rozhraní Modoboa. Zapamatujte si je a smazte\ntento dokument hned, jakmile to bude možné.\n"
+
+#: documents.py:75
+msgid "Web panel:"
+msgstr "Webový panel:"
+
+#: documents.py:78
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#: documents.py:79
+msgid "Password"
+msgstr "Heslo"
+
+#: documents.py:89
+msgid ""
+"\n"
+"Here you can view your emails anytime online, create filters or manage\n"
+"your contacts.\n"
+msgstr "\nZde si kdykoliv můžete prohlédnout své emaily, vytvořit filtry nebo spravovat Vaše kontakty.\n"
+
+#: documents.py:96
+msgid "Please change your password!"
+msgstr "Prosím změňte si své heslo!"
+
+#: documents.py:102
+msgid "PC/Tablet/Smartphone configuration:"
+msgstr "Nastavení PC/Tabletu/Smartphonu:"
+
+#: documents.py:105 forms.py:79
+msgid "SMTP server address"
+msgstr "Adresa SMTP serveru"
+
+#: documents.py:106 forms.py:84
+msgid "SMTP server port"
+msgstr "Port SMTP serveru"
+
+#: documents.py:107 forms.py:90
+msgid "SMTP connection security"
+msgstr "Zabezpečení SMTP připojení"
+
+#: documents.py:108 forms.py:97
+msgid "IMAP server address"
+msgstr "Adresa IMAP serveru"
+
+#: documents.py:109 forms.py:102
+msgid "IMAP server port"
+msgstr "Port IMAP serveru"
+
+#: documents.py:110 forms.py:108
+msgid "IMAP connection security"
+msgstr "Zabezpečení IMAP připojení"
+
+#: documents.py:120
+msgid "Use those settings for your computer, tablet or phone."
+msgstr "Použijte tato nastavení ve svém počítači, tabletu či telefonu."
+
+#: forms.py:20
+msgid "Documents storage"
+msgstr "Úložný prostor pro dokumenty"
+
+#: forms.py:23
+msgid "Directory to save documents into"
+msgstr "Adresář pro uložení dokumentů"
+
+#: forms.py:25
+msgid "Path to a directory where PDF documents will be saved"
+msgstr "Cesta k adresáři kde budou uloženy PDF dokumenty"
+
+#: forms.py:28
+msgid "Security options"
+msgstr "Možnosti zabezpečení"
+
+#: forms.py:31
+msgid "Delete documents after the first download"
+msgstr "Smazat dokumenty po prvním stažení"
+
+#: forms.py:34
+msgid ""
+"Automatically delete a document just after its first download from this "
+"interface"
+msgstr "Automaticky smazat dokument ihned po prvním stažení cez toto rozhraní"
+
+#: forms.py:40
+msgid "Generate documents only at account creation"
+msgstr "Vytvářet dokumenty pouze při vytváření účtu"
+
+#: forms.py:43
+msgid ""
+"Generate a new document only when a new account is created. If set to no, a "
+"new document will be created each time a password is updated."
+msgstr "Vytvářet nové dokumenty pouze při vytvoření účtu. Je-li nastaveno na hodnotu ne, bude nový dokument vytvořen pokaždé, když dojde ke změne hesla."
+
+#: forms.py:49
+msgid "Customization options"
+msgstr "Možnosti vlastních úprav"
+
+#: forms.py:52
+msgid "Title"
+msgstr "Název"
+
+#: forms.py:54
+msgid "The document's title"
+msgstr "Název dokumentu"
+
+#: forms.py:58
+msgid "Web panel url"
+msgstr "URL web panelu"
+
+#: forms.py:59
+msgid "URL of the Modoboa web panel"
+msgstr "URL adresa Modoboa web panelu"
+
+#: forms.py:63
+msgid "Custom message"
+msgstr "Vlastní zpráva"
+
+#: forms.py:65
+msgid "A custom message that will appear at the end of documents"
+msgstr "Vlastní zpráva, která se zobrazí na konci dokumentu."
+
+#: forms.py:70
+msgid "Include mail client connection settings"
+msgstr "Zahrnout nastavení mailového klienta"
+
+#: forms.py:73
+msgid ""
+"Include required SMTP and IMAP connection information to configure a mail "
+"client, a tablet or a phone"
+msgstr "Zahrnout vyžadovaná nastavení SMTP a IMAP připojení pri konfiguraci mailového klienta, tabletu či telefonu"
+
+#: forms.py:80
+msgid "Address of the SMTP server (hostname or IP)"
+msgstr "Adresa SMTP serveru (hostname nebo IP)"
+
+#: forms.py:86
+msgid "Listening port of the SMTP server"
+msgstr "Port SMTP serveru"
+
+#: forms.py:93 forms.py:111
+msgid "Connection security mechanism"
+msgstr "Zabezpečení připojení"
+
+#: forms.py:98
+msgid "Address of the IMAP server (hostname or IP)"
+msgstr "Adresa IMAP serveru (hostname nebo IP)"
+
+#: forms.py:104
+msgid "Listening port of the IMAP server"
+msgstr "Port IMAP serveru"
+
+#: handlers.py:46
+msgid "Retrieve user's credentials as a PDF document"
+msgstr "Získat přístupové údaje uživatele ako PDF dokument"
+
+#: lib.py:29
+#, python-format
+msgid "Failed to create the directory that will contain PDF documents (%s)"
+msgstr "Vytváření adresáře pro uložení PDF dokumentů (%s) selhalo "
+
+#: modo_extension.py:16 modo_extension.py:24
+msgid "PDF credentials"
+msgstr "PDF přístupové údaje"
+
+#: modo_extension.py:19
+msgid "Generate PDF documents containing users' credentials"
+msgstr "Vytvářet PDF dokumenty obsahující přístupové údaje uživatele"
+
+#: views.py:30
+msgid "No document available for this user"
+msgstr "Pro tohoto uživatele není k dispozici žáden dokument"
