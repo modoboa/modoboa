@@ -103,7 +103,7 @@ def get_document_logo():
         logo = settings.MODOBOA_CUSTOM_LOGO
         logo = os.path.join(settings.MEDIA_ROOT, os.path.basename(logo))
     except AttributeError:
-        logo = os.path.join(settings.STATIC_ROOT, "css/modoboa.png")
+        logo = os.path.join(settings.STATIC_ROOT, "css/modoboa-new.png")
     if not os.path.isfile(logo):
         return None
     return logo
