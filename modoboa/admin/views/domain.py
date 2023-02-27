@@ -214,6 +214,7 @@ def newdomain(request):
 
 @login_required
 @permission_required("admin.view_domain")
+@require_http_methods(["POST"])
 @reversion.create_revision()
 def editdomain(request, dom_id):
     """Edit domain view."""
