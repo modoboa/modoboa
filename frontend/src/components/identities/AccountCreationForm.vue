@@ -1,7 +1,9 @@
 <template>
 <creation-form
+  ref="form"
   :title="'New account'|translate"
   :steps="steps"
+  :form-getter="getForm"
   :form-observer-getter="getObserver"
   :validate-object="validateAccount"
   :summary-sections="summarySections"
@@ -162,6 +164,9 @@ export default {
         random_password: true
       }
     },
+    getForm (step) {
+      return this.$refs[`form_${step}`]
+    },
     getObserver (step) {
       return this.$refs[`form_${step}`].$refs.observer
     },
@@ -170,6 +175,7 @@ export default {
     },
     close () {
       this.account = this.getInitialForm()
+      this.$refs.form.resetForm()
       this.$emit('close')
     },
     submit () {

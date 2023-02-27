@@ -1,7 +1,9 @@
 <template>
 <creation-form
+  ref="form"
   :title="'New alias'|translate"
   :steps="steps"
+  :form-getter="getForm"
   :form-observer-getter="getObserver"
   :validate-object="validateAlias"
   :summary-sections="summarySections"
@@ -78,6 +80,7 @@ export default {
   methods: {
     close () {
       this.alias = this.getInitialForm()
+      this.$refs.form.resetForm()
       this.$emit('close')
     },
     getInitialForm () {
@@ -86,6 +89,9 @@ export default {
         enabled: true,
         recipients: []
       }
+    },
+    getForm (step) {
+      return this.$refs[`form_${step}`]
     },
     getObserver (step) {
       return this.$refs[`form_${step}`].$refs.observer

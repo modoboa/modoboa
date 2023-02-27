@@ -57,6 +57,9 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.form = {}
+    },
     updatePassword (value) {
       if (value) {
         accounts.getRandomPassword().then(resp => {
