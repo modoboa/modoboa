@@ -121,7 +121,7 @@ export default {
       }
       this.loading = true
       alarms.getAll(params).then(resp => {
-        this.alarms = resp.data
+        this.alarms = resp.data.results
         this.totalAlarms = resp.data.count
         this.loading = false
       })
