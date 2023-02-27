@@ -8,6 +8,7 @@
         </v-btn>
       </template>
       <v-list dense>
+        <menu-items :items="getActionMenuItems()"/>
       </v-list>
     </v-menu>
     <v-spacer></v-spacer>
@@ -54,16 +55,17 @@
       </v-chip>
     </template>
     <template v-slot:item.actions="{ item }">
-      <div class="text-right">
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
-          </template>
-          <menu-items :items="getMenuItems(item)" :object="item" />
-        </v-menu>
-      </div>
+      <template v-if="item.possible_actions.length !== 0">
+        <v-icon size="2.5em" color="blue">mdi-circle-small</v-icon>
+      </template>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </template>
+        <menu-items :items="getMenuItems(item)" :object="item" />
+      </v-menu>
     </template>
   </v-data-table>
   <confirm-dialog ref="confirmAlias" />
@@ -83,6 +85,7 @@ import accounts from '@/api/accounts'
 import aliases from '@/api/aliases'
 import ConfirmDialog from '@/components/layout/ConfirmDialog'
 import MenuItems from '@/components/tools/MenuItems'
+import repository from '@/api/repository'
 
 export default {
   components: {
@@ -104,51 +107,91 @@ export default {
     }
   },
   methods: {
-    async deleteAlias (alias) {
-      const confirm = await this.$refs.confirmAlias.open(
-        this.$gettext('Warning'),
-        this.$gettext(
-          'Do you really want to delete the alias %{ alias }?',
-          { alias: alias.identity }
-        ),
-        {
-          color: 'error',
-          cancelLabel: this.$gettext('No'),
-          agreeLabel: this.$gettext('Yes')
+    sleep (milliseconds) {
+      return new Promise((resolve) => setTimeout(resolve, milliseconds))
+    },
+    async deleteAlias (alias, confirmDialog = true) {
+      if (confirmDialog) {
+        const confirm = await this.$refs.confirmAlias.open(
+          this.$gettext('Warning'),
+          this.$gettext(
+            'Do you really want to delete the alias %{ alias }?',
+            { alias: alias.identity }
+          ),
+          {
+            color: 'error',
+            cancelLabel: this.$gettext('No'),
+            agreeLabel: this.$gettext('Yes')
+          }
+        )
+        if (!confirm) {
+          return
         }
-      )
-      if (!confirm) {
-        return
       }
       aliases.delete(alias.pk).then(() => {
-        bus.$emit('notification', { msg: this.$gettext('Alias deleted') })
-        this.fetchIdentities()
+        if (confirmDialog) {
+          this.fetchIdentities()
+          bus.$emit('notification', { msg: this.$gettext('Alias deleted') })
+        }
       })
     },
-    async deleteAccount (account) {
-      const confirm = await this.$refs.confirmAccount.open(
-        this.$gettext('Warning'),
-        this.$gettextInterpolate(
-          'Do you really want to delete the account %{ account }?',
-          { account: account.identity }
-        ),
-        {
-          color: 'error',
-          cancelLabel: this.$gettext('No'),
-          agreeLabel: this.$gettext('Yes')
+    async deleteAccount (account, confirmDialog = true) {
+      if (confirmDialog) {
+        const confirm = await this.$refs.confirmAccount.open(
+          this.$gettext('Warning'),
+          this.$gettextInterpolate(
+            'Do you really want to delete the account %{ account }?',
+            { account: account.identity }
+          ),
+          {
+            color: 'error',
+            cancelLabel: this.$gettext('No'),
+            agreeLabel: this.$gettext('Yes')
+          }
+        )
+        if (!confirm) {
+          return
         }
-      )
-      if (!confirm) {
-        return
       }
       const data = { keepdir: this.keepAccountFolder }
       accounts.delete(account.pk, data).then(() => {
-        bus.$emit('notification', { msg: this.$gettext('Account deleted') })
         this.keepAccountFolder = false
-        this.fetchIdentities()
+        if (confirmDialog) {
+          bus.$emit('notification', { msg: this.$gettext('Account deleted') })
+          this.fetchIdentities()
+        }
       }).catch(error => {
         bus.$emit('notification', { msg: error.response.data, type: 'error' })
       })
+    },
+    async deleteIdentities () {
+      if (this.selected.length === 0) {
+        return
+      }
+      const confirm = await this.$refs.confirmAlias.open(
+        this.$gettext('Warning'),
+        this.$gettext(
+          'Do you really want to delete the selected identities?'
+        ),
+        {
+          color: 'error',
+          cancelLabel: this.$gettext('No'),
+          agreeLabel: this.$gettext('Yes')
+        }
+      )
+      if (!confirm) {
+        return
+      }
+      for (const item of this.selected) {
+        if (item.type === 'account') {
+          this.deleteAccount(item, false)
+        } else if (item.type === 'alias') {
+          this.deleteAlias(item, false)
+        }
+        await this.sleep(100)
+      }
+      bus.$emit('notification', { msg: this.$gettext('Identities deleted') })
+      this.fetchIdentities()
     },
     editAccount (account) {
       this.$router.push({ name: 'AccountEdit', params: { id: account.pk } })
@@ -159,17 +202,70 @@ export default {
     fetchIdentities () {
       identities.getAll().then(resp => {
         this.identities = resp.data
+        this.selected = []
+      })
+    },
+    downloadFile (options) {
+      repository.get(options.url).then(resp => {
+        const url = window.URL.createObjectURL(
+          new Blob([resp.data], { type: options.content_type }))
+        const link = document.createElement('a')
+        link.style.display = 'none'
+        link.href = url
+        link.download = options.filename
+        document.body.appendChild(link)
+        link.click()
+        window.URL.revokeObjectURL(link.href)
+        document.body.removeChild(link)
       })
     },
     getMenuItems (item) {
       const result = []
       if (item.type === 'account') {
-        result.push({ label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editAccount })
-        result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAccount, color: 'red' })
+        item.possible_actions.forEach(element => {
+          result.push({
+            label: element.label,
+            icon: element.icon,
+            onClick: () => {
+              if (element.type === 'download') {
+                this.downloadFile(element)
+              }
+              this.fetchIdentities()
+            }
+          })
+        })
+        result.push({
+          label: this.$gettext('Edit'),
+          icon: 'mdi-circle-edit-outline',
+          onClick: this.editAccount
+        })
+        result.push({
+          label: this.$gettext('Delete'),
+          icon: 'mdi-delete-outline',
+          onClick: this.deleteAccount,
+          color: 'red'
+        })
       } else if (item.type === 'alias') {
-        result.push({ label: this.$gettext('Edit'), icon: 'mdi-circle-edit-outline', onClick: this.editAlias })
-        result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlias, color: 'red' })
+        result.push({
+          label: this.$gettext('Edit'),
+          icon: 'mdi-circle-edit-outline',
+          onClick: this.editAlias
+        })
+        result.push({
+          label: this.$gettext('Delete'),
+          icon: 'mdi-delete-outline',
+          onClick: this.deleteAlias,
+          color: 'red'
+        })
       }
+      return result
+    },
+    getActionMenuItems () {
+      const result = []
+      if (this.selected.length > 0) {
+        result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteIdentities, color: 'red' })
+      }
+      result.push({ label: 'Reload', icon: 'mdi-reload', onClick: this.fetchIdentities })
       return result
     }
   },
