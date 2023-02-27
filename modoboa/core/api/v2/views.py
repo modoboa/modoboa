@@ -9,7 +9,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth import login
 
 from drf_spectacular.utils import extend_schema
-from rest_framework import response, status
+from rest_framework import permissions, response, status
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework_simplejwt.exceptions import InvalidToken
@@ -17,7 +17,11 @@ from rest_framework.views import APIView
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.utils import check_for_updates
-from modoboa.lib.throttle import UserLesserDdosUser, LoginThrottle, PasswordResetApplyThrottle, PasswordResetRequestThrottle, PasswordResetTotpThrottle
+from modoboa.lib.permissions import IsSuperUser
+from modoboa.lib.throttle import (
+    UserLesserDdosUser, LoginThrottle, PasswordResetApplyThrottle,
+    PasswordResetRequestThrottle, PasswordResetTotpThrottle
+)
 from modoboa.parameters import tools as param_tools
 
 from smtplib import SMTPException
@@ -192,6 +196,7 @@ class PasswordResetConfirmView(APIView):
 class ComponentsInformationAPIView(APIView):
     """Retrieve information about installed components."""
 
+    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
     throttle_classes = [UserLesserDdosUser]
 
     @extend_schema(responses=serializers.ModoboaComponentSerializer(many=True))
