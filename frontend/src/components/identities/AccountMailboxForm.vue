@@ -75,6 +75,11 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.form = {
+        mailbox: {}
+      }
+    },
     update () {
       this.$emit('input', this.form)
     }

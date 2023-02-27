@@ -1,7 +1,9 @@
 <template>
 <creation-form
+  ref="form"
   :title="'New domain'|translate"
   :steps="steps"
+  :form-getter="getForm"
   :form-observer-getter="getObserver"
   :validate-object="validateDomain"
   :summary-sections="summarySections"
@@ -199,7 +201,11 @@ export default {
     },
     close () {
       this.initDomain()
+      this.$refs.form.resetForm()
       this.$emit('close')
+    },
+    getForm (step) {
+      return this.$refs[`form_${step}`]
     },
     getObserver (step) {
       return this.$refs[`form_${step}`].$refs.observer

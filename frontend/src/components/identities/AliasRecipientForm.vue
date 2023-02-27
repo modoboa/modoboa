@@ -42,6 +42,10 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.recipient = ''
+      this.recipients = []
+    },
     async addRecipient () {
       this.recipients.push(this.recipient)
       this.$emit('input', this.recipients)
