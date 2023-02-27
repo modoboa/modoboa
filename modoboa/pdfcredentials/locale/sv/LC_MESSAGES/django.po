@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Olle Gustafsson <olle@dalnix.se>, 2016,2018
+# Tomas Olsson <fettoemo@gmail.com>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-27 12:01+0200\n"
+"PO-Revision-Date: 2018-08-14 08:40+0000\n"
+"Last-Translator: Olle Gustafsson <olle@dalnix.se>\n"
+"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/sv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: constants.py:7
+msgid "None"
+msgstr "Ingen"
+
+#: documents.py:52 forms.py:53
+msgid "Personal account information"
+msgstr "Personlig kontoinformation"
+
+#: documents.py:55
+msgid "Powered by Modoboa - Mail hosting made simple"
+msgstr "Drivs av Modoboa - Mail hosting gjort enkelt"
+
+#: documents.py:69
+#, python-format
+msgid ""
+"\n"
+"Dear %s, this document contains the credentials you will need\n"
+"to connect to Modoboa. Learn the content and destroy\n"
+"the document as soon as possible.\n"
+msgstr "\nKära %s, detta dokument innehåller de kontouppgifter du behöver för att ansluta till Modoboa. Lär dig innehållet i detta dokument och förstör detta dokument så snart som möjligt\n"
+
+#: documents.py:75
+msgid "Web panel:"
+msgstr "Webbpanel"
+
+#: documents.py:78
+msgid "Username"
+msgstr "Användarnamn"
+
+#: documents.py:79
+msgid "Password"
+msgstr "Lösenord"
+
+#: documents.py:89
+msgid ""
+"\n"
+"Here you can view your emails anytime online, create filters or manage\n"
+"your contacts.\n"
+msgstr "\nHär kan du se dina e-postmeddelanden när som helst online, skapa filter eller hantera\ndina kontakter.\n"
+
+#: documents.py:96
+msgid "Please change your password!"
+msgstr "Vänligen ändra ditt lösenord!"
+
+#: documents.py:102
+msgid "PC/Tablet/Smartphone configuration:"
+msgstr "PC/Tablet/Smartphone inställningar:"
+
+#: documents.py:105 forms.py:79
+msgid "SMTP server address"
+msgstr "SMTP server adress"
+
+#: documents.py:106 forms.py:84
+msgid "SMTP server port"
+msgstr "SMTP server port"
+
+#: documents.py:107 forms.py:90
+msgid "SMTP connection security"
+msgstr "SMTP anslutningssäkerhet"
+
+#: documents.py:108 forms.py:97
+msgid "IMAP server address"
+msgstr "IMAP server adress"
+
+#: documents.py:109 forms.py:102
+msgid "IMAP server port"
+msgstr "IMAP server port"
+
+#: documents.py:110 forms.py:108
+msgid "IMAP connection security"
+msgstr "IMAP anslutningssäkerhet"
+
+#: documents.py:120
+msgid "Use those settings for your computer, tablet or phone."
+msgstr "Använd dessa inställningar för din dator, surfplatta eller telefon."
+
+#: forms.py:20
+msgid "Documents storage"
+msgstr "Dokumentlagring"
+
+#: forms.py:23
+msgid "Directory to save documents into"
+msgstr "Katalog att spara dokument till"
+
+#: forms.py:25
+msgid "Path to a directory where PDF documents will be saved"
+msgstr "Sökväg till en katalog där PDF dokument kommer sparas"
+
+#: forms.py:28
+msgid "Security options"
+msgstr "Säkerhetsinställningar"
+
+#: forms.py:31
+msgid "Delete documents after the first download"
+msgstr "Radera dokument efter första nedladdning"
+
+#: forms.py:34
+msgid ""
+"Automatically delete a document just after its first download from this "
+"interface"
+msgstr "Radera dokument automatiskt efter första nedladdningen"
+
+#: forms.py:40
+msgid "Generate documents only at account creation"
+msgstr "Generera dokument endast vid kontoskapande"
+
+#: forms.py:43
+msgid ""
+"Generate a new document only when a new account is created. If set to no, a "
+"new document will be created each time a password is updated."
+msgstr "Generera bara nya dokument när ett nytt konto skapas. Om detta sätts till nej, kommer ett nytt dokument skapas varje gång ett lösenord uppdateras."
+
+#: forms.py:49
+msgid "Customization options"
+msgstr "Anpassningsalternativ"
+
+#: forms.py:52
+msgid "Title"
+msgstr "Titel"
+
+#: forms.py:54
+msgid "The document's title"
+msgstr "Dokumentets titel"
+
+#: forms.py:58
+msgid "Web panel url"
+msgstr "Webbpanels länk "
+
+#: forms.py:59
+msgid "URL of the Modoboa web panel"
+msgstr "URL till Modoboa webbpanel"
+
+#: forms.py:63
+msgid "Custom message"
+msgstr "Anpassat meddelande"
+
+#: forms.py:65
+msgid "A custom message that will appear at the end of documents"
+msgstr "Ett anpassat meddelande som kommer visas i slutet på dokumentet"
+
+#: forms.py:70
+msgid "Include mail client connection settings"
+msgstr "Inkludera e-post klient inställningar"
+
+#: forms.py:73
+msgid ""
+"Include required SMTP and IMAP connection information to configure a mail "
+"client, a tablet or a phone"
+msgstr "Inkludera SMTP och IMAP anslutningsinformation för att konfigurera en e-postklient, surfplatta eller telefon"
+
+#: forms.py:80
+msgid "Address of the SMTP server (hostname or IP)"
+msgstr "Adress till SMTP servern (värdnamn eller IP)"
+
+#: forms.py:86
+msgid "Listening port of the SMTP server"
+msgstr "Lyssningsport för SMTP servern"
+
+#: forms.py:93 forms.py:111
+msgid "Connection security mechanism"
+msgstr "Anslutningssäkerhetsmekanism"
+
+#: forms.py:98
+msgid "Address of the IMAP server (hostname or IP)"
+msgstr "Adress till IMAP servern (värdnamn eller IP)"
+
+#: forms.py:104
+msgid "Listening port of the IMAP server"
+msgstr "Lyssningsport för IMAP servern"
+
+#: handlers.py:46
+msgid "Retrieve user's credentials as a PDF document"
+msgstr "Hämta användares kontouppgifter som ett PDF dokument"
+
+#: lib.py:29
+#, python-format
+msgid "Failed to create the directory that will contain PDF documents (%s)"
+msgstr "Kunde inte skapa katalogen som innehåller PDF dokumenten (%s)"
+
+#: modo_extension.py:16 modo_extension.py:24
+msgid "PDF credentials"
+msgstr "PDF kontouppgifter"
+
+#: modo_extension.py:19
+msgid "Generate PDF documents containing users' credentials"
+msgstr "Generera PDF dokument innehållande användares kontouppgifter"
+
+#: views.py:30
+msgid "No document available for this user"
+msgstr "Inga dokument tillgängliga för den här användaren"

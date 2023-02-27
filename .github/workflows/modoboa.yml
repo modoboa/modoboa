@@ -101,7 +101,7 @@ jobs:
         run: |
           python ./tests.py
           cd test_project
-          python3 manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog modoboa.parameters modoboa.dmarc
+          python3 manage.py test modoboa
         env:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
@@ -117,7 +117,7 @@ jobs:
         run: |
           python ./tests.py
           cd test_project
-          coverage run manage.py test modoboa.core modoboa.lib modoboa.admin modoboa.limits modoboa.transport modoboa.relaydomains modoboa.dnstools modoboa.ldapsync modoboa.policyd modoboa.maillog modoboa.parameters modoboa.dmarc
+          coverage run manage.py test modoboa
           coverage combine
         env:
           # use localhost for the host here because we are running the job on the VM.
