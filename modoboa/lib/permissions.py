@@ -3,6 +3,8 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
+from rest_framework import permissions
+
 from modoboa.core import constants as core_constants, signals as core_signals
 from modoboa.core.models import ObjectAccess, User
 
@@ -150,3 +152,10 @@ def add_permissions_to_group(group, permissions):
         group.permissions.add(
             Permission.objects.get(content_type=ct, codename=permname)
         )
+
+
+class IsSuperUser(permissions.BasePermission):
+    """Permission class to allow only super users."""
+
+    def has_permission(self, request, view):
+        return request.user.is_superuser
