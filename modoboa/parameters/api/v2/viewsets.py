@@ -1,9 +1,10 @@
 """Parameters viewsets."""
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-from rest_framework import response, viewsets
+from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 
+from modoboa.lib.permissions import IsSuperUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from . import serializers
@@ -14,6 +15,7 @@ class ParametersViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Parameter viewset."""
 
     lookup_value_regex = r"\w+"
+    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
     serializer_class = None
 
     @extend_schema(responses=serializers.ApplicationSerializer(many=True))

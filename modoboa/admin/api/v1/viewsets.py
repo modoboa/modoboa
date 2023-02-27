@@ -93,7 +93,6 @@ class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, v
         throttles = super().get_throttles()
         if self.action == "reset_password":
             throttles.append(PasswordResetRequestThrottle())
-        
         return throttles
 
     def get_serializer_class(self):
