@@ -16,7 +16,27 @@ Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface designed to work with `Postfix
 <http://www.postfix.org>`_ and `Dovecot <http://www.dovecot.org>`_.
 
-It is extensible by nature and comes with a lot of additional extensions:
+
+It provides built-in features by default :
+
+
++---------------------------------------------------------+-------------------------+------------------------------------------------------+
+|Name                                                     |Description              |Documentation                                         |
+|                                                         |                         |                                                      |
+|                                                         |                         |                                                      |
+|                                                         |                         |                                                      |
++=========================================================+=========================+======================================================+
+|modoboa-dmarc                                            |A set of tools to use    |:ref:`modoboa_dmarc Documentation <dmarcdoc>`         |
+|                                                         |`DMARC                   |                                                      |
+|                                                         |<https://dmarc.org>`_    |                                                      |
++---------------------------------------------------------+-------------------------+------------------------------------------------------+
+|modoboa-pdfcredentials                                   |Generate PDF documents   |:ref:`modoboa_pdfcredentials Documentation <pdfc>`    |
+|                                                         |containing account       |                                                      |
+|                                                         |credentials              |                                                      |
++---------------------------------------------------------+-------------------------+------------------------------------------------------+
+
+
+And it is extensible by nature and comes with a lot of additional extensions:
 
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
 |Name                                                     |Description              |Documentation                                         |
@@ -29,17 +49,9 @@ It is extensible by nature and comes with a lot of additional extensions:
 |                                                         |                         |                                                      |
 |                                                         |                         |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-dmarc                                           |A set of tools to use    |https://github.com/modoboa/modoboa-dmarc              |
-|<https://github.com/modoboa/modoboa-dmarc>`_             |`DMARC                   |                                                      |
-|                                                         |<https://dmarc.org>`_    |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
 |`modoboa-imap-migration                                  |Migrate mailboxes from an|https://github.com/modoboa/modoboa-imap-migration     |
 |<https://github.com/modoboa/modoboa-imap-migration>`_    |existing server using    |                                                      |
 |                                                         |IMAP (and offlineimap)   |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-pdfcredentials                                  |Generate PDF documents   |https://github.com/modoboa/modoboa-pdfcredentials     |
-|<https://github.com/modoboa/modoboa-pdfcredentials>`_    |containing account       |                                                      |
-|                                                         |credentials              |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
 |`modoboa-pfxadmin-migrate                                |A tool to migrate from   |https://github.com/modoboa/modoboa-pfxadmin-migrate   |
 |<https://github.com/modoboa/modoboa-pfxadmin-migrate>`_  |Postfixadmin             |                                                      |

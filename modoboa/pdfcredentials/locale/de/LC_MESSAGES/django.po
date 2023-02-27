@@ -1,0 +1,212 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Boris Andratzek <BAndratzek@LBV-net.de>, 2018
+# Christian Wiegand, 2017
+# controlcde, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-27 12:01+0200\n"
+"PO-Revision-Date: 2018-04-25 14:19+0000\n"
+"Last-Translator: Boris Andratzek <BAndratzek@LBV-net.de>\n"
+"Language-Team: German (http://www.transifex.com/tonio/modoboa/language/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: constants.py:7
+msgid "None"
+msgstr "kein"
+
+#: documents.py:52 forms.py:53
+msgid "Personal account information"
+msgstr "Persönliche Kontoinformationen"
+
+#: documents.py:55
+msgid "Powered by Modoboa - Mail hosting made simple"
+msgstr "Powered by Modoboa - Mail hosting made simple"
+
+#: documents.py:69
+#, python-format
+msgid ""
+"\n"
+"Dear %s, this document contains the credentials you will need\n"
+"to connect to Modoboa. Learn the content and destroy\n"
+"the document as soon as possible.\n"
+msgstr "\nLiebe/r %s, dieses Dokument enthält die Anmeldeinformationen, die Du benötigst um Dich mit Modoboa zu verbinden. Präge Dir bitte die Informationen ein und lösche anschliessend dieses Dokument.\n"
+
+#: documents.py:75
+msgid "Web panel:"
+msgstr "Webanwendung:"
+
+#: documents.py:78
+msgid "Username"
+msgstr "Benutzername"
+
+#: documents.py:79
+msgid "Password"
+msgstr "Passwort"
+
+#: documents.py:89
+msgid ""
+"\n"
+"Here you can view your emails anytime online, create filters or manage\n"
+"your contacts.\n"
+msgstr "\nHier können Sie Ihre Emails online ansehen, Filter oder Kontakte erstellen.\n"
+
+#: documents.py:96
+msgid "Please change your password!"
+msgstr "Bitte ändern Sie Ihr Passwort!"
+
+#: documents.py:102
+msgid "PC/Tablet/Smartphone configuration:"
+msgstr "PC/Tablet/Smartphone Konfiguration:"
+
+#: documents.py:105 forms.py:79
+msgid "SMTP server address"
+msgstr "SMTP Serveradresse"
+
+#: documents.py:106 forms.py:84
+msgid "SMTP server port"
+msgstr "SMTP Server-Port"
+
+#: documents.py:107 forms.py:90
+msgid "SMTP connection security"
+msgstr "SMTP-Verbindungssicherheit"
+
+#: documents.py:108 forms.py:97
+msgid "IMAP server address"
+msgstr "IMAP Serveradresse"
+
+#: documents.py:109 forms.py:102
+msgid "IMAP server port"
+msgstr "IMAP Server-Port"
+
+#: documents.py:110 forms.py:108
+msgid "IMAP connection security"
+msgstr "IMAP Verbindungssicherheit"
+
+#: documents.py:120
+msgid "Use those settings for your computer, tablet or phone."
+msgstr "Verwenden Sie diese Einstellungen für Ihren Computer, Ihr Tablet oder Telefon"
+
+#: forms.py:20
+msgid "Documents storage"
+msgstr "Dokumentenablage"
+
+#: forms.py:23
+msgid "Directory to save documents into"
+msgstr "Speicherpfad für Dokumente"
+
+#: forms.py:25
+msgid "Path to a directory where PDF documents will be saved"
+msgstr "Dateipfad in dem die PDF-Dokumente abgelegt werden"
+
+#: forms.py:28
+msgid "Security options"
+msgstr "Sicherheitseinstellungen"
+
+#: forms.py:31
+msgid "Delete documents after the first download"
+msgstr "Lösche Dokumente nach dem ersten Download"
+
+#: forms.py:34
+msgid ""
+"Automatically delete a document just after its first download from this "
+"interface"
+msgstr "Löscht automatisch das Dokument, wenn es das erste Mal über dieses Oberfläche heruntergeladen wurde"
+
+#: forms.py:40
+msgid "Generate documents only at account creation"
+msgstr "Erzeuge Dokumente nur wenn ein Konto angelegt wurde"
+
+#: forms.py:43
+msgid ""
+"Generate a new document only when a new account is created. If set to no, a "
+"new document will be created each time a password is updated."
+msgstr "Erzeuge ein neues Dokument nur wenn ein neues Konto erstellt wurde. Wenn die Option auf Nein steht wird jedes Mal ein neues Dokument erstellt, wenn ein Passwort aktualisiert wurde."
+
+#: forms.py:49
+msgid "Customization options"
+msgstr "Individuell angepasste Optionen"
+
+#: forms.py:52
+msgid "Title"
+msgstr "Titel"
+
+#: forms.py:54
+msgid "The document's title"
+msgstr "Titel des Dokuments"
+
+#: forms.py:58
+msgid "Web panel url"
+msgstr "URL der Webanwendung"
+
+#: forms.py:59
+msgid "URL of the Modoboa web panel"
+msgstr "URL der Modoboa Webanwendung"
+
+#: forms.py:63
+msgid "Custom message"
+msgstr "Eigener Nachrichtentext"
+
+#: forms.py:65
+msgid "A custom message that will appear at the end of documents"
+msgstr "Eine eigene Nachricht, die am Ende des Dokuments angezeigt wird"
+
+#: forms.py:70
+msgid "Include mail client connection settings"
+msgstr "Verbindungseinstellungen für Mailprogramme einschließen"
+
+#: forms.py:73
+msgid ""
+"Include required SMTP and IMAP connection information to configure a mail "
+"client, a tablet or a phone"
+msgstr "Erforderliche SMTP und IMAP Einstellungen zur Konfiguration von Mailprogramme, Tablets oder Telefonen"
+
+#: forms.py:80
+msgid "Address of the SMTP server (hostname or IP)"
+msgstr "Adresse des SMTP-Servers (Hostname oder IP)"
+
+#: forms.py:86
+msgid "Listening port of the SMTP server"
+msgstr "Port, auf dem der SMTP-Server erreicht werden kann"
+
+#: forms.py:93 forms.py:111
+msgid "Connection security mechanism"
+msgstr "Mechanismus zur Verbindungssicherung"
+
+#: forms.py:98
+msgid "Address of the IMAP server (hostname or IP)"
+msgstr "Adresse des IMAP-Servers (Hostname oder IP)"
+
+#: forms.py:104
+msgid "Listening port of the IMAP server"
+msgstr "Port, auf dem der IMAP-Servier erreicht werden kann"
+
+#: handlers.py:46
+msgid "Retrieve user's credentials as a PDF document"
+msgstr "Erhalte die Anmeldeinformationen des Benutzer als ein PDF-Dokument"
+
+#: lib.py:29
+#, python-format
+msgid "Failed to create the directory that will contain PDF documents (%s)"
+msgstr "Ein Fehler ist bei der Erstellung des Pfades, der die PDF Dokumente (%s) enthält, aufgetreten. "
+
+#: modo_extension.py:16 modo_extension.py:24
+msgid "PDF credentials"
+msgstr "PDF Anmeldeinformationen"
+
+#: modo_extension.py:19
+msgid "Generate PDF documents containing users' credentials"
+msgstr "Erzeuge PDF-Dokumente welche die Benutzeranmeldeinformationen enthält"
+
+#: views.py:30
+msgid "No document available for this user"
+msgstr "Kein Dokument für diesen Benutzer verfügbar"

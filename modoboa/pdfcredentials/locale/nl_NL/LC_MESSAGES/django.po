@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# R Kloosterman <randx@zeelandnet.nl>, 2016
+# Tuxis Internet Engineering V.O.F. <info@tuxis.nl>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-27 12:01+0200\n"
+"PO-Revision-Date: 2018-01-31 08:43+0000\n"
+"Last-Translator: Tuxis Internet Engineering V.O.F. <info@tuxis.nl>\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/language/nl_NL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: constants.py:7
+msgid "None"
+msgstr ""
+
+#: documents.py:52 forms.py:53
+msgid "Personal account information"
+msgstr "Persoonlijke account informatie"
+
+#: documents.py:55
+msgid "Powered by Modoboa - Mail hosting made simple"
+msgstr "Aangeboden door Modoboa - Mail hosting made simple"
+
+#: documents.py:69
+#, python-format
+msgid ""
+"\n"
+"Dear %s, this document contains the credentials you will need\n"
+"to connect to Modoboa. Learn the content and destroy\n"
+"the document as soon as possible.\n"
+msgstr "\nBeste %s, dit document bevat alle gegevens dat u nodig\nheeft voor het gebruiken van Modoboa. Onthoud deze gegevens\nen verwijder dit document zo snel mogelijk.\n"
+
+#: documents.py:75
+msgid "Web panel:"
+msgstr "Webpaneel:"
+
+#: documents.py:78
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: documents.py:79
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: documents.py:89
+msgid ""
+"\n"
+"Here you can view your emails anytime online, create filters or manage\n"
+"your contacts.\n"
+msgstr "\nHier kunt u uw e-mails online bekijken, filters aanmaken, of contactpersonen beheren.\n"
+
+#: documents.py:96
+msgid "Please change your password!"
+msgstr "Wijzig uw wachtwoord aub!"
+
+#: documents.py:102
+msgid "PC/Tablet/Smartphone configuration:"
+msgstr "PC/Tablet/Smartphone configuratie:"
+
+#: documents.py:105 forms.py:79
+msgid "SMTP server address"
+msgstr "SMTP serveradres"
+
+#: documents.py:106 forms.py:84
+msgid "SMTP server port"
+msgstr "SMTP server poort"
+
+#: documents.py:107 forms.py:90
+msgid "SMTP connection security"
+msgstr "SMTP verbinding beveiliging"
+
+#: documents.py:108 forms.py:97
+msgid "IMAP server address"
+msgstr "IMAP serveradres"
+
+#: documents.py:109 forms.py:102
+msgid "IMAP server port"
+msgstr "IMAP server poort"
+
+#: documents.py:110 forms.py:108
+msgid "IMAP connection security"
+msgstr "IMAP verbinding beveiliging"
+
+#: documents.py:120
+msgid "Use those settings for your computer, tablet or phone."
+msgstr "Gebruik deze instellingen voor uw computer, tablet of telefoon."
+
+#: forms.py:20
+msgid "Documents storage"
+msgstr "Document opslag"
+
+#: forms.py:23
+msgid "Directory to save documents into"
+msgstr "Map voor het opslaan van de documenten"
+
+#: forms.py:25
+msgid "Path to a directory where PDF documents will be saved"
+msgstr "Pad naar de map waar de PDF documenten worden opgeslagen"
+
+#: forms.py:28
+msgid "Security options"
+msgstr "Beveiligings-opties"
+
+#: forms.py:31
+msgid "Delete documents after the first download"
+msgstr "Documenten verwijderen na eerste download"
+
+#: forms.py:34
+msgid ""
+"Automatically delete a document just after its first download from this "
+"interface"
+msgstr "Verwijder een document automatisch nadat het eenmalig is gedownload van paneel"
+
+#: forms.py:40
+msgid "Generate documents only at account creation"
+msgstr "Genereer een document enkel bij het aanmaken van een account"
+
+#: forms.py:43
+msgid ""
+"Generate a new document only when a new account is created. If set to no, a "
+"new document will be created each time a password is updated."
+msgstr "Genereer een document enkel wanneer een account is nieuw aangemaakt. Indien 'nee' is geselecteerd zal bij iedere wachtwoord wijziging een nieuw document worden gemaakt. "
+
+#: forms.py:49
+msgid "Customization options"
+msgstr "Personaliseringsopties"
+
+#: forms.py:52
+msgid "Title"
+msgstr "Titel"
+
+#: forms.py:54
+msgid "The document's title"
+msgstr "Titel van het document"
+
+#: forms.py:58
+msgid "Web panel url"
+msgstr "Webpaneel URL"
+
+#: forms.py:59
+msgid "URL of the Modoboa web panel"
+msgstr "URL van het Modoboa webpaneel"
+
+#: forms.py:63
+msgid "Custom message"
+msgstr "Aangepast bericht"
+
+#: forms.py:65
+msgid "A custom message that will appear at the end of documents"
+msgstr "Een aangepast bericht dat aan het einde van de documenten komt te staan"
+
+#: forms.py:70
+msgid "Include mail client connection settings"
+msgstr ""
+
+#: forms.py:73
+msgid ""
+"Include required SMTP and IMAP connection information to configure a mail "
+"client, a tablet or a phone"
+msgstr ""
+
+#: forms.py:80
+msgid "Address of the SMTP server (hostname or IP)"
+msgstr ""
+
+#: forms.py:86
+msgid "Listening port of the SMTP server"
+msgstr ""
+
+#: forms.py:93 forms.py:111
+msgid "Connection security mechanism"
+msgstr ""
+
+#: forms.py:98
+msgid "Address of the IMAP server (hostname or IP)"
+msgstr ""
+
+#: forms.py:104
+msgid "Listening port of the IMAP server"
+msgstr ""
+
+#: handlers.py:46
+msgid "Retrieve user's credentials as a PDF document"
+msgstr "Vraag de gebruikers gegevens op als een PDF document"
+
+#: lib.py:29
+#, python-format
+msgid "Failed to create the directory that will contain PDF documents (%s)"
+msgstr "Het aanmaken van de map voor de PDF documenten is mislukt (%s)"
+
+#: modo_extension.py:16 modo_extension.py:24
+msgid "PDF credentials"
+msgstr "PDF gegevens"
+
+#: modo_extension.py:19
+msgid "Generate PDF documents containing users' credentials"
+msgstr "Genereer PDF document met de gegevens voor de gebruiker"
+
+#: views.py:30
+msgid "No document available for this user"
+msgstr "Geen document beschikbaar voor deze gebruiker"

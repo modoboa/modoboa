@@ -1,6 +1,7 @@
 """Testing utilities."""
 
 import socket
+import tempfile
 
 from django.conf import settings
 from django.core import management
@@ -68,6 +69,8 @@ class ModoTestCase(ParametersMixin, TestCase):
         """Initiate test context."""
         self.assertEqual(
             self.client.login(username=username, password=password), True)
+        self.workdir = tempfile.mkdtemp()
+        self.set_global_parameter("storage_dir", self.workdir, app="pdfcredentials")
 
     def ajax_request(self, method, url, params=None, status=200):
         if params is None:
@@ -105,6 +108,8 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
         """Setup."""
         super(ModoAPITestCase, self).setUp()
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+        self.workdir = tempfile.mkdtemp()
+        self.set_global_parameter("storage_dir", self.workdir, app="pdfcredentials")
 
     def create_session(self):
         """Enable session storage across requests."""
