@@ -9,6 +9,7 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 
 from modoboa.admin.models import Domain
+from modoboa.lib.throttle import UserLesserDdosUser
 
 from .serializers import GetAccountCredentialsSerializer
 
@@ -22,6 +23,7 @@ class PDFCredentialView(APIView):
     )
 
     serializer_class = GetAccountCredentialsSerializer
+    throttle_classes = [UserLesserDdosUser]
 
     def get_queryset(self):
         """Filter queryset based on current user."""
