@@ -59,6 +59,9 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.form = {}
+    },
     update () {
       this.$emit('input', this.form)
     }

@@ -86,6 +86,9 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.form = {}
+    },
     updateAddress (value) {
       aliases.getRandomAddress().then(resp => {
         this.$set(this.form, 'address', `${resp.data.address}@${value.name}`)
