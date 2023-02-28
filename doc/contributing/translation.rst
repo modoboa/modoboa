@@ -2,7 +2,7 @@
 Translation
 ###########
 
-Modoboa need you to translate the project ! Feel free to join the translation team.
+Modoboa needs you to translate the project ! Feel free to join the translation team.
 
 The project is using Transifex. To start with translation, you will need to create an account and join `modoboa's team <https://www.transifex.com/tonio/modoboa/dashboard/>`_
 
