@@ -41,6 +41,9 @@ mail.{{ domain.name }}. IN A <strong>[<translate>IP address of your Modoboa serv
       >
       <div class="title">DKIM</div>
       <dkim-key-viewer :domain="domain" />
+      <div class="title">ADSP</div>
+      <pre>
+_adsp._domainkey.{{ domain.name }}. IN TXT "dkim=discardable;"</pre>
     </v-alert>
     <v-alert
       border="left"

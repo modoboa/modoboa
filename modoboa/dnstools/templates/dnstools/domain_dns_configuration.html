@@ -21,6 +21,9 @@ mail.{{ domain.name }}. IN A <strong>[{% trans "IP address of your Modoboa serve
     DKIM
     <pre>
 {{ domain.bind_format_dkim_public_key }}</pre>
+    ADSP
+    <pre>
+_adsp._domainkey.{{ domain.name }}. IN TXT "dkim=discardable;"</pre>
   {% endif %}
   DMARC
   <pre>
