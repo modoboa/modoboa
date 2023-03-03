@@ -460,7 +460,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         initial=True,
         help_text=_("Allow the administrator to set a threshold (in days) "
                     "beyond which an account is considered inactive "
-                    "if the user hasn't logged")
+                    "if the user hasn't logged in")
         )
 
     inactive_account_threshold = forms.IntegerField(
@@ -1084,7 +1084,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 "help_text": ugettext_lazy(
                     "Allow the administrator to set a threshold (in days) "
                     "beyond which an account is considered inactive "
-                    "if the user hasn't logged"
+                    "if the user hasn't logged in"
                     ),
             }),
             ("inactive_account_threshold", {
