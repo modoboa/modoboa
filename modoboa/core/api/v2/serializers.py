@@ -159,6 +159,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     send_statistics = serializers.BooleanField(default=True)
 
     # Misc settings
+    enable_inactive_accounts = serializers.BooleanField(default=True)
     inactive_account_threshold = serializers.IntegerField(default=30)
     top_notifications_check_interval = serializers.IntegerField(default=30)
     log_maximum_age = serializers.IntegerField(default=365)

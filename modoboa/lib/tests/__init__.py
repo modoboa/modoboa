@@ -52,6 +52,9 @@ class ParametersMixin(object):
         self.localconfig.parameters.set_values(parameters, app=app)
         self.localconfig.save()
 
+class SimpleModoTestCase(ParametersMixin, TestCase):
+    """Simple class to add parameters editing."""
+
 
 class ModoTestCase(ParametersMixin, TestCase):
     """All test cases must inherit from this one."""
