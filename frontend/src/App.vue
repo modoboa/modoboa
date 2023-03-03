@@ -52,7 +52,7 @@ export default {
   created () {
     // this.$store.dispatch('auth/initialize')
     bus.$on('notification', this.showNotification)
-    bus.$on('logged', this.checkAlarms)
+    bus.$on('loggedIn', this.checkAlarms)
   },
   mounted () {
     this.checkAlarms()
@@ -66,7 +66,9 @@ export default {
     notificationColor: 'success',
     notificationTimeout: 2000,
     alarmNotified: [],
-    alarmChecker: null
+    alarmChecker: null,
+    lastAlarmDate: '',
+    alarmSleepTime: 10000
   }),
   methods: {
     showNotification (options) {
@@ -79,10 +81,19 @@ export default {
     checkAlarms () {
       if (this.isAuthenticated) {
         this.alarmChecker = window.setInterval(() => {
-          alarms.getAll({}).then(resp => {
+          const params = {}
+          if (this.lastAlarmDate instanceof Date) {
+            params.min_date = this.lastAlarmDate
+          }
+          alarms.getAll(params).then(resp => {
             let count = 0
             for (const alarm of resp.data) {
               if (alarm.status === 1 && !this.alarmNotified.includes(alarm.id)) {
+                if (this.lastAlarmDate instanceof Date && new Date(alarm.created) > this.lastAlarmDate) {
+                  this.lastAlarmDate = new Date(alarm.created)
+                } else if (!(this.lastAlarmDate instanceof Date)) {
+                  this.lastAlarmDate = new Date(alarm.created)
+                }
                 count++
                 this.alarmNotified.push(alarm.id)
               }
@@ -91,7 +102,7 @@ export default {
               bus.$emit('notification', { msg: this.$gettext('You have one or more opened alarms'), type: 'error' })
             }
           })
-        }, 10000)
+        }, this.alarmSleepTime)
       }
     }
   }
