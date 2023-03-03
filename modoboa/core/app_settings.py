@@ -455,6 +455,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
 
+    enable_inactive_accounts = YesNoField(
+        label=_("Enable inactive account tracking"),
+        initial=True,
+        help_text=_("Allow the administrator to set a threshold (in days) "
+                    "beyond which an account is considered inactive "
+                    "if the user hasn't logged in")
+        )
+
     inactive_account_threshold = forms.IntegerField(
         label=_("Inactive account threshold"),
         initial=30,
@@ -518,6 +526,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         "send_new_versions_email": "check_new_versions=True",
         "new_versions_email_rcpt": "check_new_versions=True",
         "sms_provider": "sms_password_recovery=True",
+        "inactive_account_threshold": "enable_inactive_accounts=True"
     }
 
     def __init__(self, *args, **kwargs):
@@ -1070,8 +1079,17 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
     ("misc", {
         "label": ugettext_lazy("Miscellaneous"),
         "params": collections.OrderedDict([
+             ("enable_inactive_accounts", {
+                "label": ugettext_lazy("Enable inactive account tracking"),
+                "help_text": ugettext_lazy(
+                    "Allow the administrator to set a threshold (in days) "
+                    "beyond which an account is considered inactive "
+                    "if the user hasn't logged in"
+                    ),
+            }),
             ("inactive_account_threshold", {
                 "label": ugettext_lazy("Inactive account threshold"),
+                "display": "enable_inactive_accounts=true",
                 "help_text": ugettext_lazy(
                     "An account with a last login date greater than this "
                     "threshold (in days) will be considered as inactive"

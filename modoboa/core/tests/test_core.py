@@ -11,7 +11,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import ModoTestCase, SimpleModoTestCase
 from .. import factories, mocks, models
 
 
@@ -44,7 +44,7 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
 
 
-class ManagementCommandsTestCase(TestCase):
+class ManagementCommandsTestCase(SimpleModoTestCase):
     """Test management commands."""
 
     def test_change_default_admin(self):
@@ -84,6 +84,15 @@ class ManagementCommandsTestCase(TestCase):
             "clean_inactive_accounts", "--verbose", "--dry-run", stdout=out)
         self.assertIn("user1@domain.test", out.getvalue())
 
+        # Disable account account threshold
+        self.set_global_parameter("enable_inactive_accounts", False)
+        out = StringIO()
+        management.call_command(
+            "clean_inactive_accounts", "--verbose", stdout=out)
+        self.assertIn("Inactive accounts detection is disabled.",
+                      out.getvalue())
+
+        self.set_global_parameter("enable_inactive_accounts", True)
         management.call_command("clean_inactive_accounts", "--silent")
         account.refresh_from_db()
         self.assertFalse(account.is_active)

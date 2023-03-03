@@ -59,6 +59,7 @@ CORE_SETTINGS = {
     "send_new_versions_email": False,
     "new_versions_email_rcpt": "postmaster@yourdomain.test",
     "send_statistics": True,
+    "enable_inactive_accounts": True,
     "inactive_account_threshold": 30,
     "top_notifications_check_interval": 30,
     "log_maximum_age": 365,

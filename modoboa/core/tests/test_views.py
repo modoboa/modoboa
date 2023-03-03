@@ -60,6 +60,7 @@ SETTINGS_SAMPLE = {
     "core-default_password": "Toto1000",
     "limits-deflt_user_quota_limit": "0",
     "core-hide_features_widget": "False",
+    "core-enable_inactive_accounts": "True",
     "core-inactive_account_threshold": "30",
     "admin-domains_must_have_authorized_mx": False,
     "core-random_password_length": "8",
