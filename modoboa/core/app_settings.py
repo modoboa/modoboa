@@ -458,8 +458,9 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     enable_inactive_accounts = YesNoField(
         label=_("Enable inactive account tracking"),
         initial=True,
-        help_text=_("Allow the administrator to set a threshold beyond which "
-                    "an account is considered inactive if the user hasn't logged.")
+        help_text=_("Allow the administrator to set a threshold (in days) "
+                    "beyond which an account is considered inactive "
+                    "if the user hasn't logged")
         )
 
     inactive_account_threshold = forms.IntegerField(
@@ -1081,8 +1082,9 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
              ("enable_inactive_accounts", {
                 "label": ugettext_lazy("Enable inactive account tracking"),
                 "help_text": ugettext_lazy(
-                    "Allow the administrator to set a threshold beyond which "
-                    "an account is considered inactive if the user hasn't logged."
+                    "Allow the administrator to set a threshold (in days) "
+                    "beyond which an account is considered inactive "
+                    "if the user hasn't logged"
                     ),
             }),
             ("inactive_account_threshold", {
