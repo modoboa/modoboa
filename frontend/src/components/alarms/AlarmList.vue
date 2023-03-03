@@ -82,6 +82,7 @@ import { bus } from '@/main'
 import alarms from '@/api/alarms'
 import debounce from 'debounce'
 import MenuItems from '@/components/tools/MenuItems'
+import constants from '@/constants.json'
 
 export default {
   components: {
@@ -121,7 +122,7 @@ export default {
       }
       this.loading = true
       alarms.getAll(params).then(resp => {
-        this.alarms = resp.data.results
+        this.alarms = resp.data
         this.totalAlarms = resp.data.count
         this.loading = false
       })
@@ -135,13 +136,13 @@ export default {
       })
     },
     async closeAlarm (alarm) {
-      alarms.switchStatus(alarm.id, { status: 2 }).then(() => {
+      alarms.switchStatus(alarm.id, { status: constants.ALARM_CLOSED }).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Alarm closed') })
         this.fetchAlarms()
       })
     },
     async openAlarm (alarm) {
-      alarms.switchStatus(alarm.id, { status: 1 }).then(() => {
+      alarms.switchStatus(alarm.id, { status: constants.ALARM_OPENED }).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Alarm re-opened') })
         this.fetchAlarms()
       })

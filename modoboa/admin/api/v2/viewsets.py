@@ -326,13 +326,29 @@ class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         return response.Response(serializer.validated_data)
 
 
+class AlarmFilterSet(dj_filters.FilterSet):
+    """Custom FilterSet for Alarms."""
+
+    min_date = dj_filters.DateTimeFilter(method="filter_date")
+
+    class Meta:
+        model = models.Alarm
+        fields = ["created"]
+
+    def filter_date(self, queryset, name, value):
+        return queryset.filter(created__gt=value)
+
+
 class AlarmViewSet(GetThrottleViewsetMixin,
                    mixins.ListModelMixin,
                    mixins.RetrieveModelMixin,
                    viewsets.GenericViewSet):
     """Viewset for Alarm."""
 
-    filter_backends = (filters.OrderingFilter, filters.SearchFilter, )
+    filter_backends = (filters.OrderingFilter,
+                       filters.SearchFilter,
+                       dj_filters.DjangoFilterBackend)
+    filterset_class = AlarmFilterSet
     ordering_fields = ["created", "status", "title"]
     pagination_class = pagination.PageNumberPagination
     permission_classes = (
@@ -349,9 +365,8 @@ class AlarmViewSet(GetThrottleViewsetMixin,
 
     @action(methods=["delete"], detail=True)
     def delete(self, request, **kwargs):
-        """Custom delete method that accepts body arguments."""
+        """Allow admins to delete alarms."""
         alarm = self.get_object()
-        domain = models.Domain.objects.get(pk=alarm.domain.pk)
         alarm.delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -361,7 +376,6 @@ class AlarmViewSet(GetThrottleViewsetMixin,
         alarm = self.get_object()
         serializer = serializers.AlarmSwitchStatusSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        domain = models.Domain.objects.get(pk=alarm.domain.pk)
         if serializer.data["status"] == constants.ALARM_CLOSED:
             alarm.close()
         else:
