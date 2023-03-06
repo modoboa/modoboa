@@ -503,7 +503,7 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         url = reverse("v2:alarm-switch", args=[alarm_restricted.pk])
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 405)
-        url = reverse("v2:alarm-delete", args=[alarm_restricted.pk])
+        url = reverse("v2:alarm-detail", args=[alarm_restricted.pk])
         resp = self.client.delete(url)
         self.assertEqual(resp.status_code, 404)
 
@@ -540,8 +540,23 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 400)
 
         # Delete the alarm
-        url = reverse("v2:alarm-delete", args=[alarm.pk])
+        url = reverse("v2:alarm-detail", args=[alarm.pk])
         resp = self.client.delete(url)
         self.assertEqual(resp.status_code, 204)
 
-
+    def test_bulk_delete(self):
+        url = reverse("v2:alarm-bulk-delete")
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.delete(f"{url}?ids[]=toto")
+        self.assertEqual(resp.status_code, 400)
+        alarm1 = factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
+        alarm2 = factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
+        resp = self.client.delete(f"{url}?ids[]={alarm1.pk}&ids[]={alarm2.pk}")
+        self.assertEqual(resp.status_code, 204)
+        with self.assertRaises(models.Alarm.DoesNotExist):
+            alarm1.refresh_from_db()
+        with self.assertRaises(models.Alarm.DoesNotExist):
+            alarm2.refresh_from_db()
