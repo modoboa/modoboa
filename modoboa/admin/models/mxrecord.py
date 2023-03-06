@@ -60,7 +60,7 @@ class MXRecord(models.Model):
     managed = models.BooleanField(default=False)
     updated = models.DateTimeField()
 
-    objects = MXRecordManager.from_queryset(MXRecordQuerySet)()
+    objects: MXRecordManager = MXRecordManager.from_queryset(MXRecordQuerySet)()
 
     def is_managed(self):
         if not param_tools.get_global_parameter("enable_mx_checks"):

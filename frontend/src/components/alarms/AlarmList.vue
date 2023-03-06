@@ -107,9 +107,6 @@ export default {
     }
   },
   methods: {
-    sleep (milliseconds) {
-      return new Promise((resolve) => setTimeout(resolve, milliseconds))
-    },
     fetchAlarms () {
       const params = {
         page: this.options.page
@@ -122,7 +119,7 @@ export default {
       }
       this.loading = true
       alarms.getAll(params).then(resp => {
-        this.alarms = resp.data
+        this.alarms = resp.data.results
         this.totalAlarms = resp.data.count
         this.loading = false
       })
@@ -148,21 +145,34 @@ export default {
       })
     },
     async deleteAlarms () {
-      for (const alarm of this.selected) {
-        this.deleteAlarm(alarm, false)
-        await this.sleep(100)
-      }
+      await alarms.bulkDelete(this.selected.map(alarm => alarm.id))
       bus.$emit('notification', { msg: this.$gettext('Alarms deleted') })
       this.selected = []
       this.fetchAlarms()
     },
     getMenuItems (item) {
       const result = []
-      result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlarm, color: 'red' })
-      if (item.status === 1) {
-        result.push({ label: this.$gettext('Close alarm'), icon: 'mdi-check', onClick: this.closeAlarm, color: 'green' })
+      result.push({
+        label: this.$gettext('Delete'),
+        icon: 'mdi-delete-outline',
+        onClick: this.deleteAlarm,
+        color: 'red'
+      })
+      if (item.status === constants.ALARM_OPENED) {
+        result.push({
+          label: this.$gettext('Close alarm'),
+          icon: 'mdi-check',
+          onClick: this.closeAlarm,
+          color: 'green'
+        })
       } else {
-        result.push({ label: this.$gettext('Reopen alarm'), icon: 'mdi-alert-circle-outline', onClick: this.openAlarm, color: 'orange' })
+        result.push({
+          label: this.$gettext('Reopen alarm'),
+          icon: 'mdi-alert-circle-outline',
+          onClick:
+          this.openAlarm,
+          color: 'orange'
+        })
       }
       return result
     },
@@ -171,7 +181,7 @@ export default {
       if (this.selected.length > 0) {
         result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlarms, color: 'red' })
       }
-      result.push({ label: 'Reload', icon: 'mdi-reload', onClick: this.fetchAlarms })
+      result.push({ label: this.$gettext('Reload'), icon: 'mdi-reload', onClick: this.fetchAlarms })
       return result
     }
   },
