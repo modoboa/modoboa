@@ -1,0 +1,134 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# cwatanab <chihiro.watanabe@live.jp>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-01 17:42+0100\n"
+"PO-Revision-Date: 2016-11-09 16:13+0000\n"
+"Last-Translator: cwatanab <chihiro.watanabe@live.jp>\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/"
+"language/ja_JP/)\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: auth_backends.py:45
+#, python-format
+msgid "Connection to IMAP server failed: %s"
+msgstr "IMAP サーバーへの接続に失敗しました: %s"
+
+#: checks.py:11
+msgid ""
+"Automatic domain/mailbox creation is disabled which means IMAP "
+"authentication won't work."
+msgstr ""
+
+#: checks.py:13
+msgid ""
+"Go to the online parameters panel (admin tab) and activate this feature."
+msgstr ""
+
+#: forms.py:15
+msgid "OfflineIMAP settings"
+msgstr "オフライン IMAP 設定"
+
+#: forms.py:18
+msgid "Concurrent sync jobs"
+msgstr "同期ジョブの並列度"
+
+#: forms.py:20
+msgid "The maximum number of concurrent synchronization jobs"
+msgstr "同期ジョブを同時に行う最大数"
+
+#: forms.py:23
+#, fuzzy
+#| msgid "OfflineIMAP settings"
+msgid "OfflineIMAP Filter settings"
+msgstr "オフライン IMAP 設定"
+
+#: forms.py:26
+msgid "Create Folders"
+msgstr ""
+
+#: forms.py:28
+msgid "Allow Creation of missing folders during sync"
+msgstr ""
+
+#: forms.py:33
+msgid "Folder Filter Exclusions"
+msgstr ""
+
+#: forms.py:36
+msgid ""
+"Use a regular expression to explicitly include folders in sync. Example: "
+"^Trash$|Del"
+msgstr ""
+
+#: forms.py:43
+msgid "Folder Filter Inclusions"
+msgstr ""
+
+#: forms.py:46
+msgid ""
+"A comma seperated list of folders to explicitly include in sync even if "
+"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
+"personal "
+msgstr ""
+
+#: handlers.py:17
+#, fuzzy
+#| msgid "IMAP migration"
+msgid "IMAP migrations"
+msgstr "IMAP マイグレーション"
+
+#: modo_extension.py:16
+msgid "IMAP migration using OfflineIMAP"
+msgstr "オフライン IMAP を使用して IMAP マイグレーション"
+
+#: modo_extension.py:19
+msgid "Migrate existing mailboxes using IMAP and OfflineIMAP"
+msgstr "IMAP と オフライン IMAP を使って既存のメールボックスを移行します"
+
+#: modo_extension.py:25 templates/modoboa_imap_migration/index.html:6
+msgid "IMAP migration"
+msgstr "IMAP マイグレーション"
+
+#~ msgid "Connection settings"
+#~ msgstr "接続設定"
+
+#~ msgid "Server address"
+#~ msgstr "サーバーアドレス"
+
+#~ msgid "Address of your IMAP server"
+#~ msgstr "IMAP サーバーのアドレス"
+
+#~ msgid "Use a secured connection"
+#~ msgstr "セキュアな接続を使う"
+
+#~ msgid "Use a secured connection to access IMAP server"
+#~ msgstr "IMAP サーバーへのアクセスにセキュアな接続を使う"
+
+#~ msgid "Server port"
+#~ msgstr "サーバーポート"
+
+#~ msgid "Listening port of your IMAP server"
+#~ msgstr "IMAP サーバーの待受ポート"
+
+#~ msgid "Cancel this account's migration"
+#~ msgstr "このアカウントのマイグレーションをキャンセルする"
+
+#~ msgid "Cancel the migration for %s?"
+#~ msgstr "%s のマイグレーションをキャンセルしますか？"
+
+#~ msgid "Unknow migration"
+#~ msgstr "不明なマイグレーション"
+
+#~ msgid "Migration cancelled successfully"
+#~ msgstr "マイグレーションのキャンセルに成功しました"

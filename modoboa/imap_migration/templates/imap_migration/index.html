@@ -1,0 +1,27 @@
+{% extends "fluid.html" %}
+
+{% load i18n lib_tags static %}
+{% load render_bundle from webpack_loader %}
+
+{% block pagetitle %}{% trans "IMAP migration" %}{% endblock %}
+
+{% block extra_css %}
+  {% if not debug %}
+    {% render_bundle 'chunk-vendors' 'css' 'IMAP_MIGRATION' %}
+    {% render_bundle 'app' 'css' 'IMAP_MIGRATION' %}
+  {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  {% if not debug %}
+    {% render_bundle 'chunk-vendors' 'js' 'IMAP_MIGRATION' %}
+  {% endif %}
+  {% render_bundle 'app' 'js' 'IMAP_MIGRATION' %}
+{% endblock %}
+
+{% block container_content %}
+
+  <div id="app">
+  </div>
+
+{% endblock %}

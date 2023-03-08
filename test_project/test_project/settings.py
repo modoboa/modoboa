@@ -91,6 +91,7 @@ MODOBOA_APPS = (
     'modoboa.maillog',
     'modoboa.pdfcredentials',
     'modoboa.dmarc',
+    'modoboa.imap_migration',
     # Modoboa extensions here.
 )
 
@@ -126,6 +127,7 @@ AUTHENTICATION_BACKENDS = (
     # 'modoboa.lib.authbackends.LDAPBackend',
     # 'modoboa.lib.authbackends.SMTPBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'modoboa.imap_migration.auth_backends.IMAPBackend',
 )
 
 # SMTP authentication

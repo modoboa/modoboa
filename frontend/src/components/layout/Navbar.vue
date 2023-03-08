@@ -169,6 +169,23 @@ export default {
           roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
         },
         {
+          icon: 'mdi-email-sync-outline',
+          text: this.$gettext('Migrations'),
+          roles: ['SuperAdmins', 'Resellers'],
+          children: [
+            {
+              text: this.$gettext('Email providers'),
+              to: { name: 'ProvdiersList' },
+              roles: ['SuperAdmins', 'Resellers']
+            },
+            {
+              text: this.$gettext('Migrations'),
+              to: { name: 'MigrationsList' },
+              roles: ['Resellers', 'SuperAdmins']
+            }
+          ]
+        },
+        {
           text: this.$gettext('Identities'),
           to: { name: 'Identities' },
           icon: 'mdi-account',
@@ -261,7 +278,7 @@ export default {
   created () {
     parameters.getApplications().then(response => {
       response.data.forEach(item => {
-        this.mainMenuItems[5].children.push({
+        this.mainMenuItems[6].children.push({
           text: item.label,
           to: { name: 'ParametersEdit', params: { app: item.name } }
         })
