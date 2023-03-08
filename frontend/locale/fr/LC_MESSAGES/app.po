@@ -821,7 +821,7 @@ msgstr ""
 #: src/components/user/ForwardForm.vue:19
 #: src/components/user/ForwardForm.vue:52
 msgid "Forward updated"
-msgstr "Transférer mise à jour"
+msgstr "Transfert mise à jour"
 
 #: src/components/dmarc/DmarcAligmentChart.vue:24
 #: src/components/dmarc/DmarcAligmentChart.vue:36
