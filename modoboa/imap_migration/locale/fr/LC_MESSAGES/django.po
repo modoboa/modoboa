@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Antoine Nguyen <tonio@ngyn.org>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-01 17:42+0100\n"
+"PO-Revision-Date: 2019-03-01 18:09+0100\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: auth_backends.py:45
+#, python-format
+msgid "Connection to IMAP server failed: %s"
+msgstr "Echec lors de la connexion au serveur IMAP : %s"
+
+#: checks.py:11
+msgid ""
+"Automatic domain/mailbox creation is disabled which means IMAP "
+"authentication won't work."
+msgstr "La création automatique de domaine/compte est désactivée, ce qui veut dire que l'authentification IMAP ne fonctionnera pas."
+
+#: checks.py:13
+msgid ""
+"Go to the online parameters panel (admin tab) and activate this feature."
+msgstr "Rendez vous sur le panneau de configuration des paramètres (onglet Administration) et activez cette fonctionnalité."
+
+#: forms.py:15
+msgid "OfflineIMAP settings"
+msgstr "Paramètres OfflineIMAP"
+
+#: forms.py:18
+msgid "Concurrent sync jobs"
+msgstr "Tâche(s) de synchronisation concurrente(s)"
+
+#: forms.py:20
+msgid "The maximum number of concurrent synchronization jobs"
+msgstr "Nombre maximal de tâche de synchronisation concurrente"
+
+#: forms.py:23
+msgid "OfflineIMAP Filter settings"
+msgstr "Paramètres de filtragre OfflineIMAP"
+
+#: forms.py:26
+msgid "Create Folders"
+msgstr "Création des dossiers"
+
+#: forms.py:28
+msgid "Allow Creation of missing folders during sync"
+msgstr "Autoriser la création des dossiers manquant pendant la synchro"
+
+#: forms.py:33
+msgid "Folder Filter Exclusions"
+msgstr "Filtre d'exclusion de dossier"
+
+#: forms.py:36
+msgid ""
+"Use a regular expression to explicitly include folders in sync. Example: "
+"^Trash$|Del"
+msgstr ""
+"Utiliser une expression régulière pour explicitement inclure des dossiers à "
+"synchroniser. Exemple : ^Trash$|Del"
+
+#: forms.py:43
+msgid "Folder Filter Inclusions"
+msgstr "Filtre d'inclusion de dossier"
+
+#: forms.py:46
+msgid ""
+"A comma seperated list of folders to explicitly include in sync even if "
+"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
+"personal "
+msgstr ""
+"Une liste de dossiers séparés par des virgules à explicitement inclure "
+"pendant la synchronisation même s'ils sont concernés par le filtre "
+"d'exclusion. Exemple debian.user, debian.personal"
+
+#: handlers.py:17
+msgid "IMAP migrations"
+msgstr "Migrations IMAP"
+
+#: modo_extension.py:16
+msgid "IMAP migration using OfflineIMAP"
+msgstr "Migration IMAP basée sur OfflineIMAP"
+
+#: modo_extension.py:19
+msgid "Migrate existing mailboxes using IMAP and OfflineIMAP"
+msgstr "Migrer des boites existantes en utilisant IMAP et OfflineIMAP"
+
+#: modo_extension.py:25 templates/modoboa_imap_migration/index.html:6
+msgid "IMAP migration"
+msgstr "Migration IMAP"
