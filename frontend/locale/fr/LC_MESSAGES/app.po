@@ -810,7 +810,7 @@ msgstr "Mot de passe oublié ?"
 #: src/components/layout/Navbar.vue:123 src/views/user/Forward.vue:3
 #: src/components/layout/Navbar.vue:238
 msgid "Forward"
-msgstr "Transférer"
+msgstr "Transfert"
 
 #: src/components/user/ForwardForm.vue:6
 msgid "Forward messages and store copies into your local mailbox"
