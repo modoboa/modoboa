@@ -815,7 +815,7 @@ msgstr "Transfert"
 #: src/components/user/ForwardForm.vue:6
 msgid "Forward messages and store copies into your local mailbox"
 msgstr ""
-"Transférez les messages et stocker des copies dans votre boîte aux lettres "
+"Transférer les messages et stocker des copies dans votre boîte aux lettres "
 "locale"
 
 #: src/components/user/ForwardForm.vue:19
