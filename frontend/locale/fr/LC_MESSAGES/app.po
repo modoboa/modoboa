@@ -768,7 +768,7 @@ msgstr "Erreur"
 
 #: src/components/identities/AccountMailboxForm.vue:5
 msgid "Ex: 10MB. Leave empty for no limit"
-msgstr "Ex: 10MB. Laissez vide pour aucune limite"
+msgstr "Ex: 10MB. Laisser vide pour aucune limite"
 
 #: src/components/identities/AliasCreationForm.vue:26
 #: src/components/identities/AliasGeneralForm.vue:79
