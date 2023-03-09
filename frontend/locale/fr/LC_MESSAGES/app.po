@@ -780,7 +780,7 @@ msgstr "Expire le"
 
 #: src/views/identities/Identities.vue:8
 msgid "Export accounts and aliases to CSV"
-msgstr "Exportez les comptes et les alias vers CSV"
+msgstr "Exporter les comptes et les alias au format CSV"
 
 #: src/views/domains/Domains.vue:8
 msgid "Export domains and aliases to CSV"
