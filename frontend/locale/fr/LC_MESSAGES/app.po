@@ -936,8 +936,8 @@ msgid ""
 "If you close this form now, your modifications won't be saved. Do you "
 "confirm?"
 msgstr ""
-"Si vous fermez ce formulaire maintenant, vos modification ne seront pas "
-"sauvegarder. Voulez-vous confirmer?"
+"Si vous fermez ce formulaire maintenant, vos modifications ne seront pas "
+"sauvegardées. Confirmez-vous ?"
 
 #: src/components/dmarc/DmarcAligmentChart.vue:52
 msgid ""
