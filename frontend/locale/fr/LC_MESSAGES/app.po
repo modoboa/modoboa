@@ -1662,7 +1662,7 @@ msgid ""
 "previous values."
 msgstr ""
 "Le premier élément de chaque ligne est obligatoire et doit être égal à l'une"
-" des valeurs précédente."
+" des valeurs précédentes."
 
 #: src/components/user/TwoFactorAuthForm.vue:39
 #: src/components/user/TwoFactorAuthForm.vue:7
@@ -1674,8 +1674,8 @@ msgid ""
 msgstr ""
 "Le code de récupération suivant est à usage unique\n"
 "              pour vous permettre d'accéder à votre compte, en cas de perte de votre\n"
-"              téléphone par exemple. Soyez convaincu de l'avoir sauvegarder dans un endroit sûr,\n"
-"              sinon vous ne pouvez plus jamais accéder à votre compte. "
+"              téléphone par exemple. Soyez convaincu de l'avoir sauvegardé dans un endroit sûr,\n"
+"              sinon vous ne pourrez plus jamais accéder à votre compte. "
 
 #: src/components/user/RecoveryCodesResetDialog.vue:7
 msgid ""
@@ -1692,7 +1692,7 @@ msgstr ""
 
 #: src/views/Dashboard.vue:6
 msgid "This page is still under construction."
-msgstr "Cette page est en cour de construction."
+msgstr "Cette page est en cours de construction."
 
 #: src/views/user/PasswordRecoveryForm.vue:25
 msgid "title"
