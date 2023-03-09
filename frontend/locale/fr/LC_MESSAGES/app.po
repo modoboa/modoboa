@@ -1014,7 +1014,7 @@ msgid ""
 "It will present a summary of your Modoboa server's status and\n"
 "      some useful information about the product."
 msgstr ""
-"Il présente un resumé de status de l'état de votre serveur Modoboa\n"
+"Il présentera un résumé du statut de votre serveur Modoboa\n"
 "    et quelques informations utiles sur le produit."
 
 #: src/components/user/ForwardForm.vue:6
