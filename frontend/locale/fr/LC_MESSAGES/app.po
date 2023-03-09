@@ -999,7 +999,7 @@ msgstr "Version installée"
 #: src/views/user/PasswordRecoveryChangeForm.vue:54
 #: src/views/user/PasswordRecoveryChangeForm.vue:114
 msgid "Invalid reset token."
-msgstr "Token de rénitialisation invalide."
+msgstr "Jeton de réinitialisation incorrect."
 
 #: src/views/Login.vue:35 src/views/Login.vue:95
 msgid "Invalid username and/or password"
