@@ -944,8 +944,8 @@ msgid ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 msgstr ""
-"Si vous l'avez récemment configurez, veuillez attendre que le premier "
-"rapport soit reçu et traité. "
+"Si vous l'avez récemment configuré, veuillez attendre que le premier rapport"
+" soit reçu et traité. "
 
 #: src/components/tools/ImportForm.vue:29
 msgid "Import"
