@@ -961,7 +961,7 @@ msgstr "Importer des domaines"
 
 #: src/views/domains/Domains.vue:5
 msgid "Import domains and aliases from CSV file"
-msgstr "Importation de domaines et alias à partir d'un fichier CVS"
+msgstr "Importation de domaines et alias à partir d'un fichier CSV"
 
 #: src/views/identities/Identities.vue:37
 msgid "Import identities"
