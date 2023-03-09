@@ -847,7 +847,7 @@ msgstr "Nom complet"
 #: src/components/identities/IdentityList.vue:18
 #: src/components/identities/IdentityList.vue:99
 msgid "Fullname/recipient"
-msgstr "Nomcomplet/destinataire"
+msgstr "Nom complet / destinataire"
 
 #: src/components/dmarc/DmarcAligmentChart.vue:22
 #: src/components/dmarc/DmarcAligmentChart.vue:34
