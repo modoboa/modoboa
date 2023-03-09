@@ -969,7 +969,7 @@ msgstr "Importer des identités"
 
 #: src/components/user/ForwardForm.vue:5
 msgid "Indicate one or more recipients separated by a comma (,)"
-msgstr "Indiquez un ou plusieurs destinataires séparés par une virgule (,) "
+msgstr "Indiquer un ou plusieurs destinataires séparés par une virgule (,) "
 
 #: src/components/layout/Navbar.vue:92 src/views/admin/Information.vue:3
 #: src/components/layout/Navbar.vue:207
