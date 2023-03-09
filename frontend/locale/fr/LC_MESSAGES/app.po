@@ -800,7 +800,7 @@ msgstr "Échoué"
 #: src/components/identities/AccountGeneralForm.vue:17
 #: src/components/identities/AccountCreationForm.vue:80
 msgid "First name"
-msgstr "Nom de famille"
+msgstr "Prénom"
 
 #: src/views/Login.vue:17 src/views/user/PasswordRecoveryChangeForm.vue:6
 #: src/views/user/PasswordRecoveryForm.vue:6
