@@ -1476,7 +1476,7 @@ msgstr "Revendeur"
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:21
 msgid "Resend SMS."
-msgstr "Renvoyer SMS."
+msgstr "Renvoyer le SMS."
 
 #: src/components/user/TwoFactorAuthForm.vue:60
 #: src/components/user/TwoFactorAuthForm.vue:8
@@ -1490,7 +1490,7 @@ msgstr "Ressources"
 
 #: src/components/tools/Resources.vue:3
 msgid "Resources usage"
-msgstr "Utilisation de ressources"
+msgstr "Utilisation des ressources"
 
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:23
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:71
