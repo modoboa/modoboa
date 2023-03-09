@@ -1003,7 +1003,7 @@ msgstr "Jeton de réinitialisation incorrect."
 
 #: src/views/Login.vue:35 src/views/Login.vue:95
 msgid "Invalid username and/or password"
-msgstr "Nom d'utilisateur et/ou mot de passe invalide"
+msgstr "Nom d'utilisateur et/ou mot de passe incorrect"
 
 #: src/components/domains/DomainDNSConfig.vue:12
 msgid "IP address of your Modoboa server"
