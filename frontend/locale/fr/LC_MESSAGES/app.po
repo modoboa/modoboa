@@ -1569,7 +1569,7 @@ msgstr "Limite d'envoi"
 
 #: src/components/domains/DomainForm.vue:71
 msgid "Sending limit:"
-msgstr "Limite d'envoi:"
+msgstr "Limite d'envoi :"
 
 #: src/components/tools/ImportForm.vue:17
 msgid "Separator"
@@ -1583,7 +1583,7 @@ msgstr "Service"
 
 #: src/components/domains/DomainForm.vue:96
 msgid "Service:"
-msgstr "Service:"
+msgstr "Service :"
 
 #: src/components/layout/Navbar.vue:86 src/components/layout/Navbar.vue:201
 msgid "Settings"
