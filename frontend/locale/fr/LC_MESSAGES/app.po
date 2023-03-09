@@ -1050,7 +1050,7 @@ msgstr "Dernière version"
 
 #: src/components/identities/AccountMailboxForm.vue:8
 msgid "Leave empty for no limit"
-msgstr "Laissez vide pour aucune limite"
+msgstr "Laisser vide pour aucune limite"
 
 #: src/components/logs/AuditTrailList.vue:9
 #: src/components/logs/AuditTrailList.vue:41
@@ -1093,7 +1093,7 @@ msgstr "Boîte aux lettres"
 
 #: src/components/domains/DomainSummary.vue:27
 msgid "Mailboxes"
-msgstr "Boites"
+msgstr "Boîtes aux lettres"
 
 #: src/components/alarms/AlarmList.vue:12
 #: src/components/logs/AuditTrailList.vue:11
@@ -1104,7 +1104,7 @@ msgstr "Message"
 
 #: src/views/logs/Messages.vue:3
 msgid "Message history"
-msgstr "Historiques des messages"
+msgstr "Historique des messages"
 
 #: src/components/domains/DomainCreationForm.vue:42
 #: src/components/domains/DomainLimitationsForm.vue:9
