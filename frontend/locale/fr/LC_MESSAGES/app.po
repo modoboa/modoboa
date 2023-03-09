@@ -904,8 +904,8 @@ msgid ""
 "Here is an example of DNS configuration (bind format). Replace values "
 "between [ ] by the appropriate ones."
 msgstr ""
-"Voici un exemplaire de configuration DNS (forma bind). Remplacez la valeur "
-"entre [ ] par les valeurs appropriées."
+"Voici un exemplaire de configuration DNS (format bind). Remplacer les "
+"valeurs entre [ ] par les valeurs appropriées."
 
 #: src/components/domains/DomainDNSConfig.vue:33
 #: src/components/domains/DomainDNSConfig.vue:34
