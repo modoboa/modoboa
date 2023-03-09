@@ -994,7 +994,7 @@ msgstr "Composants installés"
 #: src/components/admin/ComponentsInformationTable.vue:14
 #: src/components/admin/ComponentsInformationTable.vue:52
 msgid "Installed version"
-msgstr "Version insatallée"
+msgstr "Version installée"
 
 #: src/views/user/PasswordRecoveryChangeForm.vue:54
 #: src/views/user/PasswordRecoveryChangeForm.vue:114
