@@ -1830,7 +1830,7 @@ msgstr "Nom d'utilisateur"
 
 #: src/components/identities/AccountForm.vue:36
 msgid "Username:"
-msgstr "Nom d'utilisateur:"
+msgstr "Nom d'utilisateur :"
 
 #: src/components/domains/DNSStatusChip.vue:15
 #: src/components/domains/DNSStatusChip.vue:22
@@ -1900,7 +1900,7 @@ msgstr "Oui"
 
 #: src/views/user/APISetup.vue:41 src/views/user/APISetup.vue:83
 msgid "You are about to delete your API access token"
-msgstr "Vous êtes sur le point de supprimer le Token de l'API d'accès"
+msgstr "Vous êtes sur le point de supprimer votre jeton d'accès à l'API"
 
 #: src/components/tools/ImportForm.vue:10
 msgid "You can use a different character as separator."
