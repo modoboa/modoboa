@@ -784,7 +784,7 @@ msgstr "Exporter les comptes et les alias au format CSV"
 
 #: src/views/domains/Domains.vue:8
 msgid "Export domains and aliases to CSV"
-msgstr "Exportez les domaines et les alias vers CSV"
+msgstr "Exporter les domaines et les alias au format CSV"
 
 #: src/components/dmarc/DmarcAligmentChart.vue:25
 #: src/components/dmarc/DmarcAligmentChart.vue:37
