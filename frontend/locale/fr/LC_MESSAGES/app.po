@@ -1556,11 +1556,11 @@ msgstr "Adresse d'expédition ajoutée"
 #: src/components/identities/AccountSenderAddresses.vue:44
 #: src/components/identities/AccountSenderAddresses.vue:95
 msgid "Sender address deleted"
-msgstr "Adresses de l'expéditeurs supprimée"
+msgstr "Adresse d'expédition supprimée"
 
 #: src/components/identities/AccountSenderAddresses.vue:3
 msgid "Sender addresses"
-msgstr "Adresses des expéditeurs"
+msgstr "Adresses d'expédition"
 
 #: src/components/domains/DomainList.vue:27
 #: src/components/domains/DomainList.vue:169
