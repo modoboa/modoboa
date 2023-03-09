@@ -965,7 +965,7 @@ msgstr "Importation de domaines et alias à partir d'un fichier CSV"
 
 #: src/views/identities/Identities.vue:37
 msgid "Import identities"
-msgstr "Importation d'identités"
+msgstr "Importer des identités"
 
 #: src/components/user/ForwardForm.vue:5
 msgid "Indicate one or more recipients separated by a comma (,)"
