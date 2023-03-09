@@ -1137,7 +1137,7 @@ msgstr "Mois"
 
 #: src/components/domains/DNSDetail.vue:9
 msgid "MX records"
-msgstr "Enregistrement MX"
+msgstr "Enregistrements MX"
 
 #: src/components/admin/ComponentsInformationTable.vue:13
 #: src/components/domains/AdministratorList.vue:19
@@ -1163,7 +1163,7 @@ msgstr "Nom de l'administrateur"
 
 #: src/components/domains/DomainForm.vue:14
 msgid "Name:"
-msgstr "Nom:"
+msgstr "Nom :"
 
 #: src/components/identities/AccountSummary.vue:13
 msgid "Never logged-in"
@@ -1189,7 +1189,7 @@ msgstr "Nouveau domaine"
 
 #: src/components/user/RecoveryCodesResetDialog.vue:3
 msgid "New recovery codes"
-msgstr "Nouveau code de récupération"
+msgstr "Nouveaux codes de récupération"
 
 #: src/components/tools/CreationForm.vue:27
 msgid "Next"
