@@ -883,7 +883,7 @@ msgstr "Paramètres généraux "
 
 #: src/views/user/APISetup.vue:12
 msgid "Generate"
-msgstr "Généré"
+msgstr "Générer"
 
 #: src/components/domains/DNSDetail.vue:93
 #: src/components/domains/DNSDetail.vue:57
