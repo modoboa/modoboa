@@ -1908,15 +1908,15 @@ msgstr "Vous pouvez utiliser autre caractère comme séparateur"
 
 #: src/views/user/APISetup.vue:8
 msgid "Your API token has not been generated yet."
-msgstr "Le token de votre API n'a pas encore été généré."
+msgstr "Votre jeton API n'a pas encore été généré."
 
 #: src/views/user/APISetup.vue:18
 msgid "Your API token is:"
-msgstr "Le token de votre API est:"
+msgstr "Votre jeton API est :"
 
 #: src/plugins/vee-validate.js:12
 msgid "Passwords mismatch"
-msgstr "Mauvaise concordance de mots de passe"
+msgstr "Les mots de passe diffèrent"
 
 #: src/plugins/vee-validate.js:16
 msgid "This field must be a valid number"
