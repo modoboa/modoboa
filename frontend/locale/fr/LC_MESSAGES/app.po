@@ -1744,7 +1744,7 @@ msgstr "Sources de confiance"
 
 #: src/components/user/TwoFactorAuthForm.vue:4
 msgid "Two factor authentication"
-msgstr "Authentification à double facteurs"
+msgstr "Authentification à double facteur"
 
 #: src/components/user/TwoFactorAuthForm.vue:64
 #: src/components/user/TwoFactorAuthForm.vue:1
@@ -1752,9 +1752,9 @@ msgid ""
 "Two-Factor Authentication (2FA) is not yet activated for your account. "
 "Enabling this feature will increase your account's security."
 msgstr ""
-"L'authentification à double facteur (2FA), n'est pas encore activé pour "
-"votre compte. L'activation de cette fonctionnalité, augmentera la sécurité "
-"de votre compte."
+"L'authentification à double facteur (2FA) n'est pas encore activée pour "
+"votre compte. L'activation de cette fonctionnalité augmentera la sécurité de"
+" votre compte."
 
 #: src/views/TwoFA.vue:11
 msgid "Two-factor authentication code"
@@ -1768,7 +1768,7 @@ msgstr "Type"
 
 #: src/components/domains/DomainForm.vue:17
 msgid "Type:"
-msgstr "Type:"
+msgstr "Type :"
 
 #: src/components/domains/DNSStatusChip.vue:17
 #: src/components/domains/DNSStatusChip.vue:24
