@@ -1270,7 +1270,7 @@ msgstr "Options"
 #: src/components/parameters/ParametersForm.vue:61
 #: src/components/parameters/ParametersForm.vue:138
 msgid "Parameters updated"
-msgstr "Paramètres mise à jour"
+msgstr "Paramètres mis à jour"
 
 #: src/components/dmarc/DmarcAligmentChart.vue:23
 #: src/components/dmarc/DmarcAligmentChart.vue:35
@@ -1305,7 +1305,7 @@ msgstr "Récupération de mot de passe"
 #: src/components/user/ProfileForm.vue:42
 #: src/components/user/ProfileForm.vue:112
 msgid "Password updated"
-msgstr "Mot de passe mise à jour"
+msgstr "Mot de passe mis à jour"
 
 #: src/components/domains/DNSDetail.vue:14
 #: src/components/domains/DNSDetail.vue:31
