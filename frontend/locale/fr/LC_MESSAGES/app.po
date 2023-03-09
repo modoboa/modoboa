@@ -1940,8 +1940,8 @@ msgstr "non"
 
 #: src/components/parameters/ParametersForm.vue:97
 msgid "Settings: "
-msgstr "Paramètres:"
+msgstr "Paramètres :"
 
 #: src/api/repository.js:38
 msgid "You are throttled, please try later."
-msgstr "votre limite est atteint, veuillez réessayez plus tard"
+msgstr "Votre limite est atteinte, veuillez réessayer plus tard"
