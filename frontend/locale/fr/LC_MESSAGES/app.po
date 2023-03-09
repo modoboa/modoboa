@@ -1281,7 +1281,7 @@ msgstr "Partiellement aligné"
 
 #: src/components/dmarc/DmarcAligmentChart.vue:41
 msgid "Partially trusted sources / Forwarders"
-msgstr "Sources partiellement fiable / Transitaires"
+msgstr "Sources partiellement fiables / Transitaires"
 
 #: src/components/identities/AccountPasswordForm.vue:88
 #: src/components/user/ProfileForm.vue:21 src/views/Login.vue:13
