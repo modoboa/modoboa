@@ -1928,7 +1928,7 @@ msgstr "Ce champ est requis"
 
 #: src/plugins/vee-validate.js:37
 msgid "Invalid password"
-msgstr "Mot de pass invalide"
+msgstr "Mot de passe incorrect"
 
 #: src/filters/index.js:7
 msgid "yes"
