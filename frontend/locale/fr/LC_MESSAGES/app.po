@@ -1542,16 +1542,16 @@ msgstr "Sécurité"
 #: src/components/domains/AdministratorList.vue:12
 #: src/components/domains/AdministratorList.vue:2
 msgid "Select an account"
-msgstr "Sélectionnez un compte"
+msgstr "Sélectionner un compte"
 
 #: src/components/tools/ImportForm.vue:14
 msgid "Select file"
-msgstr "Sélectionnez un fichier"
+msgstr "Sélectionner un fichier"
 
 #: src/components/identities/AccountSenderAddresses.vue:38
 #: src/components/identities/AccountSenderAddresses.vue:89
 msgid "Sender address added"
-msgstr "Adresse de l'expéditeur ajoutée"
+msgstr "Adresse d'expédition ajoutée"
 
 #: src/components/identities/AccountSenderAddresses.vue:44
 #: src/components/identities/AccountSenderAddresses.vue:95
@@ -1587,11 +1587,11 @@ msgstr "Service :"
 
 #: src/components/layout/Navbar.vue:86 src/components/layout/Navbar.vue:201
 msgid "Settings"
-msgstr "Configuration"
+msgstr "Paramètres"
 
 #: src/components/parameters/ParametersForm.vue:20
 msgid "Settings: thislabel"
-msgstr "Paramètres: thislabel"
+msgstr "Paramètres : thislabel"
 
 #: src/components/domains/DNSDetail.vue:91
 #: src/components/domains/DNSDetail.vue:55
