@@ -1019,12 +1019,12 @@ msgstr ""
 
 #: src/components/user/ForwardForm.vue:6
 msgid "Keep local copies"
-msgstr "Conservez des copies locales"
+msgstr "Conserver des copies locales"
 
 #: src/components/user/ProfileForm.vue:59
 #: src/components/user/ProfileForm.vue:21
 msgid "Language"
-msgstr "Language"
+msgstr "Langage"
 
 #: src/components/identities/AccountSummary.vue:11
 msgid "Last login date"
