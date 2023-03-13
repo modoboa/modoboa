@@ -136,6 +136,9 @@ export default {
       this.formErrors = {}
       parameters.saveApplication(this.$route.params.app, this.parameters).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Parameters updated') })
+        if (this.$route.params.app === 'imap_migration') {
+          bus.$emit('imapSettingsChanged', this.parameters.enabled_imapmigration)
+        }
       }).catch(error => {
         this.formErrors = error.response.data
       })

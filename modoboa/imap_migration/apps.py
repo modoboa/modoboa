@@ -19,7 +19,8 @@ def load_imapmigration_settings():
     param_tools.registry.add2(
         "global", "imap_migration", ugettext_lazy("IMAP Migration"),
         app_settings.IMAP_MIGRATION_PARAMETERS_STRUCT,
-        serializers.IMAPMigrationSettingsSerializer)
+        serializers.IMAPMigrationSettingsSerializer,
+        True)
 
 
 class IMAPMigrationConfig(AppConfig):
