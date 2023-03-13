@@ -21,64 +21,33 @@
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
     </div>
-
-    <v-list>
-      <template v-for="item in menuItems">
-        <template v-if="displayMenuItem(item)">
-          <v-list-item
-            v-if="!item.children"
-            class="menu-item"
-            :to="item.to"
-            link
-            :key="item.title"
-            :exact="item.exact"
-            >
-            <v-list-item-icon v-if="item.icon">
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.text }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-group v-else
-                        color="white"
-                        :key="item.text"
-                        :prepend-icon="item.icon"
-                        no-action>
-            <template v-slot:activator>
-              <v-list-item-title>{{ item.text }}</v-list-item-title>
-            </template>
-
-            <template v-for="subitem in item.children">
-              <v-list-item v-if="!subitem.children"
-                           :key="subitem.text"
-                           :to="subitem.to"
-                           link>
-                <v-list-item-content>
-                  <v-list-item-title>{{ subitem.text }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-group v-else
-                            :key="subitem.text"
-                            :value="true"
-                            no-action
-                            sub-group>
-                <template v-slot:activator>
-                  <v-list-item-title>{{ subitem.text }}</v-list-item-title>
-                </template>
-                <v-list-item v-for="subsubitem in subitem.children"
-                             :key="subsubitem.text"
-                             :to="subsubitem.to"
-                             link>
-                  <v-list-item-title>{{ subsubitem.text }}</v-list-item-title>
-                </v-list-item>
-              </v-list-group>
-            </template>
-          </v-list-group>
-        </template>
-      </template>
-    </v-list>
+    <v-layout
+      justify-center>
+      <v-chip v-if="page === 1" color="blue lighten-3" large>
+        <translate>Core</translate>
+      </v-chip>
+      <v-chip v-else-if="page === 2" color="blue lighten-3" large>
+        <translate>Extensions</translate>
+      </v-chip>
+    </v-layout>
+    <base-nav-bar
+      v-if="page === 1"
+      :parametersList="parametersList"
+      />
+    <extension-nav-bar
+      v-else-if="page === 2"
+      :imap="imapMigration"
+      :parametersList="parametersList"
+      />
     <template v-slot:append>
+      <v-pagination
+        v-if="!mini"
+        v-model="page"
+        :length="2"
+        circle
+        color="blue lighten-3"
+        >
+      </v-pagination>
       <v-menu rounded="lg" offset-y top>
         <template v-slot:activator="{ attrs, on }">
           <div class="d-flex user-box justify-center align-center white--text py-2" v-bind="attrs" v-on="on">
@@ -113,10 +82,16 @@
 </template>
 
 <script>
-import parameters from '@/api/parameters'
 import { mapGetters } from 'vuex'
+import BaseNavBar from './BaseNavBar.vue'
+import ExtensionNavBar from './ExtensionNavBar.vue'
+import parameters from '@/api/parameters'
 
 export default {
+  components: {
+    BaseNavBar,
+    ExtensionNavBar
+  },
   computed: {
     ...mapGetters({
       authUser: 'auth/authUser'
@@ -139,12 +114,6 @@ export default {
         ? `${this.authUser.first_name} ${this.authUser.last_name}`
         : this.authUser.username
     },
-    menuItems () {
-      if (this.$route.meta.layout === 'user') {
-        return this.userSettingsMenuItems
-      }
-      return this.mainMenuItems
-    },
     mainColor () {
       if (this.$route.meta.layout === 'user') {
         return 'grey'
@@ -152,80 +121,20 @@ export default {
       return 'primary'
     }
   },
+  created () {
+    parameters.getApplications().then(response => {
+      this.parametersList = response.data
+    })
+    parameters.getApplication('imap_migration').then(response => {
+      this.imapMigration = response.data.params.enabled_imapmigration
+    })
+  },
   data () {
     return {
+      parametersList: [],
+      imapMigration: false,
+      page: 1,
       drawer: true,
-      mainMenuItems: [
-        {
-          text: this.$gettext('Dashboard'),
-          to: { name: 'Dashboard' },
-          icon: 'mdi-view-dashboard-outline',
-          exact: true
-        },
-        {
-          text: this.$gettext('Domains'),
-          to: { name: 'DomainList' },
-          icon: 'mdi-domain',
-          roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-        },
-        {
-          icon: 'mdi-email-sync-outline',
-          text: this.$gettext('Migrations'),
-          roles: ['SuperAdmins', 'Resellers'],
-          children: [
-            {
-              text: this.$gettext('Email providers'),
-              to: { name: 'ProvdiersList' },
-              roles: ['SuperAdmins', 'Resellers']
-            },
-            {
-              text: this.$gettext('Migrations'),
-              to: { name: 'MigrationsList' },
-              roles: ['Resellers', 'SuperAdmins']
-            }
-          ]
-        },
-        {
-          text: this.$gettext('Identities'),
-          to: { name: 'Identities' },
-          icon: 'mdi-account',
-          roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-        },
-        {
-          text: this.$gettext('Alarms'),
-          to: { name: 'Alarms' },
-          icon: 'mdi-bell'
-        },
-        {
-          icon: 'mdi-history',
-          text: this.$gettext('Logs'),
-          roles: ['SuperAdmins', 'Resellers', 'DomainAdmins'],
-          children: [
-            {
-              text: this.$gettext('Audit trail'),
-              to: { name: 'AuditTrail' },
-              roles: ['SuperAdmins']
-            },
-            {
-              text: this.$gettext('Messages'),
-              to: { name: 'MessageLog' },
-              roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-            }
-          ]
-        },
-        {
-          icon: 'mdi-cog',
-          text: this.$gettext('Settings'),
-          children: [],
-          roles: ['SuperAdmins']
-        },
-        {
-          icon: 'mdi-information',
-          text: this.$gettext('Information'),
-          roles: ['SuperAdmins'],
-          to: { name: 'Information' }
-        }
-      ],
       userSettingsMenuItems: [
         {
           text: this.$gettext('API'),
@@ -275,20 +184,7 @@ export default {
       ]
     }
   },
-  created () {
-    parameters.getApplications().then(response => {
-      response.data.forEach(item => {
-        this.mainMenuItems[6].children.push({
-          text: item.label,
-          to: { name: 'ParametersEdit', params: { app: item.name } }
-        })
-      })
-    })
-  },
   methods: {
-    displayMenuItem (item) {
-      return (item.roles === undefined || item.roles.indexOf(this.authUser.role) !== -1) && (item.condition === undefined || item.condition())
-    },
     logout () {
       this.$store.dispatch('auth/logout').then(() => {
         this.$router.push({ name: 'Login' })

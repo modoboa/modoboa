@@ -70,5 +70,6 @@ def load_settings():
     param_tools.registry.add2(
         "global", "dmarc", _("DMARC"),
         GLOBAL_PARAMETERS_STRUCT,
-        serializers.DmarcGlobalParametersSerializer
+        serializers.DmarcGlobalParametersSerializer,
+        True
     )

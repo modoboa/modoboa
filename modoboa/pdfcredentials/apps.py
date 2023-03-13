@@ -20,7 +20,8 @@ def load_pdfcredential_settings():
     param_tools.registry.add2(
         "global", "pdfcredentials", ugettext_lazy("PDF Credentials"),
         app_settings.PDF_CREDENTIALS_PARAMETERS_STRUCT,
-        serializers.PDFCredentialsSettingsSerializer)
+        serializers.PDFCredentialsSettingsSerializer,
+        True)
 
 
 class PDFCredentialsConfig(AppConfig):
