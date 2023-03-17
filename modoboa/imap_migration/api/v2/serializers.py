@@ -1,6 +1,9 @@
 """APIv2 serializers."""
 
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from modoboa.admin.models.domain import Domain
 
 
 class IMAPMigrationSettingsSerializer(serializers.Serializer):
@@ -28,3 +31,19 @@ class CheckProviderSerializer(serializers.Serializer):
     address = serializers.CharField()
     port = serializers.IntegerField(min_value=0, max_value=65535)
     secured = serializers.BooleanField()
+
+
+class CheckAssociatedDomainSerializer(serializers.Serializer):
+    """A serializer for checking associated domains."""
+
+    initialdomain = serializers.CharField()
+    new_domain = serializers.CharField()
+
+    def validate(self, data):
+        if data["initialdomain"] != data["new_domain"]:
+            if not Domain.objects.filter(name=data["initialdomain"]):
+                raise ValidationError({"new_domain": [
+                    _("You must create the local domain first.")]
+                    })
+        return data
+

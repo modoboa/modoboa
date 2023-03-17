@@ -93,6 +93,9 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.form = {}
+    },
     async checkConnection () {
       if (await this.validateForm()) {
         this.loading = true
@@ -123,6 +126,7 @@ export default {
   },
   mounted () {
     this.form = { ...this.value }
+    console.error(this.value)
   }
 }
 </script>
