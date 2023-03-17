@@ -23,5 +23,8 @@ export default {
   },
   checkProvider (params) {
     return repository.post(`/${resource}/check_connection/`, params)
+  },
+  checkAssociatedDomain (params) {
+    return repository.post(`/${resource}/check_associated_domain/`, params)
   }
 }

@@ -1,8 +1,10 @@
 <template>
 <creation-form
+  ref="form"
   :title="'New provider'|translate"
   :steps="steps"
   :form-observer-getter="getObserver"
+  :form-getter="getForm"
   :validate-object="validateProvider"
   :summary-sections="summarySections"
   @close="close"
@@ -88,15 +90,16 @@ export default {
     },
     close () {
       this.initProvider()
+      this.$refs.form.resetForm()
       this.$emit('close')
+    },
+    getForm (step) {
+      return this.$refs[`form_${step}`]
     },
     getObserver (step) {
       return this.$refs[`form_${step}`].$refs.observer
     },
     validateProvider () {
-
-    },
-    performConnectionCheck () {
 
     },
     submit () {

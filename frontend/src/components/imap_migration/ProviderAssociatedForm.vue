@@ -19,7 +19,7 @@
   <validation-provider
     v-slot="{ errors }"
     rules="required"
-    vid="newd_omain"
+    vid="new_domain"
     >
     <v-text-field
       ref="newdomainField"
@@ -58,6 +58,8 @@
 
 <script>
 
+import providerApi from '@/api/imap_migration/providers'
+
 export default {
   props: ['value'],
   data () {
@@ -70,6 +72,13 @@ export default {
     }
   },
   methods: {
+    reset () {
+      this.domains = []
+      this.domain = {
+        initialdomain: '',
+        new_domain: ''
+      }
+    },
     async validateForm () {
       return await this.$refs.observer.validate()
     },
@@ -78,13 +87,19 @@ export default {
     },
     async addDomain () {
       if (await this.validateForm()) {
-        this.domains.push({
-          name: this.domain.initialdomain,
-          new_domain: this.domain.new_domain
+        providerApi.checkAssociatedDomain(this.domain).then(response => {
+          if (response.status === 200) {
+            this.domains.push({
+              name: this.domain.initialdomain,
+              new_domain: this.domain.new_domain
+            })
+            this.$emit('input', this.domains)
+            this.$refs.initialdomainField.reset()
+            this.$refs.newdomainField.reset()
+          }
+        }).catch(error => {
+          this.$refs.observer.setErrors(error.response.data)
         })
-        this.$emit('input', this.domains)
-        this.$refs.initialdomainField.reset()
-        this.$refs.newdomainField.reset()
       }
     },
     removeDomain (index) {
