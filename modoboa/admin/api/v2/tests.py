@@ -6,7 +6,7 @@ from django.utils.encoding import force_text
 
 from rest_framework.authtoken.models import Token
 
-from modoboa.admin import factories, models
+from modoboa.admin import factories, models, constants
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
@@ -479,9 +479,84 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         factories.populate_database()
         factories.AlarmFactory(
             domain__name="test.com", mailbox=None, title="Test alarm")
+        cls.da_token = Token.objects.create(
+            user=core_models.User.objects.get(username="admin@test.com"))
 
     def test_list(self):
         url = reverse("v2:alarm-list")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()), 1)
+
+    def test_update_alarm(self):
+        """Try updating alarm status and delete it afterward."""
+
+        domain = models.Domain.objects.get(name="test.com")
+
+        # Try performing action on restricted domains
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        domain = models.Domain.objects.get(name="test2.com")
+        alarm_restricted = models.Alarm.objects.create(
+            domain=domain, mailbox=None, title="Test alarm 2")
+        alarm_restricted.save()
+        url = reverse("v2:alarm-switch", args=[alarm_restricted.pk])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 405)
+        url = reverse("v2:alarm-detail", args=[alarm_restricted.pk])
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 404)
+
+        # Perform actions as SuperAdmin
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+
+        alarm = models.Alarm.objects.create(
+            domain=domain, mailbox=None, title="Test alarm 3")
+        alarm.save()
+
+        # Switch status of the alarm to close
+        url = reverse("v2:alarm-switch", args=[alarm.pk])
+        resp = self.client.patch(url, {"status": constants.ALARM_CLOSED})
+        self.assertEqual(resp.status_code, 204)
+
+        # Check actual status
+        url = reverse("v2:alarm-detail", args=[alarm.pk])
+        resp = self.client.get(url)
+        self.assertEqual(resp.json()["status"], constants.ALARM_CLOSED)
+
+        # Switch status back to open
+        url = reverse("v2:alarm-switch", args=[alarm.pk])
+        resp = self.client.patch(url, {"status": constants.ALARM_OPENED})
+        self.assertEqual(resp.status_code, 204)
+
+        # Check actual status
+        url = reverse("v2:alarm-detail", args=[alarm.pk])
+        resp = self.client.get(url)
+        self.assertEqual(resp.json()["status"], constants.ALARM_OPENED)
+
+        # Try to set an non-existant status
+        url = reverse("v2:alarm-switch", args=[alarm.pk])
+        resp = self.client.patch(url, {"status": 10})
+        self.assertEqual(resp.status_code, 400)
+
+        # Delete the alarm
+        url = reverse("v2:alarm-detail", args=[alarm.pk])
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 204)
+
+    def test_bulk_delete(self):
+        url = reverse("v2:alarm-bulk-delete")
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.delete(f"{url}?ids[]=toto")
+        self.assertEqual(resp.status_code, 400)
+        alarm1 = factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
+        alarm2 = factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
+        resp = self.client.delete(f"{url}?ids[]={alarm1.pk}&ids[]={alarm2.pk}")
+        self.assertEqual(resp.status_code, 204)
+        with self.assertRaises(models.Alarm.DoesNotExist):
+            alarm1.refresh_from_db()
+        with self.assertRaises(models.Alarm.DoesNotExist):
+            alarm2.refresh_from_db()

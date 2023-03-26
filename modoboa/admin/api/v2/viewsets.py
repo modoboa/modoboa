@@ -20,6 +20,7 @@ from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import lib
 from ... import models
+from ... import constants
 from . import serializers
 
 
@@ -325,10 +326,30 @@ class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         return response.Response(serializer.validated_data)
 
 
-class AlarmViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
+class AlarmFilterSet(dj_filters.FilterSet):
+    """Custom FilterSet for Alarms."""
+
+    min_date = dj_filters.DateTimeFilter(method="filter_date")
+
+    class Meta:
+        model = models.Alarm
+        fields = ["created"]
+
+    def filter_date(self, queryset, name, value):
+        return queryset.filter(created__gt=value)
+
+
+class AlarmViewSet(GetThrottleViewsetMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
     """Viewset for Alarm."""
 
-    filter_backends = (filters.OrderingFilter, filters.SearchFilter, )
+    filter_backends = (filters.OrderingFilter,
+                       filters.SearchFilter,
+                       dj_filters.DjangoFilterBackend)
+    filterset_class = AlarmFilterSet
     ordering_fields = ["created", "status", "title"]
     pagination_class = pagination.PageNumberPagination
     permission_classes = (
@@ -342,3 +363,29 @@ class AlarmViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
             domain__in=models.Domain.objects.get_for_admin(
                 self.request.user)
         ).order_by("-created")
+
+    @action(methods=['patch'], detail=True)
+    def switch(self, request, **kwargs):
+        """Custom update method that switch status of an alarm."""
+        alarm = self.get_object()
+        serializer = serializers.AlarmSwitchStatusSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if serializer.data["status"] == constants.ALARM_CLOSED:
+            alarm.close()
+        else:
+            alarm.reopen()
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['delete'], detail=False)
+    def bulk_delete(self, request, **kwargs):
+        """Delete multiple alarms at the same time."""
+        ids = request.query_params.getlist("ids[]")
+        if not ids:
+            return response.Response(_("No alarm ID provided"), status=400)
+        try:
+            ids = [int(alarm_id) for alarm_id in ids]
+        except ValueError:
+            return response.Response(
+                _("Received invalid alarm id(s)"), status=400)
+        models.Alarm.objects.filter(pk__in=ids).delete()
+        return response.Response(status=204)

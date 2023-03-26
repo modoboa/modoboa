@@ -4,12 +4,14 @@ import os
 
 from django.core.management.base import BaseCommand
 from django.utils.encoding import smart_text
+from django.utils.translation import ugettext as _
 
 from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
 
 from .... import models
 from .... import signals
+from ....constants import DKIM_WRITE_ERROR, ALARM_OPENED
 
 
 class ManageDKIMKeys(BaseCommand):
@@ -19,6 +21,19 @@ class ManageDKIMKeys(BaseCommand):
         """Create a new DKIM key."""
         storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
         pkey_path = os.path.join(storage_dir, "{}.pem".format(domain.name))
+        alarm_qset = domain.alarms.filter(internal_name=DKIM_WRITE_ERROR)
+        if not os.access(storage_dir, os.W_OK):
+            if not alarm_qset.exists():
+                domain.alarms.create(
+                    title=_("DKIM path non-writable"),
+                    internal_name=DKIM_WRITE_ERROR)
+            else:
+                alarm = alarm_qset.first()
+                if alarm.status != ALARM_OPENED:
+                    alarm.reopen()
+            return
+        elif alarm_qset.exists():
+            alarm_qset.first().close()
         key_size = (
             domain.dkim_key_length if domain.dkim_key_length
             else self.default_key_length)
