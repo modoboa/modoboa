@@ -226,6 +226,10 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     _("Directory not found.")
                 )
+            if not os.access(value, os.W_OK):
+                raise serializers.ValidationError(
+                    _("Directory non-writable")
+                )
             code, output = exec_cmd("which openssl")
             if code:
                 raise serializers.ValidationError(
@@ -621,3 +625,14 @@ class AlarmSerializer(serializers.ModelSerializer):
         depth = 1
         fields = "__all__"
         model = models.Alarm
+
+
+class AlarmSwitchStatusSerializer(serializers.Serializer):
+    """Serializer to switch the status of an Alarm."""
+
+    status = serializers.IntegerField()
+
+    def validate(self, data):
+        if data["status"] not in [constants.ALARM_OPENED, constants.ALARM_CLOSED]:
+            raise ValidationError(_("Unknown status"))
+        return data
