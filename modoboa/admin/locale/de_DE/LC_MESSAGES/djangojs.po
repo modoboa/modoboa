@@ -56,4 +56,4 @@ msgstr "Keine weitere Identität anzuzeigen"
 
 #: static/admin/js/admin.js:407
 msgid "Do not delete mailbox directory"
-msgstr "Lösche das Mailboxverzeichnis nicht"
+msgstr "Postfachverzeichnis nicht löschen"
