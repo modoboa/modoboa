@@ -88,7 +88,7 @@ msgstr "Greylisted E-Mails"
 
 #: graphics.py:200
 msgid "Average normal traffic size (bytes/min)"
-msgstr "Durchschnittlicher Datenverkehr  (Bytes/min)"
+msgstr "Durchschnittlicher Datenverkehr (Bytes/Min)"
 
 #: graphics.py:203
 msgid "received size"
