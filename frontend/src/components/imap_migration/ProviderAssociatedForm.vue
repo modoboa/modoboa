@@ -2,14 +2,14 @@
 <validation-observer ref="observer">
   <validation-provider
     v-slot="{ errors }"
-    rules="required"
+    rules=""
     vid="initialdomain"
     >
     <v-text-field
       ref="initialdomainField"
       v-model="domain.initialdomain"
       :error-messages="errors"
-      :placeholder="'provider.domain' | translate"
+      :placeholder="'Name of the domain to migrate' | translate"
       outlined
       dense
       @input="update"
@@ -18,14 +18,16 @@
   </validation-provider>
   <validation-provider
     v-slot="{ errors }"
-    rules="required"
+    rules=""
     vid="new_domain"
     >
-    <v-text-field
-      ref="newdomainField"
+    <v-autocomplete
       v-model="domain.new_domain"
       :error-messages="errors"
-      :placeholder="'local.domain' | translate"
+      :label="'Local domain (optional)'|translate"
+      :items="localDomains"
+      item-text="name"
+      return-object
       outlined
       dense
       @input="update"
@@ -47,17 +49,17 @@
     @click:close="removeDomain(index)"
     >
      <template v-if="domain.new_domain">
-        {{domain.name}} --> {{domain.new_domain}}
+        {{domain.name}} --> {{domain.new_domain.name}}
       </template>
       <template v-else>
-        {{domain.name}} --> {{domain.name}}
+        {{domain.name}}
       </template>
   </v-chip>
 </validation-observer>
 </template>
 
 <script>
-
+import domainsApi from '@/api/domains'
 import providerApi from '@/api/imap_migration/providers'
 
 export default {
@@ -68,7 +70,8 @@ export default {
       domain: {
         initialdomain: '',
         new_domain: ''
-      }
+      },
+      localDomains: []
     }
   },
   methods: {
@@ -94,8 +97,11 @@ export default {
               new_domain: this.domain.new_domain
             })
             this.$emit('input', this.domains)
-            this.$refs.initialdomainField.reset()
-            this.$refs.newdomainField.reset()
+            this.$refs.observer.reset()
+            this.domain = {
+              initialdomain: '',
+              new_domain: ''
+            }
           }
         }).catch(error => {
           this.$refs.observer.setErrors(error.response.data)
@@ -114,6 +120,11 @@ export default {
         e.preventDefault()
       }
     }
+  },
+  mounted () {
+    domainsApi.getDomains().then(resp => {
+      this.localDomains = resp.data
+    })
   },
   watch: {
     value: {

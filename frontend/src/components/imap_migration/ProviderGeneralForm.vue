@@ -124,9 +124,13 @@ export default {
       this.$emit('input', this.form)
     }
   },
-  mounted () {
-    this.form = { ...this.value }
-    console.error(this.value)
+  watch: {
+    value: {
+      handler (newValue) {
+        this.form = { ...newValue }
+      },
+      immediate: true
+    }
   }
 }
 </script>

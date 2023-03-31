@@ -1,8 +1,10 @@
-"""APIv2 serializers."""
+"""API v2 serializers."""
 
 from django.utils.translation import gettext_lazy as _
+
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+
 from modoboa.admin.models.domain import Domain
 
 
@@ -37,13 +39,14 @@ class CheckAssociatedDomainSerializer(serializers.Serializer):
     """A serializer for checking associated domains."""
 
     initialdomain = serializers.CharField()
-    new_domain = serializers.CharField()
+    new_domain = serializers.PrimaryKeyRelatedField(
+        read_only=True, required=False)
 
-    def validate(self, data):
-        if data["initialdomain"] != data["new_domain"]:
-            if not Domain.objects.filter(name=data["initialdomain"]):
-                raise ValidationError({"new_domain": [
-                    _("You must create the local domain first.")]
-                    })
-        return data
-
+    def validate_new_domain(self, value):
+        domain_ids = (
+            Domain.objects.get_for_admin(self.context["request"].user)
+            .values_list("id", flat=True)
+        )
+        if value not in domain_ids:
+            raise serializers.ValidationError(_("Access denied"))
+        return value

@@ -205,7 +205,7 @@ export default {
           children: [
             {
               text: this.$gettext('Email providers'),
-              to: { name: 'ProvdiersList' },
+              to: { name: 'ProvidersList' },
               roles: ['SuperAdmins', 'Resellers']
             },
             {
