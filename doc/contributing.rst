@@ -17,7 +17,8 @@ Table of contents
 =================
 
 .. toctree::
-   :maxdepth: 1   
+   :maxdepth: 1
 
    contributing/getting_started
    contributing/plugin_api
+   contributing/translation

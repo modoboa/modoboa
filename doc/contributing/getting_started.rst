@@ -88,6 +88,9 @@ If you want to add a new dependency, just complete the
 It will download and store the required files into the
 :file:`<path_to_local_copy>/modoboa/bower_components` directory.
 
+.. note::
+  Don't forget to regenerate the localization files when you add strings. See :ref:`the translation page <translation>`
+
 New Vue.js interface
 --------------------
 
