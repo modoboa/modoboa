@@ -1,0 +1,1245 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# bdaniel93, 2023
+# Justus Kagerer <justus-kagerer@web.de>, 2020
+# NichtLeon Martin, 2022
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-05 15:36+0100\n"
+"PO-Revision-Date: 2011-07-01 08:15+0000\n"
+"Last-Translator: bdaniel93, 2023\n"
+"Language-Team: German (Germany) (http://www.transifex.com/tonio/modoboa/language/de_DE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/app_settings.py:26
+msgid "User profile"
+msgstr "Benutzerprofil"
+
+#: core/app_settings.py:39
+msgid "Authentication"
+msgstr "Authentifizierung"
+
+#: core/app_settings.py:42
+msgid "Authentication type"
+msgstr "Authentifizierungstyp"
+
+#: core/app_settings.py:43
+msgid "Local"
+msgstr "Lokal"
+
+#: core/app_settings.py:46
+msgid "The backend used for authentication"
+msgstr "Das Backend für Authentifizierung"
+
+#: core/app_settings.py:51
+msgid "Default password scheme"
+msgstr "Voreingestelltes Passwort-Schema"
+
+#: core/app_settings.py:56
+msgid "Scheme used to crypt mailbox passwords"
+msgstr "Schema zur Verschlüsselung von Postfach-Passwörtern"
+
+#: core/app_settings.py:60
+msgid "Rounds"
+msgstr "Runden"
+
+#: core/app_settings.py:63
+msgid ""
+"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
+"between 1000 and 999999999, inclusive."
+msgstr "Anzahl an Runden (nur von sha256crypt und sha512crypt genutzt). Muss zwischen 1000 und 999999999 liegen, inklusive."
+
+#: core/app_settings.py:69
+msgid "Update password scheme at login"
+msgstr "Passwort-Schema beim Login updaten"
+
+#: core/app_settings.py:72
+msgid "Update user password at login to use the default password scheme"
+msgstr "Aktualisiere das Benutzerkennwort bei der Anmeldung, um das Standardkennwortschema zu verwenden"
+
+#: core/app_settings.py:77
+msgid "Default password"
+msgstr "Standardpasswort"
+
+#: core/app_settings.py:80
+msgid "Default password for automatically created accounts."
+msgstr "Standardpasswort für automatisch kreierte Konten"
+
+#: core/app_settings.py:84
+msgid "Random password length"
+msgstr "Zufällige Passwortlänge"
+
+#: core/app_settings.py:88
+msgid "Length of randomly generated passwords."
+msgstr "Länge der zufällig generierten Passwörter."
+
+#: core/app_settings.py:92
+msgid "Update password service URL"
+msgstr "URL des Kennwortdienstes aktualisieren"
+
+#: core/app_settings.py:96
+msgid ""
+"The URL of an external page where users will be able to update their "
+"password. It applies only to non local users, ie. those automatically "
+"created after a successful external authentication (LDAP, SMTP)."
+msgstr "Die URL einer externen Seite, auf der Benutzer ihr Passwort aktualisieren können. Betrifft nur nicht lokale Benutzer, die nach einer erfolgreichen externen Authentifizierung (LDAP, SMTP) automatisch erstellt wurden."
+
+#: core/app_settings.py:104
+msgid "Password recovery announcement"
+msgstr "Ankündigung zur Passwortwiederherstellung"
+
+#: core/app_settings.py:109
+msgid "A temporary message that will be displayed on the reset password page."
+msgstr "Eine temporäre Nachricht, die auf der Passwort-Wiederherstellungsseite angezeigt wird."
+
+#: core/app_settings.py:115
+msgid "Enable password recovery by SMS"
+msgstr "Passwortwiederherstellung per SMS aktivieren"
+
+#: core/app_settings.py:118
+msgid "Enable password recovery by SMS for users who filled a phone number."
+msgstr "Aktiviere die Kennwortwiederherstellung per SMS für Benutzer, die eine Telefonnummer angegeben haben."
+
+#: core/app_settings.py:124
+msgid "SMS provider"
+msgstr "SMS-Anbieter"
+
+#: core/app_settings.py:127
+msgid "Choose a provider to send password recovery SMS"
+msgstr "Wählen Sie einen Anbieter für den Versand von SMS zur Kennwortwiederherstellung"
+
+#: core/app_settings.py:133
+msgid "LDAP settings"
+msgstr "LDAP-Einstellungen"
+
+#: core/app_settings.py:136
+msgid "Server address"
+msgstr "Serveradresse"
+
+#: core/app_settings.py:139
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "IP-Adresse oder Hostname des LDAP-Servers"
+
+#: core/app_settings.py:143
+msgid "Server port"
+msgstr "Server Port"
+
+#: core/app_settings.py:145
+msgid "The TCP port number used by the LDAP server"
+msgstr "Der TCP Port des LDAP-Servers"
+
+#: core/app_settings.py:149
+msgid "Enable secondary server (fallback)"
+msgstr "Aktiviere Ausfallserver (Fallback)"
+
+#: core/app_settings.py:152
+msgid ""
+"Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr "Aktiviere einen zweiten LDAP-Server, welcher verwendet wird, wenn der erste nicht erreichbar ist"
+
+#: core/app_settings.py:158
+msgid "Secondary server address"
+msgstr "Ausfallserver-Adresse"
+
+#: core/app_settings.py:161
+msgid "The IP address or the DNS name of the seondary LDAP server"
+msgstr "IP-Adresse oder Hostname des zweiten LDAP-Servers"
+
+#: core/app_settings.py:165
+msgid "Secondary server port"
+msgstr "Ausfallserver-Port"
+
+#: core/app_settings.py:168
+msgid "The TCP port number used by the LDAP secondary server"
+msgstr "Der TCP Port des zweiten LDAP-Servers"
+
+#: core/app_settings.py:172
+msgid "Use a secured connection"
+msgstr "Verwende eine gesicherte Verbindung"
+
+#: core/app_settings.py:176
+msgid "Use an SSL/STARTTLS connection to access the LDAP server"
+msgstr "SSL/TLS-Verbindung für Zugriff auf LDAP-Server verwenden"
+
+#: core/app_settings.py:180
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: core/app_settings.py:183
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr "Auswählen, wenn der LDAP-Server ein Active Directory ist."
+
+#: core/app_settings.py:187
+msgid "Administrator groups"
+msgstr "Administratorgruppen"
+
+#: core/app_settings.py:190
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Mitglieder dieser LDAP-POSIX-Gruppen werden als Domänenadministratoren erstellt. Nutze ';' um Gruppen zu trennen."
+
+#: core/app_settings.py:197
+msgid "Group type"
+msgstr "Gruppentyp"
+
+#: core/app_settings.py:201
+msgid "The LDAP group type to use with your directory."
+msgstr "Der LDAP-Gruppentyp, der mit Ihrem Verzeichnis verwendet werden soll."
+
+#: core/app_settings.py:206
+msgid "Groups search base"
+msgstr "Suchbasis für Gruppen"
+
+#: core/app_settings.py:209
+msgid "The distinguished name of the search base used to find groups"
+msgstr "Der Distinguished Name der Suchbasis, die zum Suchen von Gruppen verwendet wird"
+
+#: core/app_settings.py:215
+msgid "Password attribute"
+msgstr "Kennwortattribut"
+
+#: core/app_settings.py:217
+msgid "The attribute used to store user passwords"
+msgstr "Das Attribut, das zum Speichern von Benutzerpasswörtern verwendet wird"
+
+#: core/app_settings.py:222
+msgid "LDAP authentication settings"
+msgstr "LDAP-Authentifizierungseinstellungen"
+
+#: core/app_settings.py:225
+msgid "Authentication method"
+msgstr "Authentifizierungsmethode"
+
+#: core/app_settings.py:226
+msgid "Search and bind"
+msgstr "Suchen und Bind anwenden"
+
+#: core/app_settings.py:227
+msgid "Direct bind"
+msgstr "Direktbindung"
+
+#: core/app_settings.py:229
+msgid "Choose the authentication method to use"
+msgstr "Wählen Sie die Authentifizierungsmethode"
+
+#: core/app_settings.py:233 core/app_settings.py:287
+msgid "Bind DN"
+msgstr "Bind DN"
+
+#: core/app_settings.py:236 core/app_settings.py:290
+msgid ""
+"The distinguished name to use when binding to the LDAP server. Leave empty "
+"for an anonymous bind"
+msgstr "Der Distinguished Name, der beim Binden an den LDAP-Server verwendet werden soll. Für eine anonyme Bindung leer lassen"
+
+#: core/app_settings.py:243 core/app_settings.py:297
+msgid "Bind password"
+msgstr "Bind Passwort"
+
+#: core/app_settings.py:246 core/app_settings.py:300
+msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
+msgstr "Das Kennwort, das beim Binden an den LDAP-Server verwendet werden soll (mit 'Bind DN')"
+
+#: core/app_settings.py:254 core/app_settings.py:346
+msgid "Users search base"
+msgstr "Suchbasis für Benutzer"
+
+#: core/app_settings.py:257 core/app_settings.py:349
+msgid "The distinguished name of the search base used to find users"
+msgstr "Der Distinguished Name der Suchbasis, die zum Suchen von Benutzern verwendet wird"
+
+#: core/app_settings.py:263 core/app_settings.py:355
+msgid "Search filter"
+msgstr "Suchfilter"
+
+#: core/app_settings.py:266 core/app_settings.py:358
+msgid ""
+"An optional filter string (e.g. '(objectClass=person)'). In order to be "
+"valid, it must be enclosed in parentheses."
+msgstr "Ein optionaler Filter (z.B. '(objectClass=person)'). Der Filter muss entsprechend der LDAP-Konvention in Klammern gesetzt werden."
+
+#: core/app_settings.py:273
+msgid "User DN template"
+msgstr "Benutzer-DN-Vorlage"
+
+#: core/app_settings.py:276
+#, python-format
+msgid ""
+"The template used to construct a user's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr "Die Vorlage, die verwendet wird, um den DN eines Benutzers zu erstellen. Es sollte einen Platzhalter enthalten (z. B. %(user)s)"
+
+#: core/app_settings.py:284
+msgid "LDAP synchronization settings"
+msgstr "LDAP-Synchronisationseinstellungen"
+
+#: core/app_settings.py:308
+msgid "Enable export to LDAP"
+msgstr "Export zu LDAP aktivieren"
+
+#: core/app_settings.py:311
+msgid ""
+"Enable automatic synchronization between local database and LDAP directory"
+msgstr "Automatische Synchronisierung zwischen lokaler Datenbank und LDAP-Verzeichnis aktivieren"
+
+#: core/app_settings.py:317
+msgid "Delete remote LDAP account when local account is deleted"
+msgstr "Remote-LDAP-Konto löschen, wenn lokales Konto gelöscht wird"
+
+#: core/app_settings.py:321
+msgid ""
+"Delete remote LDAP account when local account is deleted, otherwise it will "
+"be disabled."
+msgstr "Remote-LDAP-Konto löschen, wenn lokales Konto gelöscht wird, ansonsten wird es deaktiviert."
+
+#: core/app_settings.py:327
+msgid "Account DN template"
+msgstr "Konto-DN-Vorlage"
+
+#: core/app_settings.py:330
+#, python-format
+msgid ""
+"The template used to construct an account's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr "Die Vorlage, die verwendet wird, um den DN eines Kontos zu erstellen. Es sollte einen Platzhalter enthalten (z. B. %(user)s)"
+
+#: core/app_settings.py:337
+msgid "Enable import from LDAP"
+msgstr "Import von LDAP aktivieren"
+
+#: core/app_settings.py:340
+msgid "Enable account synchronization from LDAP directory to local database"
+msgstr "Kontosynchronisierung vom LDAP-Verzeichnis zur lokalen Datenbank aktivieren"
+
+#: core/app_settings.py:365
+msgid "Username attribute"
+msgstr "Benutzername-Attribut"
+
+#: core/app_settings.py:368
+msgid "The name of the LDAP attribute where the username can be found."
+msgstr "Das LDAP-Attribut, in dem der Benutzername gefunden werden kann."
+
+#: core/app_settings.py:373
+msgid "Enable Dovecot LDAP sync"
+msgstr "Dovecot LDAP-Synchronisation aktivieren"
+
+#: core/app_settings.py:376
+msgid "LDAP authentication settings will be applied to Dovecot configuration."
+msgstr "LDAP-Authentifizierungseinstellungen werden auf die Dovecot-Konfiguration angewendet."
+
+#: core/app_settings.py:382
+msgid "Dovecot LDAP config file"
+msgstr "Dovecot LDAP-Konfigurationsdatei"
+
+#: core/app_settings.py:386
+msgid ""
+"Location of the configuration file which contains Dovecot LDAP settings."
+msgstr "Speicherort der Konfigurationsdatei, die Dovecot-LDAP-Einstellungen enthält."
+
+#: core/app_settings.py:391 core/templates/core/dashboard.html:5
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: core/app_settings.py:394
+msgid "Custom RSS feed"
+msgstr "Benutzerdefinierter RSS-Feed"
+
+#: core/app_settings.py:397
+msgid "Display custom RSS feed to resellers and domain administrators"
+msgstr "Anzeige benutzerdefinierter RSS-Feeds für Reseller und Domain-Administratoren"
+
+#: core/app_settings.py:402
+msgid "Hide features widget"
+msgstr "Funktionen-Widget ausblenden"
+
+#: core/app_settings.py:405
+msgid "Hide features widget for resellers and domain administrators"
+msgstr "Funktionen-Widget für Reseller und Domain-Administratoren ausblenden"
+
+#: core/app_settings.py:409
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: core/app_settings.py:412
+msgid "Sender address"
+msgstr "Absenderadresse"
+
+#: core/app_settings.py:415
+msgid "Email address used to send notifications."
+msgstr "E-Mail-Adresse, die zum Senden von Benachrichtigungen verwendet wird."
+
+#: core/app_settings.py:419
+msgid "Public API"
+msgstr "Öffentliche API"
+
+#: core/app_settings.py:422
+msgid "Enable communication"
+msgstr "Verbindung aktivieren"
+
+#: core/app_settings.py:425
+msgid "Enable communication with Modoboa public API"
+msgstr "Aktivieren Sie die Kommunikation mit der öffentlichen API von Modoboa"
+
+#: core/app_settings.py:429
+msgid "Check new versions"
+msgstr "Prüfe auf neue Versionen"
+
+#: core/app_settings.py:432
+msgid "Automatically checks if a newer version is available"
+msgstr "Prüft automatisch, ob eine neuere Version verfügbar ist"
+
+#: core/app_settings.py:436
+msgid "Send an email when new versions are found"
+msgstr "Sende eine E-Mail, wenn eine neue Version gefunden wurde"
+
+#: core/app_settings.py:439
+msgid "Send an email to notify admins about new versions"
+msgstr "Sendet eine E-Mail, um Administratoren über neue Versionen zu benachrichtigen"
+
+#: core/app_settings.py:443
+msgid "Recipient"
+msgstr "Empfänger"
+
+#: core/app_settings.py:446
+msgid "Recipient of new versions notification emails."
+msgstr "Empfänger von Benachrichtigungs-E-Mails über neue Version."
+
+#: core/app_settings.py:451
+msgid "Send statistics"
+msgstr "Sende Statistiken"
+
+#: core/app_settings.py:454
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr "Sendet Statistiken an die öffentliche API von Modoboa (Zähler und verwendete Erweiterungen)"
+
+#: core/app_settings.py:458
+msgid "Miscellaneous"
+msgstr "Verschiedenes"
+
+#: core/app_settings.py:461
+msgid "Inactive account threshold"
+msgstr "Schwellwert für inaktive Konten"
+
+#: core/app_settings.py:464
+msgid ""
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
+msgstr "Ein Konto mit einem letzten Login-Datum über diesem Schwellenwert (in Tagen) wird als inaktiv betrachtet"
+
+#: core/app_settings.py:470
+msgid "Top notifications check interval"
+msgstr "Prüfintervall für Benachrichtigungen"
+
+#: core/app_settings.py:473
+msgid "Interval between two top notification checks (in seconds)"
+msgstr "Intervall zwischen zwei Benachrichtigungsprüfungen (in Sekunden)"
+
+#: core/app_settings.py:478
+msgid "Maximum log record age"
+msgstr "Maximales Alter eines Log-Eintrags"
+
+#: core/app_settings.py:480
+msgid "The maximum age in days of a log record"
+msgstr "Das maximale Alter eines Protokollsatzes in Tagen"
+
+#: core/app_settings.py:484
+msgid "Items per page"
+msgstr "Einträge pro Seite"
+
+#: core/app_settings.py:486
+msgid "Number of displayed items per page"
+msgstr "Anzahl der angezeigten Einträge pro Seite"
+
+#: core/app_settings.py:490
+msgid "Default top redirection"
+msgstr "Standardumleitung"
+
+#: core/app_settings.py:494
+msgid "The default redirection used when no application is specified"
+msgstr "Die Standardumleitung, die verwendet wird, wenn keine Anwendung angegeben wurde"
+
+#: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
+msgid "Invalid syntax"
+msgstr "Ungültige Syntax"
+
+#: core/app_settings.py:570
+msgid "Invalid rounds number"
+msgstr "Ungültige Anzahl Runden"
+
+#: core/app_settings.py:595 core/app_settings.py:597 core/app_settings.py:608
+msgid "This field is required"
+msgstr "Dieses Feld ist erforderlich"
+
+#: core/apps.py:18
+msgid "General"
+msgstr "Allgemein"
+
+#: core/checks/settings_checks.py:6
+msgid ""
+"You have USE_TZ set to False, this may result in issues during transitions "
+"between summer/winter time (ie the same local time occuring twice due to "
+"clock change)."
+msgstr "Sie haben USE_TZ auf False gesetzt. Dies könnte zu Problemen beim Wechsel zwischen Sommer- und Winterzeit führen (z. B. das Auftauchen derselben lokalen Zeit zweimal aufgrund der Zeitumstellung)."
+
+#: core/checks/settings_checks.py:9
+msgid "Set `USE_TZ = True` in settings.py"
+msgstr "Setze 'USE_TZ = True' in settings.py"
+
+#: core/constants.py:6
+msgid "Simple user"
+msgstr "Normaler Benutzer"
+
+#: core/constants.py:7
+msgid "Domain administrator"
+msgstr "Domain-Administrator"
+
+#: core/constants.py:8
+msgid "Reseller"
+msgstr "Reseller"
+
+#: core/constants.py:9
+msgid "Super administrator"
+msgstr "Super-Administrator"
+
+#: core/constants.py:52 lib/form_utils.py:389
+msgid "No"
+msgstr "Nein"
+
+#: core/constants.py:102
+msgid "Choose a provider"
+msgstr "Wähle einen Anbieter"
+
+#: core/constants.py:107
+msgid "Dummy"
+msgstr "Platzhalter"
+
+#: core/forms.py:23
+msgid "Username"
+msgstr "Benutzername"
+
+#: core/forms.py:27
+msgid "Password"
+msgstr "Passwort"
+
+#: core/forms.py:40
+msgid "Old password"
+msgstr "Altes Passwort"
+
+#: core/forms.py:44
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: core/forms.py:48
+msgid "Confirmation"
+msgstr "Neues Passwort wiederholen"
+
+#: core/forms.py:76
+msgid "Old password mismatchs"
+msgstr "Altes Passwort stimmt nicht überein"
+
+#: core/forms.py:85
+msgid "Passwords mismatch"
+msgstr "Passwörter stimmen nicht überein"
+
+#: core/forms.py:105
+msgid "Enable API access"
+msgstr "API-Zugriff aktivieren"
+
+#: core/forms.py:139
+msgid "Verification code"
+msgstr "Bestätigungscode"
+
+#: core/forms.py:150
+msgid "Invalid code"
+msgstr "Ungültiger Code"
+
+#: core/forms.py:163
+msgid "This code is invalid"
+msgstr "Dieser Code ist ungültig"
+
+#: core/handlers.py:36
+msgid "added"
+msgstr "hinzugefügt"
+
+#: core/handlers.py:39
+msgid "modified"
+msgstr "geändert"
+
+#: core/handlers.py:41
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s von Benutzer %(user)s"
+
+#: core/handlers.py:63
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by "
+msgstr "%(object)s '%(name)s' %(action)s von "
+
+#: core/handlers.py:65
+msgid "deleted"
+msgstr "gelöscht"
+
+#: core/handlers.py:69
+msgid "user {}"
+msgstr "Benutzer {}"
+
+#: core/handlers.py:71
+msgid "management command"
+msgstr "Administrationsbefehl"
+
+#: core/handlers.py:95
+msgid "You can't delete your own account"
+msgstr "Sie können Ihr eigenes Konto nicht löschen"
+
+#: core/handlers.py:131
+msgid "One or more updates are available"
+msgstr "Ein oder mehrere Updates sind verfügbar"
+
+#: core/management/commands/communicate_with_public_api.py:44
+msgid "[modoboa] Update(s) available"
+msgstr "[modoboa] Update(s) verfügbar"
+
+#: core/models.py:52
+msgid "Allow mailboxes access"
+msgstr "Postfachzugriff zulassen"
+
+#: core/models.py:54
+msgid "Allow this administrator to access user mailboxes"
+msgstr "Gewähren Sie diesem Administrator Zugriff auf Benutzerpostfächer"
+
+#: core/models.py:57
+msgid "password"
+msgstr "Passwort"
+
+#: core/models.py:60
+msgid "language"
+msgstr "Sprache"
+
+#: core/models.py:63
+msgid "Prefered language to display pages."
+msgstr "Bevorzugte Anzeigesprache für Seiten."
+
+#: core/models.py:67
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+#: core/models.py:69
+msgid "Secondary email"
+msgstr "Sekundäre E-Mail-Adresse"
+
+#: core/models.py:72
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr "Eine alternative E-Mail-Adresse kann für die Wiederherstellung verwendet werden."
+
+#: core/models.py:126
+msgid "Failed to update password: LDAP module not installed"
+msgstr "Kennwort konnte nicht aktualisiert werden: LDAP-Modul nicht installiert"
+
+#: core/models.py:155
+msgid "account"
+msgstr "Konto"
+
+#: core/models.py:282
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: core/models.py:316
+msgid "Invalid line"
+msgstr "Ungültige Zeile"
+
+#: core/models.py:324
+msgid "You can't import an account with a role greater than yours"
+msgstr "Sie können kein Konto mit einer höheren Rolle als Ihrer eigenen importieren"
+
+#: core/models.py:339
+#, python-format
+msgid "The simple user '%s' must have a valid email address"
+msgstr "Der normale Benutzer '%s' muss eine gültige E-Mail-Adresse besitzen"
+
+#: core/models.py:344
+#, python-format
+msgid "username and email fields must not differ for '%s'"
+msgstr "Benutzername und E-Mail für '%s' dürfen sich nicht unterscheiden"
+
+#: core/password_validation.py:24
+msgid "Password must contain at least {} digit."
+msgid_plural "Password must contain at least {} digits."
+msgstr[0] "Das Passwort muss mindestens {} Ziffer enthalten."
+msgstr[1] "Das Passwort muss mindestens {} Ziffern enthalten."
+
+#: core/password_validation.py:34
+msgid "Password must contain at least {} lowercase letter."
+msgid_plural "Password must contain at least {} lowercase letters."
+msgstr[0] "Das Passwort muss mindestens {} Kleinbuchstaben enthalten."
+msgstr[1] "Das Passwort muss mindestens {} Kleinbuchstaben enthalten."
+
+#: core/password_validation.py:45
+msgid "Password must contain at least {} uppercase letter."
+msgid_plural "Password must contain at least {} uppercase letters."
+msgstr[0] "Das Passwort muss mindestens {} Großbuchstaben enthalten."
+msgstr[1] "Das Passwort muss mindestens {} Großbuchstaben enthalten."
+
+#: core/password_validation.py:57
+msgid "Password must contain at least {} special character."
+msgid_plural "Password must contain at least {} special characters."
+msgstr[0] "Das Passwort muss mindestens {} Sonderzeichen enthalten."
+msgstr[1] "Das Passwort muss mindestens {} Sonderzeichen enthalten."
+
+#: core/password_validation.py:65
+msgid "Your password must contain a combination of different character types."
+msgstr "Ihr Passwort muss eine Kombination verschiedener Zeichentypen enthalten."
+
+#: core/serializers.py:15
+msgid "Invalid PIN code"
+msgstr "Ungültiger PIN-Code"
+
+#: core/serializers.py:21
+msgid "2FA is already enabled"
+msgstr "2FA ist bereits aktiviert"
+
+#: core/sms_backends/ovh.py:19
+msgid "API endpoint"
+msgstr "API-Endpunkt"
+
+#: core/sms_backends/ovh.py:22
+msgid "OVH Europe"
+msgstr "OVH Europa"
+
+#: core/sms_backends/ovh.py:23
+msgid "OVH US"
+msgstr "OVH US"
+
+#: core/sms_backends/ovh.py:24
+msgid "OVH North-America"
+msgstr "OVH Nordamerika"
+
+#: core/sms_backends/ovh.py:25
+msgid "So you Start Europe"
+msgstr "So you Start Europa"
+
+#: core/sms_backends/ovh.py:26
+msgid "So you Start North America"
+msgstr "So you Start Nord-Amerika"
+
+#: core/sms_backends/ovh.py:27
+msgid "Kimsufi Europe"
+msgstr "Kimsufi Europa"
+
+#: core/sms_backends/ovh.py:28
+msgid "Kimsufi North America"
+msgstr "Kimsufi Nordamerika"
+
+#: core/sms_backends/ovh.py:35
+msgid "Application key"
+msgstr "Anwendungsschlüssel"
+
+#: core/sms_backends/ovh.py:42
+msgid "Application secret"
+msgstr "Anwendungsgeheimnis"
+
+#: core/sms_backends/ovh.py:50
+msgid "Consumer key"
+msgstr "Verbraucherschlüssel"
+
+#: core/templates/core/_current_features.html:6
+msgid "Features looking for sponsoring"
+msgstr "Funktionen, die nach Sponsoring suchen"
+
+#: core/templates/core/_current_features.html:12
+msgid "Goal:"
+msgstr "Ziel:"
+
+#: core/templates/core/_current_features.html:18
+msgid "More"
+msgstr "Mehr"
+
+#: core/templates/core/_current_features.html:22
+msgid "Nothing to sponsor yet."
+msgstr "Noch nichts zu sponsern."
+
+#: core/templates/core/_latest_news_widget.html:5
+msgid "Latest news"
+msgstr "Neueste Nachrichten"
+
+#: core/templates/core/_latest_news_widget.html:19
+msgid ""
+"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
+"weblog</a> for more information."
+msgstr "Besuchen Sie den <a href=\"https://modoboa.org/blog/\" target=\"_blank\">offiziellen Weblog</a> für weitere Informationen."
+
+#: core/templates/core/api_access.html:3
+msgid "API access"
+msgstr "API-Zugriff"
+
+#: core/templates/core/api_access.html:3
+msgid "Control your access to Modoboa API"
+msgstr "Verwalten Sie Ihren Zugriff auf die Modoboa API"
+
+#: core/templates/core/api_access.html:7
+#, python-format
+msgid ""
+"A documentation of the API is available <strong><a href=\"%(url)s\" "
+"target=\"_blank\">here</a></strong>."
+msgstr "Eine Dokumentation der API ist <strong><a href=\"%(url)s\" target=\"_blank\">hier</a></strong> verfügbar."
+
+#: core/templates/core/api_access.html:14
+msgid "API access token"
+msgstr "API-Zugriffstoken"
+
+#: core/templates/core/api_access.html:35
+#: core/templates/core/user_profile.html:19 lib/form_utils.py:354
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: core/templates/core/dashboard.html:11
+#, python-format
+msgid "Hello %(user)s."
+msgstr "Hallo %(user)s."
+
+#: core/templates/core/information.html:2 core/templatetags/core_tags.py:62
+msgid "Information"
+msgstr "Information"
+
+#: core/templates/core/information.html:2
+msgid "Various information about Modoboa"
+msgstr "Verschiedene Informationen über Modoboa"
+
+#: core/templates/core/information.html:5
+msgid "One or more updates are available!"
+msgstr "Ein oder mehrere Updates sind verfügbar"
+
+#: core/templates/core/information.html:6
+msgid "Check the following list to find the component(s) that can be updated."
+msgstr "Überprüfen Sie die folgende Liste auf Komponenten, die aktualisiert werden können."
+
+#: core/templates/core/information.html:10
+msgid "Applications"
+msgstr "Applikationen"
+
+#: core/templates/core/information.html:14
+#: core/templates/core/information.html:36
+msgid "Name"
+msgstr "Name"
+
+#: core/templates/core/information.html:15
+msgid "Installed version"
+msgstr "Installierte Version"
+
+#: core/templates/core/information.html:16
+msgid "Last version"
+msgstr "Aktuellste Version"
+
+#: core/templates/core/information.html:17
+msgid "Description"
+msgstr "Beschreibung"
+
+#: core/templates/core/information.html:32
+msgid "Active users"
+msgstr "Aktive Benutzer"
+
+#: core/templates/core/information.html:37
+msgid "Role"
+msgstr "Rolle"
+
+#: core/templates/core/information.html:38
+msgid "Last login"
+msgstr "Letzte Anmeldung"
+
+#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:66
+msgid "Logs"
+msgstr "Logs"
+
+#: core/templates/core/logs.html:2
+msgid "Previously on Modoboa..."
+msgstr "Bisher auf Modoboa ..."
+
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:106
+msgid "Date"
+msgstr "Datum"
+
+#: core/templates/core/logs.html:7
+msgid "Level"
+msgstr "Stufe"
+
+#: core/templates/core/logs.html:8
+msgid "Logger"
+msgstr "Logger"
+
+#: core/templates/core/logs.html:9
+msgid "Message"
+msgstr "Nachricht"
+
+#: core/templates/core/notifications/update_available.html:3
+msgid ""
+"\n"
+"  The following update is available:\n"
+msgid_plural ""
+"\n"
+"  The following updates are available:\n"
+msgstr[0] "\n  Folgendes Update ist verfügbar:\n"
+msgstr[1] "\n  Folgende Updates sind verfügbar:\n"
+
+#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:71
+msgid "Parameters"
+msgstr "Parameter"
+
+#: core/templates/core/parameters.html:2
+msgid "Configure Modoboa"
+msgstr "Modoboa konfigurieren"
+
+#: core/templates/core/parameters.html:6
+#: core/templates/core/user_preferences.html:10
+msgid "Save"
+msgstr "Speichern"
+
+#: core/templates/core/settings_header.html:5
+msgid "Modoboa settings"
+msgstr "Modoboa-Einstellungen"
+
+#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:90
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: core/templates/core/user_preferences.html:2
+#: core/templatetags/core_tags.py:120
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: core/templates/core/user_preferences.html:2
+msgid "Customize Modoboa"
+msgstr "Modoboa anpassen"
+
+#: core/templates/core/user_preferences.html:14
+msgid "No preferences available."
+msgstr "Keine Einstellungen verfügbar."
+
+#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:116
+msgid "Profile"
+msgstr "Profil"
+
+#: core/templates/core/user_profile.html:3
+msgid "Update your personal information"
+msgstr "Aktualisieren Sie Ihre persönlichen Daten"
+
+#: core/templates/core/user_profile.html:13
+msgid "Click here to update your password"
+msgstr "Klicken Sie hier, um Ihr Passwort zu aktualisieren"
+
+#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:124
+msgid "Security"
+msgstr "Sicherheit"
+
+#: core/templates/core/user_security.html:6
+msgid "Two-Factor authentication"
+msgstr "Zwei-Faktor-Authentifizierung"
+
+#: core/templates/core/user_security.html:17
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+msgstr "Installieren Sie einen Soft-Token-Authentifikator wie FreeOTP oder Google Authenticator aus dem App-Store und scannen Sie den QR-Code."
+
+#: core/templates/core/user_security.html:25
+msgid "Pin code"
+msgstr "PIN-Code"
+
+#: core/templates/core/user_security.html:28
+msgid "Register"
+msgstr "Registrieren"
+
+#: core/templates/core/user_security.html:33
+msgid ""
+"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr "Glückwunsch! Die Zwei-Faktor-Authentifizierung ist nun für diesen Account aktiviert."
+
+#: core/templates/core/user_security.html:38
+#: core/templates/core/user_security.html:89
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr "Die folgenden Wiederherstellungscodes können jeweils einmal verwendet werden, um den Zugriff auf Ihr Konto wiederherzustellen, falls Sie beispielsweise Ihr Telefon verlieren. Achten Sie darauf, diese sicher aufzubewahren, da Sie sonst nicht mehr auf Ihr Konto zugreifen können."
+
+#: core/templates/core/user_security.html:53
+msgid "Two-Factor Authentication is enabled for your account."
+msgstr "Die Zwei-Faktor-Authentifizierung ist für diesen Account aktiviert."
+
+#: core/templates/core/user_security.html:58
+msgid "Disable 2FA"
+msgstr "2FA deaktivieren"
+
+#: core/templates/core/user_security.html:61
+msgid "Reset recovery codes"
+msgstr "Wiederherstellungscodes zurücksetzen"
+
+#: core/templates/core/user_security.html:65
+msgid ""
+"Two-Factor Authentication (2FA) is not yet activated for your account. "
+"Enabling this feature will increase your account's security."
+msgstr "Die Zwei-Faktor-Authentifizierung (2FA) ist für diesen Account noch nicht aktiviert. Die Aktivierung dieser Funktion erhöht die Sicherheit des Accounts."
+
+#: core/templates/core/user_security.html:73
+msgid "Enable 2FA"
+msgstr "2FA aktivieren"
+
+#: core/templates/core/user_security.html:83
+#: core/templates/core/user_security.html:99
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "Schließen"
+
+#: core/templates/core/user_security.html:84
+msgid "New recovery codes"
+msgstr "Neue Wiederherstellungscodes"
+
+#: core/templates/core/user_security.html:88
+msgid "Here are your new recovery codes. "
+msgstr "Hier sind Ihre neuen Wiederherstellungscodes."
+
+#: core/templatetags/core_tags.py:34
+msgid "Modoboa"
+msgstr "Modoboa"
+
+#: core/templatetags/core_tags.py:102
+msgid "Logout"
+msgstr "Ausloggen"
+
+#: core/templatetags/core_tags.py:131
+msgid "API"
+msgstr "API"
+
+#: core/utils.py:32
+msgid "The core part of Modoboa"
+msgstr "Der Kern von Modoboa"
+
+#: core/views/admin.py:43
+msgid "Parameters saved"
+msgstr "Parameter gespeichert"
+
+#: core/views/auth.py:61
+#, python-format
+msgid "Password scheme mismatch. Updating %s password"
+msgstr "Kennwortschema stimmt nicht überein. Aktualisiere %s Passwort"
+
+#: core/views/auth.py:68
+#, python-format
+msgid "Password hash parameter missmatch. Updating %s password"
+msgstr "Passwort-Hash-Parameter stimmen nicht überein. Aktualisiere %s Passwort"
+
+#: core/views/auth.py:84
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr "Benutzer '%s' erfolgreich angemeldet"
+
+#: core/views/auth.py:92
+msgid "Your username and password didn't match. Please try again."
+msgstr "Benutzername und Passwort stimmen nicht überein. Bitte versuche es erneut."
+
+#: core/views/auth.py:127
+msgid "User '{}' successfully logged out"
+msgstr "Benutzer '{}' erfolgreich abgemeldet"
+
+#: core/views/auth.py:172 core/views/auth.py:227
+msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr "Bitte verwenden Sie den folgenden Code, um Ihr Modoboa-Passwort wiederherzustellen: {}"
+
+#: core/views/user.py:60
+msgid "Profile updated"
+msgstr "Profil aktualisiert"
+
+#: core/views/user.py:88
+msgid "Preferences saved"
+msgstr "Einstellungen gespeichert"
+
+#: core/views/user.py:110
+msgid "Access updated"
+msgstr "Zugang aktualisiert"
+
+#: core/viewsets.py:52
+msgid "2FA is not enabled"
+msgstr "2FA ist nicht aktiviert"
+
+#: lib/db_utils.py:23
+#, python-format
+msgid "Connection to database %s not configured"
+msgstr "Verbindung zur Datenbank %s nicht konfiguriert"
+
+#: lib/email_utils.py:143 lib/email_utils.py:362
+msgid "unable to determine encoding of string"
+msgstr "Codierung der Zeichenkette konnte nicht bestimmt werden"
+
+#: lib/exceptions.py:67
+#, python-format
+msgid "Permission denied: %s"
+msgstr "Zugriff verweigert: %s"
+
+#: lib/exceptions.py:68
+msgid "Permission denied"
+msgstr "Zugriff verweigert"
+
+#: lib/fields.py:15 lib/validators.py:14
+msgid "Enter a valid domain name"
+msgstr "Geben Sie einen gültigen Domänennamen ein"
+
+#: lib/fields.py:44 lib/fields.py:58
+msgid "Enter a valid email address."
+msgstr "Geben Sie eine gültige E-Mail-Adresse ein."
+
+#: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_confirm_code.html:25
+#: templates/registration/password_reset_form.html:29
+msgid "Submit"
+msgstr "Abschicken"
+
+#: lib/form_utils.py:110 lib/form_utils.py:113
+msgid "Invalid request"
+msgstr "Ungültige Anfrage"
+
+#: lib/form_utils.py:388
+msgid "Yes"
+msgstr "Ja"
+
+#: lib/ldap_utils.py:129
+msgid "Failed to update password: {}"
+msgstr "Passwort konnte nicht aktualisiert werden: {}"
+
+#: lib/templatetags/lib_tags.py:104
+msgid "From"
+msgstr "Von"
+
+#: lib/templatetags/lib_tags.py:105
+msgid "To"
+msgstr "An"
+
+#: lib/templatetags/lib_tags.py:107 templates/common/email_searchbar.html:17
+msgid "Subject"
+msgstr "Betreff"
+
+#: templates/404.html:4 templates/500.html:4
+msgid "Sorry"
+msgstr "Entschuldigung"
+
+#: templates/404.html:5
+msgid "The requested page does not exist."
+msgstr "Die angeforderte Seite existiert nicht."
+
+#: templates/500.html:5
+msgid "An internal error occured."
+msgstr "Ein interner Fehler ist aufgetreten."
+
+#: templates/common/email_searchbar.html:5
+msgid "Search..."
+msgstr "Suchen ..."
+
+#: templates/common/email_searchbar.html:10
+msgid "From address"
+msgstr "Absender-Adresse"
+
+#: templates/common/email_searchbar.html:33
+msgid "Both"
+msgstr "Beide"
+
+#: templates/common/error.html:4
+msgid "Error:"
+msgstr "Fehler:"
+
+#: templates/common/generic_field.html:11
+#: templates/common/generic_fields_group.html:8
+msgid "Help:"
+msgstr "Hilfe:"
+
+#: templates/common/wizard_forms.html:31
+msgid "Previous"
+msgstr "Zurück"
+
+#: templates/common/wizard_forms.html:32
+msgid "Next"
+msgstr "Weiter"
+
+#: templates/registration/base.html:8
+msgid "Welcome to Modoboa"
+msgstr "Willkommen bei Modoboa"
+
+#: templates/registration/login.html:21
+msgid "Remember me"
+msgstr "Login speichern"
+
+#: templates/registration/login.html:23
+msgid "Log in"
+msgstr "Anmelden"
+
+#: templates/registration/login.html:24
+#: templates/registration/password_reset_form.html:17
+msgid "Forgot password?"
+msgstr "Passwort vergessen?"
+
+#: templates/registration/password_reset_complete.html:8
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
+"in</a> now."
+msgstr "Ihr Passwort wurde geändert. Sie können sich jetzt <a href=\"%(url)s\">anmelden</a>."
+
+#: templates/registration/password_reset_confirm.html:7
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: templates/registration/password_reset_confirm.html:17
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr "Der Link zum Zurücksetzen des Passwortes war ungültig, möglicherweise wurde er schon verwendet. Bitte fordern Sie einen neuen Link an."
+
+#: templates/registration/password_reset_confirm_code.html:20
+msgid "Enter the code you've just received by SMS"
+msgstr "Geben Sie den Code ein, den Sie soeben per SMS erhalten haben"
+
+#: templates/registration/password_reset_confirm_code.html:27
+msgid "Resend code"
+msgstr "Code erneut senden"
+
+#: templates/registration/password_reset_done.html:7
+msgid ""
+"<p>We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly.</p> "
+"<p>If you don't receive an email, please make sure you've entered your "
+"primary address, and check your spam folder.</p>"
+msgstr "<p>Wir haben Ihnen eine E-Mail mit Anweisungen zum Festlegen Ihres Passworts geschickt, falls ein Konto mit der von Ihnen eingegebenen E-Mail-Adresse vorhanden ist. Sie sollten sie in Kürze erhalten.</p> <p>Wenn Sie keine E-Mail erhalten, vergewissern Sie sich, dass Sie Ihre primäre Adresse eingegeben haben und überprüfen Sie Ihren Spam-Ordner.</p>"
+
+#: templates/registration/password_reset_email.html:4
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(username)s Modoboa "
+"account, click the link below:"
+msgstr "Um den Vorgang zum Zurücksetzen des Passworts für Ihr %(username)s Modoboa-Konto zu beginnen, klicken Sie auf folgenden Link:"
+
+#: templates/registration/password_reset_email.html:10
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr "Falls der obere Link nicht funktioniert, kopieren Sie diesen bitte in ein neues Browser-Fenster."
+
+#: templates/registration/password_reset_email.html:14
+msgid "Sincerely, The Modoboa Team."
+msgstr "Mit freundlichen Grüßen, das Modoboa Team."
+
+#: templates/registration/password_reset_form.html:24
+msgid "Please fill-in your primary email address"
+msgstr "Bitte geben Sie Ihre primäre E-Mail-Adresse ein"
+
+#: templates/registration/password_reset_subject.txt:3
+msgid "Modoboa password reset"
+msgstr "Modoboa Passwort zurücksetzen"
