@@ -67,7 +67,7 @@ const routes = [
   },
   {
     path: '/imap_migration/providers',
-    name: 'ProvdiersList',
+    name: 'ProvidersList',
     component: () => import('../views/imap_migration/Providers.vue'),
     meta: {
       requiresAuth: true,

@@ -66,7 +66,7 @@
           :key="index"
           >
           <template v-if="domain.new_domain">
-          {{domain.name}} --> {{domain.new_domain}}
+          {{domain.name}} --> {{domain.new_domain.name}}
           </template>
           <template v-else>
           {{domain.name}} --> {{domain.name}}

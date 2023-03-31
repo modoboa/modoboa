@@ -33,12 +33,15 @@ export default {
     ProviderGeneralForm
   },
   computed: {
-    formatAssociatedDomains () {
-      let associatedDomains = ''
+    associatedDomainsSummary () {
+      const result = []
       for (const domain of this.provider.domains) {
-        associatedDomains += `${domain.name} => ${domain.new_domain}, `
+        const value = domain.new_domain ? `${domain.name} => ${domain.new_domain.name}` : domain.name
+        result.push(
+          { key: '', value }
+        )
       }
-      return associatedDomains
+      return result
     },
     summarySections () {
       const result = [
@@ -53,9 +56,7 @@ export default {
         },
         {
           title: this.$gettext('Associated domains'),
-          items: [
-            { key: this.$gettext('Perform a connection check'), value: this.formatAssociatedDomains }
-          ]
+          items: this.associatedDomainsSummary
         }
       ]
       return result
@@ -103,9 +104,19 @@ export default {
 
     },
     submit () {
-      const data = JSON.parse(JSON.stringify(this.provider))
-      console.log(this.provider)
-      this.$store.dispatch('providers/createProvider', data).then(resp => {
+      const data = { ...this.provider }
+      data.domains = []
+      for (const domain of this.provider.domains) {
+        if (domain.new_domain) {
+          data.domains.push({
+            name: domain.name,
+            new_domain: domain.new_domain.pk
+          })
+        } else {
+          data.domains.push(domain)
+        }
+      }
+      this.$store.dispatch('providers/createProvider', data).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Provider created') })
         this.close()
       })

@@ -107,9 +107,22 @@ export default {
         }
       }
       try {
-        const data = JSON.parse(JSON.stringify(this.editedProvider))
-        await providers.patch(this.editedProvider.id, data).then(resp => {
+        const data = { ...this.editedProvider }
+        data.domains = []
+        for (const domain of this.provider.domains) {
+          if (domain.new_domain) {
+            data.domains.push({
+              name: domain.name,
+              new_domain: domain.new_domain.pk || domain.new_domain.id
+            })
+          } else {
+            data.domains.push(domain)
+          }
+        }
+        await providers.patchProvider(this.editedProvider.id, data).then(() => {
           bus.$emit('notification', { msg: this.$gettext('Provider updated') })
+          this.$store.dispatch('providers/getProviders')
+          this.$router.push({ name: 'ProvidersList' })
         })
       } catch (error) {
         if (this.$refs.generalForm) {
