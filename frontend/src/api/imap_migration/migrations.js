@@ -3,8 +3,8 @@ import repository from '@/api/repository'
 const resource = 'migrations'
 
 export default {
-  getMigrations (query) {
-    return repository.get(`/${resource}/`, query)
+  getMigrations (params) {
+    return repository.get(`/${resource}/`, { params })
   },
   getMigration (slug, query) {
     return repository.get(`/${resource}/${slug}/`, query)

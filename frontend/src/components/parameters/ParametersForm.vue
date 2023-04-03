@@ -27,6 +27,8 @@
                     v-model="parameters[param.name]"
                     :label="param.label"
                     :hint="param.help_text"
+                    :error="formErrors[param.name] !== undefined"
+                    :error-messages="formErrors[param.name]"
                     persistent-hint
                     v-if="param.widget === 'BooleanField'"
                     />

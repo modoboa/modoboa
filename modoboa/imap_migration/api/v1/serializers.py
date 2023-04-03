@@ -74,7 +74,7 @@ class MailboxSerializer(serializers.ModelSerializer):
     """Simple mailbox serializer."""
 
     class Meta:
-        fields = ("id", "full_address")
+        fields = ("id", "full_address", "user")
         model = admin_models.Mailbox
 
 

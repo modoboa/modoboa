@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { bus } from '@/main'
 import accounts from '@/api/accounts'
 import AccountAliases from '@/components/identities/AccountAliases'
 import AccountSenderAddresses from '@/components/identities/AccountSenderAddresses'
@@ -58,6 +59,11 @@ export default {
   mounted () {
     accounts.get(this.$route.params.id).then(resp => {
       this.account = resp.data
+    }).catch(error => {
+      if (error.response.status === 404) {
+        bus.$emit('notification', { msg: this.$gettext('Account not found!'), type: 'error' })
+        this.$router.push({ name: 'Identities' })
+      }
     })
     parameters.getApplication('limits').then(resp => {
       this.limitsConfig = resp.data
