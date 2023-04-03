@@ -26,13 +26,18 @@
     :headers="headers"
     :items="migrations"
     :search="search"
-    item-key="pk"
+    item-key="id"
     :options.sync="options"
     :server-items-length="totalMigrations"
     :loading="loading"
     class="elevation-1"
     show-select
     >
+    <template v-slot:item.mailbox="{ item }">
+      <router-link :to="{ name: 'AccountDetail', params: { id: item.mailbox.user } }">
+          {{ item.mailbox.full_address }}
+      </router-link>
+    </template>
     <template v-slot:item.actions="{ item }">
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -60,9 +65,9 @@ export default {
     return {
       migrations: [],
       headers: [
-        { text: this.$gettext('Provider'), value: 'provider' },
-        { text: this.$gettext('Old account'), value: 'old_account' },
-        { text: this.$gettext('New account'), value: 'new_account' },
+        { text: this.$gettext('Provider'), value: 'provider.name' },
+        { text: this.$gettext('Old account'), value: 'username' },
+        { text: this.$gettext('New account'), value: 'mailbox' },
         { text: this.$gettext('Actions'), value: 'actions', sortable: false, align: 'right' }
 
       ],
@@ -75,17 +80,10 @@ export default {
   },
   methods: {
     deleteMigration (migration) {
-      this.$dialog.confirm(
-        this.$gettext('Remove this migration?'), {
-          cancelText: this.$gettext('Cancel'),
-          okText: this.$gettext('Proceed')
-        }
-      ).then(dialog => {
-        Migration.deleteMigration(migration.id).then(response => {
-          bus.$emit('notification', { msg: this.$gettext('Provider deleted') })
-          this.migrations = this.migrations.filter(item => {
-            return item.id !== migration.id
-          })
+      Migration.deleteMigration(migration.id).then(response => {
+        bus.$emit('notification', { msg: this.$gettext('Migration deleted') })
+        this.migrations = this.migrations.filter(item => {
+          return item.id !== migration.id
         })
       })
     },
@@ -97,6 +95,7 @@ export default {
       }
       Migration.getMigrations(query).then(response => {
         this.migrations = response.data
+        this.totalMigrations = this.migrations.length
         this.loading = false
       })
     },

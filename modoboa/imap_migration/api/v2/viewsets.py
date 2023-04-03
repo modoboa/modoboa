@@ -4,11 +4,12 @@ import imaplib
 import socket
 import ssl
 
-from rest_framework import serializers, response
+from rest_framework import response
 from rest_framework.decorators import action
 
 from modoboa.imap_migration.api.v1 import viewsets as v1_viewsets
-from .serializers import CheckProviderSerializer, CheckAssociatedDomainSerializer
+
+from . import serializers
 
 
 class EmailProviderViewSet(v1_viewsets.EmailProviderViewSet):
@@ -16,7 +17,7 @@ class EmailProviderViewSet(v1_viewsets.EmailProviderViewSet):
     @action(methods=["post"], detail=False)
     def check_connection(self, request, **kwargs):
         """check that provided information allow connection to imap server."""
-        serializer = CheckProviderSerializer(data=request.data)
+        serializer = serializers.CheckProviderSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         secured = serializer.data["secured"]
         address = serializer.data["address"]
@@ -39,6 +40,11 @@ class EmailProviderViewSet(v1_viewsets.EmailProviderViewSet):
         """check that the associated domain is either the same as the provider,
         or if a local domain already exists.
         This is to prevent errros on setup."""
-        serializer = CheckAssociatedDomainSerializer(data=request.data)
+        serializer = serializers.CheckAssociatedDomainSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return response.Response(status=200)
+
+
+class MigrationViewSet(v1_viewsets.MigrationViewSet):
+    """ Change the serializer to add the user id. """
+    serializer_class = serializers.MigrationSerializer

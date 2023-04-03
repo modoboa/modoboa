@@ -252,6 +252,18 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
             )
         return value
 
+    def validate_auto_create_domain_and_mailbox(self, value):
+        """
+            Make sure the option does not get deactivated
+            while imap migration is enabled.
+        """
+        if not value and param_tools.get_global_parameter("enabled_imapmigration",
+                                                          "imap_migration"):
+            raise serializers.ValidationError(
+                _("Please disable imap migration before disabling this option.")
+            )
+        return value
+
     def validate(self, data):
         """Check MX options."""
         condition = (

@@ -3,11 +3,11 @@
   <validation-provider
     v-slot="{ errors }"
     rules=""
-    vid="initialdomain"
+    vid="name"
     >
     <v-text-field
       ref="initialdomainField"
-      v-model="domain.initialdomain"
+      v-model="domain.name"
       :error-messages="errors"
       :placeholder="'Name of the domain to migrate' | translate"
       outlined
@@ -68,7 +68,7 @@ export default {
     return {
       domains: [],
       domain: {
-        initialdomain: '',
+        name: '',
         new_domain: ''
       },
       localDomains: []
@@ -78,7 +78,7 @@ export default {
     reset () {
       this.domains = []
       this.domain = {
-        initialdomain: '',
+        name: '',
         new_domain: ''
       }
     },
@@ -93,15 +93,15 @@ export default {
         providerApi.checkAssociatedDomain(this.domain).then(response => {
           if (response.status === 200) {
             this.domains.push({
-              name: this.domain.initialdomain,
+              name: this.domain.name,
               new_domain: this.domain.new_domain
             })
-            this.$emit('input', this.domains)
             this.$refs.observer.reset()
             this.domain = {
-              initialdomain: '',
+              name: '',
               new_domain: ''
             }
+            this.$emit('input', this.domains)
           }
         }).catch(error => {
           this.$refs.observer.setErrors(error.response.data)

@@ -3,7 +3,8 @@
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
+from modoboa.admin.models import Mailbox
+from modoboa.imap_migration.api.v1 import serializers as v1_serializers
 
 from modoboa.admin.models.domain import Domain
 
@@ -38,7 +39,7 @@ class CheckProviderSerializer(serializers.Serializer):
 class CheckAssociatedDomainSerializer(serializers.Serializer):
     """A serializer for checking associated domains."""
 
-    initialdomain = serializers.CharField()
+    name = serializers.CharField()
     new_domain = serializers.PrimaryKeyRelatedField(
         read_only=True, required=False)
 
@@ -50,3 +51,17 @@ class CheckAssociatedDomainSerializer(serializers.Serializer):
         if value not in domain_ids:
             raise serializers.ValidationError(_("Access denied"))
         return value
+
+
+class MailboxSerializer(serializers.ModelSerializer):
+    """Simple mailbox serializer."""
+
+    class Meta:
+        fields = ("id", "full_address", "user")
+        model = Mailbox
+
+
+class MigrationSerializer(v1_serializers.MigrationSerializer):
+    """Serializer class for Migration."""
+
+    mailbox = MailboxSerializer()

@@ -3,7 +3,7 @@ version: '3'
 services:
   api:
     container_name: modoboa_api
-    restart: unless-stopped 
+    restart: unless-stopped
     build:
       context: .
       dockerfile: docker/Dockerfile.dev
@@ -24,13 +24,12 @@ services:
 
   front:
     container_name: modoboa_front
-    restart: unless-stopped 
+    restart: unless-stopped
     build:
       context: .
       dockerfile: docker/Dockerfile.front.dev
     ports:
       - 8080:8080
-    command: "" 
     volumes:
       - ./frontend/:/home/node/
     command: "yarn serve"
