@@ -66,3 +66,4 @@ class ManageDKIMKeys(BaseCommand):
             self.create_new_dkim_key(domain)
         if qset.exists():
             signals.new_dkim_keys.send(sender=self.__class__, domains=qset)
+        signals.extra_dkim_management.send(sender=self.__class__)
