@@ -109,7 +109,7 @@ export default {
       try {
         const data = { ...this.editedProvider }
         data.domains = []
-        for (const domain of this.provider.domains) {
+        for (const domain of this.editedProvider.domains) {
           if (domain.new_domain) {
             data.domains.push({
               name: domain.name,
