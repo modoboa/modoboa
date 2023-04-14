@@ -92,6 +92,11 @@ class ProfileForm(forms.ModelForm):
                         confirmation, self.instance)
             else:
                 self.add_error("oldpassword", _("This field is required."))
+        elif newpassword or confirmation:
+            if not confirmation:
+                self.add_error("confirmation", _("This field is required."))
+            else:
+                self.add_error("newpassword", _("This field is required."))
         return self.cleaned_data
 
     def save(self, commit=True):
