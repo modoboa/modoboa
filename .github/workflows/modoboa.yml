@@ -144,17 +144,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-      - name: Install dependencies
-        run: |
-          pip install codecov
       - name: Download coverage results
         uses: actions/download-artifact@v2
         with:
           name: coverage-results
-      - name: Report coverage
-        run: |
-          coverage report
-          codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
   release:
     if: github.event_name != 'pull_request'
