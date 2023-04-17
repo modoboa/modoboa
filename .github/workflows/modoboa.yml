@@ -152,6 +152,8 @@ jobs:
         run: coverage report
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          files: test_project/.coverage
 
   release:
     if: github.event_name != 'pull_request'
