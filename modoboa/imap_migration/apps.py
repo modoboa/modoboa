@@ -31,6 +31,5 @@ class IMAPMigrationConfig(AppConfig):
 
     def ready(self):
         from . import checks  # noqa
-        from . import handlers  # noqa
 
         load_imapmigration_settings()

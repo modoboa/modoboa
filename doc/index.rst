@@ -34,6 +34,10 @@ It provides built-in features by default :
 |                                                         |containing account       |                                                      |
 |                                                         |credentials              |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
+|modoboa-imap-migration                                   |Transfer accounts from   |:ref:`modoboa_imap-migration Documentation <imap>`    |
+|                                                         |other mail server        |                                                      |
+|                                                         |automatically            |                                                      |
++---------------------------------------------------------+-------------------------+------------------------------------------------------+
 
 
 And it is extensible by nature and comes with a lot of additional extensions:
@@ -48,10 +52,6 @@ And it is extensible by nature and comes with a lot of additional extensions:
 |<https://github.com/modoboa/modoboa-amavis>`_            |<http://www.amavis.org>`_|                                                      |
 |                                                         |                         |                                                      |
 |                                                         |                         |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-imap-migration                                  |Migrate mailboxes from an|https://github.com/modoboa/modoboa-imap-migration     |
-|<https://github.com/modoboa/modoboa-imap-migration>`_    |existing server using    |                                                      |
-|                                                         |IMAP (and offlineimap)   |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
 |`modoboa-pfxadmin-migrate                                |A tool to migrate from   |https://github.com/modoboa/modoboa-pfxadmin-migrate   |
 |<https://github.com/modoboa/modoboa-pfxadmin-migrate>`_  |Postfixadmin             |                                                      |

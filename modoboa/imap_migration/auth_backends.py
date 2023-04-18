@@ -93,6 +93,11 @@ class IMAPBackend:
                 # No migration => either someone else account, or
                 # migration is done
                 return None
+            if not user.check_password(password):
+                # User may have changed its password on modoboa
+                # Remote password and local now differs
+                # We block the connection in that case
+                return None
         return user
 
     def get_user(self, user_pk):
