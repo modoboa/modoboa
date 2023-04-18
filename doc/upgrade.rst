@@ -111,9 +111,11 @@ Specific instructions
 2.1.0
 =====
 
-The ``modoboa-dmarc`` and ``modoboa.pdfcredentials`` plugins have been merged into the core.
+The ``modoboa-dmarc``, ``modoboa-pdfcredentials`` and ``modoboa-imapmigration``
+plugins have been merged into the core.
 
-Add ``'modoboa.dmarc'`` and ``'modoboa.pdfcredentials'`` to ``MODOBOA_APPS``:
+Add ``'modoboa.dmarc'``, ``'modoboa.pdfcredentials'`` and ``'modoboa.imap_migration'``
+to ``MODOBOA_APPS``:
 
 .. sourcecode:: python
 
@@ -130,16 +132,19 @@ Add ``'modoboa.dmarc'`` and ``'modoboa.pdfcredentials'`` to ``MODOBOA_APPS``:
       'modoboa.policyd',
       'modoboa.maillog',
       'modoboa.dmarc',
-      'modoboa.pdfcredentials'
+      'modoboa.pdfcredentials',
+      'modoboa.imap_migration',
    )
 
-And remove any reference to ``'modoboa_dmarc'`` or ``'modoboa.pdfcredentials'`` in this same variable.
+And remove any reference to ``'modoboa_dmarc'``, ``'modoboa_pdfcredentials'`` or ``'modoboa_imap_migration'``
+in this same variable.
 
 After upgrading modoboa, run the following commands from your virtual environment:
 
 .. sourcecode:: bash
 
-   python manage.py rename_app modoboa_dmarc dmarc
+   > python manage.py rename_app modoboa_dmarc dmarc
+   > python manage.py rename_app modoboa_imap_migration imap_migration
 
 
 2.0.4
