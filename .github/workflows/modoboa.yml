@@ -135,7 +135,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: coverage-results
-          path: test_project/.coverage
+          path: test_project/coverage.xml
 
   coverage:
     needs: test
