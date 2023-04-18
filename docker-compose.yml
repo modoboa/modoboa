@@ -30,7 +30,6 @@ services:
       dockerfile: docker/Dockerfile.front.dev
     ports:
       - 8080:8080
-    command: "" 
     volumes:
       - ./frontend/:/home/node/
     command: "yarn serve"
