@@ -113,12 +113,14 @@ jobs:
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
 
       - name: Test with pytest and coverage
-        if: ${{ matrix.python-version == '3.8' && matrix.database == 'postgres' }}
+        if: ${{ matrix.python-version == '3.10' && matrix.database == 'postgres' }}
         run: |
           python ./tests.py
           cd test_project
           coverage run manage.py test modoboa
           coverage combine
+          coverage xml
+          coverage report
         env:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
@@ -129,32 +131,25 @@ jobs:
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
       - name: Upload coverage result
-        if: ${{ matrix.python-version == '3.8' }}
+        if: ${{ matrix.python-version == '3.10' && matrix.database == 'postgres' }}
         uses: actions/upload-artifact@v2
         with:
           name: coverage-results
-          path: test_project/.coverage
+          path: test_project/coverage.xml
 
   coverage:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - name: Install dependencies
-        run: |
-          pip install codecov
       - name: Download coverage results
         uses: actions/download-artifact@v2
         with:
           name: coverage-results
-      - name: Report coverage
-        run: |
-          coverage report
-          codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
 
   release:
     if: github.event_name != 'pull_request'

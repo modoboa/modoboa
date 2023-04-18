@@ -148,8 +148,26 @@ class ProfileTestCase(ModoTestCase):
 
         self.ajax_post(
             reverse("core:user_profile"),
-            {"oldpassword": "toto",
-             "newpassword": "tutu", "confirmation": "tutu"},
+            {"language": "en",
+             "oldpassword": "toto",
+             "confirmation": "tutu"},
+            status=400
+        )
+
+        self.ajax_post(
+            reverse("core:user_profile"),
+            {"language": "en",
+             "oldpassword": "toto",
+             "newpassword": "tutu"},
+            status=400
+        )
+
+        self.ajax_post(
+            reverse("core:user_profile"),
+            {"language": "en",
+             "oldpassword": "toto",
+             "newpassword": "tutu",
+             "confirmation": "tutu"},
             status=400
         )
 
