@@ -121,7 +121,6 @@ jobs:
           coverage combine
           coverage xml
           coverage report
-          ls -la .coverage
         env:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
@@ -149,6 +148,8 @@ jobs:
           name: coverage-results
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          files: ./test_project/coverage.xml
 
   release:
     if: github.event_name != 'pull_request'
