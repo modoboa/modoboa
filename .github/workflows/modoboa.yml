@@ -149,7 +149,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: ./test_project/coverage.xml
+          files: ./coverage.xml
 
   release:
     if: github.event_name != 'pull_request'
