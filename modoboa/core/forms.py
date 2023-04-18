@@ -49,7 +49,7 @@ class ProfileForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
 
-    class Meta(object):
+    class Meta:
         model = User
         fields = ("first_name", "last_name", "language",
                   "phone_number", "secondary_email")
