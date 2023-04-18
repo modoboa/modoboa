@@ -114,6 +114,15 @@ Specific instructions
 The ``modoboa-dmarc``, ``modoboa-pdfcredentials`` and ``modoboa-imapmigration``
 plugins have been merged into the core.
 
+Add ``'django_rename_app,'`` To ``INSTALLED_APPS``:
+
+.. sourcecode:: python
+
+   INSTALLED_APPS = (
+   ...,
+   'django_rename_app',
+   )
+
 Add ``'modoboa.dmarc'``, ``'modoboa.pdfcredentials'`` and ``'modoboa.imap_migration'``
 to ``MODOBOA_APPS``:
 
