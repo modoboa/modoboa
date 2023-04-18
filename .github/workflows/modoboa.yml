@@ -119,6 +119,7 @@ jobs:
           cd test_project
           coverage run manage.py test modoboa
           coverage combine
+          coverage xml
           coverage report
           ls -la .coverage
         env:
@@ -148,8 +149,6 @@ jobs:
           name: coverage-results
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
-        with:
-          files: test_project/.coverage
 
   release:
     if: github.event_name != 'pull_request'
