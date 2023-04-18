@@ -2,12 +2,13 @@
 
 from rest_framework import filters, mixins, permissions, viewsets
 
-from ... import models
+from modoboa.lib.throttle import GetThrottleViewsetMixin
 
+from ... import models
 from . import serializers
 
 
-class EmailProviderViewSet(viewsets.ModelViewSet):
+class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
     """ViewSet class for EmailProvider."""
 
     filter_backends = (filters.SearchFilter, )
@@ -20,7 +21,8 @@ class EmailProviderViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EmailProviderSerializer
 
 
-class MigrationViewSet(mixins.ListModelMixin,
+class MigrationViewSet(GetThrottleViewsetMixin,
+                       mixins.ListModelMixin,
                        mixins.RetrieveModelMixin,
                        mixins.DestroyModelMixin,
                        viewsets.GenericViewSet):
