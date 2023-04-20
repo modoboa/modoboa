@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 14:11+0200\n"
-"PO-Revision-Date: 2011-07-01 08:15+0000\n"
+"PO-Revision-Date: 2023-04-20 15:15+0200\n"
 "Last-Translator: Icarus Flight, 2022\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
 "Language: fr\n"
@@ -123,7 +123,7 @@ msgstr "Ce champ n'autorise que des adresses IP correctes (ou des réseaux)"
 
 #: admin/api/v2/serializers.py:263
 msgid "Please disable imap migration before disabling this option."
-msgstr ""
+msgstr "Veuillez désactiver la migration IMAP avant de désactiver cette option"
 
 #: admin/api/v2/serializers.py:275 admin/app_settings.py:293
 msgid "Define at least one authorized network / address"
@@ -134,10 +134,8 @@ msgid "A mailbox is required to create aliases."
 msgstr "Une boîte aux lettres est requises pour créer des alias"
 
 #: admin/api/v2/serializers.py:649
-#, fuzzy
-#| msgid "Unknown tag {}"
 msgid "Unknown status"
-msgstr "Tag inconnu {}"
+msgstr "Statut inconnu"
 
 #: admin/api/v2/viewsets.py:75 admin/forms/account.py:365
 #: admin/forms/account.py:373 admin/forms/alias.py:91
@@ -150,11 +148,11 @@ msgstr "Vous ne pouvez pas supprimer votre propre domaine"
 
 #: admin/api/v2/viewsets.py:384
 msgid "No alarm ID provided"
-msgstr ""
+msgstr "Aucun ID d'alarme fourni"
 
 #: admin/api/v2/viewsets.py:389
 msgid "Received invalid alarm id(s)"
-msgstr ""
+msgstr "ID(s) incorrect(s) d'alarme(s) reçu(s)"
 
 #: admin/app_settings.py:23 admin/app_settings.py:300 admin/handlers.py:266
 #: admin/templates/admin/_global_statistics_widget.html:11
@@ -760,7 +758,7 @@ msgstr "Impossible de décoder le fichier CSV en utilisant l'encodage %(encoding
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:28
 msgid "DKIM path non-writable"
-msgstr ""
+msgstr "Chemin d'accès DKIM non accessible en écriture"
 
 #: admin/management/commands/subcommands/_mx.py:121
 msgid "MX {} listed by DNSBL provider {}"
@@ -1520,23 +1518,23 @@ msgstr "Locale"
 
 #: core/api/v2/serializers.py:68
 msgid "md5crypt (weak)"
-msgstr ""
+msgstr "md5crypt (faible)"
 
 #: core/api/v2/serializers.py:69
 msgid "sha256 (weak)"
-msgstr ""
+msgstr "sha256 (faible)"
 
 #: core/api/v2/serializers.py:70
 msgid "md5 (weak)"
-msgstr ""
+msgstr "md5 (faible)"
 
 #: core/api/v2/serializers.py:71
 msgid "crypt (weak)"
-msgstr ""
+msgstr "crypt (faible)"
 
 #: core/api/v2/serializers.py:72
 msgid "plain (weak)"
-msgstr ""
+msgstr "clair (faible)"
 
 #: core/api/v2/serializers.py:168 core/app_settings.py:26
 msgid "User profile"
@@ -1569,7 +1567,7 @@ msgstr "Veuillez utiliser le code suivant pour récupérer votre mot de passe Mo
 #: core/api/v2/views.py:54
 #, python-format
 msgid "Failed connection attempt from '%s' as user '%s'"
-msgstr ""
+msgstr "Tentative de connexion infructueuse depuis '%s' en tant que '%s'"
 
 #: core/api/v2/views.py:67 core/views/auth.py:89
 #, python-format
@@ -1974,14 +1972,12 @@ msgid "Miscellaneous"
 msgstr "Divers"
 
 #: core/app_settings.py:459 core/app_settings.py:1083
-#, fuzzy
-#| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
-msgstr "Seuil des comptes inactifs"
+msgstr "Activer le suivi des comptes inactifs"
 
 #: core/app_settings.py:461 core/app_settings.py:1085
 msgid "Allow the administrator to set a threshold (in days) beyond which an account is considered inactive if the user hasn't logged in"
-msgstr ""
+msgstr "Autoriser les administrateurs à définir in seuil (en jours) à partir duquel un compte est considéré comme inactif si l'utilisateur ne s'est pas connecté"
 
 #: core/app_settings.py:467 core/app_settings.py:1091
 msgid "Inactive account threshold"
@@ -2061,7 +2057,7 @@ msgstr "Test"
 
 #: core/drf_authentication.py:17
 msgid "Missing 2FA verification."
-msgstr ""
+msgstr "La vérification 2FA est manquante"
 
 #: core/forms.py:40
 msgid "Old password"
@@ -2643,11 +2639,11 @@ msgstr "Sources de confiance"
 
 #: dmarc/templates/dmarc/domain_report.html:134
 msgid "Partially trusted sources / Forwarders"
-msgstr ""
+msgstr "Sources partiellement de confiance / Transitaires"
 
 #: dmarc/templates/dmarc/domain_report.html:142
 msgid "Forwarders with ARC"
-msgstr ""
+msgstr "Transitaires avec ARC"
 
 #: dmarc/templates/dmarc/domain_report.html:150
 msgid "Unknown sources / Threats"
@@ -3100,7 +3096,7 @@ msgstr "Utilisation des ressources"
 
 #: maillog/api/v2/serializers.py:36
 msgid "You must provide start and end dates when period is custom"
-msgstr ""
+msgstr "Vous devez fournir des dates de début et fin quand la période est personnalisée"
 
 #: maillog/forms.py:23
 msgid "Path to the log file"
