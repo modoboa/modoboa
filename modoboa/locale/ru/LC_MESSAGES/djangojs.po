@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Aleksandr Mokrushin, 2021
 # Julia Nikolaeva, 2023
 # guard43ru <guard43ru@gmail.com>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -21,7 +21,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -66,3 +68,51 @@ msgstr "Вы уверены?"
 #: static/js/twocols_nav.js:171
 msgid "This will invalidate your registered application."
 msgstr "Это сделает регистрацию приложения недействительной."
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "Найти домен"
+
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
+msgid "Services updated"
+msgstr "Сервисы обновлены"
+
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Нет больше доменов для показа"
+
+#: static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Не удаляйте каталог домена"
+
+#: static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом."
+
+#: static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+"Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением "
+"аккаунтов."
+
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Нет больше квоты для показа"
+
+#: static/admin/js/admin.js:180
+msgid "No more log to show"
+msgstr "Нет больше логов для отображения"
+
+#: static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Не указан администратор домена"
+
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Нет личности для показа"
+
+#: static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Не удаляйте каталог почтовых ящиков"

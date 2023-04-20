@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Giannis Kapetanakis <bilias@edu.physics.uoc.gr>, 2016
 # Kostas Moumouris <moumouriskostas@gmail.com>, 2017
@@ -12,7 +12,8 @@ msgstr ""
 "POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2020-03-09 15:49+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/"
+"language/el_GR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -54,3 +55,55 @@ msgstr "Αναζήτηση"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Αναζήτηση..."
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "Αναζήτηση ενός domain"
+
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
+msgid "Services updated"
+msgstr "Οι υπηρεσίες ενημερώθηκαν"
+
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Δεν υπάρχουν άλλα domains για εμφάνιση"
+
+#: static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Να μην διαγραφεί ο κατάλογος αρχείων του domain "
+
+#: static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr ""
+"Αυτή η λειτουργία θα καταργήσει ΟΛΑ τα δεδομένα που σχετίζονται με αυτό το "
+"domain."
+
+#: static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+"Αυτή η λειτουργία θα καταργήσει όλα τα δεδομένα που σχετίζονται με αυτό το "
+"domain, εκτός από τους λογαριασμούς χρηστών."
+
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Δεν υπάρχει κανένα quota"
+
+#: static/admin/js/admin.js:180
+#, fuzzy
+#| msgid "No more quota to show"
+msgid "No more log to show"
+msgstr "Δεν υπάρχει κανένα quota"
+
+#: static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Δεν έχει οριστεί διαχειριστής domain"
+
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Δεν υπάρχουν άλλες ταυτότητες για εμφάνιση"
+
+#: static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Να μην διαγραφεί ο κατάλογος αρχείων του γραμματοκιβωτίου "
