@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # akong <akong@aspa.idv.tw>, 2018
 # Radium <ztl8702@126.com>, 2017
@@ -12,7 +12,8 @@ msgstr ""
 "POT-Creation-Date: 2020-03-09 16:48+0100\n"
 "PO-Revision-Date: 2020-03-09 15:49+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/language/zh_TW/)\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
+"language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -54,3 +55,51 @@ msgstr "搜尋"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "搜尋..."
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "搜尋一個網域"
+
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
+msgid "Services updated"
+msgstr "服務已更新"
+
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "無更多網域可展示"
+
+#: static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "不可以刪除網域目錄"
+
+#: static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "這個操作將會刪除所有這個網域有關的資料。"
+
+#: static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "這個操作將會刪除所有這個網域有關的資料，除了帳號。"
+
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "沒有配額可能顯示"
+
+#: static/admin/js/admin.js:180
+#, fuzzy
+#| msgid "No more quota to show"
+msgid "No more log to show"
+msgstr "沒有配額可能顯示"
+
+#: static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "網域管理員未指定"
+
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "沒有身份可以顯示"
+
+#: static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "不可能刪除郵件目錄"
