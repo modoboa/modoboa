@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2020
 # Nicolas John, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -65,3 +65,53 @@ msgstr "Sind Sie sicher?"
 #: static/js/twocols_nav.js:171
 msgid "This will invalidate your registered application."
 msgstr "Dadurch wird Ihre registrierte Anwendung ungültig."
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "Domain suchen"
+
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
+msgid "Services updated"
+msgstr "'Service'-Liste aktualisiert"
+
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Keine weiteren Domains"
+
+#: static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Verzeichnis der Domain nicht löschen"
+
+#: static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
+
+#: static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+"Diese Aktion wird ALLE mit der Domain verbundenen Daten, außer Mailkonten, "
+"löschen."
+
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Keine weiteren Quotas"
+
+#: static/admin/js/admin.js:180
+#, fuzzy
+#| msgid "No more quota to show"
+msgid "No more log to show"
+msgstr "Keine weiteren Quotas"
+
+#: static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Domain-Administrator fehlt"
+
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Keine weiteren Identitäten"
+
+#: static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Verzeichnis der Mailbox nicht löschen"

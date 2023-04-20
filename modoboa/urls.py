@@ -30,6 +30,7 @@ urlpatterns = [
     path('pdfcredentials', include("modoboa.pdfcredentials.urls")),
     path('stats/', include("modoboa.maillog.urls")),
     path('dmarc/', include("modoboa.dmarc.urls")),
+    path('imap_migration/', include("modoboa.imap_migration.urls")),
 
     path('user/forward/', user_views.forward, name="user_forward"),
 

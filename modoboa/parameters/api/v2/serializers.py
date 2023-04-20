@@ -8,6 +8,7 @@ class ApplicationSerializer(serializers.Serializer):
 
     name = serializers.CharField()
     label = serializers.CharField()
+    is_extension = serializers.BooleanField()
 
 
 class ParameterChoiceSerializer(serializers.Serializer):

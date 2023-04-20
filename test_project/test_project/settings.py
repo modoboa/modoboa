@@ -72,6 +72,7 @@ INSTALLED_APPS = (
     'django_otp',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_static',
+    'django_rename_app',
 )
 
 # A dedicated place to register Modoboa applications
@@ -91,6 +92,7 @@ MODOBOA_APPS = (
     'modoboa.maillog',
     'modoboa.pdfcredentials',
     'modoboa.dmarc',
+    'modoboa.imap_migration',
     # Modoboa extensions here.
 )
 
@@ -126,6 +128,7 @@ AUTHENTICATION_BACKENDS = (
     # 'modoboa.lib.authbackends.LDAPBackend',
     # 'modoboa.lib.authbackends.SMTPBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'modoboa.imap_migration.auth_backends.IMAPBackend',
 )
 
 # SMTP authentication

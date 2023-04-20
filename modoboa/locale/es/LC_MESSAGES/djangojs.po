@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2020
 # Enrique Saucedo Fuentes, 2022
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -20,7 +20,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -65,3 +66,53 @@ msgstr "¿Estás seguro?"
 #: static/js/twocols_nav.js:171
 msgid "This will invalidate your registered application."
 msgstr "Esto provocará que tu aplicación registrada no funcione."
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "Buscar un dominio"
+
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
+msgid "Services updated"
+msgstr "Servicios actualizados"
+
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Sin dominios que mostrar"
+
+#: static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "No eleminar el directorio del dominio"
+
+#: static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Esta operación eliminará TODOS los datos asociados a este dominio."
+
+#: static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+"Esta operación eliminará todos los datos asociados a este dominio, excepto "
+"las cuentas."
+
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Sin cuota para mostrar"
+
+#: static/admin/js/admin.js:180
+#, fuzzy
+#| msgid "No more quota to show"
+msgid "No more log to show"
+msgstr "Sin cuota para mostrar"
+
+#: static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "No hay un administrador de dominio definido"
+
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Sin identidades que mostrar"
+
+#: static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "No eliminar el directorio del mailbox"

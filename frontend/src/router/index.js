@@ -57,6 +57,33 @@ const routes = [
     }
   },
   {
+    path: '/imap_migration/migrations',
+    name: 'MigrationsList',
+    component: () => import('../components/imap_migration/MigrationsList.vue'),
+    meta: {
+      requiresAuth: true,
+      allowedRoles: ['Resellers', 'SuperAdmins']
+    }
+  },
+  {
+    path: '/imap_migration/providers',
+    name: 'ProvidersList',
+    component: () => import('../views/imap_migration/Providers.vue'),
+    meta: {
+      requiresAuth: true,
+      allowedRoles: ['Resellers', 'SuperAdmins']
+    }
+  },
+  {
+    path: '/imap_migration/providers/:id/edit',
+    name: 'ProviderEdit',
+    component: () => import('../views/imap_migration/ProviderEdit.vue'),
+    meta: {
+      requiresAuth: true,
+      allowedRoles: ['Resellers', 'SuperAdmins']
+    }
+  },
+  {
     path: '/identities',
     name: 'Identities',
     component: () => import('../views/identities/Identities.vue'),

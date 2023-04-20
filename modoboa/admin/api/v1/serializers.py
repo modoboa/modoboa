@@ -116,9 +116,6 @@ class DomainAliasSerializer(serializers.ModelSerializer):
     class Meta:
         model = admin_models.DomainAlias
         fields = ("pk", "name", "target", "enabled", )
-        expandable_fields = {
-            "target": DomainSerializer
-        }
 
     def validate_target(self, value):
         """Check target domain."""

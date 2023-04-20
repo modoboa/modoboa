@@ -63,3 +63,51 @@ msgstr "Etes vous certain ?"
 #: static/js/twocols_nav.js:171
 msgid "This will invalidate your registered application."
 msgstr "Cela annulera votre application enregistrée."
+
+#: static/modoboa_stats/js/stats.js:43
+msgid "Search a domain"
+msgstr "Checher un domaine"
+
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
+msgid "Services updated"
+msgstr "Services mis à jour"
+
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Plus de domaine à afficher"
+
+#: static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Ne pas supprimer le répertoire du domaine"
+
+#: static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
+
+#: static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+"Cette opération supprimera toutes les données associées à ce domaine à "
+"l'exception des comptes."
+
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Plus de quota à afficher"
+
+#: static/admin/js/admin.js:180
+msgid "No more log to show"
+msgstr "Plus aucun journal à afficher"
+
+#: static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Aucun administrateur de domaine défini"
+
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Plus d'identité à afficher"
+
+#: static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
