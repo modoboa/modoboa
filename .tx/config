@@ -1,56 +1,21 @@
-[modoboa.djangojspo]
-file_filter = modoboa/locale/<lang>/LC_MESSAGES/djangojs.po
-source_file = modoboa/locale/en/LC_MESSAGES/djangojs.po
-source_lang = en
-type = PO
-
 [main]
 host = https://www.transifex.com
 
-[modoboa.djangopo]
+[o:tonio:p:modoboa:r:4a510eeff6e480919e943d31202948bd]
+file_filter = modoboa/locale/<lang>/LC_MESSAGES/djangojs.po
+source_file = modoboa/locale/en/LC_MESSAGES/djangojs.po
+source_lang = en
+type        = PO
+
+[o:tonio:p:modoboa:r:5d93982e9fd6dab991db4faf93ce9ded]
 file_filter = modoboa/locale/<lang>/LC_MESSAGES/django.po
 source_file = modoboa/locale/en/LC_MESSAGES/django.po
 source_lang = en
-type = PO
+type        = PO
 
-[modoboa.modoboa-admin-relaydomains-djangopo]
-file_filter = modoboa/relaydomains/locale/<lang>/LC_MESSAGES/django.po
-source_file = modoboa/relaydomains/locale/en/LC_MESSAGES/django.po
-source_lang = en
-type = PO
 
-[modoboa.modoboa-admin-relaydomains-djangojspo]
-file_filter = modoboa/relaydomains/locale/<lang>/LC_MESSAGES/djangojs.po
-source_file = modoboa/relaydomains/locale/en/LC_MESSAGES/djangojs.po
+[o:tonio:p:modoboa:r:dd3efdd3873dc96e90015e1ebbcf2a08]
+file_filter = frontend/locale/<lang>/LC_MESSAGES/app.po
+source_file = frontend/locale/en/LC_MESSAGES/app.po
 source_lang = en
-type = PO
-
-[modoboa.modoboa-admin-limits-djangopo]
-file_filter = modoboa/limits/locale/<lang>/LC_MESSAGES/django.po
-source_file = modoboa/limits/locale/en/LC_MESSAGES/django.po
-source_lang = en
-type = PO
-
-[modoboa.modoboa-admin-djangopo]
-file_filter = modoboa/admin/locale/<lang>/LC_MESSAGES/django.po
-source_file = modoboa/admin/locale/en/LC_MESSAGES/django.po
-source_lang = en
-type = PO
-
-[modoboa.modoboa-admin-djangojspo]
-file_filter = modoboa/admin/locale/<lang>/LC_MESSAGES/djangojs.po
-source_file = modoboa/admin/locale/en/LC_MESSAGES/djangojs.po
-source_lang = en
-type = PO
-
-[modoboa.transport-djangopo]
-file_filter = modoboa/transport/locale/<lang>/LC_MESSAGES/django.po
-source_file = modoboa/transport/locale/en/LC_MESSAGES/django.po
-source_lang = en
-type = PO
-
-[modoboa.transport-djangojspo]
-file_filter = modoboa/transport/locale/<lang>/LC_MESSAGES/djangojs.po
-source_file = modoboa/transport/locale/en/LC_MESSAGES/djangojs.po
-source_lang = en
-type = PO
+type        = PO
