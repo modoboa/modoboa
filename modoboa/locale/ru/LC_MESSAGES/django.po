@@ -14,23 +14,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 10:38+0200\n"
+"POT-Creation-Date: 2023-04-20 14:11+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Russian (http://www.transifex.com/tonio/modoboa/language/"
-"ru/)\n"
+"Language-Team: Russian (http://www.transifex.com/tonio/modoboa/language/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: admin/api/v1/serializers.py:35 admin/forms/domain.py:44
-msgid ""
-"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
-"A value of 0 means no quota."
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
 msgstr ""
 
 #: admin/api/v1/serializers.py:42
@@ -62,8 +57,7 @@ msgid "This field is required"
 msgstr "Это поле обязательно для заполнеия"
 
 #: admin/api/v1/serializers.py:186
-msgid ""
-"List of administered domains (resellers and domain administrators only)."
+msgid "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
 #: admin/api/v1/serializers.py:292 admin/api/v2/serializers.py:458
@@ -196,9 +190,7 @@ msgid "Valid MXs"
 msgstr ""
 
 #: admin/app_settings.py:37 admin/app_settings.py:312
-msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+msgid "A list of IP or network address every MX record should match. A warning will be sent if a record does not respect it."
 msgstr ""
 
 #: admin/app_settings.py:45 admin/app_settings.py:318
@@ -206,9 +198,7 @@ msgid "New domains must use authorized MX(s)"
 msgstr ""
 
 #: admin/app_settings.py:48 admin/app_settings.py:321
-msgid ""
-"Prevent the creation of a new domain if its MX record does not use one of "
-"the defined addresses."
+msgid "Prevent the creation of a new domain if its MX record does not use one of the defined addresses."
 msgstr ""
 
 #: admin/app_settings.py:54 admin/app_settings.py:326
@@ -264,10 +254,7 @@ msgid "DKIM keys storage directory"
 msgstr ""
 
 #: admin/app_settings.py:107 admin/app_settings.py:367
-msgid ""
-"Absolute path of the directory where DKIM private keys will be stored. Make "
-"sure this directory belongs to root user and is not readable by the outside "
-"world."
+msgid "Absolute path of the directory where DKIM private keys will be stored. Make sure this directory belongs to root user and is not readable by the outside world."
 msgstr ""
 
 #: admin/app_settings.py:115 admin/app_settings.py:373
@@ -283,9 +270,7 @@ msgid "Default domain quota"
 msgstr ""
 
 #: admin/app_settings.py:127 admin/app_settings.py:381
-msgid ""
-"Default quota (in MB) applied to freshly created domains with no value "
-"specified. A value of 0 means no quota."
+msgid "Default quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
 msgstr ""
 
 #: admin/app_settings.py:133 admin/app_settings.py:386
@@ -293,9 +278,7 @@ msgid "Default domain sending limit"
 msgstr ""
 
 #: admin/app_settings.py:136 admin/app_settings.py:388
-msgid ""
-"Number of messages freshly created domains will be allowed to send per day. "
-"Leave empty for no limit."
+msgid "Number of messages freshly created domains will be allowed to send per day. Leave empty for no limit."
 msgstr ""
 
 #: admin/app_settings.py:141 admin/app_settings.py:395
@@ -311,12 +294,8 @@ msgstr "Обрабатывать почтовые ящики на диске"
 
 #: admin/app_settings.py:147 admin/app_settings.py:400
 #, fuzzy
-msgid ""
-"Rename or remove mailboxes on the filesystem when they get renamed or "
-"removed within Modoboa"
-msgstr ""
-"Удалять или переименовывать почтовые ящики на диске, если они удалены или "
-"переименованы в Modoboa"
+msgid "Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa"
+msgstr "Удалять или переименовывать почтовые ящики на диске, если они удалены или переименованы в Modoboa"
 
 #: admin/app_settings.py:153 admin/app_settings.py:405 admin/forms/domain.py:49
 #: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
@@ -324,9 +303,7 @@ msgid "Default mailbox quota"
 msgstr ""
 
 #: admin/app_settings.py:156
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
+msgid "Default mailbox quota (in MB) applied to freshly created mailboxes with no value specified. A value of 0 means no quota."
 msgstr ""
 
 #: admin/app_settings.py:162 admin/app_settings.py:413
@@ -334,9 +311,7 @@ msgid "Default mailbox sending limit"
 msgstr ""
 
 #: admin/app_settings.py:165 admin/app_settings.py:415
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
+msgid "Number of messages freshly created mailboxes will be allowed to send per day. Leave empty for no limit."
 msgstr ""
 
 #: admin/app_settings.py:171 admin/app_settings.py:420
@@ -365,9 +340,7 @@ msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 
 #: admin/app_settings.py:407
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created domains with no "
-"value specified. A value of 0 means no quota."
+msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
 msgstr ""
 
 #: admin/app_settings.py:451 admin/app_settings.py:453
@@ -400,9 +373,7 @@ msgid "Username"
 msgstr "Логин пользователя"
 
 #: admin/forms/account.py:34
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
+msgid "The user's name. Must be a valid e-mail address for simple users or administrators with a mailbox."
 msgstr ""
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
@@ -425,9 +396,7 @@ msgid "Random password"
 msgstr "Ошибочный запрос"
 
 #: admin/forms/account.py:46
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
+msgid "Generate a random password. If you're updating this account and check this box, a new password will be generated."
 msgstr ""
 
 #: admin/forms/account.py:52 core/forms.py:27 pdfcredentials/documents.py:81
@@ -475,19 +444,9 @@ msgstr "Квота"
 
 #: admin/forms/account.py:236
 #, fuzzy
-#| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's "
-#| "default one. Leave empty to define an unlimited value (not allowed for "
-#| "domain administrators)."
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Квота в мегабайтах для этого почтового ящика. Определите собственное "
-"значение или используйте значение по умолчанию для родительского домена. "
-"Оставьте пустым для неограниченного значения.  (Не разрешено администраторам "
-"домена)"
+#| msgid "Quota in MB for this mailbox. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Квота в мегабайтах для этого почтового ящика. Определите собственное значение или используйте значение по умолчанию для родительского домена. Оставьте пустым для неограниченного значения.  (Не разрешено администраторам домена)"
 
 #: admin/forms/account.py:246 admin/models/domain.py:36
 #: admin/models/mailbox.py:99 admin/templates/admin/account_detail.html:50
@@ -506,17 +465,9 @@ msgstr "Синоним(ы)"
 
 #: admin/forms/account.py:256
 #, fuzzy
-#| msgid ""
-#| "Alias(es) of this mailbox. Indicate only one address per input, press "
-#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
-#| "alias (ex: *@domain.tld)."
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Синонимы этого почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
-"добавления. Используйте '*' для создания синонима 'для всех' (*@domain.tld)"
+#| msgid "Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. Use the '*' character to create a 'catchall' alias (ex: *@domain.tld)."
+msgid "Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Синонимы этого почтового ящика. Вводите один адрес за раз. Нажмите ENTER для добавления. Используйте '*' для создания синонима 'для всех' (*@domain.tld)"
 
 #: admin/forms/account.py:262
 #, fuzzy
@@ -526,16 +477,9 @@ msgstr "Ошибочный запрос"
 
 #: admin/forms/account.py:265
 #, fuzzy
-#| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
-"добавления."
+#| msgid "Mailbox(es) this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgid "Additional sender address(es) for this account. The user will be allowed to send emails using this address, even if it does not exist locally. Indicate one address per input. Press ENTER to add a new input."
+msgstr "Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для добавления."
 
 #: admin/forms/account.py:325 admin/forms/alias.py:88
 #: admin/models/mailbox.py:313
@@ -601,15 +545,9 @@ msgstr "Е-майл адрес"
 
 #: admin/forms/alias.py:25
 #, fuzzy
-#| msgid ""
-#| "The alias address (without the domain part). For a 'catch-all' address, "
-#| "just enter an * character."
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Адреса синонимов (без доменной части). Для указания адреса 'для всех' "
-"введите символ *"
+#| msgid "The alias address (without the domain part). For a 'catch-all' address, just enter an * character."
+msgid "The alias address. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Адреса синонимов (без доменной части). Для указания адреса 'для всех' введите символ *"
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -617,15 +555,9 @@ msgstr "Получатели"
 
 #: admin/forms/alias.py:33
 #, fuzzy
-#| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для "
-"добавления."
+#| msgid "Mailbox(es) this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgid "Addresses this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgstr "Этот синоним почтового ящика. Вводите один адрес за раз. Нажмите ENTER для добавления."
 
 #: admin/forms/alias.py:114
 msgid "No recipient defined"
@@ -637,21 +569,15 @@ msgid "Type"
 msgstr ""
 
 #: admin/forms/domain.py:34
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Синоним(ы) этого домена. Вводите одно имя за раз. Нажмите ENTER для "
-"добавления."
+msgid "Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input."
+msgstr "Синоним(ы) этого домена. Вводите одно имя за раз. Нажмите ENTER для добавления."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
 msgstr ""
 
 #: admin/forms/domain.py:52
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
 msgstr ""
 
 #: admin/forms/domain.py:97 admin/handlers.py:166
@@ -672,7 +598,7 @@ msgstr ""
 msgid "You can't define an unlimited quota."
 msgstr ""
 
-#: admin/forms/domain.py:176 admin/forms/domain.py:181 policyd/core.py:106
+#: admin/forms/domain.py:176 admin/forms/domain.py:181
 msgid "domain"
 msgstr ""
 
@@ -694,12 +620,8 @@ msgid "Name"
 msgstr "Логин"
 
 #: admin/forms/domain.py:241
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
-msgstr ""
-"Имя администратора. Не включайте имя домена оно будет добавлено "
-"автоматически."
+msgid "The administrator's name. Don't include the domain's name here, it will be automatically appended."
+msgstr "Имя администратора. Не включайте имя домена оно будет добавлено автоматически."
 
 #: admin/forms/domain.py:251
 #, fuzzy
@@ -763,9 +685,7 @@ msgstr "Сохранить локальную копию"
 
 #: admin/forms/forward.py:22
 msgid "Forward messages and store copies into your local mailbox"
-msgstr ""
-"Перенаправление сообщения, и сохранение копии в вашем локальном почтовом "
-"ящике"
+msgstr "Перенаправление сообщения, и сохранение копии в вашем локальном почтовом ящике"
 
 #: admin/forms/import_.py:11
 msgid "Select a file"
@@ -1010,8 +930,7 @@ msgid "Enable DKIM signing"
 msgstr ""
 
 #: admin/models/domain.py:59
-msgid ""
-"If you activate this feature, a DKIM key will be generated for this domain."
+msgid "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 
 #: admin/models/domain.py:65
@@ -1497,24 +1416,11 @@ msgid "Fullname/Recipient"
 msgstr "Полное имя/получатель"
 
 #: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
 msgstr ""
 
 #: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
 msgstr ""
 
 #: admin/templates/admin/importform.html:6
@@ -1553,16 +1459,11 @@ msgstr ""
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
-msgid ""
-"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
-"providers:"
+msgid "Modoboa detected that domain %(domain)s is listed by the following DNSBL providers:"
 msgstr ""
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
-msgid ""
-"The domain's reputation will be affected and there is a chance that emails "
-"coming from it are considered as spam. You should contact those providers "
-"and ask them to unlist detected IP address(es)."
+msgid "The domain's reputation will be affected and there is a chance that emails coming from it are considered as spam. You should contact those providers and ask them to unlist detected IP address(es)."
 msgstr ""
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
@@ -1827,12 +1728,8 @@ msgid "Rounds"
 msgstr "Циклы"
 
 #: core/app_settings.py:61 core/app_settings.py:743
-msgid ""
-"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
-"between 1000 and 999999999, inclusive."
-msgstr ""
-"Количество циклов (используется только для sha256crypt и sha512crypt), Может "
-"быть от 1000 до 999999999, включительно."
+msgid "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be between 1000 and 999999999, inclusive."
+msgstr "Количество циклов (используется только для sha256crypt и sha512crypt), Может быть от 1000 до 999999999, включительно."
 
 #: core/app_settings.py:67 core/app_settings.py:749
 msgid "Update password scheme at login"
@@ -1840,9 +1737,7 @@ msgstr ""
 
 #: core/app_settings.py:70 core/app_settings.py:751
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Обновите пароль пользователя при входе в систему, чтобы использовать схему "
-"пароля по умолчанию"
+msgstr "Обновите пароль пользователя при входе в систему, чтобы использовать схему пароля по умолчанию"
 
 #: core/app_settings.py:75 core/app_settings.py:756
 msgid "Default password"
@@ -1865,10 +1760,7 @@ msgid "Update password service URL"
 msgstr ""
 
 #: core/app_settings.py:94 core/app_settings.py:768
-msgid ""
-"The URL of an external page where users will be able to update their "
-"password. It applies only to non local users, ie. those automatically "
-"created after a successful external authentication (LDAP, SMTP)."
+msgid "The URL of an external page where users will be able to update their password. It applies only to non local users, ie. those automatically created after a successful external authentication (LDAP, SMTP)."
 msgstr ""
 
 #: core/app_settings.py:102 core/app_settings.py:775
@@ -1920,8 +1812,7 @@ msgid "Enable secondary server (fallback)"
 msgstr ""
 
 #: core/app_settings.py:150 core/app_settings.py:814
-msgid ""
-"Enable a secondary LDAP server which will be used if the primary one fails"
+msgid "Enable a secondary LDAP server which will be used if the primary one fails"
 msgstr ""
 
 #: core/app_settings.py:156 core/app_settings.py:819
@@ -1961,12 +1852,8 @@ msgid "Administrator groups"
 msgstr "Администратор груп"
 
 #: core/app_settings.py:188 core/app_settings.py:845
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Члены этих LDAP Posix групп должны быть созданы администратором домена. "
-"Используйте ';' для как разделитель груп"
+msgid "Members of those LDAP Posix groups will be created as domain administrators. Use ';' characters to separate groups."
+msgstr "Члены этих LDAP Posix групп должны быть созданы администратором домена. Используйте ';' для как разделитель груп"
 
 #: core/app_settings.py:195 core/app_settings.py:851
 msgid "Group type"
@@ -2019,12 +1906,8 @@ msgstr "Соединится с DN "
 
 #: core/app_settings.py:234 core/app_settings.py:288 core/app_settings.py:882
 #: core/app_settings.py:927
-msgid ""
-"The distinguished name to use when binding to the LDAP server. Leave empty "
-"for an anonymous bind"
-msgstr ""
-"Отличительное имя  используемое для соединения с LDAP сервером. Оставьте "
-"пустым для анонимного соединения"
+msgid "The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"
+msgstr "Отличительное имя  используемое для соединения с LDAP сервером. Оставьте пустым для анонимного соединения"
 
 #: core/app_settings.py:241 core/app_settings.py:295 core/app_settings.py:888
 #: core/app_settings.py:932
@@ -2053,12 +1936,8 @@ msgstr "Фильтр поиска"
 
 #: core/app_settings.py:264 core/app_settings.py:356 core/app_settings.py:907
 #: core/app_settings.py:981
-msgid ""
-"An optional filter string (e.g. '(objectClass=person)'). In order to be "
-"valid, it must be enclosed in parentheses."
-msgstr ""
-"Необязательная срока поиска (например '(objectClass=person)') Значение нужно "
-"заключить в скобки"
+msgid "An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."
+msgstr "Необязательная срока поиска (например '(objectClass=person)') Значение нужно заключить в скобки"
 
 #: core/app_settings.py:271 core/app_settings.py:913
 msgid "User DN template"
@@ -2066,12 +1945,8 @@ msgstr "Шаблон пользователя DN"
 
 #: core/app_settings.py:274 core/app_settings.py:915
 #, python-format
-msgid ""
-"The template used to construct a user's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Шаблон используется для построения запросов к DN Он должен содержать атрибут "
-"например (%(user)s)"
+msgid "The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Шаблон используется для построения запросов к DN Он должен содержать атрибут например (%(user)s)"
 
 #: core/app_settings.py:282 core/app_settings.py:921
 msgid "LDAP synchronization settings"
@@ -2082,8 +1957,7 @@ msgid "Enable export to LDAP"
 msgstr ""
 
 #: core/app_settings.py:309 core/app_settings.py:942
-msgid ""
-"Enable automatic synchronization between local database and LDAP directory"
+msgid "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 
 #: core/app_settings.py:315 core/app_settings.py:948
@@ -2091,9 +1965,7 @@ msgid "Delete remote LDAP account when local account is deleted"
 msgstr ""
 
 #: core/app_settings.py:319 core/app_settings.py:950
-msgid ""
-"Delete remote LDAP account when local account is deleted, otherwise it will "
-"be disabled."
+msgid "Delete remote LDAP account when local account is deleted, otherwise it will be disabled."
 msgstr ""
 
 #: core/app_settings.py:325 core/app_settings.py:956
@@ -2102,9 +1974,7 @@ msgstr ""
 
 #: core/app_settings.py:328 core/app_settings.py:958
 #, python-format
-msgid ""
-"The template used to construct an account's DN. It should contain one "
-"placeholder (ie. %(user)s)"
+msgid "The template used to construct an account's DN. It should contain one placeholder (ie. %(user)s)"
 msgstr ""
 
 #: core/app_settings.py:335 core/app_settings.py:964
@@ -2136,8 +2006,7 @@ msgid "Dovecot LDAP config file"
 msgstr ""
 
 #: core/app_settings.py:384 core/app_settings.py:1004
-msgid ""
-"Location of the configuration file which contains Dovecot LDAP settings."
+msgid "Location of the configuration file which contains Dovecot LDAP settings."
 msgstr ""
 
 #: core/app_settings.py:389 core/app_settings.py:1013
@@ -2151,9 +2020,7 @@ msgstr "Пользовательская RSS лента"
 
 #: core/app_settings.py:395 core/app_settings.py:1018
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Отображать пользовательскую ленту RSS для реселлеров и администраторов "
-"доменов"
+msgstr "Отображать пользовательскую ленту RSS для реселлеров и администраторов доменов"
 
 #: core/app_settings.py:400 core/app_settings.py:1023
 msgid "Hide features widget"
@@ -2217,9 +2084,7 @@ msgstr "Отправить статистику"
 
 #: core/app_settings.py:452 core/app_settings.py:1074
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Отправлять статистику в Modoboa public API (счетчики и используемые "
-"расширения)"
+msgstr "Отправлять статистику в Modoboa public API (счетчики и используемые расширения)"
 
 #: core/app_settings.py:456 core/app_settings.py:1080
 msgid "Miscellaneous"
@@ -2232,9 +2097,7 @@ msgid "Enable inactive account tracking"
 msgstr "Порог неактивного аккаунта"
 
 #: core/app_settings.py:461 core/app_settings.py:1085
-msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+msgid "Allow the administrator to set a threshold (in days) beyond which an account is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:467 core/app_settings.py:1091
@@ -2242,12 +2105,8 @@ msgid "Inactive account threshold"
 msgstr "Порог неактивного аккаунта"
 
 #: core/app_settings.py:470 core/app_settings.py:1094
-msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Аккаунт с датой последнего входа, превышающей этот порог (в днях), будет "
-"считаться неактивным"
+msgid "An account with a last login date greater than this threshold (in days) will be considered as inactive"
+msgstr "Аккаунт с датой последнего входа, превышающей этот порог (в днях), будет считаться неактивным"
 
 #: core/app_settings.py:476 core/app_settings.py:1099
 msgid "Top notifications check interval"
@@ -2286,10 +2145,7 @@ msgid "LDAP"
 msgstr ""
 
 #: core/checks/settings_checks.py:6
-msgid ""
-"You have USE_TZ set to False, this may result in issues during transitions "
-"between summer/winter time (ie the same local time occuring twice due to "
-"clock change)."
+msgid "You have USE_TZ set to False, this may result in issues during transitions between summer/winter time (ie the same local time occuring twice due to clock change)."
 msgstr ""
 
 #: core/checks/settings_checks.py:9
@@ -2422,7 +2278,7 @@ msgstr "Альтернативный e-mail может быть использо
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Ошибка обновления пароля: модуль LDAP не установлен"
 
-#: core/models.py:159 policyd/core.py:105
+#: core/models.py:159
 msgid "account"
 msgstr "Аккаунт"
 
@@ -2549,9 +2405,7 @@ msgid "Latest news"
 msgstr "Последние новости"
 
 #: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
+msgid "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official weblog</a> for more information."
 msgstr ""
 
 #: core/templates/core/api_access.html:3
@@ -2564,9 +2418,7 @@ msgstr ""
 
 #: core/templates/core/api_access.html:7
 #, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
+msgid "A documentation of the API is available <strong><a href=\"%(url)s\" target=\"_blank\">here</a></strong>."
 msgstr ""
 
 #: core/templates/core/api_access.html:14
@@ -2691,9 +2543,7 @@ msgid "Two-Factor authentication"
 msgstr "Базовая программа для проверки подлинности"
 
 #: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+msgid "Install a soft token authenticator like FreeOTP or Google Authenticator from your application repository and use that app to scan this QR code."
 msgstr ""
 
 #: core/templates/core/user_security.html:25
@@ -2705,17 +2555,12 @@ msgid "Register"
 msgstr ""
 
 #: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
 msgstr ""
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
+msgid "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
 msgstr ""
 
 #: core/templates/core/user_security.html:53
@@ -2732,9 +2577,7 @@ msgid "Reset recovery codes"
 msgstr ""
 
 #: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
+msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
 msgstr ""
 
 #: core/templates/core/user_security.html:73
@@ -3059,9 +2902,7 @@ msgid "A DNS record has been found but its syntax is not valid:"
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+msgid "Here is an example of DNS configuration (bind format). Replace value between [ ] by the appropriate ones."
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
@@ -3138,9 +2979,7 @@ msgid "Folder Filter Exclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:44 imap_migration/app_settings.py:93
-msgid ""
-"Use a regular expression to explicitly include folders in sync. Example: "
-"^Trash$|Del"
+msgid "Use a regular expression to explicitly include folders in sync. Example: ^Trash$|Del"
 msgstr ""
 
 #: imap_migration/app_settings.py:48 imap_migration/app_settings.py:100
@@ -3148,10 +2987,7 @@ msgid "Folder Filter Inclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:50 imap_migration/app_settings.py:103
-msgid ""
-"A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+msgid "A comma seperated list of folders to explicitly include in sync even if filtered by the Folder Filter Exclusions. Example: debian.user, debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:72
@@ -3174,14 +3010,11 @@ msgid "Connection to IMAP server failed: %s"
 msgstr ""
 
 #: imap_migration/checks.py:11
-msgid ""
-"Automatic domain/mailbox creation is disabled which means IMAP "
-"authentication won't work."
+msgid "Automatic domain/mailbox creation is disabled which means IMAP authentication won't work."
 msgstr ""
 
 #: imap_migration/checks.py:13
-msgid ""
-"Go to the online parameters panel (admin tab) and activate this feature."
+msgid "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
 
 #: imap_migration/templates/imap_migration/index.html:6
@@ -3273,50 +3106,36 @@ msgstr "Администраторы домена"
 
 #: limits/app_settings.py:29 limits/app_settings.py:164
 #, fuzzy
-#| msgid ""
-#| "Maximum number of allowed domain administrators for a new administrator"
-msgid ""
-"Maximum number of allowed domain administrators for a new administrator. (0 "
-"to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Максимальное количество администраторов домена для нового администратора"
+#| msgid "Maximum number of allowed domain administrators for a new administrator"
+msgid "Maximum number of allowed domain administrators for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Максимальное количество администраторов домена для нового администратора"
 
 #: limits/app_settings.py:40 limits/app_settings.py:173
 #, fuzzy
 #| msgid "Maximum number of allowed domains for a new administrator"
-msgid ""
-"Maximum number of allowed domains for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed domains for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество доменов для нового администратора"
 
 #: limits/app_settings.py:50 limits/app_settings.py:181
 #, fuzzy
 #| msgid "Maximum number of allowed domain aliases for a new administrator"
-msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed domain aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество синонимов доменов для нового администратора"
 
 #: limits/app_settings.py:61 limits/app_settings.py:190
 #, fuzzy
 #| msgid "Maximum number of allowed mailboxes for a new administrator"
-msgid ""
-"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed mailboxes for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество почтовых ящиков для нового администратора"
 
 #: limits/app_settings.py:71 limits/app_settings.py:199
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
-msgid ""
-"Maximum number of allowed aliases for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество синонимов для нового администратора"
 
 #: limits/app_settings.py:81 limits/app_settings.py:206
-msgid ""
-"The quota a reseller will be allowed to share between the domains he "
-"creates. (0 means no quota)"
+msgid "The quota a reseller will be allowed to share between the domains he creates. (0 means no quota)"
 msgstr ""
 
 #: limits/app_settings.py:88 limits/app_settings.py:213
@@ -3335,36 +3154,26 @@ msgstr ""
 
 #: limits/app_settings.py:100 limits/app_settings.py:223
 #, fuzzy
-#| msgid ""
-#| "Maximum number of allowed domain administrators for a new administrator"
-msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Максимальное количество администраторов домена для нового администратора"
+#| msgid "Maximum number of allowed domain administrators for a new administrator"
+msgid "Maximum number of allowed domain administrators for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Максимальное количество администраторов домена для нового администратора"
 
 #: limits/app_settings.py:111 limits/app_settings.py:232
 #, fuzzy
 #| msgid "Maximum number of allowed domain aliases for a new administrator"
-msgid ""
-"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed domain aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество синонимов доменов для нового администратора"
 
 #: limits/app_settings.py:122 limits/app_settings.py:241
 #, fuzzy
 #| msgid "Maximum number of allowed mailboxes for a new administrator"
-msgid ""
-"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed mailboxes for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество почтовых ящиков для нового администратора"
 
 #: limits/app_settings.py:132 limits/app_settings.py:249
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
-msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+msgid "Maximum number of allowed aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество синонимов для нового администратора"
 
 #: limits/apps.py:13 limits/apps.py:15
@@ -3377,26 +3186,19 @@ msgstr "Максимальное количество создаваемых д�
 
 #: limits/constants.py:14
 msgid "Maximum number of domain aliases this user can create"
-msgstr ""
-"Максимальное количество создаваемых синонимов (алиасов) доменов для этого "
-"пользователя"
+msgstr "Максимальное количество создаваемых синонимов (алиасов) доменов для этого пользователя"
 
 #: limits/constants.py:18
 msgid "Maximum number of mailboxes this user can create"
-msgstr ""
-"Максимальное количество создаваемых почтовых ящиков для этого пользователя"
+msgstr "Максимальное количество создаваемых почтовых ящиков для этого пользователя"
 
 #: limits/constants.py:21
 msgid "Maximum number of mailbox aliases this user can create"
-msgstr ""
-"Максимальное количество создаваемых синонимов почтовых ящиков для этого "
-"пользователя"
+msgstr "Максимальное количество создаваемых синонимов почтовых ящиков для этого пользователя"
 
 #: limits/constants.py:25
 msgid "Maximum number of domain administrators this user can create"
-msgstr ""
-"Максимальное количество создаваемых администраторов домена для этого "
-"пользователя"
+msgstr "Максимальное количество создаваемых администраторов домена для этого пользователя"
 
 #: limits/constants.py:31
 msgid "Quota shared between domains of this reseller"
@@ -3406,32 +3208,25 @@ msgstr ""
 #, fuzzy
 #| msgid "Maximum number of domain aliases this user can create"
 msgid "Maximum number of domain aliases allowed for this domain."
-msgstr ""
-"Максимальное количество создаваемых синонимов (алиасов) доменов для этого "
-"пользователя"
+msgstr "Максимальное количество создаваемых синонимов (алиасов) доменов для этого пользователя"
 
 #: limits/constants.py:46
 #, fuzzy
 #| msgid "Maximum number of mailboxes this user can create"
 msgid "Maximum number of mailboxes allowed for this domain."
-msgstr ""
-"Максимальное количество создаваемых почтовых ящиков для этого пользователя"
+msgstr "Максимальное количество создаваемых почтовых ящиков для этого пользователя"
 
 #: limits/constants.py:50
 #, fuzzy
 #| msgid "Maximum number of mailbox aliases this user can create"
 msgid "Maximum number of mailbox aliases allowed for this domain."
-msgstr ""
-"Максимальное количество создаваемых синонимов почтовых ящиков для этого "
-"пользователя"
+msgstr "Максимальное количество создаваемых синонимов почтовых ящиков для этого пользователя"
 
 #: limits/constants.py:55
 #, fuzzy
 #| msgid "Maximum number of domain administrators this user can create"
 msgid "Maximum number of domain admins allowed for this domain."
-msgstr ""
-"Максимальное количество создаваемых администраторов домена для этого "
-"пользователя"
+msgstr "Максимальное количество создаваемых администраторов домена для этого пользователя"
 
 #: limits/forms.py:38 limits/forms.py:87
 msgid "Invalid limit"
@@ -3671,9 +3466,7 @@ msgid "Delete documents after the first download"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:45 pdfcredentials/app_settings.py:145
-msgid ""
-"Automatically delete a document just after its first download from this "
-"interface"
+msgid "Automatically delete a document just after its first download from this interface"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:151
@@ -3681,9 +3474,7 @@ msgid "Generate documents only at account creation"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:52 pdfcredentials/app_settings.py:154
-msgid ""
-"Generate a new document only when a new account is created. If set to no, a "
-"new document will be created each time a password is updated."
+msgid "Generate a new document only when a new account is created. If set to no, a new document will be created each time a password is updated."
 msgstr ""
 
 #: pdfcredentials/app_settings.py:60 pdfcredentials/app_settings.py:160
@@ -3721,9 +3512,7 @@ msgid "Include mail client connection settings"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:79 pdfcredentials/app_settings.py:184
-msgid ""
-"Include required SMTP and IMAP connection information to configure a mail "
-"client, a tablet or a phone"
+msgid "Include required SMTP and IMAP connection information to configure a mail client, a tablet or a phone"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:84 pdfcredentials/app_settings.py:190
@@ -3848,21 +3637,6 @@ msgstr ""
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr ""
 
-#: policyd/core.py:89
-#, fuzzy
-#| msgid "%s: limit reached"
-msgid "Daily sending limit reached"
-msgstr "%s лимит исчерпан"
-
-#: policyd/core.py:124
-msgid "[modoboa] Sending limit reached"
-msgstr ""
-
-#: policyd/templates/policyd/notifications/limit_reached.html:3
-#, python-format
-msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
-
 #: relaydomains/api/v1/serializers.py:25
 msgid "Unsupported service"
 msgstr ""
@@ -3953,9 +3727,7 @@ msgstr "Забыли пароль?"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
-msgid ""
-"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
-"in</a> now."
+msgid "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign in</a> now."
 msgstr ""
 
 #: templates/registration/password_reset_confirm.html:7
@@ -3963,9 +3735,7 @@ msgid "Change password"
 msgstr "Изменить пароль"
 
 #: templates/registration/password_reset_confirm.html:17
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used. Please request a new password reset."
+msgid "The password reset link was invalid, possibly because it has already been used. Please request a new password reset."
 msgstr ""
 
 #: templates/registration/password_reset_confirm_code.html:20
@@ -3977,26 +3747,18 @@ msgid "Resend code"
 msgstr ""
 
 #: templates/registration/password_reset_done.html:7
-msgid ""
-"<p>We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly.</p> "
-"<p>If you don't receive an email, please make sure you've entered your "
-"primary address, and check your spam folder.</p>"
+msgid "<p>We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.</p> <p>If you don't receive an email, please make sure you've entered your primary address, and check your spam folder.</p>"
 msgstr ""
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
 #, python-format
-msgid ""
-"To initiate the password reset process for your %(username)s Modoboa "
-"account, click the link below:"
+msgid "To initiate the password reset process for your %(username)s Modoboa account, click the link below:"
 msgstr ""
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
-msgid ""
-"If clicking the link above doesn't work, please copy and paste the URL in a "
-"new browser window instead."
+msgid "If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead."
 msgstr ""
 
 #: templates/registration/password_reset_email.html:14
@@ -4030,6 +3792,11 @@ msgstr ""
 msgid "next hop"
 msgstr ""
 
+#, fuzzy
+#~| msgid "%s: limit reached"
+#~ msgid "Daily sending limit reached"
+#~ msgstr "%s лимит исчерпан"
+
 #~ msgid "Graphical statistics about emails traffic using RRDtool"
 #~ msgstr "Графическая статистика о почтовом траффика использует RRDtool"
 
@@ -4056,12 +3823,8 @@ msgstr ""
 #~ msgid "File name"
 #~ msgstr "Имя файла"
 
-#~ msgid ""
-#~ "You can't define a forward to a local destination. Please ask your "
-#~ "administrator to create an alias instead."
-#~ msgstr ""
-#~ "Вы не можете определить перенаправление на локальный адрес. Пожалуйста, "
-#~ "попросите администратора создать синоним"
+#~ msgid "You can't define a forward to a local destination. Please ask your administrator to create an alias instead."
+#~ msgstr "Вы не можете определить перенаправление на локальный адрес. Пожалуйста, попросите администратора создать синоним"
 
 #~ msgid "Quota is greater than the allowed domain's limit (%dM)"
 #~ msgstr "Квота больше чем разрешено на уровне домена (%dM)"

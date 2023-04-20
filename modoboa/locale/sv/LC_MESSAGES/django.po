@@ -10,11 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 10:38+0200\n"
+"POT-Creation-Date: 2023-04-20 14:11+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Olle Gustafsson <olle@dalnix.se>, 2013,2015-2018,2020,2022\n"
-"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/"
-"sv/)\n"
+"Language-Team: Swedish (http://www.transifex.com/tonio/modoboa/language/sv/)\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,11 +22,8 @@ msgstr ""
 
 #: admin/api/v1/serializers.py:35 admin/forms/domain.py:44
 #, fuzzy
-#| msgid ""
-#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgid ""
-"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
-"A value of 0 means no quota."
+#| msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
 msgstr "Standardkvota i MB applicerad på nya brevlådor. 0 betyder ingen kvota."
 
 #: admin/api/v1/serializers.py:42
@@ -57,11 +53,8 @@ msgid "This field is required"
 msgstr "Detta fält är obligatoriskt"
 
 #: admin/api/v1/serializers.py:186
-msgid ""
-"List of administered domains (resellers and domain administrators only)."
-msgstr ""
-"Lista över administrerade domäner (endast återförsäljare och "
-"domänadministratörer)."
+msgid "List of administered domains (resellers and domain administrators only)."
+msgstr "Lista över administrerade domäner (endast återförsäljare och domänadministratörer)."
 
 #: admin/api/v1/serializers.py:292 admin/api/v2/serializers.py:458
 msgid "Not allowed for this role."
@@ -185,24 +178,16 @@ msgid "Valid MXs"
 msgstr "Giltiga MX"
 
 #: admin/app_settings.py:37 admin/app_settings.py:312
-msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"En lista över IP eller nätverksadresser varje MX record skall matcha. En "
-"varning kommer skickas om ett record inte matchar."
+msgid "A list of IP or network address every MX record should match. A warning will be sent if a record does not respect it."
+msgstr "En lista över IP eller nätverksadresser varje MX record skall matcha. En varning kommer skickas om ett record inte matchar."
 
 #: admin/app_settings.py:45 admin/app_settings.py:318
 msgid "New domains must use authorized MX(s)"
 msgstr "Nya domäner måste använda auktoriseradade MX inlägg"
 
 #: admin/app_settings.py:48 admin/app_settings.py:321
-msgid ""
-"Prevent the creation of a new domain if its MX record does not use one of "
-"the defined addresses."
-msgstr ""
-"Förhindra uppskapandet av nya domäner om ett MX inlägg inte använder ett "
-"fördefinerat."
+msgid "Prevent the creation of a new domain if its MX record does not use one of the defined addresses."
+msgstr "Förhindra uppskapandet av nya domäner om ett MX inlägg inte använder ett fördefinerat."
 
 #: admin/app_settings.py:54 admin/app_settings.py:326
 #, fuzzy
@@ -273,14 +258,8 @@ msgid "DKIM keys storage directory"
 msgstr "DKIM nycklar lagrings katalog"
 
 #: admin/app_settings.py:107 admin/app_settings.py:367
-msgid ""
-"Absolute path of the directory where DKIM private keys will be stored. Make "
-"sure this directory belongs to root user and is not readable by the outside "
-"world."
-msgstr ""
-"Absolut sökväg till katalogen där DKIM privata nycklar kommer lagras. Se "
-"till att den här katalogen ägs av root-användaren och inte kan läsas av "
-"utomstående."
+msgid "Absolute path of the directory where DKIM private keys will be stored. Make sure this directory belongs to root user and is not readable by the outside world."
+msgstr "Absolut sökväg till katalogen där DKIM privata nycklar kommer lagras. Se till att den här katalogen ägs av root-användaren och inte kan läsas av utomstående."
 
 #: admin/app_settings.py:115 admin/app_settings.py:373
 msgid "Default DKIM key length"
@@ -295,12 +274,8 @@ msgid "Default domain quota"
 msgstr "Standard domän kvota"
 
 #: admin/app_settings.py:127 admin/app_settings.py:381
-msgid ""
-"Default quota (in MB) applied to freshly created domains with no value "
-"specified. A value of 0 means no quota."
-msgstr ""
-"Standard kvota (i MB) applicerad på nyskapade domäner som inte har något "
-"värde specificerat. Ett värde på 0 betyder ingen kvota."
+msgid "Default quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Standard kvota (i MB) applicerad på nyskapade domäner som inte har något värde specificerat. Ett värde på 0 betyder ingen kvota."
 
 #: admin/app_settings.py:133 admin/app_settings.py:386
 #, fuzzy
@@ -309,9 +284,7 @@ msgid "Default domain sending limit"
 msgstr "Standard domän kvota"
 
 #: admin/app_settings.py:136 admin/app_settings.py:388
-msgid ""
-"Number of messages freshly created domains will be allowed to send per day. "
-"Leave empty for no limit."
+msgid "Number of messages freshly created domains will be allowed to send per day. Leave empty for no limit."
 msgstr ""
 
 #: admin/app_settings.py:141 admin/app_settings.py:395
@@ -326,12 +299,8 @@ msgid "Handle mailboxes on filesystem"
 msgstr "Hantera brevlådor på filsystem"
 
 #: admin/app_settings.py:147 admin/app_settings.py:400
-msgid ""
-"Rename or remove mailboxes on the filesystem when they get renamed or "
-"removed within Modoboa"
-msgstr ""
-"Byt namn på eller ta bort brevlådor på filsystemet när de kommer byta namn "
-"eller tas bort inom Modoboa"
+msgid "Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa"
+msgstr "Byt namn på eller ta bort brevlådor på filsystemet när de kommer byta namn eller tas bort inom Modoboa"
 
 #: admin/app_settings.py:153 admin/app_settings.py:405 admin/forms/domain.py:49
 #: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
@@ -340,15 +309,9 @@ msgstr "Standard brevlåde kvota"
 
 #: admin/app_settings.py:156
 #, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Standard brevlåde kvota (i MB) applicerad på nyligen skapade domäner där "
-"inget värde angetts. 0 betyder ingen kvota."
+#| msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgid "Default mailbox quota (in MB) applied to freshly created mailboxes with no value specified. A value of 0 means no quota."
+msgstr "Standard brevlåde kvota (i MB) applicerad på nyligen skapade domäner där inget värde angetts. 0 betyder ingen kvota."
 
 #: admin/app_settings.py:162 admin/app_settings.py:413
 #, fuzzy
@@ -357,9 +320,7 @@ msgid "Default mailbox sending limit"
 msgstr "Standard brevlåde kvota"
 
 #: admin/app_settings.py:165 admin/app_settings.py:415
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
+msgid "Number of messages freshly created mailboxes will be allowed to send per day. Leave empty for no limit."
 msgstr ""
 
 #: admin/app_settings.py:171 admin/app_settings.py:420
@@ -388,15 +349,9 @@ msgstr "Skapa ett alias med den gamla adressen när en brevlåda bytt namn."
 
 #: admin/app_settings.py:407
 #, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created domains with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Standard brevlåde kvota (i MB) applicerad på nyligen skapade domäner där "
-"inget värde angetts. 0 betyder ingen kvota."
+#| msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Standard brevlåde kvota (i MB) applicerad på nyligen skapade domäner där inget värde angetts. 0 betyder ingen kvota."
 
 #: admin/app_settings.py:451 admin/app_settings.py:453
 msgid "Administration"
@@ -428,12 +383,8 @@ msgid "Username"
 msgstr "Användarnamn"
 
 #: admin/forms/account.py:34
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
-msgstr ""
-"Användarens namn. Måste vara en giltig e-postadress för vanliga användare "
-"eller för administratörer med brevlåda."
+msgid "The user's name. Must be a valid e-mail address for simple users or administrators with a mailbox."
+msgstr "Användarens namn. Måste vara en giltig e-postadress för vanliga användare eller för administratörer med brevlåda."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 #: core/templates/core/information.html:37
@@ -453,12 +404,8 @@ msgid "Random password"
 msgstr "Slumpmässigt lösenord"
 
 #: admin/forms/account.py:46
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
-msgstr ""
-"Skapa ett slumpmässigt lösenord. Om du uppdaterar det här kontot och "
-"markerar den här rutan genereras ett nytt lösenord."
+msgid "Generate a random password. If you're updating this account and check this box, a new password will be generated."
+msgstr "Skapa ett slumpmässigt lösenord. Om du uppdaterar det här kontot och markerar den här rutan genereras ett nytt lösenord."
 
 #: admin/forms/account.py:52 core/forms.py:27 pdfcredentials/documents.py:81
 msgid "Password"
@@ -505,18 +452,9 @@ msgstr "Kvot"
 
 #: admin/forms/account.py:236
 #, fuzzy
-#| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's "
-#| "default one. Leave empty to define an unlimited value (not allowed for "
-#| "domain administrators)."
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Kvot i MB för denna brevlåda. Definiera ett anpassat värde eller använda "
-"domänens förvalda. Lämna tomt för att definiera ett obegränsat värde (ej "
-"tillåtet för domänadministratörer)."
+#| msgid "Quota in MB for this mailbox. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Kvot i MB för denna brevlåda. Definiera ett anpassat värde eller använda domänens förvalda. Lämna tomt för att definiera ett obegränsat värde (ej tillåtet för domänadministratörer)."
 
 #: admin/forms/account.py:246 admin/models/domain.py:36
 #: admin/models/mailbox.py:99 admin/templates/admin/account_detail.html:50
@@ -534,28 +472,16 @@ msgid "Alias(es)"
 msgstr "Alias"
 
 #: admin/forms/account.py:256
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Alias för denna brevlåda. Ange endast en adress per inmatning, tryck RETUR "
-"för att lägga till nytt. För att skapa ett \"catch-all\" alias, ange bara "
-"domännamnet (@domain.tld)."
+msgid "Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Alias för denna brevlåda. Ange endast en adress per inmatning, tryck RETUR för att lägga till nytt. För att skapa ett \"catch-all\" alias, ange bara domännamnet (@domain.tld)."
 
 #: admin/forms/account.py:262
 msgid "Sender addresses"
 msgstr "Avsändaradress"
 
 #: admin/forms/account.py:265
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Övriga avsändaradresser fär detta konto. Användaren tillåts skicka e-post "
-"med från denna adress, även om den inte finns lokalt. Ange en adress per "
-"rad. Tryck RETUR för att lägga till ny rad."
+msgid "Additional sender address(es) for this account. The user will be allowed to send emails using this address, even if it does not exist locally. Indicate one address per input. Press ENTER to add a new input."
+msgstr "Övriga avsändaradresser fär detta konto. Användaren tillåts skicka e-post med från denna adress, även om den inte finns lokalt. Ange en adress per rad. Tryck RETUR för att lägga till ny rad."
 
 #: admin/forms/account.py:325 admin/forms/alias.py:88
 #: admin/models/mailbox.py:313
@@ -616,23 +542,16 @@ msgid "Email address"
 msgstr "E-post adress"
 
 #: admin/forms/alias.py:25
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Alias adress. För en \"catch-all\"-alias, ange bara domännamnet (@domän.tld)."
+msgid "The alias address. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Alias adress. För en \"catch-all\"-alias, ange bara domännamnet (@domän.tld)."
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Mottagare"
 
 #: admin/forms/alias.py:33
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Adresser detta alias kommer peka på. Ange bara en adress per fält, tryck "
-"RETUR för att lägga till ytterligare."
+msgid "Addresses this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgstr "Adresser detta alias kommer peka på. Ange bara en adress per fält, tryck RETUR för att lägga till ytterligare."
 
 #: admin/forms/alias.py:114
 msgid "No recipient defined"
@@ -644,12 +563,8 @@ msgid "Type"
 msgstr "Typ"
 
 #: admin/forms/domain.py:34
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att "
-"lägga till en rad."
+msgid "Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input."
+msgstr "Alias för denna domän. Ange endast ett namn per rad, tryck ENTER för att lägga till en rad."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
@@ -657,11 +572,8 @@ msgstr "Nyckelväljare"
 
 #: admin/forms/domain.py:52
 #, fuzzy
-#| msgid ""
-#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
+#| msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
 msgstr "Standardkvota i MB applicerad på nya brevlådor. 0 betyder ingen kvota."
 
 #: admin/forms/domain.py:97 admin/handlers.py:166
@@ -682,7 +594,7 @@ msgstr "DKIM nycklar lagringskatalog ej konfigurerad"
 msgid "You can't define an unlimited quota."
 msgstr "Du kan inte ange en obegränsad kvota."
 
-#: admin/forms/domain.py:176 admin/forms/domain.py:181 policyd/core.py:106
+#: admin/forms/domain.py:176 admin/forms/domain.py:181
 msgid "domain"
 msgstr "domän"
 
@@ -704,12 +616,8 @@ msgid "Name"
 msgstr "Namn"
 
 #: admin/forms/domain.py:241
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
-msgstr ""
-"Administratörens namn. Inkludera inte domänens namn här, den kommer att "
-"läggas till automatiskt."
+msgid "The administrator's name. Don't include the domain's name here, it will be automatically appended."
+msgstr "Administratörens namn. Inkludera inte domänens namn här, den kommer att läggas till automatiskt."
 
 #: admin/forms/domain.py:251
 msgid "Generate a random password for the administrator."
@@ -1005,11 +913,8 @@ msgid "Enable DKIM signing"
 msgstr "Aktivera DKIM-signering"
 
 #: admin/models/domain.py:59
-msgid ""
-"If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Om du aktiverar den här funktionen genereras en DKIM-nyckel för den här "
-"domänen."
+msgid "If you activate this feature, a DKIM key will be generated for this domain."
+msgstr "Om du aktiverar den här funktionen genereras en DKIM-nyckel för den här domänen."
 
 #: admin/models/domain.py:65
 msgid "Key length"
@@ -1465,38 +1370,12 @@ msgid "Fullname/Recipient"
 msgstr "Fullständigt namn/Mottagare"
 
 #: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Tillhandahåll en CSV fil där raderna har följande format: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>Det första elementet i varje rad är "
-"obligatoriskt och måste vara lika med en av de tidigare värdena.</p> <p>Du "
-"kan använda ett annat tecken som separator.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Tillhandahåll en CSV fil där raderna har följande format: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>Det första elementet i varje rad är obligatoriskt och måste vara lika med en av de tidigare värdena.</p> <p>Du kan använda ett annat tecken som separator.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Tillhandahåll en CSV-fil där raderna har följande format: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>Det första elementet i varje "
-"rad är obligatorisk och måste vara lika med en av de tidigare värdena.</p> "
-"<p>Du kan använda ett annat tecken separator.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Tillhandahåll en CSV-fil där raderna har följande format: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>Det första elementet i varje rad är obligatorisk och måste vara lika med en av de tidigare värdena.</p> <p>Du kan använda ett annat tecken separator.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1532,22 +1411,12 @@ msgstr "Inget MX record funnet för denna domän."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
-msgid ""
-"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
-"providers:"
-msgstr ""
-"Modoboa har upptäckt att domän %(domain)s är listad host följande DNSBL "
-"leverantörer:"
+msgid "Modoboa detected that domain %(domain)s is listed by the following DNSBL providers:"
+msgstr "Modoboa har upptäckt att domän %(domain)s är listad host följande DNSBL leverantörer:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
-msgid ""
-"The domain's reputation will be affected and there is a chance that emails "
-"coming from it are considered as spam. You should contact those providers "
-"and ask them to unlist detected IP address(es)."
-msgstr ""
-"Domänens rykte kommer påverkas och det finns en chans att epost som kommer "
-"från den anses vara skräppost. Du bör kontakta dessa leverantörer och be den "
-"att avlista upptäckt IP adress(er)."
+msgid "The domain's reputation will be affected and there is a chance that emails coming from it are considered as spam. You should contact those providers and ask them to unlist detected IP address(es)."
+msgstr "Domänens rykte kommer påverkas och det finns en chans att epost som kommer från den anses vara skräppost. Du bör kontakta dessa leverantörer och be den att avlista upptäckt IP adress(er)."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -1803,12 +1672,8 @@ msgid "Rounds"
 msgstr "Antal omgångar"
 
 #: core/app_settings.py:61 core/app_settings.py:743
-msgid ""
-"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
-"between 1000 and 999999999, inclusive."
-msgstr ""
-"Antal omgångar att använda (används endast av sha256crypt och sha512crypt). "
-"Måste vara mellan 1000 och 999999999."
+msgid "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be between 1000 and 999999999, inclusive."
+msgstr "Antal omgångar att använda (används endast av sha256crypt och sha512crypt). Måste vara mellan 1000 och 999999999."
 
 #: core/app_settings.py:67 core/app_settings.py:749
 msgid "Update password scheme at login"
@@ -1816,8 +1681,7 @@ msgstr "Uppdatera lösenordsschema vid inloggning"
 
 #: core/app_settings.py:70 core/app_settings.py:751
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Uppdatera användarlösenord vid inloggning för att använda standard schema"
+msgstr "Uppdatera användarlösenord vid inloggning för att använda standard schema"
 
 #: core/app_settings.py:75 core/app_settings.py:756
 msgid "Default password"
@@ -1840,14 +1704,8 @@ msgid "Update password service URL"
 msgstr "Uppdatera lösenords service URL"
 
 #: core/app_settings.py:94 core/app_settings.py:768
-msgid ""
-"The URL of an external page where users will be able to update their "
-"password. It applies only to non local users, ie. those automatically "
-"created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"Webbadressen till en extern sida där användare kan uppdatera sitt lösenord. "
-"Det gäller endast icke-lokala användare, dvs. de som skapas automatiskt "
-"efter en lyckad extern autentisering (LDAP, SMTP)."
+msgid "The URL of an external page where users will be able to update their password. It applies only to non local users, ie. those automatically created after a successful external authentication (LDAP, SMTP)."
+msgstr "Webbadressen till en extern sida där användare kan uppdatera sitt lösenord. Det gäller endast icke-lokala användare, dvs. de som skapas automatiskt efter en lyckad extern autentisering (LDAP, SMTP)."
 
 #: core/app_settings.py:102 core/app_settings.py:775
 msgid "Password recovery announcement"
@@ -1855,9 +1713,7 @@ msgstr "Meddelande om återställning av lösenord"
 
 #: core/app_settings.py:107 core/app_settings.py:777
 msgid "A temporary message that will be displayed on the reset password page."
-msgstr ""
-"Ett tillfälligt meddelande som kommer att visas på sidan för återställning "
-"av lösenord."
+msgstr "Ett tillfälligt meddelande som kommer att visas på sidan för återställning av lösenord."
 
 #: core/app_settings.py:113 core/app_settings.py:782
 msgid "Enable password recovery by SMS"
@@ -1865,9 +1721,7 @@ msgstr "Aktivera lösenordsåterställning via SMS"
 
 #: core/app_settings.py:116 core/app_settings.py:784
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
-"Aktivera återställning av lösenord via SMS för användare som fyllt i ett "
-"telefonnummer."
+msgstr "Aktivera återställning av lösenord via SMS för användare som fyllt i ett telefonnummer."
 
 #: core/app_settings.py:122 core/app_settings.py:789
 msgid "SMS provider"
@@ -1902,11 +1756,8 @@ msgid "Enable secondary server (fallback)"
 msgstr "Aktivera sekundär server (reserv)"
 
 #: core/app_settings.py:150 core/app_settings.py:814
-msgid ""
-"Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
-"Aktivera en sekundär LDAP-server som kommer att användas om den primära "
-"misslyckas"
+msgid "Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr "Aktivera en sekundär LDAP-server som kommer att användas om den primära misslyckas"
 
 #: core/app_settings.py:156 core/app_settings.py:819
 msgid "Secondary server address"
@@ -1945,12 +1796,8 @@ msgid "Administrator groups"
 msgstr "Administratörsgrupper"
 
 #: core/app_settings.py:188 core/app_settings.py:845
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Användare av dessa LDAP Posix grupper kommer skapas som "
-"domänadministratörer. Använd ';' för att separera grupper."
+msgid "Members of those LDAP Posix groups will be created as domain administrators. Use ';' characters to separate groups."
+msgstr "Användare av dessa LDAP Posix grupper kommer skapas som domänadministratörer. Använd ';' för att separera grupper."
 
 #: core/app_settings.py:195 core/app_settings.py:851
 msgid "Group type"
@@ -2003,12 +1850,8 @@ msgstr "Bind DN"
 
 #: core/app_settings.py:234 core/app_settings.py:288 core/app_settings.py:882
 #: core/app_settings.py:927
-msgid ""
-"The distinguished name to use when binding to the LDAP server. Leave empty "
-"for an anonymous bind"
-msgstr ""
-"Det unika namnet för att använda vid bindningar till LDAP-servern. Lämna "
-"tomt för en anonym bindning"
+msgid "The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"
+msgstr "Det unika namnet för att använda vid bindningar till LDAP-servern. Lämna tomt för en anonym bindning"
 
 #: core/app_settings.py:241 core/app_settings.py:295 core/app_settings.py:888
 #: core/app_settings.py:932
@@ -2018,8 +1861,7 @@ msgstr "Bind lösenord"
 #: core/app_settings.py:244 core/app_settings.py:298 core/app_settings.py:890
 #: core/app_settings.py:934
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Lösenordet ska användas vid bindning till LDAP-servern (med \"Bind DN ')"
+msgstr "Lösenordet ska användas vid bindning till LDAP-servern (med \"Bind DN ')"
 
 #: core/app_settings.py:252 core/app_settings.py:344 core/app_settings.py:897
 #: core/app_settings.py:971
@@ -2038,12 +1880,8 @@ msgstr "Sökfilter"
 
 #: core/app_settings.py:264 core/app_settings.py:356 core/app_settings.py:907
 #: core/app_settings.py:981
-msgid ""
-"An optional filter string (e.g. '(objectClass=person)'). In order to be "
-"valid, it must be enclosed in parentheses."
-msgstr ""
-"En valfri filtersträng (t.ex. \"(objectClass = personer) '). För att vara "
-"giltigt måste det omges av parenteser."
+msgid "An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."
+msgstr "En valfri filtersträng (t.ex. \"(objectClass = personer) '). För att vara giltigt måste det omges av parenteser."
 
 #: core/app_settings.py:271 core/app_settings.py:913
 msgid "User DN template"
@@ -2051,12 +1889,8 @@ msgstr "Anvädar DN mall"
 
 #: core/app_settings.py:274 core/app_settings.py:915
 #, python-format
-msgid ""
-"The template used to construct a user's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Mallen som används för att konstruera en användares DN. Den bör innehålla en "
-"platshållare (dvs. %(user)s)"
+msgid "The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Mallen som används för att konstruera en användares DN. Den bör innehålla en platshållare (dvs. %(user)s)"
 
 #: core/app_settings.py:282 core/app_settings.py:921
 msgid "LDAP synchronization settings"
@@ -2067,21 +1901,16 @@ msgid "Enable export to LDAP"
 msgstr "Aktivera export till LDAP"
 
 #: core/app_settings.py:309 core/app_settings.py:942
-msgid ""
-"Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
-"Aktivera automatisk synkronisering mellan lokal databas och LDAP-katalog"
+msgid "Enable automatic synchronization between local database and LDAP directory"
+msgstr "Aktivera automatisk synkronisering mellan lokal databas och LDAP-katalog"
 
 #: core/app_settings.py:315 core/app_settings.py:948
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr "Ta bort fjärran LDAP-konto när lokalt konto raderas"
 
 #: core/app_settings.py:319 core/app_settings.py:950
-msgid ""
-"Delete remote LDAP account when local account is deleted, otherwise it will "
-"be disabled."
-msgstr ""
-"Radera LDAP-fjärrkonto när det lokala kontot raderas, annars inaktiveras det."
+msgid "Delete remote LDAP account when local account is deleted, otherwise it will be disabled."
+msgstr "Radera LDAP-fjärrkonto när det lokala kontot raderas, annars inaktiveras det."
 
 #: core/app_settings.py:325 core/app_settings.py:956
 msgid "Account DN template"
@@ -2089,12 +1918,8 @@ msgstr "DN-mall för kontot"
 
 #: core/app_settings.py:328 core/app_settings.py:958
 #, python-format
-msgid ""
-"The template used to construct an account's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Mallen som används för att skapa ett kontos DN. Den ska innehålla en "
-"platshållare (ex.%(user)s)"
+msgid "The template used to construct an account's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Mallen som används för att skapa ett kontos DN. Den ska innehålla en platshållare (ex.%(user)s)"
 
 #: core/app_settings.py:335 core/app_settings.py:964
 msgid "Enable import from LDAP"
@@ -2125,10 +1950,8 @@ msgid "Dovecot LDAP config file"
 msgstr "Dovecot LDAP-konfigurationsfil"
 
 #: core/app_settings.py:384 core/app_settings.py:1004
-msgid ""
-"Location of the configuration file which contains Dovecot LDAP settings."
-msgstr ""
-"Plats för konfigurationsfilen som innehåller Dovecot LDAP-inställningar."
+msgid "Location of the configuration file which contains Dovecot LDAP settings."
+msgstr "Plats för konfigurationsfilen som innehåller Dovecot LDAP-inställningar."
 
 #: core/app_settings.py:389 core/app_settings.py:1013
 #: core/templates/core/dashboard.html:5
@@ -2141,8 +1964,7 @@ msgstr "Användardefinierat RSS-flöde"
 
 #: core/app_settings.py:395 core/app_settings.py:1018
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Visa användardefinierat RSS-flöde för återförsäljare och domänadministratörer"
+msgstr "Visa användardefinierat RSS-flöde för återförsäljare och domänadministratörer"
 
 #: core/app_settings.py:400 core/app_settings.py:1023
 msgid "Hide features widget"
@@ -2190,8 +2012,7 @@ msgstr "Skicka ett mejl när nya versioner hittas"
 
 #: core/app_settings.py:437 core/app_settings.py:1060
 msgid "Send an email to notify admins about new versions"
-msgstr ""
-"Skicka ett e-postmeddelande för att meddela administratörer om nya versioner"
+msgstr "Skicka ett e-postmeddelande för att meddela administratörer om nya versioner"
 
 #: core/app_settings.py:441 core/app_settings.py:1064
 msgid "Recipient"
@@ -2207,8 +2028,7 @@ msgstr "Skicka statistik"
 
 #: core/app_settings.py:452 core/app_settings.py:1074
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Skicka statistik för Modoboas publika API (räknare och använda tillägg)"
+msgstr "Skicka statistik för Modoboas publika API (räknare och använda tillägg)"
 
 #: core/app_settings.py:456 core/app_settings.py:1080
 msgid "Miscellaneous"
@@ -2221,9 +2041,7 @@ msgid "Enable inactive account tracking"
 msgstr "Gräns för inaktiva konton"
 
 #: core/app_settings.py:461 core/app_settings.py:1085
-msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+msgid "Allow the administrator to set a threshold (in days) beyond which an account is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:467 core/app_settings.py:1091
@@ -2231,12 +2049,8 @@ msgid "Inactive account threshold"
 msgstr "Gräns för inaktiva konton"
 
 #: core/app_settings.py:470 core/app_settings.py:1094
-msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Ett konto som inte har loggat in innan denna gräns (antal dagar) kommer "
-"anses som inaktivt"
+msgid "An account with a last login date greater than this threshold (in days) will be considered as inactive"
+msgstr "Ett konto som inte har loggat in innan denna gräns (antal dagar) kommer anses som inaktivt"
 
 #: core/app_settings.py:476 core/app_settings.py:1099
 msgid "Top notifications check interval"
@@ -2275,14 +2089,8 @@ msgid "LDAP"
 msgstr ""
 
 #: core/checks/settings_checks.py:6
-msgid ""
-"You have USE_TZ set to False, this may result in issues during transitions "
-"between summer/winter time (ie the same local time occuring twice due to "
-"clock change)."
-msgstr ""
-"Du måste ange USE_TZ till False, detta kan leda till problem under "
-"övergångar mellan sommar / vintertid (dvs samma lokal tid som uppträder två "
-"gånger på grund av klockbyte)."
+msgid "You have USE_TZ set to False, this may result in issues during transitions between summer/winter time (ie the same local time occuring twice due to clock change)."
+msgstr "Du måste ange USE_TZ till False, detta kan leda till problem under övergångar mellan sommar / vintertid (dvs samma lokal tid som uppträder två gånger på grund av klockbyte)."
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
@@ -2414,7 +2222,7 @@ msgstr "En alternativ e-post adress, kan användas för återställningsbehov."
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Misslyckades med att uppdatera lösenord: LDAP modul ej installerad"
 
-#: core/models.py:159 policyd/core.py:105
+#: core/models.py:159
 msgid "account"
 msgstr "konto"
 
@@ -2535,12 +2343,8 @@ msgid "Latest news"
 msgstr "Senaste nytt"
 
 #: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
-msgstr ""
-"Besök den <a href=\"https://modoboa.org/blog/\" target=\"_blank\">officiella "
-"bloggen</a> för mer information."
+msgid "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official weblog</a> for more information."
+msgstr "Besök den <a href=\"https://modoboa.org/blog/\" target=\"_blank\">officiella bloggen</a> för mer information."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -2552,12 +2356,8 @@ msgstr "Kontrollera din åtskomst till Modoboa API"
 
 #: core/templates/core/api_access.html:7
 #, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
-msgstr ""
-"Dokumentation över API:et finns <strong><a href=\"%(url)s\" "
-"target=\"_blank\">här</a></strong>."
+msgid "A documentation of the API is available <strong><a href=\"%(url)s\" target=\"_blank\">here</a></strong>."
+msgstr "Dokumentation över API:et finns <strong><a href=\"%(url)s\" target=\"_blank\">här</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -2582,8 +2382,7 @@ msgstr "En eller flera uppdateringar finns tillgängliga!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Kontrollera följande lista för att se de komponenter som kan uppdateras."
+msgstr "Kontrollera följande lista för att se de komponenter som kan uppdateras."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -2682,13 +2481,8 @@ msgid "Two-Factor authentication"
 msgstr "Tvåfaktorsautentisering"
 
 #: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
-msgstr ""
-"Installera en mjuk token-autentisering som FreeOTP eller Google "
-"Authenticator från ditt programförråd och använd den appen för att skanna "
-"den här QR-koden."
+msgid "Install a soft token authenticator like FreeOTP or Google Authenticator from your application repository and use that app to scan this QR code."
+msgstr "Installera en mjuk token-autentisering som FreeOTP eller Google Authenticator från ditt programförråd och använd den appen för att skanna den här QR-koden."
 
 #: core/templates/core/user_security.html:25
 msgid "Pin code"
@@ -2699,22 +2493,13 @@ msgid "Register"
 msgstr "Registrera"
 
 #: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
 msgstr "Grattis! Tvåfaktorsautentisering är nu aktiverat för ditt konto."
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
-msgstr ""
-"Följande återställningskoder kan användas en gång var för att låta dig "
-"återfå åtkomst till ditt konto, om du till exempel skulle tappa din telefon. "
-"Se till att spara dem på ett säkert ställe, annars kommer du inte att kunna "
-"komma åt ditt konto längre."
+msgid "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
+msgstr "Följande återställningskoder kan användas en gång var för att låta dig återfå åtkomst till ditt konto, om du till exempel skulle tappa din telefon. Se till att spara dem på ett säkert ställe, annars kommer du inte att kunna komma åt ditt konto längre."
 
 #: core/templates/core/user_security.html:53
 msgid "Two-Factor Authentication is enabled for your account."
@@ -2729,12 +2514,8 @@ msgid "Reset recovery codes"
 msgstr "Återställ återställningskoder"
 
 #: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
-msgstr ""
-"Tvåfaktorsautentisering (2FA) har inte aktiverats för ditt konto. Aktivering "
-"ökar ditt kontos säkerhet."
+msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
+msgstr "Tvåfaktorsautentisering (2FA) har inte aktiverats för ditt konto. Aktivering ökar ditt kontos säkerhet."
 
 #: core/templates/core/user_security.html:73
 msgid "Enable 2FA"
@@ -3043,9 +2824,7 @@ msgid "A DNS record has been found but its syntax is not valid:"
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+msgid "Here is an example of DNS configuration (bind format). Replace value between [ ] by the appropriate ones."
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
@@ -3124,9 +2903,7 @@ msgid "Folder Filter Exclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:44 imap_migration/app_settings.py:93
-msgid ""
-"Use a regular expression to explicitly include folders in sync. Example: "
-"^Trash$|Del"
+msgid "Use a regular expression to explicitly include folders in sync. Example: ^Trash$|Del"
 msgstr ""
 
 #: imap_migration/app_settings.py:48 imap_migration/app_settings.py:100
@@ -3134,10 +2911,7 @@ msgid "Folder Filter Inclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:50 imap_migration/app_settings.py:103
-msgid ""
-"A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+msgid "A comma seperated list of folders to explicitly include in sync even if filtered by the Folder Filter Exclusions. Example: debian.user, debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:72
@@ -3162,14 +2936,11 @@ msgid "Connection to IMAP server failed: %s"
 msgstr "Anslutning till IMAP server misslyckades: %s"
 
 #: imap_migration/checks.py:11
-msgid ""
-"Automatic domain/mailbox creation is disabled which means IMAP "
-"authentication won't work."
+msgid "Automatic domain/mailbox creation is disabled which means IMAP authentication won't work."
 msgstr ""
 
 #: imap_migration/checks.py:13
-msgid ""
-"Go to the online parameters panel (admin tab) and activate this feature."
+msgid "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
 
 #: imap_migration/templates/imap_migration/index.html:6
@@ -3258,49 +3029,27 @@ msgid "Domain admins"
 msgstr "Domänadministratörer"
 
 #: limits/app_settings.py:29 limits/app_settings.py:164
-msgid ""
-"Maximum number of allowed domain administrators for a new administrator. (0 "
-"to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max antal tillåtna domän admininstratöre för en ny administratör. (0 för att "
-"inaktivera, -1 för obegränsat antal)"
+msgid "Maximum number of allowed domain administrators for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Max antal tillåtna domän admininstratöre för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:40 limits/app_settings.py:173
-msgid ""
-"Maximum number of allowed domains for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max antal tillåtna domäner för en ny administratör. (0 för att inaktivera, "
-"-1 för obegränsat antal)"
+msgid "Maximum number of allowed domains for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Max antal tillåtna domäner för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:50 limits/app_settings.py:181
-msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maximalt antal domän alias för en ny administratör. (0 för att inaktivera, "
-"-1 för obegränsat antal)"
+msgid "Maximum number of allowed domain aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal domän alias för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:61 limits/app_settings.py:190
-msgid ""
-"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maximalt antal brevlådor för en ny administratör. (0 för att inaktivera, -1 "
-"för obegränsat antal)"
+msgid "Maximum number of allowed mailboxes for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal brevlådor för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:71 limits/app_settings.py:199
-msgid ""
-"Maximum number of allowed aliases for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maximalt antal alias för en ny administratör. (0 för att inaktivera, -1 för "
-"obegränsat antal)"
+msgid "Maximum number of allowed aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Maximalt antal alias för en ny administratör. (0 för att inaktivera, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:81 limits/app_settings.py:206
-msgid ""
-"The quota a reseller will be allowed to share between the domains he "
-"creates. (0 means no quota)"
+msgid "The quota a reseller will be allowed to share between the domains he creates. (0 means no quota)"
 msgstr ""
 
 #: limits/app_settings.py:88 limits/app_settings.py:213
@@ -3316,35 +3065,20 @@ msgid "Enable or disable per-domain limits"
 msgstr "Aktivera eller avaktivera per domän gränser"
 
 #: limits/app_settings.py:100 limits/app_settings.py:223
-msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max antal tillåtna domänadministratörer för en ny domän. (0 för att neka "
-"skapande, -1 för oändligt antal)"
+msgid "Maximum number of allowed domain administrators for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Max antal tillåtna domänadministratörer för en ny domän. (0 för att neka skapande, -1 för oändligt antal)"
 
 #: limits/app_settings.py:111 limits/app_settings.py:232
-msgid ""
-"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max antal domänalias för en ny domän. (0 för att neka skapande, -1 för "
-"obegränsat)"
+msgid "Maximum number of allowed domain aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Max antal domänalias för en ny domän. (0 för att neka skapande, -1 för obegränsat)"
 
 #: limits/app_settings.py:122 limits/app_settings.py:241
-msgid ""
-"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max antal brevlådor per domän. (0 för inga alls, -1 för obegränsat antal)"
+msgid "Maximum number of allowed mailboxes for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Max antal brevlådor per domän. (0 för inga alls, -1 för obegränsat antal)"
 
 #: limits/app_settings.py:132 limits/app_settings.py:249
-msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
-msgstr ""
-"Max antal tillåtna alias för en ny domän. (0 för inga alls, -1 för "
-"obegränsat antal)"
+msgid "Maximum number of allowed aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Max antal tillåtna alias för en ny domän. (0 för inga alls, -1 för obegränsat antal)"
 
 #: limits/apps.py:13 limits/apps.py:15
 msgid "Limits"
@@ -3622,9 +3356,7 @@ msgid "Delete documents after the first download"
 msgstr "Radera dokument efter första nedladdning"
 
 #: pdfcredentials/app_settings.py:45 pdfcredentials/app_settings.py:145
-msgid ""
-"Automatically delete a document just after its first download from this "
-"interface"
+msgid "Automatically delete a document just after its first download from this interface"
 msgstr "Radera dokument automatiskt efter första nedladdningen"
 
 #: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:151
@@ -3632,12 +3364,8 @@ msgid "Generate documents only at account creation"
 msgstr "Generera dokument endast vid kontoskapande"
 
 #: pdfcredentials/app_settings.py:52 pdfcredentials/app_settings.py:154
-msgid ""
-"Generate a new document only when a new account is created. If set to no, a "
-"new document will be created each time a password is updated."
-msgstr ""
-"Generera bara nya dokument när ett nytt konto skapas. Om detta sätts till "
-"nej, kommer ett nytt dokument skapas varje gång ett lösenord uppdateras."
+msgid "Generate a new document only when a new account is created. If set to no, a new document will be created each time a password is updated."
+msgstr "Generera bara nya dokument när ett nytt konto skapas. Om detta sätts till nej, kommer ett nytt dokument skapas varje gång ett lösenord uppdateras."
 
 #: pdfcredentials/app_settings.py:60 pdfcredentials/app_settings.py:160
 msgid "Customization options"
@@ -3672,12 +3400,8 @@ msgid "Include mail client connection settings"
 msgstr "Inkludera e-post klient inställningar"
 
 #: pdfcredentials/app_settings.py:79 pdfcredentials/app_settings.py:184
-msgid ""
-"Include required SMTP and IMAP connection information to configure a mail "
-"client, a tablet or a phone"
-msgstr ""
-"Inkludera SMTP och IMAP anslutningsinformation för att konfigurera en e-"
-"postklient, surfplatta eller telefon"
+msgid "Include required SMTP and IMAP connection information to configure a mail client, a tablet or a phone"
+msgstr "Inkludera SMTP och IMAP anslutningsinformation för att konfigurera en e-postklient, surfplatta eller telefon"
 
 #: pdfcredentials/app_settings.py:84 pdfcredentials/app_settings.py:190
 #: pdfcredentials/documents.py:107
@@ -3753,9 +3477,7 @@ msgid ""
 "the document as soon as possible.\n"
 msgstr ""
 "\n"
-"Kära %s, detta dokument innehåller de kontouppgifter du behöver för att "
-"ansluta till Modoboa. Lär dig innehållet i detta dokument och förstör detta "
-"dokument så snart som möjligt\n"
+"Kära %s, detta dokument innehåller de kontouppgifter du behöver för att ansluta till Modoboa. Lär dig innehållet i detta dokument och förstör detta dokument så snart som möjligt\n"
 
 #: pdfcredentials/documents.py:77
 msgid "Web panel:"
@@ -3768,8 +3490,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Här kan du se dina e-postmeddelanden när som helst online, skapa filter "
-"eller hantera\n"
+"Här kan du se dina e-postmeddelanden när som helst online, skapa filter eller hantera\n"
 "dina kontakter.\n"
 
 #: pdfcredentials/documents.py:98
@@ -3804,21 +3525,6 @@ msgstr "Kunde inte skapa katalogen som innehåller PDF dokumenten (%s)"
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr "Kunde inte skapa katalogen som innehåller PDF dokumenten (%s)"
-
-#: policyd/core.py:89
-#, fuzzy
-#| msgid "%s: limit reached"
-msgid "Daily sending limit reached"
-msgstr "%s: gräns uppnådd"
-
-#: policyd/core.py:124
-msgid "[modoboa] Sending limit reached"
-msgstr ""
-
-#: policyd/templates/policyd/notifications/limit_reached.html:3
-#, python-format
-msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
 
 #: relaydomains/api/v1/serializers.py:25
 msgid "Unsupported service"
@@ -3910,24 +3616,16 @@ msgstr "Glömt ditt lösenord?"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
-msgid ""
-"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
-"in</a> now."
-msgstr ""
-"Ditt lösenord har ändrats. Du kan fortsätta med att <a "
-"href=\"%(url)s\">logga in</a>."
+msgid "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign in</a> now."
+msgstr "Ditt lösenord har ändrats. Du kan fortsätta med att <a href=\"%(url)s\">logga in</a>."
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
 msgstr "Ändra lösenord"
 
 #: templates/registration/password_reset_confirm.html:17
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used. Please request a new password reset."
-msgstr ""
-"Lösenordets återställningslänk är ogiltig, förmodligen för att den redan "
-"använts. Var vänlig begär en ny återställning av lösenord."
+msgid "The password reset link was invalid, possibly because it has already been used. Please request a new password reset."
+msgstr "Lösenordets återställningslänk är ogiltig, förmodligen för att den redan använts. Var vänlig begär en ny återställning av lösenord."
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
@@ -3938,35 +3636,19 @@ msgid "Resend code"
 msgstr "Skicka kod igen"
 
 #: templates/registration/password_reset_done.html:7
-msgid ""
-"<p>We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly.</p> "
-"<p>If you don't receive an email, please make sure you've entered your "
-"primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>Vi har e-postat dig instruktioner för att ändra ditt lösenord, om ett "
-"konto finns med den e-post adress du angav. Du borde få detta brev inom kort."
-"</p> <p>Om du inte fått något brev, var vänlig kontrollera att du angav rätt "
-"e-post adress, och kolla din skräpkatalog.</p>"
+msgid "<p>We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.</p> <p>If you don't receive an email, please make sure you've entered your primary address, and check your spam folder.</p>"
+msgstr "<p>Vi har e-postat dig instruktioner för att ändra ditt lösenord, om ett konto finns med den e-post adress du angav. Du borde få detta brev inom kort.</p> <p>Om du inte fått något brev, var vänlig kontrollera att du angav rätt e-post adress, och kolla din skräpkatalog.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
 #, python-format
-msgid ""
-"To initiate the password reset process for your %(username)s Modoboa "
-"account, click the link below:"
-msgstr ""
-"För att starta processen för återställning av lösenord för ditt %(username)s "
-"Modoboa konto, klicka på länken nedanför:"
+msgid "To initiate the password reset process for your %(username)s Modoboa account, click the link below:"
+msgstr "För att starta processen för återställning av lösenord för ditt %(username)s Modoboa konto, klicka på länken nedanför:"
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
-msgid ""
-"If clicking the link above doesn't work, please copy and paste the URL in a "
-"new browser window instead."
-msgstr ""
-"Om det ej går att klicka på länken, klipp och klistra länken i ett nytt "
-"webbläsarfönster istället."
+msgid "If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead."
+msgstr "Om det ej går att klicka på länken, klipp och klistra länken i ett nytt webbläsarfönster istället."
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
@@ -3996,6 +3678,11 @@ msgstr "tjänst"
 #: transport/models.py:18
 msgid "next hop"
 msgstr "nästa hopp"
+
+#, fuzzy
+#~| msgid "%s: limit reached"
+#~ msgid "Daily sending limit reached"
+#~ msgstr "%s: gräns uppnådd"
 
 #~ msgid "A set of tools to ease DMARC integration"
 #~ msgstr "En uppsättning verktyg för att underlätta DMARC integration"

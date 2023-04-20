@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 10:38+0200\n"
+"POT-Creation-Date: 2023-04-20 14:11+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
@@ -17,25 +17,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !"
-"=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && "
-"(n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 "
-"> 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != "
-"0 && n % 1000000 == 0) ? 3 : 4);\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 && n % 1000000 == 0) ? 3 : 4);\n"
 
 #: admin/api/v1/serializers.py:35 admin/forms/domain.py:44
-msgid ""
-"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
-"A value of 0 means no quota."
-msgstr ""
-"Kota rannet kenetre ar boestoù-postel. Gellout a ra bezañ ezpleget e Ko, Mo "
-"(diouer) pe Go c'hoazh. Un dalvoudegezh \"0\" a dalvez kota ebet."
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Kota rannet kenetre ar boestoù-postel. Gellout a ra bezañ ezpleget e Ko, Mo (diouer) pe Go c'hoazh. Un dalvoudegezh \"0\" a dalvez kota ebet."
 
 #: admin/api/v1/serializers.py:42
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Kota dre-ziouer e Mo arloet d'ar boestoù-postel. Un dalvoudegezh \"0\" a "
-"dalvez kota ebet."
+msgstr "Kota dre-ziouer e Mo arloet d'ar boestoù-postel. Un dalvoudegezh \"0\" a dalvez kota ebet."
 
 #: admin/api/v1/serializers.py:73 admin/forms/domain.py:108
 msgid "No authorized MX record found for this domain"
@@ -60,8 +50,7 @@ msgid "This field is required"
 msgstr "Rekis eo leuniañ ar vaezienn"
 
 #: admin/api/v1/serializers.py:186
-msgid ""
-"List of administered domains (resellers and domain administrators only)."
+msgid "List of administered domains (resellers and domain administrators only)."
 msgstr "Listenn domanioù meret (eilgwerzherien ha merourien zomani hepken)."
 
 #: admin/api/v1/serializers.py:292 admin/api/v2/serializers.py:458
@@ -186,25 +175,16 @@ msgid "Valid MXs"
 msgstr "MXs talvoudus"
 
 #: admin/app_settings.py:37 admin/app_settings.py:312
-msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"Ul listennad chomlec'hioù IP pe rouedad hag a rank bezañ doujet gant kement "
-"enrolladenn MX Ur c'hemenn-diwall a vo kaset seul wech ma ne vo ket doujet "
-"gant un enrolladenn."
+msgid "A list of IP or network address every MX record should match. A warning will be sent if a record does not respect it."
+msgstr "Ul listennad chomlec'hioù IP pe rouedad hag a rank bezañ doujet gant kement enrolladenn MX Ur c'hemenn-diwall a vo kaset seul wech ma ne vo ket doujet gant un enrolladenn."
 
 #: admin/app_settings.py:45 admin/app_settings.py:318
 msgid "New domains must use authorized MX(s)"
 msgstr "An domanioù nevez a rank implijout MX(où) aotreet"
 
 #: admin/app_settings.py:48 admin/app_settings.py:321
-msgid ""
-"Prevent the creation of a new domain if its MX record does not use one of "
-"the defined addresses."
-msgstr ""
-"Mirout ouzh krouidigezh un domani ma n'eus ket da vihanañ ur chomlec'h "
-"termenet MX  evit ec'h enrolladennoù."
+msgid "Prevent the creation of a new domain if its MX record does not use one of the defined addresses."
+msgstr "Mirout ouzh krouidigezh un domani ma n'eus ket da vihanañ ur chomlec'h termenet MX  evit ec'h enrolladennoù."
 
 #: admin/app_settings.py:54 admin/app_settings.py:326
 #, fuzzy
@@ -275,14 +255,8 @@ msgid "DKIM keys storage directory"
 msgstr "Kavlec'h stokiñ an alc'hwezioù DKIM"
 
 #: admin/app_settings.py:107 admin/app_settings.py:367
-msgid ""
-"Absolute path of the directory where DKIM private keys will be stored. Make "
-"sure this directory belongs to root user and is not readable by the outside "
-"world."
-msgstr ""
-"Hent absolut ar c'havlec'h a vo stoket an alc'hwezioù DKIM ennañ. Bezit asur "
-"e vez perc'hennet ar c'havlec'h-mañ gant an implijer gwrizienn ha n'hall ket "
-"bezañ lennet gant an dud diavaez."
+msgid "Absolute path of the directory where DKIM private keys will be stored. Make sure this directory belongs to root user and is not readable by the outside world."
+msgstr "Hent absolut ar c'havlec'h a vo stoket an alc'hwezioù DKIM ennañ. Bezit asur e vez perc'hennet ar c'havlec'h-mañ gant an implijer gwrizienn ha n'hall ket bezañ lennet gant an dud diavaez."
 
 #: admin/app_settings.py:115 admin/app_settings.py:373
 msgid "Default DKIM key length"
@@ -297,12 +271,8 @@ msgid "Default domain quota"
 msgstr "Kota domani dre-ziouer"
 
 #: admin/app_settings.py:127 admin/app_settings.py:381
-msgid ""
-"Default quota (in MB) applied to freshly created domains with no value "
-"specified. A value of 0 means no quota."
-msgstr ""
-"Kota dre-ziouer (e Mo) arloet d'an domanioù krouet hep talvoudegezh spisaet. "
-"Un dalvoudegezh 0 a dalvez n'eus kota ebet."
+msgid "Default quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Kota dre-ziouer (e Mo) arloet d'an domanioù krouet hep talvoudegezh spisaet. Un dalvoudegezh 0 a dalvez n'eus kota ebet."
 
 #: admin/app_settings.py:133 admin/app_settings.py:386
 #, fuzzy
@@ -311,9 +281,7 @@ msgid "Default domain sending limit"
 msgstr "Kota domani dre-ziouer"
 
 #: admin/app_settings.py:136 admin/app_settings.py:388
-msgid ""
-"Number of messages freshly created domains will be allowed to send per day. "
-"Leave empty for no limit."
+msgid "Number of messages freshly created domains will be allowed to send per day. Leave empty for no limit."
 msgstr ""
 
 #: admin/app_settings.py:141 admin/app_settings.py:395
@@ -328,12 +296,8 @@ msgid "Handle mailboxes on filesystem"
 msgstr "Merañ ar voest-posteloù war restr-sistem"
 
 #: admin/app_settings.py:147 admin/app_settings.py:400
-msgid ""
-"Rename or remove mailboxes on the filesystem when they get renamed or "
-"removed within Modoboa"
-msgstr ""
-"Adenvel pe zilemel boest-posteloù war ar restr-sistem pa vezont adanvet pe "
-"dilamet diwar Modoboa"
+msgid "Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa"
+msgstr "Adenvel pe zilemel boest-posteloù war ar restr-sistem pa vezont adanvet pe dilamet diwar Modoboa"
 
 #: admin/app_settings.py:153 admin/app_settings.py:405 admin/forms/domain.py:49
 #: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
@@ -342,15 +306,9 @@ msgstr "Kota boest-posteloù dre-ziouer"
 
 #: admin/app_settings.py:156
 #, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Kota dre-ziouer (e Mo) arloet d'ar voest-posteloù krouet hep talvoudegezh "
-"spisaet. Un dalvoudegezh 0 a dalvez n'eus kota ebet."
+#| msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgid "Default mailbox quota (in MB) applied to freshly created mailboxes with no value specified. A value of 0 means no quota."
+msgstr "Kota dre-ziouer (e Mo) arloet d'ar voest-posteloù krouet hep talvoudegezh spisaet. Un dalvoudegezh 0 a dalvez n'eus kota ebet."
 
 #: admin/app_settings.py:162 admin/app_settings.py:413
 #, fuzzy
@@ -359,9 +317,7 @@ msgid "Default mailbox sending limit"
 msgstr "Kota boest-posteloù dre-ziouer"
 
 #: admin/app_settings.py:165 admin/app_settings.py:415
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
+msgid "Number of messages freshly created mailboxes will be allowed to send per day. Leave empty for no limit."
 msgstr ""
 
 #: admin/app_settings.py:171 admin/app_settings.py:420
@@ -386,21 +342,13 @@ msgstr "Krouiñ un alias pa vez adanvet ur voest-posteloù"
 
 #: admin/app_settings.py:190 admin/app_settings.py:436
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
-"Krouiñ un alias en ur implijout ar chomlec'h pa vez adanvet ar voest-"
-"posteloù."
+msgstr "Krouiñ un alias en ur implijout ar chomlec'h pa vez adanvet ar voest-posteloù."
 
 #: admin/app_settings.py:407
 #, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created domains with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Kota dre-ziouer (e Mo) arloet d'ar voest-posteloù krouet hep talvoudegezh "
-"spisaet. Un dalvoudegezh 0 a dalvez n'eus kota ebet."
+#| msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Kota dre-ziouer (e Mo) arloet d'ar voest-posteloù krouet hep talvoudegezh spisaet. Un dalvoudegezh 0 a dalvez n'eus kota ebet."
 
 #: admin/app_settings.py:451 admin/app_settings.py:453
 msgid "Administration"
@@ -432,12 +380,8 @@ msgid "Username"
 msgstr "Anv implier"
 
 #: admin/forms/account.py:34
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
-msgstr ""
-"An anv implijer. Rankout a ra bezañ ur voest-posteloù reizh evit an implijer "
-"eeun pe ar verourien gant ur voest-posteloù."
+msgid "The user's name. Must be a valid e-mail address for simple users or administrators with a mailbox."
+msgstr "An anv implijer. Rankout a ra bezañ ur voest-posteloù reizh evit an implijer eeun pe ar verourien gant ur voest-posteloù."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 #: core/templates/core/information.html:37
@@ -457,12 +401,8 @@ msgid "Random password"
 msgstr "Ger-tremen dre-zegouezh"
 
 #: admin/forms/account.py:46
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
-msgstr ""
-"Genel ur ger-tremen dre-zegouezh. M'emaoc'h oc'h hizivaat ar gont-mañ hag e "
-"kochit ar c'hombodig-mañ, ur ger-tremen nevez a vo ganet."
+msgid "Generate a random password. If you're updating this account and check this box, a new password will be generated."
+msgstr "Genel ur ger-tremen dre-zegouezh. M'emaoc'h oc'h hizivaat ar gont-mañ hag e kochit ar c'hombodig-mañ, ur ger-tremen nevez a vo ganet."
 
 #: admin/forms/account.py:52 core/forms.py:27 pdfcredentials/documents.py:81
 msgid "Password"
@@ -508,15 +448,8 @@ msgid "Quota"
 msgstr "Kota"
 
 #: admin/forms/account.py:236
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Kota evit ar voest-posteloù-mañ. Gellout a ra bezañ ezpleget e Ko, Mo "
-"(diouer) pe Go c'hoazh. Termeniñ un dalvoudegezh ispisial pe implijit "
-"talvoudegezh an domani. Laoskit goullo evit termeniñ un dalvoudegezh "
-"divevenn (berzet evit ar verourien zomani)."
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Kota evit ar voest-posteloù-mañ. Gellout a ra bezañ ezpleget e Ko, Mo (diouer) pe Go c'hoazh. Termeniñ un dalvoudegezh ispisial pe implijit talvoudegezh an domani. Laoskit goullo evit termeniñ un dalvoudegezh divevenn (berzet evit ar verourien zomani)."
 
 #: admin/forms/account.py:246 admin/models/domain.py:36
 #: admin/models/mailbox.py:99 admin/templates/admin/account_detail.html:50
@@ -534,29 +467,16 @@ msgid "Alias(es)"
 msgstr "Alias(où)"
 
 #: admin/forms/account.py:256
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Alias(où) ar voest-postel-mañ. Spisait ur chomlec'h dre enmont, pouezit war "
-"KAS evit ouzhpennañ un enmont nevez. Evit krouiñ un alias 'lak-pep-tra', "
-"ebarzhit anv an domani hepken (@domain.tld)."
+msgid "Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Alias(où) ar voest-postel-mañ. Spisait ur chomlec'h dre enmont, pouezit war KAS evit ouzhpennañ un enmont nevez. Evit krouiñ un alias 'lak-pep-tra', ebarzhit anv an domani hepken (@domain.tld)."
 
 #: admin/forms/account.py:262
 msgid "Sender addresses"
 msgstr "Chomlec'hioù ar c'haser"
 
 #: admin/forms/account.py:265
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Chomlec'h(ioù) kaser ouzhpenn evit ar gont-mañ. An implijer a vo aotreet da "
-"gas posteloù en ur ober gant ar chomlec'hioù-se, ha pa 'z eus anezhañ en un "
-"doare lec'hel. Spisait ur chomlec'h dre enmont. Pouezit war KAS evit un "
-"enmont nevez."
+msgid "Additional sender address(es) for this account. The user will be allowed to send emails using this address, even if it does not exist locally. Indicate one address per input. Press ENTER to add a new input."
+msgstr "Chomlec'h(ioù) kaser ouzhpenn evit ar gont-mañ. An implijer a vo aotreet da gas posteloù en ur ober gant ar chomlec'hioù-se, ha pa 'z eus anezhañ en un doare lec'hel. Spisait ur chomlec'h dre enmont. Pouezit war KAS evit un enmont nevez."
 
 #: admin/forms/account.py:325 admin/forms/alias.py:88
 #: admin/models/mailbox.py:313
@@ -617,24 +537,16 @@ msgid "Email address"
 msgstr "Chomlec'h postel"
 
 #: admin/forms/alias.py:25
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Chomlec'h an alias. Evit krouiñ un alias catchall, ebarzhit hepken an anv "
-"domani (@domani.tld)"
+msgid "The alias address. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Chomlec'h an alias. Evit krouiñ un alias catchall, ebarzhit hepken an anv domani (@domani.tld)"
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Reseverien"
 
 #: admin/forms/alias.py:33
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Chomlec'hioù az aio an alias-mañ betek ar poent ennañ. Spisait ur chomlec'h "
-"dre enmont, pouezit war KAS evit ouzhpennañ un enmont nevez."
+msgid "Addresses this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgstr "Chomlec'hioù az aio an alias-mañ betek ar poent ennañ. Spisait ur chomlec'h dre enmont, pouezit war KAS evit ouzhpennañ un enmont nevez."
 
 #: admin/forms/alias.py:114
 msgid "No recipient defined"
@@ -646,24 +558,16 @@ msgid "Type"
 msgstr "Doare"
 
 #: admin/forms/domain.py:34
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Alias​​(où) an domani-mañ. Spisait un anv dre enmont hepken, pouezit war KAS "
-"evit ouzhpennañ un emnont nevez."
+msgid "Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input."
+msgstr "Alias​​(où) an domani-mañ. Spisait un anv dre enmont hepken, pouezit war KAS evit ouzhpennañ un emnont nevez."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
 msgstr "Diuzer alc'hwez"
 
 #: admin/forms/domain.py:52
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
-msgstr ""
-"Kota arloet d'ar boestoù-postel. Gellout a ra bezañ ezpleget e Ko, Mo "
-"(diouer) pe Go c'hoazh. Un dalvoudegezh \"0\" a dalvez kota ebet."
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Kota arloet d'ar boestoù-postel. Gellout a ra bezañ ezpleget e Ko, Mo (diouer) pe Go c'hoazh. Un dalvoudegezh \"0\" a dalvez kota ebet."
 
 #: admin/forms/domain.py:97 admin/handlers.py:166
 msgid "domain alias"
@@ -683,7 +587,7 @@ msgstr "Kavlec'h stokiñ an alc'hwezioù DKIM chomet digefluniet"
 msgid "You can't define an unlimited quota."
 msgstr "N'hallit ket termeniñ ur c'hota divevenn"
 
-#: admin/forms/domain.py:176 admin/forms/domain.py:181 policyd/core.py:106
+#: admin/forms/domain.py:176 admin/forms/domain.py:181
 msgid "domain"
 msgstr "domani"
 
@@ -705,9 +609,7 @@ msgid "Name"
 msgstr "Anv"
 
 #: admin/forms/domain.py:241
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
+msgid "The administrator's name. Don't include the domain's name here, it will be automatically appended."
 msgstr "An anv merour. Na eberzhit ket anv domani amañ, em-ouzhpennet e vo."
 
 #: admin/forms/domain.py:251
@@ -768,8 +670,7 @@ msgstr "Mirout eiladennoù lec'hel"
 
 #: admin/forms/forward.py:22
 msgid "Forward messages and store copies into your local mailbox"
-msgstr ""
-"Treuzkas kemennadennoù ha stokiñ eiladennoù e-barzh ar voest-posteloù lec'hel"
+msgstr "Treuzkas kemennadennoù ha stokiñ eiladennoù e-barzh ar voest-posteloù lec'hel"
 
 #: admin/forms/import_.py:11
 msgid "Select a file"
@@ -789,9 +690,7 @@ msgstr "Kriptañ ar gerioù-tremen"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Kochit an dibarzh ma ne vez ket kriptet ar gerioù-tremen endalc'het en ho "
-"restr"
+msgstr "Kochit an dibarzh ma ne vez ket kriptet ar gerioù-tremen endalc'het en ho restr"
 
 #: admin/handlers.py:215
 #, python-format
@@ -850,8 +749,7 @@ msgstr "N'eus bet kavet anv servijer ebet hag az afe en-dro"
 #: admin/lib.py:209 admin/tests/test_mx.py:158
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
-"Prantad gortoz spister DNS, n'heller ket sevel ar reked %s evit ar mare"
+msgstr "Prantad gortoz spister DNS, n'heller ket sevel ar reked %s evit ar mare"
 
 #: admin/lib.py:212
 #, python-format
@@ -875,8 +773,7 @@ msgstr "%d objed emporzhiet gant berzh"
 
 #: admin/management/commands/subcommands/_import.py:93
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
-"Ar restr CSV neket kodet anezhi en UTF-8, klask a reomp divinout an enkodañ"
+msgstr "Ar restr CSV neket kodet anezhi en UTF-8, klask a reomp divinout an enkodañ"
 
 #: admin/management/commands/subcommands/_import.py:105
 #, python-format
@@ -886,8 +783,7 @@ msgstr "Lenn ur restr CSV en ur implijout an enkodañ %(encoding)s"
 #: admin/management/commands/subcommands/_import.py:116
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
-msgstr ""
-"N'heller ket digodiñ ar restroù CSV en ur ober gant an enkodañ %(encoding)s"
+msgstr "N'heller ket digodiñ ar restroù CSV en ur ober gant an enkodañ %(encoding)s"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:28
 msgid "DKIM path non-writable"
@@ -1009,11 +905,8 @@ msgid "Enable DKIM signing"
 msgstr "Enaouiñ ar sinadur DKIM"
 
 #: admin/models/domain.py:59
-msgid ""
-"If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Ma enaouit an arc'hweladur-mañ, un alc'hwez DKIM a vo ganet evit an domani-"
-"mañ."
+msgid "If you activate this feature, a DKIM key will be generated for this domain."
+msgstr "Ma enaouit an arc'hweladur-mañ, un alc'hwez DKIM a vo ganet evit an domani-mañ."
 
 #: admin/models/domain.py:65
 msgid "Key length"
@@ -1046,9 +939,7 @@ msgstr "Talvoudegezh kota direizh evit boest-posteloù an domani \"{}\""
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
-msgstr ""
-"N'hall ket bezañ brasoc'h kota dre-ziouer ur voestad-posteloù evit kota un "
-"domani"
+msgstr "N'hall ket bezañ brasoc'h kota dre-ziouer ur voestad-posteloù evit kota un domani"
 
 #: admin/models/domain_alias.py:34
 msgid "The alias name"
@@ -1471,39 +1362,12 @@ msgid "Fullname/Recipient"
 msgstr "Anv klok/Resever"
 
 #: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Pourvezit ur restr CSV el lec'h ma touj al linennoù unan eus ar stummoù da-"
-"heul: <ul> <li><em>domani; anv; kota; boes-postel kota dre-ziouer; enaouet</"
-"em></li> <li><em>domani-alias; anv; domani bukeet; enaouet</em></li> "
-"<li><em>domain a-eil; anv; herbrec'hier bukenn; porzh bukenn; servij; "
-"enaouet; gwiriañ ar resevourien</em></li> </ul> <p>Elfenn gentañ pep linenn "
-"a vez ret hag e rank bezañ par ouzh unan eus an talvoudegezhioù kent.</p> "
-"<p>Gellout a rit implijout un arouezenn evel skejer.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Pourvezit ur restr CSV el lec'h ma touj al linennoù unan eus ar stummoù da-heul: <ul> <li><em>domani; anv; kota; boes-postel kota dre-ziouer; enaouet</em></li> <li><em>domani-alias; anv; domani bukeet; enaouet</em></li> <li><em>domain a-eil; anv; herbrec'hier bukenn; porzh bukenn; servij; enaouet; gwiriañ ar resevourien</em></li> </ul> <p>Elfenn gentañ pep linenn a vez ret hag e rank bezañ par ouzh unan eus an talvoudegezhioù kent.</p> <p>Gellout a rit implijout un arouezenn evel skejer.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Pourvezit ur restr CSV el lec'h ma touj al linennoù unan eus ar stummoù da-"
-"heul: <ul> <li><em>kont; anv-kevreañ; ger-tremen; anv bihan; anv familh; "
-"enaouet; strolladoù; chomlec'h; kota; [, domani, ...]</em></li> "
-"<li><em>alias; chomlec'h; enaouet; resever; resever; ...</em></li> </ul> "
-"<p>Elfenn gentañ pep linenn a vez ret hag e rank bezañ par ouzh unan eus an "
-"talvoudegezhioù kent.</p> <p>Gellout a rit implijout un arouezenn evel "
-"skejer.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Pourvezit ur restr CSV el lec'h ma touj al linennoù unan eus ar stummoù da-heul: <ul> <li><em>kont; anv-kevreañ; ger-tremen; anv bihan; anv familh; enaouet; strolladoù; chomlec'h; kota; [, domani, ...]</em></li> <li><em>alias; chomlec'h; enaouet; resever; resever; ...</em></li> </ul> <p>Elfenn gentañ pep linenn a vez ret hag e rank bezañ par ouzh unan eus an talvoudegezhioù kent.</p> <p>Gellout a rit implijout un arouezenn evel skejer.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1539,30 +1403,17 @@ msgstr "Erolladenn MX ebet kavet evit an domani-mañ."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
-msgid ""
-"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
-"providers:"
-msgstr ""
-"Modoboa en deus diguzhet e oa an domani %(domain)s listennet gant ar "
-"bourvezerien DNSBL da-heul:"
+msgid "Modoboa detected that domain %(domain)s is listed by the following DNSBL providers:"
+msgstr "Modoboa en deus diguzhet e oa an domani %(domain)s listennet gant ar bourvezerien DNSBL da-heul:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
-msgid ""
-"The domain's reputation will be affected and there is a chance that emails "
-"coming from it are considered as spam. You should contact those providers "
-"and ask them to unlist detected IP address(es)."
-msgstr ""
-"Brud an domani a vo merket-kennañ ha posupl eo e vo lakaet da strob ar "
-"posteloù o tont eus e berzh. Rankout a rafec'h mont e darempred gant ar "
-"bourvezerien-mañ evit goulenn digantañ dilistennañ ar chomlec'h(ioù) IP "
-"diguzhet."
+msgid "The domain's reputation will be affected and there is a chance that emails coming from it are considered as spam. You should contact those providers and ask them to unlist detected IP address(es)."
+msgstr "Brud an domani a vo merket-kennañ ha posupl eo e vo lakaet da strob ar posteloù o tont eus e berzh. Rankout a rafec'h mont e darempred gant ar bourvezerien-mañ evit goulenn digantañ dilistennañ ar chomlec'h(ioù) IP diguzhet."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
-"Modoboa a zo bet diguzhet gantañ ne oa tamm enrolladenn MX reizh gant an "
-"domani %(domain)s:"
+msgstr "Modoboa a zo bet diguzhet gantañ ne oa tamm enrolladenn MX reizh gant an domani %(domain)s:"
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1824,12 +1675,8 @@ msgid "Rounds"
 msgstr "Troiadoù"
 
 #: core/app_settings.py:61 core/app_settings.py:743
-msgid ""
-"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
-"between 1000 and 999999999, inclusive."
-msgstr ""
-"Niver a droiadoù d'ober ganto (implijet gant sha256crypt ha sha512crypt "
-"hepken). Bez' e rank bezañ etre 1000 ha 999999999, e-barzh."
+msgid "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be between 1000 and 999999999, inclusive."
+msgstr "Niver a droiadoù d'ober ganto (implijet gant sha256crypt ha sha512crypt hepken). Bez' e rank bezañ etre 1000 ha 999999999, e-barzh."
 
 #: core/app_settings.py:67 core/app_settings.py:749
 msgid "Update password scheme at login"
@@ -1837,9 +1684,7 @@ msgstr ""
 
 #: core/app_settings.py:70 core/app_settings.py:751
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Hizivait ger-tremen an implijer d'ar mare kevreaén evit implijout ar "
-"brastres ger-tremen dre-ziouer"
+msgstr "Hizivait ger-tremen an implijer d'ar mare kevreaén evit implijout ar brastres ger-tremen dre-ziouer"
 
 #: core/app_settings.py:75 core/app_settings.py:756
 msgid "Default password"
@@ -1862,10 +1707,7 @@ msgid "Update password service URL"
 msgstr ""
 
 #: core/app_settings.py:94 core/app_settings.py:768
-msgid ""
-"The URL of an external page where users will be able to update their "
-"password. It applies only to non local users, ie. those automatically "
-"created after a successful external authentication (LDAP, SMTP)."
+msgid "The URL of an external page where users will be able to update their password. It applies only to non local users, ie. those automatically created after a successful external authentication (LDAP, SMTP)."
 msgstr ""
 
 #: core/app_settings.py:102 core/app_settings.py:775
@@ -1917,8 +1759,7 @@ msgid "Enable secondary server (fallback)"
 msgstr ""
 
 #: core/app_settings.py:150 core/app_settings.py:814
-msgid ""
-"Enable a secondary LDAP server which will be used if the primary one fails"
+msgid "Enable a secondary LDAP server which will be used if the primary one fails"
 msgstr ""
 
 #: core/app_settings.py:156 core/app_settings.py:819
@@ -1943,8 +1784,7 @@ msgstr "Ober gant ur gevreadenn suraet"
 
 #: core/app_settings.py:174 core/app_settings.py:835
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
-msgstr ""
-"Implijit ur gevreadenn SSL/STARTTLS evit gellet tizhout ar servijer LDAP"
+msgstr "Implijit ur gevreadenn SSL/STARTTLS evit gellet tizhout ar servijer LDAP"
 
 #: core/app_settings.py:178 core/app_settings.py:838
 msgid "Active Directory"
@@ -1959,12 +1799,8 @@ msgid "Administrator groups"
 msgstr "Strolladoù merañ"
 
 #: core/app_settings.py:188 core/app_settings.py:845
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Izili ar strolladoù LDAP Posix a vo krouet evel bezañ merourien domani. "
-"Implijit an arouezoù ';' evit gellet skejañ ar strolladoù."
+msgid "Members of those LDAP Posix groups will be created as domain administrators. Use ';' characters to separate groups."
+msgstr "Izili ar strolladoù LDAP Posix a vo krouet evel bezañ merourien domani. Implijit an arouezoù ';' evit gellet skejañ ar strolladoù."
 
 #: core/app_settings.py:195 core/app_settings.py:851
 msgid "Group type"
@@ -2017,12 +1853,8 @@ msgstr "Liammañ DN"
 
 #: core/app_settings.py:234 core/app_settings.py:288 core/app_settings.py:882
 #: core/app_settings.py:927
-msgid ""
-"The distinguished name to use when binding to the LDAP server. Leave empty "
-"for an anonymous bind"
-msgstr ""
-"An anv dibar da vezañ implijet evit en em liammañ ouzh ar servijer LDAP. "
-"Lezel goullo evit un liamm dizanv."
+msgid "The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"
+msgstr "An anv dibar da vezañ implijet evit en em liammañ ouzh ar servijer LDAP. Lezel goullo evit un liamm dizanv."
 
 #: core/app_settings.py:241 core/app_settings.py:295 core/app_settings.py:888
 #: core/app_settings.py:932
@@ -2032,9 +1864,7 @@ msgstr "Liammañ ur ger-tremen"
 #: core/app_settings.py:244 core/app_settings.py:298 core/app_settings.py:890
 #: core/app_settings.py:934
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Ar ger-tremen d'ober gantañ evit kevreañ ouzh ar servijer LDAP (gant "
-"'kevreadenn DN')"
+msgstr "Ar ger-tremen d'ober gantañ evit kevreañ ouzh ar servijer LDAP (gant 'kevreadenn DN')"
 
 #: core/app_settings.py:252 core/app_settings.py:344 core/app_settings.py:897
 #: core/app_settings.py:971
@@ -2053,12 +1883,8 @@ msgstr "Sil klask"
 
 #: core/app_settings.py:264 core/app_settings.py:356 core/app_settings.py:907
 #: core/app_settings.py:981
-msgid ""
-"An optional filter string (e.g. '(objectClass=person)'). In order to be "
-"valid, it must be enclosed in parentheses."
-msgstr ""
-"Ur chadenn sil diret (d.sk. '(objedKlas = person)'). Evit bezañ reizh, e "
-"rank bezañ enklozet etre krommelloù."
+msgid "An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."
+msgstr "Ur chadenn sil diret (d.sk. '(objedKlas = person)'). Evit bezañ reizh, e rank bezañ enklozet etre krommelloù."
 
 #: core/app_settings.py:271 core/app_settings.py:913
 msgid "User DN template"
@@ -2066,12 +1892,8 @@ msgstr "Patrom implijer DN"
 
 #: core/app_settings.py:274 core/app_settings.py:915
 #, python-format
-msgid ""
-"The template used to construct a user's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Ar skouer implijet evit sevel DN un implijer. Rankout a rafe enderc'hel ur "
-"spas miret (d.l.e %(user)s)"
+msgid "The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Ar skouer implijet evit sevel DN un implijer. Rankout a rafe enderc'hel ur spas miret (d.l.e %(user)s)"
 
 #: core/app_settings.py:282 core/app_settings.py:921
 msgid "LDAP synchronization settings"
@@ -2082,8 +1904,7 @@ msgid "Enable export to LDAP"
 msgstr ""
 
 #: core/app_settings.py:309 core/app_settings.py:942
-msgid ""
-"Enable automatic synchronization between local database and LDAP directory"
+msgid "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 
 #: core/app_settings.py:315 core/app_settings.py:948
@@ -2091,9 +1912,7 @@ msgid "Delete remote LDAP account when local account is deleted"
 msgstr ""
 
 #: core/app_settings.py:319 core/app_settings.py:950
-msgid ""
-"Delete remote LDAP account when local account is deleted, otherwise it will "
-"be disabled."
+msgid "Delete remote LDAP account when local account is deleted, otherwise it will be disabled."
 msgstr ""
 
 #: core/app_settings.py:325 core/app_settings.py:956
@@ -2102,9 +1921,7 @@ msgstr ""
 
 #: core/app_settings.py:328 core/app_settings.py:958
 #, python-format
-msgid ""
-"The template used to construct an account's DN. It should contain one "
-"placeholder (ie. %(user)s)"
+msgid "The template used to construct an account's DN. It should contain one placeholder (ie. %(user)s)"
 msgstr ""
 
 #: core/app_settings.py:335 core/app_settings.py:964
@@ -2136,8 +1953,7 @@ msgid "Dovecot LDAP config file"
 msgstr ""
 
 #: core/app_settings.py:384 core/app_settings.py:1004
-msgid ""
-"Location of the configuration file which contains Dovecot LDAP settings."
+msgid "Location of the configuration file which contains Dovecot LDAP settings."
 msgstr ""
 
 #: core/app_settings.py:389 core/app_settings.py:1013
@@ -2151,8 +1967,7 @@ msgstr "Froud RSS personel"
 
 #: core/app_settings.py:395 core/app_settings.py:1018
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Diskouez froudoù RSS personnel d'an eilgwerzherien ha merourien an domani"
+msgstr "Diskouez froudoù RSS personnel d'an eilgwerzherien ha merourien an domani"
 
 #: core/app_settings.py:400 core/app_settings.py:1023
 msgid "Hide features widget"
@@ -2160,8 +1975,7 @@ msgstr "Kuzhat an arc'hweladurioù objed"
 
 #: core/app_settings.py:403 core/app_settings.py:1025
 msgid "Hide features widget for resellers and domain administrators"
-msgstr ""
-"Kuzhat an arc'hweladurioù objed d'an eilgwerzherien ha merourien an domani"
+msgstr "Kuzhat an arc'hweladurioù objed d'an eilgwerzherien ha merourien an domani"
 
 #: core/app_settings.py:407 core/app_settings.py:1032
 msgid "Notifications"
@@ -2217,9 +2031,7 @@ msgstr "Kas statistikoù"
 
 #: core/app_settings.py:452 core/app_settings.py:1074
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Kas ar statistikoù da API foran Modoboa (kontourioù hag an astennoù "
-"impliljet)"
+msgstr "Kas ar statistikoù da API foran Modoboa (kontourioù hag an astennoù impliljet)"
 
 #: core/app_settings.py:456 core/app_settings.py:1080
 msgid "Miscellaneous"
@@ -2232,9 +2044,7 @@ msgid "Enable inactive account tracking"
 msgstr "Treuzoù ar c'hontoù dioberiant"
 
 #: core/app_settings.py:461 core/app_settings.py:1085
-msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+msgid "Allow the administrator to set a threshold (in days) beyond which an account is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:467 core/app_settings.py:1091
@@ -2242,12 +2052,8 @@ msgid "Inactive account threshold"
 msgstr "Treuzoù ar c'hontoù dioberiant"
 
 #: core/app_settings.py:470 core/app_settings.py:1094
-msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Ur gont gant un deiziad kevreañ koshoc'h evit an treuzoù-se (e devezhioù) a "
-"vo kontet evel bezañ dioberiant"
+msgid "An account with a last login date greater than this threshold (in days) will be considered as inactive"
+msgstr "Ur gont gant un deiziad kevreañ koshoc'h evit an treuzoù-se (e devezhioù) a vo kontet evel bezañ dioberiant"
 
 #: core/app_settings.py:476 core/app_settings.py:1099
 msgid "Top notifications check interval"
@@ -2286,14 +2092,8 @@ msgid "LDAP"
 msgstr ""
 
 #: core/checks/settings_checks.py:6
-msgid ""
-"You have USE_TZ set to False, this may result in issues during transitions "
-"between summer/winter time (ie the same local time occuring twice due to "
-"clock change)."
-msgstr ""
-"Bez ho peus lakaet USE_TZ da Gaou, gellout a ra degas kudennoù da vare an "
-"tremennadennoù eurvezh hañv/eurvezh goañv (d.l.e ar memes eurvezh lec'hel a "
-"c'hoarvez div wech abalamour d'ur cheñchamant horolaj)."
+msgid "You have USE_TZ set to False, this may result in issues during transitions between summer/winter time (ie the same local time occuring twice due to clock change)."
+msgstr "Bez ho peus lakaet USE_TZ da Gaou, gellout a ra degas kudennoù da vare an tremennadennoù eurvezh hañv/eurvezh goañv (d.l.e ar memes eurvezh lec'hel a c'hoarvez div wech abalamour d'ur cheñchamant horolaj)."
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
@@ -2419,14 +2219,13 @@ msgstr "Yezh karetañ evit diskwel ar pajenoù"
 
 #: core/models.py:72
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr ""
-"Gallout a reer ober gant un eil chomlec'h postel evit ezhommoù adtapout"
+msgstr "Gallout a reer ober gant un eil chomlec'h postel evit ezhommoù adtapout"
 
 #: core/models.py:126
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Hizivadur ger-tremen c'hwitet: modulenn LDAP nann-staliet"
 
-#: core/models.py:159 policyd/core.py:105
+#: core/models.py:159
 msgid "account"
 msgstr "kont"
 
@@ -2436,9 +2235,7 @@ msgstr "Dizanv"
 
 #: core/models.py:328
 msgid "You can't import an account with a role greater than yours"
-msgstr ""
-"N'hallit ket emporzhiañ ur gont gant ur rol pouezusoc'h evit hoc'h hini "
-"deoc'h-c'hwi"
+msgstr "N'hallit ket emporzhiañ ur gont gant ur rol pouezusoc'h evit hoc'h hini deoc'h-c'hwi"
 
 #: core/models.py:343
 #, python-format
@@ -2448,8 +2245,7 @@ msgstr "An implijer eeun '%s' a rank kaout ur chomlec'h postel reizh"
 #: core/models.py:348
 #, python-format
 msgid "username and email fields must not differ for '%s'"
-msgstr ""
-"ar maeziennoù anv-implijer hag ar postel a rank bezañ disheñvel diouzh '%s'"
+msgstr "ar maeziennoù anv-implijer hag ar postel a rank bezañ disheñvel diouzh '%s'"
 
 #: core/password_validation.py:24
 msgid "Password must contain at least {} digit."
@@ -2489,8 +2285,7 @@ msgstr[4] "Ar ger-tremen a rank enderc'hel da vihanañ {} arouez ispisial."
 
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
-msgstr ""
-"Rankout a ra enderc'hel ho ker-tremen ur c'henaozadur a arouezioù disheñvel."
+msgstr "Rankout a ra enderc'hel ho ker-tremen ur c'henaozadur a arouezioù disheñvel."
 
 #: core/sms_backends/ovh.py:21 core/sms_backends/ovh.py:103
 msgid "API endpoint"
@@ -2563,12 +2358,8 @@ msgid "Latest news"
 msgstr "Keleier diwezhañ"
 
 #: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
-msgstr ""
-"Kit d'ober un dro war ar <a href=\"https://modoboa.org/blog/\" "
-"target=\"_blank\">weblog ofisiel</a> evit kaout muioc'h a ditouroù."
+msgid "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official weblog</a> for more information."
+msgstr "Kit d'ober un dro war ar <a href=\"https://modoboa.org/blog/\" target=\"_blank\">weblog ofisiel</a> evit kaout muioc'h a ditouroù."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -2580,12 +2371,8 @@ msgstr "Merit ho moned da API Modoboa"
 
 #: core/templates/core/api_access.html:7
 #, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
-msgstr ""
-"Un teuliadur diwar-benn an API a vez hegerzh <strong><a href=\"%(url)s\" "
-"target=\"_blank\">amañ</a></strong>."
+msgid "A documentation of the API is available <strong><a href=\"%(url)s\" target=\"_blank\">here</a></strong>."
+msgstr "Un teuliadur diwar-benn an API a vez hegerzh <strong><a href=\"%(url)s\" target=\"_blank\">amañ</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -2610,9 +2397,7 @@ msgstr "Un hizivadenn pe muioc'h a zo hegerz!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Sellit ouzh al listenn da-heul da welet hag-eñ e c'hall bezañ hizivaet ar "
-"parzh(ioù)."
+msgstr "Sellit ouzh al listenn da-heul da welet hag-eñ e c'hall bezañ hizivaet ar parzh(ioù)."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -2712,9 +2497,7 @@ msgid "Two-Factor authentication"
 msgstr "Drekleur implijet evit bezañ anavezet"
 
 #: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+msgid "Install a soft token authenticator like FreeOTP or Google Authenticator from your application repository and use that app to scan this QR code."
 msgstr ""
 
 #: core/templates/core/user_security.html:25
@@ -2726,17 +2509,12 @@ msgid "Register"
 msgstr ""
 
 #: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
 msgstr ""
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
+msgid "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
 msgstr ""
 
 #: core/templates/core/user_security.html:53
@@ -2755,9 +2533,7 @@ msgid "Reset recovery codes"
 msgstr ""
 
 #: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
+msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
 msgstr ""
 
 #: core/templates/core/user_security.html:73
@@ -2798,9 +2574,7 @@ msgstr "Arventennoù enrollet"
 
 #: core/views/auth.py:100
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Hoc'h anv-implijer hag ho ker-tremen na genglotont ket. Klaskit en-dro, mar "
-"plij."
+msgstr "Hoc'h anv-implijer hag ho ker-tremen na genglotont ket. Klaskit en-dro, mar plij."
 
 #: core/views/auth.py:135
 msgid "User '{}' successfully logged out"
@@ -2828,9 +2602,7 @@ msgstr "Enaouiñ an enklaskoù eilpennet"
 
 #: dmarc/forms.py:44 dmarc/forms.py:56
 msgid "Enable reverse DNS lookups (reports will be longer to display)"
-msgstr ""
-"Enaouiñ an enklaskoù DNS eilpennet (danevelloù a vo hiroc'h da vezañ "
-"diskouezet)"
+msgstr "Enaouiñ an enklaskoù DNS eilpennet (danevelloù a vo hiroc'h da vezañ diskouezet)"
 
 #: dmarc/forms.py:69 dmarc/forms.py:71
 #, fuzzy
@@ -3075,9 +2847,7 @@ msgid "A DNS record has been found but its syntax is not valid:"
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+msgid "Here is an example of DNS configuration (bind format). Replace value between [ ] by the appropriate ones."
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
@@ -3154,9 +2924,7 @@ msgid "Folder Filter Exclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:44 imap_migration/app_settings.py:93
-msgid ""
-"Use a regular expression to explicitly include folders in sync. Example: "
-"^Trash$|Del"
+msgid "Use a regular expression to explicitly include folders in sync. Example: ^Trash$|Del"
 msgstr ""
 
 #: imap_migration/app_settings.py:48 imap_migration/app_settings.py:100
@@ -3164,10 +2932,7 @@ msgid "Folder Filter Inclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:50 imap_migration/app_settings.py:103
-msgid ""
-"A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+msgid "A comma seperated list of folders to explicitly include in sync even if filtered by the Folder Filter Exclusions. Example: debian.user, debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:72
@@ -3190,14 +2955,11 @@ msgid "Connection to IMAP server failed: %s"
 msgstr ""
 
 #: imap_migration/checks.py:11
-msgid ""
-"Automatic domain/mailbox creation is disabled which means IMAP "
-"authentication won't work."
+msgid "Automatic domain/mailbox creation is disabled which means IMAP authentication won't work."
 msgstr ""
 
 #: imap_migration/checks.py:13
-msgid ""
-"Go to the online parameters panel (admin tab) and activate this feature."
+msgid "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
 
 #: imap_migration/templates/imap_migration/index.html:6
@@ -3288,52 +3050,28 @@ msgid "Domain admins"
 msgstr "Merourien domani"
 
 #: limits/app_settings.py:29 limits/app_settings.py:164
-msgid ""
-"Maximum number of allowed domain administrators for a new administrator. (0 "
-"to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a verourien zomani aotreet evit ur merour nevez anezhañ. (0 "
-"evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed domain administrators for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a verourien zomani aotreet evit ur merour nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:40 limits/app_settings.py:173
-msgid ""
-"Maximum number of allowed domains for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a zomanioù aotreet evit ur merour nevez anezhañ. (0 evit berzañ "
-"kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed domains for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a zomanioù aotreet evit ur merour nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:50 limits/app_settings.py:181
-msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a aliasoù domani aotreet evit ur merour nevez anezhañ. (0 evit "
-"berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed domain aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a aliasoù domani aotreet evit ur merour nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:61 limits/app_settings.py:190
-msgid ""
-"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a voestoù-postel aotreet evit ur merour nevez anezhañ. (0 evit "
-"berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed mailboxes for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a voestoù-postel aotreet evit ur merour nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:71 limits/app_settings.py:199
-msgid ""
-"Maximum number of allowed aliases for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a aliasoù aotreet evit ur merour nevez anezhañ. (0 evit berzañ "
-"kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a aliasoù aotreet evit ur merour nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:81 limits/app_settings.py:206
-msgid ""
-"The quota a reseller will be allowed to share between the domains he "
-"creates. (0 means no quota)"
-msgstr ""
-"Kota un eilgwerzher a vo aotreet da rannañ kenetre an domanioù krouet "
-"gantañ. (0 a dalvez tamm kota ebet)"
+msgid "The quota a reseller will be allowed to share between the domains he creates. (0 means no quota)"
+msgstr "Kota un eilgwerzher a vo aotreet da rannañ kenetre an domanioù krouet gantañ. (0 a dalvez tamm kota ebet)"
 
 #: limits/app_settings.py:88 limits/app_settings.py:213
 msgid "Default per-domain limits"
@@ -3348,36 +3086,20 @@ msgid "Enable or disable per-domain limits"
 msgstr "Enaouiñ pe lazhañ ar bevennoù dre-zomani"
 
 #: limits/app_settings.py:100 limits/app_settings.py:223
-msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a verourien zomani aotreet evit un domani nevez (0 evit berzañ "
-"kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed domain administrators for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a verourien zomani aotreet evit un domani nevez (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:111 limits/app_settings.py:232
-msgid ""
-"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a aliasoù domani aotreet evit un domani nevez anezhañ. (0 evit "
-"berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed domain aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a aliasoù domani aotreet evit un domani nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:122 limits/app_settings.py:241
-msgid ""
-"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a voestoù-postel aotreet evit un domani nevez anezhañ. (0 evit "
-"berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed mailboxes for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a voestoù-postel aotreet evit un domani nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/app_settings.py:132 limits/app_settings.py:249
-msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
-msgstr ""
-"Niver brasañ a aliasoù aotreet evit un domani nevez anezhañ. (0 evit berzañ "
-"kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
+msgid "Maximum number of allowed aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Niver brasañ a aliasoù aotreet evit un domani nevez anezhañ. (0 evit berzañ kement krouidigezh, -1 evit aotren ar c'hrouidigezhioù divevenn)"
 
 #: limits/apps.py:13 limits/apps.py:15
 msgid "Limits"
@@ -3389,24 +3111,19 @@ msgstr "Niver brasañ a zomanioù a c'hall bezañ krouet gant an implijer-mañ"
 
 #: limits/constants.py:14
 msgid "Maximum number of domain aliases this user can create"
-msgstr ""
-"Niver brasañ a aliasoù domanioù a c'hall bezañ krouet gant an implijer-mañ"
+msgstr "Niver brasañ a aliasoù domanioù a c'hall bezañ krouet gant an implijer-mañ"
 
 #: limits/constants.py:18
 msgid "Maximum number of mailboxes this user can create"
-msgstr ""
-"Niver brasañ a voestoù-postel a c'hall bezañ krouet gant an implijer-mañ"
+msgstr "Niver brasañ a voestoù-postel a c'hall bezañ krouet gant an implijer-mañ"
 
 #: limits/constants.py:21
 msgid "Maximum number of mailbox aliases this user can create"
-msgstr ""
-"Niver brasañ a aliasoù boest-postel a c'hall bezañ krouet gant an implijer-"
-"mañ"
+msgstr "Niver brasañ a aliasoù boest-postel a c'hall bezañ krouet gant an implijer-mañ"
 
 #: limits/constants.py:25
 msgid "Maximum number of domain administrators this user can create"
-msgstr ""
-"Niver brasañ a verourien domani a c'hall bezañ krouet gant an implijer-mañ"
+msgstr "Niver brasañ a verourien domani a c'hall bezañ krouet gant an implijer-mañ"
 
 #: limits/constants.py:31
 msgid "Quota shared between domains of this reseller"
@@ -3674,9 +3391,7 @@ msgid "Delete documents after the first download"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:45 pdfcredentials/app_settings.py:145
-msgid ""
-"Automatically delete a document just after its first download from this "
-"interface"
+msgid "Automatically delete a document just after its first download from this interface"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:151
@@ -3684,9 +3399,7 @@ msgid "Generate documents only at account creation"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:52 pdfcredentials/app_settings.py:154
-msgid ""
-"Generate a new document only when a new account is created. If set to no, a "
-"new document will be created each time a password is updated."
+msgid "Generate a new document only when a new account is created. If set to no, a new document will be created each time a password is updated."
 msgstr ""
 
 #: pdfcredentials/app_settings.py:60 pdfcredentials/app_settings.py:160
@@ -3724,9 +3437,7 @@ msgid "Include mail client connection settings"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:79 pdfcredentials/app_settings.py:184
-msgid ""
-"Include required SMTP and IMAP connection information to configure a mail "
-"client, a tablet or a phone"
+msgid "Include required SMTP and IMAP connection information to configure a mail client, a tablet or a phone"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:84 pdfcredentials/app_settings.py:190
@@ -3851,21 +3562,6 @@ msgstr ""
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr ""
 
-#: policyd/core.py:89
-#, fuzzy
-#| msgid "%s: limit reached"
-msgid "Daily sending limit reached"
-msgstr "%s: bevenn tizhet"
-
-#: policyd/core.py:124
-msgid "[modoboa] Sending limit reached"
-msgstr ""
-
-#: policyd/templates/policyd/notifications/limit_reached.html:3
-#, python-format
-msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
-
 #: relaydomains/api/v1/serializers.py:25
 msgid "Unsupported service"
 msgstr "Servij nann-degemeret"
@@ -3956,25 +3652,16 @@ msgstr "Ger-tremen ankouaeet?"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
-msgid ""
-"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
-"in</a> now."
-msgstr ""
-"Termenet eo bet ho ker-tremen. Gellout a rit mont war-raok ha <a "
-"href=\"%(url)s\">kevreañ</a> bremañ."
+msgid "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign in</a> now."
+msgstr "Termenet eo bet ho ker-tremen. Gellout a rit mont war-raok ha <a href=\"%(url)s\">kevreañ</a> bremañ."
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
 msgstr "Cheñch ger-tremen"
 
 #: templates/registration/password_reset_confirm.html:17
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used. Please request a new password reset."
-msgstr ""
-"Al liamm adderaouaekaat a oa direizh anezhañ, sur a-walc'h abalamour m'eo "
-"bet implijet endeo. Goulennit war-lerc'h un adderaouekadur ger-tremen nevez "
-"mar plij."
+msgid "The password reset link was invalid, possibly because it has already been used. Please request a new password reset."
+msgstr "Al liamm adderaouaekaat a oa direizh anezhañ, sur a-walc'h abalamour m'eo bet implijet endeo. Goulennit war-lerc'h un adderaouekadur ger-tremen nevez mar plij."
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
@@ -3985,35 +3672,19 @@ msgid "Resend code"
 msgstr ""
 
 #: templates/registration/password_reset_done.html:7
-msgid ""
-"<p>We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly.</p> "
-"<p>If you don't receive an email, please make sure you've entered your "
-"primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>Postelet hon eus deoc'h pazennoù evit diazezañ ker-tremen, ma vez ur gont "
-"gant ar postel ho peus ebarzhet. Resevet e vint ganeoc'h a-benn nebeud.</p> "
-"<p>Ma ne resevit tamm postel ebet, bezit asur da vezañ bet skrivet ho "
-"chomlec'h postel pennañ, ha taolit ur sell ouzh an doser strob.</p>"
+msgid "<p>We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.</p> <p>If you don't receive an email, please make sure you've entered your primary address, and check your spam folder.</p>"
+msgstr "<p>Postelet hon eus deoc'h pazennoù evit diazezañ ker-tremen, ma vez ur gont gant ar postel ho peus ebarzhet. Resevet e vint ganeoc'h a-benn nebeud.</p> <p>Ma ne resevit tamm postel ebet, bezit asur da vezañ bet skrivet ho chomlec'h postel pennañ, ha taolit ur sell ouzh an doser strob.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
 #, python-format
-msgid ""
-"To initiate the password reset process for your %(username)s Modoboa "
-"account, click the link below:"
-msgstr ""
-"%(username)s, evit loc'hañ an argerzh adderaouekaat ger-tremen evit ho kont "
-"Modoboa, klikit war al liamm dindan:"
+msgid "To initiate the password reset process for your %(username)s Modoboa account, click the link below:"
+msgstr "%(username)s, evit loc'hañ an argerzh adderaouekaat ger-tremen evit ho kont Modoboa, klikit war al liamm dindan:"
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
-msgid ""
-"If clicking the link above doesn't work, please copy and paste the URL in a "
-"new browser window instead."
-msgstr ""
-"Ma ne 'z a ket en-dro klikañ war al liamm dindan, eilit pe pegit an URL e-"
-"barzh ur prenestr merdeer nevez e-plas."
+msgid "If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead."
+msgstr "Ma ne 'z a ket en-dro klikañ war al liamm dindan, eilit pe pegit an URL e-barzh ur prenestr merdeer nevez e-plas."
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
@@ -4043,6 +3714,11 @@ msgstr "servij"
 #: transport/models.py:18
 msgid "next hop"
 msgstr "lamm da-heul"
+
+#, fuzzy
+#~| msgid "%s: limit reached"
+#~ msgid "Daily sending limit reached"
+#~ msgstr "%s: bevenn tizhet"
 
 #~ msgid "A set of tools to ease DMARC integration"
 #~ msgstr "Un dastumad ostilhoù da aesaat enframmañ DMARC"

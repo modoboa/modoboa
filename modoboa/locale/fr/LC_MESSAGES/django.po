@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 10:38+0200\n"
+"POT-Creation-Date: 2023-04-20 14:11+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Icarus Flight, 2022\n"
 "Language-Team: French (http://www.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -20,22 +20,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: admin/api/v1/serializers.py:35 admin/forms/domain.py:44
-msgid ""
-"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
-"A value of 0 means no quota."
-msgstr ""
-"Quota partagé entre les boîtes aux lettres. Peut être exprimé en Ko, Mo "
-"(défaut) ou Go. Une valeur à 0 signifie pas de quota."
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Quota partagé entre les boîtes aux lettres. Peut être exprimé en Ko, Mo (défaut) ou Go. Une valeur à 0 signifie pas de quota."
 
 #: admin/api/v1/serializers.py:42
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Quota par défaut en Mo appliqué aux boîtes aux lettres. Une valeur à 0 "
-"signifie pas de quota."
+msgstr "Quota par défaut en Mo appliqué aux boîtes aux lettres. Une valeur à 0 signifie pas de quota."
 
 #: admin/api/v1/serializers.py:73 admin/forms/domain.py:108
 msgid "No authorized MX record found for this domain"
@@ -60,11 +53,8 @@ msgid "This field is required"
 msgstr "Ce champ est requis"
 
 #: admin/api/v1/serializers.py:186
-msgid ""
-"List of administered domains (resellers and domain administrators only)."
-msgstr ""
-"Liste des domaines administrés (revendeurs et administrateurs de domaine "
-"seulement)."
+msgid "List of administered domains (resellers and domain administrators only)."
+msgstr "Liste des domaines administrés (revendeurs et administrateurs de domaine seulement)."
 
 #: admin/api/v1/serializers.py:292 admin/api/v2/serializers.py:458
 msgid "Not allowed for this role."
@@ -125,8 +115,7 @@ msgstr "Répertoire introuvable."
 
 #: admin/api/v2/serializers.py:236 admin/app_settings.py:261
 msgid "openssl not found, please make sure it is installed."
-msgstr ""
-"impossible de trouver openssl, veuillez vous assurer vous qu'il est installé."
+msgstr "impossible de trouver openssl, veuillez vous assurer vous qu'il est installé."
 
 #: admin/api/v2/serializers.py:251 admin/app_settings.py:278
 msgid "This field only allows valid IP addresses (or networks)"
@@ -187,25 +176,16 @@ msgid "Valid MXs"
 msgstr "MX(s) valide(s)"
 
 #: admin/app_settings.py:37 admin/app_settings.py:312
-msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"Une liste d'adresses IP ou réseau que chaque enregistrement MX doit "
-"respecter. Un avertissement sera envoyé dès qu'un enregistrement ne la "
-"respecte pas."
+msgid "A list of IP or network address every MX record should match. A warning will be sent if a record does not respect it."
+msgstr "Une liste d'adresses IP ou réseau que chaque enregistrement MX doit respecter. Un avertissement sera envoyé dès qu'un enregistrement ne la respecte pas."
 
 #: admin/app_settings.py:45 admin/app_settings.py:318
 msgid "New domains must use authorized MX(s)"
 msgstr "Les nouveaux domaines doivent utiliser un ou plusieurs MX autorisés"
 
 #: admin/app_settings.py:48 admin/app_settings.py:321
-msgid ""
-"Prevent the creation of a new domain if its MX record does not use one of "
-"the defined addresses."
-msgstr ""
-"Empêcher la création d'un domaine s'il n'a pas au moins un MX utilisant une "
-"adresse autorisée."
+msgid "Prevent the creation of a new domain if its MX record does not use one of the defined addresses."
+msgstr "Empêcher la création d'un domaine s'il n'a pas au moins un MX utilisant une adresse autorisée."
 
 #: admin/app_settings.py:54 admin/app_settings.py:326
 msgid "Enable SPF checks"
@@ -221,9 +201,7 @@ msgstr "Activer les tests DKIM"
 
 #: admin/app_settings.py:65 admin/app_settings.py:334
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
-msgstr ""
-"Vérifie que chaque domaine ayant la signature DKIM activée dispose d'un "
-"enregistrement DNS valide"
+msgstr "Vérifie que chaque domaine ayant la signature DKIM activée dispose d'un enregistrement DNS valide"
 
 #: admin/app_settings.py:71 admin/app_settings.py:339
 msgid "Enable DMARC checks"
@@ -239,9 +217,7 @@ msgstr "Activer les tests d'autoconfiguration"
 
 #: admin/app_settings.py:82 admin/app_settings.py:347
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr ""
-"Vérifie que chaque domaine a les enregistrements nécessaires à "
-"l'autoconfiguration"
+msgstr "Vérifie que chaque domaine a les enregistrements nécessaires à l'autoconfiguration"
 
 #: admin/app_settings.py:87 admin/app_settings.py:352
 msgid "Enable DNSBL checks"
@@ -257,23 +233,15 @@ msgstr "Serveur DNS personnalisé"
 
 #: admin/app_settings.py:99 admin/app_settings.py:360
 msgid "Use a custom DNS server instead of local server configuration"
-msgstr ""
-"Utiliser un serveur DNS personnalisé à la place de la configuration par "
-"défaut du serveur"
+msgstr "Utiliser un serveur DNS personnalisé à la place de la configuration par défaut du serveur"
 
 #: admin/app_settings.py:104 admin/app_settings.py:365
 msgid "DKIM keys storage directory"
 msgstr "Répertoire de stockage des clés DKIM"
 
 #: admin/app_settings.py:107 admin/app_settings.py:367
-msgid ""
-"Absolute path of the directory where DKIM private keys will be stored. Make "
-"sure this directory belongs to root user and is not readable by the outside "
-"world."
-msgstr ""
-"Chemin absolu du répertoire dans lequel seront stockées les clés DKIM. "
-"Assurez vous que ce répertoire appartient à l'utilisateur root et qu'il "
-"n'est pas lisible par le monde extérieur."
+msgid "Absolute path of the directory where DKIM private keys will be stored. Make sure this directory belongs to root user and is not readable by the outside world."
+msgstr "Chemin absolu du répertoire dans lequel seront stockées les clés DKIM. Assurez vous que ce répertoire appartient à l'utilisateur root et qu'il n'est pas lisible par le monde extérieur."
 
 #: admin/app_settings.py:115 admin/app_settings.py:373
 msgid "Default DKIM key length"
@@ -288,24 +256,16 @@ msgid "Default domain quota"
 msgstr "Quota de domaine par défaut"
 
 #: admin/app_settings.py:127 admin/app_settings.py:381
-msgid ""
-"Default quota (in MB) applied to freshly created domains with no value "
-"specified. A value of 0 means no quota."
-msgstr ""
-"Quota par défaut (en Mo) appliqué aux domaines fraichement créés et ne "
-"spécifiant pas de valeur. 0 signifie qu'aucun quota ne sera appliqué."
+msgid "Default quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Quota par défaut (en Mo) appliqué aux domaines fraichement créés et ne spécifiant pas de valeur. 0 signifie qu'aucun quota ne sera appliqué."
 
 #: admin/app_settings.py:133 admin/app_settings.py:386
 msgid "Default domain sending limit"
 msgstr "Limite d'envoi par défaut du domaine"
 
 #: admin/app_settings.py:136 admin/app_settings.py:388
-msgid ""
-"Number of messages freshly created domains will be allowed to send per day. "
-"Leave empty for no limit."
-msgstr ""
-"Nombre maximal de messages que les nouveaux domaines seront autorisés à "
-"envoyer par jour. Laisser vide pour n'indiquer aucune limite."
+msgid "Number of messages freshly created domains will be allowed to send per day. Leave empty for no limit."
+msgstr "Nombre maximal de messages que les nouveaux domaines seront autorisés à envoyer par jour. Laisser vide pour n'indiquer aucune limite."
 
 #: admin/app_settings.py:141 admin/app_settings.py:395
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:58
@@ -319,12 +279,8 @@ msgid "Handle mailboxes on filesystem"
 msgstr "Gérer les boites sur le système de fichiers"
 
 #: admin/app_settings.py:147 admin/app_settings.py:400
-msgid ""
-"Rename or remove mailboxes on the filesystem when they get renamed or "
-"removed within Modoboa"
-msgstr ""
-"Renommer ou supprimer les boites sur le système de fichiers quand elles sont "
-"renommées ou supprimées dans Modoboa"
+msgid "Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa"
+msgstr "Renommer ou supprimer les boites sur le système de fichiers quand elles sont renommées ou supprimées dans Modoboa"
 
 #: admin/app_settings.py:153 admin/app_settings.py:405 admin/forms/domain.py:49
 #: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
@@ -332,24 +288,16 @@ msgid "Default mailbox quota"
 msgstr "Quota par défaut pour une boîte aux lettres"
 
 #: admin/app_settings.py:156
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Quota par défaut utilisé pour les boîtes aux lettres nouvellement créés. Une "
-"valeur à 0 signifie pas de quota."
+msgid "Default mailbox quota (in MB) applied to freshly created mailboxes with no value specified. A value of 0 means no quota."
+msgstr "Quota par défaut utilisé pour les boîtes aux lettres nouvellement créés. Une valeur à 0 signifie pas de quota."
 
 #: admin/app_settings.py:162 admin/app_settings.py:413
 msgid "Default mailbox sending limit"
 msgstr "Limite d'envoi par défaut d'une boîte aux lettres"
 
 #: admin/app_settings.py:165 admin/app_settings.py:415
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
-msgstr ""
-"Nombre maximal de messages que les nouveaux comptes seront autorisés à "
-"envoyer par jour. Laisser vide pour n'indiquer aucune limite."
+msgid "Number of messages freshly created mailboxes will be allowed to send per day. Leave empty for no limit."
+msgstr "Nombre maximal de messages que les nouveaux comptes seront autorisés à envoyer par jour. Laisser vide pour n'indiquer aucune limite."
 
 #: admin/app_settings.py:171 admin/app_settings.py:420
 msgid "Automatic account removal"
@@ -357,9 +305,7 @@ msgstr "Suppression automatique de compte"
 
 #: admin/app_settings.py:174 admin/app_settings.py:422
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr ""
-"Lorsqu'une boite aux lettres est supprimée, supprimer le compte associé en "
-"même temps"
+msgstr "Lorsqu'une boite aux lettres est supprimée, supprimer le compte associé en même temps"
 
 #: admin/app_settings.py:178 admin/app_settings.py:426
 msgid "Automatic domain/mailbox creation"
@@ -367,9 +313,7 @@ msgstr "Création automatique de domaine/boite aux lettres"
 
 #: admin/app_settings.py:181 admin/app_settings.py:428
 msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr ""
-"Créer un domaine et une boite aux lettres quand un compte est créé "
-"automatiquement."
+msgstr "Créer un domaine et une boite aux lettres quand un compte est créé automatiquement."
 
 #: admin/app_settings.py:187 admin/app_settings.py:434
 msgid "Create an alias when a mailbox is renamed"
@@ -377,17 +321,11 @@ msgstr "Créer un alias quand une boite aux lettres est renommée"
 
 #: admin/app_settings.py:190 admin/app_settings.py:436
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
-"Créer un alias en utilisant l'ancienne adresse quand une boite aux lettres "
-"est renommée."
+msgstr "Créer un alias en utilisant l'ancienne adresse quand une boite aux lettres est renommée."
 
 #: admin/app_settings.py:407
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created domains with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Quota par défaut (en Mo) appliqué aux nouveaux domaines quand aucune valeur "
-"n'est spécifiée. Une valeur de 0 signifie pas de quota."
+msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Quota par défaut (en Mo) appliqué aux nouveaux domaines quand aucune valeur n'est spécifiée. Une valeur de 0 signifie pas de quota."
 
 #: admin/app_settings.py:451 admin/app_settings.py:453
 msgid "Administration"
@@ -417,12 +355,8 @@ msgid "Username"
 msgstr "Nom d'utilisateur"
 
 #: admin/forms/account.py:34
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
-msgstr ""
-"Le nom de l'utilisateur. Doit être une adresse e-mail valide pour les "
-"utilisateurs simples ou les administrateurs avec une boite aux lettres."
+msgid "The user's name. Must be a valid e-mail address for simple users or administrators with a mailbox."
+msgstr "Le nom de l'utilisateur. Doit être une adresse e-mail valide pour les utilisateurs simples ou les administrateurs avec une boite aux lettres."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 #: core/templates/core/information.html:37
@@ -442,12 +376,8 @@ msgid "Random password"
 msgstr "Mot de passe aléatoire"
 
 #: admin/forms/account.py:46
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
-msgstr ""
-"Générer un mot de passe aléatoire. Si vous modifiez ce compte et cochez "
-"cette case, un nouveau mot de passe sera généré."
+msgid "Generate a random password. If you're updating this account and check this box, a new password will be generated."
+msgstr "Générer un mot de passe aléatoire. Si vous modifiez ce compte et cochez cette case, un nouveau mot de passe sera généré."
 
 #: admin/forms/account.py:52 core/forms.py:27 pdfcredentials/documents.py:81
 msgid "Password"
@@ -493,15 +423,8 @@ msgid "Quota"
 msgstr "Quota"
 
 #: admin/forms/account.py:236
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Quota pour cette boite. Peut être exprimé en Ko, Mo (défaut) ou Go. Définir "
-"une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser "
-"vide pour définir une valeur illimitée (interdit pour les admins. de "
-"domaine)."
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Quota pour cette boite. Peut être exprimé en Ko, Mo (défaut) ou Go. Définir une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser vide pour définir une valeur illimitée (interdit pour les admins. de domaine)."
 
 #: admin/forms/account.py:246 admin/models/domain.py:36
 #: admin/models/mailbox.py:99 admin/templates/admin/account_detail.html:50
@@ -519,29 +442,16 @@ msgid "Alias(es)"
 msgstr "Alias"
 
 #: admin/forms/account.py:256
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Alias de cette boîte aux lettres. Indiquer une adresse par champ, appuyer "
-"sur ENTREE pour ajouter un nouveau champ. Pour créer un alias 'fourre-tout', "
-"entrer seulement le nom du domaine (@domain.tld)."
+msgid "Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Alias de cette boîte aux lettres. Indiquer une adresse par champ, appuyer sur ENTREE pour ajouter un nouveau champ. Pour créer un alias 'fourre-tout', entrer seulement le nom du domaine (@domain.tld)."
 
 #: admin/forms/account.py:262
 msgid "Sender addresses"
 msgstr "Adresses d'envoi"
 
 #: admin/forms/account.py:265
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Adresse(s) d'envoi supplémentaire(s) pour ce compte. L'utilisateur sera "
-"autorisé à envoyer des e-mails en utilisant la/les adresse(s) déclarée(s), "
-"même si elle(s) n'existe(nt) pas localement. Indiquer une adresse par champ. "
-"Appuyer sur ENTREE pour ajouter un nouveau champ."
+msgid "Additional sender address(es) for this account. The user will be allowed to send emails using this address, even if it does not exist locally. Indicate one address per input. Press ENTER to add a new input."
+msgstr "Adresse(s) d'envoi supplémentaire(s) pour ce compte. L'utilisateur sera autorisé à envoyer des e-mails en utilisant la/les adresse(s) déclarée(s), même si elle(s) n'existe(nt) pas localement. Indiquer une adresse par champ. Appuyer sur ENTREE pour ajouter un nouveau champ."
 
 #: admin/forms/account.py:325 admin/forms/alias.py:88
 #: admin/models/mailbox.py:313
@@ -602,24 +512,16 @@ msgid "Email address"
 msgstr "Adresse email"
 
 #: admin/forms/alias.py:25
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"L'adresse de l'alias. Pour créer un alias \"fourre-tout\", saisissez "
-"uniquement le nom du domaine (@domain.tld)."
+msgid "The alias address. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "L'adresse de l'alias. Pour créer un alias \"fourre-tout\", saisissez uniquement le nom du domaine (@domain.tld)."
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Destinataires"
 
 #: admin/forms/alias.py:33
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Les adresses vers lesquelles cet alias pointera. Indiquer une adresse par "
-"champ, appuyer sur ENTREE pour ajouter un nouveau champ."
+msgid "Addresses this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgstr "Les adresses vers lesquelles cet alias pointera. Indiquer une adresse par champ, appuyer sur ENTREE pour ajouter un nouveau champ."
 
 #: admin/forms/alias.py:114
 msgid "No recipient defined"
@@ -631,24 +533,16 @@ msgid "Type"
 msgstr "Type"
 
 #: admin/forms/domain.py:34
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Alias de ce domaine. Indiquer seulement un nom par champ, appuyer sur ENTREE "
-"pour ajouter un nouveau champ."
+msgid "Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input."
+msgstr "Alias de ce domaine. Indiquer seulement un nom par champ, appuyer sur ENTREE pour ajouter un nouveau champ."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
 msgstr "Sélecteur de clé"
 
 #: admin/forms/domain.py:52
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
-msgstr ""
-"Quota par défaut appliqué aux boîtes aux lettres. Peut être exprimé en Ko, "
-"Mo (défaut) ou Go. Une valeur à 0 signifie pas de quota."
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Quota par défaut appliqué aux boîtes aux lettres. Peut être exprimé en Ko, Mo (défaut) ou Go. Une valeur à 0 signifie pas de quota."
 
 #: admin/forms/domain.py:97 admin/handlers.py:166
 msgid "domain alias"
@@ -668,7 +562,7 @@ msgstr "Répertoire de stockage des clés DKIM non configuré"
 msgid "You can't define an unlimited quota."
 msgstr "Vous ne pouvez pas définir de quota illimité"
 
-#: admin/forms/domain.py:176 admin/forms/domain.py:181 policyd/core.py:106
+#: admin/forms/domain.py:176 admin/forms/domain.py:181
 msgid "domain"
 msgstr "domaine"
 
@@ -690,12 +584,8 @@ msgid "Name"
 msgstr "Nom"
 
 #: admin/forms/domain.py:241
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
-msgstr ""
-"Le nom de l'administrateur. Ne pas include un nom de domaine ici, il sera "
-"ajouté automatiquement."
+msgid "The administrator's name. Don't include the domain's name here, it will be automatically appended."
+msgstr "Le nom de l'administrateur. Ne pas include un nom de domaine ici, il sera ajouté automatiquement."
 
 #: admin/forms/domain.py:251
 msgid "Generate a random password for the administrator."
@@ -775,9 +665,7 @@ msgstr "Chiffrer les mots de passe"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Cocher cette option si les mots de passe contenus dans votre fichier ne sont "
-"pas chiffrés"
+msgstr "Cocher cette option si les mots de passe contenus dans votre fichier ne sont pas chiffrés"
 
 #: admin/handlers.py:215
 #, python-format
@@ -858,9 +746,7 @@ msgstr "%d objets importés avec succès"
 
 #: admin/management/commands/subcommands/_import.py:93
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
-"Le fichier CSV n'est pas encodé en UTF-8, tentative de détermination de "
-"l'encodage"
+msgstr "Le fichier CSV n'est pas encodé en UTF-8, tentative de détermination de l'encodage"
 
 #: admin/management/commands/subcommands/_import.py:105
 #, python-format
@@ -870,8 +756,7 @@ msgstr "Lire le fichier CSV en utilisant l'encodage %(encoding)s"
 #: admin/management/commands/subcommands/_import.py:116
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
-msgstr ""
-"Impossible de décoder le fichier CSV en utilisant l'encodage %(encoding)s"
+msgstr "Impossible de décoder le fichier CSV en utilisant l'encodage %(encoding)s"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:28
 msgid "DKIM path non-writable"
@@ -985,11 +870,8 @@ msgid "Enable DKIM signing"
 msgstr "Activer la signature DKIM"
 
 #: admin/models/domain.py:59
-msgid ""
-"If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Si vous activez cette fonctionnalité, une clé DKIM sera générée pour ce "
-"domain."
+msgid "If you activate this feature, a DKIM key will be generated for this domain."
+msgstr "Si vous activez cette fonctionnalité, une clé DKIM sera générée pour ce domain."
 
 #: admin/models/domain.py:65
 msgid "Key length"
@@ -1010,15 +892,11 @@ msgstr "{} : valeur incorrecte de quota pour ce domaine"
 
 #: admin/models/domain.py:381
 msgid "{}: invalid default mailbox quota value for domain"
-msgstr ""
-"{} : la valeur du quota par défaut des boîtes aux lettres est incorrecte "
-"pour ce domaine"
+msgstr "{} : la valeur du quota par défaut des boîtes aux lettres est incorrecte pour ce domaine"
 
 #: admin/models/domain.py:386
 msgid "{}: default mailbox quota cannot be greater than domain quota"
-msgstr ""
-"{} : le quota par défaut de la boîte aux lettres ne peut pas être supérieur "
-"au quota du domaine"
+msgstr "{} : le quota par défaut de la boîte aux lettres ne peut pas être supérieur au quota du domaine"
 
 #: admin/models/domain_alias.py:34
 msgid "The alias name"
@@ -1430,39 +1308,12 @@ msgid "Fullname/Recipient"
 msgstr "Nom complet/Destinataire"
 
 #: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Fournir un fichier CSV dans lequel les lignes respectent un des formats "
-"suivants : <ul> <li><em>domain; name; quota; default mailbox quota; enabled</"
-"em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>Vous "
-"pouvez utiliser un caractère différent comme séparateur.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Fournir un fichier CSV dans lequel les lignes respectent un des formats suivants : <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>Vous pouvez utiliser un caractère différent comme séparateur.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Fournissez un fichier CSV dans lequel les lignes respectent un des formats "
-"suivants : <ul> <li><em>account; loginname; password; first name; last name; "
-"enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; "
-"address; enabled; recipient; recipient; ...</em></li> </ul> <p>Le premier "
-"élément de chaque ligne est obligatoire et doit être égal à l'une des "
-"valeurs présentées.</p><p>Vous pouvez utiliser un caractère différent en "
-"tant que séparateur.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Fournissez un fichier CSV dans lequel les lignes respectent un des formats suivants : <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>Le premier élément de chaque ligne est obligatoire et doit être égal à l'une des valeurs présentées.</p><p>Vous pouvez utiliser un caractère différent en tant que séparateur.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1490,9 +1341,7 @@ msgstr "Mis à jour"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
-"Cette IP ne correspond à un aucun des MX valides déclarés dans les "
-"paramètres."
+msgstr "Cette IP ne correspond à un aucun des MX valides déclarés dans les paramètres."
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
@@ -1500,29 +1349,17 @@ msgstr "Aucun enregistrement MX trouvé pour ce domaine."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
-msgid ""
-"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
-"providers:"
-msgstr ""
-"Modoboa a détecté que le domaine %(domain)s est listé par les fournisseurs "
-"de DNSBL suivants :"
+msgid "Modoboa detected that domain %(domain)s is listed by the following DNSBL providers:"
+msgstr "Modoboa a détecté que le domaine %(domain)s est listé par les fournisseurs de DNSBL suivants :"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
-msgid ""
-"The domain's reputation will be affected and there is a chance that emails "
-"coming from it are considered as spam. You should contact those providers "
-"and ask them to unlist detected IP address(es)."
-msgstr ""
-"La réputation de ce domaine sera affectée et il est probable que les emails "
-"venant de lui soient considérés comme du spam. Vous devriez contacter ces "
-"fournisseurs pour leur demander de délister la/les adresse(s) détectée(s)."
+msgid "The domain's reputation will be affected and there is a chance that emails coming from it are considered as spam. You should contact those providers and ask them to unlist detected IP address(es)."
+msgstr "La réputation de ce domaine sera affectée et il est probable que les emails venant de lui soient considérés comme du spam. Vous devriez contacter ces fournisseurs pour leur demander de délister la/les adresse(s) détectée(s)."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
-"Modoboa a détecté que le domain %(domain)s n'a aucun enregistrement MX "
-"valide :"
+msgstr "Modoboa a détecté que le domain %(domain)s n'a aucun enregistrement MX valide :"
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1727,9 +1564,7 @@ msgstr "Ancien mot de passe"
 
 #: core/api/v2/serializers.py:328 core/views/auth.py:180 core/views/auth.py:235
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
-"Veuillez utiliser le code suivant pour récupérer votre mot de passe "
-"Modoboa : {}"
+msgstr "Veuillez utiliser le code suivant pour récupérer votre mot de passe Modoboa : {}"
 
 #: core/api/v2/views.py:54
 #, python-format
@@ -1744,16 +1579,12 @@ msgstr "Utiliseur '%s' connecté avec succès"
 #: core/api/v2/views.py:86 core/views/auth.py:68
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
-msgstr ""
-"La méthode de chiffrement du mot de passe diffère. Mise à jour du mot de "
-"passe de %s"
+msgstr "La méthode de chiffrement du mot de passe diffère. Mise à jour du mot de passe de %s"
 
 #: core/api/v2/views.py:93 core/views/auth.py:75
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
-msgstr ""
-"Le paramètre de hash du mot de passe ne correspond pas. Mise à jour %s du "
-"mot de passe"
+msgstr "Le paramètre de hash du mot de passe ne correspond pas. Mise à jour %s du mot de passe"
 
 #: core/app_settings.py:39 core/app_settings.py:728
 msgid "Authentication"
@@ -1773,20 +1604,15 @@ msgstr "Méthode de chiffrement par défaut"
 
 #: core/app_settings.py:54 core/app_settings.py:738
 msgid "Scheme used to crypt mailbox passwords"
-msgstr ""
-"Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
+msgstr "Méthode utilisée pour chiffrer les mots de passe des boites aux lettres"
 
 #: core/app_settings.py:58 core/app_settings.py:741
 msgid "Rounds"
 msgstr "Tours"
 
 #: core/app_settings.py:61 core/app_settings.py:743
-msgid ""
-"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
-"between 1000 and 999999999, inclusive."
-msgstr ""
-"Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit "
-"être compris entre 1000 et 999999999 inclue."
+msgid "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be between 1000 and 999999999, inclusive."
+msgstr "Nombre de tours à utiliser (sha256crypt et sha512crypt uniquement). Doit être compris entre 1000 et 999999999 inclue."
 
 #: core/app_settings.py:67 core/app_settings.py:749
 msgid "Update password scheme at login"
@@ -1794,9 +1620,7 @@ msgstr "Mettre à jour la méthode de chiffrement du mot de passe à la connexio
 
 #: core/app_settings.py:70 core/app_settings.py:751
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Mise à jour du mot de passe utilisateur lors d'une connexion pour utiliser "
-"la méthode de chiffrement par défaut"
+msgstr "Mise à jour du mot de passe utilisateur lors d'une connexion pour utiliser la méthode de chiffrement par défaut"
 
 #: core/app_settings.py:75 core/app_settings.py:756
 msgid "Default password"
@@ -1819,14 +1643,8 @@ msgid "Update password service URL"
 msgstr "URL de service de mise à jour du mot de passe"
 
 #: core/app_settings.py:94 core/app_settings.py:768
-msgid ""
-"The URL of an external page where users will be able to update their "
-"password. It applies only to non local users, ie. those automatically "
-"created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"L'URL d'une page externe où les utilisateurs pourront mettre à jour leur mot "
-"de passe. Elle s'applique uniquement aux utilisateurs non locaux, c'est à "
-"dire ceux créés après une authentification externe réussie (LDAP, SMTP)."
+msgid "The URL of an external page where users will be able to update their password. It applies only to non local users, ie. those automatically created after a successful external authentication (LDAP, SMTP)."
+msgstr "L'URL d'une page externe où les utilisateurs pourront mettre à jour leur mot de passe. Elle s'applique uniquement aux utilisateurs non locaux, c'est à dire ceux créés après une authentification externe réussie (LDAP, SMTP)."
 
 #: core/app_settings.py:102 core/app_settings.py:775
 msgid "Password recovery announcement"
@@ -1834,9 +1652,7 @@ msgstr "Annonce pour la récupération de mot de passe"
 
 #: core/app_settings.py:107 core/app_settings.py:777
 msgid "A temporary message that will be displayed on the reset password page."
-msgstr ""
-"Un message temporaire qui sera affiché sur la page de récupération de mot de "
-"passe"
+msgstr "Un message temporaire qui sera affiché sur la page de récupération de mot de passe"
 
 #: core/app_settings.py:113 core/app_settings.py:782
 msgid "Enable password recovery by SMS"
@@ -1844,9 +1660,7 @@ msgstr "Activer la récupération de mot de passe par SMS"
 
 #: core/app_settings.py:116 core/app_settings.py:784
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
-"Activer la récupération de mot de passe par SMS pour les utilisateurs ayant "
-"renseigné un numéro de téléphone"
+msgstr "Activer la récupération de mot de passe par SMS pour les utilisateurs ayant renseigné un numéro de téléphone"
 
 #: core/app_settings.py:122 core/app_settings.py:789
 msgid "SMS provider"
@@ -1854,8 +1668,7 @@ msgstr "Fournisseur SMS"
 
 #: core/app_settings.py:125 core/app_settings.py:792
 msgid "Choose a provider to send password recovery SMS"
-msgstr ""
-"Choisir un fournisseur pour envoyer les SMS de récupération de mot de passe"
+msgstr "Choisir un fournisseur pour envoyer les SMS de récupération de mot de passe"
 
 #: core/app_settings.py:131
 msgid "LDAP settings"
@@ -1882,11 +1695,8 @@ msgid "Enable secondary server (fallback)"
 msgstr "Activer le serveur secondaire (secours)"
 
 #: core/app_settings.py:150 core/app_settings.py:814
-msgid ""
-"Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
-"Activer un serveur LDAP secondaire qui sera utilisé si le principal est en "
-"échec"
+msgid "Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr "Activer un serveur LDAP secondaire qui sera utilisé si le principal est en échec"
 
 #: core/app_settings.py:156 core/app_settings.py:819
 msgid "Secondary server address"
@@ -1925,13 +1735,8 @@ msgid "Administrator groups"
 msgstr "Groupes administrateurs"
 
 #: core/app_settings.py:188 core/app_settings.py:845
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Les membres de ces groupes LDAP (Posix) seront créés en tant "
-"qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les "
-"groupes."
+msgid "Members of those LDAP Posix groups will be created as domain administrators. Use ';' characters to separate groups."
+msgstr "Les membres de ces groupes LDAP (Posix) seront créés en tant qu'administrateurs de domaine. Utiliser des caractères ';' pour séparer les groupes."
 
 #: core/app_settings.py:195 core/app_settings.py:851
 msgid "Group type"
@@ -1947,9 +1752,7 @@ msgstr "Base de recherche des groupes"
 
 #: core/app_settings.py:207 core/app_settings.py:859
 msgid "The distinguished name of the search base used to find groups"
-msgstr ""
-"Le nom distinctif de la base de recherche utilisée pour rechercher les "
-"groupes"
+msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les groupes"
 
 #: core/app_settings.py:213 core/app_settings.py:864
 msgid "Password attribute"
@@ -1986,12 +1789,8 @@ msgstr "ND de connexion"
 
 #: core/app_settings.py:234 core/app_settings.py:288 core/app_settings.py:882
 #: core/app_settings.py:927
-msgid ""
-"The distinguished name to use when binding to the LDAP server. Leave empty "
-"for an anonymous bind"
-msgstr ""
-"Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser "
-"vide pour une connexion anonyme"
+msgid "The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"
+msgstr "Le nom distinctif à utiliser pour les connections au serveur LDAP. Laisser vide pour une connexion anonyme"
 
 #: core/app_settings.py:241 core/app_settings.py:295 core/app_settings.py:888
 #: core/app_settings.py:932
@@ -2001,9 +1800,7 @@ msgstr "Mot de passe de connexion"
 #: core/app_settings.py:244 core/app_settings.py:298 core/app_settings.py:890
 #: core/app_settings.py:934
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de "
-"connexion')"
+msgstr "Le mot de passe à utiliser pour les connections au serveur LDAP (avec 'ND de connexion')"
 
 #: core/app_settings.py:252 core/app_settings.py:344 core/app_settings.py:897
 #: core/app_settings.py:971
@@ -2013,9 +1810,7 @@ msgstr "Base de recherche des utilisateurs"
 #: core/app_settings.py:255 core/app_settings.py:347 core/app_settings.py:899
 #: core/app_settings.py:973
 msgid "The distinguished name of the search base used to find users"
-msgstr ""
-"Le nom distinctif de la base de recherche utilisée pour rechercher les "
-"utilisateurs"
+msgstr "Le nom distinctif de la base de recherche utilisée pour rechercher les utilisateurs"
 
 #: core/app_settings.py:261 core/app_settings.py:353 core/app_settings.py:905
 #: core/app_settings.py:979
@@ -2024,12 +1819,8 @@ msgstr "Filtre de recherche"
 
 #: core/app_settings.py:264 core/app_settings.py:356 core/app_settings.py:907
 #: core/app_settings.py:981
-msgid ""
-"An optional filter string (e.g. '(objectClass=person)'). In order to be "
-"valid, it must be enclosed in parentheses."
-msgstr ""
-"Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être "
-"valide, il doit être entouré de parenthèses."
+msgid "An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."
+msgstr "Un filtre de recherche optionel (ex. '(objectClass=person)'). Pour être valide, il doit être entouré de parenthèses."
 
 #: core/app_settings.py:271 core/app_settings.py:913
 msgid "User DN template"
@@ -2037,12 +1828,8 @@ msgstr "Modèle de nom distinctif utilisateur"
 
 #: core/app_settings.py:274 core/app_settings.py:915
 #, python-format
-msgid ""
-"The template used to construct a user's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il "
-"doit contenir un espace réservé (ex. %(user)s)"
+msgid "The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Le modèle utilisé pour construire le nom distinctif d'un utilisateur. Il doit contenir un espace réservé (ex. %(user)s)"
 
 #: core/app_settings.py:282 core/app_settings.py:921
 msgid "LDAP synchronization settings"
@@ -2053,23 +1840,16 @@ msgid "Enable export to LDAP"
 msgstr "Activer l'export LDAP"
 
 #: core/app_settings.py:309 core/app_settings.py:942
-msgid ""
-"Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
-"Activer la synchronisation automatique entre la base de données locale et "
-"l'annuaire LDAP"
+msgid "Enable automatic synchronization between local database and LDAP directory"
+msgstr "Activer la synchronisation automatique entre la base de données locale et l'annuaire LDAP"
 
 #: core/app_settings.py:315 core/app_settings.py:948
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr "Supprimer un compte LDAP distant lorsqu'un compte local est supprimé"
 
 #: core/app_settings.py:319 core/app_settings.py:950
-msgid ""
-"Delete remote LDAP account when local account is deleted, otherwise it will "
-"be disabled."
-msgstr ""
-"Supprimer un compte LDAP distant lorsqu'un compte local supprimé, autrement "
-"il sera désactivé."
+msgid "Delete remote LDAP account when local account is deleted, otherwise it will be disabled."
+msgstr "Supprimer un compte LDAP distant lorsqu'un compte local supprimé, autrement il sera désactivé."
 
 #: core/app_settings.py:325 core/app_settings.py:956
 msgid "Account DN template"
@@ -2077,12 +1857,8 @@ msgstr "Modèle des DN de compte"
 
 #: core/app_settings.py:328 core/app_settings.py:958
 #, python-format
-msgid ""
-"The template used to construct an account's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Le modèle utilisé pour construite un DN de compte (nom unique). Il doit "
-"contenir un emplacement (c'est à dire 1%(user)s)"
+msgid "The template used to construct an account's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Le modèle utilisé pour construite un DN de compte (nom unique). Il doit contenir un emplacement (c'est à dire 1%(user)s)"
 
 #: core/app_settings.py:335 core/app_settings.py:964
 msgid "Enable import from LDAP"
@@ -2090,9 +1866,7 @@ msgstr "Activer l'import LDAP"
 
 #: core/app_settings.py:338 core/app_settings.py:966
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr ""
-"Activer la synchronisation des comptes entre un annuaire LDAP et la base de "
-"données locale"
+msgstr "Activer la synchronisation des comptes entre un annuaire LDAP et la base de données locale"
 
 #: core/app_settings.py:363 core/app_settings.py:987
 msgid "Username attribute"
@@ -2100,8 +1874,7 @@ msgstr "Attribut nom d'utilisateur"
 
 #: core/app_settings.py:366 core/app_settings.py:989
 msgid "The name of the LDAP attribute where the username can be found."
-msgstr ""
-"Le nom de l'attribut LDAP dans lequel le nom d'utilisateur peut être trouvé."
+msgstr "Le nom de l'attribut LDAP dans lequel le nom d'utilisateur peut être trouvé."
 
 #: core/app_settings.py:371 core/app_settings.py:995
 msgid "Enable Dovecot LDAP sync"
@@ -2109,20 +1882,15 @@ msgstr "Activer la synchronisation LDAP pour Dovecot"
 
 #: core/app_settings.py:374 core/app_settings.py:997
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
-"Les paramètres d'authentification LDAP seront appliqués à la configuration "
-"de Dovecot."
+msgstr "Les paramètres d'authentification LDAP seront appliqués à la configuration de Dovecot."
 
 #: core/app_settings.py:380 core/app_settings.py:1002
 msgid "Dovecot LDAP config file"
 msgstr "Fichier de configuration Dovecot pour LDAP"
 
 #: core/app_settings.py:384 core/app_settings.py:1004
-msgid ""
-"Location of the configuration file which contains Dovecot LDAP settings."
-msgstr ""
-"Emplacement du fichier de configuration qui contient les paramètres LDAP de "
-"Dovecot"
+msgid "Location of the configuration file which contains Dovecot LDAP settings."
+msgstr "Emplacement du fichier de configuration qui contient les paramètres LDAP de Dovecot"
 
 #: core/app_settings.py:389 core/app_settings.py:1013
 #: core/templates/core/dashboard.html:5
@@ -2135,9 +1903,7 @@ msgstr "Flux RSS personnalisé"
 
 #: core/app_settings.py:395 core/app_settings.py:1018
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Afficher un flux RSS personnalisé aux revendeurs et administrateurs de "
-"domaine"
+msgstr "Afficher un flux RSS personnalisé aux revendeurs et administrateurs de domaine"
 
 #: core/app_settings.py:400 core/app_settings.py:1023
 msgid "Hide features widget"
@@ -2145,9 +1911,7 @@ msgstr "Masquer le widget des fonctionnalités"
 
 #: core/app_settings.py:403 core/app_settings.py:1025
 msgid "Hide features widget for resellers and domain administrators"
-msgstr ""
-"Masquer le widget des fonctionnalités pour les revendeurs et les "
-"administrateurs de domaine"
+msgstr "Masquer le widget des fonctionnalités pour les revendeurs et les administrateurs de domaine"
 
 #: core/app_settings.py:407 core/app_settings.py:1032
 msgid "Notifications"
@@ -2187,9 +1951,7 @@ msgstr "Envoyer un email quand de nouvelles versions sont trouvées"
 
 #: core/app_settings.py:437 core/app_settings.py:1060
 msgid "Send an email to notify admins about new versions"
-msgstr ""
-"Envoyer un email pour notifier les administrateurs à propos des nouvelles "
-"versions"
+msgstr "Envoyer un email pour notifier les administrateurs à propos des nouvelles versions"
 
 #: core/app_settings.py:441 core/app_settings.py:1064
 msgid "Recipient"
@@ -2205,9 +1967,7 @@ msgstr "Envoyer des statistiques"
 
 #: core/app_settings.py:452 core/app_settings.py:1074
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Envoyer des statistiques à l'API publique de Modoboa (compteurs et "
-"extensions utilisées)"
+msgstr "Envoyer des statistiques à l'API publique de Modoboa (compteurs et extensions utilisées)"
 
 #: core/app_settings.py:456 core/app_settings.py:1080
 msgid "Miscellaneous"
@@ -2220,9 +1980,7 @@ msgid "Enable inactive account tracking"
 msgstr "Seuil des comptes inactifs"
 
 #: core/app_settings.py:461 core/app_settings.py:1085
-msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+msgid "Allow the administrator to set a threshold (in days) beyond which an account is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:467 core/app_settings.py:1091
@@ -2230,12 +1988,8 @@ msgid "Inactive account threshold"
 msgstr "Seuil des comptes inactifs"
 
 #: core/app_settings.py:470 core/app_settings.py:1094
-msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Un compte avec une date de dernière connexion antérieure à ce seuil sera "
-"considéré comme inactif"
+msgid "An account with a last login date greater than this threshold (in days) will be considered as inactive"
+msgstr "Un compte avec une date de dernière connexion antérieure à ce seuil sera considéré comme inactif"
 
 #: core/app_settings.py:476 core/app_settings.py:1099
 msgid "Top notifications check interval"
@@ -2267,22 +2021,15 @@ msgstr "Redirection par défaut"
 
 #: core/app_settings.py:500 core/app_settings.py:1116
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"La redirection appliquée par défaut quand aucune application n'est spécifiée"
+msgstr "La redirection appliquée par défaut quand aucune application n'est spécifiée"
 
 #: core/app_settings.py:799
 msgid "LDAP"
 msgstr ""
 
 #: core/checks/settings_checks.py:6
-msgid ""
-"You have USE_TZ set to False, this may result in issues during transitions "
-"between summer/winter time (ie the same local time occuring twice due to "
-"clock change)."
-msgstr ""
-"Vous avez défini USE_TZ à False, ce qui peut entraîner des problèmes lors "
-"des transitions entre l'heure d'été et l'heure d'hiver (c.-à-d. La même "
-"heure locale se produisant deux fois en raison d'un changement d'horloge)."
+msgid "You have USE_TZ set to False, this may result in issues during transitions between summer/winter time (ie the same local time occuring twice due to clock change)."
+msgstr "Vous avez défini USE_TZ à False, ce qui peut entraîner des problèmes lors des transitions entre l'heure d'été et l'heure d'hiver (c.-à-d. La même heure locale se produisant deux fois en raison d'un changement d'horloge)."
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
@@ -2412,10 +2159,9 @@ msgstr "Une adresse e-mail alternative ou de secours."
 
 #: core/models.py:126
 msgid "Failed to update password: LDAP module not installed"
-msgstr ""
-"Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
+msgstr "Echec de la mise à jour du mot de passe : le module LDAP n'est pas installé"
 
-#: core/models.py:159 policyd/core.py:105
+#: core/models.py:159
 msgid "account"
 msgstr "compte"
 
@@ -2467,9 +2213,7 @@ msgstr[2] "Le mot de passe doit contenir au moins {} caractères spéciaux."
 
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
-msgstr ""
-"Votre mot de passe doit contenir une combinaison de différents types de "
-"caractère."
+msgstr "Votre mot de passe doit contenir une combinaison de différents types de caractère."
 
 #: core/sms_backends/ovh.py:21 core/sms_backends/ovh.py:103
 msgid "API endpoint"
@@ -2542,12 +2286,8 @@ msgid "Latest news"
 msgstr "Dernières nouvelles"
 
 #: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
-msgstr ""
-"Visitez le <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blog "
-"officiel</a> pour plus d'information."
+msgid "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official weblog</a> for more information."
+msgstr "Visitez le <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blog officiel</a> pour plus d'information."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -2559,12 +2299,8 @@ msgstr "Contrôlez votre accès à l'API de Modoboa"
 
 #: core/templates/core/api_access.html:7
 #, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
-msgstr ""
-"Une documentation de l'API est disponible <strong><a href=\"%(url)s\" "
-"target=\"_blank\">ici</a></strong>."
+msgid "A documentation of the API is available <strong><a href=\"%(url)s\" target=\"_blank\">here</a></strong>."
+msgstr "Une documentation de l'API est disponible <strong><a href=\"%(url)s\" target=\"_blank\">ici</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -2589,8 +2325,7 @@ msgstr "Une ou plusieurs mises à jour sont disponibles!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
+msgstr "Consulter la liste suivante pour trouver le(s) composant(s) concerné(s)."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -2692,13 +2427,8 @@ msgid "Two-Factor authentication"
 msgstr "Authentification à deux facteurs"
 
 #: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
-msgstr ""
-"Installez une application d'authentification par jetons comme FreeOTP ou "
-"Google Authenticator à partir de votre appstore et utilisez-la pour scanner "
-"ce QR code."
+msgid "Install a soft token authenticator like FreeOTP or Google Authenticator from your application repository and use that app to scan this QR code."
+msgstr "Installez une application d'authentification par jetons comme FreeOTP ou Google Authenticator à partir de votre appstore et utilisez-la pour scanner ce QR code."
 
 #: core/templates/core/user_security.html:25
 msgid "Pin code"
@@ -2709,25 +2439,13 @@ msgid "Register"
 msgstr "Enregistrement"
 
 #: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr ""
-"Félicitations ! L'authentification à deux facteurs est maintenant activée "
-"pour votre compte."
+msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr "Félicitations ! L'authentification à deux facteurs est maintenant activée pour votre compte."
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
-msgstr ""
-"Les codes de récupération suivants peuvent être utilisés une fois chacun "
-"pour vous permettre de récupérer un accès à votre compte, au cas où vous "
-"perdriez votre téléphone par exemple. Assurez-vous de les conserver dans un "
-"lieu sûr, autrement vous ne serez définitivement plus en mesure d'accéder à "
-"votre compte."
+msgid "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
+msgstr "Les codes de récupération suivants peuvent être utilisés une fois chacun pour vous permettre de récupérer un accès à votre compte, au cas où vous perdriez votre téléphone par exemple. Assurez-vous de les conserver dans un lieu sûr, autrement vous ne serez définitivement plus en mesure d'accéder à votre compte."
 
 #: core/templates/core/user_security.html:53
 msgid "Two-Factor Authentication is enabled for your account."
@@ -2742,12 +2460,8 @@ msgid "Reset recovery codes"
 msgstr "Réinitialiser les codes de récupération."
 
 #: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
-msgstr ""
-"L'authentification à 2 facteurs n'est pas encore activée pour votre compte. "
-"Activer cette fonctionnalité renforcera la sécurité de votre compte."
+msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
+msgstr "L'authentification à 2 facteurs n'est pas encore activée pour votre compte. Activer cette fonctionnalité renforcera la sécurité de votre compte."
 
 #: core/templates/core/user_security.html:73
 msgid "Enable 2FA"
@@ -2783,9 +2497,7 @@ msgstr "Paramètres enregistrés"
 
 #: core/views/auth.py:100
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
-"réessayer."
+msgstr "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez réessayer."
 
 #: core/views/auth.py:135
 msgid "User '{}' successfully logged out"
@@ -2813,9 +2525,7 @@ msgstr "Activer les recherches inversées"
 
 #: dmarc/forms.py:44 dmarc/forms.py:56
 msgid "Enable reverse DNS lookups (reports will be longer to display)"
-msgstr ""
-"Activer les recherches DNS inversées (les rapports seront plus longs à "
-"afficher)"
+msgstr "Activer les recherches DNS inversées (les rapports seront plus longs à afficher)"
 
 #: dmarc/forms.py:69 dmarc/forms.py:71
 #, fuzzy
@@ -3060,12 +2770,8 @@ msgid "A DNS record has been found but its syntax is not valid:"
 msgstr "Un enregistrement DNS a été trouvé mais sa syntaxe est incorrecte :"
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
-msgstr ""
-"Voici un exemple de configuration DNS (format bind). Remplacez les valeurs "
-"entre [ ] par celles appropriées."
+msgid "Here is an example of DNS configuration (bind format). Replace value between [ ] by the appropriate ones."
+msgstr "Voici un exemple de configuration DNS (format bind). Remplacez les valeurs entre [ ] par celles appropriées."
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
 msgid "IP address of your Modoboa server"
@@ -3143,26 +2849,16 @@ msgid "Folder Filter Exclusions"
 msgstr "Filtre d'exclusion de dossier"
 
 #: imap_migration/app_settings.py:44 imap_migration/app_settings.py:93
-msgid ""
-"Use a regular expression to explicitly include folders in sync. Example: "
-"^Trash$|Del"
-msgstr ""
-"Utiliser une expression régulière pour explicitement inclure des dossiers à "
-"synchroniser. Exemple : ^Trash$|Del"
+msgid "Use a regular expression to explicitly include folders in sync. Example: ^Trash$|Del"
+msgstr "Utiliser une expression régulière pour explicitement inclure des dossiers à synchroniser. Exemple : ^Trash$|Del"
 
 #: imap_migration/app_settings.py:48 imap_migration/app_settings.py:100
 msgid "Folder Filter Inclusions"
 msgstr "Filtre d'inclusion de dossier"
 
 #: imap_migration/app_settings.py:50 imap_migration/app_settings.py:103
-msgid ""
-"A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
-msgstr ""
-"Une liste de dossiers séparés par des virgules à explicitement inclure "
-"pendant la synchronisation même s'ils sont concernés par le filtre "
-"d'exclusion. Exemple debian.user, debian.personal"
+msgid "A comma seperated list of folders to explicitly include in sync even if filtered by the Folder Filter Exclusions. Example: debian.user, debian.personal "
+msgstr "Une liste de dossiers séparés par des virgules à explicitement inclure pendant la synchronisation même s'ils sont concernés par le filtre d'exclusion. Exemple debian.user, debian.personal"
 
 #: imap_migration/app_settings.py:72
 msgid "OfflineIMAP settings"
@@ -3184,19 +2880,12 @@ msgid "Connection to IMAP server failed: %s"
 msgstr "Echec lors de la connexion au serveur IMAP : %s"
 
 #: imap_migration/checks.py:11
-msgid ""
-"Automatic domain/mailbox creation is disabled which means IMAP "
-"authentication won't work."
-msgstr ""
-"La création automatique de domaine/compte est désactivée, ce qui veut dire "
-"que l'authentification IMAP ne fonctionnera pas."
+msgid "Automatic domain/mailbox creation is disabled which means IMAP authentication won't work."
+msgstr "La création automatique de domaine/compte est désactivée, ce qui veut dire que l'authentification IMAP ne fonctionnera pas."
 
 #: imap_migration/checks.py:13
-msgid ""
-"Go to the online parameters panel (admin tab) and activate this feature."
-msgstr ""
-"Rendez vous sur le panneau de configuration des paramètres (onglet "
-"Administration) et activez cette fonctionnalité."
+msgid "Go to the online parameters panel (admin tab) and activate this feature."
+msgstr "Rendez vous sur le panneau de configuration des paramètres (onglet Administration) et activez cette fonctionnalité."
 
 #: imap_migration/templates/imap_migration/index.html:6
 msgid "IMAP migration"
@@ -3284,52 +2973,28 @@ msgid "Domain admins"
 msgstr "Admins de domaine"
 
 #: limits/app_settings.py:29 limits/app_settings.py:164
-msgid ""
-"Maximum number of allowed domain administrators for a new administrator. (0 "
-"to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal d'admins de domaine pour un nouvel administrateur. (0 pour "
-"interdire toute création, -1 pour autoriser les création illimitées)"
+msgid "Maximum number of allowed domain administrators for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal d'admins de domaine pour un nouvel administrateur. (0 pour interdire toute création, -1 pour autoriser les création illimitées)"
 
 #: limits/app_settings.py:40 limits/app_settings.py:173
-msgid ""
-"Maximum number of allowed domains for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal de domaines pour un nouvel administrateur. (0 pour interdire "
-"toute création, -1 pour autoriser les créations illimitées)"
+msgid "Maximum number of allowed domains for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal de domaines pour un nouvel administrateur. (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:50 limits/app_settings.py:181
-msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal d'alias de domaine pour un nouvel administrateur. (0 pour "
-"interdire toute création, -1 pour autoriser les créations illimitées)"
+msgid "Maximum number of allowed domain aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal d'alias de domaine pour un nouvel administrateur. (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:61 limits/app_settings.py:190
-msgid ""
-"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal de boites pour un nouvel administrateur. (0 pour interdire "
-"toute création, -1 pour autoriser les créations illimitées)"
+msgid "Maximum number of allowed mailboxes for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal de boites pour un nouvel administrateur. (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:71 limits/app_settings.py:199
-msgid ""
-"Maximum number of allowed aliases for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal d'alias de boite pour un nouvel administrateur. (0 pour "
-"interdire toute création, -1 pour autoriser les créations illimitées)"
+msgid "Maximum number of allowed aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal d'alias de boite pour un nouvel administrateur. (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:81 limits/app_settings.py:206
-msgid ""
-"The quota a reseller will be allowed to share between the domains he "
-"creates. (0 means no quota)"
-msgstr ""
-"Le quota qu'un revendeur sera autorisé à partager entre les domaines qu'il "
-"créé. (0 signifie pas de quota)"
+msgid "The quota a reseller will be allowed to share between the domains he creates. (0 means no quota)"
+msgstr "Le quota qu'un revendeur sera autorisé à partager entre les domaines qu'il créé. (0 signifie pas de quota)"
 
 #: limits/app_settings.py:88 limits/app_settings.py:213
 msgid "Default per-domain limits"
@@ -3344,37 +3009,20 @@ msgid "Enable or disable per-domain limits"
 msgstr "Activer ou désactiver les limites par domaine"
 
 #: limits/app_settings.py:100 limits/app_settings.py:223
-msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal d'administrateurs de domaine autorisés pour un nouveau "
-"domaine (0 pour interdire toute création, -1 pour autoriser les créations "
-"illimitées)"
+msgid "Maximum number of allowed domain administrators for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal d'administrateurs de domaine autorisés pour un nouveau domaine (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:111 limits/app_settings.py:232
-msgid ""
-"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal d'alias de domaine autorisés pour un nouveau domaine. (0 pour "
-"interdire toute création, -1 pour autoriser les créations illimitées)"
+msgid "Maximum number of allowed domain aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal d'alias de domaine autorisés pour un nouveau domaine. (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:122 limits/app_settings.py:241
-msgid ""
-"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal de boites aux lettres autorisées pour un nouveau domaine. (0 "
-"pour interdire toute création, -1 pour autoriser les créations illimitées)"
+msgid "Maximum number of allowed mailboxes for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal de boites aux lettres autorisées pour un nouveau domaine. (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/app_settings.py:132 limits/app_settings.py:249
-msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
-msgstr ""
-"Nombre maximal d'alias autorisés pour un nouveau domaine. (0 pour interdire "
-"toute création, -1 pour autoriser les créations illimitées)"
+msgid "Maximum number of allowed aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Nombre maximal d'alias autorisés pour un nouveau domaine. (0 pour interdire toute création, -1 pour autoriser les créations illimitées)"
 
 #: limits/apps.py:13 limits/apps.py:15
 msgid "Limits"
@@ -3642,25 +3290,16 @@ msgid "Delete documents after the first download"
 msgstr "Supprimer les documents après le premier téléchargement"
 
 #: pdfcredentials/app_settings.py:45 pdfcredentials/app_settings.py:145
-msgid ""
-"Automatically delete a document just after its first download from this "
-"interface"
-msgstr ""
-"Supprimer automatiquement un document juste après son premier "
-"téléchargement  depuis cette interface"
+msgid "Automatically delete a document just after its first download from this interface"
+msgstr "Supprimer automatiquement un document juste après son premier téléchargement  depuis cette interface"
 
 #: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:151
 msgid "Generate documents only at account creation"
 msgstr "Générer les documents à la création des comptes uniquement"
 
 #: pdfcredentials/app_settings.py:52 pdfcredentials/app_settings.py:154
-msgid ""
-"Generate a new document only when a new account is created. If set to no, a "
-"new document will be created each time a password is updated."
-msgstr ""
-"Génère un nouveau document uniquement lors de la création d'un compte. Si "
-"défini à non, un nouveau document sera généré chaque fois qu'un mot de passe "
-"est changé."
+msgid "Generate a new document only when a new account is created. If set to no, a new document will be created each time a password is updated."
+msgstr "Génère un nouveau document uniquement lors de la création d'un compte. Si défini à non, un nouveau document sera généré chaque fois qu'un mot de passe est changé."
 
 #: pdfcredentials/app_settings.py:60 pdfcredentials/app_settings.py:160
 msgid "Customization options"
@@ -3695,12 +3334,8 @@ msgid "Include mail client connection settings"
 msgstr "Inclure les paramètres de connexion pour client mail"
 
 #: pdfcredentials/app_settings.py:79 pdfcredentials/app_settings.py:184
-msgid ""
-"Include required SMTP and IMAP connection information to configure a mail "
-"client, a tablet or a phone"
-msgstr ""
-"Inclure les paramètres de connexion nécessaires pour configurer un client "
-"mail, une tablette ou un téléphone"
+msgid "Include required SMTP and IMAP connection information to configure a mail client, a tablet or a phone"
+msgstr "Inclure les paramètres de connexion nécessaires pour configurer un client mail, une tablette ou un téléphone"
 
 #: pdfcredentials/app_settings.py:84 pdfcredentials/app_settings.py:190
 #: pdfcredentials/documents.py:107
@@ -3791,8 +3426,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"D'ici vous pouvez consulter vos emails en ligne n'importe quand, créer des "
-"filtres ou gérer vos contacts.\n"
+"D'ici vous pouvez consulter vos emails en ligne n'importe quand, créer des filtres ou gérer vos contacts.\n"
 
 #: pdfcredentials/documents.py:98
 msgid "Please change your password!"
@@ -3804,14 +3438,11 @@ msgstr "Configuration PC/Tablette/Smartphone :"
 
 #: pdfcredentials/documents.py:122
 msgid "Use those settings for your computer, tablet or phone."
-msgstr ""
-"Utilisez ces paramètres pour votre ordinateur, votre tablette ou votre "
-"téléphone."
+msgstr "Utilisez ces paramètres pour votre ordinateur, votre tablette ou votre téléphone."
 
 #: pdfcredentials/handlers.py:51
 msgid "Retrieve user's credentials as a PDF document"
-msgstr ""
-"Récupérer les identifiant de l'utilisateur sous forme d'un document PDF"
+msgstr "Récupérer les identifiant de l'utilisateur sous forme d'un document PDF"
 
 #: pdfcredentials/handlers.py:71
 #, fuzzy
@@ -3823,27 +3454,12 @@ msgstr "Identifiants en PDF"
 #, fuzzy
 #| msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
-msgstr ""
-"Echec lors de la création du répertoire qui contiendra les documents PDF (%s)"
+msgstr "Echec lors de la création du répertoire qui contiendra les documents PDF (%s)"
 
 #: pdfcredentials/lib.py:34
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
-msgstr ""
-"Echec lors de la création du répertoire qui contiendra les documents PDF (%s)"
-
-#: policyd/core.py:89
-msgid "Daily sending limit reached"
-msgstr "Limite d'envoi quotidienne atteinte"
-
-#: policyd/core.py:124
-msgid "[modoboa] Sending limit reached"
-msgstr "[modoboa] Limite d'envoi atteinte"
-
-#: policyd/templates/policyd/notifications/limit_reached.html:3
-#, python-format
-msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr "La limite journalière du %(ltype)s suivant a été atteinte : %(name)s."
+msgstr "Echec lors de la création du répertoire qui contiendra les documents PDF (%s)"
 
 #: relaydomains/api/v1/serializers.py:25
 msgid "Unsupported service"
@@ -3935,25 +3551,16 @@ msgstr "Mot de passe oublié ?"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
-msgid ""
-"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
-"in</a> now."
-msgstr ""
-"Votre mot de passe a été défini. Vous pouvez continuer et vous <a "
-"href=\"%(url)s\">connecter </a> dès maintenant."
+msgid "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign in</a> now."
+msgstr "Votre mot de passe a été défini. Vous pouvez continuer et vous <a href=\"%(url)s\">connecter </a> dès maintenant."
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
 #: templates/registration/password_reset_confirm.html:17
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used. Please request a new password reset."
-msgstr ""
-"Le lien de réinitialisation du mot de passe était invalide, probablement "
-"parce qu'il a déjà été utilisé. Merci de demander une nouvelle "
-"réinitialisation de mot de passe."
+msgid "The password reset link was invalid, possibly because it has already been used. Please request a new password reset."
+msgstr "Le lien de réinitialisation du mot de passe était invalide, probablement parce qu'il a déjà été utilisé. Merci de demander une nouvelle réinitialisation de mot de passe."
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
@@ -3964,36 +3571,19 @@ msgid "Resend code"
 msgstr "Envoyer de nouveau le code"
 
 #: templates/registration/password_reset_done.html:7
-msgid ""
-"<p>We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly.</p> "
-"<p>If you don't receive an email, please make sure you've entered your "
-"primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>Nous vous avons envoyé par email les instructions pour définir votre mot "
-"de passe, pour peu qu'un compte avec l'email que vous avez renseigné existe. "
-"Vous devriez les recevoir rapidement.</p><p>Si vous ne recevez pas d'email, "
-"merci de vérifier que vous avez renseigné votre adresse principale et de "
-"vérifier votre dossier spam.</p>"
+msgid "<p>We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.</p> <p>If you don't receive an email, please make sure you've entered your primary address, and check your spam folder.</p>"
+msgstr "<p>Nous vous avons envoyé par email les instructions pour définir votre mot de passe, pour peu qu'un compte avec l'email que vous avez renseigné existe. Vous devriez les recevoir rapidement.</p><p>Si vous ne recevez pas d'email, merci de vérifier que vous avez renseigné votre adresse principale et de vérifier votre dossier spam.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
 #, python-format
-msgid ""
-"To initiate the password reset process for your %(username)s Modoboa "
-"account, click the link below:"
-msgstr ""
-"Pour initier la procédure de réinitialisation du mot de passe de votre "
-"compte Modoboa %(username)s, cliquez sur le lien ci-dessous :"
+msgid "To initiate the password reset process for your %(username)s Modoboa account, click the link below:"
+msgstr "Pour initier la procédure de réinitialisation du mot de passe de votre compte Modoboa %(username)s, cliquez sur le lien ci-dessous :"
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
-msgid ""
-"If clicking the link above doesn't work, please copy and paste the URL in a "
-"new browser window instead."
-msgstr ""
-"Si cliquer sur lien ci-dessous ne fonctionne pas, merci de copier / coller "
-"cette URL dans une nouvelle fenêtre navigateur à la place."
+msgid "If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead."
+msgstr "Si cliquer sur lien ci-dessous ne fonctionne pas, merci de copier / coller cette URL dans une nouvelle fenêtre navigateur à la place."
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
@@ -4024,12 +3614,21 @@ msgstr "service"
 msgid "next hop"
 msgstr "saut suivant"
 
+#~ msgid "Daily sending limit reached"
+#~ msgstr "Limite d'envoi quotidienne atteinte"
+
+#~ msgid "[modoboa] Sending limit reached"
+#~ msgstr "[modoboa] Limite d'envoi atteinte"
+
+#, python-format
+#~ msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
+#~ msgstr "La limite journalière du %(ltype)s suivant a été atteinte : %(name)s."
+
 #~ msgid "A set of tools to ease DMARC integration"
 #~ msgstr "Un jeu d'outils pour faciliter l'intégration de DMARC"
 
 #~ msgid "Generate PDF documents containing users' credentials"
-#~ msgstr ""
-#~ "Génère des documents PDF contenant les identifiants des utilisateurs"
+#~ msgstr "Génère des documents PDF contenant les identifiants des utilisateurs"
 
 #~ msgid "IMAP migrations"
 #~ msgstr "Migrations IMAP"

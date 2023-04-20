@@ -19,11 +19,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 10:38+0200\n"
+"POT-Creation-Date: 2023-04-20 14:11+0200\n"
 "PO-Revision-Date: 2020-10-03 09:44+0000\n"
 "Last-Translator: J Rosier <vertalen@tagora.nl>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
-"language/nl_NL/)\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/language/nl_NL/)\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,12 +30,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/api/v1/serializers.py:35 admin/forms/domain.py:44
-msgid ""
-"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
-"A value of 0 means no quota."
-msgstr ""
-"Quota gedeeld tussen mailboxen. Kan uitgedrukt worden in kB, MB (standaard) "
-"of GB. Een waarde van 0 betekent geen quota."
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Quota gedeeld tussen mailboxen. Kan uitgedrukt worden in kB, MB (standaard) of GB. Een waarde van 0 betekent geen quota."
 
 #: admin/api/v1/serializers.py:42
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -65,8 +60,7 @@ msgid "This field is required"
 msgstr "Dit veld is verplicht"
 
 #: admin/api/v1/serializers.py:186
-msgid ""
-"List of administered domains (resellers and domain administrators only)."
+msgid "List of administered domains (resellers and domain administrators only)."
 msgstr "Lijst van beheerde domeinen (alleen resellers en domeinbeheerders)."
 
 #: admin/api/v1/serializers.py:292 admin/api/v2/serializers.py:458
@@ -189,21 +183,15 @@ msgid "Valid MXs"
 msgstr "Geldige MX'en"
 
 #: admin/app_settings.py:37 admin/app_settings.py:312
-msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"Een lijst van IP-adressen waaraan alle MX-records moeten voldoen. Er zal een "
-"waarschuwing getoond worden voor records die niet overeenkomen."
+msgid "A list of IP or network address every MX record should match. A warning will be sent if a record does not respect it."
+msgstr "Een lijst van IP-adressen waaraan alle MX-records moeten voldoen. Er zal een waarschuwing getoond worden voor records die niet overeenkomen."
 
 #: admin/app_settings.py:45 admin/app_settings.py:318
 msgid "New domains must use authorized MX(s)"
 msgstr "Nieuwe domeinen moeten geauthoriseerde MX-record(s) gebruiken."
 
 #: admin/app_settings.py:48 admin/app_settings.py:321
-msgid ""
-"Prevent the creation of a new domain if its MX record does not use one of "
-"the defined addresses."
+msgid "Prevent the creation of a new domain if its MX record does not use one of the defined addresses."
 msgstr "Een domein niet aanmaken als het MX-record het adres niet gebruikt."
 
 #: admin/app_settings.py:54 admin/app_settings.py:326
@@ -220,8 +208,7 @@ msgstr "Activeer DKIM-controle"
 
 #: admin/app_settings.py:65 admin/app_settings.py:334
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
-msgstr ""
-"Controleer of ieder domein met geactiveerde DKIM een geldig DNS record heeft"
+msgstr "Controleer of ieder domein met geactiveerde DKIM een geldig DNS record heeft"
 
 #: admin/app_settings.py:71 admin/app_settings.py:339
 msgid "Enable DMARC checks"
@@ -237,9 +224,7 @@ msgstr "Activeer controle van automatische configuratie"
 
 #: admin/app_settings.py:82 admin/app_settings.py:347
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr ""
-"Controleer of ieder domein geldige records voor automatische configuratie "
-"heeft."
+msgstr "Controleer of ieder domein geldige records voor automatische configuratie heeft."
 
 #: admin/app_settings.py:87 admin/app_settings.py:352
 msgid "Enable DNSBL checks"
@@ -262,14 +247,8 @@ msgid "DKIM keys storage directory"
 msgstr "DKIM Key opslagdirectory"
 
 #: admin/app_settings.py:107 admin/app_settings.py:367
-msgid ""
-"Absolute path of the directory where DKIM private keys will be stored. Make "
-"sure this directory belongs to root user and is not readable by the outside "
-"world."
-msgstr ""
-"Absolute pad van de directory waar DKIM private keys worden opgeslagen. Let "
-"erop dat deze directory van de root-gebruiker is en niet leesbaar is voor "
-"andere gebruikers."
+msgid "Absolute path of the directory where DKIM private keys will be stored. Make sure this directory belongs to root user and is not readable by the outside world."
+msgstr "Absolute pad van de directory waar DKIM private keys worden opgeslagen. Let erop dat deze directory van de root-gebruiker is en niet leesbaar is voor andere gebruikers."
 
 #: admin/app_settings.py:115 admin/app_settings.py:373
 msgid "Default DKIM key length"
@@ -284,24 +263,16 @@ msgid "Default domain quota"
 msgstr "Standaard domeinquotum"
 
 #: admin/app_settings.py:127 admin/app_settings.py:381
-msgid ""
-"Default quota (in MB) applied to freshly created domains with no value "
-"specified. A value of 0 means no quota."
-msgstr ""
-"Standaard quotum (in MB) om op nieuw aangemaakte domeinen zonder waarde toe "
-"te passen. Een waarde van 0 betekent geen quotum."
+msgid "Default quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Standaard quotum (in MB) om op nieuw aangemaakte domeinen zonder waarde toe te passen. Een waarde van 0 betekent geen quotum."
 
 #: admin/app_settings.py:133 admin/app_settings.py:386
 msgid "Default domain sending limit"
 msgstr "Standaard verzendlimiet per domein"
 
 #: admin/app_settings.py:136 admin/app_settings.py:388
-msgid ""
-"Number of messages freshly created domains will be allowed to send per day. "
-"Leave empty for no limit."
-msgstr ""
-"Aantal mails dat nieuwe domeinen per dag mogen verzenden. Laat leeg voor "
-"geen limiet."
+msgid "Number of messages freshly created domains will be allowed to send per day. Leave empty for no limit."
+msgstr "Aantal mails dat nieuwe domeinen per dag mogen verzenden. Laat leeg voor geen limiet."
 
 #: admin/app_settings.py:141 admin/app_settings.py:395
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:58
@@ -315,12 +286,8 @@ msgid "Handle mailboxes on filesystem"
 msgstr "Pas mailboxen op het bestandssysteem aan"
 
 #: admin/app_settings.py:147 admin/app_settings.py:400
-msgid ""
-"Rename or remove mailboxes on the filesystem when they get renamed or "
-"removed within Modoboa"
-msgstr ""
-"Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of "
-"verwijderd worden in Modoboa."
+msgid "Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa"
+msgstr "Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of verwijderd worden in Modoboa."
 
 #: admin/app_settings.py:153 admin/app_settings.py:405 admin/forms/domain.py:49
 #: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
@@ -328,24 +295,16 @@ msgid "Default mailbox quota"
 msgstr "Standaard mailbox quota"
 
 #: admin/app_settings.py:156
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Standaard mailboxquotum (in MB), toegepast op nieuwe mailboxen zonder "
-"gespecificeerde waarde. De waarde '0' betekent geen quotum."
+msgid "Default mailbox quota (in MB) applied to freshly created mailboxes with no value specified. A value of 0 means no quota."
+msgstr "Standaard mailboxquotum (in MB), toegepast op nieuwe mailboxen zonder gespecificeerde waarde. De waarde '0' betekent geen quotum."
 
 #: admin/app_settings.py:162 admin/app_settings.py:413
 msgid "Default mailbox sending limit"
 msgstr "Standaard verzendlimiet voor mailboxen"
 
 #: admin/app_settings.py:165 admin/app_settings.py:415
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
-msgstr ""
-"Aantal mails dat nieuwe mailboxen per dag mogen verzenden. Laat leeg voor "
-"geen limiet."
+msgid "Number of messages freshly created mailboxes will be allowed to send per day. Leave empty for no limit."
+msgstr "Aantal mails dat nieuwe mailboxen per dag mogen verzenden. Laat leeg voor geen limiet."
 
 #: admin/app_settings.py:171 admin/app_settings.py:420
 msgid "Automatic account removal"
@@ -353,8 +312,7 @@ msgstr "Automatish een account verwijderen"
 
 #: admin/app_settings.py:174 admin/app_settings.py:422
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr ""
-"Als een mailbox wordt verwijderd, verwijder dan ook het bijbehorende account"
+msgstr "Als een mailbox wordt verwijderd, verwijder dan ook het bijbehorende account"
 
 #: admin/app_settings.py:178 admin/app_settings.py:426
 msgid "Automatic domain/mailbox creation"
@@ -362,8 +320,7 @@ msgstr "Domein en mailbox automatisch aanmaken"
 
 #: admin/app_settings.py:181 admin/app_settings.py:428
 msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr ""
-"Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
+msgstr "Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
 
 #: admin/app_settings.py:187 admin/app_settings.py:434
 msgid "Create an alias when a mailbox is renamed"
@@ -374,12 +331,8 @@ msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "Maak een alias aan voor het oude adres als een mailbox hernoemd wordt."
 
 #: admin/app_settings.py:407
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created domains with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Standaard mailboxquota (in MB) die worden toegepast op nieuwe domeinen "
-"zonder gespecificeerde waarde. Een 0 betekent geen quota."
+msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Standaard mailboxquota (in MB) die worden toegepast op nieuwe domeinen zonder gespecificeerde waarde. Een 0 betekent geen quota."
 
 #: admin/app_settings.py:451 admin/app_settings.py:453
 msgid "Administration"
@@ -409,12 +362,8 @@ msgid "Username"
 msgstr "Gebruikersnaam"
 
 #: admin/forms/account.py:34
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
-msgstr ""
-"De naam van de gebruiker. Moet een geldig e-mailadres zijn voor gebruikers "
-"of administrators met een mailbox."
+msgid "The user's name. Must be a valid e-mail address for simple users or administrators with a mailbox."
+msgstr "De naam van de gebruiker. Moet een geldig e-mailadres zijn voor gebruikers of administrators met een mailbox."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 #: core/templates/core/information.html:37
@@ -434,12 +383,8 @@ msgid "Random password"
 msgstr "Willekeurig wachtwoord"
 
 #: admin/forms/account.py:46
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
-msgstr ""
-"Genereer een willekeurig wachtwoord. Als je dit account bijwerkt en deze "
-"optie aanvinkt wordt er een nieuw wachtwoord gegenereerd."
+msgid "Generate a random password. If you're updating this account and check this box, a new password will be generated."
+msgstr "Genereer een willekeurig wachtwoord. Als je dit account bijwerkt en deze optie aanvinkt wordt er een nieuw wachtwoord gegenereerd."
 
 #: admin/forms/account.py:52 core/forms.py:27 pdfcredentials/documents.py:81
 msgid "Password"
@@ -485,15 +430,8 @@ msgid "Quota"
 msgstr "Quota"
 
 #: admin/forms/account.py:236
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Quotum voor deze mailbox; kan uitgedrukt worden in kB, MB (standaard) of GB. "
-"Geef een aangepaste waarde of gebruik de standaard voor dit domein. Laat dit "
-"leeg voor een ongelimiteerde waarde (niet toegestaan voor "
-"domeinadministrators)."
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Quotum voor deze mailbox; kan uitgedrukt worden in kB, MB (standaard) of GB. Geef een aangepaste waarde of gebruik de standaard voor dit domein. Laat dit leeg voor een ongelimiteerde waarde (niet toegestaan voor domeinadministrators)."
 
 #: admin/forms/account.py:246 admin/models/domain.py:36
 #: admin/models/mailbox.py:99 admin/templates/admin/account_detail.html:50
@@ -511,29 +449,16 @@ msgid "Alias(es)"
 msgstr "Alias(sen)"
 
 #: admin/forms/account.py:256
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Alias(en) van deze mailbox. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen. Om een 'catch-all'-adres te maken voer "
-"je alleen het domein in (bijvoorbeeld: @domein.tld)."
+msgid "Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Alias(en) van deze mailbox. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen. Om een 'catch-all'-adres te maken voer je alleen het domein in (bijvoorbeeld: @domein.tld)."
 
 #: admin/forms/account.py:262
 msgid "Sender addresses"
 msgstr "Afzenderadressen"
 
 #: admin/forms/account.py:265
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Extra afzenderadres(sen) voor dit account. De gebruiker wordt toegestaan om "
-"dit adres als verzender te gebruiken voor uitgaande berichten, ook al "
-"bestaat dit adres niet lokaal. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen."
+msgid "Additional sender address(es) for this account. The user will be allowed to send emails using this address, even if it does not exist locally. Indicate one address per input. Press ENTER to add a new input."
+msgstr "Extra afzenderadres(sen) voor dit account. De gebruiker wordt toegestaan om dit adres als verzender te gebruiken voor uitgaande berichten, ook al bestaat dit adres niet lokaal. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: admin/forms/account.py:325 admin/forms/alias.py:88
 #: admin/models/mailbox.py:313
@@ -594,24 +519,16 @@ msgid "Email address"
 msgstr "mailadres"
 
 #: admin/forms/alias.py:25
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Het alias-adres. Om een 'catch-all'-adres te maken voer je alleen het domein "
-"in (bijvoorbeeld: @domein.nl)."
+msgid "The alias address. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Het alias-adres. Om een 'catch-all'-adres te maken voer je alleen het domein in (bijvoorbeeld: @domein.nl)."
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Ontvangers"
 
 #: admin/forms/alias.py:33
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Adressen waarnaar deze alias zal verwijzen. Geef slechts een adres per regel "
-"op, en toets ENTER om een nieuwe regel te krijgen."
+msgid "Addresses this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgstr "Adressen waarnaar deze alias zal verwijzen. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: admin/forms/alias.py:114
 msgid "No recipient defined"
@@ -623,24 +540,16 @@ msgid "Type"
 msgstr "Type"
 
 #: admin/forms/domain.py:34
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Alias(sen) van dit domein. Geef slechts een adres per regel op, en toets "
-"ENTER om een nieuwe regel te krijgen."
+msgid "Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input."
+msgstr "Alias(sen) van dit domein. Geef slechts een adres per regel op, en toets ENTER om een nieuwe regel te krijgen."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
 msgstr "Key selector"
 
 #: admin/forms/domain.py:52
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
-msgstr ""
-"Standaard quotum toegepast op alle mailboxen. Kan uitgedrukt worden in kB, "
-"MB (standaard) of GB. Een waarde van 0 betekent geen quotum."
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Standaard quotum toegepast op alle mailboxen. Kan uitgedrukt worden in kB, MB (standaard) of GB. Een waarde van 0 betekent geen quotum."
 
 #: admin/forms/domain.py:97 admin/handlers.py:166
 msgid "domain alias"
@@ -660,7 +569,7 @@ msgstr "DKIM Key opslagdirectory niet geconfigureerd"
 msgid "You can't define an unlimited quota."
 msgstr "Je kunt geen onbeperkt quotum definiëren."
 
-#: admin/forms/domain.py:176 admin/forms/domain.py:181 policyd/core.py:106
+#: admin/forms/domain.py:176 admin/forms/domain.py:181
 msgid "domain"
 msgstr "domein"
 
@@ -682,9 +591,7 @@ msgid "Name"
 msgstr "Naam"
 
 #: admin/forms/domain.py:241
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
+msgid "The administrator's name. Don't include the domain's name here, it will be automatically appended."
 msgstr "De naam van de beheerder. De domeinnaam word automatisch toegevoegd."
 
 #: admin/forms/domain.py:251
@@ -765,8 +672,7 @@ msgstr "Versleutel wachtwoorden"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Vink deze optie aan als wachtwoorden in je bestand niet versleuteld zijn"
+msgstr "Vink deze optie aan als wachtwoorden in je bestand niet versleuteld zijn"
 
 #: admin/handlers.py:215
 #, python-format
@@ -847,9 +753,7 @@ msgstr "%d objecten succesvol geïmporteerd"
 
 #: admin/management/commands/subcommands/_import.py:93
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
-"CSV bestand is niet gecodeerd in UTF-8, aan het proberen om de codering te "
-"raden"
+msgstr "CSV bestand is niet gecodeerd in UTF-8, aan het proberen om de codering te raden"
 
 #: admin/management/commands/subcommands/_import.py:105
 #, python-format
@@ -973,11 +877,8 @@ msgid "Enable DKIM signing"
 msgstr "Zet DKIM ondertekening aan"
 
 #: admin/models/domain.py:59
-msgid ""
-"If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Als je deze functie aanzet, zal er een DKIM key gegenereerd worden voor dit "
-"domein."
+msgid "If you activate this feature, a DKIM key will be generated for this domain."
+msgstr "Als je deze functie aanzet, zal er een DKIM key gegenereerd worden voor dit domein."
 
 #: admin/models/domain.py:65
 msgid "Key length"
@@ -1414,43 +1315,20 @@ msgid "Fullname/Recipient"
 msgstr "Volledige naam/Ontvanger"
 
 #: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Lever een CSV bestand en zorg ervoor dat de regels voldoen aan een van de "
-"volgende formaten: <ul> <li><em>domain; name; quota; default mailbox quota; "
-"enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></"
-"li> <li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>Het eerste element van elke regel is "
-"verplicht en moet gelijk zijn aan een van de vorige waarden.</p> <p>Je kan "
-"een eigen scheidingsteken gebruiken.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Lever een CSV bestand en zorg ervoor dat de regels voldoen aan een van de volgende formaten: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan een van de vorige waarden.</p> <p>Je kan een eigen scheidingsteken gebruiken.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
 msgstr ""
-"Lever een CSV bestand en zorg ervoor dat de regels voldoen aan een van de "
-"volgende formaten:\n"
+"Lever een CSV bestand en zorg ervoor dat de regels voldoen aan een van de volgende formaten:\n"
 "<ul>\n"
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li>\n"
+"<li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>\n"
 "<li><em>alias; address; enabled; internal recipient</em></li>\n"
 "<li><em>forward; address; enabled; external recipient</em></li>\n"
 "<li><em>dlist; address; enabled; recipient; recipient; ...</em></li>\n"
 "</ul>\n"
-"<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan "
-"een van de vorige waarden.</p>\n"
+"<p>Het eerste element van elke regel is verplicht en moet gelijk zijn aan een van de vorige waarden.</p>\n"
 "<p>Je kan een eigen scheidingsteken gebruiken.</p>"
 
 #: admin/templates/admin/importform.html:6
@@ -1479,9 +1357,7 @@ msgstr "Bijgewerkt"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
-"Dit IP-adres komt niet overeen met een van de valide MX'en zoals "
-"gedefinieerd in de instellingen"
+msgstr "Dit IP-adres komt niet overeen met een van de valide MX'en zoals gedefinieerd in de instellingen"
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
@@ -1489,29 +1365,17 @@ msgstr "Geen geldig MX-record voor dit domein gevonden."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
-msgid ""
-"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
-"providers:"
-msgstr ""
-"Modoboa heeft vastgesteld dat het domein %(domain)s op de volgende DNSBL "
-"lijsten staat:"
+msgid "Modoboa detected that domain %(domain)s is listed by the following DNSBL providers:"
+msgstr "Modoboa heeft vastgesteld dat het domein %(domain)s op de volgende DNSBL lijsten staat:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
-msgid ""
-"The domain's reputation will be affected and there is a chance that emails "
-"coming from it are considered as spam. You should contact those providers "
-"and ask them to unlist detected IP address(es)."
-msgstr ""
-"De reputatie van dit domein wordt hierdoor aangetast er bestaat een kans dat "
-"e-mail van dit domein als spam wordt gezien. Je zou contact moeten opnemen "
-"met deze providers en hun vragen om deze IP adressen van de lijst te halen."
+msgid "The domain's reputation will be affected and there is a chance that emails coming from it are considered as spam. You should contact those providers and ask them to unlist detected IP address(es)."
+msgstr "De reputatie van dit domein wordt hierdoor aangetast er bestaat een kans dat e-mail van dit domein als spam wordt gezien. Je zou contact moeten opnemen met deze providers en hun vragen om deze IP adressen van de lijst te halen."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
-"Modoboa heeft vastgesteld dat het domein %(domain)s geen geldig MX-record "
-"heeft:"
+msgstr "Modoboa heeft vastgesteld dat het domein %(domain)s geen geldig MX-record heeft:"
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1762,12 +1626,8 @@ msgid "Rounds"
 msgstr "Rondes"
 
 #: core/app_settings.py:61 core/app_settings.py:743
-msgid ""
-"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
-"between 1000 and 999999999, inclusive."
-msgstr ""
-"Nummer van te gebruiken randomizeringsrondes (alleen bij sha256crypt en "
-"sha512crypt). Moet tussen de 1000 en 999999999 liggen."
+msgid "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be between 1000 and 999999999, inclusive."
+msgstr "Nummer van te gebruiken randomizeringsrondes (alleen bij sha256crypt en sha512crypt). Moet tussen de 1000 en 999999999 liggen."
 
 #: core/app_settings.py:67 core/app_settings.py:749
 msgid "Update password scheme at login"
@@ -1775,9 +1635,7 @@ msgstr "Update wachtwoordschema bij inloggen"
 
 #: core/app_settings.py:70 core/app_settings.py:751
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Update gebruikerswachtwoord bij het inloggen om het standaard wachtwoord "
-"schema te gebruiken. "
+msgstr "Update gebruikerswachtwoord bij het inloggen om het standaard wachtwoord schema te gebruiken. "
 
 #: core/app_settings.py:75 core/app_settings.py:756
 msgid "Default password"
@@ -1800,14 +1658,8 @@ msgid "Update password service URL"
 msgstr "Service-url voor wachtwoorden updaten"
 
 #: core/app_settings.py:94 core/app_settings.py:768
-msgid ""
-"The URL of an external page where users will be able to update their "
-"password. It applies only to non local users, ie. those automatically "
-"created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"De URL van een externe pagina waar gebruikers hun wachtwoord kunnen "
-"bijwerken. Alleen van toepassing op niet-lokale gebruikers die automatisch "
-"worden aangemaakt na een succesvolle externe authenticatie (LDAP, SMTP)."
+msgid "The URL of an external page where users will be able to update their password. It applies only to non local users, ie. those automatically created after a successful external authentication (LDAP, SMTP)."
+msgstr "De URL van een externe pagina waar gebruikers hun wachtwoord kunnen bijwerken. Alleen van toepassing op niet-lokale gebruikers die automatisch worden aangemaakt na een succesvolle externe authenticatie (LDAP, SMTP)."
 
 #: core/app_settings.py:102 core/app_settings.py:775
 msgid "Password recovery announcement"
@@ -1823,9 +1675,7 @@ msgstr "Wachtwoordherstel via SMS activeren"
 
 #: core/app_settings.py:116 core/app_settings.py:784
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
-"Wachtwoordherstel via SMS activeren voor gebruikers die een telefoonnummer "
-"hebben ingevuld."
+msgstr "Wachtwoordherstel via SMS activeren voor gebruikers die een telefoonnummer hebben ingevuld."
 
 #: core/app_settings.py:122 core/app_settings.py:789
 msgid "SMS provider"
@@ -1860,10 +1710,8 @@ msgid "Enable secondary server (fallback)"
 msgstr "Secundaire server activeren (fallback)"
 
 #: core/app_settings.py:150 core/app_settings.py:814
-msgid ""
-"Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
-"Activeer secundaire LDAP server, te gebruiken als de primaire server wegvalt"
+msgid "Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr "Activeer secundaire LDAP server, te gebruiken als de primaire server wegvalt"
 
 #: core/app_settings.py:156 core/app_settings.py:819
 msgid "Secondary server address"
@@ -1902,12 +1750,8 @@ msgid "Administrator groups"
 msgstr "Beheerdergroepen"
 
 #: core/app_settings.py:188 core/app_settings.py:845
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Leden van deze LDAP POSIX-groepen zullen aangemaakt worden als "
-"domeinbeheerders. Gebruik ';' karakters om groepen te scheiden."
+msgid "Members of those LDAP Posix groups will be created as domain administrators. Use ';' characters to separate groups."
+msgstr "Leden van deze LDAP POSIX-groepen zullen aangemaakt worden als domeinbeheerders. Gebruik ';' karakters om groepen te scheiden."
 
 #: core/app_settings.py:195 core/app_settings.py:851
 msgid "Group type"
@@ -1960,12 +1804,8 @@ msgstr "Koppeling DN"
 
 #: core/app_settings.py:234 core/app_settings.py:288 core/app_settings.py:882
 #: core/app_settings.py:927
-msgid ""
-"The distinguished name to use when binding to the LDAP server. Leave empty "
-"for an anonymous bind"
-msgstr ""
-"De gedistingeerde naam om te gebruiken bij het koppelen met de LDAP-server. "
-"Laat leeg voor een anonieme koppeling."
+msgid "The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"
+msgstr "De gedistingeerde naam om te gebruiken bij het koppelen met de LDAP-server. Laat leeg voor een anonieme koppeling."
 
 #: core/app_settings.py:241 core/app_settings.py:295 core/app_settings.py:888
 #: core/app_settings.py:932
@@ -1975,9 +1815,7 @@ msgstr "Koppel wachtwoord"
 #: core/app_settings.py:244 core/app_settings.py:298 core/app_settings.py:890
 #: core/app_settings.py:934
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Het wachtwoord om te gebruiken tijdens het koppelen met de LDAP-server (met "
-"'koppel DN')"
+msgstr "Het wachtwoord om te gebruiken tijdens het koppelen met de LDAP-server (met 'koppel DN')"
 
 #: core/app_settings.py:252 core/app_settings.py:344 core/app_settings.py:897
 #: core/app_settings.py:971
@@ -1996,12 +1834,8 @@ msgstr "Zoekfilter"
 
 #: core/app_settings.py:264 core/app_settings.py:356 core/app_settings.py:907
 #: core/app_settings.py:981
-msgid ""
-"An optional filter string (e.g. '(objectClass=person)'). In order to be "
-"valid, it must be enclosed in parentheses."
-msgstr ""
-"Een optionele filter string (zoals '(objectClass=person)'). Om geldig te "
-"kunnen zijn, moet het tussen haakjes staan."
+msgid "An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."
+msgstr "Een optionele filter string (zoals '(objectClass=person)'). Om geldig te kunnen zijn, moet het tussen haakjes staan."
 
 #: core/app_settings.py:271 core/app_settings.py:913
 msgid "User DN template"
@@ -2009,12 +1843,8 @@ msgstr "Gebruiker DN template"
 
 #: core/app_settings.py:274 core/app_settings.py:915
 #, python-format
-msgid ""
-"The template used to construct a user's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Het template dat gebruikt wordt om een gebruiker zijn/haar DN op te bouwen. "
-"Het moet een placeholder bevatten (bijvoorbeeld. %(user)s)"
+msgid "The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Het template dat gebruikt wordt om een gebruiker zijn/haar DN op te bouwen. Het moet een placeholder bevatten (bijvoorbeeld. %(user)s)"
 
 #: core/app_settings.py:282 core/app_settings.py:921
 msgid "LDAP synchronization settings"
@@ -2025,22 +1855,16 @@ msgid "Enable export to LDAP"
 msgstr "Activeer export naar LDAP"
 
 #: core/app_settings.py:309 core/app_settings.py:942
-msgid ""
-"Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
-"Activeer automatische synchronisatie tussen lokale database en LDAP directory"
+msgid "Enable automatic synchronization between local database and LDAP directory"
+msgstr "Activeer automatische synchronisatie tussen lokale database en LDAP directory"
 
 #: core/app_settings.py:315 core/app_settings.py:948
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr "Verwijder extern LDAP account als het lokale account wordt verwijderd"
 
 #: core/app_settings.py:319 core/app_settings.py:950
-msgid ""
-"Delete remote LDAP account when local account is deleted, otherwise it will "
-"be disabled."
-msgstr ""
-"Verwijder extern LDAP account als het lokale account wordt verwijderd. Zo "
-"niet, dan wordt het gedeactiveerd."
+msgid "Delete remote LDAP account when local account is deleted, otherwise it will be disabled."
+msgstr "Verwijder extern LDAP account als het lokale account wordt verwijderd. Zo niet, dan wordt het gedeactiveerd."
 
 #: core/app_settings.py:325 core/app_settings.py:956
 msgid "Account DN template"
@@ -2048,12 +1872,8 @@ msgstr "Account DN sjabloon"
 
 #: core/app_settings.py:328 core/app_settings.py:958
 #, python-format
-msgid ""
-"The template used to construct an account's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Het sjabloon voor het opbouwen van het DN (distinguishedname). Het moet een "
-"tijdelijke aanduiding (placeholder) bevatten (bijvoorbeeld %(user)s)"
+msgid "The template used to construct an account's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Het sjabloon voor het opbouwen van het DN (distinguishedname). Het moet een tijdelijke aanduiding (placeholder) bevatten (bijvoorbeeld %(user)s)"
 
 #: core/app_settings.py:335 core/app_settings.py:964
 msgid "Enable import from LDAP"
@@ -2077,16 +1897,14 @@ msgstr "Activeer Dovecot LDAP synchronisatie"
 
 #: core/app_settings.py:374 core/app_settings.py:997
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
-"LDAP authenticatie-instellingen worden toegepast op Dovecot-configuratie."
+msgstr "LDAP authenticatie-instellingen worden toegepast op Dovecot-configuratie."
 
 #: core/app_settings.py:380 core/app_settings.py:1002
 msgid "Dovecot LDAP config file"
 msgstr "Dovecot LDAP configuratiebestand"
 
 #: core/app_settings.py:384 core/app_settings.py:1004
-msgid ""
-"Location of the configuration file which contains Dovecot LDAP settings."
+msgid "Location of the configuration file which contains Dovecot LDAP settings."
 msgstr "Locatie van het configuratiebestand met Dovecot LDAP-instellingen."
 
 #: core/app_settings.py:389 core/app_settings.py:1013
@@ -2164,9 +1982,7 @@ msgstr "Verstuur statistieken"
 
 #: core/app_settings.py:452 core/app_settings.py:1074
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Verstuur statistieken naar de publieke Modoboa API (statistieken en "
-"gebruikte extenties)"
+msgstr "Verstuur statistieken naar de publieke Modoboa API (statistieken en gebruikte extenties)"
 
 #: core/app_settings.py:456 core/app_settings.py:1080
 msgid "Miscellaneous"
@@ -2179,9 +1995,7 @@ msgid "Enable inactive account tracking"
 msgstr "Drempelwaarde inactieve gebruikers"
 
 #: core/app_settings.py:461 core/app_settings.py:1085
-msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+msgid "Allow the administrator to set a threshold (in days) beyond which an account is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:467 core/app_settings.py:1091
@@ -2189,12 +2003,8 @@ msgid "Inactive account threshold"
 msgstr "Drempelwaarde inactieve gebruikers"
 
 #: core/app_settings.py:470 core/app_settings.py:1094
-msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Een gebruiker die langer dan dit aantal dagen niet ingelogd is, wordt op "
-"inactief gezet."
+msgid "An account with a last login date greater than this threshold (in days) will be considered as inactive"
+msgstr "Een gebruiker die langer dan dit aantal dagen niet ingelogd is, wordt op inactief gezet."
 
 #: core/app_settings.py:476 core/app_settings.py:1099
 msgid "Top notifications check interval"
@@ -2226,23 +2036,15 @@ msgstr "Standaard top omleiding"
 
 #: core/app_settings.py:500 core/app_settings.py:1116
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"De standaard omleiding die gebruikt wordt als er geen andere applicatie is "
-"opgegeven"
+msgstr "De standaard omleiding die gebruikt wordt als er geen andere applicatie is opgegeven"
 
 #: core/app_settings.py:799
 msgid "LDAP"
 msgstr ""
 
 #: core/checks/settings_checks.py:6
-msgid ""
-"You have USE_TZ set to False, this may result in issues during transitions "
-"between summer/winter time (ie the same local time occuring twice due to "
-"clock change)."
-msgstr ""
-"USE_TZ staat op 'False', dit kan voor problemen zorgen tijdens de transitie "
-"tussen zomer- en wintertijd (bijv. dezelfde locale tijd komt twee keer voor "
-"door de tijdsverandering)"
+msgid "You have USE_TZ set to False, this may result in issues during transitions between summer/winter time (ie the same local time occuring twice due to clock change)."
+msgstr "USE_TZ staat op 'False', dit kan voor problemen zorgen tijdens de transitie tussen zomer- en wintertijd (bijv. dezelfde locale tijd komt twee keer voor door de tijdsverandering)"
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
@@ -2368,15 +2170,13 @@ msgstr "Voorkeurstaal om pagina's weer te geven"
 
 #: core/models.py:72
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr ""
-"Een alternatief e-mailadres, dit kan gebruikt worden voor herstel "
-"mogelijkheden."
+msgstr "Een alternatief e-mailadres, dit kan gebruikt worden voor herstel mogelijkheden."
 
 #: core/models.py:126
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Mislukt om wachtwoord aan te passen: LDAP-module niet geinstalleerd"
 
-#: core/models.py:159 policyd/core.py:105
+#: core/models.py:159
 msgid "account"
 msgstr "account"
 
@@ -2497,12 +2297,8 @@ msgid "Latest news"
 msgstr "Laatste nieuws"
 
 #: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
-msgstr ""
-"Bezoek de <a href=\"https://modoboa.org/blog/\" target=\"_blank\">officiële "
-"weblog</a> voor meer informatie."
+msgid "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official weblog</a> for more information."
+msgstr "Bezoek de <a href=\"https://modoboa.org/blog/\" target=\"_blank\">officiële weblog</a> voor meer informatie."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -2514,12 +2310,8 @@ msgstr "Beheer uw toegang tot de Modoboa API"
 
 #: core/templates/core/api_access.html:7
 #, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
-msgstr ""
-"API documentatie is beschikbaar <strong><a href=\"%(url)s\" "
-"target=\"_blank\">hier</a></strong>."
+msgid "A documentation of the API is available <strong><a href=\"%(url)s\" target=\"_blank\">here</a></strong>."
+msgstr "API documentatie is beschikbaar <strong><a href=\"%(url)s\" target=\"_blank\">hier</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -2544,9 +2336,7 @@ msgstr "Eén of meer updates zijn beschikbaar!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Bekijk de volgende lijst om de componenten te vinden die bijgewerkt kunnen "
-"worden"
+msgstr "Bekijk de volgende lijst om de componenten te vinden die bijgewerkt kunnen worden"
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -2649,9 +2439,7 @@ msgid "Two-Factor authentication"
 msgstr "De backend gebruikt voor authenticatie"
 
 #: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+msgid "Install a soft token authenticator like FreeOTP or Google Authenticator from your application repository and use that app to scan this QR code."
 msgstr ""
 
 #: core/templates/core/user_security.html:25
@@ -2665,17 +2453,12 @@ msgid "Register"
 msgstr ""
 
 #: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
 msgstr ""
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
+msgid "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
 msgstr ""
 
 #: core/templates/core/user_security.html:53
@@ -2694,9 +2477,7 @@ msgid "Reset recovery codes"
 msgstr ""
 
 #: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
+msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
 msgstr ""
 
 #: core/templates/core/user_security.html:73
@@ -2737,9 +2518,7 @@ msgstr "Parameters opgeslagen"
 
 #: core/views/auth.py:100
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Uw gebruikersnaam en wachtwoord komen niet overeen. Probeer het alstublieft "
-"opnieuw."
+msgstr "Uw gebruikersnaam en wachtwoord komen niet overeen. Probeer het alstublieft opnieuw."
 
 #: core/views/auth.py:135
 msgid "User '{}' successfully logged out"
@@ -3012,12 +2791,8 @@ msgid "A DNS record has been found but its syntax is not valid:"
 msgstr "Er is een DNS-record gevonden maar de syntax is ongeldig:"
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
-msgstr ""
-"Hier is een voorbeeld van een DNS-configuratie (bind format). Vervang de "
-"waarden tussen [ ] door geschikte waarden."
+msgid "Here is an example of DNS configuration (bind format). Replace value between [ ] by the appropriate ones."
+msgstr "Hier is een voorbeeld van een DNS-configuratie (bind format). Vervang de waarden tussen [ ] door geschikte waarden."
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
 msgid "IP address of your Modoboa server"
@@ -3095,9 +2870,7 @@ msgid "Folder Filter Exclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:44 imap_migration/app_settings.py:93
-msgid ""
-"Use a regular expression to explicitly include folders in sync. Example: "
-"^Trash$|Del"
+msgid "Use a regular expression to explicitly include folders in sync. Example: ^Trash$|Del"
 msgstr ""
 
 #: imap_migration/app_settings.py:48 imap_migration/app_settings.py:100
@@ -3105,10 +2878,7 @@ msgid "Folder Filter Inclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:50 imap_migration/app_settings.py:103
-msgid ""
-"A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+msgid "A comma seperated list of folders to explicitly include in sync even if filtered by the Folder Filter Exclusions. Example: debian.user, debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:72
@@ -3133,14 +2903,11 @@ msgid "Connection to IMAP server failed: %s"
 msgstr "Verbinding met de IMAP server mislukt: %s"
 
 #: imap_migration/checks.py:11
-msgid ""
-"Automatic domain/mailbox creation is disabled which means IMAP "
-"authentication won't work."
+msgid "Automatic domain/mailbox creation is disabled which means IMAP authentication won't work."
 msgstr ""
 
 #: imap_migration/checks.py:13
-msgid ""
-"Go to the online parameters panel (admin tab) and activate this feature."
+msgid "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
 
 #: imap_migration/templates/imap_migration/index.html:6
@@ -3232,50 +2999,36 @@ msgstr "Domein administrators"
 
 #: limits/app_settings.py:29 limits/app_settings.py:164
 #, fuzzy
-#| msgid ""
-#| "Maximum number of allowed domain administrators for a new administrator"
-msgid ""
-"Maximum number of allowed domain administrators for a new administrator. (0 "
-"to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maximum aantal toegestane domein administrators voor een nieuwe administrator"
+#| msgid "Maximum number of allowed domain administrators for a new administrator"
+msgid "Maximum number of allowed domain administrators for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Maximum aantal toegestane domein administrators voor een nieuwe administrator"
 
 #: limits/app_settings.py:40 limits/app_settings.py:173
 #, fuzzy
 #| msgid "Maximum number of allowed domains for a new administrator"
-msgid ""
-"Maximum number of allowed domains for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed domains for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal toegestane domeinen voor een nieuwe administrator"
 
 #: limits/app_settings.py:50 limits/app_settings.py:181
 #, fuzzy
 #| msgid "Maximum number of allowed domain aliases for a new administrator"
-msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed domain aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal domein aliassen voor een nieuwe administrator"
 
 #: limits/app_settings.py:61 limits/app_settings.py:190
 #, fuzzy
 #| msgid "Maximum number of allowed mailboxes for a new administrator"
-msgid ""
-"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed mailboxes for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal toegestane mailboxen voor een nieuwe administrator"
 
 #: limits/app_settings.py:71 limits/app_settings.py:199
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
-msgid ""
-"Maximum number of allowed aliases for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal aliassen voor een nieuwe administrator"
 
 #: limits/app_settings.py:81 limits/app_settings.py:206
-msgid ""
-"The quota a reseller will be allowed to share between the domains he "
-"creates. (0 means no quota)"
+msgid "The quota a reseller will be allowed to share between the domains he creates. (0 means no quota)"
 msgstr ""
 
 #: limits/app_settings.py:88 limits/app_settings.py:213
@@ -3294,36 +3047,26 @@ msgstr ""
 
 #: limits/app_settings.py:100 limits/app_settings.py:223
 #, fuzzy
-#| msgid ""
-#| "Maximum number of allowed domain administrators for a new administrator"
-msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maximum aantal toegestane domein administrators voor een nieuwe administrator"
+#| msgid "Maximum number of allowed domain administrators for a new administrator"
+msgid "Maximum number of allowed domain administrators for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Maximum aantal toegestane domein administrators voor een nieuwe administrator"
 
 #: limits/app_settings.py:111 limits/app_settings.py:232
 #, fuzzy
 #| msgid "Maximum number of allowed domain aliases for a new administrator"
-msgid ""
-"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed domain aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal domein aliassen voor een nieuwe administrator"
 
 #: limits/app_settings.py:122 limits/app_settings.py:241
 #, fuzzy
 #| msgid "Maximum number of allowed mailboxes for a new administrator"
-msgid ""
-"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
+msgid "Maximum number of allowed mailboxes for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal toegestane mailboxen voor een nieuwe administrator"
 
 #: limits/app_settings.py:132 limits/app_settings.py:249
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
-msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+msgid "Maximum number of allowed aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal aliassen voor een nieuwe administrator"
 
 #: limits/apps.py:13 limits/apps.py:15
@@ -3610,25 +3353,16 @@ msgid "Delete documents after the first download"
 msgstr "Documenten verwijderen na eerste download"
 
 #: pdfcredentials/app_settings.py:45 pdfcredentials/app_settings.py:145
-msgid ""
-"Automatically delete a document just after its first download from this "
-"interface"
-msgstr ""
-"Verwijder een document automatisch nadat het eenmalig is gedownload van "
-"paneel"
+msgid "Automatically delete a document just after its first download from this interface"
+msgstr "Verwijder een document automatisch nadat het eenmalig is gedownload van paneel"
 
 #: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:151
 msgid "Generate documents only at account creation"
 msgstr "Genereer een document enkel bij het aanmaken van een account"
 
 #: pdfcredentials/app_settings.py:52 pdfcredentials/app_settings.py:154
-msgid ""
-"Generate a new document only when a new account is created. If set to no, a "
-"new document will be created each time a password is updated."
-msgstr ""
-"Genereer een document enkel wanneer een account is nieuw aangemaakt. Indien "
-"'nee' is geselecteerd zal bij iedere wachtwoord wijziging een nieuw document "
-"worden gemaakt. "
+msgid "Generate a new document only when a new account is created. If set to no, a new document will be created each time a password is updated."
+msgstr "Genereer een document enkel wanneer een account is nieuw aangemaakt. Indien 'nee' is geselecteerd zal bij iedere wachtwoord wijziging een nieuw document worden gemaakt. "
 
 #: pdfcredentials/app_settings.py:60 pdfcredentials/app_settings.py:160
 msgid "Customization options"
@@ -3656,17 +3390,14 @@ msgstr "Aangepast bericht"
 
 #: pdfcredentials/app_settings.py:73 pdfcredentials/app_settings.py:176
 msgid "A custom message that will appear at the end of documents"
-msgstr ""
-"Een aangepast bericht dat aan het einde van de documenten komt te staan"
+msgstr "Een aangepast bericht dat aan het einde van de documenten komt te staan"
 
 #: pdfcredentials/app_settings.py:77 pdfcredentials/app_settings.py:181
 msgid "Include mail client connection settings"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:79 pdfcredentials/app_settings.py:184
-msgid ""
-"Include required SMTP and IMAP connection information to configure a mail "
-"client, a tablet or a phone"
+msgid "Include required SMTP and IMAP connection information to configure a mail client, a tablet or a phone"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:84 pdfcredentials/app_settings.py:190
@@ -3758,8 +3489,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Hier kunt u uw e-mails online bekijken, filters aanmaken, of contactpersonen "
-"beheren.\n"
+"Hier kunt u uw e-mails online bekijken, filters aanmaken, of contactpersonen beheren.\n"
 
 #: pdfcredentials/documents.py:98
 msgid "Please change your password!"
@@ -3793,21 +3523,6 @@ msgstr "Het aanmaken van de map voor de PDF documenten is mislukt (%s)"
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr "Het aanmaken van de map voor de PDF documenten is mislukt (%s)"
-
-#: policyd/core.py:89
-#, fuzzy
-#| msgid "%s: limit reached"
-msgid "Daily sending limit reached"
-msgstr "%s: limiet bereikt"
-
-#: policyd/core.py:124
-msgid "[modoboa] Sending limit reached"
-msgstr ""
-
-#: policyd/templates/policyd/notifications/limit_reached.html:3
-#, python-format
-msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
 
 #: relaydomains/api/v1/serializers.py:25
 msgid "Unsupported service"
@@ -3905,23 +3620,16 @@ msgstr "Wachtwoord vergeten?"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
-msgid ""
-"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
-"in</a> now."
-msgstr ""
-"Je wachtwoord is ingesteld. Je kunt nu <a href=\"%(url)s\">inloggen</a>"
+msgid "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign in</a> now."
+msgstr "Je wachtwoord is ingesteld. Je kunt nu <a href=\"%(url)s\">inloggen</a>"
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
 msgstr "Wachtwoord wijzigen"
 
 #: templates/registration/password_reset_confirm.html:17
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used. Please request a new password reset."
-msgstr ""
-"Deze wachtwoord herstel link is ongeldig, misschien is hij al gebruikt. "
-"Vraag een nieuwe wachtwoord herstel link aan."
+msgid "The password reset link was invalid, possibly because it has already been used. Please request a new password reset."
+msgstr "Deze wachtwoord herstel link is ongeldig, misschien is hij al gebruikt. Vraag een nieuwe wachtwoord herstel link aan."
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
@@ -3932,35 +3640,21 @@ msgid "Resend code"
 msgstr "Stuur de code opnieuw"
 
 #: templates/registration/password_reset_done.html:7
-msgid ""
-"<p>We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly.</p> "
-"<p>If you don't receive an email, please make sure you've entered your "
-"primary address, and check your spam folder.</p>"
+msgid "<p>We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.</p> <p>If you don't receive an email, please make sure you've entered your primary address, and check your spam folder.</p>"
 msgstr ""
-"<p>We hebben je instructies gemailt om je wachtwoord in te stellen. Als het "
-"door jou ingevulde email adres bestaat, zal je hem binnenkort ontvangen</p>\n"
-"<p>Als je geen email ontvangt, controleer dan of je het juiste email adres "
-"hebt ingevuld, en controleer je spam folder. </p>"
+"<p>We hebben je instructies gemailt om je wachtwoord in te stellen. Als het door jou ingevulde email adres bestaat, zal je hem binnenkort ontvangen</p>\n"
+"<p>Als je geen email ontvangt, controleer dan of je het juiste email adres hebt ingevuld, en controleer je spam folder. </p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
 #, python-format
-msgid ""
-"To initiate the password reset process for your %(username)s Modoboa "
-"account, click the link below:"
-msgstr ""
-"Klik op de volgende link om een wachtwoord in te stellen voor het Modoboa "
-"account  %(username)s "
+msgid "To initiate the password reset process for your %(username)s Modoboa account, click the link below:"
+msgstr "Klik op de volgende link om een wachtwoord in te stellen voor het Modoboa account  %(username)s "
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
-msgid ""
-"If clicking the link above doesn't work, please copy and paste the URL in a "
-"new browser window instead."
-msgstr ""
-"Als u niet op bovenstaande link kunt klikken kopieer dan de URL in uw "
-"browser,"
+msgid "If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead."
+msgstr "Als u niet op bovenstaande link kunt klikken kopieer dan de URL in uw browser,"
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
@@ -3992,6 +3686,11 @@ msgstr ""
 #: transport/models.py:18
 msgid "next hop"
 msgstr ""
+
+#, fuzzy
+#~| msgid "%s: limit reached"
+#~ msgid "Daily sending limit reached"
+#~ msgstr "%s: limiet bereikt"
 
 #~ msgid "A set of tools to ease DMARC integration"
 #~ msgstr "Een aantal eenvoudige programmas DMARC"
@@ -4052,17 +3751,14 @@ msgstr ""
 #, fuzzy
 #~| msgid ""
 #~| "\n"
-#~| "<li><em>relaydomain; name; target host; service; enabled; verify "
-#~| "recipients</em></li>\n"
+#~| "<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n"
 #~| "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
 #~ msgid ""
 #~ "\n"
-#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
-#~ "recipients</em></li>\n"
+#~ "<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n"
 #~ msgstr ""
 #~ "\n"
-#~ "<li><em>relaydomain; name; target host; service; enabled; verify "
-#~ "recipients</em></li>\n"
+#~ "<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n"
 #~ "<li><em>relaydomainalias; name; target; enabled</em></li>\n"
 
 #~ msgid "Your resources are not initialized yet"

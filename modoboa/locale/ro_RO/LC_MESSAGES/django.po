@@ -10,31 +10,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 10:38+0200\n"
+"POT-Creation-Date: 2023-04-20 14:11+0200\n"
 "PO-Revision-Date: 2021-10-04 13:27+0000\n"
 "Last-Translator: Simona Iacob <s@zp1.net>\n"
-"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
-"language/ro_RO/)\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/language/ro_RO/)\n"
 "Language: ro_RO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
 #: admin/api/v1/serializers.py:35 admin/forms/domain.py:44
-msgid ""
-"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
-"A value of 0 means no quota."
-msgstr ""
-"Limită distribuită intre căsuțele postale. Poate fi exprimată in KB, MB "
-"(implicit) sau GB. Valoarea 0 reprezintă nelimitat."
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Limită distribuită intre căsuțele postale. Poate fi exprimată in KB, MB (implicit) sau GB. Valoarea 0 reprezintă nelimitat."
 
 #: admin/api/v1/serializers.py:42
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
-"înseamnă fără cotă."
+msgstr "Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 înseamnă fără cotă."
 
 #: admin/api/v1/serializers.py:73 admin/forms/domain.py:108
 msgid "No authorized MX record found for this domain"
@@ -59,10 +51,8 @@ msgid "This field is required"
 msgstr "Acest câmp este necesar"
 
 #: admin/api/v1/serializers.py:186
-msgid ""
-"List of administered domains (resellers and domain administrators only)."
-msgstr ""
-"Lista domenilor administrate (doar reselleri și administratori de domeniu)"
+msgid "List of administered domains (resellers and domain administrators only)."
+msgstr "Lista domenilor administrate (doar reselleri și administratori de domeniu)"
 
 #: admin/api/v1/serializers.py:292 admin/api/v2/serializers.py:458
 msgid "Not allowed for this role."
@@ -186,25 +176,16 @@ msgid "Valid MXs"
 msgstr "MX-uri valide"
 
 #: admin/app_settings.py:37 admin/app_settings.py:312
-msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"O listă de IP-uri sau de adrese de rețea care pentru fiecare înregistrare MX "
-"ar trebui să se potrivească. O avertizare va fi trimisă dacă o înregistrare "
-"nu respectă această conformitate."
+msgid "A list of IP or network address every MX record should match. A warning will be sent if a record does not respect it."
+msgstr "O listă de IP-uri sau de adrese de rețea care pentru fiecare înregistrare MX ar trebui să se potrivească. O avertizare va fi trimisă dacă o înregistrare nu respectă această conformitate."
 
 #: admin/app_settings.py:45 admin/app_settings.py:318
 msgid "New domains must use authorized MX(s)"
 msgstr "Domeniile noi trebuie să utilizeze MX(-uri) autorizate"
 
 #: admin/app_settings.py:48 admin/app_settings.py:321
-msgid ""
-"Prevent the creation of a new domain if its MX record does not use one of "
-"the defined addresses."
-msgstr ""
-"Împiedică crearea unui nou domeniu dacă înregistrarea MX nu utilizează una "
-"dintre adresele definite."
+msgid "Prevent the creation of a new domain if its MX record does not use one of the defined addresses."
+msgstr "Împiedică crearea unui nou domeniu dacă înregistrarea MX nu utilizează una dintre adresele definite."
 
 #: admin/app_settings.py:54 admin/app_settings.py:326
 msgid "Enable SPF checks"
@@ -220,9 +201,7 @@ msgstr "Activați verificările DKIM"
 
 #: admin/app_settings.py:65 admin/app_settings.py:334
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
-msgstr ""
-"Verificați dacă fiecare domeniu cu autentificarea DKIM activată are o "
-"înregistrare DNS validă."
+msgstr "Verificați dacă fiecare domeniu cu autentificarea DKIM activată are o înregistrare DNS validă."
 
 #: admin/app_settings.py:71 admin/app_settings.py:339
 msgid "Enable DMARC checks"
@@ -238,9 +217,7 @@ msgstr "Activați verificările de autoconfigurare"
 
 #: admin/app_settings.py:82 admin/app_settings.py:347
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr ""
-"Verificați dacă fiecare domeniu are o înregistrare validă pentru "
-"autoconfigurare"
+msgstr "Verificați dacă fiecare domeniu are o înregistrare validă pentru autoconfigurare"
 
 #: admin/app_settings.py:87 admin/app_settings.py:352
 msgid "Enable DNSBL checks"
@@ -263,14 +240,8 @@ msgid "DKIM keys storage directory"
 msgstr "Folderul de stocare pentru cheile DKIM"
 
 #: admin/app_settings.py:107 admin/app_settings.py:367
-msgid ""
-"Absolute path of the directory where DKIM private keys will be stored. Make "
-"sure this directory belongs to root user and is not readable by the outside "
-"world."
-msgstr ""
-"Calea absolută a directorului în care vor fi stocate cheile private DKIM. "
-"Asigurați-vă că acest director aparține utilizatorului root și nu poate fi "
-"citit de orice user."
+msgid "Absolute path of the directory where DKIM private keys will be stored. Make sure this directory belongs to root user and is not readable by the outside world."
+msgstr "Calea absolută a directorului în care vor fi stocate cheile private DKIM. Asigurați-vă că acest director aparține utilizatorului root și nu poate fi citit de orice user."
 
 #: admin/app_settings.py:115 admin/app_settings.py:373
 msgid "Default DKIM key length"
@@ -285,24 +256,16 @@ msgid "Default domain quota"
 msgstr "Cota-parte implicită a domeniului"
 
 #: admin/app_settings.py:127 admin/app_settings.py:381
-msgid ""
-"Default quota (in MB) applied to freshly created domains with no value "
-"specified. A value of 0 means no quota."
-msgstr ""
-"Cota implicită (în MB) aplicată domeniilor nou create, care nu au nicio "
-"valoare specificată. O valoare de 0 înseamnă că nu există o cotă."
+msgid "Default quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Cota implicită (în MB) aplicată domeniilor nou create, care nu au nicio valoare specificată. O valoare de 0 înseamnă că nu există o cotă."
 
 #: admin/app_settings.py:133 admin/app_settings.py:386
 msgid "Default domain sending limit"
 msgstr "Limita implicită de trimitere a domeniului"
 
 #: admin/app_settings.py:136 admin/app_settings.py:388
-msgid ""
-"Number of messages freshly created domains will be allowed to send per day. "
-"Leave empty for no limit."
-msgstr ""
-"Numărul de mesaje pe care domeniile nou create vor putea să le trimită pe "
-"zi. Lăsați gol pentru nicio limită."
+msgid "Number of messages freshly created domains will be allowed to send per day. Leave empty for no limit."
+msgstr "Numărul de mesaje pe care domeniile nou create vor putea să le trimită pe zi. Lăsați gol pentru nicio limită."
 
 #: admin/app_settings.py:141 admin/app_settings.py:395
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:58
@@ -316,12 +279,8 @@ msgid "Handle mailboxes on filesystem"
 msgstr "Gestionați cutiile poștale în sistemul de fișiere"
 
 #: admin/app_settings.py:147 admin/app_settings.py:400
-msgid ""
-"Rename or remove mailboxes on the filesystem when they get renamed or "
-"removed within Modoboa"
-msgstr ""
-"Redenumește sau eliminează căsuțele poștale din sistemul de fișiere atunci "
-"când se redenumesc sau se elimină în Modoboa"
+msgid "Rename or remove mailboxes on the filesystem when they get renamed or removed within Modoboa"
+msgstr "Redenumește sau eliminează căsuțele poștale din sistemul de fișiere atunci când se redenumesc sau se elimină în Modoboa"
 
 #: admin/app_settings.py:153 admin/app_settings.py:405 admin/forms/domain.py:49
 #: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
@@ -329,25 +288,16 @@ msgid "Default mailbox quota"
 msgstr "Cota implicită pentru cutia poștală"
 
 #: admin/app_settings.py:156
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Cota implicită a căsuței poștale (în MB) aplicată căsuțelor poștale nou "
-"create fără a fi specificată nicio valoare. O valoare de 0 înseamnă că nu "
-"există cotă."
+msgid "Default mailbox quota (in MB) applied to freshly created mailboxes with no value specified. A value of 0 means no quota."
+msgstr "Cota implicită a căsuței poștale (în MB) aplicată căsuțelor poștale nou create fără a fi specificată nicio valoare. O valoare de 0 înseamnă că nu există cotă."
 
 #: admin/app_settings.py:162 admin/app_settings.py:413
 msgid "Default mailbox sending limit"
 msgstr "Limita implicită de trimitere a căsuței poștale"
 
 #: admin/app_settings.py:165 admin/app_settings.py:415
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
-msgstr ""
-"Numărul de mesaje pe care cutiile poștale nou create vor putea să le trimită "
-"pe zi. Lăsați gol pentru nicio limită."
+msgid "Number of messages freshly created mailboxes will be allowed to send per day. Leave empty for no limit."
+msgstr "Numărul de mesaje pe care cutiile poștale nou create vor putea să le trimită pe zi. Lăsați gol pentru nicio limită."
 
 #: admin/app_settings.py:171 admin/app_settings.py:420
 msgid "Automatic account removal"
@@ -363,8 +313,7 @@ msgstr "Crearea automată a domeniului / cutiei poștale"
 
 #: admin/app_settings.py:181 admin/app_settings.py:428
 msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr ""
-"Creați un domeniu și o căsuță poștală atunci când un cont este creat automat."
+msgstr "Creați un domeniu și o căsuță poștală atunci când un cont este creat automat."
 
 #: admin/app_settings.py:187 admin/app_settings.py:434
 msgid "Create an alias when a mailbox is renamed"
@@ -372,22 +321,13 @@ msgstr "Creați un alias când o cutie poștală este redenumită"
 
 #: admin/app_settings.py:190 admin/app_settings.py:436
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
-"Creați un alias utilizând vechea adresă atunci când o cutie poștală este "
-"redenumită."
+msgstr "Creați un alias utilizând vechea adresă atunci când o cutie poștală este redenumită."
 
 #: admin/app_settings.py:407
 #, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created mailboxes with "
-#| "no value specified. A value of 0 means no quota."
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created domains with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Cota implicită a căsuței poștale (în MB) aplicată căsuțelor poștale nou "
-"create fără a fi specificată nicio valoare. O valoare de 0 înseamnă că nu "
-"există cotă."
+#| msgid "Default mailbox quota (in MB) applied to freshly created mailboxes with no value specified. A value of 0 means no quota."
+msgid "Default mailbox quota (in MB) applied to freshly created domains with no value specified. A value of 0 means no quota."
+msgstr "Cota implicită a căsuței poștale (în MB) aplicată căsuțelor poștale nou create fără a fi specificată nicio valoare. O valoare de 0 înseamnă că nu există cotă."
 
 #: admin/app_settings.py:451 admin/app_settings.py:453
 msgid "Administration"
@@ -417,12 +357,8 @@ msgid "Username"
 msgstr "Utilizator"
 
 #: admin/forms/account.py:34
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
-msgstr ""
-"Numele de utilizator. Trebuie sa fie o adresa de e-mail valida pentru "
-"tilizatori simpli sau pentru administratori care au casuță poștală."
+msgid "The user's name. Must be a valid e-mail address for simple users or administrators with a mailbox."
+msgstr "Numele de utilizator. Trebuie sa fie o adresa de e-mail valida pentru tilizatori simpli sau pentru administratori care au casuță poștală."
 
 #: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
 #: core/templates/core/information.html:37
@@ -442,12 +378,8 @@ msgid "Random password"
 msgstr "Parolă aleatorie"
 
 #: admin/forms/account.py:46
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
-msgstr ""
-"Generați o parolă aleatorie. Dacă actualizați acest cont și bifați această "
-"casetă, va fi generată o nouă parolă."
+msgid "Generate a random password. If you're updating this account and check this box, a new password will be generated."
+msgstr "Generați o parolă aleatorie. Dacă actualizați acest cont și bifați această casetă, va fi generată o nouă parolă."
 
 #: admin/forms/account.py:52 core/forms.py:27 pdfcredentials/documents.py:81
 msgid "Password"
@@ -493,15 +425,8 @@ msgid "Quota"
 msgstr "Cotă-parte"
 
 #: admin/forms/account.py:236
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Limita pentru această căsuță poștală, poate fi exprimată in KB, MB "
-"(implicit) sau GB. Defineste o valoare particularizată sau folosește "
-"valoarea implicită a domeniului. Lăsati necompletat pentru a defini o "
-"valoare nelimitată (nu este permis pentru administratorii de domeniu)."
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Limita pentru această căsuță poștală, poate fi exprimată in KB, MB (implicit) sau GB. Defineste o valoare particularizată sau folosește valoarea implicită a domeniului. Lăsati necompletat pentru a defini o valoare nelimitată (nu este permis pentru administratorii de domeniu)."
 
 #: admin/forms/account.py:246 admin/models/domain.py:36
 #: admin/models/mailbox.py:99 admin/templates/admin/account_detail.html:50
@@ -511,8 +436,7 @@ msgstr "Limita de trimitere a mesajelor"
 
 #: admin/forms/account.py:250 admin/models/mailbox.py:101
 msgid "Number of messages this mailbox can send per day"
-msgstr ""
-"Numărul de mesaje pe care această căsuță poștală le poate trimite pe zi"
+msgstr "Numărul de mesaje pe care această căsuță poștală le poate trimite pe zi"
 
 #: admin/forms/account.py:253 admin/forms/domain.py:31
 #: admin/templates/admin/domain_headers.html:4
@@ -520,30 +444,16 @@ msgid "Alias(es)"
 msgstr "Alias(uri)"
 
 #: admin/forms/account.py:256
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Alias(uri) la această căsuță poștală. Indicați numai o singură adresă pentru "
-"fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă. Pentru a crea "
-"un alias de captură care sa prindă toate emailurile, trebuie doar să "
-"introduceți numele domeniului (@ domain.tld)."
+msgid "Alias(es) of this mailbox. Indicate only one address per input, press ENTER to add a new input. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Alias(uri) la această căsuță poștală. Indicați numai o singură adresă pentru fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă. Pentru a crea un alias de captură care sa prindă toate emailurile, trebuie doar să introduceți numele domeniului (@ domain.tld)."
 
 #: admin/forms/account.py:262
 msgid "Sender addresses"
 msgstr "Adresa expeditorului"
 
 #: admin/forms/account.py:265
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Adresa(e) suplimentare a expeditorului pentru acest cont. Utilizatorului i "
-"se va permite să trimită e-mailuri utilizând această adresă, chiar dacă nu "
-"există pe plan local. Indicați o adresă pentru fiecare intrare. Apăsați "
-"ENTER pentru a adăuga o intrare nouă."
+msgid "Additional sender address(es) for this account. The user will be allowed to send emails using this address, even if it does not exist locally. Indicate one address per input. Press ENTER to add a new input."
+msgstr "Adresa(e) suplimentare a expeditorului pentru acest cont. Utilizatorului i se va permite să trimită e-mailuri utilizând această adresă, chiar dacă nu există pe plan local. Indicați o adresă pentru fiecare intrare. Apăsați ENTER pentru a adăuga o intrare nouă."
 
 #: admin/forms/account.py:325 admin/forms/alias.py:88
 #: admin/models/mailbox.py:313
@@ -604,24 +514,16 @@ msgid "Email address"
 msgstr "Adresă email"
 
 #: admin/forms/alias.py:25
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Adresa aliasului. Pentru a crea un alias care caputrează tot, trebuie doar "
-"să introduceți numele domeniului (@ domain.tld)."
+msgid "The alias address. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Adresa aliasului. Pentru a crea un alias care caputrează tot, trebuie doar să introduceți numele domeniului (@ domain.tld)."
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
 msgstr "Destinatarii"
 
 #: admin/forms/alias.py:33
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Adresele pe care sunt asociate cu acest alias. Indicați numai o singură "
-"adresă pentru fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă."
+msgid "Addresses this alias will point to. Indicate only one address per input, press ENTER to add a new input."
+msgstr "Adresele pe care sunt asociate cu acest alias. Indicați numai o singură adresă pentru fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă."
 
 #: admin/forms/alias.py:114
 msgid "No recipient defined"
@@ -633,24 +535,16 @@ msgid "Type"
 msgstr "Tip"
 
 #: admin/forms/domain.py:34
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Alias (uri) la acest domeniu. Indicați un singur nume pe fiecare intrare, "
-"apăsați ENTER pentru a adăuga o intrare nouă."
+msgid "Alias(es) of this domain. Indicate only one name per input, press ENTER to add a new input."
+msgstr "Alias (uri) la acest domeniu. Indicați un singur nume pe fiecare intrare, apăsați ENTER pentru a adăuga o intrare nouă."
 
 #: admin/forms/domain.py:39
 msgid "Key selector"
 msgstr "Selector cheie"
 
 #: admin/forms/domain.py:52
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
-msgstr ""
-"Limita implicită aplicată căsuțelor postale. Poate fi exprimată in KB, MB "
-"(implicit) sau GB. Valoarea 0 reprezintă nelimitat."
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Limita implicită aplicată căsuțelor postale. Poate fi exprimată in KB, MB (implicit) sau GB. Valoarea 0 reprezintă nelimitat."
 
 #: admin/forms/domain.py:97 admin/handlers.py:166
 msgid "domain alias"
@@ -670,7 +564,7 @@ msgstr "Folderul de stocare a cheilor DKIM nu este configurat"
 msgid "You can't define an unlimited quota."
 msgstr "Nu poți sa definești o cotă nelimitată"
 
-#: admin/forms/domain.py:176 admin/forms/domain.py:181 policyd/core.py:106
+#: admin/forms/domain.py:176 admin/forms/domain.py:181
 msgid "domain"
 msgstr "domeniu"
 
@@ -692,12 +586,8 @@ msgid "Name"
 msgstr "Nume"
 
 #: admin/forms/domain.py:241
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
-msgstr ""
-"Numele administratorului. Nu include aici si numele domeniului, el va fi "
-"automat alipit. "
+msgid "The administrator's name. Don't include the domain's name here, it will be automatically appended."
+msgstr "Numele administratorului. Nu include aici si numele domeniului, el va fi automat alipit. "
 
 #: admin/forms/domain.py:251
 msgid "Generate a random password for the administrator."
@@ -757,8 +647,7 @@ msgstr "Ține o copii locale"
 
 #: admin/forms/forward.py:22
 msgid "Forward messages and store copies into your local mailbox"
-msgstr ""
-"Redirecționează mesajele și stochează copiile în căsuța postală locală "
+msgstr "Redirecționează mesajele și stochează copiile în căsuța postală locală "
 
 #: admin/forms/import_.py:11
 msgid "Select a file"
@@ -778,9 +667,7 @@ msgstr "Encriptează parola"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Bifeaza această opțune dacă parolele conținute în fșierul tău nu sunt "
-"encriptate"
+msgstr "Bifeaza această opțune dacă parolele conținute în fșierul tău nu sunt encriptate"
 
 #: admin/handlers.py:215
 #, python-format
@@ -837,9 +724,7 @@ msgstr "Nu s-au găsit NS-uri funcționale"
 #: admin/lib.py:209 admin/tests/test_mx.py:158
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
-"Timeout întâmpinat la rezolvarea cererii DNS, imposibilă de interogat %s în "
-"acest moment"
+msgstr "Timeout întâmpinat la rezolvarea cererii DNS, imposibilă de interogat %s în acest moment"
 
 #: admin/lib.py:212
 #, python-format
@@ -863,8 +748,7 @@ msgstr "%d obiecte importate cu succes"
 
 #: admin/management/commands/subcommands/_import.py:93
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
-"Fișierul CSV nu este codat UTF-8, incercăm să determinăm codarea automat"
+msgstr "Fișierul CSV nu este codat UTF-8, incercăm să determinăm codarea automat"
 
 #: admin/management/commands/subcommands/_import.py:105
 #, python-format
@@ -992,11 +876,8 @@ msgid "Enable DKIM signing"
 msgstr "Activează semnarea DKIM"
 
 #: admin/models/domain.py:59
-msgid ""
-"If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Dacă activezi această facilitate, o chieie DKIM se va genera pt acest "
-"domeniu."
+msgid "If you activate this feature, a DKIM key will be generated for this domain."
+msgstr "Dacă activezi această facilitate, o chieie DKIM se va genera pt acest domeniu."
 
 #: admin/models/domain.py:65
 msgid "Key length"
@@ -1029,9 +910,7 @@ msgstr "Valuare implicită de cotă invalidă pentru domeniul '{}'"
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
-msgstr ""
-"Valuarea de cotă implicită a unei cutii poștale nu poate fi mai mare decât "
-"cota de domeniu"
+msgstr "Valuarea de cotă implicită a unei cutii poștale nu poate fi mai mare decât cota de domeniu"
 
 #: admin/models/domain_alias.py:34
 msgid "The alias name"
@@ -1447,39 +1326,12 @@ msgid "Fullname/Recipient"
 msgstr "Nume Complet/Destinatar"
 
 #: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Furnizați un fișier CSV unde liniile respectă unul dintre următoarele "
-"formate<ul>: <li><em>domain; name; quota; default mailbox quota; enabled </"
-"em></li><li><em>domainalias; name; targeted domain; enabled</em></"
-"li><li><em> relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul>Primul element al fiecărei linii este "
-"obligatoriu și trebuie să fie egal cu una dintre valorile anterioare. Puteți "
-"utiliza un caracter diferit ca separator."
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>domain; name; quota; default mailbox quota; enabled</em></li> <li><em>domainalias; name; targeted domain; enabled</em></li> <li><em>relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Furnizați un fișier CSV unde liniile respectă unul dintre următoarele formate<ul>: <li><em>domain; name; quota; default mailbox quota; enabled </em></li><li><em>domainalias; name; targeted domain; enabled</em></li><li><em> relaydomain; name; target host; target port; service; enabled; verify recipients</em></li> </ul>Primul element al fiecărei linii este obligatoriu și trebuie să fie egal cu una dintre valorile anterioare. Puteți utiliza un caracter diferit ca separator."
 
 #: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Furnizați un fișier CSV unde liniile respectă unul dintre următoarele "
-"formate:<ul><li><em> account; loginname; password; first name; last name; "
-"enabled; group; address; quota; [, domain, ...] </em></li><li><em>alias; "
-"address; enabled; recipient; recipient; ... </em></li></ul><p>Primul element "
-"al fiecărei linii este obligatoriu și trebuie să fie egal cu una dintre "
-"valorile anterioare.</p><p> Puteți utiliza un caracter diferit ca separator."
-"</p>"
+msgid "Provide a CSV file where lines respect one of the following formats: <ul> <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; recipient; recipient; ...</em></li> </ul> <p>The first element of each line is mandatory and must be equal to one of the previous values.</p> <p>You can use a different character as separator.</p>"
+msgstr "Furnizați un fișier CSV unde liniile respectă unul dintre următoarele formate:<ul><li><em> account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...] </em></li><li><em>alias; address; enabled; recipient; recipient; ... </em></li></ul><p>Primul element al fiecărei linii este obligatoriu și trebuie să fie egal cu una dintre valorile anterioare.</p><p> Puteți utiliza un caracter diferit ca separator.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1507,8 +1359,7 @@ msgstr "Actualizat"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
-"Acest IP nu se potrivește cu nicio înregistrare MX definită în parametrii"
+msgstr "Acest IP nu se potrivește cu nicio înregistrare MX definită în parametrii"
 
 #: admin/templates/admin/mx_domain_detail.html:36
 msgid "No MX record found for this domain."
@@ -1516,28 +1367,17 @@ msgstr "Nu există înregistrări MX pentru acest domeniu."
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
-msgid ""
-"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
-"providers:"
-msgstr ""
-"Modoboa a detectat ca domeniul %(domain)s este listat sub DNSBL la urmatorii "
-"furnizori DNSBL:"
+msgid "Modoboa detected that domain %(domain)s is listed by the following DNSBL providers:"
+msgstr "Modoboa a detectat ca domeniul %(domain)s este listat sub DNSBL la urmatorii furnizori DNSBL:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
-msgid ""
-"The domain's reputation will be affected and there is a chance that emails "
-"coming from it are considered as spam. You should contact those providers "
-"and ask them to unlist detected IP address(es)."
-msgstr ""
-"Reputația domeniului va fi afectată și există șansa ca e-mailurile provenite "
-"de la acestă adresă să fie considerate spam. Ar trebui să contactați acești "
-"furnizori și să îi solicitați să elimine adresele(sau adresa) IP detectate."
+msgid "The domain's reputation will be affected and there is a chance that emails coming from it are considered as spam. You should contact those providers and ask them to unlist detected IP address(es)."
+msgstr "Reputația domeniului va fi afectată și există șansa ca e-mailurile provenite de la acestă adresă să fie considerate spam. Ar trebui să contactați acești furnizori și să îi solicitați să elimine adresele(sau adresa) IP detectate."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
-"Modoboa a detectat ca domeniul %(domain)s nu are înregistrări MX valide: "
+msgstr "Modoboa a detectat ca domeniul %(domain)s nu are înregistrări MX valide: "
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1742,8 +1582,7 @@ msgstr "Vechea parolă"
 
 #: core/api/v2/serializers.py:328 core/views/auth.py:180 core/views/auth.py:235
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
-"Vă rugăm să folosiți următorul cod pentru a vă recupera parola Modoboa: {}"
+msgstr "Vă rugăm să folosiți următorul cod pentru a vă recupera parola Modoboa: {}"
 
 #: core/api/v2/views.py:54
 #, python-format
@@ -1790,13 +1629,8 @@ msgid "Rounds"
 msgstr "Iterații"
 
 #: core/app_settings.py:61 core/app_settings.py:743
-msgid ""
-"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
-"between 1000 and 999999999, inclusive."
-msgstr ""
-"Număr de iterații folosite (setare folosită doar de sha256crypt și "
-"sha512crypt) Trebuie să fie un număr cuprins între 1000 și 999999999 "
-"inclusiv."
+msgid "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be between 1000 and 999999999, inclusive."
+msgstr "Număr de iterații folosite (setare folosită doar de sha256crypt și sha512crypt) Trebuie să fie un număr cuprins între 1000 și 999999999 inclusiv."
 
 #: core/app_settings.py:67 core/app_settings.py:749
 msgid "Update password scheme at login"
@@ -1804,9 +1638,7 @@ msgstr "Actualizarea schemei de parole la autentificare"
 
 #: core/app_settings.py:70 core/app_settings.py:751
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Modifică parola utilizatorului la autentificare pentru a utiliza noua schemă "
-"de parolă"
+msgstr "Modifică parola utilizatorului la autentificare pentru a utiliza noua schemă de parolă"
 
 #: core/app_settings.py:75 core/app_settings.py:756
 msgid "Default password"
@@ -1829,14 +1661,8 @@ msgid "Update password service URL"
 msgstr "Actualizarea URL-ului serviciului de parolă"
 
 #: core/app_settings.py:94 core/app_settings.py:768
-msgid ""
-"The URL of an external page where users will be able to update their "
-"password. It applies only to non local users, ie. those automatically "
-"created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"URL-ul unei pagini externe unde utilizatorii își vor putea actualiza parola. "
-"Se aplică numai utilizatorilor care nu sunt locali, adică cei creați automat "
-"după o autentificare externă reușită (LDAP, SMTP)."
+msgid "The URL of an external page where users will be able to update their password. It applies only to non local users, ie. those automatically created after a successful external authentication (LDAP, SMTP)."
+msgstr "URL-ul unei pagini externe unde utilizatorii își vor putea actualiza parola. Se aplică numai utilizatorilor care nu sunt locali, adică cei creați automat după o autentificare externă reușită (LDAP, SMTP)."
 
 #: core/app_settings.py:102 core/app_settings.py:775
 msgid "Password recovery announcement"
@@ -1852,9 +1678,7 @@ msgstr "Activați recuperarea parolei prin SMS"
 
 #: core/app_settings.py:116 core/app_settings.py:784
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
-"Activați recuperarea parolei prin SMS pentru utilizatorii care au completat "
-"un număr de telefon."
+msgstr "Activați recuperarea parolei prin SMS pentru utilizatorii care au completat un număr de telefon."
 
 #: core/app_settings.py:122 core/app_settings.py:789
 msgid "SMS provider"
@@ -1889,11 +1713,8 @@ msgid "Enable secondary server (fallback)"
 msgstr "Activați serverul secundar (fallback)"
 
 #: core/app_settings.py:150 core/app_settings.py:814
-msgid ""
-"Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
-"Activați un server LDAP secundar care va fi utilizat în cazul în care "
-"serverul principal eșuează"
+msgid "Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr "Activați un server LDAP secundar care va fi utilizat în cazul în care serverul principal eșuează"
 
 #: core/app_settings.py:156 core/app_settings.py:819
 msgid "Secondary server address"
@@ -1917,8 +1738,7 @@ msgstr "Folosește o conexiune securizată"
 
 #: core/app_settings.py:174 core/app_settings.py:835
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
-msgstr ""
-"Folosește o conexiune de tip SSL/STARTTLS pentru a accesa serverul LDAP"
+msgstr "Folosește o conexiune de tip SSL/STARTTLS pentru a accesa serverul LDAP"
 
 #: core/app_settings.py:178 core/app_settings.py:838
 msgid "Active Directory"
@@ -1933,12 +1753,8 @@ msgid "Administrator groups"
 msgstr "Grupuri administrator"
 
 #: core/app_settings.py:188 core/app_settings.py:845
-msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Membrii acelor grupuri LDAP Posix vor fi create ca administratori de "
-"domeniu. Folosește caracterul ';' pentru a separa grupurile."
+msgid "Members of those LDAP Posix groups will be created as domain administrators. Use ';' characters to separate groups."
+msgstr "Membrii acelor grupuri LDAP Posix vor fi create ca administratori de domeniu. Folosește caracterul ';' pentru a separa grupurile."
 
 #: core/app_settings.py:195 core/app_settings.py:851
 msgid "Group type"
@@ -1991,12 +1807,8 @@ msgstr "Atribuie DN"
 
 #: core/app_settings.py:234 core/app_settings.py:288 core/app_settings.py:882
 #: core/app_settings.py:927
-msgid ""
-"The distinguished name to use when binding to the LDAP server. Leave empty "
-"for an anonymous bind"
-msgstr ""
-"Numele ales folosit la atribuirea cu servarul LDAP. Câpul necompletat se "
-"foloseste în cazul atribuirii anonime"
+msgid "The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind"
+msgstr "Numele ales folosit la atribuirea cu servarul LDAP. Câpul necompletat se foloseste în cazul atribuirii anonime"
 
 #: core/app_settings.py:241 core/app_settings.py:295 core/app_settings.py:888
 #: core/app_settings.py:932
@@ -2006,8 +1818,7 @@ msgstr "Parola de atribuire"
 #: core/app_settings.py:244 core/app_settings.py:298 core/app_settings.py:890
 #: core/app_settings.py:934
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"Parola folosită la momentul atribuiri cu servarul LDAP (vezi 'Atribuie DB')"
+msgstr "Parola folosită la momentul atribuiri cu servarul LDAP (vezi 'Atribuie DB')"
 
 #: core/app_settings.py:252 core/app_settings.py:344 core/app_settings.py:897
 #: core/app_settings.py:971
@@ -2026,12 +1837,8 @@ msgstr "Filtru de căutare"
 
 #: core/app_settings.py:264 core/app_settings.py:356 core/app_settings.py:907
 #: core/app_settings.py:981
-msgid ""
-"An optional filter string (e.g. '(objectClass=person)'). In order to be "
-"valid, it must be enclosed in parentheses."
-msgstr ""
-"Un filtru opțional  (de ex. '(ObjectClass = persoană)'). Pentru a fi valid, "
-"trebuie să fie închis în paranteze."
+msgid "An optional filter string (e.g. '(objectClass=person)'). In order to be valid, it must be enclosed in parentheses."
+msgstr "Un filtru opțional  (de ex. '(ObjectClass = persoană)'). Pentru a fi valid, trebuie să fie închis în paranteze."
 
 #: core/app_settings.py:271 core/app_settings.py:913
 msgid "User DN template"
@@ -2039,12 +1846,8 @@ msgstr "Templateul DN pt utilizator"
 
 #: core/app_settings.py:274 core/app_settings.py:915
 #, python-format
-msgid ""
-"The template used to construct a user's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-"Templateul folosit pentru a construi un utilizator DN. Ar trebui să conțină "
-"un substituent (de ex. %(user)s)"
+msgid "The template used to construct a user's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr "Templateul folosit pentru a construi un utilizator DN. Ar trebui să conțină un substituent (de ex. %(user)s)"
 
 #: core/app_settings.py:282 core/app_settings.py:921
 msgid "LDAP synchronization settings"
@@ -2055,23 +1858,16 @@ msgid "Enable export to LDAP"
 msgstr "Activați exportul către LDAP"
 
 #: core/app_settings.py:309 core/app_settings.py:942
-msgid ""
-"Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
-"Activați sincronizarea automată între baza de date locală și directorul LDAP"
+msgid "Enable automatic synchronization between local database and LDAP directory"
+msgstr "Activați sincronizarea automată între baza de date locală și directorul LDAP"
 
 #: core/app_settings.py:315 core/app_settings.py:948
 msgid "Delete remote LDAP account when local account is deleted"
-msgstr ""
-"Ștergerea contului LDAP la distanță atunci când contul local este șters"
+msgstr "Ștergerea contului LDAP la distanță atunci când contul local este șters"
 
 #: core/app_settings.py:319 core/app_settings.py:950
-msgid ""
-"Delete remote LDAP account when local account is deleted, otherwise it will "
-"be disabled."
-msgstr ""
-"Ștergeți contul LDAP la distanță atunci când contul local este șters, altfel "
-"acesta va fi dezactivat."
+msgid "Delete remote LDAP account when local account is deleted, otherwise it will be disabled."
+msgstr "Ștergeți contul LDAP la distanță atunci când contul local este șters, altfel acesta va fi dezactivat."
 
 #: core/app_settings.py:325 core/app_settings.py:956
 msgid "Account DN template"
@@ -2079,12 +1875,8 @@ msgstr "Șablon de cont DN"
 
 #: core/app_settings.py:328 core/app_settings.py:958
 #, python-format
-msgid ""
-"The template used to construct an account's DN. It should contain one "
-"placeholder (ie. %(user)s)"
-msgstr ""
-" Șablonul utilizat pentru a construi DN-ul unui cont. Acesta trebuie să "
-"conțină un spațiu rezervat (ie. %(user)s)"
+msgid "The template used to construct an account's DN. It should contain one placeholder (ie. %(user)s)"
+msgstr " Șablonul utilizat pentru a construi DN-ul unui cont. Acesta trebuie să conțină un spațiu rezervat (ie. %(user)s)"
 
 #: core/app_settings.py:335 core/app_settings.py:964
 msgid "Enable import from LDAP"
@@ -2092,8 +1884,7 @@ msgstr "Activați importul din LDAP"
 
 #: core/app_settings.py:338 core/app_settings.py:966
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr ""
-"Activați sincronizarea conturilor din directorul LDAP în baza de date locală"
+msgstr "Activați sincronizarea conturilor din directorul LDAP în baza de date locală"
 
 #: core/app_settings.py:363 core/app_settings.py:987
 msgid "Username attribute"
@@ -2109,16 +1900,14 @@ msgstr "Activați sincronizarea Dovecot LDAP"
 
 #: core/app_settings.py:374 core/app_settings.py:997
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
-"Setările de autentificare LDAP vor fi aplicate la configurația Dovecot."
+msgstr "Setările de autentificare LDAP vor fi aplicate la configurația Dovecot."
 
 #: core/app_settings.py:380 core/app_settings.py:1002
 msgid "Dovecot LDAP config file"
 msgstr "Fișier de configurare Dovecot LDAP"
 
 #: core/app_settings.py:384 core/app_settings.py:1004
-msgid ""
-"Location of the configuration file which contains Dovecot LDAP settings."
+msgid "Location of the configuration file which contains Dovecot LDAP settings."
 msgstr "Locația fișierului de configurare care conține setările Dovecot LDAP."
 
 #: core/app_settings.py:389 core/app_settings.py:1013
@@ -2132,8 +1921,7 @@ msgstr "Feedul RSS personalizat"
 
 #: core/app_settings.py:395 core/app_settings.py:1018
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Afișează feedul RSS personalizat la reselleri și administratori de domeniu"
+msgstr "Afișează feedul RSS personalizat la reselleri și administratori de domeniu"
 
 #: core/app_settings.py:400 core/app_settings.py:1023
 msgid "Hide features widget"
@@ -2141,9 +1929,7 @@ msgstr "Ascunde widgetul de caracteristici "
 
 #: core/app_settings.py:403 core/app_settings.py:1025
 msgid "Hide features widget for resellers and domain administrators"
-msgstr ""
-"Ascunde widgetul de caracteristici pentru reselleri și administratori de "
-"domeniu"
+msgstr "Ascunde widgetul de caracteristici pentru reselleri și administratori de domeniu"
 
 #: core/app_settings.py:407 core/app_settings.py:1032
 msgid "Notifications"
@@ -2183,8 +1969,7 @@ msgstr "Trimiteți un e-mail atunci când sunt găsite versiuni noi"
 
 #: core/app_settings.py:437 core/app_settings.py:1060
 msgid "Send an email to notify admins about new versions"
-msgstr ""
-"Trimiteți un e-mail pentru a notifica administratorii despre noile versiuni"
+msgstr "Trimiteți un e-mail pentru a notifica administratorii despre noile versiuni"
 
 #: core/app_settings.py:441 core/app_settings.py:1064
 msgid "Recipient"
@@ -2200,9 +1985,7 @@ msgstr "Trimite statistici"
 
 #: core/app_settings.py:452 core/app_settings.py:1074
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Trimiteți statistici către API-ul public Modoboa (contoare și extensii "
-"utilizate)"
+msgstr "Trimiteți statistici către API-ul public Modoboa (contoare și extensii utilizate)"
 
 #: core/app_settings.py:456 core/app_settings.py:1080
 msgid "Miscellaneous"
@@ -2215,9 +1998,7 @@ msgid "Enable inactive account tracking"
 msgstr "Pragul pentru cont invalid"
 
 #: core/app_settings.py:461 core/app_settings.py:1085
-msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+msgid "Allow the administrator to set a threshold (in days) beyond which an account is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:467 core/app_settings.py:1091
@@ -2225,12 +2006,8 @@ msgid "Inactive account threshold"
 msgstr "Pragul pentru cont invalid"
 
 #: core/app_settings.py:470 core/app_settings.py:1094
-msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Un cont cu o ultima data de conectare mai mare decat acest prag (in zile) va "
-"fi considerat inactiv"
+msgid "An account with a last login date greater than this threshold (in days) will be considered as inactive"
+msgstr "Un cont cu o ultima data de conectare mai mare decat acest prag (in zile) va fi considerat inactiv"
 
 #: core/app_settings.py:476 core/app_settings.py:1099
 msgid "Top notifications check interval"
@@ -2238,8 +2015,7 @@ msgstr "Intervalul de verificare a notificărilor"
 
 #: core/app_settings.py:479 core/app_settings.py:1101
 msgid "Interval between two top notification checks (in seconds)"
-msgstr ""
-"Intervalul dintre două verificări de notificare principală (în secunde)"
+msgstr "Intervalul dintre două verificări de notificare principală (în secunde)"
 
 #: core/app_settings.py:484 core/app_settings.py:1105
 msgid "Maximum log record age"
@@ -2263,23 +2039,15 @@ msgstr "Redirecționarea principală implicită"
 
 #: core/app_settings.py:500 core/app_settings.py:1116
 msgid "The default redirection used when no application is specified"
-msgstr ""
-"Redirecționarea implicită utilizată atunci când nu este specificată nici o "
-"aplicație"
+msgstr "Redirecționarea implicită utilizată atunci când nu este specificată nici o aplicație"
 
 #: core/app_settings.py:799
 msgid "LDAP"
 msgstr ""
 
 #: core/checks/settings_checks.py:6
-msgid ""
-"You have USE_TZ set to False, this may result in issues during transitions "
-"between summer/winter time (ie the same local time occuring twice due to "
-"clock change)."
-msgstr ""
-"Aveți USE_TZ setat la False, acest lucru poate duce la probleme în timpul "
-"tranzițiilor între timul de vara / iarna (adică același timp local care "
-"apare de două ori ca urmare a modificării ceasului)."
+msgid "You have USE_TZ set to False, this may result in issues during transitions between summer/winter time (ie the same local time occuring twice due to clock change)."
+msgstr "Aveți USE_TZ setat la False, acest lucru poate duce la probleme în timpul tranzițiilor între timul de vara / iarna (adică același timp local care apare de două ori ca urmare a modificării ceasului)."
 
 #: core/checks/settings_checks.py:9
 msgid "Set `USE_TZ = True` in settings.py"
@@ -2389,9 +2157,7 @@ msgstr "Permiteți accesul la cutiile poștale"
 
 #: core/models.py:54
 msgid "Allow this administrator to access user mailboxes"
-msgstr ""
-"Permiteți acestui administrator să acceseze cutiile poștale ale "
-"utilizatorilor"
+msgstr "Permiteți acestui administrator să acceseze cutiile poștale ale utilizatorilor"
 
 #: core/models.py:57
 msgid "password"
@@ -2413,7 +2179,7 @@ msgstr "O adresă de e-mail alternativă poate fi utilizată pentru recuperare."
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Eroare la actualizarea parolei: modulul LDAP nu este instalat"
 
-#: core/models.py:159 policyd/core.py:105
+#: core/models.py:159
 msgid "account"
 msgstr "cont"
 
@@ -2465,8 +2231,7 @@ msgstr[2] "Parola trebuie să conțină cel puțin {} caractere speciale."
 
 #: core/password_validation.py:65
 msgid "Your password must contain a combination of different character types."
-msgstr ""
-"Parola dvs. trebuie să conțină o combinație de tipuri diferite de caractere."
+msgstr "Parola dvs. trebuie să conțină o combinație de tipuri diferite de caractere."
 
 #: core/sms_backends/ovh.py:21 core/sms_backends/ovh.py:103
 msgid "API endpoint"
@@ -2539,12 +2304,8 @@ msgid "Latest news"
 msgstr "Ultimele știri"
 
 #: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
-msgstr ""
-"Vizitează <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blogul "
-"oficial</a> pentru mai multe informații."
+msgid "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official weblog</a> for more information."
+msgstr "Vizitează <a href=\"https://modoboa.org/blog/\" target=\"_blank\">blogul oficial</a> pentru mai multe informații."
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -2556,12 +2317,8 @@ msgstr "Controlați-vă accesul la API-ul Modoboa"
 
 #: core/templates/core/api_access.html:7
 #, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
-msgstr ""
-"Documentația API-ului este disponibilă <strong><a href=\"%(url)s\" "
-"target=\"_blank\">aici</a></strong>."
+msgid "A documentation of the API is available <strong><a href=\"%(url)s\" target=\"_blank\">here</a></strong>."
+msgstr "Documentația API-ului este disponibilă <strong><a href=\"%(url)s\" target=\"_blank\">aici</a></strong>."
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -2586,9 +2343,7 @@ msgstr "Sunt disponibile una sau mai multe actualizări!"
 
 #: core/templates/core/information.html:6
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Verificați lista următoare pentru a găsi componentele(ul) care pot fi "
-"actualizate."
+msgstr "Verificați lista următoare pentru a găsi componentele(ul) care pot fi actualizate."
 
 #: core/templates/core/information.html:10
 msgid "Applications"
@@ -2690,13 +2445,8 @@ msgid "Two-Factor authentication"
 msgstr "Autentificare cu doi factori"
 
 #: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
-msgstr ""
-"Instalați un autentificator soft token, cum ar fi FreeOTP sau Google "
-"Authenticator, din depozitul de aplicații și utilizați aplicația respectivă "
-"pentru a scana acest cod QR."
+msgid "Install a soft token authenticator like FreeOTP or Google Authenticator from your application repository and use that app to scan this QR code."
+msgstr "Instalați un autentificator soft token, cum ar fi FreeOTP sau Google Authenticator, din depozitul de aplicații și utilizați aplicația respectivă pentru a scana acest cod QR."
 
 #: core/templates/core/user_security.html:25
 msgid "Pin code"
@@ -2707,29 +2457,17 @@ msgid "Register"
 msgstr "Înregistrare"
 
 #: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr ""
-"Felicitări! Autentificarea în doi factori este acum activată pentru contul "
-"dvs."
+msgid "Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr "Felicitări! Autentificarea în doi factori este acum activată pentru contul dvs."
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
-msgstr ""
-"Următoarele coduri de recuperare pot fi folosite o singură dată pentru a vă "
-"permite să vă recâștigați accesul la cont, de exemplu, în cazul în care vă "
-"pierdeți telefonul. Asigură-te că le salvezi într-un loc sigur, altfel nu "
-"vei mai putea accesa contul tău."
+msgid "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
+msgstr "Următoarele coduri de recuperare pot fi folosite o singură dată pentru a vă permite să vă recâștigați accesul la cont, de exemplu, în cazul în care vă pierdeți telefonul. Asigură-te că le salvezi într-un loc sigur, altfel nu vei mai putea accesa contul tău."
 
 #: core/templates/core/user_security.html:53
 msgid "Two-Factor Authentication is enabled for your account."
-msgstr ""
-"Autentificarea în doi factori este activată pentru contul dumneavoastră."
+msgstr "Autentificarea în doi factori este activată pentru contul dumneavoastră."
 
 #: core/templates/core/user_security.html:58
 msgid "Disable 2FA"
@@ -2740,12 +2478,8 @@ msgid "Reset recovery codes"
 msgstr "Resetarea codurilor de recuperare"
 
 #: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
-msgstr ""
-"Autentificarea în doi factori (2FA) nu este încă activată pentru contul dvs. "
-"Activarea acestei funcții va spori securitatea contului dvs."
+msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
+msgstr "Autentificarea în doi factori (2FA) nu este încă activată pentru contul dvs. Activarea acestei funcții va spori securitatea contului dvs."
 
 #: core/templates/core/user_security.html:73
 msgid "Enable 2FA"
@@ -2781,9 +2515,7 @@ msgstr "Parametrii au fost salvați"
 
 #: core/views/auth.py:100
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
-"Numele de utilizator și parola nu s-au potrivit. Vă rugăm să încercați din "
-"nou."
+msgstr "Numele de utilizator și parola nu s-au potrivit. Vă rugăm să încercați din nou."
 
 #: core/views/auth.py:135
 msgid "User '{}' successfully logged out"
@@ -3072,9 +2804,7 @@ msgid "A DNS record has been found but its syntax is not valid:"
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+msgid "Here is an example of DNS configuration (bind format). Replace value between [ ] by the appropriate ones."
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
@@ -3151,9 +2881,7 @@ msgid "Folder Filter Exclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:44 imap_migration/app_settings.py:93
-msgid ""
-"Use a regular expression to explicitly include folders in sync. Example: "
-"^Trash$|Del"
+msgid "Use a regular expression to explicitly include folders in sync. Example: ^Trash$|Del"
 msgstr ""
 
 #: imap_migration/app_settings.py:48 imap_migration/app_settings.py:100
@@ -3161,10 +2889,7 @@ msgid "Folder Filter Inclusions"
 msgstr ""
 
 #: imap_migration/app_settings.py:50 imap_migration/app_settings.py:103
-msgid ""
-"A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+msgid "A comma seperated list of folders to explicitly include in sync even if filtered by the Folder Filter Exclusions. Example: debian.user, debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:72
@@ -3187,14 +2912,11 @@ msgid "Connection to IMAP server failed: %s"
 msgstr ""
 
 #: imap_migration/checks.py:11
-msgid ""
-"Automatic domain/mailbox creation is disabled which means IMAP "
-"authentication won't work."
+msgid "Automatic domain/mailbox creation is disabled which means IMAP authentication won't work."
 msgstr ""
 
 #: imap_migration/checks.py:13
-msgid ""
-"Go to the online parameters panel (admin tab) and activate this feature."
+msgid "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
 
 #: imap_migration/templates/imap_migration/index.html:6
@@ -3285,53 +3007,28 @@ msgid "Domain admins"
 msgstr "Administratori de domeniu"
 
 #: limits/app_settings.py:29 limits/app_settings.py:164
-msgid ""
-"Maximum number of allowed domain administrators for a new administrator. (0 "
-"to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de administratori de domeniu permiși pentru un nou "
-"administrator. (0 pentru a dezactiva crearea, -1 pentru a permite creări "
-"nelimitate)"
+msgid "Maximum number of allowed domain administrators for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de administratori de domeniu permiși pentru un nou administrator. (0 pentru a dezactiva crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:40 limits/app_settings.py:173
-msgid ""
-"Maximum number of allowed domains for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de domenii permise pentru un nou administrator. (0 nu permite "
-"crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed domains for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de domenii permise pentru un nou administrator. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:50 limits/app_settings.py:181
-msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de aliasuri de domenii permise pentru un nou administrator. (0 "
-"nu permite crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed domain aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de aliasuri de domenii permise pentru un nou administrator. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:61 limits/app_settings.py:190
-msgid ""
-"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de căsuțe poștale permise pentru un nou administrator. (0 nu "
-"permite crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed mailboxes for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de căsuțe poștale permise pentru un nou administrator. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:71 limits/app_settings.py:199
-msgid ""
-"Maximum number of allowed aliases for a new administrator. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de aliasuri permise pentru un nou administrator. (0 nu permite "
-"crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed aliases for a new administrator. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de aliasuri permise pentru un nou administrator. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:81 limits/app_settings.py:206
-msgid ""
-"The quota a reseller will be allowed to share between the domains he "
-"creates. (0 means no quota)"
-msgstr ""
-"Cota pe care un reseller le va putea să împartă între domeniile pe care le "
-"creează. (0 nu înseamnă fără cotă)"
+msgid "The quota a reseller will be allowed to share between the domains he creates. (0 means no quota)"
+msgstr "Cota pe care un reseller le va putea să împartă între domeniile pe care le creează. (0 nu înseamnă fără cotă)"
 
 #: limits/app_settings.py:88 limits/app_settings.py:213
 msgid "Default per-domain limits"
@@ -3346,36 +3043,20 @@ msgid "Enable or disable per-domain limits"
 msgstr "Activați sau dezactivați limitele pe domenii"
 
 #: limits/app_settings.py:100 limits/app_settings.py:223
-msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de administratori de domeniu permiși pentru un domeniu nou. (0 "
-"nu permite crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed domain administrators for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de administratori de domeniu permiși pentru un domeniu nou. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:111 limits/app_settings.py:232
-msgid ""
-"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de aliasuri de domenii permise pentru un domeniu nou. (0 nu "
-"permite crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed domain aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de aliasuri de domenii permise pentru un domeniu nou. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:122 limits/app_settings.py:241
-msgid ""
-"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
-"creation, -1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de căsuțe poștale autorizate pentru un domeniu nou. (0 nu "
-"permite crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed mailboxes for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de căsuțe poștale autorizate pentru un domeniu nou. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/app_settings.py:132 limits/app_settings.py:249
-msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
-msgstr ""
-"Numărul maxim de aliasuri permise pentru un domeniu nou. (0 nu permite "
-"crearea, -1 pentru a permite creări nelimitate)"
+msgid "Maximum number of allowed aliases for a new domain. (0 to deny any creation, -1 to allow unlimited creations)"
+msgstr "Numărul maxim de aliasuri permise pentru un domeniu nou. (0 nu permite crearea, -1 pentru a permite creări nelimitate)"
 
 #: limits/apps.py:13 limits/apps.py:15
 msgid "Limits"
@@ -3387,8 +3068,7 @@ msgstr "Numărul maxim de domenii pe care acest utilizator le poate crea"
 
 #: limits/constants.py:14
 msgid "Maximum number of domain aliases this user can create"
-msgstr ""
-"Numărul maxim de aliasuri de domeniu pe care acest utilizator le poate crea"
+msgstr "Numărul maxim de aliasuri de domeniu pe care acest utilizator le poate crea"
 
 #: limits/constants.py:18
 msgid "Maximum number of mailboxes this user can create"
@@ -3396,15 +3076,11 @@ msgstr "Numărul maxim de cutii poștale pe care acest utilizator le poate crea"
 
 #: limits/constants.py:21
 msgid "Maximum number of mailbox aliases this user can create"
-msgstr ""
-"Numărul maxim de aliasuri de cutie poștală pe care acest utilizator le poate "
-"crea"
+msgstr "Numărul maxim de aliasuri de cutie poștală pe care acest utilizator le poate crea"
 
 #: limits/constants.py:25
 msgid "Maximum number of domain administrators this user can create"
-msgstr ""
-"Numărul maxim de administratori de domeniu pe care acest utilizator îl poate "
-"crea"
+msgstr "Numărul maxim de administratori de domeniu pe care acest utilizator îl poate crea"
 
 #: limits/constants.py:31
 msgid "Quota shared between domains of this reseller"
@@ -3420,13 +3096,11 @@ msgstr "Numărul maxim de cutii poștale permis pentru acest domeniu."
 
 #: limits/constants.py:50
 msgid "Maximum number of mailbox aliases allowed for this domain."
-msgstr ""
-"Numărul maxim de aliasuri pentru cutia poștală permis pentru acest domeniu."
+msgstr "Numărul maxim de aliasuri pentru cutia poștală permis pentru acest domeniu."
 
 #: limits/constants.py:55
 msgid "Maximum number of domain admins allowed for this domain."
-msgstr ""
-"Numărul maxim de administratori de domeniu permis pentru acest domeniu."
+msgstr "Numărul maxim de administratori de domeniu permis pentru acest domeniu."
 
 #: limits/forms.py:38 limits/forms.py:87
 msgid "Invalid limit"
@@ -3658,9 +3332,7 @@ msgid "Delete documents after the first download"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:45 pdfcredentials/app_settings.py:145
-msgid ""
-"Automatically delete a document just after its first download from this "
-"interface"
+msgid "Automatically delete a document just after its first download from this interface"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:151
@@ -3668,9 +3340,7 @@ msgid "Generate documents only at account creation"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:52 pdfcredentials/app_settings.py:154
-msgid ""
-"Generate a new document only when a new account is created. If set to no, a "
-"new document will be created each time a password is updated."
+msgid "Generate a new document only when a new account is created. If set to no, a new document will be created each time a password is updated."
 msgstr ""
 
 #: pdfcredentials/app_settings.py:60 pdfcredentials/app_settings.py:160
@@ -3708,9 +3378,7 @@ msgid "Include mail client connection settings"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:79 pdfcredentials/app_settings.py:184
-msgid ""
-"Include required SMTP and IMAP connection information to configure a mail "
-"client, a tablet or a phone"
+msgid "Include required SMTP and IMAP connection information to configure a mail client, a tablet or a phone"
 msgstr ""
 
 #: pdfcredentials/app_settings.py:84 pdfcredentials/app_settings.py:190
@@ -3835,21 +3503,6 @@ msgstr ""
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr ""
 
-#: policyd/core.py:89
-#, fuzzy
-#| msgid "%s: limit reached"
-msgid "Daily sending limit reached"
-msgstr "%s: s-a atins limita"
-
-#: policyd/core.py:124
-msgid "[modoboa] Sending limit reached"
-msgstr ""
-
-#: policyd/templates/policyd/notifications/limit_reached.html:3
-#, python-format
-msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
-
 #: relaydomains/api/v1/serializers.py:25
 msgid "Unsupported service"
 msgstr "Serviciu neacceptat"
@@ -3940,24 +3593,16 @@ msgstr "Ai uitat parola?"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
-msgid ""
-"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
-"in</a> now."
-msgstr ""
-"Parola dvs. a fost setată. Puteți acum să va <a "
-"href=\"%(url)s\">autentificați</a> din nou."
+msgid "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign in</a> now."
+msgstr "Parola dvs. a fost setată. Puteți acum să va <a href=\"%(url)s\">autentificați</a> din nou."
 
 #: templates/registration/password_reset_confirm.html:7
 msgid "Change password"
 msgstr "Schimbă parola"
 
 #: templates/registration/password_reset_confirm.html:17
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used. Please request a new password reset."
-msgstr ""
-"Linkul de resetare a parolei este invalid, posibil din cauza faptului că a "
-"fost deja utilizat. Te rugăm solicită o nouă resetare a parolei. "
+msgid "The password reset link was invalid, possibly because it has already been used. Please request a new password reset."
+msgstr "Linkul de resetare a parolei este invalid, posibil din cauza faptului că a fost deja utilizat. Te rugăm solicită o nouă resetare a parolei. "
 
 #: templates/registration/password_reset_confirm_code.html:20
 msgid "Enter the code you've just received by SMS"
@@ -3968,35 +3613,19 @@ msgid "Resend code"
 msgstr "Reîntoarceți codul"
 
 #: templates/registration/password_reset_done.html:7
-msgid ""
-"<p>We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly.</p> "
-"<p>If you don't receive an email, please make sure you've entered your "
-"primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>V-am trimis prin e-mail instrucțiuni pentru setarea parolei, dacă există "
-"un cont cu adresa pe care ați introdus-o. Ar trebui să le primiți în scurt "
-"timp.</p><p>Dacă nu primiți un e-mail, asigurați-vă că ați introdus adresa "
-"dvs. principală și că verificați dosarul dvs. de spam.</p>"
+msgid "<p>We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.</p> <p>If you don't receive an email, please make sure you've entered your primary address, and check your spam folder.</p>"
+msgstr "<p>V-am trimis prin e-mail instrucțiuni pentru setarea parolei, dacă există un cont cu adresa pe care ați introdus-o. Ar trebui să le primiți în scurt timp.</p><p>Dacă nu primiți un e-mail, asigurați-vă că ați introdus adresa dvs. principală și că verificați dosarul dvs. de spam.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
 #, python-format
-msgid ""
-"To initiate the password reset process for your %(username)s Modoboa "
-"account, click the link below:"
-msgstr ""
-"Pentru a iniția procesul de resetare a parolei pentru contul dvs. "
-"%(username)s Modoboa, faceți clic pe linkul de mai jos:"
+msgid "To initiate the password reset process for your %(username)s Modoboa account, click the link below:"
+msgstr "Pentru a iniția procesul de resetare a parolei pentru contul dvs. %(username)s Modoboa, faceți clic pe linkul de mai jos:"
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
-msgid ""
-"If clicking the link above doesn't work, please copy and paste the URL in a "
-"new browser window instead."
-msgstr ""
-"Dacă făcând click pe linkul de mai sus nu funcționează, copiați și lipiți "
-"adresa URL într-o fereastră nouă a browserului."
+msgid "If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead."
+msgstr "Dacă făcând click pe linkul de mai sus nu funcționează, copiați și lipiți adresa URL într-o fereastră nouă a browserului."
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
@@ -4027,12 +3656,16 @@ msgstr "serviciu"
 msgid "next hop"
 msgstr "următorul hop"
 
+#, fuzzy
+#~| msgid "%s: limit reached"
+#~ msgid "Daily sending limit reached"
+#~ msgstr "%s: s-a atins limita"
+
 #~ msgid "Mailboxes owner"
 #~ msgstr "Propietarul cutiilor postale"
 
 #~ msgid "The UNIX account who owns mailboxes on the filesystem"
-#~ msgstr ""
-#~ "Contul UNIX care are in propietate casuțele poștale în sistemul de fișiere"
+#~ msgstr "Contul UNIX care are in propietate casuțele poștale în sistemul de fișiere"
 
 #, python-format
 #~ msgid "Domain '%s' does not exist"
