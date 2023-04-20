@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Fulup <fulup.jakez@gmail.com>, 2016
 msgid ""
@@ -16,7 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: br\n"
-"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 && n % 1000000 == 0) ? 3 : 4);\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !"
+"=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && "
+"(n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 "
+"> 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != "
+"0 && n % 1000000 == 0) ? 3 : 4);\n"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -53,3 +57,49 @@ msgstr "Klask"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Klask..."
+
+#: relaydomains/static/relaydomains/js/relay_domains.js:45
+msgid "Services updated"
+msgstr "Servijoù hizivaet"
+
+#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Domani ebet ken da ziskouez"
+
+#: static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Na zilamit ket ar c'havlec'h domanioù"
+
+#: static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "An oberiadenn-mañ a zilamo an HOLL roadennoù stag ouzh an domani-mañ."
+
+#: static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr ""
+"An oberiadenn-mañ a zilamo an HOLL roadennoù stag ouzh an domani-mañ, paneve "
+"ar c'hontoù."
+
+#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Kota ebet ken da ziskouez"
+
+#: static/admin/js/admin.js:180
+#, fuzzy
+#| msgid "No more quota to show"
+msgid "No more log to show"
+msgstr "Kota ebet ken da ziskouez"
+
+#: static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Merour domani ebet termenet"
+
+#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Identelezh ebet ken da ziskouez"
+
+#: static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Na zilamit ket kavlec'h ar voest-posteloù"

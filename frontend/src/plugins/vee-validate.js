@@ -36,6 +36,15 @@ extend('validPassword', {
   },
   message: $gettext('Invalid password')
 })
+extend('portNumber', {
+  validate: async (value) => {
+    if (value < 0 || value > 65535) {
+      return false
+    }
+    return true
+  },
+  message: $gettext('Specify a valid port number')
+})
 
 // Register components globally
 Vue.component('ValidationObserver', ValidationObserver)

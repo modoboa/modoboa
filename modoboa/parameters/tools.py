@@ -42,11 +42,13 @@ class Registry(object):
             "label": label, "formclass": formclass, "defaults": {}
         }
 
-    def add2(self, level, app, label, structure, serializer_class):
+    def add2(self, level, app, label, structure, serializer_class,
+             is_extension=False):
         """Add new parameters for given app and level."""
         self._registry2[level][app] = {
             "label": label, "structure": structure,
-            "serializer_class": serializer_class
+            "serializer_class": serializer_class,
+            "is_extension": is_extension
         }
 
     def _load_default_values(self, level):
@@ -60,7 +62,8 @@ class Registry(object):
 
     def get_applications(self, level):
         """Return all applications registered for level."""
-        result = [{"name": key, "label": value["label"]}
+        result = [{"name": key, "label": value["label"],
+                   "is_extension": value["is_extension"]}
                   for key, value in self._registry2[level].items()]
         return result
 

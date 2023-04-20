@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-06 13:15+0200\n"
+"POT-Creation-Date: 2023-04-20 10:38+0200\n"
 "PO-Revision-Date: 2018-07-06 08:26+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
@@ -21,39 +21,1753 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: core/app_settings.py:26
-msgid "User profile"
-msgstr "使用者檔案"
+#: admin/api/v1/serializers.py:35 admin/forms/domain.py:44
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
 
-#: core/app_settings.py:39
-msgid "Authentication"
-msgstr "驗證"
+#: admin/api/v1/serializers.py:42
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
 
-#: core/app_settings.py:42
-msgid "Authentication type"
-msgstr "驗證類型"
+#: admin/api/v1/serializers.py:73 admin/forms/domain.py:108
+msgid "No authorized MX record found for this domain"
+msgstr "沒有找到這個網域已驗證過的 MX 紀錄"
 
-#: core/app_settings.py:43
+#: admin/api/v1/serializers.py:91 admin/forms/domain.py:150
+msgid "Cannot be greater than domain quota"
+msgstr "不可以超過網域配額"
+
+#: admin/api/v1/serializers.py:123 admin/api/v1/serializers.py:318
+#: admin/api/v2/serializers.py:479 admin/models/alias.py:34
+msgid "Permission denied."
+msgstr "權限不足"
+
+#: admin/api/v1/serializers.py:174 admin/api/v2/serializers.py:74
+#: admin/api/v2/serializers.py:408 admin/forms/alias.py:108
+#: admin/forms/alias.py:110 core/api/v2/serializers.py:224
+#: core/api/v2/serializers.py:226 core/api/v2/serializers.py:235
+#: core/app_settings.py:608 core/app_settings.py:610 core/app_settings.py:621
+#: transport/backends.py:40
+msgid "This field is required"
+msgstr "這個欄位是必填的"
+
+#: admin/api/v1/serializers.py:186
+msgid ""
+"List of administered domains (resellers and domain administrators only)."
+msgstr "管理員網域列表 (只有經銷商和網域管理員)。"
+
+#: admin/api/v1/serializers.py:292 admin/api/v2/serializers.py:458
+msgid "Not allowed for this role."
+msgstr "不允許這個身份"
+
+#: admin/api/v1/serializers.py:310
+msgid "Must be equal to mailbox full_address"
+msgstr "必須跟信箱完整位址一樣"
+
+#: admin/api/v1/serializers.py:347 admin/api/v2/serializers.py:503
+#: admin/forms/account.py:178 admin/forms/account.py:180
+#: admin/forms/domain.py:165 admin/forms/domain.py:294
+#: admin/forms/domain.py:297 core/forms.py:94 core/forms.py:97 core/forms.py:99
+msgid "This field is required."
+msgstr "這個欄位是必填的"
+
+#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:520
+msgid "Local domain {} does not exist"
+msgstr "本機網域 {} 不存在"
+
+#: admin/api/v1/serializers.py:445
+msgid "A list of recipient"
+msgstr "收件人列表"
+
+#: admin/api/v1/serializers.py:492
+msgid "You don't have access to this domain."
+msgstr "您不能存取這個網域。"
+
+#: admin/api/v1/serializers.py:500
+msgid "You don't have access to this mailbox."
+msgstr "您不能存取這個信箱。"
+
+#: admin/api/v1/viewsets.py:174
+msgid "Here is your new Modoboa password: {}"
+msgstr ""
+
+#: admin/api/v2/serializers.py:100 admin/forms/domain.py:314
+#, python-format
+msgid "User '%s' already exists"
+msgstr "使用者 '%s' 已存在"
+
+#: admin/api/v2/serializers.py:210 admin/api/v2/serializers.py:218
+#: admin/app_settings.py:237 admin/app_settings.py:245
+#: admin/forms/account.py:351
+msgid "Must be a positive integer"
+msgstr "必須是正整數"
+
+#: admin/api/v2/serializers.py:227 admin/app_settings.py:255
+#: pdfcredentials/api/v2/serializers.py:50
+msgid "Directory not found."
+msgstr "目錄不存在"
+
+#: admin/api/v2/serializers.py:231
+#, fuzzy
+#| msgid "Directory not found."
+msgid "Directory non-writable"
+msgstr "目錄不存在"
+
+#: admin/api/v2/serializers.py:236 admin/app_settings.py:261
+msgid "openssl not found, please make sure it is installed."
+msgstr "openssl 找不到，請確認已安裝。"
+
+#: admin/api/v2/serializers.py:251 admin/app_settings.py:278
+msgid "This field only allows valid IP addresses (or networks)"
+msgstr ""
+
+#: admin/api/v2/serializers.py:263
+msgid "Please disable imap migration before disabling this option."
+msgstr ""
+
+#: admin/api/v2/serializers.py:275 admin/app_settings.py:293
+msgid "Define at least one authorized network / address"
+msgstr "定義至少一個已驗證網路/位址"
+
+#: admin/api/v2/serializers.py:508
+#, fuzzy
+#| msgid "A mailbox is required"
+msgid "A mailbox is required to create aliases."
+msgstr "信箱是必要的"
+
+#: admin/api/v2/serializers.py:649
+#, fuzzy
+#| msgid "Unknown"
+msgid "Unknown status"
+msgstr "未知"
+
+#: admin/api/v2/viewsets.py:75 admin/forms/account.py:365
+#: admin/forms/account.py:373 admin/forms/alias.py:91
+msgid "You don't have access to this domain"
+msgstr "您無權訪問此網域"
+
+#: admin/api/v2/viewsets.py:78 admin/views/domain.py:247
+msgid "You can't delete your own domain"
+msgstr "您不可以刪除您擁有的網域"
+
+#: admin/api/v2/viewsets.py:384
+msgid "No alarm ID provided"
+msgstr ""
+
+#: admin/api/v2/viewsets.py:389
+msgid "Received invalid alarm id(s)"
+msgstr ""
+
+#: admin/app_settings.py:23 admin/app_settings.py:300 admin/handlers.py:266
+#: admin/templates/admin/_global_statistics_widget.html:11
+#: admin/templates/admin/domains.html:5 limits/app_settings.py:37
+#: limits/app_settings.py:170 limits/constants.py:9
+msgid "Domains"
+msgstr "網域"
+
+#: admin/app_settings.py:26 admin/app_settings.py:303
+msgid "Enable MX checks"
+msgstr "啟用 MX 檢查"
+
+#: admin/app_settings.py:29 admin/app_settings.py:305
+msgid "Check that every domain has a valid MX record"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: admin/app_settings.py:34 admin/app_settings.py:309
+msgid "Valid MXs"
+msgstr "正確的 MX"
+
+#: admin/app_settings.py:37 admin/app_settings.py:312
+msgid ""
+"A list of IP or network address every MX record should match. A warning will "
+"be sent if a record does not respect it."
+msgstr ""
+"每個 MX 紀錄應該要跟列出來的 IP 或網路位址一樣。假如紀錄不同的會有警告送出。"
+
+#: admin/app_settings.py:45 admin/app_settings.py:318
+msgid "New domains must use authorized MX(s)"
+msgstr "新的網域必須要有已驗立的 MX(s)"
+
+#: admin/app_settings.py:48 admin/app_settings.py:321
+msgid ""
+"Prevent the creation of a new domain if its MX record does not use one of "
+"the defined addresses."
+msgstr "假如 MX 紀錄未使用定義的位址請避免建立新的網域。"
+
+#: admin/app_settings.py:54 admin/app_settings.py:326
+#, fuzzy
+#| msgid "Enable DNS checks"
+msgid "Enable SPF checks"
+msgstr "啟用 DNS 檢查"
+
+#: admin/app_settings.py:57 admin/app_settings.py:328
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid SPF record"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: admin/app_settings.py:62 admin/app_settings.py:332
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DKIM checks"
+msgstr "啟用 MX 檢查"
+
+#: admin/app_settings.py:65 admin/app_settings.py:334
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: admin/app_settings.py:71 admin/app_settings.py:339
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable DMARC checks"
+msgstr "啟用 MX 檢查"
+
+#: admin/app_settings.py:74 admin/app_settings.py:341
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid DMARC record"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: admin/app_settings.py:79 admin/app_settings.py:345
+#, fuzzy
+#| msgid "Enable MX checks"
+msgid "Enable autoconfig checks"
+msgstr "啟用 MX 檢查"
+
+#: admin/app_settings.py:82 admin/app_settings.py:347
+#, fuzzy
+#| msgid "Check that every domain has a valid MX record"
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr "檢查每個網域都有正確的 MX 紀錄"
+
+#: admin/app_settings.py:87 admin/app_settings.py:352
+msgid "Enable DNSBL checks"
+msgstr "啟用 DNSBL 檢查"
+
+#: admin/app_settings.py:90 admin/app_settings.py:354
+msgid "Check every domain against major DNSBL providers"
+msgstr "針對每個 DNSBL 供應商來檢查每個網域"
+
+#: admin/app_settings.py:95 admin/app_settings.py:358
+msgid "Custom DNS server"
+msgstr ""
+
+#: admin/app_settings.py:99 admin/app_settings.py:360
+msgid "Use a custom DNS server instead of local server configuration"
+msgstr ""
+
+#: admin/app_settings.py:104 admin/app_settings.py:365
+msgid "DKIM keys storage directory"
+msgstr "DKIM 金鑰儲存目錄"
+
+#: admin/app_settings.py:107 admin/app_settings.py:367
+msgid ""
+"Absolute path of the directory where DKIM private keys will be stored. Make "
+"sure this directory belongs to root user and is not readable by the outside "
+"world."
+msgstr ""
+"絕對路徑的目錄將會給 DKIM 私鑰儲存。確認這個目錄屬於 root 使用者並且外面的世"
+"界無法讀取。"
+
+#: admin/app_settings.py:115 admin/app_settings.py:373
+msgid "Default DKIM key length"
+msgstr "預設 DKIM 金鑰長度"
+
+#: admin/app_settings.py:119 admin/app_settings.py:375
+msgid "Default length in bits for newly generated DKIM keys."
+msgstr "預設長度是給新產生的 DKIM 金鑰用。"
+
+#: admin/app_settings.py:124 admin/app_settings.py:379
+msgid "Default domain quota"
+msgstr "預設網域配額"
+
+#: admin/app_settings.py:127 admin/app_settings.py:381
+msgid ""
+"Default quota (in MB) applied to freshly created domains with no value "
+"specified. A value of 0 means no quota."
+msgstr "預設配額（以MB為單位）應用於未指定值的創立網域。值為0表示沒有配額。"
+
+#: admin/app_settings.py:133 admin/app_settings.py:386
+#, fuzzy
+#| msgid "Default domain quota"
+msgid "Default domain sending limit"
+msgstr "預設網域配額"
+
+#: admin/app_settings.py:136 admin/app_settings.py:388
+msgid ""
+"Number of messages freshly created domains will be allowed to send per day. "
+"Leave empty for no limit."
+msgstr ""
+
+#: admin/app_settings.py:141 admin/app_settings.py:395
+#: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:58
+#: limits/app_settings.py:119 limits/app_settings.py:187
+#: limits/app_settings.py:238 limits/constants.py:17 limits/constants.py:45
+msgid "Mailboxes"
+msgstr "信箱"
+
+#: admin/app_settings.py:144 admin/app_settings.py:398
+msgid "Handle mailboxes on filesystem"
+msgstr "在檔案系統上處理信箱"
+
+#: admin/app_settings.py:147 admin/app_settings.py:400
+msgid ""
+"Rename or remove mailboxes on the filesystem when they get renamed or "
+"removed within Modoboa"
+msgstr "當他要在 Modoboa 上取得更名或移除就會在檔案系統上更名或移除信箱"
+
+#: admin/app_settings.py:153 admin/app_settings.py:405 admin/forms/domain.py:49
+#: admin/models/domain.py:32 admin/templates/admin/domain_detail.html:64
+msgid "Default mailbox quota"
+msgstr "預設信箱配額"
+
+#: admin/app_settings.py:156
+#, fuzzy
+#| msgid ""
+#| "Default mailbox quota (in MB) applied to freshly created domains with no "
+#| "value specified. A value of 0 means no quota."
+msgid ""
+"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
+"value specified. A value of 0 means no quota."
+msgstr ""
+"預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
+
+#: admin/app_settings.py:162 admin/app_settings.py:413
+#, fuzzy
+#| msgid "Default mailbox quota"
+msgid "Default mailbox sending limit"
+msgstr "預設信箱配額"
+
+#: admin/app_settings.py:165 admin/app_settings.py:415
+msgid ""
+"Number of messages freshly created mailboxes will be allowed to send per "
+"day. Leave empty for no limit."
+msgstr ""
+
+#: admin/app_settings.py:171 admin/app_settings.py:420
+msgid "Automatic account removal"
+msgstr "自動刪除帳號"
+
+#: admin/app_settings.py:174 admin/app_settings.py:422
+msgid "When a mailbox is removed, also remove the associated account"
+msgstr "當信箱移除時，也會移除關聯的帳號"
+
+#: admin/app_settings.py:178 admin/app_settings.py:426
+msgid "Automatic domain/mailbox creation"
+msgstr "自動建立網域/信箱"
+
+#: admin/app_settings.py:181 admin/app_settings.py:428
+msgid "Create a domain and a mailbox when an account is automatically created."
+msgstr "當帳號自動建立後會建立網域和一個信箱。"
+
+#: admin/app_settings.py:187 admin/app_settings.py:434
+msgid "Create an alias when a mailbox is renamed"
+msgstr "當信箱更名時會建立別名"
+
+#: admin/app_settings.py:190 admin/app_settings.py:436
+msgid "Create an alias using the old address when a mailbox is renamed."
+msgstr "當信箱更名時建立別名並使用在舊的位址。"
+
+#: admin/app_settings.py:407
+#, fuzzy
+#| msgid ""
+#| "Default mailbox quota (in MB) applied to freshly created domains with no "
+#| "value specified. A value of 0 means no quota."
+msgid ""
+"Default mailbox quota (in MB) applied to freshly created domains with no "
+"value specified. A value of 0 means no quota."
+msgstr ""
+"預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
+
+#: admin/app_settings.py:451 admin/app_settings.py:453
+msgid "Administration"
+msgstr "管理員"
+
+#: admin/constants.py:28 admin/forms/alias.py:43
+#: admin/templates/admin/_per_domain_statistics_widget.html:7
+#: admin/templates/admin/domains_quota_headers.html:2
+msgid "Domain"
+msgstr "網域"
+
+#: admin/constants.py:29
+msgid "Relay domain"
+msgstr "網域轉送"
+
+#: admin/constants.py:44
+msgid "Opened"
+msgstr ""
+
+#: admin/constants.py:45
+#, fuzzy
+#| msgid "Close"
+msgid "Closed"
+msgstr "關閉"
+
+#: admin/forms/account.py:32 admin/templates/admin/domain_detail.html:159
+#: core/forms.py:23 pdfcredentials/documents.py:80
+msgid "Username"
+msgstr "使用者名稱"
+
+#: admin/forms/account.py:34
+msgid ""
+"The user's name. Must be a valid e-mail address for simple users or "
+"administrators with a mailbox."
+msgstr "使用者名稱。必須是單純使用者的正確電子郵件地址或是管理員的信箱。"
+
+#: admin/forms/account.py:39 admin/templates/admin/account_detail.html:29
+#: core/templates/core/information.html:37
+msgid "Role"
+msgstr "身份"
+
+#: admin/forms/account.py:40
+msgid "Choose"
+msgstr "選擇"
+
+#: admin/forms/account.py:41
+msgid "What level of permission this user will have"
+msgstr "這個使用者有什麼樣的權限等級"
+
+#: admin/forms/account.py:44 admin/forms/domain.py:248
+msgid "Random password"
+msgstr "隨機密碼"
+
+#: admin/forms/account.py:46
+msgid ""
+"Generate a random password. If you're updating this account and check this "
+"box, a new password will be generated."
+msgstr "產生一個隨機密碼。假如您更新這個帳號也勾選這個選項，新的密碼就會產生。"
+
+#: admin/forms/account.py:52 core/forms.py:27 pdfcredentials/documents.py:81
+msgid "Password"
+msgstr "密碼"
+
+#: admin/forms/account.py:57 core/forms.py:48
+msgid "Confirmation"
+msgstr "確認"
+
+#: admin/forms/account.py:60
+msgid "Enter the same password as above, for verification."
+msgstr "為了驗證，在下方輸入相同的密碼。"
+
+#: admin/forms/account.py:72
+msgid "Enabled"
+msgstr "已啟用"
+
+#: admin/forms/account.py:167
+msgid "Only super administrators are allowed for this mode"
+msgstr "只有超級管理員在這個模式下是允許的"
+
+#: admin/forms/account.py:186
+msgid "The two password fields didn't match."
+msgstr "兩次鍵入的密碼不相符。"
+
+#: admin/forms/account.py:199
+msgid "You can't disable your own account"
+msgstr "您不可以停用您擁有的帳號"
+
+#: admin/forms/account.py:226
+msgid "E-mail"
+msgstr "電郵"
+
+#: admin/forms/account.py:228
+msgid "Create an alias using the old address"
+msgstr "用舊的位址來建立別名"
+
+#: admin/forms/account.py:233 admin/forms/domain.py:41
+#: admin/templates/admin/account_detail.html:45
+#: admin/templates/admin/domain_detail.html:49 limits/app_settings.py:78
+#: limits/app_settings.py:204 limits/constants.py:30
+msgid "Quota"
+msgstr "配額"
+
+#: admin/forms/account.py:236
+#, fuzzy
+#| msgid ""
+#| "Quota in MB for this mailbox. Define a custom value or use domain's "
+#| "default one. Leave empty to define an unlimited value (not allowed for "
+#| "domain administrators)."
+msgid ""
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
+msgstr ""
+"這個信箱有多少 MB 的配額。定義一個自訂的值或使用網域的預設值。保持空白是定義"
+"為無限制 (不允許網域管理者)。"
+
+#: admin/forms/account.py:246 admin/models/domain.py:36
+#: admin/models/mailbox.py:99 admin/templates/admin/account_detail.html:50
+#: admin/templates/admin/domain_detail.html:69
+msgid "Message sending limit"
+msgstr ""
+
+#: admin/forms/account.py:250 admin/models/mailbox.py:101
+msgid "Number of messages this mailbox can send per day"
+msgstr ""
+
+#: admin/forms/account.py:253 admin/forms/domain.py:31
+#: admin/templates/admin/domain_headers.html:4
+msgid "Alias(es)"
+msgstr "別名(是)"
+
+#: admin/forms/account.py:256
+msgid ""
+"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
+"to add a new input. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
+msgstr ""
+"這個信箱的別名(es)。一行只能輸入一個電子郵件，按 Enter 新增新的一行，要建立抓"
+"取別名，只要輸入網域名稱 (@domain.tld)。"
+
+#: admin/forms/account.py:262
+msgid "Sender addresses"
+msgstr "傳送地址"
+
+#: admin/forms/account.py:265
+msgid ""
+"Additional sender address(es) for this account. The user will be allowed to "
+"send emails using this address, even if it does not exist locally. Indicate "
+"one address per input. Press ENTER to add a new input."
+msgstr ""
+"新增這個帳號的寄件地址(es)。此使用者將會允許使用這個位址寄送郵件，即使這個不"
+"在本機。一行輸入一個位址。按 Enter 新增新的一行。"
+
+#: admin/forms/account.py:325 admin/forms/alias.py:88
+#: admin/models/mailbox.py:313
+msgid "Domain does not exist"
+msgstr "網域不存在"
+
+#: admin/forms/account.py:361
+msgid "Local domain does not exist"
+msgstr "本地網域不存在"
+
+#: admin/forms/account.py:476
+msgid "Domain(s)"
+msgstr "網域"
+
+#: admin/forms/account.py:478
+msgid "Domain(s) that user administrates"
+msgstr "系統管理者網域(S)"
+
+#: admin/forms/account.py:525 admin/forms/account.py:615
+#: admin/forms/domain.py:365 admin/forms/domain.py:436 core/apps.py:19
+#: core/apps.py:21 imap_migration/app_settings.py:14
+#: imap_migration/app_settings.py:64 maillog/forms.py:20
+#: pdfcredentials/app_settings.py:20 pdfcredentials/app_settings.py:123
+msgid "General"
+msgstr "一般"
+
+#: admin/forms/account.py:529 core/templates/core/user_profile.html:3
+#: core/templatetags/core_tags.py:116
+msgid "Profile"
+msgstr "檔案"
+
+#: admin/forms/account.py:533 admin/forms/account.py:621
+msgid "Mail"
+msgstr "電子郵件"
+
+#: admin/forms/account.py:536
+msgid "Permissions"
+msgstr "權限"
+
+#: admin/forms/account.py:604
+msgid "Account updated"
+msgstr "帳號已更新"
+
+#: admin/forms/account.py:629
+msgid "New account"
+msgstr "新帳號"
+
+#: admin/forms/account.py:639
+msgid "Account created"
+msgstr "帳號已建立"
+
+#: admin/forms/alias.py:20
+msgid "Random address"
+msgstr "隨機位址"
+
+#: admin/forms/alias.py:23
+msgid "Email address"
+msgstr "電郵地址"
+
+#: admin/forms/alias.py:25
+msgid ""
+"The alias address. To create a catchall alias, just enter the domain name "
+"(@domain.tld)."
+msgstr "此別名位址。要建立抓取別名，只要輸入網域名稱 (@domain.tld)。"
+
+#: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
+msgid "Recipients"
+msgstr "收件人"
+
+#: admin/forms/alias.py:33
+msgid ""
+"Addresses this alias will point to. Indicate only one address per input, "
+"press ENTER to add a new input."
+msgstr ""
+"這個別名的位址將會指到這。一行只能輸入一個電子郵件，按 Enter 新增新的一行。"
+
+#: admin/forms/alias.py:114
+msgid "No recipient defined"
+msgstr "沒有定義收件人"
+
+#: admin/forms/domain.py:28
+#: admin/templates/admin/_global_statistics_widget.html:7
+msgid "Type"
+msgstr "類型"
+
+#: admin/forms/domain.py:34
+msgid ""
+"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
+"add a new input."
+msgstr "這個網域的別名(es)。一行只能輸入一個電子郵件，按 Enter 新增新的一行。"
+
+#: admin/forms/domain.py:39
+msgid "Key selector"
+msgstr "Key selector"
+
+#: admin/forms/domain.py:52
+#, fuzzy
+#| msgid ""
+#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
+
+#: admin/forms/domain.py:97 admin/handlers.py:166
+msgid "domain alias"
+msgstr "網域別名"
+
+#: admin/forms/domain.py:100 admin/forms/domain.py:176
+#: admin/forms/domain.py:184
+#, python-format
+msgid "A %s with this name already exists"
+msgstr "此 %s 及這個名稱已存在"
+
+#: admin/forms/domain.py:120
+msgid "DKIM keys storage directory not configured"
+msgstr "未設置 DKIM 金鑰儲存目錄"
+
+#: admin/forms/domain.py:155
+msgid "You can't define an unlimited quota."
+msgstr "您不可以定義無限制配額。"
+
+#: admin/forms/domain.py:176 admin/forms/domain.py:181 policyd/core.py:106
+msgid "domain"
+msgstr "網域"
+
+#: admin/forms/domain.py:230
+msgid "Create a domain administrator"
+msgstr "建立網域管理者"
+
+#: admin/forms/domain.py:233
+msgid "Automatically create an administrator for this domain"
+msgstr "自動建立這個網域的管理者"
+
+#: admin/forms/domain.py:238 admin/templates/admin/domain_detail.html:159
+#: admin/templates/admin/domain_headers.html:3
+#: admin/templates/admin/identity_headers.html:2
+#: admin/templates/admin/mx_domain_detail.html:9
+#: core/templates/core/information.html:14
+#: core/templates/core/information.html:36
+msgid "Name"
+msgstr "名稱"
+
+#: admin/forms/domain.py:241
+msgid ""
+"The administrator's name. Don't include the domain's name here, it will be "
+"automatically appended."
+msgstr "管理者的名稱。不可以包括這裡的網域名稱，這將會自動附加。"
+
+#: admin/forms/domain.py:251
+msgid "Generate a random password for the administrator."
+msgstr "產生隨機密碼給管理員。"
+
+#: admin/forms/domain.py:257
+msgid "With a mailbox"
+msgstr "有附信箱"
+
+#: admin/forms/domain.py:260
+msgid "Create a mailbox for the administrator."
+msgstr "建立信箱給管理員"
+
+#: admin/forms/domain.py:266
+msgid "Create aliases"
+msgstr "建立別名"
+
+#: admin/forms/domain.py:269
+msgid "Automatically create standard aliases for this domain"
+msgstr "自動建立這個網域的標準別名"
+
+#: admin/forms/domain.py:285
+msgid "Invalid format"
+msgstr "無效格式"
+
+#: admin/forms/domain.py:426
+msgid "Domain modified"
+msgstr "網域已修改"
+
+#: admin/forms/domain.py:447
+msgid "Options"
+msgstr "選項"
+
+#: admin/forms/domain.py:455
+msgid "New domain"
+msgstr "新網域"
+
+#: admin/forms/domain.py:468
+msgid "Domain created"
+msgstr "網域已建立"
+
+#: admin/forms/export.py:9 admin/forms/import_.py:13
+msgid "Separator"
+msgstr "分開"
+
+#: admin/forms/forward.py:12
+msgid "Recipient(s)"
+msgstr "收件人"
+
+#: admin/forms/forward.py:16
+msgid "Indicate one or more recipients separated by a ','"
+msgstr "指定一個或多個收件人並用 ',' 來分開"
+
+#: admin/forms/forward.py:19
+msgid "Keep local copies"
+msgstr "本機儲存"
+
+#: admin/forms/forward.py:22
+msgid "Forward messages and store copies into your local mailbox"
+msgstr "轉寄郵件及儲存一份到您的本機信箱"
+
+#: admin/forms/import_.py:11
+msgid "Select a file"
+msgstr "選擇檔案"
+
+#: admin/forms/import_.py:19
+msgid "Continue on error"
+msgstr "錯誤時仍繼續"
+
+#: admin/forms/import_.py:20
+msgid "Don't treat duplicated objects as error"
+msgstr "錯誤時不用處理重複的物件"
+
+#: admin/forms/import_.py:38
+msgid "Crypt passwords"
+msgstr "加密密碼"
+
+#: admin/forms/import_.py:40
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr "假如密碼包含在您的檔案且未加密時請勾選這個選項"
+
+#: admin/handlers.py:215
+#, python-format
+msgid "Account import failed (%s): domain does not exist"
+msgstr "帳號匯入失敗 (%s): 網域不存在"
+
+#: admin/handlers.py:228 admin/models/mailbox.py:342
+msgid "Mailbox {} already exists"
+msgstr "信箱 {} 已存在"
+
+#: admin/handlers.py:236
+#, python-format
+msgid "Account import failed (%s): wrong quota value"
+msgstr "帳號匯入失敗 (%s): 錯誤配額"
+
+#: admin/handlers.py:276
+#: admin/templates/admin/_global_statistics_widget.html:17
+#: admin/templates/admin/_per_domain_statistics_widget.html:8
+#: admin/templates/admin/identities.html:5
+msgid "Identities"
+msgstr "使用者"
+
+#: admin/handlers.py:292 admin/templates/admin/forward.html:2
+msgid "Forward"
+msgstr "轉發"
+
+#: admin/lib.py:48
+msgid "A mailbox is required"
+msgstr "信箱是必要的"
+
+#: admin/lib.py:138
+msgid "You are not allowed to import domains"
+msgstr "您未允許匯入網域"
+
+#: admin/lib.py:149
+msgid "You are not allowed to import domain aliases."
+msgstr "您未允許匯入網域別名。"
+
+#: admin/lib.py:199 admin/tests/test_mx.py:152 admin/tests/test_mx.py:161
+#: admin/tests/test_mx.py:164
+#, fuzzy, python-format
+#| msgid "No DNS records found for %s"
+msgid "No DNS record found for %s"
+msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#: admin/lib.py:202
+#, fuzzy, python-format
+#| msgid "No MX record for %s"
+msgid "No %(type)s record for %(name)s"
+msgstr "沒有 %s 的 MX 紀錄"
+
+#: admin/lib.py:206 admin/tests/test_mx.py:156
+msgid "No working name servers found"
+msgstr "沒有找到執行中的名稱伺服器"
+
+#: admin/lib.py:209 admin/tests/test_mx.py:158
+#, python-format
+msgid "DNS resolution timeout, unable to query %s at the moment"
+msgstr "DNS 解析逾時，無法查詢 %s 在這個時間點"
+
+#: admin/lib.py:212
+#, python-format
+msgid "DNS name is too long: %s"
+msgstr ""
+
+#: admin/lib.py:239
+#, fuzzy, python-brace-format
+#| msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgid "Invalid IP address format for {domain}; {addr}"
+msgstr "無效的 IP 位址格式 %(domain)s; %(addr)s"
+
+#: admin/lib.py:309
+#, python-format
+msgid "Object already exists: %s"
+msgstr "元件已存在: %s"
+
+#: admin/lib.py:313
+#, python-format
+msgid "%d objects imported successfully"
+msgstr "%d 元件已匯入成功"
+
+#: admin/management/commands/subcommands/_import.py:93
+msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
+msgstr ""
+
+#: admin/management/commands/subcommands/_import.py:105
+#, python-format
+msgid "Reading CSV file using %(encoding)s encoding"
+msgstr ""
+
+#: admin/management/commands/subcommands/_import.py:116
+#, python-format
+msgid "Unable to decode CSV file using %(encoding)s encoding"
+msgstr ""
+
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:28
+msgid "DKIM path non-writable"
+msgstr ""
+
+#: admin/management/commands/subcommands/_mx.py:121
+msgid "MX {} listed by DNSBL provider {}"
+msgstr ""
+
+#: admin/management/commands/subcommands/_mx.py:169
+#, fuzzy
+#| msgid "Domain {} has no MX record"
+msgid "Domain has no MX record"
+msgstr "網域 {} 沒有 MX 紀錄"
+
+#: admin/management/commands/subcommands/_mx.py:173
+msgid "Domain {} has no MX record"
+msgstr "網域 {} 沒有 MX 紀錄"
+
+#: admin/management/commands/subcommands/_mx.py:193
+#, fuzzy
+#| msgid "MX records of {}"
+msgid "Invalid MX record: {}"
+msgstr "MX 紀錄 {}"
+
+#: admin/management/commands/subcommands/_mx.py:199
+#, python-brace-format
+msgid "MX record for domain {0} is invalid: {1}"
+msgstr "此網域的 MX 紀錄 {0} 是無效的: {1}"
+
+#: admin/management/commands/subcommands/_mx.py:213
+msgid "[modoboa] MX issue(s) for domain {}"
+msgstr "[modoboa] 此網域的 MX 問題(s) {}"
+
+#: admin/management/commands/subcommands/_mx.py:271
+msgid "[modoboa] DNSBL issue(s) for domain {}"
+msgstr "[modoboa] 此網域的 DNSBL 問題(s) {}"
+
+#: admin/models/alias.py:32
+msgid "Domain not found."
+msgstr "網域不存在。"
+
+#: admin/models/alias.py:37
+#, fuzzy
+#| msgid "Alias with this name already exists"
+msgid "An alias with this name already exists."
+msgstr "這個名稱的別名已存在"
+
+#: admin/models/alias.py:71 admin/models/mailbox.py:92
+msgid "address"
+msgstr "地址"
+
+#: admin/models/alias.py:73
+msgid "The alias address."
+msgstr "別名位址。"
+
+#: admin/models/alias.py:78 admin/models/domain.py:43
+#: admin/models/domain_alias.py:41
+msgid "enabled"
+msgstr "已啟用"
+
+#: admin/models/alias.py:79 admin/models/domain_alias.py:42
+msgid "Check to activate this alias"
+msgstr "點擊啟用這個別名"
+
+#: admin/models/alias.py:84 admin/templates/admin/alias_detail.html:32
+#: core/templates/core/information.html:17
+msgid "Description"
+msgstr "描述"
+
+#: admin/models/alias.py:86 admin/templates/admin/alias_detail.html:29
+msgid "Expire at"
+msgstr "過期在"
+
+#: admin/models/alias.py:127
+msgid "alias"
+msgstr "別名"
+
+#: admin/models/alias.py:159
+msgid "Invalid address"
+msgstr "無效位址"
+
+#: admin/models/alias.py:180
+msgid "Local recipient {}@{} not found"
+msgstr "本機收件人 {}@{} 未找到"
+
+#: admin/models/alias.py:215
+#, fuzzy
+#| msgid "Invalid line: %s"
+msgid "Invalid line: {}"
+msgstr "無效行: %s"
+
+#: admin/models/domain.py:26 admin/models/domain_alias.py:33
+msgid "name"
+msgstr "名稱"
+
+#: admin/models/domain.py:27
+msgid "The domain name"
+msgstr "網域名稱"
+
+#: admin/models/domain.py:39
+msgid "Number of messages this domain can send per day"
+msgstr ""
+
+#: admin/models/domain.py:44
+msgid "Check to activate this domain"
+msgstr "點擊啟用這個網域"
+
+#: admin/models/domain.py:49
+msgid "Enable DNS checks"
+msgstr "啟用 DNS 檢查"
+
+#: admin/models/domain.py:50
+msgid "Check to enable DNS checks for this domain"
+msgstr "點擊啟用這個網域的 DNS 檢查"
+
+#: admin/models/domain.py:57
+msgid "Enable DKIM signing"
+msgstr "啟用 DKIM 簽署"
+
+#: admin/models/domain.py:59
+msgid ""
+"If you activate this feature, a DKIM key will be generated for this domain."
+msgstr "假如您啟用這個功能，DKIM 金鑰將會產生給這個網域。"
+
+#: admin/models/domain.py:65
+msgid "Key length"
+msgstr "金鑰長度"
+
+#: admin/models/domain.py:357 admin/models/domain_alias.py:66
+#: core/models.py:320 relaydomains/lib.py:13
+msgid "Invalid line"
+msgstr "無效的線"
+
+#: admin/models/domain.py:367
+#, fuzzy
+#| msgid "No authorized MX record found for domain {}"
+msgid "{}: no authorized MX record found for domain"
+msgstr "沒有找到這個網域已驗證過的 MX 紀錄 {}"
+
+#: admin/models/domain.py:374
+#, fuzzy
+#| msgid "Invalid quota value for domain '{}'"
+msgid "{}: invalid quota value for domain"
+msgstr "此網域有無效的配額值 '{}'"
+
+#: admin/models/domain.py:381
+#, fuzzy
+#| msgid "Invalid default mailbox quota value for domain '{}'"
+msgid "{}: invalid default mailbox quota value for domain"
+msgstr "此網域有無效的預設信箱配額值 '{}'"
+
+#: admin/models/domain.py:386
+#, fuzzy
+#| msgid "Default mailbox quota cannot be greater than domain quota"
+msgid "{}: default mailbox quota cannot be greater than domain quota"
+msgstr "預設的信箱配額不可以超過網域配額"
+
+#: admin/models/domain_alias.py:34
+msgid "The alias name"
+msgstr "別名名稱"
+
+#: admin/models/domain_alias.py:36
+msgid "target"
+msgstr "目標"
+
+#: admin/models/domain_alias.py:37
+msgid "The domain this alias points to"
+msgstr "此網域的這個別名指到"
+
+#: admin/models/domain_alias.py:75
+#, python-format
+msgid "Unknown domain %s"
+msgstr "未知網域 %s"
+
+#: admin/models/mailbox.py:94
+msgid "Mailbox address (without the @domain.tld part)"
+msgstr "信箱位址 (不要有 @domain.tld 這個部份)"
+
+#: admin/models/mailbox.py:156
+#, python-format
+msgid "Failed to retrieve mailbox location (%s)"
+msgstr "無法收回信箱位置 (%s)"
+
+#: admin/models/mailbox.py:254
+msgid "A quota is required"
+msgstr "配額是必要的"
+
+#: admin/models/mailbox.py:261
+#, fuzzy
+#| msgid "Domain quota exceeded"
+msgid "{}: domain quota exceeded"
+msgstr "網域配額已超過"
+
+#: admin/templates/admin/_domain_dkim_key.html:6
+#: admin/templates/admin/_domain_dkim_key.html:20
+#: core/templates/core/user_security.html:83
+#: core/templates/core/user_security.html:99
+#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
+#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+msgid "Close"
+msgstr "關閉"
+
+#: admin/templates/admin/_domain_dkim_key.html:7
+#, python-format
+msgid "DKIM public key for %(domain)s"
+msgstr "DKIM 公鑰給 %(domain)s"
+
+#: admin/templates/admin/_domain_dkim_key.html:11
+msgid "Raw format. Click to copy"
+msgstr ""
+
+#: admin/templates/admin/_domain_dkim_key.html:15
+#, fuzzy
+#| msgid "Bind/named format"
+msgid "Bind/named format. Click to copy"
+msgstr "Bind/named 格式"
+
+#: admin/templates/admin/_domain_dnschecks_status.html:4
+msgctxt "checks"
+msgid "Disabled"
+msgstr "已停用"
+
+#: admin/templates/admin/_domain_dnschecks_status.html:6
+msgid "Awaiting checks"
+msgstr "等待檢查"
+
+#: admin/templates/admin/_domain_dnschecks_status.html:16
+#: admin/templates/admin/_domain_dnschecks_status.html:26
+#: admin/templates/admin/_domain_dnschecks_status.html:34
+#: admin/templates/admin/_domain_dnschecks_status.html:42
+#, fuzzy
+#| msgid "No DNS records found for %s"
+msgid "No record found"
+msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#: admin/templates/admin/_domain_dnschecks_status.html:24
+msgid "Waiting for key to be generated"
+msgstr ""
+
+#: admin/templates/admin/_global_statistics_widget.html:4
+msgid "Global statistics"
+msgstr "全域狀態"
+
+#: admin/templates/admin/_global_statistics_widget.html:8
+msgid "Quantity"
+msgstr "數量"
+
+#: admin/templates/admin/_global_statistics_widget.html:14
+#: admin/templates/admin/domain_detail.html:37
+#: admin/templates/admin/domain_detail.html:87 limits/app_settings.py:47
+#: limits/app_settings.py:108 limits/app_settings.py:178
+#: limits/app_settings.py:229 limits/constants.py:13 limits/constants.py:41
+msgid "Domain aliases"
+msgstr "網域別名"
+
+#: admin/templates/admin/_per_domain_statistics_widget.html:4
+msgid "Per-domain statistics"
+msgstr "每個網域狀態"
+
+#: admin/templates/admin/account_detail.html:16
+#: admin/templates/admin/alias_detail.html:16
+#: admin/templates/admin/domain_detail.html:19
+#: admin/templates/admin/identities_table.html:7
+msgid "(disabled)"
+msgstr "(已停用)"
+
+#: admin/templates/admin/account_detail.html:22
+#: admin/templates/admin/alias_detail.html:22
+#: admin/templates/admin/domain_detail.html:25
+msgid "Summary"
+msgstr "摘要"
+
+#: admin/templates/admin/account_detail.html:26
+msgid "Full name"
+msgstr "全名"
+
+#: admin/templates/admin/account_detail.html:32
+#: admin/templates/admin/alias_detail.html:26
+msgid "Created"
+msgstr "已建立"
+
+#: admin/templates/admin/account_detail.html:35
+#: core/templates/core/information.html:38
+msgid "Last login"
+msgstr "最後登入"
+
+#: admin/templates/admin/account_detail.html:38 core/models.py:69
+msgid "Secondary email"
+msgstr "次要電子郵件"
+
+#: admin/templates/admin/account_detail.html:38
+#: admin/templates/admin/account_detail.html:41
+msgid "Not defined"
+msgstr "未定義"
+
+#: admin/templates/admin/account_detail.html:41 core/models.py:67
+msgid "Phone number"
+msgstr "電話號碼"
+
+#: admin/templates/admin/account_detail.html:61
+msgid "Administered domains"
+msgstr "管理員網域"
+
+#: admin/templates/admin/account_detail.html:67
+msgid "No domain defined."
+msgstr "未定義網域"
+
+#: admin/templates/admin/account_detail.html:81
+msgid "Aliases"
+msgstr "別名"
+
+#: admin/templates/admin/account_detail.html:87
+msgid "No alias defined"
+msgstr "未定義別名"
+
+#: admin/templates/admin/account_detail.html:93
+msgid "Additional sender addresses"
+msgstr "新增寄件者地址"
+
+#: admin/templates/admin/account_detail.html:99
+msgid "No sender address defined"
+msgstr "未定義寄件者地址"
+
+#: admin/templates/admin/account_general_form.html:12
+#: admin/templates/admin/aliasform.html:13
+msgid "Domain is disabled"
+msgstr "網域已停用"
+
+#: admin/templates/admin/alias_detail.html:16
+#: admin/templates/admin/identities.html:33
+msgid "Alias"
+msgstr "別名"
+
+#: admin/templates/admin/alias_detail.html:27
+msgid "Modified"
+msgstr "已修改"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:10
+msgid "Provider"
+msgstr "提供者"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:11
+#: admin/templates/admin/identities_quota_headers.html:2
+#: admin/templates/admin/mx_domain_detail.html:10
+msgid "Address"
+msgstr "地址"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:12
+#: admin/templates/admin/domain_detail.html:114
+#: admin/templates/admin/domains_log_headers.html:6
+#: admin/templates/admin/messages_log_headers.html:6
+msgid "Status"
+msgstr "狀態"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:21
+msgid "listed"
+msgstr "已列表"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:29
+msgid "Everything is fine, this domain is not listed."
+msgstr "所有都正常，這個網域未列出。"
+
+#: admin/templates/admin/dnsbl_domain_detail.html:32
+msgid "No information available for this domain."
+msgstr "沒有這個網域的有效資訊。"
+
+#: admin/templates/admin/domain_alarms.html:19
+msgid "Opened alarms for"
+msgstr ""
+
+#: admin/templates/admin/domain_alarms.html:25
+#: admin/templates/admin/domains_log_headers.html:3
+#: admin/templates/admin/messages_log_headers.html:3
+#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:106
+msgid "Date"
+msgstr "日期"
+
+#: admin/templates/admin/domain_alarms.html:26 core/templates/core/logs.html:9
+msgid "Message"
+msgstr ""
+
+#: admin/templates/admin/domain_alarms.html:27
+#, fuzzy
+#| msgid "Mailboxes"
+msgid "Mailbox"
+msgstr "信箱"
+
+#: admin/templates/admin/domain_alarms.html:40
+msgid "No opened alarm"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:29
+msgid "Creation date"
+msgstr "建立日期"
+
+#: admin/templates/admin/domain_detail.html:33
+msgid "Last modification date"
+msgstr "最後修改日期"
+
+#: admin/templates/admin/domain_detail.html:45 limits/app_settings.py:68
+#: limits/app_settings.py:129 limits/app_settings.py:196
+#: limits/app_settings.py:246 limits/constants.py:20 limits/constants.py:48
+msgid "Mailbox aliases"
+msgstr "信箱別名"
+
+#: admin/templates/admin/domain_detail.html:50
+#: admin/templates/admin/domain_detail.html:57
+#: admin/templates/admin/domain_detail.html:58
+#: admin/templates/admin/domain_detail.html:65
+#: admin/templates/admin/domains_quotas.html:11
+#: admin/templates/admin/domains_quotas.html:12
+#: admin/templates/admin/newdomainform.html:3
+msgid "MB"
+msgstr "MB"
+
+#: admin/templates/admin/domain_detail.html:54
+#: admin/templates/admin/domain_detail.html:73
+msgid "Usage"
+msgstr "使用率"
+
+#: admin/templates/admin/domain_detail.html:57
+#: admin/templates/admin/domains_quotas.html:11
+msgctxt "quota"
+msgid "used"
+msgstr "已使用"
+
+#: admin/templates/admin/domain_detail.html:58
+#: admin/templates/admin/domains_quotas.html:12
+msgid "allocated"
+msgstr "分配"
+
+#: admin/templates/admin/domain_detail.html:70
+msgid "per day"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:76
+#, fuzzy
+#| msgctxt "quota"
+#| msgid "used"
+msgctxt "message count"
+msgid "used"
+msgstr "已使用"
+
+#: admin/templates/admin/domain_detail.html:106
+msgid "DNS"
+msgstr "DNS"
+
+#: admin/templates/admin/domain_detail.html:121
+msgid "DKIM key"
+msgstr "DKIM 金鑰"
+
+#: admin/templates/admin/domain_detail.html:125
+msgid "Show key"
+msgstr "顯示金鑰"
+
+#: admin/templates/admin/domain_detail.html:133
+msgid "Warning"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:139
+msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:142 core/constants.py:53
+#: lib/form_utils.py:397
+msgid "No"
+msgstr "否"
+
+#: admin/templates/admin/domain_detail.html:143
+msgid "Generate new key"
+msgstr ""
+
+#: admin/templates/admin/domain_detail.html:143 lib/form_utils.py:396
+msgid "Yes"
+msgstr "是"
+
+#: admin/templates/admin/domain_detail.html:149
+msgid "Not generated"
+msgstr "沒有產生"
+
+#: admin/templates/admin/domain_detail.html:156
+msgid "Administrators"
+msgstr "管理員"
+
+#: admin/templates/admin/domain_detail.html:168
+#: admin/templatetags/admin_tags.py:279
+msgid "Remove this permission"
+msgstr "移除這個權限"
+
+#: admin/templates/admin/domain_detail.html:173
+msgid "No domain administrator defined yet."
+msgstr "沒有定義網域管理員。"
+
+#: admin/templates/admin/domain_headers.html:5
+#: admin/templates/admin/identity_headers.html:4
+msgid "Tags"
+msgstr "標籤"
+
+#: admin/templates/admin/domain_headers.html:7
+msgid "DNS status"
+msgstr "DNS 狀態"
+
+#: admin/templates/admin/domain_headers.html:9
+#: admin/templates/admin/identity_headers.html:5
+msgid "Actions"
+msgstr "動作"
+
+#: admin/templates/admin/domain_options_form.html:10
+msgid "You can't create a new domain administrator"
+msgstr "您不可能建立新的網域管理員"
+
+#: admin/templates/admin/domains.html:28
+#: admin/templates/admin/identities.html:29
+msgid "Add"
+msgstr "新增"
+
+#: admin/templates/admin/domains_log_headers.html:2
+msgid "Queue ID"
+msgstr ""
+
+#: admin/templates/admin/domains_log_headers.html:4
+#: admin/templates/admin/messages_log_headers.html:4
+#: lib/templatetags/lib_tags.py:104
+msgid "From"
+msgstr "寄件人"
+
+#: admin/templates/admin/domains_log_headers.html:5
+#: admin/templates/admin/messages_log_headers.html:5
+#: lib/templatetags/lib_tags.py:105
+msgid "To"
+msgstr "收件人"
+
+#: admin/templates/admin/domains_quota_headers.html:3
+#: admin/templates/admin/identities_quota_headers.html:4
+msgid "Limit"
+msgstr "限制"
+
+#: admin/templates/admin/domains_quota_headers.html:4
+msgid "Used"
+msgstr "已使用"
+
+#: admin/templates/admin/domains_quota_headers.html:5
+msgid "Allocated"
+msgstr "分配"
+
+#: admin/templates/admin/domains_quota_headers.html:6
+#: admin/templates/admin/identities_quota_headers.html:5
+#, python-format
+msgid "Usage (%%)"
+msgstr "使用率 (%%)"
+
+#: admin/templates/admin/domains_table.html:5
+msgid "disabled"
+msgstr "已停用"
+
+#: admin/templates/admin/forward.html:2
+msgid "Automatically forward emails to another address"
+msgstr "自動轉寄郵件到其他位址"
+
+#: admin/templates/admin/forward.html:9 admin/views/alias.py:88
+#: core/templates/core/api_access.html:35
+#: core/templates/core/user_profile.html:19 lib/form_utils.py:354
+msgid "Update"
+msgstr "更新"
+
+#: admin/templates/admin/identities.html:32
+msgid "Account"
+msgstr "帳號"
+
+#: admin/templates/admin/identities_quota_headers.html:3
+msgid "Value"
+msgstr "值"
+
+#: admin/templates/admin/identity_headers.html:3
+msgid "Fullname/Recipient"
+msgstr "完整名稱/收件人"
+
+#: admin/templates/admin/import_domains_form.html:6
+msgid ""
+"Provide a CSV file where lines respect one of the following formats: <ul> "
+"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
+"<li><em>domainalias; name; targeted domain; enabled</em></li> "
+"<li><em>relaydomain; name; target host; target port; service; enabled; "
+"verify recipients</em></li> </ul> <p>The first element of each line is "
+"mandatory and must be equal to one of the previous values.</p> <p>You can "
+"use a different character as separator.</p>"
+msgstr ""
+"提供 CSV 檔並且每行使用以下格式: <ul> <li><em>網域; 名稱; 配額; 預設信箱配"
+"額; 已啟用</em></li> <li><em>網域別名; 名稱; 目標網域; 已啟用</em></li> "
+"<li><em>轉送網域; 名稱; 目標主機; 目標連接埠; 服務; 已啟用; 驗證收件人</em></"
+"li> </ul> <p>每一行的第一個元件都是強制性的且必須跟之前值是一樣的。</p> <p>您"
+"可以使用不同的字元來分開。</p>"
+
+#: admin/templates/admin/import_identities_form.html:6
+msgid ""
+"Provide a CSV file where lines respect one of the following formats: <ul> "
+"<li><em>account; loginname; password; first name; last name; enabled; group; "
+"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
+"is mandatory and must be equal to one of the previous values.</p> <p>You can "
+"use a different character as separator.</p>"
+msgstr ""
+"提供 CSV 檔並且每行使用以下格式: <ul> <li><em>帳號; 登入名稱; 密碼; 名; 姓; "
+"已啟用; 群組; 位址; 配額; [, 網域, ...]</em></li> <li><em>別名; 位址; 已啟"
+"用; 收件人; 收件人; ...</em></li> </ul> <p>每一行的第一個元件都是強制性的且必"
+"須跟之前值是一樣的。</p> <p>您可以使用不同的字元來分開。</p>"
+
+#: admin/templates/admin/importform.html:6
+msgid "Help"
+msgstr "幫助"
+
+#: admin/templates/admin/importform.html:13
+msgid "Importing..."
+msgstr "匯入中..."
+
+#: admin/templates/admin/mailboxes_raw.html:3
+msgid "Choose a value"
+msgstr "選擇一個值"
+
+#: admin/templates/admin/mailform.html:7
+msgid "Use domain default value"
+msgstr "使用網域預設值"
+
+#: admin/templates/admin/messages_log_headers.html:2
+msgid "ID"
+msgstr ""
+
+#: admin/templates/admin/mx_domain_detail.html:11
+msgid "Updated"
+msgstr "已更新"
+
+#: admin/templates/admin/mx_domain_detail.html:23
+msgid "This IP does not match any of the valid MXs defined in parameters"
+msgstr "這個 IP 與參數中定義任何有效 MX 不正確"
+
+#: admin/templates/admin/mx_domain_detail.html:36
+msgid "No MX record found for this domain."
+msgstr "沒有找到這個網域的 MX 紀錄。"
+
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:3
+#, python-format
+msgid ""
+"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
+"providers:"
+msgstr "Modoboa 已偵測到網域 %(domain)s 是列表在以下的 DNSBL 提供者:"
+
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:11
+msgid ""
+"The domain's reputation will be affected and there is a chance that emails "
+"coming from it are considered as spam. You should contact those providers "
+"and ask them to unlist detected IP address(es)."
+msgstr ""
+"此網域的信用將有機會影響從這裡寄出的郵件被當作垃圾郵件。您應該聯絡提供者並要"
+"求他們取消 IP 位址(es) 的偵測列表。"
+
+#: admin/templates/admin/notifications/domain_invalid_mx.html:3
+#, python-format
+msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
+msgstr "Modoboa 已偵測到網域 %(domain)s 沒有正確的 MX 紀錄:"
+
+#: admin/templates/admin/searchform.html:6
+msgid "Search"
+msgstr "搜尋"
+
+#: admin/templatetags/admin_tags.py:19
+msgid "enabled_m"
+msgstr "enabled_m"
+
+#: admin/templatetags/admin_tags.py:19
+msgid "enabled_f"
+msgstr "enabled_f"
+
+#: admin/templatetags/admin_tags.py:47
+msgid "List domains"
+msgstr "網域清單"
+
+#: admin/templatetags/admin_tags.py:52 admin/templatetags/admin_tags.py:112
+msgid "List quotas"
+msgstr "配額清單"
+
+#: admin/templatetags/admin_tags.py:57
+msgid "Message logs"
+msgstr ""
+
+#: admin/templatetags/admin_tags.py:69 admin/templatetags/admin_tags.py:117
+#: admin/views/import_.py:56 admin/views/import_.py:78
+msgid "Import"
+msgstr "匯入"
+
+#: admin/templatetags/admin_tags.py:75 admin/templatetags/admin_tags.py:123
+#: admin/views/export.py:39 admin/views/export.py:67
+msgid "Export"
+msgstr "匯出"
+
+#: admin/templatetags/admin_tags.py:107
+msgid "List identities"
+msgstr "使用者清單"
+
+#: admin/templatetags/admin_tags.py:142
+msgid "View the domain's identities"
+msgstr "查看網域使用者"
+
+#: admin/templatetags/admin_tags.py:149
+#, fuzzy
+#| msgid "domain alias"
+msgid "View domain's alarms"
+msgstr "網域別名"
+
+#: admin/templatetags/admin_tags.py:155 admin/templatetags/admin_tags.py:198
+#: admin/templatetags/admin_tags.py:211
+msgid "Edit {}"
+msgstr "編輯 {}"
+
+#: admin/templatetags/admin_tags.py:165 admin/templatetags/admin_tags.py:202
+#: admin/templatetags/admin_tags.py:216
+#, python-format
+msgid "Delete %s?"
+msgstr "刪除 %s?"
+
+#: admin/tests/test_mx.py:155
+#, python-format
+msgid "No MX record for %s"
+msgstr "沒有 %s 的 MX 紀錄"
+
+#: admin/tests/test_mx.py:167 admin/tests/test_mx.py:170
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgstr "無效的 IP 位址格式 %(domain)s; %(addr)s"
+
+#: admin/views/alias.py:30
+msgid "Alias with this name already exists"
+msgstr "這個名稱的別名已存在"
+
+#: admin/views/alias.py:55
+msgid "Create"
+msgstr "建立"
+
+#: admin/views/alias.py:67
+msgid "New alias"
+msgstr "新的別名"
+
+#: admin/views/alias.py:68
+msgid "Alias created"
+msgstr "別名已建立"
+
+#: admin/views/alias.py:80
+msgid "Alias modified"
+msgstr "別名已修改"
+
+#: admin/views/alias.py:105
+msgid "Alias deleted"
+msgid_plural "Aliases deleted"
+msgstr[0] "別名已刪除"
+
+#: admin/views/dns.py:28
+msgid "MX records of {}"
+msgstr "MX 紀錄 {}"
+
+#: admin/views/dns.py:51
+msgid "DNSBL summary for {}"
+msgstr "DNSBL 摘要 {}"
+
+#: admin/views/domain.py:250
+msgid "Domain deleted"
+msgid_plural "Domains deleted"
+msgstr[0] "網域移除"
+
+#: admin/views/export.py:38
+msgid "Export identities"
+msgstr "匯出使用者"
+
+#: admin/views/export.py:66
+msgid "Export domains"
+msgstr "匯出網域"
+
+#: admin/views/identity.py:108 admin/views/identity.py:205
+#: admin/views/identity.py:210 lib/form_utils.py:110 lib/form_utils.py:113
+msgid "Invalid request"
+msgstr "無效請求"
+
+#: admin/views/identity.py:194
+msgid "Account deleted"
+msgid_plural "Accounts deleted"
+msgstr[0] "帳號已刪除"
+
+#: admin/views/import_.py:55
+msgid "Import domains"
+msgstr "匯入網域"
+
+#: admin/views/import_.py:77
+msgid "Import identities"
+msgstr "匯入使用者"
+
+#: admin/views/user.py:52
+msgid "Forward updated"
+msgstr "轉寄已更新"
+
+#: core/api/v1/serializers.py:16
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Invalid PIN code"
+msgstr "無效的線"
+
+#: core/api/v1/serializers.py:22
+msgid "2FA is already enabled"
+msgstr ""
+
+#: core/api/v1/viewsets.py:61
+msgid "2FA is not enabled"
+msgstr ""
+
+#: core/api/v2/serializers.py:60 core/app_settings.py:43
 msgid "Local"
 msgstr "本機"
 
-#: core/app_settings.py:46
+#: core/api/v2/serializers.py:68
+msgid "md5crypt (weak)"
+msgstr "md5crypt (弱)"
+
+#: core/api/v2/serializers.py:69
+msgid "sha256 (weak)"
+msgstr "sha256 (弱)"
+
+#: core/api/v2/serializers.py:70
+msgid "md5 (weak)"
+msgstr "md5 (弱)"
+
+#: core/api/v2/serializers.py:71
+msgid "crypt (weak)"
+msgstr "crypt (弱)"
+
+#: core/api/v2/serializers.py:72
+msgid "plain (weak)"
+msgstr "plain (弱)"
+
+#: core/api/v2/serializers.py:168 core/app_settings.py:26
+msgid "User profile"
+msgstr "使用者檔案"
+
+#: core/api/v2/serializers.py:183 core/api/v2/serializers.py:190
+#: core/api/v2/serializers.py:197 core/app_settings.py:561
+#: core/app_settings.py:569 core/app_settings.py:577
+msgid "Invalid syntax"
+msgstr ""
+
+#: core/api/v2/serializers.py:202 core/app_settings.py:583
+msgid "Invalid rounds number"
+msgstr ""
+
+#: core/api/v2/serializers.py:262 core/forms.py:176
+msgid "This code is invalid"
+msgstr ""
+
+#: core/api/v2/serializers.py:274
+#, fuzzy
+#| msgid "Old password"
+msgid "Invalid password"
+msgstr "舊密碼"
+
+#: core/api/v2/serializers.py:328 core/views/auth.py:180 core/views/auth.py:235
+msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr ""
+
+#: core/api/v2/views.py:54
+#, python-format
+msgid "Failed connection attempt from '%s' as user '%s'"
+msgstr ""
+
+#: core/api/v2/views.py:67 core/views/auth.py:89
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr ""
+
+#: core/api/v2/views.py:86 core/views/auth.py:68
+#, python-format
+msgid "Password scheme mismatch. Updating %s password"
+msgstr ""
+
+#: core/api/v2/views.py:93 core/views/auth.py:75
+#, python-format
+msgid "Password hash parameter missmatch. Updating %s password"
+msgstr ""
+
+#: core/app_settings.py:39 core/app_settings.py:728
+msgid "Authentication"
+msgstr "驗證"
+
+#: core/app_settings.py:42 core/app_settings.py:731
+msgid "Authentication type"
+msgstr "驗證類型"
+
+#: core/app_settings.py:46 core/app_settings.py:733
 msgid "The backend used for authentication"
 msgstr "此背景程式已用於驗證"
 
-#: core/app_settings.py:51
+#: core/app_settings.py:51 core/app_settings.py:736
 msgid "Default password scheme"
 msgstr "預設密碼方案"
 
-#: core/app_settings.py:56
+#: core/app_settings.py:54 core/app_settings.py:738
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "方案已使用於加密信箱密碼"
 
-#: core/app_settings.py:60
+#: core/app_settings.py:58 core/app_settings.py:741
 msgid "Rounds"
 msgstr "輪"
 
-#: core/app_settings.py:63
+#: core/app_settings.py:61 core/app_settings.py:743
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -61,274 +1775,282 @@ msgstr ""
 "重複幾輪產生 (只能用於 sha256crypt 和 sha512crypt). 必須介於 1000 到 "
 "999999999, 包括."
 
-#: core/app_settings.py:69
+#: core/app_settings.py:67 core/app_settings.py:749
 #, fuzzy
 #| msgid "Default password scheme"
 msgid "Update password scheme at login"
 msgstr "預設密碼方案"
 
-#: core/app_settings.py:72
+#: core/app_settings.py:70 core/app_settings.py:751
 msgid "Update user password at login to use the default password scheme"
 msgstr ""
 
-#: core/app_settings.py:77
+#: core/app_settings.py:75 core/app_settings.py:756
 msgid "Default password"
 msgstr "預設密碼"
 
-#: core/app_settings.py:80
+#: core/app_settings.py:78 core/app_settings.py:758
 msgid "Default password for automatically created accounts."
 msgstr "預設密碼是給自動產生帳號用。"
 
-#: core/app_settings.py:84
+#: core/app_settings.py:82 core/app_settings.py:761
 msgid "Random password length"
 msgstr "隨機密碼長度"
 
-#: core/app_settings.py:88
+#: core/app_settings.py:86 core/app_settings.py:763
 msgid "Length of randomly generated passwords."
 msgstr "隨機產生密碼的長度。"
 
-#: core/app_settings.py:92
+#: core/app_settings.py:90 core/app_settings.py:766
 #, fuzzy
 #| msgid "Default password scheme"
 msgid "Update password service URL"
 msgstr "預設密碼方案"
 
-#: core/app_settings.py:96
+#: core/app_settings.py:94 core/app_settings.py:768
 msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
 msgstr ""
 
-#: core/app_settings.py:104
+#: core/app_settings.py:102 core/app_settings.py:775
 msgid "Password recovery announcement"
 msgstr ""
 
-#: core/app_settings.py:109
+#: core/app_settings.py:107 core/app_settings.py:777
 msgid "A temporary message that will be displayed on the reset password page."
 msgstr ""
 
-#: core/app_settings.py:115
+#: core/app_settings.py:113 core/app_settings.py:782
 msgid "Enable password recovery by SMS"
 msgstr ""
 
-#: core/app_settings.py:118
+#: core/app_settings.py:116 core/app_settings.py:784
 msgid "Enable password recovery by SMS for users who filled a phone number."
 msgstr ""
 
-#: core/app_settings.py:124
+#: core/app_settings.py:122 core/app_settings.py:789
 msgid "SMS provider"
 msgstr ""
 
-#: core/app_settings.py:127
+#: core/app_settings.py:125 core/app_settings.py:792
 msgid "Choose a provider to send password recovery SMS"
 msgstr ""
 
-#: core/app_settings.py:133
+#: core/app_settings.py:131
 msgid "LDAP settings"
 msgstr "LDAP 設定"
 
-#: core/app_settings.py:136
+#: core/app_settings.py:134 core/app_settings.py:802
 msgid "Server address"
 msgstr "伺服器地址"
 
-#: core/app_settings.py:139
+#: core/app_settings.py:137 core/app_settings.py:804
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "LDAP 伺服器的 IP 或 DNS 名稱"
 
-#: core/app_settings.py:143
+#: core/app_settings.py:141 core/app_settings.py:807
 msgid "Server port"
 msgstr "伺服器連接埠"
 
-#: core/app_settings.py:145
+#: core/app_settings.py:143 core/app_settings.py:809
 msgid "The TCP port number used by the LDAP server"
 msgstr "LDAP 伺服器所使用的 TCP 連接埠"
 
-#: core/app_settings.py:149
+#: core/app_settings.py:147 core/app_settings.py:812
 msgid "Enable secondary server (fallback)"
 msgstr ""
 
-#: core/app_settings.py:152
+#: core/app_settings.py:150 core/app_settings.py:814
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
 msgstr ""
 
-#: core/app_settings.py:158
+#: core/app_settings.py:156 core/app_settings.py:819
 #, fuzzy
 #| msgid "Server address"
 msgid "Secondary server address"
 msgstr "伺服器地址"
 
-#: core/app_settings.py:161
+#: core/app_settings.py:159 core/app_settings.py:822
 #, fuzzy
 #| msgid "The IP address or the DNS name of the LDAP server"
 msgid "The IP address or the DNS name of the seondary LDAP server"
 msgstr "LDAP 伺服器的 IP 或 DNS 名稱"
 
-#: core/app_settings.py:165
+#: core/app_settings.py:163 core/app_settings.py:826
 #, fuzzy
 #| msgid "Server port"
 msgid "Secondary server port"
 msgstr "伺服器連接埠"
 
-#: core/app_settings.py:168
+#: core/app_settings.py:166 core/app_settings.py:829
 #, fuzzy
 #| msgid "The TCP port number used by the LDAP server"
 msgid "The TCP port number used by the LDAP secondary server"
 msgstr "LDAP 伺服器所使用的 TCP 連接埠"
 
-#: core/app_settings.py:172
+#: core/app_settings.py:170 core/app_settings.py:833
 msgid "Use a secured connection"
 msgstr "使用安全的連接"
 
-#: core/app_settings.py:176
+#: core/app_settings.py:174 core/app_settings.py:835
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgstr "使用 SSL/STARTTLS 連線到 LDAP 伺服器"
 
-#: core/app_settings.py:180
+#: core/app_settings.py:178 core/app_settings.py:838
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:183
+#: core/app_settings.py:181 core/app_settings.py:840
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "判斷 LDAP 伺服器是否是 Active Directory 伺服器"
 
-#: core/app_settings.py:187
+#: core/app_settings.py:185 core/app_settings.py:843
 msgid "Administrator groups"
 msgstr "管理者群組"
 
-#: core/app_settings.py:190
+#: core/app_settings.py:188 core/app_settings.py:845
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
 msgstr "這些 LDAP 群組的成員將會建立為網域管理者。使用 ';' 字元來分開群組"
 
-#: core/app_settings.py:197
+#: core/app_settings.py:195 core/app_settings.py:851
 msgid "Group type"
 msgstr "群組類型"
 
-#: core/app_settings.py:201
+#: core/app_settings.py:199 core/app_settings.py:853
 msgid "The LDAP group type to use with your directory."
 msgstr "此 LDAP 群組類型會使用您的目錄"
 
-#: core/app_settings.py:206
+#: core/app_settings.py:204 core/app_settings.py:857
 msgid "Groups search base"
 msgstr "群組搜尋基準"
 
-#: core/app_settings.py:209
+#: core/app_settings.py:207 core/app_settings.py:859
 msgid "The distinguished name of the search base used to find groups"
 msgstr "搜尋基準使用醒目的名稱來找到群組"
 
-#: core/app_settings.py:215
+#: core/app_settings.py:213 core/app_settings.py:864
 msgid "Password attribute"
 msgstr "密碼屬性"
 
-#: core/app_settings.py:217
+#: core/app_settings.py:215 core/app_settings.py:866
 msgid "The attribute used to store user passwords"
 msgstr "此屬性使用在儲存使用者密碼"
 
-#: core/app_settings.py:222
+#: core/app_settings.py:220 core/app_settings.py:869
 #, fuzzy
 #| msgid "Authentication method"
 msgid "LDAP authentication settings"
 msgstr "身份驗證方法"
 
-#: core/app_settings.py:225
+#: core/app_settings.py:223 core/app_settings.py:874
 msgid "Authentication method"
 msgstr "身份驗證方法"
 
-#: core/app_settings.py:226
+#: core/app_settings.py:224 core/constants.py:59
 msgid "Search and bind"
 msgstr "搜尋和 bind"
 
-#: core/app_settings.py:227
+#: core/app_settings.py:225 core/constants.py:60
 msgid "Direct bind"
 msgstr "直接 bind"
 
-#: core/app_settings.py:229
+#: core/app_settings.py:227 core/app_settings.py:877
 msgid "Choose the authentication method to use"
 msgstr "選擇驗證模組來使用"
 
-#: core/app_settings.py:233 core/app_settings.py:287
+#: core/app_settings.py:231 core/app_settings.py:285 core/app_settings.py:880
+#: core/app_settings.py:925
 msgid "Bind DN"
 msgstr "Bind DN"
 
-#: core/app_settings.py:236 core/app_settings.py:290
+#: core/app_settings.py:234 core/app_settings.py:288 core/app_settings.py:882
+#: core/app_settings.py:927
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
 msgstr "當對應到 LDAP 伺服器請使用醒目的名稱。保留空白為匿名 bind"
 
-#: core/app_settings.py:243 core/app_settings.py:297
+#: core/app_settings.py:241 core/app_settings.py:295 core/app_settings.py:888
+#: core/app_settings.py:932
 msgid "Bind password"
 msgstr "Bind 密碼"
 
-#: core/app_settings.py:246 core/app_settings.py:300
+#: core/app_settings.py:244 core/app_settings.py:298 core/app_settings.py:890
+#: core/app_settings.py:934
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr "此密碼使用於當綁定到 LDAP 伺服器 (有 'Bind DN')"
 
-#: core/app_settings.py:254 core/app_settings.py:346
+#: core/app_settings.py:252 core/app_settings.py:344 core/app_settings.py:897
+#: core/app_settings.py:971
 msgid "Users search base"
 msgstr "使用者搜尋基準"
 
-#: core/app_settings.py:257 core/app_settings.py:349
+#: core/app_settings.py:255 core/app_settings.py:347 core/app_settings.py:899
+#: core/app_settings.py:973
 msgid "The distinguished name of the search base used to find users"
 msgstr "搜尋基準使用醒目的名稱來找到使用者"
 
-#: core/app_settings.py:263 core/app_settings.py:355
+#: core/app_settings.py:261 core/app_settings.py:353 core/app_settings.py:905
+#: core/app_settings.py:979
 msgid "Search filter"
 msgstr "搜尋過濾器"
 
-#: core/app_settings.py:266 core/app_settings.py:358
+#: core/app_settings.py:264 core/app_settings.py:356 core/app_settings.py:907
+#: core/app_settings.py:981
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
 msgstr ""
 "過濾字串的選 (例如 '(objectClass=person)'). 要能正常使用，這必須括在括號內。"
 
-#: core/app_settings.py:273
+#: core/app_settings.py:271 core/app_settings.py:913
 msgid "User DN template"
 msgstr "使用者 DN 範本"
 
-#: core/app_settings.py:276
+#: core/app_settings.py:274 core/app_settings.py:915
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr "此範本已使用結構化使用者的 DN. 他應該包含一個佔位符 (例如 %(user)s)"
 
-#: core/app_settings.py:284
+#: core/app_settings.py:282 core/app_settings.py:921
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "LDAP synchronization settings"
 msgstr "LDAP 設定"
 
-#: core/app_settings.py:308
+#: core/app_settings.py:306 core/app_settings.py:940
 msgid "Enable export to LDAP"
 msgstr ""
 
-#: core/app_settings.py:311
+#: core/app_settings.py:309 core/app_settings.py:942
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 
-#: core/app_settings.py:317
+#: core/app_settings.py:315 core/app_settings.py:948
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr ""
 
-#: core/app_settings.py:321
+#: core/app_settings.py:319 core/app_settings.py:950
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
 msgstr ""
 
-#: core/app_settings.py:327
+#: core/app_settings.py:325 core/app_settings.py:956
 #, fuzzy
 #| msgid "User DN template"
 msgid "Account DN template"
 msgstr "使用者 DN 範本"
 
-#: core/app_settings.py:330
+#: core/app_settings.py:328 core/app_settings.py:958
 #, fuzzy, python-format
 #| msgid ""
 #| "The template used to construct a user's DN. It should contain one "
@@ -338,179 +2060,180 @@ msgid ""
 "placeholder (ie. %(user)s)"
 msgstr "此範本已使用結構化使用者的 DN. 他應該包含一個佔位符 (例如 %(user)s)"
 
-#: core/app_settings.py:337
+#: core/app_settings.py:335 core/app_settings.py:964
 msgid "Enable import from LDAP"
 msgstr ""
 
-#: core/app_settings.py:340
+#: core/app_settings.py:338 core/app_settings.py:966
 msgid "Enable account synchronization from LDAP directory to local database"
 msgstr ""
 
-#: core/app_settings.py:365
+#: core/app_settings.py:363 core/app_settings.py:987
 #, fuzzy
 #| msgid "Password attribute"
 msgid "Username attribute"
 msgstr "密碼屬性"
 
-#: core/app_settings.py:368
+#: core/app_settings.py:366 core/app_settings.py:989
 msgid "The name of the LDAP attribute where the username can be found."
 msgstr ""
 
-#: core/app_settings.py:373
+#: core/app_settings.py:371 core/app_settings.py:995
 #, fuzzy
 #| msgid "Enable communication"
 msgid "Enable Dovecot LDAP sync"
 msgstr "啟用通訊"
 
-#: core/app_settings.py:376
+#: core/app_settings.py:374 core/app_settings.py:997
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
 msgstr ""
 
-#: core/app_settings.py:382
+#: core/app_settings.py:380 core/app_settings.py:1002
 msgid "Dovecot LDAP config file"
 msgstr ""
 
-#: core/app_settings.py:386
+#: core/app_settings.py:384 core/app_settings.py:1004
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
 msgstr ""
 
-#: core/app_settings.py:391 core/templates/core/dashboard.html:5
+#: core/app_settings.py:389 core/app_settings.py:1013
+#: core/templates/core/dashboard.html:5
 msgid "Dashboard"
 msgstr "儀表板"
 
-#: core/app_settings.py:394
+#: core/app_settings.py:392 core/app_settings.py:1016
 msgid "Custom RSS feed"
 msgstr "自訂 RSS 來源"
 
-#: core/app_settings.py:397
+#: core/app_settings.py:395 core/app_settings.py:1018
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr "顯示自訂的 RSS 來源給經銷商和網域管理者"
 
-#: core/app_settings.py:402
+#: core/app_settings.py:400 core/app_settings.py:1023
 msgid "Hide features widget"
 msgstr "隱藏功能物件"
 
-#: core/app_settings.py:405
+#: core/app_settings.py:403 core/app_settings.py:1025
 msgid "Hide features widget for resellers and domain administrators"
 msgstr "隱藏功能物件給經銷商和網域管理者"
 
-#: core/app_settings.py:409
+#: core/app_settings.py:407 core/app_settings.py:1032
 msgid "Notifications"
 msgstr "通知"
 
-#: core/app_settings.py:412
+#: core/app_settings.py:410 core/app_settings.py:1035
 msgid "Sender address"
 msgstr "伺服器位址"
 
-#: core/app_settings.py:415
+#: core/app_settings.py:413 core/app_settings.py:1037
 msgid "Email address used to send notifications."
 msgstr "郵件地址用於寄送通知。"
 
-#: core/app_settings.py:419
+#: core/app_settings.py:417 core/app_settings.py:1042
 msgid "Public API"
 msgstr "公用 API"
 
-#: core/app_settings.py:422
+#: core/app_settings.py:420 core/app_settings.py:1045
 msgid "Enable communication"
 msgstr "啟用通訊"
 
-#: core/app_settings.py:425
+#: core/app_settings.py:423
 msgid "Enable communication with Modoboa public API"
 msgstr "開啟 Modoboa 公用 API 的通訊"
 
-#: core/app_settings.py:429
+#: core/app_settings.py:427 core/app_settings.py:1050
 msgid "Check new versions"
 msgstr "檢查新的版本"
 
-#: core/app_settings.py:432
+#: core/app_settings.py:430 core/app_settings.py:1047 core/app_settings.py:1053
 msgid "Automatically checks if a newer version is available"
 msgstr "假如有新的版本就自動檢查"
 
-#: core/app_settings.py:436
+#: core/app_settings.py:434 core/app_settings.py:1057
 msgid "Send an email when new versions are found"
 msgstr ""
 
-#: core/app_settings.py:439
+#: core/app_settings.py:437 core/app_settings.py:1060
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 
-#: core/app_settings.py:443
+#: core/app_settings.py:441 core/app_settings.py:1064
 msgid "Recipient"
 msgstr ""
 
-#: core/app_settings.py:446
+#: core/app_settings.py:444 core/app_settings.py:1067
 msgid "Recipient of new versions notification emails."
 msgstr ""
 
-#: core/app_settings.py:451
+#: core/app_settings.py:449 core/app_settings.py:1071
 msgid "Send statistics"
 msgstr "寄送狀態"
 
-#: core/app_settings.py:454
+#: core/app_settings.py:452 core/app_settings.py:1074
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr "寄送狀態到 Modoboa 公用 API (計數器及已使用的外掛)"
 
-#: core/app_settings.py:458
+#: core/app_settings.py:456 core/app_settings.py:1080
 msgid "Miscellaneous"
 msgstr "雜項"
 
-#: core/app_settings.py:461
+#: core/app_settings.py:459 core/app_settings.py:1083
+#, fuzzy
+#| msgid "Inactive account threshold"
+msgid "Enable inactive account tracking"
+msgstr "未啟用帳號上限"
+
+#: core/app_settings.py:461 core/app_settings.py:1085
+msgid ""
+"Allow the administrator to set a threshold (in days) beyond which an account "
+"is considered inactive if the user hasn't logged in"
+msgstr ""
+
+#: core/app_settings.py:467 core/app_settings.py:1091
 msgid "Inactive account threshold"
 msgstr "未啟用帳號上限"
 
-#: core/app_settings.py:464
+#: core/app_settings.py:470 core/app_settings.py:1094
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
 msgstr "這個帳號最後一次登錄日期超過這個上限 (在幾天) 將考慮停用"
 
-#: core/app_settings.py:470
+#: core/app_settings.py:476 core/app_settings.py:1099
 msgid "Top notifications check interval"
 msgstr "檢查提醒間隔"
 
-#: core/app_settings.py:473
+#: core/app_settings.py:479 core/app_settings.py:1101
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "兩次檢查提醒間隔 (在幾秒)"
 
-#: core/app_settings.py:478
+#: core/app_settings.py:484 core/app_settings.py:1105
 msgid "Maximum log record age"
 msgstr "最大日誌紀錄時間"
 
-#: core/app_settings.py:480
+#: core/app_settings.py:486 core/app_settings.py:1107
 msgid "The maximum age in days of a log record"
 msgstr ""
 
-#: core/app_settings.py:484
+#: core/app_settings.py:490 core/app_settings.py:1110
 msgid "Items per page"
 msgstr "每頁的條目數量"
 
-#: core/app_settings.py:486
+#: core/app_settings.py:492 core/app_settings.py:1111
 msgid "Number of displayed items per page"
 msgstr ""
 
-#: core/app_settings.py:490
+#: core/app_settings.py:496 core/app_settings.py:1114
 msgid "Default top redirection"
 msgstr ""
 
-#: core/app_settings.py:494
+#: core/app_settings.py:500 core/app_settings.py:1116
 msgid "The default redirection used when no application is specified"
 msgstr ""
 
-#: core/app_settings.py:548 core/app_settings.py:556 core/app_settings.py:564
-msgid "Invalid syntax"
-msgstr ""
-
-#: core/app_settings.py:570
-msgid "Invalid rounds number"
-msgstr ""
-
-#: core/app_settings.py:595 core/app_settings.py:597 core/app_settings.py:608
-msgid "This field is required"
-msgstr ""
-
-#: core/apps.py:18
-msgid "General"
+#: core/app_settings.py:799
+msgid "LDAP"
 msgstr ""
 
 #: core/checks/settings_checks.py:6
@@ -540,57 +2263,45 @@ msgstr "經銷商"
 msgid "Super administrator"
 msgstr "超級管理員"
 
-#: core/constants.py:52 lib/form_utils.py:389
-msgid "No"
-msgstr "否"
-
-#: core/constants.py:102
+#: core/constants.py:108
 msgid "Choose a provider"
 msgstr ""
 
-#: core/constants.py:107
+#: core/constants.py:113
 msgid "Dummy"
 msgstr ""
 
-#: core/forms.py:21
-msgid "Username"
-msgstr "使用者名稱"
+#: core/drf_authentication.py:17
+msgid "Missing 2FA verification."
+msgstr ""
 
-#: core/forms.py:25
-msgid "Password"
-msgstr "密碼"
-
-#: core/forms.py:38
+#: core/forms.py:40
 msgid "Old password"
 msgstr "舊密碼"
 
-#: core/forms.py:42
+#: core/forms.py:44
 msgid "New password"
 msgstr "新密碼"
 
-#: core/forms.py:46
-msgid "Confirmation"
-msgstr "確認"
-
-#: core/forms.py:74
+#: core/forms.py:76
 msgid "Old password mismatchs"
 msgstr "舊密碼不相符"
 
-#: core/forms.py:83
+#: core/forms.py:89
 msgid "Passwords mismatch"
 msgstr "密碼不相符"
 
-#: core/forms.py:103
+#: core/forms.py:118
 msgid "Enable API access"
 msgstr "啟用 API 存取"
 
-#: core/forms.py:137
+#: core/forms.py:152
 #, fuzzy
 #| msgid "Notifications"
 msgid "Verification code"
 msgstr "通知"
 
-#: core/forms.py:148
+#: core/forms.py:163
 #, fuzzy
 #| msgid "Invalid line"
 msgid "Invalid code"
@@ -640,35 +2351,27 @@ msgstr "一個或多個可用的更新"
 msgid "[modoboa] Update(s) available"
 msgstr "一個或多個可用的更新"
 
-#: core/models.py:55
+#: core/models.py:52
 msgid "Allow mailboxes access"
 msgstr "允許信箱存取"
 
-#: core/models.py:57
+#: core/models.py:54
 msgid "Allow this administrator to access user mailboxes"
 msgstr "允許這個管理者來存取使用者信箱"
 
-#: core/models.py:60
+#: core/models.py:57
 msgid "password"
 msgstr "密碼"
 
-#: core/models.py:63
+#: core/models.py:60
 msgid "language"
 msgstr "語言"
 
-#: core/models.py:66
+#: core/models.py:63
 msgid "Prefered language to display pages."
 msgstr "顯示頁面的預設語言"
 
-#: core/models.py:70
-msgid "Phone number"
-msgstr "電話號碼"
-
 #: core/models.py:72
-msgid "Secondary email"
-msgstr "次要電子郵件"
-
-#: core/models.py:75
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr "替代的電子郵件，可以使用在需要回復的時候。"
 
@@ -676,28 +2379,24 @@ msgstr "替代的電子郵件，可以使用在需要回復的時候。"
 msgid "Failed to update password: LDAP module not installed"
 msgstr "更新密碼失敗: LDAP 模組未安裝"
 
-#: core/models.py:155
+#: core/models.py:159 policyd/core.py:105
 msgid "account"
 msgstr "帳號"
 
-#: core/models.py:282
+#: core/models.py:286
 msgid "Unknown"
 msgstr "未知"
 
-#: core/models.py:316
-msgid "Invalid line"
-msgstr "無效的線"
-
-#: core/models.py:324
+#: core/models.py:328
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 
-#: core/models.py:339
+#: core/models.py:343
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 
-#: core/models.py:344
+#: core/models.py:348
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
@@ -726,48 +2425,52 @@ msgstr[0] ""
 msgid "Your password must contain a combination of different character types."
 msgstr ""
 
-#: core/sms_backends/ovh.py:19
+#: core/sms_backends/ovh.py:21 core/sms_backends/ovh.py:103
 msgid "API endpoint"
 msgstr ""
 
-#: core/sms_backends/ovh.py:22
+#: core/sms_backends/ovh.py:24 core/sms_backends/ovh.py:65
 msgid "OVH Europe"
 msgstr ""
 
-#: core/sms_backends/ovh.py:23
+#: core/sms_backends/ovh.py:25 core/sms_backends/ovh.py:66
 msgid "OVH US"
 msgstr ""
 
-#: core/sms_backends/ovh.py:24
+#: core/sms_backends/ovh.py:26 core/sms_backends/ovh.py:67
 msgid "OVH North-America"
 msgstr ""
 
-#: core/sms_backends/ovh.py:25
+#: core/sms_backends/ovh.py:27 core/sms_backends/ovh.py:68
 msgid "So you Start Europe"
 msgstr ""
 
-#: core/sms_backends/ovh.py:26
+#: core/sms_backends/ovh.py:28 core/sms_backends/ovh.py:69
 msgid "So you Start North America"
 msgstr ""
 
-#: core/sms_backends/ovh.py:27
+#: core/sms_backends/ovh.py:29 core/sms_backends/ovh.py:70
 msgid "Kimsufi Europe"
 msgstr ""
 
-#: core/sms_backends/ovh.py:28
+#: core/sms_backends/ovh.py:30 core/sms_backends/ovh.py:71
 msgid "Kimsufi North America"
 msgstr ""
 
-#: core/sms_backends/ovh.py:35
+#: core/sms_backends/ovh.py:37 core/sms_backends/ovh.py:107
 msgid "Application key"
 msgstr ""
 
-#: core/sms_backends/ovh.py:42
+#: core/sms_backends/ovh.py:44
 msgid "Application secret"
 msgstr ""
 
-#: core/sms_backends/ovh.py:50
+#: core/sms_backends/ovh.py:52 core/sms_backends/ovh.py:116
 msgid "Consumer key"
+msgstr ""
+
+#: core/sms_backends/ovh.py:111
+msgid "Appication secret"
 msgstr ""
 
 #: core/templates/core/_current_features.html:6
@@ -807,20 +2510,15 @@ msgstr ""
 #: core/templates/core/api_access.html:7
 #, python-format
 msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" target="
-"\"_blank\">here</a></strong>."
+"A documentation of the API is available <strong><a href=\"%(url)s\" "
+"target=\"_blank\">here</a></strong>."
 msgstr ""
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
 msgstr ""
 
-#: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:19 lib/form_utils.py:354
-msgid "Update"
-msgstr ""
-
-#: core/templates/core/dashboard.html:11
+#: core/templates/core/dashboard.html:17
 #, python-format
 msgid "Hello %(user)s."
 msgstr ""
@@ -845,11 +2543,6 @@ msgstr ""
 msgid "Applications"
 msgstr ""
 
-#: core/templates/core/information.html:14
-#: core/templates/core/information.html:36
-msgid "Name"
-msgstr "名稱"
-
 #: core/templates/core/information.html:15
 msgid "Installed version"
 msgstr ""
@@ -858,20 +2551,8 @@ msgstr ""
 msgid "Last version"
 msgstr ""
 
-#: core/templates/core/information.html:17
-msgid "Description"
-msgstr ""
-
 #: core/templates/core/information.html:32
 msgid "Active users"
-msgstr ""
-
-#: core/templates/core/information.html:37
-msgid "Role"
-msgstr ""
-
-#: core/templates/core/information.html:38
-msgid "Last login"
 msgstr ""
 
 #: core/templates/core/logs.html:2 core/templatetags/core_tags.py:66
@@ -882,20 +2563,12 @@ msgstr "記錄"
 msgid "Previously on Modoboa..."
 msgstr ""
 
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:106
-msgid "Date"
-msgstr "日期"
-
 #: core/templates/core/logs.html:7
 msgid "Level"
 msgstr ""
 
 #: core/templates/core/logs.html:8
 msgid "Logger"
-msgstr ""
-
-#: core/templates/core/logs.html:9
-msgid "Message"
 msgstr ""
 
 #: core/templates/core/notifications/update_available.html:3
@@ -943,10 +2616,6 @@ msgstr ""
 msgid "No preferences available."
 msgstr "沒有可用的狀態"
 
-#: core/templates/core/user_profile.html:3 core/templatetags/core_tags.py:116
-msgid "Profile"
-msgstr "檔案"
-
 #: core/templates/core/user_profile.html:3
 msgid "Update your personal information"
 msgstr "更新你的個人信息"
@@ -957,6 +2626,83 @@ msgstr "更新你的個人信息"
 msgid "Click here to update your password"
 msgstr "更新密碼失敗: {}"
 
+#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:124
+msgid "Security"
+msgstr ""
+
+#: core/templates/core/user_security.html:6
+#, fuzzy
+#| msgid "The backend used for authentication"
+msgid "Two-Factor authentication"
+msgstr "此背景程式已用於驗證"
+
+#: core/templates/core/user_security.html:17
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from "
+"your application repository and use that app to scan this QR code."
+msgstr ""
+
+#: core/templates/core/user_security.html:25
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Pin code"
+msgstr "無效的線"
+
+#: core/templates/core/user_security.html:28
+msgid "Register"
+msgstr ""
+
+#: core/templates/core/user_security.html:33
+msgid ""
+"Congratulations! Two-Factor Authentication is now enabled for your account."
+msgstr ""
+
+#: core/templates/core/user_security.html:38
+#: core/templates/core/user_security.html:89
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr ""
+
+#: core/templates/core/user_security.html:53
+msgid "Two-Factor Authentication is enabled for your account."
+msgstr ""
+
+#: core/templates/core/user_security.html:58
+#, fuzzy
+#| msgctxt "checks"
+#| msgid "Disabled"
+msgid "Disable 2FA"
+msgstr "已停用"
+
+#: core/templates/core/user_security.html:61
+msgid "Reset recovery codes"
+msgstr ""
+
+#: core/templates/core/user_security.html:65
+msgid ""
+"Two-Factor Authentication (2FA) is not yet activated for your account. "
+"Enabling this feature will increase your account's security."
+msgstr ""
+
+#: core/templates/core/user_security.html:73
+#, fuzzy
+#| msgid "Enabled"
+msgid "Enable 2FA"
+msgstr "已啟用"
+
+#: core/templates/core/user_security.html:84
+#, fuzzy
+#| msgid "No DNS records found for %s"
+msgid "New recovery codes"
+msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#: core/templates/core/user_security.html:88
+msgid "Here are your new recovery codes. "
+msgstr ""
+
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
 msgstr "Modoboa"
@@ -965,7 +2711,7 @@ msgstr "Modoboa"
 msgid "Logout"
 msgstr "登出"
 
-#: core/templatetags/core_tags.py:127
+#: core/templatetags/core_tags.py:131
 msgid "API"
 msgstr "API"
 
@@ -977,51 +2723,457 @@ msgstr "Modoboa 的核心部分"
 msgid "Parameters saved"
 msgstr "參數已儲存"
 
-#: core/views/auth.py:59
-#, python-format
-msgid "Password scheme mismatch. Updating %s password"
-msgstr ""
-
-#: core/views/auth.py:66
-#, python-format
-msgid "Password hash parameter missmatch. Updating %s password"
-msgstr ""
-
-#: core/views/auth.py:82
-#, python-format
-msgid "User '%s' successfully logged in"
-msgstr ""
-
-#: core/views/auth.py:90
+#: core/views/auth.py:100
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 
-#: core/views/auth.py:125
+#: core/views/auth.py:135
 msgid "User '{}' successfully logged out"
 msgstr ""
 
-#: core/views/auth.py:170 core/views/auth.py:225
-msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
-
-#: core/views/user.py:53
+#: core/views/user.py:59
 msgid "Profile updated"
 msgstr "個人設定已更新"
 
-#: core/views/user.py:81
+#: core/views/user.py:88
 msgid "Preferences saved"
 msgstr "參數已儲存"
 
-#: core/views/user.py:103
+#: core/views/user.py:110
 msgid "Access updated"
 msgstr "存取已更新"
+
+#: dmarc/forms.py:38 dmarc/forms.py:51
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "DNS settings"
+msgstr "LDAP 設定"
+
+#: dmarc/forms.py:41 dmarc/forms.py:54
+msgid "Enable reverse lookups"
+msgstr ""
+
+#: dmarc/forms.py:44 dmarc/forms.py:56
+msgid "Enable reverse DNS lookups (reports will be longer to display)"
+msgstr ""
+
+#: dmarc/forms.py:69 dmarc/forms.py:71
+msgid "DMARC"
+msgstr ""
+
+#: dmarc/handlers.py:20
+#, fuzzy
+#| msgid "No MX record for %s"
+msgid "Show DMARC report for {}"
+msgstr "沒有 %s 的 MX 紀錄"
+
+#: dmarc/lib.py:299 dmarc/templatetags/dmarc_tags.py:59 dmarc/views.py:123
+#, fuzzy
+#| msgid "Not defined"
+msgid "Not resolved"
+msgstr "未定義"
+
+#: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
+msgid "None"
+msgstr ""
+
+#: dmarc/models.py:11
+#, fuzzy
+#| msgid "Quantity"
+msgid "Quarantine"
+msgstr "數量"
+
+#: dmarc/models.py:12
+#, fuzzy
+#| msgid "Subject"
+msgid "Reject"
+msgstr "主題"
+
+#: dmarc/models.py:17
+msgid "Neutral"
+msgstr ""
+
+#: dmarc/models.py:18
+#, fuzzy
+#| msgid "Password"
+msgid "Pass"
+msgstr "密碼"
+
+#: dmarc/models.py:19
+msgid "Fail"
+msgstr ""
+
+#: dmarc/models.py:20
+#, fuzzy
+#| msgid "Server port"
+msgid "Temporary error"
+msgstr "伺服器連接埠"
+
+#: dmarc/models.py:21
+msgid "Permanent error"
+msgstr ""
+
+#: dmarc/models.py:25
+msgid "Policy"
+msgstr ""
+
+#: dmarc/models.py:29
+msgid "Soft failure"
+msgstr ""
+
+#: dmarc/templates/dmarc/_result_detail.html:6
+msgid "Total"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:21
+#: dmarc/templates/dmarc/domain_report.html:27
+#, fuzzy
+#| msgid "Full name"
+msgid "Fully aligned"
+msgstr "全名"
+
+#: dmarc/templates/dmarc/domain_report.html:22
+#: dmarc/templates/dmarc/domain_report.html:28
+msgid "Partially aligned"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:23
+#: dmarc/templates/dmarc/domain_report.html:29
+#, fuzzy
+#| msgid "Forward"
+msgid "Forwarded"
+msgstr "轉發"
+
+#: dmarc/templates/dmarc/domain_report.html:24
+#: dmarc/templates/dmarc/domain_report.html:30
+msgid "Failed"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:52
+msgid "DMARC report for"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:76
+msgid "processed"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:85
+msgid "fully aligned"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:94
+msgid "partially aligned"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:103
+#, fuzzy
+#| msgid "Forward"
+msgid "forwarded"
+msgstr "轉發"
+
+#: dmarc/templates/dmarc/domain_report.html:112
+msgid "failed"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:122
+msgid "Display details"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:126
+#, fuzzy
+#| msgid "Resources"
+msgid "Trusted sources"
+msgstr "資源"
+
+#: dmarc/templates/dmarc/domain_report.html:134
+msgid "Partially trusted sources / Forwarders"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:142
+msgid "Forwarders with ARC"
+msgstr ""
+
+#: dmarc/templates/dmarc/domain_report.html:150
+msgid "Unknown sources / Threats"
+msgstr ""
+
+#: dnstools/lib.py:78
+msgid "Wrong ip4 mechanism syntax"
+msgstr ""
+
+#: dnstools/lib.py:82
+msgid "Wrong IPv4 address format"
+msgstr ""
+
+#: dnstools/lib.py:88
+msgid "Wrong ip6 mechanism syntax"
+msgstr ""
+
+#: dnstools/lib.py:93
+msgid "Wrong IPv6 address format"
+msgstr ""
+
+#: dnstools/lib.py:108 dnstools/lib.py:134
+msgid "Invalid syntax for {} mechanism"
+msgstr ""
+
+#: dnstools/lib.py:110
+msgid "Invalid mask found {}"
+msgstr ""
+
+#: dnstools/lib.py:155
+msgid "Not an SPF record"
+msgstr ""
+
+#: dnstools/lib.py:177
+msgid "Unknown mechanism {}"
+msgstr ""
+
+#: dnstools/lib.py:179
+msgid "Unknown modifier {}"
+msgstr ""
+
+#: dnstools/lib.py:182
+msgid "Duplicate modifier {} found"
+msgstr ""
+
+#: dnstools/lib.py:186
+msgid "No mechanism found"
+msgstr ""
+
+#: dnstools/lib.py:193
+msgid "Not a valid DKIM record"
+msgstr ""
+
+#: dnstools/lib.py:201 dnstools/lib.py:254
+msgid "Invalid tag {}"
+msgstr ""
+
+#: dnstools/lib.py:206
+msgid "No key found in record"
+msgstr ""
+
+#: dnstools/lib.py:213
+msgid "Wrong value {} for tag {}"
+msgstr ""
+
+#: dnstools/lib.py:228
+msgid "Wrong value {} for tag {}:"
+msgstr ""
+
+#: dnstools/lib.py:232
+msgid " not an integer"
+msgstr ""
+
+#: dnstools/lib.py:235
+msgid " less than {}"
+msgstr ""
+
+#: dnstools/lib.py:238
+msgid " greater than {}"
+msgstr ""
+
+#: dnstools/lib.py:246
+msgid "Not a valid DMARC record"
+msgstr ""
+
+#: dnstools/lib.py:257
+msgid "Unknown tag {}"
+msgstr ""
+
+#: dnstools/lib.py:262
+msgid "Missing required p tag"
+msgstr ""
+
+#: dnstools/models.py:75
+msgid "Public key mismatchs"
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:8
+msgid "autoconfig record (Mozilla) found: "
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:12
+msgid "autoconfig record (Mozilla) not found."
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:17
+msgid "autodiscover record (Microsoft) found: "
+msgstr ""
+
+#: dnstools/templates/dnstools/autoconfig_records_status.html:21
+msgid "autodiscover record (Microsoft) not found."
+msgstr ""
+
+#: dnstools/templates/dnstools/dns_record_detail.html:8
+msgid "A DNS record has been found and is valid."
+msgstr ""
+
+#: dnstools/templates/dnstools/dns_record_detail.html:12
+msgid "A DNS record has been found but its syntax is not valid:"
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:7
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace value between "
+"[ ] by the appropriate ones."
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:15
+msgid "IP address of your Modoboa server"
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:28
+msgid "Auto configuration"
+msgstr ""
+
+#: dnstools/templates/dnstools/domain_dns_configuration.html:30
+#: dnstools/templates/dnstools/domain_dns_configuration.html:31
+msgid "hostname of your automx server"
+msgstr ""
+
+#: dnstools/views.py:36
+msgid "{} record of {}"
+msgstr ""
+
+#: dnstools/views.py:64
+msgid "Auto configuration records for {}"
+msgstr ""
+
+#: dnstools/views.py:84
+msgid "DNS configuration for {}"
+msgstr ""
+
+#: imap_migration/api/v2/serializers.py:52
+#, fuzzy
+#| msgid "Access updated"
+msgid "Access denied"
+msgstr "存取已更新"
+
+#: imap_migration/app_settings.py:17 imap_migration/app_settings.py:67
+#, fuzzy
+#| msgid "Enable DKIM signing"
+msgid "Enable IMAP Migration"
+msgstr "啟用 DKIM 簽署"
+
+#: imap_migration/app_settings.py:19 imap_migration/app_settings.py:69
+#, fuzzy
+#| msgid "Enable DKIM signing"
+msgid "Enable IMAP Migration."
+msgstr "啟用 DKIM 簽署"
+
+#: imap_migration/app_settings.py:24
+msgid "OfflineIMAP"
+msgstr ""
+
+#: imap_migration/app_settings.py:27 imap_migration/app_settings.py:75
+msgid "Concurrent sync jobs"
+msgstr ""
+
+#: imap_migration/app_settings.py:29 imap_migration/app_settings.py:77
+msgid "The maximum number of concurrent synchronization jobs"
+msgstr ""
+
+#: imap_migration/app_settings.py:34
+msgid "OfflineIMAP Filter"
+msgstr ""
+
+#: imap_migration/app_settings.py:37 imap_migration/app_settings.py:83
+#, fuzzy
+#| msgid "Create aliases"
+msgid "Create Folders"
+msgstr "建立別名"
+
+#: imap_migration/app_settings.py:39 imap_migration/app_settings.py:85
+msgid "Allow Creation of missing folders during sync"
+msgstr ""
+
+#: imap_migration/app_settings.py:42 imap_migration/app_settings.py:90
+msgid "Folder Filter Exclusions"
+msgstr ""
+
+#: imap_migration/app_settings.py:44 imap_migration/app_settings.py:93
+msgid ""
+"Use a regular expression to explicitly include folders in sync. Example: "
+"^Trash$|Del"
+msgstr ""
+
+#: imap_migration/app_settings.py:48 imap_migration/app_settings.py:100
+msgid "Folder Filter Inclusions"
+msgstr ""
+
+#: imap_migration/app_settings.py:50 imap_migration/app_settings.py:103
+msgid ""
+"A comma seperated list of folders to explicitly include in sync even if "
+"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
+"personal "
+msgstr ""
+
+#: imap_migration/app_settings.py:72
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "OfflineIMAP settings"
+msgstr "LDAP 設定"
+
+#: imap_migration/app_settings.py:80
+msgid "OfflineIMAP Filter settings"
+msgstr ""
+
+#: imap_migration/apps.py:18 imap_migration/apps.py:20
+msgid "IMAP Migration"
+msgstr ""
+
+#: imap_migration/auth_backends.py:46
+#, python-format
+msgid "Connection to IMAP server failed: %s"
+msgstr ""
+
+#: imap_migration/checks.py:11
+msgid ""
+"Automatic domain/mailbox creation is disabled which means IMAP "
+"authentication won't work."
+msgstr ""
+
+#: imap_migration/checks.py:13
+msgid ""
+"Go to the online parameters panel (admin tab) and activate this feature."
+msgstr ""
+
+#: imap_migration/templates/imap_migration/index.html:6
+#, fuzzy
+#| msgid "Administration"
+msgid "IMAP migration"
+msgstr "管理員"
+
+#: ldapsync/lib.py:84
+msgid "Failed to create LDAP account: {}"
+msgstr ""
+
+#: ldapsync/lib.py:124
+msgid "Failed to update LDAP account: {}"
+msgstr ""
+
+#: ldapsync/lib.py:138
+msgid "Failed to delete LDAP account: {}"
+msgstr ""
+
+#: ldapsync/lib.py:149
+msgid "Failed to disable LDAP account: {}"
+msgstr ""
+
+#: lib/api_client.py:36 lib/api_client.py:72 lib/api_client.py:87
+#: lib/api_client.py:92
+#, fuzzy, python-format
+#| msgid "Enable communication with Modoboa public API"
+msgid "Failed to communicate with public API: %s"
+msgstr "開啟 Modoboa 公用 API 的通訊"
 
 #: lib/db_utils.py:23
 #, python-format
 msgid "Connection to database %s not configured"
 msgstr "連線到資料庫 %s 未設置"
 
-#: lib/email_utils.py:141 lib/email_utils.py:360
+#: lib/email_utils.py:143 lib/email_utils.py:363
 msgid "unable to determine encoding of string"
 msgstr ""
 
@@ -1048,29 +3200,595 @@ msgstr "輸入有效的電子郵件"
 msgid "Submit"
 msgstr "執行"
 
-#: lib/form_utils.py:110 lib/form_utils.py:113
-msgid "Invalid request"
-msgstr ""
-
-#: lib/form_utils.py:388
-msgid "Yes"
-msgstr "是"
-
 #: lib/ldap_utils.py:129
 msgid "Failed to update password: {}"
 msgstr "更新密碼失敗: {}"
 
-#: lib/templatetags/lib_tags.py:104
-msgid "From"
-msgstr "寄件人"
-
-#: lib/templatetags/lib_tags.py:105
-msgid "To"
-msgstr "收件人"
-
 #: lib/templatetags/lib_tags.py:107 templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "主題"
+
+#: limits/app_settings.py:17 limits/app_settings.py:154
+msgid "Default per-admin limits"
+msgstr "預設每個管理者限制"
+
+#: limits/app_settings.py:20 limits/app_settings.py:157
+msgid "Enable per-admin limits"
+msgstr "啟用每個管理者限制"
+
+#: limits/app_settings.py:22 limits/app_settings.py:158
+msgid "Enable or disable per-admin limits"
+msgstr "啟用或停用每個管理者限制"
+
+#: limits/app_settings.py:26 limits/app_settings.py:97
+#: limits/app_settings.py:161 limits/app_settings.py:220 limits/constants.py:24
+#: limits/constants.py:54
+msgid "Domain admins"
+msgstr "網域管理員"
+
+#: limits/app_settings.py:29 limits/app_settings.py:164
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr "新的管理者最大允許網域管理者的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:40 limits/app_settings.py:173
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "新的管理者最大允許網域的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:50 limits/app_settings.py:181
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr "新的管理者最大允許網域別名的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:61 limits/app_settings.py:190
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "新的管理者最大允許信箱的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:71 limits/app_settings.py:199
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "新的管理者最大允許別名的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:81 limits/app_settings.py:206
+msgid ""
+"The quota a reseller will be allowed to share between the domains he "
+"creates. (0 means no quota)"
+msgstr "經銷商的配額允許分配給他建立的網域之間。(0 意思是沒配額)"
+
+#: limits/app_settings.py:88 limits/app_settings.py:213
+msgid "Default per-domain limits"
+msgstr "預設每個網域限制"
+
+#: limits/app_settings.py:91 limits/app_settings.py:216
+msgid "Enable per-domain limits"
+msgstr "啟用每個網域限制"
+
+#: limits/app_settings.py:93 limits/app_settings.py:217
+msgid "Enable or disable per-domain limits"
+msgstr "啟用或停用每個網域限制"
+
+#: limits/app_settings.py:100 limits/app_settings.py:223
+msgid ""
+"Maximum number of allowed domain administrators for a new domain. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
+msgstr "新的網域最大允許網域管理者的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:111 limits/app_settings.py:232
+msgid ""
+"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "新的網域最大允許網域別名的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:122 limits/app_settings.py:241
+msgid ""
+"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "新的網域最大允許信箱的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/app_settings.py:132 limits/app_settings.py:249
+msgid ""
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
+"-1 to allow unlimited creations)"
+msgstr "新的網域最大允許別名的數量。(0 是禁止建立，-1 是無限制建立)"
+
+#: limits/apps.py:13 limits/apps.py:15
+msgid "Limits"
+msgstr "限制"
+
+#: limits/constants.py:10
+msgid "Maximum number of domains this user can create"
+msgstr "這個使用者最大可以建立網域的數量"
+
+#: limits/constants.py:14
+msgid "Maximum number of domain aliases this user can create"
+msgstr "這個使用者最大可以建立網域別名的數量"
+
+#: limits/constants.py:18
+msgid "Maximum number of mailboxes this user can create"
+msgstr "這個使用者最大可以建立信箱的數量"
+
+#: limits/constants.py:21
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "這個使用者最大可以建立信箱別名的數量"
+
+#: limits/constants.py:25
+msgid "Maximum number of domain administrators this user can create"
+msgstr "這個使用者最大可以建立網域管理者的數量"
+
+#: limits/constants.py:31
+msgid "Quota shared between domains of this reseller"
+msgstr "這個經銷商配額分配在網域之間"
+
+#: limits/constants.py:42
+msgid "Maximum number of domain aliases allowed for this domain."
+msgstr "這個網域最大可以建立網域別名的數量"
+
+#: limits/constants.py:46
+msgid "Maximum number of mailboxes allowed for this domain."
+msgstr "這個網域最大可以建立信箱的數量"
+
+#: limits/constants.py:50
+msgid "Maximum number of mailbox aliases allowed for this domain."
+msgstr "這個網域最大可以建立信箱別名的數量"
+
+#: limits/constants.py:55
+msgid "Maximum number of domain admins allowed for this domain."
+msgstr "這個網域最大可以建立網域管理者的數量"
+
+#: limits/forms.py:38 limits/forms.py:87
+msgid "Invalid limit"
+msgstr "無效的限制"
+
+#: limits/handlers.py:118 limits/handlers.py:154
+msgid "Resources"
+msgstr "資源"
+
+#: limits/lib.py:19
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s: 已達到上限"
+
+#: limits/lib.py:29
+msgid "Not enough resources"
+msgstr "資源不足"
+
+#: limits/lib.py:47 limits/models.py:47
+msgid "You're not allowed to define unlimited values"
+msgstr "您不允許定義無限值"
+
+#: limits/models.py:57 limits/models.py:121
+msgid "unlimited"
+msgstr "無限制"
+
+#: limits/templates/limits/poolusage.html:3
+#: limits/templates/limits/resources_widget.html:5
+msgid "Resources usage"
+msgstr "資源使用量"
+
+#: maillog/api/v2/serializers.py:36
+msgid "You must provide start and end dates when period is custom"
+msgstr ""
+
+#: maillog/forms.py:23
+msgid "Path to the log file"
+msgstr "日誌檔的路徑"
+
+#: maillog/forms.py:25
+msgid "Path to log file used to collect statistics"
+msgstr "日誌檔的路徑用於蒐集狀態"
+
+#: maillog/forms.py:30
+msgid "Directory to store RRD files"
+msgstr "儲存 RRD 檔案的目錄"
+
+#: maillog/forms.py:33
+msgid "Path to directory where RRD files are stored"
+msgstr "RRD 檔案已儲存到目錄路徑"
+
+#: maillog/forms.py:38
+msgid "Show greylisted messages"
+msgstr "顯示灰名單郵件"
+
+#: maillog/forms.py:41
+msgid "Differentiate between hard and soft rejects (greylisting)"
+msgstr "區分在硬的退件跟軟的退件之間 (灰名單)"
+
+#: maillog/forms.py:59 maillog/handlers.py:22
+msgid "Statistics"
+msgstr "統計"
+
+#: maillog/graphics.py:93
+msgid "Failed to locate rrdtool binary."
+msgstr "指定 rrdtools 位置失敗。"
+
+#: maillog/graphics.py:170
+msgid "Average traffic (msgs/min)"
+msgstr "平均流量 (郵件數/分鐘)"
+
+#: maillog/graphics.py:173
+msgid "sent messages"
+msgstr "已發訊息"
+
+#: maillog/graphics.py:174
+msgid "received messages"
+msgstr "收到的訊息"
+
+#: maillog/graphics.py:175
+msgid "bounced messages"
+msgstr "已退回郵件"
+
+#: maillog/graphics.py:176
+msgid "rejected messages"
+msgstr "已拒絕郵件"
+
+#: maillog/graphics.py:177
+msgid "virus messages"
+msgstr "病毒郵件"
+
+#: maillog/graphics.py:178
+msgid "spam messages"
+msgstr "垃圾郵件"
+
+#: maillog/graphics.py:185
+msgid "greylisted messages"
+msgstr "灰名單郵件"
+
+#: maillog/graphics.py:196
+msgid "Average normal traffic size (bytes/min)"
+msgstr "平均流量大小 (位元組/分鐘)"
+
+#: maillog/graphics.py:199
+msgid "received size"
+msgstr "已接收大小"
+
+#: maillog/graphics.py:201
+msgid "sent size"
+msgstr "寄送大小"
+
+#: maillog/graphics.py:209
+msgid "Mail traffic"
+msgstr "郵件流量"
+
+#: maillog/graphics.py:253
+msgid "Average account creation (account/hour)"
+msgstr "建立帳號平均值 (帳號/小時)"
+
+#: maillog/graphics.py:256
+msgid "New accounts"
+msgstr "新帳號"
+
+#: maillog/graphics.py:263
+msgid "Accounts"
+msgstr "帳號"
+
+#: maillog/templates/maillog/index.html:4
+msgid "Graphical statistics"
+msgstr "圖形狀態"
+
+#: maillog/templates/maillog/index.html:44
+msgid "Search a domain"
+msgstr "搜尋網域"
+
+#: maillog/templates/maillog/index.html:77
+msgid "Apply"
+msgstr "套用"
+
+#: maillog/views.py:33
+msgid "No statistics available"
+msgstr "沒有可用的狀態"
+
+#: maillog/views.py:40
+msgid "Day"
+msgstr "日"
+
+#: maillog/views.py:41
+msgid "Week"
+msgstr "周"
+
+#: maillog/views.py:42
+msgid "Month"
+msgstr "月"
+
+#: maillog/views.py:43
+msgid "Year"
+msgstr "年"
+
+#: maillog/views.py:44
+msgid "Custom"
+msgstr "自訂"
+
+#: maillog/views.py:64
+msgid "Unknown graphic set"
+msgstr "未知圖形設定"
+
+#: maillog/views.py:69
+#, fuzzy
+#| msgid "Unknown graphic set"
+msgid "Unknown domain"
+msgstr "未知圖形設定"
+
+#: maillog/views.py:74
+msgid "Bad custom period"
+msgstr "錯誤的自訂期間"
+
+#: pdfcredentials/api/v2/serializers.py:31 pdfcredentials/app_settings.py:164
+#: pdfcredentials/documents.py:52
+#, fuzzy
+#| msgid "Update your personal information"
+msgid "Personal account information"
+msgstr "更新你的個人信息"
+
+#: pdfcredentials/api/v2/serializers.py:54
+#, fuzzy
+#| msgid "Directory not found."
+msgid "Directory is not writable"
+msgstr "目錄不存在"
+
+#: pdfcredentials/api/v2/serializers.py:76 pdfcredentials/views.py:28
+#, fuzzy
+#| msgid "No information available for this domain."
+msgid "No document available for this user"
+msgstr "沒有這個網域的有效資訊。"
+
+#: pdfcredentials/app_settings.py:23 pdfcredentials/app_settings.py:126
+#, fuzzy
+#| msgid "Enable DNS checks"
+msgid "Enable PDF credentials"
+msgstr "啟用 DNS 檢查"
+
+#: pdfcredentials/app_settings.py:25 pdfcredentials/app_settings.py:128
+msgid "Enabled PDF credentials document generation on account creation."
+msgstr ""
+
+#: pdfcredentials/app_settings.py:30 pdfcredentials/app_settings.py:131
+msgid "Documents storage"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:33 pdfcredentials/app_settings.py:134
+#, fuzzy
+#| msgid "Directory to store RRD files"
+msgid "Directory to save documents into"
+msgstr "儲存 RRD 檔案的目錄"
+
+#: pdfcredentials/app_settings.py:35 pdfcredentials/app_settings.py:136
+#, fuzzy
+#| msgid "Path to directory where RRD files are stored"
+msgid "Path to a directory where PDF documents will be saved"
+msgstr "RRD 檔案已儲存到目錄路徑"
+
+#: pdfcredentials/app_settings.py:40 pdfcredentials/app_settings.py:139
+#, fuzzy
+#| msgid "Description"
+msgid "Security options"
+msgstr "描述"
+
+#: pdfcredentials/app_settings.py:43 pdfcredentials/app_settings.py:142
+msgid "Delete documents after the first download"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:45 pdfcredentials/app_settings.py:145
+msgid ""
+"Automatically delete a document just after its first download from this "
+"interface"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:151
+msgid "Generate documents only at account creation"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:52 pdfcredentials/app_settings.py:154
+msgid ""
+"Generate a new document only when a new account is created. If set to no, a "
+"new document will be created each time a password is updated."
+msgstr ""
+
+#: pdfcredentials/app_settings.py:60 pdfcredentials/app_settings.py:160
+msgid "Customization options"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:63 pdfcredentials/app_settings.py:163
+msgid "Title"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:64 pdfcredentials/app_settings.py:165
+msgid "The document's title"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:67 pdfcredentials/app_settings.py:169
+msgid "Web panel url"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:68 pdfcredentials/app_settings.py:170
+msgid "URL of the Modoboa web panel"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:71 pdfcredentials/app_settings.py:174
+#, fuzzy
+#| msgid "spam messages"
+msgid "Custom message"
+msgstr "垃圾郵件"
+
+#: pdfcredentials/app_settings.py:73 pdfcredentials/app_settings.py:176
+msgid "A custom message that will appear at the end of documents"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:77 pdfcredentials/app_settings.py:181
+msgid "Include mail client connection settings"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:79 pdfcredentials/app_settings.py:184
+msgid ""
+"Include required SMTP and IMAP connection information to configure a mail "
+"client, a tablet or a phone"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:84 pdfcredentials/app_settings.py:190
+#: pdfcredentials/documents.py:107
+#, fuzzy
+#| msgid "Server address"
+msgid "SMTP server address"
+msgstr "伺服器地址"
+
+#: pdfcredentials/app_settings.py:86 pdfcredentials/app_settings.py:191
+msgid "Address of the SMTP server (hostname or IP)"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:89 pdfcredentials/app_settings.py:195
+#: pdfcredentials/documents.py:108
+#, fuzzy
+#| msgid "Server port"
+msgid "SMTP server port"
+msgstr "伺服器連接埠"
+
+#: pdfcredentials/app_settings.py:91 pdfcredentials/app_settings.py:197
+msgid "Listening port of the SMTP server"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:94 pdfcredentials/app_settings.py:201
+#: pdfcredentials/documents.py:109
+msgid "SMTP connection security"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:96 pdfcredentials/app_settings.py:111
+#: pdfcredentials/app_settings.py:204 pdfcredentials/app_settings.py:222
+msgid "Connection security mechanism"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:99 pdfcredentials/app_settings.py:208
+#: pdfcredentials/documents.py:110
+#, fuzzy
+#| msgid "Server address"
+msgid "IMAP server address"
+msgstr "伺服器地址"
+
+#: pdfcredentials/app_settings.py:101 pdfcredentials/app_settings.py:209
+msgid "Address of the IMAP server (hostname or IP)"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:104 pdfcredentials/app_settings.py:213
+#: pdfcredentials/documents.py:111
+#, fuzzy
+#| msgid "Server port"
+msgid "IMAP server port"
+msgstr "伺服器連接埠"
+
+#: pdfcredentials/app_settings.py:106 pdfcredentials/app_settings.py:215
+msgid "Listening port of the IMAP server"
+msgstr ""
+
+#: pdfcredentials/app_settings.py:109 pdfcredentials/app_settings.py:219
+#: pdfcredentials/documents.py:112
+msgid "IMAP connection security"
+msgstr ""
+
+#: pdfcredentials/apps.py:19
+msgid "PDF credentials"
+msgstr ""
+
+#: pdfcredentials/apps.py:21
+msgid "PDF Credentials"
+msgstr ""
+
+#: pdfcredentials/documents.py:55
+msgid "Powered by Modoboa - Mail hosting made simple"
+msgstr ""
+
+#: pdfcredentials/documents.py:71
+#, python-format
+msgid ""
+"\n"
+"Dear %s, this document contains the credentials you will need\n"
+"to connect to Modoboa. Learn the content and destroy\n"
+"the document as soon as possible.\n"
+msgstr ""
+
+#: pdfcredentials/documents.py:77
+msgid "Web panel:"
+msgstr ""
+
+#: pdfcredentials/documents.py:91
+msgid ""
+"\n"
+"Here you can view your emails anytime online, create filters or manage\n"
+"your contacts.\n"
+msgstr ""
+
+#: pdfcredentials/documents.py:98
+#, fuzzy
+#| msgid "Failed to update password: {}"
+msgid "Please change your password!"
+msgstr "更新密碼失敗: {}"
+
+#: pdfcredentials/documents.py:104
+msgid "PC/Tablet/Smartphone configuration:"
+msgstr ""
+
+#: pdfcredentials/documents.py:122
+msgid "Use those settings for your computer, tablet or phone."
+msgstr ""
+
+#: pdfcredentials/handlers.py:51
+msgid "Retrieve user's credentials as a PDF document"
+msgstr ""
+
+#: pdfcredentials/handlers.py:71
+msgid "Download PDF credentials"
+msgstr ""
+
+#: pdfcredentials/lib.py:27
+msgid "Can't write to selected directory to store PDF documents"
+msgstr ""
+
+#: pdfcredentials/lib.py:34
+#, python-format
+msgid "Failed to create the directory that will contain PDF documents (%s)"
+msgstr ""
+
+#: policyd/core.py:89
+#, fuzzy
+#| msgid "%s: limit reached"
+msgid "Daily sending limit reached"
+msgstr "%s: 已達到上限"
+
+#: policyd/core.py:124
+msgid "[modoboa] Sending limit reached"
+msgstr ""
+
+#: policyd/templates/policyd/notifications/limit_reached.html:3
+#, python-format
+msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
+msgstr ""
+
+#: relaydomains/api/v1/serializers.py:25
+msgid "Unsupported service"
+msgstr "不支援的服務"
+
+#: relaydomains/handlers.py:61
+msgid "Transport settings"
+msgstr "轉送設定"
+
+#: relaydomains/handlers.py:85
+msgid "Transport"
+msgstr "轉送"
+
+#: relaydomains/transport.py:14
+msgid "target host address"
+msgstr "目標主機位址"
+
+#: relaydomains/transport.py:16
+msgid "target host port"
+msgstr "目標主機連接埠"
+
+#: relaydomains/transport.py:18
+msgid "verify recipients"
+msgstr "驗證收件者"
 
 #: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
@@ -1105,11 +3823,6 @@ msgstr "錯誤："
 msgid "Help:"
 msgstr "幫助："
 
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
-msgid "Close"
-msgstr "關閉"
-
 #: templates/common/wizard_forms.html:31
 msgid "Previous"
 msgstr "上一個"
@@ -1117,6 +3830,12 @@ msgstr "上一個"
 #: templates/common/wizard_forms.html:32
 msgid "Next"
 msgstr "下一個"
+
+#: templates/nlayout.html:57
+#, fuzzy
+#| msgid "New domain"
+msgid "New admin"
+msgstr "新網域"
 
 #: templates/registration/base.html:8
 msgid "Welcome to Modoboa"
@@ -1169,6 +3888,7 @@ msgid ""
 msgstr ""
 
 #: templates/registration/password_reset_email.html:4
+#: templates/registration/password_reset_email_v2.html:4
 #, python-format
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
@@ -1176,12 +3896,14 @@ msgid ""
 msgstr ""
 
 #: templates/registration/password_reset_email.html:10
+#: templates/registration/password_reset_email_v2.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
 msgstr ""
 
 #: templates/registration/password_reset_email.html:14
+#: templates/registration/password_reset_email_v2.html:14
 msgid "Sincerely, The Modoboa Team."
 msgstr ""
 
@@ -1193,23 +3915,77 @@ msgstr ""
 msgid "Modoboa password reset"
 msgstr "Modoboa 密碼重設"
 
-#~ msgid "md5crypt (weak)"
-#~ msgstr "md5crypt (弱)"
+#: transport/backends.py:55
+msgid "Invalid value"
+msgstr "無效的值"
 
-#~ msgid "sha256 (weak)"
-#~ msgstr "sha256 (弱)"
+#: transport/models.py:16
+msgid "pattern"
+msgstr "模式"
 
-#~ msgid "md5 (weak)"
-#~ msgstr "md5 (弱)"
+#: transport/models.py:17
+msgid "service"
+msgstr "服務"
 
-#~ msgid "crypt (weak)"
-#~ msgstr "crypt (弱)"
-
-#~ msgid "plain (weak)"
-#~ msgstr "plain (弱)"
+#: transport/models.py:18
+msgid "next hop"
+msgstr "下一步"
 
 #~ msgid "Secret key"
 #~ msgstr "密鑰"
 
 #~ msgid "Key used to encrypt/decrypt passwords"
 #~ msgstr "金鑰用於加密/解密"
+
+#~ msgid "Graphical statistics about emails traffic using RRDtool"
+#~ msgstr "有關郵件流量的圖形狀態表是使用 RRDtool"
+
+#~ msgid "Mailboxes owner"
+#~ msgstr "信箱擁有者"
+
+#~ msgid "The UNIX account who owns mailboxes on the filesystem"
+#~ msgstr "UNIX 帳號是檔案系統上擁有的信箱"
+
+#, python-format
+#~ msgid "Domain '%s' does not exist"
+#~ msgstr "網域 '%s' 不存在"
+
+#~ msgid "Raw format"
+#~ msgstr "Raw 格式"
+
+#~ msgid "Admin"
+#~ msgstr "管理"
+
+#~ msgid "File name"
+#~ msgstr "檔案名稱"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No {type} record found for MX {mx}"
+#~ msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No A record found for MX %(domain)s"
+#~ msgstr "沒有找到這個網域的 MX 紀錄。"
+
+#, fuzzy
+#~| msgid "No MX record found for this domain."
+#~ msgid "No AAAA record found for MX %(domain)s"
+#~ msgstr "沒有找到這個網域的 MX 紀錄。"
+
+#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
+#~ msgstr "信箱之間共用幾 MB 的配額。值為0表示沒配額。"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No DNS records found without MX for %s"
+#~ msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#, fuzzy
+#~| msgid "No DNS records found for %s"
+#~ msgid "No DNS records found without MX for %(domain)s"
+#~ msgstr "沒有找到 %s 的 DNS 紀錄"
+
+#~ msgid "Unable to lookup ip addresses for %(domain)s; %(error)s"
+#~ msgstr "無法查詢此 IP 位址 %(domain)s; %(error)s"

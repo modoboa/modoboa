@@ -114,6 +114,7 @@
 
 <script>
 import parameters from '@/api/parameters'
+import { bus } from '@/main'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -154,6 +155,7 @@ export default {
   },
   data () {
     return {
+      imapMigration: false,
       drawer: true,
       mainMenuItems: [
         {
@@ -193,6 +195,23 @@ export default {
               text: this.$gettext('Messages'),
               to: { name: 'MessageLog' },
               roles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
+            }
+          ]
+        },
+        {
+          icon: 'mdi-email-sync-outline',
+          text: this.$gettext('IMAP Migration'),
+          roles: ['SuperAdmins', 'Resellers'],
+          children: [
+            {
+              text: this.$gettext('Email providers'),
+              to: { name: 'ProvidersList' },
+              roles: ['SuperAdmins', 'Resellers']
+            },
+            {
+              text: this.$gettext('Migrations'),
+              to: { name: 'MigrationsList' },
+              roles: ['Resellers', 'SuperAdmins']
             }
           ]
         },
@@ -261,16 +280,25 @@ export default {
   created () {
     parameters.getApplications().then(response => {
       response.data.forEach(item => {
-        this.mainMenuItems[5].children.push({
+        this.mainMenuItems[6].children.push({
           text: item.label,
           to: { name: 'ParametersEdit', params: { app: item.name } }
         })
       })
     })
+    parameters.getApplication('imap_migration').then(response => {
+      this.imapMigration = response.data.params.enabled_imapmigration
+    })
+    bus.$on('imapSettingsChanged', (status) => { this.imapMigration = status })
   },
   methods: {
     displayMenuItem (item) {
-      return (item.roles === undefined || item.roles.indexOf(this.authUser.role) !== -1) && (item.condition === undefined || item.condition())
+      const condition = (item.roles === undefined || item.roles.indexOf(this.authUser.role) !== -1) && (item.condition === undefined || item.condition()) && (item.activated !== false)
+      if (item.icon === 'mdi-email-sync-outline') {
+        // For imapMigration
+        return condition && this.imapMigration
+      }
+      return condition
     },
     logout () {
       this.$store.dispatch('auth/logout').then(() => {
