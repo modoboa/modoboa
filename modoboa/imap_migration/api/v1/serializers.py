@@ -74,18 +74,18 @@ class EmailProviderSerializer(serializers.ModelSerializer):
         return instance
 
 
-class MailboxSerializer(serializers.ModelSerializer):
+class MailboxMigrationSerializer(serializers.ModelSerializer):
     """Simple mailbox serializer."""
 
     class Meta:
-        fields = ("id", "full_address", "user")
+        fields = ("id", "address", "user")
         model = admin_models.Mailbox
 
 
 class MigrationSerializer(serializers.ModelSerializer):
     """Serializer class for Migration."""
 
-    mailbox = MailboxSerializer()
+    mailbox = MailboxMigrationSerializer()
 
     class Meta:
         depth = 1

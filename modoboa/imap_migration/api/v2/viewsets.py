@@ -24,14 +24,10 @@ class EmailProviderViewSet(v1_viewsets.EmailProviderViewSet):
         port = serializer.data["port"]
         try:
             if secured:
-                print(address)
-                print(port)
                 imaplib.IMAP4_SSL(address, port)
             else:
                 imaplib.IMAP4(address, port)
         except (socket.error, imaplib.IMAP4.error, ssl.SSLError) as error:
-            print(type(error))
-            print(error)
             return response.Response({'status': 'failed'}, 400)
         return response.Response(status=200)
 

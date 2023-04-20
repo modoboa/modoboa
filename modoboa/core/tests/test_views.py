@@ -109,6 +109,9 @@ SETTINGS_SAMPLE = {
     "pdfcredentials-imap_server_port": 667,
     "pdfcredentials-imap_connection_security": "starttls",
     "dmarc-enable_rlookups": False,
+    "imap_migration-enabled_imapmigration": True,
+    "imap_migration-max_sync_accounts": 2,
+    "imap_migration-create_folders": True,
 }
 
 
