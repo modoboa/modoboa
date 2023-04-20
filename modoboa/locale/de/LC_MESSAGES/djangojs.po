@@ -12,15 +12,53 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 15:47+0100\n"
+"POT-Creation-Date: 2023-04-20 14:54+0200\n"
 "PO-Revision-Date: 2020-05-11 18:45+0000\n"
 "Last-Translator: Nicolas John, 2020\n"
 "Language-Team: German (https://www.transifex.com/tonio/teams/13749/de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Keine weiteren Domains"
+
+#: admin/static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Verzeichnis der Domain nicht löschen"
+
+#: admin/static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
+
+#: admin/static/admin/js/admin.js:152
+msgid "This operation will remove all data associated to this domain, excepting accounts."
+msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten, außer Mailkonten, löschen."
+
+#: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Keine weiteren Quotas"
+
+#: admin/static/admin/js/admin.js:180
+#, fuzzy
+#| msgid "No more quota to show"
+msgid "No more log to show"
+msgstr "Keine weiteren Quotas"
+
+#: admin/static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Domain-Administrator fehlt"
+
+#: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Keine weiteren Identitäten"
+
+#: admin/static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Verzeichnis der Mailbox nicht löschen"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -33,6 +71,10 @@ msgstr "Operation"
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
 msgstr "Keine weiteren Log-Einträge"
+
+#: maillog/static/maillog/js/stats.js:45
+msgid "Search a domain"
+msgstr "Domain suchen"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -66,52 +108,5 @@ msgstr "Sind Sie sicher?"
 msgid "This will invalidate your registered application."
 msgstr "Dadurch wird Ihre registrierte Anwendung ungültig."
 
-#: static/modoboa_stats/js/stats.js:43
-msgid "Search a domain"
-msgstr "Domain suchen"
-
-#: relaydomains/static/relaydomains/js/relay_domains.js:45
-msgid "Services updated"
-msgstr "'Service'-Liste aktualisiert"
-
-#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
-msgid "No more domain to show"
-msgstr "Keine weiteren Domains"
-
-#: static/admin/js/admin.js:149
-msgid "Do not delete domain directory"
-msgstr "Verzeichnis der Domain nicht löschen"
-
-#: static/admin/js/admin.js:151
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Diese Aktion wird ALLE mit der Domain verbundenen Daten löschen."
-
-#: static/admin/js/admin.js:152
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-"Diese Aktion wird ALLE mit der Domain verbundenen Daten, außer Mailkonten, "
-"löschen."
-
-#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
-msgid "No more quota to show"
-msgstr "Keine weiteren Quotas"
-
-#: static/admin/js/admin.js:180
-#, fuzzy
-#| msgid "No more quota to show"
-msgid "No more log to show"
-msgstr "Keine weiteren Quotas"
-
-#: static/admin/js/admin.js:309
-msgid "No domain administrator defined"
-msgstr "Domain-Administrator fehlt"
-
-#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
-msgid "No more identity to show"
-msgstr "Keine weiteren Identitäten"
-
-#: static/admin/js/admin.js:407
-msgid "Do not delete mailbox directory"
-msgstr "Verzeichnis der Mailbox nicht löschen"
+#~ msgid "Services updated"
+#~ msgstr "'Service'-Liste aktualisiert"

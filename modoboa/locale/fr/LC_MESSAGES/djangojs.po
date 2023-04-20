@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 15:47+0100\n"
+"POT-Creation-Date: 2023-04-20 14:54+0200\n"
 "PO-Revision-Date: 2020-11-05 15:48+0100\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2020\n"
 "Language-Team: French (https://www.transifex.com/tonio/teams/13749/fr/)\n"
@@ -19,6 +19,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Plus de domaine à afficher"
+
+#: admin/static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Ne pas supprimer le répertoire du domaine"
+
+#: admin/static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
+
+#: admin/static/admin/js/admin.js:152
+msgid "This operation will remove all data associated to this domain, excepting accounts."
+msgstr "Cette opération supprimera toutes les données associées à ce domaine à l'exception des comptes."
+
+#: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Plus de quota à afficher"
+
+#: admin/static/admin/js/admin.js:180
+msgid "No more log to show"
+msgstr "Plus aucun journal à afficher"
+
+#: admin/static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Aucun administrateur de domaine défini"
+
+#: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Plus d'identité à afficher"
+
+#: admin/static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -31,6 +67,10 @@ msgstr "opération"
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
 msgstr "Plus d'entrée de journal à afficher"
+
+#: maillog/static/maillog/js/stats.js:45
+msgid "Search a domain"
+msgstr "Checher un domaine"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -64,50 +104,5 @@ msgstr "Etes vous certain ?"
 msgid "This will invalidate your registered application."
 msgstr "Cela annulera votre application enregistrée."
 
-#: static/modoboa_stats/js/stats.js:43
-msgid "Search a domain"
-msgstr "Checher un domaine"
-
-#: relaydomains/static/relaydomains/js/relay_domains.js:45
-msgid "Services updated"
-msgstr "Services mis à jour"
-
-#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
-msgid "No more domain to show"
-msgstr "Plus de domaine à afficher"
-
-#: static/admin/js/admin.js:149
-msgid "Do not delete domain directory"
-msgstr "Ne pas supprimer le répertoire du domaine"
-
-#: static/admin/js/admin.js:151
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Cette opération supprimera TOUTES les données associées à ce domaine."
-
-#: static/admin/js/admin.js:152
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-"Cette opération supprimera toutes les données associées à ce domaine à "
-"l'exception des comptes."
-
-#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
-msgid "No more quota to show"
-msgstr "Plus de quota à afficher"
-
-#: static/admin/js/admin.js:180
-msgid "No more log to show"
-msgstr "Plus aucun journal à afficher"
-
-#: static/admin/js/admin.js:309
-msgid "No domain administrator defined"
-msgstr "Aucun administrateur de domaine défini"
-
-#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
-msgid "No more identity to show"
-msgstr "Plus d'identité à afficher"
-
-#: static/admin/js/admin.js:407
-msgid "Do not delete mailbox directory"
-msgstr "Ne pas supprimer le répertoire de la boite aux lettres"
+#~ msgid "Services updated"
+#~ msgstr "Services mis à jour"

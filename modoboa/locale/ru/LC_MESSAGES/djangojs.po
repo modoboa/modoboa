@@ -13,17 +13,51 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-05 15:47+0100\n"
+"POT-Creation-Date: 2023-04-20 14:54+0200\n"
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: guard43ru <guard43ru@gmail.com>, 2023\n"
 "Language-Team: Russian (https://www.transifex.com/tonio/teams/13749/ru/)\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "Нет больше доменов для показа"
+
+#: admin/static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "Не удаляйте каталог домена"
+
+#: admin/static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом."
+
+#: admin/static/admin/js/admin.js:152
+msgid "This operation will remove all data associated to this domain, excepting accounts."
+msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением аккаунтов."
+
+#: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "Нет больше квоты для показа"
+
+#: admin/static/admin/js/admin.js:180
+msgid "No more log to show"
+msgstr "Нет больше логов для отображения"
+
+#: admin/static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "Не указан администратор домена"
+
+#: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "Нет личности для показа"
+
+#: admin/static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "Не удаляйте каталог почтовых ящиков"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -36,6 +70,10 @@ msgstr "действие"
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
 msgstr "Нет больше записей лога для показа"
+
+#: maillog/static/maillog/js/stats.js:45
+msgid "Search a domain"
+msgstr "Найти домен"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -69,50 +107,5 @@ msgstr "Вы уверены?"
 msgid "This will invalidate your registered application."
 msgstr "Это сделает регистрацию приложения недействительной."
 
-#: static/modoboa_stats/js/stats.js:43
-msgid "Search a domain"
-msgstr "Найти домен"
-
-#: relaydomains/static/relaydomains/js/relay_domains.js:45
-msgid "Services updated"
-msgstr "Сервисы обновлены"
-
-#: static/admin/js/admin.js:129 static/admin/js/admin.js:174
-msgid "No more domain to show"
-msgstr "Нет больше доменов для показа"
-
-#: static/admin/js/admin.js:149
-msgid "Do not delete domain directory"
-msgstr "Не удаляйте каталог домена"
-
-#: static/admin/js/admin.js:151
-msgid "This operation will remove ALL data associated to this domain."
-msgstr "Эта операция удалит ВСЕ данные, связанные с этим доменом."
-
-#: static/admin/js/admin.js:152
-msgid ""
-"This operation will remove all data associated to this domain, excepting "
-"accounts."
-msgstr ""
-"Эта операция удалит ВСЕ данные, связанные с этим доменом, за исключением "
-"аккаунтов."
-
-#: static/admin/js/admin.js:177 static/admin/js/admin.js:436
-msgid "No more quota to show"
-msgstr "Нет больше квоты для показа"
-
-#: static/admin/js/admin.js:180
-msgid "No more log to show"
-msgstr "Нет больше логов для отображения"
-
-#: static/admin/js/admin.js:309
-msgid "No domain administrator defined"
-msgstr "Не указан администратор домена"
-
-#: static/admin/js/admin.js:365 static/admin/js/admin.js:433
-msgid "No more identity to show"
-msgstr "Нет личности для показа"
-
-#: static/admin/js/admin.js:407
-msgid "Do not delete mailbox directory"
-msgstr "Не удаляйте каталог почтовых ящиков"
+#~ msgid "Services updated"
+#~ msgstr "Сервисы обновлены"
