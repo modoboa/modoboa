@@ -150,12 +150,17 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     full_address = lib_fields.DRFEmailFieldUTF8()
     quota = serializers.CharField(required=False)
+    quota_usage = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Mailbox
         fields = (
-            "pk", "full_address", "use_domain_quota", "quota", "message_limit"
+            "pk", "full_address", "use_domain_quota", "quota", "message_limit",
+            "quota_usage"
         )
+
+    def get_quota_usage(self, mb) -> int:
+        return mb.get_quota_in_percent()
 
     def validate_full_address(self, value):
         """Lower case address."""

@@ -14,7 +14,7 @@
     </v-row>
     <v-row>
       <v-col cols="6"><translate>Quota</translate></v-col>
-      <v-col cols="6">{{ domain.quota }} MB</v-col>
+      <v-col cols="6">{{ domain.quota }} <translate>MB</translate></v-col>
     </v-row>
     <v-row>
       <v-col cols="6"><translate>Default mailbox quota</translate></v-col>
