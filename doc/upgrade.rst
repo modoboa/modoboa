@@ -111,6 +111,12 @@ Specific instructions
 2.1.0
 =====
 
+.. warning::
+
+   For this particular version, it is really important that you apply
+   new migrations **AFTER** the following instructions. If you don't,
+   you'll get into trouble...
+
 The ``modoboa-dmarc``, ``modoboa-pdfcredentials`` and ``modoboa-imapmigration``
 plugins have been merged into the core.
 
