@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-20 16:22+0200\n"
+"POT-Creation-Date: 2023-04-21 15:13+0200\n"
 "PO-Revision-Date: 2023-02-23 11:26+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -54,13 +54,13 @@ msgstr ""
 msgid "Account"
 msgstr "Добавить аккаунт"
 
-#: src/components/identities/AccountCreationForm.vue:135
-#: src/components/identities/AccountCreationForm.vue:187
+#: src/components/identities/AccountCreationForm.vue:138
+#: src/components/identities/AccountCreationForm.vue:190
 msgid "Account created"
 msgstr "Аккаунт создан"
 
-#: src/components/identities/IdentityList.vue:79
-#: src/components/identities/IdentityList.vue:160
+#: src/components/identities/IdentityList.vue:80
+#: src/components/identities/IdentityList.vue:162
 msgid "Account deleted"
 msgstr ""
 
@@ -69,13 +69,13 @@ msgstr ""
 msgid "Account not found!"
 msgstr "Аккаунт создан"
 
-#: src/components/identities/AccountForm.vue:65
-#: src/components/identities/AccountForm.vue:192
+#: src/components/identities/AccountForm.vue:67
+#: src/components/identities/AccountForm.vue:194
 msgid "Account updated"
 msgstr "аккаунт изменен"
 
 #: src/components/alarms/AlarmList.vue:20
-#: src/components/domains/DomainList.vue:29
+#: src/components/domains/DomainList.vue:30
 #: src/components/identities/IdentityList.vue:6
 #: src/components/identities/IdentityList.vue:2
 #: src/components/identities/IdentityList.vue:20
@@ -83,9 +83,9 @@ msgstr "аккаунт изменен"
 #: src/components/imap_migration/ProvidersList.vue:20
 #: src/components/imap_migration/ProvidersList.vue:112
 #: src/components/imap_migration/MigrationsList.vue:71
-#: src/components/identities/IdentityList.vue:101
+#: src/components/identities/IdentityList.vue:102
 #: src/components/alarms/AlarmList.vue:100
-#: src/components/domains/DomainList.vue:171
+#: src/components/domains/DomainList.vue:173
 msgid "Actions"
 msgstr "Действие"
 
@@ -148,8 +148,8 @@ msgid "Administrator removed"
 msgstr ""
 
 #: src/components/domains/AdministratorList.vue:5
-#: src/components/domains/DomainList.vue:113
-#: src/components/domains/DomainList.vue:255
+#: src/components/domains/DomainList.vue:114
+#: src/components/domains/DomainList.vue:257
 msgid "Administrators"
 msgstr "Администраторы"
 
@@ -169,9 +169,9 @@ msgstr ""
 msgid "Alarm re-opened"
 msgstr ""
 
-#: src/components/domains/DomainList.vue:119
-#: src/components/layout/Navbar.vue:65 src/components/layout/Navbar.vue:180
-#: src/components/domains/DomainList.vue:261
+#: src/components/domains/DomainList.vue:120
+#: src/components/layout/Navbar.vue:66 src/components/layout/Navbar.vue:181
+#: src/components/domains/DomainList.vue:263
 msgid "Alarms"
 msgstr ""
 
@@ -189,13 +189,13 @@ msgstr "Синоним"
 msgid "Alias created"
 msgstr "Синоним создан"
 
-#: src/components/identities/IdentityList.vue:53
-#: src/components/identities/IdentityList.vue:134
+#: src/components/identities/IdentityList.vue:54
+#: src/components/identities/IdentityList.vue:136
 msgid "Alias deleted"
 msgstr ""
 
-#: src/components/identities/AliasForm.vue:28
-#: src/components/identities/AliasForm.vue:111
+#: src/components/identities/AliasForm.vue:30
+#: src/components/identities/AliasForm.vue:113
 msgid "Alias updated"
 msgstr ""
 
@@ -204,7 +204,7 @@ msgstr ""
 msgid "Alias(es) of this mailbox. To create a catchall alias, just enter the domain name (@domain.tld)."
 msgstr ""
 
-#: src/components/domains/DomainList.vue:25
+#: src/components/domains/DomainList.vue:26
 #: src/components/domains/DomainSummary.vue:31
 #: src/components/identities/AccountAliases.vue:3
 #: src/components/identities/AccountCreationForm.vue:62
@@ -213,7 +213,7 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:114
 #: src/components/identities/AccountCreationForm.vue:117
 #: src/components/identities/AccountCreationForm.vue:145
-#: src/components/domains/DomainList.vue:167
+#: src/components/domains/DomainList.vue:169
 msgid "Aliases"
 msgstr "Синоним(ы)"
 
@@ -221,7 +221,7 @@ msgstr "Синоним(ы)"
 msgid "Alignment"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:118 src/components/layout/Navbar.vue:233
+#: src/components/layout/Navbar.vue:119 src/components/layout/Navbar.vue:234
 msgid "API"
 msgstr "API"
 
@@ -256,8 +256,8 @@ msgstr "Применить"
 msgid "Associated domains"
 msgstr "Список квот"
 
-#: src/components/layout/Navbar.vue:75 src/views/logs/AuditTrail.vue:3
-#: src/components/layout/Navbar.vue:190
+#: src/components/layout/Navbar.vue:76 src/views/logs/AuditTrail.vue:3
+#: src/components/layout/Navbar.vue:191
 msgid "Audit trail"
 msgstr ""
 
@@ -338,7 +338,8 @@ msgstr ""
 msgid "Choose a role"
 msgstr ""
 
-#: src/App.vue:18 src/App.vue:2 src/components/domains/AdministratorList.vue:36
+#: src/App.vue:22 src/App.vue:14 src/App.vue:2
+#: src/components/domains/AdministratorList.vue:36
 #: src/components/domains/DomainAliasForm.vue:21
 #: src/components/domains/DomainDKIMKey.vue:22
 #: src/components/domains/DomainDNSConfig.vue:40
@@ -376,10 +377,6 @@ msgstr ""
 #: src/components/tools/ImportForm.vue:19
 msgid "Continue on error"
 msgstr "Продолжать при ошибке"
-
-#: src/components/imap_migration/ProviderGeneralForm.vue:11
-msgid "Control if the IMAP is secured through SSL/TLS or Start SSL"
-msgstr ""
 
 #: src/components/domains/DomainGeneralForm.vue:8
 msgid "Control if this domain will be allowed to send and receive messages"
@@ -444,7 +441,7 @@ msgstr ""
 msgid "Daily sending limit"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:47 src/components/layout/Navbar.vue:162
+#: src/components/layout/Navbar.vue:48 src/components/layout/Navbar.vue:163
 msgid "Dashboard"
 msgstr "Приборная панель"
 
@@ -474,18 +471,18 @@ msgstr ""
 #: src/components/alarms/AlarmList.vue:76
 #: src/components/alarms/AlarmList.vue:102
 #: src/components/domains/DomainAliasForm.vue:24
-#: src/components/domains/DomainList.vue:115
-#: src/components/identities/IdentityList.vue:162
-#: src/components/identities/IdentityList.vue:174
-#: src/components/identities/IdentityList.vue:185
+#: src/components/domains/DomainList.vue:116
+#: src/components/identities/IdentityList.vue:164
+#: src/components/identities/IdentityList.vue:176
+#: src/components/identities/IdentityList.vue:187
 #: src/components/imap_migration/MigrationsList.vue:50
 #: src/components/imap_migration/ProvidersList.vue:45
 #: src/components/imap_migration/ProvidersList.vue:137
 #: src/components/imap_migration/MigrationsList.vue:105
-#: src/components/identities/IdentityList.vue:243
-#: src/components/identities/IdentityList.vue:255
-#: src/components/identities/IdentityList.vue:266
-#: src/components/domains/DomainList.vue:257
+#: src/components/identities/IdentityList.vue:246
+#: src/components/identities/IdentityList.vue:258
+#: src/components/identities/IdentityList.vue:269
+#: src/components/domains/DomainList.vue:259
 msgid "Delete"
 msgstr ""
 
@@ -597,8 +594,8 @@ msgstr ""
 msgid "DNS configuration help"
 msgstr ""
 
-#: src/components/domains/DomainList.vue:26
-#: src/components/domains/DomainList.vue:168
+#: src/components/domains/DomainList.vue:27
+#: src/components/domains/DomainList.vue:170
 msgid "DNS status"
 msgstr "Статистика"
 
@@ -610,13 +607,13 @@ msgstr ""
 msgid "Do not delete domain folder"
 msgstr ""
 
-#: src/components/identities/IdentityList.vue:36
-#: src/components/identities/IdentityList.vue:118
+#: src/components/identities/IdentityList.vue:37
+#: src/components/identities/IdentityList.vue:120
 msgid "Do you really want to delete the alias %{ alias }?"
 msgstr ""
 
-#: src/components/identities/IdentityList.vue:92
-#: src/components/identities/IdentityList.vue:174
+#: src/components/identities/IdentityList.vue:93
+#: src/components/identities/IdentityList.vue:176
 msgid "Do you really want to delete the selected identities?"
 msgstr ""
 
@@ -658,8 +655,8 @@ msgstr "Домен создан"
 msgid "Domain default value"
 msgstr ""
 
-#: src/components/domains/DomainList.vue:70
-#: src/components/domains/DomainList.vue:212
+#: src/components/domains/DomainList.vue:71
+#: src/components/domains/DomainList.vue:214
 msgid "Domain deleted"
 msgstr ""
 
@@ -667,8 +664,8 @@ msgstr ""
 msgid "Domain name (ex: domain.tld)"
 msgstr ""
 
-#: src/components/domains/DomainForm.vue:53
-#: src/components/domains/DomainForm.vue:215
+#: src/components/domains/DomainForm.vue:56
+#: src/components/domains/DomainForm.vue:218
 msgid "Domain updated"
 msgstr ""
 
@@ -677,8 +674,8 @@ msgstr ""
 msgid "domain's default value"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:53 src/views/domains/Domains.vue:3
-#: src/components/layout/Navbar.vue:168
+#: src/components/layout/Navbar.vue:54 src/views/domains/Domains.vue:3
+#: src/components/layout/Navbar.vue:169
 msgid "Domains"
 msgstr "Домены"
 
@@ -686,14 +683,14 @@ msgstr "Домены"
 msgid "Don't treat duplicated objects as errors"
 msgstr ""
 
-#: src/components/domains/DomainList.vue:114
-#: src/components/identities/IdentityList.vue:157
-#: src/components/identities/IdentityList.vue:169
+#: src/components/domains/DomainList.vue:115
+#: src/components/identities/IdentityList.vue:159
+#: src/components/identities/IdentityList.vue:171
 #: src/components/imap_migration/ProvidersList.vue:51
 #: src/components/imap_migration/ProvidersList.vue:143
-#: src/components/identities/IdentityList.vue:238
-#: src/components/identities/IdentityList.vue:250
-#: src/components/domains/DomainList.vue:256
+#: src/components/identities/IdentityList.vue:241
+#: src/components/identities/IdentityList.vue:253
+#: src/components/domains/DomainList.vue:258
 msgid "Edit"
 msgstr ""
 
@@ -732,7 +729,7 @@ msgstr ""
 msgid "Email address"
 msgstr "Е-майл адрес"
 
-#: src/components/layout/Navbar.vue:92 src/components/layout/Navbar.vue:207
+#: src/components/layout/Navbar.vue:93 src/components/layout/Navbar.vue:208
 #, fuzzy
 msgid "Email providers"
 msgstr "Е-майл адрес"
@@ -840,8 +837,8 @@ msgstr ""
 msgid "Forgot password?"
 msgstr "Забыли пароль?"
 
-#: src/components/layout/Navbar.vue:142 src/views/user/Forward.vue:3
-#: src/components/layout/Navbar.vue:257
+#: src/components/layout/Navbar.vue:143 src/views/user/Forward.vue:3
+#: src/components/layout/Navbar.vue:258
 msgid "Forward"
 msgstr "Перенаправленые"
 
@@ -877,7 +874,7 @@ msgid "Full name"
 msgstr "Имя файла"
 
 #: src/components/identities/IdentityList.vue:18
-#: src/components/identities/IdentityList.vue:99
+#: src/components/identities/IdentityList.vue:100
 msgid "Fullname/recipient"
 msgstr ""
 
@@ -955,19 +952,19 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:59 src/views/identities/Identities.vue:3
-#: src/components/layout/Navbar.vue:174
+#: src/components/layout/Navbar.vue:60 src/views/identities/Identities.vue:3
+#: src/components/layout/Navbar.vue:175
 msgid "Identities"
 msgstr "Пользователи"
 
-#: src/components/identities/IdentityList.vue:112
-#: src/components/identities/IdentityList.vue:193
+#: src/components/identities/IdentityList.vue:113
+#: src/components/identities/IdentityList.vue:195
 #, fuzzy
 msgid "Identities deleted"
 msgstr "Пользователи"
 
-#: src/components/tools/CreationForm.vue:40
-#: src/components/tools/CreationForm.vue:113
+#: src/components/tools/CreationForm.vue:42
+#: src/components/tools/CreationForm.vue:116
 msgid "If you close this form now, your modifications won't be saved. Do you confirm?"
 msgstr ""
 
@@ -975,7 +972,7 @@ msgstr ""
 msgid "If you configured it recently, please wait for the first report to be received and processed."
 msgstr ""
 
-#: src/components/layout/Navbar.vue:88 src/components/layout/Navbar.vue:203
+#: src/components/layout/Navbar.vue:89 src/components/layout/Navbar.vue:204
 msgid "IMAP Migration"
 msgstr ""
 
@@ -1007,8 +1004,8 @@ msgstr "Импорт информации о пользователях"
 msgid "Indicate one or more recipients separated by a comma (,)"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:111 src/views/admin/Information.vue:3
-#: src/components/layout/Navbar.vue:226
+#: src/components/layout/Navbar.vue:112 src/views/admin/Information.vue:3
+#: src/components/layout/Navbar.vue:227
 msgid "Information"
 msgstr "Информация"
 
@@ -1040,6 +1037,10 @@ msgstr ""
 
 #: src/components/domains/DomainDNSConfig.vue:12
 msgid "IP address of your Modoboa server"
+msgstr ""
+
+#: src/components/imap_migration/ProviderGeneralForm.vue:11
+msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
 msgstr ""
 
 #: src/views/Dashboard.vue:7
@@ -1107,12 +1108,12 @@ msgstr ""
 msgid "Logger"
 msgstr "Логгер"
 
-#: src/components/layout/Navbar.vue:158 src/components/layout/Topbar.vue:6
-#: src/components/layout/Navbar.vue:273 src/components/layout/Topbar.vue:53
+#: src/components/layout/Navbar.vue:159 src/components/layout/Topbar.vue:6
+#: src/components/layout/Navbar.vue:274 src/components/layout/Topbar.vue:53
 msgid "Logout"
 msgstr "Завершить сеанс"
 
-#: src/components/layout/Navbar.vue:71 src/components/layout/Navbar.vue:186
+#: src/components/layout/Navbar.vue:72 src/components/layout/Navbar.vue:187
 msgid "Logs"
 msgstr "Логи"
 
@@ -1153,7 +1154,7 @@ msgstr ""
 msgid "messages"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:80 src/components/layout/Navbar.vue:195
+#: src/components/layout/Navbar.vue:81 src/components/layout/Navbar.vue:196
 msgid "Messages"
 msgstr ""
 
@@ -1163,7 +1164,7 @@ msgstr ""
 msgid "Migration deleted"
 msgstr "Дата создания"
 
-#: src/components/layout/Navbar.vue:97 src/components/layout/Navbar.vue:212
+#: src/components/layout/Navbar.vue:98 src/components/layout/Navbar.vue:213
 #, fuzzy
 msgid "Migrations"
 msgstr "Подтверждение"
@@ -1190,19 +1191,19 @@ msgstr ""
 #: src/components/domains/DNSDetail.vue:18
 #: src/components/domains/DomainAliasForm.vue:40
 #: src/components/domains/DomainCreationForm.vue:25
-#: src/components/domains/DomainList.vue:24
+#: src/components/domains/DomainList.vue:25
 #: src/components/domains/DomainOptionsForm.vue:4
 #: src/components/identities/IdentityList.vue:17
 #: src/components/imap_migration/ProviderCreationForm.vue:29
 #: src/components/imap_migration/ProvidersList.vue:15
 #: src/components/imap_migration/ProvidersList.vue:107
 #: src/components/imap_migration/ProviderCreationForm.vue:51
-#: src/components/identities/IdentityList.vue:98
+#: src/components/identities/IdentityList.vue:99
 #: src/components/domains/DNSDetail.vue:176
 #: src/components/domains/DomainAliasForm.vue:13
 #: src/components/domains/DomainCreationForm.vue:78
 #: src/components/domains/AdministratorList.vue:87
-#: src/components/domains/DomainList.vue:166
+#: src/components/domains/DomainList.vue:168
 #: src/components/admin/ComponentsInformationTable.vue:51
 msgid "Name"
 msgstr "Логин"
@@ -1257,17 +1258,17 @@ msgid "Next"
 msgstr "Следующая"
 
 #: src/components/domains/DNSDetail.vue:35
-#: src/components/domains/DomainList.vue:61
-#: src/components/identities/IdentityList.vue:42
-#: src/components/identities/IdentityList.vue:67
-#: src/components/identities/IdentityList.vue:97
-#: src/components/tools/CreationForm.vue:44
-#: src/components/tools/CreationForm.vue:117
-#: src/components/identities/IdentityList.vue:123
-#: src/components/identities/IdentityList.vue:148
-#: src/components/identities/IdentityList.vue:178
+#: src/components/domains/DomainList.vue:62
+#: src/components/identities/IdentityList.vue:43
+#: src/components/identities/IdentityList.vue:68
+#: src/components/identities/IdentityList.vue:98
+#: src/components/tools/CreationForm.vue:46
+#: src/components/tools/CreationForm.vue:120
+#: src/components/identities/IdentityList.vue:125
+#: src/components/identities/IdentityList.vue:150
+#: src/components/identities/IdentityList.vue:180
 #: src/components/domains/DNSDetail.vue:193
-#: src/components/domains/DomainList.vue:203
+#: src/components/domains/DomainList.vue:205
 msgid "No"
 msgstr ""
 
@@ -1420,9 +1421,9 @@ msgstr ""
 msgid "Proceed"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:125 src/components/layout/Navbar.vue:152
-#: src/views/user/Profile.vue:3 src/components/layout/Navbar.vue:240
-#: src/components/layout/Navbar.vue:267
+#: src/components/layout/Navbar.vue:126 src/components/layout/Navbar.vue:153
+#: src/views/user/Profile.vue:3 src/components/layout/Navbar.vue:241
+#: src/components/layout/Navbar.vue:268
 msgid "Profile"
 msgstr ""
 
@@ -1471,14 +1472,14 @@ msgstr ""
 
 #: src/components/domains/DomainCreationForm.vue:40
 #: src/components/domains/DomainLimitationsForm.vue:3
-#: src/components/domains/DomainList.vue:28
+#: src/components/domains/DomainList.vue:29
 #: src/components/domains/DomainSummary.vue:15
 #: src/components/identities/AccountCreationForm.vue:50
 #: src/components/identities/AccountMailboxForm.vue:14
 #: src/components/identities/AccountCreationForm.vue:102
 #: src/components/identities/AccountMailboxForm.vue:3
 #: src/components/domains/DomainCreationForm.vue:93
-#: src/components/domains/DomainList.vue:170
+#: src/components/domains/DomainList.vue:172
 msgid "Quota"
 msgstr ""
 
@@ -1642,8 +1643,8 @@ msgstr ""
 msgid "Secured"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:131 src/views/user/Security.vue:3
-#: src/components/layout/Navbar.vue:246
+#: src/components/layout/Navbar.vue:132 src/views/user/Security.vue:3
+#: src/components/layout/Navbar.vue:247
 msgid "Security"
 msgstr ""
 
@@ -1670,8 +1671,8 @@ msgstr ""
 msgid "Sender addresses"
 msgstr "Ошибочный запрос"
 
-#: src/components/domains/DomainList.vue:27
-#: src/components/domains/DomainList.vue:169
+#: src/components/domains/DomainList.vue:28
+#: src/components/domains/DomainList.vue:171
 msgid "Sending limit"
 msgstr ""
 
@@ -1693,7 +1694,7 @@ msgstr ""
 msgid "Service:"
 msgstr ""
 
-#: src/components/layout/Navbar.vue:105 src/components/layout/Navbar.vue:220
+#: src/components/layout/Navbar.vue:106 src/components/layout/Navbar.vue:221
 msgid "Settings"
 msgstr "Настройки"
 
@@ -1761,7 +1762,7 @@ msgid "Super administrator"
 msgstr "Супер администратор"
 
 #: src/components/identities/IdentityList.vue:19
-#: src/components/identities/IdentityList.vue:100
+#: src/components/identities/IdentityList.vue:101
 msgid "Tags"
 msgstr "Теги"
 
@@ -1936,17 +1937,17 @@ msgid "Verify code"
 msgstr ""
 
 #: src/components/domains/DNSDetail.vue:29
-#: src/components/domains/DomainList.vue:54
-#: src/components/identities/IdentityList.vue:35
-#: src/components/identities/IdentityList.vue:60
-#: src/components/identities/IdentityList.vue:91
-#: src/components/tools/CreationForm.vue:39 src/views/user/APISetup.vue:40
-#: src/components/tools/CreationForm.vue:112
-#: src/components/identities/IdentityList.vue:116
-#: src/components/identities/IdentityList.vue:141
-#: src/components/identities/IdentityList.vue:172
+#: src/components/domains/DomainList.vue:55
+#: src/components/identities/IdentityList.vue:36
+#: src/components/identities/IdentityList.vue:61
+#: src/components/identities/IdentityList.vue:92
+#: src/components/tools/CreationForm.vue:41 src/views/user/APISetup.vue:40
+#: src/components/tools/CreationForm.vue:115
+#: src/components/identities/IdentityList.vue:118
+#: src/components/identities/IdentityList.vue:143
+#: src/components/identities/IdentityList.vue:174
 #: src/components/domains/DNSDetail.vue:187
-#: src/components/domains/DomainList.vue:196 src/views/user/APISetup.vue:81
+#: src/components/domains/DomainList.vue:198 src/views/user/APISetup.vue:81
 msgid "Warning"
 msgstr ""
 
@@ -1974,17 +1975,17 @@ msgid "Year"
 msgstr "Год"
 
 #: src/components/domains/DNSDetail.vue:36
-#: src/components/domains/DomainList.vue:62
-#: src/components/identities/IdentityList.vue:43
-#: src/components/identities/IdentityList.vue:68
-#: src/components/identities/IdentityList.vue:98
-#: src/components/tools/CreationForm.vue:43
-#: src/components/tools/CreationForm.vue:116
-#: src/components/identities/IdentityList.vue:124
-#: src/components/identities/IdentityList.vue:149
-#: src/components/identities/IdentityList.vue:179
+#: src/components/domains/DomainList.vue:63
+#: src/components/identities/IdentityList.vue:44
+#: src/components/identities/IdentityList.vue:69
+#: src/components/identities/IdentityList.vue:99
+#: src/components/tools/CreationForm.vue:45
+#: src/components/tools/CreationForm.vue:119
+#: src/components/identities/IdentityList.vue:126
+#: src/components/identities/IdentityList.vue:151
+#: src/components/identities/IdentityList.vue:181
 #: src/components/domains/DNSDetail.vue:194
-#: src/components/domains/DomainList.vue:204
+#: src/components/domains/DomainList.vue:206
 msgid "Yes"
 msgstr ""
 
@@ -1996,7 +1997,7 @@ msgstr ""
 msgid "You can use a different character as separator."
 msgstr ""
 
-#: src/App.vue:66 src/App.vue:102
+#: src/App.vue:69 src/App.vue:110
 msgid "You have one or more opened alarms"
 msgstr ""
 

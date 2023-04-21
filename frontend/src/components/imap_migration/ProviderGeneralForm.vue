@@ -40,7 +40,7 @@
   <v-switch
     :label="'Secured' | translate"
     v-model="form.secured"
-    :hint="'Control if the IMAP is secured through SSL/TLS or Start SSL' | translate"
+    :hint="'Is the IMAP connection secured using SSL/TLS or StartTLS' | translate"
     persistent-hint
     @change="update"
     />
@@ -104,7 +104,6 @@ export default {
           port: this.form.port,
           secured: this.form.secured
         }
-        console.error(params)
         Provider.checkProvider(params).then(response => {
           this.connectionStatus = 1
           this.loading = false
