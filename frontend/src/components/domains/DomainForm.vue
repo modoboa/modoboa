@@ -149,10 +149,10 @@
     </v-expansion-panel>
   </v-expansion-panels>
   <div class="mt-4 d-flex justify-end">
-    <v-btn @click="$router.go(-1)">
+    <v-btn @click="$router.go(-1)" :loading="working">
       <translate>Cancel</translate>
     </v-btn>
-    <v-btn class="ml-4" color="primary darken-1" @click="save">
+    <v-btn class="ml-4" color="primary darken-1" @click="save" :loading="working">
       <translate>Save</translate>
     </v-btn>
   </div>
@@ -187,7 +187,8 @@ export default {
     return {
       editedDomain: {},
       limitsConfig: {},
-      panel: 0
+      panel: 0,
+      working: false
     }
   },
   methods: {
@@ -204,16 +205,21 @@ export default {
           return
         }
       }
-      const data = { ...this.editedDomain }
-      if (data.transport === null) {
-        delete data.transport
+      this.working = true
+      try {
+        const data = { ...this.editedDomain }
+        if (data.transport === null) {
+          delete data.transport
+        }
+        if (data.type === 'relaydomain') {
+          this.$refs.transportForm.checkSettingTypes(data)
+        }
+        this.$store.dispatch('domains/updateDomain', data).then(() => {
+          bus.$emit('notification', { msg: this.$gettext('Domain updated') })
+        })
+      } finally {
+        this.working = false
       }
-      if (data.type === 'relaydomain') {
-        this.$refs.transportForm.checkSettingTypes(data)
-      }
-      this.$store.dispatch('domains/updateDomain', data).then(resp => {
-        bus.$emit('notification', { msg: this.$gettext('Domain updated') })
-      })
     }
   },
   created () {
@@ -226,7 +232,6 @@ export default {
       handler: function (val) {
         if (val) {
           this.editedDomain = JSON.parse(JSON.stringify(val))
-          console.log(this.editedDomain)
         }
       },
       immediate: true

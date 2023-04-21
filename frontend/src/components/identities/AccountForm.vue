@@ -99,7 +99,7 @@
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel
-      v-if="limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
+      v-if="limitsConfig.params && limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
       >
       <v-expansion-panel-header>
         <v-row no-gutters>
@@ -114,10 +114,10 @@
     </v-expansion-panel>
   </v-expansion-panels>
   <div class="mt-4 d-flex justify-end">
-    <v-btn @click="$router.go(-1)">
+    <v-btn @click="$router.go(-1)" :loading="working">
       <translate>Cancel</translate>
     </v-btn>
-    <v-btn class="ml-4" color="primary darken-1" @click="save">
+    <v-btn class="ml-4" color="primary darken-1" @click="save" :loading="working">
       <translate>Save</translate>
     </v-btn>
   </div>
@@ -151,7 +151,8 @@ export default {
     return {
       editedAccount: {},
       limitsConfig: {},
-      panel: 0
+      panel: 0,
+      working: false
     }
   },
   methods: {
@@ -168,6 +169,7 @@ export default {
           return
         }
       }
+      this.working = true
       try {
         const data = JSON.parse(JSON.stringify(this.editedAccount))
         if (this.usernameIsEmail) {
@@ -201,6 +203,8 @@ export default {
         if (this.$refs.resourcesForm) {
           this.$refs.resourcesForm.$refs.observer.setErrors(error.response.data)
         }
+      } finally {
+        this.working = false
       }
     }
   },

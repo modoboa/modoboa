@@ -99,8 +99,17 @@ export default {
       this.$emit('input', this.form)
     }
   },
-  mounted () {
-    this.form = { ...this.value }
+  watch: {
+    value: {
+      handler (newValue) {
+        if (newValue) {
+          this.form = { ...newValue }
+        } else {
+          this.form = {}
+        }
+      },
+      immediate: true
+    }
   }
 }
 </script>

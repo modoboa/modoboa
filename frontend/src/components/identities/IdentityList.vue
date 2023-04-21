@@ -28,6 +28,7 @@
     :headers="headers"
     :items="identities"
     :search="search"
+    :loading="loading"
     item-key="identity"
     class="elevation-1"
     show-select
@@ -102,6 +103,7 @@ export default {
       ],
       identities: [],
       keepAccountFolder: false,
+      loading: true,
       search: '',
       selected: []
     }
@@ -203,6 +205,7 @@ export default {
       identities.getAll().then(resp => {
         this.identities = resp.data
         this.selected = []
+        this.loading = false
       })
     },
     downloadFile (options) {

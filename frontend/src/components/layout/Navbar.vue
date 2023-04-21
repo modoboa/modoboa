@@ -79,7 +79,7 @@
       </template>
     </v-list>
     <template v-slot:append>
-      <v-menu rounded="lg" offset-y top>
+      <v-menu rounded="lg" offset-y top v-if="isAuthenticated">
         <template v-slot:activator="{ attrs, on }">
           <div class="d-flex user-box justify-center align-center white--text py-2" v-bind="attrs" v-on="on">
             <v-avatar size="40" color="primary">
@@ -120,7 +120,8 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      authUser: 'auth/authUser'
+      authUser: 'auth/authUser',
+      isAuthenticated: 'auth/isAuthenticated'
     }),
     userInitials () {
       let initials = null

@@ -57,8 +57,9 @@
         <div class="d-flex justify-center mt-8">
           <v-btn
             color="primary"
-            @click="$emit('create')"
+            @click="create"
             large
+            :loading="working"
             >
             <translate>Confirm and create</translate>
           </v-btn>
@@ -89,12 +90,14 @@ export default {
   },
   data () {
     return {
-      currentStep: 1
+      currentStep: 1,
+      working: false
     }
   },
   methods: {
     resetForm () {
       this.currentStep = 1
+      this.working = false
       this.steps.forEach((item, index) => {
         const observer = this.formObserverGetter(index + 1)
         if (observer !== undefined) {
@@ -139,6 +142,10 @@ export default {
         }
       }
       this.currentStep = next
+    },
+    create () {
+      this.working = true
+      this.$emit('create')
     }
   }
 }
