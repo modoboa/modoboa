@@ -65,7 +65,7 @@ class DNSRecord(models.Model):
             func = getattr(lib, "check_{}_syntax".format(self.type))
             result = func(self.value)
         except lib.DNSSyntaxError as err:
-            self.error = str(err)
+            self.error = str(err)[:50]
             self.updated = timezone.now()
             return
         except AttributeError:
