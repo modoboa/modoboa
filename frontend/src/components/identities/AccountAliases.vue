@@ -4,9 +4,9 @@
     <translate class="headline">Aliases</translate>
   </v-card-title>
   <v-card-text>
-    <p v-for="alias in account.aliases" :key="alias">
+    <v-chip v-for="alias in account.aliases" :key="alias" class="mr-2 mt-2">
       {{ alias }}
-    </p>
+    </v-chip>
   </v-card-text>
 </v-card>
 </template>
