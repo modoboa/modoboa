@@ -170,6 +170,7 @@ jobs:
           nvm install 14
           yarn install
           yarn build
+          make translations
           cd ..
       - name: Build packages
         run: |

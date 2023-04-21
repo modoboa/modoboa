@@ -22,6 +22,7 @@ dist/
 node_modules
 /static/dist
 /frontend/webpack-stats.json
+/frontend/src/translations.json
 
 # TOX stuff
 test_project/modoboa.db
