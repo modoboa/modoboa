@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 16:09+0200\n"
+"POT-Creation-Date: 2023-04-20 16:22+0200\n"
 "PO-Revision-Date: 2023-02-23 11:26+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -81,11 +81,11 @@ msgstr "Konto uppdaterat"
 #: src/components/identities/IdentityList.vue:20
 #: src/components/imap_migration/MigrationsList.vue:16
 #: src/components/imap_migration/ProvidersList.vue:20
-#: src/components/alarms/AlarmList.vue:100
-#: src/components/domains/DomainList.vue:171
-#: src/components/identities/IdentityList.vue:101
 #: src/components/imap_migration/ProvidersList.vue:112
 #: src/components/imap_migration/MigrationsList.vue:71
+#: src/components/identities/IdentityList.vue:101
+#: src/components/alarms/AlarmList.vue:100
+#: src/components/domains/DomainList.vue:171
 msgid "Actions"
 msgstr "Åtgärder"
 
@@ -112,11 +112,11 @@ msgstr ""
 #: src/components/identities/AliasCreationForm.vue:20
 #: src/components/imap_migration/ProviderCreationForm.vue:30
 #: src/components/imap_migration/ProvidersList.vue:16
-#: src/components/domains/DNSDetail.vue:177
-#: src/components/identities/AliasCreationForm.vue:42
-#: src/components/identities/AccountSenderAddresses.vue:63
 #: src/components/imap_migration/ProvidersList.vue:108
 #: src/components/imap_migration/ProviderCreationForm.vue:52
+#: src/components/identities/AliasCreationForm.vue:42
+#: src/components/identities/AccountSenderAddresses.vue:63
+#: src/components/domains/DNSDetail.vue:177
 msgid "Address"
 msgstr "Adress"
 
@@ -170,9 +170,8 @@ msgid "Alarm re-opened"
 msgstr ""
 
 #: src/components/domains/DomainList.vue:119
-#: src/components/layout/Navbar.vue:65
+#: src/components/layout/Navbar.vue:65 src/components/layout/Navbar.vue:180
 #: src/components/domains/DomainList.vue:261
-#: src/components/layout/Navbar.vue:180
 msgid "Alarms"
 msgstr ""
 
@@ -211,10 +210,10 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:62
 #: src/components/identities/AccountCreationForm.vue:65
 #: src/components/identities/AccountCreationForm.vue:93
-#: src/components/domains/DomainList.vue:167
 #: src/components/identities/AccountCreationForm.vue:114
 #: src/components/identities/AccountCreationForm.vue:117
 #: src/components/identities/AccountCreationForm.vue:145
+#: src/components/domains/DomainList.vue:167
 msgid "Aliases"
 msgstr "Alias"
 
@@ -452,8 +451,8 @@ msgstr "Kontrollpanel"
 
 #: src/components/logs/AuditTrailList.vue:8
 #: src/components/logs/MessageList.vue:10
-#: src/components/logs/MessageList.vue:43
 #: src/components/logs/AuditTrailList.vue:40
+#: src/components/logs/MessageList.vue:43
 msgid "Date"
 msgstr ""
 
@@ -482,12 +481,12 @@ msgstr "Standardkvota i MB applicerad på nya brevlådor. 0 betyder ingen kvota.
 #: src/components/identities/IdentityList.vue:185
 #: src/components/imap_migration/MigrationsList.vue:50
 #: src/components/imap_migration/ProvidersList.vue:45
-#: src/components/domains/DomainList.vue:257
+#: src/components/imap_migration/ProvidersList.vue:137
+#: src/components/imap_migration/MigrationsList.vue:105
 #: src/components/identities/IdentityList.vue:243
 #: src/components/identities/IdentityList.vue:255
 #: src/components/identities/IdentityList.vue:266
-#: src/components/imap_migration/ProvidersList.vue:137
-#: src/components/imap_migration/MigrationsList.vue:105
+#: src/components/domains/DomainList.vue:257
 msgid "Delete"
 msgstr ""
 
@@ -499,9 +498,9 @@ msgstr ""
 #: src/components/identities/AliasCreationForm.vue:31
 #: src/components/identities/AliasGeneralForm.vue:87
 #: src/components/identities/AliasSummary.vue:19
-#: src/components/admin/ComponentsInformationTable.vue:54
-#: src/components/identities/AliasGeneralForm.vue:56
 #: src/components/identities/AliasCreationForm.vue:53
+#: src/components/identities/AliasGeneralForm.vue:56
+#: src/components/admin/ComponentsInformationTable.vue:54
 msgid "Description"
 msgstr "Beskrivning"
 
@@ -625,8 +624,8 @@ msgstr ""
 #: src/components/alarms/AlarmList.vue:17
 #: src/components/identities/AliasGeneralForm.vue:56
 #: src/views/domains/Domain.vue:3 src/views/domains/Domains.vue:20
-#: src/components/alarms/AlarmList.vue:97
 #: src/components/identities/AliasGeneralForm.vue:31
+#: src/components/alarms/AlarmList.vue:97
 msgid "Domain"
 msgstr "Domän"
 
@@ -692,10 +691,10 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:157
 #: src/components/identities/IdentityList.vue:169
 #: src/components/imap_migration/ProvidersList.vue:51
-#: src/components/domains/DomainList.vue:256
+#: src/components/imap_migration/ProvidersList.vue:143
 #: src/components/identities/IdentityList.vue:238
 #: src/components/identities/IdentityList.vue:250
-#: src/components/imap_migration/ProvidersList.vue:143
+#: src/components/domains/DomainList.vue:256
 msgid "Edit"
 msgstr ""
 
@@ -768,8 +767,8 @@ msgstr "Aktivera DNS kontroller"
 #: src/components/identities/AccountGeneralForm.vue:13
 #: src/components/identities/AliasForm.vue:17
 #: src/components/identities/AliasGeneralForm.vue:11
-#: src/components/domains/DomainCreationForm.vue:80
 #: src/components/identities/AccountCreationForm.vue:91
+#: src/components/domains/DomainCreationForm.vue:80
 msgid "Enabled"
 msgstr "Aktiverad"
 
@@ -808,8 +807,8 @@ msgstr ""
 #: src/components/identities/AliasCreationForm.vue:26
 #: src/components/identities/AliasGeneralForm.vue:79
 #: src/components/identities/AliasSummary.vue:15
-#: src/components/identities/AliasGeneralForm.vue:49
 #: src/components/identities/AliasCreationForm.vue:48
+#: src/components/identities/AliasGeneralForm.vue:49
 msgid "Expire at"
 msgstr "Går ut"
 
@@ -830,9 +829,10 @@ msgstr "Misslyckades"
 
 #: src/components/identities/AccountCreationForm.vue:30
 #: src/components/identities/AccountGeneralForm.vue:32
-#: src/components/user/ProfileForm.vue:45 src/components/user/ProfileForm.vue:9
-#: src/components/identities/AccountGeneralForm.vue:17
+#: src/components/user/ProfileForm.vue:45
 #: src/components/identities/AccountCreationForm.vue:82
+#: src/components/identities/AccountGeneralForm.vue:17
+#: src/components/user/ProfileForm.vue:9
 msgid "First name"
 msgstr ""
 
@@ -901,13 +901,13 @@ msgstr "Helt i linje"
 #: src/components/imap_migration/ProviderCreationForm.vue:44
 #: src/components/imap_migration/ProviderForm.vue:7
 #: src/views/domains/Domain.vue:11
+#: src/components/imap_migration/ProviderCreationForm.vue:49
+#: src/components/imap_migration/ProviderCreationForm.vue:66
+#: src/components/identities/AliasCreationForm.vue:39
+#: src/components/identities/AliasCreationForm.vue:71
 #: src/components/domains/DomainCreationForm.vue:76
 #: src/components/domains/DomainCreationForm.vue:161
 #: src/components/domains/DomainCreationForm.vue:167
-#: src/components/identities/AliasCreationForm.vue:39
-#: src/components/identities/AliasCreationForm.vue:71
-#: src/components/imap_migration/ProviderCreationForm.vue:49
-#: src/components/imap_migration/ProviderCreationForm.vue:66
 msgid "General"
 msgstr "Generellt"
 
@@ -1069,9 +1069,9 @@ msgstr "Senast ändrad"
 #: src/components/identities/AccountCreationForm.vue:31
 #: src/components/identities/AccountGeneralForm.vue:41
 #: src/components/user/ProfileForm.vue:52
-#: src/components/user/ProfileForm.vue:15
-#: src/components/identities/AccountGeneralForm.vue:25
 #: src/components/identities/AccountCreationForm.vue:83
+#: src/components/identities/AccountGeneralForm.vue:25
+#: src/components/user/ProfileForm.vue:15
 msgid "Last name"
 msgstr ""
 
@@ -1109,7 +1109,7 @@ msgid "Logger"
 msgstr "Loggare"
 
 #: src/components/layout/Navbar.vue:158 src/components/layout/Topbar.vue:6
-#: src/components/layout/Topbar.vue:53 src/components/layout/Navbar.vue:273
+#: src/components/layout/Navbar.vue:273 src/components/layout/Topbar.vue:53
 msgid "Logout"
 msgstr "Logga ut"
 
@@ -1121,9 +1121,9 @@ msgstr "Loggar"
 #: src/components/identities/AccountCreationForm.vue:46
 #: src/components/identities/AccountCreationForm.vue:89
 #: src/components/identities/AccountForm.vue:56
-#: src/components/alarms/AlarmList.vue:98
 #: src/components/identities/AccountCreationForm.vue:98
 #: src/components/identities/AccountCreationForm.vue:141
+#: src/components/alarms/AlarmList.vue:98
 msgid "Mailbox"
 msgstr "Brevlådor"
 
@@ -1145,8 +1145,8 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:42
 #: src/components/domains/DomainLimitationsForm.vue:9
 #: src/components/identities/AccountCreationForm.vue:56
-#: src/components/domains/DomainCreationForm.vue:95
 #: src/components/identities/AccountCreationForm.vue:108
+#: src/components/domains/DomainCreationForm.vue:95
 msgid "Message sending limit"
 msgstr ""
 
@@ -1196,15 +1196,15 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:17
 #: src/components/imap_migration/ProviderCreationForm.vue:29
 #: src/components/imap_migration/ProvidersList.vue:15
-#: src/components/domains/DomainAliasForm.vue:13
-#: src/components/domains/DNSDetail.vue:176
-#: src/components/domains/DomainList.vue:166
-#: src/components/domains/AdministratorList.vue:87
-#: src/components/domains/DomainCreationForm.vue:78
-#: src/components/admin/ComponentsInformationTable.vue:51
-#: src/components/identities/IdentityList.vue:98
 #: src/components/imap_migration/ProvidersList.vue:107
 #: src/components/imap_migration/ProviderCreationForm.vue:51
+#: src/components/identities/IdentityList.vue:98
+#: src/components/domains/DNSDetail.vue:176
+#: src/components/domains/DomainAliasForm.vue:13
+#: src/components/domains/DomainCreationForm.vue:78
+#: src/components/domains/AdministratorList.vue:87
+#: src/components/domains/DomainList.vue:166
+#: src/components/admin/ComponentsInformationTable.vue:51
 msgid "Name"
 msgstr "Namn"
 
@@ -1264,12 +1264,12 @@ msgstr "Nästa"
 #: src/components/identities/IdentityList.vue:67
 #: src/components/identities/IdentityList.vue:97
 #: src/components/tools/CreationForm.vue:44
-#: src/components/domains/DNSDetail.vue:193
-#: src/components/domains/DomainList.vue:203
+#: src/components/tools/CreationForm.vue:117
 #: src/components/identities/IdentityList.vue:123
 #: src/components/identities/IdentityList.vue:148
 #: src/components/identities/IdentityList.vue:178
-#: src/components/tools/CreationForm.vue:117
+#: src/components/domains/DNSDetail.vue:193
+#: src/components/domains/DomainList.vue:203
 msgid "No"
 msgstr ""
 
@@ -1362,9 +1362,9 @@ msgstr "Lösenord"
 #: src/components/domains/DomainCreationForm.vue:127
 #: src/components/identities/AccountCreationForm.vue:101
 #: src/components/identities/AccountPasswordForm.vue:32
-#: src/components/domains/DomainCreationForm.vue:180
-#: src/components/identities/AccountPasswordForm.vue:103
 #: src/components/identities/AccountCreationForm.vue:153
+#: src/components/identities/AccountPasswordForm.vue:103
+#: src/components/domains/DomainCreationForm.vue:180
 msgid "Password copied to clipboard"
 msgstr ""
 
@@ -1477,10 +1477,10 @@ msgstr ""
 #: src/components/domains/DomainSummary.vue:15
 #: src/components/identities/AccountCreationForm.vue:50
 #: src/components/identities/AccountMailboxForm.vue:14
-#: src/components/domains/DomainList.vue:170
-#: src/components/domains/DomainCreationForm.vue:93
-#: src/components/identities/AccountMailboxForm.vue:3
 #: src/components/identities/AccountCreationForm.vue:102
+#: src/components/identities/AccountMailboxForm.vue:3
+#: src/components/domains/DomainCreationForm.vue:93
+#: src/components/domains/DomainList.vue:170
 msgid "Quota"
 msgstr ""
 
@@ -1510,8 +1510,8 @@ msgstr "Slumpmässig adress"
 #: src/components/domains/DomainOptionsForm.vue:6
 #: src/components/identities/AccountCreationForm.vue:34
 #: src/components/identities/AccountPasswordForm.vue:9
-#: src/components/domains/DomainCreationForm.vue:111
 #: src/components/identities/AccountCreationForm.vue:86
+#: src/components/domains/DomainCreationForm.vue:111
 msgid "Random password"
 msgstr "Slumpmässigt lösenord"
 
@@ -1602,8 +1602,8 @@ msgstr ""
 #: src/views/user/PasswordRecoveryForm.vue:19
 #: src/views/user/PasswordRecoveryForm.vue:32
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:22
-#: src/views/user/PasswordRecoverySmsTotpForm.vue:70
 #: src/views/user/PasswordRecoveryForm.vue:78
+#: src/views/user/PasswordRecoverySmsTotpForm.vue:70
 msgid "Return to login"
 msgstr ""
 
@@ -1805,10 +1805,10 @@ msgstr ""
 
 #: src/views/Login.vue:41 src/views/user/PasswordRecoveryChangeForm.vue:62
 #: src/views/user/PasswordRecoveryForm.vue:69
-#: src/views/user/PasswordRecoverySmsTotpForm.vue:46
-#: src/views/user/PasswordRecoverySmsTotpForm.vue:94
+#: src/views/user/PasswordRecoverySmsTotpForm.vue:46 src/views/Login.vue:101
+#: src/views/user/PasswordRecoveryChangeForm.vue:122
 #: src/views/user/PasswordRecoveryForm.vue:115
-#: src/views/user/PasswordRecoveryChangeForm.vue:122 src/views/Login.vue:101
+#: src/views/user/PasswordRecoverySmsTotpForm.vue:94
 msgid "Too many unsuccessful attempts, please try later."
 msgstr ""
 
@@ -1915,9 +1915,9 @@ msgstr ""
 #: src/components/domains/AdministratorList.vue:18
 #: src/components/identities/AccountCreationForm.vue:29
 #: src/components/identities/AccountGeneralForm.vue:19 src/views/Login.vue:9
-#: src/components/domains/AdministratorList.vue:86
-#: src/components/identities/AccountGeneralForm.vue:7
 #: src/components/identities/AccountCreationForm.vue:81
+#: src/components/identities/AccountGeneralForm.vue:7
+#: src/components/domains/AdministratorList.vue:86
 msgid "Username"
 msgstr "Användarnamn"
 
@@ -1944,12 +1944,12 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:60
 #: src/components/identities/IdentityList.vue:91
 #: src/components/tools/CreationForm.vue:39 src/views/user/APISetup.vue:40
-#: src/components/domains/DNSDetail.vue:187
-#: src/components/domains/DomainList.vue:196
+#: src/components/tools/CreationForm.vue:112
 #: src/components/identities/IdentityList.vue:116
 #: src/components/identities/IdentityList.vue:141
 #: src/components/identities/IdentityList.vue:172
-#: src/components/tools/CreationForm.vue:112 src/views/user/APISetup.vue:81
+#: src/components/domains/DNSDetail.vue:187
+#: src/components/domains/DomainList.vue:196 src/views/user/APISetup.vue:81
 msgid "Warning"
 msgstr ""
 
@@ -1982,12 +1982,12 @@ msgstr "År"
 #: src/components/identities/IdentityList.vue:68
 #: src/components/identities/IdentityList.vue:98
 #: src/components/tools/CreationForm.vue:43
-#: src/components/domains/DNSDetail.vue:194
-#: src/components/domains/DomainList.vue:204
+#: src/components/tools/CreationForm.vue:116
 #: src/components/identities/IdentityList.vue:124
 #: src/components/identities/IdentityList.vue:149
 #: src/components/identities/IdentityList.vue:179
-#: src/components/tools/CreationForm.vue:116
+#: src/components/domains/DNSDetail.vue:194
+#: src/components/domains/DomainList.vue:204
 msgid "Yes"
 msgstr ""
 
@@ -2011,6 +2011,18 @@ msgstr ""
 msgid "Your API token is:"
 msgstr ""
 
+#: src/filters/index.js:7
+msgid "yes"
+msgstr ""
+
+#: src/filters/index.js:7
+msgid "no"
+msgstr ""
+
+#: src/components/parameters/ParametersForm.vue:99
+msgid "Settings: "
+msgstr ""
+
 #: src/plugins/vee-validate.js:12
 msgid "Passwords mismatch"
 msgstr "Lösenord matchar inte"
@@ -2029,18 +2041,6 @@ msgstr ""
 
 #: src/plugins/vee-validate.js:46
 msgid "Specify a valid port number"
-msgstr ""
-
-#: src/filters/index.js:7
-msgid "yes"
-msgstr ""
-
-#: src/filters/index.js:7
-msgid "no"
-msgstr ""
-
-#: src/components/parameters/ParametersForm.vue:99
-msgid "Settings: "
 msgstr ""
 
 #: src/api/repository.js:38

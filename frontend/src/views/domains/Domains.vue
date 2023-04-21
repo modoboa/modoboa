@@ -67,7 +67,6 @@
       </template>
     </import-form>
   </v-dialog>
-
 </div>
 </template>
 
@@ -89,6 +88,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       showAliasForm: false,
       showDomainWizard: false,
       showImportForm: false
