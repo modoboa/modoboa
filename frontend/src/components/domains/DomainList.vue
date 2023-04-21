@@ -32,6 +32,7 @@
                 :expanded.sync="expanded"
                 @item-expanded="loadAliases"
                 @click:row="showAliases"
+                :loading="!domainsLoaded"
                 >
     <template v-slot:item="{ item, isExpanded, expand }">
       <tr>
@@ -158,7 +159,8 @@ export default {
     MenuItems
   },
   computed: mapGetters({
-    domains: 'domains/domains'
+    domains: 'domains/domains',
+    domainsLoaded: 'domains/domainsLoaded'
   }),
   data () {
     return {

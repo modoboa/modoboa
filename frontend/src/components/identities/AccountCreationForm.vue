@@ -171,6 +171,9 @@ export default {
       return this.$refs[`form_${step}`].$refs.observer
     },
     validateAccount () {
+      if (this.account.mailbox.message_limit === '') {
+        this.$set(this.account.mailbox, 'message_limit', undefined)
+      }
       return accounts.validate(this.account)
     },
     close () {
@@ -183,7 +186,7 @@ export default {
       if (this.account.role === 'SuperAdmins' && this.account.username.indexOf('@') === -1) {
         delete data.mailbox
       }
-      accounts.create(data).then(resp => {
+      accounts.create(data).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Account created') })
         this.$emit('created')
         this.close()

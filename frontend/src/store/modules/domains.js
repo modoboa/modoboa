@@ -16,6 +16,7 @@ const state = {
 // getters
 const getters = {
   domains: state => state.domains,
+  domainsLoaded: state => state.domainsLoaded,
   getDomainByPk: state => pk => {
     for (const domain of state.domains) {
       if (domain.pk === parseInt(pk, 10)) {
