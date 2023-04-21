@@ -1,35 +1,40 @@
 <template>
-<v-app v-if="!isAuthenticated">
-  <v-main>
-    <router-view />
-  </v-main>
-</v-app>
-<v-app v-else>
-  <navbar />
-  <v-main>
-    <v-container fluid>
-      <router-view/>
-    </v-container>
-  </v-main>
-  <v-snackbar
-    v-model="snackbar"
-    :color="notificationColor"
-    :timeout="notificationTimeout"
-    top
-    >
-    {{ notification }}
+<v-app>
+  <template v-if="layoutTemplate === 'empty'">
+    <v-main>
+      <router-view />
+    </v-main>
+  </template>
 
-    <template v-slot:action="{ attrs }">
-      <v-btn
-        color="white"
-        text
-        v-bind="attrs"
-        @click="snackbar = false"
-        >
-        <translate>Close</translate>
-      </v-btn>
-    </template>
-  </v-snackbar>
+  <template v-else>
+    <navbar />
+    <v-main>
+      <v-container fluid>
+        <transition name="fade">
+          <router-view/>
+        </transition>
+      </v-container>
+    </v-main>
+    <v-snackbar
+      v-model="snackbar"
+      :color="notificationColor"
+      :timeout="notificationTimeout"
+      top
+      >
+      {{ notification }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+          >
+          <translate>Close</translate>
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </template>
 </v-app>
 </template>
 
@@ -44,7 +49,10 @@ export default {
   computed: {
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated'
-    })
+    }),
+    layoutTemplate () {
+      return this.$route.meta.layoutTemplate || '2cols'
+    }
   },
   components: {
     Navbar
