@@ -166,15 +166,16 @@ jobs:
       - name: Build frontend
         shell: bash -l {0}
         run: |
+          sudo apt-get install gettext
           cd frontend
           nvm install 14
           yarn install
-          yarn build
           make translations
+          yarn build
           cd ..
       - name: Build packages
         run: |
-          sudo apt-get install librrd-dev rrdtool libssl-dev gettext
+          sudo apt-get install librrd-dev rrdtool libssl-dev
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
           cd modoboa
