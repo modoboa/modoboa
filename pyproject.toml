@@ -83,7 +83,7 @@ dependencies = [
 
 
 [project.scripts]
-modoboa-cli = "mmodoboa:modoboa_admin"
+modoboa-cli = "modoboa:modoboa_admin"
 
 [project.urls]
 homepage = "http://modoboa.org/"
