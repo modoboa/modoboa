@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -89,3 +89,6 @@ modoboa-cli = "modoboa:modoboa_admin"
 homepage = "http://modoboa.org/"
 documentation = "https://modoboa.readthedocs.io/en/latest/"
 repository = "https://github.com/modoboa/modoboa"
+
+[tool.setuptools.dynamic]
+version = {attr = "modoboa.version.get_version"}
