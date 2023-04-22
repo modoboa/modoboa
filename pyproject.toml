@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modoboa"
+version = "0.0.1"
+authors = [
+  { name="Antoine Nguyen", email="tonio@ngyn.org" },
+]
+description = "Mail hosting made simple"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django :: 2.2",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Communications :: Email",
+    "Topic :: Internet :: WWW/HTTP",
+]
+keywords = ["email"]
+license = {file = "LICENSE"}
+dependencies = [
+    "django<4.0",
+    "django-ckeditor==6.3.0",
+    "django-phonenumber-field[phonenumbers]==7.0.2",
+    "django-reversion==5.0.4",
+    "django-xforwardedfor-middleware==2.0",
+    "django-otp==1.1.6",
+    "django-filter",
+    "django-rename-app==0.1.5",
+
+    "dj-database-url",
+
+    "djangorestframework>=3.11,<3.15",
+    "drf-spectacular",
+    "uritemplate",
+    "djangorestframework-simplejwt==5.2.2",
+
+    "passlib~=1.7.4",
+    "bcrypt",  # Requires libffi-dev and python-dev"
+
+    "asgiref",
+    "dnspython==2.3.0",
+    "feedparser==6.0.10",
+    "gevent==22.10.2",
+    "jsonfield==3.1.0",
+    "Pillow",  # Optional dependency for django-ckeditor
+    "progressbar33==2.4",
+    "python-dateutil",
+    "cryptography",
+    "pytz",
+    "requests",
+    "lxml",
+    "chardet",
+    "ovh",
+    "oath",
+    "redis",
+    "rrdtool>=0.1.10",
+    "qrcode",
+
+    "aiosmtplib",
+    "aioredis==2.0.1",
+
+    # PDF credentials
+    "reportlab",
+
+    # DMARC
+    "tldextract>=2.0.2",
+    "defusedxml>=0.6.0",
+    "python-magic>=0.4.24",
+]
+
+[project.scripts]
+modoboa-cli = "mmodoboa:modoboa_admin"
+
+[project.urls]
+homepage = "http://modoboa.org/"
+documentation = "https://modoboa.readthedocs.io/en/latest/"
+repository = "https://github.com/modoboa/modoboa"
