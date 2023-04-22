@@ -4,12 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "modoboa"
-version = "0.0.1"
+dynamic = [
+   "version",
+   "optional-dependencies"
+]
 authors = [
   { name="Antoine Nguyen", email="tonio@ngyn.org" },
 ]
 description = "Mail hosting made simple"
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">=3.7"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -45,7 +48,7 @@ dependencies = [
     "djangorestframework-simplejwt==5.2.2",
 
     "passlib~=1.7.4",
-    "bcrypt",  # Requires libffi-dev and python-dev"
+    "bcrypt",  # Requires libffi-dev and python-dev
 
     "asgiref",
     "dnspython==2.3.0",
@@ -77,6 +80,7 @@ dependencies = [
     "defusedxml>=0.6.0",
     "python-magic>=0.4.24",
 ]
+
 
 [project.scripts]
 modoboa-cli = "mmodoboa:modoboa_admin"
