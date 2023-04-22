@@ -6,5 +6,5 @@ def get_version():
     if github_version is not None:
         return github_version
 
-    return default_version()
+    return default_version(local_scheme="")
 
