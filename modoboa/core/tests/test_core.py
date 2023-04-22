@@ -289,6 +289,4 @@ class APICommunicationTestCase(ModoTestCase):
                 mocks.modo_api_instance_update,
                 mocks.modo_api_versions_no_update):
             management.call_command("communicate_with_public_api")
-        for mails in mail.outbox:
-            print(mails.body)
         self.assertEqual(len(mail.outbox), 1)
