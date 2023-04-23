@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-21 15:13+0200\n"
+"POT-Creation-Date: 2023-04-23 18:55+0200\n"
 "PO-Revision-Date: 2023-02-23 11:26+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -79,11 +79,11 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:20
 #: src/components/imap_migration/MigrationsList.vue:16
 #: src/components/imap_migration/ProvidersList.vue:20
-#: src/components/imap_migration/ProvidersList.vue:112
-#: src/components/imap_migration/MigrationsList.vue:71
+#: src/components/domains/DomainList.vue:173
 #: src/components/identities/IdentityList.vue:102
 #: src/components/alarms/AlarmList.vue:100
-#: src/components/domains/DomainList.vue:173
+#: src/components/imap_migration/MigrationsList.vue:71
+#: src/components/imap_migration/ProvidersList.vue:112
 msgid "Actions"
 msgstr ""
 
@@ -110,11 +110,11 @@ msgstr ""
 #: src/components/identities/AliasCreationForm.vue:20
 #: src/components/imap_migration/ProviderCreationForm.vue:30
 #: src/components/imap_migration/ProvidersList.vue:16
-#: src/components/imap_migration/ProvidersList.vue:108
-#: src/components/imap_migration/ProviderCreationForm.vue:52
+#: src/components/domains/DNSDetail.vue:177
 #: src/components/identities/AliasCreationForm.vue:42
 #: src/components/identities/AccountSenderAddresses.vue:63
-#: src/components/domains/DNSDetail.vue:177
+#: src/components/imap_migration/ProviderCreationForm.vue:52
+#: src/components/imap_migration/ProvidersList.vue:108
 msgid "Address"
 msgstr ""
 
@@ -168,8 +168,9 @@ msgid "Alarm re-opened"
 msgstr ""
 
 #: src/components/domains/DomainList.vue:120
-#: src/components/layout/Navbar.vue:66 src/components/layout/Navbar.vue:181
+#: src/components/layout/Navbar.vue:66
 #: src/components/domains/DomainList.vue:263
+#: src/components/layout/Navbar.vue:181
 msgid "Alarms"
 msgstr ""
 
@@ -208,10 +209,10 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:62
 #: src/components/identities/AccountCreationForm.vue:65
 #: src/components/identities/AccountCreationForm.vue:93
+#: src/components/domains/DomainList.vue:169
 #: src/components/identities/AccountCreationForm.vue:114
 #: src/components/identities/AccountCreationForm.vue:117
 #: src/components/identities/AccountCreationForm.vue:145
-#: src/components/domains/DomainList.vue:169
 msgid "Aliases"
 msgstr ""
 
@@ -247,9 +248,9 @@ msgstr ""
 #: src/components/imap_migration/ProviderCreationForm.vue:45
 #: src/components/imap_migration/ProviderForm.vue:29
 #: src/components/imap_migration/ProvidersList.vue:19
-#: src/components/imap_migration/ProvidersList.vue:111
 #: src/components/imap_migration/ProviderCreationForm.vue:58
 #: src/components/imap_migration/ProviderCreationForm.vue:67
+#: src/components/imap_migration/ProvidersList.vue:111
 msgid "Associated domains"
 msgstr ""
 
@@ -394,6 +395,11 @@ msgstr ""
 msgid "Copy token to clipboard"
 msgstr ""
 
+#: src/components/parameters/ParametersForm.vue:68
+#: src/components/parameters/ParametersForm.vue:158
+msgid "Could not save parameters"
+msgstr ""
+
 #: src/components/domains/DomainCreationForm.vue:54
 #: src/components/domains/DomainOptionsForm.vue:2
 #: src/components/domains/DomainCreationForm.vue:107
@@ -435,6 +441,8 @@ msgid "Daily message sending limit"
 msgstr ""
 
 #: src/components/domains/DomainSummary.vue:23
+#: src/components/identities/AccountSummary.vue:43
+#: src/components/identities/AccountSummary.vue:12
 msgid "Daily sending limit"
 msgstr ""
 
@@ -474,12 +482,12 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:187
 #: src/components/imap_migration/MigrationsList.vue:50
 #: src/components/imap_migration/ProvidersList.vue:45
-#: src/components/imap_migration/ProvidersList.vue:137
-#: src/components/imap_migration/MigrationsList.vue:105
+#: src/components/domains/DomainList.vue:259
 #: src/components/identities/IdentityList.vue:246
 #: src/components/identities/IdentityList.vue:258
 #: src/components/identities/IdentityList.vue:269
-#: src/components/domains/DomainList.vue:259
+#: src/components/imap_migration/MigrationsList.vue:105
+#: src/components/imap_migration/ProvidersList.vue:137
 msgid "Delete"
 msgstr ""
 
@@ -491,8 +499,8 @@ msgstr ""
 #: src/components/identities/AliasCreationForm.vue:31
 #: src/components/identities/AliasGeneralForm.vue:87
 #: src/components/identities/AliasSummary.vue:19
-#: src/components/identities/AliasCreationForm.vue:53
 #: src/components/identities/AliasGeneralForm.vue:56
+#: src/components/identities/AliasCreationForm.vue:53
 #: src/components/admin/ComponentsInformationTable.vue:54
 msgid "Description"
 msgstr ""
@@ -684,10 +692,10 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:159
 #: src/components/identities/IdentityList.vue:171
 #: src/components/imap_migration/ProvidersList.vue:51
-#: src/components/imap_migration/ProvidersList.vue:143
+#: src/components/domains/DomainList.vue:258
 #: src/components/identities/IdentityList.vue:241
 #: src/components/identities/IdentityList.vue:253
-#: src/components/domains/DomainList.vue:258
+#: src/components/imap_migration/ProvidersList.vue:143
 msgid "Edit"
 msgstr ""
 
@@ -759,8 +767,8 @@ msgstr ""
 #: src/components/identities/AccountGeneralForm.vue:13
 #: src/components/identities/AliasForm.vue:17
 #: src/components/identities/AliasGeneralForm.vue:11
-#: src/components/identities/AccountCreationForm.vue:91
 #: src/components/domains/DomainCreationForm.vue:80
+#: src/components/identities/AccountCreationForm.vue:91
 msgid "Enabled"
 msgstr ""
 
@@ -799,8 +807,8 @@ msgstr ""
 #: src/components/identities/AliasCreationForm.vue:26
 #: src/components/identities/AliasGeneralForm.vue:79
 #: src/components/identities/AliasSummary.vue:15
-#: src/components/identities/AliasCreationForm.vue:48
 #: src/components/identities/AliasGeneralForm.vue:49
+#: src/components/identities/AliasCreationForm.vue:48
 msgid "Expire at"
 msgstr ""
 
@@ -822,8 +830,8 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:30
 #: src/components/identities/AccountGeneralForm.vue:32
 #: src/components/user/ProfileForm.vue:45
-#: src/components/identities/AccountCreationForm.vue:82
 #: src/components/identities/AccountGeneralForm.vue:17
+#: src/components/identities/AccountCreationForm.vue:82
 #: src/components/user/ProfileForm.vue:9
 msgid "First name"
 msgstr ""
@@ -891,13 +899,13 @@ msgstr ""
 #: src/components/imap_migration/ProviderCreationForm.vue:44
 #: src/components/imap_migration/ProviderForm.vue:7
 #: src/views/domains/Domain.vue:11
-#: src/components/imap_migration/ProviderCreationForm.vue:49
-#: src/components/imap_migration/ProviderCreationForm.vue:66
-#: src/components/identities/AliasCreationForm.vue:39
-#: src/components/identities/AliasCreationForm.vue:71
 #: src/components/domains/DomainCreationForm.vue:76
 #: src/components/domains/DomainCreationForm.vue:161
 #: src/components/domains/DomainCreationForm.vue:167
+#: src/components/identities/AliasCreationForm.vue:39
+#: src/components/identities/AliasCreationForm.vue:71
+#: src/components/imap_migration/ProviderCreationForm.vue:49
+#: src/components/imap_migration/ProviderCreationForm.vue:66
 msgid "General"
 msgstr ""
 
@@ -1062,8 +1070,8 @@ msgstr ""
 #: src/components/identities/AccountCreationForm.vue:31
 #: src/components/identities/AccountGeneralForm.vue:41
 #: src/components/user/ProfileForm.vue:52
-#: src/components/identities/AccountCreationForm.vue:83
 #: src/components/identities/AccountGeneralForm.vue:25
+#: src/components/identities/AccountCreationForm.vue:83
 #: src/components/user/ProfileForm.vue:15
 msgid "Last name"
 msgstr ""
@@ -1102,7 +1110,7 @@ msgid "Logger"
 msgstr ""
 
 #: src/components/layout/Navbar.vue:159 src/components/layout/Topbar.vue:6
-#: src/components/layout/Navbar.vue:274 src/components/layout/Topbar.vue:53
+#: src/components/layout/Topbar.vue:53 src/components/layout/Navbar.vue:274
 msgid "Logout"
 msgstr ""
 
@@ -1124,10 +1132,17 @@ msgstr ""
 msgid "Mailboxes"
 msgstr ""
 
+#: src/components/domains/DomainSummary.vue:16
+#: src/components/identities/AccountSummary.vue:37
+#: src/components/identities/AccountSummary.vue:6
+#: src/components/identities/AccountSummary.vue:1
+msgid "MB"
+msgstr ""
+
 #: src/components/alarms/AlarmList.vue:19
 #: src/components/logs/AuditTrailList.vue:11
-#: src/components/alarms/AlarmList.vue:99
 #: src/components/logs/AuditTrailList.vue:43
+#: src/components/alarms/AlarmList.vue:99
 msgid "Message"
 msgstr ""
 
@@ -1138,8 +1153,8 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:42
 #: src/components/domains/DomainLimitationsForm.vue:9
 #: src/components/identities/AccountCreationForm.vue:56
-#: src/components/identities/AccountCreationForm.vue:108
 #: src/components/domains/DomainCreationForm.vue:95
+#: src/components/identities/AccountCreationForm.vue:108
 msgid "Message sending limit"
 msgstr ""
 
@@ -1187,15 +1202,15 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:17
 #: src/components/imap_migration/ProviderCreationForm.vue:29
 #: src/components/imap_migration/ProvidersList.vue:15
-#: src/components/imap_migration/ProvidersList.vue:107
-#: src/components/imap_migration/ProviderCreationForm.vue:51
-#: src/components/identities/IdentityList.vue:99
-#: src/components/domains/DNSDetail.vue:176
-#: src/components/domains/DomainAliasForm.vue:13
 #: src/components/domains/DomainCreationForm.vue:78
-#: src/components/domains/AdministratorList.vue:87
+#: src/components/domains/DNSDetail.vue:176
 #: src/components/domains/DomainList.vue:168
+#: src/components/domains/DomainAliasForm.vue:13
+#: src/components/domains/AdministratorList.vue:87
+#: src/components/identities/IdentityList.vue:99
 #: src/components/admin/ComponentsInformationTable.vue:51
+#: src/components/imap_migration/ProviderCreationForm.vue:51
+#: src/components/imap_migration/ProvidersList.vue:107
 msgid "Name"
 msgstr ""
 
@@ -1254,12 +1269,12 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:68
 #: src/components/identities/IdentityList.vue:98
 #: src/components/tools/CreationForm.vue:46
-#: src/components/tools/CreationForm.vue:120
+#: src/components/domains/DNSDetail.vue:193
+#: src/components/domains/DomainList.vue:205
 #: src/components/identities/IdentityList.vue:125
 #: src/components/identities/IdentityList.vue:150
 #: src/components/identities/IdentityList.vue:180
-#: src/components/domains/DNSDetail.vue:193
-#: src/components/domains/DomainList.vue:205
+#: src/components/tools/CreationForm.vue:120
 msgid "No"
 msgstr ""
 
@@ -1326,8 +1341,8 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: src/components/parameters/ParametersForm.vue:61
-#: src/components/parameters/ParametersForm.vue:140
+#: src/components/parameters/ParametersForm.vue:63
+#: src/components/parameters/ParametersForm.vue:153
 msgid "Parameters updated"
 msgstr ""
 
@@ -1351,9 +1366,9 @@ msgstr ""
 #: src/components/domains/DomainCreationForm.vue:127
 #: src/components/identities/AccountCreationForm.vue:101
 #: src/components/identities/AccountPasswordForm.vue:32
-#: src/components/identities/AccountCreationForm.vue:153
-#: src/components/identities/AccountPasswordForm.vue:103
 #: src/components/domains/DomainCreationForm.vue:180
+#: src/components/identities/AccountPasswordForm.vue:103
+#: src/components/identities/AccountCreationForm.vue:153
 msgid "Password copied to clipboard"
 msgstr ""
 
@@ -1397,8 +1412,8 @@ msgstr ""
 
 #: src/components/imap_migration/ProviderCreationForm.vue:31
 #: src/components/imap_migration/ProvidersList.vue:17
-#: src/components/imap_migration/ProvidersList.vue:109
 #: src/components/imap_migration/ProviderCreationForm.vue:53
+#: src/components/imap_migration/ProvidersList.vue:109
 msgid "Port"
 msgstr ""
 
@@ -1464,10 +1479,12 @@ msgstr ""
 #: src/components/domains/DomainSummary.vue:15
 #: src/components/identities/AccountCreationForm.vue:50
 #: src/components/identities/AccountMailboxForm.vue:14
-#: src/components/identities/AccountCreationForm.vue:102
-#: src/components/identities/AccountMailboxForm.vue:3
+#: src/components/identities/AccountSummary.vue:33
+#: src/components/identities/AccountSummary.vue:2
 #: src/components/domains/DomainCreationForm.vue:93
 #: src/components/domains/DomainList.vue:172
+#: src/components/identities/AccountMailboxForm.vue:3
+#: src/components/identities/AccountCreationForm.vue:102
 msgid "Quota"
 msgstr ""
 
@@ -1497,8 +1514,8 @@ msgstr ""
 #: src/components/domains/DomainOptionsForm.vue:6
 #: src/components/identities/AccountCreationForm.vue:34
 #: src/components/identities/AccountPasswordForm.vue:9
-#: src/components/identities/AccountCreationForm.vue:86
 #: src/components/domains/DomainCreationForm.vue:111
+#: src/components/identities/AccountCreationForm.vue:86
 msgid "Random password"
 msgstr ""
 
@@ -1589,8 +1606,8 @@ msgstr ""
 #: src/views/user/PasswordRecoveryForm.vue:19
 #: src/views/user/PasswordRecoveryForm.vue:32
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:22
-#: src/views/user/PasswordRecoveryForm.vue:78
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:70
+#: src/views/user/PasswordRecoveryForm.vue:78
 msgid "Return to login"
 msgstr ""
 
@@ -1626,8 +1643,8 @@ msgstr ""
 #: src/components/imap_migration/ProviderCreationForm.vue:32
 #: src/components/imap_migration/ProviderGeneralForm.vue:11
 #: src/components/imap_migration/ProvidersList.vue:18
-#: src/components/imap_migration/ProvidersList.vue:110
 #: src/components/imap_migration/ProviderCreationForm.vue:54
+#: src/components/imap_migration/ProvidersList.vue:110
 msgid "Secured"
 msgstr ""
 
@@ -1686,7 +1703,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/components/parameters/ParametersForm.vue:20
+#: src/components/parameters/ParametersForm.vue:21
 msgid "Settings: thislabel"
 msgstr ""
 
@@ -1727,8 +1744,8 @@ msgstr ""
 
 #: src/components/alarms/AlarmList.vue:16
 #: src/components/logs/MessageList.vue:11
-#: src/components/alarms/AlarmList.vue:96
 #: src/components/logs/MessageList.vue:44
+#: src/components/alarms/AlarmList.vue:96
 msgid "Status"
 msgstr ""
 
@@ -1792,8 +1809,8 @@ msgstr ""
 #: src/views/user/PasswordRecoveryForm.vue:69
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:46 src/views/Login.vue:101
 #: src/views/user/PasswordRecoveryChangeForm.vue:122
-#: src/views/user/PasswordRecoveryForm.vue:115
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:94
+#: src/views/user/PasswordRecoveryForm.vue:115
 msgid "Too many unsuccessful attempts, please try later."
 msgstr ""
 
@@ -1899,9 +1916,9 @@ msgstr ""
 #: src/components/domains/AdministratorList.vue:18
 #: src/components/identities/AccountCreationForm.vue:29
 #: src/components/identities/AccountGeneralForm.vue:19 src/views/Login.vue:9
-#: src/components/identities/AccountCreationForm.vue:81
-#: src/components/identities/AccountGeneralForm.vue:7
 #: src/components/domains/AdministratorList.vue:86
+#: src/components/identities/AccountGeneralForm.vue:7
+#: src/components/identities/AccountCreationForm.vue:81
 msgid "Username"
 msgstr ""
 
@@ -1928,12 +1945,12 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:61
 #: src/components/identities/IdentityList.vue:92
 #: src/components/tools/CreationForm.vue:41 src/views/user/APISetup.vue:40
-#: src/components/tools/CreationForm.vue:115
+#: src/components/domains/DNSDetail.vue:187
+#: src/components/domains/DomainList.vue:198
 #: src/components/identities/IdentityList.vue:118
 #: src/components/identities/IdentityList.vue:143
 #: src/components/identities/IdentityList.vue:174
-#: src/components/domains/DNSDetail.vue:187
-#: src/components/domains/DomainList.vue:198 src/views/user/APISetup.vue:81
+#: src/components/tools/CreationForm.vue:115 src/views/user/APISetup.vue:81
 msgid "Warning"
 msgstr ""
 
@@ -1966,12 +1983,12 @@ msgstr ""
 #: src/components/identities/IdentityList.vue:69
 #: src/components/identities/IdentityList.vue:99
 #: src/components/tools/CreationForm.vue:45
-#: src/components/tools/CreationForm.vue:119
+#: src/components/domains/DNSDetail.vue:194
+#: src/components/domains/DomainList.vue:206
 #: src/components/identities/IdentityList.vue:126
 #: src/components/identities/IdentityList.vue:151
 #: src/components/identities/IdentityList.vue:181
-#: src/components/domains/DNSDetail.vue:194
-#: src/components/domains/DomainList.vue:206
+#: src/components/tools/CreationForm.vue:119
 msgid "Yes"
 msgstr ""
 
@@ -1995,6 +2012,10 @@ msgstr ""
 msgid "Your API token is:"
 msgstr ""
 
+#: src/api/repository.js:38
+msgid "You are throttled, please try later."
+msgstr ""
+
 #: src/filters/index.js:7
 msgid "yes"
 msgstr ""
@@ -2003,7 +2024,7 @@ msgstr ""
 msgid "no"
 msgstr ""
 
-#: src/components/parameters/ParametersForm.vue:99
+#: src/components/parameters/ParametersForm.vue:111
 msgid "Settings: "
 msgstr ""
 
@@ -2025,8 +2046,4 @@ msgstr ""
 
 #: src/plugins/vee-validate.js:46
 msgid "Specify a valid port number"
-msgstr ""
-
-#: src/api/repository.js:38
-msgid "You are throttled, please try later."
 msgstr ""
