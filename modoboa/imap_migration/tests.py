@@ -134,7 +134,7 @@ class ViewSetTestCase(DataMixin, ModoAPITestCase):
     """ViewSet related tests."""
 
     def test_create_provider(self):
-        url = reverse("api:emailprovider-list")
+        url = reverse("v2:emailprovider-list")
         data = {
             "name": "Google",
             "address": "imap.google.com",
@@ -156,7 +156,7 @@ class ViewSetTestCase(DataMixin, ModoAPITestCase):
         provider_domain = factories.EmailProviderDomainFactory(
             name="outlook.com")
         url = reverse(
-            "api:emailprovider-detail", args=[provider_domain.provider.pk])
+            "v2:emailprovider-detail", args=[provider_domain.provider.pk])
         data = {
             "id": provider_domain.provider.id,
             "name": provider_domain.provider.name,
