@@ -44,10 +44,12 @@ class PDFCredentialsSettingsSerializer(serializers.Serializer):
 
     def validate(self, data):
         """Check that directory exists."""
-        enabled_pdfcredentials = data.get("enabled_pdfcredentials", False)
+        enabled_pdfcredentials = data.get("enabled_pdfcredentials", None)
         condition = (enabled_pdfcredentials or
-                     param_tools.get_global_parameter("enabled_pdfcredentials")
+                     (enabled_pdfcredentials is None and
+                      param_tools.get_global_parameter("enabled_pdfcredentials")
                      )
+                    )
         if condition:
             storage_dir = data.get("storage_dir", None)
             if storage_dir is not None:
