@@ -159,9 +159,7 @@ export default {
         this.formErrors = error.response.data
         Object.keys(this.formErrors).forEach(element => {
           for (let i = 0; i < this.structure.length; i++) {
-            const isIn = (this.structure[i].parameters.filter(function (val, index, array) {
-              return val.name === element
-            }).length > 0)
+            const isIn = this.structure[i].parameters.filter(param => param.name === element).length > 0
             if (isIn) {
               this.tab_error.push(i)
             }
