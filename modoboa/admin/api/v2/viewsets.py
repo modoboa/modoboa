@@ -7,13 +7,14 @@ from django.contrib.contenttypes.models import ContentType
 from django_filters import rest_framework as dj_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import (
-    filters, mixins, parsers, pagination, permissions, response, status, viewsets
+    filters, mixins, parsers, permissions, response, status, viewsets
 )
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import models as core_models
+from modoboa.lib import pagination
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
 from modoboa.lib.throttle import GetThrottleViewsetMixin
@@ -351,7 +352,7 @@ class AlarmViewSet(GetThrottleViewsetMixin,
                        dj_filters.DjangoFilterBackend)
     filterset_class = AlarmFilterSet
     ordering_fields = ["created", "status", "title"]
-    pagination_class = pagination.PageNumberPagination
+    pagination_class = pagination.CustomPageNumberPagination
     permission_classes = (
         permissions.IsAuthenticated,
     )

@@ -486,7 +486,7 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         url = reverse("v2:alarm-list")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.json()), 1)
+        self.assertEqual(len(resp.json()["results"]), 1)
 
     def test_update_alarm(self):
         """Try updating alarm status and delete it afterward."""
