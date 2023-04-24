@@ -109,7 +109,8 @@ export default {
   methods: {
     fetchAlarms () {
       const params = {
-        page: this.options.page
+        page: this.options.page,
+        page_size: this.options.itemsPerPage
       }
       if (this.options.sortBy) {
         params.ordering = this.options.sortBy.map(item => this.options.sortDesc[0] ? `-${item}` : item).join(',')
