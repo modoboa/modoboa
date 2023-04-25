@@ -17,7 +17,7 @@ bin/instance
 .coverage
 ./build/
 dist/
-
+modoboa/frontend_dist
 # JS stuff
 node_modules
 /static/dist
