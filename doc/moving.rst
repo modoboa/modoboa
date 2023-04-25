@@ -5,6 +5,13 @@ Moving to Modoboa
 You have an existing platform and you'd like to move to Modoboa, the
 following tools could help you.
 
+Using IMAP protocol
+===================
+
+A built-in tool to migrate accounts from an old server using the IMAP protocol.
+
+:ref:`Know more <imap>`.
+
 From postfixadmin
 =================
 
@@ -30,9 +37,9 @@ format::
 
 Boolean fields accept the following values: ``true``, ``1``, ``yes``,
 ``y`` (case insensitive). Any other value will be evaluated as false.
-  
+
 .. warning::
-     
+
    The order does matter. Objects are created sequencially so a
    domain must be created before its mailboxes and aliases and a
    mailbox must created before its alias(es).
