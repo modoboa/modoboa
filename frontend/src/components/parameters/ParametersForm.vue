@@ -5,22 +5,12 @@
   </v-toolbar>
 
   <v-tabs v-model="active">
-    <template v-for="(element, index) in displayableElements"
-      >
-      <v-tab
-        v-if="tab_error.includes(index)"
-        class="error_tab"
-        :key="index"
-        >
-        {{ element.label }}
-      </v-tab>
-      <v-tab v-else
-       :key="index"
-       >
-        {{ element.label }}
-      </v-tab>
-    </template>
-
+    <v-tab v-for="(element, index) in displayableElements"
+           :class="tab_error.includes(index) ? 'error_tab' : ''"
+           :key="index"
+           >
+      {{ element.label }}
+    </v-tab>
     <v-tabs-items v-model="active">
       <v-tab-item
         v-for="(element, index) in displayableElements"
