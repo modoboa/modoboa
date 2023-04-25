@@ -167,7 +167,7 @@ def newaccount(request):
 
 @login_required
 @permission_required("core.change_user")
-@require_http_methods(["POST"])
+@require_http_methods(["GET", "POST"])
 @reversion.create_revision()
 def editaccount(request, pk):
     account = User.objects.get(pk=pk)
