@@ -6,6 +6,7 @@
 
   <v-tabs v-model="active">
     <v-tab v-for="(element, index) in displayableElements"
+           :class="tab_error.includes(index) ? 'error_tab' : ''"
            :key="index"
            >
       {{ element.label }}
@@ -87,7 +88,8 @@ export default {
       structure: [],
       parameters: {},
       formErrors: {},
-      label: ''
+      label: '',
+      tab_error: []
     }
   },
   computed: {
@@ -136,13 +138,23 @@ export default {
     },
     save () {
       this.formErrors = {}
+      this.tab_error = []
       parameters.saveApplication(this.$route.params.app, this.parameters).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Parameters updated') })
         if (this.$route.params.app === 'imap_migration') {
           bus.$emit('imapSettingsChanged', this.parameters.enabled_imapmigration)
         }
       }).catch(error => {
+        bus.$emit('notification', { msg: this.$gettext('Could not save parameters'), type: 'error' })
         this.formErrors = error.response.data
+        Object.keys(this.formErrors).forEach(element => {
+          for (let i = 0; i < this.structure.length; i++) {
+            const isIn = this.structure[i].parameters.filter(param => param.name === element).length > 0
+            if (isIn) {
+              this.tab_error.push(i)
+            }
+          }
+        })
       })
     }
   }
@@ -152,5 +164,8 @@ export default {
 <style scoped>
 .v-toolbar {
   background-color: #f7f8fa !important;
+}
+.v-application .primary--text .error_tab {
+  color: #ff5252 !important;
 }
 </style>
