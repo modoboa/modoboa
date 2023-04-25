@@ -28,7 +28,25 @@ configuration file with the command:
    > python manage.py generate_offlineimap_config
 
 You then need to setup `OfflineIMAP <https://www.offlineimap.org/doc/quick_start.html>`_.
-    ..
+
+The synchronization script must be configured to run periodically on
+your new server. Since it will copy mailboxes content to its final
+destination, filesystem permissions must be respected. To do that, it
+must be executed by the user which owns mailboxes (generally
+``vmail``).
+
+Here is a configuration example where the script is executed every
+hours. You can copy it inside the ``/etc/cron.d/modoboa`` file:
+
+.. sourcecode:: shell
+
+  PYTHON=/srv/modoboa/env/bin/python
+  INSTANCE=/srv/modoboa/instance
+
+  0       */1     *       *       *       vmail   cd /srv/vmail && $PYTHON $INSTANCE/manage.py generate_offlineimap_config --output .offlineimaprc && /usr/local/bin/offlineimap > /dev/null 2>&1
+
+Feel free to adapt it.
+
 This will sync back-and-forth user mailbox.
 
 
