@@ -164,3 +164,25 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         """Test storage directory creation."""
         self.set_global_parameter("storage_dir", "/nonexistentdir")
         self._create_account("leon@test.com", expected_status=500)
+
+    def test_directory_check_settings(self):
+        """Test validation for unwritable directory."""
+        self.set_global_parameter("storage_dir", "/nonexistentdir")
+        self.set_global_parameter("enabled_pdfcredentials", False)
+        url = reverse("v2:parameter-detail", args=["pdfcredentials"])
+        data = {
+                "webpanel_url": "http://localhost",
+                "smtp_server_address": "mail.localhost",
+                "imap_server_address": "mail.localhost",
+               }
+
+        # Test that we can't activate it without providing a valid storage dir.
+        data["enabled_pdfcredentials"] = True
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn(b"Directory not found", resp.content)
+        # Test that we can disable it even if the directory is not right.
+        self.set_global_parameter("enabled_pdfcredentials", True)
+        data["enabled_pdfcredentials"] = False
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
