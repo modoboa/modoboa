@@ -16,30 +16,6 @@ Modoboa is a mail hosting and management platform including a modern
 and simplified Web User Interface designed to work with `Postfix
 <http://www.postfix.org>`_ and `Dovecot <http://www.dovecot.org>`_.
 
-
-It provides built-in features by default :
-
-
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|Name                                                     |Description              |Documentation                                         |
-|                                                         |                         |                                                      |
-|                                                         |                         |                                                      |
-|                                                         |                         |                                                      |
-+=========================================================+=========================+======================================================+
-|modoboa-dmarc                                            |A set of tools to use    |:ref:`modoboa_dmarc Documentation <dmarcdoc>`         |
-|                                                         |`DMARC                   |                                                      |
-|                                                         |<https://dmarc.org>`_    |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|modoboa-pdfcredentials                                   |Generate PDF documents   |:ref:`modoboa_pdfcredentials Documentation <pdfc>`    |
-|                                                         |containing account       |                                                      |
-|                                                         |credentials              |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|modoboa-imap-migration                                   |Transfer accounts from   |:ref:`modoboa_imap-migration Documentation <imap>`    |
-|                                                         |other mail server        |                                                      |
-|                                                         |automatically            |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-
-
 And it is extensible by nature and comes with a lot of additional extensions:
 
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
