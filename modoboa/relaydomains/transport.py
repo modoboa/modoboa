@@ -1,6 +1,6 @@
 """Transport backend definition."""
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from modoboa.transport import backends
 

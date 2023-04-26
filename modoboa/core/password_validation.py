@@ -1,7 +1,7 @@
 """Custom password validators."""
 
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import gettext as _, ngettext
 
 
 class ComplexityValidator(object):
@@ -20,7 +20,7 @@ class ComplexityValidator(object):
             sum(1 for char in password if char.isdigit()) < self.digits)
         if condition:
             raise ValidationError(
-                ungettext(
+                ngettext(
                     "Password must contain at least {} digit.",
                     "Password must contain at least {} digits.",
                     self.digits
@@ -30,7 +30,7 @@ class ComplexityValidator(object):
             sum(1 for char in password if char.islower()) < self.lower)
         if condition:
             raise ValidationError(
-                ungettext(
+                ngettext(
                     "Password must contain at least {} lowercase letter.",
                     "Password must contain at least {} lowercase letters.",
                     self.lower
@@ -41,7 +41,7 @@ class ComplexityValidator(object):
             sum(1 for char in password if char.isupper()) < self.upper)
         if condition:
             raise ValidationError(
-                ungettext(
+                ngettext(
                     "Password must contain at least {} uppercase letter.",
                     "Password must contain at least {} uppercase letters.",
                     self.upper
@@ -53,7 +53,7 @@ class ComplexityValidator(object):
             self.specials)
         if condition:
             raise ValidationError(
-                ungettext(
+                ngettext(
                     "Password must contain at least {} special character.",
                     "Password must contain at least {} special characters.",
                     self.specials

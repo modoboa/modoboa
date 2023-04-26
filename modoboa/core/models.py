@@ -6,9 +6,9 @@ from email.header import Header
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django.utils.encoding import force_str, smart_bytes, smart_text
+from django.utils.encoding import force_str, smart_bytes, smart_str
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -49,26 +49,26 @@ class User(AbstractUser):
     is_active = models.BooleanField(default=True, db_index=True)
     is_local = models.BooleanField(default=True, db_index=True)
     master_user = models.BooleanField(
-        ugettext_lazy("Allow mailboxes access"), default=False,
-        help_text=ugettext_lazy(
+        gettext_lazy("Allow mailboxes access"), default=False,
+        help_text=gettext_lazy(
             "Allow this administrator to access user mailboxes"
         )
     )
-    password = models.CharField(ugettext_lazy("password"), max_length=256)
+    password = models.CharField(gettext_lazy("password"), max_length=256)
 
     language = models.CharField(
-        ugettext_lazy("language"),
+        gettext_lazy("language"),
         max_length=10, default="en", choices=constants.LANGUAGES,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Prefered language to display pages."
         )
     )
     phone_number = PhoneNumberField(
-        ugettext_lazy("Phone number"), blank=True, null=True)
+        gettext_lazy("Phone number"), blank=True, null=True)
     secondary_email = models.EmailField(
-        ugettext_lazy("Secondary email"), max_length=254,
+        gettext_lazy("Secondary email"), max_length=254,
         blank=True, null=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "An alternative e-mail address, can be used for recovery needs.")
     )
 
@@ -78,9 +78,7 @@ class User(AbstractUser):
 
     class Meta(object):
         ordering = ["username"]
-        index_together = [
-            ["email", "is_active"]
-        ]
+        indexes = [models.Index(fields=["email", "is_active"])]
 
     password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
 
@@ -144,7 +142,7 @@ class User(AbstractUser):
         return hasher().verify(raw_value, val2)
 
     def __str__(self):
-        return smart_text(self.get_username())
+        return smart_str(self.get_username())
 
     def get_absolute_url(self):
         """Return detail url for this user."""
@@ -369,13 +367,13 @@ class User(AbstractUser):
         """Return row that can be included in a CSV file."""
         row = [
             "account",
-            smart_text(self.username),
-            smart_text(self.password),
-            smart_text(self.first_name),
-            smart_text(self.last_name),
-            smart_text(self.is_active),
-            smart_text(self.role),
-            smart_text(self.email)
+            smart_str(self.username),
+            smart_str(self.password),
+            smart_str(self.first_name),
+            smart_str(self.last_name),
+            smart_str(self.is_active),
+            smart_str(self.role),
+            smart_str(self.email)
         ]
         results = signals.account_exported.send(
             sender=self.__class__, user=self)

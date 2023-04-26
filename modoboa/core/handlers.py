@@ -9,8 +9,8 @@ from django.contrib.sites import models as sites_models
 from django.db.models import signals
 from django.dispatch import receiver
 from django.urls import reverse
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext as _
 
 from modoboa.lib import exceptions, permissions
 from modoboa.lib.signals import get_request
@@ -39,7 +39,7 @@ def post_revision_commit(sender, **kwargs):
             action = _("modified")
             level = "warning"
         message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
-            "object": smart_text(version.content_type).capitalize(),
+            "object": smart_str(version.content_type).capitalize(),
             "name": version.object_repr, "action": action,
             "user": current_user
         }
@@ -61,7 +61,7 @@ def log_object_removal(sender, instance, **kwargs):
         return
     logger = logging.getLogger("modoboa.admin")
     msg = _("%(object)s '%(name)s' %(action)s by ") % {
-        "object": smart_text(version.content_type).capitalize(),
+        "object": smart_str(version.content_type).capitalize(),
         "name": version.object_repr, "action": _("deleted")
     }
     request = get_request()

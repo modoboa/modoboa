@@ -2,7 +2,7 @@
 
 from django.contrib.auth import mixins as auth_mixins
 from django.urls import reverse
-from django.utils.http import is_safe_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views import generic
 
 from ..extensions import exts_pool
@@ -16,7 +16,7 @@ def find_nextlocation(request, user):
     nextlocation = request.POST.get("next", request.GET.get("next"))
     condition = (
         nextlocation and
-        is_safe_url(nextlocation, request.get_host())
+        url_has_allowed_host_and_scheme(nextlocation, request.get_host())
     )
     if condition:
         return nextlocation

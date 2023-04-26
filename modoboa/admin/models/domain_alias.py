@@ -4,8 +4,8 @@ from reversion import revisions as reversion
 
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib.exceptions import BadRequest, Conflict
@@ -30,16 +30,16 @@ class DomainAlias(AdminObject):
 
     """Domain aliases."""
 
-    name = models.CharField(ugettext_lazy("name"), max_length=100, unique=True,
-                            help_text=ugettext_lazy("The alias name"))
+    name = models.CharField(gettext_lazy("name"), max_length=100, unique=True,
+                            help_text=gettext_lazy("The alias name"))
     target = models.ForeignKey(
-        Domain, verbose_name=ugettext_lazy("target"),
-        help_text=ugettext_lazy("The domain this alias points to"),
+        Domain, verbose_name=gettext_lazy("target"),
+        help_text=gettext_lazy("The domain this alias points to"),
         on_delete=models.CASCADE
     )
     enabled = models.BooleanField(
-        ugettext_lazy("enabled"),
-        help_text=ugettext_lazy("Check to activate this alias"),
+        gettext_lazy("enabled"),
+        help_text=gettext_lazy("Check to activate this alias"),
         default=True
     )
 
@@ -51,7 +51,7 @@ class DomainAlias(AdminObject):
         app_label = "admin"
 
     def __str__(self):
-        return smart_text(self.name)
+        return smart_str(self.name)
 
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row

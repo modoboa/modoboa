@@ -1,7 +1,8 @@
 """Extension management."""
 
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import include
+from django.urls import re_path
 from django.utils.encoding import smart_str
 
 
@@ -111,7 +112,7 @@ class ExtensionsPool(object):
                 pattern = "{}.urls"
             try:
                 result.append(
-                    url(root, include(pattern.format(ext_name)))
+                    re_path(root, include(pattern.format(ext_name)))
                 )
             except ImportError:
                 # No urls for this extension

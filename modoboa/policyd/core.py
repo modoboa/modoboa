@@ -15,7 +15,7 @@ from django.db import connections
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils import translation
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.admin import constants as admin_constants
 from modoboa.admin import models as admin_models
@@ -102,8 +102,8 @@ def create_alarm(ltype, name):
 async def notify_limit_reached(ltype, name):
     """Send a notification to super admins about item."""
     ltype_translations = {
-        "account": ugettext_lazy("account"),
-        "domain": ugettext_lazy("domain")
+        "account": gettext_lazy("account"),
+        "domain": gettext_lazy("domain")
     }
     # We're going to execute sync code so we need an executor
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)

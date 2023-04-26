@@ -13,9 +13,9 @@ from lxml.html.clean import Cleaner
 
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_str, smart_text
+from django.utils.encoding import smart_str, smart_str
 from django.utils.html import conditional_escape, escape
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
 from modoboa.lib import u2u_decode
@@ -130,7 +130,7 @@ class Email(object):
                 if not len(value):
                     continue
                 if encoding:
-                    value = smart_text(value, encoding=encoding)
+                    value = smart_str(value, encoding=encoding)
                 elif isinstance(value, bytes):
                     # SMTPUTF8 fallback (most of the time)
                     # Address contains non ASCII chars but is not RFC2047
@@ -229,7 +229,7 @@ class Email(object):
             _RE_REMOVE_EXTRA_WHITESPACE.sub("\n\n", content).strip()
         )
         mail_text = escape(mail_text)
-        return smart_text(mail_text)
+        return smart_str(mail_text)
 
     def _post_process_html(self, content):
         html = lxml.html.fromstring(content)
@@ -253,7 +253,7 @@ class Email(object):
         )
         mail_text = lxml.html.tostring(
             cleaner.clean_html(html), encoding="unicode")
-        return smart_text(mail_text)
+        return smart_str(mail_text)
 
     def _map_cid(self, url):
         if url.startswith("cid:"):

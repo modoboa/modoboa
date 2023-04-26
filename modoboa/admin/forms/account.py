@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib.auth import password_validation
 from django.http import QueryDict
 from django.urls import reverse
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
@@ -29,34 +29,34 @@ class AccountFormGeneral(forms.ModelForm):
     """General account form."""
 
     username = forms.CharField(
-        label=ugettext_lazy("Username"),
-        help_text=ugettext_lazy(
+        label=gettext_lazy("Username"),
+        help_text=gettext_lazy(
             "The user's name. Must be a valid e-mail address for simple users "
             "or administrators with a mailbox."
         )
     )
     role = forms.ChoiceField(
-        label=ugettext_lazy("Role"),
-        choices=[("", ugettext_lazy("Choose"))],
-        help_text=ugettext_lazy("What level of permission this user will have")
+        label=gettext_lazy("Role"),
+        choices=[("", gettext_lazy("Choose"))],
+        help_text=gettext_lazy("What level of permission this user will have")
     )
     random_password = forms.BooleanField(
-        label=ugettext_lazy("Random password"),
-        help_text=ugettext_lazy(
+        label=gettext_lazy("Random password"),
+        help_text=gettext_lazy(
             "Generate a random password. If you're updating this account and "
             "check this box, a new password will be generated."
         ),
         required=False
     )
     password1 = forms.CharField(
-        label=ugettext_lazy("Password"), widget=forms.widgets.PasswordInput,
+        label=gettext_lazy("Password"), widget=forms.widgets.PasswordInput,
         required=False
     )
 
     password2 = forms.CharField(
-        label=ugettext_lazy("Confirmation"),
+        label=gettext_lazy("Confirmation"),
         widget=forms.widgets.PasswordInput,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Enter the same password as above, for verification."
         ),
         required=False
@@ -69,7 +69,7 @@ class AccountFormGeneral(forms.ModelForm):
             "master_user",
         )
         labels = {
-            "is_active": ugettext_lazy("Enabled")
+            "is_active": gettext_lazy("Enabled")
         }
 
     def __init__(self, user, *args, **kwargs):
@@ -223,14 +223,14 @@ class AccountFormMail(forms.Form, DynamicForm):
     """Form to handle mail part."""
 
     email = lib_fields.UTF8EmailField(
-        label=ugettext_lazy("E-mail"), required=False)
+        label=gettext_lazy("E-mail"), required=False)
     create_alias_with_old_address = forms.BooleanField(
-        label=ugettext_lazy("Create an alias using the old address"),
+        label=gettext_lazy("Create an alias using the old address"),
         required=False,
         initial=False
     )
     quota = forms.CharField(
-        label=ugettext_lazy("Quota"),
+        label=gettext_lazy("Quota"),
         required=False,
         help_text=_(
             "Quota for this mailbox, can be expressed in KB, MB (default) or "
@@ -243,25 +243,25 @@ class AccountFormMail(forms.Form, DynamicForm):
     )
     quota_act = forms.BooleanField(required=False)
     message_limit = forms.IntegerField(
-        label=ugettext_lazy("Message sending limit"),
+        label=gettext_lazy("Message sending limit"),
         required=False,
         min_value=0,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Number of messages this mailbox can send per day")
     )
     aliases = lib_fields.UTF8AndEmptyUserEmailField(
-        label=ugettext_lazy("Alias(es)"),
+        label=gettext_lazy("Alias(es)"),
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Alias(es) of this mailbox. Indicate only one address per input, "
             "press ENTER to add a new input. To create a catchall alias, just "
             "enter the domain name (@domain.tld)."
         )
     )
     senderaddress = lib_fields.UTF8AndEmptyUserEmailField(
-        label=ugettext_lazy("Sender addresses"),
+        label=gettext_lazy("Sender addresses"),
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Additional sender address(es) for this account. The user will be "
             "allowed to send emails using this address, even if it "
             "does not exist locally. Indicate one address per input. Press "
@@ -473,9 +473,9 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
     """A form to assign domain(s) permission."""
 
     domains = lib_fields.DomainNameField(
-        label=ugettext_lazy("Domain(s)"),
+        label=gettext_lazy("Domain(s)"),
         required=False,
-        help_text=ugettext_lazy("Domain(s) that user administrates")
+        help_text=gettext_lazy("Domain(s) that user administrates")
     )
 
     def __init__(self, *args, **kwargs):

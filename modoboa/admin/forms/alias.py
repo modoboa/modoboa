@@ -4,7 +4,7 @@ from collections import OrderedDict
 
 from django import forms
 from django.http import QueryDict
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.lib import exceptions as lib_exceptions, fields as lib_fields
@@ -17,19 +17,19 @@ class AliasForm(forms.ModelForm, DynamicForm):
     """A form to create/modify an alias."""
 
     random_address = forms.BooleanField(
-        label=ugettext_lazy("Random address"),
+        label=gettext_lazy("Random address"),
         required=False)
     address = lib_fields.UTF8AndEmptyUserEmailField(
-        label=ugettext_lazy("Email address"),
-        help_text=ugettext_lazy(
+        label=gettext_lazy("Email address"),
+        help_text=gettext_lazy(
             "The alias address. To create a catchall alias, just enter the "
             "domain name (@domain.tld)."
         ),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
     recipients = lib_fields.UTF8AndEmptyUserEmailField(
-        label=ugettext_lazy("Recipients"), required=False,
-        help_text=ugettext_lazy(
+        label=gettext_lazy("Recipients"), required=False,
+        help_text=gettext_lazy(
             "Addresses this alias will point to. Indicate only one address "
             "per input, press ENTER to add a new input."
         ),
@@ -40,7 +40,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
         model = Alias
         fields = ("address", "domain", "enabled", "expire_at", "description")
         labels = {
-            "domain": ugettext_lazy("Domain")
+            "domain": gettext_lazy("Domain")
         }
         widgets = {
             "domain": forms.widgets.Select(

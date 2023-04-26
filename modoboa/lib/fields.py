@@ -1,7 +1,7 @@
 """Custom form fields."""
 
 from django import forms
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 from rest_framework import serializers
 
@@ -12,7 +12,7 @@ class DomainNameField(forms.fields.CharField):
     """A subclass of CharField that only accepts a valid domain name."""
 
     default_error_messages = {
-        "invalid": ugettext_lazy("Enter a valid domain name")
+        "invalid": gettext_lazy("Enter a valid domain name")
     }
 
     default_validators = [validators.validate_hostname]
@@ -41,7 +41,7 @@ class DRFEmailFieldUTF8(serializers.CharField):
     """Custom DRF email field to support UTF8."""
 
     default_error_messages = {
-        "invalid": ugettext_lazy("Enter a valid email address.")
+        "invalid": gettext_lazy("Enter a valid email address.")
     }
 
     def __init__(self, **kwargs):
@@ -55,7 +55,7 @@ class DRFEmailFieldUTF8AndEmptyUser(serializers.CharField):
     """Custom DRF email field to support UTF8 and empty local part."""
 
     default_error_messages = {
-        "invalid": ugettext_lazy("Enter a valid email address.")
+        "invalid": gettext_lazy("Enter a valid email address.")
     }
 
     def __init__(self, **kwargs):

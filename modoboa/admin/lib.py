@@ -15,8 +15,8 @@ from dns.name import IDNA_2008_UTS_46
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Q
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext as _
 
 from django.contrib.auth import password_validation
 from django.contrib.contenttypes.models import ContentType
@@ -232,14 +232,14 @@ def get_domain_mx_list(domain):
                 continue
             for ip_answer in ip_answers:
                 try:
-                    address_smart = smart_text(ip_answer.address)
+                    address_smart = smart_str(ip_answer.address)
                     mx_ip = ipaddress.ip_address(address_smart)
                 except ValueError as e:
                     logger.warning(
                         _("Invalid IP address format for "
                           "{domain}; {addr}").format(
                               domain=mx_domain,
-                            addr=smart_text(ip_answer.address)
+                            addr=smart_str(ip_answer.address)
                           ), exc_info=e)
                 else:
                     result.append((mx_domain, mx_ip))
@@ -249,7 +249,7 @@ def get_domain_mx_list(domain):
 def domain_has_authorized_mx(name):
     """Check if domain has authorized mx record at least."""
     valid_mxs = param_tools.get_global_parameter("valid_mxs")
-    valid_mxs = [ipaddress.ip_network(smart_text(v.strip()))
+    valid_mxs = [ipaddress.ip_network(smart_str(v.strip()))
                  for v in valid_mxs.split() if v.strip()]
     domain_mxs = get_domain_mx_list(name)
     for _mx_addr, mx_ip_addr in domain_mxs:

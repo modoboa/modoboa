@@ -13,7 +13,7 @@ from reportlab.platypus import (
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.parameters import tools as param_tools
 

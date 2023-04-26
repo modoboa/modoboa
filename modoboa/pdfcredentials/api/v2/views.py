@@ -2,7 +2,7 @@
 
 import os
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.http import HttpResponse
 
 from rest_framework import permissions

@@ -3,7 +3,7 @@
 import collections
 
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from modoboa.lib.form_utils import SeparatorField, YesNoField
 from modoboa.parameters import forms as param_forms

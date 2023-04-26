@@ -2,7 +2,7 @@
 
 from django.core.files.base import ContentFile
 from django.urls import reverse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from rest_framework.authtoken.models import Token
 
@@ -165,7 +165,7 @@ domainalias; domalias1.com; domain1.com; True
         ]
         self.assertCountEqual(
             expected_response,
-            force_text(response.content.strip()).split("\r\n")
+            force_str(response.content.strip()).split("\r\n")
         )
 
 
@@ -385,7 +385,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
     def test_export(self):
         response = self.client.get(reverse("v2:identities-export"))
         expected_response = "account,admin,,,,True,SuperAdmins,,\r\naccount,admin@test.com,{PLAIN}toto,,,True,DomainAdmins,admin@test.com,10,test.com\r\naccount,admin@test2.com,{PLAIN}toto,,,True,DomainAdmins,admin@test2.com,10,test2.com\r\naccount,user@test.com,{PLAIN}toto,,,True,SimpleUsers,user@test.com,10\r\naccount,user@test2.com,{PLAIN}toto,,,True,SimpleUsers,user@test2.com,10\r\nalias,alias@test.com,True,user@test.com\r\nalias,forward@test.com,True,user@external.com\r\nalias,postmaster@test.com,True,test@truc.fr,toto@titi.com\r\n"  # NOQA:E501
-        received_content = force_text(response.content.strip()).split("\r\n")
+        received_content = force_str(response.content.strip()).split("\r\n")
         # Empty admin password because it is hashed using SHA512-CRYPT
         admin_row = received_content[0].split(",")
         admin_row[2] = ""

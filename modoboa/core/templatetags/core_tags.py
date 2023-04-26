@@ -12,9 +12,9 @@ from django.contrib.sessions.models import Session
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
-from django.utils.translation import get_language, ugettext as _
+from django.utils.translation import get_language, gettext as _
 
 from .. import models
 from .. import signals
@@ -241,7 +241,7 @@ def display_messages(msgs):
     level = "info"
     for m in msgs:
         level = m.tags
-        text += smart_text(m) + "\\\n"
+        text += smart_str(m) + "\\\n"
 
     if level == "info":
         level = "success"

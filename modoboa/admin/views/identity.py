@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import (
 )
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import gettext as _, ngettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
@@ -191,7 +191,7 @@ def editaccount(request, pk):
 def delaccount(request, pk):
     User.objects.get(pk=pk).delete()
     return render_to_json_response(
-        ungettext("Account deleted", "Accounts deleted", 1)
+        ngettext("Account deleted", "Accounts deleted", 1)
     )
 
 

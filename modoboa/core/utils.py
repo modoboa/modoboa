@@ -2,7 +2,7 @@
 
 from pkg_resources import parse_version
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.api_client import ModoAPIClient

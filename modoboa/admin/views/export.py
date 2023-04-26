@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import (
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from ..forms import ExportDataForm
 from ..lib import get_domains, get_identities

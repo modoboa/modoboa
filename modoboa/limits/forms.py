@@ -1,7 +1,7 @@
 """Custom forms."""
 
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.lib.permissions import get_object_owner
 from . import utils
