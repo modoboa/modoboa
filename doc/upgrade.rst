@@ -154,6 +154,19 @@ to ``MODOBOA_APPS``:
 And remove any reference to ``'modoboa_dmarc'``, ``'modoboa_pdfcredentials'`` or ``'modoboa_imap_migration'``
 in this same variable.
 
+You need to add ``'modoboa_imap_migration.auth_backends.IMAPBackend',`` at the end of ``AUTHENTICATION_BACKENDS``:
+
+.. sourcecode:: python
+
+   AUTHENTICATION_BACKENDS = (
+      'django.contrib.auth.backends.ModelBackend',
+      'modoboa_imap_migration.auth_backends.IMAPBackend',
+   )
+
+.. note::
+   It won't affect login if you don't use ``imap_migration`` feature.
+   It is therefor highly recommended to add this authentication backend.
+
 After upgrading modoboa, run the following commands from your virtual environment:
 
 .. sourcecode:: bash
