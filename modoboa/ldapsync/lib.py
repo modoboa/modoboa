@@ -5,7 +5,7 @@ import ldap.modlist as modlist
 
 from django.conf import settings
 from django.utils.encoding import force_bytes, force_str
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
 from modoboa.lib.email_utils import split_mailbox

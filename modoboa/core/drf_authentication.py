@@ -1,7 +1,7 @@
 """Custom authentication for DRF."""
 
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django_otp.models import Device
 from drf_spectacular.contrib.rest_framework_simplejwt import SimpleJWTScheme

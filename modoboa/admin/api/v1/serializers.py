@@ -6,8 +6,8 @@ from django.conf import settings
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _, gettext_lazy
 
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
@@ -31,14 +31,14 @@ class DomainSerializer(serializers.ModelSerializer):
 
     quota = serializers.CharField(
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Quota shared between mailboxes. Can be expressed in KB, "
             "MB (default) or GB. A value of 0 means no quota."
         )
     )
     default_mailbox_quota = serializers.CharField(
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Default quota in MB applied to mailboxes. A value of 0 means "
             "no quota."
         )
@@ -140,7 +140,7 @@ class DomainAliasSerializer(serializers.ModelSerializer):
                 object_type="domain_aliases")
         except lib_exceptions.ModoboaException as inst:
             raise serializers.ValidationError({
-                "domain": force_text(inst)})
+                "domain": force_str(inst)})
         domain_alias.save(creator=creator)
         return domain_alias
 
@@ -331,7 +331,7 @@ class WritableAccountSerializer(AccountSerializer):
                         object_type="mailboxes")
                 except lib_exceptions.ModoboaException as inst:
                     raise serializers.ValidationError({
-                        "mailbox": force_text(inst)})
+                        "mailbox": force_str(inst)})
         condition = (
             not data.get("random_password") and (
                 data.get("password") or
@@ -447,7 +447,7 @@ class AliasSerializer(serializers.ModelSerializer):
     recipients = serializers.ListField(
         child=lib_fields.DRFEmailFieldUTF8AndEmptyUser(),
         allow_empty=False,
-        help_text=ugettext_lazy("A list of recipient")
+        help_text=gettext_lazy("A list of recipient")
     )
 
     class Meta:

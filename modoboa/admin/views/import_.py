@@ -11,8 +11,8 @@ from django.contrib.auth.decorators import (
 from django.db import transaction
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext as _
 
 from modoboa.lib.exceptions import Conflict, ModoboaException
 from .. import lib

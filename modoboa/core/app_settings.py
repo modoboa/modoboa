@@ -5,7 +5,7 @@ import collections
 from django import forms
 from django.conf import settings
 from django.contrib.auth import password_validation
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core.password_hashers import get_dovecot_schemes
 from modoboa.core.password_hashers.base import PasswordHasher
@@ -36,61 +36,61 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     app = "core"
 
-    sep1 = SeparatorField(label=ugettext_lazy("Authentication"))
+    sep1 = SeparatorField(label=gettext_lazy("Authentication"))
 
     authentication_type = forms.ChoiceField(
-        label=ugettext_lazy("Authentication type"),
-        choices=[("local", ugettext_lazy("Local")),
+        label=gettext_lazy("Authentication type"),
+        choices=[("local", gettext_lazy("Local")),
                  ("ldap", "LDAP")],
         initial="local",
-        help_text=ugettext_lazy("The backend used for authentication"),
+        help_text=gettext_lazy("The backend used for authentication"),
         widget=HorizontalRadioSelect()
     )
 
     password_scheme = forms.ChoiceField(
-        label=ugettext_lazy("Default password scheme"),
+        label=gettext_lazy("Default password scheme"),
         choices=[],
         initial="sha512crypt",
-        help_text=ugettext_lazy("Scheme used to crypt mailbox passwords"),
+        help_text=gettext_lazy("Scheme used to crypt mailbox passwords"),
     )
 
     rounds_number = forms.IntegerField(
-        label=ugettext_lazy("Rounds"),
+        label=gettext_lazy("Rounds"),
         initial=70000,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Number of rounds to use (only used by sha256crypt and "
             "sha512crypt). Must be between 1000 and 999999999, inclusive."
         ),
     )
 
     update_scheme = YesNoField(
-        label=ugettext_lazy("Update password scheme at login"),
+        label=gettext_lazy("Update password scheme at login"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Update user password at login to use the default password scheme"
         )
     )
 
     default_password = forms.CharField(
-        label=ugettext_lazy("Default password"),
+        label=gettext_lazy("Default password"),
         initial="password",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Default password for automatically created accounts.")
     )
 
     random_password_length = forms.IntegerField(
-        label=ugettext_lazy("Random password length"),
+        label=gettext_lazy("Random password length"),
         min_value=8,
         initial=8,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Length of randomly generated passwords.")
     )
 
     update_password_url = forms.URLField(
-        label=ugettext_lazy("Update password service URL"),
+        label=gettext_lazy("Update password service URL"),
         initial="",
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The URL of an external page where users will be able"
             " to update their password. It applies only to non local"
             " users, ie. those automatically created after a successful"
@@ -99,92 +99,92 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     password_recovery_msg = forms.CharField(
-        label=ugettext_lazy("Password recovery announcement"),
+        label=gettext_lazy("Password recovery announcement"),
         initial="",
         required=False,
         widget=forms.widgets.Textarea(),
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "A temporary message that will be displayed on the "
             "reset password page."
         )
     )
 
     sms_password_recovery = YesNoField(
-        label=ugettext_lazy("Enable password recovery by SMS"),
+        label=gettext_lazy("Enable password recovery by SMS"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Enable password recovery by SMS for users who filled "
             "a phone number."
         )
     )
 
     sms_provider = forms.ChoiceField(
-        label=ugettext_lazy("SMS provider"),
+        label=gettext_lazy("SMS provider"),
         choices=constants.SMS_BACKENDS,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Choose a provider to send password recovery SMS"
         ),
         required=False
     )
 
     # LDAP specific settings
-    ldap_sep = SeparatorField(label=ugettext_lazy("LDAP settings"))
+    ldap_sep = SeparatorField(label=gettext_lazy("LDAP settings"))
 
     ldap_server_address = forms.CharField(
-        label=ugettext_lazy("Server address"),
+        label=gettext_lazy("Server address"),
         initial="localhost",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The IP address or the DNS name of the LDAP server"),
     )
 
     ldap_server_port = forms.IntegerField(
-        label=ugettext_lazy("Server port"),
+        label=gettext_lazy("Server port"),
         initial=389,
-        help_text=ugettext_lazy("The TCP port number used by the LDAP server"),
+        help_text=gettext_lazy("The TCP port number used by the LDAP server"),
     )
 
     ldap_enable_secondary_server = YesNoField(
-        label=ugettext_lazy("Enable secondary server (fallback)"),
+        label=gettext_lazy("Enable secondary server (fallback)"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Enable a secondary LDAP server which will be used "
             "if the primary one fails"
         )
     )
 
     ldap_secondary_server_address = forms.CharField(
-        label=ugettext_lazy("Secondary server address"),
+        label=gettext_lazy("Secondary server address"),
         initial="localhost",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The IP address or the DNS name of the seondary LDAP server"),
     )
 
     ldap_secondary_server_port = forms.IntegerField(
-        label=ugettext_lazy("Secondary server port"),
+        label=gettext_lazy("Secondary server port"),
         initial=389,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The TCP port number used by the LDAP secondary server"),
     )
 
     ldap_secured = forms.ChoiceField(
-        label=ugettext_lazy("Use a secured connection"),
+        label=gettext_lazy("Use a secured connection"),
         choices=constants.LDAP_SECURE_MODES,
         initial="none",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Use an SSL/STARTTLS connection to access the LDAP server")
     )
 
     ldap_is_active_directory = YesNoField(
-        label=ugettext_lazy("Active Directory"),
+        label=gettext_lazy("Active Directory"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Tell if the LDAP server is an Active Directory one")
     )
 
     ldap_admin_groups = forms.CharField(
-        label=ugettext_lazy("Administrator groups"),
+        label=gettext_lazy("Administrator groups"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Members of those LDAP Posix groups will be created as domain "
             "administrators. Use ';' characters to separate groups."
         ),
@@ -192,45 +192,45 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_group_type = forms.ChoiceField(
-        label=ugettext_lazy("Group type"),
+        label=gettext_lazy("Group type"),
         initial="posixgroup",
         choices=constants.LDAP_GROUP_TYPES,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The LDAP group type to use with your directory."
         )
     )
 
     ldap_groups_search_base = forms.CharField(
-        label=ugettext_lazy("Groups search base"),
+        label=gettext_lazy("Groups search base"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The distinguished name of the search base used to find groups"
         ),
         required=False
     )
 
     ldap_password_attribute = forms.CharField(
-        label=ugettext_lazy("Password attribute"),
+        label=gettext_lazy("Password attribute"),
         initial="userPassword",
-        help_text=ugettext_lazy("The attribute used to store user passwords"),
+        help_text=gettext_lazy("The attribute used to store user passwords"),
     )
 
     # LDAP authentication settings
     ldap_auth_sep = SeparatorField(
-        label=ugettext_lazy("LDAP authentication settings"))
+        label=gettext_lazy("LDAP authentication settings"))
 
     ldap_auth_method = forms.ChoiceField(
-        label=ugettext_lazy("Authentication method"),
-        choices=[("searchbind", ugettext_lazy("Search and bind")),
-                 ("directbind", ugettext_lazy("Direct bind"))],
+        label=gettext_lazy("Authentication method"),
+        choices=[("searchbind", gettext_lazy("Search and bind")),
+                 ("directbind", gettext_lazy("Direct bind"))],
         initial="searchbind",
-        help_text=ugettext_lazy("Choose the authentication method to use"),
+        help_text=gettext_lazy("Choose the authentication method to use"),
     )
 
     ldap_bind_dn = forms.CharField(
-        label=ugettext_lazy("Bind DN"),
+        label=gettext_lazy("Bind DN"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The distinguished name to use when binding to the LDAP server. "
             "Leave empty for an anonymous bind"
         ),
@@ -238,9 +238,9 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_bind_password = forms.CharField(
-        label=ugettext_lazy("Bind password"),
+        label=gettext_lazy("Bind password"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The password to use when binding to the LDAP server "
             "(with 'Bind DN')"
         ),
@@ -249,18 +249,18 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_search_base = forms.CharField(
-        label=ugettext_lazy("Users search base"),
+        label=gettext_lazy("Users search base"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The distinguished name of the search base used to find users"
         ),
         required=False,
     )
 
     ldap_search_filter = forms.CharField(
-        label=ugettext_lazy("Search filter"),
+        label=gettext_lazy("Search filter"),
         initial="(mail=%(user)s)",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "An optional filter string (e.g. '(objectClass=person)'). "
             "In order to be valid, it must be enclosed in parentheses."
         ),
@@ -268,9 +268,9 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_user_dn_template = forms.CharField(
-        label=ugettext_lazy("User DN template"),
+        label=gettext_lazy("User DN template"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The template used to construct a user's DN. It should contain "
             "one placeholder (ie. %(user)s)"
         ),
@@ -279,12 +279,12 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     # LDAP sync. settings
     ldap_sync_sep = SeparatorField(
-        label=ugettext_lazy("LDAP synchronization settings"))
+        label=gettext_lazy("LDAP synchronization settings"))
 
     ldap_sync_bind_dn = forms.CharField(
-        label=ugettext_lazy("Bind DN"),
+        label=gettext_lazy("Bind DN"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The distinguished name to use when binding to the LDAP server. "
             "Leave empty for an anonymous bind"
         ),
@@ -292,9 +292,9 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_sync_bind_password = forms.CharField(
-        label=ugettext_lazy("Bind password"),
+        label=gettext_lazy("Bind password"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The password to use when binding to the LDAP server "
             "(with 'Bind DN')"
         ),
@@ -303,28 +303,28 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_enable_sync = YesNoField(
-        label=ugettext_lazy("Enable export to LDAP"),
+        label=gettext_lazy("Enable export to LDAP"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Enable automatic synchronization between local database and "
             "LDAP directory")
     )
 
     ldap_sync_delete_remote_account = YesNoField(
-        label=ugettext_lazy(
+        label=gettext_lazy(
             "Delete remote LDAP account when local account is deleted"
         ),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Delete remote LDAP account when local account is deleted, "
             "otherwise it will be disabled."
         )
     )
 
     ldap_sync_account_dn_template = forms.CharField(
-        label=ugettext_lazy("Account DN template"),
+        label=gettext_lazy("Account DN template"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The template used to construct an account's DN. It should contain "
             "one placeholder (ie. %(user)s)"
         ),
@@ -332,27 +332,27 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_enable_import = YesNoField(
-        label=ugettext_lazy("Enable import from LDAP"),
+        label=gettext_lazy("Enable import from LDAP"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Enable account synchronization from LDAP directory to local "
             "database"
         )
     )
 
     ldap_import_search_base = forms.CharField(
-        label=ugettext_lazy("Users search base"),
+        label=gettext_lazy("Users search base"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The distinguished name of the search base used to find users"
         ),
         required=False,
     )
 
     ldap_import_search_filter = forms.CharField(
-        label=ugettext_lazy("Search filter"),
+        label=gettext_lazy("Search filter"),
         initial="(cn=*)",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "An optional filter string (e.g. '(objectClass=person)'). "
             "In order to be valid, it must be enclosed in parentheses."
         ),
@@ -360,51 +360,51 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     ldap_import_username_attr = forms.CharField(
-        label=ugettext_lazy("Username attribute"),
+        label=gettext_lazy("Username attribute"),
         initial="cn",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The name of the LDAP attribute where the username can be found."
         ),
     )
 
     ldap_dovecot_sync = YesNoField(
-        label=ugettext_lazy("Enable Dovecot LDAP sync"),
+        label=gettext_lazy("Enable Dovecot LDAP sync"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "LDAP authentication settings will be applied to Dovecot "
             "configuration."
         )
     )
 
     ldap_dovecot_conf_file = forms.CharField(
-        label=ugettext_lazy("Dovecot LDAP config file"),
+        label=gettext_lazy("Dovecot LDAP config file"),
         initial="/etc/dovecot/dovecot-modoboa.conf",
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Location of the configuration file which contains "
             "Dovecot LDAP settings."
         )
     )
 
-    dash_sep = SeparatorField(label=ugettext_lazy("Dashboard"))
+    dash_sep = SeparatorField(label=gettext_lazy("Dashboard"))
 
     rss_feed_url = forms.URLField(
-        label=ugettext_lazy("Custom RSS feed"),
+        label=gettext_lazy("Custom RSS feed"),
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Display custom RSS feed to resellers and domain administrators"
         )
     )
 
     hide_features_widget = YesNoField(
-        label=ugettext_lazy("Hide features widget"),
+        label=gettext_lazy("Hide features widget"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Hide features widget for resellers and domain administrators"
         )
     )
 
-    notif_sep = SeparatorField(label=ugettext_lazy("Notifications"))
+    notif_sep = SeparatorField(label=gettext_lazy("Notifications"))
 
     sender_address = lib_fields.UTF8EmailField(
         label=_("Sender address"),
@@ -414,26 +414,26 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         )
     )
 
-    api_sep = SeparatorField(label=ugettext_lazy("Public API"))
+    api_sep = SeparatorField(label=gettext_lazy("Public API"))
 
     enable_api_communication = YesNoField(
-        label=ugettext_lazy("Enable communication"),
+        label=gettext_lazy("Enable communication"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Enable communication with Modoboa public API")
     )
 
     check_new_versions = YesNoField(
-        label=ugettext_lazy("Check new versions"),
+        label=gettext_lazy("Check new versions"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Automatically checks if a newer version is available")
     )
 
     send_new_versions_email = YesNoField(
-        label=ugettext_lazy("Send an email when new versions are found"),
+        label=gettext_lazy("Send an email when new versions are found"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Send an email to notify admins about new versions"
         )
     )
@@ -446,14 +446,14 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     send_statistics = YesNoField(
-        label=ugettext_lazy("Send statistics"),
+        label=gettext_lazy("Send statistics"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Send statistics to Modoboa public API "
             "(counters and used extensions)")
     )
 
-    sep3 = SeparatorField(label=ugettext_lazy("Miscellaneous"))
+    sep3 = SeparatorField(label=gettext_lazy("Miscellaneous"))
 
     enable_inactive_accounts = YesNoField(
         label=_("Enable inactive account tracking"),
@@ -481,22 +481,22 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     )
 
     log_maximum_age = forms.IntegerField(
-        label=ugettext_lazy("Maximum log record age"),
+        label=gettext_lazy("Maximum log record age"),
         initial=365,
-        help_text=ugettext_lazy("The maximum age in days of a log record"),
+        help_text=gettext_lazy("The maximum age in days of a log record"),
     )
 
     items_per_page = forms.IntegerField(
-        label=ugettext_lazy("Items per page"),
+        label=gettext_lazy("Items per page"),
         initial=30,
-        help_text=ugettext_lazy("Number of displayed items per page"),
+        help_text=gettext_lazy("Number of displayed items per page"),
     )
 
     default_top_redirection = forms.ChoiceField(
-        label=ugettext_lazy("Default top redirection"),
+        label=gettext_lazy("Default top redirection"),
         choices=[],
         initial="user",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The default redirection used when no application is specified"
         ),
     )
@@ -537,7 +537,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         )
         available_schemes = get_dovecot_schemes()
         self.fields["password_scheme"].choices = [
-            (hasher.name, ugettext_lazy(hasher.label))
+            (hasher.name, gettext_lazy(hasher.label))
             for hasher in PasswordHasher.get_password_hashers()
             if hasher().scheme in available_schemes
         ]
@@ -725,46 +725,46 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
 GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
     ("authentication", {
-        "label": ugettext_lazy("Authentication"),
+        "label": gettext_lazy("Authentication"),
         "params": collections.OrderedDict([
             ("authentication_type", {
-                "label": ugettext_lazy("Authentication type"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Authentication type"),
+                "help_text": gettext_lazy(
                     "The backend used for authentication"),
             }),
             ("password_scheme", {
-                "label": ugettext_lazy("Default password scheme"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default password scheme"),
+                "help_text": gettext_lazy(
                     "Scheme used to crypt mailbox passwords"),
             }),
             ("rounds_number", {
-                "label": ugettext_lazy("Rounds"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Rounds"),
+                "help_text": gettext_lazy(
                     "Number of rounds to use (only used by sha256crypt and "
                     "sha512crypt). Must be between 1000 and 999999999, "
                     "inclusive."
                 )
             }),
             ("update_scheme", {
-                "label": ugettext_lazy("Update password scheme at login"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Update password scheme at login"),
+                "help_text": gettext_lazy(
                     "Update user password at login to use the default "
                     "password scheme"
                 )
             }),
             ("default_password", {
-                "label": ugettext_lazy("Default password"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default password"),
+                "help_text": gettext_lazy(
                     "Default password for automatically created accounts.")
             }),
             ("random_password_length", {
-                "label": ugettext_lazy("Random password length"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Random password length"),
+                "help_text": gettext_lazy(
                     "Length of randomly generated passwords.")
             }),
             ("update_password_url", {
-                "label": ugettext_lazy("Update password service URL"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Update password service URL"),
+                "help_text": gettext_lazy(
                     "The URL of an external page where users will be able"
                     " to update their password. It applies only to non local"
                     " users, ie. those automatically created after a successful"
@@ -772,23 +772,23 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 )
             }),
             ("password_recovery_msg", {
-                "label": ugettext_lazy("Password recovery announcement"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Password recovery announcement"),
+                "help_text": gettext_lazy(
                     "A temporary message that will be displayed on the "
                     "reset password page."
                 )
             }),
             ("sms_password_recovery", {
-                "label": ugettext_lazy("Enable password recovery by SMS"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable password recovery by SMS"),
+                "help_text": gettext_lazy(
                     "Enable password recovery by SMS for users who filled "
                     "a phone number."
                 )
             }),
             ("sms_provider", {
-                "label": ugettext_lazy("SMS provider"),
+                "label": gettext_lazy("SMS provider"),
                 "display": "sms_password_recovery=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Choose a provider to send password recovery SMS"
                 )
             }),
@@ -799,94 +799,94 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
         "label": _("LDAP"),
         "params": collections.OrderedDict([
             ("ldap_server_address", {
-                "label": ugettext_lazy("Server address"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Server address"),
+                "help_text": gettext_lazy(
                     "The IP address or the DNS name of the LDAP server"),
             }),
             ("ldap_server_port", {
-                "label": ugettext_lazy("Server port"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Server port"),
+                "help_text": gettext_lazy(
                     "The TCP port number used by the LDAP server")
             }),
             ("ldap_enable_secondary_server", {
-                "label": ugettext_lazy("Enable secondary server (fallback)"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable secondary server (fallback)"),
+                "help_text": gettext_lazy(
                     "Enable a secondary LDAP server which will be used "
                     "if the primary one fails"
                 )
             }),
             ("ldap_secondary_server_address", {
-                "label": ugettext_lazy("Secondary server address"),
+                "label": gettext_lazy("Secondary server address"),
                 "display": "ldap_enable_secondary_server=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "The IP address or the DNS name of the seondary LDAP server"
                 )
             }),
             ("ldap_secondary_server_port", {
-                "label": ugettext_lazy("Secondary server port"),
+                "label": gettext_lazy("Secondary server port"),
                 "display": "ldap_enable_secondary_server=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "The TCP port number used by the LDAP secondary server"
                 )
             }),
             ("ldap_secured", {
-                "label": ugettext_lazy("Use a secured connection"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Use a secured connection"),
+                "help_text": gettext_lazy(
                     "Use an SSL/STARTTLS connection to access the LDAP server")
             }),
             ("ldap_is_active_directory", {
-                "label": ugettext_lazy("Active Directory"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Active Directory"),
+                "help_text": gettext_lazy(
                     "Tell if the LDAP server is an Active Directory one")
             }),
             ("ldap_admin_groups", {
-                "label": ugettext_lazy("Administrator groups"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Administrator groups"),
+                "help_text": gettext_lazy(
                     "Members of those LDAP Posix groups will be created as "
                     "domain administrators. Use ';' characters to separate "
                     "groups."
                 )
             }),
             ("ldap_group_type", {
-                "label": ugettext_lazy("Group type"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Group type"),
+                "help_text": gettext_lazy(
                     "The LDAP group type to use with your directory."
                 )
             }),
             ("ldap_groups_search_base", {
-                "label": ugettext_lazy("Groups search base"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Groups search base"),
+                "help_text": gettext_lazy(
                     "The distinguished name of the search base used to find "
                     "groups"
                 )
             }),
             ("ldap_password_attribute", {
-                "label": ugettext_lazy("Password attribute"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Password attribute"),
+                "help_text": gettext_lazy(
                     "The attribute used to store user passwords"),
             }),
             ("ldap_auth_sep", {
-                "label": ugettext_lazy("LDAP authentication settings"),
+                "label": gettext_lazy("LDAP authentication settings"),
                 "display": "authentication_type=ldap",
                 "separator": True
             }),
             ("ldap_auth_method", {
-                "label": ugettext_lazy("Authentication method"),
+                "label": gettext_lazy("Authentication method"),
                 "display": "authentication_type=ldap",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Choose the authentication method to use"),
             }),
             ("ldap_bind_dn", {
-                "label": ugettext_lazy("Bind DN"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Bind DN"),
+                "help_text": gettext_lazy(
                     "The distinguished name to use when binding to the LDAP "
                     "server. Leave empty for an anonymous bind"
                 ),
                 "display": "authentication_type=ldap&ldap_auth_method=searchbind"
             }),
             ("ldap_bind_password", {
-                "label": ugettext_lazy("Bind password"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Bind password"),
+                "help_text": gettext_lazy(
                     "The password to use when binding to the LDAP server "
                     "(with 'Bind DN')"
                 ),
@@ -894,113 +894,113 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 "password": True
             }),
             ("ldap_search_base", {
-                "label": ugettext_lazy("Users search base"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Users search base"),
+                "help_text": gettext_lazy(
                     "The distinguished name of the search base used to find "
                     "users"
                 ),
                 "display": "authentication_type=ldap&ldap_auth_method=searchbind"
             }),
             ("ldap_search_filter", {
-                "label": ugettext_lazy("Search filter"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Search filter"),
+                "help_text": gettext_lazy(
                     "An optional filter string (e.g. '(objectClass=person)'). "
                     "In order to be valid, it must be enclosed in parentheses."
                 ),
                 "display": "authentication_type=ldap&ldap_auth_method=searchbind"
             }),
             ("ldap_user_dn_template", {
-                "label": ugettext_lazy("User DN template"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("User DN template"),
+                "help_text": gettext_lazy(
                     "The template used to construct a user's DN. It should "
                     "contain one placeholder (ie. %(user)s)"
                 ),
                 "display": "authentication_type=ldap&ldap_auth_method=directbind"
             }),
             ("ldap_sync_sep", {
-                "label": ugettext_lazy("LDAP synchronization settings"),
+                "label": gettext_lazy("LDAP synchronization settings"),
                 "separator": True
             }),
             ("ldap_sync_bind_dn", {
-                "label": ugettext_lazy("Bind DN"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Bind DN"),
+                "help_text": gettext_lazy(
                     "The distinguished name to use when binding to the LDAP server. "
                     "Leave empty for an anonymous bind"
                 )
             }),
             ("ldap_sync_bind_password", {
-                "label": ugettext_lazy("Bind password"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Bind password"),
+                "help_text": gettext_lazy(
                     "The password to use when binding to the LDAP server "
                     "(with 'Bind DN')"
                 ),
                 "password": True
             }),
             ("ldap_enable_sync", {
-                "label": ugettext_lazy("Enable export to LDAP"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable export to LDAP"),
+                "help_text": gettext_lazy(
                     "Enable automatic synchronization between local database "
                     "and LDAP directory"
                 )
             }),
             ("ldap_sync_delete_remote_account", {
-                "label": ugettext_lazy(
+                "label": gettext_lazy(
                     "Delete remote LDAP account when local account is deleted"),
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Delete remote LDAP account when local account is deleted, "
                     "otherwise it will be disabled."
                 ),
                 "display": "ldap_enable_sync=true"
             }),
             ("ldap_sync_account_dn_template", {
-                "label": ugettext_lazy("Account DN template"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Account DN template"),
+                "help_text": gettext_lazy(
                     "The template used to construct an account's DN. It should "
                     "contain one placeholder (ie. %(user)s)"
                 ),
                 "display": "ldap_enable_sync=true"
             }),
             ("ldap_enable_import", {
-                "label": ugettext_lazy("Enable import from LDAP"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable import from LDAP"),
+                "help_text": gettext_lazy(
                     "Enable account synchronization from LDAP directory to "
                     "local database"
                 )
             }),
             ("ldap_import_search_base", {
-                "label": ugettext_lazy("Users search base"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Users search base"),
+                "help_text": gettext_lazy(
                     "The distinguished name of the search base used to find "
                     "users"
                 ),
                 "display": "ldap_enable_import=true"
             }),
             ("ldap_import_search_filter", {
-                "label": ugettext_lazy("Search filter"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Search filter"),
+                "help_text": gettext_lazy(
                     "An optional filter string (e.g. '(objectClass=person)'). "
                     "In order to be valid, it must be enclosed in parentheses."
                 ),
                 "display": "ldap_enable_import=true"
             }),
             ("ldap_import_username_attr", {
-                "label": ugettext_lazy("Username attribute"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Username attribute"),
+                "help_text": gettext_lazy(
                     "The name of the LDAP attribute where the username can be "
                     "found."
                 ),
                 "display": "ldap_enable_import=true"
             }),
             ("ldap_dovecot_sync", {
-                "label": ugettext_lazy("Enable Dovecot LDAP sync"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable Dovecot LDAP sync"),
+                "help_text": gettext_lazy(
                     "LDAP authentication settings will be applied to Dovecot "
                     "configuration."
                 )
             }),
             ("ldap_dovecot_conf_file", {
-                "label": ugettext_lazy("Dovecot LDAP config file"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Dovecot LDAP config file"),
+                "help_text": gettext_lazy(
                     "Location of the configuration file which contains "
                     "Dovecot LDAP settings."
                 ),
@@ -1010,18 +1010,18 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
         ])
     }),
     ("dashboard", {
-        "label": ugettext_lazy("Dashboard"),
+        "label": gettext_lazy("Dashboard"),
         "params": collections.OrderedDict([
             ("rss_feed_url", {
-                "label": ugettext_lazy("Custom RSS feed"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Custom RSS feed"),
+                "help_text": gettext_lazy(
                     "Display custom RSS feed to resellers and domain "
                     "administrators"
                 )
             }),
             ("hide_features_widget", {
-                "label": ugettext_lazy("Hide features widget"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Hide features widget"),
+                "help_text": gettext_lazy(
                     "Hide features widget for resellers and domain "
                     "administrators"
                 )
@@ -1029,90 +1029,90 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
         ])
     }),
     ("notifications", {
-        "label": ugettext_lazy("Notifications"),
+        "label": gettext_lazy("Notifications"),
         "params": collections.OrderedDict([
             ("sender_address", {
-                "label": ugettext_lazy("Sender address"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Sender address"),
+                "help_text": gettext_lazy(
                     "Email address used to send notifications.")
             })
         ])
     }),
     ("api", {
-        "label": ugettext_lazy("Public API"),
+        "label": gettext_lazy("Public API"),
         "params": collections.OrderedDict([
             ("enable_api_communication", {
-                "label": ugettext_lazy("Enable communication"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable communication"),
+                "help_text": gettext_lazy(
                     "Automatically checks if a newer version is available")
             }),
             ("check_new_versions", {
-                "label": ugettext_lazy("Check new versions"),
+                "label": gettext_lazy("Check new versions"),
                 "display": "enable_api_communication=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Automatically checks if a newer version is available")
             }),
             ("send_new_versions_email", {
-                "label": ugettext_lazy(
+                "label": gettext_lazy(
                     "Send an email when new versions are found"),
                 "display": "check_new_versions=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Send an email to notify admins about new versions"
                 )
             }),
             ("new_versions_email_rcpt", {
-                "label": ugettext_lazy("Recipient"),
+                "label": gettext_lazy("Recipient"),
                 "display": "check_new_versions=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Recipient of new versions notification emails."
                 )
             }),
             ("send_statistics", {
-                "label": ugettext_lazy("Send statistics"),
+                "label": gettext_lazy("Send statistics"),
                 "display": "enable_api_communication=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Send statistics to Modoboa public API "
                     "(counters and used extensions)")
             })
         ])
     }),
     ("misc", {
-        "label": ugettext_lazy("Miscellaneous"),
+        "label": gettext_lazy("Miscellaneous"),
         "params": collections.OrderedDict([
              ("enable_inactive_accounts", {
-                "label": ugettext_lazy("Enable inactive account tracking"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable inactive account tracking"),
+                "help_text": gettext_lazy(
                     "Allow the administrator to set a threshold (in days) "
                     "beyond which an account is considered inactive "
                     "if the user hasn't logged in"
                     ),
             }),
             ("inactive_account_threshold", {
-                "label": ugettext_lazy("Inactive account threshold"),
+                "label": gettext_lazy("Inactive account threshold"),
                 "display": "enable_inactive_accounts=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "An account with a last login date greater than this "
                     "threshold (in days) will be considered as inactive"
                 )
             }),
             ("top_notifications_check_interval", {
-                "label": ugettext_lazy("Top notifications check interval"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Top notifications check interval"),
+                "help_text": gettext_lazy(
                     "Interval between two top notification checks (in seconds)"
                 ),
             }),
             ("log_maximum_age", {
-                "label": ugettext_lazy("Maximum log record age"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Maximum log record age"),
+                "help_text": gettext_lazy(
                     "The maximum age in days of a log record"),
             }),
             ("items_per_page", {
-                "label": ugettext_lazy("Items per page"),
-                "help_text": ugettext_lazy("Number of displayed items per page")
+                "label": gettext_lazy("Items per page"),
+                "help_text": gettext_lazy("Number of displayed items per page")
             }),
             ("default_top_redirection", {
-                "label": ugettext_lazy("Default top redirection"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default top redirection"),
+                "help_text": gettext_lazy(
                     "The default redirection used when no application is "
                     "specified"
                 ),

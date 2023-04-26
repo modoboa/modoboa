@@ -2,7 +2,7 @@
 
 from django.core.checks import Warning, register
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
 

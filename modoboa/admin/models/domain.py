@@ -6,9 +6,9 @@ from reversion import revisions as reversion
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
@@ -23,46 +23,46 @@ from . import mixins
 class Domain(mixins.MessageLimitMixin, AdminObject):
     """Mail domain."""
 
-    name = models.CharField(ugettext_lazy("name"), max_length=253, unique=True,
-                            help_text=ugettext_lazy("The domain name"))
+    name = models.CharField(gettext_lazy("name"), max_length=253, unique=True,
+                            help_text=gettext_lazy("The domain name"))
     quota = models.PositiveIntegerField(
         default=0,
     )
     default_mailbox_quota = models.PositiveIntegerField(
-        verbose_name=ugettext_lazy("Default mailbox quota"),
+        verbose_name=gettext_lazy("Default mailbox quota"),
         default=0
     )
     message_limit = models.PositiveIntegerField(
-        ugettext_lazy("Message sending limit"),
+        gettext_lazy("Message sending limit"),
         null=True, blank=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Number of messages this domain can send per day"
         )
     )
     enabled = models.BooleanField(
-        ugettext_lazy("enabled"),
-        help_text=ugettext_lazy("Check to activate this domain"),
+        gettext_lazy("enabled"),
+        help_text=gettext_lazy("Check to activate this domain"),
         default=True
     )
     type = models.CharField(default="domain", max_length=20)  # NOQA:A003
     enable_dns_checks = models.BooleanField(
-        ugettext_lazy("Enable DNS checks"), default=True,
-        help_text=ugettext_lazy("Check to enable DNS checks for this domain")
+        gettext_lazy("Enable DNS checks"), default=True,
+        help_text=gettext_lazy("Check to enable DNS checks for this domain")
     )
 
     transport = models.OneToOneField(
         "transport.Transport", null=True, on_delete=models.SET_NULL)
 
     enable_dkim = models.BooleanField(
-        ugettext_lazy("Enable DKIM signing"),
-        help_text=ugettext_lazy(
+        gettext_lazy("Enable DKIM signing"),
+        help_text=gettext_lazy(
             "If you activate this feature, a DKIM key will be "
             "generated for this domain."),
         default=False
     )
     dkim_key_selector = models.CharField(max_length=30, default="modoboa")
     dkim_key_length = models.PositiveIntegerField(
-        ugettext_lazy("Key length"), choices=constants.DKIM_KEY_LENGTHS,
+        gettext_lazy("Key length"), choices=constants.DKIM_KEY_LENGTHS,
         blank=True, null=True
     )
     dkim_public_key = models.TextField(blank=True)
@@ -339,7 +339,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         super().delete()
 
     def __str__(self):
-        return smart_text(self.name)
+        return smart_str(self.name)
 
     def from_csv(self, user, row):
         """Create a new domain from a CSV entry.
@@ -397,7 +397,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         result = [
             [
                 "domain",
-                force_text(self.name),
+                force_str(self.name),
                 self.quota,
                 self.default_mailbox_quota,
                 self.enabled

@@ -6,7 +6,7 @@ from django import template
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.lib.templatetags.lib_tags import render_link
@@ -16,7 +16,7 @@ from .. import signals
 register = template.Library()
 
 genders = {
-    "Enabled": (ugettext_lazy("enabled_m"), ugettext_lazy("enabled_f"))
+    "Enabled": (gettext_lazy("enabled_m"), gettext_lazy("enabled_f"))
 }
 
 

@@ -1,10 +1,10 @@
 """PDF credentials constants."""
 
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 
 CONNECTION_SECURITY_MODES = [
-    ("none", ugettext_lazy("None")),
+    ("none", gettext_lazy("None")),
     ("starttls", "STARTTLS"),
     ("tls", "TLS")
 ]

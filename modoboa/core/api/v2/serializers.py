@@ -13,10 +13,10 @@ from django.core.exceptions import ValidationError as djangoValidationError
 from django.template import loader
 
 from django.utils import formats
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from django.utils.translation import ugettext_lazy, ugettext as _
+from django.utils.translation import gettext_lazy, gettext as _
 
 from rest_framework import serializers, status
 from rest_framework.exceptions import APIException
@@ -36,7 +36,7 @@ class CustomValidationError(APIException):
         if detail is not None:
             self.detail = detail
         else:
-            self.detail = {'detail': force_text(self.default_detail)}
+            self.detail = {'detail': force_str(self.default_detail)}
 
 
 class NoSMSAvailable(Exception):
@@ -57,7 +57,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
 
     # General settings
     authentication_type = serializers.ChoiceField(
-        choices=[("local", ugettext_lazy("Local")),
+        choices=[("local", gettext_lazy("Local")),
                  ("ldap", "LDAP")],
         default="local"
     )
@@ -65,11 +65,11 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         choices=[("sha512crypt", "sha512crypt"),
                  ("sha256crypt", "sha256crypt"),
                  ("blfcrypt", "bcrypt"),
-                 ("md5crypt", ugettext_lazy("md5crypt (weak)")),
-                 ("sha256", ugettext_lazy("sha256 (weak)")),
-                 ("md5", ugettext_lazy("md5 (weak)")),
-                 ("crypt", ugettext_lazy("crypt (weak)")),
-                 ("plain", ugettext_lazy("plain (weak)"))],
+                 ("md5crypt", gettext_lazy("md5crypt (weak)")),
+                 ("sha256", gettext_lazy("sha256 (weak)")),
+                 ("md5", gettext_lazy("md5 (weak)")),
+                 ("crypt", gettext_lazy("crypt (weak)")),
+                 ("plain", gettext_lazy("plain (weak)"))],
         default="sha512crypt"
     )
     rounds_number = serializers.IntegerField(default=70000)

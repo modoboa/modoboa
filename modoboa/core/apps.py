@@ -2,7 +2,7 @@
 
 from django.apps import AppConfig
 from django.db.models import signals
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 
 def load_core_settings():
@@ -16,9 +16,9 @@ def load_core_settings():
     from .api.v2 import serializers
 
     param_tools.registry.add(
-        "global", app_settings.GeneralParametersForm, ugettext_lazy("General"))
+        "global", app_settings.GeneralParametersForm, gettext_lazy("General"))
     param_tools.registry.add2(
-        "global", "core", ugettext_lazy("General"),
+        "global", "core", gettext_lazy("General"),
         app_settings.GLOBAL_PARAMETERS_STRUCT,
         serializers.CoreGlobalParametersSerializer)
 

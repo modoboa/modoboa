@@ -2,7 +2,7 @@
 
 from django.apps import AppConfig
 
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 
 def load_pdfcredential_settings():
@@ -16,9 +16,9 @@ def load_pdfcredential_settings():
     from .api.v2 import serializers
 
     param_tools.registry.add(
-        "global", app_settings.ParametersForm, ugettext_lazy("PDF credentials"))
+        "global", app_settings.ParametersForm, gettext_lazy("PDF credentials"))
     param_tools.registry.add2(
-        "global", "pdfcredentials", ugettext_lazy("PDF Credentials"),
+        "global", "pdfcredentials", gettext_lazy("PDF Credentials"),
         app_settings.PDF_CREDENTIALS_PARAMETERS_STRUCT,
         serializers.PDFCredentialsSettingsSerializer,
         True)

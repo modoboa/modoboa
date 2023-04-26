@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import signals
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.admin import models as admin_models, signals as admin_signals
 from modoboa.core import models as core_models, signals as core_signals

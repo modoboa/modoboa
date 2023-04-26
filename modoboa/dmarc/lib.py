@@ -20,8 +20,8 @@ import six
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext as _
 
 from modoboa.admin import models as admin_models
 from modoboa.parameters import tools as param_tools
@@ -57,7 +57,7 @@ def import_record(xml_node, report):
     record.spf_result = policy_evaluated.find("spf").text
     reason = policy_evaluated.find("reason")
     if reason:
-        record.reason_type = smart_text(reason.find("type").text)[:14]
+        record.reason_type = smart_str(reason.find("type").text)[:14]
         if record.reason_type not in constants.ALLOWED_REASON_TYPES:
             record.reason_type = "other"
         comment = reason.find("comment").text or ""

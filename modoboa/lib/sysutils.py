@@ -10,7 +10,7 @@ import re
 import subprocess
 
 from django.conf import settings
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 
 def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
@@ -59,7 +59,7 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     dpath = None
     code, output = exec_cmd("which doveadm")
     if not code:
-        dpath = force_text(output).strip()
+        dpath = force_str(output).strip()
     else:
         known_paths = getattr(
             settings, "DOVEADM_LOOKUP_PATH",

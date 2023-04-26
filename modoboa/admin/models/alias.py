@@ -7,9 +7,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import (
-    force_bytes, force_str, smart_text
+    force_bytes, force_str, smart_str
 )
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from reversion import revisions as reversion
 
@@ -68,22 +68,22 @@ class Alias(AdminObject):
     """Mailbox alias."""
 
     address = models.CharField(
-        ugettext_lazy("address"), max_length=254,
-        help_text=ugettext_lazy(
+        gettext_lazy("address"), max_length=254,
+        help_text=gettext_lazy(
             "The alias address."
         )
     )
     domain = models.ForeignKey(Domain, null=True, on_delete=models.CASCADE)
     enabled = models.BooleanField(
-        ugettext_lazy("enabled"),
-        help_text=ugettext_lazy("Check to activate this alias"),
+        gettext_lazy("enabled"),
+        help_text=gettext_lazy("Check to activate this alias"),
         default=True
     )
     internal = models.BooleanField(default=False)
     description = models.TextField(
-        ugettext_lazy("Description"), blank=True)
+        gettext_lazy("Description"), blank=True)
     expire_at = models.DateTimeField(
-        ugettext_lazy("Expire at"), blank=True, null=True)
+        gettext_lazy("Expire at"), blank=True, null=True)
     _objectname = "MailboxAlias"
 
     objects = AliasManager()
@@ -258,6 +258,6 @@ class AliasRecipient(models.Model):
 
     def __str__(self):
         """Return alias and recipient."""
-        return smart_text(
+        return smart_str(
             "{} -> {}".format(self.alias.address, self.address)
         )

@@ -5,8 +5,8 @@ from functools import reduce
 from django import forms
 from django.http import QueryDict
 from django.urls import reverse
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
@@ -25,30 +25,30 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     """A form to create/edit a domain."""
 
     type = forms.ChoiceField(  # NOQA:A003
-        label=ugettext_lazy("Type"),
+        label=gettext_lazy("Type"),
     )
     aliases = DomainNameField(
-        label=ugettext_lazy("Alias(es)"),
+        label=gettext_lazy("Alias(es)"),
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Alias(es) of this domain. Indicate only one name per input, "
             "press ENTER to add a new input."
         )
     )
     dkim_key_selector = forms.CharField(
-        label=ugettext_lazy("Key selector"), initial="modoboa", required=False)
+        label=gettext_lazy("Key selector"), initial="modoboa", required=False)
     quota = forms.CharField(
-        label=ugettext_lazy("Quota"),
+        label=gettext_lazy("Quota"),
         initial=0,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Quota shared between mailboxes. Can be expressed in KB, "
             "MB (default) or GB. A value of 0 means no quota."
         )
     )
     default_mailbox_quota = forms.CharField(
-        label=ugettext_lazy("Default mailbox quota"),
+        label=gettext_lazy("Default mailbox quota"),
         initial=0,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Default quota applied to mailboxes. Can be expressed in KB, MB "
             "(default) or GB. A value of 0 means no quota."
         )
@@ -97,7 +97,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             name, [(DomainAlias, _("domain alias"))])
         if label is not None:
             raise forms.ValidationError(
-                _("A %s with this name already exists") % force_text(label))
+                _("A %s with this name already exists") % force_str(label))
 
         domains_must_have_authorized_mx = (
             param_tools.get_global_parameter("domains_must_have_authorized_mx")
@@ -182,7 +182,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             if label is not None:
                 self.add_error(
                     k, _("A %s with this name already exists")
-                    % force_text(label)
+                    % force_str(label)
                 )
             else:
                 self.aliases.append(cleaned_data[k])
@@ -227,17 +227,17 @@ class DomainFormOptions(forms.Form):
     """A form containing options for domain creation."""
 
     create_dom_admin = YesNoField(
-        label=ugettext_lazy("Create a domain administrator"),
+        label=gettext_lazy("Create a domain administrator"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Automatically create an administrator for this domain"
         )
     )
 
     dom_admin_username = forms.CharField(
-        label=ugettext_lazy("Name"),
+        label=gettext_lazy("Name"),
         initial="admin",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "The administrator's name. Don't include the domain's name here, "
             "it will be automatically appended."
         ),
@@ -245,27 +245,27 @@ class DomainFormOptions(forms.Form):
     )
 
     random_password = YesNoField(
-        label=ugettext_lazy("Random password"),
+        label=gettext_lazy("Random password"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Generate a random password for the administrator."
         ),
         required=False
     )
 
     with_mailbox = YesNoField(
-        label=ugettext_lazy("With a mailbox"),
+        label=gettext_lazy("With a mailbox"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Create a mailbox for the administrator."
         ),
         required=False
     )
 
     create_aliases = YesNoField(
-        label=ugettext_lazy("Create aliases"),
+        label=gettext_lazy("Create aliases"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Automatically create standard aliases for this domain"
         ),
         required=False

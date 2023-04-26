@@ -9,7 +9,7 @@ from django.forms.fields import Field
 from django.forms.widgets import RadioSelect
 from django.shortcuts import render
 from django.utils.encoding import force_str
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.lib.exceptions import BadRequest
 from modoboa.lib.web_utils import render_to_json_response
@@ -393,8 +393,8 @@ class YesNoField(TypedChoiceField):
         """Constructor."""
         kwargs.update({
             "choices": (
-                (True, ugettext_lazy("Yes")),
-                (False, ugettext_lazy("No"))
+                (True, gettext_lazy("Yes")),
+                (False, gettext_lazy("No"))
             ),
             "widget": HorizontalRadioSelect(),
             "coerce": lambda x: x == "True"

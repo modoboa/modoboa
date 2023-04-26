@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import gettext as _, ngettext
 from django.views import generic
 from django.views.decorators.http import require_http_methods
 
@@ -102,7 +102,7 @@ def delalias(request):
         if not request.user.can_access(alias):
             raise PermDeniedException
         alias.delete()
-    msg = ungettext("Alias deleted", "Aliases deleted", len(selection))
+    msg = ngettext("Alias deleted", "Aliases deleted", len(selection))
     return render_to_json_response(msg)
 
 
