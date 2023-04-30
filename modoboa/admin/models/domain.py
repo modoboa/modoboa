@@ -313,7 +313,8 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
 
     def save(self, *args, **kwargs):
         """Store current data if domain is renamed."""
-        if self.oldname != self.name:
+        # We check that the instance exists to use m2m relationship
+        if self.pk and self.oldname != self.name:
             self.old_mail_homes = {
                 mb.id: mb.mail_home for mb in self.mailbox_set.all()
             }
