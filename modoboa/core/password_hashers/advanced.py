@@ -40,7 +40,7 @@ class BLFCRYPTHasher(PasswordHasher):
         # rounds = parameters.get_global_parameter("rounds_number")
         # To get around this, I use the default of 12.
         rounds = 12
-        return bcrypt.hash.using(rounds=rounds).hash(clearvalue)
+        return bcrypt.using(rounds=rounds).hash(clearvalue)
 
     def verify(self, clearvalue, hashed_value):
         return bcrypt.verify(clearvalue, hashed_value)
