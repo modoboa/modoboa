@@ -14,7 +14,6 @@ import tldextract
 from defusedxml.ElementTree import fromstring
 from dns import resolver, reversename
 import magic
-import pytz.exceptions
 import six
 
 from django.db import transaction
@@ -128,11 +127,7 @@ def import_report(content):
                 print(f"Report skipped because of malformed data (empty {attr})")
                 return
         value = setattr(report, "policy_{}".format(attr), node.text)
-    try:
-        report.save()
-    except (pytz.exceptions.AmbiguousTimeError):
-        print("Report skipped because of invalid date.")
-        return
+    report.save()
     for record in root.findall("record"):
         import_record(record, report)
 
@@ -223,7 +218,7 @@ def week_range(year, weeknumber):
         "{}-{}-{}".format(year, weeknumber, 1), fmt)
     end_week = datetime.datetime.strptime(
         "{}-{}-{}".format(year, weeknumber, 0), fmt)
-    return tz.localize(start_week), tz.localize(end_week)
+    return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
 
 
 def insert_record(target: dict, record, name: str) -> None:
