@@ -97,7 +97,6 @@ jobs:
           pip install -r mysql-requirements.txt
           echo "DB=mysql" >> $GITHUB_ENV
       - name: Test with pytest
-        if: ${{ matrix.database != 'postgres' }}
         run: |
           python ./tests.py
           cd test_project

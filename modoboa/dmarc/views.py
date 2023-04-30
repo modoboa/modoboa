@@ -45,7 +45,7 @@ def week_range(year, weeknumber):
         "{}-{}-{}".format(year, weeknumber, 1), fmt)
     end_week = datetime.datetime.strptime(
         "{}-{}-{}".format(year, weeknumber, 0), fmt)
-    return tz.localize(start_week), tz.localize(end_week)
+    return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
 
 
 class DomainReportView(
