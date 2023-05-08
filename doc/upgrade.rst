@@ -160,7 +160,7 @@ You need to add ``'modoboa_imap_migration.auth_backends.IMAPBackend',`` at the e
 
    AUTHENTICATION_BACKENDS = (
       'django.contrib.auth.backends.ModelBackend',
-      'modoboa_imap_migration.auth_backends.IMAPBackend',
+      'modoboa.imap_migration.auth_backends.IMAPBackend',
    )
 
 .. note::
