@@ -7,7 +7,7 @@ import pkg_resources
 import requests
 from requests.exceptions import RequestException
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 logger = logging.getLogger("modoboa.admin")
 

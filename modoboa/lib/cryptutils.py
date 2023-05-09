@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives.hashes import SHA1
 
 from django.conf import settings
 from django.utils.crypto import get_random_string
-from django.utils.encoding import smart_bytes, smart_text
+from django.utils.encoding import smart_bytes, smart_str
 
 
 def random_key(length=16):
@@ -34,12 +34,12 @@ def _get_fernet():
 
 def encrypt(clear_value):
     """Encrypt a value using secret_key."""
-    return smart_text(_get_fernet().encrypt(smart_bytes(clear_value)))
+    return smart_str(_get_fernet().encrypt(smart_bytes(clear_value)))
 
 
 def decrypt(encrypted_value):
     """Decrypt a value using secret_key."""
-    return smart_text(_get_fernet().decrypt(smart_bytes(encrypted_value)))
+    return smart_str(_get_fernet().decrypt(smart_bytes(encrypted_value)))
 
 
 def get_password(request):

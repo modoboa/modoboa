@@ -1,9 +1,9 @@
 """Custom urls."""
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url("^$", views.test_view, name="index")
+    re_path("^$", views.test_view, name="index")
 ]

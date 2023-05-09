@@ -13,7 +13,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import gettext as _, ngettext
 from django.views import generic
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
@@ -247,7 +247,7 @@ def deldomain(request, dom_id):
         raise PermDeniedException(_("You can't delete your own domain"))
     dom.delete(request.user, keepdir)
 
-    msg = ungettext("Domain deleted", "Domains deleted", 1)
+    msg = ngettext("Domain deleted", "Domains deleted", 1)
     return render_to_json_response(msg)
 
 

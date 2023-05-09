@@ -5,7 +5,7 @@ from functools import reduce
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core.models import Log
 from modoboa.core.utils import check_for_updates

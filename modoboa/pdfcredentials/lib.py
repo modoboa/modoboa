@@ -11,7 +11,7 @@ from urllib.parse import quote
 
 from django.conf import settings
 from django.utils.encoding import force_bytes, smart_bytes
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools

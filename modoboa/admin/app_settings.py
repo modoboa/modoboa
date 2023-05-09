@@ -6,8 +6,8 @@ import os
 
 from django import forms
 from django.conf import settings
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _, gettext_lazy
 from django.forms.fields import GenericIPAddressField
 
 from modoboa.lib.form_utils import SeparatorField, YesNoField
@@ -20,20 +20,20 @@ from . import constants
 class AdminParametersForm(param_forms.AdminParametersForm):
     app = "admin"
 
-    dom_sep = SeparatorField(label=ugettext_lazy("Domains"))
+    dom_sep = SeparatorField(label=gettext_lazy("Domains"))
 
     enable_mx_checks = YesNoField(
-        label=ugettext_lazy("Enable MX checks"),
+        label=gettext_lazy("Enable MX checks"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Check that every domain has a valid MX record"
         )
     )
 
     valid_mxs = forms.CharField(
-        label=ugettext_lazy("Valid MXs"),
+        label=gettext_lazy("Valid MXs"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "A list of IP or network address every MX record should match."
             " A warning will be sent if a record does not respect it."
         ),
@@ -42,68 +42,68 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     )
 
     domains_must_have_authorized_mx = YesNoField(
-        label=ugettext_lazy("New domains must use authorized MX(s)"),
+        label=gettext_lazy("New domains must use authorized MX(s)"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Prevent the creation of a new domain if its MX record does "
             "not use one of the defined addresses."
         )
     )
 
     enable_spf_checks = YesNoField(
-        label=ugettext_lazy("Enable SPF checks"),
+        label=gettext_lazy("Enable SPF checks"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Check if every domain has a valid SPF record"
         )
     )
 
     enable_dkim_checks = YesNoField(
-        label=ugettext_lazy("Enable DKIM checks"),
+        label=gettext_lazy("Enable DKIM checks"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Check if every domain with DKIM signin enabled has a valid DNS "
             "record"
         )
     )
 
     enable_dmarc_checks = YesNoField(
-        label=ugettext_lazy("Enable DMARC checks"),
+        label=gettext_lazy("Enable DMARC checks"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Check if every domain has a valid DMARC record"
         )
     )
 
     enable_autoconfig_checks = YesNoField(
-        label=ugettext_lazy("Enable autoconfig checks"),
+        label=gettext_lazy("Enable autoconfig checks"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Check if every domain has a valid records for autoconfiguration"
         )
     )
 
     enable_dnsbl_checks = YesNoField(
-        label=ugettext_lazy("Enable DNSBL checks"),
+        label=gettext_lazy("Enable DNSBL checks"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Check every domain against major DNSBL providers"
         )
     )
 
     custom_dns_server = GenericIPAddressField(
-        label=ugettext_lazy("Custom DNS server"),
+        label=gettext_lazy("Custom DNS server"),
         required=False,
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Use a custom DNS server instead of local server configuration"
         )
     )
 
     dkim_keys_storage_dir = forms.CharField(
-        label=ugettext_lazy("DKIM keys storage directory"),
+        label=gettext_lazy("DKIM keys storage directory"),
         initial="",
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Absolute path of the directory where DKIM private keys will "
             "be stored. Make sure this directory belongs to root user "
             "and is not readable by the outside world."
@@ -112,81 +112,81 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     )
 
     dkim_default_key_length = forms.ChoiceField(
-        label=ugettext_lazy("Default DKIM key length"),
+        label=gettext_lazy("Default DKIM key length"),
         initial=2048,
         choices=constants.DKIM_KEY_LENGTHS,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Default length in bits for newly generated DKIM keys."
         )
     )
 
     default_domain_quota = forms.IntegerField(
-        label=ugettext_lazy("Default domain quota"),
+        label=gettext_lazy("Default domain quota"),
         initial=0,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Default quota (in MB) applied to freshly created domains with no "
             "value specified. A value of 0 means no quota."
         )
     )
 
     default_domain_message_limit = forms.IntegerField(
-        label=ugettext_lazy("Default domain sending limit"),
+        label=gettext_lazy("Default domain sending limit"),
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Number of messages freshly created domains will be "
             "allowed to send per day. Leave empty for no limit."
         )
     )
 
-    mbsep = SeparatorField(label=ugettext_lazy("Mailboxes"))
+    mbsep = SeparatorField(label=gettext_lazy("Mailboxes"))
 
     handle_mailboxes = YesNoField(
-        label=ugettext_lazy("Handle mailboxes on filesystem"),
+        label=gettext_lazy("Handle mailboxes on filesystem"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Rename or remove mailboxes on the filesystem when they get"
             " renamed or removed within Modoboa"
         )
     )
 
     default_mailbox_quota = forms.IntegerField(
-        label=ugettext_lazy("Default mailbox quota"),
+        label=gettext_lazy("Default mailbox quota"),
         initial=0,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Default mailbox quota (in MB) applied to freshly created "
             "mailboxes with no value specified. A value of 0 means no quota."
         )
     )
 
     default_mailbox_message_limit = forms.IntegerField(
-        label=ugettext_lazy("Default mailbox sending limit"),
+        label=gettext_lazy("Default mailbox sending limit"),
         required=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Number of messages freshly created mailboxes will be "
             "allowed to send per day. Leave empty for no limit."
         )
     )
 
     auto_account_removal = YesNoField(
-        label=ugettext_lazy("Automatic account removal"),
+        label=gettext_lazy("Automatic account removal"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "When a mailbox is removed, also remove the associated account")
     )
 
     auto_create_domain_and_mailbox = YesNoField(
-        label=ugettext_lazy("Automatic domain/mailbox creation"),
+        label=gettext_lazy("Automatic domain/mailbox creation"),
         initial=True,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Create a domain and a mailbox when an account is automatically "
             "created."
         )
     )
 
     create_alias_on_mbox_rename = YesNoField(
-        label=ugettext_lazy("Create an alias when a mailbox is renamed"),
+        label=gettext_lazy("Create an alias when a mailbox is renamed"),
         initial=False,
-        help_text=ugettext_lazy(
+        help_text=gettext_lazy(
             "Create an alias using the old address when a mailbox is renamed."
         )
     )
@@ -207,7 +207,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         dpath = None
         code, output = exec_cmd("which dovecot")
         if not code:
-            dpath = force_text(output).strip()
+            dpath = force_str(output).strip()
         else:
             known_paths = getattr(
                 settings, "DOVECOT_LOOKUP_PATH",
@@ -222,7 +222,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
             except OSError:
                 hide_fields = True
             else:
-                version = force_text(version)
+                version = force_str(version)
                 if code or not version.strip().startswith("2"):
                     hide_fields = True
         else:
@@ -234,7 +234,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         """Ensure quota is a positive integer."""
         if self.cleaned_data["default_domain_quota"] < 0:
             raise forms.ValidationError(
-                ugettext_lazy("Must be a positive integer")
+                gettext_lazy("Must be a positive integer")
             )
         return self.cleaned_data["default_domain_quota"]
 
@@ -242,7 +242,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         """Ensure quota is a positive integer."""
         if self.cleaned_data["default_mailbox_quota"] < 0:
             raise forms.ValidationError(
-                ugettext_lazy("Must be a positive integer")
+                gettext_lazy("Must be a positive integer")
             )
         return self.cleaned_data["default_mailbox_quota"]
 
@@ -252,12 +252,12 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         if storage_dir:
             if not os.path.isdir(storage_dir):
                 raise forms.ValidationError(
-                    ugettext_lazy("Directory not found.")
+                    gettext_lazy("Directory not found.")
                 )
             code, output = exec_cmd("which openssl")
             if code:
                 raise forms.ValidationError(
-                    ugettext_lazy(
+                    gettext_lazy(
                         "openssl not found, please make sure it is installed.")
                 )
         return storage_dir
@@ -274,7 +274,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
             ]
         except ValueError:
             raise forms.ValidationError(
-                ugettext_lazy(
+                gettext_lazy(
                     "This field only allows valid IP addresses (or networks)"
                 )
             )
@@ -297,94 +297,94 @@ class AdminParametersForm(param_forms.AdminParametersForm):
 
 GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
     ("domains", {
-        "label": ugettext_lazy("Domains"),
+        "label": gettext_lazy("Domains"),
         "params": collections.OrderedDict([
             ("enable_mx_checks", {
-                "label": ugettext_lazy("Enable MX checks"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable MX checks"),
+                "help_text": gettext_lazy(
                     "Check that every domain has a valid MX record"
                 )
             }),
             ("valid_mxs", {
-                "label": ugettext_lazy("Valid MXs"),
+                "label": gettext_lazy("Valid MXs"),
                 "display": "enable_mx_checks=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "A list of IP or network address every MX record should "
                     "match. A warning will be sent if a record does not "
                     "respect it."
                 ),
             }),
             ("domains_must_have_authorized_mx", {
-                "label": ugettext_lazy("New domains must use authorized MX(s)"),
+                "label": gettext_lazy("New domains must use authorized MX(s)"),
                 "display": "enable_mx_checks=true",
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Prevent the creation of a new domain if its MX record "
                     "does not use one of the defined addresses."
                 )
             }),
             ("enable_spf_checks", {
-                "label": ugettext_lazy("Enable SPF checks"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable SPF checks"),
+                "help_text": gettext_lazy(
                     "Check if every domain has a valid SPF record"
                 )
             }),
             ("enable_dkim_checks", {
-                "label": ugettext_lazy("Enable DKIM checks"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable DKIM checks"),
+                "help_text": gettext_lazy(
                     "Check if every domain with DKIM signin enabled "
                     "has a valid DNS record"
                 )
             }),
             ("enable_dmarc_checks", {
-                "label": ugettext_lazy("Enable DMARC checks"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable DMARC checks"),
+                "help_text": gettext_lazy(
                     "Check if every domain has a valid DMARC record"
                 )
             }),
             ("enable_autoconfig_checks", {
-                "label": ugettext_lazy("Enable autoconfig checks"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable autoconfig checks"),
+                "help_text": gettext_lazy(
                     "Check if every domain has a valid records for "
                     "autoconfiguration"
                 )
             }),
             ("enable_dnsbl_checks", {
-                "label": ugettext_lazy("Enable DNSBL checks"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Enable DNSBL checks"),
+                "help_text": gettext_lazy(
                     "Check every domain against major DNSBL providers"
                 )
             }),
             ("custom_dns_server", {
-                "label": ugettext_lazy("Custom DNS server"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Custom DNS server"),
+                "help_text": gettext_lazy(
                     "Use a custom DNS server instead of local server "
                     "configuration"
                 )
             }),
             ("dkim_keys_storage_dir", {
-                "label": ugettext_lazy("DKIM keys storage directory"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("DKIM keys storage directory"),
+                "help_text": gettext_lazy(
                     "Absolute path of the directory where DKIM private keys "
                     "will be stored. Make sure this directory belongs to root "
                     "user and is not readable by the outside world."
                 ),
             }),
             ("dkim_default_key_length", {
-                "label": ugettext_lazy("Default DKIM key length"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default DKIM key length"),
+                "help_text": gettext_lazy(
                     "Default length in bits for newly generated DKIM keys."
                 )
             }),
             ("default_domain_quota", {
-                "label": ugettext_lazy("Default domain quota"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default domain quota"),
+                "help_text": gettext_lazy(
                     "Default quota (in MB) applied to freshly created domains "
                     "with no value specified. A value of 0 means no quota."
                 )
             }),
             ("default_domain_message_limit", {
-                "label": ugettext_lazy("Default domain sending limit"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default domain sending limit"),
+                "help_text": gettext_lazy(
                     "Number of messages freshly created domains will be "
                     "allowed to send per day. Leave empty for no limit."
                 )
@@ -392,47 +392,47 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
         ])
     }),
     ("mailboxes", {
-        "label": ugettext_lazy("Mailboxes"),
+        "label": gettext_lazy("Mailboxes"),
         "params": collections.OrderedDict([
             ("handle_mailboxes", {
-                "label": ugettext_lazy("Handle mailboxes on filesystem"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Handle mailboxes on filesystem"),
+                "help_text": gettext_lazy(
                     "Rename or remove mailboxes on the filesystem when they get"
                     " renamed or removed within Modoboa"
                 )
             }),
             ("default_mailbox_quota", {
-                "label": ugettext_lazy("Default mailbox quota"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default mailbox quota"),
+                "help_text": gettext_lazy(
                     "Default mailbox quota (in MB) applied to freshly created "
                     "domains with no value specified. A value of 0 means no "
                     "quota."
                 )
             }),
             ("default_mailbox_message_limit", {
-                "label": ugettext_lazy("Default mailbox sending limit"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Default mailbox sending limit"),
+                "help_text": gettext_lazy(
                     "Number of messages freshly created mailboxes will be "
                     "allowed to send per day. Leave empty for no limit."
                 )
             }),
             ("auto_account_removal", {
-                "label": ugettext_lazy("Automatic account removal"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Automatic account removal"),
+                "help_text": gettext_lazy(
                     "When a mailbox is removed, also remove the associated "
                     "account")
             }),
             ("auto_create_domain_and_mailbox", {
-                "label": ugettext_lazy("Automatic domain/mailbox creation"),
-                "help_text": ugettext_lazy(
+                "label": gettext_lazy("Automatic domain/mailbox creation"),
+                "help_text": gettext_lazy(
                     "Create a domain and a mailbox when an account is "
                     "automatically created."
                 )
             }),
             ("create_alias_on_mbox_rename", {
-                "label": ugettext_lazy(
+                "label": gettext_lazy(
                     "Create an alias when a mailbox is renamed"),
-                "help_text": ugettext_lazy(
+                "help_text": gettext_lazy(
                     "Create an alias using the old address when a mailbox is "
                     "renamed."
                 )
@@ -448,8 +448,8 @@ def load_admin_settings():
     from .api.v2 import serializers
 
     param_tools.registry.add(
-        "global", AdminParametersForm, ugettext_lazy("Administration"))
+        "global", AdminParametersForm, gettext_lazy("Administration"))
     param_tools.registry.add2(
-        "global", "admin", ugettext_lazy("Administration"),
+        "global", "admin", gettext_lazy("Administration"),
         GLOBAL_PARAMETERS_STRUCT,
         serializers.AdminGlobalParametersSerializer)

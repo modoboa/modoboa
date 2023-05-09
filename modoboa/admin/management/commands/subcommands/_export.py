@@ -3,7 +3,7 @@
 import csv
 
 from django.core.management.base import BaseCommand
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 from modoboa.core.extensions import exts_pool
 from modoboa.core.models import User
@@ -56,5 +56,5 @@ class ExportCommand(BaseCommand):
     def handle(self, *args, **options):
         exts_pool.load_all()
         self.csvwriter = csv.writer(
-            self.stdout, delimiter=smart_text(options["sepchar"]))
+            self.stdout, delimiter=smart_str(options["sepchar"]))
         getattr(self, "export_{}".format(options["objtype"]))()

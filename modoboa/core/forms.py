@@ -7,7 +7,7 @@ from django.contrib.auth import (
     forms as auth_forms, get_user_model, password_validation
 )
 from django.db.models import Q
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 import django_otp
 
@@ -20,11 +20,11 @@ class LoginForm(forms.Form):
     """User login form."""
 
     username = forms.CharField(
-        label=ugettext_lazy("Username"),
+        label=gettext_lazy("Username"),
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
     password = forms.CharField(
-        label=ugettext_lazy("Password"),
+        label=gettext_lazy("Password"),
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     rememberme = forms.BooleanField(
@@ -37,15 +37,15 @@ class ProfileForm(forms.ModelForm):
     """Form to update User profile."""
 
     oldpassword = forms.CharField(
-        label=ugettext_lazy("Old password"), required=False,
+        label=gettext_lazy("Old password"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     newpassword = forms.CharField(
-        label=ugettext_lazy("New password"), required=False,
+        label=gettext_lazy("New password"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
     confirmation = forms.CharField(
-        label=ugettext_lazy("Confirmation"), required=False,
+        label=gettext_lazy("Confirmation"), required=False,
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
 
@@ -115,7 +115,7 @@ class APIAccessForm(forms.Form):
     """Form to control API access."""
 
     enable_api_access = forms.BooleanField(
-        label=ugettext_lazy("Enable API access"), required=False)
+        label=gettext_lazy("Enable API access"), required=False)
 
     def __init__(self, *args, **kwargs):
         """Initialize form."""
@@ -149,7 +149,7 @@ class VerifySMSCodeForm(forms.Form):
     """A form to verify a code received by SMS."""
 
     code = forms.CharField(
-        label=ugettext_lazy("Verification code"),
+        label=gettext_lazy("Verification code"),
         widget=forms.widgets.TextInput(attrs={"class": "form-control"})
     )
 

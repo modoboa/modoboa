@@ -5,7 +5,7 @@ import socket
 import ssl
 
 from django.utils.encoding import smart_bytes, smart_str
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
 from modoboa.lib import email_utils

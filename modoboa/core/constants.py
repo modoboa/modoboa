@@ -1,12 +1,12 @@
 """Core application constants."""
 
 from django.conf import settings
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
-SIMPLEUSERS_ROLE = ("SimpleUsers", ugettext_lazy("Simple user"))
-DOMAINADMINS_ROLE = ("DomainAdmins", ugettext_lazy("Domain administrator"))
-RESELLERS_ROLE = ("Resellers", ugettext_lazy("Reseller"))
-SUPERADMINS_ROLE = ("SuperAdmins", ugettext_lazy("Super administrator"))
+SIMPLEUSERS_ROLE = ("SimpleUsers", gettext_lazy("Simple user"))
+DOMAINADMINS_ROLE = ("DomainAdmins", gettext_lazy("Domain administrator"))
+RESELLERS_ROLE = ("Resellers", gettext_lazy("Reseller"))
+SUPERADMINS_ROLE = ("SuperAdmins", gettext_lazy("Super administrator"))
 
 ROLES = (
     SIMPLEUSERS_ROLE,
@@ -50,14 +50,14 @@ LDAP_GROUP_TYPES = (
 )
 
 LDAP_SECURE_MODES = [
-    ("none", ugettext_lazy("No")),
+    ("none", gettext_lazy("No")),
     ("starttls", "STARTTLS"),
     ("ssl", "SSL/TLS")
 ]
 
 LDAP_AUTH_METHODS = [
-    ("searchbind", ugettext_lazy("Search and bind")),
-    ("directbind", ugettext_lazy("Direct bind"))
+    ("searchbind", gettext_lazy("Search and bind")),
+    ("directbind", gettext_lazy("Direct bind"))
 ]
 
 PERMISSIONS = {
@@ -105,11 +105,11 @@ PERMISSIONS = {
 }
 
 SMS_BACKENDS = [
-    ("", ugettext_lazy("Choose a provider")),
+    ("", gettext_lazy("Choose a provider")),
     ("ovh", "OVH"),
 ]
 
 if settings.DEBUG:
-    SMS_BACKENDS.insert(1, ("dummy", ugettext_lazy("Dummy")))
+    SMS_BACKENDS.insert(1, ("dummy", gettext_lazy("Dummy")))
 
 TFA_DEVICE_TOKEN_KEY = "otp_device_id"

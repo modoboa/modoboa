@@ -5,7 +5,7 @@ import collections
 from django import forms
 from django.conf import settings
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django.contrib.sites import models as sites_models
 

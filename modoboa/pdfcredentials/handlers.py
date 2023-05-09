@@ -5,7 +5,7 @@ import os
 from django.urls import reverse
 from django.db.models import signals
 from django.dispatch import receiver
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.admin import signals as admin_signals
 from modoboa.core import models as core_models

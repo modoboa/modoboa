@@ -11,7 +11,7 @@ import string
 from random import Random
 
 from django.utils.crypto import constant_time_compare
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 
 
 class MetaHasher(type):
@@ -65,8 +65,8 @@ class PasswordHasher(metaclass=MetaHasher):
         :rtype: str
         :return: encrypted password
         """
-        pwhash = self._b64encode(self._encrypt(force_text(clearvalue)))
-        return "%s%s" % (self.scheme, force_text(pwhash))
+        pwhash = self._b64encode(self._encrypt(force_str(clearvalue)))
+        return "%s%s" % (self.scheme, force_str(pwhash))
 
     def verify(self, clearvalue, hashed_value):
         """Verify a password against a hashed value.

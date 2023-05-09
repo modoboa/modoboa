@@ -524,7 +524,7 @@ class LogParser:
         last_message = models.Maillog.objects.last()
         cur_dt = datetime.fromtimestamp(self.orig_ts)
         tz = timezone.get_current_timezone()
-        cur_dt = tz.localize(cur_dt)
+        cur_dt = cur_dt.replace(tzinfo=tz)
         condition = (
             last_message and (
                 cur_dt < last_message.date or

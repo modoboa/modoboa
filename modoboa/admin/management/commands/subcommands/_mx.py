@@ -10,9 +10,9 @@ from django.core.mail import EmailMessage
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.utils import timezone
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.admin import constants, models
 from modoboa.dnstools import models as dns_models
@@ -40,7 +40,7 @@ class CheckMXRecords(BaseCommand):
     def valid_mxs(self):
         """Return valid MXs set in admin."""
         valid_mxs = param_tools.get_global_parameter("valid_mxs")
-        return [ipaddress.ip_network(smart_text(v.strip()))
+        return [ipaddress.ip_network(smart_str(v.strip()))
                 for v in valid_mxs.split() if v.strip()]
 
     def add_arguments(self, parser):
@@ -70,7 +70,7 @@ class CheckMXRecords(BaseCommand):
         results = {}
         for ip, mxs in mx_list.items():
             try:
-                ip = ipaddress.ip_address(smart_text(ip))
+                ip = ipaddress.ip_address(smart_str(ip))
             except ValueError:
                 continue
             else:

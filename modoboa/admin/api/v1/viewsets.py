@@ -2,7 +2,7 @@
 
 from django import http
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from django_filters import rest_framework as dj_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view

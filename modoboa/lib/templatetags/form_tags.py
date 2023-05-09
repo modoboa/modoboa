@@ -4,7 +4,7 @@ Form rendering tags.
 
 from django import forms, template
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 
 from modoboa.lib.form_utils import SeparatorField
@@ -43,7 +43,7 @@ def render_field(
     from modoboa.core.templatetags.core_tags import visirule
 
     if isinstance(field.field, SeparatorField):
-        return "<h5%s>%s</h5>" % (visirule(field), smart_text(field.label))
+        return "<h5%s>%s</h5>" % (visirule(field), smart_str(field.label))
     configure_field_classes(field)
     context = {
         "field": field, "help_display_mode": help_display_mode,

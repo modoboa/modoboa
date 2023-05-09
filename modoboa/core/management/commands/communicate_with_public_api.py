@@ -3,7 +3,7 @@
 from django.core.mail import EmailMessage
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.admin import models as admin_models
 from modoboa.core.extensions import exts_pool

@@ -1,12 +1,12 @@
 """Export related forms."""
 
 from django import forms
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 
 class ExportDataForm(forms.Form):
     sepchar = forms.CharField(
-        label=ugettext_lazy("Separator"),
+        label=gettext_lazy("Separator"),
         max_length=1,
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control"})

@@ -8,7 +8,7 @@ from testfixtures import LogCapture
 from django.core import mail, management
 from django.test import override_settings
 from django.urls import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core import factories as core_factories
 from modoboa.lib.tests import ModoTestCase
@@ -221,7 +221,7 @@ class DNSBLTestCase(ModoTestCase):
         management.call_command(
             "modo", "check_mx", "--email", "user@example.test")
         self.assertEqual(len(mail.outbox), 2)
-    
+
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")

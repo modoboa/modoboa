@@ -1,6 +1,6 @@
 """App related views."""
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views import generic
 
 from django.contrib.auth import mixins as auth_mixins
