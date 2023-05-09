@@ -108,7 +108,7 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
-2.1.5
+2.2.0
 =====
 
 .. note::
