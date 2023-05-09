@@ -6,8 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.db.models.manager import Manager
-from django.utils.encoding import smart_text, force_text
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import smart_str, force_str
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
@@ -89,15 +89,15 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
     """User mailbox."""
 
     address = models.CharField(
-        ugettext_lazy("address"), max_length=252,
-        help_text=ugettext_lazy(
+        gettext_lazy("address"), max_length=252,
+        help_text=gettext_lazy(
             "Mailbox address (without the @domain.tld part)")
     )
     quota = models.PositiveIntegerField(default=0)
     use_domain_quota = models.BooleanField(default=False)
     message_limit = models.PositiveIntegerField(
-        ugettext_lazy("Message sending limit"), null=True, blank=True,
-        help_text=ugettext_lazy(
+        gettext_lazy("Message sending limit"), null=True, blank=True,
+        help_text=gettext_lazy(
             "Number of messages this mailbox can send per day")
     )
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
@@ -115,7 +115,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         self.old_message_limit = self.message_limit
 
     def __str__(self):
-        return smart_text(self.full_address)
+        return smart_str(self.full_address)
 
     def __full_address(self, localpart):
         return "%s@%s" % (localpart, self.domain.name)
@@ -154,7 +154,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
             if code:
                 raise lib_exceptions.InternalError(
                     _("Failed to retrieve mailbox location (%s)") % output)
-            self.__mail_home = force_text(output.strip())
+            self.__mail_home = force_str(output.strip())
         return self.__mail_home
 
     @property
@@ -363,7 +363,7 @@ class SenderAddress(models.Model):
 
     def __str__(self):
         """Return address."""
-        return smart_text(self.address)
+        return smart_str(self.address)
 
 
 reversion.register(SenderAddress)

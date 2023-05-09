@@ -4,14 +4,14 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, URLValidator
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 
 class HostnameValidator(object):
 
     """Validator for fqdn."""
 
-    message = ugettext_lazy("Enter a valid domain name")
+    message = gettext_lazy("Enter a valid domain name")
     code = "invalid"
     regex = re.compile(URLValidator.host_re)
 

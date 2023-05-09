@@ -5,7 +5,7 @@ from io import StringIO
 
 from django.core.management import call_command
 from django.urls import reverse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from modoboa.lib.tests import ModoTestCase
 from .. import factories, models
@@ -50,7 +50,7 @@ class ExportTestCase(ModoTestCase):
         ]
         self.assertCountEqual(
             expected_response,
-            force_text(response.content.strip()).split("\r\n")
+            force_str(response.content.strip()).split("\r\n")
         )
 
         # Test management command too.
@@ -59,12 +59,12 @@ class ExportTestCase(ModoTestCase):
         response = sys.stdout.getvalue()
         sys.stdout = stdout_backup
         self.assertCountEqual(
-            expected_response, force_text(response.strip()).split("\r\n"))
+            expected_response, force_str(response.strip()).split("\r\n"))
 
     def test_export_identities(self):
         response = self.__export_identities()
         expected_response = "account;admin;;;;True;SuperAdmins;;\r\naccount;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com\r\naccount;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\nalias;alias@test.com;True;user@test.com\r\nalias;forward@test.com;True;user@external.com\r\nalias;postmaster@test.com;True;test@truc.fr;toto@titi.com\r\n"  # NOQA:E501
-        received_content = force_text(response.content.strip()).split("\r\n")
+        received_content = force_str(response.content.strip()).split("\r\n")
         # Empty admin password because it is hashed using SHA512-CRYPT
         admin_row = received_content[0].split(";")
         admin_row[2] = ""
@@ -86,7 +86,7 @@ class ExportTestCase(ModoTestCase):
         expected_response = "account;user@test.com;{PLAIN}toto;;;True;SimpleUsers;user@test.com;10\r\naccount;user@test2.com;{PLAIN}toto;;;True;SimpleUsers;user@test2.com;10\r\naccount;toto@test.com;{PLAIN}toto;Léon;;True;SimpleUsers;toto@test.com;10"  # NOQA:E501
         self.assertCountEqual(
             expected_response.split("\r\n"),
-            force_text(response.content.strip()).split("\r\n")
+            force_str(response.content.strip()).split("\r\n")
         )
 
     def test_export_superadmins(self):
@@ -111,7 +111,7 @@ class ExportTestCase(ModoTestCase):
         expected_response = "account;admin@test.com;{PLAIN}toto;;;True;DomainAdmins;admin@test.com;10;test.com\r\naccount;admin@test2.com;{PLAIN}toto;;;True;DomainAdmins;admin@test2.com;10;test2.com"  # NOQA:E501
         self.assertCountEqual(
             expected_response.split("\r\n"),
-            force_text(response.content.strip()).split("\r\n")
+            force_str(response.content.strip()).split("\r\n")
         )
 
     def test_export_aliases(self):

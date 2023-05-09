@@ -1,7 +1,7 @@
 """AppConfig for IMAP migration."""
 
 from django.apps import AppConfig
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 
 def load_imapmigration_settings():
@@ -15,9 +15,9 @@ def load_imapmigration_settings():
     from .api.v2 import serializers
 
     param_tools.registry.add(
-        "global", app_settings.ParametersForm, ugettext_lazy("IMAP Migration"))
+        "global", app_settings.ParametersForm, gettext_lazy("IMAP Migration"))
     param_tools.registry.add2(
-        "global", "imap_migration", ugettext_lazy("IMAP Migration"),
+        "global", "imap_migration", gettext_lazy("IMAP Migration"),
         app_settings.IMAP_MIGRATION_PARAMETERS_STRUCT,
         serializers.IMAPMigrationSettingsSerializer,
         True)

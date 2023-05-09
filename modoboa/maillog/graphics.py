@@ -7,8 +7,8 @@ from itertools import chain
 import os
 
 from django.conf import settings
-from django.utils.encoding import smart_bytes, smart_text
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.encoding import smart_bytes, smart_str
+from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import exceptions
@@ -91,7 +91,7 @@ class Graphic:
         if dpath is None:
             raise exceptions.InternalError(
                 _("Failed to locate rrdtool binary."))
-        return smart_text(dpath)
+        return smart_str(dpath)
 
     def export(self, rrdfile, start, end):
         """Export data to JSON using rrdtool."""
@@ -167,22 +167,22 @@ class GraphicSet(object):
 class AverageTraffic(Graphic):
     """Average traffic."""
 
-    title = ugettext_lazy('Average traffic (msgs/min)')
+    title = gettext_lazy('Average traffic (msgs/min)')
 
     # Curve definitions
-    sent = Curve("sent", "lawngreen", ugettext_lazy("sent messages"))
-    recv = Curve("recv", "steelblue", ugettext_lazy("received messages"))
-    bounced = Curve("bounced", "yellow", ugettext_lazy("bounced messages"))
-    reject = Curve("reject", "tomato", ugettext_lazy("rejected messages"))
-    virus = Curve("virus", "orange", ugettext_lazy("virus messages"))
-    spam = Curve("spam", "silver", ugettext_lazy("spam messages"))
+    sent = Curve("sent", "lawngreen", gettext_lazy("sent messages"))
+    recv = Curve("recv", "steelblue", gettext_lazy("received messages"))
+    bounced = Curve("bounced", "yellow", gettext_lazy("bounced messages"))
+    reject = Curve("reject", "tomato", gettext_lazy("rejected messages"))
+    virus = Curve("virus", "orange", gettext_lazy("virus messages"))
+    spam = Curve("spam", "silver", gettext_lazy("spam messages"))
 
     order = ["reject", "bounced", "recv", "sent", "virus", "spam"]
 
     def __init__(self, greylist=False):
         if greylist:
             self.greylist = Curve(
-                "greylist", "dimgrey", ugettext_lazy("greylisted messages"))
+                "greylist", "dimgrey", gettext_lazy("greylisted messages"))
             self.order = [
                 "reject", "greylist", "bounced", "recv", "sent", "virus",
                 "spam"
@@ -193,12 +193,12 @@ class AverageTraffic(Graphic):
 class AverageTrafficSize(Graphic):
     """Average traffic size."""
 
-    title = ugettext_lazy('Average normal traffic size (bytes/min)')
+    title = gettext_lazy('Average normal traffic size (bytes/min)')
 
     # Curve definitions
-    size_recv = Curve("size_recv", "orange", ugettext_lazy("received size"))
+    size_recv = Curve("size_recv", "orange", gettext_lazy("received size"))
     size_sent = Curve(
-        "size_sent", "mediumturquoise", ugettext_lazy("sent size")
+        "size_sent", "mediumturquoise", gettext_lazy("sent size")
     )
 
 
@@ -206,7 +206,7 @@ class MailTraffic(GraphicSet):
     """Mail traffic graphic set."""
 
     domain_selector = True
-    title = ugettext_lazy("Mail traffic")
+    title = gettext_lazy("Mail traffic")
     _graphics = [AverageTraffic, AverageTrafficSize]
 
     def __init__(self, greylist=False):
@@ -250,15 +250,15 @@ class MailTraffic(GraphicSet):
 class AccountCreationGraphic(Graphic):
     """Account creation over time."""
 
-    title = ugettext_lazy("Average account creation (account/hour)")
+    title = gettext_lazy("Average account creation (account/hour)")
 
     accounts = Curve(
-        "new_accounts", "steelblue", ugettext_lazy("New accounts"))
+        "new_accounts", "steelblue", gettext_lazy("New accounts"))
 
 
 class AccountGraphicSet(GraphicSet):
     """A graphic set for accounts."""
 
     file_name = "new_accounts"
-    title = ugettext_lazy("Accounts")
+    title = gettext_lazy("Accounts")
     _graphics = [AccountCreationGraphic]

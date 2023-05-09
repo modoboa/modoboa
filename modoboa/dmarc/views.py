@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.views import generic
 
 from django.contrib.auth import mixins as auth_mixins
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from modoboa.admin import models as admin_models
 from modoboa.parameters import tools as param_tools
@@ -45,7 +45,7 @@ def week_range(year, weeknumber):
         "{}-{}-{}".format(year, weeknumber, 1), fmt)
     end_week = datetime.datetime.strptime(
         "{}-{}-{}".format(year, weeknumber, 0), fmt)
-    return tz.localize(start_week), tz.localize(end_week)
+    return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
 
 
 class DomainReportView(

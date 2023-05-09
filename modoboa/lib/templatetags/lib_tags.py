@@ -5,7 +5,7 @@ from datetime import datetime
 from django import template
 from django.template import Context, Template
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.core import signals as core_signals
 

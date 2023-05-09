@@ -108,6 +108,23 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+2.2.0
+=====
+
+.. note::
+   This version has not been released yet.
+
+* Django has been updated to 4.2LTS. Please upgrade all your extensions alongside modoboa.
+* Support for Python 3.7 has been dropped, minimum Python version is now 3.8.
+* Support for Postgres 11 has been dropped, minimum Postgres version is now 12.
+
+If you use Postgresql, you need to install pyscopg3+:
+
+.. sourcecode:: bash
+
+   pip install psycopg[binary]>=3.1
+
+
 2.1.0
 =====
 

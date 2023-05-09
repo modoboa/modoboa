@@ -1,6 +1,6 @@
 """Core API viewsets."""
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 import django_otp
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken

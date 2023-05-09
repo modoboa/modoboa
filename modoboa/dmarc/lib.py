@@ -14,14 +14,13 @@ import tldextract
 from defusedxml.ElementTree import fromstring
 from dns import resolver, reversename
 import magic
-import pytz.exceptions
 import six
 
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext as _
 
 from modoboa.admin import models as admin_models
 from modoboa.parameters import tools as param_tools
@@ -57,7 +56,7 @@ def import_record(xml_node, report):
     record.spf_result = policy_evaluated.find("spf").text
     reason = policy_evaluated.find("reason")
     if reason:
-        record.reason_type = smart_text(reason.find("type").text)[:14]
+        record.reason_type = smart_str(reason.find("type").text)[:14]
         if record.reason_type not in constants.ALLOWED_REASON_TYPES:
             record.reason_type = "other"
         comment = reason.find("comment").text or ""
@@ -128,11 +127,7 @@ def import_report(content):
                 print(f"Report skipped because of malformed data (empty {attr})")
                 return
         value = setattr(report, "policy_{}".format(attr), node.text)
-    try:
-        report.save()
-    except (pytz.exceptions.AmbiguousTimeError):
-        print("Report skipped because of invalid date.")
-        return
+    report.save()
     for record in root.findall("record"):
         import_record(record, report)
 
@@ -223,7 +218,7 @@ def week_range(year, weeknumber):
         "{}-{}-{}".format(year, weeknumber, 1), fmt)
     end_week = datetime.datetime.strptime(
         "{}-{}-{}".format(year, weeknumber, 0), fmt)
-    return tz.localize(start_week), tz.localize(end_week)
+    return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
 
 
 def insert_record(target: dict, record, name: str) -> None:

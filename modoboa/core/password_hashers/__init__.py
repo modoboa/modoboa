@@ -3,7 +3,7 @@ Password hashers for Modoboa.
 """
 
 from django.conf import settings
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 from modoboa.core.password_hashers.advanced import (  # NOQA:F401
     BLFCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher,
@@ -53,5 +53,5 @@ def get_dovecot_schemes():
             if retcode:
                 schemes = default_schemes
 
-    return ["{{{}}}".format(smart_text(scheme))
+    return ["{{{}}}".format(smart_str(scheme))
             for scheme in schemes.split()]

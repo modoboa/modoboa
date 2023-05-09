@@ -9,7 +9,7 @@ import re
 from email.header import decode_header, make_header
 from email.utils import parseaddr
 
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 # check spaces between encoded_words (and strip them)
 sre = re.compile(r"\?=[ \t]+=\?")
@@ -40,7 +40,7 @@ def decode_mime(m):
     """Substitute matching encoded_word with unicode equiv."""
     h = decode_header(clean_spaces(m))
     try:
-        u = smart_text(make_header(h))
+        u = smart_str(make_header(h))
     except (LookupError, UnicodeDecodeError):
         return m.group(0)
     return u

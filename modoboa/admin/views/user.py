@@ -4,7 +4,7 @@ from reversion import revisions as reversion
 
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from modoboa.lib.web_utils import render_to_json_response
 from ..forms import ForwardForm

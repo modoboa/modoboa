@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11
+        image: postgres:12
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -66,7 +66,7 @@ jobs:
     strategy:
       matrix:
         database: ['postgres', 'mysql']
-        python-version: [3.7, 3.8, 3.9, '3.10']
+        python-version: [3.8, 3.9, '3.10']
       fail-fast: false
 
     steps:
@@ -97,7 +97,7 @@ jobs:
           pip install -r mysql-requirements.txt
           echo "DB=mysql" >> $GITHUB_ENV
       - name: Test with pytest
-        if: ${{ matrix.python-version != '3.8' || matrix.database != 'postgres' }}
+        if: ${{ matrix.python-version != '3.10' || matrix.database != 'postgres' }}
         run: |
           python ./tests.py
           cd test_project
