@@ -1,2 +1,2 @@
 docutils<0.20
-urllib3
+urllib3==1.26.15
