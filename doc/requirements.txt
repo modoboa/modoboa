@@ -1,1 +1,2 @@
 docutils<0.20
+urllib3
