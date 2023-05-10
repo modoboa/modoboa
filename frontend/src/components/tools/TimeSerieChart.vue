@@ -65,7 +65,14 @@ export default {
     apexchart: VueApexCharts,
     DateField
   },
-  props: ['domain', 'graphicSet', 'graphicName'],
+  props: {
+    domain: {
+      type: Object,
+      required: false
+    },
+    graphicSet: String,
+    graphicName: String
+  },
   computed: {
     title () {
       if (this.statistics) {
@@ -133,8 +140,10 @@ export default {
       const args = {
         graphSet: this.graphicSet,
         period: this.period,
-        graphicName: this.graphicName,
-        searchQuery: this.domain.name
+        graphicName: this.graphicName
+      }
+      if (this.domain) {
+        args.searchQuery = this.domain.name
       }
       if (this.period === 'custom') {
         args.start = this.start
@@ -149,7 +158,7 @@ export default {
     this.fetchStatistics()
   },
   watch: {
-    graphicName (newValue) {
+    graphicName () {
       this.$set(this.options, 'colors', this.getColors())
     }
   }

@@ -49,11 +49,3 @@ class ParametersForm(param_forms.AdminParametersForm):
         test_mode = getattr(settings, "RRDTOOL_TEST_MODE", False)
         if rrd_version < required_version and not test_mode:
             del self.fields["greylist"]
-
-
-def load_settings():
-    """Load app settings."""
-    from modoboa.parameters import tools as param_tools
-
-    param_tools.registry.add(
-        "global", ParametersForm, gettext_lazy("Statistics"))
