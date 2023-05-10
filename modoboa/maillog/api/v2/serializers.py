@@ -75,3 +75,12 @@ class MaillogSerializer(serializers.ModelSerializer):
             "size", "status"
         )
         model = models.Maillog
+
+
+class MaillogGlobalParemetersSerializer(serializers.Serializer):
+    """A serializer for global parameters."""
+
+    logfile = serializers.CharField(default="/var/log/mail.log")
+    rrd_rootdir = serializers.CharField(default="/tmp/modoboa")
+    greylist = serializers.BooleanField(default=False)
+    enable_domain_limits = serializers.BooleanField(default=False)
