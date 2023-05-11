@@ -152,18 +152,27 @@ const routes = [
     }
   },
   {
-    path: '/logs/audit_trail',
-    name: 'AuditTrail',
-    component: () => import('../views/logs/AuditTrail.vue'),
+    path: '/monitoring/statistics',
+    name: 'Statistics',
+    component: () => import('../views/monitoring/Statistics.vue'),
     meta: {
       requiresAuth: true,
       allowedRoles: ['SuperAdmins']
     }
   },
   {
-    path: '/logs/messages',
+    path: '/monitoring/audit_trail',
+    name: 'AuditTrail',
+    component: () => import('../views/monitoring/AuditTrail.vue'),
+    meta: {
+      requiresAuth: true,
+      allowedRoles: ['SuperAdmins']
+    }
+  },
+  {
+    path: '/monitoring/messages',
     name: 'MessageLog',
-    component: () => import('../views/logs/Messages.vue'),
+    component: () => import('../views/monitoring/Messages.vue'),
     meta: {
       requiresAuth: true,
       allowedRoles: ['DomainAdmins', 'SuperAdmins']
