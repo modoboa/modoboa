@@ -7,6 +7,9 @@ Modoboa
 This section describes the installation of the web interface (a
 `Django <https://www.djangoproject.com/>`_ project).
 
+This proposed configuration is the one you can find with modoboa-installer. For up to date configuration, `take a look here <https://github.com/modoboa/modoboa-installer/tree/master/modoboa_installer/scripts/files/modoboa/>`_
+
+
 Prepare the system
 ------------------
 
@@ -25,7 +28,7 @@ distributions using `virtualenv <https://virtualenv.pypa.io/en/stable/>`_:
 
    # apt-get install virtualenv python3-pip
    # useradd modoboa  # create a dedicated user
-   # su -l modoboa    # log in as the newly created user
+   # sudo -u modoboa -i bash    # log in as the newly created user
    $ virtualenv --python python3 ./env  # create the virtual environment
    $ source ./env/bin/activate          # activate the virtual environment
 
@@ -40,6 +43,7 @@ following system packages according to your distribution:
 | libxml2-dev libxslt-dev       |
 | libjpeg-dev librrd-dev        |
 | rrdtool libffi-dev libssl-dev |
+| pkg-config libcairo2-dev      |
 +-------------------------------+
 
 +-----------------------------+
@@ -99,13 +103,15 @@ Install the corresponding Python binding:
 
 .. code-block:: console
 
-   (env)$ pip install psycopg2
+   (env)$ pip install psycopg[binary]>=3.1
 
 .. note::
 
    Alternatively, you can install the ``python3-psycopg2`` package instead on
    Debian-based distributions if your virtual environment was created with
    ``--system-site-packages`` option.
+   Note that psycopg 3.1 is required starting with modoboa 2.2.0 and
+   ubuntu and debian packages are too old for now.
 
 Then, create a user and a database. For example, to create the ``modoboa``
 database owned by a ``modoboa`` user, run the following commands on your
@@ -169,7 +175,8 @@ you just have to run the following command:
    If you choose to install extensions one at a time, you will have to
    add their names in settings.py to ``MODOBOA_APPS``. Also ensure that
    you have the line ``from modoboa_amavis.settings import *`` at the
-   end of this file.
+   end of this file and possibly perform more steps. Check the manuall
+   of each extensions for specific Instructions.
 
    The list of available extensions can be found on the :doc:`index
    page <../index>`. Instructions to install them are available on
@@ -226,15 +233,15 @@ following content inside:
    INSTANCE=<path to Modoboa instance>
 
    # Operations on mailboxes
-   *     *  *  *  *  vmail    $PYTHON $INSTANCE/manage.py handle_mailbox_operations
+   *     *  *  *  *  <mailbox user>    $PYTHON $INSTANCE/manage.py handle_mailbox_operations
 
    # Generate DKIM keys (they will belong to the user running this job)
    *     *  *  *  *  root     umask 077 && $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
 
    # Sessions table cleanup
-   0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py clearsessions
+   0     0  *  *  *  root  $PYTHON $INSTANCE/manage.py clearsessions
    # Logs table cleanup
-   0     0  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py cleanlogs
+   0     0  *  *  *  root  $PYTHON $INSTANCE/manage.py cleanlogs
    # Logs parsing
    */15  *  *  *  *  root     $PYTHON $INSTANCE/manage.py logparser &> /dev/null
    0     *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py update_statistics
@@ -271,14 +278,13 @@ You can launch it manually using the following command:
 
 But we recommend an automatic start using ``systemd`` or
 ``supervisor``. Here is a configuration example for ``supervisor``:
-
 .. sourcecode:: ini
 
    [program:policyd]
    autostart=true
    autorestart=true
-   command=/srv/modoboa/env/bin/python /srv/modoboa/instance/manage.py policy_daemon
-   directory=/srv/modoboa
+   command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py policy_daemon
+   directory=<modoboa user home dir>
    redirect_stderr=true
    user=modoboa
    numprocs=1
