@@ -94,6 +94,32 @@ class MaintainMap(object):
     )
 
 
+class SendOnlyAccountMap(object):
+
+    filename = "sql-send-only.cf"
+    mysql = (
+        "SELECT '550 Requested mail action not taken: mailbox disabled' "
+        "FROM admin_mailbox mb INNER JOIN admin_domain dom "
+        "ON mb.domain_id=dom.id "
+        "WHERE mb.is_send_only=1 AND dom.name='%d' AND mb.address='%u' "
+        "LIMIT 1"
+    )
+    postgres = (
+        "SELECT '550 Requested mail action not taken: mailbox disabled' "
+        "FROM admin_mailbox mb INNER JOIN admin_domain dom "
+        "ON mb.domain_id=dom.id "
+        "WHERE mb.is_send_only AND dom.name='%d' AND mb.address='%u' "
+        "LIMIT 1"
+    )
+    sqlite = (
+        "SELECT '550 Requested mail action not taken: mailbox disabled' "
+        "FROM admin_mailbox mb INNER JOIN admin_domain dom "
+        "ON mb.domain_id=dom.id "
+        "WHERE mb.is_send_only=1 AND dom.name='%d' AND mb.address='%u' "
+        "LIMIT 1"
+    )
+
+
 class SenderLoginMap(object):
     """Map file to list authorized sender addresses for a given account:
     * Its mailbox
