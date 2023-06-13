@@ -152,11 +152,14 @@ class MailboxSerializer(serializers.ModelSerializer):
     quota = serializers.CharField(required=False)
     quota_usage = serializers.SerializerMethodField()
 
+    message_limit = serializers.CharField(
+            required=False, allow_null=True, allow_blank=True)
+
     class Meta:
         model = models.Mailbox
         fields = (
-            "pk", "full_address", "use_domain_quota", "quota", "message_limit",
-            "quota_usage"
+            "pk", "full_address", "use_domain_quota", "quota",
+            "quota_usage", "message_limit"
         )
 
     def get_quota_usage(self, mb) -> int:
@@ -165,6 +168,14 @@ class MailboxSerializer(serializers.ModelSerializer):
     def validate_full_address(self, value):
         """Lower case address."""
         return value.lower()
+
+    def validate_message_limit(self, value):
+        if not value:
+            return None
+        try:
+            return int(value)
+        except ValueError:
+            raise ValidationError(_("A valid integer is required."))
 
     def validate_quota(self, value):
         """Convert quota to MB."""
