@@ -403,7 +403,7 @@ class MailboxSerializer(serializers.ModelSerializer):
         return web_utils.size2integer(value, output_unit="MB")
 
     def validate_message_limit(self, value):
-        if not value:
+        if value == "":
             return None
         try:
             return int(value)
