@@ -119,9 +119,9 @@ Specific instructions
 .. note::
    This version has not been released yet.
 
-* Django has been updated to 4.2LTS. Please upgrade all your extensions alongside modoboa.
-* Support for Python 3.7 has been dropped, minimum Python version is now 3.8.
-* Support for Postgres 11 has been dropped, minimum Postgres version is now 12.
+* Django has been updated to 4.2LTS. Please upgrade all your extensions alongside modoboa
+* Support for Python 3.7 has been dropped, minimum Python version is now 3.8
+* Support for Postgres 11 has been dropped, minimum Postgres version is now 12
 
 If you use Postgresql, you need to install pyscopg3+:
 
@@ -131,7 +131,7 @@ If you use Postgresql, you need to install pyscopg3+:
 
 RQ has been added. This should replace the use of cron jobs in the future.
 For now, only ``manage_dkim_keys`` has been migrated. This will make the dkim
-key generation asynchronious but the task will be started as soon as the generation
+key generation asynchronous but the task will be started as soon as the generation
 is required.
 
 Follow these instructions to perform the update in case you used supervisord for the
@@ -140,9 +140,10 @@ installation (this apply if you used ``modoboa-installer``):
 1. Edit settings.py (``/srv/modoboa/instance/instance/settings.py`` by default) and add:
 
 .. sourcecode:: python
+
    INSTALLED_APPS = (
-   ...,
-   'django_rq',
+       ...,
+       'django_rq',
    )
 
 and add the RQ section bellow the ``#REDIS`` section:
@@ -168,7 +169,7 @@ and add the RQ section bellow the ``#REDIS`` section:
       }
    }
 
-Then by default you will need to restart ``uwsgi`` service. ``systemctl restart uwsgi`` on Debian.
+Then by default you will need to restart ``uwsgi`` service (``systemctl restart uwsgi`` on Debian).
 
 2. Create a new supervisord config (``/etc/supervisor/conf.d/modoboaworkerd.conf`` by default) :
 
@@ -191,6 +192,48 @@ You will find it here ``/srv/modoboa/`` by default.
 You can help you with ``/etc/supervisor/conf.d/policyd.conf`` (by default).
 
 Then restart supervisor. ``#> supervisorctl reread && supervisorctl update`` on Debian.
+
+Admins now have the option to setup a receive-only mailbox or a send-only mailbox.
+
+Generate new maps for postfix from your virtual environment:
+
+.. sourcecode:: python
+   > python3 manage.py generate_postfix_maps --destdir /etc/postfix/ --force-overwrite
+
+Send-only mailboxes do not have access to IMAP.
+You need to change your dovecot configuration to enable it.
+
+If you use ``Postgres``:
+Change ``user_query`` in ``/etc/dovecot/dovecot-sql-master.conf.ext``:
+
+.. sourcecode::
+   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE mb.is_send_only AND mb.address='%%n' AND dom.name='%%d'
+
+
+You need to add ``proxy:pgsql:/etc/postfix/sql-send-only.cf`` to ``smtpd_recipient_restrictions`` in ``/etc/postfix/main.cf``:
+
+.. sourcecode::
+   smtpd_recipient_restrictions =
+      ...
+      check_recipient_access
+          proxy:pgsql:/etc/postfix/sql-send-only.cf
+          ...
+
+
+If you use ``MySQL``:
+Change ``password_query`` in ``/etc/dovecot/dovecot-sql-master.conf.ext``:
+
+.. sourcecode::
+   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, CONCAT('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE mb.is_send_only=1 AND mb.address='%%n' AND dom.name='%%d'
+
+You need to add ``proxy:mysql:/etc/postfix/sql-send-only.cf`` to ``smtpd_recipient_restrictions`` in ``/etc/postfix/main.cf``:
+
+.. sourcecode::
+   smtpd_recipient_restrictions =
+      ...
+      check_recipient_access
+          proxy:pgsql:/etc/postfix/sql-send-only.cf
+          ...
 
 
 2.1.0

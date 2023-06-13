@@ -103,6 +103,8 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    is_send_only = models.BooleanField(default=False)
+
     objects = MailboxManager()
 
     class Meta:

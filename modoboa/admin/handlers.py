@@ -159,7 +159,8 @@ def register_postfix_maps(sender, **kwargs):
     return [
         postfix_maps.DomainsMap, postfix_maps.DomainsAliasesMap,
         postfix_maps.AliasesMap, postfix_maps.MaintainMap,
-        postfix_maps.SenderLoginMap
+        postfix_maps.SenderLoginMap,
+        postfix_maps.SendOnlyAccountMap
     ]
 
 
