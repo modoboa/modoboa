@@ -34,7 +34,8 @@ services:
       DEBUG: "True"
       REDIS_HOST: redis
     command: >
-      sh -c "cd test_project
+      sh -c "redis-server &
+             cd test_project
              python3 manage.py migrate
              python3 manage.py load_initial_data
              django-admin compilemessages

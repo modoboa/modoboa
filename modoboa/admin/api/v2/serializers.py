@@ -389,9 +389,6 @@ class MailboxSerializer(serializers.ModelSerializer):
 
     quota = serializers.CharField(required=False)
 
-    message_limit = serializers.CharField(
-            required=False, allow_null=True, allow_blank=True)
-
     class Meta:
         model = models.Mailbox
         fields = (
@@ -401,14 +398,6 @@ class MailboxSerializer(serializers.ModelSerializer):
     def validate_quota(self, value):
         """Convert quota to MB."""
         return web_utils.size2integer(value, output_unit="MB")
-
-    def validate_message_limit(self, value):
-        if value == "":
-            return None
-        try:
-            return int(value)
-        except ValueError:
-            raise ValidationError(_("A valid integer is required."))
 
     def validate(self, data):
         """Check if quota is required."""
