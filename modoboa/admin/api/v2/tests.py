@@ -292,7 +292,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "role": "SimpleUsers",
             "password": "Toto12345",
             "mailbox": {
-                "message_limit": ""
+                "message_limit": None
             }
         }
         resp = self.client.patch(url, data, format="json")
