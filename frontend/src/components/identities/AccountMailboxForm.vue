@@ -39,6 +39,18 @@
       @input="update"
       />
   </validation-provider>
+  <validation-provider
+    v-slot="{ errors }"
+    rules=""
+    >
+    <v-switch
+      v-model="form.mailbox.is_send_only"
+      :label="'Send only account' | translate"
+      dense
+      :error-messages="errors"
+      @input="update"
+      />
+  </validation-provider>
 </validation-observer>
 </template>
 

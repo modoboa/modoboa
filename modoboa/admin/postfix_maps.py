@@ -99,23 +99,26 @@ class SendOnlyAccountMap(object):
     filename = "sql-send-only.cf"
     mysql = (
         "SELECT '550 Requested mail action not taken: mailbox disabled' "
-        "FROM admin_mailbox mb INNER JOIN admin_domain dom "
-        "ON mb.domain_id=dom.id "
-        "WHERE mb.is_send_only=1 AND dom.name='%d' AND mb.address='%u' "
+        "FROM modoboa_admin_aliasrecipient amb "
+        "INNER JOIN admin_mailbox mb "
+        "ON mb.id=amb.r_mailbox_id "
+        "WHERE mb.is_send_only=1 AND amb.address=CONCAT('%u', '@','%d') "
         "LIMIT 1"
     )
     postgres = (
         "SELECT '550 Requested mail action not taken: mailbox disabled' "
-        "FROM admin_mailbox mb INNER JOIN admin_domain dom "
-        "ON mb.domain_id=dom.id "
-        "WHERE mb.is_send_only AND dom.name='%d' AND mb.address='%u' "
+        "FROM modoboa_admin_aliasrecipient amb "
+        "INNER JOIN admin_mailbox mb "
+        "ON mb.id=amb.r_mailbox_id "
+        "WHERE mb.is_send_only AND amb.address='%u' || '@' || '%d' "
         "LIMIT 1"
     )
     sqlite = (
         "SELECT '550 Requested mail action not taken: mailbox disabled' "
-        "FROM admin_mailbox mb INNER JOIN admin_domain dom "
-        "ON mb.domain_id=dom.id "
-        "WHERE mb.is_send_only=1 AND dom.name='%d' AND mb.address='%u' "
+        "FROM modoboa_admin_aliasrecipient amb "
+        "INNER JOIN admin_mailbox mb "
+        "ON mb.id=amb.r_mailbox_id "
+        "WHERE mb.is_send_only=1 AND mb.address='%u' || '@' || '%d' "
         "LIMIT 1"
     )
 
