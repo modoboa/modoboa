@@ -24,15 +24,21 @@
       />
   </validation-provider>
   <label class="m-label">{{ $gettext('Daily message sending limit') }}</label>
-  <v-text-field
-    v-model="form.mailbox.message_limit"
-    :placeholder="'Leave empty for no limit' | translate"
-    :hint="'Number of messages this mailbox can send per day. Leave empty for no limit.' | translate"
-    persistent-hint
-    outlined
-    dense
-    @input="update"
-    />
+  <validation-provider
+    v-slot="{ errors }"
+    rules="numeric"
+    >
+    <v-text-field
+      v-model="form.mailbox.message_limit"
+      :placeholder="'Leave empty for no limit' | translate"
+      :hint="'Number of messages this mailbox can send per day. Leave empty for no limit.' | translate"
+      persistent-hint
+      outlined
+      dense
+      :error-messages="errors"
+      @input="update"
+      />
+  </validation-provider>
 </validation-observer>
 </template>
 
@@ -93,6 +99,9 @@ export default {
         this.form = { ...newValue }
         if (this.form.role === 'SimpleUsers') {
           this.$set(this.form.mailbox, 'full_address', this.form.username)
+        }
+        if (newValue.mailbox.message_limit === '') {
+          this.form.mailbox.message_limit = null
         }
       },
       deep: true
