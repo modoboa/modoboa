@@ -33,15 +33,17 @@ services:
       DB: "SQLITE"
       DEBUG: "True"
       REDIS_HOST: redis
+      REDIS_PORT: 6379
     command: >
-      sh -c "redis-server &
-             cd test_project
+      sh -c  "cd test_project
              python3 manage.py migrate
              python3 manage.py load_initial_data
              django-admin compilemessages
              python3 manage.py runserver 0:8000"
     volumes:
       - .:/code
+    depends_on:
+      - redis
 
   front:
     container_name: modoboa_front
@@ -58,3 +60,6 @@ services:
       DOCKER: "yes"
     depends_on:
       - api
+
+volumes:
+  redis-cache:
