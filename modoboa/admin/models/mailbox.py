@@ -322,7 +322,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
                 not user.userobjectlimit_set.get(name="quota").max_value
             )
             self.set_quota(values["quota"], override_rules)
-        if values.get("message_limit", "absent") != "absent":
+        if "message_limit" in values:
             self.message_limit = values["message_limit"]
         if newaddress:
             self.rename(local_part, domain)
