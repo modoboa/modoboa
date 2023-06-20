@@ -6350,6 +6350,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+qrcode.vue@~1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/qrcode.vue/-/qrcode.vue-1.7.0.tgz#c54b2934f0650c10d92785d08aaad36c55e0fc56"
+  integrity sha512-R7t6Y3fDDtcU7L4rtqwGUDP9xD64gJhIwpfjhRCTKmBoYF6SS49PIJHRJ048cse6OI7iwTwgyy2C46N9Ygoc6g==
+
 qs@6.10.3:
   version "6.10.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.3.tgz#d6cde1b2ffca87b5aa57889816c5f81535e22e8e"

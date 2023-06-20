@@ -5,10 +5,29 @@
       <span class="text-subtitle-1"><translate>Two factor authentication</translate></span>
     </v-card-title>
     <v-card-text>
-      <template v-if="qrCode">
+      <template v-if="qrURL">
         <v-row>
           <v-col cols="4">
-            <div v-html="qrCode"></div>
+            <v-row rows="2">
+              <qrcode-vue
+              :value="qrURL"
+              :size="200"
+              render-as="svg"
+              level="H"
+              class= "qrcode"
+              />
+            </v-row>
+            <v-row>
+              <v-btn color="primary" @click="copyKey" class="key">
+                Click here to copy the key
+                <v-icon
+                  v-if="clicked"
+                  color="success"
+                >
+        mdi-check-all
+      </v-icon>
+              </v-btn>
+            </v-row>
           </v-col>
           <v-col cols="6">
             <v-alert type="info">
@@ -95,10 +114,12 @@
 import account from '@/api/account'
 import Cookies from 'js-cookie'
 import RecoveryCodesResetDialog from './RecoveryCodesResetDialog'
+import QrcodeVue from 'qrcode.vue'
 
 export default {
   components: {
-    RecoveryCodesResetDialog
+    RecoveryCodesResetDialog,
+    QrcodeVue
   },
   props: {
     account: Object
@@ -107,20 +128,27 @@ export default {
     return {
       newTokens: [],
       pinCode: null,
-      qrCode: null,
+      key: null,
+      qrURL: null,
+      clicked: false,
       showCodesResetDialog: false,
       tokens: []
     }
   },
   methods: {
-    getQRCode () {
-      account.getQRCodeForTFASetup().then(resp => {
-        this.qrCode = resp.data
+    getKey () {
+      account.getKeyForTFASetup().then(resp => {
+        this.key = resp.data.key
+        this.qrURL = resp.data.url
       })
+    },
+    copyKey () {
+      navigator.clipboard.writeText(this.key)
+      this.clicked = true
     },
     startTFASetup () {
       account.startTFASetup().then(resp => {
-        this.getQRCode()
+        this.getKey()
       })
     },
     async finalizeTFASetup () {
@@ -129,7 +157,8 @@ export default {
         return
       }
       const resp = await account.finalizeTFASetup(this.pinCode)
-      this.qrCode = null
+      this.key = null
+      this.qrURL = null
       this.tokens = resp.data.tokens
       Cookies.set('token', resp.data.access, { sameSite: 'strict' })
       Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
@@ -153,8 +182,18 @@ export default {
   },
   created () {
     if (!this.account.tfa_enabled) {
-      this.getQRCode()
+      this.getKey()
     }
   }
 }
 </script>
+
+<style>
+.qrcode {
+  margin-left:20px;
+}
+.key {
+  margin-left:10px;
+  margin-top:10px;
+}
+</style>
