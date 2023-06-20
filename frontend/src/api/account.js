@@ -16,8 +16,8 @@ export default {
   startTFASetup () {
     return repository.post(`${resource}/tfa/setup/`)
   },
-  getQRCodeForTFASetup () {
-    return repository.get(`${resource}/tfa/setup/qr_code/`)
+  getKeyForTFASetup () {
+    return repository.get(`${resource}/tfa/setup/key/`)
   },
   finalizeTFASetup (pinCode) {
     const payload = { pin_code: pinCode }
