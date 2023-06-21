@@ -19,7 +19,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         admin_factories.populate_database()
 
     @mock.patch("django_otp.plugins.otp_totp.models.TOTPDevice.verify_token")
-    def test_tfa_setup_process(self, verify_mock):
+    def test_tfa_setup_process(self, verify_mock, password_ok="password"):
         admin = models.User.objects.get(username="admin")
         self.client.force_login(admin)
 
@@ -58,18 +58,20 @@ class AccountViewSetTestCase(ModoAPITestCase):
 
         # Try to disable TFA auth
         url = reverse("api:account-tfa-disable")
-        response = self.client.post(url)
+        data = {"password": password_ok}
+        response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertFalse(admin.totpdevice_set.exists())
 
-    def test_tfa_reset_codes(self):
+    def test_tfa_reset_codes(self, password_ok="password"):
         admin = models.User.objects.get(username="admin")
         self.client.force_login(admin)
         url = reverse("api:account-tfa-reset-codes")
-        response = self.client.post(url)
+        data = {"password": password_ok}
+        response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 403)
 
         device = admin.staticdevice_set.create(name="Device")
-        response = self.client.post(url)
+        response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(device.token_set.count(), 10)

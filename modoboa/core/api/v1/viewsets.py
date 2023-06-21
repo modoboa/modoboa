@@ -67,8 +67,8 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         if not request.user.tfa_enabled:
             # We include it as "password" to display the error
-            return response.Response({"password": _("2FA is not enabled")},
-                                     status=400)
+            return response.Response({"error": _("2FA is not enabled")},
+                                     status=403)
         request.user.totpdevice_set.all().delete()
         request.user.staticdevice_set.all().delete()
         request.user.tfa_enabled = False
@@ -89,8 +89,8 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         device = request.user.staticdevice_set.first()
         if device is None:
-            return response.Response({"password": _("2FA is not enabled")},
-                                     status=400)
+            return response.Response({"error": _("2FA is not enabled")},
+                                     status=403)
         device.token_set.all().delete()
         for cpt in range(10):
             token = StaticToken.random_token()
