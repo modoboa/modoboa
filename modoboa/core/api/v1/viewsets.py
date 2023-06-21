@@ -57,8 +57,17 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     @action(methods=["post"], detail=False, url_path="tfa/disable")
     def tfa_disable(self, request):
         """Disable TFA."""
+        serializer = serializers.CheckPasswordTFASerializer(
+            data=request.data,
+            context={
+                "user": request.user,
+                "remote_addr": request.META["REMOTE_ADDR"]
+                }
+            )
+        serializer.is_valid(raise_exception=True)
         if not request.user.tfa_enabled:
-            return response.Response({"error": _("2FA is not enabled")},
+            # We include it as "password" to display the error
+            return response.Response({"password": _("2FA is not enabled")},
                                      status=400)
         request.user.totpdevice_set.all().delete()
         request.user.staticdevice_set.all().delete()
@@ -70,9 +79,18 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     @action(methods=["post"], detail=False, url_path="tfa/reset_codes")
     def tfa_reset_codes(self, request, *args, **kwargs):
         """Reset recovery codes."""
+        serializer = serializers.CheckPasswordTFASerializer(
+            data=request.data,
+            context={
+                "user": request.user,
+                "remote_addr": request.META["REMOTE_ADDR"]
+                }
+            )
+        serializer.is_valid(raise_exception=True)
         device = request.user.staticdevice_set.first()
         if device is None:
-            return response.Response(status=403)
+            return response.Response({"password": _("2FA is not enabled")},
+                                     status=400)
         device.token_set.all().delete()
         for cpt in range(10):
             token = StaticToken.random_token()

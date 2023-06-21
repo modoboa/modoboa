@@ -11,7 +11,7 @@
             <v-row rows="2">
               <qrcode-vue
               :value="qrURL"
-              :size="200"
+              :size="250"
               render-as="svg"
               level="H"
               class= "qrcode"
@@ -19,13 +19,15 @@
             </v-row>
             <v-row>
               <v-btn color="primary" @click="copyKey" class="key">
-                Click here to copy the key
+                <translate>
+                  Click here to copy the key
+                </translate>
                 <v-icon
                   v-if="clicked"
                   color="success"
                 >
-        mdi-check-all
-      </v-icon>
+                  mdi-check-all
+                </v-icon>
               </v-btn>
             </v-row>
           </v-col>
@@ -41,7 +43,7 @@
             <validation-observer ref="observer">
               <validation-provider
                 v-slot="{ errors }"
-                rules="required"
+                rules="required|numeric|minmax:6"
                 >
                 <v-text-field
                   v-model="pinCode"
@@ -78,12 +80,28 @@
       </template>
       <template v-else-if="account.tfa_enabled">
         <v-alert type="info">
-          Two-Factor Authentication is enabled for your account.
+          <translate> Two-Factor Authentication is enabled for your account.</translate>
         </v-alert>
-        <v-btn color="error" @click="disableTFA" class="mr-2">
+        <validation-observer ref="observer">
+          <validation-provider
+            vid="password"
+            v-slot="{ errors }"
+            rules="required"
+            >
+            <label class="m-label"><translate>Password</translate></label>
+            <v-text-field
+              ref="password"
+              type="password"
+              v-model="password"
+              :error-messages="errors"
+              outlined
+              />
+          </validation-provider>
+        </validation-observer>
+        <v-btn color="error" @click="disableTFA" class="mr-2" :loading="loadingDisable">
           <translate>Disable 2FA</translate>
         </v-btn>
-        <v-btn @click="resetRecoveryCodes">
+        <v-btn @click="resetRecoveryCodes" :loading="loadingReset">
           <translate>Reset recovery codes</translate>
         </v-btn>
       </template>
@@ -115,6 +133,7 @@ import account from '@/api/account'
 import Cookies from 'js-cookie'
 import RecoveryCodesResetDialog from './RecoveryCodesResetDialog'
 import QrcodeVue from 'qrcode.vue'
+import { bus } from '@/main'
 
 export default {
   components: {
@@ -132,7 +151,11 @@ export default {
       qrURL: null,
       clicked: false,
       showCodesResetDialog: false,
-      tokens: []
+      loadingDisable: false,
+      loadingReset: false,
+      password: '',
+      tokens: [],
+      errors: {}
     }
   },
   methods: {
@@ -164,15 +187,52 @@ export default {
       Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
       this.$store.dispatch('auth/initialize')
     },
-    disableTFA () {
-      account.disableTFA().then(resp => {
+    async disableTFA () {
+      const isValid = await this.$refs.observer.validate()
+      if (!isValid) {
+        return
+      }
+      const payload = {
+        password: this.password
+      }
+      this.loadingDisable = true
+      account.disableTFA(payload).then(resp => {
+        this.loadingDisable = false
         this.$store.dispatch('auth/fetchUser')
+        this.$refs.password.reset()
+        this.$refs.observer.reset()
+      }).catch(err => {
+        this.loadingDisable = false
+        if (err.response.status === 400) {
+          this.$refs.observer.setErrors(err.response.data)
+        } else {
+          bus.$emit('notification', { msg: this.$gettext(err.response.data), type: 'error' })
+        }
       })
     },
-    resetRecoveryCodes () {
-      account.resetRecoveryCodes().then(resp => {
+    async resetRecoveryCodes () {
+      const isValid = await this.$refs.observer.validate()
+      if (!isValid) {
+        return
+      }
+      const payload = {
+        password: this.password
+      }
+      this.loadingReset = true
+
+      account.resetRecoveryCodes(payload).then(resp => {
+        this.loadingReset = false
         this.newTokens = resp.data.tokens
         this.showCodesResetDialog = true
+        this.$refs.password.reset()
+        this.$refs.observer.reset()
+      }).catch(err => {
+        this.loadingReset = false
+        if (err.response.status === 400) {
+          this.$refs.observer.setErrors(err.response.data)
+        } else {
+          bus.$emit('notification', { msg: this.$gettext(err.response.data), type: 'error' })
+        }
       })
     },
     closeRecoveryCodesResetDialog () {
@@ -191,9 +251,10 @@ export default {
 <style>
 .qrcode {
   margin-left:20px;
+  margin-top: 2.0em;
 }
 .key {
   margin-left:10px;
-  margin-top:10px;
+  margin-top:1.75em;
 }
 </style>
