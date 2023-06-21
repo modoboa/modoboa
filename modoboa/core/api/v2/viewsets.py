@@ -99,7 +99,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
 
     @action(methods=["get"], detail=False, url_path="tfa/setup/key")
     def tfa_setup_get_key(self, request):
-        """Get a QR code to finalize the setup process."""
+        """Get a key and url to finalize the setup process."""
         if request.user.tfa_enabled:
             return response.Response(status=404)
         device = request.user.totpdevice_set.first()

@@ -23,11 +23,11 @@ export default {
     const payload = { pin_code: pinCode }
     return repository.post(`${resource}/tfa/setup/check/`, payload)
   },
-  disableTFA () {
-    return repository.post(`${resource}/tfa/disable/`)
+  disableTFA (data) {
+    return repository.post(`${resource}/tfa/disable/`, data)
   },
-  resetRecoveryCodes () {
-    return repository.post(`${resource}/tfa/reset_codes/`)
+  resetRecoveryCodes (data) {
+    return repository.post(`${resource}/tfa/reset_codes/`, data)
   },
   getForward () {
     return repository.get(`${resource}/forward/`)

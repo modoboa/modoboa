@@ -166,12 +166,6 @@ TwocolsNav.prototype = {
         this.update_content(data);
         $('#start-tfa-setup').click(this.startTFASetup);
         $('#finalize-tfa-setup').click(this.finalizeTFASetup);
-        $('#deactivate-tfa').confirm({
-            question: gettext('Are you sure?'),
-            warning: gettext('This will invalidate your registered application.'),
-            method: 'POST'
-        });
-        $('#tfa-refresh-codes').click(this.resetTFARecoveryCodes);
     },
 
     startTFASetup: function (evt) {
@@ -201,24 +195,6 @@ TwocolsNav.prototype = {
         }).fail(function (jqxhr) {
             var errors = JSON.parse(jqxhr.responseText);
             display_field_error($('#pin-code'), errors.pin_code.join(' '));
-        });
-    },
-
-    resetTFARecoveryCodes: function (evt) {
-        evt.preventDefault();
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'post',
-            contentType: 'application/json'
-        }).done(function (resp) {
-            var $container = $('#tfa-codes-area');
-            var $ul = $('<ul>');
-            $.each(resp.tokens, function (index, value) {
-                var $li = $('<li />', { html: value });
-                $ul.append($li);
-            });
-            $container.append($ul);
-            $('#codes-modal').modal();
         });
     }
 };
