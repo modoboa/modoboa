@@ -171,7 +171,7 @@ to ``MODOBOA_APPS``:
 And remove any reference to ``'modoboa_dmarc'``, ``'modoboa_pdfcredentials'`` or ``'modoboa_imap_migration'``
 in this same variable.
 
-You need to add ``'modoboa_imap_migration.auth_backends.IMAPBackend',`` at the end of ``AUTHENTICATION_BACKENDS``:
+You need to add ``'modoboa.imap_migration.auth_backends.IMAPBackend',`` at the end of ``AUTHENTICATION_BACKENDS``:
 
 .. sourcecode:: python
 
