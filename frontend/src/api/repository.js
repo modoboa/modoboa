@@ -44,7 +44,9 @@ _axios.interceptors.response.use(
     const refreshToken = Cookies.get('refreshToken')
     if (error.config.url.endsWith('/token/refresh/') || !refreshToken) {
       store.dispatch('auth/logout')
-      router.push({ name: 'Login' })
+      if (router.history.current.name !== 'Login') {
+        router.push({ name: 'Login' })
+      }
       return Promise.reject(error)
     }
     return _axios.post('/token/refresh/', { refresh: refreshToken }).then(resp => {
