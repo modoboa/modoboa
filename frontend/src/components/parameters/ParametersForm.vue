@@ -107,6 +107,9 @@ export default {
   watch: {
     '$route' (to, from) {
       this.loadParams(to.params.app)
+    },
+    'parameters' (to, from) {
+      this.tab_error = []
     }
   },
   methods: {

@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { bus } from '@/main'
 import Cookies from 'js-cookie'
 import account from '@/api/account'
 
@@ -63,6 +64,7 @@ export default {
         Cookies.set('token', resp.data.access, { sameSite: 'strict' })
         Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
         this.$store.dispatch('auth/initialize').then(() => {
+          bus.$emit('loggedIn')
           this.$router.push({ name: 'DomainList' })
         })
       }).catch(error => {

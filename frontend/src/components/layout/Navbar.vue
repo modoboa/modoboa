@@ -284,27 +284,31 @@ export default {
     }
   },
   created () {
-    parameters.getApplications().then(response => {
-      response.data.forEach(item => {
-        this.mainMenuItems[6].children.push({
-          text: item.label,
-          to: { name: 'ParametersEdit', params: { app: item.name } }
+    if (this.isAuthenticated) {
+      parameters.getApplications().then(response => {
+        response.data.forEach(item => {
+          this.mainMenuItems[6].children.push({
+            text: item.label,
+            to: { name: 'ParametersEdit', params: { app: item.name } }
+          })
         })
       })
-    })
-    parameters.getApplication('imap_migration').then(response => {
-      this.imapMigration = response.data.params.enabled_imapmigration
-    })
-    bus.$on('imapSettingsChanged', (status) => { this.imapMigration = status })
+      parameters.getApplication('imap_migration').then(response => {
+        this.imapMigration = response.data.params.enabled_imapmigration
+      })
+      bus.$on('imapSettingsChanged', (status) => { this.imapMigration = status })
+    }
   },
   methods: {
     displayMenuItem (item) {
-      const condition = (item.roles === undefined || item.roles.indexOf(this.authUser.role) !== -1) && (item.condition === undefined || item.condition()) && (item.activated !== false)
-      if (item.icon === 'mdi-email-sync-outline') {
-        // For imapMigration
-        return condition && this.imapMigration
+      if (this.isAuthenticated) {
+        const condition = (item.roles === undefined || item.roles.indexOf(this.authUser.role) !== -1) && (item.condition === undefined || item.condition()) && (item.activated !== false)
+        if (item.icon === 'mdi-email-sync-outline') {
+          // For imapMigration
+          return condition && this.imapMigration
+        }
+        return condition
       }
-      return condition
     },
     logout () {
       this.$store.dispatch('auth/logout').then(() => {
