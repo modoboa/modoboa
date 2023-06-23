@@ -9,7 +9,7 @@ django-rename-app==0.1.5
 
 dj-database-url
 
-djangorestframework>=3.11,<3.15
+djangorestframework>=3.14,<3.15
 drf-spectacular
 uritemplate
 djangorestframework-simplejwt==5.2.2
@@ -46,3 +46,7 @@ reportlab
 tldextract>=2.0.2
 defusedxml>=0.6.0
 python-magic>=0.4.24
+
+# RQ
+rq>=1.13.0
+django-rq

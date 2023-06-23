@@ -1,6 +1,25 @@
 version: '3'
 
 services:
+  redis:
+    image: redis:5-alpine
+    ports:
+      - 6379:6379
+
+  rq:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    environment:
+      PYTHONPATH: ".."
+      DB: "SQLITE"
+      DEBUG: "True"
+      REDIS_HOST: redis
+    command: >
+      sh -c "cd test_project; python3 manage.py rqworker high default low"
+    volumes:
+      - .:/code
+
   api:
     container_name: modoboa_api
     restart: unless-stopped
@@ -13,6 +32,7 @@ services:
       PYTHONPATH: ".."
       DB: "SQLITE"
       DEBUG: "True"
+      REDIS_HOST: redis
     command: >
       sh -c "cd test_project
              python3 manage.py migrate

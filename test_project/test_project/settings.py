@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_static',
     'django_rename_app',
+    'django_rq',
 )
 
 # A dedicated place to register Modoboa applications
@@ -231,10 +232,18 @@ PID_FILE_STORAGE_PATH = '/tmp'
 
 # REDIS
 
-REDIS_HOST = 'localhost'
+REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
 REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
 REDIS_QUOTA_DB = 0
 REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
+
+# RQ
+
+RQ_QUEUES = {
+    'default': {
+        'URL': REDIS_URL,
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
