@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_static',
     'django_rename_app',
+    'django_rq',
 {% if devmode %}    'djangobower',{% endif %}
 )
 
@@ -252,6 +253,26 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_QUOTA_DB = 0
 REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
+
+# RQ
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': REDIS_HOST,
+        'PORT': REDIS_PORT,
+        'DB': 0,
+    },
+    'high': {
+        'HOST': REDIS_HOST,
+        'PORT': REDIS_PORT,
+        'DB': 0,
+    },
+    'low': {
+        'HOST': REDIS_HOST,
+        'PORT': REDIS_PORT,
+        'DB': 0,
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

@@ -52,6 +52,11 @@ jobs:
         image: redis
         ports:
           - 6379/tcp
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       openldap:
         image: docker.pkg.github.com/modoboa/docker-openldap/docker-openldap
         ports:
@@ -79,12 +84,17 @@ jobs:
         run: |
           sudo apt-get update -y \
           && sudo apt-get install -y \
-            postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
+            postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev redis-server
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r ldap-requirements.txt
           pip install -r test-requirements.txt
           python setup.py develop
+          echo "Testing redis connection"
+          redis-cli -h $REDIS_HOST -p $REDIS_PORT ping
+        env:
+          REDIS_HOST: localhost
+          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
       - name: Install postgres requirements
         if: ${{ matrix.database == 'postgres' }}
         run: |
@@ -109,6 +119,7 @@ jobs:
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
           MYSQL_USER: root
+          REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
 
@@ -128,6 +139,7 @@ jobs:
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
           MYSQL_USER: root
+          REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
       - name: Upload coverage result

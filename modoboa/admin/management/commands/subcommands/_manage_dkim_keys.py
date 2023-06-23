@@ -56,8 +56,25 @@ class ManageDKIMKeys(BaseCommand):
         domain.dkim_public_key = public_key
         domain.save(update_fields=["dkim_public_key", "dkim_private_key_path"])
 
+    def add_arguments(self, parser):
+        """Add arguments to command."""
+        parser.add_argument(
+            "--domain", type=str, dest="domain", default="",
+            help="Domain target for keys generation."
+        )
+
     def handle(self, *args, **options):
         """Entry point."""
+        if options["domain"] != "":
+            domain = models.Domain.objects.filter(name=options["domain"],
+                                                  enable_dkim=True,
+                                                  dkim_private_key_path="")
+            if domain.exists():
+                self.create_new_dkim_key(domain[0])
+                signals.new_dkim_keys.send(sender=self.__class__,
+                                           domains=domain)
+            return
+
         self.default_key_length = param_tools.get_global_parameter(
             "dkim_default_key_length")
         qset = models.Domain.objects.filter(
