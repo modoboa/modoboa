@@ -65,6 +65,9 @@ class ManageDKIMKeys(BaseCommand):
 
     def handle(self, *args, **options):
         """Entry point."""
+        self.default_key_length = param_tools.get_global_parameter(
+            "dkim_default_key_length")
+
         if options["domain"] != "":
             domain = models.Domain.objects.filter(name=options["domain"],
                                                   enable_dkim=True,
@@ -75,8 +78,6 @@ class ManageDKIMKeys(BaseCommand):
                                            domains=domain)
             return
 
-        self.default_key_length = param_tools.get_global_parameter(
-            "dkim_default_key_length")
         qset = models.Domain.objects.filter(
             enable_dkim=True, dkim_private_key_path="")
         for domain in qset:
