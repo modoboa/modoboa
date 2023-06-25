@@ -310,7 +310,7 @@ But we recommend an automatic start using ``systemd`` or
    [program:modoboa-worker]
    autostart=true
    autorestart=true
-   command=/srv/modoboa/env/bin/rq worker high default low
+   command=/srv/modoboa/env/bin/python /srv/modoboa/instance/manage.py worker high default low
    directory=/srv/modoboa
    numprocs=1
    stopsignal=TERM
