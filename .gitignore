@@ -26,7 +26,6 @@ node_modules
 
 # TOX stuff
 test_project/modoboa.db
-test_project/redis
 
 /.project
 /.pydevproject
