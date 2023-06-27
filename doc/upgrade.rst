@@ -5,6 +5,11 @@ Upgrade
 Modoboa
 *******
 
+.. note::
+   In this doc, ``by default`` mean that you used `modoboa installer
+   <https://github.com/modoboa/modoboa-installer>`_ to install modoboa
+   and that your didn't change your configuration.
+
 .. warning::
 
    The new version you are going to install may need to modify your
@@ -123,6 +128,69 @@ If you use Postgresql, you need to install pyscopg3+:
 .. sourcecode:: bash
 
    pip install psycopg[binary]>=3.1
+
+RQ has been added. This should replace the use of cron jobs in the future.
+For now, only ``manage_dkim_keys`` has been migrated. This will make the dkim
+key generation asynchronious but the task will be started as soon as the generation
+is required.
+
+Follow these instructions to perform the update in case you used supervisord for the
+installation (this apply if you used ``modoboa-installer``):
+
+1. Edit settings.py (``/srv/modoboa/instance/instance/settings.py`` by default) and add:
+
+.. sourcecode:: python
+   INSTALLED_APPS = (
+   ...,
+   'django_rq',
+   )
+
+and add the RQ section bellow the ``#REDIS`` section:
+
+.. sourcecode:: python
+   # RQ
+
+   RQ_QUEUES = {
+      'default': {
+         'HOST': REDIS_HOST,
+         'PORT': REDIS_PORT,
+         'DB': 0,
+      },
+      'high': {
+         'HOST': REDIS_HOST,
+         'PORT': REDIS_PORT,
+         'DB': 0,
+      },
+      'low': {
+         'HOST': REDIS_HOST,
+         'PORT': REDIS_PORT,
+         'DB': 0,
+      }
+   }
+
+Then by default you will need to restart ``uwsgi`` service. ``systemctl restart uwsgi`` on Debian.
+
+2. Create a new supervisord config (``/etc/supervisor/conf.d/modoboaworkerd.conf`` by default) :
+
+.. sourcecode:: ini
+   [program:modoboa-worker]
+   autostart=true
+   autorestart=true
+   command={%python env path%} {% manage.py instance path%} worker high default low
+   directory={%modoboa home dir%}
+   numprocs=1
+   stopsignal=TERM
+
+``python env path`` : Python executable located in your virtual environment created for modoboa.
+You will find it here  ``/srv/modoboa/venv/bin/python`` by default.
+``manage.py instance path``: Path to manage.py of your modoboa instance.
+You will find it here : ``/srv/modoboa/instance/manage.py``by default.
+``Modoboa home dir``: Home dir of the user running modooba.
+You will find it here ``/srv/modoboa/`` by default.
+
+You can help you with ``/etc/supervisor/conf.d/policyd.conf`` (by default).
+
+Then restart supervisor. ``#> supervisorctl reread && supervisorctl update`` on Debian.
 
 
 2.1.0

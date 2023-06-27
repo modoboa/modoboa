@@ -2,6 +2,8 @@
 
 import socket
 
+from django.conf import settings
+
 from dns.name import Name
 from dns.rdtypes.IN.A import A
 from dns.rdtypes.ANY.MX import MX
@@ -67,6 +69,7 @@ _POSSIBLE_DNS_RESULTS_NO_MX = {
     "mx3.example.com": [_A_RECORD]
 }
 _POSSIBLE_IP_RESULTS = {
+    settings.REDIS_HOST: socket.getaddrinfo(settings.REDIS_HOST, settings.REDIS_PORT),
     "test3.com": [_IPV4_RECORD_2],
     "mx2.example.com": [_IPV4_RECORD_2],
     "bad-response.example.com": [_BAD_IP_RECORD],

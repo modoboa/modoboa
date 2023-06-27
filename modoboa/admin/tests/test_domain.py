@@ -470,11 +470,20 @@ class DKIMTestCase(ModoTestCase):
             constants.ALARM_CLOSED)
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
-        domain = Domain.objects.get(name=values["name"])
+
+        domain.refresh_from_db()
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
         self.assertContains(
             response, escape(domain.bind_format_dkim_public_key))
+
+        # Try generating DKIM key for a targetted domain
+        domain.dkim_private_key_path = ""
+        domain.save()
+
+        call_command("modo", "manage_dkim_keys", f"--domain={domain.name}")
+        domain.refresh_from_db()
+        self.assertNotEqual(domain.dkim_private_key_path, "")
 
     def test_dkim_key_length_modification(self):
         """ """
