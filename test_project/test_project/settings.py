@@ -243,6 +243,12 @@ RQ_QUEUES = {
     'default': {
         'URL': REDIS_URL,
     },
+    'high': {
+         'URL': REDIS_URL,
+    },
+    'low': {
+         'URL': REDIS_URL,
+    }
 }
 
 # Password validation
