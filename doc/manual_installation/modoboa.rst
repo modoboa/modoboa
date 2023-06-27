@@ -248,7 +248,7 @@ following content inside:
    Please note that above crontab might not be ideal on high load systems.
    If you receive a fairly high amount of emails per day, you may want to
    run modoboas logparser tasks *once per night*.
-   
+
    This has the down side that the statistic graph and message log within
    the UI are updated once per day only.
 
@@ -285,5 +285,35 @@ But we recommend an automatic start using ``systemd`` or
 
 It will listen by default on ``127.0.0.1`` and port ``9999``. The
 policy daemon won't do anything unless you tell :ref:`postfix <policyd_config>` to use it.
+
+
+RQ daemon
+---------
+
+Modoboa uses `RQ <https://python-rq.org>`_ as a job handler for async task.
+
+A `redis server <https://redis.io/>`_ is required to run this new daemon.
+
+A worker needs to be launched in the venv.
+
+You can launch it manually using the following command:
+
+.. sourcecode:: bash
+
+   (env)> rq worker high default low
+
+But we recommend an automatic start using ``systemd`` or
+``supervisor``. Here is a configuration example for ``supervisor``:
+
+.. sourcecode:: ini
+
+   [program:modoboa-worker]
+   autostart=true
+   autorestart=true
+   command=/srv/modoboa/env/bin/python /srv/modoboa/instance/manage.py worker high default low
+   directory=/srv/modoboa
+   numprocs=1
+   stopsignal=TERM
+
 
 Now you can continue to the :ref:`webserver` section.
