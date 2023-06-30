@@ -32,5 +32,5 @@ def get_account_credentials(request, accountid):
     resp = HttpResponse(content)
     resp["Content-Type"] = "application/pdf"
     resp["Content-Length"] = len(content)
-    resp["Content-Disposition"] = f"attachment; filename={fname};"
+    resp["Content-Disposition"] = f"attachment; filename={os.path.basename(fname)};"
     return resp
