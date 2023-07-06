@@ -62,8 +62,8 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
             context={
                 "user": request.user,
                 "remote_addr": request.META["REMOTE_ADDR"]
-                }
-            )
+            }
+        )
         serializer.is_valid(raise_exception=True)
         if not request.user.tfa_enabled:
             # We include it as "password" to display the error
@@ -84,8 +84,8 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
             context={
                 "user": request.user,
                 "remote_addr": request.META["REMOTE_ADDR"]
-                }
-            )
+            }
+        )
         serializer.is_valid(raise_exception=True)
         device = request.user.staticdevice_set.first()
         if device is None:
