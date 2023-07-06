@@ -193,7 +193,7 @@ You can help you with ``/etc/supervisor/conf.d/policyd.conf`` (by default).
 
 Then restart supervisor. ``#> supervisorctl reread && supervisorctl update`` on Debian.
 
-Admins now have the option to setup a receive-only mailbox or a send-only mailbox.
+Admins now have the option to setup a send-only mailbox.
 
 Generate new maps for postfix from your virtual environment:
 
