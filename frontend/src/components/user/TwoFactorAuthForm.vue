@@ -43,6 +43,7 @@
             <validation-observer ref="observer">
               <validation-provider
                 v-slot="{ errors }"
+                name="pin_code"
                 rules="required|numeric|minmax:6"
                 >
                 <v-text-field
@@ -95,6 +96,7 @@
               v-model="password"
               :error-messages="errors"
               outlined
+              autocomplete="new-password"
               />
           </validation-provider>
         </validation-observer>
@@ -179,13 +181,19 @@ export default {
       if (!valid) {
         return
       }
-      const resp = await account.finalizeTFASetup(this.pinCode)
-      this.key = null
-      this.qrURL = null
-      this.tokens = resp.data.tokens
-      Cookies.set('token', resp.data.access, { sameSite: 'strict' })
-      Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
-      this.$store.dispatch('auth/initialize')
+      try {
+        const resp = await account.finalizeTFASetup(this.pinCode)
+        this.key = null
+        this.qrURL = null
+        this.tokens = resp.data.tokens
+        Cookies.set('token', resp.data.access, { sameSite: 'strict' })
+        Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
+        this.$store.dispatch('auth/initialize')
+      } catch (err) {
+        if (err.response.status === 400) {
+          this.$refs.observer.setErrors(err.response.data)
+        }
+      }
     },
     async disableTFA () {
       const isValid = await this.$refs.observer.validate()
