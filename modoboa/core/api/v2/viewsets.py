@@ -1,10 +1,5 @@
 """Core API v2 viewsets."""
 
-import io
-
-import qrcode
-import qrcode.image.svg
-
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, permissions, response, viewsets
@@ -102,19 +97,16 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
             "access": str(refresh.access_token)
         })
 
-    @action(methods=["get"], detail=False, url_path="tfa/setup/qr_code")
-    def tfa_setup_get_qr_code(self, request):
-        """Get a QR code to finalize the setup process."""
+    @action(methods=["get"], detail=False, url_path="tfa/setup/key")
+    def tfa_setup_get_key(self, request):
+        """Get a key and url to finalize the setup process."""
         if request.user.tfa_enabled:
             return response.Response(status=404)
         device = request.user.totpdevice_set.first()
         if not device:
             return response.Response(status=404)
-        factory = qrcode.image.svg.SvgPathImage
-        img = qrcode.make(device.config_url, image_factory=factory)
-        buf = io.BytesIO()
-        img.save(buf)
-        return response.Response(buf.getvalue(), content_type="application/xml")
+        return response.Response({"key": device.key, "url":device.config_url},
+                                 content_type="application/json")
 
     @extend_schema(
         request=core_v1_serializers.CheckTFASetupSerializer

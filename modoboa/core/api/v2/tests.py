@@ -146,8 +146,9 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn("access", resp.json())
 
-    def test_tfa_setup_get_qr_code(self):
-        url = reverse("v2:account-tfa-setup-get-qr-code")
+    def test_tfa_setup(self):
+        # Setup TFA
+        url = reverse("v2:account-tfa-setup-get-key")
 
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 404)
@@ -156,7 +157,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         user.totpdevice_set.create(name="Device")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.content_type, "application/xml")
+        self.assertEqual(resp.content_type, "application/json")
 
         user.tfa_enabled = True
         user.save()
@@ -164,7 +165,11 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 404)
 
     @mock.patch("django_otp.plugins.otp_totp.models.TOTPDevice.verify_token")
-    def test_tfa_setup_check(self, verify_mock):
+    def test_tfa_setup_modify(self,
+                              verify_mock,
+                              password_ko="Toto1234",
+                              password_ok="password"
+                              ):
         user = models.User.objects.get(username="admin")
         user.totpdevice_set.create(name="Device")
 
@@ -182,6 +187,30 @@ class AccountViewSetTestCase(ModoAPITestCase):
         verify_mock.side_effect = [True]
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
+
+        url_reset = reverse("v2:account-tfa-reset-codes")
+        url_disable = reverse("v2:account-tfa-disable")
+        data = {"password": password_ko}
+        # Try regenerate TFA backup code with wrong password
+        resp = self.client.post(url_reset, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        # Try disable with wrong password
+        resp = self.client.post(url_disable, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+
+        # Test with password ok
+        data = {"password": password_ok}
+        # Try regenerate TFA backup codes with good password
+        resp = self.client.post(url_reset, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("tokens", resp.json())
+
+        # Try disable with good password
+        resp = self.client.post(url_disable, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        user.refresh_from_db()
+        self.assertEqual(user.tfa_enabled, False)
 
     def test_api_token(self):
         # 1. Obtain a JWT token so we can safely play with basic token
@@ -413,7 +442,6 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         # TODO: See why user doesn't update it's password --> self.test_me_password(password_ok="MyHardenedPass1!")
-
 
 
 class AuthenticationTestCase(ModoAPITestCase):

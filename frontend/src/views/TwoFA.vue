@@ -20,6 +20,7 @@
           <v-col cols="6" offset="3">
             <label class="m-label"><translate>Two-factor authentication code</translate></label>
             <v-otp-input
+              ref="otpInput"
               v-model="code"
               length="6"
               :error-messages="errors"
@@ -51,6 +52,9 @@ export default {
       errors: {},
       loading: false
     }
+  },
+  mounted: function () {
+    this.$refs.otpInput.focus()
   },
   methods: {
     async verifyCode () {
