@@ -54,10 +54,10 @@
             Two-Factor Authentication is enabled for your account.
           {% endblocktrans %}
         </div>
-        <a id="deactivate-tfa" class="btn btn-danger" href="{% url 'api:account-tfa-disable' %}">
+        <a id="deactivate-tfa" class="btn btn-danger" data-href="{% url 'api:account-tfa-disable' %}" data-toggle="modal" data-target="#disable-modal" data-content="{% trans 'This will invalidate your registered application.' %}">
           {% trans "Disable 2FA" %}
         </a>
-        <a id="tfa-refresh-codes" class="btn btn-default" href="{% url 'api:account-tfa-reset-codes' %}">
+        <a id="tfa-refresh-codes" class="btn btn-default" data-href="{% url 'api:account-tfa-reset-codes' %}" data-toggle="modal" data-target="#disable-modal" data-content="{% trans 'This will regenerate your tokens.' %}">
           {% trans "Reset recovery codes" %}
         </a>
     {% else %}
@@ -101,3 +101,82 @@
       </div>
     </div>
   </div>
+  <div id="disable-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="passwordConfirmModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form id="password-confirm">
+          <div class="modal-header">
+            <h3 class="modal-title">Are you sure?</h3>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger">
+              <h4>Warning</h4>
+              <div id="password-confirm-content">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">{% trans "Confirm your password" %}</label>
+              <input name="password" id="password" class="form-control" type="password" placeholder="{% trans 'password' %}" required>
+              <div class="col-sm-3">
+                <small id="password-error" class="text-danger"></small>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Ok</button>
+            <a data-dismiss="modal" class="btn btn-default">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    const passwordError = document.getElementById("password-error")
+    var buttonClicked;
+    $('#disable-modal').on('shown.bs.modal', function (event) {
+      buttonClicked = $(event.relatedTarget); // Button that triggered the modal
+      document.getElementById("password-confirm-content").innerHTML = buttonClicked.attr("data-content")
+    });
+    const form = document.getElementById('password-confirm')
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault()
+      passwordError.innerHTML = ""
+      const url = buttonClicked.attr("data-href")
+      const formData = new FormData(event.target);
+      const plainFormData = Object.fromEntries(formData.entries());
+      const formDataJsonString = JSON.stringify(plainFormData);
+      const fetchOptions = {
+		method: "POST",
+		credentials: 'same-origin',
+		headers: {
+			"Content-Type": "application/json",
+			"Accept": "application/json",
+			"X-CSRFToken": getCookie("csrftoken")
+		},
+        body: formDataJsonString,
+      };
+      const response = await fetch(url, fetchOptions);
+
+      if (!response.ok && response.status === 400) {
+        const text = await response.json();
+        passwordError.innerHTML = text.password[0];
+        return;
+      } else {
+        if (buttonClicked.attr("id") === "tfa-refresh-codes") {
+          var $container = $('#tfa-codes-area');
+          var $ul = $('<ul>');
+          const resp = await response.json()
+          $.each(resp.tokens, function (index, value) {
+              var $li = $('<li />', { html: value });
+              $ul.append($li);
+          });
+          $container.append($ul);
+          $('#codes-modal').modal();
+          $('#disable-modal').modal('hide')
+          return;
+        }
+      }
+      window.location.reload();
+    })
+  </script>

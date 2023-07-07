@@ -15,6 +15,13 @@ extend('numeric', {
   ...numeric,
   message: () => $gettext('This field must be a valid number')
 })
+extend('minmax', {
+  validate: async (value, args) => {
+    return value.length >= args.length && value.length <= args.length
+  },
+  params: ['length'],
+  message: $gettext('This field must have a length of {length} characters')
+})
 extend('required', {
   ...required,
   message: () => $gettext('This field is required')
