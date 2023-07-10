@@ -37,7 +37,6 @@ rrdtool>=0.1.10
 qrcode
 
 aiosmtplib
-aioredis==2.0.1
 
 # PDF credentials
 reportlab
