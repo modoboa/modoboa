@@ -32,7 +32,7 @@ lxml
 chardet
 ovh
 oath
-redis
+redis>=4.2.0rc1
 rrdtool>=0.1.10
 qrcode
 
