@@ -1,8 +1,7 @@
 """Policy daemon related tests."""
 
 import asyncio
-# from mock import patch
-from asynctest import patch
+from mock import patch
 from multiprocessing import Process
 import socket
 import time
@@ -200,8 +199,7 @@ sasl_username=user@test.com
             await policyd_core.reset_counters()
 
         # Run the async test
-        coro = asyncio.coroutine(run_test)
-        event_loop.run_until_complete(coro())
+        event_loop.run_until_complete(run_test())
         event_loop.close()
 
         self.assertEqual(
