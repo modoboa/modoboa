@@ -6,7 +6,7 @@ Modoboa
 *******
 
 .. note::
-   In this doc, ``by default`` mean that you used `modoboa installer
+   In this doc, ``by default`` means that you used `modoboa installer
    <https://github.com/modoboa/modoboa-installer>`_ to install modoboa
    and that your didn't change your configuration.
 
@@ -123,6 +123,16 @@ Specific instructions
 * Support for Python 3.7 has been dropped, minimum Python version is now 3.8
 * Support for Postgres 11 has been dropped, minimum Postgres version is now 12
 
+You need to change the first line in ``urls.py`` in ``{instance_dir}/instance/urls.py``:
+
+.. sourcecode:: python
+
+   # from django.conf.urls import include, url
+   from django.urls import include, path
+
+And replace `url` with `path` in the file.
+
+
 If you use Postgresql, you need to install pyscopg3+:
 
 .. sourcecode:: bash
@@ -149,8 +159,8 @@ installation (this apply if you used ``modoboa-installer``):
 and add the RQ section bellow the ``#REDIS`` section:
 
 .. sourcecode:: python
-   # RQ
 
+   # RQ
    RQ_QUEUES = {
       'default': {
          'HOST': REDIS_HOST,
@@ -171,14 +181,15 @@ and add the RQ section bellow the ``#REDIS`` section:
 
 Then by default you will need to restart ``uwsgi`` service (``systemctl restart uwsgi`` on Debian).
 
-2. Create a new supervisord config (``/etc/supervisor/conf.d/modoboaworkerd.conf`` by default) :
+2. Create a new supervisord config (``/etc/supervisor/conf.d/modoboa-worker.conf`` by default) :
 
 .. sourcecode:: ini
    [program:modoboa-worker]
    autostart=true
    autorestart=true
-   command={%python env path%} {% manage.py instance path%} worker high default low
+   command={%python env path%} {% manage.py instance path%} rqworker high default low
    directory={%modoboa home dir%}
+   user=%{modoboa user}
    numprocs=1
    stopsignal=TERM
 
@@ -188,6 +199,7 @@ You will find it here  ``/srv/modoboa/venv/bin/python`` by default.
 You will find it here : ``/srv/modoboa/instance/manage.py``by default.
 ``Modoboa home dir``: Home dir of the user running modooba.
 You will find it here ``/srv/modoboa/`` by default.
+``modoboa user`` : User owning modoboa home dir.
 
 You can help you with ``/etc/supervisor/conf.d/policyd.conf`` (by default).
 
