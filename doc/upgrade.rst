@@ -119,11 +119,15 @@ Specific instructions
 .. note::
    This version has not been released yet.
 
+.. note::
+   If you use the installer to perform the upgrade, you only need to edit ``urls.py`` and ``settings.py``
+
 * Django has been updated to 4.2LTS. Please upgrade all your extensions alongside modoboa
 * Support for Python 3.7 has been dropped, minimum Python version is now 3.8
 * Support for Postgres 11 has been dropped, minimum Postgres version is now 12
 
-You need to change the first line in ``urls.py`` in ``{instance_dir}/instance/urls.py``:
+You need to change the first line in ``urls.py`` in
+(``/srv/modoboa/instance/instance/urls.py`` by default):
 
 .. sourcecode:: python
 
@@ -184,6 +188,7 @@ Then by default you will need to restart ``uwsgi`` service (``systemctl restart 
 2. Create a new supervisord config (``/etc/supervisor/conf.d/modoboa-worker.conf`` by default) :
 
 .. sourcecode:: ini
+
    [program:modoboa-worker]
    autostart=true
    autorestart=true
@@ -207,40 +212,40 @@ Then restart supervisor. ``#> supervisorctl reread && supervisorctl update`` on 
 
 Admins now have the option to setup a send-only mailbox.
 
-Generate new maps for postfix from your virtual environment:
-
-.. sourcecode:: python
-   > python3 manage.py generate_postfix_maps --destdir /etc/postfix/ --force-overwrite
-
 Send-only mailboxes do not have access to IMAP.
 You need to change your dovecot configuration to enable it.
 
+.. note::
+   modoboa-webmail may not work with send-only user for now.
+
 If you use ``Postgres``:
-Change ``user_query`` in ``/etc/dovecot/dovecot-sql-master.conf.ext``:
+Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql.conf.ext``:
 
 .. sourcecode::
-   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only IS NOT TRUE OR %s NOT IN ('imap', 'pop3')) AND mb.address='%%n' AND dom.name='%%d'
+
+   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND mb.address='%%n' AND dom.name='%%d'
+
+   password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb_home, %mailboxes_owner_uid AS userdb_uid, %mailboxes_owner_gid AS userdb_gid, CONCAT('*:bytes=', mb.quota, 'M') AS userdb_quota_rule FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE (mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3')) AND email='%%u' AND is_active AND dom.enabled
 
 
-You need to add ``proxy:pgsql:/etc/postfix/sql-send-only.cf`` to ``smtpd_recipient_restrictions`` in ``/etc/postfix/main.cf``:
-
-.. sourcecode::
-   smtpd_recipient_restrictions =
-      ...
-      check_recipient_access
-          proxy:pgsql:/etc/postfix/sql-send-only.cf
-          ...
+You basically simply need to add ``(mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND`` for ``user_query`` after ``WHERE`` and ``(mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3')) AND`` for ``password_query`` after ``WHERE``.
 
 
 If you use ``MySQL``:
-Change ``password_query`` in ``/etc/dovecot/dovecot-sql-master.conf.ext``:
+Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql-master.ext``:
 
 .. sourcecode::
-   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, CONCAT('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only=0 OR %s NOT IN ('imap', 'pop3')) AND mb.address='%%n' AND dom.name='%%d'
+
+   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, CONCAT('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND mb.address='%%n' AND dom.name='%%d'
+
+   password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb_home, %mailboxes_owner_uid AS userdb_uid, %mailboxes_owner_gid AS userdb_gid, CONCAT('*:bytes=', mb.quota, 'M') AS userdb_quota_rule FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE (mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3')) AND u.email='%%u' AND u.is_active=1 AND dom.enabled=1
+
+You basically simply need to add ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND`` for ``user_query`` after ``WHERE`` and ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3'))`` for ``password_query`` after ``WHERE``.
 
 You need to add ``proxy:mysql:/etc/postfix/sql-send-only.cf`` to ``smtpd_recipient_restrictions`` in ``/etc/postfix/main.cf``:
 
 .. sourcecode::
+
    smtpd_recipient_restrictions =
       ...
       check_recipient_access
