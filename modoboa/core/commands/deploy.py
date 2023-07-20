@@ -247,7 +247,7 @@ class DeployCommand(Command):
         tpl = self._render_template(
             "%s/settings.py.tpl" % self._templates_dir, {
                 "db_connections": connections,
-                "secret_key": _generate_secret_key(parsed_args.secret_key_length),
+                "secret_key": self._generate_secret_key(parsed_args.secret_key_length),
                 "name": parsed_args.name,
                 "allowed_host": allowed_host,
                 "lang": parsed_args.lang,
