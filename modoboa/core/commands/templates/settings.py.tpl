@@ -257,21 +257,11 @@ REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 # RQ
 
 RQ_QUEUES = {
-    'default': {
+    'dkim': {
         'HOST': REDIS_HOST,
         'PORT': REDIS_PORT,
         'DB': 0,
     },
-    'high': {
-        'HOST': REDIS_HOST,
-        'PORT': REDIS_PORT,
-        'DB': 0,
-    },
-    'low': {
-        'HOST': REDIS_HOST,
-        'PORT': REDIS_PORT,
-        'DB': 0,
-    }
 }
 
 # Password validation

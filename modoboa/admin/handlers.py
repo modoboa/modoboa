@@ -51,7 +51,8 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
 def create_dkim_key(sender, instance, **kwargs):
     if not instance.enable_dkim:
         return
-    django_rq.enqueue(call_command,
+    queue = django_rq.get_queue('dkim')
+    queue.enqueue(call_command,
                       "modo",
                       "manage_dkim_keys",
                       f"--domain={instance.name}")
