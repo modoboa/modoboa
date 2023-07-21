@@ -62,9 +62,6 @@ export default {
     bus.$on('notification', this.showNotification)
     bus.$on('loggedIn', this.checkAlarms)
   },
-  mounted () {
-    this.checkAlarms()
-  },
   beforeDestroy () {
     clearInterval(this.alarmChecker)
   },
@@ -88,6 +85,9 @@ export default {
     },
     checkAlarms () {
       if (this.isAuthenticated) {
+        if (this.alarmChecker !== null) {
+          return
+        }
         this.alarmChecker = window.setInterval(() => {
           const params = {}
           if (this.lastAlarmDate instanceof Date) {
@@ -95,7 +95,7 @@ export default {
           }
           alarms.getAll(params).then(resp => {
             let count = 0
-            for (const alarm of resp.data) {
+            for (const alarm of resp.data.results) {
               if (alarm.status === 1 && !this.alarmNotified.includes(alarm.id)) {
                 if (this.lastAlarmDate instanceof Date && new Date(alarm.created) > this.lastAlarmDate) {
                   this.lastAlarmDate = new Date(alarm.created)
