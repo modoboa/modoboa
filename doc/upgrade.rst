@@ -232,16 +232,6 @@ Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql-maste
 
 You basically simply need to add ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND`` for ``user_query`` after ``WHERE`` and ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3'))`` for ``password_query`` after ``WHERE``.
 
-You need to add ``proxy:mysql:/etc/postfix/sql-send-only.cf`` to ``smtpd_recipient_restrictions`` in ``/etc/postfix/main.cf``:
-
-.. sourcecode::
-
-   smtpd_recipient_restrictions =
-      ...
-      check_recipient_access
-          proxy:pgsql:/etc/postfix/sql-send-only.cf
-          ...
-
 
 2.1.0
 =====
