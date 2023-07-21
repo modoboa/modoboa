@@ -166,21 +166,11 @@ and add the RQ section bellow the ``#REDIS`` section:
 
    # RQ
    RQ_QUEUES = {
-      'default': {
+      'dkim': {
          'HOST': REDIS_HOST,
          'PORT': REDIS_PORT,
          'DB': 0,
       },
-      'high': {
-         'HOST': REDIS_HOST,
-         'PORT': REDIS_PORT,
-         'DB': 0,
-      },
-      'low': {
-         'HOST': REDIS_HOST,
-         'PORT': REDIS_PORT,
-         'DB': 0,
-      }
    }
 
 Then by default you will need to restart ``uwsgi`` service (``systemctl restart uwsgi`` on Debian).
@@ -192,9 +182,9 @@ Then by default you will need to restart ``uwsgi`` service (``systemctl restart 
    [program:modoboa-worker]
    autostart=true
    autorestart=true
-   command={%python env path%} {% manage.py instance path%} rqworker high default low
+   command={%python env path%} {% manage.py instance path%} rqworker dkim
    directory={%modoboa home dir%}
-   user=%{modoboa user}
+   user=%{dkim manager user}
    numprocs=1
    stopsignal=TERM
 
@@ -204,7 +194,7 @@ You will find it here  ``/srv/modoboa/venv/bin/python`` by default.
 You will find it here : ``/srv/modoboa/instance/manage.py``by default.
 ``Modoboa home dir``: Home dir of the user running modooba.
 You will find it here ``/srv/modoboa/`` by default.
-``modoboa user`` : User owning modoboa home dir.
+``dkim manager user`` : User managing dkim signing (opendkim by default).
 
 You can help you with ``/etc/supervisor/conf.d/policyd.conf`` (by default).
 
