@@ -88,6 +88,11 @@
                   <v-col cols="6" v-else>
                     <translate class="mr-2">Quota: </translate> {{ account.mailbox.quota }}
                   </v-col>
+                  <v-col cols="6">
+                    <translate class="mr-2">Send only</translate>
+                    <v-icon color="success" v-if="account.mailbox.is_send_only">mdi-check-circle-outline</v-icon>
+                    <v-icon v-else>mdi-close-circle-outline</v-icon>
+                  </v-col>
                 </template>
               </v-row>
             </v-fade-transition>

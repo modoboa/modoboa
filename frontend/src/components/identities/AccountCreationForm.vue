@@ -107,6 +107,11 @@ export default {
             {
               key: this.$gettext('Message sending limit'),
               value: this.account.mailbox.message_limit
+            },
+            {
+              key: this.$gettext('Send only account'),
+              value: this.account.mailbox.is_send_only,
+              type: 'yesno'
             }
           ]
         },
