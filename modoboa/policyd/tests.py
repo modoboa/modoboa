@@ -1,8 +1,8 @@
 """Policy daemon related tests."""
 
 import asyncio
-# from mock import patch
-from asynctest import patch
+from aiosmtplib import send
+from unittest.mock import AsyncMock
 from multiprocessing import Process
 import socket
 import time
@@ -57,8 +57,7 @@ class PolicyDaemonTestCase(
         self.admin.role = "SuperAdmins"
 
         db.connections.close_all()
-        patcher = patch("aiosmtplib.send")
-        self.send_mock = patcher.start()
+        self.send_mock = AsyncMock(send)
         self.process = Process(target=start_policy_daemon)
         self.process.daemon = True
         self.process.start()
@@ -200,8 +199,7 @@ sasl_username=user@test.com
             await policyd_core.reset_counters()
 
         # Run the async test
-        coro = asyncio.coroutine(run_test)
-        event_loop.run_until_complete(coro())
+        event_loop.run_until_complete(run_test())
         event_loop.close()
 
         self.assertEqual(

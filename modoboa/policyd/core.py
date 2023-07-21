@@ -8,7 +8,7 @@ import logging
 
 import aiosmtplib
 from dateutil.relativedelta import relativedelta
-import aioredis
+from redis import asyncio as aioredis
 
 from django.conf import settings
 from django.db import connections
