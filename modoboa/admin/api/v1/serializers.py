@@ -156,7 +156,7 @@ class MailboxSerializer(serializers.ModelSerializer):
         model = models.Mailbox
         fields = (
             "pk", "full_address", "use_domain_quota", "quota", "message_limit",
-            "quota_usage"
+            "quota_usage", "is_send_only"
         )
 
     def get_quota_usage(self, mb) -> int:

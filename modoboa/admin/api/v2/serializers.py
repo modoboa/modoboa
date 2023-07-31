@@ -393,6 +393,7 @@ class MailboxSerializer(serializers.ModelSerializer):
         model = models.Mailbox
         fields = (
             "pk", "use_domain_quota", "quota", "message_limit",
+            "is_send_only",
         )
 
     def validate_quota(self, value):
