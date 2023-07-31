@@ -81,7 +81,6 @@ export default {
       return await this.$refs.observer.validate() && await this.$refs.passwordForm.validate()
     },
     update () {
-      console.log(this.form)
       this.$emit('input', this.form)
     }
   },

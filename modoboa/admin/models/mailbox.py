@@ -103,6 +103,8 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    is_send_only = models.BooleanField(default=False)
+
     objects = MailboxManager()
 
     class Meta:
@@ -324,6 +326,8 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
             self.set_quota(values["quota"], override_rules)
         if "message_limit" in values:
             self.message_limit = values["message_limit"]
+        if "is_send_only" in values:
+            self.is_send_only = values["is_send_only"]
         if newaddress:
             self.rename(local_part, domain)
         self.save()

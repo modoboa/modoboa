@@ -249,6 +249,11 @@ class AccountFormMail(forms.Form, DynamicForm):
         help_text=gettext_lazy(
             "Number of messages this mailbox can send per day")
     )
+    is_send_only = forms.BooleanField(
+        required=False,
+        help_text=gettext_lazy(
+            "Block IMAP connection and incoming mails for this mailbox")
+    )
     aliases = lib_fields.UTF8AndEmptyUserEmailField(
         label=gettext_lazy("Alias(es)"),
         required=False,
@@ -296,6 +301,7 @@ class AccountFormMail(forms.Form, DynamicForm):
                 self.fields["quota"].initial = self.mb.quota
             if self.mb.message_limit:
                 self.fields["message_limit"].initial = self.mb.message_limit
+            self.fields["is_send_only"].initial = self.mb.is_send_only
             self.fields["create_alias_with_old_address"].initial = (
                 params["create_alias_on_mbox_rename"]
             )
@@ -384,7 +390,8 @@ class AccountFormMail(forms.Form, DynamicForm):
         self.mb = models.Mailbox(
             address=self.locpart, domain=self.domain, user=account,
             use_domain_quota=self.cleaned_data["quota_act"],
-            message_limit=self.cleaned_data.get("message_limit")
+            message_limit=self.cleaned_data.get("message_limit"),
+            is_send_only=self.cleaned_data.get("is_send_only", False)
         )
         override_rules = (
             user.is_superuser or

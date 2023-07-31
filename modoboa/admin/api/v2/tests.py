@@ -258,7 +258,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
-    def test_message_limit_update(self):
+    def test_mailbox_options_update(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])
         data = {
@@ -266,13 +266,15 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "role": "SimpleUsers",
             "password": "Toto12345",
             "mailbox": {
-                "message_limit": 10
+                "message_limit": 10,
+                "is_send_only": True,
             }
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         account.refresh_from_db()
         self.assertEqual(account.mailbox.message_limit, 10)
+        self.assertEqual(account.mailbox.is_send_only, True)
 
         data = {
             "username": "user@test.com",
@@ -292,13 +294,15 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "role": "SimpleUsers",
             "password": "Toto12345",
             "mailbox": {
-                "message_limit": None
+                "message_limit": None,
+                "is_send_only": False,
             }
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         account.refresh_from_db()
         self.assertEqual(account.mailbox.message_limit, None)
+        self.assertEqual(account.mailbox.is_send_only, False)
 
     def test_update_admin(self):
         account = core_models.User.objects.get(username="admin")
