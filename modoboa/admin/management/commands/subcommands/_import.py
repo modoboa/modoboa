@@ -7,6 +7,7 @@ import os
 import progressbar
 from chardet.universaldetector import UniversalDetector
 
+from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils.translation import gettext as _
@@ -60,9 +61,15 @@ class ImportCommand(BaseCommand):
             for row in reader:
                 if not row:
                     continue
-                fct = signals.import_object.send(
-                    sender=self.__class__, objtype=row[0].strip())
-                fct = [func for x_, func in fct if func is not None]
+                try:
+                    fct = signals.import_object.send(
+                        sender=self.__class__, objtype=row[0].strip())
+                    fct = [func for x_, func in fct if func is not None]
+                except ValidationError as e:
+                    raise CommandError(
+                        _("It seems that your CSV is badly formatted at row: ") +
+                        options["sepchar"].join(row)
+                        )
                 if not fct:
                     continue
                 fct = fct[0]
