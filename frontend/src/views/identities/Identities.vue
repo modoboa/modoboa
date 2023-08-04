@@ -67,7 +67,7 @@
       <template v-slot:help>
         <ul>
           <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>
-          <li><em>alias; address; enabled; recipient; recipient; ...</em></li>
+          <li><em>alias; address; enabled; recipient; [more recipients; ...]</em></li>
         </ul>
       </template>
       <template v-slot:extraFields="{ form }">
