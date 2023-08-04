@@ -117,6 +117,7 @@ Recommend packages for debian and derivatives::
   apt install uwsgi uwsgi-plugin-python3
 
 Here is a sample nginx configuration::
+
   upstream modoboa {
     server unix:<uwsgi_socket_path> fail_timeout=0;
   }
@@ -208,7 +209,7 @@ not be completely self-explanatory:
   media directories are because otherwise nginx won't be able to find
   them.
 
-  If Modoboa is at the root of your domain, then ``<hostnamel>``
+  If Modoboa is at the root of your domain, then ``<hostname>``
   is an empty string and can be deleted from the configuration
   above. In this case, you probably do not need the ``alias``
   directives.

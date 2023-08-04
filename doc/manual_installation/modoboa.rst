@@ -106,12 +106,10 @@ Install the corresponding Python binding:
    (env)$ pip install psycopg[binary]>=3.1
 
 .. note::
-
-   Alternatively, you can install the ``python3-psycopg2`` package instead on
-   Debian-based distributions if your virtual environment was created with
-   ``--system-site-packages`` option.
-   Note that psycopg 3.1 is required starting with modoboa 2.2.0 and
-   ubuntu and debian packages are too old for now.
+   Ubuntu and Debian repositories contain python-psycopgX package
+   but starting modoboa 2.2.0 minimum version required is 3.1 and
+   it has not yet it these distro yet
+   Prior modoboa version can run with ``python3-psycopg2``.
 
 Then, create a user and a database. For example, to create the ``modoboa``
 database owned by a ``modoboa`` user, run the following commands on your
@@ -175,8 +173,8 @@ you just have to run the following command:
    If you choose to install extensions one at a time, you will have to
    add their names in settings.py to ``MODOBOA_APPS``. Also ensure that
    you have the line ``from modoboa_amavis.settings import *`` at the
-   end of this file and possibly perform more steps. Check the manuall
-   of each extensions for specific Instructions.
+   end of this file and possibly perform more steps. Check the
+   documentation/readme of each extensions for specific Instructions.
 
    The list of available extensions can be found on the :doc:`index
    page <../index>`. Instructions to install them are available on
