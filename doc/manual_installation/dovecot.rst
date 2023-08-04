@@ -34,7 +34,7 @@ Then, edit the ``inbox`` namespace and add the following line::
 
   inbox = yes
 
-In order for dovecot to automaticaly create ususal folder on account creation, edit the ``inbox`` namespace of :file:`15-mailboxes.conf`::
+In order for dovecot to automaticaly create usual folders on account creation, edit the ``inbox`` namespace of :file:`15-mailboxes.conf`::
 
   mailbox Drafts {
     auto = subscribe
