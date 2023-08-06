@@ -62,7 +62,7 @@
       :title="'Import identities'|translate"
       @beforeSubmit="prepareData"
       @submit="importIdentities"
-      @close="showImportForm = false"
+      @close="closeImportForm"
       >
       <template v-slot:help>
         <ul>
@@ -124,10 +124,16 @@ export default {
       })
     },
     prepareData (data) {
-      data.append('crypt_passwords', this.form.crypt_passwords)
+      if (this.form !== undefined) {
+        data.append('crypt_passwords', this.form.crypt_passwords)
+      }
     },
     importIdentities (data) {
       this.importContent(identities, data)
+    },
+    closeImportForm () {
+      this.showImportForm = false
+      this.updateIdentities()
     }
   }
 }
