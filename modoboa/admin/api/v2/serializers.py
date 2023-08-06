@@ -446,7 +446,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         aliases = []
         for alias in value:
             localpart, domain = models.validate_alias_address(
-                alias, self.context["request"].user)
+                alias, self.context["request"].user, ignore_existing=True)
             aliases.append({"localpart": localpart, "domain": domain})
         return aliases
 
@@ -543,12 +543,12 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         self.set_permissions(user, domains)
         if aliases:
             for alias in aliases:
-                models.Alias.objects.create(
-                    creator=creator,
-                    domain=alias["domain"],
-                    address="{}@{}".format(alias["localpart"], alias["domain"]),
-                    recipients=[user.username]
-                )
+                models.modify_or_create_alias(
+                    "{}@{}".format(alias["localpart"], alias["domain"]),
+                    [user.username],
+                    creator,
+                    alias["domain"]
+                    )
         return user
 
     def update(self, instance, validated_data):
@@ -556,6 +556,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         mailbox_data = validated_data.pop("mailbox", None)
         password = validated_data.pop("password", None)
         domains = validated_data.pop("domains", [])
+        aliases = validated_data.pop("aliases", None)
         for key, value in validated_data.items():
             setattr(instance, key, value)
         if password:
@@ -571,6 +572,14 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 mailbox_data["full_address"] = validated_data["username"]
                 instance.email = validated_data["username"]
                 self._create_mailbox(creator, instance, mailbox_data)
+        if aliases and "username" in validated_data:
+            for alias in aliases:
+                models.modify_or_create_alias(
+                    "{}@{}".format(alias["localpart"], alias["domain"]),
+                    [validated_data["username"]],
+                    creator,
+                    alias["domain"]
+                    )
         instance.save()
         resources = validated_data.get("resources")
         if resources:

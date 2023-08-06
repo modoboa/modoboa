@@ -15,7 +15,7 @@
       />
   </validation-provider>
   <v-chip
-    v-for="(alias, index) in aliases"
+    v-for="(alias, index) in form.aliases"
     :key="index"
     class="mr-2 mt-2"
     close
@@ -37,19 +37,25 @@ export default {
   },
   data () {
     return {
-      currentAlias: '',
-      aliases: []
+      form: {
+        mailbox: {},
+        aliases: []
+      },
+      currentAlias: ''
     }
   },
   methods: {
     reset () {
       this.currentAlias = ''
-      this.aliases = []
+      this.form.aliases = []
+    },
+    update () {
+      this.$emit('input', this.form)
     },
     async addAlias () {
       try {
-        await accounts.validate({ aliases: [this.currentAlias] })
-        this.aliases.push(this.currentAlias)
+        await accounts.validate({ aliases: [this.currentAlias], mailbox: this.form.mailbox })
+        this.form.aliases.push(this.currentAlias)
         this.$refs.aliasField.reset()
       } catch (error) {
         let errorMsg = null
@@ -62,15 +68,20 @@ export default {
       }
     },
     removeAlias (index) {
-      this.aliases.splice(index, 1)
+      this.form.aliases.splice(index, 1)
       this.update()
-    },
-    update () {
-      this.$emit('input', this.aliases)
     }
   },
   mounted () {
-    this.aliases = [...this.value]
+    this.form = { ...this.value }
+  },
+  watch: {
+    value: {
+      handler (newValue) {
+        this.form = { ...newValue }
+      },
+      deep: true
+    }
   }
 }
 </script>

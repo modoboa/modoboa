@@ -79,8 +79,8 @@ class ImportCommand(BaseCommand):
                     if options["continue_if_exists"]:
                         continue
                     raise CommandError(
-                        "Object already exists: {}".format(
-                            options["sepchar"].join(row[:2])))
+                        "Object already exists at line {}: {}".format(
+                            i+1, options["sepchar"].join(row[:2])))
                 i += 1
                 pbar.update(i)
 

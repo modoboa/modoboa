@@ -166,15 +166,15 @@ def _import_alias(user, row, **kwargs):
 
 
 def import_alias(user, row, formopts):
-    _import_alias(user, row, expected_elements=4)
+    _import_alias(user, row, expected_elements=4, formopts=formopts)
 
 
 def import_forward(user, row, formopts):
-    _import_alias(user, row, expected_elements=4)
+    _import_alias(user, row, expected_elements=4, formopts=formopts)
 
 
 def import_dlist(user, row, formopts):
-    _import_alias(user, row)
+    _import_alias(user, row, formopts=formopts)
 
 
 def get_dns_resolver():

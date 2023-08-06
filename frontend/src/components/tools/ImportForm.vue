@@ -29,13 +29,19 @@
           dense
           />
       </validation-provider>
-      <label class="m-label"><translate>Separator</translate></label>
-      <v-text-field
-        v-model="form.sepchar"
-        :error-messages="errors"
-        outlined
-        dense
-        />
+      <validation-provider
+        v-slot="{ errors }"
+        name="name"
+        rules="required"
+        >
+        <label class="m-label"><translate>Separator</translate></label>
+        <v-text-field
+          v-model="form.sepchar"
+          :error-messages="errors"
+          outlined
+          dense
+          />
+      </validation-provider>
       <v-switch
         v-model="form.continue_if_exists"
         :label="'Continue on error'|translate"
