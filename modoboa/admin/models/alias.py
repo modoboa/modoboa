@@ -62,7 +62,7 @@ def modify_or_create_alias(address, recipients, creator, domain):
     alias = Alias.objects.filter(address=address, internal=False)
     if alias.exists():
         alias.first().add_recipients(recipients)
-    elif creator is not None and domain is not None:
+    else:
         Alias.objects.create(
                 creator=creator,
                 domain=domain,
