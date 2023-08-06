@@ -418,3 +418,26 @@ dómain; dómªin2.com; 1000; 100; True
         self.assertEqual(dom.default_mailbox_quota, 200)
         self.assertTrue(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
+
+    def test_import_aliases(self):
+        f = ContentFile("""
+account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 0
+account; Truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 5; test.com
+alias; alias1@test.com; True; user1@test.com
+""", name="identities.csv")  # NOQA:E501
+        resp = self.client.post(
+            reverse("admin:identity_import"),
+            {"sourcefile": f, "crypt_password": True}
+        )
+        self.assertEqual(resp.status_code, 200)
+
+        test_file = os.path.join(
+            os.path.dirname(__file__),
+            "test_data/import_aliases.csv"
+        )
+        with self.assertRaises(CommandError) as cm:
+            call_command("modo", "import", test_file)
+            ex_message = cm.exception.messages
+            self.assertTrue(ex_message.startswith("Object already exists"))
+
+        call_command("modo", "import", "--continue-if-exists", test_file)
