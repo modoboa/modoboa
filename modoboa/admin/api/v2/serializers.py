@@ -544,10 +544,10 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         if aliases:
             for alias in aliases:
                 models.modify_or_create_alias(
-                    "{}@{}".format(alias["localpart"], alias["domain"]),
-                    [user.username],
-                    creator,
-                    alias["domain"]
+                    address="{}@{}".format(alias["localpart"], alias["domain"]),
+                    recipients=[user.username],
+                    creator=creator,
+                    domain=alias["domain"]
                     )
         return user
 
@@ -572,14 +572,24 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 mailbox_data["full_address"] = validated_data["username"]
                 instance.email = validated_data["username"]
                 self._create_mailbox(creator, instance, mailbox_data)
-        if aliases and "username" in validated_data:
+        if aliases is not None and "username" in validated_data:
+            # We create a list to keep track of alias we need to delete
+            alias_recipients = instance.mailbox.alias_addresses
             for alias in aliases:
+                address="{}@{}".format(alias["localpart"], alias["domain"])
                 models.modify_or_create_alias(
-                    "{}@{}".format(alias["localpart"], alias["domain"]),
-                    [validated_data["username"]],
-                    creator,
-                    alias["domain"]
+                    address=address,
+                    recipients=[validated_data["username"]],
+                    creator=creator,
+                    domain=alias["domain"]
                     )
+                try:
+                    alias_recipients.remove(address)
+                except ValueError:
+                    continue
+            for alias in alias_recipients:
+                models.remove_recipient_from_alias(
+                    alias, validated_data["username"])
         instance.save()
         resources = validated_data.get("resources")
         if resources:

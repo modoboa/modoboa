@@ -253,7 +253,10 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "password": "Toto12345",
             "mailbox": {
                 "quota": 10
-            }
+            },
+            "aliases": [
+                "aliasupdate1@test.com"
+            ]
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -303,6 +306,80 @@ class AccountViewSetTestCase(ModoAPITestCase):
         account.refresh_from_db()
         self.assertEqual(account.mailbox.message_limit, None)
         self.assertEqual(account.mailbox.is_send_only, False)
+
+    def test_update_aliases(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "username": "user@test.com",
+            "role": "SimpleUsers",
+            "password": "Toto12345",
+            "mailbox": {
+                "quota": 10
+            },
+            "aliases": [
+                "aliasupdate1@test.com"
+            ]
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(
+            models.Alias.objects.filter(address="aliasupdate1@test.com").exists())
+
+        # Create an alias for another user
+        url = reverse("v2:account-list")
+        data = {
+            "username": "toto@test.com",
+            "role": "SimpleUsers",
+            "mailbox": {
+                "use_domain_quota": True
+            },
+            "password": "Toto12345",
+            "language": "fr",
+            "aliases": ["totoalias@test.com"]
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 201)
+
+        # Try updating existing account with this newly created alias
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "username": "user@test.com",
+            "role": "SimpleUsers",
+            "password": "Toto12345",
+            "mailbox": {
+                "quota": 10
+            },
+            "aliases": [
+                "totoalias@test.com",
+                "aliasupdate1@test.com",
+            ]
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        alias = models.Alias.objects.filter(address="totoalias@test.com")
+        self.assertTrue(alias.exists())
+        alias_recipients = list(alias.first().recipients)
+        self.assertIn("toto@test.com", alias_recipients)
+        self.assertIn("user@test.com", alias_recipients)
+
+        # Try deleting the aliases
+        data = {
+            "username": "user@test.com",
+            "role": "SimpleUsers",
+            "mailbox": {
+                "quota": 10
+            },
+            "aliases": []
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(
+            models.Alias.objects.filter(address="aliasupdate1@test.com").exists())
+        alias_recipients = list(models.Alias.objects.filter(
+            address="totoalias@test.com").first().recipients
+        )
+        self.assertEqual(alias_recipients, ["toto@test.com"])
 
     def test_update_admin(self):
         account = core_models.User.objects.get(username="admin")

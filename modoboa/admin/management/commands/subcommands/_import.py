@@ -68,7 +68,8 @@ class ImportCommand(BaseCommand):
                 except ValidationError as e:
                     raise CommandError(
                         _("It seems that your CSV is badly formatted at row: ") +
-                        options["sepchar"].join(row)
+                        options["sepchar"].join(row) +
+                        _(f"Details: {e.message}")
                         )
                 if not fct:
                     continue
