@@ -61,16 +61,9 @@ class ImportCommand(BaseCommand):
             for row in reader:
                 if not row:
                     continue
-                try:
-                    fct = signals.import_object.send(
-                        sender=self.__class__, objtype=row[0].strip())
-                    fct = [func for x_, func in fct if func is not None]
-                except ValidationError as e:
-                    raise CommandError(
-                        _("It seems that your CSV is badly formatted at row: ") +
-                        options["sepchar"].join(row) +
-                        _(f"Details: {e.message}")
-                        )
+                fct = signals.import_object.send(
+                    sender=self.__class__, objtype=row[0].strip())
+                fct = [func for x_, func in fct if func is not None]
                 if not fct:
                     continue
                 fct = fct[0]
