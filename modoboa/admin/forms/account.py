@@ -428,7 +428,7 @@ class AccountFormMail(forms.Form, DynamicForm):
         # 4. Create / update aliases
         for alias in self.aliases:
             if self.mb.aliasrecipient_set.select_related("alias").filter(
-                    alias__address=alias, internal=False).exists():
+                    alias__address=alias, alias__internal=False).exists():
                 continue
             local_part, domname = split_mailbox(alias)
             al, _ = models.Alias.objects.get_or_create(
