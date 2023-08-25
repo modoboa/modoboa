@@ -135,6 +135,26 @@ class AccountTestCase(ModoTestCase):
         self.ajax_post(reverse("admin:account_add"), values)
         self.assertTrue(alias.aliasrecipient_set.count() == 2)
 
+    def test_create_alias_on_existing_account(self):
+        values = {
+            "email": "tester@test.com",
+            "username": "tester@test.com",
+            "role": "SimpleUsers",
+            "random_password": "on",
+            "quota_act": True,
+            "is_active": True,
+            "stepid": "step2",
+            "aliases": "user@test.com",
+        }
+        self.ajax_post(reverse("admin:account_add"), values)
+        # Check that internal alias has not been updated
+        alias = models.Alias.objects.get(
+            address="user@test.com", internal=True)
+        self.assertTrue(alias.aliasrecipient_set.count() == 1)
+        alias = models.Alias.objects.get(
+            address="user@test.com", internal=False)
+        self.assertTrue(alias.aliasrecipient_set.count() == 1)
+
     def test_create_disabled_account(self):
         """Check if account and alias are disabled."""
         values = {
