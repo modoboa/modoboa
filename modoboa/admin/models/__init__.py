@@ -4,9 +4,7 @@ from .alarm import Alarm
 from .alias import (
     Alias,
     AliasRecipient,
-    validate_alias_address,
-    modify_or_create_alias,
-    remove_recipient_from_alias)
+    validate_alias_address)
 from .base import AdminObject
 from .domain import Domain
 from .domain_alias import DomainAlias
@@ -27,6 +25,4 @@ __all__ = [
     "Quota",
     "SenderAddress",
     "validate_alias_address",
-    "modify_or_create_alias",
-    "remove_recipient_from_alias",
 ]

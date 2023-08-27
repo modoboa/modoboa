@@ -56,39 +56,6 @@ def validate_alias_address(
     return local_part, domain
 
 
-def modify_or_create_alias(address, recipients, creator, domain):
-    """Add recipient if the alias already exists or create it."""
-
-    alias = Alias.objects.filter(address=address, internal=False)
-    if alias.exists():
-        alias.first().add_recipients(recipients)
-    else:
-        Alias.objects.create(
-                creator=creator,
-                domain=domain,
-                address=address,
-                recipients=recipients
-                )
-
-
-def remove_recipient_from_alias(address, recipient_to_delete):
-    """Delete the selected recipient from an alias
-    or delete the whole alias if only one is left."""
-    alias = Alias.objects.filter(
-       address=address, internal=False)
-    if alias.exists():
-        alias_recipients = list(alias.first().recipients)
-        if recipient_to_delete in alias_recipients:
-            if len(alias_recipients) == 1:
-                # Only recipient, we delete the AliasExists
-                alias.delete()
-            else:
-                alias_recipients.remove(recipient_to_delete)
-                alias = alias.first()
-                alias.set_recipients(alias_recipients)
-                alias.save()
-
-
 class AliasManager(models.Manager):
     """Custom manager for Alias."""
 
@@ -102,6 +69,20 @@ class AliasManager(models.Manager):
         if recipients:
             alias.set_recipients(recipients)
         return alias
+
+    def modify_or_create_alias(self, address, recipients, creator, domain):
+        """Add recipient if the alias already exists or create it."""
+
+        alias = Alias.objects.filter(address=address, internal=False)
+        if alias.exists():
+            alias.first().add_recipients(recipients)
+        else:
+            self.create(
+                    creator=creator,
+                    domain=domain,
+                    address=address,
+                    recipients=recipients
+                    )
 
 
 class Alias(AdminObject):
@@ -226,6 +207,19 @@ class Alias(AdminObject):
                 else:
                     kwargs["r_mailbox"] = rcpt
             AliasRecipient(**kwargs).save()
+
+    def remove_recipient_from_alias(self, recipient_to_delete):
+        """Delete the selected recipient from an alias
+        or delete the whole alias if only one is left."""
+        alias_recipients = list(self.recipients)
+        if recipient_to_delete in alias_recipients:
+            if len(alias_recipients) == 1:
+                # Only recipient, we delete the AliasExists
+                self.delete()
+            else:
+                alias_recipients.remove(recipient_to_delete)
+                self.set_recipients(alias_recipients)
+                self.save()
 
     def set_recipients(self, address_list):
         """Set recipients for this alias."""

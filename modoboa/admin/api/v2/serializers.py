@@ -543,7 +543,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         self.set_permissions(user, domains)
         if aliases:
             for alias in aliases:
-                models.modify_or_create_alias(
+                models.alias.modify_or_create_alias(
                     address="{}@{}".format(alias["localpart"], alias["domain"]),
                     recipients=[user.username],
                     creator=creator,
@@ -576,8 +576,8 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             # We create a list to keep track of alias we need to delete
             alias_recipients = instance.mailbox.alias_addresses
             for alias in aliases:
-                address="{}@{}".format(alias["localpart"], alias["domain"])
-                models.modify_or_create_alias(
+                address = "{}@{}".format(alias["localpart"], alias["domain"])
+                models.alias.modify_or_create_alias(
                     address=address,
                     recipients=[validated_data["username"]],
                     creator=creator,
@@ -587,9 +587,12 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     alias_recipients.remove(address)
                 except ValueError:
                     continue
-            for alias in alias_recipients:
-                models.remove_recipient_from_alias(
-                    alias, validated_data["username"])
+            for alias_address in alias_recipients:
+                alias = models.Alias.objects.filter(
+                    address=alias_address, internal=False)
+                if alias.exists():
+                    alias.first().remove_recipient_from_alias(
+                        validated_data["username"])
         instance.save()
         resources = validated_data.get("resources")
         if resources:
