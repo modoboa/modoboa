@@ -543,7 +543,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         self.set_permissions(user, domains)
         if aliases:
             for alias in aliases:
-                models.alias.modify_or_create_alias(
+                models.Alias.objects.modify_or_create(
                     address="{}@{}".format(alias["localpart"], alias["domain"]),
                     recipients=[user.username],
                     creator=creator,
@@ -577,7 +577,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             alias_recipients = instance.mailbox.alias_addresses
             for alias in aliases:
                 address = "{}@{}".format(alias["localpart"], alias["domain"])
-                models.alias.modify_or_create_alias(
+                models.Alias.objects.modify_or_create(
                     address=address,
                     recipients=[validated_data["username"]],
                     creator=creator,
