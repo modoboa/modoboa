@@ -1,4 +1,4 @@
-from django.conf.urls import include, path
+from django.urls import include, path
 
 urlpatterns = [
     path(r'', include('modoboa.urls')),

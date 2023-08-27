@@ -70,7 +70,7 @@ class AliasManager(models.Manager):
             alias.set_recipients(recipients)
         return alias
 
-    def modify_or_create_alias(self, address, recipients, creator, domain):
+    def modify_or_create(self, address, recipients, creator, domain):
         """Add recipient if the alias already exists or create it."""
 
         alias = Alias.objects.filter(address=address, internal=False)

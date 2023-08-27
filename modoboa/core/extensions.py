@@ -1,7 +1,7 @@
 """Extension management."""
 
 from django.conf import settings
-from django.conf.urls import include
+from django.urls import include
 from django.urls import re_path
 from django.utils.encoding import smart_str
 
