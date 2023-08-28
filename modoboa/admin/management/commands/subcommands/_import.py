@@ -7,6 +7,7 @@ import os
 import progressbar
 from chardet.universaldetector import UniversalDetector
 
+from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils.translation import gettext as _
@@ -72,8 +73,8 @@ class ImportCommand(BaseCommand):
                     if options["continue_if_exists"]:
                         continue
                     raise CommandError(
-                        "Object already exists: {}".format(
-                            options["sepchar"].join(row[:2])))
+                        "Object already exists at line {}: {}".format(
+                            i+1, options["sepchar"].join(row[:2])))
                 i += 1
                 pbar.update(i)
 

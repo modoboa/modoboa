@@ -103,6 +103,37 @@
         <account-mailbox-form ref="mailboxForm" v-model="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-expansion-panel v-if="usernameIsEmail">
+      <v-expansion-panel-header v-slot="{ open }">
+        <v-row no-gutters>
+          <v-col cols="4">
+            <translate>Alias</translate>
+          </v-col>
+          <v-col
+            cols="8"
+            class="text--secondary"
+            >
+            <v-fade-transition leave-absolute>
+              <span v-if="open"></span>
+              <v-row
+                v-else
+                no-gutters
+                style="width: 100%"
+                >
+                <template v-if="account.aliases">
+                  <v-col cols="6">
+                    <translate class="mr-2">Aliases: </translate> <translate>Number of associated alias: </translate> {{ account.aliases.length }}
+                  </v-col>
+                </template>
+              </v-row>
+            </v-fade-transition>
+          </v-col>
+        </v-row>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <account-alias-form ref="aliasForm" v-model="editedAccount" />
+      </v-expansion-panel-content>
+    </v-expansion-panel>
     <v-expansion-panel
       v-if="limitsConfig.params && limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
       >
@@ -135,6 +166,7 @@ import { bus } from '@/main'
 import accounts from '@/api/accounts'
 import AccountGeneralForm from './AccountGeneralForm'
 import AccountMailboxForm from './AccountMailboxForm'
+import AccountAliasForm from './AccountAliasForm'
 import AccountRoleForm from './AccountRoleForm'
 import ResourcesForm from '@/components/tools/ResourcesForm'
 import parameters from '@/api/parameters'
@@ -143,6 +175,7 @@ export default {
   components: {
     AccountGeneralForm,
     AccountMailboxForm,
+    AccountAliasForm,
     AccountRoleForm,
     ResourcesForm
   },

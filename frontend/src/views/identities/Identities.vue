@@ -62,12 +62,12 @@
       :title="'Import identities'|translate"
       @beforeSubmit="prepareData"
       @submit="importIdentities"
-      @close="showImportForm = false"
+      @close="closeImportForm"
       >
       <template v-slot:help>
         <ul>
           <li><em>account; loginname; password; first name; last name; enabled; group; address; quota; [, domain, ...]</em></li>
-          <li><em>alias; address; enabled; recipient; recipient; ...</em></li>
+          <li><em>alias; address; enabled; recipient; [more recipients; ...]</em></li>
         </ul>
       </template>
       <template v-slot:extraFields="{ form }">
@@ -124,10 +124,16 @@ export default {
       })
     },
     prepareData (data) {
-      data.append('crypt_passwords', this.form.crypt_passwords)
+      if (this.form !== undefined) {
+        data.append('crypt_passwords', this.form.crypt_passwords)
+      }
     },
     importIdentities (data) {
       this.importContent(identities, data)
+    },
+    closeImportForm () {
+      this.showImportForm = false
+      this.updateIdentities()
     }
   }
 }

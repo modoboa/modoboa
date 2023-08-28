@@ -18,6 +18,7 @@ from modoboa.lib import pagination
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
 from modoboa.lib.throttle import GetThrottleViewsetMixin
+from modoboa.lib.exceptions import AliasExists
 
 from ... import lib
 from ... import models
@@ -163,7 +164,6 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
     filter_backends = (filters.SearchFilter, dj_filters.DjangoFilterBackend)
     filterset_class = AccountFilterSet
 
-
     def get_serializer_class(self):
         if self.action in ["create", "validate", "update", "partial_update"]:
             return serializers.WritableAccountSerializer
@@ -264,7 +264,13 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
             data=request.data,
             context=self.get_serializer_context(),
             partial=True)
-        serializer.is_valid(raise_exception=True)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except AliasExists as e:
+            return response.Response(
+                data={"id": e.alias_id, "status": _("This alias already exists")},
+                status=409
+                )
         return response.Response(status=204)
 
     @action(methods=["get"], detail=False)

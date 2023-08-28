@@ -52,6 +52,16 @@ class Conflict(ModoboaException):
     http_code = 409
 
 
+class AliasExists(Conflict):
+    """
+    Use this exception to indicate that the requested alias already exists
+    and that it should be updated instead of created.
+    """
+
+    def __init__(self, alias_id):
+        self.alias_id = alias_id
+
+
 class PermDeniedException(ModoboaException):
     """
     Use this exception when a user tries to do something he is not

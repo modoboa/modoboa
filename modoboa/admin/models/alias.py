@@ -16,7 +16,7 @@ from reversion import revisions as reversion
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.exceptions import (
-    BadRequest, Conflict, NotFound, ModoboaException
+    BadRequest, Conflict, NotFound, ModoboaException, AliasExists
 )
 from .. import signals
 from .base import AdminObject
@@ -24,7 +24,9 @@ from .domain import Domain
 from .mailbox import Mailbox
 
 
-def validate_alias_address(address, creator, internal=False, instance=None):
+def validate_alias_address(
+        address, creator, internal=False, instance=None, ignore_existing=False
+        ):
     """Check if the given alias address can be created by creator."""
     local_part, domain = split_mailbox(address)
     domain = Domain.objects.filter(name=domain).first()
@@ -33,8 +35,13 @@ def validate_alias_address(address, creator, internal=False, instance=None):
     if not creator.can_access(domain):
         raise ValidationError(_("Permission denied."))
     if not instance or instance.address != address:
-        if Alias.objects.filter(address=address, internal=internal).exists():
-            raise ValidationError(_("An alias with this name already exists."))
+        alias = Alias.objects.filter(address=address, internal=internal)
+        condition = (
+            alias.exists()
+            and not ignore_existing
+        )
+        if condition:
+            raise AliasExists(alias.first().pk)
     if instance is None:
         try:
             # Check creator limits
@@ -62,6 +69,20 @@ class AliasManager(models.Manager):
         if recipients:
             alias.set_recipients(recipients)
         return alias
+
+    def modify_or_create(self, address, recipients, creator, domain):
+        """Add recipient if the alias already exists or create it."""
+
+        alias = self.get_queryset().filter(address=address, internal=False)
+        if alias.exists():
+            alias.first().add_recipients(recipients)
+            return
+        self.create(
+            creator=creator,
+            domain=domain,
+            address=address,
+            recipients=recipients
+        )
 
 
 class Alias(AdminObject):
@@ -187,6 +208,21 @@ class Alias(AdminObject):
                     kwargs["r_mailbox"] = rcpt
             AliasRecipient(**kwargs).save()
 
+    def remove_recipient_or_delete(self, recipient_to_delete: str):
+        """
+        Delete the selected recipient from this alias
+        or delete the whole alias if only one is left.
+        """
+        alias_recipients = list(self.recipients)
+        if recipient_to_delete in alias_recipients:
+            if len(alias_recipients) == 1:
+                # Only recipient, we delete the Alias
+                self.delete()
+            else:
+                alias_recipients.remove(recipient_to_delete)
+                self.set_recipients(alias_recipients)
+                self.save()
+
     def set_recipients(self, address_list):
         """Set recipients for this alias."""
 
@@ -209,12 +245,33 @@ class Alias(AdminObject):
         """Return the number of recipients of this alias."""
         return self.aliasrecipient_set.count()
 
-    def from_csv(self, user, row, expected_elements=5):
+    def from_csv(self,
+                 user,
+                 row,
+                 expected_elements=5,
+                 formopts=False,
+                 **kwargs):
         """Create a new alias from a CSV file entry."""
         if len(row) < expected_elements:
             raise BadRequest(_("Invalid line: {}").format(row))
         self.address = row[1].strip().lower()
-        local_part, self.domain = validate_alias_address(self.address, user)
+        try:
+            local_part, self.domain = validate_alias_address(self.address, user)
+        except AliasExists as e:
+            # If continue_if_exists is true, we simply update the alias
+            # Else we throw the conflict issue
+            continue_if_exists = False
+            if formopts:
+                continue_if_exists = formopts.get("continue_if_exists", False)
+            if continue_if_exists:
+                alias = Alias.objects.filter(address=self.address,
+                                             internal=False).first()
+                alias.add_recipients([raddress.strip() for raddress in row[3:]])
+                alias.save()
+                return
+            else:
+                raise e
+
         self.enabled = (row[2].strip().lower() in ["true", "1", "yes", "y"])
         self.save()
         self.set_recipients([raddress.strip() for raddress in row[3:]])
