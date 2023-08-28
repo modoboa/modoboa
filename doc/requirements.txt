@@ -1,1 +1,2 @@
 docutils<0.21
+sphinx_rtd_theme
