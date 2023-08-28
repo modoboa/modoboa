@@ -403,6 +403,7 @@ class AccountFormMail(forms.Form, DynamicForm):
 
     def _update_aliases(self, user, account):
         """Update mailbox aliases."""
+        # 1. We check if existing aliases were removed...
         qset = self.mb.aliasrecipient_set.select_related("alias").filter(
             alias__internal=False)
         for ralias in qset:
@@ -414,22 +415,26 @@ class AccountFormMail(forms.Form, DynamicForm):
                 alias.delete()
             else:
                 self.aliases.remove(ralias.alias.address)
+        # 2. Nothing left to do, return
         if not self.aliases:
             return
+        # 3. Check limits at all levels
         core_signals.can_create_object.send(
             self.__class__, context=user, klass=models.Alias,
             count=len(self.aliases))
         core_signals.can_create_object.send(
             self.__class__, context=self.mb.domain,
             object_type="mailbox_aliases", count=len(self.aliases))
+        # 4. Create / update aliases
         for alias in self.aliases:
             if self.mb.aliasrecipient_set.select_related("alias").filter(
-                    alias__address=alias).exists():
+                    alias__address=alias, alias__internal=False).exists():
                 continue
             local_part, domname = split_mailbox(alias)
             al, _ = models.Alias.objects.get_or_create(
                 address=alias,
                 domain=models.Domain.objects.get(name=domname),
+                internal=False,
                 defaults={'enabled': account.is_active},
             )
             al.add_recipients([self.mb.full_address])
