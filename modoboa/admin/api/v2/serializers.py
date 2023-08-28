@@ -582,7 +582,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     recipients=[validated_data["username"]],
                     creator=creator,
                     domain=alias["domain"]
-                    )
+                )
                 try:
                     alias_recipients.remove(address)
                 except ValueError:
@@ -591,8 +591,9 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 alias = models.Alias.objects.filter(
                     address=alias_address, internal=False)
                 if alias.exists():
-                    alias.first().remove_recipient_from_alias(
-                        validated_data["username"])
+                    alias.first().remove_recipient_or_delete(
+                        validated_data["username"]
+                    )
         instance.save()
         resources = validated_data.get("resources")
         if resources:

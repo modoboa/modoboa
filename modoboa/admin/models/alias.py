@@ -39,7 +39,7 @@ def validate_alias_address(
         condition = (
             alias.exists()
             and not ignore_existing
-            )
+        )
         if condition:
             raise AliasExists(alias.first().pk)
     if instance is None:
@@ -73,16 +73,16 @@ class AliasManager(models.Manager):
     def modify_or_create(self, address, recipients, creator, domain):
         """Add recipient if the alias already exists or create it."""
 
-        alias = Alias.objects.filter(address=address, internal=False)
+        alias = self.get_queryset().filter(address=address, internal=False)
         if alias.exists():
             alias.first().add_recipients(recipients)
-        else:
-            self.create(
-                    creator=creator,
-                    domain=domain,
-                    address=address,
-                    recipients=recipients
-                    )
+            return
+        self.create(
+            creator=creator,
+            domain=domain,
+            address=address,
+            recipients=recipients
+        )
 
 
 class Alias(AdminObject):
@@ -208,13 +208,15 @@ class Alias(AdminObject):
                     kwargs["r_mailbox"] = rcpt
             AliasRecipient(**kwargs).save()
 
-    def remove_recipient_from_alias(self, recipient_to_delete):
-        """Delete the selected recipient from an alias
-        or delete the whole alias if only one is left."""
+    def remove_recipient_or_delete(self, recipient_to_delete: str):
+        """
+        Delete the selected recipient from this alias
+        or delete the whole alias if only one is left.
+        """
         alias_recipients = list(self.recipients)
         if recipient_to_delete in alias_recipients:
             if len(alias_recipients) == 1:
-                # Only recipient, we delete the AliasExists
+                # Only recipient, we delete the Alias
                 self.delete()
             else:
                 alias_recipients.remove(recipient_to_delete)
