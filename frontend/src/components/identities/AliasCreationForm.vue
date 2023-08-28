@@ -101,7 +101,14 @@ export default {
       if (data.recipients.length === 0) {
         delete data.recipients
       }
-      return aliases.validate(data)
+      const validation = aliases.validate(data)
+      validation.catch(error => {
+        if (error.response.status === 409 && error.response.data.id !== undefined) {
+          bus.$emit('notification', { msg: this.$gettext('Alias already exists, redirecting to edit page'), type: 'warning' })
+          this.$router.push({ name: 'AliasEdit', params: { id: error.response.data.id } })
+        }
+      })
+      return validation
     },
     submit () {
       aliases.create(this.alias).then(resp => {

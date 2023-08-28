@@ -20,7 +20,7 @@
     <account-mailbox-form :ref="`form_${step}`" v-model="account" />
   </template>
   <template v-slot:form.aliases="{ step }">
-    <account-alias-form v-if="step >= 4" :ref="`form_${step}`" v-model="account.aliases" />
+    <account-alias-form v-if="step >= 4" :ref="`form_${step}`" v-model="account" />
   </template>
   <template v-slot:item.random_password="{ item }">
     <template v-if="item.value">
