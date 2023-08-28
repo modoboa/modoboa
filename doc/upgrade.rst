@@ -206,32 +206,28 @@ Send-only mailboxes do not have access to IMAP.
 You need to change your dovecot configuration to enable it.
 
 .. note::
+
    modoboa-webmail may not work with send-only user for now.
 
 If you use ``Postgres``:
-Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql.conf.ext``:
+Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql.conf.ext``::
 
-.. sourcecode::
+  user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND mb.address='%%n' AND dom.name='%%d'
 
-   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, '*:bytes=' || mb.quota || 'M' AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND mb.address='%%n' AND dom.name='%%d'
-
-   password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb_home, %mailboxes_owner_uid AS userdb_uid, %mailboxes_owner_gid AS userdb_gid, CONCAT('*:bytes=', mb.quota, 'M') AS userdb_quota_rule FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE (mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3')) AND email='%%u' AND is_active AND dom.enabled
+  password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb_home, %mailboxes_owner_uid AS userdb_uid, %mailboxes_owner_gid AS userdb_gid, CONCAT('*:bytes=', mb.quota, 'M') AS userdb_quota_rule FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE (mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3')) AND email='%%u' AND is_active AND dom.enabled
 
 
 You basically simply need to add ``(mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND`` for ``user_query`` after ``WHERE`` and ``(mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3')) AND`` for ``password_query`` after ``WHERE``.
 
 
 If you use ``MySQL``:
-Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql-master.ext``:
+Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql-master.ext``::
 
-.. sourcecode::
+  user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, CONCAT('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND mb.address='%%n' AND dom.name='%%d'
 
-   user_query = SELECT '%{home_dir}/%%d/%%n' AS home, %mailboxes_owner_uid as uid, %mailboxes_owner_gid as gid, CONCAT('*:bytes=', mb.quota, 'M') AS quota_rule FROM admin_mailbox mb INNER JOIN admin_domain dom ON mb.domain_id=dom.id INNER JOIN core_user u ON u.id=mb.user_id WHERE (mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND mb.address='%%n' AND dom.name='%%d'
-
-   password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb_home, %mailboxes_owner_uid AS userdb_uid, %mailboxes_owner_gid AS userdb_gid, CONCAT('*:bytes=', mb.quota, 'M') AS userdb_quota_rule FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE (mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3')) AND u.email='%%u' AND u.is_active=1 AND dom.enabled=1
+  password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb_home, %mailboxes_owner_uid AS userdb_uid, %mailboxes_owner_gid AS userdb_gid, CONCAT('*:bytes=', mb.quota, 'M') AS userdb_quota_rule FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE (mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3')) AND u.email='%%u' AND u.is_active=1 AND dom.enabled=1
 
 You basically simply need to add ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND`` for ``user_query`` after ``WHERE`` and ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3'))`` for ``password_query`` after ``WHERE``.
-
 
 2.1.0
 =====
