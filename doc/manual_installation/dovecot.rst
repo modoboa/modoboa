@@ -10,6 +10,17 @@ suitable for this combination.
 In this section, we assume dovecot's configuration resides in
 :file:`/etc/dovecot`, all pathes will be relative to this directory.
 
+You can find configuration documentation `here <https://doc.dovecot.org/configuration_manual/>`_.
+
+This proposed configuration is the one you can find with modoboa-installer. For up to date configuration, `take a look here <https://github.com/modoboa/modoboa-installer/tree/master/modoboa_installer/scripts/files/dovecot/conf.d>`_
+
+Packages
+========
+
+For debian and derivative, recommended packages are::
+
+  apt install dovecot-imapd dovecot-lmtpd dovecot-managesieved dovecot-sieve
+
 Mailboxes
 =========
 
@@ -17,11 +28,13 @@ First, edit the :file:`conf.d/10-mail.conf` and set the ``mail_location``
 variable::
 
   # maildir
-  mail_location = maildir:~/.maildir
+  mail_location = maildir:~/Maildir
 
-Then, edit the ``inbox`` namespace and add the following lines::
+Then, edit the ``inbox`` namespace and add the following line::
 
   inbox = yes
+
+In order for dovecot to automaticaly create usual folders on account creation, edit the ``inbox`` namespace of :file:`15-mailboxes.conf`::
 
   mailbox Drafts {
     auto = subscribe
@@ -38,6 +51,14 @@ Then, edit the ``inbox`` namespace and add the following lines::
   mailbox Trash {
     auto = subscribe
     special_use = \Trash
+  }
+
+Starting dovecot 2.2.20+, you can add ``autoexpunge`` parameter to delete older message, for instance::
+
+    mailbox Trash {
+    auto = subscribe
+    special_use = \Trash
+    autoexpunge=30d
   }
 
 With dovecot 2.1+, it ensures all the special mailboxes will be
@@ -79,11 +100,11 @@ executed (see :ref:`Postfix configuration <postfix_config>`).
 
 Edit the crontab of the user who owns the mailboxes on the file system::
 
-  $ crontab -u <user> -e
+  $ crontab -u <vmail_user> -e
 
 And add the following line inside::
 
-  * * * * * python <modoboa_site>/manage.py handle_mailbox_operations
+  * * * * * python <modoboa_instance>/manage.py handle_mailbox_operations
 
 .. warning::
 
@@ -139,6 +160,9 @@ to your database engine.
 MySQL users
 -----------
 
+For debian and derivative, you need to install mysql connector for dovecot::
+  sudo apt install dovecot-mysql
+
 ::
 
   driver = mysql
@@ -169,6 +193,9 @@ MySQL users
 PostgreSQL users
 ----------------
 
+For debian and derivative, you need to install postgres connector for dovecot::
+  sudo apt install dovecot-pgsql
+
 ::
 
   driver = pgsql
@@ -196,6 +223,9 @@ PostgreSQL users
 
 SQLite users
 ------------
+
+For debian and derivative, you need to install sqlite connector for dovecot::
+  sudo apt install dovecot-sqlite
 
 ::
 
@@ -233,12 +263,12 @@ You should comment the userdb section, which will be managed by SQL with modoboa
       args = /etc/dovecot/dovecot-ldap.conf.ext
    }
 
-   #userdb {                                                                
-      #driver = ldap                                                         
-      #args = /etc/dovecot/dovecot-ldap.conf.ext                             
-                                                                                
+   #userdb {
+      #driver = ldap
+      #args = /etc/dovecot/dovecot-ldap.conf.ext
+
       # Default fields can be used to specify defaults that LDAP may override
-      #default_fields = home=/home/virtual/%u                                
+      #default_fields = home=/home/virtual/%u
    #}
 
 Your own dovecot LDAP configuration file is now :file:`/etc/dovecot/dovecot-ldap.conf.ext`.
@@ -249,7 +279,7 @@ Synchronize dovecot LDAP conf with modoboa LDAP conf
 
 To make dovecot LDAP configuration synchronized with modoboa LDAP configuration, you should create a dedicated dovecot conf file.
 At the end of your dovecot configuration file (:file:`dovecot-ldap.conf.ext`), add the following line::
-   
+
    !include_try dovecot-modoboa.conf.ext
 
 Then, set modoboa parameter *Enable Dovecot LDAP sync* to *Yes*.
@@ -401,7 +431,7 @@ execute the following commands::
   $ su - postgres
   $ psql [modoboa database] < /path/to/modoboa_postgres_trigger.sql
   $ exit
-  
+
 Replace ``[modoboa database]`` by the appropriate value.
 
 Forcing recalculation
@@ -436,15 +466,6 @@ uncommented::
 
   protocol sieve {
     # ...
-  }
-
-Messages filtering using Sieve is done by the LDA.
-
-Inside :file:`conf.d/15-lda.conf`, activate the ``sieve`` plugin like this::
-
-  protocol lda {
-    # Space separated list of plugins to load (default is global mail_plugins).
-    mail_plugins = $mail_plugins sieve
   }
 
 Finally, configure the ``sieve`` plugin by editing the
