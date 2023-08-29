@@ -177,12 +177,20 @@ export default {
       }
       return result
     },
+    async deleteAll () {
+      await alarms.deleteAll()
+      bus.$emit('notification', { msg: this.$gettext('Alarms flushed') })
+      this.fetchAlarms()
+    },
     getActionMenuItems () {
       const result = []
       if (this.selected.length > 0) {
         result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlarms, color: 'red' })
       }
       result.push({ label: this.$gettext('Reload'), icon: 'mdi-reload', onClick: this.fetchAlarms })
+      if (this.totalAlarms > 0) {
+        result.push({ label: this.$gettext('Delete ALL'), icon: 'mdi-delete-alert-outline', onClick: this.deleteAll, color: 'red' })
+      }
       return result
     }
   },

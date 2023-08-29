@@ -1,5 +1,7 @@
 """Admin API v2 viewsets."""
 
+from asgiref.sync import async_to_sync
+
 from django.utils.translation import gettext as _
 
 from django.contrib.contenttypes.models import ContentType
@@ -396,3 +398,13 @@ class AlarmViewSet(GetThrottleViewsetMixin,
                 _("Received invalid alarm id(s)"), status=400)
         models.Alarm.objects.filter(pk__in=ids).delete()
         return response.Response(status=204)
+
+    @action(methods=['delete'], detail=False)
+    def flush_all(self, request, **kwargs):
+        """Flush every alarms the user can access (async)"""
+        async_to_sync(self.flush_all_alarms)
+        return response.Response(status=202)
+
+    async def flush_all_alarms(self):
+        print(len(self.get_queryset()))
+        await queryset.adelete(self.get_queryset())
