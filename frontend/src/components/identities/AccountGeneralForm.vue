@@ -3,6 +3,7 @@
   <validation-provider
     v-slot="{ errors }"
     rules="required"
+    vid="username"
     >
     <label class="m-label">{{ $gettext('Username') }}</label>
     <email-field
@@ -56,7 +57,7 @@ export default {
     AccountPasswordForm,
     EmailField
   },
-  props: ['value', 'account'],
+  props: ['value'],
   data () {
     return {
       form: {}
@@ -76,6 +77,7 @@ export default {
   methods: {
     reset () {
       this.form = {}
+      this.$refs.passwordForm.reset()
     },
     async validateForm () {
       return await this.$refs.observer.validate() && await this.$refs.passwordForm.validate()
@@ -84,8 +86,18 @@ export default {
       this.$emit('input', this.form)
     }
   },
-  mounted () {
-    this.form = { ...this.value }
+  watch: {
+    value: {
+      handler (newValue) {
+        if (newValue) {
+          this.form = { ...newValue }
+        } else {
+          this.form = {}
+        }
+      },
+      deep: true,
+      immediate: true
+    }
   }
 }
 </script>

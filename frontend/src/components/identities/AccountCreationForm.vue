@@ -67,6 +67,9 @@ export default {
     CreationForm
   },
   computed: {
+    needsMailbox () {
+      return this.account.role !== 'SuperAdmins' || (this.account.username && this.account.username.indexOf('@') !== -1)
+    },
     summarySections () {
       const result = [
         {
@@ -93,46 +96,47 @@ export default {
               type: 'yesno'
             }
           ]
-        },
-        {
-          title: this.$gettext('Mailbox'),
-          items: [
-            { key: this.$gettext('Email'), value: this.account.mailbox.full_address },
-            {
-              key: this.$gettext('Quota'),
-              value: (this.account.mailbox.use_domain_quota)
-                ? this.$gettext('Domain default value')
-                : this.account.mailbox.quota
-            },
-            {
-              key: this.$gettext('Message sending limit'),
-              value: this.account.mailbox.message_limit
-            },
-            {
-              key: this.$gettext('Send only account'),
-              value: this.account.mailbox.is_send_only,
-              type: 'yesno'
-            }
-          ]
-        },
-        {
-          title: this.$gettext('Aliases'),
-          items: [
-            {
-              key: this.$gettext('Aliases'),
-              value: this.account.aliases,
-              type: 'list'
-            }
-          ]
         }
       ]
+      if (this.needsMailbox) {
+        return result.concat([
+          {
+            title: this.$gettext('Mailbox'),
+            items: [
+              { key: this.$gettext('Email'), value: this.account.mailbox.full_address },
+              {
+                key: this.$gettext('Quota'),
+                value: (this.account.mailbox.use_domain_quota)
+                  ? this.$gettext('Domain default value')
+                  : this.account.mailbox.quota
+              },
+              {
+                key: this.$gettext('Message sending limit'),
+                value: this.account.mailbox.message_limit
+              },
+              {
+                key: this.$gettext('Send only account'),
+                value: this.account.mailbox.is_send_only,
+                type: 'yesno'
+              }
+            ]
+          },
+          {
+            title: this.$gettext('Aliases'),
+            items: [
+              {
+                key: this.$gettext('Aliases'),
+                value: this.account.aliases,
+                type: 'list'
+              }
+            ]
+          }
+        ])
+      }
       return result
-    }
-  },
-  data () {
-    return {
-      account: this.getInitialForm(),
-      steps: [
+    },
+    steps () {
+      const result = [
         {
           name: 'role',
           title: this.$gettext('Role')
@@ -140,16 +144,26 @@ export default {
         {
           name: 'identification',
           title: this.$gettext('Identification')
-        },
-        {
-          name: 'mailbox',
-          title: this.$gettext('Mailbox')
-        },
-        {
-          name: 'aliases',
-          title: this.$gettext('Aliases')
         }
       ]
+      if (this.needsMailbox) {
+        return result.concat([
+          {
+            name: 'mailbox',
+            title: this.$gettext('Mailbox')
+          },
+          {
+            name: 'aliases',
+            title: this.$gettext('Aliases')
+          }
+        ])
+      }
+      return result
+    }
+  },
+  data () {
+    return {
+      account: this.getInitialForm()
     }
   },
   methods: {
@@ -175,11 +189,18 @@ export default {
     getObserver (step) {
       return this.$refs[`form_${step}`].$refs.observer
     },
-    validateAccount () {
-      if (this.account.mailbox.message_limit === '') {
-        this.$set(this.account.mailbox, 'message_limit', undefined)
+    preparePayload (payload) {
+      if (payload.role === 'SuperAdmins' && payload.username && payload.username.indexOf('@') === -1) {
+        delete payload.mailbox
       }
-      return accounts.validate(this.account)
+      if (payload.mailbox && payload.mailbox.message_limit === '') {
+        this.$set(payload.mailbox, 'message_limit', undefined)
+      }
+    },
+    validateAccount () {
+      const payload = { ...this.account }
+      this.preparePayload(payload)
+      return accounts.validate(payload)
     },
     close () {
       this.account = this.getInitialForm()
@@ -188,9 +209,7 @@ export default {
     },
     submit () {
       const data = { ...this.account }
-      if (this.account.role === 'SuperAdmins' && this.account.username.indexOf('@') === -1) {
-        delete data.mailbox
-      }
+      this.preparePayload(data)
       accounts.create(data).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Account created') })
         this.$emit('created')
@@ -200,6 +219,11 @@ export default {
   },
   mounted () {
     this.$store.dispatch('identities/fetchDomains')
+  },
+  watch: {
+    'account.role' () {
+      delete this.account.username
+    }
   }
 }
 </script>
