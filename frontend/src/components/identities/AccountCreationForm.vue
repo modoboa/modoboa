@@ -175,11 +175,18 @@ export default {
     getObserver (step) {
       return this.$refs[`form_${step}`].$refs.observer
     },
-    validateAccount () {
-      if (this.account.mailbox.message_limit === '') {
-        this.$set(this.account.mailbox, 'message_limit', undefined)
+    preparePayload (payload) {
+      if (payload.role === 'SuperAdmins' && payload.username && payload.username.indexOf('@') === -1) {
+        delete payload.mailbox
       }
-      return accounts.validate(this.account)
+      if (payload.mailbox && payload.mailbox.message_limit === '') {
+        this.$set(payload.mailbox, 'message_limit', undefined)
+      }
+    },
+    validateAccount () {
+      const payload = { ...this.account }
+      this.preparePayload(payload)
+      return accounts.validate(payload)
     },
     close () {
       this.account = this.getInitialForm()
@@ -188,9 +195,7 @@ export default {
     },
     submit () {
       const data = { ...this.account }
-      if (this.account.role === 'SuperAdmins' && this.account.username.indexOf('@') === -1) {
-        delete data.mailbox
-      }
+      this.preparePayload(data)
       accounts.create(data).then(() => {
         bus.$emit('notification', { msg: this.$gettext('Account created') })
         this.$emit('created')
