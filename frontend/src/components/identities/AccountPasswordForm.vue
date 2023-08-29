@@ -116,15 +116,18 @@ export default {
     },
     async validate () {
       return await this.$refs.observer.validate()
+    },
+    reset () {
+      if (this.account) {
+        this.form.random_password = this.account.random_password
+        if (this.form.random_password) {
+          this.updatePassword(true)
+        }
+      }
     }
   },
   mounted () {
-    if (this.account) {
-      this.form.random_password = this.account.random_password
-      if (this.form.random_password) {
-        this.updatePassword(true)
-      }
-    }
+    this.reset()
   }
 }
 </script>

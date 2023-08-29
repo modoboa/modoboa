@@ -18,7 +18,7 @@ export const importExportMixin = {
         } else {
           bus.$emit('notification', { msg: resp.data.message, type: 'error' })
         }
-      }).catch(error => {
+      }).catch(() => {
         bus.$emit('notification', {
           msg: this.$gettext('CSV seems to be badly formatted'),
           type: 'error'
