@@ -3,6 +3,7 @@
   <validation-provider
     v-slot="{ errors }"
     rules="required"
+    vid="username"
     >
     <label class="m-label">{{ $gettext('Username') }}</label>
     <email-field
