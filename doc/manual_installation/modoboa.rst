@@ -311,11 +311,13 @@ But we recommend an automatic start using ``systemd`` or
 
 .. sourcecode:: ini
 
-   [program:modoboa-worker]
+   [program:modoboa-dkim-worker]
    autostart=true
    autorestart=true
-   command=/srv/modoboa/env/bin/python /srv/modoboa/instance/manage.py worker high default low
-   directory=/srv/modoboa
+   command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py rqworker dkim
+   directory=<modoboa user home dir>
+   user=<opendkim user>
+   redirect_stderr=true
    numprocs=1
    stopsignal=TERM
 
