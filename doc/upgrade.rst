@@ -55,6 +55,24 @@ Make sure to use root privileges and run the following command:
 
 Then, reload postfix.
 
+
+Updating the installer
+======================
+
+It is important to keep the installer updated because it works on rolling release.
+To do that, go to modoboa-installer directory then:
+
+.. sourcecode:: bash
+
+   > git fetch && git pull
+
+If some error appears, you may try this:
+
+.. sourcecode:: bash
+
+   > git reset --hard origin/master
+
+
 New-admin interface
 ===================
 
@@ -117,10 +135,10 @@ Specific instructions
 =====
 
 .. note::
-   This version has not been released yet.
-
-.. note::
-   If you use the installer to perform the upgrade, you only need to edit ``urls.py`` and ``settings.py``
+   If you use the installer to perform the upgrade, you NEED to update it.
+   See above for instructions.
+   After updating the installer and modoboa with it,
+   you only need to edit ``urls.py`` and ``settings.py``
 
 * Django has been updated to 4.2LTS. Please upgrade all your extensions alongside modoboa
 * Support for Python 3.7 has been dropped, minimum Python version is now 3.8
