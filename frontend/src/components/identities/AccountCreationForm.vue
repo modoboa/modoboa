@@ -11,7 +11,7 @@
   @create="submit"
   >
   <template v-slot:form.role="{ step }">
-    <account-role-form :ref="`form_${step}`" v-model="account.role" :account="account" />
+    <account-role-form :ref="`form_${step}`" v-model="account.role" :account="account" :authUserRole="authUser.role" />
   </template>
   <template v-slot:form.identification="{ step }">
     <account-general-form v-if="step >= 2" :ref="`form_${step}`" v-model="account" />
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { bus } from '@/main'
 import accounts from '@/api/accounts'
 import AccountAliasForm from './AccountAliasForm'
@@ -70,6 +71,9 @@ export default {
     needsMailbox () {
       return this.account.role !== 'SuperAdmins' || (this.account.username && this.account.username.indexOf('@') !== -1)
     },
+    ...mapGetters({
+      authUser: 'auth/authUser'
+    }),
     summarySections () {
       const result = [
         {
