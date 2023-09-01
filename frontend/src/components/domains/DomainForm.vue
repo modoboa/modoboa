@@ -89,8 +89,8 @@
                 <v-col cols="6">
                   <translate class="mr-2">Quota: </translate> {{ domain.quota }}
                 </v-col>
-                <v-col cols="6" v-if="domain.message_sending_limit">
-                  <translate class="mr-2">Sending limit: </translate> {{ domain.message_sending_limit }}
+                <v-col cols="6" v-if="domain.message_limit">
+                  <translate class="mr-2">Sending limit: </translate> {{ domain.message_limit }}
                 </v-col>
                 <v-col cols="6" v-else>
                   <translate class="mr-2">No sending limit</translate>
@@ -207,7 +207,7 @@ export default {
       }
       this.working = true
       try {
-        const data = { ...this.editedDomain }
+        const data = JSON.parse(JSON.stringify(this.editedDomain))
         if (data.transport === null) {
           delete data.transport
         }
@@ -231,7 +231,7 @@ export default {
     domain: {
       handler: function (val) {
         if (val) {
-          this.editedDomain = JSON.parse(JSON.stringify(val))
+          this.editedDomain = { ...val }
         }
       },
       immediate: true

@@ -38,7 +38,7 @@
       :label="'Message sending limit' | translate"
       :hint="'Number of messages this domain can send per day. Leave empty for no limit.' | translate"
       persistent-hint
-      v-model="form.message_sending_limit"
+      v-model="form.message_limit"
       :error-messages="errors"
       outlined
       @input="update"
@@ -49,9 +49,7 @@
 
 <script>
 export default {
-  props: {
-    value: Object
-  },
+  props: ['value'],
   data () {
     return {
       form: {}
@@ -65,12 +63,18 @@ export default {
       this.$emit('input', this.form)
     }
   },
+  mounted () {
+    this.form = { ...this.value }
+  },
   watch: {
     value: {
-      handler: function (newValue) {
-        this.form = { ...this.value }
+      handler (newValue) {
+        if (newValue.message_limit === '') {
+          newValue.message_limit = null
+        }
+        this.form = { ...newValue }
       },
-      immediate: true
+      deep: true
     }
   }
 }

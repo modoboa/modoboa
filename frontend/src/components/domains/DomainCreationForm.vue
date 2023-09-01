@@ -92,7 +92,7 @@ export default {
           items: [
             { key: this.$gettext('Quota'), value: this.domain.quota },
             { key: this.$gettext('Default mailbox quota'), value: this.domain.default_mailbox_quota },
-            { key: this.$gettext('Message sending limit'), value: this.domain.message_sending_limit }
+            { key: this.$gettext('Message sending limit'), value: this.domain.message_limit }
           ]
         }
       ]
