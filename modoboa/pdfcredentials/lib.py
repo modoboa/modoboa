@@ -1,6 +1,7 @@
 """Internal library."""
 
 from io import BytesIO
+import logging
 import os
 import struct
 
@@ -18,7 +19,7 @@ from modoboa.parameters import tools as param_tools
 
 
 def init_storage_dir():
-    """Create the directory whare documents will be stored."""
+    """Create the directory where documents will be stored."""
     storage_dir = param_tools.get_global_parameter("storage_dir")
     if os.path.exists(storage_dir) and os.access(storage_dir, os.W_OK):
         return
@@ -66,17 +67,24 @@ def crypt_and_save_to_file(content, filename, length, chunksize=64*512):
     iv = os.urandom(16)
     cipher = _get_cipher(iv)
     encryptor = cipher.encryptor()
-    with open(filename, "wb") as fp:
-        fp.write(struct.pack(b"<Q", length))
-        fp.write(iv)
-        while True:
-            chunk = content.read(chunksize)
-            if not len(chunk):
-                break
-            elif len(chunk) % 16:
-                chunk += b" " * (16 - len(chunk) % 16)
-            fp.write(encryptor.update(force_bytes(chunk)))
-        fp.write(encryptor.finalize())
+    try:
+        with open(filename, "wb") as fp:
+            fp.write(struct.pack(b"<Q", length))
+            fp.write(iv)
+            while True:
+                chunk = content.read(chunksize)
+                if not len(chunk):
+                    break
+                elif len(chunk) % 16:
+                    chunk += b" " * (16 - len(chunk) % 16)
+                fp.write(encryptor.update(force_bytes(chunk)))
+            fp.write(encryptor.finalize())
+    except FileNotFoundError as e:
+        logger = logging.getLogger("modoboa.admin")
+        logger.error(
+            _("Failed to create PDF_credentials file. "
+            "Please check the permissions or the path."),
+            exc_info=e)
 
 
 def decrypt_file(filename, chunksize=24*1024):
