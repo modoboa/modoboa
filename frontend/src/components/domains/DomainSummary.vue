@@ -14,11 +14,13 @@
     </v-row>
     <v-row>
       <v-col cols="6"><translate>Quota</translate></v-col>
-      <v-col cols="6">{{ domain.quota }} <translate>MB</translate></v-col>
+      <v-col cols="6" v-if="domain.quota === '0'"><translate>Unlimited</translate></v-col>
+      <v-col cols="6" v-else>{{ domain.quota }} <translate>MB</translate></v-col>
     </v-row>
     <v-row>
       <v-col cols="6"><translate>Default mailbox quota</translate></v-col>
-      <v-col cols="6">{{ domain.default_mailbox_quota }} MB</v-col>
+      <v-col cols="6" v-if="domain.default_mailbox_quota === '0'"><translate>Unlimited</translate></v-col>
+      <v-col cols="6" v-else>{{ domain.default_mailbox_quota }} MB</v-col>
     </v-row>
     <v-row v-if="domain.sending_limit !== undefined">
       <v-col cols="6"><translate>Daily sending limit</translate></v-col>
