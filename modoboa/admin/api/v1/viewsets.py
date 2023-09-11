@@ -36,7 +36,9 @@ from . import serializers
         summary="Create a new domain"
     )
 )
-class DomainViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class DomainViewSet(GetThrottleViewsetMixin,
+                    lib_viewsets.RevisionModelMixin,
+                    viewsets.ModelViewSet):
     """Domain viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
