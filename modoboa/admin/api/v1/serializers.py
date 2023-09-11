@@ -109,6 +109,15 @@ class DomainSerializer(serializers.ModelSerializer):
         domain.save(creator=creator)
         return domain
 
+    def update(self, instance, validated_data):
+        """Update domain and create/update transport."""
+        super().update(instance, validated_data)
+        _enable_dkim = validated_data.get("enable_dkim")
+        if _enable_dkim is False and instance.dkim_private_key_path != "":
+            instance.dkim_private_key_path = ""
+            instance.save()
+        return instance
+
 
 class DomainAliasSerializer(serializers.ModelSerializer):
     """Base DomainAlias serializer."""

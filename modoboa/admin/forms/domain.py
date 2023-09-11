@@ -220,6 +220,9 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 options = {"creator": user} if domalias_post_create else {}
                 DomainAlias(name=alias, target=d, enabled=d.enabled).save(
                     **options)
+        if self.cleaned_data.get("enable_dkim") is False and d.dkim_private_key_path != "":
+            d.dkim_private_key_path = ""
+            d.save()
         return d
 
 

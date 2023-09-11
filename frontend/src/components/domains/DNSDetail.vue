@@ -122,7 +122,9 @@
           </v-chip>
         </v-col>
       </v-row>
-      <v-row v-if="value.enable_dkim">
+    </template>
+    <template v-if="value.enable_dkim">
+      <v-row>
         <v-col cols="3"><translate>DKIM key</translate></v-col>
         <v-col cols="9">
           <div v-if="value.dkim_private_key_path && value.dkim_public_key">

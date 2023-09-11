@@ -74,13 +74,9 @@ class ManageDKIMKeys(BaseCommand):
                                                   dkim_private_key_path="")
             if domain.exists():
                 self.create_new_dkim_key(domain[0])
-                signals.new_dkim_keys.send(sender=self.__class__,
-                                           domains=domain)
             return
 
         qset = models.Domain.objects.filter(
             enable_dkim=True, dkim_private_key_path="")
         for domain in qset:
             self.create_new_dkim_key(domain)
-        if qset.exists():
-            signals.new_dkim_keys.send(sender=self.__class__, domains=qset)
