@@ -33,8 +33,7 @@ def password_updated(sender, account, password, created, **kwargs):
         logger = logging.getLogger("modoboa.admin")
         logger.error(
             _("Failed to create PDF_credentials directory. "
-            "Please check the permissions or the path."),
-            exc_info=e)
+            "Please check the permissions or the path."))
     credentials(account, password)
 
 

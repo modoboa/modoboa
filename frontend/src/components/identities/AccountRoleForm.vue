@@ -29,12 +29,13 @@
 
 <script>
 import ChoiceField from '@/components/tools/ChoiceField'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ChoiceField
   },
-  props: ['value', 'account', 'role', 'authUserRole'],
+  props: ['value', 'account', 'role'],
   computed: {
     roleLabel () {
       const role = this.accountRoles.find(role => role.value === this.account.role)
@@ -45,16 +46,19 @@ export default {
       return role !== undefined ? role.help : ''
     },
     accountRoles () {
-      if (this.authUserRole === 'SuperAdmins') {
+      if (this.authUser.role === 'SuperAdmins') {
         return [...this.domainAdminsRole, ...this.resellerRole, ...this.simpleUserRole, ...this.superAdminsRole]
-      } else if (this.authUserRole === 'DomainAdmins') {
+      } else if (this.authUser.role === 'DomainAdmins') {
         return this.simpleUserRole
-      } else if (this.authUserRole === 'Resellers') {
+      } else if (this.authUser.role === 'Resellers') {
         return [...this.domainAdminsRole, ...this.simpleUserRole]
       } else {
         return []
       }
-    }
+    },
+    ...mapGetters({
+      authUser: 'auth/authUser'
+    })
   },
   methods: {
     reset () { }

@@ -11,7 +11,7 @@
   @create="submit"
   >
   <template v-slot:form.role="{ step }">
-    <account-role-form :ref="`form_${step}`" v-model="account.role" :account="account" :authUserRole="authUser.role" />
+    <account-role-form :ref="`form_${step}`" v-model="account.role" :account="account" />
   </template>
   <template v-slot:form.identification="{ step }">
     <account-general-form v-if="step >= 2" :ref="`form_${step}`" v-model="account" />
