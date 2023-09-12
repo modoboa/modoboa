@@ -27,7 +27,7 @@
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <account-role-form ref="roleForm" v-model="editedAccount.role" :account="editedAccount" :authUserRole="authUser.role"/>
+        <account-role-form ref="roleForm" v-model="editedAccount.role" :account="editedAccount" />
       </v-expansion-panel-content>
     </v-expansion-panel>
     <v-expansion-panel>
@@ -155,7 +155,7 @@
                 >
                 <template v-if="account.resources != undefined && account.resources.length == 2">
                   <v-col cols="6">
-                    <translate class="mr-2">Mailbox: </translate> <translate>Number of allowed mailbox: </translate> {{ account.resources[0].max_value}}
+                    <translate class="mr-2">Mailbox: </translate> <translate>Number of allowed mailboxes: </translate> {{ account.resources[0].max_value}}
                   </v-col>
                   <v-col cols="6">
                   <translate class="mr-2">Mailbox aliases: </translate> <translate>Number of allowed mailbox aliases: </translate> {{ account.resources[1].max_value}}

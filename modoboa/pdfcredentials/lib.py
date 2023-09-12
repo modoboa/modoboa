@@ -83,8 +83,7 @@ def crypt_and_save_to_file(content, filename, length, chunksize=64*512):
         logger = logging.getLogger("modoboa.admin")
         logger.error(
             _("Failed to create PDF_credentials file. "
-            "Please check the permissions or the path."),
-            exc_info=e)
+            "Please check the permissions or the path."))
 
 
 def decrypt_file(filename, chunksize=24*1024):
