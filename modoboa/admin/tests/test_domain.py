@@ -487,7 +487,9 @@ class DKIMTestCase(ModoTestCase):
 
         # Try disabling DKIM and checking that dkim_private_key_path is emptied
         values = {
-            "name": "pouet.com", "enable_dkim": False
+            "name": "pouet.com", "enable_dkim": False,
+            "quota": 1000, "default_mailbox_quota": 100,
+            "type": "domain"
         }
         self.ajax_post(
             reverse("admin:domain_change", args=[domain.id]),
