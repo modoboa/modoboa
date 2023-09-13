@@ -485,6 +485,17 @@ class DKIMTestCase(ModoTestCase):
         domain.refresh_from_db()
         self.assertNotEqual(domain.dkim_private_key_path, "")
 
+        # Try disabling DKIM and checking that dkim_private_key_path is emptied
+        values = {
+            "name": "pouet.com", "enable_dkim": False
+        }
+        self.ajax_post(
+            reverse("admin:domain_change", args=[domain.id]),
+            values
+        )
+        domain.refresh_from_db()
+        self.assertEqual(domain.dkim_private_key_path, "")
+
     def test_dkim_key_length_modification(self):
         """ """
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
