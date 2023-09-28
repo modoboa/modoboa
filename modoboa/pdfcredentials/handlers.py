@@ -1,5 +1,6 @@
 """PDF credentials handlers."""
 
+import logging
 import os
 
 from django.urls import reverse
@@ -10,6 +11,7 @@ from django.utils.translation import gettext as _
 from modoboa.admin import signals as admin_signals
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
+from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 
 from .documents import credentials
@@ -25,7 +27,13 @@ def password_updated(sender, account, password, created, **kwargs):
         "generate_at_creation")
     if (generate_at_creation and not created) or account.is_superuser:
         return
-    init_storage_dir()
+    try:
+        init_storage_dir()
+    except InternalError as e:
+        logger = logging.getLogger("modoboa.admin")
+        logger.error(
+            _("Failed to create PDF_credentials directory. "
+            "Please check the permissions or the path."))
     credentials(account, password)
 
 

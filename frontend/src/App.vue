@@ -7,7 +7,7 @@
   </template>
 
   <template v-else>
-    <navbar />
+    <navbar v-if="isAuthenticated" />
     <v-main>
       <v-container fluid>
         <transition name="fade">

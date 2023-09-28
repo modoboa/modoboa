@@ -3,12 +3,12 @@
   <v-switch
     :label="'Enable DNS checks' | translate"
     v-model="form.enable_dns_checks"
-    @input="update"
+    @change="update"
     />
   <v-switch
     :label="'Enable DKIM signing' | translate"
     v-model="form.enable_dkim"
-    @input="update"
+    @change="update"
     />
   <v-text-field
     :label="'DKIM key selector' | translate"
