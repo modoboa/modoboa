@@ -284,20 +284,18 @@ export default {
     }
   },
   created () {
-    if (this.isAuthenticated) {
-      parameters.getApplications().then(response => {
-        response.data.forEach(item => {
-          this.mainMenuItems[6].children.push({
-            text: item.label,
-            to: { name: 'ParametersEdit', params: { app: item.name } }
-          })
+    parameters.getApplications().then(response => {
+      response.data.forEach(item => {
+        this.mainMenuItems[6].children.push({
+          text: item.label,
+          to: { name: 'ParametersEdit', params: { app: item.name } }
         })
       })
-      parameters.getApplication('imap_migration').then(response => {
-        this.imapMigration = response.data.params.enabled_imapmigration
-      })
-      bus.$on('imapSettingsChanged', (status) => { this.imapMigration = status })
-    }
+    })
+    parameters.getApplication('imap_migration').then(response => {
+      this.imapMigration = response.data.params.enabled_imapmigration
+    })
+    bus.$on('imapSettingsChanged', (status) => { this.imapMigration = status })
   },
   methods: {
     displayMenuItem (item) {

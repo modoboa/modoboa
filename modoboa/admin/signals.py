@@ -19,5 +19,4 @@ get_domain_form_instances = django.dispatch.Signal() # Provides user, domain
 # get_domain_tags = django.dispatch.Signal(providing_args=["domain"])
 import_object = django.dispatch.Signal() # Provides objtype
 use_external_recipients = django.dispatch.Signal() # Provides recipients
-new_dkim_keys = django.dispatch.Signal() # Provides domain
 extra_account_identities_actions = django.dispatch.Signal() # Provides account

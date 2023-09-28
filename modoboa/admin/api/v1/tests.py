@@ -133,6 +133,16 @@ class DomainAPITestCase(ModoAPITestCase):
         domain.refresh_from_db()
         self.assertEqual(domain.name, "toto.test")
 
+    def test_remove_dkim_domain(self):
+        """Try to remove DKIM from a domain."""
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("v1:domain-detail", args=[domain.pk])
+        response = self.client.put(
+            url, {"name": "test.com", "enable_dkim": False})
+        self.assertEqual(response.status_code, 200)
+        domain.refresh_from_db()
+        self.assertEqual(domain.dkim_private_key_path, "")
+
     def test_delete_domain(self):
         """Try to delete a domain."""
         domain = models.Domain.objects.get(name="test.com")

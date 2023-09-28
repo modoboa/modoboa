@@ -137,15 +137,37 @@
     <v-expansion-panel
       v-if="limitsConfig.params && limitsConfig.params.enable_admin_limits && account.role !== 'SimpleUsers' && account.role !== 'SuperAdmins'"
       >
-      <v-expansion-panel-header>
+      <v-expansion-panel-header v-slot="{ open }">
         <v-row no-gutters>
           <v-col cols="4">
             <translate>Resources</translate>
           </v-col>
+          <v-col
+            cols="8"
+            class="text--secondary"
+            >
+            <v-fade-transition leave-absolute>
+              <span v-if="open"></span>
+              <v-row
+                v-else
+                no-gutters
+                style="width: 100%"
+                >
+                <template v-if="account.resources != undefined && account.resources.length == 2">
+                  <v-col cols="6">
+                    <translate class="mr-2">Mailbox: </translate> <translate>Number of allowed mailboxes: </translate> {{ account.resources[0].max_value}}
+                  </v-col>
+                  <v-col cols="6">
+                  <translate class="mr-2">Mailbox aliases: </translate> <translate>Number of allowed mailbox aliases: </translate> {{ account.resources[1].max_value}}
+                  </v-col>
+                </template>
+              </v-row>
+            </v-fade-transition>
+          </v-col>
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <resources-form ref="resourcesForm" :resources="editedAccount.resources" />
+        <resources-form ref="resourcesForm" v-model="editedAccount.resources" />
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -161,6 +183,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import _isEmpty from 'lodash/isEmpty'
 import { bus } from '@/main'
 import accounts from '@/api/accounts'
@@ -183,7 +206,10 @@ export default {
   computed: {
     usernameIsEmail () {
       return this.editedAccount.username && this.editedAccount.username.indexOf('@') !== -1
-    }
+    },
+    ...mapGetters({
+      authUser: 'auth/authUser'
+    })
   },
   data () {
     return {

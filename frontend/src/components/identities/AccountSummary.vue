@@ -32,7 +32,10 @@
     <template v-if="account.mailbox">
       <v-row>
         <v-col cols="6"><translate>Quota</translate></v-col>
-        <v-col cols="6">
+        <v-col cols="6" v-if="account.mailbox.quota === '0'">
+          <translate>Unlimited</translate>
+        </v-col>
+        <v-col cols="6" v-else>
           <v-progress-linear
             :color="account.mailbox.quota_usage < 80 ? 'primary' : 'warning'"
             :value="account.mailbox.quota_usage"

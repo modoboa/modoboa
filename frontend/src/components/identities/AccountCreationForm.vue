@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { bus } from '@/main'
 import accounts from '@/api/accounts'
 import AccountAliasForm from './AccountAliasForm'
@@ -70,6 +71,9 @@ export default {
     needsMailbox () {
       return this.account.role !== 'SuperAdmins' || (this.account.username && this.account.username.indexOf('@') !== -1)
     },
+    ...mapGetters({
+      authUser: 'auth/authUser'
+    }),
     summarySections () {
       const result = [
         {
