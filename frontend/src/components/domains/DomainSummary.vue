@@ -22,9 +22,9 @@
       <v-col cols="6" v-if="domain.default_mailbox_quota === '0'"><translate>Unlimited</translate></v-col>
       <v-col cols="6" v-else>{{ domain.default_mailbox_quota }} MB</v-col>
     </v-row>
-    <v-row v-if="domain.sending_limit !== undefined">
+    <v-row v-if="domain.message_limit !== undefined">
       <v-col cols="6"><translate>Daily sending limit</translate></v-col>
-      <v-col cols="6">{{ domain.sending_limit }} <translate>messages</translate></v-col>
+      <v-col cols="6">{{ domain.message_limit }} <translate>messages</translate></v-col>
     </v-row>
     <v-row>
       <v-col cols="6"><translate>Mailboxes</translate></v-col>
