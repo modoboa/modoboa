@@ -40,6 +40,9 @@
 {% block extra_js %}
   <script type="text/javascript">
    $(document).ready(function() {
+       $("form").submit(function(){  
+           $(":submit",this).attr("disabled","disabled");  
+       });
        $('#id_username').focus();
    });
   </script>
