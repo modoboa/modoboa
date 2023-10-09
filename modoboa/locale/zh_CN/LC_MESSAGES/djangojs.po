@@ -7,6 +7,7 @@
 # 李 正 <364109980@qq.com>, 2021
 # Max Sun <zhl.sun@gmail.com>, 2023
 # Leamon, 2023
+# ice ice, 2023
 # 
 #, fuzzy
 msgid ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-20 14:54+0200\n"
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
-"Last-Translator: Leamon, 2023\n"
+"Last-Translator: ice ice, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/tonio/teams/13749/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr "没有更多的域可以展示"
 
 #: admin/static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
-msgstr "请勿删除域目录"
+msgstr "请勿删除域名目录"
 
 #: admin/static/admin/js/admin.js:151
 msgid "This operation will remove ALL data associated to this domain."
