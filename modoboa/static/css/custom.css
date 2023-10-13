@@ -1,6 +1,6 @@
 /* ------- Media ------- */
 
-.sidebar { 
+.sidebar {
     display: none;
 }
 
@@ -67,7 +67,7 @@
 
  /* --------- general --------- */
 
-.container-fluid { 
+.container-fluid {
     padding-left: 0;
     padding-right: 0;
 }
@@ -101,7 +101,7 @@
 
 
 /* Global */
-body { 
+body {
     padding-top: 50px;
     padding-bottom: 50px;
 }
@@ -168,7 +168,15 @@ label {
     table-layout: fixed;
 }
 
-
+.menu-link {
+	display: block;
+	padding: 3px 20px;
+	clear: both;
+	font-weight: 400;
+	line-height: 1.42857143;
+	color: #333;
+	white-space: nowrap;
+}
 
 /* --------- main page --------- */
 
@@ -202,7 +210,7 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
     padding-left: 20px;*/
 }
 
-.nav-sidebar > li > a:hover { 
+.nav-sidebar > li > a:hover {
     background-color: #eee;
 }
 
@@ -230,7 +238,7 @@ html body div.navbar div.container-fluid div#navigate-navbar-collapse.collapse u
      margin-bottom: 4px;
  }
 
-.main { 
+.main {
     padding: 20px 15px;
 }
 
@@ -280,7 +288,7 @@ table td[name="actions"] {
 
  /* modals */
 
-.modal-body .nav-pills { 
+.modal-body .nav-pills {
     margin-bottom: 15px;
 }
 
