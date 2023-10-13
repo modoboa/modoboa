@@ -60,7 +60,7 @@
             {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            {% if selection %}{% user_menu user selection %}{% else %}{% user_menu user "" %}{% endif %}
+            {% if selection %}{% user_menu request selection %}{% else %}{% user_menu request "" %}{% endif %}
           </ul>
           {% include "common/top_notifications.html" %}
         </div>

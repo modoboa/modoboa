@@ -3,7 +3,7 @@
 from datetime import datetime
 
 from django import template
-from django.template import Context, Template
+from django.template import Context, RequestContext, Template
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
@@ -49,6 +49,15 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 {% if link.img %}<i class="{{ link.img }}"></i>{% endif %}
 {{ link.label }}</a>""")  # NOQA:E501
     return t.render(Context({"link": linkdef, "mdclass": mdclass}))
+
+
+@register.simple_tag
+def render_post_link(linkdef, request):
+    t = Template("""<form method="post" action="{{ link.url }}">
+{% csrf_token %}
+<a class="menulink" href="#" onclick="this.parentNode.submit()">{% if link.img %}<i class="{{ link.img }}"></i>{% endif %}{{ link.label }}</a>
+</form>""")
+    return t.render(RequestContext(request, {"link": linkdef}))
 
 
 @register.simple_tag
