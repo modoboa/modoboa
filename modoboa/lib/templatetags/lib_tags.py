@@ -55,7 +55,7 @@ class="{{ mdclass }}{% if link.class %} {{ link.class }}{% endif %}"
 def render_post_link(linkdef, request):
     t = Template("""<form method="post" action="{{ link.url }}">
 {% csrf_token %}
-<a class="menulink" href="#" onclick="this.parentNode.submit()">{% if link.img %}<i class="{{ link.img }}"></i>{% endif %}{{ link.label }}</a>
+<a class="menu-link" href="#" onclick="this.parentNode.submit()">{% if link.img %}<i class="{{ link.img }}"></i>{% endif %}{{ link.label }}</a>
 </form>""")
     return t.render(RequestContext(request, {"link": linkdef}))
 
