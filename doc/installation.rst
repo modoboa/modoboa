@@ -49,8 +49,10 @@ if you get this warning - '/usr/bin/env: ‘python’: No such file or directory
 
 .. sourcecode:: bash
 
-   > sudo apt-get install python-virtualenv python-pip
+   > sudo apt-get install python3-virtualenv python3-pip
 
+For the sake of simplicity, you can also install the ``python-is-python3`` package.
+It allows you to use ``python`` command.
 
 Wait a few minutes and you're done \o/
 
