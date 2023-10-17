@@ -17,8 +17,8 @@ Modoboa
 
 Most of the time, upgrading your installation to a newer Modoboa
 version only requires a few actions. In every case, you will need to
-apply the general procedure first and then check if the version you
-are installing requires specific actions.
+apply the specific actions if the version you are installing requires it,
+and then apply the general ones.
 
 In case you use a dedicated user and/or a virtualenv, do not forget to
 use them:
@@ -144,15 +144,17 @@ Specific instructions
 * Support for Python 3.7 has been dropped, minimum Python version is now 3.8
 * Support for Postgres 11 has been dropped, minimum Postgres version is now 12
 
-You need to change the first line in ``urls.py`` in
-(``/srv/modoboa/instance/instance/urls.py`` by default):
+You need to change the first line in ``urls.py`` and replace `url` with `path` (in
+``/srv/modoboa/instance/instance/urls.py`` by default):
 
 .. sourcecode:: python
 
    # from django.conf.urls import include, url
    from django.urls import include, path
 
-And replace `url` with `path` in the file.
+   urlpatterns = [
+      path(r'', include('modoboa.urls')),
+   ]
 
 
 If you use Postgresql, you need to install pyscopg3+:
