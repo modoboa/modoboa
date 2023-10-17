@@ -16,6 +16,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext as _
 from django.views import generic
 from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_http_methods
 
 from django.contrib.auth import (
     authenticate, login, logout, views as auth_views
@@ -126,6 +127,7 @@ def dologin(request):
 dologin = never_cache(dologin)
 
 
+@require_http_methods(["POST"])
 def dologout(request):
     """Logout current user."""
     if not request.user.is_anonymous:

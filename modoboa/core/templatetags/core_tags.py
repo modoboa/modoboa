@@ -79,11 +79,11 @@ def admin_menu(selection, user):
 
 
 @register.simple_tag
-def user_menu(user, selection):
+def user_menu(request, selection):
     entries = [
         {"name": "user",
          "img": "fa fa-user",
-         "label": user.fullname,
+         "label": request.user.fullname,
          "menu": [
                 {"name": "settings",
                  "img": "fa fa-list",
@@ -93,17 +93,21 @@ def user_menu(user, selection):
     ]
 
     extra_entries = signals.extra_user_menu_entries.send(
-        sender="user_menu", location="options_menu", user=user)
+        sender="user_menu", location="options_menu", user=request.user)
     extra_entries = reduce(
         lambda a, b: a + b, [entry[1] for entry in extra_entries])
     entries[0]["menu"] += (
-        extra_entries + [{"name": "logout",
-                          "url": reverse("core:logout"),
-                          "label": _("Logout"),
-                          "img": "fa fa-sign-out"}]
+        extra_entries + [{
+            "name": "logout",
+            "url": reverse("core:logout"),
+            "label": _("Logout"),
+            "img": "fa fa-sign-out",
+            "method": "post"
+        }]
     )
     return render_to_string("common/menulist.html", {
-        "selection": selection, "entries": entries, "user": user
+        "request": request, "selection": selection,
+        "entries": entries, "user": request.user
     })
 
 
