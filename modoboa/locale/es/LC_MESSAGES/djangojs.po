@@ -76,7 +76,7 @@ msgstr "operación"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
-msgstr "Sin entradas que mostrar"
+msgstr "No hay más registros que mostrar"
 
 #: maillog/static/maillog/js/stats.js:45
 msgid "Search a domain"
