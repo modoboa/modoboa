@@ -112,4 +112,4 @@ msgstr "¿Estás seguro?"
 
 #: static/js/twocols_nav.js:171
 msgid "This will invalidate your registered application."
-msgstr "Esto provocará que tu aplicación registrada no funcione."
+msgstr "Esto invalidará tu aplicación registrada."
