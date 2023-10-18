@@ -60,7 +60,7 @@ msgstr "No hay un administrador de dominio definido"
 
 #: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
 msgid "No more identity to show"
-msgstr "Sin identidades que mostrar"
+msgstr "No hay identidades para mostrar"
 
 #: admin/static/admin/js/admin.js:407
 msgid "Do not delete mailbox directory"
