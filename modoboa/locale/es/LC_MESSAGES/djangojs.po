@@ -96,7 +96,7 @@ msgstr "Error interno"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr "Sin entradas que mostrar"
+msgstr "No hay más entradas para mostrar"
 
 #: static/js/listing.js:46
 msgid "Search"
