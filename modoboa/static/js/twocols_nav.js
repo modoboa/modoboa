@@ -30,7 +30,7 @@ TwocolsNav.prototype = {
     listen: function() {
         $("a.ajaxnav").click($.proxy(this.load_section, this));
         $(document).on("click", "#update", $.proxy(function(e) {
-            var $form = $("form").first();
+            var $form = $(e.target).closest("form");
             simple_ajax_form_post(e, {
                 formid: $form.attr("id"),
                 modal: false,
