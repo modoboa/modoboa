@@ -48,7 +48,7 @@ msgstr ""
 
 #: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
 msgid "No more quota to show"
-msgstr "Sin cuota para mostrar"
+msgstr "No hay más cuotas que mostrar"
 
 #: admin/static/admin/js/admin.js:180
 msgid "No more log to show"
