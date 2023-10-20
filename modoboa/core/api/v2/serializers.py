@@ -21,7 +21,9 @@ from django.utils.translation import gettext_lazy, gettext as _
 from rest_framework import serializers, status
 from rest_framework.exceptions import APIException
 
-from modoboa.core import constants, models, sms_backends, app_settings, context_processors
+from modoboa.core import (
+    constants, models, sms_backends, app_settings, context_processors
+)
 from modoboa.core.models import User
 from modoboa.lib import fields as lib_fields, cryptutils
 
@@ -62,21 +64,15 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         default="local"
     )
     password_scheme = serializers.ChoiceField(
-        choices=[("sha512crypt", "sha512crypt"),
-                 ("sha256crypt", "sha256crypt"),
-                 ("blfcrypt", "bcrypt"),
-                 ("md5crypt", gettext_lazy("md5crypt (weak)")),
-                 ("sha256", gettext_lazy("sha256 (weak)")),
-                 ("md5", gettext_lazy("md5 (weak)")),
-                 ("crypt", gettext_lazy("crypt (weak)")),
-                 ("plain", gettext_lazy("plain (weak)"))],
+        choices=[("sha512crypt", "sha512crypt")],
         default="sha512crypt"
     )
     rounds_number = serializers.IntegerField(default=70000)
     update_scheme = serializers.BooleanField(default=True)
-    default_password = serializers.CharField(default="password")
+    default_password = serializers.CharField(default="ChangeMe1!")
     random_password_length = serializers.IntegerField(min_value=8, default=8)
-    update_password_url = serializers.URLField(required=False, allow_blank=True)
+    update_password_url = serializers.URLField(
+        required=False, allow_blank=True)
     password_recovery_msg = serializers.CharField(
         required=False, allow_blank=True)
     sms_password_recovery = serializers.BooleanField(default=False)
@@ -173,8 +169,27 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         for field, definition in sms_backend_fields.items():
             self.fields[field] = definition["type"](
                 **definition["attrs"])
+
+        try:
+            self.saved_password_scheme = args[0].get("password_scheme")
+            self.saved_default_top_redirection = args[0].get("default_top_redirection")
+        except IndexError:
+            self.saved_password_scheme = None
+            self.saved_default_top_redirection = None
         # Choices serializer for default_top_redirection field
         self.fields["default_top_redirection"].choices = app_settings.enabled_applications()
+        # Populate choices of password_scheme
+        localconfig = models.LocalConfig.objects.first()
+        self.fields["password_scheme"].choices = app_settings.get_password_scheme(localconfig)
+
+    @property
+    def data(self):
+        ret = super().data
+        if self.saved_password_scheme is not None:
+            ret["password_scheme"] = self.saved_password_scheme
+        if self.saved_default_top_redirection is not None:
+            ret["default_top_redirection"] = self.saved_default_top_redirection
+        return ret
 
     def validate_ldap_user_dn_template(self, value):
         try:

@@ -16,6 +16,7 @@
     "debounce": "^1.2.1",
     "js-cookie": "^2.2.1",
     "luxon": "^1.28.1",
+    "qrcode.vue": "~1.7.0",
     "vee-validate": "^3.4.5",
     "vue": "^2.6.14",
     "vue-apexcharts": "^1.6.0",
@@ -23,8 +24,7 @@
     "vue-gettext": "^2.1.12",
     "vue-router": "^3.2.0",
     "vuetify": "^2.6.10",
-    "vuex": "^3.4.0",
-    "qrcode.vue": "~1.7.0"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

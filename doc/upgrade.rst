@@ -131,6 +131,57 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+
+2.2.3
+=====
+
+* Multiple security fixes
+* Fixed a CRSF error when logging multiple time on v1
+* Reduced the number of call to doveadm
+
+You to setup a new worker :
+
+1. Create a new supervisord config (``/etc/supervisor/conf.d/modoboa-base-worker.conf`` by default) :
+
+.. sourcecode:: ini
+
+   [program:modoboa-base-worker]
+   autostart=true
+   autorestart=true
+   command={%python env path%} {% manage.py instance path%} rqworker modoboa
+   directory={%modoboa home dir%}
+   user=%{modoboa user}
+   numprocs=1
+   stopsignal=TERM
+
+``python env path`` : Python executable located in your virtual environment created for modoboa.
+You will find it here  ``/srv/modoboa/venv/bin/python`` by default.
+``manage.py instance path``: Path to manage.py of your modoboa instance.
+You will find it here : ``/srv/modoboa/instance/manage.py``by default.
+``Modoboa home dir``: Home dir of the user running modooba.
+You will find it here ``/srv/modoboa/`` by default.
+``modoboa user`` : User managing dkim signing (modoboa by default).
+
+You can help you with ``/etc/supervisor/conf.d/policyd.conf`` (by default).
+
+Then restart supervisor. ``#> supervisorctl reread && supervisorctl update`` on Debian.
+
+2. Update the RQ_QUEUES section bellow the ``#REDIS`` section:
+
+.. sourcecode:: python
+
+   # RQ
+   RQ_QUEUES = {
+      ...
+      },
+      'modoboa': {
+         'HOST': REDIS_HOST,
+         'PORT': REDIS_PORT,
+         'DB': 0,
+      },
+   }
+
+
 2.2.0
 =====
 

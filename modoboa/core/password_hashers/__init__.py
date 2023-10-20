@@ -10,8 +10,10 @@ from modoboa.core.password_hashers.advanced import (  # NOQA:F401
     ARGON2IDHasher, SSHAHasher
 )
 from modoboa.core.password_hashers.base import (  # NOQA:F401
-    CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher
+    CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher, PasswordHasher
 )
+from modoboa.core import models
+
 from modoboa.lib.sysutils import doveadm_cmd
 
 
@@ -55,3 +57,17 @@ def get_dovecot_schemes():
 
     return ["{{{}}}".format(smart_str(scheme))
             for scheme in schemes.split()]
+
+
+def cache_available_passowrd_hasher():
+    available_schemes = get_dovecot_schemes()
+    password_scheme_choice = [
+        (hasher.name, hasher.label)
+        for hasher in PasswordHasher.get_password_hashers()
+        if hasher().scheme in available_schemes
+        ]
+    localconfig = models.LocalConfig.objects.first()
+    localconfig.cache.set_cache_entry("password_scheme_choice",
+                                      password_scheme_choice,
+                                      "core")
+    localconfig.save(update_fields=["_cache"])
