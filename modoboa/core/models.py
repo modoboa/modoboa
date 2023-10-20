@@ -3,6 +3,7 @@
 import re
 from email.header import Header
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -14,7 +15,6 @@ from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
-import jsonfield
 from phonenumber_field.modelfields import PhoneNumberField
 from reversion import revisions as reversion
 
@@ -22,7 +22,8 @@ from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import (
     BadRequest, Conflict, InternalError, PermDeniedException
 )
-from modoboa.parameters import tools as param_tools
+from modoboa.lib.json_field_utils import JSONDatetimeEncoder
+from modoboa.parameters import tools as param_tools, cache_tools
 from . import constants, signals
 
 try:
@@ -74,7 +75,7 @@ class User(AbstractUser):
 
     tfa_enabled = models.BooleanField(default=False)
 
-    _parameters = jsonfield.JSONField(default={})
+    _parameters = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
 
     class Meta(object):
         ordering = ["username"]
@@ -447,9 +448,10 @@ class LocalConfig(models.Model):
     site = models.ForeignKey("sites.Site", on_delete=models.CASCADE)
 
     # API results cache
-    api_versions = jsonfield.JSONField()
+    api_versions = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
 
-    _parameters = jsonfield.JSONField(default={})
+    _parameters = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
+    _cache = models.JSONField(default=dict, encoder=JSONDatetimeEncoder)
 
     # Dovecot LDAP update
     need_dovecot_update = models.BooleanField(default=False)
@@ -458,6 +460,7 @@ class LocalConfig(models.Model):
         """Load parameter manager."""
         super(LocalConfig, self).__init__(*args, **kwargs)
         self.parameters = param_tools.Manager("global", self._parameters)
+        self.cache = cache_tools.CacheManager(self._cache)
 
 
 class ExtensionUpdateHistory(models.Model):

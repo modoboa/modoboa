@@ -262,6 +262,11 @@ RQ_QUEUES = {
         'PORT': REDIS_PORT,
         'DB': 0,
     },
+    'modoboa': {
+        'HOST': REDIS_HOST,
+        'PORT': REDIS_PORT,
+        'DB': 0,
+    },
 }
 
 # Password validation

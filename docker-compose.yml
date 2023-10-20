@@ -16,7 +16,7 @@ services:
       DEBUG: "True"
       REDIS_HOST: redis
     command: >
-      sh -c "cd test_project; python3 manage.py rqworker dkim"
+      sh -c "cd test_project; python3 manage.py rqworker dkim modoboa"
     volumes:
       - .:/code
 
