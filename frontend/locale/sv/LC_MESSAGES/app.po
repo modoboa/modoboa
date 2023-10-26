@@ -1672,7 +1672,7 @@ msgstr "Resursanvändning"
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:23
 #: src/views/user/PasswordRecoverySmsTotpForm.vue:71
 msgid "Retry reset"
-msgstr "Försök att återställa igen"
+msgstr "Försök återställning igen"
 
 #: src/views/user/PasswordRecoveryChangeForm.vue:24
 #: src/views/user/PasswordRecoveryForm.vue:19
