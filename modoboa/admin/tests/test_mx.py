@@ -10,7 +10,8 @@ from django.test import override_settings
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from modoboa.core import factories as core_factories
+from modoboa.core import (
+    models as core_models, factories as core_factories)
 from modoboa.lib.tests import ModoTestCase
 from . import utils
 from .. import factories, models
@@ -170,6 +171,29 @@ class MXTestCase(ModoTestCase):
              _("Invalid IP address format for %(domain)s; %(addr)s")
              % {"domain": "bad-response.example.com", "addr": "000.0.0.0"}),
         )
+
+    @mock.patch("ipaddress.ip_address")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
+    def test_ipv6_logging(self, mock_query, mock_ip_address):
+        """Test to check that AAAA missing record is logged consistently."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_ip_address.side_effect = utils.mock_ip_address_result
+        localconfig = core_models.LocalConfig.objects.first()
+        localconfig.parameters.set_value("enable_ipv6_checks", True, "admin")
+        localconfig.save()
+        with LogCapture("modoboa.admin") as log:
+            get_domain_mx_list("test3.com")
+        log.check(
+            ("modoboa.admin", "ERROR",
+                _("No AAAA record for %s")
+                % "mx3.example.com")
+        )
+        localconfig = core_models.LocalConfig.objects.first()
+        localconfig.parameters.set_value("enable_ipv6_checks", False, "admin")
+        localconfig.save()
+        with LogCapture("modoboa.admin") as log2:
+            get_domain_mx_list("test3.com")
+        log2.check()
 
 
 @override_settings(DNSBL_PROVIDERS=["zen.spamhaus.org"])

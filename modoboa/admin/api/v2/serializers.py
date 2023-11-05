@@ -181,6 +181,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     enable_mx_checks = serializers.BooleanField(default=True)
     valid_mxs = serializers.CharField(allow_blank=True)
     domains_must_have_authorized_mx = serializers.BooleanField(default=False)
+    enable_ipv6_checks = serializers.BooleanField(default=True)
     enable_spf_checks = serializers.BooleanField(default=True)
     enable_dkim_checks = serializers.BooleanField(default=True)
     enable_dmarc_checks = serializers.BooleanField(default=True)

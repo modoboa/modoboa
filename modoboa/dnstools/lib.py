@@ -5,6 +5,7 @@ import ipaddress
 from django.utils.translation import gettext as _
 
 from modoboa.admin import lib as admin_lib
+from modoboa.parameters import tools as param_tools
 
 from . import constants
 
@@ -43,7 +44,10 @@ def get_dmarc_record(domain):
 
 def _get_simple_record(name):
     """We just want to know if name is declared."""
-    for rdtype in ["A", "CNAME", "AAAA"]:
+    rtypes = ["A", "CNAME"]
+    if param_tools.get_global_parameter("enable_IPV6_checks", app="admin"):
+        rtypes.append("AAAA")
+    for rdtype in rtypes:
         records = admin_lib.get_dns_records(name, rdtype)
         if records is not None:
             break
