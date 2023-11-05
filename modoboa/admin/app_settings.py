@@ -50,6 +50,14 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
+    enable_ipv6_checks = YesNoField(
+        label=gettext_lazy("Enable IPV6 checks"),
+        initial=True,
+        help_text=gettext_lazy(
+            "Check if every domain has a valid AAAA record"
+        )
+    )
+
     enable_spf_checks = YesNoField(
         label=gettext_lazy("Enable SPF checks"),
         initial=True,
@@ -320,6 +328,12 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                 "help_text": gettext_lazy(
                     "Prevent the creation of a new domain if its MX record "
                     "does not use one of the defined addresses."
+                )
+            }),
+            ("enable_ipv6_checks", {
+                "label": gettext_lazy("Enable IPV6 checks"),
+                "help_text": gettext_lazy(
+                    "Check if every domain has a valid IPV6 record"
                 )
             }),
             ("enable_spf_checks", {

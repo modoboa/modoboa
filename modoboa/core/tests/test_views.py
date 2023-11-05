@@ -51,6 +51,7 @@ SETTINGS_SAMPLE = {
     "core-ldap_admin_groups": "",
     "core-ldap_groups_search_base": "",
     "admin-enable_mx_checks": "True",
+    "admin-enable_ipv6_checks": "True",
     "core-ldap_search_base": "",
     "admin-valid_mxs": "",
     "limits-deflt_user_domains_limit": "0",
