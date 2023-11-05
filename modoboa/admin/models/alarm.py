@@ -65,8 +65,7 @@ class Alarm(models.Model):
                     f"DELETE FROM '{cls._meta.db_table}'")
             else:
                 cursor.execute(
-                    f"TRUNCATE TABLE '{cls._meta.db_table}'")
-
+                    f"TRUNCATE TABLE {cls._meta.db_table}")
 
 
 reversion.register(Alarm)
