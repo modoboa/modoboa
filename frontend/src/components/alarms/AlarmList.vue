@@ -151,6 +151,12 @@ export default {
       this.selected = []
       this.fetchAlarms()
     },
+    async clearAlarms () {
+      await alarms.clearAll()
+      bus.$emit('notification', { msg: this.$gettext('Alarms cleared') })
+      this.select = []
+      this.fetchAlarms()
+    },
     getMenuItems (item) {
       const result = []
       result.push({
@@ -181,6 +187,9 @@ export default {
       const result = []
       if (this.selected.length > 0) {
         result.push({ label: this.$gettext('Delete'), icon: 'mdi-delete-outline', onClick: this.deleteAlarms, color: 'red' })
+      }
+      if (this.alarms.length > 0) {
+        result.push({ label: this.$gettext('Clear all'), icon: 'mdi-nuke', onClick: this.clearAlarms, color: 'red' })
       }
       result.push({ label: this.$gettext('Reload'), icon: 'mdi-reload', onClick: this.fetchAlarms })
       return result

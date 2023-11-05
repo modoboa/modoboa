@@ -686,3 +686,16 @@ class AlarmViewSetTestCase(ModoAPITestCase):
             alarm1.refresh_from_db()
         with self.assertRaises(models.Alarm.DoesNotExist):
             alarm2.refresh_from_db()
+
+    def test_clear_all(self):
+        alarm1 = factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
+        alarm2 = factories.AlarmFactory(
+            domain__name="test.com", mailbox=None, title="Test alarm")
+        url = reverse("v2:alarm-clear-all")
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 204)
+        with self.assertRaises(models.Alarm.DoesNotExist):
+            alarm1.refresh_from_db()
+        with self.assertRaises(models.Alarm.DoesNotExist):
+            alarm2.refresh_from_db()

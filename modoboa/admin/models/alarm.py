@@ -1,6 +1,6 @@
 """Alert related models."""
 
-from django.db import models
+from django.db import models, connection
 from django.utils import timezone
 
 from reversion import revisions as reversion
@@ -56,6 +56,17 @@ class Alarm(models.Model):
         self.status = constants.ALARM_OPENED
         self.closed = None
         self.save()
+
+    @classmethod
+    def truncate(cls):
+        with connection.cursor() as cursor:
+            if connection.vendor == "sqlite":
+                cursor.execute(
+                    f"DELETE FROM '{cls._meta.db_table}'")
+            else:
+                cursor.execute(
+                    f"TRUNCATE TABLE '{cls._meta.db_table}'")
+
 
 
 reversion.register(Alarm)

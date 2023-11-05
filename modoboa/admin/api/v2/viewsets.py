@@ -396,3 +396,9 @@ class AlarmViewSet(GetThrottleViewsetMixin,
                 _("Received invalid alarm id(s)"), status=400)
         models.Alarm.objects.filter(pk__in=ids).delete()
         return response.Response(status=204)
+
+    @action(methods=['delete'], detail=False)
+    def clear_all(self, request, **kwargs):
+        """Clear the alarm table."""
+        models.Alarm.truncate()
+        return response.Response(status=204)
