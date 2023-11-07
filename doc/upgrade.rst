@@ -135,8 +135,6 @@ Specific instructions
 2.2.3
 =====
 
-* Multiple security fixes
-* Fixed a CRSF error when logging multiple time on v1
 * Reduced the number of call to doveadm
 
 You to setup a new worker :
