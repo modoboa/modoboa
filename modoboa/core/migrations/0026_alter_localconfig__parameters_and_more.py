@@ -2,7 +2,6 @@
 
 import django.core.serializers.json
 from django.db import migrations, models
-import modoboa.lib.json_field_utils
 
 
 class Migration(migrations.Migration):
@@ -31,11 +30,6 @@ class Migration(migrations.Migration):
             model_name='localconfig',
             name='api_versions',
             field=models.JSONField(default=dict),
-        ),
-        migrations.AddField(
-            model_name='localconfig',
-            name='_cache',
-            field=models.JSONField(default=dict, encoder=modoboa.lib.json_field_utils.JSONDatetimeEncoder),
         ),
         migrations.AlterField(
             model_name='localconfig',

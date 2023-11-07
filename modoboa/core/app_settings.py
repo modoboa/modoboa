@@ -3,9 +3,11 @@
 import collections
 
 from django import forms
+from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth import password_validation
 from django.utils.translation import gettext as _, gettext_lazy
+
 from django_rq import get_queue
 
 from modoboa.core.jobs import job_retrieve_available_hashers
@@ -42,14 +44,10 @@ def get_default_password_scheme():
     ]
 
 
-def get_password_scheme(localconfig):
-    if localconfig is None:
-        return get_default_password_scheme()
-    available_schemes = localconfig.cache.get_value(
-        "password_scheme_choice", "core", False)
-    get_queue("modoboa").enqueue(
-        job_retrieve_available_hashers)
+def get_password_scheme():
+    available_schemes = cache.get("password_scheme_choice")
     if available_schemes is None:
+        get_queue("modoboa").enqueue(job_retrieve_available_hashers)
         return get_default_password_scheme()
     return available_schemes
 
@@ -558,7 +556,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         self._add_visibilty_rules(
             sms_backends.get_all_backend_visibility_rules()
         )
-        self.fields["password_scheme"].choices = get_password_scheme(self.localconfig)
+        self.fields["password_scheme"].choices = get_password_scheme()
 
     def _add_dynamic_fields(self):
         new_fields = collections.OrderedDict()

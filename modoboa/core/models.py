@@ -22,8 +22,7 @@ from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import (
     BadRequest, Conflict, InternalError, PermDeniedException
 )
-from modoboa.lib.json_field_utils import JSONDatetimeEncoder
-from modoboa.parameters import tools as param_tools, cache_tools
+from modoboa.parameters import tools as param_tools
 from . import constants, signals
 
 try:
@@ -451,7 +450,6 @@ class LocalConfig(models.Model):
     api_versions = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
 
     _parameters = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
-    _cache = models.JSONField(default=dict, encoder=JSONDatetimeEncoder)
 
     # Dovecot LDAP update
     need_dovecot_update = models.BooleanField(default=False)
@@ -460,7 +458,6 @@ class LocalConfig(models.Model):
         """Load parameter manager."""
         super(LocalConfig, self).__init__(*args, **kwargs)
         self.parameters = param_tools.Manager("global", self._parameters)
-        self.cache = cache_tools.CacheManager(self._cache)
 
 
 class ExtensionUpdateHistory(models.Model):

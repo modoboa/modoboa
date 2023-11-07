@@ -65,7 +65,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
     password_scheme = serializers.ChoiceField(
         choices=[("sha512crypt", "sha512crypt")],
-        default="sha512crypt"
+        required=False
     )
     rounds_number = serializers.IntegerField(default=70000)
     update_scheme = serializers.BooleanField(default=True)
@@ -169,27 +169,10 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         for field, definition in sms_backend_fields.items():
             self.fields[field] = definition["type"](
                 **definition["attrs"])
-
-        try:
-            self.saved_password_scheme = args[0].get("password_scheme")
-            self.saved_default_top_redirection = args[0].get("default_top_redirection")
-        except IndexError:
-            self.saved_password_scheme = None
-            self.saved_default_top_redirection = None
         # Choices serializer for default_top_redirection field
         self.fields["default_top_redirection"].choices = app_settings.enabled_applications()
         # Populate choices of password_scheme
-        localconfig = models.LocalConfig.objects.first()
-        self.fields["password_scheme"].choices = app_settings.get_password_scheme(localconfig)
-
-    @property
-    def data(self):
-        ret = super().data
-        if self.saved_password_scheme is not None:
-            ret["password_scheme"] = self.saved_password_scheme
-        if self.saved_default_top_redirection is not None:
-            ret["default_top_redirection"] = self.saved_default_top_redirection
-        return ret
+        self.fields["password_scheme"].choices = app_settings.get_password_scheme()
 
     def validate_ldap_user_dn_template(self, value):
         try:

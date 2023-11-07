@@ -181,6 +181,18 @@ Then restart supervisor. ``#> supervisorctl reread && supervisorctl update`` on 
       },
    }
 
+3. Add the CACHE section bellow the ``# RQ`` one:
+
+.. sourcecode:: python
+
+   # CACHE
+   CACHES = {
+      "default": {
+         "BACKEND": 'django.core.cache.backends.redis.RedisCache',
+         "LOCATION": REDIS_URL
+      }
+   }
+
 
 2.2.0
 =====
