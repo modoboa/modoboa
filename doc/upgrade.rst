@@ -137,7 +137,7 @@ Specific instructions
 
 * Reduced the number of call to doveadm
 
-You to setup a new worker :
+You need to setup a new worker :
 
 1. Create a new supervisord config (``/etc/supervisor/conf.d/modoboa-base-worker.conf`` by default) :
 
