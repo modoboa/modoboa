@@ -255,7 +255,7 @@ RQ_QUEUES = {
 CACHES = {
     "default": {
         "BACKEND": 'django.core.cache.backends.redis.RedisCache',
-        "LOCATION": f"{REDIS_HOST}:{REDIS_PORT}"
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}"
     }
 }
 
