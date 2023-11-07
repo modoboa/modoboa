@@ -6,6 +6,7 @@ import getpass
 import oath
 from unittest import mock
 
+from django.core.cache import cache
 from django.test import override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
@@ -81,11 +82,20 @@ class ParametersAPITestCase(ModoAPITestCase):
     @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH],
                        DOVECOT_USER=DOVECOT_USER)
     def test_update(self):
+        cache.delete("password_scheme_choice")
+        queue = get_queue("modoboa", is_async=False)
+        queue.empty()
+
         url = reverse("v2:parameter-detail", args=["core"])
         data = copy.copy(CORE_SETTINGS)
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+        get_worker("modoboa").work(burst=True)
+        self.assertIsNotNone(cache.get("password_scheme_choice"))
+        self.assertIn(('plain', 'plain (weak)'),
+                      cache.get("password_scheme_choice")
+        )
         # Modify SMS related settings
         data["sms_password_recovery"] = True
         resp = self.client.put(url, data, format="json")
@@ -124,49 +134,6 @@ class ParametersAPITestCase(ModoAPITestCase):
         })
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
-
-    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH],
-                       DOVECOT_USER=DOVECOT_USER)
-    def test_cache(self):
-        """Launch the password scheme job manually and check the result."""
-        queue = get_queue("modoboa", is_async=False)
-        queue.empty()
-        job = queue.enqueue(jobs.job_retrieve_available_hashers,
-                            bypass_condition=True)
-        get_worker("modoboa").work(burst=True)
-        job_result = job.latest_result()
-        self.assertEqual(job_result.type, job_result.Type.SUCCESSFUL)
-        localconfig = models.LocalConfig.objects.first()
-        cache = localconfig.cache
-        self.assertIn(['plain', 'plain (weak)'],
-                      cache.get_value("password_scheme_choice", "core"))
-        entry = cache.get_cache_entry("password_scheme_choice", "core")
-        self.assertEqual(entry["last_update"],
-                         cache.get_last_mod("password_scheme_choice", "core"))
-        entry_guess_extension = cache.get_cache_entry("password_scheme_choice")
-        self.assertEqual(entry, entry_guess_extension)
-        cache.set_cache_entry("test_cache", "test")
-        self.assertEqual(
-            cache.get_value("test_cache", "core"),
-            "test")
-
-        # Check that the cache will be updated once a month
-        localconfig._cache["core"]["password_scheme_choice"]["value"] = "outofdate!"
-        localconfig.save()
-        job = queue.enqueue(jobs.job_retrieve_available_hashers)
-        get_worker("modoboa").work(burst=True)
-        localconfig = models.LocalConfig.objects.first()
-        value = localconfig.cache.get_value("password_scheme_choice")
-        self.assertEqual(value, "outofdate!")
-
-        old_datetime = datetime.datetime.utcnow() - datetime.timedelta(weeks=5)
-        localconfig._cache["core"]["password_scheme_choice"]["last_update"] = old_datetime
-        localconfig.save()
-        job = queue.enqueue(jobs.job_retrieve_available_hashers)
-        get_worker("modoboa").work(burst=True)
-        localconfig = models.LocalConfig.objects.first()
-        value = localconfig.cache.get_value("password_scheme_choice")
-        self.assertFalse(value == "outofdate!")
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
