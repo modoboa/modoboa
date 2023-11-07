@@ -1,7 +1,6 @@
 """Core API related tests."""
 
 import copy
-import datetime
 import getpass
 import oath
 from unittest import mock
@@ -14,7 +13,7 @@ from django.utils.http import urlsafe_base64_encode
 from django_rq import get_worker, get_queue
 
 from modoboa.admin import factories
-from modoboa.core import models, jobs
+from modoboa.core import models
 from modoboa.core.tests import utils
 from modoboa.lib.tests import ModoAPITestCase
 from rest_framework.authtoken.models import Token
