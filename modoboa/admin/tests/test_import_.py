@@ -83,14 +83,14 @@ domainalias; domalias1.com; domain1.com; True
     @mock.patch("socket.getaddrinfo")
     def test_domain_import_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain import when MX check is enabled."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers", ))
         self.client.force_login(reseller)
         self.set_global_parameter("valid_mxs", "192.0.2.1 2001:db8::1")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
 
-        mock_query.side_effect = utils.mock_dns_query_result
-        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         f = ContentFile(
             b"domain; test3.com; 100; 1; True", name="domains.csv")
         resp = self.client.post(
