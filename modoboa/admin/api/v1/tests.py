@@ -75,6 +75,8 @@ class DomainAPITestCase(ModoAPITestCase):
     @mock.patch("socket.getaddrinfo")
     def test_create_domain_with_mx_check(self, mock_getaddrinfo, mock_query):
         """Check domain creation when MX check is activated."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         self.set_global_parameter("enable_admin_limits", False, app="limits")
         self.set_global_parameter("valid_mxs", "192.0.2.1 2001:db8::1")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
@@ -84,8 +86,6 @@ class DomainAPITestCase(ModoAPITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
         url = reverse("v1:domain-list")
-        mock_query.side_effect = utils.mock_dns_query_result
-        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         response = self.client.post(
             url, {"name": "no-mx.example.com", "quota": 0,
                   "default_mailbox_quota": 10}
