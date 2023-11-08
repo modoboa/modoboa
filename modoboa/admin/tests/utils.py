@@ -36,7 +36,7 @@ _DNE_MX_RECORD = MX("IN", "MX", 10, Name(
 _MX_RECORDS = [_MX_RECORD_1]
 _IP_SET_RECORDS = [RRset()]
 
-_IPV4_RECORD_REDIS = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("127.0.0.1", settings.REDIS_PORT))
+_IPV4_RECORD_REDIS = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("127.0.0.1", int(settings.REDIS_PORT)))
 _IPV4_RECORD_1 = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("192.0.2.1", 25))
 _IPV4_RECORD_2 = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("192.0.2.2", 25))
 _IPV6_RECORD = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("2001:db8::1", 25))
