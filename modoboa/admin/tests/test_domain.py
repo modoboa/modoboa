@@ -210,6 +210,9 @@ class DomainTestCase(ModoTestCase):
     @mock.patch("socket.getaddrinfo")
     def test_create_and_check_mx(self, mock_getaddrinfo, mock_query):
         """Check for authorized MX record."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
+
         reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers", ))
         self.client.force_login(reseller)
@@ -218,8 +221,6 @@ class DomainTestCase(ModoTestCase):
         self.set_global_parameter("valid_mxs", "192.0.2.1 2001:db8::1")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
 
-        mock_query.side_effect = utils.mock_dns_query_result
-        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         values = {
             "name": "no-mx.example.com", "quota": 0,
             "default_mailbox_quota": 0,
