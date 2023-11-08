@@ -227,7 +227,7 @@ def get_domain_mx_list(domain):
         mx_domain = dns_answer.exchange.to_unicode(
             omit_final_dot=True, idna_codec=IDNA_2008_UTS_46)
         rtypes = ["A"]
-        if param_tools.get_global_parameter("enable_ipv6_checks", app="admin"):
+        if param_tools.get_global_parameter("enable_ipv6_mx_checks", app="admin"):
             rtypes.append("AAAA")
         for rtype in rtypes:
             ip_answers = get_dns_records(mx_domain, rtype, resolver)
