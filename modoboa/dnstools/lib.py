@@ -45,7 +45,7 @@ def get_dmarc_record(domain):
 def _get_simple_record(name):
     """We just want to know if name is declared."""
     rtypes = ["A", "CNAME"]
-    if param_tools.get_global_parameter("enable_IPV6_checks", app="admin"):
+    if param_tools.get_global_parameter("enable_ipv6_mx_checks", app="admin"):
         rtypes.append("AAAA")
     for rdtype in rtypes:
         records = admin_lib.get_dns_records(name, rdtype)

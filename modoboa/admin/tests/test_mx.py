@@ -179,7 +179,7 @@ class MXTestCase(ModoTestCase):
         mock_query.side_effect = utils.mock_dns_query_result
         mock_ip_address.side_effect = utils.mock_ip_address_result
         localconfig = core_models.LocalConfig.objects.first()
-        localconfig.parameters.set_value("enable_ipv6_checks", True, "admin")
+        localconfig.parameters.set_value("enable_ipv6_mx_checks", True, "admin")
         localconfig.save()
         with LogCapture("modoboa.admin") as log:
             get_domain_mx_list("test3.com")
@@ -189,7 +189,7 @@ class MXTestCase(ModoTestCase):
                 % "mx3.example.com")
         )
         localconfig = core_models.LocalConfig.objects.first()
-        localconfig.parameters.set_value("enable_ipv6_checks", False, "admin")
+        localconfig.parameters.set_value("enable_ipv6_mx_checks", False, "admin")
         localconfig.save()
         with LogCapture("modoboa.admin") as log2:
             get_domain_mx_list("test3.com")

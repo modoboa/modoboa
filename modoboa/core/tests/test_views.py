@@ -51,7 +51,7 @@ SETTINGS_SAMPLE = {
     "core-ldap_admin_groups": "",
     "core-ldap_groups_search_base": "",
     "admin-enable_mx_checks": "True",
-    "admin-enable_ipv6_checks": "True",
+    "admin-enable_ipv6_mx_checks": "True",
     "core-ldap_search_base": "",
     "admin-valid_mxs": "",
     "limits-deflt_user_domains_limit": "0",
@@ -265,6 +265,15 @@ sha512crypt is not one of the available choices."]},
         self.assertIn(
             "sms_ovh_application_secret", errors["form_errors"])
 
+    def test_mx_check_settings_clean(self):
+        settings = SETTINGS_SAMPLE.copy()
+        settings["admin-enable_mx_checks"] = False
+        url = reverse("core:parameters")
+        response = self.client.post(url, settings, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            param_tools.get_global_parameter("enable_ipv6_mx_checks", "admin")
+        )
 
 class UserSettings(param_forms.UserParametersForm):
     """Stupid user settings form."""

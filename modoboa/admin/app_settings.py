@@ -50,11 +50,11 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         )
     )
 
-    enable_ipv6_checks = YesNoField(
+    enable_ipv6_mx_checks = YesNoField(
         label=gettext_lazy("Enable IPV6 checks"),
         initial=True,
         help_text=gettext_lazy(
-            "Check if every domain has a valid AAAA record"
+            "Check if MX setup for ipv6 is valid"
         )
     )
 
@@ -202,7 +202,8 @@ class AdminParametersForm(param_forms.AdminParametersForm):
     # Visibility rules
     visibility_rules = {
         "valid_mxs": "enable_mx_checks=True",
-        "domains_must_have_authorized_mx": "enable_mx_checks=True"
+        "domains_must_have_authorized_mx": "enable_mx_checks=True",
+        "enable_ipv6_mx_checks": "enable_mx_checks=True"
     }
 
     def __init__(self, *args, **kwargs):
@@ -300,6 +301,8 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                 "valid_mxs",
                 _("Define at least one authorized network / address")
             )
+        if not cleaned_data.get("enable_mx_checks"):
+            cleaned_data["enable_ipv6_mx_checks"] = False
         return cleaned_data
 
 
@@ -330,10 +333,11 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
                     "does not use one of the defined addresses."
                 )
             }),
-            ("enable_ipv6_checks", {
+            ("enable_ipv6_mx_checks", {
                 "label": gettext_lazy("Enable IPV6 checks"),
+                "display": "enable_mx_checks=true",
                 "help_text": gettext_lazy(
-                    "Check if every domain has a valid IPV6 record"
+                    "Check if MX setup for ipv6 is valid"
                 )
             }),
             ("enable_spf_checks", {
