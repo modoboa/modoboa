@@ -37,7 +37,7 @@
     "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-standard": "^6.1.0",
     "@vue/test-utils": "^1.0.3",
-    "axios": "^0.21.2",
+    "axios": "^1.6.0",
     "chai": "^4.1.2",
     "easygettext": "^2.15.0",
     "eslint": "^7.32.0",
