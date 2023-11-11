@@ -476,7 +476,7 @@ msgstr "Alias för denna brevlåda. Ange endast en adress per ingång, tryck ENT
 
 #: admin/forms/account.py:262
 msgid "Sender addresses"
-msgstr "Avsändaradress"
+msgstr "Avsändaradress(er)"
 
 #: admin/forms/account.py:265
 msgid ""
