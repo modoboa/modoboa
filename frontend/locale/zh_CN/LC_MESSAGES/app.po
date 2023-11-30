@@ -68,7 +68,7 @@ msgstr "账户已创建"
 #: src/components/identities/IdentityList.vue:80
 #: src/components/identities/IdentityList.vue:162
 msgid "Account deleted"
-msgstr "删除账户"
+msgstr "账户已删除"
 
 #: src/views/identities/Account.vue:29 src/views/identities/Account.vue:64
 msgid "Account not found!"
