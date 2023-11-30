@@ -1477,12 +1477,12 @@ msgstr "提供商"
 #: src/components/imap_migration/ProviderCreationForm.vue:98
 #: src/components/imap_migration/ProviderCreationForm.vue:120
 msgid "Provider created"
-msgstr "已创建的提供商"
+msgstr "提供商已创建"
 
 #: src/components/imap_migration/ProvidersList.vue:30
 #: src/components/imap_migration/ProvidersList.vue:122
 msgid "Provider deleted"
-msgstr "已删除的提供商"
+msgstr "提供商已删除"
 
 #: src/components/imap_migration/ProviderGeneralForm.vue:3
 msgid "Provider name"
