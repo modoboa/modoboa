@@ -198,7 +198,7 @@ msgstr "已创建别名"
 #: src/components/identities/IdentityList.vue:54
 #: src/components/identities/IdentityList.vue:136
 msgid "Alias deleted"
-msgstr "删除别名"
+msgstr "已删除别名"
 
 #: src/components/identities/AliasForm.vue:30
 #: src/components/identities/AliasForm.vue:113
