@@ -1555,7 +1555,7 @@ msgstr "随机密码"
 
 #: src/components/domains/DomainDKIMKey.vue:8
 msgid "Raw format. Click to copy"
-msgstr "原始格式。点击复制"
+msgstr "点击复制原始格式。"
 
 #: src/components/user/ForwardForm.vue:4
 msgid "Recipient(s)"
