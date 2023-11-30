@@ -193,7 +193,7 @@ msgstr "别名"
 #: src/components/identities/AliasCreationForm.vue:86
 #: src/components/identities/AliasCreationForm.vue:108
 msgid "Alias created"
-msgstr "创建别名"
+msgstr "已创建别名"
 
 #: src/components/identities/IdentityList.vue:54
 #: src/components/identities/IdentityList.vue:136
