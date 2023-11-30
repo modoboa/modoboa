@@ -644,12 +644,12 @@ msgstr "您真的想删除所选身份吗？"
 #: src/components/identities/AliasGeneralForm.vue:31
 #: src/components/alarms/AlarmList.vue:97
 msgid "Domain"
-msgstr "域"
+msgstr "域名"
 
 #: src/components/identities/AccountRoleForm.vue:25
 #: src/components/identities/AccountRoleForm.vue:55
 msgid "Domain administrator"
-msgstr "域管理"
+msgstr "域名管理"
 
 #: src/components/domains/DomainAliasForm.vue:51
 #: src/components/domains/DomainAliasForm.vue:120
