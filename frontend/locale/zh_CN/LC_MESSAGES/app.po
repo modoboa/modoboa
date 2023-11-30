@@ -1180,7 +1180,7 @@ msgstr "历史信息"
 #: src/components/domains/DomainCreationForm.vue:95
 #: src/components/identities/AccountCreationForm.vue:108
 msgid "Message sending limit"
-msgstr "信息发送限制"
+msgstr "发信限制"
 
 #: src/components/domains/DomainSummary.vue:24
 msgid "messages"
