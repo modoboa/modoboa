@@ -183,7 +183,7 @@ msgstr "警报"
 
 #: src/components/alarms/AlarmList.vue:69
 msgid "Alarms deleted"
-msgstr "删除警报"
+msgstr "已删除警报"
 
 #: src/views/domains/Domains.vue:23 src/views/identities/Alias.vue:3
 #: src/views/identities/Identities.vue:23
