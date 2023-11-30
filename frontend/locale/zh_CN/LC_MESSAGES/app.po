@@ -649,7 +649,7 @@ msgstr "域"
 #: src/components/identities/AccountRoleForm.vue:25
 #: src/components/identities/AccountRoleForm.vue:55
 msgid "Domain administrator"
-msgstr "域名管理"
+msgstr "域管理"
 
 #: src/components/domains/DomainAliasForm.vue:51
 #: src/components/domains/DomainAliasForm.vue:120
