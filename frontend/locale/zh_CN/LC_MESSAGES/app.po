@@ -340,7 +340,7 @@ msgstr "如果文件中的密码未加密请选中此选项"
 #: src/components/domains/DomainAliasForm.vue:56
 #: src/components/domains/DomainAliasForm.vue:26
 msgid "Choose a domain"
-msgstr "选择一个域名"
+msgstr "选择一个域"
 
 #: src/components/identities/AccountRoleForm.vue:5
 msgid "Choose a role"
