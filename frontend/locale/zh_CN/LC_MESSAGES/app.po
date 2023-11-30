@@ -1360,7 +1360,7 @@ msgstr "已开启"
 
 #: src/views/alarms/Alarms.vue:3
 msgid "Opened alarms"
-msgstr "打开警报"
+msgstr "已打开警报"
 
 #: src/components/domains/DomainCreationForm.vue:52
 #: src/components/domains/DomainCreationForm.vue:111
