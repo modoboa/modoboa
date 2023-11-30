@@ -451,7 +451,7 @@ msgstr "当前密码"
 #: src/components/identities/AccountMailboxForm.vue:43
 #: src/components/identities/AccountMailboxForm.vue:26
 msgid "Daily message sending limit"
-msgstr "每日信息发送限制"
+msgstr "每日发信限制"
 
 #: src/components/domains/DomainSummary.vue:23
 #: src/components/identities/AccountSummary.vue:43
