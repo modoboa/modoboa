@@ -1040,9 +1040,7 @@ msgid ""
 "Install a soft token authenticator like FreeOTP or Google\n"
 "                Authenticator from your application repository and use that\n"
 "                app to scan this QR code."
-msgstr ""
-"安装软令牌验证器，如 FreeOTP 或 Google。\n"
-"Authenticator 等软令牌验证器，并使用该应用程序扫描此二维码。"
+msgstr "安装软令牌验证器，如 FreeOTP 或 Google Authenticator 等软令牌验证器，并使用该应用程序扫描此二维码。"
 
 #: src/components/admin/ComponentsInformationTable.vue:3
 msgid "Installed components"
