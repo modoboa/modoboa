@@ -243,7 +243,7 @@ msgstr "将 API 令牌复制到剪贴板"
 
 #: src/views/user/APISetup.vue:33 src/views/user/APISetup.vue:74
 msgid "API token created"
-msgstr "创建 API 令牌"
+msgstr "已创建 API 令牌"
 
 #: src/views/user/APISetup.vue:55 src/views/user/APISetup.vue:96
 msgid "API token deleted"
