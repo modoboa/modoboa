@@ -150,7 +150,7 @@ msgstr "管理员姓名"
 #: src/components/domains/AdministratorList.vue:60
 #: src/components/domains/AdministratorList.vue:128
 msgid "Administrator removed"
-msgstr "移除管理员"
+msgstr "已移除管理员"
 
 #: src/components/domains/AdministratorList.vue:5
 #: src/components/domains/DomainList.vue:114
