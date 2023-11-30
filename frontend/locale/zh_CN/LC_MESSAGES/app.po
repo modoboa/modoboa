@@ -247,7 +247,7 @@ msgstr "已创建 API 令牌"
 
 #: src/views/user/APISetup.vue:55 src/views/user/APISetup.vue:96
 msgid "API token deleted"
-msgstr "删除 API 令牌"
+msgstr "已删除 API 令牌"
 
 #: src/components/tools/TimeSerieChart.vue:19
 msgid "Apply"
