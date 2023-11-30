@@ -2050,7 +2050,7 @@ msgstr "您的 API 令牌尚未生成。"
 
 #: src/views/user/APISetup.vue:18
 msgid "Your API token is:"
-msgstr "您的 API 令牌是"
+msgstr "您的 API 令牌是："
 
 #: src/api/repository.js:38
 msgid "You are throttled, please try later."
