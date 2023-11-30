@@ -601,7 +601,7 @@ msgstr "该域似乎未启用 DMARC 支持。"
 #: src/components/domains/DomainCreationForm.vue:162
 #: src/components/domains/DomainCreationForm.vue:168
 msgid "DNS"
-msgstr "域名解析服务"
+msgstr "域名解析服务器"
 
 #: src/components/domains/DomainForm.vue:39
 msgid "DNS checks"
