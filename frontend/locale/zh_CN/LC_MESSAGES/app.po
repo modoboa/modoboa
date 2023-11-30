@@ -63,7 +63,7 @@ msgstr "账户"
 #: src/components/identities/AccountCreationForm.vue:138
 #: src/components/identities/AccountCreationForm.vue:190
 msgid "Account created"
-msgstr "创建账户"
+msgstr "账户已创建"
 
 #: src/components/identities/IdentityList.vue:80
 #: src/components/identities/IdentityList.vue:162
