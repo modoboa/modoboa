@@ -140,7 +140,7 @@ msgstr "管理域"
 #: src/components/domains/AdministratorList.vue:53
 #: src/components/domains/AdministratorList.vue:121
 msgid "Administrator added"
-msgstr "已添加的管理"
+msgstr "已添加的管理员"
 
 #: src/components/domains/DomainCreationForm.vue:55
 #: src/components/domains/DomainCreationForm.vue:108
