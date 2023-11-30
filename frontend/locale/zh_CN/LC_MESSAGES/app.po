@@ -203,7 +203,7 @@ msgstr "已删除别名"
 #: src/components/identities/AliasForm.vue:30
 #: src/components/identities/AliasForm.vue:113
 msgid "Alias updated"
-msgstr "更新别名"
+msgstr "已更新别名"
 
 #: src/components/identities/AccountAliasForm.vue:3
 #: src/components/identities/AliasRecipientForm.vue:3
