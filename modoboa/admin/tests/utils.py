@@ -43,7 +43,7 @@ _BAD_IP_RECORD = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("BAD", 25))
 _IP_RECORDS = [_IPV4_RECORD_1, _IPV6_RECORD]
 
 _POSSIBLE_DNS_RESULTS = {
-    "test3.com": [_MX_RECORD_2],
+    "test3.com": [_MX_RECORD_3],
     "no-mx.example.com": NoAnswer(),
     "does-not-exist.example.com": NXDOMAIN(),
     "timeout.example.com": Timeout(),
@@ -79,12 +79,20 @@ _POSSIBLE_IP_RESULTS = {
     "000.0.0.0": ValueError(),
 }
 
+_POSSIBLE_DNS_IPV6_RESULTS = {
+    settings.REDIS_HOST: socket.getaddrinfo(settings.REDIS_HOST, settings.REDIS_PORT),
+    "mx3.example.com": NoAnswer()
+    }
+
 
 def mock_dns_query_result(qname, *args, **kwargs):
     if "MX" in args:
         if qname in _POSSIBLE_DNS_RESULTS:
             return get_mock_dns_query_response(_POSSIBLE_DNS_RESULTS, qname)
         return _MX_RECORDS
+    elif "AAAA" in args:
+        if qname in _POSSIBLE_DNS_IPV6_RESULTS:
+            return get_mock_dns_query_response(_POSSIBLE_DNS_IPV6_RESULTS, qname)
     if qname in _POSSIBLE_DNS_RESULTS_NO_MX:
         return get_mock_dns_query_response(_POSSIBLE_DNS_RESULTS_NO_MX, qname)
     return _IP_SET_RECORDS

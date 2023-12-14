@@ -226,7 +226,10 @@ def get_domain_mx_list(domain):
     for dns_answer in dns_answers:
         mx_domain = dns_answer.exchange.to_unicode(
             omit_final_dot=True, idna_codec=IDNA_2008_UTS_46)
-        for rtype in ["A", "AAAA"]:
+        rtypes = ["A"]
+        if param_tools.get_global_parameter("enable_ipv6_mx_checks", app="admin"):
+            rtypes.append("AAAA")
+        for rtype in rtypes:
             ip_answers = get_dns_records(mx_domain, rtype, resolver)
             if not ip_answers:
                 continue
