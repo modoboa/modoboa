@@ -346,7 +346,7 @@ function defaultAjaxErrorHandler(event, jqxhr, settings) {
     } catch (x) {
         data = gettext("Internal error");
     }
-    $('body').notify('error', data);
+    $('body').notify('error', htmlEncode(data));
 }
 
 /**
