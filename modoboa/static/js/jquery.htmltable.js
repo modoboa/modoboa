@@ -54,28 +54,28 @@
             }
         },
 
-	/**
-	 * Set the row's state, cancel the change if the current state
-	 * and the new state are identical
-	 */
-	_set_select: function($row, selected) {
-	    var $input = $row.find(this.options.input_selector);
+	    /**
+	     * Set the row's state, cancel the change if the current state
+	     * and the new state are identical
+	     */
+	    _set_select: function($row, selected) {
+	        var $input = $row.find(this.options.input_selector);
 
-	    if (this.is_selected($row) == selected)
-		return; 
-	    $input.prop('checked', selected);
-	    if (selected) {
-		$row.addClass(this.options.row_selected_class);
+	        if (this.is_selected($row) == selected)
+		        return;
+	        $input.prop('checked', selected);
+	        if (selected) {
+		        $row.addClass(this.options.row_selected_class);
                 if (this.options.row_unselected_event !== undefined) {
                     this.options.row_unselected_event($row);
-		}
-	    } else {
-		$row.removeClass(this.options.row_selected_class);
+		        }
+	        } else {
+		        $row.removeClass(this.options.row_selected_class);
                 if (this.options.row_selected_event !== undefined) {
                     this.options.row_selected_event($row);
                 }
-	    }
-	},
+	        }
+	    },
 
         /**
          * Change the selection state of a given row.
@@ -90,27 +90,40 @@
             var $row = $(e.target).parents(this.options.row_selector);
 
             if (this.shift_pressed && this.last_selection) {
-		var select = !this.is_selected($row);
-                var itfunc = ($row.index() >= this.last_selection.index()) ? 
+		        var select = !this.is_selected($row);
+                var itfunc = ($row.index() >= this.last_selection.index()) ?
                     "next" : "prev";
-		var $cur_row;
-		
+		        var $cur_row;
+
                 for ($cur_row = this.last_selection;
-		     $cur_row.length;
-		     $cur_row = $cur_row[itfunc](this.options.row_selector)) {
+		             $cur_row.length;
+		             $cur_row = $cur_row[itfunc](this.options.row_selector)) {
                     this._set_select($cur_row, select);
                     if ($row.attr("id") == $cur_row.attr("id")) {
                         break;
                     }
                 }
-		this.last_selection = $row;
+		        this.last_selection = $row;
                 return;
             } else if (!this.options.keep_selection && !this.ctrl_pressed &&
-		       (!this.last_selection || !this.last_selection.is($row))) {
+		               (!this.last_selection || !this.last_selection.is($row))) {
                 this.clear_selection();
             }
             this.last_selection = $row;
             this._toggle_select($row);
+        },
+
+        /**
+         * Change the selection state of all rows.
+         */
+        toggleSelectAll: function(value) {
+            if (!value) {
+                this.clear_selection();
+            } else {
+                $(this.options.row_selector).each((index, row) => {
+                    this._set_select($(row), true);
+                });
+            }
         },
 
         /**
