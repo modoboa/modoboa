@@ -1,17 +1,25 @@
 """Core API related tests."""
 
 import copy
+import getpass
 import oath
 from unittest import mock
 
+from django.core.cache import cache
+from django.test import override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django_rq import get_worker, get_queue
 
 from modoboa.admin import factories
 from modoboa.core import models
+from modoboa.core.tests import utils
 from modoboa.lib.tests import ModoAPITestCase
 from rest_framework.authtoken.models import Token
+
+DOVEADM_TEST_PATH = utils.get_doveadm_test_path()
+DOVECOT_USER = getpass.getuser()
 
 CORE_SETTINGS = {
     "authentication_type": "local",
@@ -70,12 +78,23 @@ CORE_SETTINGS = {
 
 class ParametersAPITestCase(ModoAPITestCase):
 
+    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH],
+                       DOVECOT_USER=DOVECOT_USER)
     def test_update(self):
+        cache.delete("password_scheme_choice")
+        queue = get_queue("modoboa", is_async=False)
+        queue.empty()
+
         url = reverse("v2:parameter-detail", args=["core"])
         data = copy.copy(CORE_SETTINGS)
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+        get_worker("modoboa").work(burst=True)
+        self.assertIsNotNone(cache.get("password_scheme_choice"))
+        self.assertIn(('plain', 'plain (weak)'),
+                      cache.get("password_scheme_choice")
+        )
         # Modify SMS related settings
         data["sms_password_recovery"] = True
         resp = self.client.put(url, data, format="json")

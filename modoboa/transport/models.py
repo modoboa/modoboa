@@ -1,8 +1,8 @@
 """Transport models."""
 
-import jsonfield
 from reversion import revisions as reversion
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -17,7 +17,7 @@ class Transport(models.Model):
     service = models.CharField(_("service"), max_length=30)
     next_hop = models.CharField(_("next hop"), max_length=100, blank=True)
 
-    _settings = jsonfield.JSONField(default={})
+    _settings = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
 
     class Meta:
         ordering = ["pattern"]

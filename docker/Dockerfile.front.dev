@@ -1,6 +1,9 @@
-FROM node:16.10-alpine 
+FROM node:16.10-alpine
 
 ENV HOME=/home/node/
+
+RUN apk add --no-cache --update gettext \
+    && rm -rf /var/cache/apk/*
 
 WORKDIR $HOME
 

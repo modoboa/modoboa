@@ -233,12 +233,12 @@ class SettingsTestCase(ModoTestCase):
         settings = SETTINGS_SAMPLE.copy()
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
-        settings["core-password_scheme"] = "sha512crypt"
+        settings["core-password_scheme"] = "magic_password_scheme"
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
         compare(response.json(), {
             "form_errors": {"password_scheme": ["Select a valid choice. \
-sha512crypt is not one of the available choices."]},
+magic_password_scheme is not one of the available choices."]},
             "prefix": "core"
         })
         settings["core-password_scheme"] = "plain"

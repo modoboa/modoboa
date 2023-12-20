@@ -3,10 +3,14 @@
 import collections
 
 from django import forms
+from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth import password_validation
 from django.utils.translation import gettext as _, gettext_lazy
 
+from django_rq import get_queue
+
+from modoboa.core.jobs import job_retrieve_available_hashers
 from modoboa.core.password_hashers import get_dovecot_schemes
 from modoboa.core.password_hashers.base import PasswordHasher
 from modoboa.lib import fields as lib_fields
@@ -29,6 +33,23 @@ def enabled_applications():
             continue
         result.append((extension["name"], extension["label"]))
     return sorted(result, key=lambda e: e[0])
+
+
+def get_default_password_scheme():
+    available_schemes = get_dovecot_schemes()
+    return [
+        (hasher.name, gettext_lazy(hasher.label))
+        for hasher in PasswordHasher.get_password_hashers()
+        if hasher().scheme in available_schemes
+    ]
+
+
+def get_password_scheme():
+    available_schemes = cache.get("password_scheme_choice")
+    if available_schemes is None:
+        get_queue("modoboa").enqueue(job_retrieve_available_hashers)
+        return get_default_password_scheme()
+    return available_schemes
 
 
 class GeneralParametersForm(param_forms.AdminParametersForm):
@@ -73,7 +94,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
 
     default_password = forms.CharField(
         label=gettext_lazy("Default password"),
-        initial="password",
+        initial="ChangeMe1!",
         help_text=gettext_lazy(
             "Default password for automatically created accounts.")
     )
@@ -535,12 +556,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         self._add_visibilty_rules(
             sms_backends.get_all_backend_visibility_rules()
         )
-        available_schemes = get_dovecot_schemes()
-        self.fields["password_scheme"].choices = [
-            (hasher.name, gettext_lazy(hasher.label))
-            for hasher in PasswordHasher.get_password_hashers()
-            if hasher().scheme in available_schemes
-        ]
+        self.fields["password_scheme"].choices = get_password_scheme()
 
     def _add_dynamic_fields(self):
         new_fields = collections.OrderedDict()

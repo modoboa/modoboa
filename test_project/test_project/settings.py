@@ -225,6 +225,8 @@ SPECTACULAR_SETTINGS = {
 # MODOBOA_CUSTOM_LOGO = os.path.join(MEDIA_URL, "custom_logo.png")
 
 # DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
+DOVECOT_USER="root"
+
 
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
@@ -243,6 +245,18 @@ RQ_QUEUES = {
     'dkim': {
         'URL': REDIS_URL,
     },
+    'modoboa': {
+        'URL': REDIS_URL,
+    },
+}
+
+# CACHE
+
+CACHES = {
+    "default": {
+        "BACKEND": 'django.core.cache.backends.redis.RedisCache',
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}"
+    }
 }
 
 # Password validation
