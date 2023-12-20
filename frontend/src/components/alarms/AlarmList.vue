@@ -32,6 +32,7 @@
     :server-items-length="totalAlarms"
     :loading="loading"
     class="elevation-1"
+    :footer-props="customFooterProps"
     show-select
     >
     <template v-slot:item.status="{ item }">
@@ -91,6 +92,9 @@ export default {
   data () {
     return {
       alarms: [],
+      customFooterProps: {
+        'items-per-page-options': [25, 50, 100, 200]
+      },
       headers: [
         { text: this.$gettext('Triggered'), value: 'created' },
         { text: this.$gettext('Status'), value: 'status' },
