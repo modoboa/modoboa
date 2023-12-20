@@ -58,7 +58,7 @@ def get_dovecot_schemes():
             for scheme in schemes.split()]
 
 
-def cache_available_passowrd_hasher():
+def cache_available_password_hasher():
     available_schemes = get_dovecot_schemes()
     password_scheme_choice = [
         (hasher.name, hasher.label)
