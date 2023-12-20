@@ -262,7 +262,22 @@ RQ_QUEUES = {
         'PORT': REDIS_PORT,
         'DB': 0,
     },
+    'modoboa': {
+        'HOST': REDIS_HOST,
+        'PORT': REDIS_PORT,
+        'DB': 0,
+    },
 }
+
+# CACHE
+
+CACHES = {
+    "default": {
+        "BACKEND": 'django.core.cache.backends.redis.RedisCache',
+        "LOCATION": REDIS_URL
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

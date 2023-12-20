@@ -2,6 +2,7 @@
 Password hashers for Modoboa.
 """
 
+from django.core.cache import cache
 from django.conf import settings
 from django.utils.encoding import smart_str
 
@@ -10,7 +11,7 @@ from modoboa.core.password_hashers.advanced import (  # NOQA:F401
     ARGON2IDHasher, SSHAHasher
 )
 from modoboa.core.password_hashers.base import (  # NOQA:F401
-    CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher
+    CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher, PasswordHasher
 )
 from modoboa.lib.sysutils import doveadm_cmd
 
@@ -55,3 +56,15 @@ def get_dovecot_schemes():
 
     return ["{{{}}}".format(smart_str(scheme))
             for scheme in schemes.split()]
+
+
+def cache_available_password_hasher():
+    available_schemes = get_dovecot_schemes()
+    password_scheme_choice = [
+        (hasher.name, hasher.label)
+        for hasher in PasswordHasher.get_password_hashers()
+        if hasher().scheme in available_schemes
+        ]
+    cache.set("password_scheme_choice",
+              password_scheme_choice,
+              2592000)
