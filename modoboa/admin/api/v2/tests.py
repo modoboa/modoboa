@@ -535,7 +535,7 @@ class AliasViewSetTestCase(ModoAPITestCase):
 
         data = {"address": "alias@test.com"}
         resp = self.client.post(url, data, format="json")
-        self.assertEqual(resp.status_code, 409)
+        self.assertEqual(resp.status_code, 400)
 
         al_id = models.Alias.objects.get(address="alias@test.com").pk
         self.assertEqual(resp.json()["id"], al_id)

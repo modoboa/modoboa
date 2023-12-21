@@ -471,8 +471,10 @@ class AliasSerializer(serializers.ModelSerializer):
         try:
             local_part, self.domain = admin_models.validate_alias_address(
                 value, self.context["request"].user, instance=self.instance)
-        except (AliasExists, ValidationError) as err:
+        except ValidationError as err:
             raise serializers.ValidationError(err)
+        except AliasExists:
+            raise serializers.ValidationError(_("This alias already exists"))
         return value.lower()
 
     def create(self, validated_data):
