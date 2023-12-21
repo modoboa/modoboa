@@ -17,6 +17,7 @@ from modoboa.admin import models as admin_models
 from modoboa.core import (
     constants as core_constants, models as core_models, signals as core_signals
 )
+from modoboa.lib.exceptions import AliasExists
 from modoboa.lib import (
     email_utils, exceptions as lib_exceptions, fields as lib_fields,
     permissions, validators, web_utils
@@ -467,8 +468,11 @@ class AliasSerializer(serializers.ModelSerializer):
 
     def validate_address(self, value):
         """Check domain."""
-        local_part, self.domain = admin_models.validate_alias_address(
-            value, self.context["request"].user, instance=self.instance)
+        try:
+            local_part, self.domain = admin_models.validate_alias_address(
+                value, self.context["request"].user, instance=self.instance)
+        except (AliasExists, ValidationError) as err:
+            raise serializers.ValidationError(err)
         return value.lower()
 
     def create(self, validated_data):
