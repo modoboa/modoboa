@@ -469,7 +469,7 @@ class AliasSerializer(serializers.ModelSerializer):
         """Check domain."""
         local_part, self.domain = admin_models.validate_alias_address(
             value, self.context["request"].user, instance=self.instance)
-        return value
+        return value.lower()
 
     def create(self, validated_data):
         """Create appropriate objects."""
@@ -498,13 +498,13 @@ class SenderAddressSerializer(serializers.ModelSerializer):
 
     def validate_address(self, value):
         """Check domain."""
-        local_part, domain = email_utils.split_mailbox(value)
+        local_part, domain = email_utils.split_mailbox(value.lower())
         domain = admin_models.Domain.objects.filter(name=domain).first()
         user = self.context["request"].user
         if domain and not user.can_access(domain):
             raise serializers.ValidationError(
                 _("You don't have access to this domain."))
-        return value
+        return value.lower()
 
     def validate_mailbox(self, value):
         """Check permission."""

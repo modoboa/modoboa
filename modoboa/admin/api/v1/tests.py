@@ -678,6 +678,17 @@ class AliasAPITestCase(ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 
+    def test_create_duplicate_alias(self):
+        url = reverse("v1:alias-list")
+        response = self.client.post(url, self.ALIAS_DATA, format="json")
+        self.assertEqual(response.status_code, 201)
+
+        # Try with same address but different case
+        data = copy.deepcopy(self.ALIAS_DATA)
+        data["address"] = "ALIAS_fromapi@test.com"
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+
     def test_create_alias_as_domadmin(self):
         """As DomainAdmin, try to create a new alias."""
         self.client.credentials(
