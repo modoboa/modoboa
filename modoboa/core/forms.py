@@ -88,8 +88,11 @@ class ProfileForm(forms.ModelForm):
                 if newpassword != confirmation:
                     self.add_error("confirmation", _("Passwords mismatch"))
                 else:
-                    password_validation.validate_password(
-                        confirmation, self.instance)
+                    try:
+                        password_validation.validate_password(
+                            confirmation, self.instance)
+                    except forms.ValidationError as err:
+                        self.add_error("confirmation", err)
             else:
                 self.add_error("oldpassword", _("This field is required."))
         elif newpassword or confirmation:
