@@ -28,7 +28,7 @@ def validate_alias_address(
         address, creator, internal=False, instance=None, ignore_existing=False
         ):
     """Check if the given alias address can be created by creator."""
-    local_part, domain = split_mailbox(address)
+    local_part, domain = split_mailbox(address.lower())
     domain = Domain.objects.filter(name=domain).first()
     if domain is None:
         raise ValidationError(_("Domain not found."))

@@ -17,6 +17,7 @@ from modoboa.admin import models as admin_models
 from modoboa.core import (
     constants as core_constants, models as core_models, signals as core_signals
 )
+from modoboa.lib.exceptions import AliasExists
 from modoboa.lib import (
     email_utils, exceptions as lib_exceptions, fields as lib_fields,
     permissions, validators, web_utils
@@ -467,9 +468,14 @@ class AliasSerializer(serializers.ModelSerializer):
 
     def validate_address(self, value):
         """Check domain."""
-        local_part, self.domain = admin_models.validate_alias_address(
-            value, self.context["request"].user, instance=self.instance)
-        return value
+        try:
+            local_part, self.domain = admin_models.validate_alias_address(
+                value, self.context["request"].user, instance=self.instance)
+        except ValidationError as err:
+            raise serializers.ValidationError(err)
+        except AliasExists:
+            raise serializers.ValidationError(_("This alias already exists"))
+        return value.lower()
 
     def create(self, validated_data):
         """Create appropriate objects."""
@@ -498,13 +504,13 @@ class SenderAddressSerializer(serializers.ModelSerializer):
 
     def validate_address(self, value):
         """Check domain."""
-        local_part, domain = email_utils.split_mailbox(value)
+        local_part, domain = email_utils.split_mailbox(value.lower())
         domain = admin_models.Domain.objects.filter(name=domain).first()
         user = self.context["request"].user
         if domain and not user.can_access(domain):
             raise serializers.ValidationError(
                 _("You don't have access to this domain."))
-        return value
+        return value.lower()
 
     def validate_mailbox(self, value):
         """Check permission."""
