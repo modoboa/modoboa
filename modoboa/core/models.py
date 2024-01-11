@@ -456,8 +456,9 @@ class LocalConfig(models.Model):
 
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""
-        super(LocalConfig, self).__init__(*args, **kwargs)
-        self.parameters = param_tools.Manager("global", self._parameters)
+        super().__init__(*args, **kwargs)
+        if self.pk:
+            self.parameters = param_tools.Manager("global", self._parameters)
 
 
 class ExtensionUpdateHistory(models.Model):
