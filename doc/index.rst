@@ -6,7 +6,7 @@
 Modoboa documentation
 =====================
 
-.. image:: _static/modoboa_logo.png
+.. image:: _static/modoboa.svg
    :align: center
 
 Overview
