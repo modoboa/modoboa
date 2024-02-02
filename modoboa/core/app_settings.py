@@ -10,6 +10,8 @@ from django.utils.translation import gettext as _, gettext_lazy
 
 from django_rq import get_queue
 
+from redis.exceptions import ConnectionError
+
 from modoboa.core.jobs import job_retrieve_available_hashers
 from modoboa.core.password_hashers import get_dovecot_schemes
 from modoboa.core.password_hashers.base import PasswordHasher
@@ -45,11 +47,15 @@ def get_default_password_scheme():
 
 
 def get_password_scheme():
-    available_schemes = cache.get("password_scheme_choice")
-    if available_schemes is None:
-        get_queue("modoboa").enqueue(job_retrieve_available_hashers)
+    try:
+        available_schemes = cache.get("password_scheme_choice")
+        if available_schemes is None:
+            get_queue("modoboa").enqueue(job_retrieve_available_hashers)
+            return get_default_password_scheme()
+        return available_schemes
+    except ConnectionError:
+        # TODO : notification/email to admin
         return get_default_password_scheme()
-    return available_schemes
 
 
 class GeneralParametersForm(param_forms.AdminParametersForm):
