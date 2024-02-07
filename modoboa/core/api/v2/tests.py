@@ -10,10 +10,10 @@ from django.test import override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django_rq import get_worker, get_queue
 
-from modoboa.admin import factories
-from modoboa.core import models
+from modoboa.admin import (factories, models as admin_models,
+                           constants as admin_constants)
+from modoboa.core import models, constants
 from modoboa.core.tests import utils
 from modoboa.lib.tests import ModoAPITestCase
 from rest_framework.authtoken.models import Token
@@ -78,19 +78,18 @@ CORE_SETTINGS = {
 
 class ParametersAPITestCase(ModoAPITestCase):
 
+    def setUp(self):
+        super().setUp()
+        cache.delete("password_scheme_choice")
+
     @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH],
                        DOVECOT_USER=DOVECOT_USER)
     def test_update(self):
-        cache.delete("password_scheme_choice")
-        queue = get_queue("modoboa", is_async=False)
-        queue.empty()
-
         url = reverse("v2:parameter-detail", args=["core"])
         data = copy.copy(CORE_SETTINGS)
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
-        get_worker("modoboa").work(burst=True)
         self.assertIsNotNone(cache.get("password_scheme_choice"))
         self.assertIn(('plain', 'plain (weak)'),
                       cache.get("password_scheme_choice")
@@ -133,6 +132,50 @@ class ParametersAPITestCase(ModoAPITestCase):
         })
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
+
+    def test_doveadm_alarm(self):
+        """ Test that an alarm is opened, closed or reopened
+        depending on the result of the doveadm command for the password scheme
+        """
+        # Test case where doveadm command fails
+        url = reverse("v2:parameter-detail", args=["core"])
+        data = copy.copy(CORE_SETTINGS)
+        data["password_scheme"] = "plain"
+
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertIsNone(cache.get("password_scheme_choice"))
+        doveadm_alarm = admin_models.Alarm.objects.filter(
+            internal_name=constants.DOVEADM_PASS_SCHEME_ALARM)
+        self.assertEqual(doveadm_alarm.count(), 1)
+        cache.delete("job_cache_available_password_hasher")
+
+        with self.settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH],
+                           DOVECOT_USER=DOVECOT_USER):
+            # The command should work and close the alarm
+            resp = self.client.put(url, data, format="json")
+            self.assertEqual(resp.status_code, 200)
+
+            self.assertIsNotNone(cache.get("password_scheme_choice"))
+            doveadm_alarm = admin_models.Alarm.objects.filter(
+                internal_name=constants.DOVEADM_PASS_SCHEME_ALARM)
+            self.assertEqual(doveadm_alarm.count(), 1)
+            self.assertEqual(doveadm_alarm.first().status,
+                             admin_constants.ALARM_CLOSED)
+            cache.delete("job_cache_available_password_hasher")
+
+        # And lastly check that the alarm is reopened if the issue starts again
+        # Simulate that the cache has expired
+        cache.delete("password_scheme_choice")
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        doveadm_alarm = admin_models.Alarm.objects.filter(
+            internal_name=constants.DOVEADM_PASS_SCHEME_ALARM)
+        self.assertEqual(doveadm_alarm.count(), 1)
+        self.assertEqual(doveadm_alarm.first().status,
+                         admin_constants.ALARM_OPENED)
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
