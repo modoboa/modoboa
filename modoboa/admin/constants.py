@@ -44,3 +44,5 @@ ALARM_STATUSES = [
     (ALARM_OPENED, _("Opened")),
     (ALARM_CLOSED, _("Closed")),
 ]
+
+REDIS_ALARM = "redis_connection_error"

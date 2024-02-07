@@ -113,3 +113,5 @@ if settings.DEBUG:
     SMS_BACKENDS.insert(1, ("dummy", gettext_lazy("Dummy")))
 
 TFA_DEVICE_TOKEN_KEY = "otp_device_id"
+
+DOVEADM_PASS_SCHEME_ALARM = "doveadm_password_scheme_fail"
