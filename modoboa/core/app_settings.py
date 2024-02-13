@@ -8,13 +8,7 @@ from django.conf import settings
 from django.contrib.auth import password_validation
 from django.utils.translation import gettext as _, gettext_lazy
 
-from django_rq import get_queue
-
-from redis.exceptions import ConnectionError
-
-from modoboa.core.jobs import job_retrieve_available_hashers
-from modoboa.core.password_hashers import get_dovecot_schemes
-from modoboa.core.password_hashers.base import PasswordHasher
+from modoboa.core.password_hashers.utils import cache_available_password_hasher
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
     HorizontalRadioSelect, SeparatorField, YesNoField
@@ -37,25 +31,11 @@ def enabled_applications():
     return sorted(result, key=lambda e: e[0])
 
 
-def get_default_password_scheme():
-    available_schemes = get_dovecot_schemes()
-    return [
-        (hasher.name, gettext_lazy(hasher.label))
-        for hasher in PasswordHasher.get_password_hashers()
-        if hasher().scheme in available_schemes
-    ]
-
-
 def get_password_scheme():
-    try:
-        available_schemes = cache.get("password_scheme_choice")
-        if available_schemes is None:
-            get_queue("modoboa").enqueue(job_retrieve_available_hashers)
-            return get_default_password_scheme()
-        return available_schemes
-    except ConnectionError:
-        # TODO : notification/email to admin
-        return get_default_password_scheme()
+    available_schemes = cache.get("password_scheme_choice")
+    if available_schemes is None:
+        available_schemes = cache_available_password_hasher()
+    return available_schemes
 
 
 class GeneralParametersForm(param_forms.AdminParametersForm):

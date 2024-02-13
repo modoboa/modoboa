@@ -13,9 +13,8 @@ try:
 except ImportError:
     argon2 = None
 
-from modoboa.core.password_hashers import (
-    get_password_hasher, get_dovecot_schemes
-)
+from modoboa.core.password_hashers import get_password_hasher
+from modoboa.core.password_hashers.utils import get_dovecot_schemes
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
@@ -187,7 +186,7 @@ class AuthenticationTestCase(ModoTestCase):
             "DIGEST-MD5 PLAIN-MD4 PLAIN-MD5 LDAP-MD5 LANMAN NTLM OTP SKEY RPA "
             "PBKDF2 CRYPT SHA256-CRYPT SHA512-CRYPT"
         )
-        supported_schemes = get_dovecot_schemes()
+        supported_schemes = get_dovecot_schemes()[0]
         self.assertEqual(supported_schemes,
                          ["{MD5}",
                           "{MD5-CRYPT}",
@@ -224,12 +223,12 @@ class AuthenticationTestCase(ModoTestCase):
     @override_settings(DOVECOT_SUPPORTED_SCHEMES="SHA1 SHA512-CRYPT")
     def test_dovecot_supported_schemes_from_settings(self):
         """Validate dovecot supported schemes from the settings."""
-        supported_schemes = get_dovecot_schemes()
+        supported_schemes = get_dovecot_schemes()[0]
         self.assertEqual(supported_schemes, ["{SHA1}", "{SHA512-CRYPT}"])
 
     def test_dovecot_default_schemes(self):
         """Check default scheme if doveadm is not found."""
-        supported_schemes = get_dovecot_schemes()
+        supported_schemes = get_dovecot_schemes()[0]
         self.assertEqual(supported_schemes, ["{MD5-CRYPT}", "{PLAIN}"])
 
 

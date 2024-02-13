@@ -20,7 +20,8 @@ class Alarm(models.Model):
     """A simple alarm to attach to a domain and/or mailbox."""
 
     domain = models.ForeignKey(
-        "admin.Domain", on_delete=models.CASCADE, related_name="alarms")
+        "admin.Domain", on_delete=models.CASCADE, related_name="alarms",
+        blank=True, null=True)
     mailbox = models.ForeignKey(
         "admin.Mailbox", on_delete=models.SET_NULL,
         related_name="alarms",
