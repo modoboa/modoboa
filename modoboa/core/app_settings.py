@@ -8,11 +8,6 @@ from django.conf import settings
 from django.contrib.auth import password_validation
 from django.utils.translation import gettext as _, gettext_lazy
 
-from redis.exceptions import ConnectionError
-
-from modoboa.admin.models import Alarm
-from modoboa.admin.constants import REDIS_ALARM, ALARM_OPENED
-
 from modoboa.core.password_hashers.utils import cache_available_password_hasher
 from modoboa.lib import fields as lib_fields
 from modoboa.lib.form_utils import (
@@ -37,19 +32,10 @@ def enabled_applications():
 
 
 def get_password_scheme():
-    try:
-        available_schemes = cache.get("password_scheme_choice")
-        if available_schemes is None:
-            available_schemes = cache_available_password_hasher()
-        return available_schemes
-    except ConnectionError:
-        redis_alarm = Alarm.objects.filter(internal_name=REDIS_ALARM)
-        if redis_alarm.first() is None:
-            Alarm.objects.create(internal_name=REDIS_ALARM,
-                                 title="Redis seems misconfigured")
-        elif redis_alarm.first().status == ALARM_OPENED:
-            redis_alarm.first().reopen()
-        return cache_available_password_hasher(bypass_cache=True)
+    available_schemes = cache.get("password_scheme_choice")
+    if available_schemes is None:
+        available_schemes = cache_available_password_hasher()
+    return available_schemes
 
 
 class GeneralParametersForm(param_forms.AdminParametersForm):
