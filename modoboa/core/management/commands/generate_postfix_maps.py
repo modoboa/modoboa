@@ -46,10 +46,13 @@ class Command(BaseCommand):
             return
         with open(self.__checksums_file) as fp:
             for line in fp:
-                fname, dbtype, checksum = line.split(":")
-                self.__checksums[fname.strip()] = {
-                    "dbtype": dbtype, "checksum": checksum.strip()
-                }
+                try:
+                    fname, dbtype, checksum = line.split(":")
+                    self.__checksums[fname.strip()] = {
+                        "dbtype": dbtype, "checksum": checksum.strip()
+                    }
+                except ValueError:
+                    pass # Ignore incorrect checksum file lines
 
     def __register_map_files(self):
         """Load specified applications."""
@@ -121,12 +124,13 @@ query = {{ query|safe }}
             self, mapobject, destdir, context, force_overwrite=False):
         """Render a map file."""
         fullpath = os.path.join(destdir, mapobject.filename)
-        if os.path.exists(fullpath) and not force_overwrite:
+        if os.path.exists(fullpath) and mapobject.filename in self.__checksums \
+        and not force_overwrite:
             if not self.__check_file(fullpath):
                 print(
                     "Cannot upgrade '{}' map because it has been modified."
                     .format(mapobject.filename))
-                return self.__checksums[mapobject.filename]
+                return self.__checksums[mapobject.filename["checksum"]]
             mapcontent = utils.parse_map_file(fullpath)
             context = copy.deepcopy(context)
             context["dbtype"] = self.__checksums[mapobject.filename]["dbtype"]
