@@ -3,45 +3,45 @@ import repository from './repository'
 const resource = 'account'
 
 export default {
-  getMe () {
+  getMe() {
     return repository.get(`/${resource}/me/`)
   },
-  checkPassword (value) {
+  checkPassword(value) {
     return repository.post(`/${resource}/me/password/`, { password: value })
   },
-  verifyTFACode (code) {
+  verifyTFACode(code) {
     const payload = { code }
     return repository.post(`${resource}/tfa/verify/`, payload)
   },
-  startTFASetup () {
+  startTFASetup() {
     return repository.post(`${resource}/tfa/setup/`)
   },
-  getKeyForTFASetup () {
+  getKeyForTFASetup() {
     return repository.get(`${resource}/tfa/setup/key/`)
   },
-  finalizeTFASetup (pinCode) {
+  finalizeTFASetup(pinCode) {
     const payload = { pin_code: pinCode }
     return repository.post(`${resource}/tfa/setup/check/`, payload)
   },
-  disableTFA (data) {
+  disableTFA(data) {
     return repository.post(`${resource}/tfa/disable/`, data)
   },
-  resetRecoveryCodes (data) {
+  resetRecoveryCodes(data) {
     return repository.post(`${resource}/tfa/reset_codes/`, data)
   },
-  getForward () {
+  getForward() {
     return repository.get(`${resource}/forward/`)
   },
-  setForward (data) {
+  setForward(data) {
     return repository.post(`${resource}/forward/`, data)
   },
-  getAPIToken () {
+  getAPIToken() {
     return repository.get(`${resource}/api_token/`)
   },
-  createAPIToken () {
+  createAPIToken() {
     return repository.post(`${resource}/api_token/`)
   },
-  deleteAPIToken () {
+  deleteAPIToken() {
     return repository.delete(`${resource}/api_token/`)
-  }
+  },
 }

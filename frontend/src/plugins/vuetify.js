@@ -1,20 +1,36 @@
+/**
+ * plugins/vuetify.js
+ *
+ * Framework documentation: https://vuetifyjs.com`
+ */
+
+// Styles
 import '@mdi/font/css/materialdesignicons.css'
-import Vue from 'vue'
-import Vuetify from 'vuetify/lib'
+import 'vuetify/styles'
 
-Vue.use(Vuetify)
+// Composables
+import { createVuetify } from 'vuetify'
 
-export default new Vuetify({
+// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+export default createVuetify({
   theme: {
-    options: {
-      customProperties: true
-    },
     themes: {
       light: {
-        primary: '#046BF8',
-        secondary: '#F18429',
-        label: '#616161'
-      }
-    }
-  }
+        colors: {
+          primary: '#046BF8',
+          'primary-lighten-1': '#3688F9',
+          'primary-darken-1': '#0350BA',
+          secondary: '#F18429',
+          label: '#616161',
+        },
+      },
+    },
+  },
+  styles: { configFile: 'src/styles/settings.scss' },
+  defaults: {
+    VCard: {
+      class: 'pa-2',
+      VCardTitle: { class: 'd-flex', style: 'align-items: center;' },
+    },
+  },
 })

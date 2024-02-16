@@ -1,264 +1,319 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-
-import store from '@/store'
-
-import ParametersForm from '@/components/parameters/ParametersForm'
-
-Vue.use(VueRouter)
+// Composables
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores'
 
 const routes = [
   {
-    path: '/',
-    name: 'Dashboard',
-    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
     path: '/login',
-    name: 'Login',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue'),
-    meta: {
-      layoutTemplate: 'empty'
-    }
+    component: () => import('@/layouts/default/DefaultLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Login',
+        component: () => import('@/views/login/LoginView.vue'),
+      },
+      {
+        path: 'twofa',
+        name: 'TwoFA',
+        component: () => import('@/views/login/TwoFA.vue'),
+      },
+      {
+        path: 'password_recovery',
+        name: 'PasswordRecovery',
+        component: () => import('../views/login/PasswordRecoveryView.vue'),
+      },
+      {
+        path: 'password_recovery/confirm/:id?/:token?/',
+        name: 'PasswordRecoveryChangeForm',
+        component: () =>
+          import('../views/login/PasswordRecoveryChangeView.vue'),
+      },
+      {
+        path: 'password_recovery/sms_confirm',
+        name: 'PasswordRecoverySms',
+        component: () =>
+          import('../views/login/PasswordRecoverySmsTotpView.vue'),
+      },
+    ],
   },
   {
-    path: '/twofa',
-    name: 'TwoFA',
-    component: () => import('../views/TwoFA.vue'),
-    meta: {
-      layoutTemplate: 'empty'
-    }
+    path: '/admin',
+    component: () => import('@/layouts/dashboard/DashboardLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('@/views/Dashboard.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'domains',
+        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+        },
+        children: [
+          {
+            path: '',
+            name: 'DomainList',
+            component: () => import('@/views/admin/domains/DomainsView.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+          },
+          {
+            path: ':id',
+            name: 'DomainDetail',
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+            component: () => import('@/views/admin/domains/DomainView.vue'),
+          },
+          {
+            path: ':id/edit',
+            name: 'DomainEdit',
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+            component: () => import('@/views/admin/domains/DomainEditView.vue'),
+          },
+        ],
+      },
+      {
+        path: 'imap_migration',
+        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+        },
+        children: [
+          {
+            path: 'migrations',
+            name: 'MigrationsList',
+            component: () =>
+              import('@/views/admin/imap_migration/MigrationsView.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['Resellers', 'SuperAdmins'],
+            },
+          },
+          {
+            path: 'providers',
+            component: () => import('@/layouts/default/DefaultLayout.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['Resellers', 'SuperAdmins'],
+            },
+            children: [
+              {
+                path: '',
+                name: 'ProvidersList',
+                component: () =>
+                  import('@/views/admin/imap_migration/ProvidersView.vue'),
+                meta: {
+                  requiresAuth: true,
+                  allowedRoles: ['Resellers', 'SuperAdmins'],
+                },
+              },
+              {
+                path: 'providers/:id/edit',
+                name: 'ProviderEdit',
+                component: () =>
+                  import('@/views/admin/imap_migration/ProviderEditView.vue'),
+                meta: {
+                  requiresAuth: true,
+                  allowedRoles: ['Resellers', 'SuperAdmins'],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: 'identities',
+        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+        },
+        children: [
+          {
+            path: '',
+            name: 'Identities',
+            component: () =>
+              import('@/views/admin/identities/IdentitiesView.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+          },
+          {
+            path: 'accounts/:id',
+            name: 'AccountDetail',
+            component: () => import('@/views/admin/identities/AccountView.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+          },
+          {
+            path: 'accounts/:id/edit',
+            name: 'AccountEdit',
+            component: () =>
+              import('@/views/admin/identities/AccountEditView.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+          },
+          {
+            path: 'aliases/:id',
+            name: 'AliasDetail',
+            component: () => import('@/views/admin/identities/AliasView.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+          },
+          {
+            path: 'aliases/:id/edit',
+            name: 'AliasEdit',
+            component: () =>
+              import('@/views/admin/identities/AliasEditView.vue'),
+            meta: {
+              requiresAuth: true,
+              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+            },
+          },
+        ],
+      },
+      {
+        path: 'parameters/:app',
+        name: 'ParametersEdit',
+        component: () => import('@/views/admin/ParametersView.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['SuperAdmins'],
+        },
+      },
+      {
+        path: 'alarms',
+        name: 'Alarms',
+        component: () => import('@/views/admin/alarms/AlarmsView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'monitoring/statistics',
+        name: 'Statistics',
+        component: () => import('@/views/admin/monitoring/StatisticsView.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['SuperAdmins'],
+        },
+      },
+      {
+        path: 'monitoring/audit_trail',
+        name: 'AuditTrail',
+        component: () => import('@/views/admin/monitoring/AuditTrailView.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['SuperAdmins'],
+        },
+      },
+      {
+        path: 'monitoring/messages',
+        name: 'MessageLog',
+        component: () => import('@/views/admin/monitoring/MessagesView.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['DomainAdmins', 'SuperAdmins'],
+        },
+      },
+      {
+        path: 'information',
+        name: 'Information',
+        component: () => import('@/views/admin/InformationView.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['SuperAdmins'],
+        },
+      },
+    ],
   },
   {
-    path: '/domains',
-    name: 'DomainList',
-    component: () => import('../views/domains/Domains.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
+    path: '/account',
+    component: () => import('@/layouts/dashboard/DashboardLayout.vue'),
+    meta: { layout: 'account' },
+    children: [
+      {
+        path: 'api',
+        name: 'APISetup',
+        component: () => import('@/views/account/APISetupView.vue'),
+        meta: {
+          requiresAuth: true,
+          allowedRoles: ['SuperAdmins'],
+        },
+      },
+      {
+        path: 'profile',
+        name: 'UserProfile',
+        component: () => import('@/views/account/ProfileView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'security',
+        name: 'UserSecurity',
+        component: () => import('@/views/account/SecurityView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'forward',
+        name: 'UserForward',
+        component: () => import('@/views/account/ForwardView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
-    path: '/domains/:id',
-    name: 'DomainDetail',
-    component: () => import('../views/domains/Domain.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    redirect: { name: 'Dashboard', params: {} },
   },
-  {
-    path: '/domains/:id/edit',
-    name: 'DomainEdit',
-    component: () => import('../views/domains/DomainEdit.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/imap_migration/migrations',
-    name: 'MigrationsList',
-    component: () => import('../components/imap_migration/MigrationsList.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/imap_migration/providers',
-    name: 'ProvidersList',
-    component: () => import('../views/imap_migration/Providers.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/imap_migration/providers/:id/edit',
-    name: 'ProviderEdit',
-    component: () => import('../views/imap_migration/ProviderEdit.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/identities',
-    name: 'Identities',
-    component: () => import('../views/identities/Identities.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/identities/accounts/:id',
-    name: 'AccountDetail',
-    component: () => import('../views/identities/Account.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/identities/accounts/:id/edit',
-    name: 'AccountEdit',
-    component: () => import('../views/identities/AccountEdit.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/identities/aliases/:id',
-    name: 'AliasDetail',
-    component: () => import('../views/identities/Alias.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/identities/aliases/:id/edit',
-    name: 'AliasEdit',
-    component: () => import('../views/identities/AliasEdit.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/parameters/:app',
-    name: 'ParametersEdit',
-    component: ParametersForm,
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['SuperAdmins']
-    }
-  },
-  {
-    path: '/alarms',
-    name: 'Alarms',
-    component: () => import('../views/alarms/Alarms.vue'),
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/monitoring/statistics',
-    name: 'Statistics',
-    component: () => import('../views/monitoring/Statistics.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['SuperAdmins']
-    }
-  },
-  {
-    path: '/monitoring/audit_trail',
-    name: 'AuditTrail',
-    component: () => import('../views/monitoring/AuditTrail.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['SuperAdmins']
-    }
-  },
-  {
-    path: '/monitoring/messages',
-    name: 'MessageLog',
-    component: () => import('../views/monitoring/Messages.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['DomainAdmins', 'SuperAdmins']
-    }
-  },
-  {
-    path: '/information',
-    name: 'Information',
-    component: () => import('../views/admin/Information.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['SuperAdmins']
-    }
-  },
-  {
-    path: '/user/api',
-    name: 'APISetup',
-    component: () => import('../views/user/APISetup.vue'),
-    meta: {
-      requiresAuth: true,
-      allowedRoles: ['SuperAdmins'],
-      layout: 'user'
-    }
-  },
-  {
-    path: '/user/profile',
-    name: 'UserProfile',
-    component: () => import('../views/user/Profile.vue'),
-    meta: {
-      requiresAuth: true,
-      layout: 'user'
-    }
-  },
-  {
-    path: '/user/security',
-    name: 'UserSecurity',
-    component: () => import('../views/user/Security.vue'),
-    meta: {
-      requiresAuth: true,
-      layout: 'user'
-    }
-  },
-  {
-    path: '/user/forward',
-    name: 'UserForward',
-    component: () => import('../views/user/Forward.vue'),
-    meta: {
-      requiresAuth: true,
-      layout: 'user'
-    }
-  },
-  {
-    path: '/password_recovery',
-    name: 'PasswordRecoveryForm',
-    component: () => import('../views/user/PasswordRecoveryForm.vue')
-  },
-  {
-    path: '/password_recovery/confirm/:id?/:token?/',
-    name: 'PasswordRecoveryChangeForm',
-    component: () => import('../views/user/PasswordRecoveryChangeForm.vue')
-  },
-  {
-    path: '/password_recovery/sms_confirm',
-    name: 'PasswordRecoverySms',
-    component: () => import('../views/user/PasswordRecoverySmsTotpForm.vue')
-  }
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    store.dispatch('auth/initialize').then(() => {
-      if (!store.getters['auth/isAuthenticated']) {
+  if (to.meta.requiresAuth !== undefined) {
+    const authStore = useAuthStore()
+    authStore.initialize().then(() => {
+      if (!authStore.isAuthenticated) {
         next({ name: 'Login' })
       } else {
+        /*
         if (to.meta.allowedRoles !== undefined) {
-          if (to.meta.allowedRoles.indexOf(store.getters['auth/authUser'].role) === -1) {
+          if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
             next({ name: 'Dashboard' })
             return
           }
-        }
+        }*/
         next()
       }
     })

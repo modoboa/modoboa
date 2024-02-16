@@ -1,0 +1,12 @@
+import { createPinia } from 'pinia'
+
+export * from './auth.store'
+export * from './bus.store'
+export * from './domains.store'
+export * from './accounts.store'
+export * from './aliases.store'
+export * from './identities.store'
+export * from './parameters.store'
+export * from './providers.store'
+
+export default createPinia()

@@ -180,9 +180,9 @@ jobs:
         run: |
           sudo apt-get install gettext
           cd frontend
-          nvm install 14
+          nvm install 20
           yarn install
-          make translations
+          yarn gettext:compile
           yarn build
           cd ..
       - name: Build packages
