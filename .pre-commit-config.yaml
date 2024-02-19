@@ -1,0 +1,20 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/PyCQA/pylint
+    rev: 'v3.0.3'
+    hooks:
+    -   id: pylint
+-   repo: https://github.com/psf/black
+    rev: '24.2.0'
+    hooks:
+    -   id: black
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: 'v9.0.0-beta.0'
+    hooks:
+    -   id: eslint
+        files: \.(js|vue)$
+        types: [file]
+        additional_dependencies:
+        -   eslint
+        -   eslint-plugin-vue 
