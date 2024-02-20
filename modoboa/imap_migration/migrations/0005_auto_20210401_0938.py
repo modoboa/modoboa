@@ -7,18 +7,22 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('imap_migration', '0004_auto_20190207_0939'),
+        ("imap_migration", "0004_auto_20190207_0939"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='emailproviderdomain',
-            name='provider',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='domains', to='imap_migration.EmailProvider'),
+            model_name="emailproviderdomain",
+            name="provider",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="domains",
+                to="imap_migration.EmailProvider",
+            ),
         ),
         migrations.AlterField(
-            model_name='migration',
-            name='username',
+            model_name="migration",
+            name="username",
             field=models.CharField(max_length=254, unique=True),
         ),
     ]

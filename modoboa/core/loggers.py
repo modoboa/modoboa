@@ -7,6 +7,5 @@ class SQLHandler(logging.Handler):
         from .models import Log
 
         Log.objects.create(
-            message=record.getMessage(), level=record.levelname,
-            logger=record.name
+            message=record.getMessage(), level=record.levelname, logger=record.name
         )

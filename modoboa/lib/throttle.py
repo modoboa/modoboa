@@ -8,7 +8,7 @@ class UserDdosPerView(SimpleRateThrottle):
     applied on a per view basis for authentificated users.
     """
 
-    scope = 'ddos'
+    scope = "ddos"
 
     def get_cache_key(self, request, view):
         if request.user and request.user.is_authenticated:
@@ -16,8 +16,8 @@ class UserDdosPerView(SimpleRateThrottle):
         else:
             ident = self.get_ident(request)
         return self.cache_format % {
-            'scope': hash(resolve(request.path).url_name),
-            'ident': ident
+            "scope": hash(resolve(request.path).url_name),
+            "ident": ident,
         }
 
 
@@ -27,18 +27,18 @@ class UserLesserDdosUser(UserDdosPerView):
     applied on a per view basis for authentificated users.
     """
 
-    scope = 'ddos_lesser'
+    scope = "ddos_lesser"
 
 
 class LoginThrottle(SimpleRateThrottle):
     """Custom throttle to reset the cache counter on success."""
 
-    scope = 'login'
+    scope = "login"
 
     def get_cache_key(self, request, view):
         return self.cache_format % {
-            'scope': self.scope,
-            'ident': self.get_ident(request)
+            "scope": self.scope,
+            "ident": self.get_ident(request),
         }
 
     def reset_cache(self, request):
@@ -48,17 +48,17 @@ class LoginThrottle(SimpleRateThrottle):
 
 class PasswordResetRequestThrottle(LoginThrottle):
 
-    scope = 'password_recovery_request'
+    scope = "password_recovery_request"
 
 
 class PasswordResetTotpThrottle(LoginThrottle):
 
-    scope = 'password_recovery_totp_check'
+    scope = "password_recovery_totp_check"
 
 
 class PasswordResetApplyThrottle(LoginThrottle):
 
-    scope = 'password_recovery_apply'
+    scope = "password_recovery_apply"
 
 
 class GetThrottleViewsetMixin:
@@ -72,8 +72,14 @@ class GetThrottleViewsetMixin:
 
         throttles = [UserRateThrottle()]
         actions = [
-            "list", "retrieve", "validate", "dns_detail", "me",
-            "dns_detail", "applications", "structure"
+            "list",
+            "retrieve",
+            "validate",
+            "dns_detail",
+            "me",
+            "dns_detail",
+            "applications",
+            "structure",
         ]
         if self.action in actions:
             throttles.append(UserLesserDdosUser())

@@ -43,8 +43,16 @@ from ... import models
 rrdstep = 60
 xpoints = 540
 points_per_sample = 3
-variables = ["sent", "recv", "bounced", "reject", "spam", "virus",
-             "size_sent", "size_recv"]
+variables = [
+    "sent",
+    "recv",
+    "bounced",
+    "reject",
+    "spam",
+    "virus",
+    "size_sent",
+    "size_recv",
+]
 
 
 class LogParser:
@@ -73,10 +81,9 @@ class LogParser:
         # set up regular expression
         self._date_expressions = [
             r"(?P<month>\w+)\s+(?P<day>\d+)\s+(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)(?P<eol>.*)",  # noqa
-            r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)\.\d+\+\d+:\d+(?P<eol>.*)"  # noqa
+            r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)\.\d+\+\d+:\d+(?P<eol>.*)",  # noqa
         ]
-        self._date_expressions = [
-            re.compile(v) for v in self._date_expressions]
+        self._date_expressions = [re.compile(v) for v in self._date_expressions]
         self.date_expr = None
         self._regex = {
             "line": r"\s+([-\w\.]+)\s+(\w+)/?(\w*)[[](\d+)[]]:\s+(.*)",
@@ -91,14 +98,13 @@ class LogParser:
             "rmilter_msg_done": r"msg done: queue_id: <(?P<queue_id>[^>]+)>; message id: <(?P<message_id>[^>]+)>.*; from: <(?P<from>[^>]+)>; rcpt: <(?P<rcpt>[^>]+)>.*; spam scan: (?P<action>[^;]+); virus scan:",  # noqa
             "rmilter_spam": r"mlfi_eom: (rejecting spam|add spam header to message according to spamd action)",  # noqa
             "rmilter_virus": r"mlfi_eom:.* virus found",
-            "rmilter_greylist": (
-                r"GREYLIST\([0-9]+\.[0-9]{2}\)\[greylisted[^\]]*\]")
+            "rmilter_greylist": (r"GREYLIST\([0-9]+\.[0-9]{2}\)\[greylisted[^\]]*\]"),
         }
         self._regex = {k: re.compile(v) for k, v in self._regex.items()}
         self._srs_regex = {
             "detect_srs": "^SRS[01][+-=]",
             "reverse_srs0": r"^SRS0[+-=]\S+=\S{2}=(\S+)=(\S+)\@\S+$",
-            "reverse_srs1": r"^SRS1[+-=]\S+=\S+==\S+=\S{2}=(\S+)=(\S+)\@\S+$"
+            "reverse_srs1": r"^SRS1[+-=]\S+=\S+==\S+=\S{2}=(\S+)=(\S+)\@\S+$",
         }
         self._srs_regex = {
             k: re.compile(v, re.IGNORECASE) for k, v in self._srs_regex.items()
@@ -192,7 +198,7 @@ class LogParser:
         """
         ds_type = "ABSOLUTE"
         rows = xpoints / points_per_sample
-        realrows = int(rows * 1.1)    # ensure that the full range is covered
+        realrows = int(rows * 1.1)  # ensure that the full range is covered
         day_steps = int(3600 * 24 / (rrdstep * rows))
         week_steps = day_steps * 7
         month_steps = week_steps * 5
@@ -209,10 +215,7 @@ class LogParser:
                 params += ["RRA:%s:0.5:%s:%s" % (cf, step, realrows)]
 
         # With those setup, we can now created the RRD
-        rrdtool.create(str(fname),
-                       "--start", str(m),
-                       "--step", str(rrdstep),
-                       *params)
+        rrdtool.create(str(fname), "--start", str(m), "--step", str(rrdstep), *params)
         return m
 
     def add_datasource_to_rrd(self, fname, dsname):
@@ -326,14 +329,13 @@ class LogParser:
         :param month: the month of the current record beeing parsed
         :return: an integer
         """
-        month = time.strptime(month, "%b").tm_mon if not month.isdigit() \
-            else int(month)
+        month = time.strptime(month, "%b").tm_mon if not month.isdigit() else int(month)
         if self.curmonth == 1 and month != self.curmonth:
             return self.__year - 1
         return self.__year
 
     def is_srs_forward(self, mail_address):
-        """ Check if mail address has been mangled by SRS
+        """Check if mail address has been mangled by SRS
 
         Sender Rewriting Scheme (SRS) modifies mail adresses so that they
         always end in a local domain.
@@ -344,7 +346,7 @@ class LogParser:
         return self._srs_regex["detect_srs"].match(mail_address) is not None
 
     def reverse_srs(self, mail_address):
-        """ Try to unwind a mail address rewritten by SRS
+        """Try to unwind a mail address rewritten by SRS
 
         Sender Rewriting Scheme (SRS) modifies mail adresses so that they
         always end in a local domain. Common Postfix implementations of SRS
@@ -354,8 +356,7 @@ class LogParser:
         :return a str
         """
         m = self._srs_regex["reverse_srs0"].match(mail_address)
-        m = self._srs_regex["reverse_srs1"].match(mail_address) \
-            if m is None else m
+        m = self._srs_regex["reverse_srs1"].match(mail_address) if m is None else m
 
         if m is not None:
             return "%s@%s" % m.group(2, 1)
@@ -363,7 +364,7 @@ class LogParser:
             return mail_address
 
     def _parse_amavis(self, log, host, pid, subprog):
-        """ Parse an Amavis log entry.
+        """Parse an Amavis log entry.
 
         :param str log: logged message
         :param str host: hostname
@@ -384,7 +385,7 @@ class LogParser:
         return False
 
     def _parse_rmilter(self, log, host, pid, subprog):
-        """ Parse an Rmilter log entry.
+        """Parse an Rmilter log entry.
 
         :param str log: logged message
         :param str host: hostname
@@ -400,24 +401,18 @@ class LogParser:
         # Virus check must come before spam check due to pattern similarity.
         m = self._regex["rmilter_virus"].match(msg)
         if m is not None:
-            self.workdict[workdict_key] = {
-                "action": "virus"
-            }
+            self.workdict[workdict_key] = {"action": "virus"}
             return True
         m = self._regex["rmilter_spam"].match(msg)
         if m is not None:
-            self.workdict[workdict_key] = {
-                "action": "spam"
-            }
+            self.workdict[workdict_key] = {"action": "spam"}
             return True
 
         # Greylisting
         if self.greylist:
             m = self._regex["rmilter_greylist"].search(msg)
             if m is not None:
-                self.workdict[workdict_key] = {
-                    "action": "greylist"
-                }
+                self.workdict[workdict_key] = {"action": "greylist"}
                 return True
 
         # Gather information about message sender and queue ID
@@ -434,7 +429,7 @@ class LogParser:
         return False
 
     def _parse_postfix(self, log, host, pid, subprog):
-        """ Parse a log entry generated by Postfix.
+        """Parse a log entry generated by Postfix.
 
         :param str log: logged message
         :param str host: hostname
@@ -452,10 +447,8 @@ class LogParser:
             m = self._regex["reject"].match(msg)
             dom = m.group(1) if m is not None else None
             if dom in self.domains:
-                condition = (
-                    self.greylist and (
-                        "Greylisted" in msg or
-                        (subprog == "postscreen" and " 450 " in msg))
+                condition = self.greylist and (
+                    "Greylisted" in msg or (subprog == "postscreen" and " 450 " in msg)
                 )
                 if condition:
                     self.inc_counter(dom, "greylist")
@@ -474,7 +467,7 @@ class LogParser:
         if m is not None:
             self.workdict[queue_id] = {
                 "from": self.reverse_srs(m.group(1)),
-                "size": int(m.group(2))
+                "size": int(m.group(2)),
             }
             return True
 
@@ -484,12 +477,12 @@ class LogParser:
             return False
         (msg_to, msg_status) = m.groups()
         if queue_id not in self.workdict:
-            self._dprint("[parser] inconsistent mail (%s: %s), skipping"
-                         % (queue_id, msg_to))
+            self._dprint(
+                "[parser] inconsistent mail (%s: %s), skipping" % (queue_id, msg_to)
+            )
             return True
         if msg_status not in variables:
-            self._dprint("[parser] unsupported status %s, skipping"
-                         % msg_status)
+            self._dprint("[parser] unsupported status %s, skipping" % msg_status)
             return True
 
         # orig_to is optional.
@@ -500,15 +493,11 @@ class LogParser:
         from_domain = split_mailbox(self.workdict[queue_id]["from"])[1]
         if from_domain is not None and from_domain in self.domains:
             self.inc_counter(from_domain, "sent")
-            self.inc_counter(from_domain, "size_sent",
-                             self.workdict[queue_id]["size"])
+            self.inc_counter(from_domain, "size_sent", self.workdict[queue_id]["size"])
 
         # Handle local "to" domains.
         to_domain = None
-        condition = (
-            msg_orig_to is not None and
-            not self.is_srs_forward(msg_orig_to)
-        )
+        condition = msg_orig_to is not None and not self.is_srs_forward(msg_orig_to)
         if condition:
             to_domain = split_mailbox(msg_orig_to)[1]
         if to_domain is None:
@@ -516,8 +505,7 @@ class LogParser:
 
         if msg_status == "sent":
             self.inc_counter(to_domain, "recv")
-            self.inc_counter(to_domain, "size_recv",
-                             self.workdict[queue_id]["size"])
+            self.inc_counter(to_domain, "size_recv", self.workdict[queue_id]["size"])
         else:
             self.inc_counter(to_domain, msg_status)
 
@@ -525,26 +513,25 @@ class LogParser:
         cur_dt = datetime.fromtimestamp(self.orig_ts)
         tz = timezone.get_current_timezone()
         cur_dt = cur_dt.replace(tzinfo=tz)
-        condition = (
-            last_message and (
-                cur_dt < last_message.date or
-                (cur_dt == last_message.date and
-                 models.Maillog.objects.filter(
-                     date=cur_dt, queue_id=queue_id).exists())
+        condition = last_message and (
+            cur_dt < last_message.date
+            or (
+                cur_dt == last_message.date
+                and models.Maillog.objects.filter(
+                    date=cur_dt, queue_id=queue_id
+                ).exists()
             )
         )
         if not condition:
             if from_domain in self.domains:
                 from_domain = Domain.objects.filter(
-                    Q(name=from_domain) |
-                    Q(domainalias__name=from_domain)
+                    Q(name=from_domain) | Q(domainalias__name=from_domain)
                 ).first()
             else:
                 from_domain = None
             if to_domain in self.domains:
                 to_domain = Domain.objects.filter(
-                    Q(name=to_domain) |
-                    Q(domainalias__name=to_domain)
+                    Q(name=to_domain) | Q(domainalias__name=to_domain)
                 ).first()
             else:
                 to_domain = None
@@ -559,7 +546,7 @@ class LogParser:
                 size=self.workdict[queue_id]["size"],
                 status=msg_status,
                 from_domain=from_domain,
-                to_domain=to_domain
+                to_domain=to_domain,
             )
 
         return True
@@ -582,8 +569,7 @@ class LogParser:
             if not parser(log, host, pid, subprog):
                 self._dprint("[parser] ignoring %r log: %r" % (prog, log))
         except AttributeError:
-            self._dprint(
-                "[parser] no log handler for \"{}\": {}".format(prog, log))
+            self._dprint('[parser] no log handler for "{}": {}'.format(prog, log))
 
     def process(self):
         """Process the log file.
@@ -611,14 +597,21 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command line."""
         parser.add_argument(
-            "--logfile", default=None,
-            help="postfix log in syslog format", metavar="FILE")
+            "--logfile",
+            default=None,
+            help="postfix log in syslog format",
+            metavar="FILE",
+        )
         parser.add_argument(
-            "--verbose", default=False, action="store_true",
-            dest="verbose", help="Set verbose mode")
+            "--verbose",
+            default=False,
+            action="store_true",
+            dest="verbose",
+            help="Set verbose mode",
+        )
         parser.add_argument(
-            "--debug", default=False, action="store_true",
-            help="Set debug mode")
+            "--debug", default=False, action="store_true", help="Set debug mode"
+        )
 
     def can_start(self):
         """Check if another process is already running or not."""
@@ -643,11 +636,10 @@ class Command(BaseCommand):
             sys.exit(2)
         if options["logfile"] is None:
             options["logfile"] = param_tools.get_global_parameter(
-                "logfile", app="maillog")
-        greylist = param_tools.get_global_parameter(
-            "greylist", raise_exception=False)
+                "logfile", app="maillog"
+            )
+        greylist = param_tools.get_global_parameter("greylist", raise_exception=False)
         p = LogParser(
-            options, param_tools.get_global_parameter("rrd_rootdir"),
-            None, greylist
+            options, param_tools.get_global_parameter("rrd_rootdir"), None, greylist
         )
         p.process()

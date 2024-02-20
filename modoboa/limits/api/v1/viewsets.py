@@ -11,10 +11,11 @@ from . import serializers
 
 
 class ResourcesViewSet(
-        GetThrottleViewsetMixin,
-        mixins.RetrieveModelMixin,
-        mixins.UpdateModelMixin,
-        viewsets.GenericViewSet):
+    GetThrottleViewsetMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
     """Resources viewset."""
 
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
@@ -25,8 +26,9 @@ class ResourcesViewSet(
         user = self.request.user
         ids = list(
             user.objectaccess_set.filter(
-                content_type=ContentType.objects.get_for_model(user))
-            .values_list("object_id", flat=True))
+                content_type=ContentType.objects.get_for_model(user)
+            ).values_list("object_id", flat=True)
+        )
         if not user.is_superuser and user.pk in ids:
             ids.remove(user.pk)
         return core_models.User.objects.filter(pk__in=ids)

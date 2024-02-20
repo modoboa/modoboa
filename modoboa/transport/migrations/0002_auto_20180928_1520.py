@@ -5,13 +5,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('transport', '0001_initial'),
+        ("transport", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='transport',
-            name='pattern',
-            field=models.CharField(db_index=True, max_length=253, unique=True, verbose_name='pattern'),
+            model_name="transport",
+            name="pattern",
+            field=models.CharField(
+                db_index=True, max_length=253, unique=True, verbose_name="pattern"
+            ),
         ),
     ]

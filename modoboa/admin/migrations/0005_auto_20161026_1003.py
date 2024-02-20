@@ -5,18 +5,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0004_auto_20160914_0907'),
+        ("admin", "0004_auto_20160914_0907"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='alias',
-            name='description',
-            field=models.TextField(blank=True, verbose_name='Description'),
+            model_name="alias",
+            name="description",
+            field=models.TextField(blank=True, verbose_name="Description"),
         ),
         migrations.AlterField(
-            model_name='alias',
-            name='expire_at',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Expire at'),
+            model_name="alias",
+            name="expire_at",
+            field=models.DateTimeField(blank=True, null=True, verbose_name="Expire at"),
         ),
     ]

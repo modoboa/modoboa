@@ -22,25 +22,25 @@ ADMIN_GROUPS = [
 ]
 
 LANGUAGES = (
-    ("br", u"breton"),
-    ("cs", u"čeština"),
-    ("de", u"deutsch"),
-    ("en", u"english"),
-    ("el", u"ελληνικά"),
-    ("es", u"español"),
+    ("br", "breton"),
+    ("cs", "čeština"),
+    ("de", "deutsch"),
+    ("en", "english"),
+    ("el", "ελληνικά"),
+    ("es", "español"),
     ("fi", "Suomalainen"),
-    ("fr", u"français"),
-    ("it", u"italiano"),
-    ("ja", u"日本の"),
-    ("nl", u"nederlands"),
-    ("pt", u"português"),
-    ("pt-br", u"português (BR)"),
-    ("pl", u"polski"),
-    ("ro", u"Română"),
-    ("ru", u"русский"),
-    ("sv", u"svenska"),
-    ("tr", u"türk"),
-    ("zh-hant", u"中文（台灣）"),
+    ("fr", "français"),
+    ("it", "italiano"),
+    ("ja", "日本の"),
+    ("nl", "nederlands"),
+    ("pt", "português"),
+    ("pt-br", "português (BR)"),
+    ("pl", "polski"),
+    ("ro", "Română"),
+    ("ru", "русский"),
+    ("sv", "svenska"),
+    ("tr", "türk"),
+    ("zh-hant", "中文（台灣）"),
 )
 
 
@@ -52,12 +52,12 @@ LDAP_GROUP_TYPES = (
 LDAP_SECURE_MODES = [
     ("none", gettext_lazy("No")),
     ("starttls", "STARTTLS"),
-    ("ssl", "SSL/TLS")
+    ("ssl", "SSL/TLS"),
 ]
 
 LDAP_AUTH_METHODS = [
     ("searchbind", gettext_lazy("Search and bind")),
-    ("directbind", gettext_lazy("Direct bind"))
+    ("directbind", gettext_lazy("Direct bind")),
 ]
 
 PERMISSIONS = {
@@ -101,7 +101,7 @@ PERMISSIONS = {
         ["admin", "domainalias", "add_domainalias"],
         ["admin", "domainalias", "change_domainalias"],
         ["admin", "domainalias", "delete_domainalias"],
-    ]
+    ],
 }
 
 SMS_BACKENDS = [

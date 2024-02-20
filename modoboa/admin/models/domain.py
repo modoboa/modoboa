@@ -23,47 +23,54 @@ from . import mixins
 class Domain(mixins.MessageLimitMixin, AdminObject):
     """Mail domain."""
 
-    name = models.CharField(gettext_lazy("name"), max_length=253, unique=True,
-                            help_text=gettext_lazy("The domain name"))
+    name = models.CharField(
+        gettext_lazy("name"),
+        max_length=253,
+        unique=True,
+        help_text=gettext_lazy("The domain name"),
+    )
     quota = models.PositiveIntegerField(
         default=0,
     )
     default_mailbox_quota = models.PositiveIntegerField(
-        verbose_name=gettext_lazy("Default mailbox quota"),
-        default=0
+        verbose_name=gettext_lazy("Default mailbox quota"), default=0
     )
     message_limit = models.PositiveIntegerField(
         gettext_lazy("Message sending limit"),
-        null=True, blank=True,
-        help_text=gettext_lazy(
-            "Number of messages this domain can send per day"
-        )
+        null=True,
+        blank=True,
+        help_text=gettext_lazy("Number of messages this domain can send per day"),
     )
     enabled = models.BooleanField(
         gettext_lazy("enabled"),
         help_text=gettext_lazy("Check to activate this domain"),
-        default=True
+        default=True,
     )
     type = models.CharField(default="domain", max_length=20)  # NOQA:A003
     enable_dns_checks = models.BooleanField(
-        gettext_lazy("Enable DNS checks"), default=True,
-        help_text=gettext_lazy("Check to enable DNS checks for this domain")
+        gettext_lazy("Enable DNS checks"),
+        default=True,
+        help_text=gettext_lazy("Check to enable DNS checks for this domain"),
     )
 
     transport = models.OneToOneField(
-        "transport.Transport", null=True, on_delete=models.SET_NULL)
+        "transport.Transport", null=True, on_delete=models.SET_NULL
+    )
 
     enable_dkim = models.BooleanField(
         gettext_lazy("Enable DKIM signing"),
         help_text=gettext_lazy(
             "If you activate this feature, a DKIM key will be "
-            "generated for this domain."),
-        default=False
+            "generated for this domain."
+        ),
+        default=False,
     )
     dkim_key_selector = models.CharField(max_length=30, default="modoboa")
     dkim_key_length = models.PositiveIntegerField(
-        gettext_lazy("Key length"), choices=constants.DKIM_KEY_LENGTHS,
-        blank=True, null=True
+        gettext_lazy("Key length"),
+        choices=constants.DKIM_KEY_LENGTHS,
+        blank=True,
+        null=True,
     )
     dkim_public_key = models.TextField(blank=True)
     dkim_private_key_path = models.CharField(max_length=254, blank=True)
@@ -94,9 +101,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
     @property
     def identities_count(self) -> int:
         """Total number of identities in this domain."""
-        return (
-            self.mailbox_set.count() +
-            self.alias_set.filter(internal=False).count())
+        return self.mailbox_set.count() + self.alias_set.filter(internal=False).count()
 
     @property
     def opened_alarms_count(self) -> int:
@@ -111,12 +116,14 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
                 label = dt[1]
         result = [{"name": self.type, "label": label, "type": "dom"}]
         if self.transport:
-            result.append({
-                "name": self.transport.service,
-                "label": self.transport.service,
-                "type": "srv",
-                "color": "info"
-            })
+            result.append(
+                {
+                    "name": self.transport.service,
+                    "label": self.transport.service,
+                    "type": "srv",
+                    "color": "info",
+                }
+            )
         return result
 
     @property
@@ -128,7 +135,8 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         return User.objects.filter(
             is_superuser=False,
             objectaccess__content_type__model="domain",
-            objectaccess__object_id=self.pk)
+            objectaccess__object_id=self.pk,
+        )
 
     @property
     def aliases(self):
@@ -165,7 +173,10 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         errors = []
         if config["enable_mx_checks"] and not self.mxrecord_set.has_valids():
             errors.append("mx")
-        if config["enable_dnsbl_checks"] and self.dnsblresult_set.blacklisted().exists():
+        if (
+            config["enable_dnsbl_checks"]
+            and self.dnsblresult_set.blacklisted().exists()
+        ):
             errors.append("dnsbl")
         if config["enable_spf_checks"]:
             if self.spf_record is None or not self.spf_record.is_valid:
@@ -225,8 +236,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             return 0
         if not self.mailbox_set.exists():
             return 0
-        return self.mailbox_set.aggregate(
-            total=models.Sum("quota"))["total"]
+        return self.mailbox_set.aggregate(total=models.Sum("quota"))["total"]
 
     @cached_property
     def allocated_quota_in_percent(self):
@@ -268,14 +278,15 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         split_record = []
         while record:
             if len(record) > 74:
-                split_record.append("  \"%s\"" % record[:74])
+                split_record.append('  "%s"' % record[:74])
                 record = record[74:]
             else:
-                split_record.append("  \"%s\"" % record)
+                split_record.append('  "%s"' % record)
                 break
         record = "\n".join(split_record)
         return "{}._domainkey.{}. IN TXT (\n{})".format(
-            self.dkim_key_selector, self.name, record)
+            self.dkim_key_selector, self.name, record
+        )
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
@@ -285,7 +296,8 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         from modoboa.lib.permissions import grant_access_to_object
 
         core_signals.can_create_object.send(
-            sender=self.__class__, context=self, object_type="domain_admins")
+            sender=self.__class__, context=self, object_type="domain_admins"
+        )
         grant_access_to_object(account, self)
         for mb in self.mailbox_set.all():
             if mb.user.has_perm("admin.add_domain"):
@@ -315,9 +327,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         """Store current data if domain is renamed."""
         # We check that the instance exists to use m2m relationship
         if self.pk and self.oldname != self.name:
-            self.old_mail_homes = {
-                mb.id: mb.mail_home for mb in self.mailbox_set.all()
-            }
+            self.old_mail_homes = {mb.id: mb.mail_home for mb in self.mailbox_set.all()}
         if self.old_dkim_key_length != self.dkim_key_length:
             self.dkim_public_key = ""
             self.dkim_private_key_path = ""
@@ -359,38 +369,36 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         self.name = row[1].strip().lower()
         if Domain.objects.filter(name=self.name).exists():
             raise Conflict
-        domains_must_have_authorized_mx = (
-            param_tools.get_global_parameter("domains_must_have_authorized_mx")
+        domains_must_have_authorized_mx = param_tools.get_global_parameter(
+            "domains_must_have_authorized_mx"
         )
         if domains_must_have_authorized_mx and not user.is_superuser:
             if not lib.domain_has_authorized_mx(self.name):
                 raise BadRequest(
-                    _("{}: no authorized MX record found for domain")
-                    .format(self.name)
+                    _("{}: no authorized MX record found for domain").format(self.name)
                 )
         try:
             self.quota = int(row[2].strip())
         except ValueError:
-            raise BadRequest(
-                _("{}: invalid quota value for domain")
-                .format(self.name)
-            )
+            raise BadRequest(_("{}: invalid quota value for domain").format(self.name))
         try:
             self.default_mailbox_quota = int(row[3].strip())
         except ValueError:
             raise BadRequest(
-                _("{}: invalid default mailbox quota value for domain")
-                .format(self.name)
+                _("{}: invalid default mailbox quota value for domain").format(
+                    self.name
+                )
             )
         if self.quota != 0 and self.default_mailbox_quota > self.quota:
             raise BadRequest(
-                _("{}: default mailbox quota cannot be greater than domain "
-                  "quota").format(self.name)
+                _(
+                    "{}: default mailbox quota cannot be greater than domain " "quota"
+                ).format(self.name)
             )
-        self.enabled = (row[4].strip().lower() in ["true", "1", "yes", "y"])
+        self.enabled = row[4].strip().lower() in ["true", "1", "yes", "y"]
         core_signals.can_create_object.send(
-            sender=self.__class__, context=user, klass=Domain,
-            instance=self)
+            sender=self.__class__, context=user, klass=Domain, instance=self
+        )
         self.save(creator=user)
 
     def to_csv_rows(self):
@@ -401,7 +409,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
                 force_str(self.name),
                 self.quota,
                 self.default_mailbox_quota,
-                self.enabled
+                self.enabled,
             ]
         ]
         for dalias in self.domainalias_set.all():

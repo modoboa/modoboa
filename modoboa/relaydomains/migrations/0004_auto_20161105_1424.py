@@ -16,18 +16,18 @@ def move_dates(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('relaydomains', '0003_auto_20170116_1508'),
+        ("relaydomains", "0003_auto_20170116_1508"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='relaydomain',
-            name='creation',
+            model_name="relaydomain",
+            name="creation",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='relaydomain',
-            name='last_modification',
+            model_name="relaydomain",
+            name="last_modification",
             field=models.DateTimeField(null=True),
         ),
         migrations.RunPython(move_dates),

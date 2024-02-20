@@ -7,8 +7,7 @@ from django.views import generic
 from .. import models
 
 
-class MXDomainDetailView(
-        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+class MXDomainDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """View to display MX records."""
 
     model = models.Domain
@@ -18,20 +17,19 @@ class MXDomainDetailView(
     def get_queryset(self):
         """Add some prefetching."""
         return (
-            super(MXDomainDetailView, self).get_queryset()
-            .prefetch_related("mxrecord_set"))
+            super(MXDomainDetailView, self)
+            .get_queryset()
+            .prefetch_related("mxrecord_set")
+        )
 
     def get_context_data(self, **kwargs):
         """Add extra variables."""
         context = super(MXDomainDetailView, self).get_context_data(**kwargs)
-        context.update({
-            "title": _("MX records of {}").format(self.object.name)
-        })
+        context.update({"title": _("MX records of {}").format(self.object.name)})
         return context
 
 
-class DNSBLDomainDetailView(
-        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+class DNSBLDomainDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """View to display DNSBL summary."""
 
     model = models.Domain
@@ -41,13 +39,13 @@ class DNSBLDomainDetailView(
     def get_queryset(self):
         """Add some prefetching."""
         return (
-            super(DNSBLDomainDetailView, self).get_queryset()
-            .prefetch_related("dnsblresult_set"))
+            super(DNSBLDomainDetailView, self)
+            .get_queryset()
+            .prefetch_related("dnsblresult_set")
+        )
 
     def get_context_data(self, **kwargs):
         """Add extra variables."""
         context = super(DNSBLDomainDetailView, self).get_context_data(**kwargs)
-        context.update({
-            "title": _("DNSBL summary for {}").format(self.object.name)
-        })
+        context.update({"title": _("DNSBL summary for {}").format(self.object.name)})
         return context

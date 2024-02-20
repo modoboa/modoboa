@@ -36,39 +36,41 @@ class ParametersViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name='id', location=OpenApiParameter.PATH,
-                description='A registered application name',
-                type=str, required=True
+                name="id",
+                location=OpenApiParameter.PATH,
+                description="A registered application name",
+                type=str,
+                required=True,
             ),
         ],
-        responses=serializers.AppParametersSerializer
+        responses=serializers.AppParametersSerializer,
     )
     def retrieve(self, request, pk: str):
         """Return all parameters for given app."""
         parameters = request.localconfig.parameters.get_values_dict(pk)
-        serializer = tools.registry.get_serializer_class("global", pk)(
-            parameters)
-        result = serializers.AppParametersSerializer({
-            "label": tools.registry.get_label("global", pk),
-            "params": serializer.data
-        })
+        serializer = tools.registry.get_serializer_class("global", pk)(parameters)
+        result = serializers.AppParametersSerializer(
+            {"label": tools.registry.get_label("global", pk), "params": serializer.data}
+        )
         return response.Response(result.data)
 
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name='id', location=OpenApiParameter.PATH,
-                description='A registered application name',
-                type=str, required=True
+                name="id",
+                location=OpenApiParameter.PATH,
+                description="A registered application name",
+                type=str,
+                required=True,
             ),
         ]
     )
     def update(self, request, pk: str):
         """Save parameters for given app."""
         serializer = tools.registry.get_serializer_class("global", pk)(
-            data=request.data)
+            data=request.data
+        )
         serializer.is_valid(raise_exception=True)
-        request.localconfig.parameters.set_values(
-            serializer.validated_data, app=pk)
+        request.localconfig.parameters.set_values(serializer.validated_data, app=pk)
         request.localconfig.save(update_fields=["_parameters"])
         return response.Response()

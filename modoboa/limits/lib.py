@@ -43,9 +43,7 @@ def allocate_resources_from_user(limit, user, value):
     """
     ol = user.userobjectlimit_set.get(name=limit.name)
     if value == -1 and ol.max_value != -1:
-        raise BadLimitValue(
-            _("You're not allowed to define unlimited values")
-        )
+        raise BadLimitValue(_("You're not allowed to define unlimited values"))
 
     if limit.max_value > -1:
         value -= limit.max_value

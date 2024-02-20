@@ -19,7 +19,8 @@ from ...lib import rfc_6266_content_disposition
 class PDFCredentialView(APIView):
 
     permission_classes = (
-        permissions.IsAuthenticated, permissions.DjangoModelPermissions,
+        permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
     )
 
     serializer_class = GetAccountCredentialsSerializer
@@ -33,7 +34,8 @@ class PDFCredentialView(APIView):
         """View to download a document."""
         data = {"account_id": kwargs["account_id"]}
         serializer = GetAccountCredentialsSerializer(
-            data=data, context={'request': request})
+            data=data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

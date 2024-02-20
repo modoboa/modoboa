@@ -5,48 +5,48 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0006_auto_20161104_1900'),
-        ('relaydomains', '0005_auto_20161105_1426'),
+        ("admin", "0006_auto_20161104_1900"),
+        ("relaydomains", "0005_auto_20161105_1426"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='alias',
-            name='dates',
+            model_name="alias",
+            name="dates",
         ),
         migrations.RemoveField(
-            model_name='domain',
-            name='dates',
+            model_name="domain",
+            name="dates",
         ),
         migrations.RemoveField(
-            model_name='domainalias',
-            name='dates',
+            model_name="domainalias",
+            name="dates",
         ),
         migrations.RemoveField(
-            model_name='mailbox',
-            name='dates',
+            model_name="mailbox",
+            name="dates",
         ),
         migrations.AlterField(
-            model_name='alias',
-            name='last_modification',
+            model_name="alias",
+            name="last_modification",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='domain',
-            name='last_modification',
+            model_name="domain",
+            name="last_modification",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='domainalias',
-            name='last_modification',
+            model_name="domainalias",
+            name="last_modification",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='mailbox',
-            name='last_modification',
+            model_name="mailbox",
+            name="last_modification",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.DeleteModel(
-            name='ObjectDates',
+            name="ObjectDates",
         ),
     ]

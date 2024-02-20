@@ -16,16 +16,21 @@ def next_period(period):
     """Return next period."""
     current = period.split("-")
     if int(current[1]) == 52:
-        week0 = datetime.datetime.strptime("{}-0-1".format(int(current[0]) + 1 ), "%Y-%W-%w")
-        week1 = datetime.datetime.strptime("{}-1-1".format(int(current[0]) + 1 ), "%Y-%W-%w")
+        week0 = datetime.datetime.strptime(
+            "{}-0-1".format(int(current[0]) + 1), "%Y-%W-%w"
+        )
+        week1 = datetime.datetime.strptime(
+            "{}-1-1".format(int(current[0]) + 1), "%Y-%W-%w"
+        )
         week52 = datetime.datetime.strptime("{}-52-1".format(current[0]), "%Y-%W-%w")
-        if week0 == week52 or week0 == week1 :
-            parts = (int(current[0]) + 1, 1 )
+        if week0 == week52 or week0 == week1:
+            parts = (int(current[0]) + 1, 1)
         else:
-            parts = (int(current[0]) + 1, 0 )
+            parts = (int(current[0]) + 1, 0)
     else:
-        parts = (current[0], int(current[1]) + 1 )
+        parts = (current[0], int(current[1]) + 1)
     return mark_safe("{}-{}".format(parts[0], parts[1]))
+
 
 @register.simple_tag
 def previous_period(period):
@@ -35,18 +40,20 @@ def previous_period(period):
         week0 = datetime.datetime.strptime("{}-0-1".format(current[0]), "%Y-%W-%w")
         week1 = datetime.datetime.strptime("{}-1-1".format(current[0]), "%Y-%W-%w")
         if week0 == week1:
-            parts = (int(current[0]) - 1, 52 )
+            parts = (int(current[0]) - 1, 52)
         else:
-            parts = (current[0], 0 )
+            parts = (current[0], 0)
     elif int(current[1]) == 0:
         week0 = datetime.datetime.strptime("{}-0-1".format(current[0]), "%Y-%W-%w")
-        week52 = datetime.datetime.strptime("{}-52-1".format(int(current[0]) - 1 ), "%Y-%W-%w")
+        week52 = datetime.datetime.strptime(
+            "{}-52-1".format(int(current[0]) - 1), "%Y-%W-%w"
+        )
         if week0 == week52:
-            parts = (int(current[0]) - 1, 51 )
+            parts = (int(current[0]) - 1, 51)
         else:
-            parts = (int(current[0]) - 1, 52 )
+            parts = (int(current[0]) - 1, 52)
     else:
-        parts = (current[0], int(current[1]) - 1 )
+        parts = (current[0], int(current[1]) - 1)
     return mark_safe("{}-{}".format(parts[0], parts[1]))
 
 
@@ -55,7 +62,8 @@ def domain_sorted_items(domain_dict):
     """Return a list of tuples ordered alphabetically by domain names."""
     if isinstance(domain_dict, dict):
         sorted_domain_dict = OrderedDict(
-            sorted(domain_dict.items(), key=lambda t: t[0]))
+            sorted(domain_dict.items(), key=lambda t: t[0])
+        )
         unresolved_label = _("Not resolved")
         unresolved = sorted_domain_dict.pop(unresolved_label, None)
         if unresolved:

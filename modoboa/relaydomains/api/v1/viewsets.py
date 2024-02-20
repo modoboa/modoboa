@@ -9,17 +9,21 @@ from modoboa.lib.viewsets import RevisionModelMixin
 from . import serializers
 
 
-class RelayDomainViewSet(GetThrottleViewsetMixin, RevisionModelMixin, viewsets.ModelViewSet):
+class RelayDomainViewSet(
+    GetThrottleViewsetMixin, RevisionModelMixin, viewsets.ModelViewSet
+):
     """RelayDomain viewset."""
 
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    permission_classes = [
+        IsAuthenticated,
+        DjangoModelPermissions,
+    ]
     serializer_class = serializers.RelayDomainSerializer
 
     def get_queryset(self):
         """Filter queryset based on current user."""
-        return (
-            admin_models.Domain.objects.get_for_admin(self.request.user)
-            .filter(type="relaydomain")
+        return admin_models.Domain.objects.get_for_admin(self.request.user).filter(
+            type="relaydomain"
         )
 
     def perform_destroy(self, instance):

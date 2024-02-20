@@ -23,8 +23,7 @@ class Curve:
     """
 
     def __init__(self, dsname, color, legend, cfunc="AVERAGE"):
-        """Constructor.
-        """
+        """Constructor."""
         self.dsname = dsname
         self.color = color
         self.legend = legend
@@ -40,10 +39,9 @@ class Curve:
             param_tools.get_global_parameter("rrd_rootdir"), "%s.rrd" % rrdfile
         )
         return [
-            'DEF:%s=%s:%s:%s' %
-            (self.dsname, rrdfile, self.dsname, self.cfunc),
-            'CDEF:%(ds)spm=%(ds)s,UN,0,%(ds)s,IF,60,*' % {"ds": self.dsname},
-            'XPORT:%spm:"%s"' % (self.dsname, self.legend)
+            "DEF:%s=%s:%s:%s" % (self.dsname, rrdfile, self.dsname, self.cfunc),
+            "CDEF:%(ds)spm=%(ds)s,UN,0,%(ds)s,IF,60,*" % {"ds": self.dsname},
+            'XPORT:%spm:"%s"' % (self.dsname, self.legend),
         ]
 
 
@@ -82,15 +80,15 @@ class Graphic:
             dpath = output.strip()
         else:
             known_paths = getattr(
-                settings, "RRDTOOL_LOOKUP_PATH",
-                ("/usr/bin/rrdtool", "/usr/local/bin/rrdtool")
+                settings,
+                "RRDTOOL_LOOKUP_PATH",
+                ("/usr/bin/rrdtool", "/usr/local/bin/rrdtool"),
             )
             for fpath in known_paths:
                 if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
                     dpath = fpath
         if dpath is None:
-            raise exceptions.InternalError(
-                _("Failed to locate rrdtool binary."))
+            raise exceptions.InternalError(_("Failed to locate rrdtool binary."))
         return smart_str(dpath)
 
     def export(self, rrdfile, start, end):
@@ -98,27 +96,27 @@ class Graphic:
         result = []
         cmdargs = []
         for curve in self._curves:
-            result += [{
-                "name": str(curve.legend),
-                "backgroundColor": curve.color, "data": []
-            }]
+            result += [
+                {"name": str(curve.legend), "backgroundColor": curve.color, "data": []}
+            ]
             cmdargs += curve.to_rrd_command_args(rrdfile)
         code = 0
 
         cmd = "{} xport --json -t --start {} --end {} ".format(
-            self.rrdtool_binary, str(start), str(end))
+            self.rrdtool_binary, str(start), str(end)
+        )
         cmd += " ".join(cmdargs)
         code, output = exec_cmd(smart_bytes(cmd))
         if code:
             return []
 
         xport = json.loads(output)
-        for row in xport['data']:
+        for row in xport["data"]:
             timestamp = int(row[0])
-            date = datetime.datetime.fromtimestamp(timestamp).isoformat(sep=' ')
-            for (vindex, value) in enumerate(row[1:]):
-                result[vindex]['data'].append(
-                    {'x': date, 'y': value, 'timestamp': timestamp}
+            date = datetime.datetime.fromtimestamp(timestamp).isoformat(sep=" ")
+            for vindex, value in enumerate(row[1:]):
+                result[vindex]["data"].append(
+                    {"x": date, "y": value, "timestamp": timestamp}
                 )
 
         return result
@@ -159,7 +157,7 @@ class GraphicSet(object):
             if graphic is None or graphic == graph.display_name:
                 result[graph.display_name] = {
                     "title": str(graph.title),
-                    "series": graph.export(rrdfile, start, end)
+                    "series": graph.export(rrdfile, start, end),
                 }
         return result
 
@@ -167,7 +165,7 @@ class GraphicSet(object):
 class AverageTraffic(Graphic):
     """Average traffic."""
 
-    title = gettext_lazy('Average traffic (msgs/min)')
+    title = gettext_lazy("Average traffic (msgs/min)")
 
     # Curve definitions
     sent = Curve("sent", "lawngreen", gettext_lazy("sent messages"))
@@ -182,10 +180,16 @@ class AverageTraffic(Graphic):
     def __init__(self, greylist=False):
         if greylist:
             self.greylist = Curve(
-                "greylist", "dimgrey", gettext_lazy("greylisted messages"))
+                "greylist", "dimgrey", gettext_lazy("greylisted messages")
+            )
             self.order = [
-                "reject", "greylist", "bounced", "recv", "sent", "virus",
-                "spam"
+                "reject",
+                "greylist",
+                "bounced",
+                "recv",
+                "sent",
+                "virus",
+                "spam",
             ]
         super().__init__()
 
@@ -193,13 +197,11 @@ class AverageTraffic(Graphic):
 class AverageTrafficSize(Graphic):
     """Average traffic size."""
 
-    title = gettext_lazy('Average normal traffic size (bytes/min)')
+    title = gettext_lazy("Average normal traffic size (bytes/min)")
 
     # Curve definitions
     size_recv = Curve("size_recv", "orange", gettext_lazy("received size"))
-    size_sent = Curve(
-        "size_sent", "mediumturquoise", gettext_lazy("sent size")
-    )
+    size_sent = Curve("size_sent", "mediumturquoise", gettext_lazy("sent size"))
 
 
 class MailTraffic(GraphicSet):
@@ -232,8 +234,7 @@ class MailTraffic(GraphicSet):
         results = list(
             chain(
                 admin_models.Domain.objects.filter(name__startswith=pattern),
-                admin_models.DomainAlias.objects.filter(
-                    name__startswith=pattern)
+                admin_models.DomainAlias.objects.filter(name__startswith=pattern),
             )
         )
         if len(results) != 1:
@@ -252,8 +253,7 @@ class AccountCreationGraphic(Graphic):
 
     title = gettext_lazy("Average account creation (account/hour)")
 
-    accounts = Curve(
-        "new_accounts", "steelblue", gettext_lazy("New accounts"))
+    accounts = Curve("new_accounts", "steelblue", gettext_lazy("New accounts"))
 
 
 class AccountGraphicSet(GraphicSet):

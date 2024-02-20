@@ -30,32 +30,30 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         return response.Response(serializer.data)
 
     @action(
-        methods=['post'],
+        methods=["post"],
         detail=False,
-        url_path='me/password',
-        serializer_class=serializers.CheckPasswordSerializer
+        url_path="me/password",
+        serializer_class=serializers.CheckPasswordSerializer,
     )
     def check_me_password(self, request):
         """Check current user password."""
         serializer = serializers.CheckPasswordSerializer(
-            data=request.data, context={"user": request.user})
+            data=request.data, context={"user": request.user}
+        )
         serializer.is_valid(raise_exception=True)
         return response.Response()
 
     @extend_schema(
         description="Get current API token",
         responses={200: serializers.UserAPITokenSerializer},
-        methods=["GET"]
+        methods=["GET"],
     )
     @extend_schema(
         description="Generate new API token",
         responses={201: serializers.UserAPITokenSerializer},
-        methods=["POST"]
+        methods=["POST"],
     )
-    @extend_schema(
-        description="Delete current API token",
-        methods=["DELETE"]
-    )
+    @extend_schema(description="Delete current API token", methods=["DELETE"])
     @action(
         methods=["get", "post", "delete"],
         detail=False,
@@ -64,9 +62,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
     def manage_api_token(self, request):
         """Manage API token."""
         if not request.user.is_superuser:
-            raise PermissionDenied(
-                "Only super administrators can have API tokens"
-            )
+            raise PermissionDenied("Only super administrators can have API tokens")
         if request.method == "DELETE":
             Token.objects.filter(user=request.user).delete()
             return response.Response(status=204)
@@ -87,15 +83,16 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
     def tfa_verify_code(self, request):
         """Verify given code validity."""
         serializer = serializers.VerifyTFACodeSerializer(
-            data=request.data, context={"user": request.user})
+            data=request.data, context={"user": request.user}
+        )
         serializer.is_valid(raise_exception=True)
         refresh = RefreshToken.for_user(request.user)
-        refresh[constants.TFA_DEVICE_TOKEN_KEY] = (
-            serializer.validated_data["code"].persistent_id)
-        return response.Response({
-            "refresh": str(refresh),
-            "access": str(refresh.access_token)
-        })
+        refresh[constants.TFA_DEVICE_TOKEN_KEY] = serializer.validated_data[
+            "code"
+        ].persistent_id
+        return response.Response(
+            {"refresh": str(refresh), "access": str(refresh.access_token)}
+        )
 
     @action(methods=["get"], detail=False, url_path="tfa/setup/key")
     def tfa_setup_get_key(self, request):
@@ -105,22 +102,22 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         device = request.user.totpdevice_set.first()
         if not device:
             return response.Response(status=404)
-        return response.Response({"key": device.key, "url":device.config_url},
-                                 content_type="application/json")
+        return response.Response(
+            {"key": device.key, "url": device.config_url},
+            content_type="application/json",
+        )
 
-    @extend_schema(
-        request=core_v1_serializers.CheckTFASetupSerializer
-    )
+    @extend_schema(request=core_v1_serializers.CheckTFASetupSerializer)
     @action(methods=["post"], detail=False, url_path="tfa/setup/check")
     def tfa_setup_check(self, request):
         """Check TFA setup."""
         serializer = core_v1_serializers.CheckTFASetupSerializer(
-            data=request.data, context={"user": request.user})
+            data=request.data, context={"user": request.user}
+        )
         serializer.is_valid(raise_exception=True)
         # create static device for recovery purposes
         device = StaticDevice.objects.create(
-            user=request.user,
-            name="{} static device".format(request.user)
+            user=request.user, name="{} static device".format(request.user)
         )
         tokens = []
         for cpt in range(10):
@@ -134,11 +131,13 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         device = request.user.totpdevice_set.first()
         refresh = RefreshToken.for_user(request.user)
         refresh[constants.TFA_DEVICE_TOKEN_KEY] = device.persistent_id
-        return response.Response({
-            "tokens": tokens,
-            "refresh": str(refresh),
-            "access": str(refresh.access_token)
-        })
+        return response.Response(
+            {
+                "tokens": tokens,
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+            }
+        )
 
 
 class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
@@ -160,9 +159,7 @@ class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
 class LanguageViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Language viewset."""
 
-    permission_classes = (
-        permissions.IsAuthenticated,
-    )
+    permission_classes = (permissions.IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
         languages = [

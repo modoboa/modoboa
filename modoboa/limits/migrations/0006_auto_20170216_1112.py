@@ -21,9 +21,7 @@ def create_quota_limits(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('limits', '0005_auto_20160415_1654'),
+        ("limits", "0005_auto_20160415_1654"),
     ]
 
-    operations = [
-        migrations.RunPython(create_quota_limits)
-    ]
+    operations = [migrations.RunPython(create_quota_limits)]

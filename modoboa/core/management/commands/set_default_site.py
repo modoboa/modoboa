@@ -9,7 +9,6 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
-
     """Management command to set the default site."""
 
     help = "Set default site (see django.contrib.sites)"  # NOQA:A003

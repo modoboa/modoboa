@@ -36,14 +36,13 @@ class RedisTestCaseMixin:
         self.rclient = redis.Redis(
             host=settings.REDIS_HOST,
             port=settings.REDIS_PORT,
-            db=settings.REDIS_QUOTA_DB
+            db=settings.REDIS_QUOTA_DB,
         )
         self.rclient.set_response_callback("HGET", int)
         self.rclient.delete(constants.REDIS_HASHNAME)
 
 
-class PolicyDaemonTestCase(
-        RedisTestCaseMixin, ParametersMixin, TransactionTestCase):
+class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestCase):
     """Test cases for policy daemon.
 
     A redis instance is required to run those tests.
@@ -71,7 +70,7 @@ class PolicyDaemonTestCase(
         domain.save()
         self.assertEqual(
             self.rclient.hget(constants.REDIS_HASHNAME, domain.name),
-            domain.message_limit
+            domain.message_limit,
         )
         return domain
 
@@ -82,8 +81,7 @@ class PolicyDaemonTestCase(
         mb.message_limit = value
         mb.save()
         self.assertEqual(
-            self.rclient.hget(constants.REDIS_HASHNAME, account.email),
-            mb.message_limit
+            self.rclient.hget(constants.REDIS_HASHNAME, account.email), mb.message_limit
         )
         return account
 
@@ -108,25 +106,29 @@ class PolicyDaemonTestCase(
         s = self.connect_to_daemon()
 
         # This one will be accepted
-        s.send(b"""protocol_state=RCPT
+        s.send(
+            b"""protocol_state=RCPT
 sasl_username=user@test.com
 
-""")
+"""
+        )
         res = s.recv(1024)
         self.assertEqual(res, b"action=dunno\n\n")
         self.assertEqual(
             self.rclient.hget(constants.REDIS_HASHNAME, domain.name),
-            domain.message_limit - 1
+            domain.message_limit - 1,
         )
         s.close()
 
         # This one will be accepted and will trigger a notification
         # but I can't check it yet
         s = self.connect_to_daemon()
-        s.send(b"""protocol_state=RCPT
+        s.send(
+            b"""protocol_state=RCPT
 sasl_username=user@test.com
 
-""")
+"""
+        )
         time.sleep(0.1)
         res = s.recv(1024)
         self.assertEqual(res, b"action=dunno\n\n")
@@ -134,10 +136,12 @@ sasl_username=user@test.com
 
         # This one will be denied
         s = self.connect_to_daemon()
-        s.send(b"""protocol_state=RCPT
+        s.send(
+            b"""protocol_state=RCPT
 sasl_username=user@test.com
 
-""")
+"""
+        )
         res = s.recv(1024)
         self.assertEqual(
             res, b"action=defer_if_permit Daily limit reached, retry later\n\n"
@@ -150,25 +154,29 @@ sasl_username=user@test.com
         s = self.connect_to_daemon()
 
         # This one will be accepted
-        s.send(b"""protocol_state=RCPT
+        s.send(
+            b"""protocol_state=RCPT
 sasl_username=user@test.com
 
-""")
+"""
+        )
         res = s.recv(1024)
         self.assertEqual(res, b"action=dunno\n\n")
         self.assertEqual(
             self.rclient.hget(constants.REDIS_HASHNAME, account.email),
-            account.mailbox.message_limit - 1
+            account.mailbox.message_limit - 1,
         )
         s.close()
 
         # This one will be accepted and will trigger a notification
         # but I can't check it yet
         s = self.connect_to_daemon()
-        s.send(b"""protocol_state=RCPT
+        s.send(
+            b"""protocol_state=RCPT
 sasl_username=user@test.com
 
-""")
+"""
+        )
         time.sleep(0.1)
         res = s.recv(1024)
         self.assertEqual(res, b"action=dunno\n\n")
@@ -176,10 +184,12 @@ sasl_username=user@test.com
 
         # This one will be denied
         s = self.connect_to_daemon()
-        s.send(b"""protocol_state=RCPT
+        s.send(
+            b"""protocol_state=RCPT
 sasl_username=user@test.com
 
-""")
+"""
+        )
         res = s.recv(1024)
         self.assertEqual(
             res, b"action=defer_if_permit Daily limit reached, retry later\n\n"
@@ -202,10 +212,8 @@ sasl_username=user@test.com
         event_loop.run_until_complete(run_test())
         event_loop.close()
 
-        self.assertEqual(
-            self.rclient.hget(constants.REDIS_HASHNAME, domain.name), 20)
-        self.assertEqual(
-            self.rclient.hget(constants.REDIS_HASHNAME, account.email), 10)
+        self.assertEqual(self.rclient.hget(constants.REDIS_HASHNAME, domain.name), 20)
+        self.assertEqual(self.rclient.hget(constants.REDIS_HASHNAME, account.email), 10)
 
 
 class ModelsTestCase(RedisTestCaseMixin, ModoTestCase):
@@ -241,7 +249,7 @@ class ModelsTestCase(RedisTestCaseMixin, ModoTestCase):
         domain.save()
         self.assertEqual(
             self.rclient.hget(constants.REDIS_HASHNAME, domain.name),
-            domain.message_limit
+            domain.message_limit,
         )
 
         # Force constructor call to fill _loaded_values
@@ -250,11 +258,9 @@ class ModelsTestCase(RedisTestCaseMixin, ModoTestCase):
         domain.save()
         self.assertEqual(
             self.rclient.hget(constants.REDIS_HASHNAME, domain.name),
-            domain.message_limit
+            domain.message_limit,
         )
 
         domain.message_limit = None
         domain.save()
-        self.assertFalse(
-            self.rclient.hexists(constants.REDIS_HASHNAME, domain.name)
-        )
+        self.assertFalse(self.rclient.hexists(constants.REDIS_HASHNAME, domain.name))

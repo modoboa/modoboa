@@ -1,4 +1,5 @@
 """Core API v2 serializers."""
+
 import django_otp
 import oath
 
@@ -22,7 +23,11 @@ from rest_framework import serializers, status
 from rest_framework.exceptions import APIException
 
 from modoboa.core import (
-    constants, models, sms_backends, app_settings, context_processors
+    constants,
+    models,
+    sms_backends,
+    app_settings,
+    context_processors,
 )
 from modoboa.core.models import User
 from modoboa.lib import fields as lib_fields, cryptutils
@@ -30,7 +35,7 @@ from modoboa.lib import fields as lib_fields, cryptutils
 
 class CustomValidationError(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
-    default_detail = 'A server error occurred.'
+    default_detail = "A server error occurred."
 
     def __init__(self, detail, status_code):
         if status_code is not None:
@@ -38,16 +43,17 @@ class CustomValidationError(APIException):
         if detail is not None:
             self.detail = detail
         else:
-            self.detail = {'detail': force_str(self.default_detail)}
+            self.detail = {"detail": force_str(self.default_detail)}
 
 
 class NoSMSAvailable(Exception):
-    """ Raised when no sms totp is available for password reset (to try email)."""
+    """Raised when no sms totp is available for password reset (to try email)."""
+
     pass
 
 
 class PasswordRequirementsFailure(Exception):
-    """ Raised when django is not happy with password provided."""
+    """Raised when django is not happy with password provided."""
 
     def __init__(self, message_list, *args: object) -> None:
         super().__init__(*args)
@@ -59,46 +65,41 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
 
     # General settings
     authentication_type = serializers.ChoiceField(
-        choices=[("local", gettext_lazy("Local")),
-                 ("ldap", "LDAP")],
-        default="local"
+        choices=[("local", gettext_lazy("Local")), ("ldap", "LDAP")], default="local"
     )
     password_scheme = serializers.ChoiceField(
-        choices=[("sha512crypt", "sha512crypt")],
-        required=False
+        choices=[("sha512crypt", "sha512crypt")], required=False
     )
     rounds_number = serializers.IntegerField(default=70000)
     update_scheme = serializers.BooleanField(default=True)
     default_password = serializers.CharField(default="ChangeMe1!")
     random_password_length = serializers.IntegerField(min_value=8, default=8)
-    update_password_url = serializers.URLField(
-        required=False, allow_blank=True)
-    password_recovery_msg = serializers.CharField(
-        required=False, allow_blank=True)
+    update_password_url = serializers.URLField(required=False, allow_blank=True)
+    password_recovery_msg = serializers.CharField(required=False, allow_blank=True)
     sms_password_recovery = serializers.BooleanField(default=False)
     sms_provider = serializers.ChoiceField(
-        choices=constants.SMS_BACKENDS, required=False, allow_null=True)
+        choices=constants.SMS_BACKENDS, required=False, allow_null=True
+    )
 
     # LDAP settings
     ldap_server_address = serializers.CharField(default="localhost")
     ldap_server_port = serializers.IntegerField(default=389)
     ldap_enable_secondary_server = serializers.BooleanField(default=False)
     ldap_secondary_server_address = serializers.CharField(required=False)
-    ldap_secondary_server_port = serializers.IntegerField(
-        default=389, required=False)
+    ldap_secondary_server_port = serializers.IntegerField(default=389, required=False)
     ldap_secured = serializers.ChoiceField(
-        choices=constants.LDAP_SECURE_MODES,
-        default="none"
+        choices=constants.LDAP_SECURE_MODES, default="none"
     )
     ldap_is_active_directory = serializers.BooleanField(default=False)
     ldap_admin_groups = serializers.CharField(
-        default="", required=False, allow_blank=True)
+        default="", required=False, allow_blank=True
+    )
     ldap_group_type = serializers.ChoiceField(
-        default="posixgroup",
-        choices=constants.LDAP_GROUP_TYPES
+        default="posixgroup", choices=constants.LDAP_GROUP_TYPES
     )
     ldap_groups_search_base = serializers.CharField(
-        default="", required=False, allow_blank=True)
+        default="", required=False, allow_blank=True
+    )
     ldap_password_attribute = serializers.CharField(default="userPassword")
 
     # LDAP auth settings
@@ -106,32 +107,31 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         choices=constants.LDAP_AUTH_METHODS,
         default="searchbind",
     )
-    ldap_bind_dn = serializers.CharField(
-        default="", required=False, allow_blank=True)
+    ldap_bind_dn = serializers.CharField(default="", required=False, allow_blank=True)
     ldap_bind_password = serializers.CharField(
-        default="", required=False, allow_blank=True)
+        default="", required=False, allow_blank=True
+    )
     ldap_search_base = serializers.CharField(
-        default="", required=False, allow_blank=True)
+        default="", required=False, allow_blank=True
+    )
     ldap_search_filter = serializers.CharField(
-        default="(mail=%(user)s)", required=False,
-        allow_blank=True)
+        default="(mail=%(user)s)", required=False, allow_blank=True
+    )
     ldap_user_dn_template = serializers.CharField(
-        default="", required=False, allow_blank=True)
+        default="", required=False, allow_blank=True
+    )
 
     # LDAP sync settings
     ldap_sync_bind_dn = serializers.CharField(required=False, allow_blank=True)
-    ldap_sync_bind_password = serializers.CharField(
-        required=False, allow_blank=True)
+    ldap_sync_bind_password = serializers.CharField(required=False, allow_blank=True)
     ldap_enable_sync = serializers.BooleanField(default=False)
     ldap_sync_delete_remote_account = serializers.BooleanField(default=False)
     ldap_sync_account_dn_template = serializers.CharField(
-        required=False, allow_blank=True)
-    ldap_enable_import = serializers.BooleanField(default=False)
-    ldap_import_search_base = serializers.CharField(
-        required=False, allow_blank=True)
-    ldap_import_search_filter = serializers.CharField(
-        default="(cn=*)", required=False
+        required=False, allow_blank=True
     )
+    ldap_enable_import = serializers.BooleanField(default=False)
+    ldap_import_search_base = serializers.CharField(required=False, allow_blank=True)
+    ldap_import_search_filter = serializers.CharField(default="(cn=*)", required=False)
     ldap_import_username_attr = serializers.CharField(default="cn")
     ldap_dovecot_sync = serializers.BooleanField(default=False)
     ldap_dovecot_conf_file = serializers.CharField(
@@ -140,12 +140,12 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
 
     # Dashboard settings
     rss_feed_url = serializers.URLField(
-        allow_blank=True, required=False, allow_null=True)
+        allow_blank=True, required=False, allow_null=True
+    )
     hide_features_widget = serializers.BooleanField(default=False)
 
     # Notification settings
-    sender_address = lib_fields.DRFEmailFieldUTF8(
-        default="noreply@yourdomain.test")
+    sender_address = lib_fields.DRFEmailFieldUTF8(default="noreply@yourdomain.test")
 
     # API settings
     enable_api_communication = serializers.BooleanField(default=True)
@@ -161,16 +161,18 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     log_maximum_age = serializers.IntegerField(default=365)
     items_per_page = serializers.IntegerField(default=30)
     default_top_redirection = serializers.ChoiceField(
-        default="user", choices=[("user", _("User profile"))], required=False)
+        default="user", choices=[("user", _("User profile"))], required=False
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         sms_backend_fields = sms_backends.get_all_backend_serializer_settings()
         for field, definition in sms_backend_fields.items():
-            self.fields[field] = definition["type"](
-                **definition["attrs"])
+            self.fields[field] = definition["type"](**definition["attrs"])
         # Choices serializer for default_top_redirection field
-        self.fields["default_top_redirection"].choices = app_settings.enabled_applications()
+        self.fields["default_top_redirection"].choices = (
+            app_settings.enabled_applications()
+        )
         # Populate choices of password_scheme
         self.fields["password_scheme"].choices = app_settings.get_password_scheme()
 
@@ -286,12 +288,15 @@ class PasswordRecoveryEmailSerializer(serializers.Serializer):
 
     def validate(self, data):
         clean_email = data["email"]
-        self.context["user"] = (User.objects.filter(
-            email__iexact=clean_email, is_active=True)
-            .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
+        self.context["user"] = (
+            User.objects.filter(email__iexact=clean_email, is_active=True).exclude(
+                Q(secondary_email__isnull=True) | Q(secondary_email="")
+            )
         ).first()
         if self.context["user"] is None:
-            raise CustomValidationError({"type": "email", "reason": "No valid user found."}, 404)
+            raise CustomValidationError(
+                {"type": "email", "reason": "No valid user found."}, 404
+            )
         return data
 
     def save(self):
@@ -301,30 +306,33 @@ class PasswordRecoveryEmailSerializer(serializers.Serializer):
         site_name = current_site.name
         domain = current_site.domain
         context = {
-            'email': to_email,
-            'domain': domain,
-            'site_name': site_name,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'user': user,
-            'token': default_token_generator.make_token(user),
-            'protocol': 'https',
+            "email": to_email,
+            "domain": domain,
+            "site_name": site_name,
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "user": user,
+            "token": default_token_generator.make_token(user),
+            "protocol": "https",
         }
         context.update(context_processors.new_admin_url())
         subject = loader.render_to_string(
-            "registration/password_reset_subject.txt", context)
+            "registration/password_reset_subject.txt", context
+        )
         # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
+        subject = "".join(subject.splitlines())
         body = loader.render_to_string(
-            "registration/password_reset_email_v2.html", context)
+            "registration/password_reset_email_v2.html", context
+        )
         send_mail(subject, body, None, [to_email], fail_silently=False)
 
 
 def send_sms_code(secret, backend, user):
-    """ Send a sms containing a TOTP code for password reset. """
+    """Send a sms containing a TOTP code for password reset."""
     code = oath.totp(secret)
     text = _(
-        "Please use the following code to recover your Modoboa password: {}"
-        .format(code)
+        "Please use the following code to recover your Modoboa password: {}".format(
+            code
+        )
     )
     if not backend.send(text, [str(user.phone_number)]):
         raise NoSMSAvailable()
@@ -340,14 +348,14 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
 
         user = User.objects.filter(email__iexact=clean_email, is_active=True).first()
         if user is None:
-            raise CustomValidationError({
-                "type": "sms", "reason": "No valid user found."
-            }, 404)
+            raise CustomValidationError(
+                {"type": "sms", "reason": "No valid user found."}, 404
+            )
 
         self.context["user"] = (
-            User.objects.filter(
-                email__iexact=clean_email, is_active=True)
-            .exclude(Q(phone_number__isnull=True) | Q(phone_number=""))
+            User.objects.filter(email__iexact=clean_email, is_active=True).exclude(
+                Q(phone_number__isnull=True) | Q(phone_number="")
+            )
         ).first()
         if self.context["user"] is None:
             raise NoSMSAvailable()
@@ -358,8 +366,7 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
         user = self.context["user"]
         if not user:
             raise NoSMSAvailable()
-        backend = sms_backends.get_active_backend(
-            request.localconfig.parameters)
+        backend = sms_backends.get_active_backend(request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
         send_sms_code(secret, backend, user)
         request.session["totp_secret"] = secret
@@ -376,13 +383,15 @@ class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
             self.context["totp_secret"] = self.context["request"].session["totp_secret"]
         except KeyError:
             raise CustomValidationError(
-                {"reason": "totp secret not set in session"}, 403)
+                {"reason": "totp secret not set in session"}, 403
+            )
         if not oath.accept_totp(self.context["totp_secret"], data["sms_totp"])[0]:
             raise CustomValidationError({"reason": "Wrong totp"}, 400)
 
         # Attempt to get user, will raise an error if pk is not valid
         self.context["user"] = User.objects.filter(
-            pk=self.context["request"].session["user_pk"]).first()
+            pk=self.context["request"].session["user_pk"]
+        ).first()
         if self.context["user"] is None:
             raise CustomValidationError({"reason": "Invalid user"}, 400)
 
@@ -404,11 +413,13 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
             self.context["totp_secret"] = self.context["request"].session["totp_secret"]
         except KeyError:
             raise CustomValidationError(
-                {"reason": "totp secret not set in session"}, status.HTTP_403_FORBIDDEN)
+                {"reason": "totp secret not set in session"}, status.HTTP_403_FORBIDDEN
+            )
 
         # Attempt to get user, will raise an error if pk is not valid
         self.context["user"] = User.objects.filter(
-            pk=self.context["request"].session["user_pk"]).first()
+            pk=self.context["request"].session["user_pk"]
+        ).first()
         if self.context["user"] is None:
             raise CustomValidationError({"reason": "Invalid user"}, 400)
 
@@ -416,7 +427,8 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
 
     def save(self):
         backend = sms_backends.get_active_backend(
-            self.context["request"].localconfig.parameters)
+            self.context["request"].localconfig.parameters
+        )
         send_sms_code(self.context["totp_secret"], backend, self.context["user"])
         return True
 
@@ -442,9 +454,11 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
     def validate(self, data):
 
         # Validate password
-        if data["new_password1"] == "" or data["new_password1"] != data["new_password2"]:
-            raise serializers.ValidationError(
-                "Password is empty or does not match")
+        if (
+            data["new_password1"] == ""
+            or data["new_password1"] != data["new_password2"]
+        ):
+            raise serializers.ValidationError("Password is empty or does not match")
 
         user = self.get_user(data["id"])
 

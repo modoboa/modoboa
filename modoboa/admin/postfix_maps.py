@@ -1,7 +1,7 @@
 """Map file definitions for postfix."""
 
-class DomainsMap(object):
 
+class DomainsMap(object):
     """Map to list all domains."""
 
     filename = "sql-domains.cf"
@@ -10,8 +10,7 @@ class DomainsMap(object):
         "WHERE name='%s' AND type='domain' AND enabled=1"
     )
     postgres = (
-        "SELECT name FROM admin_domain "
-        "WHERE name='%s' AND type='domain' AND enabled"
+        "SELECT name FROM admin_domain " "WHERE name='%s' AND type='domain' AND enabled"
     )
     sqlite = (
         "SELECT name FROM admin_domain "
@@ -20,7 +19,6 @@ class DomainsMap(object):
 
 
 class DomainsAliasesMap(object):
-
     """Map to list all domain aliases."""
 
     filename = "sql-domain-aliases.cf"
@@ -42,7 +40,6 @@ class DomainsAliasesMap(object):
 
 
 class AliasesMap(object):
-
     """A map to list all mailbox aliases."""
 
     filename = "sql-aliases.cf"
@@ -67,7 +64,6 @@ class AliasesMap(object):
 
 
 class MaintainMap(object):
-
     """Map files to list non available mailboxes."""
 
     filename = "sql-maintain.cf"

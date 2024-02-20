@@ -19,7 +19,8 @@ def check_relaydomain_alias(sender, recipients, **kwargs):
     if not qset.exists():
         return False
     qset = admin_models.Mailbox.objects.select_related("domain").filter(
-        domain__name=domain, address=localpart)
+        domain__name=domain, address=localpart
+    )
     if qset.exists():
         return False
     return True
@@ -45,7 +46,7 @@ def register_postfix_maps(sender, **kwargs):
     return [
         postfix_maps.RelayDomainsMap,
         postfix_maps.SplitedDomainsTransportMap,
-        postfix_maps.RelayRecipientVerification
+        postfix_maps.RelayRecipientVerification,
     ]
 
 
@@ -57,34 +58,38 @@ def extra_domain_form(sender, user, **kwargs):
     domain = kwargs.get("domain")
     if not domain or domain.type != "relaydomain":
         return []
-    return [{
-        "id": "relaydomain", "title": _("Transport settings"),
-        "cls": forms.RelayDomainFormGeneral,
-        "formtpl": "transport/_transport_form.html"
-    }]
+    return [
+        {
+            "id": "relaydomain",
+            "title": _("Transport settings"),
+            "cls": forms.RelayDomainFormGeneral,
+            "formtpl": "transport/_transport_form.html",
+        }
+    ]
 
 
 @receiver(admin_signals.get_domain_form_instances)
 def fill_domain_instances(sender, user, domain, **kwargs):
     """Fill the relaydomain form with the right instance."""
     condition = (
-        not user.has_perm("transport.change_transport") or
-        domain.type != "relaydomain"
+        not user.has_perm("transport.change_transport") or domain.type != "relaydomain"
     )
     if condition:
         return {}
-    return {
-        "relaydomain": domain.transport
-    }
+    return {"relaydomain": domain.transport}
 
 
 @receiver(admin_signals.extra_domain_wizard_steps)
 def extra_wizard_step(sender, **kwargs):
     """Return a step to configure the relay settings."""
-    return [forms.RelayDomainWizardStep(
-        "relay", forms.RelayDomainFormGeneral, _("Transport"),
-        "transport/_transport_form.html"
-    )]
+    return [
+        forms.RelayDomainWizardStep(
+            "relay",
+            forms.RelayDomainFormGeneral,
+            _("Transport"),
+            "transport/_transport_form.html",
+        )
+    ]
 
 
 @receiver(admin_signals.import_object)
@@ -102,12 +107,10 @@ def update_recipient_access(sender, instance, **kwargs):
         return
     if instance._settings.get("relay_verify_recipients", False):
         models.RecipientAccess.objects.get_or_create(
-            pattern=instance.pattern,
-            defaults={"action": "reject_unverified_recipient"}
+            pattern=instance.pattern, defaults={"action": "reject_unverified_recipient"}
         )
     else:
-        models.RecipientAccess.objects.filter(
-            pattern=instance.pattern).delete()
+        models.RecipientAccess.objects.filter(pattern=instance.pattern).delete()
 
 
 @receiver(signals.post_delete, sender=tr_models.Transport)

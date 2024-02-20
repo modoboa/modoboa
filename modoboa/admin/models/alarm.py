@@ -20,18 +20,23 @@ class Alarm(models.Model):
     """A simple alarm to attach to a domain and/or mailbox."""
 
     domain = models.ForeignKey(
-        "admin.Domain", on_delete=models.CASCADE, related_name="alarms",
-        blank=True, null=True)
-    mailbox = models.ForeignKey(
-        "admin.Mailbox", on_delete=models.SET_NULL,
+        "admin.Domain",
+        on_delete=models.CASCADE,
         related_name="alarms",
-        null=True, blank=True,
+        blank=True,
+        null=True,
+    )
+    mailbox = models.ForeignKey(
+        "admin.Mailbox",
+        on_delete=models.SET_NULL,
+        related_name="alarms",
+        null=True,
+        blank=True,
     )
     created = models.DateTimeField(default=timezone.now)
     closed = models.DateTimeField(null=True, blank=True)
     status = models.IntegerField(
-        default=constants.ALARM_OPENED, choices=constants.ALARM_STATUSES,
-        db_index=True
+        default=constants.ALARM_OPENED, choices=constants.ALARM_STATUSES, db_index=True
     )
 
     title = models.TextField()
@@ -44,7 +49,8 @@ class Alarm(models.Model):
 
     def __str__(self):
         return "[{}] {} - {}".format(
-            self.created, self.domain, self.get_status_display())
+            self.created, self.domain, self.get_status_display()
+        )
 
     def close(self):
         """Close this alarm."""

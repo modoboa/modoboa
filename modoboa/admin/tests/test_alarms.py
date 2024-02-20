@@ -16,8 +16,7 @@ class AlarmsTestCase(ModoTestCase):
 
     def test_set_forward(self):
         domain = Domain.objects.all().first()
-        alarm = Alarm.objects.create(
-            domain=domain, mailbox=None, title="Test alarm 3")
+        alarm = Alarm.objects.create(domain=domain, mailbox=None, title="Test alarm 3")
         alarm.save()
         self.assertEqual(alarm.status, 1)
         alarm.close()

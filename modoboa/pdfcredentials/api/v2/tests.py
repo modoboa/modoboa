@@ -28,9 +28,7 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         data = {
             "username": f"{username}",
             "role": "SimpleUsers",
-            "mailbox": {
-                "use_domain_quota": True
-            },
+            "mailbox": {"use_domain_quota": True},
             "password": "Toto12345",
             "language": "fr",
         }
@@ -78,9 +76,7 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         self.assertTrue(assert_action_in_response)
 
         # Try to download the file
-        response = self.client.get(
-            reverse("v2:get-credentials",
-                    args=[account.pk]))
+        response = self.client.get(reverse("v2:get-credentials", args=[account.pk]))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/pdf")
 
@@ -88,22 +84,21 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         self.assertFalse(os.path.exists(fname))
 
         # Try to download a second time
-        response = self.client.get(
-            reverse("v2:get-credentials",
-                    args=[account.pk]))
-        self.assertEqual(response.json()["detail"],
-                         "No document available for this user")
+        response = self.client.get(reverse("v2:get-credentials", args=[account.pk]))
+        self.assertEqual(
+            response.json()["detail"], "No document available for this user"
+        )
 
         # Update account
         values.update({"language": "en"})
         self.client.patch(
-            reverse("v2:account-detail", args=[account.pk]), values, format='json'
+            reverse("v2:account-detail", args=[account.pk]), values, format="json"
         )
         self.assertFalse(os.path.exists(fname))
 
         self.set_global_parameter("generate_at_creation", False)
         self.client.patch(
-            reverse("v2:account-detail", args=[account.pk]), values, format='json'
+            reverse("v2:account-detail", args=[account.pk]), values, format="json"
         )
         self.assertTrue(os.path.exists(fname))
 
@@ -146,9 +141,7 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         account = core_models.User.objects.get(username=values["username"])
 
         # Try to download the file
-        response = self.client.get(
-            reverse("v2:get-credentials",
-                    args=[account.pk]))
+        response = self.client.get(reverse("v2:get-credentials", args=[account.pk]))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/pdf")
 
@@ -171,10 +164,10 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         self.set_global_parameter("enabled_pdfcredentials", False)
         url = reverse("v2:parameter-detail", args=["pdfcredentials"])
         data = {
-                "webpanel_url": "http://localhost",
-                "smtp_server_address": "mail.localhost",
-                "imap_server_address": "mail.localhost",
-               }
+            "webpanel_url": "http://localhost",
+            "smtp_server_address": "mail.localhost",
+            "imap_server_address": "mail.localhost",
+        }
 
         # Test that we can't activate it without providing a valid storage dir.
         data["enabled_pdfcredentials"] = True

@@ -8,7 +8,6 @@ from django.utils.translation import gettext_lazy
 
 
 class HostnameValidator(object):
-
     """Validator for fqdn."""
 
     message = gettext_lazy("Enter a valid domain name")
@@ -37,7 +36,6 @@ validate_hostname = HostnameValidator()
 
 
 class UTF8EmailValidator(EmailValidator):
-
     """Validator for addresses using non-ASCII characters."""
 
     # unicode letters range (must be a unicode string, not a raw string)
@@ -57,11 +55,9 @@ validate_utf8_email = UTF8EmailValidator()
 
 
 class UTF8AndEmptyUserEmailValidator(UTF8EmailValidator):
-
     """Same as upper + allows empty local part."""
 
-    user_regex = re.compile(
-        r"(^$|" + UTF8EmailValidator.user_regex_raw, re.IGNORECASE)
+    user_regex = re.compile(r"(^$|" + UTF8EmailValidator.user_regex_raw, re.IGNORECASE)
 
 
 validate_utf8_and_empty_user_email = UTF8AndEmptyUserEmailValidator()

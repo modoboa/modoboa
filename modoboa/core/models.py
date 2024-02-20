@@ -20,20 +20,23 @@ from reversion import revisions as reversion
 
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib.exceptions import (
-    BadRequest, Conflict, InternalError, PermDeniedException
+    BadRequest,
+    Conflict,
+    InternalError,
+    PermDeniedException,
 )
 from modoboa.parameters import tools as param_tools
 from . import constants, signals
 
 try:
     from modoboa.lib.ldap_utils import LDAPAuthBackend
+
     ldap_available = True
 except ImportError:
     ldap_available = False
 
 
 class User(AbstractUser):
-
     """Custom User model.
 
     It overloads the way passwords are stored into the database. The
@@ -49,27 +52,28 @@ class User(AbstractUser):
     is_active = models.BooleanField(default=True, db_index=True)
     is_local = models.BooleanField(default=True, db_index=True)
     master_user = models.BooleanField(
-        gettext_lazy("Allow mailboxes access"), default=False,
-        help_text=gettext_lazy(
-            "Allow this administrator to access user mailboxes"
-        )
+        gettext_lazy("Allow mailboxes access"),
+        default=False,
+        help_text=gettext_lazy("Allow this administrator to access user mailboxes"),
     )
     password = models.CharField(gettext_lazy("password"), max_length=256)
 
     language = models.CharField(
         gettext_lazy("language"),
-        max_length=10, default="en", choices=constants.LANGUAGES,
-        help_text=gettext_lazy(
-            "Prefered language to display pages."
-        )
+        max_length=10,
+        default="en",
+        choices=constants.LANGUAGES,
+        help_text=gettext_lazy("Prefered language to display pages."),
     )
-    phone_number = PhoneNumberField(
-        gettext_lazy("Phone number"), blank=True, null=True)
+    phone_number = PhoneNumberField(gettext_lazy("Phone number"), blank=True, null=True)
     secondary_email = models.EmailField(
-        gettext_lazy("Secondary email"), max_length=254,
-        blank=True, null=True,
+        gettext_lazy("Secondary email"),
+        max_length=254,
+        blank=True,
+        null=True,
         help_text=gettext_lazy(
-            "An alternative e-mail address, can be used for recovery needs.")
+            "An alternative e-mail address, can be used for recovery needs."
+        ),
     )
 
     tfa_enabled = models.BooleanField(default=False)
@@ -80,7 +84,7 @@ class User(AbstractUser):
         ordering = ["username"]
         indexes = [models.Index(fields=["email", "is_active"])]
 
-    password_expr = re.compile(r'\{([\w\-]+)\}(.+)')
+    password_expr = re.compile(r"\{([\w\-]+)\}(.+)")
 
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""
@@ -96,12 +100,15 @@ class User(AbstractUser):
 
         """
         scheme = param_tools.get_global_parameter(
-            "password_scheme", raise_exception=False)
+            "password_scheme", raise_exception=False
+        )
         if scheme is None:
             from modoboa.core.apps import load_core_settings
+
             load_core_settings()
             scheme = param_tools.get_global_parameter(
-                "password_scheme", raise_exception=False)
+                "password_scheme", raise_exception=False
+            )
         raw_value = smart_bytes(raw_value)
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
@@ -123,12 +130,13 @@ class User(AbstractUser):
                 raise InternalError(
                     _("Failed to update password: LDAP module not installed")
                 )
-            LDAPAuthBackend().update_user_password(
-                self.username, curvalue, raw_value
-            )
+            LDAPAuthBackend().update_user_password(self.username, curvalue, raw_value)
         signals.account_password_updated.send(
             sender=self.__class__,
-            account=self, password=raw_value, created=self.pk is None)
+            account=self,
+            password=raw_value,
+            created=self.pk is None,
+        )
 
     def check_password(self, raw_value):
         """Compare raw_value to current password."""
@@ -154,9 +162,10 @@ class User(AbstractUser):
 
     @property
     def tags(self):
-        return [{"name": "account", "label": _("account"), "type": "idt"},
-                {"name": self.role, "label": self.role,
-                 "type": "grp", "color": "info"}]
+        return [
+            {"name": "account", "label": _("account"), "type": "idt"},
+            {"name": self.role, "label": self.role, "type": "grp", "color": "info"},
+        ]
 
     @property
     def fullname(self):
@@ -187,7 +196,8 @@ class User(AbstractUser):
     def encoded_address(self):
         if self.first_name != "" or self.last_name != "":
             return '"{}" <{}>'.format(
-                Header(self.fullname, "utf8").encode(), self.email)
+                Header(self.fullname, "utf8").encode(), self.email
+            )
         return self.email
 
     def is_owner(self, obj):
@@ -198,8 +208,7 @@ class User(AbstractUser):
         """
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(
-                content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             return False
         return ooentry.is_owner
@@ -220,8 +229,7 @@ class User(AbstractUser):
 
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(
-                content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             pass
         else:
@@ -258,7 +266,8 @@ class User(AbstractUser):
         if role is None or self.role == role:
             return
         signals.account_role_changed.send(
-            sender=self.__class__, account=self, role=role)
+            sender=self.__class__, account=self, role=role
+        )
         self.groups.clear()
         if role == "SuperAdmins":
             self.is_superuser = True
@@ -272,6 +281,7 @@ class User(AbstractUser):
                 self.groups.add(Group.objects.get(name="SimpleUsers"))
             if role != "SimpleUsers" and not self.can_access(self):
                 from modoboa.lib.permissions import grant_access_to_object
+
                 grant_access_to_object(self, self)
         self.save()
         self._role = role
@@ -291,6 +301,7 @@ class User(AbstractUser):
     def post_create(self, creator):
         """Grant permission on this user to creator."""
         from modoboa.lib.permissions import grant_access_to_object
+
         grant_access_to_object(creator, self, is_owner=True)
 
     def save(self, *args, **kwargs):
@@ -322,10 +333,9 @@ class User(AbstractUser):
             allowed_roles = get_account_roles(user)
             allowed_roles = [role[0] for role in allowed_roles]
             if desired_role not in allowed_roles:
-                raise PermDeniedException(_(
-                    "You can't import an account with a role greater than "
-                    "yours"
-                ))
+                raise PermDeniedException(
+                    _("You can't import an account with a role greater than " "yours")
+                )
 
         self.username = row[1].strip().lower()
         try:
@@ -338,13 +348,17 @@ class User(AbstractUser):
         if desired_role == "SimpleUsers":
             if len(row) < 8 or not row[7].strip():
                 raise BadRequest(
-                    _("The simple user '%s' must have a valid email address"
-                      % self.username)
+                    _(
+                        "The simple user '%s' must have a valid email address"
+                        % self.username
+                    )
                 )
             if self.username != row[7].strip():
                 raise BadRequest(
-                    _("username and email fields must not differ for '%s'"
-                      % self.username)
+                    _(
+                        "username and email fields must not differ for '%s'"
+                        % self.username
+                    )
                 )
 
         if crypt_password:
@@ -353,7 +367,7 @@ class User(AbstractUser):
             self.password = row[2].strip()
         self.first_name = row[3].strip()
         self.last_name = row[4].strip()
-        self.is_active = (row[5].strip().lower() in ["true", "1", "yes", "y"])
+        self.is_active = row[5].strip().lower() in ["true", "1", "yes", "y"]
         self.language = settings.LANGUAGE_CODE
         self.save()
         self.role = desired_role
@@ -361,7 +375,8 @@ class User(AbstractUser):
         if len(row) < 8:
             return
         signals.account_imported.send(
-            sender=self.__class__, user=user, account=self, row=row[7:])
+            sender=self.__class__, user=user, account=self, row=row[7:]
+        )
 
     def to_csv_row(self):
         """Return row that can be included in a CSV file."""
@@ -373,10 +388,9 @@ class User(AbstractUser):
             smart_str(self.last_name),
             smart_str(self.is_active),
             smart_str(self.role),
-            smart_str(self.email)
+            smart_str(self.email),
         ]
-        results = signals.account_exported.send(
-            sender=self.__class__, user=self)
+        results = signals.account_exported.send(sender=self.__class__, user=self)
         for result in results:
             row += result[1]
         return row
@@ -411,8 +425,7 @@ def populate_callback(user, group="SimpleUsers"):
     user.post_create(sadmins[0])
     for su in sadmins[1:]:
         grant_access_to_object(su, user)
-    signals.account_auto_created.send(
-        sender="populate_callback", user=user)
+    signals.account_auto_created.send(sender="populate_callback", user=user)
 
 
 class ObjectAccess(models.Model):
@@ -426,9 +439,7 @@ class ObjectAccess(models.Model):
         unique_together = (("user", "content_type", "object_id"),)
 
     def __str__(self):
-        return "%s => %s (%s)" % (
-            self.user, self.content_object, self.content_type
-        )
+        return "%s => %s (%s)" % (self.user, self.content_object, self.content_type)
 
 
 class Log(models.Model):

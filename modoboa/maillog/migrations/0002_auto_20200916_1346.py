@@ -28,7 +28,7 @@ def backwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('maillog', '0001_initial'),
+        ("maillog", "0001_initial"),
     ]
 
     operations = [

@@ -26,9 +26,7 @@ class Command(BaseCommand):
     }
 
     def add_arguments(self, parser):
-        subparsers = parser.add_subparsers(
-            dest='subcommand', title='subcommands'
-        )
+        subparsers = parser.add_subparsers(dest="subcommand", title="subcommands")
         # required argument is added in Python 3.7
         subparsers.required = True
 
@@ -36,9 +34,7 @@ class Command(BaseCommand):
             command = command_class(self.stdout, self.stderr)
             command.style = self.style
 
-            subparser = subparsers.add_parser(
-                command_name, help=command_class.help
-            )
+            subparser = subparsers.add_parser(command_name, help=command_class.help)
             # This is needed to output console friendly errors
             subparser.called_from_command_line = self._called_from_command_line
 
@@ -47,4 +43,4 @@ class Command(BaseCommand):
             subparser.set_defaults(command=command)
 
     def execute(self, *args, **options):
-        return options.pop('command').execute(*args, **options)
+        return options.pop("command").execute(*args, **options)

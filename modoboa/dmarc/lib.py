@@ -66,8 +66,7 @@ def import_record(xml_node, report):
     header_from = identifiers.find("header_from").text.split(".")
     domain = None
     while len(header_from) >= 2:
-        domain = admin_models.Domain.objects.filter(
-            name=".".join(header_from)).first()
+        domain = admin_models.Domain.objects.filter(name=".".join(header_from)).first()
         if domain is not None:
             record.header_from = domain
             break
@@ -83,8 +82,11 @@ def import_record(xml_node, report):
         if not rnode:
             continue
         models.Result.objects.create(
-            record=record, type=rtype, domain=rnode.find("domain").text,
-            result=rnode.find("result").text)
+            record=record,
+            type=rtype,
+            domain=rnode.find("domain").text,
+            result=rnode.find("result").text,
+        )
 
 
 @transaction.atomic
@@ -94,15 +96,16 @@ def import_report(content):
     metadata = root.find("report_metadata")
     print(
         "Importing report {} received from {}".format(
-            metadata.find("report_id").text,
-            metadata.find("org_name").text)
+            metadata.find("report_id").text, metadata.find("org_name").text
+        )
     )
     reporter, created = models.Reporter.objects.get_or_create(
         email=metadata.find("email").text,
-        defaults={"org_name": metadata.find("org_name").text}
+        defaults={"org_name": metadata.find("org_name").text},
     )
     qs = models.Report.objects.filter(
-        reporter=reporter, report_id=metadata.find("report_id").text)
+        reporter=reporter, report_id=metadata.find("report_id").text
+    )
     if qs.exists():
         print("Report already imported.")
         return
@@ -122,7 +125,7 @@ def import_report(content):
         node = policy_published.find(attr)
         if node is None or not node.text:
             if attr == "sp":
-                node = fromstring('<sp>unstated</sp>', forbid_dtd=True)
+                node = fromstring("<sp>unstated</sp>", forbid_dtd=True)
             else:
                 print(f"Report skipped because of malformed data (empty {attr})")
                 return
@@ -165,12 +168,14 @@ def import_report_from_email(content):
             fpo = six.BytesIO(part.get_payload(decode=True))
             # Try to get the actual file type of the buffer
             # required to make sure we are dealing with an XML file
-            file_type = magic.Magic(uncompress=True, mime=True).from_buffer(fpo.read(2048))
+            file_type = magic.Magic(uncompress=True, mime=True).from_buffer(
+                fpo.read(2048)
+            )
             fpo.seek(0)
             if file_type in FILE_TYPES:
                 import_archive(fpo, content_type=part.get_content_type())
         except (OSError, IOError):
-            print('Error: the attachment does not match the mimetype')
+            print("Error: the attachment does not match the mimetype")
             err = True
         else:
             fpo.close()
@@ -214,10 +219,8 @@ def week_range(year, weeknumber):
     """Return start and end dates of a given week."""
     tz = timezone.get_current_timezone()
     fmt = "%Y-%W-%w"
-    start_week = datetime.datetime.strptime(
-        "{}-{}-{}".format(year, weeknumber, 1), fmt)
-    end_week = datetime.datetime.strptime(
-        "{}-{}-{}".format(year, weeknumber, 0), fmt)
+    start_week = datetime.datetime.strptime("{}-{}-{}".format(year, weeknumber, 1), fmt)
+    end_week = datetime.datetime.strptime("{}-{}-{}".format(year, weeknumber, 0), fmt)
     return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
 
 
@@ -230,7 +233,7 @@ def insert_record(target: dict, record, name: str) -> None:
         target[name][record.source_ip] = {
             "total": 0,
             "spf": {"success": 0, "failure": 0},
-            "dkim": {"success": 0, "failure": 0}
+            "dkim": {"success": 0, "failure": 0},
         }
     target[name][record.source_ip]["total"] += record.count
     for typ in ["spf", "dkim"]:
@@ -252,19 +255,11 @@ def get_aligment_stats(domain, period=None) -> dict:
 
     daterange = week_range(year, week)
     qargs = (
-        (Q(report__start_date__gte=daterange[0],
-           report__start_date__lte=daterange[1]) |
-         Q(report__end_date__gte=daterange[0],
-           report__end_date__lte=daterange[1])) &
-        Q(header_from=domain)
-    )
+        Q(report__start_date__gte=daterange[0], report__start_date__lte=daterange[1])
+        | Q(report__end_date__gte=daterange[0], report__end_date__lte=daterange[1])
+    ) & Q(header_from=domain)
     all_records = models.Record.objects.filter(qargs)
-    stats: dict = {
-        "aligned": {},
-        "trusted": {},
-        "forwarded": {},
-        "failed": {}
-    }
+    stats: dict = {"aligned": {}, "trusted": {}, "forwarded": {}, "failed": {}}
 
     dns_names = {}
     if param_tools.get_global_parameter("enable_rlookups"):
@@ -279,16 +274,21 @@ def get_aligment_stats(domain, period=None) -> dict:
                 ext = tldextract.extract(str(resp[0].target))
                 if not ext.suffix:  # invalid PTR record
                     raise resolver.NXDOMAIN()
-                return (ip, '.'.join((ext.domain, ext.suffix)).lower())
-            except (resolver.NXDOMAIN, resolver.YXDOMAIN,
-                    resolver.NoAnswer, resolver.NoNameservers,
-                    resolver.Timeout):
+                return (ip, ".".join((ext.domain, ext.suffix)).lower())
+            except (
+                resolver.NXDOMAIN,
+                resolver.YXDOMAIN,
+                resolver.NoAnswer,
+                resolver.NoNameservers,
+                resolver.Timeout,
+            ):
                 return (None, None)
 
         ips = (r.source_ip for r in all_records)
         with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
-            dns_names = {i: n for (i, n) in
-                         list(pool.map(get_domain_name_from_ip, ips))}
+            dns_names = {
+                i: n for (i, n) in list(pool.map(get_domain_name_from_ip, ips))
+            }
 
     for record in all_records:
         name = dns_names.get(record.source_ip, _("Not resolved"))
@@ -296,7 +296,9 @@ def get_aligment_stats(domain, period=None) -> dict:
             insert_record(stats["aligned"], record, name)
         elif record.dkim_result == "pass" or record.spf_result == "pass":
             insert_record(stats["trusted"], record, name)
-        elif record.reason_type == "local_policy" and record.reason_comment.startswith("arc=pass"):
+        elif record.reason_type == "local_policy" and record.reason_comment.startswith(
+            "arc=pass"
+        ):
             insert_record(stats["forwarded"], record, name)
         else:
             insert_record(stats["failed"], record, name)

@@ -5,14 +5,14 @@ import sys
 from django.db import IntegrityError, migrations, transaction
 
 VIEW_PERMISSION_CODENAMES = {
-    'view_aliases': 'view_alias',
-    'view_domaliases': 'view_domainalias',
-    'view_mailboxes': 'view_mailbox',
+    "view_aliases": "view_alias",
+    "view_domaliases": "view_domainalias",
+    "view_mailboxes": "view_mailbox",
 }
 
 
 def rename_view_permissions(apps, schema_editor):
-    Permission = apps.get_model('auth', 'Permission')
+    Permission = apps.get_model("auth", "Permission")
     db_alias = schema_editor.connection.alias
     # Iterate over permissions and try to rename the codename
     for perm in Permission.objects.using(db_alias).filter(
@@ -36,7 +36,7 @@ def rename_view_permissions(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0014_auto_20181017_1628'),
+        ("admin", "0014_auto_20181017_1628"),
     ]
 
     operations = [

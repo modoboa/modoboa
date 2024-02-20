@@ -6,14 +6,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('transport', '0001_initial'),
-        ('admin', '0010_auto_20170215_1328'),
+        ("transport", "0001_initial"),
+        ("admin", "0010_auto_20170215_1328"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='domain',
-            name='transport',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, to='transport.Transport'),
+            model_name="domain",
+            name="transport",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="transport.Transport",
+            ),
         ),
     ]

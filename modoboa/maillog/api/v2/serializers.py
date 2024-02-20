@@ -12,7 +12,7 @@ PERIODS = [
     ("week", "Week"),
     ("month", "Month"),
     ("year", "Year"),
-    ("custom", "Custom")
+    ("custom", "Custom"),
 ]
 
 
@@ -27,9 +27,8 @@ class StatisticsInputSerializer(serializers.Serializer):
     end = serializers.DateField(required=False)
 
     def validate(self, data):
-        condition = (
-            data["period"] == "custom" and
-            (not data.get("start") or not data.get("end"))
+        condition = data["period"] == "custom" and (
+            not data.get("start") or not data.get("end")
         )
         if condition:
             raise serializers.ValidationError(
@@ -71,8 +70,14 @@ class MaillogSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = (
-            "id", "queue_id", "date", "sender", "rcpt", "original_rcpt",
-            "size", "status"
+            "id",
+            "queue_id",
+            "date",
+            "sender",
+            "rcpt",
+            "original_rcpt",
+            "size",
+            "status",
         )
         model = models.Maillog
 

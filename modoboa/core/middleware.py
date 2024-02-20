@@ -24,17 +24,14 @@ class TwoFAMiddleware:
     def __call__(self, request):
         user = getattr(request, "user", None)
         redirect_url = reverse("core:2fa_verify")
-        url_exceptions = (
-            redirect_url,
-            "/jsi18n/"
-        )
+        url_exceptions = (redirect_url, "/jsi18n/")
         condition = (
-            user and
-            not user.is_anonymous and
-            user.tfa_enabled and
-            not request.path.startswith('/api/') and
-            request.path not in url_exceptions and
-            not user.is_verified()
+            user
+            and not user.is_anonymous
+            and user.tfa_enabled
+            and not request.path.startswith("/api/")
+            and request.path not in url_exceptions
+            and not user.is_verified()
         )
         if condition:
             return http.HttpResponseRedirect(reverse("core:2fa_verify"))

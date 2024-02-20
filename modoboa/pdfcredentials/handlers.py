@@ -23,8 +23,7 @@ def password_updated(sender, account, password, created, **kwargs):
     """Create or update document."""
     if not param_tools.get_global_parameter("enabled_pdfcredentials"):
         return
-    generate_at_creation = param_tools.get_global_parameter(
-        "generate_at_creation")
+    generate_at_creation = param_tools.get_global_parameter("generate_at_creation")
     if (generate_at_creation and not created) or account.is_superuser:
         return
     try:
@@ -32,8 +31,11 @@ def password_updated(sender, account, password, created, **kwargs):
     except InternalError as e:
         logger = logging.getLogger("modoboa.admin")
         logger.error(
-            _("Failed to create PDF_credentials directory. "
-            "Please check the permissions or the path."))
+            _(
+                "Failed to create PDF_credentials directory. "
+                "Please check the permissions or the path."
+            )
+        )
     credentials(account, password)
 
 
@@ -51,13 +53,14 @@ def extra_account_actions(sender, account, **kwargs):
     fname = get_creds_filename(account)
     if not os.path.exists(fname):
         return []
-    return [{
-        "name": "get_credentials",
-        "url": reverse("pdfcredentials:account_credentials",
-                       args=[account.id]),
-        "img": "fa fa-download",
-        "title": _("Retrieve user's credentials as a PDF document")
-    }]
+    return [
+        {
+            "name": "get_credentials",
+            "url": reverse("pdfcredentials:account_credentials", args=[account.id]),
+            "img": "fa fa-download",
+            "title": _("Retrieve user's credentials as a PDF document"),
+        }
+    ]
 
 
 @receiver(admin_signals.extra_account_identities_actions)
@@ -80,5 +83,5 @@ def extra_identities_actions(sender, account, **kwargs):
         "type": "download",
         "content_type": "application/pdf",
         "url": url,
-        "filename": os.path.basename(fname)
+        "filename": os.path.basename(fname),
     }

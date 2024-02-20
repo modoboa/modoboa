@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dmarc', '0002_auto_20180124_2311'),
+        ("dmarc", "0002_auto_20180124_2311"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='report',
+            name="report",
             options={},
         ),
     ]

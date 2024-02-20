@@ -1,7 +1,7 @@
 """Map file definitions for postfix."""
 
-class RelayDomainsMap(object):
 
+class RelayDomainsMap(object):
     """Map file to list all relay domains."""
 
     filename = "sql-relaydomains.cf"
@@ -20,7 +20,6 @@ class RelayDomainsMap(object):
 
 
 class SplitedDomainsTransportMap(object):
-
     """A transport map for splited domains.
 
     (ie. ones with both local and remote mailboxes)
@@ -57,16 +56,9 @@ class SplitedDomainsTransportMap(object):
 
 
 class RelayRecipientVerification(object):
-
     """A map file to enable recipient verification."""
 
     filename = "sql-relay-recipient-verification.cf"
-    mysql = (
-        "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
-    )
-    postgres = (
-        "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
-    )
-    sqlite = (
-        "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
-    )
+    mysql = "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
+    postgres = "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"
+    sqlite = "SELECT action FROM relaydomains_recipientaccess WHERE pattern='%d'"

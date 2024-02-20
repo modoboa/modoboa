@@ -28,19 +28,20 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         """Add extra arguments."""
+        parser.add_argument("--dburl", help="Custom database url")
         parser.add_argument(
-            "--dburl", help="Custom database url")
+            "--destdir", default=".", help="Directory where files will be created"
+        )
         parser.add_argument(
-            "--destdir", default=".",
-            help="Directory where files will be created")
-        parser.add_argument(
-            "--force-overwrite", action="store_true", default=False,
-            help="Force overwrite of existing map files")
+            "--force-overwrite",
+            action="store_true",
+            default=False,
+            help="Force overwrite of existing map files",
+        )
 
     def __load_checksums(self, destdir):
         """Load existing checksums if possible."""
-        self.__checksums_file = os.path.join(
-            destdir, "modoboa-postfix-maps.chk")
+        self.__checksums_file = os.path.join(destdir, "modoboa-postfix-maps.chk")
         self.__checksums = {}
         if not os.path.exists(self.__checksums_file):
             return
@@ -48,7 +49,8 @@ class Command(BaseCommand):
             for line in fp:
                 fname, dbtype, checksum = line.split(":")
                 self.__checksums[fname.strip()] = {
-                    "dbtype": dbtype, "checksum": checksum.strip()
+                    "dbtype": dbtype,
+                    "checksum": checksum.strip(),
                 }
 
     def __register_map_files(self):
@@ -62,9 +64,7 @@ class Command(BaseCommand):
     def __check_file(self, path):
         """Check if map file has been modified."""
         fname = os.path.basename(path)
-        condition = (
-            not self.__checksums or
-            fname not in self.__checksums)
+        condition = not self.__checksums or fname not in self.__checksums
         if condition:
             return True
         with open(path, mode="rb") as fp:
@@ -92,7 +92,9 @@ query = {{ query|safe }}
         dburl = options.get("dburl")
         db_settings = (
             dj_database_url.config(default=dburl)
-            if dburl else settings.DATABASES["default"])
+            if dburl
+            else settings.DATABASES["default"]
+        )
         if "sqlite" in db_settings["ENGINE"]:
             dbtype = "sqlite"
         elif "postgresql" in db_settings["ENGINE"]:
@@ -102,10 +104,11 @@ query = {{ query|safe }}
         dbhost = db_settings.get("HOST", "127.0.0.1")
         dbport = db_settings.get("PORT", "")
         if len(dbport):
-            dbhost += ':' + dbport
+            dbhost += ":" + dbport
 
         commandline = "{} {}".format(
-            os.path.basename(sys.argv[0]), " ".join(sys.argv[1:]))
+            os.path.basename(sys.argv[0]), " ".join(sys.argv[1:])
+        )
         context = {
             "date": timezone.now(),
             "commandline": commandline,
@@ -113,19 +116,20 @@ query = {{ query|safe }}
             "dbuser": db_settings["USER"],
             "dbpass": db_settings["PASSWORD"],
             "dbname": db_settings["NAME"],
-            "dbhost": dbhost
+            "dbhost": dbhost,
         }
         return context
 
-    def __render_map_file(
-            self, mapobject, destdir, context, force_overwrite=False):
+    def __render_map_file(self, mapobject, destdir, context, force_overwrite=False):
         """Render a map file."""
         fullpath = os.path.join(destdir, mapobject.filename)
         if os.path.exists(fullpath) and not force_overwrite:
             if not self.__check_file(fullpath):
                 print(
-                    "Cannot upgrade '{}' map because it has been modified."
-                    .format(mapobject.filename))
+                    "Cannot upgrade '{}' map because it has been modified.".format(
+                        mapobject.filename
+                    )
+                )
                 return self.__checksums[mapobject.filename]
             mapcontent = utils.parse_map_file(fullpath)
             context = copy.deepcopy(context)
@@ -139,8 +143,7 @@ query = {{ query|safe }}
                 context["dbhost"] = mapcontent["hosts"]
         content = self.get_template(context["dbtype"]).render(
             Context(
-                dict(list(context.items()),
-                     query=getattr(mapobject, context["dbtype"]))
+                dict(list(context.items()), query=getattr(mapobject, context["dbtype"]))
             )
         )
         fullpath = os.path.join(destdir, mapobject.filename)
@@ -161,10 +164,9 @@ query = {{ query|safe }}
         checksums = {}
         for mapobject in mapfiles:
             checksum = self.__render_map_file(
-                mapobject, destdir, context,
-                force_overwrite=options["force_overwrite"])
+                mapobject, destdir, context, force_overwrite=options["force_overwrite"]
+            )
             checksums[mapobject.filename] = checksum
         with open(self.__checksums_file, "w") as fp:
             for fname, checksum in list(checksums.items()):
-                fp.write("{}:{}:{}\n".format(
-                    fname, context["dbtype"], checksum))
+                fp.write("{}:{}:{}\n".format(fname, context["dbtype"], checksum))

@@ -7,13 +7,14 @@ def rename_settings(apps, schema_editor):
     LocalConfig = apps.get_model("core", "LocalConfig")
     lc = LocalConfig.objects.first()
     condition = (
-        lc and
-        "admin" in lc._parameters and
-        "default_domain_quota" in lc._parameters["admin"]
+        lc
+        and "admin" in lc._parameters
+        and "default_domain_quota" in lc._parameters["admin"]
     )
     if condition:
-        lc._parameters["admin"]["default_mailbox_quota"] = (
-            lc._parameters["admin"]["default_domain_quota"])
+        lc._parameters["admin"]["default_mailbox_quota"] = lc._parameters["admin"][
+            "default_domain_quota"
+        ]
         del lc._parameters["admin"]["default_domain_quota"]
         lc.save(update_fields=["_parameters"])
 
@@ -21,9 +22,7 @@ def rename_settings(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0011_auto_20161104_2217'),
+        ("core", "0011_auto_20161104_2217"),
     ]
 
-    operations = [
-        migrations.RunPython(rename_settings)
-    ]
+    operations = [migrations.RunPython(rename_settings)]

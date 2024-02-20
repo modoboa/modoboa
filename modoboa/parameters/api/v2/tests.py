@@ -43,7 +43,7 @@ class ParametersAPITestCase(ModoAPITestCase):
             "deflt_domain_domain_admins_limit": 0,
             "deflt_domain_domain_aliases_limit": 0,
             "deflt_domain_mailboxes_limit": 0,
-            "deflt_domain_mailbox_aliases_limit": 0
+            "deflt_domain_mailbox_aliases_limit": 0,
         }
         url = reverse("v2:parameter-detail", args=["limits"])
         resp = self.client.put(url, data, format="json")
@@ -55,7 +55,7 @@ class ParametersAPITestCase(ModoAPITestCase):
             "default_mailbox_quota": -1,
             "valid_mxs": "mail.test.com",
             "custom_dns_server": "",
-            "dkim_keys_storage_dir": "/wrong"
+            "dkim_keys_storage_dir": "/wrong",
         }
         url = reverse("v2:parameter-detail", args=["admin"])
         resp = self.client.put(url, data, format="json")
@@ -63,40 +63,32 @@ class ParametersAPITestCase(ModoAPITestCase):
         errors = resp.json()
         self.assertEqual(
             errors["valid_mxs"],
-            ["This field only allows valid IP addresses (or networks)"]
+            ["This field only allows valid IP addresses (or networks)"],
         )
-        self.assertEqual(
-            errors["default_domain_quota"], ["Must be a positive integer"]
-        )
+        self.assertEqual(errors["default_domain_quota"], ["Must be a positive integer"])
         self.assertEqual(
             errors["default_mailbox_quota"], ["Must be a positive integer"]
         )
-        self.assertEqual(
-            errors["dkim_keys_storage_dir"], ["Directory not found."]
-        )
+        self.assertEqual(errors["dkim_keys_storage_dir"], ["Directory not found."])
 
         # Try to set dkim storage dir to a non-writable directory.
-        data = {
-            "dkim_keys_storage_dir": "/root"
-        }
+        data = {"dkim_keys_storage_dir": "/root"}
         url = reverse("v2:parameter-detail", args=["admin"])
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
         errors = resp.json()
-        self.assertEqual(
-            errors["dkim_keys_storage_dir"], ["Directory non-writable"]
-        )
+        self.assertEqual(errors["dkim_keys_storage_dir"], ["Directory non-writable"])
 
         data = {
             "enable_mx_checks": True,
             "domains_must_have_authorized_mx": True,
             "valid_mxs": "",
             "custom_dns_server": "",
-            "dkim_keys_storage_dir": ""
+            "dkim_keys_storage_dir": "",
         }
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(
             resp.json()["valid_mxs"],
-            ["Define at least one authorized network / address"]
+            ["Define at least one authorized network / address"],
         )

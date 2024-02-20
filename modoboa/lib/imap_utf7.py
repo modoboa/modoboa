@@ -55,7 +55,7 @@ import codecs
 
 # encoding
 
-PRINTABLE = set(range(0x20, 0x26)) | set(range(0x27, 0x7f))
+PRINTABLE = set(range(0x20, 0x26)) | set(range(0x27, 0x7F))
 
 
 def modified_utf7(s):
@@ -135,6 +135,7 @@ codecs.register(imap4_utf_7)
 
 # testing methods
 
+
 def imapUTF7Encode(ust):  # NOQA:N802
     "Returns imap utf-7 encoded version of string"
     return ust.encode("imap4-utf-7")
@@ -165,7 +166,10 @@ def utf7SequenceToUTF8(seq):  # NOQA:N802
     return [itm.decode("imap4-utf-7").encode("utf-8") for itm in seq]
 
 
-__all__ = ["imapUTF7Encode", "imapUTF7Decode", ]
+__all__ = [
+    "imapUTF7Encode",
+    "imapUTF7Decode",
+]
 
 if __name__ == "__main__":
 
