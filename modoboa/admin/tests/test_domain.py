@@ -20,7 +20,7 @@ from modoboa.core.tests.test_views import SETTINGS_SAMPLE
 from modoboa.lib.tests import ModoTestCase
 from modoboa.maillog import factories as ml_factories
 
-from ..import constants
+from .. import constants
 from . import utils
 from .. import factories
 from ..models import Alarm, Alias, Domain
@@ -38,8 +38,12 @@ class DomainTestCase(ModoTestCase):
     def test_create(self):
         """Test the creation of a domain."""
         values = {
-            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": False, "type": "domain", "stepid": "step3"
+            "name": "pouet.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": False,
+            "type": "domain",
+            "stepid": "step3",
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
@@ -52,12 +56,16 @@ class DomainTestCase(ModoTestCase):
     def test_create_utf8(self):
         """Test the creation of a domain with non-ASCII characters."""
         values = {
-            "name": "pouét.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": False, "type": "domain", "stepid": "step3"
+            "name": "pouét.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": False,
+            "type": "domain",
+            "stepid": "step3",
         }
         self.ajax_post(reverse("admin:domain_add"), values)
-        dom = Domain.objects.get(name=u"pouét.com")
-        self.assertEqual(dom.name, u"pouét.com")
+        dom = Domain.objects.get(name="pouét.com")
+        self.assertEqual(dom.name, "pouét.com")
         self.assertEqual(dom.quota, 1000)
         self.assertEqual(dom.default_mailbox_quota, 100)
         self.assertEqual(dom.enabled, False)
@@ -66,83 +74,101 @@ class DomainTestCase(ModoTestCase):
     def test_create_with_template(self):
         """Test the creation of a domain with a template."""
         values = {
-            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": True, "dom_admin_username": "toto",
-            "with_mailbox": True, "create_aliases": True, "type": "domain",
-            "stepid": "step3"
+            "name": "pouet.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": True,
+            "dom_admin_username": "toto",
+            "with_mailbox": True,
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         da = User.objects.get(username="toto@pouet.com")
         self.assertIn(da, dom.admins)
         al = Alias.objects.get(address="postmaster@pouet.com")
-        self.assertTrue(
-            al.aliasrecipient_set.filter(r_mailbox=da.mailbox)
-            .exists()
-        )
+        self.assertTrue(al.aliasrecipient_set.filter(r_mailbox=da.mailbox).exists())
         self.assertTrue(da.can_access(al))
 
         values = {
-            "name": "pouet2.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": True, "dom_admin_username": "postmaster",
-            "create_aliases": True, "type": "domain", "stepid": "step3",
-            "with_mailbox": True
+            "name": "pouet2.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": True,
+            "dom_admin_username": "postmaster",
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
+            "with_mailbox": True,
         }
         self.ajax_post(reverse("admin:domain_add"), values)
-        self.assertTrue(
-            User.objects.filter(username="postmaster@pouet2.com").exists())
+        self.assertTrue(User.objects.filter(username="postmaster@pouet2.com").exists())
         self.assertFalse(
             Alias.objects.filter(
-                address="postmaster@pouet2.com", internal=False).exists())
+                address="postmaster@pouet2.com", internal=False
+            ).exists()
+        )
 
     def test_create_with_template_and_random_password(self):
         """Test domain creation with administrator and random password."""
         values = {
-            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": True, "dom_admin_username": "toto",
-            "with_mailbox": True, "create_aliases": True, "type": "domain",
-            "stepid": "step3", "random_password": True
+            "name": "pouet.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": True,
+            "dom_admin_username": "toto",
+            "with_mailbox": True,
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
+            "random_password": True,
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         self.assertFalse(
-            self.client.login(username="admin@pouet.com", password="password"))
+            self.client.login(username="admin@pouet.com", password="password")
+        )
 
     def test_create_with_template_and_no_mailbox(self):
         """Test domain creation with administrator but no mailbox."""
         values = {
-            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": True, "dom_admin_username": "toto",
-            "with_mailbox": False, "create_aliases": True, "type": "domain",
-            "stepid": "step3"
+            "name": "pouet.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": True,
+            "dom_admin_username": "toto",
+            "with_mailbox": False,
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         da = User.objects.get(username="toto@pouet.com")
         self.assertIn(da, dom.admins)
         self.assertFalse(hasattr(da, "mailbox"))
-        self.assertFalse(
-            Alias.objects.filter(address="postmaster@pouet.com").exists())
+        self.assertFalse(Alias.objects.filter(address="postmaster@pouet.com").exists())
 
     def test_create_with_template_and_empty_quota(self):
         """Test the creation of a domain with a template and no quota"""
         values = {
-            "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
-            "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": "step3",
-            "with_mailbox": True
+            "name": "pouet.com",
+            "quota": 0,
+            "default_mailbox_quota": 0,
+            "create_dom_admin": True,
+            "dom_admin_username": "toto",
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
+            "with_mailbox": True,
         }
-        self.ajax_post(
-            reverse("admin:domain_add"),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         da = User.objects.get(username="toto@pouet.com")
         self.assertIn(da, dom.admins)
         al = Alias.objects.get(address="postmaster@pouet.com")
-        self.assertTrue(
-            al.aliasrecipient_set.filter(r_mailbox=da.mailbox)
-            .exists()
-        )
+        self.assertTrue(al.aliasrecipient_set.filter(r_mailbox=da.mailbox).exists())
         self.assertTrue(da.can_access(al))
 
     def test_create_with_template_and_custom_password(self):
@@ -150,61 +176,62 @@ class DomainTestCase(ModoTestCase):
         password = "Toto1000"
         self.set_global_parameter("default_password", password, app="core")
         values = {
-            "name": "pouet.com", "quota": 0, "default_mailbox_quota": 0,
-            "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": "step3",
-            "with_mailbox": True
+            "name": "pouet.com",
+            "quota": 0,
+            "default_mailbox_quota": 0,
+            "create_dom_admin": True,
+            "dom_admin_username": "toto",
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
+            "with_mailbox": True,
         }
-        self.ajax_post(
-            reverse("admin:domain_add"),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_add"), values)
         dom = Domain.objects.get(name="pouet.com")
         da = User.objects.get(username="toto@pouet.com")
         self.assertIn(da, dom.admins)
         al = Alias.objects.get(address="postmaster@pouet.com")
-        self.assertTrue(
-            al.aliasrecipient_set.filter(r_mailbox=da.mailbox)
-            .exists()
-        )
+        self.assertTrue(al.aliasrecipient_set.filter(r_mailbox=da.mailbox).exists())
         self.assertTrue(da.can_access(al))
-        self.assertTrue(
-            self.client.login(username="toto@pouet.com", password=password))
+        self.assertTrue(self.client.login(username="toto@pouet.com", password=password))
 
     def test_quota_constraints(self):
         """Check quota constraints."""
         values = {
-            "name": "pouet.com", "quota": 10, "default_mailbox_quota": 100,
-            "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": "step3"
+            "name": "pouet.com",
+            "quota": 10,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": True,
+            "dom_admin_username": "toto",
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
         }
-        response = self.ajax_post(
-            reverse("admin:domain_add"),
-            values, status=400
-        )
+        response = self.ajax_post(reverse("admin:domain_add"), values, status=400)
         self.assertEqual(
             response["form_errors"]["default_mailbox_quota"][0],
-            "Cannot be greater than domain quota")
+            "Cannot be greater than domain quota",
+        )
 
         dom = Domain.objects.get(name="test.com")
         values["name"] = dom.name
         values["quota"] = 10
         values["default_mailbox_quota"] = 100
         response = self.ajax_post(
-            reverse("admin:domain_change", args=[dom.pk]),
-            values, status=400
+            reverse("admin:domain_change", args=[dom.pk]), values, status=400
         )
         self.assertEqual(
             response["form_errors"]["default_mailbox_quota"][0],
-            "Cannot be greater than domain quota")
+            "Cannot be greater than domain quota",
+        )
 
     def test_create_using_default_quota(self):
         """Check that default value is used for creation."""
         self.set_global_parameter("default_domain_quota", 500)
         self.set_global_parameter("default_mailbox_quota", 50)
         response = self.client.get(reverse("admin:domain_add"))
-        self.assertContains(response, "value=\"500\"")
-        self.assertContains(response, "value=\"50\"")
+        self.assertContains(response, 'value="500"')
+        self.assertContains(response, 'value="50"')
 
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     @mock.patch("socket.getaddrinfo")
@@ -214,7 +241,8 @@ class DomainTestCase(ModoTestCase):
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
 
         reseller = core_factories.UserFactory(
-            username="reseller", groups=("Resellers", ))
+            username="reseller", groups=("Resellers",)
+        )
         self.client.force_login(reseller)
 
         self.set_global_parameter("enable_admin_limits", False, app="limits")
@@ -222,15 +250,18 @@ class DomainTestCase(ModoTestCase):
         self.set_global_parameter("domains_must_have_authorized_mx", True)
 
         values = {
-            "name": "no-mx.example.com", "quota": 0,
+            "name": "no-mx.example.com",
+            "quota": 0,
             "default_mailbox_quota": 0,
-            "create_dom_admin": True, "dom_admin_username": "toto",
-            "create_aliases": True, "type": "domain", "stepid": "step3",
-            "with_mailbox": True
+            "create_dom_admin": True,
+            "dom_admin_username": "toto",
+            "create_aliases": True,
+            "type": "domain",
+            "stepid": "step3",
+            "with_mailbox": True,
         }
         self.ajax_post(reverse("admin:domain_add"), values, 400)
-        self.assertFalse(
-            Domain.objects.filter(name=values["name"]).exists())
+        self.assertFalse(Domain.objects.filter(name=values["name"]).exists())
 
         values["name"] = "pouet.com"
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
@@ -242,21 +273,20 @@ class DomainTestCase(ModoTestCase):
         Rename 'test.com' domain to 'pouet.com'
         """
         values = {
-            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
-            "type": "domain", "enabled": True
+            "name": "pouet.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "type": "domain",
+            "enabled": True,
         }
         dom = Domain.objects.get(name="test.com")
-        self.ajax_post(
-            reverse("admin:domain_change", args=[dom.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_change", args=[dom.id]), values)
         dom = Domain.objects.get(name="pouet.com")
         self.assertEqual(dom.name, "pouet.com")
         self.assertTrue(dom.enabled)
 
         # Check if aliases were renamed too
-        self.assertTrue(
-            dom.alias_set.filter(address="postmaster@pouet.com").exists())
+        self.assertTrue(dom.alias_set.filter(address="postmaster@pouet.com").exists())
 
     def test_delete(self):
         """Test the removal of a domain."""
@@ -264,15 +294,13 @@ class DomainTestCase(ModoTestCase):
         self.ajax_post(reverse("admin:domain_delete", args=[dom.id]))
         with self.assertRaises(Domain.DoesNotExist):
             Domain.objects.get(pk=1)
-        self.assertTrue(
-            User.objects.filter(username="user@test.com").exists())
+        self.assertTrue(User.objects.filter(username="user@test.com").exists())
         self.set_global_parameter("auto_account_removal", True)
         dom = Domain.objects.get(name="test2.com")
         self.ajax_post(reverse("admin:domain_delete", args=[dom.id]))
         with self.assertRaises(Domain.DoesNotExist):
             Domain.objects.get(pk=1)
-        self.assertFalse(
-            User.objects.filter(username="admin@test2.com").exists())
+        self.assertFalse(User.objects.filter(username="admin@test2.com").exists())
 
     def test_domain_counters(self):
         """Check counters at domain level."""
@@ -347,8 +375,10 @@ class DomainTestCase(ModoTestCase):
         domain = Domain.objects.get(name="test.com")
         ml_factories.MaillogFactory(from_domain=domain)
         ml_factories.MaillogFactory(
-            to_domain=domain, status="received",
-            date=timezone.now() + relativedelta(days=1))
+            to_domain=domain,
+            status="received",
+            date=timezone.now() + relativedelta(days=1),
+        )
         ml_factories.MaillogFactory(date=timezone.now() + relativedelta(days=2))
         ml_factories.MaillogFactory(date=timezone.now() + relativedelta(days=3))
         url = reverse("admin:domain_logs_list")
@@ -375,8 +405,7 @@ class DomainTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Global statistics", response.content.decode("utf-8"))
 
-        self.client.force_login(
-            User.objects.get(username="admin@test.com"))
+        self.client.force_login(User.objects.get(username="admin@test.com"))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         content = response.content.decode("utf-8")
@@ -386,7 +415,8 @@ class DomainTestCase(ModoTestCase):
     def test_page_loader(self):
         """Test page loader view."""
         factories.AlarmFactory(
-            domain__name="test.com", mailbox=None, title="Test alarm")
+            domain__name="test.com", mailbox=None, title="Test alarm"
+        )
         url = reverse("admin:domain_page")
         response = self.ajax_get(url)
         self.assertIn("handle_mailboxes", response)
@@ -418,10 +448,13 @@ class DKIMTestCase(ModoTestCase):
         settings["admin-dkim_keys_storage_dir"] = "/wrong"
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
-        compare(response.json(), {
-            "form_errors": {"dkim_keys_storage_dir": ["Directory not found."]},
-            "prefix": "admin"
-        })
+        compare(
+            response.json(),
+            {
+                "form_errors": {"dkim_keys_storage_dir": ["Directory not found."]},
+                "prefix": "admin",
+            },
+        )
         settings["admin-dkim_keys_storage_dir"] = self.workdir
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
@@ -429,20 +462,26 @@ class DKIMTestCase(ModoTestCase):
     def test_dkim_key_creation(self):
         """Test DKIM key creation."""
         values = {
-            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": False, "type": "domain", "stepid": "step3",
-            "enable_dkim": True, "dkim_key_selector": ""
+            "name": "pouet.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": False,
+            "type": "domain",
+            "stepid": "step3",
+            "enable_dkim": True,
+            "dkim_key_selector": "",
         }
         response = self.ajax_post(reverse("admin:domain_add"), values, 400)
         self.assertEqual(
             response["form_errors"]["enable_dkim"][0],
-            "DKIM keys storage directory not configured")
+            "DKIM keys storage directory not configured",
+        )
 
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
         response = self.ajax_post(reverse("admin:domain_add"), values, 400)
         self.assertEqual(
-            response["form_errors"]["dkim_key_selector"][0],
-            "This field is required.")
+            response["form_errors"]["dkim_key_selector"][0], "This field is required."
+        )
 
         values["dkim_key_selector"] = "default"
         self.ajax_post(reverse("admin:domain_add"), values)
@@ -453,30 +492,33 @@ class DKIMTestCase(ModoTestCase):
         domain = Domain.objects.get(name=values["name"])
 
         # Closing the alarm and retry generating dkim keys
-        Alarm.objects.get(domain=domain,
-                          internal_name=constants.DKIM_WRITE_ERROR
-                          ).close()
+        Alarm.objects.get(
+            domain=domain, internal_name=constants.DKIM_WRITE_ERROR
+        ).close()
         call_command("modo", "manage_dkim_keys")
         self.assertEqual(
-            Alarm.objects.get(domain=domain,
-                              internal_name=constants.DKIM_WRITE_ERROR).status,
-            constants.ALARM_OPENED)
+            Alarm.objects.get(
+                domain=domain, internal_name=constants.DKIM_WRITE_ERROR
+            ).status,
+            constants.ALARM_OPENED,
+        )
 
         # Generate normally
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
         call_command("modo", "manage_dkim_keys")
         self.assertEqual(
-            Alarm.objects.get(domain=domain,
-                              internal_name=constants.DKIM_WRITE_ERROR).status,
-            constants.ALARM_CLOSED)
+            Alarm.objects.get(
+                domain=domain, internal_name=constants.DKIM_WRITE_ERROR
+            ).status,
+            constants.ALARM_CLOSED,
+        )
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
 
         domain.refresh_from_db()
         url = reverse("admin:domain_detail", args=[domain.pk])
         response = self.client.get(url)
-        self.assertContains(
-            response, escape(domain.bind_format_dkim_public_key))
+        self.assertContains(response, escape(domain.bind_format_dkim_public_key))
 
         # Try generating DKIM key for a targetted domain
         domain.dkim_private_key_path = ""
@@ -488,14 +530,13 @@ class DKIMTestCase(ModoTestCase):
 
         # Try disabling DKIM and checking that dkim_private_key_path is emptied
         values = {
-            "name": "pouet.com", "enable_dkim": False,
-            "quota": 1000, "default_mailbox_quota": 100,
-            "type": "domain"
+            "name": "pouet.com",
+            "enable_dkim": False,
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "type": "domain",
         }
-        self.ajax_post(
-            reverse("admin:domain_change", args=[domain.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_change", args=[domain.id]), values)
         domain.refresh_from_db()
         self.assertEqual(domain.dkim_private_key_path, "")
 
@@ -503,9 +544,14 @@ class DKIMTestCase(ModoTestCase):
         """ """
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
         values = {
-            "name": "pouet.com", "quota": 1000, "default_mailbox_quota": 100,
-            "create_dom_admin": False, "type": "domain", "stepid": "step3",
-            "enable_dkim": True, "dkim_key_selector": "default"
+            "name": "pouet.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "create_dom_admin": False,
+            "type": "domain",
+            "stepid": "step3",
+            "enable_dkim": True,
+            "dkim_key_selector": "default",
         }
         self.ajax_post(reverse("admin:domain_add"), values)
         call_command("modo", "manage_dkim_keys")

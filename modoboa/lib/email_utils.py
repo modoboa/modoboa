@@ -68,8 +68,7 @@ class Email(object):
             #       updated to use True or False.
             self.links = bool(links)
         elif links == "0":
-            raise TypeError("links == \"0\" is not valid, did you mean True or "
-                            "False?")
+            raise TypeError('links == "0" is not valid, did you mean True or ' "False?")
         else:
             raise TypeError("links should be a boolean value")
 
@@ -102,10 +101,7 @@ class Email(object):
             if self._msg is not None:
                 for header in self._basic_headers:
                     value = self.get_header(self.msg, header)
-                    self._headers.append({
-                        "name": header,
-                        "value": value
-                    })
+                    self._headers.append({"name": header, "value": value})
 
         return self._headers
 
@@ -173,11 +169,9 @@ class Email(object):
             self._parse_inline_image(msg, level)
 
         if self.contents["plain"]:
-            self.contents["plain"] = self._post_process_plain(
-                self.contents["plain"])
+            self.contents["plain"] = self._post_process_plain(self.contents["plain"])
         if self.contents["html"]:
-            self.contents["html"] = self._post_process_html(
-                self.contents["html"])
+            self.contents["html"] = self._post_process_html(self.contents["html"])
 
     def _parse_text(self, msg, level=0):
         content_type = msg.get_content_subtype()
@@ -222,12 +216,12 @@ class Email(object):
             return
 
         self._images[cid] = "data:%s;base64,%s" % (
-            content_type, "".join(msg.get_payload().splitlines(False)))
+            content_type,
+            "".join(msg.get_payload().splitlines(False)),
+        )
 
     def _post_process_plain(self, content):
-        mail_text = (
-            _RE_REMOVE_EXTRA_WHITESPACE.sub("\n\n", content).strip()
-        )
+        mail_text = _RE_REMOVE_EXTRA_WHITESPACE.sub("\n\n", content).strip()
         mail_text = escape(mail_text)
         return smart_str(mail_text)
 
@@ -249,10 +243,9 @@ class Email(object):
             embedded=True,
             frames=True,
             add_nofollow=True,
-            safe_attrs=safe_attrs
+            safe_attrs=safe_attrs,
         )
-        mail_text = lxml.html.tostring(
-            cleaner.clean_html(html), encoding="unicode")
+        mail_text = lxml.html.tostring(cleaner.clean_html(html), encoding="unicode")
         return smart_str(mail_text)
 
     def _map_cid(self, url):
@@ -288,8 +281,7 @@ class Email(object):
 
 def split_address(address):
     """Split an e-mail address into local part and domain."""
-    assert isinstance(address, str),\
-        "address should be of type str"
+    assert isinstance(address, str), "address should be of type str"
     if "@" not in address:
         local_part = address
         domain = None
@@ -300,27 +292,25 @@ def split_address(address):
 
 def split_local_part(local_part, delimiter=None):
     """Split a local part into local part and extension."""
-    assert isinstance(local_part, str),\
-        "local_part should be of type str"
-    assert isinstance(delimiter, str) or delimiter is None,\
-        "delimiter should be of type str"
+    assert isinstance(local_part, str), "local_part should be of type str"
+    assert (
+        isinstance(delimiter, str) or delimiter is None
+    ), "delimiter should be of type str"
     extension = None
     if local_part.lower() in ["mailer-daemon", "double-bounce"]:
         # never split these special addresses
         pass
-    elif (
-        delimiter == "-" and
-         (local_part.startswith("owner-") or
-          local_part.endswith("-request"))
+    elif delimiter == "-" and (
+        local_part.startswith("owner-") or local_part.endswith("-request")
     ):
         # don't split owner-* or *-request if - is the delimiter, they are
         # special addresses used by mail lists.
         pass
     elif (
-        delimiter and
-        delimiter in local_part and
-        local_part[0] != delimiter and
-        local_part[-1] != delimiter
+        delimiter
+        and delimiter in local_part
+        and local_part[0] != delimiter
+        and local_part[-1] != delimiter
     ):
         local_part, extension = local_part.split(delimiter, 1)
 
@@ -345,8 +335,7 @@ def split_mailbox(mailbox, return_extension=False):
 
 def decode(value_bytes, encoding, append_to_error=""):
     """Try to decode the given string."""
-    assert isinstance(value_bytes, bytes),\
-        "value_bytes should be of type bytes"
+    assert isinstance(value_bytes, bytes), "value_bytes should be of type bytes"
     if len(value_bytes) == 0:
         # short circuit for empty strings
         return ""
@@ -355,13 +344,10 @@ def decode(value_bytes, encoding, append_to_error=""):
     except (UnicodeDecodeError, LookupError):
         encoding = chardet.detect(value_bytes)
         try:
-            value = value_bytes.decode(
-                encoding["encoding"], "replace"
-            )
+            value = value_bytes.decode(encoding["encoding"], "replace")
         except (TypeError, UnicodeDecodeError) as exc:
             raise InternalError(
-                _("unable to determine encoding of string") +
-                append_to_error
+                _("unable to determine encoding of string") + append_to_error
             ) from exc
     return value
 
@@ -399,8 +385,9 @@ def set_email_headers(msg, subject, sender, rcpt):
     msg["From"] = sender
     msg["To"] = prepare_addresses(rcpt)
     msg["Message-ID"] = make_msgid()
-    msg["User-Agent"] = "Modoboa %s" % \
-        (pkg_resources.get_distribution("modoboa").version)
+    msg["User-Agent"] = "Modoboa %s" % (
+        pkg_resources.get_distribution("modoboa").version
+    )
     msg["Date"] = formatdate(time.time(), True)
 
 
@@ -426,8 +413,7 @@ def _sendmail(sender, rcpt, msgstring, server="localhost", port=25):
     return True, None
 
 
-def sendmail_simple(
-        sender, rcpt, subject="Sample message", content="", **kwargs):
+def sendmail_simple(sender, rcpt, subject="Sample message", content="", **kwargs):
     """Simple way to send a text message
 
     Send a text/plain message with basic headers (msg-id, date).
@@ -465,7 +451,10 @@ def sendmail_fromfile(sender, rcpt, fname):
 
     content = """From: %s
 To: %s
-""" % (sender, rcpt)
+""" % (
+        sender,
+        rcpt,
+    )
     content += fp.read()
     fp.close()
 
@@ -475,11 +464,13 @@ To: %s
 def send_notification(recipient, subject, tpl, sender=None, **kwargs):
     """Send notification by email."""
     if not sender:
-        local_config = (
-            core_models.LocalConfig.objects.select_related("site").first())
+        local_config = core_models.LocalConfig.objects.select_related("site").first()
         sender = local_config.parameters.get_value("sender_address")
     content = render_to_string(tpl, kwargs)
     msg = EmailMessage(
-        subject, content.strip(), sender, [recipient],
+        subject,
+        content.strip(),
+        sender,
+        [recipient],
     )
     msg.send()

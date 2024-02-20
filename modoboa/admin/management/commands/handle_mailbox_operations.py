@@ -31,8 +31,9 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command line."""
         parser.add_argument(
-            "--pidfile", default="/tmp/handle_mailbox_operations.pid",
-            help="Path to the file that will contain the PID of this process"
+            "--pidfile",
+            default="/tmp/handle_mailbox_operations.pid",
+            help="Path to the file that will contain the PID of this process",
         )
 
     def rename_mailbox(self, operation):
@@ -45,9 +46,7 @@ class Command(BaseCommand):
                 os.makedirs(dirname)
             except os.error as e:
                 raise OperationError(str(e))
-        code, output = exec_cmd(
-            "mv %s %s" % (operation.argument, new_mail_home)
-        )
+        code, output = exec_cmd("mv %s %s" % (operation.argument, new_mail_home))
         if code:
             raise OperationError(output)
 
@@ -58,8 +57,7 @@ class Command(BaseCommand):
 
         def onerror(function, path, excinfo):
             """Handle errors."""
-            self.logger.critical(
-                "delete failed (reason: {})".format(excinfo))
+            self.logger.critical("delete failed (reason: {})".format(excinfo))
 
         shutil.rmtree(operation.argument, False, onerror)
 
@@ -97,7 +95,8 @@ class Command(BaseCommand):
                 f(ope)
             except (OperationError, InternalError) as e:
                 self.logger.critical(
-                    "%s failed (reason: %s)", ope, str(e).decode("utf-8"))
+                    "%s failed (reason: %s)", ope, str(e).decode("utf-8")
+                )
             else:
                 self.logger.info("%s succeed", ope)
                 ope.delete()

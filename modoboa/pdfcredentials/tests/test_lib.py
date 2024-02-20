@@ -34,9 +34,7 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
         data = {
             "username": f"{username}",
             "role": "SimpleUsers",
-            "mailbox": {
-                "use_domain_quota": True
-            },
+            "mailbox": {"use_domain_quota": True},
             "password": "Toto12345",
             "language": "fr",
         }
@@ -62,16 +60,15 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
         fname = os.path.join(self.workdir, "{}.pdf".format(username))
         self.assertTrue(os.path.exists(fname))
         filebuff = lib.decrypt_file(fname)
-        self.assertIn("application/pdf",
-                      Popen("/usr/bin/file -b --mime -",
-                            shell=True,
-                            stdout=PIPE,
-                            stdin=PIPE)
-                      .communicate(filebuff)[0].strip().decode()
-                      )
+        self.assertIn(
+            "application/pdf",
+            Popen("/usr/bin/file -b --mime -", shell=True, stdout=PIPE, stdin=PIPE)
+            .communicate(filebuff)[0]
+            .strip()
+            .decode(),
+        )
         with open(fname, "r") as file:
             with self.assertRaises(UnicodeDecodeError):
-                Popen("/usr/bin/file -b --mime -",
-                      shell=True,
-                      stdout=PIPE,
-                      stdin=PIPE).communicate(file.read(1024))[0].strip()
+                Popen(
+                    "/usr/bin/file -b --mime -", shell=True, stdout=PIPE, stdin=PIPE
+                ).communicate(file.read(1024))[0].strip()

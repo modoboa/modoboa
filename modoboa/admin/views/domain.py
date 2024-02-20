@@ -6,7 +6,9 @@ from reversion import revisions as reversion
 
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
-    login_required, permission_required, user_passes_test
+    login_required,
+    permission_required,
+    user_passes_test,
 )
 from django.db.models import Q, Sum
 from django.http import HttpResponseRedirect
@@ -37,15 +39,15 @@ def index(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domain") or
-    u.has_perm("admin.view_mailbox")
+    lambda u: u.has_perm("admin.view_domain") or u.has_perm("admin.view_mailbox")
 )
 def _domains(request):
     sort_order, sort_dir = get_sort_order(request.GET, "name")
     extra_filters = signals.extra_domain_filters.send(sender="_domains")
     if extra_filters:
         extra_filters = reduce(
-            lambda a, b: a + b, [result[1] for result in extra_filters])
+            lambda a, b: a + b, [result[1] for result in extra_filters]
+        )
     filters = {
         flt: request.GET.get(flt, None)
         for flt in ["domfilter", "searchquery"] + extra_filters
@@ -54,17 +56,19 @@ def _domains(request):
     domainlist = get_domains(request.user, **filters)
     if sort_order == "name":
         domainlist = sorted(
-            domainlist,
-            key=lambda d: getattr(d, sort_order), reverse=sort_dir == "-"
+            domainlist, key=lambda d: getattr(d, sort_order), reverse=sort_dir == "-"
         )
     else:
-        domainlist = sorted(domainlist, key=lambda d: d.tags[0]["name"],
-                            reverse=sort_dir == "-")
+        domainlist = sorted(
+            domainlist, key=lambda d: d.tags[0]["name"], reverse=sort_dir == "-"
+        )
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
-            "handle_mailboxes", raise_exception=False),
+            "handle_mailboxes", raise_exception=False
+        ),
         "auto_account_removal": request.localconfig.parameters.get_value(
-            "auto_account_removal"),
+            "auto_account_removal"
+        ),
     }
     page = get_listing_page(domainlist, request.GET.get("page", 1))
     parameters = request.localconfig.parameters
@@ -73,9 +77,8 @@ def _domains(request):
         "enable_spf_checks": parameters.get_value("enable_spf_checks"),
         "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
         "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
-        "enable_autoconfig_checks": (
-            parameters.get_value("enable_autoconfig_checks")),
-        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
+        "enable_autoconfig_checks": (parameters.get_value("enable_autoconfig_checks")),
+        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
     }
     context["headers"] = render_to_string(
         "admin/domain_headers.html", dns_checks, request
@@ -97,28 +100,31 @@ def _domains(request):
 def domains(request, tplname="admin/domains.html"):
     if not request.user.has_perm("admin.view_domain"):
         if request.user.has_perm("admin.view_mailbox"):
-            return HttpResponseRedirect(
-                reverse("admin:identity_list")
-            )
+            return HttpResponseRedirect(reverse("admin:identity_list"))
         return HttpResponseRedirect(reverse("core:user_index"))
     parameters = request.localconfig.parameters
-    return render(request, tplname, {
-        "selection": "domains",
-        "enable_mx_checks": parameters.get_value("enable_mx_checks"),
-        "enable_spf_checks": parameters.get_value("enable_spf_checks"),
-        "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
-        "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
-        "enable_autoconfig_checks": (
-            parameters.get_value("enable_autoconfig_checks")),
-        "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks")
-    })
+    return render(
+        request,
+        tplname,
+        {
+            "selection": "domains",
+            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+            "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+            "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+            "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+            "enable_autoconfig_checks": (
+                parameters.get_value("enable_autoconfig_checks")
+            ),
+            "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
+        },
+    )
 
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("admin.view_domain") or
-    u.has_perm("admin.view_mailbox") or
-    u.has_perm("admin.add_domain")
+    lambda u: u.has_perm("admin.view_domain")
+    or u.has_perm("admin.view_mailbox")
+    or u.has_perm("admin.add_domain")
 )
 def get_next_page(request):
     """Return the next page of the domain or quota list."""
@@ -146,15 +152,12 @@ def list_quotas(request):
     if sort_order in ["name", "quota"]:
         domains = domains.order_by("{}{}".format(sort_dir, sort_order))
     elif sort_order == "allocated_quota":
-        domains = (
-            domains.annotate(allocated_quota=Sum("mailbox__quota"))
-            .order_by("{}{}".format(sort_dir, sort_order))
+        domains = domains.annotate(allocated_quota=Sum("mailbox__quota")).order_by(
+            "{}{}".format(sort_dir, sort_order)
         )
     page = get_listing_page(domains, request.GET.get("page", 1))
     context = {
-        "headers": render_to_string(
-            "admin/domains_quota_headers.html", {}, request
-        )
+        "headers": render_to_string("admin/domains_quota_headers.html", {}, request)
     }
     if page is None:
         context["length"] = 0
@@ -182,16 +185,14 @@ def list_logs(request):
     logs = logs.order_by("{}{}".format(sort_dir, sort_order))
     if search:
         logs = logs.filter(
-            Q(sender__icontains=search) |
-            Q(rcpt__icontains=search) |
-            Q(queue_id__icontains=search) |
-            Q(status__icontains=search)
+            Q(sender__icontains=search)
+            | Q(rcpt__icontains=search)
+            | Q(queue_id__icontains=search)
+            | Q(status__icontains=search)
         )
     page = get_listing_page(logs, request.GET.get("page", 1))
     context = {
-        "headers": render_to_string(
-            "admin/domains_log_headers.html", {}, request
-        )
+        "headers": render_to_string("admin/domains_log_headers.html", {}, request)
     }
     if page is None:
         context["length"] = 0
@@ -207,8 +208,7 @@ def list_logs(request):
 @permission_required("admin.add_domain")
 @reversion.create_revision()
 def newdomain(request):
-    core_signals.can_create_object.send(
-        "newdomain", context=request.user, klass=Domain)
+    core_signals.can_create_object.send("newdomain", context=request.user, klass=Domain)
     return DomainWizard(request).process()
 
 
@@ -224,7 +224,8 @@ def editdomain(request, dom_id):
 
     instances = {"general": domain}
     results = signals.get_domain_form_instances.send(
-        sender="editdomain", user=request.user, domain=domain)
+        sender="editdomain", user=request.user, domain=domain
+    )
     for result in results:
         instances.update(result[1])
     return DomainForm(request, instances=instances).process()
@@ -251,8 +252,7 @@ def deldomain(request, dom_id):
     return render_to_json_response(msg)
 
 
-class DomainDetailView(
-        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+class DomainDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """DetailView for Domain."""
 
     model = Domain
@@ -260,39 +260,40 @@ class DomainDetailView(
 
     def get_queryset(self):
         """Add some prefetching."""
-        return (
-            Domain.objects.get_for_admin(self.request.user)
-            .prefetch_related("domainalias_set", "mailbox_set", "alias_set")
+        return Domain.objects.get_for_admin(self.request.user).prefetch_related(
+            "domainalias_set", "mailbox_set", "alias_set"
         )
 
     def get_context_data(self, **kwargs):
         """Include extra widgets."""
         context = super(DomainDetailView, self).get_context_data(**kwargs)
         result = signals.extra_domain_dashboard_widgets.send(
-            self.__class__, user=self.request.user, domain=self.object)
+            self.__class__, user=self.request.user, domain=self.object
+        )
         parameters = self.request.localconfig.parameters
-        context.update({
-            "templates": {"left": [], "right": []},
-            "enable_mx_checks": parameters.get_value("enable_mx_checks"),
-            "enable_spf_checks": parameters.get_value("enable_spf_checks"),
-            "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
-            "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
-            "enable_autoconfig_checks": (
-                parameters.get_value("enable_autoconfig_checks")),
-            "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
-        })
+        context.update(
+            {
+                "templates": {"left": [], "right": []},
+                "enable_mx_checks": parameters.get_value("enable_mx_checks"),
+                "enable_spf_checks": parameters.get_value("enable_spf_checks"),
+                "enable_dkim_checks": parameters.get_value("enable_dkim_checks"),
+                "enable_dmarc_checks": parameters.get_value("enable_dmarc_checks"),
+                "enable_autoconfig_checks": (
+                    parameters.get_value("enable_autoconfig_checks")
+                ),
+                "enable_dnsbl_checks": parameters.get_value("enable_dnsbl_checks"),
+            }
+        )
         for _receiver, widgets in result:
             for widget in widgets:
-                context["templates"][widget["column"]].append(
-                    widget["template"])
+                context["templates"][widget["column"]].append(widget["template"])
                 # FIXME: can raise conflicts...
                 context.update(widget["context"])
 
         return context
 
 
-class DomainAlarmsView(
-        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+class DomainAlarmsView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """A view to list domain alarms."""
 
     model = Domain
@@ -301,7 +302,6 @@ class DomainAlarmsView(
 
     def get_queryset(self):
         """Add some prefetching."""
-        return (
-            Domain.objects.get_for_admin(self.request.user)
-            .prefetch_related("alarms")
+        return Domain.objects.get_for_admin(self.request.user).prefetch_related(
+            "alarms"
         )

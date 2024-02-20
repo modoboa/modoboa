@@ -5,9 +5,11 @@ from django.contrib.auth import mixins as auth_mixins
 from django.views import generic
 
 
-class IndexView(auth_mixins.LoginRequiredMixin,
-                auth_mixins.PermissionRequiredMixin,
-                generic.TemplateView):
+class IndexView(
+    auth_mixins.LoginRequiredMixin,
+    auth_mixins.PermissionRequiredMixin,
+    generic.TemplateView,
+):
     """Index view."""
 
     permission_required = "modoboa.imap_migration.add_migration"

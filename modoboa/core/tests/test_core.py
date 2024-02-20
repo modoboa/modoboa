@@ -16,7 +16,6 @@ from .. import factories, mocks, models
 
 
 class AuthenticationTestCase(ModoTestCase):
-
     """Validate authentication scenarios."""
 
     @classmethod
@@ -49,10 +48,8 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
 
     def test_change_default_admin(self):
         """Use dedicated option."""
-        management.call_command(
-            "load_initial_data", "--admin-username", "modoadmin")
-        self.assertTrue(
-            self.client.login(username="modoadmin", password="password"))
+        management.call_command("load_initial_data", "--admin-username", "modoadmin")
+        self.assertTrue(self.client.login(username="modoadmin", password="password"))
 
     def test_clean_logs(self):
         """Run cleanlogs command."""
@@ -72,8 +69,7 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
 
         last_login = timezone.now() - relativedelta(days=45)
         account = factories.UserFactory(
-            username="user1@domain.test", groups=("SimpleUsers", ),
-            last_login=last_login
+            username="user1@domain.test", groups=("SimpleUsers",), last_login=last_login
         )
         management.call_command("clean_inactive_accounts", "--dry-run")
         account.refresh_from_db()
@@ -81,16 +77,15 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
 
         out = StringIO()
         management.call_command(
-            "clean_inactive_accounts", "--verbose", "--dry-run", stdout=out)
+            "clean_inactive_accounts", "--verbose", "--dry-run", stdout=out
+        )
         self.assertIn("user1@domain.test", out.getvalue())
 
         # Disable account account threshold
         self.set_global_parameter("enable_inactive_accounts", False)
         out = StringIO()
-        management.call_command(
-            "clean_inactive_accounts", "--verbose", stdout=out)
-        self.assertIn("Inactive accounts detection is disabled.",
-                      out.getvalue())
+        management.call_command("clean_inactive_accounts", "--verbose", stdout=out)
+        self.assertIn("Inactive accounts detection is disabled.", out.getvalue())
 
         self.set_global_parameter("enable_inactive_accounts", True)
         management.call_command("clean_inactive_accounts", "--silent")
@@ -100,8 +95,7 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
         account.is_active = True
         account.save(update_fields=["is_active"])
 
-        management.call_command(
-            "clean_inactive_accounts", "--silent", "--delete")
+        management.call_command("clean_inactive_accounts", "--silent", "--delete")
         with self.assertRaises(models.User.DoesNotExist):
             account.refresh_from_db()
 
@@ -120,8 +114,10 @@ class ProfileTestCase(ModoTestCase):
     def test_update_profile(self):
         """Update profile without password."""
         data = {
-            "first_name": "Homer", "last_name": "Simpson",
-            "phone_number": "+33612345678", "language": "en"
+            "first_name": "Homer",
+            "last_name": "Simpson",
+            "phone_number": "+33612345678",
+            "language": "en",
         }
         self.ajax_post(reverse("core:user_profile"), data)
         admin = models.User.objects.get(username="admin")
@@ -134,47 +130,53 @@ class ProfileTestCase(ModoTestCase):
         * The default admin changes his password (no associated Mailbox)
         * A normal user changes his password
         """
-        self.ajax_post(reverse("core:user_profile"),
-                       {"language": "en", "oldpassword": "password",
-                        "newpassword": "12345Toi", "confirmation": "12345Toi"})
+        self.ajax_post(
+            reverse("core:user_profile"),
+            {
+                "language": "en",
+                "oldpassword": "password",
+                "newpassword": "12345Toi",
+                "confirmation": "12345Toi",
+            },
+        )
         self.client.logout()
 
-        self.assertEqual(
-            self.client.login(username="admin", password="12345Toi"), True
-        )
+        self.assertEqual(self.client.login(username="admin", password="12345Toi"), True)
         self.assertEqual(
             self.client.login(username="user@test.com", password="toto"), True
         )
 
         self.ajax_post(
             reverse("core:user_profile"),
-            {"language": "en",
-             "oldpassword": "toto",
-             "confirmation": "tutu"},
-            status=400
+            {"language": "en", "oldpassword": "toto", "confirmation": "tutu"},
+            status=400,
         )
 
         self.ajax_post(
             reverse("core:user_profile"),
-            {"language": "en",
-             "oldpassword": "toto",
-             "newpassword": "tutu"},
-            status=400
+            {"language": "en", "oldpassword": "toto", "newpassword": "tutu"},
+            status=400,
         )
 
         self.ajax_post(
             reverse("core:user_profile"),
-            {"language": "en",
-             "oldpassword": "toto",
-             "newpassword": "tutu",
-             "confirmation": "tutu"},
-            status=400
+            {
+                "language": "en",
+                "oldpassword": "toto",
+                "newpassword": "tutu",
+                "confirmation": "tutu",
+            },
+            status=400,
         )
 
         self.ajax_post(
             reverse("core:user_profile"),
-            {"language": "en", "oldpassword": "toto",
-             "newpassword": "Toto1234", "confirmation": "Toto1234"}
+            {
+                "language": "en",
+                "oldpassword": "toto",
+                "newpassword": "Toto1234",
+                "confirmation": "Toto1234",
+            },
         )
         self.client.logout()
         self.assertTrue(
@@ -184,9 +186,13 @@ class ProfileTestCase(ModoTestCase):
     def test_update_password_restrictions(self):
         self.ajax_post(
             reverse("core:user_profile"),
-            {"language": "en", "oldpassword": "",
-             "newpassword": "12345Toi", "confirmation": "12345Toi"},
-            status=400
+            {
+                "language": "en",
+                "oldpassword": "",
+                "newpassword": "12345Toi",
+                "confirmation": "12345Toi",
+            },
+            status=400,
         )
         self.client.logout()
 
@@ -196,11 +202,9 @@ class ProfileTestCase(ModoTestCase):
 
     def test_update_password_url(self):
         """Check if external is used when defined."""
-        self.set_global_parameter(
-            "update_password_url", "http://update.password")
+        self.set_global_parameter("update_password_url", "http://update.password")
         non_local_user = factories.UserFactory(
-            username="user@external.com", groups=("SimpleUsers",),
-            is_local=False
+            username="user@external.com", groups=("SimpleUsers",), is_local=False
         )
         self.client.force_login(non_local_user)
         url = reverse("core:user_profile")
@@ -213,7 +217,6 @@ class ProfileTestCase(ModoTestCase):
 
 
 class APIAccessFormTestCase(ModoTestCase):
-
     """Check form access."""
 
     @classmethod
@@ -250,10 +253,11 @@ class APICommunicationTestCase(ModoTestCase):
     def test_management_command(self):
         """Check command."""
         with httmock.HTTMock(
-                mocks.modo_api_instance_search,
-                mocks.modo_api_instance_create,
-                mocks.modo_api_instance_update,
-                mocks.modo_api_versions):
+            mocks.modo_api_instance_search,
+            mocks.modo_api_instance_create,
+            mocks.modo_api_instance_update,
+            mocks.modo_api_versions,
+        ):
             management.call_command("communicate_with_public_api")
         self.assertEqual(models.LocalConfig.objects.first().api_pk, 100)
         self.assertEqual(len(mail.outbox), 0)
@@ -265,28 +269,31 @@ class APICommunicationTestCase(ModoTestCase):
         # Enable notifications
         self.set_global_parameter("send_new_versions_email", True)
         with httmock.HTTMock(
-                mocks.modo_api_instance_search,
-                mocks.modo_api_instance_create,
-                mocks.modo_api_instance_update,
-                mocks.modo_api_versions):
+            mocks.modo_api_instance_search,
+            mocks.modo_api_instance_create,
+            mocks.modo_api_instance_update,
+            mocks.modo_api_versions,
+        ):
             management.call_command("communicate_with_public_api")
         self.assertEqual(len(mail.outbox), 1)
 
         # Call once again and check no new notification has been sent
         self.set_global_parameter("send_new_versions_email", True)
         with httmock.HTTMock(
-                mocks.modo_api_instance_search,
-                mocks.modo_api_instance_create,
-                mocks.modo_api_instance_update,
-                mocks.modo_api_versions):
+            mocks.modo_api_instance_search,
+            mocks.modo_api_instance_create,
+            mocks.modo_api_instance_update,
+            mocks.modo_api_versions,
+        ):
             management.call_command("communicate_with_public_api")
         self.assertEqual(len(mail.outbox), 1)
 
         # Make sure no new notification is sent when no updates
         with httmock.HTTMock(
-                mocks.modo_api_instance_search,
-                mocks.modo_api_instance_create,
-                mocks.modo_api_instance_update,
-                mocks.modo_api_versions_no_update):
+            mocks.modo_api_instance_search,
+            mocks.modo_api_instance_create,
+            mocks.modo_api_instance_update,
+            mocks.modo_api_versions_no_update,
+        ):
             management.call_command("communicate_with_public_api")
         self.assertEqual(len(mail.outbox), 1)

@@ -23,8 +23,8 @@ class MapFilesTestCaseMixin(object):
     def _test_maps_generation(self, engine):
         dburl = "{0}://user:password@localhost/testdb".format(engine)
         call_command(
-            "generate_postfix_maps",
-            "--dburl", dburl, "--destdir", self.workdir)
+            "generate_postfix_maps", "--dburl", dburl, "--destdir", self.workdir
+        )
 
         for mapfile in self.MAP_FILES:
             path = "{0}/{1}".format(self.workdir, mapfile)

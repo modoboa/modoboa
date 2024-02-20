@@ -21,8 +21,8 @@ class ManagementCommandTestCase(mixins.CallCommandMixin, ModoTestCase):
         self.import_fail_reports()
         self.assertTrue(self.domain.record_set.exists())
         self.assertTrue(
-            models.Reporter.objects.filter(
-                org_name="FastMail Pty Ltd").exists())
+            models.Reporter.objects.filter(org_name="FastMail Pty Ltd").exists()
+        )
         # Ensure that reports from Yahoo are processed successfully.
         # These do not contain a sp attribute in policy_published
         self.assertTrue(

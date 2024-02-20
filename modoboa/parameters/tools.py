@@ -18,8 +18,7 @@ class NotDefined(exceptions.ModoboaException):
     def __str__(self):
         if self.name is None:
             return "Application {} not registered".format(self.app)
-        return "Parameter {} not defined for app {}".format(
-            self.name, self.app)
+        return "Parameter {} not defined for app {}".format(self.name, self.app)
 
 
 class Registry(object):
@@ -27,28 +26,24 @@ class Registry(object):
 
     def __init__(self):
         """Constructor."""
-        self._registry = {
-            "global": {},
-            "user": {}
-        }
-        self._registry2 = {
-            "global": {},
-            "user": {}
-        }
+        self._registry = {"global": {}, "user": {}}
+        self._registry2 = {"global": {}, "user": {}}
 
     def add(self, level, formclass, label):
         """Add a new class containing parameters."""
         self._registry[level][formclass.app] = {
-            "label": label, "formclass": formclass, "defaults": {}
+            "label": label,
+            "formclass": formclass,
+            "defaults": {},
         }
 
-    def add2(self, level, app, label, structure, serializer_class,
-             is_extension=False):
+    def add2(self, level, app, label, structure, serializer_class, is_extension=False):
         """Add new parameters for given app and level."""
         self._registry2[level][app] = {
-            "label": label, "structure": structure,
+            "label": label,
+            "structure": structure,
             "serializer_class": serializer_class,
-            "is_extension": is_extension
+            "is_extension": is_extension,
         }
 
     def _load_default_values(self, level):
@@ -62,9 +57,14 @@ class Registry(object):
 
     def get_applications(self, level):
         """Return all applications registered for level."""
-        result = [{"name": key, "label": value["label"],
-                   "is_extension": value["is_extension"]}
-                  for key, value in self._registry2[level].items()]
+        result = [
+            {
+                "name": key,
+                "label": value["label"],
+                "is_extension": value["is_extension"],
+            }
+            for key, value in self._registry2[level].items()
+        ]
         return result
 
     def get_label(self, level, app):
@@ -77,22 +77,21 @@ class Registry(object):
         if first_app in self._registry[level]:
             sorted_apps.append(first_app)
         sorted_apps += sorted(
-            (
-                a for a in self._registry[level]
-                if a != first_app
-            ),
-            key=lambda a: self._registry[level][a]["label"]
+            (a for a in self._registry[level] if a != first_app),
+            key=lambda a: self._registry[level][a]["label"],
         )
         result = []
         for app in sorted_apps:
             data = self._registry[level][app]
             if not data["formclass"].has_access(**kwargs):
                 continue
-            result.append({
-                "app": app,
-                "label": data["label"],
-                "form": data["formclass"](*args, **kwargs)
-            })
+            result.append(
+                {
+                    "app": app,
+                    "label": data["label"],
+                    "form": data["formclass"](*args, **kwargs),
+                }
+            )
         return result
 
     def get_serializer_class(self, level, app):
@@ -112,7 +111,7 @@ class Registry(object):
                 item = {
                     "label": sconfig["label"],
                     "display": sconfig.get("display", ""),
-                    "parameters": []
+                    "parameters": [],
                 }
                 for name, config in list(sconfig["params"].items()):
                     data = {
@@ -217,7 +216,8 @@ class Manager:
             raise NotDefined(app, parameter)
         if app not in self._parameters:
             self._parameters[app] = copy.deepcopy(
-                registry.get_defaults(self._level, app))
+                registry.get_defaults(self._level, app)
+            )
         self._parameters[app][parameter] = value
 
     def set_values(self, values, app=None):
@@ -228,13 +228,15 @@ class Manager:
             raise NotDefined(app)
         if app not in self._parameters:
             self._parameters[app] = copy.deepcopy(
-                registry.get_defaults(self._level, app))
+                registry.get_defaults(self._level, app)
+            )
         self._parameters[app].update(values)
 
 
 def get_localconfig():
     """Retrieve current LocalConfig instance."""
     from modoboa.core import models as core_models
+
     request = signals.get_request()
     if request:
         return request.localconfig

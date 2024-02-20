@@ -7,7 +7,13 @@ from django.contrib.contenttypes.models import ContentType
 from django_filters import rest_framework as dj_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import (
-    filters, mixins, parsers, permissions, response, status, viewsets
+    filters,
+    mixins,
+    parsers,
+    permissions,
+    response,
+    status,
+    viewsets,
 )
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -29,31 +35,32 @@ from . import serializers
 @extend_schema_view(
     retrieve=extend_schema(
         description="Retrieve a particular domain",
-        summary="Retrieve a particular domain"
+        summary="Retrieve a particular domain",
     ),
     list=extend_schema(
-        description="Retrieve a list of domains",
-        summary="Retrieve a list of domains"
+        description="Retrieve a list of domains", summary="Retrieve a list of domains"
     ),
     create=extend_schema(
-        description="Create a new domain",
-        summary="Create a new domain"
+        description="Create a new domain", summary="Create a new domain"
     ),
     delete=extend_schema(
-        description="Delete a particular domain",
-        summary="Delete a particular domain"
+        description="Delete a particular domain", summary="Delete a particular domain"
     ),
 )
-class DomainViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
-                    mixins.ListModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.CreateModelMixin,
-                    mixins.UpdateModelMixin,
-                    viewsets.GenericViewSet):
+class DomainViewSet(
+    GetThrottleViewsetMixin,
+    lib_viewsets.RevisionModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
     """V2 viewset."""
 
     permission_classes = (
-        permissions.IsAuthenticated, permissions.DjangoModelPermissions,
+        permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
     )
 
     def get_queryset(self):
@@ -112,8 +119,9 @@ class DomainViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
         domain.remove_admin(serializer.validated_data["account"])
         return response.Response()
 
-    @action(methods=["get"], detail=False,
-            renderer_classes=(lib_renderers.CSVRenderer,))
+    @action(
+        methods=["get"], detail=False, renderer_classes=(lib_renderers.CSVRenderer,)
+    )
     def export(self, request, **kwargs):
         """Export domains and aliases to CSV."""
         result = []
@@ -121,21 +129,19 @@ class DomainViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
             result += domain.to_csv_rows()
         return response.Response(result)
 
-    @extend_schema(
-        request=serializers.CSVImportSerializer
+    @extend_schema(request=serializers.CSVImportSerializer)
+    @action(
+        methods=["post"],
+        detail=False,
+        parser_classes=(parsers.MultiPartParser, parsers.FormParser),
+        url_path="import",
     )
-    @action(methods=["post"],
-            detail=False,
-            parser_classes=(parsers.MultiPartParser, parsers.FormParser),
-            url_path="import")
     def import_from_csv(self, request, **kwargs):
         """Import domains and aliases from CSV file."""
         serializer = serializers.CSVImportSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         status, msg = lib.import_data(
-            request.user,
-            request.FILES["sourcefile"],
-            serializer.validated_data
+            request.user, request.FILES["sourcefile"], serializer.validated_data
         )
         return response.Response({"status": status, "message": msg})
 
@@ -144,9 +150,8 @@ class AccountFilterSet(dj_filters.FilterSet):
     """Custom FilterSet for Account."""
 
     domain = dj_filters.ModelChoiceFilter(
-        queryset=lambda request: models.Domain.objects.get_for_admin(
-            request.user),
-        field_name="mailbox__domain"
+        queryset=lambda request: models.Domain.objects.get_for_admin(request.user),
+        field_name="mailbox__domain",
     )
     role = dj_filters.CharFilter(method="filter_role")
 
@@ -176,23 +181,19 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
     def get_queryset(self):
         """Filter queryset based on current user."""
         user = self.request.user
-        ids = (
-            user.objectaccess_set
-            .filter(content_type=ContentType.objects.get_for_model(user))
-            .values_list("object_id", flat=True)
-        )
-        return (
-            core_models.User.objects.filter(pk__in=ids)
-            .prefetch_related("userobjectlimit_set")
+        ids = user.objectaccess_set.filter(
+            content_type=ContentType.objects.get_for_model(user)
+        ).values_list("object_id", flat=True)
+        return core_models.User.objects.filter(pk__in=ids).prefetch_related(
+            "userobjectlimit_set"
         )
 
     @action(methods=["post"], detail=False)
     def validate(self, request, **kwargs):
         """Validate given account without creating it."""
         serializer = self.get_serializer(
-            data=request.data,
-            context=self.get_serializer_context(),
-            partial=True)
+            data=request.data, context=self.get_serializer_context(), partial=True
+        )
         serializer.is_valid(raise_exception=True)
         return response.Response(status=204)
 
@@ -215,17 +216,19 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
 class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Viewset for identities."""
 
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = None
 
     def list(self, request, **kwargs):
         """Return all identities."""
         serializer = serializers.IdentitySerializer(
-            lib.get_identities(request.user), many=True)
+            lib.get_identities(request.user), many=True
+        )
         return response.Response(serializer.data)
 
-    @action(methods=["get"], detail=False,
-            renderer_classes=(lib_renderers.CSVRenderer,))
+    @action(
+        methods=["get"], detail=False, renderer_classes=(lib_renderers.CSVRenderer,)
+    )
     def export(self, request, **kwargs):
         """Export accounts and aliases to CSV."""
         result = []
@@ -233,21 +236,19 @@ class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
             result.append(idt.to_csv_row())
         return response.Response(result)
 
-    @extend_schema(
-        request=serializers.CSVIdentityImportSerializer
+    @extend_schema(request=serializers.CSVIdentityImportSerializer)
+    @action(
+        methods=["post"],
+        detail=False,
+        parser_classes=(parsers.MultiPartParser, parsers.FormParser),
+        url_path="import",
     )
-    @action(methods=["post"],
-            detail=False,
-            parser_classes=(parsers.MultiPartParser, parsers.FormParser),
-            url_path="import")
     def import_from_csv(self, request, **kwargs):
         """Import accounts and aliases from CSV file."""
         serializer = serializers.CSVIdentityImportSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         status, msg = lib.import_data(
-            request.user,
-            request.FILES["sourcefile"],
-            serializer.validated_data
+            request.user, request.FILES["sourcefile"], serializer.validated_data
         )
         return response.Response({"status": status, "message": msg})
 
@@ -261,23 +262,20 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
     def validate(self, request, **kwargs):
         """Validate given alias without creating it."""
         serializer = self.get_serializer(
-            data=request.data,
-            context=self.get_serializer_context(),
-            partial=True)
+            data=request.data, context=self.get_serializer_context(), partial=True
+        )
         try:
             serializer.is_valid(raise_exception=True)
         except AliasExists as e:
             return response.Response(
                 data={"id": e.alias_id, "status": _("This alias already exists")},
-                status=409
-                )
+                status=409,
+            )
         return response.Response(status=204)
 
     @action(methods=["get"], detail=False)
     def random_address(self, request, **kwargs):
-        return response.Response({
-            "address": models.Alias.generate_random_address()
-        })
+        return response.Response({"address": models.Alias.generate_random_address()})
 
 
 class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
@@ -288,7 +286,8 @@ class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         """Get or define user forward."""
         mb = request.user.mailbox
         alias = models.Alias.objects.filter(
-            address=mb.full_address, internal=False).first()
+            address=mb.full_address, internal=False
+        ).first()
         data = {}
         if request.method == "GET":
             if alias is not None and alias.recipients:
@@ -304,17 +303,16 @@ class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         recipients = serializer.validated_data.get("recipients")
         if not recipients:
             models.Alias.objects.filter(
-                address=mb.full_address, internal=False).delete()
+                address=mb.full_address, internal=False
+            ).delete()
             # Make sure internal self-alias is enabled
-            models.Alias.objects.filter(
-                address=mb.full_address, internal=True
-            ).update(enabled=True)
+            models.Alias.objects.filter(address=mb.full_address, internal=True).update(
+                enabled=True
+            )
         else:
             if alias is None:
                 alias = models.Alias.objects.create(
-                    address=mb.full_address,
-                    domain=mb.domain,
-                    enabled=mb.user.is_active
+                    address=mb.full_address, domain=mb.domain, enabled=mb.user.is_active
                 )
                 alias.post_create(request.user)
             if serializer.validated_data["keepcopies"]:
@@ -346,32 +344,35 @@ class AlarmFilterSet(dj_filters.FilterSet):
         return queryset.filter(created__gt=value)
 
 
-class AlarmViewSet(GetThrottleViewsetMixin,
-                   mixins.DestroyModelMixin,
-                   mixins.ListModelMixin,
-                   mixins.RetrieveModelMixin,
-                   viewsets.GenericViewSet):
+class AlarmViewSet(
+    GetThrottleViewsetMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
     """Viewset for Alarm."""
 
-    filter_backends = (filters.OrderingFilter,
-                       filters.SearchFilter,
-                       dj_filters.DjangoFilterBackend)
+    filter_backends = (
+        filters.OrderingFilter,
+        filters.SearchFilter,
+        dj_filters.DjangoFilterBackend,
+    )
     filterset_class = AlarmFilterSet
     ordering_fields = ["created", "status", "title"]
     pagination_class = pagination.CustomPageNumberPagination
-    permission_classes = (
-        permissions.IsAuthenticated,
-    )
+    permission_classes = (permissions.IsAuthenticated,)
     search_fields = ["domain__name", "title"]
     serializer_class = serializers.AlarmSerializer
 
     def get_queryset(self):
-        return models.Alarm.objects.select_related("domain").filter(
-            domain__in=models.Domain.objects.get_for_admin(
-                self.request.user)
-        ).order_by("-created")
+        return (
+            models.Alarm.objects.select_related("domain")
+            .filter(domain__in=models.Domain.objects.get_for_admin(self.request.user))
+            .order_by("-created")
+        )
 
-    @action(methods=['patch'], detail=True)
+    @action(methods=["patch"], detail=True)
     def switch(self, request, **kwargs):
         """Custom update method that switch status of an alarm."""
         alarm = self.get_object()
@@ -383,7 +384,7 @@ class AlarmViewSet(GetThrottleViewsetMixin,
             alarm.reopen()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=['delete'], detail=False)
+    @action(methods=["delete"], detail=False)
     def bulk_delete(self, request, **kwargs):
         """Delete multiple alarms at the same time."""
         ids = request.query_params.getlist("ids[]")
@@ -392,7 +393,6 @@ class AlarmViewSet(GetThrottleViewsetMixin,
         try:
             ids = [int(alarm_id) for alarm_id in ids]
         except ValueError:
-            return response.Response(
-                _("Received invalid alarm id(s)"), status=400)
+            return response.Response(_("Received invalid alarm id(s)"), status=400)
         models.Alarm.objects.filter(pk__in=ids).delete()
         return response.Response(status=204)

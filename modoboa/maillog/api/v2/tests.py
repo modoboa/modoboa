@@ -12,15 +12,11 @@ class StatisticsViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url + "?gset=mailtraffic&period=day")
         self.assertEqual(resp.status_code, 200)
 
-        resp = self.client.get(
-            url +
-            "?gset=mailtraffic&period=custom&start=2021-05-01"
-        )
+        resp = self.client.get(url + "?gset=mailtraffic&period=custom&start=2021-05-01")
         self.assertEqual(resp.status_code, 400)
 
         resp = self.client.get(
-            url +
-            "?gset=mailtraffic&period=custom&start=2021-05-01&end=2021-05-02"
+            url + "?gset=mailtraffic&period=custom&start=2021-05-01&end=2021-05-02"
         )
         self.assertEqual(resp.status_code, 200)
 

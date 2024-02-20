@@ -3,11 +3,19 @@ Password hashers for Modoboa.
 """
 
 from modoboa.core.password_hashers.advanced import (  # NOQA:F401
-    BLFCRYPTHasher, MD5CRYPTHasher, SHA256CRYPTHasher, SHA512CRYPTHasher,
-    ARGON2IDHasher, SSHAHasher
+    BLFCRYPTHasher,
+    MD5CRYPTHasher,
+    SHA256CRYPTHasher,
+    SHA512CRYPTHasher,
+    ARGON2IDHasher,
+    SSHAHasher,
 )
 from modoboa.core.password_hashers.base import (  # NOQA:F401
-    CRYPTHasher, MD5Hasher, PLAINHasher, SHA256Hasher, PasswordHasher
+    CRYPTHasher,
+    MD5Hasher,
+    PLAINHasher,
+    SHA256Hasher,
+    PasswordHasher,
 )
 
 

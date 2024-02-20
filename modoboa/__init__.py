@@ -8,6 +8,8 @@ except DistributionNotFound:
     # package is not installed
     pass
 
+
 def modoboa_admin():
     from modoboa.core.commands import handle_command_line
+
     handle_command_line()

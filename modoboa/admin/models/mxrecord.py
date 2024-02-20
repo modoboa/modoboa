@@ -29,8 +29,7 @@ class MXRecordManager(models.Manager):
         from .. import lib
 
         now = timezone.now()
-        records = self.get_queryset().filter(
-            domain=domain, updated__gt=now)
+        records = self.get_queryset().filter(domain=domain, updated__gt=now)
         if records.exists():
             for record in records:
                 yield record
@@ -47,7 +46,8 @@ class MXRecordManager(models.Manager):
                 domain=domain,
                 name="{}".format(mx_addr.strip(".")),
                 address="{}".format(mx_ip_addr),
-                updated=now + delta)
+                updated=now + delta,
+            )
             yield record
 
 

@@ -21,10 +21,9 @@ class Command(object):
         self._verbose = verbose
         if not settings.configured:
             settings.configure(
-                TEMPLATES=[{
-                    "BACKEND": (
-                        "django.template.backends.django.DjangoTemplates")
-                }]
+                TEMPLATES=[
+                    {"BACKEND": ("django.template.backends.django.DjangoTemplates")}
+                ]
             )
         self._templates_dir = "%s/templates" % os.path.dirname(__file__)
 
@@ -62,12 +61,12 @@ def scan_for_commands(dirname=""):
         if os.path.isfile(f):
             continue
         cmdname = f.replace(".py", "")
-        cmdmod = __import__("modoboa.core.commands", globals(), locals(),
-                            [smart_str(cmdname)])
+        cmdmod = __import__(
+            "modoboa.core.commands", globals(), locals(), [smart_str(cmdname)]
+        )
         cmdmod = getattr(cmdmod, cmdname)
         if "_" in cmdname:
-            cmdclassname = "".join(
-                [s.capitalize() for s in cmdname.split("_")])
+            cmdclassname = "".join([s.capitalize() for s in cmdname.split("_")])
         else:
             cmdclassname = cmdname.capitalize()
         try:
@@ -85,11 +84,13 @@ def handle_command_line():
         description="A set of utilities to ease the installation of Modoboa.",
         epilog="""Available commands:
 %s
-""" % "\n".join(["\t%s" % c for c in sorted(commands)]))
-    parser.add_argument("--verbose", action="store_true",
-                        help="Activate verbose output")
-    parser.add_argument("command", type=str,
-                        help="A valid command name")
+"""
+        % "\n".join(["\t%s" % c for c in sorted(commands)]),
+    )
+    parser.add_argument(
+        "--verbose", action="store_true", help="Activate verbose output"
+    )
+    parser.add_argument("command", type=str, help="A valid command name")
     (args, remaining) = parser.parse_known_args()
 
     if args.command not in commands:

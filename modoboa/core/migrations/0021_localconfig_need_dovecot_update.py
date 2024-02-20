@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0020_auto_20200421_0851'),
+        ("core", "0020_auto_20200421_0851"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='localconfig',
-            name='need_dovecot_update',
+            model_name="localconfig",
+            name="need_dovecot_update",
             field=models.BooleanField(default=False),
         ),
     ]

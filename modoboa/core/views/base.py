@@ -14,15 +14,13 @@ def find_nextlocation(request, user):
         # Redirect to profile on first login
         return reverse("core:user_index")
     nextlocation = request.POST.get("next", request.GET.get("next"))
-    condition = (
-        nextlocation and
-        url_has_allowed_host_and_scheme(nextlocation, request.get_host())
+    condition = nextlocation and url_has_allowed_host_and_scheme(
+        nextlocation, request.get_host()
     )
     if condition:
         return nextlocation
     if request.user.role == "SimpleUsers":
-        topredir = request.localconfig.parameters.get_value(
-            "default_top_redirection")
+        topredir = request.localconfig.parameters.get_value("default_top_redirection")
         if topredir != "user":
             infos = exts_pool.get_extension_infos(topredir)
             nextlocation = infos["topredirection_url"]

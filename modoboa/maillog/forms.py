@@ -23,22 +23,22 @@ class ParametersForm(param_forms.AdminParametersForm):
         label=gettext_lazy("Path to the log file"),
         initial="/var/log/mail.log",
         help_text=gettext_lazy("Path to log file used to collect statistics"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     rrd_rootdir = forms.CharField(
         label=gettext_lazy("Directory to store RRD files"),
         initial="/tmp/modoboa",
-        help_text=gettext_lazy(
-            "Path to directory where RRD files are stored"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        help_text=gettext_lazy("Path to directory where RRD files are stored"),
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     greylist = form_utils.YesNoField(
         label=gettext_lazy("Show greylisted messages"),
         initial=False,
         help_text=gettext_lazy(
-            "Differentiate between hard and soft rejects (greylisting)")
+            "Differentiate between hard and soft rejects (greylisting)"
+        ),
     )
 
     def __init__(self, *args, **kwargs):

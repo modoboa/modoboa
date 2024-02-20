@@ -10,37 +10,58 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Limit',
+            name="Limit",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=255)),
-                ('curvalue', models.IntegerField(default=0)),
-                ('maxvalue', models.IntegerField(default=-2)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("curvalue", models.IntegerField(default=0)),
+                ("maxvalue", models.IntegerField(default=-2)),
             ],
             options={
-                'db_table': 'limits_limit',
+                "db_table": "limits_limit",
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='LimitsPool',
+            name="LimitsPool",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+                    ),
+                ),
             ],
             options={
-                'db_table': 'limits_limitspool',
+                "db_table": "limits_limitspool",
             },
             bases=(models.Model,),
         ),
         migrations.AddField(
-            model_name='limit',
-            name='pool',
-            field=models.ForeignKey(to='limits.LimitsPool', on_delete=models.CASCADE),
+            model_name="limit",
+            name="pool",
+            field=models.ForeignKey(to="limits.LimitsPool", on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
-            name='limit',
-            unique_together=set([('name', 'pool')]),
+            name="limit",
+            unique_together=set([("name", "pool")]),
         ),
     ]

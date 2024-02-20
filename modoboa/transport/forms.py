@@ -7,7 +7,7 @@ from . import backends, models
 TYPE_TO_FIELD_MAP = {
     "int": forms.IntegerField,
     "boolean": forms.BooleanField,
-    "string": forms.CharField
+    "string": forms.CharField,
 }
 
 
@@ -32,7 +32,8 @@ class BackendSettingsMixin(object):
             if "widget" in setting:
                 options["widget"] = setting["widget"]
             self.fields[fullname] = TYPE_TO_FIELD_MAP[ftype](
-                label=setting["label"], required=False, **options)
+                label=setting["label"], required=False, **options
+            )
             self.setting_field_names.append(fullname)
 
     def clean_backend_fields(self, name):
@@ -45,8 +46,7 @@ class BackendSettingsMixin(object):
         """Set settings to JSON field."""
         transport = super(BackendSettingsMixin, self).save(commit=False)
         transport._settings = {
-            name: self.cleaned_data[name]
-            for name in self.setting_field_names
+            name: self.cleaned_data[name] for name in self.setting_field_names
         }
         if commit:
             transport.save()

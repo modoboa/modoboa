@@ -48,9 +48,7 @@ class LDAPAuthBackend(object):
     def __init__(self):
         param_tools.apply_to_django_settings()
         self.global_params = dict(param_tools.get_global_parameters("core"))
-        self.server_uri = self._setting(
-            "AUTH_LDAP_SERVER_URI", "ldap://localhost"
-        )
+        self.server_uri = self._setting("AUTH_LDAP_SERVER_URI", "ldap://localhost")
         self.pwd_attr = self._setting("LDAP_PASSWORD_ATTR", "userPassword")
         self.ldap_ad = self._setting("LDAP_ACTIVE_DIRECTORY", False)
         self.conn = None
@@ -68,9 +66,7 @@ class LDAPAuthBackend(object):
         conn = ldap.initialize(self.server_uri)
         conn.set_option(ldap.OPT_X_TLS_DEMAND, True)
         conn.set_option(ldap.OPT_DEBUG_LEVEL, 255)
-        conn.simple_bind_s(
-            force_str(dn), force_str(password)
-        )
+        conn.simple_bind_s(force_str(dn), force_str(password))
         return conn
 
     def connect_to_server(self, user, password):
@@ -116,14 +112,15 @@ class LDAPAuthBackend(object):
         self.connect_to_server(user, password)
         user_dn = self._find_user_dn(user)
         if self.ldap_ad:
-            newpassword = (
-                ('"%s"' % newpassword).encode("utf-16").lstrip("\377\376")
+            newpassword = ('"%s"' % newpassword).encode("utf-16").lstrip("\377\376")
+        ldif = [
+            (
+                ldap.MOD_REPLACE,
+                force_str(self.pwd_attr),
+                force_bytes(self._crypt_password(newpassword)),
             )
-        ldif = [(ldap.MOD_REPLACE,
-                 force_str(self.pwd_attr),
-                 force_bytes(self._crypt_password(newpassword)))]
+        ]
         try:
             self.conn.modify_s(force_str(user_dn), ldif)
         except ldap.LDAPError as e:
-            raise InternalError(
-                _("Failed to update password: {}").format(e))
+            raise InternalError(_("Failed to update password: {}").format(e))

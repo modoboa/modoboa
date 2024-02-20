@@ -16,33 +16,29 @@ from ... import signals
 from . import serializers
 
 
-class StatisticsViewSet(GetThrottleViewsetMixin,viewsets.ViewSet):
+class StatisticsViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """A viewset to provide extra route related to mail statistics."""
 
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
 
     @extend_schema(
         parameters=[serializers.StatisticsInputSerializer],
-        responses={200: serializers.StatisticsSerializer}
+        responses={200: serializers.StatisticsSerializer},
     )
     def list(self, request, **kwargs):
         serializer = serializers.StatisticsInputSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         graph_sets = {}
-        for result in signals.get_graph_sets.send(
-                sender="index", user=request.user):
+        for result in signals.get_graph_sets.send(sender="index", user=request.user):
             graph_sets.update(result[1])
         gset = serializer.validated_data["gset"]
         fname = graph_sets[gset].get_file_name(
-            request.user, serializer.validated_data.get("searchquery"))
+            request.user, serializer.validated_data.get("searchquery")
+        )
         period = serializer.validated_data["period"]
         if period == "custom":
-            start = int(
-                time.mktime(serializer.validated_data["start"].timetuple())
-            )
-            end = int(
-                time.mktime(serializer.validated_data["end"].timetuple())
-            )
+            start = int(time.mktime(serializer.validated_data["start"].timetuple()))
+            end = int(time.mktime(serializer.validated_data["end"].timetuple()))
         else:
             end = int(time.mktime(time.localtime()))
             start = "-1{}".format(period)
@@ -59,7 +55,7 @@ class MaillogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     ordering = ["-date"]
     ordering_fields = "__all__"
     pagination_class = pagination.CustomPageNumberPagination
-    permissions = (permissions.IsAuthenticated, )
+    permissions = (permissions.IsAuthenticated,)
     search_fields = ["queue_id", "sender", "rcpt", "original_rcpt", "status"]
     serializer_class = serializers.MaillogSerializer
 

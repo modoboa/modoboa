@@ -5,9 +5,7 @@ import os
 from django.http import HttpResponse
 from django.utils.translation import gettext as _
 
-from django.contrib.auth.decorators import (
-    login_required, permission_required
-)
+from django.contrib.auth.decorators import login_required, permission_required
 
 from modoboa.core.models import User
 from modoboa.lib.exceptions import ModoboaException, PermDeniedException

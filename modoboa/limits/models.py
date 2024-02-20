@@ -43,8 +43,7 @@ class ObjectLimitMixin(object):
         value = getattr(instance, field)
         if value == 0:
             # Do not allow unlimited value
-            raise lib.BadLimitValue(
-                _("You're not allowed to define unlimited values"))
+            raise lib.BadLimitValue(_("You're not allowed to define unlimited values"))
         try:
             old_value = instance._loaded_values[field]
         except (AttributeError, KeyError):
@@ -63,12 +62,13 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=254)
-    content_type = models.ForeignKey("contenttypes.ContentType",
-                                     on_delete=models.CASCADE)
+    content_type = models.ForeignKey(
+        "contenttypes.ContentType", on_delete=models.CASCADE
+    )
     max_value = models.IntegerField(default=0)
 
     class Meta(object):
-        unique_together = (("user", "name"), )
+        unique_together = (("user", "name"),)
 
     @property
     def definition(self):
@@ -81,25 +81,23 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
     @property
     def current_value(self) -> int:
         """Return the current number of objects."""
-        condition = (
-            self.type == "count" and
-            "extra_filters" not in self.definition)
+        condition = self.type == "count" and "extra_filters" not in self.definition
         if condition:
             return core_models.ObjectAccess.objects.filter(
-                user=self.user, is_owner=True,
-                content_type=self.content_type).count()
+                user=self.user, is_owner=True, content_type=self.content_type
+            ).count()
         id_list = core_models.ObjectAccess.objects.filter(
-            user=self.user, is_owner=True,
-            content_type=self.content_type).values_list("object_id", flat=True)
+            user=self.user, is_owner=True, content_type=self.content_type
+        ).values_list("object_id", flat=True)
         model_class = self.content_type.model_class()
         if self.type == "count":
             return model_class.objects.filter(
-                pk__in=id_list, **self.definition["extra_filters"]).count()
+                pk__in=id_list, **self.definition["extra_filters"]
+            ).count()
         qset = model_class.objects.filter(pk__in=id_list)
         if not qset.exists():
             return 0
-        return qset.aggregate(
-            total=models.Sum(self.definition["field"]))["total"]
+        return qset.aggregate(total=models.Sum(self.definition["field"]))["total"]
 
     @property
     def label(self):
@@ -130,7 +128,7 @@ class DomainObjectLimit(ObjectLimitMixin, models.Model):
     max_value = models.IntegerField(default=0)
 
     class Meta(object):
-        unique_together = (("domain", "name"), )
+        unique_together = (("domain", "name"),)
 
     @property
     def definition(self):

@@ -34,27 +34,23 @@ def index(request, tplname="core/user_index.html"):
 def profile(request, tplname="core/user_profile.html"):
     """Profile detail/update view."""
     update_password = True
-    results = signals.allow_password_change.send(
-        sender="profile", user=request.user)
+    results = signals.allow_password_change.send(sender="profile", user=request.user)
     if True in [result[1] for result in results]:
         update_password = False
-    password_url = request.localconfig.parameters.get_value(
-        "update_password_url")
+    password_url = request.localconfig.parameters.get_value("update_password_url")
     show_password_url = False
     if not request.user.is_local and password_url:
         show_password_url = True
         update_password = False
 
     if request.method == "POST":
-        form = ProfileForm(
-            update_password, request.POST, instance=request.user
-        )
+        form = ProfileForm(update_password, request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             if update_password and form.cleaned_data["confirmation"] != "":
-                request.session["password"] = force_str(encrypt(
-                    form.cleaned_data["confirmation"]
-                ))
+                request.session["password"] = force_str(
+                    encrypt(form.cleaned_data["confirmation"])
+                )
             translation.activate(request.user.language)
             response = render_to_json_response(_("Profile updated"))
             response.set_cookie(settings.LANGUAGE_COOKIE_NAME, request.user.language)
@@ -62,38 +58,50 @@ def profile(request, tplname="core/user_profile.html"):
         return render_to_json_response({"form_errors": form.errors}, status=400)
 
     form = ProfileForm(update_password, instance=request.user)
-    return render_to_json_response({
-        "content": render_to_string(tplname, {
-            "form": form,
-            "show_password_url": show_password_url,
-            "password_url": password_url
-        }, request)
-    })
+    return render_to_json_response(
+        {
+            "content": render_to_string(
+                tplname,
+                {
+                    "form": form,
+                    "show_password_url": show_password_url,
+                    "password_url": password_url,
+                },
+                request,
+            )
+        }
+    )
 
 
 @login_required
 def preferences(request):
     if request.method == "POST":
-        forms = param_tools.registry.get_forms(
-            "user", request.POST, user=request.user)
+        forms = param_tools.registry.get_forms("user", request.POST, user=request.user)
         for formdef in forms:
             form = formdef["form"]
             if form.is_valid():
                 form.save()
                 continue
-            return render_to_json_response({
-                "prefix": form.app, "form_errors": form.errors
-            }, status=400)
+            return render_to_json_response(
+                {"prefix": form.app, "form_errors": form.errors}, status=400
+            )
         request.user.save()
         return render_to_json_response(_("Preferences saved"))
 
-    return render_to_json_response({
-        "content": render_to_string("core/user_preferences.html", {
-            "forms": param_tools.registry.get_forms(
-                "user", user=request.user, first_app="general")
-        }, request),
-        "onload_cb": "preferencesCallback",
-    })
+    return render_to_json_response(
+        {
+            "content": render_to_string(
+                "core/user_preferences.html",
+                {
+                    "forms": param_tools.registry.get_forms(
+                        "user", user=request.user, first_app="general"
+                    )
+                },
+                request,
+            ),
+            "onload_cb": "preferencesCallback",
+        }
+    )
 
 
 @login_required
@@ -108,14 +116,11 @@ def api_access(request):
             else:
                 Token.objects.filter(user=request.user).delete()
             return render_to_json_response(_("Access updated"))
-        return render_to_json_response({
-            "form_errors": form.errors
-        }, status=400)
+        return render_to_json_response({"form_errors": form.errors}, status=400)
     form = APIAccessForm(user=request.user)
-    return render_to_json_response({
-        "content": render_to_string(
-            "core/api_access.html", {"form": form}, request)
-    })
+    return render_to_json_response(
+        {"content": render_to_string("core/api_access.html", {"form": form}, request)}
+    )
 
 
 @login_required
@@ -139,8 +144,7 @@ def security(request):
                 img.save(buf)
                 context.update({"qrcode": buf.getvalue().decode()})
     resp = {
-        "content": render_to_string(
-            "core/user_security.html", context, request),
-        "callback": "security"
+        "content": render_to_string("core/user_security.html", context, request),
+        "callback": "security",
     }
     return render_to_json_response(resp)

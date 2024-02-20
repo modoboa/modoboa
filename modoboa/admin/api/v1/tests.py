@@ -28,7 +28,8 @@ class DomainAPITestCase(ModoAPITestCase):
         super(DomainAPITestCase, cls).setUpTestData()
         factories.populate_database()
         cls.da_token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin@test.com"))
+            user=core_models.User.objects.get(username="admin@test.com")
+        )
 
     def test_get_domains(self):
         """Retrieve a list of domains."""
@@ -37,8 +38,7 @@ class DomainAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
         domain = response.data[0]
-        url = reverse(
-            "v1:domain-detail", args=[domain["pk"]])
+        url = reverse("v1:domain-detail", args=[domain["pk"]])
         response = self.client.get(url)
         data = response.json()
         self.assertEqual(response.status_code, 200)
@@ -65,10 +65,10 @@ class DomainAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("default_mailbox_quota", response.data)
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         response = self.client.post(
-            url, {"name": "test4.com", "default_mailbox_quota": 10})
+            url, {"name": "test4.com", "default_mailbox_quota": 10}
+        )
         self.assertEqual(response.status_code, 403)
 
     @mock.patch.object(dns.resolver.Resolver, "resolve")
@@ -81,19 +81,19 @@ class DomainAPITestCase(ModoAPITestCase):
         self.set_global_parameter("valid_mxs", "192.0.2.1 2001:db8::1")
         self.set_global_parameter("domains_must_have_authorized_mx", True)
         reseller = core_factories.UserFactory(
-            username="reseller", groups=("Resellers", ))
+            username="reseller", groups=("Resellers",)
+        )
         token = Token.objects.create(user=reseller)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
 
         url = reverse("v1:domain-list")
         response = self.client.post(
-            url, {"name": "no-mx.example.com", "quota": 0,
-                  "default_mailbox_quota": 10}
+            url, {"name": "no-mx.example.com", "quota": 0, "default_mailbox_quota": 10}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.json()["name"][0],
-            "No authorized MX record found for this domain")
+            response.json()["name"][0], "No authorized MX record found for this domain"
+        )
 
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         response = self.client.post(
@@ -104,25 +104,28 @@ class DomainAPITestCase(ModoAPITestCase):
     def test_update_domain(self):
         """Check domain update."""
         domain = models.Domain.objects.get(name="test.com")
-        models.Mailbox.objects.filter(
-            domain__name="test.com", address="user").update(
-                use_domain_quota=True)
+        models.Mailbox.objects.filter(domain__name="test.com", address="user").update(
+            use_domain_quota=True
+        )
         url = reverse("v1:domain-detail", args=[domain.pk])
         response = self.client.put(
-            url, {"name": "test.com", "default_mailbox_quota": 1000})
+            url, {"name": "test.com", "default_mailbox_quota": 1000}
+        )
         self.assertEqual(response.status_code, 200)
         domain.refresh_from_db()
         self.assertEqual(domain.default_mailbox_quota, 1000)
-        mb = models.Mailbox.objects.get(
-            domain__name="test.com", address="user")
+        mb = models.Mailbox.objects.get(domain__name="test.com", address="user")
         self.assertEqual(mb.quota, 1000)
 
         response = self.client.put(
-            url, {"name": "test42.com", "default_mailbox_quota": 1000})
+            url, {"name": "test42.com", "default_mailbox_quota": 1000}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(
             models.Mailbox.objects.filter(
-                address="user", domain__name="test42.com").exists())
+                address="user", domain__name="test42.com"
+            ).exists()
+        )
 
     def test_patch_domain(self):
         """Check domain partial update."""
@@ -137,8 +140,7 @@ class DomainAPITestCase(ModoAPITestCase):
         """Try to remove DKIM from a domain."""
         domain = models.Domain.objects.get(name="test.com")
         url = reverse("v1:domain-detail", args=[domain.pk])
-        response = self.client.put(
-            url, {"name": "test.com", "enable_dkim": False})
+        response = self.client.put(url, {"name": "test.com", "enable_dkim": False})
         self.assertEqual(response.status_code, 200)
         domain.refresh_from_db()
         self.assertEqual(domain.dkim_private_key_path, "")
@@ -161,11 +163,14 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         super(DomainAliasAPITestCase, cls).setUpTestData()
         factories.populate_database()
         cls.dom_alias1 = factories.DomainAliasFactory(
-            name="dalias1.com", target__name="test.com")
+            name="dalias1.com", target__name="test.com"
+        )
         cls.dom_alias2 = factories.DomainAliasFactory(
-            name="dalias2.com", target__name="test2.com")
+            name="dalias2.com", target__name="test2.com"
+        )
         cls.da_token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin@test.com"))
+            user=core_models.User.objects.get(username="admin@test.com")
+        )
 
     def test_get(self):
         """Retrieve a list of domain aliases."""
@@ -173,8 +178,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
-        url = reverse(
-            "v1:domain_alias-detail", args=[response.data[0]["pk"]])
+        url = reverse("v1:domain_alias-detail", args=[response.data[0]["pk"]])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["name"], "dalias1.com")
@@ -184,8 +188,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         response = self.client.get(reverse("v1:domain_alias-list"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 0)
@@ -194,31 +197,25 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         """Try to create a new domain alias."""
         url = reverse("v1:domain_alias-list")
         target = models.Domain.objects.get(name="test.com")
-        data = {
-            "name": "dalias3.com",
-            "target": target.pk
-        }
+        data = {"name": "dalias3.com", "target": target.pk}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 
         dalias = response.json()
-        dalias = models.DomainAlias.objects.filter(
-            pk=dalias["pk"]).first()
+        dalias = models.DomainAlias.objects.filter(pk=dalias["pk"]).first()
         self.assertEqual(dalias.target, target)
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         response = self.client.post(
-            url, {"name": "dalias4.com", "target": target.pk}, format="json")
+            url, {"name": "dalias4.com", "target": target.pk}, format="json"
+        )
         self.assertEqual(response.status_code, 403)
 
     def test_put(self):
         """Try to update a domain alias."""
         dalias = models.DomainAlias.objects.get(name="dalias1.com")
         url = reverse("v1:domain_alias-detail", args=[dalias.pk])
-        data = {
-            "name": "dalias3.com", "target": dalias.target.pk
-        }
+        data = {"name": "dalias3.com", "target": dalias.target.pk}
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
@@ -232,8 +229,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         url = reverse("v1:domain_alias-detail", args=[dalias.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
-        self.assertFalse(
-            models.DomainAlias.objects.filter(pk=dalias.pk).exists())
+        self.assertFalse(models.DomainAlias.objects.filter(pk=dalias.pk).exists())
 
 
 class AccountAPITestCase(ModoAPITestCase):
@@ -243,10 +239,7 @@ class AccountAPITestCase(ModoAPITestCase):
         "username": "fromapi@test.com",
         "role": "SimpleUsers",
         "password": "Toto1234",
-        "mailbox": {
-            "full_address": "fromapi@test.com",
-            "quota": 10
-        }
+        "mailbox": {"full_address": "fromapi@test.com", "quota": 10},
     }
 
     @classmethod
@@ -255,15 +248,15 @@ class AccountAPITestCase(ModoAPITestCase):
         super(AccountAPITestCase, cls).setUpTestData()
         factories.populate_database()
         cls.da_token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin@test.com"))
+            user=core_models.User.objects.get(username="admin@test.com")
+        )
 
     def setUp(self):
         """Test setup."""
         super().setUp()
-        self.set_global_parameters({
-            "enable_admin_limits": False,
-            "enable_domain_limits": False
-        }, app="limits")
+        self.set_global_parameters(
+            {"enable_admin_limits": False, "enable_domain_limits": False}, app="limits"
+        )
 
     def test_get_accounts(self):
         """Retrieve a list of accounts."""
@@ -351,12 +344,10 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         domain = models.Domain.objects.get(name="test.com")
-        admin = core_models.User.objects.get(
-            pk=response.json()["pk"])
+        admin = core_models.User.objects.get(pk=response.json()["pk"])
         self.assertIn(admin, domain.admins)
 
-        response = self.client.get(
-            reverse("v1:account-detail", args=[admin.pk]))
+        response = self.client.get(reverse("v1:account-detail", args=[admin.pk]))
         self.assertEqual(response.status_code, 200)
         self.assertIn("domains", response.json())
 
@@ -376,8 +367,7 @@ class AccountAPITestCase(ModoAPITestCase):
         user = core_models.User.objects.filter(pk=account["pk"]).first()
         self.assertIsNot(user, None)
         self.assertIsNot(user.mailbox, None)
-        self.assertEqual(
-            user.mailbox.quota, user.mailbox.domain.default_mailbox_quota)
+        self.assertEqual(user.mailbox.quota, user.mailbox.domain.default_mailbox_quota)
 
     def test_create_existing_account(self):
         """Check if unicity is respected."""
@@ -404,8 +394,7 @@ class AccountAPITestCase(ModoAPITestCase):
 
     def test_create_account_as_domadmin(self):
         """As DomainAdmin, try to create a new account."""
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         data = copy.deepcopy(self.ACCOUNT_DATA)
         data["mailbox"]["quota"] = 1000
         url = reverse("v1:account-list")
@@ -414,8 +403,7 @@ class AccountAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 400)
 
         data["username"] = "fromapi@test2.com"
-        data["mailbox"].update({"full_address": "fromapi@test2.com",
-                                "quota": 10})
+        data["mailbox"].update({"full_address": "fromapi@test2.com", "quota": 10})
         response = self.client.post(url, data, format="json")
         # Should fail because admin has no access to @test2.com domain
         self.assertEqual(response.status_code, 400)
@@ -442,8 +430,8 @@ class AccountAPITestCase(ModoAPITestCase):
             "password": "Toto1234",
             "mailbox": {
                 "full_address": "fromapi@test.com",
-                "quota": account.mailbox.quota
-            }
+                "quota": account.mailbox.quota,
+            },
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
@@ -460,14 +448,9 @@ class AccountAPITestCase(ModoAPITestCase):
 
     def test_update_account_with_no_mailbox(self):
         """Try to disable an account."""
-        account = core_factories.UserFactory(
-            username="reseller", groups=("Resellers", ))
+        account = core_factories.UserFactory(username="reseller", groups=("Resellers",))
         url = reverse("v1:account-detail", args=[account.pk])
-        data = {
-            "username": "reseller",
-            "role": account.role,
-            "is_active": False
-        }
+        data = {"username": "reseller", "role": account.role, "is_active": False}
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
@@ -480,7 +463,7 @@ class AccountAPITestCase(ModoAPITestCase):
             "username": "fromapi@test.com",
             "mailbox": {
                 "full_address": "fromapi@test.com",
-            }
+            },
         }
         response = self.client.patch(url, data, format="json")
         self.assertEqual(response.status_code, 200)
@@ -498,9 +481,9 @@ class AccountAPITestCase(ModoAPITestCase):
             "password": "Toto1234",
             "mailbox": {
                 "full_address": account.mailbox.full_address,
-                "quota": account.mailbox.quota
+                "quota": account.mailbox.quota,
             },
-            "domains": ["test.com", "test2.com"]
+            "domains": ["test.com", "test2.com"],
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
@@ -525,8 +508,8 @@ class AccountAPITestCase(ModoAPITestCase):
             "password": "Toto1234",
             "mailbox": {
                 "full_address": "fromapi@test3.com",
-                "quota": account.mailbox.quota
-            }
+                "quota": account.mailbox.quota,
+            },
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 404)
@@ -539,20 +522,17 @@ class AccountAPITestCase(ModoAPITestCase):
         url = reverse("v1:account-detail", args=[account.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
-        self.assertFalse(
-            core_models.User.objects.filter(pk=account.pk).exists())
+        self.assertFalse(core_models.User.objects.filter(pk=account.pk).exists())
         self.assertFalse(domadmin.can_access(account))
 
     def test_account_exists(self):
         """Validate /exists/ service."""
         url = reverse("v1:account-exists")
-        response = self.client.get(
-            "{}?email={}".format(url, "user@test.com"))
+        response = self.client.get("{}?email={}".format(url, "user@test.com"))
         self.assertEqual(response.status_code, 200)
         content = response.json()
         self.assertTrue(content["exists"])
-        response = self.client.get(
-            "{}?email={}".format(url, "pipo@test.com"))
+        response = self.client.get("{}?email={}".format(url, "pipo@test.com"))
         self.assertEqual(response.status_code, 200)
         content = response.json()
         self.assertFalse(content["exists"])
@@ -562,17 +542,16 @@ class AccountAPITestCase(ModoAPITestCase):
     def test_change_password(self):
         """Check the change password service."""
         account = core_models.User.objects.get(username="user@test.com")
-        url = reverse(
-            "v1:account-password", args=[account.pk])
+        url = reverse("v1:account-password", args=[account.pk])
         response = self.client.put(
-            url, {"password": "toto", "new_password": "pass"},
-            format="json")
+            url, {"password": "toto", "new_password": "pass"}, format="json"
+        )
         # must fail because password is too weak
         self.assertEqual(response.status_code, 400)
 
         response = self.client.put(
-            url, {"password": "toto", "new_password": "Toto1234"},
-            format="json")
+            url, {"password": "toto", "new_password": "Toto1234"}, format="json"
+        )
         self.assertEqual(response.status_code, 200)
         account.refresh_from_db()
         self.assertTrue(account.check_password("Toto1234"))
@@ -585,13 +564,16 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.post(url)
         self.assertEqual(response.status_code, 404)
 
-        self.set_global_parameters({
-            "sms_password_recovery": True,
-            "sms_provider": "ovh",
-            "sms_ovh_application_key": "key",
-            "sms_ovh_application_secret": "secret",
-            "sms_ovh_consumer_key": "consumer"
-        }, app="core")
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            },
+            app="core",
+        )
         # No email provided
         response = self.client.post(url)
         self.assertEqual(response.status_code, 400)
@@ -615,21 +597,19 @@ class AliasAPITestCase(ModoAPITestCase):
 
     ALIAS_DATA = {
         "address": "alias_fromapi@test.com",
-        "recipients": [
-            "user@test.com", "postmaster@test.com", "user_éé@nonlocal.com"
-        ]
+        "recipients": ["user@test.com", "postmaster@test.com", "user_éé@nonlocal.com"],
     }
 
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AliasAPITestCase, cls).setUpTestData()
-        cls.localconfig.parameters.set_value(
-            "enable_admin_limits", False, app="limits")
+        cls.localconfig.parameters.set_value("enable_admin_limits", False, app="limits")
         cls.localconfig.save()
         factories.populate_database()
         cls.da_token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin@test.com"))
+            user=core_models.User.objects.get(username="admin@test.com")
+        )
 
     def test_get_aliases(self):
         """Retrieve a list of aliases."""
@@ -664,13 +644,23 @@ class AliasAPITestCase(ModoAPITestCase):
         domadmin = core_models.User.objects.get(username="admin@test.com")
         self.assertTrue(domadmin.can_access(alias))
         self.assertEqual(alias.aliasrecipient_set.count(), 3)
-        self.assertTrue(alias.aliasrecipient_set.filter(
-            address="user@test.com", r_mailbox__isnull=False).exists())
-        self.assertTrue(alias.aliasrecipient_set.filter(
-            address="postmaster@test.com", r_alias__isnull=False).exists())
-        self.assertTrue(alias.aliasrecipient_set.filter(
-            address="user_éé@nonlocal.com",
-            r_mailbox__isnull=True, r_alias__isnull=True).exists())
+        self.assertTrue(
+            alias.aliasrecipient_set.filter(
+                address="user@test.com", r_mailbox__isnull=False
+            ).exists()
+        )
+        self.assertTrue(
+            alias.aliasrecipient_set.filter(
+                address="postmaster@test.com", r_alias__isnull=False
+            ).exists()
+        )
+        self.assertTrue(
+            alias.aliasrecipient_set.filter(
+                address="user_éé@nonlocal.com",
+                r_mailbox__isnull=True,
+                r_alias__isnull=True,
+            ).exists()
+        )
 
         # Create catchall alias
         data = copy.deepcopy(self.ALIAS_DATA)
@@ -691,8 +681,7 @@ class AliasAPITestCase(ModoAPITestCase):
 
     def test_create_alias_as_domadmin(self):
         """As DomainAdmin, try to create a new alias."""
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         url = reverse("v1:alias-list")
         response = self.client.post(url, self.ALIAS_DATA, format="json")
         self.assertEqual(response.status_code, 201)
@@ -710,26 +699,20 @@ class AliasAPITestCase(ModoAPITestCase):
         url = reverse("v1:alias-detail", args=[alias.pk])
         data = {
             "address": "alias@test.com",
-            "recipients": ["user@test.com", "user@nonlocal.com"]
+            "recipients": ["user@test.com", "user@nonlocal.com"],
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
         alias.refresh_from_db()
         self.assertEqual(alias.aliasrecipient_set.count(), 2)
-        data = {
-            "address": "alias@test.com",
-            "recipients": ["user@nonlocal.com"]
-        }
+        data = {"address": "alias@test.com", "recipients": ["user@nonlocal.com"]}
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         alias.refresh_from_db()
         self.assertEqual(alias.aliasrecipient_set.count(), 1)
 
-        data = {
-            "address": "alias@test.com",
-            "recipients": []
-        }
+        data = {"address": "alias@test.com", "recipients": []}
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 400)
 
@@ -741,13 +724,12 @@ class AliasAPITestCase(ModoAPITestCase):
         url = reverse("v1:alias-detail", args=[alias.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
-        self.assertFalse(
-            models.Alias.objects.filter(pk=alias.pk).exists())
+        self.assertFalse(models.Alias.objects.filter(pk=alias.pk).exists())
         self.assertFalse(domadmin.can_access(alias))
         self.assertFalse(
             models.AliasRecipient.objects.filter(
-                address="user@test.com", alias__address="alias@test.com")
-            .exists()
+                address="user@test.com", alias__address="alias@test.com"
+            ).exists()
         )
 
 
@@ -758,18 +740,18 @@ class SenderAddressAPITestCase(ModoAPITestCase):
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(SenderAddressAPITestCase, cls).setUpTestData()
-        cls.localconfig.parameters.set_value(
-            "enable_admin_limits", False, app="limits")
+        cls.localconfig.parameters.set_value("enable_admin_limits", False, app="limits")
         cls.localconfig.save()
         factories.populate_database()
         cls.sa1 = factories.SenderAddressFactory(
             address="test@domain.ext",
             mailbox__user__username="user@test.com",
             mailbox__address="user",
-            mailbox__domain__name="test.com"
+            mailbox__domain__name="test.com",
         )
         cls.da_token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin@test.com"))
+            user=core_models.User.objects.get(username="admin@test.com")
+        )
 
     def test_list(self):
         """Retrieve a list of sender addresses."""
@@ -782,35 +764,31 @@ class SenderAddressAPITestCase(ModoAPITestCase):
     def test_create(self):
         """Create a new sender addresses."""
         url = reverse("v1:sender_address-list")
-        mbox = models.Mailbox.objects.get(
-            address="admin", domain__name="test.com")
+        mbox = models.Mailbox.objects.get(address="admin", domain__name="test.com")
         data = {"address": "@extdomain.test", "mailbox": mbox.pk}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 201)
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         data = {"address": "user@test2.com", "mailbox": mbox.pk}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.json()["address"][0],
-            "You don't have access to this domain.")
+            response.json()["address"][0], "You don't have access to this domain."
+        )
 
-        mbox = models.Mailbox.objects.get(
-            address="admin", domain__name="test2.com")
+        mbox = models.Mailbox.objects.get(address="admin", domain__name="test2.com")
         data = {"address": "toto@titi.com", "mailbox": mbox.pk}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.json()["mailbox"][0],
-            "You don't have access to this mailbox.")
+            response.json()["mailbox"][0], "You don't have access to this mailbox."
+        )
 
     def test_patch(self):
         """Patch an existing sender address."""
         url = reverse("v1:sender_address-detail", args=[self.sa1.pk])
-        mbox = models.Mailbox.objects.get(
-            address="user", domain__name="test.com")
+        mbox = models.Mailbox.objects.get(address="user", domain__name="test.com")
         data = {"address": "@extdomain.test"}
         response = self.client.patch(url, data)
         self.assertEqual(response.status_code, 200)
@@ -821,8 +799,7 @@ class SenderAddressAPITestCase(ModoAPITestCase):
     def test_update(self):
         """Update an existing sender address."""
         url = reverse("v1:sender_address-detail", args=[self.sa1.pk])
-        mbox = models.Mailbox.objects.get(
-            address="user", domain__name="test.com")
+        mbox = models.Mailbox.objects.get(address="user", domain__name="test.com")
         data = {"address": "@extdomain.test", "mailbox": mbox.pk}
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, 200)

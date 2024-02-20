@@ -21,16 +21,17 @@ class TransportSerializer(serializers.ModelSerializer):
         """Check fields based on backend."""
         self.backend = tr_backends.manager.get_backend(data["service"])
         if not self.backend:
-            raise serializers.ValidationError({
-                "service": _("Unsupported service")
-            })
+            raise serializers.ValidationError({"service": _("Unsupported service")})
         data["_settings"] = json.loads(data["_settings"])
         errors = self.backend.clean_fields(data["_settings"])
         if errors:
-            raise serializers.ValidationError({
-                "_settings": ",".join(
-                    ["{}: {}".format(error[0], error[1]) for error in errors])
-            })
+            raise serializers.ValidationError(
+                {
+                    "_settings": ",".join(
+                        ["{}: {}".format(error[0], error[1]) for error in errors]
+                    )
+                }
+            )
         return data
 
 
@@ -42,10 +43,18 @@ class RelayDomainSerializer(serializers.ModelSerializer):
     class Meta:
         model = admin_models.Domain
         fields = (
-            "pk", "name", "enabled", "transport", "enable_dkim",
-            "dkim_key_selector", "dkim_public_key"
+            "pk",
+            "name",
+            "enabled",
+            "transport",
+            "enable_dkim",
+            "dkim_key_selector",
+            "dkim_public_key",
         )
-        read_only_fields = ("pk", "dkim_public_key", )
+        read_only_fields = (
+            "pk",
+            "dkim_public_key",
+        )
 
     def create(self, validated_data):
         """Use backend to serialize data."""

@@ -1,10 +1,19 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
--   repo: https://github.com/PyCQA/pylint
-    rev: 'v3.0.3'
+-   repo: local
     hooks:
     -   id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        args:
+          [
+            "-rn",
+            "-sn",
+            "--fail-under=5"
+          ]
 -   repo: https://github.com/psf/black
     rev: '24.2.0'
     hooks:

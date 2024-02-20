@@ -17,8 +17,8 @@ class ResourcePoolForm(forms.Form):
         for name, tpl in utils.get_user_limit_templates():
             if "required_role" in tpl:
                 condition = (
-                    self.account is not None and
-                    self.account.role != tpl["required_role"]
+                    self.account is not None
+                    and self.account.role != tpl["required_role"]
                 )
                 if condition:
                     continue
@@ -42,8 +42,9 @@ class ResourcePoolForm(forms.Form):
         """Load limit values from given user."""
         for fieldname in list(self.fields.keys()):
             lname = fieldname.replace("_limit", "")
-            self.fields[fieldname].initial = (
-                user.userobjectlimit_set.get(name=lname).max_value)
+            self.fields[fieldname].initial = user.userobjectlimit_set.get(
+                name=lname
+            ).max_value
 
     def save(self):
         owner = get_object_owner(self.account)
@@ -53,8 +54,7 @@ class ResourcePoolForm(forms.Form):
                 continue
             limit = self.account.userobjectlimit_set.get(name=name)
             if not owner.is_superuser:
-                allocate_resources_from_user(
-                    limit, owner, self.cleaned_data[fieldname])
+                allocate_resources_from_user(limit, owner, self.cleaned_data[fieldname])
             limit.max_value = self.cleaned_data[fieldname]
             limit.save(update_fields=["max_value"])
 
@@ -74,8 +74,9 @@ class DomainLimitsForm(forms.Form):
             return
         for fieldname in list(self.fields.keys()):
             lname = fieldname.replace("_limit", "")
-            self.fields[fieldname].initial = (
-                self.domain.domainobjectlimit_set.get(name=lname).max_value)
+            self.fields[fieldname].initial = self.domain.domainobjectlimit_set.get(
+                name=lname
+            ).max_value
 
     def clean(self):
         """Ensure limit values are correct."""

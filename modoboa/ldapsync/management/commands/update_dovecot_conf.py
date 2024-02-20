@@ -20,8 +20,7 @@ class Command(BaseCommand):
             return
         config = dict(param_tools.get_global_parameters("core"))
         condition = (
-            config["authentication_type"] == "ldap" and
-            config["ldap_dovecot_sync"]
+            config["authentication_type"] == "ldap" and config["ldap_dovecot_sync"]
         )
         if condition:
             lib.update_dovecot_config_file(config)

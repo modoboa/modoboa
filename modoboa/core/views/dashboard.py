@@ -29,9 +29,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         """Add context variables."""
         context = super(DashboardView, self).get_context_data(**kwargs)
-        context.update({
-            "selection": "dashboard", "widgets": {"left": [], "right": []}
-        })
+        context.update({"selection": "dashboard", "widgets": {"left": [], "right": []}})
         # Fetch latest news
         if self.request.user.language == "fr":
             lang = "fr"
@@ -41,8 +39,9 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
 
         feed_url = "{}{}/weblog/feeds/".format(MODOBOA_WEBSITE_URL, lang)
         if self.request.user.role != "SuperAdmins":
-            custom_feed_url = (
-                self.request.localconfig.parameters.get_value("rss_feed_url"))
+            custom_feed_url = self.request.localconfig.parameters.get_value(
+                "rss_feed_url"
+            )
             if custom_feed_url:
                 feed_url = custom_feed_url
         entries = []
@@ -55,10 +54,10 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
         context.update({"news": entries})
 
         hide_features_widget = self.request.localconfig.parameters.get_value(
-            "hide_features_widget")
+            "hide_features_widget"
+        )
         if self.request.user.is_superuser or not hide_features_widget:
-            url = "{}{}/api/projects/?featured=true".format(
-                MODOBOA_WEBSITE_URL, lang)
+            url = "{}{}/api/projects/?featured=true".format(MODOBOA_WEBSITE_URL, lang)
             features = []
             if not settings.DISABLE_DASHBOARD_EXTERNAL_QUERIES:
                 try:
@@ -73,11 +72,11 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
 
         # Extra widgets
         result = signals.extra_admin_dashboard_widgets.send(
-            sender=self.__class__, user=self.request.user)
+            sender=self.__class__, user=self.request.user
+        )
         for _receiver, widgets in result:
             for widget in widgets:
-                context["widgets"][widget["column"]].append(
-                    widget["template"])
+                context["widgets"][widget["column"]].append(widget["template"])
                 # FIXME: can raise conflicts...
                 context.update(widget["context"])
 

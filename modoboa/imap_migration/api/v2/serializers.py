@@ -21,12 +21,12 @@ class IMAPMigrationSettingsSerializer(serializers.Serializer):
 
     # OfflineIMAP Filter settings
     create_folders = serializers.BooleanField(default=True)
-    folder_filter_exclude = serializers.CharField(required=False,
-                                                  allow_blank=True,
-                                                  default="")
-    folder_filter_include = serializers.CharField(required=False,
-                                                  allow_blank=True,
-                                                  default="")
+    folder_filter_exclude = serializers.CharField(
+        required=False, allow_blank=True, default=""
+    )
+    folder_filter_include = serializers.CharField(
+        required=False, allow_blank=True, default=""
+    )
 
 
 class EmailProviderDomainSerializer(serializers.ModelSerializer):
@@ -35,11 +35,7 @@ class EmailProviderDomainSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
 
     class Meta:
-        extra_kwargs = {
-            "name": {
-                "validators": []
-            }
-        }
+        extra_kwargs = {"name": {"validators": []}}
         fields = ("id", "name", "new_domain")
         model = models.EmailProviderDomain
 
@@ -61,8 +57,9 @@ class EmailProviderSerializer(serializers.ModelSerializer):
         if domains:
             to_create = []
             for domain in domains:
-                to_create.append(models.EmailProviderDomain(
-                    provider=provider, **domain))
+                to_create.append(
+                    models.EmailProviderDomain(provider=provider, **domain)
+                )
             models.EmailProviderDomain.objects.bulk_create(to_create)
         return provider
 
@@ -87,11 +84,13 @@ class EmailProviderSerializer(serializers.ModelSerializer):
                     break
         to_create = []
         for new_domain in domains:
-            to_create.append(models.EmailProviderDomain(
-                name=new_domain["name"],
-                new_domain=new_domain.get("new_domain"),
-                provider=instance
-            ))
+            to_create.append(
+                models.EmailProviderDomain(
+                    name=new_domain["name"],
+                    new_domain=new_domain.get("new_domain"),
+                    provider=instance,
+                )
+            )
         models.EmailProviderDomain.objects.bulk_create(to_create)
         return instance
 
@@ -108,14 +107,12 @@ class CheckAssociatedDomainSerializer(serializers.Serializer):
     """A serializer for checking associated domains."""
 
     name = serializers.CharField()
-    new_domain = serializers.PrimaryKeyRelatedField(
-        read_only=True, required=False)
+    new_domain = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
 
     def validate_new_domain(self, value):
-        domain_ids = (
-            Domain.objects.get_for_admin(self.context["request"].user)
-            .values_list("id", flat=True)
-        )
+        domain_ids = Domain.objects.get_for_admin(
+            self.context["request"].user
+        ).values_list("id", flat=True)
         if value not in domain_ids:
             raise serializers.ValidationError(_("Access denied"))
         return value
@@ -138,4 +135,3 @@ class MigrationSerializer(serializers.ModelSerializer):
         depth = 1
         fields = ("id", "provider", "mailbox", "username")
         model = models.Migration
-

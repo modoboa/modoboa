@@ -23,37 +23,34 @@ def forward(request, tplname="admin/forward.html"):
         if form.is_valid():
             recipients = form.cleaned_data["dest"]
             if not recipients:
-                Alias.objects.filter(
-                    address=mb.full_address, internal=False).delete()
+                Alias.objects.filter(address=mb.full_address, internal=False).delete()
                 # Make sure internal self-alias is enabled
-                Alias.objects.filter(
-                    address=mb.full_address, internal=True
-                ).update(enabled=True)
+                Alias.objects.filter(address=mb.full_address, internal=True).update(
+                    enabled=True
+                )
             else:
                 if al is None:
                     al = Alias.objects.create(
                         address=mb.full_address,
                         domain=mb.domain,
-                        enabled=mb.user.is_active
+                        enabled=mb.user.is_active,
                     )
                     al.post_create(request.user)
                 if form.cleaned_data["keepcopies"]:
                     # Make sure internal self-alias is enabled
-                    Alias.objects.filter(
-                        address=mb.full_address, internal=True
-                    ).update(enabled=True)
+                    Alias.objects.filter(address=mb.full_address, internal=True).update(
+                        enabled=True
+                    )
                 else:
                     # Deactivate internal self-alias to avoid storing
                     # local copies...
-                    Alias.objects.filter(
-                        address=mb.full_address, internal=True
-                    ).update(enabled=False)
+                    Alias.objects.filter(address=mb.full_address, internal=True).update(
+                        enabled=False
+                    )
                 al.set_recipients(recipients)
             return render_to_json_response(_("Forward updated"))
 
-        return render_to_json_response(
-            {"form_errors": form.errors}, status=400
-        )
+        return render_to_json_response({"form_errors": form.errors}, status=400)
 
     form = ForwardForm()
     if al is not None and al.recipients:
@@ -62,6 +59,6 @@ def forward(request, tplname="admin/forward.html"):
             form.fields["keepcopies"].initial = True
             recipients.remove(mb.full_address)
         form.fields["dest"].initial = "\n".join(recipients)
-    return render_to_json_response({
-        "content": render_to_string(tplname, {"form": form}, request)
-    })
+    return render_to_json_response(
+        {"content": render_to_string(tplname, {"form": form}, request)}
+    )

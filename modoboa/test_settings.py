@@ -54,10 +54,7 @@ else:
             "HOST": "localhost",
             "PORT": os.environ.get("POSTGRES_PORT", "5432"),
             "ATOMIC_REQUESTS": True,
-            "OPTIONS": {
-                "client_encoding": "UTF8",
-                "sslmode": "disable"
-            },
+            "OPTIONS": {"client_encoding": "UTF8", "sslmode": "disable"},
             "TEST": {
                 "CHARSET": "UTF8",
             },

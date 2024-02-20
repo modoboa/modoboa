@@ -16,11 +16,14 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command line."""
         parser.add_argument(
-            "--debug", action="store_true", default=False,
-            help="Activate debug output")
+            "--debug", action="store_true", default=False, help="Activate debug output"
+        )
         parser.add_argument(
-            "--verbose", action="store_true", default=False,
-            help="Display informational messages")
+            "--verbose",
+            action="store_true",
+            default=False,
+            help="Display informational messages",
+        )
 
     def __vprint(self, msg):
         if not self.verbose:

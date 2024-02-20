@@ -16,10 +16,8 @@ class ReportOptionsForm(forms.Form):
 
     current_year = forms.IntegerField(widget=forms.widgets.HiddenInput)
     current_week = forms.IntegerField()
-    query = forms.ChoiceField(
-        choices=[("previous", "Previous"), ("next", "Next")])
-    resolve_hostnames = forms.BooleanField(
-        initial=False, required=False)
+    query = forms.ChoiceField(choices=[("previous", "Previous"), ("next", "Next")])
+    resolve_hostnames = forms.BooleanField(initial=False, required=False)
 
     def __init__(self, *args, **kwargs):
         """Constructor."""
@@ -40,36 +38,45 @@ class ParametersForm(param_forms.AdminParametersForm):
     enable_rlookups = form_utils.YesNoField(
         label=_("Enable reverse lookups"),
         initial=False,
-        help_text=_(
-            "Enable reverse DNS lookups (reports will be longer to display)"
-        )
+        help_text=_("Enable reverse DNS lookups (reports will be longer to display)"),
     )
 
 
-GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict([
-    ("dns", {
-        "label": _("DNS settings"),
-        "params": collections.OrderedDict([
-            ("enable_rlookups", {
-                "label": _("Enable reverse lookups"),
-                "help_text": _(
-                    "Enable reverse DNS lookups (reports will be longer to display)"
-                )
-            })
-        ])
-    })
-])
+GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
+    [
+        (
+            "dns",
+            {
+                "label": _("DNS settings"),
+                "params": collections.OrderedDict(
+                    [
+                        (
+                            "enable_rlookups",
+                            {
+                                "label": _("Enable reverse lookups"),
+                                "help_text": _(
+                                    "Enable reverse DNS lookups (reports will be longer to display)"
+                                ),
+                            },
+                        )
+                    ]
+                ),
+            },
+        )
+    ]
+)
 
 
 def load_settings():
     """Load app settings."""
     from modoboa.parameters import tools as param_tools
 
-    param_tools.registry.add(
-        "global", ParametersForm, _("DMARC"))
+    param_tools.registry.add("global", ParametersForm, _("DMARC"))
     param_tools.registry.add2(
-        "global", "dmarc", _("DMARC"),
+        "global",
+        "dmarc",
+        _("DMARC"),
         GLOBAL_PARAMETERS_STRUCT,
         serializers.DmarcGlobalParametersSerializer,
-        True
+        True,
     )

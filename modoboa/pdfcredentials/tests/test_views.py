@@ -36,14 +36,18 @@ class EventsTestCase(ModoTestCase):
         """Create a test account."""
         values = {
             "username": username,
-            "first_name": "Tester", "last_name": "Toto",
-            "role": "SimpleUsers", "quota_act": True,
-            "is_active": True, "email": username,
-            "random_password": True, "stepid": 2
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": username,
+            "random_password": True,
+            "stepid": 2,
         }
         response = self.client.post(
-            reverse("admin:account_add"), values,
-            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+            reverse("admin:account_add"), values, HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
         self.assertEqual(response.status_code, expected_status)
         return values
 
@@ -60,8 +64,8 @@ class EventsTestCase(ModoTestCase):
 
         # Try to download the file
         response = self.client.get(
-            reverse("pdfcredentials:account_credentials",
-                    args=[account.pk]))
+            reverse("pdfcredentials:account_credentials", args=[account.pk])
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/pdf")
 
@@ -70,21 +74,17 @@ class EventsTestCase(ModoTestCase):
 
         # Try to download a second time
         response = self.client.get(
-            reverse("pdfcredentials:account_credentials",
-                    args=[account.pk]))
+            reverse("pdfcredentials:account_credentials", args=[account.pk])
+        )
         self.assertContains(response, "No document available for this user")
 
         # Update account
         values.update({"language": "en"})
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         self.assertFalse(os.path.exists(fname))
 
         self.set_global_parameter("generate_at_creation", False)
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         self.assertTrue(os.path.exists(fname))
 
     def test_with_connection_settings(self):
@@ -107,9 +107,7 @@ class EventsTestCase(ModoTestCase):
         fname = os.path.join(self.workdir, "{}.pdf".format(values["username"]))
         self.assertTrue(os.path.exists(fname))
         account = core_models.User.objects.get(username=values["username"])
-        self.ajax_post(
-            reverse("admin:account_delete", args=[account.pk]), {}
-        )
+        self.ajax_post(reverse("admin:account_delete", args=[account.pk]), {})
         self.assertFalse(os.path.exists(fname))
 
     @override_settings(MODOBOA_LOGO="modoboa.png")
@@ -128,8 +126,8 @@ class EventsTestCase(ModoTestCase):
 
         # Try to download the file
         response = self.client.get(
-            reverse("pdfcredentials:account_credentials",
-                    args=[account.pk]))
+            reverse("pdfcredentials:account_credentials", args=[account.pk])
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/pdf")
 
@@ -137,18 +135,15 @@ class EventsTestCase(ModoTestCase):
         self.assertFalse(os.path.exists(fname))
 
         # Delete account
-        self.ajax_post(
-            reverse("admin:account_delete", args=[account.pk]), {}
-        )
+        self.ajax_post(reverse("admin:account_delete", args=[account.pk]), {})
 
     def test_storage_dir_creation(self):
         """Test storage directory creation."""
         self.set_global_parameter("storage_dir", "/nonexistentdir")
-        with self.assertLogs(logger='modoboa.admin', level='ERROR') as log:
+        with self.assertLogs(logger="modoboa.admin", level="ERROR") as log:
             resp = self._create_account("leon@test.com")
             self.assertIn(
                 "ERROR:modoboa.admin:Failed to create PDF_credentials directory. "
                 "Please check the permissions or the path.",
-                log.output
+                log.output,
             )
-

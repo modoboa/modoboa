@@ -17,7 +17,7 @@ class TransportBackend(object):
         """Validate an host address syntax."""
         validator_list = [
             lib_validators.validate_hostname,
-            validators.validate_ipv46_address
+            validators.validate_ipv46_address,
         ]
         for validator in validator_list:
             try:
@@ -77,11 +77,7 @@ class TransportBackendManager(object):
     def get_backend_list(self):
         """Return known backend list."""
         return sorted(
-            (
-                (key, key)
-                for key, backend in self.backends.items()
-            ),
-            key=lambda i: i[1]
+            ((key, key) for key, backend in self.backends.items()), key=lambda i: i[1]
         )
 
     def get_backend_settings(self, name):

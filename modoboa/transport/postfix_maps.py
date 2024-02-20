@@ -1,5 +1,6 @@
 """Map file definitions for postfix."""
 
+
 class TransportMap(object):
     """A transport map."""
 

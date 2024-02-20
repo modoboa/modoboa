@@ -19,10 +19,7 @@ class ForwardTestCase(ModoTestCase):
         self.client.logout()
         self.client.login(username="user@test.com", password="toto")
         url = reverse("user_forward")
-        self.ajax_post(
-            url,
-            {"dest": "user@extdomain.com", "keepcopies": True}
-        )
+        self.ajax_post(url, {"dest": "user@extdomain.com", "keepcopies": True})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         content = response.json()
@@ -38,10 +35,7 @@ class ForwardTestCase(ModoTestCase):
         self.assertTrue(selfalias.enabled)
 
         # Deactivate local copies
-        self.ajax_post(
-            url,
-            {"dest": "user@extdomain.com", "keepcopies": False}
-        )
+        self.ajax_post(url, {"dest": "user@extdomain.com", "keepcopies": False})
         selfalias.refresh_from_db()
         self.assertFalse(selfalias.enabled)
 

@@ -3,9 +3,7 @@
 import oath
 
 from django import forms
-from django.contrib.auth import (
-    forms as auth_forms, get_user_model, password_validation
-)
+from django.contrib.auth import forms as auth_forms, get_user_model, password_validation
 from django.db.models import Q
 from django.utils.translation import gettext as _, gettext_lazy
 
@@ -21,41 +19,46 @@ class LoginForm(forms.Form):
 
     username = forms.CharField(
         label=gettext_lazy("Username"),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
     password = forms.CharField(
         label=gettext_lazy("Password"),
-        widget=forms.PasswordInput(attrs={"class": "form-control"})
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
     )
-    rememberme = forms.BooleanField(
-        initial=False,
-        required=False
-    )
+    rememberme = forms.BooleanField(initial=False, required=False)
 
 
 class ProfileForm(forms.ModelForm):
     """Form to update User profile."""
 
     oldpassword = forms.CharField(
-        label=gettext_lazy("Old password"), required=False,
-        widget=forms.PasswordInput(attrs={"class": "form-control"})
+        label=gettext_lazy("Old password"),
+        required=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
     )
     newpassword = forms.CharField(
-        label=gettext_lazy("New password"), required=False,
-        widget=forms.PasswordInput(attrs={"class": "form-control"})
+        label=gettext_lazy("New password"),
+        required=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
     )
     confirmation = forms.CharField(
-        label=gettext_lazy("Confirmation"), required=False,
-        widget=forms.PasswordInput(attrs={"class": "form-control"})
+        label=gettext_lazy("Confirmation"),
+        required=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
     )
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "language",
-                  "phone_number", "secondary_email")
+        fields = (
+            "first_name",
+            "last_name",
+            "language",
+            "phone_number",
+            "secondary_email",
+        )
         widgets = {
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
-            "last_name": forms.TextInput(attrs={"class": "form-control"})
+            "last_name": forms.TextInput(attrs={"class": "form-control"}),
         }
 
     def __init__(self, update_password, *args, **kwargs):
@@ -90,7 +93,8 @@ class ProfileForm(forms.ModelForm):
                 else:
                     try:
                         password_validation.validate_password(
-                            confirmation, self.instance)
+                            confirmation, self.instance
+                        )
                     except forms.ValidationError as err:
                         self.add_error("confirmation", err)
             else:
@@ -107,8 +111,7 @@ class ProfileForm(forms.ModelForm):
         if commit:
             if self.cleaned_data.get("confirmation", "") != "":
                 user.set_password(
-                    self.cleaned_data["confirmation"],
-                    self.cleaned_data["oldpassword"]
+                    self.cleaned_data["confirmation"], self.cleaned_data["oldpassword"]
                 )
             user.save()
         return user
@@ -118,7 +121,8 @@ class APIAccessForm(forms.Form):
     """Form to control API access."""
 
     enable_api_access = forms.BooleanField(
-        label=gettext_lazy("Enable API access"), required=False)
+        label=gettext_lazy("Enable API access"), required=False
+    )
 
     def __init__(self, *args, **kwargs):
         """Initialize form."""
@@ -133,19 +137,30 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
     def get_users(self, email):
         """Return matching user(s) who should receive a reset."""
         return (
-            get_user_model()._default_manager.filter(
-                email__iexact=email, is_active=True)
+            get_user_model()
+            ._default_manager.filter(email__iexact=email, is_active=True)
             .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
         )
 
-    def send_mail(self, subject_template_name, email_template_name,
-                  context, from_email, to_email,
-                  html_email_template_name=None):
+    def send_mail(
+        self,
+        subject_template_name,
+        email_template_name,
+        context,
+        from_email,
+        to_email,
+        html_email_template_name=None,
+    ):
         """Send message to secondary email instead."""
         to_email = context["user"].secondary_email
         super(PasswordResetForm, self).send_mail(
-            subject_template_name, email_template_name,
-            context, from_email, to_email, html_email_template_name)
+            subject_template_name,
+            email_template_name,
+            context,
+            from_email,
+            to_email,
+            html_email_template_name,
+        )
 
 
 class VerifySMSCodeForm(forms.Form):
@@ -153,7 +168,7 @@ class VerifySMSCodeForm(forms.Form):
 
     code = forms.CharField(
         label=gettext_lazy("Verification code"),
-        widget=forms.widgets.TextInput(attrs={"class": "form-control"})
+        widget=forms.widgets.TextInput(attrs={"class": "form-control"}),
     )
 
     def __init__(self, *args, **kwargs):

@@ -24,11 +24,9 @@ class SMSBackend:
 
 def get_backend_class(name):
     """Return class for given backend."""
-    backend_module = import_module(
-        "modoboa.core.sms_backends.{}".format(name))
+    backend_module = import_module("modoboa.core.sms_backends.{}".format(name))
     try:
-        backend_class = getattr(
-            backend_module, "{}Backend".format(name.upper()))
+        backend_class = getattr(backend_module, "{}Backend".format(name.upper()))
     except AttributeError:
         return None
     else:

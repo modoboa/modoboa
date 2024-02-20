@@ -17,9 +17,7 @@ def set_message_limit(instance, key):
     if old_message_limit == instance.message_limit:
         return
     rclient = redis.Redis(
-        host=settings.REDIS_HOST,
-        port=settings.REDIS_PORT,
-        db=settings.REDIS_QUOTA_DB
+        host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_QUOTA_DB
     )
     if instance.message_limit is None:
         # delete existing key

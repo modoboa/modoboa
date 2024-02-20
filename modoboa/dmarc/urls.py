@@ -7,6 +7,5 @@ from . import views
 app_name = "dmarc"
 
 urlpatterns = [
-    path("domains/<int:pk>/", views.DomainReportView.as_view(),
-         name="domain_report"),
+    path("domains/<int:pk>/", views.DomainReportView.as_view(), name="domain_report"),
 ]

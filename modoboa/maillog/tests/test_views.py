@@ -31,11 +31,9 @@ class RunCommandsMixin(object):
 
     def run_logparser(self):
         """Run logparser command."""
-        path = os.path.join(
-            os.path.dirname(__file__), "mail.log")
+        path = os.path.join(os.path.dirname(__file__), "mail.log")
         with open(path) as fp:
-            content = fp.read() % {
-                "day": datetime.date.today().strftime("%b %d")}
+            content = fp.read() % {"day": datetime.date.today().strftime("%b %d")}
         path = os.path.join(self.workdir, "mail.log")
         with open(path, "w") as fp:
             fp.write(content)
@@ -84,7 +82,8 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
         self.assertIn("averagetraffic", response["graphs"])
         for period in ["week", "month", "year"]:
             response = self.ajax_get(
-                "{}?gset=mailtraffic&period={}".format(url, period))
+                "{}?gset=mailtraffic&period={}".format(url, period)
+            )
             self.assertIn("averagetraffic", response["graphs"])
             self.assertEqual(response["period_name"], period)
 
@@ -93,15 +92,14 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
         start = "{} 11:00:00".format(today)
         end = "{} 11:40:00".format(today)
         response = self.ajax_get(
-            "{}?gset=mailtraffic&period=custom&start={}&end={}".format(
-                url, start, end)
+            "{}?gset=mailtraffic&period=custom&start={}&end={}".format(url, start, end)
         )
         self.assertIn("averagetraffic", response["graphs"])
 
         # unknown domain
         response = self.ajax_get(
-            "{}?gset=mailtraffic&searchquery=unknown.com".format(url),
-            status=400)
+            "{}?gset=mailtraffic&searchquery=unknown.com".format(url), status=400
+        )
 
         # check with greylist enabled
         self.set_global_parameter("greylist", True)
@@ -113,8 +111,7 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
         self.run_update_statistics(rebuild=True)
         url = reverse("maillog:graph_list")
         response = self.ajax_get("{}?gset=accountgraphicset".format(url))
-        data = (
-            response["graphs"]["accountcreationgraphic"]["series"][0]["data"])
+        data = response["graphs"]["accountcreationgraphic"]["series"][0]["data"]
         self.assertEqual(data[-1]["y"], 5.0)
 
     def test_graphs_as_domainadmin(self):
@@ -128,8 +125,7 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
         response = self.ajax_get("{}&searchquery=test.com".format(url))
         self.assertIn("averagetraffic", response["graphs"])
 
-        response = self.ajax_get(
-            "{}&searchquery=test2.com".format(url), status=403)
+        response = self.ajax_get("{}&searchquery=test2.com".format(url), status=403)
 
     def test_get_domain_list(self):
         """Test get_domain_list view."""

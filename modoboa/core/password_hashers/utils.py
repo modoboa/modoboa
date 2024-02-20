@@ -42,12 +42,10 @@ def get_dovecot_schemes():
                 status = 0
 
     # Manage alarms if needed
-    doveadm_alarms = Alarm.objects.filter(
-        internal_name=DOVEADM_PASS_SCHEME_ALARM)
+    doveadm_alarms = Alarm.objects.filter(internal_name=DOVEADM_PASS_SCHEME_ALARM)
     doveadm_alarm = doveadm_alarms.first()
     if status == 0:
-        condition = (doveadm_alarm is not None and
-                     doveadm_alarm.status == ALARM_OPENED)
+        condition = doveadm_alarm is not None and doveadm_alarm.status == ALARM_OPENED
         if condition:
             doveadm_alarm.close()
     elif status == 2:
@@ -57,21 +55,19 @@ def get_dovecot_schemes():
         else:
             Alarm.objects.create(
                 title="Failed to retrieve available dovecot schemes",
-                internal_name=DOVEADM_PASS_SCHEME_ALARM)
+                internal_name=DOVEADM_PASS_SCHEME_ALARM,
+            )
 
-    return ["{{{}}}".format(smart_str(scheme))
-            for scheme in schemes.split()], status
+    return ["{{{}}}".format(smart_str(scheme)) for scheme in schemes.split()], status
 
 
 def cache_available_password_hasher(bypass_cache=False):
     available_schemes, status = get_dovecot_schemes()
     password_scheme_choice = [
-            (hasher.name, hasher.label)
-            for hasher in PasswordHasher.get_password_hashers()
-            if hasher().scheme in available_schemes
-            ]
+        (hasher.name, hasher.label)
+        for hasher in PasswordHasher.get_password_hashers()
+        if hasher().scheme in available_schemes
+    ]
     if status == 0 and not bypass_cache:
-        cache.set("password_scheme_choice",
-                  password_scheme_choice,
-                  2592000)
+        cache.set("password_scheme_choice", password_scheme_choice, 2592000)
     return password_scheme_choice

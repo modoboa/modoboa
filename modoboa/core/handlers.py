@@ -40,8 +40,9 @@ def post_revision_commit(sender, **kwargs):
             level = "warning"
         message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
             "object": smart_str(version.content_type).capitalize(),
-            "name": version.object_repr, "action": action,
-            "user": current_user
+            "name": version.object_repr,
+            "action": action,
+            "user": current_user,
         }
         getattr(logger, level)(message)
 
@@ -62,7 +63,8 @@ def log_object_removal(sender, instance, **kwargs):
     logger = logging.getLogger("modoboa.admin")
     msg = _("%(object)s '%(name)s' %(action)s by ") % {
         "object": smart_str(version.content_type).capitalize(),
-        "name": version.object_repr, "action": _("deleted")
+        "name": version.object_repr,
+        "action": _("deleted"),
     }
     request = get_request()
     if request:
@@ -79,8 +81,7 @@ def create_local_config(sender, **kwargs):
         return
     if models.LocalConfig.objects.using(kwargs["using"]).exists():
         return
-    models.LocalConfig.objects.create(
-        site=sites_models.Site.objects.get_current())
+    models.LocalConfig.objects.create(site=sites_models.Site.objects.get_current())
 
 
 @receiver(signals.pre_delete, sender=models.User)
@@ -91,16 +92,13 @@ def update_permissions(sender, instance, **kwargs):
     if request:
         from_user = request.user
         if from_user == instance:
-            raise exceptions.PermDeniedException(
-                _("You can't delete your own account")
-            )
+            raise exceptions.PermDeniedException(_("You can't delete your own account"))
 
         if not from_user.can_access(instance):
             raise exceptions.PermDeniedException
 
     # We send an additional signal before permissions are removed
-    core_signals.account_deleted.send(
-        sender="update_permissions", user=instance)
+    core_signals.account_deleted.send(sender="update_permissions", user=instance)
     owner = permissions.get_object_owner(instance)
     if owner == instance:
         # The default admin is being removed...
@@ -108,10 +106,8 @@ def update_permissions(sender, instance, **kwargs):
     # Change ownership of existing objects
     for ooentry in instance.objectaccess_set.filter(is_owner=True):
         if ooentry.content_object is not None:
-            permissions.grant_access_to_object(
-                owner, ooentry.content_object, True)
-            permissions.ungrant_access_to_object(
-                ooentry.content_object, instance)
+            permissions.grant_access_to_object(owner, ooentry.content_object, True)
+            permissions.ungrant_access_to_object(ooentry.content_object, instance)
     # Remove existing permissions on this user
     permissions.ungrant_access_to_object(instance)
 
@@ -125,9 +121,11 @@ def check_for_new_versions(sender, include_all, **kwargs):
     status, extensions = utils.check_for_updates()
     if not status:
         return [{"id": "newversionavailable"}] if include_all else []
-    return [{
-        "id": "newversionavailable",
-        "url": reverse("core:index") + "#info/",
-        "text": _("One or more updates are available"),
-        "level": "info",
-    }]
+    return [
+        {
+            "id": "newversionavailable",
+            "url": reverse("core:index") + "#info/",
+            "text": _("One or more updates are available"),
+            "level": "info",
+        }
+    ]

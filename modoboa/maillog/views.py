@@ -8,14 +8,14 @@ import time
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import (
-    login_required, user_passes_test, permission_required
+    login_required,
+    user_passes_test,
+    permission_required,
 )
 
 from modoboa.admin.models import Domain
 from modoboa.lib.exceptions import BadRequest, NotFound
-from modoboa.lib.web_utils import (
-    render_to_json_response
-)
+from modoboa.lib.web_utils import render_to_json_response
 
 from . import signals
 from .lib import date_to_timestamp
@@ -33,22 +33,25 @@ def index(request):
             raise NotFound(_("No statistics available"))
 
     graph_sets = {}
-    for result in signals.get_graph_sets.send(
-            sender="index", user=request.user):
+    for result in signals.get_graph_sets.send(sender="index", user=request.user):
         graph_sets.update(result[1])
     periods = [
         {"name": "day", "label": _("Day")},
         {"name": "week", "label": _("Week")},
         {"name": "month", "label": _("Month")},
         {"name": "year", "label": _("Year")},
-        {"name": "custom", "label": _("Custom")}
+        {"name": "custom", "label": _("Custom")},
     ]
-    return render(request, 'maillog/index.html', {
-        "periods": periods,
-        "selection": "stats",
-        "deflocation": deflocation,
-        "graph_sets": graph_sets
-    })
+    return render(
+        request,
+        "maillog/index.html",
+        {
+            "periods": periods,
+            "selection": "stats",
+            "deflocation": deflocation,
+            "graph_sets": graph_sets,
+        },
+    )
 
 
 @login_required
@@ -57,8 +60,7 @@ def graphs(request):
     gset = request.GET.get("gset", None)
     searchq = request.GET.get("searchquery", None)
     graph_sets = {}
-    for result in signals.get_graph_sets.send(
-            sender="index", user=request.user):
+    for result in signals.get_graph_sets.send(sender="index", user=request.user):
         graph_sets.update(result[1])
     if gset not in graph_sets:
         raise NotFound(_("Unknown graphic set"))
@@ -74,8 +76,8 @@ def graphs(request):
             raise BadRequest(_("Bad custom period"))
         start = request.GET["start"]
         end = request.GET["end"]
-        expr = re.compile(r'[:\- ]')
-        period_name = "%s_%s" % (expr.sub('', start), expr.sub('', end))
+        expr = re.compile(r"[:\- ]")
+        period_name = "%s_%s" % (expr.sub("", start), expr.sub("", end))
         start = date_to_timestamp(expr.split(start))
         end = date_to_timestamp(expr.split(end))
     else:
