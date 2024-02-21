@@ -1,23 +1,27 @@
 <template>
-  <div>
-    <v-toolbar flat>
-      <v-toolbar-title>
-        {{ $gettext('Alias') }} {{ alias.address }}
-        <v-btn
-          color="primary"
-          icon="mdi-circle-edit-outline"
-          :to="{ name: 'AliasEdit', params: { id: alias.pk } }"
-        />
-        <v-btn color="primary" icon="mdi-reload" @click="refreshAlias()" />
-      </v-toolbar-title>
-    </v-toolbar>
-    <v-row>
-      <v-col cols="6">
-        <AliasSummary :alias="alias" />
-        <AliasRecipientsSummary :alias="alias" class="mt-2" />
-      </v-col>
-    </v-row>
-  </div>
+    <div>
+        <v-toolbar flat>
+            <v-toolbar-title>
+                {{ $gettext('Alias') }} {{ alias.address }}
+                <v-btn
+                    color="primary"
+                    icon="mdi-circle-edit-outline"
+                    :to="{ name: 'AliasEdit', params: { id: alias.pk } }"
+                />
+                <v-btn
+                    color="primary"
+                    icon="mdi-reload"
+                    @click="refreshAlias()"
+                />
+            </v-toolbar-title>
+        </v-toolbar>
+        <v-row>
+            <v-col cols="6">
+                <AliasSummary :alias="alias" />
+                <AliasRecipientsSummary :alias="alias" class="mt-2" />
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 <script setup lang="js">
@@ -33,20 +37,20 @@ const aliasesStore = useAliasesStore()
 const route = useRoute()
 
 const alias = computed(() => {
-  if (aliasesStore.aliases[route.params.id] !== undefined) {
-    return aliasesStore.aliases[route.params.id]
-  }
-  refreshAlias()
-  return { pk: route.params.id }
+    if (aliasesStore.aliases[route.params.id] !== undefined) {
+        return aliasesStore.aliases[route.params.id]
+    }
+    refreshAlias()
+    return { pk: route.params.id }
 })
 
 function refreshAlias() {
-  aliasesStore.getAlias(route.params.id)
+    aliasesStore.getAlias(route.params.id)
 }
 </script>
 
 <style scoped>
 .v-toolbar {
-  background-color: #f7f8fa !important;
+    background-color: #f7f8fa !important;
 }
 </style>

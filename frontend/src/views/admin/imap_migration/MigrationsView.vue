@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <v-toolbar flat>
-      <v-toolbar-title>{{ $gettext('Migrations') }}</v-toolbar-title>
-      <v-spacer />
-    </v-toolbar>
+    <div>
+        <v-toolbar flat>
+            <v-toolbar-title>{{ $gettext('Migrations') }}</v-toolbar-title>
+            <v-spacer />
+        </v-toolbar>
 
-    <MigrationsList />
-  </div>
+        <MigrationsList />
+    </div>
 </template>
 
 <script setup lang="js">
@@ -18,10 +18,10 @@ const { $gettext } = useGettext()
 
 <style scoped>
 .v-toolbar {
-  background-color: #f7f8fa !important;
+    background-color: #f7f8fa !important;
 }
 
 .v-tabs-items {
-  background-color: #f7f8fa !important;
+    background-color: #f7f8fa !important;
 }
 </style>

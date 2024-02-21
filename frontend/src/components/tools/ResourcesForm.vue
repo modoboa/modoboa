@@ -1,16 +1,16 @@
 <template>
-  <v-form ref="vFormRef">
-    <template v-for="resource in resources" :key="resource.name">
-      <label class="m-label">{{ resource.label }}</label>
-      <v-text-field
-        v-model="resource.max_value"
-        type="number"
-        variant="outlined"
-        dense
-        :rules="[rules.required]"
-      />
-    </template>
-  </v-form>
+    <v-form ref="vFormRef">
+        <template v-for="resource in resources" :key="resource.name">
+            <label class="m-label">{{ resource.label }}</label>
+            <v-text-field
+                v-model="resource.max_value"
+                type="number"
+                variant="outlined"
+                dense
+                :rules="[rules.required]"
+            />
+        </template>
+    </v-form>
 </template>
 
 <script setup lang="js">
@@ -24,9 +24,9 @@ const resources = computed(() => props.modelValue)
 const vFormRef = ref()
 
 function getPayload() {
-  return resources.value.map((r) => {
-    return { name: r.name, max_value: r.max_value }
-  })
+    return resources.value.map((r) => {
+        return { name: r.name, max_value: r.max_value }
+    })
 }
 
 defineExpose({ vFormRef, getPayload })

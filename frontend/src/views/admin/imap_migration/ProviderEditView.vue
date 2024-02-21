@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <span class="text-h4"> {{ $gettext('Edit provider') }} </span>
-    <div class="mt-4" />
-    <ProviderForm :provider="provider" />
-  </div>
+    <div>
+        <span class="text-h4"> {{ $gettext('Edit provider') }} </span>
+        <div class="mt-4" />
+        <ProviderForm :provider="provider" />
+    </div>
 </template>
 
 <script setup lang="js">
@@ -19,6 +19,6 @@ const route = useRoute()
 const provider = ref({})
 
 providersApi.getProvider(route.params.id).then((response) => {
-  provider.value = response.data
+    provider.value = response.data
 })
 </script>

@@ -9,43 +9,43 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue({
-      template: { transformAssetUrls },
-    }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
-    vuetify({
-      autoImport: true,
-      styles: {
-        configFile: 'src/styles/settings.scss',
-      },
-    }),
-    ViteFonts({
-      google: {
-        families: [
-          {
-            name: 'Roboto',
-            styles: 'wght@100;300;400;500;700;900',
-          },
-        ],
-      },
-    }),
-  ],
-  base: process.env.NODE_ENV === 'production' ? '/new-admin/' : '/',
-  define: { 'process.env': {}, __VUE_OPTIONS_API__: false },
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    plugins: [
+        vue({
+            template: { transformAssetUrls },
+        }),
+        // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
+        vuetify({
+            autoImport: true,
+            styles: {
+                configFile: 'src/styles/settings.scss',
+            },
+        }),
+        ViteFonts({
+            google: {
+                families: [
+                    {
+                        name: 'Roboto',
+                        styles: 'wght@100;300;400;500;700;900',
+                    },
+                ],
+            },
+        }),
+    ],
+    base: process.env.NODE_ENV === 'production' ? '/new-admin/' : '/',
+    define: { 'process.env': {}, __VUE_OPTIONS_API__: false },
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
+        extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
     },
-    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
-  },
-  server: {
-    port: 3000,
-    proxy: {
-      '/api':
-        process.env.DOCKER == 'yes'
-          ? 'http://api:8000'
-          : 'http://127.0.0.1:8000',
+    server: {
+        port: 3000,
+        proxy: {
+            '/api':
+                process.env.DOCKER == 'yes'
+                    ? 'http://api:8000'
+                    : 'http://127.0.0.1:8000',
+        },
     },
-  },
 })
