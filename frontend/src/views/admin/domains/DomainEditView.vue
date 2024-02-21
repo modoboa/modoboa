@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <span class="text-h4">{{ $gettext('Edit domain') }}</span>
-    <div class="mt-4" />
-    <DomainEditForm :domain="domain" />
-  </div>
+    <div>
+        <span class="text-h4">{{ $gettext('Edit domain') }}</span>
+        <div class="mt-4" />
+        <DomainEditForm :domain="domain" />
+    </div>
 </template>
 
 <script setup lang="js">
@@ -20,6 +20,6 @@ const route = useRoute()
 const domain = ref({ pk: route.params.id })
 
 domainsStore
-  .getDomain(route.params.id)
-  .then((response) => (domain.value = response.data))
+    .getDomain(route.params.id)
+    .then((response) => (domain.value = response.data))
 </script>

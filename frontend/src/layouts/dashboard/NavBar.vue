@@ -1,117 +1,121 @@
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
-    :rail="rail"
-    permanent
-    :color="mainColor"
-    app
-  >
-    <div class="d-flex align-center">
-      <v-img
-        src="@/assets/Modoboa_RVB-BLANC-SANS.png"
-        max-width="190"
-        class="logo"
-        @click="router.push({ name: 'Dashboard' })"
-      />
-      <v-btn
-        :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
-        variant="text"
-        @click.stop="rail = !rail"
-      >
-      </v-btn>
-    </div>
-
-    <v-list nav>
-      <template v-for="item in menuItems">
-        <template v-if="displayMenuItem(item)">
-          <v-list-item
-            v-if="!item.children"
-            :key="item.text"
-            :value="item"
-            :to="item.to"
-            link
-            :exact="item.exact"
-            :title="item.text"
-            :prepend-icon="item.icon"
-          >
-          </v-list-item>
-          <v-list-group v-else :key="item.text" :value="item.text">
-            <template #activator="{ props }">
-              <v-list-item
-                v-bind="props"
-                :key="item.text"
-                :title="item.text"
-                color="white"
-                :prepend-icon="item.icon"
-              >
-              </v-list-item>
-            </template>
-            <v-list-item
-              v-for="subitem in item.children"
-              :key="subitem.text"
-              :to="subitem.to"
-              link
-              :title="subitem.text"
-              :value="subitem"
-            ></v-list-item>
-          </v-list-group>
-        </template>
-      </template>
-    </v-list>
-    <template #append>
-      <v-menu v-if="isAuthenticated" rounded="lg" offset-y top>
-        <template #activator="{ props }">
-          <div
-            :class="[
-              backgroundColor,
-              'd-flex',
-              'justify-center',
-              'align-center',
-              'pa-2',
-            ]"
-          >
+    <v-navigation-drawer
+        v-model="drawer"
+        :rail="rail"
+        permanent
+        :color="mainColor"
+        app
+    >
+        <div class="d-flex align-center">
+            <v-img
+                src="@/assets/Modoboa_RVB-BLANC-SANS.png"
+                max-width="190"
+                class="logo"
+                @click="router.push({ name: 'Dashboard' })"
+            />
             <v-btn
-              v-bind="props"
-              :class="[backgroundColor, 'text-white']"
-              rounded
-              density="compact"
-              height="48"
-              elevation="0"
+                :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
+                variant="text"
+                @click.stop="rail = !rail"
             >
-              <v-avatar size="40" color="primary">
-                <span class="text-white headline">{{ userInitials }}</span>
-              </v-avatar>
-              <template v-if="!rail">
-                <span class="mx-2">{{ displayName }}</span>
-                <v-icon class="float-right">mdi-chevron-up</v-icon>
-              </template>
             </v-btn>
-          </div>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="item in userMenuItems"
-            :key="item.text"
-            :to="item.to"
-            link
-            @click="item.click"
-          >
-            <template #prepend>
-              <v-icon :icon="item.icon"></v-icon>
+        </div>
+
+        <v-list nav>
+            <template v-for="item in menuItems">
+                <template v-if="displayMenuItem(item)">
+                    <v-list-item
+                        v-if="!item.children"
+                        :key="item.text"
+                        :value="item"
+                        :to="item.to"
+                        link
+                        :exact="item.exact"
+                        :title="item.text"
+                        :prepend-icon="item.icon"
+                    >
+                    </v-list-item>
+                    <v-list-group v-else :key="item.text" :value="item.text">
+                        <template #activator="{ props }">
+                            <v-list-item
+                                v-bind="props"
+                                :key="item.text"
+                                :title="item.text"
+                                color="white"
+                                :prepend-icon="item.icon"
+                            >
+                            </v-list-item>
+                        </template>
+                        <v-list-item
+                            v-for="subitem in item.children"
+                            :key="subitem.text"
+                            :to="subitem.to"
+                            link
+                            :title="subitem.text"
+                            :value="subitem"
+                        ></v-list-item>
+                    </v-list-group>
+                </template>
             </template>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item>
         </v-list>
-      </v-menu>
-    </template>
-  </v-navigation-drawer>
+        <template #append>
+            <v-menu v-if="isAuthenticated" rounded="lg" offset-y top>
+                <template #activator="{ props }">
+                    <div
+                        :class="[
+                            backgroundColor,
+                            'd-flex',
+                            'justify-center',
+                            'align-center',
+                            'pa-2',
+                        ]"
+                    >
+                        <v-btn
+                            v-bind="props"
+                            :class="[backgroundColor, 'text-white']"
+                            rounded
+                            density="compact"
+                            height="48"
+                            elevation="0"
+                        >
+                            <v-avatar size="40" color="primary">
+                                <span class="text-white headline">{{
+                                    userInitials
+                                }}</span>
+                            </v-avatar>
+                            <template v-if="!rail">
+                                <span class="mx-2">{{ displayName }}</span>
+                                <v-icon class="float-right"
+                                    >mdi-chevron-up</v-icon
+                                >
+                            </template>
+                        </v-btn>
+                    </div>
+                </template>
+                <v-list>
+                    <v-list-item
+                        v-for="item in userMenuItems"
+                        :key="item.text"
+                        :to="item.to"
+                        link
+                        @click="item.click"
+                    >
+                        <template #prepend>
+                            <v-icon :icon="item.icon"></v-icon>
+                        </template>
+                        <v-list-item-title>{{ item.text }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </template>
+    </v-navigation-drawer>
 </template>
 
 <script setup lang="js">
 import { useRoute, useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { getActivePinia } from "pinia"
+import { getActivePinia } from 'pinia'
 
 import parametersApi from '@/api/parameters'
 import { useAuthStore, useParametersStore } from '@/stores'
@@ -139,8 +143,8 @@ const userInitials = computed(() => {
     }
     if (authUser.value.last_name) {
         initials = initials
-                 ? initials + authUser.value.last_name[0]
-                 : authUser.value.last_name[0]
+            ? initials + authUser.value.last_name[0]
+            : authUser.value.last_name[0]
     }
     if (!initials) {
         initials = authUser.value.username[0]
@@ -149,8 +153,8 @@ const userInitials = computed(() => {
 })
 const displayName = computed(() => {
     return authUser.value.first_name || authUser.value.last_name
-         ? `${authUser.value.first_name} ${authUser.value.last_name}`
-         : authUser.value.username
+        ? `${authUser.value.first_name} ${authUser.value.last_name}`
+        : authUser.value.username
 })
 
 const menuItems = computed(() => {
@@ -308,7 +312,7 @@ function displayMenuItem(item) {
     if (isAuthenticated.value) {
         const condition =
             (item.roles === undefined ||
-             item.roles.indexOf(authUser.value.role) !== -1) &&
+                item.roles.indexOf(authUser.value.role) !== -1) &&
             (item.condition === undefined || item.condition()) &&
             item.activated !== false
         if (item.icon === 'mdi-email-sync-outline') {
@@ -320,7 +324,7 @@ function displayMenuItem(item) {
 }
 
 async function logout() {
-    getActivePinia()._s.forEach(async (store) => await store.$reset());
+    getActivePinia()._s.forEach(async (store) => await store.$reset())
     router.push({ name: 'Login' })
 }
 
@@ -336,17 +340,17 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .v-list-item {
-  &--active {
-    &::before {
-      opacity: 0;
+    &--active {
+        &::before {
+            opacity: 0;
+        }
+        background-color: #034bad !important;
+        color: white;
+        opacity: 1;
     }
-    background-color: #034bad !important;
-    color: white;
-    opacity: 1;
-  }
 }
 
 .logo {
-  cursor: pointer;
+    cursor: pointer;
 }
 </style>

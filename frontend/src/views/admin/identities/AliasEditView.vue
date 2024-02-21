@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <span class="text-h4">{{ $gettext('Edit alias') }}</span>
-    <div class="mt-4" />
-    <AliasEditForm :alias="alias" />
-  </div>
+    <div>
+        <span class="text-h4">{{ $gettext('Edit alias') }}</span>
+        <div class="mt-4" />
+        <AliasEditForm :alias="alias" />
+    </div>
 </template>
 
 <script setup lang="js">

@@ -17,18 +17,18 @@ import { createApp } from 'vue'
 import repository from '@/api/repository.js'
 
 fetch(import.meta.env.BASE_URL + 'config.json').then((resp) => {
-  resp.json().then((config) => {
-    if (!config.API_BASE_URL) {
-      throw Error('API_BASE_URL is not defined in config.json')
-    }
-    repository.defaults.baseURL = config.API_BASE_URL
+    resp.json().then((config) => {
+        if (!config.API_BASE_URL) {
+            throw Error('API_BASE_URL is not defined in config.json')
+        }
+        repository.defaults.baseURL = config.API_BASE_URL
 
-    const app = createApp(App)
+        const app = createApp(App)
 
-    registerPlugins(app)
+        registerPlugins(app)
 
-    app.mount('#app')
+        app.mount('#app')
 
-    app.provide('$config', config)
-  })
+        app.provide('$config', config)
+    })
 })
