@@ -4,5 +4,9 @@ import { ref } from 'vue'
 export const useParametersStore = defineStore('parameters', () => {
   const imapMigrationEnabled = ref(null)
 
-  return { imapMigrationEnabled }
+  async function $reset() {
+    imapMigrationEnabled.value = null
+  }
+
+  return { imapMigrationEnabled, $reset }
 })

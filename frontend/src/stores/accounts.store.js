@@ -14,6 +14,11 @@ export const useAccountsStore = defineStore('accounts', () => {
   const accounts = ref({})
   const accountsLoaded = ref(false)
 
+  async function $reset() {
+    accounts.value = {}
+    accountsLoaded.value = false
+  }
+
   async function getAll() {
     accounts.value = {}
     return accountsApi.getAll().then((response) => {
@@ -73,5 +78,6 @@ export const useAccountsStore = defineStore('accounts', () => {
     updateAccount,
     createAccount,
     deleteAccount,
+    $reset
   }
 })

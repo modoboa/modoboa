@@ -10,8 +10,12 @@ export const useAliasesStore = defineStore('aliases', () => {
   const { $gettext } = gettext
 
   const aliases = ref({})
-
   const aliasesLoaded = ref(false)
+
+  async function $reset() {
+    aliases.value = {}
+    aliasesLoaded.value = false
+  }
 
   async function getAll() {
     aliasesLoaded.value = false
@@ -85,5 +89,6 @@ export const useAliasesStore = defineStore('aliases', () => {
     createAlias,
     deleteAlias,
     updateAlias,
+    $reset
   }
 })

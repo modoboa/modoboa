@@ -17,6 +17,11 @@ export const useIdentitiesStore = defineStore('identities', () => {
   const identitiesLoaded = ref(false)
   const identities = ref([])
 
+  async function $reset() {
+    identitiesLoaded.value = false
+    identities.value = []
+  }
+
   async function _getIndexByPk(type, pk) {
     for (let i = 0; i < identities.value.length; i++) {
       if (identities.value[i].pk === pk && identities.value[i].type === type) {
@@ -168,5 +173,6 @@ export const useIdentitiesStore = defineStore('identities', () => {
     deleteIdentity,
     createIdentity,
     updateIdentity,
+    $reset
   }
 })
