@@ -52,26 +52,26 @@ msgstr ""
 msgid "Absolute time range"
 msgstr ""
 
-#: src/stores/identities.store.js:67
+#: src/stores/identities.store.js:72
 #, fuzzy
 msgid "account"
-msgstr "Account"
+msgstr "account"
 
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
 msgstr "Account"
 
-#: src/stores/accounts.store.js:51
+#: src/stores/accounts.store.js:56
 msgid "Account created"
 msgstr "Account creato"
 
-#: src/stores/accounts.store.js:62
+#: src/stores/accounts.store.js:67
 #, fuzzy
 msgid "Account successfully deleted"
 msgstr "Account creato"
 
-#: src/stores/accounts.store.js:43
+#: src/stores/accounts.store.js:48
 msgid "Account updated"
 msgstr "Account aggiornato"
 
@@ -161,7 +161,7 @@ msgid "Alarm re-opened"
 msgstr ""
 
 #: src/components/admin/domains/DomainList.vue:302
-#: src/layouts/dashboard/NavBar.vue:201
+#: src/layouts/dashboard/NavBar.vue:202
 msgid "Alarms"
 msgstr ""
 
@@ -169,10 +169,10 @@ msgstr ""
 msgid "Alarms deleted"
 msgstr ""
 
-#: src/stores/identities.store.js:97
+#: src/stores/identities.store.js:102
 #, fuzzy
 msgid "alias"
-msgstr "Alias"
+msgstr "alias"
 
 #: src/components/admin/identities/AccountEditForm.vue:115
 #: src/views/admin/domains/DomainsView.vue:36
@@ -190,16 +190,16 @@ msgstr "Alias creato"
 msgid "Alias already exists, redirecting to edit page"
 msgstr ""
 
-#: src/stores/aliases.store.js:48
+#: src/stores/aliases.store.js:52
 #, fuzzy
 msgid "Alias successfully created"
 msgstr "Alias creato"
 
-#: src/stores/aliases.store.js:61
+#: src/stores/aliases.store.js:65
 msgid "Alias successfully deleted"
 msgstr ""
 
-#: src/stores/aliases.store.js:74
+#: src/stores/aliases.store.js:78
 #, fuzzy
 msgid "Alias updated"
 msgstr "Alias creato"
@@ -207,8 +207,8 @@ msgstr "Alias creato"
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
-"name (@domain.tld)."
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
 msgstr ""
 
 #: src/components/admin/domains/DomainList.vue:201
@@ -229,7 +229,7 @@ msgstr "Alias"
 msgid "Alignment"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:260
+#: src/layouts/dashboard/NavBar.vue:261
 msgid "API"
 msgstr "API"
 
@@ -276,7 +276,7 @@ msgstr "Domini amministrati"
 msgid "Associated domains"
 msgstr "Domini amministrati"
 
-#: src/layouts/dashboard/NavBar.vue:216
+#: src/layouts/dashboard/NavBar.vue:217
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr ""
@@ -375,7 +375,7 @@ msgstr "Chiudi"
 msgid "Confirm and create"
 msgstr ""
 
-#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:63
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:64
 msgid "Confirmation"
 msgstr "Conferma"
 
@@ -402,7 +402,7 @@ msgstr ""
 
 #: src/components/admin/domains/DomainCreationForm.vue:54
 #: src/components/admin/identities/AccountCreationForm.vue:43
-#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:42
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:43
 msgid "Copy to clipboard"
 msgstr ""
 
@@ -460,14 +460,14 @@ msgstr ""
 msgid "Daily sending limit"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:183
+#: src/layouts/dashboard/NavBar.vue:184
 msgid "Dashboard"
 msgstr ""
 
 #: src/components/admin/logs/AuditTrailList.vue:49
 #: src/components/admin/logs/MessageList.vue:43
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/components/tools/TimeSerieChart.vue:108
 msgid "Day"
@@ -515,7 +515,7 @@ msgstr "Descrizione"
 msgid "Detail"
 msgstr ""
 
-#: src/components/account/TwoFactorAuthForm.vue:90
+#: src/components/account/TwoFactorAuthForm.vue:91
 #, fuzzy
 msgid "Disable 2FA"
 msgstr "Disabilitato"
@@ -523,7 +523,7 @@ msgstr "Disabilitato"
 #: src/components/admin/domains/DomainList.vue:80
 #, fuzzy
 msgid "disabled"
-msgstr "(disabilitato)"
+msgstr "Disabilitato"
 
 #: src/components/admin/domains/DNSStatusChip.vue:18
 msgid "Disabled"
@@ -554,7 +554,8 @@ msgid "DKIM key selector"
 msgstr ""
 
 #: src/components/admin/domains/DNSDetail.vue:238
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr ""
 
 #: src/components/admin/domains/DomainDKIMKey.vue:5
@@ -575,7 +576,7 @@ msgstr ""
 
 #: src/views/admin/domains/DomainView.vue:27
 msgid "DMARC"
-msgstr ""
+msgstr "Strumenti DMARC"
 
 #: src/components/admin/domains/DNSDetail.vue:92
 msgid "DMARC record found"
@@ -627,7 +628,7 @@ msgstr ""
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:55
 #, fuzzy
 msgid "domain"
-msgstr "Dominio"
+msgstr "dominio"
 
 #: src/components/admin/alarms/AlarmList.vue:94
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:21
@@ -640,15 +641,15 @@ msgstr "Dominio"
 msgid "Domain administrator"
 msgstr "Amministratore di dominio"
 
-#: src/stores/domains.store.js:84
+#: src/stores/domains.store.js:90
 msgid "Domain alias created"
 msgstr ""
 
-#: src/stores/domains.store.js:106
+#: src/stores/domains.store.js:112
 msgid "Domain alias deleted"
 msgstr ""
 
-#: src/stores/domains.store.js:121
+#: src/stores/domains.store.js:127
 msgid "Domain alias updated"
 msgstr ""
 
@@ -669,7 +670,7 @@ msgstr ""
 msgid "Domain name (ex: domain.tld)"
 msgstr ""
 
-#: src/stores/domains.store.js:56
+#: src/stores/domains.store.js:62
 msgid "Domain updated"
 msgstr ""
 
@@ -678,7 +679,7 @@ msgstr ""
 msgid "domain's default value"
 msgstr "Usa il valore predefinito"
 
-#: src/layouts/dashboard/NavBar.vue:189
+#: src/layouts/dashboard/NavBar.vue:190
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domini"
@@ -725,7 +726,7 @@ msgstr ""
 msgid "Email address"
 msgstr "Indirizzo email"
 
-#: src/layouts/dashboard/NavBar.vue:233
+#: src/layouts/dashboard/NavBar.vue:234
 #, fuzzy
 msgid "Email providers"
 msgstr "Indirizzo email"
@@ -739,7 +740,7 @@ msgstr ""
 msgid "Empty"
 msgstr ""
 
-#: src/components/account/TwoFactorAuthForm.vue:107
+#: src/components/account/TwoFactorAuthForm.vue:108
 #, fuzzy
 msgid "Enable 2FA"
 msgstr "Abilitato"
@@ -839,7 +840,7 @@ msgstr "Password dimenticata?"
 msgid "Forgot password?"
 msgstr "Password dimenticata?"
 
-#: src/layouts/dashboard/NavBar.vue:284 src/views/account/ForwardView.vue:3
+#: src/layouts/dashboard/NavBar.vue:285 src/views/account/ForwardView.vue:3
 msgid "Forward"
 msgstr "Inoltra"
 
@@ -865,7 +866,7 @@ msgstr ""
 #: src/components/admin/logs/MessageList.vue:46
 #: src/components/tools/TimeSerieChart.vue:19
 msgid "From"
-msgstr ""
+msgstr "Da"
 
 #: src/components/admin/identities/AccountSummary.vue:19
 msgid "Full name"
@@ -942,7 +943,7 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:195
+#: src/layouts/dashboard/NavBar.vue:196
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identità"
@@ -959,9 +960,9 @@ msgid ""
 "received and processed."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:229
+#: src/layouts/dashboard/NavBar.vue:230
 msgid "IMAP Migration"
-msgstr ""
+msgstr "Migrazione IMAP"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:17
 msgid "IMAP Port"
@@ -995,14 +996,14 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:252 src/views/admin/InformationView.vue:4
+#: src/layouts/dashboard/NavBar.vue:253 src/views/admin/InformationView.vue:4
 msgid "Information"
 msgstr "Informazioni"
 
 #: src/components/account/TwoFactorAuthForm.vue:34
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
 
 #: src/views/admin/InformationView.vue:8
@@ -1014,10 +1015,10 @@ msgstr "Versione installata"
 msgid "Installed version"
 msgstr "Versione installata"
 
-#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:126
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:127
 #, fuzzy
 msgid "Invalid password"
-msgstr "Password casuale"
+msgstr "Vecchia password"
 
 #: src/plugins/rules.js:41
 msgid "Invalid port number"
@@ -1091,7 +1092,7 @@ msgstr ""
 msgid "Logger"
 msgstr "Logger"
 
-#: src/layouts/dashboard/NavBar.vue:300
+#: src/layouts/dashboard/NavBar.vue:301
 msgid "Logout"
 msgstr "Esci"
 
@@ -1119,12 +1120,12 @@ msgstr "Caselle di posta"
 #: src/components/admin/domains/DomainSummary.vue:20
 #: src/components/admin/identities/AccountSummary.vue:49
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: src/components/admin/alarms/AlarmList.vue:96
 #: src/components/admin/logs/AuditTrailList.vue:52
 msgid "Message"
-msgstr "Utilizzo"
+msgstr "Messaggio"
 
 #: src/views/admin/monitoring/MessagesView.vue:3
 #, fuzzy
@@ -1141,7 +1142,7 @@ msgstr ""
 msgid "messages"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:221
+#: src/layouts/dashboard/NavBar.vue:222
 msgid "Messages"
 msgstr ""
 
@@ -1150,7 +1151,7 @@ msgstr ""
 msgid "Migration deleted"
 msgstr "Data di creazione"
 
-#: src/layouts/dashboard/NavBar.vue:238
+#: src/layouts/dashboard/NavBar.vue:239
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 #, fuzzy
 msgid "Migrations"
@@ -1168,7 +1169,7 @@ msgstr "Modificato"
 msgid "Modify"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:207
+#: src/layouts/dashboard/NavBar.vue:208
 msgid "Monitoring"
 msgstr ""
 
@@ -1245,7 +1246,7 @@ msgstr "Indirizzo email"
 
 #: src/components/account/RecoveryCodesResetDialog.vue:4
 msgid "New recovery codes"
-msgstr ""
+msgstr "Nessun record DNS trovato per %s"
 
 #: src/components/tools/CreationForm.vue:68
 msgid "Next"
@@ -1262,7 +1263,7 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:235
 #: src/components/tools/CreationForm.vue:133
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:40
 #, fuzzy
@@ -1372,18 +1373,18 @@ msgstr ""
 
 #: src/components/account/ProfileForm.vue:69
 #: src/components/account/TwoFactorAuthForm.vue:75
-#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:52
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:53
 #: src/components/login/LoginForm.vue:70
 msgid "Password"
 msgstr "Password"
 
 #: src/components/admin/domains/DomainCreationForm.vue:280
 #: src/components/admin/identities/AccountCreationForm.vue:205
-#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:105
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:106
 msgid "Password copied to clipboard"
 msgstr ""
 
-#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:100
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:101
 #, fuzzy
 msgid "Password mismatch"
 msgstr "Le password non corrispondono"
@@ -1420,7 +1421,7 @@ msgstr "Numero di telefono"
 
 #: src/components/account/TwoFactorAuthForm.vue:39
 msgid "Pin code"
-msgstr ""
+msgstr "Riga non valida"
 
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
@@ -1444,7 +1445,7 @@ msgstr ""
 msgid "Proceed"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:267 src/layouts/dashboard/NavBar.vue:294
+#: src/layouts/dashboard/NavBar.vue:268 src/layouts/dashboard/NavBar.vue:295
 #: src/views/account/ProfileView.vue:4
 msgid "Profile"
 msgstr "Profilo"
@@ -1460,14 +1461,14 @@ msgstr ""
 #: src/components/admin/imap_migration/MigrationsList.vue:76
 #, fuzzy
 msgid "Provider"
-msgstr "Dominio creato"
+msgstr "Provider"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:127
 #, fuzzy
 msgid "Provider created"
 msgstr "Dominio creato"
 
-#: src/stores/providers.store.js:45
+#: src/stores/providers.store.js:50
 #, fuzzy
 msgid "Provider deleted"
 msgstr "Dominio creato"
@@ -1499,13 +1500,13 @@ msgstr ""
 #: src/components/admin/identities/AccountSummary.vue:36
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
 msgid "Quota"
-msgstr "Dimensione massima"
+msgstr "Quota"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
 msgstr ""
 "Dimensione massima per questa mailbox, può essere espressa in KB, MB "
 "(predefinito) o GB. Definire un valore personalizzato o utilizzare quello "
@@ -1534,7 +1535,7 @@ msgstr "Indirizzo casuale"
 
 #: src/components/admin/domains/DomainCreationForm.vue:252
 #: src/components/admin/identities/AccountCreationForm.vue:103
-#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:19
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:20
 msgid "Random password"
 msgstr "Password casuale"
 
@@ -1600,7 +1601,7 @@ msgstr "Rivenditore"
 msgid "Resend SMS."
 msgstr ""
 
-#: src/components/account/TwoFactorAuthForm.vue:93
+#: src/components/account/TwoFactorAuthForm.vue:94
 msgid "Reset recovery codes"
 msgstr ""
 
@@ -1653,7 +1654,7 @@ msgstr "Ricerca"
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:27
 msgid "Secondary email"
-msgstr "Email secondaria"
+msgstr "Email alternativa"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:24
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:57
@@ -1661,9 +1662,9 @@ msgstr "Email secondaria"
 msgid "Secured"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:273 src/views/account/SecurityView.vue:4
+#: src/layouts/dashboard/NavBar.vue:274 src/views/account/SecurityView.vue:4
 msgid "Security"
-msgstr ""
+msgstr "Opzioni di sicurezza"
 
 #: src/components/admin/domains/DomainAdminList.vue:20
 msgid "Select an account"
@@ -1709,7 +1710,7 @@ msgstr ""
 msgid "Service: "
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:246
+#: src/layouts/dashboard/NavBar.vue:247
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -1738,7 +1739,7 @@ msgstr ""
 msgid "Start typing a name here..."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:211
+#: src/layouts/dashboard/NavBar.vue:212
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 #, fuzzy
@@ -1800,7 +1801,7 @@ msgstr ""
 #: src/components/admin/logs/MessageList.vue:45
 #: src/components/tools/TimeSerieChart.vue:20
 msgid "To"
-msgstr ""
+msgstr "A"
 
 #: src/components/login/LoginForm.vue:44
 #: src/components/login/PasswordRecoveryChangeForm.vue:126
@@ -1844,7 +1845,7 @@ msgstr "Autenticazione"
 msgid "Two-factor authentication"
 msgstr "Autenticazione"
 
-#: src/components/account/TwoFactorAuthForm.vue:101
+#: src/components/account/TwoFactorAuthForm.vue:102
 msgid ""
 "Two-Factor Authentication (2FA) is not yet activated for your account. "
 "Enabling this feature will increase your account's security."
@@ -1979,7 +1980,7 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:234
 #: src/components/tools/CreationForm.vue:132
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: src/views/account/APISetupView.vue:102
 msgid "You are about to delete your API access token"

@@ -179,9 +179,12 @@ jobs:
         shell: bash -l {0}
         run: |
           sudo apt-get install gettext
+          pip install polib
           cd frontend
           nvm install 20
           yarn install
+          yarn gettext:extract
+          python3 merge_translations.py
           yarn gettext:compile
           yarn build
           cd ..
