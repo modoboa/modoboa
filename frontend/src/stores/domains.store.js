@@ -12,6 +12,12 @@ export const useDomainsStore = defineStore('domains', () => {
   const domains = ref({})
   const domainAliases = ref({})
 
+  async function $reset() {
+    domainsLoaded.value = false
+    domains.value = {}
+    domainAliases.value = {}
+  }
+
   async function getDomains() {
     domainsLoaded.value = false
     return domainApi.getDomains().then((response) => {
@@ -144,5 +150,6 @@ export const useDomainsStore = defineStore('domains', () => {
     getAliases,
     deleteAlias,
     updateAlias,
+    $reset
   }
 })

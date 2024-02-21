@@ -80,7 +80,7 @@ class User(AbstractUser):
 
     _parameters = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
 
-    class Meta(object):
+    class Meta:
         ordering = ["username"]
         indexes = [models.Index(fields=["email", "is_active"])]
 
@@ -88,7 +88,7 @@ class User(AbstractUser):
 
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""
-        super(User, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.parameters = param_tools.Manager("user", self._parameters)
 
     def _crypt_password(self, raw_value):
@@ -113,7 +113,7 @@ class User(AbstractUser):
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
     def set_password(self, raw_value, curvalue=None):
-        """Password update
+        """Password update.
 
         Update the current mailbox's password with the given clear
         value. This value is encrypted according to the defined method
@@ -185,7 +185,7 @@ class User(AbstractUser):
     @property
     def name_or_rcpt(self):
         if self.first_name != "":
-            return "%s %s" % (self.first_name, self.last_name)
+            return f"{self.first_name} {self.last_name}"
         return "----"
 
     @property
@@ -201,7 +201,7 @@ class User(AbstractUser):
         return self.email
 
     def is_owner(self, obj):
-        """Tell is the user is the unique owner of this object
+        """Tell is the user is the unique owner of this object.
 
         :param obj: an object inheriting from ``models.Model``
         :return: a boolean
@@ -259,7 +259,7 @@ class User(AbstractUser):
 
     @role.setter
     def role(self, role):
-        """Set administrative role for this account
+        """Set administrative role for this account.
 
         :param string role: the role to set
         """
@@ -306,7 +306,7 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         creator = kwargs.pop("creator", None)
-        super(User, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if creator is not None:
             self.post_create(creator)
 
@@ -334,7 +334,7 @@ class User(AbstractUser):
             allowed_roles = [role[0] for role in allowed_roles]
             if desired_role not in allowed_roles:
                 raise PermDeniedException(
-                    _("You can't import an account with a role greater than " "yours")
+                    _("You can't import an account with a role greater than yours")
                 )
 
         self.username = row[1].strip().lower()
@@ -435,11 +435,11 @@ class ObjectAccess(models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
     is_owner = models.BooleanField(default=False)
 
-    class Meta(object):
+    class Meta:
         unique_together = (("user", "content_type", "object_id"),)
 
     def __str__(self):
-        return "%s => %s (%s)" % (self.user, self.content_object, self.content_type)
+        return f"{self.user} => {self.content_object} ({self.content_type})"
 
 
 class Log(models.Model):

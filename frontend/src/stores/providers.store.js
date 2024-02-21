@@ -11,6 +11,11 @@ export const useProvidersStore = defineStore('providers', () => {
   const providers = ref({})
   const { $gettext } = gettext
 
+  async function $reset() {
+    providersLoaded.value = false
+    providers.value = {}
+  }
+
   async function getProviders() {
     providers.value = {}
     providersLoaded.value = false
@@ -54,5 +59,6 @@ export const useProvidersStore = defineStore('providers', () => {
     getProviders,
     createProvider,
     deleteProvider,
+    $reset
   }
 })
