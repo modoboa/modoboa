@@ -1,29 +1,28 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
--   repo: local
+  - repo: local
     hooks:
-    -   id: pylint
+      - id: pylint
         name: pylint
         entry: pylint
         language: system
         types: [python]
-        args:
-          [
-            "-rn",
-            "-sn",
-            "--fail-under=5"
-          ]
--   repo: https://github.com/psf/black
-    rev: '24.2.0'
+        args: ["-rn", "-sn", "--fail-under=5"]
+  - repo: https://github.com/psf/black
+    rev: "24.2.0"
     hooks:
-    -   id: black
--   repo: https://github.com/pre-commit/mirrors-eslint
-    rev: 'v9.0.0-beta.0'
+      - id: black
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v9.0.0-beta.0"
     hooks:
-    -   id: eslint
+      - id: eslint
         files: \.(js|vue)$
         types: [file]
         additional_dependencies:
-        -   eslint
-        -   eslint-plugin-vue 
+          - eslint
+          - eslint-plugin-vue
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v4.0.0-alpha.8" # Use the sha / tag you want to point at
+    hooks:
+      - id: prettier
