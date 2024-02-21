@@ -8,11 +8,14 @@ from modoboa.core import models as core_models
 
 
 W001 = Warning(
-    _("Automatic domain/mailbox creation is disabled which means IMAP "
-      "authentication won't work."),
-    hint=_("Go to the online parameters panel (admin tab) and activate "
-           "this feature."),
-    id="modoboa-imap-migration.W001"
+    _(
+        "Automatic domain/mailbox creation is disabled which means IMAP "
+        "authentication won't work."
+    ),
+    hint=_(
+        "Go to the online parameters panel (admin tab) and activate " "this feature."
+    ),
+    id="modoboa-imap-migration.W001",
 )
 
 
@@ -23,7 +26,6 @@ def check_auto_creation_is_enabled(app_configs, **kwargs):
     if not lc:
         return []
     errors = []
-    if not lc.parameters.get_value(
-            "auto_create_domain_and_mailbox", app="admin"):
+    if not lc.parameters.get_value("auto_create_domain_and_mailbox", app="admin"):
         errors.append(W001)
     return errors

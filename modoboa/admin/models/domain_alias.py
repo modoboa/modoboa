@@ -27,20 +27,24 @@ class DomainAliasManager(models.Manager):
 
 
 class DomainAlias(AdminObject):
-
     """Domain aliases."""
 
-    name = models.CharField(gettext_lazy("name"), max_length=100, unique=True,
-                            help_text=gettext_lazy("The alias name"))
+    name = models.CharField(
+        gettext_lazy("name"),
+        max_length=100,
+        unique=True,
+        help_text=gettext_lazy("The alias name"),
+    )
     target = models.ForeignKey(
-        Domain, verbose_name=gettext_lazy("target"),
+        Domain,
+        verbose_name=gettext_lazy("target"),
         help_text=gettext_lazy("The domain this alias points to"),
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     enabled = models.BooleanField(
         gettext_lazy("enabled"),
         help_text=gettext_lazy("Check to activate this alias"),
-        default=True
+        default=True,
     )
 
     owners = GenericRelation(core_models.ObjectAccess)
@@ -74,14 +78,14 @@ class DomainAlias(AdminObject):
         except Domain.DoesNotExist:
             raise BadRequest(_("Unknown domain %s") % domname)
         core_signals.can_create_object.send(
-            sender="import", context=self.target, object_type="domain_aliases")
+            sender="import", context=self.target, object_type="domain_aliases"
+        )
         self.enabled = row[3].strip().lower() in ["true", "1", "yes", "y"]
         self.save(creator=user)
 
     def to_csv_row(self):
         """Export to row that can be included in a CSV file."""
-        return ["domainalias", self.name,
-                self.target.name, self.enabled]
+        return ["domainalias", self.name, self.target.name, self.enabled]
 
     def to_csv(self, csvwriter):
         """Export a domain alias using CSV format

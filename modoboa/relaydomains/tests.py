@@ -26,13 +26,10 @@ class Operations(object):
             "enabled": True,
             "stepid": "step3",
             "quota": 0,
-            "default_mailbox_quota": 0
+            "default_mailbox_quota": 0,
         }
         values.update(kwargs)
-        return self.ajax_post(
-            reverse("admin:domain_add"),
-            values, status
-        )
+        return self.ajax_post(reverse("admin:domain_add"), values, status)
 
     def _relay_domain_alias_operation(self, optype, domain, name, status=200):
         transport = tr_models.Transport.objects.get(pattern=domain.name)
@@ -43,7 +40,7 @@ class Operations(object):
             "relay_target_port": transport._settings["relay_target_port"],
             "type": "relaydomain",
             "quota": domain.quota,
-            "default_mailbox_quota": domain.default_mailbox_quota
+            "default_mailbox_quota": domain.default_mailbox_quota,
         }
         aliases = [alias.name for alias in domain.domainalias_set.all()]
         if optype == "add":
@@ -54,9 +51,7 @@ class Operations(object):
             fname = "aliases" if not cpt else "aliases_%d" % cpt
             values[fname] = alias
         return self.ajax_post(
-            reverse("admin:domain_change",
-                    args=[domain.id]),
-            values, status
+            reverse("admin:domain_change", args=[domain.id]), values, status
         )
 
     def _check_limit(self, name, curvalue, maxvalue):
@@ -73,22 +68,23 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         super(RelayDomainsTestCase, cls).setUpTestData()
         admin_factories.populate_database()
         cls.transport = tr_factories.TransportFactory(
-            pattern="relaydomain.tld", service="relay",
+            pattern="relaydomain.tld",
+            service="relay",
             _settings={
                 "relay_target_host": "external.host.tld",
                 "relay_target_port": "25",
-                "relay_verify_recipients": False
-            }
+                "relay_verify_recipients": False,
+            },
         )
         cls.dom = admin_factories.DomainFactory(
-            name="relaydomain.tld", type="relaydomain",
-            transport=cls.transport)
-        admin_factories.DomainAliasFactory(
-            name="relaydomainalias.tld", target=cls.dom)
+            name="relaydomain.tld", type="relaydomain", transport=cls.transport
+        )
+        admin_factories.DomainAliasFactory(name="relaydomainalias.tld", target=cls.dom)
         admin_factories.MailboxFactory(
-            domain=cls.dom, address="local",
+            domain=cls.dom,
+            address="local",
             user__username="local@relaydomain.tld",
-            user__groups=("SimpleUsers", )
+            user__groups=("SimpleUsers",),
         )
 
     def test_domain_list_view(self):
@@ -110,18 +106,17 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         """
         self._create_relay_domain("relaydomain1.tld")
         transport = tr_models.Transport.objects.get(pattern="relaydomain1.tld")
-        self.assertEqual(
-            transport._settings["relay_target_host"], "external.host.tld")
-        self.assertEqual(
-            transport._settings["relay_verify_recipients"], False)
+        self.assertEqual(transport._settings["relay_target_host"], "external.host.tld")
+        self.assertEqual(transport._settings["relay_verify_recipients"], False)
 
         resp = self._create_relay_domain("test.com", 400)
-        self.assertEqual(resp["form_errors"]["name"][0],
-                         "Domain with this Name already exists.")
+        self.assertEqual(
+            resp["form_errors"]["name"][0], "Domain with this Name already exists."
+        )
         resp = self._create_relay_domain("relaydomainalias.tld", 400)
         self.assertEqual(
             resp["form_errors"]["name"][0],
-            "A domain alias with this name already exists"
+            "A domain alias with this name already exists",
         )
 
     def test_create_relaydomainalias(self):
@@ -132,22 +127,16 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
 
         FIXME: add a check for domain alias.
         """
-        self._relay_domain_alias_operation(
-            "add", self.dom, "relaydomainalias1.tld"
-        )
-        resp = self._relay_domain_alias_operation(
-            "add", self.dom, "test.com", 400
-        )
+        self._relay_domain_alias_operation("add", self.dom, "relaydomainalias1.tld")
+        resp = self._relay_domain_alias_operation("add", self.dom, "test.com", 400)
         self.assertEqual(
             resp["form_errors"]["aliases_2"][0],
-            "A domain with this name already exists"
+            "A domain with this name already exists",
         )
-        resp = self._relay_domain_alias_operation(
-            "add", self.dom, self.dom.name, 400
-        )
+        resp = self._relay_domain_alias_operation("add", self.dom, self.dom.name, 400)
         self.assertEqual(
             resp["form_errors"]["aliases_2"][0],
-            "A domain with this name already exists"
+            "A domain with this name already exists",
         )
 
     def test_edit_relaydomain(self):
@@ -163,26 +152,20 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "relay_verify_recipients": True,
             "type": "relaydomain",
             "enabled": True,
-            "quota": 0, "default_mailbox_quota": 0
+            "quota": 0,
+            "default_mailbox_quota": 0,
         }
-        self.ajax_post(
-            reverse("admin:domain_change", args=[self.dom.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_change", args=[self.dom.id]), values)
         self.transport.refresh_from_db()
-        self.assertEqual(
-            self.transport._settings["relay_target_port"], 4040)
+        self.assertEqual(self.transport._settings["relay_target_port"], 4040)
         self.assertTrue(
-            models.RecipientAccess.objects.filter(
-                pattern=values["name"]).exists())
-        values["relay_verify_recipients"] = False
-        self.ajax_post(
-            reverse("admin:domain_change", args=[self.dom.id]),
-            values
+            models.RecipientAccess.objects.filter(pattern=values["name"]).exists()
         )
+        values["relay_verify_recipients"] = False
+        self.ajax_post(reverse("admin:domain_change", args=[self.dom.id]), values)
         self.assertFalse(
-            models.RecipientAccess.objects.filter(
-                pattern=values["name"]).exists())
+            models.RecipientAccess.objects.filter(pattern=values["name"]).exists()
+        )
 
     def test_relaydomain_domain_switch(self):
         """Check domain <-> relaydomain transitions."""
@@ -195,10 +178,9 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "enabled": True,
             "service": "relay",
             "relay_target_host": self.transport._settings["relay_target_host"],
-            "relay_target_port": self.transport._settings["relay_target_port"]
+            "relay_target_port": self.transport._settings["relay_target_port"],
         }
-        self.ajax_post(
-            reverse("admin:domain_change", args=[domain_pk]), values)
+        self.ajax_post(reverse("admin:domain_change", args=[domain_pk]), values)
         with self.assertRaises(tr_models.Transport.DoesNotExist):
             self.transport.refresh_from_db()
         self.dom.refresh_from_db()
@@ -208,13 +190,12 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "type": "relaydomain",
             "enabled": True,
             "quota": 0,
-            "default_mailbox_quota": 0
+            "default_mailbox_quota": 0,
         }
-        self.ajax_post(
-            reverse("admin:domain_change", args=[domain_pk]), values)
+        self.ajax_post(reverse("admin:domain_change", args=[domain_pk]), values)
         self.assertEqual(
-            admin_models.Domain.objects.get(name="relaydomain.tld").type,
-            "relaydomain")
+            admin_models.Domain.objects.get(name="relaydomain.tld").type, "relaydomain"
+        )
 
     def test_edit_relaydomainalias(self):
         """Test the modification of a relay domain alias.
@@ -228,22 +209,17 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
             "relay_target_port": self.transport._settings["relay_target_port"],
             "type": "relaydomain",
             "aliases": "relaydomainalias.net",
-            "quota": 0, "default_mailbox_quota": 0
+            "quota": 0,
+            "default_mailbox_quota": 0,
         }
-        self.ajax_post(
-            reverse("admin:domain_change", args=[self.dom.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_change", args=[self.dom.id]), values)
         admin_models.DomainAlias.objects.get(name="relaydomainalias.net")
         with self.assertRaises(admin_models.DomainAlias.DoesNotExist):
             admin_models.DomainAlias.objects.get(name="relaydomainalias.tld")
 
     def test_delete_relaydomain(self):
         """Test the removal of a relay domain."""
-        self.ajax_post(
-            reverse("admin:domain_delete", args=[self.dom.id]),
-            {}
-        )
+        self.ajax_post(reverse("admin:domain_delete", args=[self.dom.id]), {})
         with self.assertRaises(tr_models.Transport.DoesNotExist):
             self.transport.refresh_from_db()
 
@@ -251,34 +227,33 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
         """Test the removal of a recipient access."""
         self.transport._settings["relay_verify_recipients"] = True
         self.transport.save()
-        self.ajax_post(
-            reverse("admin:domain_delete", args=[self.dom.id]),
-            {}
-        )
+        self.ajax_post(reverse("admin:domain_delete", args=[self.dom.id]), {})
         self.assertFalse(
             models.RecipientAccess.objects.filter(
-                pattern=self.transport.pattern).exists())
+                pattern=self.transport.pattern
+            ).exists()
+        )
 
     def test_alias_on_relaydomain(self):
         """Create an alias on a relay domain."""
         values = {
             "address": "alias@relaydomain.tld",
             "recipients": "recipient@relaydomain.tld",
-            "enabled": True
+            "enabled": True,
         }
         self.ajax_post(reverse("admin:alias_add"), values)
         self.assertTrue(
-            admin_models.Alias.objects.filter(
-                address="alias@relaydomain.tld").exists())
+            admin_models.Alias.objects.filter(address="alias@relaydomain.tld").exists()
+        )
         values = {
             "address": "alias2@relaydomain.tld",
             "recipients": "local@relaydomain.tld",
-            "enabled": True
+            "enabled": True,
         }
         self.ajax_post(reverse("admin:alias_add"), values)
         self.assertTrue(
-            admin_models.Alias.objects.filter(
-                address="alias2@relaydomain.tld").exists())
+            admin_models.Alias.objects.filter(address="alias2@relaydomain.tld").exists()
+        )
 
 
 class ImportTestCase(ModoTestCase):
@@ -286,16 +261,15 @@ class ImportTestCase(ModoTestCase):
 
     def test_webui_import(self):
         """Check if import from webui works."""
-        f = ContentFile("relaydomain;relay.com;127.0.0.1;25;relay;True;True",
-                        name="domains.csv")
-        self.client.post(
-            reverse("admin:domain_import"), {
-                "sourcefile": f
-            }
+        f = ContentFile(
+            "relaydomain;relay.com;127.0.0.1;25;relay;True;True", name="domains.csv"
         )
+        self.client.post(reverse("admin:domain_import"), {"sourcefile": f})
         self.assertTrue(
             admin_models.Domain.objects.filter(
-                name="relay.com", type="relaydomain").exists())
+                name="relay.com", type="relaydomain"
+            ).exists()
+        )
 
 
 class LimitsTestCase(ModoTestCase, Operations):
@@ -306,11 +280,10 @@ class LimitsTestCase(ModoTestCase, Operations):
         super(LimitsTestCase, cls).setUpTestData()
         for name, _definition in limits_utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(
-                "deflt_user_{0}_limit".format(name), 2, app="limits")
+                "deflt_user_{0}_limit".format(name), 2, app="limits"
+            )
         cls.localconfig.save()
-        cls.user = UserFactory.create(
-            username="reseller", groups=("Resellers",)
-        )
+        cls.user = UserFactory.create(username="reseller", groups=("Resellers",))
 
     def setUp(self):
         """Initialize test."""
@@ -318,46 +291,32 @@ class LimitsTestCase(ModoTestCase, Operations):
         self.client.force_login(self.user)
 
     def test_relay_domains_limit(self):
-        self._create_relay_domain(
-            "relaydomain1.tld", quota=1, default_mailbox_quota=1)
+        self._create_relay_domain("relaydomain1.tld", quota=1, default_mailbox_quota=1)
         self._check_limit("domains", 1, 2)
-        self._create_relay_domain(
-            "relaydomain2.tld", quota=1, default_mailbox_quota=1)
+        self._create_relay_domain("relaydomain2.tld", quota=1, default_mailbox_quota=1)
         self._check_limit("domains", 2, 2)
         self._create_relay_domain("relaydomain3.tld", 403)
         self._check_limit("domains", 2, 2)
         domid = admin_models.Domain.objects.get(name="relaydomain2.tld").id
-        self.ajax_post(
-            reverse("admin:domain_delete", args=[domid]), {})
+        self.ajax_post(reverse("admin:domain_delete", args=[domid]), {})
         self._check_limit("domains", 1, 2)
 
     def test_relay_domain_aliases_limit(self):
-        self._create_relay_domain(
-            "relaydomain1.tld", quota=1, default_mailbox_quota=1)
+        self._create_relay_domain("relaydomain1.tld", quota=1, default_mailbox_quota=1)
         domain = admin_models.Domain.objects.get(name="relaydomain1.tld")
-        self._relay_domain_alias_operation(
-            "add", domain, "relay-domain-alias1.tld"
-        )
+        self._relay_domain_alias_operation("add", domain, "relay-domain-alias1.tld")
         self._check_limit("domain_aliases", 1, 2)
-        self._relay_domain_alias_operation(
-            "add", domain, "relay-domain-alias2.tld"
-        )
+        self._relay_domain_alias_operation("add", domain, "relay-domain-alias2.tld")
         self._check_limit("domain_aliases", 2, 2)
         self._relay_domain_alias_operation(
             "add", domain, "relay-domain-alias3.tld", 403
         )
         self._check_limit("domain_aliases", 2, 2)
-        self._relay_domain_alias_operation(
-            "delete", domain, "relay-domain-alias2.tld"
-        )
+        self._relay_domain_alias_operation("delete", domain, "relay-domain-alias2.tld")
         self._check_limit("domain_aliases", 1, 2)
 
 
 class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
-
     """Test case for relaydomains."""
 
-    MAP_FILES = [
-        "sql-relaydomains.cf",
-        "sql-relay-recipient-verification.cf"
-    ]
+    MAP_FILES = ["sql-relaydomains.cf", "sql-relay-recipient-verification.cf"]

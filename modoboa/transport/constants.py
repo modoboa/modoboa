@@ -1,5 +1,3 @@
 """Transport constants."""
 
-PERMISSIONS = {
-
-}
+PERMISSIONS = {}

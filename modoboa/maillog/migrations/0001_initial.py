@@ -9,26 +9,50 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('admin', '0017_alarm'),
+        ("admin", "0017_alarm"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Maillog',
+            name="Maillog",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('queue_id', models.CharField(max_length=50)),
-                ('date', models.DateTimeField()),
-                ('sender', models.EmailField(max_length=254)),
-                ('rcpt', models.EmailField(max_length=254)),
-                ('original_rcpt', models.EmailField(max_length=254, null=True)),
-                ('size', models.PositiveIntegerField()),
-                ('status', models.CharField(max_length=15)),
-                ('from_domain', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='sent_messages_log', to='admin.Domain')),
-                ('to_domain', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='recv_messages_log', to='admin.Domain')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("queue_id", models.CharField(max_length=50)),
+                ("date", models.DateTimeField()),
+                ("sender", models.EmailField(max_length=254)),
+                ("rcpt", models.EmailField(max_length=254)),
+                ("original_rcpt", models.EmailField(max_length=254, null=True)),
+                ("size", models.PositiveIntegerField()),
+                ("status", models.CharField(max_length=15)),
+                (
+                    "from_domain",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="sent_messages_log",
+                        to="admin.Domain",
+                    ),
+                ),
+                (
+                    "to_domain",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="recv_messages_log",
+                        to="admin.Domain",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['date'],
+                "ordering": ["date"],
             },
         ),
     ]

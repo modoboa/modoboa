@@ -19,9 +19,10 @@ import sys
 class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
-            return MagicMock()
+        return MagicMock()
 
-MOCK_MODULES = ['rrdtool']
+
+MOCK_MODULES = ["rrdtool"]
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -196,8 +197,7 @@ htmlhelp_basename = "Modoboadoc"
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "Modoboa.tex", "Modoboa Documentation",
-     "Antoine Nguyen", "manual"),
+    ("index", "Modoboa.tex", "Modoboa Documentation", "Antoine Nguyen", "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -228,10 +228,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ("index", "modoboa", "Modoboa Documentation",
-     ["Antoine Nguyen"], 1)
-]
+man_pages = [("index", "modoboa", "Modoboa Documentation", ["Antoine Nguyen"], 1)]
 
 intersphinx_mapping = {
     "amavis": ("http://modoboa-amavis.readthedocs.org/en/latest/", None)

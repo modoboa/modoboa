@@ -25,8 +25,8 @@ class ManageDKIMKeys(BaseCommand):
         if not os.access(storage_dir, os.W_OK):
             if not alarm_qset.exists():
                 domain.alarms.create(
-                    title=_("DKIM path non-writable"),
-                    internal_name=DKIM_WRITE_ERROR)
+                    title=_("DKIM path non-writable"), internal_name=DKIM_WRITE_ERROR
+                )
             else:
                 alarm = alarm_qset.first()
                 if alarm.status != ALARM_OPENED:
@@ -35,19 +35,27 @@ class ManageDKIMKeys(BaseCommand):
         elif alarm_qset.exists():
             alarm_qset.first().close()
         key_size = (
-            domain.dkim_key_length if domain.dkim_key_length
-            else self.default_key_length)
+            domain.dkim_key_length
+            if domain.dkim_key_length
+            else self.default_key_length
+        )
         code, output = sysutils.exec_cmd(
-            "openssl genrsa -out {} {}".format(pkey_path, key_size))
+            "openssl genrsa -out {} {}".format(pkey_path, key_size)
+        )
         if code:
-            print("Failed to generate DKIM private key for domain {}: {}"
-                  .format(domain.name, smart_str(output)))
+            print(
+                "Failed to generate DKIM private key for domain {}: {}".format(
+                    domain.name, smart_str(output)
+                )
+            )
         domain.dkim_private_key_path = pkey_path
-        code, output = sysutils.exec_cmd(
-            "openssl rsa -in {} -pubout".format(pkey_path))
+        code, output = sysutils.exec_cmd("openssl rsa -in {} -pubout".format(pkey_path))
         if code:
-            print("Failed to generate DKIM public key for domain {}: {}"
-                  .format(domain.name, smart_str(output)))
+            print(
+                "Failed to generate DKIM public key for domain {}: {}".format(
+                    domain.name, smart_str(output)
+                )
+            )
         public_key = ""
         for cpt, line in enumerate(smart_str(output).splitlines()):
             if cpt == 0 or line.startswith("-----"):
@@ -59,24 +67,27 @@ class ManageDKIMKeys(BaseCommand):
     def add_arguments(self, parser):
         """Add arguments to command."""
         parser.add_argument(
-            "--domain", type=str, dest="domain", default="",
-            help="Domain target for keys generation."
+            "--domain",
+            type=str,
+            dest="domain",
+            default="",
+            help="Domain target for keys generation.",
         )
 
     def handle(self, *args, **options):
         """Entry point."""
         self.default_key_length = param_tools.get_global_parameter(
-            "dkim_default_key_length")
+            "dkim_default_key_length"
+        )
 
         if options["domain"] != "":
-            domain = models.Domain.objects.filter(name=options["domain"],
-                                                  enable_dkim=True,
-                                                  dkim_private_key_path="")
+            domain = models.Domain.objects.filter(
+                name=options["domain"], enable_dkim=True, dkim_private_key_path=""
+            )
             if domain.exists():
                 self.create_new_dkim_key(domain[0])
             return
 
-        qset = models.Domain.objects.filter(
-            enable_dkim=True, dkim_private_key_path="")
+        qset = models.Domain.objects.filter(enable_dkim=True, dkim_private_key_path="")
         for domain in qset:
             self.create_new_dkim_key(domain)

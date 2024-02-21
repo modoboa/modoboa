@@ -56,12 +56,18 @@ class ExtensionTestCase(TestCase):
         """Check getter method."""
         self.assertIsNone(self.pool.get_extension_infos("toto"))
         infos = self.pool.get_extension_infos("stupid_extension_1")
-        compare(infos, {
-            "name": "stupid_extension_1", "label": "Stupid extension",
-            "version": "1.0.0", "description": "A stupid extension",
-            "url": "stupid_extension_1", "always_active": False,
-            "topredirection_url": None
-        })
+        compare(
+            infos,
+            {
+                "name": "stupid_extension_1",
+                "label": "Stupid extension",
+                "version": "1.0.0",
+                "description": "A stupid extension",
+                "url": "stupid_extension_1",
+                "always_active": False,
+                "topredirection_url": None,
+            },
+        )
 
     def test_list_all(self):
         """Check list_all method."""

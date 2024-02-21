@@ -30,8 +30,10 @@ BAD_SPF_RECORDS = [
     ("v=spf1 mx/1000", "Invalid mask found 1000"),
     ("v=spf1 ptr|test.com", "Invalid syntax for ptr mechanism"),
     ("v=spf1 forward=test.com ~all", "Unknown modifier forward"),
-    ("v=spf1 redirect=test.com redirect=test.com ~all",
-     "Duplicate modifier redirect found"),
+    (
+        "v=spf1 redirect=test.com redirect=test.com ~all",
+        "Duplicate modifier redirect found",
+    ),
     ("v=spf1", "No mechanism found"),
 ]
 
@@ -62,8 +64,7 @@ BAD_DMARC_RECORDS = [
     ("v=DMARC1; test", "Invalid tag test"),
     ("v=DMARC1; test=toto", "Unknown tag test"),
     ("v=DMARC1; adkim=g", "Wrong value g for tag adkim"),
-    ("v=DMARC1; rua=mail:toto@test.com",
-     "Wrong value mail:toto@test.com for tag rua"),
+    ("v=DMARC1; rua=mail:toto@test.com", "Wrong value mail:toto@test.com for tag rua"),
     ("v=DMARC1; rf=afrf,toto", "Wrong value toto for tag rf"),
     ("v=DMARC1; ri=XXX", "Wrong value XXX for tag ri: not an integer"),
     ("v=DMARC1; pct=-1", "Wrong value -1 for tag pct: less than 0"),
@@ -75,7 +76,7 @@ GOOD_DMARC_RECORDS = [
     "v=DMARC1; p=reject;; pct=100",
     "v=DMARC1; p=quarantine; sp=none; adkim=s; aspf=s; "
     "rua=mailto:dmarc-aggrep@ngyn.org; ruf=mailto:toto@test.com!24m; "
-    "rf=afrf; pct=100; ri=86400"
+    "rf=afrf; pct=100; ri=86400",
 ]
 
 BAD_DKIM_RECORDS = [
@@ -88,22 +89,18 @@ BAD_DKIM_RECORDS = [
 class LibTestCase(SimpleTestCase):
     """TestCase for library methods."""
 
-    @mock.patch('modoboa.admin.lib.get_dns_records')
+    @mock.patch("modoboa.admin.lib.get_dns_records")
     def test_get_record_type_value(self, mock_get_dns_records):
         mock_get_dns_records.return_value = [
             TXT("IN", "TXT", ["v=spf1 mx -all"]),
             TXT("IN", "TXT", ["v=DKIM1 p=XXXXX", "YYYYY"]),
             TXT("IN", "TXT", ["v=DMARC1 p=reject"]),
         ]
-        self.assertEqual(
-            lib.get_spf_record("example.com"), "v=spf1 mx -all"
-        )
+        self.assertEqual(lib.get_spf_record("example.com"), "v=spf1 mx -all")
         self.assertEqual(
             lib.get_dkim_record("example.com", "mail"), "v=DKIM1 p=XXXXXYYYYY"
         )
-        self.assertEqual(
-            lib.get_dmarc_record("example.com"), "v=DMARC1 p=reject"
-        )
+        self.assertEqual(lib.get_dmarc_record("example.com"), "v=DMARC1 p=reject")
 
     def test_check_spf_syntax(self):
         for record in BAD_SPF_RECORDS:
@@ -138,44 +135,44 @@ class ViewsTestCase(ModoTestCase):
         """Create some records."""
         super(ViewsTestCase, cls).setUpTestData()
         cls.spf_rec = factories.DNSRecordFactory(
-            type="spf", value="v=SPF1 mx -all", is_valid=True,
-            domain__name="test.com"
+            type="spf", value="v=SPF1 mx -all", is_valid=True, domain__name="test.com"
         )
         cls.dmarc_rec = factories.DNSRecordFactory(
-            type="dmarc", value="XXX", is_valid=False,
+            type="dmarc",
+            value="XXX",
+            is_valid=False,
             error="Not a DMARC record",
-            domain__name="test.com"
+            domain__name="test.com",
         )
         cls.dkim_rec = factories.DNSRecordFactory(
-            type="dkim", value="12345", is_valid=False,
+            type="dkim",
+            value="12345",
+            is_valid=False,
             error="Public key mismatchs",
-            domain__name="test.com"
+            domain__name="test.com",
         )
         cls.ac_rec = factories.DNSRecordFactory(
-            type="autoconfig", value="1.2.3.4", is_valid=True,
-            domain__name="test.com"
+            type="autoconfig", value="1.2.3.4", is_valid=True, domain__name="test.com"
         )
 
     def test_record_detail_view(self):
         url = reverse("dnstools:dns_record_detail", args=[self.spf_rec.pk])
         response = self.client.get(url)
-        self.assertContains(
-            response, "A DNS record has been found and is valid")
+        self.assertContains(response, "A DNS record has been found and is valid")
         url = reverse("dnstools:dns_record_detail", args=[self.dmarc_rec.pk])
         response = self.client.get(url)
         self.assertContains(response, "Not a DMARC record")
 
     def test_autoconfig_record_status_view(self):
         url = reverse(
-            "dnstools:autoconfig_records_status", args=[self.ac_rec.domain.pk])
+            "dnstools:autoconfig_records_status", args=[self.ac_rec.domain.pk]
+        )
         response = self.client.get(url)
         self.assertContains(response, "autoconfig record (Mozilla) found")
-        self.assertContains(
-            response, "autodiscover record (Microsoft) not found")
+        self.assertContains(response, "autodiscover record (Microsoft) not found")
 
     def test_domain_dns_configuration(self):
-        url = reverse(
-            "dnstools:domain_dns_configuration", args=[self.ac_rec.domain.pk])
+        url = reverse("dnstools:domain_dns_configuration", args=[self.ac_rec.domain.pk])
         response = self.client.get(url)
         self.assertContains(response, "[IP address of your Modoboa server]")
 
@@ -184,37 +181,32 @@ class DomainTestCase(ModoTestCase):
 
     def test_dns_global_status(self):
         admin_factories.MXRecordFactory.create(
-            domain__name="test.com", name="mail.test.com",
-            updated=timezone.now())
+            domain__name="test.com", name="mail.test.com", updated=timezone.now()
+        )
         domain = admin_models.Domain.objects.get(name="test.com")
         self.assertEqual(domain.dns_global_status, "critical")
 
         factories.DNSRecordFactory.create(
-            type="spf", value="v=SPF1 mx -all", is_valid=True,
-            domain__name="test.com"
+            type="spf", value="v=SPF1 mx -all", is_valid=True, domain__name="test.com"
         )
         self.assertEqual(domain.dns_global_status, "critical")
 
         factories.DNSRecordFactory(
-            type="dkim", value="12345", is_valid=True,
-            domain__name="test.com"
+            type="dkim", value="12345", is_valid=True, domain__name="test.com"
         )
         self.assertEqual(domain.dns_global_status, "critical")
 
         factories.DNSRecordFactory(
-            type="dmarc", value="XXX", is_valid=True,
-            domain__name="test.com"
+            type="dmarc", value="XXX", is_valid=True, domain__name="test.com"
         )
         self.assertEqual(domain.dns_global_status, "critical")
 
         factories.DNSRecordFactory(
-            type="autoconfig", value="1.2.3.4", is_valid=True,
-            domain__name="test.com"
+            type="autoconfig", value="1.2.3.4", is_valid=True, domain__name="test.com"
         )
         self.assertEqual(domain.dns_global_status, "critical")
 
         factories.DNSRecordFactory(
-            type="autodiscover", value="1.2.3.4", is_valid=True,
-            domain__name="test.com"
+            type="autodiscover", value="1.2.3.4", is_valid=True, domain__name="test.com"
         )
         self.assertEqual(domain.dns_global_status, "ok")

@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 def update_disabled_accounts_aliases(apps, schema_editor):
-    User = apps.get_model('core', 'User')
-    Alias = apps.get_model('admin', 'Alias')
+    User = apps.get_model("core", "User")
+    Alias = apps.get_model("admin", "Alias")
 
-    disabled_accounts = User.objects.filter(
-        mailbox__isnull=False, is_active=False)
+    disabled_accounts = User.objects.filter(mailbox__isnull=False, is_active=False)
 
     Alias.objects.filter(
-        address__in=list(disabled_accounts.values_list('email', flat=True)),
+        address__in=list(disabled_accounts.values_list("email", flat=True)),
         enabled=True,
     ).update(enabled=False)
 
@@ -19,8 +18,8 @@ def update_disabled_accounts_aliases(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0018_auto_20201204_0935'),
-        ('core', '0022_user_tfa_enabled'),
+        ("admin", "0018_auto_20201204_0935"),
+        ("core", "0022_user_tfa_enabled"),
     ]
 
     operations = [

@@ -17,43 +17,50 @@ class AliasForm(forms.ModelForm, DynamicForm):
     """A form to create/modify an alias."""
 
     random_address = forms.BooleanField(
-        label=gettext_lazy("Random address"),
-        required=False)
+        label=gettext_lazy("Random address"), required=False
+    )
     address = lib_fields.UTF8AndEmptyUserEmailField(
         label=gettext_lazy("Email address"),
         help_text=gettext_lazy(
             "The alias address. To create a catchall alias, just enter the "
             "domain name (@domain.tld)."
         ),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
     recipients = lib_fields.UTF8AndEmptyUserEmailField(
-        label=gettext_lazy("Recipients"), required=False,
+        label=gettext_lazy("Recipients"),
+        required=False,
         help_text=gettext_lazy(
             "Addresses this alias will point to. Indicate only one address "
             "per input, press ENTER to add a new input."
         ),
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     class Meta:
         model = Alias
         fields = ("address", "domain", "enabled", "expire_at", "description")
-        labels = {
-            "domain": gettext_lazy("Domain")
-        }
+        labels = {"domain": gettext_lazy("Domain")}
         widgets = {
             "domain": forms.widgets.Select(
-                attrs={"class": "selectpicker", "data-live-search": "true"})
+                attrs={"class": "selectpicker", "data-live-search": "true"}
+            )
         }
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(AliasForm, self).__init__(*args, **kwargs)
         self.fields = OrderedDict(
-            (key, self.fields[key]) for key in
-            ["random_address", "address", "domain", "recipients", "enabled",
-             "expire_at", "description"]
+            (key, self.fields[key])
+            for key in [
+                "random_address",
+                "address",
+                "domain",
+                "recipients",
+                "enabled",
+                "expire_at",
+                "description",
+            ]
         )
         if self.instance.pk:
             del self.fields["random_address"]
@@ -87,14 +94,12 @@ class AliasForm(forms.ModelForm, DynamicForm):
         except Domain.DoesNotExist:
             raise forms.ValidationError(_("Domain does not exist"))
         if not self.user.can_access(domain):
-            raise forms.ValidationError(
-                _("You don't have access to this domain")
-            )
+            raise forms.ValidationError(_("You don't have access to this domain"))
         if not self.instance.pk:
             try:
                 core_signals.can_create_object.send(
-                    sender=self.__class__, context=domain,
-                    object_type="mailbox_aliases")
+                    sender=self.__class__, context=domain, object_type="mailbox_aliases"
+                )
             except lib_exceptions.ModoboaException as inst:
                 raise forms.ValidationError(inst)
         return self.cleaned_data["address"].lower()
@@ -119,14 +124,16 @@ class AliasForm(forms.ModelForm, DynamicForm):
         alias = super(AliasForm, self).save(commit=False)
         if self.cleaned_data.get("random_address"):
             alias.address = "{}@{}".format(
-                Alias.generate_random_address(), alias.domain)
+                Alias.generate_random_address(), alias.domain
+            )
         else:
             local_part, domname = split_mailbox(self.cleaned_data["address"])
             alias.domain = Domain.objects.get(name=domname)
         if commit:
             alias.save()
             address_list = [
-                value for field, value in self.cleaned_data.items()
+                value
+                for field, value in self.cleaned_data.items()
                 if field.startswith("recipients") and value
             ]
             alias.set_recipients(address_list)

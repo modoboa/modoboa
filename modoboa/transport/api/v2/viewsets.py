@@ -12,11 +12,9 @@ from ... import backends
 class TransportViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Viewset for Transport."""
 
-    permissions = (permissions.IsAuthenticated, )
+    permissions = (permissions.IsAuthenticated,)
 
-    @extend_schema(
-        responses={200: serializers.TransportBackendSerializer}
-    )
+    @extend_schema(responses={200: serializers.TransportBackendSerializer})
     def list(self, request, *args, **kwargs):
         """Return the list of all defined transport backends."""
         all_settings = backends.manager.get_all_backend_settings()

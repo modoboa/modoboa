@@ -10,6 +10,7 @@ class GenericParametersForm(forms.Form):
 
     Each extension has the possibility to define global parameters.
     """
+
     app = None
     visibility_rules = None
 
@@ -35,9 +36,7 @@ class GenericParametersForm(forms.Form):
         """Add visibility rules to this form."""
         for key, rule in list(rules.items()):
             field, value = rule.split("=")
-            visibility = {
-                "field": "id_%s-%s" % (self.app, field), "value": value
-            }
+            visibility = {"field": "id_%s-%s" % (self.app, field), "value": value}
             self.visirules["%s-%s" % (self.app, key)] = visibility
 
     def _add_dynamic_fields(self):
@@ -66,8 +65,8 @@ class AdminParametersForm(GenericParametersForm):
     def _load_initial_values(self):
         """Load form initial values from database."""
         condition = (
-            not db_utils.db_table_exists("core_localconfig") or
-            not self.localconfig)
+            not db_utils.db_table_exists("core_localconfig") or not self.localconfig
+        )
         if condition:
             return
         values = self.localconfig.parameters.get_values(app=self.app)

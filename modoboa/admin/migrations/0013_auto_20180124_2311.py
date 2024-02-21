@@ -5,23 +5,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0012_auto_20180112_1658'),
+        ("admin", "0012_auto_20180112_1658"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='domain',
-            name='dkim_key_selector',
-            field=models.CharField(default='modoboa', max_length=30),
+            model_name="domain",
+            name="dkim_key_selector",
+            field=models.CharField(default="modoboa", max_length=30),
         ),
         migrations.AlterField(
-            model_name='domain',
-            name='type',
-            field=models.CharField(default='domain', max_length=20),
+            model_name="domain",
+            name="type",
+            field=models.CharField(default="domain", max_length=20),
         ),
         migrations.AlterField(
-            model_name='mailboxoperation',
-            name='type',
-            field=models.CharField(choices=[('rename', 'rename'), ('delete', 'delete')], max_length=20),
+            model_name="mailboxoperation",
+            name="type",
+            field=models.CharField(
+                choices=[("rename", "rename"), ("delete", "delete")], max_length=20
+            ),
         ),
     ]

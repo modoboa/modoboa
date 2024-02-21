@@ -32,10 +32,13 @@ class ModoExtension(object):
     def infos(self):
         """Information about this extension."""
         return {
-            "name": self.name, "label": self.label, "version": self.version,
-            "description": self.description, "url": self.get_url(),
+            "name": self.name,
+            "label": self.label,
+            "version": self.version,
+            "description": self.description,
+            "url": self.get_url(),
             "topredirection_url": self.topredirection_url,
-            "always_active": self.always_active
+            "always_active": self.always_active,
         }
 
     def load_initial_data(self):
@@ -111,9 +114,7 @@ class ExtensionsPool(object):
                 root = r"^{}/".format(ext.get_url())
                 pattern = "{}.urls"
             try:
-                result.append(
-                    re_path(root, include(pattern.format(ext_name)))
-                )
+                result.append(re_path(root, include(pattern.format(ext_name))))
             except ImportError:
                 # No urls for this extension
                 pass

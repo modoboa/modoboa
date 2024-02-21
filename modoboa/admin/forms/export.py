@@ -9,7 +9,7 @@ class ExportDataForm(forms.Form):
         label=gettext_lazy("Separator"),
         max_length=1,
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"})
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     def __init__(self, *args, **kwargs):

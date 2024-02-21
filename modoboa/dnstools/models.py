@@ -19,8 +19,11 @@ class DNSRecordManager(models.Manager):
         DNS queries are not performed while `ttl` (in seconds) is still valid.
         """
         now = timezone.now()
-        record = self.get_queryset().filter(
-            domain=domain, type=rtype, updated__gt=now).first()
+        record = (
+            self.get_queryset()
+            .filter(domain=domain, type=rtype, updated__gt=now)
+            .first()
+        )
         if record:
             return record
 
@@ -38,8 +41,7 @@ class DNSRecord(models.Model):
     """A model to store DNS records for Domain."""
 
     domain = models.ForeignKey("admin.Domain", on_delete=models.CASCADE)
-    type = models.CharField(
-        max_length=15, choices=constants.DNS_RECORD_TYPES)
+    type = models.CharField(max_length=15, choices=constants.DNS_RECORD_TYPES)
     value = models.TextField(blank=True)
     is_valid = models.BooleanField(default=False)
     error = models.CharField(max_length=50, null=True, blank=True)
@@ -54,7 +56,8 @@ class DNSRecord(models.Model):
         """Retrieve corresponding DNS record."""
         if self.type == "dkim":
             self.value = lib.get_dkim_record(
-                self.domain.name, self.domain.dkim_key_selector)
+                self.domain.name, self.domain.dkim_key_selector
+            )
         else:
             func = getattr(lib, "get_{}_record".format(self.type))
             self.value = func(self.domain.name)

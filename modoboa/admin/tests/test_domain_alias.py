@@ -21,37 +21,30 @@ class DomainAliasTestCase(ModoTestCase):
         domal.target = dom
         domal.save()
         self.assertEqual(dom.domainalias_count, 1)
-        self.assertTrue(
-            Alias.objects.filter(
-                address="@{}".format(domal.name)).exists())
+        self.assertTrue(Alias.objects.filter(address="@{}".format(domal.name)).exists())
 
         domal.name = "domalias.org"
         domal.save()
 
         domal.delete()
         self.assertFalse(
-            Alias.objects.filter(
-                address="@{}".format(domal.name)).exists())
+            Alias.objects.filter(address="@{}".format(domal.name)).exists()
+        )
 
     def test_form(self):
         dom = Domain.objects.get(name="test.com")
         values = {
-            "name": dom.name, "quota": dom.quota,
+            "name": dom.name,
+            "quota": dom.quota,
             "default_mailbox_quota": dom.default_mailbox_quota,
-            "enabled": dom.enabled, "aliases": "domalias.net",
-            "aliases_1": "domaliasé.com", "type": "domain"
+            "enabled": dom.enabled,
+            "aliases": "domalias.net",
+            "aliases_1": "domaliasé.com",
+            "type": "domain",
         }
-        self.ajax_post(
-            reverse("admin:domain_change",
-                    args=[dom.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_change", args=[dom.id]), values)
         self.assertEqual(dom.domainalias_set.count(), 2)
 
         del values["aliases_1"]
-        self.ajax_post(
-            reverse("admin:domain_change",
-                    args=[dom.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:domain_change", args=[dom.id]), values)
         self.assertEqual(dom.domainalias_set.count(), 1)

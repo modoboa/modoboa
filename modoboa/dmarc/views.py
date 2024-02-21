@@ -29,7 +29,7 @@ def insert_record(target, record, name):
         target[name][record.source_ip] = {
             "total": 0,
             "spf": {"pass": 0, "fail": 0},
-            "dkim": {"pass": 0, "fail": 0}
+            "dkim": {"pass": 0, "fail": 0},
         }
     target[name][record.source_ip]["total"] += record.count
     for typ in ["spf", "dkim"]:
@@ -41,16 +41,12 @@ def week_range(year, weeknumber):
     """Return start and end dates of a given week."""
     tz = timezone.get_current_timezone()
     fmt = "%Y-%W-%w"
-    start_week = datetime.datetime.strptime(
-        "{}-{}-{}".format(year, weeknumber, 1), fmt)
-    end_week = datetime.datetime.strptime(
-        "{}-{}-{}".format(year, weeknumber, 0), fmt)
+    start_week = datetime.datetime.strptime("{}-{}-{}".format(year, weeknumber, 1), fmt)
+    end_week = datetime.datetime.strptime("{}-{}-{}".format(year, weeknumber, 0), fmt)
     return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
 
 
-class DomainReportView(
-        auth_mixins.PermissionRequiredMixin,
-        generic.TemplateView):
+class DomainReportView(auth_mixins.PermissionRequiredMixin, generic.TemplateView):
     """ListView for Report."""
 
     permission_required = "dmarc.view_report"
@@ -69,26 +65,22 @@ class DomainReportView(
         self.daterange = week_range(year, week)
         self.domain = admin_models.Domain.objects.get(pk=self.kwargs["pk"])
         qargs = (
-            (Q(report__start_date__gte=self.daterange[0],
-               report__start_date__lte=self.daterange[1]) |
-             Q(report__end_date__gte=self.daterange[0],
-               report__end_date__lte=self.daterange[1])) &
-            Q(header_from=self.domain)
-        )
+            Q(
+                report__start_date__gte=self.daterange[0],
+                report__start_date__lte=self.daterange[1],
+            )
+            | Q(
+                report__end_date__gte=self.daterange[0],
+                report__end_date__lte=self.daterange[1],
+            )
+        ) & Q(header_from=self.domain)
         return models.Record.objects.select_related().filter(qargs)
 
     def get_context_data(self, *args, **kwargs):
         """Extra context data."""
-        context = super(DomainReportView, self).get_context_data(
-            *args, **kwargs)
+        context = super(DomainReportView, self).get_context_data(*args, **kwargs)
         qset = self.get_queryset()
-        stats = {
-            "total": 0,
-            "aligned": 0,
-            "trusted": 0,
-            "forwarded": 0,
-            "failed": 0
-        }
+        stats = {"total": 0, "aligned": 0, "trusted": 0, "forwarded": 0, "failed": 0}
         aligned = {}
         trusted = {}
         forwarded = {}
@@ -107,16 +99,21 @@ class DomainReportView(
                     ext = tldextract.extract(str(resp[0].target))
                     if not ext.suffix:  # invalid PTR record
                         raise resolver.NXDOMAIN()
-                    return (ip, '.'.join((ext.domain, ext.suffix)).lower())
-                except (resolver.NXDOMAIN, resolver.YXDOMAIN,
-                        resolver.NoAnswer, resolver.NoNameservers,
-                        resolver.Timeout):
+                    return (ip, ".".join((ext.domain, ext.suffix)).lower())
+                except (
+                    resolver.NXDOMAIN,
+                    resolver.YXDOMAIN,
+                    resolver.NoAnswer,
+                    resolver.NoNameservers,
+                    resolver.Timeout,
+                ):
                     return (None, None)
 
             ips = (r.source_ip for r in all_records)
             with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
-                dns_names = {i: n for (i, n) in
-                             list(pool.map(get_domain_name_from_ip, ips))}
+                dns_names = {
+                    i: n for (i, n) in list(pool.map(get_domain_name_from_ip, ips))
+                }
 
         for record in all_records:
             stats["total"] += record.count
@@ -127,7 +124,10 @@ class DomainReportView(
             elif record.dkim_result == "pass" or record.spf_result == "pass":
                 stats["trusted"] += record.count
                 insert_record(trusted, record, name)
-            elif record.reason_type == "local_policy" and record.reason_comment.startswith("arc=pass"):
+            elif (
+                record.reason_type == "local_policy"
+                and record.reason_comment.startswith("arc=pass")
+            ):
                 stats["forwarded"] += record.count
                 insert_record(forwarded, record, name)
             else:
@@ -136,16 +136,26 @@ class DomainReportView(
 
         pie_data = {}
         if stats["total"]:
-            pie_data.update({
-                "faligned": stats["aligned"] / float(stats["total"]) * 100,
-                "paligned": stats["trusted"] / float(stats["total"]) * 100,
-                "forwarded": stats["forwarded"] / float(stats["total"]) * 100,
-                "failed": stats["failed"] / float(stats["total"]) * 100
-            })
+            pie_data.update(
+                {
+                    "faligned": stats["aligned"] / float(stats["total"]) * 100,
+                    "paligned": stats["trusted"] / float(stats["total"]) * 100,
+                    "forwarded": stats["forwarded"] / float(stats["total"]) * 100,
+                    "failed": stats["failed"] / float(stats["total"]) * 100,
+                }
+            )
 
-        context.update({
-            "stats": stats, "aligned": aligned, "trusted": trusted, "forwarded": forwarded, "threats": threats,
-            "period": self.period, "daterange": self.daterange,
-            "domain": self.domain, "pie_data": pie_data
-        })
+        context.update(
+            {
+                "stats": stats,
+                "aligned": aligned,
+                "trusted": trusted,
+                "forwarded": forwarded,
+                "threats": threats,
+                "period": self.period,
+                "daterange": self.daterange,
+                "domain": self.domain,
+                "pie_data": pie_data,
+            }
+        )
         return context

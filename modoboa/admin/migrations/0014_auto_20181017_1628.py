@@ -5,18 +5,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0013_auto_20180124_2311'),
+        ("admin", "0013_auto_20180124_2311"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='domain',
-            name='default_mailbox_quota',
-            field=models.PositiveIntegerField(default=0, verbose_name='Default mailbox quota'),
+            model_name="domain",
+            name="default_mailbox_quota",
+            field=models.PositiveIntegerField(
+                default=0, verbose_name="Default mailbox quota"
+            ),
         ),
         migrations.AlterField(
-            model_name='domain',
-            name='quota',
+            model_name="domain",
+            name="quota",
             field=models.PositiveIntegerField(default=0),
         ),
     ]

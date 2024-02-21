@@ -5,12 +5,11 @@ import os
 from django.test import SimpleTestCase
 from django.utils.encoding import smart_bytes, smart_str
 
-from ..email_utils import (
-    Email, prepare_addresses, split_address, split_local_part
-)
+from ..email_utils import Email, prepare_addresses, split_address, split_local_part
 
 SAMPLES_DIR = os.path.realpath(
-    os.path.join(os.path.dirname(__file__), "sample_messages"))
+    os.path.join(os.path.dirname(__file__), "sample_messages")
+)
 
 
 class EmailTestImplementation(Email):
@@ -38,8 +37,7 @@ class EmailTests(SimpleTestCase):
     def _get_expected_output(self, message_id, **kwargs):
         ext = kwargs["dformat"] if "dformat" in kwargs else "plain"
         ext += "_links" if "links" in kwargs and kwargs["links"] else "_nolinks"
-        message_path = os.path.join(SAMPLES_DIR,
-                                    "%s-output-%s.txt" % (message_id, ext))
+        message_path = os.path.join(SAMPLES_DIR, "%s-output-%s.txt" % (message_id, ext))
         assert os.path.isfile(message_path), "%s does not exist." % message_path
 
         with open(message_path, "rb") as fp:
@@ -56,19 +54,18 @@ class EmailTests(SimpleTestCase):
 
     def test_invalid_links_value(self):
         """modoboa-amavis set links = "0"; in python "0" == True, fixed in PR 79
-           https://github.com/modoboa/modoboa-amavis/pull/79"""
+        https://github.com/modoboa/modoboa-amavis/pull/79"""
         with self.assertRaises(TypeError) as cm:
             EmailTestImplementation("text_plain", links="0")
 
             ex_message = cm.exception.messages
             self.assertEqual(
-                ex_message,
-                "links == \"0\" is not valid, did you mean True or False?"
+                ex_message, 'links == "0" is not valid, did you mean True or False?'
             )
 
     def test_links_value_for_webmail(self):
         """modoboa-webmail sets links = 0 or 1
-           TODO: this should be fixed in modoboa-webmail to use True/False"""
+        TODO: this should be fixed in modoboa-webmail to use True/False"""
         email = EmailTestImplementation("text_plain", links=0)
         self.assertFalse(email.links)
 
@@ -108,7 +105,6 @@ class EmailTests(SimpleTestCase):
 
 
 class EmailAddressParserTests(SimpleTestCase):
-
     """Tests for split_address() and split_local_part()."""
 
     def test_split_address_with_domain(self):
@@ -157,13 +153,15 @@ class EmailAddressParserTests(SimpleTestCase):
         """Check a list of e-mail addresses is sepearted correctly."""
         # value is an array with one long string not 3 sepearte values.
         value = [
-            "\"Doe, John\" <doe.john@sub.example.com>;"
-            "\"John Smith\" <john.smith@sub.example.com>,"
+            '"Doe, John" <doe.john@sub.example.com>;'
+            '"John Smith" <john.smith@sub.example.com>,'
             "admin@sub.example.com"
         ]
-        expected_output = "\"Doe, John\" <doe.john@sub.example.com>,"\
-                          "John Smith <john.smith@sub.example.com>,"\
-                          "admin@sub.example.com"
+        expected_output = (
+            '"Doe, John" <doe.john@sub.example.com>,'
+            "John Smith <john.smith@sub.example.com>,"
+            "admin@sub.example.com"
+        )
         output = prepare_addresses(value)
         self.assertEqual(output, expected_output)
 
@@ -171,8 +169,8 @@ class EmailAddressParserTests(SimpleTestCase):
         """Check a list of e-mail addresses is sepearted correctly."""
         # value is an array with one long string not 3 sepearte values.
         value = [
-            "\"Doe, John\" <doe.john@sub.example.com>;"
-            "\"John Smith\" <john.smith@sub.example.com>,"
+            '"Doe, John" <doe.john@sub.example.com>;'
+            '"John Smith" <john.smith@sub.example.com>,'
             "admin@sub.example.com"
         ]
         expected_output = [
@@ -188,8 +186,8 @@ class EmailAddressParserTests(SimpleTestCase):
         # value is one long string not 3 sepearte values, prepare_addresses
         # should convert it to a list.
         value = (
-            "\"Doe, John\" <doe.john@sub.example.com>;"
-            "\"John Smith\" <john.smith@sub.example.com>,"
+            '"Doe, John" <doe.john@sub.example.com>;'
+            '"John Smith" <john.smith@sub.example.com>,'
             "admin@sub.example.com"
         )
         expected_output = [

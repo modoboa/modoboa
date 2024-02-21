@@ -12,13 +12,12 @@ APPLICATIONS = [
     ("webmail", "modoboa_webmail"),
 ]
 
+
 def rename_app_parameters(app, model):
     """Rename all parameters for a given app."""
     qset = model.objects.filter(name__startswith=app[0])
     for param in qset:
-        param.name = param.name.replace(
-            "{}.".format(app[0]), "{}.".format(app[1])
-        )
+        param.name = param.name.replace("{}.".format(app[0]), "{}.".format(app[1]))
         param.save()
 
 
@@ -34,9 +33,7 @@ def rename_parameters(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lib', '0001_initial'),
+        ("lib", "0001_initial"),
     ]
 
-    operations = [
-        migrations.RunPython(rename_parameters)
-    ]
+    operations = [migrations.RunPython(rename_parameters)]

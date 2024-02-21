@@ -17,44 +17,53 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command line."""
         parser.add_argument(
-            "--delete", action="store_true", default=False,
-            help="Delete inactive accounts (default is to disable)")
+            "--delete",
+            action="store_true",
+            default=False,
+            help="Delete inactive accounts (default is to disable)",
+        )
         parser.add_argument(
-            "--dry-run", action="store_true", default=False,
-            help="Only look for inactive accounts, no action")
+            "--dry-run",
+            action="store_true",
+            default=False,
+            help="Only look for inactive accounts, no action",
+        )
         parser.add_argument(
-            "--silent", action="store_true", default=False,
-            help="Enable silent mode (no question)")
+            "--silent",
+            action="store_true",
+            default=False,
+            help="Enable silent mode (no question)",
+        )
         parser.add_argument(
-            "--verbose", action="store_true", default=False,
-            help="Enable verbose mode")
+            "--verbose", action="store_true", default=False, help="Enable verbose mode"
+        )
 
     def _log_inactive_accounts(self, qset):
         """Log inactive accounts found."""
-        print(
-            "The following inactive accounts have been found:",
-            file=self.stdout)
+        print("The following inactive accounts have been found:", file=self.stdout)
         for account in qset.values("username", "last_login"):
             print(
                 "> {}\n    (last login: {})".format(
-                    account["username"], account["last_login"]),
-                file=self.stdout
+                    account["username"], account["last_login"]
+                ),
+                file=self.stdout,
             )
 
     def handle(self, *args, **options):
         """Command entry point."""
-        if not param_tools.get_global_parameter(
-                "enable_inactive_accounts"):
+        if not param_tools.get_global_parameter("enable_inactive_accounts"):
             if options["verbose"]:
-                print("Inactive accounts detection is disabled.",
-                      file=self.stdout)
+                print("Inactive accounts detection is disabled.", file=self.stdout)
             return
         inactive_account_threshold = param_tools.get_global_parameter(
-            "inactive_account_threshold")
+            "inactive_account_threshold"
+        )
         qset = models.User.objects.filter(
-            is_active=True, is_superuser=False,
-            last_login__lt=timezone.now() -
-            relativedelta(days=inactive_account_threshold))
+            is_active=True,
+            is_superuser=False,
+            last_login__lt=timezone.now()
+            - relativedelta(days=inactive_account_threshold),
+        )
         if not qset.exists():
             return
         if options["verbose"]:
@@ -63,8 +72,7 @@ class Command(BaseCommand):
             return
         action = "delete" if options["delete"] else "disable"
         if not options["silent"]:
-            answer = input(
-                "Do you want to {} those accounts? (y/N) ".format(action))
+            answer = input("Do you want to {} those accounts? (y/N) ".format(action))
             if not answer.lower().startswith("y"):
                 return
         if action == "disable":

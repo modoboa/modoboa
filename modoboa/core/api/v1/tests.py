@@ -4,7 +4,7 @@ from modoboa.lib.tests import ModoTestCase
 
 
 class OpenAPITestCase(ModoTestCase):
-    openapi_schema_url = reverse_lazy('schema-v1-legacy')
+    openapi_schema_url = reverse_lazy("schema-v1-legacy")
 
     def test_unauthorized(self):
         self.client.logout()
@@ -17,7 +17,10 @@ class OpenAPITestCase(ModoTestCase):
 
         response = self.client.get(self.openapi_schema_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['info'], {
-            'title': "Modoboa API",
-            'version': "v1",
-        })
+        self.assertEqual(
+            response.json()["info"],
+            {
+                "title": "Modoboa API",
+                "version": "v1",
+            },
+        )

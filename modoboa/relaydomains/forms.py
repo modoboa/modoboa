@@ -43,10 +43,7 @@ class RelayDomainFormGeneral(tr_forms.TransportForm):
 
     class Meta:
         model = tr_models.Transport
-        exclude = [
-            "creation", "pattern", "next_hop", "enabled",
-            "_settings"
-        ]
+        exclude = ["creation", "pattern", "next_hop", "enabled", "_settings"]
 
     def save(self, *args, **kwargs):
         """Custom save method."""

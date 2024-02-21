@@ -10,7 +10,7 @@ class TransportFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.Transport
-        django_get_or_create = ("pattern", )
+        django_get_or_create = ("pattern",)
 
     pattern = factory.Sequence(lambda n: "transport{}".format(n))
     service = "relay"

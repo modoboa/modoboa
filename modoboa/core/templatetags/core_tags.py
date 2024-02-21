@@ -26,126 +26,149 @@ register = template.Library()
 def core_menu(selection, user):
     """Build the top level menu."""
     entries = signals.extra_admin_menu_entries.send(
-        sender="core_menu", location="top_menu", user=user)
+        sender="core_menu", location="top_menu", user=user
+    )
     entries = reduce(lambda a, b: a + b, [entry[1] for entry in entries])
     if user.is_superuser:
         entries += [
-            {"name": "settings",
-             "label": _("Modoboa"),
-             "url": reverse("core:index")}
+            {"name": "settings", "label": _("Modoboa"), "url": reverse("core:index")}
         ]
     if not len(entries):
         return ""
-    return render_to_string("common/menulist.html", {
-        "entries": entries,
-        "selection": selection,
-        "user": user}
+    return render_to_string(
+        "common/menulist.html",
+        {"entries": entries, "selection": selection, "user": user},
     )
 
 
 @register.simple_tag
 def extensions_menu(selection, user):
     menu = signals.extra_user_menu_entries.send(
-        sender="core_menu", location="top_menu", user=user)
+        sender="core_menu", location="top_menu", user=user
+    )
     menu = reduce(lambda a, b: a + b, [entry[1] for entry in menu])
-    return render_to_string("common/menulist.html", {
-        "selection": selection, "entries": menu, "user": user
-    })
+    return render_to_string(
+        "common/menulist.html", {"selection": selection, "entries": menu, "user": user}
+    )
 
 
 @register.simple_tag
 def admin_menu(selection, user):
     entries = [
-        {"name": "info",
-         "class": "ajaxnav",
-         "url": "info/",
-         "label": _("Information")},
-        {"name": "logs",
-         "class": "ajaxnav",
-         "url": "logs/?sort_order=-date_created",
-         "label": _("Logs")},
-        {"name": "parameters",
-         "class": "ajaxnav",
-         "url": "parameters/",
-         "img": "",
-         "label": _("Parameters")},
+        {"name": "info", "class": "ajaxnav", "url": "info/", "label": _("Information")},
+        {
+            "name": "logs",
+            "class": "ajaxnav",
+            "url": "logs/?sort_order=-date_created",
+            "label": _("Logs"),
+        },
+        {
+            "name": "parameters",
+            "class": "ajaxnav",
+            "url": "parameters/",
+            "img": "",
+            "label": _("Parameters"),
+        },
     ]
-    return render_to_string("common/menu.html", {
-        "entries": entries,
-        "css": "nav nav-sidebar",
-        "selection": selection,
-        "user": user
-    })
+    return render_to_string(
+        "common/menu.html",
+        {
+            "entries": entries,
+            "css": "nav nav-sidebar",
+            "selection": selection,
+            "user": user,
+        },
+    )
 
 
 @register.simple_tag
 def user_menu(request, selection):
     entries = [
-        {"name": "user",
-         "img": "fa fa-user",
-         "label": request.user.fullname,
-         "menu": [
-                {"name": "settings",
-                 "img": "fa fa-list",
-                 "label": _("Settings"),
-                 "url": reverse("core:user_index")}
-         ]}
+        {
+            "name": "user",
+            "img": "fa fa-user",
+            "label": request.user.fullname,
+            "menu": [
+                {
+                    "name": "settings",
+                    "img": "fa fa-list",
+                    "label": _("Settings"),
+                    "url": reverse("core:user_index"),
+                }
+            ],
+        }
     ]
 
     extra_entries = signals.extra_user_menu_entries.send(
-        sender="user_menu", location="options_menu", user=request.user)
-    extra_entries = reduce(
-        lambda a, b: a + b, [entry[1] for entry in extra_entries])
-    entries[0]["menu"] += (
-        extra_entries + [{
+        sender="user_menu", location="options_menu", user=request.user
+    )
+    extra_entries = reduce(lambda a, b: a + b, [entry[1] for entry in extra_entries])
+    entries[0]["menu"] += extra_entries + [
+        {
             "name": "logout",
             "url": reverse("core:logout"),
             "label": _("Logout"),
             "img": "fa fa-sign-out",
-            "method": "post"
-        }]
+            "method": "post",
+        }
+    ]
+    return render_to_string(
+        "common/menulist.html",
+        {
+            "request": request,
+            "selection": selection,
+            "entries": entries,
+            "user": request.user,
+        },
     )
-    return render_to_string("common/menulist.html", {
-        "request": request, "selection": selection,
-        "entries": entries, "user": request.user
-    })
 
 
 @register.simple_tag
 def uprefs_menu(selection, user):
     entries = [
-        {"name": "profile",
-         "class": "ajaxnav",
-         "url": "profile/",
-         "label": _("Profile")},
-        {"name": "preferences",
-         "class": "ajaxnav",
-         "url": "preferences/",
-         "label": _("Preferences")},
-        {"name": "security",
-         "class": "ajaxnav",
-         "url": "security/",
-         "label": _("Security")},
+        {
+            "name": "profile",
+            "class": "ajaxnav",
+            "url": "profile/",
+            "label": _("Profile"),
+        },
+        {
+            "name": "preferences",
+            "class": "ajaxnav",
+            "url": "preferences/",
+            "label": _("Preferences"),
+        },
+        {
+            "name": "security",
+            "class": "ajaxnav",
+            "url": "security/",
+            "label": _("Security"),
+        },
     ]
     if user.is_superuser:
-        entries.append({
-            "name": "api",
-            "class": "ajaxnav",
-            "url": "api/",
-            "label": _("API"),
-        })
+        entries.append(
+            {
+                "name": "api",
+                "class": "ajaxnav",
+                "url": "api/",
+                "label": _("API"),
+            }
+        )
     extra_entries = signals.extra_user_menu_entries.send(
-        sender="user_menu", location="uprefs_menu", user=user)
-    extra_entries = reduce(
-        lambda a, b: a + b, [entry[1] for entry in extra_entries])
+        sender="user_menu", location="uprefs_menu", user=user
+    )
+    extra_entries = reduce(lambda a, b: a + b, [entry[1] for entry in extra_entries])
     entries += extra_entries
     entries = sorted(entries, key=lambda e: e["label"])
-    return render_to_string("common/menu.html", {
-        "entries": entries,
-        "css": "nav nav-sidebar",
-        "selection": selection,
-        "user": user
-    })
+    return render_to_string(
+        "common/menu.html",
+        {
+            "entries": entries,
+            "css": "nav nav-sidebar",
+            "selection": selection,
+            "user": user,
+        },
+    )
 
 
 @register.filter
@@ -154,7 +177,7 @@ def colorize_level(level):
     classes = {
         "INFO": "text-info",
         "WARNING": "text-warning",
-        "CRITICAL": "text-danger"
+        "CRITICAL": "text-danger",
     }
     if level not in classes:
         return level
@@ -169,14 +192,18 @@ def tohtml(message):
 
 @register.simple_tag
 def visirule(field):
-    if not hasattr(field, "form") or \
-            not hasattr(field.form, "visirules") or \
-            field.html_name not in field.form.visirules:
+    if (
+        not hasattr(field, "form")
+        or not hasattr(field.form, "visirules")
+        or field.html_name not in field.form.visirules
+    ):
         return ""
     rule = field.form.visirules[field.html_name]
     return mark_safe(
-        " data-visibility-field='{}' data-visibility-value='{}' "
-        .format(rule["field"], rule["value"]))
+        " data-visibility-field='{}' data-visibility-value='{}' ".format(
+            rule["field"], rule["value"]
+        )
+    )
 
 
 @register.simple_tag
@@ -200,8 +227,7 @@ class ConnectedUsers(template.Node):
                 uid_list.append(uid)
 
         # Query all logged in users based on id list
-        context[self.varname] = (
-            models.User.objects.filter(pk__in=uid_list).distinct())
+        context[self.varname] = models.User.objects.filter(pk__in=uid_list).distinct()
         return ""
 
 
@@ -230,12 +256,11 @@ def get_modoboa_logo():
 @register.simple_tag
 def load_optionalmenu(user):
     menu = signals.extra_user_menu_entries.send(
-        sender="user_menu", location="top_menu_middle", user=user)
-    menu = reduce(
-        lambda a, b: a + b, [entry[1] for entry in menu])
+        sender="user_menu", location="top_menu_middle", user=user
+    )
+    menu = reduce(lambda a, b: a + b, [entry[1] for entry in menu])
     return template.loader.render_to_string(
-        "common/menulist.html",
-        {"entries": menu, "user": user}
+        "common/menulist.html", {"entries": menu, "user": user}
     )
 
 
@@ -253,13 +278,16 @@ def display_messages(msgs):
     else:
         timeout = "undefined"
 
-    return mark_safe("""
+    return mark_safe(
+        """
 <script type="text/javascript">
     $(document).ready(function() {
         $('body').notify('%s', '%s', %s);
     });
 </script>
-""" % (level, text, timeout))
+"""
+        % (level, text, timeout)
+    )
 
 
 @register.filter
@@ -267,5 +295,5 @@ def currencyfmt(amount):
     """Simple temp. filter to replace babel."""
     lang = get_language()
     if lang == "fr":
-        return u"{} €".format(amount)
-    return u"€{}".format(amount)
+        return "{} €".format(amount)
+    return "€{}".format(amount)

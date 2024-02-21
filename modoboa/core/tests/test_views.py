@@ -169,7 +169,8 @@ class DashboardTestCase(ModoTestCase):
         self.assertContains(response, "https://modoboa.org")
 
         self.set_global_parameter(
-            "rss_feed_url", "https://www.djangoproject.com/rss/weblog/")
+            "rss_feed_url", "https://www.djangoproject.com/rss/weblog/"
+        )
         self.client.force_login(self.dadmin)
         response = self.client.get(url)
         self.assertContains(response, "djangoproject")
@@ -200,7 +201,7 @@ class DashboardTestCase(ModoTestCase):
         """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = True"""
         url = reverse("core:dashboard")
         response = self.client.get(url)
-        self.assertNotContains(response, 'https://modoboa.org/en/weblog/')
+        self.assertNotContains(response, "https://modoboa.org/en/weblog/")
 
     def test_root_dispatch(self):
         """Check root dispatching."""
@@ -236,19 +237,29 @@ class SettingsTestCase(ModoTestCase):
         settings["core-password_scheme"] = "magic_password_scheme"
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
-        compare(response.json(), {
-            "form_errors": {"password_scheme": ["Select a valid choice. \
-magic_password_scheme is not one of the available choices."]},
-            "prefix": "core"
-        })
+        compare(
+            response.json(),
+            {
+                "form_errors": {
+                    "password_scheme": [
+                        "Select a valid choice. \
+magic_password_scheme is not one of the available choices."
+                    ]
+                },
+                "prefix": "core",
+            },
+        )
         settings["core-password_scheme"] = "plain"
         settings["core-rounds_number"] = ""
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
-        compare(response.json(), {
-            "form_errors": {"rounds_number": ["This field is required."]},
-            "prefix": "core"
-        })
+        compare(
+            response.json(),
+            {
+                "form_errors": {"rounds_number": ["This field is required."]},
+                "prefix": "core",
+            },
+        )
 
     def test_sms_settings_clean(self):
         """Check sms settings validation."""
@@ -262,8 +273,7 @@ magic_password_scheme is not one of the available choices."]},
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
         errors = response.json()
-        self.assertIn(
-            "sms_ovh_application_secret", errors["form_errors"])
+        self.assertIn("sms_ovh_application_secret", errors["form_errors"])
 
     def test_mx_check_settings_clean(self):
         settings = SETTINGS_SAMPLE.copy()
@@ -274,6 +284,7 @@ magic_password_scheme is not one of the available choices."]},
         self.assertFalse(
             param_tools.get_global_parameter("enable_ipv6_mx_checks", "admin")
         )
+
 
 class UserSettings(param_forms.UserParametersForm):
     """Stupid user settings form."""
@@ -286,10 +297,7 @@ class UserSettings(param_forms.UserParametersForm):
 def extra_user_menu(sender, location, user, **kwargs):
     """Return extra menu entry."""
     return [
-        {"name": "test_menu_entry",
-         "class": "ajaxnav",
-         "url": "toto/",
-         "label": "Test"}
+        {"name": "test_menu_entry", "class": "ajaxnav", "url": "toto/", "label": "Test"}
     ]
 
 

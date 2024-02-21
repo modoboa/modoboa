@@ -9,20 +9,45 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('admin', '0014_auto_20181017_1628'),
+        ("admin", "0014_auto_20181017_1628"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='DNSRecord',
+            name="DNSRecord",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('spf', 'SPF'), ('dkim', 'DKIM'), ('dmarc', 'DMARC'), ('autoconfig', 'Autoconfig'), ('autodiscover', 'Autodiscover')], max_length=15)),
-                ('value', models.TextField(blank=True)),
-                ('is_valid', models.BooleanField(default=False)),
-                ('error', models.CharField(blank=True, max_length=50, null=True)),
-                ('updated', models.DateTimeField(default=django.utils.timezone.now)),
-                ('domain', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='admin.Domain')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("spf", "SPF"),
+                            ("dkim", "DKIM"),
+                            ("dmarc", "DMARC"),
+                            ("autoconfig", "Autoconfig"),
+                            ("autodiscover", "Autodiscover"),
+                        ],
+                        max_length=15,
+                    ),
+                ),
+                ("value", models.TextField(blank=True)),
+                ("is_valid", models.BooleanField(default=False)),
+                ("error", models.CharField(blank=True, max_length=50, null=True)),
+                ("updated", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "domain",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="admin.Domain"
+                    ),
+                ),
             ],
         ),
     ]

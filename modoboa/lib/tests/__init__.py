@@ -24,6 +24,7 @@ except socket.error:
 
 try:
     import ldap  # noqa
+
     NO_LDAP = False
 except ImportError:
     NO_LDAP = True
@@ -52,6 +53,7 @@ class ParametersMixin(object):
         self.localconfig.parameters.set_values(parameters, app=app)
         self.localconfig.save()
 
+
 class SimpleModoTestCase(ParametersMixin, TestCase):
     """Simple class to add parameters editing."""
 
@@ -67,8 +69,7 @@ class ModoTestCase(ParametersMixin, TestCase):
 
     def setUp(self, username="admin", password="password"):
         """Initiate test context."""
-        self.assertEqual(
-            self.client.login(username=username, password=password), True)
+        self.assertEqual(self.client.login(username=username, password=password), True)
         self.workdir = tempfile.mkdtemp()
         self.set_global_parameter("storage_dir", self.workdir, app="pdfcredentials")
 
@@ -76,7 +77,8 @@ class ModoTestCase(ParametersMixin, TestCase):
         if params is None:
             params = {}
         response = getattr(self.client, method)(
-            url, params, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+            url, params, HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
         self.assertEqual(response.status_code, status)
         return response.json()
 
@@ -102,7 +104,8 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
         super(ModoAPITestCase, cls).setUpTestData()
         management.call_command("load_initial_data")
         cls.token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin"))
+            user=core_models.User.objects.get(username="admin")
+        )
 
     def setUp(self):
         """Setup."""

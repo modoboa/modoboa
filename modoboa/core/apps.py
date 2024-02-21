@@ -16,11 +16,15 @@ def load_core_settings():
     from .api.v2 import serializers
 
     param_tools.registry.add(
-        "global", app_settings.GeneralParametersForm, gettext_lazy("General"))
+        "global", app_settings.GeneralParametersForm, gettext_lazy("General")
+    )
     param_tools.registry.add2(
-        "global", "core", gettext_lazy("General"),
+        "global",
+        "core",
+        gettext_lazy("General"),
         app_settings.GLOBAL_PARAMETERS_STRUCT,
-        serializers.CoreGlobalParametersSerializer)
+        serializers.CoreGlobalParametersSerializer,
+    )
 
 
 class CoreConfig(AppConfig):

@@ -6,7 +6,9 @@ import io
 from reversion import revisions as reversion
 
 from django.contrib.auth.decorators import (
-    login_required, permission_required, user_passes_test
+    login_required,
+    permission_required,
+    user_passes_test,
 )
 from django.db import transaction
 from django.shortcuts import render
@@ -35,14 +37,13 @@ def importdata(request, formclass=ImportDataForm):
     form = formclass(request.POST, request.FILES)
     if form.is_valid():
         status, msg = lib.import_data(
-            request.user, request.FILES["sourcefile"], form.cleaned_data)
+            request.user, request.FILES["sourcefile"], form.cleaned_data
+        )
         if status:
-            return render(request, "admin/import_done.html", {
-                "status": "ok", "msg": msg
-            })
-    return render(request, "admin/import_done.html", {
-        "status": "ko", "msg": msg
-    })
+            return render(
+                request, "admin/import_done.html", {"status": "ok", "msg": msg}
+            )
+    return render(request, "admin/import_done.html", {"status": "ko", "msg": msg})
 
 
 @login_required
@@ -66,8 +67,7 @@ def import_domains(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("core.add_user") or
-    u.has_perm("admin.add_alias")
+    lambda u: u.has_perm("core.add_user") or u.has_perm("admin.add_alias")
 )
 def import_identities(request):
     if request.method == "POST":
@@ -81,6 +81,6 @@ def import_identities(request):
         "formid": "importform",
         "enctype": "multipart/form-data",
         "target": "import_target",
-        "form": ImportIdentitiesForm()
+        "form": ImportIdentitiesForm(),
     }
     return render(request, "admin/import_identities_form.html", ctx)

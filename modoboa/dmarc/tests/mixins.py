@@ -43,5 +43,5 @@ class CallCommandMixin(object):
             fpath = os.path.join(path, f)
             if f.startswith(".") or not os.path.isfile(fpath):
                 continue
-            with self.assertRaisesMessage(SystemExit, '65'):
+            with self.assertRaisesMessage(SystemExit, "65"):
                 self.import_report(fpath)

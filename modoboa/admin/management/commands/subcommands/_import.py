@@ -27,33 +27,33 @@ class ImportCommand(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command."""
         parser.add_argument(
-            "--sepchar", type=str, default=";",
-            help="Separator used in file.")
+            "--sepchar", type=str, default=";", help="Separator used in file."
+        )
         parser.add_argument(
-            "--continue-if-exists", action="store_true",
-            dest="continue_if_exists", default=False,
-            help="Continue even if an entry already exists.")
+            "--continue-if-exists",
+            action="store_true",
+            dest="continue_if_exists",
+            default=False,
+            help="Continue even if an entry already exists.",
+        )
         parser.add_argument(
-            "--crypt-password", action="store_true",
-            default=False, help="Encrypt provided passwords.")
-        parser.add_argument(
-            "files", type=str, nargs="+", help="CSV files to import.")
+            "--crypt-password",
+            action="store_true",
+            default=False,
+            help="Encrypt provided passwords.",
+        )
+        parser.add_argument("files", type=str, nargs="+", help="CSV files to import.")
 
     def _import(self, filename, options, encoding="utf-8"):
         """Import domains or identities."""
-        superadmin = (
-            core_models.User.objects.filter(is_superuser=True).first()
-        )
+        superadmin = core_models.User.objects.filter(is_superuser=True).first()
         if not os.path.isfile(filename):
             raise CommandError("File not found")
 
-        num_lines = sum(
-            1 for line in io.open(filename, encoding=encoding) if line
-        )
+        num_lines = sum(1 for line in io.open(filename, encoding=encoding) if line)
         pbar = progressbar.ProgressBar(
-            widgets=[
-                progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()
-            ], maxval=num_lines
+            widgets=[progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()],
+            maxval=num_lines,
         ).start()
         with io.open(filename, encoding=encoding, newline="") as f:
             reader = csv.reader(f, delimiter=options["sepchar"])
@@ -62,7 +62,8 @@ class ImportCommand(BaseCommand):
                 if not row:
                     continue
                 fct = signals.import_object.send(
-                    sender=self.__class__, objtype=row[0].strip())
+                    sender=self.__class__, objtype=row[0].strip()
+                )
                 fct = [func for x_, func in fct if func is not None]
                 if not fct:
                     continue
@@ -74,7 +75,9 @@ class ImportCommand(BaseCommand):
                         continue
                     raise CommandError(
                         "Object already exists at line {}: {}".format(
-                            i+1, options["sepchar"].join(row[:2])))
+                            i + 1, options["sepchar"].join(row[:2])
+                        )
+                    )
                 i += 1
                 pbar.update(i)
 
@@ -90,10 +93,14 @@ class ImportCommand(BaseCommand):
             except CommandError as exc:
                 raise exc
             except UnicodeDecodeError:
-                self.stdout.write(self.style.NOTICE(
-                    _("CSV file is not encoded in UTF-8, attempting to guess "
-                      "encoding")
-                ))
+                self.stdout.write(
+                    self.style.NOTICE(
+                        _(
+                            "CSV file is not encoded in UTF-8, attempting to guess "
+                            "encoding"
+                        )
+                    )
+                )
                 detector = UniversalDetector()
                 with io.open(filename, "rb") as fp:
                     for line in fp:
@@ -102,18 +109,19 @@ class ImportCommand(BaseCommand):
                             break
                     detector.close()
 
-                self.stdout.write(self.style.NOTICE(
-                    _("Reading CSV file using %(encoding)s encoding") %
-                    detector.result
-                ))
+                self.stdout.write(
+                    self.style.NOTICE(
+                        _("Reading CSV file using %(encoding)s encoding")
+                        % detector.result
+                    )
+                )
                 try:
                     with transaction.atomic():
                         self._import(
-                            filename, options,
-                            encoding=detector.result["encoding"]
+                            filename, options, encoding=detector.result["encoding"]
                         )
                 except UnicodeDecodeError as exc:
                     raise CommandError(
-                        _("Unable to decode CSV file using %(encoding)s "
-                          "encoding") % detector.result
+                        _("Unable to decode CSV file using %(encoding)s " "encoding")
+                        % detector.result
                     ) from exc

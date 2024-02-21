@@ -2,9 +2,7 @@
 
 import os
 
-BOWER_COMPONENTS_ROOT = os.path.join(
-    os.path.dirname(__file__), ".."
-)
+BOWER_COMPONENTS_ROOT = os.path.join(os.path.dirname(__file__), "..")
 
 BOWER_INSTALLED_APPS = (
     "jquery#1.9",

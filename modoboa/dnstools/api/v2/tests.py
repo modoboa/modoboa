@@ -16,22 +16,24 @@ class DNSViewSetTestCase(ModoAPITestCase):
         super().setUpTestData()
         admin_factories.populate_database()
         cls.spf_rec = factories.DNSRecordFactory(
-            type="spf", value="v=SPF1 mx -all", is_valid=True,
-            domain__name="test.com"
+            type="spf", value="v=SPF1 mx -all", is_valid=True, domain__name="test.com"
         )
         cls.dmarc_rec = factories.DNSRecordFactory(
-            type="dmarc", value="XXX", is_valid=False,
+            type="dmarc",
+            value="XXX",
+            is_valid=False,
             error="Not a DMARC record",
-            domain__name="test.com"
+            domain__name="test.com",
         )
         cls.dkim_rec = factories.DNSRecordFactory(
-            type="dkim", value="12345", is_valid=False,
+            type="dkim",
+            value="12345",
+            is_valid=False,
             error="Public key mismatchs",
-            domain__name="test.com"
+            domain__name="test.com",
         )
         cls.ac_rec = factories.DNSRecordFactory(
-            type="autoconfig", value="1.2.3.4", is_valid=True,
-            domain__name="test.com"
+            type="autoconfig", value="1.2.3.4", is_valid=True, domain__name="test.com"
         )
 
     def test_dns_detail(self):

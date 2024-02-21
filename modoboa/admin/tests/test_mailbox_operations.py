@@ -13,8 +13,7 @@ from modoboa.lib.tests import ModoTestCase
 from .. import factories, models
 
 
-@override_settings(
-    DOVECOT_LOOKUP_PATH=["{}/dovecot".format(os.path.dirname(__file__))])
+@override_settings(DOVECOT_LOOKUP_PATH=["{}/dovecot".format(os.path.dirname(__file__))])
 class MailboxOperationTestCase(ModoTestCase):
     """Test management command."""
 
@@ -43,10 +42,9 @@ class MailboxOperationTestCase(ModoTestCase):
         path = "{}/test.com/admin".format(self.workdir)
         mail_home_mock.__get__ = mock.Mock(return_value=path)
         mb = models.Mailbox.objects.select_related("user").get(
-            address="admin", domain__name="test.com")
-        self.ajax_post(
-            reverse("admin:account_delete", args=[mb.user.pk]), {}
+            address="admin", domain__name="test.com"
         )
+        self.ajax_post(reverse("admin:account_delete", args=[mb.user.pk]), {})
         call_command("handle_mailbox_operations")
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertFalse(os.path.exists(mb.mail_home))
@@ -57,15 +55,16 @@ class MailboxOperationTestCase(ModoTestCase):
         path = "{}/test.com/admin".format(self.workdir)
         mail_home_mock.__get__ = mock.Mock(return_value=path)
         mb = models.Mailbox.objects.select_related("user").get(
-            address="admin", domain__name="test.com")
-        values = {
-            "username": "admin2@test.com", "role": "DomainAdmins",
-            "is_active": True, "email": "admin2@test.com",
-            "language": "en"
-        }
-        self.ajax_post(
-            reverse("admin:account_change", args=[mb.user.pk]), values
+            address="admin", domain__name="test.com"
         )
+        values = {
+            "username": "admin2@test.com",
+            "role": "DomainAdmins",
+            "is_active": True,
+            "email": "admin2@test.com",
+            "language": "en",
+        }
+        self.ajax_post(reverse("admin:account_change", args=[mb.user.pk]), values)
         path = "{}/test.com/admin2".format(self.workdir)
         mail_home_mock.__get__ = mock.Mock(return_value=path)
         call_command("handle_mailbox_operations")

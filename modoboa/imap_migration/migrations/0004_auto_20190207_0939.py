@@ -9,18 +9,21 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('imap_migration', '0003_auto_20190207_0919'),
+        ("imap_migration", "0003_auto_20190207_0919"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='migration',
-            name='provider',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='imap_migration.EmailProvider'),
+            model_name="migration",
+            name="provider",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="imap_migration.EmailProvider",
+            ),
         ),
         migrations.AlterField(
-            model_name='migration',
-            name='username',
+            model_name="migration",
+            name="username",
             field=models.CharField(max_length=254),
         ),
     ]

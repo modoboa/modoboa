@@ -17,12 +17,7 @@ DNSBL_PROVIDERS = [
 
 # Do not run tests for these domains.
 # https://en.wikipedia.org/wiki/Top-level_domain#Reserved_domains
-RESERVED_TLD = [
-    "example",
-    "invalid",
-    "localhost",
-    "test"
-]
+RESERVED_TLD = ["example", "invalid", "localhost", "test"]
 
 DOMAIN_TYPES = [
     ("domain", _("Domain")),

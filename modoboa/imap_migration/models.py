@@ -24,10 +24,12 @@ class EmailProviderDomain(models.Model):
     """Email provider domain class."""
 
     provider = models.ForeignKey(
-        EmailProvider, on_delete=models.CASCADE, related_name="domains")
+        EmailProvider, on_delete=models.CASCADE, related_name="domains"
+    )
     name = models.CharField(max_length=100, unique=True)
     new_domain = models.ForeignKey(
-        "admin.Domain", on_delete=models.SET_NULL, null=True, blank=True)
+        "admin.Domain", on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     class Meta:
         ordering = ["provider", "name"]

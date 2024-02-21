@@ -6,7 +6,6 @@ from . import viewsets
 
 
 router = routers.SimpleRouter()
-router.register(
-    r"transports", viewsets.TransportViewSet, basename="transport")
+router.register(r"transports", viewsets.TransportViewSet, basename="transport")
 
 urlpatterns = router.urls

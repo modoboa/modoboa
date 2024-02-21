@@ -19,10 +19,11 @@ class MetaHasher(type):
     PasswordHasher Metaclass
     Allow classmethod to be properties
     """
+
     @property
     def name(cls):
         """Returns the name of the hasher"""
-        return cls.__name__.rstrip('Hasher').lower()
+        return cls.__name__.rstrip("Hasher").lower()
 
     @property
     def label(cls):
@@ -34,6 +35,7 @@ class PasswordHasher(metaclass=MetaHasher):
     """
     Base class of all hashers.
     """
+
     _weak = False
 
     def __init__(self, target="local"):
@@ -76,8 +78,7 @@ class PasswordHasher(metaclass=MetaHasher):
         :return: True if passwords match, False otherwise
         """
         return constant_time_compare(
-            self._b64encode(self._encrypt(clearvalue, hashed_value)),
-            hashed_value
+            self._b64encode(self._encrypt(clearvalue, hashed_value)), hashed_value
         )
 
     def needs_rehash(self, hashed_value):
@@ -100,6 +101,7 @@ class PLAINHasher(PasswordHasher):
     """
     Plain (ie. clear) password hasher.
     """
+
     _weak = True
 
     @property
@@ -116,6 +118,7 @@ class CRYPTHasher(PasswordHasher):
 
     Uses python `crypt` standard module.
     """
+
     _weak = True
 
     @property
@@ -124,13 +127,7 @@ class CRYPTHasher(PasswordHasher):
 
     def _encrypt(self, clearvalue, salt=None):
         if salt is None:
-            salt = "".join(
-                Random().sample(
-                    string.ascii_letters +
-                    string.digits,
-                    2
-                )
-            )
+            salt = "".join(Random().sample(string.ascii_letters + string.digits, 2))
         return crypt.crypt(clearvalue, salt)
 
 
@@ -140,6 +137,7 @@ class MD5Hasher(PasswordHasher):
 
     Uses python `hashlib` standard module.
     """
+
     _weak = True
 
     @property
@@ -157,6 +155,7 @@ class SHA256Hasher(PasswordHasher):
 
     Uses python `hashlib` and `base64` standard modules.
     """
+
     _weak = True
 
     @property

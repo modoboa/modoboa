@@ -16,13 +16,13 @@ from . import serializers
 class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
     """ViewSet class for EmailProvider."""
 
-    filter_backends = (filters.SearchFilter, )
+    filter_backends = (filters.SearchFilter,)
     permission_classes = (
         permissions.IsAuthenticated,
-        permissions.DjangoModelPermissions
+        permissions.DjangoModelPermissions,
     )
     queryset = models.EmailProvider.objects.all().prefetch_related("domains")
-    search_fields = ("name", )
+    search_fields = ("name",)
     serializer_class = serializers.EmailProviderSerializer
 
     @action(methods=["post"], detail=False)
@@ -39,7 +39,7 @@ class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
             else:
                 imaplib.IMAP4(address, port)
         except (socket.error, imaplib.IMAP4.error, ssl.SSLError):
-            return response.Response({'status': 'failed'}, 400)
+            return response.Response({"status": "failed"}, 400)
         return response.Response(status=200)
 
     @action(methods=["post"], detail=False)
@@ -52,21 +52,27 @@ class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
         return response.Response(status=200)
 
 
-class MigrationViewSet(GetThrottleViewsetMixin,
-                       mixins.ListModelMixin,
-                       mixins.RetrieveModelMixin,
-                       mixins.DestroyModelMixin,
-                       viewsets.GenericViewSet):
+class MigrationViewSet(
+    GetThrottleViewsetMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
     """ViewSet class for Migration."""
 
-    filter_backends = (filters.SearchFilter, )
+    filter_backends = (filters.SearchFilter,)
     permission_classes = (
         permissions.IsAuthenticated,
-        permissions.DjangoModelPermissions
+        permissions.DjangoModelPermissions,
     )
     queryset = models.Migration.objects.all().select_related(
-        "provider", "mailbox__domain")
+        "provider", "mailbox__domain"
+    )
     search_fields = (
-        "username", "provider__name", "mailbox__address",
-        "mailbox__domain__name")
+        "username",
+        "provider__name",
+        "mailbox__address",
+        "mailbox__domain__name",
+    )
     serializer_class = serializers.MigrationSerializer

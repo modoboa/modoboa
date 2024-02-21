@@ -16,8 +16,8 @@ def _get_record_type_value(records, rr_type):
     for record in records:
         # Multiple strings are separated by a space as described in:
         # https://tools.ietf.org/html/rfc4408#section-3.1.3
-        value = str(record).replace('" "', '').strip('"')
-        if value.startswith('v={}'.format(rr_type)):
+        value = str(record).replace('" "', "").strip('"')
+        if value.startswith("v={}".format(rr_type)):
             return value
     return None
 
@@ -25,21 +25,21 @@ def _get_record_type_value(records, rr_type):
 def get_spf_record(domain):
     """Return SPF record for domain (if any)."""
     records = admin_lib.get_dns_records(domain, "TXT")
-    return _get_record_type_value(records, 'spf1')
+    return _get_record_type_value(records, "spf1")
 
 
 def get_dkim_record(domain, selector):
     """Return DKIM records form domain (if any)."""
     name = "{}._domainkey.{}".format(selector, domain)
     records = admin_lib.get_dns_records(name, "TXT")
-    return _get_record_type_value(records, 'DKIM1')
+    return _get_record_type_value(records, "DKIM1")
 
 
 def get_dmarc_record(domain):
     """Return DMARC record for domain (if any)."""
     name = "_dmarc.{}".format(domain)
     records = admin_lib.get_dns_records(name, "TXT")
-    return _get_record_type_value(records, 'DMARC1')
+    return _get_record_type_value(records, "DMARC1")
 
 
 def _get_simple_record(name):
@@ -108,8 +108,7 @@ def _check_domain_and_mask(value, mechanism):
     elif "/" in value:
         mechanism, mask = value.split("/")
     else:
-        raise DNSSyntaxError(
-            _("Invalid syntax for {} mechanism").format(mechanism))
+        raise DNSSyntaxError(_("Invalid syntax for {} mechanism").format(mechanism))
     if mask and (not mask.isdigit() or int(mask) > 32):
         raise DNSSyntaxError(_("Invalid mask found {}").format(mask))
 
@@ -134,8 +133,7 @@ def _check_simple(value, mechanism):
         return
     parts = value.split(":")
     if len(parts) != 2:
-        raise DNSSyntaxError(
-            _("Invalid syntax for {} mechanism").format(mechanism))
+        raise DNSSyntaxError(_("Invalid syntax for {} mechanism").format(mechanism))
 
 
 def check_spf_ptr(value):
@@ -180,11 +178,11 @@ def check_spf_syntax(record):
             if len(modifier) != 2:
                 raise DNSSyntaxError(_("Unknown mechanism {}").format(part))
             if modifier[0] not in ["redirect", "exp"]:
-                raise DNSSyntaxError(_("Unknown modifier {}").format(
-                    modifier[0]))
+                raise DNSSyntaxError(_("Unknown modifier {}").format(modifier[0]))
             if modifier[0] in modifiers:
-                raise DNSSyntaxError(_("Duplicate modifier {} found").format(
-                    modifier[0]))
+                raise DNSSyntaxError(
+                    _("Duplicate modifier {} found").format(modifier[0])
+                )
             modifiers.append(modifier[0])
     if not len(mechanisms) and not len(modifiers):
         raise DNSSyntaxError(_("No mechanism found"))
@@ -235,11 +233,11 @@ def check_dmarc_tag(tag, value):
         except ValueError:
             raise DNSSyntaxError(error + _(" not an integer"))
         if "min_value" in tdef and value < tdef["min_value"]:
-            raise DNSSyntaxError(
-                error + _(" less than {}").format(tdef["min_value"]))
+            raise DNSSyntaxError(error + _(" less than {}").format(tdef["min_value"]))
         if "max_value" in tdef and value > tdef["max_value"]:
             raise DNSSyntaxError(
-                error + _(" greater than {}").format(tdef["max_value"]))
+                error + _(" greater than {}").format(tdef["max_value"])
+            )
     else:
         check_dmarc_tag_string_value(tag, value)
 

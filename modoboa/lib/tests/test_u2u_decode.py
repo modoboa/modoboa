@@ -11,14 +11,20 @@ class U2UTestCase(TestCase):
     def test_header_decoding(self):
         """Simple decoding."""
         samples = [
-            ("=?ISO-8859-15?Q?=20Profitez de tous les services en ligne sur "
-             "impots.gouv.fr?=",
-             "Profitez de tous les services en ligne sur impots.gouv.fr"),
-            ("=?ISO-8859-1?Q?Accus=E9?= de =?ISO-8859-1?Q?r=E9ception?= de "
-             "votre annonce",
-             "Accusé de réception de votre annonce"),
-            ("Sm=?ISO-8859-1?B?9g==?=rg=?ISO-8859-1?B?5Q==?=sbord",
-             "Sm\xf6rg\xe5sbord"),
+            (
+                "=?ISO-8859-15?Q?=20Profitez de tous les services en ligne sur "
+                "impots.gouv.fr?=",
+                "Profitez de tous les services en ligne sur impots.gouv.fr",
+            ),
+            (
+                "=?ISO-8859-1?Q?Accus=E9?= de =?ISO-8859-1?Q?r=E9ception?= de "
+                "votre annonce",
+                "Accusé de réception de votre annonce",
+            ),
+            (
+                "Sm=?ISO-8859-1?B?9g==?=rg=?ISO-8859-1?B?5Q==?=sbord",
+                "Sm\xf6rg\xe5sbord",
+            ),
             # The following case currently fails because of the way we split
             # encoded words to parse them separately, which can lead to
             # unexpected unicode decode errors... I think it will work fine on
@@ -35,22 +41,22 @@ class U2UTestCase(TestCase):
         """Check address decoding."""
         mailsploit_sample = (
             "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=00?="
-            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com")
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com"
+        )
         expected_result = (
             "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??="
-            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com")
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?=@mailsploit.com"
+        )
         self.assertEqual(
-            u2u_decode.decode_address(mailsploit_sample),
-            ("", expected_result)
+            u2u_decode.decode_address(mailsploit_sample), ("", expected_result)
         )
         mailsploit_sample = (
             '"=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?="\n'
             "<=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q?=0A=00?="
-            "@mailsploit.com>")
+            "@mailsploit.com>"
+        )
         expected_result = (
             "potus@whitehouse.gov",
-            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??="
-            "@mailsploit.com")
-        self.assertEqual(
-            u2u_decode.decode_address(mailsploit_sample),
-            expected_result)
+            "=?utf-8?b?cG90dXNAd2hpdGVob3VzZS5nb3Y=?==?utf-8?Q??=" "@mailsploit.com",
+        )
+        self.assertEqual(u2u_decode.decode_address(mailsploit_sample), expected_result)

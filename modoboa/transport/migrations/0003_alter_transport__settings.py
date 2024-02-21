@@ -7,18 +7,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('transport', '0002_auto_20180928_1520'),
+        ("transport", "0002_auto_20180928_1520"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='transport',
-            name='_settings',
+            model_name="transport",
+            name="_settings",
             field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
-            model_name='transport',
-            name='_settings',
-            field=models.JSONField(default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder),
+            model_name="transport",
+            name="_settings",
+            field=models.JSONField(
+                default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder
+            ),
         ),
     ]

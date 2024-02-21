@@ -31,12 +31,17 @@ _SPF_RECORD = TXT("IN", "TXT", ["v=spf1 mx -all"])
 _DMARC_RECORD = TXT("IN", "TXT", ["v=DMARC1 p=reject"])
 _DKIM_RECORD = TXT("IN", "TXT", ["v=DKIM1 p=XXXXX"])
 _BAD_MX_RECORD = MX("IN", "MX", 10, Name("bad-response.example.com".split(".")))
-_DNE_MX_RECORD = MX("IN", "MX", 10, Name(
-    "does-not-exist.example.com".split(".")))
+_DNE_MX_RECORD = MX("IN", "MX", 10, Name("does-not-exist.example.com".split(".")))
 _MX_RECORDS = [_MX_RECORD_1]
 _IP_SET_RECORDS = [RRset()]
 
-_IPV4_RECORD_REDIS = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("127.0.0.1", int(settings.REDIS_PORT)))
+_IPV4_RECORD_REDIS = (
+    socket.AF_INET,
+    socket.SOCK_STREAM,
+    6,
+    "",
+    ("127.0.0.1", int(settings.REDIS_PORT)),
+)
 _IPV4_RECORD_1 = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("192.0.2.1", 25))
 _IPV4_RECORD_2 = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("192.0.2.2", 25))
 _IPV6_RECORD = (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("2001:db8::1", 25))
@@ -53,7 +58,7 @@ _POSSIBLE_DNS_RESULTS = {
     "no-lookup.example.com": [_DNE_MX_RECORD],
     "no-answer.example.com": [_DNE_MX_RECORD],
     "dns-checks.com": [_MX_RECORD_2],
-    "invalid-mx.com": [_MX_RECORD_3]
+    "invalid-mx.com": [_MX_RECORD_3],
 }
 
 _POSSIBLE_DNS_RESULTS_NO_MX = {
@@ -62,12 +67,16 @@ _POSSIBLE_DNS_RESULTS_NO_MX = {
     "no-lookup.example.com": NXDOMAIN(),
     "no-answer.example.com": NoAnswer(),
     "bad-response.example.com": [RRsetInvalid()],
-    "dns-checks.com": [_SPF_RECORD, ],
+    "dns-checks.com": [
+        _SPF_RECORD,
+    ],
     "modoboa._domainkey.dns-checks.com": [_DKIM_RECORD],
-    "_dmarc.dns-checks.com": [_DMARC_RECORD, ],
+    "_dmarc.dns-checks.com": [
+        _DMARC_RECORD,
+    ],
     "autoconfig.dns-checks.com": [_A_RECORD],
     "autodiscover.dns-checks.com": [_A_RECORD],
-    "mx3.example.com": [_A_RECORD]
+    "mx3.example.com": [_A_RECORD],
 }
 _POSSIBLE_IP_RESULTS = {
     settings.REDIS_HOST: [_IPV4_RECORD_REDIS],
@@ -82,8 +91,8 @@ _POSSIBLE_IP_RESULTS = {
 
 _POSSIBLE_DNS_IPV6_RESULTS = {
     settings.REDIS_HOST: socket.getaddrinfo(settings.REDIS_HOST, settings.REDIS_PORT),
-    "mx3.example.com": NoAnswer()
-    }
+    "mx3.example.com": NoAnswer(),
+}
 
 
 def mock_dns_query_result(qname, *args, **kwargs):

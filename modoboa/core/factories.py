@@ -8,7 +8,6 @@ from . import models
 
 
 class PermissionFactory(factory.django.DjangoModelFactory):
-
     """A base factory to handle permissions."""
 
     class Meta(object):
@@ -22,7 +21,6 @@ class PermissionFactory(factory.django.DjangoModelFactory):
 
 
 class GroupFactory(factory.django.DjangoModelFactory):
-
     """A factory to create Group instances."""
 
     class Meta(object):
@@ -32,12 +30,11 @@ class GroupFactory(factory.django.DjangoModelFactory):
 
 
 class UserFactory(PermissionFactory):
-
     """A factory to create User instances."""
 
     class Meta(object):
         model = models.User
-        django_get_or_create = ("username", )
+        django_get_or_create = ("username",)
 
     email = factory.LazyAttribute(lambda a: a.username)
     password = "{PLAIN}toto"

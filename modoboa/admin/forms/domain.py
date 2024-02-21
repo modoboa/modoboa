@@ -13,7 +13,11 @@ from modoboa.core.models import User
 from modoboa.lib.exceptions import Conflict
 from modoboa.lib.fields import DomainNameField
 from modoboa.lib.form_utils import (
-    DynamicForm, TabForms, WizardForm, WizardStep, YesNoField
+    DynamicForm,
+    TabForms,
+    WizardForm,
+    WizardStep,
+    YesNoField,
 )
 from modoboa.lib.web_utils import render_to_json_response, size2integer
 from modoboa.parameters import tools as param_tools
@@ -33,17 +37,18 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=gettext_lazy(
             "Alias(es) of this domain. Indicate only one name per input, "
             "press ENTER to add a new input."
-        )
+        ),
     )
     dkim_key_selector = forms.CharField(
-        label=gettext_lazy("Key selector"), initial="modoboa", required=False)
+        label=gettext_lazy("Key selector"), initial="modoboa", required=False
+    )
     quota = forms.CharField(
         label=gettext_lazy("Quota"),
         initial=0,
         help_text=gettext_lazy(
             "Quota shared between mailboxes. Can be expressed in KB, "
             "MB (default) or GB. A value of 0 means no quota."
-        )
+        ),
     )
     default_mailbox_quota = forms.CharField(
         label=gettext_lazy("Default mailbox quota"),
@@ -51,15 +56,23 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         help_text=gettext_lazy(
             "Default quota applied to mailboxes. Can be expressed in KB, MB "
             "(default) or GB. A value of 0 means no quota."
-        )
+        ),
     )
 
     class Meta:
         model = Domain
         fields = (
-            "name", "type", "quota", "default_mailbox_quota", "message_limit",
-            "aliases", "enabled", "enable_dns_checks", "enable_dkim",
-            "dkim_key_selector", "dkim_key_length"
+            "name",
+            "type",
+            "quota",
+            "default_mailbox_quota",
+            "message_limit",
+            "aliases",
+            "enabled",
+            "enable_dns_checks",
+            "enable_dkim",
+            "dkim_key_selector",
+            "dkim_key_length",
         )
 
     def __init__(self, user, *args, **kwargs):
@@ -71,15 +84,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         params = dict(param_tools.get_global_parameters("admin"))
         self.fields["quota"].initial = params["default_domain_quota"]
         if params["default_domain_message_limit"] is not None:
-            self.fields["message_limit"].initial = (
-                params["default_domain_message_limit"])
-        self.fields["default_mailbox_quota"].initial = (
-            params["default_mailbox_quota"])
+            self.fields["message_limit"].initial = params[
+                "default_domain_message_limit"
+            ]
+        self.fields["default_mailbox_quota"].initial = params["default_mailbox_quota"]
         self.fields["type"].choices = constants.DOMAIN_TYPES
-        self.field_widths = {
-            "quota": 3,
-            "default_mailbox_quota": 3
-        }
+        self.field_widths = {"quota": 3, "default_mailbox_quota": 3}
         self.user = user
 
         if len(args) and isinstance(args[0], QueryDict):
@@ -93,19 +103,20 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     def clean_name(self):
         """Check unicity and more."""
         name = self.cleaned_data["name"].lower()
-        label = lib.check_if_domain_exists(
-            name, [(DomainAlias, _("domain alias"))])
+        label = lib.check_if_domain_exists(name, [(DomainAlias, _("domain alias"))])
         if label is not None:
             raise forms.ValidationError(
-                _("A %s with this name already exists") % force_str(label))
+                _("A %s with this name already exists") % force_str(label)
+            )
 
-        domains_must_have_authorized_mx = (
-            param_tools.get_global_parameter("domains_must_have_authorized_mx")
+        domains_must_have_authorized_mx = param_tools.get_global_parameter(
+            "domains_must_have_authorized_mx"
         )
         if domains_must_have_authorized_mx and not self.user.is_superuser:
             if not lib.domain_has_authorized_mx(name):
                 raise forms.ValidationError(
-                    _("No authorized MX record found for this domain"))
+                    _("No authorized MX record found for this domain")
+                )
 
         return name
 
@@ -116,8 +127,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
             return enabled
         storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
         if not storage_dir:
-            raise forms.ValidationError(
-                _("DKIM keys storage directory not configured"))
+            raise forms.ValidationError(_("DKIM keys storage directory not configured"))
         return enabled
 
     def clean_quota(self):
@@ -127,7 +137,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
     def clean_default_mailbox_quota(self):
         """Return proper quota value."""
         return size2integer(
-            self.cleaned_data["default_mailbox_quota"], output_unit="MB")
+            self.cleaned_data["default_mailbox_quota"], output_unit="MB"
+        )
 
     def clean(self):
         """Custom fields validation.
@@ -141,13 +152,13 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if self._errors:
             return cleaned_data
         condition = (
-            self.cleaned_data["quota"] != 0 and
-            self.cleaned_data["default_mailbox_quota"] >
-            self.cleaned_data["quota"])
+            self.cleaned_data["quota"] != 0
+            and self.cleaned_data["default_mailbox_quota"] > self.cleaned_data["quota"]
+        )
         if condition:
             self.add_error(
-                "default_mailbox_quota",
-                _("Cannot be greater than domain quota"))
+                "default_mailbox_quota", _("Cannot be greater than domain quota")
+            )
         elif self.user.role == "Resellers":
             limit = self.user.userobjectlimit_set.get(name="quota")
             if limit.max_value != 0:
@@ -155,14 +166,12 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 msg = _("You can't define an unlimited quota.")
                 if quota == 0:
                     self.add_error("quota", msg)
-                default_mailbox_quota = self.cleaned_data[
-                    "default_mailbox_quota"]
+                default_mailbox_quota = self.cleaned_data["default_mailbox_quota"]
                 if default_mailbox_quota == 0:
                     self.add_error("default_mailbox_quota", msg)
         if self.cleaned_data["enable_dkim"]:
             if not self.cleaned_data.get("dkim_key_selector"):
-                self.add_error(
-                    "dkim_key_selector", _("This field is required."))
+                self.add_error("dkim_key_selector", _("This field is required."))
         self.aliases = []
         copied_data = cleaned_data.copy()
         for k in copied_data.keys():
@@ -177,12 +186,10 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 )
                 del cleaned_data[k]
                 continue
-            label = lib.check_if_domain_exists(
-                cleaned_data[k], [(Domain, _("domain"))])
+            label = lib.check_if_domain_exists(cleaned_data[k], [(Domain, _("domain"))])
             if label is not None:
                 self.add_error(
-                    k, _("A %s with this name already exists")
-                    % force_str(label)
+                    k, _("A %s with this name already exists") % force_str(label)
                 )
             else:
                 self.aliases.append(cleaned_data[k])
@@ -198,7 +205,8 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         """
         d = super(DomainFormGeneral, self).save(commit=False)
         core_signals.can_create_object.send(
-            sender=self.__class__, context=user, klass=Domain, instance=d)
+            sender=self.__class__, context=user, klass=Domain, instance=d
+        )
         if not commit:
             return d
         d.save()
@@ -209,18 +217,23 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
                 self.aliases.remove(dalias.name)
         if self.aliases:
             core_signals.can_create_object.send(
-                self.__class__, context=user, klass=DomainAlias,
-                count=len(self.aliases))
+                self.__class__, context=user, klass=DomainAlias, count=len(self.aliases)
+            )
             core_signals.can_create_object.send(
-                self.__class__, context=d, object_type="domain_aliases",
-                count=len(self.aliases))
+                self.__class__,
+                context=d,
+                object_type="domain_aliases",
+                count=len(self.aliases),
+            )
             for alias in self.aliases:
                 if d.domainalias_set.filter(name=alias).exists():
                     continue
                 options = {"creator": user} if domalias_post_create else {}
-                DomainAlias(name=alias, target=d, enabled=d.enabled).save(
-                    **options)
-        if self.cleaned_data.get("enable_dkim") is False and d.dkim_private_key_path != "":
+                DomainAlias(name=alias, target=d, enabled=d.enabled).save(**options)
+        if (
+            self.cleaned_data.get("enable_dkim") is False
+            and d.dkim_private_key_path != ""
+        ):
             d.dkim_private_key_path = ""
             d.save()
         return d
@@ -232,9 +245,7 @@ class DomainFormOptions(forms.Form):
     create_dom_admin = YesNoField(
         label=gettext_lazy("Create a domain administrator"),
         initial=False,
-        help_text=gettext_lazy(
-            "Automatically create an administrator for this domain"
-        )
+        help_text=gettext_lazy("Automatically create an administrator for this domain"),
     )
 
     dom_admin_username = forms.CharField(
@@ -244,40 +255,35 @@ class DomainFormOptions(forms.Form):
             "The administrator's name. Don't include the domain's name here, "
             "it will be automatically appended."
         ),
-        required=False
+        required=False,
     )
 
     random_password = YesNoField(
         label=gettext_lazy("Random password"),
         initial=False,
-        help_text=gettext_lazy(
-            "Generate a random password for the administrator."
-        ),
-        required=False
+        help_text=gettext_lazy("Generate a random password for the administrator."),
+        required=False,
     )
 
     with_mailbox = YesNoField(
         label=gettext_lazy("With a mailbox"),
         initial=True,
-        help_text=gettext_lazy(
-            "Create a mailbox for the administrator."
-        ),
-        required=False
+        help_text=gettext_lazy("Create a mailbox for the administrator."),
+        required=False,
     )
 
     create_aliases = YesNoField(
         label=gettext_lazy("Create aliases"),
         initial=True,
-        help_text=gettext_lazy(
-            "Automatically create standard aliases for this domain"
-        ),
-        required=False
+        help_text=gettext_lazy("Automatically create standard aliases for this domain"),
+        required=False,
     )
 
     def __init__(self, user, *args, **kwargs):
         super(DomainFormOptions, self).__init__(*args, **kwargs)
         results = core_signals.user_can_set_role.send(
-            sender=self.__class__, user=user, role="DomainAdmins")
+            sender=self.__class__, user=user, role="DomainAdmins"
+        )
         if False in [result[1] for result in results]:
             self.fields = {}
             return
@@ -293,11 +299,9 @@ class DomainFormOptions(forms.Form):
         cleaned_data = super(DomainFormOptions, self).clean()
         if cleaned_data.get("create_dom_admin"):
             if not cleaned_data.get("dom_admin_username"):
-                self.add_error(
-                    "dom_admin_username", _("This field is required."))
+                self.add_error("dom_admin_username", _("This field is required."))
             if "create_aliases" not in cleaned_data:
-                self.add_error(
-                    "create_aliases", _("This field is required."))
+                self.add_error("create_aliases", _("This field is required."))
         return cleaned_data
 
     def save(self, *args, **kwargs):
@@ -307,22 +311,19 @@ class DomainFormOptions(forms.Form):
             return
         user = kwargs.pop("user")
         domain = kwargs.pop("domain")
-        username = "%s@%s" % (
-            self.cleaned_data["dom_admin_username"], domain.name)
+        username = "%s@%s" % (self.cleaned_data["dom_admin_username"], domain.name)
         try:
             da = User.objects.get(username=username)
         except User.DoesNotExist:
             pass
         else:
             raise Conflict(_("User '%s' already exists") % username)
-        core_signals.can_create_object.send(
-            self.__class__, context=user, klass=Mailbox)
+        core_signals.can_create_object.send(self.__class__, context=user, klass=Mailbox)
         da = User(username=username, email=username, is_active=True)
         if self.cleaned_data["random_password"]:
             password = lib.make_password()
         else:
-            password = param_tools.get_global_parameter(
-                "default_password", app="core")
+            password = param_tools.get_global_parameter("default_password", app="core")
         da.set_password(password)
         da.save()
         da.role = "DomainAdmins"
@@ -331,24 +332,27 @@ class DomainFormOptions(forms.Form):
         if self.cleaned_data["with_mailbox"]:
             dom_admin_username = self.cleaned_data["dom_admin_username"]
             mb = Mailbox(
-                address=dom_admin_username, domain=domain,
-                user=da, use_domain_quota=True
+                address=dom_admin_username,
+                domain=domain,
+                user=da,
+                use_domain_quota=True,
             )
-            mb.set_quota(
-                override_rules=user.has_perm("admin.change_domain"))
+            mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
             mb.save(creator=user)
 
             condition = (
-                domain.type == "domain" and
-                self.cleaned_data["create_aliases"] and
-                dom_admin_username != "postmaster"
+                domain.type == "domain"
+                and self.cleaned_data["create_aliases"]
+                and dom_admin_username != "postmaster"
             )
             if condition:
                 core_signals.can_create_object.send(
-                    self.__class__, context=user, klass=Alias)
-                address = u"postmaster@{}".format(domain.name)
+                    self.__class__, context=user, klass=Alias
+                )
+                address = "postmaster@{}".format(domain.name)
                 alias = Alias.objects.create(
-                    address=address, domain=domain, enabled=True)
+                    address=address, domain=domain, enabled=True
+                )
                 alias.set_recipients([mb.full_address])
                 alias.post_create(user)
 
@@ -363,36 +367,37 @@ class DomainForm(TabForms):
         self.forms = []
         self.domain = None
         if self.user.has_perm("admin.change_domain"):
-            self.forms.append({
-                "id": "general",
-                "title": _("General"),
-                "formtpl": "admin/domain_general_form.html",
-                "cls": DomainFormGeneral,
-                "mandatory": True,
-                "new_args": [request.user]
-            })
+            self.forms.append(
+                {
+                    "id": "general",
+                    "title": _("General"),
+                    "formtpl": "admin/domain_general_form.html",
+                    "cls": DomainFormGeneral,
+                    "mandatory": True,
+                    "new_args": [request.user],
+                }
+            )
 
         cbargs = {"user": self.user}
         if "instances" in kwargs:
             self.domain = kwargs["instances"]["general"]
             cbargs["domain"] = self.domain
-        results = signals.extra_domain_forms.send(
-            sender=self.__class__, **cbargs)
-        self.forms += reduce(
-            lambda a, b: a + b, [result[1] for result in results])
+        results = signals.extra_domain_forms.send(sender=self.__class__, **cbargs)
+        self.forms += reduce(lambda a, b: a + b, [result[1] for result in results])
         if not self.forms:
             self.active_id = "admins"
         super(DomainForm, self).__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
         """Add information to template context."""
-        context.update({
-            "title": self.domain.name,
-            "action": reverse(
-                "admin:domain_change", args=[self.domain.pk]),
-            "formid": "domform",
-            "domain": self.domain
-        })
+        context.update(
+            {
+                "title": self.domain.name,
+                "action": reverse("admin:domain_change", args=[self.domain.pk]),
+                "formid": "domform",
+                "domain": self.domain,
+            }
+        )
 
     def is_valid(self):
         """Custom validation.
@@ -417,8 +422,7 @@ class DomainForm(TabForms):
         first_form = self.forms[0]["instance"]
         options = {}
         if isinstance(first_form, DomainFormGeneral):
-            domain = first_form.save(
-                self.request.user, domalias_post_create=True)
+            domain = first_form.save(self.request.user, domalias_post_create=True)
             options.update({"domain": domain})
         else:
             first_form.save(self.request.user)
@@ -436,9 +440,11 @@ class DomainWizard(WizardForm):
         super(DomainWizard, self).__init__(request)
         self.add_step(
             WizardStep(
-                "general", DomainFormGeneral, _("General"),
+                "general",
+                DomainFormGeneral,
+                _("General"),
                 "admin/domain_general_form.html",
-                [request.user]
+                [request.user],
             )
         )
         results = signals.extra_domain_wizard_steps.send(sender=self.__class__)
@@ -447,18 +453,22 @@ class DomainWizard(WizardForm):
                 self.add_step(step)
         self.add_step(
             WizardStep(
-                "options", DomainFormOptions, _("Options"),
+                "options",
+                DomainFormOptions,
+                _("Options"),
                 "admin/domain_options_form.html",
-                [self.request.user]
+                [self.request.user],
             )
         )
 
     def extra_context(self, context):
-        context.update({
-            "title": _("New domain"),
-            "action": reverse("admin:domain_add"),
-            "formid": "domform"
-        })
+        context.update(
+            {
+                "title": _("New domain"),
+                "action": reverse("admin:domain_add"),
+                "formid": "domform",
+            }
+        )
 
     def done(self):
         genform = self.first_step.form

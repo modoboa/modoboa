@@ -17,8 +17,8 @@ def move_relaydomain_to_transport(apps, schema_editor):
             _settings={
                 "relay_target_host": rd.target_host,
                 "relay_target_port": rd.target_port,
-                "relay_verify_recipients": rd.verify_recipients
-            }
+                "relay_verify_recipients": rd.verify_recipients,
+            },
         )
         rd.domain.transport = tr
         rd.domain.save(update_fields=["transport"])
@@ -26,7 +26,9 @@ def move_relaydomain_to_transport(apps, schema_editor):
             continue
         ra_to_create.append(
             RecipientAccess(
-                pattern=rd.domain.name, action="reject_unverified_recipient"))
+                pattern=rd.domain.name, action="reject_unverified_recipient"
+            )
+        )
     RecipientAccess.objects.bulk_create(ra_to_create)
 
 
@@ -38,11 +40,9 @@ def forward(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('relaydomains', '0007_recipientaccess'),
-        ('transport', '0001_initial'),
-        ('admin', '0011_domain_transport'),
+        ("relaydomains", "0007_recipientaccess"),
+        ("transport", "0001_initial"),
+        ("admin", "0011_domain_transport"),
     ]
 
-    operations = [
-        migrations.RunPython(move_relaydomain_to_transport, forward)
-    ]
+    operations = [migrations.RunPython(move_relaydomain_to_transport, forward)]

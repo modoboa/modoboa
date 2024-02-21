@@ -37,11 +37,12 @@ class SMTPBackend(object):
            We assume the username is a valid email address.
         """
         user, created = User.objects.get_or_create(
-            username__iexact=username, defaults={
+            username__iexact=username,
+            defaults={
                 "username": username.lower(),
                 "email": username.lower(),
-                "language": settings.LANGUAGE_CODE
-            }
+                "language": settings.LANGUAGE_CODE,
+            },
         )
         if created:
             populate_callback(user)
@@ -58,9 +59,7 @@ class SMTPBackend(object):
 
 
 try:
-    from django_auth_ldap.backend import (
-        LDAPBackend as orig_LDAPBackend, _LDAPUser
-    )
+    from django_auth_ldap.backend import LDAPBackend as orig_LDAPBackend, _LDAPUser
 
     class LDAPBackendBase(orig_LDAPBackend):
 
@@ -68,8 +67,7 @@ try:
             """Load LDAP settings."""
             param_tools.apply_to_django_settings()
             super().__init__(*args, **kwargs)
-            self.global_params = dict(
-                param_tools.get_global_parameters("core"))
+            self.global_params = dict(param_tools.get_global_parameters("core"))
 
         def get_or_build_user(self, username, ldap_user):
             """
@@ -88,7 +86,7 @@ try:
             if domain is None:
                 # Try to find associated email
                 email = None
-                for attr in ['mail', 'userPrincipalName']:
+                for attr in ["mail", "userPrincipalName"]:
                     if attr in ldap_user.attrs:
                         email = ldap_user.attrs[attr][0]
                         break
@@ -104,8 +102,8 @@ try:
                 defaults={
                     "username": username.lower(),
                     "is_local": False,
-                    "language": settings.LANGUAGE_CODE
-                }
+                    "language": settings.LANGUAGE_CODE,
+                },
             )
             if created:
                 populate_callback(user, group)
@@ -130,7 +128,6 @@ try:
             """Return fullname for given setting."""
             return "{}{}".format(cls.settings_prefix, setting)
 
-
     class LDAPBackend(LDAPBackendBase):
         """Primary LDAP backend."""
 
@@ -138,14 +135,12 @@ try:
         srv_address_setting_name = "ldap_server_address"
         srv_port_setting_name = "ldap_server_port"
 
-
     class LDAPSecondaryBackend(LDAPBackendBase):
         """Secondary LDAP backend."""
 
         settings_prefix = "AUTH_LDAP_2_"
         srv_address_setting_name = "ldap_secondary_server_address"
         srv_port_setting_name = "ldap_secondary_server_port"
-
 
 except ImportError:
     pass

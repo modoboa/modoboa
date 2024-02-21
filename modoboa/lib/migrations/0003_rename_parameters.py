@@ -23,10 +23,8 @@ def rename_parameters(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lib', '0002_rename_parameters'),
-        ('admin', '0001_initial'),
+        ("lib", "0002_rename_parameters"),
+        ("admin", "0001_initial"),
     ]
 
-    operations = [
-        migrations.RunPython(rename_parameters)
-    ]
+    operations = [migrations.RunPython(rename_parameters)]

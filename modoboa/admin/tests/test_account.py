@@ -19,9 +19,10 @@ class AuthenticationTestCase(ModoTestCase):
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
         cls.mb = factories.MailboxFactory(
-            domain__name="test.com", address="user",
+            domain__name="test.com",
+            address="user",
             user__username="user@test.com",
-            user__groups=("SimpleUsers",)
+            user__groups=("SimpleUsers",),
         )
 
     def test_authentication_unicode(self):
@@ -46,10 +47,16 @@ class AccountTestCase(ModoTestCase):
 
     def test_crud(self):
         values = {
-            "username": "tester@test.com", "first_name": "Tester",
-            "last_name": "Toto", "password1": "Toto1234",
-            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
-            "is_active": True, "email": "tester@test.com", "stepid": "step2"
+            "username": "tester@test.com",
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "tester@test.com",
+            "stepid": "step2",
         }
         self.ajax_post(reverse("admin:account_add"), values)
 
@@ -66,19 +73,24 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(mb.domain.mailbox_count, 3)
         # Check if self alias has been created
         self.assertTrue(
-            models.AliasRecipient.objects.select_related("alias").filter(
-                alias__address=mb.full_address, address=mb.full_address,
-                alias__internal=True).exists()
+            models.AliasRecipient.objects.select_related("alias")
+            .filter(
+                alias__address=mb.full_address,
+                address=mb.full_address,
+                alias__internal=True,
+            )
+            .exists()
         )
 
-        values.update({
-            "username": "pouet@test.com", "language": "en",
-            "secondary_email": "homer@simpson.com",
-            "phone_number": "+33612345678"
-        })
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.id]), values
+        values.update(
+            {
+                "username": "pouet@test.com",
+                "language": "en",
+                "secondary_email": "homer@simpson.com",
+                "phone_number": "+33612345678",
+            }
         )
+        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
         account.refresh_from_db()
         self.assertEqual(account.secondary_email, values["secondary_email"])
         mb = models.Mailbox.objects.get(pk=mb.pk)
@@ -86,18 +98,24 @@ class AccountTestCase(ModoTestCase):
         self.assertEqual(mb.quota_value.username, "pouet@test.com")
         # Check if self alias has been updated
         self.assertTrue(
-            models.AliasRecipient.objects.select_related("alias").filter(
-                alias__address=mb.full_address, address=mb.full_address,
-                alias__internal=True).exists()
+            models.AliasRecipient.objects.select_related("alias")
+            .filter(
+                alias__address=mb.full_address,
+                address=mb.full_address,
+                alias__internal=True,
+            )
+            .exists()
         )
-        self.ajax_post(
-            reverse("admin:account_delete", args=[account.id]), {}
-        )
+        self.ajax_post(reverse("admin:account_delete", args=[account.id]), {})
         # Check if self alias has been deleted
         self.assertFalse(
-            models.AliasRecipient.objects.select_related("alias").filter(
-                alias__address=mb.full_address, address=mb.full_address,
-                alias__internal=True).exists()
+            models.AliasRecipient.objects.select_related("alias")
+            .filter(
+                alias__address=mb.full_address,
+                address=mb.full_address,
+                alias__internal=True,
+            )
+            .exists()
         )
 
     @override_settings(LANGUAGE_CODE="fr")
@@ -113,7 +131,7 @@ class AccountTestCase(ModoTestCase):
             "quota_act": True,
             "is_active": True,
             "email": "tester@test.com",
-            "stepid": "step2"
+            "stepid": "step2",
         }
         self.ajax_post(reverse("admin:account_add"), values)
         account = User.objects.get(username=values["username"])
@@ -148,11 +166,9 @@ class AccountTestCase(ModoTestCase):
         }
         self.ajax_post(reverse("admin:account_add"), values)
         # Check that internal alias has not been updated
-        alias = models.Alias.objects.get(
-            address="user@test.com", internal=True)
+        alias = models.Alias.objects.get(address="user@test.com", internal=True)
         self.assertTrue(alias.aliasrecipient_set.count() == 1)
-        alias = models.Alias.objects.get(
-            address="user@test.com", internal=False)
+        alias = models.Alias.objects.get(address="user@test.com", internal=False)
         self.assertTrue(alias.aliasrecipient_set.count() == 1)
 
     def test_create_disabled_account(self):
@@ -167,7 +183,7 @@ class AccountTestCase(ModoTestCase):
             "quota_act": True,
             "is_active": False,
             "email": "tester@test.com",
-            "stepid": "step2"
+            "stepid": "step2",
         }
         self.ajax_post(reverse("admin:account_add"), values)
         account = User.objects.get(username=values["username"])
@@ -186,19 +202,15 @@ class AccountTestCase(ModoTestCase):
             "quota_act": True,
             "is_active": False,
             "email": "user@test.com",
-            "language": "en"
+            "language": "en",
         }
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.id]), values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
         internal.refresh_from_db()
         self.assertFalse(internal.enabled)
         forward.refresh_from_db()
         self.assertFalse(forward.enabled)
         values["is_active"] = True
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.id]), values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
         internal.refresh_from_db()
         self.assertTrue(internal.enabled)
         forward.refresh_from_db()
@@ -217,7 +229,7 @@ class AccountTestCase(ModoTestCase):
             "email": "new_user@test.com",
             "language": "en",
             "create_alias_with_old_address": False,
-            "aliases_1": "alias@test.com"
+            "aliases_1": "alias@test.com",
         }
         url = reverse("admin:account_change", args=[account.pk])
         self.ajax_post(url, values)
@@ -237,42 +249,48 @@ class AccountTestCase(ModoTestCase):
             "is_active": account.is_active,
             "email": "new_user@test.com",
             "language": "en",
-            "create_alias_with_old_address": False
+            "create_alias_with_old_address": False,
         }
         url = reverse("admin:account_change", args=[account.pk])
         # Rename while option is set to False -> no alias created
         self.ajax_post(url, values)
         self.assertFalse(
             models.AliasRecipient.objects.filter(
-                address="new_user@test.com", alias__address="user@test.com",
-                alias__internal=False
+                address="new_user@test.com",
+                alias__address="user@test.com",
+                alias__internal=False,
             ).exists()
         )
         # Now rename while option set to True -> alias created
-        values.update({
-            "username": "user@test.com",
-            "email": "user@test.com",
-            "create_alias_with_old_address": True}
+        values.update(
+            {
+                "username": "user@test.com",
+                "email": "user@test.com",
+                "create_alias_with_old_address": True,
+            }
         )
         self.ajax_post(url, values)
         self.assertTrue(
             models.AliasRecipient.objects.filter(
-                address="user@test.com", alias__address="new_user@test.com",
-                alias__internal=False
+                address="user@test.com",
+                alias__address="new_user@test.com",
+                alias__internal=False,
             ).exists()
         )
         # Change domain while option set to True -> alias created
-        values.update({
-            "username": "new_user@test2.com",
-            "email": "new_user@test2.com",
-        })
+        values.update(
+            {
+                "username": "new_user@test2.com",
+                "email": "new_user@test2.com",
+            }
+        )
         self.ajax_post(url, values)
         self.assertTrue(
             models.AliasRecipient.objects.filter(
                 address="new_user@test2.com",
                 alias__address="user@test.com",
                 alias__domain__name="test.com",
-                alias__internal=False
+                alias__internal=False,
             ).exists()
         )
 
@@ -280,38 +298,45 @@ class AccountTestCase(ModoTestCase):
         """Check password constraints."""
         values = {
             "username": "tester@test.com",
-            "first_name": "Tester", "last_name": "Toto",
-            "password1": "", "password2": "",
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "password1": "",
+            "password2": "",
             "role": "SimpleUsers",
-            "quota_act": True, "is_active": True, "email": "tester@test.com",
-            "stepid": "step2"
+            "quota_act": True,
+            "is_active": True,
+            "email": "tester@test.com",
+            "stepid": "step2",
         }
         resp = self.ajax_post(reverse("admin:account_add"), values, 400)
-        self.assertEqual(
-            resp["form_errors"]["password1"][0],
-            "This field is required.")
+        self.assertEqual(resp["form_errors"]["password1"][0], "This field is required.")
         values["password1"] = "Toto1234"
         values["password2"] = "Toto12345"
         resp = self.ajax_post(reverse("admin:account_add"), values, 400)
         self.assertEqual(
-            resp["form_errors"]["password2"][0],
-            "The two password fields didn't match.")
+            resp["form_errors"]["password2"][0], "The two password fields didn't match."
+        )
 
         values["password1"] = "toto1234"
         values["password2"] = "toto1234"
         resp = self.ajax_post(reverse("admin:account_add"), values, 400)
         self.assertEqual(
             resp["form_errors"]["password2"][0],
-            "Password must contain at least 1 uppercase letter.")
+            "Password must contain at least 1 uppercase letter.",
+        )
 
     def test_random_password(self):
         """Try to create an account with a random password."""
         values = {
             "username": "tester@test.com",
-            "first_name": "Tester", "last_name": "Toto",
-            "random_password": True, "role": "SimpleUsers",
-            "quota_act": True, "is_active": True, "email": "tester@test.com",
-            "stepid": "step2"
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "random_password": True,
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "tester@test.com",
+            "stepid": "step2",
         }
         self.ajax_post(reverse("admin:account_add"), values)
 
@@ -320,62 +345,56 @@ class AccountTestCase(ModoTestCase):
         values["language"] = "en"
         # Since 'random_password' is still True, a new password should
         # be generated
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         account.refresh_from_db()
         self.assertNotEqual(password, account.password)
         password = account.password
 
         values["random_password"] = False
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         account.refresh_from_db()
         self.assertEqual(password, account.password)
 
     def test_delete_default_superadmin(self):
         """Delete default superadmin."""
-        sadmin2 = core_factories.UserFactory(
-            username="admin2", is_superuser=True)
+        sadmin2 = core_factories.UserFactory(username="admin2", is_superuser=True)
         sadmin = User.objects.get(username="admin")
         self.client.force_login(sadmin2)
-        self.ajax_post(
-            reverse("admin:account_delete", args=[sadmin.pk]), {}
-        )
+        self.ajax_post(reverse("admin:account_delete", args=[sadmin.pk]), {})
         values = {
-            "username": "user@test.com", "role": "DomainAdmins",
-            "is_active": True, "email": "user@test.com",
-            "language": "en"
+            "username": "user@test.com",
+            "role": "DomainAdmins",
+            "is_active": True,
+            "email": "user@test.com",
+            "language": "en",
         }
         account = User.objects.get(username="user@test.com")
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
 
     def test_sender_address(self):
         """Check if sender addresses are saved."""
         account = User.objects.get(username="user@test.com")
         values = {
-            "username": "user@test.com", "first_name": "Tester",
-            "last_name": "Toto", "role": "SimpleUsers",
-            "quota_act": True, "is_active": True, "email": "user@test.com",
-            "senderaddress": "test@titi.com", "senderaddress_1": "toto@go.com",
-            "language": "en"
+            "username": "user@test.com",
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "user@test.com",
+            "senderaddress": "test@titi.com",
+            "senderaddress_1": "toto@go.com",
+            "language": "en",
         }
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values)
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         self.assertEqual(
-            models.SenderAddress.objects.filter(
-                mailbox__address="user").count(),
-            2)
+            models.SenderAddress.objects.filter(mailbox__address="user").count(), 2
+        )
         del values["senderaddress_1"]
-        self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values)
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         self.assertEqual(
-            models.SenderAddress.objects.filter(
-                mailbox__address="user").count(),
-            1)
+            models.SenderAddress.objects.filter(mailbox__address="user").count(), 1
+        )
 
     def test_sender_address_as_domainadmin(self):
         """Check that restrictions are applied."""
@@ -383,63 +402,83 @@ class AccountTestCase(ModoTestCase):
         self.client.force_login(admin)
         account = User.objects.get(username="user@test.com")
         values = {
-            "username": "user@test.com", "first_name": "Tester",
-            "last_name": "Toto", "role": "SimpleUsers",
-            "quota_act": True, "is_active": True, "email": "user@test.com",
+            "username": "user@test.com",
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "user@test.com",
             "senderaddress": "test@titi.com",
-            "senderaddress_1": "toto@test2.com"
+            "senderaddress_1": "toto@test2.com",
         }
         response = self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values, 400)
+            reverse("admin:account_change", args=[account.pk]), values, 400
+        )
         self.assertEqual(
             response["form_errors"]["senderaddress_1"][0],
-            "You don't have access to this domain")
+            "You don't have access to this domain",
+        )
 
     def test_conflicts(self):
         """Check if unicity constraints are respected."""
         values = {
             "username": "user@test.com",
-            "password1": "Toto1234", "password2": "Toto1234",
-            "role": "SimpleUsers", "quota_act": True,
-            "is_active": True, "email": "user@test.com",
-            "stepid": "step2"
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "user@test.com",
+            "stepid": "step2",
         }
         self.ajax_post(reverse("admin:account_add"), values, status=400)
 
-        values.update({"username": "fakeuser@test.com",
-                       "email": "fakeuser@test.com"})
+        values.update({"username": "fakeuser@test.com", "email": "fakeuser@test.com"})
         self.ajax_post(reverse("admin:account_add"), values)
         account = User.objects.get(username="fakeuser@test.com")
         values = {
             "username": "user@test.com",
-            "role": "SimpleUsers", "quota_act": True,
-            "is_active": True, "email": "user@test.com",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "user@test.com",
         }
         self.ajax_post(
-            reverse("admin:account_change", args=[account.pk]), values,
-            status=400
+            reverse("admin:account_change", args=[account.pk]), values, status=400
         )
 
     def test_utf8_username(self):
         """Create an account with non-ASCII characters."""
         values = {
-            "username": "téster@test.com", "first_name": "Tester",
-            "last_name": "Toto", "password1": "Toto1234",
-            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
-            "is_active": True, "email": "téster@test.com", "stepid": "step2"
+            "username": "téster@test.com",
+            "first_name": "Tester",
+            "last_name": "Toto",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "téster@test.com",
+            "stepid": "step2",
         }
         self.ajax_post(reverse("admin:account_add"), values)
 
     def _set_quota(self, email, value, expected_status=200):
         account = User.objects.get(username=email)
         values = {
-            "username": email, "role": "SimpleUsers", "quota_act": False,
-            "is_active": True, "quota": value, "email": email,
-            "language": "en"
+            "username": email,
+            "role": "SimpleUsers",
+            "quota_act": False,
+            "is_active": True,
+            "quota": value,
+            "email": email,
+            "language": "en",
         }
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]),
-            values, status=expected_status
+            values,
+            status=expected_status,
         )
 
     def test_set_nul_quota_as_superadmin(self):
@@ -448,15 +487,11 @@ class AccountTestCase(ModoTestCase):
     def test_set_nul_quota_as_domainadmin(self):
         """Check cases where a domain admin set unlimited quota."""
         self.client.logout()
-        self.assertTrue(
-            self.client.login(username="admin@test.com", password="toto")
-        )
+        self.assertTrue(self.client.login(username="admin@test.com", password="toto"))
         # Fails because domain has a quota
         self._set_quota("user@test.com", 0, 400)
         self.client.logout()
-        self.assertTrue(
-            self.client.login(username="admin@test2.com", password="toto")
-        )
+        self.assertTrue(self.client.login(username="admin@test2.com", password="toto"))
         # Ok because domain has no quota
         self._set_quota("user@test2.com", 0)
 
@@ -477,25 +512,29 @@ class AccountTestCase(ModoTestCase):
     def test_master_user(self):
         """Validate the master user mode."""
         values = {
-            "username": "masteruser", "role": "SuperAdmins",
+            "username": "masteruser",
+            "role": "SuperAdmins",
             "quota_act": False,
-            "is_active": True, "master_user": True, "stepid": "step2",
-            "password1": "Toto1234", "password2": "Toto1234"
+            "is_active": True,
+            "master_user": True,
+            "stepid": "step2",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
         }
-        self.ajax_post(
-            reverse("admin:account_add"), values
-        )
+        self.ajax_post(reverse("admin:account_add"), values)
         self.assertTrue(User.objects.get(username="masteruser").master_user)
 
         values = {
-            "username": "testuser", "role": "DomainAdmins",
+            "username": "testuser",
+            "role": "DomainAdmins",
             "quota_act": False,
-            "is_active": True, "master_user": True, "stepid": "step2",
-            "password1": "Toto1234", "password2": "Toto1234"
+            "is_active": True,
+            "master_user": True,
+            "stepid": "step2",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
         }
-        self.ajax_post(
-            reverse("admin:account_add"), values, status=400
-        )
+        self.ajax_post(reverse("admin:account_add"), values, status=400)
 
     def test_account_detail_view(self):
         """Test account detail view."""
@@ -513,8 +552,7 @@ class AccountTestCase(ModoTestCase):
 
     def test_quota_list_view(self):
         """Test quota list view."""
-        models.Quota.objects.filter(username="user@test.com").update(
-            bytes=5 * 1048576)
+        models.Quota.objects.filter(username="user@test.com").update(bytes=5 * 1048576)
         url = reverse("admin:identity_quota_list")
         response = self.ajax_get(url)
         self.assertIn("5M", response["rows"])
@@ -522,24 +560,23 @@ class AccountTestCase(ModoTestCase):
         self.assertIn("user@test.com", response["rows"])
         old_rows = response["rows"]
 
-        response = self.ajax_get(
-            "{}?sort_order=-quota_value__bytes".format(url))
+        response = self.ajax_get("{}?sort_order=-quota_value__bytes".format(url))
         self.assertNotEqual(old_rows, response["rows"])
         old_rows = response["rows"]
 
-        response = self.ajax_get(
-            "{}?sort_order=-quota_usage".format(url))
+        response = self.ajax_get("{}?sort_order=-quota_usage".format(url))
         self.assertEqual(old_rows, response["rows"])
 
-        response = self.ajax_get(
-            "{}?sort_order=-unknown".format(url), status=400)
+        response = self.ajax_get("{}?sort_order=-unknown".format(url), status=400)
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
-@override_settings(AUTHENTICATION_BACKENDS=(
-    "modoboa.lib.authbackends.LDAPBackend",
-    "django.contrib.auth.backends.ModelBackend",
-))
+@override_settings(
+    AUTHENTICATION_BACKENDS=(
+        "modoboa.lib.authbackends.LDAPBackend",
+        "django.contrib.auth.backends.ModelBackend",
+    )
+)
 class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
     """Check LDAP related code."""
 
@@ -550,10 +587,8 @@ class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
         self.set_global_parameter("auto_create_domain_and_mailbox", False)
         username = "testuser@example.com"
         self.authenticate(username, "test")
-        self.assertFalse(
-            models.Domain.objects.filter(name="example.com").exists())
-        self.assertFalse(
-            models.Mailbox.objects.filter(address="testuser").exists())
+        self.assertFalse(models.Domain.objects.filter(name="example.com").exists())
+        self.assertFalse(models.Mailbox.objects.filter(address="testuser").exists())
 
 
 class PermissionsTestCase(ModoTestCase):
@@ -576,9 +611,12 @@ class PermissionsTestCase(ModoTestCase):
         """Initiate test context."""
         super(PermissionsTestCase, self).setUp()
         self.values = {
-            "username": self.user.username, "role": "DomainAdmins",
-            "is_active": self.user.is_active, "email": "user@test.com",
-            "quota_act": True, "language": "en"
+            "username": self.user.username,
+            "role": "DomainAdmins",
+            "is_active": self.user.is_active,
+            "email": "user@test.com",
+            "quota_act": True,
+            "language": "en",
         }
 
     def tearDown(self):
@@ -588,8 +626,7 @@ class PermissionsTestCase(ModoTestCase):
         factories.DomainFactory(name="test2.com")
 
         self.ajax_post(
-            reverse("admin:account_change", args=[self.user.id]),
-            self.values
+            reverse("admin:account_change", args=[self.user.id]), self.values
         )
         self.assertEqual(self.user.role, "DomainAdmins")
 
@@ -599,8 +636,7 @@ class PermissionsTestCase(ModoTestCase):
         self.values["domains_1"] = "test.com"
         self.values["domains_2"] = "test2.com"
         self.ajax_post(
-            reverse("admin:account_change", args=[self.user.id]),
-            self.values
+            reverse("admin:account_change", args=[self.user.id]), self.values
         )
         self.assertIn(
             self.user, models.Domain.objects.get(name="test.com").admins.all()
@@ -611,8 +647,7 @@ class PermissionsTestCase(ModoTestCase):
 
         del self.values["domains_2"]
         self.ajax_post(
-            reverse("admin:account_change", args=[self.user.id]),
-            self.values
+            reverse("admin:account_change", args=[self.user.id]), self.values
         )
         self.assertIn(
             self.user, models.Domain.objects.get(name="test.com").admins.all()
@@ -623,12 +658,9 @@ class PermissionsTestCase(ModoTestCase):
 
         self.values["role"] = "SimpleUsers"
         self.ajax_post(
-            reverse("admin:account_change", args=[self.user.id]),
-            self.values
+            reverse("admin:account_change", args=[self.user.id]), self.values
         )
-        self.assertFalse(
-            self.user.groups.filter(name="DomainAdmins").exists()
-        )
+        self.assertFalse(self.user.groups.filter(name="DomainAdmins").exists())
         self.assertNotIn(
             self.user, models.Domain.objects.get(name="test.com").admins.all()
         )
@@ -636,46 +668,36 @@ class PermissionsTestCase(ModoTestCase):
     def test_superusers(self):
         self.values["role"] = "SuperAdmins"
         self.ajax_post(
-            reverse("admin:account_change", args=[self.user.id]),
-            self.values
+            reverse("admin:account_change", args=[self.user.id]), self.values
         )
-        self.assertEqual(
-            User.objects.get(username="user@test.com").is_superuser, True
-        )
+        self.assertEqual(User.objects.get(username="user@test.com").is_superuser, True)
 
         self.values["role"] = "SimpleUsers"
         self.ajax_post(
-            reverse("admin:account_change", args=[self.user.id]),
-            self.values
+            reverse("admin:account_change", args=[self.user.id]), self.values
         )
-        self.assertEqual(User.objects.get(
-            username="user@test.com").is_superuser, False)
+        self.assertEqual(User.objects.get(username="user@test.com").is_superuser, False)
 
     def test_self_modif(self):
         self.client.logout()
-        self.assertTrue(
-            self.client.login(username="admin@test.com", password="toto")
-        )
+        self.assertTrue(self.client.login(username="admin@test.com", password="toto"))
         admin = User.objects.get(username="admin@test.com")
         values = {
-            "username": "admin@test.com", "first_name": "Admin",
-            "password1": "", "password2": "",
-            "quota": 10, "is_active": True, "email": "admin@test.com",
-            "language": "en"
+            "username": "admin@test.com",
+            "first_name": "Admin",
+            "password1": "",
+            "password2": "",
+            "quota": 10,
+            "is_active": True,
+            "email": "admin@test.com",
+            "language": "en",
         }
-        self.ajax_post(
-            reverse("admin:account_change", args=[admin.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[admin.id]), values)
         self.assertEqual(admin.role, "DomainAdmins")
-        self.assertTrue(admin.can_access(
-            models.Domain.objects.get(name="test.com")))
+        self.assertTrue(admin.can_access(models.Domain.objects.get(name="test.com")))
 
         values["role"] = "SuperAdmins"
-        self.ajax_post(
-            reverse("admin:account_change", args=[admin.id]),
-            values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[admin.id]), values)
         admin.refresh_from_db()
         self.assertEqual(admin.role, "DomainAdmins")
 
@@ -683,33 +705,31 @@ class PermissionsTestCase(ModoTestCase):
         self.client.login(username=self.reseller.username, password="toto")
         self.assertTrue(self.reseller.can_access(self.reseller))
         values = {
-            "username": self.reseller.username, "first_name": "Reseller",
-            "password1": "", "password2": "",
-            "is_active": True, "language": "en"
+            "username": self.reseller.username,
+            "first_name": "Reseller",
+            "password1": "",
+            "password2": "",
+            "is_active": True,
+            "language": "en",
         }
-        self.ajax_post(
-            reverse("admin:account_change", args=[self.reseller.pk]),
-            values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[self.reseller.pk]), values)
         self.assertEqual(self.reseller.role, "Resellers")
         values["role"] = "SuperAdmins"
-        self.ajax_post(
-            reverse("admin:account_change", args=[self.reseller.pk]),
-            values
-        )
+        self.ajax_post(reverse("admin:account_change", args=[self.reseller.pk]), values)
         self.assertEqual(self.reseller.role, "Resellers")
 
     def test_domadmin_access(self):
         self.client.logout()
         self.assertEqual(
-            self.client.login(username="admin@test.com", password="toto"),
-            True)
+            self.client.login(username="admin@test.com", password="toto"), True
+        )
         response = self.client.get(reverse("admin:domain_list"))
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get(
             reverse("admin:account_change", args=[self.user.id]),
-            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
         self.assertNotEqual(response["Content-Type"], "application/json")
 
     def test_domainadmin_deletes_superadmin(self):
@@ -720,21 +740,21 @@ class PermissionsTestCase(ModoTestCase):
         to access the super admin.
         """
         values = {
-            "username": "superadmin2@test.com", "first_name": "Super",
-            "last_name": "Admin", "password1": "Toto1234",
-            "password2": "Toto1234", "role": "SuperAdmins", "is_active": True,
-            "email": "superadmin2@test.com", "stepid": "step2"
+            "username": "superadmin2@test.com",
+            "first_name": "Super",
+            "last_name": "Admin",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SuperAdmins",
+            "is_active": True,
+            "email": "superadmin2@test.com",
+            "stepid": "step2",
         }
-        self.ajax_post(
-            reverse("admin:account_add"),
-            values
-        )
+        self.ajax_post(reverse("admin:account_add"), values)
         account = User.objects.get(username="superadmin2@test.com")
         self.client.logout()
         self.client.login(username="admin@test.com", password="toto")
-        self.ajax_post(
-            reverse("admin:account_delete", args=[account.id]), {}, 403
-        )
+        self.ajax_post(reverse("admin:account_delete", args=[account.id]), {}, 403)
 
     def test_domainadmin_dlist_local_domain_not_owned(self):
         """Check if a domain admin can use a local mailbox he can't
@@ -743,22 +763,25 @@ class PermissionsTestCase(ModoTestCase):
             "address": "all@test.com",
             "recipients": "user@test.com",
             "recipients_1": "user@test2.com",
-            "enabled": True
+            "enabled": True,
         }
         self.ajax_post(reverse("admin:alias_add"), values)
 
     def test_domainadmin_master_user(self):
         """Check domain administrator is not allowed to access this feature."""
         values = {
-            "username": "user10@test.com", "first_name": "Test",
-            "last_name": "Test", "password1": "Toto1234",
-            "password2": "Toto1234", "role": "SimpleUsers", "is_active": True,
-            "master_user": True, "email": "user10@test.com", "stepid": "step2"
+            "username": "user10@test.com",
+            "first_name": "Test",
+            "last_name": "Test",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SimpleUsers",
+            "is_active": True,
+            "master_user": True,
+            "email": "user10@test.com",
+            "stepid": "step2",
         }
-        self.ajax_post(
-            reverse("admin:account_add"),
-            values, status=400
-        )
+        self.ajax_post(reverse("admin:account_add"), values, status=400)
 
     def test_domadmins_permissions(self):
         """
@@ -767,17 +790,24 @@ class PermissionsTestCase(ModoTestCase):
         """
         dom = models.Domain.objects.get(name="test.com")
         mb = factories.MailboxFactory(
-            domain=dom, address="admin2",
-            user__username="admin2@test.com", user__groups=("DomainAdmins", ),
-            user__password="{PLAIN}toto")
+            domain=dom,
+            address="admin2",
+            user__username="admin2@test.com",
+            user__groups=("DomainAdmins",),
+            user__password="{PLAIN}toto",
+        )
         dom.add_admin(mb.user)
         self.client.logout()
-        self.assertTrue(
-            self.client.login(username="admin@test.com", password="toto"))
+        self.assertTrue(self.client.login(username="admin@test.com", password="toto"))
         values = {
-            "username": "new@test.com", "password1": "Toto1234",
-            "password2": "Toto1234", "role": "SimpleUsers", "quota_act": True,
-            "is_active": True, "email": "new@test.com", "stepid": "step2"
+            "username": "new@test.com",
+            "password1": "Toto1234",
+            "password2": "Toto1234",
+            "role": "SimpleUsers",
+            "quota_act": True,
+            "is_active": True,
+            "email": "new@test.com",
+            "stepid": "step2",
         }
         self.ajax_post(reverse("admin:account_add"), values)
 

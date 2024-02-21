@@ -23,18 +23,20 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
     if kwargs.get("created"):
         return
     instance.mailbox_set.filter(use_domain_quota=True).update(
-        quota=instance.default_mailbox_quota)
+        quota=instance.default_mailbox_quota
+    )
     if instance.old_mail_homes is None:
         return
-    qset = (
-        models.Quota.objects.filter(
-            username__contains="@{}".format(instance.oldname))
+    qset = models.Quota.objects.filter(
+        username__contains="@{}".format(instance.oldname)
     )
     for q in qset:
         username = q.username.replace(
-            "@{}".format(instance.oldname), "@{}".format(instance.name))
+            "@{}".format(instance.oldname), "@{}".format(instance.name)
+        )
         models.Quota.objects.create(
-            username=username, bytes=q.bytes, messages=q.messages)
+            username=username, bytes=q.bytes, messages=q.messages
+        )
         q.delete()
     for mb in instance.mailbox_set.all():
         mb.rename_dir(instance.old_mail_homes[mb.pk])
@@ -42,8 +44,7 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
     # .update(address=Concat("local_part", Value(instance.name)))
     # if the local_part was stored aside the address...
     for alias in instance.alias_set.all():
-        alias.address = "{}@{}".format(
-            alias.address.split("@", 1)[0], instance.name)
+        alias.address = "{}@{}".format(alias.address.split("@", 1)[0], instance.name)
         alias.save(update_fields=["address"])
 
 
@@ -51,11 +52,8 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
 def create_dkim_key(sender, instance, **kwargs):
     if not instance.enable_dkim:
         return
-    queue = django_rq.get_queue('dkim')
-    queue.enqueue(call_command,
-                      "modo",
-                      "manage_dkim_keys",
-                      f"--domain={instance.name}")
+    queue = django_rq.get_queue("dkim")
+    queue.enqueue(call_command, "modo", "manage_dkim_keys", f"--domain={instance.name}")
 
 
 @receiver(signals.post_save, sender=models.DomainAlias)
@@ -64,16 +62,17 @@ def create_alias_for_domainalias(sender, instance, **kwargs):
     if not kwargs.get("created"):
         return
     alias = models.Alias.objects.create(
-        address=u"@{}".format(instance.name), enabled=True, internal=True)
+        address="@{}".format(instance.name), enabled=True, internal=True
+    )
     models.AliasRecipient.objects.create(
-        address=u"@{}".format(instance.target.name), alias=alias)
+        address="@{}".format(instance.target.name), alias=alias
+    )
 
 
 @receiver(signals.post_delete, sender=models.DomainAlias)
 def remove_alias_for_domainalias(sender, instance, **kwargs):
     """Remove the alias associated to domain alias."""
-    models.Alias.objects.filter(
-        address=u"@{}".format(instance.name)).delete()
+    models.Alias.objects.filter(address="@{}".format(instance.name)).delete()
 
 
 @receiver(signals.post_save, sender=models.Mailbox)
@@ -84,20 +83,22 @@ def manage_alias_for_mailbox(sender, instance, **kwargs):
             address=instance.full_address,
             domain=instance.domain,
             internal=True,
-            defaults={
-                "enabled": instance.user.enabled
-            }
+            defaults={"enabled": instance.user.enabled},
         )
         models.AliasRecipient.objects.create(
-            address=instance.full_address, alias=alias, r_mailbox=instance)
+            address=instance.full_address, alias=alias, r_mailbox=instance
+        )
         return
     old_address = getattr(instance, "old_full_address", None)
     if old_address is None or old_address == instance.full_address:
         return
     # Update old self alias
     alr = models.AliasRecipient.objects.get(
-        alias__address=old_address, address=old_address,
-        r_mailbox=instance, alias__internal=True)
+        alias__address=old_address,
+        address=old_address,
+        r_mailbox=instance,
+        alias__internal=True,
+    )
     alr.address = instance.full_address
     alr.save()
     alr.alias.address = instance.full_address
@@ -106,7 +107,8 @@ def manage_alias_for_mailbox(sender, instance, **kwargs):
 
     # Update AliasRecipient instances
     instance.aliasrecipient_set.filter(alias__internal=False).update(
-        address=instance.full_address)
+        address=instance.full_address
+    )
 
 
 @receiver(signals.pre_delete, sender=models.Mailbox)
@@ -132,7 +134,8 @@ def mailbox_deleted_handler(sender, **kwargs):
     request = lib_signals.get_request()
     if request:
         if not request.localconfig.parameters.get_value(
-                "handle_mailboxes", raise_exception=False):
+            "handle_mailboxes", raise_exception=False
+        ):
             return
         keepdir = request.POST.get("keepdir", "false") == "true"
         if keepdir:
@@ -142,7 +145,8 @@ def mailbox_deleted_handler(sender, **kwargs):
         # Management command context
         localconfig = core_models.LocalConfig.objects.first()
         if not localconfig.parameters.get_value(
-                "handle_mailboxes", raise_exception=False):
+            "handle_mailboxes", raise_exception=False
+        ):
             return
         mb.delete_dir()
 
@@ -150,17 +154,18 @@ def mailbox_deleted_handler(sender, **kwargs):
 @receiver(signals.post_delete, sender=models.Mailbox)
 def remove_alias_for_mailbox(sender, instance, **kwargs):
     """Remove "self alias" for this mailbox."""
-    models.Alias.objects.filter(
-        address=instance.full_address).delete()
+    models.Alias.objects.filter(address=instance.full_address).delete()
 
 
 @receiver(core_signals.register_postfix_maps)
 def register_postfix_maps(sender, **kwargs):
     """Register admin map files."""
     return [
-        postfix_maps.DomainsMap, postfix_maps.DomainsAliasesMap,
-        postfix_maps.AliasesMap, postfix_maps.MaintainMap,
-        postfix_maps.SenderLoginMap
+        postfix_maps.DomainsMap,
+        postfix_maps.DomainsAliasesMap,
+        postfix_maps.AliasesMap,
+        postfix_maps.MaintainMap,
+        postfix_maps.SenderLoginMap,
     ]
 
 
@@ -177,11 +182,11 @@ def account_auto_created(sender, user, **kwargs):
         domain = models.Domain.objects.get(name=domname)
     except models.Domain.DoesNotExist:
         label = lib.check_if_domain_exists(
-            domname, [(models.DomainAlias, _("domain alias"))])
+            domname, [(models.DomainAlias, _("domain alias"))]
+        )
         if label is not None:
             return
-        domain = models.Domain(
-            name=domname, enabled=True, default_mailbox_quota=0)
+        domain = models.Domain(name=domname, enabled=True, default_mailbox_quota=0)
         domain.save(creator=sadmins[0])
         for su in sadmins[1:]:
             permissions.grant_access_to_object(su, domain)
@@ -201,11 +206,10 @@ def account_auto_created(sender, user, **kwargs):
 @receiver(core_signals.account_exported)
 def export_admin_domains(sender, user, **kwargs):
     """Export administered domains too."""
-    result = [user.mailbox.quota] if hasattr(user, "mailbox") else [u""]
+    result = [user.mailbox.quota] if hasattr(user, "mailbox") else [""]
     if user.role != "DomainAdmins":
         return result
-    return result + [
-        dom.name for dom in models.Domain.objects.get_for_admin(user)]
+    return result + [dom.name for dom in models.Domain.objects.get_for_admin(user)]
 
 
 @receiver(core_signals.account_imported)
@@ -232,14 +236,17 @@ def import_account_mailbox(sender, user, account, row, **kwargs):
         if not user.can_access(domain):
             raise exceptions.PermDeniedException
         core_signals.can_create_object.send(
-            sender="import", context=user, klass=models.Mailbox)
+            sender="import", context=user, klass=models.Mailbox
+        )
         core_signals.can_create_object.send(
-            sender="import", context=domain, object_type="mailboxes")
+            sender="import", context=domain, object_type="mailboxes"
+        )
         account.save()
         qset = models.Mailbox.objects.filter(address=mailbox, domain=domain)
         if qset.exists():
             raise exceptions.Conflict(
-                _("Mailbox {} already exists").format(account.email))
+                _("Mailbox {} already exists").format(account.email)
+            )
         if len(row) == 1:
             quota = None
         else:
@@ -252,11 +259,12 @@ def import_account_mailbox(sender, user, account, row, **kwargs):
                 )
         use_domain_quota = True if not quota else False
         mb = models.Mailbox(
-            address=mailbox, domain=domain,
-            user=account, use_domain_quota=use_domain_quota)
-        mb.set_quota(
-            quota, override_rules=user.has_perm("admin.change_domain")
+            address=mailbox,
+            domain=domain,
+            user=account,
+            use_domain_quota=use_domain_quota,
         )
+        mb.set_quota(quota, override_rules=user.has_perm("admin.change_domain"))
         mb.save(creator=user)
     if account.role == "DomainAdmins":
         for domname in row[2:]:
@@ -275,19 +283,20 @@ def admin_menu(sender, location, user, **kwargs):
     entries = []
     if user.has_perm("admin.view_domain"):
         entries += [
-            {"name": "domains",
-             "url": reverse("admin:domain_list"),
-             "label": _("Domains")}
+            {
+                "name": "domains",
+                "url": reverse("admin:domain_list"),
+                "label": _("Domains"),
+            }
         ]
-    conditions = (
-        user.has_perm("core.add_user"),
-        user.has_perm("admin.add_alias")
-    )
+    conditions = (user.has_perm("core.add_user"), user.has_perm("admin.add_alias"))
     if any(conditions):
         entries += [
-            {"name": "identities",
-             "url": reverse("admin:identity_list"),
-             "label": _("Identities")},
+            {
+                "name": "identities",
+                "url": reverse("admin:identity_list"),
+                "label": _("Identities"),
+            },
         ]
     return entries
 
@@ -300,10 +309,12 @@ def user_menu(sender, location, user, **kwargs):
     if not hasattr(user, "mailbox"):
         return []
     return [
-        {"name": "forward",
-         "class": "ajaxnav",
-         "url": "forward/",
-         "label": _("Forward")}
+        {
+            "name": "forward",
+            "class": "ajaxnav",
+            "url": "forward/",
+            "label": _("Forward"),
+        }
     ]
 
 
@@ -321,12 +332,15 @@ def grant_access_to_all_objects(sender, account, role, **kwargs):
     if role != "SuperAdmins":
         return
     perm_models = [
-        core_models.User, models.Domain, models.DomainAlias, models.Mailbox,
-        models.Alias]
+        core_models.User,
+        models.Domain,
+        models.DomainAlias,
+        models.Mailbox,
+        models.Alias,
+    ]
     for model in perm_models:
         permissions.grant_access_to_objects(
-            account, model.objects.all(),
-            ContentType.objects.get_for_model(model)
+            account, model.objects.all(), ContentType.objects.get_for_model(model)
         )
 
 
@@ -338,19 +352,15 @@ def add_widgets_to_admin_dashboard(sender, user, **kwargs):
             "domains_counter": models.Domain.objects.count(),
             "domain_aliases_counter": models.DomainAlias.objects.count(),
             "identities_counter": (
-                core_models.User.objects.count() +
-                models.Alias.objects.filter(internal=False).count()),
+                core_models.User.objects.count()
+                + models.Alias.objects.filter(internal=False).count()
+            ),
         }
         template = "admin/_global_statistics_widget.html"
     else:
-        context = {
-            "domains": models.Domain.objects.get_for_admin(user)}
+        context = {"domains": models.Domain.objects.get_for_admin(user)}
         template = "admin/_per_domain_statistics_widget.html"
-    return [{
-        "column": "left",
-        "template": template,
-        "context": context
-    }]
+    return [{"column": "left", "template": template, "context": context}]
 
 
 @receiver(admin_signals.import_object)

@@ -51,10 +51,11 @@ class RepairTestCase(ModoTestCase):
     def test_management_command_with_no_alias(self):
         """Check that problem is fixed."""
         count, detail = models.Alias.objects.filter(
-            address="user@test.com", internal=True).delete()
+            address="user@test.com", internal=True
+        ).delete()
         self.assertEqual(count, 3)
         ret = management.call_command("modo", "repair", "--quiet")
         assert ret is None
         self.assertTrue(
-            models.Alias.objects.filter(
-                address="user@test.com", internal=True).exists())
+            models.Alias.objects.filter(address="user@test.com", internal=True).exists()
+        )
