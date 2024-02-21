@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <v-toolbar flat>
-            <v-toolbar-title>{{ $gettext('Profile') }}</v-toolbar-title>
-        </v-toolbar>
-        <div class="pa-4">
-            <ProfileForm />
-        </div>
+  <div>
+    <v-toolbar flat>
+      <v-toolbar-title>{{ $gettext('Profile') }}</v-toolbar-title>
+    </v-toolbar>
+    <div class="pa-4">
+      <ProfileForm />
     </div>
+  </div>
 </template>
 
 <script setup lang="js">
@@ -18,6 +18,6 @@ const { $gettext } = useGettext()
 
 <style scoped>
 .v-toolbar {
-    background-color: #f7f8fa !important;
+  background-color: #f7f8fa !important;
 }
 </style>

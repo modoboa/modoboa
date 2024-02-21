@@ -1,21 +1,21 @@
 <template>
-    <v-app>
-        <NavBar />
-        <DashboardView />
-        <v-snackbar
-            v-model="snackbar"
-            :color="notificationColor"
-            :timeout="notificationTimeout"
-            location="top"
-        >
-            {{ notification }}
-            <template #actions>
-                <v-btn color="white" text @click="snackbar = false">
-                    {{ $gettext('Close') }}
-                </v-btn>
-            </template>
-        </v-snackbar>
-    </v-app>
+  <v-app>
+    <NavBar />
+    <DashboardView />
+    <v-snackbar
+      v-model="snackbar"
+      :color="notificationColor"
+      :timeout="notificationTimeout"
+      location="top"
+    >
+      {{ notification }}
+      <template #actions>
+        <v-btn color="white" text @click="snackbar = false">
+          {{ $gettext('Close') }}
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </v-app>
 </template>
 
 <script setup>
@@ -35,10 +35,10 @@ const notification = computed(() => busStore.notification)
 const snackbar = ref(false)
 
 busStore.$onAction(({ name, after }) => {
-    if (name === 'displayNotification') {
-        after(() => {
-            snackbar.value = true
-        })
-    }
+  if (name === 'displayNotification') {
+    after(() => {
+      snackbar.value = true
+    })
+  }
 }, true)
 </script>

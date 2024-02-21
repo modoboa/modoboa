@@ -1,7 +1,7 @@
 <template>
-    <v-app>
-        <DefaultView />
-    </v-app>
+  <v-app>
+    <DefaultView />
+  </v-app>
 </template>
 
 <script setup>
