@@ -31,30 +31,29 @@ class Command(BaseCommand):
                 updates[extension["name"]] = extension["last_version"]
                 to_create.append(
                     models.ExtensionUpdateHistory(
-                        extension=extension["name"],
-                        version=extension["last_version"]
+                        extension=extension["name"], version=extension["last_version"]
                     )
                 )
         if not updates:
             return
         content = render_to_string(
-            "core/notifications/update_available.html", {
-                "updates": updates
-            })
+            "core/notifications/update_available.html", {"updates": updates}
+        )
         subject = _("[modoboa] Update(s) available")
         sender = local_config.parameters.get_value("sender_address")
-        recipient = local_config.parameters.get_value(
-            "new_versions_email_rcpt")
+        recipient = local_config.parameters.get_value("new_versions_email_rcpt")
         msg = EmailMessage(
-            subject, content.strip(), sender, [recipient],
+            subject,
+            content.strip(),
+            sender,
+            [recipient],
         )
         msg.send()
         models.ExtensionUpdateHistory.objects.bulk_create(to_create)
 
     def handle(self, *args, **options):
         """Command entry point."""
-        local_config = (
-            models.LocalConfig.objects.select_related("site").first())
+        local_config = models.LocalConfig.objects.select_related("site").first()
         if not local_config.parameters.get_value("enable_api_communication"):
             return
         self.client = api_client.ModoAPIClient()
@@ -87,7 +86,8 @@ class Command(BaseCommand):
             "domain_alias_counter": admin_models.DomainAlias.objects.count(),
             "mailbox_counter": admin_models.Mailbox.objects.count(),
             "alias_counter": (
-                admin_models.Alias.objects.filter(internal=False).count()),
-            "extensions": extensions
+                admin_models.Alias.objects.filter(internal=False).count()
+            ),
+            "extensions": extensions,
         }
         self.client.update_instance(local_config.api_pk, data)

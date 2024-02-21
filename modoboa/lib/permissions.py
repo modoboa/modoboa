@@ -20,16 +20,15 @@ def get_account_roles(user, account=None):
     """
     result = [core_constants.SIMPLEUSERS_ROLE]
     filters = core_signals.user_can_set_role.send(
-        sender="get_account_roles", user=user, role="DomainAdmins",
-        account=account)
-    condition = (
-        user.has_perm("admin.add_domain") and
-        (not filters or True in [flt[1] for flt in filters]))
+        sender="get_account_roles", user=user, role="DomainAdmins", account=account
+    )
+    condition = user.has_perm("admin.add_domain") and (
+        not filters or True in [flt[1] for flt in filters]
+    )
     if condition:
         result += [core_constants.DOMAINADMINS_ROLE]
     if user.is_superuser:
-        result += [
-            core_constants.RESELLERS_ROLE, core_constants.SUPERADMINS_ROLE]
+        result += [core_constants.RESELLERS_ROLE, core_constants.SUPERADMINS_ROLE]
     return sorted(result, key=lambda role: role[1])
 
 
@@ -51,7 +50,8 @@ def grant_access_to_object(user, obj, is_owner=False):
     """
     ct = ContentType.objects.get_for_model(obj)
     entry, created = ObjectAccess.objects.get_or_create(
-        user=user, content_type=ct, object_id=obj.id)
+        user=user, content_type=ct, object_id=obj.id
+    )
     entry.is_owner = is_owner
     entry.save()
     if not created or not is_owner:
@@ -59,9 +59,7 @@ def grant_access_to_object(user, obj, is_owner=False):
     for su in User.objects.filter(is_superuser=True):
         if su == user:
             continue
-        ObjectAccess.objects.get_or_create(
-            user=su, content_type=ct, object_id=obj.id
-        )
+        ObjectAccess.objects.get_or_create(user=su, content_type=ct, object_id=obj.id)
 
 
 def grant_access_to_objects(user, objects, ct):
@@ -75,8 +73,7 @@ def grant_access_to_objects(user, objects, ct):
     :param ct: the content type
     """
     for obj in objects:
-        ObjectAccess.objects.get_or_create(
-            user=user, content_type=ct, object_id=obj.id)
+        ObjectAccess.objects.get_or_create(user=user, content_type=ct, object_id=obj.id)
 
 
 def ungrant_access_to_object(obj, user=None):
@@ -100,17 +97,11 @@ def ungrant_access_to_object(obj, user=None):
         except ObjectAccess.DoesNotExist:
             pass
         try:
-            ObjectAccess.objects.get(
-                content_type=ct, object_id=obj.id, is_owner=True
-            )
+            ObjectAccess.objects.get(content_type=ct, object_id=obj.id, is_owner=True)
         except ObjectAccess.DoesNotExist:
-            grant_access_to_object(
-                User.objects.filter(is_superuser=True)[0], obj, True
-            )
+            grant_access_to_object(User.objects.filter(is_superuser=True)[0], obj, True)
     else:
-        ObjectAccess.objects.filter(
-            content_type=ct, object_id=obj.id
-        ).delete()
+        ObjectAccess.objects.filter(content_type=ct, object_id=obj.id).delete()
 
 
 def ungrant_access_to_objects(objects):
@@ -146,8 +137,7 @@ def add_permissions_to_group(group, permissions):
 
     for appname, modelname, permname in permissions:
         ct = ContentType.objects.get_by_natural_key(appname, modelname)
-        if group.permissions.filter(
-                content_type=ct, codename=permname).exists():
+        if group.permissions.filter(content_type=ct, codename=permname).exists():
             continue
         group.permissions.add(
             Permission.objects.get(content_type=ct, codename=permname)

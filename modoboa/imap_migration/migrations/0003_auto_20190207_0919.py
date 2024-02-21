@@ -21,12 +21,13 @@ def create_default_provider(apps, schema_editor):
         name="Default",
         address=params["server_address"],
         port=params["server_port"],
-        secured=params["secured"]
+        secured=params["secured"],
     )
     for migration in Migration.objects.select_related("mailbox__domain"):
         migration.provider = provider
         migration.username = (
-            migration.mailbox.address + "@" + migration.mailbox.domain.name)
+            migration.mailbox.address + "@" + migration.mailbox.domain.name
+        )
         migration.save(update_fields=["provider", "username"])
 
 
@@ -37,45 +38,79 @@ def backwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0014_auto_20181017_1628'),
-        ('imap_migration', '0002_password'),
+        ("admin", "0014_auto_20181017_1628"),
+        ("imap_migration", "0002_password"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='EmailProvider',
+            name="EmailProvider",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('address', models.CharField(max_length=200)),
-                ('port', models.PositiveIntegerField(default=143)),
-                ('secured', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("address", models.CharField(max_length=200)),
+                ("port", models.PositiveIntegerField(default=143)),
+                ("secured", models.BooleanField(default=False)),
             ],
             options={
-                'ordering': ['name'],
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='EmailProviderDomain',
+            name="EmailProviderDomain",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('new_domain', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='admin.Domain')),
-                ('provider', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='imap_migration.EmailProvider')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                (
+                    "new_domain",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="admin.Domain",
+                    ),
+                ),
+                (
+                    "provider",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="imap_migration.EmailProvider",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['provider', 'name'],
+                "ordering": ["provider", "name"],
             },
         ),
         migrations.AddField(
-            model_name='migration',
-            name='username',
+            model_name="migration",
+            name="username",
             field=models.CharField(max_length=254, null=True),
         ),
         migrations.AddField(
-            model_name='migration',
-            name='provider',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='imap_migration.EmailProvider'),
+            model_name="migration",
+            name="provider",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="imap_migration.EmailProvider",
+            ),
         ),
-        migrations.RunPython(create_default_provider, backwards)
+        migrations.RunPython(create_default_provider, backwards),
     ]

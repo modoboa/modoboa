@@ -9,8 +9,7 @@ class CheckSessionCookieSecureTest(SimpleTestCase):
     def test_use_tz_false(self):
         """If USE_TZ is off provide one warning."""
         self.assertEqual(
-            settings_checks.check_use_tz_enabled(None),
-            [settings_checks.W001]
+            settings_checks.check_use_tz_enabled(None), [settings_checks.W001]
         )
 
     @override_settings(USE_TZ=True)

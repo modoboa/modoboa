@@ -12,7 +12,7 @@ from . import serializers
 
 class DMARCViewSet(GetThrottleViewsetMixin, viewsets.GenericViewSet):
 
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
         """Filter queryset based on current user."""
@@ -22,7 +22,7 @@ class DMARCViewSet(GetThrottleViewsetMixin, viewsets.GenericViewSet):
         methods=["get"],
         detail=True,
         serializer_class=serializers.DMARCAligmentSerializer,
-        url_path="dmarc/alignment_stats"
+        url_path="dmarc/alignment_stats",
     )
     def alignment_stats(self, request, **kwargs):
         domain = self.get_object()

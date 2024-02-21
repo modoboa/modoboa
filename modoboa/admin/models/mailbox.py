@@ -25,8 +25,7 @@ class QuotaManager(models.Manager):
 
     def get_domain_usage(self, domain):
         """Return current usage for domain."""
-        qset = self.get_queryset().filter(
-            username__endswith="@{}".format(domain.name))
+        qset = self.get_queryset().filter(username__endswith="@{}".format(domain.name))
         result = qset.aggregate(usage=models.Sum("bytes")).get("usage", 0)
         if result is None:
             result = 0
@@ -34,7 +33,6 @@ class QuotaManager(models.Manager):
 
 
 class Quota(models.Model):
-
     """Keeps track of Mailbox current quota."""
 
     username = models.EmailField(primary_key=True, max_length=254)
@@ -48,7 +46,6 @@ class Quota(models.Model):
 
 
 class MailboxManager(Manager):
-
     """Custom manager for Mailbox."""
 
     def get_for_admin(self, admin, squery=None):
@@ -66,18 +63,14 @@ class MailboxManager(Manager):
                 parts = squery.split("@")
                 addrfilter = "@".join(parts[:-1])
                 domfilter = parts[-1]
-                qf = (
-                    Q(address__contains=addrfilter) &
-                    Q(domain__name__contains=domfilter)
+                qf = Q(address__contains=addrfilter) & Q(
+                    domain__name__contains=domfilter
                 )
             else:
-                qf = (
-                    Q(address__contains=squery) |
-                    Q(domain__name__contains=squery)
-                )
-        ids = admin.objectaccess_set \
-            .filter(content_type=ContentType.objects.get_for_model(Mailbox)) \
-            .values_list("object_id", flat=True)
+                qf = Q(address__contains=squery) | Q(domain__name__contains=squery)
+        ids = admin.objectaccess_set.filter(
+            content_type=ContentType.objects.get_for_model(Mailbox)
+        ).values_list("object_id", flat=True)
         if qf is not None:
             qf = Q(pk__in=ids) & qf
         else:
@@ -89,16 +82,17 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
     """User mailbox."""
 
     address = models.CharField(
-        gettext_lazy("address"), max_length=252,
-        help_text=gettext_lazy(
-            "Mailbox address (without the @domain.tld part)")
+        gettext_lazy("address"),
+        max_length=252,
+        help_text=gettext_lazy("Mailbox address (without the @domain.tld part)"),
     )
     quota = models.PositiveIntegerField(default=0)
     use_domain_quota = models.BooleanField(default=False)
     message_limit = models.PositiveIntegerField(
-        gettext_lazy("Message sending limit"), null=True, blank=True,
-        help_text=gettext_lazy(
-            "Number of messages this mailbox can send per day")
+        gettext_lazy("Message sending limit"),
+        null=True,
+        blank=True,
+        help_text=gettext_lazy("Number of messages this mailbox can send per day"),
     )
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -134,7 +128,8 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
     def alias_count(self):
         return (
             self.recipientalias_set.select_related("alias")
-            .filter(alias__internal=False).count()
+            .filter(alias__internal=False)
+            .count()
         )
 
     @property
@@ -155,7 +150,8 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
             code, output = doveadm_cmd("user -f home %s" % self.full_address)
             if code:
                 raise lib_exceptions.InternalError(
-                    _("Failed to retrieve mailbox location (%s)") % output)
+                    _("Failed to retrieve mailbox location (%s)") % output
+                )
             self.__mail_home = force_str(output.strip())
         return self.__mail_home
 
@@ -165,9 +161,8 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
 
         :rtype: list of string
         """
-        qset = (
-            self.aliasrecipient_set.select_related("alias")
-            .filter(alias__internal=False)
+        qset = self.aliasrecipient_set.select_related("alias").filter(
+            alias__internal=False
         )
         aliases = [alr.alias.address for alr in qset]
         return aliases
@@ -177,8 +172,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         """Retrieve the ``Quota`` instance associated to this mailbox."""
         if not hasattr(self, "_quota_value"):
             try:
-                self._quota_value = Quota.objects.get(
-                    username=self.full_address)
+                self._quota_value = Quota.objects.get(username=self.full_address)
             except Quota.DoesNotExist:
                 return None
         return self._quota_value
@@ -195,8 +189,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
 
     def rename_dir(self, old_mail_home):
         """Rename local directory if needed."""
-        hm = param_tools.get_global_parameter(
-            "handle_mailboxes", raise_exception=False)
+        hm = param_tools.get_global_parameter("handle_mailboxes", raise_exception=False)
         if not hm:
             return
         MailboxOperation.objects.create(
@@ -219,15 +212,15 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         self.address = address
         self.domain = domain
         self.quota_value = Quota.objects.create(
-            username=self.full_address, bytes=old_qvalue.bytes,
-            messages=old_qvalue.messages
+            username=self.full_address,
+            bytes=old_qvalue.bytes,
+            messages=old_qvalue.messages,
         )
         old_qvalue.delete()
         self.rename_dir(old_mail_home)
 
     def delete_dir(self):
-        hm = param_tools.get_global_parameter(
-            "handle_mailboxes", raise_exception=False)
+        hm = param_tools.get_global_parameter("handle_mailboxes", raise_exception=False)
         if not hm:
             return
         MailboxOperation.objects.create(type="delete", argument=self.mail_home)
@@ -277,16 +270,15 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         """
         if not self.quota:
             return 0
-        return int(
-            self.quota_value.bytes / float(self.quota * 1048576) * 100
-        )
+        return int(self.quota_value.bytes / float(self.quota * 1048576) * 100)
 
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
+
         super().post_create(creator)
         conditions = (
             creator.has_perm("admin.add_mailbox"),
-            not self.user.has_perm("admin.add_domain")
+            not self.user.has_perm("admin.add_domain"),
         )
         if all(conditions):
             # An admin is creating a new mailbox. Give
@@ -305,8 +297,9 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         newaddress = None
         if values["email"] != self.full_address:
             newaddress = values["email"]
-        elif (self.user.role == "SimpleUsers" and
-              self.user.username != self.full_address):
+        elif (
+            self.user.role == "SimpleUsers" and self.user.username != self.full_address
+        ):
             newaddress = self.user.username
         if newaddress is not None:
             local_part, domname = split_mailbox(newaddress)
@@ -319,9 +312,10 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
             self.use_domain_quota = values["use_domain_quota"]
         if "use_domain_quota" in values or "quota" in values:
             override_rules = (
-                not self.quota or user.is_superuser or
-                user.has_perm("admin.add_domain") and
-                not user.userobjectlimit_set.get(name="quota").max_value
+                not self.quota
+                or user.is_superuser
+                or user.has_perm("admin.add_domain")
+                and not user.userobjectlimit_set.get(name="quota").max_value
             )
             self.set_quota(values["quota"], override_rules)
         if "message_limit" in values:
@@ -343,11 +337,11 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         if self.pk:
             qset = qset.exclude(pk=self.pk)
         if qset.exists():
-            raise lib_exceptions.Conflict(
-                _("Mailbox {} already exists").format(self))
+            raise lib_exceptions.Conflict(_("Mailbox {} already exists").format(self))
         if self.quota_value is None:
             self.quota_value, created = Quota.objects.get_or_create(
-                username=self.full_address)
+                username=self.full_address
+            )
         super().save(*args, **kwargs)
 
 
@@ -377,8 +371,9 @@ reversion.register(SenderAddress)
 class MailboxOperation(models.Model):
     """An operation on a mailbox."""
 
-    mailbox = models.ForeignKey(Mailbox, blank=True, null=True,
-                                on_delete=models.CASCADE)
+    mailbox = models.ForeignKey(
+        Mailbox, blank=True, null=True, on_delete=models.CASCADE
+    )
     type = models.CharField(  # NOQA:A003
         max_length=20, choices=(("rename", "rename"), ("delete", "delete"))
     )

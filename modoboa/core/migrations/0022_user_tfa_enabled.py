@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0021_localconfig_need_dovecot_update'),
+        ("core", "0021_localconfig_need_dovecot_update"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='tfa_enabled',
+            model_name="user",
+            name="tfa_enabled",
             field=models.BooleanField(default=False),
         ),
     ]

@@ -12,9 +12,7 @@ def rename_limits_parameters(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lib', '0004_auto_20151114_1409'),
+        ("lib", "0004_auto_20151114_1409"),
     ]
 
-    operations = [
-        migrations.RunPython(rename_limits_parameters)
-    ]
+    operations = [migrations.RunPython(rename_limits_parameters)]

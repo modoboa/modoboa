@@ -37,7 +37,6 @@ DBCONN_TPL = """
 
 
 class DeployCommand(Command):
-
     """The ``deploy`` command."""
 
     help = (  # NOQA:A003
@@ -47,45 +46,59 @@ class DeployCommand(Command):
 
     def __init__(self, *args, **kwargs):
         super(DeployCommand, self).__init__(*args, **kwargs)
-        self._parser.add_argument("name", type=str,
-                                  help="The name of your Modoboa instance")
         self._parser.add_argument(
-            "--collectstatic", action="store_true", default=False,
-            help="Run django collectstatic command"
+            "name", type=str, help="The name of your Modoboa instance"
         )
         self._parser.add_argument(
-            "--dburl", type=str, nargs="+", default=None,
-            help="A database-url with a name")
-        self._parser.add_argument(
-            "--domain", type=str, default=None,
-            help="The domain under which you want to deploy modoboa")
-        self._parser.add_argument(
-            "--lang", type=str, default="en",
-            help="Set the default language"
+            "--collectstatic",
+            action="store_true",
+            default=False,
+            help="Run django collectstatic command",
         )
         self._parser.add_argument(
-            "--timezone", type=str, default="UTC",
-            help="Set the local timezone"
+            "--dburl",
+            type=str,
+            nargs="+",
+            default=None,
+            help="A database-url with a name",
         )
         self._parser.add_argument(
-            "--devel", action="store_true", default=False,
-            help="Create a development instance"
+            "--domain",
+            type=str,
+            default=None,
+            help="The domain under which you want to deploy modoboa",
         )
         self._parser.add_argument(
-            "--extensions", type=str, nargs="*",
-            help="The list of extension to deploy"
+            "--lang", type=str, default="en", help="Set the default language"
         )
         self._parser.add_argument(
-            "--dont-install-extensions", action="store_true", default=False,
-            help="Do not install extensions using pip"
+            "--timezone", type=str, default="UTC", help="Set the local timezone"
         )
         self._parser.add_argument(
-            "--admin-username", default="admin",
-            help="Username of the initial super administrator"
+            "--devel",
+            action="store_true",
+            default=False,
+            help="Create a development instance",
         )
         self._parser.add_argument(
-            "--secret-key-length", default=60, type=int,
-            help="Specify the length of the secret key"
+            "--extensions", type=str, nargs="*", help="The list of extension to deploy"
+        )
+        self._parser.add_argument(
+            "--dont-install-extensions",
+            action="store_true",
+            default=False,
+            help="Do not install extensions using pip",
+        )
+        self._parser.add_argument(
+            "--admin-username",
+            default="admin",
+            help="Username of the initial super administrator",
+        )
+        self._parser.add_argument(
+            "--secret-key-length",
+            default=60,
+            type=int,
+            help="Specify the length of the secret key",
         )
 
     def _exec_django_command(self, name, cwd, *args):
@@ -109,7 +122,7 @@ class DeployCommand(Command):
             if output:
                 print(
                     "\n".join([l.decode() for l in output if l is not None]),
-                    file=sys.stderr
+                    file=sys.stderr,
                 )
             print("%s failed, check your configuration" % cmd, file=sys.stderr)
 
@@ -124,8 +137,7 @@ class DeployCommand(Command):
         print("Configuring database connection: %s" % name)
         info = {
             "conn_name": name,
-            "ENGINE": input(
-                "Database type (mysql, postgres or sqlite3): ")
+            "ENGINE": input("Database type (mysql, postgres or sqlite3): "),
         }
         if info["ENGINE"] not in ["mysql", "postgres", "sqlite3"]:
             raise RuntimeError("Unsupported database engine")
@@ -141,8 +153,7 @@ class DeployCommand(Command):
             info["ENGINE"] = "django.db.backends.mysql"
             default_port = 3306
         info["HOST"] = input("Database host (default: 'localhost'): ")
-        info["PORT"] = input(
-            "Database port (default: '%s'): " % default_port)
+        info["PORT"] = input("Database port (default: '%s'): " % default_port)
         # leave port setting empty, if default value is supplied and
         # leave it to django
         if info["PORT"] == default_port:
@@ -167,7 +178,7 @@ class DeployCommand(Command):
         is marked as insecure.
         """
         c = string.ascii_letters + string.digits + string.punctuation
-        secret_key = ''.join(secrets.choice(c) for i in range(secret_key_length))
+        secret_key = "".join(secrets.choice(c) for i in range(secret_key_length))
         return secret_key
 
     def find_extra_settings(self, extensions):
@@ -188,9 +199,7 @@ class DeployCommand(Command):
 
     def handle(self, parsed_args):
         django.setup()
-        management.call_command(
-            "startproject", parsed_args.name, verbosity=False
-        )
+        management.call_command("startproject", parsed_args.name, verbosity=False)
         path = "%(name)s/%(name)s" % {"name": parsed_args.name}
         sys.path.append(parsed_args.name)
 
@@ -210,14 +219,12 @@ class DeployCommand(Command):
                 info["conn_name"] = conn_name
                 connections[conn_name] = conn_tpl.render(Context(info))
         else:
-            connections["default"] = conn_tpl.render(
-                Context(self.ask_db_info()))
+            connections["default"] = conn_tpl.render(Context(self.ask_db_info()))
 
         if parsed_args.domain:
             allowed_host = parsed_args.domain
         else:
-            allowed_host = input(
-                "What will be the hostname used to access Modoboa? ")
+            allowed_host = input("What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
         extra_settings = []
@@ -225,13 +232,14 @@ class DeployCommand(Command):
         if extensions:
             if "all" in extensions:
                 extensions = self._get_extension_list()
-            extensions = [(extension, extension.replace("-", "_"))
-                          for extension in extensions]
+            extensions = [
+                (extension, extension.replace("-", "_")) for extension in extensions
+            ]
             if not parsed_args.dont_install_extensions:
                 cmd = (
-                    sys.executable +
-                    " -m pip install " +
-                    " ".join([extension[0] for extension in extensions])
+                    sys.executable
+                    + " -m pip install "
+                    + " ".join([extension[0] for extension in extensions])
                 )
                 exec_cmd(cmd, capture_output=False)
             extra_settings = self.find_extra_settings(extensions)
@@ -241,11 +249,10 @@ class DeployCommand(Command):
             os.path.join(os.path.dirname(__file__), "../../bower_components")
         )
 
-        mod = __import__(
-            parsed_args.name, globals(), locals(), [smart_str("settings")]
-        )
+        mod = __import__(parsed_args.name, globals(), locals(), [smart_str("settings")])
         tpl = self._render_template(
-            "%s/settings.py.tpl" % self._templates_dir, {
+            "%s/settings.py.tpl" % self._templates_dir,
+            {
                 "db_connections": connections,
                 "secret_key": self._generate_secret_key(parsed_args.secret_key_length),
                 "name": parsed_args.name,
@@ -255,42 +262,40 @@ class DeployCommand(Command):
                 "bower_components_dir": bower_components_dir,
                 "devmode": parsed_args.devel,
                 "extensions": extensions,
-                "extra_settings": extra_settings
-            }
+                "extra_settings": extra_settings,
+            },
         )
         with open("%s/settings.py" % path, "w") as fp:
             fp.write(tpl)
-        shutil.copyfile(
-            "%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path
-        )
+        shutil.copyfile("%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path)
         os.mkdir("%s/media" % parsed_args.name)
 
         if isfile("%s/settings.pyc" % path):
             os.unlink("%s/settings.pyc" % path)
+        self._exec_django_command("migrate", parsed_args.name, "--noinput")
         self._exec_django_command(
-            "migrate", parsed_args.name, "--noinput"
-        )
-        self._exec_django_command(
-            "load_initial_data", parsed_args.name,
-            "--admin-username", parsed_args.admin_username
+            "load_initial_data",
+            parsed_args.name,
+            "--admin-username",
+            parsed_args.admin_username,
         )
         if parsed_args.collectstatic:
-            self._exec_django_command(
-                "collectstatic", parsed_args.name, "--noinput"
-            )
-        self._exec_django_command(
-            "set_default_site", parsed_args.name, allowed_host
-        )
+            self._exec_django_command("collectstatic", parsed_args.name, "--noinput")
+        self._exec_django_command("set_default_site", parsed_args.name, allowed_host)
 
         base_frontend_dir = os.path.join(
-            os.path.dirname(__file__), "../../frontend_dist/")
+            os.path.dirname(__file__), "../../frontend_dist/"
+        )
         if not os.path.exists(base_frontend_dir):
             return
         frontend_target_dir = "{}/frontend".format(parsed_args.name)
         shutil.copytree(base_frontend_dir, frontend_target_dir)
 
         with open("{}/config.json".format(frontend_target_dir), "w") as fp:
-            fp.write("""{
+            fp.write(
+                """{
     "API_BASE_URL": "https://%s/api/v2"
 }
-""" % allowed_host)
+"""
+                % allowed_host
+            )

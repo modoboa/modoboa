@@ -26,12 +26,14 @@ def check_for_updates():
     local_config = models.LocalConfig.objects.first()
     client = ModoAPIClient()
     extensions = exts_pool.list_all()
-    extensions = [{
-        "label": "Modoboa",
-        "name": "modoboa",
-        "description": _("The core part of Modoboa"),
-        "version": client.local_core_version
-    }] + extensions
+    extensions = [
+        {
+            "label": "Modoboa",
+            "name": "modoboa",
+            "description": _("The core part of Modoboa"),
+            "version": client.local_core_version,
+        }
+    ] + extensions
     update_avail = False
     for extension in extensions:
         pkgname = extension["name"].replace("_", "-")
@@ -39,9 +41,8 @@ def check_for_updates():
             if api_extension["name"] != pkgname:
                 continue
             extension["last_version"] = api_extension["version"]
-            if (
-                parse_version(api_extension["version"]) >
-                parse_version(extension["version"])
+            if parse_version(api_extension["version"]) > parse_version(
+                extension["version"]
             ):
                 extension["update"] = True
                 extension["changelog_url"] = api_extension["url"]

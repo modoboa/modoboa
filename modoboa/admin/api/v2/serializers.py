@@ -56,7 +56,9 @@ class DomainSerializer(v1_serializers.DomainSerializer):
 
     class Meta(v1_serializers.DomainSerializer.Meta):
         fields = v1_serializers.DomainSerializer.Meta.fields + (
-            "domain_admin", "transport", "opened_alarms_count"
+            "domain_admin",
+            "transport",
+            "opened_alarms_count",
         )
 
     def __init__(self, *args, **kwargs):
@@ -71,7 +73,9 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         result = super().validate(data)
         dtype = data.get("type", "domain")
         if dtype == "relaydomain" and not data.get("transport"):
-            raise serializers.ValidationError({"transport": _("This field is required")})
+            raise serializers.ValidationError(
+                {"transport": _("This field is required")}
+            )
         return result
 
     def create(self, validated_data):
@@ -96,16 +100,15 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         except core_models.User.DoesNotExist:
             pass
         else:
-            raise lib_exceptions.Conflict(
-                _("User '%s' already exists") % username)
+            raise lib_exceptions.Conflict(_("User '%s' already exists") % username)
         user = self.context["request"].user
         core_signals.can_create_object.send(
-            self.__class__, context=user, klass=models.Mailbox)
+            self.__class__, context=user, klass=models.Mailbox
+        )
         da = core_models.User(username=username, email=username, is_active=True)
         password = domain_admin.get("password")
         if password is None:
-            password = param_tools.get_global_parameter(
-                "default_password", app="core")
+            password = param_tools.get_global_parameter("default_password", app="core")
         da.set_password(password)
         da.save()
         da.role = "DomainAdmins"
@@ -115,25 +118,28 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         if domain_admin["with_mailbox"]:
             dom_admin_username = domain_admin["username"]
             mb = models.Mailbox(
-                address=dom_admin_username, domain=domain,
-                user=da, use_domain_quota=True
+                address=dom_admin_username,
+                domain=domain,
+                user=da,
+                use_domain_quota=True,
             )
-            mb.set_quota(
-                override_rules=user.has_perm("admin.change_domain"))
+            mb.set_quota(override_rules=user.has_perm("admin.change_domain"))
             mb.save(creator=user)
 
             # 3. Create aliases if needed
             condition = (
-                domain.type == "domain" and
-                domain_admin["with_aliases"] and
-                dom_admin_username != "postmaster"
+                domain.type == "domain"
+                and domain_admin["with_aliases"]
+                and dom_admin_username != "postmaster"
             )
             if condition:
                 core_signals.can_create_object.send(
-                    self.__class__, context=user, klass=models.Alias)
-                address = u"postmaster@{}".format(domain.name)
+                    self.__class__, context=user, klass=models.Alias
+                )
+                address = "postmaster@{}".format(domain.name)
                 alias = models.Alias.objects.create(
-                    address=address, domain=domain, enabled=True)
+                    address=address, domain=domain, enabled=True
+                )
                 alias.set_recipients([mb.full_address])
                 alias.post_create(user)
 
@@ -162,9 +168,9 @@ class DomainSerializer(v1_serializers.DomainSerializer):
                 instance.save()
         if resources:
             for resource in resources:
-                instance.domainobjectlimit_set.filter(
-                    name=resource["name"]
-                ).update(max_value=resource["max_value"])
+                instance.domainobjectlimit_set.filter(name=resource["name"]).update(
+                    max_value=resource["max_value"]
+                )
         return instance
 
 
@@ -190,16 +196,19 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     enable_dnsbl_checks = serializers.BooleanField(default=True)
     dkim_keys_storage_dir = serializers.CharField(allow_blank=True)
     dkim_default_key_length = serializers.ChoiceField(
-        default=2048, choices=constants.DKIM_KEY_LENGTHS)
+        default=2048, choices=constants.DKIM_KEY_LENGTHS
+    )
     default_domain_quota = serializers.IntegerField(default=0)
     default_domain_message_limit = serializers.IntegerField(
-        required=False, allow_null=True)
+        required=False, allow_null=True
+    )
 
     # Mailboxes settings
     handle_mailboxes = serializers.BooleanField(default=False)
     default_mailbox_quota = serializers.IntegerField(default=0)
     default_mailbox_message_limit = serializers.IntegerField(
-        required=False, allow_null=True)
+        required=False, allow_null=True
+    )
     auto_account_removal = serializers.BooleanField(default=False)
     auto_create_domain_and_mailbox = serializers.BooleanField(default=True)
     create_alias_on_mbox_rename = serializers.BooleanField(default=False)
@@ -207,30 +216,22 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     def validate_default_domain_quota(self, value):
         """Ensure quota is a positive integer."""
         if value < 0:
-            raise serializers.ValidationError(
-                _("Must be a positive integer")
-            )
+            raise serializers.ValidationError(_("Must be a positive integer"))
         return value
 
     def validate_default_mailbox_quota(self, value):
         """Ensure quota is a positive integer."""
         if value < 0:
-            raise serializers.ValidationError(
-                _("Must be a positive integer")
-            )
+            raise serializers.ValidationError(_("Must be a positive integer"))
         return value
 
     def validate_dkim_keys_storage_dir(self, value):
         """Check that directory exists."""
         if value:
             if not os.path.isdir(value):
-                raise serializers.ValidationError(
-                    _("Directory not found.")
-                )
+                raise serializers.ValidationError(_("Directory not found."))
             if not os.access(value, os.W_OK):
-                raise serializers.ValidationError(
-                    _("Directory non-writable")
-                )
+                raise serializers.ValidationError(_("Directory non-writable"))
             code, output = exec_cmd("which openssl")
             if code:
                 raise serializers.ValidationError(
@@ -244,8 +245,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
             return value
         try:
             ip_addresses = [
-                ipaddress.ip_network(v.strip())
-                for v in value.split() if v.strip()
+                ipaddress.ip_network(v.strip()) for v in value.split() if v.strip()
             ]
         except ValueError:
             raise serializers.ValidationError(
@@ -255,11 +255,12 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
 
     def validate_auto_create_domain_and_mailbox(self, value):
         """
-            Make sure the option does not get deactivated
-            while imap migration is enabled.
+        Make sure the option does not get deactivated
+        while imap migration is enabled.
         """
-        if not value and param_tools.get_global_parameter("enabled_imapmigration",
-                                                          "imap_migration"):
+        if not value and param_tools.get_global_parameter(
+            "enabled_imapmigration", "imap_migration"
+        ):
             raise serializers.ValidationError(
                 _("Please disable imap migration before disabling this option.")
             )
@@ -268,13 +269,14 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     def validate(self, data):
         """Check MX options."""
         condition = (
-            data.get("enable_mx_checks") and
-            data.get("domains_must_have_authorized_mx") and
-            not data.get("valid_mxs"))
+            data.get("enable_mx_checks")
+            and data.get("domains_must_have_authorized_mx")
+            and not data.get("valid_mxs")
+        )
         if condition:
-            raise serializers.ValidationError({
-                "valid_mxs": _("Define at least one authorized network / address")
-            })
+            raise serializers.ValidationError(
+                {"valid_mxs": _("Define at least one authorized network / address")}
+            )
         if not data.get("enable_mx_checks"):
             data["enable_ipv6_mx_checks"] = False
         return data
@@ -335,7 +337,8 @@ class IdentitySerializer(serializers.Serializer):
             # (not used for now)
             return []
         actions = admin_signals.extra_account_identities_actions.send(
-            self.__class__, account=identity)
+            self.__class__, account=identity
+        )
         cleaned_actions = []
         for action in actions:
             try:
@@ -358,15 +361,11 @@ class AccountSerializer(v1_serializers.AccountSerializer):
     """Add support for user resources."""
 
     aliases = serializers.ListField(
-        child=lib_fields.DRFEmailFieldUTF8(),
-        source="mailbox.alias_addresses"
+        child=lib_fields.DRFEmailFieldUTF8(), source="mailbox.alias_addresses"
     )
 
     class Meta(v1_serializers.AccountSerializer.Meta):
-        fields = (
-            v1_serializers.AccountSerializer.Meta.fields
-            + ("aliases", )
-        )
+        fields = v1_serializers.AccountSerializer.Meta.fields + ("aliases",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -375,7 +374,7 @@ class AccountSerializer(v1_serializers.AccountSerializer):
         self.fields["resources"] = serializers.SerializerMethodField()
 
     def get_resources(self, account) -> List[AccountResourceSerializer]:
-        if account.role == 'SimpleUsers':
+        if account.role == "SimpleUsers":
             return []
         resources = []
         for limit in account.userobjectlimit_set.all():
@@ -395,7 +394,10 @@ class MailboxSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Mailbox
         fields = (
-            "pk", "use_domain_quota", "quota", "message_limit",
+            "pk",
+            "use_domain_quota",
+            "quota",
+            "message_limit",
             "is_send_only",
         )
 
@@ -408,9 +410,9 @@ class MailboxSerializer(serializers.ModelSerializer):
         method = self.context["request"].method
         if not data.get("use_domain_quota", False):
             if "quota" not in data and method != "PATCH":
-                raise serializers.ValidationError({
-                    "quota": _("This field is required")
-                })
+                raise serializers.ValidationError(
+                    {"quota": _("This field is required")}
+                )
         return data
 
 
@@ -426,8 +428,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
     """Add support for aliases and sender addresses."""
 
     aliases = serializers.ListField(
-        child=lib_fields.DRFEmailFieldUTF8(),
-        required=False
+        child=lib_fields.DRFEmailFieldUTF8(), required=False
     )
     mailbox = MailboxSerializer(required=False)
 
@@ -449,7 +450,8 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         aliases = []
         for alias in value:
             localpart, domain = models.validate_alias_address(
-                alias, self.context["request"].user, ignore_existing=True)
+                alias, self.context["request"].user, ignore_existing=True
+            )
             aliases.append({"localpart": localpart, "domain": domain})
         return aliases
 
@@ -458,9 +460,9 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         master_user = data.get("master_user", False)
         role = data.get("role")
         if master_user and role != "SuperAdmins":
-            raise serializers.ValidationError({
-                "master_user": _("Not allowed for this role.")
-            })
+            raise serializers.ValidationError(
+                {"master_user": _("Not allowed for this role.")}
+            )
         if role == "SimpleUsers":
             username = data.get("username")
             if username:
@@ -471,46 +473,43 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             mailbox = data.get("mailbox")
             if mailbox is None:
                 if not self.instance:
-                    data["mailbox"] = {
-                        "use_domain_quota": True
-                    }
+                    data["mailbox"] = {"use_domain_quota": True}
         if "mailbox" in data and "username" in data:
             self.address, domain_name = email_utils.split_mailbox(data["username"])
-            self.domain = get_object_or_404(
-                models.Domain, name=domain_name)
+            self.domain = get_object_or_404(models.Domain, name=domain_name)
             creator = self.context["request"].user
             if not creator.can_access(self.domain):
                 raise serializers.ValidationError({"mailbox": _("Permission denied.")})
             if not self.instance:
                 try:
                     core_signals.can_create_object.send(
-                        sender=self.__class__, context=creator,
-                        klass=models.Mailbox)
+                        sender=self.__class__, context=creator, klass=models.Mailbox
+                    )
                     core_signals.can_create_object.send(
-                        sender=self.__class__, context=self.domain,
-                        object_type="mailboxes")
+                        sender=self.__class__,
+                        context=self.domain,
+                        object_type="mailboxes",
+                    )
                 except lib_exceptions.ModoboaException as inst:
-                    raise serializers.ValidationError({
-                        "mailbox": str(inst)
-                    })
+                    raise serializers.ValidationError({"mailbox": str(inst)})
         if data.get("password") or not self.partial:
             password = data.get("password")
             if password:
                 try:
                     password_validation.validate_password(
-                        data["password"], self.instance)
+                        data["password"], self.instance
+                    )
                 except ValidationError as exc:
-                    raise serializers.ValidationError({
-                        "password": exc.messages[0]})
+                    raise serializers.ValidationError({"password": exc.messages[0]})
             elif not self.instance:
-                raise serializers.ValidationError({
-                    "password": _("This field is required.")
-                })
+                raise serializers.ValidationError(
+                    {"password": _("This field is required.")}
+                )
         aliases = data.get("aliases")
         if aliases and "mailbox" not in data:
-            raise serializers.ValidationError({
-                "aliases": _("A mailbox is required to create aliases.")
-            })
+            raise serializers.ValidationError(
+                {"aliases": _("A mailbox is required to create aliases.")}
+            )
         domain_names = data.get("domains")
         if not domain_names:
             return data
@@ -520,9 +519,9 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             if domain:
                 domains.append(domain)
                 continue
-            raise serializers.ValidationError({
-                "domains": _("Local domain {} does not exist").format(name)
-            })
+            raise serializers.ValidationError(
+                {"domains": _("Local domain {} does not exist").format(name)}
+            )
         data["domains"] = domains
         return data
 
@@ -550,8 +549,8 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     address="{}@{}".format(alias["localpart"], alias["domain"]),
                     recipients=[user.username],
                     creator=creator,
-                    domain=alias["domain"]
-                    )
+                    domain=alias["domain"],
+                )
         return user
 
     def update(self, instance, validated_data):
@@ -584,7 +583,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     address=address,
                     recipients=[validated_data["username"]],
                     creator=creator,
-                    domain=alias["domain"]
+                    domain=alias["domain"],
                 )
                 try:
                     alias_recipients.remove(address)
@@ -592,18 +591,17 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     continue
             for alias_address in alias_recipients:
                 alias = models.Alias.objects.filter(
-                    address=alias_address, internal=False)
+                    address=alias_address, internal=False
+                )
                 if alias.exists():
-                    alias.first().remove_recipient_or_delete(
-                        validated_data["username"]
-                    )
+                    alias.first().remove_recipient_or_delete(validated_data["username"])
         instance.save()
         resources = validated_data.get("resources")
         if resources:
             for resource in resources:
-                instance.userobjectlimit_set.filter(
-                    name=resource["name"]
-                ).update(max_value=resource["max_value"])
+                instance.userobjectlimit_set.filter(name=resource["name"]).update(
+                    max_value=resource["max_value"]
+                )
         self.set_permissions(instance, domains)
         return instance
 

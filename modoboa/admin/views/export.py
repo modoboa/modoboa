@@ -4,7 +4,9 @@ import csv
 from io import StringIO
 
 from django.contrib.auth.decorators import (
-    login_required, permission_required, user_passes_test
+    login_required,
+    permission_required,
+    user_passes_test,
 )
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -48,7 +50,8 @@ def export_identities(request):
         fp = StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
         identities = get_identities(
-            request.user, **request.session["identities_filters"])
+            request.user, **request.session["identities_filters"]
+        )
         for ident in identities:
             ident.to_csv(csvwriter)
         content = fp.getvalue()
@@ -75,8 +78,7 @@ def export_domains(request):
         form.is_valid()
         fp = StringIO()
         csvwriter = csv.writer(fp, delimiter=form.cleaned_data["sepchar"])
-        for dom in get_domains(request.user,
-                               **request.session["domains_filters"]):
+        for dom in get_domains(request.user, **request.session["domains_filters"]):
             dom.to_csv(csvwriter)
         content = fp.getvalue()
         fp.close()

@@ -7,43 +7,49 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0025_rename_user_email_is_active_core_user_email_c0c03f_idx'),
+        ("core", "0025_rename_user_email_is_active_core_user_email_c0c03f_idx"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='localconfig',
-            name='_parameters',
+            model_name="localconfig",
+            name="_parameters",
             field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
-            model_name='localconfig',
-            name='api_versions',
+            model_name="localconfig",
+            name="api_versions",
             field=models.JSONField(),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='_parameters',
+            model_name="user",
+            name="_parameters",
             field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
-            model_name='localconfig',
-            name='api_versions',
+            model_name="localconfig",
+            name="api_versions",
             field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
-            model_name='localconfig',
-            name='_parameters',
-            field=models.JSONField(default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder),
+            model_name="localconfig",
+            name="_parameters",
+            field=models.JSONField(
+                default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder
+            ),
         ),
         migrations.AlterField(
-            model_name='localconfig',
-            name='api_versions',
-            field=models.JSONField(default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder),
+            model_name="localconfig",
+            name="api_versions",
+            field=models.JSONField(
+                default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='_parameters',
-            field=models.JSONField(default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder),
+            model_name="user",
+            name="_parameters",
+            field=models.JSONField(
+                default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder
+            ),
         ),
     ]

@@ -5,13 +5,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0007_auto_20161104_1915'),
+        ("admin", "0007_auto_20161104_1915"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='domain',
-            name='enable_dns_checks',
-            field=models.BooleanField(default=True, help_text='Check to enable DNS checks for this domain', verbose_name='Enable DNS checks'),
+            model_name="domain",
+            name="enable_dns_checks",
+            field=models.BooleanField(
+                default=True,
+                help_text="Check to enable DNS checks for this domain",
+                verbose_name="Enable DNS checks",
+            ),
         ),
     ]

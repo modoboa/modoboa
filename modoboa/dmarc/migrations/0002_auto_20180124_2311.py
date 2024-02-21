@@ -8,28 +8,59 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dmarc', '0001_initial'),
+        ("dmarc", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='record',
-            name='disposition',
-            field=models.CharField(choices=[('none', 'None'), ('quarantine', 'Quarantine'), ('reject', 'Reject')], max_length=10),
+            model_name="record",
+            name="disposition",
+            field=models.CharField(
+                choices=[
+                    ("none", "None"),
+                    ("quarantine", "Quarantine"),
+                    ("reject", "Reject"),
+                ],
+                max_length=10,
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='dkim_result',
-            field=models.CharField(choices=[('none', 'None'), ('neutral', 'Neutral'), ('pass', 'Pass'), ('fail', 'Fail'), ('temperror', 'Temporary error'), ('permerror', 'Permanent error'), ('policy', 'Policy')], max_length=9),
+            model_name="record",
+            name="dkim_result",
+            field=models.CharField(
+                choices=[
+                    ("none", "None"),
+                    ("neutral", "Neutral"),
+                    ("pass", "Pass"),
+                    ("fail", "Fail"),
+                    ("temperror", "Temporary error"),
+                    ("permerror", "Permanent error"),
+                    ("policy", "Policy"),
+                ],
+                max_length=9,
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='spf_result',
-            field=models.CharField(choices=[('none', 'None'), ('neutral', 'Neutral'), ('pass', 'Pass'), ('fail', 'Fail'), ('temperror', 'Temporary error'), ('permerror', 'Permanent error'), ('softfail', 'Soft failure')], max_length=9),
+            model_name="record",
+            name="spf_result",
+            field=models.CharField(
+                choices=[
+                    ("none", "None"),
+                    ("neutral", "Neutral"),
+                    ("pass", "Pass"),
+                    ("fail", "Fail"),
+                    ("temperror", "Temporary error"),
+                    ("permerror", "Permanent error"),
+                    ("softfail", "Soft failure"),
+                ],
+                max_length=9,
+            ),
         ),
         migrations.AlterField(
-            model_name='result',
-            name='type',
-            field=models.CharField(choices=[('dkim', 'DKIM'), ('spf', 'SPF')], max_length=4),
+            model_name="result",
+            name="type",
+            field=models.CharField(
+                choices=[("dkim", "DKIM"), ("spf", "SPF")], max_length=4
+            ),
         ),
     ]

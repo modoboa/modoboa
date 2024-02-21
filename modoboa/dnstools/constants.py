@@ -25,5 +25,5 @@ DMARC_TAGS = {
     "ri": {"type": "int"},
     "rua": {"type": "list", "regex": DMARC_URI_REGEX},
     "ruf": {"type": "list", "regex": DMARC_URI_REGEX},
-    "sp": {"values": ["none", "quarantine", "reject"]}
+    "sp": {"values": ["none", "quarantine", "reject"]},
 }

@@ -1,168 +1,160 @@
 <template>
-<v-card>
-  <v-toolbar dense elevation="0">
-    <v-toolbar-title>{{ title }}</v-toolbar-title>
-    <v-spacer />
-    <v-menu
-      v-model="menu"
-      :nudge-width="200"
-      offset-y
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          small
-          v-bind="attrs"
-          v-on="on"
-          >
-          <v-icon small>mdi-calendar</v-icon>
-          <translate>Period</translate>
-          <span v-if="period">: {{ period }}</span>
-        </v-btn>
-      </template>
-      <v-layout>
-        <v-row>
-          <v-col cols="6" class="d-flex flex-column align-start py-3 px-6">
-            <translate class="subtitle">Absolute time range</translate>
-            <date-field v-model="start" :label="'From'|translate" />
-            <date-field v-model="end" :label="'To'|translate" />
-            <v-btn color="primary" @click="setCustomPeriod"><translate>Apply</translate></v-btn>
-          </v-col>
-          <v-col cols="6">
-            <translate class="subtitle">Relative time ranges</translate>
-            <v-list>
-              <v-list-item
-                v-for="period in periods"
-                :key="period.value"
-                @click="setPeriod(period.value)"
+  <v-card>
+    <v-toolbar dense elevation="0">
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-spacer />
+      <v-menu v-model="menu" offset-y>
+        <template #activator="{ props }">
+          <v-btn size="small" v-bind="props" prepend-icon="mdi-calendar">
+            {{ $gettext('Period') }}
+            <span v-if="period">: {{ period }}</span>
+          </v-btn>
+        </template>
+        <v-container class="bg-white" fluid>
+          <v-row no-gutters>
+            <v-col cols="12" md="6" class="pr-2">
+              <div class="text-subtitle-1">
+                {{ $gettext('Absolute time range') }}
+              </div>
+              <DateField v-model="start" :label="$gettext('From')" />
+              <DateField v-model="end" :label="$gettext('To')" />
+              <v-btn color="primary" @click="setCustomPeriod">{{
+                $gettext('Apply')
+              }}</v-btn>
+            </v-col>
+            <v-col cols="12" md="6">
+              <div class="text-subtitle-1">
+                {{ $gettext('Relative time ranges') }}
+              </div>
+              <v-list>
+                <v-list-item
+                  v-for="_period in periods"
+                  :key="_period.value"
+                  @click="setPeriod(_period.value)"
                 >
-                <v-list-item-title>{{ period.name }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-col>
-        </v-row>
-      </v-layout>
-    </v-menu>
-  </v-toolbar>
-  <v-card-text>
-    <apexchart
-      v-if="statistics"
-      type="area"
-      height="350"
-      :options="options"
-      :series="statistics.series"
+                  <v-list-item-title> {{ _period.name }} </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-menu>
+    </v-toolbar>
+    <v-card-text>
+      <apexchart
+        v-if="statistics"
+        type="area"
+        height="350"
+        :options="options"
+        :series="statistics.series"
       />
-  </v-card-text>
-</v-card>
+    </v-card-text>
+  </v-card>
 </template>
 
-<script>
-import VueApexCharts from 'vue-apexcharts'
-import statistics from '@/api/statistics'
-import DateField from './DateField'
+<script setup lang="js">
+import statisticsApi from '@/api/statistics'
+import DateField from './DateField.vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useGettext } from 'vue3-gettext'
 
-export default {
-  components: {
-    apexchart: VueApexCharts,
-    DateField
+const { $gettext } = useGettext()
+
+const _props = defineProps({
+  domain: {
+    type: Object,
+    required: false,
+    default: null,
   },
-  props: {
-    domain: {
-      type: Object,
-      required: false
+  graphicSet: { type: String, default: null },
+  graphicName: { type: String, default: null },
+})
+
+const title = computed(() => {
+  if (statistics.value) {
+    return statistics.value.title
+  }
+  return ''
+})
+
+const menu = ref(false)
+const options = ref({
+  chart: {
+    type: 'area',
+    stacked: false,
+    zoom: {
+      type: 'x',
+      enabled: true,
+      autoScaleYaxis: true,
     },
-    graphicSet: String,
-    graphicName: String
-  },
-  computed: {
-    title () {
-      if (this.statistics) {
-        return this.statistics.title
-      }
-      return ''
-    }
-  },
-  data () {
-    return {
-      dateMenu: false,
-      menu: false,
-      options: {
-        chart: {
-          type: 'area',
-          stacked: false,
-          zoom: {
-            type: 'x',
-            enabled: true,
-            autoScaleYaxis: true
-          },
-          toolbar: {
-            autoSelected: 'zoom'
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        yaxis: {
-        },
-        xaxis: {
-          type: 'datetime'
-        }
-      },
-      end: null,
-      start: null,
-      statistics: null,
-      period: 'day',
-      periods: [
-        { value: 'day', name: this.$gettext('Day') },
-        { value: 'week', name: this.$gettext('Week') },
-        { value: 'month', name: this.$gettext('Month') },
-        { value: 'year', name: this.$gettext('Year') }
-      ]
-    }
-  },
-  methods: {
-    getColors () {
-      if (this.graphicName === 'averagetraffic') {
-        return ['#ff6347', '#ffff00', '#4682B4', '#7cfc00', '#ffa500', '#d3d3d3']
-      }
-      return ['#ffa500', '#41d1cc']
+    toolbar: {
+      autoSelected: 'zoom',
     },
-    setCustomPeriod () {
-      this.period = 'custom'
-      this.fetchStatistics()
-    },
-    setPeriod (period) {
-      if (period !== this.period) {
-        this.period = period
-        this.fetchStatistics()
-      }
-    },
-    fetchStatistics () {
-      const args = {
-        graphSet: this.graphicSet,
-        period: this.period,
-        graphicName: this.graphicName
-      }
-      if (this.domain) {
-        args.searchQuery = this.domain.name
-      }
-      if (this.period === 'custom') {
-        args.start = this.start
-        args.end = this.end
-      }
-      statistics.getStatistics(args).then(resp => {
-        this.statistics = resp.data.graphs[this.graphicName]
-      })
-    }
   },
-  mounted () {
-    this.fetchStatistics()
+  dataLabels: {
+    enabled: false,
   },
-  watch: {
-    graphicName () {
-      this.$set(this.options, 'colors', this.getColors())
-    }
+  yaxis: {},
+  xaxis: {
+    type: 'datetime',
+  },
+})
+
+const end = ref(null)
+const start = ref(null)
+const statistics = ref(null)
+const period = ref('day')
+const periods = ref([
+  { value: 'day', name: $gettext('Day') },
+  { value: 'week', name: $gettext('Week') },
+  { value: 'month', name: $gettext('Month') },
+  { value: 'year', name: $gettext('Year') },
+])
+
+function getColors() {
+  if (_props.graphicName === 'averagetraffic') {
+    return ['#ff6347', '#ffff00', '#4682B4', '#7cfc00', '#ffa500', '#d3d3d3']
+  }
+  return ['#ffa500', '#41d1cc']
+}
+
+function setCustomPeriod() {
+  period.value = 'custom'
+  fetchStatistics()
+}
+function setPeriod(newPeriod) {
+  if (newPeriod !== period.value) {
+    period.value = newPeriod
+    fetchStatistics()
   }
 }
+function fetchStatistics() {
+  const args = {
+    graphSet: _props.graphicSet,
+    period: period.value,
+    graphicName: _props.graphicName,
+  }
+  if (_props.domain) {
+    args.searchQuery = _props.domain.name
+  }
+  if (period.value === 'custom') {
+    args.start = start.value
+    args.end = end.value
+  }
+  statisticsApi.getStatistics(args).then((resp) => {
+    statistics.value = resp.data.graphs[_props.graphicName]
+  })
+}
+
+onMounted(() => {
+  fetchStatistics()
+})
+watch(
+  () => _props.graphicName,
+  () => {
+    options.value.colors = getColors()
+  }
+)
 </script>
 
 <style scoped>

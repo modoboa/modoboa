@@ -20,21 +20,25 @@ class LDAPTestCaseMixin(object):
     def ldapauthbackend(self):
         """Return LDAPAuthBackend instance."""
         from modoboa.lib.ldap_utils import LDAPAuthBackend
+
         return LDAPAuthBackend()
 
     def activate_ldap_authentication(self):
         """Modify settings."""
-        self.set_global_parameters({
-            "authentication_type": "ldap",
-            "ldap_server_port": settings.LDAP_SERVER_PORT
-        })
+        self.set_global_parameters(
+            {
+                "authentication_type": "ldap",
+                "ldap_server_port": settings.LDAP_SERVER_PORT,
+            }
+        )
 
     def restore_user_password(self, username, new_password):
         """Restore user password to its initial state."""
         for password in ["Toto1234", "test"]:
             try:
                 self.ldapauthbackend.update_user_password(
-                    username, password, new_password)
+                    username, password, new_password
+                )
             except exceptions.InternalError:
                 pass
             else:
@@ -46,30 +50,35 @@ class LDAPTestCaseMixin(object):
         self.client.logout()
         if restore_before:
             self.restore_user_password(user, password)
-        self.assertTrue(
-            self.client.login(username=user, password=password))
+        self.assertTrue(self.client.login(username=user, password=password))
 
     def searchbind_mode(self):
         """Apply settings required by the searchbind mode."""
-        self.set_global_parameters({
-            "ldap_auth_method": "searchbind",
-            "ldap_bind_dn": "cn=admin,dc=example,dc=com",
-            "ldap_bind_password": "test",
-            "ldap_search_base": "ou=users,dc=example,dc=com"
-        })
+        self.set_global_parameters(
+            {
+                "ldap_auth_method": "searchbind",
+                "ldap_bind_dn": "cn=admin,dc=example,dc=com",
+                "ldap_bind_password": "test",
+                "ldap_search_base": "ou=users,dc=example,dc=com",
+            }
+        )
 
     def directbind_mode(self):
         """Apply settings required by the directbind mode."""
-        self.set_global_parameters({
-            "ldap_auth_method": "directbind",
-            "ldap_user_dn_template": "cn=%(user)s,ou=users,dc=example,dc=com"
-        })
+        self.set_global_parameters(
+            {
+                "ldap_auth_method": "directbind",
+                "ldap_user_dn_template": "cn=%(user)s,ou=users,dc=example,dc=com",
+            }
+        )
 
 
-@override_settings(AUTHENTICATION_BACKENDS=(
-    "modoboa.lib.authbackends.LDAPBackend",
-    "django.contrib.auth.backends.ModelBackend"
-))
+@override_settings(
+    AUTHENTICATION_BACKENDS=(
+        "modoboa.lib.authbackends.LDAPBackend",
+        "django.contrib.auth.backends.ModelBackend",
+    )
+)
 class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
     """Validate LDAP authentication scenarios."""
 
@@ -95,10 +104,12 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.authenticate(username, "test")
         self.check_created_user(username)
 
-        self.set_global_parameters({
-            "ldap_admin_groups": "admins",
-            "ldap_groups_search_base": "ou=groups,dc=example,dc=com"
-        })
+        self.set_global_parameters(
+            {
+                "ldap_admin_groups": "admins",
+                "ldap_groups_search_base": "ou=groups,dc=example,dc=com",
+            }
+        )
         username = "mailadmin@example.com"
         self.authenticate(username, "test", False)
         self.check_created_user(username, "DomainAdmins")
@@ -114,10 +125,12 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
 
         # 1: must work because usernames of domain admins are not
         # always email addresses
-        self.set_global_parameters({
-            "ldap_admin_groups": "admins",
-            "ldap_groups_search_base": "ou=groups,dc=example,dc=com"
-        })
+        self.set_global_parameters(
+            {
+                "ldap_admin_groups": "admins",
+                "ldap_groups_search_base": "ou=groups,dc=example,dc=com",
+            }
+        )
         username = "mailadmin"
         self.authenticate(username, "test", False)
         self.check_created_user("mailadmin@example.com", "DomainAdmins", False)
@@ -134,10 +147,12 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
             username="user@test.com", groups=("SimpleUsers",)
         )
 
-    @override_settings(AUTHENTICATION_BACKENDS=(
-        "modoboa.lib.authbackends.LDAPBackend",
-        "django.contrib.auth.backends.ModelBackend"
-    ))
+    @override_settings(
+        AUTHENTICATION_BACKENDS=(
+            "modoboa.lib.authbackends.LDAPBackend",
+            "django.contrib.auth.backends.ModelBackend",
+        )
+    )
     def test_update_password_ldap(self):
         """Update password for an LDAP user."""
         self.activate_ldap_authentication()
@@ -147,7 +162,11 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.authenticate(username, "test")
         self.ajax_post(
             reverse("core:user_profile"),
-            {"language": "en", "oldpassword": "test",
-             "newpassword": "Toto1234", "confirmation": "Toto1234"}
+            {
+                "language": "en",
+                "oldpassword": "test",
+                "newpassword": "Toto1234",
+                "confirmation": "Toto1234",
+            },
         )
         self.authenticate(username, "Toto1234", False)

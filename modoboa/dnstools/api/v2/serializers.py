@@ -46,6 +46,11 @@ class DNSDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = admin_models.Domain
         fields = (
-            "mx_records", "dnsbl_results", "autoconfig_record",
-            "autodiscover_record", "spf_record", "dkim_record", "dmarc_record"
+            "mx_records",
+            "dnsbl_results",
+            "autoconfig_record",
+            "autodiscover_record",
+            "spf_record",
+            "dkim_record",
+            "dmarc_record",
         )

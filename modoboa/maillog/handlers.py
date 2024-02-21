@@ -18,9 +18,7 @@ def menu(sender, location, user, **kwargs):
     if location != "top_menu" or user.role == "SimpleUsers":
         return []
     return [
-        {"name": "stats",
-         "label": _("Statistics"),
-         "url": reverse('maillog:fullindex')}
+        {"name": "stats", "label": _("Statistics"), "url": reverse("maillog:fullindex")}
     ]
 
 
@@ -28,10 +26,9 @@ def menu(sender, location, user, **kwargs):
 def get_default_graphic_sets(sender, **kwargs):
     """Return graphic set."""
     mail_traffic_gset = graphics.MailTraffic(
-        param_tools.get_global_parameter("greylist", raise_exception=False))
-    result = {
-        mail_traffic_gset.html_id: mail_traffic_gset
-    }
+        param_tools.get_global_parameter("greylist", raise_exception=False)
+    )
+    result = {mail_traffic_gset.html_id: mail_traffic_gset}
     if kwargs.get("user").is_superuser:
         account_gset = graphics.AccountGraphicSet()
         result.update({account_gset.html_id: account_gset})

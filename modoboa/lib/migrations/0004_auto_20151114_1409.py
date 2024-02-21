@@ -13,8 +13,8 @@ def move_language_preference(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lib', '0003_rename_parameters'),
-        ('core', '0005_user_language'),
+        ("lib", "0003_rename_parameters"),
+        ("core", "0005_user_language"),
     ]
 
     operations = [

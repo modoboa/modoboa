@@ -12,8 +12,11 @@ def load_limits_settings():
 
     param_tools.registry.add("global", app_settings.ParametersForm, _("Limits"))
     param_tools.registry.add2(
-        "global", "limits", _("Limits"), app_settings.GLOBAL_PARAMETERS_STRUCT,
-        serializers.LimitsGlobalParemetersSerializer
+        "global",
+        "limits",
+        _("Limits"),
+        app_settings.GLOBAL_PARAMETERS_STRUCT,
+        serializers.LimitsGlobalParemetersSerializer,
     )
 
 

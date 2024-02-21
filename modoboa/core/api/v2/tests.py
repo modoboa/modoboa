@@ -11,8 +11,11 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from modoboa.admin import (factories, models as admin_models,
-                           constants as admin_constants)
+from modoboa.admin import (
+    factories,
+    models as admin_models,
+    constants as admin_constants,
+)
 from modoboa.core import models, constants
 from modoboa.core.tests import utils
 from modoboa.lib.tests import ModoAPITestCase
@@ -72,7 +75,7 @@ CORE_SETTINGS = {
     "top_notifications_check_interval": 30,
     "log_maximum_age": 365,
     "items_per_page": 30,
-    "default_top_redirection": "user"
+    "default_top_redirection": "user",
 }
 
 
@@ -82,8 +85,9 @@ class ParametersAPITestCase(ModoAPITestCase):
         super().setUp()
         cache.delete("password_scheme_choice")
 
-    @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH],
-                       DOVECOT_USER=DOVECOT_USER)
+    @override_settings(
+        DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+    )
     def test_update(self):
         url = reverse("v2:parameter-detail", args=["core"])
         data = copy.copy(CORE_SETTINGS)
@@ -91,9 +95,7 @@ class ParametersAPITestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
         self.assertIsNotNone(cache.get("password_scheme_choice"))
-        self.assertIn(('plain', 'plain (weak)'),
-                      cache.get("password_scheme_choice")
-        )
+        self.assertIn(("plain", "plain (weak)"), cache.get("password_scheme_choice"))
         # Modify SMS related settings
         data["sms_password_recovery"] = True
         resp = self.client.put(url, data, format="json")
@@ -102,20 +104,19 @@ class ParametersAPITestCase(ModoAPITestCase):
         data["sms_provider"] = "test"
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
-        data.update({
-            "sms_provider": "ovh",
-            "sms_ovh_application_key": "key",
-            "sms_ovh_application_secret": "secret",
-            "sms_ovh_consumer_key": "consumer"
-        })
+        data.update(
+            {
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            }
+        )
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
         # Modify some LDAP settings
-        data.update({
-            "authentication_type": "ldap",
-            "ldap_auth_method": "searchbind"
-        })
+        data.update({"authentication_type": "ldap", "ldap_auth_method": "searchbind"})
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
         self.assertIn("ldap_search_base", resp.json())
@@ -125,16 +126,18 @@ class ParametersAPITestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 400)
         self.assertIn("ldap_user_dn_template", resp.json())
 
-        data.update({
-            "ldap_user_dn_template": "%(user)s",
-            "ldap_sync_account_dn_template": "%(user)s",
-            "ldap_search_filter": "mail=%(user)s"
-        })
+        data.update(
+            {
+                "ldap_user_dn_template": "%(user)s",
+                "ldap_sync_account_dn_template": "%(user)s",
+                "ldap_search_filter": "mail=%(user)s",
+            }
+        )
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
     def test_doveadm_alarm(self):
-        """ Test that an alarm is opened, closed or reopened
+        """Test that an alarm is opened, closed or reopened
         depending on the result of the doveadm command for the password scheme
         """
         # Test case where doveadm command fails
@@ -147,22 +150,24 @@ class ParametersAPITestCase(ModoAPITestCase):
 
         self.assertIsNone(cache.get("password_scheme_choice"))
         doveadm_alarm = admin_models.Alarm.objects.filter(
-            internal_name=constants.DOVEADM_PASS_SCHEME_ALARM)
+            internal_name=constants.DOVEADM_PASS_SCHEME_ALARM
+        )
         self.assertEqual(doveadm_alarm.count(), 1)
         cache.delete("job_cache_available_password_hasher")
 
-        with self.settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH],
-                           DOVECOT_USER=DOVECOT_USER):
+        with self.settings(
+            DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+        ):
             # The command should work and close the alarm
             resp = self.client.put(url, data, format="json")
             self.assertEqual(resp.status_code, 200)
 
             self.assertIsNotNone(cache.get("password_scheme_choice"))
             doveadm_alarm = admin_models.Alarm.objects.filter(
-                internal_name=constants.DOVEADM_PASS_SCHEME_ALARM)
+                internal_name=constants.DOVEADM_PASS_SCHEME_ALARM
+            )
             self.assertEqual(doveadm_alarm.count(), 1)
-            self.assertEqual(doveadm_alarm.first().status,
-                             admin_constants.ALARM_CLOSED)
+            self.assertEqual(doveadm_alarm.first().status, admin_constants.ALARM_CLOSED)
             cache.delete("job_cache_available_password_hasher")
 
         # And lastly check that the alarm is reopened if the issue starts again
@@ -172,10 +177,10 @@ class ParametersAPITestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
         doveadm_alarm = admin_models.Alarm.objects.filter(
-            internal_name=constants.DOVEADM_PASS_SCHEME_ALARM)
+            internal_name=constants.DOVEADM_PASS_SCHEME_ALARM
+        )
         self.assertEqual(doveadm_alarm.count(), 1)
-        self.assertEqual(doveadm_alarm.first().status,
-                         admin_constants.ALARM_OPENED)
+        self.assertEqual(doveadm_alarm.first().status, admin_constants.ALARM_OPENED)
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
@@ -227,11 +232,9 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 404)
 
     @mock.patch("django_otp.plugins.otp_totp.models.TOTPDevice.verify_token")
-    def test_tfa_setup_modify(self,
-                              verify_mock,
-                              password_ko="Toto1234",
-                              password_ok="password"
-                              ):
+    def test_tfa_setup_modify(
+        self, verify_mock, password_ko="Toto1234", password_ok="password"
+    ):
         user = models.User.objects.get(username="admin")
         user.totpdevice_set.create(name="Device")
 
@@ -277,10 +280,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
     def test_api_token(self):
         # 1. Obtain a JWT token so we can safely play with basic token
         url = reverse("v2:token_obtain_pair")
-        data = {
-            "username": "admin",
-            "password": "password"
-        }
+        data = {"username": "admin", "password": "password"}
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.client.credentials(
@@ -300,19 +300,16 @@ class AccountViewSetTestCase(ModoAPITestCase):
         """Simulate a failed login attempt and check that it is logged."""
 
         url = reverse("v2:token_obtain_pair")
-        data = {
-            "username": "clearly_non_existent_user",
-            "password": "password"
-        }
+        data = {"username": "clearly_non_existent_user", "password": "password"}
 
-        with self.assertLogs(logger='modoboa.auth', level='WARNING') as log:
+        with self.assertLogs(logger="modoboa.auth", level="WARNING") as log:
 
             resp = self.client.post(url, data, format="json")
             self.assertEqual(resp.status_code, 401)
             self.assertIn(
                 "WARNING:modoboa.auth:Failed connection attempt from '127.0.0.1'"
                 " as user 'clearly_non_existent_user'",
-                log.output
+                log.output,
             )
 
 
@@ -328,7 +325,8 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         super().setUpTestData()
         factories.populate_database()
         cls.da_token = Token.objects.create(
-            user=models.User.objects.get(username="admin@test.com"))
+            user=models.User.objects.get(username="admin@test.com")
+        )
 
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
@@ -361,13 +359,16 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         self.assertEqual(response.json()["type"], "email")
 
         # SMS reset test
-        self.set_global_parameters({
-            "sms_password_recovery": True,
-            "sms_provider": "ovh",
-            "sms_ovh_application_key": "key",
-            "sms_ovh_application_secret": "secret",
-            "sms_ovh_consumer_key": "consumer"
-        }, app="core")
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            },
+            app="core",
+        )
 
         # Phone number
         account.phone_number = "+33612345678"
@@ -395,13 +396,15 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         # Send sms
         client_get.return_value = ["service"]
         client_post.return_value = {"totalCreditsRemoved": 1}
-        self.set_global_parameters({
-            "sms_password_recovery": True,
-            "sms_provider": "ovh",
-            "sms_ovh_application_key": "key",
-            "sms_ovh_application_secret": "secret",
-            "sms_ovh_consumer_key": "consumer"
-        })
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            }
+        )
         self.client.logout()
         self.create_session()
         data = {"email": account.email}
@@ -447,13 +450,15 @@ class PasswordResetTestCase(AccountViewSetTestCase):
 
         client_get.return_value = ["service"]
         client_post.return_value = {"totalCreditsRemoved": 1}
-        self.set_global_parameters({
-            "sms_password_recovery": True,
-            "sms_provider": "ovh",
-            "sms_ovh_application_key": "key",
-            "sms_ovh_application_secret": "secret",
-            "sms_ovh_consumer_key": "consumer"
-        })
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            }
+        )
 
         # Prepare account
         account = models.User.objects.get(username="user@test.com")
@@ -477,30 +482,54 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         token_ok = response.json()["token"]
 
         # Password differs
-        data = {"new_password1": "123456", "new_password2": "123457", "token": token_ok, "id": id_ok}
+        data = {
+            "new_password1": "123456",
+            "new_password2": "123457",
+            "token": token_ok,
+            "id": id_ok,
+        }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
 
         # Wrong ID
         id_ko = urlsafe_base64_encode(force_bytes(-1))
-        data = {"new_password1": "123456", "new_password2": "123456", "token": token_ok, "id": id_ko}
+        data = {
+            "new_password1": "123456",
+            "new_password2": "123456",
+            "token": token_ok,
+            "id": id_ko,
+        }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 404)
 
         # Wrong Token
         token_ko = "123456"
-        data = {"new_password1": "123456", "new_password2": "123456", "token": token_ko, "id": id_ok}
+        data = {
+            "new_password1": "123456",
+            "new_password2": "123456",
+            "token": token_ko,
+            "id": id_ok,
+        }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 403)
 
         # Failed password requirements
-        data = {"new_password1": "123456", "new_password2": "123456", "token": token_ok, "id": id_ok}
+        data = {
+            "new_password1": "123456",
+            "new_password2": "123456",
+            "token": token_ok,
+            "id": id_ok,
+        }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.json()["type"], "password_requirement")
 
         # All good
-        data = {"new_password1": "MyHardenedPass1!", "new_password2": "MyHardenedPass1!", "token": token_ok,
-                "id": id_ok}
+        data = {
+            "new_password1": "MyHardenedPass1!",
+            "new_password2": "MyHardenedPass1!",
+            "token": token_ok,
+            "id": id_ok,
+        }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         # TODO: See why user doesn't update it's password --> self.test_me_password(password_ok="MyHardenedPass1!")
@@ -512,15 +541,13 @@ class AuthenticationTestCase(ModoAPITestCase):
     def test_2fa(self, match_mock):
         url = reverse("v2:token_obtain_pair")
         me_url = reverse("v2:account-me")
-        data = {
-            "username": "admin",
-            "password": "password"
-        }
+        data = {"username": "admin", "password": "password"}
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
         self.client.credentials(
-            HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"]))
+            HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"])
+        )
         resp = self.client.get(me_url)
         self.assertEqual(resp.status_code, 200)
 
@@ -540,7 +567,8 @@ class AuthenticationTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
         self.client.credentials(
-            HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"]))
+            HTTP_AUTHORIZATION="Bearer {}".format(resp.json()["access"])
+        )
         resp = self.client.get(me_url)
         self.assertEqual(resp.status_code, 200)
 

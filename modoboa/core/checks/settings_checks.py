@@ -3,9 +3,11 @@ from django.core.checks import Warning, register
 from django.utils.translation import gettext as _
 
 W001 = Warning(
-    _("You have USE_TZ set to False, this may result in issues during "
-      "transitions between summer/winter time (ie the same local time occuring "
-      "twice due to clock change)."),
+    _(
+        "You have USE_TZ set to False, this may result in issues during "
+        "transitions between summer/winter time (ie the same local time occuring "
+        "twice due to clock change)."
+    ),
     hint=_("Set `USE_TZ = True` in settings.py"),
     id="modoboa.W001",
 )

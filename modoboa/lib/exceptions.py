@@ -11,6 +11,7 @@ class ModoboaException(Exception):
     """
     Base class for Modoboa custom exceptions.
     """
+
     http_code = None
 
     def __init__(self, *args, **kwargs):
@@ -24,6 +25,7 @@ class InternalError(ModoboaException):
     """
     Use this exception for system errors, missing dependencies, etc.
     """
+
     http_code = 500
 
 
@@ -33,6 +35,7 @@ class BadRequest(ModoboaException):
     format (example: wrong CSV line) or doesn't respect validation
     rules.
     """
+
     http_code = 400
 
 
@@ -41,6 +44,7 @@ class NotFound(ModoboaException):
     Use this exception to indicate the requested resource could not be
     found.
     """
+
     http_code = 404
 
 
@@ -49,6 +53,7 @@ class Conflict(ModoboaException):
     Use this exception to indicate that the request could not be
     processed because of conflict in the request.
     """
+
     http_code = 409
 
 
@@ -67,6 +72,7 @@ class PermDeniedException(ModoboaException):
     Use this exception when a user tries to do something he is not
     allowed to.
     """
+
     http_code = 403
 
     def __init__(self, msg=None):

@@ -10,9 +10,7 @@ from . import constants
 def get_redis_connection():
     """Return a client connection to Redis server."""
     rclient = redis.Redis(
-        host=settings.REDIS_HOST,
-        port=settings.REDIS_PORT,
-        db=settings.REDIS_QUOTA_DB
+        host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_QUOTA_DB
     )
     rclient.set_response_callback("HGET", int)
     return rclient

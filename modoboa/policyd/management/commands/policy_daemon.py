@@ -27,8 +27,7 @@ class Command(BaseCommand):
         """Add command line arguments."""
         parser.add_argument("--host", type=str, default="localhost")
         parser.add_argument("--port", type=int, default=9999)
-        parser.add_argument("--debug", action="store_true",
-                            help="Enable debug mode")
+        parser.add_argument("--debug", action="store_true", help="Enable debug mode")
 
     def handle(self, *args, **options):
         """Entry point."""
@@ -41,17 +40,16 @@ class Command(BaseCommand):
         # Schedule reset task
         core.start_reset_counters_coro()
 
-        for signame in {'SIGINT', 'SIGTERM'}:
+        for signame in {"SIGINT", "SIGTERM"}:
             loop.add_signal_handler(
-                getattr(signal, signame),
-                functools.partial(ask_exit, signame, loop)
+                getattr(signal, signame), functools.partial(ask_exit, signame, loop)
             )
 
         logger.info("Serving on {}".format(server.sockets[0].getsockname()))
 
         if options["debug"]:
             loop.set_debug(True)
-            logging.getLogger('asyncio').setLevel(logging.DEBUG)
+            logging.getLogger("asyncio").setLevel(logging.DEBUG)
 
         loop.run_forever()
 

@@ -19,7 +19,8 @@ class DomainViewSetTestCase(ModoAPITestCase):
         super().setUpTestData()
         factories.populate_database()
         cls.da_token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin@test.com"))
+            user=core_models.User.objects.get(username="admin@test.com")
+        )
 
     def test_create(self):
         url = reverse("v2:domain-list")
@@ -28,8 +29,8 @@ class DomainViewSetTestCase(ModoAPITestCase):
             "domain_admin": {
                 "username": "admin",
                 "with_mailbox": True,
-                "with_aliases": True
-            }
+                "with_aliases": True,
+            },
         }
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
@@ -39,8 +40,7 @@ class DomainViewSetTestCase(ModoAPITestCase):
         admin = dom.admins.first()
         self.assertTrue(hasattr(admin, "mailbox"))
         self.assertTrue(
-            models.Alias.objects.filter(
-                address="postmaster@domain.tld").exists()
+            models.Alias.objects.filter(address="postmaster@domain.tld").exists()
         )
 
     def test_update(self):
@@ -50,11 +50,8 @@ class DomainViewSetTestCase(ModoAPITestCase):
             "type": "relaydomain",
             "transport": {
                 "service": "relay",
-                "settings": {
-                    "relay_target_port": 25,
-                    "relay_target_host": "localhost"
-                }
-            }
+                "settings": {"relay_target_port": 25, "relay_target_host": "localhost"},
+            },
         }
         url = reverse("v2:domain-detail", args=[domain.pk])
         resp = self.client.put(url, data, format="json")
@@ -63,7 +60,7 @@ class DomainViewSetTestCase(ModoAPITestCase):
         self.assertEqual(domain.transport.service, data["transport"]["service"])
         self.assertEqual(
             domain.transport._settings["relay_target_host"],
-            data["transport"]["settings"]["relay_target_host"]
+            data["transport"]["settings"]["relay_target_host"],
         )
 
         data["transport"]["relay_verify_recipients"] = True
@@ -75,9 +72,7 @@ class DomainViewSetTestCase(ModoAPITestCase):
         domain = models.Domain.objects.get(name="test2.com")
         data = {
             "name": "test2.com",
-            "resources": [
-                {"name": "domain_aliases", "max_value": 20}
-            ]
+            "resources": [{"name": "domain_aliases", "max_value": 20}],
         }
         url = reverse("v2:domain-detail", args=[domain.pk])
         resp = self.client.put(url, data, format="json")
@@ -87,8 +82,7 @@ class DomainViewSetTestCase(ModoAPITestCase):
         )
 
     def test_delete(self):
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
         domain = models.Domain.objects.get(name="test2.com")
         url = reverse("v2:domain-delete", args=[domain.pk])
@@ -129,15 +123,14 @@ class DomainViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_domains_import(self):
-        f = ContentFile(b"""domain; domain1.com; 1000; 100; True
+        f = ContentFile(
+            b"""domain; domain1.com; 1000; 100; True
 domain; domain2.com; 1000; 200; False
 domainalias; domalias1.com; domain1.com; True
-""", name="domains.csv")
-        self.client.post(
-            reverse("v2:domain-import-from-csv"), {
-                "sourcefile": f
-            }
+""",
+            name="domains.csv",
         )
+        self.client.post(reverse("v2:domain-import-from-csv"), {"sourcefile": f})
         admin = core_models.User.objects.get(username="admin")
         dom = models.Domain.objects.get(name="domain1.com")
         self.assertEqual(dom.quota, 1000)
@@ -164,8 +157,7 @@ domainalias; domalias1.com; domain1.com; True
             "domain,test2.com,0,0,True",
         ]
         self.assertCountEqual(
-            expected_response,
-            force_str(response.content.strip()).split("\r\n")
+            expected_response, force_str(response.content.strip()).split("\r\n")
         )
 
 
@@ -182,19 +174,14 @@ class AccountViewSetTestCase(ModoAPITestCase):
         data = {
             "username": "toto@test.com",
             "role": "SimpleUsers",
-            "mailbox": {
-                "use_domain_quota": True
-            },
+            "mailbox": {"use_domain_quota": True},
             "password": "Toto12345",
             "language": "fr",
-            "aliases": ["alias3@test.com"]
+            "aliases": ["alias3@test.com"],
         }
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
-        self.assertTrue(
-            models.Alias.objects.filter(
-                address="alias3@test.com").exists()
-        )
+        self.assertTrue(models.Alias.objects.filter(address="alias3@test.com").exists())
 
     def test_create_admin(self):
         url = reverse("v2:account-list")
@@ -203,7 +190,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "role": "SuperAdmins",
             "password": "Toto12345",
             "language": "fr",
-            "aliases": ["alias3@test.com"]
+            "aliases": ["alias3@test.com"],
         }
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
@@ -251,12 +238,8 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "username": "user@test.com",
             "role": "SimpleUsers",
             "password": "Toto12345",
-            "mailbox": {
-                "quota": 10
-            },
-            "aliases": [
-                "aliasupdate1@test.com"
-            ]
+            "mailbox": {"quota": 10},
+            "aliases": ["aliasupdate1@test.com"],
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -271,7 +254,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "mailbox": {
                 "message_limit": 10,
                 "is_send_only": True,
-            }
+            },
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -283,9 +266,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "username": "user@test.com",
             "role": "SimpleUsers",
             "password": "Toto12345",
-            "mailbox": {
-                "quota": 10
-            }
+            "mailbox": {"quota": 10},
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -299,7 +280,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "mailbox": {
                 "message_limit": None,
                 "is_send_only": False,
-            }
+            },
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -314,29 +295,24 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "username": "user@test.com",
             "role": "SimpleUsers",
             "password": "Toto12345",
-            "mailbox": {
-                "quota": 10
-            },
-            "aliases": [
-                "aliasupdate1@test.com"
-            ]
+            "mailbox": {"quota": 10},
+            "aliases": ["aliasupdate1@test.com"],
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(
-            models.Alias.objects.filter(address="aliasupdate1@test.com").exists())
+            models.Alias.objects.filter(address="aliasupdate1@test.com").exists()
+        )
 
         # Create an alias for another user
         url = reverse("v2:account-list")
         data = {
             "username": "toto@test.com",
             "role": "SimpleUsers",
-            "mailbox": {
-                "use_domain_quota": True
-            },
+            "mailbox": {"use_domain_quota": True},
             "password": "Toto12345",
             "language": "fr",
-            "aliases": ["totoalias@test.com"]
+            "aliases": ["totoalias@test.com"],
         }
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
@@ -347,13 +323,11 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "username": "user@test.com",
             "role": "SimpleUsers",
             "password": "Toto12345",
-            "mailbox": {
-                "quota": 10
-            },
+            "mailbox": {"quota": 10},
             "aliases": [
                 "totoalias@test.com",
                 "aliasupdate1@test.com",
-            ]
+            ],
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -367,17 +341,16 @@ class AccountViewSetTestCase(ModoAPITestCase):
         data = {
             "username": "user@test.com",
             "role": "SimpleUsers",
-            "mailbox": {
-                "quota": 10
-            },
-            "aliases": []
+            "mailbox": {"quota": 10},
+            "aliases": [],
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.assertFalse(
-            models.Alias.objects.filter(address="aliasupdate1@test.com").exists())
-        alias_recipients = list(models.Alias.objects.filter(
-            address="totoalias@test.com").first().recipients
+            models.Alias.objects.filter(address="aliasupdate1@test.com").exists()
+        )
+        alias_recipients = list(
+            models.Alias.objects.filter(address="totoalias@test.com").first().recipients
         )
         self.assertEqual(alias_recipients, ["toto@test.com"])
 
@@ -388,9 +361,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "username": "superadmin@test.com",
             "role": "SuperAdmins",
             "password": "Toto12345",
-            "mailbox": {
-                "quota": 10
-            }
+            "mailbox": {"quota": 10},
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -405,7 +376,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         data = {
             "resources": [
                 {"name": "mailboxes", "max_value": 10},
-                {"name": "mailbox_aliases", "max_value": 10}
+                {"name": "mailbox_aliases", "max_value": 10},
             ]
         }
         resp = self.client.patch(url, data, format="json")
@@ -436,17 +407,20 @@ class IdentityViewSetTestCase(ModoAPITestCase):
         self.assertEqual(len(resp.json()), 8)
 
     def test_import(self):
-        f = ContentFile("""
+        f = ContentFile(
+            """
 account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 0
 account; Truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 5; test.com
 alias; alias1@test.com; True; user1@test.com
 forward; alias2@test.com; True; user1+ext@test.com
 forward; fwd1@test.com; True; user@extdomain.com
 dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
-""", name="identities.csv")  # NOQA:E501
+""",
+            name="identities.csv",
+        )  # NOQA:E501
         self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True}
+            {"sourcefile": f, "crypt_password": True},
         )
         admin = core_models.User.objects.get(username="admin")
         u1 = core_models.User.objects.get(username="user1@test.com")
@@ -461,13 +435,11 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         self.assertEqual(mb1.quota, 0)
         self.assertTrue(admin.is_owner(mb1))
         self.assertEqual(mb1.full_address, "user1@test.com")
-        self.assertTrue(
-            self.client.login(username="user1@test.com", password="toto")
-        )
+        self.assertTrue(self.client.login(username="user1@test.com", password="toto"))
 
         da = core_models.User.objects.get(username="truc@test.com")
         damb = da.mailbox
-        self.assertEqual(da.first_name, u"René")
+        self.assertEqual(da.first_name, "René")
         self.assertEqual(da.role, "DomainAdmins")
         self.assertEqual(damb.quota, 5)
         self.assertFalse(damb.use_domain_quota)
@@ -478,30 +450,23 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         self.assertTrue(da.can_access(u))
 
         al = models.Alias.objects.get(address="alias1@test.com")
-        self.assertTrue(
-            al.aliasrecipient_set
-            .filter(r_mailbox=u1.mailbox).exists()
-        )
+        self.assertTrue(al.aliasrecipient_set.filter(r_mailbox=u1.mailbox).exists())
         self.assertTrue(admin.is_owner(al))
 
         fwd = models.Alias.objects.get(address="fwd1@test.com")
         self.assertTrue(
-            fwd.aliasrecipient_set
-            .filter(
-                address="user@extdomain.com", r_mailbox__isnull=True,
-                r_alias__isnull=True)
-            .exists()
+            fwd.aliasrecipient_set.filter(
+                address="user@extdomain.com",
+                r_mailbox__isnull=True,
+                r_alias__isnull=True,
+            ).exists()
         )
         self.assertTrue(admin.is_owner(fwd))
 
         dlist = models.Alias.objects.get(address="dlist@test.com")
+        self.assertTrue(dlist.aliasrecipient_set.filter(r_mailbox=u1.mailbox).exists())
         self.assertTrue(
-            dlist.aliasrecipient_set
-            .filter(r_mailbox=u1.mailbox).exists()
-        )
-        self.assertTrue(
-            dlist.aliasrecipient_set.filter(address="user@extdomain.com")
-            .exists()
+            dlist.aliasrecipient_set.filter(address="user@extdomain.com").exists()
         )
         self.assertTrue(admin.is_owner(dlist))
 
@@ -513,10 +478,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         admin_row = received_content[0].split(",")
         admin_row[2] = ""
         received_content[0] = ",".join(admin_row)
-        self.assertCountEqual(
-            expected_response.strip().split("\r\n"),
-            received_content
-        )
+        self.assertCountEqual(expected_response.strip().split("\r\n"), received_content)
 
 
 class AliasViewSetTestCase(ModoAPITestCase):
@@ -536,10 +498,7 @@ class AliasViewSetTestCase(ModoAPITestCase):
         data = {"address": "alias@test.com"}
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
-        self.assertEqual(
-            resp.json()["address"][0],
-            "This alias already exists"
-        )
+        self.assertEqual(resp.json()["address"][0], "This alias already exists")
 
         data = {"address": "alias2@test.com"}
         resp = self.client.post(url, data, format="json")
@@ -563,8 +522,7 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
         cls.da_token = Token.objects.create(user=cls.da)
 
     def test_forward(self):
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         url = reverse("v2:account-forward")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
@@ -580,8 +538,7 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
         self.assertEqual(
-            models.Alias.objects.filter(address=self.da.username).count(),
-            2
+            models.Alias.objects.filter(address=self.da.username).count(), 2
         )
 
         resp = self.client.get(url)
@@ -592,8 +549,7 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(
-            models.Alias.objects.filter(address=self.da.username).count(),
-            1
+            models.Alias.objects.filter(address=self.da.username).count(), 1
         )
 
 
@@ -605,9 +561,11 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         super().setUpTestData()
         factories.populate_database()
         factories.AlarmFactory(
-            domain__name="test.com", mailbox=None, title="Test alarm")
+            domain__name="test.com", mailbox=None, title="Test alarm"
+        )
         cls.da_token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin@test.com"))
+            user=core_models.User.objects.get(username="admin@test.com")
+        )
 
     def test_list(self):
         url = reverse("v2:alarm-list")
@@ -621,11 +579,11 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         domain = models.Domain.objects.get(name="test.com")
 
         # Try performing action on restricted domains
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
         domain = models.Domain.objects.get(name="test2.com")
         alarm_restricted = models.Alarm.objects.create(
-            domain=domain, mailbox=None, title="Test alarm 2")
+            domain=domain, mailbox=None, title="Test alarm 2"
+        )
         alarm_restricted.save()
         url = reverse("v2:alarm-switch", args=[alarm_restricted.pk])
         resp = self.client.post(url)
@@ -638,7 +596,8 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
         alarm = models.Alarm.objects.create(
-            domain=domain, mailbox=None, title="Test alarm 3")
+            domain=domain, mailbox=None, title="Test alarm 3"
+        )
         alarm.save()
 
         # Switch status of the alarm to close
@@ -678,9 +637,11 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         resp = self.client.delete(f"{url}?ids[]=toto")
         self.assertEqual(resp.status_code, 400)
         alarm1 = factories.AlarmFactory(
-            domain__name="test.com", mailbox=None, title="Test alarm")
+            domain__name="test.com", mailbox=None, title="Test alarm"
+        )
         alarm2 = factories.AlarmFactory(
-            domain__name="test.com", mailbox=None, title="Test alarm")
+            domain__name="test.com", mailbox=None, title="Test alarm"
+        )
         resp = self.client.delete(f"{url}?ids[]={alarm1.pk}&ids[]={alarm2.pk}")
         self.assertEqual(resp.status_code, 204)
         with self.assertRaises(models.Alarm.DoesNotExist):

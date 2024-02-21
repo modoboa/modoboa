@@ -5,13 +5,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0008_domain_enable_dns_checks'),
+        ("admin", "0008_domain_enable_dns_checks"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='domain',
-            old_name='quota',
-            new_name='default_mailbox_quota',
+            model_name="domain",
+            old_name="quota",
+            new_name="default_mailbox_quota",
         ),
     ]

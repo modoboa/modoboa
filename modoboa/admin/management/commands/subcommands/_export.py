@@ -18,12 +18,18 @@ class ExportCommand(BaseCommand):
     def add_arguments(self, parser):
         """Add arguments to command."""
         parser.add_argument(
-            "--sepchar", type=str, dest="sepchar", default=";",
-            help="Separator used in generated file."
+            "--sepchar",
+            type=str,
+            dest="sepchar",
+            default=";",
+            help="Separator used in generated file.",
         )
         parser.add_argument(
-            "objtype", type=str, choices=["domains", "identities"],
-            help="The type of object to export (domains or identities)")
+            "objtype",
+            type=str,
+            choices=["domains", "identities"],
+            help="The type of object to export (domains or identities)",
+        )
 
     def export_domains(self):
         """Export all domains."""
@@ -39,7 +45,8 @@ class ExportCommand(BaseCommand):
         qset = (
             models.Alias.objects.filter(internal=False)
             .exclude(alias_recipient_aliases=None)
-            .distinct().prefetch_related("aliasrecipient_set")
+            .distinct()
+            .prefetch_related("aliasrecipient_set")
         )
         for alias in qset:
             alias.to_csv(self.csvwriter)
@@ -56,5 +63,6 @@ class ExportCommand(BaseCommand):
     def handle(self, *args, **options):
         exts_pool.load_all()
         self.csvwriter = csv.writer(
-            self.stdout, delimiter=smart_str(options["sepchar"]))
+            self.stdout, delimiter=smart_str(options["sepchar"])
+        )
         getattr(self, "export_{}".format(options["objtype"]))()

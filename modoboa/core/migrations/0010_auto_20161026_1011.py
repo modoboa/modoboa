@@ -42,22 +42,22 @@ def clear_parameters(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0009_auto_20161026_1003'),
-        ('lib', '0005_auto_20160416_1449'),
+        ("core", "0009_auto_20161026_1003"),
+        ("lib", "0005_auto_20160416_1449"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='localconfig',
-            name='_parameters',
+            model_name="localconfig",
+            name="_parameters",
             field=models.JSONField(default=dict),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='user',
-            name='_parameters',
+            model_name="user",
+            name="_parameters",
             field=models.JSONField(default=dict),
             preserve_default=False,
         ),
-        migrations.RunPython(move_parameters, clear_parameters)
+        migrations.RunPython(move_parameters, clear_parameters),
     ]

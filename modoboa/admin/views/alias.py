@@ -35,18 +35,15 @@ def _validate_alias(request, form, successmsg, callback=None):
     return render_to_json_response({"form_errors": form.errors}, status=400)
 
 
-def _new_alias(request, title, action, successmsg,
-               tplname="admin/aliasform.html"):
-    core_signals.can_create_object.send(
-        "new_alias", context=request.user, klass=Alias)
+def _new_alias(request, title, action, successmsg, tplname="admin/aliasform.html"):
+    core_signals.can_create_object.send("new_alias", context=request.user, klass=Alias)
     if request.method == "POST":
+
         def callback(user, alias):
             alias.post_create(user)
 
         form = AliasForm(request.user, request.POST)
-        return _validate_alias(
-            request, form, successmsg, callback
-        )
+        return _validate_alias(request, form, successmsg, callback)
 
     ctx = {
         "title": title,
@@ -54,7 +51,7 @@ def _new_alias(request, title, action, successmsg,
         "formid": "aliasform",
         "action_label": _("Create"),
         "action_classes": "submit",
-        "form": AliasForm(request.user)
+        "form": AliasForm(request.user),
     }
     return render(request, tplname, ctx)
 
@@ -64,8 +61,7 @@ def _new_alias(request, title, action, successmsg,
 @reversion.create_revision()
 def newalias(request):
     return _new_alias(
-        request, _("New alias"), reverse("admin:alias_add"),
-        _("Alias created")
+        request, _("New alias"), reverse("admin:alias_add"), _("Alias created")
     )
 
 
@@ -87,7 +83,7 @@ def editalias(request, alid, tplname="admin/aliasform.html"):
         "title": alias.address,
         "action_label": _("Update"),
         "action_classes": "submit",
-        "form": AliasForm(request.user, instance=alias)
+        "form": AliasForm(request.user, instance=alias),
     }
     return render(request, tplname, ctx)
 
@@ -106,8 +102,7 @@ def delalias(request):
     return render_to_json_response(msg)
 
 
-class AliasDetailView(
-        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+class AliasDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """DetailView for Alias."""
 
     model = Alias

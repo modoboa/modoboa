@@ -6,5 +6,5 @@ ALLOWED_REASON_TYPES = (
     "trusted_forwarder",
     "mailing_list",
     "local_policy",
-    "other"
+    "other",
 )

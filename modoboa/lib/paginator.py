@@ -2,8 +2,8 @@
 Custom pagination tools.
 """
 
-class Page(object):
 
+class Page(object):
     """Class to represent a page."""
 
     def __init__(self, paginator, pageid, id_start, id_stop, baseurl=None):
@@ -45,9 +45,7 @@ class Page(object):
     def has_next(self):
         """Tell if a next page is available or not."""
         if self._has_next is None:
-            self._has_next = (
-                True if self.id_stop < self.paginator.total else False
-            )
+            self._has_next = True if self.id_stop < self.paginator.total else False
         return self._has_next
 
     @property
@@ -69,7 +67,6 @@ class Page(object):
 
 
 class Paginator(object):
-
     """Pagination class."""
 
     def __init__(self, total, elems_per_page):

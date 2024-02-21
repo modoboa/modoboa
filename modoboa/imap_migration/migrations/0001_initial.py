@@ -7,19 +7,29 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '__first__'),
+        ("admin", "__first__"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Migration',
+            name="Migration",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('_password', models.CharField(max_length=100)),
-                ('mailbox', models.ForeignKey(to='admin.Mailbox', on_delete=models.CASCADE)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                ("_password", models.CharField(max_length=100)),
+                (
+                    "mailbox",
+                    models.ForeignKey(to="admin.Mailbox", on_delete=models.CASCADE),
+                ),
             ],
-            options={
-            },
+            options={},
             bases=(models.Model,),
         ),
     ]

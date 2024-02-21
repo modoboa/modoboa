@@ -14,8 +14,8 @@ from . import constants
 
 class NotVerified(APIException):
     status_code = status.HTTP_418_IM_A_TEAPOT
-    default_detail = _('Missing 2FA verification.')
-    default_code = 'not_verified'
+    default_detail = _("Missing 2FA verification.")
+    default_code = "not_verified"
 
 
 class JWTAuthenticationWith2FA(JWTAuthentication):
@@ -25,9 +25,7 @@ class JWTAuthenticationWith2FA(JWTAuthentication):
         header = self.get_header(request)
         raw_token = self.get_raw_token(header)
         validated_token = self.get_validated_token(raw_token)
-        url_exceptions = (
-            reverse("v2:account-tfa-verify-code"),
-        )
+        url_exceptions = (reverse("v2:account-tfa-verify-code"),)
         if request.path in url_exceptions:
             return
         if constants.TFA_DEVICE_TOKEN_KEY in validated_token:
@@ -48,5 +46,5 @@ class JWTAuthenticationWith2FA(JWTAuthentication):
 
 
 class SimpleJWTWith2FAScheme(SimpleJWTScheme):
-    target_class = 'modoboa.core.drf_authentication.JWTAuthenticationWith2FA'
-    name = 'jwt2FAAuth'
+    target_class = "modoboa.core.drf_authentication.JWTAuthenticationWith2FA"
+    name = "jwt2FAAuth"

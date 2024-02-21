@@ -25,9 +25,7 @@ from reversion import revisions as reversion
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
-from modoboa.lib.exceptions import (
-    Conflict, ModoboaException, PermDeniedException
-)
+from modoboa.lib.exceptions import Conflict, ModoboaException, PermDeniedException
 from modoboa.parameters import tools as param_tools
 
 from . import signals
@@ -40,13 +38,16 @@ def needs_mailbox():
     Some applications (the webmail for example) need a mailbox to
     work.
     """
+
     def decorator(f):
         @wraps(f)
         def wrapped_f(request, *args, **kwargs):
             if hasattr(request.user, "mailbox"):
                 return f(request, *args, **kwargs)
             raise PermDeniedException(_("A mailbox is required"))
+
         return wrapped_f
+
     return decorator
 
 
@@ -61,13 +62,12 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
     """
     accounts = []
     if idtfilter is None or not idtfilter or idtfilter == "account":
-        ids = user.objectaccess_set \
-            .filter(content_type=ContentType.objects.get_for_model(user)) \
-            .values_list("object_id", flat=True)
+        ids = user.objectaccess_set.filter(
+            content_type=ContentType.objects.get_for_model(user)
+        ).values_list("object_id", flat=True)
         q = Q(pk__in=ids)
         if searchquery is not None:
-            q &= Q(username__icontains=searchquery) \
-                | Q(email__icontains=searchquery)
+            q &= Q(username__icontains=searchquery) | Q(email__icontains=searchquery)
         if grpfilter is not None and grpfilter:
             if grpfilter == "SuperAdmins":
                 q &= Q(is_superuser=True)
@@ -76,16 +76,19 @@ def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
         accounts = User.objects.filter(q).prefetch_related("groups")
 
     aliases = []
-    if idtfilter is None or not idtfilter \
-            or (idtfilter in ["alias", "forward", "dlist"]):
+    if (
+        idtfilter is None
+        or not idtfilter
+        or (idtfilter in ["alias", "forward", "dlist"])
+    ):
         alct = ContentType.objects.get_for_model(Alias)
-        ids = user.objectaccess_set.filter(content_type=alct) \
-            .values_list("object_id", flat=True)
+        ids = user.objectaccess_set.filter(content_type=alct).values_list(
+            "object_id", flat=True
+        )
         q = Q(pk__in=ids, internal=False)
         if searchquery is not None:
-            q &= (
-                Q(address__icontains=searchquery) |
-                Q(domain__name__icontains=searchquery)
+            q &= Q(address__icontains=searchquery) | Q(
+                domain__name__icontains=searchquery
             )
         aliases = Alias.objects.select_related("domain").filter(q)
         if idtfilter is not None and idtfilter:
@@ -101,8 +104,7 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
     :rtype: list
     :return: a list of domains and/or relay domains
     """
-    domains = (
-        Domain.objects.get_for_admin(user).prefetch_related("domainalias_set"))
+    domains = Domain.objects.get_for_admin(user).prefetch_related("domainalias_set")
     if domfilter:
         domains = domains.filter(type=domfilter)
     if searchquery is not None:
@@ -110,7 +112,8 @@ def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
         q |= Q(domainalias__name__contains=searchquery)
         domains = domains.filter(q).distinct()
     results = signals.extra_domain_qset_filters.send(
-        sender="get_domains", domfilter=domfilter, extrafilters=extrafilters)
+        sender="get_domains", domfilter=domfilter, extrafilters=extrafilters
+    )
     if results:
         qset_filters = {}
         for result in results:
@@ -136,8 +139,7 @@ def import_domain(user, row, formopts):
     """Specific code for domains import"""
     if not user.has_perm("admin.add_domain"):
         raise PermDeniedException(_("You are not allowed to import domains"))
-    core_signals.can_create_object.send(
-        sender="import", context=user, klass=Domain)
+    core_signals.can_create_object.send(sender="import", context=user, klass=Domain)
     dom = Domain()
     dom.from_csv(user, row)
 
@@ -145,10 +147,10 @@ def import_domain(user, row, formopts):
 def import_domainalias(user, row, formopts):
     """Specific code for domain aliases import"""
     if not user.has_perm("admin.add_domainalias"):
-        raise PermDeniedException(
-            _("You are not allowed to import domain aliases."))
+        raise PermDeniedException(_("You are not allowed to import domain aliases."))
     core_signals.can_create_object.send(
-        sender="import", context=user, klass=DomainAlias)
+        sender="import", context=user, klass=DomainAlias
+    )
     domalias = DomainAlias()
     domalias.from_csv(user, row)
 
@@ -200,14 +202,15 @@ def get_dns_records(name, typ, resolver=None):
     except dns.resolver.NoAnswer as e:
         logger.error(
             _("No %(type)s record for %(name)s") % {"type": typ, "name": name},
-            exc_info=e
+            exc_info=e,
         )
     except dns.resolver.NoNameservers as e:
         logger.error(_("No working name servers found"), exc_info=e)
     except dns.resolver.Timeout as e:
         logger.warning(
-            _("DNS resolution timeout, unable to query %s at the moment") %
-            name, exc_info=e)
+            _("DNS resolution timeout, unable to query %s at the moment") % name,
+            exc_info=e,
+        )
     except dns.name.NameTooLong as e:
         logger.error(_("DNS name is too long: %s" % name), exc_info=e)
     else:
@@ -225,7 +228,8 @@ def get_domain_mx_list(domain):
         return result
     for dns_answer in dns_answers:
         mx_domain = dns_answer.exchange.to_unicode(
-            omit_final_dot=True, idna_codec=IDNA_2008_UTS_46)
+            omit_final_dot=True, idna_codec=IDNA_2008_UTS_46
+        )
         rtypes = ["A"]
         if param_tools.get_global_parameter("enable_ipv6_mx_checks", app="admin"):
             rtypes.append("AAAA")
@@ -239,11 +243,11 @@ def get_domain_mx_list(domain):
                     mx_ip = ipaddress.ip_address(address_smart)
                 except ValueError as e:
                     logger.warning(
-                        _("Invalid IP address format for "
-                          "{domain}; {addr}").format(
-                              domain=mx_domain,
-                            addr=smart_str(ip_answer.address)
-                          ), exc_info=e)
+                        _("Invalid IP address format for " "{domain}; {addr}").format(
+                            domain=mx_domain, addr=smart_str(ip_answer.address)
+                        ),
+                        exc_info=e,
+                    )
                 else:
                     result.append((mx_domain, mx_ip))
     return result
@@ -252,8 +256,11 @@ def get_domain_mx_list(domain):
 def domain_has_authorized_mx(name):
     """Check if domain has authorized mx record at least."""
     valid_mxs = param_tools.get_global_parameter("valid_mxs")
-    valid_mxs = [ipaddress.ip_network(smart_str(v.strip()))
-                 for v in valid_mxs.split() if v.strip()]
+    valid_mxs = [
+        ipaddress.ip_network(smart_str(v.strip()))
+        for v in valid_mxs.split()
+        if v.strip()
+    ]
     domain_mxs = get_domain_mx_list(name)
     for _mx_addr, mx_ip_addr in domain_mxs:
         for subnet in valid_mxs:
@@ -264,13 +271,12 @@ def domain_has_authorized_mx(name):
 
 def make_password():
     """Create a random password."""
-    length = int(
-        param_tools.get_global_parameter("random_password_length", app="core")
-    )
+    length = int(param_tools.get_global_parameter("random_password_length", app="core"))
     while True:
         password = "".join(
-            random.SystemRandom().choice(
-                string.ascii_letters + string.digits) for _ in range(length))
+            random.SystemRandom().choice(string.ascii_letters + string.digits)
+            for _ in range(length)
+        )
         try:
             password_validation.validate_password(password)
         except ValidationError:
@@ -297,7 +303,8 @@ def import_data(user, file_object, options: dict):
                 if not row:
                     continue
                 fct = signals.import_object.send(
-                    sender="importdata", objtype=row[0].strip())
+                    sender="importdata", objtype=row[0].strip()
+                )
                 fct = [func for x_, func in fct if func is not None]
                 if not fct:
                     continue
@@ -315,6 +322,6 @@ def import_data(user, file_object, options: dict):
                 cpt += 1
             msg = _("%d objects imported successfully") % cpt
             return True, msg
-        except (ModoboaException) as e:
+        except ModoboaException as e:
             error = str(e)
     return False, error

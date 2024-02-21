@@ -124,10 +124,13 @@ class WizardForm(ABC):
             if self.steps[stepid].check_access(self):
                 break
             stepid -= 1
-        return render_to_json_response({
-            "title": self.steps[stepid].title, "id": self.steps[stepid].uid,
-            "stepid": stepid
-        })
+        return render_to_json_response(
+            {
+                "title": self.steps[stepid].title,
+                "id": self.steps[stepid].uid,
+                "stepid": stepid,
+            }
+        )
 
     def next_step(self):
         """Go to the next step if previous forms are valid."""
@@ -138,24 +141,30 @@ class WizardForm(ABC):
             if self.steps[cpt].check_access(self):
                 statuses.append(self.steps[cpt].form.is_valid())
         if False in statuses:
-            return render_to_json_response({
-                "stepid": stepid, "id": self.steps[stepid - 1].uid,
-                "form_errors": self.errors
-            }, status=400)
+            return render_to_json_response(
+                {
+                    "stepid": stepid,
+                    "id": self.steps[stepid - 1].uid,
+                    "form_errors": self.errors,
+                },
+                status=400,
+            )
         while stepid < len(self.steps):
             if self.steps[stepid].check_access(self):
                 break
             stepid += 1
         if stepid == len(self.steps):
             return self.done()
-        return render_to_json_response({
-            "title": self.steps[stepid].title, "id": self.steps[stepid].uid,
-            "stepid": stepid
-        })
+        return render_to_json_response(
+            {
+                "title": self.steps[stepid].title,
+                "id": self.steps[stepid].uid,
+                "stepid": stepid,
+            }
+        )
 
     def extra_context(self, context):
-        """Provide additional information to template's context.
-        """
+        """Provide additional information to template's context."""
         pass
 
     def process(self):
@@ -180,7 +189,6 @@ class WizardForm(ABC):
 
 
 class DynamicForm(object):
-
     """
     A form which accepts dynamic fields.
 
@@ -193,8 +201,7 @@ class DynamicForm(object):
     data = {}
 
     def _create_field(self, typ, name, value=None, pos=None):
-        """Create a new form field.
-        """
+        """Create a new form field."""
         self.fields[name] = typ(label="", required=False)
         if value is not None:
             self.fields[name].initial = value
@@ -211,7 +218,7 @@ class DynamicForm(object):
         :param string pattern: pattern used to find field instances
         :param typ: a form field class
         """
-        expr = re.compile(r'%s_\d+' % pattern)
+        expr = re.compile(r"%s_\d+" % pattern)
         values = []
         for k, v in list(qdict.items()):
             if k == pattern or expr.match(k):
@@ -292,8 +299,7 @@ class TabForms(object):
         """
         to_remove = []
         for f in self.forms:
-            if mandatory_only and \
-               ("mandatory" not in f or not f["mandatory"]):
+            if mandatory_only and ("mandatory" not in f or not f["mandatory"]):
                 continue
             elif optional_only and ("mandatory" in f and f["mandatory"]):
                 continue
@@ -308,8 +314,7 @@ class TabForms(object):
 
     @abc.abstractmethod
     def save(self):
-        """Save objects here.
-        """
+        """Save objects here."""
 
     def remove_tab(self, tabid):
         for f in self.forms:
@@ -325,8 +330,7 @@ class TabForms(object):
             yield form
 
     def extra_context(self, context):
-        """"Provide additional information to template's context.
-        """
+        """ "Provide additional information to template's context."""
         pass
 
     @abc.abstractmethod
@@ -337,23 +341,22 @@ class TabForms(object):
         """
 
     def process(self):
-        """Process the received request.
-        """
+        """Process the received request."""
         if self.request.method == "POST":
             if self.is_valid():
                 self.save()
                 return self.done()
-            return render_to_json_response(
-                {"form_errors": self.errors}, status=400
-            )
+            return render_to_json_response({"form_errors": self.errors}, status=400)
         context = {
             "tabs": self,
         }
         if self.forms:
-            context.update({
-                "action_label": _("Update"),
-                "action_classes": "submit",
-            })
+            context.update(
+                {
+                    "action_label": _("Update"),
+                    "action_classes": "submit",
+                }
+            )
         self.extra_context(context)
         active_tab_id = self.request.GET.get("active_tab", "default")
         if active_tab_id != "default":
@@ -367,6 +370,7 @@ class UserKwargModelFormMixin:
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
+
 
 #
 # Custom fields from here
@@ -391,12 +395,11 @@ class YesNoField(TypedChoiceField):
 
     def __init__(self, *args, **kwargs):
         """Constructor."""
-        kwargs.update({
-            "choices": (
-                (True, gettext_lazy("Yes")),
-                (False, gettext_lazy("No"))
-            ),
-            "widget": HorizontalRadioSelect(),
-            "coerce": lambda x: x == "True"
-        })
+        kwargs.update(
+            {
+                "choices": ((True, gettext_lazy("Yes")), (False, gettext_lazy("No"))),
+                "widget": HorizontalRadioSelect(),
+                "coerce": lambda x: x == "True",
+            }
+        )
         super(YesNoField, self).__init__(*args, **kwargs)

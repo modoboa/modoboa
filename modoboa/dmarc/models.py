@@ -9,7 +9,7 @@ from modoboa.admin import models as admin_models
 POLICY_DISPOSITIONS = [
     ("none", _("None")),
     ("quarantine", _("Quarantine")),
-    ("reject", _("Reject"))
+    ("reject", _("Reject")),
 ]
 
 COMMON_RESULTS = [
@@ -18,16 +18,12 @@ COMMON_RESULTS = [
     ("pass", _("Pass")),
     ("fail", _("Fail")),
     ("temperror", _("Temporary error")),
-    ("permerror", _("Permanent error"))
+    ("permerror", _("Permanent error")),
 ]
 
-DKIM_RESULTS = COMMON_RESULTS + [
-    ("policy", _("Policy"))
-]
+DKIM_RESULTS = COMMON_RESULTS + [("policy", _("Policy"))]
 
-SPF_RESULTS = COMMON_RESULTS + [
-    ("softfail", _("Soft failure"))
-]
+SPF_RESULTS = COMMON_RESULTS + [("softfail", _("Soft failure"))]
 
 RECORD_TYPES = [
     ("dkim", "DKIM"),
@@ -36,7 +32,6 @@ RECORD_TYPES = [
 
 
 class Reporter(models.Model):
-
     """Report issuers."""
 
     org_name = models.CharField(max_length=100)
@@ -48,7 +43,6 @@ class Reporter(models.Model):
 
 
 class Report(models.Model):
-
     """Aggregated reports."""
 
     report_id = models.CharField(max_length=100)
@@ -69,12 +63,10 @@ class Report(models.Model):
 
     def __str__(self):
         """Display provider and dates."""
-        return "{}: {} -> {}".format(
-            self.reporter, self.start_date, self.end_date)
+        return "{}: {} -> {}".format(self.reporter, self.start_date, self.end_date)
 
 
 class Record(models.Model):
-
     """Report records."""
 
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
@@ -82,20 +74,15 @@ class Record(models.Model):
     count = models.IntegerField()
 
     # Policy evaluated
-    disposition = models.CharField(
-        max_length=10, choices=POLICY_DISPOSITIONS)
-    dkim_result = models.CharField(
-        max_length=9, choices=DKIM_RESULTS)
-    spf_result = models.CharField(
-        max_length=9, choices=SPF_RESULTS)
-    header_from = models.ForeignKey(admin_models.Domain,
-                                    on_delete=models.CASCADE)
+    disposition = models.CharField(max_length=10, choices=POLICY_DISPOSITIONS)
+    dkim_result = models.CharField(max_length=9, choices=DKIM_RESULTS)
+    spf_result = models.CharField(max_length=9, choices=SPF_RESULTS)
+    header_from = models.ForeignKey(admin_models.Domain, on_delete=models.CASCADE)
     reason_type = models.CharField(max_length=15, blank=True)
     reason_comment = models.CharField(max_length=100, blank=True)
 
 
 class Result(models.Model):
-
     """Record results."""
 
     record = models.ForeignKey(Record, on_delete=models.CASCADE)

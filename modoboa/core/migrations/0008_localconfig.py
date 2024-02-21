@@ -6,18 +6,31 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sites', '0002_alter_domain_unique'),
-        ('core', '0007_auto_20151116_1349'),
+        ("sites", "0002_alter_domain_unique"),
+        ("core", "0007_auto_20151116_1349"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='LocalConfig',
+            name="LocalConfig",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('api_pk', models.PositiveIntegerField(null=True)),
-                ('api_versions', models.JSONField()),
-                ('site', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sites.Site')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("api_pk", models.PositiveIntegerField(null=True)),
+                ("api_versions", models.JSONField()),
+                (
+                    "site",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="sites.Site"
+                    ),
+                ),
             ],
         ),
     ]

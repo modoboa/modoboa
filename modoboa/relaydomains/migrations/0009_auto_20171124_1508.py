@@ -5,22 +5,22 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('relaydomains', '0008_auto_20171123_1653'),
+        ("relaydomains", "0008_auto_20171123_1653"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='relaydomain',
-            name='domain',
+            model_name="relaydomain",
+            name="domain",
         ),
         migrations.RemoveField(
-            model_name='relaydomain',
-            name='service',
+            model_name="relaydomain",
+            name="service",
         ),
         migrations.DeleteModel(
-            name='RelayDomain',
+            name="RelayDomain",
         ),
         migrations.DeleteModel(
-            name='Service',
+            name="Service",
         ),
     ]

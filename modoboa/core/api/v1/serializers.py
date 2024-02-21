@@ -39,7 +39,7 @@ class CheckPasswordTFASerializer(serializers.Serializer):
             logger.warning(
                 _("Failed TFA settings editing attempt from '%s' as user '%s'"),
                 self.context["remote_addr"],
-                escape(user.username)
+                escape(user.username),
             )
             raise serializers.ValidationError(_("Invalid password"))
         return value

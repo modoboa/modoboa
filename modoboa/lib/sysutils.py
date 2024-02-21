@@ -62,8 +62,9 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
         dpath = force_str(output).strip()
     else:
         known_paths = getattr(
-            settings, "DOVEADM_LOOKUP_PATH",
-            ("/usr/bin/doveadm", "/usr/local/bin/doveadm")
+            settings,
+            "DOVEADM_LOOKUP_PATH",
+            ("/usr/bin/doveadm", "/usr/local/bin/doveadm"),
         )
         for fpath in known_paths:
             if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
@@ -73,11 +74,13 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     curuser = pwd.getpwuid(os.getuid()).pw_name
     sudo_user = dovecot_user if curuser != dovecot_user else None
     if dpath:
-        return exec_cmd("{} {}".format(dpath, params),
-                        sudo_user=sudo_user,
-                        pinput=pinput,
-                        capture_output=capture_output,
-                        **kwargs)
+        return exec_cmd(
+            "{} {}".format(dpath, params),
+            sudo_user=sudo_user,
+            pinput=pinput,
+            capture_output=capture_output,
+            **kwargs,
+        )
 
     raise OSError("doveadm command not found")
 

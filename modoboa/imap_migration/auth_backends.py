@@ -23,14 +23,18 @@ class IMAPBackend:
         if not param_tools.get_global_parameter("enabled_imapmigration"):
             return None
         condition = not param_tools.get_global_parameter(
-                "auto_create_domain_and_mailbox", "admin")
+            "auto_create_domain_and_mailbox", "admin"
+        )
         if condition:
             # Automatic domain/mailbox is disabled. Deny auth to
             # prevent further issues...
             return None
         self.address, domain = email_utils.split_mailbox(username)
-        provider_domain = models.EmailProviderDomain.objects.filter(
-            name=domain).select_related("provider").first()
+        provider_domain = (
+            models.EmailProviderDomain.objects.filter(name=domain)
+            .select_related("provider")
+            .first()
+        )
         if not provider_domain:
             # Domain not allowed for migration: failure
             return None
@@ -42,12 +46,10 @@ class IMAPBackend:
             else:
                 conn = imaplib.IMAP4(address, port)
         except (socket.error, imaplib.IMAP4.error, ssl.SSLError) as error:
-            raise ModoboaException(
-                _("Connection to IMAP server failed: %s") % error)
+            raise ModoboaException(_("Connection to IMAP server failed: %s") % error)
 
         try:
-            typ, data = conn.login(
-                smart_bytes(username), smart_str(password))
+            typ, data = conn.login(smart_bytes(username), smart_str(password))
         except imaplib.IMAP4.error:
             typ = "NO"
         conn.logout()
@@ -66,12 +68,12 @@ class IMAPBackend:
         orig_username = username
         # Check if old addresses must be converted
         if self.provider_domain.new_domain:
-            username = u"{}@{}".format(
-                self.address, self.provider_domain.new_domain.name)
+            username = "{}@{}".format(
+                self.address, self.provider_domain.new_domain.name
+            )
         user, created = core_models.User.objects.get_or_create(
-            username__iexact=username, defaults={
-                "username": username.lower(), "email": username.lower()
-            }
+            username__iexact=username,
+            defaults={"username": username.lower(), "email": username.lower()},
         )
         if created:
             user.set_password(password)
@@ -81,7 +83,7 @@ class IMAPBackend:
                 provider=self.provider_domain.provider,
                 mailbox=user.mailbox,
                 username=orig_username,
-                password=password
+                password=password,
             )
         else:
             # What happens if an account already exists?

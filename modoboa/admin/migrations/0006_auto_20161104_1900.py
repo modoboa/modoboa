@@ -19,49 +19,49 @@ def move_dates(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0005_auto_20161026_1003'),
+        ("admin", "0005_auto_20161026_1003"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='alias',
-            name='creation',
+            model_name="alias",
+            name="creation",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='alias',
-            name='last_modification',
+            model_name="alias",
+            name="last_modification",
             field=models.DateTimeField(null=True),
         ),
         migrations.AddField(
-            model_name='domain',
-            name='creation',
+            model_name="domain",
+            name="creation",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='domain',
-            name='last_modification',
+            model_name="domain",
+            name="last_modification",
             field=models.DateTimeField(null=True),
         ),
         migrations.AddField(
-            model_name='domainalias',
-            name='creation',
+            model_name="domainalias",
+            name="creation",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='domainalias',
-            name='last_modification',
+            model_name="domainalias",
+            name="last_modification",
             field=models.DateTimeField(null=True),
         ),
         migrations.AddField(
-            model_name='mailbox',
-            name='creation',
+            model_name="mailbox",
+            name="creation",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='mailbox',
-            name='last_modification',
+            model_name="mailbox",
+            name="last_modification",
             field=models.DateTimeField(null=True),
         ),
-        migrations.RunPython(move_dates)
+        migrations.RunPython(move_dates),
     ]

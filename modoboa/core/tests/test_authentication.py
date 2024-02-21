@@ -95,7 +95,7 @@ class AuthenticationTestCase(ModoTestCase):
         password = "toto"
         data = {"username": username, "password": password}
         user = models.User.objects.get(username=username)
-        pw_hash = get_password_hasher('fallback_scheme')()
+        pw_hash = get_password_hasher("fallback_scheme")()
 
         self.client.logout()
         self.set_global_parameter("password_scheme", "sha512crypt")
@@ -154,9 +154,7 @@ class AuthenticationTestCase(ModoTestCase):
             self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith("{ARGON2ID}"))
-        parameters = argon2.extract_parameters(
-            user.password.lstrip("{ARGON2ID}")
-        )
+        parameters = argon2.extract_parameters(user.password.lstrip("{ARGON2ID}"))
         self.assertEqual(parameters.time_cost, 4)
         self.assertEqual(parameters.memory_cost, 10000)
         self.assertEqual(parameters.parallelism, 4)
@@ -170,8 +168,7 @@ class AuthenticationTestCase(ModoTestCase):
             self.client.post(reverse("core:login"), data)
         user.refresh_from_db()
         self.assertTrue(user.password.startswith("{ARGON2ID}"))
-        parameters = argon2.extract_parameters(
-            user.password.lstrip("{ARGON2ID}"))
+        parameters = argon2.extract_parameters(user.password.lstrip("{ARGON2ID}"))
         self.assertEqual(parameters.time_cost, 3)
         self.assertEqual(parameters.memory_cost, 1000)
         self.assertEqual(parameters.parallelism, 2)
@@ -184,41 +181,45 @@ class AuthenticationTestCase(ModoTestCase):
             "MD5 MD5-CRYPT SHA SHA1 SSHA SHA256 SHA512 SMD5 SSHA SSHA256 SSHA512 "
             "PLAIN CLEAR CLEARTEXT PLAIN-TRUNC CRAM-MD5 SCRAM-SHA-1 HMAC-MD5 "
             "DIGEST-MD5 PLAIN-MD4 PLAIN-MD5 LDAP-MD5 LANMAN NTLM OTP SKEY RPA "
-            "PBKDF2 CRYPT SHA256-CRYPT SHA512-CRYPT"
+            "PBKDF2 CRYPT SHA256-CRYPT SHA512-CRYPT",
         )
         supported_schemes = get_dovecot_schemes()[0]
-        self.assertEqual(supported_schemes,
-                         ["{MD5}",
-                          "{MD5-CRYPT}",
-                          "{SHA}",
-                          "{SHA1}",
-                          "{SSHA}",
-                          "{SHA256}",
-                          "{SHA512}",
-                          "{SMD5}",
-                          "{SSHA}",
-                          "{SSHA256}",
-                          "{SSHA512}",
-                          "{PLAIN}",
-                          "{CLEAR}",
-                          "{CLEARTEXT}",
-                          "{PLAIN-TRUNC}",
-                          "{CRAM-MD5}",
-                          "{SCRAM-SHA-1}",
-                          "{HMAC-MD5}",
-                          "{DIGEST-MD5}",
-                          "{PLAIN-MD4}",
-                          "{PLAIN-MD5}",
-                          "{LDAP-MD5}",
-                          "{LANMAN}",
-                          "{NTLM}",
-                          "{OTP}",
-                          "{SKEY}",
-                          "{RPA}",
-                          "{PBKDF2}",
-                          "{CRYPT}",
-                          "{SHA256-CRYPT}",
-                          "{SHA512-CRYPT}"])
+        self.assertEqual(
+            supported_schemes,
+            [
+                "{MD5}",
+                "{MD5-CRYPT}",
+                "{SHA}",
+                "{SHA1}",
+                "{SSHA}",
+                "{SHA256}",
+                "{SHA512}",
+                "{SMD5}",
+                "{SSHA}",
+                "{SSHA256}",
+                "{SSHA512}",
+                "{PLAIN}",
+                "{CLEAR}",
+                "{CLEARTEXT}",
+                "{PLAIN-TRUNC}",
+                "{CRAM-MD5}",
+                "{SCRAM-SHA-1}",
+                "{HMAC-MD5}",
+                "{DIGEST-MD5}",
+                "{PLAIN-MD4}",
+                "{PLAIN-MD5}",
+                "{LDAP-MD5}",
+                "{LANMAN}",
+                "{NTLM}",
+                "{OTP}",
+                "{SKEY}",
+                "{RPA}",
+                "{PBKDF2}",
+                "{CRYPT}",
+                "{SHA256-CRYPT}",
+                "{SHA512-CRYPT}",
+            ],
+        )
 
     @override_settings(DOVECOT_SUPPORTED_SCHEMES="SHA1 SHA512-CRYPT")
     def test_dovecot_supported_schemes_from_settings(self):
@@ -240,9 +241,10 @@ class PasswordResetTestCase(ModoTestCase):
         """Create test data."""
         super(PasswordResetTestCase, cls).setUpTestData()
         cls.account_ok = factories.UserFactory(
-            username="user@test.com", secondary_email="test@ext.com",
+            username="user@test.com",
+            secondary_email="test@ext.com",
             phone_number="+33612345678",
-            groups=("SimpleUsers",)
+            groups=("SimpleUsers",),
         )
         cls.account_ko = factories.UserFactory(
             username="user2@test.com", groups=("SimpleUsers",)
@@ -255,8 +257,8 @@ class PasswordResetTestCase(ModoTestCase):
         data = {"email": self.account_ok.email}
         response = self.client.post(url, data, follow=True)
         self.assertContains(
-            response,
-            "We've emailed you instructions for setting your password")
+            response, "We've emailed you instructions for setting your password"
+        )
         self.assertEqual(len(mail.outbox), 1)
 
     def test_reset_password_no_secondary_email(self):
@@ -266,8 +268,8 @@ class PasswordResetTestCase(ModoTestCase):
         data = {"email": self.account_ko.email}
         response = self.client.post(url, data, follow=True)
         self.assertContains(
-            response,
-            "We've emailed you instructions for setting your password")
+            response, "We've emailed you instructions for setting your password"
+        )
         self.assertEqual(len(mail.outbox), 0)
 
     def test_reset_password_announcement(self):
@@ -286,13 +288,15 @@ class PasswordResetTestCase(ModoTestCase):
         """Test reset password by SMS."""
         client_get.return_value = ["service"]
         client_post.return_value = {"totalCreditsRemoved": 1}
-        self.set_global_parameters({
-            "sms_password_recovery": True,
-            "sms_provider": "ovh",
-            "sms_ovh_application_key": "key",
-            "sms_ovh_application_secret": "secret",
-            "sms_ovh_consumer_key": "consumer"
-        })
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            }
+        )
         self.client.logout()
         url = reverse("password_reset")
         data = {"email": self.account_ok.email}
@@ -318,13 +322,16 @@ class PasswordResetTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
-        self.set_global_parameters({
-            "sms_password_recovery": True,
-            "sms_provider": "ovh",
-            "sms_ovh_application_key": "key",
-            "sms_ovh_application_secret": "secret",
-            "sms_ovh_consumer_key": "consumer"
-        }, app="core")
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            },
+            app="core",
+        )
         # No user pk in session
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
@@ -340,10 +347,12 @@ class PasswordResetTestCase(ModoTestCase):
 
 
 @skipIf(NO_SMTP, "No SMTP server available")
-@override_settings(AUTHENTICATION_BACKENDS=(
-    "modoboa.lib.authbackends.SMTPBackend",
-    "django.contrib.auth.backends.ModelBackend"
-))
+@override_settings(
+    AUTHENTICATION_BACKENDS=(
+        "modoboa.lib.authbackends.SMTPBackend",
+        "django.contrib.auth.backends.ModelBackend",
+    )
+)
 class SMTPAuthenticationTestCase(ModoTestCase):
     """Validate SMTP authentication scenarios."""
 
@@ -356,10 +365,8 @@ class SMTPAuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:user_index")))
-        mock_smtp.return_value.login.assert_called_once_with(
-            username, password)
-        self.assertTrue(
-            models.User.objects.filter(username=username).exists())
+        mock_smtp.return_value.login.assert_called_once_with(username, password)
+        self.assertTrue(models.User.objects.filter(username=username).exists())
 
     @mock.patch("smtplib.SMTP")
     def test_smtp_authentication(self, mock_smtp):
@@ -383,14 +390,13 @@ class SMTPAuthenticationTestCase(ModoTestCase):
         """Check SMTP authentication failure."""
         instance = mock_smtp.return_value
         instance.login.side_effect = smtplib.SMTPAuthenticationError(
-            450, "User not found")
+            450, "User not found"
+        )
         self.client.logout()
         username = "user@unknown.test"
         password = "toto"
         data = {"username": username, "password": password}
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 401)
-        mock_smtp.return_value.login.assert_called_once_with(
-            username, password)
-        self.assertFalse(
-            models.User.objects.filter(username=username).exists())
+        mock_smtp.return_value.login.assert_called_once_with(username, password)
+        self.assertFalse(models.User.objects.filter(username=username).exists())

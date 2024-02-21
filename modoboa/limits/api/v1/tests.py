@@ -22,21 +22,20 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         """Create test data."""
         super(APIAdminLimitsTestCase, cls).setUpTestData()
         for name, _definition in utils.get_user_limit_templates():
-            cls.localconfig.parameters.set_value(
-                "deflt_user_{0}_limit".format(name), 2)
+            cls.localconfig.parameters.set_value("deflt_user_{0}_limit".format(name), 2)
         cls.localconfig.save()
         populate_database()
         cls.user = User.objects.get(username="admin@test.com")
         cls.da_token = Token.objects.create(user=cls.user)
         cls.reseller = core_factories.UserFactory(
-            username="reseller", groups=("Resellers", ),
+            username="reseller",
+            groups=("Resellers",),
         )
         cls.r_token = Token.objects.create(user=cls.reseller)
 
     def test_domadmins_limit(self):
         """Check domain admins limit."""
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.r_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.r_token.key)
 
         limit = self.reseller.userobjectlimit_set.get(name="domain_admins")
         url = reverse("v1:account-list")
@@ -66,18 +65,14 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             "username": user.username,
             "role": "DomainAdmins",
             "password": "Toto1234",
-            "mailbox": {
-                "full_address": user.username,
-                "quota": user.mailbox.quota
-            }
+            "mailbox": {"full_address": user.username, "quota": user.mailbox.quota},
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 400)
 
     def test_domains_limit(self):
         """Check domains limit."""
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.r_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.r_token.key)
         limit = self.reseller.userobjectlimit_set.get(name="domains")
         quota = self.reseller.userobjectlimit_set.get(name="quota")
         quota.max_value = 3
@@ -98,25 +93,23 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         data["name"] = "test5.com"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 403)
-        self.assertEqual(
-            response.content.decode("utf-8"), '"Domains: limit reached"'
-        )
+        self.assertEqual(response.content.decode("utf-8"), '"Domains: limit reached"')
 
         resp = self.client.delete(
-            reverse("v1:domain-detail",
-                    args=[Domain.objects.get(name="test4.com").pk]))
+            reverse("v1:domain-detail", args=[Domain.objects.get(name="test4.com").pk])
+        )
         self.assertEqual(resp.status_code, 204)
         data["quota"] = 0
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.content.decode(),
-            '"You\'re not allowed to define unlimited values"')
+            '"You\'re not allowed to define unlimited values"',
+        )
 
     def test_domain_aliases_limit(self):
         """Check domain aliases limit."""
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.r_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.r_token.key)
         domain = Domain.objects.get(name="test.com")
         domain.add_admin(self.reseller)
         limit = self.reseller.userobjectlimit_set.get(name="domain_aliases")
@@ -137,8 +130,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
 
     def test_mailboxes_limit(self):
         """Check mailboxes limit."""
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailboxes")
         url = reverse("v1:account-list")
@@ -146,10 +138,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
             "username": "fromapi@test.com",
             "role": "SimpleUsers",
             "password": "Toto1234",
-            "mailbox": {
-                "full_address": "fromapi@test.com",
-                "quota": 10
-            }
+            "mailbox": {"full_address": "fromapi@test.com", "quota": 10},
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -168,16 +157,17 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
 
     def test_aliases_limit(self):
         """Check mailbox aliases limit."""
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
         limit = self.user.userobjectlimit_set.get(name="mailbox_aliases")
         url = reverse("v1:alias-list")
         data = {
             "address": "alias_fromapi@test.com",
             "recipients": [
-                "user@test.com", "postmaster@test.com", "user_éé@nonlocal.com"
-            ]
+                "user@test.com",
+                "postmaster@test.com",
+                "user_éé@nonlocal.com",
+            ],
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
@@ -200,11 +190,11 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(APIDomainLimitsTestCase, cls).setUpTestData()
-        cls.localconfig.parameters.set_value(
-            "enable_domain_limits", True)
+        cls.localconfig.parameters.set_value("enable_domain_limits", True)
         for name, _definition in utils.get_domain_limit_templates():
             cls.localconfig.parameters.set_value(
-                "deflt_domain_{0}_limit".format(name), 2)
+                "deflt_domain_{0}_limit".format(name), 2
+            )
         cls.localconfig.save()
         populate_database()
 
@@ -218,10 +208,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
             "username": "fromapi@test.com",
             "role": "SimpleUsers",
             "password": "Toto1234",
-            "mailbox": {
-                "full_address": "fromapi@test.com",
-                "quota": 10
-            }
+            "mailbox": {"full_address": "fromapi@test.com", "quota": 10},
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
@@ -251,8 +238,10 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         data = {
             "address": "alias_fromapi@test.com",
             "recipients": [
-                "user@test.com", "postmaster@test.com", "user_éé@nonlocal.com"
-            ]
+                "user@test.com",
+                "postmaster@test.com",
+                "user_éé@nonlocal.com",
+            ],
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
@@ -266,14 +255,14 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
         """Create test data."""
         super(ResourcesAPITestCase, cls).setUpTestData()
         for name, _definition in utils.get_user_limit_templates():
-            cls.localconfig.parameters.set_value(
-                "deflt_user_{0}_limit".format(name), 2)
+            cls.localconfig.parameters.set_value("deflt_user_{0}_limit".format(name), 2)
         cls.localconfig.save()
         populate_database()
         cls.user = User.objects.get(username="admin@test.com")
         cls.da_token = Token.objects.create(user=cls.user)
         cls.reseller = core_factories.UserFactory(
-            username="reseller", groups=("Resellers", ),
+            username="reseller",
+            groups=("Resellers",),
         )
         cls.r_token = Token.objects.create(user=cls.reseller)
 
@@ -288,19 +277,17 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
             "domain_admins": 2,
             "domain_aliases": 2,
             "domains": 2,
-            "mailbox_aliases": 2
+            "mailbox_aliases": 2,
         }
         compare(expected, response.data)
 
         # As reseller => fails
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
         # As domain admin => fails
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
@@ -313,12 +300,11 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
         response = self.client.put(url, resources)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            self.reseller.userobjectlimit_set.get(name="domains").max_value,
-            1000)
+            self.reseller.userobjectlimit_set.get(name="domains").max_value, 1000
+        )
 
         # As domain admin => fails
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
         resources.update({"domains": 2, "mailboxes": 2})
         url = reverse("v1:resources-detail", args=[self.user.pk])
         response = self.client.put(url, resources)
@@ -326,18 +312,17 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
 
         # As reseller => ok
         permissions.grant_access_to_object(self.reseller, self.user, True)
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
         resources.update({"domains": 500, "mailboxes": 500})
         url = reverse("v1:resources-detail", args=[self.user.pk])
         response = self.client.put(url, resources)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            self.user.userobjectlimit_set.get(name="domains").max_value,
-            500)
+            self.user.userobjectlimit_set.get(name="domains").max_value, 500
+        )
         self.assertEqual(
-            self.reseller.userobjectlimit_set.get(name="domains").max_value,
-            502)
+            self.reseller.userobjectlimit_set.get(name="domains").max_value, 502
+        )
         resources.update({"domains": 1003})
         response = self.client.put(url, resources)
         self.assertEqual(response.status_code, 424)

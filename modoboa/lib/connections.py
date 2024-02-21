@@ -2,7 +2,6 @@ from modoboa.lib.cryptutils import decrypt
 
 
 class ConnectionsManager(type):
-
     """
     Singleton pattern implementation.
 
@@ -25,8 +24,7 @@ class ConnectionsManager(type):
             kwargs["password"] = decrypt(kwargs["password"])
 
         if self.instances[key] is None:
-            self.instances[key] = \
-                super(ConnectionsManager, self).__call__(**kwargs)
+            self.instances[key] = super(ConnectionsManager, self).__call__(**kwargs)
         else:
             self.instances[key].refresh(key, kwargs["password"])
         return self.instances[key]

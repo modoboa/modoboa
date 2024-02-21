@@ -33,8 +33,7 @@ def fix_owner(qs, dry_run=False, **options):
             log("  {cls} {obj} has no owner".format(**kw), **options)
             continue
         if isinstance(obj, User):
-            admin = User.objects.filter(
-                is_superuser=True, is_active=True).first()
+            admin = User.objects.filter(is_superuser=True, is_active=True).first()
         elif isinstance(obj, models.Domain):
             admin = obj.admins.first()
         elif isinstance(obj, models.DomainAlias):
@@ -43,12 +42,10 @@ def fix_owner(qs, dry_run=False, **options):
             admin = obj.domain.admins.first()
         if not admin:
             # Fallback: use the first superuser found
-            admin = User.objects.filter(
-                is_superuser=True, is_active=True).first()
+            admin = User.objects.filter(is_superuser=True, is_active=True).first()
         grant_access_to_object(admin, obj, is_owner=True)
         kw["admin"] = admin
-        log("  {cls} {obj} is now owned by {admin}".format(**kw),
-            **options)
+        log("  {cls} {obj} is now owned by {admin}".format(**kw), **options)
 
 
 @known_problem
@@ -72,22 +69,24 @@ def sometimes_mailbox_have_no_alias(**options):
     recipient_created = 0
     for instance in models.Mailbox.objects.select_related("domain").all():
         alias, created = models.Alias.objects.get_or_create(
-            address=instance.full_address,
-            domain=instance.domain,
-            internal=True)
+            address=instance.full_address, domain=instance.domain, internal=True
+        )
         if created:
             alias_created += 1
             log("Alias {0} created".format(alias), **options)
         recipient, created = models.AliasRecipient.objects.get_or_create(
-            alias=alias,
-            address=instance.full_address,
-            r_mailbox=instance)
+            alias=alias, address=instance.full_address, r_mailbox=instance
+        )
         if created:
             recipient_created += 1
             log("AliasRecipient {0} created".format(recipient), **options)
     if alias_created or recipient_created:
-        log("{0} alias created. {1} alias recipient created".format(
-            alias_created, recipient_created), **options)
+        log(
+            "{0} alias created. {1} alias recipient created".format(
+                alias_created, recipient_created
+            ),
+            **options,
+        )
 
 
 class Repair(BaseCommand):
@@ -98,21 +97,21 @@ class Repair(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command."""
         parser.add_argument(
-            "--dry-run", action="store_true", default=False,
-            help="List known problems without fixing them.")
+            "--dry-run",
+            action="store_true",
+            default=False,
+            help="List known problems without fixing them.",
+        )
         parser.add_argument(
-            "--quiet", action="store_true", default=False,
-            help="Quiet mode.")
+            "--quiet", action="store_true", default=False, help="Quiet mode."
+        )
 
     def handle(self, *args, **options):
         """Command entry point."""
         # Load known problems from extensions.
         for ext in settings.MODOBOA_APPS:
             try:
-                __import__(
-                    ext, locals(), globals(),
-                    [smart_str("known_problems")]
-                )
+                __import__(ext, locals(), globals(), [smart_str("known_problems")])
             except ImportError:
                 pass
         for func in known_problems:

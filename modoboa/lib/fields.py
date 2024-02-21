@@ -11,9 +11,7 @@ from . import validators
 class DomainNameField(forms.fields.CharField):
     """A subclass of CharField that only accepts a valid domain name."""
 
-    default_error_messages = {
-        "invalid": gettext_lazy("Enter a valid domain name")
-    }
+    default_error_messages = {"invalid": gettext_lazy("Enter a valid domain name")}
 
     default_validators = [validators.validate_hostname]
 
@@ -40,26 +38,24 @@ class UTF8AndEmptyUserEmailField(forms.fields.EmailField):
 class DRFEmailFieldUTF8(serializers.CharField):
     """Custom DRF email field to support UTF8."""
 
-    default_error_messages = {
-        "invalid": gettext_lazy("Enter a valid email address.")
-    }
+    default_error_messages = {"invalid": gettext_lazy("Enter a valid email address.")}
 
     def __init__(self, **kwargs):
         super(DRFEmailFieldUTF8, self).__init__(**kwargs)
         validator = validators.UTF8EmailValidator(
-            message=self.error_messages["invalid"])
+            message=self.error_messages["invalid"]
+        )
         self.validators.append(validator)
 
 
 class DRFEmailFieldUTF8AndEmptyUser(serializers.CharField):
     """Custom DRF email field to support UTF8 and empty local part."""
 
-    default_error_messages = {
-        "invalid": gettext_lazy("Enter a valid email address.")
-    }
+    default_error_messages = {"invalid": gettext_lazy("Enter a valid email address.")}
 
     def __init__(self, **kwargs):
         super(DRFEmailFieldUTF8AndEmptyUser, self).__init__(**kwargs)
         validator = validators.UTF8AndEmptyUserEmailValidator(
-            message=self.error_messages["invalid"])
+            message=self.error_messages["invalid"]
+        )
         self.validators.append(validator)

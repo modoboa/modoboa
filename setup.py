@@ -39,7 +39,8 @@ if __name__ == "__main__":
     INSTALL_REQUIRES = get_requirements(path.join(HERE, "requirements.txt"))
     MYSQL_REQUIRES = get_requirements(path.join(HERE, "mysql-requirements.txt"))
     POSTGRESQL_REQUIRES = get_requirements(
-        path.join(HERE, "postgresql-requirements.txt"))
+        path.join(HERE, "postgresql-requirements.txt")
+    )
     LDAP_REQUIRES = get_requirements(path.join(HERE, "ldap-requirements.txt"))
 
     with open(path.join(HERE, "README.rst")) as readme:
@@ -47,7 +48,7 @@ if __name__ == "__main__":
 
     def local_scheme(version):
         """Skip the local version (eg. +xyz of 0.6.1.dev4+gdf99fe2)
-            to be able to upload to Test PyPI"""
+        to be able to upload to Test PyPI"""
         return ""
 
     setup(
@@ -74,14 +75,13 @@ if __name__ == "__main__":
         ],
         keywords="email",
         packages=find_packages(
-            exclude=["doc", "test_data", "test_project", "frontend"]),
+            exclude=["doc", "test_data", "test_project", "frontend"]
+        ),
         include_package_data=True,
         zip_safe=False,
         scripts=["bin/modoboa-admin.py"],
         install_requires=INSTALL_REQUIRES,
-        use_scm_version={
-            "local_scheme": local_scheme
-        },
+        use_scm_version={"local_scheme": local_scheme},
         python_requires=">=3.7",
         setup_requires=["setuptools_scm>6.4"],
         extras_require={

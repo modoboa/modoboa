@@ -5,9 +5,7 @@ from django.db import models
 from django.utils import timezone
 
 from modoboa.core import models as core_models
-from modoboa.lib.permissions import (
-    grant_access_to_object, ungrant_access_to_object
-)
+from modoboa.lib.permissions import grant_access_to_object, ungrant_access_to_object
 
 
 class AdminObjectManager(models.Manager):

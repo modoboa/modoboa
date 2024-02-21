@@ -52,6 +52,7 @@ class MD5CRYPTHasher(PasswordHasher):
 
     This scheme can't be considered as secure anymore.
     """
+
     _weak = True
 
     @property
@@ -117,6 +118,7 @@ class SSHAHasher(PasswordHasher):
     """
     Salted SHA1 password hasher.
     """
+
     _weak = True
 
     @property
@@ -129,10 +131,11 @@ class SSHAHasher(PasswordHasher):
 
     def verify(self, clearvalue, hashed_value):
         # We have to add the scheme for the hashed_value to be validated
-        return ldap_salted_sha1.verify(clearvalue, f'{{SSHA}}{hashed_value}')
+        return ldap_salted_sha1.verify(clearvalue, f"{{SSHA}}{hashed_value}")
 
 
 if argon2_hasher is not None:
+
     class ARGON2IDHasher(PasswordHasher):
         """
         argon2 password hasher.
@@ -142,7 +145,9 @@ if argon2_hasher is not None:
         but can only be used with dovecot >= 2.3 and libsodium >= 1.0.13
         """
 
-        def __init__(self,):
+        def __init__(
+            self,
+        ):
             super(ARGON2IDHasher, self).__init__()
 
             parameters = dict()
@@ -175,9 +180,9 @@ if argon2_hasher is not None:
                 return False
 
         def needs_rehash(self, hashed_value):
-            return self.hasher.check_needs_rehash(
-                hashed_value.strip(self.scheme)
-            )
+            return self.hasher.check_needs_rehash(hashed_value.strip(self.scheme))
+
 else:
+
     class ARGON2IDHasher:
         pass

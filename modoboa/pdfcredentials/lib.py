@@ -25,15 +25,14 @@ def init_storage_dir():
         return
     elif not os.access(storage_dir, os.W_OK) and os.path.exists(storage_dir):
         raise InternalError(
-            _("Can't write to selected directory to store PDF "
-                "documents")
-            )
+            _("Can't write to selected directory to store PDF " "documents")
+        )
     try:
         os.mkdir(storage_dir)
     except (OSError, IOError) as inst:
         raise InternalError(
-            _("Failed to create the directory that will contain "
-              "PDF documents (%s)") % inst
+            _("Failed to create the directory that will contain " "PDF documents (%s)")
+            % inst
         )
 
 
@@ -55,14 +54,10 @@ def _get_cipher(iv):
     """Return ready-to-user Cipher."""
     key = smart_bytes(settings.SECRET_KEY[:32])
     backend = default_backend()
-    return Cipher(
-        algorithms.AES(force_bytes(key)),
-        modes.CBC(iv),
-        backend=backend
-    )
+    return Cipher(algorithms.AES(force_bytes(key)), modes.CBC(iv), backend=backend)
 
 
-def crypt_and_save_to_file(content, filename, length, chunksize=64*512):
+def crypt_and_save_to_file(content, filename, length, chunksize=64 * 512):
     """Crypt content and save it to a file."""
     iv = os.urandom(16)
     cipher = _get_cipher(iv)
@@ -82,11 +77,14 @@ def crypt_and_save_to_file(content, filename, length, chunksize=64*512):
     except FileNotFoundError as e:
         logger = logging.getLogger("modoboa.admin")
         logger.error(
-            _("Failed to create PDF_credentials file. "
-            "Please check the permissions or the path."))
+            _(
+                "Failed to create PDF_credentials file. "
+                "Please check the permissions or the path."
+            )
+        )
 
 
-def decrypt_file(filename, chunksize=24*1024):
+def decrypt_file(filename, chunksize=24 * 1024):
     """Decrypt the content of a file and return it."""
     buff = BytesIO()
     with open(filename, "rb") as fp:

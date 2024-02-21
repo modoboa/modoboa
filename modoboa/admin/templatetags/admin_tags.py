@@ -15,9 +15,7 @@ from .. import signals
 
 register = template.Library()
 
-genders = {
-    "Enabled": (gettext_lazy("enabled_m"), gettext_lazy("enabled_f"))
-}
+genders = {"Enabled": (gettext_lazy("enabled_m"), gettext_lazy("enabled_f"))}
 
 
 @register.simple_tag
@@ -43,47 +41,57 @@ def domains_menu(selection, user, ajax_mode=True):
         quota_list_url = domain_list_url + "#quotas/"
         logs_url = domain_list_url + "#logs/"
     entries = [
-        {"name": "domains",
-         "label": _("List domains"),
-         "img": "fa fa-user",
-         "class": "ajaxnav navigation",
-         "url": domain_list_url},
-        {"name": "quotas",
-         "label": _("List quotas"),
-         "img": "fa fa-hdd-o",
-         "class": "ajaxnav navigation",
-         "url": quota_list_url},
-        {"name": "logs",
-         "label": _("Message logs"),
-         "img": "fa fa-list",
-         "class": "ajaxnav navigation",
-         "url": logs_url},
+        {
+            "name": "domains",
+            "label": _("List domains"),
+            "img": "fa fa-user",
+            "class": "ajaxnav navigation",
+            "url": domain_list_url,
+        },
+        {
+            "name": "quotas",
+            "label": _("List quotas"),
+            "img": "fa fa-hdd-o",
+            "class": "ajaxnav navigation",
+            "url": quota_list_url,
+        },
+        {
+            "name": "logs",
+            "label": _("Message logs"),
+            "img": "fa fa-list",
+            "class": "ajaxnav navigation",
+            "url": logs_url,
+        },
     ]
     if user.has_perm("admin.add_domain"):
         extra_entries = signals.extra_domain_menu_entries.send(
-            sender="domains_menu", user=user)
+            sender="domains_menu", user=user
+        )
         for entry in extra_entries:
             entries += entry[1]
         entries += [
-            {"name": "import",
-             "label": _("Import"),
-             "img": "fa fa-folder-open",
-             "url": reverse("admin:domain_import"),
-             "modal": True,
-             "modalcb": "admin.importform_cb"},
-            {"name": "export",
-             "label": _("Export"),
-             "img": "fa fa-share-alt",
-             "url": reverse("admin:domain_export"),
-             "modal": True,
-             "modalcb": "admin.exportform_cb"}
+            {
+                "name": "import",
+                "label": _("Import"),
+                "img": "fa fa-folder-open",
+                "url": reverse("admin:domain_import"),
+                "modal": True,
+                "modalcb": "admin.importform_cb",
+            },
+            {
+                "name": "export",
+                "label": _("Export"),
+                "img": "fa fa-share-alt",
+                "url": reverse("admin:domain_export"),
+                "modal": True,
+                "modalcb": "admin.exportform_cb",
+            },
         ]
 
-    return render_to_string("common/menulist.html", {
-        "entries": entries,
-        "selection": selection,
-        "user": user
-    })
+    return render_to_string(
+        "common/menulist.html",
+        {"entries": entries, "selection": selection, "user": user},
+    )
 
 
 @register.simple_tag
@@ -103,71 +111,84 @@ def identities_menu(user, selection=None, ajax_mode=True):
         identity_list_url = reverse("admin:identity_list")
         quota_list_url = identity_list_url + "#quotas/"
     entries = [
-        {"name": "identities",
-         "label": _("List identities"),
-         "img": "fa fa-user",
-         "class": nav_classes,
-         "url": identity_list_url},
-        {"name": "quotas",
-         "label": _("List quotas"),
-         "img": "fa fa-hdd-o",
-         "class": nav_classes,
-         "url": quota_list_url},
-        {"name": "import",
-         "label": _("Import"),
-         "img": "fa fa-folder-open",
-         "url": reverse("admin:identity_import"),
-         "modal": True,
-         "modalcb": "admin.importform_cb"},
-        {"name": "export",
-         "label": _("Export"),
-         "img": "fa fa-share-alt",
-         "url": reverse("admin:identity_export"),
-         "modal": True,
-         "modalcb": "admin.exportform_cb"}
+        {
+            "name": "identities",
+            "label": _("List identities"),
+            "img": "fa fa-user",
+            "class": nav_classes,
+            "url": identity_list_url,
+        },
+        {
+            "name": "quotas",
+            "label": _("List quotas"),
+            "img": "fa fa-hdd-o",
+            "class": nav_classes,
+            "url": quota_list_url,
+        },
+        {
+            "name": "import",
+            "label": _("Import"),
+            "img": "fa fa-folder-open",
+            "url": reverse("admin:identity_import"),
+            "modal": True,
+            "modalcb": "admin.importform_cb",
+        },
+        {
+            "name": "export",
+            "label": _("Export"),
+            "img": "fa fa-share-alt",
+            "url": reverse("admin:identity_export"),
+            "modal": True,
+            "modalcb": "admin.exportform_cb",
+        },
     ]
 
-    return render_to_string("common/menulist.html", {
-        "entries": entries,
-        "user": user
-    })
+    return render_to_string("common/menulist.html", {"entries": entries, "user": user})
 
 
 @register.simple_tag
 def domain_actions(user, domain):
     actions = [
-        {"name": "listidentities",
-         "url": u"{0}#list/?searchquery=@{1}".format(
-             reverse("admin:identity_list"), domain.name),
-         "title": _("View the domain's identities"),
-         "img": "fa fa-user"},
+        {
+            "name": "listidentities",
+            "url": "{0}#list/?searchquery=@{1}".format(
+                reverse("admin:identity_list"), domain.name
+            ),
+            "title": _("View the domain's identities"),
+            "img": "fa fa-user",
+        },
     ]
     if domain.alarms.opened().exists():
-        actions.append({
-            "name": "listalarms",
-            "url": reverse("admin:domain_alarms", args=[domain.pk]),
-            "title": _("View domain's alarms"),
-            "img": "fa fa-bell"
-        })
+        actions.append(
+            {
+                "name": "listalarms",
+                "url": reverse("admin:domain_alarms", args=[domain.pk]),
+                "title": _("View domain's alarms"),
+                "img": "fa fa-bell",
+            }
+        )
     if user.has_perm("admin.change_domain"):
-        actions.append({
-            "name": "editdomain",
-            "title": _("Edit {}").format(domain),
-            "url": reverse("admin:domain_change", args=[domain.pk]),
-            "modal": True,
-            "modalcb": "admin.domainform_cb",
-            "img": "fa fa-edit"
-        })
+        actions.append(
+            {
+                "name": "editdomain",
+                "title": _("Edit {}").format(domain),
+                "url": reverse("admin:domain_change", args=[domain.pk]),
+                "modal": True,
+                "modalcb": "admin.domainform_cb",
+                "img": "fa fa-edit",
+            }
+        )
     if user.has_perm("admin.delete_domain"):
-        actions.append({
-            "name": "deldomain",
-            "url": reverse("admin:domain_delete", args=[domain.id]),
-            "title": _("Delete %s?") % domain.name,
-            "img": "fa fa-trash"
-        })
+        actions.append(
+            {
+                "name": "deldomain",
+                "url": reverse("admin:domain_delete", args=[domain.id]),
+                "title": _("Delete %s?") % domain.name,
+                "img": "fa fa-trash",
+            }
+        )
 
-    responses = signals.extra_domain_actions.send(
-        sender=None, user=user, domain=domain)
+    responses = signals.extra_domain_actions.send(sender=None, user=user, domain=domain)
     for _receiver, response in responses:
         if response:
             actions += response
@@ -182,38 +203,43 @@ def identity_actions(user, ident):
     if name == "User":
         actions = []
         result = core_signals.extra_account_actions.send(
-            sender="identity_actions", account=ident)
+            sender="identity_actions", account=ident
+        )
         for action in result:
             actions += action[1]
-        url = (
-            reverse("admin:account_change", args=[objid]) +
-            "?active_tab=default"
-        )
+        url = reverse("admin:account_change", args=[objid]) + "?active_tab=default"
         actions += [
-            {"name": "changeaccount",
-             "url": url,
-             "img": "fa fa-edit",
-             "modal": True,
-             "modalcb": "admin.editaccount_cb",
-             "title": _("Edit {}").format(ident.username)},
-            {"name": "delaccount",
-             "url": reverse("admin:account_delete", args=[objid]),
-             "img": "fa fa-trash",
-             "title": _("Delete %s?") % ident.username},
+            {
+                "name": "changeaccount",
+                "url": url,
+                "img": "fa fa-edit",
+                "modal": True,
+                "modalcb": "admin.editaccount_cb",
+                "title": _("Edit {}").format(ident.username),
+            },
+            {
+                "name": "delaccount",
+                "url": reverse("admin:account_delete", args=[objid]),
+                "img": "fa fa-trash",
+                "title": _("Delete %s?") % ident.username,
+            },
         ]
     else:
         actions = [
-            {"name": "changealias",
-             "url": reverse("admin:alias_change", args=[objid]),
-             "img": "fa fa-edit",
-             "modal": True,
-             "modalcb": "admin.aliasform_cb",
-             "title": _("Edit {}").format(ident)},
-            {"name": "delalias",
-             "url": "{}?selection={}".format(
-                 reverse("admin:alias_delete"), objid),
-             "img": "fa fa-trash",
-             "title": _("Delete %s?") % ident.address},
+            {
+                "name": "changealias",
+                "url": reverse("admin:alias_change", args=[objid]),
+                "img": "fa fa-edit",
+                "modal": True,
+                "modalcb": "admin.aliasform_cb",
+                "title": _("Edit {}").format(ident),
+            },
+            {
+                "name": "delalias",
+                "url": "{}?selection={}".format(reverse("admin:alias_delete"), objid),
+                "img": "fa fa-trash",
+                "title": _("Delete %s?") % ident.address,
+            },
         ]
     return render_actions(actions)
 
@@ -222,8 +248,7 @@ def identity_actions(user, ident):
 def check_identity_status(identity):
     """Check if identity is enabled or not."""
     if identity.__class__.__name__ == "User":
-        if hasattr(identity, "mailbox") \
-           and not identity.mailbox.domain.enabled:
+        if hasattr(identity, "mailbox") and not identity.mailbox.domain.enabled:
             return False
         elif not identity.is_active:
             return False
@@ -271,13 +296,16 @@ def identity_modify_link(identity, active_tab="default"):
 
 @register.simple_tag
 def domadmin_actions(daid, domid):
-    actions = [{
-        "name": "removeperm",
-        "url": "{0}?domid={1}&daid={2}".format(
-            reverse("admin:permission_remove"), domid, daid),
-        "img": "fa fa-trash",
-        "title": _("Remove this permission")
-    }]
+    actions = [
+        {
+            "name": "removeperm",
+            "url": "{0}?domid={1}&daid={2}".format(
+                reverse("admin:permission_remove"), domid, daid
+            ),
+            "img": "fa fa-trash",
+            "title": _("Remove this permission"),
+        }
+    ]
     return render_actions(actions)
 
 
@@ -294,7 +322,10 @@ def gender(value, target):
 def get_extra_admin_content(user, target, currentpage):
     results = signals.extra_admin_content.send(
         sender="get_extra_admin_content",
-        user=user, location=target, currentpage=currentpage)
+        user=user,
+        location=target,
+        currentpage=currentpage,
+    )
     if not results:
         return ""
     results = reduce(lambda a, b: a + b, [result[1] for result in results])

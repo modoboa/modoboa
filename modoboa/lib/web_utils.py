@@ -16,15 +16,15 @@ from django.template.loader import render_to_string
 def _render_error(request, errortpl="error", user_context=None):
     if user_context is None:
         user_context = {}
-    return render(
-        request, "common/%s.html" % errortpl, user_context
-    )
+    return render(request, "common/%s.html" % errortpl, user_context)
 
 
 def render_actions(actions):
-    t = template.Template("""{% load lib_tags %}
+    t = template.Template(
+        """{% load lib_tags %}
 {% for a in actions %}{% render_link a %}{% endfor %}
-""")
+"""
+    )
     return t.render(template.Context({"actions": actions}))
 
 
@@ -39,9 +39,16 @@ def getctx(status, level=1, callback=None, **kwargs):
     return ctx
 
 
-def ajax_response(request, status="ok", respmsg=None,
-                  url=None, ajaxnav=False, norefresh=False,
-                  template=None, **kwargs):
+def ajax_response(
+    request,
+    status="ok",
+    respmsg=None,
+    url=None,
+    ajaxnav=False,
+    norefresh=False,
+    template=None,
+    **kwargs,
+):
     """Ajax response shortcut
 
     Simple shortcut that sends an JSON response. If a template is
@@ -118,18 +125,18 @@ def size2integer(value, output_unit="B"):
         return 0
     if output_unit == "B":
         if m.group(2)[0] in ["K", "k"]:
-            return int(m.group(1)) * 2 ** 10
+            return int(m.group(1)) * 2**10
         if m.group(2)[0] in ["M", "m"]:
-            return int(m.group(1)) * 2 ** 20
+            return int(m.group(1)) * 2**20
         if m.group(2)[0] in ["G", "g"]:
-            return int(m.group(1)) * 2 ** 30
+            return int(m.group(1)) * 2**30
     elif output_unit == "MB":
         if m.group(2)[0] in ["K", "k"]:
-            return int(int(m.group(1)) / 2 ** 10)
+            return int(int(m.group(1)) / 2**10)
         if m.group(2)[0] in ["M", "m"]:
             return int(m.group(1))
         if m.group(2)[0] in ["G", "g"]:
-            return int(m.group(1)) * 2 ** 10
+            return int(m.group(1)) * 2**10
     else:
         raise ValueError("Unsupported output unit {}".format(output_unit))
     return 0
@@ -143,8 +150,7 @@ class NavigationParameters(object):
     def __init__(self, request, sessionkey):
         self.request = request
         self.sessionkey = sessionkey
-        self.parameters = [("pattern", "", True),
-                           ("criteria", "from_addr", False)]
+        self.parameters = [("pattern", "", True), ("criteria", "from_addr", False)]
 
     def __getitem__(self, key):
         """Retrieve an item."""
@@ -167,8 +173,7 @@ class NavigationParameters(object):
         self["page"] = int(self.request.GET.get("page", 1))
 
     def store(self):
-        """Store navigation parameters into session.
-        """
+        """Store navigation parameters into session."""
         if self.sessionkey not in self.request.session:
             self.request.session[self.sessionkey] = {}
         self._store_page()

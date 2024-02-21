@@ -6,8 +6,7 @@ def rename_and_clean(apps, schema_editor):
     ContentType = apps.get_model("contenttypes", "ContentType")
     for ct in ContentType.objects.filter(app_label="admin"):
         try:
-            old_ct = ContentType.objects.get(
-                app_label="modoboa_admin", model=ct.model)
+            old_ct = ContentType.objects.get(app_label="modoboa_admin", model=ct.model)
         except ContentType.DoesNotExist:
             continue
         old_ct.app_label = "admin"
@@ -29,8 +28,8 @@ def rename_and_clean(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0001_initial'),
-        ('contenttypes', '0002_remove_content_type_name'),
+        ("admin", "0001_initial"),
+        ("contenttypes", "0002_remove_content_type_name"),
     ]
 
     operations = [

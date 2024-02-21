@@ -36,7 +36,7 @@ def get_listing_page(objects, pagenum):
     paginator = Paginator(
         objects,
         param_tools.get_global_parameter("items_per_page", app="core"),
-        allow_empty_first_page=False
+        allow_empty_first_page=False,
     )
     try:
         page = paginator.page(int(pagenum))

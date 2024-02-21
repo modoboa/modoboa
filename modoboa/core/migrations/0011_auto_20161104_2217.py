@@ -5,18 +5,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0010_auto_20161026_1011'),
+        ("core", "0010_auto_20161026_1011"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='localconfig',
-            name='_parameters',
+            model_name="localconfig",
+            name="_parameters",
             field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='_parameters',
+            model_name="user",
+            name="_parameters",
             field=models.JSONField(default=dict),
         ),
     ]

@@ -4,7 +4,9 @@ from reversion import revisions as reversion
 
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import (
-    login_required, permission_required, user_passes_test
+    login_required,
+    permission_required,
+    user_passes_test,
 )
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -25,8 +27,7 @@ from ..models import Domain, Mailbox
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("core.add_user") or
-    u.has_perm("admin.add_alias")
+    lambda u: u.has_perm("core.add_user") or u.has_perm("admin.add_alias")
 )
 def _identities(request):
     filters = {
@@ -35,28 +36,29 @@ def _identities(request):
     }
     request.session["identities_filters"] = filters
     idents_list = get_identities(request.user, **filters)
-    sort_order, sort_dir = get_sort_order(request.GET, "identity",
-                                          ["identity", "name_or_rcpt", "tags"])
+    sort_order, sort_dir = get_sort_order(
+        request.GET, "identity", ["identity", "name_or_rcpt", "tags"]
+    )
     if sort_order in ["identity", "name_or_rcpt"]:
-        objects = sorted(idents_list, key=lambda o: getattr(o, sort_order),
-                         reverse=sort_dir == "-")
+        objects = sorted(
+            idents_list, key=lambda o: getattr(o, sort_order), reverse=sort_dir == "-"
+        )
     else:
-        objects = sorted(idents_list, key=lambda o: o.tags[0]["label"],
-                         reverse=sort_dir == "-")
+        objects = sorted(
+            idents_list, key=lambda o: o.tags[0]["label"], reverse=sort_dir == "-"
+        )
     context = {
         "handle_mailboxes": request.localconfig.parameters.get_value(
-            "handle_mailboxes", raise_exception=False)
+            "handle_mailboxes", raise_exception=False
+        )
     }
     page = get_listing_page(objects, request.GET.get("page", 1))
-    context["headers"] = render_to_string(
-        "admin/identity_headers.html", {}, request)
+    context["headers"] = render_to_string("admin/identity_headers.html", {}, request)
     if page is None:
         context["length"] = 0
     else:
         context["rows"] = render_to_string(
-            "admin/identities_table.html", {
-                "identities": page.object_list
-            }, request
+            "admin/identities_table.html", {"identities": page.object_list}, request
         )
         context["pages"] = [page.number]
     return render_to_json_response(context)
@@ -85,7 +87,7 @@ def list_quotas(request):
                 select={"quota_value__bytes": "admin_quota.bytes"},
                 where=["admin_quota.username=%s" % where],
                 tables=["admin_quota", "admin_domain"],
-                order_by=["%s%s" % (sort_dir, sort_order)]
+                order_by=["%s%s" % (sort_dir, sort_order)],
             )
         else:
             if db_type == "postgres":
@@ -102,15 +104,13 @@ def list_quotas(request):
                 select={"quota_usage": select},
                 where=["admin_quota.username=%s" % where],
                 tables=["admin_quota", "admin_domain"],
-                order_by=["%s%s" % (sort_dir, sort_order)]
+                order_by=["%s%s" % (sort_dir, sort_order)],
             )
     else:
         raise BadRequest(_("Invalid request"))
     page = get_listing_page(mboxes, request.GET.get("page", 1))
     context = {
-        "headers": render_to_string(
-            "admin/identities_quota_headers.html", {}, request
-        )
+        "headers": render_to_string("admin/identities_quota_headers.html", {}, request)
     }
     if page is None:
         context["length"] = 0
@@ -124,9 +124,9 @@ def list_quotas(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("core.add_user") or
-    u.has_perm("admin.add_alias") or
-    u.has_perm("admin.add_mailbox")
+    lambda u: u.has_perm("core.add_user")
+    or u.has_perm("admin.add_alias")
+    or u.has_perm("admin.add_mailbox")
 )
 def get_next_page(request):
     """Return the next page of the identity list."""
@@ -137,22 +137,17 @@ def get_next_page(request):
 
 @login_required
 @user_passes_test(
-    lambda u: u.has_perm("core.add_user") or
-    u.has_perm("admin.add_alias")
+    lambda u: u.has_perm("core.add_user") or u.has_perm("admin.add_alias")
 )
 @ensure_csrf_cookie
 def identities(request, tplname="admin/identities.html"):
-    return render(request, tplname, {
-        "selection": "identities",
-        "deflocation": "list/"
-    })
+    return render(request, tplname, {"selection": "identities", "deflocation": "list/"})
 
 
 @login_required
 @permission_required("core.add_user")
 def accounts_list(request):
-    accs = User.objects.filter(is_superuser=False) \
-        .exclude(groups__name="SimpleUsers")
+    accs = User.objects.filter(is_superuser=False).exclude(groups__name="SimpleUsers")
     res = [a.username for a in accs.all()]
     return render_to_json_response(res)
 
@@ -175,11 +170,10 @@ def editaccount(request, pk):
         raise PermDeniedException
     mb = account.mailbox if hasattr(account, "mailbox") else None
 
-    instances = {
-        "general": account, "profile": account, "mail": mb, "perms": account
-    }
+    instances = {"general": account, "profile": account, "mail": mb, "perms": account}
     results = signals.get_account_form_instances.send(
-        sender="editaccount", user=request.user, account=account)
+        sender="editaccount", user=request.user, account=account
+    )
     for result in results:
         instances.update(result[1])
     return AccountForm(request, instances=instances).process()
@@ -190,9 +184,7 @@ def editaccount(request, pk):
 @require_http_methods(["POST"])
 def delaccount(request, pk):
     User.objects.get(pk=pk).delete()
-    return render_to_json_response(
-        ngettext("Account deleted", "Accounts deleted", 1)
-    )
+    return render_to_json_response(ngettext("Account deleted", "Accounts deleted", 1))
 
 
 @login_required
@@ -208,15 +200,13 @@ def remove_permission(request):
         domain = Domain.objects.get(pk=domid)
     except (User.DoesNotExist, Domain.DoesNotExist):
         raise BadRequest(_("Invalid request"))
-    if not request.user.can_access(account) or \
-       not request.user.can_access(domain):
+    if not request.user.can_access(account) or not request.user.can_access(domain):
         raise PermDeniedException
     domain.remove_admin(account)
     return render_to_json_response({})
 
 
-class AccountDetailView(
-        auth_mixins.PermissionRequiredMixin, generic.DetailView):
+class AccountDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
     """DetailView for Account."""
 
     model = User
@@ -235,12 +225,12 @@ class AccountDetailView(
         context = super(AccountDetailView, self).get_context_data(**kwargs)
         del context["user"]
         result = signals.extra_account_dashboard_widgets.send(
-            self.__class__, user=self.request.user, account=self.object)
+            self.__class__, user=self.request.user, account=self.object
+        )
         context["templates"] = {"left": [], "right": []}
         for _receiver, widgets in result:
             for widget in widgets:
-                context["templates"][widget["column"]].append(
-                    widget["template"])
+                context["templates"][widget["column"]].append(widget["template"])
                 context.update(widget["context"])
         if self.object.role in ["Resellers", "DomainAdmins"]:
             context["domains"] = Domain.objects.get_for_admin(self.object)

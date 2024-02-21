@@ -25,23 +25,24 @@ from . import serializers
 @extend_schema_view(
     retrieve=extend_schema(
         description="Retrieve a particular domain",
-        summary="Retrieve a particular domain"
+        summary="Retrieve a particular domain",
     ),
     list=extend_schema(
-        description="Retrieve a list of domains",
-        summary="Retrieve a list of domains"
+        description="Retrieve a list of domains", summary="Retrieve a list of domains"
     ),
     create=extend_schema(
-        description="Create a new domain",
-        summary="Create a new domain"
-    )
+        description="Create a new domain", summary="Create a new domain"
+    ),
 )
-class DomainViewSet(GetThrottleViewsetMixin,
-                    lib_viewsets.RevisionModelMixin,
-                    viewsets.ModelViewSet):
+class DomainViewSet(
+    GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet
+):
     """Domain viewset."""
 
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    permission_classes = [
+        IsAuthenticated,
+        DjangoModelPermissions,
+    ]
     serializer_class = serializers.DomainSerializer
 
     def get_queryset(self):
@@ -63,13 +64,17 @@ class DomainAliasFilterSet(dj_filters.FilterSet):
         fields = ["domain"]
 
 
-class DomainAliasViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
-                         viewsets.ModelViewSet):
+class DomainAliasViewSet(
+    GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet
+):
     """ViewSet for DomainAlias."""
 
-    filter_backends = (dj_filters.DjangoFilterBackend, )
+    filter_backends = (dj_filters.DjangoFilterBackend,)
     filterset_class = DomainAliasFilterSet
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    permission_classes = [
+        IsAuthenticated,
+        DjangoModelPermissions,
+    ]
     renderer_classes = (renderers.JSONRenderer, lib_renderers.CSVRenderer)
     serializer_class = serializers.DomainAliasSerializer
 
@@ -83,11 +88,16 @@ class DomainAliasViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixi
         return context
 
 
-class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class AccountViewSet(
+    GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet
+):
     """ViewSet for User/Mailbox."""
 
-    filter_backends = (filters.SearchFilter, )
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    filter_backends = (filters.SearchFilter,)
+    permission_classes = [
+        IsAuthenticated,
+        DjangoModelPermissions,
+    ]
     search_fields = ("^first_name", "^last_name", "^email")
 
     def get_throttles(self):
@@ -105,15 +115,14 @@ class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, v
             "password": serializers.AccountPasswordSerializer,
             "reset_password": serializers.ResetPasswordSerializer,
         }
-        return action_dict.get(
-            self.action, serializers.WritableAccountSerializer)
+        return action_dict.get(self.action, serializers.WritableAccountSerializer)
 
     def get_queryset(self):
         """Filter queryset based on current user."""
         user = self.request.user
-        ids = user.objectaccess_set \
-            .filter(content_type=ContentType.objects.get_for_model(user)) \
-            .values_list("object_id", flat=True)
+        ids = user.objectaccess_set.filter(
+            content_type=ContentType.objects.get_for_model(user)
+        ).values_list("object_id", flat=True)
         queryset = core_models.User.objects.filter(pk__in=ids)
         domain = self.request.query_params.get("domain")
         if domain:
@@ -131,8 +140,7 @@ class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, v
         if serializer.is_valid():
             serializer.save()
             return Response()
-        return Response(
-            serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False)
     def exists(self, request):
@@ -156,25 +164,23 @@ class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, v
     @action(methods=["post"], detail=False)
     def reset_password(self, request):
         """Reset account password and send a new one by SMS."""
-        sms_password_recovery = (
-            request.localconfig.parameters
-            .get_value("sms_password_recovery", app="core")
+        sms_password_recovery = request.localconfig.parameters.get_value(
+            "sms_password_recovery", app="core"
         )
         if not sms_password_recovery:
             return Response(status=404)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = core_models.User.objects.filter(
-            email=serializer.validated_data["email"]).first()
+            email=serializer.validated_data["email"]
+        ).first()
         if not user or not user.phone_number:
             return Response(status=404)
-        backend = sms_backends.get_active_backend(
-            request.localconfig.parameters)
+        backend = sms_backends.get_active_backend(request.localconfig.parameters)
         if not backend:
             return Response(status=404)
         password = lib.make_password()
-        content = _("Here is your new Modoboa password: {}").format(
-            password)
+        content = _("Here is your new Modoboa password: {}").format(password)
         if not backend.send(content, [str(user.phone_number)]):
             body = {"status": "ko"}
         else:
@@ -185,23 +191,26 @@ class AccountViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, v
         return Response(body)
 
 
-class AliasViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet):
+class AliasViewSet(
+    GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet
+):
     """
     create:
     Create a new alias instance.
     """
 
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    permission_classes = [
+        IsAuthenticated,
+        DjangoModelPermissions,
+    ]
     serializer_class = serializers.AliasSerializer
 
     def get_queryset(self):
         """Filter queryset based on current user."""
         user = self.request.user
-        ids = (
-            user.objectaccess_set.filter(
-                content_type=ContentType.objects.get_for_model(models.Alias))
-            .values_list("object_id", flat=True)
-        )
+        ids = user.objectaccess_set.filter(
+            content_type=ContentType.objects.get_for_model(models.Alias)
+        ).values_list("object_id", flat=True)
         queryset = models.Alias.objects.filter(pk__in=ids)
         domain = self.request.query_params.get("domain")
         if domain:
@@ -217,21 +226,23 @@ class SenderAddressFilterSet(dj_filters.FilterSet):
         fields = ["mailbox"]
 
 
-class SenderAddressViewSet(GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin,
-                           viewsets.ModelViewSet):
+class SenderAddressViewSet(
+    GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet
+):
     """View set for SenderAddress model."""
 
-    filter_backends = (dj_filters.DjangoFilterBackend, )
+    filter_backends = (dj_filters.DjangoFilterBackend,)
     filterset_class = SenderAddressFilterSet
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, ]
+    permission_classes = [
+        IsAuthenticated,
+        DjangoModelPermissions,
+    ]
     serializer_class = serializers.SenderAddressSerializer
 
     def get_queryset(self):
         """Filter queryset based on current user."""
         user = self.request.user
-        mb_ids = (
-            user.objectaccess_set.filter(
-                content_type=ContentType.objects.get_for_model(models.Mailbox))
-            .values_list("object_id", flat=True)
-        )
+        mb_ids = user.objectaccess_set.filter(
+            content_type=ContentType.objects.get_for_model(models.Mailbox)
+        ).values_list("object_id", flat=True)
         return models.SenderAddress.objects.filter(mailbox__pk__in=mb_ids)

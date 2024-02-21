@@ -28,10 +28,10 @@ class DataMixin(object):
     def setUpTestData(cls):
         super(DataMixin, cls).setUpTestData()
         admin_factories.populate_database()
-        cls.mb = admin_models.Mailbox.objects.get(
-            user__username="user@test.com")
+        cls.mb = admin_models.Mailbox.objects.get(user__username="user@test.com")
         cls.migration = factories.MigrationFactory(
-            password="Toto1234", mailbox=cls.mb, username="user@test.com")
+            password="Toto1234", mailbox=cls.mb, username="user@test.com"
+        )
 
 
 # class ViewsTestCase(DataMixin, ModoTestCase):
@@ -69,8 +69,7 @@ class AuthenticationTestCase(DataMixin, ModoTestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 401)
 
-        self.set_global_parameter(
-            "auto_create_domain_and_mailbox", False, app="admin")
+        self.set_global_parameter("auto_create_domain_and_mailbox", False, app="admin")
         data = {"username": "new_user2@test.com", "password": "Toto1234"}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 401)
@@ -79,8 +78,7 @@ class AuthenticationTestCase(DataMixin, ModoTestCase):
     def test_authenticate_and_rename(self, mock_imap):
         """Check address renaming."""
         domain = admin_models.Domain.objects.get(name="test.com")
-        factories.EmailProviderDomainFactory(
-            name="gmail.com", new_domain=domain)
+        factories.EmailProviderDomainFactory(name="gmail.com", new_domain=domain)
         mock_imap.return_value.login.return_value = ["OK", b""]
         url = reverse("core:login")
         data = {"username": "new_user@gmail.com", "password": "Toto1234"}
@@ -93,12 +91,10 @@ class AuthenticationTestCase(DataMixin, ModoTestCase):
     def test_authenticate_conflicts(self, mock_imap):
         """Check potential conflicts."""
         core_factories.UserFactory(
-            username="admin2@test.com", groups=("DomainAdmins", ),
-            password="{PLAIN}toto"
+            username="admin2@test.com", groups=("DomainAdmins",), password="{PLAIN}toto"
         )
         domain = admin_models.Domain.objects.get(name="test.com")
-        factories.EmailProviderDomainFactory(
-            name="gmail.com", new_domain=domain)
+        factories.EmailProviderDomainFactory(name="gmail.com", new_domain=domain)
         mock_imap.return_value.login.return_value = ["OK", b""]
         url = reverse("core:login")
         data = {"username": "admin@gmail.com", "password": "Toto1234"}
@@ -140,51 +136,42 @@ class ViewSetTestCase(DataMixin, ModoAPITestCase):
             "address": "imap.google.com",
             "port": 143,
             "secured": True,
-            "domains": [
-                {"id": 1000,
-                 "name": "gmail.com"}
-            ]
+            "domains": [{"id": 1000, "name": "gmail.com"}],
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         self.assertTrue(
-            models.EmailProviderDomain.objects.filter(name="gmail.com")
-            .exists()
+            models.EmailProviderDomain.objects.filter(name="gmail.com").exists()
         )
 
     def test_update_provider(self):
-        provider_domain = factories.EmailProviderDomainFactory(
-            name="outlook.com")
-        url = reverse(
-            "v2:emailprovider-detail", args=[provider_domain.provider.pk])
+        provider_domain = factories.EmailProviderDomainFactory(name="outlook.com")
+        url = reverse("v2:emailprovider-detail", args=[provider_domain.provider.pk])
         data = {
             "id": provider_domain.provider.id,
             "name": provider_domain.provider.name,
             "address": provider_domain.provider.address,
             "port": provider_domain.provider.port,
             "domains": [
-                {"id": provider_domain.id,
-                 "name": "hotmail.com",
-                 "new_domain": None},
-                {"name": "gmail.com",
-                 "new_domain": admin_models.Domain.objects.get(
-                     name="test.com").pk}
-            ]
+                {"id": provider_domain.id, "name": "hotmail.com", "new_domain": None},
+                {
+                    "name": "gmail.com",
+                    "new_domain": admin_models.Domain.objects.get(name="test.com").pk,
+                },
+            ],
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         provider_domain.refresh_from_db()
         self.assertEqual(provider_domain.name, data["domains"][0]["name"])
         self.assertTrue(
-            models.EmailProviderDomain.objects.filter(name="gmail.com")
-            .exists()
+            models.EmailProviderDomain.objects.filter(name="gmail.com").exists()
         )
         data["domains"].pop()
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertFalse(
-            models.EmailProviderDomain.objects.filter(name="gmail.com")
-            .exists()
+            models.EmailProviderDomain.objects.filter(name="gmail.com").exists()
         )
 
 
@@ -192,13 +179,6 @@ class ChecksTestCase(ModoTestCase):
     """Deploy checks test case."""
 
     def test_auto_creation_check(self):
-        self.assertEqual(
-            checks.check_auto_creation_is_enabled(None),
-            []
-        )
-        self.set_global_parameter(
-            "auto_create_domain_and_mailbox", False, app="admin")
-        self.assertEqual(
-            checks.check_auto_creation_is_enabled(None),
-            [checks.W001]
-        )
+        self.assertEqual(checks.check_auto_creation_is_enabled(None), [])
+        self.set_global_parameter("auto_create_domain_and_mailbox", False, app="admin")
+        self.assertEqual(checks.check_auto_creation_is_enabled(None), [checks.W001])

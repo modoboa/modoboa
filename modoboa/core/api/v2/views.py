@@ -19,8 +19,11 @@ from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.utils import check_for_updates
 from modoboa.lib.permissions import IsSuperUser
 from modoboa.lib.throttle import (
-    UserLesserDdosUser, LoginThrottle, PasswordResetApplyThrottle,
-    PasswordResetRequestThrottle, PasswordResetTotpThrottle
+    UserLesserDdosUser,
+    LoginThrottle,
+    PasswordResetApplyThrottle,
+    PasswordResetRequestThrottle,
+    PasswordResetTotpThrottle,
 )
 from modoboa.parameters import tools as param_tools
 
@@ -53,7 +56,7 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
             logger.warning(
                 _("Failed connection attempt from '%s' as user '%s'"),
                 request.META["REMOTE_ADDR"],
-                escape(serializer.initial_data["username"])
+                escape(serializer.initial_data["username"]),
             )
             raise InvalidToken(e.args[0])
 
@@ -63,19 +66,16 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
         # Reset login throttle
         delete_cache_key(LoginThrottle, self.get_throttles(), request)
 
-        logger.info(
-            _("User '%s' successfully logged in"), user.username
-        )
+        logger.info(_("User '%s' successfully logged in"), user.username)
         if user and user.is_active:
-            condition = (
-                user.is_local and
-                param_tools.get_global_parameter(
-                    "update_scheme", raise_exception=False)
+            condition = user.is_local and param_tools.get_global_parameter(
+                "update_scheme", raise_exception=False
             )
             if condition:
                 # check if password scheme is correct
                 scheme = param_tools.get_global_parameter(
-                    "password_scheme", raise_exception=False)
+                    "password_scheme", raise_exception=False
+                )
                 # use SHA512CRYPT as default fallback
                 if scheme is None:
                     pwhash = get_password_hasher("sha512crypt")()
@@ -84,21 +84,19 @@ class TokenObtainPairView(jwt_views.TokenObtainPairView):
                 if not user.password.startswith(pwhash.scheme):
                     logger.info(
                         _("Password scheme mismatch. Updating %s password"),
-                        user.username
+                        user.username,
                     )
                     user.set_password(request.data["password"])
                     user.save()
                 if pwhash.needs_rehash(user.password):
                     logger.info(
-                        _("Password hash parameter missmatch. "
-                          "Updating %s password"),
-                        user.username
+                        _("Password hash parameter missmatch. " "Updating %s password"),
+                        user.username,
                     )
                     user.set_password(serializer.data["password"])
                     user.save()
 
-        return response.Response(
-            serializer.validated_data, status=status.HTTP_200_OK)
+        return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class EmailPasswordResetView(APIView):
@@ -110,15 +108,19 @@ class EmailPasswordResetView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = serializers.PasswordRecoveryEmailSerializer(
-            data=request.data, context={'request': request})
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
         try:
             serializer.save()
         except SMTPException:
-            return response.Response({
-                "type": "email",
-                "reason": "Error while sending the email. Please contact an administrator."
-            }, 503)
+            return response.Response(
+                {
+                    "type": "email",
+                    "reason": "Error while sending the email. Please contact an administrator.",
+                },
+                503,
+            )
 
         # Email response
         return response.Response({"type": "email"}, 200)
@@ -133,7 +135,8 @@ class DefaultPasswordResetView(EmailPasswordResetView):
     def post(self, request, *args, **kwargs):
         """Recover password."""
         serializer = serializers.PasswordRecoverySmsSerializer(
-            data=request.data, context={'request': request})
+            data=request.data, context={"request": request}
+        )
         try:
             serializer.is_valid(raise_exception=True)
         except serializers.NoSMSAvailable:
@@ -144,7 +147,7 @@ class DefaultPasswordResetView(EmailPasswordResetView):
 
 
 class PasswordResetSmsTOTP(APIView):
-    """ Check SMS Totp code. """
+    """Check SMS Totp code."""
 
     throttle_classes = [PasswordResetTotpThrottle]
 
@@ -154,7 +157,7 @@ class PasswordResetSmsTOTP(APIView):
                 klass = serializers.PasswordRecoverySmsConfirmSerializer
             elif request.data["type"] == "resend":
                 klass = serializers.PasswordRecoverySmsResendSerializer
-            serializer = klass(data=request.data, context={'request': request})
+            serializer = klass(data=request.data, context={"request": request})
         except (MultiValueDictKeyError, KeyError):
             return response.Response({"reason": "No type provided."}, 400)
         serializer.is_valid(raise_exception=True)
@@ -162,23 +165,24 @@ class PasswordResetSmsTOTP(APIView):
         payload = {"type": "resend"}
         if request.data["type"] == "confirm":
             serializer_response = serializer.context["response"]
-            payload.update({
-                "token": serializer_response[0],
-                "id": serializer_response[1],
-                "type": "confirm"
-            })
+            payload.update(
+                {
+                    "token": serializer_response[0],
+                    "id": serializer_response[1],
+                    "type": "confirm",
+                }
+            )
         delete_cache_key(PasswordResetTotpThrottle, self.get_throttles(), request)
         return response.Response(payload, 200)
 
 
 class PasswordResetConfirmView(APIView):
-    """ Get and set new user password. """
+    """Get and set new user password."""
 
     throttle_classes = [PasswordResetApplyThrottle]
 
     def post(self, request, *args, **kwargs):
-        serializer = serializers.PasswordRecoveryConfirmSerializer(
-            data=request.data)
+        serializer = serializers.PasswordRecoveryConfirmSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
         except serializers.PasswordRequirementsFailure as e:
@@ -202,7 +206,5 @@ class ComponentsInformationAPIView(APIView):
     @extend_schema(responses=serializers.ModoboaComponentSerializer(many=True))
     def get(self, request, *args, **kwargs):
         status, extensions = check_for_updates()
-        serializer = serializers.ModoboaComponentSerializer(
-            extensions, many=True
-        )
+        serializer = serializers.ModoboaComponentSerializer(extensions, many=True)
         return response.Response(serializer.data)

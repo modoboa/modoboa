@@ -37,6 +37,7 @@ def close_db_connections(func, *args, **kwargs):
 
     To use in threads.
     """
+
     def _close_db_connections(*args, **kwargs):
         ret = None
         try:
@@ -45,6 +46,7 @@ def close_db_connections(func, *args, **kwargs):
             for conn in connections.all():
                 conn.close()
         return ret
+
     return _close_db_connections
 
 
@@ -77,10 +79,7 @@ def get_local_config():
 @close_db_connections
 def get_notification_recipients():
     """Return superadmins with a mailbox."""
-    return (
-        core_models.User.objects
-        .filter(is_superuser=True, mailbox__isnull=False)
-    )
+    return core_models.User.objects.filter(is_superuser=True, mailbox__isnull=False)
 
 
 @close_db_connections
@@ -94,16 +93,18 @@ def create_alarm(ltype, name):
     else:
         localpart, domain = split_mailbox(name)
         mailbox = admin_models.Mailbox.objects.get(
-            address=localpart, domain__name=domain)
+            address=localpart, domain__name=domain
+        )
         mailbox.alarms.create(
-            domain=mailbox.domain, title=title, internal_name=internal_name)
+            domain=mailbox.domain, title=title, internal_name=internal_name
+        )
 
 
 async def notify_limit_reached(ltype, name):
     """Send a notification to super admins about item."""
     ltype_translations = {
         "account": gettext_lazy("account"),
-        "domain": gettext_lazy("domain")
+        "domain": gettext_lazy("domain"),
     }
     # We're going to execute sync code so we need an executor
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
@@ -118,9 +119,9 @@ async def notify_limit_reached(ltype, name):
     for recipient in recipients:
         with translation.override(recipient.language):
             content = render_to_string(
-                "policyd/notifications/limit_reached.html", {
-                    "ltype": ltype_translations[ltype], "name": name
-                })
+                "policyd/notifications/limit_reached.html",
+                {"ltype": ltype_translations[ltype], "name": name},
+            )
             subject = _("[modoboa] Sending limit reached")
         msg = EmailMessage()
         msg["From"] = sender
@@ -143,7 +144,9 @@ async def apply_policies(attributes):
     sasl_username = attributes.get("sasl_username")
     if not sasl_username:
         return SUCCESS_ACTION
-    rclient = aioredis.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
+    rclient = aioredis.from_url(
+        settings.REDIS_URL, encoding="utf-8", decode_responses=True
+    )
     decr_domain = False
     decr_user = False
     localpart, domain = split_mailbox(sasl_username)
@@ -155,8 +158,7 @@ async def apply_policies(attributes):
         decr_domain = True
     if await rclient.hexists(constants.REDIS_HASHNAME, sasl_username):
         counter = await rclient.hget(constants.REDIS_HASHNAME, sasl_username)
-        logger.info("Account {} current counter: {}".format(
-            sasl_username, counter))
+        logger.info("Account {} current counter: {}".format(sasl_username, counter))
         if int(counter) <= 0:
             return FAILURE_ACTION
         decr_user = True
@@ -212,8 +214,7 @@ async def new_connection(reader, writer):
 
 def get_next_execution_dt():
     """Return next execution date and time."""
-    return (timezone.now() + relativedelta(days=1)).replace(
-        hour=0, minute=0, second=0)
+    return (timezone.now() + relativedelta(days=1)).replace(hour=0, minute=0, second=0)
 
 
 @sync_to_async
@@ -226,11 +227,10 @@ def get_domains_to_reset():
     """
     qset = admin_models.Domain.objects.filter(message_limit__isnull=False)
     admin_models.Alarm.objects.filter(
-        internal_name="limit_reached", domain__in=qset,
-        status=admin_constants.ALARM_OPENED
-    ).update(
-        status=admin_constants.ALARM_CLOSED, closed=timezone.now()
-    )
+        internal_name="limit_reached",
+        domain__in=qset,
+        status=admin_constants.ALARM_OPENED,
+    ).update(status=admin_constants.ALARM_CLOSED, closed=timezone.now())
     return list(qset)
 
 
@@ -242,29 +242,27 @@ def get_mailboxes_to_reset():
 
     We also close all associated alarms.
     """
-    qset = (
-        admin_models.Mailbox.objects.filter(message_limit__isnull=False)
-        .select_related("domain")
-    )
+    qset = admin_models.Mailbox.objects.filter(
+        message_limit__isnull=False
+    ).select_related("domain")
     admin_models.Alarm.objects.filter(
-        internal_name="limit_reached", mailbox__in=qset,
-        status=admin_constants.ALARM_OPENED
-    ).update(
-        status=admin_constants.ALARM_CLOSED, closed=timezone.now()
-    )
+        internal_name="limit_reached",
+        mailbox__in=qset,
+        status=admin_constants.ALARM_OPENED,
+    ).update(status=admin_constants.ALARM_CLOSED, closed=timezone.now())
     return list(qset)
 
 
 async def reset_counters():
     """Reset all counters."""
-    rclient = aioredis.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
+    rclient = aioredis.from_url(
+        settings.REDIS_URL, encoding="utf-8", decode_responses=True
+    )
     logger.info("Resetting all counters")
     for domain in await get_domains_to_reset():
-        await rclient.hset(
-            constants.REDIS_HASHNAME, domain.name, domain.message_limit)
+        await rclient.hset(constants.REDIS_HASHNAME, domain.name, domain.message_limit)
     for mb in await get_mailboxes_to_reset():
-        await rclient.hset(
-            constants.REDIS_HASHNAME, mb.full_address, mb.message_limit)
+        await rclient.hset(constants.REDIS_HASHNAME, mb.full_address, mb.message_limit)
     await rclient.close()
     # reschedule
     asyncio.ensure_future(run_at(get_next_execution_dt(), reset_counters))
@@ -273,5 +271,6 @@ async def reset_counters():
 def start_reset_counters_coro():
     """Start coroutine."""
     first_time = (timezone.now() + relativedelta(days=1)).replace(
-        hour=0, minute=0, second=0)
+        hour=0, minute=0, second=0
+    )
     asyncio.ensure_future(run_at(first_time, reset_counters))

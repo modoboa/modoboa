@@ -6,14 +6,16 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('relaydomains', '0005_auto_20161105_1426'),
+        ("relaydomains", "0005_auto_20161105_1426"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='relaydomain',
-            name='last_modification',
-            field=models.DateTimeField(auto_now=True, default=django.utils.timezone.now),
+            model_name="relaydomain",
+            name="last_modification",
+            field=models.DateTimeField(
+                auto_now=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
     ]
