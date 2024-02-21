@@ -24,11 +24,11 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
         """Check if user can access dashboard."""
         if not request.user.is_authenticated or not request.user.is_admin:
             return self.handle_no_permission()
-        return super(DashboardView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         """Add context variables."""
-        context = super(DashboardView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update({"selection": "dashboard", "widgets": {"left": [], "right": []}})
         # Fetch latest news
         if self.request.user.language == "fr":

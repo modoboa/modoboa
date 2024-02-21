@@ -2,3 +2,4 @@ django-bower
 django-debug-toolbar
 pre-commit
 black
+pylint
