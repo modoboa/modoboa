@@ -66,7 +66,7 @@
           </ul>
         </template>
         <template v-else-if="tfa_enabled">
-          <v-alert type="info">
+          <v-alert type="info" class="mb-2">
             {{
               $gettext('Two-Factor Authentication is enabled for your account.')
             }}
@@ -75,6 +75,7 @@
             <label class="m-label">{{ $gettext('Password') }} </label>
             <v-text-field
               v-model="password"
+              autocomplete="new-password"
               type="password"
               variant="outlined"
               :rules="[rules.required]"
@@ -143,7 +144,7 @@ const showCodesResetDialog = ref(false)
 const loadingDisable = ref(false)
 const loadingReset = ref(false)
 const password = ref('')
-const passwordError = ref()
+const passwordError = ref([])
 const tokens = ref([])
 
 const tfa_enabled = computed(() => authStore.authUser.tfa_enabled)
@@ -197,7 +198,7 @@ async function disableTFA() {
     })
     .catch((error) => {
       if (error.response.status === 400) {
-        passwordError.value = error.response.data
+        passwordError.value = error.response.data.password
       } else {
         busStore.displayNotification({
           msg: $gettext(error.response.data),
@@ -229,7 +230,7 @@ async function resetRecoveryCodes() {
     })
     .catch((error) => {
       if (error.response.status === 400) {
-        passwordError.value = error.response.data
+        passwordError.value = error.response.data.password
       } else {
         busStore.displayNotification({
           msg: $gettext(error.response.data),
