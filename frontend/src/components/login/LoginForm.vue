@@ -33,7 +33,11 @@ async function authenticate() {
   authStore
     .login(payload)
     .then(() => {
-      router.push({ name: 'Dashboard' })
+      if (authStore.authUser.role === 'SimpleUsers') {
+        router.push({ name: 'AccountSettings' })
+      } else {
+        router.push({ name: 'Dashboard' })
+      }
     })
     .catch((err) => {
       loading.value = false

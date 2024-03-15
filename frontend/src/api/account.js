@@ -44,4 +44,10 @@ export default {
   deleteAPIToken() {
     return repository.delete(`${resource}/api_token/`)
   },
+  getARMessage() {
+    return repository.get(`${resource}/armessage/`)
+  },
+  setARMessage(data) {
+    return repository.put(`${resource}/armessage/`, data)
+  },
 }
