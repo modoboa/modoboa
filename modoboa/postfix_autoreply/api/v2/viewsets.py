@@ -75,8 +75,13 @@ class AccountARMessageViewSet(viewsets.ViewSet):
     def armessage(self, request):
         if not hasattr(request.user, "mailbox"):
             return response.Response(status=404)
+        params = dict(param_tools.get_global_parameters("postfix_autoreply"))
         armessage, created = models.ARmessage.objects.get_or_create(
-            mbox=self.request.user.mailbox
+            mbox=self.request.user.mailbox,
+            defaults={
+                "subject": params["default_subject"],
+                "content": params["default_content"],
+            },
         )
         if request.method == "GET":
             serializer = serializers.AccountARMessageSerializer(armessage)
