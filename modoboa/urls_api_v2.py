@@ -18,6 +18,7 @@ urlpatterns = [
     path("", include("modoboa.maillog.api.v2.urls")),
     path("", include("modoboa.transport.api.v2.urls")),
     path("", include("modoboa.pdfcredentials.api.v2.urls")),
+    path("", include("modoboa.postfix_autoreply.api.v2.urls")),
 ]
 
 urlpatterns += exts_pool.get_urls(category="api")

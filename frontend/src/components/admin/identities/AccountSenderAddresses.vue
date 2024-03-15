@@ -1,4 +1,3 @@
-Ac
 <template>
   <v-card>
     <v-card-title>
@@ -57,11 +56,12 @@ Ac
 </template>
 
 <script setup lang="js">
-// import { bus } from '@/main'
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { useBusStore } from '@/stores'
 import senderAddresses from '@/api/senderAddresses'
 
+const busStore = useBusStore()
 const { $gettext } = useGettext()
 const props = defineProps({ account: { type: Object, default: null } })
 
@@ -94,14 +94,14 @@ function submit() {
     fetchSenderAddresses()
     newAddress.value = null
     hideAddBtn.value = false
-    // bus.$emit('notification', { msg: this.$gettext('Sender address added') })
+    busStore.displayNotification({ msg: $gettext('Sender address added') })
   })
 }
 
 function deleteSenderAddress(senderAddress) {
   senderAddresses.delete(senderAddress.pk).then(() => {
     fetchSenderAddresses()
-    // bus.$emit('notification', { msg: this.$gettext('Sender address deleted') })
+    busStore.displayNotification({ msg: $gettext('Sender address deleted') })
   })
 }
 

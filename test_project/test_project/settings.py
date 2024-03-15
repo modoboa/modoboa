@@ -94,6 +94,7 @@ MODOBOA_APPS = (
     "modoboa.pdfcredentials",
     "modoboa.dmarc",
     "modoboa.imap_migration",
+    "modoboa.postfix_autoreply",
     # Modoboa extensions here.
 )
 
