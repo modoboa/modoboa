@@ -113,6 +113,9 @@ SETTINGS_SAMPLE = {
     "imap_migration-enabled_imapmigration": True,
     "imap_migration-max_sync_accounts": 2,
     "imap_migration-create_folders": True,
+    "postfix_autoreply-autoreplies_timeout": 86400,
+    "postfix_autoreply-default_subject": "I'm off",
+    "postfix_autoreply-default_content": "I'm off",
 }
 
 
