@@ -63,6 +63,8 @@ class MailboxOperationTestCase(ModoTestCase):
             "is_active": True,
             "email": "admin2@test.com",
             "language": "en",
+            "subject": "test",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[mb.user.pk]), values)
         path = "{}/test.com/admin2".format(self.workdir)
