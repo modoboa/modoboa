@@ -88,6 +88,8 @@ class AccountTestCase(ModoTestCase):
                 "language": "en",
                 "secondary_email": "homer@simpson.com",
                 "phone_number": "+33612345678",
+                "subject": "subject",
+                "content": "content",
             }
         )
         self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
@@ -203,6 +205,8 @@ class AccountTestCase(ModoTestCase):
             "is_active": False,
             "email": "user@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
         internal.refresh_from_db()
@@ -228,6 +232,8 @@ class AccountTestCase(ModoTestCase):
             "is_active": account.is_active,
             "email": "new_user@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
             "create_alias_with_old_address": False,
             "aliases_1": "alias@test.com",
         }
@@ -249,6 +255,8 @@ class AccountTestCase(ModoTestCase):
             "is_active": account.is_active,
             "email": "new_user@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
             "create_alias_with_old_address": False,
         }
         url = reverse("admin:account_change", args=[account.pk])
@@ -343,6 +351,8 @@ class AccountTestCase(ModoTestCase):
         account = User.objects.get(username=values["username"])
         password = account.password
         values["language"] = "en"
+        values["subject"] = "subject"
+        values["content"] = "content"
         # Since 'random_password' is still True, a new password should
         # be generated
         self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
@@ -367,6 +377,8 @@ class AccountTestCase(ModoTestCase):
             "is_active": True,
             "email": "user@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         account = User.objects.get(username="user@test.com")
         self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
@@ -385,6 +397,8 @@ class AccountTestCase(ModoTestCase):
             "senderaddress": "test@titi.com",
             "senderaddress_1": "toto@go.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         self.assertEqual(
@@ -474,6 +488,8 @@ class AccountTestCase(ModoTestCase):
             "quota": value,
             "email": email,
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(
             reverse("admin:account_change", args=[account.id]),
@@ -617,6 +633,8 @@ class PermissionsTestCase(ModoTestCase):
             "email": "user@test.com",
             "quota_act": True,
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
 
     def tearDown(self):
@@ -691,6 +709,8 @@ class PermissionsTestCase(ModoTestCase):
             "is_active": True,
             "email": "admin@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[admin.id]), values)
         self.assertEqual(admin.role, "DomainAdmins")
@@ -711,6 +731,8 @@ class PermissionsTestCase(ModoTestCase):
             "password2": "",
             "is_active": True,
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[self.reseller.pk]), values)
         self.assertEqual(self.reseller.role, "Resellers")

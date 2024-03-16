@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 
 from modoboa.admin import models as admin_models
 from modoboa.lib.email_utils import split_mailbox
+from modoboa.parameters import tools as param_tools
 
 from modoboa.postfix_autoreply import models
 from . import serializers
