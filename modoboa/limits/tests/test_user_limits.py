@@ -188,6 +188,8 @@ class DomainAdminTestCase(ResourceTestCase):
             "aliases": "alias1@test.com",
             "aliases_1": "alias2@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
         Alias.objects.get(address="alias1@test.com")
@@ -269,6 +271,8 @@ class ResellerTestCase(ResourceTestCase):
             "is_active": user.is_active,
             "email": user.email,
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         resp = self.ajax_post(
             reverse("admin:account_change", args=[user.id]), values, status=400
@@ -355,6 +359,8 @@ class ResellerTestCase(ResourceTestCase):
             "language": "en",
             "quota_act": False,
             "quota": 0,
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[admin.pk]), values, 400)
 
@@ -399,6 +405,8 @@ class ResellerTestCase(ResourceTestCase):
             "mailboxes_limit": 1,
             "mailbox_aliases_limit": 2,
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
         self._check_limit("mailboxes", 1, 1)

@@ -79,7 +79,7 @@ class EventsTestCase(ModoTestCase):
         self.assertContains(response, "No document available for this user")
 
         # Update account
-        values.update({"language": "en"})
+        values.update({"language": "en", "subject": "subject", "content": "content"})
         self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         self.assertFalse(os.path.exists(fname))
 
