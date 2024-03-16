@@ -94,6 +94,8 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
             "domains": "test2.com",
             "domains_1": "test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
         self.assertTrue(limit.is_exceeded())
@@ -151,6 +153,8 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
             "aliases": "alias@test.com",
             "aliases_1": "alias1@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
         self.assertTrue(limit.is_exceeded())
