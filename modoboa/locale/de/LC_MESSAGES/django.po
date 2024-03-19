@@ -3146,7 +3146,7 @@ msgstr "Maximale Anzahl der erlaubten Domänen-Aliase für eine neue Domain. (0 
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Maximale Anzahl der zulässigen Postfächer für eine neue Domäne. (0, um jegliche Einrichtung zu verweigern, -1, um unbegrenzte Einrichtungen zuzulassen)"
+msgstr "Maximale Anzahl der zulässigen Postfächer für eine neue Domäne. (0 für generelles Verbieten, -1 für unbeschränktes Erstellen)"
 
 #: limits/app_settings.py:132 limits/app_settings.py:249
 msgid ""
