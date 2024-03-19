@@ -3134,13 +3134,13 @@ msgstr "Aktiviere oder deaktiviere Grenzen je Domäne"
 msgid ""
 "Maximum number of allowed domain administrators for a new domain. (0 to deny"
 " any creation, -1 to allow unlimited creations)"
-msgstr "Maximale Anzahl der zulässigen Domänenadministratoren für eine neue Domäne. (0, um jegliche Einrichtung zu verweigern, -1, um unbegrenzte Einrichtungen zuzulassen)"
+msgstr "Maximale Anzahl der zulässigen Domänenadministratoren für eine neue Domäne. (0 für generelles Verbieten, -1 für unbeschränktes Erstellen)"
 
 #: limits/app_settings.py:111 limits/app_settings.py:232
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Maximale Anzahl der erlaubten Domänen-Aliase für eine neue Domain. (0, um jegliche Einrichtung zu verweigern, -1, um unbegrenzte Einrichtungen zuzulassen)"
+msgstr "Maximale Anzahl der erlaubten Domänen-Aliase für eine neue Domain. (0 für generelles Verbieten, -1 für unbeschränktes Erstellen)"
 
 #: limits/app_settings.py:122 limits/app_settings.py:241
 msgid ""
