@@ -183,8 +183,8 @@ const mainMenuItems = [
   {
     text: $gettext('Dashboard'),
     to: { name: 'Dashboard' },
-    icon: 'mdi-view-dashboard-outline',
     exact: true,
+    icon: 'mdi-view-dashboard-outline'
   },
   {
     text: $gettext('Domains'),
@@ -253,48 +253,22 @@ const mainMenuItems = [
     text: $gettext('Information'),
     roles: ['SuperAdmins'],
     to: { name: 'Information' },
-  },
+  }
 ]
 
 const userSettingsMenuItems = [
   {
-    text: $gettext('API'),
-    roles: ['SuperAdmins'],
-    to: { name: 'APISetup' },
-    icon: 'mdi-api',
-    exact: true,
-  },
-  {
-    text: $gettext('Profile'),
-    to: { name: 'UserProfile' },
-    icon: 'mdi-account-circle-outline',
-    exact: true,
-  },
-  {
-    text: $gettext('Security'),
-    to: { name: 'UserSecurity' },
-    icon: 'mdi-lock-outline',
-    exact: true,
-  },
-  // {
-  //   text: $gettext('Preferences'),
-  //   icon: 'mdi-tune',
-  //   exact: true
-  // },
-  {
-    text: $gettext('Forward'),
-    condition: () => authUser.value.mailbox !== null,
-    to: { name: 'UserForward' },
-    icon: 'mdi-forward',
-    exact: true,
-  },
+    text: $gettext('Settings'),
+    to: { name: 'AccountSettings' },
+    icon: 'mdi-cog'
+  }
 ]
 
 const userMenuItems = [
   {
-    text: $gettext('Profile'),
+    text: $gettext('Account'),
     icon: 'mdi-account-circle-outline',
-    to: { name: 'UserProfile' },
+    to: { name: 'AccountSettings' },
     click: () => null,
   },
   {
@@ -303,6 +277,14 @@ const userMenuItems = [
     click: logout,
   },
 ]
+
+if (authUser.value.role !== 'SimpleUsers') {
+  userMenuItems.unshift({
+    text: $gettext('Admin'),
+    to: { name: 'Dashboard' },
+    icon: 'mdi-view-dashboard-outline'
+  })
+}
 
 function displayMenuItem(item) {
   if (isAuthenticated.value) {
