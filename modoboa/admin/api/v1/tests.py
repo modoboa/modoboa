@@ -6,6 +6,7 @@ from unittest import mock
 
 import dns.resolver
 
+from django.core.cache import cache
 from django.test import override_settings
 from django.urls import reverse
 
@@ -25,7 +26,7 @@ class DomainAPITestCase(ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DomainAPITestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
         cls.da_token = Token.objects.create(
             user=core_models.User.objects.get(username="admin@test.com")
@@ -257,6 +258,10 @@ class AccountAPITestCase(ModoAPITestCase):
         self.set_global_parameters(
             {"enable_admin_limits": False, "enable_domain_limits": False}, app="limits"
         )
+
+    def tearDown(self):
+        # Make sure API calls do not get throttled
+        cache.clear()
 
     def test_get_accounts(self):
         """Retrieve a list of accounts."""
