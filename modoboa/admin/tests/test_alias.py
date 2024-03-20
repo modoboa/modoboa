@@ -26,6 +26,8 @@ class AliasTestCase(ModoTestCase):
             "aliases": "toto@test.com",
             "aliases_1": "titi@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
         self.assertEqual(
@@ -65,6 +67,8 @@ class AliasTestCase(ModoTestCase):
             "email": "user@test.com",
             "aliases": "Toto@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
         mb = user.mailbox
@@ -96,6 +100,8 @@ class AliasTestCase(ModoTestCase):
             "is_active": user.is_active,
             "email": "user@test.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
 
@@ -236,6 +242,8 @@ class AliasTestCase(ModoTestCase):
             "is_active": True,
             "email": user.email,
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         self.ajax_post(reverse("admin:account_change", args=[user.id]), values)
 
@@ -264,6 +272,8 @@ class AliasTestCase(ModoTestCase):
             "aliases": "toto@test.com",
             "aliases_1": "titi@test2.com",
             "language": "en",
+            "subject": "subject",
+            "content": "content",
         }
         response = self.ajax_post(
             reverse("admin:account_change", args=[user.id]), values, 400

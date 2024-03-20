@@ -251,38 +251,17 @@ const routes = [
   {
     path: '/account',
     component: () => import('@/layouts/dashboard/DashboardLayout.vue'),
-    meta: { layout: 'account' },
+    meta: {
+      layout: 'account',
+      requiresAuth: true,
+    },
     children: [
       {
-        path: 'api',
-        name: 'APISetup',
-        component: () => import('@/views/account/APISetupView.vue'),
+        path: ':tab?',
+        name: 'AccountSettings',
+        component: () => import('@/views/account/SettingsView.vue'),
         meta: {
-          requiresAuth: true,
-          allowedRoles: ['SuperAdmins'],
-        },
-      },
-      {
-        path: 'profile',
-        name: 'UserProfile',
-        component: () => import('@/views/account/ProfileView.vue'),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: 'security',
-        name: 'UserSecurity',
-        component: () => import('@/views/account/SecurityView.vue'),
-        meta: {
-          requiresAuth: true,
-        },
-      },
-      {
-        path: 'forward',
-        name: 'UserForward',
-        component: () => import('@/views/account/ForwardView.vue'),
-        meta: {
+          layout: 'account',
           requiresAuth: true,
         },
       },

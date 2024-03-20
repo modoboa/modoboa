@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import gettext from '@/plugins/gettext'
 
 import repository from '@/api/repository'
@@ -12,6 +12,10 @@ import authApi from '@/api/auth'
 export const useAuthStore = defineStore('auth', () => {
   const authUser = ref({})
   const isAuthenticated = ref(false)
+
+  const userHasMailbox = computed(() => {
+    return authUser.value.mailbox !== null
+  })
 
   async function fetchUser() {
     return accountApi.getMe().then((resp) => {
@@ -41,7 +45,7 @@ export const useAuthStore = defineStore('auth', () => {
     const cookie = Cookies.withAttributes(cookiesAttributes)
     cookie.set('token', resp.data.access)
     cookie.set('refreshToken', resp.data.refresh)
-    initialize()
+    return initialize()
   }
   async function $reset() {
     delete repository.defaults.headers.common.Authorization
@@ -87,5 +91,6 @@ export const useAuthStore = defineStore('auth', () => {
     $reset,
     updateAccount,
     finalizeTFASetup,
+    userHasMailbox,
   }
 })
