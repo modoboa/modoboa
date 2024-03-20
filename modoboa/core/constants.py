@@ -78,6 +78,7 @@ PERMISSIONS = {
         ["admin", "senderaddress", "add_senderaddress"],
         ["admin", "senderaddress", "change_senderaddress"],
         ["admin", "senderaddress", "delete_senderaddress"],
+        ["admin", "domainalias", "view_domainalias"],
     ],
     "Resellers": [
         ["core", "user", "add_user"],
