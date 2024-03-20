@@ -156,12 +156,14 @@ class AccountARMessageViewSetTestCase(ModoAPITestCase):
         self.client.logout()
         self.client.force_login(self.account)
         url = reverse("api:account_armessage-armessage")
+        fromdate = timezone.now()
+        todate = fromdate + relativedelta(days=4)
         data = {
             "enabled": True,
             "subject": "Je suis absent",
             "content": "Je reviendrai",
-            "fromdate": "2024-03-16T10:00",
-            "untildate": "2024-03-18T10:00",
+            "fromdate": fromdate.isoformat(),
+            "untildate": todate.isoformat(),
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)

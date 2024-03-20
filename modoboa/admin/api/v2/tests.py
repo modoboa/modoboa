@@ -523,7 +523,7 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
 
     def test_forward(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
-        url = reverse("v2:account-forward")
+        url = reverse("v2:user_account-forward")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertNotIn("recipients", resp.json())
