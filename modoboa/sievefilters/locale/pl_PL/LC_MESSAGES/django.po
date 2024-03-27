@@ -1,0 +1,365 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Artur Slowik <artur@slowik.it>, 2017
+# Dariusz Koryto <dariusz@koryto.eu>, 2016
+# Tomasz Proć <tomasz.proc@gmail.com>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-01 18:04+0100\n"
+"PO-Revision-Date: 2017-12-02 10:16+0000\n"
+"Last-Translator: Tomasz Proć <tomasz.proc@gmail.com>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/language/pl_PL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: constants.py:6
+msgid "contains"
+msgstr "zawiera"
+
+#: constants.py:7
+msgid "does not contain"
+msgstr "nie zawiera"
+
+#: constants.py:8
+msgid "is"
+msgstr "jest"
+
+#: constants.py:9
+msgid "is not"
+msgstr "nie jest"
+
+#: constants.py:14
+msgid "Subject"
+msgstr "Temat"
+
+#: constants.py:17
+msgid "Sender"
+msgstr "Nadawca"
+
+#: constants.py:20
+msgid "Recipient"
+msgstr "Odbioraca"
+
+#: constants.py:23
+msgid "Cc"
+msgstr "DW"
+
+#: constants.py:25
+msgid "Size"
+msgstr "Rozmiar"
+
+#: constants.py:26
+msgid "is greater than"
+msgstr "jest większe niż"
+
+#: constants.py:27
+msgid "is less than"
+msgstr "jest mniejsze niż"
+
+#: constants.py:31
+msgid "Move message to"
+msgstr "Przenieś wiadomość do"
+
+#: constants.py:36 constants.py:44
+msgid "Keep local copy"
+msgstr "Zachowaj kopię"
+
+#: constants.py:40
+msgid "Redirect message to"
+msgstr "Przekieruj wiadomość do"
+
+#: constants.py:48
+msgid "Reject message"
+msgstr "Odrzuć wiadomość"
+
+#: constants.py:50
+msgid "Stop processing"
+msgstr "Zatrzymaj przetwarzanie"
+
+#: forms.py:33
+msgid "Check to activate this filters set"
+msgstr "Zaznacz aby uruchomić ten zestaw filtrów"
+
+#: forms.py:87 templates/modoboa_sievefilters/guieditor.html:6
+msgid "Name"
+msgstr "Nazwa"
+
+#: forms.py:89
+msgid "Match type"
+msgstr "Typ dopasowania"
+
+#: forms.py:90
+msgid "All of the following"
+msgstr "Wszystkie poniższe"
+
+#: forms.py:91
+msgid "Any of the following"
+msgstr "Żadne z poniższych"
+
+#: forms.py:92
+msgid "All messages"
+msgstr "Wszystkie wiadomości"
+
+#: forms.py:107
+msgid "Wrong filter name"
+msgstr "Zła nazwa filtru"
+
+#: forms.py:351
+msgid "ManageSieve settings"
+msgstr "Ustawienia ManageSieve"
+
+#: forms.py:354 forms.py:384
+msgid "Server address"
+msgstr "Adres serwera"
+
+#: forms.py:356
+msgid "Address of your MANAGESIEVE server"
+msgstr "Addres twojego serwera MANAGESIEVE"
+
+#: forms.py:361 forms.py:396
+msgid "Server port"
+msgstr "Port serwera"
+
+#: forms.py:363
+msgid "Listening port of your MANAGESIEVE server"
+msgstr "Port twojego serwera MANAGESIEVE"
+
+#: forms.py:368
+msgid "Connect using STARTTLS"
+msgstr "Połącz używając STARTTLS"
+
+#: forms.py:370
+msgid "Use the STARTTLS extension"
+msgstr "Użyj rozszerzenia STARTTLS"
+
+#: forms.py:374
+msgid "Authentication mechanism"
+msgstr "Mechanizm autentykacji"
+
+#: forms.py:377
+msgid "Prefered authentication mechanism"
+msgstr "Preferowany mechanizm uwierzytelnienia"
+
+#: forms.py:381
+msgid "IMAP settings"
+msgstr "Ustawienia IMAP"
+
+#: forms.py:386
+msgid "Address of your IMAP server"
+msgstr "Adres serwera IMAP"
+
+#: forms.py:390
+msgid "Use a secured connection"
+msgstr "Użyj bezpiecznego polączenia"
+
+#: forms.py:392
+msgid "Use a secured connection to access IMAP server"
+msgstr "Użyj bezpiecznego połączenia do serwera IMAP"
+
+#: forms.py:398
+msgid "Listening port of your IMAP server"
+msgstr "Port, na którym nasłuchuje twój serwer IMAP"
+
+#: forms.py:405
+msgid "General"
+msgstr "Ogólne"
+
+#: forms.py:409
+msgid "Editor mode"
+msgstr "Tryb edycji"
+
+#: forms.py:411
+msgid "Select the mode you want the editor to work in"
+msgstr "Wybierz tryb w jakim ma działać edytor"
+
+#: forms.py:415
+msgid "Mailboxes"
+msgstr "Skrzynki pocztowe"
+
+#: forms.py:419
+msgid "Trash folder"
+msgstr "Folder kosza"
+
+#: forms.py:420
+msgid "Folder where deleted messages go"
+msgstr "Folder, do którego trafiają usunięte wiadomości"
+
+#: forms.py:425
+msgid "Sent folder"
+msgstr "Folder wysłane"
+
+#: forms.py:426
+msgid "Folder where copies of sent messages go"
+msgstr "Folder, do którego trafiają kopie wysłanych wiadomości"
+
+#: forms.py:431
+msgid "Drafts folder"
+msgstr "Folder kopie robocze"
+
+#: forms.py:432
+msgid "Folder where drafts go"
+msgstr "Folder, do którego trafiają kopie robocze"
+
+#: handlers.py:19 modo_extension.py:26
+#: templates/modoboa_sievefilters/index.html:4
+msgid "Message filters"
+msgstr "Filtry wiadomości"
+
+#: imaputils.py:99
+msgid "Failed to retrieve hierarchy delimiter"
+msgstr "Nie udało się rozpoznać hierarchii separatora"
+
+#: imaputils.py:135
+#, python-format
+msgid "Connection to IMAP server failed: %s"
+msgstr "Błąd połączenia do serwera IMAP: %s"
+
+#: lib.py:54
+msgid "Connection to MANAGESIEVE server failed, check your configuration"
+msgstr "Błąd połączenia do serwera MANAGESIEVE: %s, sprawdź konfigurację"
+
+#: lib.py:98
+msgid "Not enough space on server"
+msgstr "Brak miejsca na serwerze"
+
+#: modo_extension.py:18
+msgid "Plugin to easily create server-side filters"
+msgstr "Wtyczka do łatwego tworzenia filtrów po stronie serwera"
+
+#: modo_extension.py:24
+msgid "Sieve filters"
+msgstr "Filtry Sieve"
+
+#: templates/modoboa_sievefilters/filter.html:9
+msgid "Conditions"
+msgstr "Warunki"
+
+#: templates/modoboa_sievefilters/filter.html:20
+#: templates/modoboa_sievefilters/guieditor.html:5 views.py:104
+msgid "Actions"
+msgstr "Akcje"
+
+#: templates/modoboa_sievefilters/guieditor.html:7
+msgid "Active"
+msgstr "Aktywne"
+
+#: templates/modoboa_sievefilters/guieditor.html:24
+msgid "No filter defined yet"
+msgstr "Brak zdefiniowanych filtrów"
+
+#: templates/modoboa_sievefilters/index.html:82
+msgid "Filter sets"
+msgstr "Zestaw filtrów"
+
+#: templates/modoboa_sievefilters/index.html:86
+msgid "active"
+msgstr "aktywny"
+
+#: templates/modoboa_sievefilters/index.html:101
+msgid ""
+"No filters set defined yet. You must create one in order to define filters."
+msgstr "Nie zdefiniowano zestawu filtrów. Musisz utworzyć przynajmniej jeden."
+
+#: templatetags/sfilters_tags.py:21
+msgid "New filters set"
+msgstr "Nowy zestaw filtrów"
+
+#: templatetags/sfilters_tags.py:39 views.py:153
+msgid "New filter"
+msgstr "Nowy filter"
+
+#: templatetags/sfilters_tags.py:50
+msgid "Save filters set"
+msgstr "Zapisz zestaw filtrów"
+
+#: templatetags/sfilters_tags.py:58
+msgid "Activate filters set"
+msgstr "Uruchom zestaw filtrów"
+
+#: templatetags/sfilters_tags.py:63
+msgid "Remove filters set"
+msgstr "Usuń zestaw filtrów"
+
+#: templatetags/sfilters_tags.py:67
+msgid "Download"
+msgstr "Pobierz"
+
+#: templatetags/sfilters_tags.py:82 views.py:175
+msgid "Edit filter"
+msgstr "Edytuj filtr"
+
+#: templatetags/sfilters_tags.py:90
+msgid "Remove this filter"
+msgstr "Usuń ten filtr"
+
+#: templatetags/sfilters_tags.py:99
+msgid "Move this filter up"
+msgstr "Przenieś ten filtr wyżej"
+
+#: templatetags/sfilters_tags.py:108
+msgid "Move this filter down"
+msgstr "Przenieś ten filtr niżej"
+
+#: views.py:87
+msgid "Failed to retrieve filters set"
+msgstr "Nie udało się pobrać zestawu filtrów"
+
+#: views.py:156 views.py:248
+msgid "Create"
+msgstr "Utwórz"
+
+#: views.py:161
+msgid "Filter created"
+msgstr "Filtr utworzony"
+
+#: views.py:179
+msgid "Update"
+msgstr "Zaktualizuj"
+
+#: views.py:186
+msgid "Filter modified"
+msgstr "Filtr zmodyfikowano"
+
+#: views.py:209
+msgid "Filter removed"
+msgstr "Filtr usunięto"
+
+#: views.py:210
+msgid "Failed to remove filter"
+msgstr "Nie udało się usunąć filtru"
+
+#: views.py:225
+msgid "Filters set saved"
+msgstr "Zestaw filtrów zapisano"
+
+#: views.py:241
+msgid "Filters set created"
+msgstr "Zestaw filtrów utworzono"
+
+#: views.py:246
+msgid "Create a new filters set"
+msgstr "Utwórz nowy zestaw filtrów"
+
+#: views.py:265
+msgid "Filters set deleted"
+msgstr "Filtry skasowano"
+
+#: views.py:278
+msgid "Filters set activated"
+msgstr "Filtry usunięto"
+
+#: views.py:307
+msgid "yes"
+msgstr "tak"
+
+#: views.py:311
+msgid "no"
+msgstr "nie"

@@ -92,6 +92,8 @@ MODOBOA_APPS = (
     'modoboa.pdfcredentials',
     'modoboa.dmarc',
     'modoboa.imap_migration',
+    'modoboa.postfix_autoreply',
+    'modoboa.sievefilters',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}

@@ -257,6 +257,15 @@ const routes = [
     },
     children: [
       {
+        path: 'filters',
+        name: 'AccountFilters',
+        component: () => import('@/views/account/FiltersView.vue'),
+        meta: {
+          layout: 'account',
+          requiresAuth: true,
+        },
+      },
+      {
         path: ':tab?',
         name: 'AccountSettings',
         component: () => import('@/views/account/SettingsView.vue'),
@@ -283,18 +292,15 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth !== undefined) {
     const authStore = useAuthStore()
     authStore.initialize().then(() => {
-      if (!authStore.isAuthenticated) {
-        next({ name: 'Login' })
-      } else {
-        /*
+      authStore.validateAccess()
+      /*
         if (to.meta.allowedRoles !== undefined) {
-          if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
-            next({ name: 'Dashboard' })
-            return
-          }
+        if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
+        next({ name: 'Dashboard' })
+        return
+        }
         }*/
-        next()
-      }
+      next()
     })
   } else {
     next()

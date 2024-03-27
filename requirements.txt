@@ -13,6 +13,7 @@ djangorestframework>=3.14,<3.16
 drf-spectacular
 uritemplate
 djangorestframework-simplejwt==5.3.1
+django-oauth-toolkit
 
 passlib~=1.7.4
 bcrypt  # Requires libffi-dev and python-dev
@@ -48,3 +49,6 @@ python-magic>=0.4.24
 # RQ
 rq>=1.13.0
 django-rq
+
+# Sieve
+sievelib>=1.1.1

@@ -50,4 +50,25 @@ export default {
   setARMessage(data) {
     return repository.put(`${resource}/armessage/`, data)
   },
+  getFilterSets() {
+    return repository.get(`${resource}/filtersets/`)
+  },
+  createFilterSet(data) {
+    return repository.post(`${resource}/filtersets/`, data)
+  },
+  getFilterConditionTemplates() {
+    return repository.get(`${resource}/filtersets/condition_templates/`)
+  },
+  getFilterActionTemplates() {
+    return repository.get(`${resource}/filtersets/action_templates/`)
+  },
+  getFilters(filterSetName) {
+    return repository.get(`${resource}/filtersets/${filterSetName}/filters/`)
+  },
+  createFilter(filterSetName, data) {
+    return repository.post(
+      `${resource}/filtersets/${filterSetName}/filters/`,
+      data
+    )
+  },
 }

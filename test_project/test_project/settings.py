@@ -66,6 +66,7 @@ INSTALLED_APPS = (
     "reversion",
     "ckeditor",
     "ckeditor_uploader",
+    "oauth2_provider",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
@@ -95,6 +96,7 @@ MODOBOA_APPS = (
     "modoboa.dmarc",
     "modoboa.imap_migration",
     "modoboa.postfix_autoreply",
+    "modoboa.sievefilters",
     # Modoboa extensions here.
 )
 
@@ -189,6 +191,17 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "..", "modoboa", "bower_components"),
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# oAuth2 settings
+
+OAUTH2_PROVIDER = {
+    "SCOPES": {
+        "read": "Read scope",
+        "write": "Write scope",
+        "introspection": "Introspect token scope",
+    },
+    "DEFAULT_SCOPES": ["read", "write"],
+}
+
 # Rest framework settings
 
 REST_FRAMEWORK = {
@@ -202,7 +215,7 @@ REST_FRAMEWORK = {
         "password_recovery_apply": "25/hour",
     },
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "modoboa.core.drf_authentication.JWTAuthenticationWith2FA",
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
