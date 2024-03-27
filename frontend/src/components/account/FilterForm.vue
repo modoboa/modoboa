@@ -1,0 +1,275 @@
+<template>
+  <v-card
+    :title="title"
+  >
+    <v-card-text>
+      <v-form ref="formRef">
+        <v-text-field
+          v-model="form.name"
+          :label="$gettext('Name')"
+          variant="outlined"
+          density="compact"
+          :rules="[rules.required]"
+        />
+        <div>
+          <h4>{{ $gettext('Conditions') }}</h4>
+          <v-radio-group
+            v-model="form.match_type"
+            color="primary"
+            inline
+          >
+            <v-radio
+              :label="$gettext('All of the following')"
+              value="allof"
+            />
+            <v-radio
+              :label="$gettext('Any of the following')"
+              value="anyof"
+            />
+            <v-radio
+              :label="$gettext('All messages')"
+              value="all"
+            />
+          </v-radio-group>
+          <div v-for="(condition, index) in form.conditions" class="d-flex align-center">
+            <v-select
+              v-model="condition.name"
+              :label="$gettext('Choose a header')"
+              :items="conditionTemplates"
+              item-title="label"
+              item-value="name"
+              variant="outlined"
+              density="compact"
+              :rules="[rules.required]"
+            />
+            <v-select
+              v-model="condition.operator"
+              :label="$gettext('Choose an operator')"
+              :items="getConditionOperators(condition.name)"
+              item-title="label"
+              item-value="name"
+              variant="outlined"
+              class="ml-2"
+              density="compact"
+              :rules="[rules.required]"
+            />
+            <v-text-field
+              v-model="condition.value"
+              :label="$gettext('Value')"
+              variant="outlined"
+              class="ml-2"
+              density="compact"
+              :type="getConditionType(index)"
+              :rules="[rules.required]"
+            />
+            <v-btn
+              v-if="index === 0"
+              icon="mdi-plus"
+              variant="text"
+              :title="$gettext('Add condition')"
+              color="primary"
+              @click="addCondition"
+            />
+            <v-btn
+              v-else
+              icon="mdi-trash-can"
+              variant="text"
+              :title="$gettext('Remove condition')"
+              color="error"
+              @click="removeCondition(index)"
+              />
+          </div>
+        </div>
+        <div>
+          <h4>{{ $gettext('Actions') }}</h4>
+          <div v-for="(action, index) in form.actions" class="d-flex align-start mt-2">
+            <v-select
+              v-model="action.name"
+              :label="$gettext('Choose an action')"
+              :items="actionTemplates"
+              item-title="label"
+              item-value="name"
+              variant="outlined"
+              density="compact"
+              class="flex-grow-0"
+            />
+            <div class="mx-2 d-flex flex-column flex-grow-1">
+              <template v-for="arg in getActionArguments(action.name)">
+                <v-text-field
+                  v-if="arg.type === 'string' || arg.type === 'list'"
+                  v-model="action.args[arg.name]"
+                  density="compact"
+                  variant="outlined"
+                  :rules="[rules.required]"
+                />
+                <v-checkbox
+                  v-if="arg.type === 'boolean'"
+                  v-model="action.args[arg.name]"
+                  :label="arg.label"
+                />
+              </template>
+            </div>
+            <v-btn
+              v-if="index === 0"
+              icon="mdi-plus"
+              variant="text"
+              :title="$gettext('Add action')"
+              color="primary"
+              @click="addAction"
+            />
+            <v-btn
+              v-else
+              icon="mdi-trash-can"
+              variant="text"
+              :title="$gettext('Remove action')"
+              color="error"
+              @click="removeAction(index)"
+            />
+          </div>
+        </div>
+      </v-form>
+    </v-card-text>
+    <v-divider></v-divider>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn
+        :text="$gettext('Cancel')"
+        variant="plain"
+        @click="close"
+      ></v-btn>
+      <v-btn
+        color="primary"
+        :text="submitLabel"
+        @click="submit"
+      ></v-btn>
+    </v-card-actions>
+  </v-card>
+</template>
+
+<script setup>
+import { computed, ref, watch } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import accountApi from '@/api/account'
+import rules from '@/plugins/rules'
+
+const props = defineProps({
+  filterSet: {
+    type: String,
+    default: null
+  },
+  filter: {
+    type: Object,
+    required: false,
+    default: null
+  }
+})
+const emit = defineEmits(['close'])
+const { $gettext } = useGettext()
+
+const conditionTemplates = ref([])
+const actionTemplates = ref([])
+const formRef = ref()
+const form = ref(getInitialFormContent())
+
+const title = computed(() => {
+  return (props.filter) ? $gettext('Edit filter') : $gettext('New filter')
+})
+const submitLabel = computed(() => {
+  return (props.filter) ? $gettext('Update') : $gettext('Create')
+})
+
+watch(() => props.filter, (value) => {
+  if (value) {
+    form.value = JSON.parse(JSON.stringify(props.filter))
+  } else {
+    form.value = getInitialFormContent()
+  }
+}, { immediate: true })
+
+function close() {
+  emit('close')
+  form.value = getInitialFormContent()
+}
+
+function getInitialFormContent() {
+  return {
+    match_type: 'anyof',
+    conditions: [{}],
+    actions: [{
+      args: {}
+    }]
+  }
+}
+
+function getConditionOperators(condition) {
+  for (const template of conditionTemplates.value) {
+    if (template.name === condition) {
+      return template.operators
+    }
+  }
+  return []
+}
+
+function getConditionType(index) {
+  for (const template of conditionTemplates.value) {
+    if (template.name === form.value.conditions[index].name) {
+      for (const operator of template.operators) {
+        if (operator.name === form.value.conditions[index].operator) {
+          return (operator.type === 'string') ? 'text' : 'number'
+        }
+      }
+    }
+  }
+}
+
+function getActionArguments(action) {
+  for (const template of actionTemplates.value) {
+    if (template.name === action) {
+      return template.args
+    }
+  }
+  return []
+}
+
+function addCondition() {
+  form.value.conditions.push({
+    name: conditionTemplates.value[0].name,
+    operator: conditionTemplates.value[0].operators[0]
+  })
+}
+
+function removeCondition(index) {
+  form.value.conditions.splice(index, 1)
+}
+
+function addAction() {
+  form.value.actions.push({
+    name: actionTemplates.value[0].name,
+    args: {}
+  })
+}
+
+function removeAction(index) {
+  form.value.actions.splice(index, 1)
+}
+
+async function submit() {
+  const { valid } = await formRef.value.validate()
+  if (!valid) {
+    return
+  }
+  accountApi.createFilter(props.filterSet, form.value).then(() => {
+
+  })
+}
+
+accountApi.getFilterConditionTemplates().then(resp => {
+  conditionTemplates.value = resp.data
+  form.value.conditions[0].name = conditionTemplates.value[0].name
+  form.value.conditions[0].operator = conditionTemplates.value[0].operators[0]
+})
+accountApi.getFilterActionTemplates().then(resp => {
+  actionTemplates.value = resp.data
+  form.value.actions[0].name = actionTemplates.value[0].name
+})
+</script>

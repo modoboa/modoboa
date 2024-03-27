@@ -19,7 +19,7 @@ repos:
         name: eslint
         language: node
         types: [javascript]
-        entry: eslint --fix 
+        entry: eslint -c frontend/.eslintrc.js --ignore-pattern modoboa/* --fix 
         additional_dependencies: ["eslint-plugin-vue"]
   - repo: https://github.com/psf/black
     rev: "24.2.0"
