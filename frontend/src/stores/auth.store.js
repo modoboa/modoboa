@@ -3,15 +3,28 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import gettext from '@/plugins/gettext'
+import { UserManager } from 'oidc-client-ts'
 
 import repository from '@/api/repository'
 import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
-import authApi from '@/api/auth'
+// import authApi from '@/api/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const authUser = ref({})
   const isAuthenticated = ref(false)
+  const manager = new UserManager({
+    authority: '/api/o',
+    client_id: 'LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD',
+    // Is client_secret necessary?
+    client_secret:
+      'fXzG7tq23eXrM7RK41pXHRseuRWnxe4gV0p4A4YXJlF9jva7QfsDft1g7ESYU9AXR35QE0lo2Ti696OXsqb9JHLjtrPxaYmgMSRmRwLCce5hVr3FB2QhfSOThFYhcuuR',
+    metadata: {
+      authorization_endpoint: '/api/o/authorize/',
+      token_endpoint: '/api/o/token/',
+    },
+    scope: 'read write',
+  })
 
   const userHasMailbox = computed(() => {
     return authUser.value.mailbox !== null
@@ -26,31 +39,35 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function initialize() {
-    const token = Cookies.get('token')
-    if (!token) {
+    if (isAuthenticated.value) {
       return
     }
-    repository.defaults.headers.common.Authorization = `Bearer ${token}`
+    const user = await manager.getUser()
+    if (!user) {
+      return
+    }
+    repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
     repository.defaults.headers.post['Content-Type'] = 'application/json'
     return fetchUser()
   }
 
-  async function login(payload) {
-    const resp = await authApi.requestToken(payload)
-    const cookiesAttributes = { sameSite: 'strict' }
-    if (payload.rememberMe) {
-      cookiesAttributes.expires = 90
+  async function validateAccess() {
+    const user = await manager.getUser()
+    if (!user || user.expired) {
+      manager.signinRedirect()
     }
+  }
 
-    const cookie = Cookies.withAttributes(cookiesAttributes)
-    cookie.set('token', resp.data.access)
-    cookie.set('refreshToken', resp.data.refresh)
+  async function login(payload) {
+    await manager.signinResourceOwnerCredentials(payload)
     return initialize()
+    // const cookiesAttributes = { sameSite: 'strict' }
+    // if (payload.rememberMe) {
+    //   cookiesAttributes.expires = 90
+    // }
   }
   async function $reset() {
     delete repository.defaults.headers.common.Authorization
-    Cookies.remove('token')
-    Cookies.remove('refreshToken')
     authUser.value = {}
     isAuthenticated.value = false
   }
@@ -85,12 +102,13 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     authUser,
     isAuthenticated,
+    userHasMailbox,
+    validateAccess,
     fetchUser,
     initialize,
     login,
     $reset,
     updateAccount,
     finalizeTFASetup,
-    userHasMailbox,
   }
 })

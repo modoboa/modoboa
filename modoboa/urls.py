@@ -29,6 +29,7 @@ urlpatterns = [
     path("stats/", include("modoboa.maillog.urls")),
     path("dmarc/", include("modoboa.dmarc.urls")),
     path("imap_migration/", include("modoboa.imap_migration.urls")),
+    path("sfilters/", include("modoboa.sievefilters.urls")),
     path("user/forward/", user_views.forward, name="user_forward"),
     path(
         "accounts/password_reset/",
@@ -100,6 +101,7 @@ urlpatterns += [
         name="docs-index-v2",
     ),
     path("api/schema-v2/redoc/", SpectacularRedocView.as_view(url_name="schema-v2")),
+    path("api/o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
     path("api/v1/", include("modoboa.urls_api_v1", namespace="v1")),
     path("api/v2/", include("modoboa.urls_api_v2", namespace="v2")),
 ]
