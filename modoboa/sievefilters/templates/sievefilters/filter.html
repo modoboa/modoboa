@@ -1,0 +1,26 @@
+{% extends "common/generic_modal_form.html" %}
+{% load i18n form_tags sfilters_tags %}
+
+{% block modal_css_classes %}modal-lg{% endblock %}
+
+{% block formbody %}
+  {% if oldname %}<input type="hidden" name="oldname" value="{{ oldname }}" />{% endif %}
+  {% render_field form.name %}
+  <h6>{% trans "Conditions" %}</h6>
+  <div id="addfilterlist">
+    <div id="matchtype">
+      {% render_field form.match_type %}
+    </div>
+    <div id="hide" style="display:{{ hidestyle }}">
+      {% for ec in conds_nb %}
+      {% display_condition form ec %}
+      {% endfor %}
+    </div>
+  </div>
+  <h6>{% trans "Actions" %}</h6>
+  <div id="addfilterlist">
+    {% for ea in actions_nb %}
+    {% display_action form ea %}
+    {% endfor %}
+  </div>
+{% endblock %}

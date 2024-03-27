@@ -258,6 +258,11 @@ const mainMenuItems = [
 
 const userSettingsMenuItems = [
   {
+    text: $gettext('Filters'),
+    to: { name: 'AccountFilters' },
+    icon: 'mdi-filter'
+  },
+  {
     text: $gettext('Settings'),
     to: { name: 'AccountSettings' },
     icon: 'mdi-cog'
