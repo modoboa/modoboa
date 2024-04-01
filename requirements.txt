@@ -27,7 +27,7 @@ python-dateutil
 cryptography
 pytz
 requests
-lxml==4.9.4  # FIXME: issue with version 5+
+lxml==5.2.0  # FIXME: issue with version 5+
 chardet
 ovh
 oath
