@@ -257,7 +257,7 @@ const routes = [
     },
     children: [
       {
-        path: 'filters',
+        path: 'filters/:filterset?',
         name: 'AccountFilters',
         component: () => import('@/views/account/FiltersView.vue'),
         meta: {
