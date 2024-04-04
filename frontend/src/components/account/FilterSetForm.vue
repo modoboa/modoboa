@@ -36,13 +36,18 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useBusStore } from '@/stores'
+import { useGettext } from 'vue3-gettext'
 import rules from '@/plugins/rules'
 import accountApi from '@/api/account'
 
+const { $gettext } = useGettext()
 const emit = defineEmits(['close'])
+const busStore = useBusStore()
 
 const form = ref({})
 const formRef = ref()
+const working = ref(false)
 
 function close() {
   formRef.value.reset()
@@ -55,8 +60,13 @@ async function submit() {
   if (!valid) {
     return
   }
-  accountApi.createFilterSet(form.value).then(() => {
+  working.value = true
+  try {
+    await accountApi.createFilterSet(form.value)
+    busStore.displayNotification({ msg: $gettext('Filter set created') })
     close()
-  })
+  } finally {
+    working.value = false
+  }
 }
 </script>

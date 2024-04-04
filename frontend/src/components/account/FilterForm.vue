@@ -31,55 +31,57 @@
               value="all"
             />
           </v-radio-group>
-          <div v-for="(condition, index) in form.conditions" class="d-flex align-center">
-            <v-select
-              v-model="condition.name"
-              :label="$gettext('Choose a header')"
-              :items="conditionTemplates"
-              item-title="label"
-              item-value="name"
-              variant="outlined"
-              density="compact"
-              :rules="[rules.required]"
-              @update:model-value=""
-            />
-            <v-select
-              v-model="condition.operator"
-              :label="$gettext('Choose an operator')"
-              :items="getConditionOperators(condition.name)"
-              item-title="label"
-              item-value="name"
-              variant="outlined"
-              class="ml-2"
-              density="compact"
-              :rules="[rules.required]"
-            />
-            <v-text-field
-              v-model="condition.value"
-              :label="$gettext('Value')"
-              variant="outlined"
-              class="ml-2"
-              density="compact"
-              :type="getConditionType(index)"
-              :rules="[rules.required]"
-            />
-            <v-btn
-              v-if="index === 0"
-              icon="mdi-plus"
-              variant="text"
-              :title="$gettext('Add condition')"
-              color="primary"
-              @click="addCondition"
-            />
-            <v-btn
-              v-else
-              icon="mdi-trash-can"
-              variant="text"
-              :title="$gettext('Remove condition')"
-              color="error"
-              @click="removeCondition(index)"
+          <template v-if="form.match_type !== 'all'">
+            <div v-for="(condition, index) in form.conditions" class="d-flex align-center">
+              <v-select
+                v-model="condition.name"
+                :label="$gettext('Choose a header')"
+                :items="conditionTemplates"
+                item-title="label"
+                item-value="name"
+                variant="outlined"
+                density="compact"
+                :rules="[rules.required]"
+                @update:model-value=""
               />
-          </div>
+              <v-select
+                v-model="condition.operator"
+                :label="$gettext('Choose an operator')"
+                :items="getConditionOperators(condition.name)"
+                item-title="label"
+                item-value="name"
+                variant="outlined"
+                class="ml-2"
+                density="compact"
+                :rules="[rules.required]"
+              />
+              <v-text-field
+                v-model="condition.value"
+                :label="$gettext('Value')"
+                variant="outlined"
+                class="ml-2"
+                density="compact"
+                :type="getConditionType(index)"
+                :rules="[rules.required]"
+              />
+              <v-btn
+                v-if="index === 0"
+                icon="mdi-plus"
+                variant="text"
+                :title="$gettext('Add condition')"
+                color="primary"
+                @click="addCondition"
+              />
+              <v-btn
+                v-else
+                icon="mdi-trash-can"
+                variant="text"
+                :title="$gettext('Remove condition')"
+                color="error"
+                @click="removeCondition(index)"
+              />
+            </div>
+          </template>
         </div>
         <div>
           <h4>{{ $gettext('Actions') }}</h4>
@@ -143,6 +145,7 @@
       <v-btn
         color="primary"
         :text="submitLabel"
+        :loading="working"
         @click="submit"
       ></v-btn>
     </v-card-actions>
@@ -175,6 +178,7 @@ const conditionTemplates = ref([])
 const actionTemplates = ref([])
 const formRef = ref()
 const form = ref(getInitialFormContent())
+const working = ref(false)
 
 const title = computed(() => {
   return (props.filter) ? $gettext('Edit filter') : $gettext('New filter')
@@ -266,6 +270,7 @@ async function submit() {
   if (!valid) {
     return
   }
+  working.value = true
   let msg
   const data = JSON.parse(JSON.stringify(form.value))
   for (const action of data.actions) {
@@ -288,6 +293,8 @@ async function submit() {
       busStore.displayNotification({ msg: err.response.data.error, type: 'error' })
     }
     return
+  } finally {
+    working.value = false
   }
   busStore.displayNotification({ msg })
   close()

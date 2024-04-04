@@ -3,6 +3,7 @@
 from typing import List, Tuple
 
 from sievelib import commands
+from sievelib.factory import Filter
 
 from rest_framework import serializers
 
@@ -37,7 +38,7 @@ class FilterSerializer(serializers.Serializer):
     actions = ActionSerializer(many=True)
 
     @staticmethod
-    def from_filters(filters) -> "FilterSerializer":
+    def from_filters(filters: List[Filter]) -> "FilterSerializer":
         result = []
         for fobj in filters:
             test = (

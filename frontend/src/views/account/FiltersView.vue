@@ -8,7 +8,7 @@
     v-model="currentFilterSet"
     :label="$gettext('Select a filter set')"
     :items="filterSets"
-    item-title="name"
+    :item-title="getFilterSetName"
     return-object
     variant="outlined"
     hide-details
@@ -35,7 +35,7 @@
       </v-btn>
     </template>
     <MenuItems
-      :items="filterSetActions"
+      :items="getFilterSetActions()"
       :obj="currentFilterSet"
       />
   </v-menu>
@@ -103,6 +103,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import accountApi from '@/api/account'
@@ -110,6 +111,8 @@ import FilterSetForm from '@/components/account/FilterSetForm.vue'
 import FilterForm from '@/components/account/FilterForm.vue'
 import MenuItems from '@/components/tools/MenuItems.vue'
 
+const router = useRouter()
+const route = useRoute()
 const busStore = useBusStore()
 const { $gettext } = useGettext()
 
@@ -129,8 +132,23 @@ const headers = [
 watch(currentFilterSet, (value) => {
   if (value) {
     fetchFilters(value.name)
+    if (route.params.filterset !== value.name) {
+      router.push({
+        name: 'AccountFilters', params: { filterset: value.name }
+      })
+    }
+  } else {
+    router.push({ name: 'AccountFilters' })
   }
 })
+
+function getFilterSetName(filterSet) {
+  let result = filterSet.name
+  if (filterSet.active) {
+    result += ' (' + $gettext('active') + ')'
+  }
+  return result
+}
 
 function closeFilterSetForm() {
   showFilterSetForm.value = false
@@ -146,6 +164,14 @@ function closeFilterForm() {
 function fetchFilterSets() {
   accountApi.getFilterSets().then(resp => {
     filterSets.value = resp.data
+    if (!currentFilterSet.value && route.params.filterset) {
+      for (const filterSet of filterSets.value) {
+        if (filterSet.name === route.params.filterset) {
+          currentFilterSet.value = filterSet
+          break
+        }
+      }
+    }
   })
 }
 
@@ -237,13 +263,7 @@ function getFilterActions(filter) {
   return result
 }
 
-const filterSetActions = ref([
-  {
-    label: $gettext('Activate filter set'),
-    color: 'success',
-    icon: 'mdi-check',
-    onClick: activateFilterSet
-  },
+const filterSetActions = [
   {
     label: $gettext('Download filter set'),
     icon: 'mdi-download',
@@ -255,7 +275,20 @@ const filterSetActions = ref([
     icon: 'mdi-trash-can',
     onClick: deleteFilterSet
   }
-])
+]
+
+function getFilterSetActions() {
+  const result = []
+  if (!currentFilterSet.value.active) {
+    result.push({
+      label: $gettext('Activate filter set'),
+      color: 'success',
+      icon: 'mdi-check',
+      onClick: activateFilterSet
+    })
+  }
+  return result.concat(filterSetActions)
+}
 
 fetchFilterSets()
 </script>
