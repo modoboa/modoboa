@@ -41,6 +41,7 @@
               variant="outlined"
               density="compact"
               :rules="[rules.required]"
+              @update:model-value=""
             />
             <v-select
               v-model="condition.operator"
@@ -149,6 +150,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { useBusStore } from '@/stores'
 import accountApi from '@/api/account'
 import rules from '@/plugins/rules'
 
@@ -164,6 +166,7 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['close'])
+const busStore = useBusStore()
 const { $gettext } = useGettext()
 
 const conditionTemplates = ref([])
@@ -178,9 +181,12 @@ const submitLabel = computed(() => {
   return (props.filter) ? $gettext('Update') : $gettext('Create')
 })
 
+let originalFilterName
+
 watch(() => props.filter, (value) => {
   if (value) {
-    form.value = JSON.parse(JSON.stringify(props.filter))
+    form.value = JSON.parse(JSON.stringify(value))
+    originalFilterName = value.name
   } else {
     form.value = getInitialFormContent()
   }
@@ -234,7 +240,7 @@ function getActionArguments(action) {
 function addCondition() {
   form.value.conditions.push({
     name: conditionTemplates.value[0].name,
-    operator: conditionTemplates.value[0].operators[0]
+    operator: conditionTemplates.value[0].operators[0].name
   })
 }
 
@@ -258,18 +264,30 @@ async function submit() {
   if (!valid) {
     return
   }
-  accountApi.createFilter(props.filterSet, form.value).then(() => {
-
-  })
+  if (!props.filter) {
+    accountApi.createFilter(props.filterSet, form.value).then(() => {
+      busStore.displayNotification({ msg: $gettext('Filter added') })
+      close()
+    })
+  } else {
+    accountApi.updateFilter(props.filterSet, originalFilterName, form.value).then(() => {
+      busStore.displayNotification({ msg: $gettext('Filter updated') })
+      close()
+    })
+  }
 }
 
 accountApi.getFilterConditionTemplates().then(resp => {
   conditionTemplates.value = resp.data
-  form.value.conditions[0].name = conditionTemplates.value[0].name
-  form.value.conditions[0].operator = conditionTemplates.value[0].operators[0]
+  if (!props.filter) {
+    form.value.conditions[0].name = conditionTemplates.value[0].name
+    form.value.conditions[0].operator = conditionTemplates.value[0].operators[0].name
+  }
 })
 accountApi.getFilterActionTemplates().then(resp => {
   actionTemplates.value = resp.data
-  form.value.actions[0].name = actionTemplates.value[0].name
+  if (!props.filter) {
+    form.value.actions[0].name = actionTemplates.value[0].name
+  }
 })
 </script>

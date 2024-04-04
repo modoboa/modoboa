@@ -88,11 +88,13 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { useBusStore } from '@/stores'
 import accountApi from '@/api/account'
 import FilterSetForm from '@/components/account/FilterSetForm.vue'
 import FilterForm from '@/components/account/FilterForm.vue'
 import MenuItems from '@/components/tools/MenuItems.vue'
 
+const busStore = useBusStore()
 const { $gettext } = useGettext()
 
 const filterSets = ref([])
@@ -109,9 +111,7 @@ const headers = [
 ]
 
 watch(currentFilterSet, (value) => {
-  accountApi.getFilters(value.name).then(resp => {
-    filters.value = resp.data
-  })
+  fetchFilters(value.name)
 })
 
 function closeFilterSetForm() {
@@ -122,11 +122,18 @@ function closeFilterSetForm() {
 function closeFilterForm() {
   showFilterForm.value = false
   selectedFilter.value = null
+  fetchFilters(currentFilterSet.value.name)
 }
 
 function fetchFilterSets() {
   accountApi.getFilterSets().then(resp => {
     filterSets.value = resp.data
+  })
+}
+
+function fetchFilters(filterSetName) {
+  accountApi.getFilters(filterSetName).then(resp => {
+    filters.value = resp.data
   })
 }
 
@@ -136,6 +143,10 @@ function editFilter(filter) {
 }
 
 function deleteFilter(filter) {
+  accountApi.deleteFilter(currentFilterSet.value.name, filter.name).then(() => {
+    busStore.displayNotification({ msg: $gettext('Filter removed') })
+    fetchFilters(currentFilterSet.value.name)
+  })
 }
 
 const filterActions = [

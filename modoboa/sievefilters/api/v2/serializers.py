@@ -1,5 +1,7 @@
 """Sievefilters serializers."""
 
+from typing import List, Tuple
+
 from sievelib import commands
 
 from rest_framework import serializers
@@ -49,17 +51,16 @@ class FilterSerializer(serializers.Serializer):
                 "actions": [],
             }
             for t in test["test"]["tests"]:
-                print(t)
                 if isinstance(t, commands.TrueCommand):
                     item["match_type"] = "all"
                     item["conditions"] += [
-                        {name: "Subject", "operator": "contains", value: ""}
+                        {"name": "Subject", "operator": "contains", "value": ""}
                     ]
                     break
                 elif isinstance(t, commands.SizeCommand):
                     item["conditions"] += [
                         {
-                            name: "size",
+                            "name": "size",
                             "operator": t["comparator"][1:],
                             "value": t["limit"],
                         }
@@ -94,14 +95,19 @@ class FilterSerializer(serializers.Serializer):
             result.append(item)
         return FilterSerializer(result, many=True)
 
-    def to_filter(self):
-        """Convert serializer data to filter."""
-        conditions = []
+    def to_filter(self) -> Tuple[str, List, List]:
+        """Convert serializer data to filter representation."""
+        conditions: List[Tuple] = []
         actions = []
-        for condition in self.validated_data["conditions"]:
-            conditions.append(
-                [condition["name"], f":{condition['operator']}", condition["value"]]
-            )
+        match_type = self.validated_data["match_type"]
+        if match_type == "all":
+            match_type = "anyof"
+            conditions = [("true",)]
+        else:
+            for condition in self.validated_data["conditions"]:
+                conditions.append(
+                    (condition["name"], f":{condition['operator']}", condition["value"])
+                )
         for input_action in self.validated_data["actions"]:
             action = [input_action["name"]]
             tpl = lib.find_action_template(input_action["name"])
@@ -112,7 +118,7 @@ class FilterSerializer(serializers.Serializer):
             else:
                 action += [arg for arg in input_action["args"].values()]
             actions.append(action)
-        return (conditions, actions)
+        return (match_type, conditions, actions)
 
 
 class OperatorSerializer(serializers.Serializer):

@@ -41,7 +41,6 @@ services:
              python3 manage.py runserver 0:8000"
     volumes:
       - .:/code
-      - ../sievelib/sievelib:/opt/venv/lib/python3.12/site-packages/sievelib
 
   front:
     container_name: modoboa_front
