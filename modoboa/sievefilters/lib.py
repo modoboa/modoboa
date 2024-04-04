@@ -1,8 +1,7 @@
-# coding: utf-8
-
 """Internal tools."""
 
 import ssl
+from typing import Optional, Tuple, Union
 
 from sievelib.factory import FiltersSet
 from sievelib import managesieve
@@ -26,15 +25,16 @@ class SieveClientError(ModoboaException):
 class SieveClient:
     """Sieve client."""
 
-    def __init__(self, user=None, password=None):
-        try:
-            ret, msg = self.login(user, password)
-        except managesieve.Error as e:
-            raise ConnectionError(str(e))
-        if not ret:
-            raise ConnectionError(msg)
+    def __init__(self, user: Optional[str] = None, password: Optional[str] = None):
+        if user and password:
+            try:
+                ret, msg = self.login(user, password)
+            except managesieve.Error as e:
+                raise ConnectionError(str(e))
+            if not ret:
+                raise ConnectionError(msg)
 
-    def login(self, user, password):
+    def login(self, user: str, password: str) -> Tuple[bool, Union[str, None]]:
         conf = dict(param_tools.get_global_parameters("sievefilters"))
         self.msc = managesieve.Client(conf["server"], conf["port"], debug=True)
         authmech = conf["authentication_mech"]
@@ -57,7 +57,7 @@ class SieveClient:
         self.msc.logout()
         self.msc = None
 
-    def refresh(self, user, password):
+    def refresh(self, user: str, password: str):
         if self.msc is not None:
             try:
                 self.msc.capability()
@@ -75,7 +75,7 @@ class SieveClient:
     def listscripts(self):
         return self.msc.listscripts()
 
-    def getscript(self, name: str, format: str = "raw") -> FiltersSet | str | None:
+    def getscript(self, name: str, format: str = "raw") -> Union[FiltersSet, str, None]:
         content = self.msc.getscript(name)
         if content is None:
             raise SieveClientError(self.msc.errmsg.decode())
@@ -98,18 +98,18 @@ class SieveClient:
         if active and not self.msc.setactive(name):
             raise SieveClientError(self.msc.errmsg)
 
-    def deletescript(self, name):
+    def deletescript(self, name: str):
         if not self.msc.deletescript(name):
             raise SieveClientError(self.msc.errmsg.decode())
 
-    def activatescript(self, name):
+    def activatescript(self, name: str):
         if not self.msc.setactive(name):
             raise SieveClientError(self.msc.errmsg.decode())
 
 
-def find_action_template(action):
+def find_action_template(action: str):
     """Find template corresponding to action."""
     for tpl in constants.ACTION_TEMPLATES:
         if tpl["name"] == action:
             return tpl
-    raise RuntimeError("action {} not defined".format(action))
+    raise RuntimeError(f"action {action} not defined")

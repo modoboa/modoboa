@@ -71,4 +71,15 @@ export default {
       data
     )
   },
+  updateFilter(filterSetName, filter, data) {
+    return repository.put(
+      `${resource}/filtersets/${filterSetName}/filters/${filter}/`,
+      data
+    )
+  },
+  deleteFilter(filterSetName, filter) {
+    return repository.delete(
+      `${resource}/filtersets/${filterSetName}/filters/${filter}/`
+    )
+  },
 }
