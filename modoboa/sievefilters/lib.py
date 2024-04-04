@@ -25,6 +25,8 @@ class SieveClientError(ModoboaException):
 class SieveClient:
     """Sieve client."""
 
+    msc: managesieve.Client
+
     def __init__(self, user: Optional[str] = None, password: Optional[str] = None):
         if user and password:
             try:
