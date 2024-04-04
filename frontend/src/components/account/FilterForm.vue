@@ -107,6 +107,8 @@
                   v-if="arg.type === 'boolean'"
                   v-model="action.args[arg.name]"
                   :label="arg.label"
+                  color="primary"
+                  :value="arg.value"
                 />
               </template>
             </div>
@@ -265,12 +267,20 @@ async function submit() {
     return
   }
   let msg
+  const data = JSON.parse(JSON.stringify(form.value))
+  for (const action of data.actions) {
+    for (const [key, value] of Object.entries(action.args)) {
+      if (typeof value === 'boolean' && !value) {
+        delete action.args[key]
+      }
+    }
+  }
   try {
     if (!props.filter) {
-      await accountApi.createFilter(props.filterSet, form.value)
+      await accountApi.createFilter(props.filterSet, data)
       msg = $gettext('Filter added')
     } else {
-      await accountApi.updateFilter(props.filterSet, originalFilterName, form.value)
+      await accountApi.updateFilter(props.filterSet, originalFilterName, data)
       msg = $gettext('Filter updated')
     }
   } catch (err) {
