@@ -85,11 +85,7 @@ class FilterSerializer(serializers.Serializer):
                 for argtpl in tpl.get("args", []):
                     if argtpl["name"] not in c:
                         continue
-                    value = c[argtpl["name"]]
-                    if argtpl["type"] == "boolean":
-                        value = True if value else False
-                    else:
-                        value = value.strip('"')
+                    value = c[argtpl["name"]].strip('"')
                     action["args"][argtpl["name"]] = value
                 item["actions"] += [action]
             result.append(item)
