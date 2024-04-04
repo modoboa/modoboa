@@ -264,17 +264,23 @@ async function submit() {
   if (!valid) {
     return
   }
-  if (!props.filter) {
-    accountApi.createFilter(props.filterSet, form.value).then(() => {
-      busStore.displayNotification({ msg: $gettext('Filter added') })
-      close()
-    })
-  } else {
-    accountApi.updateFilter(props.filterSet, originalFilterName, form.value).then(() => {
-      busStore.displayNotification({ msg: $gettext('Filter updated') })
-      close()
-    })
+  let msg
+  try {
+    if (!props.filter) {
+      await accountApi.createFilter(props.filterSet, form.value)
+      msg = $gettext('Filter added')
+    } else {
+      await accountApi.updateFilter(props.filterSet, originalFilterName, form.value)
+      msg = $gettext('Filter updated')
+    }
+  } catch (err) {
+    if (err.response.data && err.response.data.error) {
+      busStore.displayNotification({ msg: err.response.data.error, type: 'error' })
+    }
+    return
   }
+  busStore.displayNotification({ msg })
+  close()
 }
 
 accountApi.getFilterConditionTemplates().then(resp => {

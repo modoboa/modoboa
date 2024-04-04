@@ -18,7 +18,7 @@ class ModoboaException(Exception):
         if "http_code" in kwargs:
             self.http_code = kwargs["http_code"]
             del kwargs["http_code"]
-        super(ModoboaException, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class InternalError(ModoboaException):
