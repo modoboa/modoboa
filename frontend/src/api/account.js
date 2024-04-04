@@ -53,8 +53,17 @@ export default {
   getFilterSets() {
     return repository.get(`${resource}/filtersets/`)
   },
+  downloadFilterSet(filterSetName) {
+    return repository.get(`${resource}/filtersets/${filterSetName}/download/`)
+  },
   createFilterSet(data) {
     return repository.post(`${resource}/filtersets/`, data)
+  },
+  activateFilterSet(filterSetName) {
+    return repository.post(`${resource}/filtersets/${filterSetName}/activate/`)
+  },
+  deleteFilterSet(filterSetName) {
+    return repository.delete(`${resource}/filtersets/${filterSetName}/`)
   },
   getFilterConditionTemplates() {
     return repository.get(`${resource}/filtersets/condition_templates/`)
@@ -75,6 +84,16 @@ export default {
     return repository.put(
       `${resource}/filtersets/${filterSetName}/filters/${filter}/`,
       data
+    )
+  },
+  disableFilter(filterSetName, filter) {
+    return repository.post(
+      `${resource}/filtersets/${filterSetName}/filters/${filter}/disable/`
+    )
+  },
+  enableFilter(filterSetName, filter) {
+    return repository.post(
+      `${resource}/filtersets/${filterSetName}/filters/${filter}/enable/`
     )
   },
   deleteFilter(filterSetName, filter) {
