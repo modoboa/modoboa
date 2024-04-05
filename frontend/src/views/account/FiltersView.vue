@@ -1,104 +1,129 @@
 <template>
-<v-toolbar flat>
-  <v-toolbar-title>{{ $gettext('Message filters') }}</v-toolbar-title>
-</v-toolbar>
+  <div class="pa-4">
+    <div class="text-h6 font-weight-regular mb-4">{{ $gettext('Message filters') }}</div>
 
-<div class="d-flex bg-white align-center pa-4">
-  <v-autocomplete
-    v-model="currentFilterSet"
-    :label="$gettext('Select a filter set')"
-    :items="filterSets"
-    :item-title="getFilterSetName"
-    return-object
-    variant="outlined"
-    hide-details
-    class="flex-grow-0"
-    style="width: 200px"
-  />
-  <v-btn
-    color="primary"
-    icon="mdi-plus"
-    size="small"
-    class="mx-4"
-    @click="showFilterSetForm = true"
-    :title="$gettext('Add filter set')"
-  />
-  <v-menu v-if="currentFilterSet">
-    <template v-slot:activator="{ props }">
-      <v-btn
-        append-icon="mdi-chevron-down"
-        v-bind="props"
-        size="small"
-        color="default"
-      >
-        {{ $gettext('Actions') }}
-      </v-btn>
-    </template>
-    <MenuItems
-      :items="getFilterSetActions()"
-      :obj="currentFilterSet"
+    <v-toolbar dense floating color="white">
+      <v-autocomplete
+        v-model="currentFilterSet"
+        :label="$gettext('Select a filter set')"
+        :items="filterSets"
+        :item-title="getFilterSetName"
+        return-object
+        variant="outlined"
+        hide-details
+        class="flex-grow-0"
+        style="width: 200px"
+        density="compact"
       />
-  </v-menu>
-</div>
+      <v-btn
+        color="primary"
+        icon="mdi-plus"
+        size="small"
+        class="mx-4"
+        @click="showFilterSetForm = true"
+        :title="$gettext('Add filter set')"
+      />
+      <v-menu v-if="currentFilterSet">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            icon="mdi-dots-vertical"
+            v-bind="props"
+            size="small"
+            color="default"
+          >
+          </v-btn>
+        </template>
+        <MenuItems
+          :items="getFilterSetActions()"
+          :obj="currentFilterSet"
+        />
+      </v-menu>
 
-<div
-  v-if="currentFilterSet"
-  class="bg-white mt-4 pa-2"
->
-  <div class="d-flex align-center">
-    <v-spacer />
-    <v-btn
-      color="primary"
-      :title="$gettext('Add new filter')"
-      @click="showFilterForm = true"
+      <v-switch
+        v-if="currentFilterSet"
+        v-model="rawMode"
+        :label="$gettext('Raw mode')"
+        color="primary"
+        class="ml-4"
+        hide-details
+      />
+    </v-toolbar>
+
+    <div
+      v-if="currentFilterSet"
+      class="bg-white mt-4 pa-2"
     >
-      <v-icon icon="mdi-plus" />
-      {{ $gettext('Add') }}
-    </v-btn>
+      <template v-if="!rawMode">
+        <div class="d-flex align-center">
+          <v-spacer />
+          <v-btn
+            color="primary"
+            :title="$gettext('Add new filter')"
+            @click="showFilterForm = true"
+          >
+            <v-icon icon="mdi-plus" />
+            {{ $gettext('Add') }}
+          </v-btn>
+        </div>
+        <v-data-table
+          :headers="headers"
+          :items="filters"
+          :loading="loadingFilters"
+        >
+          <template #[`item.enabled`]="{ item }">
+            {{ $yesno(item.enabled) }}
+          </template>
+          <template #[`item.filter_actions`]="{ item }">
+            <v-menu offset-y>
+              <template #activator="{ props }">
+                <v-btn
+                  icon="mdi-dots-horizontal"
+                  variant="text"
+                  v-bind="props"
+                >
+                </v-btn>
+              </template>
+              <MenuItems :items="getFilterActions(item)" :obj="item" />
+            </v-menu>
+          </template>
+        </v-data-table>
+      </template>
+      <template v-else>
+        <v-textarea
+          v-model="filterSetRawContent"
+          variant="outlined"
+          auto-grow
+        />
+        <v-btn
+          color="success"
+          @click="saveFilterSet"
+          :loading="saving"
+        >
+          {{ $gettext('Save') }}
+        </v-btn>
+      </template>
+    </div>
   </div>
-  <v-data-table
-    :headers="headers"
-    :items="filters"
+  <v-dialog
+    v-model="showFilterSetForm"
+    max-width="600"
   >
-    <template #[`item.enabled`]="{ item }">
-      {{ $yesno(item.enabled) }}
-    </template>
-    <template #[`item.filter_actions`]="{ item }">
-       <v-menu offset-y>
-         <template #activator="{ props }">
-           <v-btn
-             icon="mdi-dots-horizontal"
-             variant="text"
-             v-bind="props"
-             >
-           </v-btn>
-         </template>
-         <MenuItems :items="getFilterActions(item)" :obj="item" />
-       </v-menu>
-    </template>
-  </v-data-table>
-</div>
+    <FilterSetForm
+      @close="closeFilterSetForm"
+    />
+  </v-dialog>
 
-<v-dialog
-  v-model="showFilterSetForm"
-  max-width="600"
->
-  <FilterSetForm
-    @close="closeFilterSetForm"
-  />
-</v-dialog>
-
-<v-dialog
-  v-model="showFilterForm"
-  max-width="800"
->
-  <FilterForm
-    v-if="currentFilterSet"
-    :filter-set="currentFilterSet.name"
-    :filter="selectedFilter"
-    @close="closeFilterForm"
-  />
-</v-dialog>
+  <v-dialog
+    v-model="showFilterForm"
+    max-width="800"
+  >
+    <FilterForm
+      v-if="currentFilterSet"
+      :filter-set="currentFilterSet.name"
+      :filter="selectedFilter"
+      @close="closeFilterForm"
+    />
+  </v-dialog>
 </template>
 
 <script setup>
@@ -118,7 +143,11 @@ const { $gettext } = useGettext()
 
 const filterSets = ref([])
 const filters = ref([])
+const filterSetRawContent = ref('')
 const currentFilterSet = ref()
+const loadingFilters = ref(false)
+const rawMode = ref(false)
+const saving = ref(false)
 const selectedFilter = ref(null)
 const showFilterSetForm = ref(false)
 const showFilterForm = ref(false)
@@ -139,6 +168,16 @@ watch(currentFilterSet, (value) => {
     }
   } else {
     router.push({ name: 'AccountFilters' })
+  }
+})
+
+watch(rawMode, (value) => {
+  if (value) {
+    accountApi.downloadFilterSet(currentFilterSet.value.name).then(resp => {
+      filterSetRawContent.value = resp.data
+    })
+  } else {
+    fetchFilters(currentFilterSet.value.name)
   }
 })
 
@@ -176,8 +215,10 @@ function fetchFilterSets() {
 }
 
 function fetchFilters(filterSetName) {
+  loadingFilters.value = true
   accountApi.getFilters(filterSetName).then(resp => {
     filters.value = resp.data
+    loadingFilters.value = false
   })
 }
 
@@ -217,6 +258,14 @@ async function deleteFilterSet(filterSet) {
   busStore.displayNotification({ msg: $gettext('Filter set removed') })
   currentFilterSet.value = null
   fetchFilterSets()
+}
+
+async function saveFilterSet() {
+  const data = { content: filterSetRawContent.value }
+  saving.value = true
+  await accountApi.saveFilterSet(currentFilterSet.value.name, data)
+  saving.value = false
+  busStore.displayNotification({ msg: $gettext('Filter set updated') })
 }
 
 async function downloadFilterSet(filterSet) {
@@ -294,9 +343,9 @@ fetchFilterSets()
 </script>
 
 <style scoped>
- .v-toolbar {
-   background-color: #f7f8fa !important;
- }
+ /* .v-toolbar {
+    background-color: white !important;
+    } */
  .v-tabs {
    background-color: #f7f8fa !important;
  }
