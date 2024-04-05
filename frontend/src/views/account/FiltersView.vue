@@ -55,11 +55,11 @@
     >
       <template v-if="!rawMode">
         <div class="d-flex align-center">
-          <v-spacer />
           <v-btn
             color="primary"
             :title="$gettext('Add new filter')"
             @click="showFilterForm = true"
+            class="mx-auto"
           >
             <v-icon icon="mdi-plus" />
             {{ $gettext('Add') }}
@@ -73,7 +73,7 @@
           <template #[`item.enabled`]="{ item }">
             {{ $yesno(item.enabled) }}
           </template>
-          <template #[`item.filter_actions`]="{ item }">
+          <template #[`item.filter_actions`]="{ index, item }">
             <v-menu offset-y>
               <template #activator="{ props }">
                 <v-btn
@@ -83,21 +83,26 @@
                 >
                 </v-btn>
               </template>
-              <MenuItems :items="getFilterActions(item)" :obj="item" />
+              <MenuItems :items="getFilterActions(item, index)" :obj="item" />
             </v-menu>
           </template>
         </v-data-table>
       </template>
       <template v-else>
-        <v-textarea
-          v-model="filterSetRawContent"
-          variant="outlined"
-          auto-grow
-        />
+        <v-form ref="rawFormRef">
+          <v-textarea
+            v-model="filterSetRawContent"
+            variant="outlined"
+            auto-grow
+            :rules="[rules.required]"
+            :error-messages="rawContentErrors"
+          />
+        </v-form>
         <v-btn
           color="success"
           @click="saveFilterSet"
           :loading="saving"
+          class="mt-2"
         >
           {{ $gettext('Save') }}
         </v-btn>
@@ -131,6 +136,7 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
+import rules from '@/plugins/rules'
 import accountApi from '@/api/account'
 import FilterSetForm from '@/components/account/FilterSetForm.vue'
 import FilterForm from '@/components/account/FilterForm.vue'
@@ -146,6 +152,8 @@ const filters = ref([])
 const filterSetRawContent = ref('')
 const currentFilterSet = ref()
 const loadingFilters = ref(false)
+const rawContentErrors = ref([])
+const rawFormRef = ref()
 const rawMode = ref(false)
 const saving = ref(false)
 const selectedFilter = ref(null)
@@ -178,6 +186,12 @@ watch(rawMode, (value) => {
     })
   } else {
     fetchFilters(currentFilterSet.value.name)
+  }
+})
+
+watch(filterSetRawContent, () => {
+  if (rawContentErrors.value.length) {
+    rawContentErrors.value = []
   }
 })
 
@@ -248,6 +262,16 @@ function deleteFilter(filter) {
   })
 }
 
+async function moveFilterDown(filter) {
+  await accountApi.moveFilterDown(currentFilterSet.value.name, filter.name)
+  fetchFilters(currentFilterSet.value.name)
+}
+
+async function moveFilterUp(filter) {
+  await accountApi.moveFilterUp(currentFilterSet.value.name, filter.name)
+  fetchFilters(currentFilterSet.value.name)
+}
+
 async function activateFilterSet(filterSet) {
   await accountApi.activateFilterSet(filterSet.name)
   busStore.displayNotification({ msg: $gettext('Filter set activated') })
@@ -261,11 +285,22 @@ async function deleteFilterSet(filterSet) {
 }
 
 async function saveFilterSet() {
+  const { valid } = await rawFormRef.value.validate()
+  if (!valid) {
+    return
+  }
   const data = { content: filterSetRawContent.value }
   saving.value = true
-  await accountApi.saveFilterSet(currentFilterSet.value.name, data)
-  saving.value = false
-  busStore.displayNotification({ msg: $gettext('Filter set updated') })
+  try {
+    await accountApi.saveFilterSet(currentFilterSet.value.name, data)
+    busStore.displayNotification({ msg: $gettext('Filter set updated') })
+  } catch (err) {
+    if (err.response.status === 400 && err.response.data.content) {
+      rawContentErrors.value = err.response.data.content
+    }
+  } finally {
+    saving.value = false
+  }
 }
 
 async function downloadFilterSet(filterSet) {
@@ -292,7 +327,7 @@ const filterActions = [
   }
 ]
 
-function getFilterActions(filter) {
+function getFilterActions(filter, index) {
   const result = [...filterActions]
   if (filter.enabled) {
     result.push({
@@ -307,6 +342,20 @@ function getFilterActions(filter) {
       icon: 'mdi-check',
       color: 'success',
       onClick: enableFilter
+    })
+  }
+  if (index !== filters.value.length - 1) {
+    result.push({
+      label: $gettext('Move down'),
+      icon: 'mdi-arrow-down',
+      onClick: moveFilterDown
+    })
+  }
+  if (index !== 0) {
+    result.push({
+      label: $gettext('Move up'),
+      icon: 'mdi-arrow-up',
+      onClick: moveFilterUp
     })
   }
   return result
@@ -341,12 +390,3 @@ function getFilterSetActions() {
 
 fetchFilterSets()
 </script>
-
-<style scoped>
- /* .v-toolbar {
-    background-color: white !important;
-    } */
- .v-tabs {
-   background-color: #f7f8fa !important;
- }
-</style>

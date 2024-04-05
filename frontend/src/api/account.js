@@ -94,6 +94,16 @@ export default {
       `${resource}/filtersets/${filterSetName}/filters/${filter}/disable/`
     )
   },
+  moveFilterDown(filterSetName, filter) {
+    return repository.post(
+      `${resource}/filtersets/${filterSetName}/filters/${filter}/move_down/`
+    )
+  },
+  moveFilterUp(filterSetName, filter) {
+    return repository.post(
+      `${resource}/filtersets/${filterSetName}/filters/${filter}/move_up/`
+    )
+  },
   enableFilter(filterSetName, filter) {
     return repository.post(
       `${resource}/filtersets/${filterSetName}/filters/${filter}/enable/`

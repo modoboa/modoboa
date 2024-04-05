@@ -10,8 +10,9 @@
           variant="outlined"
           density="compact"
           :rules="[rules.required]"
+          :error-messages="apiErrors.name ? apiErrors.name : []"
         />
-        <div>
+        <div class="bg-grey-lighten-4 rounded pa-3">
           <h4>{{ $gettext('Conditions') }}</h4>
           <v-radio-group
             v-model="form.match_type"
@@ -42,7 +43,6 @@
                 variant="outlined"
                 density="compact"
                 :rules="[rules.required]"
-                @update:model-value=""
               />
               <v-select
                 v-model="condition.operator"
@@ -83,7 +83,7 @@
             </div>
           </template>
         </div>
-        <div>
+        <div class="mt-4 bg-grey-lighten-4 rounded pa-3">
           <h4>{{ $gettext('Actions') }}</h4>
           <div v-for="(action, index) in form.actions" class="d-flex align-start mt-2">
             <v-select
@@ -140,11 +140,12 @@
       <v-spacer></v-spacer>
       <v-btn
         :text="$gettext('Cancel')"
-        variant="plain"
+        variant="elevated"
         @click="close"
       ></v-btn>
       <v-btn
         color="primary"
+        variant="elevated"
         :text="submitLabel"
         :loading="working"
         @click="submit"
@@ -175,6 +176,7 @@ const emit = defineEmits(['close'])
 const busStore = useBusStore()
 const { $gettext } = useGettext()
 
+const apiErrors = ref({})
 const conditionTemplates = ref([])
 const actionTemplates = ref([])
 const formRef = ref()
@@ -290,8 +292,8 @@ async function submit() {
       msg = $gettext('Filter updated')
     }
   } catch (err) {
-    if (err.response.data && err.response.data.error) {
-      busStore.displayNotification({ msg: err.response.data.error, type: 'error' })
+    if (err.response.status === 400 && err.response.data) {
+      apiErrors.value = err.response.data
     }
     return
   } finally {
