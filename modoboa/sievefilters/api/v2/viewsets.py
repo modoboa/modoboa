@@ -7,6 +7,7 @@ from sievelib.commands import BadArgument, BadValue
 from sievelib.factory import FilterAlreadyExists
 
 from django.http import HttpResponse
+from django.utils.translation import gettext as _
 
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
@@ -18,6 +19,14 @@ from modoboa.sievefilters import constants
 from modoboa.sievefilters.lib import SieveClient, SieveClientError
 from modoboa.sievefilters.rfc6266 import build_header
 from modoboa.sievefilters.api.v2 import serializers
+
+
+FILTER_SET_ID = OpenApiParameter(
+    "id",
+    OpenApiTypes.STR,
+    description="Name of an existing filter set",
+    location=OpenApiParameter.PATH,
+)
 
 
 class FilterSetViewSet(viewsets.ViewSet):
@@ -62,12 +71,15 @@ class FilterSetViewSet(viewsets.ViewSet):
             fset = sclient.getscript(pk)
         except SieveClientError:
             return response.Response(status=404)
-        serializer = serializers.FilterSetContentSerializer(data=request.data)
+        serializer = serializers.FilterSetContentSerializer(
+            data=request.data, context={"sclient": sclient}
+        )
         serializer.is_valid(raise_exception=True)
         try:
             sclient.pushscript(pk, serializer.validated_data["content"])
         except SieveClientError as e:
             error = str(e)
+            return response.Response({"content": error}, status=400)
         return response.Response(serializer.validated_data)
 
     @action(methods=["post"], detail=True)
@@ -135,22 +147,33 @@ class FilterSetViewSet(viewsets.ViewSet):
         return response.Response(serializer.data)
 
     @extend_schema(
-        parameters=[
-            OpenApiParameter("id", OpenApiTypes.STR),
-        ],
-        request=serializers.FilterSerializer,
-        responses={201: serializers.FilterSerializer},
+        parameters=[FILTER_SET_ID],
+        responses={200: serializers.FilterSerializer(many=True)},
     )
-    @action(methods=["get", "post"], detail=True)
-    def filters(self, request, pk=None):
+    @action(methods=["get"], detail=True, url_path="filters")
+    def get_filters(self, request, pk=None):
+        """Retrieve a list of all filters associated to given filter set."""
         sclient = self.get_sieve_client(request)
         try:
             fset = sclient.getscript(pk, format="fset")
         except SieveClientError:
             return response.Response(status=404)
-        if request.method == "GET":
-            serializer = serializers.FilterSerializer.from_filters(fset.filters)
-            return response.Response(serializer.data)
+        serializer = serializers.FilterSerializer.from_filters(fset.filters)
+        return response.Response(serializer.data)
+
+    @extend_schema(
+        parameters=[FILTER_SET_ID],
+        request=serializers.FilterSerializer,
+        responses={201: serializers.FilterSerializer},
+    )
+    @get_filters.mapping.post
+    def filters(self, request, pk=None):
+        """Create a new filter."""
+        sclient = self.get_sieve_client(request)
+        try:
+            fset = sclient.getscript(pk, format="fset")
+        except SieveClientError:
+            return response.Response(status=404)
         serializer = serializers.FilterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         match_type, conditions, actions = serializer.to_filter()
@@ -160,8 +183,8 @@ class FilterSetViewSet(viewsets.ViewSet):
         except (BadArgument, BadValue) as inst:
             return response.Response(str(inst), status=400)
         except FilterAlreadyExists:
-            return response.Response(
-                {"error": f"Filter {fset.name} already exists"}, status=409
+            raise serializers.ValidationError(
+                {"name": _("Filter %s already exists") % fltname}
             )
         sclient.pushscript(fset.name, str(fset))
         return response.Response(serializer.validated_data, status=201)
@@ -169,7 +192,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     @extend_schema(
         description="Update an existing filter",
         parameters=[
-            OpenApiParameter("id", OpenApiTypes.STR, location=OpenApiParameter.PATH),
+            FILTER_SET_ID,
             OpenApiParameter(
                 "filter", OpenApiTypes.STR, location=OpenApiParameter.PATH
             ),
@@ -226,7 +249,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     @extend_schema(
         description="Delete an existing filter",
         parameters=[
-            OpenApiParameter("id", OpenApiTypes.STR, location=OpenApiParameter.PATH),
+            FILTER_SET_ID,
             OpenApiParameter(
                 "filter", OpenApiTypes.STR, location=OpenApiParameter.PATH
             ),
@@ -243,3 +266,25 @@ class FilterSetViewSet(viewsets.ViewSet):
             sclient.pushscript(fset.name, str(fset))
             return response.Response(status=204)
         return response.Response(status=404)
+
+    def move_filter(self, request, filterset: str, filter: str, direction: str):
+        sclient = self.get_sieve_client(request)
+        try:
+            fset = sclient.getscript(filterset, format="fset")
+        except SieveClientError:
+            return response.Response(status=404)
+        fset.movefilter(filter, direction)
+        sclient.pushscript(filterset, str(fset))
+        return response.Response(status=204)
+
+    @action(
+        methods=["post"], detail=True, url_path="filters/(?P<filter>[^/.]+)/move_up"
+    )
+    def move_filter_up(self, request, pk: str, filter: str):
+        return self.move_filter(request, pk, filter, "up")
+
+    @action(
+        methods=["post"], detail=True, url_path="filters/(?P<filter>[^/.]+)/move_down"
+    )
+    def move_filter_down(self, request, pk: str, filter: str):
+        return self.move_filter(request, pk, filter, "down")

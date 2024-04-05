@@ -5,6 +5,8 @@ from typing import List, Tuple
 from sievelib import commands
 from sievelib.factory import Filter
 
+from django.utils.translation import gettext as _
+
 from rest_framework import serializers
 
 from modoboa.sievefilters import constants, lib
@@ -19,6 +21,13 @@ class FilterSetSerializer(serializers.Serializer):
 class FilterSetContentSerializer(serializers.Serializer):
 
     content = serializers.CharField()
+
+    def validate_content(self, value: str):
+        sclient = self.context["sclient"]
+        if not sclient.msc.checkscript(value):
+            error = sclient.msc.errmsg.decode().strip().split("\r\n")[0]
+            raise serializers.ValidationError(error)
+        return value
 
 
 class ConditionSerializer(serializers.Serializer):
