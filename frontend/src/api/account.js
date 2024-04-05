@@ -65,6 +65,9 @@ export default {
   deleteFilterSet(filterSetName) {
     return repository.delete(`${resource}/filtersets/${filterSetName}/`)
   },
+  saveFilterSet(filterSetName, data) {
+    return repository.put(`${resource}/filtersets/${filterSetName}/`, data)
+  },
   getFilterConditionTemplates() {
     return repository.get(`${resource}/filtersets/condition_templates/`)
   },

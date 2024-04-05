@@ -16,6 +16,11 @@ class FilterSetSerializer(serializers.Serializer):
     active = serializers.BooleanField(default=False)
 
 
+class FilterSetContentSerializer(serializers.Serializer):
+
+    content = serializers.CharField()
+
+
 class ConditionSerializer(serializers.Serializer):
 
     name = serializers.CharField()
