@@ -51,6 +51,25 @@ class FilterSetViewSet(viewsets.ViewSet):
         )
         return response.Response(serializer.validated_data, 201)
 
+    @extend_schema(
+        request=serializers.FilterSetContentSerializer,
+        responses=serializers.FilterSetContentSerializer,
+    )
+    def update(self, request, pk):
+        """Update filter set content."""
+        sclient = self.get_sieve_client(request)
+        try:
+            fset = sclient.getscript(pk)
+        except SieveClientError:
+            return response.Response(status=404)
+        serializer = serializers.FilterSetContentSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            sclient.pushscript(pk, serializer.validated_data["content"])
+        except SieveClientError as e:
+            error = str(e)
+        return response.Response(serializer.validated_data)
+
     @action(methods=["post"], detail=True)
     def activate(self, request, pk):
         """Activate an existing filter set."""

@@ -111,6 +111,7 @@
                   :label="arg.label"
                   color="primary"
                   :value="arg.value"
+                  density="compact"
                 />
               </template>
             </div>
