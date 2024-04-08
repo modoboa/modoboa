@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from modoboa.sievefilters import constants, lib
+from modoboa.sievefilters.api.v2 import vloaders
 
 
 class FilterSetSerializer(serializers.Serializer):
@@ -152,6 +153,14 @@ class ActionArgumentSerializer(serializers.Serializer):
     type = serializers.CharField()
     label = serializers.CharField(required=False)
     value = serializers.CharField(required=False)
+    choices = serializers.SerializerMethodField(required=False)
+
+    def get_choices(self, obj):
+        print(obj)
+        if "vloader" not in obj:
+            return None
+        loader = getattr(vloaders, obj["vloader"])
+        return loader(self.context["request"])
 
 
 class ActionTemplateSerializer(serializers.Serializer):

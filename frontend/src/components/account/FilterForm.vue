@@ -98,8 +98,17 @@
             />
             <div class="mx-2 d-flex flex-column flex-grow-1">
               <template v-for="arg in getActionArguments(action.name)">
+                <v-select
+                  v-if="arg.type === 'list'"
+                  v-model="action.args[arg.name]"
+                  :items="arg.choices"
+                  item-title="label"
+                  density="compact"
+                  variant="outlined"
+                  :rules="[rules.required]"
+                />
                 <v-text-field
-                  v-if="arg.type === 'string' || arg.type === 'list'"
+                  v-if="arg.type === 'string'"
                   v-model="action.args[arg.name]"
                   density="compact"
                   variant="outlined"
