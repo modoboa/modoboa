@@ -39,7 +39,7 @@ ACTION_TEMPLATES = [
         "name": "fileinto",
         "label": _("Move message to"),
         "args": [
-            {"name": "mailbox", "type": "list", "vloader": "userfolders"},
+            {"name": "mailbox", "type": "list", "vloader": "user_mailboxes"},
             {
                 "name": "copy",
                 "type": "boolean",

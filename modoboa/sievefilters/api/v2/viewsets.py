@@ -15,6 +15,7 @@ from rest_framework import response, viewsets
 from rest_framework.decorators import action
 
 from modoboa.lib.connections import ConnectionError
+from modoboa.lib.viewsets import HasMailbox
 from modoboa.sievefilters import constants
 from modoboa.sievefilters.lib import SieveClient, SieveClientError
 from modoboa.sievefilters.rfc6266 import build_header
@@ -31,6 +32,7 @@ FILTER_SET_ID = OpenApiParameter(
 
 class FilterSetViewSet(viewsets.ViewSet):
 
+    permission_classes = (HasMailbox,)
     serializer_class = serializers.FilterSetSerializer
 
     def get_sieve_client(self, request):
@@ -142,7 +144,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     @action(methods=["get"], detail=False)
     def action_templates(self, request):
         serializer = serializers.ActionTemplateSerializer(
-            constants.ACTION_TEMPLATES, many=True
+            constants.ACTION_TEMPLATES, many=True, context={"request": request}
         )
         return response.Response(serializer.data)
 

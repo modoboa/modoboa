@@ -155,7 +155,7 @@ const displayName = computed(() => {
 
 const menuItems = computed(() => {
   if (route.meta.layout === 'account') {
-    return userSettingsMenuItems
+    return getUserSettingsMenuItems()
   }
   return mainMenuItems
 })
@@ -256,19 +256,6 @@ const mainMenuItems = [
   }
 ]
 
-const userSettingsMenuItems = [
-  {
-    text: $gettext('Filters'),
-    to: { name: 'AccountFilters' },
-    icon: 'mdi-filter'
-  },
-  {
-    text: $gettext('Settings'),
-    to: { name: 'AccountSettings' },
-    icon: 'mdi-cog'
-  }
-]
-
 const userMenuItems = [
   {
     text: $gettext('Account'),
@@ -289,6 +276,24 @@ if (authUser.value.role !== 'SimpleUsers') {
     to: { name: 'Dashboard' },
     icon: 'mdi-view-dashboard-outline'
   })
+}
+
+function getUserSettingsMenuItems() {
+  const result = []
+
+  if (authUser.value.mailbox) {
+    result.push({
+      text: $gettext('Filters'),
+      to: { name: 'AccountFilters' },
+      icon: 'mdi-filter'
+    })
+  }
+  result.push({
+    text: $gettext('Settings'),
+    to: { name: 'AccountSettings' },
+    icon: 'mdi-cog'
+  })
+  return result
 }
 
 function displayMenuItem(item) {
