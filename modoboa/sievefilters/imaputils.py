@@ -1,16 +1,11 @@
-# coding: utf-8
-"""
-:mod:`imaputils` --- Extra IMAPv4 utilities
--------------------------------------------
-"""
+"""IMAPv4 utilities."""
 
+import base64
 import imaplib
 import re
 from operator import itemgetter
 import socket
 import ssl
-
-import six
 
 from django.utils.encoding import smart_bytes
 from django.utils.translation import gettext as _
@@ -30,8 +25,7 @@ class ImapError(ModoboaException):
         return str(self.reason)
 
 
-@six.add_metaclass(ConnectionsManager)
-class IMAPconnector(object):
+class IMAPconnector:
     """The IMAPv4 connector."""
 
     list_base_pattern = r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" "?(?P<name>[^"]*)"?'
@@ -51,7 +45,8 @@ class IMAPconnector(object):
         self.login(user, password)
 
     def _cmd(self, name, *args, **kwargs):
-        """IMAP command wrapper
+        """
+        IMAP command wrapper.
 
         To simplify errors handling, this wrapper calls the
         appropriate method (``uid`` or FIXME) and then check the
@@ -98,31 +93,12 @@ class IMAPconnector(object):
             self.__hdelimiter = m.group("delimiter")
         return self.__hdelimiter
 
-    def refresh(self, user, password):
-        """Check if current connection needs a refresh
-
-        Is it really secure?
+    def login(self, user: str, passwd: str):
         """
-        if self.m is not None:
-            try:
-                self._cmd("NOOP")
-            except ImapError:
-                if hasattr(self, "current_mailbox"):
-                    del self.current_mailbox
-            else:
-                return
+        Custom login method.
 
-        self.login(user, password)
-
-    def login(self, user, passwd):
-        """Custom login method
-
-        We connect to the server, issue a LOGIN command. If
-        successfull, we try to record a eventuel CAPABILITY untagged
-        response. Otherwise, we issue the command.
-
-        :param user: username
-        :param passwd: password
+        Only OAUTHBEARER mechanism is supported here. passwd parameter is actually a
+        Bearer token.
         """
         try:
             if self.conf["imap_secured"]:
@@ -132,8 +108,15 @@ class IMAPconnector(object):
         except (socket.error, imaplib.IMAP4.error, ssl.SSLError) as error:
             raise ImapError(_("Connection to IMAP server failed: %s" % error))
 
-        passwd = self.m._quote(passwd)
-        data = self._cmd("LOGIN", smart_bytes(user), smart_bytes(passwd))
+        token = (
+            b"n,a="
+            + user.encode("utf-8")
+            + b",\001auth=Bearer "
+            + passwd.encode("utf-8")
+            + b"\001\001"
+        )
+        token = base64.b64encode(token)
+        data = self._cmd("AUTHENTICATE", b"OAUTHBEARER", token)
         self.m.state = "AUTH"
         if "CAPABILITY" in self.m.untagged_responses:
             self.capabilities = (
@@ -191,8 +174,6 @@ class IMAPconnector(object):
                 descr = {"name": name}
                 newmboxes += [descr]
 
-            if "\\Marked" in flags or "\\UnMarked" not in flags:
-                descr["send_status"] = True
             if "\\HasChildren" in flags:
                 if "\\NonExistent" in flags:
                     descr["removed"] = True
@@ -201,7 +182,7 @@ class IMAPconnector(object):
 
         mailboxes += sorted(newmboxes, key=itemgetter("name"))
 
-    def getmboxes(self, user, topmailbox=""):
+    def getmboxes(self, user, topmailbox: str = ""):
         """Returns a list of mailboxes for a particular user
 
         By default, only the first level of mailboxes under
@@ -215,32 +196,22 @@ class IMAPconnector(object):
             md_mailboxes = []
         else:
             md_mailboxes = [
-                {"name": "INBOX", "class": "fa fa-inbox"},
-                {
-                    "name": user.parameters.get_value("drafts_folder"),
-                    "class": "fa fa-file",
-                },
-                {"name": "Junk", "class": "fa fa-fire"},
-                {
-                    "name": user.parameters.get_value("sent_folder"),
-                    "class": "fa fa-envelope",
-                },
-                {
-                    "name": user.parameters.get_value("trash_folder"),
-                    "class": "fa fa-trash",
-                },
+                {"name": "INBOX"},
+                {"name": user.parameters.get_value("drafts_folder")},
+                {"name": "Junk"},
+                {"name": user.parameters.get_value("sent_folder")},
+                {"name": user.parameters.get_value("trash_folder")},
             ]
         self._listmboxes(topmailbox, md_mailboxes)
 
         return md_mailboxes
 
 
-def get_imapconnector(request):
-    """Simple shortcut to create a connector
+def get_imapconnector(request) -> IMAPconnector:
+    """
+    Simple shortcut to create a connector
 
     :param request: a ``Request`` object
     """
-    imapc = IMAPconnector(
-        user=request.user.username, password=request.session["password"]
-    )
+    imapc = IMAPconnector(user=request.user.username, password=str(request.auth))
     return imapc
