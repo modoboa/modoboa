@@ -156,7 +156,6 @@ class ActionArgumentSerializer(serializers.Serializer):
     choices = serializers.SerializerMethodField(required=False)
 
     def get_choices(self, obj):
-        print(obj)
         if "vloader" not in obj:
             return None
         loader = getattr(vloaders, obj["vloader"])

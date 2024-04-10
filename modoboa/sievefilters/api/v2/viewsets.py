@@ -1,7 +1,6 @@
 """Sievefilters viewsets."""
 
 import copy
-from typing import Optional
 
 from sievelib.commands import BadArgument, BadValue
 from sievelib.factory import FilterAlreadyExists
@@ -70,7 +69,7 @@ class FilterSetViewSet(viewsets.ViewSet):
         """Update filter set content."""
         sclient = self.get_sieve_client(request)
         try:
-            fset = sclient.getscript(pk)
+            sclient.getscript(pk)
         except SieveClientError:
             return response.Response(status=404)
         serializer = serializers.FilterSetContentSerializer(
@@ -89,7 +88,7 @@ class FilterSetViewSet(viewsets.ViewSet):
         """Activate an existing filter set."""
         sclient = self.get_sieve_client(request)
         try:
-            fset = sclient.getscript(pk, format="fset")
+            sclient.getscript(pk, format="fset")
         except SieveClientError:
             return response.Response(status=404)
         try:
@@ -116,7 +115,7 @@ class FilterSetViewSet(viewsets.ViewSet):
         """Delete an existing filter set."""
         sclient = self.get_sieve_client(request)
         try:
-            fset = sclient.getscript(pk, format="fset")
+            sclient.getscript(pk, format="fset")
         except SieveClientError:
             return response.Response(status=404)
         sclient.deletescript(pk)

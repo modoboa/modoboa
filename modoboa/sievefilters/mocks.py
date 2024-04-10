@@ -26,8 +26,10 @@ if anyof (header :contains "Subject" "toto", not header :contains "To" "peé") {
 """
 
 
-class ManagesieveClientMock(object):
+class ManagesieveClientMock:
     """Fake managesieve client."""
+
+    errmsg: bytes = b""
 
     def __init__(self, *args, **kwargs):
         self.scripts = {
@@ -37,7 +39,7 @@ class ManagesieveClientMock(object):
         }
 
     def connect(self, username, password, **kwargs):
-        return username == "user@test.com" and password == "toto"
+        return username == "user@test.com"
 
     def logout(self):
         return True
@@ -70,8 +72,11 @@ class ManagesieveClientMock(object):
     def deletescript(self, name):
         return True
 
+    def checkscript(self, content):
+        return True
 
-class IMAP4Mock(object):
+
+class IMAP4Mock:
     """Fake IMAP4 client."""
 
     def __init__(self, *args, **kwargs):
