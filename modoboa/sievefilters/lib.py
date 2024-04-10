@@ -63,7 +63,7 @@ class SieveClient:
         if self.msc is not None:
             try:
                 self.msc.capability()
-            except managesieve.Error as e:
+            except managesieve.Error:
                 pass
             else:
                 return

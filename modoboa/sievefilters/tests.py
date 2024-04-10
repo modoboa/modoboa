@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """Sievefilters tests."""
 
 from unittest import mock
