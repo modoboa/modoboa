@@ -294,18 +294,16 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
     authStore.initialize().then(() => {
       authStore.validateAccess()
-      if (to.meta.requiresMailbox && !authStore.authUser.mailbox) {
-        next(false)
-      } else {
-        /*
-        if (to.meta.allowedRoles !== undefined) {
+      if (to.meta.allowedRoles !== undefined) {
         if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
-        next({ name: 'Dashboard' })
-        return
+          next({ name: 'Dashboard' })
+          return
         }
-        }*/
-        next()
       }
+      if (to.meta.requiresMailbox && !authStore.authUser.mailbox) {
+        next({ name: 'Dashboard' })
+      }
+      next()
     })
   } else {
     next()
