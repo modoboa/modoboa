@@ -194,12 +194,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # oAuth2 settings
 
 OAUTH2_PROVIDER = {
+    "OIDC_ENABLED": True,
+    "OIDC_RP_INITIATED_LOGOUT_ENABLED": True,
+    "OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT": True,
+    "OIDC_RSA_PRIVATE_KEY": os.environ.get("OIDC_RSA_PRIVATE_KEY"),
     "SCOPES": {
+        "openid": "OpenID Connect scope",
         "read": "Read scope",
         "write": "Write scope",
         "introspection": "Introspect token scope",
     },
-    "DEFAULT_SCOPES": ["read", "write"],
+    "DEFAULT_SCOPES": ["openid", "read", "write"],
 }
 
 # Rest framework settings

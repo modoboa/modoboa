@@ -18,6 +18,11 @@ const routes = [
         component: () => import('@/views/login/TwoFA.vue'),
       },
       {
+        path: 'logged',
+        name: 'LoginCallback',
+        component: () => import('@/views/login/LoginCallbackView.vue'),
+      },
+      {
         path: 'password_recovery',
         name: 'PasswordRecovery',
         component: () => import('../views/login/PasswordRecoveryView.vue'),
@@ -291,8 +296,14 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth !== undefined) {
+    const previousPage = window.location.href
+    sessionStorage.setItem('previousPage', previousPage)
     const authStore = useAuthStore()
-    authStore.initialize().then(() => {
+    authStore.initialize().then((res) => {
+      if (res === null) {
+        next({name: 'Login'})
+        return
+      }
       authStore.validateAccess()
       if (to.meta.allowedRoles !== undefined) {
         if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
