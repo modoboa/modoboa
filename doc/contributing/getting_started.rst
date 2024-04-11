@@ -16,6 +16,10 @@ Then, just run the following command::
 
   $ docker-compose up
 
+Then if not done already, run this command to create an OIDC application
+in order to be able to log in from the frontend::
+  $ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name frontend --algorithm RS256 --redirect-uris 'http://localhost:3000/login/logged' public authorization_grant_type authorization-code'
+
 It will start the docker environment and make a Modoboa instance
 available at ``http://localhost:8000`` and the new admin interface at ``http://localhost:8080``
 
