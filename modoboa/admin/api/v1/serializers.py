@@ -470,8 +470,6 @@ class WritableAccountSerializer(AccountSerializer):
         else:
             password = validated_data.pop("password")
         user.set_password(password)
-        if "language" not in validated_data:
-            user.language = settings.LANGUAGE_CODE
         user.save(creator=creator)
         if mailbox_data:
             self._create_mailbox(creator, user, mailbox_data)

@@ -7,7 +7,9 @@ export default {
     return repository.get(`${resource}/`)
   },
   getAllForMailbox(mailboxId) {
-    return repository.get(`${resource}/`, { params: { mailbox: mailboxId } })
+    return repository.get(`${resource}/`, {
+      params: { mailbox: mailboxId },
+    })
   },
   create(data) {
     return repository.post(`${resource}/`, data)

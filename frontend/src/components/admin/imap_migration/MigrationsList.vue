@@ -44,7 +44,10 @@
       </template>
       <template #[`item.mailbox`]="{ item }">
         <router-link
-          :to="{ name: 'AccountDetail', params: { id: item.mailbox.user } }"
+          :to="{
+            name: 'AccountDetail',
+            params: { id: item.mailbox.user },
+          }"
         >
           {{ item.mailbox.full_address }}
         </router-link>

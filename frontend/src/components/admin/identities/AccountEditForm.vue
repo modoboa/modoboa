@@ -36,7 +36,8 @@
                 <v-row v-else no-gutters style="width: 100%">
                   <v-col cols="6">
                     <div class="mr-2">
-                      {{ $gettext('Username:') }} {{ editedAccount.username }}
+                      {{ $gettext('Username:') }}
+                      {{ editedAccount.username }}
                     </div>
                   </v-col>
                   <v-col cols="6">
@@ -301,7 +302,10 @@ async function save() {
       delete data.aliases
     }
     identitiesStore.updateIdentity('account', data).then(() => {
-      router.push({ name: 'AccountDetail', params: { id: route.params.id } })
+      router.push({
+        name: 'AccountDetail',
+        params: { id: route.params.id },
+      })
     })
   } finally {
     working.value = false

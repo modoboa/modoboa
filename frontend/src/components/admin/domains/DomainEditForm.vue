@@ -13,10 +13,12 @@
                 <span v-if="expanded"></span>
                 <v-row v-else no-gutters style="width: 100%">
                   <v-col cols="6">
-                    {{ $gettext('Name: ') }} {{ editedDomain.name }}
+                    {{ $gettext('Name: ') }}
+                    {{ editedDomain.name }}
                   </v-col>
                   <v-col cols="6">
-                    {{ $gettext('Type: ') }} {{ editedDomain.type }}
+                    {{ $gettext('Type: ') }}
+                    {{ editedDomain.type }}
                   </v-col>
                 </v-row>
               </v-fade-transition>
@@ -76,7 +78,8 @@
                 <v-row v-else no-gutters style="width: 100%">
                   <v-col cols="6">
                     <div class="mr-2">
-                      {{ $gettext('Quota: ') }} {{ editedDomain.quota }}
+                      {{ $gettext('Quota: ') }}
+                      {{ editedDomain.quota }}
                     </div>
                   </v-col>
                   <v-col v-if="editedDomain.message_limit" cols="6">
@@ -86,7 +89,9 @@
                     </div>
                   </v-col>
                   <v-col v-else cols="6">
-                    <div class="mr-2">{{ $gettext('No sending limit') }}</div>
+                    <div class="mr-2">
+                      {{ $gettext('No sending limit') }}
+                    </div>
                   </v-col>
                 </v-row>
               </v-fade-transition>

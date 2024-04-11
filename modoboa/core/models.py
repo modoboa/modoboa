@@ -36,6 +36,10 @@ except ImportError:
     ldap_available = False
 
 
+def get_default_language() -> str:
+    return settings.LANGUAGE_CODE
+
+
 class User(AbstractUser):
     """Custom User model.
 
@@ -61,7 +65,7 @@ class User(AbstractUser):
     language = models.CharField(
         gettext_lazy("language"),
         max_length=10,
-        default="en",
+        default=get_default_language,
         choices=constants.LANGUAGES,
         help_text=gettext_lazy("Prefered language to display pages."),
     )

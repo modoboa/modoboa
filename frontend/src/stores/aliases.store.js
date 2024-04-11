@@ -89,6 +89,6 @@ export const useAliasesStore = defineStore('aliases', () => {
     createAlias,
     deleteAlias,
     updateAlias,
-    $reset
+    $reset,
   }
 })

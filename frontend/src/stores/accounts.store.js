@@ -78,6 +78,6 @@ export const useAccountsStore = defineStore('accounts', () => {
     updateAccount,
     createAccount,
     deleteAccount,
-    $reset
+    $reset,
   }
 })

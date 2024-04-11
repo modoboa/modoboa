@@ -70,7 +70,9 @@
           </div>
         </v-stepper-window-item>
         <v-stepper-window-item :value="steps.length + 1" class="flex-grow-0">
-          <div class="text-center text-h3">{{ $gettext('Summary') }}</div>
+          <div class="text-center text-h3">
+            {{ $gettext('Summary') }}
+          </div>
           <CreationSummary
             :sections="summarySections"
             @modify-step="(val) => (currentStep = val)"

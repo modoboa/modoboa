@@ -11,7 +11,9 @@
           {{ $gettext('Forgot password?') }}
         </h4>
         <v-form ref="observer">
-          <p id="password_validation">{{ password_validation_error }}</p>
+          <p id="password_validation">
+            {{ password_validation_error }}
+          </p>
           <label class="m-label">{{ $gettext('Change password') }}</label>
           <v-text-field
             v-model="password"

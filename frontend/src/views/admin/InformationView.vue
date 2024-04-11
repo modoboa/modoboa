@@ -15,7 +15,9 @@
           text
           border="left"
         >
-          <div tag="p">{{ $gettext('One or more updates are available') }}</div>
+          <div tag="p">
+            {{ $gettext('One or more updates are available') }}
+          </div>
           <div tag="p" class="text-body-2">
             {{
               $gettext(

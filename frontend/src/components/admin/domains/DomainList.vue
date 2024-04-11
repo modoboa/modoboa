@@ -64,7 +64,10 @@
           </td>
           <td>
             <router-link
-              :to="{ name: 'DomainDetail', params: { id: item.pk } }"
+              :to="{
+                name: 'DomainDetail',
+                params: { id: item.pk },
+              }"
             >
               {{ item.name }}
             </router-link>
@@ -199,7 +202,11 @@ const aliases = computed(() => domainStore.domainAliases)
 const domainHeaders = [
   { title: $gettext('Name'), key: 'name' },
   { title: $gettext('Aliases'), key: 'domainalias_count' },
-  { title: $gettext('DNS status'), key: 'dns_global_status', sortable: false },
+  {
+    title: $gettext('DNS status'),
+    key: 'dns_global_status',
+    sortable: false,
+  },
   { title: $gettext('Sending limit'), key: 'message_limit' },
   { title: $gettext('Quota'), key: 'allocated_quota_in_percent' },
   {

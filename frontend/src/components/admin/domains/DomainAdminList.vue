@@ -62,7 +62,8 @@
             variant="outlined"
             @click="addRow"
           >
-            <v-icon small>mdi-plus</v-icon> {{ $gettext('Add administrator') }}
+            <v-icon small>mdi-plus</v-icon>
+            {{ $gettext('Add administrator') }}
           </v-btn>
         </v-col>
         <v-col v-if="dialogMode" align="right">
@@ -144,7 +145,9 @@ function addAdministrator() {
       )
       selectedAccount.value = null
       hideAddBtn.value = false
-      busStore.displayNotification({ msg: $gettext('Administrator added') })
+      busStore.displayNotification({
+        msg: $gettext('Administrator added'),
+      })
     })
 }
 

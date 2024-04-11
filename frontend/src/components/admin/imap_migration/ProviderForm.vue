@@ -11,7 +11,8 @@
               <span v-if="open"></span>
               <v-row v-else no-gutters style="width: 100%">
                 <v-col cols="6">
-                  {{ $gettext('Name:') }} {{ editedProvider.name }}
+                  {{ $gettext('Name:') }}
+                  {{ editedProvider.name }}
                 </v-col>
               </v-row>
             </v-fade-transition>
@@ -130,7 +131,9 @@ async function save() {
       }
     }
     await providers.patchProvider(editedProvider.value.id, data).then(() => {
-      busStore.displayNotification({ msg: $gettext('Provider updated') })
+      busStore.displayNotification({
+        msg: $gettext('Provider updated'),
+      })
       providersStore.getProviders()
       router.push({ name: 'ProvidersList' })
     })

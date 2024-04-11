@@ -131,6 +131,47 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+2.3.0
+=====
+
+.. warning::
+
+   For this particular version, it is really important that you apply
+   new migrations **AFTER** the following instructions. If you don't,
+   you'll get into trouble...
+
+The ``modoboa-postfix-autoreply`` plugin has been merged into the core.
+
+In :file:`settings.py` file, add ``'modoboa.postfix_autoreply'`` to ``MODOBOA_APPS``:
+
+.. sourcecode:: python
+
+   MODOBOA_APPS = (
+      'modoboa',
+      'modoboa.core',
+      'modoboa.lib',
+      'modoboa.admin',
+      'modoboa.transport',
+      'modoboa.relaydomains',
+      'modoboa.limits',
+      'modoboa.parameters',
+      'modoboa.dnstools',
+      'modoboa.policyd',
+      'modoboa.maillog',
+      'modoboa.dmarc',
+      'modoboa.pdfcredentials',
+      'modoboa.imap_migration',
+      'modoboa.postfix_autoreply',
+   )
+
+And remove any reference to ``'modoboa_postfix_autoreply'`` in this same variable.
+
+After upgrading modoboa, run the following commands from your virtual environment:
+
+.. sourcecode:: bash
+
+   > python manage.py rename_app modoboa_postfix_autoreply postfix_autoreply
+
 
 2.2.3
 =====

@@ -70,7 +70,11 @@ export const useIdentitiesStore = defineStore('identities', () => {
       name_or_rcpt: name_or_rcpt,
       tags: [
         { name: 'account', label: $gettext('account'), type: 'idt' },
-        { name: account.role, label: $gettext(account.role), type: 'grp' },
+        {
+          name: account.role,
+          label: $gettext(account.role),
+          type: 'grp',
+        },
       ],
       possible_actions: [],
     }
@@ -173,6 +177,6 @@ export const useIdentitiesStore = defineStore('identities', () => {
     deleteIdentity,
     createIdentity,
     updateIdentity,
-    $reset
+    $reset,
   }
 })

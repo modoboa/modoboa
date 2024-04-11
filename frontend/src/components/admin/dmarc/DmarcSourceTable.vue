@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="text-h6">
-      {{ title }} <span :class="text - `${color}-lighten-2`">{{ total }}</span>
+      {{ title }}
+      <span :class="text - `${color}-lighten-2`">{{ total }}</span>
     </div>
     <v-simple-table>
       <tbody>

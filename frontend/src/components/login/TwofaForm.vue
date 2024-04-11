@@ -63,7 +63,9 @@ async function verifyCode() {
     .verifyTFACode(code.value)
     .then((resp) => {
       Cookies.set('token', resp.data.access, { sameSite: 'strict' })
-      Cookies.set('refreshToken', resp.data.refresh, { sameSite: 'strict' })
+      Cookies.set('refreshToken', resp.data.refresh, {
+        sameSite: 'strict',
+      })
       authStore.initialize().then(() => {
         // bus.$emit('loggedIn')
         router.push({ name: 'DomainList' })

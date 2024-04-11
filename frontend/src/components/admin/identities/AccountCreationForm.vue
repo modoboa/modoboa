@@ -96,7 +96,10 @@ const summarySections = computed(() => {
       title: $gettext('Identification'),
       items: [
         { key: $gettext('Username'), value: account.value.username },
-        { key: $gettext('First name'), value: account.value.first_name },
+        {
+          key: $gettext('First name'),
+          value: account.value.first_name,
+        },
         { key: $gettext('Last name'), value: account.value.last_name },
         {
           name: 'random_password',
@@ -117,7 +120,10 @@ const summarySections = computed(() => {
       {
         title: $gettext('Mailbox'),
         items: [
-          { key: $gettext('Email'), value: account.value.mailbox.full_address },
+          {
+            key: $gettext('Email'),
+            value: account.value.mailbox.full_address,
+          },
           {
             key: $gettext('Quota'),
             value: account.value.mailbox.use_domain_quota

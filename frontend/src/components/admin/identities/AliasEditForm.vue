@@ -13,10 +13,13 @@
                 <span v-if="expanded"></span>
                 <v-row v-else no-gutters style="width: 100%">
                   <v-col cols="6">
-                    {{ $gettext('Address') }}: {{ editedAlias.address }}
+                    {{ $gettext('Address') }}:
+                    {{ editedAlias.address }}
                   </v-col>
                   <v-col cols="6">
-                    <div class="mr-2">{{ $gettext('Enabled') }}</div>
+                    <div class="mr-2">
+                      {{ $gettext('Enabled') }}
+                    </div>
                     <v-icon v-if="editedAlias.enabled" color="success"
                       >mdi-check-circle-outline</v-icon
                     >
@@ -126,7 +129,10 @@ async function save() {
   identitiesStore
     .updateIdentity('alias', editedAlias.value)
     .then(() =>
-      router.push({ name: 'AliasDetail', params: { id: route.params.id } })
+      router.push({
+        name: 'AliasDetail',
+        params: { id: route.params.id },
+      })
     )
     .finally(() => (working.value = false))
 }

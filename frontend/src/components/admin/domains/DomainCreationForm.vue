@@ -213,7 +213,10 @@ const summarySections = computed(() => {
     const relayEntry = {
       title: $gettext('Transport'),
       items: [
-        { key: $gettext('Service'), value: domain.value.transport.service },
+        {
+          key: $gettext('Service'),
+          value: domain.value.transport.service,
+        },
       ],
     }
     for (const setting of transport.value.service.settings) {

@@ -59,7 +59,9 @@
             <li>
               <em>domain; name; quota; default mailbox quota; enabled</em>
             </li>
-            <li><em>domainalias; name; targeted domain; enabled</em></li>
+            <li>
+              <em>domainalias; name; targeted domain; enabled</em>
+            </li>
             <li>
               <em
                 >relaydomain; name; target host; target port; service; enabled;

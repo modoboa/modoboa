@@ -47,7 +47,9 @@ export const useProvidersStore = defineStore('providers', () => {
       .deleteProvider({ id: id })
       .then((response) => {
         delete providers.value[id]
-        busStore.displayNotification({ msg: $gettext('Provider deleted') })
+        busStore.displayNotification({
+          msg: $gettext('Provider deleted'),
+        })
         return response
       })
       .finally(() => (providersLoaded.value = true))
@@ -59,6 +61,6 @@ export const useProvidersStore = defineStore('providers', () => {
     getProviders,
     createProvider,
     deleteProvider,
-    $reset
+    $reset,
   }
 })

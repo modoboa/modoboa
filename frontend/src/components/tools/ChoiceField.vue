@@ -33,61 +33,61 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed } from 'vue'
 
 const props = defineProps({
   modelValue: { type: [Number, String], default: null },
-  label: { type: String, default: "" },
+  label: { type: String, default: '' },
   choices: { type: Array, default: () => [] },
   disabled: {
     type: Boolean,
     default: false,
   },
   choicesPerLine: { type: Number, default: undefined },
-});
+})
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue'])
 
 const currentChoice = computed({
   get() {
-    return props.modelValue;
+    return props.modelValue
   },
   set(value) {
-    emit("update:modelValue", value);
+    emit('update:modelValue', value)
   },
-});
+})
 
-const formatedChoices = ref([]);
+const formatedChoices = ref([])
 
 function formatChoices() {
   if (props.choicesPerLine) {
-    let sliceIndex = 0;
+    let sliceIndex = 0
     while (sliceIndex < props.choices.length) {
       const result = props.choices.slice(
         sliceIndex,
-        sliceIndex + props.choicesPerLine,
-      );
-      formatedChoices.value.push(result);
-      sliceIndex += props.choicesPerLine;
+        sliceIndex + props.choicesPerLine
+      )
+      formatedChoices.value.push(result)
+      sliceIndex += props.choicesPerLine
     }
   } else {
-    formatedChoices.value.push(props.choices);
+    formatedChoices.value.push(props.choices)
   }
 }
 
 function iconColor(value) {
-  return !props.disabled && value === currentChoice.value ? "primary" : "";
+  return !props.disabled && value === currentChoice.value ? 'primary' : ''
 }
 function selectChoice(value) {
   if (props.disabled) {
-    return;
+    return
   }
-  currentChoice.value = value;
+  currentChoice.value = value
 }
 
 onMounted(() => {
-  formatChoices();
-});
+  formatChoices()
+})
 </script>
 
 <style lang="scss" scoped>

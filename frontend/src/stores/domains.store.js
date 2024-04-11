@@ -150,6 +150,6 @@ export const useDomainsStore = defineStore('domains', () => {
     getAliases,
     deleteAlias,
     updateAlias,
-    $reset
+    $reset,
   }
 })

@@ -111,7 +111,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { getActivePinia } from "pinia"
+import { getActivePinia } from 'pinia'
 
 import parametersApi from '@/api/parameters'
 import { useAuthStore, useParametersStore } from '@/stores'
@@ -129,208 +129,190 @@ const drawer = ref(true)
 const authUser = computed(() => authStore.authUser)
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 const backgroundColor = computed(() =>
-    route.meta.layout === 'account' ? 'bg-grey-darken-1' : 'bg-primary-darken-1'
+  route.meta.layout === 'account' ? 'bg-grey-darken-1' : 'bg-primary-darken-1'
 )
 
 const userInitials = computed(() => {
-    let initials = null
-    if (authUser.value.first_name) {
-        initials = authUser.value.first_name[0]
-    }
-    if (authUser.value.last_name) {
-        initials = initials
-                 ? initials + authUser.value.last_name[0]
-                 : authUser.value.last_name[0]
-    }
-    if (!initials) {
-        initials = authUser.value.username[0]
-    }
-    return initials
+  let initials = null
+  if (authUser.value.first_name) {
+    initials = authUser.value.first_name[0]
+  }
+  if (authUser.value.last_name) {
+    initials = initials
+      ? initials + authUser.value.last_name[0]
+      : authUser.value.last_name[0]
+  }
+  if (!initials) {
+    initials = authUser.value.username[0]
+  }
+  return initials
 })
 const displayName = computed(() => {
-    return authUser.value.first_name || authUser.value.last_name
-         ? `${authUser.value.first_name} ${authUser.value.last_name}`
-         : authUser.value.username
+  return authUser.value.first_name || authUser.value.last_name
+    ? `${authUser.value.first_name} ${authUser.value.last_name}`
+    : authUser.value.username
 })
 
 const menuItems = computed(() => {
-    if (route.meta.layout === 'account') {
-        return userSettingsMenuItems
-    }
-    return mainMenuItems
+  if (route.meta.layout === 'account') {
+    return userSettingsMenuItems
+  }
+  return mainMenuItems
 })
 
 const mainColor = computed(() => {
-    if (route.meta.layout === 'account') {
-        return 'grey'
-    }
-    return 'primary'
+  if (route.meta.layout === 'account') {
+    return 'grey'
+  }
+  return 'primary'
 })
 
 // created
 parametersApi.getApplications().then((response) => {
-    response.data.forEach((item) => {
-        mainMenuItems[6].children.push({
-            text: item.label,
-            to: { name: 'ParametersEdit', params: { app: item.name } },
-        })
+  response.data.forEach((item) => {
+    mainMenuItems[6].children.push({
+      text: item.label,
+      to: { name: 'ParametersEdit', params: { app: item.name } },
     })
+  })
 })
 
 const imapMigration = computed(() => parametersStore.imapMigrationEnabled)
 
 const mainMenuItems = [
-    {
-        text: $gettext('Dashboard'),
-        to: { name: 'Dashboard' },
-        icon: 'mdi-view-dashboard-outline',
-        exact: true,
-    },
-    {
-        text: $gettext('Domains'),
-        to: { name: 'DomainList' },
-        icon: 'mdi-domain',
+  {
+    text: $gettext('Dashboard'),
+    to: { name: 'Dashboard' },
+    exact: true,
+    icon: 'mdi-view-dashboard-outline'
+  },
+  {
+    text: $gettext('Domains'),
+    to: { name: 'DomainList' },
+    icon: 'mdi-domain',
+    roles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+  },
+  {
+    text: $gettext('Identities'),
+    to: { name: 'Identities' },
+    icon: 'mdi-account',
+    roles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+  },
+  {
+    text: $gettext('Alarms'),
+    to: { name: 'Alarms' },
+    icon: 'mdi-bell',
+  },
+  {
+    icon: 'mdi-history',
+    text: $gettext('Monitoring'),
+    roles: ['SuperAdmins', 'Resellers', 'DomainAdmins'],
+    children: [
+      {
+        text: $gettext('Statistics'),
+        to: { name: 'Statistics' },
+        roles: ['SuperAdmins'],
+      },
+      {
+        text: $gettext('Audit trail'),
+        to: { name: 'AuditTrail' },
+        roles: ['SuperAdmins'],
+      },
+      {
+        text: $gettext('Messages'),
+        to: { name: 'MessageLog' },
         roles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
-    },
-    {
-        text: $gettext('Identities'),
-        to: { name: 'Identities' },
-        icon: 'mdi-account',
-        roles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
-    },
-    {
-        text: $gettext('Alarms'),
-        to: { name: 'Alarms' },
-        icon: 'mdi-bell',
-    },
-    {
-        icon: 'mdi-history',
-        text: $gettext('Monitoring'),
-        roles: ['SuperAdmins', 'Resellers', 'DomainAdmins'],
-        children: [
-            {
-                text: $gettext('Statistics'),
-                to: { name: 'Statistics' },
-                roles: ['SuperAdmins'],
-            },
-            {
-                text: $gettext('Audit trail'),
-                to: { name: 'AuditTrail' },
-                roles: ['SuperAdmins'],
-            },
-            {
-                text: $gettext('Messages'),
-                to: { name: 'MessageLog' },
-                roles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
-            },
-        ],
-    },
-    {
-        icon: 'mdi-email-sync-outline',
-        text: $gettext('IMAP Migration'),
+      },
+    ],
+  },
+  {
+    icon: 'mdi-email-sync-outline',
+    text: $gettext('IMAP Migration'),
+    roles: ['SuperAdmins', 'Resellers'],
+    children: [
+      {
+        text: $gettext('Email providers'),
+        to: { name: 'ProvidersList' },
         roles: ['SuperAdmins', 'Resellers'],
-        children: [
-            {
-                text: $gettext('Email providers'),
-                to: { name: 'ProvidersList' },
-                roles: ['SuperAdmins', 'Resellers'],
-            },
-            {
-                text: $gettext('Migrations'),
-                to: { name: 'MigrationsList' },
-                roles: ['Resellers', 'SuperAdmins'],
-            },
-        ],
-    },
-    {
-        icon: 'mdi-cog',
-        text: $gettext('Settings'),
-        children: [],
-        roles: ['SuperAdmins'],
-    },
-    {
-        icon: 'mdi-information',
-        text: $gettext('Information'),
-        roles: ['SuperAdmins'],
-        to: { name: 'Information' },
-    },
+      },
+      {
+        text: $gettext('Migrations'),
+        to: { name: 'MigrationsList' },
+        roles: ['Resellers', 'SuperAdmins'],
+      },
+    ],
+  },
+  {
+    icon: 'mdi-cog',
+    text: $gettext('Settings'),
+    children: [],
+    roles: ['SuperAdmins'],
+  },
+  {
+    icon: 'mdi-information',
+    text: $gettext('Information'),
+    roles: ['SuperAdmins'],
+    to: { name: 'Information' },
+  }
 ]
 
 const userSettingsMenuItems = [
-    {
-        text: $gettext('API'),
-        roles: ['SuperAdmins'],
-        to: { name: 'APISetup' },
-        icon: 'mdi-api',
-        exact: true,
-    },
-    {
-        text: $gettext('Profile'),
-        to: { name: 'UserProfile' },
-        icon: 'mdi-account-circle-outline',
-        exact: true,
-    },
-    {
-        text: $gettext('Security'),
-        to: { name: 'UserSecurity' },
-        icon: 'mdi-lock-outline',
-        exact: true,
-    },
-    // {
-    //   text: $gettext('Preferences'),
-    //   icon: 'mdi-tune',
-    //   exact: true
-    // },
-    {
-        text: $gettext('Forward'),
-        condition: () => authUser.value.mailbox !== null,
-        to: { name: 'UserForward' },
-        icon: 'mdi-forward',
-        exact: true,
-    },
+  {
+    text: $gettext('Settings'),
+    to: { name: 'AccountSettings' },
+    icon: 'mdi-cog'
+  }
 ]
 
 const userMenuItems = [
-    {
-        text: $gettext('Profile'),
-        icon: 'mdi-account-circle-outline',
-        to: { name: 'UserProfile' },
-        click: () => null,
-    },
-    {
-        text: $gettext('Logout'),
-        icon: 'mdi-logout',
-        click: logout,
-    },
+  {
+    text: $gettext('Account'),
+    icon: 'mdi-account-circle-outline',
+    to: { name: 'AccountSettings' },
+    click: () => null,
+  },
+  {
+    text: $gettext('Logout'),
+    icon: 'mdi-logout',
+    click: logout,
+  },
 ]
 
+if (authUser.value.role !== 'SimpleUsers') {
+  userMenuItems.unshift({
+    text: $gettext('Admin'),
+    to: { name: 'Dashboard' },
+    icon: 'mdi-view-dashboard-outline'
+  })
+}
+
 function displayMenuItem(item) {
-    if (isAuthenticated.value) {
-        const condition =
-            (item.roles === undefined ||
-             item.roles.indexOf(authUser.value.role) !== -1) &&
-            (item.condition === undefined || item.condition()) &&
-            item.activated !== false
-        if (item.icon === 'mdi-email-sync-outline') {
-            // For imapMigration
-            return condition && imapMigration.value
-        }
-        return condition
+  if (isAuthenticated.value) {
+    const condition =
+      (item.roles === undefined ||
+        item.roles.indexOf(authUser.value.role) !== -1) &&
+      (item.condition === undefined || item.condition()) &&
+      item.activated !== false
+    if (item.icon === 'mdi-email-sync-outline') {
+      // For imapMigration
+      return condition && imapMigration.value
     }
+    return condition
+  }
 }
 
 async function logout() {
-    getActivePinia()._s.forEach(async (store) => await store.$reset());
-    router.push({ name: 'Login' })
+  getActivePinia()._s.forEach(async (store) => await store.$reset())
+  router.push({ name: 'Login' })
 }
 
 onMounted(() => {
-    if (parametersStore.imapMigrationEnabled === null) {
-        parametersApi.getApplication('imap_migration').then((response) => {
-            parametersStore.imapMigrationEnabled =
-                response.data.params.enabled_imapmigration
-        })
-    }
+  if (parametersStore.imapMigrationEnabled === null) {
+    parametersApi.getApplication('imap_migration').then((response) => {
+      parametersStore.imapMigrationEnabled =
+        response.data.params.enabled_imapmigration
+    })
+  }
 })
 </script>
 

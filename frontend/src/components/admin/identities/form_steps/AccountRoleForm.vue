@@ -18,7 +18,7 @@
             class="float-right"
             size="large"
             icon="mdi-help-circle-outline"
-            />
+          />
         </v-alert>
       </v-col>
     </v-row>

@@ -32,7 +32,9 @@
                   :key="_period.value"
                   @click="setPeriod(_period.value)"
                 >
-                  <v-list-item-title> {{ _period.name }} </v-list-item-title>
+                  <v-list-item-title>
+                    {{ _period.name }}
+                  </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-col>

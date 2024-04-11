@@ -147,7 +147,9 @@ async function save() {
   parametersApi
     .saveApplication(route.params.app, parameters.value)
     .then(() => {
-      busStore.displayNotification({ msg: $gettext('Parameters updated') })
+      busStore.displayNotification({
+        msg: $gettext('Parameters updated'),
+      })
       if (route.params.app === 'imap_migration') {
         parametersStore.imapMigrationEnabled =
           parameters.value.enabled_imapmigration

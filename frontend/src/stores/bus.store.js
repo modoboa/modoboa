@@ -19,6 +19,6 @@ export const useBusStore = defineStore('bus', () => {
     notification,
     notificationColor,
     displayNotification,
-    $reset
+    $reset,
   }
 })
