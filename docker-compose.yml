@@ -28,6 +28,8 @@ services:
       dockerfile: docker/Dockerfile.dev
     ports:
       - 8000:8000
+    env_file:
+      - test_project/oidc_key
     environment:
       PYTHONPATH: ".."
       DB: "SQLITE"
