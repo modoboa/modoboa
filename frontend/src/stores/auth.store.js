@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import gettext from '@/plugins/gettext'
+import router from '@/router/index.js'
 import { UserManager } from 'oidc-client-ts'
 
 import repository from '@/api/repository'
@@ -14,16 +15,16 @@ export const useAuthStore = defineStore('auth', () => {
   const authUser = ref({})
   const isAuthenticated = ref(false)
   const manager = new UserManager({
-    authority: '/api/o',
+    authority: 'http://localhost:8000/api/o',
     client_id: 'LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD',
-    // Is client_secret necessary?
-    client_secret:
-      'fXzG7tq23eXrM7RK41pXHRseuRWnxe4gV0p4A4YXJlF9jva7QfsDft1g7ESYU9AXR35QE0lo2Ti696OXsqb9JHLjtrPxaYmgMSRmRwLCce5hVr3FB2QhfSOThFYhcuuR',
-    metadata: {
-      authorization_endpoint: '/api/o/authorize/',
-      token_endpoint: '/api/o/token/',
-    },
-    scope: 'read write',
+    redirect_uri: 'http://localhost:3000/logged',
+    response_type: 'code',
+    scope: 'openid read write',
+    automaticSilentRenew: true,
+    accessTokenExpiringNotificationTime: 60,
+    monitorSession: true,
+    filterProtocolClaims: true,
+    loadUserInfo: true,
   })
 
   const userHasMailbox = computed(() => {
@@ -40,12 +41,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function initialize() {
     if (isAuthenticated.value) {
-      return
+      return null
     }
     const user = await manager.getUser()
     if (!user) {
-      return
+      console.log("user failed to identify")
+      return null
     }
+    console.log("user successfully identified")
     repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
     repository.defaults.headers.post['Content-Type'] = 'application/json'
     return fetchUser()
@@ -58,14 +61,37 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login(payload) {
-    await manager.signinResourceOwnerCredentials(payload)
-    return initialize()
-    // const cookiesAttributes = { sameSite: 'strict' }
-    // if (payload.rememberMe) {
-    //   cookiesAttributes.expires = 90
-    // }
+  async function login() {
+    console.log("login")
+    try {
+      await manager.signinRedirect();
+      console.log("Currently Logging in")
+    } catch (error) {
+      console.error('Error logging in:', error)
+    }
   }
+
+  async function completeLogin() {
+    console.log("completeLogin")
+    try {
+      const user = await manager.signinRedirectCallback()
+      isAuthenticated.value = true
+      console.log(user)
+      const previousPage = sessionStorage.getItem('previousPage');
+      // Redirect the user to the previous page if available
+      if (previousPage) {
+        window.location.href = previousPage;
+      } else {
+        // Redirect to a default page if the previous page is not available
+        router.push({name : 'Dashboard'});
+      }
+      return user
+    } catch (error) {
+      console.error('Error completing login:', error)
+      return null
+    }
+  }
+
   async function $reset() {
     delete repository.defaults.headers.common.Authorization
     authUser.value = {}
@@ -101,6 +127,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     authUser,
+    completeLogin,
     isAuthenticated,
     userHasMailbox,
     validateAccess,

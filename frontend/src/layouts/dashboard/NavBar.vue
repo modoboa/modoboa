@@ -313,7 +313,7 @@ function displayMenuItem(item) {
 
 async function logout() {
   getActivePinia()._s.forEach(async (store) => await store.$reset())
-  router.push({ name: 'Login' })
+  //router.push({ name: 'Login' })
 }
 
 onMounted(() => {
