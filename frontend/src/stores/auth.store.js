@@ -38,6 +38,15 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
+  function getAccessToken() {
+    return manager.getUser().then((user) => {
+      if (!user) {
+        return null
+      }
+      return user.access_token
+    })
+  }
+
   async function initialize() {
     if (isAuthenticated.value) {
       return null
@@ -46,8 +55,6 @@ export const useAuthStore = defineStore('auth', () => {
     if (!user) {
       return null
     }
-    repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
-    repository.defaults.headers.post['Content-Type'] = 'application/json'
     return fetchUser()
   }
 
@@ -55,7 +62,10 @@ export const useAuthStore = defineStore('auth', () => {
     const user = await manager.getUser()
     if (!user || user.expired) {
       manager.signinRedirect()
+      return
     }
+    repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
+    repository.defaults.headers.post['Content-Type'] = 'application/json'
   }
 
   async function login() {
@@ -127,6 +137,7 @@ export const useAuthStore = defineStore('auth', () => {
     userHasMailbox,
     validateAccess,
     fetchUser,
+    getAccessToken,
     initialize,
     login,
     $reset,

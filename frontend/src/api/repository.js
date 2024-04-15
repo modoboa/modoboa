@@ -8,9 +8,9 @@ const _axios = axios.create()
 _axios.interceptors.request.use(
   function (config) {
     const authStore = useAuthStore()
-    // Do something before request is sent
     if (authStore.isAuthenticated) {
       config.headers['Accept-Language'] = authStore.authUser.language
+      config.headers['Authorization'] = `Bearer ${authStore.getAccessToken()}`
     }
     return config
   },
