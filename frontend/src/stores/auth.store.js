@@ -9,7 +9,6 @@ import { UserManager } from 'oidc-client-ts'
 import repository from '@/api/repository'
 import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
-// import authApi from '@/api/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const authUser = ref({})
@@ -61,7 +60,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login() {
     try {
-      await manager.signinRedirect();
+      await manager.signinRedirect()
     } catch (error) {
       console.error('Error logging in:', error)
     }
@@ -71,13 +70,13 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const user = await manager.signinRedirectCallback()
       isAuthenticated.value = true
-      const previousPage = sessionStorage.getItem('previousPage');
+      const previousPage = sessionStorage.getItem('previousPage')
       // Redirect the user to the previous page if available
       if (previousPage) {
-        window.location.href = previousPage;
+        window.location.href = previousPage
       } else {
         // Redirect to a default page if the previous page is not available
-        router.push({name : 'Dashboard'});
+        router.push({ name: 'Dashboard' })
       }
       return user
     } catch (error) {
@@ -91,6 +90,7 @@ export const useAuthStore = defineStore('auth', () => {
     authUser.value = {}
     isAuthenticated.value = false
     //TODO: Call the logout callback of OIDC and log out from the IdP
+    manager.signoutRedirect()
   }
 
   async function updateAccount(data) {

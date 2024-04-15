@@ -299,26 +299,18 @@ router.beforeEach((to, from, next) => {
     const previousPage = window.location.href
     sessionStorage.setItem('previousPage', previousPage)
     const authStore = useAuthStore()
-    authStore.initialize().then((res) => {
-      if (res === null) {
-        next({name: 'Login'})
+    authStore.validateAccess()
+    if (to.meta.allowedRoles !== undefined) {
+      if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
+        next({ name: 'Dashboard' })
         return
       }
-      authStore.validateAccess()
-      if (to.meta.allowedRoles !== undefined) {
-        if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
-          next({ name: 'Dashboard' })
-          return
-        }
-      }
-      if (to.meta.requiresMailbox && !authStore.authUser.mailbox) {
-        next({ name: 'Dashboard' })
-      }
-      next()
-    })
-  } else {
-    next()
+    }
+    if (to.meta.requiresMailbox && !authStore.authUser.mailbox) {
+      next({ name: 'Dashboard' })
+    }
   }
+  next()
 })
 
 export default router
