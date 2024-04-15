@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     "ckeditor",
     "ckeditor_uploader",
     "oauth2_provider",
+    "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
@@ -115,6 +116,7 @@ MIDDLEWARE = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "x_forwarded_for.middleware.XForwardedForMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -167,6 +169,8 @@ TEMPLATES = [
 ROOT_URLCONF = "test_project.urls"
 
 WSGI_APPLICATION = "test_project.wsgi.application"
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
