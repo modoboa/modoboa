@@ -2,4 +2,10 @@
   <router-view />
 </template>
 
-<script setup></script>
+<script setup>
+import { useAuthStore } from '@/stores'
+
+const authStore = useAuthStore()
+
+authStore.initialize()
+</script>
