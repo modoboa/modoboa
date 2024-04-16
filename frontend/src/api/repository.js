@@ -6,11 +6,12 @@ import { useAuthStore } from '@/stores'
 const _axios = axios.create()
 
 _axios.interceptors.request.use(
-  function (config) {
+  async function (config) {
     const authStore = useAuthStore()
     if (authStore.isAuthenticated) {
+      const token = await authStore.getAccessToken()
       config.headers['Accept-Language'] = authStore.authUser.language
-      config.headers['Authorization'] = `Bearer ${authStore.getAccessToken()}`
+      config.headers['Authorization'] = `Bearer ${token}`
     }
     return config
   },
