@@ -167,15 +167,17 @@ const mainColor = computed(() => {
   return 'primary'
 })
 
-// created
-parametersApi.getApplications().then((response) => {
-  response.data.forEach((item) => {
-    mainMenuItems[6].children.push({
-      text: item.label,
-      to: { name: 'ParametersEdit', params: { app: item.name } },
+if (authUser.role === 'SuperAdmins') {
+  // created
+  parametersApi.getApplications().then((response) => {
+    response.data.forEach((item) => {
+      mainMenuItems[6].children.push({
+        text: item.label,
+        to: { name: 'ParametersEdit', params: { app: item.name } },
+      })
     })
   })
-})
+}
 
 const imapMigration = computed(() => parametersStore.imapMigrationEnabled)
 
@@ -316,7 +318,7 @@ async function logout() {
 }
 
 onMounted(() => {
-  if (parametersStore.imapMigrationEnabled === null) {
+  if (authUser.role === 'SuperAdmins' && parametersStore.imapMigrationEnabled === null) {
     parametersApi.getApplication('imap_migration').then((response) => {
       parametersStore.imapMigrationEnabled =
         response.data.params.enabled_imapmigration
