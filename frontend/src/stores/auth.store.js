@@ -11,7 +11,7 @@ import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
 
 export const useAuthStore = defineStore('auth', () => {
-  const authUser = ref({})
+  const authUser = ref(null)
   const isAuthenticated = ref(false)
   const manager = new UserManager({
     authority: 'http://localhost:8000/api/o',
