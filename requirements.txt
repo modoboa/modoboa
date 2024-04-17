@@ -6,13 +6,13 @@ django-xforwardedfor-middleware==2.0
 django-otp==1.3.0
 django-filter
 django-rename-app==0.1.7
+django-environ
 
 dj-database-url
 
 djangorestframework>=3.14,<3.16
 drf-spectacular
 uritemplate
-djangorestframework-simplejwt==5.3.1
 django-oauth-toolkit
 django-cors-headers
 

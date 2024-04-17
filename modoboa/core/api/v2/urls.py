@@ -3,9 +3,6 @@
 from django.urls import path
 
 from rest_framework import routers
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-)
 
 from . import views
 from . import viewsets
@@ -18,8 +15,6 @@ router.register(r"logs/audit-trail", viewsets.LogViewSet)
 
 urlpatterns = router.urls
 urlpatterns += [
-    path("token/", views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path(
         "password_reset/",
         views.DefaultPasswordResetView.as_view(),

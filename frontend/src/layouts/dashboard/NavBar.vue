@@ -272,7 +272,7 @@ const userMenuItems = [
   },
 ]
 
-if (authUser.value.role !== 'SimpleUsers') {
+if (isAuthenticated && authUser.value.role !== 'SimpleUsers') {
   userMenuItems.unshift({
     text: $gettext('Admin'),
     to: { name: 'Dashboard' },
