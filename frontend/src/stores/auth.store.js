@@ -10,13 +10,16 @@ import repository from '@/api/repository'
 import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
 
+import { useGlobalConfig } from '@/main'
+
 export const useAuthStore = defineStore('auth', () => {
+  const config = useGlobalConfig()
   const authUser = ref(null)
   const isAuthenticated = ref(false)
   const manager = new UserManager({
-    authority: 'http://localhost:8000/api/o',
-    client_id: 'LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD',
-    redirect_uri: 'http://localhost:3000/login/logged',
+    authority: config.OAUTH_AUTHORITY_URL,
+    client_id: config.OAUTH_CLIENT_ID,
+    redirect_uri: config.OAUTH_REDIRECT_URI,
     response_type: 'code',
     scope: 'openid read write',
     automaticSilentRenew: true,
