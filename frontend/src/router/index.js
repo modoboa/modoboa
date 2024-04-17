@@ -294,11 +294,14 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth !== undefined) {
     const previousPage = window.location.href
     sessionStorage.setItem('previousPage', previousPage)
     const authStore = useAuthStore()
+    if (!authStore.authUser) {
+      await authStore.initialize()
+    }
     authStore.validateAccess()
     if (to.meta.allowedRoles !== undefined) {
       if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
