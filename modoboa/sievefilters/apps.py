@@ -24,4 +24,3 @@ class SieveFiltersConfig(AppConfig):
 
     def ready(self):
         load_settings()
-        from . import handlers

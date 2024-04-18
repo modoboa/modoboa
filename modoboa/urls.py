@@ -29,7 +29,6 @@ urlpatterns = [
     path("stats/", include("modoboa.maillog.urls")),
     path("dmarc/", include("modoboa.dmarc.urls")),
     path("imap_migration/", include("modoboa.imap_migration.urls")),
-    path("sfilters/", include("modoboa.sievefilters.urls")),
     path("user/forward/", user_views.forward, name="user_forward"),
     path(
         "accounts/password_reset/",
