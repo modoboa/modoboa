@@ -116,6 +116,13 @@ SETTINGS_SAMPLE = {
     "postfix_autoreply-autoreplies_timeout": 86400,
     "postfix_autoreply-default_subject": "I'm off",
     "postfix_autoreply-default_content": "I'm off",
+    "sievefilters-server": "127.0.0.1",
+    "sievefilters-port": 4190,
+    "sievefilters-starttls": False,
+    "sievefilters-authentication_mech": "auto",
+    "sievefilters-imap_server": "127.0.0.1",
+    "sievefilters-imap_secured": False,
+    "sievefilters-imap_port": 143,
 }
 
 
