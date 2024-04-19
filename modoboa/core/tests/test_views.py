@@ -119,7 +119,7 @@ SETTINGS_SAMPLE = {
     "sievefilters-server": "127.0.0.1",
     "sievefilters-port": 4190,
     "sievefilters-starttls": False,
-    "sievefilters-authentication_mech": "auto",
+    "sievefilters-authentication_mech": "AUTO",
     "sievefilters-imap_server": "127.0.0.1",
     "sievefilters-imap_secured": False,
     "sievefilters-imap_port": 143,
