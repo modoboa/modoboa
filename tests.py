@@ -39,6 +39,7 @@ class DeployTest(unittest.TestCase):
             % (dburl, "localhost", self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)
+        print(output.decode("utf-8"))
         self.assertEqual(code, 0)
 
 
