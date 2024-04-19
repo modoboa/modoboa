@@ -19,7 +19,7 @@ class DeployTest(unittest.TestCase):
     dbport = PORT
     projname = "modoboa_test"
     dbuser = DB == "mysql" and "modoboa" or "postgres"
-    dbpassword = DB == "mysql" and "modoboa" or ""
+    dbpassword = DB == "mysql" and "modoboa" or "postgres"
 
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
