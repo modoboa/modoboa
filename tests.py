@@ -33,14 +33,12 @@ class DeployTest(unittest.TestCase):
             self.dbport,
             "modoboa",
         )
-        print(dburl)
         cmd = (
             "modoboa-admin.py deploy --collectstatic "
             "--dburl %s --domain %s --admin-username admin %s"
             % (dburl, "localhost", self.projname)
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)
-        print(output.decode("utf-8"))
         self.assertEqual(code, 0)
 
 
