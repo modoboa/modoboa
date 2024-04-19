@@ -33,6 +33,7 @@ class DeployTest(unittest.TestCase):
             self.dbport,
             self.projname,
         )
+        print(dburl)
         cmd = (
             "modoboa-admin.py deploy --collectstatic "
             "--dburl %s --domain %s --admin-username admin %s"
