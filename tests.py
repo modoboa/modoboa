@@ -31,7 +31,7 @@ class DeployTest(unittest.TestCase):
             self.dbpassword,
             self.dbhost,
             self.dbport,
-            self.projname,
+            "modoboa",
         )
         print(dburl)
         cmd = (
