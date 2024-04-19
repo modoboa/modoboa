@@ -8,6 +8,7 @@ import shutil
 import string
 import subprocess
 import sys
+import uuid
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -18,8 +19,6 @@ from django.conf import settings
 from django.core import management
 from django.template import Context, Template
 from django.utils.encoding import smart_str
-
-from oauth2_provider.models import Application
 
 from modoboa.core.commands import Command
 from modoboa.lib.api_client import ModoAPIClient
@@ -50,7 +49,7 @@ class DeployCommand(Command):
     )
 
     def __init__(self, *args, **kwargs):
-        super(DeployCommand, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._parser.add_argument(
             "name", type=str, help="The name of your Modoboa instance"
         )
@@ -202,16 +201,6 @@ class DeployCommand(Command):
             extra_settings.append(extension[1])
         return extra_settings
 
-    def create_frontend_oauth_app(self) -> str:
-        app = Application.objects.create(
-            name="Modoboa frontend",
-            client_type="public",
-            algorithm="RS256",
-            authorization_grant_type="authorization-code",
-            skip_authorization=True,
-        )
-        return app.client_id
-
     def generate_rsa_private_key(self, storage_path: str):
         """Generate RSA private key for OIDC support."""
         private_key = rsa.generate_private_key(
@@ -223,8 +212,10 @@ class DeployCommand(Command):
             format=serialization.PrivateFormat.TraditionalOpenSSL,
             encryption_algorithm=serialization.NoEncryption(),
         )
+        content = bytes(pem)
+        content = content.replace(b"\n", b"\\n")
         with open(f"{storage_path}/.env", "wb") as fp:
-            fp.write(b'OIDC_RSA_PRIVATE_KEY="' + bytes(pem) + b'"\n')
+            fp.write(b'OIDC_RSA_PRIVATE_KEY="' + content + b'"\n')
 
     def handle(self, parsed_args):
         django.setup()
@@ -296,7 +287,7 @@ class DeployCommand(Command):
         )
         with open("%s/settings.py" % path, "w") as fp:
             fp.write(tpl)
-        self.generate_rsa_private_key(path)
+        self.generate_rsa_private_key(parsed_args.name)
 
         shutil.copyfile("%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path)
         os.mkdir("%s/media" % parsed_args.name)
@@ -322,15 +313,31 @@ class DeployCommand(Command):
         frontend_target_dir = "{}/frontend".format(parsed_args.name)
         shutil.copytree(base_frontend_dir, frontend_target_dir)
 
-        client_id = self.create_frontend_oauth_app()
         frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
+        redirect_uri = f"https://{allowed_host}/{frontend_path}/login/logged"
+        client_id = str(uuid.uuid4())
+        self._exec_django_command(
+            "createapplication",
+            parsed_args.name,
+            "--name",
+            "Modoboa frontend",
+            "--client-id",
+            client_id,
+            "--skip-authorization",
+            "--algorithm",
+            "RS256",
+            "--redirect-uris",
+            redirect_uri,
+            "public",
+            "authorization-code",
+        )
         with open("{}/config.json".format(frontend_target_dir), "w") as fp:
             fp.write(
-                f"""{
+                f"""{{
     "API_BASE_URL": "https://{allowed_host}/api/v2",
     "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
     "OAUTH_CLIENT_ID": "{client_id}",
-    "OAUTH_REDIRECT_URI": "https://{allowed_host}/{frontend_path}/login/logged"
-}
+    "OAUTH_REDIRECT_URI": "{redirect_uri}"
+}}
 """
             )
