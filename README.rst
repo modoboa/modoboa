@@ -1,10 +1,10 @@
-################################
-`Modoboa <http://modoboa.org/>`_
-################################
+############################################
+Modoboa (`website: <https://modoboa.org/>`_)
+############################################
 
 |workflow| |codecov| |latest-version|
 
-Modoboa is a mail hosting and management platform including a modern
+`Modoboa <https://modoboa.org>`_ is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
 as an administration panel and webmail.
 
@@ -53,10 +53,17 @@ If you want to try out Modoboa, check out our `demo installation <https://demo.m
 Getting help
 ************
 
+Modoboa is a free software and is totally open source BUT you can hire the team if you need professional services. More information here: https://modoboa.org/en/professional-services/.
+
+Contracting a support plan if a good way to ensure your installation stays available and up-to-date and it will help the project to be sustainable :)
+
+*********
+Community
+*********
+
 If you have any questions, you can get help through the following platforms:
 
 * `Discord <https://discord.gg/WuQ3v3PXGR>`_
-* Mailing list: join the `modoboa-users <https://groups.google.com/forum/#!forum/modoboa-users>`_ group on Google Groups
 * Github: open an issue if you found a bug
 
 *************
