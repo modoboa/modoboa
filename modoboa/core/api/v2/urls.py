@@ -12,6 +12,7 @@ router = routers.SimpleRouter()
 router.register(r"account", viewsets.AccountViewSet, basename="account")
 router.register(r"languages", viewsets.LanguageViewSet, basename="language")
 router.register(r"logs/audit-trail", viewsets.LogViewSet)
+router.register(r"fido", viewsets.FIDOViewSet, basename="fido")
 
 urlpatterns = router.urls
 urlpatterns += [

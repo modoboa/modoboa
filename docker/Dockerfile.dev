@@ -15,6 +15,7 @@ COPY requirements.txt /tmp
 COPY test-requirements.txt /tmp
 RUN python -m pip install -U pip
 RUN pip install -r requirements.txt -r test-requirements.txt
+RUN pip install django-extensions Werkzeug pyOpenSSL
 
 FROM base as run
 COPY docker/doveadm /usr/local/bin

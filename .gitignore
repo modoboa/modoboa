@@ -34,3 +34,5 @@ test_project/modoboa.db
 .ash_history
 modoboa.kdev4
 .kateproject
+test_project/cert.crt
+test_project/cert.key

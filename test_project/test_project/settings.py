@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     "django_otp.plugins.otp_static",
     "django_rename_app",
     "django_rq",
+    "django_extensions", # Just for docker (SSL support)
 )
 
 # A dedicated place to register Modoboa applications

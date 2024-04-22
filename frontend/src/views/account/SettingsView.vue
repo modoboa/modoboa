@@ -30,6 +30,7 @@
     </v-window-item>
     <v-window-item value="security">
       <TwoFactorAuthForm />
+      <FidoAuthForm />
     </v-window-item>
     <v-window-item value="forward" v-if="authStore.userHasMailbox">
       <ForwardForm />
@@ -51,6 +52,7 @@ import TwoFactorAuthForm from '@/components/account/TwoFactorAuthForm.vue'
 import ForwardForm from '@/components/account/ForwardForm.vue'
 import AutoReplyForm from '@/components/account/AutoReplyForm.vue'
 import APISetupForm from '@/components/account/APISetupForm.vue'
+import FidoAuthForm from '@/components/account/FidoAuthForm.vue'
 import { useAuthStore } from '@/stores'
 
 const authStore = useAuthStore()
