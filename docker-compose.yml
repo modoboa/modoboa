@@ -38,7 +38,7 @@ services:
              python3 manage.py migrate
              python3 manage.py load_initial_data
              django-admin compilemessages
-             python3 manage.py runserver 0:8000"
+             python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
     volumes:
       - .:/code
 

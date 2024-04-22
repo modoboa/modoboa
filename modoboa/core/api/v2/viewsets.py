@@ -2,7 +2,7 @@
 
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from drf_spectacular.utils import extend_schema
-from rest_framework import filters, permissions, response, viewsets
+from rest_framework import filters, permissions, response, viewsets, mixins
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -16,6 +16,7 @@ from modoboa.lib import pagination
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import constants
+from ... import fido2_auth as f2_auth
 from ... import models
 from . import serializers
 
@@ -167,3 +168,33 @@ class LanguageViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
             {"code": lang[0], "label": lang[1]} for lang in constants.LANGUAGES
         ]
         return response.Response(languages)
+
+
+class FIDOViewSet(GetThrottleViewsetMixin,
+                  mixins.ListModelMixin,
+                  mixins.DestroyModelMixin,
+                  mixins.UpdateModelMixin,
+                  viewsets.GenericViewSet):
+    """Fido management viewset. """
+
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = serializers.FIDOSerializer
+
+    def get_queryset(self):
+        return models.UserFidoKeys.objects.filter(user=self.request.user)
+
+    @action(methods=["post"], detail=False, url_path="registration/begin")
+    def registration_begin(self, request):
+        """An Api View which starts the registration process of a fido key."""
+        options = f2_auth.begin_registration(request)
+        return response.Response(dict(options))
+
+    @action(methods=["post"], detail=False, url_path="registration/end")
+    def registration_end(self, request):
+        """An Api View to complete the registration process of a fido key."""
+        serializer = serializers.FidoRegistrationSerializer(
+            data=request.data)
+        serializer.is_valid(raise_exception=True)
+        f2_auth.end_registration(request.data,
+                                 request.session.pop("fido2_state"),
+                                 request.user.id)

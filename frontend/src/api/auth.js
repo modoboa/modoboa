@@ -13,4 +13,7 @@ export default {
   changePassword(data) {
     return repository.post('/reset_confirm/', data)
   },
+  beginFidoRegistration() {
+    return repository.post('/fido/registration/begin/')
+  },
 }

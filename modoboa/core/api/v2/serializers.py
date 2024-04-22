@@ -238,6 +238,22 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         return data
 
 
+class FIDOSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserFidoKeys
+        fields = ["id", "name", "enabled", "added_on", "last_used"]
+
+
+class FidoRegistrationSerializer(serializers.Serializer):
+    """Serializer used to finish the fido key registration."""
+
+    type = serializers.CharField()
+    id = serializers.CharField()
+    raw_id = serializers.CharField()
+    authenticatorAttachment = serializers.CharField()
+    response = serializers.JSONField()
+
+
 class LogSerializer(serializers.ModelSerializer):
     """Log serializer."""
 
