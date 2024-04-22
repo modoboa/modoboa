@@ -1,5 +1,5 @@
 ############################################
-Modoboa (`website: <https://modoboa.org/>`_)
+Modoboa (`website <https://modoboa.org/>`_)
 ############################################
 
 |workflow| |codecov| |latest-version|
