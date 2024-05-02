@@ -241,7 +241,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
 class FIDOSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserFidoKeys
-        fields = ["id", "name", "enabled", "added_on", "last_used"]
+        fields = ["id", "name", "enabled", "added_on", "last_used", "use_count"]
 
 
 class FidoRegistrationSerializer(serializers.Serializer):

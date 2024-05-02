@@ -417,8 +417,9 @@ class UserFidoKeys(models.Model):
     name = models.CharField(max_length=255)
     enabled = models.BooleanField(default=True)
     added_on = models.DateTimeField(auto_now_add=True)
-    last_used = models.DateTimeField(null=True,default=None)
-    credential_data = models.CharField(max_length=4096)
+    last_used = models.DateTimeField(null=True, default=None)
+    use_count = models.IntegerField(default=0)
+    credential_data = models.TextField()
 
 
 def populate_callback(user, group="SimpleUsers"):

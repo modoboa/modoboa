@@ -3,7 +3,7 @@ from .models import UserFidoKeys
 
 from fido2.webauthn import PublicKeyCredentialRpEntity, PublicKeyCredentialUserEntity, AttestedCredentialData, UserVerificationRequirement
 from fido2.server import Fido2Server
-from fido2.utils import websafe_decode
+from fido2.utils import websafe_decode, websafe_encode
 import fido2.features
 
 
@@ -20,7 +20,7 @@ def create_fido2_server():
 
 
 def get_creds_from_user(user_id):
-    [AttestedCredentialData(websafe_decode(uf.token)) for uf in UserFidoKeys.objects.filter(user=user_id)]
+    return [AttestedCredentialData(websafe_decode(uf.credential_data)) for uf in UserFidoKeys.objects.filter(user=user_id)]
 
 
 def begin_registration(request):
@@ -47,4 +47,4 @@ def end_registration(data, fido2_state, user_id):
         fido2_state,
         data
         )
-    print(auth_data)
+    return websafe_encode(auth_data.credential_data)
