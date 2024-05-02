@@ -16,4 +16,7 @@ export default {
   beginFidoRegistration() {
     return repository.post('/fido/registration/begin/')
   },
+  endFidoRegistration(data) {
+    return repository.post('/fido/registration/end/', data)
+  }
 }

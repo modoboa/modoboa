@@ -3,3 +3,6 @@ django-debug-toolbar
 pre-commit
 black
 pylint
+django-extensions
+Werkzeug
+pyOpenSSL
