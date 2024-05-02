@@ -66,6 +66,9 @@ async function startFidoRegistration() {
 
 onMounted(() => {
   registrationLoading.value = true
+  authApi.getAllFidoRegistred().then((resp) => {
+    console.log(resp)
+  })
   authApi.beginFidoRegistration().then((resp) => {
     creationOption.value = createRequestFromJSON(resp.data)
   }).finally(() => registrationLoading.value = false)

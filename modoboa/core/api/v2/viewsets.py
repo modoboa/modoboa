@@ -195,6 +195,10 @@ class FIDOViewSet(GetThrottleViewsetMixin,
         serializer = serializers.FidoRegistrationSerializer(
             data=request.data)
         serializer.is_valid(raise_exception=True)
-        f2_auth.end_registration(request.data,
+        credential_data = f2_auth.end_registration(request.data,
                                  request.session.pop("fido2_state"),
                                  request.user.id)
+        models.UserFidoKeys.objects.create(name=request.data["name"],
+                                           credential_data=credential_data,
+                                           user=request.user)
+        return response.Response({"success": True}, 200)

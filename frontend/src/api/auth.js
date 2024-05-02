@@ -18,5 +18,8 @@ export default {
   },
   endFidoRegistration(data) {
     return repository.post('/fido/registration/end/', data)
-  }
+  },
+  getAllFidoRegistred() {
+    return repository.get('/fido/')
+  },
 }
