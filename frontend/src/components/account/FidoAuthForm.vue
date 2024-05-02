@@ -15,10 +15,12 @@
             }}
           </div>
           <template v-if="browserCapable">
-            <v-text-field v-model="name" />
-            <v-btn color="success" :loading="registrationLoading" @click="startFidoRegistration">
-              {{ $gettext('Add WebAuthN device') }}
-            </v-btn>
+            <v-form ref="fidoForm" @submit.prevent="startFidoRegistration">
+              <v-text-field v-model="name" :rules="[rules.required]"/>
+              <v-btn color="success" type="submit" :loading="registrationLoading">
+                {{ $gettext('Add WebAuthN device') }}
+              </v-btn>
+            </v-form>
           </template>
           <template v-else>
             <v-alert type="error">
@@ -34,6 +36,7 @@
 import { ref, onMounted } from 'vue'
 import authApi from '@/api/auth.js'
 import { useGettext } from 'vue3-gettext'
+import rules from '@/plugins/rules.js'
 
 const { $gettext } = useGettext()
 
@@ -41,13 +44,22 @@ const name = ref()
 const registrationLoading = ref(false)
 const creationOption = ref()
 const browserCapable = !!(navigator.credentials && navigator.credentials.create && navigator.credentials.get && window.PublicKeyCredential)
+const fidoForm = ref()
 
 async function startFidoRegistration() {
+  const { valid } = await fidoForm.value.validate()
+  if (!valid) {
+    return
+  }
   if (creationOption.value) {
     navigator.credentials.create({...creationOption.value})
       .then(function (attestation) {
         const result = createResponseToJSON(attestation)
+        result.name = name.value
         console.log(result)
+        authApi.endFidoRegistration(result).then((resp) => {
+          console.log(resp)
+        })
       })
   }
 }

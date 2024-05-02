@@ -249,9 +249,10 @@ class FidoRegistrationSerializer(serializers.Serializer):
 
     type = serializers.CharField()
     id = serializers.CharField()
-    raw_id = serializers.CharField()
+    rawId = serializers.CharField()
     authenticatorAttachment = serializers.CharField()
     response = serializers.JSONField()
+    name = serializers.CharField()
 
 
 class LogSerializer(serializers.ModelSerializer):

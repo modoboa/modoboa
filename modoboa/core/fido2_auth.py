@@ -33,7 +33,8 @@ def begin_registration(request):
             display_name=request.user.username,
         ),
         get_creds_from_user(request.user.pk),
-        user_verification=UserVerificationRequirement.DISCOURAGED
+        user_verification=UserVerificationRequirement.DISCOURAGED,
+        extensions={"credentialProtectionPolicy":"userVerificationOptional"}
     )
     request.session['fido2_state'] = state
     return options
@@ -42,8 +43,8 @@ def begin_registration(request):
 def end_registration(data, fido2_state, user_id):
     set_json_mapping()
     server = create_fido2_server()
-    server.authenticate_complete(
+    auth_data = server.register_complete(
         fido2_state,
-        get_creds_from_user(user_id),
-        data["response"],
+        data
         )
+    print(auth_data)
