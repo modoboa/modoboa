@@ -167,19 +167,9 @@ const mainColor = computed(() => {
   return 'primary'
 })
 
-if (authUser.role === 'SuperAdmins') {
-  // created
-  parametersApi.getApplications().then((response) => {
-    response.data.forEach((item) => {
-      mainMenuItems[6].children.push({
-        text: item.label,
-        to: { name: 'ParametersEdit', params: { app: item.name } },
-      })
-    })
-  })
-}
-
 const imapMigration = computed(() => parametersStore.imapMigrationEnabled)
+
+const settings = []
 
 const mainMenuItems = [
   {
@@ -247,7 +237,7 @@ const mainMenuItems = [
   {
     icon: 'mdi-cog',
     text: $gettext('Settings'),
-    children: [],
+    children: settings,
     roles: ['SuperAdmins'],
   },
   {
@@ -318,7 +308,17 @@ async function logout() {
 }
 
 onMounted(() => {
-  if (authUser.role === 'SuperAdmins' && parametersStore.imapMigrationEnabled === null) {
+  if (authUser.value.role === 'SuperAdmins') {
+    parametersApi.getApplications().then((response) => {
+      response.data.forEach((item) => {
+        settings.push({
+          text: item.label,
+          to: { name: 'ParametersEdit', params: { app: item.name } },
+        })
+      })
+    })
+  }
+  if (authUser.value.role === 'SuperAdmins' && parametersStore.imapMigrationEnabled === null) {
     parametersApi.getApplication('imap_migration').then((response) => {
       parametersStore.imapMigrationEnabled =
         response.data.params.enabled_imapmigration
