@@ -766,7 +766,7 @@ Add the following settings to your ``settings.py`` file:
    REDIS_QUOTA_DB = 0
    REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
-Or, if Redis listen on unix socket:
+Or, if Redis listen on unix socket and you are not using the Modoboa installer:
 
 .. sourcecode:: python
 
