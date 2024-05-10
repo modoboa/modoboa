@@ -253,6 +253,9 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_QUOTA_DB = 0
 REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
+# To use unix socket, use this scheme instead
+# REDIS_HOST must point to the socket path
+# REDIS_URL = 'unix://{}?db={}'.format(REDIS_HOST, REDIS_QUOTA_DB)
 
 # RQ
 
@@ -260,12 +263,14 @@ RQ_QUEUES = {
     'dkim': {
         'HOST': REDIS_HOST,
         'PORT': REDIS_PORT,
-        'DB': 0,
+        'DB': REDIS_QUOTA_DB,
+        'URL': REDIS_URL,
     },
     'modoboa': {
         'HOST': REDIS_HOST,
         'PORT': REDIS_PORT,
-        'DB': 0,
+        'DB': REDIS_QUOTA_DB,
+        'URL': REDIS_URL,
     },
 }
 
