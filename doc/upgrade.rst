@@ -766,6 +766,15 @@ Add the following settings to your ``settings.py`` file:
    REDIS_QUOTA_DB = 0
    REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
+Or, if Redis listen on unix socket and you are not using the Modoboa installer:
+
+.. sourcecode:: python
+
+   REDIS_HOST = '/path/to/redis/socket'
+   REDIS_PORT = 6379
+   REDIS_QUOTA_DB = 0
+   REDIS_URL = 'unix://{}?db={}'.format(REDIS_HOST, REDIS_QUOTA_DB)
+
 Once done, you can start the policy daemon using the following commands:
 
 .. sourcecode:: bash
