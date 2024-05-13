@@ -1,55 +1,53 @@
 <script setup lang="js">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useGettext } from 'vue3-gettext'
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useGettext } from 'vue3-gettext'
+  import { useAuthStore } from '@/stores'
+  import rules from '@/plugins/rules.js'
 
-import { useAuthStore } from '@/stores'
-import rules from '@/plugins/rules.js'
+  // Variables
+  const loading = ref(false)
+  const rememberMe = ref(false)
+  const username = ref('')
+  const password = ref('')
+  const isPasswordVisible = ref(false)
+  const loginForm = ref()
+  const errors = ref([])
+  const authStore = useAuthStore()
+  const router = useRouter()
+  const { $gettext } = useGettext()
 
-const loading = ref(false)
-const rememberMe = ref(false)
-const username = ref('')
-const password = ref('')
-const isPasswordvisible = ref(false)
-const loginForm = ref()
-const errors = ref([])
+  // Function to authenticate user
+  async function authenticate() {
+    const { valid } = await loginForm.value.validate()
+    if (!valid) return
 
-const authStore = useAuthStore()
-const router = useRouter()
-const { $gettext } = useGettext()
+    loading.value = true
+    const payload = {
+      username: username.value,
+      password: password.value,
+      rememberMe: rememberMe.value,
+    }
 
-async function authenticate() {
-  const { valid } = await loginForm.value.validate()
-  if (!valid) {
-    return
-  }
-  loading.value = true
-
-  const payload = {
-    username: username.value,
-    password: password.value,
-    rememberMe: rememberMe.value,
-  }
-  authStore
-    .login(payload)
-    .then(() => {
+    // Attempt login
+    try {
+      await authStore.login(payload)
+      // Redirect based on user role
       if (authStore.authUser.role === 'SimpleUsers') {
         router.push({ name: 'AccountSettings' })
       } else {
         router.push({ name: 'Dashboard' })
       }
-    })
-    .catch((err) => {
+    } catch (err) {
       loading.value = false
+      // Handle errors
       if (err.response.status === 401) {
         errors.value = [$gettext('Invalid username and/or password')]
       } else if (err.response.status === 429) {
-        errors.value = [
-          $gettext('Too many unsuccessful attempts, please try later.'),
-        ]
+        errors.value = [$gettext('Too many unsuccessful attempts, please try later.')]
       }
-    })
-}
+    }
+  }
 </script>
 
 <template>
@@ -59,7 +57,9 @@ async function authenticate() {
         <h4 class="text-primary mb-10 text-h4">
           {{ $gettext('Identification') }}
         </h4>
+        <!-- Login Form -->
         <v-form ref="loginForm" @submit.prevent="authenticate">
+          <!-- Username Input -->
           <v-text-field
             v-model="username"
             variant="outlined"
@@ -67,19 +67,22 @@ async function authenticate() {
             prepend-inner-icon="mdi-account-outline"
             :rules="[rules.required]"
           />
+          <!-- Password Input -->
           <v-text-field
             v-model="password"
-            :type="isPasswordvisible ? 'text' : 'password'"
+            :type="isPasswordVisible ? 'text' : 'password'"
             prepend-inner-icon="mdi-lock-outline"
             :label="$gettext('Password')"
             variant="outlined"
-            :append-inner-icon="isPasswordvisible ? 'mdi-eye-off' : 'mdi-eye'"
+            :append-inner-icon="isPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
             :rules="[rules.required, rules.minLength(6)]"
             :error-messages="errors"
-            @click:append-inner="isPasswordvisible = !isPasswordvisible"
+            @click:append-inner="isPasswordVisible = !isPasswordVisible"
+            aria-label="Toggle password visibility"
           />
+          <!-- Remember Me Checkbox -->
           <v-checkbox v-model="rememberMe" :label="$gettext('Remember me')" />
-
+          <!-- Login Button -->
           <v-btn
             block
             color="primary"
@@ -91,6 +94,7 @@ async function authenticate() {
             {{ $gettext('Connect') }}
           </v-btn>
         </v-form>
+        <!-- Forgot Password Button -->
         <v-btn
           block
           variant="outlined"
@@ -103,3 +107,4 @@ async function authenticate() {
     </v-row>
   </v-container>
 </template>
+
