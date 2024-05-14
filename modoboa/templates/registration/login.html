@@ -9,7 +9,9 @@
 {% block main_content %}
   <form method="post" action="{% url 'core:login' %}" class="login-form form-horizontal">
     {% csrf_token %}
+    <!-- Username Field -->
     {% render_field form.username %}
+    <!-- Password Field -->
     {% render_field form.password %}
     <input type="hidden" name="next" value="{{ next }}" />
     <div class="form-group">
@@ -17,33 +19,41 @@
       </div>
       <div class="col-lg-5 col-md-5 col-sm-5">
         <div class="checkbox">
+          <!-- Remember Me Checkbox -->
           <label class="checkbox" for="id_rememberme">
-            <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
+            <input type="checkbox" id="id_rememberme" name="rememberme" aria-label="{% trans "Remember me" %}" />{% trans "Remember me" %}
           </label>
-          <button class="btn btn-primary col-lg-12" type="submit">{% trans "Log in" %}</button>
+          <!-- Login Button -->
+          <button class="btn btn-primary col-lg-12" type="submit" aria-label="{% trans "Log in" %}" disabled>{% trans "Log in" %}</button>
+          <!-- Forgot Password Link -->
           <a class="pull-right" href="{% url 'password_reset' %}">{% trans "Forgot password?" %}</a>
         </div>
       </div>
     </div>
   </form>
+  <!-- Display Login Error -->
   <div class="login-error">
     {% if error %}{% alert error "danger" %}{% endif %}
   </div>
 {% endblock %}
 
 {% block sub_content %}
-  {% for annoucement in annoucements %}
-    <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ annoucement|safe }}</div>
+  <!-- Display Announcements -->
+  {% for announcement in announcements %}
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ announcement|safe }}</div>
   {% endfor %}
 {% endblock %}
 
 {% block extra_js %}
   <script type="text/javascript">
-   $(document).ready(function() {
-       $("form").submit(function(){  
-           $(":submit",this).attr("disabled","disabled");  
-       });
-       $('#id_username').focus();
-   });
+    $(document).ready(function() {
+      // Disable submit button on form submission
+      $("form").submit(function(){  
+        $(":submit",this).attr("disabled","disabled");  
+      });
+      // Set focus to username field on page load
+      $('#id_username').focus();
+    });
   </script>
 {% endblock %}
+
