@@ -16,7 +16,8 @@ class LocalConfigMiddleware(MiddlewareMixin):
 
 
 class TwoFAMiddleware:
-    """Custom 2FA middleware to enforce verification if user has TFA enabled."""
+    """Custom 2FA middleware to enforce verification if user has TFA enabled.
+        Also verify the user if it successfully use a webautn token."""
 
     def __init__(self, get_response=None):
         self.get_response = get_response

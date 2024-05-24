@@ -5,6 +5,7 @@ from fido2.webauthn import PublicKeyCredentialRpEntity, PublicKeyCredentialUserE
 from fido2.server import Fido2Server
 from fido2.utils import websafe_decode, websafe_encode
 import fido2.features
+import datetime
 
 
 def set_json_mapping():
@@ -34,7 +35,7 @@ def begin_registration(request):
         ),
         get_creds_from_user(request.user.pk),
         user_verification=UserVerificationRequirement.DISCOURAGED,
-        extensions={"credentialProtectionPolicy":"userVerificationOptional"}
+        extensions={"credentialProtectionPolicy": "userVerificationOptional"}
     )
     request.session['fido2_state'] = state
     return options
@@ -46,5 +47,32 @@ def end_registration(data, fido2_state, user_id):
     auth_data = server.register_complete(
         fido2_state,
         data
-        )
+    )
     return websafe_encode(auth_data.credential_data)
+
+
+def begin_authentication(request):
+    set_json_mapping()
+    server = create_fido2_server()
+    options, state = server.authenticate_begin(
+        get_creds_from_user(request.user.id))
+    request.session['fido_state'] = state
+    return options
+
+
+def end_authentication(request):
+    set_json_mapping()
+    server = create_fido2_server()
+    credentials = get_creds_from_user(request.user.id)
+    result = server.authenticate_complete(
+        request.session.pop("fido_state"),
+        credentials,
+        request.data,
+    )
+    for key in UserFidoKeys.objects.filter(user=request.user.id):
+        cred = AttestedCredentialData(websafe_decode(key.credential_data))
+        if cred.credential_id == result.credential_id:
+            key.last_used = datetime.datetime.now()
+            key.use_count += 1
+            key.save()
+    return True, ""

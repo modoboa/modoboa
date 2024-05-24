@@ -9,22 +9,104 @@
 {% block main_content %}
   <div class="row">
     <div class="col-sm-offset-4 col-sm-6">
-      <form method="post" action="{% url 'core:2fa_verify' %}" class="login-form">
-        {% csrf_token %}
-        <div class="form-group{% if form.tfa_code.errors %} has-error{% endif %}">
-          <label class="control-label">Two-Factor authentication code</label>
-          <input id="id_tfa_code" name="tfa_code" class="form-control">
-          <span class="help-block">
-            {{ form.tfa_code.errors }}
-          </span>
-          <p class="help-block">
-            Enter the code from the two-factor app on your mobile
-            device. If you've lost your device, you may enter one of your
-            recovery codes.
-          </p>
-        </div>
-        <button class="btn btn-primary col-sm-12" type="submit">Verify code</button>
-      </form>
+      <div id="methodSelection">
+        {% if totp_device %}
+        <button onclick="showTOTP()">Use TOTP/backup code</button>
+        {% endif %}
+        {% if webauthn_device %}
+        <button onclick="showWebAuthn()">Use Webautn device</button>
+        {% endif %}
+      </div>
+      <div id="totp_form" style="display:none;">
+
+        <form method="post" action="{% url 'core:2fa_verify' %}" class="login-form">
+          {% csrf_token %}
+          <div class="form-group{% if form.tfa_code.errors %} has-error{% endif %}">
+            <label class="control-label">Two-Factor authentication code</label>
+            <input id="id_tfa_code" name="tfa_code" class="form-control">
+            <span class="help-block">
+              {{ form.tfa_code.errors }}
+            </span>
+            <p class="help-block">
+              Enter the code from the two-factor app on your mobile
+              device. If you've lost your device, you may enter one of your
+              recovery codes.
+            </p>
+          </div>
+          <button class="btn btn-primary col-sm-12" type="submit">Verify code</button>
+        </form>
+        <button onclick="backToSelection()">Back</button>
+      </div>
+      <div id="webautn_form" style="display:none;">
+        <button onclick="useWebAuthn()">Log using Webauthn</button>
+        <button onclick="backToSelection()">Back</button>
+      </div>
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script type="module" defer>
+    import {
+          get,
+          parseRequestOptionsFromJSON,
+      } from "{% static 'js/webauthn-json.browser-ponyfill.js' %}"
+
+    function showTOTP() {
+      document.getElementById("totp_form").style.display = 'block'
+      document.getElementById("methodSelection").style.display = 'none'
+    }
+    window.showTOTP = showTOTP
+
+    function backToSelection() {
+      document.getElementById("totp_form").style.display = 'none'
+      document.getElementById("webautn_form").style.display = 'none'
+      document.getElementById("methodSelection").style.display = 'block'
+    }
+    window.backToSelection = backToSelection
+
+    function showWebAuthn() {
+      document.getElementById("webautn_form").style.display = 'block'
+      document.getElementById("methodSelection").style.display = 'none'
+    }
+    window.showWebAuthn = showWebAuthn
+
+    async function useWebAuthn() {
+      const csrf = getCookie('csrftoken')
+      console.log(csrf)
+      const request = await fetch("{% url 'v2:fido-authenticate-begin' %}", {
+        method: 'POST',
+        headers: { "X-CSRFToken": csrf, 'Content-Type': 'application/json' }
+      })
+      if(!request.ok) {
+        throw new Error('No credential available to authenticate!')
+      }
+      let json = await request.json()
+      let options = parseRequestOptionsFromJSON(json)
+
+      let response = await get(options);
+      let result = await fetch("{% url 'v2:fido-authenticate-end' %}", {
+        method: 'POST',
+        headers: { "X-CSRFToken": csrf, 'Content-Type': 'application/json'},
+        body: JSON.stringify(response),
+      })
+    }
+    window.useWebAuthn = useWebAuthn
+
+    function getCookie(cname) {
+      const name = cname + "="
+      const decodedCookie = decodeURIComponent(document.cookie)
+      const ca = decodedCookie.split(';')
+      for(let i = 0; i <ca.length; i++) {
+        let c = ca[i]
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1)
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length)
+        }
+      }
+      return ""
+    }
+  </script>
 {% endblock %}

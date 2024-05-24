@@ -64,7 +64,8 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
     def manage_api_token(self, request):
         """Manage API token."""
         if not request.user.is_superuser:
-            raise PermissionDenied("Only super administrators can have API tokens")
+            raise PermissionDenied(
+                "Only super administrators can have API tokens")
         if request.method == "DELETE":
             Token.objects.filter(user=request.user).delete()
             return response.Response(status=204)
@@ -196,9 +197,28 @@ class FIDOViewSet(GetThrottleViewsetMixin,
             data=request.data)
         serializer.is_valid(raise_exception=True)
         credential_data = f2_auth.end_registration(request.data,
-                                 request.session.pop("fido2_state"),
-                                 request.user.id)
+                                                   request.session.pop(
+                                                       "fido2_state"),
+                                                   request.user.id)
         models.UserFidoKeys.objects.create(name=request.data["name"],
                                            credential_data=credential_data,
                                            user=request.user)
+        if not request.user.tfa_enabled:
+            request.user.tfa_enabled = True
+            request.user.save()
         return response.Response({"success": True}, 200)
+
+    @action(methods=["post"], detail=False, url_path="authenticate/begin")
+    def authenticate_begin(self, request):
+        """An API View to start the authentication process."""
+        options = f2_auth.begin_authentication(request)
+        return response.Response(dict(options))
+
+    @action(methods=["post"], detail=False, url_path="authenticate/end")
+    def authenticate_end(self, request):
+        """An API View to finish the authentication process."""
+        serializer = serializers.FidoAuthenticationSerializer(
+            data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result, detail = f2_auth.end_authentication(request)
+        return response.Response({"success": True})

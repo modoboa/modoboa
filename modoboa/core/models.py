@@ -58,7 +58,8 @@ class User(AbstractUser):
     master_user = models.BooleanField(
         gettext_lazy("Allow mailboxes access"),
         default=False,
-        help_text=gettext_lazy("Allow this administrator to access user mailboxes"),
+        help_text=gettext_lazy(
+            "Allow this administrator to access user mailboxes"),
     )
     password = models.CharField(gettext_lazy("password"), max_length=256)
 
@@ -69,7 +70,8 @@ class User(AbstractUser):
         choices=constants.LANGUAGES,
         help_text=gettext_lazy("Prefered language to display pages."),
     )
-    phone_number = PhoneNumberField(gettext_lazy("Phone number"), blank=True, null=True)
+    phone_number = PhoneNumberField(gettext_lazy(
+        "Phone number"), blank=True, null=True)
     secondary_email = models.EmailField(
         gettext_lazy("Secondary email"),
         max_length=254,
@@ -212,7 +214,8 @@ class User(AbstractUser):
         """
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(
+                content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             return False
         return ooentry.is_owner
@@ -233,7 +236,8 @@ class User(AbstractUser):
 
         ct = ContentType.objects.get_for_model(obj)
         try:
-            ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
+            ooentry = self.objectaccess_set.get(
+                content_type=ct, object_id=obj.id)
         except ObjectAccess.DoesNotExist:
             pass
         else:
@@ -394,7 +398,8 @@ class User(AbstractUser):
             smart_str(self.role),
             smart_str(self.email),
         ]
-        results = signals.account_exported.send(sender=self.__class__, user=self)
+        results = signals.account_exported.send(
+            sender=self.__class__, user=self)
         for result in results:
             row += result[1]
         return row
@@ -413,7 +418,7 @@ reversion.register(User)
 
 
 class UserFidoKeys(models.Model):
-    user = models.ForeignKey(User ,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     enabled = models.BooleanField(default=True)
     added_on = models.DateTimeField(auto_now_add=True)
