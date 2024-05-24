@@ -86,13 +86,15 @@ def dologin(request):
 
                 translation.activate(request.user.language)
 
-                logger.info(_("User '%s' successfully logged in") % user.username)
+                logger.info(_("User '%s' successfully logged in") %
+                            user.username)
                 signals.user_login.send(
                     sender="dologin",
                     username=form.cleaned_data["username"],
                     password=form.cleaned_data["password"],
                 )
-                response = HttpResponseRedirect(find_nextlocation(request, user))
+                response = HttpResponseRedirect(
+                    find_nextlocation(request, user))
                 response.set_cookie(
                     settings.LANGUAGE_COOKIE_NAME, request.user.language
                 )
@@ -114,7 +116,8 @@ def dologin(request):
         nextlocation = request.GET.get("next", "")
         httpcode = 200
 
-    announcements = signals.get_announcements.send(sender="login", location="loginpage")
+    announcements = signals.get_announcements.send(
+        sender="login", location="loginpage")
     announcements = [announcement[1] for announcement in announcements]
     return HttpResponse(
         render_to_string(
@@ -154,7 +157,8 @@ class PasswordResetView(auth_views.PasswordResetView):
 
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
-        self.from_email = request.localconfig.parameters.get_value("sender_address")
+        self.from_email = request.localconfig.parameters.get_value(
+            "sender_address")
 
     def get_context_data(self, **kwargs):
         """Include help text."""
@@ -177,7 +181,8 @@ class PasswordResetView(auth_views.PasswordResetView):
         if not user:
             # Fallback to email
             return super().form_valid(form)
-        backend = sms_backends.get_active_backend(self.request.localconfig.parameters)
+        backend = sms_backends.get_active_backend(
+            self.request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
         code = oath.totp(secret)
         text = _(
@@ -227,10 +232,12 @@ class ResendSMSCodeView(generic.View):
         if not sms_password_recovery:
             raise Http404
         try:
-            user = models.User._default_manager.get(pk=self.request.session["user_pk"])
+            user = models.User._default_manager.get(
+                pk=self.request.session["user_pk"])
         except KeyError:
             raise Http404
-        backend = sms_backends.get_active_backend(self.request.localconfig.parameters)
+        backend = sms_backends.get_active_backend(
+            self.request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
         code = oath.totp(secret)
         text = _(
@@ -251,6 +258,15 @@ class TwoFactorCodeVerifyView(
 
     form_class = forms.Verify2FACodeForm
     template_name = "registration/twofactor_code_verify.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        has_totp_device = django_otp.user_has_device(self.request.user)
+        context["totp_device"] = has_totp_device
+        has_webauthn_device = models.UserFidoKeys.objects.filter(
+            user=self.request.user).exists()
+        context["webauthn_device"] = has_webauthn_device
+        return context
 
     def form_valid(self, form):
         """Login user."""

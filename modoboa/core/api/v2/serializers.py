@@ -75,7 +75,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     default_password = serializers.CharField(default="ChangeMe1!")
     random_password_length = serializers.IntegerField(min_value=8, default=8)
     update_password_url = serializers.URLField(required=False, allow_blank=True)
-    password_recovery_msg = serializers.CharField(required=False, allow_blank=True)
+    password_recovery_msg = serializers.CharField(
+        required=False, allow_blank=True)
     sms_password_recovery = serializers.BooleanField(default=False)
     sms_provider = serializers.ChoiceField(
         choices=constants.SMS_BACKENDS, required=False, allow_null=True
@@ -86,7 +87,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     ldap_server_port = serializers.IntegerField(default=389)
     ldap_enable_secondary_server = serializers.BooleanField(default=False)
     ldap_secondary_server_address = serializers.CharField(required=False)
-    ldap_secondary_server_port = serializers.IntegerField(default=389, required=False)
+    ldap_secondary_server_port = serializers.IntegerField(
+        default=389, required=False)
     ldap_secured = serializers.ChoiceField(
         choices=constants.LDAP_SECURE_MODES, default="none"
     )
@@ -107,7 +109,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         choices=constants.LDAP_AUTH_METHODS,
         default="searchbind",
     )
-    ldap_bind_dn = serializers.CharField(default="", required=False, allow_blank=True)
+    ldap_bind_dn = serializers.CharField(
+        default="", required=False, allow_blank=True)
     ldap_bind_password = serializers.CharField(
         default="", required=False, allow_blank=True
     )
@@ -123,15 +126,18 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
 
     # LDAP sync settings
     ldap_sync_bind_dn = serializers.CharField(required=False, allow_blank=True)
-    ldap_sync_bind_password = serializers.CharField(required=False, allow_blank=True)
+    ldap_sync_bind_password = serializers.CharField(
+        required=False, allow_blank=True)
     ldap_enable_sync = serializers.BooleanField(default=False)
     ldap_sync_delete_remote_account = serializers.BooleanField(default=False)
     ldap_sync_account_dn_template = serializers.CharField(
         required=False, allow_blank=True
     )
     ldap_enable_import = serializers.BooleanField(default=False)
-    ldap_import_search_base = serializers.CharField(required=False, allow_blank=True)
-    ldap_import_search_filter = serializers.CharField(default="(cn=*)", required=False)
+    ldap_import_search_base = serializers.CharField(
+        required=False, allow_blank=True)
+    ldap_import_search_filter = serializers.CharField(
+        default="(cn=*)", required=False)
     ldap_import_username_attr = serializers.CharField(default="cn")
     ldap_dovecot_sync = serializers.BooleanField(default=False)
     ldap_dovecot_conf_file = serializers.CharField(
@@ -145,7 +151,8 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     hide_features_widget = serializers.BooleanField(default=False)
 
     # Notification settings
-    sender_address = lib_fields.DRFEmailFieldUTF8(default="noreply@yourdomain.test")
+    sender_address = lib_fields.DRFEmailFieldUTF8(
+        default="noreply@yourdomain.test")
 
     # API settings
     enable_api_communication = serializers.BooleanField(default=True)
@@ -253,6 +260,16 @@ class FidoRegistrationSerializer(serializers.Serializer):
     authenticatorAttachment = serializers.CharField()
     response = serializers.JSONField()
     name = serializers.CharField()
+
+
+class FidoAuthenticationSerializer(serializers.Serializer):
+    """Serializer used to finish the fido key authentication."""
+    authenticatorAttachment = serializers.CharField()
+    clientExtensionResults = serializers.JSONField()
+    id = serializers.CharField()
+    rawId = serializers.CharField()
+    response = serializers.JSONField()
+    type = serializers.CharField()
 
 
 class LogSerializer(serializers.ModelSerializer):
@@ -363,7 +380,8 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
         request = self.context["request"]
         clean_email = data["email"]
 
-        user = User.objects.filter(email__iexact=clean_email, is_active=True).first()
+        user = User.objects.filter(
+            email__iexact=clean_email, is_active=True).first()
         if user is None:
             raise CustomValidationError(
                 {"type": "sms", "reason": "No valid user found."}, 404
@@ -383,7 +401,8 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
         user = self.context["user"]
         if not user:
             raise NoSMSAvailable()
-        backend = sms_backends.get_active_backend(request.localconfig.parameters)
+        backend = sms_backends.get_active_backend(
+            request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
         send_sms_code(secret, backend, user)
         request.session["totp_secret"] = secret
@@ -446,7 +465,8 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
         backend = sms_backends.get_active_backend(
             self.context["request"].localconfig.parameters
         )
-        send_sms_code(self.context["totp_secret"], backend, self.context["user"])
+        send_sms_code(self.context["totp_secret"],
+                      backend, self.context["user"])
         return True
 
 
@@ -475,7 +495,8 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
             data["new_password1"] == ""
             or data["new_password1"] != data["new_password2"]
         ):
-            raise serializers.ValidationError("Password is empty or does not match")
+            raise serializers.ValidationError(
+                "Password is empty or does not match")
 
         user = self.get_user(data["id"])
 
