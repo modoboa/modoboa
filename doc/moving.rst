@@ -10,29 +10,46 @@ Using IMAP protocol
 
 .. _imap:
 
-`Modoboa <https://modoboa.org/>`_ provides a way to transfer your
-account from another provider/server using an IMAP access.
+`Modoboa <https://modoboa.org/>`_ provides a way to transfer accounts
+hosted on a different platform/provider to your personal server using
+the IMAP protocol and a tool called `OfflineIMAP
+<https://www.offlineimap.org/doc/installation.html>`_.
+
+It works as follows:
+* You first declare what needs to be migrated, basically the domain(s) you own and where they can be found. By doing that, you'll allow accounts hosted on the platform/provider you're migrating from to log into your Modoboa server
+* The first time an old account (one coming from your previous provider) successfuly log into Modoboa, a dedicated migration task is created
+* On a regular basis (every hour generally), a cron job is responsible for generating an OfflineIMAP configuration file including instructions to migrate all declared migrations and lauching OfflineIMAP to start/continue migrations
+
+.. warning::
+
+   So, as you probably already understood, you can't migrate all your
+   accounts at the same time since you probably don't know their
+   corresponding password. Every account migration must be started by the
+   account's owner.
 
 Configuration
 -------------
 
-The configuration is done from the admin panel (*Modoboa >
-Parameters > IMAP Migration*). And you have a specific tab to configure
-your migration that is visible for SuperAdmins.
-These settings are only available on the new admin interface.
+Since Modoboa does not handle the installation of OfflineIMAP, you
+need to do it on your own. The following `instructions
+<https://www.offlineimap.org/doc/quick_start.html>`_ will help you.
+
+Once done, *the new admin interface (v2)* will let you:
+* define the neccessary information to `connect to your old platform/provider <providers>`_
+* define `what is to be migrated <migrations>`_ (ie. the accounts)
+* customize the behaviour of OfflineIMAP : go to 'Parameters > Imap Migration' from the left menu
 
 .. warning::
 
-   You must have enabled **Auto create domain** in modoboa parameters for this extension to work.
+   **Auto create domain** feature must be enabled to make this feature
+    work. Go to 'Parameters > Administration > Mailboxes' and check if
+    it's the case.
 
-This extension can create `OfflineIMAP <https://www.offlineimap.org/doc/installation.html>`_
-configuration file with the command:
+To generate an OfflineIMAP configuration file, run the following command:
 
 .. sourcecode:: bash
 
    > python manage.py generate_offlineimap_config
-
-You then need to setup `OfflineIMAP <https://www.offlineimap.org/doc/quick_start.html>`_.
 
 The synchronization script must be configured to run periodically on
 your new server. Since it will copy mailboxes content to its final
@@ -54,27 +71,42 @@ Feel free to adapt it.
 
 This will sync back-and-forth user mailbox.
 
+.. _providers:
+
 Providers
 ---------
 
-Mail server can host multiple domains so the provider address
-may be different from the domain part of your email address.
+A provider represents an IMAP server that hosts one or several domains
+you own. It includes connection information (network address, port,
+etc.) and a list of hosted domain.
 
-Associated domain is the domain part of the email address.
-You can leave "Local Domain" blank if you keep the same domain.
-This domain will be auto-created if needed.
-you must create the domain beforhand if you want to migrate an account
-from `user@domain1.tld` to `user@domain2.tld`.
+For each domain you declare, you must provide its name. Modoboa will
+then create a local domain with the exact same name if needed (ie. if
+it does not exist yet) the first time it migrates an account.
 
+Optionaly, you have the possibility to rename a domain (for example:
+domain.com -> domain.net) by providing a value to the 'Local domain'
+field.
+
+.. _migrations:
 
 Migrations
 ----------
 
-Migrations are automatically handled when providers have been configured.
-Users use their old credential to log and the account is automatically created.
-They shall use the new domain on next logins if a local domain was set in the provider configuration.
-If you have installed OfflineIMAP, you may delete the migration to stop mailbox sync.
-SuperAdmins may check migrations in the `IMAP Migration` tab.
+Migrations are automatically created, you don't need to do it.
+
+The first time an account of your old platform successfuly log into
+Modoboa (using old credentials), a local account and a migration task
+will be created.
+
+.. warning::
+
+   In case of domain renaming as described in `Providers <providers>`_,
+   users must use the new email address as username for next connection
+   attempts.
+
+SuperAdmins can monitor running migrations and stop/delete them from
+the `IMAP Migration` section (left menu).
 
 
 From postfixadmin
