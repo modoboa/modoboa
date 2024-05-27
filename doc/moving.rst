@@ -16,32 +16,34 @@ the IMAP protocol and a tool called `OfflineIMAP
 <https://www.offlineimap.org/doc/installation.html>`_.
 
 It works as follows:
+
 * You first declare what needs to be migrated, basically the domain(s) you own and where they can be found. By doing that, you'll allow accounts hosted on the platform/provider you're migrating from to log into your Modoboa server
 * The first time an old account (one coming from your previous provider) successfuly log into Modoboa, a dedicated migration task is created
 * On a regular basis (every hour generally), a cron job is responsible for generating an OfflineIMAP configuration file including instructions to migrate all declared migrations and lauching OfflineIMAP to start/continue migrations
 
 .. warning::
 
-   So, as you probably already understood, you can't migrate all your
-   accounts at the same time since you probably don't know their
-   corresponding password. Every account migration must be started by the
-   account's owner.
+   As you probably already understood, you can't migrate all your
+   accounts at the same time since you don't know their corresponding
+   password (most of the time). Every account migration must be
+   started by the account's owner.
 
 Configuration
 -------------
 
-Since Modoboa does not handle the installation of OfflineIMAP, you
+Modoboa won'thandle the installation of OfflineIMAP so you
 need to do it on your own. The following `instructions
 <https://www.offlineimap.org/doc/quick_start.html>`_ will help you.
 
 Once done, *the new admin interface (v2)* will let you:
+
 * define the neccessary information to `connect to your old platform/provider <providers>`_
 * define `what is to be migrated <migrations>`_ (ie. the accounts)
 * customize the behaviour of OfflineIMAP : go to 'Parameters > Imap Migration' from the left menu
 
 .. warning::
 
-   **Auto create domain** feature must be enabled to make this feature
+   **Auto create domain** option must be enabled to make this feature
     work. Go to 'Parameters > Administration > Mailboxes' and check if
     it's the case.
 
