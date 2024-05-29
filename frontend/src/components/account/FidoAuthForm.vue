@@ -16,7 +16,11 @@
           </div>
           <template v-if="browserCapable">
             <v-form ref="fidoForm" @submit.prevent="startFidoRegistration">
-              <v-text-field v-model="name" :rules="[rules.required]"/>
+              <v-text-field
+                v-model="name"
+                :label="$gettext('Name')"
+                :rules="[rules.required]"
+              />
               <v-btn color="success" type="submit" :loading="registrationLoading">
                 {{ $gettext('Add WebAuthN device') }}
               </v-btn>
