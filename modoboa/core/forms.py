@@ -10,7 +10,6 @@ from django.utils.translation import gettext as _, gettext_lazy
 import django_otp
 
 from modoboa.core.models import User, UserFidoKeys
-from modoboa.core import utils
 from modoboa.lib.form_utils import UserKwargModelFormMixin
 from modoboa.parameters import tools as param_tools
 
@@ -120,8 +119,8 @@ class ProfileForm(forms.ModelForm):
 
 class TwoFAChoiceForm(forms.Form):
     """Form to select the 2FA method of choice."""
-    two_fa_choices = forms.ChoiceField(choices=(),
-                                       required=True)
+
+    two_fa_choices = forms.ChoiceField(choices=(), required=True)
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user")
@@ -129,8 +128,8 @@ class TwoFAChoiceForm(forms.Form):
         if fido_keys.exists():
             self.fields["two_fa_choices.choices"].choices = [
                 ("TOTP", "TOTP or recovery codes"),
-                ("FIDO", "Webauthn device")
-                ]
+                ("FIDO", "Webauthn device"),
+            ]
 
 
 class APIAccessForm(forms.Form):
@@ -169,7 +168,7 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
     ):
         """Send message to secondary email instead."""
         to_email = context["user"].secondary_email
-        super(PasswordResetForm, self).send_mail(
+        super().send_mail(
             subject_template_name,
             email_template_name,
             context,

@@ -47,6 +47,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # The email address that error messages come from, such as those sent to ADMINS
 # SERVER_EMAIL = 'webmaster@example.net'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Security settings
 
@@ -76,7 +77,7 @@ INSTALLED_APPS = (
     "django_otp.plugins.otp_static",
     "django_rename_app",
     "django_rq",
-    "django_extensions", # Just for docker (SSL support)
+    "django_extensions",  # Just for docker (SSL support)
 )
 
 # A dedicated place to register Modoboa applications
