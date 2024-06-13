@@ -172,6 +172,16 @@ After upgrading modoboa, run the following commands from your virtual environmen
 
    > python manage.py rename_app modoboa_postfix_autoreply postfix_autoreply
 
+`SORBS DNS has been deprecated <https://www.mail-archive.com/mailop@mailop.org/msg22064.html>`_.
+
+If you were using them with postfix, you need to update your
+configuration by removing any reference to it. For example::
+
+# Use some DNSBL
+postscreen_dnsbl_sites =
+	zen.spamhaus.org=127.0.0.[2..11]*3
+	bl.spameatingmonkey.net=127.0.0.2*2
+	bl.spamcop.net=127.0.0.2
 
 2.2.3
 =====

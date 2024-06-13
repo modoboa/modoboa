@@ -5,11 +5,9 @@ from django.utils.translation import gettext_lazy as _
 DNSBL_PROVIDERS = [
     "b.barracudacentral.org",
     "bl.spamcop.net",
-    "dnsbl.sorbs.net",
     "ips.backscatterer.org",
     "psbl.surriel.com",
     "sbl.spamhaus.org",
-    "spam.dnsbl.sorbs.net",
     "ubl.unsubscore.com",
     "xbl.spamhaus.org",
     "zen.spamhaus.org",
