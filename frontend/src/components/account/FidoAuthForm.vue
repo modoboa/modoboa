@@ -73,9 +73,9 @@
     </v-card>
   </div>
    <ConfirmDialog ref="confirmDeletion"/>
-   <ConfirmDialog ref="confirmEdition">
+   <ConfirmDialog :callback_agree="checkForm" ref="confirmEdition">
     <v-form ref="editForm">
-      <v-text-field v-model="editName" :label="$gettext('name')"/>
+      <v-text-field v-model="editName" :label="$gettext('name')" :rules="[rules.required]"/>
       <v-switch v-model="editEnabled" :label="$gettext('enabled')" color="principal"/>
     </v-form>
    </ConfirmDialog>
@@ -88,6 +88,10 @@ import { useGettext } from 'vue3-gettext'
 import rules from '@/plugins/rules.js'
 import { useAuthStore } from '@/stores'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
+import {
+  create,
+  parseCreationOptionsFromJSON,
+} from "@github/webauthn-json/browser-ponyfill";
 
 const authStore = useAuthStore()
 
@@ -95,7 +99,6 @@ const { $gettext } = useGettext()
 
 const name = ref()
 const registrationLoading = ref(false)
-const creationOption = ref()
 const browserCapable = !!(navigator.credentials && navigator.credentials.create && navigator.credentials.get && window.PublicKeyCredential)
 const fidoForm = ref()
 const fidoCreds = computed(() => authStore.fidoCreds)
@@ -115,17 +118,21 @@ const editName = ref('')
 const editEnabled = ref(false)
 
 async function startFidoRegistration() {
+  registrationLoading.value = true
   const { valid } = await fidoForm.value.validate()
   if (!valid) {
+    registrationLoading.value = false
     return
   }
-  if (creationOption.value) {
-    navigator.credentials.create({...creationOption.value})
-      .then(function (attestation) {
-        const result = createResponseToJSON(attestation)
-        result.name = name.value
-        authStore.addFidoCred(result)
-      })
+  const creationOption = await authApi.beginFidoRegistration()
+  console.log(creationOption)
+  if (creationOption) {
+    const options = parseCreationOptionsFromJSON(creationOption.data)
+    const result = await create(options)
+    const response = result.toJSON()
+    response.name = name.value
+    console.log(response)
+    authStore.addFidoCred(response)
   }
 }
 
@@ -145,11 +152,16 @@ async function deleteCred(cred) {
   authStore.deleteFidoCreds(cred.id)
 }
 
+async function checkForm() {
+  return (await editForm.value.validate()).valid
+}
+
 async function editCred(cred) {
   editName.value = cred.name
   editEnabled.value = cred.enabled
+
   const result = await confirmEdition.value.open(
-  $gettext('Edition'),
+  $gettext('Edtion'),
     $gettext('Edit your device'),
     {
       color: 'warning',
@@ -160,159 +172,12 @@ async function editCred(cred) {
   if (!result) {
     return
   }
-  console.log(editForm.value.items)
+
+  data = {name: editName.value, enabled: editEnabled.value}
+  //TODO : send it !
 }
 
 onMounted(() => {
-  registrationLoading.value = true
   authStore.getFidoCreds()
-  authApi.beginFidoRegistration().then((resp) => {
-    creationOption.value = createRequestFromJSON(resp.data)
-  }).finally(() => registrationLoading.value = false)
 })
-
-// Taken from the example of python-fido2 repo
-// src/webauthn-json/base64url.ts
-function base64urlToBuffer(baseurl64String) {
-  const padding = "==".slice(0, (4 - baseurl64String.length % 4) % 4);
-  const base64String = baseurl64String.replace(/-/g, "+").replace(/_/g, "/") + padding;
-  const str = atob(base64String);
-  const buffer = new ArrayBuffer(str.length);
-  const byteView = new Uint8Array(buffer);
-  for (let i = 0; i < str.length; i++) {
-    byteView[i] = str.charCodeAt(i);
-  }
-  return buffer;
-}
-
-function bufferToBase64url(buffer) {
-  const byteView = new Uint8Array(buffer);
-  let str = "";
-  for (const charCode of byteView) {
-    str += String.fromCharCode(charCode);
-  }
-  const base64String = btoa(str);
-  const base64urlString = base64String.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
-  return base64urlString;
-}
-
-// src/webauthn-json/convert.ts
-const copyValue = "copy";
-const convertValue = "convert";
-function convert(conversionFn, schema, input) {
-  if (schema === copyValue) {
-    return input;
-  }
-  if (schema === convertValue) {
-    return conversionFn(input);
-  }
-  if (schema instanceof Array) {
-    return input.map((v) => convert(conversionFn, schema[0], v));
-  }
-  if (schema instanceof Object) {
-    const output = {};
-    for (const [key, schemaField] of Object.entries(schema)) {
-      if (schemaField.derive) {
-        const v = schemaField.derive(input);
-        if (v !== void 0) {
-          input[key] = v;
-        }
-      }
-      if (!(key in input)) {
-        if (schemaField.required) {
-          throw new Error(`Missing key: ${key}`);
-        }
-        continue;
-      }
-      if (input[key] == null) {
-        output[key] = null;
-        continue;
-      }
-      output[key] = convert(conversionFn, schemaField.schema, input[key]);
-    }
-    return output;
-  }
-}
-
-function derived(schema, derive) {
-  return {
-    required: true,
-    schema,
-    derive
-  };
-}
-function required(schema) {
-  return {
-    required: true,
-    schema
-  };
-}
-function optional(schema) {
-  return {
-    required: false,
-    schema
-  };
-}
-
-const publicKeyCredentialDescriptorSchema = {
-  type: required(copyValue),
-  id: required(convertValue),
-  transports: optional(copyValue)
-}
-
-const simplifiedExtensionsSchema = {
-  appid: optional(copyValue),
-  appidExclude: optional(copyValue),
-  credProps: optional(copyValue)
-}
-
-const simplifiedClientExtensionResultsSchema = {
-  appid: optional(copyValue),
-  appidExclude: optional(copyValue),
-  credProps: optional(copyValue)
-}
-
-const credentialCreationOptions = {
-  publicKey: required({
-    rp: required(copyValue),
-    user: required({
-      id: required(convertValue),
-      name: required(copyValue),
-      displayName: required(copyValue)
-    }),
-    challenge: required(convertValue),
-    pubKeyCredParams: required(copyValue),
-    timeout: optional(copyValue),
-    excludeCredentials: optional([publicKeyCredentialDescriptorSchema]),
-    authenticatorSelection: optional(copyValue),
-    attestation: optional(copyValue),
-    extensions: optional(simplifiedExtensionsSchema)
-  }),
-  signal: optional(copyValue)
-}
-
-const publicKeyCredentialWithAttestation = {
-  type: required(copyValue),
-  id: required(copyValue),
-  rawId: required(convertValue),
-  authenticatorAttachment: optional(copyValue),
-  response: required({
-    clientDataJSON: required(convertValue),
-    attestationObject: required(convertValue),
-    transports: derived(copyValue, (response) => {
-      var _a;
-      return ((_a = response.getTransports) == null ? void 0 : _a.call(response)) || [];
-    })
-  }),
-  clientExtensionResults: derived(simplifiedClientExtensionResultsSchema, (pkc) => pkc.getClientExtensionResults())
-}
-
-function createRequestFromJSON(requestJSON) {
-  return convert(base64urlToBuffer, credentialCreationOptions, requestJSON);
-}
-
-function createResponseToJSON(credential) {
-  return convert(bufferToBase64url, publicKeyCredentialWithAttestation, credential);
-}
-
 </script>
