@@ -9,6 +9,7 @@ import { UserManager } from 'oidc-client-ts'
 import repository from '@/api/repository'
 import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
+import authApi from '@/api/auth.js'
 
 import { useGlobalConfig } from '@/main'
 
@@ -28,6 +29,7 @@ export const useAuthStore = defineStore('auth', () => {
     filterProtocolClaims: true,
     loadUserInfo: true,
   })
+  const fidoCreds = ref([])
 
   const userHasMailbox = computed(() => {
     return authUser.value.mailbox !== null
@@ -38,6 +40,24 @@ export const useAuthStore = defineStore('auth', () => {
       gettext.current = resp.data.language
       authUser.value = resp.data
       isAuthenticated.value = true
+    })
+  }
+
+  async function getFidoCreds() {
+    return authApi.getAllFidoRegistred().then((resp) => {
+      fidoCreds.value = resp.data
+    })
+  }
+
+  async function addFidoCred(result) {
+    return authApi.endFidoRegistration(result).then(() => {
+      getFidoCreds()
+    })
+  }
+
+  async function deleteFidoCreds(id) {
+    return authApi.deleteFido(id).then(() => {
+      fidoCreds.value = fidoCreds.value.filter((cred) => cred.id !== id)
     })
   }
 
@@ -138,9 +158,13 @@ export const useAuthStore = defineStore('auth', () => {
     completeLogin,
     isAuthenticated,
     userHasMailbox,
+    fidoCreds,
     validateAccess,
     fetchUser,
     getAccessToken,
+    getFidoCreds,
+    addFidoCred,
+    deleteFidoCreds,
     initialize,
     login,
     $reset,
