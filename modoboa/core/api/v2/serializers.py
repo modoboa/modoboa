@@ -249,6 +249,7 @@ class FIDOSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserFidoKeys
         fields = ["id", "name", "enabled", "added_on", "last_used", "use_count"]
+        # TODO : read-only fields for everything other than name and enabled :)
 
 
 class FidoRegistrationSerializer(serializers.Serializer):
