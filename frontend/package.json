@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "3.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -14,6 +15,7 @@
     "gettext:compile": "vue-gettext-compile"
   },
   "dependencies": {
+    "@github/webauthn-json": "^2.1.1",
     "@mdi/font": "^7.3.67",
     "apexcharts": "^3.45.2",
     "axios": "^1.6.7",
