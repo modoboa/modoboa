@@ -20,7 +20,7 @@ repos:
         language: node
         types_or: [javascript, jsx, ts, tsx, vue]
         entry: eslint -c frontend/.eslint.conf.js --fix
-        additional_dependencies: ["eslint-plugin-vue"]
+        additional_dependencies: ["eslint-plugin-vue", "eslint-config-prettier", "prettier", "eslint"]
   - repo: https://github.com/psf/black
     rev: "24.2.0"
     hooks:

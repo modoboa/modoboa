@@ -37,6 +37,7 @@
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "eslint": "^9.5.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.26.0",
     "prettier": "^3.3.2",
     "sass": "^1.77.5",
