@@ -206,7 +206,7 @@ class FIDOViewSet(GetThrottleViewsetMixin,
         if not request.user.tfa_enabled:
             request.user.tfa_enabled = True
             request.user.save()
-        return response.Response({"success": True}, 200)
+        return response.Response(status=204)
 
     @action(methods=["post"], detail=False, url_path="authenticate/begin")
     def authenticate_begin(self, request):

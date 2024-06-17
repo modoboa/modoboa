@@ -22,4 +22,7 @@ export default {
   getAllFidoRegistred() {
     return repository.get('/fido/')
   },
+  deleteFido(id) {
+    return repository.delete(`/fido/${id}/`)
+  }
 }

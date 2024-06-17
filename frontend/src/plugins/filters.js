@@ -10,7 +10,7 @@ export default {
     }
     app.config.globalProperties.$date = (value) => {
       return DateTime.fromISO(value)
-        .setLocale('en')
+        .setLocale(gettext.current)
         .toLocaleString(DateTime.DATETIME_MED)
     }
     app.config.globalProperties.$truncate = (value, length, clamp) => {
