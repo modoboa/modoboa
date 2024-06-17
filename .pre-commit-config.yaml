@@ -11,15 +11,15 @@ repos:
         args: ["-rn", "-sn", "--fail-under=5"]
       - id: prettier
         name: prettier
-        entry: prettier frontend/ --config frontend/.prettierrc.json --write --ignore-unknown
+        entry: prettier --config frontend/.prettierrc.json --write --ignore-unknown
         language: node
-        types: [javascript, jsx, ts, tsx]
+        types_or: [javascript, jsx, ts, tsx, vue]
         additional_dependencies: ["prettier"]
       - id: eslint
         name: eslint
         language: node
-        types: [javascript, jsx, ts, tsx]
-        entry: eslint -c frontend/.eslintrc.js --ignore-pattern frontend/ --fix
+        types_or: [javascript, jsx, ts, tsx, vue]
+        entry: eslint -c frontend/.eslint.conf.js --fix
         additional_dependencies: ["eslint-plugin-vue"]
   - repo: https://github.com/psf/black
     rev: "24.2.0"
