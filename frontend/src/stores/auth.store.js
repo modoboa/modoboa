@@ -140,17 +140,14 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  async function finalizeTFASetup(pinCode) {
-    return accountApi
-      .finalizeTFASetup(pinCode)
-      .then((response) => {
-        const cookie = Cookies.withAttributes({ sameSite: 'strict' })
-        cookie.set('token', response.data.access)
-        cookie.set('refreshToken', response.data.refresh)
-        initialize()
-        return response
-      })
-      .catch((error) => error)
+  function finalizeTFASetup(pinCode) {
+    return accountApi.finalizeTFASetup(pinCode).then((response) => {
+      const cookie = Cookies.withAttributes({ sameSite: 'strict' })
+      cookie.set('token', response.data.access)
+      cookie.set('refreshToken', response.data.refresh)
+      fetchUser()
+      return response
+    })
   }
 
   return {
