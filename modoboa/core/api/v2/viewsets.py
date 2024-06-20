@@ -7,8 +7,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
-# from rest_framework_simplejwt.tokens import RefreshToken
-
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
@@ -80,21 +78,6 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
                 token = ""
         serializer = serializers.UserAPITokenSerializer({"token": str(token)})
         return response.Response(serializer.data, status=status)
-
-    # @action(methods=["post"], detail=False, url_path="tfa/verify")
-    # def tfa_verify_code(self, request):
-    #     """Verify given code validity."""
-    #     serializer = serializers.VerifyTFACodeSerializer(
-    #         data=request.data, context={"user": request.user}
-    #     )
-    #     serializer.is_valid(raise_exception=True)
-    #     refresh = RefreshToken.for_user(request.user)
-    #     refresh[constants.TFA_DEVICE_TOKEN_KEY] = serializer.validated_data[
-    #         "code"
-    #     ].persistent_id
-    #     return response.Response(
-    #         {"refresh": str(refresh), "access": str(refresh.access_token)}
-    #     )
 
     @action(methods=["get"], detail=False, url_path="tfa/setup/key")
     def tfa_setup_get_key(self, request):
