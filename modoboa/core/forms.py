@@ -14,17 +14,8 @@ from modoboa.lib.form_utils import UserKwargModelFormMixin
 from modoboa.parameters import tools as param_tools
 
 
-class LoginForm(forms.Form):
-    """User login form."""
+class AuthenticationForm(auth_forms.AuthenticationForm):
 
-    username = forms.CharField(
-        label=gettext_lazy("Username"),
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-    password = forms.CharField(
-        label=gettext_lazy("Password"),
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
-    )
     rememberme = forms.BooleanField(initial=False, required=False)
 
 
