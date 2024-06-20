@@ -191,6 +191,7 @@ class VerifySMSCodeForm(forms.Form):
 class Verify2FACodeForm(UserKwargModelFormMixin, forms.Form):
     """A form to verify 2FA codes validity."""
 
+    next = forms.CharField(required=False)
     tfa_code = forms.CharField()
 
     def clean_tfa_code(self):
