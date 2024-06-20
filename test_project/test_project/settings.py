@@ -122,8 +122,6 @@ MIDDLEWARE = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    # "django_otp.middleware.OTPMiddleware",
-    # "modoboa.core.middleware.TwoFAMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "modoboa.core.middleware.LocalConfigMiddleware",
