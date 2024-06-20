@@ -64,8 +64,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
     def manage_api_token(self, request):
         """Manage API token."""
         if not request.user.is_superuser:
-            raise PermissionDenied(
-                "Only super administrators can have API tokens")
+            raise PermissionDenied("Only super administrators can have API tokens")
         if request.method == "DELETE":
             Token.objects.filter(user=request.user).delete()
             return response.Response(status=204)
@@ -171,12 +170,14 @@ class LanguageViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         return response.Response(languages)
 
 
-class FIDOViewSet(GetThrottleViewsetMixin,
-                  mixins.ListModelMixin,
-                  mixins.DestroyModelMixin,
-                  mixins.UpdateModelMixin,
-                  viewsets.GenericViewSet):
-    """Fido management viewset. """
+class FIDOViewSet(
+    GetThrottleViewsetMixin,
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    """Fido management viewset."""
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = serializers.FIDOSerializer
@@ -193,32 +194,17 @@ class FIDOViewSet(GetThrottleViewsetMixin,
     @action(methods=["post"], detail=False, url_path="registration/end")
     def registration_end(self, request):
         """An Api View to complete the registration process of a fido key."""
-        serializer = serializers.FidoRegistrationSerializer(
-            data=request.data)
+        serializer = serializers.FidoRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        credential_data = f2_auth.end_registration(request.data,
-                                                   request.session.pop(
-                                                       "fido2_state"),
-                                                   request.user.id)
-        models.UserFidoKeys.objects.create(name=request.data["name"],
-                                           credential_data=credential_data,
-                                           user=request.user)
+        credential_data = f2_auth.end_registration(
+            request.data, request.session.pop("fido2_state"), request.user.id
+        )
+        models.UserFidoKeys.objects.create(
+            name=request.data["name"],
+            credential_data=credential_data,
+            user=request.user,
+        )
         if not request.user.tfa_enabled:
             request.user.tfa_enabled = True
             request.user.save()
         return response.Response(status=204)
-
-    @action(methods=["post"], detail=False, url_path="authenticate/begin")
-    def authenticate_begin(self, request):
-        """An API View to start the authentication process."""
-        options = f2_auth.begin_authentication(request)
-        return response.Response(dict(options))
-
-    @action(methods=["post"], detail=False, url_path="authenticate/end")
-    def authenticate_end(self, request):
-        """An API View to finish the authentication process."""
-        serializer = serializers.FidoAuthenticationSerializer(
-            data=request.data)
-        serializer.is_valid(raise_exception=True)
-        result, detail = f2_auth.end_authentication(request)
-        return response.Response({"success": True})
