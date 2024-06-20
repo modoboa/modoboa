@@ -20,6 +20,7 @@
     <div id="totp_form" style="display:none;">
       <form method="post" action="{% url 'core:2fa_verify' %}">
         {% csrf_token %}
+        <input type="hidden" id="id_next" name="next" value="{{ nextlocation }}">
         <div class="input-group{% if form.tfa_code.errors %} has-error{% endif %}">
           <label>{% translate "One-time password" %}</label>
           <input id="id_tfa_code" name="tfa_code">
@@ -84,7 +85,12 @@
     let options = parseRequestOptionsFromJSON(json)
 
     let response = await get(options);
-    let result = await fetch("{% url 'core:fido_auth_end' %}", {
+    let params = new URLSearchParams(window.location.search)
+    let url = "{% url 'core:fido_auth_end' %}"
+    if (params.has('next')) {
+      url += `?next=${encodeURIComponent(params.get('next'))}`
+    }
+    let result = await fetch(url, {
       method: 'POST',
       headers: { "X-CSRFToken": csrf, 'Content-Type': 'application/json'},
       body: JSON.stringify(response),

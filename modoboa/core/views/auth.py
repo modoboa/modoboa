@@ -2,6 +2,7 @@
 
 from functools import cached_property
 import logging
+import urllib.parse
 
 import oath
 
@@ -125,7 +126,11 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
             self.request.session[constants.TFA_PRE_VERIFY_USER_PK] = user.pk
             self.request.session[constants.TFA_PRE_VERIFY_USER_BACKEND] = user.backend
             self.request.session["rememberme"] = form.cleaned_data["rememberme"]
-            return HttpResponseRedirect(reverse("core:2fa_verify"))
+            nextlocation = self.request.POST.get("next", self.request.GET.get("next"))
+            url = reverse("core:2fa_verify")
+            if nextlocation:
+                url += f"?next={urllib.parse.quote(nextlocation)}"
+            return HttpResponseRedirect(url)
         return self.login(user, form.cleaned_data["rememberme"])
 
     def form_invalid(self, form):
@@ -275,6 +280,9 @@ class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
             user=self.user
         ).exists()
         context["webauthn_device"] = has_webauthn_device
+        context["nextlocation"] = self.request.POST.get(
+            "next", self.request.GET.get("next")
+        )
         return context
 
     def form_valid(self, form):
