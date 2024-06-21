@@ -89,7 +89,7 @@ jobs:
           pip install -r requirements.txt
           pip install -r ldap-requirements.txt
           pip install -r test-requirements.txt
-          python setup.py develop
+          pip install -e .
           echo "Testing redis connection"
           redis-cli -h $REDIS_HOST -p $REDIS_PORT ping
         env:
