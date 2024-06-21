@@ -23,7 +23,7 @@ class CheckTFASetupSerializer(serializers.Serializer):
 
     def validate(self, data):
         user = self.context["user"]
-        if user.tfa_enabled or user.staticdevice_set.exists():
+        if user.totp_enabled or user.staticdevice_set.exists():
             raise serializers.ValidationError(_("2FA is already enabled"))
         return data
 
