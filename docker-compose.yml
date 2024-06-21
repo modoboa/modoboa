@@ -36,7 +36,7 @@ services:
     command: >
       sh -c "cd test_project
              python3 manage.py migrate
-             python3 manage.py load_initial_data
+             python3 manage.py load_initial_data --dev
              django-admin compilemessages
              python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
     volumes:
