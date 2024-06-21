@@ -80,7 +80,6 @@ CORE_SETTINGS = {
 
 
 class ParametersAPITestCase(ModoAPITestCase):
-
     def setUp(self):
         super().setUp()
         cache.delete("password_scheme_choice")
@@ -184,7 +183,6 @@ class ParametersAPITestCase(ModoAPITestCase):
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
-
     def test_me(self):
         url = reverse("v2:account-me")
         resp = self.client.get(url)
@@ -226,7 +224,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, "application/json")
 
-        user.tfa_enabled = True
+        user.totp_enabled = True
         user.save()
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 404)
@@ -275,7 +273,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
         user.refresh_from_db()
-        self.assertEqual(user.tfa_enabled, False)
+        self.assertEqual(user.totp_enabled, False)
 
     # def test_api_token(self):
     #     # 1. Obtain a JWT token so we can safely play with basic token
@@ -574,7 +572,6 @@ class PasswordResetTestCase(AccountViewSetTestCase):
 
 
 class LanguageViewSetTestCase(ModoAPITestCase):
-
     def test_list(self):
         url = reverse("v2:language-list")
         resp = self.client.get(url)
@@ -582,7 +579,6 @@ class LanguageViewSetTestCase(ModoAPITestCase):
 
 
 class ComponentAPITestCase(ModoAPITestCase):
-
     def test_information(self):
         url = reverse("v2:components_information")
         resp = self.client.get(url)
