@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.4"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -43,3 +43,9 @@ repository = "https://github.com/modoboa/modoboa"
 
 [tool.setuptools.dynamic]
 version = {attr = "modoboa.version.get_version"}
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies.dev = { file = ["dev-requirements.txt"] }
+optional-dependencies.test = { file = ["test-requirements.txt"] }
+optional-dependencies.ldap = { file = ["ldap-requirements.txt"] }
+optional-dependencies.mysql = { file = ["mysql-requirements.txt"] }
+optional-dependencies.postgresql = { file = ["postgresql-requirements.txt"] }
