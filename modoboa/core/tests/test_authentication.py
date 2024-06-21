@@ -53,7 +53,7 @@ class AuthenticationTestCase(ModoTestCase):
     def test_authentication_with_2fa(self, login_mock, match_mock):
         user = models.User.objects.get(username="user@test.com")
         user.totpdevice_set.create(name="Device")
-        user.tfa_enabled = True
+        user.totp_enabled = True
         user.save()
         data = {"username": "user@test.com", "password": "toto"}
         response = self.client.post(reverse("core:login"), data)

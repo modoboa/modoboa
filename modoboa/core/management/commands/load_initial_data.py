@@ -9,7 +9,10 @@ A management command to load Modoboa initial data.
 from functools import reduce
 
 from django.contrib.auth.models import Group
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
+
+from oauth2_provider.models import get_application_model
 
 from modoboa.lib.permissions import add_permissions_to_group
 from ... import constants, extensions, models, signals
@@ -27,11 +30,19 @@ class Command(BaseCommand):
             default="admin",
             help="Username of the initial super administrator.",
         )
+        (
+            parser.add_argument(
+                "--extra-fixtures",
+                action="store_true",
+                default=False,
+                help="Also load some fixtures from the admin application.",
+            ),
+        )
         parser.add_argument(
-            "--extra-fixtures",
+            "--dev",
             action="store_true",
             default=False,
-            help="Also load some fixtures from the admin application.",
+            help="Setup dev environment. DO NOT USE IN PRODUCTION",
         )
 
     def handle(self, *args, **options):
@@ -76,3 +87,16 @@ class Command(BaseCommand):
             from modoboa.admin import factories
 
             factories.populate_database()
+
+        if options["dev"]:
+            app_model = get_application_model()
+            if not app_model.objects.filter(name="frontend").exists():
+                call_command(
+                    "createapplication",
+                    "--algorithm=RS256",
+                    "--redirect-uris=https://localhost:3000/login/logged",
+                    "--name=frontend",
+                    "--client-id=LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD",
+                    "public",
+                    "authorization-code",
+                )

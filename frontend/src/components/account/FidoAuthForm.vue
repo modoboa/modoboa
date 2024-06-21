@@ -8,25 +8,14 @@
       </v-card-title>
       <v-card-text>
         <v-row>
-          <v-col v-if="!authStore.authUser.tfa_enabled" cols="4">
+          <v-col v-if="fidoCreds.length === 0" cols="4">
             <div tag="p" class="my-4">
               {{
                 $gettext(
-                  'You must enable two-factor authentication using one-time passwords first.'
+                  "You don't have any WebAuthN registered as a second authentication method."
                 )
               }}
             </div>
-          </v-col>
-          <v-col v-else cols="4">
-            <template v-if="fidoCreds.length === 0">
-              <div tag="p" class="my-4">
-                {{
-                  $gettext(
-                    "You don't have any WebAuthN registered as a second authentication method."
-                  )
-                }}
-              </div>
-            </template>
             <template v-if="browserCapable">
               <v-form ref="fidoForm" @submit.prevent="startFidoRegistration">
                 <v-text-field
@@ -104,6 +93,12 @@
       />
     </v-form>
   </ConfirmDialog>
+  <v-dialog v-model="showBackupTokenDialog" max-width="800px" persistent>
+    <RecoveryCodesResetDialog
+      :tokens="newTokens"
+      @close="closeRecoveryCodesResetDialog"
+    />
+  </v-dialog>
 </template>
 
 <script setup lang="js">
@@ -113,6 +108,7 @@ import { useGettext } from 'vue3-gettext'
 import rules from '@/plugins/rules.js'
 import { useAuthStore } from '@/stores'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
+import RecoveryCodesResetDialog from './RecoveryCodesResetDialog.vue'
 import {
   create,
   parseCreationOptionsFromJSON,
@@ -145,25 +141,35 @@ const confirmEdition = ref()
 const editForm = ref()
 const editName = ref('')
 const editEnabled = ref(false)
+const tokens = ref()
+const showBackupTokenDialog = ref(false)
 
 async function startFidoRegistration() {
-  registrationLoading.value = true
   const { valid } = await fidoForm.value.validate()
   if (!valid) {
-    registrationLoading.value = false
     return
   }
+  registrationLoading.value = true
   const creationOption = await authApi.beginFidoRegistration()
   if (creationOption) {
     const options = parseCreationOptionsFromJSON(creationOption.data)
-    const result = await create(options)
-    const response = result.toJSON()
-    console.log(response)
-    response.name = name.value
-    await authStore.addFidoCred(response)
+    const device = await create(options)
+    const result = device.toJSON()
+    result.name = name.value
+    authStore.addFidoCred(result).then((res) => {
+      if (res.status === 200) {
+        tokens.value = res.data.tokens
+        showBackupTokenDialog.value = true
+      }
+    })
     fidoForm.value.reset()
   }
   registrationLoading.value = false
+}
+
+function closeRecoveryCodesResetDialog() {
+  tokens.value = []
+  showBackupTokenDialog.value = false
 }
 
 async function deleteCred(cred) {

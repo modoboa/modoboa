@@ -82,7 +82,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
     @action(methods=["get"], detail=False, url_path="tfa/setup/key")
     def tfa_setup_get_key(self, request):
         """Get a key and url to finalize the setup process."""
-        if request.user.tfa_enabled:
+        if request.user.totp_enabled:
             return response.Response(status=404)
         device = request.user.totpdevice_set.first()
         if not device:
@@ -110,7 +110,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
             device.token_set.create(token=token)
             tokens.append(token)
         # Set enable flag to True so we can't go here anymore
-        request.user.tfa_enabled = True
+        request.user.totp_enabled = True
         request.user.save()
         # Generate new tokens
         device = request.user.totpdevice_set.first()
@@ -166,7 +166,17 @@ class FIDOViewSet(
     serializer_class = serializers.FIDOSerializer
 
     def get_queryset(self):
-        return models.UserFidoKeys.objects.filter(user=self.request.user)
+        if self.request.user.webautn_enabled:
+            return models.UserFidoKeys.objects.filter(user=self.request.user)
+        return None
+
+    def destroy(self, request, *args, **kwargs):
+        super().destroy(request, *args, **kwargs)
+        device = request.user.totpdevice_set.first()
+        if device is None:
+            request.user.webautn_enabled = False
+            request.user.staticdevice_set.all().delete()
+            request.user.save()
 
     @action(methods=["post"], detail=False, url_path="registration/begin")
     def registration_begin(self, request):
@@ -187,7 +197,20 @@ class FIDOViewSet(
             credential_data=credential_data,
             user=request.user,
         )
-        if not request.user.tfa_enabled:
-            request.user.tfa_enabled = True
+        if not request.user.webautn_enabled:
+            request.user.webautn_enabled = True
             request.user.save()
+
+        # create static device for recovery purposes if needed
+        device = request.user.staticdevice_set.first()
+        if device is None:
+            device = StaticDevice.objects.create(
+                user=request.user, name="{} static device".format(request.user)
+            )
+            for cpt in range(10):
+                token = StaticToken.random_token()
+                device.token_set.create(token=token)
+            return response.Response(
+                {"tokens": device.token_set.all().values_list("token", flat=True)}
+            )
         return response.Response(status=204)

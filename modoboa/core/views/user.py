@@ -127,13 +127,13 @@ def api_access(request):
 def security(request):
     """View to manage security settings."""
     context = {"user_has_device": django_otp.user_has_device(request.user)}
-    if not request.user.tfa_enabled:
+    if not request.user.totp_enabled:
         device = request.user.staticdevice_set.first()
         if device:
             tokens = device.token_set.all().values_list("token", flat=True)
             context.update({"tokens": tokens})
             # Set enable flag to True so we can't go here anymore
-            request.user.tfa_enabled = True
+            request.user.totp_enabled = True
             request.user.save()
         else:
             device = request.user.totpdevice_set.first()

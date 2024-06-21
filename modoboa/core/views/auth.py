@@ -39,7 +39,6 @@ logger = logging.getLogger("modoboa.auth")
 
 
 class LoginViewMixin:
-
     @cached_property
     def logger(self):
         return logging.getLogger("modoboa.auth")
@@ -122,7 +121,7 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
             username=user.username,
             password=form.cleaned_data["password"],
         )
-        if user.tfa_enabled:
+        if user.totp_enabled:
             self.request.session[constants.TFA_PRE_VERIFY_USER_PK] = user.pk
             self.request.session[constants.TFA_PRE_VERIFY_USER_BACKEND] = user.backend
             self.request.session["rememberme"] = form.cleaned_data["rememberme"]
@@ -276,10 +275,7 @@ class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
         context = super().get_context_data(**kwargs)
         has_totp_device = django_otp.user_has_device(self.user)
         context["totp_device"] = has_totp_device
-        has_webauthn_device = models.UserFidoKeys.objects.filter(
-            user=self.user
-        ).exists()
-        context["webauthn_device"] = has_webauthn_device
+        context["webauthn_device"] = self.user.webauthn_enabled
         context["nextlocation"] = self.request.POST.get(
             "next", self.request.GET.get("next")
         )
