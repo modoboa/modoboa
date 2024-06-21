@@ -42,10 +42,10 @@ To do so, run the following commands::
   $ source <path>/bin/activate
   $ git clone https://github.com/modoboa/modoboa.git
   $ cd modoboa
-  $ python setup.py develop
+  $ pip install -e .
   $ pip install -r dev-requirements.txt
 
-The ``develop`` command creates a symbolic link to your local copy so
+This will create a symbolic link to your local copy so
 any modification you make will be automatically available in your
 environment, no need to copy them.
 
