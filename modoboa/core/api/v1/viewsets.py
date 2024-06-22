@@ -63,8 +63,9 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
             # We include it as "password" to display the error
             return response.Response({"error": _("2FA is not enabled")}, status=403)
         request.user.totpdevice_set.all().delete()
-        request.user.staticdevice_set.all().delete()
         request.user.totp_enabled = False
+        if not request.user.tfa_enabled:
+            request.user.staticdevice_set.all().delete()
         request.user.save()
         return response.Response()
 

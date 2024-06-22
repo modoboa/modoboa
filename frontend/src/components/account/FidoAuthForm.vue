@@ -16,33 +16,8 @@
                 )
               }}
             </div>
-            <template v-if="browserCapable">
-              <v-form ref="fidoForm" @submit.prevent="startFidoRegistration">
-                <v-text-field
-                  v-model="name"
-                  :label="$gettext('New device name')"
-                  :rules="[rules.required]"
-                />
-                <v-btn
-                  color="success"
-                  type="submit"
-                  :loading="registrationLoading"
-                >
-                  {{ $gettext('Setup device') }}
-                </v-btn>
-              </v-form>
-            </template>
-            <template v-else>
-              <v-alert type="error">
-                {{
-                  $gettext(
-                    'Your browser does not seem compatible with WebAuthN'
-                  )
-                }}
-              </v-alert>
-            </template>
           </v-col>
-          <v-col v-if="fidoCreds.length" cols="8">
+          <v-col v-else cols="8">
             <h3>{{ $gettext('Registered Webauthn devices') }}</h3>
             <v-data-table-virtual
               :headers="headers"
@@ -74,6 +49,38 @@
               </template>
             </v-data-table-virtual>
           </v-col>
+          <v-col cols="4">
+            <template v-if="browserCapable">
+              <h3>
+                {{
+                  $gettext('Enter a name to register a new webauthn device.')
+                }}
+              </h3>
+              <v-form ref="fidoForm" @submit.prevent="startFidoRegistration">
+                <v-text-field
+                  v-model="name"
+                  :label="$gettext('New device name')"
+                  :rules="[rules.required]"
+                />
+                <v-btn
+                  color="success"
+                  type="submit"
+                  :loading="registrationLoading"
+                >
+                  {{ $gettext('Setup device') }}
+                </v-btn>
+              </v-form>
+            </template>
+            <template v-else>
+              <v-alert type="error">
+                {{
+                  $gettext(
+                    'Your browser does not seem compatible with WebAuthN'
+                  )
+                }}
+              </v-alert>
+            </template>
+          </v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -95,7 +102,7 @@
   </ConfirmDialog>
   <v-dialog v-model="showBackupTokenDialog" max-width="800px" persistent>
     <RecoveryCodesResetDialog
-      :tokens="newTokens"
+      :tokens="tokens"
       @close="closeRecoveryCodesResetDialog"
     />
   </v-dialog>
@@ -153,16 +160,21 @@ async function startFidoRegistration() {
   const creationOption = await authApi.beginFidoRegistration()
   if (creationOption) {
     const options = parseCreationOptionsFromJSON(creationOption.data)
-    const device = await create(options)
-    const result = device.toJSON()
-    result.name = name.value
-    authStore.addFidoCred(result).then((res) => {
-      if (res.status === 200) {
-        tokens.value = res.data.tokens
-        showBackupTokenDialog.value = true
-      }
-    })
-    fidoForm.value.reset()
+    try {
+      const device = await create(options)
+      const result = device.toJSON()
+      result.name = name.value
+      authStore.addFidoCred(result).then((res) => {
+        if (res.status === 200) {
+          tokens.value = res.data.tokens
+          showBackupTokenDialog.value = true
+        }
+      })
+      fidoForm.value.reset()
+    } catch {
+      registrationLoading.value = false
+      return
+    }
   }
   registrationLoading.value = false
 }

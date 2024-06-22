@@ -46,18 +46,28 @@ export const useAuthStore = defineStore('auth', () => {
   async function getFidoCreds() {
     return authApi.getAllFidoRegistred().then((resp) => {
       fidoCreds.value = resp.data
+      if (fidoCreds.value.length > 0) {
+        authUser.value.tfa_enabled = true
+        authUser.value.webauthn_enabled = true
+      }
+      return resp
     })
   }
 
   async function addFidoCred(result) {
-    return authApi.endFidoRegistration(result).then(() => {
+    return authApi.endFidoRegistration(result).then((res) => {
       getFidoCreds()
+      return res
     })
   }
 
   async function deleteFidoCreds(id) {
-    return authApi.deleteFido(id).then(() => {
+    return authApi.deleteFido(id).then((res) => {
       fidoCreds.value = fidoCreds.value.filter((cred) => cred.id !== id)
+      authUser.value.tfa_enabled = res.data.tfa_enabled
+      if (!res.data.tfa_enabled) {
+        authUser.value.webauthn_enabled = false
+      }
     })
   }
 
