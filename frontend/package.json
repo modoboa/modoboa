@@ -17,31 +17,32 @@
   "dependencies": {
     "@github/webauthn-json": "^2.1.1",
     "@mdi/font": "^7.3.67",
-    "apexcharts": "^3.45.2",
-    "axios": "^1.6.7",
-    "core-js": "^3.29.0",
-    "debounce": "^2.0.0",
+    "apexcharts": "^3.49.1",
+    "axios": "^1.7.2",
+    "core-js": "^3.37.1",
+    "debounce": "^2.1.0",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.4",
     "oidc-client-ts": "^3.0.1",
     "pinia": "^2.1.7",
     "qrcode.vue": "^3.4.1",
     "roboto-fontface": "*",
-    "vue": "^3.4.19",
-    "vue-router": "^4.0.0",
-    "vue3-apexcharts": "^1.5.2",
-    "vue3-gettext": "^3.0.0-beta.4",
-    "vuetify": "^3.5.4"
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3",
+    "vue3-apexcharts": "^1.5.3",
+    "vue3-gettext": "^3.0.0-beta.5",
+    "vuetify": "^3.6.9"
   },
   "devDependencies": {
     "@vitejs/plugin-basic-ssl": "^1.1.0",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "eslint": "^8.56.0",
-    "eslint-plugin-vue": "^9.21.1",
-    "prettier": "^3.1.1",
-    "sass": "^1.69.5",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "eslint": "^9.5.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "prettier": "^3.3.2",
+    "sass": "^1.77.5",
     "unplugin-fonts": "^1.0.3",
-    "vite": "^5.1.7",
-    "vite-plugin-vuetify": "^2.0.1"
+    "vite": "^5.3.1",
+    "vite-plugin-vuetify": "^2.0.3"
   }
 }
