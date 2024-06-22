@@ -36,10 +36,10 @@ const { $gettext } = useGettext()
 
 const props = defineProps({
   // the callback should return true or false, returning false inhibits the close event
-  callback_agree : {
+  callback_agree: {
     type: Function,
-    default: null
-  }
+    default: null,
+  },
 })
 
 const dialog = ref(false)
@@ -70,7 +70,7 @@ defineExpose({
 })
 
 async function agree() {
-  if (props.callback_agree !== null && ! (await props.callback_agree())) {
+  if (props.callback_agree !== null && !(await props.callback_agree())) {
     return
   }
   storedResolve(true)

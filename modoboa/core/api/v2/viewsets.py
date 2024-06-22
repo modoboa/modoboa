@@ -13,10 +13,30 @@ from modoboa.core.api.v1 import viewsets as core_v1_viewsets
 from modoboa.lib import pagination
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
+import base64
+
 from ... import constants
 from ... import fido2_auth as f2_auth
 from ... import models
 from . import serializers
+
+
+def create_static_tokens(request):
+    """Utility function to create or recreate
+    static tokens if needed."""
+    device = request.user.staticdevice_set.first()
+    if device is None:
+        device = StaticDevice.objects.create(
+            user=request.user, name="{} static device".format(request.user)
+        )
+    elif device is not None:
+        return None
+    tokens = []
+    for cpt in range(10):
+        token = StaticToken.random_token()
+        device.token_set.create(token=token)
+        tokens.append(token)
+    return tokens
 
 
 class AccountViewSet(core_v1_viewsets.AccountViewSet):
@@ -88,7 +108,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         if not device:
             return response.Response(status=404)
         return response.Response(
-            {"key": device.key, "url": device.config_url},
+            {"key": base64.b32encode(device.bin_key), "url": device.config_url},
             content_type="application/json",
         )
 
@@ -101,28 +121,13 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         )
         serializer.is_valid(raise_exception=True)
         # create static device for recovery purposes
-        device = StaticDevice.objects.create(
-            user=request.user, name="{} static device".format(request.user)
-        )
-        tokens = []
-        for cpt in range(10):
-            token = StaticToken.random_token()
-            device.token_set.create(token=token)
-            tokens.append(token)
+        tokens = create_static_tokens(request)
         # Set enable flag to True so we can't go here anymore
         request.user.totp_enabled = True
         request.user.save()
-        # Generate new tokens
-        device = request.user.totpdevice_set.first()
-        # refresh = RefreshToken.for_user(request.user)
-        # refresh[constants.TFA_DEVICE_TOKEN_KEY] = device.persistent_id
-        return response.Response(
-            {
-                "tokens": tokens,
-                # "refresh": str(refresh),
-                # "access": str(refresh.access_token),
-            }
-        )
+        if tokens is None:
+            return response.Response(status=204)
+        return response.Response({"tokens": tokens})
 
 
 class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
@@ -166,17 +171,23 @@ class FIDOViewSet(
     serializer_class = serializers.FIDOSerializer
 
     def get_queryset(self):
-        if self.request.user.webautn_enabled:
+        if self.request.user.webauthn_enabled:
             return models.UserFidoKeys.objects.filter(user=self.request.user)
         return None
 
     def destroy(self, request, *args, **kwargs):
         super().destroy(request, *args, **kwargs)
-        device = request.user.totpdevice_set.first()
-        if device is None:
-            request.user.webautn_enabled = False
+        queryset = self.get_queryset()
+        to_save = False
+        if not queryset.exists():
+            request.user.webauthn_enabled = False
+            to_save = True
+        if not request.user.tfa_enabled:
             request.user.staticdevice_set.all().delete()
+            to_save = True
+        if to_save:
             request.user.save()
+        return response.Response({"tfa_enabled": request.user.tfa_enabled})
 
     @action(methods=["post"], detail=False, url_path="registration/begin")
     def registration_begin(self, request):
@@ -197,20 +208,11 @@ class FIDOViewSet(
             credential_data=credential_data,
             user=request.user,
         )
-        if not request.user.webautn_enabled:
-            request.user.webautn_enabled = True
+        if not request.user.webauthn_enabled:
+            request.user.webauthn_enabled = True
             request.user.save()
 
-        # create static device for recovery purposes if needed
-        device = request.user.staticdevice_set.first()
-        if device is None:
-            device = StaticDevice.objects.create(
-                user=request.user, name="{} static device".format(request.user)
-            )
-            for cpt in range(10):
-                token = StaticToken.random_token()
-                device.token_set.create(token=token)
-            return response.Response(
-                {"tokens": device.token_set.all().values_list("token", flat=True)}
-            )
+        tokens = create_static_tokens(request)
+        if tokens is not None:
+            return response.Response({"tokens": tokens})
         return response.Response(status=204)

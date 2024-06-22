@@ -121,7 +121,7 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
             username=user.username,
             password=form.cleaned_data["password"],
         )
-        if user.totp_enabled:
+        if user.tfa_enabled:
             self.request.session[constants.TFA_PRE_VERIFY_USER_PK] = user.pk
             self.request.session[constants.TFA_PRE_VERIFY_USER_BACKEND] = user.backend
             self.request.session["rememberme"] = form.cleaned_data["rememberme"]
@@ -279,6 +279,8 @@ class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
         context["nextlocation"] = self.request.POST.get(
             "next", self.request.GET.get("next")
         )
+        if context["nextlocation"] is None:
+            context.pop("nextlocation")
         return context
 
     def form_valid(self, form):

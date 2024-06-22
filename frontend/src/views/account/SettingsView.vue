@@ -25,7 +25,8 @@
         <ProfileForm />
       </v-window-item>
       <v-window-item value="security">
-        <TwoFactorAuthForm />
+        <TotpAuthForm />
+        <BackupCodeAuthForm />
         <FidoAuthForm />
       </v-window-item>
       <v-window-item v-if="authStore.userHasMailbox" value="forward">
@@ -47,7 +48,8 @@
 <script setup>
 import { ref } from 'vue'
 import ProfileForm from '@/components/account/ProfileForm.vue'
-import TwoFactorAuthForm from '@/components/account/TwoFactorAuthForm.vue'
+import TotpAuthForm from '@/components/account/TotpAuthForm.vue'
+import BackupCodeAuthForm from '@/components/account/BackupCodeAuthForm.vue'
 import ForwardForm from '@/components/account/ForwardForm.vue'
 import AutoReplyForm from '@/components/account/AutoReplyForm.vue'
 import APISetupForm from '@/components/account/APISetupForm.vue'
