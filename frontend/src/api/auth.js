@@ -24,5 +24,5 @@ export default {
   },
   deleteFido(id) {
     return repository.delete(`/fido/${id}/`)
-  }
+  },
 }
