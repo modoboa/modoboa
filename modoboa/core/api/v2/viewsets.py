@@ -12,6 +12,7 @@ from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
 from modoboa.lib import pagination
+from modoboa.lib.permissions import IsSuperUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import constants
@@ -149,7 +150,7 @@ class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     pagination_class = pagination.CustomPageNumberPagination
     permission_classes = (
         permissions.IsAuthenticated,
-        permissions.DjangoModelPermissions,
+        IsSuperUser,
     )
     queryset = models.Log.objects.all()
     search_fields = ["logger", "level", "message"]
