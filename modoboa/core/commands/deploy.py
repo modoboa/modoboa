@@ -8,14 +8,12 @@ import shutil
 import string
 import subprocess
 import sys
-import uuid
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 import dj_database_url
 
 import django
-from django.conf import settings
 from django.core import management
 from django.template import Context, Template
 from django.utils.encoding import smart_str
@@ -304,40 +302,3 @@ class DeployCommand(Command):
         if parsed_args.collectstatic:
             self._exec_django_command("collectstatic", parsed_args.name, "--noinput")
         self._exec_django_command("set_default_site", parsed_args.name, allowed_host)
-
-        base_frontend_dir = os.path.join(
-            os.path.dirname(__file__), "../../frontend_dist/"
-        )
-        if not os.path.exists(base_frontend_dir):
-            return
-        frontend_target_dir = "{}/frontend".format(parsed_args.name)
-        shutil.copytree(base_frontend_dir, frontend_target_dir)
-
-        frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
-        redirect_uri = f"https://{allowed_host}/{frontend_path}/login/logged"
-        client_id = str(uuid.uuid4())
-        self._exec_django_command(
-            "createapplication",
-            parsed_args.name,
-            "--name",
-            "Modoboa frontend",
-            "--client-id",
-            client_id,
-            "--skip-authorization",
-            "--algorithm",
-            "RS256",
-            "--redirect-uris",
-            redirect_uri,
-            "public",
-            "authorization-code",
-        )
-        with open("{}/config.json".format(frontend_target_dir), "w") as fp:
-            fp.write(
-                f"""{{
-    "API_BASE_URL": "https://{allowed_host}/api/v2",
-    "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
-    "OAUTH_CLIENT_ID": "{client_id}",
-    "OAUTH_REDIRECT_URI": "{redirect_uri}"
-}}
-"""
-            )

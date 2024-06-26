@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'ckeditor_uploader',
     'oauth2_provider',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
@@ -109,6 +110,7 @@ MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'x_forwarded_for.middleware.XForwardedForMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -213,6 +215,9 @@ OAUTH2_PROVIDER = {
     },
     'DEFAULT_SCOPES': ['openid', 'read', 'write'],
 }
+
+# If CORS fail, you might want to try to set it to True
+#CORS_ORIGIN_ALLOW_ALL = False
 
 # Rest framework settings
 
