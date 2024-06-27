@@ -80,6 +80,20 @@ h2 {
     color: #333;
 }
 
+.input-group.error input {
+    border-color: #ff5252;
+}
+
+.error-message {
+    color: #ff5252;
+    font-size: 12px;
+    display: none;
+}
+
+.input-group.error .error-message {
+    display: block;
+}
+
 .checkbox-group {
     display: flex;
     align-items: center;
@@ -93,16 +107,24 @@ h2 {
 .btn {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #e6e6e6;
     border: none;
     border-radius: 5px;
-    color: white;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
 .btn:hover {
+  background-color: #c9c9c9;
+}
+
+.btn-primary:hover {
     background-color: #0056b3;
 }
 
@@ -121,8 +143,9 @@ h2 {
 }
 
 .alert-box {
-    background-color: #007bff;
+    background-color: #ff5252;
     color: white;
+    text-align: left;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;

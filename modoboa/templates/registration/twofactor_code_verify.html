@@ -11,20 +11,20 @@
     <h2>{% translate "Verification" %}</h2>
     <div id="methodSelection">
       {% if totp_device %}
-        <button class="btn" onclick="showTOTP()">{% translate "Use TOTP/backup code" %}</button>
+        <button class="btn btn-primary" onclick="showTOTP()">{% translate "Use TOTP/backup code" %}</button>
       {% endif %}
       {% if webauthn_device %}
-        <button class="mt btn" onclick="showWebAuthn()">{% translate "Use Webauthn device" %}</button>
+        <button class="mt btn btn-primary" onclick="showWebAuthn()">{% translate "Use Webauthn device" %}</button>
       {% endif %}
     </div>
     <div id="totp_form" style="display:none;">
       <form method="post" action="{% url 'core:2fa_verify' %}">
         {% csrf_token %}
         <input type="hidden" id="id_next" name="next" value="{{ nextlocation }}">
-        <div class="input-group{% if form.tfa_code.errors %} has-error{% endif %}">
+        <div class="input-group{% if form.tfa_code.errors %} error{% endif %}">
           <label>{% translate "One-time password" %}</label>
-          <input id="id_tfa_code" name="tfa_code">
-          <span class="help-block">
+          <input id="id_tfa_code" name="tfa_code" required>
+          <span class="error-message">
             {{ form.tfa_code.errors }}
           </span>
           <p class="help-block">
@@ -35,13 +35,13 @@
             {% endblocktranslate %}
           </p>
         </div>
-        <button class="btn btn-primary" type="submit">Verify code</button>
+        <button class="btn btn-primary" type="submit">{% translate "Verify code" %}</button>
       </form>
-      <button class="mt" onclick="backToSelection()">Back</button>
+      <button class="mt btn" onclick="backToSelection()">{% translate "Back" %}</button>
     </div>
     <div id="webautn_form" style="display:none;">
-      <button class="btn" onclick="useWebAuthn()">Log using Webauthn</button>
-      <button class="mt" onclick="backToSelection()">Back</button>
+      <button class="btn" onclick="useWebAuthn()">{% translate "Log using Webauthn" %}</button>
+      <button class="mt btn" onclick="backToSelection()">{% translate "Back" %}</button>
     </div>
   </div>
 {% endblock %}

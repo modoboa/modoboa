@@ -23,14 +23,16 @@
         <input type="checkbox" id="remember" name="remember">
         <label for="remember">{% translate "Remember me" %}</label>
       </div>
-      <button class="btn" type="submit">{% trans "Log in" %}</button>
+      <button class="btn btn-primary" type="submit">{% trans "Log in" %}</button>
     </form>
     <div class="footer">
       <a class="pull-right" href="{% url 'password_reset' %}">{% trans "Forgot password?" %}</a>
     </div>
-  </div>
-  <div class="login-error">
-    {% if error %}{% alert error "danger" %}{% endif %}
+    {% if form.non_field_errors %}
+      <div class="mt alert-box">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
   </div>
 {% endblock %}
 
