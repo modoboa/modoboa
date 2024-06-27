@@ -15,6 +15,7 @@ module.exports = {
       'nl',
       'pl',
       'pt',
+      'pt-br',
       'ru',
       'sv',
       'tr',
