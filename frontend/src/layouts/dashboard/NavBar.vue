@@ -155,7 +155,7 @@ const displayName = computed(() => {
 
 const menuItems = computed(() => {
   if (route.meta.layout === 'account') {
-    return userSettingsMenuItems
+    return getUserSettingsMenuItems()
   }
   return mainMenuItems
 })
@@ -167,17 +167,9 @@ const mainColor = computed(() => {
   return 'primary'
 })
 
-// created
-parametersApi.getApplications().then((response) => {
-  response.data.forEach((item) => {
-    mainMenuItems[6].children.push({
-      text: item.label,
-      to: { name: 'ParametersEdit', params: { app: item.name } },
-    })
-  })
-})
-
 const imapMigration = computed(() => parametersStore.imapMigrationEnabled)
+
+const settings = []
 
 const mainMenuItems = [
   {
@@ -245,7 +237,7 @@ const mainMenuItems = [
   {
     icon: 'mdi-cog',
     text: $gettext('Settings'),
-    children: [],
+    children: settings,
     roles: ['SuperAdmins'],
   },
   {
@@ -253,14 +245,6 @@ const mainMenuItems = [
     text: $gettext('Information'),
     roles: ['SuperAdmins'],
     to: { name: 'Information' },
-  }
-]
-
-const userSettingsMenuItems = [
-  {
-    text: $gettext('Settings'),
-    to: { name: 'AccountSettings' },
-    icon: 'mdi-cog'
   }
 ]
 
@@ -278,12 +262,30 @@ const userMenuItems = [
   },
 ]
 
-if (authUser.value.role !== 'SimpleUsers') {
+if (isAuthenticated && authUser.value.role !== 'SimpleUsers') {
   userMenuItems.unshift({
     text: $gettext('Admin'),
     to: { name: 'Dashboard' },
     icon: 'mdi-view-dashboard-outline'
   })
+}
+
+function getUserSettingsMenuItems() {
+  const result = []
+
+  if (authUser.value.mailbox) {
+    result.push({
+      text: $gettext('Filters'),
+      to: { name: 'AccountFilters' },
+      icon: 'mdi-filter'
+    })
+  }
+  result.push({
+    text: $gettext('Settings'),
+    to: { name: 'AccountSettings' },
+    icon: 'mdi-cog'
+  })
+  return result
 }
 
 function displayMenuItem(item) {
@@ -303,11 +305,20 @@ function displayMenuItem(item) {
 
 async function logout() {
   getActivePinia()._s.forEach(async (store) => await store.$reset())
-  router.push({ name: 'Login' })
 }
 
 onMounted(() => {
-  if (parametersStore.imapMigrationEnabled === null) {
+  if (authUser.value.role === 'SuperAdmins') {
+    parametersApi.getApplications().then((response) => {
+      response.data.forEach((item) => {
+        settings.push({
+          text: item.label,
+          to: { name: 'ParametersEdit', params: { app: item.name } },
+        })
+      })
+    })
+  }
+  if (authUser.value.role === 'SuperAdmins' && parametersStore.imapMigrationEnabled === null) {
     parametersApi.getApplication('imap_migration').then((response) => {
       parametersStore.imapMigrationEnabled =
         response.data.params.enabled_imapmigration

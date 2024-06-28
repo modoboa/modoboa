@@ -34,6 +34,14 @@ import { useGettext } from 'vue3-gettext'
 
 const { $gettext } = useGettext()
 
+const props = defineProps({
+  // the callback should return true or false, returning false inhibits the close event
+  callback_agree: {
+    type: Function,
+    default: null,
+  },
+})
+
 const dialog = ref(false)
 const message = ref('')
 const title = ref('')
@@ -61,7 +69,10 @@ defineExpose({
   open,
 })
 
-function agree() {
+async function agree() {
+  if (props.callback_agree !== null && !(await props.callback_agree())) {
+    return
+  }
   storedResolve(true)
   dialog.value = false
 }

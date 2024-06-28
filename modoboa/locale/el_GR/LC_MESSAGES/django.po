@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 11:23+0100\n"
+"POT-Creation-Date: 2024-04-18 16:45+0200\n"
 "PO-Revision-Date: 2017-10-12 19:37+0000\n"
 "Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
@@ -85,23 +85,23 @@ msgstr "Αυτό το πεδίο απαιτείτε."
 msgid "Local domain {} does not exist"
 msgstr "Το τοπικός domain {} δεν υπάρχει"
 
-#: admin/api/v1/serializers.py:513
+#: admin/api/v1/serializers.py:511
 msgid "A list of recipient"
 msgstr "Λίστα παραληπτών"
 
-#: admin/api/v1/serializers.py:529 admin/api/v2/viewsets.py:271
+#: admin/api/v1/serializers.py:527 admin/api/v2/viewsets.py:271
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "Ο χρήστης '%s' υπάρχει ήδη"
 
-#: admin/api/v1/serializers.py:565
+#: admin/api/v1/serializers.py:563
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this domain."
 msgstr "Δεν έχετε πρόσβαση σε αυτό το domain"
 
-#: admin/api/v1/serializers.py:574
+#: admin/api/v1/serializers.py:572
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this mailbox."
@@ -340,6 +340,7 @@ msgstr ""
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
 #: limits/app_settings.py:111 limits/app_settings.py:195
 #: limits/app_settings.py:269 limits/constants.py:31 limits/constants.py:84
+#: sievefilters/forms.py:373
 msgid "Mailboxes"
 msgstr "Γραμματοκιβώτια"
 
@@ -614,7 +615,7 @@ msgstr "Τα domains που ο χρήστης διαχειρίζεται"
 #: core/apps.py:24 imap_migration/app_settings.py:17
 #: imap_migration/app_settings.py:99 maillog/apps.py:14 maillog/forms.py:20
 #: pdfcredentials/app_settings.py:23 pdfcredentials/app_settings.py:195
-#: postfix_autoreply/forms.py:118
+#: postfix_autoreply/forms.py:107 sievefilters/forms.py:363
 msgid "General"
 msgstr "Γενικά"
 
@@ -738,7 +739,8 @@ msgstr "Αυτόματη δημιουργία διαχειριστή για αυ
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
 #: core/templates/core/information.html:14
-#: core/templates/core/information.html:36
+#: core/templates/core/information.html:36 sievefilters/forms.py:38
+#: sievefilters/templates/sievefilters/guieditor.html:6
 msgid "Name"
 msgstr "Όνομα"
 
@@ -1049,7 +1051,7 @@ msgid "Key length"
 msgstr ""
 
 #: admin/models/domain.py:368 admin/models/domain_alias.py:70
-#: core/models.py:329 relaydomains/lib.py:13
+#: core/models.py:333 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Λάθος γραμμή"
 
@@ -1210,7 +1212,7 @@ msgstr "Δημιουργήθηκε"
 msgid "Last login"
 msgstr "Τελευταία είσοδος χρήστη"
 
-#: admin/templates/admin/account_detail.html:38 core/models.py:70
+#: admin/templates/admin/account_detail.html:38 core/models.py:74
 msgid "Secondary email"
 msgstr "Δευτερεύον email"
 
@@ -1219,7 +1221,7 @@ msgstr "Δευτερεύον email"
 msgid "Not defined"
 msgstr "Μη καθορισμένο"
 
-#: admin/templates/admin/account_detail.html:41 core/models.py:68
+#: admin/templates/admin/account_detail.html:41 core/models.py:72
 msgid "Phone number"
 msgstr "Τηλέφωνο"
 
@@ -1431,6 +1433,9 @@ msgstr "Κατάσταση DNS"
 
 #: admin/templates/admin/domain_headers.html:9
 #: admin/templates/admin/identity_headers.html:5
+#: sievefilters/templates/sievefilters/filter.html:20
+#: sievefilters/templates/sievefilters/guieditor.html:5
+#: sievefilters/views.py:102
 msgid "Actions"
 msgstr "Ενέργειες"
 
@@ -1490,6 +1495,7 @@ msgstr "Αυτόματη προώθηση των email σε άλλη διεύθ�
 #: core/templates/core/api_access.html:35
 #: core/templates/core/user_profile.html:19 lib/form_utils.py:356
 #: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:10
+#: sievefilters/views.py:171
 msgid "Update"
 msgstr "Ενημέρωση"
 
@@ -1675,7 +1681,7 @@ msgstr "Έγραφες MX από{}"
 msgid "Alias with this name already exists"
 msgstr "Υπάρχει είδη αυτό το ψευδώνυμο"
 
-#: admin/views/alias.py:52
+#: admin/views/alias.py:52 sievefilters/views.py:151 sievefilters/views.py:239
 msgid "Create"
 msgstr "Δημιουργία"
 
@@ -1778,7 +1784,7 @@ msgstr "Προφίλ Χρήστη"
 #: core/api/v2/serializers.py:183 core/api/v2/serializers.py:190
 #: core/api/v2/serializers.py:197 core/app_settings.py:535
 #: core/app_settings.py:543 core/app_settings.py:551
-#: postfix_autoreply/forms.py:165
+#: postfix_autoreply/forms.py:155
 msgid "Invalid syntax"
 msgstr "Μη έγκυρη σύνταξη"
 
@@ -1793,26 +1799,6 @@ msgstr ""
 #: core/api/v2/serializers.py:333 core/views/auth.py:184
 #: core/views/auth.py:237
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
-
-#: core/api/v2/views.py:57
-#, python-format
-msgid "Failed connection attempt from '%s' as user '%s'"
-msgstr ""
-
-#: core/api/v2/views.py:69 core/views/auth.py:89
-#, python-format
-msgid "User '%s' successfully logged in"
-msgstr "Επιτυχής είσοδος του χρήστη '%s'"
-
-#: core/api/v2/views.py:86 core/views/auth.py:67
-#, python-format
-msgid "Password scheme mismatch. Updating %s password"
-msgstr ""
-
-#: core/api/v2/views.py:93 core/views/auth.py:75
-#, python-format
-msgid "Password hash parameter missmatch. Updating %s password"
 msgstr ""
 
 #: core/app_settings.py:44 core/app_settings.py:716
@@ -1916,7 +1902,8 @@ msgstr ""
 msgid "LDAP settings"
 msgstr "Ρυθμίσεις LDAP"
 
-#: core/app_settings.py:132 core/app_settings.py:836
+#: core/app_settings.py:132 core/app_settings.py:836 sievefilters/forms.py:312
+#: sievefilters/forms.py:342
 msgid "Server address"
 msgstr "Διεύθυνση εξυπηρετητή"
 
@@ -1924,7 +1911,8 @@ msgstr "Διεύθυνση εξυπηρετητή"
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "Η IP διεύθυνση ή το DNS όνομα του εξυπηρετητή LDAP"
 
-#: core/app_settings.py:138 core/app_settings.py:845
+#: core/app_settings.py:138 core/app_settings.py:845 sievefilters/forms.py:319
+#: sievefilters/forms.py:354
 msgid "Server port"
 msgstr "Πόρτα εξυπηρετητή"
 
@@ -1965,9 +1953,9 @@ msgstr "Πόρτα εξυπηρετητή"
 msgid "The TCP port number used by the LDAP secondary server"
 msgstr "Η TCP πόρτα λειτουργίας του εξυπηρετητή LDAP"
 
-#: core/app_settings.py:167 core/app_settings.py:886
+#: core/app_settings.py:167 core/app_settings.py:886 sievefilters/forms.py:348
 msgid "Use a secured connection"
-msgstr "Χρήση ασφαλής σύνδεσης"
+msgstr "Χρησιμοποιήστε μια ασφαλή σύνδεση"
 
 #: core/app_settings.py:171 core/app_settings.py:888
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
@@ -2249,8 +2237,9 @@ msgid "Send an email to notify admins about new versions"
 msgstr ""
 
 #: core/app_settings.py:425 core/app_settings.py:1233
+#: sievefilters/constants.py:25
 msgid "Recipient"
-msgstr ""
+msgstr "Παραλήπτης"
 
 #: core/app_settings.py:427 core/app_settings.py:1236
 msgid "Recipient of new versions notification emails."
@@ -2357,11 +2346,11 @@ msgstr "Μεταπωλητής "
 msgid "Super administrator"
 msgstr "Super διαχειριστής"
 
-#: core/constants.py:108
+#: core/constants.py:109
 msgid "Choose a provider"
 msgstr ""
 
-#: core/constants.py:113
+#: core/constants.py:114
 msgid "Dummy"
 msgstr ""
 
@@ -2445,59 +2434,59 @@ msgstr "Υπάρχουν διαθέσιμες ενημερώσεις"
 msgid "[modoboa] Update(s) available"
 msgstr "Υπάρχουν διαθέσιμες ενημερώσεις"
 
-#: core/models.py:55
+#: core/models.py:59
 msgid "Allow mailboxes access"
 msgstr "Να επιτρέπεται η πρόσβαση σε γραμματοκιβώτια"
 
-#: core/models.py:57
+#: core/models.py:61
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 "Να επιτρέπεται σε αυτόν τον διαχειριστή η πρόσβαση στα γραμματοκιβώτια "
 "χρηστών"
 
-#: core/models.py:59 core/templates/core/user_security.html:119
+#: core/models.py:63 core/templates/core/user_security.html:119
 msgid "password"
 msgstr "κωδικός"
 
-#: core/models.py:62
+#: core/models.py:66
 msgid "language"
 msgstr "Γλώσσα "
 
-#: core/models.py:66
+#: core/models.py:70
 msgid "Prefered language to display pages."
 msgstr "Επιλογή γλώσσας για την εμφάνιση σελίδων."
 
-#: core/models.py:75
+#: core/models.py:79
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 "Μια εναλλακτική e-mail διεύθυνση, μπορεί να χρησιμοποιηθεί για λόγους "
 "ανάκτησης."
 
-#: core/models.py:131
+#: core/models.py:135
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 "Σφάλμα κατά την ενημέρωση του κωδικού: το LDAP module δεν είναι "
 "εγκατεστημένο"
 
-#: core/models.py:166 policyd/core.py:106
+#: core/models.py:170 policyd/core.py:106
 msgid "account"
 msgstr "λογαριασμός"
 
-#: core/models.py:294
+#: core/models.py:298
 msgid "Unknown"
 msgstr "Άγνωστη"
 
-#: core/models.py:337
+#: core/models.py:341
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 "Δεν μπορείτε να εισάγετε έναν λογαριασμό με ρόλο μεγαλύτερο από τον δικό σας"
 
-#: core/models.py:352
+#: core/models.py:356
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "Ο απλός χρήστης '%s' πρέπει να έχει μια έγκυρη email διεύθυνση"
 
-#: core/models.py:359
+#: core/models.py:363
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
@@ -2859,6 +2848,21 @@ msgstr "Το βασικό μέρος του Modoboa"
 #: core/views/admin.py:42
 msgid "Parameters saved"
 msgstr "Οι παράμετροι αποθηκεύτηκαν"
+
+#: core/views/auth.py:67
+#, python-format
+msgid "Password scheme mismatch. Updating %s password"
+msgstr ""
+
+#: core/views/auth.py:75
+#, python-format
+msgid "Password hash parameter missmatch. Updating %s password"
+msgstr ""
+
+#: core/views/auth.py:89
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr "Επιτυχής είσοδος του χρήστη '%s'"
 
 #: core/views/auth.py:101
 msgid "Your username and password didn't match. Please try again."
@@ -3248,10 +3252,10 @@ msgstr "Ρυθμίσεις OfflineIMAP"
 msgid "IMAP Migration"
 msgstr "Μετάβαση IMAP"
 
-#: imap_migration/auth_backends.py:49
+#: imap_migration/auth_backends.py:49 sievefilters/imaputils.py:109
 #, python-format
 msgid "Connection to IMAP server failed: %s"
-msgstr "Παρουσιάστηκε σφάλμα στη σύνδεση με τον εξυπηρετητή IMAP: %s"
+msgstr "Η σύνδεση στο διακομιστή IMAP απέτυχε:%s"
 
 #: imap_migration/checks.py:12
 msgid ""
@@ -3327,7 +3331,8 @@ msgstr "Αποστολή"
 msgid "Failed to update password: {}"
 msgstr "Αποτυχία ενημέρωσης κωδικού: {}"
 
-#: lib/templatetags/lib_tags.py:120 templates/common/email_searchbar.html:17
+#: lib/templatetags/lib_tags.py:120 sievefilters/constants.py:23
+#: templates/common/email_searchbar.html:17
 msgid "Subject"
 msgstr "Τίτλος"
 
@@ -3948,19 +3953,19 @@ msgstr "%s: χρήση ορίου"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr ""
 
-#: postfix_autoreply/api/v2/serializers.py:28 postfix_autoreply/forms.py:98
+#: postfix_autoreply/api/v2/serializers.py:27 postfix_autoreply/forms.py:88
 #, fuzzy
 #| msgid "This field is required"
 msgid "This date is over"
 msgstr "Αυτή η ημερομηνία έχει παρέλθει"
 
-#: postfix_autoreply/api/v2/serializers.py:32 postfix_autoreply/forms.py:101
+#: postfix_autoreply/api/v2/serializers.py:30 postfix_autoreply/forms.py:90
 #, fuzzy
 #| msgid "Cannot be greater than domain quota"
 msgid "Must be greater than start date"
 msgstr "Πρέπει να είναι μεγαλύτερη από την ημερομηνία έναρξης"
 
-#: postfix_autoreply/apps.py:11 postfix_autoreply/forms.py:173
+#: postfix_autoreply/apps.py:12 postfix_autoreply/forms.py:163
 #, fuzzy
 #| msgid "Automatic account removal"
 msgid "Automatic replies"
@@ -3972,17 +3977,17 @@ msgstr ""
 "Ενεργοποίηση της αυτόματης απάντησης από αυτήν την ημερομηνία. Μορφή  : "
 "YYYY-MM-DD HH:mm:ss"
 
-#: postfix_autoreply/forms.py:31
+#: postfix_autoreply/forms.py:28
 msgid "Until"
 msgstr "Έως"
 
-#: postfix_autoreply/forms.py:34
+#: postfix_autoreply/forms.py:31
 msgid "Activate your auto reply until this date. Format : YYYY-MM-DD HH:mm:ss"
 msgstr ""
 "Ενεργοποίηση της αυτόματης απάντησης μέχρι αυτήν την ημερομηνία. Μορφή  : "
 "YYYY-MM-DD HH:mm:ss"
 
-#: postfix_autoreply/forms.py:51
+#: postfix_autoreply/forms.py:39
 #, python-format
 msgid ""
 "The content of your answer. You can use the following variables, which will "
@@ -3990,38 +3995,38 @@ msgid ""
 "%(untildate)s"
 msgstr ""
 
-#: postfix_autoreply/forms.py:121
+#: postfix_autoreply/forms.py:110
 msgid "Automatic reply timeout"
 msgstr "Χρονικό όριο λήξης αυτόματης απάντησης"
 
-#: postfix_autoreply/forms.py:124
+#: postfix_autoreply/forms.py:113
 msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr ""
 "Χρονικό όριο λήξης σε δευτερόλεπτα μεταξύ δύο αυτόματων απαντήσεων προς τον "
 "ίδιο παραλήπτη"
 
-#: postfix_autoreply/forms.py:130
+#: postfix_autoreply/forms.py:119
 msgid "Default subject"
 msgstr "Προεπιλεγμένος τίτλος"
 
-#: postfix_autoreply/forms.py:131
+#: postfix_autoreply/forms.py:120
 msgid "I'm off"
 msgstr "Λείπω"
 
-#: postfix_autoreply/forms.py:133
+#: postfix_autoreply/forms.py:122
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
 msgstr ""
 "Προκαθορισμένο θέμα που θα χρησιμοποιείται όταν δημιουργούνται αυτόματες "
 "απαντήσεις μηνυμάτων"
 
-#: postfix_autoreply/forms.py:140
+#: postfix_autoreply/forms.py:129
 #, fuzzy
 #| msgid "Default domain quota"
 msgid "Default content"
 msgstr "Προεπιλεγμένο περιεχόμενο"
 
-#: postfix_autoreply/forms.py:142
+#: postfix_autoreply/forms.py:131
 #, python-format
 msgid ""
 "I'm currently off. I'll answer as soon as I come back.\n"
@@ -4034,7 +4039,7 @@ msgstr ""
 "Φιλικά,\n"
 "%(name)s\n"
 
-#: postfix_autoreply/forms.py:148
+#: postfix_autoreply/forms.py:138
 #, python-format
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
@@ -4043,14 +4048,14 @@ msgstr ""
 "Το προεπιλεγμένο κείμενο που θα χρησιμοποιείται στις αυτόματες απαντήσεις. "
 "Το macro '%(name)s' αντικαθίσταται από το όνομα του χρήστη. "
 
-#: postfix_autoreply/handlers.py:123
+#: postfix_autoreply/handlers.py:118
 #: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
 #, fuzzy
 #| msgid "Custom message"
 msgid "Auto-reply message"
 msgstr "Κείμενο αυτόματης απάντησης"
 
-#: postfix_autoreply/handlers.py:135
+#: postfix_autoreply/handlers.py:131
 msgid "Auto reply"
 msgstr "Αυτόματη απάντηση"
 
@@ -4060,11 +4065,11 @@ msgstr "Αυτόματη απάντηση"
 msgid "subject"
 msgstr "τίτλος"
 
-#: postfix_autoreply/models.py:16
+#: postfix_autoreply/models.py:17
 msgid "The subject that will appear in sent emails"
 msgstr "Ο τίτλος που θα φαίνεται στα απεσταλμένα email"
 
-#: postfix_autoreply/models.py:19
+#: postfix_autoreply/models.py:20
 msgid "content"
 msgstr "περιεχόμενο"
 
@@ -4072,7 +4077,7 @@ msgstr "περιεχόμενο"
 msgid "The content that will appear in sent emails"
 msgstr "Το κείμενο που θα φαίνεται στα απεσταλμένα email"
 
-#: postfix_autoreply/models.py:24
+#: postfix_autoreply/models.py:23
 msgid "Activate/Deactivate your auto reply"
 msgstr "Ενεργοποίηση/Απενεργοποίηση της αυτόματης απάντησης"
 
@@ -4109,6 +4114,380 @@ msgstr "Θύρα κεντρικού host"
 #: relaydomains/transport.py:27
 msgid "verify recipients"
 msgstr "επιβεβαίωση παραληπτών"
+
+#: sievefilters/api/v2/viewsets.py:188
+#, fuzzy, python-format
+#| msgid "User '%s' already exists"
+msgid "Filter %s already exists"
+msgstr "Ο χρήστης '%s' υπάρχει ήδη"
+
+#: sievefilters/apps.py:12
+#, fuzzy
+#| msgid "Search filter"
+msgid "Sieve filters"
+msgstr "Φίλτρα Sieve"
+
+#: sievefilters/apps.py:15 sievefilters/handlers.py:20
+#: sievefilters/templates/sievefilters/index.html:4
+#, fuzzy
+#| msgid "Search filter"
+msgid "Message filters"
+msgstr "Φίλτρα μηνυμάτων"
+
+#: sievefilters/constants.py:10 sievefilters/forms.py:42
+msgid "All of the following"
+msgstr "Όλα τα παρακάτω"
+
+#: sievefilters/constants.py:11 sievefilters/forms.py:43
+msgid "Any of the following"
+msgstr "Οποιοδήποτε από τα παρακάτων"
+
+#: sievefilters/constants.py:12 sievefilters/forms.py:44
+#, fuzzy
+#| msgid "sent messages"
+msgid "All messages"
+msgstr "Όλα τα μηνύματα"
+
+#: sievefilters/constants.py:16
+#, fuzzy
+#| msgid "Domains"
+msgid "contains"
+msgstr "περιέχει"
+
+#: sievefilters/constants.py:17
+msgid "does not contain"
+msgstr "δεν περιέχει"
+
+#: sievefilters/constants.py:18
+msgid "is"
+msgstr "είναι"
+
+#: sievefilters/constants.py:19
+msgid "is not"
+msgstr "δεν είναι"
+
+#: sievefilters/constants.py:24
+#, fuzzy
+#| msgid "Sender address"
+msgid "Sender"
+msgstr "Αποστολέας"
+
+#: sievefilters/constants.py:26
+msgid "Cc"
+msgstr "Cc"
+
+#: sievefilters/constants.py:29
+msgid "Size"
+msgstr "Μέγεθος"
+
+#: sievefilters/constants.py:31
+#, fuzzy
+#| msgid "Cannot be greater than domain quota"
+msgid "is greater than"
+msgstr "είναι μεγαλύτερο από"
+
+#: sievefilters/constants.py:32
+msgid "is less than"
+msgstr "είναι μικρότερο από"
+
+#: sievefilters/constants.py:40
+#, fuzzy
+#| msgid "bounced messages"
+msgid "Move message to"
+msgstr "Μετακίνηση μηνυμάτων προς"
+
+#: sievefilters/constants.py:46 sievefilters/constants.py:60
+#, fuzzy
+#| msgid "Keep local copies"
+msgid "Keep local copy"
+msgstr ""
+
+#: sievefilters/constants.py:54
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Redirect message to"
+msgstr "Ανακατεύθυνση μηνυμάτων προς"
+
+#: sievefilters/constants.py:68
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Reject message"
+msgstr "Απόρριψη μηνύματος"
+
+#: sievefilters/constants.py:71
+msgid "Stop processing"
+msgstr "Ακύρωση επεξεργασίας"
+
+#: sievefilters/forms.py:26
+#, fuzzy
+#| msgid "Check to activate this alias"
+msgid "Check to activate this filters set"
+msgstr "Επιλέξτε για να ενεργοποιηθεί αυτό το σετ φίλτρων"
+
+#: sievefilters/forms.py:40
+msgid "Match type"
+msgstr ""
+
+#: sievefilters/forms.py:60
+#, fuzzy
+#| msgid "File name"
+msgid "Wrong filter name"
+msgstr "Λάθος όνομα φίλτρου"
+
+#: sievefilters/forms.py:309
+#, fuzzy
+#| msgid "DNS settings"
+msgid "ManageSieve settings"
+msgstr "Ρυθμίσεις ManageSieve"
+
+#: sievefilters/forms.py:314
+#, fuzzy
+#| msgid "Address of your IMAP server"
+msgid "Address of your MANAGESIEVE server"
+msgstr "Η διεύθυνση του εξυπηρετητή MANAGESIEVE"
+
+#: sievefilters/forms.py:321
+#, fuzzy
+#| msgid "Listening port of your IMAP server"
+msgid "Listening port of your MANAGESIEVE server"
+msgstr "Η πόρτα λειτουργίας του MANAGESIEVE εξυπηρετητή σας"
+
+#: sievefilters/forms.py:326
+msgid "Connect using STARTTLS"
+msgstr "Σύνδεση με χρήση STARTTLS"
+
+#: sievefilters/forms.py:328
+msgid "Use the STARTTLS extension"
+msgstr "Χρήση του extension STARTTLS"
+
+#: sievefilters/forms.py:332
+#, fuzzy
+#| msgid "Authentication method"
+msgid "Authentication mechanism"
+msgstr "Μηχανισμός πιστοποίησης"
+
+#: sievefilters/forms.py:335
+#, fuzzy
+#| msgid "Authentication method"
+msgid "Prefered authentication mechanism"
+msgstr "Επιλεγμένος μηχανισμός πιστοποίησης"
+
+#: sievefilters/forms.py:339
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "IMAP settings"
+msgstr "ρύθμισης IMAP"
+
+#: sievefilters/forms.py:344
+msgid "Address of your IMAP server"
+msgstr "Διεύθυνση του διακομιστή IMAP"
+
+#: sievefilters/forms.py:350
+msgid "Use a secured connection to access IMAP server"
+msgstr "Χρησιμοποιήστε μια ασφαλή σύνδεση για πρόσβαση στον διακομιστή IMAP"
+
+#: sievefilters/forms.py:356
+msgid "Listening port of your IMAP server"
+msgstr "Η θύρα που ακούει ο IMAP server σας"
+
+#: sievefilters/forms.py:367
+msgid "Editor mode"
+msgstr "Λειτουργία συντάκτη"
+
+#: sievefilters/forms.py:369
+msgid "Select the mode you want the editor to work in"
+msgstr "Επιλέξτε τη λειτουργία στην οποία θέλετε να εργάζεται ο συντάκτης"
+
+#: sievefilters/forms.py:377
+msgid "Trash folder"
+msgstr "Φάκελος σκουπιδιών"
+
+#: sievefilters/forms.py:378
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Folder where deleted messages go"
+msgstr "Φάκελος που πηγαίνουν τα σβησμένα μηνύματα"
+
+#: sievefilters/forms.py:383
+msgid "Sent folder"
+msgstr "Φάκελος απεσταλμένων"
+
+#: sievefilters/forms.py:384
+msgid "Folder where copies of sent messages go"
+msgstr "Φάκελος όπου πηγαίνουν αντίγραφα των απεσταλμένων μηνυμάτων"
+
+#: sievefilters/forms.py:389
+msgid "Drafts folder"
+msgstr "Φάκελος πρόχειρων"
+
+#: sievefilters/forms.py:390
+msgid "Folder where drafts go"
+msgstr "Ο φάκελος που θα πηγαίνουν τα πρόχειρα"
+
+#: sievefilters/imaputils.py:92
+msgid "Failed to retrieve hierarchy delimiter"
+msgstr "Αποτυχία κατά την ανάκτηση της οροθετημένης ιεραρχίας"
+
+#: sievefilters/lib.py:54
+#, fuzzy
+#| msgid "Connection to IMAP server failed: %s"
+msgid "Connection to MANAGESIEVE server failed, check your configuration"
+msgstr ""
+"Η σύνδεση με τον εξυπηρετητή MANAGESIEVE απέτυχε, ελέγξτε τις ρυθμίσεις σας "
+
+#: sievefilters/lib.py:96
+#, fuzzy
+#| msgid "Not enough resources"
+msgid "Not enough space on server"
+msgstr "Δεν υπάρχει διαθέσιμος χώρος στον εξυπηρετητή"
+
+#: sievefilters/templates/sievefilters/filter.html:9
+#, fuzzy
+#| msgid "Confirmation"
+msgid "Conditions"
+msgstr "Συνθήκες"
+
+#: sievefilters/templates/sievefilters/guieditor.html:7
+#, fuzzy
+#| msgid "Active users"
+msgid "Active"
+msgstr "Ενεργό"
+
+#: sievefilters/templates/sievefilters/guieditor.html:24
+#, fuzzy
+#| msgid "Not defined"
+msgid "No filter defined yet"
+msgstr "Δεν υπάρχει καθορισμένο φίλτρο"
+
+#: sievefilters/templates/sievefilters/index.html:82
+msgid "Filter sets"
+msgstr "Σετ φίλτρων"
+
+#: sievefilters/templates/sievefilters/index.html:86
+msgid "active"
+msgstr "ενεργό"
+
+#: sievefilters/templates/sievefilters/index.html:101
+msgid ""
+"No filters set defined yet. You must create one in order to define filters."
+msgstr ""
+"Δεν έχουν οριστεί ακόμη φίλτρα. Πρέπει να δημιουργήσετε τουλάχιστον ένα για "
+"να καθοριστούν τα φίλτρα"
+
+#: sievefilters/templatetags/sfilters_tags.py:22
+msgid "New filters set"
+msgstr "Νέο σετ φίλτρων"
+
+#: sievefilters/templatetags/sfilters_tags.py:40 sievefilters/views.py:148
+#, fuzzy
+#| msgid "Search filter"
+msgid "New filter"
+msgstr "Νέο φίλτρο"
+
+#: sievefilters/templatetags/sfilters_tags.py:52
+#, fuzzy
+#| msgid "Search filter"
+msgid "Save filters set"
+msgstr "Αποθήκευση του σετ φίλτρων"
+
+#: sievefilters/templatetags/sfilters_tags.py:61
+#, fuzzy
+#| msgid "Active users"
+msgid "Activate filters set"
+msgstr "Ενεργοποίηση του σετ φίλτρων"
+
+#: sievefilters/templatetags/sfilters_tags.py:67
+#, fuzzy
+#| msgid "Remove this permission"
+msgid "Remove filters set"
+msgstr "Αφαίρεση του σετ φίλτρων"
+
+#: sievefilters/templatetags/sfilters_tags.py:73
+msgid "Download"
+msgstr "Λήψη"
+
+#: sievefilters/templatetags/sfilters_tags.py:88 sievefilters/views.py:168
+msgid "Edit filter"
+msgstr "Επεξεργασία φίλτρου"
+
+#: sievefilters/templatetags/sfilters_tags.py:97
+#, fuzzy
+#| msgid "Remove this permission"
+msgid "Remove this filter"
+msgstr "Αφαίρεση αυτού του φίλτρου"
+
+#: sievefilters/templatetags/sfilters_tags.py:108
+msgid "Move this filter up"
+msgstr "Μετακίνηση αυτού του φίλτρου πάνω"
+
+#: sievefilters/templatetags/sfilters_tags.py:119
+#, fuzzy
+#| msgid "Remove this permission"
+msgid "Move this filter down"
+msgstr "Μετακίνηση αυτού του φίλτρου κάτω"
+
+#: sievefilters/views.py:87
+#, fuzzy
+#| msgid "Failed to retrieve mailbox location (%s)"
+msgid "Failed to retrieve filters set"
+msgstr "Σφάλμα κατά την την λήψη του σετ φίλτρων"
+
+#: sievefilters/views.py:155
+#, fuzzy
+#| msgid "Alias created"
+msgid "Filter created"
+msgstr "Το φίλτρο δημιουργήθηκε"
+
+#: sievefilters/views.py:177
+#, fuzzy
+#| msgid "modified"
+msgid "Filter modified"
+msgstr "Το φίλτρο άλλαξε"
+
+#: sievefilters/views.py:197
+msgid "Filter removed"
+msgstr "Το φίλτρο αφαιρέθηκε "
+
+#: sievefilters/views.py:198
+msgid "Failed to remove filter"
+msgstr "Σφάλμα κατά την αφαίρεση του φίλτρου"
+
+#: sievefilters/views.py:212
+#, fuzzy
+#| msgid "Parameters saved"
+msgid "Filters set saved"
+msgstr "Το σετ φίλτρων αποθηκεύτηκε"
+
+#: sievefilters/views.py:231
+#, fuzzy
+#| msgid "Alias created"
+msgid "Filters set created"
+msgstr "Το σετ φίλτρων δημιουργήθηκε"
+
+#: sievefilters/views.py:237
+msgid "Create a new filters set"
+msgstr "Δημιουργία νέου σετ φίλτρων"
+
+#: sievefilters/views.py:256
+#, fuzzy
+#| msgid "Alias deleted"
+#| msgid_plural "Aliases deleted"
+msgid "Filters set deleted"
+msgstr "Το σετ φίλτρων διαγράφηκε"
+
+#: sievefilters/views.py:270
+msgid "Filters set activated"
+msgstr "Το σετ φίλτρων ενεργοποιήθηκε"
+
+#: sievefilters/views.py:297
+#, fuzzy
+#| msgid "Yes"
+msgid "yes"
+msgstr "ναι"
+
+#: sievefilters/views.py:301
+msgid "no"
+msgstr "όχι"
 
 #: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
@@ -4360,9 +4739,6 @@ msgstr ""
 #~ msgid "Admin"
 #~ msgstr "Διαχειριστής"
 
-#~ msgid "File name"
-#~ msgstr "Όνομα αρχείου"
-
 #, fuzzy
 #~ msgid "No {type} record found for MX {mx}"
 #~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
@@ -4390,15 +4766,6 @@ msgstr ""
 
 #~ msgid "Connection settings"
 #~ msgstr "Ρυθμίσεις σύνδεσης"
-
-#~ msgid "Address of your IMAP server"
-#~ msgstr "Η διεύθυνση του εξυπηρετητή IMAP"
-
-#~ msgid "Use a secured connection to access IMAP server"
-#~ msgstr "Χρήση ασφαλής σύνδεσης με τον εξυπηρετητή IMAP"
-
-#~ msgid "Listening port of your IMAP server"
-#~ msgstr "Η πόρτα λειτουργίας του εξυπηρετητή IMAP"
 
 #~ msgid "Cancel this account's migration"
 #~ msgstr "Ακύρωση της μετάβασης αυτού του λογαριασμού"

@@ -10,12 +10,22 @@ app_name = "core"
 urlpatterns = [
     path("", views.RootDispatchView.as_view(), name="root"),
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
-    path("accounts/login/", views.dologin, name="login"),
+    path("accounts/login/", views.LoginView.as_view(), name="login"),
     path("accounts/logout/", views.dologout, name="logout"),
     path(
         "accounts/2fa_verify/",
         views.TwoFactorCodeVerifyView.as_view(),
         name="2fa_verify",
+    ),
+    path(
+        "accounts/fido/authenticate/begin",
+        views.FidoAuthenticationBeginView.as_view(),
+        name="fido_auth_begin",
+    ),
+    path(
+        "accounts/fido/authenticate/end",
+        views.FidoAuthenticationEndView.as_view(),
+        name="fido_auth_end",
     ),
     path("core/", views.viewsettings, name="index"),
     path("core/parameters/", views.parameters, name="parameters"),

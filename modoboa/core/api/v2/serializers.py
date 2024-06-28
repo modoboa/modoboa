@@ -238,6 +238,35 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         return data
 
 
+class FIDOSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserFidoKeys
+        fields = ["id", "name", "enabled", "added_on", "last_used", "use_count"]
+        # TODO : read-only fields for everything other than name and enabled :)
+
+
+class FidoRegistrationSerializer(serializers.Serializer):
+    """Serializer used to finish the fido key registration."""
+
+    type = serializers.CharField()
+    id = serializers.CharField()
+    rawId = serializers.CharField()
+    authenticatorAttachment = serializers.CharField()
+    response = serializers.JSONField()
+    name = serializers.CharField()
+
+
+class FidoAuthenticationSerializer(serializers.Serializer):
+    """Serializer used to finish the fido key authentication."""
+
+    authenticatorAttachment = serializers.CharField()
+    clientExtensionResults = serializers.JSONField()
+    id = serializers.CharField()
+    rawId = serializers.CharField()
+    response = serializers.JSONField()
+    type = serializers.CharField()
+
+
 class LogSerializer(serializers.ModelSerializer):
     """Log serializer."""
 
