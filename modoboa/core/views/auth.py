@@ -276,6 +276,9 @@ class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
         has_totp_device = django_otp.user_has_device(self.user)
         context["totp_device"] = has_totp_device
         context["webauthn_device"] = self.user.webauthn_enabled
+        context["show_method_selection"] = (
+            has_totp_device and self.user.webauthn_enabled
+        )
         context["nextlocation"] = self.request.POST.get(
             "next", self.request.GET.get("next")
         )
