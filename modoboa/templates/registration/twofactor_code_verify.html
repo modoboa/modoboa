@@ -9,15 +9,17 @@
 {% block main_content %}
   <div class="login-box">
     <h2>{% translate "Verification" %}</h2>
-    <div id="methodSelection">
-      {% if totp_device %}
-        <button class="btn btn-primary" onclick="showTOTP()">{% translate "Use TOTP/backup code" %}</button>
-      {% endif %}
-      {% if webauthn_device %}
-        <button class="mt btn btn-primary" onclick="showWebAuthn()">{% translate "Use Webauthn device" %}</button>
-      {% endif %}
-    </div>
-    <div id="totp_form" style="display:none;">
+    {% if show_method_selection %}
+      <div id="methodSelection">
+        {% if totp_device %}
+          <button class="btn btn-primary" onclick="showTOTP()">{% translate "Use TOTP/backup code" %}</button>
+        {% endif %}
+        {% if webauthn_device %}
+          <button class="mt btn btn-primary" onclick="showWebAuthn()">{% translate "Use Webauthn device" %}</button>
+        {% endif %}
+      </div>
+    {% endif %}
+    <div id="totp_form" {% if show_method_selection or not totp_device %}style="display:none;"{% endif %}>
       <form method="post" action="{% url 'core:2fa_verify' %}">
         {% csrf_token %}
         <input type="hidden" id="id_next" name="next" value="{{ nextlocation }}">
@@ -25,7 +27,9 @@
           <label>{% translate "One-time password" %}</label>
           <input id="id_tfa_code" name="tfa_code" required>
           <span class="error-message">
-            {{ form.tfa_code.errors }}
+            {% for error in form.tfa_code.errors %}
+              {{ error }}
+            {% endfor %}
           </span>
           <p class="help-block">
             {% blocktranslate trimmed %}
@@ -37,11 +41,15 @@
         </div>
         <button class="btn btn-primary" type="submit">{% translate "Verify code" %}</button>
       </form>
-      <button class="mt btn" onclick="backToSelection()">{% translate "Back" %}</button>
+      {% if show_method_selection %}
+        <button class="mt btn" onclick="backToSelection()">{% translate "Back" %}</button>
+      {% endif %}
     </div>
-    <div id="webautn_form" style="display:none;">
+    <div id="webautn_form" {% if show_method_selection or not webauthn_device %}style="display:none;"{% endif %}>
       <button class="btn" onclick="useWebAuthn()">{% translate "Log using Webauthn" %}</button>
-      <button class="mt btn" onclick="backToSelection()">{% translate "Back" %}</button>
+      {% if show_method_selection %}
+        <button class="mt btn" onclick="backToSelection()">{% translate "Back" %}</button>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

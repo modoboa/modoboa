@@ -44,11 +44,14 @@
 
 {% block extra_js %}
   <script type="text/javascript">
-   $(document).ready(function() {
-       $("form").submit(function(){
-           $(":submit", this).attr("disabled", "disabled");
-       });
-       $('#id_username').focus();
-   });
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const field = document.querySelector('#id_username');
+    field.focus();
+    form.addEventListener('submit', () => {
+      const submitBtn = document.querySelector('button[type=submit]');
+      submitBtn.disabled = true;
+    });
+  });
   </script>
 {% endblock %}
