@@ -12,7 +12,7 @@
             <div tag="p" class="my-4">
               {{
                 $gettext(
-                  "You don't have any WebAuthN registered as a second authentication method."
+                  "You don't have any WebAuthN device registered as a second authentication method."
                 )
               }}
             </div>
@@ -22,7 +22,6 @@
             <v-data-table-virtual
               :headers="headers"
               :items="fidoCreds"
-              height="400"
               item-value="id"
             >
               <template #[`item.added_on`]="{ item }">

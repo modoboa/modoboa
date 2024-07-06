@@ -200,9 +200,7 @@ class FIDOViewSet(
         """An Api View to complete the registration process of a fido key."""
         serializer = serializers.FidoRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        credential_data = f2_auth.end_registration(
-            request.data, request.session.pop("fido2_state"), request.user.id
-        )
+        credential_data = f2_auth.end_registration(request)
         models.UserFidoKeys.objects.create(
             name=request.data["name"],
             credential_data=credential_data,

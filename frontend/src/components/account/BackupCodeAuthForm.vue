@@ -11,7 +11,7 @@
           <v-alert type="info" class="mb-2">
             {{
               $gettext(
-                "You already have generated backup codes for this account. If you don't remember them or have used them all, you generate new ones."
+                "You already have generated backup codes for this account. If you don't remember them or have used them all, you can generate new ones."
               )
             }}
           </v-alert>
@@ -22,6 +22,7 @@
               autocomplete="new-password"
               type="password"
               variant="outlined"
+              density="compact"
               :rules="[rules.required]"
               :error-messages="passwordError"
             />
