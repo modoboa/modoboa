@@ -26,8 +26,8 @@
       </v-window-item>
       <v-window-item value="security">
         <TotpAuthForm />
-        <BackupCodeAuthForm />
         <FidoAuthForm />
+        <BackupCodeAuthForm />
       </v-window-item>
       <v-window-item v-if="authStore.userHasMailbox" value="forward">
         <ForwardForm />

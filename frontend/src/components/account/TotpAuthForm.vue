@@ -87,6 +87,7 @@
               autocomplete="new-password"
               type="password"
               variant="outlined"
+              density="compact"
               :rules="[rules.required]"
               :error-messages="passwordError"
             />

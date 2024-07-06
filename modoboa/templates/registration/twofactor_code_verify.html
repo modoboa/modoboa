@@ -46,7 +46,7 @@
       {% endif %}
     </div>
     <div id="webautn_form" {% if show_method_selection or not webauthn_device %}style="display:none;"{% endif %}>
-      <button class="btn" onclick="useWebAuthn()">{% translate "Log using Webauthn" %}</button>
+      <button class="btn btn-primary" onclick="useWebAuthn()">{% translate "Log using Webauthn" %}</button>
       {% if show_method_selection %}
         <button class="mt btn" onclick="backToSelection()">{% translate "Back" %}</button>
       {% endif %}

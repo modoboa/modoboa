@@ -300,7 +300,7 @@ class FidoAuthenticationBeginView(generic.View):
         user_id = request.session.get(constants.TFA_PRE_VERIFY_USER_PK)
         if not user_id:
             raise PermissionDenied
-        options, state = fido2_auth.begin_authentication(user_id)
+        options, state = fido2_auth.begin_authentication(request, user_id)
         request.session["fido_state"] = state
         return JsonResponse(dict(options))
 
@@ -315,6 +315,8 @@ class FidoAuthenticationEndView(LoginViewMixin, APIView):
             raise PermissionDenied
         serializer = serializers.FidoAuthenticationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        fido2_auth.end_authentication(user, fido_state, serializer.validated_data)
+        fido2_auth.end_authentication(
+            user, fido_state, serializer.validated_data, request.localconfig.site.domain
+        )
         response = self.login(user, self.request.session.pop("rememberme", False))
         return JsonResponse({"next": response.url})
