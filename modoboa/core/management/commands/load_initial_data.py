@@ -93,8 +93,8 @@ class Command(BaseCommand):
         base_frontend_dir = os.path.join(
             os.path.dirname(__file__), "../../frontend_dist/"
         )
+        frontend_target_dir = "{}/frontend".format(options["name"])
         if os.path.exists(base_frontend_dir):
-            frontend_target_dir = "{}/frontend".format(options["name"])
             shutil.copytree(base_frontend_dir, frontend_target_dir)
 
         app_model = get_application_model()
