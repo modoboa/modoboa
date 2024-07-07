@@ -90,13 +90,6 @@ class Command(BaseCommand):
             else:
                 signals.initial_data_loaded.send(sender=self.__class__, extname=extname)
 
-        base_frontend_dir = os.path.join(
-            os.path.dirname(__file__), "../../frontend_dist/"
-        )
-        frontend_target_dir = "{}/frontend".format(options["name"])
-        if os.path.exists(base_frontend_dir):
-            shutil.copytree(base_frontend_dir, frontend_target_dir)
-
         app_model = get_application_model()
         allowed_host = getattr(settings, "ALLOWED_HOSTS", None)
         if allowed_host is not None:
@@ -127,16 +120,22 @@ class Command(BaseCommand):
         else:
             client_id = frontend_application.first().client_id
 
-        with open(f"{frontend_target_dir}/config.json", "w") as fp:
-            fp.write(
-                f"""{{
-                        "API_BASE_URL": "https://{allowed_host}/api/v2",
-                        "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
-                        "OAUTH_CLIENT_ID": "{client_id}",
-                        "OAUTH_REDIRECT_URI": "{redirect_uri}"
-                        }}
-                """
-            )
+        base_frontend_dir = os.path.join(
+            os.path.dirname(__file__), "../../frontend_dist/"
+        )
+        frontend_target_dir = "{}/frontend".format(options["name"])
+        if os.path.exists(base_frontend_dir):
+            shutil.copytree(base_frontend_dir, frontend_target_dir)
+            with open(f"{frontend_target_dir}/config.json", "w") as fp:
+                fp.write(
+                    f"""{{
+  "API_BASE_URL": "https://{allowed_host}/api/v2",
+  "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
+  "OAUTH_CLIENT_ID": "{client_id}",
+  "OAUTH_REDIRECT_URI": "{redirect_uri}"
+}}
+"""
+                )
 
         if options["extra_fixtures"]:
             from modoboa.admin import factories
