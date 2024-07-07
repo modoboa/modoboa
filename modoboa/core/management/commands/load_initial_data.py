@@ -105,31 +105,29 @@ class Command(BaseCommand):
             allowed_host = input("What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
+        frontend_application = app_model.objects.filter(name="frontend")
         frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
         redirect_uri = f"https://{allowed_host}/{frontend_path}/login/logged"
-        client_id = str(uuid.uuid4())
-        frontend_application = app_model.objects.filter(name="frontend")
+        client_id = ""
         if not frontend_application.exists():
-            self._exec_django_command(
+            if options["dev"]:
+                redirect_uri = "https://localhost:3000/login/logged"
+                client_id = "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD"
+            else:
+                client_id = str(uuid.uuid4())
+            call_command(
                 "createapplication",
-                "frontend",
-                "--name",
-                "Modoboa frontend",
-                "--client-id",
-                client_id,
-                "--skip-authorization",
-                "--algorithm",
-                "RS256",
-                "--redirect-uris",
-                redirect_uri,
+                "--algorithm=RS256",
+                f"--redirect-uris={redirect_uri}",
+                "--name='Modoboa frontend'",
+                f"--client-id={client_id}",
                 "public",
                 "authorization-code",
             )
-
         else:
             client_id = frontend_application.first().client_id
 
-        with open("{}/config.json".format(frontend_target_dir), "w") as fp:
+        with open(f"{frontend_target_dir}/config.json", "w") as fp:
             fp.write(
                 f"""{{
                         "API_BASE_URL": "https://{allowed_host}/api/v2",
@@ -144,16 +142,3 @@ class Command(BaseCommand):
             from modoboa.admin import factories
 
             factories.populate_database()
-
-        if options["dev"]:
-            app_model = get_application_model()
-            if not app_model.objects.filter(name="frontend").exists():
-                call_command(
-                    "createapplication",
-                    "--algorithm=RS256",
-                    "--redirect-uris=https://localhost:3000/login/logged",
-                    "--name=frontend",
-                    "--client-id=LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD",
-                    "public",
-                    "authorization-code",
-                )
