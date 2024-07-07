@@ -98,14 +98,14 @@ class Command(BaseCommand):
             shutil.copytree(base_frontend_dir, frontend_target_dir)
 
         app_model = get_application_model()
-        allowed_host = settings.get("ALLOWED_HOSTS")
+        allowed_host = getattr(settings, "ALLOWED_HOSTS", None)
         if allowed_host is not None:
             allowed_host = allowed_host[0]
         else:
             allowed_host = input("What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
-        frontend_path = settings.get("NEW_ADMIN_URL", "new-admin")
+        frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
         redirect_uri = f"https://{allowed_host}/{frontend_path}/login/logged"
         client_id = str(uuid.uuid4())
         frontend_application = app_model.objects.filter(name="frontend")

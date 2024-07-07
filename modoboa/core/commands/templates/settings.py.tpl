@@ -2,7 +2,7 @@
 Django settings for {{ name }} project.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/2.2/topics/settings/
+https://docs.djangoproject.com/en/4.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
@@ -22,7 +22,7 @@ BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '{{ secret_key }}'
@@ -164,14 +164,14 @@ WSGI_APPLICATION = '{{ name }}.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     {% for conn in db_connections.values %}{{ conn|safe }}{% endfor %}
 }
 
 # Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = '{{ lang }}'
 
@@ -308,7 +308,7 @@ CACHES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
