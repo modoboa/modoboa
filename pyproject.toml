@@ -37,9 +37,11 @@ license = {file = "LICENSE"}
 modoboa-cli = "modoboa:modoboa_admin"
 
 [project.urls]
-homepage = "http://modoboa.org/"
-documentation = "https://modoboa.readthedocs.io/en/latest/"
-repository = "https://github.com/modoboa/modoboa"
+Homepage = "http://modoboa.org/"
+Documentation = "https://modoboa.readthedocs.io/en/latest/"
+Repository = "https://github.com/modoboa/modoboa"
+Changelog = "https://github.com/modoboa/modoboa/blob/master/CHANGELOG.md"
+Issues = "https://github.com/modoboa/modoboa/issues"
 
 [tool.setuptools.dynamic]
 version = {attr = "modoboa.version.get_version"}
