@@ -76,11 +76,13 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
     template_name = "registration/login.html"
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         announcements = signals.get_announcements.send(
             sender="login", location="loginpage"
         )
         announcements = [announcement[1] for announcement in announcements]
-        return super().get_context_data(announcements=announcements, **kwargs)
+        context.update({"announcements": announcements})
+        return context
 
     def check_password_hash(self, user, form):
         condition = user.is_local and param_tools.get_global_parameter(
@@ -141,7 +143,7 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
                 "user": escape(form.cleaned_data["username"]),
             }
         )
-        return super().form_invalid(form)
+        return self.render_to_response(self.get_context_data(form=form), status=401)
 
 
 @require_http_methods(["POST"])

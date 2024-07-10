@@ -57,9 +57,6 @@ class AuthenticationTestCase(ModoTestCase):
         user.save()
         data = {"username": "user@test.com", "password": "toto"}
         response = self.client.post(reverse("core:login"), data)
-
-        response = self.client.get(response.url)
-        self.assertEqual(response.status_code, 302)
         url = reverse("core:2fa_verify")
         self.assertTrue(response.url.endswith(url))
 

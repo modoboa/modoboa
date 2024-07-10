@@ -98,7 +98,7 @@ class Command(BaseCommand):
             allowed_host = input("What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
-        frontend_application = app_model.objects.filter(name="frontend")
+        frontend_application = app_model.objects.filter(name="Modoboa frontend")
         frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
         redirect_uri = f"https://{allowed_host}/{frontend_path}/login/logged"
         client_id = ""
