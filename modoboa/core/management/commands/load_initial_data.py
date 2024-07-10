@@ -51,6 +51,12 @@ class Command(BaseCommand):
             default=False,
             help="Setup dev environment. DO NOT USE IN PRODUCTION",
         )
+        parser.add_argument(
+            "--no-frontend",
+            action="store_true",
+            default=False,
+            help="Omit everything related to frontend initialisation",
+        )
 
     def handle(self, *args, **options):
         """Command entry point."""
@@ -89,6 +95,14 @@ class Command(BaseCommand):
                 )
             else:
                 signals.initial_data_loaded.send(sender=self.__class__, extname=extname)
+
+        if options["extra_fixtures"]:
+            from modoboa.admin import factories
+
+            factories.populate_database()
+
+        if options["no_frontend"]:
+            return
 
         app_model = get_application_model()
         allowed_host = getattr(settings, "ALLOWED_HOSTS", None)
@@ -136,8 +150,3 @@ class Command(BaseCommand):
 }}
 """
                 )
-
-        if options["extra_fixtures"]:
-            from modoboa.admin import factories
-
-            factories.populate_database()

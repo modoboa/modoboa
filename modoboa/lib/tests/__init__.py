@@ -65,7 +65,7 @@ class ModoTestCase(ParametersMixin, TestCase):
     def setUpTestData(cls):  # noqa
         """Create a default user."""
         super(ModoTestCase, cls).setUpTestData()
-        management.call_command("load_initial_data")
+        management.call_command("load_initial_data", "--no-frontend")
 
     def setUp(self, username="admin", password="password"):
         """Initiate test context."""
