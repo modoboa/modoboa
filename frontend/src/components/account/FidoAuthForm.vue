@@ -92,11 +92,6 @@
         :label="$gettext('name')"
         :rules="[rules.required]"
       />
-      <v-switch
-        v-model="editEnabled"
-        :label="$gettext('enabled')"
-        color="principal"
-      />
     </v-form>
   </ConfirmDialog>
   <v-dialog v-model="showBackupTokenDialog" max-width="800px" persistent>
@@ -139,14 +134,12 @@ const headers = [
   { title: $gettext('Added On'), key: 'added_on' },
   { title: $gettext('Last Used'), key: 'last_used' },
   { title: $gettext('Use count'), key: 'use_count' },
-  { title: $gettext('Enabled'), key: 'enabled' },
   { title: $gettext('Actions'), key: 'actions' },
 ]
 const confirmDeletion = ref()
 const confirmEdition = ref()
 const editForm = ref()
 const editName = ref('')
-const editEnabled = ref(false)
 const tokens = ref()
 const showBackupTokenDialog = ref(false)
 
@@ -159,21 +152,18 @@ async function startFidoRegistration() {
   const creationOption = await authApi.beginFidoRegistration()
   if (creationOption) {
     const options = parseCreationOptionsFromJSON(creationOption.data)
-    try {
-      const device = await create(options)
-      const result = device.toJSON()
-      result.name = name.value
-      authStore.addFidoCred(result).then((res) => {
-        if (res.status === 200) {
-          tokens.value = res.data.tokens
-          showBackupTokenDialog.value = true
-        }
-      })
-      fidoForm.value.reset()
-    } catch {
-      registrationLoading.value = false
-      return
-    }
+    const device = await create(options)
+    const result = device.toJSON()
+    result.name = name.value
+    authStore.addFidoCred(result).then((res) => {
+      if (res.status === 200) {
+        tokens.value = res.data.tokens
+        showBackupTokenDialog.value = true
+      }
+    })
+    fidoForm.value.reset()
+    registrationLoading.value = false
+    return
   }
   registrationLoading.value = false
 }
@@ -205,7 +195,6 @@ async function checkForm() {
 
 async function editCred(cred) {
   editName.value = cred.name
-  editEnabled.value = cred.enabled
 
   const result = await confirmEdition.value.open(
     $gettext('Edition'),
@@ -219,9 +208,8 @@ async function editCred(cred) {
   if (!result) {
     return
   }
-
-  data = { name: editName.value, enabled: editEnabled.value }
-  //TODO : send it !
+  const data = { name: editName.value }
+  await authStore.editFidoCred(cred.id, data)
 }
 
 onMounted(() => {

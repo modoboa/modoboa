@@ -114,10 +114,12 @@ class Command(BaseCommand):
                 allowed_host = "localhost"
         frontend_application = app_model.objects.filter(name="Modoboa frontend")
         frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
-        redirect_uri = f"https://{allowed_host}/{frontend_path}/login/logged"
+        base_uri = f"https://{allowed_host}/{frontend_path}"
+        redirect_uri = f"{base_uri}/login/logged"
         client_id = ""
         if not frontend_application.exists():
             if options["dev"]:
+                base_uri = "https://localhost:3000/"
                 redirect_uri = "https://localhost:3000/login/logged"
                 client_id = "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD"
             else:
@@ -128,6 +130,8 @@ class Command(BaseCommand):
                 f"--redirect-uris={redirect_uri}",
                 "--name='Modoboa frontend'",
                 f"--client-id={client_id}",
+                f"--post-logout-redirect-uris={base_uri}",
+                "--skip-authorization",
                 "public",
                 "authorization-code",
             )
@@ -147,6 +151,7 @@ class Command(BaseCommand):
   "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
   "OAUTH_CLIENT_ID": "{client_id}",
   "OAUTH_REDIRECT_URI": "{redirect_uri}"
+  "OAUTH_POST_REDIRECT_URI": "{base_uri}"
 }}
 """
                 )

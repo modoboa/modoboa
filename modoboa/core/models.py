@@ -420,7 +420,6 @@ reversion.register(User)
 class UserFidoKeys(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    enabled = models.BooleanField(default=True)
     added_on = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(null=True, default=None)
     use_count = models.IntegerField(default=0)

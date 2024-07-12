@@ -25,4 +25,7 @@ export default {
   deleteFido(id) {
     return repository.delete(`/fido/${id}/`)
   },
+  editFido(id, data) {
+    return repository.put(`/fido/${id}/`, data)
+  },
 }

@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0027_alter_user_language"),
     ]
@@ -25,7 +24,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.CharField(max_length=255)),
-                ("enabled", models.BooleanField(default=True)),
                 ("added_on", models.DateTimeField(auto_now_add=True)),
                 ("last_used", models.DateTimeField(default=None, null=True)),
                 ("use_count", models.IntegerField(default=0)),
