@@ -74,7 +74,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function editFidoCred(id, data) {
     return authApi.editFido(id, data).then((res) => {
-      for (const i = 0; i < fidoCreds.value.length; i++) {
+      for (let i = 0; i < fidoCreds.value.length; i++) {
         if (fidoCreds.value[i].id === id) {
           fidoCreds.value[i] = res.data
           break
