@@ -291,7 +291,7 @@ async function save() {
     } else {
       delete data.mailbox.full_address
     }
-    if (data.random_password || !data.password) {
+    if (!data.password) {
       delete data.password
       delete data.password_confirmation
     }
