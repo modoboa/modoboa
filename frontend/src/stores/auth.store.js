@@ -21,6 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
     authority: config.OAUTH_AUTHORITY_URL,
     client_id: config.OAUTH_CLIENT_ID,
     redirect_uri: config.OAUTH_REDIRECT_URI,
+    post_logout_redirect_uri: config.OAUTH_POST_REDIRECT_URI,
     response_type: 'code',
     scope: 'openid read write',
     automaticSilentRenew: true,
@@ -68,6 +69,18 @@ export const useAuthStore = defineStore('auth', () => {
       if (!res.data.tfa_enabled) {
         authUser.value.webauthn_enabled = false
       }
+    })
+  }
+
+  async function editFidoCred(id, data) {
+    return authApi.editFido(id, data).then((res) => {
+      for (const i = 0; i < fidoCreds.value.length; i++) {
+        if (fidoCreds.value[i].id === id) {
+          fidoCreds.value[i] = res.data
+          break
+        }
+      }
+      return res
     })
   }
 
@@ -172,6 +185,7 @@ export const useAuthStore = defineStore('auth', () => {
     getFidoCreds,
     addFidoCred,
     deleteFidoCreds,
+    editFidoCred,
     initialize,
     login,
     $reset,

@@ -241,8 +241,13 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
 class FIDOSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserFidoKeys
-        fields = ["id", "name", "enabled", "added_on", "last_used", "use_count"]
-        # TODO : read-only fields for everything other than name and enabled :)
+        fields = ["id", "name", "added_on", "last_used", "use_count"]
+        extra_kwargs = {
+            "id": {"read_only": True},
+            "added_on": {"read_only": True},
+            "last_used": {"read_only": True},
+            "use_count": {"read_only": True},
+        }
 
 
 class FidoRegistrationSerializer(serializers.Serializer):
@@ -368,7 +373,6 @@ def send_sms_code(secret, backend, user):
 
 
 class PasswordRecoverySmsSerializer(serializers.Serializer):
-
     email = serializers.EmailField()
 
     def validate(self, data, *args, **kwargs):
@@ -404,7 +408,6 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
 
 
 class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
-
     sms_totp = serializers.CharField(min_length=6, max_length=6)
 
     def validate(self, data):
@@ -436,7 +439,6 @@ class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
 
 
 class PasswordRecoverySmsResendSerializer(serializers.Serializer):
-
     def validate(self, data):
         try:
             self.context["totp_secret"] = self.context["request"].session["totp_secret"]
@@ -463,7 +465,6 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
 
 
 class PasswordRecoveryConfirmSerializer(serializers.Serializer):
-
     new_password1 = serializers.CharField()
     new_password2 = serializers.CharField()
 
@@ -481,7 +482,6 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         return user
 
     def validate(self, data):
-
         # Validate password
         if (
             data["new_password1"] == ""
