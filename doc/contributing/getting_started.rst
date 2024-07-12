@@ -21,10 +21,11 @@ in order to be able to log in from the frontend:
 
 ..  sourcecode:: bash
 
-  $ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/python manage.py createapplication --name frontend --client-id "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD" --user 1 --algorithm RS256 --redirect-uris 'https://localhost:3000/login/logged' public authorization-code'
+  $ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name frontend --client-id "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD" --user 1 --algorithm RS256 --redirect-uris 'https://localhost:3000/login/logged' public authorization-code'
+  $ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name Dovecot --skip-authorization --client-id=dovecot --client-secret=Toto12345 confidential client-credentials'
 
 It will start the docker environment and make a Modoboa instance
-available at ``http://localhost:8000`` and the new admin interface at ``http://localhost:8080``
+available at ``https://localhost:8000`` and the new admin interface at ``https://localhost:3000``.
 
 If you don't want to use docker or need a more complex development
 setup, go to the next section.

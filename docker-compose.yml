@@ -42,6 +42,27 @@ services:
     volumes:
       - .:/code
 
+  api-unsecured:
+    container_name: modoboa_api_unsecured
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    ports:
+      - 8001:8001
+    env_file:
+      - test_project/oidc_key
+    environment:
+      PYTHONPATH: ".."
+      DB: "SQLITE"
+      DEBUG: "True"
+      REDIS_HOST: redis
+    command: >
+      sh -c "cd test_project
+             python3 manage.py runserver_plus 0.0.0.0:8001"
+    volumes:
+      - .:/code
+
   front:
     container_name: modoboa_front
     restart: unless-stopped
