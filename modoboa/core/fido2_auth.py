@@ -10,7 +10,7 @@ import fido2.features
 
 from django.utils import timezone
 
-from modoboa.core.models import User, UserFidoKeys
+from modoboa.core.models import User, UserFidoKey
 
 
 def set_json_mapping():
@@ -28,7 +28,7 @@ def create_fido2_server(rp_id: str) -> Fido2Server:
 def get_creds_from_user(user_id: int) -> dict:
     return {
         key: AttestedCredentialData(websafe_decode(key.credential_data))
-        for key in UserFidoKeys.objects.filter(user=user_id)
+        for key in UserFidoKey.objects.filter(user=user_id)
     }
 
 

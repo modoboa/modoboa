@@ -417,7 +417,7 @@ class User(AbstractUser):
 reversion.register(User)
 
 
-class UserFidoKeys(models.Model):
+class UserFidoKey(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     added_on = models.DateTimeField(auto_now_add=True)
