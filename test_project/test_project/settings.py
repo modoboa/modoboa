@@ -29,6 +29,7 @@ DEBUG = "DEBUG" in os.environ
 
 ALLOWED_HOSTS = [
     "api",
+    "api-unsecured",
     "127.0.0.1",
     "localhost",
 ]
