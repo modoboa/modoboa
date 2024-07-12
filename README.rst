@@ -81,5 +81,5 @@ The following external libraries are provided with Modoboa:
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
 .. |workflow| image:: https://github.com/modoboa/modoboa/workflows/Modoboa%20App/badge.svg
-.. |codecov| image:: http://codecov.io/github/modoboa/modoboa/coverage.svg?branch=master
-   :target: http://codecov.io/github/modoboa/modoboa?branch=master
+.. |codecov| image:: https://codecov.io/gh/modoboa/modoboa/graph/badge.svg?token=1E5eBxJO33
+   :target: https://codecov.io/gh/modoboa/modoboa
