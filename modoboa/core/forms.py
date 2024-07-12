@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _, gettext_lazy
 
 import django_otp
 
-from modoboa.core.models import User, UserFidoKeys
+from modoboa.core.models import User, UserFidoKey
 from modoboa.lib.form_utils import UserKwargModelFormMixin
 from modoboa.parameters import tools as param_tools
 
@@ -115,7 +115,7 @@ class TwoFAChoiceForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user")
-        fido_keys = UserFidoKeys.objects.filter(user=user)
+        fido_keys = UserFidoKey.objects.filter(user=user)
         if fido_keys.exists():
             self.fields["two_fa_choices.choices"].choices = [
                 ("TOTP", "TOTP or recovery codes"),

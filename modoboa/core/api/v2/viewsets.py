@@ -172,7 +172,7 @@ class FIDOViewSet(
 
     def get_queryset(self):
         if self.request.user.webauthn_enabled:
-            return models.UserFidoKeys.objects.filter(user=self.request.user)
+            return models.UserFidoKey.objects.filter(user=self.request.user)
         return None
 
     def destroy(self, request, *args, **kwargs):
@@ -201,7 +201,7 @@ class FIDOViewSet(
         serializer = serializers.FidoRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         credential_data = f2_auth.end_registration(request)
-        models.UserFidoKeys.objects.create(
+        models.UserFidoKey.objects.create(
             name=request.data["name"],
             credential_data=credential_data,
             user=request.user,
