@@ -166,9 +166,8 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.5.0
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   release:
     if: github.event_name != 'pull_request'
