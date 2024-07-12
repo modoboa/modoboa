@@ -10,17 +10,38 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from modoboa.sievefilters import constants, lib
+from modoboa.sievefilters.forms import supported_auth_mechs
 from modoboa.sievefilters.api.v2 import vloaders
 
 
-class FilterSetSerializer(serializers.Serializer):
+class SievefiltersSettingsSerializer(serializers.Serializer):
+    """A serializer for global parameters."""
 
+    # ManageSieve settings
+
+    server = serializers.CharField(default="127.0.0.1")
+    port = serializers.IntegerField(default=4190)
+    starttls = serializers.BooleanField(default=False)
+    authentication_mech = serializers.ChoiceField(
+        default="auto", choices=[("auto", _("auto"))]
+    )
+
+    # Imap Settings
+    imap_server = serializers.CharField(default="127.0.0.1")
+    imap_secured = serializers.BooleanField(default=False)
+    imap_port = serializers.IntegerField(default=143)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["authentication_mech"].choices = supported_auth_mechs()
+
+
+class FilterSetSerializer(serializers.Serializer):
     name = serializers.CharField()
     active = serializers.BooleanField(default=False)
 
 
 class FilterSetContentSerializer(serializers.Serializer):
-
     content = serializers.CharField()
 
     def validate_content(self, value: str):
@@ -32,20 +53,17 @@ class FilterSetContentSerializer(serializers.Serializer):
 
 
 class ConditionSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     operator = serializers.CharField()
     value = serializers.CharField()
 
 
 class ActionSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     args = serializers.DictField(child=serializers.CharField())
 
 
 class FilterSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     enabled = serializers.BooleanField(default=True)
     match_type = serializers.ChoiceField(choices=constants.MATCH_TYPES)
@@ -134,21 +152,18 @@ class FilterSerializer(serializers.Serializer):
 
 
 class OperatorSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     label = serializers.CharField()
     type = serializers.CharField()
 
 
 class ConditionTemplateSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     label = serializers.CharField()
     operators = OperatorSerializer(many=True)
 
 
 class ActionArgumentSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     type = serializers.CharField()
     label = serializers.CharField(required=False)
@@ -163,7 +178,6 @@ class ActionArgumentSerializer(serializers.Serializer):
 
 
 class ActionTemplateSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     label = serializers.CharField()
     args = ActionArgumentSerializer(many=True, required=False)

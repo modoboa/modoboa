@@ -8,6 +8,21 @@ from rest_framework import serializers
 from modoboa.postfix_autoreply import models
 
 
+class PostfixAutoreplySettingsSerializer(serializers.Serializer):
+    """A serializer for global parameters."""
+
+    # General
+    autoreplies_timeout = serializers.IntegerField(default=86400)
+    default_subject = serializers.CharField(default="I'm off")
+    default_content = serializers.CharField(
+        default="""I'm currently off. I'll answer as soon as I come back.
+
+Best regards,
+%(name)s
+"""
+    )
+
+
 class ARMessageSerializer(serializers.ModelSerializer):
     """A serializer for ARmessage."""
 
