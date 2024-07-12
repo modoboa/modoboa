@@ -1,12 +1,12 @@
 comment:
-  layout: header, changes, diff
+  layout: " header, changes, diff "
 coverage:
   ignore:
-  - **/migrations/*
-  - **/tests/*
-  - **/tests.py
-  - modoboa/core/dev_settings.py
-  - modoboa/test_settings.py
+    - "**/migrations/*"
+    - "**/tests/*"
+    - "**/tests.py"
+    - "modoboa/core/dev_settings.py"
+    - "modoboa/test_settings.py"
   status:
     patch:
       default:
