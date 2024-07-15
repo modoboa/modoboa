@@ -12,7 +12,6 @@ from modoboa.lib.tests import ModoAPITestCase
 
 
 class DomainViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -162,7 +161,6 @@ domainalias; domalias1.com; domain1.com; True
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -209,6 +207,25 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
         self.assertIn("password", resp.json())
+
+    def test_create_too_long_username(self):
+        """Test that it is not possible to create too long usernames (RFC5321)."""
+        url = reverse("v2:account-list")
+        toolong_username = "".join(["a" for i in range(66)])
+        data = {
+            "username": toolong_username,
+            "role": "SimpleUsers",
+            "mailbox": {"use_domain_quota": True},
+            "password": "Toto12345",
+            "language": "fr",
+            "aliases": ["totoalias@test.com"],
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn(
+            "The left part of an email address can't be more than 64 characters",
+            resp.json(),
+        )
 
     def test_validate(self):
         """Test validate and throttling."""
@@ -393,7 +410,6 @@ class AccountViewSetTestCase(ModoAPITestCase):
 
 
 class IdentityViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -482,7 +498,6 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
 
 
 class AliasViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -512,7 +527,6 @@ class AliasViewSetTestCase(ModoAPITestCase):
 
 
 class UserAccountViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -554,7 +568,6 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
 
 
 class AlarmViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
