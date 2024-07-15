@@ -213,7 +213,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         url = reverse("v2:account-list")
         toolong_username = "".join(["a" for i in range(66)])
         data = {
-            "username": toolong_username,
+            "username": f"{toolong_username}@test.com",
             "role": "SimpleUsers",
             "mailbox": {"use_domain_quota": True},
             "password": "Toto12345",
@@ -224,7 +224,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 400)
         self.assertIn(
             "The left part of an email address can't be more than 64 characters",
-            resp.json(),
+            str(resp.json()),
         )
 
     def test_validate(self):
