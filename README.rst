@@ -36,6 +36,14 @@ Main features
 * `Autoreply messages for Postfix <https://github.com/modoboa/modoboa-postfix-autoreply>`_
 * `Graphical statistics about email traffic <https://github.com/modoboa/modoboa-stats>`_
 
+************
+Installation
+************
+
+The easiest way to install modoboa is to use the
+`offical installer <https://github.com/modoboa/modoboa-installer>`_.
+More information is available in the documentation.
+
 *************
 Documentation
 *************
