@@ -12,12 +12,13 @@ documentation.
 
 * New API+Docs: *https://<hostname>/api/schema-v2/swagger/*
 * Old API: *http://<hostname>/api/v1/*
-* (Old) Documentation: *http://<hostname>/docs/api/*
+
+.. note::
+  You need to be logged in for the API docs to show.
 
 **Examples:**
 
 * `new example <https://demo.modoboa.org/api/schema-v2/swagger/>`_
-* `old example <https://demo.modoboa.org/docs/api/>`_ 
 
 documentation is available on the official demo.
 
