@@ -228,10 +228,6 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     def validate_dkim_keys_storage_dir(self, value):
         """Check that directory exists."""
         if value:
-            if not os.path.isdir(value):
-                raise serializers.ValidationError(_("Directory not found."))
-            if not os.access(value, os.W_OK):
-                raise serializers.ValidationError(_("Directory non-writable"))
             code, output = exec_cmd("which openssl")
             if code:
                 raise serializers.ValidationError(
