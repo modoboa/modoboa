@@ -6,11 +6,10 @@ from typing import Optional, Tuple, Union
 from sievelib.factory import FiltersSet
 from sievelib import managesieve
 from sievelib.parser import Parser
-import six
 
 from django.utils.translation import gettext as _
 
-from modoboa.lib.connections import ConnectionsManager, ConnectionError
+from modoboa.lib.connections import ConnectionError
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.parameters import tools as param_tools
 
@@ -18,10 +17,9 @@ from . import constants
 
 
 class SieveClientError(ModoboaException):
-    http_code = 424
+    http_code = 400
 
 
-# @six.add_metaclass(ConnectionsManager)
 class SieveClient:
     """Sieve client."""
 
@@ -31,10 +29,10 @@ class SieveClient:
         if user and password:
             try:
                 ret, msg = self.login(user, password)
-            except managesieve.Error as e:
-                raise ConnectionError(str(e))
+            except (managesieve.Error, ConnectionError) as e:
+                raise SieveClientError(str(e))
             if not ret:
-                raise ConnectionError(msg)
+                raise SieveClientError(msg)
 
     def login(self, user: str, password: str) -> Tuple[bool, Union[str, None]]:
         conf = dict(param_tools.get_global_parameters("sievefilters"))
