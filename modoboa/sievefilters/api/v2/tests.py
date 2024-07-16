@@ -111,3 +111,116 @@ class FilterSetViewSetTestCase(ModoAPITestCase):
         actions = resp.json()
         self.assertEqual(len(actions), 4)
         self.assertIn("choices", actions[0]["args"][0])
+
+    def test_get_filters(self):
+        self.authenticate()
+        url = reverse("v2:filterset-get-filters", args=["unknown"])
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-get-filters", args=["main_script"])
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()), 2)
+
+    def test_add_filter(self):
+        self.authenticate()
+        url = reverse("v2:filterset-get-filters", args=["unknown"])
+        data = {
+            "name": "New filter",
+            "enabled": True,
+            "match_type": "anyof",
+            "conditions": [
+                {"name": "From", "operator": "is", "value": "toto@titi.com"},
+            ],
+            "actions": [
+                {"name": "redirect", "args": {"address": "tata@titi.com"}},
+            ],
+        }
+        resp = self.client.post(url, data)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-get-filters", args=["main_script"])
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 201)
+
+    def test_update_filter(self):
+        self.authenticate()
+        url = reverse("v2:filterset-update-filter", args=["unknown", "test1"])
+        data = {
+            "name": "test1",
+            "enabled": True,
+            "match_type": "anyof",
+            "conditions": [
+                {"name": "From", "operator": "is", "value": "toto@titi.com"},
+            ],
+            "actions": [
+                {"name": "redirect", "args": {"address": "tata@titi.com"}},
+            ],
+        }
+        resp = self.client.put(url, data)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-update-filter", args=["main_script", "test1"])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+    def test_disable_filter(self):
+        self.authenticate()
+        url = reverse("v2:filterset-disable-filter", args=["unknown", "test1"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-disable-filter", args=["main_script", "unknown"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-disable-filter", args=["main_script", "test1"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+    def test_enable_filter(self):
+        self.authenticate()
+        url = reverse("v2:filterset-enable-filter", args=["unknown", "test1"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-enable-filter", args=["main_script", "unknown"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 404)
+        # We can't enable a filter which is not disabled
+        url = reverse("v2:filterset-enable-filter", args=["main_script", "test2"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 404)
+        # So we disable it
+        url = reverse("v2:filterset-disable-filter", args=["main_script", "test2"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+        # And we enable it again
+        url = reverse("v2:filterset-enable-filter", args=["main_script", "test2"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+    def test_delete_filter(self):
+        self.authenticate()
+        url = reverse("v2:filterset-update-filter", args=["unknown", "test2"])
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-update-filter", args=["main_script", "unknown"])
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-update-filter", args=["main_script", "test2"])
+        resp = self.client.delete(url)
+        self.assertEqual(resp.status_code, 204)
+
+    def test_move_filter_up(self):
+        self.authenticate()
+        url = reverse("v2:filterset-move-filter-up", args=["unknown", "test2"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-move-filter-up", args=["main_script", "test2"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+    def test_move_filter_down(self):
+        self.authenticate()
+        url = reverse("v2:filterset-move-filter-down", args=["unknown", "test1"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 404)
+        url = reverse("v2:filterset-move-filter-down", args=["main_script", "test2"])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
