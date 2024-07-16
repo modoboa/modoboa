@@ -13,7 +13,6 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
 
-from modoboa.lib.connections import ConnectionError
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.sievefilters import constants
 from modoboa.sievefilters.lib import SieveClient, SieveClientError
@@ -35,10 +34,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     serializer_class = serializers.FilterSetSerializer
 
     def get_sieve_client(self, request):
-        # try:
         return SieveClient(user=request.user.username, password=str(request.auth))
-        # except ConnectionError as e:
-        # raise
 
     def list(self, request):
         """Retrieve list of available filter sets."""
