@@ -199,8 +199,15 @@ def get_authoritative_server(domain, resolver=None):
     while True:
         try:
             answers = dns.resolver.resolve(dnsname, 'NS')
-            return str(answers[0].target)
+            if answers:
+                first_answer = answers[0]
+                if hasattr(first_answer, "target"):
+                    return str(first_answer.target)
+                if hasattr(first_answer, "address"):
+                    return str(first_answer.address)
         except dns.resolver.NoAnswer as e:
+            dnsname = dnsname.parent()
+        else:
             dnsname = dnsname.parent()
 
 
