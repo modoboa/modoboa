@@ -20,28 +20,28 @@
         {{ $gettext('API access') }}
       </v-tab>
     </v-tabs>
-    <v-window v-model="tab">
-      <v-window-item value="profile">
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item value="profile">
         <ProfileForm />
-      </v-window-item>
-      <v-window-item value="security">
+      </v-tabs-window-item>
+      <v-tabs-window-item value="security">
         <TotpAuthForm />
         <FidoAuthForm />
         <BackupCodeAuthForm />
-      </v-window-item>
-      <v-window-item v-if="authStore.userHasMailbox" value="forward">
+      </v-tabs-window-item>
+      <v-tabs-window-item v-if="authStore.userHasMailbox" value="forward">
         <ForwardForm />
-      </v-window-item>
-      <v-window-item v-if="authStore.userHasMailbox" value="autoreply">
+      </v-tabs-window-item>
+      <v-tabs-window-item v-if="authStore.userHasMailbox" value="autoreply">
         <AutoReplyForm />
-      </v-window-item>
-      <v-window-item
+      </v-tabs-window-item>
+      <v-tabs-window-item
         v-if="authStore.authUser.role === 'SuperAdmins'"
         value="api"
       >
         <APISetupForm />
-      </v-window-item>
-    </v-window>
+      </v-tabs-window-item>
+    </v-tabs-window>
   </div>
 </template>
 
@@ -62,9 +62,6 @@ const tab = ref()
 
 <style scoped>
 .v-toolbar {
-  background-color: #f7f8fa !important;
-}
-.v-tabs {
   background-color: #f7f8fa !important;
 }
 </style>

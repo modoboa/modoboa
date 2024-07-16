@@ -4,7 +4,7 @@
       <v-toolbar-title>{{ title }}</v-toolbar-title>
     </v-toolbar>
 
-    <v-tabs v-model="active">
+    <v-tabs v-model="active" bg-color="white">
       <v-tab
         v-for="(element, index) in displayableElements"
         :key="index"
@@ -14,8 +14,8 @@
         {{ element.label }}
       </v-tab>
     </v-tabs>
-    <v-window v-model="active">
-      <v-window-item
+    <v-tabs-window v-model="active">
+      <v-tabs-window-item
         v-for="element in displayableElements"
         :key="element.label"
       >
@@ -72,8 +72,8 @@
             </template>
           </v-card-text>
         </v-card>
-      </v-window-item>
-    </v-window>
+      </v-tabs-window-item>
+    </v-tabs-window>
     <v-btn
       icon="mdi-content-save"
       class="ma-5"
