@@ -57,21 +57,6 @@ class SieveClient:
         self.msc.logout()
         self.msc = None
 
-    def refresh(self, user: str, password: str):
-        if self.msc is not None:
-            try:
-                self.msc.capability()
-            except managesieve.Error:
-                pass
-            else:
-                return
-        try:
-            ret, msg = self.login(user, password)
-        except (managesieve.Error, ssl.SSLError) as e:
-            raise ConnectionError(e)
-        if not ret:
-            raise ConnectionError(msg)
-
     def listscripts(self):
         return self.msc.listscripts()
 

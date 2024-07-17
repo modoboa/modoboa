@@ -120,7 +120,7 @@ class FilterSetViewSetTestCase(ModoAPITestCase):
         url = reverse("v2:filterset-get-filters", args=["main_script"])
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.json()), 2)
+        self.assertEqual(len(resp.json()), 5)
 
     def test_add_filter(self):
         self.authenticate()

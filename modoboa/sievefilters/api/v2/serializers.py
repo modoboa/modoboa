@@ -84,35 +84,35 @@ class FilterSerializer(serializers.Serializer):
                 "conditions": [],
                 "actions": [],
             }
-            for t in test["test"]["tests"]:
-                if isinstance(t, commands.TrueCommand):
-                    item["match_type"] = "all"
-                    item["conditions"] += [
-                        {"name": "Subject", "operator": "contains", "value": ""}
-                    ]
-                    break
-                elif isinstance(t, commands.SizeCommand):
-                    item["conditions"] += [
-                        {
-                            "name": "size",
-                            "operator": t["comparator"][1:],
-                            "value": t["limit"],
-                        }
-                    ]
-                else:
-                    operator_prefix = ""
-                    if isinstance(t, commands.NotCommand):
-                        t = t["test"]
-                        operator_prefix = "not"
-                    item["conditions"] += [
-                        {
-                            "name": t["header-names"].strip('"'),
-                            "operator": "{}{}".format(
-                                operator_prefix, t["match-type"][1:]
-                            ),
-                            "value": t["key-list"].strip('"'),
-                        }
-                    ]
+            if isinstance(test["test"], commands.TrueCommand):
+                item["match_type"] = "all"
+                item["conditions"] += [
+                    {"name": "Subject", "operator": "contains", "value": ""}
+                ]
+            else:
+                for t in test["test"]["tests"]:
+                    if isinstance(t, commands.SizeCommand):
+                        item["conditions"] += [
+                            {
+                                "name": "size",
+                                "operator": t["comparator"][1:],
+                                "value": t["limit"],
+                            }
+                        ]
+                    else:
+                        operator_prefix = ""
+                        if isinstance(t, commands.NotCommand):
+                            t = t["test"]
+                            operator_prefix = "not"
+                        item["conditions"] += [
+                            {
+                                "name": t["header-names"].strip('"'),
+                                "operator": "{}{}".format(
+                                    operator_prefix, t["match-type"][1:]
+                                ),
+                                "value": t["key-list"].strip('"'),
+                            }
+                        ]
             for c in test.children:
                 action = {"name": c.name, "args": {}}
                 tpl = lib.find_action_template(c.name)
