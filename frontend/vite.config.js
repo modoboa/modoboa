@@ -2,6 +2,7 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import ViteFonts from 'unplugin-fonts/vite'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -10,6 +11,7 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    basicSsl(),
     vue({
       template: { transformAssetUrls },
     }),
@@ -42,10 +44,14 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/api':
-        process.env.DOCKER == 'yes'
-          ? 'http://api:8000'
-          : 'http://127.0.0.1:8000',
+      '/api': {
+        target:
+          process.env.DOCKER == 'yes'
+            ? 'https://api:8000'
+            : 'http://127.0.0.1:8000',
+        secure: false,
+      },
     },
+    https: true,
   },
 })

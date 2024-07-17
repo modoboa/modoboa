@@ -27,8 +27,8 @@
         {{ $gettext('DMARC') }}
       </v-tab>
     </v-tabs>
-    <v-window v-model="tab">
-      <v-window-item>
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item>
         <v-row>
           <v-col cols="12" md="6">
             <DomainSummary :domain="domain" />
@@ -49,8 +49,8 @@
             />
           </v-col>
         </v-row>
-      </v-window-item>
-      <v-window-item>
+      </v-tabs-window-item>
+      <v-tabs-window-item>
         <v-row>
           <v-col cols="12">
             <TimeSerieChart
@@ -69,11 +69,11 @@
             />
           </v-col>
         </v-row>
-      </v-window-item>
-      <v-window-item>
+      </v-tabs-window-item>
+      <v-tabs-window-item>
         <DmarcAligmentChart :domain="domain" />
-      </v-window-item>
-    </v-window>
+      </v-tabs-window-item>
+    </v-tabs-window>
   </div>
 </template>
 

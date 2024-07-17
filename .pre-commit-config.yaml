@@ -13,14 +13,14 @@ repos:
         name: prettier
         entry: prettier --config frontend/.prettierrc.json --write --ignore-unknown
         language: node
-        types: [javascript]
+        types_or: [javascript, jsx, ts, tsx, vue]
         additional_dependencies: ["prettier"]
       - id: eslint
         name: eslint
         language: node
-        types: [javascript]
-        entry: eslint --fix 
-        additional_dependencies: ["eslint-plugin-vue"]
+        types_or: [javascript, jsx, ts, tsx, vue]
+        entry: eslint -c frontend/.eslint.conf.js --fix
+        additional_dependencies: ["eslint-plugin-vue", "eslint-config-prettier", "prettier", "eslint"]
   - repo: https://github.com/psf/black
     rev: "24.2.0"
     hooks:

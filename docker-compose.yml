@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   redis:
     image: redis:5-alpine
@@ -28,6 +26,8 @@ services:
       dockerfile: docker/Dockerfile.dev
     ports:
       - 8000:8000
+    env_file:
+      - test_project/oidc_key
     environment:
       PYTHONPATH: ".."
       DB: "SQLITE"
@@ -36,9 +36,30 @@ services:
     command: >
       sh -c "cd test_project
              python3 manage.py migrate
-             python3 manage.py load_initial_data
+             python3 manage.py load_initial_data --dev
              django-admin compilemessages
-             python3 manage.py runserver 0:8000"
+             python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
+    volumes:
+      - .:/code
+
+  api-unsecured:
+    container_name: modoboa_api_unsecured
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    ports:
+      - 8001:8001
+    env_file:
+      - test_project/oidc_key
+    environment:
+      PYTHONPATH: ".."
+      DB: "SQLITE"
+      DEBUG: "True"
+      REDIS_HOST: redis
+    command: >
+      sh -c "cd test_project
+             python3 manage.py runserver_plus 0.0.0.0:8001"
     volumes:
       - .:/code
 
@@ -52,8 +73,19 @@ services:
       - 3000:3000
     volumes:
       - ./frontend/:/home/node/
-    command: "yarn dev --host"
+    command: >
+        sh -c "yarn install
+               yarn dev --host"
     environment:
       DOCKER: "yes"
     depends_on:
       - api
+
+  dovecot:
+    container_name: modoboa_dovecot
+    restart: unless-stopped
+    image: dovecot/dovecot:latest
+    depends_on:
+      - api
+    volumes:
+      - ./docker/dovecot_config:/etc/dovecot/conf.d

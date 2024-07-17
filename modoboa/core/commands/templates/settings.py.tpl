@@ -2,7 +2,7 @@
 Django settings for {{ name }} project.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/2.2/topics/settings/
+https://docs.djangoproject.com/en/4.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
@@ -10,18 +10,19 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 from logging.handlers import SysLogHandler
 import os
+import environ
 {% if devmode %}
 
 from modoboa.core.dev_settings import *  # noqa
 {% endif %}
 
-
+env = environ.Env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '{{ secret_key }}'
@@ -62,6 +63,8 @@ INSTALLED_APPS = (
     'reversion',
     'ckeditor',
     'ckeditor_uploader',
+    'oauth2_provider',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
@@ -92,6 +95,8 @@ MODOBOA_APPS = (
     'modoboa.pdfcredentials',
     'modoboa.dmarc',
     'modoboa.imap_migration',
+    'modoboa.postfix_autoreply',
+    'modoboa.sievefilters',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}
@@ -105,11 +110,10 @@ MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'x_forwarded_for.middleware.XForwardedForMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware',
-    'modoboa.core.middleware.TwoFAMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'modoboa.core.middleware.LocalConfigMiddleware',
@@ -160,14 +164,14 @@ WSGI_APPLICATION = '{{ name }}.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     {% for conn in db_connections.values %}{{ conn|safe }}{% endfor %}
 }
 
 # Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = '{{ lang }}'
 
@@ -196,6 +200,25 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# oAuth2 settings
+
+OAUTH2_PROVIDER = {
+    'OIDC_ENABLED': True,
+    'OIDC_RP_INITIATED_LOGOUT_ENABLED': True,
+    'OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT': True,
+    'OIDC_RSA_PRIVATE_KEY': env('OIDC_RSA_PRIVATE_KEY'),
+    'SCOPES': {
+        'openid': 'OpenID Connect scope',
+        'read': 'Read scope',
+        'write': 'Write scope',
+        'introspection': 'Introspect token scope',
+    },
+    'DEFAULT_SCOPES': ['openid', 'read', 'write'],
+}
+
+# If CORS fail, you might want to try to set it to True
+#CORS_ORIGIN_ALLOW_ALL = False
+
 # Rest framework settings
 
 REST_FRAMEWORK = {
@@ -209,7 +232,7 @@ REST_FRAMEWORK = {
         'password_recovery_apply': '25/hour'
     },
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'modoboa.core.drf_authentication.JWTAuthenticationWith2FA',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
@@ -285,7 +308,7 @@ CACHES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

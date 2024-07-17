@@ -11,11 +11,13 @@
           )
         }}
       </v-alert>
-      <ul>
-        <li v-for="token in tokens" :key="token">
-          {{ token }}
-        </li>
-      </ul>
+      <v-table class="mt-4" density="compact">
+        <tbody>
+          <tr v-for="token in tokens" :key="token">
+            <td>{{ token }}</td>
+          </tr>
+        </tbody>
+      </v-table>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>

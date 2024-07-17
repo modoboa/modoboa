@@ -69,7 +69,7 @@ Simply log into your modoboa web panel and verify that your extensions
 and webmail box is working.
 
 Information
-***********
+===========
 
 Rebuild instructions from:
 `https://help.pythonanywhere.com/pages/RebuildingVirtualenvs/

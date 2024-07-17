@@ -3,15 +3,34 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import gettext from '@/plugins/gettext'
+import router from '@/router/index.js'
+import { UserManager } from 'oidc-client-ts'
 
 import repository from '@/api/repository'
 import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
-import authApi from '@/api/auth'
+import authApi from '@/api/auth.js'
+
+import { useGlobalConfig } from '@/main'
 
 export const useAuthStore = defineStore('auth', () => {
-  const authUser = ref({})
+  const config = useGlobalConfig()
+  const authUser = ref(null)
   const isAuthenticated = ref(false)
+  const manager = new UserManager({
+    authority: config.OAUTH_AUTHORITY_URL,
+    client_id: config.OAUTH_CLIENT_ID,
+    redirect_uri: config.OAUTH_REDIRECT_URI,
+    post_logout_redirect_uri: config.OAUTH_POST_REDIRECT_URI,
+    response_type: 'code',
+    scope: 'openid read write',
+    automaticSilentRenew: true,
+    accessTokenExpiringNotificationTime: 60,
+    monitorSession: true,
+    filterProtocolClaims: true,
+    loadUserInfo: true,
+  })
+  const fidoCreds = ref([])
 
   const userHasMailbox = computed(() => {
     return authUser.value.mailbox !== null
@@ -25,34 +44,109 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
+  async function getFidoCreds() {
+    return authApi.getAllFidoRegistred().then((resp) => {
+      fidoCreds.value = resp.data
+      if (fidoCreds.value.length > 0) {
+        authUser.value.tfa_enabled = true
+        authUser.value.webauthn_enabled = true
+      }
+      return resp
+    })
+  }
+
+  async function addFidoCred(result) {
+    return authApi.endFidoRegistration(result).then((res) => {
+      getFidoCreds()
+      return res
+    })
+  }
+
+  async function deleteFidoCreds(id) {
+    return authApi.deleteFido(id).then((res) => {
+      fidoCreds.value = fidoCreds.value.filter((cred) => cred.id !== id)
+      authUser.value.tfa_enabled = res.data.tfa_enabled
+      if (!res.data.tfa_enabled) {
+        authUser.value.webauthn_enabled = false
+      }
+    })
+  }
+
+  async function editFidoCred(id, data) {
+    return authApi.editFido(id, data).then((res) => {
+      for (let i = 0; i < fidoCreds.value.length; i++) {
+        if (fidoCreds.value[i].id === id) {
+          fidoCreds.value[i] = res.data
+          break
+        }
+      }
+      return res
+    })
+  }
+
+  function getAccessToken() {
+    return manager.getUser().then((user) => {
+      if (!user) {
+        return null
+      }
+      return user.access_token
+    })
+  }
+
   async function initialize() {
-    const token = Cookies.get('token')
-    if (!token) {
-      return
+    if (isAuthenticated.value) {
+      return null
     }
-    repository.defaults.headers.common.Authorization = `Bearer ${token}`
-    repository.defaults.headers.post['Content-Type'] = 'application/json'
+    const user = await manager.getUser()
+    if (!user) {
+      return null
+    }
     return fetchUser()
   }
 
-  async function login(payload) {
-    const resp = await authApi.requestToken(payload)
-    const cookiesAttributes = { sameSite: 'strict' }
-    if (payload.rememberMe) {
-      cookiesAttributes.expires = 90
+  async function validateAccess() {
+    const user = await manager.getUser()
+    if (!user || user.expired) {
+      manager.signinRedirect()
+      return
     }
-
-    const cookie = Cookies.withAttributes(cookiesAttributes)
-    cookie.set('token', resp.data.access)
-    cookie.set('refreshToken', resp.data.refresh)
-    return initialize()
+    repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
+    repository.defaults.headers.post['Content-Type'] = 'application/json'
   }
+
+  async function login() {
+    try {
+      await manager.signinRedirect()
+    } catch (error) {
+      console.error('Error logging in:', error)
+    }
+  }
+
+  async function completeLogin() {
+    try {
+      const user = await manager.signinRedirectCallback()
+      isAuthenticated.value = true
+      const previousPage = sessionStorage.getItem('previousPage')
+      // Redirect the user to the previous page if available
+      if (previousPage) {
+        window.location.href = previousPage
+      } else {
+        // Redirect to a default page if the previous page is not available
+        router.push({ name: 'Dashboard' })
+      }
+      return user
+    } catch (error) {
+      console.error('Error completing login:', error)
+      return null
+    }
+  }
+
   async function $reset() {
     delete repository.defaults.headers.common.Authorization
-    Cookies.remove('token')
-    Cookies.remove('refreshToken')
     authUser.value = {}
     isAuthenticated.value = false
+    //TODO: Call the logout callback of OIDC and log out from the IdP
+    manager.signoutRedirect()
   }
 
   async function updateAccount(data) {
@@ -69,28 +163,33 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  async function finalizeTFASetup(pinCode) {
-    return accountApi
-      .finalizeTFASetup(pinCode)
-      .then((response) => {
-        const cookie = Cookies.withAttributes({ sameSite: 'strict' })
-        cookie.set('token', response.data.access)
-        cookie.set('refreshToken', response.data.refresh)
-        initialize()
-        return response
-      })
-      .catch((error) => error)
+  function finalizeTFASetup(pinCode) {
+    return accountApi.finalizeTFASetup(pinCode).then((response) => {
+      const cookie = Cookies.withAttributes({ sameSite: 'strict' })
+      cookie.set('token', response.data.access)
+      cookie.set('refreshToken', response.data.refresh)
+      fetchUser()
+      return response
+    })
   }
 
   return {
     authUser,
+    completeLogin,
     isAuthenticated,
+    userHasMailbox,
+    fidoCreds,
+    validateAccess,
     fetchUser,
+    getAccessToken,
+    getFidoCreds,
+    addFidoCred,
+    deleteFidoCreds,
+    editFidoCred,
     initialize,
     login,
     $reset,
     updateAccount,
     finalizeTFASetup,
-    userHasMailbox,
   }
 })

@@ -80,7 +80,8 @@ class User(AbstractUser):
         ),
     )
 
-    tfa_enabled = models.BooleanField(default=False)
+    totp_enabled = models.BooleanField(default=False)
+    webauthn_enabled = models.BooleanField(default=False)
 
     _parameters = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
 
@@ -203,6 +204,10 @@ class User(AbstractUser):
                 Header(self.fullname, "utf8").encode(), self.email
             )
         return self.email
+
+    @property
+    def tfa_enabled(self):
+        return self.totp_enabled or self.webauthn_enabled
 
     def is_owner(self, obj):
         """Tell is the user is the unique owner of this object.
@@ -410,6 +415,17 @@ class User(AbstractUser):
 
 
 reversion.register(User)
+
+
+class UserFidoKey(models.Model):
+    """Model to store user fido keys."""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    added_on = models.DateTimeField(auto_now_add=True)
+    last_used = models.DateTimeField(null=True, default=None)
+    use_count = models.IntegerField(default=0)
+    credential_data = models.TextField()
 
 
 def populate_callback(user, group="SimpleUsers"):

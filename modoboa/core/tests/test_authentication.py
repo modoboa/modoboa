@@ -13,12 +13,23 @@ try:
 except ImportError:
     argon2 = None
 
+from modoboa.core import constants
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.password_hashers.utils import get_dovecot_schemes
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
 DOVEADM_TEST_PATH = "{}/doveadm".format(os.path.dirname(__file__))
+
+
+class MockedAttestedCredentialData:
+
+    def __init__(self, _):
+        pass
+
+    @staticmethod
+    def _parse(data):
+        return "1", "XX", "3", None
 
 
 class AuthenticationTestCase(ModoTestCase):
@@ -53,13 +64,10 @@ class AuthenticationTestCase(ModoTestCase):
     def test_authentication_with_2fa(self, login_mock, match_mock):
         user = models.User.objects.get(username="user@test.com")
         user.totpdevice_set.create(name="Device")
-        user.tfa_enabled = True
+        user.totp_enabled = True
         user.save()
         data = {"username": "user@test.com", "password": "toto"}
         response = self.client.post(reverse("core:login"), data)
-
-        response = self.client.get(response.url)
-        self.assertEqual(response.status_code, 302)
         url = reverse("core:2fa_verify")
         self.assertTrue(response.url.endswith(url))
 
@@ -231,6 +239,55 @@ class AuthenticationTestCase(ModoTestCase):
         """Check default scheme if doveadm is not found."""
         supported_schemes = get_dovecot_schemes()[0]
         self.assertEqual(supported_schemes, ["{MD5-CRYPT}", "{PLAIN}"])
+
+    def test_fido_auth_begin(self):
+        url = reverse("core:fido_auth_begin")
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 403)
+        session = self.client.session
+        session[constants.TFA_PRE_VERIFY_USER_PK] = self.account.pk
+        session.save()
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 200)
+
+    @mock.patch("fido2.webauthn.AttestedCredentialData", MockedAttestedCredentialData)
+    @mock.patch("fido2.server.Fido2Server.authenticate_complete")
+    @mock.patch("fido2.utils.websafe_decode")
+    def test_fido_auth_end(self, websafe_decode_mock, authenticate_complete_mock):
+        data = {
+            "authenticatorAttachment": "attachment",
+            "clientExtensionResults": '{"key": "value"}',
+            "id": "XX",
+            "rawId": "XX",
+            "response": '{"key": "value"}',
+            "type": "type",
+        }
+        url = reverse("core:fido_auth_end")
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 403)
+        session = self.client.session
+        session[constants.TFA_PRE_VERIFY_USER_PK] = self.account.pk
+        session[constants.TFA_PRE_VERIFY_USER_BACKEND] = (
+            "django.contrib.auth.backends.ModelBackend"
+        )
+        session["fido_state"] = "state"
+        session.save()
+
+        class AuthenticateMockResult:
+            credential_id = "XX"
+
+        key = factories.UserFidoKeyFactory(user=self.account)
+        authenticate_complete_mock.side_effect = [AuthenticateMockResult()]
+        websafe_decode_mock.side_effect = [
+            bytes.fromhex(
+                "f8a011f38c0a4d15800617111f9edc7d0040fe3aac036d14c1e1c65518b698dd1da8f596bc33e11072813466c6bf3845691509b80fb76d59309b8d39e0a93452688f6ca3a39a76f3fc52744fb73948b15783a5010203262001215820643566c206dd00227005fa5de69320616ca268043a38f08bde2e9dc45a5cafaf225820171353b2932434703726aae579fa6542432861fe591e481ea22d63997e1a5290"  # noqa E501
+            )
+        ]
+
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        key.refresh_from_db()
+        self.assertEqual(key.use_count, 1)
 
 
 class PasswordResetTestCase(ModoTestCase):

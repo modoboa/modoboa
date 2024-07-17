@@ -249,7 +249,7 @@ def get_modoboa_logo():
     except AttributeError:
         logo = None
     if logo is None:
-        return os.path.join(settings.STATIC_URL, "css/modoboa.png")
+        return os.path.join(settings.STATIC_URL, "css/modoboa-white.png")
     return logo
 
 

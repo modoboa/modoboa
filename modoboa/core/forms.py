@@ -9,22 +9,13 @@ from django.utils.translation import gettext as _, gettext_lazy
 
 import django_otp
 
-from modoboa.core.models import User
+from modoboa.core.models import User, UserFidoKey
 from modoboa.lib.form_utils import UserKwargModelFormMixin
 from modoboa.parameters import tools as param_tools
 
 
-class LoginForm(forms.Form):
-    """User login form."""
+class AuthenticationForm(auth_forms.AuthenticationForm):
 
-    username = forms.CharField(
-        label=gettext_lazy("Username"),
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-    password = forms.CharField(
-        label=gettext_lazy("Password"),
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
-    )
     rememberme = forms.BooleanField(initial=False, required=False)
 
 
@@ -117,6 +108,21 @@ class ProfileForm(forms.ModelForm):
         return user
 
 
+class TwoFAChoiceForm(forms.Form):
+    """Form to select the 2FA method of choice."""
+
+    two_fa_choices = forms.ChoiceField(choices=(), required=True)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        fido_keys = UserFidoKey.objects.filter(user=user)
+        if fido_keys.exists():
+            self.fields["two_fa_choices.choices"].choices = [
+                ("TOTP", "TOTP or recovery codes"),
+                ("FIDO", "Webauthn device"),
+            ]
+
+
 class APIAccessForm(forms.Form):
     """Form to control API access."""
 
@@ -153,7 +159,7 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
     ):
         """Send message to secondary email instead."""
         to_email = context["user"].secondary_email
-        super(PasswordResetForm, self).send_mail(
+        super().send_mail(
             subject_template_name,
             email_template_name,
             context,
@@ -185,6 +191,7 @@ class VerifySMSCodeForm(forms.Form):
 class Verify2FACodeForm(UserKwargModelFormMixin, forms.Form):
     """A form to verify 2FA codes validity."""
 
+    next = forms.CharField(required=False)
     tfa_code = forms.CharField()
 
     def clean_tfa_code(self):

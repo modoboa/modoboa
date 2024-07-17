@@ -1,16 +1,17 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import router from '@/router'
-import { useAuthStore } from '@/stores'
+import { useAuthStore, useBusStore } from '@/stores'
 
 const _axios = axios.create()
 
 _axios.interceptors.request.use(
-  function (config) {
+  async function (config) {
     const authStore = useAuthStore()
-    // Do something before request is sent
     if (authStore.isAuthenticated) {
+      const token = await authStore.getAccessToken()
       config.headers['Accept-Language'] = authStore.authUser.language
+      config.headers['Authorization'] = `Bearer ${token}`
     }
     return config
   },
@@ -35,6 +36,8 @@ _axios.interceptors.response.use(
       return Promise.reject(error)
     }
     if (error.response.status !== 401 || router.currentRoute.name === 'Login') {
+      const busStore = useBusStore()
+      busStore.displayNotification({ msg: error.response.data, type: 'error' })
       return Promise.reject(error)
     }
     const refreshToken = Cookies.get('refreshToken')
