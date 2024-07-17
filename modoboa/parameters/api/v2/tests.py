@@ -6,7 +6,6 @@ from modoboa.lib.tests import ModoAPITestCase
 
 
 class ParametersAPITestCase(ModoAPITestCase):
-
     def test_applications(self):
         url = reverse("v2:parameter-applications")
         resp = self.client.get(url)
@@ -69,15 +68,6 @@ class ParametersAPITestCase(ModoAPITestCase):
         self.assertEqual(
             errors["default_mailbox_quota"], ["Must be a positive integer"]
         )
-        self.assertEqual(errors["dkim_keys_storage_dir"], ["Directory not found."])
-
-        # Try to set dkim storage dir to a non-writable directory.
-        data = {"dkim_keys_storage_dir": "/root"}
-        url = reverse("v2:parameter-detail", args=["admin"])
-        resp = self.client.put(url, data, format="json")
-        self.assertEqual(resp.status_code, 400)
-        errors = resp.json()
-        self.assertEqual(errors["dkim_keys_storage_dir"], ["Directory non-writable"])
 
         data = {
             "enable_mx_checks": True,

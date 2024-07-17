@@ -29,6 +29,7 @@ DKIM_KEY_LENGTHS = [
 ]
 
 DKIM_WRITE_ERROR = "DKIM path error"
+DKIM_ERROR = "general DKIM generation error"
 
 ALARM_OPENED = 1
 ALARM_CLOSED = 2

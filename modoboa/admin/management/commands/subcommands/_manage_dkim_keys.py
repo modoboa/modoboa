@@ -10,8 +10,7 @@ from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
 
 from .... import models
-from .... import signals
-from ....constants import DKIM_WRITE_ERROR, ALARM_OPENED
+from ....constants import DKIM_WRITE_ERROR, ALARM_OPENED, DKIM_ERROR
 
 
 class ManageDKIMKeys(BaseCommand):
@@ -21,11 +20,16 @@ class ManageDKIMKeys(BaseCommand):
         """Create a new DKIM key."""
         storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
         pkey_path = os.path.join(storage_dir, "{}.pem".format(domain.name))
+
         alarm_qset = domain.alarms.filter(internal_name=DKIM_WRITE_ERROR)
         if not os.access(storage_dir, os.W_OK):
             if not alarm_qset.exists():
                 domain.alarms.create(
-                    title=_("DKIM path non-writable"), internal_name=DKIM_WRITE_ERROR
+                    title=_(
+                        "DKIM path non-writable "
+                        "(either a permission issue or the directory does not exist)"
+                    ),
+                    internal_name=DKIM_WRITE_ERROR,
                 )
             else:
                 alarm = alarm_qset.first()
@@ -48,6 +52,10 @@ class ManageDKIMKeys(BaseCommand):
                     domain.name, smart_str(output)
                 )
             )
+            domain.alarms.create(
+                title=_("Failed to generate DKIM private key"), internal_name=DKIM_ERROR
+            )
+            return
         domain.dkim_private_key_path = pkey_path
         code, output = sysutils.exec_cmd("openssl rsa -in {} -pubout".format(pkey_path))
         if code:
@@ -56,6 +64,10 @@ class ManageDKIMKeys(BaseCommand):
                     domain.name, smart_str(output)
                 )
             )
+            domain.alarms.create(
+                title=_("Failed to generate DKIM public key"), internal_name=DKIM_ERROR
+            )
+            return
         public_key = ""
         for cpt, line in enumerate(smart_str(output).splitlines()):
             if cpt == 0 or line.startswith("-----"):
