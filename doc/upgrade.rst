@@ -144,6 +144,17 @@ Version 2.3.0
    new migrations **AFTER** the following instructions. If you don't,
    you'll get into trouble...
 
+Pre update
+----------
+
+Before your start upgrading modoboa, run the following commands from
+your virtual environment:
+
+.. sourcecode:: bash
+
+   > python manage.py modo repair
+   > python manage.py rename_app modoboa_postfix_autoreply postfix_autoreply
+
 Required changes to :file:`settings.py`
 ---------------------------------------
 
@@ -300,16 +311,6 @@ SORBS DNS
          zen.spamhaus.org=127.0.0.[2..11]*3
          bl.spameatingmonkey.net=127.0.0.2*2
          bl.spamcop.net=127.0.0.2
-
-
-Post update
------------
-
-After upgrading modoboa, run the following commands from your virtual environment:
-
-.. sourcecode:: bash
-
-   > python manage.py rename_app modoboa_postfix_autoreply postfix_autoreply
 
 Version 2.2.3
 =============
