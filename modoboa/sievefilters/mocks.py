@@ -14,6 +14,21 @@ if anyof (header :contains "To" "test1") {
 if anyof (header :contains "To" "test2") {
     fileinto "Test2";
 }
+
+# Filter: test3
+if anyof (size :over 100k) {
+    fileinto "Test3";
+}
+
+# Filter: test4
+if anyof (not header :contains "Sender" "toto@toto.com") {
+    fileinto "Toto";
+}
+
+# Filter: test5
+if true {
+    fileinto "All";
+}
 """
 
 SAMPLE_SIEVE_SCRIPT2 = """require ["fileinto"];
