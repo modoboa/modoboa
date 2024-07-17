@@ -29,7 +29,6 @@ DKIM_KEY_LENGTHS = [
 ]
 
 DKIM_WRITE_ERROR = "DKIM path error"
-DKIM_DIR_NOT_FOUND = "DKIM directory not found"
 DKIM_ERROR = "general DKIM generation error"
 
 ALARM_OPENED = 1
