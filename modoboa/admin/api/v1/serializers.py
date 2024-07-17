@@ -253,6 +253,8 @@ class AccountSerializer(serializers.ModelSerializer):
             "secondary_email",
             "domains",
             "tfa_enabled",
+            "totp_enabled",
+            "webauthn_enabled",
             "date_joined",
             "last_login",
         )

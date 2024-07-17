@@ -1,4 +1,8 @@
 {
   "API_BASE_URL": "/api/v2/",
-  "API_DOC_URL": "/api/schema-v2/swagger/"
+  "API_DOC_URL": "/api/schema-v2/swagger/",
+  "OAUTH_AUTHORITY_URL": "https://localhost:8000/api/o",
+  "OAUTH_CLIENT_ID": "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD",
+  "OAUTH_REDIRECT_URI": "https://localhost:3000/login/logged",
+  "OAUTH_POST_REDIRECT_URI": "https://localhost:3000/"
 }

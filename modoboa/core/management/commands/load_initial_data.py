@@ -7,9 +7,16 @@ A management command to load Modoboa initial data.
 """
 
 from functools import reduce
+import os
+import shutil
+import uuid
 
+from django.conf import settings
 from django.contrib.auth.models import Group
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
+
+from oauth2_provider.models import get_application_model
 
 from modoboa.lib.permissions import add_permissions_to_group
 from ... import constants, extensions, models, signals
@@ -23,15 +30,32 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """Add extra arguments to command."""
         parser.add_argument(
+            "--name", help="The name of your Modoboa instance", default="instance"
+        )
+        parser.add_argument(
             "--admin-username",
             default="admin",
             help="Username of the initial super administrator.",
         )
+        (
+            parser.add_argument(
+                "--extra-fixtures",
+                action="store_true",
+                default=False,
+                help="Also load some fixtures from the admin application.",
+            ),
+        )
         parser.add_argument(
-            "--extra-fixtures",
+            "--dev",
             action="store_true",
             default=False,
-            help="Also load some fixtures from the admin application.",
+            help="Setup dev environment. DO NOT USE IN PRODUCTION",
+        )
+        parser.add_argument(
+            "--no-frontend",
+            action="store_true",
+            default=False,
+            help="Omit everything related to frontend initialisation",
         )
 
     def handle(self, *args, **options):
@@ -76,3 +100,58 @@ class Command(BaseCommand):
             from modoboa.admin import factories
 
             factories.populate_database()
+
+        if options["no_frontend"]:
+            return
+
+        app_model = get_application_model()
+        allowed_host = getattr(settings, "ALLOWED_HOSTS", None)
+        if allowed_host is not None:
+            allowed_host = allowed_host[0]
+        else:
+            allowed_host = input("What will be the hostname used to access Modoboa? ")
+            if not allowed_host:
+                allowed_host = "localhost"
+        frontend_application = app_model.objects.filter(name="Modoboa frontend")
+        frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
+        base_uri = f"https://{allowed_host}/{frontend_path}"
+        redirect_uri = f"{base_uri}/login/logged"
+        client_id = ""
+        if not frontend_application.exists():
+            if options["dev"]:
+                base_uri = "https://localhost:3000/"
+                redirect_uri = "https://localhost:3000/login/logged"
+                client_id = "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD"
+            else:
+                client_id = str(uuid.uuid4())
+            call_command(
+                "createapplication",
+                "--algorithm=RS256",
+                f"--redirect-uris={redirect_uri}",
+                "--name='Modoboa frontend'",
+                f"--client-id={client_id}",
+                f"--post-logout-redirect-uris={base_uri}",
+                "--skip-authorization",
+                "public",
+                "authorization-code",
+            )
+        else:
+            client_id = frontend_application.first().client_id
+
+        base_frontend_dir = os.path.join(
+            os.path.dirname(__file__), "../../frontend_dist/"
+        )
+        frontend_target_dir = "{}/frontend".format(options["name"])
+        if os.path.exists(base_frontend_dir):
+            shutil.copytree(base_frontend_dir, frontend_target_dir)
+            with open(f"{frontend_target_dir}/config.json", "w") as fp:
+                fp.write(
+                    f"""{{
+  "API_BASE_URL": "https://{allowed_host}/api/v2",
+  "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
+  "OAUTH_CLIENT_ID": "{client_id}",
+  "OAUTH_REDIRECT_URI": "{redirect_uri}"
+  "OAUTH_POST_REDIRECT_URI": "{base_uri}"
+}}
+"""
+                )

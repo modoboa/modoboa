@@ -11,6 +11,7 @@
         <v-stepper-item
           v-for="(step, index) in steps"
           :key="step.name"
+          color="primary"
           :value="index + 1"
           :complete="currentStep > index + 1"
         >
@@ -172,17 +173,11 @@ function create() {
 .v-stepper {
   width: 100%;
   overflow: auto;
+}
 
-  &__content {
+.v-window {
+  &__container {
     width: 60%;
-  }
-
-  &__items {
-    overflow-y: auto;
-  }
-
-  &__wrapper {
-    padding: 0 10px;
   }
 }
 </style>

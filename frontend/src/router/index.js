@@ -18,6 +18,11 @@ const routes = [
         component: () => import('@/views/login/TwoFA.vue'),
       },
       {
+        path: 'logged',
+        name: 'LoginCallback',
+        component: () => import('@/views/login/LoginCallbackView.vue'),
+      },
+      {
         path: 'password_recovery',
         name: 'PasswordRecovery',
         component: () => import('../views/login/PasswordRecoveryView.vue'),
@@ -257,6 +262,16 @@ const routes = [
     },
     children: [
       {
+        path: 'filters/:filterset?',
+        name: 'AccountFilters',
+        component: () => import('@/views/account/FiltersView.vue'),
+        meta: {
+          layout: 'account',
+          requiresAuth: true,
+          requiresMailbox: true,
+        },
+      },
+      {
         path: ':tab?',
         name: 'AccountSettings',
         component: () => import('@/views/account/SettingsView.vue'),
@@ -279,26 +294,26 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth !== undefined) {
+    const previousPage = window.location.href
+    sessionStorage.setItem('previousPage', previousPage)
     const authStore = useAuthStore()
-    authStore.initialize().then(() => {
-      if (!authStore.isAuthenticated) {
-        next({ name: 'Login' })
-      } else {
-        /*
-        if (to.meta.allowedRoles !== undefined) {
-          if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
-            next({ name: 'Dashboard' })
-            return
-          }
-        }*/
-        next()
+    if (!authStore.authUser) {
+      await authStore.initialize()
+    }
+    authStore.validateAccess()
+    if (to.meta.allowedRoles !== undefined) {
+      if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
+        next({ name: 'Dashboard' })
+        return
       }
-    })
-  } else {
-    next()
+    }
+    if (to.meta.requiresMailbox && !authStore.authUser.mailbox) {
+      next({ name: 'Dashboard' })
+    }
   }
+  next()
 })
 
 export default router

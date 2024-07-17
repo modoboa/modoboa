@@ -13,4 +13,19 @@ export default {
   changePassword(data) {
     return repository.post('/reset_confirm/', data)
   },
+  beginFidoRegistration() {
+    return repository.post('/fido/registration/begin/')
+  },
+  endFidoRegistration(data) {
+    return repository.post('/fido/registration/end/', data)
+  },
+  getAllFidoRegistred() {
+    return repository.get('/fido/')
+  },
+  deleteFido(id) {
+    return repository.delete(`/fido/${id}/`)
+  },
+  editFido(id, data) {
+    return repository.put(`/fido/${id}/`, data)
+  },
 }

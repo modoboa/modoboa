@@ -1,0 +1,6 @@
+introspection_mode = post
+introspection_url = http://dovecot:Toto12345@api-unsecured:8001/api/o/introspect/
+username_attribute = username
+tls_ca_cert_file = /etc/ssl/certs/ca-certificates.crt
+active_attribute = active
+active_value = true

@@ -7,43 +7,51 @@
 {% endblock %}
 
 {% block main_content %}
-  <form method="post" action="{% url 'core:login' %}" class="login-form form-horizontal">
-    {% csrf_token %}
-    {% render_field form.username %}
-    {% render_field form.password %}
-    <input type="hidden" name="next" value="{{ next }}" />
-    <div class="form-group">
-      <div class="control-label col-lg-4 col-md-4 col-sm-4 ">
+  <div class="login-box">
+    <h2>{% translate "Identification" %}</h2>
+    <form method="post" action="{% url 'core:login' %}" class="login-form form-horizontal">
+      {% csrf_token %}
+      <div class="input-group">
+        {% render_field form.username %}
       </div>
-      <div class="col-lg-5 col-md-5 col-sm-5">
-        <div class="checkbox">
-          <label class="checkbox" for="id_rememberme">
-            <input type="checkbox" id="id_rememberme" name="rememberme" />{% trans "Remember me" %}
-          </label>
-          <button class="btn btn-primary col-lg-12" type="submit">{% trans "Log in" %}</button>
-          <a class="pull-right" href="{% url 'password_reset' %}">{% trans "Forgot password?" %}</a>
-        </div>
+      <div class="input-group">
+        {% render_field form.password %}
       </div>
+      <input type="hidden" name="next" value="{{ next }}" />
+
+      <div class="input-group checkbox-group">
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">{% translate "Remember me" %}</label>
+      </div>
+      <button class="btn btn-primary" type="submit">{% trans "Log in" %}</button>
+    </form>
+    <div class="footer">
+      <a class="pull-right" href="{% url 'password_reset' %}">{% trans "Forgot password?" %}</a>
     </div>
-  </form>
-  <div class="login-error">
-    {% if error %}{% alert error "danger" %}{% endif %}
+    {% if form.non_field_errors %}
+      <div class="mt alert-box">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
   </div>
 {% endblock %}
 
 {% block sub_content %}
-  {% for annoucement in annoucements %}
-    <div class="col-xs-12 col-sm-offset-3 col-sm-6">{{ annoucement|safe }}</div>
+  {% for announcement in announcements %}
+    <div>{{ announcement|safe }}</div>
   {% endfor %}
 {% endblock %}
 
 {% block extra_js %}
   <script type="text/javascript">
-   $(document).ready(function() {
-       $("form").submit(function(){  
-           $(":submit",this).attr("disabled","disabled");  
-       });
-       $('#id_username').focus();
-   });
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const field = document.querySelector('#id_username');
+    field.focus();
+    form.addEventListener('submit', () => {
+      const submitBtn = document.querySelector('button[type=submit]');
+      submitBtn.disabled = true;
+    });
+  });
   </script>
 {% endblock %}

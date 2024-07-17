@@ -51,6 +51,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
 
         self.assertIn("recovery codes", response.json()["content"])
         admin.refresh_from_db()
+        self.assertTrue(admin.totp_enabled)
         self.assertTrue(admin.tfa_enabled)
         device = admin.staticdevice_set.first()
         self.assertIsNot(device, None)

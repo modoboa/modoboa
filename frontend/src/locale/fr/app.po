@@ -8,36 +8,16 @@ msgstr ""
 "PO-Revision-Date: 2024-03-20 10:10+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#~ #
-#~ # Translators:
-#~ # Che Akycow, 2023
-#~ # Antoine Nguyen <tonio@ngyn.org>, 2023
-#~ #
-#~ msgid ""
-#~ msgstr ""
-#~ "Project-Id-Version: \n"
-#~ "Report-Msgid-Bugs-To: \n"
-#~ "POT-Creation-Date: 2023-12-01 14:58+0100\n"
-#~ "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2023\n"
-#~ "Language-Team: French (https://app.transifex.com/tonio/teams/13749/fr/)\n"
-#~ "Language: fr\n"
-#~ "MIME-Version: 1.0\n"
-#~ "Content-Type: text/plain; charset=UTF-8\n"
-#~ "Content-Transfer-Encoding: 8bit\n"
-#~ "Generated-By: easygettext\n"
-#~ "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-#~ "1000000 == 0 ? 1 : 2;\n"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:41
 msgid "(the domain will be created locally)"
 msgstr "(Le domaine sera créé automatiquement)"
 
 #: src/components/account/APISetupForm.vue:45
-#: src/views/account/APISetupView.vue:50
 msgid "A documentation of the API is available"
 msgstr "Une documentation de l'API est disponible"
 
@@ -83,7 +63,7 @@ msgstr "Plage de temps absolue"
 msgid "account"
 msgstr "compte"
 
-#: src/layouts/dashboard/NavBar.vue:269
+#: src/layouts/dashboard/NavBar.vue:253
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
@@ -105,6 +85,8 @@ msgstr "Compte supprimé avec succès"
 msgid "Account updated"
 msgstr "Compte mis à jour"
 
+#: src/components/account/FidoAuthForm.vue:137
+#: src/components/account/FilterForm.vue:87
 #: src/components/admin/alarms/AlarmList.vue:20
 #: src/components/admin/alarms/AlarmList.vue:98
 #: src/components/admin/domains/DomainList.vue:213
@@ -118,6 +100,10 @@ msgstr "Compte mis à jour"
 msgid "Actions"
 msgstr "Actions"
 
+#: src/views/account/FiltersView.vue:382
+msgid "Activate filter set"
+msgstr ""
+
 #: src/components/account/AutoReplyForm.vue:35
 msgid "Activate your auto reply from this date"
 msgstr "Activez votre réponse automatique à partir de cette date"
@@ -126,7 +112,18 @@ msgstr "Activez votre réponse automatique à partir de cette date"
 msgid "Activate your auto reply until this date"
 msgstr "Activez votre réponse automatique jusqu'à cette date"
 
+#: src/views/account/FiltersView.vue:201
+msgid "active"
+msgstr ""
+
+#: src/components/account/FilterSetForm.vue:14
+#: src/views/account/FiltersView.vue:165
+#, fuzzy
+msgid "Active"
+msgstr "Actions"
+
 #: src/components/admin/domains/DomainAliasForm.vue:68
+#: src/views/account/FiltersView.vue:65
 msgid "Add"
 msgstr "Ajouter"
 
@@ -134,9 +131,27 @@ msgstr "Ajouter"
 msgid "Add a new domain alias"
 msgstr "Ajouter un nouvel alias de domaine"
 
+#: src/components/account/FilterForm.vue:131
+#, fuzzy
+msgid "Add action"
+msgstr "Actions"
+
 #: src/components/admin/domains/DomainAdminList.vue:66
 msgid "Add administrator"
 msgstr "Ajouter un administrateur"
+
+#: src/components/account/FilterForm.vue:71
+#, fuzzy
+msgid "Add condition"
+msgstr "Configuration automatique"
+
+#: src/views/account/FiltersView.vue:24
+msgid "Add filter set"
+msgstr ""
+
+#: src/views/account/FiltersView.vue:60
+msgid "Add new filter"
+msgstr ""
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:52
 msgid "Add sender address"
@@ -145,6 +160,10 @@ msgstr "Ajouter l'adresse de l'expéditeur"
 #: src/components/admin/identities/DomainAdminDomains.vue:16
 msgid "Add/Remove from the domain page"
 msgstr "Ajouter/Supprimer depuis la page du domaine"
+
+#: src/components/account/FidoAuthForm.vue:134
+msgid "Added On"
+msgstr ""
 
 #: src/components/admin/domains/DNSDetail.vue:171
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
@@ -159,7 +178,7 @@ msgstr "Adresse"
 msgid "Address (hostname or IP)"
 msgstr "Adresse (nom d'hôte ou IP)"
 
-#: src/layouts/dashboard/NavBar.vue:283
+#: src/layouts/dashboard/NavBar.vue:267
 msgid "Admin"
 msgstr ""
 
@@ -201,7 +220,7 @@ msgid "Alarm re-opened"
 msgstr "Alarme ré-ouverte"
 
 #: src/components/admin/domains/DomainList.vue:309
-#: src/layouts/dashboard/NavBar.vue:202
+#: src/layouts/dashboard/NavBar.vue:194
 msgid "Alarms"
 msgstr "Alarmes"
 
@@ -266,22 +285,32 @@ msgstr "Alias :"
 msgid "Alignment"
 msgstr "Alignement"
 
-#: src/views/account/APISetupView.vue:4 src/views/account/SettingsView.vue:24
+#: src/components/account/FilterForm.vue:31
+#, fuzzy
+msgid "All messages"
+msgstr "messages"
+
+#: src/components/account/FilterForm.vue:23
+msgid "All of the following"
+msgstr ""
+
+#: src/components/account/FilterForm.vue:27
+msgid "Any of the following"
+msgstr ""
+
+#: src/views/account/SettingsView.vue:20
 msgid "API access"
 msgstr "Accès API"
 
 #: src/components/account/APISetupForm.vue:73
-#: src/views/account/APISetupView.vue:80
 msgid "API token copied to your clipboard"
 msgstr "Jeton API copié dans votre presse-papier"
 
 #: src/components/account/APISetupForm.vue:85
-#: src/views/account/APISetupView.vue:92
 msgid "API token created"
 msgstr "Jeton API créé"
 
 #: src/components/account/APISetupForm.vue:107
-#: src/views/account/APISetupView.vue:114
 msgid "API token deleted"
 msgstr "Jeton API supprimé"
 
@@ -308,7 +337,12 @@ msgstr "Domaine associé"
 msgid "Associated domains"
 msgstr "Domaines associés"
 
-#: src/layouts/dashboard/NavBar.vue:217
+#: src/views/login/LoginView.vue:17
+#, fuzzy
+msgid "Attempting to log you in."
+msgstr "Retour à la connexion"
+
+#: src/layouts/dashboard/NavBar.vue:209
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Journal des modifications"
@@ -322,7 +356,7 @@ msgstr "Authentification"
 msgid "Auto configuration"
 msgstr "Configuration automatique"
 
-#: src/views/account/SettingsView.vue:21
+#: src/views/account/SettingsView.vue:17
 msgid "Auto-reply message"
 msgstr "Message de réponse automatique"
 
@@ -350,17 +384,23 @@ msgstr "Enregistrement autodiscover (Microsoft): %{ value }"
 msgid "Back"
 msgstr "Retour"
 
+#: src/components/account/BackupCodeAuthForm.vue:6
+msgid "Backup codes"
+msgstr ""
+
 #: src/components/admin/domains/DomainDKIMKey.vue:23
 msgid "Bind/named format. Click to copy"
 msgstr "Format bind/named. Cliquez pour copier"
 
 #: src/components/account/APISetupForm.vue:98
+#: src/components/account/FidoAuthForm.vue:204
+#: src/components/account/FilterForm.vue:151
+#: src/components/account/FilterSetForm.vue:24
 #: src/components/admin/domains/DomainEditForm.vue:160
 #: src/components/admin/identities/AccountEditForm.vue:186
 #: src/components/admin/identities/AliasEditForm.vue:69
 #: src/components/admin/imap_migration/ProviderForm.vue:58
-#: src/components/tools/ConfirmDialog.vue:47
-#: src/views/account/APISetupView.vue:105
+#: src/components/tools/ConfirmDialog.vue:55
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -386,15 +426,30 @@ msgstr ""
 msgid "Choose a domain"
 msgstr "Choisissez un domaine"
 
+#: src/components/account/FilterForm.vue:39
+#, fuzzy
+msgid "Choose a header"
+msgstr "Choisissez un rôle"
+
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:7
 msgid "Choose a role"
 msgstr "Choisissez un rôle"
 
-#: src/components/account/TwoFactorAuthForm.vue:24
+#: src/components/account/FilterForm.vue:91
+#, fuzzy
+msgid "Choose an action"
+msgstr "Choisissez un domaine"
+
+#: src/components/account/FilterForm.vue:49
+#, fuzzy
+msgid "Choose an operator"
+msgstr "Choisissez un rôle"
+
+#: src/components/account/TotpAuthForm.vue:24
 msgid "Click here to copy the key"
 msgstr "Cliquer ici pour copier la clé"
 
-#: src/components/account/RecoveryCodesResetDialog.vue:23
+#: src/components/account/RecoveryCodesResetDialog.vue:25
 #: src/components/admin/domains/DomainAdminList.vue:71
 #: src/components/admin/domains/DomainAliasForm.vue:31
 #: src/components/admin/domains/DomainDKIMKey.vue:37
@@ -412,6 +467,11 @@ msgstr "Fermer l'alarme"
 msgid "Closed"
 msgstr "Fermé"
 
+#: src/components/account/FilterForm.vue:16
+#, fuzzy
+msgid "Conditions"
+msgstr "Confirmation"
+
 #: src/components/tools/CreationForm.vue:91
 msgid "Confirm and create"
 msgstr "Confirmer et créer"
@@ -420,16 +480,14 @@ msgstr "Confirmer et créer"
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: src/components/account/TwoFactorAuthForm.vue:50
+#: src/components/account/TotpAuthForm.vue:53
+#, fuzzy
 msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
+"Congratulations! Two-factor authentication using one-time passwords is now "
+"enabled for your account."
 msgstr ""
 "Félicitations ! l'authentification à double facteur est maintenant activée "
 "sur votre compte"
-
-#: src/components/login/LoginForm.vue:91
-msgid "Connect"
-msgstr "Connexion"
 
 #: src/components/account/AutoReplyForm.vue:20
 msgid "Content"
@@ -455,13 +513,18 @@ msgid "Copy to clipboard"
 msgstr "Copier dans le presse-papiers"
 
 #: src/components/account/APISetupForm.vue:28
-#: src/views/account/APISetupView.vue:33
 msgid "Copy token to clipboard"
 msgstr "Copier le jeton dans la presse-papiers"
 
 #: src/views/admin/ParametersView.vue:160
 msgid "Could not save parameters"
 msgstr "Impossible de sauvegarder les paramètres"
+
+#: src/components/account/FilterForm.vue:199
+#: src/components/account/FilterSetForm.vue:30
+#, fuzzy
+msgid "Create"
+msgstr "Date de création"
 
 #: src/components/admin/domains/DomainCreationForm.vue:241
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:5
@@ -471,6 +534,10 @@ msgstr "Créer un administrateur de domaine"
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:27
 msgid "Create a mailbox for the administrator."
 msgstr "Créer une boite aux lettres pour l'administrateur"
+
+#: src/components/account/FilterSetForm.vue:3
+msgid "Create a new filter set"
+msgstr ""
 
 #: src/components/admin/domains/DomainCreationForm.vue:265
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
@@ -508,7 +575,7 @@ msgstr "Limite quotidienne d'envoi de messages"
 msgid "Daily sending limit"
 msgstr "Limite d'envoi quotidienne"
 
-#: src/layouts/dashboard/NavBar.vue:184
+#: src/layouts/dashboard/NavBar.vue:176
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -544,11 +611,16 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:189
 #: src/components/admin/imap_migration/MigrationsList.vue:123
 #: src/components/admin/imap_migration/ProvidersList.vue:124
+#: src/views/account/FiltersView.vue:323
 msgid "Delete"
 msgstr "Supprimer"
 
+#: src/views/account/FiltersView.vue:371
+#, fuzzy
+msgid "Delete filter set"
+msgstr "Sélectionner un fichier"
+
 #: src/components/account/APISetupForm.vue:38
-#: src/views/account/APISetupView.vue:43
 msgid "Delete token"
 msgstr "Supprimer le jeton"
 
@@ -563,7 +635,12 @@ msgstr "Description"
 msgid "Detail"
 msgstr "Détail"
 
-#: src/components/account/TwoFactorAuthForm.vue:91
+#: src/views/account/FiltersView.vue:334
+#, fuzzy
+msgid "Disable"
+msgstr "Désactivés"
+
+#: src/components/account/TotpAuthForm.vue:101
 msgid "Disable 2FA"
 msgstr "Désactiver l'authentification à double facteur"
 
@@ -587,7 +664,9 @@ msgstr "Clé DKIM copiée dans le presse-papier"
 msgid ""
 "DKIM key does not seem to be genrated yet or has failed. Do you want to "
 "requeue the job?"
-msgstr "La génération de la clé DKIM ne semble pas encore avoir eu lieu ou a échoué. Souhaitez vous relancer l'opération ?"
+msgstr ""
+"La génération de la clé DKIM ne semble pas encore avoir eu lieu ou a échoué. "
+"Souhaitez vous relancer l'opération ?"
 
 #: src/components/admin/domains/DomainCreationForm.vue:208
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
@@ -670,6 +749,11 @@ msgstr "Ne pas supprimer le dossier des domaines"
 msgid "Do you really want to delete the domain %{ domain }?"
 msgstr "Voulez-vous réellement supprimer le domaine %{ domaine } ?"
 
+#: src/components/account/FidoAuthForm.vue:179
+#, fuzzy
+msgid "Do you really want to delete this WebAuthn device?"
+msgstr "Voulez-vous réellement supprimer le domaine %{ domaine } ?"
+
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:55
 msgid "domain"
 msgstr "domaine"
@@ -721,7 +805,7 @@ msgstr "Domaine mise à jour"
 msgid "domain's default value"
 msgstr "La valeur par défaut du domaine"
 
-#: src/layouts/dashboard/NavBar.vue:190
+#: src/layouts/dashboard/NavBar.vue:182
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domaines"
@@ -730,10 +814,15 @@ msgstr "Domaines"
 msgid "Don't treat duplicated objects as errors"
 msgstr "Ne pas traiter les objets dupliqués comme des erreurs"
 
+#: src/views/account/FiltersView.vue:366
+msgid "Download filter set"
+msgstr ""
+
 #: src/components/admin/domains/DomainList.vue:296
 #: src/components/admin/identities/IdentityList.vue:159
 #: src/components/admin/identities/IdentityList.vue:171
 #: src/components/admin/imap_migration/ProvidersList.vue:130
+#: src/views/account/FiltersView.vue:318
 msgid "Edit"
 msgstr "Modifier"
 
@@ -753,9 +842,24 @@ msgstr "Modifier le domaine"
 msgid "Edit domain alias"
 msgstr "Modifier l'alias de domaine"
 
+#: src/components/account/FilterForm.vue:196
+#, fuzzy
+msgid "Edit filter"
+msgstr "Modifier le fournisseur"
+
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
 msgid "Edit provider"
 msgstr "Modifier le fournisseur"
+
+#: src/components/account/FidoAuthForm.vue:201
+#, fuzzy
+msgid "Edit your device"
+msgstr "Modifier le fournisseur"
+
+#: src/components/account/FidoAuthForm.vue:200
+#, fuzzy
+msgid "Edition"
+msgstr "Modifier"
 
 #: src/components/admin/identities/AccountCreationForm.vue:124
 msgid "Email"
@@ -765,7 +869,7 @@ msgstr "E-mail"
 msgid "Email address"
 msgstr "Adresse email"
 
-#: src/layouts/dashboard/NavBar.vue:234
+#: src/layouts/dashboard/NavBar.vue:226
 msgid "Email providers"
 msgstr "Fournisseurs de messagerie"
 
@@ -778,9 +882,10 @@ msgstr "Email envoyé, veuillez vérifier votre boite aux lettres"
 msgid "Empty"
 msgstr "Vide"
 
-#: src/components/account/TwoFactorAuthForm.vue:108
-msgid "Enable 2FA"
-msgstr "Activer 2FA"
+#: src/views/account/FiltersView.vue:341
+#, fuzzy
+msgid "Enable"
+msgstr "Activé"
 
 #: src/components/admin/domains/DomainCreationForm.vue:181
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:11
@@ -802,6 +907,10 @@ msgstr "Activer les tests DNS"
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:52
 msgid "Enabled"
 msgstr "Activé"
+
+#: src/components/account/FidoAuthForm.vue:55
+msgid "Enter a name to register a new webauthn device."
+msgstr ""
 
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:71
 msgid "Enter a simple username or an email address"
@@ -860,15 +969,57 @@ msgstr ""
 msgid "Field is required"
 msgstr "Ce champ est requis"
 
+#: src/components/account/FilterForm.vue:298
+msgid "Filter added"
+msgstr ""
+
+#: src/views/account/FiltersView.vue:254
+#, fuzzy
+msgid "Filter disabled"
+msgstr "désactivé"
+
+#: src/views/account/FiltersView.vue:247
+msgid "Filter enabled"
+msgstr ""
+
+#: src/views/account/FiltersView.vue:260
+#, fuzzy
+msgid "Filter removed"
+msgstr "Administrateur supprimé"
+
+#: src/views/account/FiltersView.vue:277
+msgid "Filter set activated"
+msgstr ""
+
+#: src/components/account/FilterSetForm.vue:66
+#, fuzzy
+msgid "Filter set created"
+msgstr "Fournisseur créé"
+
+#: src/views/account/FiltersView.vue:282
+#, fuzzy
+msgid "Filter set removed"
+msgstr "Administrateur supprimé"
+
+#: src/views/account/FiltersView.vue:296
+#, fuzzy
+msgid "Filter set updated"
+msgstr "Paramètres mis à jour"
+
+#: src/components/account/FilterForm.vue:301
+#, fuzzy
+msgid "Filter updated"
+msgstr "Profil mis à jour"
+
+#: src/layouts/dashboard/NavBar.vue:278
+msgid "Filters"
+msgstr ""
+
 #: src/components/account/ProfileForm.vue:9
 #: src/components/admin/identities/AccountCreationForm.vue:100
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 msgid "First name"
 msgstr "Prénom"
-
-#: src/components/login/LoginForm.vue:100
-msgid "Forgot password"
-msgstr "Mot de passe oublié ?"
 
 #: src/components/login/PasswordRecoveryChangeForm.vue:11
 #: src/components/login/PasswordRecoveryForm.vue:12
@@ -876,7 +1027,7 @@ msgstr "Mot de passe oublié ?"
 msgid "Forgot password?"
 msgstr "Mot de passe oublié ?"
 
-#: src/views/account/ForwardView.vue:3 src/views/account/SettingsView.vue:18
+#: src/views/account/SettingsView.vue:14
 msgid "Forward"
 msgstr "Transfert"
 
@@ -943,7 +1094,6 @@ msgid "General settings"
 msgstr "Paramètres généraux "
 
 #: src/components/account/APISetupForm.vue:13
-#: src/views/account/APISetupView.vue:18
 msgid "Generate"
 msgstr "Générer"
 
@@ -961,7 +1111,6 @@ msgstr "aide"
 
 #: src/components/account/APISetupForm.vue:46
 #: src/components/account/ProfileForm.vue:28
-#: src/views/account/APISetupView.vue:51
 msgid "here"
 msgstr "ici"
 
@@ -976,11 +1125,10 @@ msgstr ""
 #: src/components/admin/identities/AccountCreationForm.vue:167
 #: src/components/admin/identities/AccountCreationForm.vue:96
 #: src/components/admin/identities/AccountEditForm.vue:31
-#: src/components/login/LoginForm.vue:60
 msgid "Identification"
 msgstr "Identification"
 
-#: src/layouts/dashboard/NavBar.vue:196
+#: src/layouts/dashboard/NavBar.vue:188
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identités"
@@ -1001,7 +1149,7 @@ msgstr ""
 "Si vous l'avez récemment configuré, veuillez attendre que le premier rapport "
 "soit reçu et traité. "
 
-#: src/layouts/dashboard/NavBar.vue:230
+#: src/layouts/dashboard/NavBar.vue:222
 msgid "IMAP Migration"
 msgstr "Migration IMAP"
 
@@ -1037,11 +1185,11 @@ msgstr "Indiquer un ou plusieurs destinataires séparés par une virgule (,) "
 msgid "Info"
 msgstr "Info"
 
-#: src/layouts/dashboard/NavBar.vue:253 src/views/admin/InformationView.vue:4
+#: src/layouts/dashboard/NavBar.vue:245 src/views/admin/InformationView.vue:4
 msgid "Information"
 msgstr "Information"
 
-#: src/components/account/TwoFactorAuthForm.vue:34
+#: src/components/account/TotpAuthForm.vue:34
 msgid ""
 "Install a soft token authenticator like FreeOTP or Google Authenticator from "
 "your application repository and use that app to scan this QR code."
@@ -1070,10 +1218,6 @@ msgstr "Numéro de port incorrect"
 #: src/components/login/PasswordRecoveryChangeForm.vue:117
 msgid "Invalid reset token."
 msgstr "Jeton de réinitialisation incorrect."
-
-#: src/components/login/LoginForm.vue:45
-msgid "Invalid username and/or password"
-msgstr "Nom d'utilisateur et/ou mot de passe incorrect"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
@@ -1110,6 +1254,11 @@ msgstr "Date de dernière modification"
 msgid "Last name"
 msgstr "Nom de famille"
 
+#: src/components/account/FidoAuthForm.vue:135
+#, fuzzy
+msgid "Last Used"
+msgstr "Nom de famille"
+
 #: src/views/admin/InformationView.vue:61
 msgid "Latest version"
 msgstr "Dernière version"
@@ -1137,7 +1286,7 @@ msgstr "Domaine local (optionnel)"
 msgid "Logger"
 msgstr "Logger"
 
-#: src/layouts/dashboard/NavBar.vue:275
+#: src/layouts/dashboard/NavBar.vue:259
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -1170,6 +1319,11 @@ msgstr "Mo"
 msgid "Message"
 msgstr "Message"
 
+#: src/views/account/FiltersView.vue:3
+#, fuzzy
+msgid "Message filters"
+msgstr "Historique des messages"
+
 #: src/views/admin/monitoring/MessagesView.vue:3
 msgid "Message history"
 msgstr "Historique des messages"
@@ -1184,7 +1338,7 @@ msgstr "Limite d'envoi des messages"
 msgid "messages"
 msgstr "messages"
 
-#: src/layouts/dashboard/NavBar.vue:222
+#: src/layouts/dashboard/NavBar.vue:214
 msgid "Messages"
 msgstr "Messages"
 
@@ -1192,7 +1346,7 @@ msgstr "Messages"
 msgid "Migration deleted"
 msgstr "Migration supprimée"
 
-#: src/layouts/dashboard/NavBar.vue:239
+#: src/layouts/dashboard/NavBar.vue:231
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Migrations"
@@ -1209,13 +1363,21 @@ msgstr "Modifié"
 msgid "Modify"
 msgstr "Modifier"
 
-#: src/layouts/dashboard/NavBar.vue:208
+#: src/layouts/dashboard/NavBar.vue:200
 msgid "Monitoring"
 msgstr "Supervision"
 
 #: src/components/tools/TimeSerieChart.vue:112
 msgid "Month"
 msgstr "Mois"
+
+#: src/views/account/FiltersView.vue:349
+msgid "Move down"
+msgstr ""
+
+#: src/views/account/FiltersView.vue:356
+msgid "Move up"
+msgstr ""
 
 #: src/plugins/rules.js:37
 msgid "Must be a numeric value or empty"
@@ -1225,6 +1387,14 @@ msgstr "Valeur numérique requise, ou pas de valeur"
 msgid "MX records"
 msgstr "Enregistrements MX"
 
+#: src/components/account/FidoAuthForm.vue:92
+#, fuzzy
+msgid "name"
+msgstr "Nom d'utilisateur"
+
+#: src/components/account/FidoAuthForm.vue:133
+#: src/components/account/FilterForm.vue:9
+#: src/components/account/FilterSetForm.vue:9
 #: src/components/admin/domains/DNSDetail.vue:170
 #: src/components/admin/domains/DomainAdminList.vue:107
 #: src/components/admin/domains/DomainAliasForm.vue:8
@@ -1234,7 +1404,7 @@ msgstr "Enregistrements MX"
 #: src/components/admin/identities/IdentityList.vue:118
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:96
-#: src/views/admin/InformationView.vue:59
+#: src/views/account/FiltersView.vue:164 src/views/admin/InformationView.vue:59
 msgid "Name"
 msgstr "Nom"
 
@@ -1253,6 +1423,10 @@ msgstr "Nom :"
 #: src/components/admin/domains/DomainEditForm.vue:16
 msgid "Name: "
 msgstr "Nom :"
+
+#: src/components/account/FidoAuthForm.vue:32
+msgid "Never"
+msgstr ""
 
 #: src/components/admin/identities/AccountSummary.vue:16
 msgid "Never logged-in"
@@ -1273,9 +1447,18 @@ msgstr "Nouveau compte"
 msgid "New alias"
 msgstr "Nouvel alias"
 
+#: src/components/account/FidoAuthForm.vue:61
+msgid "New device name"
+msgstr ""
+
 #: src/components/admin/domains/DomainCreationForm.vue:4
 msgid "New domain"
 msgstr "Nouveau domaine"
+
+#: src/components/account/FilterForm.vue:196
+#, fuzzy
+msgid "New filter"
+msgstr "Nouveau fournisseur"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:4
 msgid "New provider"
@@ -1293,6 +1476,7 @@ msgstr "Suivant"
 msgid "no"
 msgstr "non"
 
+#: src/components/account/FidoAuthForm.vue:182
 #: src/components/admin/domains/DNSDetail.vue:223
 #: src/components/admin/domains/DNSDetail.vue:243
 #: src/components/admin/domains/DomainList.vue:248
@@ -1321,6 +1505,12 @@ msgstr "Aucune adresse d'expéditeur définie pour ce compte"
 #: src/components/admin/domains/DomainEditForm.vue:93
 msgid "No sending limit"
 msgstr "Pas de limite d'envoi"
+
+#: src/components/account/BackupCodeAuthForm.vue:43
+#, fuzzy
+msgid "No two-factor authentificator is yet set for your account."
+msgstr ""
+"L'authentification à double facteur est maintenant activée sur votre compte"
 
 #: src/plugins/rules.js:7
 msgid "Not a valid email"
@@ -1365,7 +1555,7 @@ msgstr ""
 msgid "Ok"
 msgstr "Ok"
 
-#: src/components/tools/ConfirmDialog.vue:48
+#: src/components/tools/ConfirmDialog.vue:56
 msgid "OK"
 msgstr "OK"
 
@@ -1376,6 +1566,11 @@ msgstr "Ancien compte"
 #: src/views/admin/InformationView.vue:19
 msgid "One or more updates are available"
 msgstr "Une ou plusieurs mise à jour sont disponibles"
+
+#: src/components/account/TotpAuthForm.vue:6
+#, fuzzy
+msgid "One-time passwords"
+msgstr "Modifier le mot de passe"
 
 #: src/components/admin/alarms/AlarmList.vue:43
 msgid "Opened"
@@ -1407,10 +1602,10 @@ msgstr "Partiellement aligné"
 msgid "Partially trusted sources / Forwarders"
 msgstr "Sources partiellement fiables / Transitaires"
 
+#: src/components/account/BackupCodeAuthForm.vue:19
 #: src/components/account/ProfileForm.vue:69
-#: src/components/account/TwoFactorAuthForm.vue:75
+#: src/components/account/TotpAuthForm.vue:84
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:53
-#: src/components/login/LoginForm.vue:74
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -1452,7 +1647,7 @@ msgstr "Période"
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: src/components/account/TwoFactorAuthForm.vue:39
+#: src/components/account/TotpAuthForm.vue:39
 msgid "Pin code"
 msgstr "Code Pin"
 
@@ -1475,11 +1670,10 @@ msgid "Problem"
 msgstr "Problème"
 
 #: src/components/account/APISetupForm.vue:99
-#: src/views/account/APISetupView.vue:106
 msgid "Proceed"
 msgstr "Procéder"
 
-#: src/views/account/ProfileView.vue:4 src/views/account/SettingsView.vue:12
+#: src/views/account/SettingsView.vue:8
 msgid "Profile"
 msgstr "Profil"
 
@@ -1570,6 +1764,10 @@ msgstr "Mot de passe aléatoire"
 msgid "Raw format. Click to copy"
 msgstr "Format brut. Cliquer pour copier"
 
+#: src/views/account/FiltersView.vue:45
+msgid "Raw mode"
+msgstr ""
+
 #: src/components/account/ForwardForm.vue:4
 msgid "Recipient(s)"
 msgstr "Destinataire(s)"
@@ -1582,9 +1780,18 @@ msgstr "Destinataire(s)"
 msgid "Recipients"
 msgstr "Destinataires"
 
-#: src/components/account/TwoFactorAuthForm.vue:42
+#: src/components/account/TotpAuthForm.vue:45
 msgid "Register"
 msgstr "Enregistrer"
+
+#: src/components/account/TotpAuthForm.vue:115
+#, fuzzy
+msgid "Register authenticator"
+msgstr "Authentification à double facteur"
+
+#: src/components/account/FidoAuthForm.vue:21
+msgid "Registered Webauthn devices"
+msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:27
 msgid "Relative time ranges"
@@ -1602,9 +1809,13 @@ msgstr "domaine relais"
 msgid "Reload"
 msgstr "Recharger"
 
-#: src/components/login/LoginForm.vue:81
-msgid "Remember me"
-msgstr "Se souvenir de moi"
+#: src/components/account/FilterForm.vue:139
+msgid "Remove action"
+msgstr ""
+
+#: src/components/account/FilterForm.vue:79
+msgid "Remove condition"
+msgstr ""
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:36
 msgid "Remove this address"
@@ -1626,7 +1837,7 @@ msgstr "Revendeur"
 msgid "Resend SMS."
 msgstr "Renvoyer le SMS."
 
-#: src/components/account/TwoFactorAuthForm.vue:94
+#: src/components/account/BackupCodeAuthForm.vue:35
 msgid "Reset recovery codes"
 msgstr "Rénitialiser les codes de récupération"
 
@@ -1661,10 +1872,12 @@ msgstr "Retour à la connexion"
 msgid "Role"
 msgstr "Rôle"
 
+#: src/components/account/FidoAuthForm.vue:205
 #: src/components/admin/domains/DomainEditForm.vue:168
 #: src/components/admin/identities/AccountEditForm.vue:194
 #: src/components/admin/identities/AliasEditForm.vue:77
 #: src/components/admin/imap_migration/ProviderForm.vue:61
+#: src/views/account/FiltersView.vue:107
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -1687,9 +1900,10 @@ msgstr "E-mail secondaire"
 msgid "Secured"
 msgstr "Sécurisé"
 
-#: src/views/account/SecurityView.vue:4 src/views/account/SettingsView.vue:15
-msgid "Security"
-msgstr "Sécurité"
+#: src/views/account/FiltersView.vue:8
+#, fuzzy
+msgid "Select a filter set"
+msgstr "Sélectionner un fichier"
 
 #: src/components/admin/domains/DomainAdminList.vue:20
 msgid "Select an account"
@@ -1741,9 +1955,14 @@ msgstr "Service"
 msgid "Service: "
 msgstr "Service :"
 
-#: src/layouts/dashboard/NavBar.vue:247 src/layouts/dashboard/NavBar.vue:261
+#: src/layouts/dashboard/NavBar.vue:239 src/layouts/dashboard/NavBar.vue:284
 msgid "Settings"
 msgstr "Paramètres"
+
+#: src/components/account/FidoAuthForm.vue:69
+#, fuzzy
+msgid "Setup device"
+msgstr "Service"
 
 #: src/components/admin/domains/DNSDetail.vue:108
 msgid "Show key"
@@ -1770,7 +1989,7 @@ msgstr "Enregistrement SPF introuvable"
 msgid "Start typing a name here..."
 msgstr "Commencer à saisir un nom ici..."
 
-#: src/layouts/dashboard/NavBar.vue:212
+#: src/layouts/dashboard/NavBar.vue:204
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -1814,7 +2033,10 @@ msgid ""
 "The content of your answer. You can use the following variables, which will "
 "be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
 "%(untildate)s"
-msgstr "Le contenu de votre réponse. Vous pouvez utiliser les variables suivantes, qui seront automatiquement remplacées par les valeurs appropriées : %(name)s, %(fromdate)s, %(untildate)s"
+msgstr ""
+"Le contenu de votre réponse. Vous pouvez utiliser les variables suivantes, "
+"qui seront automatiquement remplacées par les valeurs appropriées : "
+"%(name)s, %(fromdate)s, %(untildate)s"
 
 #: src/components/tools/ImportForm.vue:16
 msgid ""
@@ -1825,7 +2047,7 @@ msgstr ""
 "des valeurs précédentes."
 
 #: src/components/account/RecoveryCodesResetDialog.vue:9
-#: src/components/account/TwoFactorAuthForm.vue:57
+#: src/components/account/TotpAuthForm.vue:61
 msgid ""
 "The following recovery codes can be used one time each to let you regain "
 "access to your account, in case you lose your phone for example. Make sure "
@@ -1851,7 +2073,6 @@ msgstr "Cette page est en cours de construction."
 msgid "To"
 msgstr "A"
 
-#: src/components/login/LoginForm.vue:48
 #: src/components/login/PasswordRecoveryChangeForm.vue:128
 #: src/components/login/PasswordRecoveryForm.vue:125
 #: src/components/login/PasswordRecoverySmsTotpForm.vue:103
@@ -1882,26 +2103,30 @@ msgstr "Déclenché"
 msgid "Trusted sources"
 msgstr "Sources de confiance"
 
-#: src/components/account/TwoFactorAuthForm.vue:6
-msgid "Two factor authentication"
+#: src/views/account/SettingsView.vue:11
+#, fuzzy
+msgid "Two-factor auth"
 msgstr "Authentification à double facteur"
 
 #: src/components/login/TwofaForm.vue:6
 msgid "Two-factor authentication"
 msgstr "Authentification à double facteur"
 
-#: src/components/account/TwoFactorAuthForm.vue:102
+#: src/components/account/TotpAuthForm.vue:109
+#, fuzzy
 msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
+"Two-factor authentication (2FA) using one-time passwords is not yet "
+"activated for your account."
 msgstr ""
-"L'authentification à double facteur (2FA) n'est pas encore activée pour "
-"votre compte. L'activation de cette fonctionnalité augmentera la sécurité de "
-"votre compte."
+"L'authentification à double facteur est maintenant activée sur votre compte"
 
-#: src/components/account/TwoFactorAuthForm.vue:71
-msgid "Two-Factor Authentication is enabled for your account."
-msgstr "L'authentification à double facteur est maintenant activée sur votre compte"
+#: src/components/account/TotpAuthForm.vue:78
+#, fuzzy
+msgid ""
+"Two-factor authentication using one-time passwords is enabled for your "
+"account."
+msgstr ""
+"L'authentification à double facteur est maintenant activée sur votre compte"
 
 #: src/components/admin/domains/DomainCreationForm.vue:164
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:13
@@ -1934,6 +2159,7 @@ msgstr "illimité"
 msgid "Until"
 msgstr "Jusqu'au"
 
+#: src/components/account/FilterForm.vue:199
 #: src/components/account/ForwardForm.vue:25
 #: src/components/admin/domains/DomainAliasForm.vue:68
 msgid "Update"
@@ -1955,6 +2181,11 @@ msgstr "Mise à jour des paramètres"
 msgid "Updated"
 msgstr "Mis à jour"
 
+#: src/components/account/FidoAuthForm.vue:136
+#, fuzzy
+msgid "Use count"
+msgstr "Nouveau compte"
+
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:106
 msgid "Use domain default value"
 msgstr "Utiliser la valeur par défaut du domaine"
@@ -1972,7 +2203,6 @@ msgstr "Utilisateur inconnu."
 #: src/components/admin/domains/DomainAdminList.vue:106
 #: src/components/admin/identities/AccountCreationForm.vue:98
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
-#: src/components/login/LoginForm.vue:66
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -1984,6 +2214,10 @@ msgstr "Nom d'utilisateur :"
 msgid "Valid"
 msgstr "Valide"
 
+#: src/components/account/FilterForm.vue:60
+msgid "Value"
+msgstr ""
+
 #: src/components/login/TwofaForm.vue:31
 msgid "Verify code"
 msgstr "Vérifier le code"
@@ -1993,14 +2227,18 @@ msgid "warning"
 msgstr "Avertissement"
 
 #: src/components/account/APISetupForm.vue:94
+#: src/components/account/FidoAuthForm.vue:178
 #: src/components/admin/domains/DNSDetail.vue:237
 #: src/components/admin/domains/DomainList.vue:242
 #: src/components/admin/identities/IdentityList.vue:204
 #: src/components/admin/identities/IdentityList.vue:230
 #: src/components/tools/CreationForm.vue:128
-#: src/views/account/APISetupView.vue:101
 msgid "Warning"
 msgstr "Avertissement"
+
+#: src/components/account/FidoAuthForm.vue:6
+msgid "WebAuthn"
+msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:111
 msgid "Week"
@@ -2026,6 +2264,7 @@ msgstr "Année"
 msgid "yes"
 msgstr "oui"
 
+#: src/components/account/FidoAuthForm.vue:183
 #: src/components/admin/domains/DNSDetail.vue:224
 #: src/components/admin/domains/DNSDetail.vue:244
 #: src/components/admin/domains/DomainList.vue:249
@@ -2035,8 +2274,13 @@ msgstr "oui"
 msgid "Yes"
 msgstr "Oui"
 
+#: src/components/account/BackupCodeAuthForm.vue:13
+msgid ""
+"You already have generated backup codes for this account. If you don't "
+"remember them or have used them all, you can generate new ones."
+msgstr ""
+
 #: src/components/account/APISetupForm.vue:95
-#: src/views/account/APISetupView.vue:102
 msgid "You are about to delete your API access token"
 msgstr "Vous êtes sur le point de supprimer votre jeton d'accès à l'API"
 
@@ -2044,19 +2288,53 @@ msgstr "Vous êtes sur le point de supprimer votre jeton d'accès à l'API"
 msgid "You can use a different character as separator."
 msgstr "Vous pouvez utiliser autre caractère comme séparateur"
 
+#: src/components/account/FidoAuthForm.vue:14
+msgid ""
+"You don't have any WebAuthN device registered as a second authentication "
+"method."
+msgstr ""
+
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:115
 msgid "You need to bind at least one domain to the provider."
 msgstr "Vous devez associer au moins un domaine à ce fournisseur."
 
 #: src/components/account/APISetupForm.vue:4
-#: src/views/account/APISetupView.vue:9
 msgid "Your API token has not been generated yet."
 msgstr "Votre jeton API n'a pas encore été généré."
 
 #: src/components/account/APISetupForm.vue:20
-#: src/views/account/APISetupView.vue:25
 msgid "Your API token is:"
 msgstr "Votre jeton API est :"
+
+#: src/components/account/FidoAuthForm.vue:76
+msgid "Your browser does not seem compatible with WebAuthN"
+msgstr ""
+
+#~ msgid "Connect"
+#~ msgstr "Connexion"
+
+#~ msgid "Enable 2FA"
+#~ msgstr "Activer 2FA"
+
+#~ msgid "Forgot password"
+#~ msgstr "Mot de passe oublié ?"
+
+#~ msgid "Invalid username and/or password"
+#~ msgstr "Nom d'utilisateur et/ou mot de passe incorrect"
+
+#~ msgid "Remember me"
+#~ msgstr "Se souvenir de moi"
+
+#~ msgid "Security"
+#~ msgstr "Sécurité"
+
+#~ msgid ""
+#~ "Two-Factor Authentication (2FA) is not yet activated for your account. "
+#~ "Enabling this feature will increase your account's security."
+#~ msgstr ""
+#~ "L'authentification à double facteur (2FA) n'est pas encore activée pour "
+#~ "votre compte. L'activation de cette fonctionnalité augmentera la sécurité "
+#~ "de votre compte."
 
 #~ msgid "API"
 #~ msgstr "API"

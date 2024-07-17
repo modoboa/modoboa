@@ -59,12 +59,13 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
             context={"user": request.user, "remote_addr": request.META["REMOTE_ADDR"]},
         )
         serializer.is_valid(raise_exception=True)
-        if not request.user.tfa_enabled:
+        if not request.user.totp_enabled:
             # We include it as "password" to display the error
             return response.Response({"error": _("2FA is not enabled")}, status=403)
         request.user.totpdevice_set.all().delete()
-        request.user.staticdevice_set.all().delete()
-        request.user.tfa_enabled = False
+        request.user.totp_enabled = False
+        if not request.user.tfa_enabled:
+            request.user.staticdevice_set.all().delete()
         request.user.save()
         return response.Response()
 

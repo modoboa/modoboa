@@ -2,8 +2,8 @@
   <div>
     <v-card flat>
       <v-card-title>
-        <span class="text-subtitle-1">
-          {{ $gettext('Two factor authentication') }}
+        <span class="text-h6">
+          {{ $gettext('One-time passwords') }}
         </span>
       </v-card-title>
       <v-card-text>
@@ -37,38 +37,47 @@
                 }}
               </v-alert>
               <label class="m-label">{{ $gettext('Pin code') }}</label>
-              <v-otp-input v-model="pinCode" />
+              <v-otp-input
+                v-model="pinCode"
+                :error="pinCodeErrors.length !== 0"
+              />
               <v-btn color="primary" @click="finalizeTFASetup">
                 {{ $gettext('Register') }}
               </v-btn>
             </v-col>
           </v-row>
         </template>
-        <template v-else-if="tokens.length">
+        <template v-else-if="successSetup">
           <v-alert type="success">
             {{
               $gettext(
-                'Congratulations! Two-Factor Authentication is now enabled for your account.'
+                'Congratulations! Two-factor authentication using one-time passwords is now enabled for your account.'
               )
             }}
           </v-alert>
-          <p>
-            {{
-              $gettext(
-                "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
-              )
-            }}
-          </p>
-          <ul>
-            <li v-for="token in tokens" :key="token">
-              {{ token }}
-            </li>
-          </ul>
+          <template v-if="tokens.length">
+            <p class="mt-4">
+              {{
+                $gettext(
+                  "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
+                )
+              }}
+            </p>
+            <v-table density="compact">
+              <tbody>
+                <tr v-for="token in tokens" :key="token">
+                  <td>{{ token }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </template>
         </template>
-        <template v-else-if="tfa_enabled">
+        <template v-else-if="totp_enabled">
           <v-alert type="info" class="mb-2">
             {{
-              $gettext('Two-Factor Authentication is enabled for your account.')
+              $gettext(
+                'Two-factor authentication using one-time passwords is enabled for your account.'
+              )
             }}
           </v-alert>
           <v-form ref="editTFAForm">
@@ -78,6 +87,7 @@
               autocomplete="new-password"
               type="password"
               variant="outlined"
+              density="compact"
               :rules="[rules.required]"
               :error-messages="passwordError"
             />
@@ -90,9 +100,6 @@
               >
                 {{ $gettext('Disable 2FA') }}
               </v-btn>
-              <v-btn :loading="loadingReset" @click="resetRecoveryCodes">
-                {{ $gettext('Reset recovery codes') }}
-              </v-btn>
             </div>
           </v-form>
         </template>
@@ -100,28 +107,21 @@
           <div tag="p" class="my-4">
             {{
               $gettext(
-                "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
+                'Two-factor authentication (2FA) using one-time passwords is not yet activated for your account.'
               )
             }}
           </div>
           <v-btn color="success" @click="startTFASetup">
-            {{ $gettext('Enable 2FA') }}
+            {{ $gettext('Register authenticator') }}
           </v-btn>
         </template>
       </v-card-text>
     </v-card>
-    <v-dialog v-model="showCodesResetDialog" max-width="800px" persistent>
-      <RecoveryCodesResetDialog
-        :tokens="newTokens"
-        @close="closeRecoveryCodesResetDialog"
-      />
-    </v-dialog>
   </div>
 </template>
 
 <script setup lang="js">
 import accountApi from '@/api/account'
-import RecoveryCodesResetDialog from './RecoveryCodesResetDialog'
 import QrcodeVue from 'qrcode.vue'
 import { useBusStore, useAuthStore } from '@/stores'
 import { ref, computed } from 'vue'
@@ -133,21 +133,18 @@ const busStore = useBusStore()
 const authStore = useAuthStore()
 
 const editTFAForm = ref()
-
-const newTokens = ref([])
 const pinCode = ref('')
-const pinCodeErrors = ref()
+const pinCodeErrors = ref([])
 const key = ref(null)
 const qrURL = ref(null)
 const clicked = ref(false)
-const showCodesResetDialog = ref(false)
 const loadingDisable = ref(false)
-const loadingReset = ref(false)
 const password = ref('')
 const passwordError = ref([])
 const tokens = ref([])
+const successSetup = ref(false)
 
-const tfa_enabled = computed(() => authStore.authUser.tfa_enabled)
+const totp_enabled = computed(() => authStore.authUser.totp_enabled)
 
 function getKey() {
   accountApi.getKeyForTFASetup().then((resp) => {
@@ -167,17 +164,20 @@ function startTFASetup() {
   })
 }
 
-async function finalizeTFASetup() {
+function finalizeTFASetup() {
   authStore
     .finalizeTFASetup(pinCode.value)
     .then((response) => {
       key.value = null
       qrURL.value = null
-      tokens.value = response.data.tokens
+      if (response.status === 200) {
+        tokens.value = response.data.tokens
+      }
+      successSetup.value = true
     })
     .catch((error) => {
       if (error.response.status === 400) {
-        pinCodeErrors.value = error.response.data
+        pinCodeErrors.value = error.response.data.pin_code
       }
     })
 }
@@ -210,46 +210,6 @@ async function disableTFA() {
       loadingDisable.value = false
       editTFAForm.value.reset()
     })
-}
-
-async function resetRecoveryCodes() {
-  const isValid = await editTFAForm.value.validate()
-  if (!isValid) {
-    return
-  }
-  const payload = {
-    password: password.value,
-  }
-  loadingReset.value = true
-
-  accountApi
-    .resetRecoveryCodes(payload)
-    .then((response) => {
-      newTokens.value = response.data.tokens
-      showCodesResetDialog.value = true
-    })
-    .catch((error) => {
-      if (error.response.status === 400) {
-        passwordError.value = error.response.data.password
-      } else {
-        busStore.displayNotification({
-          msg: $gettext(error.response.data),
-          type: 'error',
-        })
-      }
-    })
-    .finally(() => {
-      loadingReset.value = false
-      editTFAForm.value.reset()
-    })
-}
-
-function closeRecoveryCodesResetDialog() {
-  newTokens.value = []
-  showCodesResetDialog.value = false
-}
-if (!tfa_enabled.value) {
-  getKey()
 }
 </script>
 

@@ -56,8 +56,8 @@ Make sure to use root privileges and run the following command:
 Then, reload postfix.
 
 
-Updating the installer
-======================
+Modoboa installer
+*****************
 
 It is important to keep the installer updated because it works on rolling release.
 To do that, go to modoboa-installer directory then:
@@ -74,7 +74,7 @@ If some error appears, you may try this:
 
 
 New-admin interface
-===================
+*******************
 
 .. note::
    You don't need to perform these actions if you use the installer to upgrade your instance.
@@ -93,8 +93,12 @@ New admin interface won't update by itself. Run the following commands to update
 Extensions
 **********
 
+..  warning::
+   Do not open an issue after an upgrade if you have not updated your extensions.
+
 If a new version is available for an extension you're using, it is
-recommanded to install it. Upgrading an extensions is pretty and the
+recommanded to install it. It may even be required.
+Upgrading an extensions is pretty and the
 procedure is almost the same than the one used for Modoboa.
 
 In case you use a dedicated user and/or a virtualenv, do not forget to
@@ -131,8 +135,8 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
-2.3.0
-=====
+Version 2.3.0
+=============
 
 .. warning::
 
@@ -140,31 +144,166 @@ Specific instructions
    new migrations **AFTER** the following instructions. If you don't,
    you'll get into trouble...
 
-The ``modoboa-postfix-autoreply`` plugin has been merged into the core.
+Required changes to :file:`settings.py`
+---------------------------------------
 
-In :file:`settings.py` file, add ``'modoboa.postfix_autoreply'`` to ``MODOBOA_APPS``:
+Some changes are required to your :file:`settings.py` file.
+These changes will not be performed by the installer.
+The location of this file is ``/srv/modoboa/instance/instance``
+by default.
 
-.. sourcecode:: python
+-  Append ``'import environ'`` after ``'import os'``:
 
-   MODOBOA_APPS = (
-      'modoboa',
-      'modoboa.core',
-      'modoboa.lib',
-      'modoboa.admin',
-      'modoboa.transport',
-      'modoboa.relaydomains',
-      'modoboa.limits',
-      'modoboa.parameters',
-      'modoboa.dnstools',
-      'modoboa.policyd',
-      'modoboa.maillog',
-      'modoboa.dmarc',
-      'modoboa.pdfcredentials',
-      'modoboa.imap_migration',
-      'modoboa.postfix_autoreply',
-   )
+   .. sourcecode:: python
 
-And remove any reference to ``'modoboa_postfix_autoreply'`` in this same variable.
+      import os
+      import environ
+
+-  Append the following lines after the line starting
+   with ``'BASE_DIR'``:
+
+   .. sourcecode:: python
+
+      # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+      BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
+      env = environ.Env()
+      environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+-  Add ``oauth2_provider`` and ``corsheaders`` to the ``INSTALLED_APPS`` list:
+
+   .. sourcecode:: python
+
+      INSTALLED_APPS = (
+         'django.contrib.auth',
+         'django.contrib.contenttypes',
+         'django.contrib.sessions',
+         'django.contrib.messages',
+         'django.contrib.sites',
+         'django.contrib.staticfiles',
+         'reversion',
+         'ckeditor',
+         'ckeditor_uploader',
+         'oauth2_provider',
+         'corsheaders',
+         'rest_framework',
+         'rest_framework.authtoken',
+         'drf_spectacular',
+         'phonenumber_field',
+         'django_otp',
+         'django_otp.plugins.otp_totp',
+         'django_otp.plugins.otp_static',
+         'django_rename_app',
+         'django_rq',
+      )
+
+-  The ``modoboa-postfix-autoreply`` and ``modoboa-sievefilters``
+   plugins have been merged into the core.
+
+   Add ``'modoboa.postfix_autoreply'`` and
+   ``modoboa.sievefilters`` to ``MODOBOA_APPS``:
+
+   .. sourcecode:: python
+
+      MODOBOA_APPS = (
+         'modoboa',
+         'modoboa.core',
+         'modoboa.lib',
+         'modoboa.admin',
+         'modoboa.transport',
+         'modoboa.relaydomains',
+         'modoboa.limits',
+         'modoboa.parameters',
+         'modoboa.dnstools',
+         'modoboa.policyd',
+         'modoboa.maillog',
+         'modoboa.dmarc',
+         'modoboa.pdfcredentials',
+         'modoboa.imap_migration',
+         'modoboa.postfix_autoreply',
+         'modoboa.sievefilters',
+      )
+
+   .. warning::
+      Remove any reference to ``'modoboa_postfix_autoreply'`` AND
+      ``modoboa_sievefilters`` in this same variable.
+
+-  Due to the changes to the authentication flow, you need to replace MIDDLEWARE
+   with the following:
+
+   .. sourcecode:: python
+
+      MIDDLEWARE = (
+         'django.contrib.sessions.middleware.SessionMiddleware',
+         'django.middleware.locale.LocaleMiddleware',
+         'x_forwarded_for.middleware.XForwardedForMiddleware',
+         'corsheaders.middleware.CorsMiddleware',
+         'django.middleware.common.CommonMiddleware',
+         'django.middleware.csrf.CsrfViewMiddleware',
+         'django.contrib.auth.middleware.AuthenticationMiddleware',
+         'django.contrib.messages.middleware.MessageMiddleware',
+         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+         'modoboa.core.middleware.LocalConfigMiddleware',
+         'modoboa.lib.middleware.AjaxLoginRedirect',
+         'modoboa.lib.middleware.CommonExceptionCatcher',
+         'modoboa.lib.middleware.RequestCatcherMiddleware',
+      )
+
+-  Add the following content after ``MEDIA_ROOT``:
+
+   .. sourcecode:: python
+
+      # oAuth2 settings
+
+      OAUTH2_PROVIDER = {
+         'OIDC_ENABLED': True,
+         'OIDC_RP_INITIATED_LOGOUT_ENABLED': True,
+         'OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT': True,
+         'OIDC_RSA_PRIVATE_KEY': env('OIDC_RSA_PRIVATE_KEY'),
+         'SCOPES': {
+            'openid': 'OpenID Connect scope',
+            'read': 'Read scope',
+            'write': 'Write scope',
+            'introspection': 'Introspect token scope',
+         },
+         'DEFAULT_SCOPES': ['openid', 'read', 'write'],
+      }
+
+      # If CORS fail, you might want to try to set it to True
+      #CORS_ORIGIN_ALLOW_ALL = False
+
+-  Add ``'oauth2_provider.contrib.rest_framework.OAuth2Authentication'``
+   at the top of the list of ``DEFAULT_AUTHENTICATION_CLASSES``
+   (inside ``REST_FRAMEWORK`` section):
+
+   .. sourcecode:: python
+
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+         'rest_framework.authentication.TokenAuthentication',
+         'rest_framework.authentication.SessionAuthentication',
+      ),
+
+
+SORBS DNS
+---------
+
+   .. note::
+      The installer will take care of that if you use it to upgrade.
+
+
+   `SORBS DNS has been deprecated <https://www.mail-archive.com/mailop@mailop.org/msg22064.html>`_.
+   If you were using them with postfix, you need to update your
+   configuration by removing any reference to it. For example::
+
+      # Use some DNSBL
+      postscreen_dnsbl_sites =
+         zen.spamhaus.org=127.0.0.[2..11]*3
+         bl.spameatingmonkey.net=127.0.0.2*2
+         bl.spamcop.net=127.0.0.2
+
+
+Post update
+-----------
 
 After upgrading modoboa, run the following commands from your virtual environment:
 
@@ -172,19 +311,8 @@ After upgrading modoboa, run the following commands from your virtual environmen
 
    > python manage.py rename_app modoboa_postfix_autoreply postfix_autoreply
 
-`SORBS DNS has been deprecated <https://www.mail-archive.com/mailop@mailop.org/msg22064.html>`_.
-
-If you were using them with postfix, you need to update your
-configuration by removing any reference to it. For example::
-
-# Use some DNSBL
-postscreen_dnsbl_sites =
-	zen.spamhaus.org=127.0.0.[2..11]*3
-	bl.spameatingmonkey.net=127.0.0.2*2
-	bl.spamcop.net=127.0.0.2
-
-2.2.3
-=====
+Version 2.2.3
+=============
 
 * Reduced the number of call to doveadm
 
@@ -243,8 +371,8 @@ Then restart supervisor. ``#> supervisorctl reread && supervisorctl update`` on 
    }
 
 
-2.2.0
-=====
+Version 2.2.0
+=============
 
 .. note::
    If you use the installer to perform the upgrade, you NEED to update it.
@@ -361,8 +489,8 @@ Change ``user_query`` and ``password_query`` in ``/etc/dovecot/dovecot-sql-maste
 
 You basically simply need to add ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND`` for ``user_query`` after ``WHERE`` and ``(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3'))`` for ``password_query`` after ``WHERE``.
 
-2.1.0
-=====
+Version 2.1.0
+=============
 
 .. warning::
 
@@ -428,8 +556,8 @@ After upgrading modoboa, run the following commands from your virtual environmen
    > python manage.py rename_app modoboa_imap_migration imap_migration
 
 
-2.0.4
-=====
+Version 2.0.4
+=============
 
 The following modifications must be applied to the :file:`settings.py` file:
 
@@ -513,8 +641,8 @@ The following modifications must be applied to the :file:`settings.py` file:
    - `password_` is for the recovery, it is divided per step in the recovery process.
 
 
-2.0.3
-=====
+Version 2.0.3
+=============
 
 Update the new following setting in the :file:`settings.py` file:
 
@@ -523,8 +651,8 @@ Update the new following setting in the :file:`settings.py` file:
    DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
-2.0.0
-=====
+Version 2.0.0
+=============
 
 Add ``drf_spectacular`` and ``phonenumber_field`` to ``INSTALLED_APPS``
 in the :file:`settings.py` file, as follows:
@@ -678,8 +806,8 @@ files. For NGINX, you should add the following in the ``server`` block:
        try_files $uri $uri/ /index.html = 404;
    }
 
-1.17.0
-======
+Version 1.17.0
+==============
 
 Modoboa now supports Two-Factor authentication using TOTP
 applications.
@@ -743,8 +871,8 @@ And add the following new setting:
    OTP_TOTP_ISSUER = "<your server hostname here>"
 
 
-1.16.0
-======
+Version 1.16.0
+==============
 
 A new :ref:`policy daemon <policy_daemon>` has been added.
 
@@ -816,8 +944,8 @@ Add ``'modoboa.maillog'`` to ``MODOBOA_APPS``:
 
 And remove any reference to ``modoboa_stats`` in this same variable.
 
-1.15.0
-======
+Version 1.15.0
+==============
 
 This version drops Python 2 support so don't forget to update all the
 extensions you use.
@@ -847,14 +975,14 @@ command:
 Then, reload postfix.
 
 
-1.14.0
-======
+Version 1.14.0
+==============
 
 This release introduces an optional LDAP synchronization process. If
 you want to use it, please follow the :ref:`dedicated procedure <ldap_sync>`.
 
-1.13.1
-======
+Version 1.13.1
+=======
 
 Upgrade postfix maps files as follows:
 
@@ -863,8 +991,8 @@ Upgrade postfix maps files as follows:
    > python manage.py generate_postfix_maps --destdir <path> --force-overwrite
 
 
-1.13.0
-======
+Version 1.13.0
+==============
 
 Add ``'modoboa.dnstools'`` to ``MODOBOA_APPS``:
 
@@ -898,8 +1026,8 @@ present. Remove the corresponding ``proxy_read_maps`` entry if relevant.
 
 Reload postfix.
 
-1.10.0
-======
+Version 1.10.0
+==============
 
 .. warning::
 
@@ -1005,13 +1133,13 @@ Add the following cron job in order to generate DKIM keys::
   # Generate DKIM keys (they will belong to the user running this job)
   *       *       *       *       *       root    $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
 
-1.9.0
-=====
+Version 1.9.0
+=============
 
 If you want to manage inactive accounts, look at :ref:`inactive_accounts`.
 
-1.8.3
-=====
+Version 1.8.3
+=============
 
 Edit the :file:`settings.py` file and replace the following line:
 
@@ -1025,8 +1153,8 @@ by:
 
    BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 
-1.8.0
-=====
+Version 1.8.0
+=============
 
 Modoboa now relies on `Django's builtin password validation system
 <https://docs.djangoproject.com/en/1.10/topics/auth/passwords/#module-django.contrib.auth.password_validation>`_
@@ -1083,8 +1211,8 @@ Add the following lines:
        },
    ]
 
-1.7.2
-=====
+Version 1.7.2
+=============
 
 API documentation has evolved (because of the upgrade to Django Rest
 Framework 3.6) and CKeditor is now embedded by default (thanks to the
@@ -1167,8 +1295,8 @@ Don't forget to run the following command:
    > python manage.py collectstatic
 
 
-1.7.1
-=====
+Version 1.7.1
+=============
 
 If you used 1.7.0 for a fresh installation, please run the following commands:
 
@@ -1179,8 +1307,8 @@ If you used 1.7.0 for a fresh installation, please run the following commands:
    > cd <modoboa_instance_dir>
    > python manage.py load_initial_data
 
-1.7.0
-=====
+Version 1.7.0
+=============
 
 This version requires Django >= 1.10 so you need to make some
 modifications. It also brings internal API changes which are not
@@ -1349,8 +1477,8 @@ This quota is the default quota applied to new mailboxes. This value
 cannot exceed Quota[1] and hence cannot be 0(unlimited) if Quota[1] is
 finite.
 
-1.6.1
-=====
+Version 1.6.1
+=============
 
 First of all, update postfix map files as follows:
 
@@ -1398,8 +1526,8 @@ Command line shortcut:
   $ pip install modoboa-stats==1.0.9
 
 
-1.6.0
-=====
+Version 1.6.0
+=============
 
 .. warning::
 
@@ -1438,8 +1566,8 @@ and change the following parameter::
       <driver>:/etc/postfix/sql-sender-login-aliases.cf
       <driver>:/etc/postfix/sql-sender-login-mailboxes-extra.cf
 
-1.5.0
-=====
+Version 1.5.0
+=============
 
 The API has been greatly improved and a documentation is now
 available. To enable it, add ``'rest_framework_swagger'`` to the
@@ -1482,8 +1610,8 @@ your :file:`settings.py` file, make sure it looks like this::
       'modoboa.core.context_processors.top_notifications',
   ]
 
-1.4.0
-=====
+Version 1.4.0
+=============
 
 .. warning::
 
@@ -1553,8 +1681,8 @@ This version also introduces a REST API. To enable it:
 
    $ python manage.py migrate
 
-1.3.5
-=====
+Version 1.3.5
+=============
 
 To enhance security, Modoboa now checks the `strength of user
 passwords <https://github.com/dstufft/django-passwords>_`.
@@ -1572,8 +1700,8 @@ To use this feature, add the following configuration into the ``settings.py`` fi
   }
 
 
-1.3.2
-=====
+Version 1.3.2
+=============
 
 Modoboa now uses the *atomic requests* mode to preserve database
 consistency (`reference
@@ -1593,8 +1721,8 @@ follows::
       }
   }
 
-1.3.0
-=====
+Version 1.3.0
+=============
 
 This release does not bring awesome new features but it is a necessary
 bridge to the future of Modoboa. All extensions now have their own git
@@ -1661,8 +1789,8 @@ Here are the required steps:
      - 0 0 * * * <modoboa_site>/manage.py cleanup
      + 0 0 * * * <modoboa_site>/manage.py clearsessions
 
-1.2.0
-=====
+Version 1.2.0
+=============
 
 A new notification service let administrators know about new Modoboa
 versions. To activate it, you need to update the

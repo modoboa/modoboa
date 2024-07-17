@@ -36,6 +36,14 @@ Main features
 * `Autoreply messages for Postfix <https://github.com/modoboa/modoboa-postfix-autoreply>`_
 * `Graphical statistics about email traffic <https://github.com/modoboa/modoboa-stats>`_
 
+************
+Installation
+************
+
+The easiest way to install modoboa is to use the
+`offical installer <https://github.com/modoboa/modoboa-installer>`_.
+More information is available in the documentation.
+
 *************
 Documentation
 *************
@@ -81,5 +89,5 @@ The following external libraries are provided with Modoboa:
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
 .. |workflow| image:: https://github.com/modoboa/modoboa/workflows/Modoboa%20App/badge.svg
-.. |codecov| image:: http://codecov.io/github/modoboa/modoboa/coverage.svg?branch=master
-   :target: http://codecov.io/github/modoboa/modoboa?branch=master
+.. |codecov| image:: https://codecov.io/gh/modoboa/modoboa/graph/badge.svg?token=1E5eBxJO33
+   :target: https://codecov.io/gh/modoboa/modoboa

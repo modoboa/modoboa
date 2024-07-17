@@ -26,13 +26,14 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: test
     services:
       postgres:
         image: postgres:12
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_DB: modoboa
         ports:
         # will assign a random free host port
         - 5432/tcp
@@ -75,9 +76,9 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -89,7 +90,8 @@ jobs:
           pip install -r requirements.txt
           pip install -r ldap-requirements.txt
           pip install -r test-requirements.txt
-          python setup.py develop
+          pip install -r dev-requirements.txt
+          pip install -e .
           echo "Testing redis connection"
           redis-cli -h $REDIS_HOST -p $REDIS_PORT ping
         env:
@@ -107,7 +109,7 @@ jobs:
           pip install -r mysql-requirements.txt
           echo "DB=mysql" >> $GITHUB_ENV
       - name: Test with pytest
-        if: ${{ matrix.python-version != '3.10' || matrix.database != 'postgres' }}
+        if: ${{ matrix.python-version != '3.11' || matrix.database != 'postgres' }}
         run: |
           python ./tests.py
           cd test_project
@@ -122,9 +124,10 @@ jobs:
           REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
+          OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
       - name: Test with pytest and coverage
-        if: ${{ matrix.python-version == '3.10' && matrix.database == 'postgres' }}
+        if: ${{ matrix.python-version == '3.11' && matrix.database == 'postgres' }}
         run: |
           python ./tests.py
           cd test_project
@@ -142,9 +145,11 @@ jobs:
           REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
+          OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
+
       - name: Upload coverage result
-        if: ${{ matrix.python-version == '3.10' && matrix.database == 'postgres' }}
-        uses: actions/upload-artifact@v3
+        if: ${{ matrix.python-version == '3.11' && matrix.database == 'postgres' }}
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-results
           path: test_project/coverage.xml
@@ -153,28 +158,34 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download coverage results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: coverage-results
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4.5.0
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
 
   release:
     if: github.event_name != 'pull_request'
     needs: coverage
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/modoboa
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - name: Build frontend
         shell: bash -l {0}
         run: |
@@ -198,14 +209,10 @@ jobs:
         if: endsWith(github.event.ref, '/master')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.test_pypi_password }}
-          repository_url: https://test.pypi.org/legacy/
-          skip_existing: true
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
       - name: Publish distribution to PyPI
         if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.pypi_password }}
-          skip_existing: true
+          skip-existing: true
