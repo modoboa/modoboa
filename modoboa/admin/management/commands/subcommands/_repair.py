@@ -4,6 +4,9 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils.encoding import smart_str
 
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+
 from modoboa.admin import models
 from modoboa.core.models import User
 from modoboa.lib.permissions import get_object_owner, grant_access_to_object
@@ -87,6 +90,15 @@ def sometimes_mailbox_have_no_alias(**options):
             ),
             **options,
         )
+
+
+@known_problem
+def postfix_autoreply_old_contenttypes(**options):
+    """Sometime old postfix autoreply contenttypes might be present."""
+    for ct in ContentType.objects.filter(app_label="postfix_autoreply"):
+        result = Permission.objects.filter(content_type=ct).delete()
+        ct.delete()
+        log(f"Removed content type {ct.name} and {result[0]} associated permssions")
 
 
 class Repair(BaseCommand):
