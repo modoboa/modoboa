@@ -54,4 +54,8 @@ export default defineConfig({
     },
     https: true,
   },
+  build: {
+    emptyOutDir: true,
+    outDir: '../modoboa/frontend_dist',
+  },
 })
