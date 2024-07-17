@@ -7,11 +7,9 @@ from operator import itemgetter
 import socket
 import ssl
 
-from django.utils.encoding import smart_bytes
 from django.utils.translation import gettext as _
 
 from modoboa.lib import imap_utf7  # NOQA
-from modoboa.lib.connections import ConnectionsManager
 from modoboa.lib.exceptions import ModoboaException, InternalError
 from modoboa.parameters import tools as param_tools
 

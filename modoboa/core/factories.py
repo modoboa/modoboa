@@ -1,5 +1,7 @@
 """Factories for core application."""
 
+import base64
+
 import factory
 
 from django.contrib.auth.models import Group
@@ -58,3 +60,13 @@ class LogFactory(factory.django.DjangoModelFactory):
     logger = "modoboa.admin"
     message = "A message"
     level = "info"
+
+
+class UserFidoKeyFactory(factory.django.DjangoModelFactory):
+    """Factory for UserFidoKey."""
+
+    class Meta:
+        model = models.UserFidoKey
+
+    name = factory.Sequence(lambda n: f"Name {n}")
+    credential_data = "data"
