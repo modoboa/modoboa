@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-18 16:45+0200\n"
-"PO-Revision-Date: 2014-12-29 12:51+0000\n"
+"PO-Revision-Date: 2024-07-17 11:45+0200\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/modoboa/language/pt_PT/)\n"
 "Language: pt_PT\n"
@@ -3310,7 +3310,7 @@ msgstr ""
 #: imap_migration/auth_backends.py:49 sievefilters/imaputils.py:109
 #, python-format
 msgid "Connection to IMAP server failed: %s"
-msgstr "Ligação ao servidor MANAGESIEVE falhou, valide a configuração"
+msgstr "Ligação ao servidor IMAP falhou : %s"
 
 #: imap_migration/checks.py:12
 msgid ""
