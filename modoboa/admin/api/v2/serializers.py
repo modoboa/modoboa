@@ -492,6 +492,14 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     )
                 except lib_exceptions.ModoboaException as inst:
                     raise serializers.ValidationError({"mailbox": str(inst)})
+            if len(self.address) > 64:
+                raise serializers.ValidationError(
+                    {
+                        "username": _(
+                            "The left part of an email address can't be more than 64 characters."
+                        )
+                    }
+                )
         if data.get("password") or not self.partial:
             password = data.get("password")
             if password:
