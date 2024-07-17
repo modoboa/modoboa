@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-18 16:45+0200\n"
-"PO-Revision-Date: 2020-10-03 09:44+0000\n"
+"PO-Revision-Date: 2024-07-17 11:46+0200\n"
 "Last-Translator: J Rosier <vertalen@tagora.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/language/nl_NL/)\n"
 "Language: nl_NL\n"
@@ -3165,8 +3165,7 @@ msgstr "IMAP migratie"
 #: imap_migration/auth_backends.py:49 sievefilters/imaputils.py:109
 #, python-format
 msgid "Connection to IMAP server failed: %s"
-msgstr ""
-"Verbinding naar MANAGESIEVE server mislukt, controleer uw configuratie"
+msgstr "Verbinding naar IMAP server mislukt: %s"
 
 #: imap_migration/checks.py:12
 msgid ""
