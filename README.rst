@@ -32,9 +32,9 @@ Main features
 * `Webmail <https://github.com/modoboa/modoboa-webmail>`_
 * `Calendar <https://github.com/modoboa/modoboa-radicale>`_
 * `Address book <https://github.com/modoboa/modoboa-contacts>`_
-* `Per-user Sieve filters <https://github.com/modoboa/modoboa-sievefilters>`_
-* `Autoreply messages for Postfix <https://github.com/modoboa/modoboa-postfix-autoreply>`_
-* `Graphical statistics about email traffic <https://github.com/modoboa/modoboa-stats>`_
+* Per-user Sieve filters
+* Autoreply messages for Postfix
+* Graphical statistics about email traffic
 
 ************
 Installation
