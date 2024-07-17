@@ -10,7 +10,7 @@ from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
 
 from .... import models
-from ....constants import DKIM_WRITE_ERROR, ALARM_OPENED, DKIM_DIR_NOT_FOUND, DKIM_ERROR
+from ....constants import DKIM_WRITE_ERROR, ALARM_OPENED, DKIM_ERROR
 
 
 class ManageDKIMKeys(BaseCommand):
