@@ -418,6 +418,8 @@ reversion.register(User)
 
 
 class UserFidoKey(models.Model):
+    """Model to store user fido keys."""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     added_on = models.DateTimeField(auto_now_add=True)
