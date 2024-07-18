@@ -46,14 +46,15 @@
               >
               </v-list-item>
             </template>
-            <v-list-item
-              v-for="subitem in item.children"
-              :key="subitem.text"
-              :to="subitem.to"
-              link
-              :title="subitem.text"
-              :value="subitem"
-            ></v-list-item>
+            <template v-for="subitem in item.children" :key="subitem.text">
+              <v-list-item
+                v-if="displayMenuItem(subitem)"
+                :to="subitem.to"
+                link
+                :title="subitem.text"
+                :value="subitem"
+              ></v-list-item>
+            </template>
           </v-list-group>
         </template>
       </template>
@@ -176,7 +177,7 @@ const mainMenuItems = [
     text: $gettext('Dashboard'),
     to: { name: 'Dashboard' },
     exact: true,
-    icon: 'mdi-view-dashboard-outline'
+    icon: 'mdi-view-dashboard-outline',
   },
   {
     text: $gettext('Domains'),
@@ -245,7 +246,7 @@ const mainMenuItems = [
     text: $gettext('Information'),
     roles: ['SuperAdmins'],
     to: { name: 'Information' },
-  }
+  },
 ]
 
 const userMenuItems = [
@@ -262,11 +263,11 @@ const userMenuItems = [
   },
 ]
 
-if (isAuthenticated && authUser.value.role !== 'SimpleUsers') {
+if (isAuthenticated.value && authUser.value.role !== 'SimpleUsers') {
   userMenuItems.unshift({
     text: $gettext('Admin'),
     to: { name: 'Dashboard' },
-    icon: 'mdi-view-dashboard-outline'
+    icon: 'mdi-view-dashboard-outline',
   })
 }
 
@@ -277,13 +278,13 @@ function getUserSettingsMenuItems() {
     result.push({
       text: $gettext('Filters'),
       to: { name: 'AccountFilters' },
-      icon: 'mdi-filter'
+      icon: 'mdi-filter',
     })
   }
   result.push({
     text: $gettext('Settings'),
     to: { name: 'AccountSettings' },
-    icon: 'mdi-cog'
+    icon: 'mdi-cog',
   })
   return result
 }
@@ -318,7 +319,10 @@ onMounted(() => {
       })
     })
   }
-  if (authUser.value.role === 'SuperAdmins' && parametersStore.imapMigrationEnabled === null) {
+  if (
+    authUser.value.role === 'SuperAdmins' &&
+    parametersStore.imapMigrationEnabled === null
+  ) {
     parametersApi.getApplication('imap_migration').then((response) => {
       parametersStore.imapMigrationEnabled =
         response.data.params.enabled_imapmigration
