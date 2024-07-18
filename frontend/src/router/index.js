@@ -13,31 +13,9 @@ const routes = [
         component: () => import('@/views/login/LoginView.vue'),
       },
       {
-        path: 'twofa',
-        name: 'TwoFA',
-        component: () => import('@/views/login/TwoFA.vue'),
-      },
-      {
         path: 'logged',
         name: 'LoginCallback',
         component: () => import('@/views/login/LoginCallbackView.vue'),
-      },
-      {
-        path: 'password_recovery',
-        name: 'PasswordRecovery',
-        component: () => import('../views/login/PasswordRecoveryView.vue'),
-      },
-      {
-        path: 'password_recovery/confirm/:id?/:token?/',
-        name: 'PasswordRecoveryChangeForm',
-        component: () =>
-          import('../views/login/PasswordRecoveryChangeView.vue'),
-      },
-      {
-        path: 'password_recovery/sms_confirm',
-        name: 'PasswordRecoverySms',
-        component: () =>
-          import('../views/login/PasswordRecoverySmsTotpView.vue'),
       },
     ],
   },
