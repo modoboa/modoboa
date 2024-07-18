@@ -53,4 +53,4 @@ rq>=1.13.0
 django-rq
 
 # Sieve
-sievelib>=1.4
+sievelib>=1.4.1

@@ -27,6 +27,7 @@
         {{ $gettext('DMARC') }}
       </v-tab>
     </v-tabs>
+
     <v-tabs-window v-model="tab">
       <v-tabs-window-item>
         <v-row>
@@ -115,5 +116,11 @@ function refreshDomain() {
 }
 .v-tabs-items {
   background-color: #f7f8fa !important;
+}
+</style>
+
+<style>
+.v-window__container {
+  width: 100% !important;
 }
 </style>
