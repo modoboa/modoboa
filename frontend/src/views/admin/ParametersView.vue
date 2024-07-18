@@ -195,3 +195,9 @@ loadParams(route.params.app)
   color: #ff5252 !important;
 }
 </style>
+
+<style>
+.v-window__container {
+  width: 100% !important;
+}
+</style>

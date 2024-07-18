@@ -151,9 +151,9 @@ function fetchAlarms({ page, itemsPerPage, sortBy }) {
     page: page || 1,
     page_size: itemsPerPage || 10,
   }
-  if (sortBy) {
+  if (sortBy && sortBy.length) {
     params.ordering = sortBy
-      .map((item) => (this.options.sortDesc[0] ? `-${item}` : item))
+      .map((item) => (item.order !== 'asc' ? `-${item.key}` : item.key))
       .join(',')
   }
   if (search.value !== '') {
@@ -177,7 +177,7 @@ async function deleteAlarm(alarm, single = true) {
 }
 async function deleteAlarms() {
   await alarmsApi.bulkDelete(selected.value.map((alarm) => alarm.id))
-  busStore.displayNotification({ msg: this.$gettext('Alarms deleted') })
+  busStore.displayNotification({ msg: $gettext('Alarms deleted') })
   selected.value = []
   fetchAlarms({})
 }
