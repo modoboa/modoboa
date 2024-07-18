@@ -2,7 +2,7 @@
   <div v-if="alignments">
     <v-card>
       <v-toolbar dense elevation="0" class="mr-2">
-        <v-toolbar-title>$gettext('Alignment')</v-toolbar-title>
+        <v-toolbar-title>{{ $gettext('Alignment') }}</v-toolbar-title>
         <v-spacer />
         <v-btn icon="mdi-arrow-left" size="x-small" @click="previousWeek">
         </v-btn>
@@ -153,8 +153,8 @@ const boxes = ref([
 ])
 
 const now = DateTime.now()
-const currentWeek = ref(now.year)
-const currentYear = ref(now.weekNumber)
+const currentYear = ref(now.year)
+const currentWeek = ref(now.weekNumber)
 const dmarcDisabled = ref(false)
 const loading = ref(false)
 const panel = ref(null)
