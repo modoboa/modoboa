@@ -64,7 +64,7 @@ msgstr "Määrämittainen aikaraja"
 msgid "account"
 msgstr "Tili"
 
-#: src/layouts/dashboard/NavBar.vue:253
+#: src/layouts/dashboard/NavBar.vue:254
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
@@ -182,7 +182,7 @@ msgstr "Osoite"
 msgid "Address (hostname or IP)"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:267
+#: src/layouts/dashboard/NavBar.vue:268
 msgid "Admin"
 msgstr ""
 
@@ -228,7 +228,7 @@ msgid "Alarm re-opened"
 msgstr "Verkkotunnuksen alias poistettu"
 
 #: src/components/admin/domains/DomainList.vue:309
-#: src/layouts/dashboard/NavBar.vue:194
+#: src/layouts/dashboard/NavBar.vue:195
 msgid "Alarms"
 msgstr "Hälytykset"
 
@@ -359,7 +359,7 @@ msgstr "Hallinnoidut verkkotunnukset"
 msgid "Attempting to log you in."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:209
+#: src/layouts/dashboard/NavBar.vue:210
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Tarkastusketju"
@@ -397,7 +397,7 @@ msgstr "autodiscover-tietuetta (Microsoft) ei löydy"
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr "autodiscover-tietue (Microsoft): %{ value }"
 
-#: src/components/tools/CreationForm.vue:61
+#: src/components/tools/CreationForm.vue:62
 msgid "Back"
 msgstr "Takaisin"
 
@@ -420,11 +420,6 @@ msgstr "Bind/nimetty muoto. Kopioi klikkaamalla"
 #: src/components/tools/ConfirmDialog.vue:55
 msgid "Cancel"
 msgstr "Peruuta"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:17
-#, fuzzy
-msgid "Change password"
-msgstr "Vaihda salasana"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
 msgid "Check connection:"
@@ -492,7 +487,7 @@ msgstr "Suljettu"
 msgid "Conditions"
 msgstr "Vahvistus"
 
-#: src/components/tools/CreationForm.vue:91
+#: src/components/tools/CreationForm.vue:92
 msgid "Confirm and create"
 msgstr "Vahvista ja luo"
 
@@ -534,7 +529,7 @@ msgstr "Kopioi leikepöydälle"
 msgid "Copy token to clipboard"
 msgstr "Kopioi turvatunnus leikepöydälle"
 
-#: src/views/admin/ParametersView.vue:160
+#: src/views/admin/ParametersView.vue:162
 msgid "Could not save parameters"
 msgstr ""
 
@@ -593,7 +588,7 @@ msgstr "Päivittäinen viestien lähetysraja"
 msgid "Daily sending limit"
 msgstr "Päivittäinen lähetysraja"
 
-#: src/layouts/dashboard/NavBar.vue:176
+#: src/layouts/dashboard/NavBar.vue:177
 msgid "Dashboard"
 msgstr "Työpöytä"
 
@@ -829,7 +824,7 @@ msgstr "Verkkotunnus päivitetty"
 msgid "domain's default value"
 msgstr "verkkotunnuksen oletusarvo"
 
-#: src/layouts/dashboard/NavBar.vue:182
+#: src/layouts/dashboard/NavBar.vue:183
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Sinulla ei ole oikeutta tuoda verkkotunnuksia"
@@ -850,7 +845,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: src/views/admin/identities/AccountEditView.vue:2
+#: src/views/admin/identities/AccountEditView.vue:3
 msgid "Edit account"
 msgstr "Muokkaa tiliä"
 
@@ -894,15 +889,10 @@ msgstr "Sähköposti"
 msgid "Email address"
 msgstr "Sähköpostiosoite"
 
-#: src/layouts/dashboard/NavBar.vue:226
+#: src/layouts/dashboard/NavBar.vue:227
 #, fuzzy
 msgid "Email providers"
 msgstr "Sähköpostiosoite"
-
-#: src/components/login/PasswordRecoveryForm.vue:104
-#: src/views/login/PasswordRecoveryForm.vue:103
-msgid "Email sent, please check your inbox"
-msgstr ""
 
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
@@ -945,23 +935,6 @@ msgstr "Anna yksinkertainen käyttäjätunnus tai sähköpostiosoite"
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:69
 msgid "Enter an email address"
 msgstr "Syötä oikean muotoinen sähköpostiosoite"
-
-#: src/components/login/TwofaForm.vue:11
-msgid ""
-"Enter the code from the two-factor app on your mobile device. If you have "
-"lost your device, you may enter one of your recovery codes."
-msgstr ""
-"Syötä koodi mobiililaitteesi kaksivaiheisen tunnistuksen sovelluksesta. Jos "
-"olet hukannut laitteesi, voit syöttää yhden palautuskoodeistasi."
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:16
-msgid "Enter the code you've just received by SMS"
-msgstr "Kirjoita tekstiviestillä saamasi koodi"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:70
-#: src/views/login/PasswordRecoveryForm.vue:121
-msgid "Error"
-msgstr ""
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
 msgid "Ex: 10MB. Leave empty for no limit"
@@ -1037,7 +1010,7 @@ msgstr "Parametrit päivitetty"
 msgid "Filter updated"
 msgstr "Profiili päivitetty"
 
-#: src/layouts/dashboard/NavBar.vue:278
+#: src/layouts/dashboard/NavBar.vue:279
 msgid "Filters"
 msgstr ""
 
@@ -1046,13 +1019,6 @@ msgstr ""
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 msgid "First name"
 msgstr "Etunimi"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:11
-#: src/components/login/PasswordRecoveryForm.vue:12
-#: src/views/login/PasswordRecoveryForm.vue:17
-#, fuzzy
-msgid "Forgot password?"
-msgstr "Unohditko salasanasi?"
 
 #: src/views/account/SettingsView.vue:14
 msgid "Forward"
@@ -1156,12 +1122,12 @@ msgstr ""
 msgid "Identification"
 msgstr "Tunniste"
 
-#: src/layouts/dashboard/NavBar.vue:188
+#: src/layouts/dashboard/NavBar.vue:189
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identiteetit"
 
-#: src/components/tools/CreationForm.vue:129
+#: src/components/tools/CreationForm.vue:130
 msgid ""
 "If you close this form now, your modifications won't be saved. Do you "
 "confirm?"
@@ -1173,7 +1139,7 @@ msgid ""
 "received and processed."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:222
+#: src/layouts/dashboard/NavBar.vue:223
 #, fuzzy
 msgid "IMAP Migration"
 msgstr "Automaattinen asetusten määrittäminen"
@@ -1207,11 +1173,7 @@ msgstr "Tuo identiteetit"
 msgid "Indicate one or more recipients separated by a comma (,)"
 msgstr "Ilmoita yksi tai useampi vastaanottaja pilkulla (,) erotettuna"
 
-#: src/views/login/PasswordRecoveryForm.vue:102
-msgid "Info"
-msgstr ""
-
-#: src/layouts/dashboard/NavBar.vue:245 src/views/admin/InformationView.vue:4
+#: src/layouts/dashboard/NavBar.vue:246 src/views/admin/InformationView.vue:4
 #, fuzzy
 msgid "Information"
 msgstr "Tiedot"
@@ -1243,10 +1205,6 @@ msgstr "Virheellinen salasana"
 #, fuzzy
 msgid "Invalid port number"
 msgstr "Virheellinen salasana"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:117
-msgid "Invalid reset token."
-msgstr ""
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
@@ -1316,7 +1274,7 @@ msgstr ""
 msgid "Logger"
 msgstr "Lokikirja"
 
-#: src/layouts/dashboard/NavBar.vue:259
+#: src/layouts/dashboard/NavBar.vue:260
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
@@ -1370,7 +1328,7 @@ msgstr "Viestien lähetysraja"
 msgid "messages"
 msgstr "viestit"
 
-#: src/layouts/dashboard/NavBar.vue:214
+#: src/layouts/dashboard/NavBar.vue:215
 msgid "Messages"
 msgstr "Viestit"
 
@@ -1379,7 +1337,7 @@ msgstr "Viestit"
 msgid "Migration deleted"
 msgstr "Luontipäivä"
 
-#: src/layouts/dashboard/NavBar.vue:231
+#: src/layouts/dashboard/NavBar.vue:232
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 #, fuzzy
 msgid "Migrations"
@@ -1397,7 +1355,7 @@ msgstr "Muokattu"
 msgid "Modify"
 msgstr "Muokkaa"
 
-#: src/layouts/dashboard/NavBar.vue:200
+#: src/layouts/dashboard/NavBar.vue:201
 msgid "Monitoring"
 msgstr ""
 
@@ -1506,7 +1464,7 @@ msgstr "Uudet palautuskoodit"
 msgid "New recovery codes"
 msgstr "Uudet palautuskoodit"
 
-#: src/components/tools/CreationForm.vue:68
+#: src/components/tools/CreationForm.vue:69
 msgid "Next"
 msgstr "Seuraava"
 
@@ -1520,7 +1478,7 @@ msgstr "ei"
 #: src/components/admin/domains/DomainList.vue:248
 #: src/components/admin/identities/IdentityList.vue:209
 #: src/components/admin/identities/IdentityList.vue:235
-#: src/components/tools/CreationForm.vue:135
+#: src/components/tools/CreationForm.vue:136
 msgid "No"
 msgstr "Ei"
 
@@ -1590,11 +1548,6 @@ msgstr ""
 "Viestien määrä, jonka tämä postilaatikko voi lähettää päivässä. Jätä "
 "tyhjäksi, jos et halua rajoitusta."
 
-#: src/components/login/PasswordRecoveryForm.vue:76
-#: src/views/login/PasswordRecoveryForm.vue:75
-msgid "Ok"
-msgstr ""
-
 #: src/components/tools/ConfirmDialog.vue:56
 msgid "OK"
 msgstr "OK"
@@ -1631,7 +1584,7 @@ msgstr "Vaihtoehdot"
 msgid "or suggest a new language"
 msgstr ""
 
-#: src/views/admin/ParametersView.vue:151
+#: src/views/admin/ParametersView.vue:153
 msgid "Parameters updated"
 msgstr "Parametrit päivitetty"
 
@@ -1661,11 +1614,6 @@ msgstr "Salasana kopioitu leikepöydälle"
 #, fuzzy
 msgid "Password mismatch"
 msgstr "Salasanat eivät täsmää"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:12
-#, fuzzy
-msgid "Password recovery"
-msgstr "Salasana"
 
 #: src/components/account/ProfileForm.vue:143
 msgid "Password updated"
@@ -1698,11 +1646,6 @@ msgstr "Pin-koodi"
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
 msgstr ""
-
-#: src/components/login/PasswordRecoveryForm.vue:16
-#: src/views/login/PasswordRecoveryForm.vue:21
-msgid "Please fill-in your primary email address"
-msgstr "Täytä ensisijainen sähköpostiosoitteesi"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
@@ -1886,10 +1829,6 @@ msgstr "Avatut hälytykset"
 msgid "Reseller"
 msgstr "Jälleenmyyjä"
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:39
-msgid "Resend SMS."
-msgstr ""
-
 #: src/components/account/BackupCodeAuthForm.vue:35
 #, fuzzy
 msgid "Reset recovery codes"
@@ -1903,20 +1842,6 @@ msgstr "Resurssit"
 #: src/components/tools/ResourcesView.vue:4
 msgid "Resources usage"
 msgstr "Resurssien käyttö"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:73
-msgid "Retry reset"
-msgstr ""
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:47
-#: src/components/login/PasswordRecoveryForm.vue:38
-#: src/components/login/PasswordRecoveryForm.vue:77
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:44
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:72
-#: src/views/login/PasswordRecoveryForm.vue:43
-#: src/views/login/PasswordRecoveryForm.vue:76
-msgid "Return to login"
-msgstr ""
 
 #: src/components/admin/identities/AccountCreationForm.vue:163
 #: src/components/admin/identities/AccountCreationForm.vue:92
@@ -2014,7 +1939,7 @@ msgstr "Palvelu"
 msgid "Service: "
 msgstr "Palvelu:"
 
-#: src/layouts/dashboard/NavBar.vue:239 src/layouts/dashboard/NavBar.vue:284
+#: src/layouts/dashboard/NavBar.vue:240 src/layouts/dashboard/NavBar.vue:285
 msgid "Settings"
 msgstr "Asetukset"
 
@@ -2048,7 +1973,7 @@ msgstr "SPF-tietuetta ei löydy"
 msgid "Start typing a name here..."
 msgstr "Aloita nimen kirjoittaminen tästä..."
 
-#: src/layouts/dashboard/NavBar.vue:204
+#: src/layouts/dashboard/NavBar.vue:205
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 #, fuzzy
@@ -2064,15 +1989,8 @@ msgstr "Tila"
 msgid "Subject"
 msgstr ""
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:42
-#: src/components/login/PasswordRecoveryForm.vue:33
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:34
-#: src/views/login/PasswordRecoveryForm.vue:38
-msgid "Submit"
-msgstr "Lähetä"
-
-#: src/components/tools/CreationForm.vue:20
-#: src/components/tools/CreationForm.vue:74
+#: src/components/tools/CreationForm.vue:21
+#: src/components/tools/CreationForm.vue:75
 msgid "Summary"
 msgstr "Yhteenveto"
 
@@ -2131,20 +2049,9 @@ msgstr "Tämä sivu on vielä rakenteilla."
 msgid "To"
 msgstr "Vastaanottaja"
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:128
-#: src/components/login/PasswordRecoveryForm.vue:125
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:103
-#: src/views/login/PasswordRecoveryForm.vue:124
-msgid "Too many unsuccessful attempts, please try later."
-msgstr ""
-
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
 msgid "Total"
-msgstr ""
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:89
-msgid "TOTP resent."
 msgstr ""
 
 #: src/components/admin/domains/DomainCreationForm.vue:151
@@ -2165,11 +2072,6 @@ msgstr "Resurssit"
 #: src/views/account/SettingsView.vue:11
 #, fuzzy
 msgid "Two-factor auth"
-msgstr "Kaksivaiheinent tunnistus"
-
-#: src/components/login/TwofaForm.vue:6
-#, fuzzy
-msgid "Two-factor authentication"
 msgstr "Kaksivaiheinent tunnistus"
 
 #: src/components/account/TotpAuthForm.vue:109
@@ -2251,15 +2153,6 @@ msgstr "Uusi tili"
 msgid "Use domain default value"
 msgstr "Käytä verkkotunnuksen oletusarvoa"
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:97
-msgid "User seems wrong, return to login or restart reset the process?"
-msgstr ""
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:119
-#, fuzzy
-msgid "User unknown."
-msgstr "Tuntematon"
-
 #: src/components/admin/domains/DomainAdminList.vue:106
 #: src/components/admin/identities/AccountCreationForm.vue:98
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
@@ -2278,10 +2171,6 @@ msgstr "Kelvollinen"
 msgid "Value"
 msgstr ""
 
-#: src/components/login/TwofaForm.vue:31
-msgid "Verify code"
-msgstr "Tarkista koodi"
-
 #: src/components/admin/domains/DNSDetail.vue:217
 #, fuzzy
 msgid "warning"
@@ -2293,7 +2182,7 @@ msgstr "Varoitus"
 #: src/components/admin/domains/DomainList.vue:242
 #: src/components/admin/identities/IdentityList.vue:204
 #: src/components/admin/identities/IdentityList.vue:230
-#: src/components/tools/CreationForm.vue:128
+#: src/components/tools/CreationForm.vue:129
 msgid "Warning"
 msgstr "Varoitus"
 
@@ -2331,7 +2220,7 @@ msgstr "kyllä"
 #: src/components/admin/domains/DomainList.vue:249
 #: src/components/admin/identities/IdentityList.vue:208
 #: src/components/admin/identities/IdentityList.vue:234
-#: src/components/tools/CreationForm.vue:134
+#: src/components/tools/CreationForm.vue:135
 msgid "Yes"
 msgstr "Kyllä"
 
@@ -2370,6 +2259,45 @@ msgstr "API-pääsytunnisteesi on:"
 #: src/components/account/FidoAuthForm.vue:76
 msgid "Your browser does not seem compatible with WebAuthN"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Change password"
+#~ msgstr "Vaihda salasana"
+
+#~ msgid ""
+#~ "Enter the code from the two-factor app on your mobile device. If you have "
+#~ "lost your device, you may enter one of your recovery codes."
+#~ msgstr ""
+#~ "Syötä koodi mobiililaitteesi kaksivaiheisen tunnistuksen sovelluksesta. "
+#~ "Jos olet hukannut laitteesi, voit syöttää yhden palautuskoodeistasi."
+
+#~ msgid "Enter the code you've just received by SMS"
+#~ msgstr "Kirjoita tekstiviestillä saamasi koodi"
+
+#, fuzzy
+#~ msgid "Forgot password?"
+#~ msgstr "Unohditko salasanasi?"
+
+#, fuzzy
+#~ msgid "Password recovery"
+#~ msgstr "Salasana"
+
+#~ msgid "Please fill-in your primary email address"
+#~ msgstr "Täytä ensisijainen sähköpostiosoitteesi"
+
+#~ msgid "Submit"
+#~ msgstr "Lähetä"
+
+#, fuzzy
+#~ msgid "Two-factor authentication"
+#~ msgstr "Kaksivaiheinent tunnistus"
+
+#, fuzzy
+#~ msgid "User unknown."
+#~ msgstr "Tuntematon"
+
+#~ msgid "Verify code"
+#~ msgstr "Tarkista koodi"
 
 #~ msgid "Connect"
 #~ msgstr "Yhdistä"
