@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <span class="text-h4">{{ $gettext('Edit domain') }}</span>
-    <div class="mt-4" />
-    <DomainEditForm :domain="domain" />
-  </div>
+  <v-toolbar flat>
+    <v-toolbar-title>{{ $gettext('Edit domain') }}</v-toolbar-title>
+  </v-toolbar>
+  <DomainEditForm :domain="domain" />
 </template>
 
 <script setup lang="js">
@@ -23,3 +22,9 @@ domainsStore
   .getDomain(route.params.id)
   .then((response) => (domain.value = response.data))
 </script>
+
+<style scoped>
+.v-toolbar {
+  background-color: #f7f8fa !important;
+}
+</style>

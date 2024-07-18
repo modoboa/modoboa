@@ -65,3 +65,9 @@ const tab = ref()
   background-color: #f7f8fa !important;
 }
 </style>
+
+<style>
+.v-window__container {
+  width: 100% !important;
+}
+</style>
