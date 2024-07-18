@@ -20,7 +20,6 @@ version only requires a few actions. In every case, you will need to
 apply the specific actions if the version you are installing requires it,
 and then apply the general ones.
 
-.. _post_upgrade_commands:
 In case you use a dedicated user and/or a virtualenv, do not forget to
 use them:
 
@@ -28,6 +27,13 @@ use them:
 
    > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
+
+
+.. _post_upgrade_commands:
+
+.. note::
+
+    Check the :ref:`specific_upgrade_instructions` before running the following commands.
 
 Then, run the following commands:
 
@@ -148,8 +154,8 @@ Version 2.3.0
 
 Pre update
 ----------
-@TODO : Update this with SQL changes
-Before your start upgrading modoboa, run the following commands from
+@TODO : Update this with SQL changes, clarify "before you start upgrading modoboa"
+Before you start upgrading modoboa, run the following commands from
 your virtual environment:
 
 .. sourcecode:: bash
@@ -274,7 +280,7 @@ by default.
       ),
 
 
--  Run the commands indacated :ref:`in the first section <post_upgrade_commands>`
+-  Run the commands indicated :ref:`in the first section <post_upgrade_commands>`
    then add the following content after ``MEDIA_ROOT``:
 
    .. sourcecode:: python
@@ -986,7 +992,7 @@ This release introduces an optional LDAP synchronization process. If
 you want to use it, please follow the :ref:`dedicated procedure <ldap_sync>`.
 
 Version 1.13.1
-=======
+==============
 
 Upgrade postfix maps files as follows:
 
