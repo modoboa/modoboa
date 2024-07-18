@@ -1,6 +1,7 @@
 <template>
-  <span class="text-h4">{{ $gettext('Edit account') }}</span>
-  <div class="mt-4" />
+  <v-toolbar flat>
+    <v-toolbar-title>{{ $gettext('Edit account') }}</v-toolbar-title>
+  </v-toolbar>
   <AccountEditForm />
 </template>
 
@@ -10,3 +11,9 @@ import { useGettext } from 'vue3-gettext'
 
 const { $gettext } = useGettext()
 </script>
+
+<style scoped>
+.v-toolbar {
+  background-color: #f7f8fa !important;
+}
+</style>

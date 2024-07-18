@@ -19,59 +19,61 @@
         v-for="element in displayableElements"
         :key="element.label"
       >
-        <v-card>
-          <v-card-text>
-            <template
-              v-for="param in displayableParams(element.parameters)"
-              :key="param.name"
-            >
-              <div class="my-4">
-                <template v-if="param.widget === 'SeparatorField'">
-                  <h2>{{ param.label }}</h2>
-                </template>
-                <template v-else-if="param.widget === 'BooleanField'">
-                  <v-switch
-                    v-if="param.widget === 'BooleanField'"
-                    v-model="parameters[param.name]"
-                    :label="param.label"
-                    :hint="param.help_text"
-                    :error="formErrors[param.name] !== undefined"
-                    color="primary"
-                    density="compact"
-                    :error-messages="formErrors[param.name]"
-                    persistent-hint
-                  />
-                </template>
-                <template v-else>
-                  <label class="m-label">{{ param.label }}</label>
-                  <v-select
-                    v-if="param.widget === 'ChoiceField'"
-                    v-model="parameters[param.name]"
-                    :items="param.choices"
-                    item-title="text"
-                    :hint="param.help_text"
-                    persistent-hint
-                    density="compact"
-                    variant="outlined"
-                  />
-                  <v-text-field
-                    v-else
-                    v-model="parameters[param.name]"
-                    :hint="param.help_text"
-                    persistent-hint
-                    :error="formErrors[param.name] !== undefined"
-                    :error-messages="formErrors[param.name]"
-                    :type="
-                      param.widget === 'PasswordField' ? 'password' : 'text'
-                    "
-                    density="compact"
-                    variant="outlined"
-                  />
-                </template>
-              </div>
-            </template>
-          </v-card-text>
-        </v-card>
+        <v-container fluid class="pa-0">
+          <v-card>
+            <v-card-text>
+              <template
+                v-for="param in displayableParams(element.parameters)"
+                :key="param.name"
+              >
+                <div class="my-4">
+                  <template v-if="param.widget === 'SeparatorField'">
+                    <h2>{{ param.label }}</h2>
+                  </template>
+                  <template v-else-if="param.widget === 'BooleanField'">
+                    <v-switch
+                      v-if="param.widget === 'BooleanField'"
+                      v-model="parameters[param.name]"
+                      :label="param.label"
+                      :hint="param.help_text"
+                      :error="formErrors[param.name] !== undefined"
+                      color="primary"
+                      density="compact"
+                      :error-messages="formErrors[param.name]"
+                      persistent-hint
+                    />
+                  </template>
+                  <template v-else>
+                    <label class="m-label">{{ param.label }}</label>
+                    <v-select
+                      v-if="param.widget === 'ChoiceField'"
+                      v-model="parameters[param.name]"
+                      :items="param.choices"
+                      item-title="text"
+                      :hint="param.help_text"
+                      persistent-hint
+                      density="compact"
+                      variant="outlined"
+                    />
+                    <v-text-field
+                      v-else
+                      v-model="parameters[param.name]"
+                      :hint="param.help_text"
+                      persistent-hint
+                      :error="formErrors[param.name] !== undefined"
+                      :error-messages="formErrors[param.name]"
+                      :type="
+                        param.widget === 'PasswordField' ? 'password' : 'text'
+                      "
+                      density="compact"
+                      variant="outlined"
+                    />
+                  </template>
+                </div>
+              </template>
+            </v-card-text>
+          </v-card>
+        </v-container>
       </v-tabs-window-item>
     </v-tabs-window>
     <v-btn

@@ -42,3 +42,9 @@ busStore.$onAction(({ name, after }) => {
   }
 }, true)
 </script>
+
+<style>
+.v-application {
+  background-color: #f7f8fa;
+}
+</style>
