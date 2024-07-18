@@ -190,11 +190,52 @@ def get_dns_resolver():
     return resolver
 
 
+def get_authoritative_server(domain, resolver=None):
+    if not resolver:
+       resolver = get_dns_resolver()
+
+    dnsname = dns.name.from_text(domain)
+
+    while True:
+        try:
+            answers = dns.resolver.resolve(dnsname, 'NS')
+            if answers:
+                first_answer = answers[0]
+                if hasattr(first_answer, "target"):
+                    return str(first_answer.target)
+                if hasattr(first_answer, "address"):
+                    return str(first_answer.address)
+        except dns.resolver.NoAnswer as e:
+            dnsname = dnsname.parent()
+        else:
+            dnsname = dnsname.parent()
+
+
+def get_authoritative_ip(domain, resolver=None):
+    dnsserver_name = get_authoritative_server(domain, resolver=resolver)
+    if not resolver:
+       resolver = get_dns_resolver()
+    answer = resolver.resolve(dnsserver_name)
+    if answer:
+        return answer[0].address
+    return None
+
+
+def get_authoritative_resolver(domain, resolver=None):
+    dnsserver_ip = get_authoritative_ip(domain, resolver=resolver)
+    if dnsserver_ip:
+        resolver = dns.resolver.Resolver()
+        resolver.nameservers = [dnsserver_ip]
+    else:
+        resolver = get_dns_resolver()
+    return resolver
+
+
 def get_dns_records(name, typ, resolver=None):
     """Retrieve DNS records for given name and type."""
     logger = logging.getLogger("modoboa.admin")
-    if not resolver:
-        resolver = get_dns_resolver()
+
+    resolver = get_authoritative_resolver(name, resolver=resolver)
     try:
         dns_answers = resolver.resolve(name, typ, search=True)
     except dns.resolver.NXDOMAIN as e:
