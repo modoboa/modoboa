@@ -20,6 +20,7 @@ version only requires a few actions. In every case, you will need to
 apply the specific actions if the version you are installing requires it,
 and then apply the general ones.
 
+.. _post_upgrade_commands:
 In case you use a dedicated user and/or a virtualenv, do not forget to
 use them:
 
@@ -37,6 +38,7 @@ Then, run the following commands:
    > python manage.py migrate
    > python manage.py collectstatic
    > python manage.py check --deploy
+   > python manage.py load_initial_data
 
 Once done, check if the version you are installing requires
 :ref:`specific_upgrade_instructions`.
@@ -146,7 +148,7 @@ Version 2.3.0
 
 Pre update
 ----------
-
+@TODO : Update this with SQL changes
 Before your start upgrading modoboa, run the following commands from
 your virtual environment:
 
@@ -259,7 +261,21 @@ by default.
          'modoboa.lib.middleware.RequestCatcherMiddleware',
       )
 
--  Add the following content after ``MEDIA_ROOT``:
+-  Add ``'oauth2_provider.contrib.rest_framework.OAuth2Authentication'``
+   at the top of the list of ``DEFAULT_AUTHENTICATION_CLASSES``
+   (inside ``REST_FRAMEWORK`` section):
+
+   .. sourcecode:: python
+
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+         'rest_framework.authentication.TokenAuthentication',
+         'rest_framework.authentication.SessionAuthentication',
+      ),
+
+
+-  Run the commands indacated :ref:`in the first section <post_upgrade_commands>`
+   then add the following content after ``MEDIA_ROOT``:
 
    .. sourcecode:: python
 
@@ -281,19 +297,6 @@ by default.
 
       # If CORS fail, you might want to try to set it to True
       #CORS_ORIGIN_ALLOW_ALL = False
-
--  Add ``'oauth2_provider.contrib.rest_framework.OAuth2Authentication'``
-   at the top of the list of ``DEFAULT_AUTHENTICATION_CLASSES``
-   (inside ``REST_FRAMEWORK`` section):
-
-   .. sourcecode:: python
-
-      'DEFAULT_AUTHENTICATION_CLASSES': (
-         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-         'rest_framework.authentication.TokenAuthentication',
-         'rest_framework.authentication.SessionAuthentication',
-      ),
-
 
 SORBS DNS
 ---------
