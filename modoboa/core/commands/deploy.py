@@ -9,8 +9,6 @@ import string
 import subprocess
 import sys
 
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
 import dj_database_url
 
 import django
@@ -19,6 +17,7 @@ from django.template import Context, Template
 from django.utils.encoding import smart_str
 
 from modoboa.core.commands import Command
+from modoboa.core.utils import generate_rsa_private_key
 from modoboa.lib.api_client import ModoAPIClient
 from modoboa.lib.sysutils import exec_cmd
 
@@ -199,22 +198,6 @@ class DeployCommand(Command):
             extra_settings.append(extension[1])
         return extra_settings
 
-    def generate_rsa_private_key(self, storage_path: str):
-        """Generate RSA private key for OIDC support."""
-        private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=4096,
-        )
-        pem = private_key.private_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PrivateFormat.TraditionalOpenSSL,
-            encryption_algorithm=serialization.NoEncryption(),
-        )
-        content = bytes(pem)
-        content = content.replace(b"\n", b"\\n")
-        with open(f"{storage_path}/.env", "wb") as fp:
-            fp.write(b'OIDC_RSA_PRIVATE_KEY="' + content + b'"\n')
-
     def handle(self, parsed_args):
         django.setup()
         management.call_command("startproject", parsed_args.name, verbosity=False)
@@ -285,7 +268,7 @@ class DeployCommand(Command):
         )
         with open("%s/settings.py" % path, "w") as fp:
             fp.write(tpl)
-        self.generate_rsa_private_key(parsed_args.name)
+        generate_rsa_private_key(parsed_args.name)
 
         shutil.copyfile("%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path)
         os.mkdir("%s/media" % parsed_args.name)
