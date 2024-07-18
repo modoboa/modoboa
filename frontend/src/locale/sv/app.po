@@ -64,7 +64,7 @@ msgstr "Absolut tidsintervall"
 msgid "account"
 msgstr "Konto"
 
-#: src/layouts/dashboard/NavBar.vue:253
+#: src/layouts/dashboard/NavBar.vue:254
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
@@ -182,7 +182,7 @@ msgstr "Adress"
 msgid "Address (hostname or IP)"
 msgstr "Adress (värdnamn eller IP)"
 
-#: src/layouts/dashboard/NavBar.vue:267
+#: src/layouts/dashboard/NavBar.vue:268
 msgid "Admin"
 msgstr ""
 
@@ -225,7 +225,7 @@ msgid "Alarm re-opened"
 msgstr "Larm öppnat på nytt"
 
 #: src/components/admin/domains/DomainList.vue:309
-#: src/layouts/dashboard/NavBar.vue:194
+#: src/layouts/dashboard/NavBar.vue:195
 msgid "Alarms"
 msgstr "Larm"
 
@@ -355,7 +355,7 @@ msgstr "Associerade domäner"
 msgid "Attempting to log you in."
 msgstr "Återgå till inloggning"
 
-#: src/layouts/dashboard/NavBar.vue:209
+#: src/layouts/dashboard/NavBar.vue:210
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Verifieringskedja"
@@ -393,7 +393,7 @@ msgstr "autodiscover-post (Microsoft) hittades inte"
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr "autodiscover-post (Microsoft): %{ value }"
 
-#: src/components/tools/CreationForm.vue:61
+#: src/components/tools/CreationForm.vue:62
 msgid "Back"
 msgstr "Tillbaka"
 
@@ -416,10 +416,6 @@ msgstr "Bind/named formatterat. Klicka för att kopiera"
 #: src/components/tools/ConfirmDialog.vue:55
 msgid "Cancel"
 msgstr "Avbryt"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:17
-msgid "Change password"
-msgstr "Ändra lösenord"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
 msgid "Check connection:"
@@ -484,7 +480,7 @@ msgstr "Stängd"
 msgid "Conditions"
 msgstr "Bekräftelse"
 
-#: src/components/tools/CreationForm.vue:91
+#: src/components/tools/CreationForm.vue:92
 msgid "Confirm and create"
 msgstr "Bekräfta och skapa"
 
@@ -527,7 +523,7 @@ msgstr "Kopiera till urklipp"
 msgid "Copy token to clipboard"
 msgstr "Kopiera token till urklipp"
 
-#: src/views/admin/ParametersView.vue:160
+#: src/views/admin/ParametersView.vue:162
 msgid "Could not save parameters"
 msgstr "Kunde inte spara parametrar"
 
@@ -586,7 +582,7 @@ msgstr "Daglig sändningsgräns för meddelanden"
 msgid "Daily sending limit"
 msgstr "Daglig sändningsgräns"
 
-#: src/layouts/dashboard/NavBar.vue:176
+#: src/layouts/dashboard/NavBar.vue:177
 msgid "Dashboard"
 msgstr "Instrumentbräda"
 
@@ -820,7 +816,7 @@ msgstr "Domän uppdaterad"
 msgid "domain's default value"
 msgstr "domänens standardvärde"
 
-#: src/layouts/dashboard/NavBar.vue:182
+#: src/layouts/dashboard/NavBar.vue:183
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domäner"
@@ -841,7 +837,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Redigera"
 
-#: src/views/admin/identities/AccountEditView.vue:2
+#: src/views/admin/identities/AccountEditView.vue:3
 msgid "Edit account"
 msgstr "Redigera konto"
 
@@ -884,14 +880,9 @@ msgstr "E-post"
 msgid "Email address"
 msgstr "E-postadress"
 
-#: src/layouts/dashboard/NavBar.vue:226
+#: src/layouts/dashboard/NavBar.vue:227
 msgid "Email providers"
 msgstr "E-postleverantörer"
-
-#: src/components/login/PasswordRecoveryForm.vue:104
-#: src/views/login/PasswordRecoveryForm.vue:103
-msgid "Email sent, please check your inbox"
-msgstr ""
 
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
@@ -934,23 +925,6 @@ msgstr "Ange ett enkelt användarnamn eller en e-postadress"
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:69
 msgid "Enter an email address"
 msgstr "Ange en e-postadress"
-
-#: src/components/login/TwofaForm.vue:11
-msgid ""
-"Enter the code from the two-factor app on your mobile device. If you have "
-"lost your device, you may enter one of your recovery codes."
-msgstr ""
-"Ange koden från tvåfaktorsappen på din mobila enhet. Om du har tappat bort "
-"din enhet kan du ange en av dina återställningskoder."
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:16
-msgid "Enter the code you've just received by SMS"
-msgstr "Ange koden du precis har fått via SMS"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:70
-#: src/views/login/PasswordRecoveryForm.vue:121
-msgid "Error"
-msgstr "Fel"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
 msgid "Ex: 10MB. Leave empty for no limit"
@@ -1026,7 +1000,7 @@ msgstr "Parametrar uppdaterade"
 msgid "Filter updated"
 msgstr "Profil uppdaterad"
 
-#: src/layouts/dashboard/NavBar.vue:278
+#: src/layouts/dashboard/NavBar.vue:279
 msgid "Filters"
 msgstr ""
 
@@ -1035,13 +1009,6 @@ msgstr ""
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 msgid "First name"
 msgstr "Förnamn"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:11
-#: src/components/login/PasswordRecoveryForm.vue:12
-#: src/views/login/PasswordRecoveryForm.vue:17
-#, fuzzy
-msgid "Forgot password?"
-msgstr "Glömt lösenord?"
 
 #: src/views/account/SettingsView.vue:14
 msgid "Forward"
@@ -1143,12 +1110,12 @@ msgstr ""
 msgid "Identification"
 msgstr "Identifikation"
 
-#: src/layouts/dashboard/NavBar.vue:188
+#: src/layouts/dashboard/NavBar.vue:189
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identiteter"
 
-#: src/components/tools/CreationForm.vue:129
+#: src/components/tools/CreationForm.vue:130
 msgid ""
 "If you close this form now, your modifications won't be saved. Do you "
 "confirm?"
@@ -1164,7 +1131,7 @@ msgstr ""
 "Om du konfigurerade det nyligen, vänta tills den första rapporten tas emot "
 "och behandlas."
 
-#: src/layouts/dashboard/NavBar.vue:222
+#: src/layouts/dashboard/NavBar.vue:223
 msgid "IMAP Migration"
 msgstr "IMAP migrering"
 
@@ -1196,11 +1163,7 @@ msgstr "Importera identiteter"
 msgid "Indicate one or more recipients separated by a comma (,)"
 msgstr "Ange en eller flera mottagare separerade med kommatecken (,)"
 
-#: src/views/login/PasswordRecoveryForm.vue:102
-msgid "Info"
-msgstr ""
-
-#: src/layouts/dashboard/NavBar.vue:245 src/views/admin/InformationView.vue:4
+#: src/layouts/dashboard/NavBar.vue:246 src/views/admin/InformationView.vue:4
 msgid "Information"
 msgstr "Information"
 
@@ -1230,10 +1193,6 @@ msgstr "Ogiltigt lösenord"
 #, fuzzy
 msgid "Invalid port number"
 msgstr "Ange ett giltigt portnummer"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:117
-msgid "Invalid reset token."
-msgstr "Ogiltigt återställningstoken."
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
@@ -1303,7 +1262,7 @@ msgstr "Lokal domän (valfritt)§"
 msgid "Logger"
 msgstr "Logger"
 
-#: src/layouts/dashboard/NavBar.vue:259
+#: src/layouts/dashboard/NavBar.vue:260
 msgid "Logout"
 msgstr "Logga ut"
 
@@ -1357,7 +1316,7 @@ msgstr "Begränsning för meddelandesändning"
 msgid "messages"
 msgstr "meddelanden"
 
-#: src/layouts/dashboard/NavBar.vue:214
+#: src/layouts/dashboard/NavBar.vue:215
 msgid "Messages"
 msgstr "Meddelanden"
 
@@ -1365,7 +1324,7 @@ msgstr "Meddelanden"
 msgid "Migration deleted"
 msgstr "Migrering raderad"
 
-#: src/layouts/dashboard/NavBar.vue:231
+#: src/layouts/dashboard/NavBar.vue:232
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Migreringar"
@@ -1382,7 +1341,7 @@ msgstr "Ändrad"
 msgid "Modify"
 msgstr "Ändra"
 
-#: src/layouts/dashboard/NavBar.vue:200
+#: src/layouts/dashboard/NavBar.vue:201
 msgid "Monitoring"
 msgstr ""
 
@@ -1489,7 +1448,7 @@ msgstr "Ny leverantör"
 msgid "New recovery codes"
 msgstr "Nya återställningskoder"
 
-#: src/components/tools/CreationForm.vue:68
+#: src/components/tools/CreationForm.vue:69
 msgid "Next"
 msgstr "Nästa"
 
@@ -1503,7 +1462,7 @@ msgstr "nej"
 #: src/components/admin/domains/DomainList.vue:248
 #: src/components/admin/identities/IdentityList.vue:209
 #: src/components/admin/identities/IdentityList.vue:235
-#: src/components/tools/CreationForm.vue:135
+#: src/components/tools/CreationForm.vue:136
 msgid "No"
 msgstr "Nej"
 
@@ -1573,11 +1532,6 @@ msgstr ""
 "Antal meddelanden som denna brevlåda kan skicka per dag. Lämna tomt för "
 "ingen begränsning."
 
-#: src/components/login/PasswordRecoveryForm.vue:76
-#: src/views/login/PasswordRecoveryForm.vue:75
-msgid "Ok"
-msgstr "Ok"
-
 #: src/components/tools/ConfirmDialog.vue:56
 msgid "OK"
 msgstr "OK"
@@ -1612,7 +1566,7 @@ msgstr "Alternativ"
 msgid "or suggest a new language"
 msgstr ""
 
-#: src/views/admin/ParametersView.vue:151
+#: src/views/admin/ParametersView.vue:153
 msgid "Parameters updated"
 msgstr "Parametrar uppdaterade"
 
@@ -1642,10 +1596,6 @@ msgstr "Lösenord kopierat till urklipp"
 #, fuzzy
 msgid "Password mismatch"
 msgstr "Lösenord matchar ej"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:12
-msgid "Password recovery"
-msgstr "Lösenordsåterställning"
 
 #: src/components/account/ProfileForm.vue:143
 msgid "Password updated"
@@ -1678,11 +1628,6 @@ msgstr "Pinkod"
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
 msgstr ""
-
-#: src/components/login/PasswordRecoveryForm.vue:16
-#: src/views/login/PasswordRecoveryForm.vue:21
-msgid "Please fill-in your primary email address"
-msgstr "Var vänlig fyll i din primära e-postadress"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
@@ -1857,10 +1802,6 @@ msgstr "Återöppna larmet"
 msgid "Reseller"
 msgstr "Återförsäljare"
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:39
-msgid "Resend SMS."
-msgstr "Skicka SMS på nytt."
-
 #: src/components/account/BackupCodeAuthForm.vue:35
 msgid "Reset recovery codes"
 msgstr "Återställ återställningskoder"
@@ -1873,20 +1814,6 @@ msgstr "Resurser"
 #: src/components/tools/ResourcesView.vue:4
 msgid "Resources usage"
 msgstr "Resursanvändning"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:73
-msgid "Retry reset"
-msgstr "Försök återställning igen"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:47
-#: src/components/login/PasswordRecoveryForm.vue:38
-#: src/components/login/PasswordRecoveryForm.vue:77
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:44
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:72
-#: src/views/login/PasswordRecoveryForm.vue:43
-#: src/views/login/PasswordRecoveryForm.vue:76
-msgid "Return to login"
-msgstr "Återgå till inloggning"
 
 #: src/components/admin/identities/AccountCreationForm.vue:163
 #: src/components/admin/identities/AccountCreationForm.vue:92
@@ -1983,7 +1910,7 @@ msgstr "Tjänst"
 msgid "Service: "
 msgstr "Tjänst:"
 
-#: src/layouts/dashboard/NavBar.vue:239 src/layouts/dashboard/NavBar.vue:284
+#: src/layouts/dashboard/NavBar.vue:240 src/layouts/dashboard/NavBar.vue:285
 msgid "Settings"
 msgstr "Inställningar"
 
@@ -2017,7 +1944,7 @@ msgstr "SPF post saknas"
 msgid "Start typing a name here..."
 msgstr "Börja skriva ett namn här..."
 
-#: src/layouts/dashboard/NavBar.vue:204
+#: src/layouts/dashboard/NavBar.vue:205
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -2032,15 +1959,8 @@ msgstr "Status"
 msgid "Subject"
 msgstr ""
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:42
-#: src/components/login/PasswordRecoveryForm.vue:33
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:34
-#: src/views/login/PasswordRecoveryForm.vue:38
-msgid "Submit"
-msgstr "Skicka"
-
-#: src/components/tools/CreationForm.vue:20
-#: src/components/tools/CreationForm.vue:74
+#: src/components/tools/CreationForm.vue:21
+#: src/components/tools/CreationForm.vue:75
 msgid "Summary"
 msgstr "Sammanfattning"
 
@@ -2098,21 +2018,10 @@ msgstr "Denna sida är fortfarande under konstruktion."
 msgid "To"
 msgstr "Till"
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:128
-#: src/components/login/PasswordRecoveryForm.vue:125
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:103
-#: src/views/login/PasswordRecoveryForm.vue:124
-msgid "Too many unsuccessful attempts, please try later."
-msgstr "För många misslyckade försök, försök igen senare."
-
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
 msgid "Total"
 msgstr "Totalt"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:89
-msgid "TOTP resent."
-msgstr "TOTP skickat igen."
 
 #: src/components/admin/domains/DomainCreationForm.vue:151
 #: src/components/admin/domains/DomainCreationForm.vue:214
@@ -2131,11 +2040,6 @@ msgstr "Pålitliga källor"
 #: src/views/account/SettingsView.vue:11
 #, fuzzy
 msgid "Two-factor auth"
-msgstr "Tvåfaktorsautentisering"
-
-#: src/components/login/TwofaForm.vue:6
-#, fuzzy
-msgid "Two-factor authentication"
 msgstr "Tvåfaktorsautentisering"
 
 #: src/components/account/TotpAuthForm.vue:109
@@ -2217,16 +2121,6 @@ msgstr "Nytt konto"
 msgid "Use domain default value"
 msgstr "Använd domänens standardvärde"
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:97
-msgid "User seems wrong, return to login or restart reset the process?"
-msgstr ""
-"Användare verkar felaktig, återgå till inloggning eller börja om "
-"återsällningsprocessen?"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:119
-msgid "User unknown."
-msgstr "Okänd användare."
-
 #: src/components/admin/domains/DomainAdminList.vue:106
 #: src/components/admin/identities/AccountCreationForm.vue:98
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
@@ -2245,10 +2139,6 @@ msgstr "Giltig"
 msgid "Value"
 msgstr ""
 
-#: src/components/login/TwofaForm.vue:31
-msgid "Verify code"
-msgstr "Verifikationskod"
-
 #: src/components/admin/domains/DNSDetail.vue:217
 #, fuzzy
 msgid "warning"
@@ -2260,7 +2150,7 @@ msgstr "Varning"
 #: src/components/admin/domains/DomainList.vue:242
 #: src/components/admin/identities/IdentityList.vue:204
 #: src/components/admin/identities/IdentityList.vue:230
-#: src/components/tools/CreationForm.vue:128
+#: src/components/tools/CreationForm.vue:129
 msgid "Warning"
 msgstr "Varning"
 
@@ -2298,7 +2188,7 @@ msgstr "ja"
 #: src/components/admin/domains/DomainList.vue:249
 #: src/components/admin/identities/IdentityList.vue:208
 #: src/components/admin/identities/IdentityList.vue:234
-#: src/components/tools/CreationForm.vue:134
+#: src/components/tools/CreationForm.vue:135
 msgid "Yes"
 msgstr "Ja"
 
@@ -2337,6 +2227,71 @@ msgstr "Ditt API token är:"
 #: src/components/account/FidoAuthForm.vue:76
 msgid "Your browser does not seem compatible with WebAuthN"
 msgstr ""
+
+#~ msgid "Change password"
+#~ msgstr "Ändra lösenord"
+
+#~ msgid ""
+#~ "Enter the code from the two-factor app on your mobile device. If you have "
+#~ "lost your device, you may enter one of your recovery codes."
+#~ msgstr ""
+#~ "Ange koden från tvåfaktorsappen på din mobila enhet. Om du har tappat "
+#~ "bort din enhet kan du ange en av dina återställningskoder."
+
+#~ msgid "Enter the code you've just received by SMS"
+#~ msgstr "Ange koden du precis har fått via SMS"
+
+#~ msgid "Error"
+#~ msgstr "Fel"
+
+#, fuzzy
+#~ msgid "Forgot password?"
+#~ msgstr "Glömt lösenord?"
+
+#~ msgid "Invalid reset token."
+#~ msgstr "Ogiltigt återställningstoken."
+
+#~ msgid "Ok"
+#~ msgstr "Ok"
+
+#~ msgid "Password recovery"
+#~ msgstr "Lösenordsåterställning"
+
+#~ msgid "Please fill-in your primary email address"
+#~ msgstr "Var vänlig fyll i din primära e-postadress"
+
+#~ msgid "Resend SMS."
+#~ msgstr "Skicka SMS på nytt."
+
+#~ msgid "Retry reset"
+#~ msgstr "Försök återställning igen"
+
+#~ msgid "Return to login"
+#~ msgstr "Återgå till inloggning"
+
+#~ msgid "Submit"
+#~ msgstr "Skicka"
+
+#~ msgid "Too many unsuccessful attempts, please try later."
+#~ msgstr "För många misslyckade försök, försök igen senare."
+
+#~ msgid "TOTP resent."
+#~ msgstr "TOTP skickat igen."
+
+#, fuzzy
+#~ msgid "Two-factor authentication"
+#~ msgstr "Tvåfaktorsautentisering"
+
+#~ msgid "User seems wrong, return to login or restart reset the process?"
+#~ msgstr ""
+#~ "Användare verkar felaktig, återgå till inloggning eller börja om "
+#~ "återsällningsprocessen?"
+
+#~ msgid "User unknown."
+#~ msgstr "Okänd användare."
+
+#~ msgid "Verify code"
+#~ msgstr "Verifikationskod"
 
 #~ msgid "Connect"
 #~ msgstr "Anslut"

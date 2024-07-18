@@ -50,7 +50,7 @@ msgstr "Absolute time range"
 msgid "account"
 msgstr "Account"
 
-#: src/layouts/dashboard/NavBar.vue:253
+#: src/layouts/dashboard/NavBar.vue:254
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
@@ -168,7 +168,7 @@ msgstr "Address"
 msgid "Address (hostname or IP)"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:267
+#: src/layouts/dashboard/NavBar.vue:268
 msgid "Admin"
 msgstr ""
 
@@ -212,7 +212,7 @@ msgid "Alarm re-opened"
 msgstr ""
 
 #: src/components/admin/domains/DomainList.vue:309
-#: src/layouts/dashboard/NavBar.vue:194
+#: src/layouts/dashboard/NavBar.vue:195
 msgid "Alarms"
 msgstr "Alarms"
 
@@ -342,7 +342,7 @@ msgstr "Administered domains"
 msgid "Attempting to log you in."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:209
+#: src/layouts/dashboard/NavBar.vue:210
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Audit trail"
@@ -380,7 +380,7 @@ msgstr "autodiscover record (Microsoft) not found"
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr "autodiscover record (Microsoft): %{ value }"
 
-#: src/components/tools/CreationForm.vue:61
+#: src/components/tools/CreationForm.vue:62
 msgid "Back"
 msgstr "Back"
 
@@ -403,11 +403,6 @@ msgstr "Bind/named format. Click to copy"
 #: src/components/tools/ConfirmDialog.vue:55
 msgid "Cancel"
 msgstr "Cancel"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:17
-#, fuzzy
-msgid "Change password"
-msgstr "Random password"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
 msgid "Check connection:"
@@ -474,7 +469,7 @@ msgstr "Close"
 msgid "Conditions"
 msgstr "Information"
 
-#: src/components/tools/CreationForm.vue:91
+#: src/components/tools/CreationForm.vue:92
 msgid "Confirm and create"
 msgstr "Confirm and create"
 
@@ -517,7 +512,7 @@ msgstr "Copy to clipboard"
 msgid "Copy token to clipboard"
 msgstr "Copy to clipboard"
 
-#: src/views/admin/ParametersView.vue:160
+#: src/views/admin/ParametersView.vue:162
 msgid "Could not save parameters"
 msgstr ""
 
@@ -579,7 +574,7 @@ msgstr "Message sending limit"
 msgid "Daily sending limit"
 msgstr "Daily sending limit"
 
-#: src/layouts/dashboard/NavBar.vue:176
+#: src/layouts/dashboard/NavBar.vue:177
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -819,7 +814,7 @@ msgstr "Domain updated"
 msgid "domain's default value"
 msgstr "Domain deleted"
 
-#: src/layouts/dashboard/NavBar.vue:182
+#: src/layouts/dashboard/NavBar.vue:183
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domains"
@@ -840,7 +835,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Edit"
 
-#: src/views/admin/identities/AccountEditView.vue:2
+#: src/views/admin/identities/AccountEditView.vue:3
 #, fuzzy
 msgid "Edit account"
 msgstr "Account"
@@ -887,14 +882,9 @@ msgstr ""
 msgid "Email address"
 msgstr "Specify an email address"
 
-#: src/layouts/dashboard/NavBar.vue:226
+#: src/layouts/dashboard/NavBar.vue:227
 msgid "Email providers"
 msgstr "Email providers"
-
-#: src/components/login/PasswordRecoveryForm.vue:104
-#: src/views/login/PasswordRecoveryForm.vue:103
-msgid "Email sent, please check your inbox"
-msgstr ""
 
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
@@ -938,23 +928,6 @@ msgstr ""
 #, fuzzy
 msgid "Enter an email address"
 msgstr "Specify an email address"
-
-#: src/components/login/TwofaForm.vue:11
-msgid ""
-"Enter the code from the two-factor app on your mobile device. If you have "
-"lost your device, you may enter one of your recovery codes."
-msgstr ""
-"Enter the code from the two-factor app on your mobile device. If you have "
-"lost your device, you may enter one of your recovery codes."
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:16
-msgid "Enter the code you've just received by SMS"
-msgstr ""
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:70
-#: src/views/login/PasswordRecoveryForm.vue:121
-msgid "Error"
-msgstr ""
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
 msgid "Ex: 10MB. Leave empty for no limit"
@@ -1029,7 +1002,7 @@ msgstr "Domain updated"
 msgid "Filter updated"
 msgstr "Domain updated"
 
-#: src/layouts/dashboard/NavBar.vue:278
+#: src/layouts/dashboard/NavBar.vue:279
 msgid "Filters"
 msgstr ""
 
@@ -1039,13 +1012,6 @@ msgstr ""
 #, fuzzy
 msgid "First name"
 msgstr "Full name"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:11
-#: src/components/login/PasswordRecoveryForm.vue:12
-#: src/views/login/PasswordRecoveryForm.vue:17
-#, fuzzy
-msgid "Forgot password?"
-msgstr "Forgot password"
 
 #: src/views/account/SettingsView.vue:14
 msgid "Forward"
@@ -1150,12 +1116,12 @@ msgstr ""
 msgid "Identification"
 msgstr "Identification"
 
-#: src/layouts/dashboard/NavBar.vue:188
+#: src/layouts/dashboard/NavBar.vue:189
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identities"
 
-#: src/components/tools/CreationForm.vue:129
+#: src/components/tools/CreationForm.vue:130
 msgid ""
 "If you close this form now, your modifications won't be saved. Do you "
 "confirm?"
@@ -1171,7 +1137,7 @@ msgstr ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 
-#: src/layouts/dashboard/NavBar.vue:222
+#: src/layouts/dashboard/NavBar.vue:223
 msgid "IMAP Migration"
 msgstr "IMAP Migration"
 
@@ -1205,11 +1171,7 @@ msgstr "Identities"
 msgid "Indicate one or more recipients separated by a comma (,)"
 msgstr ""
 
-#: src/views/login/PasswordRecoveryForm.vue:102
-msgid "Info"
-msgstr ""
-
-#: src/layouts/dashboard/NavBar.vue:245 src/views/admin/InformationView.vue:4
+#: src/layouts/dashboard/NavBar.vue:246 src/views/admin/InformationView.vue:4
 msgid "Information"
 msgstr "Information"
 
@@ -1234,10 +1196,6 @@ msgstr "Random password"
 
 #: src/plugins/rules.js:41
 msgid "Invalid port number"
-msgstr ""
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:117
-msgid "Invalid reset token."
 msgstr ""
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
@@ -1305,7 +1263,7 @@ msgstr ""
 msgid "Logger"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:259
+#: src/layouts/dashboard/NavBar.vue:260
 msgid "Logout"
 msgstr "Logout"
 
@@ -1362,7 +1320,7 @@ msgstr "Message sending limit"
 msgid "messages"
 msgstr "messages"
 
-#: src/layouts/dashboard/NavBar.vue:214
+#: src/layouts/dashboard/NavBar.vue:215
 msgid "Messages"
 msgstr "Messages"
 
@@ -1371,7 +1329,7 @@ msgstr "Messages"
 msgid "Migration deleted"
 msgstr "Domain deleted"
 
-#: src/layouts/dashboard/NavBar.vue:231
+#: src/layouts/dashboard/NavBar.vue:232
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Migrations"
@@ -1390,7 +1348,7 @@ msgstr "Modify"
 msgid "Modify"
 msgstr "Modify"
 
-#: src/layouts/dashboard/NavBar.vue:200
+#: src/layouts/dashboard/NavBar.vue:201
 msgid "Monitoring"
 msgstr "Monitoring"
 
@@ -1500,7 +1458,7 @@ msgstr "Email providers"
 msgid "New recovery codes"
 msgstr ""
 
-#: src/components/tools/CreationForm.vue:68
+#: src/components/tools/CreationForm.vue:69
 msgid "Next"
 msgstr "Next"
 
@@ -1514,7 +1472,7 @@ msgstr "no"
 #: src/components/admin/domains/DomainList.vue:248
 #: src/components/admin/identities/IdentityList.vue:209
 #: src/components/admin/identities/IdentityList.vue:235
-#: src/components/tools/CreationForm.vue:135
+#: src/components/tools/CreationForm.vue:136
 msgid "No"
 msgstr "No"
 
@@ -1579,11 +1537,6 @@ msgid ""
 msgstr ""
 "Number of messages this domain can send per day. Leave empty for no limit."
 
-#: src/components/login/PasswordRecoveryForm.vue:76
-#: src/views/login/PasswordRecoveryForm.vue:75
-msgid "Ok"
-msgstr ""
-
 #: src/components/tools/ConfirmDialog.vue:56
 msgid "OK"
 msgstr "OK"
@@ -1619,7 +1572,7 @@ msgstr "Options"
 msgid "or suggest a new language"
 msgstr ""
 
-#: src/views/admin/ParametersView.vue:151
+#: src/views/admin/ParametersView.vue:153
 msgid "Parameters updated"
 msgstr ""
 
@@ -1648,11 +1601,6 @@ msgstr "Password copied to clipboard"
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:101
 #, fuzzy
 msgid "Password mismatch"
-msgstr "Password"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:12
-#, fuzzy
-msgid "Password recovery"
 msgstr "Password"
 
 #: src/components/account/ProfileForm.vue:143
@@ -1688,11 +1636,6 @@ msgstr "Verify code"
 
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
-msgstr ""
-
-#: src/components/login/PasswordRecoveryForm.vue:16
-#: src/views/login/PasswordRecoveryForm.vue:21
-msgid "Please fill-in your primary email address"
 msgstr ""
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
@@ -1871,10 +1814,6 @@ msgstr ""
 msgid "Reseller"
 msgstr ""
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:39
-msgid "Resend SMS."
-msgstr ""
-
 #: src/components/account/BackupCodeAuthForm.vue:35
 msgid "Reset recovery codes"
 msgstr ""
@@ -1887,20 +1826,6 @@ msgstr "Resources"
 #: src/components/tools/ResourcesView.vue:4
 msgid "Resources usage"
 msgstr "Resources usage"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:73
-msgid "Retry reset"
-msgstr ""
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:47
-#: src/components/login/PasswordRecoveryForm.vue:38
-#: src/components/login/PasswordRecoveryForm.vue:77
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:44
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:72
-#: src/views/login/PasswordRecoveryForm.vue:43
-#: src/views/login/PasswordRecoveryForm.vue:76
-msgid "Return to login"
-msgstr ""
 
 #: src/components/admin/identities/AccountCreationForm.vue:163
 #: src/components/admin/identities/AccountCreationForm.vue:92
@@ -1997,7 +1922,7 @@ msgstr "Service"
 msgid "Service: "
 msgstr "Service: "
 
-#: src/layouts/dashboard/NavBar.vue:239 src/layouts/dashboard/NavBar.vue:284
+#: src/layouts/dashboard/NavBar.vue:240 src/layouts/dashboard/NavBar.vue:285
 msgid "Settings"
 msgstr "Settings"
 
@@ -2031,7 +1956,7 @@ msgstr "SPF record not found"
 msgid "Start typing a name here..."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:204
+#: src/layouts/dashboard/NavBar.vue:205
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -2047,15 +1972,8 @@ msgstr "DNS status"
 msgid "Subject"
 msgstr ""
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:42
-#: src/components/login/PasswordRecoveryForm.vue:33
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:34
-#: src/views/login/PasswordRecoveryForm.vue:38
-msgid "Submit"
-msgstr ""
-
-#: src/components/tools/CreationForm.vue:20
-#: src/components/tools/CreationForm.vue:74
+#: src/components/tools/CreationForm.vue:21
+#: src/components/tools/CreationForm.vue:75
 msgid "Summary"
 msgstr "Summary"
 
@@ -2109,21 +2027,10 @@ msgstr ""
 msgid "To"
 msgstr "To"
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:128
-#: src/components/login/PasswordRecoveryForm.vue:125
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:103
-#: src/views/login/PasswordRecoveryForm.vue:124
-msgid "Too many unsuccessful attempts, please try later."
-msgstr ""
-
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
 msgid "Total"
 msgstr "Total"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:89
-msgid "TOTP resent."
-msgstr ""
 
 #: src/components/admin/domains/DomainCreationForm.vue:151
 #: src/components/admin/domains/DomainCreationForm.vue:214
@@ -2142,10 +2049,6 @@ msgstr "Trusted sources"
 #: src/views/account/SettingsView.vue:11
 #, fuzzy
 msgid "Two-factor auth"
-msgstr "Two-factor authentication"
-
-#: src/components/login/TwofaForm.vue:6
-msgid "Two-factor authentication"
 msgstr "Two-factor authentication"
 
 #: src/components/account/TotpAuthForm.vue:109
@@ -2226,15 +2129,6 @@ msgstr "Account"
 msgid "Use domain default value"
 msgstr ""
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:97
-msgid "User seems wrong, return to login or restart reset the process?"
-msgstr ""
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:119
-#, fuzzy
-msgid "User unknown."
-msgstr "Unknown"
-
 #: src/components/admin/domains/DomainAdminList.vue:106
 #: src/components/admin/identities/AccountCreationForm.vue:98
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
@@ -2254,10 +2148,6 @@ msgstr "Valid"
 msgid "Value"
 msgstr ""
 
-#: src/components/login/TwofaForm.vue:31
-msgid "Verify code"
-msgstr "Verify code"
-
 #: src/components/admin/domains/DNSDetail.vue:217
 msgid "warning"
 msgstr "warning"
@@ -2268,7 +2158,7 @@ msgstr "warning"
 #: src/components/admin/domains/DomainList.vue:242
 #: src/components/admin/identities/IdentityList.vue:204
 #: src/components/admin/identities/IdentityList.vue:230
-#: src/components/tools/CreationForm.vue:128
+#: src/components/tools/CreationForm.vue:129
 msgid "Warning"
 msgstr "Warning"
 
@@ -2306,7 +2196,7 @@ msgstr "yes"
 #: src/components/admin/domains/DomainList.vue:249
 #: src/components/admin/identities/IdentityList.vue:208
 #: src/components/admin/identities/IdentityList.vue:234
-#: src/components/tools/CreationForm.vue:134
+#: src/components/tools/CreationForm.vue:135
 msgid "Yes"
 msgstr "Yes"
 
@@ -2345,6 +2235,35 @@ msgstr ""
 #: src/components/account/FidoAuthForm.vue:76
 msgid "Your browser does not seem compatible with WebAuthN"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Change password"
+#~ msgstr "Random password"
+
+#~ msgid ""
+#~ "Enter the code from the two-factor app on your mobile device. If you have "
+#~ "lost your device, you may enter one of your recovery codes."
+#~ msgstr ""
+#~ "Enter the code from the two-factor app on your mobile device. If you have "
+#~ "lost your device, you may enter one of your recovery codes."
+
+#, fuzzy
+#~ msgid "Forgot password?"
+#~ msgstr "Forgot password"
+
+#, fuzzy
+#~ msgid "Password recovery"
+#~ msgstr "Password"
+
+#~ msgid "Two-factor authentication"
+#~ msgstr "Two-factor authentication"
+
+#, fuzzy
+#~ msgid "User unknown."
+#~ msgstr "Unknown"
+
+#~ msgid "Verify code"
+#~ msgstr "Verify code"
 
 #~ msgid "Connect"
 #~ msgstr "Connect"

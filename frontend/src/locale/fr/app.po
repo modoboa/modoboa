@@ -63,7 +63,7 @@ msgstr "Plage de temps absolue"
 msgid "account"
 msgstr "compte"
 
-#: src/layouts/dashboard/NavBar.vue:253
+#: src/layouts/dashboard/NavBar.vue:254
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
@@ -178,7 +178,7 @@ msgstr "Adresse"
 msgid "Address (hostname or IP)"
 msgstr "Adresse (nom d'hôte ou IP)"
 
-#: src/layouts/dashboard/NavBar.vue:267
+#: src/layouts/dashboard/NavBar.vue:268
 msgid "Admin"
 msgstr ""
 
@@ -220,7 +220,7 @@ msgid "Alarm re-opened"
 msgstr "Alarme ré-ouverte"
 
 #: src/components/admin/domains/DomainList.vue:309
-#: src/layouts/dashboard/NavBar.vue:194
+#: src/layouts/dashboard/NavBar.vue:195
 msgid "Alarms"
 msgstr "Alarmes"
 
@@ -342,7 +342,7 @@ msgstr "Domaines associés"
 msgid "Attempting to log you in."
 msgstr "Retour à la connexion"
 
-#: src/layouts/dashboard/NavBar.vue:209
+#: src/layouts/dashboard/NavBar.vue:210
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Journal des modifications"
@@ -380,7 +380,7 @@ msgstr "Enregistrement autodiscover (Microsoft) non trouvé"
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr "Enregistrement autodiscover (Microsoft): %{ value }"
 
-#: src/components/tools/CreationForm.vue:61
+#: src/components/tools/CreationForm.vue:62
 msgid "Back"
 msgstr "Retour"
 
@@ -403,10 +403,6 @@ msgstr "Format bind/named. Cliquez pour copier"
 #: src/components/tools/ConfirmDialog.vue:55
 msgid "Cancel"
 msgstr "Annuler"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:17
-msgid "Change password"
-msgstr "Modifier le mot de passe"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
 msgid "Check connection:"
@@ -472,7 +468,7 @@ msgstr "Fermé"
 msgid "Conditions"
 msgstr "Confirmation"
 
-#: src/components/tools/CreationForm.vue:91
+#: src/components/tools/CreationForm.vue:92
 msgid "Confirm and create"
 msgstr "Confirmer et créer"
 
@@ -516,7 +512,7 @@ msgstr "Copier dans le presse-papiers"
 msgid "Copy token to clipboard"
 msgstr "Copier le jeton dans la presse-papiers"
 
-#: src/views/admin/ParametersView.vue:160
+#: src/views/admin/ParametersView.vue:162
 msgid "Could not save parameters"
 msgstr "Impossible de sauvegarder les paramètres"
 
@@ -575,7 +571,7 @@ msgstr "Limite quotidienne d'envoi de messages"
 msgid "Daily sending limit"
 msgstr "Limite d'envoi quotidienne"
 
-#: src/layouts/dashboard/NavBar.vue:176
+#: src/layouts/dashboard/NavBar.vue:177
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
@@ -805,7 +801,7 @@ msgstr "Domaine mise à jour"
 msgid "domain's default value"
 msgstr "La valeur par défaut du domaine"
 
-#: src/layouts/dashboard/NavBar.vue:182
+#: src/layouts/dashboard/NavBar.vue:183
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domaines"
@@ -826,7 +822,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Modifier"
 
-#: src/views/admin/identities/AccountEditView.vue:2
+#: src/views/admin/identities/AccountEditView.vue:3
 msgid "Edit account"
 msgstr "Modifier le compte"
 
@@ -869,14 +865,9 @@ msgstr "E-mail"
 msgid "Email address"
 msgstr "Adresse email"
 
-#: src/layouts/dashboard/NavBar.vue:226
+#: src/layouts/dashboard/NavBar.vue:227
 msgid "Email providers"
 msgstr "Fournisseurs de messagerie"
-
-#: src/components/login/PasswordRecoveryForm.vue:104
-#: src/views/login/PasswordRecoveryForm.vue:103
-msgid "Email sent, please check your inbox"
-msgstr "Email envoyé, veuillez vérifier votre boite aux lettres"
 
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
@@ -919,24 +910,6 @@ msgstr "Entrer un nom d'utilisateur simple ou une adresse e-mail"
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:69
 msgid "Enter an email address"
 msgstr "Entrer une adresse e-mail"
-
-#: src/components/login/TwofaForm.vue:11
-msgid ""
-"Enter the code from the two-factor app on your mobile device. If you have "
-"lost your device, you may enter one of your recovery codes."
-msgstr ""
-"Entrez le code de l'application à double facteur sur votre téléphone mobile. "
-"Si vous avez perdu votre appareil, vous pouvez entrez l'un de vos code de "
-"récupération."
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:16
-msgid "Enter the code you've just received by SMS"
-msgstr "Entrez le code que vous venez de recevoir par SMS"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:70
-#: src/views/login/PasswordRecoveryForm.vue:121
-msgid "Error"
-msgstr "Erreur"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
 msgid "Ex: 10MB. Leave empty for no limit"
@@ -1011,7 +984,7 @@ msgstr "Paramètres mis à jour"
 msgid "Filter updated"
 msgstr "Profil mis à jour"
 
-#: src/layouts/dashboard/NavBar.vue:278
+#: src/layouts/dashboard/NavBar.vue:279
 msgid "Filters"
 msgstr ""
 
@@ -1020,12 +993,6 @@ msgstr ""
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 msgid "First name"
 msgstr "Prénom"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:11
-#: src/components/login/PasswordRecoveryForm.vue:12
-#: src/views/login/PasswordRecoveryForm.vue:17
-msgid "Forgot password?"
-msgstr "Mot de passe oublié ?"
 
 #: src/views/account/SettingsView.vue:14
 msgid "Forward"
@@ -1128,12 +1095,12 @@ msgstr ""
 msgid "Identification"
 msgstr "Identification"
 
-#: src/layouts/dashboard/NavBar.vue:188
+#: src/layouts/dashboard/NavBar.vue:189
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identités"
 
-#: src/components/tools/CreationForm.vue:129
+#: src/components/tools/CreationForm.vue:130
 msgid ""
 "If you close this form now, your modifications won't be saved. Do you "
 "confirm?"
@@ -1149,7 +1116,7 @@ msgstr ""
 "Si vous l'avez récemment configuré, veuillez attendre que le premier rapport "
 "soit reçu et traité. "
 
-#: src/layouts/dashboard/NavBar.vue:222
+#: src/layouts/dashboard/NavBar.vue:223
 msgid "IMAP Migration"
 msgstr "Migration IMAP"
 
@@ -1181,11 +1148,7 @@ msgstr "Importer des identités"
 msgid "Indicate one or more recipients separated by a comma (,)"
 msgstr "Indiquer un ou plusieurs destinataires séparés par une virgule (,) "
 
-#: src/views/login/PasswordRecoveryForm.vue:102
-msgid "Info"
-msgstr "Info"
-
-#: src/layouts/dashboard/NavBar.vue:245 src/views/admin/InformationView.vue:4
+#: src/layouts/dashboard/NavBar.vue:246 src/views/admin/InformationView.vue:4
 msgid "Information"
 msgstr "Information"
 
@@ -1214,10 +1177,6 @@ msgstr "Mot de passe incorrect"
 #: src/plugins/rules.js:41
 msgid "Invalid port number"
 msgstr "Numéro de port incorrect"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:117
-msgid "Invalid reset token."
-msgstr "Jeton de réinitialisation incorrect."
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
@@ -1286,7 +1245,7 @@ msgstr "Domaine local (optionnel)"
 msgid "Logger"
 msgstr "Logger"
 
-#: src/layouts/dashboard/NavBar.vue:259
+#: src/layouts/dashboard/NavBar.vue:260
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -1338,7 +1297,7 @@ msgstr "Limite d'envoi des messages"
 msgid "messages"
 msgstr "messages"
 
-#: src/layouts/dashboard/NavBar.vue:214
+#: src/layouts/dashboard/NavBar.vue:215
 msgid "Messages"
 msgstr "Messages"
 
@@ -1346,7 +1305,7 @@ msgstr "Messages"
 msgid "Migration deleted"
 msgstr "Migration supprimée"
 
-#: src/layouts/dashboard/NavBar.vue:231
+#: src/layouts/dashboard/NavBar.vue:232
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Migrations"
@@ -1363,7 +1322,7 @@ msgstr "Modifié"
 msgid "Modify"
 msgstr "Modifier"
 
-#: src/layouts/dashboard/NavBar.vue:200
+#: src/layouts/dashboard/NavBar.vue:201
 msgid "Monitoring"
 msgstr "Supervision"
 
@@ -1468,7 +1427,7 @@ msgstr "Nouveau fournisseur"
 msgid "New recovery codes"
 msgstr "Nouveaux codes de récupération"
 
-#: src/components/tools/CreationForm.vue:68
+#: src/components/tools/CreationForm.vue:69
 msgid "Next"
 msgstr "Suivant"
 
@@ -1482,7 +1441,7 @@ msgstr "non"
 #: src/components/admin/domains/DomainList.vue:248
 #: src/components/admin/identities/IdentityList.vue:209
 #: src/components/admin/identities/IdentityList.vue:235
-#: src/components/tools/CreationForm.vue:135
+#: src/components/tools/CreationForm.vue:136
 msgid "No"
 msgstr "Non"
 
@@ -1550,11 +1509,6 @@ msgstr ""
 "Nombre de messages que cette boîte aux lettres peut envoyer par jour. "
 "Laisser vide pour aucune limite."
 
-#: src/components/login/PasswordRecoveryForm.vue:76
-#: src/views/login/PasswordRecoveryForm.vue:75
-msgid "Ok"
-msgstr "Ok"
-
 #: src/components/tools/ConfirmDialog.vue:56
 msgid "OK"
 msgstr "OK"
@@ -1589,7 +1543,7 @@ msgstr "Options"
 msgid "or suggest a new language"
 msgstr ""
 
-#: src/views/admin/ParametersView.vue:151
+#: src/views/admin/ParametersView.vue:153
 msgid "Parameters updated"
 msgstr "Paramètres mis à jour"
 
@@ -1618,10 +1572,6 @@ msgstr "Mot de passe copié dans la presse-papier"
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:101
 msgid "Password mismatch"
 msgstr "Le mot de passe est différent"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:12
-msgid "Password recovery"
-msgstr "Récupération de mot de passe"
 
 #: src/components/account/ProfileForm.vue:143
 msgid "Password updated"
@@ -1654,11 +1604,6 @@ msgstr "Code Pin"
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
 msgstr "Veuillez ajouter au moins un destinataire"
-
-#: src/components/login/PasswordRecoveryForm.vue:16
-#: src/views/login/PasswordRecoveryForm.vue:21
-msgid "Please fill-in your primary email address"
-msgstr "Veillez renseigner votre adresse e-mail principale"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
@@ -1833,10 +1778,6 @@ msgstr "Ré-ouvrir l'alarme"
 msgid "Reseller"
 msgstr "Revendeur"
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:39
-msgid "Resend SMS."
-msgstr "Renvoyer le SMS."
-
 #: src/components/account/BackupCodeAuthForm.vue:35
 msgid "Reset recovery codes"
 msgstr "Rénitialiser les codes de récupération"
@@ -1849,20 +1790,6 @@ msgstr "Ressources"
 #: src/components/tools/ResourcesView.vue:4
 msgid "Resources usage"
 msgstr "Utilisation des ressources"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:73
-msgid "Retry reset"
-msgstr "Réessayer la rénitialisation"
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:47
-#: src/components/login/PasswordRecoveryForm.vue:38
-#: src/components/login/PasswordRecoveryForm.vue:77
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:44
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:72
-#: src/views/login/PasswordRecoveryForm.vue:43
-#: src/views/login/PasswordRecoveryForm.vue:76
-msgid "Return to login"
-msgstr "Retour à la connexion"
 
 #: src/components/admin/identities/AccountCreationForm.vue:163
 #: src/components/admin/identities/AccountCreationForm.vue:92
@@ -1955,7 +1882,7 @@ msgstr "Service"
 msgid "Service: "
 msgstr "Service :"
 
-#: src/layouts/dashboard/NavBar.vue:239 src/layouts/dashboard/NavBar.vue:284
+#: src/layouts/dashboard/NavBar.vue:240 src/layouts/dashboard/NavBar.vue:285
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -1989,7 +1916,7 @@ msgstr "Enregistrement SPF introuvable"
 msgid "Start typing a name here..."
 msgstr "Commencer à saisir un nom ici..."
 
-#: src/layouts/dashboard/NavBar.vue:204
+#: src/layouts/dashboard/NavBar.vue:205
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -2004,15 +1931,8 @@ msgstr "Statut"
 msgid "Subject"
 msgstr "Sujet"
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:42
-#: src/components/login/PasswordRecoveryForm.vue:33
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:34
-#: src/views/login/PasswordRecoveryForm.vue:38
-msgid "Submit"
-msgstr "Soumettre"
-
-#: src/components/tools/CreationForm.vue:20
-#: src/components/tools/CreationForm.vue:74
+#: src/components/tools/CreationForm.vue:21
+#: src/components/tools/CreationForm.vue:75
 msgid "Summary"
 msgstr "Résumé"
 
@@ -2073,21 +1993,10 @@ msgstr "Cette page est en cours de construction."
 msgid "To"
 msgstr "A"
 
-#: src/components/login/PasswordRecoveryChangeForm.vue:128
-#: src/components/login/PasswordRecoveryForm.vue:125
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:103
-#: src/views/login/PasswordRecoveryForm.vue:124
-msgid "Too many unsuccessful attempts, please try later."
-msgstr "Trop de tentatives sans succès, veuillez réessayer plus tard"
-
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
 msgid "Total"
 msgstr "Total"
-
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:89
-msgid "TOTP resent."
-msgstr "TOTP envoyé."
 
 #: src/components/admin/domains/DomainCreationForm.vue:151
 #: src/components/admin/domains/DomainCreationForm.vue:214
@@ -2106,10 +2015,6 @@ msgstr "Sources de confiance"
 #: src/views/account/SettingsView.vue:11
 #, fuzzy
 msgid "Two-factor auth"
-msgstr "Authentification à double facteur"
-
-#: src/components/login/TwofaForm.vue:6
-msgid "Two-factor authentication"
 msgstr "Authentification à double facteur"
 
 #: src/components/account/TotpAuthForm.vue:109
@@ -2190,16 +2095,6 @@ msgstr "Nouveau compte"
 msgid "Use domain default value"
 msgstr "Utiliser la valeur par défaut du domaine"
 
-#: src/components/login/PasswordRecoverySmsTotpForm.vue:97
-msgid "User seems wrong, return to login or restart reset the process?"
-msgstr ""
-"L'utilisateur semble erroné, revenez à la connexion ou redémarrer "
-"réinitialisez le processus "
-
-#: src/components/login/PasswordRecoveryChangeForm.vue:119
-msgid "User unknown."
-msgstr "Utilisateur inconnu."
-
 #: src/components/admin/domains/DomainAdminList.vue:106
 #: src/components/admin/identities/AccountCreationForm.vue:98
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
@@ -2218,10 +2113,6 @@ msgstr "Valide"
 msgid "Value"
 msgstr ""
 
-#: src/components/login/TwofaForm.vue:31
-msgid "Verify code"
-msgstr "Vérifier le code"
-
 #: src/components/admin/domains/DNSDetail.vue:217
 msgid "warning"
 msgstr "Avertissement"
@@ -2232,7 +2123,7 @@ msgstr "Avertissement"
 #: src/components/admin/domains/DomainList.vue:242
 #: src/components/admin/identities/IdentityList.vue:204
 #: src/components/admin/identities/IdentityList.vue:230
-#: src/components/tools/CreationForm.vue:128
+#: src/components/tools/CreationForm.vue:129
 msgid "Warning"
 msgstr "Avertissement"
 
@@ -2270,7 +2161,7 @@ msgstr "oui"
 #: src/components/admin/domains/DomainList.vue:249
 #: src/components/admin/identities/IdentityList.vue:208
 #: src/components/admin/identities/IdentityList.vue:234
-#: src/components/tools/CreationForm.vue:134
+#: src/components/tools/CreationForm.vue:135
 msgid "Yes"
 msgstr "Oui"
 
@@ -2309,6 +2200,76 @@ msgstr "Votre jeton API est :"
 #: src/components/account/FidoAuthForm.vue:76
 msgid "Your browser does not seem compatible with WebAuthN"
 msgstr ""
+
+#~ msgid "Change password"
+#~ msgstr "Modifier le mot de passe"
+
+#~ msgid "Email sent, please check your inbox"
+#~ msgstr "Email envoyé, veuillez vérifier votre boite aux lettres"
+
+#~ msgid ""
+#~ "Enter the code from the two-factor app on your mobile device. If you have "
+#~ "lost your device, you may enter one of your recovery codes."
+#~ msgstr ""
+#~ "Entrez le code de l'application à double facteur sur votre téléphone "
+#~ "mobile. Si vous avez perdu votre appareil, vous pouvez entrez l'un de vos "
+#~ "code de récupération."
+
+#~ msgid "Enter the code you've just received by SMS"
+#~ msgstr "Entrez le code que vous venez de recevoir par SMS"
+
+#~ msgid "Error"
+#~ msgstr "Erreur"
+
+#~ msgid "Forgot password?"
+#~ msgstr "Mot de passe oublié ?"
+
+#~ msgid "Info"
+#~ msgstr "Info"
+
+#~ msgid "Invalid reset token."
+#~ msgstr "Jeton de réinitialisation incorrect."
+
+#~ msgid "Ok"
+#~ msgstr "Ok"
+
+#~ msgid "Password recovery"
+#~ msgstr "Récupération de mot de passe"
+
+#~ msgid "Please fill-in your primary email address"
+#~ msgstr "Veillez renseigner votre adresse e-mail principale"
+
+#~ msgid "Resend SMS."
+#~ msgstr "Renvoyer le SMS."
+
+#~ msgid "Retry reset"
+#~ msgstr "Réessayer la rénitialisation"
+
+#~ msgid "Return to login"
+#~ msgstr "Retour à la connexion"
+
+#~ msgid "Submit"
+#~ msgstr "Soumettre"
+
+#~ msgid "Too many unsuccessful attempts, please try later."
+#~ msgstr "Trop de tentatives sans succès, veuillez réessayer plus tard"
+
+#~ msgid "TOTP resent."
+#~ msgstr "TOTP envoyé."
+
+#~ msgid "Two-factor authentication"
+#~ msgstr "Authentification à double facteur"
+
+#~ msgid "User seems wrong, return to login or restart reset the process?"
+#~ msgstr ""
+#~ "L'utilisateur semble erroné, revenez à la connexion ou redémarrer "
+#~ "réinitialisez le processus "
+
+#~ msgid "User unknown."
+#~ msgstr "Utilisateur inconnu."
+
+#~ msgid "Verify code"
+#~ msgstr "Vérifier le code"
 
 #~ msgid "Connect"
 #~ msgstr "Connexion"
