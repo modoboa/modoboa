@@ -1,6 +1,9 @@
+from django.core.checks import register, Info, Warning
 from django.conf import settings
-from django.core.checks import Warning, register
 from django.utils.translation import gettext as _
+
+from modoboa.core.utils import generate_rsa_private_key
+
 
 W001 = Warning(
     _(
@@ -24,3 +27,14 @@ def check_use_tz_enabled(app_configs, **kwargs):
     if not settings.USE_TZ:
         errors.append(W001)
     return errors
+
+
+@register(deploy=True)
+def check_rsa_private_key_exists(app_configs, **kwargs):
+    """
+    Ensure an RSA private key exists to enable OIDC.
+    """
+    msgs = []
+    if generate_rsa_private_key(settings.BASE_DIR):
+        msgs.append(Info("An RSA private key has been generated for OIDC."))
+    return msgs

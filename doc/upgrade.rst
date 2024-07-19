@@ -28,6 +28,13 @@ use them:
    > sudo -u <modoboa_user> -i bash
    > source <virtuenv_path>/bin/activate
 
+
+.. _post_upgrade_commands:
+
+.. note::
+
+    Check the :ref:`specific_upgrade_instructions` before running the following commands.
+
 Then, run the following commands:
 
 .. sourcecode:: bash
@@ -37,6 +44,7 @@ Then, run the following commands:
    > python manage.py migrate
    > python manage.py collectstatic
    > python manage.py check --deploy
+   > python manage.py load_initial_data
 
 Once done, check if the version you are installing requires
 :ref:`specific_upgrade_instructions`.
@@ -146,8 +154,8 @@ Version 2.3.0
 
 Pre update
 ----------
-
-Before your start upgrading modoboa, run the following commands from
+@TODO : Update this with SQL changes, clarify "before you start upgrading modoboa"
+Before you start upgrading modoboa, run the following commands from
 your virtual environment:
 
 .. sourcecode:: bash
@@ -259,7 +267,21 @@ by default.
          'modoboa.lib.middleware.RequestCatcherMiddleware',
       )
 
--  Add the following content after ``MEDIA_ROOT``:
+-  Add ``'oauth2_provider.contrib.rest_framework.OAuth2Authentication'``
+   at the top of the list of ``DEFAULT_AUTHENTICATION_CLASSES``
+   (inside ``REST_FRAMEWORK`` section):
+
+   .. sourcecode:: python
+
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+         'rest_framework.authentication.TokenAuthentication',
+         'rest_framework.authentication.SessionAuthentication',
+      ),
+
+
+-  Run the commands indicated :ref:`in the first section <post_upgrade_commands>`
+   then add the following content after ``MEDIA_ROOT``:
 
    .. sourcecode:: python
 
@@ -281,19 +303,6 @@ by default.
 
       # If CORS fail, you might want to try to set it to True
       #CORS_ORIGIN_ALLOW_ALL = False
-
--  Add ``'oauth2_provider.contrib.rest_framework.OAuth2Authentication'``
-   at the top of the list of ``DEFAULT_AUTHENTICATION_CLASSES``
-   (inside ``REST_FRAMEWORK`` section):
-
-   .. sourcecode:: python
-
-      'DEFAULT_AUTHENTICATION_CLASSES': (
-         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-         'rest_framework.authentication.TokenAuthentication',
-         'rest_framework.authentication.SessionAuthentication',
-      ),
-
 
 SORBS DNS
 ---------
@@ -983,7 +992,7 @@ This release introduces an optional LDAP synchronization process. If
 you want to use it, please follow the :ref:`dedicated procedure <ldap_sync>`.
 
 Version 1.13.1
-=======
+==============
 
 Upgrade postfix maps files as follows:
 

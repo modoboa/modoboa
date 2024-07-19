@@ -112,12 +112,17 @@ class Command(BaseCommand):
             allowed_host = input("What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
-        frontend_application = app_model.objects.filter(name="Modoboa frontend")
+        frontend_application_qs = app_model.objects.all()
+        frontend_application = None
+        for app in frontend_application_qs:
+            if app.name == "Modoboa frontend":
+                frontend_application = app
+                break
         frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
         base_uri = f"https://{allowed_host}/{frontend_path}"
         redirect_uri = f"{base_uri}/login/logged"
         client_id = ""
-        if not frontend_application.exists():
+        if frontend_application is None:
             if options["dev"]:
                 base_uri = "https://localhost:3000/"
                 redirect_uri = "https://localhost:3000/login/logged"
@@ -136,13 +141,14 @@ class Command(BaseCommand):
                 "authorization-code",
             )
         else:
-            client_id = frontend_application.first().client_id
+            client_id = frontend_application.client_id
 
         base_frontend_dir = os.path.join(
-            os.path.dirname(__file__), "../../frontend_dist/"
+            os.path.dirname(__file__), "../../../frontend_dist/"
         )
-        frontend_target_dir = "{}/frontend".format(options["name"])
+        frontend_target_dir = "{}/frontend".format(settings.BASE_DIR)
         if os.path.exists(base_frontend_dir):
+            shutil.rmtree(frontend_target_dir, ignore_errors=True)
             shutil.copytree(base_frontend_dir, frontend_target_dir)
             with open(f"{frontend_target_dir}/config.json", "w") as fp:
                 fp.write(
@@ -150,7 +156,7 @@ class Command(BaseCommand):
   "API_BASE_URL": "https://{allowed_host}/api/v2",
   "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
   "OAUTH_CLIENT_ID": "{client_id}",
-  "OAUTH_REDIRECT_URI": "{redirect_uri}"
+  "OAUTH_REDIRECT_URI": "{redirect_uri}",
   "OAUTH_POST_REDIRECT_URI": "{base_uri}"
 }}
 """
