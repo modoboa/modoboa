@@ -11,7 +11,6 @@ from django.utils.translation import gettext as _
 
 from modoboa.core.extensions import exts_pool
 from modoboa.lib.api_client import ModoAPIClient
-from . import models
 
 
 def parse_map_file(path):
@@ -28,6 +27,8 @@ def parse_map_file(path):
 
 def check_for_updates():
     """Check if a new version of Modoboa is available."""
+    from . import models
+
     local_config = models.LocalConfig.objects.first()
     client = ModoAPIClient()
     extensions = exts_pool.list_all()
