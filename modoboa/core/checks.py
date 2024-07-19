@@ -34,5 +34,7 @@ def check_rsa_private_key_exists(app_configs, **kwargs):
     """
     Ensure an RSA private key exists to enable OIDC.
     """
+    msgs = []
     if generate_rsa_private_key(settings.BASE_DIR):
-        return Info("An RSA private key has been generated for OIDC.")
+        msgs.append(Info("An RSA private key has been generated for OIDC."))
+    return msgs
