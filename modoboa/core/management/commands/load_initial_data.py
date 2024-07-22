@@ -115,7 +115,7 @@ class Command(BaseCommand):
         frontend_application_qs = app_model.objects.all()
         frontend_application = None
         for app in frontend_application_qs:
-            if app.name == "Modoboa frontend":
+            if app.name == "modoboa_frontend":
                 frontend_application = app
                 break
         frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
@@ -133,7 +133,7 @@ class Command(BaseCommand):
                 "createapplication",
                 "--algorithm=RS256",
                 f"--redirect-uris={redirect_uri}",
-                "--name='Modoboa frontend'",
+                "--name=modoboa_frontend",
                 f"--client-id={client_id}",
                 f"--post-logout-redirect-uris={base_uri}",
                 "--skip-authorization",
