@@ -672,7 +672,7 @@ msgstr "API token kopierat till urklipp"
 #: src/components/admin/domains/DNSDetail.vue:218
 #, fuzzy
 msgid ""
-"DKIM key does not seem to be genrated yet or has failed. Do you want to "
+"DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
 msgstr "DKIM-nycklar finns redan för den här domänen. Vill du skriva över dem?"
 
