@@ -1,9 +1,10 @@
 """API v2 tests."""
 
 from unittest import mock
-from datetime import timezone, timedelta
+from datetime import timedelta
 
 from django.urls import reverse
+from django.utils import timezone
 
 from oauth2_provider.models import get_access_token_model, get_application_model
 
@@ -33,7 +34,7 @@ class FilterSetViewSetTestCase(ModoAPITestCase):
         )
 
         cls.access_token = AccessToken.objects.create(
-            user=cls.test_user,
+            user=cls.user,
             scope="read write",
             expires=timezone.now() + timedelta(seconds=300),
             token="secret-access-token-key",

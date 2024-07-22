@@ -24,10 +24,10 @@ class SieveClient:
 
     msc: managesieve.Client
 
-    def __init__(self, user: Optional[str] = None, oauth_token: Optional[str] = None):
-        if user and oauth_token:
+    def __init__(self, user: Optional[str] = None, password: Optional[str] = None):
+        if user and password:
             try:
-                ret, msg = self.login(user, oauth_token)
+                ret, msg = self.login(user, password)
             except (managesieve.Error, ConnectionError) as e:
                 raise SieveClientError(str(e))
             if not ret:
