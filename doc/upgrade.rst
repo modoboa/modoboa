@@ -46,8 +46,13 @@ Then, run the following commands:
    > python manage.py check --deploy
    > python manage.py load_initial_data
 
-Once done, check if the version you are installing requires
-:ref:`specific_upgrade_instructions`.
+Then when everything has been updated,
+restart modoboa's services:
+
+.. sourcecode:: bash
+
+   # sudo systemctl restart uwsgi
+   # sudo systemctl restart supervisor
 
 Finally, restart your web server.
 
@@ -154,14 +159,34 @@ Version 2.3.0
 
 Pre update
 ----------
-@TODO : Update this with SQL changes, clarify "before you start upgrading modoboa"
-Before you start upgrading modoboa, run the following commands from
-your virtual environment:
 
-.. sourcecode:: bash
+.. note::
 
-   > python manage.py modo repair
-   > python manage.py rename_app modoboa_postfix_autoreply postfix_autoreply
+    To check that you were actually using modoboa-postfix-autoreply
+    you can check if this command returns something:
+
+    .. sourcecode:: bash
+
+        cat /srv/modoboa/instance/instance/settings.py | grep "modoboa_postfix_autoreply"
+
+If you were using
+`modoboa-postfix-autoreply <https://github.com/modoboa/modoboa-postfix-autoreply>`_
+extension, you need to perfome a few commands:
+
+-  If you are using Postegresql (default option with the installer),
+   run as a root user:
+
+   .. sourcecode:: bash
+
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_content_type SET app_label='postfix_autoreply' WHERE app_label='modoboa_postfix_autoreply'"
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_migrations SET app='postfix_autoreply' WHERE app='modoboa_postfix_autoreply'"
+
+-   If you are using Mysql, run as a root user:
+
+    .. sourcecode:: bash
+
+       > echo "UPDATE django_content_type SET app_label='postfix_autoreply' WHERE app_label='modoboa_postfix_autoreply'" |  mysql -u root -p modoboa
+       > echo "UPDATE django_migrations SET app='postfix_autoreply' WHERE app='modoboa_postfix_autoreply'" | mysql -u root -p modoboa
 
 Required changes to :file:`settings.py`
 ---------------------------------------
@@ -267,7 +292,9 @@ by default.
          'modoboa.lib.middleware.RequestCatcherMiddleware',
       )
 
--  Add ``'oauth2_provider.contrib.rest_framework.OAuth2Authentication'``
+-  Replace
+   ``'modoboa.core.drf_authentication.JWTAuthenticationWith2FA'`` by
+   ``'oauth2_provider.contrib.rest_framework.OAuth2Authentication'``
    at the top of the list of ``DEFAULT_AUTHENTICATION_CLASSES``
    (inside ``REST_FRAMEWORK`` section):
 
@@ -303,6 +330,24 @@ by default.
 
       # If CORS fail, you might want to try to set it to True
       #CORS_ORIGIN_ALLOW_ALL = False
+
+Post update
+-----------
+
+Run this command to be sure to have everything set.
+
+.. sourcecode:: bash
+
+    python manage.py modo repair
+
+You need to set the ``buffer-size`` to ``8192`` in uwsgi config.
+Edit the value in ``/etc/uwsgi/apps-available/automx_instance.ini``
+to match at least 8192 or add it if it was not set:
+
+.. sourcecode:: bash
+
+    buffer-size = 8192
+
 
 SORBS DNS
 ---------
