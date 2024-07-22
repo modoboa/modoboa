@@ -1,19 +1,10 @@
 """Custom forms."""
 
-from sievelib.managesieve import SUPPORTED_AUTH_MECHS
-
 from django import forms
 from django.utils.translation import gettext_lazy
 
 from modoboa.lib import form_utils
 from modoboa.parameters import forms as param_forms
-
-
-def supported_auth_mechs():
-    values = [("AUTO", "auto")]
-    for m in SUPPORTED_AUTH_MECHS:
-        values += [(m, m.lower())]
-    return values
 
 
 class ParametersForm(param_forms.AdminParametersForm):
@@ -39,14 +30,6 @@ class ParametersForm(param_forms.AdminParametersForm):
         label=gettext_lazy("Connect using STARTTLS"),
         initial=False,
         help_text=gettext_lazy("Use the STARTTLS extension"),
-    )
-
-    authentication_mech = forms.ChoiceField(
-        label=gettext_lazy("Authentication mechanism"),
-        choices=supported_auth_mechs(),
-        initial="auto",
-        help_text=gettext_lazy("Prefered authentication mechanism"),
-        widget=forms.Select(attrs={"class": "form-control"}),
     )
 
     sep2 = form_utils.SeparatorField(label=gettext_lazy("IMAP settings"))
