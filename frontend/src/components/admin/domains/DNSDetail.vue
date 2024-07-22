@@ -216,7 +216,7 @@ async function retryKeyGeneration() {
     const result = await dialog.value.open(
       $gettext('warning'),
       $gettext(
-        'DKIM key does not seem to be genrated yet or has failed. Do you want to requeue the job?'
+        'DKIM key does not seem to be generated yet or has failed. Do you want to requeue the job?'
       ),
       {
         color: 'warning',
