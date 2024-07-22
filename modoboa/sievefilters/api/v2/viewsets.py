@@ -29,7 +29,6 @@ FILTER_SET_ID = OpenApiParameter(
 
 
 class FilterSetViewSet(viewsets.ViewSet):
-
     permission_classes = (HasMailbox,)
     serializer_class = serializers.FilterSetSerializer
 

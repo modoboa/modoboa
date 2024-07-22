@@ -1,25 +1,44 @@
 """API v2 tests."""
 
 from unittest import mock
+from datetime import timezone, timedelta
 
 from django.urls import reverse
 
-from rest_framework.authtoken.models import Token
+from oauth2_provider.models import get_access_token_model, get_application_model
 
 from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 from modoboa.sievefilters import mocks
 
+Application = get_application_model()
+AccessToken = get_access_token_model()
+
 
 class FilterSetViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):
         """Create some users."""
         super().setUpTestData()
         admin_factories.populate_database()
         cls.user = core_models.User.objects.get(username="user@test.com")
+
+        cls.application = Application.objects.create(
+            name="Test Application",
+            redirect_uris="http://localhost",
+            user=cls.user,
+            client_type=Application.CLIENT_PUBLIC,
+            authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,
+        )
+
+        cls.access_token = AccessToken.objects.create(
+            user=cls.test_user,
+            scope="read write",
+            expires=timezone.now() + timedelta(seconds=300),
+            token="secret-access-token-key",
+            application=cls.application,
+        )
 
     def setUp(self):
         """Connect with a simpler user."""
@@ -35,11 +54,7 @@ class FilterSetViewSetTestCase(ModoAPITestCase):
         self.addCleanup(patcher.stop)
 
     def authenticate(self, username: str = "user@test.com"):
-        # FIXME: replace ASAP with an oauth2 token
-        token = Token.objects.create(
-            user=core_models.User.objects.get(username=username)
-        )
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        self.client.credentials(Authorization="Bearer " + self.access_token.token)
 
     def test_list(self):
         self.authenticate()
