@@ -600,7 +600,7 @@ msgid "DKIM key copied to clipboard"
 msgstr ""
 
 #: src/components/admin/domains/DNSDetail.vue:218
-msgid "DKIM key does not seem to be genrated yet or has failed. Do you want to requeue the job?"
+msgid "DKIM key does not seem to be generated yet or has failed. Do you want to requeue the job?"
 msgstr ""
 
 #: src/components/admin/domains/DomainCreationForm.vue:208

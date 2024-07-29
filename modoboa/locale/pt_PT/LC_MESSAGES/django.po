@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-18 13:38+0200\n"
+"POT-Creation-Date: 2024-07-22 14:45+0200\n"
 "PO-Revision-Date: 2024-07-17 11:45+0200\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
@@ -322,7 +322,7 @@ msgstr ""
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
 #: limits/app_settings.py:111 limits/app_settings.py:195
 #: limits/app_settings.py:269 limits/constants.py:31 limits/constants.py:84
-#: sievefilters/forms.py:86
+#: sievefilters/forms.py:69
 msgid "Mailboxes"
 msgstr ""
 
@@ -610,7 +610,7 @@ msgstr "Domínio(s) administrado pelo utilizador"
 #: imap_migration/app_settings.py:99 maillog/apps.py:14 maillog/forms.py:20
 #: pdfcredentials/app_settings.py:23 pdfcredentials/app_settings.py:195
 #: postfix_autoreply/app_settings.py:12 postfix_autoreply/forms.py:107
-#: sievefilters/forms.py:76
+#: sievefilters/forms.py:59
 msgid "General"
 msgstr "Geral"
 
@@ -1943,8 +1943,8 @@ msgid "LDAP settings"
 msgstr "Definições do serviço de directório"
 
 #: core/app_settings.py:132 core/app_settings.py:836
-#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:58
-#: sievefilters/forms.py:25 sievefilters/forms.py:55
+#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:51
+#: sievefilters/forms.py:16 sievefilters/forms.py:38
 msgid "Server address"
 msgstr "Endereço do Servidor"
 
@@ -1953,8 +1953,8 @@ msgid "The IP address or the DNS name of the LDAP server"
 msgstr "O endereço IP do servidor de DNS do servidor LDAP"
 
 #: core/app_settings.py:138 core/app_settings.py:845
-#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:74
-#: sievefilters/forms.py:32 sievefilters/forms.py:67
+#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:67
+#: sievefilters/forms.py:23 sievefilters/forms.py:50
 msgid "Server port"
 msgstr "Porta do Servidor"
 
@@ -1996,7 +1996,7 @@ msgid "The TCP port number used by the LDAP secondary server"
 msgstr " A porta TCP usada pelo servidor LDAP"
 
 #: core/app_settings.py:167 core/app_settings.py:886
-#: sievefilters/app_settings.py:65 sievefilters/forms.py:61
+#: sievefilters/app_settings.py:58 sievefilters/forms.py:44
 msgid "Use a secured connection"
 msgstr ""
 
@@ -2360,14 +2360,14 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks/settings_checks.py:7
+#: core/checks.py:10
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
 msgstr ""
 
-#: core/checks/settings_checks.py:11
+#: core/checks.py:14
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr ""
 
@@ -2878,7 +2878,7 @@ msgstr "Sair"
 msgid "API"
 msgstr ""
 
-#: core/utils.py:33
+#: core/utils.py:39
 #, fuzzy
 #| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
@@ -4141,65 +4141,49 @@ msgstr "endereço de destino"
 msgid "verify recipients"
 msgstr "verificar destinatários"
 
-#: sievefilters/api/v2/serializers.py:26
-msgid "auto"
-msgstr ""
-
-#: sievefilters/api/v2/viewsets.py:184
+#: sievefilters/api/v2/viewsets.py:183
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
 msgstr "O utilizador '%s' já existe"
 
-#: sievefilters/app_settings.py:12 sievefilters/forms.py:22
+#: sievefilters/app_settings.py:12 sievefilters/forms.py:13
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "ManageSieve settings"
 msgstr "Definições do MANAGESIEVE"
 
-#: sievefilters/app_settings.py:19 sievefilters/forms.py:27
+#: sievefilters/app_settings.py:19 sievefilters/forms.py:18
 msgid "Address of your MANAGESIEVE server"
 msgstr "Endereço do servidor MANAGESIEVE"
 
-#: sievefilters/app_settings.py:27 sievefilters/forms.py:34
+#: sievefilters/app_settings.py:27 sievefilters/forms.py:25
 msgid "Listening port of your MANAGESIEVE server"
 msgstr "Porta atribuída ao servidor MANAGESIEVE"
 
-#: sievefilters/app_settings.py:34 sievefilters/forms.py:39
+#: sievefilters/app_settings.py:34 sievefilters/forms.py:30
 msgid "Connect using STARTTLS"
 msgstr "Ligar via STARTTLS"
 
-#: sievefilters/app_settings.py:35 sievefilters/forms.py:41
+#: sievefilters/app_settings.py:35 sievefilters/forms.py:32
 msgid "Use the STARTTLS extension"
 msgstr "Usar a extensão STARTLS"
 
-#: sievefilters/app_settings.py:41 sievefilters/forms.py:45
-#, fuzzy
-#| msgid "Authentication method"
-msgid "Authentication mechanism"
-msgstr "Mecanismo de autenticação"
-
-#: sievefilters/app_settings.py:42 sievefilters/forms.py:48
-#, fuzzy
-#| msgid "Authentication method"
-msgid "Prefered authentication mechanism"
-msgstr "Método de autenticação preferencial"
-
-#: sievefilters/app_settings.py:52 sievefilters/forms.py:52
+#: sievefilters/app_settings.py:45 sievefilters/forms.py:35
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "IMAP settings"
 msgstr "Definições do MANAGESIEVE"
 
-#: sievefilters/app_settings.py:59 sievefilters/forms.py:57
+#: sievefilters/app_settings.py:52 sievefilters/forms.py:40
 msgid "Address of your IMAP server"
 msgstr "Endereço do servidor MANAGESIEVE"
 
-#: sievefilters/app_settings.py:67 sievefilters/forms.py:63
+#: sievefilters/app_settings.py:60 sievefilters/forms.py:46
 msgid "Use a secured connection to access IMAP server"
 msgstr ""
 
-#: sievefilters/app_settings.py:75 sievefilters/forms.py:69
+#: sievefilters/app_settings.py:68 sievefilters/forms.py:52
 msgid "Listening port of your IMAP server"
 msgstr "Porta atribuída ao servidor MANAGESIEVE"
 
@@ -4297,35 +4281,35 @@ msgstr "Reencaminhar mensagens para"
 msgid "Stop processing"
 msgstr ""
 
-#: sievefilters/forms.py:80
+#: sievefilters/forms.py:63
 msgid "Editor mode"
 msgstr "Modo de edição"
 
-#: sievefilters/forms.py:82
+#: sievefilters/forms.py:65
 msgid "Select the mode you want the editor to work in"
 msgstr "Seleccione o modo de funcionamento do editor"
 
-#: sievefilters/forms.py:90
+#: sievefilters/forms.py:73
 msgid "Trash folder"
 msgstr ""
 
-#: sievefilters/forms.py:91
+#: sievefilters/forms.py:74
 msgid "Folder where deleted messages go"
 msgstr ""
 
-#: sievefilters/forms.py:96
+#: sievefilters/forms.py:79
 msgid "Sent folder"
 msgstr ""
 
-#: sievefilters/forms.py:97
+#: sievefilters/forms.py:80
 msgid "Folder where copies of sent messages go"
 msgstr ""
 
-#: sievefilters/forms.py:102
+#: sievefilters/forms.py:85
 msgid "Drafts folder"
 msgstr ""
 
-#: sievefilters/forms.py:103
+#: sievefilters/forms.py:86
 msgid "Folder where drafts go"
 msgstr ""
 
@@ -4333,11 +4317,11 @@ msgstr ""
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Falha ao recuperar os filtros definidos"
 
-#: sievefilters/lib.py:52
+#: sievefilters/lib.py:48
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr "Ligação ao servidor MANAGESIEVE falhou, valide a configuração"
 
-#: sievefilters/lib.py:79
+#: sievefilters/lib.py:75
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4538,6 +4522,16 @@ msgstr ""
 #: transport/models.py:17
 msgid "next hop"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Authentication method"
+#~ msgid "Authentication mechanism"
+#~ msgstr "Mecanismo de autenticação"
+
+#, fuzzy
+#~| msgid "Authentication method"
+#~ msgid "Prefered authentication mechanism"
+#~ msgstr "Método de autenticação preferencial"
 
 #, fuzzy
 #~| msgid "Domain modified"

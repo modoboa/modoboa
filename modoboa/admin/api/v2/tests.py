@@ -211,7 +211,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
     def test_create_too_long_username(self):
         """Test that it is not possible to create too long usernames (RFC5321)."""
         url = reverse("v2:account-list")
-        toolong_username = "".join(["a" for i in range(66)])
+        toolong_username = "a" * 66
         data = {
             "username": f"{toolong_username}@test.com",
             "role": "SimpleUsers",

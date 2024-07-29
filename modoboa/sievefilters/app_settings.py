@@ -35,13 +35,6 @@ SIEVEFILTERS_PARAMETERS_STRUCT = collections.OrderedDict(
                                 "help_text": _("Use the STARTTLS extension"),
                             },
                         ),
-                        (
-                            "authentication_mech",
-                            {
-                                "label": _("Authentication mechanism"),
-                                "help_text": _("Prefered authentication mechanism"),
-                            },
-                        ),
                     ]
                 ),
             },
