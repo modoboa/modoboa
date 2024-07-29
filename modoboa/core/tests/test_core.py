@@ -4,6 +4,7 @@ from io import StringIO
 
 import httmock
 from dateutil.relativedelta import relativedelta
+from oauth2_provider.models import get_application_model
 
 from django.core import mail
 from django.core import management
@@ -59,6 +60,15 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
         log1.save(update_fields=["date_created"])
         management.call_command("cleanlogs")
         self.assertEqual(models.Log.objects.count(), 1)
+
+    def test_non_duplicate_client_creation(self):
+        """Test that the load_initial_data command do not create duplicates
+        client for the frontend deployment."""
+        app_model = get_application_model()
+        management.call_command("load_initial_data")
+        self.assertEqual(1, app_model.objects.filter(name="modoboa_frontend").count())
+        management.call_command("load_initial_data")
+        self.assertEqual(1, app_model.objects.filter(name="modoboa_frontend").count())
 
     def test_clean_inactive_accounts(self):
         """Run clean_inactive_accounts command."""

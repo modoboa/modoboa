@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-18 13:38+0200\n"
+"POT-Creation-Date: 2024-07-22 14:45+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
@@ -329,7 +329,7 @@ msgstr ""
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
 #: limits/app_settings.py:111 limits/app_settings.py:195
 #: limits/app_settings.py:269 limits/constants.py:31 limits/constants.py:84
-#: sievefilters/forms.py:86
+#: sievefilters/forms.py:69
 msgid "Mailboxes"
 msgstr "Boest-posteloù"
 
@@ -599,7 +599,7 @@ msgstr "Domani(où) meret gant an implijer"
 #: imap_migration/app_settings.py:99 maillog/apps.py:14 maillog/forms.py:20
 #: pdfcredentials/app_settings.py:23 pdfcredentials/app_settings.py:195
 #: postfix_autoreply/app_settings.py:12 postfix_autoreply/forms.py:107
-#: sievefilters/forms.py:76
+#: sievefilters/forms.py:59
 msgid "General"
 msgstr "Hollek"
 
@@ -1896,8 +1896,8 @@ msgid "LDAP settings"
 msgstr "Arventennoù LDAP"
 
 #: core/app_settings.py:132 core/app_settings.py:836
-#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:58
-#: sievefilters/forms.py:25 sievefilters/forms.py:55
+#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:51
+#: sievefilters/forms.py:16 sievefilters/forms.py:38
 msgid "Server address"
 msgstr "Chomlec'h ar servijer"
 
@@ -1906,8 +1906,8 @@ msgid "The IP address or the DNS name of the LDAP server"
 msgstr "Chomlec'h IP pe anv DNS ar servijer LDAP"
 
 #: core/app_settings.py:138 core/app_settings.py:845
-#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:74
-#: sievefilters/forms.py:32 sievefilters/forms.py:67
+#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:67
+#: sievefilters/forms.py:23 sievefilters/forms.py:50
 msgid "Server port"
 msgstr "Porzh ar servijer"
 
@@ -1941,7 +1941,7 @@ msgid "The TCP port number used by the LDAP secondary server"
 msgstr ""
 
 #: core/app_settings.py:167 core/app_settings.py:886
-#: sievefilters/app_settings.py:65 sievefilters/forms.py:61
+#: sievefilters/app_settings.py:58 sievefilters/forms.py:44
 msgid "Use a secured connection"
 msgstr "Ober gant ur gevreadenn suraet"
 
@@ -2290,7 +2290,7 @@ msgstr "An adheñchañ dre-ziouer implijet pa n'eus arload ebet spisaet"
 msgid "LDAP"
 msgstr ""
 
-#: core/checks/settings_checks.py:7
+#: core/checks.py:10
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2300,7 +2300,7 @@ msgstr ""
 "tremennadennoù eurvezh hañv/eurvezh goañv (d.l.e ar memes eurvezh lec'hel a "
 "c'hoarvez div wech abalamour d'ur cheñchamant horolaj)."
 
-#: core/checks/settings_checks.py:11
+#: core/checks.py:14
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Lakaat `USE_TZ = Gwir e-barzh`arventennoù.py"
 
@@ -2803,7 +2803,7 @@ msgstr "Digevreañ"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:33
+#: core/utils.py:39
 msgid "The core part of Modoboa"
 msgstr "Lodenn greiz Modoboa"
 
@@ -4053,68 +4053,52 @@ msgstr "porzhioù herbrec'hiañ bukenn"
 msgid "verify recipients"
 msgstr "gwiriit ar reseverien"
 
-#: sievefilters/api/v2/serializers.py:26
-msgid "auto"
-msgstr ""
-
-#: sievefilters/api/v2/viewsets.py:184
+#: sievefilters/api/v2/viewsets.py:183
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
 msgstr "An implijer \"%s\" a zo anezhañ endeo"
 
-#: sievefilters/app_settings.py:12 sievefilters/forms.py:22
+#: sievefilters/app_settings.py:12 sievefilters/forms.py:13
 #, fuzzy
 #| msgid "DNS settings"
 msgid "ManageSieve settings"
 msgstr "Arventennoù DNS"
 
-#: sievefilters/app_settings.py:19 sievefilters/forms.py:27
+#: sievefilters/app_settings.py:19 sievefilters/forms.py:18
 msgid "Address of your MANAGESIEVE server"
 msgstr ""
 
-#: sievefilters/app_settings.py:27 sievefilters/forms.py:34
+#: sievefilters/app_settings.py:27 sievefilters/forms.py:25
 msgid "Listening port of your MANAGESIEVE server"
 msgstr ""
 
-#: sievefilters/app_settings.py:34 sievefilters/forms.py:39
+#: sievefilters/app_settings.py:34 sievefilters/forms.py:30
 msgid "Connect using STARTTLS"
 msgstr ""
 
-#: sievefilters/app_settings.py:35 sievefilters/forms.py:41
+#: sievefilters/app_settings.py:35 sievefilters/forms.py:32
 msgid "Use the STARTTLS extension"
 msgstr ""
 
-#: sievefilters/app_settings.py:41 sievefilters/forms.py:45
-#, fuzzy
-#| msgid "Authentication method"
-msgid "Authentication mechanism"
-msgstr "Doare dilesañ"
-
-#: sievefilters/app_settings.py:42 sievefilters/forms.py:48
-#, fuzzy
-#| msgid "Authentication method"
-msgid "Prefered authentication mechanism"
-msgstr "Doare dilesañ"
-
-#: sievefilters/app_settings.py:52 sievefilters/forms.py:52
+#: sievefilters/app_settings.py:45 sievefilters/forms.py:35
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "IMAP settings"
 msgstr "Arventennoù LDAP"
 
-#: sievefilters/app_settings.py:59 sievefilters/forms.py:57
+#: sievefilters/app_settings.py:52 sievefilters/forms.py:40
 msgid "Address of your IMAP server"
 msgstr ""
 
-#: sievefilters/app_settings.py:67 sievefilters/forms.py:63
+#: sievefilters/app_settings.py:60 sievefilters/forms.py:46
 #, fuzzy
 #| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Use a secured connection to access IMAP server"
 msgstr ""
 "Implijit ur gevreadenn SSL/STARTTLS evit gellet tizhout ar servijer LDAP"
 
-#: sievefilters/app_settings.py:75 sievefilters/forms.py:69
+#: sievefilters/app_settings.py:68 sievefilters/forms.py:52
 msgid "Listening port of your IMAP server"
 msgstr ""
 
@@ -4214,41 +4198,41 @@ msgstr "Kemennadenn"
 msgid "Stop processing"
 msgstr ""
 
-#: sievefilters/forms.py:80
+#: sievefilters/forms.py:63
 msgid "Editor mode"
 msgstr ""
 
-#: sievefilters/forms.py:82
+#: sievefilters/forms.py:65
 msgid "Select the mode you want the editor to work in"
 msgstr ""
 
-#: sievefilters/forms.py:90
+#: sievefilters/forms.py:73
 #, fuzzy
 #| msgid "Create aliases"
 msgid "Trash folder"
 msgstr "Krouiñ aliasoù"
 
-#: sievefilters/forms.py:91
+#: sievefilters/forms.py:74
 msgid "Folder where deleted messages go"
 msgstr ""
 
-#: sievefilters/forms.py:96
+#: sievefilters/forms.py:79
 #, fuzzy
 #| msgid "Create aliases"
 msgid "Sent folder"
 msgstr "Krouiñ aliasoù"
 
-#: sievefilters/forms.py:97
+#: sievefilters/forms.py:80
 msgid "Folder where copies of sent messages go"
 msgstr ""
 
-#: sievefilters/forms.py:102
+#: sievefilters/forms.py:85
 #, fuzzy
 #| msgid "Create aliases"
 msgid "Drafts folder"
 msgstr "Krouiñ aliasoù"
 
-#: sievefilters/forms.py:103
+#: sievefilters/forms.py:86
 msgid "Folder where drafts go"
 msgstr ""
 
@@ -4256,11 +4240,11 @@ msgstr ""
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr ""
 
-#: sievefilters/lib.py:52
+#: sievefilters/lib.py:48
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 
-#: sievefilters/lib.py:79
+#: sievefilters/lib.py:75
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4466,6 +4450,16 @@ msgstr "servij"
 #: transport/models.py:17
 msgid "next hop"
 msgstr "lamm da-heul"
+
+#, fuzzy
+#~| msgid "Authentication method"
+#~ msgid "Authentication mechanism"
+#~ msgstr "Doare dilesañ"
+
+#, fuzzy
+#~| msgid "Authentication method"
+#~ msgid "Prefered authentication mechanism"
+#~ msgstr "Doare dilesañ"
 
 #, fuzzy
 #~| msgid "Directory not found."

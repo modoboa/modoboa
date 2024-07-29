@@ -41,7 +41,7 @@ Installation
 ************
 
 The easiest way to install modoboa is to use the
-`offical installer <https://github.com/modoboa/modoboa-installer>`_.
+`official installer <https://github.com/modoboa/modoboa-installer>`_.
 More information is available in the documentation.
 
 *************

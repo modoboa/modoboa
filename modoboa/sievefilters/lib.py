@@ -1,6 +1,5 @@
 """Internal tools."""
 
-import ssl
 from typing import Optional, Tuple, Union
 
 from sievelib.factory import FiltersSet
@@ -37,12 +36,9 @@ class SieveClient:
     def login(self, user: str, password: str) -> Tuple[bool, Union[str, None]]:
         conf = dict(param_tools.get_global_parameters("sievefilters"))
         self.msc = managesieve.Client(conf["server"], conf["port"], debug=True)
-        authmech = conf["authentication_mech"]
-        if authmech == "AUTO":
-            authmech = None
         try:
             ret = self.msc.connect(
-                user, password, starttls=conf["starttls"], authmech=authmech
+                user, password, starttls=conf["starttls"], authmech="OAUTHBEARER"
             )
         except managesieve.Error as err:
             print(err)

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-18 13:38+0200\n"
+"POT-Creation-Date: 2024-07-22 14:45+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/"
@@ -326,7 +326,7 @@ msgstr ""
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
 #: limits/app_settings.py:111 limits/app_settings.py:195
 #: limits/app_settings.py:269 limits/constants.py:31 limits/constants.py:84
-#: sievefilters/forms.py:86
+#: sievefilters/forms.py:69
 msgid "Mailboxes"
 msgstr "Schránky"
 
@@ -556,8 +556,8 @@ msgid ""
 "(@domain.tld)."
 msgstr ""
 "Alias(y) této schránky. V rámci vstupu vložte pouze jeden alias, stiskněte "
-"ENTER pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte "
-"'*' (např. *@domena.cz)."
+"ENTER pro vložení dalšího aliasu. Pro vytvoření doménového koše vložte '*' "
+"(např. *@domena.cz)."
 
 #: admin/forms/account.py:275
 msgid "Sender addresses"
@@ -596,7 +596,7 @@ msgstr "Doména(y) pod správou uživatele"
 #: imap_migration/app_settings.py:99 maillog/apps.py:14 maillog/forms.py:20
 #: pdfcredentials/app_settings.py:23 pdfcredentials/app_settings.py:195
 #: postfix_autoreply/app_settings.py:12 postfix_autoreply/forms.py:107
-#: sievefilters/forms.py:76
+#: sievefilters/forms.py:59
 msgid "General"
 msgstr "Obecné"
 
@@ -1877,8 +1877,8 @@ msgid "LDAP settings"
 msgstr "Nastavení LDAP"
 
 #: core/app_settings.py:132 core/app_settings.py:836
-#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:58
-#: sievefilters/forms.py:25 sievefilters/forms.py:55
+#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:51
+#: sievefilters/forms.py:16 sievefilters/forms.py:38
 msgid "Server address"
 msgstr "Adresa serveru"
 
@@ -1887,8 +1887,8 @@ msgid "The IP address or the DNS name of the LDAP server"
 msgstr "IP adresa DNS jména LDAP serveru"
 
 #: core/app_settings.py:138 core/app_settings.py:845
-#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:74
-#: sievefilters/forms.py:32 sievefilters/forms.py:67
+#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:67
+#: sievefilters/forms.py:23 sievefilters/forms.py:50
 msgid "Server port"
 msgstr "Port serveru"
 
@@ -1922,7 +1922,7 @@ msgid "The TCP port number used by the LDAP secondary server"
 msgstr ""
 
 #: core/app_settings.py:167 core/app_settings.py:886
-#: sievefilters/app_settings.py:65 sievefilters/forms.py:61
+#: sievefilters/app_settings.py:58 sievefilters/forms.py:44
 msgid "Use a secured connection"
 msgstr "Použít zabezpečené připojení"
 
@@ -2271,7 +2271,7 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks/settings_checks.py:7
+#: core/checks.py:10
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2280,7 +2280,7 @@ msgstr ""
 "Hodnota USE_TZ je Vypnutá, toto může způsobit problémy při přechodu mezi "
 "letním a zimním časem (např. stejný čas dvakrát během změny času)."
 
-#: core/checks/settings_checks.py:11
+#: core/checks.py:14
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Nastavte `USE_TZ = True` v settings.py"
 
@@ -2777,7 +2777,7 @@ msgstr "Odhlásit se"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:33
+#: core/utils.py:39
 msgid "The core part of Modoboa"
 msgstr "Hlavní část Modoboa"
 
@@ -4054,69 +4054,53 @@ msgstr "cílový server"
 msgid "verify recipients"
 msgstr "ověřit příjemce"
 
-#: sievefilters/api/v2/serializers.py:26
-msgid "auto"
-msgstr ""
-
-#: sievefilters/api/v2/viewsets.py:184
+#: sievefilters/api/v2/viewsets.py:183
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
 msgstr "Uživatel '%s' již existuje"
 
-#: sievefilters/app_settings.py:12 sievefilters/forms.py:22
+#: sievefilters/app_settings.py:12 sievefilters/forms.py:13
 #, fuzzy
 #| msgid "Connection settings"
 msgid "ManageSieve settings"
 msgstr "Nastavení ManageSieve"
 
-#: sievefilters/app_settings.py:19 sievefilters/forms.py:27
+#: sievefilters/app_settings.py:19 sievefilters/forms.py:18
 #, fuzzy
 #| msgid "Address of your IMAP server"
 msgid "Address of your MANAGESIEVE server"
 msgstr "Adresa vašeho serveru ManegeSieve"
 
-#: sievefilters/app_settings.py:27 sievefilters/forms.py:34
+#: sievefilters/app_settings.py:27 sievefilters/forms.py:25
 #, fuzzy
 #| msgid "Listening port of your IMAP server"
 msgid "Listening port of your MANAGESIEVE server"
 msgstr "Port, na kterém naslouchá váš ManageSieve server"
 
-#: sievefilters/app_settings.py:34 sievefilters/forms.py:39
+#: sievefilters/app_settings.py:34 sievefilters/forms.py:30
 msgid "Connect using STARTTLS"
 msgstr "Připojit pomocí STARTTLS"
 
-#: sievefilters/app_settings.py:35 sievefilters/forms.py:41
+#: sievefilters/app_settings.py:35 sievefilters/forms.py:32
 msgid "Use the STARTTLS extension"
 msgstr "Použít rozšíření STARTTLS"
 
-#: sievefilters/app_settings.py:41 sievefilters/forms.py:45
-#, fuzzy
-#| msgid "Authentication method"
-msgid "Authentication mechanism"
-msgstr "Režim ověření"
-
-#: sievefilters/app_settings.py:42 sievefilters/forms.py:48
-#, fuzzy
-#| msgid "Authentication method"
-msgid "Prefered authentication mechanism"
-msgstr "Preferovaný režim ověření"
-
-#: sievefilters/app_settings.py:52 sievefilters/forms.py:52
+#: sievefilters/app_settings.py:45 sievefilters/forms.py:35
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "IMAP settings"
 msgstr "Nastavení IMAP"
 
-#: sievefilters/app_settings.py:59 sievefilters/forms.py:57
+#: sievefilters/app_settings.py:52 sievefilters/forms.py:40
 msgid "Address of your IMAP server"
 msgstr "Adresa vašeho IMAP serveru"
 
-#: sievefilters/app_settings.py:67 sievefilters/forms.py:63
+#: sievefilters/app_settings.py:60 sievefilters/forms.py:46
 msgid "Use a secured connection to access IMAP server"
 msgstr "Použít zabezpečené připojení pro přístup k IMAP serveru"
 
-#: sievefilters/app_settings.py:75 sievefilters/forms.py:69
+#: sievefilters/app_settings.py:68 sievefilters/forms.py:52
 msgid "Listening port of your IMAP server"
 msgstr "Port, na kterém naslouchá váš IMAP server"
 
@@ -4216,37 +4200,37 @@ msgstr "Odmítnout zprávu"
 msgid "Stop processing"
 msgstr "Ukončit zpracování"
 
-#: sievefilters/forms.py:80
+#: sievefilters/forms.py:63
 msgid "Editor mode"
 msgstr "Režim úpravy"
 
-#: sievefilters/forms.py:82
+#: sievefilters/forms.py:65
 msgid "Select the mode you want the editor to work in"
 msgstr "Zvolte režim editoru textu, ve kterém si přejete pracovat"
 
-#: sievefilters/forms.py:90
+#: sievefilters/forms.py:73
 msgid "Trash folder"
 msgstr "Složka koše"
 
-#: sievefilters/forms.py:91
+#: sievefilters/forms.py:74
 #, fuzzy
 #| msgid "rejected messages"
 msgid "Folder where deleted messages go"
 msgstr "Složka pro smazané zprávy"
 
-#: sievefilters/forms.py:96
+#: sievefilters/forms.py:79
 msgid "Sent folder"
 msgstr "Složka odeslané pošty"
 
-#: sievefilters/forms.py:97
+#: sievefilters/forms.py:80
 msgid "Folder where copies of sent messages go"
 msgstr "Složka pro kopie odeslaných zpráv"
 
-#: sievefilters/forms.py:102
+#: sievefilters/forms.py:85
 msgid "Drafts folder"
 msgstr "Složka konceptů"
 
-#: sievefilters/forms.py:103
+#: sievefilters/forms.py:86
 msgid "Folder where drafts go"
 msgstr "Složka pro koncepty zpráv"
 
@@ -4254,13 +4238,13 @@ msgstr "Složka pro koncepty zpráv"
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Nebylo možné zjistit hierarchický oddělovač"
 
-#: sievefilters/lib.py:52
+#: sievefilters/lib.py:48
 #, fuzzy
 #| msgid "Connection to IMAP server failed: %s"
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr "Spojení se serverem ManageSieve selhalo, zkontrolujte nastavení"
 
-#: sievefilters/lib.py:79
+#: sievefilters/lib.py:75
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4463,6 +4447,16 @@ msgstr "služba"
 #: transport/models.py:17
 msgid "next hop"
 msgstr "následující skok"
+
+#, fuzzy
+#~| msgid "Authentication method"
+#~ msgid "Authentication mechanism"
+#~ msgstr "Režim ověření"
+
+#, fuzzy
+#~| msgid "Authentication method"
+#~ msgid "Prefered authentication mechanism"
+#~ msgstr "Preferovaný režim ověření"
 
 #, fuzzy
 #~| msgid "Directory not found."

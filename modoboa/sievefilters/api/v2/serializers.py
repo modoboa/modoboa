@@ -5,12 +5,9 @@ from typing import List, Tuple
 from sievelib import commands
 from sievelib.factory import Filter
 
-from django.utils.translation import gettext as _
-
 from rest_framework import serializers
 
 from modoboa.sievefilters import constants, lib
-from modoboa.sievefilters.forms import supported_auth_mechs
 from modoboa.sievefilters.api.v2 import vloaders
 
 
@@ -22,18 +19,11 @@ class SievefiltersSettingsSerializer(serializers.Serializer):
     server = serializers.CharField(default="127.0.0.1")
     port = serializers.IntegerField(default=4190)
     starttls = serializers.BooleanField(default=False)
-    authentication_mech = serializers.ChoiceField(
-        default="auto", choices=[("auto", _("auto"))]
-    )
 
     # Imap Settings
     imap_server = serializers.CharField(default="127.0.0.1")
     imap_secured = serializers.BooleanField(default=False)
     imap_port = serializers.IntegerField(default=143)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["authentication_mech"].choices = supported_auth_mechs()
 
 
 class FilterSetSerializer(serializers.Serializer):

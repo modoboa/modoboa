@@ -2,7 +2,6 @@
 
 """Mock objects."""
 
-
 SAMPLE_SIEVE_SCRIPT = """require ["fileinto", "copy"];
 
 # Filter: test1
@@ -63,7 +62,7 @@ class ManagesieveClientMock:
         return """
 "IMPLEMENTATION" "Example1 ManageSieved v001"
 "VERSION" "1.0"
-"SASL" "PLAIN SCRAM-SHA-1 GSSAPI"
+"SASL" "PLAIN SCRAM-SHA-1 GSSAPI OAUTHBEARER"
 "SIEVE" "fileinto vacation"
 "STARTTLS"
 """
