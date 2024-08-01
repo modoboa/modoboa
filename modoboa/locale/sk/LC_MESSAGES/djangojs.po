@@ -2,10 +2,10 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Martin Oravec <8uk54nt0@gmail.com>, 2023
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -15,12 +15,11 @@ msgstr ""
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: Martin Oravec <8uk54nt0@gmail.com>, 2023\n"
 "Language-Team: Slovak (https://app.transifex.com/tonio/teams/13749/sk/)\n"
-"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
-">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
+"Language: sk\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
@@ -100,64 +99,3 @@ msgstr "Hľadať"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Hľadať..."
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "General information"
-#~ msgstr "operácia"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Description"
-#~ msgstr "operácia"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Auto configuration"
-#~ msgstr "operácia"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "Nie je definovaný žiadny doménový administrátor"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "Nie je definovaný žiadny doménový administrátor"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "Vyhlĺadať doménu"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Options"
-#~ msgstr "operácia"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "Nie je definovaný žiadny doménový administrátor"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "Nie je definovaný žiadny doménový administrátor"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "Nie je definovaný žiadny doménový administrátor"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Migrations"
-#~ msgstr "operácia"
-
-#~ msgid "Are you sure?"
-#~ msgstr "Ste si istý?"
-
-#~ msgid "This will invalidate your registered application."
-#~ msgstr "Táto operácia zneplatní vašu registrovanú aplikáciu."
