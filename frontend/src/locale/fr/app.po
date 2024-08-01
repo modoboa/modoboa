@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2024-03-20 10:10+0100\n"
+"PO-Revision-Date: 2024-08-01 17:22+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fr\n"
@@ -118,9 +118,8 @@ msgstr ""
 
 #: src/components/account/FilterSetForm.vue:14
 #: src/views/account/FiltersView.vue:165
-#, fuzzy
 msgid "Active"
-msgstr "Actions"
+msgstr "Actif"
 
 #: src/components/admin/domains/DomainAliasForm.vue:68
 #: src/views/account/FiltersView.vue:65
@@ -132,26 +131,24 @@ msgid "Add a new domain alias"
 msgstr "Ajouter un nouvel alias de domaine"
 
 #: src/components/account/FilterForm.vue:127
-#, fuzzy
 msgid "Add action"
-msgstr "Actions"
+msgstr "Ajouter une action"
 
 #: src/components/admin/domains/DomainAdminList.vue:66
 msgid "Add administrator"
 msgstr "Ajouter un administrateur"
 
 #: src/components/account/FilterForm.vue:60
-#, fuzzy
 msgid "Add condition"
-msgstr "Configuration automatique"
+msgstr "Ajouter une condition"
 
 #: src/views/account/FiltersView.vue:24
 msgid "Add filter set"
-msgstr ""
+msgstr "Ajouter un jeu de filtre"
 
 #: src/views/account/FiltersView.vue:60
 msgid "Add new filter"
-msgstr ""
+msgstr "Ajouter un nouveau filtre"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:52
 msgid "Add sender address"
@@ -163,7 +160,7 @@ msgstr "Ajouter/Supprimer depuis la page du domaine"
 
 #: src/components/account/FidoAuthForm.vue:134
 msgid "Added On"
-msgstr ""
+msgstr "Ajouté le"
 
 #: src/components/admin/domains/DNSDetail.vue:171
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
@@ -286,9 +283,8 @@ msgid "Alignment"
 msgstr "Alignement"
 
 #: src/components/account/FilterForm.vue:18
-#, fuzzy
 msgid "All messages"
-msgstr "messages"
+msgstr "Tous les messages"
 
 #: src/components/account/FilterForm.vue:16
 msgid "All of the following"
