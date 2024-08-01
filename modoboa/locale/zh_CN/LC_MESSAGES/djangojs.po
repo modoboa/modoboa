@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # 李 正 <364109980@qq.com>, 2021
 # Max Sun <zhl.sun@gmail.com>, 2023
 # Leamon, 2023
 # ice ice, 2023
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -17,12 +17,11 @@ msgstr ""
 "POT-Creation-Date: 2024-08-01 11:53+0200\n"
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: ice ice, 2023\n"
-"Language-Team: Chinese (China) (https://app.transifex.com/tonio/teams/13749/"
-"zh_CN/)\n"
-"Language: zh_CN\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/tonio/teams/13749/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
@@ -102,64 +101,3 @@ msgstr "查找"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "查找..."
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "General information"
-#~ msgstr "操作"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Description"
-#~ msgstr "操作"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Auto configuration"
-#~ msgstr "操作"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "未定义域管理员"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "未定义域管理员"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "搜索域"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Options"
-#~ msgstr "操作"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "未定义域管理员"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "未定义域管理员"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "未定义域管理员"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Migrations"
-#~ msgstr "操作"
-
-#~ msgid "Are you sure?"
-#~ msgstr "你确定吗？"
-
-#~ msgid "This will invalidate your registered application."
-#~ msgstr "这会使您的注册申请无效。"
