@@ -254,6 +254,8 @@ For debian and derivative, you need to install sqlite connector for dovecot::
 
    Replace values between ``<>`` with yours.
 
+.. _dovecot_oauth2:
+
 OAuth 2 authentication
 ======================
 
@@ -264,9 +266,7 @@ application with the following commands:
 .. sourcecode:: bash
 
    > cd <modoboa_instance_path>
-   > python manage.py createapplication --name=Dovecot --algorithm=RS256 --skip-authorization --redirect-uris=http://localhost --client-secret=<client_secret> public authorization-code
-
-Choose a value for ``<client_secret>`` (you can generate a random one).
+   > python manage.py createapplication --name=Dovecot --skip-authorization --client-id=dovecot confidential client-credentials
 
 On success, you should see an output similar to::
 
@@ -291,13 +291,13 @@ Finally, create a file named :file:`conf.d/dovecot-oauth2.conf.ext` with the
 following content::
 
   introspection_mode = post
-  introspection_url = http://<client_id>:<client_secret>@localhost/api/o/introspect/
+  introspection_url = http://dovecot:<client_secret>@localhost/api/o/introspect/
   username_attribute = username
   tls_ca_cert_file = /etc/ssl/certs/ca-certificates.crt
   active_attribute = active
   active_value = true
 
-Replace ``<client_id>`` and ``<client_secret>`` with the values you obtained earlier.
+Replace ``<client_secret>`` with the value you obtained earlier.
 
 LDAP
 ====

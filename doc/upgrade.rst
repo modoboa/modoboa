@@ -331,6 +331,12 @@ by default.
       # If CORS fail, you might want to try to set it to True
       #CORS_ORIGIN_ALLOW_ALL = False
 
+Docevot configuration changes
+-----------------------------
+
+You must enable oauth2 authentication in Dovecot to make the filters
+editor work in the new UI. Follow this :ref:`guide <dovecot_oauth2>`.
+
 Post update
 -----------
 

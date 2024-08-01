@@ -223,7 +223,6 @@ const editedAccount = ref({ pk: route.params.id })
 const usernameIsEmail = computed(() => {
   return (
     editedAccount.value.username &&
-    editedAccount.value.role !== 'SuperAdmins' &&
     editedAccount.value.username.indexOf('@') !== -1
   )
 })

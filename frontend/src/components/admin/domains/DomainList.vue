@@ -316,9 +316,7 @@ function getDomainMenuItems(domain) {
 }
 
 onMounted(() => {
-  if (Object.values(domains.value).length < 1) {
-    reloadDomains()
-  }
+  reloadDomains()
 })
 </script>
 
