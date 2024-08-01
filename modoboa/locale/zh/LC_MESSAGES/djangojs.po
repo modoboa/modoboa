@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# ice ice, 2023
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-01 11:53+0200\n"
+"PO-Revision-Date: 2020-10-02 13:39+0000\n"
+"Last-Translator: ice ice, 2023\n"
+"Language-Team: Chinese (https://app.transifex.com/tonio/teams/13749/zh/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
+msgid "No more domain to show"
+msgstr "没有更多的域名展示。"
+
+#: admin/static/admin/js/admin.js:149
+msgid "Do not delete domain directory"
+msgstr "请勿删除域名目录。"
+
+#: admin/static/admin/js/admin.js:151
+msgid "This operation will remove ALL data associated to this domain."
+msgstr "此操作会删除与该域名下相关的所有数据。"
+
+#: admin/static/admin/js/admin.js:152
+msgid ""
+"This operation will remove all data associated to this domain, excepting "
+"accounts."
+msgstr "此操作会删除与该域名下相关的所有数据，账号除外。"
+
+#: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
+msgid "No more quota to show"
+msgstr "没有更多配额显示"
+
+#: admin/static/admin/js/admin.js:180
+msgid "No more log to show"
+msgstr "没有更多日志"
+
+#: admin/static/admin/js/admin.js:309
+msgid "No domain administrator defined"
+msgstr "没有定义域名管理员"
+
+#: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
+msgid "No more identity to show"
+msgstr "没有更多用户"
+
+#: admin/static/admin/js/admin.js:407
+msgid "Do not delete mailbox directory"
+msgstr "请勿删除邮件目录"
+
+#: bower_components/jquery-ui/jquery-ui.min.js:8
+msgid "'"
+msgstr "'"
+
+#: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
+msgid "operation"
+msgstr "操作"
+
+#: core/static/core/js/settings.js:16
+msgid "No more log entry to show"
+msgstr "没有更多日志"
+
+#: maillog/static/maillog/js/stats.js:45
+msgid "Search a domain"
+msgstr "搜索域名"
+
+#: static/js/confirmation.js:44
+msgid "Warning"
+msgstr "警告"
+
+#: static/js/confirmation.js:59
+msgid "Cancel"
+msgstr "取消"
+
+#: static/js/global.js:347
+msgid "Internal error"
+msgstr "内部错误"
+
+#: static/js/listing.js:21
+msgid "No more entry to show"
+msgstr "没有更多记录"
+
+#: static/js/listing.js:46
+msgid "Search"
+msgstr "搜索"
+
+#: static/js/searchbar.js:28
+msgid "Search..."
+msgstr "搜索..."
