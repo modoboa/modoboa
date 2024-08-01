@@ -246,11 +246,15 @@ function generateNewKey() {
   )
 }
 
-watch(domain, (newDomain) => {
-  if (props.modelValue) {
-    domainsApi.getDomainDNSDetail(newDomain.pk).then((resp) => {
-      detail.value = resp.data
-    })
-  }
-})
+watch(
+  domain,
+  (newDomain) => {
+    if (newDomain) {
+      domainsApi.getDomainDNSDetail(newDomain.pk).then((resp) => {
+        detail.value = resp.data
+      })
+    }
+  },
+  { immediate: true }
+)
 </script>
