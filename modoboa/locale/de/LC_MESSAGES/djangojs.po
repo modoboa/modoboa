@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Nicolas John, 2020
 # nade 74 <reg@privmail.biz>, 2020
 # Antoine Nguyen <tonio@ngyn.org>, 2023
 # Henry Schütterle, 2023
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -18,10 +18,10 @@ msgstr ""
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: Henry Schütterle, 2023\n"
 "Language-Team: German (https://app.transifex.com/tonio/teams/13749/de/)\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
@@ -103,64 +103,3 @@ msgstr "Suche"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Suchen..."
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "General information"
-#~ msgstr "Operation"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Description"
-#~ msgstr "Operation"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Auto configuration"
-#~ msgstr "Operation"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "Domain-Administrator fehlt"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "Domain-Administrator fehlt"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "Domain suchen"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Options"
-#~ msgstr "Operation"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "Domain-Administrator fehlt"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "Domain-Administrator fehlt"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "Domain-Administrator fehlt"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Migrations"
-#~ msgstr "Operation"
-
-#~ msgid "Are you sure?"
-#~ msgstr "Sind Sie sicher?"
-
-#~ msgid "This will invalidate your registered application."
-#~ msgstr "Dadurch wird Ihre registrierte Anwendung ungültig."
