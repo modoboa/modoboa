@@ -89,7 +89,7 @@ msgid "Account updated"
 msgstr "Tili päivitetty"
 
 #: src/components/account/FidoAuthForm.vue:137
-#: src/components/account/FilterForm.vue:87
+#: src/components/account/FilterForm.vue:76
 #: src/components/admin/alarms/AlarmList.vue:20
 #: src/components/admin/alarms/AlarmList.vue:98
 #: src/components/admin/domains/DomainList.vue:213
@@ -134,7 +134,7 @@ msgstr "Lisää"
 msgid "Add a new domain alias"
 msgstr "Lisää uusi verkkotunnuksen alias"
 
-#: src/components/account/FilterForm.vue:131
+#: src/components/account/FilterForm.vue:127
 #, fuzzy
 msgid "Add action"
 msgstr "Toiminnot"
@@ -143,7 +143,7 @@ msgstr "Toiminnot"
 msgid "Add administrator"
 msgstr "Lisää järjestelmänvalvoja"
 
-#: src/components/account/FilterForm.vue:71
+#: src/components/account/FilterForm.vue:60
 #, fuzzy
 msgid "Add condition"
 msgstr "Automaattinen asetusten määrittäminen"
@@ -299,16 +299,16 @@ msgstr "Aliakset"
 msgid "Alignment"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:31
+#: src/components/account/FilterForm.vue:18
 #, fuzzy
 msgid "All messages"
 msgstr "viestit"
 
-#: src/components/account/FilterForm.vue:23
+#: src/components/account/FilterForm.vue:16
 msgid "All of the following"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:27
+#: src/components/account/FilterForm.vue:17
 msgid "Any of the following"
 msgstr ""
 
@@ -411,7 +411,7 @@ msgstr "Bind/nimetty muoto. Kopioi klikkaamalla"
 
 #: src/components/account/APISetupForm.vue:98
 #: src/components/account/FidoAuthForm.vue:204
-#: src/components/account/FilterForm.vue:151
+#: src/components/account/FilterForm.vue:147
 #: src/components/account/FilterSetForm.vue:24
 #: src/components/admin/domains/DomainEditForm.vue:160
 #: src/components/admin/identities/AccountEditForm.vue:186
@@ -439,7 +439,7 @@ msgstr ""
 msgid "Choose a domain"
 msgstr "Valitse verkkotunnus"
 
-#: src/components/account/FilterForm.vue:39
+#: src/components/account/FilterForm.vue:28
 #, fuzzy
 msgid "Choose a header"
 msgstr "Valitse käyttäjätyyppisi"
@@ -448,12 +448,12 @@ msgstr "Valitse käyttäjätyyppisi"
 msgid "Choose a role"
 msgstr "Valitse käyttäjätyyppisi"
 
-#: src/components/account/FilterForm.vue:91
+#: src/components/account/FilterForm.vue:84
 #, fuzzy
 msgid "Choose an action"
 msgstr "Valitse verkkotunnus"
 
-#: src/components/account/FilterForm.vue:49
+#: src/components/account/FilterForm.vue:38
 #, fuzzy
 msgid "Choose an operator"
 msgstr "Valitse käyttäjätyyppisi"
@@ -482,7 +482,7 @@ msgstr "Sulje"
 msgid "Closed"
 msgstr "Suljettu"
 
-#: src/components/account/FilterForm.vue:16
+#: src/components/account/FilterForm.vue:14
 #, fuzzy
 msgid "Conditions"
 msgstr "Vahvistus"
@@ -533,7 +533,7 @@ msgstr "Kopioi turvatunnus leikepöydälle"
 msgid "Could not save parameters"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:199
+#: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
 #, fuzzy
 msgid "Create"
@@ -861,7 +861,7 @@ msgstr "Muokkaa verkkotunnusta"
 msgid "Edit domain alias"
 msgstr "Muokkaa verkkotunnusta"
 
-#: src/components/account/FilterForm.vue:196
+#: src/components/account/FilterForm.vue:192
 #, fuzzy
 msgid "Edit filter"
 msgstr "Sähköpostiosoite"
@@ -968,7 +968,7 @@ msgstr ""
 msgid "Field is required"
 msgstr "Tämä kenttä on pakollinen"
 
-#: src/components/account/FilterForm.vue:298
+#: src/components/account/FilterForm.vue:300
 msgid "Filter added"
 msgstr ""
 
@@ -1005,7 +1005,7 @@ msgstr "Järjestelmänvalvoja poistettu"
 msgid "Filter set updated"
 msgstr "Parametrit päivitetty"
 
-#: src/components/account/FilterForm.vue:301
+#: src/components/account/FilterForm.vue:303
 #, fuzzy
 msgid "Filter updated"
 msgstr "Profiili päivitetty"
@@ -1385,7 +1385,7 @@ msgid "name"
 msgstr "Käyttäjätunnus"
 
 #: src/components/account/FidoAuthForm.vue:133
-#: src/components/account/FilterForm.vue:9
+#: src/components/account/FilterForm.vue:7
 #: src/components/account/FilterSetForm.vue:9
 #: src/components/admin/domains/DNSDetail.vue:170
 #: src/components/admin/domains/DomainAdminList.vue:107
@@ -1450,7 +1450,7 @@ msgstr ""
 msgid "New domain"
 msgstr "Uusi verkkotunnus"
 
-#: src/components/account/FilterForm.vue:196
+#: src/components/account/FilterForm.vue:192
 #, fuzzy
 msgid "New filter"
 msgstr "Uudet palautuskoodit"
@@ -1804,11 +1804,11 @@ msgstr "Uusi verkkotunnus"
 msgid "Reload"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:139
+#: src/components/account/FilterForm.vue:135
 msgid "Remove action"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:79
+#: src/components/account/FilterForm.vue:68
 msgid "Remove condition"
 msgstr ""
 
@@ -2121,7 +2121,7 @@ msgstr "rajoittamaton"
 msgid "Until"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:199
+#: src/components/account/FilterForm.vue:195
 #: src/components/account/ForwardForm.vue:25
 #: src/components/admin/domains/DomainAliasForm.vue:68
 msgid "Update"
@@ -2167,7 +2167,7 @@ msgstr "Käyttäjätunnus:"
 msgid "Valid"
 msgstr "Kelvollinen"
 
-#: src/components/account/FilterForm.vue:60
+#: src/components/account/FilterForm.vue:49
 msgid "Value"
 msgstr ""
 

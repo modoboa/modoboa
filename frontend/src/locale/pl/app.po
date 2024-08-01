@@ -80,7 +80,7 @@ msgid "Account updated"
 msgstr ""
 
 #: src/components/account/FidoAuthForm.vue:137
-#: src/components/account/FilterForm.vue:87
+#: src/components/account/FilterForm.vue:76
 #: src/components/admin/alarms/AlarmList.vue:20
 #: src/components/admin/alarms/AlarmList.vue:98
 #: src/components/admin/domains/DomainList.vue:213
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Add a new domain alias"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:131
+#: src/components/account/FilterForm.vue:127
 msgid "Add action"
 msgstr ""
 
@@ -132,7 +132,7 @@ msgstr ""
 msgid "Add administrator"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:71
+#: src/components/account/FilterForm.vue:60
 msgid "Add condition"
 msgstr ""
 
@@ -274,15 +274,15 @@ msgstr ""
 msgid "Alignment"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:31
+#: src/components/account/FilterForm.vue:18
 msgid "All messages"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:23
+#: src/components/account/FilterForm.vue:16
 msgid "All of the following"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:27
+#: src/components/account/FilterForm.vue:17
 msgid "Any of the following"
 msgstr ""
 
@@ -381,7 +381,7 @@ msgstr ""
 
 #: src/components/account/APISetupForm.vue:98
 #: src/components/account/FidoAuthForm.vue:204
-#: src/components/account/FilterForm.vue:151
+#: src/components/account/FilterForm.vue:147
 #: src/components/account/FilterSetForm.vue:24
 #: src/components/admin/domains/DomainEditForm.vue:160
 #: src/components/admin/identities/AccountEditForm.vue:186
@@ -407,7 +407,7 @@ msgstr ""
 msgid "Choose a domain"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:39
+#: src/components/account/FilterForm.vue:28
 msgid "Choose a header"
 msgstr ""
 
@@ -415,11 +415,11 @@ msgstr ""
 msgid "Choose a role"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:91
+#: src/components/account/FilterForm.vue:84
 msgid "Choose an action"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:49
+#: src/components/account/FilterForm.vue:38
 msgid "Choose an operator"
 msgstr ""
 
@@ -445,7 +445,7 @@ msgstr ""
 msgid "Closed"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:16
+#: src/components/account/FilterForm.vue:14
 msgid "Conditions"
 msgstr ""
 
@@ -493,7 +493,7 @@ msgstr ""
 msgid "Could not save parameters"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:199
+#: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
 msgid "Create"
 msgstr ""
@@ -807,7 +807,7 @@ msgstr ""
 msgid "Edit domain alias"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:196
+#: src/components/account/FilterForm.vue:192
 msgid "Edit filter"
 msgstr ""
 
@@ -907,7 +907,7 @@ msgstr ""
 msgid "Field is required"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:298
+#: src/components/account/FilterForm.vue:300
 msgid "Filter added"
 msgstr ""
 
@@ -939,7 +939,7 @@ msgstr ""
 msgid "Filter set updated"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:301
+#: src/components/account/FilterForm.vue:303
 msgid "Filter updated"
 msgstr ""
 
@@ -1293,7 +1293,7 @@ msgid "name"
 msgstr ""
 
 #: src/components/account/FidoAuthForm.vue:133
-#: src/components/account/FilterForm.vue:9
+#: src/components/account/FilterForm.vue:7
 #: src/components/account/FilterSetForm.vue:9
 #: src/components/admin/domains/DNSDetail.vue:170
 #: src/components/admin/domains/DomainAdminList.vue:107
@@ -1355,7 +1355,7 @@ msgstr ""
 msgid "New domain"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:196
+#: src/components/account/FilterForm.vue:192
 msgid "New filter"
 msgstr ""
 
@@ -1679,11 +1679,11 @@ msgstr ""
 msgid "Reload"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:139
+#: src/components/account/FilterForm.vue:135
 msgid "Remove action"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:79
+#: src/components/account/FilterForm.vue:68
 msgid "Remove condition"
 msgstr ""
 
@@ -1972,7 +1972,7 @@ msgstr ""
 msgid "Until"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:199
+#: src/components/account/FilterForm.vue:195
 #: src/components/account/ForwardForm.vue:25
 #: src/components/admin/domains/DomainAliasForm.vue:68
 msgid "Update"
@@ -2016,7 +2016,7 @@ msgstr ""
 msgid "Valid"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:60
+#: src/components/account/FilterForm.vue:49
 msgid "Value"
 msgstr ""
 
