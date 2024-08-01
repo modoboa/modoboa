@@ -15,7 +15,7 @@ type        = PO
 
 
 [o:tonio:p:modoboa:r:dd3efdd3873dc96e90015e1ebbcf2a08]
-file_filter = frontend/locale/<lang>/LC_MESSAGES/app.po
-source_file = frontend/locale/en/LC_MESSAGES/app.po
+file_filter = frontend/src/locale/<lang>/LC_MESSAGES/app.po
+source_file = frontend/src/locale/en/LC_MESSAGES/app.po
 source_lang = en
 type        = PO
