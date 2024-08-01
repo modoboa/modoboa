@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Icarus Flight, 2022
 # Antoine Nguyen <tonio@ngyn.org>, 2023
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,12 +16,11 @@ msgstr ""
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2023\n"
 "Language-Team: French (https://app.transifex.com/tonio/teams/13749/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
@@ -102,64 +101,3 @@ msgstr "Chercher"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Chercher..."
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "General information"
-#~ msgstr "opération"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Description"
-#~ msgstr "opération"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Auto configuration"
-#~ msgstr "opération"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "Aucun administrateur de domaine défini"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "Aucun administrateur de domaine défini"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "Checher un domaine"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Options"
-#~ msgstr "opération"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "Aucun administrateur de domaine défini"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "Aucun administrateur de domaine défini"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "Aucun administrateur de domaine défini"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Migrations"
-#~ msgstr "opération"
-
-#~ msgid "Are you sure?"
-#~ msgstr "Etes vous certain ?"
-
-#~ msgid "This will invalidate your registered application."
-#~ msgstr "Cela annulera votre application enregistrée."
