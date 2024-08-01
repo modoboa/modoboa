@@ -2,10 +2,10 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2023
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -15,10 +15,10 @@ msgstr ""
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2023\n"
 "Language-Team: Georgian (https://app.transifex.com/tonio/teams/13749/ka/)\n"
-"Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ka\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
@@ -100,64 +100,3 @@ msgstr "ძებნა"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "ძებნა..."
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "General information"
-#~ msgstr "ოპერაცია"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Description"
-#~ msgstr "ოპერაცია"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Auto configuration"
-#~ msgstr "ოპერაცია"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "დომენის ადმინისტრატორი აღწერილი არაა"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "დომენის ადმინისტრატორი აღწერილი არაა"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "დომენის ძებნა"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Options"
-#~ msgstr "ოპერაცია"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "დომენის ადმინისტრატორი აღწერილი არაა"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "დომენის ადმინისტრატორი აღწერილი არაა"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "დომენის ადმინისტრატორი აღწერილი არაა"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Migrations"
-#~ msgstr "ოპერაცია"
-
-#~ msgid "Are you sure?"
-#~ msgstr "დარწმუნებული ბრძანდებით?"
-
-#~ msgid "This will invalidate your registered application."
-#~ msgstr "ეს გააუქმებს თქვენს რეგისტრირებულ პროგრამას."
