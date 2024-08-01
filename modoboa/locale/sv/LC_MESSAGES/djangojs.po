@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
-# Olle Gustafsson <olle@dalnix.se>, 2022
+# Olle Gustafsson <olle@dalnix.se>, 2020
 # Antoine Nguyen <tonio@ngyn.org>, 2023
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,10 +16,10 @@ msgstr ""
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2023\n"
 "Language-Team: Swedish (https://app.transifex.com/tonio/teams/13749/sv/)\n"
-"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
@@ -101,64 +101,3 @@ msgstr "Sök"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Sök..."
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "General information"
-#~ msgstr "åtgärd"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Description"
-#~ msgstr "åtgärd"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Auto configuration"
-#~ msgstr "åtgärd"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "Ingen domänadministratör definierad"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "Ingen domänadministratör definierad"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "Sök domän"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Options"
-#~ msgstr "åtgärd"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "Ingen domänadministratör definierad"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "Ingen domänadministratör definierad"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "Ingen domänadministratör definierad"
-
-#, fuzzy
-#~| msgid "operation"
-#~ msgid "Migrations"
-#~ msgstr "åtgärd"
-
-#~ msgid "Are you sure?"
-#~ msgstr "Är du säker?"
-
-#~ msgid "This will invalidate your registered application."
-#~ msgstr "Detta kommer invalidera din registrerade ansökan."
