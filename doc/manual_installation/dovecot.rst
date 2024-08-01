@@ -276,7 +276,7 @@ On success, you should see an output similar to::
 To enable OAuth2 authentication in Dovecot, edit the :file:`conf.d/10-auth.conf`
 file and add the following line at the end::
 
-  #!include auth-oauth2.conf.ext
+  !include auth-oauth2.conf.ext
 
 Then, create a file named :file:`conf.d/auth-oauth2.conf.ext` with the
 following content::
