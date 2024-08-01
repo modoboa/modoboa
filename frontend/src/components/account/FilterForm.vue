@@ -1,7 +1,5 @@
 <template>
-  <v-card
-    :title="title"
-  >
+  <v-card :title="title">
     <v-card-text>
       <v-form ref="formRef">
         <v-text-field
@@ -14,26 +12,17 @@
         />
         <div class="bg-grey-lighten-4 rounded pa-3">
           <h4>{{ $gettext('Conditions') }}</h4>
-          <v-radio-group
-            v-model="form.match_type"
-            color="primary"
-            inline
-          >
-            <v-radio
-              :label="$gettext('All of the following')"
-              value="allof"
-            />
-            <v-radio
-              :label="$gettext('Any of the following')"
-              value="anyof"
-            />
-            <v-radio
-              :label="$gettext('All messages')"
-              value="all"
-            />
+          <v-radio-group v-model="form.match_type" color="primary" inline>
+            <v-radio :label="$gettext('All of the following')" value="allof" />
+            <v-radio :label="$gettext('Any of the following')" value="anyof" />
+            <v-radio :label="$gettext('All messages')" value="all" />
           </v-radio-group>
           <template v-if="form.match_type !== 'all'">
-            <div v-for="(condition, index) in form.conditions" class="d-flex align-center">
+            <div
+              v-for="(condition, index) in form.conditions"
+              :key="`condition-${index}`"
+              class="d-flex align-start"
+            >
               <v-select
                 v-model="condition.name"
                 :label="$gettext('Choose a header')"
@@ -85,7 +74,11 @@
         </div>
         <div class="mt-4 bg-grey-lighten-4 rounded pa-3">
           <h4>{{ $gettext('Actions') }}</h4>
-          <div v-for="(action, index) in form.actions" class="d-flex align-start mt-2">
+          <div
+            v-for="(action, index) in form.actions"
+            :key="`action-${index}`"
+            class="d-flex align-start mt-2"
+          >
             <v-select
               v-model="action.name"
               :label="$gettext('Choose an action')"
@@ -97,7 +90,10 @@
               class="flex-grow-0"
             />
             <div class="mx-2 d-flex flex-column flex-grow-1">
-              <template v-for="arg in getActionArguments(action.name)">
+              <template
+                v-for="(arg, argIndex) in getActionArguments(action.name)"
+                :key="`arg-${index}-${argIndex}`"
+              >
                 <v-select
                   v-if="arg.type === 'list'"
                   v-model="action.args[arg.name]"
@@ -173,13 +169,13 @@ import rules from '@/plugins/rules'
 const props = defineProps({
   filterSet: {
     type: String,
-    default: null
+    default: null,
   },
   filter: {
     type: Object,
     required: false,
-    default: null
-  }
+    default: null,
+  },
 })
 const emit = defineEmits(['close'])
 const busStore = useBusStore()
@@ -193,22 +189,26 @@ const form = ref(getInitialFormContent())
 const working = ref(false)
 
 const title = computed(() => {
-  return (props.filter) ? $gettext('Edit filter') : $gettext('New filter')
+  return props.filter ? $gettext('Edit filter') : $gettext('New filter')
 })
 const submitLabel = computed(() => {
-  return (props.filter) ? $gettext('Update') : $gettext('Create')
+  return props.filter ? $gettext('Update') : $gettext('Create')
 })
 
 let originalFilterName
 
-watch(() => props.filter, (value) => {
-  if (value) {
-    form.value = JSON.parse(JSON.stringify(value))
-    originalFilterName = value.name
-  } else {
-    form.value = getInitialFormContent()
-  }
-}, { immediate: true })
+watch(
+  () => props.filter,
+  (value) => {
+    if (value) {
+      form.value = JSON.parse(JSON.stringify(value))
+      originalFilterName = value.name
+    } else {
+      form.value = getInitialFormContent()
+    }
+  },
+  { immediate: true }
+)
 
 function close() {
   emit('close')
@@ -219,9 +219,11 @@ function getInitialFormContent() {
   return {
     match_type: 'anyof',
     conditions: [{}],
-    actions: [{
-      args: {}
-    }]
+    actions: [
+      {
+        args: {},
+      },
+    ],
   }
 }
 
@@ -239,7 +241,7 @@ function getConditionType(index) {
     if (template.name === form.value.conditions[index].name) {
       for (const operator of template.operators) {
         if (operator.name === form.value.conditions[index].operator) {
-          return (operator.type === 'string') ? 'text' : 'number'
+          return operator.type === 'string' ? 'text' : 'number'
         }
       }
     }
@@ -258,7 +260,7 @@ function getActionArguments(action) {
 function addCondition() {
   form.value.conditions.push({
     name: conditionTemplates.value[0].name,
-    operator: conditionTemplates.value[0].operators[0].name
+    operator: conditionTemplates.value[0].operators[0].name,
   })
 }
 
@@ -269,7 +271,7 @@ function removeCondition(index) {
 function addAction() {
   form.value.actions.push({
     name: actionTemplates.value[0].name,
-    args: {}
+    args: {},
   })
 }
 
@@ -312,14 +314,15 @@ async function submit() {
   close()
 }
 
-accountApi.getFilterConditionTemplates().then(resp => {
+accountApi.getFilterConditionTemplates().then((resp) => {
   conditionTemplates.value = resp.data
   if (!props.filter) {
     form.value.conditions[0].name = conditionTemplates.value[0].name
-    form.value.conditions[0].operator = conditionTemplates.value[0].operators[0].name
+    form.value.conditions[0].operator =
+      conditionTemplates.value[0].operators[0].name
   }
 })
-accountApi.getFilterActionTemplates().then(resp => {
+accountApi.getFilterActionTemplates().then((resp) => {
   actionTemplates.value = resp.data
   if (!props.filter) {
     form.value.actions[0].name = actionTemplates.value[0].name
