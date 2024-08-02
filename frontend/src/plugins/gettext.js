@@ -15,7 +15,7 @@ export default createGettext({
     ja: 'Japanese',
     nl: 'Dutch',
     pl: 'Polish',
-    pt: 'Portuguese',
+    pt_BR: 'Portuguese (BR)',
     ru: 'Russian',
     sv: 'Swedish',
     tr: 'tr',

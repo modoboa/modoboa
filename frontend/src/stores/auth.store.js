@@ -36,10 +36,18 @@ export const useAuthStore = defineStore('auth', () => {
     return authUser.value.mailbox !== null
   })
 
+  const accountLanguage = computed(() => {
+    if (authUser.value.language.indexOf('-') !== -1) {
+      const parts = authUser.value.language.split('-')
+      return `${parts[0]}_${parts[1].toUpperCase()}`
+    }
+    return authUser.value.language
+  })
+
   async function fetchUser() {
     return accountApi.getMe().then((resp) => {
-      gettext.current = resp.data.language
       authUser.value = resp.data
+      gettext.current = accountLanguage.value
       isAuthenticated.value = true
     })
   }
@@ -151,15 +159,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function updateAccount(data) {
     return accountsApi.patch(authUser.value.pk, data).then((response) => {
-      if (
-        response.data.language != authUser.value.language &&
-        response.data.language in gettext.available
-      ) {
-        gettext.current = response.data.language
-      }
       const newAuthUser = { ...authUser.value, ...response.data }
       delete newAuthUser.password
       authUser.value = { ...newAuthUser }
+      if (accountLanguage.value in gettext.available) {
+        gettext.current = accountLanguage.value
+      }
     })
   }
 
@@ -175,6 +180,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     authUser,
+    accountLanguage,
     completeLogin,
     isAuthenticated,
     userHasMailbox,

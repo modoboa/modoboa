@@ -1,24 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 # Translators:
-# Jose Marcos Araujo <jmaraujo@avancetec.com.br>, 2016
-# Paulino Michelazzo <michelazzo@me.com>, 2014
+# RAMON PEGO <ramon.pego.stl@gmail.com>, 2021
+# Antoine Nguyen <tonio@ngyn.org>, 2023
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-01 11:53+0200\n"
-"PO-Revision-Date: 2020-03-09 15:49+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/tonio/modoboa/"
-"language/pt_BR/)\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: 2020-10-02 13:39+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2023\n"
+"Language-Team: Portuguese (Brazil) (https://app.transifex.com/tonio/teams/13749/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
@@ -45,10 +47,8 @@ msgid "No more quota to show"
 msgstr "Nenhuma quota a mais para mostrar"
 
 #: admin/static/admin/js/admin.js:180
-#, fuzzy
-#| msgid "No more quota to show"
 msgid "No more log to show"
-msgstr "Nenhuma quota a mais para mostrar"
+msgstr ""
 
 #: admin/static/admin/js/admin.js:309
 msgid "No domain administrator defined"
@@ -68,7 +68,7 @@ msgstr "'"
 
 #: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
 msgid "operation"
-msgstr ""
+msgstr "operação"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
@@ -101,63 +101,3 @@ msgstr "Busca"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "Buscar..."
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Parameters updated"
-#~ msgstr "Serviço atualizado"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Provider name"
-#~ msgstr "Serviço atualizado"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "Nenhum administrador de domínio definido"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "Nenhum administrador de domínio definido"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "Buscar um domínio"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "Nenhum administrador de domínio definido"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "Nenhum administrador de domínio definido"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Service"
-#~ msgstr "Serviço atualizado"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "Nenhum administrador de domínio definido"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Alias updated"
-#~ msgstr "Serviço atualizado"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Profile updated"
-#~ msgstr "Serviço atualizado"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Domain updated"
-#~ msgstr "Serviço atualizado"
