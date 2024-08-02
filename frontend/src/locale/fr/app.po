@@ -1444,7 +1444,7 @@ msgstr "Pas de limite d'envoi"
 #: src/components/account/BackupCodeAuthForm.vue:43
 msgid "No two-factor authentificator is yet set for your account."
 msgstr ""
-"Aucune authentification à double-facteur n'est encore active pour votre "
+"Aucune authentification à deux facteurs n'est encore active pour votre "
 "compte."
 
 #: src/plugins/rules.js:7
