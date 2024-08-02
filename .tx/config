@@ -14,8 +14,12 @@ source_lang = en
 type        = PO
 
 
-[o:tonio:p:modoboa:r:dd3efdd3873dc96e90015e1ebbcf2a08]
-file_filter = frontend/src/locale/<lang>/LC_MESSAGES/app.po
-source_file = frontend/src/locale/en/LC_MESSAGES/app.po
-source_lang = en
-type        = PO
+[o:tonio:p:modoboa:r:04c0b653215cb5fa48ab101eae1a1917]
+file_filter 		= frontend/src/locale/<lang>/app.po
+source_file 		= frontend/src/locale/en/app.po
+source_lang 		= en
+type        		= PO
+minimum_perc           	= 0
+resource_name          	= frontend..en/app.po (master)
+replace_edited_strings 	= true
+keep_translations      	= false
