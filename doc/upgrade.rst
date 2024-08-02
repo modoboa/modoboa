@@ -306,6 +306,10 @@ by default.
          'rest_framework.authentication.SessionAuthentication',
       ),
 
+Save your modifications at this point and run the :ref:`post upgrade
+commands <post_upgrade_commands>` now.
+
+Then, apply this last modification to your settings:
 
 -  Run the commands indicated :ref:`in the first section <post_upgrade_commands>`
    then add the following content after ``MEDIA_ROOT``:

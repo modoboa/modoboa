@@ -274,7 +274,11 @@ On success, you should see an output similar to::
   client_secret: XXXX
 
 To enable OAuth2 authentication in Dovecot, edit the :file:`conf.d/10-auth.conf`
-file and add the following line at the end::
+file and update the auth_mechanisms line as follows::
+
+  auth_mechanisms = plain login oauthbearer xoauth2
+
+Then, add the following line at the end::
 
   !include auth-oauth2.conf.ext
 
@@ -291,7 +295,7 @@ Finally, create a file named :file:`conf.d/dovecot-oauth2.conf.ext` with the
 following content::
 
   introspection_mode = post
-  introspection_url = http://dovecot:<client_secret>@localhost/api/o/introspect/
+  introspection_url = https://dovecot:<client_secret>@<hostname of your server>/api/o/introspect/
   username_attribute = username
   tls_ca_cert_file = /etc/ssl/certs/ca-certificates.crt
   active_attribute = active
