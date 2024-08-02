@@ -474,7 +474,7 @@ msgid ""
 "Congratulations! Two-factor authentication using one-time passwords is now "
 "enabled for your account."
 msgstr ""
-"Félicitations ! L'authentification à double-facteur utilisant des mots de "
+"Félicitations ! L'authentification à deux facteurs utilisant des mots de "
 "passe jetable est désormais active pour votre compte."
 
 #: src/components/account/AutoReplyForm.vue:20
