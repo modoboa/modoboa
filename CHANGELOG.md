@@ -5,7 +5,7 @@
 #### New features
 
 * Sieve filter management has been added to the core repository and has been migrated to New Admin.
-* Postifix auto reply has been added to the core repository and has been migrated to New Admin.
+* Postfix auto reply has been added to the core repository and has been migrated to New Admin.
 * Added Oauth2 authentication.
 * Added Webauthn (Fido2) as a second authentication method.
 * New Admin have been migrated to Vue 3.
