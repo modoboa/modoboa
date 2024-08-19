@@ -1,0 +1,2163 @@
+# 
+# Translators:
+# J Rosier <vertalen@tagora.nl>, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2024-08-01 12:26+0000\n"
+"Last-Translator: J Rosier <vertalen@tagora.nl>, 2024\n"
+"Language-Team: Dutch (Netherlands) (https://app.transifex.com/tonio/teams/13749/nl_NL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:41
+msgid "(the domain will be created locally)"
+msgstr "(Het domein zal lokaal worden aangemaakt)"
+
+#: src/components/account/APISetupForm.vue:45
+msgid "A documentation of the API is available"
+msgstr "De API-documentatie is beschikbaar"
+
+#: src/components/admin/domains/DNSDetail.vue:195
+msgid ""
+"A new key will be generated soon. Refresh the page in a moment to see it."
+msgstr ""
+"Een nieuwe sleutel zal direct worden aangemaakt. Ververs de pagina om de "
+"sleutel te zien."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:108
+msgid ""
+"A user with all privileges, can do anything. By default, such a user does "
+"not have a mailbox so he can't access end-user features."
+msgstr ""
+"Een gebruiker met alle rechten kan alles doen. Deze gebruiker zal standaard "
+"geen mailbox hebben, zodat hij geen toegang heeft tot features van "
+"eindgebruikers."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:82
+msgid ""
+"A user with no privileges but with a mailbox. He will be allowed to use all "
+"end-user features: webmail, calendar, contacts, filters."
+msgstr ""
+"Een gebruiker zonder rechten maar met een mailbox. Deze gebruiker kan alle "
+"gebruikersfeatures gebruiken: webmail, agenda, contacten en filters."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:92
+msgid ""
+"A user with privileges on one or more domain. He will be allowed to "
+"administer mailboxes and he can also have a mailbox."
+msgstr ""
+"Een gebruiker met rechten voor een of meer domeinen. Deze gebruiker kan "
+"mailboxen beheren en ook zelf een mailbox hebben."
+
+#: src/components/tools/TimeSerieChart.vue:17
+msgid "Absolute time range"
+msgstr "Absolute tijdsspanne"
+
+#: src/stores/identities.store.js:72
+msgid "account"
+msgstr "account"
+
+#: src/layouts/dashboard/NavBar.vue:254
+#: src/views/admin/identities/AccountView.vue:4
+#: src/views/admin/identities/IdentitiesView.vue:33
+msgid "Account"
+msgstr "Account"
+
+#: src/stores/accounts.store.js:56
+msgid "Account created"
+msgstr "Account aangemaakt"
+
+#: src/views/account/SettingsView.vue:3
+msgid "Account settings"
+msgstr "Accountinstellingen"
+
+#: src/stores/accounts.store.js:67
+msgid "Account successfully deleted"
+msgstr "Account verwijderd"
+
+#: src/stores/accounts.store.js:48
+msgid "Account updated"
+msgstr "Account aangepast"
+
+#: src/components/account/FidoAuthForm.vue:137
+#: src/components/account/FilterForm.vue:76
+#: src/components/admin/alarms/AlarmList.vue:20
+#: src/components/admin/alarms/AlarmList.vue:98
+#: src/components/admin/domains/DomainList.vue:213
+#: src/components/admin/domains/DomainList.vue:24
+#: src/components/admin/identities/IdentityList.vue:122
+#: src/components/admin/identities/IdentityList.vue:23
+#: src/components/admin/imap_migration/MigrationsList.vue:23
+#: src/components/admin/imap_migration/MigrationsList.vue:83
+#: src/components/admin/imap_migration/ProvidersList.vue:102
+#: src/components/admin/imap_migration/ProvidersList.vue:25
+msgid "Actions"
+msgstr "Acties"
+
+#: src/views/account/FiltersView.vue:382
+msgid "Activate filter set"
+msgstr "Filterset activeren"
+
+#: src/components/account/AutoReplyForm.vue:35
+msgid "Activate your auto reply from this date"
+msgstr "Activeer je auto-reply vanaf deze datum"
+
+#: src/components/account/AutoReplyForm.vue:46
+msgid "Activate your auto reply until this date"
+msgstr "Activeer je auto-reply tot deze datum"
+
+#: src/views/account/FiltersView.vue:201
+msgid "active"
+msgstr "actief"
+
+#: src/components/account/FilterSetForm.vue:14
+#: src/views/account/FiltersView.vue:165
+msgid "Active"
+msgstr "Actief"
+
+#: src/components/admin/domains/DomainAliasForm.vue:68
+#: src/views/account/FiltersView.vue:65
+msgid "Add"
+msgstr "Toevoegen"
+
+#: src/components/admin/domains/DomainAliasForm.vue:74
+msgid "Add a new domain alias"
+msgstr "Voeg een nieuwe domeinalias toe"
+
+#: src/components/account/FilterForm.vue:127
+msgid "Add action"
+msgstr "Actie toevoegen"
+
+#: src/components/admin/domains/DomainAdminList.vue:66
+msgid "Add administrator"
+msgstr "Beheerder toevoegen"
+
+#: src/components/account/FilterForm.vue:60
+msgid "Add condition"
+msgstr "Voorwaarde toevoegen"
+
+#: src/views/account/FiltersView.vue:24
+msgid "Add filter set"
+msgstr "Filterset toevoegen"
+
+#: src/views/account/FiltersView.vue:60
+msgid "Add new filter"
+msgstr "Nieuw filter toevoegen"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:52
+msgid "Add sender address"
+msgstr "Afzenderadres toevoegen"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:16
+msgid "Add/Remove from the domain page"
+msgstr "Toevoegen/verwijderen van de domeinpagina"
+
+#: src/components/account/FidoAuthForm.vue:134
+msgid "Added On"
+msgstr "Toegevoegd op"
+
+#: src/components/admin/domains/DNSDetail.vue:171
+#: src/components/admin/identities/AccountSenderAddresses.vue:73
+#: src/components/admin/identities/AliasCreationForm.vue:60
+#: src/components/admin/identities/AliasEditForm.vue:16
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:54
+#: src/components/admin/imap_migration/ProvidersList.vue:97
+msgid "Address"
+msgstr "Adres"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:11
+msgid "Address (hostname or IP)"
+msgstr "Adres (hostnaam of IP-adres)"
+
+#: src/layouts/dashboard/NavBar.vue:268
+msgid "Admin"
+msgstr "Admin"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:4
+msgid "Administered domains"
+msgstr "Beheerde domeinen"
+
+#: src/components/admin/domains/DomainAdminList.vue:149
+msgid "Administrator added"
+msgstr "Beheerder toegevoegd"
+
+#: src/components/admin/domains/DomainCreationForm.vue:250
+msgid "Administrator name"
+msgstr "Beheerdersnaam"
+
+#: src/components/admin/domains/DomainAdminList.vue:158
+msgid "Administrator removed"
+msgstr "Beheerder verwijderd"
+
+#: src/components/admin/domains/DomainAdminList.vue:9
+#: src/components/admin/domains/DomainList.vue:291
+msgid "Administrators"
+msgstr "Beheerders"
+
+#: src/components/admin/domains/DomainAdminList.vue:6
+msgid "Administrators of"
+msgstr "Beheerders van"
+
+#: src/components/admin/alarms/AlarmList.vue:188
+msgid "Alarm closed"
+msgstr "Alarm afgesloten"
+
+#: src/components/admin/alarms/AlarmList.vue:173
+msgid "Alarm deleted"
+msgstr "Alarm verwijderd"
+
+#: src/components/admin/alarms/AlarmList.vue:196
+msgid "Alarm re-opened"
+msgstr "Alarm opnieuw geopend"
+
+#: src/components/admin/domains/DomainList.vue:309
+#: src/layouts/dashboard/NavBar.vue:195
+msgid "Alarms"
+msgstr "Alarmen"
+
+#: src/components/admin/alarms/AlarmList.vue:180
+msgid "Alarms deleted"
+msgstr "Alarmen verwijderd"
+
+#: src/stores/identities.store.js:106
+msgid "alias"
+msgstr "alias"
+
+#: src/components/admin/identities/AccountEditForm.vue:116
+#: src/views/admin/domains/DomainsView.vue:36
+#: src/views/admin/identities/AliasView.vue:5
+#: src/views/admin/identities/IdentitiesView.vue:36
+msgid "Alias"
+msgstr "Alias"
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:50
+msgid "Alias already added"
+msgstr "Alias is al toegevoegd"
+
+#: src/components/admin/identities/AliasCreationForm.vue:130
+msgid "Alias already exists, redirecting to edit page"
+msgstr "Alias bestaat al, redirecten naar editpagina"
+
+#: src/stores/aliases.store.js:52
+msgid "Alias successfully created"
+msgstr "Alias aangemaakt"
+
+#: src/stores/aliases.store.js:65
+msgid "Alias successfully deleted"
+msgstr "Alias verwijderd"
+
+#: src/stores/aliases.store.js:78
+msgid "Alias updated"
+msgstr "Alias gewijzigd"
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
+msgid ""
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
+msgstr ""
+"Alias(sen) van deze mailbox. Type @domeinnaam (bijv. @mijndomein.nl) om een "
+"'catchall' alias aan te maken."
+
+#: src/components/admin/domains/DomainList.vue:204
+#: src/components/admin/domains/DomainSummary.vue:40
+#: src/components/admin/identities/AccountAliases.vue:4
+#: src/components/admin/identities/AccountCreationForm.vue:145
+#: src/components/admin/identities/AccountCreationForm.vue:148
+#: src/components/admin/identities/AccountCreationForm.vue:178
+msgid "Aliases"
+msgstr "Aliassen"
+
+#: src/components/admin/identities/AccountEditForm.vue:125
+msgid "Aliases:"
+msgstr "Aliassen:"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:5
+msgid "Alignment"
+msgstr "Uitlijning"
+
+#: src/components/account/FilterForm.vue:18
+msgid "All messages"
+msgstr "Alle berichten"
+
+#: src/components/account/FilterForm.vue:16
+msgid "All of the following"
+msgstr "Alles van de volgende"
+
+#: src/components/account/FilterForm.vue:17
+msgid "Any of the following"
+msgstr "Een van de volgende"
+
+#: src/views/account/SettingsView.vue:20
+msgid "API access"
+msgstr "API-toegang"
+
+#: src/components/account/APISetupForm.vue:73
+msgid "API token copied to your clipboard"
+msgstr "API-token gekopieerd naar het klembord"
+
+#: src/components/account/APISetupForm.vue:85
+msgid "API token created"
+msgstr "API-token aangemaakt"
+
+#: src/components/account/APISetupForm.vue:107
+msgid "API token deleted"
+msgstr "API-token verwijderd"
+
+#: src/components/tools/TimeSerieChart.vue:22
+msgid "Apply"
+msgstr "Toepassen"
+
+#: src/components/admin/identities/IdentityList.vue:231
+msgid "Are you sure you want to delete this alias?"
+msgstr "Weet je zeker dat je deze alias wilt verwijderen?"
+
+#: src/components/admin/identities/IdentityList.vue:205
+msgid "Are you sure you want to delete this identity ?"
+msgstr "Weet je zeker dat je deze identiteit wilt verwijderen?"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:42
+msgid "Associated domain"
+msgstr "Gekoppeld domein"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:64
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:72
+#: src/components/admin/imap_migration/ProviderForm.vue:30
+#: src/components/admin/imap_migration/ProvidersList.vue:100
+msgid "Associated domains"
+msgstr "Gekoppelde domeinen"
+
+#: src/views/login/LoginView.vue:17
+msgid "Attempting to log you in."
+msgstr "Proberen in te loggen."
+
+#: src/layouts/dashboard/NavBar.vue:210
+#: src/views/admin/monitoring/AuditTrailView.vue:3
+msgid "Audit trail"
+msgstr "Registratie van acties"
+
+#: src/components/admin/domains/DNSDetail.vue:72
+msgid "Authentication"
+msgstr "Authenticatie"
+
+#: src/components/admin/domains/DNSDetail.vue:35
+#: src/components/admin/domains/DomainDNSConfig.vue:71
+msgid "Auto configuration"
+msgstr "Automatische configuratie"
+
+#: src/views/account/SettingsView.vue:17
+msgid "Auto-reply message"
+msgstr "Bericht voor automatisch antwoord"
+
+#: src/components/account/AutoReplyForm.vue:82
+msgid "Auto-reply message updated"
+msgstr "Bericht voor automatisch antwoord gewijzigd"
+
+#: src/components/admin/domains/DNSDetail.vue:56
+msgid "autoconfig record (Mozilla) not found"
+msgstr "autoconfig record (Mozilla) niet gevonden"
+
+#: src/components/admin/domains/DNSDetail.vue:50
+msgid "autoconfig record (Mozilla): %{ value }"
+msgstr "autoconfig record (Mozilla): %{ value }"
+
+#: src/components/admin/domains/DNSDetail.vue:68
+msgid "autodiscover record (Microsoft) not found"
+msgstr "autoconfig record (Microsoft) niet gevonden"
+
+#: src/components/admin/domains/DNSDetail.vue:62
+msgid "autodiscover record (Microsoft): %{ value }"
+msgstr "autodiscover record (Microsoft): %{ value }"
+
+#: src/components/tools/CreationForm.vue:62
+msgid "Back"
+msgstr "Terug"
+
+#: src/components/account/BackupCodeAuthForm.vue:6
+msgid "Backup codes"
+msgstr "Backupcodes"
+
+#: src/components/admin/domains/DomainDKIMKey.vue:23
+msgid "Bind/named format. Click to copy"
+msgstr "Blind/named format. Klik om te kopiëren"
+
+#: src/components/account/APISetupForm.vue:98
+#: src/components/account/FidoAuthForm.vue:204
+#: src/components/account/FilterForm.vue:147
+#: src/components/account/FilterSetForm.vue:24
+#: src/components/admin/domains/DomainEditForm.vue:160
+#: src/components/admin/identities/AccountEditForm.vue:186
+#: src/components/admin/identities/AliasEditForm.vue:69
+#: src/components/admin/imap_migration/ProviderForm.vue:58
+#: src/components/tools/ConfirmDialog.vue:55
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
+msgid "Check connection:"
+msgstr "Controleer de verbinding:"
+
+#: src/views/admin/InformationView.vue:23
+msgid "Check out the following list to find related components"
+msgstr "Bekijk de volgende lijst om gerelateerde componenten te vinden"
+
+#: src/views/admin/identities/IdentitiesView.vue:85
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr ""
+"Vink deze optie aan indien wachtwoorden in je bestand niet versleuteld zijn"
+
+#: src/components/admin/domains/DomainAliasForm.vue:15
+msgid "Choose a domain"
+msgstr "Kies een domein"
+
+#: src/components/account/FilterForm.vue:28
+msgid "Choose a header"
+msgstr "Kies een header"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:7
+msgid "Choose a role"
+msgstr "Kies een rol"
+
+#: src/components/account/FilterForm.vue:84
+msgid "Choose an action"
+msgstr "Kies een actie"
+
+#: src/components/account/FilterForm.vue:38
+msgid "Choose an operator"
+msgstr "Kies een operator"
+
+#: src/components/account/TotpAuthForm.vue:24
+msgid "Click here to copy the key"
+msgstr "klik hier om de sleutel te kopiëren"
+
+#: src/components/account/RecoveryCodesResetDialog.vue:25
+#: src/components/admin/domains/DomainAdminList.vue:71
+#: src/components/admin/domains/DomainAliasForm.vue:31
+#: src/components/admin/domains/DomainDKIMKey.vue:37
+#: src/components/admin/domains/DomainDNSConfig.vue:80
+#: src/components/tools/ImportForm.vue:51
+#: src/layouts/dashboard/DashboardLayout.vue:14
+msgid "Close"
+msgstr "Sluiten"
+
+#: src/components/admin/alarms/AlarmList.vue:133
+msgid "Close alarm"
+msgstr "Sluit alarm"
+
+#: src/components/admin/alarms/AlarmList.vue:46
+msgid "Closed"
+msgstr "Gesloten"
+
+#: src/components/account/FilterForm.vue:14
+msgid "Conditions"
+msgstr "Voorwaarden"
+
+#: src/components/tools/CreationForm.vue:92
+msgid "Confirm and create"
+msgstr "Bevestig en maak"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:64
+msgid "Confirmation"
+msgstr "Bevestiging"
+
+#: src/components/account/TotpAuthForm.vue:53
+msgid ""
+"Congratulations! Two-factor authentication using one-time passwords is now "
+"enabled for your account."
+msgstr ""
+"Gefeliciteerd! Tweevoudige verificatie met eenmalige wachtwoorden is nu "
+"actief op je account."
+
+#: src/components/account/AutoReplyForm.vue:20
+msgid "Content"
+msgstr "Inhoud"
+
+#: src/components/tools/ImportForm.vue:40
+msgid "Continue on error"
+msgstr "Doorgaan als er een fout optreedt"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:22
+msgid "Control if this domain will be allowed to send and receive messages"
+msgstr "Bepaal of dit domein berichten mag verzenden en ontvangen"
+
+#: src/components/admin/domains/DNSDetail.vue:114
+msgid "Copy key to clipboard"
+msgstr "Kopieer sleutel naar het klembord"
+
+#: src/components/admin/domains/DomainCreationForm.vue:54
+#: src/components/admin/identities/AccountCreationForm.vue:43
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:43
+msgid "Copy to clipboard"
+msgstr "Kopieer naar het klembord"
+
+#: src/components/account/APISetupForm.vue:28
+msgid "Copy token to clipboard"
+msgstr "Kopieer token naar het klembord"
+
+#: src/views/admin/ParametersView.vue:162
+msgid "Could not save parameters"
+msgstr "Kon de parameters niet bewaren"
+
+#: src/components/account/FilterForm.vue:195
+#: src/components/account/FilterSetForm.vue:30
+msgid "Create"
+msgstr "Aanmaken"
+
+#: src/components/admin/domains/DomainCreationForm.vue:241
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:5
+msgid "Create a domain administrator"
+msgstr "Maak een domeinbeheerder aan"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:27
+msgid "Create a mailbox for the administrator."
+msgstr "Maak een mailbox voor de beheerder."
+
+#: src/components/account/FilterSetForm.vue:3
+msgid "Create a new filter set"
+msgstr "Maak een nieuwe filterset aan"
+
+#: src/components/admin/domains/DomainCreationForm.vue:265
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
+msgid "Create aliases"
+msgstr "Aliassen aanmaken"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
+msgid "Create standard aliases for the domain."
+msgstr "Maak standaard aliassen voor het domein aan."
+
+#: src/components/admin/domains/DomainSummary.vue:8
+#: src/components/admin/identities/AccountSummary.vue:8
+#: src/components/admin/identities/AliasSummary.vue:8
+msgid "Creation date"
+msgstr "Aanmaakdatum"
+
+#: src/views/admin/identities/IdentitiesView.vue:81
+msgid "Crypt passwords"
+msgstr "Versleutel wachtwoorden"
+
+#: src/mixins/importExport.js:39
+msgid "CSV seems to be badly formatted"
+msgstr "CSV lijkt verkeerd format te hebben"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:4
+msgid "Current password"
+msgstr "Huidig wachtwoord"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:23
+msgid "Daily message sending limit"
+msgstr "Dagelijkse verzendlimiet e-mails"
+
+#: src/components/admin/domains/DomainSummary.vue:30
+#: src/components/admin/identities/AccountSummary.vue:55
+msgid "Daily sending limit"
+msgstr "Dagelijkse verzendlimiet"
+
+#: src/layouts/dashboard/NavBar.vue:177
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: src/components/admin/logs/AuditTrailList.vue:49
+#: src/components/admin/logs/MessageList.vue:43
+msgid "Date"
+msgstr "Datum"
+
+#: src/components/tools/TimeSerieChart.vue:110
+msgid "Day"
+msgstr "Dag"
+
+#: src/components/admin/domains/DomainCreationForm.vue:192
+#: src/components/admin/domains/DomainSummary.vue:23
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:19
+msgid "Default mailbox quota"
+msgstr "Standaard mailbox quota"
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:21
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr ""
+"Standaard quotum toegepast op alle mailboxen. Kan uitgedrukt worden in kB, "
+"MB (standaard) of GB. Een waarde van 0 betekent geen quotum."
+
+#: src/components/admin/alarms/AlarmList.vue:109
+#: src/components/admin/alarms/AlarmList.vue:126
+#: src/components/admin/domains/DomainAliasForm.vue:38
+#: src/components/admin/domains/DomainList.vue:301
+#: src/components/admin/identities/IdentityList.vue:164
+#: src/components/admin/identities/IdentityList.vue:176
+#: src/components/admin/identities/IdentityList.vue:189
+#: src/components/admin/imap_migration/MigrationsList.vue:123
+#: src/components/admin/imap_migration/ProvidersList.vue:124
+#: src/views/account/FiltersView.vue:323
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: src/views/account/FiltersView.vue:371
+msgid "Delete filter set"
+msgstr "Filterset verwijderen"
+
+#: src/components/account/APISetupForm.vue:38
+msgid "Delete token"
+msgstr "Verwijder token"
+
+#: src/components/admin/identities/AliasCreationForm.vue:72
+#: src/components/admin/identities/AliasSummary.vue:20
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:57
+#: src/views/admin/InformationView.vue:62
+msgid "Description"
+msgstr "Beschrijving"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:45
+msgid "Detail"
+msgstr "Detail"
+
+#: src/views/account/FiltersView.vue:334
+msgid "Disable"
+msgstr "Uitschakelen"
+
+#: src/components/account/TotpAuthForm.vue:101
+msgid "Disable 2FA"
+msgstr "Schakel 2FA uit"
+
+#: src/components/admin/domains/DomainList.vue:83
+msgid "disabled"
+msgstr "uitgeschakeld"
+
+#: src/components/admin/domains/DNSStatusChip.vue:18
+msgid "Disabled"
+msgstr "Uitgeschakeld"
+
+#: src/components/admin/domains/DNSDetail.vue:103
+msgid "DKIM key"
+msgstr "DKIM sleutel"
+
+#: src/components/admin/domains/DNSDetail.vue:182
+msgid "DKIM key copied to clipboard"
+msgstr "DKIM-sleutel gekopieerd naar het klembord"
+
+#: src/components/admin/domains/DNSDetail.vue:218
+msgid ""
+"DKIM key does not seem to be generated yet or has failed. Do you want to "
+"requeue the job?"
+msgstr ""
+"DKIM-sleutel is nog niet gegenereerd of genereren is mislukt. Wil je het "
+"opnieuw proberen?"
+
+#: src/components/admin/domains/DomainCreationForm.vue:208
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
+msgid "DKIM key length"
+msgstr "DKIM-sleutellengte"
+
+#: src/components/admin/domains/DomainCreationForm.vue:204
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:16
+msgid "DKIM key selector"
+msgstr "Selectie DKIM-sleutel"
+
+#: src/components/admin/domains/DNSDetail.vue:238
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgstr "DKIM sleutels bestaan al voor dit domein. Wil je ze overschrijven?"
+
+#: src/components/admin/domains/DomainDKIMKey.vue:5
+msgid "DKIM public key for"
+msgstr "DKIM publieke sleutel voor"
+
+#: src/components/admin/domains/DNSDetail.vue:84
+msgid "DKIM record found"
+msgstr "DKIM-record gevonden"
+
+#: src/components/admin/domains/DNSDetail.vue:87
+msgid "DKIM record not found"
+msgstr "DKIM-record niet gevonden"
+
+#: src/components/admin/domains/DomainEditForm.vue:52
+msgid "DKIM signing"
+msgstr "DKIM ondertekening"
+
+#: src/views/admin/domains/DomainView.vue:27
+msgid "DMARC"
+msgstr "DMARC"
+
+#: src/components/admin/domains/DNSDetail.vue:92
+msgid "DMARC record found"
+msgstr "DMARC-record gevonden"
+
+#: src/components/admin/domains/DNSDetail.vue:95
+msgid "DMARC record not found"
+msgstr "DMARC-record niet gevonden"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:89
+msgid "DMARC support does not seem to be enabled for this domain."
+msgstr "DMARC-ondersteuning lijkt niet geactiveerd te zijn voor dit domein."
+
+#: src/components/admin/domains/DomainCreationForm.vue:143
+#: src/components/admin/domains/DomainCreationForm.vue:149
+#: src/components/admin/domains/DomainCreationForm.vue:173
+#: src/components/admin/domains/DomainEditForm.vue:36
+msgid "DNS"
+msgstr "DNS"
+
+#: src/components/admin/domains/DomainEditForm.vue:43
+msgid "DNS checks"
+msgstr "DNS controles"
+
+#: src/components/admin/domains/DomainDNSConfig.vue:4
+msgid "DNS configuration for "
+msgstr "DNS-configuratie voor"
+
+#: src/components/admin/domains/DNSDetail.vue:8
+msgid "DNS configuration help"
+msgstr "DNS-configuratiehulp"
+
+#: src/components/admin/domains/DomainList.vue:206
+msgid "DNS status"
+msgstr "DNS-status"
+
+#: src/components/admin/identities/IdentityList.vue:97
+msgid "Do not delete account folder"
+msgstr "Accountdirectory niet verwijderen"
+
+#: src/components/admin/domains/DomainList.vue:161
+msgid "Do not delete domain folder"
+msgstr "Domeindirectory niet verwijderen"
+
+#: src/components/admin/domains/DomainList.vue:243
+msgid "Do you really want to delete the domain %{ domain }?"
+msgstr "Wil je het domein %{ domain } verwijderen?"
+
+#: src/components/account/FidoAuthForm.vue:179
+msgid "Do you really want to delete this WebAuthn device?"
+msgstr "Wil je dit WebAuthn apparaat verwijderen?"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:55
+msgid "domain"
+msgstr "domein"
+
+#: src/components/admin/alarms/AlarmList.vue:94
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:21
+#: src/views/admin/domains/DomainsView.vue:33
+#: src/views/admin/domains/DomainView.vue:5
+msgid "Domain"
+msgstr "Domein"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:90
+msgid "Domain administrator"
+msgstr "Domeinbeheerder"
+
+#: src/stores/domains.store.js:90
+msgid "Domain alias created"
+msgstr "Domeinalias aangemaakt"
+
+#: src/stores/domains.store.js:112
+msgid "Domain alias deleted"
+msgstr "Domeinalias verwijderd"
+
+#: src/stores/domains.store.js:127
+msgid "Domain alias updated"
+msgstr "Domeinalias gewijzigd"
+
+#: src/components/admin/domains/DomainCreationForm.vue:316
+msgid "Domain created"
+msgstr "Domein aangemaakt"
+
+#: src/components/admin/identities/AccountCreationForm.vue:130
+msgid "Domain default value"
+msgstr " Standaardwaarde domein"
+
+#: src/components/admin/domains/DomainList.vue:257
+msgid "Domain deleted"
+msgstr "Domein verwijderd"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:5
+msgid "Domain name (ex: domain.tld)"
+msgstr "Domeinnaam (bijv. mijndomein.nl)"
+
+#: src/stores/domains.store.js:62
+msgid "Domain updated"
+msgstr "Domein gewijzigd"
+
+#: src/components/admin/identities/AccountEditForm.vue:82
+msgid "domain's default value"
+msgstr " Standaardwaarde domein"
+
+#: src/layouts/dashboard/NavBar.vue:183
+#: src/views/admin/domains/DomainsView.vue:4
+msgid "Domains"
+msgstr "Domeinen"
+
+#: src/components/tools/ImportForm.vue:43
+msgid "Don't treat duplicated objects as errors"
+msgstr "Beschouw dubbele objecten niet als fout"
+
+#: src/views/account/FiltersView.vue:366
+msgid "Download filter set"
+msgstr "Filterset downloaden"
+
+#: src/components/admin/domains/DomainList.vue:296
+#: src/components/admin/identities/IdentityList.vue:159
+#: src/components/admin/identities/IdentityList.vue:171
+#: src/components/admin/imap_migration/ProvidersList.vue:130
+#: src/views/account/FiltersView.vue:318
+msgid "Edit"
+msgstr "Wijzig"
+
+#: src/views/admin/identities/AccountEditView.vue:3
+msgid "Edit account"
+msgstr "Account wijzigen"
+
+#: src/views/admin/identities/AliasEditView.vue:3
+msgid "Edit alias"
+msgstr "Alias bewerken"
+
+#: src/views/admin/domains/DomainEditView.vue:3
+msgid "Edit domain"
+msgstr "Domein bewerken"
+
+#: src/components/admin/domains/DomainAliasForm.vue:73
+msgid "Edit domain alias"
+msgstr "Domeinalias bewerken"
+
+#: src/components/account/FilterForm.vue:192
+msgid "Edit filter"
+msgstr "Filter bewerken"
+
+#: src/views/admin/imap_migration/ProviderEditView.vue:3
+msgid "Edit provider"
+msgstr "Provider bewerken"
+
+#: src/components/account/FidoAuthForm.vue:201
+msgid "Edit your device"
+msgstr "Wijzig je apparaat"
+
+#: src/components/account/FidoAuthForm.vue:200
+msgid "Edition"
+msgstr "Editie"
+
+#: src/components/admin/identities/AccountCreationForm.vue:124
+msgid "Email"
+msgstr "E-mail"
+
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
+msgid "Email address"
+msgstr "E-mailadres"
+
+#: src/layouts/dashboard/NavBar.vue:227
+msgid "Email providers"
+msgstr "E-mailproviders"
+
+#: src/components/tools/CreationSummary.vue:45
+msgid "Empty"
+msgstr "Leeg"
+
+#: src/views/account/FiltersView.vue:341
+msgid "Enable"
+msgstr "Activeer"
+
+#: src/components/admin/domains/DomainCreationForm.vue:181
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:11
+msgid "Enable DKIM signing"
+msgstr "Zet DKIM ondertekening aan"
+
+#: src/components/admin/domains/DomainCreationForm.vue:176
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
+msgid "Enable DNS checks"
+msgstr "Schakel DNS checks in."
+
+#: src/components/account/AutoReplyForm.vue:7
+#: src/components/admin/domains/DomainCreationForm.vue:166
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:20
+#: src/components/admin/identities/AccountCreationForm.vue:111
+#: src/components/admin/identities/AccountEditForm.vue:45
+#: src/components/admin/identities/AliasEditForm.vue:21
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:42
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:52
+msgid "Enabled"
+msgstr "Actief"
+
+#: src/components/account/FidoAuthForm.vue:55
+msgid "Enter a name to register a new webauthn device."
+msgstr "Voer een naam in om een nieuw webauthn device te registreren"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:71
+msgid "Enter a simple username or an email address"
+msgstr "Voer een gebruikersnaam of mailadres in"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:69
+msgid "Enter an email address"
+msgstr "Vul een mailadres in."
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
+msgid "Ex: 10MB. Leave empty for no limit"
+msgstr "Bijvoorbeeld 10 MB. Laat leeg voor geen limiet."
+
+#: src/components/admin/identities/AliasCreationForm.vue:66
+#: src/components/admin/identities/AliasSummary.vue:16
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:55
+msgid "Expire at"
+msgstr "Verloop op"
+
+#: src/views/admin/identities/IdentitiesView.vue:15
+msgid "Export accounts and aliases to CSV"
+msgstr "Exporteer accounts en aliassen naar CSV"
+
+#: src/views/admin/domains/DomainsView.vue:15
+msgid "Export domains and aliases to CSV"
+msgstr "Exporteer domeinen en aliassen naar CSV"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:130
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:152
+msgid "Failed"
+msgstr "Mislukt"
+
+#: src/components/account/ProfileForm.vue:24
+msgid "Feel free to improve the translations"
+msgstr "Voel je vrij om vertalingen te verbeteren!"
+
+#: src/plugins/rules.js:27
+msgid "Field is required"
+msgstr "Dit veld is verplicht"
+
+#: src/components/account/FilterForm.vue:300
+msgid "Filter added"
+msgstr "Filter toegevoegd"
+
+#: src/views/account/FiltersView.vue:254
+msgid "Filter disabled"
+msgstr "Filter gedeactiveerd"
+
+#: src/views/account/FiltersView.vue:247
+msgid "Filter enabled"
+msgstr "Filter geactiveerd"
+
+#: src/views/account/FiltersView.vue:260
+msgid "Filter removed"
+msgstr "Filter verwijderd"
+
+#: src/views/account/FiltersView.vue:277
+msgid "Filter set activated"
+msgstr "Filterset geactiveerd"
+
+#: src/components/account/FilterSetForm.vue:66
+msgid "Filter set created"
+msgstr "Filterset aangemaakt"
+
+#: src/views/account/FiltersView.vue:282
+msgid "Filter set removed"
+msgstr "Filterset verwijderd"
+
+#: src/views/account/FiltersView.vue:296
+msgid "Filter set updated"
+msgstr "Filterset gewijzigd"
+
+#: src/components/account/FilterForm.vue:303
+msgid "Filter updated"
+msgstr "Filter gewijzigd"
+
+#: src/layouts/dashboard/NavBar.vue:279
+msgid "Filters"
+msgstr "Filters"
+
+#: src/components/account/ProfileForm.vue:9
+#: src/components/admin/identities/AccountCreationForm.vue:100
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
+msgid "First name"
+msgstr "Voornaam"
+
+#: src/views/account/SettingsView.vue:14
+msgid "Forward"
+msgstr "Doorsturen"
+
+#: src/components/account/ForwardForm.vue:18
+msgid "Forward messages and store copies into your local mailbox"
+msgstr "Stuur berichten door en sla een kopie op in je mailbox"
+
+#: src/components/account/ForwardForm.vue:49
+msgid "Forward updated"
+msgstr "Doorstuuradres gewijzigd"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:129
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:151
+msgid "Forwarded"
+msgstr "Doorgestuurd"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:61
+msgid "Forwarders with ARC"
+msgstr "Doorsturen met ARC"
+
+#: src/components/account/AutoReplyForm.vue:32
+#: src/components/admin/logs/MessageList.vue:46
+#: src/components/tools/TimeSerieChart.vue:19
+msgid "From"
+msgstr "Van"
+
+#: src/components/admin/identities/AccountSummary.vue:19
+msgid "Full name"
+msgstr "Naam"
+
+#: src/components/admin/identities/IdentityList.vue:119
+msgid "Fullname/recipient"
+msgstr "Volledige naam/Ontvanger"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:127
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:143
+msgid "Fully aligned"
+msgstr "Volledig uitgelijnd"
+
+#: src/components/admin/domains/DomainCreationForm.vue:142
+#: src/components/admin/domains/DomainCreationForm.vue:148
+#: src/components/admin/domains/DomainCreationForm.vue:161
+#: src/components/admin/domains/DomainEditForm.vue:9
+#: src/components/admin/identities/AliasCreationForm.vue:53
+#: src/components/admin/identities/AliasCreationForm.vue:93
+#: src/components/admin/identities/AliasEditForm.vue:9
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:51
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:71
+#: src/components/admin/imap_migration/ProviderForm.vue:7
+#: src/views/admin/domains/DomainView.vue:21
+msgid "General"
+msgstr "Algemeen"
+
+#: src/components/admin/domains/DomainSummary.vue:4
+#: src/components/admin/identities/AccountSummary.vue:4
+#: src/components/admin/identities/AliasSummary.vue:4
+msgid "General information"
+msgstr "Algemene informatie"
+
+#: src/components/account/ProfileForm.vue:5
+msgid "General settings"
+msgstr "Algemene instellingen"
+
+#: src/components/account/APISetupForm.vue:13
+msgid "Generate"
+msgstr "Genereer"
+
+#: src/components/admin/domains/DNSDetail.vue:119
+msgid "Generate a new DKIM key"
+msgstr "Nieuwe DKIM-sleutel genereren"
+
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:38
+msgid "Generated address"
+msgstr "Gegenereerd adres"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:101
+msgid "help"
+msgstr "help"
+
+#: src/components/account/APISetupForm.vue:46
+#: src/components/account/ProfileForm.vue:28
+msgid "here"
+msgstr "hier"
+
+#: src/components/admin/domains/DomainDNSConfig.vue:9
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace values "
+"between [ ] by the appropriate ones."
+msgstr ""
+"Hier is een voorbeeld van een DNS-configuratie (bind format). Vervang de "
+"waarden tussen [ ] door geschikte waarden."
+
+#: src/components/admin/identities/AccountCreationForm.vue:167
+#: src/components/admin/identities/AccountCreationForm.vue:96
+#: src/components/admin/identities/AccountEditForm.vue:31
+msgid "Identification"
+msgstr "Identificatie"
+
+#: src/layouts/dashboard/NavBar.vue:189
+#: src/views/admin/identities/IdentitiesView.vue:4
+msgid "Identities"
+msgstr "Identiteiten"
+
+#: src/components/tools/CreationForm.vue:130
+msgid ""
+"If you close this form now, your modifications won't be saved. Do you "
+"confirm?"
+msgstr ""
+"Als je dit formulier nu sluit, worden de wijzigingen niet bewaard. Wil je "
+"dit bevestigen?"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:94
+msgid ""
+"If you configured it recently, please wait for the first report to be "
+"received and processed."
+msgstr ""
+"Als je het recentelijk hebt geconfigureerd, wacht dan tot het eerste rapport"
+" is verwerkt."
+
+#: src/layouts/dashboard/NavBar.vue:223
+msgid "IMAP Migration"
+msgstr "IMAP-migratie"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:17
+msgid "IMAP Port"
+msgstr "IMAP-poort"
+
+#: src/components/tools/ImportForm.vue:54
+msgid "Import"
+msgstr "Importeer"
+
+#: src/views/admin/identities/IdentitiesView.vue:8
+msgid "Import accounts and aliases from CSV file"
+msgstr "Importeer accounts en aliassen van een CSV-bestand"
+
+#: src/views/admin/domains/DomainsView.vue:53
+msgid "Import domains"
+msgstr "Importeer domeinen"
+
+#: src/views/admin/domains/DomainsView.vue:8
+msgid "Import domains and aliases from CSV file"
+msgstr "Importeer domeinen en aliassen van een CSV-bestand"
+
+#: src/views/admin/identities/IdentitiesView.vue:59
+msgid "Import identities"
+msgstr "Importeer identiteiten"
+
+#: src/components/account/ForwardForm.vue:8
+msgid "Indicate one or more recipients separated by a comma (,)"
+msgstr "Geef een of meer ontvangers op, gescheiden door een komma (,)"
+
+#: src/layouts/dashboard/NavBar.vue:246 src/views/admin/InformationView.vue:4
+msgid "Information"
+msgstr "Informatie"
+
+#: src/components/account/TotpAuthForm.vue:34
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+msgstr ""
+"Gebruik een authenticator-app zoals FreeOTP of Google Authenticator om deze "
+"QR code te scannen."
+
+#: src/views/admin/InformationView.vue:8
+msgid "Installed components"
+msgstr "Geïnstalleerde componenten"
+
+#: src/views/admin/InformationView.vue:60
+msgid "Installed version"
+msgstr "Geïnstalleerde versie"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:127
+msgid "Invalid password"
+msgstr "Ongeldig wachtwoord"
+
+#: src/plugins/rules.js:41
+msgid "Invalid port number"
+msgstr "Ongeldige poort"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
+msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
+msgstr "Is de IMAP-verbinding beveiligd met SSL/TLS of STARTTLS"
+
+#: src/views/Dashboard.vue:9
+msgid ""
+"It will present a summary of your Modoboa server's status and some useful "
+"information about the product."
+msgstr ""
+"Je krijgt een samenvatting van de status van de Modoboa-server en andere "
+"nuttige informatie."
+
+#: src/components/account/ForwardForm.vue:16
+msgid "Keep local copies"
+msgstr "Lokale kopieën behouden"
+
+#: src/components/account/ProfileForm.vue:22
+msgid "Language"
+msgstr "Taal"
+
+#: src/components/admin/identities/AccountSummary.vue:12
+msgid "Last login date"
+msgstr "Laatste login"
+
+#: src/components/admin/domains/DomainSummary.vue:12
+msgid "Last modification date"
+msgstr "Laatst gewijzigd"
+
+#: src/components/account/ProfileForm.vue:15
+#: src/components/admin/identities/AccountCreationForm.vue:103
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
+msgid "Last name"
+msgstr "Achternaam"
+
+#: src/components/account/FidoAuthForm.vue:135
+msgid "Last Used"
+msgstr "Laatst gebruikt"
+
+#: src/views/admin/InformationView.vue:61
+msgid "Latest version"
+msgstr "Laatste versie"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:26
+msgid "Leave empty for no limit"
+msgstr "Laat leeg voor geen limiet"
+
+#: src/components/admin/logs/AuditTrailList.vue:50
+msgid "Level"
+msgstr "Niveau"
+
+#: src/components/admin/domains/DomainCreationForm.vue:144
+#: src/components/admin/domains/DomainCreationForm.vue:150
+#: src/components/admin/domains/DomainCreationForm.vue:188
+#: src/components/admin/domains/DomainEditForm.vue:73
+msgid "Limitations"
+msgstr "Beperkingen"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:13
+msgid "Local domain (optional)"
+msgstr "Lokaal domein (optioneel)"
+
+#: src/components/admin/logs/AuditTrailList.vue:51
+msgid "Logger"
+msgstr "Logger"
+
+#: src/layouts/dashboard/NavBar.vue:260
+msgid "Logout"
+msgstr "Uitloggen"
+
+#: src/components/admin/alarms/AlarmList.vue:95
+#: src/components/admin/identities/AccountCreationForm.vue:121
+#: src/components/admin/identities/AccountCreationForm.vue:174
+#: src/components/admin/identities/AccountEditForm.vue:69
+msgid "Mailbox"
+msgstr "Mailbox"
+
+#: src/components/admin/identities/AccountEditForm.vue:165
+msgid "Mailbox aliases:"
+msgstr "Mailbox aliassen:"
+
+#: src/components/admin/identities/AccountEditForm.vue:158
+msgid "Mailbox:"
+msgstr "Mailbox:"
+
+#: src/components/admin/domains/DomainSummary.vue:36
+msgid "Mailboxes"
+msgstr "Mailboxen"
+
+#: src/components/admin/domains/DomainSummary.vue:20
+#: src/components/admin/identities/AccountSummary.vue:49
+msgid "MB"
+msgstr "MB"
+
+#: src/components/admin/alarms/AlarmList.vue:96
+#: src/components/admin/logs/AuditTrailList.vue:52
+msgid "Message"
+msgstr "Bericht"
+
+#: src/views/account/FiltersView.vue:3
+msgid "Message filters"
+msgstr "Berichtfilters"
+
+#: src/views/admin/monitoring/MessagesView.vue:3
+msgid "Message history"
+msgstr "Berichtengeschiedenis"
+
+#: src/components/admin/domains/DomainCreationForm.vue:196
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
+#: src/components/admin/identities/AccountCreationForm.vue:134
+msgid "Message sending limit"
+msgstr "Verzendlimiet e-mails"
+
+#: src/components/admin/domains/DomainSummary.vue:32
+msgid "messages"
+msgstr "berichten"
+
+#: src/layouts/dashboard/NavBar.vue:215
+msgid "Messages"
+msgstr "Berichten"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:98
+msgid "Migration deleted"
+msgstr "Migratie verwijderd"
+
+#: src/layouts/dashboard/NavBar.vue:232
+#: src/views/admin/imap_migration/MigrationsView.vue:4
+msgid "Migrations"
+msgstr "Migraties"
+
+#: src/plugins/rules.js:32
+msgid "Minimum length is %{ length }"
+msgstr "Minimumlengte is %{ length }"
+
+#: src/components/admin/identities/AliasSummary.vue:12
+msgid "Modified"
+msgstr "Gewijzigd"
+
+#: src/components/tools/CreationSummary.vue:10
+msgid "Modify"
+msgstr "Wijzigen"
+
+#: src/layouts/dashboard/NavBar.vue:201
+msgid "Monitoring"
+msgstr "Toezicht"
+
+#: src/components/tools/TimeSerieChart.vue:112
+msgid "Month"
+msgstr "Maand"
+
+#: src/views/account/FiltersView.vue:349
+msgid "Move down"
+msgstr "Naar beneden"
+
+#: src/views/account/FiltersView.vue:356
+msgid "Move up"
+msgstr "Naar boven"
+
+#: src/plugins/rules.js:37
+msgid "Must be a numeric value or empty"
+msgstr "Moet een numerieke waarde zijn, of leeg"
+
+#: src/components/admin/domains/DNSDetail.vue:15
+msgid "MX records"
+msgstr "MX-records"
+
+#: src/components/account/FidoAuthForm.vue:92
+msgid "name"
+msgstr "naam"
+
+#: src/components/account/FidoAuthForm.vue:133
+#: src/components/account/FilterForm.vue:7
+#: src/components/account/FilterSetForm.vue:9
+#: src/components/admin/domains/DNSDetail.vue:170
+#: src/components/admin/domains/DomainAdminList.vue:107
+#: src/components/admin/domains/DomainAliasForm.vue:8
+#: src/components/admin/domains/DomainCreationForm.vue:163
+#: src/components/admin/domains/DomainList.vue:203
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
+#: src/components/admin/identities/IdentityList.vue:118
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:53
+#: src/components/admin/imap_migration/ProvidersList.vue:96
+#: src/views/account/FiltersView.vue:164
+#: src/views/admin/InformationView.vue:59
+msgid "Name"
+msgstr "Naam"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:12
+msgid "Name of the administrator"
+msgstr "Naam van de beheerder"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:6
+msgid "Name of the domain to migrate"
+msgstr "Naam van het domein om te migreren"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:14
+msgid "Name:"
+msgstr "Naam:"
+
+#: src/components/admin/domains/DomainEditForm.vue:16
+msgid "Name: "
+msgstr "Naam:"
+
+#: src/components/account/FidoAuthForm.vue:32
+msgid "Never"
+msgstr "Nooit"
+
+#: src/components/admin/identities/AccountSummary.vue:16
+msgid "Never logged-in"
+msgstr "Nooit ingelogd"
+
+#: src/views/admin/domains/DomainsView.vue:28
+#: src/views/admin/identities/IdentitiesView.vue:28
+#: src/views/admin/imap_migration/ProvidersView.vue:12
+msgid "New"
+msgstr "Nieuw"
+
+#: src/components/admin/identities/AccountCreationForm.vue:4
+#: src/components/admin/imap_migration/MigrationsList.vue:81
+msgid "New account"
+msgstr "Nieuw account"
+
+#: src/components/admin/identities/AliasCreationForm.vue:4
+msgid "New alias"
+msgstr "Nieuwe alias"
+
+#: src/components/account/FidoAuthForm.vue:61
+msgid "New device name"
+msgstr "Nieuwe apparaatnaam"
+
+#: src/components/admin/domains/DomainCreationForm.vue:4
+msgid "New domain"
+msgstr "Nieuw domein"
+
+#: src/components/account/FilterForm.vue:192
+msgid "New filter"
+msgstr "Nieuw filter"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:4
+msgid "New provider"
+msgstr "Nieuwe provider"
+
+#: src/components/account/RecoveryCodesResetDialog.vue:4
+msgid "New recovery codes"
+msgstr "Nieuwe herstelcodes"
+
+#: src/components/tools/CreationForm.vue:69
+msgid "Next"
+msgstr "Volgende"
+
+#: src/plugins/filters.js:9
+msgid "no"
+msgstr "nee"
+
+#: src/components/account/FidoAuthForm.vue:182
+#: src/components/admin/domains/DNSDetail.vue:223
+#: src/components/admin/domains/DNSDetail.vue:243
+#: src/components/admin/domains/DomainList.vue:248
+#: src/components/admin/identities/IdentityList.vue:209
+#: src/components/admin/identities/IdentityList.vue:235
+#: src/components/tools/CreationForm.vue:136
+msgid "No"
+msgstr "Nee"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:41
+msgid "No associated domains"
+msgstr "Geen gekoppelde domeinen"
+
+#: src/mixins/importExport.js:8
+msgid "No data to export"
+msgstr "Geen data om te exporteren"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:13
+msgid "No domain managed"
+msgstr "Geen domein beheerd"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:10
+msgid "No sender address defined for this account"
+msgstr "Geen afzenderadres opgegeven voor dit account"
+
+#: src/components/admin/domains/DomainEditForm.vue:93
+msgid "No sending limit"
+msgstr "Geen verzendlimiet"
+
+#: src/components/account/BackupCodeAuthForm.vue:43
+msgid "No two-factor authentificator is yet set for your account."
+msgstr "Er is nog geen tweevoudige verificatie ingesteld voor jouw account."
+
+#: src/plugins/rules.js:7
+msgid "Not a valid email"
+msgstr "Ongeldige e-mail"
+
+#: src/components/admin/domains/DNSDetail.vue:126
+msgid "Not generated"
+msgstr "Niet gegenereerd"
+
+#: src/components/admin/identities/AccountEditForm.vue:166
+msgid "Number of allowed mailbox aliases:"
+msgstr "Aantal toegestane mailboxaliassen:"
+
+#: src/components/admin/identities/AccountEditForm.vue:159
+msgid "Number of allowed mailboxes:"
+msgstr "Aantal toegestane mailboxen:"
+
+#: src/components/admin/identities/AccountEditForm.vue:126
+msgid "Number of associated alias:"
+msgstr "Aantal gekoppelde aliassen:"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:37
+msgid "Number of associated domains:"
+msgstr "Aantal gekoppelde domeinen:"
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:34
+msgid ""
+"Number of messages this domain can send per day. Leave empty for no limit."
+msgstr ""
+"Aantal berichten dat dit domein per dag mag verzenden. Laat leeg voor geen "
+"limiet."
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:28
+msgid ""
+"Number of messages this mailbox can send per day. Leave empty for no limit."
+msgstr ""
+"Aantal berichten dat deze mailbox per dag mag verzenden. Laat leeg voor geen"
+" limiet."
+
+#: src/components/tools/ConfirmDialog.vue:56
+msgid "OK"
+msgstr "OK"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:80
+msgid "Old account"
+msgstr "Oud account"
+
+#: src/views/admin/InformationView.vue:19
+msgid "One or more updates are available"
+msgstr "Er zijn een of meer updates beschikbaar"
+
+#: src/components/account/TotpAuthForm.vue:6
+msgid "One-time passwords"
+msgstr "Eenmalige wachtwoorden"
+
+#: src/components/admin/alarms/AlarmList.vue:43
+msgid "Opened"
+msgstr "Geopend"
+
+#: src/views/admin/alarms/AlarmsView.vue:3
+msgid "Opened alarms"
+msgstr "Geopende alarmen"
+
+#: src/components/admin/domains/DomainCreationForm.vue:145
+#: src/components/admin/domains/DomainCreationForm.vue:238
+msgid "Options"
+msgstr "Opties"
+
+#: src/components/account/ProfileForm.vue:30
+msgid "or suggest a new language"
+msgstr "of geen een suggestie voor een nieuwe taal"
+
+#: src/views/admin/ParametersView.vue:153
+msgid "Parameters updated"
+msgstr "Parameters gewijzigd"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:128
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:148
+msgid "Partially aligned"
+msgstr "Gedeeltelijk uitgelijnd"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:54
+msgid "Partially trusted sources / Forwarders"
+msgstr "Gedeeltelijk vertrouwde bronnen / Forwarders"
+
+#: src/components/account/BackupCodeAuthForm.vue:19
+#: src/components/account/ProfileForm.vue:69
+#: src/components/account/TotpAuthForm.vue:84
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:53
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: src/components/admin/domains/DomainCreationForm.vue:283
+#: src/components/admin/identities/AccountCreationForm.vue:211
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:106
+msgid "Password copied to clipboard"
+msgstr "Wachtwoorden gekopieerd naar het klembord"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:101
+msgid "Password mismatch"
+msgstr "Wachtwoord mismatch"
+
+#: src/components/account/ProfileForm.vue:143
+msgid "Password updated"
+msgstr "Wachtwoord gewijzigd"
+
+#: src/plugins/rules.js:39
+msgid "Passwords mismatch"
+msgstr "Wachtwoorden komen niet overeen"
+
+#: src/components/admin/domains/DNSDetail.vue:20
+#: src/components/admin/domains/DNSDetail.vue:40
+#: src/components/admin/domains/DNSStatusChip.vue:21
+msgid "Pending"
+msgstr "In afwachting"
+
+#: src/components/tools/TimeSerieChart.vue:9
+msgid "Period"
+msgstr "Periode"
+
+#: src/components/account/ProfileForm.vue:47
+#: src/components/account/ProfileForm.vue:50
+#: src/components/admin/identities/AccountSummary.vue:31
+msgid "Phone number"
+msgstr "Telefoonnummer"
+
+#: src/components/account/TotpAuthForm.vue:39
+msgid "Pin code"
+msgstr "Pincode"
+
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
+msgid "Please add at least one recipient."
+msgstr "Voeg minstens een ontvanger toe"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:55
+#: src/components/admin/imap_migration/ProvidersList.vue:98
+msgid "Port"
+msgstr "Poort"
+
+#: src/components/admin/domains/DNSStatusChip.vue:24
+msgid "Problem"
+msgstr "Probleem"
+
+#: src/components/account/APISetupForm.vue:99
+msgid "Proceed"
+msgstr "Ga verder"
+
+#: src/views/account/SettingsView.vue:8
+msgid "Profile"
+msgstr "Profiel"
+
+#: src/components/account/ProfileForm.vue:125
+msgid "Profile updated"
+msgstr "Profiel gewijzigd"
+
+#: src/components/tools/ImportForm.vue:10
+msgid "Provide a CSV file where lines respect one of the following formats:"
+msgstr ""
+"Zorg voor een CSV-bestand met regels volgens een van de volgende formats:"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:79
+msgid "Provider"
+msgstr "Provider"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:127
+msgid "Provider created"
+msgstr "Provider aangemaakt"
+
+#: src/stores/providers.store.js:51
+msgid "Provider deleted"
+msgstr "Provider verwijderd"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:5
+msgid "Provider name"
+msgstr "Naam provider"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:135
+msgid "Provider updated"
+msgstr "Provider gewijzigd"
+
+#: src/views/admin/imap_migration/ProvidersView.vue:4
+msgid "Providers"
+msgstr "Providers"
+
+#: src/components/admin/logs/MessageList.vue:42
+msgid "Queue ID"
+msgstr "Wachtrij-ID"
+
+#: src/components/admin/domains/DomainCreationForm.vue:190
+#: src/components/admin/domains/DomainList.vue:211
+#: src/components/admin/domains/DomainSummary.vue:16
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:5
+#: src/components/admin/identities/AccountCreationForm.vue:128
+#: src/components/admin/identities/AccountSummary.vue:36
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
+msgid "Quota"
+msgstr "Quota"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
+msgid ""
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr ""
+"Quota voor deze mailbox kan uitgedrukt worden ik KB, MB (standaard) of GB. "
+"Geef een aangepaste waarde of gebruik de standaard voor dit domein. Laat dit"
+" leeg voor een ongelimiteerde waarde (niet toegestaan voor domein "
+"administrators)."
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:7
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr ""
+"Quota gedeeld tussen mailboxen. Kan uitgedrukt worden in kB, MB (standaard) "
+"of GB. Een waarde van 0 betekent geen quota."
+
+#: src/components/admin/domains/DomainEditForm.vue:81
+#: src/components/admin/identities/AccountEditForm.vue:81
+#: src/components/admin/identities/AccountEditForm.vue:87
+msgid "Quota: "
+msgstr "Quota:"
+
+#: src/components/admin/identities/AliasCreationForm.vue:56
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:6
+msgid "Random address"
+msgstr "Willekeurig adres"
+
+#: src/components/admin/domains/DomainCreationForm.vue:255
+#: src/components/admin/identities/AccountCreationForm.vue:106
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:20
+msgid "Random password"
+msgstr "Willekeurig wachtwoord"
+
+#: src/components/admin/domains/DomainDKIMKey.vue:9
+msgid "Raw format. Click to copy"
+msgstr "Ruw format. Klik om te kopiëren"
+
+#: src/views/account/FiltersView.vue:45
+msgid "Raw mode"
+msgstr "Ruwe modus"
+
+#: src/components/account/ForwardForm.vue:4
+msgid "Recipient(s)"
+msgstr "Ontvanger(s)"
+
+#: src/components/admin/identities/AliasCreationForm.vue:77
+#: src/components/admin/identities/AliasCreationForm.vue:80
+#: src/components/admin/identities/AliasCreationForm.vue:97
+#: src/components/admin/identities/AliasEditForm.vue:41
+#: src/components/admin/identities/AliasRecipientsSummary.vue:4
+msgid "Recipients"
+msgstr "Ontvangers"
+
+#: src/components/account/TotpAuthForm.vue:45
+msgid "Register"
+msgstr "Registreer"
+
+#: src/components/account/TotpAuthForm.vue:115
+msgid "Register authenticator"
+msgstr "Registreer authenticator"
+
+#: src/components/account/FidoAuthForm.vue:21
+msgid "Registered Webauthn devices"
+msgstr "Geregistreerde Webauthn-apparaten"
+
+#: src/components/tools/TimeSerieChart.vue:27
+msgid "Relative time ranges"
+msgstr "Relatieve tijdspannes"
+
+#: src/components/admin/domains/DomainList.vue:80
+msgid "Relay"
+msgstr "Relay"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:60
+msgid "relaydomain"
+msgstr "Relaydomein"
+
+#: src/components/admin/alarms/AlarmList.vue:116
+msgid "Reload"
+msgstr "Opnieuw laden"
+
+#: src/components/account/FilterForm.vue:135
+msgid "Remove action"
+msgstr "Actie verwijderen"
+
+#: src/components/account/FilterForm.vue:68
+msgid "Remove condition"
+msgstr "Voorwaarde verwijderen"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:36
+msgid "Remove this address"
+msgstr "Dit adres verwijderen"
+
+#: src/components/admin/domains/DomainAdminList.vue:47
+msgid "Remove this administrator"
+msgstr "Verwijder deze beheerder"
+
+#: src/components/admin/alarms/AlarmList.vue:140
+msgid "Reopen alarm"
+msgstr "Open alarm opnieuw"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:99
+msgid "Reseller"
+msgstr "Wederverkoper"
+
+#: src/components/account/BackupCodeAuthForm.vue:35
+msgid "Reset recovery codes"
+msgstr "Reset herstelcodes"
+
+#: src/components/admin/domains/DomainEditForm.vue:149
+#: src/components/admin/identities/AccountEditForm.vue:144
+msgid "Resources"
+msgstr "Bronnen"
+
+#: src/components/tools/ResourcesView.vue:4
+msgid "Resources usage"
+msgstr "Capaciteitsgebruik"
+
+#: src/components/admin/identities/AccountCreationForm.vue:163
+#: src/components/admin/identities/AccountCreationForm.vue:92
+#: src/components/admin/identities/AccountCreationForm.vue:93
+#: src/components/admin/identities/AccountEditForm.vue:9
+#: src/components/admin/identities/AccountSummary.vue:23
+msgid "Role"
+msgstr "Rol"
+
+#: src/components/account/FidoAuthForm.vue:205
+#: src/components/admin/domains/DomainEditForm.vue:168
+#: src/components/admin/identities/AccountEditForm.vue:194
+#: src/components/admin/identities/AliasEditForm.vue:77
+#: src/components/admin/imap_migration/ProviderForm.vue:61
+#: src/views/account/FiltersView.vue:107
+msgid "Save"
+msgstr "Bewaren"
+
+#: src/components/admin/domains/DomainList.vue:38
+#: src/components/admin/identities/IdentityList.vue:39
+#: src/components/admin/imap_migration/ProvidersList.vue:39
+#: src/components/admin/logs/AuditTrailList.vue:17
+#: src/components/admin/logs/MessageList.vue:17
+msgid "Search"
+msgstr "Zoeken"
+
+#: src/components/account/ProfileForm.vue:54
+#: src/components/admin/identities/AccountSummary.vue:27
+msgid "Secondary email"
+msgstr "Tweede e-mailadres"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:24
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:57
+#: src/components/admin/imap_migration/ProvidersList.vue:99
+msgid "Secured"
+msgstr "Beveiligd"
+
+#: src/views/account/FiltersView.vue:8
+msgid "Select a filter set"
+msgstr "Filterset selecteren"
+
+#: src/components/admin/domains/DomainAdminList.vue:20
+msgid "Select an account"
+msgstr "Account selecteren"
+
+#: src/components/tools/ImportForm.vue:22
+msgid "Select file"
+msgstr "Bestand selecteren"
+
+#: src/components/admin/identities/AccountEditForm.vue:93
+msgid "Send only"
+msgstr "Alleen verzenden"
+
+#: src/components/admin/identities/AccountCreationForm.vue:138
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:40
+msgid "Send only account"
+msgstr "Account om alleen te verzenden"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:97
+msgid "Sender address added"
+msgstr "Afzenderadres toegevoegd"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:104
+msgid "Sender address deleted"
+msgstr "Afzenderadres verwijderd"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:4
+msgid "Sender addresses"
+msgstr "Afzenderadressen"
+
+#: src/components/admin/domains/DomainList.vue:210
+msgid "Sending limit"
+msgstr "Verzendlimiet"
+
+#: src/components/admin/domains/DomainEditForm.vue:87
+msgid "Sending limit: "
+msgstr "Verzendlimiet:"
+
+#: src/components/tools/ImportForm.vue:31
+msgid "Separator"
+msgstr "Scheidingsteken"
+
+#: src/components/admin/domains/DomainCreationForm.vue:217
+#: src/components/admin/domains/form_steps/DomainTransportForm.vue:3
+msgid "Service"
+msgstr "Service"
+
+#: src/components/admin/domains/DomainEditForm.vue:121
+msgid "Service: "
+msgstr "Service:"
+
+#: src/layouts/dashboard/NavBar.vue:240 src/layouts/dashboard/NavBar.vue:285
+msgid "Settings"
+msgstr "Instellingen"
+
+#: src/components/account/FidoAuthForm.vue:69
+msgid "Setup device"
+msgstr "Stel apparaat in"
+
+#: src/components/admin/domains/DNSDetail.vue:108
+msgid "Show key"
+msgstr "Toon sleutel"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:80
+msgid "Simple user"
+msgstr "Gebruiker"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:17
+msgid "Specify an email address"
+msgstr "Vul een mailadres in."
+
+#: src/components/admin/domains/DNSDetail.vue:76
+msgid "SPF record found"
+msgstr "SPF-record gevonden"
+
+#: src/components/admin/domains/DNSDetail.vue:79
+msgid "SPF record not found"
+msgstr "SPF-record niet gevonden"
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:6
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:6
+msgid "Start typing a name here..."
+msgstr "Typ hier een naam..."
+
+#: src/layouts/dashboard/NavBar.vue:205
+#: src/views/admin/domains/DomainView.vue:24
+#: src/views/admin/monitoring/StatisticsView.vue:3
+msgid "Statistics"
+msgstr "Statistieken"
+
+#: src/components/admin/alarms/AlarmList.vue:93
+#: src/components/admin/logs/MessageList.vue:44
+msgid "Status"
+msgstr "Status"
+
+#: src/components/account/AutoReplyForm.vue:12
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: src/components/tools/CreationForm.vue:21
+#: src/components/tools/CreationForm.vue:75
+msgid "Summary"
+msgstr "Overzicht"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:106
+msgid "Super administrator"
+msgstr "Hoofdbeheerder"
+
+#: src/components/tools/EmailField.vue:58
+msgid "SuperAdmins cannot own a mailbox"
+msgstr "Hoofdbeheerders kunnen geen mailbox hebben"
+
+#: src/components/admin/identities/IdentityList.vue:120
+msgid "Tags"
+msgstr "Labels"
+
+#: src/components/account/AutoReplyForm.vue:23
+msgid ""
+"The content of your answer. You can use the following variables, which will "
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
+"%(untildate)s"
+msgstr ""
+"De inhoud van je antwoord. Je kunt de volgende variabelen gebruiken, die "
+"automatisch vervangen worden door de juiste waarde: %(name)s, %(fromdate)s, "
+"%(untildate)s"
+
+#: src/components/tools/ImportForm.vue:16
+msgid ""
+"The first element of each line is mandatory and must be equal to one of the "
+"previous values."
+msgstr ""
+"Het eerste element van elke regel is verplicht en moet gelijk zijn aan een "
+"van de vorige waardes."
+
+#: src/components/account/RecoveryCodesResetDialog.vue:9
+#: src/components/account/TotpAuthForm.vue:61
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr ""
+"De volgende herstelcodes kunnen elk een keer gebruikt worden om opnieuw "
+"toegang te krijgen tot je account, bijvoorbeeld als je je telefoon "
+"kwijtraakt. Bewaar ze op een veilige plaats, anders heb je geen toegang meer"
+" tot je account."
+
+#: src/components/account/ProfileForm.vue:34
+msgid "there"
+msgstr "er"
+
+#: src/views/Dashboard.vue:6
+msgid "This page is still under construction."
+msgstr "Deze pagina is in ontwikkeling."
+
+#: src/components/admin/logs/MessageList.vue:45
+#: src/components/tools/TimeSerieChart.vue:20
+msgid "To"
+msgstr "Aan"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:140
+#: src/components/admin/dmarc/DmarcSourceTable.vue:12
+msgid "Total"
+msgstr "Totaal"
+
+#: src/components/admin/domains/DomainCreationForm.vue:151
+#: src/components/admin/domains/DomainCreationForm.vue:214
+#: src/components/admin/domains/DomainEditForm.vue:113
+msgid "Transport"
+msgstr "Transport"
+
+#: src/components/admin/alarms/AlarmList.vue:92
+msgid "Triggered"
+msgstr "Getriggerd"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:48
+msgid "Trusted sources"
+msgstr "Vertrouwde bronnen"
+
+#: src/views/account/SettingsView.vue:11
+msgid "Two-factor auth"
+msgstr "Tweevoudige verificatie"
+
+#: src/components/account/TotpAuthForm.vue:109
+msgid ""
+"Two-factor authentication (2FA) using one-time passwords is not yet "
+"activated for your account."
+msgstr ""
+"Tweevoudige verificatie (2FA) met eenmalige wachtwoorden is nog niet actief "
+"op je account."
+
+#: src/components/account/TotpAuthForm.vue:78
+msgid ""
+"Two-factor authentication using one-time passwords is enabled for your "
+"account."
+msgstr ""
+"Tweevoudige verificatie met eenmalige wachtwoorden is nu actief op je "
+"account."
+
+#: src/components/admin/domains/DomainCreationForm.vue:164
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:13
+msgid "Type"
+msgstr "Type"
+
+#: src/components/admin/domains/DomainEditForm.vue:20
+msgid "Type: "
+msgstr "Type:"
+
+#: src/components/admin/domains/DNSStatusChip.vue:29
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:68
+msgid "Unknown sources / Threats"
+msgstr "Onbekende bronnen / bedreigingen"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:109
+msgid "unlimited"
+msgstr "onbeperkt"
+
+#: src/components/admin/domains/DomainSummary.vue:18
+#: src/components/admin/domains/DomainSummary.vue:25
+#: src/components/admin/identities/AccountSummary.vue:38
+msgid "Unlimited"
+msgstr "Onbeperkt"
+
+#: src/components/account/AutoReplyForm.vue:43
+msgid "Until"
+msgstr "Tot"
+
+#: src/components/account/FilterForm.vue:195
+#: src/components/account/ForwardForm.vue:25
+#: src/components/admin/domains/DomainAliasForm.vue:68
+msgid "Update"
+msgstr "Toepassen"
+
+#: src/components/account/AutoReplyForm.vue:54
+msgid "Update auto-reply"
+msgstr "Automatisch antwoord wijzigen"
+
+#: src/components/account/ProfileForm.vue:75
+msgid "Update Password"
+msgstr "Wachtwoord wijzigen"
+
+#: src/components/account/ProfileForm.vue:62
+msgid "Update settings"
+msgstr "Instellingen wijzigen"
+
+#: src/components/admin/domains/DNSDetail.vue:172
+msgid "Updated"
+msgstr "Bijgewerkt"
+
+#: src/components/account/FidoAuthForm.vue:136
+msgid "Use count"
+msgstr "Gebruik het aantal"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:106
+msgid "Use domain default value"
+msgstr "Gebruik de standaardwaarde van dit domein"
+
+#: src/components/admin/domains/DomainAdminList.vue:106
+#: src/components/admin/identities/AccountCreationForm.vue:98
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: src/components/admin/identities/AccountEditForm.vue:39
+msgid "Username:"
+msgstr "Gebruikersnaam:"
+
+#: src/components/admin/domains/DNSStatusChip.vue:27
+msgid "Valid"
+msgstr "Geldig"
+
+#: src/components/account/FilterForm.vue:49
+msgid "Value"
+msgstr "Waarde"
+
+#: src/components/admin/domains/DNSDetail.vue:217
+msgid "warning"
+msgstr "waarschuwing"
+
+#: src/components/account/APISetupForm.vue:94
+#: src/components/account/FidoAuthForm.vue:178
+#: src/components/admin/domains/DNSDetail.vue:237
+#: src/components/admin/domains/DomainList.vue:242
+#: src/components/admin/identities/IdentityList.vue:204
+#: src/components/admin/identities/IdentityList.vue:230
+#: src/components/tools/CreationForm.vue:129
+msgid "Warning"
+msgstr "Waarschuwing"
+
+#: src/components/account/FidoAuthForm.vue:6
+msgid "WebAuthn"
+msgstr "WebAuthn"
+
+#: src/components/tools/TimeSerieChart.vue:111
+msgid "Week"
+msgstr "Week"
+
+#: src/views/Dashboard.vue:3
+msgid "Welcome to Modoboa"
+msgstr "Welkom bij Modoboa"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:25
+msgid "With a mailbox"
+msgstr "Met een mailbox"
+
+#: src/components/admin/domains/DomainCreationForm.vue:260
+msgid "With mailbox"
+msgstr "Met mailbox"
+
+#: src/components/tools/TimeSerieChart.vue:113
+msgid "Year"
+msgstr "Jaar"
+
+#: src/plugins/filters.js:9
+msgid "yes"
+msgstr "ja"
+
+#: src/components/account/FidoAuthForm.vue:183
+#: src/components/admin/domains/DNSDetail.vue:224
+#: src/components/admin/domains/DNSDetail.vue:244
+#: src/components/admin/domains/DomainList.vue:249
+#: src/components/admin/identities/IdentityList.vue:208
+#: src/components/admin/identities/IdentityList.vue:234
+#: src/components/tools/CreationForm.vue:135
+msgid "Yes"
+msgstr "Ja"
+
+#: src/components/account/BackupCodeAuthForm.vue:13
+msgid ""
+"You already have generated backup codes for this account. If you don't "
+"remember them or have used them all, you can generate new ones."
+msgstr ""
+"Je hebt al backupcodes voor dit account gegenereerd. Als je ze niet meer "
+"hebt of ze allemaal hebt gebruikt, kun je nieuwe genereren."
+
+#: src/components/account/APISetupForm.vue:95
+msgid "You are about to delete your API access token"
+msgstr "Je gaat je API-toegangstoken verwijderen"
+
+#: src/components/tools/ImportForm.vue:20
+msgid "You can use a different character as separator."
+msgstr "Je kunt een ander teken als separator gebruiken."
+
+#: src/components/account/FidoAuthForm.vue:14
+msgid ""
+"You don't have any WebAuthN device registered as a second authentication "
+"method."
+msgstr ""
+"Je hebt geen WebAuthN-apparaat geregistreerd als methode voor tweevoudige "
+"verificatie."
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:115
+msgid "You need to bind at least one domain to the provider."
+msgstr "Je moet minstens een domein met de provider koppelen."
+
+#: src/components/account/APISetupForm.vue:4
+msgid "Your API token has not been generated yet."
+msgstr "Je API-token is nog niet gegenereerd."
+
+#: src/components/account/APISetupForm.vue:20
+msgid "Your API token is:"
+msgstr "Je API-token:"
+
+#: src/components/account/FidoAuthForm.vue:76
+msgid "Your browser does not seem compatible with WebAuthN"
+msgstr "Je browser lijkt niet compatibel met WebAuthN"
