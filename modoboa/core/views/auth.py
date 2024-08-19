@@ -57,7 +57,11 @@ class LoginViewMixin:
             return None
 
     def login(self, user, rememberme):
+        encrypted_password = self.request.session.pop("password", None)
         login(self.request, user)
+        # FIXME: remove ASAP
+        if encrypted_password:
+            self.request.session["password"] = encrypted_password
         if not rememberme:
             self.request.session.set_expiry(0)
 
