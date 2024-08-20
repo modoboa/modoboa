@@ -57,7 +57,11 @@ class LoginViewMixin:
             return None
 
     def login(self, user, rememberme):
+        encrypted_password = self.request.session.pop("password", None)
         login(self.request, user)
+        # FIXME: remove ASAP
+        if encrypted_password:
+            self.request.session["password"] = encrypted_password
         if not rememberme:
             self.request.session.set_expiry(0)
 
@@ -119,8 +123,8 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
         self.check_password_hash(user, form)
         # FIXME: remove ASAP
         signals.user_login.send(
-            sender="dologin",
-            username=user.username,
+            sender="LoginView",
+            user=user,
             password=form.cleaned_data["password"],
         )
         if user.tfa_enabled:
