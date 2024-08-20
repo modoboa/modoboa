@@ -319,10 +319,10 @@ def user_menu(sender, location, user, **kwargs):
 
 
 @receiver(core_signals.user_login)
-def user_logged_in(sender, username, password, **kwargs):
+def user_logged_in(sender, user, password, **kwargs):
     """Store user password in session."""
     request = lib_signals.get_request()
-    if hasattr(request.user, "mailbox"):
+    if hasattr(user, "mailbox"):
         request.session["password"] = encrypt(password)
 
 
