@@ -24,5 +24,5 @@ get_top_notifications = django.dispatch.Signal()  # Provides include_all
 initial_data_loaded = django.dispatch.Signal()  # Provides extname
 register_postfix_maps = django.dispatch.Signal()
 user_can_set_role = django.dispatch.Signal()  # Provides user, role, account
-user_login = django.dispatch.Signal()  # Provides username, password
+user_login = django.dispatch.Signal()  # Provides user, password
 user_logout = django.dispatch.Signal()

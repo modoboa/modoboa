@@ -123,8 +123,8 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
         self.check_password_hash(user, form)
         # FIXME: remove ASAP
         signals.user_login.send(
-            sender="dologin",
-            username=user.username,
+            sender="LoginView",
+            user=user,
             password=form.cleaned_data["password"],
         )
         if user.tfa_enabled:
