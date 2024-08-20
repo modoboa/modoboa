@@ -39,9 +39,15 @@ class AuthenticationTestCase(ModoTestCase):
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
         super(AuthenticationTestCase, cls).setUpTestData()
-        cls.account = factories.UserFactory(
-            username="user@test.com", groups=("SimpleUsers",)
+        from modoboa.admin.factories import MailboxFactory
+
+        mailbox = MailboxFactory(
+            address="user",
+            domain__name="test.com",
+            user__username="user@test.com",
+            user__groups=("SimpleUsers",),
         )
+        cls.account = mailbox.user
 
     def test_authentication(self):
         """Validate simple case."""
@@ -50,6 +56,8 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:user_index")))
+        session = self.client.session
+        self.assertIn("password", session)
 
         response = self.client.post(reverse("core:logout"), {})
         self.assertEqual(response.status_code, 302)
@@ -58,6 +66,8 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+        session = self.client.session
+        self.assertNotIn("password", session)
 
     @mock.patch("django_otp.match_token")
     @mock.patch("django_otp.login")
@@ -77,6 +87,8 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertContains(response, "This code is invalid")
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
+        session = self.client.session
+        self.assertIn("password", session)
 
     def test_open_redirect(self):
         """Check that open redirect is not allowed."""
