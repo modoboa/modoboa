@@ -88,6 +88,6 @@ The following external libraries are provided with Modoboa:
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
    :target: https://pypi.python.org/pypi/modoboa/
    :alt: Latest version on Pypi
-.. |workflow| image:: https://github.com/modoboa/modoboa/workflows/Modoboa%20App/badge.svg
+.. |workflow| image:: https://github.com/modoboa/modoboa/actions/workflows/modoboa.yml/badge.svg
 .. |codecov| image:: https://codecov.io/gh/modoboa/modoboa/graph/badge.svg?token=1E5eBxJO33
    :target: https://codecov.io/gh/modoboa/modoboa
