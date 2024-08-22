@@ -3,9 +3,7 @@
 import getpass
 import os
 from os.path import isfile
-import secrets
 import shutil
-import string
 import subprocess
 import sys
 
@@ -166,7 +164,11 @@ class DeployCommand(Command):
         """
         url = "http://api.modoboa.org/"
         official_exts = ModoAPIClient(url).list_extensions()
-        return [extension["name"] for extension in official_exts]
+        return [
+            extension["name"]
+            for extension in official_exts
+            if not extension["deprecated"]
+        ]
 
     def find_extra_settings(self, extensions):
         """Install one or more extensions.
