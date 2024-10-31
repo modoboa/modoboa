@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import gettext from '@/plugins/gettext'
 import router from '@/router/index.js'
 import { UserManager } from 'oidc-client-ts'
