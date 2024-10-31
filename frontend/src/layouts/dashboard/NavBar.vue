@@ -62,50 +62,50 @@
       </template>
     </v-list>
     <template #append>
-      <v-menu v-if="isAuthenticated" rounded="lg" offset-y top>
-        <template #activator="{ props }">
-          <div
-            :class="[
-              backgroundColor,
-              'd-flex',
-              'justify-center',
-              'align-center',
-              'pa-2',
-            ]"
-          >
-            <v-btn
-              v-bind="props"
-              :class="[backgroundColor, 'text-white']"
-              rounded
-              density="compact"
-              height="48"
-              elevation="0"
-            >
-              <v-avatar size="40" color="primary">
-                <span class="text-white headline">{{ userInitials }}</span>
-              </v-avatar>
-              <template v-if="!rail">
-                <span class="mx-2">{{ displayName }}</span>
-                <v-icon class="float-right">mdi-chevron-up</v-icon>
-              </template>
-            </v-btn>
-          </div>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="item in userMenuItems"
-            :key="item.text"
-            :to="item.to"
-            link
-            @click="item.click"
-          >
-            <template #prepend>
-              <v-icon :icon="item.icon"></v-icon>
-            </template>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <!-- <v-menu v-if="isAuthenticated" rounded="lg" offset-y top>
+           <template #activator="{ props }">
+           <div
+           :class="[
+           backgroundColor,
+           'd-flex',
+           'justify-center',
+           'align-center',
+           'pa-2',
+           ]"
+           >
+           <v-btn
+           v-bind="props"
+           :class="[backgroundColor, 'text-white']"
+           rounded
+           density="compact"
+           height="48"
+           elevation="0"
+           >
+           <v-avatar size="40" color="primary">
+           <span class="text-white headline">{{ userInitials }}</span>
+           </v-avatar>
+           <template v-if="!rail">
+           <span class="mx-2">{{ displayName }}</span>
+           <v-icon class="float-right">mdi-chevron-up</v-icon>
+           </template>
+           </v-btn>
+           </div>
+           </template>
+           <v-list>
+           <v-list-item
+           v-for="item in userMenuItems"
+           :key="item.text"
+           :to="item.to"
+           link
+           @click="item.click"
+           >
+           <template #prepend>
+           <v-icon :icon="item.icon"></v-icon>
+           </template>
+           <v-list-item-title>{{ item.text }}</v-list-item-title>
+           </v-list-item>
+           </v-list>
+           </v-menu> -->
     </template>
   </v-navigation-drawer>
 </template>
@@ -117,6 +117,14 @@ import { useGettext } from 'vue3-gettext'
 import { getActivePinia } from 'pinia'
 import { useGlobalStore, useAuthStore, useParametersStore } from '@/stores'
 import parametersApi from '@/api/parameters'
+
+const props = defineProps({
+  menuItems: {
+    type: Array,
+    required: false,
+    default: null,
+  },
+})
 
 const globalStore = useGlobalStore()
 const authStore = useAuthStore()
@@ -155,6 +163,9 @@ const displayName = computed(() => {
 })
 
 const menuItems = computed(() => {
+  if (props.menuItems) {
+    return props.menuItems
+  }
   if (route.meta.layout === 'account') {
     return getUserSettingsMenuItems()
   }
