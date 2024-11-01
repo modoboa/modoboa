@@ -325,16 +325,13 @@ def make_password():
         for possible_chars in possible_chars_types:
             all_possible_chars += possible_chars
             certain_chars += random.SystemRandom().choice(possible_chars)
-        
         password = "".join(
             random.SystemRandom().choice(all_possible_chars) \
                 for _ in range(length - len(possible_chars_types))
         ) + certain_chars
-        
         li_password = list(password)
         random.shuffle(li_password)
         password = "".join(li_password)
-        
         try:
             password_validation.validate_password(password)
         except ValidationError:
