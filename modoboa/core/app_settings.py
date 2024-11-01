@@ -88,6 +88,15 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         help_text=gettext_lazy("Length of randomly generated passwords."),
     )
 
+    allow_special_characters = YesNoField(
+        label=gettext_lazy("Allow special characters for random password"),
+        initial=False,
+        help_text=gettext_lazy(
+            "Enable special characters in randomly generated "
+            "passwords."
+        ),
+    )
+
     update_password_url = forms.URLField(
         label=gettext_lazy("Update password service URL"),
         initial="",
@@ -774,6 +783,16 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                     "Length of randomly generated passwords."
                                 ),
                             },
+                        ),
+                        (
+                            "allow_special_characters",
+                            {
+                                "label": gettext_lazy("Allow special characters for random password"),
+                                "help_text": gettext_lazy(
+                                    "Enable special characters in randomly generated "
+                                    "passwords."
+                                ),   
+                            }
                         ),
                         (
                             "update_password_url",
