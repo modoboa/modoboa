@@ -12,6 +12,11 @@ A docker image is available for developers. To use it, you must
 install `docker <https://docs.docker.com/install/>`_ and
 `docker-compose <https://docs.docker.com/compose/install/>`_ first.
 
+If not already done, clone the repo and open it::
+
+  $ git clone https://github.com/modoboa/modoboa.git
+  $ cd modoboa
+
 Then, just run the following command::
 
   $ docker-compose up
