@@ -14,8 +14,8 @@ install `docker <https://docs.docker.com/install/>`_ and
 
 If not already done, clone the repo and open it::
 
-$ git clone https://github.com/modoboa/modoboa.git
-$ cd modoboa
+  $ git clone https://github.com/modoboa/modoboa.git
+  $ cd modoboa
 
 Then, just run the following command::
 
