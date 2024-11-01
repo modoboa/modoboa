@@ -97,6 +97,16 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             },
                         ),
                         (
+                            "allow_special_characters",
+                            {
+                                "label": gettext_lazy("Allow special characters for random password"),
+                                "help_text": gettext_lazy(
+                                    "Enable special characters in randomly generated "
+                                    "passwords."
+                                ),
+                            }
+                        ),
+                        (
                             "update_password_url",
                             {
                                 "label": gettext_lazy("Update password service URL"),
