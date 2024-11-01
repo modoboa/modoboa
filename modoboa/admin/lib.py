@@ -313,10 +313,13 @@ def domain_has_authorized_mx(name):
 def make_password():
     """Create a random password."""
     length = int(param_tools.get_global_parameter("random_password_length", app="core"))
-    while True:
+    allow_special_characters = bool(param_tools.get_global_parameter("allow_special_characters", app="core"))
+    possible_chars = string.ascii_letters + string.digits
+    for i in range(10): # limit tries
+        if allow_special_characters: # add special characters in random passwd
+            possible_chars += string.punctuation
         password = "".join(
-            random.SystemRandom().choice(string.ascii_letters + string.digits)
-            for _ in range(length)
+            random.SystemRandom().choice(possible_chars) for _ in range(length)
         )
         try:
             password_validation.validate_password(password)
