@@ -153,7 +153,7 @@ class EmailAddressParserTests(SimpleTestCase):
         """Check a list of e-mail addresses is sepearted correctly."""
         # value is an array with one long string not 3 sepearte values.
         value = [
-            '"Doe, John" <doe.john@sub.example.com>;'
+            '"Doe, John" <doe.john@sub.example.com>,'
             '"John Smith" <john.smith@sub.example.com>,'
             "admin@sub.example.com"
         ]
@@ -169,7 +169,7 @@ class EmailAddressParserTests(SimpleTestCase):
         """Check a list of e-mail addresses is sepearted correctly."""
         # value is an array with one long string not 3 sepearte values.
         value = [
-            '"Doe, John" <doe.john@sub.example.com>;'
+            '"Doe, John" <doe.john@sub.example.com>,'
             '"John Smith" <john.smith@sub.example.com>,'
             "admin@sub.example.com"
         ]
@@ -186,7 +186,7 @@ class EmailAddressParserTests(SimpleTestCase):
         # value is one long string not 3 sepearte values, prepare_addresses
         # should convert it to a list.
         value = (
-            '"Doe, John" <doe.john@sub.example.com>;'
+            '"Doe, John" <doe.john@sub.example.com>,'
             '"John Smith" <john.smith@sub.example.com>,'
             "admin@sub.example.com"
         )
