@@ -391,6 +391,7 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
+    "ckeditor.W001",  # TODO : need to update to ckeditor 5 OR dump it...
 ]
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
