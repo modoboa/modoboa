@@ -8,13 +8,8 @@
     <span class="moz-smiley-s1"><span>:-)</span></span><br>
     <br>
     <img alt="" height="10" width="10"><br>
-    <pre class="moz-signature" cols="72">-- 
+    <pre class="moz-signature" cols="72">--
 someone
 <a class="moz-txt-link-abbreviated">someone@example.net</a></pre>
   </body>
-<span><b>Some <i>HTML</i> text</b>, a <a target="_blank" rel="nofollow">link</a>, an
-embedded image and an external image.<br>
-<img target="_blank"><br>
-<img target="_blank"><br>
-Nifty!</span>
 </div>

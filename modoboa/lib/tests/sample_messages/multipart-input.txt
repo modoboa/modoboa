@@ -57,7 +57,7 @@ This is an *html* /test /_message._
 :-)
 
 
--- 
+--
 Someone
 someone@example.net
 
@@ -83,12 +83,11 @@ Content-Transfer-Encoding: 7bit
     <img moz-do-not-send="false"
       src="cid:part1.D56823CE.7959DBD4@example.net" alt="" height="10"
       width="10"><br>
-    <pre class="moz-signature" cols="72">-- 
+    <pre class="moz-signature" cols="72">--
 someone
 <a class="moz-txt-link-abbreviated" href="mailto:someone@example.net">someone@example.net</a></pre>
   </body>
 </html>
-
 --------------D585B241EEF60F0F44EC20E5
 Content-Type: image/png;
  name="image.png"

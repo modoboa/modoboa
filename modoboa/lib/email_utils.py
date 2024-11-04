@@ -9,11 +9,11 @@ from email.utils import formataddr, formatdate, getaddresses, make_msgid
 import chardet
 import lxml.html
 from lxml.html import defs
-from lxml.html.clean import Cleaner
+from lxml_html_clean import Cleaner
 
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_str, smart_str
+from django.utils.encoding import smart_str
 from django.utils.html import conditional_escape, escape
 from django.utils.translation import gettext as _
 
@@ -26,7 +26,7 @@ _RE_REMOVE_EXTRA_WHITESPACE = re.compile(r"\n\s*\n")
 _RE_CID = re.compile(r".*[ ]*cid=\"([^\"]*)\".*", re.I)
 
 
-class EmailAddress(object):
+class EmailAddress:
 
     def __init__(self, address):
         self.name, self.address = u2u_decode.decode_address(address)
@@ -39,7 +39,7 @@ class EmailAddress(object):
         return self.fulladdress
 
 
-class Email(object):
+class Email:
 
     _basic_headers = (
         "From",
