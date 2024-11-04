@@ -30,7 +30,7 @@ python-dateutil
 cryptography
 pytz
 requests
-lxml
+lxml[html_clean]
 chardet
 ovh
 oath
