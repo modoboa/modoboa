@@ -1,24 +1,25 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# BAZI TANIMLAYICI BAŞLIK.
+# Telif Hakkı (C) PAKETİN TELİF HAKKI SAHİBİNİN YILI
+# Bu dosya, PAKET paketi ile aynı lisans altında dağıtılmaktadır.
 #
-# Translators:
+# Çevirmenler:
 # Caner Başaran <basaran.caner@protonmail.com>, 2015
 # Ediz Duman <neps1192@gmail.com>, 2016
+# Ali Çömez <sys@rootali.net>, 2024
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-01 11:53+0200\n"
-"PO-Revision-Date: 2020-03-09 15:49+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Turkish (Turkey) (http://www.transifex.com/tonio/modoboa/"
-"language/tr_TR/)\n"
-"Language: tr_TR\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Proje-Kimlik-Sürümü: Modoboa\n"
+"Rapor-Msgid-Hataları-To: \n"
+"POT-Oluşturma-Tarihi: 2024-08-01 11:53+0200\n"
+"PO-Revizyon-Tarihi: 2020-03-09 15:49+0000\n"
+"Son-Çevirmen: Ali Çömez <sys@rootali.net>\n"
+"Dil Ekibi: Türkçe (Türkiye) (http://www.transifex.com/tonio/modoboa/"
+"dil/tr_TR/)\n"
+"Dil: tr_TR\n"
+"MIME-Sürümü: 1.0\n"
+"İçerik-Tipi: text/plain; charset=UTF-8\n"
+"İçerik-Transfer-Kodlaması: 8bit\n"
+"Çoğul-Formlar: nplurals=2; plural=(n > 1);\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
@@ -30,27 +31,27 @@ msgstr "Domain dizini silmeyin"
 
 #: admin/static/admin/js/admin.js:151
 msgid "This operation will remove ALL data associated to this domain."
-msgstr "Bu işlem, bu domain ilişkili TÜM verileri kaldıracaktır."
+msgstr "Bu işlem, bu domain ile ilişkili TÜM verileri kaldıracaktır."
 
 #: admin/static/admin/js/admin.js:152
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "Bu işlem hesap dışında bu domain ilişkili tüm verileri kaldıracaktır."
+msgstr "Bu işlem hesaplar dışında bu domain ile ilişkili tüm verileri kaldıracaktır."
 
 #: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
 msgid "No more quota to show"
-msgstr "Gösterilecek  kota yok"
+msgstr "Gösterilecek kota yok"
 
 #: admin/static/admin/js/admin.js:180
 #, fuzzy
 #| msgid "No more quota to show"
 msgid "No more log to show"
-msgstr "Gösterilecek  kota yok"
+msgstr "Gösterilecek kota yok"
 
 #: admin/static/admin/js/admin.js:309
 msgid "No domain administrator defined"
-msgstr "domain yöneticisi tanımlanmadı"
+msgstr "Domain yöneticisi tanımlanmadı"
 
 #: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
 msgid "No more identity to show"
@@ -74,7 +75,7 @@ msgstr "Gösterilecek günlük girişi yok"
 
 #: maillog/static/maillog/js/stats.js:45
 msgid "Search a domain"
-msgstr ""
+msgstr "Bir domain ara"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -113,22 +114,22 @@ msgstr "Ara..."
 #, fuzzy
 #~| msgid "No domain administrator defined"
 #~ msgid "Administrator added"
-#~ msgstr "domain yöneticisi tanımlanmadı"
+#~ msgstr "Domain yöneticisi tanımlanmadı"
 
 #, fuzzy
 #~| msgid "No domain administrator defined"
 #~ msgid "Administrator removed"
-#~ msgstr "domain yöneticisi tanımlanmadı"
+#~ msgstr "Domain yöneticisi tanımlanmadı"
 
 #, fuzzy
 #~| msgid "No domain administrator defined"
 #~ msgid "Create a domain administrator"
-#~ msgstr "domain yöneticisi tanımlanmadı"
+#~ msgstr "Domain yöneticisi tanımlanmadı"
 
 #, fuzzy
 #~| msgid "No domain administrator defined"
 #~ msgid "Administrator name"
-#~ msgstr "domain yöneticisi tanımlanmadı"
+#~ msgstr "Domain yöneticisi tanımlanmadı"
 
 #, fuzzy
 #~| msgid "Services updated"
@@ -138,7 +139,7 @@ msgstr "Ara..."
 #, fuzzy
 #~| msgid "No domain administrator defined"
 #~ msgid "Domain administrator"
-#~ msgstr "domain yöneticisi tanımlanmadı"
+#~ msgstr "Domain yöneticisi tanımlanmadı"
 
 #, fuzzy
 #~| msgid "Services updated"
