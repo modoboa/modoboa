@@ -8,6 +8,7 @@
 # nade 74 <reg@privmail.biz>, 2020
 # Antoine Nguyen <tonio@ngyn.org>, 2023
 # Henry Schütterle, 2023
+# Tobias Hertel, 2024
 # 
 #, fuzzy
 msgid ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-01 11:53+0200\n"
 "PO-Revision-Date: 2020-10-02 13:39+0000\n"
-"Last-Translator: Henry Schütterle, 2023\n"
+"Last-Translator: Tobias Hertel, 2024\n"
 "Language-Team: German (https://app.transifex.com/tonio/teams/13749/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
-msgstr "Keine weiteren Domains"
+msgstr "Keine weiteren Domains zum Anzeigen"
 
 #: admin/static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
