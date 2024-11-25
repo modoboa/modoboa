@@ -55,7 +55,7 @@ msgstr "Kein weiterer Log anzuzeigen"
 
 #: admin/static/admin/js/admin.js:309
 msgid "No domain administrator defined"
-msgstr "Domain-Administrator fehlt"
+msgstr "Kein Domain-Administrator angegeben"
 
 #: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
 msgid "No more identity to show"
