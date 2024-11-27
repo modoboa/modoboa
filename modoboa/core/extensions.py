@@ -1,12 +1,14 @@
 """Extension management."""
 
+from typing import Dict, Optional
+
 from django.conf import settings
 from django.urls import include
 from django.urls import re_path
 from django.utils.encoding import smart_str
 
 
-class ModoExtension(object):
+class ModoExtension:
     """
     Base extension class.
 
@@ -14,14 +16,17 @@ class ModoExtension(object):
     considered as valid.
     """
 
-    name = None
-    label = None
-    version = "NA"
-    description = ""
-    needs_media = False
-    always_active = False
-    url = None
-    topredirection_url = None
+    name: str
+    label: str
+    version: str = "NA"
+    description: str = ""
+    needs_media: bool = False
+    always_active: bool = False
+    url: Optional[str] = None
+    topredirection_url: Optional[str] = None
+
+    def get_available_apps(self) -> list:
+        return []
 
     def get_url(self):
         """Return extension base url."""
@@ -50,13 +55,13 @@ class ModoExtension(object):
         pass
 
 
-class ExtensionsPool(object):
+class ExtensionsPool:
     """The extensions manager"""
 
-    def __init__(self):
-        self.extensions = {}
+    def __init__(self) -> None:
+        self.extensions: Dict[str, Dict] = {}
 
-    def register_extension(self, ext, show=True):
+    def register_extension(self, ext: ModoExtension, show: bool = True) -> None:
         """Register an extension.
 
         :param ext: a class inheriting from ``Extension``
@@ -64,7 +69,7 @@ class ExtensionsPool(object):
         """
         self.extensions[ext.name] = {"cls": ext, "show": show}
 
-    def get_extension(self, name):
+    def get_extension(self, name: str) -> Optional[ModoExtension]:
         """Retrieve the current instance of an extension."""
         if name not in self.extensions:
             return None
@@ -101,6 +106,14 @@ class ExtensionsPool(object):
         """
         for ext in settings.MODOBOA_APPS:
             self.load_extension(ext)
+
+    def get_available_apps(self) -> list:
+        result: list = []
+        for ext_name in list(self.extensions.keys()):
+            ext = self.get_extension(ext_name)
+            if ext:
+                result += ext.get_available_apps()
+        return result
 
     def get_urls(self, category="app"):
         """Get all urls defined by extensions."""

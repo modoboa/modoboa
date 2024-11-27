@@ -1,6 +1,7 @@
 FROM python:3.12-alpine3.20 AS base
 
 LABEL org.opencontainers.image.authors="Antoine Nguyen <tonio@ngyn.org>"
+
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -12,11 +13,11 @@ RUN apk add --update openssl librrd python3-dev libffi-dev gcc g++ musl-dev libx
 RUN python3 -m venv $VIRTUAL_ENV
 WORKDIR /tmp
 COPY requirements.txt /tmp
+COPY user-requirements.txt /tmp
 COPY test-requirements.txt /tmp
 COPY dev-requirements.txt /tmp
 RUN python -m pip install -U pip
-RUN pip install -r requirements.txt -r test-requirements.txt -r dev-requirements.txt
-
+RUN pip install -r requirements.txt -r user-requirements.txt -r test-requirements.txt -r dev-requirements.txt
 FROM base AS run
 COPY docker/doveadm /usr/local/bin
 RUN chmod +x /usr/local/bin/doveadm

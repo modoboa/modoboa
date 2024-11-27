@@ -1,5 +1,7 @@
 """Core API v2 viewsets."""
 
+from django.utils.translation import gettext as _
+
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, permissions, response, viewsets, mixins
@@ -10,6 +12,7 @@ from rest_framework.exceptions import PermissionDenied
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
+from modoboa.core.extensions import exts_pool
 from modoboa.lib import pagination
 from modoboa.lib.permissions import IsSuperUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
@@ -129,6 +132,27 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         if tokens is None:
             return response.Response(status=204)
         return response.Response({"tokens": tokens})
+
+    @extend_schema(
+        description="Get the list of available Modoboa applications for current user",
+        responses={200: serializers.ModoboaApplicationSerializer},
+    )
+    @action(methods=["get"], detail=False)
+    def available_applications(self, request):
+        apps = []
+        if request.user.role != "SimpleUsers":
+            apps.append(
+                {
+                    "name": "admin",
+                    "label": _("Administration"),
+                    "icon": "mdi-toolbox",
+                    "description": _("Administration console"),
+                    "url": "/admin",
+                }
+            )
+        apps += exts_pool.get_available_apps()
+        serializer = serializers.ModoboaApplicationSerializer(apps, many=True)
+        return response.Response(serializer.data)
 
 
 class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):

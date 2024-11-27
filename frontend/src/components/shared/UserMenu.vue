@@ -1,5 +1,5 @@
 <template>
-  <v-fab app icon flat location="top right" color="primary">
+  <v-btn icon flat color="primary">
     {{ userInitials }}
     <v-menu activator="parent" location="bottom">
       <v-card min-width="300" max-width="350">
@@ -28,7 +28,7 @@
         </v-list>
       </v-card>
     </v-menu>
-  </v-fab>
+  </v-btn>
 </template>
 
 <script setup>
