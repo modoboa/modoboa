@@ -11,7 +11,7 @@
         src="@/assets/Modoboa_RVB-BLANC-SANS.png"
         max-width="190"
         class="logo"
-        @click="router.push({ name: 'Dashboard' })"
+        @click="router.push(props.logoRoute)"
       />
       <v-btn
         :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
@@ -24,8 +24,20 @@
     <v-list nav>
       <template v-for="item in menuItems" :key="item.text">
         <template v-if="displayMenuItem(item)">
+          <v-list-subheader v-if="item.subheader">
+            {{ item.text.toUpperCase() }}
+          </v-list-subheader>
           <v-list-item
-            v-if="!item.children"
+            v-else-if="item.action"
+            :value="item"
+            :exact="item.exact"
+            :title="item.text"
+            :prepend-icon="item.icon"
+            @click="item.action"
+          >
+          </v-list-item>
+          <v-list-item
+            v-else-if="!item.children"
             :value="item"
             :to="item.to"
             link
@@ -122,6 +134,10 @@ const props = defineProps({
   menuItems: {
     type: Array,
     required: false,
+    default: null,
+  },
+  logoRoute: {
+    type: Object,
     default: null,
   },
 })
@@ -355,6 +371,12 @@ onMounted(() => {
     background-color: #034bad !important;
     color: white;
     opacity: 1;
+  }
+}
+
+.v-list-subheader {
+  &__text {
+    color: white !important;
   }
 }
 
