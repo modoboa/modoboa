@@ -42,4 +42,4 @@ class CheckSessionCookieSecureTest(SimpleModoTestCase):
         self.assertEqual(msgs, [])
         self.set_global_parameter("password_scheme", "crypt")
         msgs = checks.check_password_hasher(None)
-        self.assertEqual(msgs, [checks.E001])
+        self.assertEqual(msgs, [checks.W002])
