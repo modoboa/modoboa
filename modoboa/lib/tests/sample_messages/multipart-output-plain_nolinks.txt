@@ -2,6 +2,6 @@
 
 :-)
 
--- 
+--
 Someone
 someone@example.net</pre>

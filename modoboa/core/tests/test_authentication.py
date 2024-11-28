@@ -252,6 +252,10 @@ class AuthenticationTestCase(ModoTestCase):
         supported_schemes = get_dovecot_schemes()[0]
         self.assertEqual(supported_schemes, ["{MD5-CRYPT}", "{PLAIN}"])
 
+    def test_deprecated_password_scheme(self):
+        hasher = get_password_hasher("crypt")
+        self.assertEqual(hasher.label, "crypt (weak, deprecated)")
+
     def test_fido_auth_begin(self):
         url = reverse("core:fido_auth_begin")
         resp = self.client.post(url)

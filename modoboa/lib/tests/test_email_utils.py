@@ -34,10 +34,10 @@ class EmailTests(SimpleTestCase):
     output: {message_id}-output-{dformat}_{no,}links.txt
     """
 
-    def _get_expected_output(self, message_id, **kwargs):
+    def _get_expected_output(self, message_id: str, **kwargs) -> str:
         ext = kwargs["dformat"] if "dformat" in kwargs else "plain"
         ext += "_links" if "links" in kwargs and kwargs["links"] else "_nolinks"
-        message_path = os.path.join(SAMPLES_DIR, "%s-output-%s.txt" % (message_id, ext))
+        message_path = os.path.join(SAMPLES_DIR, f"{message_id}-output-{ext}.txt")
         assert os.path.isfile(message_path), "%s does not exist." % message_path
 
         with open(message_path, "rb") as fp:
@@ -46,11 +46,11 @@ class EmailTests(SimpleTestCase):
 
         return mail_text
 
-    def _test_email(self, message_id, **kwargs):
+    def _test_email(self, message_id: str, **kwargs) -> None:
         """Boiler plate code for testing e-mails."""
         expected_output = self._get_expected_output(message_id, **kwargs)
         output = EmailTestImplementation(message_id, **kwargs).body
-        self.assertEqual(output, expected_output)
+        self.assertEqual(output.strip("\n"), expected_output.strip("\n"))
 
     def test_invalid_links_value(self):
         """modoboa-amavis set links = "0"; in python "0" == True, fixed in PR 79

@@ -19,7 +19,7 @@ from modoboa.core.password_hashers.base import (  # NOQA:F401
 )
 
 
-def get_password_hasher(scheme):
+def get_password_hasher(scheme: str) -> PasswordHasher:
     """Retrieve the hasher corresponding to :keyword:`scheme`.
 
     If no class is found, `PLAINHasher` is returned.

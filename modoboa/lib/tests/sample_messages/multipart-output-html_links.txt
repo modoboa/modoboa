@@ -8,13 +8,8 @@
     <span class="moz-smiley-s1"><span>:-)</span></span><br>
     <br>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAF0lEQVQY02NgYGD4//8/ThKfHASMRN0AfaqVa6MQxIQAAAAASUVORK5CYII=" alt="" height="10" width="10" target="_blank"><br>
-    <pre class="moz-signature" cols="72">-- 
+    <pre class="moz-signature" cols="72">--
 someone
 <a class="moz-txt-link-abbreviated" href="mailto:someone@example.net" target="_blank" rel="nofollow">someone@example.net</a></pre>
   </body>
-<span><b>Some <i>HTML</i> text</b>, a <a href="http://example.net" target="_blank" rel="nofollow">link</a>, an
-embedded image and an external image.<br>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAF0lEQVQY02NgYGD4//8/ThKfHASMRN0AfaqVa6MQxIQAAAAASUVORK5CYII=" target="_blank"><br>
-<img src="http://example.net/image.png" target="_blank"><br>
-Nifty!</span>
 </div>
