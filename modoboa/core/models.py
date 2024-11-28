@@ -116,15 +116,7 @@ class User(AbstractUser):
                 "password_scheme", raise_exception=False
             )
         raw_value = smart_bytes(raw_value)
-        hasher = get_password_hasher(scheme.upper())()
-        if not hasher.available:
-            raise InternalError(
-                _(
-                    "The configured password scheme (%s) is not available anymore. Please update your configuration"
-                )
-                % (scheme)
-            )
-        return hasher.encrypt(raw_value)
+        return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
     def set_password(self, raw_value: str, curvalue: Optional[str] = None) -> None:
         """Password update.

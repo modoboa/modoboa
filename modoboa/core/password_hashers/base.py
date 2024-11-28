@@ -6,10 +6,7 @@ Contains weak hashers (the original ones) available with Modoboa.
 
 import base64
 
-try:
-    import crypt
-except ImportError:
-    crypt = None
+import crypt
 import hashlib
 from random import Random
 import string
@@ -69,10 +66,6 @@ class PasswordHasher(metaclass=MetaHasher):
             return base64.b64encode(pwhash)
         return pwhash
 
-    @property
-    def available(self) -> bool:
-        return True
-
     def encrypt(self, clearvalue: str) -> str:
         """Encrypt a password.
 
@@ -113,7 +106,7 @@ class PasswordHasher(metaclass=MetaHasher):
     @classmethod
     def get_password_hashers(cls):
         """Return all the PasswordHasher supported by Modoboa"""
-        return [hasher for hasher in cls.__subclasses__() if hasher().available]
+        return [hasher for hasher in cls.__subclasses__()]
 
 
 class PLAINHasher(PasswordHasher):
@@ -140,10 +133,6 @@ class CRYPTHasher(PasswordHasher):
 
     _weak = True
     deprecated = True
-
-    @property
-    def available(self) -> bool:
-        return crypt is not None
 
     @property
     def scheme(self):

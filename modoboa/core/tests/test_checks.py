@@ -6,7 +6,7 @@ from django.test.utils import override_settings
 
 from modoboa.core import checks
 from modoboa.lib.tests import SimpleModoTestCase
-from modoboa.core.password_scheme.base import CRYPTHasher
+from modoboa.core.password_hashers.base import CRYPTHasher
 
 
 class CheckSessionCookieSecureTest(SimpleModoTestCase):
@@ -38,9 +38,8 @@ class CheckSessionCookieSecureTest(SimpleModoTestCase):
             self.assertEqual(len(msgs), 0)
 
     def test_password_hasher_checks(self):
+        msgs = checks.check_password_hasher(None)
+        self.assertEqual(msgs, [])
         self.set_global_parameter("password_scheme", "crypt")
         msgs = checks.check_password_hasher(None)
-        if CRYPTHasher().available:
-            self.assertEqual(msgs, [checks.W002])
-        else:
-            self.assertEqual(msgs, [checks.E001])
+        self.assertEqual(msgs, [checks.E001])
