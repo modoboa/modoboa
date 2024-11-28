@@ -5,10 +5,15 @@ Contains weak hashers (the original ones) available with Modoboa.
 """
 
 import base64
-import crypt
+
+try:
+    import crypt
+except ImportError:
+    crypt = None
 import hashlib
-import string
 from random import Random
+import string
+from typing import Optional
 
 from django.utils.crypto import constant_time_compare
 from django.utils.encoding import force_bytes, force_str
@@ -28,7 +33,15 @@ class MetaHasher(type):
     @property
     def label(cls):
         """Returns the label of the hasher"""
-        return cls.name if not cls._weak else "{} (weak)".format(cls.name)
+        result = cls.name
+        tags = []
+        if cls._weak:
+            tags.append("weak")
+        if cls.deprecated:
+            tags.append("deprecated")
+        if tags:
+            result += f" ({', '.join(tags)})"
+        return result
 
 
 class PasswordHasher(metaclass=MetaHasher):
@@ -36,12 +49,14 @@ class PasswordHasher(metaclass=MetaHasher):
     Base class of all hashers.
     """
 
-    _weak = False
+    _weak: bool = False
+    deprecated: bool = False
+    scheme: str
 
     def __init__(self, target="local"):
         self._target = target
 
-    def _encrypt(self, clearvalue, salt=None):
+    def _encrypt(self, clearvalue: str, salt: Optional[str] = None) -> str:
         raise NotImplementedError
 
     def _b64encode(self, pwhash):
@@ -54,7 +69,11 @@ class PasswordHasher(metaclass=MetaHasher):
             return base64.b64encode(pwhash)
         return pwhash
 
-    def encrypt(self, clearvalue):
+    @property
+    def available(self) -> bool:
+        return True
+
+    def encrypt(self, clearvalue: str) -> str:
         """Encrypt a password.
 
         The format used to store passwords is the same than dovecot's one::
@@ -94,7 +113,7 @@ class PasswordHasher(metaclass=MetaHasher):
     @classmethod
     def get_password_hashers(cls):
         """Return all the PasswordHasher supported by Modoboa"""
-        return cls.__subclasses__()
+        return [hasher for hasher in cls.__subclasses__() if hasher().available]
 
 
 class PLAINHasher(PasswordHasher):
@@ -120,12 +139,17 @@ class CRYPTHasher(PasswordHasher):
     """
 
     _weak = True
+    deprecated = True
+
+    @property
+    def available(self) -> bool:
+        return crypt is not None
 
     @property
     def scheme(self):
         return "{CRYPT}"
 
-    def _encrypt(self, clearvalue, salt=None):
+    def _encrypt(self, clearvalue: str, salt: Optional[str] = None) -> str:
         if salt is None:
             salt = "".join(Random().sample(string.ascii_letters + string.digits, 2))
         return crypt.crypt(clearvalue, salt)

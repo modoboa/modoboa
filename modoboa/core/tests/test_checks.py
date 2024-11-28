@@ -2,13 +2,14 @@ import os
 import shutil
 import tempfile
 
-from django.test import SimpleTestCase
 from django.test.utils import override_settings
 
 from modoboa.core import checks
+from modoboa.lib.tests import SimpleModoTestCase
+from modoboa.core.password_scheme.base import CRYPTHasher
 
 
-class CheckSessionCookieSecureTest(SimpleTestCase):
+class CheckSessionCookieSecureTest(SimpleModoTestCase):
 
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
@@ -35,3 +36,11 @@ class CheckSessionCookieSecureTest(SimpleTestCase):
             os.environ["OIDC_RSA_PRIVATE_KEY"] = "KEY"
             msgs = checks.check_rsa_private_key_exists(None)
             self.assertEqual(len(msgs), 0)
+
+    def test_password_hasher_checks(self):
+        self.set_global_parameter("password_scheme", "crypt")
+        msgs = checks.check_password_hasher(None)
+        if CRYPTHasher().available:
+            self.assertEqual(msgs, [checks.W002])
+        else:
+            self.assertEqual(msgs, [checks.E001])
