@@ -2,6 +2,7 @@
 
 import re
 from email.header import Header
+from typing import Optional
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
@@ -96,7 +97,7 @@ class User(AbstractUser):
         super().__init__(*args, **kwargs)
         self.parameters = param_tools.Manager("user", self._parameters)
 
-    def _crypt_password(self, raw_value):
+    def _crypt_password(self, raw_value: str) -> str:
         """Crypt the local password using the appropriate scheme.
 
         In case we don't find the scheme (for example when the
@@ -115,9 +116,17 @@ class User(AbstractUser):
                 "password_scheme", raise_exception=False
             )
         raw_value = smart_bytes(raw_value)
-        return get_password_hasher(scheme.upper())().encrypt(raw_value)
+        hasher = get_password_hasher(scheme.upper())()
+        if not hasher.available:
+            raise InternalError(
+                _(
+                    "The configured password scheme (%s) is not available anymore. Please update your configuration"
+                )
+                % (scheme)
+            )
+        return hasher.encrypt(raw_value)
 
-    def set_password(self, raw_value, curvalue=None):
+    def set_password(self, raw_value: str, curvalue: Optional[str] = None) -> None:
         """Password update.
 
         Update the current mailbox's password with the given clear
