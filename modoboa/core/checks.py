@@ -3,7 +3,8 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from modoboa.core.utils import generate_rsa_private_key
-
+from modoboa.parameters.tools import get_global_parameter
+from modoboa.core.password_hashers import get_password_hasher
 
 W001 = Warning(
     _(
@@ -13,6 +14,11 @@ W001 = Warning(
     ),
     hint=_("Set `USE_TZ = True` in settings.py"),
     id="modoboa.W001",
+)
+W002 = Warning(
+    _("The password scheme you are using is deprecated."),
+    hint=_("Upgrade your password scheme to a stronger one"),
+    id="modoboa.W002",
 )
 
 
@@ -37,4 +43,14 @@ def check_rsa_private_key_exists(app_configs, **kwargs):
     msgs = []
     if generate_rsa_private_key(settings.BASE_DIR):
         msgs.append(Info("An RSA private key has been generated for OIDC."))
+    return msgs
+
+
+@register()
+def check_password_hasher(app_configs, **kwargs):
+    msgs = []
+    scheme_in_use = get_global_parameter("password_scheme", app="core")
+    hasher = get_password_hasher(scheme_in_use)
+    if hasher.deprecated:
+        msgs.append(W002)
     return msgs

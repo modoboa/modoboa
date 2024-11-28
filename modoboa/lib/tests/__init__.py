@@ -30,7 +30,7 @@ except ImportError:
     NO_LDAP = True
 
 
-class ParametersMixin(object):
+class ParametersMixin:
     """Add tools to manage parameters."""
 
     @classmethod

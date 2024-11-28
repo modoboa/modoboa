@@ -72,7 +72,7 @@ jobs:
     strategy:
       matrix:
         database: ['postgres', 'mysql']
-        python-version: [3.8, 3.9, '3.10', '3.11']
+        python-version: [3.9, '3.10', '3.11', '3.12']
       fail-fast: false
 
     steps:
@@ -109,7 +109,7 @@ jobs:
           pip install -r mysql-requirements.txt
           echo "DB=mysql" >> $GITHUB_ENV
       - name: Test with pytest
-        if: ${{ matrix.python-version != '3.11' || matrix.database != 'postgres' }}
+        if: ${{ matrix.python-version != '3.12' || matrix.database != 'postgres' }}
         run: |
           python ./tests.py
           cd test_project
@@ -127,7 +127,7 @@ jobs:
           OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
       - name: Test with pytest and coverage
-        if: ${{ matrix.python-version == '3.11' && matrix.database == 'postgres' }}
+        if: ${{ matrix.python-version == '3.12' && matrix.database == 'postgres' }}
         run: |
           python ./tests.py
           cd test_project
@@ -148,7 +148,7 @@ jobs:
           OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
       - name: Upload coverage result
-        if: ${{ matrix.python-version == '3.11' && matrix.database == 'postgres' }}
+        if: ${{ matrix.python-version == '3.12' && matrix.database == 'postgres' }}
         uses: actions/upload-artifact@v4
         with:
           name: coverage-results
@@ -182,10 +182,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up Python 3.11
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Build frontend
         shell: bash -l {0}
         run: |

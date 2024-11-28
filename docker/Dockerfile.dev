@@ -1,10 +1,10 @@
-FROM python:3.12-alpine as base
+FROM python:3.12-alpine AS base
 
-MAINTAINER Antoine Nguyen <tonio@ngyn.org>
+LABEL org.opencontainers.image.authors="Antoine Nguyen <tonio@ngyn.org>"
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-FROM base as build
+FROM base AS build
 
 RUN apk add --update openssl librrd python3-dev libffi-dev gcc g++ musl-dev libxml2-dev libxslt-dev \
     libressl-dev jpeg-dev rrdtool-dev file make gettext freetype-dev cairo-dev cargo \
@@ -16,7 +16,8 @@ COPY test-requirements.txt /tmp
 COPY dev-requirements.txt /tmp
 RUN python -m pip install -U pip
 RUN pip install -r requirements.txt -r test-requirements.txt -r dev-requirements.txt
-FROM base as run
+
+FROM base AS run
 COPY docker/doveadm /usr/local/bin
 RUN chmod +x /usr/local/bin/doveadm
 COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
