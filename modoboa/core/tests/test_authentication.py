@@ -16,7 +16,6 @@ except ImportError:
 from modoboa.core import constants
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.password_hashers.utils import get_dovecot_schemes
-from modoboa.lib.exceptions import InternalError
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
@@ -253,17 +252,9 @@ class AuthenticationTestCase(ModoTestCase):
         supported_schemes = get_dovecot_schemes()[0]
         self.assertEqual(supported_schemes, ["{MD5-CRYPT}", "{PLAIN}"])
 
-    def test_unavailable_password_scheme(self):
-        self.set_global_parameter("password_scheme", "crypt")
+    def test_deprecated_password_scheme(self):
         hasher = get_password_hasher("crypt")
         self.assertEqual(hasher.label, "crypt (weak, deprecated)")
-        if hasher().available:
-            return
-        username = "user@test.com"
-        password = "toto"
-        user = models.User.objects.get(username=username)
-        with self.assertRaises(InternalError):
-            user.set_password(password)
 
     def test_fido_auth_begin(self):
         url = reverse("core:fido_auth_begin")

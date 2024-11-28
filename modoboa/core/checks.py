@@ -1,18 +1,10 @@
-from django.core.checks import register, Error, Info, Warning
+from django.core.checks import register, Info, Warning
 from django.conf import settings
 from django.utils.translation import gettext as _
 
 from modoboa.core.utils import generate_rsa_private_key
 from modoboa.parameters.tools import get_global_parameter
 from modoboa.core.password_hashers import get_password_hasher
-
-EOO1 = Error(
-    _("The password scheme you use is not available anymore."),
-    hint=_(
-        "The password scheme you were using has been removed, please upgrade to a stronger one"
-    ),
-    id="modoboa.EOO1",
-)
 
 W001 = Warning(
     _(
@@ -59,8 +51,6 @@ def check_password_hasher(app_configs, **kwargs):
     msgs = []
     scheme_in_use = get_global_parameter("password_scheme", app="core")
     hasher = get_password_hasher(scheme_in_use)
-    if not hasher.available:
-        msgs.append(EOO1)
-    elif hasher.deprecated:
+    if hasher.deprecated:
         msgs.append(W002)
     return msgs
