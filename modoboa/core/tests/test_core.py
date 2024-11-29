@@ -8,7 +8,6 @@ from oauth2_provider.models import get_application_model
 
 from django.core import mail
 from django.core import management
-from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 

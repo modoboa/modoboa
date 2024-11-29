@@ -48,7 +48,7 @@ class UserManager(BaseUserManager):
         """Check if given password scheme is still in use."""
         return (
             self.get_queryset()
-            .filter(password__startswith=password_hasher.scheme)
+            .filter(password__startswith=password_hasher().scheme)
             .exists()
         )
 

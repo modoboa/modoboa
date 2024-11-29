@@ -1,43 +1,43 @@
 queue_rules:
   - name: duplicated default from automatic merge on CI success and review
     queue_conditions:
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
       - "#approved-reviews-by>=1"
       - "#review-requested=0"
       - "#changes-requested-reviews-by=0"
       - "#commented-reviews-by=0"
       - label=ready-to-merge
     merge_conditions:
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
     merge_method: squash
   - name: duplicated default from automatic merge for pyUp pull requests
     queue_conditions:
       - author=pyup-bot
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
       - label=dependencies
       - "#approved-reviews-by>=1"
     merge_conditions:
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
     merge_method: squash
   - name: duplicated default from automatic merge for dependabot pull requests
     queue_conditions:
       - author~=^dependabot(|-preview)\[bot\]$
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
       - label=dependencies
       - "#approved-reviews-by>=1"
     merge_conditions:
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
     merge_method: squash
   - name: duplicated default from automatic merge for transifex pull requests
     queue_conditions:
       - author~=^transifex-integration\[bot\]$
       - "#approved-reviews-by>=1"
     merge_conditions:
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
     merge_method: squash
   - name: default
     conditions:
-      - check-success=test (postgres, 3.9)
+      - check-success=test (postgres, 3.12)
 
 pull_request_rules:
   - name: delete head branch after merge
