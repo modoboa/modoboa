@@ -1,6 +1,6 @@
 {% load i18n core_tags lib_tags %}
 <h2>{% trans "Information" %} <small>{% trans "Various information about Modoboa" %}</small></h2><hr>
-{% if password_hasher.deprecated or password_hasher_in_use %}
+{% if password_hasher %}
   <div class="alert alert-block alert-warning">
     <h4>{% trans "You are using a deprecated password scheme!" %}</h4>
     <p>{% blocktranslate trimmed %}
@@ -20,6 +20,7 @@
       version of Modoboa, otherwise <strong>you will be unable to connect to
       the web interface anymore</strong>.
     {% endblocktranslate %}</p>
+    <p>{% blocktranslate trimmed %}Please note that you will see this message until <strong>ALL</strong> user passwords have been converted using the new scheme.{% endblocktranslate %}</p>
   </div>
 {% endif %}
 {% if update_avail %}
