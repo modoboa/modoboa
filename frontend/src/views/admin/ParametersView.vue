@@ -94,10 +94,11 @@ import parametersApi from '@/api/parameters'
 import { ref, computed, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
-import { useParametersStore } from '@/stores'
+import { useGlobalStore, useParametersStore } from '@/stores'
 
 const { $gettext } = useGettext()
 const busStore = useBusStore()
+const globalStore = useGlobalStore()
 const route = useRoute()
 const parametersStore = useParametersStore()
 
@@ -152,6 +153,7 @@ async function save() {
       busStore.displayNotification({
         msg: $gettext('Parameters updated'),
       })
+      globalStore.fetchNotifications()
       if (route.params.app === 'imap_migration') {
         parametersStore.imapMigrationEnabled =
           parameters.value.enabled_imapmigration

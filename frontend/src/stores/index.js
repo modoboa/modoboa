@@ -1,5 +1,6 @@
 import { createPinia } from 'pinia'
 
+export * from './global.store'
 export * from './auth.store'
 export * from './bus.store'
 export * from './domains.store'
