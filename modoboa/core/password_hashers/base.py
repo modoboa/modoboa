@@ -104,9 +104,14 @@ class PasswordHasher(metaclass=MetaHasher):
         return False
 
     @classmethod
-    def get_password_hashers(cls):
+    def get_password_hashers(cls) -> list[type["PasswordHasher"]]:
         """Return all the PasswordHasher supported by Modoboa"""
         return [hasher for hasher in cls.__subclasses__()]
+
+    @classmethod
+    def get_deprecated_password_hashers(cls) -> list[type["PasswordHasher"]]:
+        """Return all the PasswordHasher supported by Modoboa and marked as deprecated."""
+        return [hasher for hasher in cls.__subclasses__() if hasher.deprecated]
 
 
 class PLAINHasher(PasswordHasher):

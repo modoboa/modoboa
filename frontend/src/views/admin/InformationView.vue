@@ -23,7 +23,7 @@
                 'The password scheme you are using has been deprecated and will be removed in the next minor version. The procedure to upgrade to a stronger scheme is as follows:'
               )
             }}
-            <ol>
+            <ol class="mt-4">
               <li
                 v-html="
                   $gettext(
@@ -65,6 +65,24 @@
                 "
               ></li>
             </ol>
+            <p
+              class="mt-4"
+              v-html="
+                $gettext(
+                  'You must apply this procedure <strong>BEFORE</strong> you install a newest version of Modoboa, otherwise <strong>you will be unable to connect to the web interface anymore</strong>.',
+                  true
+                )
+              "
+            ></p>
+            <p
+              class="mt-4"
+              v-html="
+                $gettext(
+                  'Please note that you will see this message until <strong>ALL</strong> user passwords have been converted using the new scheme.',
+                  true
+                )
+              "
+            ></p>
           </template>
         </v-alert>
       </v-card-text>

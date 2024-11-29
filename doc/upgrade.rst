@@ -168,7 +168,7 @@ Update your :file:`settings.py` file with following content:
        "ckeditor.W001",  # CKEditor 4.22.1 warning
    ]
 
-This will silence a `warning sent by django-ckeditor <https://github.com/modoboa/modoboa/issues/3316>_`.
+This will silence a `warning sent by django-ckeditor <https://github.com/modoboa/modoboa/issues/3316>`_.
 
 Version 2.3.0
 =============

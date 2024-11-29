@@ -1,15 +1,18 @@
 """Utility functions."""
 
-from pkg_resources import parse_version
-import os
 import environ
+import os
+from pkg_resources import parse_version
+from typing import Optional
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from django.utils.translation import gettext as _
 
+from modoboa.core import models
 from modoboa.core.extensions import exts_pool
+from modoboa.core.password_hashers import get_configured_password_hasher, PasswordHasher
 from modoboa.lib.api_client import ModoAPIClient
 
 
@@ -85,3 +88,15 @@ def generate_rsa_private_key(storage_path: str) -> bool:
     with open(env_path, "wb") as fp:
         fp.write(b'OIDC_RSA_PRIVATE_KEY="' + content + b'"\n')
     return True
+
+
+def check_for_deprecated_password_schemes() -> Optional[type[PasswordHasher]]:
+    """Check if deprecated password scheme is still in use."""
+    hasher = get_configured_password_hasher()
+    if hasher.deprecated:
+        return hasher
+    deprecated_hashers = PasswordHasher.get_deprecated_password_hashers()
+    for dhasher in deprecated_hashers:
+        if models.User.objects.is_password_scheme_in_use(dhasher):
+            return dhasher
+    return None

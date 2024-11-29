@@ -18,7 +18,7 @@ from modoboa.core.password_hashers.base import (  # NOQA:F401
 from modoboa.parameters import tools as param_tools
 
 
-def get_password_hasher(scheme: str) -> PasswordHasher:
+def get_password_hasher(scheme: str) -> type[PasswordHasher]:
     """Retrieve the hasher corresponding to :keyword:`scheme`.
 
     If no class is found, `PLAINHasher` is returned.
@@ -35,7 +35,7 @@ def get_password_hasher(scheme: str) -> PasswordHasher:
     return hasher
 
 
-def get_configured_password_hasher() -> PasswordHasher:
+def get_configured_password_hasher() -> type[PasswordHasher]:
     """Retrieve the password hasher class currently configured."""
     scheme = param_tools.get_global_parameter("password_scheme")
     return get_password_hasher(scheme)

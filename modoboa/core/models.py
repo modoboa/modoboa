@@ -44,7 +44,7 @@ def get_default_language() -> str:
 class UserManager(BaseUserManager):
     """Custom manager for User."""
 
-    def is_password_scheme_in_use(self, password_hasher: PasswordHasher) -> bool:
+    def is_password_scheme_in_use(self, password_hasher: type[PasswordHasher]) -> bool:
         """Check if given password scheme is still in use."""
         return (
             self.get_queryset()

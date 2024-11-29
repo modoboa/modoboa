@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
-from modoboa.core.password_hashers import get_configured_password_hasher
+from modoboa.core.utils import check_for_deprecated_password_schemes
 from modoboa.lib import exceptions, permissions
 from modoboa.lib.signals import get_request
 from . import models, signals as core_signals, utils
@@ -132,13 +132,13 @@ def check_for_new_versions(sender, include_all: bool, **kwargs) -> list:
         ]
     elif include_all:
         result += [{"id": "newversionavailable"}]
-    hasher = get_configured_password_hasher()
-    if hasher.deprecated or models.User.objects.is_password_scheme_in_use(hasher):
+    hasher = check_for_deprecated_password_schemes()
+    if hasher:
         result += [
             {
                 "id": "deprecatedpasswordscheme",
                 "url": reverse("core:index") + "#info/",
-                "text": _("You are using a deprecated password scheme (%s)")
+                "text": _("You are still using a deprecated password scheme (%s)")
                 % hasher.name,
                 "level": "warning",
             }
