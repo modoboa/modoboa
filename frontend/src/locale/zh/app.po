@@ -397,7 +397,7 @@ msgstr ""
 msgid "Check connection:"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:89
+#: src/views/admin/InformationView.vue:107
 msgid "Check out the following list to find related components"
 msgstr ""
 
@@ -598,7 +598,7 @@ msgstr ""
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:20
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:57
-#: src/views/admin/InformationView.vue:130
+#: src/views/admin/InformationView.vue:148
 msgid "Description"
 msgstr ""
 
@@ -1125,11 +1125,11 @@ msgid ""
 "your application repository and use that app to scan this QR code."
 msgstr ""
 
-#: src/views/admin/InformationView.vue:74
+#: src/views/admin/InformationView.vue:92
 msgid "Installed components"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:128
+#: src/views/admin/InformationView.vue:146
 msgid "Installed version"
 msgstr ""
 
@@ -1181,7 +1181,7 @@ msgstr ""
 msgid "Last Used"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:129
+#: src/views/admin/InformationView.vue:147
 msgid "Latest version"
 msgstr ""
 
@@ -1334,7 +1334,7 @@ msgstr ""
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/views/account/FiltersView.vue:164
-#: src/views/admin/InformationView.vue:127
+#: src/views/admin/InformationView.vue:145
 msgid "Name"
 msgstr ""
 
@@ -1481,7 +1481,7 @@ msgstr ""
 msgid "Old account"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:85
+#: src/views/admin/InformationView.vue:103
 msgid "One or more updates are available"
 msgstr ""
 
@@ -1566,6 +1566,12 @@ msgstr ""
 
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
+msgstr ""
+
+#: src/views/admin/InformationView.vue:80
+msgid ""
+"Please note that you will see this message until <strong>ALL</strong> user "
+"passwords have been converted using the new scheme."
 msgstr ""
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
@@ -2131,6 +2137,13 @@ msgstr ""
 msgid ""
 "You don't have any WebAuthN device registered as a second authentication "
 "method."
+msgstr ""
+
+#: src/views/admin/InformationView.vue:71
+msgid ""
+"You must apply this procedure <strong>BEFORE</strong> you install a newest "
+"version of Modoboa, otherwise <strong>you will be unable to connect to the "
+"web interface anymore</strong>."
 msgstr ""
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:115

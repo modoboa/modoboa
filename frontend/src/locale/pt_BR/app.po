@@ -408,7 +408,7 @@ msgstr ""
 msgid "Check connection:"
 msgstr "Verificar conexão:"
 
-#: src/views/admin/InformationView.vue:89
+#: src/views/admin/InformationView.vue:107
 msgid "Check out the following list to find related components"
 msgstr "Confira a lista a seguir para encontrar componentes relacionados"
 
@@ -616,7 +616,7 @@ msgstr "Remover token"
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:20
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:57
-#: src/views/admin/InformationView.vue:130
+#: src/views/admin/InformationView.vue:148
 msgid "Description"
 msgstr "Descrição"
 
@@ -1156,11 +1156,11 @@ msgstr ""
 "Authenticator do repositório de aplicativos e use esse aplicativo para "
 "escanear esse QR code."
 
-#: src/views/admin/InformationView.vue:74
+#: src/views/admin/InformationView.vue:92
 msgid "Installed components"
 msgstr "Componentes instalados"
 
-#: src/views/admin/InformationView.vue:128
+#: src/views/admin/InformationView.vue:146
 msgid "Installed version"
 msgstr "Versão instalada"
 
@@ -1214,7 +1214,7 @@ msgstr "Sobrenome"
 msgid "Last Used"
 msgstr "Último Uso"
 
-#: src/views/admin/InformationView.vue:129
+#: src/views/admin/InformationView.vue:147
 msgid "Latest version"
 msgstr "Última versão"
 
@@ -1367,7 +1367,7 @@ msgstr "nome"
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/views/account/FiltersView.vue:164
-#: src/views/admin/InformationView.vue:127
+#: src/views/admin/InformationView.vue:145
 msgid "Name"
 msgstr "Nome"
 
@@ -1519,7 +1519,7 @@ msgstr "OK"
 msgid "Old account"
 msgstr "Conta antiga"
 
-#: src/views/admin/InformationView.vue:85
+#: src/views/admin/InformationView.vue:103
 msgid "One or more updates are available"
 msgstr "Uma ou mais atualizações estão disponíveis"
 
@@ -1605,6 +1605,12 @@ msgstr "Código PIN"
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
 msgstr "Por favor, adicione pelo menos um destinatário."
+
+#: src/views/admin/InformationView.vue:80
+msgid ""
+"Please note that you will see this message until <strong>ALL</strong> user "
+"passwords have been converted using the new scheme."
+msgstr ""
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
@@ -2194,6 +2200,13 @@ msgid ""
 msgstr ""
 "Você não tem nenhum dispositivo WebAuthN registrado como um segundo método "
 "de autenticação."
+
+#: src/views/admin/InformationView.vue:71
+msgid ""
+"You must apply this procedure <strong>BEFORE</strong> you install a newest "
+"version of Modoboa, otherwise <strong>you will be unable to connect to the "
+"web interface anymore</strong>."
+msgstr ""
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:115
 msgid "You need to bind at least one domain to the provider."

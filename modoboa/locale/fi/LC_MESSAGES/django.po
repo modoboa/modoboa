@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-29 14:52+0100\n"
+"POT-Creation-Date: 2024-11-29 17:08+0100\n"
 "PO-Revision-Date: 2023-02-17 22:03+0200\n"
 "Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
 "Language-Team: \n"
@@ -439,7 +439,7 @@ msgstr ""
 "postilaatikko, on oltava voimassa oleva sähköpostiosoite."
 
 #: admin/forms/account.py:36 admin/templates/admin/account_detail.html:29
-#: core/templates/core/information.html:59
+#: core/templates/core/information.html:60
 msgid "Role"
 msgstr "Rooli"
 
@@ -703,8 +703,8 @@ msgstr "Luo automaattisesti järjestelmänvalvojan tälle verkkotunnukselle"
 #: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
-#: core/templates/core/information.html:36
-#: core/templates/core/information.html:58
+#: core/templates/core/information.html:37
+#: core/templates/core/information.html:59
 msgid "Name"
 msgstr "Nimi"
 
@@ -956,7 +956,7 @@ msgid "Check to activate this alias"
 msgstr "Ota käyttöön tämän aliaksen aktivointi"
 
 #: admin/models/alias.py:102 admin/templates/admin/alias_detail.html:32
-#: core/templates/core/information.html:39
+#: core/templates/core/information.html:40
 msgid "Description"
 msgstr "Kuvaus"
 
@@ -1173,7 +1173,7 @@ msgid "Created"
 msgstr "Luotu"
 
 #: admin/templates/admin/account_detail.html:35
-#: core/templates/core/information.html:60
+#: core/templates/core/information.html:61
 msgid "Last login"
 msgstr "Viimeisin kirjautuminen"
 
@@ -2261,7 +2261,7 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:11
+#: core/checks.py:12
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2271,15 +2271,15 @@ msgstr ""
 "talviajan vaihtuessa. (Sama paikallinen aika esiintyy kahdesti kellon "
 "vaihtumisen vuoksi)."
 
-#: core/checks.py:15
+#: core/checks.py:16
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Aseta `USE_TZ = True` tiedostossa settings.py"
 
-#: core/checks.py:19
+#: core/checks.py:20
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:20
+#: core/checks.py:21
 #, fuzzy
 #| msgid "Update password scheme at login"
 msgid "Upgrade your password scheme to a stronger one"
@@ -2377,7 +2377,7 @@ msgstr "Yksi tai useampi päivitys on saatavilla"
 
 #: core/handlers.py:141
 #, python-format
-msgid "You are using a deprecated password scheme (%s)"
+msgid "You are still using a deprecated password scheme (%s)"
 msgstr ""
 
 #: core/management/commands/communicate_with_public_api.py:42
@@ -2601,28 +2601,34 @@ msgid ""
 "web interface anymore</strong>."
 msgstr ""
 
-#: core/templates/core/information.html:27
+#: core/templates/core/information.html:23
+msgid ""
+"Please note that you will see this message until <strong>ALL</strong> user "
+"passwords have been converted using the new scheme."
+msgstr ""
+
+#: core/templates/core/information.html:28
 msgid "One or more updates are available!"
 msgstr "Yksi tai useampi päivitys on saatavilla!"
 
-#: core/templates/core/information.html:28
+#: core/templates/core/information.html:29
 msgid "Check the following list to find the component(s) that can be updated."
 msgstr ""
 "Tarkista seuraavasta luettelosta komponentti(t), jotka voidaan päivittää."
 
-#: core/templates/core/information.html:32
+#: core/templates/core/information.html:33
 msgid "Applications"
 msgstr "Sovellukset"
 
-#: core/templates/core/information.html:37
+#: core/templates/core/information.html:38
 msgid "Installed version"
 msgstr "Asennettu versio"
 
-#: core/templates/core/information.html:38
+#: core/templates/core/information.html:39
 msgid "Last version"
 msgstr "Viimeisin versio"
 
-#: core/templates/core/information.html:54
+#: core/templates/core/information.html:55
 msgid "Active users"
 msgstr "Aktiiviset käyttäjät"
 
@@ -2799,11 +2805,11 @@ msgstr "Kirjaudu ulos"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:39
+#: core/utils.py:42
 msgid "The core part of Modoboa"
 msgstr "Modoboan ydinosa"
 
-#: core/views/admin.py:43
+#: core/views/admin.py:42
 msgid "Parameters saved"
 msgstr "Tallennetut parametrit"
 
