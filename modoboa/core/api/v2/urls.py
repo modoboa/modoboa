@@ -32,4 +32,9 @@ urlpatterns += [
         views.ComponentsInformationAPIView.as_view(),
         name="components_information",
     ),
+    path(
+        "admin/notifications/",
+        views.NotificationsAPIView.as_view(),
+        name="notifications",
+    ),
 ]

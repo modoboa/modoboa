@@ -7,7 +7,8 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 
-from modoboa.core.models import Log
+from modoboa.core.models import Log, User
+from modoboa.core.password_hashers import get_configured_password_hasher
 from modoboa.core.utils import check_for_updates
 from modoboa.lib.listing import get_listing_page, get_sort_order
 from modoboa.lib.web_utils import render_to_json_response
@@ -60,6 +61,8 @@ def parameters(request, tplname="core/parameters.html"):
 @user_passes_test(lambda u: u.is_superuser)
 def information(request, tplname="core/information.html"):
     status, extensions = check_for_updates()
+    hasher = get_configured_password_hasher()
+    password_hasher_in_use = User.objects.is_password_scheme_in_use(hasher)
     return render_to_json_response(
         {
             "content": render_to_string(
@@ -67,6 +70,9 @@ def information(request, tplname="core/information.html"):
                 {
                     "update_avail": status,
                     "extensions": extensions,
+                    "password_hasher": hasher,
+                    "password_hasher_in_use": password_hasher_in_use,
+                    "scheme": hasher.name,
                 },
             ),
         }

@@ -9,6 +9,8 @@
         <a id="{{ notification.id }}" href="{{ notification.url }}">
           {% if notification.counter %}
           <span class="label label-{{ notification.level }}"> {{ notification.counter }}</span> {{ notification.text|safe }}
+          {% elif notification.level == 'warning' %}
+          <span class="fa fa-warning"></span> {{ notification.text|safe }}
           {% else %}
           <span class="fa fa-info-circle"></span> {{ notification.text|safe }}
           {% endif %}

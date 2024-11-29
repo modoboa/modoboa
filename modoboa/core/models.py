@@ -12,14 +12,14 @@ from django.utils.encoding import force_str, smart_bytes, smart_str
 from django.utils.functional import cached_property
 from django.utils.translation import gettext as _, gettext_lazy
 
-from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.auth.models import AbstractUser, BaseUserManager, Group
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from phonenumber_field.modelfields import PhoneNumberField
 from reversion import revisions as reversion
 
-from modoboa.core.password_hashers import get_password_hasher
+from modoboa.core.password_hashers import get_password_hasher, PasswordHasher
 from modoboa.lib.exceptions import (
     BadRequest,
     Conflict,
@@ -39,6 +39,18 @@ except ImportError:
 
 def get_default_language() -> str:
     return settings.LANGUAGE_CODE
+
+
+class UserManager(BaseUserManager):
+    """Custom manager for User."""
+
+    def is_password_scheme_in_use(self, password_hasher: PasswordHasher) -> bool:
+        """Check if given password scheme is still in use."""
+        return (
+            self.get_queryset()
+            .filter(password__startswith=password_hasher.scheme)
+            .exists()
+        )
 
 
 class User(AbstractUser):
@@ -91,6 +103,8 @@ class User(AbstractUser):
         indexes = [models.Index(fields=["email", "is_active"])]
 
     password_expr = re.compile(r"\{([\w\-]+)\}(.+)")
+
+    objects = UserManager()
 
     def __init__(self, *args, **kwargs):
         """Load parameter manager."""

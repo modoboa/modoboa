@@ -22,11 +22,10 @@
     </div>
 
     <v-list nav>
-      <template v-for="item in menuItems">
+      <template v-for="item in menuItems" :key="item.text">
         <template v-if="displayMenuItem(item)">
           <v-list-item
             v-if="!item.children"
-            :key="item.text"
             :value="item"
             :to="item.to"
             link
@@ -34,8 +33,11 @@
             :title="item.text"
             :prepend-icon="item.icon"
           >
+            <template v-if="item.withBell && displayInformationBell" #append>
+              <v-icon color="red" icon="mdi-bell-alert-outline" />
+            </template>
           </v-list-item>
-          <v-list-group v-else :key="item.text" :value="item.text">
+          <v-list-group v-else :value="item.text">
             <template #activator="{ props }">
               <v-list-item
                 v-bind="props"
@@ -108,16 +110,15 @@
   </v-navigation-drawer>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { getActivePinia } from 'pinia'
-
+import { useGlobalStore, useAuthStore, useParametersStore } from '@/stores'
 import parametersApi from '@/api/parameters'
-import { useAuthStore, useParametersStore } from '@/stores'
-import { onMounted } from 'vue'
 
+const globalStore = useGlobalStore()
 const authStore = useAuthStore()
 const parametersStore = useParametersStore()
 const route = useRoute()
@@ -132,7 +133,6 @@ const isAuthenticated = computed(() => authStore.isAuthenticated)
 const backgroundColor = computed(() =>
   route.meta.layout === 'account' ? 'bg-grey-darken-1' : 'bg-primary-darken-1'
 )
-
 const userInitials = computed(() => {
   let initials = null
   if (authUser.value.first_name) {
@@ -170,8 +170,13 @@ const mainColor = computed(() => {
 
 const imapMigration = computed(() => parametersStore.imapMigrationEnabled)
 
-const settings = []
+const displayInformationBell = computed(
+  () =>
+    globalStore.notifications.length !== undefined &&
+    globalStore.notifications.length !== 0
+)
 
+const settings = []
 const mainMenuItems = [
   {
     text: $gettext('Dashboard'),
@@ -246,6 +251,7 @@ const mainMenuItems = [
     text: $gettext('Information'),
     roles: ['SuperAdmins'],
     to: { name: 'Information' },
+    withBell: true,
   },
 ]
 
@@ -318,15 +324,13 @@ onMounted(() => {
         })
       })
     })
-  }
-  if (
-    authUser.value.role === 'SuperAdmins' &&
-    parametersStore.imapMigrationEnabled === null
-  ) {
-    parametersApi.getApplication('imap_migration').then((response) => {
-      parametersStore.imapMigrationEnabled =
-        response.data.params.enabled_imapmigration
-    })
+    globalStore.fetchNotifications()
+    if (parametersStore.imapMigrationEnabled === null) {
+      parametersApi.getApplication('imap_migration').then((response) => {
+        parametersStore.imapMigrationEnabled =
+          response.data.params.enabled_imapmigration
+      })
+    }
   }
 })
 </script>

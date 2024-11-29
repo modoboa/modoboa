@@ -1,5 +1,6 @@
 """Core API v2 views."""
 
+from functools import reduce
 import logging
 from smtplib import SMTPException
 
@@ -9,6 +10,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, response
 from rest_framework.views import APIView
 
+from modoboa.core import signals
 from modoboa.core.utils import check_for_updates
 from modoboa.lib.permissions import IsSuperUser
 from modoboa.lib.throttle import (
@@ -140,4 +142,22 @@ class ComponentsInformationAPIView(APIView):
     def get(self, request, *args, **kwargs):
         status, extensions = check_for_updates()
         serializer = serializers.ModoboaComponentSerializer(extensions, many=True)
+        return response.Response(serializer.data)
+
+
+class NotificationsAPIView(APIView):
+    """Return list of active notifications."""
+
+    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+    throttle_classes = [UserLesserDdosUser]
+
+    @extend_schema(responses=serializers.NotificationSerializer(many=True))
+    def get(self, request, *args, **kwargs):
+        notifications = signals.get_top_notifications.send(
+            sender="top_notifications", include_all=False
+        )
+        notifications = reduce(
+            lambda a, b: a + b, [notif[1] for notif in notifications]
+        )
+        serializer = serializers.NotificationSerializer(notifications, many=True)
         return response.Response(serializer.data)
