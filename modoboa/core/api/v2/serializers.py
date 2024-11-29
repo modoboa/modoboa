@@ -522,3 +522,12 @@ class ModoboaComponentSerializer(serializers.Serializer):
     description = serializers.CharField()
     update = serializers.BooleanField(default=False)
     changelog_url = serializers.URLField(required=False)
+
+
+class NotificationSerializer(serializers.Serializer):
+    """Serializer used to render a notification."""
+
+    id = serializers.CharField()
+    url = serializers.CharField(required=False)
+    text = serializers.CharField()
+    level = serializers.CharField()

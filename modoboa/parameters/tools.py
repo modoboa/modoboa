@@ -21,7 +21,7 @@ class NotDefined(exceptions.ModoboaException):
         return "Parameter {} not defined for app {}".format(self.name, self.app)
 
 
-class Registry(object):
+class Registry:
     """A registry for parameters."""
 
     def __init__(self):
