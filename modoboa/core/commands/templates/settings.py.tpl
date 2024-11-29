@@ -426,6 +426,7 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
+    "ckeditor.W001",  # CKEditor 4.22.1 warning
 ]
 
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
