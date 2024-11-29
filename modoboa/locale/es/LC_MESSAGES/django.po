@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-29 14:52+0100\n"
+"POT-Creation-Date: 2024-11-29 17:08+0100\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Spanish (http://www.transifex.com/tonio/modoboa/language/"
@@ -460,7 +460,7 @@ msgstr ""
 "usuarios simples o administradores con un buzón."
 
 #: admin/forms/account.py:36 admin/templates/admin/account_detail.html:29
-#: core/templates/core/information.html:59
+#: core/templates/core/information.html:60
 msgid "Role"
 msgstr "Función"
 
@@ -731,8 +731,8 @@ msgstr "Automáticamente crear una administrador para este dominio"
 #: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
-#: core/templates/core/information.html:36
-#: core/templates/core/information.html:58
+#: core/templates/core/information.html:37
+#: core/templates/core/information.html:59
 msgid "Name"
 msgstr "Nombre"
 
@@ -993,7 +993,7 @@ msgid "Check to activate this alias"
 msgstr "Marcar para activar este alias"
 
 #: admin/models/alias.py:102 admin/templates/admin/alias_detail.html:32
-#: core/templates/core/information.html:39
+#: core/templates/core/information.html:40
 msgid "Description"
 msgstr "Descripción"
 
@@ -1210,7 +1210,7 @@ msgid "Created"
 msgstr "Creado"
 
 #: admin/templates/admin/account_detail.html:35
-#: core/templates/core/information.html:60
+#: core/templates/core/information.html:61
 msgid "Last login"
 msgstr "Último acceso"
 
@@ -2300,7 +2300,7 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:11
+#: core/checks.py:12
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2310,15 +2310,15 @@ msgstr ""
 "entre los horarios de verano e invierno (p.ej., que la misma hora exista dos "
 "veces debido a cambios del reloj)."
 
-#: core/checks.py:15
+#: core/checks.py:16
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Ajuste `USE_TZ = True` en settings.py"
 
-#: core/checks.py:19
+#: core/checks.py:20
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:20
+#: core/checks.py:21
 msgid "Upgrade your password scheme to a stronger one"
 msgstr ""
 
@@ -2414,7 +2414,7 @@ msgstr "Una o más actualizaciones están disponibles"
 
 #: core/handlers.py:141
 #, python-format
-msgid "You are using a deprecated password scheme (%s)"
+msgid "You are still using a deprecated password scheme (%s)"
 msgstr ""
 
 #: core/management/commands/communicate_with_public_api.py:42
@@ -2638,29 +2638,35 @@ msgid ""
 "web interface anymore</strong>."
 msgstr ""
 
-#: core/templates/core/information.html:27
+#: core/templates/core/information.html:23
+msgid ""
+"Please note that you will see this message until <strong>ALL</strong> user "
+"passwords have been converted using the new scheme."
+msgstr ""
+
+#: core/templates/core/information.html:28
 msgid "One or more updates are available!"
 msgstr "Hay una o más actualizaciones disponibles"
 
-#: core/templates/core/information.html:28
+#: core/templates/core/information.html:29
 msgid "Check the following list to find the component(s) that can be updated."
 msgstr ""
 "Comprueba la siguiente lista para encontrar los componentes que pueden ser "
 "actualizados."
 
-#: core/templates/core/information.html:32
+#: core/templates/core/information.html:33
 msgid "Applications"
 msgstr "Aplicaciones"
 
-#: core/templates/core/information.html:37
+#: core/templates/core/information.html:38
 msgid "Installed version"
 msgstr "Versión instalada"
 
-#: core/templates/core/information.html:38
+#: core/templates/core/information.html:39
 msgid "Last version"
 msgstr "Última versión"
 
-#: core/templates/core/information.html:54
+#: core/templates/core/information.html:55
 msgid "Active users"
 msgstr "Usuarios activos"
 
@@ -2833,11 +2839,11 @@ msgstr "Salir"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:39
+#: core/utils.py:42
 msgid "The core part of Modoboa"
 msgstr "El núcleo de Modoboa"
 
-#: core/views/admin.py:43
+#: core/views/admin.py:42
 msgid "Parameters saved"
 msgstr "Parámetros guardados"
 
