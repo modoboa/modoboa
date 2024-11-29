@@ -148,6 +148,20 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+Version 2.3.3
+=============
+
+Update your :file:`settings.py` file with following content:
+
+.. sourcecode:: python
+
+   SILENCED_SYSTEM_CHECKS = [
+       "security.W019",  # modoboa uses iframes to display e-mails
+       "ckeditor.W001",  # CKEditor 4.22.1 warning
+   ]
+
+This will silence a `warning sent by django-ckeditor <https://github.com/modoboa/modoboa/issues/3316>_`.
+
 Version 2.3.0
 =============
 
