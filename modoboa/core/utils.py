@@ -10,7 +10,6 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 
 from django.utils.translation import gettext as _
 
-from modoboa.core import models
 from modoboa.core.extensions import exts_pool
 from modoboa.core.password_hashers import get_configured_password_hasher, PasswordHasher
 from modoboa.lib.api_client import ModoAPIClient
@@ -92,6 +91,8 @@ def generate_rsa_private_key(storage_path: str) -> bool:
 
 def check_for_deprecated_password_schemes() -> Optional[type[PasswordHasher]]:
     """Check if deprecated password scheme is still in use."""
+    from modoboa.core import models
+
     hasher = get_configured_password_hasher()
     if hasher.deprecated:
         return hasher
