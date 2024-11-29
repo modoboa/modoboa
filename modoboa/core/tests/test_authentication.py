@@ -256,6 +256,16 @@ class AuthenticationTestCase(ModoTestCase):
         hasher = get_password_hasher("crypt")
         self.assertEqual(hasher.label, "crypt (weak, deprecated)")
 
+    def test_is_password_scheme_in_use(self):
+        hasher = get_password_hasher("plain")
+        self.assertTrue(
+            models.User.objects.is_password_scheme_in_use(hasher),
+        )
+        hasher = get_password_hasher("crypt")
+        self.assertFalse(
+            models.User.objects.is_password_scheme_in_use(hasher),
+        )
+
     def test_fido_auth_begin(self):
         url = reverse("core:fido_auth_begin")
         resp = self.client.post(url)

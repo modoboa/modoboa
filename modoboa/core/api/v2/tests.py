@@ -498,6 +498,22 @@ class ComponentAPITestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
 
+class NotificationAPITestCase(ModoAPITestCase):
+
+    def test_get_notifications(self):
+        url = reverse("v2:notifications")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(len(data), 0)
+
+        self.set_global_parameter("password_scheme", "crypt")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(len(data), 1)
+
+
 class AuthenticatorData(bytes):
 
     credential_data = b"RESPONSE"
