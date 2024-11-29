@@ -2,9 +2,9 @@ from django.core.checks import register, Info, Warning
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from modoboa.core.models import User
+from modoboa.core.password_hashers import get_configured_password_hasher
 from modoboa.core.utils import generate_rsa_private_key
-from modoboa.parameters.tools import get_global_parameter
-from modoboa.core.password_hashers import get_password_hasher
 
 W001 = Warning(
     _(
@@ -49,8 +49,7 @@ def check_rsa_private_key_exists(app_configs, **kwargs):
 @register()
 def check_password_hasher(app_configs, **kwargs):
     msgs = []
-    scheme_in_use = get_global_parameter("password_scheme", app="core")
-    hasher = get_password_hasher(scheme_in_use)
-    if hasher.deprecated:
+    hasher = get_configured_password_hasher()
+    if hasher.deprecated or User.objects.is_password_scheme_in_use(hasher):
         msgs.append(W002)
     return msgs

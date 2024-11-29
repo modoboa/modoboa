@@ -3,6 +3,72 @@
     <v-toolbar flat>
       <v-toolbar-title>{{ $gettext('Information') }}</v-toolbar-title>
     </v-toolbar>
+    <v-card v-if="globalStore.notifications.length" class="my-6">
+      <v-card-title>
+        {{ $gettext('Important messages') }}
+      </v-card-title>
+
+      <v-card-text>
+        <v-alert
+          v-for="notification in globalStore.notifications"
+          :key="notification.id"
+          :type="notification.level"
+          :title="notification.text"
+          border="start"
+          variant="tonal"
+        >
+          <template v-if="notification.id === 'deprecatedpasswordscheme'">
+            {{
+              $gettext(
+                'The password scheme you are using has been deprecated and will be removed in the next minor version. The procedure to upgrade to a stronger scheme is as follows:'
+              )
+            }}
+            <ol>
+              <li
+                v-html="
+                  $gettext(
+                    'Go to <strong>Settings > General</strong> section',
+                    true
+                  )
+                "
+              ></li>
+              <li
+                v-html="
+                  $gettext(
+                    'Change the value of <strong>Default password scheme</strong>',
+                    true
+                  )
+                "
+              ></li>
+              <li
+                v-html="
+                  $gettext(
+                    'Make sure <strong>Update password scheme at login</strong> option is enabled',
+                    true
+                  )
+                "
+              ></li>
+              <li v-html="$gettext('Save your changes')"></li>
+              <li>
+                {{
+                  $gettext(
+                    'Logout / Login with your current account so its password gets updated'
+                  )
+                }}
+              </li>
+              <li
+                v-html="
+                  $gettext(
+                    'Inform <strong>ALL</strong> your users that they must login to Modoboa to complete the operation',
+                    true
+                  )
+                "
+              ></li>
+            </ol>
+          </template>
+        </v-alert>
+      </v-card-text>
+    </v-card>
     <v-card class="mt-6">
       <v-card-title>
         {{ $gettext('Installed components') }}
@@ -10,10 +76,10 @@
       <v-card-text>
         <v-alert
           v-if="updatesAvailable"
-          variant="outlined"
+          variant="tonal"
           type="success"
           text
-          border="left"
+          border="start"
         >
           <div tag="p">
             {{ $gettext('One or more updates are available') }}
@@ -47,12 +113,14 @@
   </div>
 </template>
 
-<script setup lang="js">
-import { useGettext } from 'vue3-gettext'
-import adminApi from '@/api/admin'
+<script setup>
 import { computed, ref, onMounted } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { useGlobalStore } from '@/stores'
+import adminApi from '@/api/admin'
 
 const { $gettext } = useGettext()
+const globalStore = useGlobalStore()
 
 const components = ref([])
 const headers = [

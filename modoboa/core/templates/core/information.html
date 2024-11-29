@@ -1,5 +1,27 @@
 {% load i18n core_tags lib_tags %}
 <h2>{% trans "Information" %} <small>{% trans "Various information about Modoboa" %}</small></h2><hr>
+{% if password_hasher.deprecated or password_hasher_in_use %}
+  <div class="alert alert-block alert-warning">
+    <h4>{% trans "You are using a deprecated password scheme!" %}</h4>
+    <p>{% blocktranslate trimmed %}
+      The password scheme <strong>{{ scheme }}</strong> has been
+      deprecated and will be removed in the next minor version. The procedure to upgrade to a stronger scheme is as follows:
+      <ul>
+        <li>Go to <strong>Parameters > General</strong> section</li>
+        <li>Change the value of <strong>Default password scheme</strong></li>
+        <li>Make sure <strong>Update password scheme at login</strong> option is enabled</li>
+        <li>Save your changes</li>
+        <li>Logout / Login with your current account so its password gets updated</li>
+        <li>Inform <strong>ALL</strong> your users that they must login to Modoboa to complete the operation</li>
+      </ul>
+    {% endblocktranslate %}</p>
+    <p>{% blocktranslate trimmed %}
+      You must apply this procedure <strong>BEFORE</strong> you install a newest
+      version of Modoboa, otherwise <strong>you will be unable to connect to
+      the web interface anymore</strong>.
+    {% endblocktranslate %}</p>
+  </div>
+{% endif %}
 {% if update_avail %}
 <div class="alert alert-block alert-success">
   <h4>{% trans "One or more updates are available!" %}</h4>
