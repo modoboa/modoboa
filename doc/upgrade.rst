@@ -151,6 +151,14 @@ Specific instructions
 Version 2.3.3
 =============
 
+.. warning::
+
+   The ``crypt ({CRYPT})`` password scheme has been marked as
+   deprecated and will be removed from Modoboa starting with version
+   **2.4.0**. If you are still using this weak scheme, you must change
+   to something safer **ASAP**. Installations still using this scheme
+   won't be able to install Modoboa 2.4 and upper...
+
 Update your :file:`settings.py` file with following content:
 
 .. sourcecode:: python

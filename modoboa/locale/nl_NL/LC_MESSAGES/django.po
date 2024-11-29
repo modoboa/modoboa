@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-22 14:45+0200\n"
+"POT-Creation-Date: 2024-11-29 14:52+0100\n"
 "PO-Revision-Date: 2024-07-17 11:46+0200\n"
 "Last-Translator: J Rosier <vertalen@tagora.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
@@ -431,7 +431,7 @@ msgstr ""
 "of administrators met een mailbox."
 
 #: admin/forms/account.py:36 admin/templates/admin/account_detail.html:29
-#: core/templates/core/information.html:37
+#: core/templates/core/information.html:59
 msgid "Role"
 msgstr "Rol"
 
@@ -696,8 +696,8 @@ msgstr "Automatisch een beheerder aanmaken voor dit domein"
 #: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
-#: core/templates/core/information.html:14
 #: core/templates/core/information.html:36
+#: core/templates/core/information.html:58
 msgid "Name"
 msgstr "Naam"
 
@@ -948,7 +948,7 @@ msgid "Check to activate this alias"
 msgstr "Selecteer om deze alias te activeren"
 
 #: admin/models/alias.py:102 admin/templates/admin/alias_detail.html:32
-#: core/templates/core/information.html:17
+#: core/templates/core/information.html:39
 msgid "Description"
 msgstr "Beschrijving"
 
@@ -1012,7 +1012,7 @@ msgid "Key length"
 msgstr "Sleutellengte"
 
 #: admin/models/domain.py:368 admin/models/domain_alias.py:70
-#: core/models.py:338 relaydomains/lib.py:13
+#: core/models.py:353 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Onjuiste regel"
 
@@ -1151,11 +1151,11 @@ msgid "Created"
 msgstr "Aangemaakt"
 
 #: admin/templates/admin/account_detail.html:35
-#: core/templates/core/information.html:38
+#: core/templates/core/information.html:60
 msgid "Last login"
 msgstr "Laatste login"
 
-#: admin/templates/admin/account_detail.html:38 core/models.py:74
+#: admin/templates/admin/account_detail.html:38 core/models.py:87
 msgid "Secondary email"
 msgstr "Tweede e-mailadres"
 
@@ -1164,7 +1164,7 @@ msgstr "Tweede e-mailadres"
 msgid "Not defined"
 msgstr "Niet opgegeven"
 
-#: admin/templates/admin/account_detail.html:41 core/models.py:72
+#: admin/templates/admin/account_detail.html:41 core/models.py:85
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
@@ -1734,7 +1734,7 @@ msgstr "Ongeldig nummer van rondes"
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:367 core/views/auth.py:196 core/views/auth.py:249
+#: core/api/v2/serializers.py:367 core/views/auth.py:200 core/views/auth.py:253
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Gebruik de volgende code om het Modoboa wachtwoord te herstellen: {}"
 
@@ -2241,7 +2241,7 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:10
+#: core/checks.py:11
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2251,9 +2251,19 @@ msgstr ""
 "tussen zomer- en wintertijd (bijv. dezelfde locale tijd komt twee keer voor "
 "door de tijdsverandering)"
 
-#: core/checks.py:14
+#: core/checks.py:15
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Zet 'USE_TZ = TRUE' in settings.py"
+
+#: core/checks.py:19
+msgid "The password scheme you are using is deprecated."
+msgstr ""
+
+#: core/checks.py:20
+#, fuzzy
+#| msgid "Update password scheme at login"
+msgid "Upgrade your password scheme to a stronger one"
+msgstr "Update wachtwoordschema bij inloggen"
 
 #: core/constants.py:6
 msgid "Simple user"
@@ -2307,96 +2317,101 @@ msgstr "Verificatiecode"
 msgid "Invalid code"
 msgstr "Ongeldige code"
 
-#: core/handlers.py:36
+#: core/handlers.py:37
 msgid "added"
 msgstr "toegevoegd"
 
-#: core/handlers.py:39
+#: core/handlers.py:40
 msgid "modified"
 msgstr "veranderd"
 
-#: core/handlers.py:41
+#: core/handlers.py:42
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s door gebruiker %(user)s"
 
-#: core/handlers.py:64
+#: core/handlers.py:65
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s door "
 
-#: core/handlers.py:67
+#: core/handlers.py:68
 msgid "deleted"
 msgstr "verwijderd"
 
-#: core/handlers.py:71
+#: core/handlers.py:72
 msgid "user {}"
 msgstr "gebruiker {}"
 
-#: core/handlers.py:73
+#: core/handlers.py:74
 msgid "management command"
 msgstr "beheeropdracht"
 
-#: core/handlers.py:95
+#: core/handlers.py:96
 msgid "You can't delete your own account"
 msgstr "U kunt uw eigen account niet verwijderen"
 
-#: core/handlers.py:128
+#: core/handlers.py:129
 msgid "One or more updates are available"
 msgstr "Er zijn een of meer updates beschikbaar"
+
+#: core/handlers.py:141
+#, python-format
+msgid "You are using a deprecated password scheme (%s)"
+msgstr ""
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
 msgstr "[modoboa] update(s) beschikbaar"
 
-#: core/models.py:59
+#: core/models.py:72
 msgid "Allow mailboxes access"
 msgstr "Sta mailboxtoegang toe"
 
-#: core/models.py:61
+#: core/models.py:74
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Sta deze beheerder toe om mailboxen van gebruikers te benaderen"
 
-#: core/models.py:63 core/templates/core/user_security.html:119
+#: core/models.py:76 core/templates/core/user_security.html:119
 msgid "password"
 msgstr "wachtwoord"
 
-#: core/models.py:66
+#: core/models.py:79
 msgid "language"
 msgstr "taal"
 
-#: core/models.py:70
+#: core/models.py:83
 msgid "Prefered language to display pages."
 msgstr "Voorkeurstaal om pagina's weer te geven"
 
-#: core/models.py:79
+#: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 "Een alternatief e-mailadres, dit kan gebruikt worden voor herstel "
 "mogelijkheden."
 
-#: core/models.py:136
+#: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Mislukt om wachtwoord aan te passen: LDAP-module niet geinstalleerd"
 
-#: core/models.py:171 policyd/core.py:106
+#: core/models.py:186 policyd/core.py:106
 msgid "account"
 msgstr "account"
 
-#: core/models.py:303
+#: core/models.py:318
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: core/models.py:346
+#: core/models.py:361
 msgid "You can't import an account with a role greater than yours"
 msgstr "U kunt geen accounts importeren met hogere rechten dan die van uzelf"
 
-#: core/models.py:361
+#: core/models.py:376
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr "De gebruiker '%s' moet een geldig e-mailadres hebben"
 
-#: core/models.py:368
+#: core/models.py:383
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr "gebruikersnaam en e-mail -velden moeten niet verschillen van '%s'"
@@ -2542,28 +2557,53 @@ msgid "Various information about Modoboa"
 msgstr "Diverse informatie over Modoboa"
 
 #: core/templates/core/information.html:5
+msgid "You are using a deprecated password scheme!"
+msgstr ""
+
+#: core/templates/core/information.html:6
+#, python-format
+msgid ""
+"The password scheme <strong>%(scheme)s</strong> has been deprecated and will "
+"be removed in the next minor version. The procedure to upgrade to a stronger "
+"scheme is as follows: <ul> <li>Go to <strong>Parameters > General</strong> "
+"section</li> <li>Change the value of <strong>Default password scheme</"
+"strong></li> <li>Make sure <strong>Update password scheme at login</strong> "
+"option is enabled</li> <li>Save your changes</li> <li>Logout / Login with "
+"your current account so its password gets updated</li> <li>Inform "
+"<strong>ALL</strong> your users that they must login to Modoboa to complete "
+"the operation</li> </ul>"
+msgstr ""
+
+#: core/templates/core/information.html:18
+msgid ""
+"You must apply this procedure <strong>BEFORE</strong> you install a newest "
+"version of Modoboa, otherwise <strong>you will be unable to connect to the "
+"web interface anymore</strong>."
+msgstr ""
+
+#: core/templates/core/information.html:27
 msgid "One or more updates are available!"
 msgstr "Eén of meer updates zijn beschikbaar!"
 
-#: core/templates/core/information.html:6
+#: core/templates/core/information.html:28
 msgid "Check the following list to find the component(s) that can be updated."
 msgstr ""
 "Bekijk de volgende lijst om de componenten te vinden die bijgewerkt kunnen "
 "worden"
 
-#: core/templates/core/information.html:10
+#: core/templates/core/information.html:32
 msgid "Applications"
 msgstr "Programma's"
 
-#: core/templates/core/information.html:15
+#: core/templates/core/information.html:37
 msgid "Installed version"
 msgstr "Geïnstalleerde versie"
 
-#: core/templates/core/information.html:16
+#: core/templates/core/information.html:38
 msgid "Last version"
 msgstr "Laatste versie"
 
-#: core/templates/core/information.html:32
+#: core/templates/core/information.html:54
 msgid "Active users"
 msgstr "Actieve gebruikers"
 
@@ -2748,26 +2788,26 @@ msgstr "API"
 msgid "The core part of Modoboa"
 msgstr "Het hoofdonderdeel van Modoboa"
 
-#: core/views/admin.py:42
+#: core/views/admin.py:43
 msgid "Parameters saved"
 msgstr "Parameters opgeslagen"
 
-#: core/views/auth.py:66
+#: core/views/auth.py:70
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Gebruiker '%s' successvol aangemeld"
 
-#: core/views/auth.py:104
+#: core/views/auth.py:108
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Wachtwoord schema matcht niet. Updating %s wachtwoord"
 
-#: core/views/auth.py:111
+#: core/views/auth.py:115
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Hashparameter van het wachtwoord klopt niet. Wachtwoord  %s wijzigen"
 
-#: core/views/auth.py:156
+#: core/views/auth.py:160
 msgid "User '{}' successfully logged out"
 msgstr "Gebruiker '{}' is uitgelogd."
 

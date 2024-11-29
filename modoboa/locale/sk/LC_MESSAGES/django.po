@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-22 14:45+0200\n"
+"POT-Creation-Date: 2024-11-29 14:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -388,7 +388,7 @@ msgid ""
 msgstr ""
 
 #: admin/forms/account.py:36 admin/templates/admin/account_detail.html:29
-#: core/templates/core/information.html:37
+#: core/templates/core/information.html:59
 msgid "Role"
 msgstr ""
 
@@ -632,8 +632,8 @@ msgstr ""
 #: admin/templates/admin/domain_headers.html:3
 #: admin/templates/admin/identity_headers.html:2
 #: admin/templates/admin/mx_domain_detail.html:9
-#: core/templates/core/information.html:14
 #: core/templates/core/information.html:36
+#: core/templates/core/information.html:58
 msgid "Name"
 msgstr ""
 
@@ -879,7 +879,7 @@ msgid "Check to activate this alias"
 msgstr ""
 
 #: admin/models/alias.py:102 admin/templates/admin/alias_detail.html:32
-#: core/templates/core/information.html:17
+#: core/templates/core/information.html:39
 msgid "Description"
 msgstr ""
 
@@ -941,7 +941,7 @@ msgid "Key length"
 msgstr ""
 
 #: admin/models/domain.py:368 admin/models/domain_alias.py:70
-#: core/models.py:338 relaydomains/lib.py:13
+#: core/models.py:353 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr ""
 
@@ -1080,11 +1080,11 @@ msgid "Created"
 msgstr ""
 
 #: admin/templates/admin/account_detail.html:35
-#: core/templates/core/information.html:38
+#: core/templates/core/information.html:60
 msgid "Last login"
 msgstr ""
 
-#: admin/templates/admin/account_detail.html:38 core/models.py:74
+#: admin/templates/admin/account_detail.html:38 core/models.py:87
 msgid "Secondary email"
 msgstr ""
 
@@ -1093,7 +1093,7 @@ msgstr ""
 msgid "Not defined"
 msgstr ""
 
-#: admin/templates/admin/account_detail.html:41 core/models.py:72
+#: admin/templates/admin/account_detail.html:41 core/models.py:85
 msgid "Phone number"
 msgstr ""
 
@@ -1630,7 +1630,7 @@ msgstr ""
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:367 core/views/auth.py:196 core/views/auth.py:249
+#: core/api/v2/serializers.py:367 core/views/auth.py:200 core/views/auth.py:253
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
@@ -2103,15 +2103,23 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:10
+#: core/checks.py:11
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
 msgstr ""
 
-#: core/checks.py:14
+#: core/checks.py:15
 msgid "Set `USE_TZ = True` in settings.py"
+msgstr ""
+
+#: core/checks.py:19
+msgid "The password scheme you are using is deprecated."
+msgstr ""
+
+#: core/checks.py:20
+msgid "Upgrade your password scheme to a stronger one"
 msgstr ""
 
 #: core/constants.py:6
@@ -2166,94 +2174,99 @@ msgstr ""
 msgid "Invalid code"
 msgstr ""
 
-#: core/handlers.py:36
+#: core/handlers.py:37
 msgid "added"
 msgstr ""
 
-#: core/handlers.py:39
+#: core/handlers.py:40
 msgid "modified"
 msgstr ""
 
-#: core/handlers.py:41
+#: core/handlers.py:42
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr ""
 
-#: core/handlers.py:64
+#: core/handlers.py:65
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr ""
 
-#: core/handlers.py:67
+#: core/handlers.py:68
 msgid "deleted"
 msgstr ""
 
-#: core/handlers.py:71
+#: core/handlers.py:72
 msgid "user {}"
 msgstr ""
 
-#: core/handlers.py:73
+#: core/handlers.py:74
 msgid "management command"
 msgstr ""
 
-#: core/handlers.py:95
+#: core/handlers.py:96
 msgid "You can't delete your own account"
 msgstr ""
 
-#: core/handlers.py:128
+#: core/handlers.py:129
 msgid "One or more updates are available"
+msgstr ""
+
+#: core/handlers.py:141
+#, python-format
+msgid "You are using a deprecated password scheme (%s)"
 msgstr ""
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
 msgstr ""
 
-#: core/models.py:59
+#: core/models.py:72
 msgid "Allow mailboxes access"
 msgstr ""
 
-#: core/models.py:61
+#: core/models.py:74
 msgid "Allow this administrator to access user mailboxes"
 msgstr ""
 
-#: core/models.py:63 core/templates/core/user_security.html:119
+#: core/models.py:76 core/templates/core/user_security.html:119
 msgid "password"
 msgstr ""
 
-#: core/models.py:66
+#: core/models.py:79
 msgid "language"
 msgstr ""
 
-#: core/models.py:70
+#: core/models.py:83
 msgid "Prefered language to display pages."
 msgstr ""
 
-#: core/models.py:79
+#: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 
-#: core/models.py:136
+#: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
 
-#: core/models.py:171 policyd/core.py:106
+#: core/models.py:186 policyd/core.py:106
 msgid "account"
 msgstr ""
 
-#: core/models.py:303
+#: core/models.py:318
 msgid "Unknown"
 msgstr ""
 
-#: core/models.py:346
+#: core/models.py:361
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 
-#: core/models.py:361
+#: core/models.py:376
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
 msgstr ""
 
-#: core/models.py:368
+#: core/models.py:383
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
@@ -2393,26 +2406,51 @@ msgid "Various information about Modoboa"
 msgstr ""
 
 #: core/templates/core/information.html:5
-msgid "One or more updates are available!"
+msgid "You are using a deprecated password scheme!"
 msgstr ""
 
 #: core/templates/core/information.html:6
+#, python-format
+msgid ""
+"The password scheme <strong>%(scheme)s</strong> has been deprecated and will "
+"be removed in the next minor version. The procedure to upgrade to a stronger "
+"scheme is as follows: <ul> <li>Go to <strong>Parameters > General</strong> "
+"section</li> <li>Change the value of <strong>Default password scheme</"
+"strong></li> <li>Make sure <strong>Update password scheme at login</strong> "
+"option is enabled</li> <li>Save your changes</li> <li>Logout / Login with "
+"your current account so its password gets updated</li> <li>Inform "
+"<strong>ALL</strong> your users that they must login to Modoboa to complete "
+"the operation</li> </ul>"
+msgstr ""
+
+#: core/templates/core/information.html:18
+msgid ""
+"You must apply this procedure <strong>BEFORE</strong> you install a newest "
+"version of Modoboa, otherwise <strong>you will be unable to connect to the "
+"web interface anymore</strong>."
+msgstr ""
+
+#: core/templates/core/information.html:27
+msgid "One or more updates are available!"
+msgstr ""
+
+#: core/templates/core/information.html:28
 msgid "Check the following list to find the component(s) that can be updated."
 msgstr ""
 
-#: core/templates/core/information.html:10
+#: core/templates/core/information.html:32
 msgid "Applications"
 msgstr ""
 
-#: core/templates/core/information.html:15
+#: core/templates/core/information.html:37
 msgid "Installed version"
 msgstr ""
 
-#: core/templates/core/information.html:16
+#: core/templates/core/information.html:38
 msgid "Last version"
 msgstr ""
 
-#: core/templates/core/information.html:32
+#: core/templates/core/information.html:54
 msgid "Active users"
 msgstr ""
 
@@ -2578,26 +2616,26 @@ msgstr ""
 msgid "The core part of Modoboa"
 msgstr ""
 
-#: core/views/admin.py:42
+#: core/views/admin.py:43
 msgid "Parameters saved"
 msgstr ""
 
-#: core/views/auth.py:66
+#: core/views/auth.py:70
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr ""
 
-#: core/views/auth.py:104
+#: core/views/auth.py:108
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:111
+#: core/views/auth.py:115
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:156
+#: core/views/auth.py:160
 msgid "User '{}' successfully logged out"
 msgstr ""
 

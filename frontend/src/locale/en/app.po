@@ -48,7 +48,7 @@ msgstr ""
 msgid "account"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:254
+#: src/layouts/dashboard/NavBar.vue:260
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Address (hostname or IP)"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:268
+#: src/layouts/dashboard/NavBar.vue:274
 msgid "Admin"
 msgstr ""
 
@@ -202,7 +202,7 @@ msgid "Alarm re-opened"
 msgstr ""
 
 #: src/components/admin/domains/DomainList.vue:309
-#: src/layouts/dashboard/NavBar.vue:195
+#: src/layouts/dashboard/NavBar.vue:200
 msgid "Alarms"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 msgid "Attempting to log you in."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:210
+#: src/layouts/dashboard/NavBar.vue:215
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr ""
@@ -382,11 +382,15 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: src/views/admin/InformationView.vue:37
+msgid "Change the value of <strong>Default password scheme</strong>"
+msgstr ""
+
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
 msgid "Check connection:"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:23
+#: src/views/admin/InformationView.vue:89
 msgid "Check out the following list to find related components"
 msgstr ""
 
@@ -480,7 +484,7 @@ msgstr ""
 msgid "Copy token to clipboard"
 msgstr ""
 
-#: src/views/admin/ParametersView.vue:162
+#: src/views/admin/ParametersView.vue:164
 msgid "Could not save parameters"
 msgstr ""
 
@@ -538,7 +542,7 @@ msgstr ""
 msgid "Daily sending limit"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:177
+#: src/layouts/dashboard/NavBar.vue:182
 msgid "Dashboard"
 msgstr ""
 
@@ -587,7 +591,7 @@ msgstr ""
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:20
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:57
-#: src/views/admin/InformationView.vue:62
+#: src/views/admin/InformationView.vue:130
 msgid "Description"
 msgstr ""
 
@@ -761,7 +765,7 @@ msgstr ""
 msgid "domain's default value"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:183
+#: src/layouts/dashboard/NavBar.vue:188
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr ""
@@ -822,7 +826,7 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:227
+#: src/layouts/dashboard/NavBar.vue:232
 msgid "Email providers"
 msgstr ""
 
@@ -934,7 +938,7 @@ msgstr ""
 msgid "Filter updated"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:279
+#: src/layouts/dashboard/NavBar.vue:285
 msgid "Filters"
 msgstr ""
 
@@ -1020,6 +1024,10 @@ msgstr ""
 msgid "Generated address"
 msgstr ""
 
+#: src/views/admin/InformationView.vue:29
+msgid "Go to <strong>Settings > General</strong> section"
+msgstr ""
+
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:101
 msgid "help"
 msgstr ""
@@ -1041,7 +1049,7 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:189
+#: src/layouts/dashboard/NavBar.vue:194
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr ""
@@ -1058,7 +1066,7 @@ msgid ""
 "received and processed."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:223
+#: src/layouts/dashboard/NavBar.vue:228
 msgid "IMAP Migration"
 msgstr ""
 
@@ -1086,11 +1094,21 @@ msgstr ""
 msgid "Import identities"
 msgstr ""
 
+#: src/views/admin/InformationView.vue:8
+msgid "Important messages"
+msgstr ""
+
 #: src/components/account/ForwardForm.vue:8
 msgid "Indicate one or more recipients separated by a comma (,)"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:246 src/views/admin/InformationView.vue:4
+#: src/views/admin/InformationView.vue:61
+msgid ""
+"Inform <strong>ALL</strong> your users that they must login to Modoboa to "
+"complete the operation"
+msgstr ""
+
+#: src/layouts/dashboard/NavBar.vue:251 src/views/admin/InformationView.vue:4
 msgid "Information"
 msgstr ""
 
@@ -1100,11 +1118,11 @@ msgid ""
 "your application repository and use that app to scan this QR code."
 msgstr ""
 
-#: src/views/admin/InformationView.vue:8
+#: src/views/admin/InformationView.vue:74
 msgid "Installed components"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:60
+#: src/views/admin/InformationView.vue:128
 msgid "Installed version"
 msgstr ""
 
@@ -1134,6 +1152,10 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
+#: src/components/account/ProfileForm.vue:129
+msgid "Language does no exist"
+msgstr ""
+
 #: src/components/admin/identities/AccountSummary.vue:12
 msgid "Last login date"
 msgstr ""
@@ -1152,7 +1174,7 @@ msgstr ""
 msgid "Last Used"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:61
+#: src/views/admin/InformationView.vue:129
 msgid "Latest version"
 msgstr ""
 
@@ -1179,8 +1201,12 @@ msgstr ""
 msgid "Logger"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:260
+#: src/layouts/dashboard/NavBar.vue:266
 msgid "Logout"
+msgstr ""
+
+#: src/views/admin/InformationView.vue:54
+msgid "Logout / Login with your current account so its password gets updated"
 msgstr ""
 
 #: src/components/admin/alarms/AlarmList.vue:95
@@ -1200,6 +1226,11 @@ msgstr ""
 
 #: src/components/admin/domains/DomainSummary.vue:36
 msgid "Mailboxes"
+msgstr ""
+
+#: src/views/admin/InformationView.vue:45
+msgid ""
+"Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
 
 #: src/components/admin/domains/DomainSummary.vue:20
@@ -1230,7 +1261,7 @@ msgstr ""
 msgid "messages"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:215
+#: src/layouts/dashboard/NavBar.vue:220
 msgid "Messages"
 msgstr ""
 
@@ -1238,7 +1269,7 @@ msgstr ""
 msgid "Migration deleted"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:232
+#: src/layouts/dashboard/NavBar.vue:237
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr ""
@@ -1255,7 +1286,7 @@ msgstr ""
 msgid "Modify"
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:201
+#: src/layouts/dashboard/NavBar.vue:206
 msgid "Monitoring"
 msgstr ""
 
@@ -1295,7 +1326,8 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:118
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:96
-#: src/views/account/FiltersView.vue:164 src/views/admin/InformationView.vue:59
+#: src/views/account/FiltersView.vue:164
+#: src/views/admin/InformationView.vue:127
 msgid "Name"
 msgstr ""
 
@@ -1442,7 +1474,7 @@ msgstr ""
 msgid "Old account"
 msgstr ""
 
-#: src/views/admin/InformationView.vue:19
+#: src/views/admin/InformationView.vue:85
 msgid "One or more updates are available"
 msgstr ""
 
@@ -1467,7 +1499,7 @@ msgstr ""
 msgid "or suggest a new language"
 msgstr ""
 
-#: src/views/admin/ParametersView.vue:153
+#: src/views/admin/ParametersView.vue:154
 msgid "Parameters updated"
 msgstr ""
 
@@ -1497,7 +1529,7 @@ msgstr ""
 msgid "Password mismatch"
 msgstr ""
 
-#: src/components/account/ProfileForm.vue:143
+#: src/components/account/ProfileForm.vue:144
 msgid "Password updated"
 msgstr ""
 
@@ -1724,6 +1756,10 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: src/views/admin/InformationView.vue:51
+msgid "Save your changes"
+msgstr ""
+
 #: src/components/admin/domains/DomainList.vue:38
 #: src/components/admin/identities/IdentityList.vue:39
 #: src/components/admin/imap_migration/ProvidersList.vue:39
@@ -1797,7 +1833,7 @@ msgstr ""
 msgid "Service: "
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:240 src/layouts/dashboard/NavBar.vue:285
+#: src/layouts/dashboard/NavBar.vue:245 src/layouts/dashboard/NavBar.vue:291
 msgid "Settings"
 msgstr ""
 
@@ -1830,7 +1866,7 @@ msgstr ""
 msgid "Start typing a name here..."
 msgstr ""
 
-#: src/layouts/dashboard/NavBar.vue:205
+#: src/layouts/dashboard/NavBar.vue:210
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -1882,6 +1918,13 @@ msgid ""
 "access to your account, in case you lose your phone for example. Make sure "
 "to save them in a safe place, otherwise you won't be able to access your "
 "account anymore."
+msgstr ""
+
+#: src/views/admin/InformationView.vue:22
+msgid ""
+"The password scheme you are using has been deprecated and will be removed in "
+"the next minor version. The procedure to upgrade to a stronger scheme is as "
+"follows:"
 msgstr ""
 
 #: src/components/account/ProfileForm.vue:34
