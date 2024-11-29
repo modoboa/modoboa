@@ -17,68 +17,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/components/admin/imap_migration/ProviderCreationForm.vue:41
+t#: src/components/admin/imap_migration/ProviderCreationForm.vue:41
 msgid "(the domain will be created locally)"
-msgstr ""
+msgstr "(alan adı yerel olarak oluşturulacaktır)"
 
 #: src/components/account/APISetupForm.vue:45
 msgid "A documentation of the API is available"
-msgstr ""
+msgstr "API belgeleri mevcut"
 
 #: src/components/admin/domains/DNSDetail.vue:195
-msgid ""
-"A new key will be generated soon. Refresh the page in a moment to see it."
-msgstr ""
+msgid "A new key will be generated soon. Refresh the page in a moment to see it."
+msgstr "Yeni bir anahtar yakında oluşturulacak. Görmek için sayfayı biraz sonra yenileyin."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:108
-msgid ""
-"A user with all privileges, can do anything. By default, such a user does "
-"not have a mailbox so he can't access end-user features."
-msgstr ""
+msgid "A user with all privileges, can do anything. By default, such a user does not have a mailbox so he can't access end-user features."
+msgstr "Tüm ayrıcalıklara sahip bir kullanıcı her şeyi yapabilir. Varsayılan olarak, bu tür bir kullanıcının posta kutusu yoktur, bu nedenle son kullanıcı özelliklerine erişemez."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:82
-msgid ""
-"A user with no privileges but with a mailbox. He will be allowed to use all "
-"end-user features: webmail, calendar, contacts, filters."
-msgstr ""
+msgid "A user with no privileges but with a mailbox. He will be allowed to use all end-user features: webmail, calendar, contacts, filters."
+msgstr "Ayrıcalığı olmayan ancak bir posta kutusuna sahip olan bir kullanıcı. Tüm son kullanıcı özelliklerini kullanabilir: webmail, takvim, kişiler, filtreler."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:92
-msgid ""
-"A user with privileges on one or more domain. He will be allowed to "
-"administer mailboxes and he can also have a mailbox."
-msgstr ""
+msgid "A user with privileges on one or more domain. He will be allowed to administer mailboxes and he can also have a mailbox."
+msgstr "Bir veya daha fazla alanda ayrıcalıklara sahip bir kullanıcı. Posta kutularını yönetmesine izin verilecek ve ayrıca bir posta kutusuna sahip olabilir."
 
 #: src/components/tools/TimeSerieChart.vue:17
 msgid "Absolute time range"
-msgstr ""
+msgstr "Mutlak zaman aralığı"
 
 #: src/stores/identities.store.js:72
 msgid "account"
-msgstr ""
+msgstr "hesap"
 
 #: src/layouts/dashboard/NavBar.vue:254
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Account"
-msgstr ""
+msgstr "Hesap"
 
 #: src/stores/accounts.store.js:56
 msgid "Account created"
-msgstr ""
+msgstr "Hesap oluşturuldu"
 
 #: src/views/account/SettingsView.vue:3
 #, fuzzy
 msgid "Account settings"
-msgstr "Ayarlar"
+msgstr "Hesap ayarları"
 
 #: src/stores/accounts.store.js:67
 msgid "Account successfully deleted"
-msgstr ""
+msgstr "Hesap başarıyla silindi"
 
 #: src/stores/accounts.store.js:48
 #, fuzzy
 msgid "Account updated"
-msgstr "Profil güncellendi"
+msgstr "Hesap güncellendi"
 
 #: src/components/account/FidoAuthForm.vue:137
 #: src/components/account/FilterForm.vue:76
@@ -93,69 +86,69 @@ msgstr "Profil güncellendi"
 #: src/components/admin/imap_migration/ProvidersList.vue:102
 #: src/components/admin/imap_migration/ProvidersList.vue:25
 msgid "Actions"
-msgstr ""
+msgstr "Eylemler"
 
 #: src/views/account/FiltersView.vue:382
 msgid "Activate filter set"
-msgstr ""
+msgstr "Filtre setini etkinleştir"
 
 #: src/components/account/AutoReplyForm.vue:35
 msgid "Activate your auto reply from this date"
-msgstr ""
+msgstr "Otomatik yanıtınızı bu tarihten itibaren etkinleştirin"
 
 #: src/components/account/AutoReplyForm.vue:46
 msgid "Activate your auto reply until this date"
-msgstr ""
+msgstr "Otomatik yanıtınızı bu tarihe kadar etkinleştirin"
 
 #: src/views/account/FiltersView.vue:201
 msgid "active"
-msgstr ""
+msgstr "aktif"
 
 #: src/components/account/FilterSetForm.vue:14
 #: src/views/account/FiltersView.vue:165
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #: src/components/admin/domains/DomainAliasForm.vue:68
 #: src/views/account/FiltersView.vue:65
 msgid "Add"
-msgstr ""
+msgstr "Ekle"
 
 #: src/components/admin/domains/DomainAliasForm.vue:74
 msgid "Add a new domain alias"
-msgstr ""
+msgstr "Yeni bir alan adı takma adı ekle"
 
 #: src/components/account/FilterForm.vue:127
 msgid "Add action"
-msgstr ""
+msgstr "Eylem ekle"
 
 #: src/components/admin/domains/DomainAdminList.vue:66
 msgid "Add administrator"
-msgstr ""
+msgstr "Yönetici ekle"
 
 #: src/components/account/FilterForm.vue:60
 msgid "Add condition"
-msgstr ""
+msgstr "Koşul ekle"
 
 #: src/views/account/FiltersView.vue:24
 msgid "Add filter set"
-msgstr ""
+msgstr "Filtre seti ekle"
 
 #: src/views/account/FiltersView.vue:60
 msgid "Add new filter"
-msgstr ""
+msgstr "Yeni filtre ekle"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:52
 msgid "Add sender address"
-msgstr ""
+msgstr "Gönderici adresi ekle"
 
 #: src/components/admin/identities/DomainAdminDomains.vue:16
 msgid "Add/Remove from the domain page"
-msgstr ""
+msgstr "Alan adı sayfasından ekle/kaldır"
 
 #: src/components/account/FidoAuthForm.vue:134
 msgid "Added On"
-msgstr ""
+msgstr "Eklenme Tarihi"
 
 #: src/components/admin/domains/DNSDetail.vue:171
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
@@ -164,101 +157,99 @@ msgstr ""
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:54
 #: src/components/admin/imap_migration/ProvidersList.vue:97
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:11
 msgid "Address (hostname or IP)"
-msgstr ""
+msgstr "Adres (hostname veya IP)"
 
 #: src/layouts/dashboard/NavBar.vue:268
 msgid "Admin"
-msgstr ""
+msgstr "Yönetici"
 
 #: src/components/admin/identities/DomainAdminDomains.vue:4
 msgid "Administered domains"
-msgstr ""
+msgstr "Yönetilen alan adları"
 
 #: src/components/admin/domains/DomainAdminList.vue:149
 msgid "Administrator added"
-msgstr ""
+msgstr "Yönetici eklendi"
 
 #: src/components/admin/domains/DomainCreationForm.vue:250
 msgid "Administrator name"
-msgstr ""
+msgstr "Yönetici adı"
 
 #: src/components/admin/domains/DomainAdminList.vue:158
 msgid "Administrator removed"
-msgstr ""
+msgstr "Yönetici kaldırıldı"
 
 #: src/components/admin/domains/DomainAdminList.vue:9
 #: src/components/admin/domains/DomainList.vue:291
 msgid "Administrators"
-msgstr ""
+msgstr "Yöneticiler"
 
 #: src/components/admin/domains/DomainAdminList.vue:6
 #, fuzzy
 msgid "Administrators of"
-msgstr "Süper Yönetici"
+msgstr "Yöneticiler"
 
 #: src/components/admin/alarms/AlarmList.vue:188
 msgid "Alarm closed"
-msgstr ""
+msgstr "Alarm kapatıldı"
 
 #: src/components/admin/alarms/AlarmList.vue:173
 msgid "Alarm deleted"
-msgstr ""
+msgstr "Alarm silindi"
 
 #: src/components/admin/alarms/AlarmList.vue:196
 msgid "Alarm re-opened"
-msgstr ""
+msgstr "Alarm yeniden açıldı"
 
 #: src/components/admin/domains/DomainList.vue:309
 #: src/layouts/dashboard/NavBar.vue:195
 msgid "Alarms"
-msgstr ""
+msgstr "Alarmlar"
 
 #: src/components/admin/alarms/AlarmList.vue:180
 msgid "Alarms deleted"
-msgstr ""
+msgstr "Alarmlar silindi"
 
 #: src/stores/identities.store.js:106
 msgid "alias"
-msgstr ""
+msgstr "takma ad"
 
 #: src/components/admin/identities/AccountEditForm.vue:116
 #: src/views/admin/domains/DomainsView.vue:36
 #: src/views/admin/identities/AliasView.vue:5
 #: src/views/admin/identities/IdentitiesView.vue:36
 msgid "Alias"
-msgstr ""
+msgstr "Takma Ad"
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:50
 msgid "Alias already added"
-msgstr ""
+msgstr "Takma ad zaten eklendi"
 
 #: src/components/admin/identities/AliasCreationForm.vue:130
 msgid "Alias already exists, redirecting to edit page"
-msgstr ""
+msgstr "Takma ad zaten mevcut, düzenleme sayfasına yönlendiriliyor"
 
 #: src/stores/aliases.store.js:52
 msgid "Alias successfully created"
-msgstr ""
+msgstr "Takma ad başarıyla oluşturuldu"
 
 #: src/stores/aliases.store.js:65
 msgid "Alias successfully deleted"
-msgstr ""
+msgstr "Takma ad başarıyla silindi"
 
 #: src/stores/aliases.store.js:78
 #, fuzzy
 msgid "Alias updated"
-msgstr "Profil güncellendi"
+msgstr "Takma ad güncellendi"
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
-msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
-"name (@domain.tld)."
-msgstr ""
+msgid "Alias(es) of this mailbox. To create a catchall alias, just enter the domain name (@domain.tld)."
+msgstr "Bu posta kutusunun takma adı(ları). Genel bir takma ad oluşturmak için sadece alan adı (@alanadi.tld) girin."
 
 #: src/components/admin/domains/DomainList.vue:204
 #: src/components/admin/domains/DomainSummary.vue:40
@@ -267,28 +258,28 @@ msgstr ""
 #: src/components/admin/identities/AccountCreationForm.vue:148
 #: src/components/admin/identities/AccountCreationForm.vue:178
 msgid "Aliases"
-msgstr ""
+msgstr "Takma Adlar"
 
 #: src/components/admin/identities/AccountEditForm.vue:125
 msgid "Aliases:"
-msgstr ""
+msgstr "Takma Adlar:"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:5
 msgid "Alignment"
-msgstr ""
+msgstr "Hizalama"
 
 #: src/components/account/FilterForm.vue:18
 #, fuzzy
 msgid "All messages"
-msgstr "İleti"
+msgstr "Tüm iletiler"
 
 #: src/components/account/FilterForm.vue:16
 msgid "All of the following"
-msgstr ""
+msgstr "Aşağıdakilerin tümü"
 
 #: src/components/account/FilterForm.vue:17
 msgid "Any of the following"
-msgstr ""
+msgstr "Aşağıdakilerden herhangi biri"
 
 #: src/views/account/SettingsView.vue:20
 msgid "API access"
@@ -296,48 +287,48 @@ msgstr "API erişimi"
 
 #: src/components/account/APISetupForm.vue:73
 msgid "API token copied to your clipboard"
-msgstr ""
+msgstr "API jetonu panoya kopyalandı"
 
 #: src/components/account/APISetupForm.vue:85
 #, fuzzy
 msgid "API token created"
-msgstr "Profil güncellendi"
+msgstr "API jetonu oluşturuldu"
 
 #: src/components/account/APISetupForm.vue:107
 msgid "API token deleted"
-msgstr ""
+msgstr "API jetonu silindi"
 
 #: src/components/tools/TimeSerieChart.vue:22
 msgid "Apply"
-msgstr ""
+msgstr "Uygula"
 
 #: src/components/admin/identities/IdentityList.vue:231
 msgid "Are you sure you want to delete this alias?"
-msgstr ""
+msgstr "Bu takma adı silmek istediğinize emin misiniz?"
 
 #: src/components/admin/identities/IdentityList.vue:205
 msgid "Are you sure you want to delete this identity ?"
-msgstr ""
+msgstr "Bu kimliği silmek istediğinize emin misiniz?"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:42
 msgid "Associated domain"
-msgstr ""
+msgstr "İlişkili alan adı"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:64
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:72
 #: src/components/admin/imap_migration/ProviderForm.vue:30
 #: src/components/admin/imap_migration/ProvidersList.vue:100
 msgid "Associated domains"
-msgstr ""
+msgstr "İlişkili alan adları"
 
 #: src/views/login/LoginView.vue:17
 msgid "Attempting to log you in."
-msgstr ""
+msgstr "Giriş yapmaya çalışılıyor."
 
 #: src/layouts/dashboard/NavBar.vue:210
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
-msgstr ""
+msgstr "Denetim izi"
 
 #: src/components/admin/domains/DNSDetail.vue:72
 msgid "Authentication"
@@ -346,43 +337,43 @@ msgstr "Kimlik Doğrulama"
 #: src/components/admin/domains/DNSDetail.vue:35
 #: src/components/admin/domains/DomainDNSConfig.vue:71
 msgid "Auto configuration"
-msgstr ""
+msgstr "Otomatik yapılandırma"
 
 #: src/views/account/SettingsView.vue:17
 msgid "Auto-reply message"
-msgstr ""
+msgstr "Otomatik yanıt mesajı"
 
 #: src/components/account/AutoReplyForm.vue:82
 msgid "Auto-reply message updated"
-msgstr ""
+msgstr "Otomatik yanıt mesajı güncellendi"
 
 #: src/components/admin/domains/DNSDetail.vue:56
 msgid "autoconfig record (Mozilla) not found"
-msgstr ""
+msgstr "autoconfig kaydı (Mozilla) bulunamadı"
 
 #: src/components/admin/domains/DNSDetail.vue:50
 msgid "autoconfig record (Mozilla): %{ value }"
-msgstr ""
+msgstr "autoconfig kaydı (Mozilla): %{ value }"
 
 #: src/components/admin/domains/DNSDetail.vue:68
 msgid "autodiscover record (Microsoft) not found"
-msgstr ""
+msgstr "autodiscover kaydı (Microsoft) bulunamadı"
 
 #: src/components/admin/domains/DNSDetail.vue:62
 msgid "autodiscover record (Microsoft): %{ value }"
-msgstr ""
+msgstr "autodiscover kaydı (Microsoft): %{ value }"
 
 #: src/components/tools/CreationForm.vue:62
 msgid "Back"
-msgstr ""
+msgstr "Geri"
 
 #: src/components/account/BackupCodeAuthForm.vue:6
 msgid "Backup codes"
-msgstr ""
+msgstr "Yedek kodlar"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:23
 msgid "Bind/named format. Click to copy"
-msgstr ""
+msgstr "Bind/named formatı. Kopyalamak için tıklayın"
 
 #: src/components/account/APISetupForm.vue:98
 #: src/components/account/FidoAuthForm.vue:204
@@ -394,44 +385,44 @@ msgstr ""
 #: src/components/admin/imap_migration/ProviderForm.vue:58
 #: src/components/tools/ConfirmDialog.vue:55
 msgid "Cancel"
-msgstr ""
+msgstr "İptal"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
 msgid "Check connection:"
-msgstr ""
+msgstr "Bağlantıyı kontrol et:"
 
 #: src/views/admin/InformationView.vue:23
 msgid "Check out the following list to find related components"
-msgstr ""
+msgstr "İlgili bileşenleri bulmak için aşağıdaki listeye göz atın"
 
 #: src/views/admin/identities/IdentitiesView.vue:85
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
+msgstr "Dosyanızdaki parolalar şifrelenmemişse bu seçeneği işaretleyin"
 
 #: src/components/admin/domains/DomainAliasForm.vue:15
 msgid "Choose a domain"
-msgstr ""
+msgstr "Bir alan adı seçin"
 
 #: src/components/account/FilterForm.vue:28
 #, fuzzy
 msgid "Choose a header"
-msgstr "Kapat"
+msgstr "Başlık seçin"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:7
 msgid "Choose a role"
-msgstr ""
+msgstr "Bir rol seçin"
 
 #: src/components/account/FilterForm.vue:84
 msgid "Choose an action"
-msgstr ""
+msgstr "Bir eylem seçin"
 
 #: src/components/account/FilterForm.vue:38
 msgid "Choose an operator"
-msgstr ""
+msgstr "Bir operatör seçin"
 
 #: src/components/account/TotpAuthForm.vue:24
 msgid "Click here to copy the key"
-msgstr ""
+msgstr "Anahtarı kopyalamak için buraya tıklayın"
 
 #: src/components/account/RecoveryCodesResetDialog.vue:25
 #: src/components/admin/domains/DomainAdminList.vue:71
@@ -446,120 +437,112 @@ msgstr "Kapat"
 #: src/components/admin/alarms/AlarmList.vue:133
 #, fuzzy
 msgid "Close alarm"
-msgstr "Kapat"
+msgstr "Alarmı kapat"
 
 #: src/components/admin/alarms/AlarmList.vue:46
 #, fuzzy
 msgid "Closed"
-msgstr "Kapat"
+msgstr "Kapalı"
 
 #: src/components/account/FilterForm.vue:14
-#, fuzzy
 msgid "Conditions"
-msgstr "Onayla"
+msgstr "Koşullar"
 
 #: src/components/tools/CreationForm.vue:92
 msgid "Confirm and create"
-msgstr ""
+msgstr "Onayla ve oluştur"
 
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:64
 msgid "Confirmation"
-msgstr "Onayla"
+msgstr "Onay"
 
 #: src/components/account/TotpAuthForm.vue:53
-#, fuzzy
-msgid ""
-"Congratulations! Two-factor authentication using one-time passwords is now "
-"enabled for your account."
-msgstr ""
-"Tebrikler! Artık hesabınız için İki Faktörlü Kimlik Doğrulama "
-"etkinleştirildi."
+msgid "Congratulations! Two-factor authentication using one-time passwords is now enabled for your account."
+msgstr "Tebrikler! Artık hesabınız için Tek Kullanımlık Parolalar ile İki Faktörlü Kimlik Doğrulama etkinleştirildi."
 
 #: src/components/account/AutoReplyForm.vue:20
 msgid "Content"
-msgstr ""
+msgstr "İçerik"
 
 #: src/components/tools/ImportForm.vue:40
 msgid "Continue on error"
-msgstr ""
+msgstr "Hata durumunda devam et"
 
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:22
 msgid "Control if this domain will be allowed to send and receive messages"
-msgstr ""
+msgstr "Bu alan adının mesaj gönderip almasına izin verilip verilmeyeceğini kontrol et"
 
 #: src/components/admin/domains/DNSDetail.vue:114
 msgid "Copy key to clipboard"
-msgstr ""
+msgstr "Anahtarı panoya kopyala"
 
 #: src/components/admin/domains/DomainCreationForm.vue:54
 #: src/components/admin/identities/AccountCreationForm.vue:43
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:43
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Panoya kopyala"
 
 #: src/components/account/APISetupForm.vue:28
 msgid "Copy token to clipboard"
-msgstr ""
+msgstr "Jetonu panoya kopyala"
 
 #: src/views/admin/ParametersView.vue:162
 msgid "Could not save parameters"
-msgstr ""
+msgstr "Parametreler kaydedilemedi"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
 msgid "Create"
-msgstr ""
+msgstr "Oluştur"
 
 #: src/components/admin/domains/DomainCreationForm.vue:241
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:5
 msgid "Create a domain administrator"
-msgstr ""
+msgstr "Bir alan adı yöneticisi oluştur"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:27
 msgid "Create a mailbox for the administrator."
-msgstr ""
+msgstr "Yönetici için bir posta kutusu oluştur."
 
 #: src/components/account/FilterSetForm.vue:3
 msgid "Create a new filter set"
-msgstr ""
+msgstr "Yeni bir filtre seti oluştur"
 
 #: src/components/admin/domains/DomainCreationForm.vue:265
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
 msgid "Create aliases"
-msgstr ""
+msgstr "Takma adlar oluştur"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
 msgid "Create standard aliases for the domain."
-msgstr ""
+msgstr "Alan adı için standart takma adlar oluştur."
 
 #: src/components/admin/domains/DomainSummary.vue:8
 #: src/components/admin/identities/AccountSummary.vue:8
 #: src/components/admin/identities/AliasSummary.vue:8
 msgid "Creation date"
-msgstr ""
+msgstr "Oluşturulma tarihi"
 
 #: src/views/admin/identities/IdentitiesView.vue:81
-#, fuzzy
 msgid "Crypt passwords"
-msgstr "Parolanızı mı unuttunuz?"
+msgstr "Parolaları şifrele"
 
 #: src/mixins/importExport.js:39
 msgid "CSV seems to be badly formatted"
-msgstr ""
+msgstr "CSV dosyası yanlış biçimlendirilmiş görünüyor"
 
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:4
-#, fuzzy
 msgid "Current password"
-msgstr "Parolanızı mı unuttunuz?"
+msgstr "Geçerli parola"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:23
 msgid "Daily message sending limit"
-msgstr ""
+msgstr "Günlük mesaj gönderme limiti"
 
 #: src/components/admin/domains/DomainSummary.vue:30
 #: src/components/admin/identities/AccountSummary.vue:55
 msgid "Daily sending limit"
-msgstr ""
+msgstr "Günlük gönderim limiti"
 
 #: src/layouts/dashboard/NavBar.vue:177
 msgid "Dashboard"
@@ -572,19 +555,17 @@ msgstr "Tarih"
 
 #: src/components/tools/TimeSerieChart.vue:110
 msgid "Day"
-msgstr ""
+msgstr "Gün"
 
 #: src/components/admin/domains/DomainCreationForm.vue:192
 #: src/components/admin/domains/DomainSummary.vue:23
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:19
 msgid "Default mailbox quota"
-msgstr ""
+msgstr "Varsayılan posta kutusu kotası"
 
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:21
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
-msgstr ""
+msgid "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Posta kutularına uygulanan varsayılan kota. KB, MB (varsayılan) veya GB olarak ifade edilebilir. 0 değeri kota olmadığını gösterir."
 
 #: src/components/admin/alarms/AlarmList.vue:109
 #: src/components/admin/alarms/AlarmList.vue:126
@@ -597,15 +578,15 @@ msgstr ""
 #: src/components/admin/imap_migration/ProvidersList.vue:124
 #: src/views/account/FiltersView.vue:323
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: src/views/account/FiltersView.vue:371
 msgid "Delete filter set"
-msgstr ""
+msgstr "Filtre setini sil"
 
 #: src/components/account/APISetupForm.vue:38
 msgid "Delete token"
-msgstr ""
+msgstr "Jetonu sil"
 
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:20
@@ -616,188 +597,184 @@ msgstr "Tanım"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:45
 msgid "Detail"
-msgstr ""
+msgstr "Detay"
 
 #: src/views/account/FiltersView.vue:334
-#, fuzzy
 msgid "Disable"
-msgstr "2FA'yı devre dışı bırak"
+msgstr "Devre dışı bırak"
 
 #: src/components/account/TotpAuthForm.vue:101
 msgid "Disable 2FA"
 msgstr "2FA'yı devre dışı bırak"
 
 #: src/components/admin/domains/DomainList.vue:83
-#, fuzzy
 msgid "disabled"
-msgstr "2FA'yı devre dışı bırak"
+msgstr "devre dışı"
 
 #: src/components/admin/domains/DNSStatusChip.vue:18
 msgid "Disabled"
-msgstr ""
+msgstr "Devre dışı"
 
 #: src/components/admin/domains/DNSDetail.vue:103
 msgid "DKIM key"
-msgstr ""
+msgstr "DKIM anahtarı"
 
 #: src/components/admin/domains/DNSDetail.vue:182
 msgid "DKIM key copied to clipboard"
-msgstr ""
+msgstr "DKIM anahtarı panoya kopyalandı"
 
 #: src/components/admin/domains/DNSDetail.vue:218
-msgid ""
-"DKIM key does not seem to be generated yet or has failed. Do you want to "
-"requeue the job?"
-msgstr ""
+msgid "DKIM key does not seem to be generated yet or has failed. Do you want to requeue the job?"
+msgstr "DKIM anahtarı henüz oluşturulmamış veya başarısız olmuş görünüyor. İşlem sırasına tekrar eklemek ister misiniz?"
 
 #: src/components/admin/domains/DomainCreationForm.vue:208
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
 msgid "DKIM key length"
-msgstr ""
+msgstr "DKIM anahtar uzunluğu"
 
 #: src/components/admin/domains/DomainCreationForm.vue:204
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:16
 msgid "DKIM key selector"
-msgstr ""
+msgstr "DKIM anahtar seçici"
 
 #: src/components/admin/domains/DNSDetail.vue:238
 msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
-msgstr ""
+msgstr "Bu alan adı için zaten DKIM anahtarları mevcut. Üzerine yazmak ister misiniz?"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:5
 msgid "DKIM public key for"
-msgstr ""
+msgstr "İçin DKIM ortak anahtarı"
 
 #: src/components/admin/domains/DNSDetail.vue:84
 msgid "DKIM record found"
-msgstr ""
+msgstr "DKIM kaydı bulundu"
 
 #: src/components/admin/domains/DNSDetail.vue:87
 msgid "DKIM record not found"
-msgstr ""
+msgstr "DKIM kaydı bulunamadı"
 
 #: src/components/admin/domains/DomainEditForm.vue:52
 msgid "DKIM signing"
-msgstr ""
+msgstr "DKIM imzalama"
 
 #: src/views/admin/domains/DomainView.vue:27
 msgid "DMARC"
-msgstr ""
+msgstr "DMARC"
 
 #: src/components/admin/domains/DNSDetail.vue:92
 msgid "DMARC record found"
-msgstr ""
+msgstr "DMARC kaydı bulundu"
 
 #: src/components/admin/domains/DNSDetail.vue:95
 msgid "DMARC record not found"
-msgstr ""
+msgstr "DMARC kaydı bulunamadı"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:89
 msgid "DMARC support does not seem to be enabled for this domain."
-msgstr ""
+msgstr "Bu alan adı için DMARC desteği etkin görünmüyor."
 
 #: src/components/admin/domains/DomainCreationForm.vue:143
 #: src/components/admin/domains/DomainCreationForm.vue:149
 #: src/components/admin/domains/DomainCreationForm.vue:173
 #: src/components/admin/domains/DomainEditForm.vue:36
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: src/components/admin/domains/DomainEditForm.vue:43
 msgid "DNS checks"
-msgstr ""
+msgstr "DNS kontrolleri"
 
 #: src/components/admin/domains/DomainDNSConfig.vue:4
 msgid "DNS configuration for "
-msgstr ""
+msgstr " için DNS yapılandırması"
 
 #: src/components/admin/domains/DNSDetail.vue:8
 msgid "DNS configuration help"
-msgstr ""
+msgstr "DNS yapılandırma yardımı"
 
 #: src/components/admin/domains/DomainList.vue:206
 msgid "DNS status"
-msgstr ""
+msgstr "DNS durumu"
 
 #: src/components/admin/identities/IdentityList.vue:97
 msgid "Do not delete account folder"
-msgstr ""
+msgstr "Hesap klasörünü silme"
 
 #: src/components/admin/domains/DomainList.vue:161
 msgid "Do not delete domain folder"
-msgstr ""
+msgstr "Alan adı klasörünü silme"
 
 #: src/components/admin/domains/DomainList.vue:243
 msgid "Do you really want to delete the domain %{ domain }?"
-msgstr ""
+msgstr "Gerçekten %{ domain } alan adını silmek istiyor musunuz?"
 
 #: src/components/account/FidoAuthForm.vue:179
 msgid "Do you really want to delete this WebAuthn device?"
-msgstr ""
+msgstr "Bu WebAuthn cihazını silmek istediğinize emin misiniz?"
 
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:55
 msgid "domain"
-msgstr ""
+msgstr "alan adı"
 
 #: src/components/admin/alarms/AlarmList.vue:94
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:21
 #: src/views/admin/domains/DomainsView.vue:33
 #: src/views/admin/domains/DomainView.vue:5
 msgid "Domain"
-msgstr ""
+msgstr "Alan Adı"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:90
 msgid "Domain administrator"
-msgstr "Alan adı Yöneticisi"
+msgstr "Alan adı yöneticisi"
 
 #: src/stores/domains.store.js:90
 msgid "Domain alias created"
-msgstr ""
+msgstr "Alan adı takma adı oluşturuldu"
 
 #: src/stores/domains.store.js:112
 msgid "Domain alias deleted"
-msgstr ""
+msgstr "Alan adı takma adı silindi"
 
 #: src/stores/domains.store.js:127
 msgid "Domain alias updated"
-msgstr ""
+msgstr "Alan adı takma adı güncellendi"
 
 #: src/components/admin/domains/DomainCreationForm.vue:316
 msgid "Domain created"
-msgstr ""
+msgstr "Alan adı oluşturuldu"
 
 #: src/components/admin/identities/AccountCreationForm.vue:130
 msgid "Domain default value"
-msgstr ""
+msgstr "Alan adı varsayılan değeri"
 
 #: src/components/admin/domains/DomainList.vue:257
 msgid "Domain deleted"
-msgstr ""
+msgstr "Alan adı silindi"
 
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:5
 msgid "Domain name (ex: domain.tld)"
-msgstr ""
+msgstr "Alan adı (örneğin: domain.tld)"
 
 #: src/stores/domains.store.js:62
 msgid "Domain updated"
-msgstr ""
+msgstr "Alan adı güncellendi"
 
 #: src/components/admin/identities/AccountEditForm.vue:82
 msgid "domain's default value"
-msgstr ""
+msgstr "alan adının varsayılan değeri"
 
 #: src/layouts/dashboard/NavBar.vue:183
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
-msgstr ""
+msgstr "Alan Adları"
 
 #: src/components/tools/ImportForm.vue:43
 msgid "Don't treat duplicated objects as errors"
-msgstr ""
+msgstr "Yinelenen nesneleri hata olarak değerlendirme"
 
 #: src/views/account/FiltersView.vue:366
 msgid "Download filter set"
-msgstr ""
+msgstr "Filtre setini indir"
 
 #: src/components/admin/domains/DomainList.vue:296
 #: src/components/admin/identities/IdentityList.vue:159
@@ -805,73 +782,69 @@ msgstr ""
 #: src/components/admin/imap_migration/ProvidersList.vue:130
 #: src/views/account/FiltersView.vue:318
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: src/views/admin/identities/AccountEditView.vue:3
 msgid "Edit account"
-msgstr ""
+msgstr "Hesabı düzenle"
 
 #: src/views/admin/identities/AliasEditView.vue:3
 msgid "Edit alias"
-msgstr ""
+msgstr "Takma adı düzenle"
 
 #: src/views/admin/domains/DomainEditView.vue:3
 msgid "Edit domain"
-msgstr ""
+msgstr "Alan adını düzenle"
 
 #: src/components/admin/domains/DomainAliasForm.vue:73
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Alan adı takma adını düzenle"
 
 #: src/components/account/FilterForm.vue:192
-#, fuzzy
 msgid "Edit filter"
-msgstr "Yeni kurtarma kodları"
+msgstr "Filtreyi düzenle"
 
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
-#, fuzzy
 msgid "Edit provider"
-msgstr "Yeni kurtarma kodları"
+msgstr "Sağlayıcıyı düzenle"
 
 #: src/components/account/FidoAuthForm.vue:201
-#, fuzzy
 msgid "Edit your device"
-msgstr "Yeni kurtarma kodları"
+msgstr "Cihazınızı düzenleyin"
 
 #: src/components/account/FidoAuthForm.vue:200
 msgid "Edition"
-msgstr ""
+msgstr "Baskı"
 
 #: src/components/admin/identities/AccountCreationForm.vue:124
 msgid "Email"
-msgstr ""
+msgstr "E-posta"
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
 msgid "Email address"
-msgstr ""
+msgstr "E-posta adresi"
 
 #: src/layouts/dashboard/NavBar.vue:227
 msgid "Email providers"
-msgstr ""
+msgstr "E-posta sağlayıcıları"
 
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
-msgstr ""
+msgstr "Boş"
 
 #: src/views/account/FiltersView.vue:341
-#, fuzzy
 msgid "Enable"
-msgstr "2FA'yı etkinleştir"
+msgstr "Etkinleştir"
 
 #: src/components/admin/domains/DomainCreationForm.vue:181
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:11
 msgid "Enable DKIM signing"
-msgstr ""
+msgstr "DKIM imzalamayı etkinleştir"
 
 #: src/components/admin/domains/DomainCreationForm.vue:176
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
 msgid "Enable DNS checks"
-msgstr ""
+msgstr "DNS kontrollerini etkinleştir"
 
 #: src/components/account/AutoReplyForm.vue:7
 #: src/components/admin/domains/DomainCreationForm.vue:166
@@ -882,123 +855,117 @@ msgstr ""
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:42
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:52
 msgid "Enabled"
-msgstr ""
+msgstr "Etkin"
 
 #: src/components/account/FidoAuthForm.vue:55
 msgid "Enter a name to register a new webauthn device."
-msgstr ""
+msgstr "Yeni bir webauthn cihazı kaydetmek için bir ad girin."
 
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:71
 msgid "Enter a simple username or an email address"
-msgstr ""
+msgstr "Basit bir kullanıcı adı veya e-posta adresi girin"
 
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:69
 msgid "Enter an email address"
-msgstr ""
+msgstr "Bir e-posta adresi girin"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
 msgid "Ex: 10MB. Leave empty for no limit"
-msgstr ""
+msgstr "Ör: 10MB. Sınırsız için boş bırakın"
 
 #: src/components/admin/identities/AliasCreationForm.vue:66
 #: src/components/admin/identities/AliasSummary.vue:16
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:55
 msgid "Expire at"
-msgstr ""
+msgstr "Son kullanma tarihi"
 
 #: src/views/admin/identities/IdentitiesView.vue:15
 msgid "Export accounts and aliases to CSV"
-msgstr ""
+msgstr "Hesapları ve takma adları CSV olarak dışa aktar"
 
 #: src/views/admin/domains/DomainsView.vue:15
 msgid "Export domains and aliases to CSV"
-msgstr ""
+msgstr "Alan adlarını ve takma adları CSV olarak dışa aktar"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:130
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:152
 msgid "Failed"
-msgstr ""
+msgstr "Başarısız"
 
 #: src/components/account/ProfileForm.vue:24
 msgid "Feel free to improve the translations"
-msgstr ""
+msgstr "Çevirileri geliştirmekten çekinmeyin"
 
 #: src/plugins/rules.js:27
-#, fuzzy
 msgid "Field is required"
-msgstr "Bu alan gerekli"
+msgstr "Bu alan gereklidir"
 
 #: src/components/account/FilterForm.vue:300
 msgid "Filter added"
-msgstr ""
+msgstr "Filtre eklendi"
 
 #: src/views/account/FiltersView.vue:254
-#, fuzzy
 msgid "Filter disabled"
-msgstr "2FA'yı devre dışı bırak"
+msgstr "Filtre devre dışı bırakıldı"
 
 #: src/views/account/FiltersView.vue:247
 msgid "Filter enabled"
-msgstr ""
+msgstr "Filtre etkinleştirildi"
 
 #: src/views/account/FiltersView.vue:260
 msgid "Filter removed"
-msgstr ""
+msgstr "Filtre kaldırıldı"
 
 #: src/views/account/FiltersView.vue:277
 msgid "Filter set activated"
-msgstr ""
+msgstr "Filtre seti etkinleştirildi"
 
 #: src/components/account/FilterSetForm.vue:66
-#, fuzzy
 msgid "Filter set created"
-msgstr "Profil güncellendi"
+msgstr "Filtre seti oluşturuldu"
 
 #: src/views/account/FiltersView.vue:282
 msgid "Filter set removed"
-msgstr ""
+msgstr "Filtre seti kaldırıldı"
 
 #: src/views/account/FiltersView.vue:296
-#, fuzzy
 msgid "Filter set updated"
-msgstr "Profil güncellendi"
+msgstr "Filtre seti güncellendi"
 
 #: src/components/account/FilterForm.vue:303
-#, fuzzy
 msgid "Filter updated"
-msgstr "Profil güncellendi"
+msgstr "Filtre güncellendi"
 
 #: src/layouts/dashboard/NavBar.vue:279
 msgid "Filters"
-msgstr ""
+msgstr "Filtreler"
 
 #: src/components/account/ProfileForm.vue:9
 #: src/components/admin/identities/AccountCreationForm.vue:100
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 msgid "First name"
-msgstr ""
+msgstr "Ad"
 
 #: src/views/account/SettingsView.vue:14
 msgid "Forward"
-msgstr ""
+msgstr "Yönlendir"
 
 #: src/components/account/ForwardForm.vue:18
 msgid "Forward messages and store copies into your local mailbox"
-msgstr ""
+msgstr "Mesajları yönlendir ve kopyalarını yerel posta kutunuzda saklayın"
 
 #: src/components/account/ForwardForm.vue:49
-#, fuzzy
 msgid "Forward updated"
-msgstr "Profil güncellendi"
+msgstr "Yönlendirme güncellendi"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:129
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:151
 msgid "Forwarded"
-msgstr ""
+msgstr "Yönlendirildi"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:61
 msgid "Forwarders with ARC"
-msgstr ""
+msgstr "ARC ile yönlendirenler"
 
 #: src/components/account/AutoReplyForm.vue:32
 #: src/components/admin/logs/MessageList.vue:46
@@ -1008,16 +975,16 @@ msgstr "Kimden"
 
 #: src/components/admin/identities/AccountSummary.vue:19
 msgid "Full name"
-msgstr ""
+msgstr "Tam adı"
 
 #: src/components/admin/identities/IdentityList.vue:119
 msgid "Fullname/recipient"
-msgstr ""
+msgstr "Tam ad/alıcı"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:127
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:143
 msgid "Fully aligned"
-msgstr ""
+msgstr "Tam hizalı"
 
 #: src/components/admin/domains/DomainCreationForm.vue:142
 #: src/components/admin/domains/DomainCreationForm.vue:148
@@ -1037,168 +1004,159 @@ msgstr "Genel"
 #: src/components/admin/identities/AccountSummary.vue:4
 #: src/components/admin/identities/AliasSummary.vue:4
 msgid "General information"
-msgstr ""
+msgstr "Genel bilgi"
 
 #: src/components/account/ProfileForm.vue:5
 #, fuzzy
 msgid "General settings"
-msgstr "Genel"
+msgstr "Genel ayarlar"
 
 #: src/components/account/APISetupForm.vue:13
 #, fuzzy
 msgid "Generate"
-msgstr "Genel"
+msgstr "Oluştur"
 
 #: src/components/admin/domains/DNSDetail.vue:119
 msgid "Generate a new DKIM key"
-msgstr ""
+msgstr "Yeni bir DKIM anahtarı oluştur"
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:38
 msgid "Generated address"
-msgstr ""
+msgstr "Oluşturulan adres"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:101
 msgid "help"
-msgstr ""
+msgstr "yardım"
 
 #: src/components/account/APISetupForm.vue:46
 #: src/components/account/ProfileForm.vue:28
 msgid "here"
-msgstr ""
+msgstr "burada"
 
 #: src/components/admin/domains/DomainDNSConfig.vue:9
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace values "
-"between [ ] by the appropriate ones."
-msgstr ""
+msgid "Here is an example of DNS configuration (bind format). Replace values between [ ] by the appropriate ones."
+msgstr "İşte DNS yapılandırmasına (bind formatında) bir örnek. [ ] içindeki değerleri uygun olanlarla değiştirin."
 
 #: src/components/admin/identities/AccountCreationForm.vue:167
 #: src/components/admin/identities/AccountCreationForm.vue:96
 #: src/components/admin/identities/AccountEditForm.vue:31
 msgid "Identification"
-msgstr ""
+msgstr "Kimlik"
 
 #: src/layouts/dashboard/NavBar.vue:189
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
-msgstr ""
+msgstr "Kimlikler"
 
 #: src/components/tools/CreationForm.vue:130
-msgid ""
-"If you close this form now, your modifications won't be saved. Do you "
-"confirm?"
-msgstr ""
+msgid "If you close this form now, your modifications won't be saved. Do you confirm?"
+msgstr "Bu formu şimdi kapatırsanız, değişiklikleriniz kaydedilmeyecek. Onaylıyor musunuz?"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:94
-msgid ""
-"If you configured it recently, please wait for the first report to be "
-"received and processed."
-msgstr ""
+msgid "If you configured it recently, please wait for the first report to be received and processed."
+msgstr "Yakın zamanda yapılandırdıysanız, ilk raporun alınmasını ve işlenmesini bekleyin."
 
 #: src/layouts/dashboard/NavBar.vue:223
 msgid "IMAP Migration"
-msgstr ""
+msgstr "IMAP Geçişi"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:17
 msgid "IMAP Port"
-msgstr ""
+msgstr "IMAP Portu"
 
 #: src/components/tools/ImportForm.vue:54
 msgid "Import"
-msgstr ""
+msgstr "İçe aktar"
 
 #: src/views/admin/identities/IdentitiesView.vue:8
 msgid "Import accounts and aliases from CSV file"
-msgstr ""
+msgstr "CSV dosyasından hesapları ve takma adları içe aktar"
 
 #: src/views/admin/domains/DomainsView.vue:53
 msgid "Import domains"
-msgstr ""
+msgstr "Alan adlarını içe aktar"
 
 #: src/views/admin/domains/DomainsView.vue:8
 msgid "Import domains and aliases from CSV file"
-msgstr ""
+msgstr "CSV dosyasından alan adlarını ve takma adları içe aktar"
 
 #: src/views/admin/identities/IdentitiesView.vue:59
 msgid "Import identities"
-msgstr ""
+msgstr "Kimlikleri içe aktar"
 
 #: src/components/account/ForwardForm.vue:8
 msgid "Indicate one or more recipients separated by a comma (,)"
-msgstr ""
+msgstr "Bir veya daha fazla alıcıyı virgülle (,) ayırarak belirtin"
 
-#: src/layouts/dashboard/NavBar.vue:246 src/views/admin/InformationView.vue:4
+#: src/layouts/dashboard/NavBar.vue:246
+#: src/views/admin/InformationView.vue:4
 msgid "Information"
 msgstr "Bilgi"
 
 #: src/components/account/TotpAuthForm.vue:34
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
-msgstr ""
+msgid "Install a soft token authenticator like FreeOTP or Google Authenticator from your application repository and use that app to scan this QR code."
+msgstr "FreeOTP veya Google Authenticator gibi bir yazılım token doğrulayıcıyı uygulama deposundan yükleyin ve bu uygulamayı bu QR kodunu taramak için kullanın."
 
 #: src/views/admin/InformationView.vue:8
 #, fuzzy
 msgid "Installed components"
-msgstr "Kurulu sürüm"
+msgstr "Yüklü bileşenler"
 
 #: src/views/admin/InformationView.vue:60
 msgid "Installed version"
-msgstr "Kurulu sürüm"
+msgstr "Yüklü sürüm"
 
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:127
 #, fuzzy
 msgid "Invalid password"
-msgstr "Parolayı değiştirin"
+msgstr "Geçersiz parola"
 
 #: src/plugins/rules.js:41
 msgid "Invalid port number"
-msgstr ""
+msgstr "Geçersiz port numarası"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
-msgstr ""
+msgstr "IMAP bağlantısı SSL/TLS veya StartTLS kullanılarak güvence altına alınmış mı?"
 
 #: src/views/Dashboard.vue:9
-msgid ""
-"It will present a summary of your Modoboa server's status and some useful "
-"information about the product."
-msgstr ""
+msgid "It will present a summary of your Modoboa server's status and some useful information about the product."
+msgstr "Modoboa sunucunuzun durumunu ve ürün hakkında bazı yararlı bilgileri özetleyecektir."
 
 #: src/components/account/ForwardForm.vue:16
 msgid "Keep local copies"
-msgstr ""
+msgstr "Yerel kopyaları sakla"
 
 #: src/components/account/ProfileForm.vue:22
 msgid "Language"
-msgstr ""
+msgstr "Dil"
 
 #: src/components/admin/identities/AccountSummary.vue:12
 msgid "Last login date"
-msgstr ""
+msgstr "Son giriş tarihi"
 
 #: src/components/admin/domains/DomainSummary.vue:12
 msgid "Last modification date"
-msgstr ""
+msgstr "Son değişiklik tarihi"
 
 #: src/components/account/ProfileForm.vue:15
 #: src/components/admin/identities/AccountCreationForm.vue:103
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
 msgid "Last name"
-msgstr ""
+msgstr "Soyadı"
 
 #: src/components/account/FidoAuthForm.vue:135
 msgid "Last Used"
-msgstr ""
+msgstr "Son Kullanım"
 
 #: src/views/admin/InformationView.vue:61
 #, fuzzy
 msgid "Latest version"
-msgstr "Kurulu sürüm"
+msgstr "En son sürüm"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:26
 msgid "Leave empty for no limit"
-msgstr ""
+msgstr "Sınırsız için boş bırakın"
 
 #: src/components/admin/logs/AuditTrailList.vue:50
 msgid "Level"
@@ -1209,11 +1167,11 @@ msgstr "Seviye"
 #: src/components/admin/domains/DomainCreationForm.vue:188
 #: src/components/admin/domains/DomainEditForm.vue:73
 msgid "Limitations"
-msgstr ""
+msgstr "Kısıtlamalar"
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:13
 msgid "Local domain (optional)"
-msgstr ""
+msgstr "Yerel alan adı (isteğe bağlı)"
 
 #: src/components/admin/logs/AuditTrailList.vue:51
 msgid "Logger"
@@ -1221,112 +1179,112 @@ msgstr "Kayıtçı"
 
 #: src/layouts/dashboard/NavBar.vue:260
 msgid "Logout"
-msgstr "Çıkış Yapın"
+msgstr "Çıkış Yap"
 
 #: src/components/admin/alarms/AlarmList.vue:95
 #: src/components/admin/identities/AccountCreationForm.vue:121
 #: src/components/admin/identities/AccountCreationForm.vue:174
 #: src/components/admin/identities/AccountEditForm.vue:69
 msgid "Mailbox"
-msgstr ""
+msgstr "Posta Kutusu"
 
 #: src/components/admin/identities/AccountEditForm.vue:165
 msgid "Mailbox aliases:"
-msgstr ""
+msgstr "Posta Kutusu takma adları:"
 
 #: src/components/admin/identities/AccountEditForm.vue:158
 msgid "Mailbox:"
-msgstr ""
+msgstr "Posta Kutusu:"
 
 #: src/components/admin/domains/DomainSummary.vue:36
 msgid "Mailboxes"
-msgstr ""
+msgstr "Posta Kutuları"
 
 #: src/components/admin/domains/DomainSummary.vue:20
 #: src/components/admin/identities/AccountSummary.vue:49
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: src/components/admin/alarms/AlarmList.vue:96
 #: src/components/admin/logs/AuditTrailList.vue:52
 msgid "Message"
-msgstr "İleti"
+msgstr "Mesaj"
 
 #: src/views/account/FiltersView.vue:3
 #, fuzzy
 msgid "Message filters"
-msgstr "İleti"
+msgstr "Mesaj filtreleri"
 
 #: src/views/admin/monitoring/MessagesView.vue:3
 #, fuzzy
 msgid "Message history"
-msgstr "İleti"
+msgstr "Mesaj geçmişi"
 
 #: src/components/admin/domains/DomainCreationForm.vue:196
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
 #: src/components/admin/identities/AccountCreationForm.vue:134
 msgid "Message sending limit"
-msgstr ""
+msgstr "Mesaj gönderim limiti"
 
 #: src/components/admin/domains/DomainSummary.vue:32
 msgid "messages"
-msgstr ""
+msgstr "mesajlar"
 
 #: src/layouts/dashboard/NavBar.vue:215
 msgid "Messages"
-msgstr ""
+msgstr "Mesajlar"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:98
 #, fuzzy
 msgid "Migration deleted"
-msgstr "Onayla"
+msgstr "Geçiş silindi"
 
 #: src/layouts/dashboard/NavBar.vue:232
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 #, fuzzy
 msgid "Migrations"
-msgstr "Onayla"
+msgstr "Geçişler"
 
 #: src/plugins/rules.js:32
 msgid "Minimum length is %{ length }"
-msgstr ""
+msgstr "Minimum uzunluk %{ length } olmalı"
 
 #: src/components/admin/identities/AliasSummary.vue:12
 msgid "Modified"
-msgstr ""
+msgstr "Değiştirildi"
 
 #: src/components/tools/CreationSummary.vue:10
 msgid "Modify"
-msgstr ""
+msgstr "Değiştir"
 
 #: src/layouts/dashboard/NavBar.vue:201
 msgid "Monitoring"
-msgstr ""
+msgstr "İzleme"
 
 #: src/components/tools/TimeSerieChart.vue:112
 msgid "Month"
-msgstr ""
+msgstr "Ay"
 
 #: src/views/account/FiltersView.vue:349
 msgid "Move down"
-msgstr ""
+msgstr "Aşağı taşı"
 
 #: src/views/account/FiltersView.vue:356
 msgid "Move up"
-msgstr ""
+msgstr "Yukarı taşı"
 
 #: src/plugins/rules.js:37
 msgid "Must be a numeric value or empty"
-msgstr ""
+msgstr "Sayısal bir değer veya boş olmalıdır"
 
 #: src/components/admin/domains/DNSDetail.vue:15
 msgid "MX records"
-msgstr ""
+msgstr "MX kayıtları"
 
 #: src/components/account/FidoAuthForm.vue:92
 #, fuzzy
 msgid "name"
-msgstr "Kullanıcı adı"
+msgstr "isim"
 
 #: src/components/account/FidoAuthForm.vue:133
 #: src/components/account/FilterForm.vue:7
@@ -1340,68 +1298,67 @@ msgstr "Kullanıcı adı"
 #: src/components/admin/identities/IdentityList.vue:118
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:96
-#: src/views/account/FiltersView.vue:164 src/views/admin/InformationView.vue:59
+#: src/views/account/FiltersView.vue:164
+#: src/views/admin/InformationView.vue:59
 msgid "Name"
 msgstr "İsim"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:12
 msgid "Name of the administrator"
-msgstr ""
+msgstr "Yöneticinin adı"
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:6
 msgid "Name of the domain to migrate"
-msgstr ""
+msgstr "Taşınacak alan adının adı"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:14
 #, fuzzy
 msgid "Name:"
-msgstr "İsim"
+msgstr "İsim:"
 
 #: src/components/admin/domains/DomainEditForm.vue:16
 #, fuzzy
 msgid "Name: "
-msgstr "İsim"
+msgstr "İsim:"
 
 #: src/components/account/FidoAuthForm.vue:32
 msgid "Never"
-msgstr ""
+msgstr "Asla"
 
 #: src/components/admin/identities/AccountSummary.vue:16
 msgid "Never logged-in"
-msgstr ""
+msgstr "Hiç giriş yapılmadı"
 
 #: src/views/admin/domains/DomainsView.vue:28
 #: src/views/admin/identities/IdentitiesView.vue:28
 #: src/views/admin/imap_migration/ProvidersView.vue:12
 msgid "New"
-msgstr ""
+msgstr "Yeni"
 
 #: src/components/admin/identities/AccountCreationForm.vue:4
 #: src/components/admin/imap_migration/MigrationsList.vue:81
 msgid "New account"
-msgstr ""
+msgstr "Yeni hesap"
 
 #: src/components/admin/identities/AliasCreationForm.vue:4
 msgid "New alias"
-msgstr ""
+msgstr "Yeni takma ad"
 
 #: src/components/account/FidoAuthForm.vue:61
 msgid "New device name"
-msgstr ""
+msgstr "Yeni cihaz adı"
 
 #: src/components/admin/domains/DomainCreationForm.vue:4
 msgid "New domain"
-msgstr ""
+msgstr "Yeni alan adı"
 
 #: src/components/account/FilterForm.vue:192
-#, fuzzy
 msgid "New filter"
-msgstr "Yeni kurtarma kodları"
+msgstr "Yeni filtre"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:4
-#, fuzzy
 msgid "New provider"
-msgstr "Yeni kurtarma kodları"
+msgstr "Yeni sağlayıcı"
 
 #: src/components/account/RecoveryCodesResetDialog.vue:4
 msgid "New recovery codes"
@@ -1413,7 +1370,7 @@ msgstr "Sonraki"
 
 #: src/plugins/filters.js:9
 msgid "no"
-msgstr ""
+msgstr "hayır"
 
 #: src/components/account/FidoAuthForm.vue:182
 #: src/components/admin/domains/DNSDetail.vue:223
@@ -1427,112 +1384,105 @@ msgstr "Hayır"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:41
 msgid "No associated domains"
-msgstr ""
+msgstr "İlişkili alan adı yok"
 
 #: src/mixins/importExport.js:8
 msgid "No data to export"
-msgstr ""
+msgstr "Dışa aktarılacak veri yok"
 
 #: src/components/admin/identities/DomainAdminDomains.vue:13
 msgid "No domain managed"
-msgstr ""
+msgstr "Yönetilen alan adı yok"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:10
 msgid "No sender address defined for this account"
-msgstr ""
+msgstr "Bu hesap için tanımlı gönderici adresi yok"
 
 #: src/components/admin/domains/DomainEditForm.vue:93
 msgid "No sending limit"
-msgstr ""
+msgstr "Gönderim limiti yok"
 
 #: src/components/account/BackupCodeAuthForm.vue:43
-#, fuzzy
 msgid "No two-factor authentificator is yet set for your account."
-msgstr ""
-"Tebrikler! Artık hesabınız için İki Faktörlü Kimlik Doğrulama "
-"etkinleştirildi."
+msgstr "Hesabınız için henüz iki faktörlü kimlik doğrulayıcı ayarlanmadı."
 
 #: src/plugins/rules.js:7
 msgid "Not a valid email"
-msgstr ""
+msgstr "Geçerli bir e-posta değil"
 
 #: src/components/admin/domains/DNSDetail.vue:126
 msgid "Not generated"
-msgstr ""
+msgstr "Oluşturulmadı"
 
 #: src/components/admin/identities/AccountEditForm.vue:166
 msgid "Number of allowed mailbox aliases:"
-msgstr ""
+msgstr "İzin verilen posta kutusu takma adı sayısı:"
 
 #: src/components/admin/identities/AccountEditForm.vue:159
 msgid "Number of allowed mailboxes:"
-msgstr ""
+msgstr "İzin verilen posta kutusu sayısı:"
 
 #: src/components/admin/identities/AccountEditForm.vue:126
 msgid "Number of associated alias:"
-msgstr ""
+msgstr "İlişkili takma ad sayısı:"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:37
 msgid "Number of associated domains:"
-msgstr ""
+msgstr "İlişkili alan adı sayısı:"
 
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:34
-msgid ""
-"Number of messages this domain can send per day. Leave empty for no limit."
-msgstr ""
+msgid "Number of messages this domain can send per day. Leave empty for no limit."
+msgstr "Bu alan adının günlük olarak gönderebileceği mesaj sayısı. Sınırsız için boş bırakın."
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:28
-msgid ""
-"Number of messages this mailbox can send per day. Leave empty for no limit."
-msgstr ""
+msgid "Number of messages this mailbox can send per day. Leave empty for no limit."
+msgstr "Bu posta kutusunun günlük olarak gönderebileceği mesaj sayısı. Sınırsız için boş bırakın."
 
 #: src/components/tools/ConfirmDialog.vue:56
 msgid "OK"
-msgstr ""
+msgstr "Tamam"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:80
 msgid "Old account"
-msgstr ""
+msgstr "Eski hesap"
 
 #: src/views/admin/InformationView.vue:19
 msgid "One or more updates are available"
 msgstr "Bir veya daha fazla güncelleme mevcut"
 
 #: src/components/account/TotpAuthForm.vue:6
-#, fuzzy
 msgid "One-time passwords"
-msgstr "Parolayı değiştirin"
+msgstr "Tek seferlik parolalar"
 
 #: src/components/admin/alarms/AlarmList.vue:43
 msgid "Opened"
-msgstr ""
+msgstr "Açık"
 
 #: src/views/admin/alarms/AlarmsView.vue:3
 msgid "Opened alarms"
-msgstr ""
+msgstr "Açık alarmlar"
 
 #: src/components/admin/domains/DomainCreationForm.vue:145
 #: src/components/admin/domains/DomainCreationForm.vue:238
 msgid "Options"
-msgstr ""
+msgstr "Seçenekler"
 
 #: src/components/account/ProfileForm.vue:30
 msgid "or suggest a new language"
-msgstr ""
+msgstr "veya yeni bir dil önerin"
 
 #: src/views/admin/ParametersView.vue:153
-#, fuzzy
 msgid "Parameters updated"
-msgstr "Profil güncellendi"
+msgstr "Parametreler güncellendi"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:128
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:148
 msgid "Partially aligned"
-msgstr ""
+msgstr "Kısmen hizalı"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:54
 msgid "Partially trusted sources / Forwarders"
-msgstr ""
+msgstr "Kısmen güvenilen kaynaklar / Yönlendirenler"
 
 #: src/components/account/BackupCodeAuthForm.vue:19
 #: src/components/account/ProfileForm.vue:69
@@ -1545,17 +1495,15 @@ msgstr "Parola"
 #: src/components/admin/identities/AccountCreationForm.vue:211
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:106
 msgid "Password copied to clipboard"
-msgstr ""
+msgstr "Parola panoya kopyalandı"
 
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:101
-#, fuzzy
 msgid "Password mismatch"
-msgstr "Parolalar uyuşmuyor"
+msgstr "Parola uyuşmazlığı"
 
 #: src/components/account/ProfileForm.vue:143
-#, fuzzy
 msgid "Password updated"
-msgstr "Profil güncellendi"
+msgstr "Parola güncellendi"
 
 #: src/plugins/rules.js:39
 msgid "Passwords mismatch"
@@ -1565,11 +1513,11 @@ msgstr "Parolalar uyuşmuyor"
 #: src/components/admin/domains/DNSDetail.vue:40
 #: src/components/admin/domains/DNSStatusChip.vue:21
 msgid "Pending"
-msgstr ""
+msgstr "Beklemede"
 
 #: src/components/tools/TimeSerieChart.vue:9
 msgid "Period"
-msgstr ""
+msgstr "Dönem"
 
 #: src/components/account/ProfileForm.vue:47
 #: src/components/account/ProfileForm.vue:50
@@ -1583,20 +1531,20 @@ msgstr "Pin kodu"
 
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:62
 msgid "Please add at least one recipient."
-msgstr ""
+msgstr "Lütfen en az bir alıcı ekleyin."
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: src/components/admin/domains/DNSStatusChip.vue:24
 msgid "Problem"
-msgstr ""
+msgstr "Sorun"
 
 #: src/components/account/APISetupForm.vue:99
 msgid "Proceed"
-msgstr ""
+msgstr "İlerle"
 
 #: src/views/account/SettingsView.vue:8
 msgid "Profile"
@@ -1608,41 +1556,35 @@ msgstr "Profil güncellendi"
 
 #: src/components/tools/ImportForm.vue:10
 msgid "Provide a CSV file where lines respect one of the following formats:"
-msgstr ""
+msgstr "Aşağıdaki formatlardan birine uygun satırlar içeren bir CSV dosyası sağlayın:"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:79
-#, fuzzy
 msgid "Provider"
-msgstr "Yeni kurtarma kodları"
+msgstr "Sağlayıcı"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:127
-#, fuzzy
 msgid "Provider created"
-msgstr "Profil güncellendi"
+msgstr "Sağlayıcı oluşturuldu"
 
 #: src/stores/providers.store.js:51
-#, fuzzy
 msgid "Provider deleted"
-msgstr "Profil güncellendi"
+msgstr "Sağlayıcı silindi"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:5
-#, fuzzy
 msgid "Provider name"
-msgstr "Profil güncellendi"
+msgstr "Sağlayıcı adı"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:135
-#, fuzzy
 msgid "Provider updated"
-msgstr "Profil güncellendi"
+msgstr "Sağlayıcı güncellendi"
 
 #: src/views/admin/imap_migration/ProvidersView.vue:4
-#, fuzzy
 msgid "Providers"
-msgstr "Yeni kurtarma kodları"
+msgstr "Sağlayıcılar"
 
 #: src/components/admin/logs/MessageList.vue:42
 msgid "Queue ID"
-msgstr ""
+msgstr "Kuyruk Kimliği"
 
 #: src/components/admin/domains/DomainCreationForm.vue:190
 #: src/components/admin/domains/DomainList.vue:211
@@ -1652,49 +1594,44 @@ msgstr ""
 #: src/components/admin/identities/AccountSummary.vue:36
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
 msgid "Quota"
-msgstr ""
+msgstr "Kota"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
+msgid "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a custom value or use domain's default one. Leave empty to define an unlimited value (not allowed for domain administrators)."
+msgstr "Bu posta kutusu için kota, KB, MB (varsayılan) veya GB olarak ifade edilebilir. Özel bir değer belirleyin veya alan adının varsayılanını kullanın. Sınırsız bir değer belirlemek için boş bırakın (alan adı yöneticileri için izin verilmez)."
 
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:7
-msgid ""
-"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
-"A value of 0 means no quota."
-msgstr ""
+msgid "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. A value of 0 means no quota."
+msgstr "Posta kutuları arasında paylaşılan kota. KB, MB (varsayılan) veya GB olarak ifade edilebilir. 0 değeri kota olmadığını gösterir."
 
 #: src/components/admin/domains/DomainEditForm.vue:81
 #: src/components/admin/identities/AccountEditForm.vue:81
 #: src/components/admin/identities/AccountEditForm.vue:87
 msgid "Quota: "
-msgstr ""
+msgstr "Kota: "
 
 #: src/components/admin/identities/AliasCreationForm.vue:56
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:6
 msgid "Random address"
-msgstr ""
+msgstr "Rastgele adres"
 
 #: src/components/admin/domains/DomainCreationForm.vue:255
 #: src/components/admin/identities/AccountCreationForm.vue:106
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:20
 msgid "Random password"
-msgstr ""
+msgstr "Rastgele parola"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:9
 msgid "Raw format. Click to copy"
-msgstr ""
+msgstr "Ham format. Kopyalamak için tıklayın"
 
 #: src/views/account/FiltersView.vue:45
 msgid "Raw mode"
-msgstr ""
+msgstr "Ham mod"
 
 #: src/components/account/ForwardForm.vue:4
 msgid "Recipient(s)"
-msgstr ""
+msgstr "Alıcı(lar)"
 
 #: src/components/admin/identities/AliasCreationForm.vue:77
 #: src/components/admin/identities/AliasCreationForm.vue:80
@@ -1702,57 +1639,55 @@ msgstr ""
 #: src/components/admin/identities/AliasEditForm.vue:41
 #: src/components/admin/identities/AliasRecipientsSummary.vue:4
 msgid "Recipients"
-msgstr ""
+msgstr "Alıcılar"
 
 #: src/components/account/TotpAuthForm.vue:45
 msgid "Register"
 msgstr "Kayıt ol"
 
 #: src/components/account/TotpAuthForm.vue:115
-#, fuzzy
 msgid "Register authenticator"
-msgstr "Kimlik Doğrulama"
+msgstr "Kimlik doğrulayıcıyı kaydet"
 
 #: src/components/account/FidoAuthForm.vue:21
 msgid "Registered Webauthn devices"
-msgstr ""
+msgstr "Kayıtlı Webauthn cihazları"
 
 #: src/components/tools/TimeSerieChart.vue:27
 msgid "Relative time ranges"
-msgstr ""
+msgstr "Göreceli zaman aralıkları"
 
 #: src/components/admin/domains/DomainList.vue:80
 msgid "Relay"
-msgstr ""
+msgstr "Röle"
 
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:60
 msgid "relaydomain"
-msgstr ""
+msgstr "röle alanı"
 
 #: src/components/admin/alarms/AlarmList.vue:116
 msgid "Reload"
-msgstr ""
+msgstr "Yeniden Yükle"
 
 #: src/components/account/FilterForm.vue:135
 msgid "Remove action"
-msgstr ""
+msgstr "Eylemi kaldır"
 
 #: src/components/account/FilterForm.vue:68
 msgid "Remove condition"
-msgstr ""
+msgstr "Koşulu kaldır"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:36
 msgid "Remove this address"
-msgstr ""
+msgstr "Bu adresi kaldır"
 
 #: src/components/admin/domains/DomainAdminList.vue:47
 msgid "Remove this administrator"
-msgstr ""
+msgstr "Bu yöneticiyi kaldır"
 
 #: src/components/admin/alarms/AlarmList.vue:140
-#, fuzzy
 msgid "Reopen alarm"
-msgstr "Kapat"
+msgstr "Alarmı yeniden aç"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:99
 msgid "Reseller"
@@ -1765,11 +1700,11 @@ msgstr "Kurtarma kodlarını sıfırla"
 #: src/components/admin/domains/DomainEditForm.vue:149
 #: src/components/admin/identities/AccountEditForm.vue:144
 msgid "Resources"
-msgstr ""
+msgstr "Kaynaklar"
 
 #: src/components/tools/ResourcesView.vue:4
 msgid "Resources usage"
-msgstr ""
+msgstr "Kaynak kullanımı"
 
 #: src/components/admin/identities/AccountCreationForm.vue:163
 #: src/components/admin/identities/AccountCreationForm.vue:92
@@ -1794,7 +1729,7 @@ msgstr "Kaydet"
 #: src/components/admin/logs/AuditTrailList.vue:17
 #: src/components/admin/logs/MessageList.vue:17
 msgid "Search"
-msgstr ""
+msgstr "Ara"
 
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:27
@@ -1804,75 +1739,75 @@ msgstr "İkincil e-posta"
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:24
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:57
 #: src/components/admin/imap_migration/ProvidersList.vue:99
-#, fuzzy
 msgid "Secured"
-msgstr "Güvenlik"
+msgstr "Güvenli"
 
 #: src/views/account/FiltersView.vue:8
 msgid "Select a filter set"
-msgstr ""
+msgstr "Bir filtre seti seçin"
 
 #: src/components/admin/domains/DomainAdminList.vue:20
 msgid "Select an account"
-msgstr ""
+msgstr "Bir hesap seçin"
 
 #: src/components/tools/ImportForm.vue:22
 msgid "Select file"
-msgstr ""
+msgstr "Dosya seç"
 
 #: src/components/admin/identities/AccountEditForm.vue:93
 msgid "Send only"
-msgstr ""
+msgstr "Sadece gönder"
 
 #: src/components/admin/identities/AccountCreationForm.vue:138
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:40
 msgid "Send only account"
-msgstr ""
+msgstr "Sadece gönderim hesabı"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:97
 msgid "Sender address added"
-msgstr ""
+msgstr "Gönderici adresi eklendi"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:104
 msgid "Sender address deleted"
-msgstr ""
+msgstr "Gönderici adresi silindi"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:4
 msgid "Sender addresses"
-msgstr ""
+msgstr "Gönderici adresleri"
 
 #: src/components/admin/domains/DomainList.vue:210
 msgid "Sending limit"
-msgstr ""
+msgstr "Gönderim limiti"
 
 #: src/components/admin/domains/DomainEditForm.vue:87
 msgid "Sending limit: "
-msgstr ""
+msgstr "Gönderim limiti: "
 
 #: src/components/tools/ImportForm.vue:31
 msgid "Separator"
-msgstr ""
+msgstr "Ayırıcı"
 
 #: src/components/admin/domains/DomainCreationForm.vue:217
 #: src/components/admin/domains/form_steps/DomainTransportForm.vue:3
 msgid "Service"
-msgstr ""
+msgstr "Servis"
 
 #: src/components/admin/domains/DomainEditForm.vue:121
 msgid "Service: "
-msgstr ""
+msgstr "Servis: "
 
-#: src/layouts/dashboard/NavBar.vue:240 src/layouts/dashboard/NavBar.vue:285
+#: src/layouts/dashboard/NavBar.vue:240
+#: src/layouts/dashboard/NavBar.vue:285
 msgid "Settings"
 msgstr "Ayarlar"
 
 #: src/components/account/FidoAuthForm.vue:69
 msgid "Setup device"
-msgstr ""
+msgstr "Cihazı ayarla"
 
 #: src/components/admin/domains/DNSDetail.vue:108
 msgid "Show key"
-msgstr ""
+msgstr "Anahtarı göster"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:80
 msgid "Simple user"
@@ -1880,83 +1815,73 @@ msgstr "Basit kullanıcı"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:17
 msgid "Specify an email address"
-msgstr ""
+msgstr "Bir e-posta adresi belirtin"
 
 #: src/components/admin/domains/DNSDetail.vue:76
 msgid "SPF record found"
-msgstr ""
+msgstr "SPF kaydı bulundu"
 
 #: src/components/admin/domains/DNSDetail.vue:79
 msgid "SPF record not found"
-msgstr ""
+msgstr "SPF kaydı bulunamadı"
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:6
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:6
 msgid "Start typing a name here..."
-msgstr ""
+msgstr "Buraya bir isim yazmaya başlayın..."
 
 #: src/layouts/dashboard/NavBar.vue:205
 #: src/views/admin/domains/DomainView.vue:24
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
-msgstr ""
+msgstr "İstatistikler"
 
 #: src/components/admin/alarms/AlarmList.vue:93
 #: src/components/admin/logs/MessageList.vue:44
 msgid "Status"
-msgstr ""
+msgstr "Durum"
 
 #: src/components/account/AutoReplyForm.vue:12
 msgid "Subject"
-msgstr ""
+msgstr "Konu"
 
 #: src/components/tools/CreationForm.vue:21
 #: src/components/tools/CreationForm.vue:75
 msgid "Summary"
-msgstr ""
+msgstr "Özet"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:106
-#, fuzzy
 msgid "Super administrator"
-msgstr "Alan adı Yöneticisi"
+msgstr "Süper yönetici"
 
 #: src/components/tools/EmailField.vue:58
 msgid "SuperAdmins cannot own a mailbox"
-msgstr ""
+msgstr "Süper Yöneticiler posta kutusuna sahip olamaz"
 
 #: src/components/admin/identities/IdentityList.vue:120
 msgid "Tags"
-msgstr ""
+msgstr "Etiketler"
 
 #: src/components/account/AutoReplyForm.vue:23
-msgid ""
-"The content of your answer. You can use the following variables, which will "
-"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
-"%(untildate)s"
-msgstr ""
+msgid "The content of your answer. You can use the following variables, which will be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, %(untildate)s"
+msgstr "Yanıtınızın içeriği. Aşağıdaki değişkenleri kullanabilirsiniz, bunlar otomatik olarak uygun değerlerle değiştirilecektir: %(name)s, %(fromdate)s, %(untildate)s"
 
 #: src/components/tools/ImportForm.vue:16
-msgid ""
-"The first element of each line is mandatory and must be equal to one of the "
-"previous values."
-msgstr ""
+msgid "The first element of each line is mandatory and must be equal to one of the previous values."
+msgstr "Her satırın ilk öğesi zorunludur ve önceki değerlerden birine eşit olmalıdır."
 
 #: src/components/account/RecoveryCodesResetDialog.vue:9
 #: src/components/account/TotpAuthForm.vue:61
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
-msgstr ""
+msgid "The following recovery codes can be used one time each to let you regain access to your account, in case you lose your phone for example. Make sure to save them in a safe place, otherwise you won't be able to access your account anymore."
+msgstr "Aşağıdaki kurtarma kodları, telefonunuzu kaybetmeniz durumunda hesabınıza yeniden erişim sağlamanız için her biri bir kez kullanılabilir. Bu kodları güvenli bir yerde sakladığınızdan emin olun, aksi takdirde hesabınıza bir daha erişemeyebilirsiniz."
 
 #: src/components/account/ProfileForm.vue:34
 msgid "there"
-msgstr ""
+msgstr "orada"
 
 #: src/views/Dashboard.vue:6
 msgid "This page is still under construction."
-msgstr ""
+msgstr "Bu sayfa hala yapım aşamasında."
 
 #: src/components/admin/logs/MessageList.vue:45
 #: src/components/tools/TimeSerieChart.vue:20
@@ -1966,53 +1891,42 @@ msgstr "Kime"
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
 msgid "Total"
-msgstr ""
+msgstr "Toplam"
 
 #: src/components/admin/domains/DomainCreationForm.vue:151
 #: src/components/admin/domains/DomainCreationForm.vue:214
 #: src/components/admin/domains/DomainEditForm.vue:113
 msgid "Transport"
-msgstr ""
+msgstr "Taşıma"
 
 #: src/components/admin/alarms/AlarmList.vue:92
 msgid "Triggered"
-msgstr ""
+msgstr "Tetiklendi"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:48
 msgid "Trusted sources"
-msgstr ""
+msgstr "Güvenilen kaynaklar"
 
 #: src/views/account/SettingsView.vue:11
-#, fuzzy
 msgid "Two-factor auth"
-msgstr "Kimlik Doğrulama"
+msgstr "İki faktörlü kimlik doğrulama"
 
 #: src/components/account/TotpAuthForm.vue:109
-#, fuzzy
-msgid ""
-"Two-factor authentication (2FA) using one-time passwords is not yet "
-"activated for your account."
-msgstr ""
-"Tebrikler! Artık hesabınız için İki Faktörlü Kimlik Doğrulama "
-"etkinleştirildi."
+msgid "Two-factor authentication (2FA) using one-time passwords is not yet activated for your account."
+msgstr "Tek kullanımlık parolalarla iki faktörlü kimlik doğrulama (2FA) hesabınız için henüz etkinleştirilmemiş."
 
 #: src/components/account/TotpAuthForm.vue:78
-#, fuzzy
-msgid ""
-"Two-factor authentication using one-time passwords is enabled for your "
-"account."
-msgstr ""
-"Tebrikler! Artık hesabınız için İki Faktörlü Kimlik Doğrulama "
-"etkinleştirildi."
+msgid "Two-factor authentication using one-time passwords is enabled for your account."
+msgstr "Tek kullanımlık parolalarla iki faktörlü kimlik doğrulama hesabınız için etkinleştirildi."
 
 #: src/components/admin/domains/DomainCreationForm.vue:164
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:13
 msgid "Type"
-msgstr ""
+msgstr "Tür"
 
 #: src/components/admin/domains/DomainEditForm.vue:20
 msgid "Type: "
-msgstr ""
+msgstr "Tür: "
 
 #: src/components/admin/domains/DNSStatusChip.vue:29
 msgid "Unknown"
@@ -2020,21 +1934,21 @@ msgstr "Bilinmeyen"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:68
 msgid "Unknown sources / Threats"
-msgstr ""
+msgstr "Bilinmeyen kaynaklar / Tehditler"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:109
 msgid "unlimited"
-msgstr ""
+msgstr "sınırsız"
 
 #: src/components/admin/domains/DomainSummary.vue:18
 #: src/components/admin/domains/DomainSummary.vue:25
 #: src/components/admin/identities/AccountSummary.vue:38
 msgid "Unlimited"
-msgstr ""
+msgstr "Sınırsız"
 
 #: src/components/account/AutoReplyForm.vue:43
 msgid "Until"
-msgstr ""
+msgstr "Kadar"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/ForwardForm.vue:25
@@ -2043,31 +1957,28 @@ msgid "Update"
 msgstr "Güncelle"
 
 #: src/components/account/AutoReplyForm.vue:54
-#, fuzzy
 msgid "Update auto-reply"
-msgstr "Parola"
+msgstr "Otomatik yanıtı güncelle"
 
 #: src/components/account/ProfileForm.vue:75
-#, fuzzy
 msgid "Update Password"
-msgstr "Parola"
+msgstr "Parolayı Güncelle"
 
 #: src/components/account/ProfileForm.vue:62
-#, fuzzy
 msgid "Update settings"
-msgstr "Ayarlar"
+msgstr "Ayarları güncelle"
 
 #: src/components/admin/domains/DNSDetail.vue:172
 msgid "Updated"
-msgstr ""
+msgstr "Güncellendi"
 
 #: src/components/account/FidoAuthForm.vue:136
 msgid "Use count"
-msgstr ""
+msgstr "Kullanım sayısı"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:106
 msgid "Use domain default value"
-msgstr ""
+msgstr "Alan adı varsayılan değerini kullan"
 
 #: src/components/admin/domains/DomainAdminList.vue:106
 #: src/components/admin/identities/AccountCreationForm.vue:98
@@ -2076,21 +1987,20 @@ msgid "Username"
 msgstr "Kullanıcı adı"
 
 #: src/components/admin/identities/AccountEditForm.vue:39
-#, fuzzy
 msgid "Username:"
-msgstr "Kullanıcı adı"
+msgstr "Kullanıcı adı:"
 
 #: src/components/admin/domains/DNSStatusChip.vue:27
 msgid "Valid"
-msgstr ""
+msgstr "Geçerli"
 
 #: src/components/account/FilterForm.vue:49
 msgid "Value"
-msgstr ""
+msgstr "Değer"
 
 #: src/components/admin/domains/DNSDetail.vue:217
 msgid "warning"
-msgstr ""
+msgstr "uyarı"
 
 #: src/components/account/APISetupForm.vue:94
 #: src/components/account/FidoAuthForm.vue:178
@@ -2100,15 +2010,15 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:230
 #: src/components/tools/CreationForm.vue:129
 msgid "Warning"
-msgstr ""
+msgstr "Uyarı"
 
 #: src/components/account/FidoAuthForm.vue:6
 msgid "WebAuthn"
-msgstr ""
+msgstr "WebAuthn"
 
 #: src/components/tools/TimeSerieChart.vue:111
 msgid "Week"
-msgstr ""
+msgstr "Hafta"
 
 #: src/views/Dashboard.vue:3
 msgid "Welcome to Modoboa"
@@ -2116,19 +2026,19 @@ msgstr "Modoboa'ya hoş geldiniz"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:25
 msgid "With a mailbox"
-msgstr ""
+msgstr "Bir posta kutusuyla"
 
 #: src/components/admin/domains/DomainCreationForm.vue:260
 msgid "With mailbox"
-msgstr ""
+msgstr "Posta kutusuyla"
 
 #: src/components/tools/TimeSerieChart.vue:113
 msgid "Year"
-msgstr ""
+msgstr "Yıl"
 
 #: src/plugins/filters.js:9
 msgid "yes"
-msgstr ""
+msgstr "evet"
 
 #: src/components/account/FidoAuthForm.vue:183
 #: src/components/admin/domains/DNSDetail.vue:224
@@ -2141,40 +2051,36 @@ msgid "Yes"
 msgstr "Evet"
 
 #: src/components/account/BackupCodeAuthForm.vue:13
-msgid ""
-"You already have generated backup codes for this account. If you don't "
-"remember them or have used them all, you can generate new ones."
-msgstr ""
+msgid "You already have generated backup codes for this account. If you don't remember them or have used them all, you can generate new ones."
+msgstr "Bu hesap için zaten yedek kodlar oluşturmuşsunuz. Onları hatırlamıyorsanız veya hepsini kullandıysanız, yenilerini oluşturabilirsiniz."
 
 #: src/components/account/APISetupForm.vue:95
 msgid "You are about to delete your API access token"
-msgstr ""
+msgstr "API erişim tokeninizi silmek üzeresiniz"
 
 #: src/components/tools/ImportForm.vue:20
 msgid "You can use a different character as separator."
-msgstr ""
+msgstr "Farklı bir karakteri ayırıcı olarak kullanabilirsiniz."
 
 #: src/components/account/FidoAuthForm.vue:14
-msgid ""
-"You don't have any WebAuthN device registered as a second authentication "
-"method."
-msgstr ""
+msgid "You don't have any WebAuthN device registered as a second authentication method."
+msgstr "İkinci kimlik doğrulama yöntemi olarak kayıtlı WebAuthN cihazınız yok."
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:115
 msgid "You need to bind at least one domain to the provider."
-msgstr ""
+msgstr "Sağlayıcıya en az bir alan adı bağlamanız gerekiyor."
 
 #: src/components/account/APISetupForm.vue:4
 msgid "Your API token has not been generated yet."
-msgstr ""
+msgstr "API tokeniniz henüz oluşturulmadı."
 
 #: src/components/account/APISetupForm.vue:20
 msgid "Your API token is:"
-msgstr ""
+msgstr "API tokeniniz:"
 
 #: src/components/account/FidoAuthForm.vue:76
 msgid "Your browser does not seem compatible with WebAuthN"
-msgstr ""
+msgstr "Tarayıcınız WebAuthN ile uyumlu görünmüyor"
 
 #~ msgid "Change password"
 #~ msgstr "Parolayı değiştirin"
@@ -2182,13 +2088,11 @@ msgstr ""
 #~ msgid "Enter the code you've just received by SMS"
 #~ msgstr "Az önce SMS ile aldığınız kodu giriniz"
 
-#, fuzzy
 #~ msgid "Forgot password?"
 #~ msgstr "Parolanızı mı unuttunuz?"
 
-#, fuzzy
 #~ msgid "Password recovery"
-#~ msgstr "Parola"
+#~ msgstr "Parola kurtarma"
 
 #~ msgid "Please fill-in your primary email address"
 #~ msgstr "Lütfen birincil e-posta adresinizi girin"
@@ -2196,15 +2100,12 @@ msgstr ""
 #~ msgid "Submit"
 #~ msgstr "Gönder"
 
-#, fuzzy
 #~ msgid "Two-factor authentication"
-#~ msgstr "Kimlik Doğrulama"
+#~ msgstr "İki faktörlü kimlik doğrulama"
 
-#, fuzzy
 #~ msgid "User unknown."
-#~ msgstr "Bilinmeyen"
+#~ msgstr "Kullanıcı bilinmiyor."
 
-#, fuzzy
 #~ msgid "Forgot password"
 #~ msgstr "Parolanızı mı unuttunuz?"
 
@@ -2214,13 +2115,8 @@ msgstr ""
 #~ msgid "Security"
 #~ msgstr "Güvenlik"
 
-#~ msgid ""
-#~ "Two-Factor Authentication (2FA) is not yet activated for your account. "
-#~ "Enabling this feature will increase your account's security."
-#~ msgstr ""
-#~ "Hesabınız için İki Faktörlü Kimlik Doğrulama (2FA) henüz "
-#~ "etkinleştirilmedi. Bu özelliği etkinleştirmek hesabınızın güvenliğini "
-#~ "artıracaktır."
+#~ msgid "Two-Factor Authentication (2FA) is not yet activated for your account. Enabling this feature will increase your account's security."
+#~ msgstr "Hesabınız için İki Faktörlü Kimlik Doğrulama (2FA) henüz etkinleştirilmedi. Bu özelliği etkinleştirmek hesabınızın güvenliğini artıracaktır."
 
 #~ msgid "API"
 #~ msgstr "API"
