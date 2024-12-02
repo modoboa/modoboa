@@ -346,6 +346,10 @@ class AccountTestCase(ModoTestCase):
             "email": "tester@test.com",
             "stepid": "step2",
         }
+        # TODO: add test to check if unhashed password created with 
+        # make_password() from modoboa\modoboa\admin\lib.py has at least one
+        # letter, one digit(and one special character if option chosen by user) 
+
         self.ajax_post(reverse("admin:account_add"), values)
 
         account = User.objects.get(username=values["username"])
