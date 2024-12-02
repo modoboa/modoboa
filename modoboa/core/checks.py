@@ -1,3 +1,4 @@
+from django.db.utils import ProgrammingError
 from django.core.checks import register, Info, Warning
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -50,7 +51,11 @@ def check_rsa_private_key_exists(app_configs, **kwargs):
 @register()
 def check_password_hasher(app_configs, **kwargs):
     msgs = []
-    hasher = check_for_deprecated_password_schemes()
+    try:
+        hasher = check_for_deprecated_password_schemes()
+    except ProgrammingError:
+        # This is probably a fresh install...
+        return []
     if hasher:
         msgs.append(W002)
     return msgs
