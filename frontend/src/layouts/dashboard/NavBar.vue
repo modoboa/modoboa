@@ -11,7 +11,7 @@
         src="@/assets/Modoboa_RVB-BLANC-SANS.png"
         max-width="190"
         class="logo"
-        @click="router.push({ name: 'Dashboard' })"
+        @click="router.push(props.logoRoute)"
       />
       <v-btn
         :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
@@ -24,8 +24,20 @@
     <v-list nav>
       <template v-for="item in menuItems" :key="item.text">
         <template v-if="displayMenuItem(item)">
+          <v-list-subheader v-if="item.subheader">
+            {{ item.text.toUpperCase() }}
+          </v-list-subheader>
           <v-list-item
-            v-if="!item.children"
+            v-else-if="item.action"
+            :value="item"
+            :exact="item.exact"
+            :title="item.text"
+            :prepend-icon="item.icon"
+            @click="item.action"
+          >
+          </v-list-item>
+          <v-list-item
+            v-else-if="!item.children"
             :value="item"
             :to="item.to"
             link
@@ -62,50 +74,50 @@
       </template>
     </v-list>
     <template #append>
-      <v-menu v-if="isAuthenticated" rounded="lg" offset-y top>
-        <template #activator="{ props }">
-          <div
-            :class="[
-              backgroundColor,
-              'd-flex',
-              'justify-center',
-              'align-center',
-              'pa-2',
-            ]"
-          >
-            <v-btn
-              v-bind="props"
-              :class="[backgroundColor, 'text-white']"
-              rounded
-              density="compact"
-              height="48"
-              elevation="0"
-            >
-              <v-avatar size="40" color="primary">
-                <span class="text-white headline">{{ userInitials }}</span>
-              </v-avatar>
-              <template v-if="!rail">
-                <span class="mx-2">{{ displayName }}</span>
-                <v-icon class="float-right">mdi-chevron-up</v-icon>
-              </template>
-            </v-btn>
-          </div>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="item in userMenuItems"
-            :key="item.text"
-            :to="item.to"
-            link
-            @click="item.click"
-          >
-            <template #prepend>
-              <v-icon :icon="item.icon"></v-icon>
-            </template>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <!-- <v-menu v-if="isAuthenticated" rounded="lg" offset-y top>
+           <template #activator="{ props }">
+           <div
+           :class="[
+           backgroundColor,
+           'd-flex',
+           'justify-center',
+           'align-center',
+           'pa-2',
+           ]"
+           >
+           <v-btn
+           v-bind="props"
+           :class="[backgroundColor, 'text-white']"
+           rounded
+           density="compact"
+           height="48"
+           elevation="0"
+           >
+           <v-avatar size="40" color="primary">
+           <span class="text-white headline">{{ userInitials }}</span>
+           </v-avatar>
+           <template v-if="!rail">
+           <span class="mx-2">{{ displayName }}</span>
+           <v-icon class="float-right">mdi-chevron-up</v-icon>
+           </template>
+           </v-btn>
+           </div>
+           </template>
+           <v-list>
+           <v-list-item
+           v-for="item in userMenuItems"
+           :key="item.text"
+           :to="item.to"
+           link
+           @click="item.click"
+           >
+           <template #prepend>
+           <v-icon :icon="item.icon"></v-icon>
+           </template>
+           <v-list-item-title>{{ item.text }}</v-list-item-title>
+           </v-list-item>
+           </v-list>
+           </v-menu> -->
     </template>
   </v-navigation-drawer>
 </template>
@@ -117,6 +129,18 @@ import { useGettext } from 'vue3-gettext'
 import { getActivePinia } from 'pinia'
 import { useGlobalStore, useAuthStore, useParametersStore } from '@/stores'
 import parametersApi from '@/api/parameters'
+
+const props = defineProps({
+  menuItems: {
+    type: Array,
+    required: false,
+    default: null,
+  },
+  logoRoute: {
+    type: Object,
+    default: null,
+  },
+})
 
 const globalStore = useGlobalStore()
 const authStore = useAuthStore()
@@ -155,6 +179,9 @@ const displayName = computed(() => {
 })
 
 const menuItems = computed(() => {
+  if (props.menuItems) {
+    return props.menuItems
+  }
   if (route.meta.layout === 'account') {
     return getUserSettingsMenuItems()
   }
@@ -344,6 +371,12 @@ onMounted(() => {
     background-color: #034bad !important;
     color: white;
     opacity: 1;
+  }
+}
+
+.v-list-subheader {
+  &__text {
+    color: white !important;
   }
 }
 

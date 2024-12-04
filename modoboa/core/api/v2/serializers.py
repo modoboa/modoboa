@@ -531,3 +531,12 @@ class NotificationSerializer(serializers.Serializer):
     url = serializers.CharField(required=False)
     text = serializers.CharField()
     level = serializers.CharField()
+
+
+class ModoboaApplicationSerializer(serializers.Serializer):
+
+    label = serializers.CharField()
+    name = serializers.CharField()
+    icon = serializers.CharField()
+    url = serializers.CharField()
+    description = serializers.CharField(required=False)

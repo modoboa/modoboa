@@ -6,6 +6,7 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 
 // Utilities
 import { defineConfig } from 'vite'
+import { federation } from '@module-federation/vite'
 import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
@@ -31,6 +32,20 @@ export default defineConfig({
           },
         ],
       },
+    }),
+    federation({
+      name: 'coretools',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './api-repository': './src/api/repository.js',
+        './auth-store': './src/stores/auth.store.js',
+        './auth-callback': './src/views/login/LoginCallbackView.vue',
+        './navbar': './src/layouts/dashboard/NavBar.vue',
+        './top-menu': './src/components/shared/TopMenu.vue',
+        './menu-items': './src/components/tools/MenuItems.vue',
+        './form-rules': './src/plugins/rules.js',
+      },
+      shared: ['vue', 'pinia', 'vue-router', 'vue3-gettext'],
     }),
   ],
   base: process.env.NODE_ENV === 'production' ? '/new-admin/' : '/',
