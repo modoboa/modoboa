@@ -138,6 +138,8 @@ jsonschema-specifications==2024.10.1
 jwcrypto==1.5.6
     # via django-oauth-toolkit
 lxml==4.9.4
+    # via lxml-html-clean
+lxml-html-clean==0.4.1
     # via modoboa (pyproject.toml)
 markupsafe==3.0.2
     # via werkzeug

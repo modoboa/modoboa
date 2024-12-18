@@ -56,7 +56,7 @@ django==4.2.16
     #   djangorestframework
     #   drf-spectacular
     #   modoboa (pyproject.toml)
-django-auth-ldap==5.1.0
+django-auth-ldap==4.8.0
     # via modoboa (pyproject.toml)
 django-ckeditor==6.7.1
     # via modoboa (pyproject.toml)
@@ -113,6 +113,8 @@ jsonschema-specifications==2024.10.1
 jwcrypto==1.5.6
     # via django-oauth-toolkit
 lxml==4.9.4
+    # via lxml-html-clean
+lxml-html-clean==0.4.1
     # via modoboa (pyproject.toml)
 oath==1.4.4
     # via modoboa (pyproject.toml)
