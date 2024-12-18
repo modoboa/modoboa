@@ -109,7 +109,9 @@ jsonschema-specifications==2024.10.1
     # via jsonschema
 jwcrypto==1.5.6
     # via django-oauth-toolkit
-lxml[html-clean,html_clean]==4.9.4
+lxml==5.3.0
+    # via lxml-html-clean
+lxml-html-clean==0.4.1
     # via modoboa (pyproject.toml)
 mysqlclient==2.2.4
     # via modoboa (pyproject.toml)
