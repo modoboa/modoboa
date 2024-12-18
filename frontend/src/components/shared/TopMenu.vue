@@ -36,20 +36,19 @@
               <v-list-item :title="user.username" />
             </div>
             <v-divider></v-divider>
-            <template v-if="remote">
-              <v-list-item href="https://localhost:3000/account">
-                <template #prepend>
-                  <v-icon icon="mdi-account-circle-outline"></v-icon>
-                </template>
-                <v-list-item-title>Account</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="logout">
-                <template #prepend>
-                  <v-icon icon="mdi-logout"></v-icon>
-                </template>
-                <v-list-item-title>Logout</v-list-item-title>
-              </v-list-item>
-            </template>
+            <v-list-item
+              v-for="item in userMenuItems"
+              :key="item.text"
+              :to="item.to"
+              :href="item.href"
+              link
+              @click="item.click"
+            >
+              <template #prepend>
+                <v-icon :icon="item.icon"></v-icon>
+              </template>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-card>
       </v-menu>
@@ -60,6 +59,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { getActivePinia } from 'pinia'
+import { useGettext } from 'vue3-gettext'
 import accountApi from '@/api/account'
 
 const props = defineProps({
@@ -73,12 +73,31 @@ const props = defineProps({
   },
 })
 
+const { $gettext } = useGettext()
+
 const applications = ref([])
 
 const userInitials = computed(() => {
   return props.user.first_name && props.user.last_name
     ? `${props.user.first_name[0].toUpperCase()}${props.user.last_name[0].toUpperCase()}`
     : props.user.username.slice(0, 2).toUpperCase()
+})
+
+const userMenuItems = computed(() => {
+  return [
+    {
+      text: $gettext('Account'),
+      icon: 'mdi-account-circle-outline',
+      to: !props.remote ? { name: 'AccountSettings' } : null,
+      href: props.remote ? 'https://localhost:3000/account' : '',
+      click: () => null,
+    },
+    {
+      text: $gettext('Logout'),
+      icon: 'mdi-logout',
+      click: logout,
+    },
+  ]
 })
 
 async function logout() {
@@ -97,6 +116,7 @@ onMounted(() => {
   position: fixed;
   top: 10px;
   right: 10px;
+  z-index: 100;
 }
 
 .application {
