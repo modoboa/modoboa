@@ -40,7 +40,7 @@ export default defineConfig({
         './api-repository': './src/api/repository.js',
         './auth-store': './src/stores/auth.store.js',
         './auth-callback': './src/views/login/LoginCallbackView.vue',
-        './navbar': './src/layouts/dashboard/NavBar.vue',
+        './navbar': './src/components/shared/NavBar.vue',
         './top-menu': './src/components/shared/TopMenu.vue',
         './menu-items': './src/components/tools/MenuItems.vue',
         './form-rules': './src/plugins/rules.js',

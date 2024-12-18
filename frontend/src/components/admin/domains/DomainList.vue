@@ -13,6 +13,18 @@
     >
       <template #top>
         <v-toolbar color="white" flat>
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="$gettext('Search')"
+            variant="outlined"
+            single-line
+            flat
+            hide-details
+            density="compact"
+            class="flex-grow-0 w-33 mr-4"
+          ></v-text-field>
+          <slot name="extraActions" />
           <v-menu location="bottom">
             <template #activator="{ props }">
               <v-btn
@@ -31,16 +43,6 @@
             icon="mdi-reload"
             @click="reloadDomains"
           ></v-btn>
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            variant="outlined"
-            single-line
-            flat
-            hide-details
-          ></v-text-field>
         </v-toolbar>
       </template>
       <template

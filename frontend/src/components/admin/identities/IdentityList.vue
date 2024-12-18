@@ -12,6 +12,18 @@
     >
       <template #top>
         <v-toolbar flat color="white">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="$gettext('Search')"
+            variant="outlined"
+            hide-details
+            single-line
+            flat
+            density="compact"
+            class="flex-grow-0 w-33 mr-4"
+          ></v-text-field>
+          <slot name="extraActions" />
           <v-menu location="bottom">
             <template #activator="{ props }">
               <v-btn
@@ -33,15 +45,6 @@
             @click="fetchIdentities"
           ></v-btn>
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            variant="outlined"
-            hide-details
-            single-line
-            flat
-          ></v-text-field>
         </v-toolbar>
       </template>
       <template #[`item.identity`]="{ item }">
