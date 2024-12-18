@@ -57,7 +57,7 @@ dependencies = [
 	"cryptography",
 	"pytz",
 	"requests",
-	"lxml==4.9.4",  # FIXME: issue with version 5+
+	"lxml[html_clean]",
 	"chardet",
 	"ovh",
 	"oath",
