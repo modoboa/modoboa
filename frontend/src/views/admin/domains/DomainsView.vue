@@ -2,44 +2,47 @@
   <div>
     <v-toolbar flat>
       <v-toolbar-title>{{ $gettext('Domains') }}</v-toolbar-title>
-      <v-spacer />
-      <v-btn
-        class="mr-2"
-        :title="$gettext('Import domains and aliases from CSV file')"
-        variant="elevated"
-        icon="mdi-file-import-outline"
-        @click="showImportForm = true"
-      ></v-btn>
-      <v-btn
-        class="mr-2"
-        :title="$gettext('Export domains and aliases to CSV')"
-        variant="elevated"
-        icon="mdi-file-export-outline"
-        @click="exportDomains"
-      ></v-btn>
-      <v-menu offset-y>
-        <template #activator="{ props }">
-          <v-btn
-            color="primary"
-            variant="flat"
-            v-bind="props"
-            prepend-icon="mdi-plus"
-          >
-            {{ $gettext('New') }}
-          </v-btn>
-        </template>
-        <v-list density="compact">
-          <v-list-item @click="showDomainWizard = true">
-            <v-list-item-title>{{ $gettext('Domain') }}</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="showAliasForm = true">
-            <v-list-item-title>{{ $gettext('Alias') }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </v-toolbar>
 
-    <DomainList />
+    <DomainList>
+      <template #extraActions>
+        <v-menu offset-y>
+          <template #activator="{ props }">
+            <v-btn
+              color="primary"
+              variant="outlined"
+              v-bind="props"
+              prepend-icon="mdi-plus"
+              class="mr-4"
+            >
+              {{ $gettext('New') }}
+            </v-btn>
+          </template>
+          <v-list density="compact">
+            <v-list-item @click="showDomainWizard = true">
+              <v-list-item-title>{{ $gettext('Domain') }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="showAliasForm = true">
+              <v-list-item-title>{{ $gettext('Alias') }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn
+          class="mr-2"
+          :title="$gettext('Import domains and aliases from CSV file')"
+          variant="flat"
+          icon="mdi-file-import-outline"
+          @click="showImportForm = true"
+        ></v-btn>
+        <v-btn
+          class="mr-2"
+          :title="$gettext('Export domains and aliases to CSV')"
+          variant="flat"
+          icon="mdi-file-export-outline"
+          @click="exportDomains"
+        ></v-btn>
+      </template>
+    </DomainList>
 
     <v-dialog v-model="showDomainWizard" fullscreen scrollable z-index="10">
       <DomainCreationForm @close="showDomainWizard = false" />

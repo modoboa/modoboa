@@ -10,13 +10,14 @@
     >
       <template #top>
         <v-toolbar flat color="white">
-          <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             prepend-inner-icon="mdi-magnify"
             :placeholder="$gettext('Search')"
             variant="outlined"
             hide-details
+            density="compact"
+            class="flex-grow-0 w-33"
           />
         </v-toolbar>
       </template>
