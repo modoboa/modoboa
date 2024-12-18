@@ -33,7 +33,7 @@ const routes = [
       },
       {
         path: 'domains',
-        component: () => import('@/layouts/empty/Layout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -70,7 +70,7 @@ const routes = [
       },
       {
         path: 'imap_migration',
-        component: () => import('@/layouts/empty/Layout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -88,7 +88,7 @@ const routes = [
           },
           {
             path: 'providers',
-            component: () => import('@/layouts/empty/Layout.vue'),
+            component: () => import('@/layouts/empty/EmptyLayout.vue'),
             meta: {
               requiresAuth: true,
               allowedRoles: ['Resellers', 'SuperAdmins'],
@@ -120,7 +120,7 @@ const routes = [
       },
       {
         path: 'identities',
-        component: () => import('@/layouts/empty/Layout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -233,7 +233,7 @@ const routes = [
   },
   {
     path: '/account',
-    component: () => import('@/layouts/connected/Layout.vue'),
+    component: () => import('@/layouts/connected/ConnectedLayout.vue'),
     meta: {
       layout: 'account',
       requiresAuth: true,
