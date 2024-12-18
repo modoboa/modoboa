@@ -57,7 +57,7 @@ dependencies = [
 	"cryptography",
 	"pytz",
 	"requests",
-	"lxml[html_clean]",
+	"lxml-html-clean",
 	"chardet",
 	"ovh",
 	"oath",
