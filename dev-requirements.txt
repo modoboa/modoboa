@@ -237,7 +237,7 @@ six==1.16.0
     # via
     #   django-bower
     #   python-dateutil
-sqlparse==0.5.1
+sqlparse==0.5.3
     # via
     #   django
     #   django-debug-toolbar
