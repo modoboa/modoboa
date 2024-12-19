@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores'
 const routes = [
   {
     path: '/login',
-    component: () => import('@/layouts/default/DefaultLayout.vue'),
+    component: () => import('@/layouts/empty/EmptyLayout.vue'),
     children: [
       {
         path: '',
@@ -21,19 +21,19 @@ const routes = [
   },
   {
     path: '/admin',
-    component: () => import('@/layouts/dashboard/DashboardLayout.vue'),
+    component: () => import('@/layouts/connected/ConnectedLayout.vue'),
     children: [
       {
         path: '',
         name: 'Dashboard',
-        component: () => import('@/views/Dashboard.vue'),
+        component: () => import('@/views/DashboardView.vue'),
         meta: {
           requiresAuth: true,
         },
       },
       {
         path: 'domains',
-        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -70,7 +70,7 @@ const routes = [
       },
       {
         path: 'imap_migration',
-        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -88,7 +88,7 @@ const routes = [
           },
           {
             path: 'providers',
-            component: () => import('@/layouts/default/DefaultLayout.vue'),
+            component: () => import('@/layouts/empty/EmptyLayout.vue'),
             meta: {
               requiresAuth: true,
               allowedRoles: ['Resellers', 'SuperAdmins'],
@@ -120,7 +120,7 @@ const routes = [
       },
       {
         path: 'identities',
-        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -233,7 +233,7 @@ const routes = [
   },
   {
     path: '/account',
-    component: () => import('@/layouts/dashboard/DashboardLayout.vue'),
+    component: () => import('@/layouts/connected/ConnectedLayout.vue'),
     meta: {
       layout: 'account',
       requiresAuth: true,

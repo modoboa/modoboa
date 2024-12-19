@@ -114,4 +114,7 @@ export default {
       `${resource}/filtersets/${filterSetName}/filters/${filter}/`
     )
   },
+  getAvailableApplications() {
+    return repository.get(`${resource}/available_applications/`)
+  },
 }
