@@ -195,7 +195,7 @@ six==1.16.0
     # via python-dateutil
 sqlparse==0.5.1
     # via django
-tldextract==5.1.2
+tldextract==5.1.3
     # via modoboa (pyproject.toml)
 typing-extensions==4.12.2
     # via
