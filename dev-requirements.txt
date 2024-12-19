@@ -180,7 +180,7 @@ progressbar33==2.4
     # via modoboa (pyproject.toml)
 pycparser==2.22
     # via cffi
-pylint==3.3.1
+pylint==3.3.2
     # via modoboa (pyproject.toml)
 pyopenssl==24.2.1
     # via modoboa (pyproject.toml)
