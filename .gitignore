@@ -23,6 +23,7 @@ node_modules
 /static/dist
 /frontend/webpack-stats.json
 /frontend/src/translations.json
+/frontend/.__mf__temp/  
 
 # TOX stuff
 test_project/modoboa.db
