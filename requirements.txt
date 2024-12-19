@@ -182,7 +182,7 @@ sievelib==1.4.1
     # via modoboa (pyproject.toml)
 six==1.16.0
     # via python-dateutil
-sqlparse==0.5.1
+sqlparse==0.5.3
     # via django
 tldextract==5.1.3
     # via modoboa (pyproject.toml)
