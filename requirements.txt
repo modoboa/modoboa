@@ -17,7 +17,7 @@ attrs==24.2.0
     #   referencing
 bcrypt==4.2.0
     # via modoboa (pyproject.toml)
-certifi==2024.8.30
+certifi==2024.12.14
     # via requests
 cffi==1.17.1
     # via cryptography
