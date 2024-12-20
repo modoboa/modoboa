@@ -280,15 +280,21 @@ router.beforeEach(async (to, from, next) => {
     if (!authStore.authUser) {
       await authStore.initialize()
     }
-    authStore.validateAccess()
-    if (to.meta.allowedRoles !== undefined) {
-      if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
+    const isAuth = await authStore.validateAccess()
+    if (isAuth) {
+      if (to.meta.allowedRoles !== undefined) {
+        if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
+          next({ name: 'Dashboard' })
+          return
+        }
+      }
+      if (to.meta.requiresMailbox && !authStore.authUser.mailbox) {
         next({ name: 'Dashboard' })
         return
       }
-    }
-    if (to.meta.requiresMailbox && !authStore.authUser.mailbox) {
-      next({ name: 'Dashboard' })
+    } else {
+      next({ name: 'Login' })
+      return
     }
   }
   next()
