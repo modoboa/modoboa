@@ -115,11 +115,11 @@ export const useAuthStore = defineStore('auth', () => {
   async function validateAccess() {
     const user = await manager.getUser()
     if (!user || user.expired) {
-      manager.signinRedirect()
-      return
+      return false
     }
     repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
     repository.defaults.headers.post['Content-Type'] = 'application/json'
+    return true
   }
 
   async function login() {
@@ -145,6 +145,8 @@ export const useAuthStore = defineStore('auth', () => {
       return user
     } catch (error) {
       console.error('Error completing login:', error)
+      // Redirect to Dashboard so the router will attempt again login
+      router.push({ name: 'Dashboard' })
       return null
     }
   }
