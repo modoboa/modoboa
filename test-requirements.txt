@@ -239,7 +239,7 @@ uritemplate==4.1.1
     #   modoboa (pyproject.toml)
 urllib3==2.2.3
     # via requests
-virtualenv==20.27.1
+virtualenv==20.28.0
     # via tox
 zope-event==5.0
     # via gevent
