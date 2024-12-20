@@ -117,7 +117,7 @@ filelock==3.16.1
     # via
     #   tldextract
     #   virtualenv
-gevent==24.2.1
+gevent==24.11.1
     # via modoboa (pyproject.toml)
 greenlet==3.1.1
     # via gevent
