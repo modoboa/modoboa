@@ -163,7 +163,7 @@ passlib==1.7.4
     # via modoboa (pyproject.toml)
 pathspec==0.12.1
     # via black
-phonenumbers==8.13.48
+phonenumbers==8.13.52
     # via django-phonenumber-field
 pillow==11.0.0
     # via
