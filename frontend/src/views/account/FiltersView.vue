@@ -233,6 +233,12 @@ function fetchFilters(filterSetName) {
   accountApi.getFilters(filterSetName).then(resp => {
     filters.value = resp.data
     loadingFilters.value = false
+  }).catch(error => {
+    if (error.response.status === 518) { // Server is a teapot (sieve file contains custom code or is broken)
+      // Let the user see with rawmode
+      rawMode.value = true
+      busStore.displayNotification({ msg: $gettext('Failed to display template. Using raw mode'), type: 'warning' })
+    }
   })
 }
 

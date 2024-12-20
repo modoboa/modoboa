@@ -36,8 +36,10 @@ _axios.interceptors.response.use(
       return Promise.reject(error)
     }
     if (error.response.status !== 401 || router.currentRoute.name === 'Login') {
-      const busStore = useBusStore()
-      busStore.displayNotification({ msg: error.response.data, type: 'error' })
+      if (error.response.status !== 518) {
+        const busStore = useBusStore()
+        busStore.displayNotification({ msg: error.response.data, type: 'error' })
+      }
       return Promise.reject(error)
     }
     const refreshToken = Cookies.get('refreshToken')
