@@ -256,7 +256,7 @@ uritemplate==4.1.1
     #   modoboa (pyproject.toml)
 urllib3==2.2.3
     # via requests
-virtualenv==20.27.1
+virtualenv==20.28.0
     # via pre-commit
 werkzeug==3.1.3
     # via modoboa (pyproject.toml)
