@@ -55,7 +55,7 @@ django==4.2.17
     #   djangorestframework
     #   drf-spectacular
     #   modoboa (pyproject.toml)
-django-ckeditor==6.7.1
+django-ckeditor==6.7.2
     # via modoboa (pyproject.toml)
 django-cors-headers==4.6.0
     # via modoboa (pyproject.toml)

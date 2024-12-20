@@ -73,7 +73,7 @@ django==4.2.17
     #   modoboa (pyproject.toml)
 django-bower==5.2.0
     # via modoboa (pyproject.toml)
-django-ckeditor==6.7.1
+django-ckeditor==6.7.2
     # via modoboa (pyproject.toml)
 django-cors-headers==4.6.0
     # via modoboa (pyproject.toml)
