@@ -243,7 +243,7 @@ virtualenv==20.28.0
     # via tox
 zope-event==5.0
     # via gevent
-zope-interface==7.1.1
+zope-interface==7.2
     # via gevent
 
 # The following packages are considered to be unsafe in a requirements file:
