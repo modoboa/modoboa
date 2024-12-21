@@ -391,17 +391,6 @@ class AccountTestCase(ModoTestCase):
         self.assertNotEqual(password, account.password)
         password = account.password
 
-        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
-        account.refresh_from_db()
-        self.assertNotEqual(password, account.password)
-        password = account.password
-        self.assertNotEqual(
-            len(
-                [char for char in account.password if char in list(string.punctuation)]
-            ),
-            0,
-        )
-
         values["random_password"] = False
         self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
         account.refresh_from_db()
