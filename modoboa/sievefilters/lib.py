@@ -19,6 +19,10 @@ class SieveClientError(ModoboaException):
     http_code = 400
 
 
+class SieveActionTemplateNotFound(Exception):
+    pass
+
+
 class SieveClient:
     """Sieve client."""
 
@@ -93,4 +97,4 @@ def find_action_template(action: str):
     for tpl in constants.ACTION_TEMPLATES:
         if tpl["name"] == action:
             return tpl
-    raise RuntimeError(f"action {action} not defined")
+    raise SieveActionTemplateNotFound(f"action {action} not defined")

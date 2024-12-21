@@ -200,6 +200,9 @@ function getFilterSetName(filterSet) {
   if (filterSet.active) {
     result += ' (' + $gettext('active') + ')'
   }
+  else {
+    result += ' (' + $gettext('inactive') + ')'
+  }
   return result
 }
 
@@ -216,7 +219,12 @@ function closeFilterForm() {
 
 function fetchFilterSets() {
   accountApi.getFilterSets().then(resp => {
-    filterSets.value = resp.data
+    if (resp.data.length > 0 && resp.data[0].active && resp.data[0].name === null) {
+      // No filter is active
+      filterSets.value = resp.data.slice(1)
+    } else {
+      filterSets.value = resp.data
+    }
     if (!currentFilterSet.value && route.params.filterset) {
       for (const filterSet of filterSets.value) {
         if (filterSet.name === route.params.filterset) {
@@ -233,6 +241,12 @@ function fetchFilters(filterSetName) {
   accountApi.getFilters(filterSetName).then(resp => {
     filters.value = resp.data
     loadingFilters.value = false
+  }).catch(error => {
+    if (error.response.status === 518) { // Server is a teapot (sieve file contains custom code or is broken)
+      // Let the user see with rawmode
+      rawMode.value = true
+      busStore.displayNotification({ msg: $gettext('Failed to display template. Using raw mode'), type: 'warning' })
+    }
   })
 }
 

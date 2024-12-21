@@ -39,6 +39,15 @@ if anyof (header :contains "Subject" "toto", not header :contains "To" "peé") {
 }
 """
 
+SAMPLE_COMPLEX_SCRIPT = """require ["imap4flags"];
+
+# Filter: Test42
+if anyof (header :contains "From" "TOBESEEN") {
+    setflag "\\seen";
+}
+
+"""
+
 
 class ManagesieveClientMock:
     """Fake managesieve client."""
@@ -50,6 +59,7 @@ class ManagesieveClientMock:
             "main_script": SAMPLE_SIEVE_SCRIPT,
             "second_script": SAMPLE_SIEVE_SCRIPT,
             "third_script": SAMPLE_SIEVE_SCRIPT2,
+            "complex_script": SAMPLE_COMPLEX_SCRIPT,
         }
 
     def connect(self, username, password, **kwargs):
