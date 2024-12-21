@@ -1,14 +1,15 @@
 from unittest import skipIf
+import string
 
 from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.core import factories as core_factories
-from modoboa.core.models import User
+from modoboa.core.models import User, LocalConfig
 from modoboa.core.tests import test_ldap
 from modoboa.lib.tests import NO_LDAP, ModoAPITestCase
 from modoboa.limits import utils as limits_utils
-from .. import factories, models
+from .. import factories, models, lib
 
 
 class AuthenticationTestCase(ModoAPITestCase):
