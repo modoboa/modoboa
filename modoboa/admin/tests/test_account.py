@@ -1,14 +1,15 @@
 from unittest import skipIf
+import string
 
 from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.core import factories as core_factories
-from modoboa.core.models import User
+from modoboa.core.models import User, LocalConfig
 from modoboa.core.tests import test_ldap
 from modoboa.lib.tests import NO_LDAP, ModoTestCase
 from modoboa.limits import utils as limits_utils
-from .. import factories, models
+from .. import factories, models, lib
 
 
 class AuthenticationTestCase(ModoTestCase):
@@ -38,7 +39,6 @@ class AuthenticationTestCase(ModoTestCase):
 
 
 class AccountTestCase(ModoTestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -346,9 +346,36 @@ class AccountTestCase(ModoTestCase):
             "email": "tester@test.com",
             "stepid": "step2",
         }
-        # TODO: add test to check if unhashed password created with 
-        # make_password() from modoboa\modoboa\admin\lib.py has at least one
-        # letter, one digit(and one special character if option chosen by user) 
+        # Testing make_password()
+
+        # Setting allow_special_characters to False
+        localconfig = LocalConfig.objects.first()
+        localconfig.parameters.set_value("allow_special_characters", False, "core")
+        random_password_length = localconfig.parameters.get_value(
+            "random_password_length", "core"
+        )
+        localconfig.save()
+
+        random_password = lib.make_password()
+        self.assertEqual(len(random_password), random_password_length)
+        self.assertEqual(
+            len([char for char in random_password if char in list(string.punctuation)]),
+            0,
+        )
+
+        # And with allow_special_characters to True
+        localconfig = LocalConfig.objects.first()
+        localconfig.parameters.set_value("allow_special_characters", True, "core")
+        localconfig.save()
+
+        random_password = lib.make_password()
+        self.assertEqual(len(random_password), random_password_length)
+        self.assertNotEqual(
+            len([char for char in random_password if char in list(string.punctuation)]),
+            0,
+        )
+
+        # Testing API
 
         self.ajax_post(reverse("admin:account_add"), values)
 
@@ -363,6 +390,17 @@ class AccountTestCase(ModoTestCase):
         account.refresh_from_db()
         self.assertNotEqual(password, account.password)
         password = account.password
+
+        self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
+        account.refresh_from_db()
+        self.assertNotEqual(password, account.password)
+        password = account.password
+        self.assertNotEqual(
+            len(
+                [char for char in account.password if char in list(string.punctuation)]
+            ),
+            0,
+        )
 
         values["random_password"] = False
         self.ajax_post(reverse("admin:account_change", args=[account.pk]), values)
@@ -612,7 +650,6 @@ class LDAPAccountTestCase(test_ldap.LDAPTestCaseMixin, ModoTestCase):
 
 
 class PermissionsTestCase(ModoTestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
