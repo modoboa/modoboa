@@ -47,6 +47,9 @@ pull_request_rules:
   - name: automatic merge for dependabot pull requests + automatic merge for pyUp
       pull requests + automatic merge for transifex pull requests + automatic merge
       on CI success and review
-    conditions: []
+    conditions:
+      - check-success=test (postgres, 3.12)
+      - "#approved-reviews-by>=1"
+      - label=ready-to-merge
     actions:
       queue:
