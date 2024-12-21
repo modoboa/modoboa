@@ -65,6 +65,7 @@ SETTINGS_SAMPLE = {
     "core-inactive_account_threshold": "30",
     "admin-domains_must_have_authorized_mx": False,
     "core-random_password_length": "8",
+    "core-allow_special_characters": False,
     "admin-create_alias_on_mbox_rename": False,
     "admin-dkim_keys_storage_dir": "",
     "admin-dkim_default_key_length": 1024,
