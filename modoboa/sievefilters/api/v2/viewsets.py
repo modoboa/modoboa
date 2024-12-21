@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.sievefilters import constants
-from modoboa.sievefilters.lib import SieveClient, SieveClientError
+from modoboa.sievefilters.lib import SieveClient, SieveClientError, SieveActionTemplateNotFound
 from modoboa.sievefilters.rfc6266 import build_header
 from modoboa.sievefilters.api.v2 import serializers
 
@@ -154,7 +154,10 @@ class FilterSetViewSet(viewsets.ViewSet):
             fset = sclient.getscript(pk, format="fset")
         except SieveClientError:
             return response.Response(status=404)
-        serializer = serializers.FilterSerializer.from_filters(fset.filters)
+        try:
+            serializer = serializers.FilterSerializer.from_filters(fset.filters)
+        except SieveActionTemplateNotFound:
+            return HttpResponse(status=518)
         return response.Response(serializer.data)
 
     @extend_schema(
