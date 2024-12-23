@@ -95,7 +95,7 @@ django-phonenumber-field[phonenumbers]==8.0.0
     # via modoboa (pyproject.toml)
 django-rename-app==0.1.7
     # via modoboa (pyproject.toml)
-django-reversion==5.0.12
+django-reversion==5.1.0
     # via modoboa (pyproject.toml)
 django-rq==3.0.0
     # via modoboa (pyproject.toml)
