@@ -85,7 +85,7 @@ django-extensions==3.2.3
     # via modoboa (pyproject.toml)
 django-filter==24.3
     # via modoboa (pyproject.toml)
-django-js-asset==2.2.0
+django-js-asset==3.0.1
     # via django-ckeditor
 django-oauth-toolkit==3.0.1
     # via modoboa (pyproject.toml)
