@@ -47,7 +47,7 @@ dependencies = [
 	"passlib~=1.7.4",
 	"bcrypt", # Requires libffi-dev and python-dev
 	"asgiref",
-	"dnspython==2.6.1",
+	"dnspython==2.7.0",
 	"feedparser==6.0.11",
 	"fido2==1.2.0",
 	"gevent==24.11.1",
