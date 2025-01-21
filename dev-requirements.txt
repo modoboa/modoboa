@@ -13,7 +13,7 @@ asgiref==3.8.1
     #   modoboa (pyproject.toml)
 astroid==3.3.5
     # via pylint
-attrs==24.2.0
+attrs==24.3.0
     # via
     #   jsonschema
     #   referencing
