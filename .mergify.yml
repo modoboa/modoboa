@@ -34,9 +34,6 @@ queue_rules:
     merge_conditions:
       - check-success=test (postgres, 3.12)
     merge_method: squash
-  - name: default
-    conditions:
-      - check-success=test (postgres, 3.12)
 
 pull_request_rules:
   - name: delete head branch after merge
@@ -48,7 +45,7 @@ pull_request_rules:
       - author~=^dependabot(|-preview)\[bot\]$
       - check-success=test (postgres, 3.12)
       - label=dependencies
-    action:
+    actions:
       queue:
   - name: automatic merge for dependabot pull requests + automatic merge for pyUp
       pull requests + automatic merge for transifex pull requests + automatic merge
