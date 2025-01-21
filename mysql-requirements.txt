@@ -182,7 +182,7 @@ sgmllib3k==1.0.0
     # via feedparser
 sievelib==1.4.1
     # via modoboa (pyproject.toml)
-six==1.16.0
+six==1.17.0
     # via python-dateutil
 sqlparse==0.5.3
     # via django
