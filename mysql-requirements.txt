@@ -197,7 +197,7 @@ uritemplate==4.1.1
     # via
     #   drf-spectacular
     #   modoboa (pyproject.toml)
-urllib3==2.2.3
+urllib3==2.3.0
     # via requests
 zope-event==5.0
     # via gevent
