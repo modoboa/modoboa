@@ -34,7 +34,7 @@ chardet==5.2.0
     #   modoboa (pyproject.toml)
     #   reportlab
     #   tox
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1
     # via requests
 click==8.1.8
     # via rq
