@@ -24,7 +24,6 @@ queue_rules:
       - author~=^dependabot(|-preview)\[bot\]$
       - check-success=test (postgres, 3.12)
       - label=dependencies
-      - "#approved-reviews-by>=1"
     merge_conditions:
       - check-success=test (postgres, 3.12)
     merge_method: squash
@@ -44,6 +43,13 @@ pull_request_rules:
     conditions: []
     actions:
       delete_head_branch: {}
+  - name: Auto-queue for Dependabot
+    conditions:
+      - author~=^dependabot(|-preview)\[bot\]$
+      - check-success=test (postgres, 3.12)
+      - label=dependencies
+    action:
+      queue:
   - name: automatic merge for dependabot pull requests + automatic merge for pyUp
       pull requests + automatic merge for transifex pull requests + automatic merge
       on CI success and review
