@@ -237,7 +237,7 @@ uritemplate==4.1.1
     # via
     #   drf-spectacular
     #   modoboa (pyproject.toml)
-urllib3==2.2.3
+urllib3==2.3.0
     # via requests
 virtualenv==20.29.1
     # via tox
