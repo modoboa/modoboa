@@ -196,7 +196,7 @@ pyyaml==6.0.2
     #   pre-commit
 qrcode==8.0
     # via modoboa (pyproject.toml)
-redis==5.2.0
+redis==5.2.1
     # via
     #   django-rq
     #   modoboa (pyproject.toml)
