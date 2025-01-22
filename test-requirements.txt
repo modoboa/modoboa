@@ -149,7 +149,7 @@ packaging==24.2
     #   tox
 passlib==1.7.4
     # via modoboa (pyproject.toml)
-phonenumbers==8.13.52
+phonenumbers==8.13.53
     # via django-phonenumber-field
 pillow==11.0.0
     # via
