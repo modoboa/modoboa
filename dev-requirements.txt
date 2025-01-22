@@ -11,7 +11,7 @@ asgiref==3.8.1
     #   django
     #   django-cors-headers
     #   modoboa (pyproject.toml)
-astroid==3.3.5
+astroid==3.3.8
     # via pylint
 attrs==24.3.0
     # via
