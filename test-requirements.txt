@@ -21,7 +21,7 @@ attrs==24.3.0
     #   referencing
 bcrypt==4.2.1
     # via modoboa (pyproject.toml)
-cachetools==5.5.0
+cachetools==5.5.1
     # via tox
 certifi==2024.12.14
     # via requests
