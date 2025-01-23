@@ -91,7 +91,7 @@ feedparser==6.0.11
     # via modoboa (pyproject.toml)
 fido2==1.2.0
     # via modoboa (pyproject.toml)
-filelock==3.16.1
+filelock==3.17.0
     # via tldextract
 gevent==24.11.1
     # via modoboa (pyproject.toml)
