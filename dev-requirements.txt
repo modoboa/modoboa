@@ -231,7 +231,7 @@ rrdtool==0.1.16
     # via modoboa (pyproject.toml)
 sgmllib3k==1.0.0
     # via feedparser
-sievelib==1.4.1
+sievelib==1.4.2
     # via modoboa (pyproject.toml)
 six==1.17.0
     # via
