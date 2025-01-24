@@ -165,7 +165,7 @@ progressbar33==2.4
     # via modoboa (pyproject.toml)
 pycparser==2.22
     # via cffi
-pyproject-api==1.8.0
+pyproject-api==1.9.0
     # via tox
 python-dateutil==2.9.0.post0
     # via
