@@ -3,7 +3,7 @@
     v-model="drawer"
     :rail="rail"
     permanent
-    :color="mainColor"
+    :color="color"
     app
   >
     <div class="d-flex align-center">
@@ -77,11 +77,15 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ref, computed, onMounted } from 'vue'
 import { useGlobalStore, useAuthStore } from '@/stores'
 
 const props = defineProps({
+  color: {
+    type: String,
+    default: 'primary',
+  },
   menuItems: {
     type: Array,
     required: false,
@@ -95,7 +99,6 @@ const props = defineProps({
 
 const globalStore = useGlobalStore()
 const authStore = useAuthStore()
-const route = useRoute()
 const router = useRouter()
 
 const rail = ref(false)
@@ -103,13 +106,6 @@ const drawer = ref(true)
 
 const authUser = computed(() => authStore.authUser)
 const isAuthenticated = computed(() => authStore.isAuthenticated)
-
-const mainColor = computed(() => {
-  if (route.meta.layout === 'account') {
-    return 'grey'
-  }
-  return 'primary'
-})
 
 const displayInformationBell = computed(
   () =>

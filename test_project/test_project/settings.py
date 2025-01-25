@@ -102,8 +102,7 @@ MODOBOA_APPS = (
     "modoboa.postfix_autoreply",
     "modoboa.sievefilters",
     # Modoboa extensions here.
-    "modoboa_user",
-    "modoboa_user.contacts",
+    "modoboa.contacts",
 )
 
 try:

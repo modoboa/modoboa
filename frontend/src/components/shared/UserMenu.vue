@@ -11,20 +11,6 @@
             <v-list-item :title="user.username" />
           </div>
           <v-divider></v-divider>
-          <template v-if="remote">
-            <v-list-item href="https://localhost:3000/account">
-              <template #prepend>
-                <v-icon icon="mdi-account-circle-outline"></v-icon>
-              </template>
-              <v-list-item-title>Account</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="logout">
-              <template #prepend>
-                <v-icon icon="mdi-logout"></v-icon>
-              </template>
-              <v-list-item-title>Logout</v-list-item-title>
-            </v-list-item>
-          </template>
         </v-list>
       </v-card>
     </v-menu>
@@ -33,26 +19,20 @@
 
 <script setup>
 import { computed } from 'vue'
-import { getActivePinia } from 'pinia'
 
 const props = defineProps({
   user: {
     type: Object,
     default: null,
   },
-  remote: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const userInitials = computed(() => {
+  if (!props.user) {
+    return ''
+  }
   return props.user.first_name && props.user.last_name
     ? `${props.user.first_name[0].toUpperCase()}${props.user.last_name[0].toUpperCase()}`
     : props.user.username.slice(0, 2).toUpperCase()
 })
-
-async function logout() {
-  getActivePinia()._s.forEach(async (store) => await store.$reset())
-}
 </script>

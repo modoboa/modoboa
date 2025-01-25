@@ -2,10 +2,14 @@
 import { onMounted } from 'vue'
 import { useAuthStore } from '@/stores'
 
+const props = defineProps({
+  redirectUrl: String,
+})
+
 const authStore = useAuthStore()
 
 onMounted(() => {
-  authStore.completeLogin()
+  authStore.completeLogin(props.redirectUrl)
 })
 </script>
 
