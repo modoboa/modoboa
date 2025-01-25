@@ -150,6 +150,15 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
                     "url": "/admin",
                 }
             )
+        apps += [
+            {
+                "name": "contacts",
+                "label": _("Contacts"),
+                "icon": "mdi-contacts",
+                "description": _("Address book"),
+                "url": "/user/contacts",
+            }
+        ]
         apps += exts_pool.get_available_apps()
         serializer = serializers.ModoboaApplicationSerializer(apps, many=True)
         return response.Response(serializer.data)

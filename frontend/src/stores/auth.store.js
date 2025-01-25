@@ -130,7 +130,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function completeLogin() {
+  async function completeLogin(redirectUrl) {
     try {
       const user = await manager.signinRedirectCallback()
       isAuthenticated.value = true
@@ -140,7 +140,7 @@ export const useAuthStore = defineStore('auth', () => {
         window.location.href = previousPage
       } else {
         // Redirect to a default page if the previous page is not available
-        router.push({ name: 'Dashboard' })
+        router.push(redirectUrl)
       }
       return user
     } catch (error) {

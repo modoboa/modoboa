@@ -12,12 +12,12 @@ services:
       DB: "SQLITE"
       DEBUG: "True"
       REDIS_HOST: redis
-      PYTHONPATH: "..:/modoboa_user"
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
     command: >
       sh -c "cd test_project; python3 manage.py rqworker dkim modoboa"
     volumes:
       - .:/code
-      - ../modoboa-user:/modoboa_user
 
   api:
     container_name: modoboa_api
@@ -33,7 +33,8 @@ services:
       DB: "SQLITE"
       DEBUG: "True"
       REDIS_HOST: redis
-      PYTHONPATH: "..:/modoboa_user"
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
     command: >
       sh -c "cd test_project
              python3 manage.py migrate
@@ -42,7 +43,6 @@ services:
              python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
     volumes:
       - .:/code
-      - ../modoboa-user:/modoboa_user
 
   api-unsecured:
     container_name: modoboa_api_unsecured
@@ -58,13 +58,13 @@ services:
       DB: "SQLITE"
       DEBUG: "True"
       REDIS_HOST: redis
-      PYTHONPATH: "..:/modoboa_user"
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
     command: >
       sh -c "cd test_project
              python3 manage.py runserver_plus 0.0.0.0:8001"
     volumes:
       - .:/code
-      - ../modoboa-user:/modoboa_user
 
   front:
     container_name: modoboa_front

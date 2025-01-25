@@ -13,7 +13,6 @@ RUN apk add --update openssl librrd python3-dev libffi-dev gcc g++ musl-dev libx
 RUN python3 -m venv $VIRTUAL_ENV
 WORKDIR /tmp
 COPY requirements.txt /tmp
-COPY user-requirements.txt /tmp
 COPY test-requirements.txt /tmp
 COPY dev-requirements.txt /tmp
 RUN python -m pip install -U pip

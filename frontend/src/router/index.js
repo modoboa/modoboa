@@ -16,12 +16,15 @@ const routes = [
         path: 'logged',
         name: 'LoginCallback',
         component: () => import('@/views/login/LoginCallbackView.vue'),
+        props: {
+          redirectUrl: '/admin',
+        },
       },
     ],
   },
   {
     path: '/admin',
-    component: () => import('@/layouts/connected/ConnectedLayout.vue'),
+    component: () => import('@/layouts/admin/AdminLayout.vue'),
     children: [
       {
         path: '',
@@ -233,9 +236,8 @@ const routes = [
   },
   {
     path: '/account',
-    component: () => import('@/layouts/connected/ConnectedLayout.vue'),
+    component: () => import('@/layouts/account/AccountLayout.vue'),
     meta: {
-      layout: 'account',
       requiresAuth: true,
     },
     children: [
@@ -244,7 +246,6 @@ const routes = [
         name: 'AccountFilters',
         component: () => import('@/views/account/FiltersView.vue'),
         meta: {
-          layout: 'account',
           requiresAuth: true,
           requiresMailbox: true,
         },
@@ -254,9 +255,41 @@ const routes = [
         name: 'AccountSettings',
         component: () => import('@/views/account/SettingsView.vue'),
         meta: {
-          layout: 'account',
           requiresAuth: true,
         },
+      },
+    ],
+  },
+  {
+    path: '/user',
+    component: () => import('@/layouts/user/UserLayout.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+    children: [
+      {
+        path: '',
+        name: 'UserDashboard',
+        component: () => import('@/views/DashboardView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'contacts',
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: ':category?',
+            name: 'ContactList',
+            component: () => import('@/views/contacts/AddressBook.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
       },
     ],
   },
