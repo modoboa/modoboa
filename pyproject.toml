@@ -75,7 +75,10 @@ dependencies = [
 	"rq>=1.13.0",
 	"django-rq",
 	# Sieve
-	"sievelib>=1.4.1"
+	"sievelib>=1.4.1",
+        # User
+        "vobject",
+        "caldav==1.3.9"
 ]
 [project.optional-dependencies]
 dev = [
