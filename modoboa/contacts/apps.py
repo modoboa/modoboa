@@ -3,10 +3,10 @@
 from django.apps import AppConfig
 from django.utils.translation import gettext
 
-from modoboa.contacts.forms import UserSettings
-
 
 def load_settings():
+    """Load app settings."""
+    from modoboa.contacts.forms import UserSettings
     from modoboa.parameters import tools as param_tools
 
     param_tools.registry.add("user", UserSettings, gettext("Contacts"))
