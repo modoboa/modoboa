@@ -182,7 +182,7 @@ pycparser==2.22
     # via cffi
 pylint==3.3.3
     # via modoboa (pyproject.toml)
-pyopenssl==24.2.1
+pyopenssl==25.0.0
     # via modoboa (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via modoboa (pyproject.toml)
