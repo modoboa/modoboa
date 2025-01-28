@@ -150,7 +150,7 @@ redis==5.2.1
     #   django-rq
     #   modoboa (pyproject.toml)
     #   rq
-referencing==0.35.1
+referencing==0.36.2
     # via
     #   jsonschema
     #   jsonschema-specifications
