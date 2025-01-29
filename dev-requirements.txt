@@ -129,7 +129,7 @@ idna==3.10
     #   tldextract
 inflection==0.5.1
     # via drf-spectacular
-isort==5.13.2
+isort==6.0.0
     # via pylint
 jsonschema==4.23.0
     # via drf-spectacular
