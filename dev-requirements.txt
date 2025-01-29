@@ -19,7 +19,7 @@ attrs==25.1.0
     #   referencing
 bcrypt==4.2.1
     # via modoboa (pyproject.toml)
-black==24.10.0
+black==25.1.0
     # via modoboa (pyproject.toml)
 certifi==2024.12.14
     # via requests
