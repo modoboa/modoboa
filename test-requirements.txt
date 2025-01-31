@@ -23,7 +23,7 @@ bcrypt==4.2.1
     # via modoboa (pyproject.toml)
 cachetools==5.5.1
     # via tox
-certifi==2024.12.14
+certifi==2025.1.31
     # via requests
 cffi==1.17.1
     # via
