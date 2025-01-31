@@ -137,7 +137,7 @@ python-dateutil==2.9.0.post0
     # via modoboa (pyproject.toml)
 python-magic==0.4.27
     # via modoboa (pyproject.toml)
-pytz==2024.2
+pytz==2025.1
     # via modoboa (pyproject.toml)
 pyyaml==6.0.2
     # via drf-spectacular
