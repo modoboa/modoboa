@@ -4,7 +4,7 @@
 #
 #    pip-compile --extra=mysql --output-file=mysql-requirements.txt pyproject.toml
 #
-aiosmtplib==3.0.2
+aiosmtplib==4.0.0
     # via modoboa (pyproject.toml)
 asgiref==3.8.1
     # via

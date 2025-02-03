@@ -4,7 +4,7 @@
 #
 #    pip-compile --extra=test --output-file=test-requirements.txt pyproject.toml
 #
-aiosmtplib==3.0.2
+aiosmtplib==4.0.0
     # via modoboa (pyproject.toml)
 argon2-cffi==23.1.0
     # via modoboa (pyproject.toml)
