@@ -205,7 +205,7 @@ referencing==0.36.2
     # via
     #   jsonschema
     #   jsonschema-specifications
-reportlab==4.2.5
+reportlab==4.3.0
     # via modoboa (pyproject.toml)
 requests==2.32.3
     # via
