@@ -51,7 +51,7 @@ distlib==0.3.9
     # via virtualenv
 dj-database-url==2.3.0
     # via modoboa (pyproject.toml)
-django==4.2.18
+django==5.1.5
     # via
     #   dj-database-url
     #   django-ckeditor
