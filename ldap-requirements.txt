@@ -60,7 +60,7 @@ django-auth-ldap==4.8.0
     # via modoboa (pyproject.toml)
 django-ckeditor==6.7.2
     # via modoboa (pyproject.toml)
-django-cors-headers==4.6.0
+django-cors-headers==4.7.0
     # via modoboa (pyproject.toml)
 django-environ==0.12.0
     # via modoboa (pyproject.toml)
