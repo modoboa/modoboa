@@ -100,7 +100,7 @@ const adminMenuItems = [
 
 onMounted(() => {
   if (authUser.value.role === 'SuperAdmins') {
-    parametersApi.getApplications().then((response) => {
+    parametersApi.getGlobalApplications().then((response) => {
       response.data.forEach((item) => {
         settings.push({
           text: item.label,
@@ -109,7 +109,7 @@ onMounted(() => {
       })
     })
     if (parametersStore.imapMigrationEnabled === null) {
-      parametersApi.getApplication('imap_migration').then((response) => {
+      parametersApi.getGlobalApplication('imap_migration').then((response) => {
         parametersStore.imapMigrationEnabled =
           response.data.params.enabled_imapmigration
       })

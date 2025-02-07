@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Andrei-Ilie Olteanu <andrei@flashsoft.ro>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 14:22+0200\n"
+"PO-Revision-Date: 2018-06-13 07:05+0000\n"
+"Last-Translator: Andrei-Ilie Olteanu <andrei@flashsoft.ro>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
+"language/ro_RO/)\n"
+"Language: ro_RO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
+
+#: forms.py:16
+msgid "Server settings"
+msgstr "Setări server"
+
+#: forms.py:20
+msgid "Server URL"
+msgstr "URL server"
+
+#: forms.py:22
+msgid ""
+"The URL of your Radicale server. It will be used to construct calendar URLs."
+msgstr ""
+"URL-ul pentru serverul tau Radicale. Va fi folosit pentru compunerea URL-"
+"urilor pentru calendar. "
+
+#: forms.py:29
+msgid "Rights management"
+msgstr "Manageriere drepturi"
+
+#: forms.py:32
+msgid "Rights file's path"
+msgstr "Calea fișierului de drepturi"
+
+#: forms.py:35
+msgid "Path to the file that contains rights definition"
+msgstr "Calea către fișierul ce conține definirea drepturilor"
+
+#: forms.py:41
+msgid "Allow calendars administration"
+msgstr "Permite administrarea calendarelor"
+
+#: forms.py:44
+msgid "Allow domain administrators to manage user calendars (read and write)"
+msgstr ""
+"Permite administratorilor de domeniu să managerieze calendarele (scriere și "
+"citire)"
+
+#: forms.py:50
+msgid "Miscellaneous"
+msgstr ""
+
+#: forms.py:53
+msgid "Maximum size of ICS files"
+msgstr ""
+
+#: forms.py:56
+msgid ""
+"Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
+msgstr ""
+
+#: handlers.py:52
+msgid "Calendars"
+msgstr "Calendare"
+
+#: models.py:53 models.py:70
+msgid "Server location is not set, please fix it."
+msgstr "Locația serverului nu este definită, te rugăm repară. "
+
+#: modo_extension.py:17
+msgid "Radicale management"
+msgstr "Management Radicale"
+
+#: modo_extension.py:22
+msgid "Management frontend for Radicale, a simple calendar and contact server."
+msgstr ""
+"Management Frontend pentru Radicale, un server simplu pentru calendar si "
+"contact. "
+
+#: serializers.py:173 serializers.py:175
+msgid "This field is required."
+msgstr "Acest câmp este necesar."
+
+#: templates/modoboa_radicale/calendar_display.html:6
+msgid "Calendar"
+msgstr "Calendar"
+
+#: views.py:20
+#, fuzzy
+#| msgid "This field is required."
+msgid "A mailbox is required"
+msgstr "Acest câmp este necesar."
+
+#: viewsets.py:199
+msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""

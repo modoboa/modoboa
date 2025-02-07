@@ -97,6 +97,8 @@ MODOBOA_APPS = (
     'modoboa.imap_migration',
     'modoboa.postfix_autoreply',
     'modoboa.sievefilters',
+    'modoboa.contacts',
+    'modoboa.calendars',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}

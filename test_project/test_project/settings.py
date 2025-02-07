@@ -103,6 +103,7 @@ MODOBOA_APPS = (
     "modoboa.sievefilters",
     # Modoboa extensions here.
     "modoboa.contacts",
+    "modoboa.calendars",
 )
 
 try:

@@ -9,6 +9,7 @@ import vuetify from './vuetify'
 import router from '../router'
 import gettext from './gettext'
 import filters from './filters'
+import permissions from './permissions'
 import pinia from '@/stores'
 import VueApexCharts from 'vue3-apexcharts'
 
@@ -19,5 +20,6 @@ export function registerPlugins(app) {
     .use(pinia)
     .use(router)
     .use(filters)
+    .use(permissions)
     .use(VueApexCharts)
 }

@@ -2,8 +2,8 @@
 
 from django.core.management.base import BaseCommand, CommandError
 
-from modoboa_contacts import models
-from modoboa_contacts.importer import import_csv_file
+from modoboa.contacts import models
+from modoboa.contacts.importer import import_csv_file
 
 
 class Command(BaseCommand):

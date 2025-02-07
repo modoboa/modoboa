@@ -2,8 +2,6 @@
 
 from django.utils import timezone
 
-from modoboa.lib import cryptutils
-
 from .lib import carddav
 from . import models
 
@@ -20,7 +18,7 @@ def get_cdav_client_from_request(request, addressbook, *args, **kwargs):
     return get_cdav_client(
         addressbook,
         request.user.username,
-        passwd=cryptutils.decrypt(request.session["password"]),
+        passwd=request.auth,
         **kwargs,
     )
 

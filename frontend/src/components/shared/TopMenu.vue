@@ -1,5 +1,5 @@
 <template>
-  <div class="top-menu">
+  <div v-if="user" class="top-menu">
     <v-menu activator="parent" location="bottom">
       <template #activator="{ props }">
         <v-btn icon="mdi-apps" flat class="mr-4" v-bind="props"></v-btn>

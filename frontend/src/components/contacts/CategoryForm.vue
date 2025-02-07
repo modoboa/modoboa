@@ -33,6 +33,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
+import { useBusStore } from '@/stores'
 import contactsApi from '@/api/contacts'
 import rules from '@/plugins/rules'
 
@@ -42,10 +43,11 @@ const props = defineProps({
     default: null,
   },
 })
-const emit = defineEmits(['close', 'added', 'updated'])
+const emit = defineEmits(['close', 'updated'])
 
 const router = useRouter()
 const { $gettext } = useGettext()
+const { displayNotification } = useBusStore()
 
 const form = ref({})
 const formRef = ref()
@@ -69,14 +71,12 @@ async function submit() {
   }
   working.value = true
   try {
-    let resp
     if (props.category) {
-      resp = await contactsApi.updateCategory(props.category.pk, form.value)
-      emit('updated', resp.data)
+      await contactsApi.updateCategory(props.category.pk, form.value)
     } else {
-      resp = await contactsApi.addCategory(form.value)
-      emit('added', resp.data)
+      await contactsApi.addCategory(form.value)
     }
+    emit('updated')
     emit('close')
   } catch (err) {
     console.log(err)
@@ -88,6 +88,8 @@ async function submit() {
 function deleteCategory() {
   contactsApi.deleteCategory(props.category.pk).then(() => {
     close()
+    emit('updated')
+    displayNotification({ msg: $gettext('Category deleted') })
     router.push({ name: 'ContactList' })
   })
 }

@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Giancarlo Gaifas <lallo@artiemestieri.tn.it>, 2013
+# Rocco <mors10@hotmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-06 14:22+0200\n"
+"PO-Revision-Date: 2020-05-06 12:26+0000\n"
+"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
+"Language-Team: Italian (http://www.transifex.com/tonio/modoboa/language/it/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:16
+msgid "Server settings"
+msgstr "Impostazioni del Server"
+
+#: forms.py:20
+msgid "Server URL"
+msgstr "Indirizzo del Server"
+
+#: forms.py:22
+msgid ""
+"The URL of your Radicale server. It will be used to construct calendar URLs."
+msgstr "L'URL del Server. Sarà utilizzato per la costrizione degli URLs del calendario."
+
+#: forms.py:29
+msgid "Rights management"
+msgstr "Gestione permessi"
+
+#: forms.py:32
+msgid "Rights file's path"
+msgstr "Percorso permessi del file"
+
+#: forms.py:35
+msgid "Path to the file that contains rights definition"
+msgstr "Percorso del file che contiene le definizioni dei permessi"
+
+#: forms.py:41
+msgid "Allow calendars administration"
+msgstr "Permetti amministrazione dei Calendari"
+
+#: forms.py:44
+msgid "Allow domain administrators to manage user calendars (read and write)"
+msgstr "Permetti agli aministratori di dominio di aministrare i Calendari utenti (lettura e scrittura)"
+
+#: forms.py:50
+msgid "Miscellaneous"
+msgstr ""
+
+#: forms.py:53
+msgid "Maximum size of ICS files"
+msgstr ""
+
+#: forms.py:56
+msgid ""
+"Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
+msgstr ""
+
+#: handlers.py:52
+msgid "Calendars"
+msgstr "Calendari"
+
+#: models.py:53 models.py:70
+msgid "Server location is not set, please fix it."
+msgstr ""
+
+#: modo_extension.py:17
+msgid "Radicale management"
+msgstr "Amministrazione Radicale"
+
+#: modo_extension.py:22
+msgid ""
+"Management frontend for Radicale, a simple calendar and contact server."
+msgstr "Gestione frontend per Radicale , un semplice server di calendario e contatti ."
+
+#: serializers.py:173 serializers.py:175
+msgid "This field is required."
+msgstr ""
+
+#: templates/modoboa_radicale/calendar_display.html:6
+msgid "Calendar"
+msgstr ""
+
+#: views.py:20
+msgid "A mailbox is required"
+msgstr ""
+
+#: viewsets.py:199
+msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""

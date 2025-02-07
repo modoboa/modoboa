@@ -5,7 +5,6 @@ import os
 
 import httmock
 
-from django import forms
 from django.core import management
 
 from django.urls import reverse
@@ -14,30 +13,10 @@ from django.utils import timezone
 from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
-from modoboa.parameters import forms as param_forms
-from modoboa.parameters import tools as param_tools
 
 from . import factories
 from . import mocks
 from . import models
-
-
-class RadicaleParametersForm(param_forms.AdminParametersForm):
-    """Since contacts plugin depends on radicale, we need this."""
-
-    app = "modoboa_radicale"
-
-    server_location = forms.URLField(
-        label="Server URL",
-        help_text=(
-            "The URL of your Radicale server. "
-            "It will be used to construct calendar URLs."
-        ),
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-
-
-param_tools.registry.add("global", RadicaleParametersForm, "Radicale")
 
 
 class TestDataMixin:
@@ -70,7 +49,7 @@ class TestDataMixin:
         """Initiate test context."""
         self.client.force_login(self.user)
         self.set_global_parameter(
-            "server_location", "http://example.test/radicale/", app="modoboa_radicale"
+            "server_location", "http://example.test/radicale/", app="calendars"
         )
 
     def enable_cdav_sync(self):
@@ -80,8 +59,8 @@ class TestDataMixin:
             response = self.client.post(
                 url,
                 {
-                    "modoboa_contacts-enable_carddav_sync": True,
-                    "modoboa_contacts-sync_frequency": 300,
+                    "contacts-enable_carddav_sync": True,
+                    "contacts-sync_frequency": 300,
                 },
             )
         self.assertEqual(response.status_code, 200)
@@ -110,13 +89,6 @@ class ViewsTestCase(TestDataMixin, ModoTestCase):
         self.enable_cdav_sync()
         abook.refresh_from_db()
         self.assertIsNot(abook.last_sync, None)
-
-    # def test_index(self):
-    #     """Test index view."""
-    #     url = reverse("modoboa_contacts:index")
-    #     with self.assertRaises(IOError):
-    #         response = self.client.get(url)
-    # self.assertContains(response, '<div id="app">')
 
 
 class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):

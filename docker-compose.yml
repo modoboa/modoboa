@@ -41,6 +41,8 @@ services:
              python3 manage.py load_initial_data --dev
              django-admin compilemessages
              python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
+    depends_on:
+      - radicale
     volumes:
       - .:/code
 
@@ -63,6 +65,8 @@ services:
     command: >
       sh -c "cd test_project
              python3 manage.py runserver_plus 0.0.0.0:8001"
+    depends_on:
+      - radicale
     volumes:
       - .:/code
 
@@ -92,3 +96,12 @@ services:
       - api
     volumes:
       - ./docker/dovecot_config:/etc/dovecot/conf.d
+
+  radicale:
+    container_name: modoboa_radicale
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.radicale.dev
+    volumes:
+      - ./docker/radicale_config:/etc/radicale
