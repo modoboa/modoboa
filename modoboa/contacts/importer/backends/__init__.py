@@ -1,10 +1,10 @@
-from modoboa_contacts import models, tasks
+from modoboa.contacts import models, tasks
 
 
 class ImporterBackend:
     """Base class of all importer backends."""
 
-    name: str = None
+    name: str
 
     field_names: dict = {}
 

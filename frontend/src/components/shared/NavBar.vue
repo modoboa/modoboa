@@ -61,13 +61,23 @@
               </v-list-item>
             </template>
             <template v-for="subitem in item.children" :key="subitem.text">
-              <v-list-item
-                v-if="displayMenuItem(subitem)"
-                :to="subitem.to"
-                link
-                :title="subitem.text"
-                :value="subitem"
-              ></v-list-item>
+              <template v-if="displayMenuItem(subitem)">
+                <v-list-item
+                  v-if="subitem.action"
+                  :title="subitem.text"
+                  :value="subitem"
+                  :prepend-icon="subitem.icon"
+                  @click="subitem.action"
+                ></v-list-item>
+                <v-list-item
+                  v-else
+                  :to="subitem.to"
+                  link
+                  :title="subitem.text"
+                  :value="subitem"
+                  :prepend-icon="subitem.icon"
+                ></v-list-item>
+              </template>
             </template>
           </v-list-group>
         </template>

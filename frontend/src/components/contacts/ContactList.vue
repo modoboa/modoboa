@@ -14,19 +14,24 @@
             density="compact"
             class="flex-grow-0 w-33 mr-4"
           ></v-text-field>
-
-          <v-menu location="bottom">
-            <template #activator>
-              <v-btn
-                color="primary"
-                variant="outlined"
-                @click="showForm = true"
-              >
-                {{ $gettext('Add') }}
-              </v-btn>
-            </template>
-            <v-list density="compact"> </v-list>
-          </v-menu>
+          <v-btn color="primary" variant="outlined" @click="showForm = true">
+            {{ $gettext('Add') }}
+          </v-btn>
+          <template v-if="preferences.enable_carddav_sync">
+            <v-btn
+              icon="mdi-information-outline"
+              :title="$gettext('Display address book information')"
+              class="ml-2"
+              @click="showAddressBookInfo = true"
+            />
+            <v-btn
+              v-if="!addressBook.last_sync"
+              icon="mdi-sync"
+              color="success"
+              :title="$gettext('Synchronize contacts with address book')"
+              @click="syncToAddressBook"
+            />
+          </template>
           <v-chip
             v-if="$route.params.category"
             class="my-2 mx-4"
@@ -75,13 +80,22 @@
       @close="closeCategoriesForm"
     />
   </v-dialog>
+  <v-dialog v-model="showAddressBookInfo" persistent max-width="800px">
+    <AddressBookInfo
+      :address-book-url="addressBook.url"
+      @close="showAddressBookInfo = false"
+    />
+  </v-dialog>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
+import { useBusStore } from '@/stores'
 import contactsApi from '@/api/contacts'
+import parametersApi from '@/api/parameters'
+import AddressBookInfo from './AddressBookInfo.vue'
 import ContactForm from './ContactForm.vue'
 import ContactCategoriesForm from './ContactCategoriesForm.vue'
 import MenuItems from '@/components/tools/MenuItems'
@@ -90,12 +104,16 @@ const emit = defineEmits(['editCategory'])
 
 const route = useRoute()
 const { $gettext } = useGettext()
+const { displayNotification } = useBusStore()
 
+const addressBook = ref({})
 const contacts = ref([])
 const search = ref('')
 const selectedContact = ref(null)
+const showAddressBookInfo = ref(false)
 const showForm = ref(false)
 const showCategoriesForm = ref(false)
+const preferences = ref({})
 
 const headers = [
   { key: 'display_name', title: $gettext('Display name') },
@@ -122,6 +140,12 @@ const contactActions = [
     color: 'red',
   },
 ]
+
+let intervalId
+
+onBeforeUnmount(() => {
+  if (intervalId) clearInterval(intervalId)
+})
 
 function closeForm() {
   showForm.value = false
@@ -152,7 +176,7 @@ function editCategories(contact) {
 
 function closeCategoriesForm() {
   showCategoriesForm.value = false
-  selectedContact.value = false
+  selectedContact.value = null
 }
 
 function deleteContact(contact) {
@@ -167,7 +191,28 @@ function fetchContacts() {
   })
 }
 
+function syncToAddressBook() {
+  contactsApi.synchronizeToAddressBook().then(() => {
+    displayNotification({ msg: $gettext('Synchronization started') })
+  })
+}
+
+contactsApi.getDefaultAddressBook().then((resp) => {
+  addressBook.value = resp.data
+})
+parametersApi.getUserApplication('contacts').then((resp) => {
+  preferences.value = resp.data.params
+})
 fetchContacts()
+
+watch(preferences, (value) => {
+  if (value) {
+    intervalId = setInterval(
+      contactsApi.synchronizeFromAddressBook,
+      value.sync_frequency * 1000
+    )
+  }
+})
 
 watch(
   () => route.params.category,

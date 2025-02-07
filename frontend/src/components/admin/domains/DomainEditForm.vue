@@ -261,7 +261,7 @@ async function save() {
   }
 }
 onMounted(() => {
-  parametersApi.getApplication('limits').then((resp) => {
+  parametersApi.getGlobalApplication('limits').then((resp) => {
     limitsConfig.value.data = resp.data
   })
 })

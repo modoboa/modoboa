@@ -31,7 +31,7 @@ class AddressBook(models.Model):
     @property
     def url(self):
         server_location = param_tools.get_global_parameter(
-            "server_location", app="modoboa_radicale"
+            "server_location", app="calendars"
         )
         if not server_location:
             raise lib_exceptions.InternalError(

@@ -16,7 +16,7 @@ COPY requirements.txt /tmp
 COPY test-requirements.txt /tmp
 COPY dev-requirements.txt /tmp
 RUN python -m pip install -U pip
-RUN pip install -r requirements.txt -r user-requirements.txt -r test-requirements.txt -r dev-requirements.txt
+RUN pip install -r requirements.txt -r test-requirements.txt -r dev-requirements.txt
 FROM base AS run
 COPY docker/doveadm /usr/local/bin
 RUN chmod +x /usr/local/bin/doveadm

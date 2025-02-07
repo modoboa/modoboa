@@ -1,6 +1,15 @@
 import repository from './repository'
 
 export default {
+  getDefaultAddressBook() {
+    return repository.get('/address-books/default/')
+  },
+  synchronizeToAddressBook() {
+    return repository.get('/address-books/sync_to_cdav/')
+  },
+  synchronizeFromAddressBook() {
+    return repository.get('/address-books/sync_from_cdav/')
+  },
   getContacts(params) {
     return repository.get('/contacts/', { params })
   },

@@ -1,11 +1,9 @@
 <template>
   <v-main>
-    <v-container fluid>
+    <v-container fluid style="height: 100%">
       <router-view v-slot="{ Component }">
         <transition name="fade">
-          <div v-show="true">
-            <component :is="Component" />
-          </div>
+          <component :is="Component" />
         </transition>
       </router-view>
     </v-container>

@@ -1,5 +1,6 @@
 """Contacts serializers."""
 
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
@@ -13,7 +14,7 @@ class AddressBookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.AddressBook
-        fields = ("pk", "name", "url")
+        fields = ("pk", "name", "url", "last_sync")
 
 
 class EmailAddressSerializer(serializers.ModelSerializer):
@@ -218,3 +219,28 @@ class ContactSerializer(serializers.ModelSerializer):
             tasks.update_contact_cdav(self.context["request"], instance)
 
         return instance
+
+
+class UserPreferencesSerializer(serializers.Serializer):
+    """Serializer to save user preferences."""
+
+    enable_carddav_sync = serializers.BooleanField(default=False)
+    sync_frequency = serializers.IntegerField(default=300)
+
+    def validate_sync_frequency(self, value):
+        """Make sure frequency is a positive integer."""
+        if value < 60:
+            raise serializers.ValidationError(_("Minimum allowed value is 60s"))
+        return value
+
+    def post_save(self, request):
+        """Create remote cal if necessary."""
+        if not self.validated_data["enable_carddav_sync"]:
+            return
+        abook = request.user.addressbook_set.first()
+        if abook.last_sync:
+            return
+        tasks.create_cdav_addressbook(abook, request.auth)
+        if not abook.contact_set.exists():
+            abook.last_sync = timezone.now()
+            abook.save(update_fields=["last_sync"])

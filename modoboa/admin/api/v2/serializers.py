@@ -1,7 +1,6 @@
 """Admin API v2 serializers."""
 
 import ipaddress
-import os
 from typing import List
 
 from django.conf import settings
@@ -11,6 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from django.contrib.auth import password_validation
+from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
 
@@ -351,6 +351,24 @@ class AccountResourceSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ("name", "label", "max_value", "current_value", "usage")
         model = limits_models.UserObjectLimit
+
+
+class AccountMeSerializer(v1_serializers.AccountSerializer):
+    """Custom Account serializer for connected user."""
+
+    permissions = serializers.SerializerMethodField()
+
+    class Meta(v1_serializers.AccountSerializer.Meta):
+        fields = v1_serializers.AccountSerializer.Meta.fields + ("permissions",)
+
+    def get_permissions(self, user) -> List[str]:
+        """Return available permissions for given user."""
+        permissions = (
+            user.user_permissions.all() | Permission.objects.filter(group__user=user)
+        ).select_related("content_type")
+        return [
+            "{}.{}".format(p.content_type.app_label, p.codename) for p in permissions
+        ]
 
 
 class AccountSerializer(v1_serializers.AccountSerializer):

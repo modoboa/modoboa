@@ -251,6 +251,14 @@ const routes = [
         },
       },
       {
+        path: 'parameters/:app',
+        name: 'AccountParametersEdit',
+        component: () => import('@/views/account/ParametersView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: ':tab?',
         name: 'AccountSettings',
         component: () => import('@/views/account/SettingsView.vue'),
@@ -285,6 +293,22 @@ const routes = [
             path: ':category?',
             name: 'ContactList',
             component: () => import('@/views/contacts/AddressBook.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
+      {
+        path: 'calendars',
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'CalendarView',
+            component: () => import('@/views/calendars/CalendarView.vue'),
             meta: {
               requiresAuth: true,
             },

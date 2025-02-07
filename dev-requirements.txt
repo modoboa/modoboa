@@ -74,6 +74,7 @@ django==4.2.18
     #   django-rq
     #   django-xforwardedfor-middleware
     #   djangorestframework
+    #   drf-nested-routers
     #   drf-spectacular
     #   modoboa (pyproject.toml)
 django-bower==5.2.0
@@ -108,9 +109,12 @@ django-xforwardedfor-middleware==2.0
     # via modoboa (pyproject.toml)
 djangorestframework==3.15.2
     # via
+    #   drf-nested-routers
     #   drf-spectacular
     #   modoboa (pyproject.toml)
 dnspython==2.7.0
+    # via modoboa (pyproject.toml)
+drf-nested-routers==0.94.1
     # via modoboa (pyproject.toml)
 drf-spectacular==0.28.0
     # via modoboa (pyproject.toml)
