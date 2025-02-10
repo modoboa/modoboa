@@ -4,10 +4,7 @@ LABEL org.opencontainers.image.authors="Antoine Nguyen <tonio@ngyn.org>"
 
 WORKDIR /app
 
-COPY radicale_modoboa_oauth2 /app/radicale_modoboa_oauth2
-ENV PYTHONPATH="${PYTHONPATH}:/app"
-
-RUN pip install Radicale pytz requests
+RUN pip install Radicale pytz radicale-modoboa-auth-oauth2
 
 EXPOSE 5232
 
