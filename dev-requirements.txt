@@ -121,7 +121,7 @@ gevent==24.11.1
     # via modoboa (pyproject.toml)
 greenlet==3.1.1
     # via gevent
-identify==2.6.6
+identify==2.6.7
     # via pre-commit
 idna==3.10
     # via
