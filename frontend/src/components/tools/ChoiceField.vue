@@ -32,7 +32,7 @@
   </div>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref, onMounted, computed } from 'vue'
 
 const props = defineProps({
@@ -43,7 +43,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  choicesPerLine: { type: Number, default: undefined },
+  choicesPerLine: {
+    type: Number,
+    required: false,
+    default: null,
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])

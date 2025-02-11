@@ -10,11 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-29 17:08+0100\n"
+"POT-Creation-Date: 2025-02-11 09:00+0100\n"
 "PO-Revision-Date: 2018-07-06 08:26+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
-"language/zh_TW/)\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/language/zh_TW/)\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,12 +42,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "不可以超過網域配額"
 
 #: admin/api/v1/serializers.py:161 admin/api/v1/serializers.py:386
-#: admin/api/v2/serializers.py:478 admin/models/alias.py:38
+#: admin/api/v2/serializers.py:496 admin/models/alias.py:38
 msgid "Permission denied."
 msgstr "權限不足"
 
 #: admin/api/v1/serializers.py:223 admin/api/v2/serializers.py:77
-#: admin/api/v2/serializers.py:410 admin/forms/alias.py:113
+#: admin/api/v2/serializers.py:428 admin/forms/alias.py:113
 #: admin/forms/alias.py:115 core/api/v2/serializers.py:224
 #: core/api/v2/serializers.py:226 core/api/v2/serializers.py:235
 #: core/app_settings.py:582 core/app_settings.py:584 core/app_settings.py:595
@@ -61,7 +60,7 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "管理員網域列表 (只有經銷商和網域管理員)。"
 
-#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:460
+#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:478
 msgid "Not allowed for this role."
 msgstr "不允許這個身份"
 
@@ -69,14 +68,16 @@ msgstr "不允許這個身份"
 msgid "Must be equal to mailbox full_address"
 msgstr "必須跟信箱完整位址一樣"
 
-#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:510
+#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:528
 #: admin/forms/account.py:186 admin/forms/account.py:188
 #: admin/forms/domain.py:174 admin/forms/domain.py:302
-#: admin/forms/domain.py:304 core/forms.py:92 core/forms.py:95 core/forms.py:97
+#: admin/forms/domain.py:304 calendars/serializers.py:175
+#: calendars/serializers.py:177 core/forms.py:92 core/forms.py:95
+#: core/forms.py:97
 msgid "This field is required."
 msgstr "這個欄位是必填的"
 
-#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:527
+#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:545
 msgid "Local domain {} does not exist"
 msgstr "本機網域 {} 不存在"
 
@@ -129,17 +130,17 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr "定義至少一個已驗證網路/位址"
 
-#: admin/api/v2/serializers.py:495
+#: admin/api/v2/serializers.py:513
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:515
+#: admin/api/v2/serializers.py:533
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "信箱是必要的"
 
-#: admin/api/v2/serializers.py:678
+#: admin/api/v2/serializers.py:696
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
@@ -183,10 +184,9 @@ msgstr "正確的 MX"
 
 #: admin/app_settings.py:35 admin/app_settings.py:307
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"每個 MX 紀錄應該要跟列出來的 IP 或網路位址一樣。假如紀錄不同的會有警告送出。"
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "每個 MX 紀錄應該要跟列出來的 IP 或網路位址一樣。假如紀錄不同的會有警告送出。"
 
 #: admin/app_settings.py:43 admin/app_settings.py:317
 msgid "New domains must use authorized MX(s)"
@@ -281,9 +281,7 @@ msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
-"絕對路徑的目錄將會給 DKIM 私鑰儲存。確認這個目錄屬於 root 使用者並且外面的世"
-"界無法讀取。"
+msgstr "絕對路徑的目錄將會給 DKIM 私鑰儲存。確認這個目錄屬於 root 使用者並且外面的世界無法讀取。"
 
 #: admin/app_settings.py:112 admin/app_settings.py:407
 msgid "Default DKIM key length"
@@ -333,8 +331,9 @@ msgid ""
 "removed within Modoboa"
 msgstr "當他要在 Modoboa 上取得更名或移除就會在檔案系統上更名或移除信箱"
 
-#: admin/app_settings.py:148 admin/app_settings.py:456 admin/forms/domain.py:54
-#: admin/models/domain.py:36 admin/templates/admin/domain_detail.html:64
+#: admin/app_settings.py:148 admin/app_settings.py:456
+#: admin/forms/domain.py:54 admin/models/domain.py:36
+#: admin/templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "預設信箱配額"
 
@@ -346,8 +345,7 @@ msgstr "預設信箱配額"
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created mailboxes with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
+msgstr "預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
 
 #: admin/app_settings.py:157 admin/app_settings.py:467
 #, fuzzy
@@ -374,7 +372,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "自動建立網域/信箱"
 
 #: admin/app_settings.py:177 admin/app_settings.py:491
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr "當帳號自動建立後會建立網域和一個信箱。"
 
 #: admin/app_settings.py:182 admin/app_settings.py:500
@@ -397,10 +396,10 @@ msgstr "目錄不存在"
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
+msgstr "預設信箱配額（以MB為單位）應用於未指定值的建立網域。值為0表示沒有配額。"
 
 #: admin/app_settings.py:522 admin/app_settings.py:527
+#: core/api/v2/viewsets.py:148
 msgid "Administration"
 msgstr "管理員"
 
@@ -504,16 +503,14 @@ msgstr "配額"
 #: admin/forms/account.py:244
 #, fuzzy
 #| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's "
-#| "default one. Leave empty to define an unlimited value (not allowed for "
-#| "domain administrators)."
+#| "Quota in MB for this mailbox. Define a custom value or use domain's default "
+#| "one. Leave empty to define an unlimited value (not allowed for domain "
+#| "administrators)."
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"這個信箱有多少 MB 的配額。定義一個自訂的值或使用網域的預設值。保持空白是定義"
-"為無限制 (不允許網域管理者)。"
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr "這個信箱有多少 MB 的配額。定義一個自訂的值或使用網域的預設值。保持空白是定義為無限制 (不允許網域管理者)。"
 
 #: admin/forms/account.py:254 admin/models/domain.py:39
 #: admin/models/mailbox.py:92 admin/templates/admin/account_detail.html:50
@@ -540,8 +537,7 @@ msgid ""
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
 msgstr ""
-"這個信箱的別名(es)。一行只能輸入一個電子郵件，按 Enter 新增新的一行，要建立抓"
-"取別名，只要輸入網域名稱 (@domain.tld)。"
+"這個信箱的別名(es)。一行只能輸入一個電子郵件，按 Enter 新增新的一行，要建立抓取別名，只要輸入網域名稱 (@domain.tld)。"
 
 #: admin/forms/account.py:275
 msgid "Sender addresses"
@@ -552,9 +548,7 @@ msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr ""
-"新增這個帳號的寄件地址(es)。此使用者將會允許使用這個位址寄送郵件，即使這個不"
-"在本機。一行輸入一個位址。按 Enter 新增新的一行。"
+msgstr "新增這個帳號的寄件地址(es)。此使用者將會允許使用這個位址寄送郵件，即使這個不在本機。一行輸入一個位址。按 Enter 新增新的一行。"
 
 #: admin/forms/account.py:339 admin/forms/alias.py:95
 #: admin/models/mailbox.py:308
@@ -630,8 +624,7 @@ msgstr "收件人"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"這個別名的位址將會指到這。一行只能輸入一個電子郵件，按 Enter 新增新的一行。"
+msgstr "這個別名的位址將會指到這。一行只能輸入一個電子郵件，按 Enter 新增新的一行。"
 
 #: admin/forms/alias.py:119
 msgid "No recipient defined"
@@ -1083,8 +1076,9 @@ msgstr "網域配額已超過"
 #: admin/templates/admin/_domain_dkim_key.html:20
 #: core/templates/core/user_security.html:83
 #: core/templates/core/user_security.html:99
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "關閉"
 
@@ -1346,7 +1340,8 @@ msgid "Warning"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:139
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:142 core/constants.py:53
@@ -1474,25 +1469,23 @@ msgid ""
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
 msgstr ""
-"提供 CSV 檔並且每行使用以下格式: <ul> <li><em>網域; 名稱; 配額; 預設信箱配"
-"額; 已啟用</em></li> <li><em>網域別名; 名稱; 目標網域; 已啟用</em></li> "
-"<li><em>轉送網域; 名稱; 目標主機; 目標連接埠; 服務; 已啟用; 驗證收件人</em></"
-"li> </ul> <p>每一行的第一個元件都是強制性的且必須跟之前值是一樣的。</p> <p>您"
-"可以使用不同的字元來分開。</p>"
+"提供 CSV 檔並且每行使用以下格式: <ul> <li><em>網域; 名稱; 配額; 預設信箱配額; 已啟用</em></li> "
+"<li><em>網域別名; 名稱; 目標網域; 已啟用</em></li> <li><em>轉送網域; 名稱; 目標主機; 目標連接埠; 服務; "
+"已啟用; 驗證收件人</em></li> </ul> <p>每一行的第一個元件都是強制性的且必須跟之前值是一樣的。</p> "
+"<p>您可以使用不同的字元來分開。</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
 msgstr ""
-"提供 CSV 檔並且每行使用以下格式: <ul> <li><em>帳號; 登入名稱; 密碼; 名; 姓; "
-"已啟用; 群組; 位址; 配額; [, 網域, ...]</em></li> <li><em>別名; 位址; 已啟"
-"用; 收件人; 收件人; ...</em></li> </ul> <p>每一行的第一個元件都是強制性的且必"
-"須跟之前值是一樣的。</p> <p>您可以使用不同的字元來分開。</p>"
+"提供 CSV 檔並且每行使用以下格式: <ul> <li><em>帳號; 登入名稱; 密碼; 名; 姓; 已啟用; 群組; 位址; 配額; [, 網域,"
+" ...]</em></li> <li><em>別名; 位址; 已啟用; 收件人; 收件人; ...</em></li> </ul> "
+"<p>每一行的第一個元件都是強制性的且必須跟之前值是一樣的。</p> <p>您可以使用不同的字元來分開。</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1538,9 +1531,7 @@ msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
-"此網域的信用將有機會影響從這裡寄出的郵件被當作垃圾郵件。您應該聯絡提供者並要"
-"求他們取消 IP 位址(es) 的偵測列表。"
+msgstr "此網域的信用將有機會影響從這裡寄出的郵件被當作垃圾郵件。您應該聯絡提供者並要求他們取消 IP 位址(es) 的偵測列表。"
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -1690,6 +1681,144 @@ msgstr "匯入使用者"
 msgid "Forward updated"
 msgstr "轉寄已更新"
 
+#: calendars/app_settings.py:11
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "Server settings"
+msgstr "LDAP 設定"
+
+#: calendars/app_settings.py:17
+#, fuzzy
+#| msgid "Server port"
+msgid "Server URL"
+msgstr "伺服器連接埠"
+
+#: calendars/app_settings.py:19
+msgid ""
+"The URL of your Radicale server. It will be used to construct calendar URLs."
+msgstr ""
+
+#: calendars/app_settings.py:31
+msgid "Rights management"
+msgstr ""
+
+#: calendars/app_settings.py:37
+msgid "Rights file's path"
+msgstr ""
+
+#: calendars/app_settings.py:39
+msgid "Path to the file that contains rights definition"
+msgstr ""
+
+#: calendars/app_settings.py:46
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Allow calendars administration"
+msgstr "網域管理員"
+
+#: calendars/app_settings.py:48
+#, fuzzy
+#| msgid "Allow this administrator to access user mailboxes"
+msgid "Allow domain administrators to manage user calendars (read and write)"
+msgstr "允許這個管理者來存取使用者信箱"
+
+#: calendars/app_settings.py:60 core/app_settings.py:438
+#: core/app_settings.py:1258
+msgid "Miscellaneous"
+msgstr "雜項"
+
+#: calendars/app_settings.py:66
+msgid "Maximum size of ICS files"
+msgstr ""
+
+#: calendars/app_settings.py:68
+msgid ""
+"Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
+msgstr ""
+
+#: calendars/app_settings.py:89 calendars/handlers.py:55
+#: core/api/v2/viewsets.py:157
+msgid "Calendars"
+msgstr ""
+
+#: calendars/models.py:48 calendars/models.py:65 contacts/models.py:38
+msgid "Server location is not set, please fix it."
+msgstr ""
+
+#: calendars/viewsets.py:197
+msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""
+
+#: contacts/app_settings.py:11
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "Synchronization"
+msgstr "LDAP 設定"
+
+#: contacts/app_settings.py:18
+msgid "Synchonize address book using CardDAV"
+msgstr ""
+
+#: contacts/app_settings.py:21
+msgid ""
+"Choose to synchronize or not your address book using CardDAV. You will be "
+"able to access your contacts from the outside."
+msgstr ""
+
+#: contacts/app_settings.py:29
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "Synchronization frequency"
+msgstr "LDAP 設定"
+
+#: contacts/app_settings.py:31
+msgid "Interval in seconds between 2 synchronization requests"
+msgstr ""
+
+#: contacts/app_settings.py:51
+#: contacts/templates/modoboa_contacts/index.html:6
+#: core/api/v2/viewsets.py:164
+#, fuzzy
+#| msgid "Domains"
+msgid "Contacts"
+msgstr "網域"
+
+#: contacts/constants.py:6 contacts/constants.py:12
+msgid "Home"
+msgstr ""
+
+#: contacts/constants.py:7 contacts/constants.py:13
+msgid "Work"
+msgstr ""
+
+#: contacts/constants.py:8 contacts/constants.py:14
+msgid "Other"
+msgstr ""
+
+#: contacts/constants.py:15
+msgid "Main"
+msgstr ""
+
+#: contacts/constants.py:16
+msgid "Cellular"
+msgstr ""
+
+#: contacts/constants.py:17
+msgid "Fax"
+msgstr ""
+
+#: contacts/constants.py:18
+msgid "Pager"
+msgstr ""
+
+#: contacts/serializers.py:101
+msgid "Name or display name required"
+msgstr ""
+
+#: contacts/serializers.py:233
+msgid "Minimum allowed value is 60s"
+msgstr ""
+
 #: core/api/v1/serializers.py:21
 #, fuzzy
 #| msgid "Invalid line"
@@ -1738,9 +1867,26 @@ msgstr ""
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:367 core/views/auth.py:200 core/views/auth.py:253
+#: core/api/v2/serializers.py:367 core/views/auth.py:200
+#: core/views/auth.py:253
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
+
+#: core/api/v2/viewsets.py:150
+#, fuzzy
+#| msgid "Administration"
+msgid "Administration console"
+msgstr "管理員"
+
+#: core/api/v2/viewsets.py:159
+msgid "Calendar"
+msgstr ""
+
+#: core/api/v2/viewsets.py:166
+#, fuzzy
+#| msgid "Address"
+msgid "Address book"
+msgstr "地址"
 
 #: core/app_settings.py:44 core/app_settings.py:716
 msgid "Authentication"
@@ -1770,9 +1916,7 @@ msgstr "輪"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"重複幾輪產生 (只能用於 sha256crypt 和 sha512crypt). 必須介於 1000 到 "
-"999999999, 包括."
+msgstr "重複幾輪產生 (只能用於 sha256crypt 和 sha512crypt). 必須介於 1000 到 999999999, 包括."
 
 #: core/app_settings.py:71 core/app_settings.py:752
 #, fuzzy
@@ -1917,8 +2061,8 @@ msgstr "管理者群組"
 
 #: core/app_settings.py:185 core/app_settings.py:906
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr "這些 LDAP 群組的成員將會建立為網域管理者。使用 ';' 字元來分開群組"
 
 #: core/app_settings.py:192 core/app_settings.py:915
@@ -2009,8 +2153,7 @@ msgstr "搜尋過濾器"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"過濾字串的選 (例如 '(objectClass=person)'). 要能正常使用，這必須括在括號內。"
+msgstr "過濾字串的選 (例如 '(objectClass=person)'). 要能正常使用，這必須括在括號內。"
 
 #: core/app_settings.py:266 core/app_settings.py:1006
 msgid "User DN template"
@@ -2150,7 +2293,8 @@ msgstr "開啟 Modoboa 公用 API 的通訊"
 msgid "Check new versions"
 msgstr "檢查新的版本"
 
-#: core/app_settings.py:416 core/app_settings.py:1204 core/app_settings.py:1214
+#: core/app_settings.py:416 core/app_settings.py:1204
+#: core/app_settings.py:1214
 msgid "Automatically checks if a newer version is available"
 msgstr "假如有新的版本就自動檢查"
 
@@ -2179,10 +2323,6 @@ msgstr "寄送狀態"
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr "寄送狀態到 Modoboa 公用 API (計數器及已使用的外掛)"
 
-#: core/app_settings.py:438 core/app_settings.py:1258
-msgid "Miscellaneous"
-msgstr "雜項"
-
 #: core/app_settings.py:441 core/app_settings.py:1265
 #, fuzzy
 #| msgid "Inactive account threshold"
@@ -2191,8 +2331,8 @@ msgstr "未啟用帳號上限"
 
 #: core/app_settings.py:444 core/app_settings.py:1268
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:451 core/app_settings.py:1277
@@ -2201,8 +2341,8 @@ msgstr "未啟用帳號上限"
 
 #: core/app_settings.py:454 core/app_settings.py:1280
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr "這個帳號最後一次登錄日期超過這個上限 (在幾天) 將考慮停用"
 
 #: core/app_settings.py:460 core/app_settings.py:1289
@@ -2241,22 +2381,22 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:12
+#: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
 msgstr ""
 
-#: core/checks.py:16
+#: core/checks.py:17
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr ""
 
-#: core/checks.py:20
+#: core/checks.py:21
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:21
+#: core/checks.py:22
 #, fuzzy
 #| msgid "Default password scheme"
 msgid "Upgrade your password scheme to a stronger one"
@@ -2554,15 +2694,15 @@ msgstr ""
 #: core/templates/core/information.html:6
 #, python-format
 msgid ""
-"The password scheme <strong>%(scheme)s</strong> has been deprecated and will "
-"be removed in the next minor version. The procedure to upgrade to a stronger "
-"scheme is as follows: <ul> <li>Go to <strong>Parameters > General</strong> "
-"section</li> <li>Change the value of <strong>Default password scheme</"
-"strong></li> <li>Make sure <strong>Update password scheme at login</strong> "
-"option is enabled</li> <li>Save your changes</li> <li>Logout / Login with "
-"your current account so its password gets updated</li> <li>Inform "
-"<strong>ALL</strong> your users that they must login to Modoboa to complete "
-"the operation</li> </ul>"
+"The password scheme <strong>%(scheme)s</strong> has been deprecated and will"
+" be removed in the next minor version. The procedure to upgrade to a "
+"stronger scheme is as follows: <ul> <li>Go to <strong>Parameters > "
+"General</strong> section</li> <li>Change the value of <strong>Default "
+"password scheme</strong></li> <li>Make sure <strong>Update password scheme "
+"at login</strong> option is enabled</li> <li>Save your changes</li> "
+"<li>Logout / Login with your current account so its password gets "
+"updated</li> <li>Inform <strong>ALL</strong> your users that they must login"
+" to Modoboa to complete the operation</li> </ul>"
 msgstr ""
 
 #: core/templates/core/information.html:18
@@ -2685,8 +2825,8 @@ msgstr "此背景程式已用於驗證"
 
 #: core/templates/core/user_security.html:17
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
 
 #: core/templates/core/user_security.html:25
@@ -2776,7 +2916,7 @@ msgstr "登出"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:42
+#: core/utils.py:41
 msgid "The core part of Modoboa"
 msgstr "Modoboa 的核心部分"
 
@@ -3087,8 +3227,8 @@ msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
 msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+"Here is an example of DNS configuration (bind format). Replace value between"
+" [ ] by the appropriate ones."
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
@@ -3177,8 +3317,8 @@ msgstr ""
 #: imap_migration/app_settings.py:80 imap_migration/app_settings.py:138
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+"filtered by the Folder Filter Exclusions. Example: debian.user, "
+"debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:107
@@ -3294,8 +3434,8 @@ msgid "Enable or disable per-admin limits"
 msgstr "啟用或停用每個管理者限制"
 
 #: limits/app_settings.py:26 limits/app_settings.py:91
-#: limits/app_settings.py:160 limits/app_settings.py:245 limits/constants.py:47
-#: limits/constants.py:101
+#: limits/app_settings.py:160 limits/app_settings.py:245
+#: limits/constants.py:47 limits/constants.py:101
 msgid "Domain admins"
 msgstr "網域管理員"
 
@@ -3313,8 +3453,8 @@ msgstr "新的管理者最大允許網域的數量。(0 是禁止建立，-1 是
 
 #: limits/app_settings.py:48 limits/app_settings.py:186
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr "新的管理者最大允許網域別名的數量。(0 是禁止建立，-1 是無限制建立)"
 
 #: limits/app_settings.py:58 limits/app_settings.py:198
@@ -3349,8 +3489,8 @@ msgstr "啟用或停用每個網域限制"
 
 #: limits/app_settings.py:94 limits/app_settings.py:248
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr "新的網域最大允許網域管理者的數量。(0 是禁止建立，-1 是無限制建立)"
 
 #: limits/app_settings.py:104 limits/app_settings.py:260
@@ -3367,8 +3507,8 @@ msgstr "新的網域最大允許信箱的數量。(0 是禁止建立，-1 是無
 
 #: limits/app_settings.py:123 limits/app_settings.py:283
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr "新的網域最大允許別名的數量。(0 是禁止建立，-1 是無限制建立)"
 
 #: limits/apps.py:13 limits/apps.py:17
@@ -3888,8 +4028,7 @@ msgstr "當自動回覆訊息自動建立後會使用預設主旨"
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
-"當自動回覆訊息自動建立後會使用預設內容。此 '%(name)s' 巨集會取代使用者名稱。"
+msgstr "當自動回覆訊息自動建立後會使用預設內容。此 '%(name)s' 巨集會取代使用者名稱。"
 
 #: postfix_autoreply/apps.py:14 postfix_autoreply/apps.py:20
 #: postfix_autoreply/forms.py:163
@@ -3916,9 +4055,7 @@ msgid ""
 "The content of your answer. You can use the following variables, which will "
 "be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
 "%(untildate)s"
-msgstr ""
-"此內容的答案。您可以使用以下的變數，這將會自動替換適當的值: %(name)s, "
-"%(fromdate)s, %(untildate)s"
+msgstr "此內容的答案。您可以使用以下的變數，這將會自動替換適當的值: %(name)s, %(fromdate)s, %(untildate)s"
 
 #: postfix_autoreply/forms.py:120
 msgid "I'm off"
@@ -4008,7 +4145,7 @@ msgstr "目標主機連接埠"
 msgid "verify recipients"
 msgstr "驗證收件者"
 
-#: sievefilters/api/v2/viewsets.py:183
+#: sievefilters/api/v2/viewsets.py:186
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -4196,11 +4333,11 @@ msgstr ""
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr ""
 
-#: sievefilters/lib.py:48
+#: sievefilters/lib.py:52
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 
-#: sievefilters/lib.py:75
+#: sievefilters/lib.py:79
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4361,8 +4498,8 @@ msgstr "舊密碼"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -4397,108 +4534,86 @@ msgid "next hop"
 msgstr "下一步"
 
 #, fuzzy
-#~| msgid "Authentication method"
 #~ msgid "Authentication mechanism"
 #~ msgstr "身份驗證方法"
 
 #, fuzzy
-#~| msgid "Authentication method"
 #~ msgid "Prefered authentication mechanism"
 #~ msgstr "身份驗證方法"
 
 #, fuzzy
-#~| msgid "Directory not found."
 #~ msgid "Directory non-writable"
 #~ msgstr "目錄不存在"
 
 #, fuzzy
-#~| msgid "Check to activate this alias"
 #~ msgid "Check to activate this filters set"
 #~ msgstr "點擊啟用這個別名"
 
 #, fuzzy
-#~| msgid "File name"
 #~ msgid "Wrong filter name"
 #~ msgstr "檔案名稱"
 
 #, fuzzy
-#~| msgid "Confirmation"
 #~ msgid "Conditions"
 #~ msgstr "確認"
 
 #, fuzzy
-#~| msgid "Actions"
 #~ msgid "Active"
 #~ msgstr "動作"
 
 #, fuzzy
-#~| msgid "Not defined"
 #~ msgid "No filter defined yet"
 #~ msgstr "未定義"
 
 #, fuzzy
-#~| msgid "Search filter"
 #~ msgid "New filter"
 #~ msgstr "搜尋過濾器"
 
 #, fuzzy
-#~| msgid "Search filter"
 #~ msgid "Save filters set"
 #~ msgstr "搜尋過濾器"
 
 #, fuzzy
-#~| msgid "Active Directory"
 #~ msgid "Activate filters set"
 #~ msgstr "Active Directory"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Remove filters set"
 #~ msgstr "移除這個權限"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Remove this filter"
 #~ msgstr "移除這個權限"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Move this filter down"
 #~ msgstr "移除這個權限"
 
 #, fuzzy
-#~| msgid "Failed to retrieve mailbox location (%s)"
 #~ msgid "Failed to retrieve filters set"
 #~ msgstr "無法收回信箱位置 (%s)"
 
 #, fuzzy
-#~| msgid "Alias created"
 #~ msgid "Filter created"
 #~ msgstr "別名已建立"
 
 #, fuzzy
-#~| msgid "modified"
 #~ msgid "Filter modified"
 #~ msgstr "已修改"
 
 #, fuzzy
-#~| msgid "Parameters saved"
 #~ msgid "Filters set saved"
 #~ msgstr "參數已儲存"
 
 #, fuzzy
-#~| msgid "Alias created"
 #~ msgid "Filters set created"
 #~ msgstr "別名已建立"
 
 #, fuzzy
-#~| msgid "Alias deleted"
-#~| msgid_plural "Aliases deleted"
 #~ msgid "Filters set deleted"
 #~ msgstr "別名已刪除"
 
 #, fuzzy
-#~| msgid "Yes"
 #~ msgid "yes"
 #~ msgstr "是"
 

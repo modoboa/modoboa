@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-29 17:08+0100\n"
+"POT-Creation-Date: 2025-02-11 09:00+0100\n"
 "PO-Revision-Date: 2020-05-11 18:45+0000\n"
 "Last-Translator: හෙළබස, 2022\n"
 "Language-Team: Sinhala (https://www.transifex.com/tonio/teams/13749/si/)\n"
@@ -40,12 +40,12 @@ msgid "Cannot be greater than domain quota"
 msgstr ""
 
 #: admin/api/v1/serializers.py:161 admin/api/v1/serializers.py:386
-#: admin/api/v2/serializers.py:478 admin/models/alias.py:38
+#: admin/api/v2/serializers.py:496 admin/models/alias.py:38
 msgid "Permission denied."
 msgstr ""
 
 #: admin/api/v1/serializers.py:223 admin/api/v2/serializers.py:77
-#: admin/api/v2/serializers.py:410 admin/forms/alias.py:113
+#: admin/api/v2/serializers.py:428 admin/forms/alias.py:113
 #: admin/forms/alias.py:115 core/api/v2/serializers.py:224
 #: core/api/v2/serializers.py:226 core/api/v2/serializers.py:235
 #: core/app_settings.py:582 core/app_settings.py:584 core/app_settings.py:595
@@ -58,7 +58,7 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:460
+#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:478
 msgid "Not allowed for this role."
 msgstr ""
 
@@ -66,14 +66,16 @@ msgstr ""
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:510
+#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:528
 #: admin/forms/account.py:186 admin/forms/account.py:188
 #: admin/forms/domain.py:174 admin/forms/domain.py:302
-#: admin/forms/domain.py:304 core/forms.py:92 core/forms.py:95 core/forms.py:97
+#: admin/forms/domain.py:304 calendars/serializers.py:175
+#: calendars/serializers.py:177 core/forms.py:92 core/forms.py:95
+#: core/forms.py:97
 msgid "This field is required."
 msgstr ""
 
-#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:527
+#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:545
 msgid "Local domain {} does not exist"
 msgstr ""
 
@@ -124,15 +126,15 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr ""
 
-#: admin/api/v2/serializers.py:495
+#: admin/api/v2/serializers.py:513
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:515
+#: admin/api/v2/serializers.py:533
 msgid "A mailbox is required to create aliases."
 msgstr ""
 
-#: admin/api/v2/serializers.py:678
+#: admin/api/v2/serializers.py:696
 msgid "Unknown status"
 msgstr ""
 
@@ -357,6 +359,7 @@ msgid ""
 msgstr ""
 
 #: admin/app_settings.py:522 admin/app_settings.py:527
+#: core/api/v2/viewsets.py:148
 msgid "Administration"
 msgstr ""
 
@@ -1588,6 +1591,129 @@ msgstr ""
 msgid "Forward updated"
 msgstr ""
 
+#: calendars/app_settings.py:11
+msgid "Server settings"
+msgstr ""
+
+#: calendars/app_settings.py:17
+msgid "Server URL"
+msgstr ""
+
+#: calendars/app_settings.py:19
+msgid ""
+"The URL of your Radicale server. It will be used to construct calendar URLs."
+msgstr ""
+
+#: calendars/app_settings.py:31
+msgid "Rights management"
+msgstr ""
+
+#: calendars/app_settings.py:37
+msgid "Rights file's path"
+msgstr ""
+
+#: calendars/app_settings.py:39
+msgid "Path to the file that contains rights definition"
+msgstr ""
+
+#: calendars/app_settings.py:46
+msgid "Allow calendars administration"
+msgstr ""
+
+#: calendars/app_settings.py:48
+msgid "Allow domain administrators to manage user calendars (read and write)"
+msgstr ""
+
+#: calendars/app_settings.py:60 core/app_settings.py:438
+#: core/app_settings.py:1258
+msgid "Miscellaneous"
+msgstr ""
+
+#: calendars/app_settings.py:66
+msgid "Maximum size of ICS files"
+msgstr ""
+
+#: calendars/app_settings.py:68
+msgid ""
+"Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
+msgstr ""
+
+#: calendars/app_settings.py:89 calendars/handlers.py:55
+#: core/api/v2/viewsets.py:157
+msgid "Calendars"
+msgstr ""
+
+#: calendars/models.py:48 calendars/models.py:65 contacts/models.py:38
+msgid "Server location is not set, please fix it."
+msgstr ""
+
+#: calendars/viewsets.py:197
+msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""
+
+#: contacts/app_settings.py:11
+msgid "Synchronization"
+msgstr ""
+
+#: contacts/app_settings.py:18
+msgid "Synchonize address book using CardDAV"
+msgstr ""
+
+#: contacts/app_settings.py:21
+msgid ""
+"Choose to synchronize or not your address book using CardDAV. You will be "
+"able to access your contacts from the outside."
+msgstr ""
+
+#: contacts/app_settings.py:29
+msgid "Synchronization frequency"
+msgstr ""
+
+#: contacts/app_settings.py:31
+msgid "Interval in seconds between 2 synchronization requests"
+msgstr ""
+
+#: contacts/app_settings.py:51 contacts/templates/modoboa_contacts/index.html:6
+#: core/api/v2/viewsets.py:164
+msgid "Contacts"
+msgstr ""
+
+#: contacts/constants.py:6 contacts/constants.py:12
+msgid "Home"
+msgstr ""
+
+#: contacts/constants.py:7 contacts/constants.py:13
+msgid "Work"
+msgstr ""
+
+#: contacts/constants.py:8 contacts/constants.py:14
+msgid "Other"
+msgstr ""
+
+#: contacts/constants.py:15
+msgid "Main"
+msgstr ""
+
+#: contacts/constants.py:16
+msgid "Cellular"
+msgstr ""
+
+#: contacts/constants.py:17
+msgid "Fax"
+msgstr ""
+
+#: contacts/constants.py:18
+msgid "Pager"
+msgstr ""
+
+#: contacts/serializers.py:101
+msgid "Name or display name required"
+msgstr ""
+
+#: contacts/serializers.py:233
+msgid "Minimum allowed value is 60s"
+msgstr ""
+
 #: core/api/v1/serializers.py:21
 msgid "Invalid PIN code"
 msgstr ""
@@ -1634,6 +1760,18 @@ msgstr ""
 
 #: core/api/v2/serializers.py:367 core/views/auth.py:200 core/views/auth.py:253
 msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr ""
+
+#: core/api/v2/viewsets.py:150
+msgid "Administration console"
+msgstr ""
+
+#: core/api/v2/viewsets.py:159
+msgid "Calendar"
+msgstr ""
+
+#: core/api/v2/viewsets.py:166
+msgid "Address book"
 msgstr ""
 
 #: core/app_settings.py:44 core/app_settings.py:716
@@ -2045,10 +2183,6 @@ msgstr ""
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 
-#: core/app_settings.py:438 core/app_settings.py:1258
-msgid "Miscellaneous"
-msgstr ""
-
 #: core/app_settings.py:441 core/app_settings.py:1265
 msgid "Enable inactive account tracking"
 msgstr ""
@@ -2105,22 +2239,22 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:12
+#: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
 msgstr ""
 
-#: core/checks.py:16
+#: core/checks.py:17
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr ""
 
-#: core/checks.py:20
+#: core/checks.py:21
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:21
+#: core/checks.py:22
 msgid "Upgrade your password scheme to a stronger one"
 msgstr ""
 
@@ -2622,7 +2756,7 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: core/utils.py:42
+#: core/utils.py:41
 msgid "The core part of Modoboa"
 msgstr ""
 
@@ -3770,7 +3904,7 @@ msgstr ""
 msgid "verify recipients"
 msgstr ""
 
-#: sievefilters/api/v2/viewsets.py:183
+#: sievefilters/api/v2/viewsets.py:186
 #, python-format
 msgid "Filter %s already exists"
 msgstr ""
@@ -3923,11 +4057,11 @@ msgstr ""
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr ""
 
-#: sievefilters/lib.py:48
+#: sievefilters/lib.py:52
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 
-#: sievefilters/lib.py:75
+#: sievefilters/lib.py:79
 msgid "Not enough space on server"
 msgstr ""
 
