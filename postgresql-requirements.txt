@@ -222,6 +222,7 @@ typing-extensions==4.12.2
     #   dj-database-url
     #   jwcrypto
     #   psycopg
+    #   referencing
     #   sievelib
 tzdata==2025.1
     # via
