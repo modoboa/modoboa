@@ -40,7 +40,7 @@ click==8.1.8
     # via rq
 colorama==0.4.6
     # via tox
-cryptography==43.0.3
+cryptography==44.0.1
     # via
     #   fido2
     #   jwcrypto
