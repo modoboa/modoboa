@@ -217,6 +217,7 @@ typing-extensions==4.12.2
     # via
     #   dj-database-url
     #   jwcrypto
+    #   referencing
     #   sievelib
 tzdata==2025.1
     # via
