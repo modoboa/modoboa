@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-29 17:08+0100\n"
+"POT-Creation-Date: 2025-02-11 09:00+0100\n"
 "PO-Revision-Date: 2023-02-17 22:03+0200\n"
 "Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
 "Language-Team: \n"
@@ -42,12 +42,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "Ei voi olla suurempi kuin verkkotunnuksen kiintiö"
 
 #: admin/api/v1/serializers.py:161 admin/api/v1/serializers.py:386
-#: admin/api/v2/serializers.py:478 admin/models/alias.py:38
+#: admin/api/v2/serializers.py:496 admin/models/alias.py:38
 msgid "Permission denied."
 msgstr "Lupa evätty."
 
 #: admin/api/v1/serializers.py:223 admin/api/v2/serializers.py:77
-#: admin/api/v2/serializers.py:410 admin/forms/alias.py:113
+#: admin/api/v2/serializers.py:428 admin/forms/alias.py:113
 #: admin/forms/alias.py:115 core/api/v2/serializers.py:224
 #: core/api/v2/serializers.py:226 core/api/v2/serializers.py:235
 #: core/app_settings.py:582 core/app_settings.py:584 core/app_settings.py:595
@@ -62,7 +62,7 @@ msgstr ""
 "Luettelo hallinnoiduista verkkotunnuksista (vain jälleenmyyjät ja "
 "verkkotunnusten ylläpitäjät)."
 
-#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:460
+#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:478
 msgid "Not allowed for this role."
 msgstr "Ei sallittu tässä roolissa."
 
@@ -70,14 +70,16 @@ msgstr "Ei sallittu tässä roolissa."
 msgid "Must be equal to mailbox full_address"
 msgstr "Täytyy olla yhtä suuri kuin postilaatikon koko osoite"
 
-#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:510
+#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:528
 #: admin/forms/account.py:186 admin/forms/account.py:188
 #: admin/forms/domain.py:174 admin/forms/domain.py:302
-#: admin/forms/domain.py:304 core/forms.py:92 core/forms.py:95 core/forms.py:97
+#: admin/forms/domain.py:304 calendars/serializers.py:175
+#: calendars/serializers.py:177 core/forms.py:92 core/forms.py:95
+#: core/forms.py:97
 msgid "This field is required."
 msgstr "Tämä kenttä on pakollinen."
 
-#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:527
+#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:545
 msgid "Local domain {} does not exist"
 msgstr "Paikallista verkkotunnusta {} ei ole olemassa"
 
@@ -130,17 +132,17 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr "Määritä vähintään yksi valtuutettu verkko/osoite"
 
-#: admin/api/v2/serializers.py:495
+#: admin/api/v2/serializers.py:513
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:515
+#: admin/api/v2/serializers.py:533
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Tarvitaan postilaatikko"
 
-#: admin/api/v2/serializers.py:678
+#: admin/api/v2/serializers.py:696
 #, fuzzy
 #| msgid "Unknown tag {}"
 msgid "Unknown status"
@@ -185,8 +187,8 @@ msgstr "Voimassa olevat MX:t"
 
 #: admin/app_settings.py:35 admin/app_settings.py:307
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
 "Luettelo IP- tai verkko-osoitteista, joita jokaisen MX-tietueen pitäisi "
 "vastata. Varoitus lähetetään, jos tietue ei noudata sitä."
@@ -278,8 +280,8 @@ msgid ""
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
 msgstr ""
-"Absoluuttinen polku, johon DKIM:n yksityiset avaimet tallennetaan. Varmista, "
-"että tämä hakemisto kuuluu root-käyttäjälle eikä ole ulkomaailman "
+"Absoluuttinen polku, johon DKIM:n yksityiset avaimet tallennetaan. Varmista,"
+" että tämä hakemisto kuuluu root-käyttäjälle eikä ole ulkomaailman "
 "luettavissa."
 
 #: admin/app_settings.py:112 admin/app_settings.py:407
@@ -311,8 +313,8 @@ msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
 msgstr ""
-"Viestien määrä, jonka juuri luodut verkkotunnukset saavat lähettää päivässä. "
-"Jätä tyhjäksi, jos et halua rajoitusta."
+"Viestien määrä, jonka juuri luodut verkkotunnukset saavat lähettää päivässä."
+" Jätä tyhjäksi, jos et halua rajoitusta."
 
 #: admin/app_settings.py:136 admin/app_settings.py:440
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
@@ -334,8 +336,9 @@ msgstr ""
 "Nimeä uudelleen tai poista postilaatikot tiedostojärjestelmästä, kun ne "
 "nimetään uudelleen tai poistetaan Modoboassa"
 
-#: admin/app_settings.py:148 admin/app_settings.py:456 admin/forms/domain.py:54
-#: admin/models/domain.py:36 admin/templates/admin/domain_detail.html:64
+#: admin/app_settings.py:148 admin/app_settings.py:456
+#: admin/forms/domain.py:54 admin/models/domain.py:36
+#: admin/templates/admin/domain_detail.html:64
 msgid "Default mailbox quota"
 msgstr "Oletuspostilaatikkokiintiö"
 
@@ -373,7 +376,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automaattinen verkkotunnuksen/sähköpostilaatikon luominen"
 
 #: admin/app_settings.py:177 admin/app_settings.py:491
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr "Luo verkkotunnus ja postilaatikko, kun tili luodaan automaattisesti."
 
 #: admin/app_settings.py:182 admin/app_settings.py:500
@@ -393,8 +397,8 @@ msgstr "Hakemistoa ei löydy."
 #: admin/app_settings.py:458
 #, fuzzy
 #| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created mailboxes with "
-#| "no value specified. A value of 0 means no quota."
+#| "Default mailbox quota (in MB) applied to freshly created mailboxes with no "
+#| "value specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
@@ -404,6 +408,7 @@ msgstr ""
 "kiintiötä ole."
 
 #: admin/app_settings.py:522 admin/app_settings.py:527
+#: core/api/v2/viewsets.py:148
 msgid "Administration"
 msgstr "Hallinnointinäkymä"
 
@@ -460,8 +465,8 @@ msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
 msgstr ""
-"Luo satunnainen salasana. Jos päivität tätä tiliä ja valitset tämän, Modoboa "
-"luo uuden salasanan."
+"Luo satunnainen salasana. Jos päivität tätä tiliä ja valitset tämän, Modoboa"
+" luo uuden salasanan."
 
 #: admin/forms/account.py:49 pdfcredentials/documents.py:99
 msgid "Password"
@@ -508,9 +513,9 @@ msgstr "Kiintiö"
 
 #: admin/forms/account.py:244
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
 msgstr ""
 "Tämän postilaatikon kiintiö, joka voidaan ilmaista kilotavuina, megatavuina "
 "(oletus) tai gigatavuina. Määritä oma arvo tai käytä toimialueen "
@@ -557,8 +562,8 @@ msgid ""
 "one address per input. Press ENTER to add a new input."
 msgstr ""
 "Tämän tilin lisälähetysosoite(et). Käyttäjä saa lähettää sähköposteja "
-"käyttämällä tätä osoitetta, vaikka sitä ei olisikaan olemassa paikallisesti. "
-"Ilmoita yksi osoite per rivi. Lisää uusi rivi painamalla enter."
+"käyttämällä tätä osoitetta, vaikka sitä ei olisikaan olemassa paikallisesti."
+" Ilmoita yksi osoite per rivi. Lisää uusi rivi painamalla enter."
 
 #: admin/forms/account.py:339 admin/forms/alias.py:95
 #: admin/models/mailbox.py:308
@@ -625,8 +630,8 @@ msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
 msgstr ""
-"Alias-osoite. Jos haluat luoda catchall-aliaksen, kirjoita vain verkkotunnus "
-"(@verkkotunnus.tld)."
+"Alias-osoite. Jos haluat luoda catchall-aliaksen, kirjoita vain verkkotunnus"
+" (@verkkotunnus.tld)."
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -654,8 +659,8 @@ msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
 msgstr ""
-"Tämän verkkotunnuksen aliakset. Ilmoita vain yksi nimi per rivi, paina enter "
-"lisätäksesi uuden rivin."
+"Tämän verkkotunnuksen aliakset. Ilmoita vain yksi nimi per rivi, paina enter"
+" lisätäksesi uuden rivin."
 
 #: admin/forms/domain.py:43
 msgid "Key selector"
@@ -667,7 +672,8 @@ msgid ""
 "GB. A value of 0 means no quota."
 msgstr ""
 "Postilaatikoihin sovellettava oletuskiintiö. Voidaan ilmaista kilotavuina, "
-"megatavuina (oletus) tai gigatavuina. Arvo 0 tarkoittaa, ettei kiintiötä ole."
+"megatavuina (oletus) tai gigatavuina. Arvo 0 tarkoittaa, ettei kiintiötä "
+"ole."
 
 #: admin/forms/domain.py:106 admin/handlers.py:185
 msgid "domain alias"
@@ -1090,8 +1096,9 @@ msgstr "Verkkotunnuksen kiintiö ylitetty"
 #: admin/templates/admin/_domain_dkim_key.html:20
 #: core/templates/core/user_security.html:83
 #: core/templates/core/user_security.html:99
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Sulje"
 
@@ -1346,7 +1353,8 @@ msgid "Warning"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:139
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:142 core/constants.py:53
@@ -1475,28 +1483,29 @@ msgid ""
 "use a different character as separator.</p>"
 msgstr ""
 "Lähetä CSV-tiedosto, jonka rivit ovat jossakin seuraavista muodoista: <ul> "
-"<li><em>verkkotunnus; kiintiö; oletuspostilaatikon kiintiö; käytössä</em></"
-"li> <li><em>verkkotunnuksen alias; nimi; kohteena oleva verkkotunnus; "
-"käytössä</em></li> <li><em>välitysverkkotunnus; nimi; kohde-isäntä; kohde-"
-"portti; palvelu; käytössä; tarkista vastaanottajat</em></li> </ul><p>Kunkin "
-"rivin ensimmäinen elementti on pakollinen, ja sen on oltava yhtä suuri kuin "
-"jokin edellisistä arvoista.</p> <p>Voit käyttää erottimena eri merkkiä.</p>"
+"<li><em>verkkotunnus; kiintiö; oletuspostilaatikon kiintiö; "
+"käytössä</em></li> <li><em>verkkotunnuksen alias; nimi; kohteena oleva "
+"verkkotunnus; käytössä</em></li> <li><em>välitysverkkotunnus; nimi; kohde-"
+"isäntä; kohde-portti; palvelu; käytössä; tarkista vastaanottajat</em></li> "
+"</ul><p>Kunkin rivin ensimmäinen elementti on pakollinen, ja sen on oltava "
+"yhtä suuri kuin jokin edellisistä arvoista.</p> <p>Voit käyttää erottimena "
+"eri merkkiä.</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
 msgstr ""
 "Lähetä CSV-tiedosto, jonka rivit ovat jossakin seuraavista muodoista: <ul> "
 "<li><em>tili; kirjautumistunnus; salasana; etunimi; sukunimi; käytössä; "
 "ryhmä; osoite; kiintiö; [, verkkotunnus, ...]</em></li> <li><em>alias; "
-"osoite; käytössä; vastaanottaja; vastaanottaja; ...</em></li> </ul><p>Kunkin "
-"rivin ensimmäinen elementti on pakollinen, ja sen on oltava yhtä suuri kuin "
-"jokin edellisistä arvoista.</p> <p>Voit käyttää erottimena eri merkkiä.</p>"
+"osoite; käytössä; vastaanottaja; vastaanottaja; ...</em></li> </ul><p>Kunkin"
+" rivin ensimmäinen elementti on pakollinen, ja sen on oltava yhtä suuri kuin"
+" jokin edellisistä arvoista.</p> <p>Voit käyttää erottimena eri merkkiä.</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1538,8 +1547,8 @@ msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
 msgstr ""
-"Modoboa havaitsi, että verkkotunnus %(domain)s on listattu seuraavilla DNSBL-"
-"palveluntarjoajilla:"
+"Modoboa havaitsi, että verkkotunnus %(domain)s on listattu seuraavilla "
+"DNSBL-palveluntarjoajilla:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
@@ -1549,7 +1558,8 @@ msgid ""
 msgstr ""
 "Verkkotunnuksen maine kärsii, ja on mahdollista, että siitä tulevia "
 "sähköposteja pidetään roskapostina. Sinun tulisi ottaa yhteyttä näihin "
-"palveluntarjoajiin ja pyytää heitä poistamaan havaitut IP-osoitteet listalta."
+"palveluntarjoajiin ja pyytää heitä poistamaan havaitut IP-osoitteet "
+"listalta."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -1702,6 +1712,146 @@ msgstr "Tuo identiteetit"
 msgid "Forward updated"
 msgstr "Välitystieto päivitetty"
 
+#: calendars/app_settings.py:11
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "Server settings"
+msgstr "LDAP-asetukset"
+
+#: calendars/app_settings.py:17
+#, fuzzy
+#| msgid "Server port"
+msgid "Server URL"
+msgstr "Palvelimen portti"
+
+#: calendars/app_settings.py:19
+msgid ""
+"The URL of your Radicale server. It will be used to construct calendar URLs."
+msgstr ""
+
+#: calendars/app_settings.py:31
+msgid "Rights management"
+msgstr ""
+
+#: calendars/app_settings.py:37
+msgid "Rights file's path"
+msgstr ""
+
+#: calendars/app_settings.py:39
+msgid "Path to the file that contains rights definition"
+msgstr ""
+
+#: calendars/app_settings.py:46
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Allow calendars administration"
+msgstr "Luo verkkotunnuksen ylläpitäjä"
+
+#: calendars/app_settings.py:48
+#, fuzzy
+#| msgid "Allow this administrator to access user mailboxes"
+msgid "Allow domain administrators to manage user calendars (read and write)"
+msgstr "Salli tämän järjestelmänvalvojan pääsy käyttäjien postilaatikoihin"
+
+#: calendars/app_settings.py:60 core/app_settings.py:438
+#: core/app_settings.py:1258
+msgid "Miscellaneous"
+msgstr "Sekalaiset"
+
+#: calendars/app_settings.py:66
+msgid "Maximum size of ICS files"
+msgstr ""
+
+#: calendars/app_settings.py:68
+msgid ""
+"Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
+msgstr ""
+
+#: calendars/app_settings.py:89 calendars/handlers.py:55
+#: core/api/v2/viewsets.py:157
+msgid "Calendars"
+msgstr ""
+
+#: calendars/models.py:48 calendars/models.py:65 contacts/models.py:38
+msgid "Server location is not set, please fix it."
+msgstr ""
+
+#: calendars/viewsets.py:197
+msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""
+
+#: contacts/app_settings.py:11
+#, fuzzy
+#| msgid "LDAP synchronization settings"
+msgid "Synchronization"
+msgstr "LDAP-synkronointiasetukset"
+
+#: contacts/app_settings.py:18
+msgid "Synchonize address book using CardDAV"
+msgstr ""
+
+#: contacts/app_settings.py:21
+msgid ""
+"Choose to synchronize or not your address book using CardDAV. You will be "
+"able to access your contacts from the outside."
+msgstr ""
+
+#: contacts/app_settings.py:29
+#, fuzzy
+#| msgid "LDAP synchronization settings"
+msgid "Synchronization frequency"
+msgstr "LDAP-synkronointiasetukset"
+
+#: contacts/app_settings.py:31
+msgid "Interval in seconds between 2 synchronization requests"
+msgstr ""
+
+#: contacts/app_settings.py:51
+#: contacts/templates/modoboa_contacts/index.html:6
+#: core/api/v2/viewsets.py:164
+#, fuzzy
+#| msgid "Domains"
+msgid "Contacts"
+msgstr "Verkkotunnukset"
+
+#: contacts/constants.py:6 contacts/constants.py:12
+msgid "Home"
+msgstr ""
+
+#: contacts/constants.py:7 contacts/constants.py:13
+msgid "Work"
+msgstr ""
+
+#: contacts/constants.py:8 contacts/constants.py:14
+msgid "Other"
+msgstr ""
+
+#: contacts/constants.py:15
+msgid "Main"
+msgstr ""
+
+#: contacts/constants.py:16
+msgid "Cellular"
+msgstr ""
+
+#: contacts/constants.py:17
+msgid "Fax"
+msgstr ""
+
+#: contacts/constants.py:18
+msgid "Pager"
+msgstr ""
+
+#: contacts/serializers.py:101
+#, fuzzy
+#| msgid "Number of displayed items per page"
+msgid "Name or display name required"
+msgstr "Näytettävien kohteiden määrä sivua kohti"
+
+#: contacts/serializers.py:233
+msgid "Minimum allowed value is 60s"
+msgstr ""
+
 #: core/api/v1/serializers.py:21
 msgid "Invalid PIN code"
 msgstr "Virheellinen PIN-koodi"
@@ -1748,9 +1898,26 @@ msgstr "Virheellinen kierrosluku"
 msgid "This code is invalid"
 msgstr "Tämä koodi on virheellinen"
 
-#: core/api/v2/serializers.py:367 core/views/auth.py:200 core/views/auth.py:253
+#: core/api/v2/serializers.py:367 core/views/auth.py:200
+#: core/views/auth.py:253
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Käytä seuraavaa koodia saadaksesi takaisin Modoboa-salasanasi: {}"
+
+#: core/api/v2/viewsets.py:150
+#, fuzzy
+#| msgid "Administration"
+msgid "Administration console"
+msgstr "Hallinnointinäkymä"
+
+#: core/api/v2/viewsets.py:159
+msgid "Calendar"
+msgstr ""
+
+#: core/api/v2/viewsets.py:166
+#, fuzzy
+#| msgid "Address"
+msgid "Address book"
+msgstr "Osoite"
 
 #: core/app_settings.py:44 core/app_settings.py:716
 msgid "Authentication"
@@ -1925,8 +2092,8 @@ msgstr "Järjestelmänvalvojien ryhmät"
 
 #: core/app_settings.py:185 core/app_settings.py:906
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Näiden LDAP Posix -ryhmien jäsenet luodaan verkkotunnuksen "
 "järjestelmänvalvojiksi. Käytä ';'-merkkejä ryhmien erottamiseen."
@@ -2085,7 +2252,8 @@ msgstr "Ota käyttöön tuonti LDAP:stä"
 #: core/app_settings.py:330 core/app_settings.py:1081
 msgid "Enable account synchronization from LDAP directory to local database"
 msgstr ""
-"Tilien synkronoinnin käyttöönotto LDAP-hakemistosta paikalliseen tietokantaan"
+"Tilien synkronoinnin käyttöönotto LDAP-hakemistosta paikalliseen "
+"tietokantaan"
 
 #: core/app_settings.py:354 core/app_settings.py:1111
 msgid "Username attribute"
@@ -2163,7 +2331,8 @@ msgstr "Ota käyttöön viestintä Modoboan julkisen API:n kanssa"
 msgid "Check new versions"
 msgstr "Tarkista uudet versiot"
 
-#: core/app_settings.py:416 core/app_settings.py:1204 core/app_settings.py:1214
+#: core/app_settings.py:416 core/app_settings.py:1204
+#: core/app_settings.py:1214
 msgid "Automatically checks if a newer version is available"
 msgstr "Tarkistaa automaattisesti, onko uudempi versio saatavana"
 
@@ -2195,10 +2364,6 @@ msgstr ""
 "Lähetä tilastoja Modoboan julkiseen API:han (laskurit ja käytetyt "
 "laajennukset)"
 
-#: core/app_settings.py:438 core/app_settings.py:1258
-msgid "Miscellaneous"
-msgstr "Sekalaiset"
-
 #: core/app_settings.py:441 core/app_settings.py:1265
 #, fuzzy
 #| msgid "Inactive account threshold"
@@ -2207,8 +2372,8 @@ msgstr "Inaktiivisen tilin kynnysarvo"
 
 #: core/app_settings.py:444 core/app_settings.py:1268
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:451 core/app_settings.py:1277
@@ -2217,8 +2382,8 @@ msgstr "Inaktiivisen tilin kynnysarvo"
 
 #: core/app_settings.py:454 core/app_settings.py:1280
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 "Tiliä, jonka viimeisin kirjautumispäivä on suurempi kuin tämä kynnysarvo "
 "(päivinä), pidetään inaktiivisena"
@@ -2261,7 +2426,7 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:12
+#: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2271,15 +2436,15 @@ msgstr ""
 "talviajan vaihtuessa. (Sama paikallinen aika esiintyy kahdesti kellon "
 "vaihtumisen vuoksi)."
 
-#: core/checks.py:16
+#: core/checks.py:17
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Aseta `USE_TZ = True` tiedostossa settings.py"
 
-#: core/checks.py:20
+#: core/checks.py:21
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:21
+#: core/checks.py:22
 #, fuzzy
 #| msgid "Update password scheme at login"
 msgid "Upgrade your password scheme to a stronger one"
@@ -2583,15 +2748,15 @@ msgstr ""
 #: core/templates/core/information.html:6
 #, python-format
 msgid ""
-"The password scheme <strong>%(scheme)s</strong> has been deprecated and will "
-"be removed in the next minor version. The procedure to upgrade to a stronger "
-"scheme is as follows: <ul> <li>Go to <strong>Parameters > General</strong> "
-"section</li> <li>Change the value of <strong>Default password scheme</"
-"strong></li> <li>Make sure <strong>Update password scheme at login</strong> "
-"option is enabled</li> <li>Save your changes</li> <li>Logout / Login with "
-"your current account so its password gets updated</li> <li>Inform "
-"<strong>ALL</strong> your users that they must login to Modoboa to complete "
-"the operation</li> </ul>"
+"The password scheme <strong>%(scheme)s</strong> has been deprecated and will"
+" be removed in the next minor version. The procedure to upgrade to a "
+"stronger scheme is as follows: <ul> <li>Go to <strong>Parameters > "
+"General</strong> section</li> <li>Change the value of <strong>Default "
+"password scheme</strong></li> <li>Make sure <strong>Update password scheme "
+"at login</strong> option is enabled</li> <li>Save your changes</li> "
+"<li>Logout / Login with your current account so its password gets "
+"updated</li> <li>Inform <strong>ALL</strong> your users that they must login"
+" to Modoboa to complete the operation</li> </ul>"
 msgstr ""
 
 #: core/templates/core/information.html:18
@@ -2714,8 +2879,8 @@ msgstr "Kaksivaiheinen tunnistus"
 
 #: core/templates/core/user_security.html:17
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
 "Asenna soft token -autentikointiohjelma, kuten FreeOTP tai Google\n"
 "                Authenticator sovelluskaupasta ja käytä \n"
@@ -2805,7 +2970,7 @@ msgstr "Kirjaudu ulos"
 msgid "API"
 msgstr "API"
 
-#: core/utils.py:42
+#: core/utils.py:41
 msgid "The core part of Modoboa"
 msgstr "Modoboan ydinosa"
 
@@ -3116,8 +3281,8 @@ msgstr "DNS-tietue on löydetty, mutta sen syntaksi ei ole oikein:"
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
 msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+"Here is an example of DNS configuration (bind format). Replace value between"
+" [ ] by the appropriate ones."
 msgstr ""
 "Tässä on esimerkki DNS-konfiguraatiosta (bind-muodossa). Korvaa [ ]:n "
 "välissä olevat arvot sopivilla arvoilla."
@@ -3208,8 +3373,8 @@ msgstr ""
 #: imap_migration/app_settings.py:80 imap_migration/app_settings.py:138
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+"filtered by the Folder Filter Exclusions. Example: debian.user, "
+"debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:107
@@ -3328,8 +3493,8 @@ msgstr ""
 "Ota käyttöön tai poista käytöstä järjestelmänvalvojakohtaiset rajoitukset"
 
 #: limits/app_settings.py:26 limits/app_settings.py:91
-#: limits/app_settings.py:160 limits/app_settings.py:245 limits/constants.py:47
-#: limits/constants.py:101
+#: limits/app_settings.py:160 limits/app_settings.py:245
+#: limits/constants.py:47 limits/constants.py:101
 msgid "Domain admins"
 msgstr "Verkkotunnuksen ylläpitäjät"
 
@@ -3338,9 +3503,9 @@ msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
 msgstr ""
-"Uuden järjestelmänvalvojan sallittujen verkkotunnusten järjestelmänvalvojien "
-"enimmäismäärä. (0 kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän "
-"luomisen)"
+"Uuden järjestelmänvalvojan sallittujen verkkotunnusten järjestelmänvalvojien"
+" enimmäismäärä. (0 kieltää kaiken luomisen, -1 sallii rajoittamattoman "
+"määrän luomisen)"
 
 #: limits/app_settings.py:39 limits/app_settings.py:175
 msgid ""
@@ -3352,8 +3517,8 @@ msgstr ""
 
 #: limits/app_settings.py:48 limits/app_settings.py:186
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Uuden järjestelmänvalvojan sallittujen verkkotunnusten enimmäismäärä. (0 "
 "kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
@@ -3396,8 +3561,8 @@ msgstr "Ota käyttöön tai poista käytöstä verkkotunnuskohtaiset rajoitukset
 
 #: limits/app_settings.py:94 limits/app_settings.py:248
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Uuden verkkotunnuksen sallittujen ylläpitäjien enimmäismäärä. (0 kieltää "
 "kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
@@ -3415,13 +3580,13 @@ msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
-"Uuden verkkotunnuksen sallittujen postilaatikoiden enimmäismäärä. (0 kieltää "
-"kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
+"Uuden verkkotunnuksen sallittujen postilaatikoiden enimmäismäärä. (0 kieltää"
+" kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
 #: limits/app_settings.py:123 limits/app_settings.py:283
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr ""
 "Uuden verkkotunnuksen sallittujen aliasten enimmäismäärä. (0 kieltää kaiken "
 "luomisen, -1 sallii rajoittamattoman määrän luomisen)"
@@ -4053,7 +4218,7 @@ msgstr "kohde-isännän portti"
 msgid "verify recipients"
 msgstr "tarkistaa vastaanottajat"
 
-#: sievefilters/api/v2/viewsets.py:183
+#: sievefilters/api/v2/viewsets.py:186
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -4247,11 +4412,11 @@ msgstr ""
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr ""
 
-#: sievefilters/lib.py:48
+#: sievefilters/lib.py:52
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 
-#: sievefilters/lib.py:75
+#: sievefilters/lib.py:79
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4422,8 +4587,8 @@ msgstr "Vanha salasana"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -4458,17 +4623,14 @@ msgid "next hop"
 msgstr "seuraava hyppy"
 
 #, fuzzy
-#~| msgid "Authentication method"
 #~ msgid "Authentication mechanism"
 #~ msgstr "Tunnistusmenetelmä"
 
 #, fuzzy
-#~| msgid "LDAP authentication settings"
 #~ msgid "Prefered authentication mechanism"
 #~ msgstr "LDAP-todennusasetukset"
 
 #, fuzzy
-#~| msgid "Directory not found."
 #~ msgid "Directory non-writable"
 #~ msgstr "Hakemistoa ei löydy."
 
@@ -4476,88 +4638,70 @@ msgstr "seuraava hyppy"
 #~ msgstr "Käyttäjätunnuksesi ja salasanasi eivät täsmää. Yritä uudelleen."
 
 #, fuzzy
-#~| msgid "Check to activate this alias"
 #~ msgid "Check to activate this filters set"
 #~ msgstr "Ota käyttöön tämän aliaksen aktivointi"
 
 #, fuzzy
-#~| msgid "Confirmation"
 #~ msgid "Conditions"
 #~ msgstr "Vahvistus"
 
 #, fuzzy
-#~| msgid "Active users"
 #~ msgid "Active"
 #~ msgstr "Aktiiviset käyttäjät"
 
 #, fuzzy
-#~| msgid "Not defined"
 #~ msgid "No filter defined yet"
 #~ msgstr "Ei määritelty"
 
 #, fuzzy
-#~| msgid "Search filter"
 #~ msgid "New filter"
 #~ msgstr "Etsi suodatin"
 
 #, fuzzy
-#~| msgid "Search filter"
 #~ msgid "Save filters set"
 #~ msgstr "Etsi suodatin"
 
 #, fuzzy
-#~| msgid "Active users"
 #~ msgid "Activate filters set"
 #~ msgstr "Aktiiviset käyttäjät"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Remove filters set"
 #~ msgstr "Poista tämä lupa"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Remove this filter"
 #~ msgstr "Poista tämä lupa"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Move this filter down"
 #~ msgstr "Poista tämä lupa"
 
 #, fuzzy
-#~| msgid "Failed to retrieve mailbox location (%s)"
 #~ msgid "Failed to retrieve filters set"
 #~ msgstr "Postilaatikon haku epäonnistui sijainnista (%s)"
 
 #, fuzzy
-#~| msgid "Alias created"
 #~ msgid "Filter created"
 #~ msgstr "Alias luotu"
 
 #, fuzzy
-#~| msgid "modified"
 #~ msgid "Filter modified"
 #~ msgstr "muokattu"
 
 #, fuzzy
-#~| msgid "Parameters saved"
 #~ msgid "Filters set saved"
 #~ msgstr "Tallennetut parametrit"
 
 #, fuzzy
-#~| msgid "Alias created"
 #~ msgid "Filters set created"
 #~ msgstr "Alias luotu"
 
 #, fuzzy
-#~| msgid "Alias deleted"
-#~| msgid_plural "Aliases deleted"
 #~ msgid "Filters set deleted"
 #~ msgstr "Alias poistettu"
 
 #, fuzzy
-#~| msgid "Yes"
 #~ msgid "yes"
 #~ msgstr "Kyllä"
 
