@@ -8,7 +8,7 @@
     <a class="dropdown-toggle" name="{{ entry.name }}" data-toggle="dropdown" href="{{ entry.url }}">
       {% if entry.img %}<span class="{{ entry.img }}"></span> {% endif %}{{ entry.label }}
     </a>
-    <ul class="dropdown-menu" {% if entry.width %}style="width: {{ entry.width }}px"{% endif %}>
+    <ul class="dropdown-menu" {% if entry.width %}style="width: {{ entry.width | stringformat:"s" }}px"{% endif %}>
       {% for sentry in entry.menu %}
       <li>{% if sentry.method == "post" %}{% render_post_link sentry request %}{% else %}{% render_link sentry %}{% endif %}</li>
       {% endfor %}
