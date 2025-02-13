@@ -9,14 +9,14 @@
       {% if entry.menu %}
         {% if entry.url %}
       <a name="{{ entry.name }}" class="btn {{ entry.class }}" href="{{ entry.url }}" title="{{ entry.title }}">
-        {% if entry.img %}<span class="{{ entry.img}}"></span> {% endif %}{{ entry.label }}</a>
+        {% if entry.img %}<span class="{{ entry.img }}"></span> {% endif %}{{ entry.label }}</a>
       <button type="button" class="btn {{ entry.class }} dropdown-toggle" data-toggle="dropdown">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
       </button>
         {% else %}
       <button type="button" title="{{ entry.title }}" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        {% if entry.img %}<span class="{{ entry.img}}"></span> {% endif %}{{ entry.label }}
+        {% if entry.img %}<span class="{{ entry.img }}"></span> {% endif %}{{ entry.label }}
         <span class="caret"></span>
       </button>
         {% endif %}
