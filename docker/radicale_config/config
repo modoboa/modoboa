@@ -71,7 +71,7 @@ hosts = 0.0.0.0:5232
 
 # Authentication method
 # Value: none | htpasswd | remote_user | http_x_remote_user
-type = radicale_modoboa_oauth2
+type = radicale_modoboa_auth_oauth2
 
 # Htpasswd filename
 # htpasswd_filename = users

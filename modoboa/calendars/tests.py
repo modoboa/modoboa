@@ -394,12 +394,12 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.client.post(reverse("core:login"), data)
 
         # FIXME: drf nested routers does not handle reverse() properly
-        url = "/api/v1/user-calendars/{}/events/{}/".format(self.calendar.pk, 1234)
+        url = "/api/v2/user-calendars/{}/events/{}/".format(self.calendar.pk, 1234)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["title"].startswith("Bastille"))
 
-        url = "/api/v1/user-calendars/{}/events/".format(self.calendar.pk)
+        url = "/api/v2/user-calendars/{}/events/".format(self.calendar.pk)
         url = "{}?start={}&end={}".format(url, "20060712T182145Z", "20070712T182145Z")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -411,12 +411,12 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.client.post(reverse("core:login"), data)
 
         # FIXME: drf nested routers does not handle reverse() properly
-        url = "/api/v1/shared-calendars/{}/events/{}/".format(self.scalendar.pk, 1234)
+        url = "/api/v2/shared-calendars/{}/events/{}/".format(self.scalendar.pk, 1234)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["title"].startswith("Bastille"))
 
-        url = "/api/v1/shared-calendars/{}/events/".format(self.scalendar.pk)
+        url = "/api/v2/shared-calendars/{}/events/".format(self.scalendar.pk)
         url = "{}?start={}&end={}".format(url, "20060712T182145Z", "20070712T182145Z")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -427,7 +427,7 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         data = {"username": "user@test.com", "password": "toto"}
         self.client.post(reverse("core:login"), data)
 
-        url = "/api/v1/user-calendars/{}/events/".format(self.calendar.pk)
+        url = "/api/v2/user-calendars/{}/events/".format(self.calendar.pk)
         data = {
             "title": "Test event",
             "start": "2018-03-27T00:00:00Z",
@@ -441,7 +441,7 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 201)
         self.assertIn("id", response.json())
 
-        url = "/api/v1/shared-calendars/{}/events/".format(self.scalendar.pk)
+        url = "/api/v2/shared-calendars/{}/events/".format(self.scalendar.pk)
         data = {
             "title": "Test event 2",
             "start": "2018-03-27T00:00:00Z",
@@ -460,7 +460,7 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         data = {"username": "user@test.com", "password": "toto"}
         self.client.post(reverse("core:login"), data)
 
-        url = "/api/v1/user-calendars/{}/events/1234/".format(self.calendar.pk)
+        url = "/api/v2/user-calendars/{}/events/1234/".format(self.calendar.pk)
         data = {
             "title": "Test event",
             "start": "2018-03-27T00:00:00Z",
@@ -483,7 +483,7 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         data = {"username": "user@test.com", "password": "toto"}
         self.client.post(reverse("core:login"), data)
 
-        url = "/api/v1/user-calendars/{}/events/1234/".format(self.calendar.pk)
+        url = "/api/v2/user-calendars/{}/events/1234/".format(self.calendar.pk)
         data = {
             "start": "2018-03-27T00:00:00Z",
             "end": "2018-03-28T00:00:00Z",
@@ -506,7 +506,7 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
             "calendar": self.scalendar.pk,
             "new_calendar_type": "shared",
         }
-        url = "/api/v1/user-calendars/{}/events/1234/".format(self.calendar.pk)
+        url = "/api/v2/user-calendars/{}/events/1234/".format(self.calendar.pk)
         response = self.client.put(url, data=data, format="json")
         self.assertEqual(response.status_code, 200)
 
@@ -515,7 +515,7 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         data = {"username": "user@test.com", "password": "toto"}
         self.client.post(reverse("core:login"), data)
 
-        url = "/api/v1/shared-calendars/{}/events/1234/".format(self.scalendar.pk)
+        url = "/api/v2/shared-calendars/{}/events/1234/".format(self.scalendar.pk)
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
 

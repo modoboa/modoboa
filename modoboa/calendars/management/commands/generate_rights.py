@@ -11,7 +11,6 @@ from modoboa.core.models import User
 from modoboa.parameters import tools as param_tools
 
 from ... import models
-from ...modo_extension import Radicale
 
 
 class Command(BaseCommand):
@@ -130,7 +129,6 @@ permissions = %s
 
     def handle(self, *args, **options):
         """Command entry point."""
-        Radicale().load()
         path = param_tools.get_global_parameter("rights_file_path", app="calendars")
         if not options["force"]:
             try:
