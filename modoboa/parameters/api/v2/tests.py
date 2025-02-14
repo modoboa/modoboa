@@ -7,14 +7,14 @@ from modoboa.lib.tests import ModoAPITestCase
 
 class ParametersAPITestCase(ModoAPITestCase):
     def test_applications(self):
-        url = reverse("v2:parameter-applications")
+        url = reverse("v2:parameter-global-applications")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         # core, admin, limits, pdf credentials
-        self.assertEqual(len(resp.json()), 9)
+        self.assertEqual(len(resp.json()), 10)
 
     def test_get_structure(self):
-        url = reverse("v2:parameter-structure")
+        url = reverse("v2:parameter-global-structure")
         resp_full = self.client.get(url)
         self.assertEqual(resp_full.status_code, 200)
 
@@ -25,7 +25,7 @@ class ParametersAPITestCase(ModoAPITestCase):
 
     def test_retrieve(self):
         for app in ["core", "admin", "limits"]:
-            url = reverse("v2:parameter-detail", args=[app])
+            url = reverse("v2:parameter-global-detail", args=[app])
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
@@ -44,7 +44,7 @@ class ParametersAPITestCase(ModoAPITestCase):
             "deflt_domain_mailboxes_limit": 0,
             "deflt_domain_mailbox_aliases_limit": 0,
         }
-        url = reverse("v2:parameter-detail", args=["limits"])
+        url = reverse("v2:parameter-global-detail", args=["limits"])
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
@@ -56,7 +56,7 @@ class ParametersAPITestCase(ModoAPITestCase):
             "custom_dns_server": "",
             "dkim_keys_storage_dir": "/wrong",
         }
-        url = reverse("v2:parameter-detail", args=["admin"])
+        url = reverse("v2:parameter-global-detail", args=["admin"])
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
         errors = resp.json()

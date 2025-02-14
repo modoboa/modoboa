@@ -88,7 +88,7 @@ class ParametersAPITestCase(ModoAPITestCase):
         DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
     )
     def test_update(self):
-        url = reverse("v2:parameter-detail", args=["core"])
+        url = reverse("v2:parameter-global-detail", args=["core"])
         data = copy.copy(CORE_SETTINGS)
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
@@ -140,7 +140,7 @@ class ParametersAPITestCase(ModoAPITestCase):
         depending on the result of the doveadm command for the password scheme
         """
         # Test case where doveadm command fails
-        url = reverse("v2:parameter-detail", args=["core"])
+        url = reverse("v2:parameter-global-detail", args=["core"])
         data = copy.copy(CORE_SETTINGS)
         data["password_scheme"] = "plain"
 

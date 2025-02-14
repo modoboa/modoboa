@@ -332,7 +332,7 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         """Test access rule modification."""
         data = {
             "mailbox": {
-                "pk": self.admin_account.pk,
+                "pk": self.admin_account.mailbox.pk,
                 "full_address": self.admin_account.email,
             },
             "calendar": self.calendar.pk,
@@ -352,7 +352,7 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
             calendar=calendar, mailbox=self.account.mailbox, read=True, write=True
         )
         data = {
-            "mailbox": self.account.pk,
+            "mailbox": self.account.mailbox.pk,
             "calendar": calendar.pk,
             "read": False,
             "write": True,
