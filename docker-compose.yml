@@ -9,10 +9,11 @@ services:
       context: .
       dockerfile: docker/Dockerfile.dev
     environment:
-      PYTHONPATH: ".."
       DB: "SQLITE"
       DEBUG: "True"
       REDIS_HOST: redis
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
     command: >
       sh -c "cd test_project; python3 manage.py rqworker dkim modoboa"
     volumes:
@@ -29,16 +30,19 @@ services:
     env_file:
       - test_project/oidc_key
     environment:
-      PYTHONPATH: ".."
       DB: "SQLITE"
       DEBUG: "True"
       REDIS_HOST: redis
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
     command: >
       sh -c "cd test_project
              python3 manage.py migrate
              python3 manage.py load_initial_data --dev
              django-admin compilemessages
              python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
+    depends_on:
+      - radicale
     volumes:
       - .:/code
 
@@ -53,13 +57,16 @@ services:
     env_file:
       - test_project/oidc_key
     environment:
-      PYTHONPATH: ".."
       DB: "SQLITE"
       DEBUG: "True"
       REDIS_HOST: redis
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
     command: >
       sh -c "cd test_project
              python3 manage.py runserver_plus 0.0.0.0:8001"
+    depends_on:
+      - radicale
     volumes:
       - .:/code
 
@@ -89,3 +96,12 @@ services:
       - api
     volumes:
       - ./docker/dovecot_config:/etc/dovecot/conf.d
+
+  radicale:
+    container_name: modoboa_radicale
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.radicale.dev
+    volumes:
+      - ./docker/radicale_config:/etc/radicale

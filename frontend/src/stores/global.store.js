@@ -14,5 +14,9 @@ export const useGlobalStore = defineStore('global', () => {
     return notifications.value.find((item) => item.id === id)
   }
 
-  return { notifications, fetchNotifications, getNotificationById }
+  async function $reset() {
+    notifications.value = []
+  }
+
+  return { notifications, fetchNotifications, getNotificationById, $reset }
 })

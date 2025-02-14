@@ -1,6 +1,9 @@
 """Parameters management."""
 
 import copy
+from typing import Optional
+
+from rest_framework.fields import empty
 
 from modoboa.lib import exceptions, form_utils, signals
 from modoboa.lib.sysutils import guess_extension_name
@@ -37,13 +40,22 @@ class Registry:
             "defaults": {},
         }
 
-    def add2(self, level, app, label, structure, serializer_class, is_extension=False):
+    def add2(
+        self,
+        level: str,
+        app: str,
+        label: str,
+        structure: dict,
+        serializer_class,
+        is_extension: bool = False,
+    ) -> None:
         """Add new parameters for given app and level."""
         self._registry2[level][app] = {
             "label": label,
             "structure": structure,
             "serializer_class": serializer_class,
             "is_extension": is_extension,
+            "defaults": {},
         }
 
     def _load_default_values(self, level):
@@ -54,6 +66,11 @@ class Registry:
                 if isinstance(field, form_utils.SeparatorField):
                     continue
                 data["defaults"][name] = field.initial
+        for data in list(self._registry2[level].values()):
+            serializer = data["serializer_class"]()
+            for name, field in list(serializer.fields.items()):
+                if field.default is not empty:
+                    data["defaults"][name] = field.default
 
     def get_applications(self, level):
         """Return all applications registered for level."""
@@ -67,7 +84,7 @@ class Registry:
         ]
         return result
 
-    def get_label(self, level, app):
+    def get_label(self, level: str, app: str) -> str:
         return self._registry2[level][app]["label"]
 
     def get_forms(self, level, *args, **kwargs):
@@ -94,13 +111,13 @@ class Registry:
             )
         return result
 
-    def get_serializer_class(self, level, app):
+    def get_serializer_class(self, level: str, app: str):
         """Return serializer class for given level and app."""
         if app not in self._registry2[level]:
             raise NotDefined(app)
         return self._registry2[level][app]["serializer_class"]
 
-    def get_structure(self, level, for_app=None):
+    def get_structure(self, level: str, for_app: Optional[str] = None) -> list:
         """Return fields structure."""
         result = []
         for app, fields in list(self._registry2[level].items()):
@@ -137,27 +154,41 @@ class Registry:
                 result.append(item)
         return result
 
-    def exists(self, level, app, parameter=None):
+    def exists(self, level: str, app: str, parameter: Optional[str] = None) -> bool:
         """Check if parameter exists."""
         parameters = self._registry[level]
         result = app in parameters
         if parameter:
             result = result and parameter in parameters[app]["defaults"]
+        if result:
+            return result
+        parameters = self._registry2[level]
+        result = app in parameters
+        if parameter:
+            result = result and parameter in parameters[app]["defaults"]
         return result
 
-    def get_default(self, level, app, parameter):
+    def get_default(self, level: str, app: str, parameter: str):
         """Retrieve default value for parameter."""
-        if app not in self._registry[level]:
-            raise NotDefined(app)
-        if parameter not in self._registry[level][app]["defaults"]:
-            raise NotDefined(app, parameter)
-        return self._registry[level][app]["defaults"][parameter]
+        if (
+            app in self._registry[level]
+            and parameter in self._registry[level][app]["defaults"]
+        ):
+            return self._registry[level][app]["defaults"][parameter]
+        if (
+            app in self._registry2[level]
+            and parameter in self._registry2[level][app]["defaults"]
+        ):
+            return self._registry2[level][app]["defaults"][parameter]
+        raise NotDefined(app)
 
-    def get_defaults(self, level, app):
+    def get_defaults(self, level: str, app: str) -> dict:
         """Retrieve default values for application."""
-        if app not in self._registry[level]:
-            raise NotDefined(app)
-        return self._registry[level][app]["defaults"]
+        if app in self._registry[level]:
+            return self._registry[level][app]["defaults"]
+        if app in self._registry2[level]:
+            return self._registry2[level][app]["defaults"]
+        raise NotDefined(app)
 
 
 registry = Registry()
@@ -166,7 +197,7 @@ registry = Registry()
 class Manager:
     """A manager for parameters."""
 
-    def __init__(self, level, parameters):
+    def __init__(self, level: str, parameters) -> None:
         """Constructor."""
         self._level = level
         self._parameters = parameters
@@ -188,7 +219,7 @@ class Manager:
             return self._parameters[app].get(parameter, default)
         return default
 
-    def get_values(self, app=None):
+    def get_values(self, app: Optional[str] = None):
         """Return all values for the given level/app."""
         if app is None:
             app = guess_extension_name()
@@ -220,7 +251,7 @@ class Manager:
             )
         self._parameters[app][parameter] = value
 
-    def set_values(self, values, app=None):
+    def set_values(self, values: dict, app: Optional[str] = None) -> None:
         """Set/update values for the given app."""
         if app is None:
             app = guess_extension_name()

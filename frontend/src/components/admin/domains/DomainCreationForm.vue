@@ -110,7 +110,7 @@ const domain = ref(defaultDomain)
 
 onMounted(() => {
   //TODO : Store this in Pinia
-  ParametersApi.getApplication('admin').then((resp) => {
+  ParametersApi.getGlobalApplication('admin').then((resp) => {
     const params = resp.data.params
     domain.value.quota = params.default_domain_quota
     domain.value.default_mailbox_quota = params.default_mailbox_quota

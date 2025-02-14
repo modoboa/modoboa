@@ -62,7 +62,7 @@ const account = computed(() => {
 })
 const limitsConfig = ref({})
 
-parametersApi.getApplication('limits').then((resp) => {
+parametersApi.getGlobalApplication('limits').then((resp) => {
   limitsConfig.value = resp.data
 })
 

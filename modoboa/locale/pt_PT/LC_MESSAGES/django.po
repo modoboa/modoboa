@@ -13,11 +13,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-29 17:08+0100\n"
+"POT-Creation-Date: 2025-02-11 09:00+0100\n"
 "PO-Revision-Date: 2024-07-17 11:45+0200\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
-"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
-"modoboa/language/pt_PT/)\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/modoboa/language/pt_PT/)\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,14 +54,14 @@ msgid "Cannot be greater than domain quota"
 msgstr ""
 
 #: admin/api/v1/serializers.py:161 admin/api/v1/serializers.py:386
-#: admin/api/v2/serializers.py:478 admin/models/alias.py:38
+#: admin/api/v2/serializers.py:496 admin/models/alias.py:38
 #, fuzzy
 #| msgid "Permissions"
 msgid "Permission denied."
 msgstr "Permissões"
 
 #: admin/api/v1/serializers.py:223 admin/api/v2/serializers.py:77
-#: admin/api/v2/serializers.py:410 admin/forms/alias.py:113
+#: admin/api/v2/serializers.py:428 admin/forms/alias.py:113
 #: admin/forms/alias.py:115 core/api/v2/serializers.py:224
 #: core/api/v2/serializers.py:226 core/api/v2/serializers.py:235
 #: core/app_settings.py:582 core/app_settings.py:584 core/app_settings.py:595
@@ -75,7 +74,7 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 
-#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:460
+#: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:478
 msgid "Not allowed for this role."
 msgstr ""
 
@@ -83,16 +82,18 @@ msgstr ""
 msgid "Must be equal to mailbox full_address"
 msgstr ""
 
-#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:510
+#: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:528
 #: admin/forms/account.py:186 admin/forms/account.py:188
 #: admin/forms/domain.py:174 admin/forms/domain.py:302
-#: admin/forms/domain.py:304 core/forms.py:92 core/forms.py:95 core/forms.py:97
+#: admin/forms/domain.py:304 calendars/serializers.py:175
+#: calendars/serializers.py:177 core/forms.py:92 core/forms.py:95
+#: core/forms.py:97
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "This field is required."
 msgstr "É necessária uma caixa de correio"
 
-#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:527
+#: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:545
 #, fuzzy
 #| msgid "Domain does not exist"
 msgid "Local domain {} does not exist"
@@ -151,17 +152,17 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr ""
 
-#: admin/api/v2/serializers.py:495
+#: admin/api/v2/serializers.py:513
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:515
+#: admin/api/v2/serializers.py:533
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "É necessária uma caixa de correio"
 
-#: admin/api/v2/serializers.py:678
+#: admin/api/v2/serializers.py:696
 #, fuzzy
 #| msgid "Unknown domain %s"
 msgid "Unknown status"
@@ -205,8 +206,8 @@ msgstr ""
 
 #: admin/app_settings.py:35 admin/app_settings.py:307
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
 
 #: admin/app_settings.py:43 admin/app_settings.py:317
@@ -338,8 +339,9 @@ msgstr ""
 "Renomear ou remover as caixas de correio no sistema de ficheiros quando "
 "estas são renomeadas no Modoboa"
 
-#: admin/app_settings.py:148 admin/app_settings.py:456 admin/forms/domain.py:54
-#: admin/models/domain.py:36 admin/templates/admin/domain_detail.html:64
+#: admin/app_settings.py:148 admin/app_settings.py:456
+#: admin/forms/domain.py:54 admin/models/domain.py:36
+#: admin/templates/admin/domain_detail.html:64
 #, fuzzy
 #| msgid "Default domain quota"
 msgid "Default mailbox quota"
@@ -383,7 +385,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Criação automatica de domino/caixa de correio"
 
 #: admin/app_settings.py:177 admin/app_settings.py:491
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Criar um dominio e uma caixa de correio quando uma conta é criada "
 "automátiamente."
@@ -415,6 +418,7 @@ msgstr ""
 "especificado. Um valor de 0 implica sem quota."
 
 #: admin/app_settings.py:522 admin/app_settings.py:527
+#: core/api/v2/viewsets.py:148
 msgid "Administration"
 msgstr "Administração"
 
@@ -520,13 +524,13 @@ msgstr "Quota"
 #: admin/forms/account.py:244
 #, fuzzy
 #| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's "
-#| "default one. Leave empty to define an unlimited value (not allowed for "
-#| "domain administrators)."
+#| "Quota in MB for this mailbox. Define a custom value or use domain's default "
+#| "one. Leave empty to define an unlimited value (not allowed for domain "
+#| "administrators)."
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
 msgstr ""
 "Quota em MB para esta caixa de correio. Definir uma valor personalizado ou "
 "usar o valor predefinido pelo domínio. Deixar em branco para definir uma "
@@ -554,9 +558,9 @@ msgstr "Alias(es)"
 #: admin/forms/account.py:269
 #, fuzzy
 #| msgid ""
-#| "Alias(es) of this mailbox. Indicate only one address per input, press "
-#| "ENTER to add a new input. Use the '*' character to create a 'catchall' "
-#| "alias (ex: *@domain.tld)."
+#| "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
+#| "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
+#| "*@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
@@ -575,8 +579,8 @@ msgstr "Pedido inválido"
 #: admin/forms/account.py:278
 #, fuzzy
 #| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
+#| "Mailbox(es) this alias will point to. Indicate only one address per input, "
+#| "press ENTER to add a new input."
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
@@ -652,8 +656,8 @@ msgstr "Endereço de e-mail"
 #: admin/forms/alias.py:25
 #, fuzzy
 #| msgid ""
-#| "The alias address (without the domain part). For a 'catch-all' address, "
-#| "just enter an * character."
+#| "The alias address (without the domain part). For a 'catch-all' address, just"
+#| " enter an * character."
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
@@ -668,8 +672,8 @@ msgstr "Destinatários"
 #: admin/forms/alias.py:34
 #, fuzzy
 #| msgid ""
-#| "Mailbox(es) this alias will point to. Indicate only one address per "
-#| "input, press ENTER to add a new input."
+#| "Mailbox(es) this alias will point to. Indicate only one address per input, "
+#| "press ENTER to add a new input."
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
@@ -840,7 +844,8 @@ msgstr "Passwords encriptadas"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "Marque esta opção se as senhas contidas no arquivo não são encriptadas"
+msgstr ""
+"Marque esta opção se as senhas contidas no arquivo não são encriptadas"
 
 #: admin/handlers.py:233
 #, python-format
@@ -1145,8 +1150,9 @@ msgstr "Domínio criado"
 #: admin/templates/admin/_domain_dkim_key.html:20
 #: core/templates/core/user_security.html:83
 #: core/templates/core/user_security.html:99
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
+#: templates/common/generic_modal.html:6
+#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
+#: templates/common/wizard_forms.html:27
 msgid "Close"
 msgstr "Fechar"
 
@@ -1435,7 +1441,8 @@ msgid "Warning"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:139
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr ""
 
 #: admin/templates/admin/domain_detail.html:142 core/constants.py:53
@@ -1579,11 +1586,11 @@ msgstr ""
 #: admin/templates/admin/import_identities_form.html:6
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
+"<li><em>account; loginname; password; first name; last name; enabled; group;"
+" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
+"is mandatory and must be equal to one of the previous values.</p> <p>You can"
+" use a different character as separator.</p>"
 msgstr ""
 
 #: admin/templates/admin/importform.html:6
@@ -1787,6 +1794,147 @@ msgstr "Importar identidades"
 msgid "Forward updated"
 msgstr "Reencaminhamento atualizado"
 
+#: calendars/app_settings.py:11
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "Server settings"
+msgstr "Definições do MANAGESIEVE"
+
+#: calendars/app_settings.py:17
+#, fuzzy
+#| msgid "Server port"
+msgid "Server URL"
+msgstr "Porta do Servidor"
+
+#: calendars/app_settings.py:19
+msgid ""
+"The URL of your Radicale server. It will be used to construct calendar URLs."
+msgstr ""
+
+#: calendars/app_settings.py:31
+msgid "Rights management"
+msgstr ""
+
+#: calendars/app_settings.py:37
+msgid "Rights file's path"
+msgstr ""
+
+#: calendars/app_settings.py:39
+msgid "Path to the file that contains rights definition"
+msgstr ""
+
+#: calendars/app_settings.py:46
+#, fuzzy
+#| msgid "Super administrator"
+msgid "Allow calendars administration"
+msgstr "Super Administrador"
+
+#: calendars/app_settings.py:48
+#, fuzzy
+#| msgid "Maximum number of domain administrators this user can create"
+msgid "Allow domain administrators to manage user calendars (read and write)"
+msgstr ""
+"Número máximo de administradores de domínio que este utilizador pode criar"
+
+#: calendars/app_settings.py:60 core/app_settings.py:438
+#: core/app_settings.py:1258
+msgid "Miscellaneous"
+msgstr "Vários"
+
+#: calendars/app_settings.py:66
+msgid "Maximum size of ICS files"
+msgstr ""
+
+#: calendars/app_settings.py:68
+msgid ""
+"Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
+msgstr ""
+
+#: calendars/app_settings.py:89 calendars/handlers.py:55
+#: core/api/v2/viewsets.py:157
+msgid "Calendars"
+msgstr ""
+
+#: calendars/models.py:48 calendars/models.py:65 contacts/models.py:38
+msgid "Server location is not set, please fix it."
+msgstr ""
+
+#: calendars/viewsets.py:197
+msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""
+
+#: contacts/app_settings.py:11
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "Synchronization"
+msgstr "Definições do serviço de directório"
+
+#: contacts/app_settings.py:18
+msgid "Synchonize address book using CardDAV"
+msgstr ""
+
+#: contacts/app_settings.py:21
+msgid ""
+"Choose to synchronize or not your address book using CardDAV. You will be "
+"able to access your contacts from the outside."
+msgstr ""
+
+#: contacts/app_settings.py:29
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "Synchronization frequency"
+msgstr "Definições do serviço de directório"
+
+#: contacts/app_settings.py:31
+msgid "Interval in seconds between 2 synchronization requests"
+msgstr ""
+
+#: contacts/app_settings.py:51
+#: contacts/templates/modoboa_contacts/index.html:6
+#: core/api/v2/viewsets.py:164
+#, fuzzy
+#| msgid "Domains"
+msgid "Contacts"
+msgstr "contém"
+
+#: contacts/constants.py:6 contacts/constants.py:12
+msgid "Home"
+msgstr ""
+
+#: contacts/constants.py:7 contacts/constants.py:13
+msgid "Work"
+msgstr ""
+
+#: contacts/constants.py:8 contacts/constants.py:14
+msgid "Other"
+msgstr ""
+
+#: contacts/constants.py:15
+msgid "Main"
+msgstr ""
+
+#: contacts/constants.py:16
+msgid "Cellular"
+msgstr ""
+
+#: contacts/constants.py:17
+msgid "Fax"
+msgstr ""
+
+#: contacts/constants.py:18
+msgid "Pager"
+msgstr ""
+
+#: contacts/serializers.py:101
+#, fuzzy
+#| msgid "Number of displayed items per page"
+msgid "Name or display name required"
+msgstr "Número de itens apresentados por página"
+
+#: contacts/serializers.py:233
+msgid "Minimum allowed value is 60s"
+msgstr ""
+
 #: core/api/v1/serializers.py:21
 #, fuzzy
 #| msgid "Invalid line"
@@ -1837,9 +1985,26 @@ msgstr "Número de linhas inválido"
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:367 core/views/auth.py:200 core/views/auth.py:253
+#: core/api/v2/serializers.py:367 core/views/auth.py:200
+#: core/views/auth.py:253
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
+
+#: core/api/v2/viewsets.py:150
+#, fuzzy
+#| msgid "Administration"
+msgid "Administration console"
+msgstr "Administração"
+
+#: core/api/v2/viewsets.py:159
+msgid "Calendar"
+msgstr ""
+
+#: core/api/v2/viewsets.py:166
+#, fuzzy
+#| msgid "Address"
+msgid "Address book"
+msgstr "Endereço"
 
 #: core/app_settings.py:44 core/app_settings.py:716
 msgid "Authentication"
@@ -2020,8 +2185,8 @@ msgstr "Grupos de Administrador"
 
 #: core/app_settings.py:185 core/app_settings.py:906
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Os membros destes grupos \"LDAP Posix\" serão criados como administradores "
 "de domínio. Use ';' para separar os grupos."
@@ -2096,8 +2261,7 @@ msgstr "Password para bind"
 #: core/app_settings.py:240 core/app_settings.py:292 core/app_settings.py:974
 #: core/app_settings.py:1036
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"A password usada para fazer o \"bind\" ao servidor LDAP (com 'Bind DN')"
+msgstr "A password usada para fazer o \"bind\" ao servidor LDAP (com 'Bind DN')"
 
 #: core/app_settings.py:247 core/app_settings.py:335 core/app_settings.py:984
 #: core/app_settings.py:1089
@@ -2267,7 +2431,8 @@ msgstr ""
 msgid "Check new versions"
 msgstr "Procurar novas versões"
 
-#: core/app_settings.py:416 core/app_settings.py:1204 core/app_settings.py:1214
+#: core/app_settings.py:416 core/app_settings.py:1204
+#: core/app_settings.py:1214
 msgid "Automatically checks if a newer version is available"
 msgstr "Verifica automaticamente se existem novas versões"
 
@@ -2296,18 +2461,14 @@ msgstr ""
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 
-#: core/app_settings.py:438 core/app_settings.py:1258
-msgid "Miscellaneous"
-msgstr "Vários"
-
 #: core/app_settings.py:441 core/app_settings.py:1265
 msgid "Enable inactive account tracking"
 msgstr ""
 
 #: core/app_settings.py:444 core/app_settings.py:1268
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:451 core/app_settings.py:1277
@@ -2316,8 +2477,8 @@ msgstr ""
 
 #: core/app_settings.py:454 core/app_settings.py:1280
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 
 #: core/app_settings.py:460 core/app_settings.py:1289
@@ -2360,22 +2521,22 @@ msgstr ""
 msgid "LDAP"
 msgstr ""
 
-#: core/checks.py:12
+#: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
 msgstr ""
 
-#: core/checks.py:16
+#: core/checks.py:17
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr ""
 
-#: core/checks.py:20
+#: core/checks.py:21
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:21
+#: core/checks.py:22
 #, fuzzy
 #| msgid "Default password scheme"
 msgid "Upgrade your password scheme to a stronger one"
@@ -2544,8 +2705,8 @@ msgstr "O simple utilizador '%s' deve ter endereço de e-mail válido"
 #, python-format
 msgid "username and email fields must not differ for '%s'"
 msgstr ""
-"Os campos nome de utilizador e endereço de email não deve ser diferente para "
-"'%s'"
+"Os campos nome de utilizador e endereço de email não deve ser diferente para"
+" '%s'"
 
 #: core/password_validation.py:25
 msgid "Password must contain at least {} digit."
@@ -2694,15 +2855,15 @@ msgstr ""
 #: core/templates/core/information.html:6
 #, python-format
 msgid ""
-"The password scheme <strong>%(scheme)s</strong> has been deprecated and will "
-"be removed in the next minor version. The procedure to upgrade to a stronger "
-"scheme is as follows: <ul> <li>Go to <strong>Parameters > General</strong> "
-"section</li> <li>Change the value of <strong>Default password scheme</"
-"strong></li> <li>Make sure <strong>Update password scheme at login</strong> "
-"option is enabled</li> <li>Save your changes</li> <li>Logout / Login with "
-"your current account so its password gets updated</li> <li>Inform "
-"<strong>ALL</strong> your users that they must login to Modoboa to complete "
-"the operation</li> </ul>"
+"The password scheme <strong>%(scheme)s</strong> has been deprecated and will"
+" be removed in the next minor version. The procedure to upgrade to a "
+"stronger scheme is as follows: <ul> <li>Go to <strong>Parameters > "
+"General</strong> section</li> <li>Change the value of <strong>Default "
+"password scheme</strong></li> <li>Make sure <strong>Update password scheme "
+"at login</strong> option is enabled</li> <li>Save your changes</li> "
+"<li>Logout / Login with your current account so its password gets "
+"updated</li> <li>Inform <strong>ALL</strong> your users that they must login"
+" to Modoboa to complete the operation</li> </ul>"
 msgstr ""
 
 #: core/templates/core/information.html:18
@@ -2834,8 +2995,8 @@ msgstr "Backend usado para autenticação"
 
 #: core/templates/core/user_security.html:17
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
 
 #: core/templates/core/user_security.html:25
@@ -2924,7 +3085,7 @@ msgstr "Sair"
 msgid "API"
 msgstr ""
 
-#: core/utils.py:42
+#: core/utils.py:41
 #, fuzzy
 #| msgid "Welcome to Modoboa"
 msgid "The core part of Modoboa"
@@ -3241,8 +3402,8 @@ msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
 msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
+"Here is an example of DNS configuration (bind format). Replace value between"
+" [ ] by the appropriate ones."
 msgstr ""
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
@@ -3327,8 +3488,8 @@ msgstr ""
 #: imap_migration/app_settings.py:80 imap_migration/app_settings.py:138
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+"filtered by the Folder Filter Exclusions. Example: debian.user, "
+"debian.personal "
 msgstr ""
 
 #: imap_migration/app_settings.py:107
@@ -3449,8 +3610,8 @@ msgid "Enable or disable per-admin limits"
 msgstr ""
 
 #: limits/app_settings.py:26 limits/app_settings.py:91
-#: limits/app_settings.py:160 limits/app_settings.py:245 limits/constants.py:47
-#: limits/constants.py:101
+#: limits/app_settings.py:160 limits/app_settings.py:245
+#: limits/constants.py:47 limits/constants.py:101
 msgid "Domain admins"
 msgstr "Administradores de domínio"
 
@@ -3475,10 +3636,11 @@ msgstr "Número máximo permitido de domínios para novo administrador"
 
 #: limits/app_settings.py:48 limits/app_settings.py:186
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo permitido de aliases de domínio para um novo administrador"
 
@@ -3523,15 +3685,16 @@ msgstr ""
 #| msgid ""
 #| "Maximum number of allowed domain administrators for a new administrator"
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo permitido de administradores de domínio para um novo "
 "administrador"
 
 #: limits/app_settings.py:104 limits/app_settings.py:260
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3550,8 +3713,8 @@ msgstr "Número máximo permitido de caixas de correio para novo administrador"
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr "Número máximo de aliases permitidas para um novo administrador"
 
 #: limits/apps.py:13 limits/apps.py:17
@@ -3573,7 +3736,8 @@ msgstr "Número máximo de caixas de correio que este utilizador por criar"
 #: limits/constants.py:40
 msgid "Maximum number of mailbox aliases this user can create"
 msgstr ""
-"Número máximo de aliases para caixas de correio que este utilizador por criar"
+"Número máximo de aliases para caixas de correio que este utilizador por "
+"criar"
 
 #: limits/constants.py:49
 msgid "Maximum number of domain administrators this user can create"
@@ -3601,7 +3765,8 @@ msgstr "Número máximo de caixas de correio que este utilizador por criar"
 #| msgid "Maximum number of mailbox aliases this user can create"
 msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr ""
-"Número máximo de aliases para caixas de correio que este utilizador por criar"
+"Número máximo de aliases para caixas de correio que este utilizador por "
+"criar"
 
 #: limits/constants.py:102
 #, fuzzy
@@ -4187,7 +4352,7 @@ msgstr "endereço de destino"
 msgid "verify recipients"
 msgstr "verificar destinatários"
 
-#: sievefilters/api/v2/viewsets.py:183
+#: sievefilters/api/v2/viewsets.py:186
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -4363,11 +4528,11 @@ msgstr ""
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Falha ao recuperar os filtros definidos"
 
-#: sievefilters/lib.py:48
+#: sievefilters/lib.py:52
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr "Ligação ao servidor MANAGESIEVE falhou, valide a configuração"
 
-#: sievefilters/lib.py:75
+#: sievefilters/lib.py:79
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4532,8 +4697,8 @@ msgstr "Password antiga"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -4570,17 +4735,14 @@ msgid "next hop"
 msgstr ""
 
 #, fuzzy
-#~| msgid "Authentication method"
 #~ msgid "Authentication mechanism"
 #~ msgstr "Mecanismo de autenticação"
 
 #, fuzzy
-#~| msgid "Authentication method"
 #~ msgid "Prefered authentication mechanism"
 #~ msgstr "Método de autenticação preferencial"
 
 #, fuzzy
-#~| msgid "Domain modified"
 #~ msgid "Directory non-writable"
 #~ msgstr "Domínio alterado"
 
@@ -4588,27 +4750,22 @@ msgstr ""
 #~ msgstr "O seu nome de utilizador"
 
 #, fuzzy
-#~| msgid "Check to activate this alias"
 #~ msgid "Check to activate this filters set"
 #~ msgstr "Marque para ativar estes filtros"
 
 #, fuzzy
-#~| msgid "File name"
 #~ msgid "Wrong filter name"
 #~ msgstr "Filtro inválido"
 
 #, fuzzy
-#~| msgid "Confirmation"
 #~ msgid "Conditions"
 #~ msgstr "Condições"
 
 #, fuzzy
-#~| msgid "Active users"
 #~ msgid "Active"
 #~ msgstr "Ativo"
 
 #, fuzzy
-#~| msgid "No recipient defined"
 #~ msgid "No filter defined yet"
 #~ msgstr "Ainda não existe nenhum filtro definido"
 
@@ -4619,32 +4776,26 @@ msgstr ""
 #~ msgstr "ativo"
 
 #~ msgid ""
-#~ "No filters set defined yet. You must create one in order to define "
-#~ "filters."
+#~ "No filters set defined yet. You must create one in order to define filters."
 #~ msgstr ""
-#~ "Não existem grupos de filtros. Terá de criar um para poder definir "
-#~ "filtros."
+#~ "Não existem grupos de filtros. Terá de criar um para poder definir filtros."
 
 #~ msgid "New filters set"
 #~ msgstr "Novo grupo de filtros"
 
 #, fuzzy
-#~| msgid "Search filter"
 #~ msgid "New filter"
 #~ msgstr "Novo filtro"
 
 #, fuzzy
-#~| msgid "Search filter"
 #~ msgid "Save filters set"
 #~ msgstr "Guardar grupo de filtros"
 
 #, fuzzy
-#~| msgid "Active users"
 #~ msgid "Activate filters set"
 #~ msgstr "Ativar grupo de filtros"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Remove filters set"
 #~ msgstr "Eliminar grupo de filtros"
 
@@ -4655,7 +4806,6 @@ msgstr ""
 #~ msgstr "Editar filtro"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Remove this filter"
 #~ msgstr "Eliminar este filtro"
 
@@ -4663,22 +4813,18 @@ msgstr ""
 #~ msgstr "Mover este filtro para cima"
 
 #, fuzzy
-#~| msgid "Remove this permission"
 #~ msgid "Move this filter down"
 #~ msgstr "Mover este filtro para baixo"
 
 #, fuzzy
-#~| msgid "Failed to retrieve mailbox location (%s)"
 #~ msgid "Failed to retrieve filters set"
 #~ msgstr "Falha ao recuperar os filtros definidos"
 
 #, fuzzy
-#~| msgid "Forward created"
 #~ msgid "Filter created"
 #~ msgstr "Filtro criado"
 
 #, fuzzy
-#~| msgid "Forward modified"
 #~ msgid "Filter modified"
 #~ msgstr "Filtro modificado"
 
@@ -4689,12 +4835,10 @@ msgstr ""
 #~ msgstr "Falha ao remover filtro"
 
 #, fuzzy
-#~| msgid "Parameters saved"
 #~ msgid "Filters set saved"
 #~ msgstr "Grupo de filtros guardado"
 
 #, fuzzy
-#~| msgid "Distribution list created"
 #~ msgid "Filters set created"
 #~ msgstr "Grupo de filtros criado"
 
@@ -4702,7 +4846,6 @@ msgstr ""
 #~ msgstr "Criar novo grupo de filtros"
 
 #, fuzzy
-#~| msgid "Alias created"
 #~ msgid "Filters set deleted"
 #~ msgstr "Grupo de filtros eliminado"
 
@@ -4710,7 +4853,6 @@ msgstr ""
 #~ msgstr "Grupo de filtros ativado"
 
 #, fuzzy
-#~| msgid "Yes"
 #~ msgid "yes"
 #~ msgstr "sim"
 
@@ -4817,15 +4959,15 @@ msgstr ""
 #~ "Default quota in MB applied to mailboxes. Leave empty to use the default "
 #~ "value."
 #~ msgstr ""
-#~ "Quota (em MB) aplicada às caixas de correio. Deixe em branco para manter "
-#~ "o valor pré-definido."
+#~ "Quota (em MB) aplicada às caixas de correio. Deixe em branco para manter o "
+#~ "valor pré-definido."
 
 #~ msgid ""
 #~ "You can't define a forward to a local destination. Please ask your "
 #~ "administrator to create an alias instead."
 #~ msgstr ""
-#~ "Não é possível definir um reencaminhamento para um destino local. Por "
-#~ "favor informe-se junto de um administrador para criar um alias."
+#~ "Não é possível definir um reencaminhamento para um destino local. Por favor "
+#~ "informe-se junto de um administrador para criar um alias."
 
 #~ msgid "Quota is greater than the allowed domain's limit (%dM)"
 #~ msgstr "A quota excede o limite permitido pelo domínio (%dM)"

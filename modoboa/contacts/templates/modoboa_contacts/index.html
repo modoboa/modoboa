@@ -1,0 +1,30 @@
+{% extends "fluid.html" %}
+
+{% load i18n lib_tags static %}
+{% load render_bundle from webpack_loader %}
+
+{% block pagetitle %}{% trans "Contacts" %}{% endblock %}
+
+{% block extra_css %}
+  {% if not debug %}
+    {% render_bundle 'app' 'css' 'CONTACTS' %}
+  {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+  {% if sync_enabled %}
+  <script>
+  window.userProfile = {
+      abookSynced: {% if abook_synced %}true{% else %}false{% endif %}
+  };
+  </script>
+  {% endif %}
+  {% render_bundle 'app' 'js' 'CONTACTS' %}
+{% endblock %}
+
+{% block container_content %}
+
+  <div id="app">
+  </div>
+
+{% endblock %}

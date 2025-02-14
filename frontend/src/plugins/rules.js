@@ -24,7 +24,11 @@ function samePassword(value, confirmation) {
 
 export default {
   required: (value) =>
-    (value !== '' && value != null) || $gettext('Field is required'),
+    (value !== '' &&
+      value != null &&
+      value !== undefined &&
+      (!Array.isArray(value) || value.length)) ||
+    $gettext('Field is required'),
   email: (value) => validateEmail(value),
   emailOrNull: (value) => value != null || value !== '' || validateEmail(value),
   minLength: (len) => (value) =>
