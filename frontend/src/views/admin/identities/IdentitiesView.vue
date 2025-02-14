@@ -2,44 +2,48 @@
   <div>
     <v-toolbar flat>
       <v-toolbar-title>{{ $gettext('Identities') }}</v-toolbar-title>
-      <v-spacer />
-      <v-btn
-        class="mr-2"
-        :title="$gettext('Import accounts and aliases from CSV file')"
-        variant="elevated"
-        icon="mdi-file-import-outline"
-        @click="showImportForm = true"
-      ></v-btn>
-      <v-btn
-        class="mr-2"
-        :title="$gettext('Export accounts and aliases to CSV')"
-        icon="mdi-file-export-outline"
-        variant="elevated"
-        @click="exportIdentities"
-      ></v-btn>
-      <v-menu offset-y>
-        <template #activator="{ props }">
-          <v-btn
-            color="primary"
-            variant="flat"
-            v-bind="props"
-            prepend-icon="mdi-plus"
-          >
-            {{ $gettext('New') }}
-          </v-btn>
-        </template>
-        <v-list density="compact">
-          <v-list-item @click="showCreationWizard = true">
-            <v-list-item-title>{{ $gettext('Account') }}</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="showAliasCreationWizard = true">
-            <v-list-item-title>{{ $gettext('Alias') }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </v-toolbar>
 
-    <IdentityList />
+    <IdentityList>
+      <template #extraActions>
+        <v-menu offset-y>
+          <template #activator="{ props }">
+            <v-btn
+              color="primary"
+              variant="outlined"
+              v-bind="props"
+              prepend-icon="mdi-plus"
+              class="mr-4"
+            >
+              {{ $gettext('New') }}
+            </v-btn>
+          </template>
+          <v-list density="compact">
+            <v-list-item @click="showCreationWizard = true">
+              <v-list-item-title>{{ $gettext('Account') }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="showAliasCreationWizard = true">
+              <v-list-item-title>{{ $gettext('Alias') }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-btn
+          class="mr-2"
+          :title="$gettext('Import accounts and aliases from CSV file')"
+          variant="flat"
+          icon="mdi-file-import-outline"
+          @click="showImportForm = true"
+        ></v-btn>
+        <v-btn
+          class="mr-2"
+          :title="$gettext('Export accounts and aliases to CSV')"
+          icon="mdi-file-export-outline"
+          variant="flat"
+          @click="exportIdentities"
+        ></v-btn>
+      </template>
+    </IdentityList>
     <v-dialog
       v-model="showAliasCreationWizard"
       fullscreen

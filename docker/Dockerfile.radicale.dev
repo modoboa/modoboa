@@ -1,0 +1,11 @@
+FROM python:3.12-alpine3.20
+
+LABEL org.opencontainers.image.authors="Antoine Nguyen <tonio@ngyn.org>"
+
+WORKDIR /app
+
+RUN pip install Radicale pytz radicale-modoboa-auth-oauth2
+
+EXPOSE 5232
+
+CMD python3 -m radicale

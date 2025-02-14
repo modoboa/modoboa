@@ -316,7 +316,7 @@ onMounted(() => {
     .getAccount(route.params.id)
     .then((response) => (editedAccount.value = { ...response.data }))
 
-  parametersApi.getApplication('limits').then((response) => {
+  parametersApi.getGlobalApplication('limits').then((response) => {
     limitsConfig.value = response.data
   })
 })

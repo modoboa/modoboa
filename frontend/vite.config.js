@@ -53,6 +53,11 @@ export default defineConfig({
       },
     },
     https: true,
+    cors: {
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['X-Requested-With', 'content-type', 'Authorization'],
+    },
   },
   build: {
     emptyOutDir: true,

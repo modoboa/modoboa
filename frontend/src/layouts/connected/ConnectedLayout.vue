@@ -1,7 +1,8 @@
 <template>
   <v-app>
-    <NavBar />
-    <DashboardView />
+    <NavBar :color="color" :menu-items="menuItems" />
+    <TopMenu :user="authUser" />
+    <ConnectedView />
     <v-snackbar
       v-model="snackbar"
       :color="notificationColor"
@@ -19,20 +20,34 @@
 </template>
 
 <script setup>
-import DashboardView from './DashboardView.vue'
-import NavBar from './NavBar.vue'
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { useAuthStore, useBusStore } from '@/stores'
+import ConnectedView from './ConnectedView.vue'
+import NavBar from '@/components/shared/NavBar.vue'
+import TopMenu from '@/components/shared/TopMenu.vue'
 
-import { useBusStore } from '@/stores'
-
+const authStore = useAuthStore()
 const busStore = useBusStore()
 const { $gettext } = useGettext()
 
+const props = defineProps({
+  color: {
+    type: String,
+    default: 'primary',
+  },
+  menuItems: {
+    type: Array,
+    default: null,
+  },
+})
+
+const authUser = computed(() => authStore.authUser)
 const notificationColor = computed(() => busStore.notificationColor)
-const notificationTimeout = 2000
 const notification = computed(() => busStore.notification)
 const snackbar = ref(false)
+
+const notificationTimeout = 2000
 
 busStore.$onAction(({ name, after }) => {
   if (name === 'displayNotification') {

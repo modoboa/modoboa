@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores'
 const routes = [
   {
     path: '/login',
-    component: () => import('@/layouts/default/DefaultLayout.vue'),
+    component: () => import('@/layouts/empty/EmptyLayout.vue'),
     children: [
       {
         path: '',
@@ -16,24 +16,27 @@ const routes = [
         path: 'logged',
         name: 'LoginCallback',
         component: () => import('@/views/login/LoginCallbackView.vue'),
+        props: {
+          redirectUrl: '/admin',
+        },
       },
     ],
   },
   {
     path: '/admin',
-    component: () => import('@/layouts/dashboard/DashboardLayout.vue'),
+    component: () => import('@/layouts/admin/AdminLayout.vue'),
     children: [
       {
         path: '',
         name: 'Dashboard',
-        component: () => import('@/views/Dashboard.vue'),
+        component: () => import('@/views/DashboardView.vue'),
         meta: {
           requiresAuth: true,
         },
       },
       {
         path: 'domains',
-        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -70,7 +73,7 @@ const routes = [
       },
       {
         path: 'imap_migration',
-        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -88,7 +91,7 @@ const routes = [
           },
           {
             path: 'providers',
-            component: () => import('@/layouts/default/DefaultLayout.vue'),
+            component: () => import('@/layouts/empty/EmptyLayout.vue'),
             meta: {
               requiresAuth: true,
               allowedRoles: ['Resellers', 'SuperAdmins'],
@@ -120,7 +123,7 @@ const routes = [
       },
       {
         path: 'identities',
-        component: () => import('@/layouts/default/DefaultLayout.vue'),
+        component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
           allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
@@ -233,9 +236,8 @@ const routes = [
   },
   {
     path: '/account',
-    component: () => import('@/layouts/dashboard/DashboardLayout.vue'),
+    component: () => import('@/layouts/account/AccountLayout.vue'),
     meta: {
-      layout: 'account',
       requiresAuth: true,
     },
     children: [
@@ -244,9 +246,16 @@ const routes = [
         name: 'AccountFilters',
         component: () => import('@/views/account/FiltersView.vue'),
         meta: {
-          layout: 'account',
           requiresAuth: true,
           requiresMailbox: true,
+        },
+      },
+      {
+        path: 'parameters/:app',
+        name: 'AccountParametersEdit',
+        component: () => import('@/views/account/ParametersView.vue'),
+        meta: {
+          requiresAuth: true,
         },
       },
       {
@@ -254,9 +263,57 @@ const routes = [
         name: 'AccountSettings',
         component: () => import('@/views/account/SettingsView.vue'),
         meta: {
-          layout: 'account',
           requiresAuth: true,
         },
+      },
+    ],
+  },
+  {
+    path: '/user',
+    component: () => import('@/layouts/user/UserLayout.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+    children: [
+      {
+        path: '',
+        name: 'UserDashboard',
+        component: () => import('@/views/DashboardView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'contacts',
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: ':category?',
+            name: 'ContactList',
+            component: () => import('@/views/contacts/AddressBook.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
+      {
+        path: 'calendars',
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'CalendarView',
+            component: () => import('@/views/calendars/CalendarView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
       },
     ],
   },

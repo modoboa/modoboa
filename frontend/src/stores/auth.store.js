@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import gettext from '@/plugins/gettext'
 import router from '@/router/index.js'
 import { UserManager } from 'oidc-client-ts'
@@ -130,7 +130,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function completeLogin() {
+  async function completeLogin(redirectUrl) {
     try {
       const user = await manager.signinRedirectCallback()
       isAuthenticated.value = true
@@ -140,7 +140,7 @@ export const useAuthStore = defineStore('auth', () => {
         window.location.href = previousPage
       } else {
         // Redirect to a default page if the previous page is not available
-        router.push({ name: 'Dashboard' })
+        router.push(redirectUrl)
       }
       return user
     } catch (error) {

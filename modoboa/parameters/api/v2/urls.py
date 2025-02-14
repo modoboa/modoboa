@@ -6,5 +6,10 @@ from . import viewsets
 
 
 router = routers.SimpleRouter()
-router.register(r"parameters", viewsets.ParametersViewSet, basename="parameter")
+router.register(
+    r"parameters/global", viewsets.GlobalParametersViewSet, basename="parameter-global"
+)
+router.register(
+    r"parameters/user", viewsets.UserParametersViewSet, basename="parameter-user"
+)
 urlpatterns = router.urls

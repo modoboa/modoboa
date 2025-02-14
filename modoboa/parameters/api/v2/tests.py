@@ -1,20 +1,27 @@
 """Parameters API related tests."""
 
+import httmock
+
 from django.urls import reverse
 
+from rest_framework.authtoken.models import Token
+
+from modoboa.admin.factories import populate_database
+from modoboa.contacts import mocks as contact_mocks
+from modoboa.core.models import User
 from modoboa.lib.tests import ModoAPITestCase
 
 
-class ParametersAPITestCase(ModoAPITestCase):
+class GlobalParametersAPITestCase(ModoAPITestCase):
     def test_applications(self):
-        url = reverse("v2:parameter-applications")
+        url = reverse("v2:parameter-global-applications")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         # core, admin, limits, pdf credentials
-        self.assertEqual(len(resp.json()), 9)
+        self.assertEqual(len(resp.json()), 10)
 
     def test_get_structure(self):
-        url = reverse("v2:parameter-structure")
+        url = reverse("v2:parameter-global-structure")
         resp_full = self.client.get(url)
         self.assertEqual(resp_full.status_code, 200)
 
@@ -25,7 +32,7 @@ class ParametersAPITestCase(ModoAPITestCase):
 
     def test_retrieve(self):
         for app in ["core", "admin", "limits"]:
-            url = reverse("v2:parameter-detail", args=[app])
+            url = reverse("v2:parameter-global-detail", args=[app])
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
@@ -44,7 +51,7 @@ class ParametersAPITestCase(ModoAPITestCase):
             "deflt_domain_mailboxes_limit": 0,
             "deflt_domain_mailbox_aliases_limit": 0,
         }
-        url = reverse("v2:parameter-detail", args=["limits"])
+        url = reverse("v2:parameter-global-detail", args=["limits"])
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
@@ -56,7 +63,7 @@ class ParametersAPITestCase(ModoAPITestCase):
             "custom_dns_server": "",
             "dkim_keys_storage_dir": "/wrong",
         }
-        url = reverse("v2:parameter-detail", args=["admin"])
+        url = reverse("v2:parameter-global-detail", args=["admin"])
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
         errors = resp.json()
@@ -82,3 +89,49 @@ class ParametersAPITestCase(ModoAPITestCase):
             resp.json()["valid_mxs"],
             ["Define at least one authorized network / address"],
         )
+
+
+class UserParametersAPITestCase(ModoAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        populate_database()
+        cls.user = User.objects.get(username="admin@test.com")
+        cls.da_token = Token.objects.create(user=cls.user)
+
+    def setUp(self):
+        super().setUp()
+        self.set_global_parameter(
+            "server_location", "http://localhost:5232", app="calendars"
+        )
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+
+    def test_applications(self):
+        url = reverse("v2:parameter-user-applications")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()), 1)
+
+    def test_get_structure(self):
+        url = reverse("v2:parameter-user-structure")
+        resp_full = self.client.get(url)
+        self.assertEqual(resp_full.status_code, 200)
+
+        resp_contacts = self.client.get(url + "?app=contacts")
+        self.assertEqual(resp_contacts.status_code, 200)
+
+        self.assertEqual(len(resp_full.json()), len(resp_contacts.json()))
+
+    def test_retrieve(self):
+        for app in ["contacts"]:
+            url = reverse("v2:parameter-user-detail", args=[app])
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 200)
+
+    def test_update(self):
+        data = {"enable_carddav_sync": True, "sync_frequency": 300}
+        url = reverse("v2:parameter-user-detail", args=["contacts"])
+        with httmock.HTTMock(contact_mocks.options_mock, contact_mocks.mkcol_mock):
+            resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
