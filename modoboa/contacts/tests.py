@@ -45,7 +45,7 @@ class TestDataMixin:
             addressbook=cls.addressbook, first_name="Bart", emails=["bart@simpson.com"]
         )
 
-    def setUp(self):
+    def setUp(self, *args, **kwargs):
         """Initiate test context."""
         self.client.force_login(self.user)
         self.set_global_parameter(
@@ -54,19 +54,20 @@ class TestDataMixin:
 
     def enable_cdav_sync(self):
         """Enable sync. for user."""
-        url = reverse("core:user_preferences")
+        url = reverse("v2:parameter-user-detail", args=["contacts"])
         with httmock.HTTMock(mocks.options_mock, mocks.mkcol_mock):
-            response = self.client.post(
+            response = self.client.put(
                 url,
                 {
-                    "contacts-enable_carddav_sync": True,
-                    "contacts-sync_frequency": 300,
+                    "enable_carddav_sync": True,
+                    "sync_frequency": 300,
                 },
+                format="json",
             )
         self.assertEqual(response.status_code, 200)
 
 
-class ViewsTestCase(TestDataMixin, ModoTestCase):
+class ViewsTestCase(TestDataMixin, ModoAPITestCase):
     """Check views."""
 
     def test_user_settings(self):
