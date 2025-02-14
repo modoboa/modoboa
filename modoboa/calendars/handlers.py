@@ -10,9 +10,7 @@ except ImportError:
 
 
 from django.db.models import signals
-from django.urls import reverse
 from django.dispatch import receiver
-from django.utils.translation import gettext as _
 
 from modoboa.core import signals as core_signals
 
@@ -43,20 +41,6 @@ ROLES_PERMISSIONS = {
 def extra_permissions(sender, role, **kwargs):
     """Extra permissions."""
     return ROLES_PERMISSIONS.get(role, [])
-
-
-@receiver(core_signals.extra_user_menu_entries)
-def top_menu(sender, location, user, **kwargs):
-    """Add extra menu entries."""
-    if location == "top_menu" and hasattr(user, "mailbox"):
-        return [
-            {
-                "name": "radicale",
-                "label": _("Calendars"),
-                "url": reverse("calendars:calendar_detail_view"),
-            }
-        ]
-    return []
 
 
 @receiver(signals.pre_save, sender=models.UserCalendar)
