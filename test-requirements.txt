@@ -102,7 +102,7 @@ drf-spectacular==0.28.0
     # via modoboa (pyproject.toml)
 factory-boy==3.3.3
     # via modoboa (pyproject.toml)
-faker==36.1.0
+faker==36.1.1
     # via factory-boy
 feedparser==6.0.11
     # via modoboa (pyproject.toml)
