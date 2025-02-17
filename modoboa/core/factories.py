@@ -1,7 +1,5 @@
 """Factories for core application."""
 
-import base64
-
 import factory
 
 from django.contrib.auth.models import Group

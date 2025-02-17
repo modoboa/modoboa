@@ -129,7 +129,7 @@ def import_report(content):
             else:
                 print(f"Report skipped because of malformed data (empty {attr})")
                 return
-        value = setattr(report, "policy_{}".format(attr), node.text)
+        setattr(report, "policy_{}".format(attr), node.text)
     report.save()
     for record in root.findall("record"):
         import_record(record, report)

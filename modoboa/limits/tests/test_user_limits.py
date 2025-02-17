@@ -288,8 +288,8 @@ class ResellerTestCase(ResourceTestCase):
         self._create_domain("domain.tld")
         self._create_account("admin1@domain.tld", role="DomainAdmins")
         domadmin = User.objects.get(username="admin1@domain.tld")
-        for l in ["mailboxes", "mailbox_aliases"]:
-            self.assertEqual(domadmin.userobjectlimit_set.get(name=l).max_value, 0)
+        for name in ["mailboxes", "mailbox_aliases"]:
+            self.assertEqual(domadmin.userobjectlimit_set.get(name=name).max_value, 0)
 
     def test_domain_admins_limit_from_domain_tpl(self):
         self.user.userobjectlimit_set.filter(name="domains").update(max_value=3)

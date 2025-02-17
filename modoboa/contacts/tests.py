@@ -339,7 +339,7 @@ class ImportTestCase(TestDataMixin, ModoTestCase):
     def test_import_from_outlook_auto(self):
         management.call_command("import_contacts", "user@test.com", self.path)
         address = models.EmailAddress.objects.get(address="toto@titi.com")
-        phone = models.PhoneNumber.objects.get(number="12345678")
+        models.PhoneNumber.objects.get(number="12345678")
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")
@@ -352,7 +352,7 @@ class ImportTestCase(TestDataMixin, ModoTestCase):
             backend="outlook",
         )
         address = models.EmailAddress.objects.get(address="toto@titi.com")
-        phone = models.PhoneNumber.objects.get(number="12345678")
+        models.PhoneNumber.objects.get(number="12345678")
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")
@@ -366,7 +366,7 @@ class ImportTestCase(TestDataMixin, ModoTestCase):
                 carddav_password="Toto1234",
             )
         address = models.EmailAddress.objects.get(address="toto@titi.com")
-        phone = models.PhoneNumber.objects.get(number="12345678")
+        models.PhoneNumber.objects.get(number="12345678")
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")

@@ -273,7 +273,7 @@ class MaillogParser:
             if not parser(log, host, pid, subprog):
                 self._dprint("[parser] ignoring %r log: %r" % (prog, log))
         except AttributeError:
-            self._dprint('[parser] no log handler for "%r": %r'.format(prog, log))
+            self._dprint('[parser] no log handler for "%r": %r' % (prog, log))
 
     def parse(self, logfile):
         """Process the log file."""

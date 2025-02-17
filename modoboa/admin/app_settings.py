@@ -255,9 +255,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         if not value:
             return value
         try:
-            ip_addresses = [
-                ipaddress.ip_network(v.strip()) for v in value.split() if v.strip()
-            ]
+            [ipaddress.ip_network(v.strip()) for v in value.split() if v.strip()]
         except ValueError:
             raise forms.ValidationError(
                 gettext_lazy("This field only allows valid IP addresses (or networks)")
