@@ -74,7 +74,7 @@ def crypt_and_save_to_file(content, filename, length, chunksize=64 * 512):
                     chunk += b" " * (16 - len(chunk) % 16)
                 fp.write(encryptor.update(force_bytes(chunk)))
             fp.write(encryptor.finalize())
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         logger = logging.getLogger("modoboa.admin")
         logger.error(
             _(

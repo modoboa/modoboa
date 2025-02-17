@@ -7,7 +7,6 @@ import os
 import progressbar
 from chardet.universaldetector import UniversalDetector
 
-from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils.translation import gettext as _

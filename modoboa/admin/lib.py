@@ -205,7 +205,7 @@ def get_authoritative_server(domain, resolver=None):
                     return str(first_answer.target)
                 if hasattr(first_answer, "address"):
                     return str(first_answer.address)
-        except dns.resolver.NoAnswer as e:
+        except dns.resolver.NoAnswer:
             dnsname = dnsname.parent()
         else:
             dnsname = dnsname.parent()

@@ -161,9 +161,7 @@ def check_spf_syntax(record):
     for part in parts:
         if part == "":
             continue
-        qualifier = None
         if part[0] in ["+", "-", "~", "?"]:
-            qualifier = part[0]
             part = part[1:]
         if part == "all":
             continue

@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.dispatch import receiver
 from django.utils.translation import gettext as _
 
-from modoboa.admin import signals as admin_signals
 from modoboa.core import signals as core_signals
 from modoboa.parameters import tools as param_tools
 

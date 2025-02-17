@@ -114,7 +114,7 @@ class DeployCommand(Command):
         if p.returncode:
             if output:
                 print(
-                    "\n".join([l.decode() for l in output if l is not None]),
+                    "\n".join([line.decode() for line in output if line is not None]),
                     file=sys.stderr,
                 )
             print("%s failed, check your configuration" % cmd, file=sys.stderr)

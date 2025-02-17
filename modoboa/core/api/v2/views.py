@@ -25,11 +25,11 @@ from . import serializers
 logger = logging.getLogger("modoboa.auth")
 
 
-def delete_cache_key(class_target, throttles, request):
+def delete_cache_key(class_target, throttles: list, request) -> None:
     """Attempt to delete cache key from throttling on login/password reset success."""
 
     for throttle in throttles:
-        if type(throttle) == class_target:
+        if isinstance(throttle, class_target):
             throttle.reset_cache(request)
             return
 

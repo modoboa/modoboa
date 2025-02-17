@@ -2,13 +2,10 @@
 
 import os
 import shutil
-import tempfile
 
-from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.admin import factories
-from modoboa.core import models as core_models
 
 from modoboa.lib.tests import ModoAPITestCase
 from modoboa.lib.exceptions import InternalError

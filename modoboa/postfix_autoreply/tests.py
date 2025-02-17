@@ -13,7 +13,7 @@ from django.utils.formats import date_format
 
 from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase, ModoAPITestCase
+from modoboa.lib.tests import ModoTestCase
 from modoboa.transport import models as tr_models
 
 from . import factories, models

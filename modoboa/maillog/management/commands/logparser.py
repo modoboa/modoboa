@@ -19,7 +19,6 @@ Predefined events are:
 """
 
 from datetime import datetime
-import io
 import os
 import re
 import sys

@@ -10,7 +10,7 @@ class CalendarsConfig(AppConfig):
     verbose_name = "Modoboa calendars"
 
     def ready(self):
-        from modoboa.calendars import handlers
+        from modoboa.calendars import handlers  # noqa
         from modoboa.calendars.app_settings import load_settings
 
         load_settings()

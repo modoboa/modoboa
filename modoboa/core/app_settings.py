@@ -680,7 +680,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         Doing so, we can use the django_auth_ldap module.
         """
         try:
-            import ldap
+            import ldap  # noqa
 
             ldap_available = True
         except ImportError:

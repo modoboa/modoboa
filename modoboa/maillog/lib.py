@@ -18,6 +18,6 @@ def date_to_timestamp(timetuple):
     try:
         local = time.strptime(date, fmt)
     except ValueError:
-        print >> sys.stderr, "Error: failed to convert date and time"
+        print("Error: failed to convert date and time", file=sys.stderr)
         return 0
     return int(time.mktime(local))

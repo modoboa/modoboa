@@ -2,7 +2,6 @@
 
 from typing import List
 
-from django.conf import settings
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404

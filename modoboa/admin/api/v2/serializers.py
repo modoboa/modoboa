@@ -240,9 +240,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
         if not value:
             return value
         try:
-            ip_addresses = [
-                ipaddress.ip_network(v.strip()) for v in value.split() if v.strip()
-            ]
+            [ipaddress.ip_network(v.strip()) for v in value.split() if v.strip()]
         except ValueError:
             raise serializers.ValidationError(
                 _("This field only allows valid IP addresses (or networks)")

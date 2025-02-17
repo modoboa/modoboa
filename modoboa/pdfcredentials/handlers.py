@@ -28,7 +28,7 @@ def password_updated(sender, account, password, created, **kwargs):
         return
     try:
         init_storage_dir()
-    except InternalError as e:
+    except InternalError:
         logger = logging.getLogger("modoboa.admin")
         logger.error(
             _(
