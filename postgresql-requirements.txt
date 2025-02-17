@@ -122,7 +122,7 @@ jsonschema-specifications==2024.10.1
     # via jsonschema
 jwcrypto==1.5.6
     # via django-oauth-toolkit
-lxml==5.3.0
+lxml==5.3.1
     # via
     #   caldav
     #   lxml-html-clean
