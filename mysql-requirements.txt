@@ -13,7 +13,7 @@ asgiref==3.8.1
     #   modoboa (pyproject.toml)
 async-timeout==5.0.1
     # via redis
-attrs==24.3.0
+attrs==25.1.0
     # via
     #   jsonschema
     #   referencing
