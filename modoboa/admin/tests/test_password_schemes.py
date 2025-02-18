@@ -10,7 +10,7 @@ class PasswordSchemesTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(PasswordSchemesTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def _create_account(self):

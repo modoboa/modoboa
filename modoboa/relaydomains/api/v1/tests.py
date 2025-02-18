@@ -14,7 +14,7 @@ class DataMixin:
 
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
-        super(DataMixin, cls).setUpTestData()
+        super().setUpTestData()
         transport = tr_factories.TransportFactory(
             pattern="test.com",
             _settings={

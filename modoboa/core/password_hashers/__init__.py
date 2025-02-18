@@ -28,7 +28,7 @@ def get_password_hasher(scheme: str) -> type[PasswordHasher]:
     """
     try:
         scheme = scheme.replace("-", "")
-        hasher = globals()["%sHasher" % scheme.upper()]
+        hasher = globals()[f"{scheme.upper()}Hasher"]
     except KeyError:
         hasher = PLAINHasher
     return hasher

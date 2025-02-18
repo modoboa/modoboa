@@ -113,7 +113,7 @@ class Email:
     def body(self):
         if self._body is None:
             self._parse(self.msg)
-            self._body = getattr(self, "viewmail_%s" % self.dformat)()
+            self._body = getattr(self, f"viewmail_{self.dformat}")()
 
         return self._body
 
@@ -215,7 +215,7 @@ class Email:
             # Duplicate Content-ID
             return
 
-        self._images[cid] = "data:%s;base64,%s" % (
+        self._images[cid] = "data:{};base64,{}".format(
             content_type,
             "".join(msg.get_payload().splitlines(False)),
         )
@@ -263,7 +263,7 @@ class Email:
             contents = self.contents["plain"]
         else:
             contents = conditional_escape(contents)
-        return "<pre>%s</pre>" % contents
+        return f"<pre>{contents}</pre>"
 
     def viewmail_html(self, contents=None, **kwargs):
         # contents and **kwargs parameters to maintain compatibility with
@@ -385,7 +385,7 @@ def set_email_headers(msg, subject, sender, rcpt):
     msg["From"] = sender
     msg["To"] = prepare_addresses(rcpt)
     msg["Message-ID"] = make_msgid()
-    msg["User-Agent"] = "Modoboa %s" % (
+    msg["User-Agent"] = "Modoboa {}".format(
         pkg_resources.get_distribution("modoboa").version
     )
     msg["Date"] = formatdate(time.time(), True)
@@ -409,7 +409,7 @@ def _sendmail(sender, rcpt, msgstring, server="localhost", port=25):
         s.sendmail(sender, [rcpt], msgstring)
         s.quit()
     except smtplib.SMTPException as e:
-        return False, "SMTP error: %s" % str(e)
+        return False, f"SMTP error: {str(e)}"
     return True, None
 
 
@@ -449,12 +449,9 @@ def sendmail_fromfile(sender, rcpt, fname):
     except OSError as e:
         return False, str(e)
 
-    content = """From: %s
-To: %s
-""" % (
-        sender,
-        rcpt,
-    )
+    content = f"""From: {sender}
+To: {rcpt}
+"""
     content += fp.read()
     fp.close()
 

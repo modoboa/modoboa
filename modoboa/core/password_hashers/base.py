@@ -80,7 +80,7 @@ class PasswordHasher(metaclass=MetaHasher):
         :return: encrypted password
         """
         pwhash = self._b64encode(self._encrypt(force_str(clearvalue)))
-        return "%s%s" % (self.scheme, force_str(pwhash))
+        return f"{self.scheme}{force_str(pwhash)}"
 
     def verify(self, clearvalue, hashed_value):
         """Verify a password against a hashed value.

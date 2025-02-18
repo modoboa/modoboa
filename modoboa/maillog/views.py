@@ -75,12 +75,12 @@ def graphs(request):
         start = request.GET["start"]
         end = request.GET["end"]
         expr = re.compile(r"[:\- ]")
-        period_name = "%s_%s" % (expr.sub("", start), expr.sub("", end))
+        period_name = "{}_{}".format(expr.sub("", start), expr.sub("", end))
         start = date_to_timestamp(expr.split(start))
         end = date_to_timestamp(expr.split(end))
     else:
         end = int(time.mktime(time.localtime()))
-        start = "-1%s" % period
+        start = f"-1{period}"
         period_name = period
 
     tplvars["domain_selector"] = graph_sets[gset].domain_selector

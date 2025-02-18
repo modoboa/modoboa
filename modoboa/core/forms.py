@@ -133,7 +133,7 @@ class APIAccessForm(forms.Form):
     def __init__(self, *args, **kwargs):
         """Initialize form."""
         user = kwargs.pop("user")
-        super(APIAccessForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["enable_api_access"].initial = hasattr(user, "auth_token")
 
 

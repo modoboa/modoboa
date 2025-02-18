@@ -27,7 +27,7 @@ def _validate_alias(request, form, successmsg, callback=None):
         try:
             alias = form.save()
         except IntegrityError:
-            raise Conflict(_("Alias with this name already exists"))
+            raise Conflict(_("Alias with this name already exists")) from None
         if callback:
             callback(request.user, alias)
         return render_to_json_response(successmsg)
@@ -110,13 +110,13 @@ class AliasDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
 
     def has_permission(self):
         """Check object-level access."""
-        result = super(AliasDetailView, self).has_permission()
+        result = super().has_permission()
         if not result:
             return result
         return self.request.user.can_access(self.get_object())
 
     def get_context_data(self, **kwargs):
         """Add information to context."""
-        context = super(AliasDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["selection"] = "identities"
         return context

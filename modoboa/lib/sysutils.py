@@ -27,7 +27,7 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     :return: return code, command output
     """
     if sudo_user is not None:
-        cmd = "sudo -u %s %s" % (sudo_user, cmd)
+        cmd = f"sudo -u {sudo_user} {cmd}"
     kwargs["shell"] = True
     if pinput is not None:
         kwargs["stdin"] = subprocess.PIPE

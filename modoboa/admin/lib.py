@@ -253,7 +253,7 @@ def get_dns_records(name, typ, resolver=None):
             exc_info=e,
         )
     except dns.name.NameTooLong as e:
-        logger.error(_("DNS name is too long: %s" % name), exc_info=e)
+        logger.error(_("DNS name is too long: {}".format(name)), exc_info=e)
     else:
         return dns_answers
     return None
@@ -359,7 +359,7 @@ def import_data(user, file_object, options: dict):
                         raise Conflict(
                             _("Object already exists: %s")
                             % options["sepchar"].join(row[:2])
-                        )
+                        ) from None
                 cpt += 1
             msg = _("%d objects imported successfully") % cpt
             return True, msg

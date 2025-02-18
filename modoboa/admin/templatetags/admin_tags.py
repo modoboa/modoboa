@@ -151,7 +151,7 @@ def domain_actions(user, domain):
     actions = [
         {
             "name": "listidentities",
-            "url": "{0}#list/?searchquery=@{1}".format(
+            "url": "{}#list/?searchquery=@{}".format(
                 reverse("admin:identity_list"), domain.name
             ),
             "title": _("View the domain's identities"),
@@ -268,7 +268,7 @@ def domain_aliases(domain):
         return "---"
     res = ""
     for alias in domain.aliases.all():
-        res += "%s<br/>" % alias.name
+        res += f"{alias.name}<br/>"
     return mark_safe(res)
 
 
@@ -286,7 +286,7 @@ def identity_modify_link(identity, active_tab="default"):
     linkdef = {"label": identity.identity, "modal": True}
     if identity.__class__.__name__ == "User":
         linkdef["url"] = reverse("admin:account_change", args=[identity.id])
-        linkdef["url"] += "?active_tab=%s" % active_tab
+        linkdef["url"] += f"?active_tab={active_tab}"
         linkdef["modalcb"] = "admin.editaccount_cb"
     else:
         linkdef["url"] = reverse("admin:alias_change", args=[identity.id])
@@ -299,7 +299,7 @@ def domadmin_actions(daid, domid):
     actions = [
         {
             "name": "removeperm",
-            "url": "{0}?domid={1}&daid={2}".format(
+            "url": "{}?domid={}&daid={}".format(
                 reverse("admin:permission_remove"), domid, daid
             ),
             "img": "fa fa-trash",

@@ -373,15 +373,17 @@ class User(AbstractUser):
             if len(row) < 8 or not row[7].strip():
                 raise BadRequest(
                     _(
-                        "The simple user '%s' must have a valid email address"
-                        % self.username
+                        "The simple user '{}' must have a valid email address".format(
+                            self.username
+                        )
                     )
                 )
             if self.username != row[7].strip():
                 raise BadRequest(
                     _(
-                        "username and email fields must not differ for '%s'"
-                        % self.username
+                        "username and email fields must not differ for '{}'".format(
+                            self.username
+                        )
                     )
                 )
 

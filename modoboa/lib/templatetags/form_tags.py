@@ -20,7 +20,7 @@ def render_form(form, tpl=None):
 
     ret = ""
     for field in form:
-        ret += "%s\n" % render_field(field)
+        ret += f"{render_field(field)}\n"
     return mark_safe(ret)
 
 
@@ -42,7 +42,7 @@ def render_field(field, help_display_mode="tooltip", label_width="col-sm-4", **o
     from modoboa.core.templatetags.core_tags import visirule
 
     if isinstance(field.field, SeparatorField):
-        return "<h5%s>%s</h5>" % (visirule(field), smart_str(field.label))
+        return f"<h5{visirule(field)}>{smart_str(field.label)}</h5>"
     configure_field_classes(field)
     context = {
         "field": field,
@@ -64,7 +64,7 @@ def render_fields_group(form, pattern):
     cpt = 1
     haserror = len(first.errors) != 0
     while True:
-        fname = "%s_%d" % (pattern, cpt)
+        fname = f"{pattern}_{cpt}"
         if fname not in form.fields:
             break
         bfield = forms.BoundField(form, form.fields[fname], fname)

@@ -162,6 +162,7 @@ class AccessRule(models.Model):
         access = "r" if self.read else ""
         access += "w" if self.write else ""
         return smart_str(
-            "%s access rule to %s -> %s"
-            % (self.mailbox, self.calendar, access if access else "no access")
+            "{} access rule to {} -> {}".format(
+                self.mailbox, self.calendar, access if access else "no access"
+            )
         )

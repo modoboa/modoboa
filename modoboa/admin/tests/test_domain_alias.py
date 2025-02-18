@@ -10,7 +10,7 @@ class DomainAliasTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DomainAliasTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
         cls.dom = Domain.objects.get(name="test.com")
 

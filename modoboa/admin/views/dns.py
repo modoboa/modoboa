@@ -16,15 +16,11 @@ class MXDomainDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView
 
     def get_queryset(self):
         """Add some prefetching."""
-        return (
-            super(MXDomainDetailView, self)
-            .get_queryset()
-            .prefetch_related("mxrecord_set")
-        )
+        return super().get_queryset().prefetch_related("mxrecord_set")
 
     def get_context_data(self, **kwargs):
         """Add extra variables."""
-        context = super(MXDomainDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update({"title": _("MX records of {}").format(self.object.name)})
         return context
 
@@ -38,14 +34,10 @@ class DNSBLDomainDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailV
 
     def get_queryset(self):
         """Add some prefetching."""
-        return (
-            super(DNSBLDomainDetailView, self)
-            .get_queryset()
-            .prefetch_related("dnsblresult_set")
-        )
+        return super().get_queryset().prefetch_related("dnsblresult_set")
 
     def get_context_data(self, **kwargs):
         """Add extra variables."""
-        context = super(DNSBLDomainDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update({"title": _("DNSBL summary for {}").format(self.object.name)})
         return context

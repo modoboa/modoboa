@@ -21,7 +21,7 @@ class ImportDataForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        super(ImportDataForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["sepchar"].widget.attrs = {"class": "col-md-1 form-control"}
 
     def clean_sepchar(self):

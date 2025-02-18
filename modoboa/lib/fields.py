@@ -17,7 +17,7 @@ class DomainNameField(forms.fields.CharField):
 
     def clean(self, value):
         value = self.to_python(value).strip()
-        return super(DomainNameField, self).clean(value)
+        return super().clean(value)
 
 
 class UTF8EmailField(forms.fields.EmailField):
@@ -41,7 +41,7 @@ class DRFEmailFieldUTF8(serializers.CharField):
     default_error_messages = {"invalid": gettext_lazy("Enter a valid email address.")}
 
     def __init__(self, **kwargs):
-        super(DRFEmailFieldUTF8, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         validator = validators.UTF8EmailValidator(
             message=self.error_messages["invalid"]
         )
@@ -54,7 +54,7 @@ class DRFEmailFieldUTF8AndEmptyUser(serializers.CharField):
     default_error_messages = {"invalid": gettext_lazy("Enter a valid email address.")}
 
     def __init__(self, **kwargs):
-        super(DRFEmailFieldUTF8AndEmptyUser, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         validator = validators.UTF8AndEmptyUserEmailValidator(
             message=self.error_messages["invalid"]
         )

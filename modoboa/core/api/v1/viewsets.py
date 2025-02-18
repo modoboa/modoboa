@@ -45,7 +45,7 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         device = StaticDevice.objects.create(
             user=request.user, name=f"{request.user} static device"
         )
-        for cpt in range(10):
+        for _cpt in range(10):
             token = StaticToken.random_token()
             device.token_set.create(token=token)
         django_otp.login(self.request, request.user.totpdevice_set.first())
@@ -82,7 +82,7 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         if device is None:
             return response.Response({"error": _("2FA is not enabled")}, status=403)
         device.token_set.all().delete()
-        for cpt in range(10):
+        for _cpt in range(10):
             token = StaticToken.random_token()
             device.token_set.create(token=token)
         return response.Response(

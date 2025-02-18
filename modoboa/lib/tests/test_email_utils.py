@@ -15,8 +15,8 @@ SAMPLES_DIR = os.path.realpath(
 class EmailTestImplementation(Email):
 
     def _fetch_message(self):
-        message_path = os.path.join(SAMPLES_DIR, "%s-input.txt" % self.mailid)
-        assert os.path.isfile(message_path), "%s does not exist." % message_path
+        message_path = os.path.join(SAMPLES_DIR, f"{self.mailid}-input.txt")
+        assert os.path.isfile(message_path), f"{message_path} does not exist."
 
         with open(message_path, "rb") as fp:
             mail_text = smart_bytes(fp.read())
@@ -38,7 +38,7 @@ class EmailTests(SimpleTestCase):
         ext = kwargs["dformat"] if "dformat" in kwargs else "plain"
         ext += "_links" if "links" in kwargs and kwargs["links"] else "_nolinks"
         message_path = os.path.join(SAMPLES_DIR, f"{message_id}-output-{ext}.txt")
-        assert os.path.isfile(message_path), "%s does not exist." % message_path
+        assert os.path.isfile(message_path), f"{message_path} does not exist."
 
         with open(message_path, "rb") as fp:
             # output should always be unicode (py2) or str (py3)

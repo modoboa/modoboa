@@ -21,7 +21,7 @@ class GenericParametersForm(forms.Form):
 
         kwargs["prefix"] = self.app
         load_values_from_db = kwargs.pop("load_values_from_db", True)
-        super(GenericParametersForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self._add_dynamic_fields()
 
@@ -36,8 +36,8 @@ class GenericParametersForm(forms.Form):
         """Add visibility rules to this form."""
         for key, rule in list(rules.items()):
             field, value = rule.split("=")
-            visibility = {"field": "id_%s-%s" % (self.app, field), "value": value}
-            self.visirules["%s-%s" % (self.app, key)] = visibility
+            visibility = {"field": f"id_{self.app}-{field}", "value": value}
+            self.visirules[f"{self.app}-{key}"] = visibility
 
     def _add_dynamic_fields(self):
         """Add dynamic fields to this form."""
@@ -60,7 +60,7 @@ class AdminParametersForm(GenericParametersForm):
     def __init__(self, *args, **kwargs):
         """Store LocalConfig instance."""
         self.localconfig = kwargs.pop("localconfig", None)
-        super(AdminParametersForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _load_initial_values(self):
         """Load form initial values from database."""
@@ -92,7 +92,7 @@ class UserParametersForm(GenericParametersForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
-        super(UserParametersForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _load_initial_values(self):
         """Load initial values from User instance."""

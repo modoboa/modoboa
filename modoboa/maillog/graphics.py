@@ -36,12 +36,12 @@ class Curve:
         :return: a list
         """
         rrdfile = os.path.join(
-            param_tools.get_global_parameter("rrd_rootdir"), "%s.rrd" % rrdfile
+            param_tools.get_global_parameter("rrd_rootdir"), f"{rrdfile}.rrd"
         )
         return [
-            "DEF:%s=%s:%s:%s" % (self.dsname, rrdfile, self.dsname, self.cfunc),
-            "CDEF:%(ds)spm=%(ds)s,UN,0,%(ds)s,IF,60,*" % {"ds": self.dsname},
-            'XPORT:%spm:"%s"' % (self.dsname, self.legend),
+            f"DEF:{self.dsname}={rrdfile}:{self.dsname}:{self.cfunc}",
+            f"CDEF:{self.dsname}pm={self.dsname},UN,0,{self.dsname},IF,60,*",
+            f'XPORT:{self.dsname}pm:"{self.legend}"',
         ]
 
 

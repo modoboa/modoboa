@@ -16,7 +16,7 @@ from django.template.loader import render_to_string
 def _render_error(request, errortpl="error", user_context=None):
     if user_context is None:
         user_context = {}
-    return render(request, "common/%s.html" % errortpl, user_context)
+    return render(request, f"common/{errortpl}.html", user_context)
 
 
 def render_actions(actions):
@@ -102,7 +102,7 @@ def static_url(path):
     """
     if path.startswith("/"):
         path = path[1:]
-    return "%s%s" % (settings.STATIC_URL, path)
+    return f"{settings.STATIC_URL}{path}"
 
 
 def size2integer(value, output_unit="B"):

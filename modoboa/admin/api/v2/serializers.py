@@ -94,7 +94,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             return domain
 
         # 1. Create a domain administrator
-        username = "%s@%s" % (domain_admin["username"], domain.name)
+        username = "{}@{}".format(domain_admin["username"], domain.name)
         try:
             da = core_models.User.objects.get(username=username)
         except core_models.User.DoesNotExist:
@@ -244,7 +244,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
         except ValueError:
             raise serializers.ValidationError(
                 _("This field only allows valid IP addresses (or networks)")
-            )
+            ) from None
         return value
 
     def validate_auto_create_domain_and_mailbox(self, value):
@@ -479,7 +479,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                 try:
                     validators.UTF8EmailValidator()(username)
                 except ValidationError as err:
-                    raise ValidationError({"username": err.message})
+                    raise ValidationError({"username": err.message}) from None
             mailbox = data.get("mailbox")
             if mailbox is None:
                 if not self.instance:
@@ -501,7 +501,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                         object_type="mailboxes",
                     )
                 except lib_exceptions.ModoboaException as inst:
-                    raise serializers.ValidationError({"mailbox": str(inst)})
+                    raise serializers.ValidationError({"mailbox": str(inst)}) from None
             if len(self.address) > 64:
                 raise serializers.ValidationError(
                     {
@@ -518,7 +518,9 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                         data["password"], self.instance
                     )
                 except ValidationError as exc:
-                    raise serializers.ValidationError({"password": exc.messages[0]})
+                    raise serializers.ValidationError(
+                        {"password": exc.messages[0]}
+                    ) from None
             elif not self.instance:
                 raise serializers.ValidationError(
                     {"password": _("This field is required.")}

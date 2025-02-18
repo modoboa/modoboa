@@ -20,12 +20,12 @@ class MailboxOperationTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(MailboxOperationTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def setUp(self):
         """Initiate test env."""
-        super(MailboxOperationTestCase, self).setUp()
+        super().setUp()
         self.workdir = tempfile.mkdtemp()
         path = f"{self.workdir}/test.com/admin"
         os.makedirs(path)

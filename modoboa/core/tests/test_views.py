@@ -148,7 +148,7 @@ class DashboardTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
-        super(DashboardTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.dadmin = factories.UserFactory(
             username="admin@test.com", groups=("DomainAdmins",)
         )
@@ -317,13 +317,13 @@ class PreferencesTestCase(ModoTestCase):
     @classmethod
     def setUpClass(cls):
         """Register user form."""
-        super(PreferencesTestCase, cls).setUpClass()
+        super().setUpClass()
         param_tools.registry.add("user", UserSettings, "Test")
 
     @classmethod
     def tearDownClass(cls):
         """Remove user class."""
-        super(PreferencesTestCase, cls).tearDownClass()
+        super().tearDownClass()
         del param_tools.registry._registry["user"]["core"]
 
     def test_get_user_index(self):

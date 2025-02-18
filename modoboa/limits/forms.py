@@ -13,7 +13,7 @@ class ResourcePoolForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.account = kwargs.pop("instance", None)
-        super(ResourcePoolForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for name, tpl in utils.get_user_limit_templates():
             if "required_role" in tpl:
                 condition = (
@@ -30,7 +30,7 @@ class ResourcePoolForm(forms.Form):
 
     def clean(self):
         """Ensure limit values are correct."""
-        cleaned_data = super(ResourcePoolForm, self).clean()
+        cleaned_data = super().clean()
         if self.errors:
             return cleaned_data
         for lname in list(self.fields.keys()):
@@ -65,7 +65,7 @@ class DomainLimitsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         """Define limits as fields."""
         self.domain = kwargs.pop("instance", None)
-        super(DomainLimitsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for name, tpl in utils.get_domain_limit_templates():
             self.fields[f"{name}_limit"] = forms.IntegerField(
                 label=tpl["label"], help_text=tpl["help"]
@@ -80,7 +80,7 @@ class DomainLimitsForm(forms.Form):
 
     def clean(self):
         """Ensure limit values are correct."""
-        cleaned_data = super(DomainLimitsForm, self).clean()
+        cleaned_data = super().clean()
         if self.errors:
             return cleaned_data
         for lname in list(self.fields.keys()):

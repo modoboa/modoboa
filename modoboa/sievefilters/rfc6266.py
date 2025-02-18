@@ -82,25 +82,25 @@ def build_header(filename, disposition="attachment", filename_compat=None):
     rv = disposition
 
     if is_token(filename):
-        rv += "; filename=%s" % (filename,)
+        rv += f"; filename={filename}"
         return rv
     elif is_ascii(filename) and is_lws_safe(filename):
         qd_filename = qd_quote(filename)
-        rv += '; filename="%s"' % (qd_filename,)
+        rv += f'; filename="{qd_filename}"'
         if qd_filename == filename:
             # RFC 6266 claims some implementations are iffy on qdtext's
             # backslash-escaping, we'll include filename* in that case.
             return rv
     elif filename_compat:
         if is_token(filename_compat):
-            rv += "; filename=%s" % (filename_compat,)
+            rv += f"; filename={filename_compat}"
         else:
             assert is_lws_safe(filename_compat)
-            rv += '; filename="%s"' % (qd_quote(filename_compat),)
+            rv += f'; filename="{qd_quote(filename_compat)}"'
 
     # alnum are already considered always-safe, but the rest isn't.
     # Python encodes ~ when it shouldn't, for example.
-    rv += "; filename*=utf-8''%s" % (
+    rv += "; filename*=utf-8''{}".format(
         percent_encode(filename, safe=attr_chars_nonalnum, encoding="utf-8"),
     )
 
