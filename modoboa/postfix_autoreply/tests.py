@@ -13,7 +13,7 @@ from django.utils.formats import date_format
 
 from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase, ModoAPITestCase
+from modoboa.lib.tests import ModoTestCase
 from modoboa.transport import models as tr_models
 
 from . import factories, models
@@ -111,7 +111,7 @@ class EventsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(EventsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
 
     def test_domain_created_event(self):
@@ -241,12 +241,12 @@ class FormTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(FormTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
 
     def setUp(self):
         """Initialize tests."""
-        super(FormTestCase, self).setUp()
+        super().setUp()
         self.client.logout()
         self.client.login(username="user@test.com", password="toto")
 
@@ -314,7 +314,7 @@ class RepairTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
-        super(RepairTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
 
     def test_management_command(self):
@@ -322,7 +322,7 @@ class RepairTestCase(ModoTestCase):
         mbox = admin_models.Mailbox.objects.get(user__username="user@test.com")
         alias = admin_models.Alias.objects.get(internal=True, address=mbox.full_address)
         arm = factories.ARmessageFactory(mbox=mbox, enabled=False)
-        ar_address = "{}@autoreply.{}".format(mbox.full_address, mbox.domain.name)
+        ar_address = f"{mbox.full_address}@autoreply.{mbox.domain.name}"
         admin_factories.AliasRecipientFactory(alias=alias, address=ar_address)
         management.call_command("modo", "repair", "--quiet")
         self.assertFalse(
@@ -342,13 +342,13 @@ class ManagementCommandTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
-        super(ManagementCommandTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.account = User.objects.get(username="user@test.com")
 
     def setUp(self):
         """Replace stdin."""
-        super(ManagementCommandTestCase, self).setUp()
+        super().setUp()
         self.stdin = sys.stdin
         sys.stdin = StringIO(SIMPLE_EMAIL_CONTENT.strip())
         self.arm = factories.ARmessageFactory(mbox=self.account.mailbox)

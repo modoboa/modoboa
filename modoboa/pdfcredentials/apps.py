@@ -35,6 +35,6 @@ class PDFCredentialsConfig(AppConfig):
     verbose_name = "PDF credentials for Modoboa"
 
     def ready(self):
-        from . import handlers
+        from . import handlers  # noqa
 
         load_pdfcredential_settings()

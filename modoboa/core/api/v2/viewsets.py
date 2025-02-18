@@ -32,12 +32,12 @@ def create_static_tokens(request):
     device = request.user.staticdevice_set.first()
     if device is None:
         device = StaticDevice.objects.create(
-            user=request.user, name="{} static device".format(request.user)
+            user=request.user, name=f"{request.user} static device"
         )
     elif device is not None:
         return None
     tokens = []
-    for cpt in range(10):
+    for _cpt in range(10):
         token = StaticToken.random_token()
         device.token_set.create(token=token)
         tokens.append(token)

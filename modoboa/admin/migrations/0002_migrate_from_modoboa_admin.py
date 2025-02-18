@@ -1,4 +1,4 @@
-from django.db import models, migrations
+from django.db import migrations
 
 
 def rename_and_clean(apps, schema_editor):

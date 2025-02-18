@@ -16,20 +16,16 @@ def next_period(period):
     """Return next period."""
     current = period.split("-")
     if int(current[1]) == 52:
-        week0 = datetime.datetime.strptime(
-            "{}-0-1".format(int(current[0]) + 1), "%Y-%W-%w"
-        )
-        week1 = datetime.datetime.strptime(
-            "{}-1-1".format(int(current[0]) + 1), "%Y-%W-%w"
-        )
-        week52 = datetime.datetime.strptime("{}-52-1".format(current[0]), "%Y-%W-%w")
+        week0 = datetime.datetime.strptime(f"{int(current[0]) + 1}-0-1", "%Y-%W-%w")
+        week1 = datetime.datetime.strptime(f"{int(current[0]) + 1}-1-1", "%Y-%W-%w")
+        week52 = datetime.datetime.strptime(f"{current[0]}-52-1", "%Y-%W-%w")
         if week0 == week52 or week0 == week1:
             parts = (int(current[0]) + 1, 1)
         else:
             parts = (int(current[0]) + 1, 0)
     else:
         parts = (current[0], int(current[1]) + 1)
-    return mark_safe("{}-{}".format(parts[0], parts[1]))
+    return mark_safe(f"{parts[0]}-{parts[1]}")
 
 
 @register.simple_tag
@@ -37,24 +33,22 @@ def previous_period(period):
     """Return previous period."""
     current = period.split("-")
     if int(current[1]) == 1:
-        week0 = datetime.datetime.strptime("{}-0-1".format(current[0]), "%Y-%W-%w")
-        week1 = datetime.datetime.strptime("{}-1-1".format(current[0]), "%Y-%W-%w")
+        week0 = datetime.datetime.strptime(f"{current[0]}-0-1", "%Y-%W-%w")
+        week1 = datetime.datetime.strptime(f"{current[0]}-1-1", "%Y-%W-%w")
         if week0 == week1:
             parts = (int(current[0]) - 1, 52)
         else:
             parts = (current[0], 0)
     elif int(current[1]) == 0:
-        week0 = datetime.datetime.strptime("{}-0-1".format(current[0]), "%Y-%W-%w")
-        week52 = datetime.datetime.strptime(
-            "{}-52-1".format(int(current[0]) - 1), "%Y-%W-%w"
-        )
+        week0 = datetime.datetime.strptime(f"{current[0]}-0-1", "%Y-%W-%w")
+        week52 = datetime.datetime.strptime(f"{int(current[0]) - 1}-52-1", "%Y-%W-%w")
         if week0 == week52:
             parts = (int(current[0]) - 1, 51)
         else:
             parts = (int(current[0]) - 1, 52)
     else:
         parts = (current[0], int(current[1]) - 1)
-    return mark_safe("{}-{}".format(parts[0], parts[1]))
+    return mark_safe(f"{parts[0]}-{parts[1]}")
 
 
 @register.filter

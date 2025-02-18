@@ -14,7 +14,7 @@ from modoboa.lib.exceptions import InternalError
 
 def create_connection(srv_address, srv_port, config, username, password):
     """Create a new connection with given server."""
-    uri = "{}:{}".format(srv_address, srv_port)
+    uri = f"{srv_address}:{srv_port}"
     uri = "{}://{}".format("ldaps" if config["ldap_secured"] == "ssl" else "ldap", uri)
     conn = ldap.initialize(uri)
     conn.protocol_version = 3
@@ -79,7 +79,7 @@ def create_ldap_account(user, dn, conn):
     try:
         conn.add_s(dn, ldif)
     except ldap.LDAPError as e:
-        raise InternalError(_("Failed to create LDAP account: {}").format(e))
+        raise InternalError(_("Failed to create LDAP account: {}").format(e)) from None
 
 
 def check_if_dn_exists(conn, dn):
@@ -118,7 +118,7 @@ def update_ldap_account(user, config):
     try:
         conn.modify_s(dn, ldif)
     except ldap.LDAPError as e:
-        raise InternalError(_("Failed to update LDAP account: {}").format(e))
+        raise InternalError(_("Failed to update LDAP account: {}").format(e)) from None
 
 
 def delete_ldap_account(user, config):
@@ -131,14 +131,18 @@ def delete_ldap_account(user, config):
         try:
             conn.delete_s(dn)
         except ldap.LDAPError as e:
-            raise InternalError(_("Failed to delete LDAP account: {}").format(e))
+            raise InternalError(
+                _("Failed to delete LDAP account: {}").format(e)
+            ) from None
     else:
         password = get_user_password(user, True)
         ldif = [(ldap.MOD_REPLACE, "userPassword", password)]
         try:
             conn.modify_s(dn, ldif)
         except ldap.LDAPError as e:
-            raise InternalError(_("Failed to disable LDAP account: {}").format(e))
+            raise InternalError(
+                _("Failed to disable LDAP account: {}").format(e)
+            ) from None
 
 
 def find_user_groups(conn, config, dn, entry):
@@ -148,13 +152,13 @@ def find_user_groups(conn, config, dn, entry):
         or config["ldap_group_type"] == "groupofnames"
     )
     if condition:
-        flt = "(member={})".format(dn)
+        flt = f"(member={dn})"
     elif config["ldap_group_type"] == "posixgroup":
         flt = "(memberUid={})".format(force_str(entry["uid"][0]))
 
     result = conn.search_s(config["ldap_groups_search_base"], ldap.SCOPE_SUBTREE, flt)
     groups = []
-    for dn, entry in result:
+    for dn, _entry in result:
         if not dn:
             continue
         groups.append(dn.split(",")[0].split("=")[1])
@@ -200,7 +204,7 @@ def import_accounts_from_ldap(config):
                     break
             if email is None:
                 if grp == "SimpleUsers":
-                    print("Skipping {} because no email found".format(dn))
+                    print(f"Skipping {dn} because no email found")
                     continue
             else:
                 username = email
@@ -231,8 +235,8 @@ def build_ldap_uri(config, node=""):
         node += "_"
     return "{}://{}:{}".format(
         "ldaps" if config["ldap_secured"] == "ssl" else "ldap",
-        config["ldap_{}server_address".format(node)],
-        config["ldap_{}server_port".format(node)],
+        config[f"ldap_{node}server_address"],
+        config[f"ldap_{node}server_port"],
     )
 
 
@@ -255,18 +259,11 @@ def update_dovecot_config_file(config):
 
     with open(conf_file, "w") as fp:
         fp.write(
-            """uris = {uris}
+            f"""uris = {uris}
 dn = "{bind_dn}"
 dnpass = '{bind_pwd}'
 base = {base}
 user_filter = {user_filter}
-pass_filter = {pass_filter}
-""".format(
-                uris=uris,
-                bind_dn=bind_dn,
-                bind_pwd=bind_pwd,
-                base=base,
-                user_filter=user_filter,
-                pass_filter=user_filter,
-            )
+pass_filter = {user_filter}
+"""
         )

@@ -31,7 +31,7 @@ END:VCALENDAR
 """
 
 
-class Url(object):
+class Url:
 
     def __init__(self, path):
         self.path = path
@@ -85,5 +85,5 @@ class DAVClientMock:
     def proppatch(self, url, body, dummy=None):
         return Response(200)
 
-    def request(self, url, method="GET", body="", headers={}):
+    def request(self, url, method="GET", body="", headers=None):
         return Response(200)

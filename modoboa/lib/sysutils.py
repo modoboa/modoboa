@@ -27,7 +27,7 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     :return: return code, command output
     """
     if sudo_user is not None:
-        cmd = "sudo -u %s %s" % (sudo_user, cmd)
+        cmd = f"sudo -u {sudo_user} {cmd}"
     kwargs["shell"] = True
     if pinput is not None:
         kwargs["stdin"] = subprocess.PIPE
@@ -75,7 +75,7 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     sudo_user = dovecot_user if curuser != dovecot_user else None
     if dpath:
         return exec_cmd(
-            "{} {}".format(dpath, params),
+            f"{dpath} {params}",
             sudo_user=sudo_user,
             pinput=pinput,
             capture_output=capture_output,

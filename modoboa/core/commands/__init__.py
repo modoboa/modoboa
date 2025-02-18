@@ -7,7 +7,7 @@ from django.template import Context, Template
 from django.utils.encoding import smart_str
 
 
-class Command(object):
+class Command:
     """Base command class.
 
     A valid administrative command must inherit from this class.
@@ -25,7 +25,7 @@ class Command(object):
                     {"BACKEND": ("django.template.backends.django.DjangoTemplates")}
                 ]
             )
-        self._templates_dir = "%s/templates" % os.path.dirname(__file__)
+        self._templates_dir = f"{os.path.dirname(__file__)}/templates"
 
     def _render_template(self, tplfile, env):
         """Render an HTML template."""
@@ -70,7 +70,7 @@ def scan_for_commands(dirname=""):
         else:
             cmdclassname = cmdname.capitalize()
         try:
-            cmdclass = getattr(cmdmod, "%sCommand" % cmdclassname)
+            cmdclass = getattr(cmdmod, f"{cmdclassname}Command")
         except AttributeError:
             continue
         result[cmdname] = cmdclass
@@ -83,9 +83,10 @@ def handle_command_line():
     parser = argparse.ArgumentParser(
         description="A set of utilities to ease the installation of Modoboa.",
         epilog="""Available commands:
-%s
-"""
-        % "\n".join(["\t%s" % c for c in sorted(commands)]),
+{}
+""".format(
+            "\n".join([f"\t{c}" for c in sorted(commands)])
+        ),
     )
     parser.add_argument(
         "--verbose", action="store_true", help="Activate verbose output"
@@ -94,7 +95,7 @@ def handle_command_line():
     (args, remaining) = parser.parse_known_args()
 
     if args.command not in commands:
-        print("Unknown command '%s'" % args.command, file=sys.stderr)
+        print(f"Unknown command '{args.command}'", file=sys.stderr)
         sys.exit(1)
 
     commands[args.command](commands, verbose=args.verbose).run(remaining)

@@ -44,7 +44,7 @@ class Command(BaseCommand):
         ).first()
         if not addressbook:
             raise CommandError(
-                "Address Book for email '%s' not found" % options["email"]
+                "Address Book for email '{}' not found".format(options["email"])
             )
         try:
             import_csv_file(
@@ -55,5 +55,5 @@ class Command(BaseCommand):
                 options.get("carddav_password"),
             )
         except RuntimeError as err:
-            raise CommandError(err)
+            raise CommandError(err) from None
         self.stdout.write(self.style.SUCCESS("File was imported successfuly"))

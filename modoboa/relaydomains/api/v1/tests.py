@@ -9,12 +9,12 @@ from modoboa.lib.tests import ModoAPITestCase
 from modoboa.transport import factories as tr_factories, models as tr_models
 
 
-class DataMixin(object):
+class DataMixin:
     """A mixin to provide test data."""
 
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
-        super(DataMixin, cls).setUpTestData()
+        super().setUpTestData()
         transport = tr_factories.TransportFactory(
             pattern="test.com",
             _settings={

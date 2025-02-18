@@ -141,11 +141,10 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
     def form_invalid(self, form):
         # FIXME: should we return a 401 as before ?
         self.logger.warning(
-            "Failed connection attempt from '%(addr)s' as user '%(user)s'"
-            % {
-                "addr": self.request.META["REMOTE_ADDR"],
-                "user": escape(form.cleaned_data["username"]),
-            }
+            "Failed connection attempt from '{addr}' as user '{user}'".format(
+                addr=self.request.META["REMOTE_ADDR"],
+                user=escape(form.cleaned_data["username"]),
+            )
         )
         return self.render_to_response(self.get_context_data(form=form), status=401)
 
@@ -220,7 +219,7 @@ class VerifySMSCodeView(generic.FormView):
         try:
             kwargs.update({"totp_secret": self.request.session["totp_secret"]})
         except KeyError:
-            raise Http404
+            raise Http404 from None
         return kwargs
 
     def form_valid(self, form):
@@ -241,11 +240,11 @@ class ResendSMSCodeView(generic.View):
             "sms_password_recovery"
         )
         if not sms_password_recovery:
-            raise Http404
+            raise Http404 from None
         try:
             user = models.User._default_manager.get(pk=self.request.session["user_pk"])
         except KeyError:
-            raise Http404
+            raise Http404 from None
         backend = sms_backends.get_active_backend(self.request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
         code = oath.totp(secret)
@@ -255,7 +254,7 @@ class ResendSMSCodeView(generic.View):
             )
         )
         if not backend.send(text, [user.phone_number]):
-            raise Http404
+            raise Http404 from None
         self.request.session["totp_secret"] = secret
         return JsonResponse({"status": "ok"})
 

@@ -12,7 +12,7 @@ class ManagementCommandTestCase(mixins.CallCommandMixin, ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):
-        super(ManagementCommandTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.domain = admin_factories.DomainFactory(name="ngyn.org")
 
     def test_import_from_archive(self):

@@ -18,4 +18,4 @@ class IndexView(
     def get_context_data(self, **kwargs):
         """Set menu selection."""
         kwargs.update({"selection": "imap_migrations"})
-        return super(IndexView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)

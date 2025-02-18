@@ -88,7 +88,7 @@ def get_logs_page(request, page_id=None):
         if page_id is None:
             return None
     return get_listing_page(
-        Log.objects.all().order_by("%s%s" % (sort_dir, sort_order)), page_id
+        Log.objects.all().order_by(f"{sort_dir}{sort_order}"), page_id
     )
 
 

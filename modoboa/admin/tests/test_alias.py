@@ -13,7 +13,7 @@ class AliasTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(AliasTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def test_alias(self):
@@ -173,7 +173,7 @@ class AliasTestCase(ModoTestCase):
         self.ajax_post(reverse("admin:alias_change", args=[fwd.id]), values)
         self.assertEqual(fwd.recipients_count, 1)
 
-        self.ajax_delete(reverse("admin:alias_delete") + "?selection=%d" % fwd.id, {})
+        self.ajax_delete(reverse("admin:alias_delete") + f"?selection={fwd.id}", {})
         self.assertRaises(
             Alias.DoesNotExist, Alias.objects.get, address="forward2@test.com"
         )

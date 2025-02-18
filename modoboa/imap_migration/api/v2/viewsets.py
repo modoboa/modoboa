@@ -1,7 +1,6 @@
 """Viewsets for API V2 for imap_migration."""
 
 import imaplib
-import socket
 import ssl
 
 from rest_framework import response, filters, mixins, permissions, viewsets
@@ -38,7 +37,7 @@ class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
                 imaplib.IMAP4_SSL(address, port)
             else:
                 imaplib.IMAP4(address, port)
-        except (socket.error, imaplib.IMAP4.error, ssl.SSLError):
+        except (OSError, imaplib.IMAP4.error, ssl.SSLError):
             return response.Response({"status": "failed"}, 400)
         return response.Response(status=200)
 

@@ -16,7 +16,7 @@ class DomainAccessRequiredMixin(auth_mixins.AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.can_access(self.get_object()):
             return self.handle_no_permission()
-        return super(DomainAccessRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class DNSRecordDetailView(
@@ -29,7 +29,7 @@ class DNSRecordDetailView(
 
     def get_context_data(self, **kwargs):
         """Add extra variables."""
-        context = super(DNSRecordDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update(
             {
                 "title": _("{} record of {}").format(
@@ -59,7 +59,7 @@ class AutoConfigRecordsStatusView(
 
     def get_context_data(self, **kwargs):
         """Add extra data to context."""
-        context = super(AutoConfigRecordsStatusView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update(
             {"title": _("Auto configuration records for {}").format(self.object.name)}
         )
@@ -76,6 +76,6 @@ class DomainDNSConfigurationView(
 
     def get_context_data(self, **kwargs):
         """Add extra variables."""
-        context = super(DomainDNSConfigurationView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update({"title": _("DNS configuration for {}").format(self.object)})
         return context

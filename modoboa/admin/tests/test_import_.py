@@ -21,7 +21,7 @@ class ImportTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(ImportTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig.parameters.set_value("enable_admin_limits", False, app="limits")
         cls.localconfig.save()
         factories.populate_database()
@@ -326,9 +326,7 @@ alias;user@test.com;True;admin@test.com
         f = ContentFile(
             """domain; dómªin1.com; 1000; 100; True
 dómain; dómªin2.com; 1000; 100; True
-""".encode(
-                "utf8"
-            ),
+""".encode(),
             name="dómains.csv",
         )
         self.client.post(reverse("admin:domain_import"), {"sourcefile": f})

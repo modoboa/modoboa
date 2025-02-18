@@ -38,7 +38,7 @@ class Command(BaseCommand):
         self.verbose = options["verbose"]
 
         log_maximum_age = param_tools.get_global_parameter("log_maximum_age")
-        self.__vprint("Deleting logs older than %d days..." % log_maximum_age)
+        self.__vprint(f"Deleting logs older than {log_maximum_age} days...")
         limit = timezone.now() - datetime.timedelta(log_maximum_age)
         Log.objects.filter(date_created__lt=limit).delete()
         self.__vprint("Done.")

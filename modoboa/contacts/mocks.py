@@ -98,10 +98,10 @@ def report_mock(url, request):
 def get_mock(url, request):
     """Simulate a GET request."""
     uid = url.path.split("/")[-1]
-    content = """
+    content = f"""
 BEGIN:VCARD
 VERSION:3.0
-UID:{}
+UID:{uid}
 N:Gump;Forrest
 FN:Forrest Gump
 ORG:Bubba Gump Shrimp Co.
@@ -111,7 +111,5 @@ TEL;TYPE=HOME;VOICE:(404) 555-1212
 ADR;TYPE=HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
 EMAIL;TYPE=PREF,INTERNET:forrestgump@example.com
 END:VCARD
-""".format(
-        uid
-    )
+"""
     return {"status_code": 200, "content": content}

@@ -1,8 +1,5 @@
 """Import related views."""
 
-import csv
-import io
-
 from reversion import revisions as reversion
 
 from django.contrib.auth.decorators import (
@@ -10,15 +7,11 @@ from django.contrib.auth.decorators import (
     permission_required,
     user_passes_test,
 )
-from django.db import transaction
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
-from modoboa.lib.exceptions import Conflict, ModoboaException
 from .. import lib
-from .. import signals
 from ..forms import ImportDataForm, ImportIdentitiesForm
 
 

@@ -36,12 +36,12 @@ class Curve:
         :return: a list
         """
         rrdfile = os.path.join(
-            param_tools.get_global_parameter("rrd_rootdir"), "%s.rrd" % rrdfile
+            param_tools.get_global_parameter("rrd_rootdir"), f"{rrdfile}.rrd"
         )
         return [
-            "DEF:%s=%s:%s:%s" % (self.dsname, rrdfile, self.dsname, self.cfunc),
-            "CDEF:%(ds)spm=%(ds)s,UN,0,%(ds)s,IF,60,*" % {"ds": self.dsname},
-            'XPORT:%spm:"%s"' % (self.dsname, self.legend),
+            f"DEF:{self.dsname}={rrdfile}:{self.dsname}:{self.cfunc}",
+            f"CDEF:{self.dsname}pm={self.dsname},UN,0,{self.dsname},IF,60,*",
+            f'XPORT:{self.dsname}pm:"{self.legend}"',
         ]
 
 
@@ -52,7 +52,7 @@ class Graphic:
         """Constructor."""
         self._curves = []
         try:
-            order = getattr(self, "order")
+            order = self.order
         except AttributeError:
             for member in inspect.getmembers(self):
                 if isinstance(member[1], Curve):
@@ -102,9 +102,7 @@ class Graphic:
             cmdargs += curve.to_rrd_command_args(rrdfile)
         code = 0
 
-        cmd = "{} xport --json -t --start {} --end {} ".format(
-            self.rrdtool_binary, str(start), str(end)
-        )
+        cmd = f"{self.rrdtool_binary} xport --json -t --start {str(start)} --end {str(end)} "
         cmd += " ".join(cmdargs)
         code, output = exec_cmd(smart_bytes(cmd))
         if code:
@@ -122,7 +120,7 @@ class Graphic:
         return result
 
 
-class GraphicSet(object):
+class GraphicSet:
     """A set of graphics."""
 
     domain_selector = False

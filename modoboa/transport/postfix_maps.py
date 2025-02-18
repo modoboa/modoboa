@@ -1,7 +1,7 @@
 """Map file definitions for postfix."""
 
 
-class TransportMap(object):
+class TransportMap:
     """A transport map."""
 
     filename = "sql-transport.cf"

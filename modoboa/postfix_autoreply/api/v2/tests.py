@@ -14,7 +14,7 @@ class ARMessageViewSetTestCase(ModoAPITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        super(ARMessageViewSetTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.account = User.objects.get(username="user@test.com")
         cls.account2 = User.objects.get(username="user@test2.com")
@@ -27,17 +27,13 @@ class ARMessageViewSetTestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
         # Test filters
-        response = self.client.get(
-            url + "?mbox={}".format(self.account.mailbox.full_address)
-        )
+        response = self.client.get(url + f"?mbox={self.account.mailbox.full_address}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
-        response = self.client.get(
-            url + "?mbox={}".format(self.account.mailbox.address)
-        )
+        response = self.client.get(url + f"?mbox={self.account.mailbox.address}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 2)
-        response = self.client.get(url + "?mbox__user={}".format(self.account.pk))
+        response = self.client.get(url + f"?mbox__user={self.account.pk}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
         # Test retrieve

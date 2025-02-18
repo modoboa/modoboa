@@ -19,12 +19,12 @@ class EventsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create some data."""
-        super(EventsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.DomainFactory(name="test.com")
 
     def setUp(self):
         """Create temp. directory to store files."""
-        super(EventsTestCase, self).setUp()
+        super().setUp()
         self.workdir = tempfile.mkdtemp()
         self.set_global_parameter("storage_dir", self.workdir)
 
@@ -141,7 +141,7 @@ class EventsTestCase(ModoTestCase):
         """Test storage directory creation."""
         self.set_global_parameter("storage_dir", "/nonexistentdir")
         with self.assertLogs(logger="modoboa.admin", level="ERROR") as log:
-            resp = self._create_account("leon@test.com")
+            self._create_account("leon@test.com")
             self.assertIn(
                 "ERROR:modoboa.admin:Failed to create PDF_credentials directory. "
                 "Please check the permissions or the path.",

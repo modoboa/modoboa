@@ -1,4 +1,4 @@
-from django.db import models, migrations
+from django.db import migrations
 
 
 def move_language_preference(apps, schema_editor):

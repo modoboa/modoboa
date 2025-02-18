@@ -32,7 +32,7 @@ class DomainTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DomainTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def test_create(self):
@@ -364,10 +364,10 @@ class DomainTestCase(ModoTestCase):
         self.assertIn("test.com", response["rows"])
 
         old_rows = response["rows"]
-        response = self.ajax_get("{}?sort_order=-name".format(url))
+        response = self.ajax_get(f"{url}?sort_order=-name")
         self.assertNotEqual(old_rows, response["rows"])
 
-        response = self.ajax_get("{}?sort_order=allocated_quota".format(url))
+        response = self.ajax_get(f"{url}?sort_order=allocated_quota")
         self.assertNotEqual(old_rows, response["rows"])
 
     def test_domain_logs_list_view(self):
@@ -386,10 +386,10 @@ class DomainTestCase(ModoTestCase):
         self.assertIn("ID1", response["rows"])
 
         old_rows = response["rows"]
-        response = self.ajax_get("{}?sort_order=-sender".format(url))
+        response = self.ajax_get(f"{url}?sort_order=-sender")
         self.assertNotEqual(old_rows, response["rows"])
 
-        response = self.ajax_get("{}?searchquery=ID1".format(url))
+        response = self.ajax_get(f"{url}?searchquery=ID1")
         self.assertNotEqual(old_rows, response["rows"])
 
         admin = User.objects.get(username="admin@test.com")
@@ -421,7 +421,7 @@ class DomainTestCase(ModoTestCase):
         response = self.ajax_get(url)
         self.assertIn("handle_mailboxes", response)
         self.assertIn("listalarms", response["rows"])
-        response = self.ajax_get("{}?objtype=quota".format(url))
+        response = self.ajax_get(f"{url}?objtype=quota")
         self.assertIn("progress-bar", response["rows"])
 
 
@@ -431,7 +431,7 @@ class DKIMTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DKIMTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def setUp(self):

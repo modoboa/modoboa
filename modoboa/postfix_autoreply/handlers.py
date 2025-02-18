@@ -17,14 +17,14 @@ def manage_transport_entry(sender, instance, **kwargs):
     """Create or update a transport entry for this domain."""
     if kwargs.get("created"):
         tr_models.Transport.objects.get_or_create(
-            pattern="autoreply.{}".format(instance), service="autoreply"
+            pattern=f"autoreply.{instance}", service="autoreply"
         )
         return
     oldname = getattr(instance, "oldname", "None")
     if oldname is None or oldname == instance.name:
         return
-    tr_models.Transport.objects.filter(pattern="autoreply.{}".format(oldname)).update(
-        pattern="autoreply.{}".format(instance.name)
+    tr_models.Transport.objects.filter(pattern=f"autoreply.{oldname}").update(
+        pattern=f"autoreply.{instance.name}"
     )
     qset = admin_models.AliasRecipient.objects.select_related(
         "alias", "r_mailbox"
@@ -39,7 +39,7 @@ def manage_transport_entry(sender, instance, **kwargs):
 @receiver(signals.post_delete, sender=admin_models.Domain)
 def delete_transport_entry(sender, instance, **kwargs):
     """Delete a transport entry."""
-    tr_models.Transport.objects.filter(pattern="autoreply.{}".format(instance)).delete()
+    tr_models.Transport.objects.filter(pattern=f"autoreply.{instance}").delete()
 
 
 @receiver(signals.post_save, sender=admin_models.Mailbox)
@@ -49,24 +49,22 @@ def rename_autoreply_alias(sender, instance, **kwargs):
     if old_address is None or old_address == instance.full_address:
         return
     admin_models.AliasRecipient.objects.filter(
-        address__contains="{}@autoreply".format(old_address)
-    ).update(address="{}@autoreply.{}".format(instance.full_address, instance.domain))
+        address__contains=f"{old_address}@autoreply"
+    ).update(address=f"{instance.full_address}@autoreply.{instance.domain}")
 
 
 @receiver(signals.post_delete, sender=admin_models.Mailbox)
 def delete_autoreply_alias(sender, instance, **kwargs):
     """Delete alias."""
     admin_models.AliasRecipient.objects.filter(
-        address="{}@autoreply.{}".format(instance.full_address, instance.domain)
+        address=f"{instance.full_address}@autoreply.{instance.domain}"
     ).delete()
 
 
 @receiver(signals.post_save, sender=models.ARmessage)
 def manage_autoreply_alias(sender, instance, **kwargs):
     """Create or delete the alias."""
-    ar_alias_address = "{}@autoreply.{}".format(
-        instance.mbox.full_address, instance.mbox.domain
-    )
+    ar_alias_address = f"{instance.mbox.full_address}@autoreply.{instance.mbox.domain}"
     admin_models.Alias.objects.get(
         address=instance.mbox.full_address, domain=instance.mbox.domain, internal=True
     )
@@ -94,15 +92,13 @@ def extra_js(sender, caller, st_type, user, **kwargs):
     """Add static content."""
     if caller != "user_index" or st_type != "js":
         return ""
-    return """function autoreply_cb() {
-    $('.datefield').datetimepicker({
+    return f"""function autoreply_cb() {{
+    $('.datefield').datetimepicker({{
         format: 'YYYY-MM-DD HH:mm:ss',
-        locale: '%(lang)s'
-    });
-}
-""" % {
-        "lang": user.language
-    }
+        locale: '{user.language}'
+    }});
+}}
+"""
 
 
 @receiver(core_signals.extra_user_menu_entries)

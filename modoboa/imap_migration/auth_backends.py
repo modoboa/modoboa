@@ -1,7 +1,6 @@
 """IMAP authentication backend for Django."""
 
 import imaplib
-import socket
 import ssl
 
 from django.utils.encoding import smart_bytes, smart_str
@@ -45,8 +44,10 @@ class IMAPBackend:
                 conn = imaplib.IMAP4_SSL(address, port)
             else:
                 conn = imaplib.IMAP4(address, port)
-        except (socket.error, imaplib.IMAP4.error, ssl.SSLError) as error:
-            raise ModoboaException(_("Connection to IMAP server failed: %s") % error)
+        except (OSError, imaplib.IMAP4.error, ssl.SSLError) as error:
+            raise ModoboaException(
+                _(f"Connection to IMAP server failed: {error}")
+            ) from None
 
         try:
             typ, data = conn.login(smart_bytes(username), smart_str(password))
@@ -68,9 +69,7 @@ class IMAPBackend:
         orig_username = username
         # Check if old addresses must be converted
         if self.provider_domain.new_domain:
-            username = "{}@{}".format(
-                self.address, self.provider_domain.new_domain.name
-            )
+            username = f"{self.address}@{self.provider_domain.new_domain.name}"
         user, created = core_models.User.objects.get_or_create(
             username__iexact=username,
             defaults={"username": username.lower(), "email": username.lower()},

@@ -181,7 +181,7 @@ def colorize_level(level):
     }
     if level not in classes:
         return level
-    return "<p class='%s'>%s</p>" % (classes[level], level)
+    return f"<p class='{classes[level]}'>{level}</p>"
 
 
 @register.filter
@@ -238,7 +238,7 @@ def connected_users(parser, token):
     except ValueError:
         raise template.TemplateSyntaxError(
             "connected_users usage: {% connected_users as users %}"
-        )
+        ) from None
     return ConnectedUsers(varname)
 
 
@@ -279,14 +279,13 @@ def display_messages(msgs):
         timeout = "undefined"
 
     return mark_safe(
-        """
+        f"""
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('body').notify('%s', '%s', %s);
-    });
+    $(document).ready(function() {{
+        $('body').notify('{level}', '{text}', {timeout});
+    }});
 </script>
 """
-        % (level, text, timeout)
     )
 
 
@@ -295,5 +294,5 @@ def currencyfmt(amount):
     """Simple temp. filter to replace babel."""
     lang = get_language()
     if lang == "fr":
-        return "{} €".format(amount)
-    return "€{}".format(amount)
+        return f"{amount} €"
+    return f"€{amount}"

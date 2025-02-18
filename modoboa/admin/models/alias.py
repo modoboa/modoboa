@@ -54,7 +54,7 @@ def validate_alias_address(
                 object_type="mailbox_aliases",
             )
         except ModoboaException as inst:
-            raise ValidationError(str(inst))
+            raise ValidationError(str(inst)) from None
     return local_part, domain
 
 
@@ -132,7 +132,7 @@ class Alias(AdminObject):
             return "---"
         rcpts = self.recipients
         if rcpts_count > 1:
-            return "%s, ..." % rcpts[0]
+            return f"{rcpts[0]}, ..."
         return rcpts[0]
 
     @property
@@ -150,7 +150,7 @@ class Alias(AdminObject):
     def post_create(self, creator):
         from modoboa.lib.permissions import grant_access_to_object
 
-        super(Alias, self).post_create(creator)
+        super().post_create(creator)
         if creator.is_superuser:
             for admin in self.domain.admins:
                 grant_access_to_object(admin, self)
@@ -174,7 +174,7 @@ class Alias(AdminObject):
                 address, return_extension=True
             )
             if domname is None:
-                raise BadRequest("%s %s" % (_("Invalid address"), address))
+                raise BadRequest("{} {}".format(_("Invalid address"), address))
             domain = Domain.objects.filter(name=domname).first()
             kwargs = {"address": address, "alias": self}
             if (domain is not None) and (
@@ -189,7 +189,7 @@ class Alias(AdminObject):
                 rcpt = Mailbox.objects.filter(domain=domain, address=local_part).first()
                 if rcpt is None:
                     rcpt = Alias.objects.filter(
-                        address="%s@%s" % (local_part, domname)
+                        address=f"{local_part}@{domname}"
                     ).first()
                     if rcpt is None:
                         raise NotFound(
@@ -306,4 +306,4 @@ class AliasRecipient(models.Model):
 
     def __str__(self):
         """Return alias and recipient."""
-        return smart_str("{} -> {}".format(self.alias.address, self.address))
+        return smart_str(f"{self.alias.address} -> {self.address}")

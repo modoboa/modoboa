@@ -29,7 +29,7 @@ class Command(BaseCommand):
         """Create RRD file."""
         step = 3600
         ds_name = "new_accounts"
-        params = ["DS:{}:ABSOLUTE:{}:0:U".format(ds_name, step * 2)]
+        params = [f"DS:{ds_name}:ABSOLUTE:{step * 2}:0:U"]
         params += [
             "RRA:AVERAGE:0.5:1:48",  # 48 hours with a 1h granularity
             "RRA:AVERAGE:0.5:24:31",  # 31 days with a 1d granularity

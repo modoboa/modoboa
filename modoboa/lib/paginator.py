@@ -3,7 +3,7 @@ Custom pagination tools.
 """
 
 
-class Page(object):
+class Page:
     """Class to represent a page."""
 
     def __init__(self, paginator, pageid, id_start, id_stop, baseurl=None):
@@ -66,7 +66,7 @@ class Page(object):
         return lid
 
 
-class Paginator(object):
+class Paginator:
     """Pagination class."""
 
     def __init__(self, total, elems_per_page):

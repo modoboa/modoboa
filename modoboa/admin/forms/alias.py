@@ -49,7 +49,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
-        super(AliasForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields = OrderedDict(
             (key, self.fields[key])
             for key in [
@@ -80,7 +80,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
                 self.fields["enabled"].widget.attrs["disabled"] = "disabled"
             cpt = 1
             for rcpt in alias.aliasrecipient_set.filter(alias__internal=False):
-                name = "recipients_%d" % cpt
+                name = f"recipients_{cpt}"
                 self._create_field(forms.EmailField, name, rcpt.address, 2)
                 cpt += 1
 
@@ -92,7 +92,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
         try:
             domain = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise forms.ValidationError(_("Domain does not exist"))
+            raise forms.ValidationError(_("Domain does not exist")) from None
         if not self.user.can_access(domain):
             raise forms.ValidationError(_("You don't have access to this domain"))
         if not self.instance.pk:
@@ -101,12 +101,12 @@ class AliasForm(forms.ModelForm, DynamicForm):
                     sender=self.__class__, context=domain, object_type="mailbox_aliases"
                 )
             except lib_exceptions.ModoboaException as inst:
-                raise forms.ValidationError(inst)
+                raise forms.ValidationError(inst) from None
         return self.cleaned_data["address"].lower()
 
     def clean(self):
         """Check it there is at least one recipient."""
-        super(AliasForm, self).clean()
+        super().clean()
         random_address = self.cleaned_data.get("random_address")
         if not random_address:
             if not self.cleaned_data.get("address"):
@@ -121,11 +121,9 @@ class AliasForm(forms.ModelForm, DynamicForm):
 
     def save(self, commit=True):
         """Custom save method."""
-        alias = super(AliasForm, self).save(commit=False)
+        alias = super().save(commit=False)
         if self.cleaned_data.get("random_address"):
-            alias.address = "{}@{}".format(
-                Alias.generate_random_address(), alias.domain
-            )
+            alias.address = f"{Alias.generate_random_address()}@{alias.domain}"
         else:
             local_part, domname = split_mailbox(self.cleaned_data["address"])
             alias.domain = Domain.objects.get(name=domname)

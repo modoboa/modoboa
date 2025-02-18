@@ -16,14 +16,12 @@ class DomainLimitsTestCase(lib_tests.ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DomainLimitsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig.parameters.set_values(
             {"enable_admin_limits": False, "enable_domain_limits": True}
         )
         for name, _definition in utils.get_domain_limit_templates():
-            cls.localconfig.parameters.set_value(
-                "deflt_domain_{0}_limit".format(name), 2
-            )
+            cls.localconfig.parameters.set_value(f"deflt_domain_{name}_limit", 2)
         cls.localconfig.save()
         admin_factories.populate_database()
 

@@ -45,7 +45,7 @@ class MXRecordManager(models.Manager):
             record = self.get_queryset().create(
                 domain=domain,
                 name="{}".format(mx_addr.strip(".")),
-                address="{}".format(mx_ip_addr),
+                address=f"{mx_ip_addr}",
                 updated=now + delta,
             )
             yield record
@@ -68,7 +68,7 @@ class MXRecord(models.Model):
         return bool(param_tools.get_global_parameter("valid_mxs").strip())
 
     def __str__(self):
-        return "{0.name} ({0.address}) for {0.domain} ".format(self)
+        return f"{self.name} ({self.address}) for {self.domain} "
 
 
 class DNSBLQuerySet(models.QuerySet):

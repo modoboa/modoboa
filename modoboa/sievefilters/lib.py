@@ -33,7 +33,7 @@ class SieveClient:
             try:
                 ret, msg = self.login(user, password)
             except (managesieve.Error, ConnectionError) as e:
-                raise SieveClientError(str(e))
+                raise SieveClientError(str(e)) from None
             if not ret:
                 raise SieveClientError(msg)
 
@@ -76,7 +76,7 @@ class SieveClient:
 
     def pushscript(self, name: str, content: str, active: bool = False) -> None:
         if not self.msc.havespace(name, len(content)):
-            error = "%s (%s)" % (_("Not enough space on server"), self.msc.errmsg)
+            error = "{} ({})".format(_("Not enough space on server"), self.msc.errmsg)
             raise SieveClientError(error)
         if not self.msc.putscript(name, content):
             raise SieveClientError(self.msc.errmsg.decode())

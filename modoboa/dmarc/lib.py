@@ -129,7 +129,7 @@ def import_report(content):
             else:
                 print(f"Report skipped because of malformed data (empty {attr})")
                 return
-        value = setattr(report, "policy_{}".format(attr), node.text)
+        setattr(report, f"policy_{attr}", node.text)
     report.save()
     for record in root.findall("record"):
         import_record(record, report)
@@ -174,7 +174,7 @@ def import_report_from_email(content):
             fpo.seek(0)
             if file_type in FILE_TYPES:
                 import_archive(fpo, content_type=part.get_content_type())
-        except (OSError, IOError):
+        except OSError:
             print("Error: the attachment does not match the mimetype")
             err = True
         else:
@@ -219,8 +219,8 @@ def week_range(year, weeknumber):
     """Return start and end dates of a given week."""
     tz = timezone.get_current_timezone()
     fmt = "%Y-%W-%w"
-    start_week = datetime.datetime.strptime("{}-{}-{}".format(year, weeknumber, 1), fmt)
-    end_week = datetime.datetime.strptime("{}-{}-{}".format(year, weeknumber, 0), fmt)
+    start_week = datetime.datetime.strptime(f"{year}-{weeknumber}-{1}", fmt)
+    end_week = datetime.datetime.strptime(f"{year}-{weeknumber}-{0}", fmt)
     return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
 
 
@@ -237,7 +237,7 @@ def insert_record(target: dict, record, name: str) -> None:
         }
     target[name][record.source_ip]["total"] += record.count
     for typ in ["spf", "dkim"]:
-        result = getattr(record, "{}_result".format(typ))
+        result = getattr(record, f"{typ}_result")
         key = "success" if result == "pass" else "failure"
         target[name][record.source_ip][typ][key] += record.count
 
