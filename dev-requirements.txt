@@ -284,7 +284,7 @@ tzdata==2025.1
     #   icalendar
     #   recurring-ical-events
     #   x-wr-timezone
-tzlocal==5.2
+tzlocal==5.3
     # via caldav
 uritemplate==4.1.1
     # via
