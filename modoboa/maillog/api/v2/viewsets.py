@@ -41,7 +41,7 @@ class StatisticsViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
             end = int(time.mktime(serializer.validated_data["end"].timetuple()))
         else:
             end = int(time.mktime(time.localtime()))
-            start = "-1{}".format(period)
+            start = f"-1{period}"
         graphs = graph_sets[gset].export(
             fname, start, end, serializer.validated_data.get("graphic")
         )

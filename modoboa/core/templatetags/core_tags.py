@@ -295,5 +295,5 @@ def currencyfmt(amount):
     """Simple temp. filter to replace babel."""
     lang = get_language()
     if lang == "fr":
-        return "{} €".format(amount)
-    return "€{}".format(amount)
+        return f"{amount} €"
+    return f"€{amount}"

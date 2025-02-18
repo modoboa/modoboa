@@ -29,7 +29,7 @@ def init_storage_dir():
         )
     try:
         os.mkdir(storage_dir)
-    except (OSError, IOError) as inst:
+    except OSError as inst:
         raise InternalError(
             _("Failed to create the directory that will contain " "PDF documents (%s)")
             % inst
@@ -123,5 +123,5 @@ def rfc_6266_content_disposition(filename):
             filename.replace("\\", "\\\\").replace('"', r"\"")
         )
     except UnicodeEncodeError:
-        file_expr = "filename*=utf-8''{}".format(quote(filename))
+        file_expr = f"filename*=utf-8''{quote(filename)}"
     return f"attachment; {file_expr}"

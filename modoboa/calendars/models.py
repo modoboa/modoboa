@@ -53,7 +53,7 @@ class Calendar(models.Model):
     @property
     def share_url(self):
         """Return calendar share url."""
-        return "{}?token={}".format(self.full_url, self.access_token)
+        return f"{self.full_url}?token={self.access_token}"
 
     @property
     def encoded_url(self):

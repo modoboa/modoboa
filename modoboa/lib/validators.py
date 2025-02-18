@@ -7,7 +7,7 @@ from django.core.validators import EmailValidator, URLValidator
 from django.utils.translation import gettext_lazy
 
 
-class HostnameValidator(object):
+class HostnameValidator:
     """Validator for fqdn."""
 
     message = gettext_lazy("Enter a valid domain name")

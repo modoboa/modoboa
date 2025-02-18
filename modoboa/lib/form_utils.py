@@ -17,7 +17,7 @@ from modoboa.lib.web_utils import render_to_json_response
 ABC = abc.ABCMeta(force_str("ABC"), (object,), {})
 
 
-class WizardStep(object):
+class WizardStep:
     """A wizard step."""
 
     def __init__(self, uid, formclass, title, formtpl=None, new_args=None):
@@ -188,7 +188,7 @@ class WizardForm(ABC):
         """
 
 
-class DynamicForm(object):
+class DynamicForm:
     """
     A form which accepts dynamic fields.
 
@@ -234,7 +234,7 @@ class DynamicForm(object):
         self.data = ndata
 
 
-class TabForms(object):
+class TabForms:
     """
     Simple forms container.
 

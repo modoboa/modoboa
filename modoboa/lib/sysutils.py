@@ -75,7 +75,7 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     sudo_user = dovecot_user if curuser != dovecot_user else None
     if dpath:
         return exec_cmd(
-            "{} {}".format(dpath, params),
+            f"{dpath} {params}",
             sudo_user=sudo_user,
             pinput=pinput,
             capture_output=capture_output,

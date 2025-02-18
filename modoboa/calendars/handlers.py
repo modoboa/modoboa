@@ -48,7 +48,7 @@ def set_user_calendar_path(sender, instance, **kwargs):
     """Set path at creation."""
     if instance.pk:
         return
-    instance._path = "{}/{}".format(instance.mailbox.full_address, instance.name)
+    instance._path = f"{instance.mailbox.full_address}/{instance.name}"
     if not instance.access_token:
         instance.access_token = token_hex(16)
 
@@ -58,6 +58,6 @@ def set_shared_calendar_path(sender, instance, **kwargs):
     """Set path at creation."""
     if instance.pk:
         return
-    instance._path = "{}/{}".format(instance.domain.name, instance.name)
+    instance._path = f"{instance.domain.name}/{instance.name}"
     if not instance.access_token:
         instance.access_token = token_hex(16)

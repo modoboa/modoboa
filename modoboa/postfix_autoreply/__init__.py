@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Away message editor for Modoboa (postfix compatible)."""
-
-from __future__ import unicode_literals
 
 from pkg_resources import DistributionNotFound, get_distribution
 

@@ -117,7 +117,7 @@ class DeployCommand(Command):
                     "\n".join([line.decode() for line in output if line is not None]),
                     file=sys.stderr,
                 )
-            print("%s failed, check your configuration" % cmd, file=sys.stderr)
+            print(f"{cmd} failed, check your configuration", file=sys.stderr)
 
     def ask_db_info(self, name="default"):
         """Prompt the user for database information
@@ -127,7 +127,7 @@ class DeployCommand(Command):
 
         :param name: the connection name
         """
-        print("Configuring database connection: %s" % name)
+        print(f"Configuring database connection: {name}")
         info = {
             "conn_name": name,
             "ENGINE": input("Database type (mysql, postgres or sqlite3): "),
@@ -137,7 +137,7 @@ class DeployCommand(Command):
 
         if info["ENGINE"] == "sqlite3":
             info["ENGINE"] = "django.db.backends.sqlite3"
-            info["NAME"] = "%s.db" % name
+            info["NAME"] = f"{name}.db"
             return info
         if info["ENGINE"] == "postgres":
             info["ENGINE"] = "django.db.backends.postgresql"
@@ -146,7 +146,7 @@ class DeployCommand(Command):
             info["ENGINE"] = "django.db.backends.mysql"
             default_port = 3306
         info["HOST"] = input("Database host (default: 'localhost'): ")
-        info["PORT"] = input("Database port (default: '%s'): " % default_port)
+        info["PORT"] = input(f"Database port (default: '{default_port}'): ")
         # leave port setting empty, if default value is supplied and
         # leave it to django
         if info["PORT"] == default_port:
@@ -181,7 +181,7 @@ class DeployCommand(Command):
         for extension in extensions:
             module = __import__(extension[1], locals(), globals(), [])
             basedir = os.path.dirname(module.__file__)
-            if not os.path.exists("{0}/settings.py".format(basedir)):
+            if not os.path.exists(f"{basedir}/settings.py"):
                 continue
             extra_settings.append(extension[1])
         return extra_settings
@@ -189,7 +189,7 @@ class DeployCommand(Command):
     def handle(self, parsed_args):
         django.setup()
         management.call_command("startproject", parsed_args.name, verbosity=False)
-        path = "%(name)s/%(name)s" % {"name": parsed_args.name}
+        path = f"{parsed_args.name}/{parsed_args.name}"
         sys.path.append(parsed_args.name)
 
         conn_tpl = Template(DBCONN_TPL)
@@ -240,7 +240,7 @@ class DeployCommand(Command):
 
         mod = __import__(parsed_args.name, globals(), locals(), [smart_str("settings")])
         tpl = self._render_template(
-            "%s/settings.py.tpl" % self._templates_dir,
+            f"{self._templates_dir}/settings.py.tpl",
             {
                 "db_connections": connections,
                 "secret_key": management.utils.get_random_secret_key(),
@@ -254,15 +254,15 @@ class DeployCommand(Command):
                 "extra_settings": extra_settings,
             },
         )
-        with open("%s/settings.py" % path, "w") as fp:
+        with open(f"{path}/settings.py", "w") as fp:
             fp.write(tpl)
         generate_rsa_private_key(parsed_args.name)
 
-        shutil.copyfile("%s/urls.py.tpl" % self._templates_dir, "%s/urls.py" % path)
-        os.mkdir("%s/media" % parsed_args.name)
+        shutil.copyfile(f"{self._templates_dir}/urls.py.tpl", f"{path}/urls.py")
+        os.mkdir(f"{parsed_args.name}/media")
 
-        if isfile("%s/settings.pyc" % path):
-            os.unlink("%s/settings.pyc" % path)
+        if isfile(f"{path}/settings.pyc"):
+            os.unlink(f"{path}/settings.pyc")
         self._exec_django_command("migrate", parsed_args.name, "--noinput")
         self._exec_django_command(
             "load_initial_data",

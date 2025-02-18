@@ -91,7 +91,7 @@ class Command(BaseCommand):
                 extension.load_initial_data()
             except Exception as e:
                 self.stderr.write(
-                    "Unable to load initial data for '{}' ({}).".format(extname, str(e))
+                    f"Unable to load initial data for '{extname}' ({str(e)})."
                 )
             else:
                 signals.initial_data_loaded.send(sender=self.__class__, extname=extname)
@@ -141,7 +141,7 @@ class Command(BaseCommand):
         base_frontend_dir = os.path.join(
             os.path.dirname(__file__), "../../../frontend_dist/"
         )
-        frontend_target_dir = "{}/frontend".format(settings.BASE_DIR)
+        frontend_target_dir = f"{settings.BASE_DIR}/frontend"
         if os.path.exists(base_frontend_dir):
             shutil.rmtree(frontend_target_dir, ignore_errors=True)
             shutil.copytree(base_frontend_dir, frontend_target_dir)

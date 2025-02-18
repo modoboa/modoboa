@@ -13,7 +13,7 @@ from .. import factories, models
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
-class LDAPTestCaseMixin(object):
+class LDAPTestCaseMixin:
     """Set of methods used to test LDAP features."""
 
     @cached_property

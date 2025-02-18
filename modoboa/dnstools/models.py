@@ -50,7 +50,7 @@ class DNSRecord(models.Model):
     objects = DNSRecordManager()
 
     def __str__(self):
-        return "{} ({}): {}".format(self.domain, self.type, self.value)
+        return f"{self.domain} ({self.type}): {self.value}"
 
     def get_dns_record(self):
         """Retrieve corresponding DNS record."""
@@ -59,13 +59,13 @@ class DNSRecord(models.Model):
                 self.domain.name, self.domain.dkim_key_selector
             )
         else:
-            func = getattr(lib, "get_{}_record".format(self.type))
+            func = getattr(lib, f"get_{self.type}_record")
             self.value = func(self.domain.name)
 
     def check_syntax(self, ttl=7200):
         """Check record syntax."""
         try:
-            func = getattr(lib, "check_{}_syntax".format(self.type))
+            func = getattr(lib, f"check_{self.type}_syntax")
             result = func(self.value)
         except lib.DNSSyntaxError as err:
             self.error = str(err)[:50]

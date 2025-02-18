@@ -124,7 +124,7 @@ class ExtensionsPool:
                 root = ""
                 pattern = "{}.urls_api"
             else:
-                root = r"^{}/".format(ext.get_url())
+                root = rf"^{ext.get_url()}/"
                 pattern = "{}.urls"
             try:
                 result.append(re_path(root, include(pattern.format(ext_name))))

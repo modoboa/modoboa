@@ -25,7 +25,7 @@ class QuotaManager(models.Manager):
 
     def get_domain_usage(self, domain):
         """Return current usage for domain."""
-        qset = self.get_queryset().filter(username__endswith="@{}".format(domain.name))
+        qset = self.get_queryset().filter(username__endswith=f"@{domain.name}")
         result = qset.aggregate(usage=models.Sum("bytes")).get("usage", 0)
         if result is None:
             result = 0

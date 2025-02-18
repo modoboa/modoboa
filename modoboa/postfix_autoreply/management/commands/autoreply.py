@@ -5,7 +5,6 @@ import fileinput
 from io import StringIO
 import logging
 import smtplib
-import socket
 import sys
 from logging.handlers import SysLogHandler
 
@@ -91,7 +90,7 @@ def send_autoreply(sender, mailbox, armessage, original_msg):
             context.update({"untildate": localize(armessage.untildate)})
     content = armessage.content % context
     msg = EmailMessage(
-        "Auto: {} Re: {}".format(armessage.subject, subject),
+        f"Auto: {armessage.subject} Re: {subject}",
         smart_str(content),
         mailbox.user.encoded_address,
         [sender],
@@ -126,7 +125,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             handler = SysLogHandler(address=options["syslog_socket_path"])
-        except socket.error as ex:
+        except OSError as ex:
             if ex.errno == 2:
                 # try the default, localhost:514
                 handler = SysLogHandler()
@@ -193,7 +192,7 @@ class Command(BaseCommand):
             try:
                 mbox = Mailbox.objects.get(address=address, domain__name=domain)
             except Mailbox.DoesNotExist:
-                msg = "Unknown recipient %s" % (fulladdress)
+                msg = f"Unknown recipient {fulladdress}"
                 logger.debug("autoreply %s", msg)
                 continue
             try:

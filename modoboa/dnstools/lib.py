@@ -17,7 +17,7 @@ def _get_record_type_value(records, rr_type):
         # Multiple strings are separated by a space as described in:
         # https://tools.ietf.org/html/rfc4408#section-3.1.3
         value = str(record).replace('" "', "").strip('"')
-        if value.startswith("v={}".format(rr_type)):
+        if value.startswith(f"v={rr_type}"):
             return value
     return None
 
@@ -30,14 +30,14 @@ def get_spf_record(domain):
 
 def get_dkim_record(domain, selector):
     """Return DKIM records form domain (if any)."""
-    name = "{}._domainkey.{}".format(selector, domain)
+    name = f"{selector}._domainkey.{domain}"
     records = admin_lib.get_dns_records(name, "TXT")
     return _get_record_type_value(records, "DKIM1")
 
 
 def get_dmarc_record(domain):
     """Return DMARC record for domain (if any)."""
-    name = "_dmarc.{}".format(domain)
+    name = f"_dmarc.{domain}"
     records = admin_lib.get_dns_records(name, "TXT")
     return _get_record_type_value(records, "DMARC1")
 
@@ -61,12 +61,12 @@ def _get_simple_record(name):
 
 def get_autoconfig_record(domain):
     """Return autoconfig record for domain (if any)."""
-    return _get_simple_record("autoconfig.{}".format(domain))
+    return _get_simple_record(f"autoconfig.{domain}")
 
 
 def get_autodiscover_record(domain):
     """Return autodiscover record for domain (if any)."""
-    return _get_simple_record("autodiscover.{}".format(domain))
+    return _get_simple_record(f"autodiscover.{domain}")
 
 
 class DNSSyntaxError(Exception):
@@ -167,7 +167,7 @@ def check_spf_syntax(record):
             continue
         for mechanism in constants.SPF_MECHANISMS:
             if part.startswith(mechanism):
-                globals()["check_spf_{}".format(mechanism)](part)
+                globals()[f"check_spf_{mechanism}"](part)
                 mechanisms.append(mechanism)
                 break
         else:

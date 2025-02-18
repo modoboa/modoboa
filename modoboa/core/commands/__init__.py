@@ -7,7 +7,7 @@ from django.template import Context, Template
 from django.utils.encoding import smart_str
 
 
-class Command(object):
+class Command:
     """Base command class.
 
     A valid administrative command must inherit from this class.

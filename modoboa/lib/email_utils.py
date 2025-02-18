@@ -31,7 +31,7 @@ class EmailAddress:
     def __init__(self, address):
         self.name, self.address = u2u_decode.decode_address(address)
         if self.name:
-            self.fulladdress = "{} <{}>".format(self.name, self.address)
+            self.fulladdress = f"{self.name} <{self.address}>"
         else:
             self.fulladdress = self.address
 
@@ -446,7 +446,7 @@ def sendmail_fromfile(sender, rcpt, fname):
     """
     try:
         fp = open(fname)
-    except IOError as e:
+    except OSError as e:
         return False, str(e)
 
     content = """From: %s

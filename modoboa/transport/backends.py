@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from modoboa.lib import validators as lib_validators
 
 
-class TransportBackend(object):
+class TransportBackend:
     """Base backend class."""
 
     name = None
@@ -42,7 +42,7 @@ class TransportBackend(object):
             ftype = setting.get("type", "string")
             if ftype == "string":
                 validator = setting.get("validator")
-                vfunc = "_validate_{}".format(validator)
+                vfunc = f"_validate_{validator}"
                 if validator and hasattr(self, vfunc):
                     if getattr(self, vfunc)(value):
                         continue
@@ -60,7 +60,7 @@ class TransportBackend(object):
         pass
 
 
-class TransportBackendManager(object):
+class TransportBackendManager:
     """Transport backends manager."""
 
     def __init__(self):

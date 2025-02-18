@@ -306,4 +306,4 @@ class AliasRecipient(models.Model):
 
     def __str__(self):
         """Return alias and recipient."""
-        return smart_str("{} -> {}".format(self.alias.address, self.address))
+        return smart_str(f"{self.alias.address} -> {self.address}")

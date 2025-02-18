@@ -20,8 +20,8 @@ class NotDefined(exceptions.ModoboaException):
 
     def __str__(self):
         if self.name is None:
-            return "Application {} not registered".format(self.app)
-        return "Parameter {} not defined for app {}".format(self.name, self.app)
+            return f"Application {self.app} not registered"
+        return f"Parameter {self.name} not defined for app {self.app}"
 
 
 class Registry:

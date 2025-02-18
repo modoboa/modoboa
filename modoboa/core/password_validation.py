@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _, ngettext
 
 
-class ComplexityValidator(object):
+class ComplexityValidator:
     """Check password contains at least a few things."""
 
     def __init__(self, upper=1, lower=1, digits=1, specials=1):

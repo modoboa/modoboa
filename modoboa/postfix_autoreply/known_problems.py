@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Know problems and associated fixes."""
-
-from __future__ import unicode_literals
 
 from modoboa.admin import models as admin_models
 from modoboa.admin.management.commands.subcommands import _repair
@@ -22,12 +18,12 @@ def ensure_autoreplies_recipents_are_valids(**options):
             mbox__address=address, mbox__domain__name=domain
         )
         if not arqs.exists():
-            _repair.log("Delete {0} (AR does not exist)".format(alr), **options)
+            _repair.log(f"Delete {alr} (AR does not exist)", **options)
             alr.delete()
             deleted += 1
         elif arqs.filter(enabled=False).exists():
-            _repair.log("Delete {0} (AR is disabled)".format(alr), **options)
+            _repair.log(f"Delete {alr} (AR is disabled)", **options)
             alr.delete()
             deleted += 1
         if deleted:
-            _repair.log("{0} alias recipient(s) deleted".format(deleted), **options)
+            _repair.log(f"{deleted} alias recipient(s) deleted", **options)

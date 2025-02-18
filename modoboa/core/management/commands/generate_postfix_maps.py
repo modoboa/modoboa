@@ -126,9 +126,7 @@ query = {{ query|safe }}
         if os.path.exists(fullpath) and not force_overwrite:
             if not self.__check_file(fullpath):
                 print(
-                    "Cannot upgrade '{}' map because it has been modified.".format(
-                        mapobject.filename
-                    )
+                    f"Cannot upgrade '{mapobject.filename}' map because it has been modified."
                 )
                 return self.__checksums[mapobject.filename]
             mapcontent = utils.parse_map_file(fullpath)

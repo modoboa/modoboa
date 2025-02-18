@@ -110,7 +110,7 @@ class MXTestCase(ModoTestCase):
         mb = factories.MailboxFactory(
             address="admin",
             domain=domain,
-            user__username="admin@{}".format(domain.name),
+            user__username=f"admin@{domain.name}",
             user__groups=("DomainAdmins",),
         )
         domain.add_admin(mb.user)

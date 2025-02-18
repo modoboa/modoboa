@@ -27,7 +27,7 @@ def _export(content, filename):
     resp = HttpResponse(content)
     resp["Content-Type"] = "text/csv"
     resp["Content-Length"] = len(content)
-    resp["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
+    resp["Content-Disposition"] = f'attachment; filename="{filename}"'
     return resp
 
 

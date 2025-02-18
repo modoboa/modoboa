@@ -15,7 +15,7 @@ class DMARCViewsTestCase(mixins.CallCommandMixin, ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        super(DMARCViewsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.domain = admin_factories.DomainFactory(name="ngyn.org")
 
     def test_domainlist_view(self):
@@ -34,7 +34,7 @@ class DMARCViewsTestCase(mixins.CallCommandMixin, ModoTestCase):
         user = core_models.User.objects.get(username="admin")
         self.client.force_login(user)
         url = reverse("dmarc:domain_report", args=[self.domain.pk])
-        response = self.client.get("{}?period=2015-26".format(url))
+        response = self.client.get(f"{url}?period=2015-26")
         self.assertContains(response, "'Failed', 100.0")
 
     def test_domainreport_view_week0(self):
@@ -43,7 +43,7 @@ class DMARCViewsTestCase(mixins.CallCommandMixin, ModoTestCase):
         user = core_models.User.objects.get(username="admin")
         self.client.force_login(user)
         url = reverse("dmarc:domain_report", args=[self.domain.pk])
-        response = self.client.get("{}?period=2019-0".format(url))
+        response = self.client.get(f"{url}?period=2019-0")
         self.assertContains(response, "Dec. 31, 2018")
 
     def test_domainreport_view_week1(self):
@@ -52,7 +52,7 @@ class DMARCViewsTestCase(mixins.CallCommandMixin, ModoTestCase):
         user = core_models.User.objects.get(username="admin")
         self.client.force_login(user)
         url = reverse("dmarc:domain_report", args=[self.domain.pk])
-        response = self.client.get("{}?period=2019-1".format(url))
+        response = self.client.get(f"{url}?period=2019-1")
         self.assertContains(response, "Jan. 7, 2019")
 
     def test_domainreport_view_week52(self):
@@ -61,7 +61,7 @@ class DMARCViewsTestCase(mixins.CallCommandMixin, ModoTestCase):
         user = core_models.User.objects.get(username="admin")
         self.client.force_login(user)
         url = reverse("dmarc:domain_report", args=[self.domain.pk])
-        response = self.client.get("{}?period=2018-52".format(url))
+        response = self.client.get(f"{url}?period=2018-52")
         self.assertContains(response, "Dec. 30, 2018")
 
     def test_domainreport_view_arc(self):
@@ -70,7 +70,7 @@ class DMARCViewsTestCase(mixins.CallCommandMixin, ModoTestCase):
         user = core_models.User.objects.get(username="admin")
         self.client.force_login(user)
         url = reverse("dmarc:domain_report", args=[self.domain.pk])
-        response = self.client.get("{}?period=2021-22".format(url))
+        response = self.client.get(f"{url}?period=2021-22")
         self.assertContains(response, "'Fully aligned', 86.0")
         self.assertContains(response, "'Partially aligned', 8.0")
         self.assertContains(response, "'Forwarded', 4.0")

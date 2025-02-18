@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """Mock objects."""
 
 SAMPLE_SIEVE_SCRIPT = """require ["fileinto", "copy"];

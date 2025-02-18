@@ -21,7 +21,7 @@ from . import factories
 from . import models
 
 
-class DataMixin(object):
+class DataMixin:
     """A mixin to provide test data."""
 
     @classmethod

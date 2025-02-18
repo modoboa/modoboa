@@ -94,4 +94,4 @@ def render_field_width(field):
         width = form.field_widths[field.name]
     else:
         width = 5
-    return "col-sm-{0}".format(width)
+    return f"col-sm-{width}"

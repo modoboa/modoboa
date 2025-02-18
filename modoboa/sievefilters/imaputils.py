@@ -4,7 +4,6 @@ import base64
 import imaplib
 import re
 from operator import itemgetter
-import socket
 import ssl
 
 from django.utils.translation import gettext as _
@@ -103,8 +102,8 @@ class IMAPconnector:
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
                 self.m = imaplib.IMAP4(self.address, self.port)
-        except (socket.error, imaplib.IMAP4.error, ssl.SSLError) as error:
-            raise ImapError(_("Connection to IMAP server failed: %s" % error)) from None
+        except (OSError, imaplib.IMAP4.error, ssl.SSLError) as error:
+            raise ImapError(_(f"Connection to IMAP server failed: {error}")) from None
 
         token = (
             b"n,a="
@@ -139,9 +138,7 @@ class IMAPconnector:
     def _listmboxes(self, topmailbox, mailboxes):
         """Retrieve mailboxes list."""
         pattern = (
-            '"{0}{1}%"'.format(
-                topmailbox.encode("imap4-utf-7").decode(), self.hdelimiter
-            )
+            f'"{topmailbox.encode("imap4-utf-7").decode()}{self.hdelimiter}%"'
             if topmailbox
             else "%"
         )

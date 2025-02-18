@@ -51,9 +51,7 @@ class ContactFactory(factory.django.DjangoModelFactory):
 
     first_name = "Homer"
     last_name = "Simpson"
-    display_name = factory.LazyAttribute(
-        lambda c: "{}{}".format(c.first_name, c.last_name)
-    )
+    display_name = factory.LazyAttribute(lambda c: f"{c.first_name}{c.last_name}")
 
     @factory.post_generation
     def categories(self, create, extracted, **dummy_kwargs):

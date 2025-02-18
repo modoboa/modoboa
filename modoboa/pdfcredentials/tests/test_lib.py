@@ -54,7 +54,7 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
         """Test that PDFs are decrypted."""
         username = "toto1818@test.com"
         self._create_account(username)
-        fname = os.path.join(self.workdir, "{}.pdf".format(username))
+        fname = os.path.join(self.workdir, f"{username}.pdf")
         self.assertTrue(os.path.exists(fname))
         filebuff = lib.decrypt_file(fname)
         self.assertIn(
@@ -64,7 +64,7 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
             .strip()
             .decode(),
         )
-        with open(fname, "r") as file:
+        with open(fname) as file:
             with self.assertRaises(UnicodeDecodeError):
                 Popen(
                     "/usr/bin/file -b --mime -", shell=True, stdout=PIPE, stdin=PIPE

@@ -1,6 +1,5 @@
 """Parsing tools for maillog related files."""
 
-import io
 import re
 import time
 
@@ -269,7 +268,7 @@ class MaillogParser:
         host, prog, subprog, pid, log = m.groups()
 
         try:
-            parser = getattr(self, "_parse_{}".format(prog))
+            parser = getattr(self, f"_parse_{prog}")
             if not parser(log, host, pid, subprog):
                 self._dprint("[parser] ignoring %r log: %r" % (prog, log))
         except AttributeError:
@@ -278,8 +277,8 @@ class MaillogParser:
     def parse(self, logfile):
         """Process the log file."""
         try:
-            fp = io.open(logfile, encoding="utf-8")
-        except IOError as errno:
+            fp = open(logfile, encoding="utf-8")
+        except OSError as errno:
             self._dprint("%s" % errno)
             return
 

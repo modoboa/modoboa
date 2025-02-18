@@ -138,11 +138,11 @@ def size2integer(value, output_unit="B"):
         if m.group(2)[0] in ["G", "g"]:
             return int(m.group(1)) * 2**10
     else:
-        raise ValueError("Unsupported output unit {}".format(output_unit))
+        raise ValueError(f"Unsupported output unit {output_unit}")
     return 0
 
 
-class NavigationParameters(object):
+class NavigationParameters:
     """
     Just a simple object to manipulate navigation parameters.
     """

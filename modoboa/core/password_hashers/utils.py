@@ -58,7 +58,7 @@ def get_dovecot_schemes():
                 internal_name=DOVEADM_PASS_SCHEME_ALARM,
             )
 
-    return ["{{{}}}".format(smart_str(scheme)) for scheme in schemes.split()], status
+    return [f"{{{smart_str(scheme)}}}" for scheme in schemes.split()], status
 
 
 def cache_available_password_hasher(bypass_cache=False):

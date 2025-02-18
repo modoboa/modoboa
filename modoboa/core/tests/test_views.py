@@ -236,7 +236,7 @@ class SettingsTestCase(ModoTestCase):
         url = reverse("core:parameters")
         response = self.ajax_get(url)
         for app in ["core", "admin", "limits"]:
-            self.assertIn('data-app="{}"'.format(app), response["content"])
+            self.assertIn(f'data-app="{app}"', response["content"])
 
     def test_save_settings(self):
         """Test settings save."""

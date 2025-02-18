@@ -9,7 +9,7 @@ from modoboa.lib.tests import ModoAPITestCase
 from modoboa.transport import factories as tr_factories, models as tr_models
 
 
-class DataMixin(object):
+class DataMixin:
     """A mixin to provide test data."""
 
     @classmethod

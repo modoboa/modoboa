@@ -161,7 +161,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DomainAliasAPITestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
         cls.dom_alias1 = factories.DomainAliasFactory(
             name="dalias1.com", target__name="test.com"
@@ -185,7 +185,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         self.assertEqual(response.data["name"], "dalias1.com")
 
         url = reverse("v1:domain_alias-list")
-        response = self.client.get("{}?domain=test.com".format(url))
+        response = self.client.get(f"{url}?domain=test.com")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
@@ -246,7 +246,7 @@ class AccountAPITestCase(ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(AccountAPITestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
         cls.da_token = Token.objects.create(
             user=core_models.User.objects.get(username="admin@test.com")
@@ -271,17 +271,17 @@ class AccountAPITestCase(ModoAPITestCase):
         response = response.json()
         self.assertEqual(len(response), 5)
 
-        response = self.client.get("{}?domain=test.com".format(url))
+        response = self.client.get(f"{url}?domain=test.com")
         self.assertEqual(response.status_code, 200)
         response = response.json()
         self.assertEqual(len(response), 2)
 
-        response = self.client.get("{}?domain=pouet.com".format(url))
+        response = self.client.get(f"{url}?domain=pouet.com")
         self.assertEqual(response.status_code, 200)
         response = response.json()
         self.assertEqual(len(response), 0)
 
-        response = self.client.get("{}?search=user@test.com".format(url))
+        response = self.client.get(f"{url}?search=user@test.com")
         self.assertEqual(response.status_code, 200)
         response = response.json()
         self.assertEqual(len(response), 1)
@@ -608,7 +608,7 @@ class AliasAPITestCase(ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(AliasAPITestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig.parameters.set_value("enable_admin_limits", False, app="limits")
         cls.localconfig.save()
         factories.populate_database()
@@ -624,7 +624,7 @@ class AliasAPITestCase(ModoAPITestCase):
         response = response.json()
         self.assertEqual(len(response), 3)
 
-        response = self.client.get("{}?domain=test.com".format(url))
+        response = self.client.get(f"{url}?domain=test.com")
         self.assertEqual(response.status_code, 200)
         response = response.json()
         self.assertEqual(len(response), 3)
@@ -744,7 +744,7 @@ class SenderAddressAPITestCase(ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(SenderAddressAPITestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig.parameters.set_value("enable_admin_limits", False, app="limits")
         cls.localconfig.save()
         factories.populate_database()

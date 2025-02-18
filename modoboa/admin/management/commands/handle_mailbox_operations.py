@@ -25,7 +25,7 @@ class Command(BaseCommand):
     help = "Handles rename and delete operations on mailboxes"  # NOQA:A003
 
     def __init__(self, *args, **kwargs):
-        super(Command, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.logger = logging.getLogger("modoboa.admin")
 
     def add_arguments(self, parser):
@@ -44,9 +44,9 @@ class Command(BaseCommand):
         if not os.path.exists(dirname):
             try:
                 os.makedirs(dirname)
-            except os.error as e:
-                raise OperationError(str(e))
-        code, output = exec_cmd("mv %s %s" % (operation.argument, new_mail_home))
+            except OSError as e:
+                raise OperationError(str(e)) from None
+        code, output = exec_cmd(f"mv {operation.argument} {new_mail_home}")
         if code:
             raise OperationError(output)
 
@@ -57,7 +57,7 @@ class Command(BaseCommand):
 
         def onerror(function, path, excinfo):
             """Handle errors."""
-            self.logger.critical("delete failed (reason: {})".format(excinfo))
+            self.logger.critical(f"delete failed (reason: {excinfo})")
 
         shutil.rmtree(operation.argument, False, onerror)
 
@@ -71,7 +71,7 @@ class Command(BaseCommand):
             with open(path) as fp:
                 pid = fp.read().strip()
             code, output = exec_cmd(
-                "grep handle_mailbox_operations /proc/%s/cmdline" % pid
+                f"grep handle_mailbox_operations /proc/{pid}/cmdline"
             )
             if not code:
                 return False
@@ -88,7 +88,7 @@ class Command(BaseCommand):
             return
         for ope in MailboxOperation.objects.all():
             try:
-                f = getattr(self, "%s_mailbox" % ope.type)
+                f = getattr(self, f"{ope.type}_mailbox")
             except AttributeError:
                 continue
             try:

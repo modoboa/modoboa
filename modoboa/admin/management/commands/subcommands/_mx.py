@@ -87,7 +87,7 @@ class CheckMXRecords(BaseCommand):
             else:
                 delim = "." if ip.version == 4 else ":"
                 reverse = delim.join(ip.exploded.split(delim)[::-1])
-            pattern = "{}.{}.".format(reverse, provider)
+            pattern = f"{reverse}.{provider}."
             try:
                 result = socket.gethostbyname(pattern)
                 # result from dnsbl is in ipv4 format
@@ -128,7 +128,7 @@ class CheckMXRecords(BaseCommand):
                 dnsbl_result.save()
                 if not dnsbl_result.status and result:
                     trigger = True
-            alarm_name = "domain_mx_in_dnsbl_{}".format(provider)
+            alarm_name = f"domain_mx_in_dnsbl_{provider}"
             if trigger:
                 title = _("MX {} listed by DNSBL provider {}").format(mx.name, provider)
                 domain.alarms.create(
@@ -165,7 +165,7 @@ class CheckMXRecords(BaseCommand):
         """
         alerts = []
         check = False
-        mxs = [(mx, ipaddress.ip_address("%s" % mx.address)) for mx in mx_list]
+        mxs = [(mx, ipaddress.ip_address(str(mx.address))) for mx in mx_list]
         valid_mxs = self.valid_mxs
         if not mxs:
             alarm, created = domain.alarms.get_or_create(
@@ -187,7 +187,7 @@ class CheckMXRecords(BaseCommand):
                             mx.managed = check = True
                             mx.save()
                 if check is False:
-                    mx_names = ["{0.name} ({0.address})".format(mx) for mx in mx_list]
+                    mx_names = [f"{mx.name} ({mx.address})" for mx in mx_list]
                     alarm, created = domain.alarms.get_or_create(
                         internal_name="domain_invalid_mx",
                         status=constants.ALARM_OPENED,

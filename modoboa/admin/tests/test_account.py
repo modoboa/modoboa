@@ -576,14 +576,14 @@ class AccountTestCase(ModoTestCase):
         self.assertIn("user@test.com", response["rows"])
         old_rows = response["rows"]
 
-        response = self.ajax_get("{}?sort_order=-quota_value__bytes".format(url))
+        response = self.ajax_get(f"{url}?sort_order=-quota_value__bytes")
         self.assertNotEqual(old_rows, response["rows"])
         old_rows = response["rows"]
 
-        response = self.ajax_get("{}?sort_order=-quota_usage".format(url))
+        response = self.ajax_get(f"{url}?sort_order=-quota_usage")
         self.assertEqual(old_rows, response["rows"])
 
-        response = self.ajax_get("{}?sort_order=-unknown".format(url), status=400)
+        response = self.ajax_get(f"{url}?sort_order=-unknown", status=400)
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
@@ -615,7 +615,7 @@ class PermissionsTestCase(ModoTestCase):
         super(PermissionsTestCase, cls).setUpTestData()
         parameters = {}
         for name, _definition in limits_utils.get_user_limit_templates():
-            parameters["deflt_user_{0}_limit".format(name)] = 2
+            parameters[f"deflt_user_{name}_limit"] = 2
         cls.localconfig.parameters.set_values(parameters, app="limits")
         cls.localconfig.save()
         factories.populate_database()

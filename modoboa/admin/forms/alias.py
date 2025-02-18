@@ -123,9 +123,7 @@ class AliasForm(forms.ModelForm, DynamicForm):
         """Custom save method."""
         alias = super(AliasForm, self).save(commit=False)
         if self.cleaned_data.get("random_address"):
-            alias.address = "{}@{}".format(
-                Alias.generate_random_address(), alias.domain
-            )
+            alias.address = f"{Alias.generate_random_address()}@{alias.domain}"
         else:
             local_part, domname = split_mailbox(self.cleaned_data["address"])
             alias.domain = Domain.objects.get(name=domname)

@@ -14,7 +14,7 @@ from modoboa.lib.exceptions import InternalError
 
 def create_connection(srv_address, srv_port, config, username, password):
     """Create a new connection with given server."""
-    uri = "{}:{}".format(srv_address, srv_port)
+    uri = f"{srv_address}:{srv_port}"
     uri = "{}://{}".format("ldaps" if config["ldap_secured"] == "ssl" else "ldap", uri)
     conn = ldap.initialize(uri)
     conn.protocol_version = 3
@@ -152,7 +152,7 @@ def find_user_groups(conn, config, dn, entry):
         or config["ldap_group_type"] == "groupofnames"
     )
     if condition:
-        flt = "(member={})".format(dn)
+        flt = f"(member={dn})"
     elif config["ldap_group_type"] == "posixgroup":
         flt = "(memberUid={})".format(force_str(entry["uid"][0]))
 
@@ -204,7 +204,7 @@ def import_accounts_from_ldap(config):
                     break
             if email is None:
                 if grp == "SimpleUsers":
-                    print("Skipping {} because no email found".format(dn))
+                    print(f"Skipping {dn} because no email found")
                     continue
             else:
                 username = email
@@ -235,8 +235,8 @@ def build_ldap_uri(config, node=""):
         node += "_"
     return "{}://{}:{}".format(
         "ldaps" if config["ldap_secured"] == "ssl" else "ldap",
-        config["ldap_{}server_address".format(node)],
-        config["ldap_{}server_port".format(node)],
+        config[f"ldap_{node}server_address"],
+        config[f"ldap_{node}server_port"],
     )
 
 
@@ -259,18 +259,11 @@ def update_dovecot_config_file(config):
 
     with open(conf_file, "w") as fp:
         fp.write(
-            """uris = {uris}
+            f"""uris = {uris}
 dn = "{bind_dn}"
 dnpass = '{bind_pwd}'
 base = {base}
 user_filter = {user_filter}
-pass_filter = {pass_filter}
-""".format(
-                uris=uris,
-                bind_dn=bind_dn,
-                bind_pwd=bind_pwd,
-                base=base,
-                user_filter=user_filter,
-                pass_filter=user_filter,
-            )
+pass_filter = {user_filter}
+"""
         )

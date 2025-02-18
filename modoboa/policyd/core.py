@@ -135,7 +135,7 @@ async def decrement_limit(rclient, ltype, name):
     """Decrement the given limit by one."""
     new_counter = await rclient.hincrby(constants.REDIS_HASHNAME, name, -1)
     if new_counter <= 0:
-        logger.info("Limit reached for {} {}".format(ltype, name))
+        logger.info(f"Limit reached for {ltype} {name}")
         asyncio.ensure_future(notify_limit_reached(ltype, name))
 
 
@@ -152,13 +152,13 @@ async def apply_policies(attributes):
     localpart, domain = split_mailbox(sasl_username)
     if await rclient.hexists(constants.REDIS_HASHNAME, domain):
         counter = await rclient.hget(constants.REDIS_HASHNAME, domain)
-        logger.info("Domain {} current counter: {}".format(domain, counter))
+        logger.info(f"Domain {domain} current counter: {counter}")
         if int(counter) <= 0:
             return FAILURE_ACTION
         decr_domain = True
     if await rclient.hexists(constants.REDIS_HASHNAME, sasl_username):
         counter = await rclient.hget(constants.REDIS_HASHNAME, sasl_username)
-        logger.info("Account {} current counter: {}".format(sasl_username, counter))
+        logger.info(f"Account {sasl_username} current counter: {counter}")
         if int(counter) <= 0:
             return FAILURE_ACTION
         decr_user = True

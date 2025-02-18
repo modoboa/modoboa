@@ -517,4 +517,4 @@ class ExtensionUpdateHistory(models.Model):
         unique_together = [("extension", "version")]
 
     def __str__(self):
-        return "{}: {}".format(self.extension, self.name)
+        return f"{self.extension}: {self.name}"
