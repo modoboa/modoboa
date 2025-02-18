@@ -308,7 +308,7 @@ class ParametersForm(param_forms.AdminParametersForm):
 
     def __init__(self, *args, **kwargs):
         """Set initial values."""
-        super(ParametersForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.fields["webpanel_url"].initial:
             url = f"https://{self.hostname}{settings.LOGIN_URL}"
             self.fields["webpanel_url"].initial = url

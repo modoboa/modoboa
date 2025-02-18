@@ -19,7 +19,7 @@ def db_type(cname="default"):
     :return: a string or None
     """
     if cname not in settings.DATABASES:
-        raise InternalError(_("Connection to database %s not configured" % cname))
+        raise InternalError(_("Connection to database {} not configured".format(cname)))
     for t in ["postgres", "mysql", "sqlite"]:
         if settings.DATABASES[cname]["ENGINE"].find(t) != -1:
             return t

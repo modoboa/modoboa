@@ -48,7 +48,7 @@ class Operations:
         else:
             aliases.remove(name)
         for cpt, alias in enumerate(aliases):
-            fname = "aliases" if not cpt else "aliases_%d" % cpt
+            fname = "aliases" if not cpt else f"aliases_{cpt}"
             values[fname] = alias
         return self.ajax_post(
             reverse("admin:domain_change", args=[domain.id]), values, status
@@ -65,7 +65,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(RelayDomainsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.transport = tr_factories.TransportFactory(
             pattern="relaydomain.tld",
@@ -277,7 +277,7 @@ class LimitsTestCase(ModoTestCase, Operations):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(LimitsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         for name, _definition in limits_utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(
                 f"deflt_user_{name}_limit", 2, app="limits"
@@ -287,7 +287,7 @@ class LimitsTestCase(ModoTestCase, Operations):
 
     def setUp(self):
         """Initialize test."""
-        super(LimitsTestCase, self).setUp()
+        super().setUp()
         self.client.force_login(self.user)
 
     def test_relay_domains_limit(self):

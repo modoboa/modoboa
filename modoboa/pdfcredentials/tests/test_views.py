@@ -19,12 +19,12 @@ class EventsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create some data."""
-        super(EventsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.DomainFactory(name="test.com")
 
     def setUp(self):
         """Create temp. directory to store files."""
-        super(EventsTestCase, self).setUp()
+        super().setUp()
         self.workdir = tempfile.mkdtemp()
         self.set_global_parameter("storage_dir", self.workdir)
 

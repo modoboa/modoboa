@@ -11,7 +11,7 @@ def date_to_timestamp(timetuple):
     :return: an integer
     """
     date = " ".join(
-        [("%d" % elem) if isinstance(elem, int) else elem for elem in timetuple]
+        [str(elem) if isinstance(elem, int) else elem for elem in timetuple]
     )
     fmt = "%Y %m %d %H %M %S" if timetuple[1].isdigit() else "%Y %b %d %H %M %S"
     try:

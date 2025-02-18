@@ -150,7 +150,7 @@ Best regards,
         try:
             tpl % {"name": "Antoine Nguyen"}
         except (KeyError, ValueError):
-            raise forms.ValidationError(gettext_lazy("Invalid syntax"))
+            raise forms.ValidationError(gettext_lazy("Invalid syntax")) from None
         return tpl
 
 

@@ -178,7 +178,7 @@ class DomainAliasSerializer(serializers.ModelSerializer):
                 object_type="domain_aliases",
             )
         except lib_exceptions.ModoboaException as inst:
-            raise serializers.ValidationError({"domain": force_str(inst)})
+            raise serializers.ValidationError({"domain": force_str(inst)}) from None
         domain_alias.save(creator=creator)
         return domain_alias
 
@@ -311,7 +311,7 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
         try:
             password_validation.validate_password(value, self.instance)
         except ValidationError as exc:
-            raise serializers.ValidationError(exc.messages[0])
+            raise serializers.ValidationError(exc.messages[0]) from None
         return value
 
     def update(self, instance, validated_data):
@@ -363,7 +363,7 @@ class WritableAccountSerializer(AccountSerializer):
                 try:
                     validators.UTF8EmailValidator()(username)
                 except ValidationError as err:
-                    raise ValidationError({"username": err.message})
+                    raise ValidationError({"username": err.message}) from None
             mailbox = data.get("mailbox")
             if mailbox is None:
                 if not self.instance:
@@ -396,7 +396,9 @@ class WritableAccountSerializer(AccountSerializer):
                         object_type="mailboxes",
                     )
                 except lib_exceptions.ModoboaException as inst:
-                    raise serializers.ValidationError({"mailbox": force_str(inst)})
+                    raise serializers.ValidationError(
+                        {"mailbox": force_str(inst)}
+                    ) from None
         condition = not data.get("random_password") and (
             data.get("password") or not self.partial
         )
@@ -408,7 +410,9 @@ class WritableAccountSerializer(AccountSerializer):
                         data["password"], self.instance
                     )
                 except ValidationError as exc:
-                    raise serializers.ValidationError({"password": exc.messages[0]})
+                    raise serializers.ValidationError(
+                        {"password": exc.messages[0]}
+                    ) from None
             elif not self.instance:
                 raise serializers.ValidationError(
                     {"password": _("This field is required.")}
@@ -523,9 +527,9 @@ class AliasSerializer(serializers.ModelSerializer):
                 value, self.context["request"].user, instance=self.instance
             )
         except ValidationError as err:
-            raise serializers.ValidationError(err)
+            raise serializers.ValidationError(err) from None
         except AliasExists:
-            raise serializers.ValidationError(_("This alias already exists"))
+            raise serializers.ValidationError(_("This alias already exists")) from None
         return value.lower()
 
     def create(self, validated_data):

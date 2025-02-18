@@ -112,7 +112,7 @@ class LDAPAuthBackend:
         self.connect_to_server(user, password)
         user_dn = self._find_user_dn(user)
         if self.ldap_ad:
-            newpassword = ('"%s"' % newpassword).encode("utf-16").lstrip("\377\376")
+            newpassword = (f'"{newpassword}"').encode("utf-16").lstrip("\377\376")
         ldif = [
             (
                 ldap.MOD_REPLACE,

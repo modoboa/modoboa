@@ -83,7 +83,7 @@ def check_spf_ip4(value):
     try:
         ipaddress.ip_network(parts[1], False)
     except ValueError:
-        raise DNSSyntaxError(_("Wrong IPv4 address format"))
+        raise DNSSyntaxError(_("Wrong IPv4 address format")) from None
 
 
 def check_spf_ip6(value):
@@ -94,7 +94,7 @@ def check_spf_ip6(value):
     try:
         ipaddress.ip_network(value, False)
     except ValueError:
-        raise DNSSyntaxError(_("Wrong IPv6 address format"))
+        raise DNSSyntaxError(_("Wrong IPv6 address format")) from None
 
 
 def _check_domain_and_mask(value, mechanism):
@@ -229,7 +229,7 @@ def check_dmarc_tag(tag, value):
         try:
             value = int(value)
         except ValueError:
-            raise DNSSyntaxError(error + _(" not an integer"))
+            raise DNSSyntaxError(error + _(" not an integer")) from None
         if "min_value" in tdef and value < tdef["min_value"]:
             raise DNSSyntaxError(error + _(" less than {}").format(tdef["min_value"]))
         if "max_value" in tdef and value > tdef["max_value"]:

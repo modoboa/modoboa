@@ -180,21 +180,21 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         try:
             value % {"user": "toto"}
         except (KeyError, ValueError):
-            raise serializers.ValidationError(_("Invalid syntax"))
+            raise serializers.ValidationError(_("Invalid syntax")) from None
         return value
 
     def validate_ldap_sync_account_dn_template(self, value):
         try:
             value % {"user": "toto"}
         except (KeyError, ValueError):
-            raise serializers.ValidationError(_("Invalid syntax"))
+            raise serializers.ValidationError(_("Invalid syntax")) from None
         return value
 
     def validate_ldap_search_filter(self, value):
         try:
             value % {"user": "toto"}
         except (KeyError, ValueError, TypeError):
-            raise serializers.ValidationError(_("Invalid syntax"))
+            raise serializers.ValidationError(_("Invalid syntax")) from None
         return value
 
     def validate_rounds_number(self, value):
@@ -416,7 +416,7 @@ class PasswordRecoverySmsConfirmSerializer(serializers.Serializer):
         except KeyError:
             raise CustomValidationError(
                 {"reason": "totp secret not set in session"}, 403
-            )
+            ) from None
         if not oath.accept_totp(self.context["totp_secret"], data["sms_totp"])[0]:
             raise CustomValidationError({"reason": "Wrong totp"}, 400)
 
@@ -445,7 +445,7 @@ class PasswordRecoverySmsResendSerializer(serializers.Serializer):
         except KeyError:
             raise CustomValidationError(
                 {"reason": "totp secret not set in session"}, status.HTTP_403_FORBIDDEN
-            )
+            ) from None
 
         # Attempt to get user, will raise an error if pk is not valid
         self.context["user"] = User.objects.filter(
@@ -501,7 +501,7 @@ class PasswordRecoveryConfirmSerializer(serializers.Serializer):
         try:
             password_validation.validate_password(data["new_password1"], user)
         except djangoValidationError as e:
-            raise PasswordRequirementsFailure(e.messages)
+            raise PasswordRequirementsFailure(e.messages) from None
         self.context["user"] = user
         return super().validate(data)
 

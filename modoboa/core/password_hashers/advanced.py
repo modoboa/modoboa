@@ -148,7 +148,7 @@ if argon2_hasher is not None:
         def __init__(
             self,
         ):
-            super(ARGON2IDHasher, self).__init__()
+            super().__init__()
 
             parameters = dict()
 

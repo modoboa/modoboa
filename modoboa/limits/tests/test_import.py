@@ -14,7 +14,7 @@ class LimitImportTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(LimitImportTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers",)
@@ -119,7 +119,7 @@ class UserLimitImportTestCase(LimitImportTestCase):
         for name, _definition in utils.get_user_limit_templates():
             localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         localconfig.save()
-        super(UserLimitImportTestCase, cls).setUpTestData()
+        super().setUpTestData()
 
     def test_domains_import(self):
         """Check domains limit."""
@@ -181,7 +181,7 @@ class DomainLimitImportTestCase(LimitImportTestCase):
         for name, _definition in utils.get_domain_limit_templates():
             localconfig.parameters.set_value(f"deflt_domain_{name}_limit", 2)
         localconfig.save()
-        super(DomainLimitImportTestCase, cls).setUpTestData()
+        super().setUpTestData()
         mb = admin_factories.MailboxFactory(
             user__username="user@test4.com", domain__name="test4.com", address="user"
         )

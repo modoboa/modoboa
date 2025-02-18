@@ -512,7 +512,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
     }
 
     def __init__(self, *args, **kwargs):
-        super(GeneralParametersForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["default_top_redirection"].choices = enabled_applications()
         self._add_visibilty_rules(sms_backends.get_all_backend_visibility_rules())
         self.fields["password_scheme"].choices = get_password_scheme()
@@ -532,7 +532,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         try:
             tpl % {"user": "toto"}
         except (KeyError, ValueError):
-            raise forms.ValidationError(_("Invalid syntax"))
+            raise forms.ValidationError(_("Invalid syntax")) from None
         return tpl
 
     def clean_ldap_sync_account_dn_template(self):
@@ -540,7 +540,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         try:
             tpl % {"user": "toto"}
         except (KeyError, ValueError):
-            raise forms.ValidationError(_("Invalid syntax"))
+            raise forms.ValidationError(_("Invalid syntax")) from None
         return tpl
 
     def clean_ldap_search_filter(self):
@@ -548,7 +548,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
         try:
             ldap_filter % {"user": "toto"}
         except (KeyError, ValueError, TypeError):
-            raise forms.ValidationError(_("Invalid syntax"))
+            raise forms.ValidationError(_("Invalid syntax")) from None
         return ldap_filter
 
     def clean_rounds_number(self):
@@ -613,10 +613,7 @@ class GeneralParametersForm(param_forms.AdminParametersForm):
                 {"first_name": "givenName", "email": "mail", "last_name": "sn"},
             )
         ldap_uri = "ldaps://" if values["ldap_secured"] == "ssl" else "ldap://"
-        ldap_uri += "%s:%s" % (
-            values[backend.srv_address_setting_name],
-            values[backend.srv_port_setting_name],
-        )
+        ldap_uri += f"{values[backend.srv_address_setting_name]}:{values[backend.srv_port_setting_name]}"
         setattr(settings, backend.setting_fullname("SERVER_URI"), ldap_uri)
         if values["ldap_secured"] == "starttls":
             setattr(settings, backend.setting_fullname("START_TLS"), True)

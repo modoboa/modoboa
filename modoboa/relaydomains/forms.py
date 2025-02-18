@@ -52,7 +52,7 @@ class RelayDomainFormGeneral(tr_forms.TransportForm):
             # We don't want to recreate the transport we just deleted it
             # (post_save signal).
             return None
-        instance = super(RelayDomainFormGeneral, self).save()
+        instance = super().save()
         instance.pattern = domain.name
         instance.save()
         if not domain.transport:

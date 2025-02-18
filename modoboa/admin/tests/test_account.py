@@ -17,7 +17,7 @@ class AuthenticationTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(AuthenticationTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.mb = factories.MailboxFactory(
             domain__name="test.com",
             address="user",
@@ -42,7 +42,7 @@ class AccountTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(AccountTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def test_crud(self):
@@ -612,7 +612,7 @@ class PermissionsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(PermissionsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         parameters = {}
         for name, _definition in limits_utils.get_user_limit_templates():
             parameters[f"deflt_user_{name}_limit"] = 2
@@ -625,7 +625,7 @@ class PermissionsTestCase(ModoTestCase):
 
     def setUp(self):
         """Initiate test context."""
-        super(PermissionsTestCase, self).setUp()
+        super().setUp()
         self.values = {
             "username": self.user.username,
             "role": "DomainAdmins",

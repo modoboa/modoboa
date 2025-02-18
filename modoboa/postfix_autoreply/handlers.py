@@ -92,15 +92,13 @@ def extra_js(sender, caller, st_type, user, **kwargs):
     """Add static content."""
     if caller != "user_index" or st_type != "js":
         return ""
-    return """function autoreply_cb() {
-    $('.datefield').datetimepicker({
+    return f"""function autoreply_cb() {{
+    $('.datefield').datetimepicker({{
         format: 'YYYY-MM-DD HH:mm:ss',
-        locale: '%(lang)s'
-    });
-}
-""" % {
-        "lang": user.language
-    }
+        locale: '{user.language}'
+    }});
+}}
+"""
 
 
 @receiver(core_signals.extra_user_menu_entries)

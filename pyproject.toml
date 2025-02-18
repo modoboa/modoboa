@@ -120,4 +120,4 @@ version = {attr = "modoboa.version.get_version"}
 exclude = ["migrations"]
 
 [tool.ruff.lint]
-select = ["E4", "E7", "E9", "F", "Q"]
+select = ["E4", "E7", "E9", "F", "B", "Q", "UP"]

@@ -19,7 +19,7 @@ class RunCommandsMixin:
     """Mixin to run management commands."""
 
     def setUp(self):
-        super(RunCommandsMixin, self).setUp()
+        super().setUp()
         self.workdir = tempfile.mkdtemp()
         self.set_global_parameter("rrd_rootdir", self.workdir)
 
@@ -54,12 +54,12 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):  # noqa
-        super(ViewsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.da = core_models.User.objects.get(username="admin@test.com")
 
     def tearDown(self):
-        super(ViewsTestCase, self).tearDown()
+        super().tearDown()
         self.set_global_parameter("greylist", False)
 
     def test_index(self):
@@ -139,7 +139,7 @@ class ManagementCommandsTestCase(RunCommandsMixin, ModoTestCase):
 
     @classmethod
     def setUpTestData(cls):  # noqa
-        super(ManagementCommandsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
 
     def test_logparser(self):

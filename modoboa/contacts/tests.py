@@ -24,7 +24,7 @@ class TestDataMixin:
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        super(TestDataMixin, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.user = core_models.User.objects.get(username="user@test.com")
         cls.addressbook = cls.user.addressbook_set.first()

@@ -71,7 +71,7 @@ class AccountFormGeneral(forms.ModelForm):
         labels = {"is_active": gettext_lazy("Enabled")}
 
     def __init__(self, user, *args, **kwargs):
-        super(AccountFormGeneral, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields = OrderedDict(
             (key, self.fields[key])
             for key in [
@@ -163,7 +163,7 @@ class AccountFormGeneral(forms.ModelForm):
 
     def clean(self):
         """Check master user mode."""
-        super(AccountFormGeneral, self).clean()
+        super().clean()
         if self.errors:
             return self.cleaned_data
         condition = (
@@ -200,7 +200,7 @@ class AccountFormGeneral(forms.ModelForm):
         return self.cleaned_data
 
     def save(self, commit=True):
-        account = super(AccountFormGeneral, self).save(commit=False)
+        account = super().save(commit=False)
         if self.user == account and not self.cleaned_data["is_active"]:
             raise lib_exceptions.PermDeniedException(
                 _("You can't disable your own account")
@@ -355,7 +355,7 @@ class AccountFormMail(forms.Form, DynamicForm):
 
         Check if quota is >= 0 only when the domain value is not used.
         """
-        cleaned_data = super(AccountFormMail, self).clean()
+        cleaned_data = super().clean()
         use_default_domain_quota = cleaned_data["quota_act"]
         condition = (
             not use_default_domain_quota
@@ -510,13 +510,13 @@ class AccountPermissionsForm(forms.Form, DynamicForm):
             self.account = kwargs["instance"]
             del kwargs["instance"]
 
-        super(AccountPermissionsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         if not hasattr(self, "account") or self.account is None:
             return
         qset = models.Domain.objects.get_for_admin(self.account)
         for pos, dom in enumerate(qset):
-            name = "domains_%d" % (pos + 1)
+            name = f"domains_{pos + 1}"
             self._create_field(lib_fields.DomainNameField, name, dom.name)
         if len(args) and isinstance(args[0], QueryDict):
             self._load_from_qdict(args[0], "domains", lib_fields.DomainNameField)
@@ -580,7 +580,7 @@ class AccountForm(TabForms):
             cbargs["account"] = kwargs["instances"]["general"]
         results = signals.extra_account_forms.send(sender=self.__class__, **cbargs)
         self.forms += reduce(lambda a, b: a + b, [result[1] for result in results])
-        super(AccountForm, self).__init__(request, *args, **kwargs)
+        super().__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
         account = self.instances["general"]
@@ -604,8 +604,8 @@ class AccountForm(TabForms):
         if form["id"] == "general":
             return True
 
-        if hasattr(self, "check_%s" % form["id"]):
-            if not getattr(self, "check_%s" % form["id"])(self.account):
+        if hasattr(self, "check_{}".format(form["id"])):
+            if not getattr(self, "check_{}".format(form["id"]))(self.account):
                 return False
             return True
 
@@ -620,9 +620,9 @@ class AccountForm(TabForms):
     def is_valid(self):
         """Two steps validation."""
         self.instances["general"].oldgroup = self.instances["general"].role
-        if super(AccountForm, self).is_valid(mandatory_only=True):
+        if super().is_valid(mandatory_only=True):
             self.account = self.forms[0]["instance"].save()
-            return super(AccountForm, self).is_valid(optional_only=True)
+            return super().is_valid(optional_only=True)
         return False
 
     def save(self):
@@ -646,7 +646,7 @@ class AccountWizard(WizardForm):
     """Account creation wizard."""
 
     def __init__(self, request):
-        super(AccountWizard, self).__init__(request)
+        super().__init__(request)
         self.add_step(
             WizardStep(
                 "general", AccountFormGeneral, _("General"), new_args=[request.user]

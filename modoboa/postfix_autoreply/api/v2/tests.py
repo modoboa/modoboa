@@ -14,7 +14,7 @@ class ARMessageViewSetTestCase(ModoAPITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        super(ARMessageViewSetTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.account = User.objects.get(username="user@test.com")
         cls.account2 = User.objects.get(username="user@test2.com")

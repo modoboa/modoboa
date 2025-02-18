@@ -20,7 +20,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(APIAdminLimitsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         for name, _definition in utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         cls.localconfig.save()
@@ -189,7 +189,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(APIDomainLimitsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig.parameters.set_value("enable_domain_limits", True)
         for name, _definition in utils.get_domain_limit_templates():
             cls.localconfig.parameters.set_value(f"deflt_domain_{name}_limit", 2)
@@ -251,7 +251,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(ResourcesAPITestCase, cls).setUpTestData()
+        super().setUpTestData()
         for name, _definition in utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         cls.localconfig.save()

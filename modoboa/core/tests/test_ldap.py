@@ -84,7 +84,7 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
 
     def setUp(self):
         """Create test data."""
-        super(LDAPAuthenticationTestCase, self).setUp()
+        super().setUp()
         self.activate_ldap_authentication()
 
     def check_created_user(self, username, group="SimpleUsers", with_mb=True):
@@ -142,7 +142,7 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(ProfileTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.account = factories.UserFactory(
             username="user@test.com", groups=("SimpleUsers",)
         )

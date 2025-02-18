@@ -271,17 +271,17 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
     @property
     def bind_format_dkim_public_key(self):
         """Return DKIM public key using Bind format."""
-        record = "v=DKIM1;k=rsa;p=%s" % self.dkim_public_key
+        record = f"v=DKIM1;k=rsa;p={self.dkim_public_key}"
         # TXT records longer than 255 characters need split into chunks
         # split record into 74 character chunks (+2 for indent, +2 for quotes(")
         # == 78 characters) to make more readable in text editors.
         split_record = []
         while record:
             if len(record) > 74:
-                split_record.append('  "%s"' % record[:74])
+                split_record.append(f'  "{record[:74]}"')
                 record = record[74:]
             else:
-                split_record.append('  "%s"' % record)
+                split_record.append(f'  "{record}"')
                 break
         record = "\n".join(split_record)
         return f"{self.dkim_key_selector}._domainkey.{self.name}. IN TXT (\n{record})"
@@ -343,7 +343,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         if param_tools.get_global_parameter("auto_account_removal"):
             User.objects.filter(mailbox__domain=self).delete()
         elif self.mailbox_set.count():
-            Quota.objects.filter(username__contains="@%s" % self.name).delete()
+            Quota.objects.filter(username__contains=f"@{self.name}").delete()
             ungrant_access_to_objects(self.mailbox_set.all())
         super().delete()
 
@@ -378,7 +378,9 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         try:
             self.quota = int(row[2].strip())
         except ValueError:
-            raise BadRequest(_("{}: invalid quota value for domain").format(self.name))
+            raise BadRequest(
+                _("{}: invalid quota value for domain").format(self.name)
+            ) from None
         try:
             self.default_mailbox_quota = int(row[3].strip())
         except ValueError:
@@ -386,7 +388,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
                 _("{}: invalid default mailbox quota value for domain").format(
                     self.name
                 )
-            )
+            ) from None
         if self.quota != 0 and self.default_mailbox_quota > self.quota:
             raise BadRequest(
                 _(

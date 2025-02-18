@@ -62,10 +62,10 @@ class AdminObject(models.Model):
 
     def save(self, *args, **kwargs):
         creator = kwargs.pop("creator", None)
-        super(AdminObject, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if creator is not None:
             self.post_create(creator)
 
     def delete(self):
         ungrant_access_to_object(self)
-        super(AdminObject, self).delete()
+        super().delete()

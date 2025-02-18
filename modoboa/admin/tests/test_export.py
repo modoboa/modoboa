@@ -17,7 +17,7 @@ class ExportTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(ExportTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
 
     def __export_domains(self, domfilter=""):
@@ -31,7 +31,7 @@ class ExportTestCase(ModoTestCase):
     def __export_identities(self, idtfilter="", grpfilter=""):
         self.client.get(
             reverse("admin:_identity_list")
-            + "?grpfilter=%s&idtfilter=%s" % (grpfilter, idtfilter)
+            + f"?grpfilter={grpfilter}&idtfilter={idtfilter}"
         )
         return self.client.post(
             reverse("admin:identity_export"), {"filename": "test.csv"}

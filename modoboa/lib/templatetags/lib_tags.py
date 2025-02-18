@@ -18,13 +18,13 @@ def join(items, sep=","):
     for k, v in list(items.items()):
         if res != "":
             res += sep
-        res += "%s : '%s'" % (k, v)
+        res += f"{k} : '{v}'"
     return res
 
 
 @register.simple_tag
 def tolist(values):
-    return mark_safe("[%s]" % ",".join(['"%s"' % v for v in values]))
+    return mark_safe("[{}]".format(",".join([f'"{v}"' for v in values])))
 
 
 @register.simple_tag

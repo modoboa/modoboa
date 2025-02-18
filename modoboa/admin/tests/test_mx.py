@@ -23,7 +23,7 @@ class MXTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
-        super(MXTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
         # should not exist
         cls.bad_domain = factories.DomainFactory(name="does-not-exist.example.com")
@@ -297,7 +297,7 @@ class DNSChecksTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create some data."""
-        super(DNSChecksTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.domain = factories.DomainFactory(name="dns-checks.com")
 
     @mock.patch("gevent.socket.gethostbyname")

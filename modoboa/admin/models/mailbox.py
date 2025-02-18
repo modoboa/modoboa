@@ -114,7 +114,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         return smart_str(self.full_address)
 
     def __full_address(self, localpart):
-        return "%s@%s" % (localpart, self.domain.name)
+        return f"{localpart}@{self.domain.name}"
 
     @property
     def full_address(self):
@@ -147,7 +147,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         if not admin_params.get("handle_mailboxes"):
             return None
         if self.__mail_home is None:
-            code, output = doveadm_cmd("user -f home %s" % self.full_address)
+            code, output = doveadm_cmd(f"user -f home {self.full_address}")
             if code:
                 raise lib_exceptions.InternalError(
                     _("Failed to retrieve mailbox location (%s)") % output
@@ -384,5 +384,5 @@ class MailboxOperation(models.Model):
 
     def __str__(self):
         if self.type == "rename":
-            return "Rename %s -> %s" % (self.argument, self.mailbox.mail_home)
-        return "Delete %s" % self.argument
+            return f"Rename {self.argument} -> {self.mailbox.mail_home}"
+        return f"Delete {self.argument}"

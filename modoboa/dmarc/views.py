@@ -78,7 +78,7 @@ class DomainReportView(auth_mixins.PermissionRequiredMixin, generic.TemplateView
 
     def get_context_data(self, *args, **kwargs):
         """Extra context data."""
-        context = super(DomainReportView, self).get_context_data(*args, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         qset = self.get_queryset()
         stats = {"total": 0, "aligned": 0, "trusted": 0, "forwarded": 0, "failed": 0}
         aligned = {}

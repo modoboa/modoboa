@@ -212,7 +212,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                     dpath = fpath
         if dpath:
             try:
-                code, version = exec_cmd("%s --version" % dpath)
+                code, version = exec_cmd(f"{dpath} --version")
             except OSError:
                 hide_fields = True
             else:
@@ -259,12 +259,12 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         except ValueError:
             raise forms.ValidationError(
                 gettext_lazy("This field only allows valid IP addresses (or networks)")
-            )
+            ) from None
         return value
 
     def clean(self):
         """Check MX options."""
-        cleaned_data = super(AdminParametersForm, self).clean()
+        cleaned_data = super().clean()
         condition = (
             cleaned_data.get("enable_mx_checks")
             and cleaned_data.get("domains_must_have_authorized_mx")
