@@ -4,6 +4,8 @@
 
 """
 
+from typing import Optional
+
 from django.utils.translation import gettext as _
 
 
@@ -12,7 +14,7 @@ class ModoboaException(Exception):
     Base class for Modoboa custom exceptions.
     """
 
-    http_code = None
+    http_code: Optional[int] = None
 
     def __init__(self, *args, **kwargs):
         if "http_code" in kwargs:

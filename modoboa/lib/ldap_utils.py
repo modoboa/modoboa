@@ -42,7 +42,7 @@ from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 
 
-class LDAPAuthBackend(object):
+class LDAPAuthBackend:
     """LDAP authentication backend."""
 
     def __init__(self):
@@ -123,4 +123,4 @@ class LDAPAuthBackend(object):
         try:
             self.conn.modify_s(force_str(user_dn), ldif)
         except ldap.LDAPError as e:
-            raise InternalError(_("Failed to update password: {}").format(e))
+            raise InternalError(_("Failed to update password: {}").format(e)) from None

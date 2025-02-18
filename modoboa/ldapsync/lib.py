@@ -79,7 +79,7 @@ def create_ldap_account(user, dn, conn):
     try:
         conn.add_s(dn, ldif)
     except ldap.LDAPError as e:
-        raise InternalError(_("Failed to create LDAP account: {}").format(e))
+        raise InternalError(_("Failed to create LDAP account: {}").format(e)) from None
 
 
 def check_if_dn_exists(conn, dn):
@@ -118,7 +118,7 @@ def update_ldap_account(user, config):
     try:
         conn.modify_s(dn, ldif)
     except ldap.LDAPError as e:
-        raise InternalError(_("Failed to update LDAP account: {}").format(e))
+        raise InternalError(_("Failed to update LDAP account: {}").format(e)) from None
 
 
 def delete_ldap_account(user, config):
@@ -131,14 +131,18 @@ def delete_ldap_account(user, config):
         try:
             conn.delete_s(dn)
         except ldap.LDAPError as e:
-            raise InternalError(_("Failed to delete LDAP account: {}").format(e))
+            raise InternalError(
+                _("Failed to delete LDAP account: {}").format(e)
+            ) from None
     else:
         password = get_user_password(user, True)
         ldif = [(ldap.MOD_REPLACE, "userPassword", password)]
         try:
             conn.modify_s(dn, ldif)
         except ldap.LDAPError as e:
-            raise InternalError(_("Failed to disable LDAP account: {}").format(e))
+            raise InternalError(
+                _("Failed to disable LDAP account: {}").format(e)
+            ) from None
 
 
 def find_user_groups(conn, config, dn, entry):
@@ -154,7 +158,7 @@ def find_user_groups(conn, config, dn, entry):
 
     result = conn.search_s(config["ldap_groups_search_base"], ldap.SCOPE_SUBTREE, flt)
     groups = []
-    for dn, entry in result:
+    for dn, _entry in result:
         if not dn:
             continue
         groups.append(dn.split(",")[0].split("=")[1])

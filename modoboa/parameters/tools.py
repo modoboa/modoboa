@@ -124,7 +124,7 @@ class Registry:
             if for_app and for_app != app:
                 continue
             serializer = fields["serializer_class"]()
-            for section, sconfig in list(fields["structure"].items()):
+            for _section, sconfig in list(fields["structure"].items()):
                 item = {
                     "label": sconfig["label"],
                     "display": sconfig.get("display", ""),
