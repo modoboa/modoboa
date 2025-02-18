@@ -6,7 +6,6 @@ from django.test.utils import override_settings
 
 from modoboa.core import checks
 from modoboa.lib.tests import SimpleModoTestCase
-from modoboa.core.password_hashers.base import CRYPTHasher
 
 
 class CheckSessionCookieSecureTest(SimpleModoTestCase):

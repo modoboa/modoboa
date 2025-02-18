@@ -73,4 +73,4 @@ class MaillogConfig(AppConfig):
 
     def ready(self):
         load_maillog_settings()
-        from . import handlers
+        from . import handlers  # noqa

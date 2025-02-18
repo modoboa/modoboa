@@ -1,13 +1,8 @@
 """Crypto related utilities."""
 
 import base64
-import time
 
 from cryptography.fernet import Fernet
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.twofactor import InvalidToken
-from cryptography.hazmat.primitives.twofactor.totp import TOTP
-from cryptography.hazmat.primitives.hashes import SHA1
 
 from django.conf import settings
 from django.utils.crypto import get_random_string

@@ -1,7 +1,5 @@
 """Factories for core application."""
 
-import base64
-
 import factory
 
 from django.contrib.auth.models import Group
@@ -12,7 +10,7 @@ from . import models
 class PermissionFactory(factory.django.DjangoModelFactory):
     """A base factory to handle permissions."""
 
-    class Meta(object):
+    class Meta:
         abstract = True
 
     @factory.post_generation
@@ -25,7 +23,7 @@ class PermissionFactory(factory.django.DjangoModelFactory):
 class GroupFactory(factory.django.DjangoModelFactory):
     """A factory to create Group instances."""
 
-    class Meta(object):
+    class Meta:
         model = Group
 
     name = "DefaultGroup"
@@ -34,7 +32,7 @@ class GroupFactory(factory.django.DjangoModelFactory):
 class UserFactory(PermissionFactory):
     """A factory to create User instances."""
 
-    class Meta(object):
+    class Meta:
         model = models.User
         django_get_or_create = ("username",)
 
@@ -54,7 +52,7 @@ class UserFactory(PermissionFactory):
 class LogFactory(factory.django.DjangoModelFactory):
     """Factory for Log."""
 
-    class Meta(object):
+    class Meta:
         model = models.Log
 
     logger = "modoboa.admin"

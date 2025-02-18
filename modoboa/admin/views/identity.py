@@ -75,7 +75,7 @@ def list_quotas(request):
     )
     mboxes = mboxes.exclude(quota=0)
     if sort_order in ["address", "quota"]:
-        mboxes = mboxes.order_by("%s%s" % (sort_dir, sort_order))
+        mboxes = mboxes.order_by(f"{sort_dir}{sort_order}")
     elif sort_order in ("quota_value__bytes", "quota_usage"):
         db_type = db_type()
         if db_type == "mysql":
@@ -85,9 +85,9 @@ def list_quotas(request):
         if sort_order == "quota_value__bytes":
             mboxes = mboxes.extra(
                 select={"quota_value__bytes": "admin_quota.bytes"},
-                where=["admin_quota.username=%s" % where],
+                where=[f"admin_quota.username={where}"],
                 tables=["admin_quota", "admin_domain"],
-                order_by=["%s%s" % (sort_dir, sort_order)],
+                order_by=[f"{sort_dir}{sort_order}"],
             )
         else:
             if db_type == "postgres":
@@ -102,9 +102,9 @@ def list_quotas(request):
                 )
             mboxes = mboxes.extra(
                 select={"quota_usage": select},
-                where=["admin_quota.username=%s" % where],
+                where=[f"admin_quota.username={where}"],
                 tables=["admin_quota", "admin_domain"],
-                order_by=["%s%s" % (sort_dir, sort_order)],
+                order_by=[f"{sort_dir}{sort_order}"],
             )
     else:
         raise BadRequest(_("Invalid request"))
@@ -199,7 +199,7 @@ def remove_permission(request):
         account = User.objects.get(pk=daid)
         domain = Domain.objects.get(pk=domid)
     except (User.DoesNotExist, Domain.DoesNotExist):
-        raise BadRequest(_("Invalid request"))
+        raise BadRequest(_("Invalid request")) from None
     if not request.user.can_access(account) or not request.user.can_access(domain):
         raise PermDeniedException
     domain.remove_admin(account)
@@ -215,14 +215,14 @@ class AccountDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView)
 
     def has_permission(self):
         """Check object-level access."""
-        result = super(AccountDetailView, self).has_permission()
+        result = super().has_permission()
         if not result:
             return result
         return self.request.user.can_access(self.get_object())
 
     def get_context_data(self, **kwargs):
         """Add information to context."""
-        context = super(AccountDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         del context["user"]
         result = signals.extra_account_dashboard_widgets.send(
             self.__class__, user=self.request.user, account=self.object

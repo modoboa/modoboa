@@ -12,7 +12,7 @@ from django.utils.translation import gettext as _
 logger = logging.getLogger("modoboa.admin")
 
 
-class ModoAPIClient(object):
+class ModoAPIClient:
     """A simple client for the public API."""
 
     def __init__(self, api_url=None):
@@ -57,10 +57,10 @@ class ModoAPIClient(object):
 
     def register_instance(self, hostname):
         """Register this instance."""
-        url = "{}instances/search/?hostname={}".format(self._api_url, hostname)
+        url = f"{self._api_url}instances/search/?hostname={hostname}"
         instance = self.__send_request(url)
         if instance is None:
-            url = "{}instances/".format(self._api_url)
+            url = f"{self._api_url}instances/"
             data = {"hostname": hostname, "known_version": self.local_core_version}
             try:
                 response = requests.post(url, data=data)
@@ -76,7 +76,7 @@ class ModoAPIClient(object):
 
     def update_instance(self, pk, data):
         """Update instance and send stats."""
-        url = "{}instances/{}/".format(self._api_url, pk)
+        url = f"{self._api_url}instances/{pk}/"
         try:
             response = requests.put(url, data=data)
         except RequestException as err:
@@ -89,5 +89,5 @@ class ModoAPIClient(object):
 
     def versions(self):
         """Fetch core and extension versions."""
-        url = "{}versions/".format(self._api_url)
+        url = f"{self._api_url}versions/"
         return self.__send_request(url)

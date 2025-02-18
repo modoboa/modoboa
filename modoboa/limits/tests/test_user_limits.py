@@ -15,7 +15,7 @@ class PermissionsTestCase(lib_tests.ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(PermissionsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         populate_database()
 
     def test_domainadmin_deletes_reseller(self):
@@ -49,12 +49,12 @@ class ResourceTestCase(lib_tests.ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Custom setUpTestData method."""
-        super(ResourceTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig.parameters.set_values(
             {"enable_admin_limits": True, "enable_domain_limits": False}
         )
         for name, _definition in utils.get_user_limit_templates():
-            cls.localconfig.parameters.set_value("deflt_user_{0}_limit".format(name), 2)
+            cls.localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         cls.localconfig.save()
         populate_database()
 
@@ -116,7 +116,7 @@ class ResourceTestCase(lib_tests.ModoTestCase):
         else:
             aliases.remove(name)
         for cpt, alias in enumerate(aliases):
-            fname = "aliases" if not cpt else "aliases_%d" % cpt
+            fname = "aliases" if not cpt else f"aliases_{cpt}"
             values[fname] = alias
         self.ajax_post(reverse("admin:domain_change", args=[dom.id]), values, status)
 
@@ -131,7 +131,7 @@ class DomainAdminTestCase(ResourceTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DomainAdminTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.user = User.objects.get(username="admin@test.com")
         cls.user.userobjectlimit_set.filter(
             name__in=["mailboxes", "mailbox_aliases"]
@@ -139,7 +139,7 @@ class DomainAdminTestCase(ResourceTestCase):
 
     def setUp(self):
         """Test initialization."""
-        super(DomainAdminTestCase, self).setUp()
+        super().setUp()
         self.client.force_login(self.user)
 
     def test_mailboxes_limit(self):
@@ -173,7 +173,7 @@ class DomainAdminTestCase(ResourceTestCase):
         self._check_limit("mailbox_aliases", 3, -1)
         self.ajax_delete(
             reverse("admin:alias_delete")
-            + "?selection=%d" % Alias.objects.get(address="alias2@test.com").id
+            + f"?selection={Alias.objects.get(address='alias2@test.com').id}"
         )
         self._check_limit("mailbox_aliases", 2, -1)
 
@@ -201,14 +201,14 @@ class ResellerTestCase(ResourceTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(ResellerTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig.parameters.set_value("deflt_user_quota_limit", 1000)
         cls.localconfig.save()
         cls.user = UserFactory(username="reseller", groups=("Resellers",))
 
     def setUp(self):
         """Test initialization."""
-        super(ResellerTestCase, self).setUp()
+        super().setUp()
         self.client.force_login(self.user)
 
     def test_domains_limit(self):
@@ -288,8 +288,8 @@ class ResellerTestCase(ResourceTestCase):
         self._create_domain("domain.tld")
         self._create_account("admin1@domain.tld", role="DomainAdmins")
         domadmin = User.objects.get(username="admin1@domain.tld")
-        for l in ["mailboxes", "mailbox_aliases"]:
-            self.assertEqual(domadmin.userobjectlimit_set.get(name=l).max_value, 0)
+        for name in ["mailboxes", "mailbox_aliases"]:
+            self.assertEqual(domadmin.userobjectlimit_set.get(name=name).max_value, 0)
 
     def test_domain_admins_limit_from_domain_tpl(self):
         self.user.userobjectlimit_set.filter(name="domains").update(max_value=3)
@@ -380,7 +380,7 @@ class ResellerTestCase(ResourceTestCase):
         self.client.logout()
         self.client.login(username="admin", password="password")
         self.ajax_delete(
-            "{0}?domid={1}&daid={2}".format(
+            "{}?domid={}&daid={}".format(
                 reverse("admin:permission_remove"), dom.id, self.user.id
             ),
             {},

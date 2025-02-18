@@ -7,12 +7,12 @@ import sys
 from django.core.management import call_command
 
 
-class CallCommandMixin(object):
+class CallCommandMixin:
     """A mixin to provide command execution shortcuts."""
 
-    def setUp(self):
+    def setUp(self, *args, **kwargs):
         """Replace stdin"""
-        super(CallCommandMixin, self).setUp()
+        super().setUp(*args, **kwargs)
         self.stdin = sys.stdin
 
     def tearDown(self):

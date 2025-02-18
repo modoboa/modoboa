@@ -21,7 +21,7 @@ class AuthenticationTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(AuthenticationTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.account = factories.UserFactory(
             username="user@test.com", groups=("SimpleUsers",)
         )
@@ -115,7 +115,7 @@ class ProfileTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(ProfileTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.account = factories.UserFactory(
             username="user@test.com", groups=("SimpleUsers",)
         )
@@ -231,7 +231,7 @@ class APIAccessFormTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(APIAccessFormTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.account = factories.UserFactory(
             username="user@test.com", groups=("SimpleUsers",)
         )

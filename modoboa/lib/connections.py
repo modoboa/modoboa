@@ -9,7 +9,7 @@ class ConnectionsManager(type):
     """
 
     def __init__(self, name, bases, ctx):
-        super(ConnectionsManager, self).__init__(name, bases, ctx)
+        super().__init__(name, bases, ctx)
         self.instances = {}
 
     def __call__(self, **kwargs):
@@ -24,7 +24,7 @@ class ConnectionsManager(type):
             kwargs["password"] = decrypt(kwargs["password"])
 
         if self.instances[key] is None:
-            self.instances[key] = super(ConnectionsManager, self).__call__(**kwargs)
+            self.instances[key] = super().__call__(**kwargs)
         else:
             self.instances[key].refresh(key, kwargs["password"])
         return self.instances[key]

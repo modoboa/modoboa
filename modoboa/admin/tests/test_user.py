@@ -12,7 +12,7 @@ class ForwardTestCase(ModoTestCase):
     """User forward test cases."""
 
     def setUp(self):
-        super(ForwardTestCase, self).setUp()
+        super().setUp()
         populate_database()
 
     def test_set_forward(self):

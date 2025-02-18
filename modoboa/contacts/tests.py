@@ -1,4 +1,3 @@
-# coding: utf-8
 """Contacts backend tests."""
 
 import os
@@ -25,7 +24,7 @@ class TestDataMixin:
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
-        super(TestDataMixin, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.user = core_models.User.objects.get(username="user@test.com")
         cls.addressbook = cls.user.addressbook_set.first()
@@ -172,14 +171,14 @@ class ContactViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
 
-        response = self.client.get("{}?search=homer".format(url))
+        response = self.client.get(f"{url}?search=homer")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
     def test_filter_by_category(self):
         """Check filtering."""
         url = reverse("api:contact-list")
-        response = self.client.get("{}?category={}".format(url, self.category.name))
+        response = self.client.get(f"{url}?category={self.category.name}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
@@ -300,15 +299,15 @@ class EmailAddressViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
 
-        response = self.client.get("{}?search=homer".format(url))
+        response = self.client.get(f"{url}?search=homer")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
-        response = self.client.get("{}?search=Marge".format(url))
+        response = self.client.get(f"{url}?search=Marge")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
-        response = self.client.get("{}?search=Simpson".format(url))
+        response = self.client.get(f"{url}?search=Simpson")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
 
@@ -339,7 +338,7 @@ class ImportTestCase(TestDataMixin, ModoTestCase):
     def test_import_from_outlook_auto(self):
         management.call_command("import_contacts", "user@test.com", self.path)
         address = models.EmailAddress.objects.get(address="toto@titi.com")
-        phone = models.PhoneNumber.objects.get(number="12345678")
+        models.PhoneNumber.objects.get(number="12345678")
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")
@@ -352,7 +351,7 @@ class ImportTestCase(TestDataMixin, ModoTestCase):
             backend="outlook",
         )
         address = models.EmailAddress.objects.get(address="toto@titi.com")
-        phone = models.PhoneNumber.objects.get(number="12345678")
+        models.PhoneNumber.objects.get(number="12345678")
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")
@@ -366,7 +365,7 @@ class ImportTestCase(TestDataMixin, ModoTestCase):
                 carddav_password="Toto1234",
             )
         address = models.EmailAddress.objects.get(address="toto@titi.com")
-        phone = models.PhoneNumber.objects.get(number="12345678")
+        models.PhoneNumber.objects.get(number="12345678")
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")

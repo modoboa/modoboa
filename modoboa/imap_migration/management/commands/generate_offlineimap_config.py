@@ -33,7 +33,7 @@ class Command(BaseCommand):
             "imap_create_folders": conf["create_folders"],
             "imap_folder_filter_exclude": conf["folder_filter_exclude"],
             "imap_folder_filter_include": ", ".join(
-                "'{0}'".format(w) for w in conf["folder_filter_include"].split(",")
+                f"'{w}'" for w in conf["folder_filter_include"].split(",")
             ),
             "migrations": Migration.objects.select_related(
                 "provider", "mailbox__domain"

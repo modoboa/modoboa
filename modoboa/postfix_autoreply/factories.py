@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Postfix auto reply factories."""
-
-from __future__ import unicode_literals
 
 import factory
 

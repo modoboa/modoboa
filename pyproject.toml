@@ -19,10 +19,10 @@ classifiers = [
     "License :: OSI Approved :: ISC License (ISCL)",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Communications :: Email",
     "Topic :: Internet :: WWW/HTTP",
 ]
@@ -87,7 +87,7 @@ dev = [
 	"django-debug-toolbar",
 	"pre-commit",
 	"black",
-	"pylint",
+	"ruff",
 	"django-extensions",
 	"Werkzeug",
 	"pyOpenSSL"
@@ -115,3 +115,9 @@ Issues = "https://github.com/modoboa/modoboa/issues"
 
 [tool.setuptools.dynamic]
 version = {attr = "modoboa.version.get_version"}
+
+[tool.ruff]
+exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B", "Q", "UP"]

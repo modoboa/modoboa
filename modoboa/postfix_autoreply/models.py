@@ -29,7 +29,7 @@ class ARmessage(models.Model):
         db_table = "postfix_autoreply_armessage"
 
     def __str__(self):
-        return "AR<{}>: {}".format(self.mbox, self.enabled)
+        return f"AR<{self.mbox}>: {self.enabled}"
 
 
 class ARhistoric(models.Model):

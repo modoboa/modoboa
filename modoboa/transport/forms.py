@@ -11,12 +11,12 @@ TYPE_TO_FIELD_MAP = {
 }
 
 
-class BackendSettingsMixin(object):
+class BackendSettingsMixin:
     """A mixin to deal with backend settings in a model form."""
 
     def __init__(self, *args, **kwargs):
         """Constructor."""
-        super(BackendSettingsMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.setting_field_names = []
 
     def inject_backend_settings(self, name, settings):
@@ -44,7 +44,7 @@ class BackendSettingsMixin(object):
 
     def save(self, commit=True):
         """Set settings to JSON field."""
-        transport = super(BackendSettingsMixin, self).save(commit=False)
+        transport = super().save(commit=False)
         transport._settings = {
             name: self.cleaned_data[name] for name in self.setting_field_names
         }
@@ -64,7 +64,7 @@ class TransportForm(BackendSettingsMixin, forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         """Set backend list."""
-        super(TransportForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["service"].choices = backends.manager.get_backend_list()
         settings = backends.manager.get_all_backend_settings()
         for name, backend_settings in settings.items():
@@ -79,18 +79,18 @@ class TransportForm(BackendSettingsMixin, forms.ModelForm):
         backend_name = self.data.get("service")
         backend_settings = backends.manager.get_backend_settings(backend_name)
         for name, field in self.fields.items():
-            if name.startswith("{}_".format(backend_name)):
-                name = name.replace("{}_".format(backend_name), "")
+            if name.startswith(f"{backend_name}_"):
+                name = name.replace(f"{backend_name}_", "")
                 for setting in backend_settings:
                     if setting["name"] == name:
                         break
                 if setting.get("required", True):
                     field.required = True
-        return super(TransportForm, self)._clean_fields()
+        return super()._clean_fields()
 
     def clean(self):
         """Check values."""
-        cleaned_data = super(TransportForm, self).clean()
+        cleaned_data = super().clean()
         if self.errors:
             return cleaned_data
         self.clean_backend_fields(cleaned_data["service"])

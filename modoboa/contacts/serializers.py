@@ -38,7 +38,7 @@ class EmailAddressWithNameSerializer(serializers.ModelSerializer):
         """Return display name."""
         if obj.contact.display_name:
             return obj.contact.display_name
-        return "{} {}".format(obj.contact.first_name, obj.contact.last_name)
+        return f"{obj.contact.first_name} {obj.contact.last_name}"
 
 
 class PhoneNumberSerializer(serializers.ModelSerializer):

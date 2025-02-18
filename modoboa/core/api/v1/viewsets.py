@@ -29,7 +29,7 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     def tfa_setup(self, request):
         """Initiate TFA setup."""
         instance, created = TOTPDevice.objects.get_or_create(
-            user=request.user, defaults={"name": "{} TOTP device".format(request.user)}
+            user=request.user, defaults={"name": f"{request.user} TOTP device"}
         )
         return response.Response()
 
@@ -43,9 +43,9 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         # create static device for recovery purposes
         device = StaticDevice.objects.create(
-            user=request.user, name="{} static device".format(request.user)
+            user=request.user, name=f"{request.user} static device"
         )
-        for cpt in range(10):
+        for _cpt in range(10):
             token = StaticToken.random_token()
             device.token_set.create(token=token)
         django_otp.login(self.request, request.user.totpdevice_set.first())
@@ -82,7 +82,7 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         if device is None:
             return response.Response({"error": _("2FA is not enabled")}, status=403)
         device.token_set.all().delete()
-        for cpt in range(10):
+        for _cpt in range(10):
             token = StaticToken.random_token()
             device.token_set.create(token=token)
         return response.Response(

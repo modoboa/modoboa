@@ -10,7 +10,7 @@ class DomainAliasTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(DomainAliasTestCase, cls).setUpTestData()
+        super().setUpTestData()
         factories.populate_database()
         cls.dom = Domain.objects.get(name="test.com")
 
@@ -21,15 +21,13 @@ class DomainAliasTestCase(ModoTestCase):
         domal.target = dom
         domal.save()
         self.assertEqual(dom.domainalias_count, 1)
-        self.assertTrue(Alias.objects.filter(address="@{}".format(domal.name)).exists())
+        self.assertTrue(Alias.objects.filter(address=f"@{domal.name}").exists())
 
         domal.name = "domalias.org"
         domal.save()
 
         domal.delete()
-        self.assertFalse(
-            Alias.objects.filter(address="@{}".format(domal.name)).exists()
-        )
+        self.assertFalse(Alias.objects.filter(address=f"@{domal.name}").exists())
 
     def test_form(self):
         dom = Domain.objects.get(name="test.com")

@@ -76,7 +76,7 @@ class DomainAlias(AdminObject):
         try:
             self.target = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
-            raise BadRequest(_("Unknown domain %s") % domname)
+            raise BadRequest(_("Unknown domain %s") % domname) from None
         core_signals.can_create_object.send(
             sender="import", context=self.target, object_type="domain_aliases"
         )

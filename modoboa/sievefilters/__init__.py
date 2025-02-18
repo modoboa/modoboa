@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """The sieve filters editor of Modoboa."""
-
-from __future__ import unicode_literals
 
 from pkg_resources import get_distribution, DistributionNotFound
 

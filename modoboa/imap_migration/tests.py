@@ -21,12 +21,12 @@ from . import factories
 from . import models
 
 
-class DataMixin(object):
+class DataMixin:
     """A mixin to provide test data."""
 
     @classmethod
     def setUpTestData(cls):
-        super(DataMixin, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.mb = admin_models.Mailbox.objects.get(user__username="user@test.com")
         cls.migration = factories.MigrationFactory(
@@ -110,7 +110,7 @@ class ManagementCommandTestCase(DataMixin, ModoTestCase):
     """Management command test cases."""
 
     def setUp(self):
-        super(ManagementCommandTestCase, self).setUp()
+        super().setUp()
         self.workdir = tempfile.mkdtemp()
 
     def tearDown(self):

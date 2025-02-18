@@ -1,6 +1,5 @@
 """Parsing tools for maillog related files."""
 
-import io
 import re
 import time
 
@@ -163,7 +162,7 @@ class MaillogParser:
         m = self._srs_regex["reverse_srs1"].match(mail_address) if m is None else m
 
         if m is not None:
-            return "%s@%s" % m.group(2, 1)
+            return "{}@{}".format(*m.group(2, 1))
         return mail_address
 
     def new_domain_event(self, domain, name, size=None):
@@ -222,9 +221,7 @@ class MaillogParser:
             return False
         (msg_to, msg_status) = m.groups()
         if queue_id not in self.workdict:
-            self._dprint(
-                "[parser] inconsistent mail (%s: %s), skipping" % (queue_id, msg_to)
-            )
+            self._dprint(f"[parser] inconsistent mail ({queue_id}: {msg_to}), skipping")
             return True
 
         # orig_to is optional.
@@ -269,18 +266,18 @@ class MaillogParser:
         host, prog, subprog, pid, log = m.groups()
 
         try:
-            parser = getattr(self, "_parse_{}".format(prog))
+            parser = getattr(self, f"_parse_{prog}")
             if not parser(log, host, pid, subprog):
-                self._dprint("[parser] ignoring %r log: %r" % (prog, log))
+                self._dprint(f"[parser] ignoring {prog!r} log: {log!r}")
         except AttributeError:
-            self._dprint('[parser] no log handler for "%r": %r'.format(prog, log))
+            self._dprint(f'[parser] no log handler for "{prog!r}": {log!r}')
 
     def parse(self, logfile):
         """Process the log file."""
         try:
-            fp = io.open(logfile, encoding="utf-8")
-        except IOError as errno:
-            self._dprint("%s" % errno)
+            fp = open(logfile, encoding="utf-8")
+        except OSError as errno:
+            self._dprint(f"{errno}")
             return
 
         for line in fp.readlines():

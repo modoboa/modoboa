@@ -17,7 +17,7 @@ from modoboa.lib.web_utils import render_to_json_response
 ABC = abc.ABCMeta(force_str("ABC"), (object,), {})
 
 
-class WizardStep(object):
+class WizardStep:
     """A wizard step."""
 
     def __init__(self, uid, formclass, title, formtpl=None, new_args=None):
@@ -188,7 +188,7 @@ class WizardForm(ABC):
         """
 
 
-class DynamicForm(object):
+class DynamicForm:
     """
     A form which accepts dynamic fields.
 
@@ -218,7 +218,7 @@ class DynamicForm(object):
         :param string pattern: pattern used to find field instances
         :param typ: a form field class
         """
-        expr = re.compile(r"%s_\d+" % pattern)
+        expr = re.compile(rf"{pattern}_\d+")
         values = []
         for k, v in list(qdict.items()):
             if k == pattern or expr.match(k):
@@ -234,7 +234,7 @@ class DynamicForm(object):
         self.data = ndata
 
 
-class TabForms(object):
+class TabForms:
     """
     Simple forms container.
 
@@ -258,7 +258,7 @@ class TabForms(object):
                 args.append(request.POST)
             if instances is not None:
                 self.instances = instances
-                mname = "check_%s" % fd["id"]
+                mname = "check_{}".format(fd["id"])
                 if hasattr(self, mname):
                     if not getattr(self, mname)(instances[fd["id"]]):
                         to_remove += [fd]
@@ -326,8 +326,7 @@ class TabForms(object):
         return self.forward()
 
     def forward(self):
-        for form in self.forms:
-            yield form
+        yield from self.forms
 
     def extra_context(self, context):
         """ "Provide additional information to template's context."""
@@ -387,7 +386,7 @@ class SeparatorField(Field):
 
     def __init__(self, *args, **kwargs):
         kwargs["required"] = False
-        super(SeparatorField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class YesNoField(TypedChoiceField):
@@ -402,4 +401,4 @@ class YesNoField(TypedChoiceField):
                 "coerce": lambda x: x == "True",
             }
         )
-        super(YesNoField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)

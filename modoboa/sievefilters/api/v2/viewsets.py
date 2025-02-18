@@ -15,7 +15,11 @@ from rest_framework.decorators import action
 
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.sievefilters import constants
-from modoboa.sievefilters.lib import SieveClient, SieveClientError, SieveActionTemplateNotFound
+from modoboa.sievefilters.lib import (
+    SieveClient,
+    SieveClientError,
+    SieveActionTemplateNotFound,
+)
 from modoboa.sievefilters.rfc6266 import build_header
 from modoboa.sievefilters.api.v2 import serializers
 
@@ -184,7 +188,7 @@ class FilterSetViewSet(viewsets.ViewSet):
         except FilterAlreadyExists:
             raise serializers.ValidationError(
                 {"name": _("Filter %s already exists") % fltname}
-            )
+            ) from None
         sclient.pushscript(fset.name, str(fset))
         return response.Response(serializer.validated_data, status=201)
 

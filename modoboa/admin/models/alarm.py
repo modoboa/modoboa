@@ -48,9 +48,7 @@ class Alarm(models.Model):
         ordering = ["created"]
 
     def __str__(self):
-        return "[{}] {} - {}".format(
-            self.created, self.domain, self.get_status_display()
-        )
+        return f"[{self.created}] {self.domain} - {self.get_status_display()}"
 
     def close(self):
         """Close this alarm."""

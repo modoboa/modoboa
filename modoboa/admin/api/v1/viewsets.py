@@ -135,7 +135,7 @@ class AccountViewSet(
         try:
             user = core_models.User.objects.get(pk=pk)
         except core_models.User.DoesNotExist:
-            raise http.Http404
+            raise http.Http404 from None
         serializer = self.get_serializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()

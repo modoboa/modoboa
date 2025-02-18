@@ -1,7 +1,7 @@
 """Map file definitions for postfix."""
 
 
-class DomainsMap(object):
+class DomainsMap:
     """Map to list all domains."""
 
     filename = "sql-domains.cf"
@@ -18,7 +18,7 @@ class DomainsMap(object):
     )
 
 
-class DomainsAliasesMap(object):
+class DomainsAliasesMap:
     """Map to list all domain aliases."""
 
     filename = "sql-domain-aliases.cf"
@@ -39,7 +39,7 @@ class DomainsAliasesMap(object):
     )
 
 
-class AliasesMap(object):
+class AliasesMap:
     """A map to list all mailbox aliases."""
 
     filename = "sql-aliases.cf"
@@ -63,7 +63,7 @@ class AliasesMap(object):
     )
 
 
-class MaintainMap(object):
+class MaintainMap:
     """Map files to list non available mailboxes."""
 
     filename = "sql-maintain.cf"
@@ -90,7 +90,7 @@ class MaintainMap(object):
     )
 
 
-class SenderLoginMap(object):
+class SenderLoginMap:
     """Map file to list authorized sender addresses for a given account:
     * Its mailbox
     * Its aliases

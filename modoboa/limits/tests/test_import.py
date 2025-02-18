@@ -14,7 +14,7 @@ class LimitImportTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(LimitImportTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.reseller = core_factories.UserFactory(
             username="reseller", groups=("Resellers",)
@@ -27,18 +27,16 @@ class LimitImportTestCase(ModoTestCase):
         self.client.force_login(self.reseller)
         self.assertFalse(limit.is_exceeded())
         f = ContentFile(
-            """domainalias; domalias1.com; {domain}; True
-domainalias; domalias2.com; {domain}; True
-""".format(
-                domain=self.domain
-            ),
+            f"""domainalias; domalias1.com; {self.domain}; True
+domainalias; domalias2.com; {self.domain}; True
+""",
             name="domains.csv",
         )
         self.client.post(reverse("admin:domain_import"), {"sourcefile": f})
         self.assertTrue(limit.is_exceeded())
 
         f = ContentFile(
-            "domainalias; domalias3.com; {}; True".format(self.domain),
+            f"domainalias; domalias3.com; {self.domain}; True",
             name="domains.csv",
         )
         response = self.client.post(reverse("admin:domain_import"), {"sourcefile": f})
@@ -51,20 +49,16 @@ domainalias; domalias2.com; {domain}; True
         content = ""
         for cpt in range(initial_count, 2):
             content += (
-                "account; admin{cpt}@{domain}; toto; User; One; True; "
-                "DomainAdmins; user{cpt}@{domain}; 5; {domain}\n".format(
-                    domain=self.domain, cpt=cpt
-                )
+                f"account; admin{cpt}@{self.domain}; toto; User; One; True; "
+                f"DomainAdmins; user{cpt}@{self.domain}; 5; {self.domain}\n"
             )
         f = ContentFile(content, name="domain_admins.csv")
         response = self.client.post(reverse("admin:identity_import"), {"sourcefile": f})
         self.assertTrue(limit.is_exceeded())
 
         f = ContentFile(
-            """account; admin3@{domain}; toto; User; One; True; DomainAdmins; admin3@{domain}; 5; {domain}
-""".format(
-                domain=self.domain
-            ),
+            f"""account; admin3@{self.domain}; toto; User; One; True; DomainAdmins; admin3@{self.domain}; 5; {self.domain}
+""",
             name="domain_admins.csv",
         )  # NOQA:E501
         response = self.client.post(reverse("admin:identity_import"), {"sourcefile": f})
@@ -75,21 +69,19 @@ domainalias; domalias2.com; {domain}; True
         self.client.force_login(self.dadmin)
         self.assertFalse(limit.is_exceeded())
         f = ContentFile(
-            "account; user1@{domain}; toto; User; One; True; SimpleUsers; "
-            "user1@{domain}; 5\r\n"
-            "account; truc@{domain}; toto; René; Truc; True; SimpleUsers; "
-            "truc@{domain}; 5\r\n".format(domain=self.domain),
+            f"account; user1@{self.domain}; toto; User; One; True; SimpleUsers; "
+            f"user1@{self.domain}; 5\r\n"
+            f"account; truc@{self.domain}; toto; René; Truc; True; SimpleUsers; "
+            f"truc@{self.domain}; 5\r\n",
             name="domains.csv",
         )
         response = self.client.post(reverse("admin:identity_import"), {"sourcefile": f})
         self.assertTrue(limit.is_exceeded())
 
         f = ContentFile(
-            """
-account; user3@{domain}; toto; User; One; True; SimpleUsers; user3@{domain}; 5
-""".format(
-                domain=self.domain
-            ),
+            f"""
+account; user3@{self.domain}; toto; User; One; True; SimpleUsers; user3@{self.domain}; 5
+""",
             name="domains.csv",
         )
         response = self.client.post(reverse("admin:identity_import"), {"sourcefile": f})
@@ -100,22 +92,18 @@ account; user3@{domain}; toto; User; One; True; SimpleUsers; user3@{domain}; 5
         self.client.force_login(self.dadmin)
         self.assertFalse(limit.is_exceeded())
         f = ContentFile(
-            """alias; alias1@{domain}; True; user@{domain}
-alias; alias2@{domain}; True; user@{domain}
-""".format(
-                domain=self.domain
-            ),
+            f"""alias; alias1@{self.domain}; True; user@{self.domain}
+alias; alias2@{self.domain}; True; user@{self.domain}
+""",
             name="aliases.csv",
         )
         self.client.post(reverse("admin:identity_import"), {"sourcefile": f})
         self.assertTrue(limit.is_exceeded())
 
         f = ContentFile(
-            """
-alias; alias3@{domain}; True; user@{domain}
-""".format(
-                domain=self.domain
-            ),
+            f"""
+alias; alias3@{self.domain}; True; user@{self.domain}
+""",
             name="aliases.csv",
         )
         with self.assertRaises(exceptions.ValidationError):
@@ -129,9 +117,9 @@ class UserLimitImportTestCase(LimitImportTestCase):
         """Create test data."""
         localconfig = core_models.LocalConfig.objects.first()
         for name, _definition in utils.get_user_limit_templates():
-            localconfig.parameters.set_value("deflt_user_{0}_limit".format(name), 2)
+            localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         localconfig.save()
-        super(UserLimitImportTestCase, cls).setUpTestData()
+        super().setUpTestData()
 
     def test_domains_import(self):
         """Check domains limit."""
@@ -191,9 +179,9 @@ class DomainLimitImportTestCase(LimitImportTestCase):
             {"enable_domain_limits": True, "enable_admin_limits": False}
         )
         for name, _definition in utils.get_domain_limit_templates():
-            localconfig.parameters.set_value("deflt_domain_{0}_limit".format(name), 2)
+            localconfig.parameters.set_value(f"deflt_domain_{name}_limit", 2)
         localconfig.save()
-        super(DomainLimitImportTestCase, cls).setUpTestData()
+        super().setUpTestData()
         mb = admin_factories.MailboxFactory(
             user__username="user@test4.com", domain__name="test4.com", address="user"
         )

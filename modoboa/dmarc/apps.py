@@ -13,4 +13,4 @@ class DmarcConfig(AppConfig):
 
     def ready(self):
         load_settings()
-        from . import handlers
+        from . import handlers  # noqa

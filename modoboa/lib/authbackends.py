@@ -9,7 +9,7 @@ from modoboa.lib.email_utils import split_mailbox
 from modoboa.parameters import tools as param_tools
 
 
-class SMTPBackend(object):
+class SMTPBackend:
     """A backend to authenticate against an SMTP server."""
 
     def authenticate(self, request, username=None, password=None):
@@ -126,7 +126,7 @@ try:
         @classmethod
         def setting_fullname(cls, setting):
             """Return fullname for given setting."""
-            return "{}{}".format(cls.settings_prefix, setting)
+            return f"{cls.settings_prefix}{setting}"
 
     class LDAPBackend(LDAPBackendBase):
         """Primary LDAP backend."""

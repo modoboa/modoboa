@@ -133,7 +133,7 @@ class ViewsTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):
         """Create some records."""
-        super(ViewsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.spf_rec = factories.DNSRecordFactory(
             type="spf", value="v=SPF1 mx -all", is_valid=True, domain__name="test.com"
         )

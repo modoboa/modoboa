@@ -16,7 +16,7 @@ from django.template.loader import render_to_string
 def _render_error(request, errortpl="error", user_context=None):
     if user_context is None:
         user_context = {}
-    return render(request, "common/%s.html" % errortpl, user_context)
+    return render(request, f"common/{errortpl}.html", user_context)
 
 
 def render_actions(actions):
@@ -102,7 +102,7 @@ def static_url(path):
     """
     if path.startswith("/"):
         path = path[1:]
-    return "%s%s" % (settings.STATIC_URL, path)
+    return f"{settings.STATIC_URL}{path}"
 
 
 def size2integer(value, output_unit="B"):
@@ -138,11 +138,11 @@ def size2integer(value, output_unit="B"):
         if m.group(2)[0] in ["G", "g"]:
             return int(m.group(1)) * 2**10
     else:
-        raise ValueError("Unsupported output unit {}".format(output_unit))
+        raise ValueError(f"Unsupported output unit {output_unit}")
     return 0
 
 
-class NavigationParameters(object):
+class NavigationParameters:
     """
     Just a simple object to manipulate navigation parameters.
     """

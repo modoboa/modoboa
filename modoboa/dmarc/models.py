@@ -39,7 +39,7 @@ class Reporter(models.Model):
 
     def __str__(self):
         """Return name and email."""
-        return "{} <{}>".format(self.org_name, self.email)
+        return f"{self.org_name} <{self.email}>"
 
 
 class Report(models.Model):
@@ -63,7 +63,7 @@ class Report(models.Model):
 
     def __str__(self):
         """Display provider and dates."""
-        return "{}: {} -> {}".format(self.reporter, self.start_date, self.end_date)
+        return f"{self.reporter}: {self.start_date} -> {self.end_date}"
 
 
 class Record(models.Model):

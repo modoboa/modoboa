@@ -19,7 +19,7 @@ try:
     s = socket.create_connection(("127.0.0.1", 25))
     s.close()
     NO_SMTP = False
-except socket.error:
+except OSError:
     NO_SMTP = True
 
 try:
@@ -36,7 +36,7 @@ class ParametersMixin:
     @classmethod
     def setUpTestData(cls):  # noqa
         """Set LocalConfig instance."""
-        super(ParametersMixin, cls).setUpTestData()
+        super().setUpTestData()
         cls.localconfig = core_models.LocalConfig.objects.first()
 
     def set_global_parameter(self, name, value, app=None):
@@ -64,7 +64,7 @@ class ModoTestCase(ParametersMixin, TestCase):
     @classmethod
     def setUpTestData(cls):  # noqa
         """Create a default user."""
-        super(ModoTestCase, cls).setUpTestData()
+        super().setUpTestData()
         management.call_command("load_initial_data", "--no-frontend")
 
     def setUp(self, username="admin", password="password"):
@@ -101,7 +101,7 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
     @classmethod
     def setUpTestData(cls):  # noqa
         """Create a default user."""
-        super(ModoAPITestCase, cls).setUpTestData()
+        super().setUpTestData()
         management.call_command("load_initial_data")
         cls.token = Token.objects.create(
             user=core_models.User.objects.get(username="admin")
@@ -109,7 +109,7 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
 
     def setUp(self):
         """Setup."""
-        super(ModoAPITestCase, self).setUp()
+        super().setUp()
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
         self.workdir = tempfile.mkdtemp()
         self.set_global_parameter("storage_dir", self.workdir, app="pdfcredentials")

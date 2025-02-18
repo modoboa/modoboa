@@ -1,8 +1,5 @@
 """PDF Credentials API v2 views."""
 
-import os
-
-from django.utils.translation import gettext as _
 from django.http import HttpResponse
 
 from rest_framework import permissions

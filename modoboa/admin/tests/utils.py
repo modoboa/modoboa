@@ -11,13 +11,13 @@ from dns.rdtypes.ANY.TXT import TXT
 from dns.resolver import NXDOMAIN, NoAnswer, NoNameservers, Timeout
 
 
-class RRset(object):
+class RRset:
 
     def __init__(self):
         self.address = "192.0.2.1"
 
 
-class RRsetInvalid(object):
+class RRsetInvalid:
 
     def __init__(self):
         self.address = "000.0.0.0"

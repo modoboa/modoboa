@@ -12,7 +12,7 @@ class UserCalendarFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.UserCalendar
 
-    name = factory.Sequence(lambda n: "User calendar %s" % n)
+    name = factory.Sequence(lambda n: f"User calendar {n}")
     mailbox = factory.SubFactory(admin_factories.MailboxFactory)
 
 
@@ -21,7 +21,7 @@ class SharedCalendarFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.SharedCalendar
 
-    name = factory.Sequence(lambda n: "Shared calendar %s" % n)
+    name = factory.Sequence(lambda n: f"Shared calendar {n}")
     domain = factory.SubFactory(admin_factories.DomainFactory)
 
 

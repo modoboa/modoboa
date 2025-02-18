@@ -13,7 +13,7 @@ from modoboa.transport import factories as tr_factories, models as tr_models
 from . import models
 
 
-class Operations(object):
+class Operations:
 
     def _create_relay_domain(self, name, status=200, **kwargs):
         values = {
@@ -48,7 +48,7 @@ class Operations(object):
         else:
             aliases.remove(name)
         for cpt, alias in enumerate(aliases):
-            fname = "aliases" if not cpt else "aliases_%d" % cpt
+            fname = "aliases" if not cpt else f"aliases_{cpt}"
             values[fname] = alias
         return self.ajax_post(
             reverse("admin:domain_change", args=[domain.id]), values, status
@@ -65,7 +65,7 @@ class RelayDomainsTestCase(ModoTestCase, Operations):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(RelayDomainsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         admin_factories.populate_database()
         cls.transport = tr_factories.TransportFactory(
             pattern="relaydomain.tld",
@@ -277,17 +277,17 @@ class LimitsTestCase(ModoTestCase, Operations):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(LimitsTestCase, cls).setUpTestData()
+        super().setUpTestData()
         for name, _definition in limits_utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(
-                "deflt_user_{0}_limit".format(name), 2, app="limits"
+                f"deflt_user_{name}_limit", 2, app="limits"
             )
         cls.localconfig.save()
         cls.user = UserFactory.create(username="reseller", groups=("Resellers",))
 
     def setUp(self):
         """Initialize test."""
-        super(LimitsTestCase, self).setUp()
+        super().setUp()
         self.client.force_login(self.user)
 
     def test_relay_domains_limit(self):

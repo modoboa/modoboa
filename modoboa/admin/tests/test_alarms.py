@@ -1,7 +1,5 @@
 """Alarm related tests."""
 
-from django.urls import reverse
-
 from modoboa.lib.tests import ModoTestCase
 from ..factories import populate_database
 from ..models import Alarm, Domain

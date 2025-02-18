@@ -1,7 +1,7 @@
 """Map file definitions for postfix."""
 
 
-class RelayDomainsMap(object):
+class RelayDomainsMap:
     """Map file to list all relay domains."""
 
     filename = "sql-relaydomains.cf"
@@ -19,7 +19,7 @@ class RelayDomainsMap(object):
     )
 
 
-class SplitedDomainsTransportMap(object):
+class SplitedDomainsTransportMap:
     """A transport map for splited domains.
 
     (ie. ones with both local and remote mailboxes)
@@ -55,7 +55,7 @@ class SplitedDomainsTransportMap(object):
     )
 
 
-class RelayRecipientVerification(object):
+class RelayRecipientVerification:
     """A map file to enable recipient verification."""
 
     filename = "sql-relay-recipient-verification.cf"
