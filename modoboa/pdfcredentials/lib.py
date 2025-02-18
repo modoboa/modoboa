@@ -33,7 +33,7 @@ def init_storage_dir():
         raise InternalError(
             _("Failed to create the directory that will contain " "PDF documents (%s)")
             % inst
-        )
+        ) from None
 
 
 def get_creds_filename(account):

@@ -276,7 +276,7 @@ class LogParser:
         # Est ce vraiment nécessaire... ?
         if m > self.lupdates[fname] + rrdstep:
             values = ""
-            for v in variables:
+            for _v in variables:
                 if values != "":
                     values += ":"
                 values += "0"

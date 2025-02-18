@@ -33,7 +33,7 @@ class SieveClient:
             try:
                 ret, msg = self.login(user, password)
             except (managesieve.Error, ConnectionError) as e:
-                raise SieveClientError(str(e))
+                raise SieveClientError(str(e)) from None
             if not ret:
                 raise SieveClientError(msg)
 
