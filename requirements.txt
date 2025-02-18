@@ -236,7 +236,7 @@ vobject==0.9.9
     # via
     #   caldav
     #   modoboa (pyproject.toml)
-x-wr-timezone==2.0.0
+x-wr-timezone==2.0.1
     # via recurring-ical-events
 zope-event==5.0
     # via gevent
