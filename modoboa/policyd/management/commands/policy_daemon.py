@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 getattr(signal, signame), functools.partial(ask_exit, signame, loop)
             )
 
-        logger.info("Serving on {}".format(server.sockets[0].getsockname()))
+        logger.info(f"Serving on {server.sockets[0].getsockname()}")
 
         if options["debug"]:
             loop.set_debug(True)

@@ -26,11 +26,7 @@ class TransportSerializer(serializers.ModelSerializer):
         errors = self.backend.clean_fields(data["_settings"])
         if errors:
             raise serializers.ValidationError(
-                {
-                    "_settings": ",".join(
-                        ["{}: {}".format(error[0], error[1]) for error in errors]
-                    )
-                }
+                {"_settings": ",".join([f"{error[0]}: {error[1]}" for error in errors])}
             )
         return data
 

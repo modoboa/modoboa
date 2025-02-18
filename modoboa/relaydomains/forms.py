@@ -6,7 +6,7 @@ from modoboa.lib.form_utils import WizardStep
 from modoboa.transport import forms as tr_forms, models as tr_models
 
 
-class DisableSignals(object):
+class DisableSignals:
     """Context manager to disable signals."""
 
     def __init__(self):

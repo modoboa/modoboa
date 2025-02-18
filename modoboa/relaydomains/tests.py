@@ -13,7 +13,7 @@ from modoboa.transport import factories as tr_factories, models as tr_models
 from . import models
 
 
-class Operations(object):
+class Operations:
 
     def _create_relay_domain(self, name, status=200, **kwargs):
         values = {
@@ -280,7 +280,7 @@ class LimitsTestCase(ModoTestCase, Operations):
         super(LimitsTestCase, cls).setUpTestData()
         for name, _definition in limits_utils.get_user_limit_templates():
             cls.localconfig.parameters.set_value(
-                "deflt_user_{0}_limit".format(name), 2, app="limits"
+                f"deflt_user_{name}_limit", 2, app="limits"
             )
         cls.localconfig.save()
         cls.user = UserFactory.create(username="reseller", groups=("Resellers",))

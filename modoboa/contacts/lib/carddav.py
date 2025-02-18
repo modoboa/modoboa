@@ -53,9 +53,9 @@ nsmap = {
 
 
 def ns(prefix, tag=None):
-    name = "{%s}" % nsmap[prefix]
+    name = f"{{{nsmap[prefix]}}}"
     if tag is not None:
-        name = "%s%s" % (name, tag)
+        name = f"{name}{tag}"
     return name
 
 
@@ -91,7 +91,7 @@ class SyncCollectionQuery(elements.base.BaseElement):
     tag = ns("D", "sync-collection")
 
 
-class PyCardDAV(object):
+class PyCardDAV:
     """class for interacting with a CardDAV server
 
     Since PyCardDAV relies heavily on Requests [1] its SSL verification is also

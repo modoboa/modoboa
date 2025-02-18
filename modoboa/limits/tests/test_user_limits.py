@@ -54,7 +54,7 @@ class ResourceTestCase(lib_tests.ModoTestCase):
             {"enable_admin_limits": True, "enable_domain_limits": False}
         )
         for name, _definition in utils.get_user_limit_templates():
-            cls.localconfig.parameters.set_value("deflt_user_{0}_limit".format(name), 2)
+            cls.localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         cls.localconfig.save()
         populate_database()
 

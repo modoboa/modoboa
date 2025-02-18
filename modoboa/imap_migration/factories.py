@@ -13,7 +13,7 @@ class EmailProviderFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.EmailProvider
 
-    name = factory.Sequence(lambda n: "Provider {}".format(n))
+    name = factory.Sequence(lambda n: f"Provider {n}")
     address = "127.0.0.1"
     port = 143
 

@@ -292,12 +292,12 @@ class AccountFormMail(forms.Form, DynamicForm):
             self.fields["email"].required = True
             qset = self.mb.aliasrecipient_set.filter(alias__internal=False)
             for cpt, ralias in enumerate(qset):
-                name = "aliases_{}".format(cpt + 1)
+                name = f"aliases_{cpt + 1}"
                 self._create_field(
                     lib_fields.UTF8AndEmptyUserEmailField, name, ralias.alias.address
                 )
             for cpt, saddress in enumerate(self.mb.senderaddress_set.all()):
-                name = "senderaddress_{}".format(cpt + 1)
+                name = f"senderaddress_{cpt + 1}"
                 self._create_field(
                     lib_fields.UTF8AndEmptyUserEmailField, name, saddress.address
                 )
@@ -336,14 +336,14 @@ class AccountFormMail(forms.Form, DynamicForm):
         try:
             self.domain = models.Domain.objects.get(name=domname)
         except models.Domain.DoesNotExist:
-            raise forms.ValidationError(_("Domain does not exist"))
+            raise forms.ValidationError(_("Domain does not exist")) from None
         if not self.mb:
             try:
                 core_signals.can_create_object.send(
                     sender=self.__class__, context=self.domain, object_type="mailboxes"
                 )
             except lib_exceptions.ModoboaException as inst:
-                raise forms.ValidationError(inst)
+                raise forms.ValidationError(inst) from None
         return email
 
     def clean_quota(self):

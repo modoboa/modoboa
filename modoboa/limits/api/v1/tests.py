@@ -22,7 +22,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         """Create test data."""
         super(APIAdminLimitsTestCase, cls).setUpTestData()
         for name, _definition in utils.get_user_limit_templates():
-            cls.localconfig.parameters.set_value("deflt_user_{0}_limit".format(name), 2)
+            cls.localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         cls.localconfig.save()
         populate_database()
         cls.user = User.objects.get(username="admin@test.com")
@@ -192,9 +192,7 @@ class APIDomainLimitsTestCase(lib_tests.ModoAPITestCase):
         super(APIDomainLimitsTestCase, cls).setUpTestData()
         cls.localconfig.parameters.set_value("enable_domain_limits", True)
         for name, _definition in utils.get_domain_limit_templates():
-            cls.localconfig.parameters.set_value(
-                "deflt_domain_{0}_limit".format(name), 2
-            )
+            cls.localconfig.parameters.set_value(f"deflt_domain_{name}_limit", 2)
         cls.localconfig.save()
         populate_database()
 
@@ -255,7 +253,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
         """Create test data."""
         super(ResourcesAPITestCase, cls).setUpTestData()
         for name, _definition in utils.get_user_limit_templates():
-            cls.localconfig.parameters.set_value("deflt_user_{0}_limit".format(name), 2)
+            cls.localconfig.parameters.set_value(f"deflt_user_{name}_limit", 2)
         cls.localconfig.save()
         populate_database()
         cls.user = User.objects.get(username="admin@test.com")
@@ -282,12 +280,12 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
         compare(expected, response.data)
 
         # As reseller => fails
-        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.r_token.key}")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
         # As domain admin => fails
-        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.da_token.key}")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
@@ -304,7 +302,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
         )
 
         # As domain admin => fails
-        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.da_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.da_token.key}")
         resources.update({"domains": 2, "mailboxes": 2})
         url = reverse("v1:resources-detail", args=[self.user.pk])
         response = self.client.put(url, resources)
@@ -312,7 +310,7 @@ class ResourcesAPITestCase(lib_tests.ModoAPITestCase):
 
         # As reseller => ok
         permissions.grant_access_to_object(self.reseller, self.user, True)
-        self.client.credentials(HTTP_AUTHORIZATION="Token {}".format(self.r_token.key))
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.r_token.key}")
         resources.update({"domains": 500, "mailboxes": 500})
         url = reverse("v1:resources-detail", args=[self.user.pk])
         response = self.client.put(url, resources)

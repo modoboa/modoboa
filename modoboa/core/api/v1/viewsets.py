@@ -29,7 +29,7 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     def tfa_setup(self, request):
         """Initiate TFA setup."""
         instance, created = TOTPDevice.objects.get_or_create(
-            user=request.user, defaults={"name": "{} TOTP device".format(request.user)}
+            user=request.user, defaults={"name": f"{request.user} TOTP device"}
         )
         return response.Response()
 
@@ -43,7 +43,7 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         # create static device for recovery purposes
         device = StaticDevice.objects.create(
-            user=request.user, name="{} static device".format(request.user)
+            user=request.user, name=f"{request.user} static device"
         )
         for cpt in range(10):
             token = StaticToken.random_token()

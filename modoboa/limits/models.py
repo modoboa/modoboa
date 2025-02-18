@@ -9,7 +9,7 @@ from modoboa.core import models as core_models
 from . import lib, utils
 
 
-class ObjectLimitMixin(object):
+class ObjectLimitMixin:
     """Common methods."""
 
     @property
@@ -54,7 +54,7 @@ class ObjectLimitMixin(object):
         """Display current usage."""
         if self.max_value == -1:
             return _("unlimited")
-        return "{}%".format(self.usage)
+        return f"{self.usage}%"
 
 
 class UserObjectLimit(ObjectLimitMixin, models.Model):
@@ -67,7 +67,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
     )
     max_value = models.IntegerField(default=0)
 
-    class Meta(object):
+    class Meta:
         unique_together = (("user", "name"),)
 
     @property
@@ -117,7 +117,7 @@ class UserObjectLimit(ObjectLimitMixin, models.Model):
         """Display current usage."""
         if self.max_value == -1:
             return _("unlimited")
-        return "{}%".format(self.usage)
+        return f"{self.usage}%"
 
 
 class DomainObjectLimit(ObjectLimitMixin, models.Model):
@@ -127,7 +127,7 @@ class DomainObjectLimit(ObjectLimitMixin, models.Model):
     name = models.CharField(max_length=254)
     max_value = models.IntegerField(default=0)
 
-    class Meta(object):
+    class Meta:
         unique_together = (("domain", "name"),)
 
     @property
@@ -143,7 +143,7 @@ class DomainObjectLimit(ObjectLimitMixin, models.Model):
         """Return the current number of objects."""
         definition = self.definition
         if not definition:
-            raise RuntimeError("Bad limit {}".format(self.name))
+            raise RuntimeError(f"Bad limit {self.name}")
         relation = getattr(self.domain, definition["relation"])
         if "extra_filters" in definition:
             relation = relation.filter(**definition["extra_filters"])

@@ -37,7 +37,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
             lang = "en"
         context.update({"selection": "dashboard"})
 
-        feed_url = "{}{}/weblog/feeds/".format(MODOBOA_WEBSITE_URL, lang)
+        feed_url = f"{MODOBOA_WEBSITE_URL}{lang}/weblog/feeds/"
         if self.request.user.role != "SuperAdmins":
             custom_feed_url = self.request.localconfig.parameters.get_value(
                 "rss_feed_url"
@@ -57,7 +57,7 @@ class DashboardView(auth_mixins.AccessMixin, generic.TemplateView):
             "hide_features_widget"
         )
         if self.request.user.is_superuser or not hide_features_widget:
-            url = "{}{}/api/projects/?featured=true".format(MODOBOA_WEBSITE_URL, lang)
+            url = f"{MODOBOA_WEBSITE_URL}{lang}/api/projects/?featured=true"
             features = []
             if not settings.DISABLE_DASHBOARD_EXTERNAL_QUERIES:
                 try:

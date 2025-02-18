@@ -82,18 +82,16 @@ class Contact(models.Model):
         """Set uid for new object."""
         super().__init__(*args, **kwargs)
         if not self.pk:
-            self.uid = "{}.vcf".format(uuid.uuid4())
+            self.uid = f"{uuid.uuid4()}.vcf"
 
     @property
     def url(self):
-        return "{}/{}.vcf".format(self.addressbook.url, self.uid)
+        return f"{self.addressbook.url}/{self.uid}.vcf"
 
     def to_vcard(self):
         """Convert this contact to a vCard."""
         card = vobject.vCard()
-        card.add("prodid").value = "-//Modoboa//Contacts plugin {}//EN".format(
-            __version__
-        )
+        card.add("prodid").value = f"-//Modoboa//Contacts plugin {__version__}//EN"
         card.add("uid").value = self.uid
         card.add("n").value = vobject.vcard.Name(
             family=self.last_name, given=self.first_name
@@ -193,4 +191,4 @@ class PhoneNumber(models.Model):
         db_table = "modoboa_contacts_phonenumber"
 
     def __str__(self):
-        return "{}: {}".format(self.type, self.number)
+        return f"{self.type}: {self.number}"

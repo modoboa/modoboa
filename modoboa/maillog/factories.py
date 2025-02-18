@@ -15,10 +15,10 @@ class MaillogFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Maillog
 
-    queue_id = factory.Sequence(lambda n: "ID{}".format(n))
+    queue_id = factory.Sequence(lambda n: f"ID{n}")
     date = timezone.now()
-    sender = factory.Sequence(lambda n: "sender{}@example.test".format(n))
-    rcpt = factory.Sequence(lambda n: "rcpt{}@example2.test".format(n))
+    sender = factory.Sequence(lambda n: f"sender{n}@example.test")
+    rcpt = factory.Sequence(lambda n: f"rcpt{n}@example2.test")
     size = 100
     status = "sent"
     from_domain = factory.SubFactory(admin_factories.DomainFactory)

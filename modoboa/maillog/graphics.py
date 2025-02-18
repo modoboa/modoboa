@@ -102,9 +102,7 @@ class Graphic:
             cmdargs += curve.to_rrd_command_args(rrdfile)
         code = 0
 
-        cmd = "{} xport --json -t --start {} --end {} ".format(
-            self.rrdtool_binary, str(start), str(end)
-        )
+        cmd = f"{self.rrdtool_binary} xport --json -t --start {str(start)} --end {str(end)} "
         cmd += " ".join(cmdargs)
         code, output = exec_cmd(smart_bytes(cmd))
         if code:
@@ -122,7 +120,7 @@ class Graphic:
         return result
 
 
-class GraphicSet(object):
+class GraphicSet:
     """A set of graphics."""
 
     domain_selector = False

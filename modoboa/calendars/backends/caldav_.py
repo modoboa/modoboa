@@ -94,7 +94,7 @@ class Caldav_Backend(CalendarBackend):
     def update_event(self, uid, original_data):
         """Update an existing event."""
         data = dict(original_data)
-        url = "{}/{}.ics".format(self.remote_cal.url.geturl(), uid)
+        url = f"{self.remote_cal.url.geturl()}/{uid}.ics"
         cal = self.remote_cal.event_by_url(url)
         orig_evt = cal.vobject_instance.vevent
         if "title" in data:
@@ -125,7 +125,7 @@ class Caldav_Backend(CalendarBackend):
             # Calendar has been changed, remove old event first.
             self.remote_cal.client.delete(url)
             remote_cal = Calendar(self.client, data["calendar"].encoded_path)
-            url = "{}/{}.ics".format(remote_cal.url.geturl(), uid)
+            url = f"{remote_cal.url.geturl()}/{uid}.ics"
         else:
             remote_cal = self.remote_cal
         remote_cal.add_event(cal.instance)
@@ -133,7 +133,7 @@ class Caldav_Backend(CalendarBackend):
 
     def get_event(self, uid):
         """Retrieve and event using its uid."""
-        url = "{}/{}.ics".format(self.remote_cal.url.geturl(), uid)
+        url = f"{self.remote_cal.url.geturl()}/{uid}.ics"
         event = self.remote_cal.event_by_url(url)
         return self._serialize_event(event)
 
@@ -147,7 +147,7 @@ class Caldav_Backend(CalendarBackend):
 
     def delete_event(self, uid):
         """Delete an event using its uid."""
-        url = "{}/{}.ics".format(self.remote_cal.url.geturl(), uid)
+        url = f"{self.remote_cal.url.geturl()}/{uid}.ics"
         self.remote_cal.client.delete(url)
 
     def import_events(self, fp):

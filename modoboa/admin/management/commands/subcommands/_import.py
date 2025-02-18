@@ -1,7 +1,6 @@
 """Django management command to import admin objects."""
 
 import csv
-import io
 import os
 
 import progressbar
@@ -49,12 +48,12 @@ class ImportCommand(BaseCommand):
         if not os.path.isfile(filename):
             raise CommandError("File not found")
 
-        num_lines = sum(1 for line in io.open(filename, encoding=encoding) if line)
+        num_lines = sum(1 for line in open(filename, encoding=encoding) if line)
         pbar = progressbar.ProgressBar(
             widgets=[progressbar.Percentage(), progressbar.Bar(), progressbar.ETA()],
             maxval=num_lines,
         ).start()
-        with io.open(filename, encoding=encoding, newline="") as f:
+        with open(filename, encoding=encoding, newline="") as f:
             reader = csv.reader(f, delimiter=options["sepchar"])
             i = 0
             for row in reader:
@@ -76,7 +75,7 @@ class ImportCommand(BaseCommand):
                         "Object already exists at line {}: {}".format(
                             i + 1, options["sepchar"].join(row[:2])
                         )
-                    )
+                    ) from None
                 i += 1
                 pbar.update(i)
 
@@ -101,7 +100,7 @@ class ImportCommand(BaseCommand):
                     )
                 )
                 detector = UniversalDetector()
-                with io.open(filename, "rb") as fp:
+                with open(filename, "rb") as fp:
                     for line in fp:
                         detector.feed(line)
                         if detector.done:

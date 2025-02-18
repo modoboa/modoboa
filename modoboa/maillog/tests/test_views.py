@@ -15,7 +15,7 @@ from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoTestCase
 
 
-class RunCommandsMixin(object):
+class RunCommandsMixin:
     """Mixin to run management commands."""
 
     def setUp(self):
@@ -78,39 +78,37 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
         self.run_logparser()
         url = reverse("maillog:graph_list")
         self.ajax_get(url, status=404)
-        response = self.ajax_get("{}?gset=mailtraffic".format(url))
+        response = self.ajax_get(f"{url}?gset=mailtraffic")
         self.assertIn("averagetraffic", response["graphs"])
         for period in ["week", "month", "year"]:
-            response = self.ajax_get(
-                "{}?gset=mailtraffic&period={}".format(url, period)
-            )
+            response = self.ajax_get(f"{url}?gset=mailtraffic&period={period}")
             self.assertIn("averagetraffic", response["graphs"])
             self.assertEqual(response["period_name"], period)
 
         # custom period
         today = datetime.date.today()
-        start = "{} 11:00:00".format(today)
-        end = "{} 11:40:00".format(today)
+        start = f"{today} 11:00:00"
+        end = f"{today} 11:40:00"
         response = self.ajax_get(
-            "{}?gset=mailtraffic&period=custom&start={}&end={}".format(url, start, end)
+            f"{url}?gset=mailtraffic&period=custom&start={start}&end={end}"
         )
         self.assertIn("averagetraffic", response["graphs"])
 
         # unknown domain
         response = self.ajax_get(
-            "{}?gset=mailtraffic&searchquery=unknown.com".format(url), status=400
+            f"{url}?gset=mailtraffic&searchquery=unknown.com", status=400
         )
 
         # check with greylist enabled
         self.set_global_parameter("greylist", True)
-        response = self.ajax_get("{}?gset=mailtraffic".format(url))
+        response = self.ajax_get(f"{url}?gset=mailtraffic")
         self.assertIn("averagetraffic", response["graphs"])
 
     def test_account_created_graph(self):
         """Check data."""
         self.run_update_statistics(rebuild=True)
         url = reverse("maillog:graph_list")
-        response = self.ajax_get("{}?gset=accountgraphicset".format(url))
+        response = self.ajax_get(f"{url}?gset=accountgraphicset")
         data = response["graphs"]["accountcreationgraphic"]["series"][0]["data"]
         self.assertEqual(data[-1]["y"], 5.0)
 
@@ -122,10 +120,10 @@ class ViewsTestCase(RunCommandsMixin, ModoTestCase):
         response = self.ajax_get(url)
         self.assertIn("averagetraffic", response["graphs"])
 
-        response = self.ajax_get("{}&searchquery=test.com".format(url))
+        response = self.ajax_get(f"{url}&searchquery=test.com")
         self.assertIn("averagetraffic", response["graphs"])
 
-        response = self.ajax_get("{}&searchquery=test2.com".format(url), status=403)
+        response = self.ajax_get(f"{url}&searchquery=test2.com", status=403)
 
     def test_get_domain_list(self):
         """Test get_domain_list view."""
@@ -148,7 +146,7 @@ class ManagementCommandsTestCase(RunCommandsMixin, ModoTestCase):
         """Test logparser command."""
         self.run_logparser()
         for d in ["global", "test.com"]:
-            path = os.path.join(self.workdir, "{}.rrd".format(d))
+            path = os.path.join(self.workdir, f"{d}.rrd")
             self.assertTrue(os.path.exists(path))
 
     def test_logparser_with_greylist(self):
@@ -156,7 +154,7 @@ class ManagementCommandsTestCase(RunCommandsMixin, ModoTestCase):
         self.set_global_parameter("greylist", True)
         self.run_logparser()
         for d in ["global", "test.com"]:
-            path = os.path.join(self.workdir, "{}.rrd".format(d))
+            path = os.path.join(self.workdir, f"{d}.rrd")
             self.assertTrue(os.path.exists(path))
 
     def test_update_statistics(self):

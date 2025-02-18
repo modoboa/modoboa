@@ -7,7 +7,7 @@ import tempfile
 from django.core.management import call_command
 
 
-class MapFilesTestCaseMixin(object):
+class MapFilesTestCaseMixin:
     """A generic test case to check map files generation."""
 
     MAP_FILES = None
@@ -21,13 +21,13 @@ class MapFilesTestCaseMixin(object):
         shutil.rmtree(self.workdir)
 
     def _test_maps_generation(self, engine):
-        dburl = "{0}://user:password@localhost/testdb".format(engine)
+        dburl = f"{engine}://user:password@localhost/testdb"
         call_command(
             "generate_postfix_maps", "--dburl", dburl, "--destdir", self.workdir
         )
 
         for mapfile in self.MAP_FILES:
-            path = "{0}/{1}".format(self.workdir, mapfile)
+            path = f"{self.workdir}/{mapfile}"
             self.assertTrue(os.path.exists(path))
             with open(path) as fpo:
                 content = fpo.read()

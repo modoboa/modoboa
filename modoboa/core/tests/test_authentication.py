@@ -19,7 +19,7 @@ from modoboa.core.password_hashers.utils import get_dovecot_schemes
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
-DOVEADM_TEST_PATH = "{}/doveadm".format(os.path.dirname(__file__))
+DOVEADM_TEST_PATH = f"{os.path.dirname(__file__)}/doveadm"
 
 
 class MockedAttestedCredentialData:
@@ -38,7 +38,7 @@ class AuthenticationTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(AuthenticationTestCase, cls).setUpTestData()
+        super().setUpTestData()
         from modoboa.admin.factories import MailboxFactory
 
         mailbox = MailboxFactory(
@@ -322,7 +322,7 @@ class PasswordResetTestCase(ModoTestCase):
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
-        super(PasswordResetTestCase, cls).setUpTestData()
+        super().setUpTestData()
         cls.account_ok = factories.UserFactory(
             username="user@test.com",
             secondary_email="test@ext.com",

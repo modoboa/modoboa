@@ -15,7 +15,7 @@ class DomainFactory(PermissionFactory):
         model = models.Domain
         django_get_or_create = ("name",)
 
-    name = factory.Sequence(lambda n: "domain{}.test".format(n))
+    name = factory.Sequence(lambda n: f"domain{n}.test")
     type = "domain"  # NOQA:A003
     quota = 0
     default_mailbox_quota = 10

@@ -19,7 +19,7 @@ class ManageDKIMKeys(BaseCommand):
     def create_new_dkim_key(self, domain):
         """Create a new DKIM key."""
         storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
-        pkey_path = os.path.join(storage_dir, "{}.pem".format(domain.name))
+        pkey_path = os.path.join(storage_dir, f"{domain.name}.pem")
 
         alarm_qset = domain.alarms.filter(internal_name=DKIM_WRITE_ERROR)
         if not os.access(storage_dir, os.W_OK):
@@ -43,26 +43,20 @@ class ManageDKIMKeys(BaseCommand):
             if domain.dkim_key_length
             else self.default_key_length
         )
-        code, output = sysutils.exec_cmd(
-            "openssl genrsa -out {} {}".format(pkey_path, key_size)
-        )
+        code, output = sysutils.exec_cmd(f"openssl genrsa -out {pkey_path} {key_size}")
         if code:
             print(
-                "Failed to generate DKIM private key for domain {}: {}".format(
-                    domain.name, smart_str(output)
-                )
+                f"Failed to generate DKIM private key for domain {domain.name}: {smart_str(output)}"
             )
             domain.alarms.create(
                 title=_("Failed to generate DKIM private key"), internal_name=DKIM_ERROR
             )
             return
         domain.dkim_private_key_path = pkey_path
-        code, output = sysutils.exec_cmd("openssl rsa -in {} -pubout".format(pkey_path))
+        code, output = sysutils.exec_cmd(f"openssl rsa -in {pkey_path} -pubout")
         if code:
             print(
-                "Failed to generate DKIM public key for domain {}: {}".format(
-                    domain.name, smart_str(output)
-                )
+                f"Failed to generate DKIM public key for domain {domain.name}: {smart_str(output)}"
             )
             domain.alarms.create(
                 title=_("Failed to generate DKIM public key"), internal_name=DKIM_ERROR

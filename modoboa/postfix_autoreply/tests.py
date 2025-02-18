@@ -322,7 +322,7 @@ class RepairTestCase(ModoTestCase):
         mbox = admin_models.Mailbox.objects.get(user__username="user@test.com")
         alias = admin_models.Alias.objects.get(internal=True, address=mbox.full_address)
         arm = factories.ARmessageFactory(mbox=mbox, enabled=False)
-        ar_address = "{}@autoreply.{}".format(mbox.full_address, mbox.domain.name)
+        ar_address = f"{mbox.full_address}@autoreply.{mbox.domain.name}"
         admin_factories.AliasRecipientFactory(alias=alias, address=ar_address)
         management.call_command("modo", "repair", "--quiet")
         self.assertFalse(

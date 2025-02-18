@@ -72,7 +72,7 @@ class Command(BaseCommand):
             return
         action = "delete" if options["delete"] else "disable"
         if not options["silent"]:
-            answer = input("Do you want to {} those accounts? (y/N) ".format(action))
+            answer = input(f"Do you want to {action} those accounts? (y/N) ")
             if not answer.lower().startswith("y"):
                 return
         if action == "disable":

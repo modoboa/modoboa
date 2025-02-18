@@ -1,4 +1,3 @@
-# coding: utf-8
 """Contacts backend tests."""
 
 import os
@@ -172,14 +171,14 @@ class ContactViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
 
-        response = self.client.get("{}?search=homer".format(url))
+        response = self.client.get(f"{url}?search=homer")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
     def test_filter_by_category(self):
         """Check filtering."""
         url = reverse("api:contact-list")
-        response = self.client.get("{}?category={}".format(url, self.category.name))
+        response = self.client.get(f"{url}?category={self.category.name}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
@@ -300,15 +299,15 @@ class EmailAddressViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
 
-        response = self.client.get("{}?search=homer".format(url))
+        response = self.client.get(f"{url}?search=homer")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
-        response = self.client.get("{}?search=Marge".format(url))
+        response = self.client.get(f"{url}?search=Marge")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
-        response = self.client.get("{}?search=Simpson".format(url))
+        response = self.client.get(f"{url}?search=Simpson")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
 

@@ -1,5 +1,3 @@
-# coding: utf-8
-
 """
 Postfix log parser.
 
@@ -230,7 +228,7 @@ class LogParser:
     def add_point_to_rrd(self, fname, tpl, values, ts=None):
         """Try to add a new point to RRD file."""
         if ts:
-            values = "{}:{}".format(ts, values)
+            values = f"{ts}:{values}"
         if self.verbose:
             print("[rrd] VERBOSE update -t %s %s" % (tpl, values))
         try:
@@ -564,11 +562,11 @@ class LogParser:
         host, prog, subprog, pid, log = m.groups()
 
         try:
-            parser = getattr(self, "_parse_{}".format(prog))
+            parser = getattr(self, f"_parse_{prog}")
             if not parser(log, host, pid, subprog):
                 self._dprint("[parser] ignoring %r log: %r" % (prog, log))
         except AttributeError:
-            self._dprint('[parser] no log handler for "{}": {}'.format(prog, log))
+            self._dprint(f'[parser] no log handler for "{prog}": {log}')
 
     def process(self):
         """Process the log file.
@@ -580,7 +578,7 @@ class LogParser:
             with open(self.logfile, encoding="utf-8", errors="ignore") as fp:
                 for line in fp:
                     self._parse_line(line)
-        except IOError as errno:
+        except OSError as errno:
             self._dprint("%s" % errno)
             sys.exit(1)
 

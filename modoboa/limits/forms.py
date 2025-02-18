@@ -22,7 +22,7 @@ class ResourcePoolForm(forms.Form):
                 )
                 if condition:
                     continue
-            self.fields["{}_limit".format(name)] = forms.IntegerField(
+            self.fields[f"{name}_limit"] = forms.IntegerField(
                 label=tpl["label"], help_text=tpl["help"]
             )
         if self.account:
@@ -49,7 +49,7 @@ class ResourcePoolForm(forms.Form):
     def save(self):
         owner = get_object_owner(self.account)
         for name, _definition in utils.get_user_limit_templates():
-            fieldname = "{}_limit".format(name)
+            fieldname = f"{name}_limit"
             if fieldname not in self.cleaned_data:
                 continue
             limit = self.account.userobjectlimit_set.get(name=name)
@@ -67,7 +67,7 @@ class DomainLimitsForm(forms.Form):
         self.domain = kwargs.pop("instance", None)
         super(DomainLimitsForm, self).__init__(*args, **kwargs)
         for name, tpl in utils.get_domain_limit_templates():
-            self.fields["{}_limit".format(name)] = forms.IntegerField(
+            self.fields[f"{name}_limit"] = forms.IntegerField(
                 label=tpl["label"], help_text=tpl["help"]
             )
         if not self.domain:
@@ -91,7 +91,7 @@ class DomainLimitsForm(forms.Form):
     def save(self, user, **kwargs):
         """Set limits."""
         for name, _definition in utils.get_domain_limit_templates():
-            fieldname = "{}_limit".format(name)
+            fieldname = f"{name}_limit"
             if fieldname not in self.cleaned_data:
                 continue
             limit = self.domain.domainobjectlimit_set.get(name=name)

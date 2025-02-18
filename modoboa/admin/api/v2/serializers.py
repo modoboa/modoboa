@@ -136,7 +136,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
                 core_signals.can_create_object.send(
                     self.__class__, context=user, klass=models.Alias
                 )
-                address = "postmaster@{}".format(domain.name)
+                address = f"postmaster@{domain.name}"
                 alias = models.Alias.objects.create(
                     address=address, domain=domain, enabled=True
                 )
@@ -364,9 +364,7 @@ class AccountMeSerializer(v1_serializers.AccountSerializer):
         permissions = (
             user.user_permissions.all() | Permission.objects.filter(group__user=user)
         ).select_related("content_type")
-        return [
-            "{}.{}".format(p.content_type.app_label, p.codename) for p in permissions
-        ]
+        return [f"{p.content_type.app_label}.{p.codename}" for p in permissions]
 
 
 class AccountSerializer(v1_serializers.AccountSerializer):

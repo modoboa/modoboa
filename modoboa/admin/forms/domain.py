@@ -80,7 +80,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         if "instance" in kwargs:
             self.old_dkim_key_length = kwargs["instance"].dkim_key_length
             self.oldname = kwargs["instance"].name
-        super(DomainFormGeneral, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         params = dict(param_tools.get_global_parameters("admin"))
         self.fields["quota"].initial = params["default_domain_quota"]
         if params["default_domain_message_limit"] is not None:
@@ -97,7 +97,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         elif "instance" in kwargs:
             d = kwargs["instance"]
             for pos, dalias in enumerate(d.domainalias_set.all()):
-                name = "aliases_%d" % (pos + 1)
+                name = f"aliases_{pos + 1}"
                 self._create_field(forms.CharField, name, dalias.name, 3)
 
     def clean_name(self):
@@ -148,7 +148,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
 
         The validation way is not very smart...
         """
-        cleaned_data = super(DomainFormGeneral, self).clean()
+        cleaned_data = super().clean()
         if self._errors:
             return cleaned_data
         condition = (
@@ -203,7 +203,7 @@ class DomainFormGeneral(forms.ModelForm, DynamicForm):
         quotas update.
 
         """
-        d = super(DomainFormGeneral, self).save(commit=False)
+        d = super().save(commit=False)
         core_signals.can_create_object.send(
             sender=self.__class__, context=user, klass=Domain, instance=d
         )
@@ -280,7 +280,7 @@ class DomainFormOptions(forms.Form):
     )
 
     def __init__(self, user, *args, **kwargs):
-        super(DomainFormOptions, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         results = core_signals.user_can_set_role.send(
             sender=self.__class__, user=user, role="DomainAdmins"
         )
@@ -296,7 +296,7 @@ class DomainFormOptions(forms.Form):
 
     def clean(self):
         """Check required values."""
-        cleaned_data = super(DomainFormOptions, self).clean()
+        cleaned_data = super().clean()
         if cleaned_data.get("create_dom_admin"):
             if not cleaned_data.get("dom_admin_username"):
                 self.add_error("dom_admin_username", _("This field is required."))
@@ -311,7 +311,7 @@ class DomainFormOptions(forms.Form):
             return
         user = kwargs.pop("user")
         domain = kwargs.pop("domain")
-        username = "%s@%s" % (self.cleaned_data["dom_admin_username"], domain.name)
+        username = f"{self.cleaned_data['dom_admin_username']}@{domain.name}"
         try:
             da = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -349,7 +349,7 @@ class DomainFormOptions(forms.Form):
                 core_signals.can_create_object.send(
                     self.__class__, context=user, klass=Alias
                 )
-                address = "postmaster@{}".format(domain.name)
+                address = f"postmaster@{domain.name}"
                 alias = Alias.objects.create(
                     address=address, domain=domain, enabled=True
                 )
@@ -386,7 +386,7 @@ class DomainForm(TabForms):
         self.forms += reduce(lambda a, b: a + b, [result[1] for result in results])
         if not self.forms:
             self.active_id = "admins"
-        super(DomainForm, self).__init__(request, *args, **kwargs)
+        super().__init__(request, *args, **kwargs)
 
     def extra_context(self, context):
         """Add information to template context."""
@@ -409,7 +409,7 @@ class DomainForm(TabForms):
         if "general" in self.instances:
             instance = self.instances["general"]
             instance.oldname = instance.name
-        return super(DomainForm, self).is_valid()
+        return super().is_valid()
 
     def save(self):
         """Custom save method.
@@ -437,7 +437,7 @@ class DomainWizard(WizardForm):
     """Domain creation wizard."""
 
     def __init__(self, request):
-        super(DomainWizard, self).__init__(request)
+        super().__init__(request)
         self.add_step(
             WizardStep(
                 "general",

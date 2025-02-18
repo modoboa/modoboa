@@ -150,10 +150,10 @@ def list_quotas(request):
     domains = Domain.objects.get_for_admin(request.user)
     domains = domains.exclude(quota=0)
     if sort_order in ["name", "quota"]:
-        domains = domains.order_by("{}{}".format(sort_dir, sort_order))
+        domains = domains.order_by(f"{sort_dir}{sort_order}")
     elif sort_order == "allocated_quota":
         domains = domains.annotate(allocated_quota=Sum("mailbox__quota")).order_by(
-            "{}{}".format(sort_dir, sort_order)
+            f"{sort_dir}{sort_order}"
         )
     page = get_listing_page(domains, request.GET.get("page", 1))
     context = {
@@ -182,7 +182,7 @@ def list_logs(request):
         )
     else:
         logs = ml_models.Maillog.objects.all()
-    logs = logs.order_by("{}{}".format(sort_dir, sort_order))
+    logs = logs.order_by(f"{sort_dir}{sort_order}")
     if search:
         logs = logs.filter(
             Q(sender__icontains=search)
@@ -266,7 +266,7 @@ class DomainDetailView(auth_mixins.PermissionRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         """Include extra widgets."""
-        context = super(DomainDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         result = signals.extra_domain_dashboard_widgets.send(
             self.__class__, user=self.request.user, domain=self.object
         )

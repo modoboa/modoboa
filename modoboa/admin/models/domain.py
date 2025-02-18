@@ -284,9 +284,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
                 split_record.append('  "%s"' % record)
                 break
         record = "\n".join(split_record)
-        return "{}._domainkey.{}. IN TXT (\n{})".format(
-            self.dkim_key_selector, self.name, record
-        )
+        return f"{self.dkim_key_selector}._domainkey.{self.name}. IN TXT (\n{record})"
 
     def add_admin(self, account):
         """Add a new administrator to this domain.
