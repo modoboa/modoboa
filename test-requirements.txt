@@ -81,7 +81,7 @@ django-cors-headers==4.7.0
     # via modoboa (pyproject.toml)
 django-environ==0.12.0
     # via modoboa (pyproject.toml)
-django-filter==24.3
+django-filter==25.1
     # via modoboa (pyproject.toml)
 django-js-asset==2.2.0
     # via django-ckeditor
