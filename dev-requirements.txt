@@ -23,7 +23,7 @@ bcrypt==4.2.1
     # via modoboa (pyproject.toml)
 black==25.1.0
     # via modoboa (pyproject.toml)
-caldav==1.3.9
+caldav==1.4.0
     # via modoboa (pyproject.toml)
 certifi==2025.1.31
     # via requests
