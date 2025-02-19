@@ -202,7 +202,7 @@ pyyaml==6.0.2
     # via drf-spectacular
 qrcode==8.0
     # via modoboa (pyproject.toml)
-recurring-ical-events==3.4.1
+recurring-ical-events==3.5.2
     # via caldav
 redis==5.2.1
     # via
