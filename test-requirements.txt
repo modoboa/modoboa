@@ -23,7 +23,7 @@ attrs==25.1.0
     #   referencing
 bcrypt==4.2.1
     # via modoboa (pyproject.toml)
-cachetools==5.5.1
+cachetools==5.5.2
     # via tox
 caldav==1.4.0
     # via modoboa (pyproject.toml)
