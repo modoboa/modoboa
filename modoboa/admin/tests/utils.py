@@ -1,5 +1,6 @@
 """Test utilities."""
 
+import os
 import socket
 
 from django.conf import settings
@@ -9,6 +10,9 @@ from dns.rdtypes.IN.A import A
 from dns.rdtypes.ANY.MX import MX
 from dns.rdtypes.ANY.TXT import TXT
 from dns.resolver import NXDOMAIN, NoAnswer, NoNameservers, Timeout
+
+
+HAVE_REDIS = "REDIS_HOST" in os.environ and "REDIS_PORT" in os.environ
 
 
 class RRset:
