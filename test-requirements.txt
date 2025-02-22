@@ -62,6 +62,7 @@ django==4.2.18
     #   dj-database-url
     #   django-ckeditor
     #   django-cors-headers
+    #   django-extensions
     #   django-filter
     #   django-js-asset
     #   django-oauth-toolkit
@@ -80,6 +81,8 @@ django-ckeditor==6.7.2
 django-cors-headers==4.7.0
     # via modoboa (pyproject.toml)
 django-environ==0.12.0
+    # via modoboa (pyproject.toml)
+django-extensions==3.2.3
     # via modoboa (pyproject.toml)
 django-filter==25.1
     # via modoboa (pyproject.toml)
@@ -186,7 +189,6 @@ pyproject-api==1.9.0
     # via tox
 python-dateutil==2.9.0.post0
     # via
-    #   faker
     #   icalendar
     #   modoboa (pyproject.toml)
     #   recurring-ical-events
@@ -195,7 +197,6 @@ python-magic==0.4.27
     # via modoboa (pyproject.toml)
 pytz==2025.1
     # via
-    #   caldav
     #   modoboa (pyproject.toml)
     #   vobject
 pyyaml==6.0.2
@@ -258,17 +259,15 @@ tox==4.24.1
 typing-extensions==4.12.2
     # via
     #   dj-database-url
-    #   faker
     #   jwcrypto
     #   referencing
     #   sievelib
 tzdata==2025.1
     # via
+    #   faker
     #   icalendar
     #   recurring-ical-events
     #   x-wr-timezone
-tzlocal==5.3
-    # via caldav
 uritemplate==4.1.1
     # via
     #   drf-spectacular
