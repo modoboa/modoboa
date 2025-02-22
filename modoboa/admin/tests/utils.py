@@ -13,6 +13,12 @@ from dns.resolver import NXDOMAIN, NoAnswer, NoNameservers, Timeout
 
 
 HAVE_REDIS = "REDIS_HOST" in os.environ and "REDIS_PORT" in os.environ
+try:
+    import ldap
+except ImportError:
+    HAVE_LDAP = False
+else:
+    HAVE_LDAP = True
 
 
 class RRset:
