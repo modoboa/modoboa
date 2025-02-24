@@ -191,7 +191,7 @@ requests-file==2.1.0
     # via tldextract
 requests-oauthlib==2.0.0
     # via ovh
-rpds-py==0.23.0
+rpds-py==0.23.1
     # via
     #   jsonschema
     #   referencing
