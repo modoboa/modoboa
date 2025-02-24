@@ -1,6 +1,7 @@
 """Core views test cases."""
 
 from testfixtures import compare
+import unittest
 
 from django import forms
 from django.urls import reverse
@@ -8,6 +9,7 @@ from django.test import override_settings
 
 from modoboa.lib.tests import ModoTestCase
 from modoboa.parameters import forms as param_forms, tools as param_tools
+from . import utils
 from .. import factories, models, signals
 
 SETTINGS_SAMPLE = {
@@ -172,6 +174,7 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
+    @unittest.skipIf(not utils.HAVE_NETWORK, "Network access unavailable")
     def test_custom_news(self):
         """Check that custom news are displayed."""
         url = reverse("core:dashboard")
@@ -199,6 +202,7 @@ class DashboardTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertNotContains(response, "Features looking for sponsoring")
 
+    @unittest.skipIf(not utils.HAVE_NETWORK, "Network access unavailable")
     @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=False)
     def test_enable_dashboard_external_queries(self):
         """Load dashboard with DISABLE_DASHBOARD_EXTERNAL_QUERIES = False"""
