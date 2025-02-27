@@ -148,7 +148,7 @@ progressbar33==2.4
     # via modoboa (pyproject.toml)
 psycopg[binary]==3.2.3
     # via modoboa (pyproject.toml)
-psycopg-binary==3.2.3
+psycopg-binary==3.2.5
     # via psycopg
 pycparser==2.22
     # via cffi
