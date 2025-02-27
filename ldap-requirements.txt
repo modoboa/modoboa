@@ -61,7 +61,7 @@ django==4.2.18
     #   drf-nested-routers
     #   drf-spectacular
     #   modoboa (pyproject.toml)
-django-auth-ldap==4.8.0
+django-auth-ldap==5.1.0
     # via modoboa (pyproject.toml)
 django-ckeditor==6.7.2
     # via modoboa (pyproject.toml)
