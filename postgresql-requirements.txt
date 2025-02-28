@@ -146,7 +146,7 @@ pillow==11.1.0
     #   reportlab
 progressbar33==2.4
     # via modoboa (pyproject.toml)
-psycopg[binary]==3.2.3
+psycopg[binary]==3.2.5
     # via modoboa (pyproject.toml)
 psycopg-binary==3.2.3
     # via psycopg
