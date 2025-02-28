@@ -1,5 +1,6 @@
 """DNSBL related tests."""
 
+import unittest
 from unittest import mock
 
 import dns.resolver
@@ -300,6 +301,7 @@ class DNSChecksTestCase(ModoTestCase):
         super().setUpTestData()
         cls.domain = factories.DomainFactory(name="dns-checks.com")
 
+    @unittest.skipIf(not utils.HAVE_REDIS, "Redis connection not configured")
     @mock.patch("gevent.socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
