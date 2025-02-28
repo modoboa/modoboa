@@ -90,7 +90,7 @@ msgstr "内部エラー"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr "表示するエントリはありません"
+msgstr "これ以上、表示するエントリーはありません"
 
 #: static/js/listing.js:46
 msgid "Search"
@@ -98,4 +98,4 @@ msgstr "検索"
 
 #: static/js/searchbar.js:28
 msgid "Search..."
-msgstr "検索 ..."
+msgstr "検索..."
