@@ -51,8 +51,7 @@ To do so, run the following commands::
   $ source <path>/bin/activate
   $ git clone https://github.com/modoboa/modoboa.git
   $ cd modoboa
-  $ pip install -e .
-  $ pip install -r dev-requirements.txt
+  $ pip install -e .[dev]
 
 This will create a symbolic link to your local copy so
 any modification you make will be automatically available in your
