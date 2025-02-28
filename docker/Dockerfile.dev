@@ -7,16 +7,20 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 FROM base AS build
 
-RUN apk add --update openssl librrd python3-dev libffi-dev gcc g++ musl-dev libxml2-dev libxslt-dev \
-    libressl-dev jpeg-dev rrdtool-dev file make gettext freetype-dev cairo-dev cargo \
+RUN apk add --update openssl librrd python3-dev libffi-dev  \
+                     gcc g++ musl-dev libxml2-dev libxslt-dev \
+                     libressl-dev jpeg-dev rrdtool-dev file make \
+                     gettext freetype-dev cairo-dev cargo git \
     && rm -rf /var/cache/apk/*
 RUN python3 -m venv $VIRTUAL_ENV
 WORKDIR /tmp
-COPY requirements.txt /tmp
-COPY test-requirements.txt /tmp
-COPY dev-requirements.txt /tmp
-RUN python -m pip install -U pip
+COPY . /tmp
+RUN python -m pip install -U pip pip-tools ruff
+RUN pip-compile --output-file=requirements.txt pyproject.toml
+RUN pip-compile --extra=dev --output-file=dev-requirements.txt pyproject.toml
+RUN pip-compile --extra=test --output-file=test-requirements.txt pyproject.toml
 RUN pip install -r requirements.txt -r test-requirements.txt -r dev-requirements.txt
+
 FROM base AS run
 COPY docker/doveadm /usr/local/bin
 RUN chmod +x /usr/local/bin/doveadm
