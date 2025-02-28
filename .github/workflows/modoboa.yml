@@ -87,11 +87,7 @@ jobs:
           && sudo apt-get install -y \
             postfix librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev redis-server
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -r ldap-requirements.txt
-          pip install -r test-requirements.txt
-          pip install -r dev-requirements.txt
-          pip install -e .
+          pip install -e .[ldap,test,dev]
           echo "Testing redis connection"
           redis-cli -h $REDIS_HOST -p $REDIS_PORT ping
         env:
@@ -100,13 +96,13 @@ jobs:
       - name: Install postgres requirements
         if: ${{ matrix.database == 'postgres' }}
         run: |
-          pip install -r postgresql-requirements.txt
+          pip install -e .[postgresql]
           pip install coverage
           echo "DB=postgres" >> $GITHUB_ENV
       - name: Install mysql requirements
         if: ${{ matrix.database == 'mysql' }}
         run: |
-          pip install -r mysql-requirements.txt
+          pip install -e .[mysql]
           echo "DB=mysql" >> $GITHUB_ENV
       - name: Test with pytest
         if: ${{ matrix.python-version != '3.12' || matrix.database != 'postgres' }}
@@ -199,7 +195,8 @@ jobs:
       - name: Build packages
         run: |
           sudo apt-get install librrd-dev rrdtool libssl-dev
-          python -m pip install --upgrade pip build
+          python -m pip install --upgrade pip build pip-tools
+          pip-compile -o requirements.txt pyproject.toml
           pip install -r requirements.txt
           cd modoboa
           django-admin compilemessages
