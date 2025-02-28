@@ -19,7 +19,7 @@ attrs==25.1.0
     # via
     #   jsonschema
     #   referencing
-bcrypt==4.2.1
+bcrypt==4.3.0
     # via modoboa (pyproject.toml)
 black==25.1.0
     # via modoboa (pyproject.toml)
