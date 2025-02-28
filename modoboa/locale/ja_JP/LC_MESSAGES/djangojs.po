@@ -70,7 +70,7 @@ msgstr "操作"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
-msgstr "表示するログエントリはありません"
+msgstr "これ以上、表示するログエントリはありません"
 
 #: maillog/static/maillog/js/stats.js:45
 msgid "Search a domain"
