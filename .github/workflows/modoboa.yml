@@ -120,7 +120,6 @@ jobs:
           REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
-          OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
       - name: Test with pytest and coverage
         if: ${{ matrix.python-version == '3.12' && matrix.database == 'postgres' }}
@@ -141,7 +140,6 @@ jobs:
           REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
-          OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
       - name: Upload coverage result
         if: ${{ matrix.python-version == '3.12' && matrix.database == 'postgres' }}
