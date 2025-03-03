@@ -1,4 +1,5 @@
 """Management command to create DKIM keys."""
+
 from django.core.management.base import BaseCommand, CommandError
 
 from modoboa.parameters import tools as param_tools
