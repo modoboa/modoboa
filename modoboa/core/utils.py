@@ -13,6 +13,7 @@ from django.utils.translation import gettext as _
 from modoboa.core.extensions import exts_pool
 from modoboa.core.password_hashers import get_configured_password_hasher, PasswordHasher
 from modoboa.lib.api_client import ModoAPIClient
+from modoboa.rspamd.utils import check_rspamd_installed
 
 
 def parse_map_file(path):
@@ -101,3 +102,13 @@ def check_for_deprecated_password_schemes() -> Optional[type[PasswordHasher]]:
         if models.User.objects.is_password_scheme_in_use(dhasher):
             return dhasher
     return None
+
+
+def get_capabilities():
+    """Return the list of capabilities of this modoboa instance."""
+    capabilities = {}
+    # Rspamd
+    rspamd_options = check_rspamd_installed()
+    if rspamd_options is not None:
+        capabilities.update({"rspamd": rspamd_options})
+    return capabilities

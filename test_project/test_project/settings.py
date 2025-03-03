@@ -99,6 +99,7 @@ MODOBOA_APPS = (
     "modoboa.imap_migration",
     "modoboa.autoreply",
     "modoboa.sievefilters",
+    "modoboa.rspamd",
     # Modoboa extensions here.
     "modoboa.contacts",
     "modoboa.calendars",
