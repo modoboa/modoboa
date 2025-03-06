@@ -365,7 +365,7 @@ msgstr "Tentando fazer login."
 
 #: src/components/calendars/EventForm.vue:61
 msgid "Attendees"
-msgstr "Participante(s)"
+msgstr "Participantes"
 
 #: src/layouts/admin/AdminLayout.vue:57
 #: src/views/admin/monitoring/AuditTrailView.vue:3
