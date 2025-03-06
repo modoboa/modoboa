@@ -2198,7 +2198,7 @@ msgstr "Sincronização iniciada"
 
 #: src/components/contacts/ContactList.vue:31
 msgid "Synchronize contacts with address book"
-msgstr "Sincronize sua lista de contatos"
+msgstr "Sincronize seu catálogo de endereços"
 
 #: src/components/admin/identities/IdentityList.vue:123
 msgid "Tags"
