@@ -1636,7 +1636,7 @@ msgstr "Caminho para o arquivo de permissões"
 
 #: calendars/app_settings.py:39
 msgid "Path to the file that contains rights definition"
-msgstr "Caminho para o arquivo que contém as definições de direitos"
+msgstr "Caminho para o arquivo que contém a definição de direitos"
 
 #: calendars/app_settings.py:46
 msgid "Allow calendars administration"
