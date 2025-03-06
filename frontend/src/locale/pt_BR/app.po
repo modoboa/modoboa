@@ -1822,7 +1822,7 @@ msgid ""
 "passwords have been converted using the new scheme."
 msgstr ""
 "Observe que você verá esta mensagem até que <strong>TODAS</strong> as senhas"
-" de usuários tenham sido convertidas usando o novo esquema."
+" dos usuários tenham sido convertidas usando o novo esquema."
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
