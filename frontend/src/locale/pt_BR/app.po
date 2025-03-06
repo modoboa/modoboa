@@ -2273,7 +2273,7 @@ msgid ""
 "To access this address book from the outside (such as Mozilla Thunderbird or"
 " your smartphone), use the following URL:"
 msgstr ""
-"Para acessar esta lista de contatos externamente (como do Mozilla "
+"Para acessar esse catálogo de endereços externamente (como do Mozilla "
 "Thunderbird ou de seu celular), use a seguinte URL:"
 
 #: src/components/calendars/CalendarDetail.vue:9
