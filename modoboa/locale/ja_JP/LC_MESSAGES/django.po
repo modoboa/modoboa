@@ -448,7 +448,7 @@ msgstr "自分自身のアカウントを無効にすることはできません
 
 #: admin/forms/account.py:234
 msgid "E-mail"
-msgstr "E メール"
+msgstr "メールアドレス"
 
 #: admin/forms/account.py:236
 msgid "Create an alias using the old address"
