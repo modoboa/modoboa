@@ -2321,7 +2321,7 @@ msgstr "追加しました"
 
 #: core/handlers.py:40
 msgid "modified"
-msgstr "修正しました"
+msgstr "変更しました"
 
 #: core/handlers.py:42
 #, python-format
