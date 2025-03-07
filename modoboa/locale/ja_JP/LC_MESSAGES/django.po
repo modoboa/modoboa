@@ -4164,7 +4164,7 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr "<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> <p>メールが届かなければ、入力したメールアドレスが正しいものだったかどうか、または SPAM フォルダーに配信されていないかを確認してください。</p>"
+msgstr "<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> <p>メールが届かなければ、入力したアドレスが正しいものだったかどうか、または SPAM フォルダーに配信されていないかを確認してください。</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
