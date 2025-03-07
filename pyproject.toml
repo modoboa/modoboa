@@ -10,26 +10,25 @@ authors = [
 ]
 description = "Mail hosting made simple"
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
-    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.2",
     "Intended Audience :: System Administrators",
     "License :: OSI Approved :: ISC License (ISCL)",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Communications :: Email",
     "Topic :: Internet :: WWW/HTTP",
 ]
 keywords = ["email"]
 license = {file = "LICENSE"}
 dependencies = [
-	"django>4.0,<5.0",
+	"django==5.2b1",
 	"django-phonenumber-field[phonenumbers]==8.1.0",
 	"django-reversion==5.1.0",
 	"django-xforwardedfor-middleware==2.0",
