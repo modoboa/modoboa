@@ -4112,7 +4112,7 @@ msgstr "Modoboa へようこそ"
 
 #: templates/registration/login.html:11
 msgid "Identification"
-msgstr "ユーザー"
+msgstr "認証"
 
 #: templates/registration/login.html:24
 msgid "Remember me"
