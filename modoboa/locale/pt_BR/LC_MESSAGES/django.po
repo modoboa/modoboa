@@ -1667,7 +1667,7 @@ msgstr "Calendários"
 
 #: calendars/models.py:48 calendars/models.py:65 contacts/models.py:38
 msgid "Server location is not set, please fix it."
-msgstr "Localização do servidor não informada, por favor corrija isto."
+msgstr "Localização do servidor não informada, por favor corrija."
 
 #: calendars/viewsets.py:197
 msgid "Uploaded file is too big (max: {} bytes)"
