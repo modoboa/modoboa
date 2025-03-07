@@ -2247,8 +2247,8 @@ msgid ""
 " follows:"
 msgstr ""
 "O esquema de senha que você está usando foi descontinuado e será removido na"
-" próxima versão secundária. O procedimento para atualizar para um esquema "
-"mais forte é o seguinte:"
+" próxima atualização. O procedimento para atualizar para um esquema mais "
+"forte é o seguinte:"
 
 #: src/components/account/ProfileForm.vue:34
 msgid "there"
