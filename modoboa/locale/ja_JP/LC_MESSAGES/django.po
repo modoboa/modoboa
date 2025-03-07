@@ -1400,7 +1400,7 @@ msgid ""
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
 "is mandatory and must be equal to one of the previous values.</p> <p>You can"
 " use a different character as separator.</p>"
-msgstr "各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>account; ログイン名; パスワード; 姓; 名; 有効？; グループ; メールアドレス; 容量制限; [, ドメイン, ...]</em></li> <li><em>alias; メールアドレス; 有効？; 受信者; 受信者; ...</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> <p>区切り文字に別の文字も使えます。</p>"
+msgstr "各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>account; ログイン名; パスワード; 姓; 名; 有効？; グループ; アドレス; 容量制限; [, ドメイン, ...]</em></li> <li><em>alias; アドレス; 有効？; 受信者; 受信者; ...</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> <p>区切り文字に別の文字も使えます。</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
