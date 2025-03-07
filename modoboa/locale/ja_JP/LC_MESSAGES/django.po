@@ -1424,7 +1424,7 @@ msgstr "ID"
 
 #: admin/templates/admin/mx_domain_detail.html:11
 msgid "Updated"
-msgstr "更新済み"
+msgstr "更新しました"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
