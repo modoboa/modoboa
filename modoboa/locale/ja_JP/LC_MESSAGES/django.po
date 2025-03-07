@@ -26,7 +26,7 @@ msgstr ""
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr "容量制限は、すべてのメールボックス全体のものです。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
+msgstr "すべてのメールボックス全体の容量制限。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
 
 #: admin/api/v1/serializers.py:49
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
