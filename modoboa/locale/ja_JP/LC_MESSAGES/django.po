@@ -1142,7 +1142,7 @@ msgstr "エイリアス"
 
 #: admin/templates/admin/alias_detail.html:27
 msgid "Modified"
-msgstr "変更済み"
+msgstr "変更しました"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"
