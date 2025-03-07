@@ -871,7 +871,7 @@ msgstr "ドメインが見つかりません。"
 
 #: admin/models/alias.py:91 admin/models/mailbox.py:85
 msgid "address"
-msgstr "メールアドレス"
+msgstr "アドレス"
 
 #: admin/models/alias.py:93
 msgid "The alias address."
