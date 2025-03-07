@@ -630,7 +630,7 @@ msgstr "ドメイン"
 
 #: admin/forms/domain.py:246
 msgid "Create a domain administrator"
-msgstr "ドメイン管理者を作成する"
+msgstr "ドメイン管理者を作成"
 
 #: admin/forms/domain.py:248
 msgid "Automatically create an administrator for this domain"
