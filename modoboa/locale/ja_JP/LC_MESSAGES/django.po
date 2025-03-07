@@ -1616,7 +1616,7 @@ msgstr "権利情報のファイルパス"
 
 #: calendars/app_settings.py:39
 msgid "Path to the file that contains rights definition"
-msgstr "権限情報定義を保存するファイルのパス"
+msgstr "権利情報定義を保存するファイルのパス"
 
 #: calendars/app_settings.py:46
 msgid "Allow calendars administration"
