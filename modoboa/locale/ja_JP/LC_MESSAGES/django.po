@@ -2498,7 +2498,7 @@ msgstr "More"
 
 #: core/templates/core/_current_features.html:22
 msgid "Nothing to sponsor yet."
-msgstr "まだスポンサーはいません。"
+msgstr "なし"
 
 #: core/templates/core/_latest_news_widget.html:5
 msgid "Latest news"
