@@ -1,20 +1,19 @@
-#
+# 
 # Translators:
 # Paulino Michelazzo <michelazzo@me.com>, 2024
-#
+# Rafael Barretto Alves <ch3yd@hotmail.com>, 2025
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2024-08-01 12:26+0000\n"
-"Last-Translator: Paulino Michelazzo <michelazzo@me.com>, 2024\n"
-"Language-Team: Portuguese (Brazil) (https://app.transifex.com/tonio/"
-"teams/13749/pt_BR/)\n"
-"Language: pt_BR\n"
+"Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>, 2025\n"
+"Language-Team: Portuguese (Brazil) (https://app.transifex.com/tonio/teams/13749/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:41
 msgid "(the domain will be created locally)"
@@ -23,9 +22,9 @@ msgstr "(o domínio será criado localmente)"
 #: src/components/calendars/ImportEventsForm.vue:81
 msgid "%{ n } event imported"
 msgid_plural "%{ n } events imported"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%{ n } evento importado"
+msgstr[1] "%{ n } eventos importados"
+msgstr[2] "%{ n } eventos importados"
 
 #: src/components/account/APISetupForm.vue:45
 msgid "A documentation of the API is available"
@@ -51,9 +50,9 @@ msgid ""
 "A user with no privileges but with a mailbox. He will be allowed to use all "
 "end-user features: webmail, calendar, contacts, filters."
 msgstr ""
-"Um usuário sem privilégios, mas com uma caixa de correio. Ele terá permissão "
-"para usar todos os recursos do usuário final: webmail, calendário, contatos, "
-"filtros."
+"Um usuário sem privilégios, mas com uma caixa de correio. Ele terá permissão"
+" para usar todos os recursos do usuário final: webmail, calendário, "
+"contatos, filtros."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:92
 msgid ""
@@ -69,7 +68,7 @@ msgstr "Intervalo de tempo absoluto"
 
 #: src/views/calendars/CalendarView.vue:103
 msgid "Access rules"
-msgstr ""
+msgstr "Regras de acesso"
 
 #: src/stores/identities.store.js:72
 msgid "account"
@@ -144,9 +143,8 @@ msgid "Add"
 msgstr "Adicionar"
 
 #: src/views/contacts/AddressBook.vue:54
-#, fuzzy
 msgid "Add a category"
-msgstr "Adicionar ação"
+msgstr "Adicionar uma categoria"
 
 #: src/components/admin/domains/DomainAliasForm.vue:74
 msgid "Add a new domain alias"
@@ -161,9 +159,8 @@ msgid "Add administrator"
 msgstr "Adicionar administrador"
 
 #: src/components/contacts/CategoryForm.vue:57
-#, fuzzy
 msgid "Add category"
-msgstr "Adicionar ação"
+msgstr "Adicionar categoria"
 
 #: src/components/account/FilterForm.vue:60
 msgid "Add condition"
@@ -205,9 +202,8 @@ msgid "Address (hostname or IP)"
 msgstr "Endereço (hostname ou IP)"
 
 #: src/components/contacts/AddressBookInfo.vue:4
-#, fuzzy
 msgid "Address book information"
-msgstr "Informação geral"
+msgstr "Informação do catálogo de endereços"
 
 #: src/components/admin/identities/DomainAdminDomains.vue:4
 msgid "Administered domains"
@@ -289,8 +285,8 @@ msgstr "Apelido atualizado"
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
-"name (@domain.tld)."
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
 msgstr ""
 "Apelido(s) desta caixa de correio. Para criar um apelido catchall, basta "
 "digitar o nome de domínio (@domain.tld)."
@@ -369,7 +365,7 @@ msgstr "Tentando fazer login."
 
 #: src/components/calendars/EventForm.vue:61
 msgid "Attendees"
-msgstr ""
+msgstr "Participantes"
 
 #: src/layouts/admin/AdminLayout.vue:57
 #: src/views/admin/monitoring/AuditTrailView.vue:3
@@ -422,38 +418,33 @@ msgid "Bind/named format. Click to copy"
 msgstr "Formato de associação/nomeado. Clique para copiar"
 
 #: src/components/contacts/ContactForm.vue:75
-#, fuzzy
 msgid "Birth date"
-msgstr "Data de criação"
+msgstr "Data de nascimento"
 
 #: src/components/calendars/EventForm.vue:49
 #: src/views/calendars/CalendarView.vue:3
 msgid "Calendar"
-msgstr ""
+msgstr "Calendário"
 
 #: src/components/calendars/CalendarForm.vue:101
-#, fuzzy
 msgid "Calendar created"
-msgstr "Domínio criado"
+msgstr "Calendário criado"
 
 #: src/views/calendars/CalendarView.vue:257
-#, fuzzy
 msgid "Calendar deleted"
-msgstr "Alarme removido"
+msgstr "Calendário excluído"
 
 #: src/components/calendars/CalendarDetail.vue:4
-#, fuzzy
 msgid "Calendar information"
-msgstr "Informação geral"
+msgstr "Informação do calendário"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:4
 msgid "Calendar sharing"
-msgstr ""
+msgstr "Compartilhamento de calendário"
 
 #: src/components/calendars/CalendarForm.vue:98
-#, fuzzy
 msgid "Calendar updated"
-msgstr "Filtro atualizado"
+msgstr "Calendário atualizado"
 
 #: src/components/account/APISetupForm.vue:98
 #: src/components/account/FidoAuthForm.vue:204
@@ -471,16 +462,15 @@ msgstr "Cancelar"
 #: src/components/contacts/ContactList.vue:127
 #: src/views/contacts/AddressBook.vue:41
 msgid "Categories"
-msgstr ""
+msgstr "Categorias"
 
 #: src/components/contacts/CategoryForm.vue:92
-#, fuzzy
 msgid "Category deleted"
-msgstr "Alarme removido"
+msgstr "Categoria excluída"
 
 #: src/views/admin/InformationView.vue:37
 msgid "Change the value of <strong>Default password scheme</strong>"
-msgstr ""
+msgstr "Alterar o valor do <strong>Esquema de senha padrão</strong>"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:33
 msgid "Check connection:"
@@ -518,7 +508,7 @@ msgstr "Escolha um operador"
 
 #: src/components/contacts/ContactForm.vue:104
 msgid "City"
-msgstr ""
+msgstr "Cidade"
 
 #: src/components/account/TotpAuthForm.vue:24
 msgid "Click here to copy the key"
@@ -553,11 +543,11 @@ msgstr "Fechado"
 
 #: src/components/calendars/CalendarForm.vue:25
 msgid "Color"
-msgstr ""
+msgstr "Cor"
 
 #: src/components/contacts/ContactForm.vue:41
 msgid "Company"
-msgstr ""
+msgstr "Empresa"
 
 #: src/components/account/FilterForm.vue:14
 msgid "Conditions"
@@ -580,9 +570,8 @@ msgstr ""
 "está habilitada para sua conta."
 
 #: src/views/contacts/AddressBook.vue:3 src/views/contacts/AddressBook.vue:37
-#, fuzzy
 msgid "Contacts"
-msgstr "Conteúdo"
+msgstr "Contatos"
 
 #: src/components/account/AutoReplyForm.vue:20
 msgid "Content"
@@ -617,7 +606,7 @@ msgstr "Não é possível salvar os parâmetros"
 
 #: src/components/contacts/ContactForm.vue:112
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
@@ -755,13 +744,12 @@ msgstr "Desabilitado"
 
 #: src/components/contacts/ContactList.vue:23
 msgid "Display address book information"
-msgstr ""
+msgstr "Exibir informações do catálogo de endereços"
 
 #: src/components/contacts/ContactForm.vue:31
 #: src/components/contacts/ContactList.vue:119
-#, fuzzy
 msgid "Display name"
-msgstr "Nome"
+msgstr "Nome de exibição"
 
 #: src/components/admin/domains/DNSDetail.vue:103
 msgid "DKIM key"
@@ -790,7 +778,8 @@ msgid "DKIM key selector"
 msgstr "Seletor da chave DKIM"
 
 #: src/components/admin/domains/DNSDetail.vue:238
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "Já existem chaves DKIM para este domínio. Deseja sobrescrevê-las?"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:5
@@ -862,9 +851,8 @@ msgid "Do you really want to delete the domain %{ domain }?"
 msgstr "Você tem certeza que deseja remover o domínio %{ domain }?"
 
 #: src/views/calendars/CalendarView.vue:247
-#, fuzzy
 msgid "Do you really want to delete this calendar?"
-msgstr "Você tem certeza que deseja remover este dispositivo WebAuthn?"
+msgstr "Tem certeza que deseja excluir esse calendário?"
 
 #: src/components/account/FidoAuthForm.vue:179
 msgid "Do you really want to delete this WebAuthn device?"
@@ -935,7 +923,6 @@ msgid "Download filter set"
 msgstr "Baixar conjunto de filtros"
 
 #: src/components/contacts/ContactList.vue:120
-#, fuzzy
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -958,19 +945,16 @@ msgid "Edit alias"
 msgstr "Editar apelido"
 
 #: src/components/calendars/CalendarForm.vue:6
-#, fuzzy
 msgid "Edit calendar"
-msgstr "Editar apelido"
+msgstr "Editar calendário"
 
 #: src/components/contacts/CategoryForm.vue:57
-#, fuzzy
 msgid "Edit category"
-msgstr "Editar filtro"
+msgstr "Editar categoria"
 
 #: src/components/contacts/ContactForm.vue:182
-#, fuzzy
 msgid "Edit contact"
-msgstr "Editar conta"
+msgstr "Editar contato"
 
 #: src/views/admin/domains/DomainEditView.vue:3
 msgid "Edit domain"
@@ -981,9 +965,8 @@ msgid "Edit domain alias"
 msgstr "Editar apelido de domínio"
 
 #: src/components/calendars/EventForm.vue:124
-#, fuzzy
 msgid "Edit event"
-msgstr "Editar conta"
+msgstr "Editar evento"
 
 #: src/components/account/FilterForm.vue:192
 msgid "Edit filter"
@@ -1055,15 +1038,13 @@ msgid "Enter an email address"
 msgstr "Digite seu endereço de e-mail"
 
 #: src/components/calendars/EventForm.vue:172
-#, fuzzy
 msgid "Event added"
-msgstr "Filtro adicionado"
+msgstr "Evento adicionado"
 
 #: src/components/calendars/EventForm.vue:177
 #: src/views/calendars/CalendarView.vue:224
-#, fuzzy
 msgid "Event updated"
-msgstr "Conta atualizada"
+msgstr "Evento atualizado"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
 msgid "Ex: 10MB. Leave empty for no limit"
@@ -1090,7 +1071,7 @@ msgstr "Falhou"
 
 #: src/views/account/FiltersView.vue:248
 msgid "Failed to display template. Using raw mode"
-msgstr ""
+msgstr "Falha ao exibir o modelo. Usando o modo RAW"
 
 #: src/components/account/ProfileForm.vue:24
 msgid "Feel free to improve the translations"
@@ -1176,9 +1157,8 @@ msgid "From"
 msgstr "De"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:11
-#, fuzzy
 msgid "Full address"
-msgstr "Endereço de e-mail"
+msgstr "Endereço completo"
 
 #: src/components/admin/identities/AccountSummary.vue:19
 msgid "Full name"
@@ -1231,7 +1211,7 @@ msgstr "Endereço gerado"
 
 #: src/views/admin/InformationView.vue:29
 msgid "Go to <strong>Settings > General</strong> section"
-msgstr ""
+msgstr "Vá para a seção <strong>Configurações > Geral</strong>"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:101
 msgid "help"
@@ -1274,8 +1254,8 @@ msgid ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 msgstr ""
-"Se você o configurou recentemente, aguarde o primeiro relatório ser recebido "
-"e processado."
+"Se você o configurou recentemente, aguarde o primeiro relatório ser recebido"
+" e processado."
 
 #: src/layouts/admin/AdminLayout.vue:70
 msgid "IMAP Migration"
@@ -1303,23 +1283,20 @@ msgid "Import domains and aliases from CSV file"
 msgstr "Importar domínios e apelidos do arquivo CSV"
 
 #: src/components/calendars/ImportEventsForm.vue:5
-#, fuzzy
 msgid "Import events"
-msgstr "Importar identidades"
+msgstr "Importar eventos"
 
 #: src/views/admin/identities/IdentitiesView.vue:63
 msgid "Import identities"
 msgstr "Importar identidades"
 
 #: src/views/admin/InformationView.vue:8
-#, fuzzy
 msgid "Important messages"
-msgstr "Importar domínios"
+msgstr "Mensagens importantes"
 
 #: src/views/account/FiltersView.vue:204
-#, fuzzy
 msgid "inactive"
-msgstr "ativo"
+msgstr "inativo"
 
 #: src/components/account/ForwardForm.vue:8
 msgid "Indicate one or more recipients separated by a comma (,)"
@@ -1330,6 +1307,8 @@ msgid ""
 "Inform <strong>ALL</strong> your users that they must login to Modoboa to "
 "complete the operation"
 msgstr ""
+"Informe a <strong>TODOS</strong> os seus usuários que eles devem efetuar "
+"login no Modoboa para concluir a operação"
 
 #: src/layouts/admin/AdminLayout.vue:94 src/views/admin/InformationView.vue:4
 #: src/views/calendars/CalendarView.vue:93
@@ -1338,8 +1317,8 @@ msgstr "Informação"
 
 #: src/components/account/TotpAuthForm.vue:34
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
 "Instale um autenticador de token de software como FreeOTP ou Google "
 "Authenticator do repositório de aplicativos e use esse aplicativo para "
@@ -1383,7 +1362,7 @@ msgstr "idioma "
 
 #: src/components/account/ProfileForm.vue:129
 msgid "Language does no exist"
-msgstr ""
+msgstr "Idioma não existe"
 
 #: src/components/admin/identities/AccountSummary.vue:12
 msgid "Last login date"
@@ -1414,7 +1393,7 @@ msgstr "Deixe em branco para ilimitado"
 
 #: src/components/contacts/ContactForm.vue:144
 msgid "Less"
-msgstr ""
+msgstr "Menos"
 
 #: src/components/admin/logs/AuditTrailList.vue:51
 msgid "Level"
@@ -1442,6 +1421,8 @@ msgstr "Sair"
 #: src/views/admin/InformationView.vue:54
 msgid "Logout / Login with your current account so its password gets updated"
 msgstr ""
+"Saia e entre novamente com sua conta atual para que sua senha seja "
+"atualizada"
 
 #: src/components/admin/alarms/AlarmList.vue:95
 #: src/components/admin/identities/AccountCreationForm.vue:121
@@ -1466,6 +1447,8 @@ msgstr "Caixas de e-mail"
 msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
+"Certifique-se de que a opção <strong>Atualizar esquema de senha no "
+"login</strong> esteja habilitada"
 
 #: src/components/admin/domains/DomainSummary.vue:20
 #: src/components/admin/identities/AccountSummary.vue:49
@@ -1530,7 +1513,7 @@ msgstr "Mês"
 
 #: src/components/contacts/ContactForm.vue:141
 msgid "More"
-msgstr ""
+msgstr "Mais"
 
 #: src/views/account/FiltersView.vue:363
 msgid "Move down"
@@ -1550,7 +1533,7 @@ msgstr "Registros MX"
 
 #: src/views/calendars/CalendarView.vue:84
 msgid "My calendars"
-msgstr ""
+msgstr "Meus calendários"
 
 #: src/components/account/FidoAuthForm.vue:92
 msgid "name"
@@ -1616,14 +1599,12 @@ msgstr "Novo apelido"
 
 #: src/components/calendars/CalendarForm.vue:8
 #: src/views/calendars/CalendarView.vue:80
-#, fuzzy
 msgid "New calendar"
-msgstr "Novo apelido"
+msgstr "Novo calendário"
 
 #: src/components/contacts/ContactForm.vue:182
-#, fuzzy
 msgid "New contact"
-msgstr "Nova conta"
+msgstr "Novo contato"
 
 #: src/components/account/FidoAuthForm.vue:61
 msgid "New device name"
@@ -1634,9 +1615,8 @@ msgid "New domain"
 msgstr "Novo domínio"
 
 #: src/components/calendars/EventForm.vue:124
-#, fuzzy
 msgid "New event"
-msgstr "Novo nome de dispositivo"
+msgstr "Novo evento"
 
 #: src/components/account/FilterForm.vue:192
 msgid "New filter"
@@ -1691,7 +1671,8 @@ msgstr "Sem limite de envio"
 #: src/components/account/BackupCodeAuthForm.vue:43
 msgid "No two-factor authentificator is yet set for your account."
 msgstr ""
-"Ainda não existe nenhum autenticador de dois fatores definido para sua conta."
+"Ainda não existe nenhum autenticador de dois fatores definido para sua "
+"conta."
 
 #: src/plugins/rules.js:7
 msgid "Not a valid email"
@@ -1703,7 +1684,7 @@ msgstr "Não gerado"
 
 #: src/components/contacts/ContactForm.vue:129
 msgid "Note"
-msgstr ""
+msgstr "Nota"
 
 #: src/components/admin/identities/AccountEditForm.vue:166
 msgid "Number of allowed mailbox aliases:"
@@ -1818,7 +1799,7 @@ msgstr "Período"
 
 #: src/components/contacts/ContactList.vue:121
 msgid "Phone"
-msgstr ""
+msgstr "Telefone"
 
 #: src/components/account/ProfileForm.vue:47
 #: src/components/account/ProfileForm.vue:50
@@ -1840,6 +1821,8 @@ msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
 msgstr ""
+"Observe que você verá esta mensagem até que <strong>TODAS</strong> as senhas"
+" dos usuários tenham sido convertidas usando o novo esquema."
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
@@ -1847,9 +1830,8 @@ msgid "Port"
 msgstr "Porta"
 
 #: src/components/contacts/ContactForm.vue:50
-#, fuzzy
 msgid "Position"
-msgstr "Condições"
+msgstr "Posição"
 
 #: src/components/admin/domains/DNSStatusChip.vue:24
 msgid "Problem"
@@ -1912,9 +1894,9 @@ msgstr "Cota"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
 msgstr ""
 "A cota para essa caixa de correio pode ser expressa em KB, MB (padrão) ou "
 "GB. Defina um valor personalizado ou use o padrão do domínio. Deixe em "
@@ -1957,7 +1939,7 @@ msgstr "Modo bruto"
 #: src/components/calendars/CalendarAccessRulesForm.vue:21
 #: src/components/calendars/CalendarAccessRulesForm.vue:43
 msgid "Read"
-msgstr ""
+msgstr "Leitura"
 
 #: src/components/account/ForwardForm.vue:4
 msgid "Recipient(s)"
@@ -2056,7 +2038,7 @@ msgstr "Salvar"
 
 #: src/views/admin/InformationView.vue:51
 msgid "Save your changes"
-msgstr ""
+msgstr "Salve suas alterações"
 
 #: src/components/admin/domains/DomainList.vue:19
 #: src/components/admin/identities/IdentityList.vue:18
@@ -2087,22 +2069,20 @@ msgid "Select an account"
 msgstr "Selecione uma conta"
 
 #: src/components/calendars/ImportEventsForm.vue:17
-#, fuzzy
 msgid "Select an ICS file"
-msgstr "Selecionar arquivo"
+msgstr "Selecione um arquivo ICS"
 
 #: src/components/calendars/ImportEventsForm.vue:10
 msgid "Select an ICS file to import and click on the Send button"
-msgstr ""
+msgstr "Selecione um arquivo ICS para importar e clique no botão \"Enviar\""
 
 #: src/components/tools/ImportForm.vue:22
 msgid "Select file"
 msgstr "Selecionar arquivo"
 
 #: src/components/calendars/ImportEventsForm.vue:30
-#, fuzzy
 msgid "Send"
-msgstr "Apenas enviar"
+msgstr "Enviar"
 
 #: src/components/admin/identities/AccountEditForm.vue:93
 msgid "Send only"
@@ -2182,7 +2162,7 @@ msgstr "Comece a digitar um nome aqui..."
 
 #: src/components/contacts/ContactForm.vue:121
 msgid "State/Province"
-msgstr ""
+msgstr "Estado/Província"
 
 #: src/layouts/admin/AdminLayout.vue:52
 #: src/views/admin/domains/DomainView.vue:24
@@ -2214,11 +2194,11 @@ msgstr "SuperAdmins não podem ter uma caixa de correio"
 
 #: src/components/contacts/ContactList.vue:196
 msgid "Synchronization started"
-msgstr ""
+msgstr "Sincronização iniciada"
 
 #: src/components/contacts/ContactList.vue:31
 msgid "Synchronize contacts with address book"
-msgstr ""
+msgstr "Sincronize seus contatos com o catálogo de endereços"
 
 #: src/components/admin/identities/IdentityList.vue:123
 msgid "Tags"
@@ -2230,14 +2210,14 @@ msgid ""
 "be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
 "%(untildate)s"
 msgstr ""
-"O conteúdo da sua resposta. Você pode usar as seguintes variáveis, que serão "
-"substituídas automaticamente pelo valor apropriado: %(name)s, %(fromdate)s "
+"O conteúdo da sua resposta. Você pode usar as seguintes variáveis, que serão"
+" substituídas automaticamente pelo valor apropriado: %(name)s, %(fromdate)s "
 "%(untildate)s"
 
 #: src/components/calendars/CalendarDetail.vue:19
 #: src/components/contacts/AddressBookInfo.vue:19
 msgid "The credentials are the same than the ones you use to access Modoboa."
-msgstr ""
+msgstr "As credenciais são as mesmas que você usa para acessar o Modoboa."
 
 #: src/components/tools/ImportForm.vue:16
 msgid ""
@@ -2262,10 +2242,13 @@ msgstr ""
 
 #: src/views/admin/InformationView.vue:22
 msgid ""
-"The password scheme you are using has been deprecated and will be removed in "
-"the next minor version. The procedure to upgrade to a stronger scheme is as "
-"follows:"
+"The password scheme you are using has been deprecated and will be removed in"
+" the next minor version. The procedure to upgrade to a stronger scheme is as"
+" follows:"
 msgstr ""
+"O esquema de senha que você está usando foi descontinuado e será removido na"
+" próxima atualização. O procedimento para atualizar para um esquema mais "
+"forte é o seguinte:"
 
 #: src/components/account/ProfileForm.vue:34
 msgid "there"
@@ -2277,7 +2260,7 @@ msgstr "Esta página ainda está em construção."
 
 #: src/components/calendars/EventForm.vue:12
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: src/components/admin/logs/MessageList.vue:46
 #: src/components/calendars/EventForm.vue:34
@@ -2287,15 +2270,19 @@ msgstr "Para"
 
 #: src/components/contacts/AddressBookInfo.vue:9
 msgid ""
-"To access this address book from the outside (such as Mozilla Thunderbird or "
-"your smartphone), use the following URL:"
+"To access this address book from the outside (such as Mozilla Thunderbird or"
+" your smartphone), use the following URL:"
 msgstr ""
+"Para acessar esse catálogo de endereços externamente (como do Mozilla "
+"Thunderbird ou de seu celular), use a seguinte URL:"
 
 #: src/components/calendars/CalendarDetail.vue:9
 msgid ""
 "To access this calendar from the outside (such as Mozilla Thunderbird or "
 "your smartphone), use the following URL:"
 msgstr ""
+"Para acessar esta calendário externamente (como do Mozilla Thunderbird ou de"
+" seu celular), use a seguinte URL:"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
@@ -2457,7 +2444,7 @@ msgstr "Com caixa de correio"
 #: src/components/calendars/CalendarAccessRulesForm.vue:26
 #: src/components/calendars/CalendarAccessRulesForm.vue:44
 msgid "Write"
-msgstr ""
+msgstr "Escrita"
 
 #: src/components/tools/TimeSerieChart.vue:113
 msgid "Year"
@@ -2482,8 +2469,8 @@ msgid ""
 "You already have generated backup codes for this account. If you don't "
 "remember them or have used them all, you can generate new ones."
 msgstr ""
-"Você já gerou códigos de backup para esta conta. Se você não se lembra deles "
-"ou já usou todos eles, pode gerar novos."
+"Você já gerou códigos de backup para esta conta. Se você não se lembra deles"
+" ou já usou todos eles, pode gerar novos."
 
 #: src/components/account/APISetupForm.vue:95
 msgid "You are about to delete your API access token"
@@ -2494,6 +2481,8 @@ msgid ""
 "You can also share a read-only version of this calendar using the following "
 "URL: "
 msgstr ""
+"Você também pode compartilhar uma versão \"Somente leitura\" deste "
+"calendário usando a seguinte URL:"
 
 #: src/components/tools/ImportForm.vue:20
 msgid "You can use a different character as separator."
@@ -2513,6 +2502,9 @@ msgid ""
 "version of Modoboa, otherwise <strong>you will be unable to connect to the "
 "web interface anymore</strong>."
 msgstr ""
+"Você deve aplicar este procedimento <strong>ANTES</strong> de instalar uma "
+"versão mais recente do Modoboa, caso contrário <strong>você não conseguirá "
+"mais se conectar à interface web</strong>."
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:115
 msgid "You need to bind at least one domain to the provider."
@@ -2531,9 +2523,5 @@ msgid "Your browser does not seem compatible with WebAuthN"
 msgstr "Seu navegador não parece compatível com WebAuthN"
 
 #: src/components/contacts/ContactForm.vue:95
-#, fuzzy
 msgid "Zip code"
-msgstr "Código PIN"
-
-#~ msgid "Admin"
-#~ msgstr "Admin"
+msgstr "CEP"
