@@ -1,60 +1,49 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # cwatanab <chihiro.watanabe@live.jp>, 2016
-# csmk, 2014
+# Ian Moone, 2014
+# Francois REJETE <francois@rejete.com>, 2018
+# INOUE Daisuke, 2025
+# Masayuki Kumagai <makumagai@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-11 09:00+0100\n"
-"PO-Revision-Date: 2016-09-14 17:06+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Japanese (Japan) (http://www.transifex.com/tonio/modoboa/language/ja_JP/)\n"
-"Language: ja_JP\n"
+"PO-Revision-Date: 2011-07-01 08:15+0000\n"
+"Last-Translator: INOUE Daisuke, 2025\n"
+"Language-Team: Japanese (Japan) (http://app.transifex.com/tonio/modoboa/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin/api/v1/serializers.py:42 admin/forms/domain.py:49
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr ""
-"デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n"
-"値が0の場合は、クォータ制限はありません。"
+msgstr "すべてのメールボックス全体の容量制限。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
 
 #: admin/api/v1/serializers.py:49
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n"
-"値が0の場合は、クォータ制限はありません。"
+msgstr "メールボックスの容量制限のデフォルト値を MB で指定します。値を 0 にすると容量制限しません。"
 
 #: admin/api/v1/serializers.py:97 admin/forms/domain.py:118
-#, fuzzy
-#| msgid "No information available for this domain."
 msgid "No authorized MX record found for this domain"
-msgstr "このドメインに関する情報がありません。"
+msgstr "このドメインの承認済み MX レコードが見つかりません"
 
 #: admin/api/v1/serializers.py:115 admin/forms/domain.py:160
 msgid "Cannot be greater than domain quota"
-msgstr ""
+msgstr "ドメインの容量制限より大きくすることはできません"
 
 #: admin/api/v1/serializers.py:161 admin/api/v1/serializers.py:386
 #: admin/api/v2/serializers.py:496 admin/models/alias.py:38
 msgid "Permission denied."
-msgstr "アクセス拒否"
+msgstr "権限がありません。"
 
 #: admin/api/v1/serializers.py:223 admin/api/v2/serializers.py:77
 #: admin/api/v2/serializers.py:428 admin/forms/alias.py:113
@@ -68,15 +57,15 @@ msgstr "このフィールドは必須です"
 #: admin/api/v1/serializers.py:235
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr "管理しているドメインのリスト (リセーラーとドメイン管理者のみ)"
+msgstr "管理下ドメイン一覧 ( リセラーとドメイン管理者のみ )"
 
 #: admin/api/v1/serializers.py:359 admin/api/v2/serializers.py:478
 msgid "Not allowed for this role."
-msgstr "このロールには許可されていません"
+msgstr "このロールは許可されていません。"
 
 #: admin/api/v1/serializers.py:377
 msgid "Must be equal to mailbox full_address"
-msgstr "メールボックス full_address に等しくなければなりません"
+msgstr "メールボックスの full_address と同じにしてください"
 
 #: admin/api/v1/serializers.py:415 admin/api/v2/serializers.py:528
 #: admin/forms/account.py:186 admin/forms/account.py:188
@@ -84,10 +73,8 @@ msgstr "メールボックス full_address に等しくなければなりませ�
 #: admin/forms/domain.py:304 calendars/serializers.py:175
 #: calendars/serializers.py:177 core/forms.py:92 core/forms.py:95
 #: core/forms.py:97
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "This field is required."
-msgstr "メールボックスは必須です"
+msgstr "このフィールドは必須です。"
 
 #: admin/api/v1/serializers.py:427 admin/api/v2/serializers.py:545
 msgid "Local domain {} does not exist"
@@ -95,89 +82,79 @@ msgstr "ローカルドメイン {}  は、存在しません"
 
 #: admin/api/v1/serializers.py:513
 msgid "A list of recipient"
-msgstr ""
+msgstr "受信者一覧"
 
 #: admin/api/v1/serializers.py:529 admin/api/v2/viewsets.py:271
-#, fuzzy
-#| msgid "User '%s' already exists"
 msgid "This alias already exists"
-msgstr "ユーザー %s はすでに存在します"
+msgstr "このエイリアスはすでに存在します"
 
 #: admin/api/v1/serializers.py:565
-#, fuzzy
-#| msgid "You don't have access to this domain"
 msgid "You don't have access to this domain."
-msgstr "このドメインにアクセスする権限がありません"
+msgstr "このドメインにはアクセスできません。"
 
 #: admin/api/v1/serializers.py:574
-#, fuzzy
-#| msgid "You don't have access to this domain"
 msgid "You don't have access to this mailbox."
-msgstr "このドメインにアクセスする権限がありません"
+msgstr "このメールボックスにアクセスできません。"
 
 #: admin/api/v1/viewsets.py:183
 msgid "Here is your new Modoboa password: {}"
-msgstr ""
+msgstr "Modoboa の新しいパスワード : {}"
 
 #: admin/api/v2/serializers.py:103 admin/forms/domain.py:320
 #, python-format
 msgid "User '%s' already exists"
-msgstr "ユーザー %s はすでに存在します"
+msgstr "ユーザー「%s」はすでに存在します"
 
 #: admin/api/v2/serializers.py:219 admin/api/v2/serializers.py:225
 #: admin/app_settings.py:230 admin/app_settings.py:236
 #: admin/forms/account.py:366
 msgid "Must be a positive integer"
-msgstr "正の整数でなければいけません"
+msgstr "正の整数を入力してください"
 
 #: admin/api/v2/serializers.py:234 admin/app_settings.py:248
 msgid "openssl not found, please make sure it is installed."
-msgstr ""
+msgstr "openssl が見つかりません。インストールを確認してください。"
 
 #: admin/api/v2/serializers.py:248 admin/app_settings.py:263
 msgid "This field only allows valid IP addresses (or networks)"
-msgstr ""
+msgstr "有効な IP アドレス ( またはネットワーク ) を入力してください"
 
 #: admin/api/v2/serializers.py:261
 msgid "Please disable imap migration before disabling this option."
-msgstr ""
+msgstr "この設定を無効にする前に、IMAP 移行を無効にしてください。"
 
 #: admin/api/v2/serializers.py:274 admin/app_settings.py:277
 msgid "Define at least one authorized network / address"
-msgstr ""
+msgstr "認証済みのネットワークかアドレスを少なくとも 1 つ以上定義してください"
 
 #: admin/api/v2/serializers.py:513
 msgid "The left part of an email address can't be more than 64 characters."
-msgstr ""
+msgstr "メールアドレスの左部分を 64 文字以下にしてください。"
 
 #: admin/api/v2/serializers.py:533
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
-msgstr "メールボックスは必須です"
+msgstr "エイリアスを作成するにはメールボックスが必要です。"
 
 #: admin/api/v2/serializers.py:696
-#, fuzzy
-#| msgid "Unknown domain %s"
 msgid "Unknown status"
-msgstr "不明なドメイン %s"
+msgstr "不明な状態"
 
 #: admin/api/v2/viewsets.py:84 admin/forms/account.py:379
 #: admin/forms/account.py:386 admin/forms/alias.py:97
 msgid "You don't have access to this domain"
-msgstr "このドメインにアクセスする権限がありません"
+msgstr "このドメインにはアクセスできません"
 
 #: admin/api/v2/viewsets.py:87 admin/views/domain.py:248
 msgid "You can't delete your own domain"
-msgstr "あなた自身のドメインは削除できません"
+msgstr "自分自身のドメインは削除できません"
 
 #: admin/api/v2/viewsets.py:392
 msgid "No alarm ID provided"
-msgstr ""
+msgstr "アラート ID が指定されていません"
 
 #: admin/api/v2/viewsets.py:396
 msgid "Received invalid alarm id(s)"
-msgstr ""
+msgstr "無効なアラート ID を受信"
 
 #: admin/app_settings.py:23 admin/app_settings.py:289 admin/handlers.py:289
 #: admin/templates/admin/_global_statistics_widget.html:11
@@ -188,144 +165,126 @@ msgstr "ドメイン"
 
 #: admin/app_settings.py:26 admin/app_settings.py:295
 msgid "Enable MX checks"
-msgstr ""
+msgstr "MX チェック有効"
 
 #: admin/app_settings.py:28 admin/app_settings.py:297
 msgid "Check that every domain has a valid MX record"
-msgstr ""
+msgstr "各ドメインに有効な MX レコードがあるかをチェックします"
 
 #: admin/app_settings.py:32 admin/app_settings.py:304
 msgid "Valid MXs"
-msgstr ""
+msgstr "有効な MX"
 
 #: admin/app_settings.py:35 admin/app_settings.py:307
 msgid ""
 "A list of IP or network address every MX record should match. A warning will"
 " be sent if a record does not respect it."
-msgstr ""
+msgstr "各 MX レコードにマッチすることを期待する IP またはネットワークアドレスのリスト。レコードが期待通りでない場合は、警告を送信します。"
 
 #: admin/app_settings.py:43 admin/app_settings.py:317
 msgid "New domains must use authorized MX(s)"
-msgstr ""
+msgstr "新しいドメインには承認済みの MX 利用を強制"
 
 #: admin/app_settings.py:46 admin/app_settings.py:321
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr ""
+msgstr "MX レコードが定義したアドレスのいずれかを使用していない場合、新しいドメインの作成を防止します。"
 
 #: admin/app_settings.py:52 admin/app_settings.py:329
-#, fuzzy
-#| msgid "Enable DNSBL checks"
 msgid "Enable IPV6 checks"
-msgstr "DNSBL チェックを有効にする"
+msgstr "IPV6 チェック有効"
 
 #: admin/app_settings.py:54 admin/app_settings.py:332
 msgid "Check if MX setup for ipv6 is valid"
-msgstr ""
+msgstr "IPV6 用の MX の設定が有効かチェックします"
 
 #: admin/app_settings.py:58 admin/app_settings.py:339
-#, fuzzy
-#| msgid "Enable DNSBL checks"
 msgid "Enable SPF checks"
-msgstr "DNSBL チェックを有効にする"
+msgstr "SPF チェック有効"
 
 #: admin/app_settings.py:60 admin/app_settings.py:341
-#, fuzzy
-#| msgid "Check every domain against major DNSBL providers"
 msgid "Check if every domain has a valid SPF record"
-msgstr "すべてのドメインを 主な DNSBL プロバイダーでチェックする"
+msgstr "各ドメインに有効な SPF レコードがあるかをチェックします"
 
 #: admin/app_settings.py:64 admin/app_settings.py:348
-#, fuzzy
-#| msgid "Enable DNSBL checks"
 msgid "Enable DKIM checks"
-msgstr "DNSBL チェックを有効にする"
+msgstr "DKIM チェック有効"
 
 #: admin/app_settings.py:67 admin/app_settings.py:350
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
-msgstr ""
+msgstr "各 DKIM 署名のあるすべてのドメインに有効な DNS レコードがあるかをチェックします"
 
 #: admin/app_settings.py:72 admin/app_settings.py:358
-#, fuzzy
-#| msgid "Enable DNSBL checks"
 msgid "Enable DMARC checks"
-msgstr "DNSBL チェックを有効にする"
+msgstr "DMARC チェック有効"
 
 #: admin/app_settings.py:74 admin/app_settings.py:360
-#, fuzzy
-#| msgid "Check every domain against major DNSBL providers"
 msgid "Check if every domain has a valid DMARC record"
-msgstr "すべてのドメインを 主な DNSBL プロバイダーでチェックする"
+msgstr "各ドメインに有効な DMARC レコードがあるかをチェックします"
 
 #: admin/app_settings.py:78 admin/app_settings.py:367
-#, fuzzy
-#| msgid "Enable DNSBL checks"
 msgid "Enable autoconfig checks"
-msgstr "DNSBL チェックを有効にする"
+msgstr "自動構成チェック有効"
 
 #: admin/app_settings.py:81 admin/app_settings.py:369
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr ""
+msgstr "各ドメインに有効な自動構成のレコードがあるかをチェックします"
 
 #: admin/app_settings.py:86 admin/app_settings.py:377
 msgid "Enable DNSBL checks"
-msgstr "DNSBL チェックを有効にする"
+msgstr "DNSBL チェック有効"
 
 #: admin/app_settings.py:88 admin/app_settings.py:379
 msgid "Check every domain against major DNSBL providers"
-msgstr "すべてのドメインを 主な DNSBL プロバイダーでチェックする"
+msgstr "各ドメインを主な DNSBL でチェックします"
 
 #: admin/app_settings.py:92 admin/app_settings.py:386
 msgid "Custom DNS server"
-msgstr ""
+msgstr "カスタム DNS サーバー"
 
 #: admin/app_settings.py:96 admin/app_settings.py:388
 msgid "Use a custom DNS server instead of local server configuration"
-msgstr ""
+msgstr "ローカルサーバーで設定された DNS サーバーではなく、カスタム DNS サーバーを利用します"
 
 #: admin/app_settings.py:101 admin/app_settings.py:396
 msgid "DKIM keys storage directory"
-msgstr ""
+msgstr "DKIM キー保存ディレクトリー"
 
 #: admin/app_settings.py:104 admin/app_settings.py:398
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
+msgstr "DKIM プライベートキーを保存するディレクトリーの絶対パス。このディレクトリーが root ユーザー所有で、外の世界からは読めないことを確認してください。"
 
 #: admin/app_settings.py:112 admin/app_settings.py:407
 msgid "Default DKIM key length"
-msgstr ""
+msgstr "DKIM キー長のデフォルト"
 
 #: admin/app_settings.py:115 admin/app_settings.py:409
 msgid "Default length in bits for newly generated DKIM keys."
-msgstr ""
+msgstr "新たに生成する DKIM キーの長さのデフォルト値です。"
 
 #: admin/app_settings.py:119 admin/app_settings.py:416
 msgid "Default domain quota"
-msgstr "デフォルトドメインクォータ"
+msgstr "ドメイン容量制限のデフォルト"
 
 #: admin/app_settings.py:122 admin/app_settings.py:418
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
-"デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n"
-"値が0の場合は、クォータ制限はありません。"
+msgstr "特に値をせずに新たにドメインを作成する際の容量制限のデフォルト値 ( MB ) 。値を 0 にすると容量制限しません。"
 
 #: admin/app_settings.py:128 admin/app_settings.py:426
-#, fuzzy
-#| msgid "Default domain quota"
 msgid "Default domain sending limit"
-msgstr "デフォルトドメインクォータ"
+msgstr "ドメイン送信通数制限のデフォルト"
 
 #: admin/app_settings.py:131 admin/app_settings.py:428
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
-msgstr ""
+msgstr "新たにドメインを作成する際、1 日間に送信可能なメッセージ数。空にすると制限しません。"
 
 #: admin/app_settings.py:136 admin/app_settings.py:440
 #: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
@@ -337,88 +296,70 @@ msgstr "メールボックス"
 
 #: admin/app_settings.py:139 admin/app_settings.py:446
 msgid "Handle mailboxes on filesystem"
-msgstr "ファイルシステムのメールボックスを操作する"
+msgstr "ファイルシステムのメールボックスも操作"
 
 #: admin/app_settings.py:142 admin/app_settings.py:448
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr "Modoboa で、メールボックスの名前の変更もしくは、削除したとき、ファイルシステム上のメールボックスも、名前の変更もしくは削除する。"
+msgstr "Modoboa でメールボックスを変名・削除すると、ファイルシステム上も変名・削除する"
 
 #: admin/app_settings.py:148 admin/app_settings.py:456
 #: admin/forms/domain.py:54 admin/models/domain.py:36
 #: admin/templates/admin/domain_detail.html:64
-#, fuzzy
-#| msgid "Default domain quota"
 msgid "Default mailbox quota"
-msgstr "デフォルトドメインクォータ"
+msgstr "メールボックス容量制限のデフォルト"
 
 #: admin/app_settings.py:151
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created mailboxes with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n"
-"値が0の場合は、クォータ制限はありません。"
+msgstr "特に値をせずに新たにメールボックスを作成する際の容量制限のデフォルト値 ( MB ) 。値を 0 にすると容量制限しません。"
 
 #: admin/app_settings.py:157 admin/app_settings.py:467
-#, fuzzy
-#| msgid "Default domain quota"
 msgid "Default mailbox sending limit"
-msgstr "デフォルトドメインクォータ"
+msgstr "メールボックス送信通数制限のデフォルト"
 
 #: admin/app_settings.py:160 admin/app_settings.py:469
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
-msgstr ""
+msgstr "新たにメールボックスを作成する際に設定する、1 日に送信できるメッセージ数。空にすると制限しません。"
 
 #: admin/app_settings.py:166 admin/app_settings.py:477
 msgid "Automatic account removal"
-msgstr "アカウントの自動削除"
+msgstr "自動アカウント削除"
 
 #: admin/app_settings.py:169 admin/app_settings.py:479
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr "メールボックスが削除されたとき、関連するアカウントも削除します"
+msgstr "メールボックスを削除すると、関連するアカウントも削除します"
 
 #: admin/app_settings.py:174 admin/app_settings.py:488
 msgid "Automatic domain/mailbox creation"
-msgstr "ドメインとメールボックスを自動作成"
+msgstr "自動ドメイン・メールボックス作成"
 
 #: admin/app_settings.py:177 admin/app_settings.py:491
 msgid ""
 "Create a domain and a mailbox when an account is automatically created."
-msgstr "アカウントが自動的に作成されたとき、ドメインとメールボックを作成します。"
+msgstr "アカウントを作成するとドメインとメールボックスも自動で作成します。"
 
 #: admin/app_settings.py:182 admin/app_settings.py:500
 msgid "Create an alias when a mailbox is renamed"
-msgstr ""
+msgstr "メールボックスの変名でエイリアスを作成"
 
 #: admin/app_settings.py:185 admin/app_settings.py:503
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
+msgstr "メールボックスの名前を変更する際、古いアドレスをエイリアスとして作成します。"
 
 #: admin/app_settings.py:244 pdfcredentials/api/v2/serializers.py:59
-#, fuzzy
-#| msgid "Domain not found."
 msgid "Directory not found."
-msgstr "ドメインが見つかりません"
+msgstr "ディレクトリーが見つかりません。"
 
 #: admin/app_settings.py:458
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n"
-"値が0の場合は、クォータ制限はありません。"
+msgstr "特に値をせずに新たにドメインを作成する際の、メールボックスの容量制限のデフォルト値 ( MB ) 。値を 0 にすると容量制限しません。"
 
 #: admin/app_settings.py:522 admin/app_settings.py:527
 #: core/api/v2/viewsets.py:148
@@ -437,11 +378,11 @@ msgstr "リレードメイン"
 
 #: admin/constants.py:38
 msgid "Opened"
-msgstr ""
+msgstr "要対応"
 
 #: admin/constants.py:39
 msgid "Closed"
-msgstr ""
+msgstr "済"
 
 #: admin/forms/account.py:29 admin/templates/admin/domain_detail.html:159
 #: pdfcredentials/documents.py:98
@@ -452,9 +393,7 @@ msgstr "ユーザ名"
 msgid ""
 "The user's name. Must be a valid e-mail address for simple users or "
 "administrators with a mailbox."
-msgstr ""
-"ユーザーの名前。\n"
-"メールボックスを持つユーザーもしくは管理者の有効な電子メールアドレスでなければなりません。"
+msgstr "ユーザー名。メールボックスのある標準ユーザー・管理者用の有効なメールアドレスにしてください。"
 
 #: admin/forms/account.py:36 admin/templates/admin/account_detail.html:29
 #: core/templates/core/information.html:60
@@ -463,23 +402,21 @@ msgstr "ロール"
 
 #: admin/forms/account.py:37
 msgid "Choose"
-msgstr "選ぶ"
+msgstr "選択"
 
 #: admin/forms/account.py:38
 msgid "What level of permission this user will have"
-msgstr "このユーザーは、アクセス許可のレベルを持つことになります"
+msgstr "このユーザーに与える権限レベル"
 
 #: admin/forms/account.py:41 admin/forms/domain.py:262
-#, fuzzy
-#| msgid "Invalid address"
 msgid "Random password"
-msgstr "不正なアドレス"
+msgstr "ランダムパスワード"
 
 #: admin/forms/account.py:43
 msgid ""
 "Generate a random password. If you're updating this account and check this "
 "box, a new password will be generated."
-msgstr ""
+msgstr "ランダムにパスワードを生成します。アカウントの変更でこのチェックボックスにをオンにすると、新しいパスワードを生成します。"
 
 #: admin/forms/account.py:49 pdfcredentials/documents.py:99
 msgid "Password"
@@ -491,68 +428,59 @@ msgstr "確認"
 
 #: admin/forms/account.py:57
 msgid "Enter the same password as above, for verification."
-msgstr "確認のため、上記と同じパスワードを入力します。"
+msgstr "確認のため、もう一度同じパスワードを入力してください。"
 
 #: admin/forms/account.py:71
 msgid "Enabled"
-msgstr "有効化"
+msgstr "有効"
 
 #: admin/forms/account.py:175
 msgid "Only super administrators are allowed for this mode"
-msgstr "スーパー管理者だけが、このモードのために許可されています。"
+msgstr "このモードは、スーパー管理者権限が必要です"
 
 #: admin/forms/account.py:193
 msgid "The two password fields didn't match."
-msgstr "2つのパスワード項目が一致しません"
+msgstr "2 つのパスワードが不一致です。"
 
 #: admin/forms/account.py:206
 msgid "You can't disable your own account"
-msgstr "あなた自身のアカウントは無効化できません"
+msgstr "自分自身のアカウントを無効にすることはできません"
 
 #: admin/forms/account.py:234
 msgid "E-mail"
-msgstr "電子メール"
+msgstr "メールアドレス"
 
 #: admin/forms/account.py:236
 msgid "Create an alias using the old address"
-msgstr ""
+msgstr "古いアドレスをもとにエイリアスを作成"
 
 #: admin/forms/account.py:241 admin/forms/domain.py:46
 #: admin/templates/admin/account_detail.html:45
 #: admin/templates/admin/domain_detail.html:49 limits/app_settings.py:73
 #: limits/app_settings.py:218 limits/constants.py:59
 msgid "Quota"
-msgstr "クォータ"
+msgstr "容量制限"
 
 #: admin/forms/account.py:244
-#, fuzzy
-#| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's default "
-#| "one. Leave empty to define an unlimited value (not allowed for domain "
-#| "administrators)."
 msgid ""
 "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
 " custom value or use domain's default one. Leave empty to define an "
 "unlimited value (not allowed for domain administrators)."
-msgstr ""
-"このメールボックスのクォータ (MB)\n"
-"カスタム値またはドメインのデフォルト値を定義します\n"
-"無制限の値を定義する場合は空白のままにします\n"
-"（ドメイン管理者には許可されていません）"
+msgstr "このメールボックスの容量制限。KB、MB ( デフォルト ) または GB で指定します。独自の値を指定するか、ドメインのデフォルト値を利用します。空にすると制限しません ( ドメイン管理者には許可されていません )。"
 
 #: admin/forms/account.py:254 admin/models/domain.py:39
 #: admin/models/mailbox.py:92 admin/templates/admin/account_detail.html:50
 #: admin/templates/admin/domain_detail.html:69
 msgid "Message sending limit"
-msgstr ""
+msgstr "メッセージ送信通数制限"
 
 #: admin/forms/account.py:257 admin/models/mailbox.py:95
 msgid "Number of messages this mailbox can send per day"
-msgstr ""
+msgstr "このメールボックスから 1 日に送信できるメッセージ数"
 
 #: admin/forms/account.py:262
 msgid "Block IMAP connection and incoming mails for this mailbox"
-msgstr ""
+msgstr "IMAP 接続とこのメールボックスへのメール送信を拒否"
 
 #: admin/forms/account.py:266 admin/forms/domain.py:35
 #: admin/templates/admin/domain_headers.html:4
@@ -560,39 +488,31 @@ msgid "Alias(es)"
 msgstr "エイリアス"
 
 #: admin/forms/account.py:269
-#, fuzzy
-#| msgid ""
-#| "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-#| "to add a new input. Use the '*' character to create a 'catchall' alias (ex: "
-#| "*@domain.tld)."
 msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"メールボックスのエイリアス\n"
-"input ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追加します\n"
-" 「キャッチオール」エイリアスを作成するには、 ' * '文字を使用してください  (例: *@domain.tld)"
+msgstr "このメールボックスのエイリアス。入力ごとに 1 つのアドレスのみを記入します。ENTER を押すと新しい入力欄が追加されます。「すべてキャッチ」エイリアスを作成するには、ドメイン名のみ ( @domain.tls ) を入力してください。"
 
 #: admin/forms/account.py:275
 msgid "Sender addresses"
-msgstr ""
+msgstr "送信者アドレス"
 
 #: admin/forms/account.py:278
 msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr ""
+msgstr "このアカウントへの追加の送信者アドレス。ユーザーにこのアドレス――実際にはこのアドレスが存在しなくても――を使ってメールを送信することを許可します。"
 
 #: admin/forms/account.py:339 admin/forms/alias.py:95
 #: admin/models/mailbox.py:308
 msgid "Domain does not exist"
-msgstr "ドメインは存在しません"
+msgstr "ドメインがありません"
 
 #: admin/forms/account.py:376
 msgid "Local domain does not exist"
-msgstr "ローカルドメインは存在しません"
+msgstr "ローカルドメインがありません"
 
 #: admin/forms/account.py:503
 msgid "Domain(s)"
@@ -600,7 +520,7 @@ msgstr "ドメイン"
 
 #: admin/forms/account.py:505
 msgid "Domain(s) that user administrates"
-msgstr "ユーザーに管理されたドメイン"
+msgstr "ユーザーが管理しているドメイン"
 
 #: admin/forms/account.py:552 admin/forms/account.py:652
 #: admin/forms/domain.py:373 admin/forms/domain.py:445 core/apps.py:19
@@ -623,7 +543,7 @@ msgstr "メール"
 
 #: admin/forms/account.py:573
 msgid "Permissions"
-msgstr "アクセス許可"
+msgstr "権限"
 
 #: admin/forms/account.py:642
 msgid "Account updated"
@@ -638,10 +558,8 @@ msgid "Account created"
 msgstr "アカウントを作成しました"
 
 #: admin/forms/alias.py:20
-#, fuzzy
-#| msgid "Invalid address"
 msgid "Random address"
-msgstr "不正なアドレス"
+msgstr "ランダムアドレス"
 
 #: admin/forms/alias.py:23
 msgid "Email address"
@@ -651,9 +569,7 @@ msgstr "メールアドレス"
 msgid ""
 "The alias address. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"エイリアスアドレス\n"
-"キャッチオールエイリアスを作成するためには、ドメイン名だけを入力します  (@domain.tld)"
+msgstr "エイリアスアドレス。「すべてキャッチ」エイリアスを作成するには、ドメイン名のみ ( @domain.tld ) を入力します。"
 
 #: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
 msgid "Recipients"
@@ -663,13 +579,11 @@ msgstr "受信者"
 msgid ""
 "Addresses this alias will point to. Indicate only one address per input, "
 "press ENTER to add a new input."
-msgstr ""
-"アドレスはこのエイリアスが指し示すます。\n"
-"input ごとに1つだけのアドレスを記入し、 ENTER キーを押して、新しい input を追加します"
+msgstr "このエイリアスの差すアドレス。入力ごとに 1 つのアドレスのみを記入します。ENTER を押すと新しい入力欄が追加されます。"
 
 #: admin/forms/alias.py:119
 msgid "No recipient defined"
-msgstr "受信者が定義されていません"
+msgstr "受信者なし"
 
 #: admin/forms/domain.py:32
 #: admin/templates/admin/_global_statistics_widget.html:7
@@ -680,25 +594,17 @@ msgstr "タイプ"
 msgid ""
 "Alias(es) of this domain. Indicate only one name per input, press ENTER to "
 "add a new input."
-msgstr ""
-"このドメインのエイリアス \n"
-"input ごとに1つの名前を入力して、 ENTER キーを押して、新しい input を追加します"
+msgstr "このドメインのエイリアス。入力ごとに 1 つの名前のみを記入します。ENTER を押すと新しい入力欄が追加されます。"
 
 #: admin/forms/domain.py:43
 msgid "Key selector"
-msgstr ""
+msgstr "キー セレクター"
 
 #: admin/forms/domain.py:57
-#, fuzzy
-#| msgid ""
-#| "Default quota (in MB) applied to freshly created domains with no value "
-#| "specified. A value of 0 means no quota."
 msgid ""
 "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
 "GB. A value of 0 means no quota."
-msgstr ""
-"デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n"
-"値が0の場合は、クォータ制限はありません。"
+msgstr "各メールボックスの容量制限のデフォルト値。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
 
 #: admin/forms/domain.py:106 admin/handlers.py:185
 msgid "domain alias"
@@ -708,15 +614,15 @@ msgstr "ドメインエイリアス"
 #: admin/forms/domain.py:192
 #, python-format
 msgid "A %s with this name already exists"
-msgstr " %s という名前は、すでに存在しています"
+msgstr "この名前の%sはすでに使われています。"
 
 #: admin/forms/domain.py:130
 msgid "DKIM keys storage directory not configured"
-msgstr ""
+msgstr "DKIM キー保存ディレクトリーを設定してください"
 
 #: admin/forms/domain.py:166
 msgid "You can't define an unlimited quota."
-msgstr ""
+msgstr "容量制限を無制限に設定できません。"
 
 #: admin/forms/domain.py:185 admin/forms/domain.py:189 policyd/core.py:107
 msgid "domain"
@@ -724,11 +630,11 @@ msgstr "ドメイン"
 
 #: admin/forms/domain.py:246
 msgid "Create a domain administrator"
-msgstr "ドメイン管理者を作成する"
+msgstr "ドメイン管理者を作成"
 
 #: admin/forms/domain.py:248
 msgid "Automatically create an administrator for this domain"
-msgstr "自動的にドメインの管理者を作成する"
+msgstr "このドメインの管理者を自動生成します"
 
 #: admin/forms/domain.py:252 admin/templates/admin/domain_detail.html:159
 #: admin/templates/admin/domain_headers.html:3
@@ -743,25 +649,19 @@ msgstr "名前"
 msgid ""
 "The administrator's name. Don't include the domain's name here, it will be "
 "automatically appended."
-msgstr ""
-"管理者の名前\n"
-"ここでは、ドメイン名を含めないでください、それが自動的に付加されます。"
+msgstr "管理者の名前。自動的に付加するので、ここにはドメイン名を含めないでください。"
 
 #: admin/forms/domain.py:264
-#, fuzzy
-#| msgid "Create a domain administrator"
 msgid "Generate a random password for the administrator."
-msgstr "ドメイン管理者を作成する"
+msgstr "管理者のパスワードをランダムに生成します。"
 
 #: admin/forms/domain.py:269
 msgid "With a mailbox"
-msgstr ""
+msgstr "メールボックスを作成"
 
 #: admin/forms/domain.py:271
-#, fuzzy
-#| msgid "Create a domain administrator"
 msgid "Create a mailbox for the administrator."
-msgstr "ドメイン管理者を作成する"
+msgstr "管理者用のメールボックスを作成します。"
 
 #: admin/forms/domain.py:276
 msgid "Create aliases"
@@ -769,19 +669,19 @@ msgstr "エイリアスを作成"
 
 #: admin/forms/domain.py:278
 msgid "Automatically create standard aliases for this domain"
-msgstr "自動的にドメインの標準的なエイリアスを作成する"
+msgstr "このドメインの標準的なエイリアスを自動生成します"
 
 #: admin/forms/domain.py:294
 msgid "Invalid format"
-msgstr "不正なフォーマット"
+msgstr "書式が無効です"
 
 #: admin/forms/domain.py:433
 msgid "Domain modified"
-msgstr "ドメインが修正されました"
+msgstr "ドメインを変更しました"
 
 #: admin/forms/domain.py:458
 msgid "Options"
-msgstr "オプション"
+msgstr "設定"
 
 #: admin/forms/domain.py:467
 msgid "New domain"
@@ -789,11 +689,11 @@ msgstr "新しいドメイン"
 
 #: admin/forms/domain.py:481
 msgid "Domain created"
-msgstr "ドメインが作成されました"
+msgstr "ドメインを作成しました"
 
 #: admin/forms/export.py:9 admin/forms/import_.py:12
 msgid "Separator"
-msgstr "セパレーター"
+msgstr "区切り文字"
 
 #: admin/forms/forward.py:12
 msgid "Recipient(s)"
@@ -801,15 +701,15 @@ msgstr "受信者"
 
 #: admin/forms/forward.py:15
 msgid "Indicate one or more recipients separated by a ','"
-msgstr "\",\"で区切られた1つまたは複数の受信者を示します"
+msgstr "受信者を指定します。複数の場合は「,」で区切ってください。"
 
 #: admin/forms/forward.py:18
 msgid "Keep local copies"
-msgstr "ローカルコピーを保持する"
+msgstr "ローカルにコピーを保持"
 
 #: admin/forms/forward.py:21
 msgid "Forward messages and store copies into your local mailbox"
-msgstr "メッセージを転送して、ローカルのメールボックスへコピーを格納します。"
+msgstr "メッセージを転送し、ローカルのメールボックスにコピーを保存します"
 
 #: admin/forms/import_.py:10
 msgid "Select a file"
@@ -817,11 +717,11 @@ msgstr "ファイルを選択"
 
 #: admin/forms/import_.py:18
 msgid "Continue on error"
-msgstr "エラーのときに続行する"
+msgstr "エラーが発生しても継続"
 
 #: admin/forms/import_.py:20
 msgid "Don't treat duplicated objects as error"
-msgstr "重複したオブジェクトをエラーとして処理しない"
+msgstr "重複はエラーにし、インポートしない"
 
 #: admin/forms/import_.py:37
 msgid "Crypt passwords"
@@ -834,145 +734,140 @@ msgstr "ファイルに含まれるパスワードが暗号化されていない
 #: admin/handlers.py:233
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
-msgstr "アカウントのインポートに失敗しました  (%s):  ドメインが存在しません"
+msgstr "アカウントインポート失敗 ( %s ) : ドメインがありません"
 
 #: admin/handlers.py:248 admin/models/mailbox.py:340
 msgid "Mailbox {} already exists"
-msgstr "メールボックス {} はすでに存在します"
+msgstr "{} メールボックスはすでに存在します"
 
 #: admin/handlers.py:257
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
-msgstr "アカウントのインポートに失敗しました  (%s):  不正なクォータの値"
+msgstr "アカウントインポート失敗 ( %s ) : 容量制限の値に誤り"
 
 #: admin/handlers.py:298
 #: admin/templates/admin/_global_statistics_widget.html:17
 #: admin/templates/admin/_per_domain_statistics_widget.html:8
 #: admin/templates/admin/identities.html:5
 msgid "Identities"
-msgstr "ID"
+msgstr "ユーザー"
 
 #: admin/handlers.py:316 admin/templates/admin/forward.html:2
 msgid "Forward"
-msgstr "転送先"
+msgstr "転送"
 
 #: admin/lib.py:47
 msgid "A mailbox is required"
-msgstr "メールボックスは必須です"
+msgstr "メールボックスが必要です"
 
 #: admin/lib.py:141
 msgid "You are not allowed to import domains"
-msgstr "ドメインのインポートは許可されていません"
+msgstr "ドメインをインポートする権限がありません"
 
 #: admin/lib.py:150
 msgid "You are not allowed to import domain aliases."
-msgstr "ドメインエイリアスのインポートは許可されていません"
+msgstr "ドメインエイリアスをインポートする権限がありません"
 
 #: admin/lib.py:242 admin/tests/test_mx.py:154 admin/tests/test_mx.py:167
 #: admin/tests/test_mx.py:172
-#, fuzzy, python-format
-#| msgid "No information available for this domain."
+#, python-format
 msgid "No DNS record found for %s"
-msgstr "このドメインに関する情報がありません。"
+msgstr "%s の DNS レコードが見つかりません"
 
 #: admin/lib.py:245
-#, fuzzy, python-format
-#| msgid "No information available for this domain."
+#, python-format
 msgid "No %(type)s record for %(name)s"
-msgstr "このドメインに関する情報がありません。"
+msgstr "%(name)s の %(type)s レコードなし"
 
 #: admin/lib.py:249 admin/tests/test_mx.py:157
 msgid "No working name servers found"
-msgstr ""
+msgstr "稼働しているサーバーが見つかりません"
 
 #: admin/lib.py:252 admin/tests/test_mx.py:161
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
+msgstr "DNS 名前解決でタイムアウトが発生し、今のところ %s の問い合わせはできません"
 
 #: admin/lib.py:256
 #, python-format
 msgid "DNS name is too long: %s"
-msgstr ""
+msgstr "DNS 名が長すぎます : %s"
 
 #: admin/lib.py:287
-#, fuzzy, python-brace-format
-#| msgid "Invalid quota value for domain '%s'"
+#, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
-msgstr "不正なドメイン %s のクォータ値"
+msgstr "{domain} の IP アドレス書式が無効です : {addr}"
 
 #: admin/lib.py:360
 #, python-format
 msgid "Object already exists: %s"
-msgstr "オブジェクトはすでに存在します: %s"
+msgstr "オブジェクトはすでに存在します : %s"
 
 #: admin/lib.py:364
 #, python-format
 msgid "%d objects imported successfully"
-msgstr "%d オブジェクトのインポートに成功しました"
+msgstr "%d 個のオブジェクトをインポートしました"
 
 #: admin/management/commands/subcommands/_import.py:99
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
-msgstr ""
+msgstr "CSV ファイルが UTF-8 でエンコードされていません。エンコードの推測を試みます"
 
 #: admin/management/commands/subcommands/_import.py:114
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
-msgstr ""
+msgstr "CSV ファイルを %(encoding)s エンコードで読んでいます"
 
 #: admin/management/commands/subcommands/_import.py:125
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
-msgstr ""
+msgstr "%(encoding)s エンコードでは CSV ファイルをデコードできません"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:29
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
-msgstr ""
+msgstr "DKIM パスが書き込みできません ( 権限問題か、ディレクトリーが存在しないかのいずれかです )"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:56
 msgid "Failed to generate DKIM private key"
-msgstr ""
+msgstr "DKIM プライベートキーの生成に失敗"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:68
 msgid "Failed to generate DKIM public key"
-msgstr ""
+msgstr "DKIM 公開キーの生成に失敗"
 
 #: admin/management/commands/subcommands/_mx.py:133
 msgid "MX {} listed by DNSBL provider {}"
-msgstr ""
+msgstr "MX {} が DNSBL・{} に掲載されています"
 
 #: admin/management/commands/subcommands/_mx.py:174
-#, fuzzy
-#| msgid "Domain not found."
 msgid "Domain has no MX record"
-msgstr "ドメインが見つかりません"
+msgstr "ドメインに MX レコードがありません"
 
 #: admin/management/commands/subcommands/_mx.py:177
 msgid "Domain {} has no MX record"
-msgstr ""
+msgstr "{} ドメインは MX レコードがありません"
 
 #: admin/management/commands/subcommands/_mx.py:195
 msgid "Invalid MX record: {}"
-msgstr ""
+msgstr "無効な MX レコード : {}"
 
 #: admin/management/commands/subcommands/_mx.py:202
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
-msgstr ""
+msgstr "{0} ドメインの MX レコードが無効です : {1}"
 
 #: admin/management/commands/subcommands/_mx.py:213
 msgid "[modoboa] MX issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] {} ドメインの MX 問題"
 
 #: admin/management/commands/subcommands/_mx.py:269
 msgid "[modoboa] DNSBL issue(s) for domain {}"
-msgstr "[modoboa] ドメイン {} の DNSBL結果"
+msgstr "[modoboa] {} ドメインの DNSBL 問題"
 
 #: admin/models/alias.py:36
 msgid "Domain not found."
-msgstr "ドメインが見つかりません"
+msgstr "ドメインが見つかりません。"
 
 #: admin/models/alias.py:91 admin/models/mailbox.py:85
 msgid "address"
@@ -980,16 +875,16 @@ msgstr "アドレス"
 
 #: admin/models/alias.py:93
 msgid "The alias address."
-msgstr "エイリアスアドレス"
+msgstr "エイリアスアドレス。"
 
 #: admin/models/alias.py:97 admin/models/domain.py:45
 #: admin/models/domain_alias.py:45 postfix_autoreply/models.py:23
 msgid "enabled"
-msgstr "有効化"
+msgstr "有効"
 
 #: admin/models/alias.py:98 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
-msgstr "このエイリアスをアクティブにするために確認してください"
+msgstr "このエイリアスを有効にする前にチェックする"
 
 #: admin/models/alias.py:102 admin/templates/admin/alias_detail.html:32
 #: core/templates/core/information.html:40
@@ -998,7 +893,7 @@ msgstr "説明"
 
 #: admin/models/alias.py:103 admin/templates/admin/alias_detail.html:29
 msgid "Expire at"
-msgstr ""
+msgstr "期限 : "
 
 #: admin/models/alias.py:144
 msgid "alias"
@@ -1006,17 +901,15 @@ msgstr "エイリアス"
 
 #: admin/models/alias.py:177
 msgid "Invalid address"
-msgstr "不正なアドレス"
+msgstr "無効なアドレス"
 
 #: admin/models/alias.py:196
 msgid "Local recipient {}@{} not found"
 msgstr "ローカル受信者 {}@{} は見つかりません"
 
 #: admin/models/alias.py:245
-#, fuzzy
-#| msgid "Invalid line: %s"
 msgid "Invalid line: {}"
-msgstr "不正な行: %s"
+msgstr "無効な行 : {}"
 
 #: admin/models/domain.py:27 admin/models/domain_alias.py:33
 msgid "name"
@@ -1028,65 +921,53 @@ msgstr "ドメイン名"
 
 #: admin/models/domain.py:42
 msgid "Number of messages this domain can send per day"
-msgstr ""
+msgstr "このドメインから 1 日に送信できるメッセージ数"
 
 #: admin/models/domain.py:46
 msgid "Check to activate this domain"
-msgstr "このドメインをアクティブするために確認してください"
+msgstr "このドメインを有効にする前にチェックする"
 
 #: admin/models/domain.py:51
-#, fuzzy
-#| msgid "Enable DNSBL checks"
 msgid "Enable DNS checks"
-msgstr "DNSBL チェックを有効にする"
+msgstr "DNS チェック有効"
 
 #: admin/models/domain.py:53
-#, fuzzy
-#| msgid "Check to activate this domain"
 msgid "Check to enable DNS checks for this domain"
-msgstr "このドメインをアクティブするために確認してください"
+msgstr "このドメインを有効にする前に DNS チェックする"
 
 #: admin/models/domain.py:61
 msgid "Enable DKIM signing"
-msgstr ""
+msgstr "DKIM 署名を有効"
 
 #: admin/models/domain.py:63
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
+msgstr "この機能を有効にすると、このドメインの DKIM キーを生成します"
 
 #: admin/models/domain.py:70
 msgid "Key length"
-msgstr ""
+msgstr "キー長"
 
 #: admin/models/domain.py:368 admin/models/domain_alias.py:70
 #: core/models.py:353 relaydomains/lib.py:13
 msgid "Invalid line"
-msgstr "不正な行"
+msgstr "行が無効"
 
 #: admin/models/domain.py:378
-#, fuzzy
-#| msgid "No information available for this domain."
 msgid "{}: no authorized MX record found for domain"
-msgstr "このドメインに関する情報がありません。"
+msgstr "{} : ドメインの承認済み MX レコードが見つかりません"
 
 #: admin/models/domain.py:383
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
 msgid "{}: invalid quota value for domain"
-msgstr "不正なドメイン %s のクォータ値"
+msgstr "{} : ドメインの容量制限の値が無効です"
 
 #: admin/models/domain.py:388
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
 msgid "{}: invalid default mailbox quota value for domain"
-msgstr "不正なドメイン %s のクォータ値"
+msgstr "{} : ドメインの各メールボックスの容量制限の値が無効です"
 
 #: admin/models/domain.py:395
-#, fuzzy
-#| msgid "Invalid quota value for domain '%s'"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
-msgstr "不正なドメイン %s のクォータ値"
+msgstr "{} : 各メールボックスの容量制限の値は、ドメインの容量制限の値より小さくしてください"
 
 #: admin/models/domain_alias.py:36
 msgid "The alias name"
@@ -1094,35 +975,33 @@ msgstr "エイリアス名"
 
 #: admin/models/domain_alias.py:40
 msgid "target"
-msgstr "ターゲット"
+msgstr "対象"
 
 #: admin/models/domain_alias.py:41
 msgid "The domain this alias points to"
-msgstr "ドメインこのエイリアスポイントへ"
+msgstr "このエイリアスの指定先ドメイン"
 
 #: admin/models/domain_alias.py:79
 #, python-format
 msgid "Unknown domain %s"
-msgstr "不明なドメイン %s"
+msgstr "%s ドメインは不明です"
 
 #: admin/models/mailbox.py:87
 msgid "Mailbox address (without the @domain.tld part)"
-msgstr "メールボックスアドレス (@domain.tld 部分なし)"
+msgstr "メールボックス アドレス ( @domain.tld のドメイン部分を除く )"
 
 #: admin/models/mailbox.py:153
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
-msgstr "メールボックスの場所の取得に失敗しました (%s)"
+msgstr "メールボックスの場所 ( %s ) を取得できません"
 
 #: admin/models/mailbox.py:249
 msgid "A quota is required"
-msgstr "クォータは必須です"
+msgstr "容量制限の設定が必要です"
 
 #: admin/models/mailbox.py:256
-#, fuzzy
-#| msgid "Domain created"
 msgid "{}: domain quota exceeded"
-msgstr "ドメインが作成されました"
+msgstr "{} : ドメインの容量制限を超過"
 
 #: admin/templates/admin/_domain_dkim_key.html:6
 #: admin/templates/admin/_domain_dkim_key.html:20
@@ -1137,51 +1016,43 @@ msgstr "閉じる"
 #: admin/templates/admin/_domain_dkim_key.html:7
 #, python-format
 msgid "DKIM public key for %(domain)s"
-msgstr ""
+msgstr "%(domain)s の DKIM 公開キー"
 
 #: admin/templates/admin/_domain_dkim_key.html:11
 msgid "Raw format. Click to copy"
-msgstr ""
+msgstr "テキスト形式 - クリックしてクリップボードにコピー"
 
 #: admin/templates/admin/_domain_dkim_key.html:15
-#, fuzzy
-#| msgid "Invalid format"
 msgid "Bind/named format. Click to copy"
-msgstr "不正なフォーマット"
+msgstr "BIND・named 形式 - クリックしてクリップボードにコピー"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:4
-#, fuzzy
-#| msgid "disabled"
 msgctxt "checks"
 msgid "Disabled"
-msgstr "無効化"
+msgstr "無効"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:6
 msgid "Awaiting checks"
-msgstr ""
+msgstr "チェック待ち"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:16
 #: admin/templates/admin/_domain_dnschecks_status.html:26
 #: admin/templates/admin/_domain_dnschecks_status.html:34
 #: admin/templates/admin/_domain_dnschecks_status.html:42
-#, fuzzy
-#| msgid "No information available for this domain."
 msgid "No record found"
-msgstr "このドメインに関する情報がありません。"
+msgstr "レコードなし"
 
 #: admin/templates/admin/_domain_dnschecks_status.html:24
 msgid "Waiting for key to be generated"
-msgstr ""
+msgstr "キーの生成待ち"
 
 #: admin/templates/admin/_global_statistics_widget.html:4
-#, fuzzy
-#| msgid "Statistics"
 msgid "Global statistics"
-msgstr "統計情報"
+msgstr "全体の統計"
 
 #: admin/templates/admin/_global_statistics_widget.html:8
 msgid "Quantity"
-msgstr "数量"
+msgstr "量"
 
 #: admin/templates/admin/_global_statistics_widget.html:14
 #: admin/templates/admin/domain_detail.html:37
@@ -1192,32 +1063,30 @@ msgid "Domain aliases"
 msgstr "ドメインエイリアス"
 
 #: admin/templates/admin/_per_domain_statistics_widget.html:4
-#, fuzzy
-#| msgid "Per-domain counters"
 msgid "Per-domain statistics"
-msgstr "ドメインごとのカウンター"
+msgstr "ドメイン別統計"
 
 #: admin/templates/admin/account_detail.html:16
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/domain_detail.html:19
 #: admin/templates/admin/identities_table.html:7
 msgid "(disabled)"
-msgstr ""
+msgstr "( 無効 )"
 
 #: admin/templates/admin/account_detail.html:22
 #: admin/templates/admin/alias_detail.html:22
 #: admin/templates/admin/domain_detail.html:25
 msgid "Summary"
-msgstr ""
+msgstr "概要"
 
 #: admin/templates/admin/account_detail.html:26
 msgid "Full name"
-msgstr ""
+msgstr "フルネーム"
 
 #: admin/templates/admin/account_detail.html:32
 #: admin/templates/admin/alias_detail.html:26
 msgid "Created"
-msgstr ""
+msgstr "作成"
 
 #: admin/templates/admin/account_detail.html:35
 #: core/templates/core/information.html:61
@@ -1226,12 +1095,12 @@ msgstr "最終ログイン"
 
 #: admin/templates/admin/account_detail.html:38 core/models.py:87
 msgid "Secondary email"
-msgstr "2つめの電子メール"
+msgstr "別のメール"
 
 #: admin/templates/admin/account_detail.html:38
 #: admin/templates/admin/account_detail.html:41
 msgid "Not defined"
-msgstr ""
+msgstr "未設定"
 
 #: admin/templates/admin/account_detail.html:41 core/models.py:85
 msgid "Phone number"
@@ -1239,27 +1108,27 @@ msgstr "電話番号"
 
 #: admin/templates/admin/account_detail.html:61
 msgid "Administered domains"
-msgstr ""
+msgstr "管理ドメイン"
 
 #: admin/templates/admin/account_detail.html:67
 msgid "No domain defined."
-msgstr ""
+msgstr "ドメインが未設定です。"
 
 #: admin/templates/admin/account_detail.html:81
 msgid "Aliases"
-msgstr ""
+msgstr "エイリアス"
 
 #: admin/templates/admin/account_detail.html:87
 msgid "No alias defined"
-msgstr ""
+msgstr "エイリアスなし"
 
 #: admin/templates/admin/account_detail.html:93
 msgid "Additional sender addresses"
-msgstr ""
+msgstr "追加の送信者アドレス"
 
 #: admin/templates/admin/account_detail.html:99
 msgid "No sender address defined"
-msgstr ""
+msgstr "送信者アドレスなし"
 
 #: admin/templates/admin/account_general_form.html:12
 #: admin/templates/admin/aliasform.html:13
@@ -1269,15 +1138,15 @@ msgstr "ドメインが無効です"
 #: admin/templates/admin/alias_detail.html:16
 #: admin/templates/admin/identities.html:33
 msgid "Alias"
-msgstr ""
+msgstr "エイリアス"
 
 #: admin/templates/admin/alias_detail.html:27
 msgid "Modified"
-msgstr ""
+msgstr "変更しました"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:10
 msgid "Provider"
-msgstr "プロバイダー"
+msgstr "提供元"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:11
 #: admin/templates/admin/identities_quota_headers.html:2
@@ -1290,23 +1159,23 @@ msgstr "アドレス"
 #: admin/templates/admin/domains_log_headers.html:6
 #: admin/templates/admin/messages_log_headers.html:6
 msgid "Status"
-msgstr "ステータス"
+msgstr "状態"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
-msgstr "一覧"
+msgstr "掲載済み"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
-msgstr "すべて良好です。このドメインは載っていません。"
+msgstr "問題なし、このドメインは掲載されていません。"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:32
 msgid "No information available for this domain."
-msgstr "このドメインに関する情報がありません。"
+msgstr "このドメインについての情報がありません。"
 
 #: admin/templates/admin/domain_alarms.html:19
 msgid "Opened alarms for"
-msgstr ""
+msgstr "要対応アラート : "
 
 #: admin/templates/admin/domain_alarms.html:25
 #: admin/templates/admin/domains_log_headers.html:3
@@ -1320,28 +1189,26 @@ msgid "Message"
 msgstr "メッセージ"
 
 #: admin/templates/admin/domain_alarms.html:27
-#, fuzzy
-#| msgid "Mailboxes"
 msgid "Mailbox"
 msgstr "メールボックス"
 
 #: admin/templates/admin/domain_alarms.html:40
 msgid "No opened alarm"
-msgstr ""
+msgstr "要対応のアラートなし"
 
 #: admin/templates/admin/domain_detail.html:29
 msgid "Creation date"
-msgstr "作成日時"
+msgstr "作成日"
 
 #: admin/templates/admin/domain_detail.html:33
 msgid "Last modification date"
-msgstr "最終修正日時"
+msgstr "最終更新日時"
 
 #: admin/templates/admin/domain_detail.html:45 limits/app_settings.py:64
 #: limits/app_settings.py:120 limits/app_settings.py:207
 #: limits/app_settings.py:280 limits/constants.py:39 limits/constants.py:92
 msgid "Mailbox aliases"
-msgstr "メールボックスエイリアス"
+msgstr "メールボックス エイリアス"
 
 #: admin/templates/admin/domain_detail.html:50
 #: admin/templates/admin/domain_detail.html:57
@@ -1355,51 +1222,49 @@ msgstr "MB"
 
 #: admin/templates/admin/domain_detail.html:54
 #: admin/templates/admin/domain_detail.html:73
-#, fuzzy
-#| msgid "Usage (%%)"
 msgid "Usage"
-msgstr "使用量  (%%)"
+msgstr "使用量"
 
 #: admin/templates/admin/domain_detail.html:57
 #: admin/templates/admin/domains_quotas.html:11
 msgctxt "quota"
 msgid "used"
-msgstr ""
+msgstr "使用済み"
 
 #: admin/templates/admin/domain_detail.html:58
 #: admin/templates/admin/domains_quotas.html:12
 msgid "allocated"
-msgstr ""
+msgstr "割当"
 
 #: admin/templates/admin/domain_detail.html:70
 msgid "per day"
-msgstr ""
+msgstr "1 日 あたり"
 
 #: admin/templates/admin/domain_detail.html:76
 msgctxt "message count"
 msgid "used"
-msgstr ""
+msgstr "使用"
 
 #: admin/templates/admin/domain_detail.html:106
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: admin/templates/admin/domain_detail.html:121
 msgid "DKIM key"
-msgstr ""
+msgstr "DKIM キー"
 
 #: admin/templates/admin/domain_detail.html:125
 msgid "Show key"
-msgstr ""
+msgstr "キーを表示"
 
 #: admin/templates/admin/domain_detail.html:133
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: admin/templates/admin/domain_detail.html:139
 msgid ""
 "DKIM keys already exist for this domain. Do you want to overwrite them?"
-msgstr ""
+msgstr "このドメインの DKIM キーはすでに存在します。上書きしてよろしいですか？"
 
 #: admin/templates/admin/domain_detail.html:142 core/constants.py:53
 #: lib/form_utils.py:400
@@ -1408,7 +1273,7 @@ msgstr "いいえ"
 
 #: admin/templates/admin/domain_detail.html:143
 msgid "Generate new key"
-msgstr ""
+msgstr "新しいキーを生成"
 
 #: admin/templates/admin/domain_detail.html:143 lib/form_utils.py:400
 msgid "Yes"
@@ -1416,7 +1281,7 @@ msgstr "はい"
 
 #: admin/templates/admin/domain_detail.html:149
 msgid "Not generated"
-msgstr ""
+msgstr "生成しませんでした"
 
 #: admin/templates/admin/domain_detail.html:156
 msgid "Administrators"
@@ -1429,7 +1294,7 @@ msgstr "このパーミッションを削除"
 
 #: admin/templates/admin/domain_detail.html:173
 msgid "No domain administrator defined yet."
-msgstr "ドメイン管理者が指定されていません"
+msgstr "ドメイン管理者が指定されていません。"
 
 #: admin/templates/admin/domain_headers.html:5
 #: admin/templates/admin/identity_headers.html:4
@@ -1437,40 +1302,38 @@ msgid "Tags"
 msgstr "タグ"
 
 #: admin/templates/admin/domain_headers.html:7
-#, fuzzy
-#| msgid "Status"
 msgid "DNS status"
-msgstr "ステータス"
+msgstr "DNS 状態"
 
 #: admin/templates/admin/domain_headers.html:9
 #: admin/templates/admin/identity_headers.html:5
 msgid "Actions"
-msgstr "アション"
+msgstr "操作"
 
 #: admin/templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
-msgstr "新しいドメイン管理者を作成できません"
+msgstr "新しいドメイン管理者を作成する権限がありません"
 
 #: admin/templates/admin/domains.html:28
 #: admin/templates/admin/identities.html:29
 msgid "Add"
-msgstr ""
+msgstr "追加"
 
 #: admin/templates/admin/domains_log_headers.html:2
 msgid "Queue ID"
-msgstr ""
+msgstr "キュー ID"
 
 #: admin/templates/admin/domains_log_headers.html:4
 #: admin/templates/admin/messages_log_headers.html:4
 #: lib/templatetags/lib_tags.py:117 postfix_autoreply/forms.py:20
 msgid "From"
-msgstr "から"
+msgstr "差出人"
 
 #: admin/templates/admin/domains_log_headers.html:5
 #: admin/templates/admin/messages_log_headers.html:5
 #: lib/templatetags/lib_tags.py:118
 msgid "To"
-msgstr ""
+msgstr "宛先"
 
 #: admin/templates/admin/domains_quota_headers.html:3
 #: admin/templates/admin/identities_quota_headers.html:4
@@ -1479,27 +1342,25 @@ msgstr "制限"
 
 #: admin/templates/admin/domains_quota_headers.html:4
 msgid "Used"
-msgstr ""
+msgstr "使用"
 
 #: admin/templates/admin/domains_quota_headers.html:5
-#, fuzzy
-#| msgid "Alias created"
 msgid "Allocated"
-msgstr "エイリアスが作成されました"
+msgstr "割当"
 
 #: admin/templates/admin/domains_quota_headers.html:6
 #: admin/templates/admin/identities_quota_headers.html:5
 #, python-format
 msgid "Usage (%%)"
-msgstr "使用量  (%%)"
+msgstr " 使用 ( %% )"
 
 #: admin/templates/admin/domains_table.html:5
 msgid "disabled"
-msgstr "無効化"
+msgstr "無効"
 
 #: admin/templates/admin/forward.html:2
 msgid "Automatically forward emails to another address"
-msgstr "電子メールをほかのアドレスへ自動的に転送します"
+msgstr "別のアドレスにメールを自動転送"
 
 #: admin/templates/admin/forward.html:9 admin/views/alias.py:84
 #: core/templates/core/api_access.html:35
@@ -1510,7 +1371,7 @@ msgstr "更新"
 
 #: admin/templates/admin/identities.html:32
 msgid "Account"
-msgstr ""
+msgstr "アカウント"
 
 #: admin/templates/admin/identities_quota_headers.html:3
 msgid "Value"
@@ -1518,19 +1379,9 @@ msgstr "値"
 
 #: admin/templates/admin/identity_headers.html:3
 msgid "Fullname/Recipient"
-msgstr "フルネーム / 受信者"
+msgstr "フルネーム・受信者"
 
 #: admin/templates/admin/import_domains_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "  <li><em>domain; name; quota; enabled</em></li>\n"
-#| "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-#| "  %s\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
@@ -1539,27 +1390,9 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr ""
-"次のどちらかのフォーマットに従った CSV ファイルを用意してください：\n"
-"<ul>\n"
-"<li><em>domain; 名前; クォータ; 有効フラグ</em></li>\n"
-"<li><em>domainalias; 名前; 対象のドメイン; 有効フラグ</em></li>\n"
-"%s\n"
-"</ul>\n"
-"<p>各行の最初の要素は必須で、上の値に等しくなければなりません。</p>\n"
-"<p>セパレータとして別の文字を使用することができます。</p>\n"
+msgstr "各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>domain; ドメイン名; 容量制限; メールボックス容量制限のデフォルト値; 有効？</em></li> <li><em>domainalias; ドメインエイリアス名; 対象ドメイン; 有効？</em></li> <li><em>relaydomain; リレードメイン名; 対象ホスト名; 対象ポート; サービス; 有効？; 受信者を確認？</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> <p>区切り文字に別の文字も使えます。</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
-#, fuzzy
-#| msgid ""
-#| "Provide a CSV file where lines respect one of the following formats:\n"
-#| "<ul>\n"
-#| "  <li><em>domain; name; quota; enabled</em></li>\n"
-#| "  <li><em>domainalias; name; targeted domain; enabled</em></li>\n"
-#| "  %s\n"
-#| "</ul>\n"
-#| "<p>The first element of each line is mandatory and must be equal to one of the previous values.</p>\n"
-#| "<p>You can use a different character as separator.</p>\n"
 msgid ""
 "Provide a CSV file where lines respect one of the following formats: <ul> "
 "<li><em>account; loginname; password; first name; last name; enabled; group;"
@@ -1567,15 +1400,7 @@ msgid ""
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
 "is mandatory and must be equal to one of the previous values.</p> <p>You can"
 " use a different character as separator.</p>"
-msgstr ""
-"次のどちらかのフォーマットに従った CSV ファイルを用意してください：\n"
-"<ul>\n"
-"<li><em>domain; 名前; クォータ; 有効フラグ</em></li>\n"
-"<li><em>domainalias; 名前; 対象のドメイン; 有効フラグ</em></li>\n"
-"%s\n"
-"</ul>\n"
-"<p>各行の最初の要素は必須で、上の値に等しくなければなりません。</p>\n"
-"<p>セパレータとして別の文字を使用することができます。</p>\n"
+msgstr "各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>account; ログイン名; パスワード; 姓; 名; 有効？; グループ; アドレス; 容量制限; [, ドメイン, ...]</em></li> <li><em>alias; アドレス; 有効？; 受信者; 受信者; ...</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> <p>区切り文字に別の文字も使えます。</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1583,11 +1408,11 @@ msgstr "ヘルプ"
 
 #: admin/templates/admin/importform.html:13
 msgid "Importing..."
-msgstr "インポート中 ..."
+msgstr "インポートしています..."
 
 #: admin/templates/admin/mailboxes_raw.html:3
 msgid "Choose a value"
-msgstr "値を選択してください"
+msgstr "値を選択"
 
 #: admin/templates/admin/mailform.html:7
 msgid "Use domain default value"
@@ -1595,43 +1420,38 @@ msgstr "ドメインのデフォルト値を使う"
 
 #: admin/templates/admin/messages_log_headers.html:2
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: admin/templates/admin/mx_domain_detail.html:11
-#, fuzzy
-#| msgid "Update"
 msgid "Updated"
-msgstr "更新"
+msgstr "更新しました"
 
 #: admin/templates/admin/mx_domain_detail.html:23
 msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
+msgstr "この IP はパラメーターで定義している有効な MX のいずれとも一致しません"
 
 #: admin/templates/admin/mx_domain_detail.html:36
-#, fuzzy
-#| msgid "No information available for this domain."
 msgid "No MX record found for this domain."
-msgstr "このドメインに関する情報がありません。"
+msgstr "このドメインの MX レコードが見つかりません。"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr "Modoboa は、ドメイン %(domain)s が、以下の DNSBL プロバイダーに載っていることを検出しました："
+msgstr "Modoboa が %(domain)s ドメインの以下の DNSBL への掲載を検出 : "
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
-"ドメインのレピュテーションが影響を受けることになりますし、それから来るメールはスパムと見なされる可能性があります。あなたは、これらのプロバイダーに連絡して、検出されたIPアドレスを登録解除してもらう必要があります。"
+msgstr "ドメインの格付けが影響を与え、このドメインからのメールが SPAM とみなされる可能性があります。DNSBL 提供元に連絡し、検出された IP アドレスのリストからの削除を依頼する必要があります。"
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
+msgstr "Modoboa が %(domain)s ドメインの有効な MX レコードがないことを検出 : "
 
 #: admin/templates/admin/searchform.html:6
 msgid "Search"
@@ -1647,15 +1467,15 @@ msgstr "enabled_f"
 
 #: admin/templatetags/admin_tags.py:46
 msgid "List domains"
-msgstr "ドメイン一覧を表示"
+msgstr "ドメイン一覧"
 
 #: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:123
 msgid "List quotas"
-msgstr "クォータ一覧を表示"
+msgstr "容量制限一覧"
 
 #: admin/templatetags/admin_tags.py:60
 msgid "Message logs"
-msgstr ""
+msgstr "メッセージログ"
 
 #: admin/templatetags/admin_tags.py:75 admin/templatetags/admin_tags.py:130
 #: admin/views/import_.py:57 admin/views/import_.py:78
@@ -1669,22 +1489,20 @@ msgstr "エクスポート"
 
 #: admin/templatetags/admin_tags.py:116
 msgid "List identities"
-msgstr "ID 一覧を表示"
+msgstr "ユーザー一覧"
 
 #: admin/templatetags/admin_tags.py:157
 msgid "View the domain's identities"
-msgstr "ドメインの ID を表示"
+msgstr "ドメインのユーザー一覧を表示"
 
 #: admin/templatetags/admin_tags.py:166
-#, fuzzy
-#| msgid "domain alias"
 msgid "View domain's alarms"
-msgstr "ドメインエイリアス"
+msgstr "ドメインのアラートを表示"
 
 #: admin/templatetags/admin_tags.py:174 admin/templatetags/admin_tags.py:218
 #: admin/templatetags/admin_tags.py:235
 msgid "Edit {}"
-msgstr "{} を編集"
+msgstr "編集 {}"
 
 #: admin/templatetags/admin_tags.py:186 admin/templatetags/admin_tags.py:224
 #: admin/templatetags/admin_tags.py:241
@@ -1693,25 +1511,23 @@ msgid "Delete %s?"
 msgstr "%s を削除しますか？"
 
 #: admin/tests/test_mx.py:156
-#, fuzzy, python-format
-#| msgid "No information available for this domain."
+#, python-format
 msgid "No MX record for %s"
-msgstr "このドメインに関する情報がありません。"
+msgstr "%s の MX レコードなし"
 
 #: admin/tests/test_mx.py:177 admin/tests/test_mx.py:183
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
-msgstr ""
+msgstr "%(domain)s の IP アドレス書式が無効です ; %(addr)s"
 
 #: admin/tests/test_mx.py:200
-#, fuzzy, python-format
-#| msgid "No information available for this domain."
+#, python-format
 msgid "No AAAA record for %s"
-msgstr "このドメインに関する情報がありません。"
+msgstr "%s の AAAA レコードなし"
 
 #: admin/views/alias.py:30
 msgid "Alias with this name already exists"
-msgstr "このエイリアス名がすでに存在しています"
+msgstr "この名前のエイリアスがすでに存在します"
 
 #: admin/views/alias.py:52
 msgid "Create"
@@ -1723,24 +1539,24 @@ msgstr "新しいエイリアス"
 
 #: admin/views/alias.py:64
 msgid "Alias created"
-msgstr "エイリアスが作成されました"
+msgstr "エイリアスを作成しました"
 
 #: admin/views/alias.py:76
 msgid "Alias modified"
-msgstr "エイリアスは修正されました"
+msgstr "エイリアスを変更しました"
 
 #: admin/views/alias.py:101
 msgid "Alias deleted"
 msgid_plural "Aliases deleted"
-msgstr[0] ""
+msgstr[0] "エイリアスを削除しました"
 
 #: admin/views/dns.py:28
 msgid "MX records of {}"
-msgstr ""
+msgstr "{} の MX レコード"
 
 #: admin/views/dns.py:50
 msgid "DNSBL summary for {}"
-msgstr "{} のDNSBL 要約"
+msgstr "{} の DNSBL 概要"
 
 #: admin/views/domain.py:251
 msgid "Domain deleted"
@@ -1749,7 +1565,7 @@ msgstr[0] "ドメインを削除しました"
 
 #: admin/views/export.py:40
 msgid "Export identities"
-msgstr "ID をエクスポート"
+msgstr "ユーザーをエクスポート"
 
 #: admin/views/export.py:69
 msgid "Export domains"
@@ -1771,52 +1587,44 @@ msgstr "ドメインをインポート"
 
 #: admin/views/import_.py:77
 msgid "Import identities"
-msgstr "ID をインポート"
+msgstr "ユーザーをインポート"
 
 #: admin/views/user.py:51
 msgid "Forward updated"
-msgstr "転送先が更新されました"
+msgstr "転送を更新しました"
 
 #: calendars/app_settings.py:11
-#, fuzzy
-#| msgid "Connection settings"
 msgid "Server settings"
-msgstr "接続設定"
+msgstr "サーバー設定"
 
 #: calendars/app_settings.py:17
-#, fuzzy
-#| msgid "Server port"
 msgid "Server URL"
-msgstr "サーバーポート"
+msgstr "サーバー URL"
 
 #: calendars/app_settings.py:19
 msgid ""
 "The URL of your Radicale server. It will be used to construct calendar URLs."
-msgstr ""
+msgstr "Radicale サーバーのURL。カレンダーの URL の作成に使用します。"
 
 #: calendars/app_settings.py:31
 msgid "Rights management"
-msgstr ""
+msgstr "権利情報管理"
 
 #: calendars/app_settings.py:37
 msgid "Rights file's path"
-msgstr ""
+msgstr "権利情報のファイルパス"
 
 #: calendars/app_settings.py:39
 msgid "Path to the file that contains rights definition"
-msgstr ""
+msgstr "権利情報定義を保存するファイルのパス"
 
 #: calendars/app_settings.py:46
-#, fuzzy
-#| msgid "Domain administrator"
 msgid "Allow calendars administration"
-msgstr "ドメイン管理者"
+msgstr "カレンダー管理を許可"
 
 #: calendars/app_settings.py:48
-#, fuzzy
-#| msgid "Allow this administrator to access user mailboxes"
 msgid "Allow domain administrators to manage user calendars (read and write)"
-msgstr "ユーザーのメールボックスアクセスをこの管理者に許可する"
+msgstr "ドメイン管理者にユーザーカレンダーの管理 ( 読み取り・書き込み ) を許可します"
 
 #: calendars/app_settings.py:60 core/app_settings.py:438
 #: core/app_settings.py:1258
@@ -1825,132 +1633,118 @@ msgstr "その他"
 
 #: calendars/app_settings.py:66
 msgid "Maximum size of ICS files"
-msgstr ""
+msgstr "ICS ファイルの最大サイズ"
 
 #: calendars/app_settings.py:68
 msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
-msgstr ""
+msgstr "インポートする ICS ファイルの最大サイズをバイト ( または KB、MB、GB ) で指定"
 
 #: calendars/app_settings.py:89 calendars/handlers.py:55
 #: core/api/v2/viewsets.py:157
 msgid "Calendars"
-msgstr ""
+msgstr "カレンダー"
 
 #: calendars/models.py:48 calendars/models.py:65 contacts/models.py:38
 msgid "Server location is not set, please fix it."
-msgstr ""
+msgstr "サーバーの場所を設定していないので登録してください。"
 
 #: calendars/viewsets.py:197
 msgid "Uploaded file is too big (max: {} bytes)"
-msgstr ""
+msgstr "アップロード ファイルが大きすぎます ( 最大 : {} バイト )"
 
 #: contacts/app_settings.py:11
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Synchronization"
-msgstr "LDAP 設定"
+msgstr "同期"
 
 #: contacts/app_settings.py:18
 msgid "Synchonize address book using CardDAV"
-msgstr ""
+msgstr "CardDAV でアドレス帳を同期します"
 
 #: contacts/app_settings.py:21
 msgid ""
 "Choose to synchronize or not your address book using CardDAV. You will be "
 "able to access your contacts from the outside."
-msgstr ""
+msgstr "CardDAV を使ってアドレス帳の同期を行うか・行わないかを選んでください。同期すると外からアドレス帳にアクセスできます。"
 
 #: contacts/app_settings.py:29
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Synchronization frequency"
-msgstr "LDAP 設定"
+msgstr "同期する頻度"
 
 #: contacts/app_settings.py:31
 msgid "Interval in seconds between 2 synchronization requests"
-msgstr ""
+msgstr "同期要求の間隔 ( 秒 )"
 
 #: contacts/app_settings.py:51
 #: contacts/templates/modoboa_contacts/index.html:6
 #: core/api/v2/viewsets.py:164
-#, fuzzy
-#| msgid "Domains"
 msgid "Contacts"
-msgstr "ドメイン"
+msgstr "連絡先"
 
 #: contacts/constants.py:6 contacts/constants.py:12
 msgid "Home"
-msgstr ""
+msgstr "自宅"
 
 #: contacts/constants.py:7 contacts/constants.py:13
 msgid "Work"
-msgstr ""
+msgstr "職場"
 
 #: contacts/constants.py:8 contacts/constants.py:14
 msgid "Other"
-msgstr ""
+msgstr "その他"
 
 #: contacts/constants.py:15
 msgid "Main"
-msgstr ""
+msgstr "メイン"
 
 #: contacts/constants.py:16
 msgid "Cellular"
-msgstr ""
+msgstr "携帯電話"
 
 #: contacts/constants.py:17
 msgid "Fax"
-msgstr ""
+msgstr "FAX"
 
 #: contacts/constants.py:18
 msgid "Pager"
-msgstr ""
+msgstr "ポケベル"
 
 #: contacts/serializers.py:101
-#, fuzzy
-#| msgid "Number of displayed items per page"
 msgid "Name or display name required"
-msgstr "ページあたりに表示される項目の数"
+msgstr "名前か表示名は必須です"
 
 #: contacts/serializers.py:233
 msgid "Minimum allowed value is 60s"
-msgstr ""
+msgstr "60 秒以上を設定してください"
 
 #: core/api/v1/serializers.py:21
-#, fuzzy
-#| msgid "Invalid line"
 msgid "Invalid PIN code"
-msgstr "不正な行"
+msgstr "PIN コードが無効です"
 
 #: core/api/v1/serializers.py:27
 msgid "2FA is already enabled"
-msgstr ""
+msgstr "2FA はすでに有効です"
 
 #: core/api/v1/serializers.py:40
 #, python-format
 msgid "Failed TFA settings editing attempt from '%s' as user '%s'"
-msgstr ""
+msgstr "「%s」から「%s」ユーザーの 2FA 設定変更は失敗"
 
 #: core/api/v1/serializers.py:44 core/api/v2/serializers.py:308
-#, fuzzy
-#| msgid "Old password"
 msgid "Invalid password"
-msgstr "現在のパスワード"
+msgstr "無効なパスワード"
 
 #: core/api/v1/viewsets.py:64 core/api/v1/viewsets.py:83
 msgid "2FA is not enabled"
-msgstr ""
+msgstr "2 要素認証が無効"
 
 #: core/api/v2/serializers.py:68 core/app_settings.py:48
 msgid "Local"
 msgstr "ローカル"
 
 #: core/api/v2/serializers.py:164 core/app_settings.py:24
-#, fuzzy
-#| msgid "Profile"
 msgid "User profile"
-msgstr "プロフィール"
+msgstr "ユーザープロフィール"
 
 #: core/api/v2/serializers.py:183 core/api/v2/serializers.py:190
 #: core/api/v2/serializers.py:197 core/app_settings.py:535
@@ -1965,28 +1759,24 @@ msgstr "不正なラウンド数"
 
 #: core/api/v2/serializers.py:296 core/forms.py:201
 msgid "This code is invalid"
-msgstr ""
+msgstr "このコードは無効です"
 
 #: core/api/v2/serializers.py:367 core/views/auth.py:200
 #: core/views/auth.py:253
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr ""
+msgstr "Modoboa のパスワード再設定で利用するコード : {}"
 
 #: core/api/v2/viewsets.py:150
-#, fuzzy
-#| msgid "Administration"
 msgid "Administration console"
-msgstr "管理"
+msgstr "管理コンソール"
 
 #: core/api/v2/viewsets.py:159
 msgid "Calendar"
-msgstr ""
+msgstr "カレンダー"
 
 #: core/api/v2/viewsets.py:166
-#, fuzzy
-#| msgid "Address"
 msgid "Address book"
-msgstr "アドレス"
+msgstr "アドレス帳"
 
 #: core/app_settings.py:44 core/app_settings.py:716
 msgid "Authentication"
@@ -1998,15 +1788,15 @@ msgstr "認証の種類"
 
 #: core/app_settings.py:50 core/app_settings.py:724
 msgid "The backend used for authentication"
-msgstr "認証に使用されるバックエンド"
+msgstr "認証バックエンド"
 
 #: core/app_settings.py:55 core/app_settings.py:731
 msgid "Default password scheme"
-msgstr "デフォルトのパスワードハッシュ"
+msgstr "デフォルトのパスワードスキーマ"
 
 #: core/app_settings.py:58 core/app_settings.py:733
 msgid "Scheme used to crypt mailbox passwords"
-msgstr "ハッシュは、メールボックスパスワードを暗号化するのに使われます"
+msgstr "メールボックス パスワードを暗号化する際のスキーマ"
 
 #: core/app_settings.py:62 core/app_settings.py:740
 msgid "Rounds"
@@ -2016,76 +1806,66 @@ msgstr "ラウンド"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"ラウンド数は(sha256crypt と sha512crypt だけで)使用しています。\n"
-"1000 から 999999999 の間でなければなりません。"
+msgstr "ラウンド数 ( sha256crypt と sha512crypt のみ使用 ) 。1000 ～ 999999999 の間で設定してください。"
 
 #: core/app_settings.py:71 core/app_settings.py:752
-#, fuzzy
-#| msgid "Default password scheme"
 msgid "Update password scheme at login"
-msgstr "デフォルトのパスワードハッシュ"
+msgstr "ログイン時にパスワード スキーマを更新"
 
 #: core/app_settings.py:74 core/app_settings.py:755
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
+msgstr "デフォルトのパスワード スキーマに切り替えるため、ログイン時にパスワードを更新します"
 
 #: core/app_settings.py:79 core/app_settings.py:763
-#, fuzzy
-#| msgid "Default password scheme"
 msgid "Default password"
-msgstr "デフォルトのパスワードハッシュ"
+msgstr "デフォルト パスワード"
 
 #: core/app_settings.py:81 core/app_settings.py:765
 msgid "Default password for automatically created accounts."
-msgstr ""
+msgstr "アカウント自動作成で使用するデフォルト パスワード"
 
 #: core/app_settings.py:85 core/app_settings.py:772
-#, fuzzy
-#| msgid "Bind password"
 msgid "Random password length"
-msgstr "Bind パスワード"
+msgstr "ランダムパスワード長"
 
 #: core/app_settings.py:88 core/app_settings.py:774
 msgid "Length of randomly generated passwords."
-msgstr ""
+msgstr "ランダムで生成するパスワードの長さ。"
 
 #: core/app_settings.py:92 core/app_settings.py:781
-#, fuzzy
-#| msgid "Default password scheme"
 msgid "Update password service URL"
-msgstr "デフォルトのパスワードハッシュ"
+msgstr "パスワードサービス URL を更新"
 
 #: core/app_settings.py:96 core/app_settings.py:783
 msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
+msgstr "ユーザがパスワードを更新するための外部ページの URL。ローカルユーザー以外のユーザー、つまり外部認証 ( LDAP、SMTP ) が成功した後に自動作成されるユーザにのみ適用されます。"
 
 #: core/app_settings.py:104 core/app_settings.py:793
 msgid "Password recovery announcement"
-msgstr ""
+msgstr "パスワード再設定の案内"
 
 #: core/app_settings.py:109 core/app_settings.py:795
 msgid "A temporary message that will be displayed on the reset password page."
-msgstr ""
+msgstr "パスワード再設定ページに表示する一時的なメッセージ"
 
 #: core/app_settings.py:114 core/app_settings.py:804
 msgid "Enable password recovery by SMS"
-msgstr ""
+msgstr "SMS を使ったパスワード再設定"
 
 #: core/app_settings.py:117 core/app_settings.py:807
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
+msgstr "電話番号を入力したユーザーは SMS によるパスワード再設定を有効にする"
 
 #: core/app_settings.py:122 core/app_settings.py:815
 msgid "SMS provider"
-msgstr ""
+msgstr "SMS 事業者"
 
 #: core/app_settings.py:124 core/app_settings.py:818
 msgid "Choose a provider to send password recovery SMS"
-msgstr ""
+msgstr "パスワード再設定の SMS を送信する業者を選んでください"
 
 #: core/app_settings.py:129
 msgid "LDAP settings"
@@ -2099,7 +1879,7 @@ msgstr "サーバーアドレス"
 
 #: core/app_settings.py:134 core/app_settings.py:838
 msgid "The IP address or the DNS name of the LDAP server"
-msgstr "LDAP サーバーの IP アドレス、または DNS 名"
+msgstr "LDAP サーバーの IP アドレスまたは DNS 名"
 
 #: core/app_settings.py:138 core/app_settings.py:845
 #: sievefilters/app_settings.py:25 sievefilters/app_settings.py:67
@@ -2113,47 +1893,37 @@ msgstr "LDAP サーバーの TCP ポート番号"
 
 #: core/app_settings.py:144 core/app_settings.py:855
 msgid "Enable secondary server (fallback)"
-msgstr ""
+msgstr "セカンダリーサーバー ( フォールバック ) を有効にする"
 
 #: core/app_settings.py:147 core/app_settings.py:858
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
+msgstr "セカンダリー LDAP サーバー。プライマリーサーバーで失敗した際に利用します。"
 
 #: core/app_settings.py:153 core/app_settings.py:866
-#, fuzzy
-#| msgid "Server address"
 msgid "Secondary server address"
-msgstr "サーバーアドレス"
+msgstr "セカンダリーサーバー アドレス"
 
 #: core/app_settings.py:156 core/app_settings.py:869
-#, fuzzy
-#| msgid "The IP address or the DNS name of the LDAP server"
 msgid "The IP address or the DNS name of the seondary LDAP server"
-msgstr "LDAP サーバーの IP アドレス、または DNS 名"
+msgstr "セカンダリー LDAP サーバーの IP アドレスまたは DNS 名"
 
 #: core/app_settings.py:161 core/app_settings.py:876
-#, fuzzy
-#| msgid "Server port"
 msgid "Secondary server port"
-msgstr "サーバーポート"
+msgstr "セカンダリーサーバー ポート"
 
 #: core/app_settings.py:163 core/app_settings.py:879
-#, fuzzy
-#| msgid "The TCP port number used by the LDAP server"
 msgid "The TCP port number used by the LDAP secondary server"
-msgstr "LDAP サーバーの TCP ポート番号"
+msgstr "セカンダリー LDAP サーバーの TCP ポート番号"
 
 #: core/app_settings.py:167 core/app_settings.py:886
 #: sievefilters/app_settings.py:58 sievefilters/forms.py:44
 msgid "Use a secured connection"
-msgstr "セキュアな接続を使う"
+msgstr "暗号化接続を使う"
 
 #: core/app_settings.py:171 core/app_settings.py:888
-#, fuzzy
-#| msgid "Use an SSL/TLS connection to access the LDAP server"
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
-msgstr "LDAP サーバーへの接続に SSL/TLS 接続を使う"
+msgstr "LDAP サーバー に接続する際に SSL/STARTTLS を使います"
 
 #: core/app_settings.py:176 core/app_settings.py:895
 msgid "Active Directory"
@@ -2161,7 +1931,7 @@ msgstr "Active Directory"
 
 #: core/app_settings.py:178 core/app_settings.py:897
 msgid "Tell if the LDAP server is an Active Directory one"
-msgstr "LDAP サーバーが Active Directory かどうか"
+msgstr "LDAP サーバーは Active Directory ですか？"
 
 #: core/app_settings.py:182 core/app_settings.py:904
 msgid "Administrator groups"
@@ -2171,17 +1941,15 @@ msgstr "管理者グループ"
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators."
 " Use ';' characters to separate groups."
-msgstr ""
-"これらの LDAP の Posix グループのメンバーは、ドメイン管理者として作成されます。\n"
-"\";\" 文字を使って、複数グループを書けます。"
+msgstr "ここで指定する LDAP の Posix グループのメンバーをドメイン管理者として作成します。複数のグループを指定する際は「;」で区切ってください。"
 
 #: core/app_settings.py:192 core/app_settings.py:915
 msgid "Group type"
-msgstr "グループ種類"
+msgstr "グループタイプ"
 
 #: core/app_settings.py:195 core/app_settings.py:917
 msgid "The LDAP group type to use with your directory."
-msgstr "ディレクトリで使用されている LDAP グループの種類"
+msgstr "ディレクトリーで使用している LDAP グループのタイプ。"
 
 #: core/app_settings.py:199 core/app_settings.py:924
 msgid "Groups search base"
@@ -2189,7 +1957,7 @@ msgstr "グループの検索ベース"
 
 #: core/app_settings.py:202 core/app_settings.py:926
 msgid "The distinguished name of the search base used to find groups"
-msgstr "グループを見つけるために使用される検索ベースの識別名(DN)"
+msgstr "グループを探す際の検索ベースの識別名 ( DN )"
 
 #: core/app_settings.py:208 core/app_settings.py:934
 msgid "Password attribute"
@@ -2197,53 +1965,49 @@ msgstr "パスワード属性"
 
 #: core/app_settings.py:210 core/app_settings.py:936
 msgid "The attribute used to store user passwords"
-msgstr "ユーザーパスワードを格納するための属性"
+msgstr "ユーザーパスワードを格納している属性"
 
 #: core/app_settings.py:214 core/app_settings.py:943
-#, fuzzy
-#| msgid "Authentication method"
 msgid "LDAP authentication settings"
-msgstr "認証方法"
+msgstr "LDAP 認証設定"
 
 #: core/app_settings.py:217 core/app_settings.py:951
 msgid "Authentication method"
-msgstr "認証方法"
+msgstr "認証方式"
 
 #: core/app_settings.py:219 core/constants.py:59
 msgid "Search and bind"
-msgstr "検索と Bind"
+msgstr "検索とバインド"
 
 #: core/app_settings.py:220 core/constants.py:60
 msgid "Direct bind"
-msgstr "Bind"
+msgstr "ダイレクトバインド"
 
 #: core/app_settings.py:223 core/app_settings.py:954
 msgid "Choose the authentication method to use"
-msgstr "使用する認証方式を選択します"
+msgstr "使用する認証方式を選択"
 
 #: core/app_settings.py:227 core/app_settings.py:279 core/app_settings.py:961
 #: core/app_settings.py:1024
 msgid "Bind DN"
-msgstr "Bind DN"
+msgstr "バインド DN"
 
 #: core/app_settings.py:230 core/app_settings.py:282 core/app_settings.py:963
 #: core/app_settings.py:1026
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"LDAPサーバにバインドするときの識別名に使用します。\n"
-"匿名バインドのときは空のままにします。"
+msgstr "LDAP サーバーにバインドする際の識別名。空のままにすると匿名バインドです。"
 
 #: core/app_settings.py:237 core/app_settings.py:289 core/app_settings.py:972
 #: core/app_settings.py:1034
 msgid "Bind password"
-msgstr "Bind パスワード"
+msgstr "バインド パスワード"
 
 #: core/app_settings.py:240 core/app_settings.py:292 core/app_settings.py:974
 #: core/app_settings.py:1036
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr "(\"Bind DN\" を使って) LDAPサーバにバインドするときに使用するパスワード"
+msgstr "(「バインド DN」で ) LDAP サーバーにバインドする際のパスワード"
 
 #: core/app_settings.py:247 core/app_settings.py:335 core/app_settings.py:984
 #: core/app_settings.py:1089
@@ -2253,7 +2017,7 @@ msgstr "ユーザーの検索ベース"
 #: core/app_settings.py:250 core/app_settings.py:338 core/app_settings.py:986
 #: core/app_settings.py:1091
 msgid "The distinguished name of the search base used to find users"
-msgstr "ユーザーを見つけるために使用される検索ベースの識別名(DN)"
+msgstr "ユーザーを探す際の検索ベースの識別名 ( DN )"
 
 #: core/app_settings.py:256 core/app_settings.py:344 core/app_settings.py:995
 #: core/app_settings.py:1100
@@ -2265,9 +2029,7 @@ msgstr "検索フィルター"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr ""
-"オプションのフィルタ文字列 (例えば \"(objectClass=person)\") \n"
-"有効であるためには、括弧で囲まなければなりません。"
+msgstr "オプションのフィルタ文字列 ( 例 : (objectClass=person) )。「()」カッコで囲まないと有効になりません。"
 
 #: core/app_settings.py:266 core/app_settings.py:1006
 msgid "User DN template"
@@ -2278,104 +2040,95 @@ msgstr "ユーザー DN テンプレート"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr "ユーザーDNを作るために使用されるテンプレート。1つのプレースホルダ (%(user)s)が含まれている必要があります。"
+msgstr "ユーザー DN を作成する際のテンプレート。1 つのプレースホルダー ( 例 : %(user)s ) を含めてください。"
 
 #: core/app_settings.py:276 core/app_settings.py:1017
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "LDAP synchronization settings"
-msgstr "LDAP 設定"
+msgstr "LDAP 同期設定"
 
 #: core/app_settings.py:299 core/app_settings.py:1045
 msgid "Enable export to LDAP"
-msgstr ""
+msgstr "LDAP へのエクスポートを有効"
 
 #: core/app_settings.py:302 core/app_settings.py:1047
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
-msgstr ""
+msgstr "ローカル データベース・LDAP ディレクトリー間での自動同期を有効にする"
 
 #: core/app_settings.py:308 core/app_settings.py:1056
 msgid "Delete remote LDAP account when local account is deleted"
-msgstr ""
+msgstr "ローカルアカウントを削除するとリモート LDAP のアカウントも削除する"
 
 #: core/app_settings.py:311 core/app_settings.py:1059
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
-msgstr ""
+msgstr "ローカルアカウントを削除すると、リモートLDAPアカウントも削除、または無効にします。"
 
 #: core/app_settings.py:317 core/app_settings.py:1068
-#, fuzzy
-#| msgid "User DN template"
 msgid "Account DN template"
-msgstr "ユーザー DN テンプレート"
+msgstr "アカウント DN テンプレート"
 
 #: core/app_settings.py:320 core/app_settings.py:1070
-#, fuzzy, python-format
-#| msgid ""
-#| "The template used to construct a user's DN. It should contain one "
-#| "placeholder (ie. %(user)s)"
+#, python-format
 msgid ""
 "The template used to construct an account's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr "ユーザーDNを作るために使用されるテンプレート。1つのプレースホルダ (%(user)s)が含まれている必要があります。"
+msgstr "アカウント DN を作成する際のテンプレート。1 つのプレースホルダー ( 例 : %(user)s ) を含めてください。"
 
 #: core/app_settings.py:327 core/app_settings.py:1079
 msgid "Enable import from LDAP"
-msgstr ""
+msgstr "LDAP からのインポートを有効"
 
 #: core/app_settings.py:330 core/app_settings.py:1081
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr ""
+msgstr "LDAP ディレクトリーからローカル データベースへのアカウント同期を有効にします"
 
 #: core/app_settings.py:354 core/app_settings.py:1111
-#, fuzzy
-#| msgid "Password attribute"
 msgid "Username attribute"
-msgstr "パスワード属性"
+msgstr "ユーザー名属性"
 
 #: core/app_settings.py:357 core/app_settings.py:1113
 msgid "The name of the LDAP attribute where the username can be found."
-msgstr ""
+msgstr "ユーザー名を格納している LDAP 属性名。"
 
 #: core/app_settings.py:362 core/app_settings.py:1122
 msgid "Enable Dovecot LDAP sync"
-msgstr ""
+msgstr "Dovecot LDAP 同期を有効"
 
 #: core/app_settings.py:365 core/app_settings.py:1124
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
+msgstr "LDAP 認証設定を Dovecot の設定に適用します。"
 
 #: core/app_settings.py:370 core/app_settings.py:1132
 msgid "Dovecot LDAP config file"
-msgstr ""
+msgstr "Dovecot LDAP 設定ファイル"
 
 #: core/app_settings.py:374 core/app_settings.py:1134
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
-msgstr ""
+msgstr "Dovecot の LDAP 設定ファイルの場所。"
 
 #: core/app_settings.py:379 core/app_settings.py:1147
 #: core/templates/core/dashboard.html:5
 msgid "Dashboard"
-msgstr ""
+msgstr "ダッシュボード"
 
 #: core/app_settings.py:382 core/app_settings.py:1153
 msgid "Custom RSS feed"
-msgstr ""
+msgstr "カスタム RSS フィード"
 
 #: core/app_settings.py:385 core/app_settings.py:1155
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
+msgstr "リセラーとドメイン管理者に表示する独自 RSS フィードを設定します。"
 
 #: core/app_settings.py:390 core/app_settings.py:1163
 msgid "Hide features widget"
-msgstr ""
+msgstr "機能ウィジェットを非表示に"
 
 #: core/app_settings.py:393 core/app_settings.py:1165
 msgid "Hide features widget for resellers and domain administrators"
-msgstr ""
+msgstr "リセラーとドメイン管理者の機能ウィジェットを非表示にします"
 
 #: core/app_settings.py:397 core/app_settings.py:1177
 msgid "Notifications"
@@ -2387,19 +2140,19 @@ msgstr "送信者アドレス"
 
 #: core/app_settings.py:402 core/app_settings.py:1185
 msgid "Email address used to send notifications."
-msgstr "通知の送信に使われる電子メールアドレス"
+msgstr "通知を送信するメールアドレスです。"
 
 #: core/app_settings.py:405 core/app_settings.py:1196
 msgid "Public API"
-msgstr ""
+msgstr "パブリック API"
 
 #: core/app_settings.py:408 core/app_settings.py:1202
 msgid "Enable communication"
-msgstr ""
+msgstr "通信を有効に"
 
 #: core/app_settings.py:410
 msgid "Enable communication with Modoboa public API"
-msgstr ""
+msgstr "Modoboa パブリック API との通信を有効にします"
 
 #: core/app_settings.py:414 core/app_settings.py:1211
 msgid "Check new versions"
@@ -2408,60 +2161,60 @@ msgstr "新しいバージョンをチェックする"
 #: core/app_settings.py:416 core/app_settings.py:1204
 #: core/app_settings.py:1214
 msgid "Automatically checks if a newer version is available"
-msgstr "新しいバージョンが利用可能かどうか、自動的にチェックする"
+msgstr "新しいバージョンのリリースを自動チェックする"
 
 #: core/app_settings.py:420 core/app_settings.py:1222
 msgid "Send an email when new versions are found"
-msgstr ""
+msgstr "新バージョンリリースでメールを送信"
 
 #: core/app_settings.py:422 core/app_settings.py:1226
 msgid "Send an email to notify admins about new versions"
-msgstr ""
+msgstr "新しいバージョンがリリースされたら管理者にメールで通知"
 
 #: core/app_settings.py:425 core/app_settings.py:1233
 #: sievefilters/constants.py:25
 msgid "Recipient"
-msgstr ""
+msgstr "受信者"
 
 #: core/app_settings.py:427 core/app_settings.py:1236
 msgid "Recipient of new versions notification emails."
-msgstr ""
+msgstr "新しいバージョンのリリースを通知するメールの受信者を指定してください。"
 
 #: core/app_settings.py:431 core/app_settings.py:1243
 msgid "Send statistics"
-msgstr ""
+msgstr "統計を送信"
 
 #: core/app_settings.py:434 core/app_settings.py:1246
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
+msgstr "Modoboa パブリック API の統計 ( 数と利用拡張機能 ) を送信します"
 
 #: core/app_settings.py:441 core/app_settings.py:1265
 msgid "Enable inactive account tracking"
-msgstr ""
+msgstr "非利用アカウント追跡を有効に"
 
 #: core/app_settings.py:444 core/app_settings.py:1268
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account"
 " is considered inactive if the user hasn't logged in"
-msgstr ""
+msgstr "ユーザーがログインしておらず、アカウント非利用とみなす期間 ( 日 ) を設定することを管理者に許可します"
 
 #: core/app_settings.py:451 core/app_settings.py:1277
 msgid "Inactive account threshold"
-msgstr ""
+msgstr "アカウントを非利用とみなすログイン間隔"
 
 #: core/app_settings.py:454 core/app_settings.py:1280
 msgid ""
 "An account with a last login date greater than this threshold (in days) will"
 " be considered as inactive"
-msgstr ""
+msgstr "最終ログイン日が、このしきい値 ( 日数 ) よりも以前になったアカウントを非利用とみなします"
 
 #: core/app_settings.py:460 core/app_settings.py:1289
 msgid "Top notifications check interval"
-msgstr "トップの通知をチェックする間隔"
+msgstr "ページトップ通知のチェック間隔"
 
 #: core/app_settings.py:462 core/app_settings.py:1292
 msgid "Interval between two top notification checks (in seconds)"
-msgstr "2つのトップの通知チェックの間隔 (秒)"
+msgstr "2 つのページトップの通知のチェックの間隔 ( 秒 )"
 
 #: core/app_settings.py:466 core/app_settings.py:1299
 msgid "Maximum log record age"
@@ -2485,36 +2238,34 @@ msgstr "デフォルトのリダイレクト先"
 
 #: core/app_settings.py:482 core/app_settings.py:1319
 msgid "The default redirection used when no application is specified"
-msgstr "アプリケーションが指定されていないときのデフォルトのリダイレクト先に使用されます"
+msgstr "アプリケーションが未指定の際、デフォルトとなるリダイレクト先"
 
 #: core/app_settings.py:830
 msgid "LDAP"
-msgstr ""
+msgstr "LDAP"
 
 #: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
-msgstr ""
+msgstr "USE_TZ を False にすると、夏時間・冬時間の移行の際に問題となる可能性があります ( 例 : 時計が変更されることで、同じローカル時刻が 2 度発生します )。"
 
 #: core/checks.py:17
 msgid "Set `USE_TZ = True` in settings.py"
-msgstr ""
+msgstr "「USE_TZ=True」を settings.py に設定してください"
 
 #: core/checks.py:21
 msgid "The password scheme you are using is deprecated."
-msgstr ""
+msgstr "ご利用のパスワード スキーマは現在非推奨です。"
 
 #: core/checks.py:22
-#, fuzzy
-#| msgid "Default password scheme"
 msgid "Upgrade your password scheme to a stronger one"
-msgstr "デフォルトのパスワードハッシュ"
+msgstr "パスワード スキーマをより強力なものに更新してください"
 
 #: core/constants.py:6
 msgid "Simple user"
-msgstr "ユーザー"
+msgstr "標準ユーザー"
 
 #: core/constants.py:7
 msgid "Domain administrator"
@@ -2522,19 +2273,19 @@ msgstr "ドメイン管理者"
 
 #: core/constants.py:8
 msgid "Reseller"
-msgstr "リセーラー"
+msgstr "リセラー"
 
 #: core/constants.py:9
 msgid "Super administrator"
-msgstr "全体管理者"
+msgstr "スーパー管理者"
 
 #: core/constants.py:109
 msgid "Choose a provider"
-msgstr ""
+msgstr "事業者を選択"
 
 #: core/constants.py:114
 msgid "Dummy"
-msgstr ""
+msgstr "ダミー"
 
 #: core/forms.py:26
 msgid "Old password"
@@ -2550,23 +2301,19 @@ msgstr "現在のパスワードが一致しません"
 
 #: core/forms.py:83
 msgid "Passwords mismatch"
-msgstr "パスワード不一致"
+msgstr "2 つのパスワードが一致していません"
 
 #: core/forms.py:130
 msgid "Enable API access"
 msgstr "API アクセスを有効にします"
 
 #: core/forms.py:176
-#, fuzzy
-#| msgid "Notifications"
 msgid "Verification code"
-msgstr "通知"
+msgstr "確認コード"
 
 #: core/forms.py:187
-#, fuzzy
-#| msgid "Invalid line"
 msgid "Invalid code"
-msgstr "不正な行"
+msgstr "無効なコード"
 
 #: core/handlers.py:37
 msgid "added"
@@ -2574,57 +2321,54 @@ msgstr "追加しました"
 
 #: core/handlers.py:40
 msgid "modified"
-msgstr "修正しました"
+msgstr "変更しました"
 
 #: core/handlers.py:42
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
-msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s by %(user)s ユーザー"
 
 #: core/handlers.py:65
-#, fuzzy, python-format
-#| msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+#, python-format
 msgid "%(object)s '%(name)s' %(action)s by "
-msgstr "%(object)s '%(name)s' %(action)s by ユーザー %(user)s"
+msgstr "%(object)s '%(name)s' %(action)s by "
 
 #: core/handlers.py:68
 msgid "deleted"
-msgstr "削除しました"
+msgstr "削除済み"
 
 #: core/handlers.py:72
 msgid "user {}"
-msgstr ""
+msgstr "{} ユーザー"
 
 #: core/handlers.py:74
 msgid "management command"
-msgstr ""
+msgstr "管理コマンド"
 
 #: core/handlers.py:96
 msgid "You can't delete your own account"
-msgstr "あなた自身のアカウントは削除できません"
+msgstr "自分自身のアカウントは削除できません"
 
 #: core/handlers.py:129
 msgid "One or more updates are available"
-msgstr "1つ以上のアップデートが利用できます"
+msgstr "アップデートが利用できます"
 
 #: core/handlers.py:141
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
-msgstr ""
+msgstr "非推奨のパスワード スキーマ ( %s ) を利用しています"
 
 #: core/management/commands/communicate_with_public_api.py:42
-#, fuzzy
-#| msgid "One or more updates are available"
 msgid "[modoboa] Update(s) available"
-msgstr "1つ以上のアップデートが利用できます"
+msgstr "[modoboa] 新バージョン リリース"
 
 #: core/models.py:72
 msgid "Allow mailboxes access"
-msgstr "メールボックスのアクセスを許可する"
+msgstr "メールボックスのアクセスを許可"
 
 #: core/models.py:74
 msgid "Allow this administrator to access user mailboxes"
-msgstr "ユーザーのメールボックスアクセスをこの管理者に許可する"
+msgstr "この管理者にユーザーのメールボックスへのアクセスを許可します"
 
 #: core/models.py:76 core/templates/core/user_security.html:119
 msgid "password"
@@ -2632,19 +2376,19 @@ msgstr "パスワード"
 
 #: core/models.py:79
 msgid "language"
-msgstr ""
+msgstr "言語"
 
 #: core/models.py:83
 msgid "Prefered language to display pages."
-msgstr "ページの表示に優先言語を使う"
+msgstr "ページ表示で優先する言語。"
 
 #: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr "別の電子メールアドレスは、回復の必要のために使用することができます。"
+msgstr "もう 1 つのメールアドレス。万が一の際に利用します。"
 
 #: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
-msgstr "パスワードの更新に失敗しました ： LDAP モジュールがインストールされていません。"
+msgstr "パスワードの更新に失敗 : LDAP モジュールがインストールされていません"
 
 #: core/models.py:186 policyd/core.py:106
 msgid "account"
@@ -2652,125 +2396,119 @@ msgstr "アカウント"
 
 #: core/models.py:318
 msgid "Unknown"
-msgstr ""
+msgstr "不明"
 
 #: core/models.py:361
 msgid "You can't import an account with a role greater than yours"
-msgstr "あなた以上のロールを持ったアカウントはインポートできません"
+msgstr "自分のロール以上のアカウントはインポートできません"
 
 #: core/models.py:376
 #, python-format
 msgid "The simple user '%s' must have a valid email address"
-msgstr "ユーザー \"%s\" は、正しい電子メールアドレスを持っていなければいけません"
+msgstr "標準ユーザー「%s」に有効なメールアドレスがありません"
 
 #: core/models.py:383
 #, python-format
 msgid "username and email fields must not differ for '%s'"
-msgstr "\"%s\" のユーザー名と電子メールフィールドが同一である必要があります。"
+msgstr "「%s」の場合、ユーザー名とメールアドレスの項目は同一にしてください。"
 
 #: core/password_validation.py:25
 msgid "Password must contain at least {} digit."
 msgid_plural "Password must contain at least {} digits."
-msgstr[0] ""
+msgstr[0] "パスワードに {} 文字以上の数字を含めてください。"
 
 #: core/password_validation.py:37
 msgid "Password must contain at least {} lowercase letter."
 msgid_plural "Password must contain at least {} lowercase letters."
-msgstr[0] ""
+msgstr[0] "パスワードに {} 文字以上のアルファベット小文字を含めてください。"
 
 #: core/password_validation.py:49
 msgid "Password must contain at least {} uppercase letter."
 msgid_plural "Password must contain at least {} uppercase letters."
-msgstr[0] ""
+msgstr[0] "パスワードに {} 文字以上のアルファベット大文字を含めてください。"
 
 #: core/password_validation.py:62
 msgid "Password must contain at least {} special character."
 msgid_plural "Password must contain at least {} special characters."
-msgstr[0] ""
+msgstr[0] "パスワードに {} 文字以上の記号を含めてください。"
 
 #: core/password_validation.py:70
 msgid "Your password must contain a combination of different character types."
-msgstr ""
+msgstr "パスワードはさまざまな種類の文字を組み合わせる必要があります。"
 
 #: core/sms_backends/ovh.py:21 core/sms_backends/ovh.py:102
 msgid "API endpoint"
-msgstr ""
+msgstr "API エンドポイント"
 
 #: core/sms_backends/ovh.py:24 core/sms_backends/ovh.py:62
 msgid "OVH Europe"
-msgstr ""
+msgstr "OVH Europe"
 
 #: core/sms_backends/ovh.py:25 core/sms_backends/ovh.py:63
 msgid "OVH US"
-msgstr ""
+msgstr "OVH US"
 
 #: core/sms_backends/ovh.py:26 core/sms_backends/ovh.py:64
 msgid "OVH North-America"
-msgstr ""
+msgstr "OVH North-America"
 
 #: core/sms_backends/ovh.py:27 core/sms_backends/ovh.py:65
 msgid "So you Start Europe"
-msgstr ""
+msgstr "So you Start Europe"
 
 #: core/sms_backends/ovh.py:28 core/sms_backends/ovh.py:66
 msgid "So you Start North America"
-msgstr ""
+msgstr "So you Start North America"
 
 #: core/sms_backends/ovh.py:29 core/sms_backends/ovh.py:67
 msgid "Kimsufi Europe"
-msgstr ""
+msgstr "Kimsufi Europe"
 
 #: core/sms_backends/ovh.py:30 core/sms_backends/ovh.py:68
 msgid "Kimsufi North America"
-msgstr ""
+msgstr "Kimsufi North America"
 
 #: core/sms_backends/ovh.py:36 core/sms_backends/ovh.py:109
-#, fuzzy
-#| msgid "Applications"
 msgid "Application key"
-msgstr "アプリケーション"
+msgstr "アプリケーションキー"
 
 #: core/sms_backends/ovh.py:41
-#, fuzzy
-#| msgid "Applications"
 msgid "Application secret"
-msgstr "アプリケーション"
+msgstr "アプリケーションシークレット"
 
 #: core/sms_backends/ovh.py:49 core/sms_backends/ovh.py:124
 msgid "Consumer key"
-msgstr ""
+msgstr "カスタマーキー"
 
 #: core/sms_backends/ovh.py:116
-#, fuzzy
-#| msgid "Applications"
 msgid "Appication secret"
-msgstr "アプリケーション"
+msgstr "アプリケーションシークレット"
 
 #: core/templates/core/_current_features.html:6
 msgid "Features looking for sponsoring"
-msgstr ""
+msgstr "スポンサーを求めている機能"
 
 #: core/templates/core/_current_features.html:12
 msgid "Goal:"
-msgstr ""
+msgstr "ゴール : "
 
 #: core/templates/core/_current_features.html:18
 msgid "More"
-msgstr ""
+msgstr "More"
 
 #: core/templates/core/_current_features.html:22
 msgid "Nothing to sponsor yet."
-msgstr ""
+msgstr "なし"
 
 #: core/templates/core/_latest_news_widget.html:5
 msgid "Latest news"
-msgstr ""
+msgstr "新着情報"
 
 #: core/templates/core/_latest_news_widget.html:19
 msgid ""
 "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
 "weblog</a> for more information."
-msgstr ""
+msgstr "詳しくは <a href=\"https://modoboa.org/blog/\" target=\"_blank\">公式ブログ</a> をご覧ください。"
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -2785,7 +2523,7 @@ msgstr "Modoboa API へのアクセスを制御"
 msgid ""
 "A documentation of the API is available <strong><a href=\"%(url)s\" "
 "target=\"_blank\">here</a></strong>."
-msgstr ""
+msgstr "API の文書は <strong><a href=\"%(url)s\" target=\"_blank\">こちら</a></strong> から参照。"
 
 #: core/templates/core/api_access.html:14
 msgid "API access token"
@@ -2794,7 +2532,7 @@ msgstr "API アクセストークン"
 #: core/templates/core/dashboard.html:17
 #, python-format
 msgid "Hello %(user)s."
-msgstr ""
+msgstr "ようこそ、%(user)s 。"
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:58
 msgid "Information"
@@ -2802,11 +2540,11 @@ msgstr "情報"
 
 #: core/templates/core/information.html:2
 msgid "Various information about Modoboa"
-msgstr "Modoboa についてのいろいろな情報"
+msgstr "Modoboa についてのさまざまな情報"
 
 #: core/templates/core/information.html:5
 msgid "You are using a deprecated password scheme!"
-msgstr ""
+msgstr "非推奨のパスワード スキーマを使っています！"
 
 #: core/templates/core/information.html:6
 #, python-format
@@ -2820,28 +2558,28 @@ msgid ""
 "<li>Logout / Login with your current account so its password gets "
 "updated</li> <li>Inform <strong>ALL</strong> your users that they must login"
 " to Modoboa to complete the operation</li> </ul>"
-msgstr ""
+msgstr "<strong>%(scheme)s</strong> のパスワード スキーマは非推奨となり、次のマイナーバージョンで削除します。より強力なスキーマにアップグレードする手順は以下の通りです : <ul> <li><strong>パラメーター > 全般</strong> のセクションへ</li> <li><strong>パスワード スキーマのデフォルト</strong>の値を変更</li> <li><strong>ログイン時にパスワード スキーマを更新</strong>が「はい」になっていることを確認</li> <li>変更を [ 保存 ] </li> <li>ご自身のアカウントでログアウト → ログインすることでパスワードが更新されます</li> <li>かならず<strong>すべての</strong> ユーザーに Modoboa にログインして操作を完了しなければならないことをアナウンスしてください</li> </ul>"
 
 #: core/templates/core/information.html:18
 msgid ""
 "You must apply this procedure <strong>BEFORE</strong> you install a newest "
 "version of Modoboa, otherwise <strong>you will be unable to connect to the "
 "web interface anymore</strong>."
-msgstr ""
+msgstr "Modoboa の <strong>新バージョンをインストールする前に</strong> 、必ずこの手順を実施してください。<strong>今後 Web インターフェースを開けなくなります</strong>。"
 
 #: core/templates/core/information.html:23
 msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
-msgstr ""
+msgstr "注 : <strong>すべての</strong>ユーザーが新しいスキーマでパスワードを変換するまでは、このメッセージを表示しつづけます。"
 
 #: core/templates/core/information.html:28
 msgid "One or more updates are available!"
-msgstr "1つ以上のアップデートが利用できます！"
+msgstr "アップデートが利用できます！"
 
 #: core/templates/core/information.html:29
 msgid "Check the following list to find the component(s) that can be updated."
-msgstr "更新することができるコンポーネントを見つけるために以下のリストをチェックしてください。"
+msgstr "更新可能なコンポーネントを以下のリストで確認してください。"
 
 #: core/templates/core/information.html:33
 msgid "Applications"
@@ -2849,11 +2587,11 @@ msgstr "アプリケーション"
 
 #: core/templates/core/information.html:38
 msgid "Installed version"
-msgstr "インストールされたバージョン"
+msgstr "インストール済みバージョン"
 
 #: core/templates/core/information.html:39
 msgid "Last version"
-msgstr "最新のバージョン"
+msgstr "最新バージョン"
 
 #: core/templates/core/information.html:55
 msgid "Active users"
@@ -2865,7 +2603,7 @@ msgstr "ログ"
 
 #: core/templates/core/logs.html:2
 msgid "Previously on Modoboa..."
-msgstr "Modoboa 以前 ..."
+msgstr "以前の Modoboa では..."
 
 #: core/templates/core/logs.html:7
 msgid "Level"
@@ -2876,23 +2614,21 @@ msgid "Logger"
 msgstr "ロガー"
 
 #: core/templates/core/notifications/update_available.html:3
-#, fuzzy
-#| msgid "One or more updates are available"
 msgid ""
 "\n"
 "  The following update is available:\n"
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] "1つ以上のアップデートが利用できます"
+msgstr[0] "\n  以下の更新が用意されています :\n"
 
 #: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:70
 msgid "Parameters"
-msgstr "パラメータ"
+msgstr "パラメーター"
 
 #: core/templates/core/parameters.html:2
 msgid "Configure Modoboa"
-msgstr "Modoboa を設定する"
+msgstr "Modoboa の設定"
 
 #: core/templates/core/parameters.html:6
 #: core/templates/core/user_preferences.html:10
@@ -2918,50 +2654,42 @@ msgstr "Modoboa のカスタマイズ"
 
 #: core/templates/core/user_preferences.html:14
 msgid "No preferences available."
-msgstr "プリファレンスがありません"
+msgstr "有効なプリファレンスがありません。"
 
 #: core/templates/core/user_profile.html:3
 msgid "Update your personal information"
 msgstr "個人情報を更新します"
 
 #: core/templates/core/user_profile.html:13
-#, fuzzy
-#| msgid "Failed to update password: {}"
 msgid "Click here to update your password"
-msgstr "パスワードの更新に失敗しました:  {}"
+msgstr "クリックしてパスワードを更新"
 
 #: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:145
-#, fuzzy
-#| msgid "Security options"
 msgid "Security"
-msgstr "セキュリティオプション"
+msgstr "セキュリティー"
 
 #: core/templates/core/user_security.html:6
-#, fuzzy
-#| msgid "The backend used for authentication"
 msgid "Two-Factor authentication"
-msgstr "認証に使用されるバックエンド"
+msgstr "2 要素認証"
 
 #: core/templates/core/user_security.html:17
 msgid ""
 "Install a soft token authenticator like FreeOTP or Google Authenticator from"
 " your application repository and use that app to scan this QR code."
-msgstr ""
+msgstr "FreeOTP や Google 認証システムなどのソフトウェアトークン認証アプリをインストールし、そのアプリでこの QR コードをスキャンします。"
 
 #: core/templates/core/user_security.html:25
-#, fuzzy
-#| msgid "Invalid line"
 msgid "Pin code"
-msgstr "不正な行"
+msgstr "PIN コード"
 
 #: core/templates/core/user_security.html:28
 msgid "Register"
-msgstr ""
+msgstr "登録"
 
 #: core/templates/core/user_security.html:33
 msgid ""
 "Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr ""
+msgstr "おめでとうございます！　あなたのアカウントで 2 要素認証が有効になりました。"
 
 #: core/templates/core/user_security.html:38
 #: core/templates/core/user_security.html:89
@@ -2970,57 +2698,49 @@ msgid ""
 "access to your account, in case you lose your phone for example. Make sure "
 "to save them in a safe place, otherwise you won't be able to access your "
 "account anymore."
-msgstr ""
+msgstr "例えばスマートフォンを無くしてしまったなどの事態に、下記の再設定コード 1 つにつき 1 度、アカウントへの接続を回復できます。"
 
 #: core/templates/core/user_security.html:53
 msgid "Two-Factor Authentication is enabled for your account."
-msgstr ""
+msgstr "あなたのアカウントで 2 要素認証が有効になりました。"
 
 #: core/templates/core/user_security.html:57
 msgid "This will invalidate your registered application."
-msgstr ""
+msgstr "この操作で登録済みアプリケーションが無効になります。"
 
 #: core/templates/core/user_security.html:58
-#, fuzzy
-#| msgid "disabled"
 msgid "Disable 2FA"
-msgstr "無効化"
+msgstr "2FA を無効に"
 
 #: core/templates/core/user_security.html:60
 msgid "This will regenerate your tokens."
-msgstr ""
+msgstr "トークンを再生成します。"
 
 #: core/templates/core/user_security.html:61
 msgid "Reset recovery codes"
-msgstr ""
+msgstr "復元コードのリセット"
 
 #: core/templates/core/user_security.html:65
 msgid ""
 "Two-Factor Authentication (2FA) is not yet activated for your account. "
 "Enabling this feature will increase your account's security."
-msgstr ""
+msgstr "あなたのアカウントは、まだ 2 要素認証 ( 2 Factor Authentication - 2FA ) が有効になっていません。この機能を有効にすることであなたのアカウントのセキュリティーが向上します。"
 
 #: core/templates/core/user_security.html:73
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable 2FA"
-msgstr "有効化"
+msgstr "2FA を有効に"
 
 #: core/templates/core/user_security.html:84
-#, fuzzy
-#| msgid "No information available for this domain."
 msgid "New recovery codes"
-msgstr "このドメインに関する情報がありません。"
+msgstr "新しい再設定コード"
 
 #: core/templates/core/user_security.html:88
 msgid "Here are your new recovery codes. "
-msgstr ""
+msgstr "新しい再設定コードは以下の通りです。"
 
 #: core/templates/core/user_security.html:118
-#, fuzzy
-#| msgid "Crypt passwords"
 msgid "Confirm your password"
-msgstr "パスワード暗号化"
+msgstr "パスワードを確認してください"
 
 #: core/templatetags/core_tags.py:34
 msgid "Modoboa"
@@ -3036,62 +2756,58 @@ msgstr "API"
 
 #: core/utils.py:41
 msgid "The core part of Modoboa"
-msgstr "Modoboaのコア部分"
+msgstr "Modoboa のコア部分"
 
 #: core/views/admin.py:42
 msgid "Parameters saved"
-msgstr "パラメータが保存されました"
+msgstr "パラメーターを保存しました"
 
 #: core/views/auth.py:70
 #, python-format
 msgid "User '%s' successfully logged in"
-msgstr "ユーザー \"%s\" がログインに成功しました"
+msgstr "ユーザー「%s」がログインしました"
 
 #: core/views/auth.py:108
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
-msgstr ""
+msgstr "パスワード スキーマが一致しません。%s のパスワードを更新しています"
 
 #: core/views/auth.py:115
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
-msgstr ""
+msgstr "パスワードのハッシュ パラメーターが一致しません。%s パスワードを更新しています"
 
 #: core/views/auth.py:160
-#, fuzzy
-#| msgid "User '%s' successfully logged in"
 msgid "User '{}' successfully logged out"
-msgstr "ユーザー \"%s\" がログインに成功しました"
+msgstr "ユーザー「{}」がログアウトしました"
 
 #: core/views/user.py:55
 msgid "Profile updated"
-msgstr "プロフィールが更新されました"
+msgstr "プロフィールを更新しました"
 
 #: core/views/user.py:89
 msgid "Preferences saved"
-msgstr "プリファレンスが保存されました"
+msgstr "プリファレンスを保存しました"
 
 #: core/views/user.py:118
 msgid "Access updated"
-msgstr "アクセスが更新されました"
+msgstr "アクセスを更新しました"
 
 #: dmarc/forms.py:36 dmarc/forms.py:50
 msgid "DNS settings"
-msgstr ""
+msgstr "DNS 設定"
 
 #: dmarc/forms.py:39 dmarc/forms.py:56
 msgid "Enable reverse lookups"
-msgstr ""
+msgstr "逆引きを有効に"
 
 #: dmarc/forms.py:41 dmarc/forms.py:58
 msgid "Enable reverse DNS lookups (reports will be longer to display)"
-msgstr ""
+msgstr "DNS の逆引きを有効にします ( レポート表示まで時間がかかるようになります )"
 
 #: dmarc/forms.py:74 dmarc/forms.py:78
-#, fuzzy
-#| msgid "DMARC tools"
 msgid "DMARC"
-msgstr "DMARC ツール"
+msgstr "DMARC"
 
 #: dmarc/handlers.py:21
 msgid "Show DMARC report for {}"
@@ -3099,73 +2815,71 @@ msgstr "{} の DMARC レポートを表示"
 
 #: dmarc/lib.py:294 dmarc/templatetags/dmarc_tags.py:67 dmarc/views.py:120
 msgid "Not resolved"
-msgstr ""
+msgstr "未解決"
 
 #: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
 msgid "None"
-msgstr "None"
+msgstr "なし"
 
 #: dmarc/models.py:11
 msgid "Quarantine"
-msgstr "Quarantine"
+msgstr "検疫"
 
 #: dmarc/models.py:12
 msgid "Reject"
-msgstr "Reject"
+msgstr "拒否"
 
 #: dmarc/models.py:17
 msgid "Neutral"
-msgstr "Neutral"
+msgstr "中立"
 
 #: dmarc/models.py:18
 msgid "Pass"
-msgstr "Pass"
+msgstr "パス"
 
 #: dmarc/models.py:19
 msgid "Fail"
-msgstr "Fail"
+msgstr "失敗"
 
 #: dmarc/models.py:20
 msgid "Temporary error"
-msgstr "Temporary error"
+msgstr "一時的なエラー"
 
 #: dmarc/models.py:21
 msgid "Permanent error"
-msgstr "Permanent error"
+msgstr "永続的なエラー"
 
 #: dmarc/models.py:24
 msgid "Policy"
-msgstr "Policy"
+msgstr "ポリシー"
 
 #: dmarc/models.py:26
 msgid "Soft failure"
-msgstr "Soft failure"
+msgstr "ソフトフェイル"
 
 #: dmarc/templates/dmarc/_result_detail.html:6
 msgid "Total"
-msgstr "Total"
+msgstr "全体"
 
 #: dmarc/templates/dmarc/domain_report.html:21
 #: dmarc/templates/dmarc/domain_report.html:27
 msgid "Fully aligned"
-msgstr "Fully aligned"
+msgstr "完全準拠"
 
 #: dmarc/templates/dmarc/domain_report.html:22
 #: dmarc/templates/dmarc/domain_report.html:28
 msgid "Partially aligned"
-msgstr "Partially aligned"
+msgstr "一部準拠"
 
 #: dmarc/templates/dmarc/domain_report.html:23
 #: dmarc/templates/dmarc/domain_report.html:29
-#, fuzzy
-#| msgid "Forward"
 msgid "Forwarded"
-msgstr "転送先"
+msgstr "転送済み"
 
 #: dmarc/templates/dmarc/domain_report.html:24
 #: dmarc/templates/dmarc/domain_report.html:30
 msgid "Failed"
-msgstr "Failed"
+msgstr "フェイル"
 
 #: dmarc/templates/dmarc/domain_report.html:52
 msgid "DMARC report for"
@@ -3173,25 +2887,23 @@ msgstr "DMARC レポート"
 
 #: dmarc/templates/dmarc/domain_report.html:76
 msgid "processed"
-msgstr "processed"
+msgstr "処理済み"
 
 #: dmarc/templates/dmarc/domain_report.html:85
 msgid "fully aligned"
-msgstr "fully aligned"
+msgstr "完全準拠"
 
 #: dmarc/templates/dmarc/domain_report.html:94
 msgid "partially aligned"
-msgstr "partially aligned"
+msgstr "一部準拠"
 
 #: dmarc/templates/dmarc/domain_report.html:103
-#, fuzzy
-#| msgid "Forward"
 msgid "forwarded"
-msgstr "転送先"
+msgstr "転送済み"
 
 #: dmarc/templates/dmarc/domain_report.html:112
 msgid "failed"
-msgstr "failed"
+msgstr "フェイル"
 
 #: dmarc/templates/dmarc/domain_report.html:122
 msgid "Display details"
@@ -3199,305 +2911,291 @@ msgstr "詳細を表示"
 
 #: dmarc/templates/dmarc/domain_report.html:126
 msgid "Trusted sources"
-msgstr "Trusted sources"
+msgstr "信頼できるソース"
 
 #: dmarc/templates/dmarc/domain_report.html:134
 msgid "Partially trusted sources / Forwarders"
-msgstr ""
+msgstr "一部信頼できるソース・フォワーダー"
 
 #: dmarc/templates/dmarc/domain_report.html:142
 msgid "Forwarders with ARC"
-msgstr ""
+msgstr "ARC でのフォワーダー"
 
 #: dmarc/templates/dmarc/domain_report.html:150
 msgid "Unknown sources / Threats"
-msgstr "Unknown sources / Threats"
+msgstr "不明なソース・脅威"
 
 #: dnstools/lib.py:82
 msgid "Wrong ip4 mechanism syntax"
-msgstr ""
+msgstr "IP4 メカニズム書式に誤り"
 
 #: dnstools/lib.py:86
 msgid "Wrong IPv4 address format"
-msgstr ""
+msgstr "IP4 アドレス書式に誤り"
 
 #: dnstools/lib.py:92
 msgid "Wrong ip6 mechanism syntax"
-msgstr ""
+msgstr "IPV6 メカニズム書式に誤り"
 
 #: dnstools/lib.py:97
 msgid "Wrong IPv6 address format"
-msgstr ""
+msgstr "IPV6 アドレス書式に誤り"
 
 #: dnstools/lib.py:111 dnstools/lib.py:136
 msgid "Invalid syntax for {} mechanism"
-msgstr ""
+msgstr "{} メカニズムの書式が無効"
 
 #: dnstools/lib.py:113
 msgid "Invalid mask found {}"
-msgstr ""
+msgstr "{} に無効なマスク"
 
 #: dnstools/lib.py:157
 msgid "Not an SPF record"
-msgstr ""
+msgstr "SPF レコードではありません"
 
 #: dnstools/lib.py:179
 msgid "Unknown mechanism {}"
-msgstr ""
+msgstr "不明なメカニズム {}"
 
 #: dnstools/lib.py:181
 msgid "Unknown modifier {}"
-msgstr ""
+msgstr "不明な節 : {}"
 
 #: dnstools/lib.py:184
 msgid "Duplicate modifier {} found"
-msgstr ""
+msgstr "モディフィアの重複 {}"
 
 #: dnstools/lib.py:188
 msgid "No mechanism found"
-msgstr ""
+msgstr "メカニズムなし"
 
 #: dnstools/lib.py:195
 msgid "Not a valid DKIM record"
-msgstr ""
+msgstr "有効な DKIM レコードなし"
 
 #: dnstools/lib.py:203 dnstools/lib.py:256
 msgid "Invalid tag {}"
-msgstr ""
+msgstr "無効なタグ {}"
 
 #: dnstools/lib.py:208
 msgid "No key found in record"
-msgstr ""
+msgstr "レコードにキーが見つかりません"
 
 #: dnstools/lib.py:215
 msgid "Wrong value {} for tag {}"
-msgstr ""
+msgstr "タグ {} の値 {} に誤り"
 
 #: dnstools/lib.py:230
 msgid "Wrong value {} for tag {}:"
-msgstr ""
+msgstr "タグ {} の値 {} に誤り : "
 
 #: dnstools/lib.py:234
 msgid " not an integer"
-msgstr ""
+msgstr "整数ではありません"
 
 #: dnstools/lib.py:236
 msgid " less than {}"
-msgstr ""
+msgstr "{} より小さい"
 
 #: dnstools/lib.py:239
 msgid " greater than {}"
-msgstr ""
+msgstr "{} より大きい"
 
 #: dnstools/lib.py:248
 msgid "Not a valid DMARC record"
-msgstr ""
+msgstr "有効な DMARC レコードではありません"
 
 #: dnstools/lib.py:259
 msgid "Unknown tag {}"
-msgstr ""
+msgstr "不明なタグ {}"
 
 #: dnstools/lib.py:264
 msgid "Missing required p tag"
-msgstr ""
+msgstr "必要な p タグが見つかりません"
 
 #: dnstools/models.py:78
 msgid "Public key mismatchs"
-msgstr ""
+msgstr "パブリックキーが不一致です"
 
 #: dnstools/templates/dnstools/autoconfig_records_status.html:8
 msgid "autoconfig record (Mozilla) found: "
-msgstr ""
+msgstr "autoconfig レコード ( Mozilla ) が見つかりました : "
 
 #: dnstools/templates/dnstools/autoconfig_records_status.html:12
 msgid "autoconfig record (Mozilla) not found."
-msgstr ""
+msgstr "autoconfig レコード ( Mozilla ) が見つかりません。"
 
 #: dnstools/templates/dnstools/autoconfig_records_status.html:17
 msgid "autodiscover record (Microsoft) found: "
-msgstr ""
+msgstr "autodiscover レコード ( Microsoft ) が見つかりました : "
 
 #: dnstools/templates/dnstools/autoconfig_records_status.html:21
 msgid "autodiscover record (Microsoft) not found."
-msgstr ""
+msgstr "autodiscover record ( Microsoft ) が見つかりません。"
 
 #: dnstools/templates/dnstools/dns_record_detail.html:8
 msgid "A DNS record has been found and is valid."
-msgstr ""
+msgstr "DNS レコードが見つかり有効です。"
 
 #: dnstools/templates/dnstools/dns_record_detail.html:12
 msgid "A DNS record has been found but its syntax is not valid:"
-msgstr ""
+msgstr "DNS レコードは見つかりましたが 記法が無効です : "
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:7
 msgid ""
 "Here is an example of DNS configuration (bind format). Replace value between"
 " [ ] by the appropriate ones."
-msgstr ""
+msgstr "DNS 設定 ( bind 書式 ) の例です。[ ] 間の値は、適切なものに置き換えてください。"
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:15
 msgid "IP address of your Modoboa server"
-msgstr ""
+msgstr "Modoboa サーバーの IP アドレス"
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:28
 msgid "Auto configuration"
-msgstr ""
+msgstr "自動構成"
 
 #: dnstools/templates/dnstools/domain_dns_configuration.html:30
 #: dnstools/templates/dnstools/domain_dns_configuration.html:31
 msgid "hostname of your automx server"
-msgstr ""
+msgstr "automx サーバーのホスト名"
 
 #: dnstools/views.py:35
 msgid "{} record of {}"
-msgstr ""
+msgstr "{} / {}"
 
 #: dnstools/views.py:64
 msgid "Auto configuration records for {}"
-msgstr ""
+msgstr "{} の自動構成レコード"
 
 #: dnstools/views.py:80
 msgid "DNS configuration for {}"
-msgstr ""
+msgstr "{} の DNS 設定"
 
 #: imap_migration/api/v2/serializers.py:117
-#, fuzzy
-#| msgid "Access updated"
 msgid "Access denied"
-msgstr "アクセスが更新されました"
+msgstr "アクセス拒否"
 
 #: imap_migration/app_settings.py:23 imap_migration/app_settings.py:102
-#, fuzzy
-#| msgid "IMAP migration"
 msgid "Enable IMAP Migration"
-msgstr "IMAP マイグレーション"
+msgstr "IMAP 移行を有効に"
 
 #: imap_migration/app_settings.py:24 imap_migration/app_settings.py:104
-#, fuzzy
-#| msgid "IMAP migration"
 msgid "Enable IMAP Migration."
-msgstr "IMAP マイグレーション"
+msgstr "IMAP 移行を有効にします。"
 
 #: imap_migration/app_settings.py:34
-#, fuzzy
-#| msgid "OfflineIMAP settings"
 msgid "OfflineIMAP"
-msgstr "オフライン IMAP 設定"
+msgstr "オフライン IMAP"
 
 #: imap_migration/app_settings.py:40 imap_migration/app_settings.py:110
 msgid "Concurrent sync jobs"
-msgstr "同期ジョブの並列度"
+msgstr "同期ジョブの並行実行"
 
 #: imap_migration/app_settings.py:42 imap_migration/app_settings.py:112
 msgid "The maximum number of concurrent synchronization jobs"
-msgstr "同期ジョブを同時に行う最大数"
+msgstr "同期ジョブの並行実行の最大値"
 
 #: imap_migration/app_settings.py:53
-#, fuzzy
-#| msgid "OfflineIMAP settings"
 msgid "OfflineIMAP Filter"
-msgstr "オフライン IMAP 設定"
+msgstr "オフライン IMAP フィルター"
 
 #: imap_migration/app_settings.py:59 imap_migration/app_settings.py:118
 msgid "Create Folders"
-msgstr ""
+msgstr "フォルダー作成"
 
 #: imap_migration/app_settings.py:61 imap_migration/app_settings.py:120
 msgid "Allow Creation of missing folders during sync"
-msgstr ""
+msgstr "同期処理の際に存在しないフォルダーを作成することを許可"
 
 #: imap_migration/app_settings.py:68 imap_migration/app_settings.py:125
 msgid "Folder Filter Exclusions"
-msgstr ""
+msgstr "除外フォルダーフィルター"
 
 #: imap_migration/app_settings.py:70 imap_migration/app_settings.py:128
 msgid ""
 "Use a regular expression to explicitly include folders in sync. Example: "
 "^Trash$|Del"
-msgstr ""
+msgstr "同期から除外するフォルダーを正規表現で明示します。例 : ^Trash$|Del"
 
 #: imap_migration/app_settings.py:78 imap_migration/app_settings.py:135
 msgid "Folder Filter Inclusions"
-msgstr ""
+msgstr "対象フォルダーフィルター"
 
 #: imap_migration/app_settings.py:80 imap_migration/app_settings.py:138
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
 "filtered by the Folder Filter Exclusions. Example: debian.user, "
 "debian.personal "
-msgstr ""
+msgstr "除外フォルダーフィルターで対象から外れても同期に含めるフォルダーをカンマ区切りで明示します。例 : debian.user, debian.personal"
 
 #: imap_migration/app_settings.py:107
 msgid "OfflineIMAP settings"
 msgstr "オフライン IMAP 設定"
 
 #: imap_migration/app_settings.py:115
-#, fuzzy
-#| msgid "OfflineIMAP settings"
 msgid "OfflineIMAP Filter settings"
-msgstr "オフライン IMAP 設定"
+msgstr "オフライン IMAP フィルター設定"
 
 #: imap_migration/apps.py:18 imap_migration/apps.py:23
-#, fuzzy
-#| msgid "IMAP migration"
 msgid "IMAP Migration"
-msgstr "IMAP マイグレーション"
+msgstr "IMAP 移行"
 
 #: imap_migration/auth_backends.py:49 sievefilters/imaputils.py:107
 #, python-format
 msgid "Connection to IMAP server failed: %s"
-msgstr "IMAP サーバーへの接続に失敗しました: %s"
+msgstr "IMAP サーバーへの接続に失敗 : %s"
 
 #: imap_migration/checks.py:12
 msgid ""
 "Automatic domain/mailbox creation is disabled which means IMAP "
 "authentication won't work."
-msgstr ""
+msgstr "IMAP 認証が動作しない場合にドメイン・メールボックスの自動作成を無効にします。"
 
 #: imap_migration/checks.py:16
 msgid ""
 "Go to the online parameters panel (admin tab) and activate this feature."
-msgstr ""
+msgstr "パラメーターパネル ( 管理者タブ ) でこの機能を有効にします。"
 
 #: imap_migration/templates/imap_migration/index.html:6
 msgid "IMAP migration"
-msgstr "IMAP マイグレーション"
+msgstr "IMAP 移行"
 
 #: ldapsync/lib.py:82
 msgid "Failed to create LDAP account: {}"
-msgstr ""
+msgstr "LDAP アカウントの作成に失敗 : {}"
 
 #: ldapsync/lib.py:121
 msgid "Failed to update LDAP account: {}"
-msgstr ""
+msgstr "LDAP アカウントの更新に失敗 : {}"
 
 #: ldapsync/lib.py:134
 msgid "Failed to delete LDAP account: {}"
-msgstr ""
+msgstr "LDAP アカウントの削除に失敗 : {}"
 
 #: ldapsync/lib.py:141
 msgid "Failed to disable LDAP account: {}"
-msgstr ""
+msgstr "LDAP アカウントの無効化に失敗 : {}"
 
 #: lib/api_client.py:35 lib/api_client.py:69 lib/api_client.py:83
 #: lib/api_client.py:87
 #, python-format
 msgid "Failed to communicate with public API: %s"
-msgstr ""
+msgstr "パブリック API での通信に失敗 : %s"
 
 #: lib/db_utils.py:22
 #, python-format
 msgid "Connection to database %s not configured"
-msgstr "データベース %s への接続が構成されていません"
+msgstr "%s データベースへの接続が未構成"
 
 #: lib/email_utils.py:139 lib/email_utils.py:350
 msgid "unable to determine encoding of string"
-msgstr ""
+msgstr "文字列のエンコード検出ができませんでした"
 
 #: lib/exceptions.py:83
 #, python-format
 msgid "Permission denied: %s"
-msgstr "アクセス拒否: %s"
+msgstr "アクセス拒否 : %s"
 
 #: lib/exceptions.py:84
 msgid "Permission denied"
@@ -3505,11 +3203,11 @@ msgstr "アクセス拒否"
 
 #: lib/fields.py:14 lib/validators.py:13
 msgid "Enter a valid domain name"
-msgstr "正しいドメイン名を入力してください"
+msgstr "有効なドメイン名を入力してください"
 
 #: lib/fields.py:41 lib/fields.py:54
 msgid "Enter a valid email address."
-msgstr "正しいメールアドレスを入力してください"
+msgstr "有効なメールアドレスを入力してください"
 
 #: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:25
 #: templates/registration/password_reset_confirm_code.html:27
@@ -3528,93 +3226,93 @@ msgstr "件名"
 
 #: limits/app_settings.py:17 limits/app_settings.py:147
 msgid "Default per-admin limits"
-msgstr "デフォルトの管理者あたりの制限"
+msgstr "管理者ごとの制限のデフォルト"
 
 #: limits/app_settings.py:20 limits/app_settings.py:153
 msgid "Enable per-admin limits"
-msgstr "管理者あたりの制限を有効にする"
+msgstr "管理者ごとの制限を有効に"
 
 #: limits/app_settings.py:22 limits/app_settings.py:154
 msgid "Enable or disable per-admin limits"
-msgstr "管理者あたりの制限を有効もしくは無効にする"
+msgstr "管理者ごとの制限を有効もしくは無効にします"
 
 #: limits/app_settings.py:26 limits/app_settings.py:91
 #: limits/app_settings.py:160 limits/app_settings.py:245
 #: limits/constants.py:47 limits/constants.py:101
 msgid "Domain admins"
-msgstr "ドメイン管理者"
+msgstr "ドメイン管理者数"
 
 #: limits/app_settings.py:29 limits/app_settings.py:163
 msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
-msgstr "新しい管理者に許可されたドメイン管理者の最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しい管理者に作成を許可するドメイン管理者数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:39 limits/app_settings.py:175
 msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "新しい管理者に許可されたドメインの最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しい管理者に作成を許可するドメイン数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:48 limits/app_settings.py:186
 msgid ""
 "Maximum number of allowed domain aliases for a new administrator. (0 to deny"
 " any creation, -1 to allow unlimited creations)"
-msgstr "新しい管理者に許可されたドメインエイリアスの最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しい管理者に作成を許可するドメインエイリアス数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:58 limits/app_settings.py:198
 msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "新しい管理者に許可されたメールボックスの最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しい管理者に作成を許可するメールボックス数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:67 limits/app_settings.py:210
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "新しい管理者に許可されたエイリアスの最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しい管理者に作成を許可するエイリアス数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:76 limits/app_settings.py:220
 msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
-msgstr ""
+msgstr "リセラーに対して許可する、作成するドメインの容量制限の合算値。( 0 で無制限 )"
 
 #: limits/app_settings.py:82 limits/app_settings.py:232
 msgid "Default per-domain limits"
-msgstr "デフォルトのドメインあたりの制限"
+msgstr "ドメインごとの容量制限のデフォルト"
 
 #: limits/app_settings.py:85 limits/app_settings.py:238
 msgid "Enable per-domain limits"
-msgstr "ドメインあたりの制限を有効にする"
+msgstr "ドメインごとの容量制限を有効に"
 
 #: limits/app_settings.py:87 limits/app_settings.py:239
 msgid "Enable or disable per-domain limits"
-msgstr "ドメインあたりの制限を有効もしくは無効にする"
+msgstr "ドメインごとの容量制限を有効もしくは無効にします"
 
 #: limits/app_settings.py:94 limits/app_settings.py:248
 msgid ""
 "Maximum number of allowed domain administrators for a new domain. (0 to deny"
 " any creation, -1 to allow unlimited creations)"
-msgstr "新しいドメインに許可されたドメイン管理者の最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しいドメインに作成を許可するドメイン管理者数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:104 limits/app_settings.py:260
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "新しいドメインに許可されたドメインエイリアスの最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しいドメインに作成を許可するドメインエイリアス数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:114 limits/app_settings.py:272
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "新しいドメインに許可されたメールボックスの最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しいドメインに作成を許可するメールボックス数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/app_settings.py:123 limits/app_settings.py:283
 msgid ""
 "Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
 " -1 to allow unlimited creations)"
-msgstr "新しいドメインに許可されたエイリアスの最大数 (0は作成を拒否、-1は無制限の作成を許可)"
+msgstr "新しいドメインに作成を許可するエイリアス数の上限。( 0 で作成の拒否、-1 で無制限の作成 )"
 
 #: limits/apps.py:13 limits/apps.py:17
 msgid "Limits"
@@ -3622,47 +3320,47 @@ msgstr "制限"
 
 #: limits/constants.py:14
 msgid "Maximum number of domains this user can create"
-msgstr "このユーザーが作成できるドメインの最大数"
+msgstr "このユーザーが作成できるドメイン数の上限"
 
 #: limits/constants.py:23
 msgid "Maximum number of domain aliases this user can create"
-msgstr "このユーザーが作成できるドメインエイリアスの最大数"
+msgstr "このユーザーが作成できるドメインエイリアス数の上限"
 
 #: limits/constants.py:32
 msgid "Maximum number of mailboxes this user can create"
-msgstr "このユーザーが作成できるメールボックスの最大数"
+msgstr "このユーザーが作成できるメールボックス数の上限"
 
 #: limits/constants.py:40
 msgid "Maximum number of mailbox aliases this user can create"
-msgstr "このユーザーが作成できるメールボックスエイリアスの最大数"
+msgstr "このユーザーが作成できるメールボックスエイリアス数の上限"
 
 #: limits/constants.py:49
 msgid "Maximum number of domain administrators this user can create"
-msgstr "このユーザーが作成できるドメイン管理者の最大数"
+msgstr "このユーザーが作成できるドメイン管理者数の上限"
 
 #: limits/constants.py:60
 msgid "Quota shared between domains of this reseller"
-msgstr ""
+msgstr "このリセラーのドメイン全体の容量制限"
 
 #: limits/constants.py:77
 msgid "Maximum number of domain aliases allowed for this domain."
-msgstr "このドメインに許可されたドメインエイリアスの最大数"
+msgstr "このドメインに許可するドメインエイリアス数の上限"
 
 #: limits/constants.py:85
 msgid "Maximum number of mailboxes allowed for this domain."
-msgstr "このドメインに許可されたメールボックスの最大数"
+msgstr "このドメインに許可するメールボックス数の上限"
 
 #: limits/constants.py:93
 msgid "Maximum number of mailbox aliases allowed for this domain."
-msgstr "このドメインに許可されたメールボックスエイリアスの最大数"
+msgstr "このドメインに許可するメールボックスエイリアス数の上限"
 
 #: limits/constants.py:102
 msgid "Maximum number of domain admins allowed for this domain."
-msgstr "このドメインに許可されたドメイン管理者の最大数"
+msgstr "このドメインに許可するドメイン管理者数の上限"
 
 #: limits/forms.py:38 limits/forms.py:88
 msgid "Invalid limit"
-msgstr "不正な制限"
+msgstr "無効な制限"
 
 #: limits/handlers.py:118 limits/handlers.py:151
 msgid "Resources"
@@ -3671,15 +3369,15 @@ msgstr "リソース"
 #: limits/lib.py:19
 #, python-format
 msgid "%s: limit reached"
-msgstr "%s: 制限に達しました"
+msgstr "%s: 制限に到達"
 
 #: limits/lib.py:29
 msgid "Not enough resources"
-msgstr "リソースが足りません"
+msgstr "リソース不足"
 
 #: limits/lib.py:46 limits/models.py:46
 msgid "You're not allowed to define unlimited values"
-msgstr "無制限な値に設定するのは許可されていません"
+msgstr "無制限の値を設定する権限がありません"
 
 #: limits/models.py:56 limits/models.py:119
 msgid "unlimited"
@@ -3692,45 +3390,43 @@ msgstr "リソース使用量"
 
 #: maillog/api/v2/serializers.py:35
 msgid "You must provide start and end dates when period is custom"
-msgstr ""
+msgstr "期間をカスタマイズする際は、開始日と終了日を設定してください"
 
 #: maillog/apps.py:20 maillog/forms.py:23
 msgid "Path to the log file"
-msgstr "ログファイルへのパス"
+msgstr "ログファイルのパス"
 
 #: maillog/apps.py:22 maillog/forms.py:25
 msgid "Path to log file used to collect statistics"
-msgstr "統計情報を収集するために使用されたログファイルへのパス"
+msgstr "ログファイルのパス。統計を集計する際に利用します"
 
 #: maillog/apps.py:29 maillog/forms.py:30
 msgid "Directory to store RRD files"
-msgstr "RRD ファイルを保管するためのディレクトリ"
+msgstr "RRD ファイルを保存ディレクトリー"
 
 #: maillog/apps.py:31 maillog/forms.py:32
 msgid "Path to directory where RRD files are stored"
-msgstr "RRD ファイルが保管されたディレクトリへのパス"
+msgstr "RRD ファイルを保存するディレクトリーのパス"
 
 #: maillog/apps.py:38 maillog/forms.py:37
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Show greylisted messages"
-msgstr "拒否メッセージ"
+msgstr "greylist のメッセージを表示"
 
 #: maillog/apps.py:40 maillog/forms.py:40
 msgid "Differentiate between hard and soft rejects (greylisting)"
-msgstr ""
+msgstr "ハード拒否とソフト拒否を区別する ( greylist )"
 
 #: maillog/apps.py:58 maillog/apps.py:62 maillog/handlers.py:21
 msgid "Statistics"
-msgstr "統計情報"
+msgstr "統計"
 
 #: maillog/graphics.py:91
 msgid "Failed to locate rrdtool binary."
-msgstr ""
+msgstr "rrdtool バイナリーの場所に到達できません。"
 
 #: maillog/graphics.py:168
 msgid "Average traffic (msgs/min)"
-msgstr "平均トラフィック (通/分)"
+msgstr "平均通信料 ( メッセージ / 分 )"
 
 #: maillog/graphics.py:171
 msgid "sent messages"
@@ -3749,26 +3445,20 @@ msgid "rejected messages"
 msgstr "拒否メッセージ"
 
 #: maillog/graphics.py:175
-#, fuzzy
-#| msgid "sent messages"
 msgid "virus messages"
-msgstr "送信メッセージ"
+msgstr "ウイルスメッセージ"
 
 #: maillog/graphics.py:176
-#, fuzzy
-#| msgid "sent messages"
 msgid "spam messages"
-msgstr "送信メッセージ"
+msgstr "SPAM メッセージ"
 
 #: maillog/graphics.py:183
-#, fuzzy
-#| msgid "rejected messages"
 msgid "greylisted messages"
-msgstr "拒否メッセージ"
+msgstr "greylist メッセージ"
 
 #: maillog/graphics.py:200
 msgid "Average normal traffic size (bytes/min)"
-msgstr "平均トラフィックサイズ (バイト/分)"
+msgstr "通常トラフィックサイズの平均値 ( bytes / 分 )"
 
 #: maillog/graphics.py:203
 msgid "received size"
@@ -3784,15 +3474,15 @@ msgstr "メールトラフィック"
 
 #: maillog/graphics.py:254
 msgid "Average account creation (account/hour)"
-msgstr ""
+msgstr "アカウント作成数の平均 ( アカウント / 時間 )"
 
 #: maillog/graphics.py:256
 msgid "New accounts"
-msgstr ""
+msgstr "新しいアカウント"
 
 #: maillog/graphics.py:263
 msgid "Accounts"
-msgstr ""
+msgstr "アカウント"
 
 #: maillog/templates/maillog/index.html:4
 msgid "Graphical statistics"
@@ -3808,7 +3498,7 @@ msgstr "適用"
 
 #: maillog/views.py:33
 msgid "No statistics available"
-msgstr "統計情報がありません"
+msgstr "統計がありません"
 
 #: maillog/views.py:39
 msgid "Day"
@@ -3835,14 +3525,12 @@ msgid "Unknown graphic set"
 msgstr "不明なグラフィックセット"
 
 #: maillog/views.py:71
-#, fuzzy
-#| msgid "Unknown graphic set"
 msgid "Unknown domain"
-msgstr "不明なグラフィックセット"
+msgstr "不明なドメイン"
 
 #: maillog/views.py:76
 msgid "Bad custom period"
-msgstr "カスタム期間が不正です"
+msgstr "不正な期間のカスタム"
 
 #: pdfcredentials/api/v2/serializers.py:31 pdfcredentials/app_settings.py:236
 #: pdfcredentials/documents.py:60
@@ -3850,163 +3538,153 @@ msgid "Personal account information"
 msgstr "個人アカウント情報"
 
 #: pdfcredentials/api/v2/serializers.py:61
-#, fuzzy
-#| msgid "Domain not found."
 msgid "Directory is not writable"
-msgstr "ドメインが見つかりません"
+msgstr "ディレクトリーが書き込み禁止"
 
 #: pdfcredentials/api/v2/serializers.py:82 pdfcredentials/views.py:26
 msgid "No document available for this user"
-msgstr "このユーザーにはドキュメンがありません"
+msgstr "このユーザーのための文書なし"
 
 #: pdfcredentials/app_settings.py:29 pdfcredentials/app_settings.py:198
-#, fuzzy
-#| msgid "PDF credentials"
 msgid "Enable PDF credentials"
-msgstr "PDF 認証情報"
+msgstr "認証情報 PDF を有効に"
 
 #: pdfcredentials/app_settings.py:31 pdfcredentials/app_settings.py:200
-#, fuzzy
-#| msgid "Generate documents only at account creation"
 msgid "Enabled PDF credentials document generation on account creation."
-msgstr "アカウントを作成するときだけドキュメントを生成する"
+msgstr "アカウント作成時に認証情報 PDF の文書を有効にします。"
 
 #: pdfcredentials/app_settings.py:42 pdfcredentials/app_settings.py:203
 msgid "Documents storage"
-msgstr "ドキュメントストレージ"
+msgstr "文書保存場所"
 
 #: pdfcredentials/app_settings.py:48 pdfcredentials/app_settings.py:206
 msgid "Directory to save documents into"
-msgstr "ドキュメントを保存するためのディレクトリ"
+msgstr "文書を保存するディレクトリー"
 
 #: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:208
 msgid "Path to a directory where PDF documents will be saved"
-msgstr "PDF ドキュメントを保存するためのディレクトリのパス"
+msgstr "PDF 文書の保存先ディレクトリーパス"
 
 #: pdfcredentials/app_settings.py:61 pdfcredentials/app_settings.py:211
 msgid "Security options"
-msgstr "セキュリティオプション"
+msgstr "セキュリティー設定"
 
 #: pdfcredentials/app_settings.py:67 pdfcredentials/app_settings.py:214
 msgid "Delete documents after the first download"
-msgstr "最初のダウンロードの後にドキュメントを削除する"
+msgstr "ダウンロードしたら文書を削除"
 
 #: pdfcredentials/app_settings.py:69 pdfcredentials/app_settings.py:217
 msgid ""
 "Automatically delete a document just after its first download from this "
 "interface"
-msgstr "このインターフェースから最初にダウンロードされたあとにドキュメントを自動的に削除する"
+msgstr "このインターフェースからダウンロードをしたのちに、文書を自動的に削除します"
 
 #: pdfcredentials/app_settings.py:78 pdfcredentials/app_settings.py:223
 msgid "Generate documents only at account creation"
-msgstr "アカウントを作成するときだけドキュメントを生成する"
+msgstr "アカウント作成時のみ文書を作成"
 
 #: pdfcredentials/app_settings.py:81 pdfcredentials/app_settings.py:226
 msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
-msgstr ""
-"アカウントの作成されたときだけ、新しいドキュメントを生成します。\n"
-"もし「いいえ」設定すれば、新しい文書は、パスワードが更新されるたびに作成されます。"
+msgstr "新しくアカウントを作成する際にのみ、新しい文書を作成します。「いいえ」に設定すると、パスワードを更新するたびに新しい文書を作成します。"
 
 #: pdfcredentials/app_settings.py:94 pdfcredentials/app_settings.py:232
 msgid "Customization options"
-msgstr ""
+msgstr "カスタマイズ設定"
 
 #: pdfcredentials/app_settings.py:100 pdfcredentials/app_settings.py:235
 msgid "Title"
-msgstr ""
+msgstr "タイトル"
 
 #: pdfcredentials/app_settings.py:101 pdfcredentials/app_settings.py:237
 msgid "The document's title"
-msgstr ""
+msgstr "文書のタイトル"
 
 #: pdfcredentials/app_settings.py:107 pdfcredentials/app_settings.py:241
 msgid "Web panel url"
-msgstr ""
+msgstr "Web パネル URL"
 
 #: pdfcredentials/app_settings.py:108 pdfcredentials/app_settings.py:241
 msgid "URL of the Modoboa web panel"
-msgstr ""
+msgstr "Modoboa Web パネルの URL"
 
 #: pdfcredentials/app_settings.py:114 pdfcredentials/app_settings.py:245
 msgid "Custom message"
-msgstr ""
+msgstr "カスタムメッセージ"
 
 #: pdfcredentials/app_settings.py:116 pdfcredentials/app_settings.py:246
 msgid "A custom message that will appear at the end of documents"
-msgstr ""
+msgstr "文書の最後に記載するカスタムメッセージ"
 
 #: pdfcredentials/app_settings.py:123 pdfcredentials/app_settings.py:251
 msgid "Include mail client connection settings"
-msgstr ""
+msgstr "メールクライアント接続設定を含める"
 
 #: pdfcredentials/app_settings.py:125 pdfcredentials/app_settings.py:254
 msgid ""
 "Include required SMTP and IMAP connection information to configure a mail "
 "client, a tablet or a phone"
-msgstr ""
+msgstr "メールクライアント、タブレットやスマートフォンに設定する際に必要な SMTP・IMAP 接続の情報を含める"
 
 #: pdfcredentials/app_settings.py:133 pdfcredentials/app_settings.py:260
 #: pdfcredentials/documents.py:133
 msgid "SMTP server address"
-msgstr ""
+msgstr "SMTP サーバーアドレス"
 
 #: pdfcredentials/app_settings.py:136 pdfcredentials/app_settings.py:261
 msgid "Address of the SMTP server (hostname or IP)"
-msgstr ""
+msgstr "SMTP サーバーのアドレス ( ホスト名か IP アドレス )"
 
 #: pdfcredentials/app_settings.py:143 pdfcredentials/app_settings.py:265
 #: pdfcredentials/documents.py:134
 msgid "SMTP server port"
-msgstr ""
+msgstr "SMTP サーバーポート"
 
 #: pdfcredentials/app_settings.py:145 pdfcredentials/app_settings.py:267
 msgid "Listening port of the SMTP server"
-msgstr ""
+msgstr "SMTP サーバーのポート"
 
 #: pdfcredentials/app_settings.py:151 pdfcredentials/app_settings.py:271
 #: pdfcredentials/documents.py:135
 msgid "SMTP connection security"
-msgstr ""
+msgstr "SMTP 接続セキュリティー"
 
 #: pdfcredentials/app_settings.py:153 pdfcredentials/app_settings.py:179
 #: pdfcredentials/app_settings.py:274 pdfcredentials/app_settings.py:292
 msgid "Connection security mechanism"
-msgstr ""
+msgstr "接続セキュリティーメカニズム"
 
 #: pdfcredentials/app_settings.py:159 pdfcredentials/app_settings.py:278
 #: pdfcredentials/documents.py:136
 msgid "IMAP server address"
-msgstr ""
+msgstr "IMAP サーバー アドレス"
 
 #: pdfcredentials/app_settings.py:162 pdfcredentials/app_settings.py:279
 msgid "Address of the IMAP server (hostname or IP)"
-msgstr ""
+msgstr "IMAP サーバーのアドレス ( ホスト名か IP アドレス )"
 
 #: pdfcredentials/app_settings.py:169 pdfcredentials/app_settings.py:283
 #: pdfcredentials/documents.py:137
 msgid "IMAP server port"
-msgstr ""
+msgstr "IMAP サーバーポート"
 
 #: pdfcredentials/app_settings.py:171 pdfcredentials/app_settings.py:285
 msgid "Listening port of the IMAP server"
-msgstr ""
+msgstr "IMAP サーバーのポート"
 
 #: pdfcredentials/app_settings.py:177 pdfcredentials/app_settings.py:289
 #: pdfcredentials/documents.py:138
 msgid "IMAP connection security"
-msgstr ""
+msgstr "IMAP 接続セキュリティー"
 
 #: pdfcredentials/apps.py:19
 msgid "PDF credentials"
-msgstr "PDF 認証情報"
+msgstr "認証情報 PDF"
 
 #: pdfcredentials/apps.py:24
-#, fuzzy
-#| msgid "PDF credentials"
 msgid "PDF Credentials"
-msgstr "PDF 認証情報"
+msgstr "認証情報 PDF"
 
 #: pdfcredentials/documents.py:65
 msgid "Powered by Modoboa - Mail hosting made simple"
@@ -4019,146 +3697,122 @@ msgid ""
 "Dear %s, this document contains the credentials you will need\n"
 "to connect to Modoboa. Learn the content and destroy\n"
 "the document as soon as possible.\n"
-msgstr ""
-"\n"
-"%s さん\n"
-"\n"
-"このドキュメントには、Modoboa へ接続するための必要な認証情報が書かれています。\n"
-"内容を理解したら、すみやかに廃棄してください。\n"
+msgstr "\n%s 様、この文書には Modoboa メールサーバーへの接続に必要な認証情報を記しています。\n認証情報が第三者に漏れれば、メールの内容をすべて読み取られるほか、なりすましによるメール送信も可能になります。\n内容を理解し必要な設定を終えたら、厳重に管理する・廃棄するなど、対応をおねがいします。\n"
 
 #: pdfcredentials/documents.py:95
 msgid "Web panel:"
-msgstr ""
+msgstr "Web パネル : "
 
 #: pdfcredentials/documents.py:116
 msgid ""
 "\n"
 "Here you can view your emails anytime online, create filters or manage\n"
 "your contacts.\n"
-msgstr ""
+msgstr "\nこの画面からあなたのメールをオンラインで確認できるほか、表示フィルターを\n作成したり、連絡先を管理することができます。\n"
 
 #: pdfcredentials/documents.py:126
 msgid "Please change your password!"
-msgstr ""
+msgstr "パスワードを変更してください！"
 
 #: pdfcredentials/documents.py:130
 msgid "PC/Tablet/Smartphone configuration:"
-msgstr ""
+msgstr "パソコン・タブレット・スマートフォン設定 : "
 
 #: pdfcredentials/documents.py:153
 msgid "Use those settings for your computer, tablet or phone."
-msgstr ""
+msgstr "この設定はパソコン、またはスマートフォンやタブレットで利用します。"
 
 #: pdfcredentials/handlers.py:35
 msgid ""
 "Failed to create PDF_credentials directory. Please check the permissions or "
 "the path."
-msgstr ""
+msgstr "PDF_credentials ディレクトリーの作成に失敗しました。権限またはパスを確認してください。"
 
 #: pdfcredentials/handlers.py:61
 msgid "Retrieve user's credentials as a PDF document"
-msgstr "PDF ドキュメントとしてユーザー認証情報を取得します"
+msgstr "ユーザーの認証情報を PDF 文書として取得"
 
 #: pdfcredentials/handlers.py:82
-#, fuzzy
-#| msgid "PDF credentials"
 msgid "Download PDF credentials"
-msgstr "PDF 認証情報"
+msgstr "認証情報 PDF をダウンロード"
 
 #: pdfcredentials/lib.py:28
-#, fuzzy
-#| msgid ""
-#| "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
-msgstr "PDFドキュメントを格納するディレクトリの作成に失敗しました (%s)"
+msgstr "PDF 文書を保存しようとしましたが、指定のディレクトリーに書き込めません"
 
 #: pdfcredentials/lib.py:34
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
-msgstr "PDFドキュメントを格納するディレクトリの作成に失敗しました (%s)"
+msgstr "PDF 文書を保存するディレクトリーの作成に失敗 ( %s )"
 
 #: pdfcredentials/lib.py:81
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
-msgstr ""
+msgstr "認証情報 PDF ファイルの作成に失敗。権限またはパスを確認してください。"
 
 #: policyd/core.py:88
-#, fuzzy
-#| msgid "%s: limit reached"
 msgid "Daily sending limit reached"
-msgstr "%s: 制限に達しました"
+msgstr "1 日の送信通数制限に到達"
 
 #: policyd/core.py:125
-#, fuzzy
-#| msgid "%s: limit reached"
 msgid "[modoboa] Sending limit reached"
-msgstr "%s: 制限に達しました"
+msgstr "[modoboa] 送信通数制限に到達"
 
 #: policyd/templates/policyd/notifications/limit_reached.html:3
 #, python-format
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
+msgstr "%(ltype)s にもとづく 1 日あたりの制限に到達しました : %(name)s"
 
 #: postfix_autoreply/api/v2/serializers.py:42 postfix_autoreply/forms.py:88
-#, fuzzy
-#| msgid "This field is required"
 msgid "This date is over"
-msgstr "この日付は過ぎています"
+msgstr "過去の日付です"
 
 #: postfix_autoreply/api/v2/serializers.py:45 postfix_autoreply/forms.py:90
 msgid "Must be greater than start date"
-msgstr "開始日時より大きくなければいけません"
+msgstr "開始日より後を設定してください"
 
 #: postfix_autoreply/app_settings.py:18 postfix_autoreply/forms.py:110
 msgid "Automatic reply timeout"
-msgstr "自動応答間隔"
+msgstr "自動応答でタイムアウト"
 
 #: postfix_autoreply/app_settings.py:20 postfix_autoreply/forms.py:113
 msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr "同じ受信者へ自動応答する間隔 (秒)"
+msgstr "同じ受信者への 2 通の自動応答の間隔でタイムアウトが発生しました"
 
 #: postfix_autoreply/app_settings.py:27 postfix_autoreply/app_settings.py:36
 #: postfix_autoreply/forms.py:119
 msgid "Default subject"
-msgstr "デフォルトの件名"
+msgstr "件名のデフォルト"
 
 #: postfix_autoreply/app_settings.py:29 postfix_autoreply/forms.py:122
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
-msgstr "自動応答メッセージが自動的に作成されたときにデフォルトの件名を使用しました。"
+msgstr "自動応答メッセージを自動生成する際の件名のデフォルト"
 
 #: postfix_autoreply/app_settings.py:38 postfix_autoreply/forms.py:138
 #, python-format
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
-"自動応答メッセージが作成されたときにデフォルトのコンテンツを使用しました。\n"
-"\"%(name)s\" のマクロは、ユーザーのフルネームに置き換えられます。"
+msgstr "自動応答メッセージを自動生成する際の本文のデフォルト値。「%(name)s」マクロはユーザーのフルネームに置き換えます。"
 
 #: postfix_autoreply/apps.py:14 postfix_autoreply/apps.py:20
 #: postfix_autoreply/forms.py:163
-#, fuzzy
-#| msgid "Automatic account removal"
 msgid "Automatic replies"
 msgstr "自動応答"
 
 #: postfix_autoreply/forms.py:23
 msgid "Activate your auto reply from this date. Format : YYYY-MM-DD HH:mm:ss"
-msgstr ""
-"この日時から自動応答を有効にします。\n"
-"書式 : YYYY-MM-DD HH:mm:ss"
+msgstr "自動応答をはじめる日時。書式 : YYYY-MM-DD HH:mm:ss"
 
 #: postfix_autoreply/forms.py:28
 msgid "Until"
-msgstr "まで"
+msgstr "終了日"
 
 #: postfix_autoreply/forms.py:31
 msgid "Activate your auto reply until this date. Format : YYYY-MM-DD HH:mm:ss"
-msgstr ""
-"この日時まで自動応答を有効にします。\n"
-"書式 : YYYY-MM-DD HH:mm:ss"
+msgstr "自動応答する期限の日時。書式 : YYYY-MM-DD HH:mm:ss"
 
 #: postfix_autoreply/forms.py:39
 #, python-format
@@ -4166,17 +3820,15 @@ msgid ""
 "The content of your answer. You can use the following variables, which will "
 "be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
 "%(untildate)s"
-msgstr ""
+msgstr "応答の本文。以下の変数を利用すると、それぞれ適切な値に置き換えられます : %(name)s、%(fromdate)s、%(untildate)s"
 
 #: postfix_autoreply/forms.py:120
 msgid "I'm off"
-msgstr "不在"
+msgstr "不在にしております"
 
 #: postfix_autoreply/forms.py:129
-#, fuzzy
-#| msgid "Default domain quota"
 msgid "Default content"
-msgstr "デフォルトの本文"
+msgstr "本文のデフォルト"
 
 #: postfix_autoreply/forms.py:131
 #, python-format
@@ -4185,12 +3837,7 @@ msgid ""
 "\n"
 "Best regards,\n"
 "%(name)s\n"
-msgstr ""
-"ただいま不在にしています。\n"
-"戻り次第、お返事いたします。\n"
-"\n"
-"よろしくお願いします。\n"
-"%(name)s\n"
+msgstr "本日お休みをいただいております。\n\n出勤し次第、お返事いたします。\nご迷惑をおかけいたしますが、よろしくお願いいたします。\n\n%(name)s\n"
 
 #: postfix_autoreply/handlers.py:118
 #: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
@@ -4202,14 +3849,12 @@ msgid "Auto reply"
 msgstr "自動応答"
 
 #: postfix_autoreply/models.py:15
-#, fuzzy
-#| msgid "Subject"
 msgid "subject"
 msgstr "件名"
 
 #: postfix_autoreply/models.py:17
 msgid "The subject that will appear in sent emails"
-msgstr "送信された電子メールに表示される件名"
+msgstr "送信メールの件名に記載します"
 
 #: postfix_autoreply/models.py:20
 msgid "content"
@@ -4217,87 +3862,72 @@ msgstr "本文"
 
 #: postfix_autoreply/models.py:20
 msgid "The content that will appear in sent emails"
-msgstr "送信された電子メールに表示されるコンテンツ"
+msgstr "送信メールの本文に記載します"
 
 #: postfix_autoreply/models.py:23
 msgid "Activate/Deactivate your auto reply"
-msgstr "自動応答をアクティブ/非アクティブにします"
+msgstr "自動応答の稼働・停止"
 
 #: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
 msgid "Define a message to automatically send when you are off"
-msgstr "不在のとき、自動的に送るメッセージを設定する"
+msgstr "不在の際に自動応答するメッセージを設定します"
 
 #: postfix_autoreply/views.py:30
 msgid "Auto reply message updated successfully."
-msgstr "自動応答メッセージの更新に成功しました"
+msgstr "自動応答メッセージを更新しました。"
 
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
-msgstr ""
+msgstr "サポート外サービス"
 
 #: relaydomains/handlers.py:64
-#, fuzzy
-#| msgid "Relay settings"
 msgid "Transport settings"
-msgstr "リレー設定"
+msgstr "配送設定"
 
 #: relaydomains/handlers.py:89
 msgid "Transport"
-msgstr ""
+msgstr "配送"
 
 #: relaydomains/transport.py:16
-#, fuzzy
-#| msgid "target host"
 msgid "target host address"
-msgstr "ターゲットホスト"
+msgstr "対象ホストアドレス"
 
 #: relaydomains/transport.py:21
-#, fuzzy
-#| msgid "target host"
 msgid "target host port"
-msgstr "ターゲットホスト"
+msgstr "対象ホストポート"
 
 #: relaydomains/transport.py:27
 msgid "verify recipients"
-msgstr "受信者を確認"
+msgstr "受信者の確認"
 
 #: sievefilters/api/v2/viewsets.py:186
-#, fuzzy, python-format
-#| msgid "User '%s' already exists"
+#, python-format
 msgid "Filter %s already exists"
-msgstr "ユーザー %s はすでに存在します"
+msgstr "フィルター、%s はすでに存在します"
 
 #: sievefilters/app_settings.py:12 sievefilters/forms.py:13
-#, fuzzy
-#| msgid "Connection settings"
 msgid "ManageSieve settings"
-msgstr "接続設定"
+msgstr "ManageSieve 設定"
 
 #: sievefilters/app_settings.py:19 sievefilters/forms.py:18
-#, fuzzy
-#| msgid "Address of your IMAP server"
 msgid "Address of your MANAGESIEVE server"
-msgstr "IMAP サーバーのアドレス"
+msgstr "MANAGESIEVE サーバーのアドレス"
 
 #: sievefilters/app_settings.py:27 sievefilters/forms.py:25
-#, fuzzy
-#| msgid "Listening port of your IMAP server"
 msgid "Listening port of your MANAGESIEVE server"
-msgstr "IMAP サーバーの待受ポート"
+msgstr "MANAGESIEVE サーバーのポート"
 
 #: sievefilters/app_settings.py:34 sievefilters/forms.py:30
 msgid "Connect using STARTTLS"
-msgstr ""
+msgstr "STARTTLS で接続"
 
 #: sievefilters/app_settings.py:35 sievefilters/forms.py:32
 msgid "Use the STARTTLS extension"
-msgstr ""
+msgstr "STARTTLS 拡張を使用"
 
 #: sievefilters/app_settings.py:45 sievefilters/forms.py:35
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "IMAP settings"
-msgstr "LDAP 設定"
+msgstr "IMAP 設定"
 
 #: sievefilters/app_settings.py:52 sievefilters/forms.py:40
 msgid "Address of your IMAP server"
@@ -4305,157 +3935,131 @@ msgstr "IMAP サーバーのアドレス"
 
 #: sievefilters/app_settings.py:60 sievefilters/forms.py:46
 msgid "Use a secured connection to access IMAP server"
-msgstr "IMAP サーバーへのアクセスにセキュアな接続を使う"
+msgstr "IMAP サーバーに暗号化接続する"
 
 #: sievefilters/app_settings.py:68 sievefilters/forms.py:52
 msgid "Listening port of your IMAP server"
-msgstr "IMAP サーバーの待受ポート"
+msgstr "IMAP サーバーのポート"
 
 #: sievefilters/apps.py:15 sievefilters/apps.py:20
-#, fuzzy
-#| msgid "Search filter"
 msgid "Sieve filters"
-msgstr "検索フィルター"
+msgstr "Sieve フィルター"
 
 #: sievefilters/apps.py:28
-#, fuzzy
-#| msgid "Search filter"
 msgid "Message filters"
-msgstr "検索フィルター"
+msgstr "メッセージフィルター"
 
 #: sievefilters/constants.py:10
 msgid "All of the following"
-msgstr ""
+msgstr "以下のすべて"
 
 #: sievefilters/constants.py:11
 msgid "Any of the following"
-msgstr ""
+msgstr "以下のいずれか"
 
 #: sievefilters/constants.py:12
-#, fuzzy
-#| msgid "sent messages"
 msgid "All messages"
-msgstr "送信メッセージ"
+msgstr "すべてのメッセージ"
 
 #: sievefilters/constants.py:16
-#, fuzzy
-#| msgid "Domains"
 msgid "contains"
-msgstr "ドメイン"
+msgstr "含む"
 
 #: sievefilters/constants.py:17
 msgid "does not contain"
-msgstr ""
+msgstr "含まない"
 
 #: sievefilters/constants.py:18
 msgid "is"
-msgstr ""
+msgstr "一致する"
 
 #: sievefilters/constants.py:19
 msgid "is not"
-msgstr ""
+msgstr "一致しない"
 
 #: sievefilters/constants.py:24
-#, fuzzy
-#| msgid "Sender address"
 msgid "Sender"
-msgstr "送信者アドレス"
+msgstr "送信者"
 
 #: sievefilters/constants.py:26
 msgid "Cc"
-msgstr ""
+msgstr "CC"
 
 #: sievefilters/constants.py:29
 msgid "Size"
-msgstr ""
+msgstr "サイズ"
 
 #: sievefilters/constants.py:31
-#, fuzzy
-#| msgid "Must be greater than start date"
 msgid "is greater than"
-msgstr "開始日時より大きくなければいけません"
+msgstr " > "
 
 #: sievefilters/constants.py:32
 msgid "is less than"
-msgstr ""
+msgstr " < "
 
 #: sievefilters/constants.py:40
-#, fuzzy
-#| msgid "bounced messages"
 msgid "Move message to"
-msgstr "バウンスメッセージ"
+msgstr "メッセージの移動先"
 
 #: sievefilters/constants.py:46 sievefilters/constants.py:60
-#, fuzzy
-#| msgid "Keep local copies"
 msgid "Keep local copy"
 msgstr "ローカルコピーを保持する"
 
 #: sievefilters/constants.py:54
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Redirect message to"
-msgstr "拒否メッセージ"
+msgstr "メッセージのリダイレクト先"
 
 #: sievefilters/constants.py:68
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Reject message"
-msgstr "拒否メッセージ"
+msgstr "メッセージを拒否"
 
 #: sievefilters/constants.py:71
 msgid "Stop processing"
-msgstr ""
+msgstr "処理を停止"
 
 #: sievefilters/forms.py:63
 msgid "Editor mode"
-msgstr ""
+msgstr "エディターモード"
 
 #: sievefilters/forms.py:65
 msgid "Select the mode you want the editor to work in"
-msgstr ""
+msgstr "作業エディターのモードを選択してください"
 
 #: sievefilters/forms.py:73
 msgid "Trash folder"
-msgstr ""
+msgstr "ごみ箱"
 
 #: sievefilters/forms.py:74
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Folder where deleted messages go"
-msgstr "拒否メッセージ"
+msgstr "削除メッセージの行き先フォルダー"
 
 #: sievefilters/forms.py:79
 msgid "Sent folder"
-msgstr ""
+msgstr "送信済みフォルダー"
 
 #: sievefilters/forms.py:80
 msgid "Folder where copies of sent messages go"
-msgstr ""
+msgstr "送信済みメッセージの行き先フォルダー"
 
 #: sievefilters/forms.py:85
 msgid "Drafts folder"
-msgstr ""
+msgstr "下書きフォルダー"
 
 #: sievefilters/forms.py:86
 msgid "Folder where drafts go"
-msgstr ""
+msgstr "下書きの行き先フォルダー"
 
 #: sievefilters/imaputils.py:90
 msgid "Failed to retrieve hierarchy delimiter"
-msgstr ""
+msgstr "階層区切りの取得に失敗"
 
 #: sievefilters/lib.py:52
-#, fuzzy
-#| msgid "Connection to IMAP server failed: %s"
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr "IMAP サーバーへの接続に失敗しました: %s"
+msgstr "MANAGESIEVE サーバーへの接続に失敗。設定を確認してください。"
 
 #: sievefilters/lib.py:79
-#, fuzzy
-#| msgid "Not enough resources"
 msgid "Not enough space on server"
-msgstr "リソースが足りません"
+msgstr "サーバーに十分な空きがありません"
 
 #: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
@@ -4463,7 +4067,7 @@ msgstr "すみません"
 
 #: templates/404.html:5
 msgid "The requested page does not exist."
-msgstr "リクエストされたページは、存在しません。"
+msgstr "リクエストされたページはありません。"
 
 #: templates/500.html:5
 msgid "An internal error occured."
@@ -4475,7 +4079,7 @@ msgstr "検索 ..."
 
 #: templates/common/email_searchbar.html:10
 msgid "From address"
-msgstr "From アドレス"
+msgstr "送信者アドレス"
 
 #: templates/common/email_searchbar.html:33
 msgid "Both"
@@ -4499,20 +4103,16 @@ msgid "Next"
 msgstr "次へ"
 
 #: templates/nlayout.html:57
-#, fuzzy
-#| msgid "New domain"
 msgid "New admin"
-msgstr "新しいドメイン"
+msgstr "新しい管理者"
 
 #: templates/registration/base.html:8
 msgid "Welcome to Modoboa"
 msgstr "Modoboa へようこそ"
 
 #: templates/registration/login.html:11
-#, fuzzy
-#| msgid "Notifications"
 msgid "Identification"
-msgstr "通知"
+msgstr "認証"
 
 #: templates/registration/login.html:24
 msgid "Remember me"
@@ -4526,41 +4126,37 @@ msgstr "ログイン"
 #: templates/registration/password_reset_confirm_code.html:7
 #: templates/registration/password_reset_done.html:7
 #: templates/registration/password_reset_form.html:17
-#, fuzzy
-#| msgid "password"
 msgid "Forgot password?"
-msgstr "パスワード"
+msgstr "パスワードがわからない？"
 
 #: templates/registration/password_reset_complete.html:8
 #, python-format
 msgid ""
 "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
 "in</a> now."
-msgstr ""
+msgstr "パスワードを設定しました。<a href=\"%(url)s\">サインイン</a> で進みます。"
 
 #: templates/registration/password_reset_confirm.html:8
-#, fuzzy
-#| msgid "New password"
 msgid "Change password"
-msgstr "新しいパスワード"
+msgstr "パスワードを変更"
 
 #: templates/registration/password_reset_confirm.html:29
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr ""
+msgstr "パスワードの再設定リンクが無効です。おそらくこのリンクからはすでに操作を終えたものと思われます。もう一度「パスワード再設定」の操作をしてください。"
 
 #: templates/registration/password_reset_confirm_code.html:22
 msgid "Enter the code you've just received by SMS"
-msgstr ""
+msgstr "SMS で受信したコードを入力してください"
 
 #: templates/registration/password_reset_confirm_code.html:30
 msgid "Resend code"
-msgstr ""
+msgstr "コードの再送信"
 
 #: templates/registration/password_reset_confirm_code.html:45
 msgid "The code has been sent again"
-msgstr ""
+msgstr "コードを再送信しました"
 
 #: templates/registration/password_reset_done.html:8
 msgid ""
@@ -4568,7 +4164,7 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr ""
+msgstr "<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> <p>メールが届かなければ、入力したアドレスが正しいものだったかどうか、または SPAM フォルダーに配信されていないかを確認してください。</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -4576,341 +4172,71 @@ msgstr ""
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
-msgstr ""
+msgstr "パスワードの再設定処理をはじめます。対象のアカウントは %(username)s でよろしいですか？　よろしければ以下のリンクをクリックしてください : "
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
-msgstr ""
+msgstr "上のリンクが動作しなければ、URL を Web ブラウザにコピー・貼りつけしてください。"
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
 msgid "Sincerely, The Modoboa Team."
-msgstr ""
+msgstr "Modoboa チームより"
 
 #: templates/registration/password_reset_subject.txt:3
 msgid "Modoboa password reset"
-msgstr ""
+msgstr "Modoboa メールサーバー パスワード再設定"
 
 #: templates/registration/twofactor_code_verify.html:11
-#, fuzzy
-#| msgid "Notifications"
 msgid "Verification"
-msgstr "通知"
+msgstr "確認"
 
 #: templates/registration/twofactor_code_verify.html:15
 msgid "Use TOTP/backup code"
-msgstr ""
+msgstr "2FA コード・再設定コードを使用"
 
 #: templates/registration/twofactor_code_verify.html:18
 msgid "Use Webauthn device"
-msgstr ""
+msgstr "パスキー デバイスを使用"
 
 #: templates/registration/twofactor_code_verify.html:27
-#, fuzzy
-#| msgid "Old password"
 msgid "One-time password"
-msgstr "現在のパスワード"
+msgstr "ワンタイム パスワード"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
 "Enter the code from the two-factor app on your mobile device. If you've lost"
 " your device, you may enter one of your recovery codes."
-msgstr ""
+msgstr "あなたのスマートフォンの 2 要素認証アプリのコードを入力してください。スマートフォンをなくしているなどの場合は、再設定コードのいずれかを入力してください。"
 
 #: templates/registration/twofactor_code_verify.html:42
-#, fuzzy
-#| msgid "Notifications"
 msgid "Verify code"
-msgstr "通知"
+msgstr "確認コード"
 
 #: templates/registration/twofactor_code_verify.html:45
 #: templates/registration/twofactor_code_verify.html:51
 msgid "Back"
-msgstr ""
+msgstr "戻る"
 
 #: templates/registration/twofactor_code_verify.html:49
 msgid "Log using Webauthn"
-msgstr ""
+msgstr "パスキーでログイン"
 
 #: transport/backends.py:55
-#, fuzzy
-#| msgid "Invalid line"
 msgid "Invalid value"
-msgstr "不正な行"
+msgstr "無効な値"
 
 #: transport/models.py:15
 msgid "pattern"
-msgstr ""
+msgstr "パターン"
 
 #: transport/models.py:16
 msgid "service"
-msgstr ""
+msgstr "サービス"
 
 #: transport/models.py:17
 msgid "next hop"
-msgstr ""
-
-#, fuzzy
-#~ msgid "Authentication mechanism"
-#~ msgstr "認証方法"
-
-#, fuzzy
-#~ msgid "Prefered authentication mechanism"
-#~ msgstr "認証方法"
-
-#, fuzzy
-#~ msgid "Directory non-writable"
-#~ msgstr "ドメインが見つかりません"
-
-#~ msgid "Your username and password didn't match. Please try again."
-#~ msgstr "ユーザー名とパスワードが一致しません。やり直してください。"
-
-#, fuzzy
-#~ msgid "Check to activate this filters set"
-#~ msgstr "このエイリアスをアクティブにするために確認してください"
-
-#, fuzzy
-#~ msgid "Wrong filter name"
-#~ msgstr "ファイル名"
-
-#, fuzzy
-#~ msgid "Conditions"
-#~ msgstr "確認"
-
-#, fuzzy
-#~ msgid "Active"
-#~ msgstr "アクティブユーザー"
-
-#, fuzzy
-#~ msgid "No filter defined yet"
-#~ msgstr "受信者が定義されていません"
-
-#, fuzzy
-#~ msgid "New filter"
-#~ msgstr "検索フィルター"
-
-#, fuzzy
-#~ msgid "Save filters set"
-#~ msgstr "検索フィルター"
-
-#, fuzzy
-#~ msgid "Activate filters set"
-#~ msgstr "アクティブユーザー"
-
-#, fuzzy
-#~ msgid "Remove filters set"
-#~ msgstr "このパーミッションを削除"
-
-#, fuzzy
-#~ msgid "Remove this filter"
-#~ msgstr "このパーミッションを削除"
-
-#, fuzzy
-#~ msgid "Move this filter down"
-#~ msgstr "このパーミッションを削除"
-
-#, fuzzy
-#~ msgid "Failed to retrieve filters set"
-#~ msgstr "メールボックスの場所の取得に失敗しました (%s)"
-
-#, fuzzy
-#~ msgid "Filter created"
-#~ msgstr "エイリアスが作成されました"
-
-#, fuzzy
-#~ msgid "Filter modified"
-#~ msgstr "修正しました"
-
-#, fuzzy
-#~ msgid "Filters set saved"
-#~ msgstr "パラメータが保存されました"
-
-#, fuzzy
-#~ msgid "Filters set created"
-#~ msgstr "エイリアスが作成されました"
-
-#, fuzzy
-#~ msgid "yes"
-#~ msgstr "はい"
-
-#, fuzzy
-#~ msgid "An alias with this name already exists."
-#~ msgstr "このエイリアス名がすでに存在しています"
-
-#~ msgid "md5crypt (weak)"
-#~ msgstr "md5crypt (弱い)"
-
-#~ msgid "sha256 (weak)"
-#~ msgstr "sha256 (弱い)"
-
-#~ msgid "md5 (weak)"
-#~ msgstr "md5 (弱い)"
-
-#~ msgid "crypt (weak)"
-#~ msgstr "crypt (弱い)"
-
-#~ msgid "plain (weak)"
-#~ msgstr "plain (弱い)"
-
-#~ msgid "A set of tools to ease DMARC integration"
-#~ msgstr "DMARC 統合のためのツールセット"
-
-#~ msgid "Generate PDF documents containing users' credentials"
-#~ msgstr "ユーザーの認証情報を書かれた PDF ドキュメントを生成"
-
-#, fuzzy
-#~ msgid "IMAP migrations"
-#~ msgstr "IMAP マイグレーション"
-
-#~ msgid "IMAP migration using OfflineIMAP"
-#~ msgstr "オフライン IMAP を使用して IMAP マイグレーション"
-
-#~ msgid "Migrate existing mailboxes using IMAP and OfflineIMAP"
-#~ msgstr "IMAP と オフライン IMAP を使って既存のメールボックスを移行します"
-
-#~ msgid "Secret key"
-#~ msgstr "シークレットキー"
-
-#~ msgid "Key used to encrypt/decrypt passwords"
-#~ msgstr "キーは、パスワードを暗号化/復号化はするために使用されます。"
-
-#~ msgid "Key must be either 16, 24, or 32 bytes long"
-#~ msgstr "キーは、16, 24, 32 バイトのいずれかの長さでなければいけません"
-
-#, fuzzy
-#~ msgid "First name"
-#~ msgstr "グループ名"
-
-#, fuzzy
-#~ msgid "Last name"
-#~ msgstr "最終ログイン"
-
-#~ msgid "last login"
-#~ msgstr "最終ログイン"
-
-#, fuzzy
-#~ msgid "User {} logged out"
-#~ msgstr "ユーザー \"%s\" がログアウトしました"
-
-#~ msgid "Group name"
-#~ msgstr "グループ名"
-
-#~ msgid "Graphical statistics about emails traffic using RRDtool"
-#~ msgstr "RRDtool を使用して、電子メールトラフィックに関するグラフィカルな統計情報を表示します。"
-
-#~ msgid "Postfix's master.cf path"
-#~ msgstr "Postfix の master.cf へのパス"
-
-#~ msgid "Path to the master.cf configuration file"
-#~ msgstr "master.cf 設定ファイルへのパス"
-
-#~ msgid "Relay domains"
-#~ msgstr "リレードメイン"
-
-#~ msgid "The service name"
-#~ msgstr "サービス名"
-
-#, fuzzy
-#~ msgid "Remote address (hostname or IP) of this domain"
-#~ msgstr "このドメインのリモート接続先"
-
-#, fuzzy
-#~ msgid "Remote port of this domain"
-#~ msgstr "このドメインのリモート接続先"
-
-#~ msgid "Check for valid recipients"
-#~ msgstr "有効な受信者を確認してください"
-
-#~ msgid "Relay Domain"
-#~ msgstr "リレードメイン"
-
-#~ msgid "Scan"
-#~ msgstr "スキャン"
-
-#~ msgid "The relay domain name"
-#~ msgstr "リレードメインの名前"
-
-#~ msgid ""
-#~ "\n"
-#~ "<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n"
-#~ msgstr ""
-#~ "\n"
-#~ "<li><em>relaydomain; name; target host; service; enabled; verify recipients</em></li>\n"
-
-#~ msgid "Mailboxes owner"
-#~ msgstr "メールボックス所有者"
-
-#~ msgid "The UNIX account who owns mailboxes on the filesystem"
-#~ msgstr "ファイルシステム上のメールボックスを所有するUNIXアカウント"
-
-#, python-format
-#~ msgid "Domain '%s' does not exist"
-#~ msgstr "ドメイン %s は、存在しません"
-
-#, fuzzy
-#~ msgid "Raw format"
-#~ msgstr "不正なフォーマット"
-
-#, fuzzy
-#~ msgid "No {type} record found for MX {mx}"
-#~ msgstr "このドメインに関する情報がありません。"
-
-#, fuzzy
-#~ msgid "No A record found for MX %(domain)s"
-#~ msgstr "このドメインに関する情報がありません。"
-
-#, fuzzy
-#~ msgid "No AAAA record found for MX %(domain)s"
-#~ msgstr "このドメインに関する情報がありません。"
-
-#, fuzzy
-#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-#~ msgstr ""
-#~ "デフォルトのクォータ (MB) が、値を指定しないで、新しく作成されたドメインに適用されます。\n"
-#~ "値が0の場合は、クォータ制限はありません。"
-
-#, fuzzy
-#~ msgid "No DNS records found without MX for %s"
-#~ msgstr "このドメインに関する情報がありません。"
-
-#, fuzzy
-#~ msgid "No DNS records found without MX for %(domain)s"
-#~ msgstr "このドメインに関する情報がありません。"
-
-#~ msgid ""
-#~ "Default quota in MB applied to mailboxes. Leave empty to use the default "
-#~ "value."
-#~ msgstr ""
-#~ "デフォルトクォータ (MB) は、メールボックスに適用されます。\n"
-#~ "デフォルト値を使用する場合は空白のままにします。"
-
-#~ msgid ""
-#~ "You can't define a forward to a local destination. Please ask your "
-#~ "administrator to create an alias instead."
-#~ msgstr ""
-#~ "ローカルの宛先に転送先を定義することはできません。\n"
-#~ "代わりにエイリアスを作成するには、管理者に依頼してください。"
-
-#~ msgid "Quota is greater than the allowed domain's limit (%dM)"
-#~ msgstr "クォータが、ドメインに許可された制限  (%dM) より大きいです"
-
-#~ msgid "Domains and identities"
-#~ msgstr "ドメインと ID"
-
-#~ msgid "Global counters"
-#~ msgstr "全体のカウンター"
-
-#~ msgid "Cancel this account's migration"
-#~ msgstr "このアカウントのマイグレーションをキャンセルする"
-
-#~ msgid "Cancel the migration for %s?"
-#~ msgstr "%s のマイグレーションをキャンセルしますか？"
-
-#~ msgid "Unknow migration"
-#~ msgstr "不明なマイグレーション"
-
-#~ msgid "Migration cancelled successfully"
-#~ msgstr "マイグレーションのキャンセルに成功しました"
+msgstr "次のホップ"
