@@ -2532,7 +2532,7 @@ msgstr "API アクセストークン"
 #: core/templates/core/dashboard.html:17
 #, python-format
 msgid "Hello %(user)s."
-msgstr "ようこそ、%(user)s 。"
+msgstr "ようこそ、%(user)s ！"
 
 #: core/templates/core/information.html:2 core/templatetags/core_tags.py:58
 msgid "Information"
