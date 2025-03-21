@@ -1163,7 +1163,7 @@ msgstr "状態"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
-msgstr "掲載済み"
+msgstr "掲載"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
