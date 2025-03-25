@@ -22,6 +22,7 @@ urlpatterns = [
     path("", include("modoboa.sievefilters.api.v2.urls")),
     path("", include("modoboa.contacts.urls")),
     path("", include("modoboa.calendars.urls")),
+    path("webmail/", include("modoboa.webmail.urls")),
 ]
 
 urlpatterns += exts_pool.get_urls(category="api")
