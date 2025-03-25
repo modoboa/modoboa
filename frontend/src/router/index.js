@@ -270,7 +270,6 @@ const routes = [
   },
   {
     path: '/user',
-    component: () => import('@/layouts/user/UserLayout.vue'),
     meta: {
       requiresAuth: true,
     },
@@ -285,6 +284,7 @@ const routes = [
       },
       {
         path: 'contacts',
+        component: () => import('@/layouts/user/UserLayout.vue'),
         meta: {
           requiresAuth: true,
         },
@@ -301,6 +301,7 @@ const routes = [
       },
       {
         path: 'calendars',
+        component: () => import('@/layouts/user/UserLayout.vue'),
         meta: {
           requiresAuth: true,
         },
@@ -309,6 +310,31 @@ const routes = [
             path: '',
             name: 'CalendarView',
             component: () => import('@/views/calendars/CalendarView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
+      {
+        path: 'webmail',
+        component: () => import('@/layouts/webmail/WebmailLayout.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'MailboxView',
+            component: () => import('@/views/webmail/MailboxView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+          {
+            path: 'view',
+            name: 'EmailView',
+            component: () => import('@/views/webmail/EmailView.vue'),
             meta: {
               requiresAuth: true,
             },

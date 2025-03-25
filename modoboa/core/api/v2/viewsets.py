@@ -166,13 +166,13 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
                 "description": _("Address book"),
                 "url": "/user/contacts",
             },
-            # {
-            #     "name": "webmail",
-            #     "label": _("Webmail"),
-            #     "icon": "mdi-at",
-            #     "description": _("Webmail"),
-            #     "url": "/user/webmail",
-            # }
+            {
+                "name": "webmail",
+                "label": _("Webmail"),
+                "icon": "mdi-at",
+                "description": _("Webmail"),
+                "url": "/user/webmail",
+            },
         ]
         apps += exts_pool.get_available_apps()
         serializer = serializers.ModoboaApplicationSerializer(apps, many=True)
