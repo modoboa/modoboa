@@ -21,7 +21,11 @@
       </v-btn>
     </div>
 
-    <v-list nav>
+    <v-list
+      :density="layoutStore.compactLeftMenu ? 'compact' : 'default'"
+      :lines="layoutStore.compactLeftMenu ? false : true"
+      nav
+    >
       <template v-for="item in menuItems" :key="item.text">
         <template v-if="displayMenuItem(item)">
           <v-list-subheader v-if="item.subheader" class="text-white">
@@ -89,7 +93,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted } from 'vue'
-import { useGlobalStore, useAuthStore } from '@/stores'
+import { useGlobalStore, useAuthStore, useLayoutStore } from '@/stores'
 
 const props = defineProps({
   color: {
@@ -109,6 +113,7 @@ const props = defineProps({
 
 const globalStore = useGlobalStore()
 const authStore = useAuthStore()
+const layoutStore = useLayoutStore()
 const router = useRouter()
 
 const rail = ref(false)

@@ -35,7 +35,7 @@ class EmailAddress:
         else:
             self.fulladdress = self.address
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.fulladdress
 
 
@@ -117,7 +117,7 @@ class Email:
 
         return self._body
 
-    def get_header(self, msg, header):
+    def get_header(self, msg, header: str) -> str:
         # msg parameter to maintain compatibility with
         # modoboa_webmail.lib.imapemail.ImapEmail
         if header in msg:
