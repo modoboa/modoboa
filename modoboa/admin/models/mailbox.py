@@ -9,11 +9,14 @@ from django.db.models.manager import Manager
 from django.utils.encoding import smart_str, force_str
 from django.utils.translation import gettext as _, gettext_lazy
 
+from modoboa.admin import jobs
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.lib.sysutils import doveadm_cmd
 from modoboa.parameters import tools as param_tools
+
+import django_rq
 
 from .base import AdminObject
 from .domain import Domain
@@ -192,9 +195,12 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         hm = param_tools.get_global_parameter("handle_mailboxes", raise_exception=False)
         if not hm:
             return
-        MailboxOperation.objects.create(
+        mail_op = MailboxOperation.objects.create(
             mailbox=self, type="rename", argument=old_mail_home
         )
+        mail_op.save()
+        dovecot_queue = django_rq.get_queue("dovecot")
+        dovecot_queue.enqueue(jobs.rename_mailbox, mail_op.pk)
 
     def rename(self, address, domain):
         """Rename the mailbox.
@@ -223,7 +229,12 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         hm = param_tools.get_global_parameter("handle_mailboxes", raise_exception=False)
         if not hm:
             return
-        MailboxOperation.objects.create(type="delete", argument=self.mail_home)
+        mail_op = MailboxOperation.objects.create(
+            type="delete", argument=self.mail_home
+        )
+        mail_op.save()
+        dovecot_queue = django_rq.get_queue("dovecot")
+        dovecot_queue.enqueue(jobs.delete_mailbox, mail_op.pk)
 
     def set_quota(self, value=None, override_rules=False):
         """Set or update quota value for this mailbox.
