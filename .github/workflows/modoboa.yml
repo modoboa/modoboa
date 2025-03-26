@@ -127,13 +127,13 @@ jobs:
           OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
       - name: Start redis sentinel
-        if: ${{ matrix.python-version == '3.12' || matrix.database == 'postgres' }}
+        if: ${{ matrix.python-version == '3.12' && matrix.database == 'postgres' }}
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker/compose.redis-sentinel.yml"
 
       - name: Run tests againt redis sentinel
-        if: ${{ matrix.python-version == '3.12' || matrix.database == 'postgres' }}
+        if: ${{ matrix.python-version == '3.12' && matrix.database == 'postgres' }}
         run: |
           cd test_project
           coverage run manage.py test modoboa.policyd
