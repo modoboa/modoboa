@@ -256,6 +256,15 @@ PID_FILE_STORAGE_PATH = "/tmp"
 
 # REDIS
 
+REDIS_SENTINEL = bool(os.environ.get("REDIS_SENTINEL", False))
+REDIS_SENTINELS = [
+    (
+        os.environ.get("REDIS_SENTINEL_HOST", "127.0.0.1"),
+        os.environ.get("REDIS_SENTINEL_PORT", 26379),
+    )
+]
+REDIS_MASTER = os.environ.get("REDIS_MASTER", "mymaster")
+
 REDIS_HOST = os.environ.get("REDIS_HOST", "127.0.0.1")
 REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
 REDIS_QUOTA_DB = 0

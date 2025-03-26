@@ -108,8 +108,9 @@ jobs:
         run: |
           pip install -r mysql-requirements.txt
           echo "DB=mysql" >> $GITHUB_ENV
-      - name: Test with pytest
+      - name: Run tests
         if: ${{ matrix.python-version != '3.12' || matrix.database != 'postgres' }}
+        uses: hoverkraft-tech/compose-action@v2.0.1
         run: |
           python ./tests.py
           cd test_project
@@ -126,7 +127,26 @@ jobs:
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
           OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
-      - name: Test with pytest and coverage
+      - name: Start redis sentinel
+        if: ${{ matrix.python-version == '3.12' || matrix.database == 'postgres' }}
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./docker/compose.redis-sentinel.yml"
+
+      - name: Run tests againt redis sentinel
+        if: ${{ matrix.python-version == '3.12' || matrix.database == 'postgres' }}
+        run: |
+          cd test_project
+          coverage run manage.py test modoboa.policyd
+        env:
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          REDIS_SENTINEL: 1
+          REDIS_SENTINEL_HOST: localhost
+          REDIS_SENTINEL_PORT: 26379
+          REDIS_MASTER: mymaster
+          OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
+
+      - name: Run tests and coverage
         if: ${{ matrix.python-version == '3.12' && matrix.database == 'postgres' }}
         run: |
           python ./tests.py

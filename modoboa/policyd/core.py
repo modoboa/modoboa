@@ -31,6 +31,15 @@ SUCCESS_ACTION = b"dunno"
 FAILURE_ACTION = b"defer_if_permit Daily limit reached, retry later"
 
 
+def get_redis_client():
+    if not getattr(settings, "REDIS_SENTINEL", False):
+        return aioredis.from_url(
+            settings.REDIS_URL, encoding="utf-8", decode_responses=True
+        )
+    sentinel = aioredis.sentinel.Sentinel(settings.REDIS_SENTINELS, socket_timeout=0.1)
+    return sentinel.master_for(settings.REDIS_MASTER, socket_timeout=0.1)
+
+
 def close_db_connections(func, *args, **kwargs):
     """
     Make sure to close all connections to DB.
@@ -144,9 +153,7 @@ async def apply_policies(attributes):
     sasl_username = attributes.get("sasl_username")
     if not sasl_username:
         return SUCCESS_ACTION
-    rclient = aioredis.from_url(
-        settings.REDIS_URL, encoding="utf-8", decode_responses=True
-    )
+    rclient = get_redis_client()
     decr_domain = False
     decr_user = False
     localpart, domain = split_mailbox(sasl_username)
@@ -200,16 +207,14 @@ async def handle_connection(reader, writer):
 
 
 async def new_connection(reader, writer):
-    try:
-        await asyncio.wait_for(handle_connection(reader, writer), timeout=5)
-    except asyncio.TimeoutError as err:
-        logger.warning("Timeout received while handling connection: %s", err)
-    finally:
-        writer.close()
-        if hasattr(writer, "wait_closed"):
-            # Python 3.7+ only
-            await writer.wait_closed()
-        logger.info("exit")
+    # try:
+    await asyncio.wait_for(handle_connection(reader, writer), timeout=5)
+    # except asyncio.TimeoutError as err:
+    #    logger.warning(f"Timeout received while handling connection: {err}")
+    # finally:
+    writer.close()
+    await writer.wait_closed()
+    logger.info("exit")
 
 
 def get_next_execution_dt():
@@ -255,9 +260,7 @@ def get_mailboxes_to_reset():
 
 async def reset_counters():
     """Reset all counters."""
-    rclient = aioredis.from_url(
-        settings.REDIS_URL, encoding="utf-8", decode_responses=True
-    )
+    rclient = get_redis_client()
     logger.info("Resetting all counters")
     for domain in await get_domains_to_reset():
         await rclient.hset(constants.REDIS_HASHNAME, domain.name, domain.message_limit)
