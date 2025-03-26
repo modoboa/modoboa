@@ -22,6 +22,7 @@ from modoboa.lib.tests import ModoTestCase, ParametersMixin
 from modoboa.policyd import core as policyd_core
 
 from . import constants
+from . import utils
 
 
 def start_policy_daemon():
@@ -33,12 +34,7 @@ class RedisTestCaseMixin:
 
     def setUp(self):
         super().setUp()
-        self.rclient = redis.Redis(
-            host=settings.REDIS_HOST,
-            port=settings.REDIS_PORT,
-            db=settings.REDIS_QUOTA_DB,
-        )
-        self.rclient.set_response_callback("HGET", int)
+        self.rclient = utils.get_redis_connection()
         self.rclient.delete(constants.REDIS_HASHNAME)
 
 
