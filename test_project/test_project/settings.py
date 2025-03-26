@@ -288,6 +288,9 @@ RQ_QUEUES = {
     "modoboa": {
         "URL": REDIS_URL,
     },
+    "dovecot": {
+        "URL": REDIS_URL,
+    },
 }
 
 # CACHE
