@@ -28,7 +28,7 @@ classifiers = [
 keywords = ["email"]
 license = {file = "LICENSE"}
 dependencies = [
-	"django==5.2b1",
+	"django==5.2rc1",
 	"django-phonenumber-field[phonenumbers]==8.1.0",
 	"django-reversion==5.1.0",
 	"django-xforwardedfor-middleware==2.0",
@@ -59,7 +59,7 @@ dependencies = [
 	"ovh",
 	"oath",
 	"redis>=4.2.0rc1",
-	"rrdtool>=0.1.10",
+	"rrdtool-bindings>=0.2.0",
 	"qrcode",
 	"aiosmtplib",
 	# PDF credentials
