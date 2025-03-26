@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Modoboa documentation build configuration file, created by
 # sphinx-quickstart on Mon Jan  3 22:29:25 2011.

@@ -1,3 +1,7 @@
+networks:
+  redis-net:
+    external: true
+
 services:
   redis:
     image: redis:5-alpine
@@ -45,6 +49,9 @@ services:
       - radicale
     volumes:
       - .:/code
+    networks:
+      - default
+      - redis-net
 
   api-unsecured:
     container_name: modoboa_api_unsecured
@@ -105,3 +112,28 @@ services:
       dockerfile: docker/Dockerfile.radicale.dev
     volumes:
       - ./docker/radicale_config:/etc/radicale
+
+  policyd:
+    container_name: modoboa_policyd
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    ports:
+      - 9999:9999
+    env_file:
+      - test_project/oidc_key
+    environment:
+      DB: "SQLITE"
+      DEBUG: "True"
+      REDIS_HOST: redis
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
+    command: >
+      sh -c "cd test_project
+             python3 manage.py policy_daemon --host 0.0.0.0 --port 9999 --debug"
+    volumes:
+      - .:/code
+    networks:
+      - default
+      - redis-net

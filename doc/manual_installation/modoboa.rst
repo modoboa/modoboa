@@ -276,6 +276,7 @@ You can launch it manually using the following command:
 
 But we recommend an automatic start using ``systemd`` or
 ``supervisor``. Here is a configuration example for ``supervisor``:
+
 .. sourcecode:: ini
 
    [program:policyd]

@@ -7,10 +7,8 @@ from multiprocessing import Process
 import socket
 import time
 
-import redis
 
 from django import db
-from django.conf import settings
 from django.core.management import call_command
 from django.test import TransactionTestCase
 from django.urls import reverse
@@ -22,6 +20,7 @@ from modoboa.lib.tests import ModoTestCase, ParametersMixin
 from modoboa.policyd import core as policyd_core
 
 from . import constants
+from . import utils
 
 
 def start_policy_daemon():
@@ -33,12 +32,7 @@ class RedisTestCaseMixin:
 
     def setUp(self):
         super().setUp()
-        self.rclient = redis.Redis(
-            host=settings.REDIS_HOST,
-            port=settings.REDIS_PORT,
-            db=settings.REDIS_QUOTA_DB,
-        )
-        self.rclient.set_response_callback("HGET", int)
+        self.rclient = utils.get_redis_connection()
         self.rclient.delete(constants.REDIS_HASHNAME)
 
 
