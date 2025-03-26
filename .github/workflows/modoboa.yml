@@ -5,7 +5,7 @@ name: Modoboa App
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, 2.3.x ]
     paths-ignore:
       - 'modoboa/**.po'
       - 'frontend/**'
