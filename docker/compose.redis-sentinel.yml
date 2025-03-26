@@ -1,0 +1,25 @@
+services:
+  redis-master:
+    image: redis:7-alpine
+
+  redis-slave:
+    image: redis:7-alpine
+    command: redis-server --slaveof redis-master 6379
+    depends_on:
+      - redis-master
+
+  redis-sentinel:
+    image: redis:7-alpine
+    depends_on:
+      - redis-master
+      - redis-slave
+    ports:
+      - "26379:26379"
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
+            echo "sentinel monitor mymaster redis-master 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds mymaster 10000" >> /etc/sentinel.conf &&
+            echo "sentinel failover-timeout mymaster 10000" >> /etc/sentinel.conf &&
+            echo "sentinel parallel-syncs mymaster 1" >> /etc/sentinel.conf &&
+            redis-sentinel /etc/sentinel.conf'
