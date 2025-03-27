@@ -3426,7 +3426,7 @@ msgstr "rrdtool バイナリーの場所に到達できません。"
 
 #: maillog/graphics.py:168
 msgid "Average traffic (msgs/min)"
-msgstr "平均通信料 ( メッセージ / 分 )"
+msgstr "平均通信量 ( メッセージ / 分 )"
 
 #: maillog/graphics.py:171
 msgid "sent messages"
