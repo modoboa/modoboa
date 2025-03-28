@@ -47,12 +47,33 @@ pull_request_rules:
       - label=dependencies
     actions:
       queue:
-  - name: automatic merge for dependabot pull requests + automatic merge for pyUp
-      pull requests + automatic merge for transifex pull requests + automatic merge
-      on CI success and review
+  - name: automatic merge for dependabot pull requests + automatic merge for pyUp pull
+      requests + automatic merge for transifex pull requests + automatic merge on CI
+      success and review
     conditions:
       - check-success=test (postgres, 3.12)
       - "#approved-reviews-by>=1"
       - label=ready-to-merge
     actions:
       queue:
+priority_rules:
+  - name: priority for queue `duplicated default from automatic merge on CI success and
+      review`
+    conditions:
+      - "#review-requested=0"
+      - "#changes-requested-reviews-by=0"
+      - "#commented-reviews-by=0"
+      - label=ready-to-merge
+    priority: 2750
+  - name: priority for queue `duplicated default from automatic merge for pyUp pull requests`
+    conditions:
+      - author=pyup-bot
+      - "#approved-reviews-by>=1"
+    priority: 2500
+  - name: priority for queue `duplicated default from automatic merge for dependabot
+      pull requests`
+    conditions:
+      - author~=^dependabot(|-preview)\[bot\]$
+      - check-success=test (postgres, 3.12)
+      - label=dependencies
+    priority: 2250
