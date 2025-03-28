@@ -1,6 +1,6 @@
 """Webmail viewsets."""
 
-from django.http import Http404
+from django.http import Http404, HttpResponse
 
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
@@ -37,13 +37,79 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         serializer = serializers.EmailHeadersSerializer(content, many=True)
         return response.Response(serializer.data)
 
+    def move_selection(self, request, destination: str) -> int:
+        """Move selected messages to the given mailbox."""
+        serializer = serializers.MoveSelectionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        mbc = lib.get_imapconnector(request)
+        mbc.move(
+            ",".join(serializer.validated_data["selection"]),
+            serializer.validated_data["mailbox"],
+            destination,
+        )
+        return len(serializer.validated_data["selection"])
+
+    @action(
+        methods=["post"],
+        detail=False,
+        serializer_class=serializers.MoveSelectionSerializer,
+    )
+    def delete(self, request):
+        count = self.move_selection(
+            request, request.user.parameters.get_value("trash_folder")
+        )
+        return response.Response({"count": count})
+
+    @action(
+        methods=["post"],
+        detail=False,
+        serializer_class=serializers.MoveSelectionSerializer,
+    )
+    def mark_as_junk(self, request):
+        count = self.move_selection(
+            request, request.user.parameters.get_value("trash_folder")
+        )
+        return response.Response({"count": count})
+
+    @action(
+        methods=["post"],
+        detail=False,
+        serializer_class=serializers.MoveSelectionSerializer,
+    )
+    def mark_as_not_junk(self, request):
+        count = self.move_selection(request, "INBOX")
+        return response.Response({"count": count})
+
     @action(methods=["get"], detail=False)
     def content(self, request):
         mailbox = request.GET.get("mailbox", "INBOX")
         mailid = request.GET.get("mailid")
         if not mailbox or not mailid:
             raise Http404
-        email = lib.ImapEmail(request, f"{mailbox}:{mailid}")
+        dformat = self.request.GET.get("dformat", "plain")
+        email = lib.ImapEmail(
+            request,
+            f"{mailbox}:{mailid}",
+            dformat=dformat,
+            links=request.GET.get("links", "0") == "1",
+        )
         email.fetch_headers()
         serializer = serializers.EmailSerializer(email)
         return response.Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def attachment(self, request):
+        mailbox = request.GET.get("mailbox", "INBOX")
+        mailid = request.GET.get("mailid")
+        partnum = request.GET.get("partnum")
+        if not mailbox or not mailbox or not partnum:
+            raise Http404
+        imapc = lib.get_imapconnector(request)
+        partdef, payload = imapc.fetchpart(mailid, mailbox, partnum)
+        resp = HttpResponse(lib.decode_payload(partdef["encoding"], payload))
+        resp["Content-Type"] = partdef["Content-Type"]
+        resp["Content-Transfer-Encoding"] = partdef["encoding"]
+        resp["Content-Disposition"] = lib.rfc6266.build_header("attachment")
+        if int(partdef["size"]) < 200:
+            resp["Content-Length"] = partdef["size"]
+        return resp
