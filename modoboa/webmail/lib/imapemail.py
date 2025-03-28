@@ -44,6 +44,7 @@ class ImapEmail(Email):
         self.request = request
         self.imapc = get_imapconnector(request)
         self.mbox, self.mailid = self.mailid.split(":")
+        self.attachments: dict[str, str] = {}
 
     def _insert_contact_links(self, addresses):
         """Insert 'add to address book' links."""
@@ -167,7 +168,7 @@ class ImapEmail(Email):
                 return part["params"][pos + 1]
         return None
 
-    def _find_attachments(self):
+    def _find_attachments(self) -> None:
         """Retrieve attachments from the parsed body structure.
 
         We try to find and decode a file name for each attachment. If
