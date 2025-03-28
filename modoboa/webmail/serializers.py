@@ -64,9 +64,14 @@ class EmailAddressSerializer(serializers.Serializer):
     name = serializers.CharField(required=False)
 
 
+class AttachmentSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    partnum = serializers.CharField()
+
+
 class EmailHeadersSerializer(serializers.Serializer):
 
-    mailid = serializers.CharField()
+    imapid = serializers.CharField()
     subject = serializers.SerializerMethodField()
     from_address = serializers.SerializerMethodField()
     date = serializers.SerializerMethodField()
@@ -91,4 +96,24 @@ class EmailSerializer(serializers.Serializer):
 
     subject = serializers.CharField(source="Subject")
     from_address = EmailAddressSerializer(source="From")
+    to = EmailAddressSerializer(source="To", many=True)
     body = serializers.CharField()
+    date = serializers.CharField(source="Date")
+    attachments = serializers.SerializerMethodField()
+
+    def get_attachments(self, email):
+        result = []
+        if email.attachments:
+            for partnum, name in email.attachments.items():
+                data = {"name": name, "partnum": partnum}
+                result.append(data)
+        return result
+
+
+class MoveSelectionSerializer(serializers.Serializer):
+
+    mailbox = serializers.CharField()
+    selection = serializers.ListField(child=serializers.CharField())
+
+    def validate_selection(self, value):
+        return [item for item in value if item.isdigit()]
