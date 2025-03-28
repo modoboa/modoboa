@@ -23,7 +23,7 @@
     "@github/webauthn-json": "^2.1.1",
     "@mdi/font": "^7.3.67",
     "apexcharts": "^3.50.0",
-    "axios": "^1.7.4",
+    "axios": "^1.8.2",
     "core-js": "^3.37.1",
     "debounce": "^2.1.0",
     "js-cookie": "^3.0.5",
