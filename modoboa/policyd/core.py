@@ -36,7 +36,9 @@ def get_redis_client():
         return aioredis.from_url(
             settings.REDIS_URL, encoding="utf-8", decode_responses=True
         )
-    sentinel = aioredis.sentinel.Sentinel(settings.REDIS_SENTINELS, socket_timeout=0.1)
+    sentinel = aioredis.sentinel.Sentinel(
+        settings.REDIS_SENTINELS, socket_timeout=0.1, db=settings.REDIS_QUOTA_DB
+    )
     return sentinel.master_for(settings.REDIS_MASTER, socket_timeout=0.1)
 
 
