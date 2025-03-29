@@ -16,7 +16,9 @@ def get_redis_connection():
             db=settings.REDIS_QUOTA_DB,
         )
     else:
-        sentinel = redis.sentinel.Sentinel(settings.REDIS_SENTINELS, socket_timeout=0.1)
+        sentinel = redis.sentinel.Sentinel(
+            settings.REDIS_SENTINELS, socket_timeout=0.1, db=settings.REDIS_QUOTA_DB
+        )
         rclient = sentinel.master_for(settings.REDIS_MASTER, socket_timeout=0.1)
     rclient.set_response_callback("HGET", int)
     return rclient
