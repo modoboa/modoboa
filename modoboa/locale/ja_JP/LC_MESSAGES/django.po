@@ -1163,7 +1163,7 @@ msgstr "状態"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:21
 msgid "listed"
-msgstr "掲載済み"
+msgstr "掲載"
 
 #: admin/templates/admin/dnsbl_domain_detail.html:29
 msgid "Everything is fine, this domain is not listed."
@@ -3426,7 +3426,7 @@ msgstr "rrdtool バイナリーの場所に到達できません。"
 
 #: maillog/graphics.py:168
 msgid "Average traffic (msgs/min)"
-msgstr "平均通信料 ( メッセージ / 分 )"
+msgstr "平均通信量 ( メッセージ / 分 )"
 
 #: maillog/graphics.py:171
 msgid "sent messages"
