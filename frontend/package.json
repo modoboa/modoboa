@@ -23,7 +23,7 @@
     "@github/webauthn-json": "^2.1.1",
     "@mdi/font": "^7.3.67",
     "apexcharts": "^3.50.0",
-    "axios": "^1.7.4",
+    "axios": "^1.8.2",
     "core-js": "^3.37.1",
     "debounce": "^2.1.0",
     "js-cookie": "^3.0.5",
@@ -47,7 +47,7 @@
     "prettier": "^3.3.2",
     "sass": "1.77.1",
     "unplugin-fonts": "^1.0.3",
-    "vite": "^5.4.12",
+    "vite": "^5.4.15",
     "vite-plugin-vuetify": "^2.0.3"
   }
 }
