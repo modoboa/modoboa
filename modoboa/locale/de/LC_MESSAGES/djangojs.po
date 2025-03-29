@@ -27,7 +27,7 @@ msgstr ""
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
-msgstr "Keine weiteren Domains zum Anzeigen"
+msgstr "Keine weiteren Domains vorhanden"
 
 #: admin/static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
