@@ -39,7 +39,7 @@ dependencies = [
 	"django-rename-app==0.1.7",
 	"django-environ",
 	"dj-database-url",
-	"djangorestframework>=3.14,<3.16",
+	"djangorestframework>=3.14,<3.17",
 	"drf-spectacular",
 	"uritemplate",
 	"django-oauth-toolkit",
