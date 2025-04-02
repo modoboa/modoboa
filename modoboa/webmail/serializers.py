@@ -92,6 +92,16 @@ class EmailHeadersSerializer(serializers.Serializer):
         return imapheader.parse_date(obj["Date"])
 
 
+class PaginatedEmailListSerializer(serializers.Serializer):
+
+    count = serializers.IntegerField()
+    first_index = serializers.IntegerField()
+    last_index = serializers.IntegerField()
+    prev_page = serializers.IntegerField()
+    next_page = serializers.IntegerField()
+    results = EmailHeadersSerializer(many=True)
+
+
 class EmailSerializer(serializers.Serializer):
 
     subject = serializers.CharField(source="Subject")
@@ -114,6 +124,23 @@ class MoveSelectionSerializer(serializers.Serializer):
 
     mailbox = serializers.CharField()
     selection = serializers.ListField(child=serializers.CharField())
+
+    def validate_selection(self, value):
+        return [item for item in value if item.isdigit()]
+
+
+class FlagSelectionSerializer(serializers.Serializer):
+
+    mailbox = serializers.CharField()
+    selection = serializers.ListField(child=serializers.CharField())
+    status = serializers.ChoiceField(
+        choices=[
+            ("read", "Read"),
+            ("unread", "Unread"),
+            ("flagged", "Flagged"),
+            ("unflagged", "Unflagged"),
+        ]
+    )
 
     def validate_selection(self, value):
         return [item for item in value if item.isdigit()]

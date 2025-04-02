@@ -1,5 +1,5 @@
 <template>
-  <div v-show="loaded" class="bg-white rounded-lg pa-4 mt-12">
+  <div v-show="loaded" class="bg-white rounded-lg pa-4 position-relative h-100">
     <v-toolbar color="white">
       <v-btn icon="mdi-arrow-left" size="small" variant="flat" @click="close" />
 
@@ -68,7 +68,7 @@
       </v-btn>
     </v-toolbar>
 
-    <div v-if="email" class="bg-white pa-4">
+    <div v-if="email" ref="headers" class="bg-white pa-4">
       <h2>{{ email.subject }}</h2>
       <div class="d-flex mt-2">
         <h3 v-if="email.from_address.fulladdress">
@@ -97,13 +97,13 @@
           </a>
         </template>
       </div>
-      <iframe class="email-frame" />
     </div>
+    <iframe class="email-frame" />
   </div>
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
@@ -116,6 +116,7 @@ const router = useRouter()
 
 const enableLinks = ref(false)
 const email = ref(null)
+const headers = ref(null)
 const loaded = ref(false)
 const working = ref(false)
 
@@ -129,7 +130,12 @@ const recipients = computed(() => {
 })
 
 onMounted(() => {
+  window.addEventListener('resize', resizeEmailIframe)
   fetchMailContent()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', resizeEmailIframe)
 })
 
 watch(enableLinks, () => {
@@ -141,6 +147,14 @@ const close = () => {
     name: 'MailboxView',
     query: { mailbox: route.query.mailbox },
   })
+}
+
+const resizeEmailIframe = () => {
+  const iframe = document.querySelector('iframe')
+  const rect = headers.value.getBoundingClientRect()
+  iframe.style.top = `${rect.bottom}px`
+  iframe.style.width = `${rect.width - 24}px`
+  iframe.style.height = `${window.innerHeight - rect.bottom - 32}px`
 }
 
 const fetchMailContent = () => {
@@ -160,6 +174,7 @@ const fetchMailContent = () => {
         iframeDoc.write(email.value.body)
         iframeDoc.close()
         loaded.value = true
+        nextTick(resizeEmailIframe)
       })
     })
 }
@@ -220,10 +235,10 @@ const markEmailAsNotJunk = () => {
 
 <style>
 .email-frame {
-  width: 100%;
-  min-height: 1000px;
+  position: absolute !important;
+  left: 24px;
+  overflow-y: auto;
   border: none;
-  margin-top: 10px;
   background-color: #fff;
 }
 </style>

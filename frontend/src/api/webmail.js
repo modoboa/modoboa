@@ -55,4 +55,12 @@ export default {
     }
     return repository.post('/webmail/emails/mark_as_not_junk/', body)
   },
+  flagSelection(mailbox, selection, status) {
+    const body = {
+      mailbox,
+      selection,
+      status,
+    }
+    return repository.post('/webmail/emails/flag/', body)
+  },
 }

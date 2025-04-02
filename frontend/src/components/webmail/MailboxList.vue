@@ -13,7 +13,14 @@
         @mouseleave="setHover(mailbox, false)"
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
-        {{ getMailboxLabel(mailbox) }}
+        <template v-if="mailbox.unseen > 0">
+          <span class="font-weight-bold">
+            {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
+          </span>
+        </template>
+        <template v-else>
+          {{ getMailboxLabel(mailbox) }}
+        </template>
         <v-spacer />
         <v-btn
           v-if="mailbox.sub"
