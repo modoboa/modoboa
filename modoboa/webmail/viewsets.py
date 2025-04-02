@@ -15,7 +15,7 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
     serializer_class = serializers.UserMailboxSerializer
 
     def list(self, request):
-        parent_mailbox = request.GET.get("mailbox", "")
+        parent_mailbox = request.GET.get("mailbox")
         imapc = lib.get_imapconnector(request)
         mboxes = imapc.getmboxes(request.user, parent_mailbox)
         serializer = serializers.UserMailboxSerializer(mboxes, many=True)
@@ -24,18 +24,36 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
 
 class UserEmailViewSet(viewsets.GenericViewSet):
 
+    def get_serializer_class(self):
+        if self.action == "list":
+            return serializers.PaginatedEmailListSerializer
+        if self.action in ["delete", "mark_as_junk", "mark_as_not_junk"]:
+            return serializers.MoveSelectionSerializer
+        if self.action == "flag":
+            return serializers.FlagSelectionSerializer
+        return serializers.EmailSerializer
+
     def list(self, request):
         mailbox = request.GET.get("mailbox", "INBOX")
         imapc = lib.get_imapconnector(request)
-        paginator = Paginator(
-            imapc.messages_count(mbox=mailbox),
-            request.user.parameters.get_value("messages_per_page"),
-        )
-        page = paginator.getpage(1)
+        total = imapc.messages_count(mbox=mailbox)
+        messages_per_page = request.user.parameters.get_value("messages_per_page")
+        paginator = Paginator(total, messages_per_page)
+        page_num = int(request.GET.get("page", 1))
+        page = paginator.getpage(int(request.GET.get("page", 1)))
         content = imapc.fetch(page.id_start, page.id_stop, mbox=mailbox)
         content = [dict(msg) for msg in content]
         serializer = serializers.EmailHeadersSerializer(content, many=True)
-        return response.Response(serializer.data)
+        return response.Response(
+            {
+                "count": total,
+                "first_index": page_num * messages_per_page,
+                "last_index": (page_num * messages_per_page) + len(content),
+                "prev_page": page.previous_page_number if page.has_previous else None,
+                "next_page": page.next_page_number if page.has_next else None,
+                "results": serializer.data,
+            }
+        )
 
     def move_selection(self, request, destination: str) -> int:
         """Move selected messages to the given mailbox."""
@@ -79,6 +97,20 @@ class UserEmailViewSet(viewsets.GenericViewSet):
     def mark_as_not_junk(self, request):
         count = self.move_selection(request, "INBOX")
         return response.Response({"count": count})
+
+    @action(
+        methods=["post"],
+        detail=False,
+        serializer_class=serializers.FlagSelectionSerializer,
+    )
+    def flag(self, request):
+        serializer = serializers.FlagSelectionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        imapc = lib.get_imapconnector(request)
+        getattr(imapc, f"mark_messages_{serializer.validated_data['status']}")(
+            serializer.validated_data["mailbox"], serializer.validated_data["selection"]
+        )
+        return response.Response({"count": len(serializer.validated_data["selection"])})
 
     @action(methods=["get"], detail=False)
     def content(self, request):

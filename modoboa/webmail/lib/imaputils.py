@@ -568,7 +568,7 @@ class IMAPconnector:
                 mb["unseen"] = count
         return md_mailboxes
 
-    def _add_flag(self, mbox: str, msgset, flag: str) -> None:
+    def _add_flag(self, mbox: str, msgset: list[str], flag: str) -> None:
         """Add flag to a messages set.
 
         :param mbox: the mailbox containing the messages
@@ -576,9 +576,9 @@ class IMAPconnector:
         :param flag: the flag to add
         """
         self.select_mailbox(mbox, False)
-        self._cmd("STORE", msgset, "+FLAGS", flag)
+        self._cmd("STORE", ",".join(msgset), "+FLAGS", flag)
 
-    def _remove_flag(self, mbox: str, msgset, flag: str) -> None:
+    def _remove_flag(self, mbox: str, msgset: list[str], flag: str) -> None:
         """Remove flag from a message set.
 
         :param mbox: the mailbox containing the messages
@@ -586,9 +586,9 @@ class IMAPconnector:
         :param flag: the flag to remove
         """
         self.select_mailbox(mbox, False)
-        self._cmd("STORE", msgset, "-FLAGS", flag)
+        self._cmd("STORE", ",".join(msgset), "-FLAGS", flag)
 
-    def mark_messages_unread(self, mbox: str, msgset) -> None:
+    def mark_messages_unread(self, mbox: str, msgset: list[str]) -> None:
         """Mark a set of messages as unread.
 
         :param mbox: the mailbox containing the messages
@@ -596,7 +596,7 @@ class IMAPconnector:
         """
         self._remove_flag(mbox, msgset, r"(\Seen)")
 
-    def mark_messages_read(self, mbox: str, msgset) -> None:
+    def mark_messages_read(self, mbox: str, msgset: list[str]) -> None:
         """Mark a set of messages as unread.
 
         :param mbox: the mailbox containing the messages
@@ -604,7 +604,7 @@ class IMAPconnector:
         """
         self._add_flag(mbox, msgset, r"(\Seen)")
 
-    def mark_messages_flagged(self, mbox: str, msgset) -> None:
+    def mark_messages_flagged(self, mbox: str, msgset: list[str]) -> None:
         """Mark a set of messages as flagged.
 
         :param mbox: the mailbox containing the messages
@@ -612,7 +612,7 @@ class IMAPconnector:
         """
         self._add_flag(mbox, msgset, r"(\Flagged)")
 
-    def mark_messages_unflagged(self, mbox: str, msgset) -> None:
+    def mark_messages_unflagged(self, mbox: str, msgset: list[str]) -> None:
         """Mark a set of messages as unflagged.
 
         :param mbox: the mailbox containing the messages
@@ -761,7 +761,6 @@ class IMAPconnector:
             msg = email.message_from_string(
                 msg_data[f"BODY[HEADER.FIELDS ({headers})]"]
             )
-            print(type(msg))
             msg["imapid"] = uid
             msg["size"] = msg_data["RFC822.SIZE"]
             if r"\Seen" not in msg_data["FLAGS"]:

@@ -1,8 +1,10 @@
 <template>
-  <div class="text-h5 ml-4">
-    {{ $gettext('Webmail') }}
+  <div class="position-relative h-100">
+    <div class="text-h5 ml-4">
+      {{ $gettext('Webmail') }}
+    </div>
+    <EmailList :mailbox="$route.query.mailbox || 'INBOX'" />
   </div>
-  <EmailList :mailbox="$route.query.mailbox || 'INBOX'" />
 </template>
 
 <script setup>
