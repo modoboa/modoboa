@@ -26,6 +26,7 @@
     "axios": "^1.8.2",
     "core-js": "^3.37.1",
     "debounce": "^2.1.0",
+    "filesize": "^10.1.6",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.4",
     "oidc-client-ts": "^3.0.1",

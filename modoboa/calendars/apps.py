@@ -1,4 +1,4 @@
-"""AppConfig for radicale."""
+"""AppConfig for calendars."""
 
 from django.apps import AppConfig
 
