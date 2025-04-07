@@ -22,6 +22,15 @@
           </v-btn>
         </div>
 
+        <div class="d-flex justify-center mb-4">
+          <v-btn
+            :text="$gettext('Compose')"
+            color="secondary"
+            variant="flat"
+            prepend-icon="mdi-pencil"
+            @click="openComposeForm"
+          />
+        </div>
         <MailboxList
           :mailboxes="userMailboxes"
           class="mr-2"
@@ -56,4 +65,8 @@ function openMailbox(mailbox) {
 api.getUserMailboxes().then((resp) => {
   userMailboxes.value = resp.data
 })
+
+const openComposeForm = () => {
+  router.push({ name: 'ComposeEmailView' })
+}
 </script>
