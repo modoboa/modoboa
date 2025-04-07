@@ -29,6 +29,7 @@ services:
       - 8000:8000
     env_file:
       - test_project/oidc_key
+      - test_project/envfile
     environment:
       DB: "SQLITE"
       DEBUG: "True"

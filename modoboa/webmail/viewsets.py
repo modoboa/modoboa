@@ -31,6 +31,8 @@ class UserEmailViewSet(viewsets.GenericViewSet):
             return serializers.MoveSelectionSerializer
         if self.action == "flag":
             return serializers.FlagSelectionSerializer
+        if self.action == "send":
+            return serializers.SendEmailSerializer
         return serializers.EmailSerializer
 
     def list(self, request):
@@ -118,16 +120,38 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         mailid = request.GET.get("mailid")
         if not mailbox or not mailid:
             raise Http404
-        dformat = self.request.GET.get("dformat", "plain")
+        dformat = request.user.parameters.get_value("displaymode")
+        context = self.request.GET.get("context")
+        if context and context in ["reply", "forward"]:
+            modclass = getattr(lib, f"{context.capitalize()}Modifier")
+            email = modclass(
+                request,
+                f"{mailbox}:{mailid}",
+                dformat=dformat,
+                links=request.GET.get("links", "0") == "1",
+            )
+        else:
+            email = lib.ImapEmail(
+                request,
+                f"{mailbox}:{mailid}",
+                dformat=dformat,
+                links=request.GET.get("links", "0") == "1",
+            )
+            email.fetch_headers()
+        serializer = serializers.EmailSerializer(email)
+        return response.Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def source(self, request):
+        mailbox = request.GET.get("mailbox", "INBOX")
+        mailid = request.GET.get("mailid")
+        if not mailbox or not mailid:
+            raise Http404
         email = lib.ImapEmail(
             request,
             f"{mailbox}:{mailid}",
-            dformat=dformat,
-            links=request.GET.get("links", "0") == "1",
         )
-        email.fetch_headers()
-        serializer = serializers.EmailSerializer(email)
-        return response.Response(serializer.data)
+        return response.Response({"source": email.source})
 
     @action(methods=["get"], detail=False)
     def attachment(self, request):
@@ -145,3 +169,12 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         if int(partdef["size"]) < 200:
             resp["Content-Length"] = partdef["size"]
         return resp
+
+    @action(methods=["post"], detail=False)
+    def send(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        status, error = lib.send_mail(request, serializer.validated_data)
+        if status:
+            return response.Response(status=204)
+        return response.Response({"error": error}, status=400)

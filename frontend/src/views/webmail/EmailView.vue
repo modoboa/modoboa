@@ -7,15 +7,20 @@
         color="primary"
         variant="tonal"
         prepend-icon="mdi-reply"
-        append-icon="mdi-chevron-down"
+        @click="replyToEmail"
       >
         {{ $gettext('Reply') }}
-        <v-menu activator="parent">
-          <v-list>
-            <v-list-item :title="$gettext('Reply all')" />
-            <v-list-item :title="$gettext('Forward')" />
-          </v-list>
-        </v-menu>
+        <template #append>
+          <v-btn size="x-small" variant="plain">
+            <v-icon icon="mdi-chevron-down" />
+            <v-menu activator="parent">
+              <v-list>
+                <v-list-item :title="$gettext('Reply all')" />
+                <v-list-item :title="$gettext('Forward')" />
+              </v-list>
+            </v-menu>
+          </v-btn>
+        </template>
       </v-btn>
       <v-btn
         class="ml-2"
@@ -28,7 +33,7 @@
       >
       </v-btn>
       <v-btn
-        v-if="$route.params.mailbox === 'Junk'"
+        v-if="route.params.mailbox !== 'Junk'"
         class="ml-2"
         color="warning"
         variant="tonal"
@@ -52,7 +57,7 @@
       <v-btn class="ml-2" variant="tonal" icon size="small">
         <v-icon icon="mdi-cog" />
         <v-menu activator="parent">
-          <v-list>
+          <v-list density="compact">
             <v-list-item
               v-if="!enableLinks"
               :title="$gettext('Enable links')"
@@ -62,6 +67,10 @@
               v-else
               :title="$gettext('Disable links')"
               @click="enableLinks = false"
+            />
+            <v-list-item
+              :title="$gettext('Display source')"
+              @click="openEmailSourceDialog"
             />
           </v-list>
         </v-menu>
@@ -100,6 +109,20 @@
     </div>
     <iframe class="email-frame" />
   </div>
+  <v-dialog v-model="showEmailSource" max-width="1200">
+    <v-card :title="$gettext('Message source')">
+      <v-card-text class="text-caption overflow-x-auto">
+        <pre>{{ emailSource }}</pre>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          :text="$gettext('Close')"
+          @click="showEmailSource = false"
+        ></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -116,8 +139,10 @@ const router = useRouter()
 
 const enableLinks = ref(false)
 const email = ref(null)
+const emailSource = ref(null)
 const headers = ref(null)
 const loaded = ref(false)
+const showEmailSource = ref(false)
 const working = ref(false)
 
 const recipients = computed(() => {
@@ -230,6 +255,21 @@ const markEmailAsNotJunk = () => {
       })
       displayNotification({ msg: $gettext('Message marked as not junk') })
     })
+}
+
+const openEmailSourceDialog = async () => {
+  if (!emailSource.value) {
+    const resp = await api.getEmailSource(
+      route.query.mailbox,
+      route.query.mailid
+    )
+    emailSource.value = resp.data.source
+  }
+  showEmailSource.value = true
+}
+
+const replyToEmail = () => {
+  router.push({ name: 'ReplyEmailView', query: route.query })
 }
 </script>
 

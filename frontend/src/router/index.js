@@ -339,6 +339,22 @@ const routes = [
               requiresAuth: true,
             },
           },
+          {
+            path: 'compose',
+            name: 'ComposeEmailView',
+            component: () => import('@/views/webmail/ComposeEmailView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+          {
+            path: 'reply',
+            name: 'ReplyEmailView',
+            component: () => import('@/views/webmail/ReplyEmailView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
         ],
       },
     ],
