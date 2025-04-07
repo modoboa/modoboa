@@ -30,7 +30,7 @@
       >
       </v-btn>
       <v-btn
-        v-if="$route.params.mailbox === 'Junk'"
+        v-if="$route.params.mailbox !== 'Junk'"
         class="ml-2"
         color="warning"
         variant="tonal"

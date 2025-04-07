@@ -18,7 +18,7 @@ from django.utils.html import conditional_escape
 from django.utils.translation import gettext as _
 
 from modoboa.lib import u2u_decode
-from modoboa.lib.email_utils import Email, EmailAddress
+from modoboa.lib.email_utils import Email
 
 from . import imapheader
 from .attachments import get_storage_path
@@ -39,7 +39,7 @@ class ImapEmail(Email):
         ("Subject", True),
     ]
 
-    def __init__(self, request, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.request = request
         self.imapc = get_imapconnector(request)
@@ -160,7 +160,9 @@ class ImapEmail(Email):
     @property
     def source(self):
         """Retrieve email source."""
-        return self.imapc.fetchmail(self.mbox, self.mailid, what="source")["BODY[]"]
+        return self.imapc.fetchmail(
+            self.mbox, self.mailid, readonly=True, what="source"
+        )["BODY[]"]
 
     def _find_content_charset(self, part):
         for pos, elem in enumerate(part["params"]):
@@ -226,11 +228,11 @@ class ImapEmail(Email):
 class Modifier(ImapEmail):
     """Message modifier."""
 
-    def __init__(self, form, request, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         kwargs["dformat"] = request.user.parameters.get_value("editor")
         super().__init__(request, *args, **kwargs)
-        self.form = form
         self.fetch_headers(raw_addresses=True)
+        self._inject_textheader()
         getattr(self, f"_modify_{self.dformat}")()
 
     def _modify_plain(self):
@@ -255,32 +257,36 @@ class ReplyModifier(Modifier):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.textheader = f"{self.Form} {_('wrote:')}"
-        if self.dformat == "html":
-            self.textheader = f"<p>{self.textheader}</p>"
-        if hasattr(self, "Message_ID"):
-            self.form.fields["origmsgid"].initial = self.Message_ID
-        if not hasattr(self, "Reply_To"):
-            self.form.fields["to"].initial = self.original_From
-        else:
-            self.form.fields["to"].initial = self.original_ReplyTo
-        if self.request.GET.get("all", "0") == "1":  # reply-all
-            self.form.fields["cc"].initial = ""
-            toparse = self.To.split(",")
-            if hasattr(self, "Cc"):
-                toparse += self.Cc.split(",")
-            for addr in toparse:
-                tmp = EmailAddress(addr)
-                if tmp.address and tmp.address == self.request.user.username:
-                    continue
-                if self.form.fields["cc"].initial != "":
-                    self.form.fields["cc"].initial += ", "
-                self.form.fields["cc"].initial += tmp.fulladdress
+        # if hasattr(self, "Message_ID"):
+        #     self.form.fields["origmsgid"].initial = self.Message_ID
+        # if not hasattr(self, "Reply_To"):
+        #     self.form.fields["to"].initial = self.original_From
+        # else:
+        #     self.form.fields["to"].initial = self.original_ReplyTo
+        # if self.request.GET.get("all", "0") == "1":  # reply-all
+        #     self.form.fields["cc"].initial = ""
+        #     toparse = self.To.split(",")
+        #     if hasattr(self, "Cc"):
+        #         toparse += self.Cc.split(",")
+        #     for addr in toparse:
+        #         tmp = EmailAddress(addr)
+        #         if tmp.address and tmp.address == self.request.user.username:
+        #             continue
+        #         if self.form.fields["cc"].initial != "":
+        #             self.form.fields["cc"].initial += ", "
+        #         self.form.fields["cc"].initial += tmp.fulladdress
         m = re.match(r"re\s*:\s*.+", self.subject.lower())
-        if m:
-            self.form.fields["subject"].initial = self.subject
+        if not m:
+            self.subject = f"Re: {self.subject}"
+
+    def _inject_textheader(self):
+        sender = self.From.get("name", self.From["address"])
+        textheader = f"{sender} {_('wrote:')}"
+        if self.dformat == "html":
+            textheader = f"<p>{textheader}</p>"
         else:
-            self.form.fields["subject"].initial = f"Re: {self.subject}"
+            textheader = f"{textheader}\n"
+        self.body = textheader + self.body
 
     def _modify_plain(self):
         super()._modify_plain()

@@ -23,6 +23,13 @@ export default {
     }
     return repository.get(`/webmail/emails/content/`, { params })
   },
+  getEmailSource(mailbox, mailid) {
+    const params = {
+      mailbox,
+      mailid,
+    }
+    return repository.get(`/webmail/emails/source/`, { params })
+  },
   getEmailAttachment(mailbox, mailid, partnum) {
     const params = {
       mailbox,
@@ -62,5 +69,8 @@ export default {
       status,
     }
     return repository.post('/webmail/emails/flag/', body)
+  },
+  sendEmail(body) {
+    return repository.post('/webmail/emails/send/', body)
   },
 }

@@ -376,6 +376,7 @@ class IMAPconnector:
         name = self._encode_mbox_name(name)
         if readonly:
             self._cmd("EXAMINE", name)
+            self.m.is_readonly = True
         else:
             self._cmd("SELECT", name)
         self.m.state = "SELECTED"

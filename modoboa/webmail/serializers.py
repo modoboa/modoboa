@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 
+from modoboa.lib import email_utils
 from modoboa.webmail import constants
 from modoboa.webmail.lib import imapheader
 
@@ -144,3 +145,25 @@ class FlagSelectionSerializer(serializers.Serializer):
 
     def validate_selection(self, value):
         return [item for item in value if item.isdigit()]
+
+
+class SendEmailSerializer(serializers.Serializer):
+
+    sender = serializers.EmailField()
+    to = serializers.ListField(child=serializers.EmailField())
+    cc = serializers.ListField(child=serializers.EmailField(), required=False)
+    bcc = serializers.ListField(child=serializers.EmailField(), required=False)
+    subject = serializers.CharField(required=False)
+    body = serializers.CharField(required=False)
+
+    def validate_sender(self, value):
+        return value
+
+    def validate_to(self, value):
+        return email_utils.prepare_addresses(value, "envelope")
+
+    def validate_cc(self, value):
+        return email_utils.prepare_addresses(value, "envelope")
+
+    def validate_bcc(self, value):
+        return email_utils.prepare_addresses(value, "envelope")
