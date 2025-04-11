@@ -1,5 +1,6 @@
 import gettext from './gettext'
 import { DateTime } from 'luxon'
+import { filesize } from 'filesize'
 
 const { $gettext } = gettext
 
@@ -16,6 +17,9 @@ export default {
     app.config.globalProperties.$truncate = (value, length, clamp) => {
       clamp = clamp || '...'
       return value.length > length ? value.slice(0, length) + clamp : value
+    }
+    app.config.globalProperties.$filesize = (value) => {
+      return filesize(value, { locale: gettext.current })
     }
   },
 }
