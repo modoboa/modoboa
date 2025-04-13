@@ -819,7 +819,7 @@ msgstr "DNS 状態"
 
 #: src/components/admin/identities/IdentityList.vue:100
 msgid "Do not delete account folder"
-msgstr "アカウントフォルダーを削除しない"
+msgstr "アカウントフォルダーを削除せず残す"
 
 #: src/components/admin/domains/DomainList.vue:163
 msgid "Do not delete domain folder"
