@@ -823,7 +823,7 @@ msgstr "アカウントフォルダーを削除しない"
 
 #: src/components/admin/domains/DomainList.vue:163
 msgid "Do not delete domain folder"
-msgstr "ドメインフォルダーを削除してはいけません"
+msgstr "ドメインフォルダーを削除せず残す"
 
 #: src/components/admin/domains/DomainList.vue:245
 msgid "Do you really want to delete the domain %{ domain }?"
