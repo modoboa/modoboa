@@ -74,6 +74,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     update_scheme = serializers.BooleanField(default=True)
     default_password = serializers.CharField(default="ChangeMe1!")
     random_password_length = serializers.IntegerField(min_value=8, default=8)
+    allow_special_characters = serializers.BooleanField(default=False)
     update_password_url = serializers.URLField(required=False, allow_blank=True)
     password_recovery_msg = serializers.CharField(required=False, allow_blank=True)
     sms_password_recovery = serializers.BooleanField(default=False)
