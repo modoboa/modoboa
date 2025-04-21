@@ -27,6 +27,7 @@ class Command(BaseCommand):
         """Add command line arguments."""
         parser.add_argument("--host", type=str, default="localhost")
         parser.add_argument("--port", type=int, default=9999)
+        parser.add_argument("--socket", type=str, default=None)
         parser.add_argument("--debug", action="store_true", help="Enable debug mode")
 
     def handle(self, *args, **options):
@@ -36,9 +37,14 @@ class Command(BaseCommand):
         except RuntimeError:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-        coro = asyncio.start_server(
-            core.new_connection, options["host"], options["port"]
-        )
+        if options["socket"] is None:
+            coro = asyncio.start_server(
+                core.new_connection, options["host"], options["port"]
+            )
+        else:
+            coro = asyncio.start_unix_server(
+                core.new_connection, options["socket"]
+            )
         server = loop.run_until_complete(coro)
 
         # Schedule reset task
@@ -59,8 +65,9 @@ class Command(BaseCommand):
 
         logger.info("Stopping policy daemon...")
         # Close the server
-        server.close()
-        loop.run_until_complete(server.wait_closed())
+        for s in server:
+            s.close()
+            loop.run_until_complete(s.wait_closed())
         # Cancel pending tasks
         for task in asyncio.all_tasks(loop):
             task.cancel()
