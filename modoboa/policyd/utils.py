@@ -10,11 +10,7 @@ from . import constants
 def get_redis_connection():
     """Return a client connection to Redis server."""
     if not getattr(settings, "REDIS_SENTINEL", False):
-        rclient = redis.Redis(
-            host=settings.REDIS_HOST,
-            port=settings.REDIS_PORT,
-            db=settings.REDIS_QUOTA_DB,
-        )
+        rclient = redis.from_url(settings.REDIS_URL)
     else:
         sentinel = redis.sentinel.Sentinel(
             settings.REDIS_SENTINELS, socket_timeout=0.1, db=settings.REDIS_QUOTA_DB
