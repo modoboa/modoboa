@@ -5,6 +5,8 @@ from contextlib import suppress
 import functools
 import logging
 import signal
+import socket
+import os
 
 from django.core.management.base import BaseCommand
 
@@ -33,7 +35,22 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Entry point."""
         loop = asyncio.get_event_loop()
-        if options["socket"] is None:
+        if os.environ.get("LISTEN_PID", "") == str(os.getpid()) and os.environ.get("LISTEN_FDS", "").isnumeric():
+            num_sockets = int(os.environ["LISTEN_FDS"])
+
+            del os.environ["LISTEN_PID"]
+            del os.environ["LISTEN_FDS"]
+
+            servers = []
+            for fileno in range(3, 3 + num_sockets):  # It’s always FD 3+
+                listen_sock = socket.socket(fileno=fileno)
+                listen_sock.set_inheritable(False)  # Mark as CLOEXEC
+
+                servers.append(asyncio.start_server(
+                    core.new_connection, sock=listen_sock
+                ))
+            coro = asyncio.gather(*servers)
+        elif options["socket"] is None:
             coro = asyncio.start_server(
                 core.new_connection, options["host"], options["port"]
             )
@@ -51,7 +68,7 @@ class Command(BaseCommand):
                 getattr(signal, signame), functools.partial(ask_exit, signame, loop)
             )
 
-        logger.info(f"Serving on {server.sockets[0].getsockname()}")
+        logger.info(f"Started policy daemon")
 
         if options["debug"]:
             loop.set_debug(True)
