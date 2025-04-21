@@ -27,14 +27,20 @@ class Command(BaseCommand):
         """Add command line arguments."""
         parser.add_argument("--host", type=str, default="localhost")
         parser.add_argument("--port", type=int, default=9999)
+        parser.add_argument("--socket", type=str, default=None)
         parser.add_argument("--debug", action="store_true", help="Enable debug mode")
 
     def handle(self, *args, **options):
         """Entry point."""
         loop = asyncio.get_event_loop()
-        coro = asyncio.start_server(
-            core.new_connection, options["host"], options["port"]
-        )
+        if options["socket"] is None:
+            coro = asyncio.start_server(
+                core.new_connection, options["host"], options["port"]
+            )
+        else:
+            coro = asyncio.start_unix_server(
+                core.new_connection, options["socket"]
+            )
         server = loop.run_until_complete(coro)
 
         # Schedule reset task
