@@ -6,6 +6,8 @@ import sys
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "test_project.settings")
+    with open(os.path.join(os.path.dirname(__file__), "oidc_key")) as oidc_key_file:
+        os.environ.setdefault("OIDC_RSA_PRIVATE_KEY", oidc_key_file.read())
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
