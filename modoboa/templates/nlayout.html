@@ -95,7 +95,7 @@
       $(document).ready(function() {
           top_notifications = new TopNotifications({
               url: "{% url 'core:top_notifications_check' %}",
-              interval: {{ notifications_check_interval }}
+              interval: {{ notifications_check_interval | stringformat:"s" }}
           });
       });
     </script>
