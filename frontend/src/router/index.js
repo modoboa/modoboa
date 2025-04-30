@@ -355,6 +355,14 @@ const routes = [
               requiresAuth: true,
             },
           },
+          {
+            path: 'forward',
+            name: 'ForwardEmailView',
+            component: () => import('@/views/webmail/ForwardEmailView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
         ],
       },
     ],

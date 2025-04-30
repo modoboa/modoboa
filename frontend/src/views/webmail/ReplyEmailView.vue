@@ -1,5 +1,9 @@
 <template>
-  <ComposeEmailForm :original-email="email" />
+  <ComposeEmailForm
+    :original-email="email"
+    :reply-all="route.query.all === 'true'"
+    @on-toggle-html-mode="getEmailContent"
+  />
 </template>
 
 <script setup>
@@ -12,11 +16,17 @@ const route = useRoute()
 
 const email = ref()
 
-api
-  .getEmailContent(route.query.mailbox, route.query.mailid, {
-    context: 'reply',
-  })
-  .then((resp) => {
-    email.value = resp.data
-  })
+const getEmailContent = (html) => {
+  email.value = ''
+  api
+    .getEmailContent(route.query.mailbox, route.query.mailid, {
+      context: 'reply',
+      dformat: html ? 'html' : 'plain',
+    })
+    .then((resp) => {
+      email.value = resp.data
+    })
+}
+
+getEmailContent()
 </script>

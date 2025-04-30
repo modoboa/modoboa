@@ -1,6 +1,7 @@
 <template>
   <div>
     <div ref="toolbar" class="mt-4">
+      <slot name="append-toolbar"></slot>
       <v-btn-toggle
         v-if="editor"
         v-model="selection"
@@ -93,7 +94,7 @@
     </div>
     <EditorContent
       :editor="editor"
-      class="border-sm d-flex flex-column flex-grow-1"
+      class="border-sm d-flex flex-column flex-grow-1 pa-4"
     />
   </div>
 </template>
@@ -143,6 +144,7 @@ watch(
 
 <style lang="scss">
 .tiptap {
+  flex-grow: 1;
   :first-child {
     margin-top: 0;
   }
@@ -150,7 +152,6 @@ watch(
   ol {
     padding: 0 1rem;
     margin: 1.25rem 1rem 1.25rem 0.4rem;
-
     li p {
       margin-top: 0.25em;
       margin-bottom: 0.25em;

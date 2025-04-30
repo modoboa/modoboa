@@ -1,19 +1,60 @@
 from email import encoders
 from email.mime.base import MIMEBase
+import json
 import os
+from tempfile import NamedTemporaryFile
+from typing import Optional
 import uuid
 
 import six
 
 from django.conf import settings
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
+from django.http import Http404
 from django.utils.encoding import smart_bytes
+from django.utils.translation import gettext as _
 
 from modoboa.lib.exceptions import InternalError
+from modoboa.lib.redis import get_redis_connection
 from modoboa.lib.web_utils import size2integer
 from modoboa.parameters import tools as param_tools
 
 from .rfc6266 import build_header
+
+
+class ComposeSessionManager:
+
+    def __init__(self, request):
+        self.request = request
+        self.hash = f"webmail-{request.user.username}"
+        self.rclient = get_redis_connection(bytes)
+
+    def create(self) -> str:
+        """
+        Initialize a new "compose" session.
+
+        It is used to keep track of attachments defined with a new
+        message. Each new message will be associated with a unique ID (in
+        order to avoid conflicts between users).
+        """
+        randid = str(uuid.uuid4()).replace("-", "")
+        self.rclient.hset(self.hash, randid, json.dumps({"attachments": []}))
+        return randid
+
+    def delete(self, uid: str) -> None:
+        self.rclient.hdel(self.hash, uid)
+
+    def exists(self, uid: str) -> bool:
+        return self.rclient.hexists(self.hash, uid)
+
+    def get_content(self, uid: str) -> dict:
+        if not self.exists(uid):
+            raise Http404
+        content = self.rclient.hget(self.hash, uid)
+        return json.loads(content.decode())
+
+    def set_content(self, uid: str, content: dict):
+        return self.rclient.hset(self.hash, uid, json.dumps(content))
 
 
 def get_storage_path(filename):
@@ -24,22 +65,7 @@ def get_storage_path(filename):
     return os.path.join(storage_dir, filename)
 
 
-def set_compose_session(request):
-    """Initialize a new "compose" session.
-
-    It is used to keep track of attachments defined with a new
-    message. Each new message will be associated with a unique ID (in
-    order to avoid conflicts between users).
-
-    :param request: a Request object.
-    :return: the new unique ID.
-    """
-    randid = str(uuid.uuid4()).replace("-", "")
-    request.session["compose_mail"] = {"id": randid, "attachments": []}
-    return randid
-
-
-def save_attachment(f):
+def save_attachment(request, session_uid: str, f) -> dict:
     """Save a new attachment to the filesystem.
 
     The attachment is not saved using its own name to the
@@ -49,8 +75,9 @@ def save_attachment(f):
     :param f: an uploaded file object (see Django's documentation) or bytes
     :return: the new random name
     """
-    from tempfile import NamedTemporaryFile
-
+    manager = ComposeSessionManager(request)
+    if not manager.exists(session_uid):
+        raise Http404
     try:
         fp = NamedTemporaryFile(dir=get_storage_path(""), delete=False)
     except Exception as e:
@@ -61,21 +88,46 @@ def save_attachment(f):
         for chunk in f.chunks():
             fp.write(chunk)
     fp.close()
-    return fp.name
+
+    session = manager.get_content(session_uid)
+    attachment = {
+        "fname": str(f),
+        "content-type": f.content_type,
+        "size": f.size,
+        "tmpname": os.path.basename(fp.name),
+    }
+    session["attachments"].append(attachment)
+    manager.set_content(session_uid, session)
+    return attachment
 
 
-def clean_attachments(attlist):
-    """Remove all attachments from the filesystem
+def remove_attachment(request, session_uid: str, name: str) -> Optional[str]:
+    manager = ComposeSessionManager(request)
+    session = manager.get_content(session_uid)
+    for att in session["attachments"]:
+        if att["tmpname"] == name:
+            session["attachments"].remove(att)
+            fullpath = os.path.join(settings.MEDIA_ROOT, "webmail", att["tmpname"])
+            try:
+                os.remove(fullpath)
+            except OSError as e:
+                return _("Failed to remove attachment: ") + str(e)
+            manager.set_content(session_uid, session)
+            return None
+    raise Http404
 
-    :param attlist: a list of 2-uple. Each element must contain the
-                    following information : (random name, real name).
-    """
-    for att in attlist:
+
+def remove_attachments_and_session(
+    manager: ComposeSessionManager, session_uid: str
+) -> None:
+    content = manager.get_content(session_uid)
+    for att in content["attachments"]:
         fullpath = get_storage_path(att["tmpname"])
         try:
             os.remove(fullpath)
         except OSError:
             pass
+    manager.delete(session_uid)
 
 
 def create_mail_attachment(attdef, payload=None):

@@ -7,16 +7,15 @@ import re
 import email
 
 import chardet
-import six
 
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.urls import reverse
 from django.utils.encoding import smart_str
 from django.utils.html import conditional_escape
 from django.utils.translation import gettext as _
 
+from modoboa.contacts import models as contacts_models
 from modoboa.lib import u2u_decode
 from modoboa.lib.email_utils import Email
 
@@ -46,20 +45,6 @@ class ImapEmail(Email):
         self.mbox, self.mailid = self.mailid.split(":")
         self.attachments: dict[str, str] = {}
 
-    def _insert_contact_links(self, addresses):
-        """Insert 'add to address book' links."""
-        result = []
-        title = _("Add to contacts")
-        url = reverse("api:contact-list")
-        link_tpl = (
-            " <a class='addcontact' href='{}' title='{}'>"
-            "<span class='fa fa-vcard'></span></a>"
-        )
-        for address in addresses:
-            address += link_tpl.format(url, title)
-            result.append(address)
-        return result
-
     def fetch_headers(self, raw_addresses: bool = False) -> None:
         """Fetch message headers from server."""
         msg = self.imapc.fetchmail(
@@ -77,6 +62,18 @@ class ImapEmail(Email):
                 self.headers += [{"name": label, "value": hdrvalue}]
             label = re.sub("-", "_", label)
             setattr(self, label, hdrvalue)
+        addressbook = self.request.user.addressbook_set.first()
+        if not addressbook:
+            return
+        contacts = [self.From] + self.To
+        if hasattr(self, "Cc"):
+            contacts += self.Cc
+        for contact in contacts:
+            emailaddress = contacts_models.EmailAddress.objects.filter(
+                contact__addressbook=addressbook, address=contact["address"]
+            ).first()
+            if emailaddress:
+                contact["contact_id"] = emailaddress.contact.id
 
     def get_header(self, msg, header: str, **kwargs):
         """Look for a particular header.
@@ -118,6 +115,11 @@ class ImapEmail(Email):
         return " ".join(self.headers_as_list)
 
     @property
+    def subject(self):
+        """Just a shortcut to return a subject in any case."""
+        return self.Subject if hasattr(self, "Subject") else ""
+
+    @property
     def body(self):
         """Load email's body.
 
@@ -136,7 +138,7 @@ class ImapEmail(Email):
                 content = decode_payload(
                     part["encoding"], data[int(self.mailid)][f"BODY[{pnum}]"]
                 )
-                if not isinstance(content, six.text_type):
+                if not isinstance(content, str):
                     charset = self._find_content_charset(part)
                     if charset is not None:
                         try:
@@ -229,7 +231,6 @@ class Modifier(ImapEmail):
     """Message modifier."""
 
     def __init__(self, request, *args, **kwargs):
-        kwargs["dformat"] = request.user.parameters.get_value("editor")
         super().__init__(request, *args, **kwargs)
         self.fetch_headers(raw_addresses=True)
         self._inject_textheader()
@@ -243,11 +244,6 @@ class Modifier(ImapEmail):
             self.body = re.sub("</?pre>", "", self.body)
             self.body = re.sub("\n", "<br>", self.body)
 
-    @property
-    def subject(self):
-        """Just a shortcut to return a subject in any case."""
-        return self.Subject if hasattr(self, "Subject") else ""
-
 
 class ReplyModifier(Modifier):
     """Modify a message to reply to it."""
@@ -257,27 +253,15 @@ class ReplyModifier(Modifier):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # if hasattr(self, "Message_ID"):
-        #     self.form.fields["origmsgid"].initial = self.Message_ID
-        # if not hasattr(self, "Reply_To"):
-        #     self.form.fields["to"].initial = self.original_From
-        # else:
-        #     self.form.fields["to"].initial = self.original_ReplyTo
-        # if self.request.GET.get("all", "0") == "1":  # reply-all
-        #     self.form.fields["cc"].initial = ""
-        #     toparse = self.To.split(",")
-        #     if hasattr(self, "Cc"):
-        #         toparse += self.Cc.split(",")
-        #     for addr in toparse:
-        #         tmp = EmailAddress(addr)
-        #         if tmp.address and tmp.address == self.request.user.username:
-        #             continue
-        #         if self.form.fields["cc"].initial != "":
-        #             self.form.fields["cc"].initial += ", "
-        #         self.form.fields["cc"].initial += tmp.fulladdress
-        m = re.match(r"re\s*:\s*.+", self.subject.lower())
+    @property
+    def subject(self) -> str:
+        result: str = getattr(self, "Subject", "")
+        if not result:
+            return result
+        m = re.match(r"re\s*:\s*.+", result.lower())
         if not m:
-            self.subject = f"Re: {self.subject}"
+            return f"Re: {result}"
+        return result
 
     def _inject_textheader(self):
         sender = self.From.get("name", self.From["address"])
@@ -302,26 +286,33 @@ class ReplyModifier(Modifier):
 class ForwardModifier(Modifier):
     """Modify a message so it can be forwarded."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._header()
-        self.form.fields["subject"].initial = f"Fwd: {self.subject}"
+    @property
+    def subject(self) -> str:
+        result: str = getattr(self, "Subject", "")
+        return f"Fwd: {result}"
 
     def __getfunc(self, name):
         return getattr(self, f"{name}_{self.dformat}")
 
-    def _header(self):
-        self.textheader = "{}\n".format(self.__getfunc("_header_begin")())
-        self.textheader += self.__getfunc("_header_line")(_("Subject"), self.subject)
-        self.textheader += self.__getfunc("_header_line")(_("Date"), self.Date)
-        for hdr in ["From", "To", "Reply-To"]:
+    def _inject_textheader(self):
+        textheader = "{}\n".format(self.__getfunc("_header_begin")())
+        textheader += self.__getfunc("_header_line")(
+            _("Subject"), getattr(self, "Subject", "")
+        )
+        textheader += self.__getfunc("_header_line")(_("Date"), self.Date)
+        for hdr in ["From", "To", "Reply-To", "Cc"]:
             try:
                 key = re.sub("-", "_", hdr)
                 value = getattr(self, key)
-                self.textheader += self.__getfunc("_header_line")(_(hdr), value)
+                if isinstance(value, dict):
+                    value = value["fulladdress"]
+                else:
+                    value = ", ".join(item["fulladdress"] for item in value)
+                textheader += self.__getfunc("_header_line")(_(hdr), value)
             except AttributeError:
                 pass
-        self.textheader += self.__getfunc("_header_end")()
+        textheader += self.__getfunc("_header_end")()
+        self.body = textheader + self.body
 
     def _header_begin_plain(self):
         return f"----- {_('Original message')} -----"

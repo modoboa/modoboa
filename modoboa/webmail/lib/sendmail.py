@@ -14,6 +14,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 
 from modoboa.core import models as core_models
 from modoboa.parameters import tools as param_tools
+from modoboa.webmail.lib.attachments import create_mail_attachment
 
 from . import get_imapconnector
 
@@ -109,13 +110,13 @@ def format_sender_address(user: core_models.User, address: str) -> str:
     return address
 
 
-def create_message(user: core_models.User, attributes: dict):
+def create_message(user: core_models.User, attributes: dict, attachments: list):
     headers = {
         "User-Agent": "Modoboa {}".format(
             pkg_resources.get_distribution("modoboa").version
         )
     }
-    origmsgid = attributes.get("origmsgid")
+    origmsgid = attributes.get("in_reply_to")
     if origmsgid:
         headers.update({"References": origmsgid, "In-Reply-To": origmsgid})
     mode = user.parameters.get_value("editor")
@@ -130,21 +131,22 @@ def create_message(user: core_models.User, attributes: dict):
     for hdr in ["subject", "cc", "bcc"]:
         if hdr in attributes:
             setattr(msg, hdr, attributes[hdr])
+
+    for attachment in attachments:
+        msg.attach(create_mail_attachment(attachment))
     return msg
 
 
-def send_mail(request, attributes: dict) -> Tuple[bool, Optional[str]]:
-    """Email verification and sending.
-
-    If the form does not present any error, a new MIME message is
-    constructed. Then, a connection is established with the defined
-    SMTP server and the message is finally sent.
-
-    :param request: a Request object
-    :param posturl: the url to post the message form to
-    :return: a 2-uple (True|False, HttpResponse)
+def send_mail(
+    request, attributes: dict, attachments: list
+) -> Tuple[bool, Optional[str]]:
     """
-    msg = create_message(request.user, attributes)
+    Send a new email.
+
+    A new MIME message is first constructed. Then, a connection is established with the defined
+    SMTP server and the message is finally sent.
+    """
+    msg = create_message(request.user, attributes, attachments)
     conf = dict(param_tools.get_global_parameters("webmail"))
     options = {"host": conf["smtp_server"], "port": conf["smtp_port"]}
     if conf["smtp_secured_mode"] == "ssl":
@@ -177,7 +179,4 @@ def send_mail(request, attributes: dict) -> Tuple[bool, Optional[str]]:
     # Copy message to sent folder
     sentfolder = request.user.parameters.get_value("sent_folder")
     get_imapconnector(request).push_mail(sentfolder, msg.message())
-    # clean_attachments(request.session["compose_mail"]["attachments"])
-    # del request.session["compose_mail"]
-
     return True, None

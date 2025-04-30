@@ -3,17 +3,18 @@
     <div
       v-for="mailbox in props.mailboxes"
       :key="mailbox.name"
-      class="py-1 pl-3 text-body-2"
+      class="pl-3 text-body-2"
+      :class="{ 'py-1': !props.compact }"
     >
       <div
         :class="getBackgroundColorClass(mailbox)"
         class="d-flex mailbox pa-1 align-center"
-        @click="$emit('mailboxSelected', mailbox)"
+        @click="updateSelection(mailbox.name)"
         @mouseover="setHover(mailbox, true)"
         @mouseleave="setHover(mailbox, false)"
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
-        <template v-if="mailbox.unseen > 0">
+        <template v-if="props.unseenCounters && mailbox.unseen > 0">
           <span class="font-weight-bold">
             {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
           </span>
@@ -33,9 +34,11 @@
       </div>
       <MailboxList
         v-if="getMailboxState(mailbox) && mailbox.sub && mailbox.sub.length"
+        v-model="model"
         :mailboxes="mailbox.sub"
         class="mt-1"
-        @mailbox-selected="(mailbox) => $emit('mailboxSelected', mailbox)"
+        :light-mode="props.lightMode"
+        :compact="props.compact"
       />
     </div>
   </div>
@@ -43,18 +46,32 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
 import api from '@/api/webmail'
-
-const route = useRoute()
 
 const props = defineProps({
   mailboxes: {
     type: Array,
     default: null,
   },
+  lightMode: {
+    type: Boolean,
+    default: false,
+  },
+  compact: {
+    type: Boolean,
+    default: false,
+  },
+  unseenCounters: {
+    type: Boolean,
+    default: true,
+  },
+  allowUnselect: {
+    type: Boolean,
+    default: false,
+  },
 })
-const emit = defineEmits(['mailboxSelected'])
+const model = defineModel()
+const emit = defineEmits(['update:modelValue'])
 
 const iconByMailboxType = {
   inbox: 'mdi-inbox',
@@ -77,10 +94,15 @@ function setHover(mailbox, value) {
 }
 
 function getBackgroundColorClass(mailbox) {
-  if (route.query.mailbox === mailbox.name) {
-    return 'bg-primary-lighten-1'
+  if (model.value === mailbox.name) {
+    return `bg-primary-lighten-1`
   }
-  return hoverStates.value[mailbox.name] ? 'bg-primary-lighten-1' : 'bg-primary'
+  if (!props.lightMode) {
+    return hoverStates.value[mailbox.name]
+      ? `bg-primary-lighten-1`
+      : `bg-primary`
+  }
+  return hoverStates.value[mailbox.name] ? 'bg-primary' : `bg-white`
 }
 
 function getMailboxState(mailbox) {
@@ -94,8 +116,16 @@ function toggleMailbox(mailbox) {
   mailboxStates.value[mailbox.name] = !mailboxStates.value[mailbox.name]
   if (mailboxStates.value[mailbox.name] && !mailbox.sub.length) {
     api.getUserMailboxes(mailbox.name).then((resp) => {
-      mailbox.sub = resp.data
+      mailbox.sub = resp.data.mailboxes
     })
+  }
+}
+
+function updateSelection(value) {
+  if (props.allowUnselect && value === model.value) {
+    emit('update:modelValue', null)
+  } else {
+    emit('update:modelValue', value)
   }
 }
 </script>

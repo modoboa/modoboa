@@ -11,13 +11,16 @@
       <v-text-field
         v-model="search"
         prepend-inner-icon="mdi-magnify"
-        :placeholder="$gettext('Search')"
+        :placeholder="$gettext('Search in messages')"
         variant="outlined"
         single-line
         flat
         hide-details
         density="compact"
         class="flex-grow-0 w-33 mr-4"
+        clearable
+        @click:clear="fetchEmails"
+        @keyup.enter="submitSearch"
       ></v-text-field>
       <v-btn
         class="ml-2"
@@ -75,6 +78,12 @@
               prepend-icon="mdi-star-outline"
               @click="() => flagSelection('unflagged')"
             />
+            <v-list-item
+              v-if="$route.params.mailbox !== 'Trash'"
+              :title="$gettext('Empty mailbox')"
+              prepend-icon="mdi-trash-can"
+              @click="emptyMailbox"
+            />
           </v-list>
         </v-menu>
       </v-btn>
@@ -104,44 +113,58 @@
   <v-skeleton-loader v-if="loading" type="card@2"></v-skeleton-loader>
   <template v-else>
     <div class="emails position-absolute top-0 bottom-0 w-100 overflow-y-auto">
-      <v-card
-        v-for="email in emails.results"
-        :key="email.imapid"
-        density="compact"
-        class="mb-2 mx-1"
-      >
-        <v-card-text
-          class="d-flex align-center"
-          :class="{ 'font-weight-bold': email.style === 'unseen' }"
+      <template v-if="emails.results?.length">
+        <v-card
+          v-for="email in emails.results"
+          :key="email.imapid"
+          density="compact"
+          class="mb-2 mx-1"
         >
-          <v-checkbox v-model="selection" :value="email.imapid" hide-details />
-          <v-btn
-            :icon="email.flagged ? 'mdiu-star' : 'mdi-star-outline'"
-            variant="flat"
-          />
-          <div class="ml-4 clickable" @click="openEmail(email.imapid)">
-            <div>{{ email.subject }}</div>
-            <div class="mt-1 text-grey">
-              <span
-                v-if="email.from_address.name"
-                :title="email.from_address.address"
-                >{{ email.from_address.name }}</span
-              >
-              <span v-else>{{ email.from_address.address }}</span>
+          <v-card-text
+            class="d-flex align-center"
+            :class="{ 'font-weight-bold': email.style === 'unseen' }"
+          >
+            <v-checkbox
+              v-model="selection"
+              :value="email.imapid"
+              hide-details
+            />
+            <v-btn
+              :icon="email.flagged ? 'mdi-star' : 'mdi-star-outline'"
+              variant="flat"
+              @click="toggleFollowState(email)"
+            />
+            <div class="ml-4 clickable" @click="openEmail(email.imapid)">
+              <div>{{ email.subject }}</div>
+              <div class="mt-1 text-grey">
+                <span
+                  v-if="email.from_address.name"
+                  :title="email.from_address.address"
+                  >{{ email.from_address.name }}</span
+                >
+                <span v-else>{{ email.from_address.address }}</span>
+              </div>
             </div>
-          </div>
-          <v-spacer />
-          <div class="text-right">
-            <div>{{ email.date }}</div>
-            <div class="mt-1">
-              <v-icon v-if="email.answered" icon="mdi-reply-outline" />
-              <v-icon v-if="email.forwarded" icon="mdi-share-outline" />
-              <v-icon v-if="email.attachments" icon="mdi-paperclip" />
-              <span class="text-grey">{{ $filesize(email.size) }}</span>
+            <v-spacer />
+            <div class="text-right">
+              <div>{{ email.date }}</div>
+              <div class="mt-1">
+                <v-icon v-if="email.answered" icon="mdi-reply-outline" />
+                <v-icon v-if="email.forwarded" icon="mdi-share-outline" />
+                <v-icon v-if="email.attachments" icon="mdi-paperclip" />
+                <span class="text-grey">{{ $filesize(email.size) }}</span>
+              </div>
             </div>
-          </div>
-        </v-card-text>
-      </v-card>
+          </v-card-text>
+        </v-card>
+      </template>
+      <v-alert
+        v-else
+        class="mt-4"
+        type="info"
+        :text="$gettext('No message yet in this mailbox')"
+        variant="tonal"
+      />
     </div>
   </template>
 </template>
@@ -184,7 +207,7 @@ const fetchEmails = () => {
   emails.value = {}
   loading.value = true
   api
-    .getMailboxEmails(props.mailbox, { page: page.value })
+    .getMailboxEmails(props.mailbox, { page: page.value, search: search.value })
     .then((resp) => {
       emails.value = resp.data
       loading.value = false
@@ -192,6 +215,12 @@ const fetchEmails = () => {
     .catch(() => {
       loading.value = false
     })
+}
+
+const submitSearch = () => {
+  if (search.value) {
+    fetchEmails()
+  }
 }
 
 const toggleAllSelection = (value) => {
@@ -249,6 +278,20 @@ const flagSelection = (status) => {
     displayNotification({ msg: $gettext('Message(s) flagged') })
     fetchEmails()
   })
+}
+
+const emptyMailbox = () => {
+  loading.value = true
+  api.emptyUserMailbox(route.query.mailbox).then(() => {
+    emails.value = {}
+    loading.value = false
+  })
+}
+
+const toggleFollowState = async (email) => {
+  const flag = email.flagged ? 'unflagged' : 'flagged'
+  await api.flagSelection(route.query.mailbox, [email.imapid], flag)
+  email.flagged = flag === 'flagged'
 }
 
 watch(
