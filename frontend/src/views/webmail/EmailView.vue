@@ -7,7 +7,7 @@
         color="primary"
         variant="tonal"
         prepend-icon="mdi-reply"
-        @click="replyToEmail"
+        @click="() => replyToEmail()"
       >
         {{ $gettext('Reply') }}
         <template #append>
@@ -15,8 +15,14 @@
             <v-icon icon="mdi-chevron-down" />
             <v-menu activator="parent">
               <v-list>
-                <v-list-item :title="$gettext('Reply all')" />
-                <v-list-item :title="$gettext('Forward')" />
+                <v-list-item
+                  :title="$gettext('Reply all')"
+                  @click="() => replyToEmail(true)"
+                />
+                <v-list-item
+                  :title="$gettext('Forward')"
+                  @click="forwardEmail"
+                />
               </v-list>
             </v-menu>
           </v-btn>
@@ -80,16 +86,46 @@
     <div v-if="email" ref="headers" class="bg-white pa-4">
       <h2>{{ email.subject }}</h2>
       <div class="d-flex mt-2">
-        <h3 v-if="email.from_address.fulladdress">
-          {{ email.from_address.fulladdress }}
-        </h3>
-        <h3 v-else>{{ email.from_address.address }}</h3>
+        <v-menu key="sender" open-on-hover>
+          <template #activator="{ props }">
+            <h3 v-bind="props">
+              <template v-if="email.from_address.name">
+                {{ email.from_address.name }}
+                <span class="text-grey text-body-2">
+                  &lt;{{ email.from_address.address }}&gt;
+                </span>
+              </template>
+              <template v-else>
+                {{ email.from_address.address }}
+              </template>
+            </h3>
+          </template>
+          <ContactCard
+            v-model="email.from_address"
+            @contact-added="
+              (contact) => (email.from_address.contact_id = contact.id)
+            "
+          />
+        </v-menu>
         <v-spacer />
-        <span>{{ email.date }}</span>
+        <span class="text-grey">{{ email.date }}</span>
       </div>
-      <div class="mt-2">
+      <div class="mt-2 text-grey">
         {{ $gettext('To') }}
-        {{ recipients }}
+        <v-menu
+          v-for="(rcpt, index) in recipients"
+          :key="`rcpt-${index}`"
+          open-on-hover
+        >
+          <template #activator="{ props }">
+            <span v-if="index > 0">, </span>
+            <span v-bind="props">{{ rcpt.name || rcpt.address }}</span>
+          </template>
+          <ContactCard
+            :model-value="rcpt"
+            @contact-added="(contact) => storeContactId(rcpt, contact)"
+          />
+        </v-menu>
       </div>
       <div v-if="email.attachments.length" class="mt-2">
         <v-icon icon="mdi-paperclip" />
@@ -131,6 +167,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import api from '@/api/webmail'
+import ContactCard from '@/components/webmail/ContactCard.vue'
 
 const { $gettext } = useGettext()
 const { displayNotification } = useBusStore()
@@ -149,9 +186,11 @@ const recipients = computed(() => {
   if (!email.value) {
     return ''
   }
-  return email.value.to
-    .map((rcpt) => (rcpt.name ? rcpt.name : rcpt.address))
-    .join(', ')
+  let result = email.value.to
+  if (email.value.cc && email.value.cc.length) {
+    result = result.concat(email.value.cc)
+  }
+  return result
 })
 
 onMounted(() => {
@@ -268,8 +307,33 @@ const openEmailSourceDialog = async () => {
   showEmailSource.value = true
 }
 
-const replyToEmail = () => {
-  router.push({ name: 'ReplyEmailView', query: route.query })
+const storeContactId = (address, contact) => {
+  console.log(address, contact)
+  for (const rcpt of email.value.to) {
+    if (rcpt.address === address.address) {
+      rcpt.contact_id = contact.id
+      return
+    }
+  }
+  if (!email.value.cc) return
+  for (const rcpt of email.value.cc) {
+    if (rcpt.address === address.address) {
+      rcpt.contact_id = contact.id
+      return
+    }
+  }
+}
+
+const replyToEmail = (all) => {
+  const query = { ...route.query }
+  if (all) {
+    query.all = all
+  }
+  router.push({ name: 'ReplyEmailView', query })
+}
+
+const forwardEmail = () => {
+  router.push({ name: 'ForwardEmailView', query: route.query })
 }
 </script>
 

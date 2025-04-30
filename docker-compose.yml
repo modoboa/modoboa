@@ -108,6 +108,7 @@ services:
       dockerfile: docker/Dockerfile.radicale.dev
     volumes:
       - ./docker/radicale_config:/etc/radicale
+      - ./docker/collections:/collections
 
   policyd:
     container_name: modoboa_policyd

@@ -1,25 +1,102 @@
 """Webmail viewsets."""
 
+from django import forms
+from django.core.validators import validate_email
 from django.http import Http404, HttpResponse
 
-from rest_framework import response, viewsets
+from rest_framework import parsers, response, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 from modoboa.lib.paginator import Paginator
 from modoboa.webmail import lib, serializers
+from modoboa.webmail.lib import attachments
 
 
 class UserMailboxViewSet(viewsets.GenericViewSet):
     permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.UserMailboxSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return serializers.UserMailboxesSerializer
+        if self.action == "quota":
+            return serializers.UserMailboxQuotaSerializer
+        if self.action in ["create", "compress", "empty", "delete"]:
+            return serializers.UserMailboxInputSerializer
+        if self.action == "rename":
+            return serializers.UserMailboxUpdateSerializer
+        return serializers.UserMailboxSerializer
 
     def list(self, request):
         parent_mailbox = request.GET.get("mailbox")
         imapc = lib.get_imapconnector(request)
         mboxes = imapc.getmboxes(request.user, parent_mailbox)
-        serializer = serializers.UserMailboxSerializer(mboxes, many=True)
+        serializer = serializers.UserMailboxesSerializer(
+            {"mailboxes": mboxes, "hdelimiter": imapc.hdelimiter}
+        )
         return response.Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def quota(self, request):
+        mailbox = request.GET.get("mailbox")
+        if mailbox is None:
+            raise Http404
+        imapc = lib.get_imapconnector(request)
+        imapc.getquota(mailbox)
+        serializer = self.get_serializer(imapc)
+        return response.Response(serializer.data)
+
+    def create(self, request):
+        serializer = serializers.UserMailboxInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        imapc = lib.get_imapconnector(request)
+        imapc.create_folder(
+            serializer.validated_data["name"],
+            serializer.validated_data.get("parent_mailbox"),
+        )
+        return response.Response(serializer.validated_data, status=201)
+
+    @action(methods=["post"], detail=False)
+    def rename(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        imapc = lib.get_imapconnector(request)
+        oldname, oldparent = lib.separate_mailbox(
+            serializer.validated_data["oldname"], sep=imapc.hdelimiter
+        )
+        name = serializer.validated_data["name"]
+        parent = serializer.validated_data.get("parent_mailbox")
+        if name != oldname or parent != oldparent:
+            newname = name if parent is None else imapc.hdelimiter.join([parent, name])
+            imapc.rename_folder(oldname, newname)
+        return response.Response(serializer.validated_data)
+
+    @action(methods=["post"], detail=False)
+    def compress(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        imapc = lib.get_imapconnector(request)
+        imapc.compact(serializer.validated_data["name"])
+        return response.Response(status=204)
+
+    @action(methods=["post"], detail=False)
+    def empty(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        mailbox = serializer.validated_data["name"]
+        if mailbox != request.user.parameters.get_value("trash_folder"):
+            raise Http404
+        imapc = lib.get_imapconnector(request)
+        imapc.empty(mailbox)
+        return response.Response(status=204)
+
+    @action(methods=["post"], detail=False)
+    def delete(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        imapc = lib.get_imapconnector(request)
+        imapc.delete_folder(serializer.validated_data["name"])
+        return response.Response(status=204)
 
 
 class UserEmailViewSet(viewsets.GenericViewSet):
@@ -31,21 +108,31 @@ class UserEmailViewSet(viewsets.GenericViewSet):
             return serializers.MoveSelectionSerializer
         if self.action == "flag":
             return serializers.FlagSelectionSerializer
-        if self.action == "send":
-            return serializers.SendEmailSerializer
         return serializers.EmailSerializer
 
     def list(self, request):
         mailbox = request.GET.get("mailbox", "INBOX")
         imapc = lib.get_imapconnector(request)
+        search = request.GET.get("search")
+        if search:
+            imapc.parse_search_parameters("both", search)
         total = imapc.messages_count(mbox=mailbox)
         messages_per_page = request.user.parameters.get_value("messages_per_page")
         paginator = Paginator(total, messages_per_page)
         page_num = int(request.GET.get("page", 1))
         page = paginator.getpage(int(request.GET.get("page", 1)))
+        if not page:
+            return response.Response(
+                {
+                    "count": 0,
+                    "first_index": 0,
+                    "last_index": 0,
+                    "results": [],
+                }
+            )
         content = imapc.fetch(page.id_start, page.id_stop, mbox=mailbox)
         content = [dict(msg) for msg in content]
-        serializer = serializers.EmailHeadersSerializer(content, many=True)
+        results = serializers.EmailHeadersSerializer(content, many=True).data
         return response.Response(
             {
                 "count": total,
@@ -53,7 +140,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
                 "last_index": (page_num * messages_per_page) + len(content),
                 "prev_page": page.previous_page_number if page.has_previous else None,
                 "next_page": page.next_page_number if page.has_next else None,
-                "results": serializer.data,
+                "results": results,
             }
         )
 
@@ -121,6 +208,8 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         if not mailbox or not mailid:
             raise Http404
         dformat = request.user.parameters.get_value("displaymode")
+        if "dformat" in request.GET:
+            dformat = request.GET.get("dformat")
         context = self.request.GET.get("context")
         if context and context in ["reply", "forward"]:
             modclass = getattr(lib, f"{context.capitalize()}Modifier")
@@ -170,11 +259,76 @@ class UserEmailViewSet(viewsets.GenericViewSet):
             resp["Content-Length"] = partdef["size"]
         return resp
 
-    @action(methods=["post"], detail=False)
-    def send(self, request):
+
+class ComposeSessionViewSet(viewsets.GenericViewSet):
+
+    def get_serializer_class(self):
+        if self.action == "send":
+            return serializers.SendEmailSerializer
+        if self.action == "allowed_senders":
+            return serializers.AllowedSenderSerializer
+        return serializers.ComposeSessionSerializer
+
+    def create(self, request):
+        uid = attachments.ComposeSessionManager(request).create()
+        serializer = self.get_serializer({"uid": uid})
+        return response.Response(serializer.data, status=201)
+
+    @action(methods=["get"], detail=False)
+    def allowed_senders(self, request):
+        addresses = [{"address": request.user.email}]
+        for address in request.user.mailbox.alias_addresses:
+            try:
+                validate_email(address)
+                addresses.append({"address": address})
+            except forms.ValidationError:
+                pass
+        addresses += [
+            {"address": address}
+            for address in request.user.mailbox.senderaddress_set.values_list(
+                "address", flat=True
+            )
+        ]
+        serializer = self.get_serializer(addresses, many=True)
+        return response.Response(serializer.data)
+
+    @action(
+        methods=["get", "post"], detail=True, parser_classes=(parsers.MultiPartParser,)
+    )
+    def attachments(self, request, pk):
+        if request.method == "POST":
+            uploader = attachments.AttachmentUploadHandler()
+            request.upload_handlers.insert(0, uploader)
+            serializer = serializers.AttachmentUploadSerializer(data=request.FILES)
+            serializer.is_valid(raise_exception=True)
+            result = attachments.save_attachment(
+                request, pk, serializer.validated_data["attachment"]
+            )
+            return response.Response(result)
+        manager = attachments.ComposeSessionManager(request)
+        session = manager.get_content(pk)
+        serializer = serializers.UploadedAttachmentSerializer(
+            session["attachments"], many=True
+        )
+        return response.Response(serializer.data)
+
+    @action(methods=["delete"], detail=True, url_path="attachments/(?P<name>[^/.]+)")
+    def delete_attachment(self, request, pk, name):
+        error = attachments.remove_attachment(request, pk, name)
+        if error:
+            return response.Response({"error": error}, status=400)
+        return response.Response(status=204)
+
+    @action(methods=["post"], detail=True)
+    def send(self, request, pk):
+        """Send an email based on the given compose session."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        status, error = lib.send_mail(request, serializer.validated_data)
+        manager = attachments.ComposeSessionManager(request)
+        status, error = lib.send_mail(
+            request, serializer.validated_data, manager.get_content(pk)["attachments"]
+        )
         if status:
+            attachments.remove_attachments_and_session(manager, pk)
             return response.Response(status=204)
         return response.Response({"error": error}, status=400)

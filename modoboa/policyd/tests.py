@@ -16,11 +16,11 @@ from django.urls import reverse
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
+from modoboa.lib.redis import get_redis_connection
 from modoboa.lib.tests import ModoTestCase, ParametersMixin
 from modoboa.policyd import core as policyd_core
 
 from . import constants
-from . import utils
 
 
 def start_policy_daemon():
@@ -32,7 +32,7 @@ class RedisTestCaseMixin:
 
     def setUp(self):
         super().setUp()
-        self.rclient = utils.get_redis_connection()
+        self.rclient = get_redis_connection()
         self.rclient.delete(constants.REDIS_HASHNAME)
 
 

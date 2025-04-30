@@ -8,6 +8,26 @@ export default {
     }
     return repository.get('/webmail/mailboxes/', { params })
   },
+  getUserMailboxQuota(mailbox) {
+    const params = { mailbox }
+    return repository.get('/webmail/mailboxes/quota/', { params })
+  },
+  createUserMailbox(body) {
+    return repository.post('/webmail/mailboxes/', body)
+  },
+  renameUserMailbox(body) {
+    return repository.post('/webmail/mailboxes/rename/', body)
+  },
+  compressUserMailbox(body) {
+    return repository.post('/webmail/mailboxes/compress/', body)
+  },
+  deleteUserMailbox(body) {
+    return repository.post('/webmail/mailboxes/delete/', body)
+  },
+  emptyUserMailbox(mailbox) {
+    const body = { name: mailbox }
+    return repository.post('/webmail/mailboxes/empty/', body)
+  },
   getMailboxEmails(mailbox, options) {
     const params = {
       mailbox,
@@ -72,5 +92,30 @@ export default {
   },
   sendEmail(body) {
     return repository.post('/webmail/emails/send/', body)
+  },
+  createComposeSession() {
+    return repository.post('/webmail/compose-sessions/')
+  },
+  getAllowedSenders() {
+    return repository.get('/webmail/compose-sessions/allowed_senders/')
+  },
+  getUploadedAttachments(sessionUid) {
+    return repository.get(
+      `/webmail/compose-sessions/${sessionUid}/attachments/`
+    )
+  },
+  uploadAttachment(sessionUid, body) {
+    return repository.post(
+      `/webmail/compose-sessions/${sessionUid}/attachments/`,
+      body,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    )
+  },
+  removeAttachment(sessionUid, name) {
+    return repository.delete(
+      `/webmail/compose-sessions/${sessionUid}/attachments/${name}/`
+    )
   },
 }

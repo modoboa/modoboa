@@ -59,15 +59,50 @@ class UserMailboxSerializer(serializers.Serializer):
         return None
 
 
+class UserMailboxQuotaSerializer(serializers.Serializer):
+
+    usage = serializers.IntegerField(source="quota_usage")
+    current = serializers.IntegerField(source="quota_current")
+    limit = serializers.IntegerField(source="quota_limit")
+
+
+class UserMailboxesSerializer(serializers.Serializer):
+
+    mailboxes = UserMailboxSerializer(many=True)
+    hdelimiter = serializers.CharField()
+
+
+class UserMailboxInputSerializer(serializers.Serializer):
+
+    name = serializers.CharField()
+    parent_mailbox = serializers.CharField(required=False)
+
+
+class UserMailboxUpdateSerializer(UserMailboxInputSerializer):
+
+    oldname = serializers.CharField()
+
+
 class EmailAddressSerializer(serializers.Serializer):
     fulladdress = serializers.CharField()
     address = serializers.CharField()
     name = serializers.CharField(required=False)
+    contact_id = serializers.IntegerField(required=False)
 
 
 class AttachmentSerializer(serializers.Serializer):
     name = serializers.CharField()
     partnum = serializers.CharField()
+
+
+class AttachmentUploadSerializer(serializers.Serializer):
+    attachment = serializers.FileField()
+
+
+class UploadedAttachmentSerializer(serializers.Serializer):
+
+    tmpname = serializers.CharField()
+    fname = serializers.CharField()
 
 
 class EmailHeadersSerializer(serializers.Serializer):
@@ -105,11 +140,14 @@ class PaginatedEmailListSerializer(serializers.Serializer):
 
 class EmailSerializer(serializers.Serializer):
 
-    subject = serializers.CharField(source="Subject")
+    subject = serializers.CharField()
     from_address = EmailAddressSerializer(source="From")
     to = EmailAddressSerializer(source="To", many=True)
+    cc = EmailAddressSerializer(source="Cc", many=True, required=False)
     body = serializers.CharField()
     date = serializers.CharField(source="Date")
+    message_id = serializers.CharField(source="Message_ID", required=False)
+    reply_to = serializers.EmailField(source="Reply_To", required=False)
     attachments = serializers.SerializerMethodField()
 
     def get_attachments(self, email):
@@ -156,6 +194,8 @@ class SendEmailSerializer(serializers.Serializer):
     subject = serializers.CharField(required=False)
     body = serializers.CharField(required=False)
 
+    in_reply_to = serializers.CharField(required=False)
+
     def validate_sender(self, value):
         return value
 
@@ -167,3 +207,13 @@ class SendEmailSerializer(serializers.Serializer):
 
     def validate_bcc(self, value):
         return email_utils.prepare_addresses(value, "envelope")
+
+
+class ComposeSessionSerializer(serializers.Serializer):
+
+    uid = serializers.CharField()
+
+
+class AllowedSenderSerializer(serializers.Serializer):
+
+    address = serializers.EmailField()
