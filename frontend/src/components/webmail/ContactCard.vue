@@ -36,7 +36,6 @@ import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import contactsApi from '@/api/contacts'
 
-const emit = defineEmits(['contact-added'])
 const model = defineModel()
 
 const router = useRouter()
@@ -51,15 +50,17 @@ const addContact = async () => {
   }
   if (model.value.name) {
     body.display_name = model.value.name
+  } else {
+    body.display_name = model.value.address
   }
   working.value = true
   let resp
   try {
     resp = await contactsApi.createContact(body)
+    model.value.contact_id = resp.data.pk
   } finally {
     working.value = false
   }
-  emit('contact-added', resp.data)
   displayNotification({ msg: $gettext('Contact added to address book') })
 }
 
