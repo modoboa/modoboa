@@ -86,7 +86,7 @@
     <div v-if="email" ref="headers" class="bg-white pa-4">
       <h2>{{ email.subject }}</h2>
       <div class="d-flex mt-2">
-        <v-menu key="sender" open-on-hover>
+        <v-menu key="sender">
           <template #activator="{ props }">
             <h3 v-bind="props">
               <template v-if="email.from_address.name">
@@ -100,32 +100,29 @@
               </template>
             </h3>
           </template>
-          <ContactCard
-            v-model="email.from_address"
-            @contact-added="
-              (contact) => (email.from_address.contact_id = contact.id)
-            "
-          />
+          <ContactCard v-model="email.from_address" />
         </v-menu>
         <v-spacer />
         <span class="text-grey">{{ email.date }}</span>
       </div>
       <div class="mt-2 text-grey">
         {{ $gettext('To') }}
-        <v-menu
-          v-for="(rcpt, index) in recipients"
-          :key="`rcpt-${index}`"
-          open-on-hover
-        >
+        <v-menu v-for="(rcpt, index) in email.to" :key="`to-${index}`">
           <template #activator="{ props }">
             <span v-if="index > 0">, </span>
             <span v-bind="props">{{ rcpt.name || rcpt.address }}</span>
           </template>
-          <ContactCard
-            :model-value="rcpt"
-            @contact-added="(contact) => storeContactId(rcpt, contact)"
-          />
+          <ContactCard v-model="email.to[index]" />
         </v-menu>
+        <template v-if="email.cc?.length">
+          <v-menu v-for="(rcpt, index) in email.cc" :key="`cc-${index}`">
+            <template #activator="{ props }">
+              <span>, </span>
+              <span v-bind="props">{{ rcpt.name || rcpt.address }}</span>
+            </template>
+            <ContactCard v-model="email.cc[index]" />
+          </v-menu>
+        </template>
       </div>
       <div v-if="email.attachments.length" class="mt-2">
         <v-icon icon="mdi-paperclip" />
@@ -162,7 +159,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
@@ -181,17 +178,6 @@ const headers = ref(null)
 const loaded = ref(false)
 const showEmailSource = ref(false)
 const working = ref(false)
-
-const recipients = computed(() => {
-  if (!email.value) {
-    return ''
-  }
-  let result = email.value.to
-  if (email.value.cc && email.value.cc.length) {
-    result = result.concat(email.value.cc)
-  }
-  return result
-})
 
 onMounted(() => {
   window.addEventListener('resize', resizeEmailIframe)
