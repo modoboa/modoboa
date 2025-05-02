@@ -1,0 +1,256 @@
+from datetime import timedelta
+from io import BytesIO
+import os
+import shutil
+import tempfile
+from unittest import mock
+
+from django.urls import reverse
+from django.utils import timezone
+
+from oauth2_provider.models import get_access_token_model, get_application_model
+
+from modoboa.core import models as core_models
+from modoboa.admin import factories as admin_factories
+from modoboa.lib.tests import ModoAPITestCase
+
+from . import data as tests_data
+
+
+Application = get_application_model()
+AccessToken = get_access_token_model()
+
+
+def get_gif():
+    """Return gif."""
+    gif = BytesIO(
+        b"GIF87a\x01\x00\x01\x00\x80\x01\x00\x00\x00\x00ccc,\x00"
+        b"\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00;"
+    )
+    gif.name = "image.gif"
+    return gif
+
+
+class IMAP4Mock:
+    """Fake IMAP4 client."""
+
+    def __init__(self, *args, **kwargs):
+        self.untagged_responses = {}
+
+    def _quote(self, data):
+        return data
+
+    def _simple_command(self, name, *args, **kwargs):
+        if name == "CAPABILITY":
+            self.untagged_responses["CAPABILITY"] = [b""]
+        elif name == "LIST":
+            self.untagged_responses["LIST"] = [b'() "." "INBOX"']
+        elif name == "NAMESPACE":
+            self.untagged_responses["NAMESPACE"] = [b'(("" "/")) NIL NIL']
+        return "OK", None
+
+    def append(self, *args, **kwargs):
+        pass
+
+    def create(self, name):
+        return "OK", None
+
+    def delete(self, name):
+        return "OK", None
+
+    def list(self):
+        return "OK", [b'() "." "INBOX"']
+
+    def rename(self, oldname, newname):
+        return "OK", None
+
+    def uid(self, command, *args):
+        if command in ["SEARCH", "SORT"]:
+            return "OK", [b"19"]
+        elif command == "FETCH":
+            uid = int(args[0])
+            data = tests_data.BODYSTRUCTURE_SAMPLE_WITH_FLAGS
+            if uid == 46931:
+                if args[1] == "(BODYSTRUCTURE)":
+                    data = tests_data.BODYSTRUCTURE_ONLY_4
+                elif "HEADER.FIELDS" in args[1]:
+                    data = tests_data.BODYSTRUCTURE_SAMPLE_4
+                else:
+                    data = tests_data.BODY_PLAIN_4
+            elif uid == 46932:
+                if args[1] == "(BODYSTRUCTURE)":
+                    data = tests_data.BODYSTRUCTURE_ONLY_5
+                elif "HEADER.FIELDS" in args[1]:
+                    data = tests_data.BODYSTRUCTURE_SAMPLE_9
+                else:
+                    data = tests_data.BODYSTRUCTURE_SAMPLE_10
+            elif uid == 33:
+                if args[1] == "(BODYSTRUCTURE)":
+                    data = tests_data.BODYSTRUCTURE_EMPTY_MAIL
+                else:
+                    data = tests_data.EMPTY_BODY
+            elif uid == 133872:
+                data = tests_data.COMPLETE_MAIL
+            return "OK", data
+        elif command == "STORE":
+            return "OK", []
+
+
+class WebmailTestCase(ModoAPITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        admin_factories.populate_database()
+        cls.user = core_models.User.objects.get(username="user@test.com")
+        cls.application = Application.objects.create(
+            name="Test Application",
+            redirect_uris="http://localhost",
+            user=cls.user,
+            client_type=Application.CLIENT_PUBLIC,
+            authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,
+        )
+
+        cls.access_token = AccessToken.objects.create(
+            user=cls.user,
+            scope="read write",
+            expires=timezone.now() + timedelta(seconds=300),
+            token="secret-access-token-key",
+            application=cls.application,
+        )
+
+    def setUp(self):
+        """Connect with a simpler user."""
+        patcher = mock.patch("imaplib.IMAP4")
+        self.mock_imap4 = patcher.start()
+        self.mock_imap4.return_value = IMAP4Mock()
+        self.addCleanup(patcher.stop)
+        self.set_global_parameter("imap_port", 1435)
+        self.workdir = tempfile.mkdtemp()
+        os.mkdir(f"{self.workdir}/webmail")
+        self.set_global_parameter("update_scheme", False, app="core")
+
+    def tearDown(self):
+        """Cleanup."""
+        shutil.rmtree(self.workdir)
+
+    def authenticate(self, username: str = "user@test.com"):
+        self.client.credentials(Authorization="Bearer " + self.access_token.token)
+
+
+class UserMailboxViewSetTestCase(WebmailTestCase):
+
+    def test_list(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()["mailboxes"]), 5)
+
+    def test_quota(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-quota")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["usage"], -1)
+
+    def test_create(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-list")
+        body = {"name": "Test"}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 201)
+        body = {"parent": "Test", "name": "Test"}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 201)
+
+    def test_rename(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-rename")
+        body = {"name": "Test renamed", "oldname": "Test"}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    def test_compress(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-compress")
+        body = {"name": "INBOX"}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 204)
+
+    def test_empty(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-empty")
+        body = {"name": "INBOX"}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 404)
+        body = {"name": "Trash"}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 204)
+
+    def test_delete(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-delete")
+        body = {"name": "Test"}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 204)
+
+
+class UserEmailViewSetTestCase(WebmailTestCase):
+
+    def test_listmailbox(self):
+        """Check listmailbox action."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = response.json()
+        self.assertEqual(content["count"], 1)
+        self.assertEqual(
+            content["results"][0]["from_address"]["address"],
+            "nguyen.antoine@wanadoo.fr",
+        )
+
+        response = self.client.get(f"{url}?search=Réception")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            content["results"][0]["from_address"]["address"],
+            "nguyen.antoine@wanadoo.fr",
+        )
+
+    def test_getmailsource(self):
+        """Try to display a message's source."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-source")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=133872")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Message-ID", response.json()["source"])
+
+
+class ComposeSessionViewSetTestCase(WebmailTestCase):
+
+    def test_create(self):
+        self.authenticate()
+        url = reverse("v2:webmail-compose-session-list")
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 201)
+        self.assertIn("uid", response.json())
+
+    def test_get_allowed_senders(self):
+        self.authenticate()
+        url = reverse("v2:webmail-compose-session-allowed-senders")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+
+    def test_attachments(self):
+        self.authenticate()
+        url = reverse("v2:webmail-compose-session-list")
+        response = self.client.post(url)
+        uid = response.json()["uid"]
+        url = reverse("v2:webmail-compose-session-attachments", args=[uid])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)

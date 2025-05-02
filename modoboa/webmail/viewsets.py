@@ -9,12 +9,14 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 from modoboa.lib.paginator import Paginator
+from modoboa.lib.viewsets import HasMailbox
 from modoboa.webmail import lib, serializers
 from modoboa.webmail.lib import attachments
 
 
 class UserMailboxViewSet(viewsets.GenericViewSet):
-    permission_classes = (IsAuthenticated,)
+
+    permission_classes = (IsAuthenticated, HasMailbox)
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -100,6 +102,8 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
 
 
 class UserEmailViewSet(viewsets.GenericViewSet):
+
+    permission_classes = (IsAuthenticated, HasMailbox)
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -261,6 +265,8 @@ class UserEmailViewSet(viewsets.GenericViewSet):
 
 
 class ComposeSessionViewSet(viewsets.GenericViewSet):
+
+    permission_classes = (IsAuthenticated, HasMailbox)
 
     def get_serializer_class(self):
         if self.action == "send":
