@@ -5,6 +5,7 @@ import shutil
 import tempfile
 from unittest import mock
 
+from django.core import mail
 from django.urls import reverse
 from django.utils import timezone
 
@@ -13,6 +14,7 @@ from oauth2_provider.models import get_access_token_model, get_application_model
 from modoboa.core import models as core_models
 from modoboa.admin import factories as admin_factories
 from modoboa.lib.tests import ModoAPITestCase
+from modoboa.webmail.lib.attachments import ComposeSessionManager
 
 from . import data as tests_data
 
@@ -133,7 +135,7 @@ class WebmailTestCase(ModoAPITestCase):
         """Cleanup."""
         shutil.rmtree(self.workdir)
 
-    def authenticate(self, username: str = "user@test.com"):
+    def authenticate(self):
         self.client.credentials(Authorization="Bearer " + self.access_token.token)
 
 
@@ -232,12 +234,16 @@ class UserEmailViewSetTestCase(WebmailTestCase):
 
 class ComposeSessionViewSetTestCase(WebmailTestCase):
 
-    def test_create(self):
-        self.authenticate()
+    def _create_compose_session(self):
         url = reverse("v2:webmail-compose-session-list")
         response = self.client.post(url)
         self.assertEqual(response.status_code, 201)
         self.assertIn("uid", response.json())
+        return response.json()["uid"]
+
+    def test_create(self):
+        self.authenticate()
+        self._create_compose_session()
 
     def test_get_allowed_senders(self):
         self.authenticate()
@@ -248,9 +254,83 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
 
     def test_attachments(self):
         self.authenticate()
-        url = reverse("v2:webmail-compose-session-list")
-        response = self.client.post(url)
-        uid = response.json()["uid"]
+        uid = self._create_compose_session()
         url = reverse("v2:webmail-compose-session-attachments", args=[uid])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+        manager = ComposeSessionManager(self.user.username)
+        # self.set_global_parameters({"max_attachment_size": "10"})
+        # with self.settings(MEDIA_ROOT=self.workdir):
+        #     response = self.client.post(url, {"attachment": get_gif()})
+        # self.assertEqual(response.status_code, 400)
+        # self.assertContains(response, "Attachment is too big")
+
+        self.set_global_parameters({"max_attachment_size": "10K"})
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.post(url, {"attachment": get_gif()})
+        self.assertEqual(response.status_code, 200)
+        content = manager.get_content(uid)
+        self.assertEqual(len(content["attachments"]), 1)
+        name = content["attachments"][0]["tmpname"]
+        path = f"{self.workdir}/webmail/{name}"
+        self.assertTrue(os.path.exists(path))
+
+        url = reverse("v2:webmail-compose-session-delete-attachment", args=[uid, name])
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertFalse(os.path.exists(path))
+
+    def test_delete_attachment(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+
+        url = reverse(
+            "v2:webmail-compose-session-delete-attachment", args=[uid, "unknown"]
+        )
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.delete(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_send(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test",
+                "body": "Test",
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].from_email, "user@test.com")
+
+        # Try to send an email using HTML format
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+
+        self.user.first_name = "Antoine"
+        self.user.last_name = "Nguyen"
+        self.user.parameters.set_value("editor", "html")
+        self.user.save()
+        mail.outbox = []
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test",
+                "body": "<p>Test</p>",
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].from_email, '"Antoine Nguyen" <user@test.com>')
