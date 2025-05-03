@@ -276,7 +276,7 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         return serializers.ComposeSessionSerializer
 
     def create(self, request):
-        uid = attachments.ComposeSessionManager(request).create()
+        uid = attachments.ComposeSessionManager(request.user.username).create()
         serializer = self.get_serializer({"uid": uid})
         return response.Response(serializer.data, status=201)
 
@@ -303,6 +303,7 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
     )
     def attachments(self, request, pk):
         if request.method == "POST":
+            manager = attachments.ComposeSessionManager(request.user.username)
             uploader = attachments.AttachmentUploadHandler()
             request.upload_handlers.insert(0, uploader)
             serializer = serializers.AttachmentUploadSerializer(data=request.FILES)
@@ -311,7 +312,7 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
                 request, pk, serializer.validated_data["attachment"]
             )
             return response.Response(result)
-        manager = attachments.ComposeSessionManager(request)
+        manager = attachments.ComposeSessionManager(request.user.username)
         session = manager.get_content(pk)
         serializer = serializers.UploadedAttachmentSerializer(
             session["attachments"], many=True
@@ -330,7 +331,7 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         """Send an email based on the given compose session."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        manager = attachments.ComposeSessionManager(request)
+        manager = attachments.ComposeSessionManager(request.user.username)
         status, error = lib.send_mail(
             request, serializer.validated_data, manager.get_content(pk)["attachments"]
         )

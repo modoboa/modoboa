@@ -24,9 +24,8 @@ from .rfc6266 import build_header
 
 class ComposeSessionManager:
 
-    def __init__(self, request):
-        self.request = request
-        self.hash = f"webmail-{request.user.username}"
+    def __init__(self, username: str):
+        self.hash = f"webmail-{username}"
         self.rclient = get_redis_connection(bytes)
 
     def create(self) -> str:
@@ -75,7 +74,7 @@ def save_attachment(request, session_uid: str, f) -> dict:
     :param f: an uploaded file object (see Django's documentation) or bytes
     :return: the new random name
     """
-    manager = ComposeSessionManager(request)
+    manager = ComposeSessionManager(request.user.username)
     if not manager.exists(session_uid):
         raise Http404
     try:
@@ -102,7 +101,7 @@ def save_attachment(request, session_uid: str, f) -> dict:
 
 
 def remove_attachment(request, session_uid: str, name: str) -> Optional[str]:
-    manager = ComposeSessionManager(request)
+    manager = ComposeSessionManager(request.user.username)
     session = manager.get_content(session_uid)
     for att in session["attachments"]:
         if att["tmpname"] == name:

@@ -41,3 +41,4 @@ test_project/envfile
 
 # Docker
 docker/collections
+docker/redis
