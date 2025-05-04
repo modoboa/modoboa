@@ -126,27 +126,31 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         page_num = int(request.GET.get("page", 1))
         page = paginator.getpage(int(request.GET.get("page", 1)))
         if not page:
-            return response.Response(
+            serializer = self.get_serializer(
                 {
                     "count": 0,
                     "first_index": 0,
                     "last_index": 0,
+                    "prev_page": None,
+                    "next_page": None,
                     "results": [],
                 }
             )
+            return response.Response(serializer.data)
+
         content = imapc.fetch(page.id_start, page.id_stop, mbox=mailbox)
         content = [dict(msg) for msg in content]
-        results = serializers.EmailHeadersSerializer(content, many=True).data
-        return response.Response(
+        serializer = self.get_serializer(
             {
                 "count": total,
                 "first_index": page_num * messages_per_page,
                 "last_index": (page_num * messages_per_page) + len(content),
                 "prev_page": page.previous_page_number if page.has_previous else None,
                 "next_page": page.next_page_number if page.has_next else None,
-                "results": results,
+                "results": content,
             }
         )
+        return response.Response(serializer.data)
 
     def move_selection(self, request, destination: str) -> int:
         """Move selected messages to the given mailbox."""

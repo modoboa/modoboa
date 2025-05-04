@@ -110,8 +110,17 @@ BODYSTRUCTURE_SAMPLE_WITH_FLAGS = [
     b")",
 ]
 
-BODYSTRUCTURE_EMPTY_MAIL = [
-    b'33 (UID 33 BODYSTRUCTURE (("text" "plain" ("charset" "us-ascii") NIL NIL "quoted-printable" 0 0 NIL NIL NIL NIL)("application" "zip" ("name" "hotmail.com!ngyn.org!1435428000!1435514400.zip") NIL NIL "base64" 978 NIL ("attachment" ("filename" "hotmail.com!ngyn.org!1435428000!1435514400.zip")) NIL NIL) "mixed" ("boundary" "--boundary_32281_b52cf564-2a50-4f96-aeb0-ef5f83b05463") NIL NIL NIL))'
+EMPTY_BODYSTRUCTURE = 'BODYSTRUCTURE (("text" "plain" ("charset" "us-ascii") NIL NIL "quoted-printable" 0 0 NIL NIL NIL NIL)("application" "zip" ("name" "hotmail.com!ngyn.org!1435428000!1435514400.zip") NIL NIL "base64" 978 NIL ("attachment" ("filename" "hotmail.com!ngyn.org!1435428000!1435514400.zip")) NIL NIL) "mixed" ("boundary" "--boundary_32281_b52cf564-2a50-4f96-aeb0-ef5f83b05463") NIL NIL NIL)'
+
+BODYSTRUCTURE_EMPTY_MAIL = [bytes(f"33 (UID 33 {EMPTY_BODYSTRUCTURE})", "utf-8")]
+
+BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS = [
+    (
+        bytes(f"33 (UID 33 {EMPTY_BODYSTRUCTURE}", "utf-8")
+        + b" BODY[HEADER.FIELDS (FROM TO CC DATE SUBJECT)] {235}",
+        b"From: <Service.client10@maaf.fr>\r\nTo: <TONIO@NGYN.ORG>\r\nCc: \r\nSubject: Notre contact du 28/12/2011 - 192175092\r\nDate: Wed, 28 Dec 2011 13:29:17 +0100\r\nMessage-ID: <CABY0dkJspTaFn7v-1OG1nc9M0Qxn+VUTpcXzxyGNBnSnZtqMrw@mail.gmail.com>\r\n\r\n",
+    ),
+    b")",
 ]
 
 EMPTY_BODY = [(b"33 (UID 33 BODY[1] {0}", b""), b")"]
