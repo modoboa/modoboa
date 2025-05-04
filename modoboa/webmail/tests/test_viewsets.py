@@ -89,12 +89,14 @@ class IMAP4Mock:
             elif uid == 33:
                 if args[1] == "(BODYSTRUCTURE)":
                     data = tests_data.BODYSTRUCTURE_EMPTY_MAIL
+                elif "HEADER.FIELDS" in args[1]:
+                    data = tests_data.BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS
                 else:
                     data = tests_data.EMPTY_BODY
             elif uid == 133872:
                 data = tests_data.COMPLETE_MAIL
             return "OK", data
-        elif command == "STORE":
+        elif command in ["COPY", "STORE"]:
             return "OK", []
 
 
@@ -230,6 +232,64 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         response = self.client.get(f"{url}?mailbox=INBOX&mailid=133872")
         self.assertEqual(response.status_code, 200)
         self.assertIn("Message-ID", response.json()["source"])
+
+    def test_delete(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-delete")
+        body = {"mailbox": "INBOX", "selection": [1]}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["count"], 1)
+
+        body = {"mailbox": "INBOX", "selection": ["truc"]}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["count"], 0)
+
+    def test_mark_as_junk(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-mark-as-junk")
+        body = {"mailbox": "INBOX", "selection": [1]}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["count"], 1)
+
+    def test_mark_as_not_junk(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-mark-as-not-junk")
+        body = {"mailbox": "INBOX", "selection": [1]}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["count"], 1)
+
+    def test_flag(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-flag")
+        for status in ["read", "unread", "flagged", "unflagged"]:
+            body = {"mailbox": "INBOX", "selection": [1], "status": status}
+            response = self.client.post(url, body, format="json")
+            self.assertEqual(response.status_code, 200)
+
+    def test_content(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+        # Empty email
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=33")
+        self.assertEqual(response.status_code, 200)
+        self.assertIs(response.json()["body"], None)
+
+        # Reply modifier
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=46931&context=reply")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["subject"].startswith("Re:"))
+
+        # Forward modifier
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=46932&context=forward")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["subject"].startswith("Fwd:"))
 
 
 class ComposeSessionViewSetTestCase(WebmailTestCase):
