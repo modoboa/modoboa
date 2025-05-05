@@ -291,6 +291,12 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["subject"].startswith("Fwd:"))
 
+    def test_attachment(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-attachment")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
 
 class ComposeSessionViewSetTestCase(WebmailTestCase):
 

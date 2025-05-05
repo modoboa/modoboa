@@ -19,21 +19,19 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
     permission_classes = (IsAuthenticated, HasMailbox)
 
     def get_serializer_class(self):
-        if self.action == "list":
-            return serializers.UserMailboxesSerializer
         if self.action == "quota":
             return serializers.UserMailboxQuotaSerializer
         if self.action in ["create", "compress", "empty", "delete"]:
             return serializers.UserMailboxInputSerializer
         if self.action == "rename":
             return serializers.UserMailboxUpdateSerializer
-        return serializers.UserMailboxSerializer
+        return serializers.UserMailboxesSerializer
 
     def list(self, request):
         parent_mailbox = request.GET.get("mailbox")
         imapc = lib.get_imapconnector(request)
         mboxes = imapc.getmboxes(request.user, parent_mailbox)
-        serializer = serializers.UserMailboxesSerializer(
+        serializer = self.get_serializer(
             {"mailboxes": mboxes, "hdelimiter": imapc.hdelimiter}
         )
         return response.Response(serializer.data)
@@ -154,7 +152,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
 
     def move_selection(self, request, destination: str) -> int:
         """Move selected messages to the given mailbox."""
-        serializer = serializers.MoveSelectionSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         mbc = lib.get_imapconnector(request)
         mbc.move(
@@ -201,7 +199,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         serializer_class=serializers.FlagSelectionSerializer,
     )
     def flag(self, request):
-        serializer = serializers.FlagSelectionSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         imapc = lib.get_imapconnector(request)
         getattr(imapc, f"mark_messages_{serializer.validated_data['status']}")(
