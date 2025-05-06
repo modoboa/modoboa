@@ -1,6 +1,5 @@
 """Extra IMAPv4 utilities."""
 
-import base64
 import email
 from functools import wraps
 import imaplib
@@ -13,6 +12,7 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from modoboa.lib import imap_utf7  # noqa
+from modoboa.lib import oauth2
 from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 
@@ -255,14 +255,7 @@ class IMAPconnector:
             raise ImapError(_(f"Connection to IMAP server failed: {error}")) from None
 
         if not settings.WEBMAIL_DEV_MODE:
-            token = (
-                b"n,a="
-                + user.encode("utf-8")
-                + b",\001auth=Bearer "
-                + rawtoken.encode("utf-8")
-                + b"\001\001"
-            )
-            token = base64.b64encode(token)
+            token = oauth2.build_oauthbearer_string(user, rawtoken)
             data = self._cmd("AUTHENTICATE", b"OAUTHBEARER", token)
         else:
             user = bytes(settings.WEBMAIL_DEV_USERNAME, "utf-8")

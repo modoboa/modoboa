@@ -155,8 +155,13 @@ def send_mail(
         options.update({"use_tls": True})
     if conf["smtp_authentication"]:
         if not settings.WEBMAIL_DEV_MODE:
-            # TODO: oauth2 auth
-            pass
+            options.update(
+                {
+                    "backend": "modoboa.lib.smtp_backend.OAuthBearerEmailBackend",
+                    "username": request.user.email,
+                    "password": request.auth,
+                }
+            )
         else:
             options.update(
                 {
