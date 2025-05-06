@@ -93,6 +93,8 @@ class IMAP4Mock:
                     data = tests_data.BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS
                 else:
                     data = tests_data.EMPTY_BODY
+            elif uid == 3444:
+                data = tests_data.BODYSTRUCTURE_WITH_PDF
             elif uid == 133872:
                 data = tests_data.COMPLETE_MAIL
             return "OK", data
@@ -296,6 +298,11 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         url = reverse("v2:webmail-email-attachment")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=3444&partnum=2")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.headers["Content-Disposition"], "attachment; filename=attachment"
+        )
 
 
 class ComposeSessionViewSetTestCase(WebmailTestCase):
