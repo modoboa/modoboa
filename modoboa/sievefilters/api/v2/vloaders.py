@@ -2,7 +2,7 @@
 
 from typing import List, Optional, TypedDict
 
-from modoboa.sievefilters import imaputils
+from modoboa.webmail.lib import imaputils
 
 
 class UserMailbox(TypedDict):
@@ -13,7 +13,7 @@ class UserMailbox(TypedDict):
 
 
 def __build_folders_list(
-    folders: dict, user, imapc: imaputils.IMAPconnector, parentmb: Optional[str] = None
+    folders: list, user, imapc: imaputils.IMAPconnector, parentmb: Optional[str] = None
 ) -> List[UserMailbox]:
     ret: List[UserMailbox] = []
     for fd in folders:

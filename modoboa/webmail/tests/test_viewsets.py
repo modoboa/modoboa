@@ -333,11 +333,11 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
 
         manager = ComposeSessionManager(self.user.username)
-        # self.set_global_parameters({"max_attachment_size": "10"})
-        # with self.settings(MEDIA_ROOT=self.workdir):
-        #     response = self.client.post(url, {"attachment": get_gif()})
-        # self.assertEqual(response.status_code, 400)
-        # self.assertContains(response, "Attachment is too big")
+        self.set_global_parameters({"max_attachment_size": "10"})
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.post(url, {"attachment": get_gif()})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("Attachment is too big", response.json()["attachment"][0])
 
         self.set_global_parameters({"max_attachment_size": "10K"})
         with self.settings(MEDIA_ROOT=self.workdir):
@@ -370,17 +370,23 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.authenticate()
         uid = self._create_compose_session()
 
-        url = reverse("v2:webmail-compose-session-send", args=[uid])
-        response = self.client.post(
-            url,
-            {
-                "sender": self.user.email,
-                "to": ["test@example.test"],
-                "subject": "test",
-                "body": "Test",
-            },
-            format="json",
-        )
+        # Upload an attachment
+        url = reverse("v2:webmail-compose-session-attachments", args=[uid])
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.post(url, {"attachment": get_gif()})
+
+            # Send the message
+            url = reverse("v2:webmail-compose-session-send", args=[uid])
+            response = self.client.post(
+                url,
+                {
+                    "sender": self.user.email,
+                    "to": ["test@example.test"],
+                    "subject": "test",
+                    "body": "Test",
+                },
+                format="json",
+            )
         self.assertEqual(response.status_code, 204)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].from_email, "user@test.com")
