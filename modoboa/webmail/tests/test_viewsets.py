@@ -49,6 +49,8 @@ class IMAP4Mock:
             self.untagged_responses["LIST"] = [b'() "." "INBOX"']
         elif name == "NAMESPACE":
             self.untagged_responses["NAMESPACE"] = [b'(("" "/")) NIL NIL']
+        elif name == "STATUS":
+            self.untagged_responses["STATUS"] = [b"STATUS INBOX (UNSEEN 10)"]
         return "OK", None
 
     def append(self, *args, **kwargs):
