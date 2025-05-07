@@ -171,7 +171,7 @@ class IMAPconnector:
     )
     unseen_pattern = re.compile(r"[^\(]+\(UNSEEN (\d+)\)")
 
-    def __init__(self, user=None, password=None) -> None:
+    def __init__(self, user=None, password=None, load_namespaces: bool = True) -> None:
         self.__hdelimiter: Optional[str] = None
         self.__ns_prefixes: dict = {}
         self.quota_usage: int = -1
@@ -182,7 +182,8 @@ class IMAPconnector:
         self.address = self.conf["imap_server"]
         self.port = self.conf["imap_port"]
         self.login(user, password)
-        self.load_namespaces()
+        if load_namespaces:
+            self.load_namespaces()
 
     def _cmd(self, name: str, *args, **kwargs) -> Optional[list]:
         """IMAP command wrapper.
@@ -815,9 +816,9 @@ def separate_mailbox(fullname: str, sep: str = ".") -> tuple[str, Optional[str]]
     return fullname, None
 
 
-def get_imapconnector(request) -> IMAPconnector:
+def get_imapconnector(request, **kwargs) -> IMAPconnector:
     """Shortcut to create an IMAP connector.
 
     :param request: a ``Request`` object
     """
-    return IMAPconnector(request.user.username, str(request.auth))
+    return IMAPconnector(request.user.username, str(request.auth), **kwargs)
