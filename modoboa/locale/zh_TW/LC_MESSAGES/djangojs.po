@@ -75,7 +75,7 @@ msgstr "無更多記錄可展示"
 
 #: maillog/static/maillog/js/stats.js:45
 msgid "Search a domain"
-msgstr "搜尋一個網域"
+msgstr "搜尋「網域」"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
