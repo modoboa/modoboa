@@ -3,6 +3,7 @@
 from django import forms
 from django.core.validators import validate_email
 from django.http import Http404, HttpResponse
+from django.utils.translation import gettext as _
 
 from rest_framework import parsers, response, viewsets
 from rest_framework.decorators import action
@@ -270,6 +271,13 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
 
     permission_classes = (IsAuthenticated, HasMailbox)
 
+    def initialize_request(self, request, *args, **kwargs):
+        response = super().initialize_request(request, *args, **kwargs)
+        if self.action == "attachments":
+            uploader = attachments.AttachmentUploadHandler()
+            request.upload_handlers.insert(0, uploader)
+        return response
+
     def get_serializer_class(self):
         if self.action == "send":
             return serializers.SendEmailSerializer
@@ -306,10 +314,15 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
     def attachments(self, request, pk):
         if request.method == "POST":
             manager = attachments.ComposeSessionManager(request.user.username)
-            uploader = attachments.AttachmentUploadHandler()
-            request.upload_handlers.insert(0, uploader)
             serializer = serializers.AttachmentUploadSerializer(data=request.FILES)
-            serializer.is_valid(raise_exception=True)
+            if not serializer.is_valid():
+                errors = serializer.errors
+                if request.upload_handlers[0].toobig:
+                    errors["attachment"] = [
+                        _("Attachment is too big (limit: %s)")
+                        % request.upload_handlers[0].maxsize
+                    ]
+                return response.Response(errors, status=400)
             result = attachments.save_attachment(
                 request, pk, serializer.validated_data["attachment"]
             )
