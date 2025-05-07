@@ -25,7 +25,7 @@ msgstr ""
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
-msgstr "沒有更多的網域可以顯示"
+msgstr "沒有更多的「網域」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
