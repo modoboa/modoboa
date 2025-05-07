@@ -29,7 +29,7 @@ msgstr "沒有更多的「網域」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
-msgstr "不可以刪除網域目錄"
+msgstr "不可以刪除「網域目錄」"
 
 #: admin/static/admin/js/admin.js:151
 msgid "This operation will remove ALL data associated to this domain."
