@@ -96,23 +96,3 @@ class ManagesieveClientMock:
 
     def checkscript(self, content):
         return True
-
-
-class IMAP4Mock:
-    """Fake IMAP4 client."""
-
-    def __init__(self, *args, **kwargs):
-        self.untagged_responses = {}
-
-    def _quote(self, data):
-        return data
-
-    def _simple_command(self, name, *args, **kwargs):
-        if name == "CAPABILITY":
-            self.untagged_responses["CAPABILITY"] = [b""]
-        elif name == "LIST":
-            self.untagged_responses["LIST"] = [b'() "." "INBOX"']
-        return "OK", None
-
-    def list(self):
-        return "OK", [b'() "." "INBOX"']
