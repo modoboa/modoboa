@@ -55,7 +55,7 @@ msgstr "網域管理員未指定"
 
 #: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
 msgid "No more identity to show"
-msgstr "沒有身份可以顯示"
+msgstr "沒有更多的「身份」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:407
 msgid "Do not delete mailbox directory"
