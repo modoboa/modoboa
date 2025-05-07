@@ -101,7 +101,7 @@ test = [
 	"testfixtures==8.3.0",
 	"tox",
 ]
-ldap = ["django-auth-ldap<5.0.0"]
+ldap = ["django-auth-ldap<6.0.0"]
 
 [project.scripts]
 modoboa-cli = "modoboa:modoboa_admin"
