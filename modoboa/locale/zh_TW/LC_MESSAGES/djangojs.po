@@ -59,7 +59,7 @@ msgstr "沒有更多的「身份」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:407
 msgid "Do not delete mailbox directory"
-msgstr "不可能刪除郵件目錄"
+msgstr "不可以刪除「郵件目錄」"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
