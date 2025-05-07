@@ -51,7 +51,7 @@ msgstr "沒有更多的「日誌」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:309
 msgid "No domain administrator defined"
-msgstr "網域管理員未指定"
+msgstr "「網域管理員」未指定"
 
 #: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
 msgid "No more identity to show"
