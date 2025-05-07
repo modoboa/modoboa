@@ -33,7 +33,7 @@ msgstr "不可以刪除網域目錄"
 
 #: admin/static/admin/js/admin.js:151
 msgid "This operation will remove ALL data associated to this domain."
-msgstr "請注意：這個動作，將會刪除與這個網域有關的全部資料。"
+msgstr "請注意：這個動作，將會刪除與這個「網域」有關的全部資料。"
 
 #: admin/static/admin/js/admin.js:152
 msgid ""
