@@ -5,7 +5,6 @@
 # 
 # Translators:
 # Gary Wu <mrexcuse.tw@gmail.com>, 2021
-# Antoine Nguyen <tonio@ngyn.org>, 2023
 # LAB INGO, 2025
 # 
 #, fuzzy
@@ -71,7 +70,7 @@ msgstr "操作"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
-msgstr "無更多記錄可展示"
+msgstr "沒有更多的「日誌」資料，可以顯示。"
 
 #: maillog/static/maillog/js/stats.js:45
 msgid "Search a domain"
