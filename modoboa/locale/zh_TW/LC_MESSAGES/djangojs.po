@@ -91,7 +91,7 @@ msgstr "內部錯誤"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr "無更多條目可展示"
+msgstr "沒有「相關資料」，可以顯示。"
 
 #: static/js/listing.js:46
 msgid "Search"
