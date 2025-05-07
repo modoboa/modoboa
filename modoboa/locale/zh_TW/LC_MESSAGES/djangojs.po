@@ -39,7 +39,7 @@ msgstr "請注意：這個動作，將會刪除與這個「網域」有關的全
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "請注意：這個動作，除了保留帳號之外，將會刪除與這個網域有關的全部資料。"
+msgstr "請注意：這個動作，除了保留「帳號」之外，將會刪除與這個「網域」有關的全部資料。"
 
 #: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
 msgid "No more quota to show"
