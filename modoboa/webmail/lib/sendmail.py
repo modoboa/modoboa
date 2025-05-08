@@ -15,29 +15,9 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from modoboa.core import models as core_models
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail.lib.attachments import create_mail_attachment
+from modoboa.webmail.lib.utils import html2plaintext
 
 from . import get_imapconnector
-
-
-def html2plaintext(content: str) -> str:
-    """HTML to plain text translation.
-
-    :param content: some HTML content
-    """
-    if not content:
-        return ""
-    html = lxml.html.fromstring(content)
-    plaintext = ""
-    for ch in html.iter():
-        p = None
-        if ch.text is not None:
-            p = ch.text.strip("\r\t\n")
-        if ch.tag == "img":
-            p = ch.get("alt")
-        if p is None:
-            continue
-        plaintext += p + "\n"
-    return plaintext
 
 
 def make_body_images_inline(body: str) -> Tuple[str, list]:
@@ -183,5 +163,6 @@ def send_mail(
 
     # Copy message to sent folder
     sentfolder = request.user.parameters.get_value("sent_folder")
-    get_imapconnector(request).push_mail(sentfolder, msg.message())
+    with get_imapconnector(request) as imapc:
+        imapc.push_mail(sentfolder, msg.message())
     return True, None

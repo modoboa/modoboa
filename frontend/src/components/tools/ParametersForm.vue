@@ -50,6 +50,24 @@
                     density="compact"
                     variant="outlined"
                   />
+                  <v-textarea
+                    v-else-if="param.widget === 'TextareaField'"
+                    v-model="parameters[param.name]"
+                    :hint="param.help_text"
+                    persistent-hint
+                    :error="formErrors[param.name] !== undefined"
+                    :error-messages="formErrors[param.name]"
+                    :type="
+                      param.widget === 'PasswordField' ? 'password' : 'text'
+                    "
+                    density="compact"
+                    variant="outlined"
+                  />
+                  <HtmlEditor
+                    v-else-if="param.widget === 'HTMLField'"
+                    v-model="parameters[param.name]"
+                  >
+                  </HtmlEditor>
                   <v-text-field
                     v-else
                     v-model="parameters[param.name]"
@@ -86,6 +104,7 @@
 import { computed, ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
+import HtmlEditor from '@/components/tools/HtmlEditor'
 
 const props = defineProps({
   app: {

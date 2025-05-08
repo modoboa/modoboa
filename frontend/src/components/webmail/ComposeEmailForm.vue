@@ -148,6 +148,7 @@
       </div>
       <BodyEditor
         v-model="form.body"
+        :editor-mode="editorMode"
         @on-toggle-html-mode="(value) => emit('onToggleHtmlMode', value)"
       />
     </v-form>
@@ -161,7 +162,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore } from '@/stores'
@@ -193,6 +194,7 @@ const authStore = useAuthStore()
 const allowedSenders = ref([])
 const attachmentCount = ref(0)
 const contacts = ref([])
+const editorMode = ref('plain')
 const form = ref({})
 const formRef = ref()
 const showAttachmentsDialog = ref(false)
@@ -293,6 +295,17 @@ const lookForContacts = debounce(async (search) => {
   }
 }, 500)
 
+const initialize = (body) => {
+  if (body.signature) {
+    if (form.value.body) {
+      form.value.body += body.signature
+    } else {
+      form.value.body = body.signature
+    }
+  }
+  editorMode.value = body.editor_format
+}
+
 watch(
   () => props.originalEmail,
   () => {
@@ -305,10 +318,12 @@ if (!route.query.uid) {
   api.createComposeSession().then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
     router.push({ name: route.name, query })
+    initialize(resp.data)
   })
 } else {
-  api.getUploadedAttachments(route.query.uid).then((resp) => {
-    attachmentCount.value = resp.data.length
+  api.getComposeSession(route.query.uid).then((resp) => {
+    attachmentCount.value = resp.data.attachments.length
+    initialize(resp.data)
   })
 }
 

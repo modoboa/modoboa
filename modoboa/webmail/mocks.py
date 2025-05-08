@@ -14,7 +14,7 @@ class IMAP4Mock:
 
     def _simple_command(self, name, *args, **kwargs):
         if name == "CAPABILITY":
-            self.untagged_responses["CAPABILITY"] = [b""]
+            self.untagged_responses["CAPABILITY"] = [b"QUOTA"]
         elif name == "LIST":
             self.untagged_responses["LIST"] = [b'() "." "INBOX"']
         elif name == "NAMESPACE":

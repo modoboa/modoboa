@@ -18,7 +18,7 @@ from modoboa.parameters import tools as param_tools
 from ..exceptions import ImapError, WebmailInternalError
 from .fetch_parser import FetchResponseParser
 
-imaplib.Debug = 4
+# imaplib.Debug = 4
 
 # workaround for the "got more than 10000 bytes" exception. MAXLINE
 # value set to 1M, as on latest python versions.
@@ -147,7 +147,7 @@ class IMAPconnector:
     )
     unseen_pattern = re.compile(r"[^\(]+\(UNSEEN (\d+)\)")
 
-    def __init__(self, user=None, password=None, load_namespaces: bool = True) -> None:
+    def __init__(self, user: str, password: str, with_namespaces: bool = True) -> None:
         self.__hdelimiter: Optional[str] = None
         self.__ns_prefixes: dict = {}
         self.quota_usage: int = -1
@@ -157,9 +157,18 @@ class IMAPconnector:
         self.conf = dict(param_tools.get_global_parameters("webmail"))
         self.address = self.conf["imap_server"]
         self.port = self.conf["imap_port"]
-        self.login(user, password)
-        if load_namespaces:
+        self.user = user
+        self.password = password
+        self.with_namespaces = with_namespaces
+
+    def __enter__(self):
+        self.login(self.user, self.password)
+        if self.load_namespaces:
             self.load_namespaces()
+        return self
+
+    def __exit__(self, *args):
+        self.logout()
 
     def _cmd(self, name: str, *args, **kwargs) -> Optional[list]:
         """IMAP command wrapper.

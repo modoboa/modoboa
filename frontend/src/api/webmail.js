@@ -12,6 +12,10 @@ export default {
     const params = { mailbox }
     return repository.get('/webmail/mailboxes/quota/', { params })
   },
+  getUserMailboxUnseen(mailbox) {
+    const params = { mailbox }
+    return repository.get('webmail/mailboxes/unseen/', { params })
+  },
   createUserMailbox(body) {
     return repository.post('/webmail/mailboxes/', body)
   },
@@ -93,16 +97,14 @@ export default {
   sendEmail(body) {
     return repository.post('/webmail/emails/send/', body)
   },
+  getComposeSession(uid) {
+    return repository.get(`/webmail/compose-sessions/${uid}/`)
+  },
   createComposeSession() {
     return repository.post('/webmail/compose-sessions/')
   },
   getAllowedSenders() {
     return repository.get('/webmail/compose-sessions/allowed_senders/')
-  },
-  getUploadedAttachments(sessionUid) {
-    return repository.get(
-      `/webmail/compose-sessions/${sessionUid}/attachments/`
-    )
   },
   uploadAttachment(sessionUid, body) {
     return repository.post(

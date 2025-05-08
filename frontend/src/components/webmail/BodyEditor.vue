@@ -31,8 +31,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import HtmlEditor from '@/components/tools/HtmlEditor'
+
+const props = defineProps({
+  editorMode: {
+    type: String,
+    default: null,
+  },
+})
 
 const model = defineModel()
 const emit = defineEmits(['onToggleHtmlMode'])
@@ -44,4 +51,11 @@ const toggleHtmlMode = () => {
   htmlMode.value = !htmlMode.value
   emit('onToggleHtmlMode', htmlMode.value)
 }
+
+watch(
+  () => props.editorMode,
+  (value) => {
+    htmlMode.value = value === 'html'
+  }
+)
 </script>
