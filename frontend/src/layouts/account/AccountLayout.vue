@@ -20,6 +20,7 @@ const userSettingsMenuItems = computed(() => {
   // Temporary solution...
   const appIcons = {
     contacts: 'mdi-contacts-outline',
+    webmail: 'mdi-at',
   }
 
   result.push({

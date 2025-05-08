@@ -4,9 +4,9 @@ from django.db.models import signals
 from django.dispatch import receiver
 
 from modoboa.admin import models as admin_models
+from modoboa.lib.redis import get_redis_connection
 
 from . import constants
-from . import utils
 
 
 def set_message_limit(instance, key):
@@ -14,7 +14,7 @@ def set_message_limit(instance, key):
     old_message_limit = instance._loaded_values.get("message_limit")
     if old_message_limit == instance.message_limit:
         return
-    rclient = utils.get_redis_connection()
+    rclient = get_redis_connection()
     if instance.message_limit is None:
         # delete existing key
         if rclient.hexists(constants.REDIS_HASHNAME, key):

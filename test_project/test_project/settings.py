@@ -104,6 +104,7 @@ MODOBOA_APPS = (
     # Modoboa extensions here.
     "modoboa.contacts",
     "modoboa.calendars",
+    "modoboa.webmail",
 )
 
 try:
@@ -426,3 +427,7 @@ DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
 # Load settings from extensions
 
 LDAP_SERVER_PORT = os.environ.get("LDAP_SERVER_PORT", 3389)
+
+WEBMAIL_DEV_MODE = os.environ.get("WEBMAIL_DEV_MODE", "off") == "on"
+WEBMAIL_DEV_USERNAME = os.environ.get("WEBMAIL_DEV_USERNAME", "")
+WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")

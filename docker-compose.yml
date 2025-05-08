@@ -1,8 +1,11 @@
 services:
   redis:
-    image: redis:5-alpine
+    image: redis:7-alpine
     ports:
       - 6379:6379
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - ./docker/redis:/data
 
   rq:
     build:
@@ -29,6 +32,7 @@ services:
       - 8000:8000
     env_file:
       - test_project/oidc_key
+      - test_project/envfile
     environment:
       DB: "SQLITE"
       DEBUG: "True"
@@ -93,7 +97,7 @@ services:
   dovecot:
     container_name: modoboa_dovecot
     restart: unless-stopped
-    image: dovecot/dovecot:latest
+    image: dovecot/dovecot:2.3-latest
     depends_on:
       - api
     volumes:
@@ -107,6 +111,7 @@ services:
       dockerfile: docker/Dockerfile.radicale.dev
     volumes:
       - ./docker/radicale_config:/etc/radicale
+      - ./docker/collections:/collections
 
   policyd:
     container_name: modoboa_policyd
