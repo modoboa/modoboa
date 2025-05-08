@@ -1,64 +1,64 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
 # Translators:
-# akong <akong@aspa.idv.tw>, 2018
-# Radium <ztl8702@126.com>, 2017
+# Gary Wu <mrexcuse.tw@gmail.com>, 2021
+# LAB INGO, 2025
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-01 11:53+0200\n"
-"PO-Revision-Date: 2020-03-09 15:49+0000\n"
-"Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
-"language/zh_TW/)\n"
-"Language: zh_TW\n"
+"PO-Revision-Date: 2020-10-02 13:39+0000\n"
+"Last-Translator: LAB INGO, 2025\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/tonio/teams/13749/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin/static/admin/js/admin.js:129 admin/static/admin/js/admin.js:174
 msgid "No more domain to show"
-msgstr "無更多網域可展示"
+msgstr "沒有更多的「網域」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:149
 msgid "Do not delete domain directory"
-msgstr "不可以刪除網域目錄"
+msgstr "不可以刪除「網域目錄」"
 
 #: admin/static/admin/js/admin.js:151
 msgid "This operation will remove ALL data associated to this domain."
-msgstr "這個操作將會刪除所有這個網域有關的資料。"
+msgstr "請注意：這個動作，將會刪除與這個「網域」有關的全部資料。"
 
 #: admin/static/admin/js/admin.js:152
 msgid ""
 "This operation will remove all data associated to this domain, excepting "
 "accounts."
-msgstr "這個操作將會刪除所有這個網域有關的資料，除了帳號。"
+msgstr "請注意：這個動作，除了保留「帳號」之外，將會刪除與這個「網域」相關的全部資料。"
 
 #: admin/static/admin/js/admin.js:177 admin/static/admin/js/admin.js:436
 msgid "No more quota to show"
-msgstr "沒有配額可能顯示"
+msgstr "沒有更多的「空間配額」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:180
-#, fuzzy
-#| msgid "No more quota to show"
 msgid "No more log to show"
-msgstr "沒有配額可能顯示"
+msgstr "沒有更多的「日誌」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:309
 msgid "No domain administrator defined"
-msgstr "網域管理員未指定"
+msgstr "「網域管理員」未指定"
 
 #: admin/static/admin/js/admin.js:365 admin/static/admin/js/admin.js:433
 msgid "No more identity to show"
-msgstr "沒有身份可以顯示"
+msgstr "沒有更多的「身份」資料，可以顯示。"
 
 #: admin/static/admin/js/admin.js:407
 msgid "Do not delete mailbox directory"
-msgstr "不可能刪除郵件目錄"
+msgstr "不可以刪除「郵件目錄」"
 
 #: bower_components/jquery-ui/jquery-ui.min.js:8
 msgid "'"
@@ -66,15 +66,15 @@ msgstr "'"
 
 #: bower_components/swagger-ui/dist/swagger-ui-bundle.js:133
 msgid "operation"
-msgstr ""
+msgstr "操作"
 
 #: core/static/core/js/settings.js:16
 msgid "No more log entry to show"
-msgstr "無更多記錄可展示"
+msgstr "沒有更多的「日誌」資料，可以顯示。"
 
 #: maillog/static/maillog/js/stats.js:45
 msgid "Search a domain"
-msgstr "搜尋一個網域"
+msgstr "搜尋「網域」"
 
 #: static/js/confirmation.js:44
 msgid "Warning"
@@ -90,7 +90,7 @@ msgstr "內部錯誤"
 
 #: static/js/listing.js:21
 msgid "No more entry to show"
-msgstr "無更多條目可展示"
+msgstr "沒有「相關資料」，可以顯示。"
 
 #: static/js/listing.js:46
 msgid "Search"
@@ -99,63 +99,3 @@ msgstr "搜尋"
 #: static/js/searchbar.js:28
 msgid "Search..."
 msgstr "搜尋..."
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Parameters updated"
-#~ msgstr "服務已更新"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Provider name"
-#~ msgstr "服務已更新"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator added"
-#~ msgstr "網域管理員未指定"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator removed"
-#~ msgstr "網域管理員未指定"
-
-#, fuzzy
-#~| msgid "Search a domain"
-#~ msgid "Choose a domain"
-#~ msgstr "搜尋一個網域"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Create a domain administrator"
-#~ msgstr "網域管理員未指定"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Administrator name"
-#~ msgstr "網域管理員未指定"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Service"
-#~ msgstr "服務已更新"
-
-#, fuzzy
-#~| msgid "No domain administrator defined"
-#~ msgid "Domain administrator"
-#~ msgstr "網域管理員未指定"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Alias updated"
-#~ msgstr "服務已更新"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Profile updated"
-#~ msgstr "服務已更新"
-
-#, fuzzy
-#~| msgid "Services updated"
-#~ msgid "Domain updated"
-#~ msgstr "服務已更新"
