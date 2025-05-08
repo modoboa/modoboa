@@ -90,6 +90,15 @@ class UserMailboxViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["usage"], -1)
 
+    def test_unseen(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-unseen")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["counter"], 10)
+
     def test_create(self):
         self.authenticate()
         url = reverse("v2:webmail-mailbox-list")
@@ -247,6 +256,13 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.authenticate()
         self._create_compose_session()
 
+    def test_get(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-detail", args=[uid])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
     def test_get_allowed_senders(self):
         self.authenticate()
         url = reverse("v2:webmail-compose-session-allowed-senders")
@@ -257,12 +273,10 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
     def test_attachments(self):
         self.authenticate()
         uid = self._create_compose_session()
-        url = reverse("v2:webmail-compose-session-attachments", args=[uid])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
 
         manager = ComposeSessionManager(self.user.username)
         self.set_global_parameters({"max_attachment_size": "10"})
+        url = reverse("v2:webmail-compose-session-attachments", args=[uid])
         with self.settings(MEDIA_ROOT=self.workdir):
             response = self.client.post(url, {"attachment": get_gif()})
         self.assertEqual(response.status_code, 400)

@@ -22,6 +22,8 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
     def get_serializer_class(self):
         if self.action == "quota":
             return serializers.UserMailboxQuotaSerializer
+        if self.action == "unseen":
+            return serializers.UserMailboxUnseenSerializer
         if self.action in ["create", "compress", "empty", "delete"]:
             return serializers.UserMailboxInputSerializer
         if self.action == "rename":
@@ -30,8 +32,8 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         parent_mailbox = request.GET.get("mailbox")
-        imapc = lib.get_imapconnector(request)
-        mboxes = imapc.getmboxes(request.user, parent_mailbox)
+        with lib.get_imapconnector(request) as imapc:
+            mboxes = imapc.getmboxes(request.user, parent_mailbox)
         serializer = self.get_serializer(
             {"mailboxes": mboxes, "hdelimiter": imapc.hdelimiter}
         )
@@ -42,42 +44,56 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
         mailbox = request.GET.get("mailbox")
         if mailbox is None:
             raise Http404
-        imapc = lib.get_imapconnector(request)
-        imapc.getquota(mailbox)
-        serializer = self.get_serializer(imapc)
+        with lib.get_imapconnector(request) as imapc:
+            imapc.getquota(mailbox)
+            serializer = self.get_serializer(imapc)
+        return response.Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def unseen(self, request):
+        """Get unseen messages counter for given mailbox."""
+        mailbox = request.GET.get("mailbox")
+        if mailbox is None:
+            raise Http404
+        with lib.get_imapconnector(request) as imapc:
+            serializer = self.get_serializer(
+                {"counter": imapc.unseen_messages(mailbox)}
+            )
         return response.Response(serializer.data)
 
     def create(self, request):
         serializer = serializers.UserMailboxInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        imapc = lib.get_imapconnector(request)
-        imapc.create_folder(
-            serializer.validated_data["name"],
-            serializer.validated_data.get("parent_mailbox"),
-        )
+        with lib.get_imapconnector(request) as imapc:
+            imapc.create_folder(
+                serializer.validated_data["name"],
+                serializer.validated_data.get("parent_mailbox"),
+            )
         return response.Response(serializer.validated_data, status=201)
 
     @action(methods=["post"], detail=False)
     def rename(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        imapc = lib.get_imapconnector(request)
-        oldname, oldparent = lib.separate_mailbox(
-            serializer.validated_data["oldname"], sep=imapc.hdelimiter
-        )
-        name = serializer.validated_data["name"]
-        parent = serializer.validated_data.get("parent_mailbox")
-        if name != oldname or parent != oldparent:
-            newname = name if parent is None else imapc.hdelimiter.join([parent, name])
-            imapc.rename_folder(oldname, newname)
+        with lib.get_imapconnector(request) as imapc:
+            oldname, oldparent = lib.separate_mailbox(
+                serializer.validated_data["oldname"], sep=imapc.hdelimiter
+            )
+            name = serializer.validated_data["name"]
+            parent = serializer.validated_data.get("parent_mailbox")
+            if name != oldname or parent != oldparent:
+                newname = (
+                    name if parent is None else imapc.hdelimiter.join([parent, name])
+                )
+                imapc.rename_folder(oldname, newname)
         return response.Response(serializer.validated_data)
 
     @action(methods=["post"], detail=False)
     def compress(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        imapc = lib.get_imapconnector(request)
-        imapc.compact(serializer.validated_data["name"])
+        with lib.get_imapconnector(request) as imapc:
+            imapc.compact(serializer.validated_data["name"])
         return response.Response(status=204)
 
     @action(methods=["post"], detail=False)
@@ -87,16 +103,16 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
         mailbox = serializer.validated_data["name"]
         if mailbox != request.user.parameters.get_value("trash_folder"):
             raise Http404
-        imapc = lib.get_imapconnector(request)
-        imapc.empty(mailbox)
+        with lib.get_imapconnector(request) as imapc:
+            imapc.empty(mailbox)
         return response.Response(status=204)
 
     @action(methods=["post"], detail=False)
     def delete(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        imapc = lib.get_imapconnector(request)
-        imapc.delete_folder(serializer.validated_data["name"])
+        with lib.get_imapconnector(request) as imapc:
+            imapc.delete_folder(serializer.validated_data["name"])
         return response.Response(status=204)
 
 
@@ -115,29 +131,29 @@ class UserEmailViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         mailbox = request.GET.get("mailbox", "INBOX")
-        imapc = lib.get_imapconnector(request)
         search = request.GET.get("search")
-        if search:
-            imapc.parse_search_parameters("both", search)
-        total = imapc.messages_count(mbox=mailbox)
-        messages_per_page = request.user.parameters.get_value("messages_per_page")
-        paginator = Paginator(total, messages_per_page)
-        page_num = int(request.GET.get("page", 1))
-        page = paginator.getpage(int(request.GET.get("page", 1)))
-        if not page:
-            serializer = self.get_serializer(
-                {
-                    "count": 0,
-                    "first_index": 0,
-                    "last_index": 0,
-                    "prev_page": None,
-                    "next_page": None,
-                    "results": [],
-                }
-            )
-            return response.Response(serializer.data)
+        with lib.get_imapconnector(request) as imapc:
+            if search:
+                imapc.parse_search_parameters("both", search)
+            total = imapc.messages_count(mbox=mailbox)
+            messages_per_page = request.user.parameters.get_value("messages_per_page")
+            paginator = Paginator(total, messages_per_page)
+            page_num = int(request.GET.get("page", 1))
+            page = paginator.getpage(int(request.GET.get("page", 1)))
+            if not page:
+                serializer = self.get_serializer(
+                    {
+                        "count": 0,
+                        "first_index": 0,
+                        "last_index": 0,
+                        "prev_page": None,
+                        "next_page": None,
+                        "results": [],
+                    }
+                )
+                return response.Response(serializer.data)
 
-        content = imapc.fetch(page.id_start, page.id_stop, mbox=mailbox)
+            content = imapc.fetch(page.id_start, page.id_stop, mbox=mailbox)
         content = [dict(msg) for msg in content]
         serializer = self.get_serializer(
             {
@@ -155,12 +171,12 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         """Move selected messages to the given mailbox."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        mbc = lib.get_imapconnector(request)
-        mbc.move(
-            ",".join(serializer.validated_data["selection"]),
-            serializer.validated_data["mailbox"],
-            destination,
-        )
+        with lib.get_imapconnector(request) as mbc:
+            mbc.move(
+                ",".join(serializer.validated_data["selection"]),
+                serializer.validated_data["mailbox"],
+                destination,
+            )
         return len(serializer.validated_data["selection"])
 
     @action(
@@ -202,10 +218,11 @@ class UserEmailViewSet(viewsets.GenericViewSet):
     def flag(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        imapc = lib.get_imapconnector(request)
-        getattr(imapc, f"mark_messages_{serializer.validated_data['status']}")(
-            serializer.validated_data["mailbox"], serializer.validated_data["selection"]
-        )
+        with lib.get_imapconnector(request) as imapc:
+            getattr(imapc, f"mark_messages_{serializer.validated_data['status']}")(
+                serializer.validated_data["mailbox"],
+                serializer.validated_data["selection"],
+            )
         return response.Response({"count": len(serializer.validated_data["selection"])})
 
     @action(methods=["get"], detail=False)
@@ -256,8 +273,8 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         partnum = request.GET.get("partnum")
         if not mailbox or not mailbox or not partnum:
             raise Http404
-        imapc = lib.get_imapconnector(request)
-        partdef, payload = imapc.fetchpart(mailid, mailbox, partnum)
+        with lib.get_imapconnector(request) as imapc:
+            partdef, payload = imapc.fetchpart(mailid, mailbox, partnum)
         resp = HttpResponse(lib.decode_payload(partdef["encoding"], payload))
         resp["Content-Type"] = partdef["Content-Type"]
         resp["Content-Transfer-Encoding"] = partdef["encoding"]
@@ -285,6 +302,14 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
             return serializers.AllowedSenderSerializer
         return serializers.ComposeSessionSerializer
 
+    def retrieve(self, request, pk=None):
+        manager = attachments.ComposeSessionManager(request.user.username)
+        session = manager.get_content(pk)
+        serializer = self.get_serializer(
+            {"uid": pk, "attachments": session["attachments"]}
+        )
+        return response.Response(serializer.data)
+
     def create(self, request):
         uid = attachments.ComposeSessionManager(request.user.username).create()
         serializer = self.get_serializer({"uid": uid})
@@ -308,31 +333,21 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(addresses, many=True)
         return response.Response(serializer.data)
 
-    @action(
-        methods=["get", "post"], detail=True, parser_classes=(parsers.MultiPartParser,)
-    )
+    @action(methods=["post"], detail=True, parser_classes=(parsers.MultiPartParser,))
     def attachments(self, request, pk):
-        if request.method == "POST":
-            manager = attachments.ComposeSessionManager(request.user.username)
-            serializer = serializers.AttachmentUploadSerializer(data=request.FILES)
-            if not serializer.is_valid():
-                errors = serializer.errors
-                if request.upload_handlers[0].toobig:
-                    errors["attachment"] = [
-                        _("Attachment is too big (limit: %s)")
-                        % request.upload_handlers[0].maxsize
-                    ]
+        serializer = serializers.AttachmentUploadSerializer(data=request.FILES)
+        if not serializer.is_valid():
+            errors = serializer.errors
+            if request.upload_handlers[0].toobig:
+                errors["attachment"] = [
+                    _("Attachment is too big (limit: %s)")
+                    % request.upload_handlers[0].maxsize
+                ]
                 return response.Response(errors, status=400)
-            result = attachments.save_attachment(
-                request, pk, serializer.validated_data["attachment"]
-            )
-            return response.Response(result)
-        manager = attachments.ComposeSessionManager(request.user.username)
-        session = manager.get_content(pk)
-        serializer = serializers.UploadedAttachmentSerializer(
-            session["attachments"], many=True
+        result = attachments.save_attachment(
+            request, pk, serializer.validated_data["attachment"]
         )
-        return response.Response(serializer.data)
+        return response.Response(result)
 
     @action(methods=["delete"], detail=True, url_path="attachments/(?P<name>[^/.]+)")
     def delete_attachment(self, request, pk, name):

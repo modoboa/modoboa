@@ -35,7 +35,7 @@ def __build_folders_list(
 
 def user_mailboxes(request) -> List[UserMailbox]:
     """Retrieve list of available mailboxes for given user."""
-    mbc = imaputils.get_imapconnector(request, load_namespaces=False)
-    ret = mbc.getmboxes(request.user)
-    folders = __build_folders_list(ret, request.user, mbc)
+    with imaputils.get_imapconnector(request, load_namespaces=False) as mbc:
+        ret = mbc.getmboxes(request.user)
+        folders = __build_folders_list(ret, request.user, mbc)
     return folders

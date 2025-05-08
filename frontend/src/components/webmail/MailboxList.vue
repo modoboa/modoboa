@@ -15,7 +15,15 @@
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
         <template v-if="props.unseenCounters && mailbox.unseen > 0">
-          <span class="font-weight-bold">
+          <span
+            v-if="mailbox.name === route.query.mailbox"
+            class="font-weight-bold"
+          >
+            {{ getMailboxLabel(mailbox) }} ({{
+              getCurrentMailboxUnseen(mailbox)
+            }})
+          </span>
+          <span v-else class="font-weight-bold">
             {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
           </span>
         </template>
@@ -45,7 +53,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useBusStore } from '@/stores'
 import api from '@/api/webmail'
 
 const props = defineProps({
@@ -73,6 +83,9 @@ const props = defineProps({
 const model = defineModel()
 const emit = defineEmits(['update:modelValue'])
 
+const route = useRoute()
+const busStore = useBusStore()
+
 const iconByMailboxType = {
   inbox: 'mdi-inbox',
   draft: 'mdi-file',
@@ -82,11 +95,19 @@ const iconByMailboxType = {
   normal: 'mdi-folder-outline',
 }
 
+const currentMailboxUnseen = ref(null)
 const hoverStates = ref({})
 const mailboxStates = ref({})
 
 function getMailboxLabel(mailbox) {
   return mailbox.label.split('/').pop()
+}
+
+function getCurrentMailboxUnseen(mailbox) {
+  if (currentMailboxUnseen.value === null) {
+    currentMailboxUnseen.value = mailbox.unseen
+  }
+  return currentMailboxUnseen.value
 }
 
 function setHover(mailbox, value) {
@@ -128,6 +149,15 @@ function updateSelection(value) {
     emit('update:modelValue', value)
   }
 }
+
+watch(
+  () => busStore.mbCounterKey,
+  () => {
+    api.getUserMailboxUnseen(route.query.mailbox).then((resp) => {
+      currentMailboxUnseen.value = resp.data.counter
+    })
+  }
+)
 </script>
 
 <style scoped lang="scss">

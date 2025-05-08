@@ -71,6 +71,8 @@ class Registry:
             for name, field in list(serializer.fields.items()):
                 if field.default is not empty:
                     data["defaults"][name] = field.default
+                else:
+                    data["defaults"][name] = None
 
     def get_applications(self, level):
         """Return all applications registered for level."""
@@ -144,7 +146,9 @@ class Registry:
                         if config.get("password"):
                             data["widget"] = "PasswordField"
                         else:
-                            data["widget"] = field.__class__.__name__
+                            data["widget"] = config.get(
+                                "widget", field.__class__.__name__
+                            )
                             if data["widget"] == "ChoiceField":
                                 data["choices"] = [
                                     {"text": value, "value": key}

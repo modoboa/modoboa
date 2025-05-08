@@ -167,7 +167,7 @@ import api from '@/api/webmail'
 import ContactCard from '@/components/webmail/ContactCard.vue'
 
 const { $gettext } = useGettext()
-const { displayNotification } = useBusStore()
+const { displayNotification, reloadMailboxCounters } = useBusStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -215,6 +215,7 @@ const fetchMailContent = () => {
   api
     .getEmailContent(route.query.mailbox, route.query.mailid, options)
     .then((resp) => {
+      reloadMailboxCounters()
       email.value = resp.data
       nextTick(() => {
         const iframe = document.createElement('iframe')
@@ -291,23 +292,6 @@ const openEmailSourceDialog = async () => {
     emailSource.value = resp.data.source
   }
   showEmailSource.value = true
-}
-
-const storeContactId = (address, contact) => {
-  console.log(address, contact)
-  for (const rcpt of email.value.to) {
-    if (rcpt.address === address.address) {
-      rcpt.contact_id = contact.id
-      return
-    }
-  }
-  if (!email.value.cc) return
-  for (const rcpt of email.value.cc) {
-    if (rcpt.address === address.address) {
-      rcpt.contact_id = contact.id
-      return
-    }
-  }
 }
 
 const replyToEmail = (all) => {

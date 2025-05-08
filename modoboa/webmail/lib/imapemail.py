@@ -42,8 +42,12 @@ class ImapEmail(Email):
         super().__init__(*args, **kwargs)
         self.request = request
         self.imapc = get_imapconnector(request)
+        self.imapc = self.imapc.__enter__()
         self.mbox, self.mailid = self.mailid.split(":")
         self.attachments: dict[str, str] = {}
+
+    def __del__(self):
+        self.imapc.__exit__()
 
     def fetch_headers(self, raw_addresses: bool = False) -> None:
         """Fetch message headers from server."""

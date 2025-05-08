@@ -131,6 +131,7 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                             "enable_links",
                             {
                                 "label": gettext_lazy("Enable HTML links display"),
+                                "display": "displaymode=html",
                                 "help_text": gettext_lazy(
                                     "Enable/Disable HTML links display"
                                 ),
@@ -150,11 +151,9 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                         (
                             "refresh_interval",
                             {
-                                "label": gettext_lazy(
-                                    "Number of displayed emails per page"
-                                ),
+                                "label": gettext_lazy("Listing refresh rate"),
                                 "help_text": gettext_lazy(
-                                    "Sets the maximum number of messages displayed in a page"
+                                    "Automatic listing refresh rate (in secconds)"
                                 ),
                             },
                         ),
@@ -237,6 +236,7 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                                 "help_text": gettext_lazy(
                                     "User defined email signature"
                                 ),
+                                "widget": "HTMLField",
                             },
                         ),
                     ]

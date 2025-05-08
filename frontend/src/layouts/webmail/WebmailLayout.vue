@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
@@ -108,7 +108,7 @@ import api from '@/api/webmail'
 const { $gettext } = useGettext()
 const route = useRoute()
 const router = useRouter()
-const { displayNotification } = useBusStore()
+const busStore = useBusStore()
 
 const confirm = ref()
 const drawer = ref(true)
@@ -149,10 +149,12 @@ function openMailbox(mailbox) {
   })
 }
 
-api.getUserMailboxes().then((resp) => {
-  userMailboxes.value = resp.data.mailboxes
-  hdelimiter.value = resp.data.hdelimiter
-})
+const fetchUserMailboxes = () => {
+  api.getUserMailboxes().then((resp) => {
+    userMailboxes.value = resp.data.mailboxes
+    hdelimiter.value = resp.data.hdelimiter
+  })
+}
 
 const openComposeForm = () => {
   router.push({ name: 'ComposeEmailView' })
@@ -161,9 +163,7 @@ const openComposeForm = () => {
 const closeMailboxForm = () => {
   showMailboxForm.value = false
   editedMailbox.value = null
-  api.getUserMailboxes().then((resp) => {
-    userMailboxes.value = resp.data.mailboxes
-  })
+  fetchUserMailboxes()
 }
 
 const openMailboxForm = () => {
@@ -185,7 +185,7 @@ const navigateToMailbox = (mailbox) => {
 
 const compressMailbox = async () => {
   await api.compressUserMailbox({ name: selectedMailbox.value })
-  displayNotification({ msg: $gettext('Mailbox compressed') })
+  busStore.displayNotification({ msg: $gettext('Mailbox compressed') })
 }
 
 const deleteMailbox = async () => {
@@ -202,10 +202,18 @@ const deleteMailbox = async () => {
     return
   }
   await api.deleteUserMailbox({ name: selectedMailbox.value })
-  displayNotification({ msg: $gettext('Mailbox deleted') })
+  busStore.displayNotification({ msg: $gettext('Mailbox deleted') })
   navigateToMailbox('INBOX')
 }
 
+watch(
+  () => busStore.dataKey,
+  () => {
+    fetchUserMailboxes()
+  }
+)
+
+fetchUserMailboxes()
 api.getUserMailboxQuota(route.query.mailbox || 'INBOX').then((resp) => {
   mailboxQuota.value = resp.data
 })

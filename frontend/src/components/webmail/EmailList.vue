@@ -170,7 +170,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
@@ -184,7 +184,7 @@ const props = defineProps({
 })
 
 const { $gettext } = useGettext()
-const { displayNotification } = useBusStore()
+const { displayNotification, reloadMailboxCounters } = useBusStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -196,12 +196,15 @@ const selectAll = ref(false)
 const selection = ref([])
 const working = ref(false)
 
+let intervalId = null
+
 const openEmail = (emailid) => {
   router.push({
     name: 'EmailView',
     query: { mailbox: props.mailbox, mailid: emailid },
   })
 }
+const emit = defineEmits(['reloadContent'])
 
 const fetchEmails = () => {
   emails.value = {}
@@ -215,6 +218,11 @@ const fetchEmails = () => {
     .catch(() => {
       loading.value = false
     })
+}
+
+const autoRefreshContent = () => {
+  fetchEmails()
+  emit('refreshContent')
 }
 
 const submitSearch = () => {
@@ -240,6 +248,7 @@ const deleteSelection = () => {
     working.value = false
     displayNotification({ msg: $gettext('Message(s) deleted') })
     fetchEmails()
+    reloadMailboxCounters()
   })
 }
 
@@ -251,7 +260,7 @@ const markSelectionAsJunk = () => {
   api.markSelectionAsJunk(route.query.mailbox, selection.value).then(() => {
     working.value = false
     displayNotification({ msg: $gettext('Message(s) marked as junk') })
-    fetchEmails()
+    autoRefreshContent()
   })
 }
 
@@ -263,7 +272,7 @@ const markSelectionAsNotJunk = () => {
   api.markSelectionAsNotJunk(route.query.mailbox, selection.value).then(() => {
     working.value = false
     displayNotification({ msg: $gettext('Message(s) marked as not junk') })
-    fetchEmails()
+    autoRefreshContent()
   })
 }
 
@@ -277,6 +286,7 @@ const flagSelection = (status) => {
     selection.value = []
     displayNotification({ msg: $gettext('Message(s) flagged') })
     fetchEmails()
+    reloadMailboxCounters()
   })
 }
 
@@ -285,6 +295,7 @@ const emptyMailbox = () => {
   api.emptyUserMailbox(route.query.mailbox).then(() => {
     emails.value = {}
     loading.value = false
+    reloadMailboxCounters()
   })
 }
 
@@ -293,6 +304,14 @@ const toggleFollowState = async (email) => {
   await api.flagSelection(route.query.mailbox, [email.imapid], flag)
   email.flagged = flag === 'flagged'
 }
+
+onMounted(() => {
+  intervalId = setInterval(autoRefreshContent, 300 * 1000)
+})
+
+onUnmounted(() => {
+  clearInterval(intervalId)
+})
 
 watch(
   () => props.mailbox,
