@@ -185,6 +185,11 @@ msgstr ""
 msgid "Add sender address"
 msgstr "Lisää lähettäjän osoite"
 
+#: src/components/webmail/ContactCard.vue:15
+#, fuzzy
+msgid "Add to contacts"
+msgstr "Muokkaa tiliä"
+
 #: src/components/admin/identities/DomainAdminDomains.vue:16
 #, fuzzy
 msgid "Add/Remove from the domain page"
@@ -383,6 +388,15 @@ msgstr "Hallinnoidut verkkotunnukset"
 msgid "Associated domains"
 msgstr "Hallinnoidut verkkotunnukset"
 
+#: src/components/webmail/AttachmentsDialog.vue:16
+msgid "Attach"
+msgstr ""
+
+#: src/components/webmail/AttachmentsDialog.vue:3
+#: src/components/webmail/ComposeEmailForm.vue:21
+msgid "Attachments"
+msgstr ""
+
 #: src/views/login/LoginCallbackView.vue:20 src/views/login/LoginView.vue:17
 msgid "Attempting to log you in."
 msgstr ""
@@ -435,6 +449,11 @@ msgstr "Takaisin"
 
 #: src/components/account/BackupCodeAuthForm.vue:6
 msgid "Backup codes"
+msgstr ""
+
+#: src/components/webmail/ComposeEmailForm.vue:110
+#: src/components/webmail/ComposeEmailForm.vue:73
+msgid "Bcc"
 msgstr ""
 
 #: src/components/admin/domains/DomainDKIMKey.vue:23
@@ -497,6 +516,11 @@ msgstr ""
 #, fuzzy
 msgid "Category deleted"
 msgstr "Verkkotunnuksen alias poistettu"
+
+#: src/components/webmail/ComposeEmailForm.vue:65
+#: src/components/webmail/ComposeEmailForm.vue:83
+msgid "Cc"
+msgstr ""
 
 #: src/views/admin/InformationView.vue:37
 msgid "Change the value of <strong>Default password scheme</strong>"
@@ -562,7 +586,9 @@ msgstr ""
 #: src/components/contacts/ContactCategoriesForm.vue:21
 #: src/components/contacts/ContactForm.vue:148
 #: src/components/tools/ImportForm.vue:51
-#: src/layouts/connected/ConnectedLayout.vue:15
+#: src/components/webmail/AttachmentsDialog.vue:41
+#: src/components/webmail/MailboxForm.vue:29
+#: src/layouts/connected/ConnectedLayout.vue:17
 msgid "Close"
 msgstr "Sulje"
 
@@ -584,6 +610,15 @@ msgstr ""
 msgid "Company"
 msgstr ""
 
+#: src/layouts/webmail/WebmailLayout.vue:28
+msgid "Compose"
+msgstr ""
+
+#: src/layouts/webmail/WebmailLayout.vue:66
+#, fuzzy
+msgid "Compress this mailbox"
+msgstr "Postilaatikolla"
+
 #: src/components/account/FilterForm.vue:14
 #, fuzzy
 msgid "Conditions"
@@ -603,6 +638,10 @@ msgid ""
 "Congratulations! Two-factor authentication using one-time passwords is now "
 "enabled for your account."
 msgstr "Onnittelut! Kaksivaiheinen tunnistus on nyt käytössä tililläsi."
+
+#: src/components/webmail/ContactCard.vue:64
+msgid "Contact added to address book"
+msgstr ""
 
 #: src/views/contacts/AddressBook.vue:3 src/views/contacts/AddressBook.vue:37
 msgid "Contacts"
@@ -635,7 +674,7 @@ msgstr "Kopioi leikepöydälle"
 msgid "Copy token to clipboard"
 msgstr "Kopioi turvatunnus leikepöydälle"
 
-#: src/components/tools/ParametersForm.vue:164
+#: src/components/tools/ParametersForm.vue:183
 msgid "Could not save parameters"
 msgstr ""
 
@@ -646,6 +685,7 @@ msgstr ""
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
 #: src/components/calendars/CalendarForm.vue:80
+#: src/components/webmail/MailboxForm.vue:79
 #, fuzzy
 msgid "Create"
 msgstr "Luontipäivä"
@@ -663,10 +703,20 @@ msgstr "Luo ylläpitäjän postilaatikko."
 msgid "Create a new filter set"
 msgstr ""
 
+#: src/layouts/webmail/WebmailLayout.vue:49
+#, fuzzy
+msgid "Create a new mailbox"
+msgstr "Postilaatikolla"
+
 #: src/components/admin/domains/DomainCreationForm.vue:265
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
 msgid "Create aliases"
 msgstr "Luo aliaksia"
+
+#: src/components/webmail/MailboxForm.vue:75
+#, fuzzy
+msgid "Create new mailbox"
+msgstr "Postilaatikolla"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
 msgid "Create standard aliases for the domain."
@@ -747,6 +797,16 @@ msgstr "Poista"
 msgid "Delete filter set"
 msgstr "Valitse tiedosto"
 
+#: src/layouts/webmail/WebmailLayout.vue:60
+#, fuzzy
+msgid "Delete this mailbox"
+msgstr "Postilaatikolla"
+
+#: src/layouts/webmail/WebmailLayout.vue:194
+#, fuzzy
+msgid "Delete this mailbox?"
+msgstr "Postilaatikolla"
+
 #: src/components/account/APISetupForm.vue:38
 msgid "Delete token"
 msgstr "Poista avain"
@@ -772,6 +832,11 @@ msgstr "Pois käytöstä"
 msgid "Disable 2FA"
 msgstr "Poista kaksivaiheinen tunnistautuminen (2FA) käytöstä"
 
+#: src/views/webmail/EmailView.vue:74
+#, fuzzy
+msgid "Disable links"
+msgstr "Pois käytöstä"
+
 #: src/components/admin/domains/DomainList.vue:85
 #, fuzzy
 msgid "disabled"
@@ -789,6 +854,11 @@ msgstr ""
 #: src/components/contacts/ContactList.vue:119
 #, fuzzy
 msgid "Display name"
+msgstr "Etunimi"
+
+#: src/views/webmail/EmailView.vue:78
+#, fuzzy
+msgid "Display source"
 msgstr "Etunimi"
 
 #: src/components/admin/domains/DNSDetail.vue:103
@@ -1023,10 +1093,20 @@ msgstr "Muokkaa tiliä"
 msgid "Edit filter"
 msgstr "Sähköpostiosoite"
 
+#: src/components/webmail/MailboxForm.vue:76
+#, fuzzy
+msgid "Edit mailbox"
+msgstr "Postilaatikolla"
+
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
 #, fuzzy
 msgid "Edit provider"
 msgstr "Sähköpostiosoite"
+
+#: src/layouts/webmail/WebmailLayout.vue:54
+#, fuzzy
+msgid "Edit this mailbox"
+msgstr "Postilaatikolla"
 
 #: src/components/account/FidoAuthForm.vue:201
 #, fuzzy
@@ -1051,9 +1131,19 @@ msgstr "Sähköpostiosoite"
 msgid "Email providers"
 msgstr "Sähköpostiosoite"
 
+#: src/components/webmail/ComposeEmailForm.vue:268
+#, fuzzy
+msgid "Email sent"
+msgstr "Sähköposti"
+
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
 msgstr "Tyhjä"
+
+#: src/components/webmail/EmailList.vue:83
+#, fuzzy
+msgid "Empty mailbox"
+msgstr "Postilaatikolla"
 
 #: src/views/account/FiltersView.vue:355
 #, fuzzy
@@ -1069,6 +1159,11 @@ msgstr "Ota DKIM-allekirjoitus käyttöön"
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
 msgid "Enable DNS checks"
 msgstr "Ota DNS-tarkistukset käyttöön"
+
+#: src/views/webmail/EmailView.vue:69
+#, fuzzy
+msgid "Enable links"
+msgstr "Käytössä"
 
 #: src/components/account/AutoReplyForm.vue:7
 #: src/components/admin/domains/DomainCreationForm.vue:166
@@ -1181,7 +1276,7 @@ msgstr "Parametrit päivitetty"
 msgid "Filter updated"
 msgstr "Profiili päivitetty"
 
-#: src/layouts/account/AccountLayout.vue:32
+#: src/layouts/account/AccountLayout.vue:33
 msgid "Filters"
 msgstr ""
 
@@ -1192,7 +1287,7 @@ msgstr ""
 msgid "First name"
 msgstr "Etunimi"
 
-#: src/views/account/SettingsView.vue:14
+#: src/views/account/SettingsView.vue:14 src/views/webmail/EmailView.vue:23
 msgid "Forward"
 msgstr "Välitä"
 
@@ -1218,6 +1313,7 @@ msgstr ""
 #: src/components/admin/logs/MessageList.vue:47
 #: src/components/calendars/EventForm.vue:24
 #: src/components/tools/TimeSerieChart.vue:19
+#: src/components/webmail/ComposeEmailForm.vue:29
 msgid "From"
 msgstr "Lähde"
 
@@ -1508,6 +1604,26 @@ msgstr "Postilaatikko"
 msgid "Mailbox aliases:"
 msgstr "Postilaatikot"
 
+#: src/layouts/webmail/WebmailLayout.vue:188
+#, fuzzy
+msgid "Mailbox compressed"
+msgstr "Postilaatikot"
+
+#: src/components/webmail/MailboxForm.vue:105
+#, fuzzy
+msgid "Mailbox created"
+msgstr "Verkkotunnus luotu"
+
+#: src/layouts/webmail/WebmailLayout.vue:205
+#, fuzzy
+msgid "Mailbox deleted"
+msgstr "Luontipäivä"
+
+#: src/components/webmail/MailboxForm.vue:98
+#, fuzzy
+msgid "Mailbox renamed"
+msgstr "Postilaatikot"
+
 #: src/components/admin/identities/AccountEditForm.vue:158
 #, fuzzy
 msgid "Mailbox:"
@@ -1522,6 +1638,22 @@ msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
 
+#: src/components/webmail/EmailList.vue:72
+msgid "Mark as followed"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:62
+msgid "Mark as read"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:77
+msgid "Mark as unfollowed"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:67
+msgid "Mark as unread"
+msgstr ""
+
 #: src/components/admin/domains/DomainSummary.vue:20
 #: src/components/admin/identities/AccountSummary.vue:49
 msgid "MB"
@@ -1532,6 +1664,11 @@ msgstr ""
 msgid "Message"
 msgstr "Viesti"
 
+#: src/views/webmail/EmailView.vue:254
+#, fuzzy
+msgid "Message deleted"
+msgstr "Viestien historia"
+
 #: src/views/account/FiltersView.vue:3
 #, fuzzy
 msgid "Message filters"
@@ -1541,11 +1678,37 @@ msgstr "Viestien historia"
 msgid "Message history"
 msgstr "Viestien historia"
 
+#: src/views/webmail/EmailView.vue:268
+msgid "Message marked as junk"
+msgstr ""
+
+#: src/views/webmail/EmailView.vue:282
+msgid "Message marked as not junk"
+msgstr ""
+
 #: src/components/admin/domains/DomainCreationForm.vue:196
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
 #: src/components/admin/identities/AccountCreationForm.vue:134
 msgid "Message sending limit"
 msgstr "Viestien lähetysraja"
+
+#: src/components/webmail/EmailList.vue:249
+#, fuzzy
+msgid "Message(s) deleted"
+msgstr "Viestien historia"
+
+#: src/components/webmail/EmailList.vue:287
+#, fuzzy
+msgid "Message(s) flagged"
+msgstr "Viestien historia"
+
+#: src/components/webmail/EmailList.vue:262
+msgid "Message(s) marked as junk"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:274
+msgid "Message(s) marked as not junk"
+msgstr ""
 
 #: src/components/admin/domains/DomainSummary.vue:32
 msgid "messages"
@@ -1629,6 +1792,7 @@ msgstr "Käyttäjätunnus"
 #: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/components/calendars/CalendarForm.vue:15
 #: src/components/contacts/CategoryForm.vue:10
+#: src/components/webmail/MailboxForm.vue:7
 #: src/views/account/FiltersView.vue:164
 #: src/views/admin/InformationView.vue:145
 msgid "Name"
@@ -1718,7 +1882,7 @@ msgstr "Uudet palautuskoodit"
 msgid "Next"
 msgstr "Seuraava"
 
-#: src/plugins/filters.js:9
+#: src/plugins/filters.js:10
 msgid "no"
 msgstr "ei"
 
@@ -1729,6 +1893,7 @@ msgstr "ei"
 #: src/components/admin/identities/IdentityList.vue:212
 #: src/components/admin/identities/IdentityList.vue:238
 #: src/components/tools/CreationForm.vue:136
+#: src/layouts/webmail/WebmailLayout.vue:198
 msgid "No"
 msgstr "Ei"
 
@@ -1743,6 +1908,10 @@ msgstr ""
 
 #: src/components/admin/identities/DomainAdminDomains.vue:13
 msgid "No domain managed"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:165
+msgid "No message yet in this mailbox"
 msgstr ""
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:10
@@ -1811,6 +1980,10 @@ msgstr "OK"
 msgid "Old account"
 msgstr "Muokkaa tiliä"
 
+#: src/components/webmail/EmailList.vue:93
+msgid "on"
+msgstr ""
+
 #: src/views/admin/InformationView.vue:103
 msgid "One or more updates are available"
 msgstr "Yksi tai useampi päivitys on saatavilla"
@@ -1838,9 +2011,14 @@ msgstr "Vaihtoehdot"
 msgid "or suggest a new language"
 msgstr ""
 
-#: src/components/tools/ParametersForm.vue:159
+#: src/components/tools/ParametersForm.vue:178
 msgid "Parameters updated"
 msgstr "Parametrit päivitetty"
+
+#: src/components/webmail/MailboxForm.vue:13
+#, fuzzy
+msgid "Parent mailbox"
+msgstr "Postilaatikolla"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:128
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:148
@@ -1941,6 +2119,13 @@ msgstr "Profiili päivitetty"
 #: src/components/tools/ImportForm.vue:10
 msgid "Provide a CSV file where lines respect one of the following formats:"
 msgstr "Toimita CSV-tiedosto, jonka rivit ovat jossakin seuraavista muodoista:"
+
+#: src/components/webmail/ComposeEmailForm.vue:124
+#: src/components/webmail/ComposeEmailForm.vue:54
+#: src/components/webmail/ComposeEmailForm.vue:97
+#, fuzzy
+msgid "Provide one or more addresses"
+msgstr "Lähettäjän osoitteet"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:79
 #, fuzzy
@@ -2100,6 +2285,14 @@ msgstr "Poista tämä ylläpitäjä"
 msgid "Reopen alarm"
 msgstr "Avatut hälytykset"
 
+#: src/views/webmail/EmailView.vue:12
+msgid "Reply"
+msgstr ""
+
+#: src/views/webmail/EmailView.vue:19
+msgid "Reply all"
+msgstr ""
+
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:99
 msgid "Reseller"
 msgstr "Jälleenmyyjä"
@@ -2149,6 +2342,11 @@ msgstr ""
 msgid "Search"
 msgstr "Hae"
 
+#: src/components/webmail/EmailList.vue:14
+#, fuzzy
+msgid "Search in messages"
+msgstr "viestit"
+
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:27
 msgid "Secondary email"
@@ -2184,6 +2382,7 @@ msgid "Select file"
 msgstr "Valitse tiedosto"
 
 #: src/components/calendars/ImportEventsForm.vue:30
+#: src/components/webmail/ComposeEmailForm.vue:13
 #, fuzzy
 msgid "Send"
 msgstr "Valitse tili"
@@ -2234,7 +2433,7 @@ msgstr "Palvelu"
 msgid "Service: "
 msgstr "Palvelu:"
 
-#: src/layouts/account/AccountLayout.vue:26
+#: src/layouts/account/AccountLayout.vue:27
 #: src/layouts/admin/AdminLayout.vue:88
 msgid "Settings"
 msgstr "Asetukset"
@@ -2286,6 +2485,7 @@ msgid "Status"
 msgstr "Tila"
 
 #: src/components/account/AutoReplyForm.vue:12
+#: src/components/webmail/ComposeEmailForm.vue:137
 msgid "Subject"
 msgstr ""
 
@@ -2371,6 +2571,8 @@ msgstr ""
 #: src/components/admin/logs/MessageList.vue:46
 #: src/components/calendars/EventForm.vue:34
 #: src/components/tools/TimeSerieChart.vue:20
+#: src/components/webmail/ComposeEmailForm.vue:46
+#: src/views/webmail/EmailView.vue:109
 msgid "To"
 msgstr "Vastaanottaja"
 
@@ -2465,6 +2667,7 @@ msgstr ""
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactCategoriesForm.vue:24
 #: src/components/contacts/ContactForm.vue:185
+#: src/components/webmail/MailboxForm.vue:79
 msgid "Update"
 msgstr "Päivitä"
 
@@ -2472,6 +2675,11 @@ msgstr "Päivitä"
 #, fuzzy
 msgid "Update auto-reply"
 msgstr "Vaihda salasana"
+
+#: src/components/webmail/ContactCard.vue:23
+#, fuzzy
+msgid "Update contact"
+msgstr "Muokkaa tiliä"
 
 #: src/components/account/ProfileForm.vue:75
 msgid "Update Password"
@@ -2524,6 +2732,7 @@ msgstr "Varoitus"
 #: src/components/admin/identities/IdentityList.vue:207
 #: src/components/admin/identities/IdentityList.vue:233
 #: src/components/tools/CreationForm.vue:129
+#: src/layouts/webmail/WebmailLayout.vue:193
 #: src/views/calendars/CalendarView.vue:246
 msgid "Warning"
 msgstr "Varoitus"
@@ -2531,6 +2740,11 @@ msgstr "Varoitus"
 #: src/components/account/FidoAuthForm.vue:6
 msgid "WebAuthn"
 msgstr ""
+
+#: src/views/webmail/MailboxView.vue:4
+#, fuzzy
+msgid "Webmail"
+msgstr "Sähköposti"
 
 #: src/components/tools/TimeSerieChart.vue:111
 msgid "Week"
@@ -2557,7 +2771,7 @@ msgstr ""
 msgid "Year"
 msgstr "Vuosi"
 
-#: src/plugins/filters.js:9
+#: src/plugins/filters.js:10
 msgid "yes"
 msgstr "kyllä"
 
@@ -2568,6 +2782,7 @@ msgstr "kyllä"
 #: src/components/admin/identities/IdentityList.vue:211
 #: src/components/admin/identities/IdentityList.vue:237
 #: src/components/tools/CreationForm.vue:135
+#: src/layouts/webmail/WebmailLayout.vue:197
 msgid "Yes"
 msgstr "Kyllä"
 
