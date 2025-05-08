@@ -1,19 +1,21 @@
-# 
+#
 # Translators:
 # Paulino Michelazzo <michelazzo@me.com>, 2024
 # Rafael Barretto Alves <ch3yd@hotmail.com>, 2025
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2024-08-01 12:26+0000\n"
 "Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>, 2025\n"
-"Language-Team: Portuguese (Brazil) (https://app.transifex.com/tonio/teams/13749/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (https://app.transifex.com/tonio/"
+"teams/13749/pt_BR/)\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:41
 msgid "(the domain will be created locally)"
@@ -50,9 +52,9 @@ msgid ""
 "A user with no privileges but with a mailbox. He will be allowed to use all "
 "end-user features: webmail, calendar, contacts, filters."
 msgstr ""
-"Um usuário sem privilégios, mas com uma caixa de correio. Ele terá permissão"
-" para usar todos os recursos do usuário final: webmail, calendário, "
-"contatos, filtros."
+"Um usuário sem privilégios, mas com uma caixa de correio. Ele terá permissão "
+"para usar todos os recursos do usuário final: webmail, calendário, contatos, "
+"filtros."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:92
 msgid ""
@@ -178,6 +180,11 @@ msgstr "Adicionar novo filtro"
 msgid "Add sender address"
 msgstr "Adicionar endereço do remetente"
 
+#: src/components/webmail/ContactCard.vue:15
+#, fuzzy
+msgid "Add to contacts"
+msgstr "Editar contato"
+
 #: src/components/admin/identities/DomainAdminDomains.vue:16
 msgid "Add/Remove from the domain page"
 msgstr "Adicionar/Remover da página do domínio"
@@ -285,8 +292,8 @@ msgstr "Apelido atualizado"
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
-" name (@domain.tld)."
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
+"name (@domain.tld)."
 msgstr ""
 "Apelido(s) desta caixa de correio. Para criar um apelido catchall, basta "
 "digitar o nome de domínio (@domain.tld)."
@@ -359,6 +366,15 @@ msgstr "Domínio associado"
 msgid "Associated domains"
 msgstr "Domínios associados"
 
+#: src/components/webmail/AttachmentsDialog.vue:16
+msgid "Attach"
+msgstr ""
+
+#: src/components/webmail/AttachmentsDialog.vue:3
+#: src/components/webmail/ComposeEmailForm.vue:21
+msgid "Attachments"
+msgstr ""
+
 #: src/views/login/LoginCallbackView.vue:20 src/views/login/LoginView.vue:17
 msgid "Attempting to log you in."
 msgstr "Tentando fazer login."
@@ -412,6 +428,11 @@ msgstr "Voltar"
 #: src/components/account/BackupCodeAuthForm.vue:6
 msgid "Backup codes"
 msgstr "Códigos de backup"
+
+#: src/components/webmail/ComposeEmailForm.vue:110
+#: src/components/webmail/ComposeEmailForm.vue:73
+msgid "Bcc"
+msgstr ""
 
 #: src/components/admin/domains/DomainDKIMKey.vue:23
 msgid "Bind/named format. Click to copy"
@@ -467,6 +488,11 @@ msgstr "Categorias"
 #: src/components/contacts/CategoryForm.vue:92
 msgid "Category deleted"
 msgstr "Categoria excluída"
+
+#: src/components/webmail/ComposeEmailForm.vue:65
+#: src/components/webmail/ComposeEmailForm.vue:83
+msgid "Cc"
+msgstr ""
 
 #: src/views/admin/InformationView.vue:37
 msgid "Change the value of <strong>Default password scheme</strong>"
@@ -529,7 +555,9 @@ msgstr "Clique aqui para copiar a chave"
 #: src/components/contacts/ContactCategoriesForm.vue:21
 #: src/components/contacts/ContactForm.vue:148
 #: src/components/tools/ImportForm.vue:51
-#: src/layouts/connected/ConnectedLayout.vue:15
+#: src/components/webmail/AttachmentsDialog.vue:41
+#: src/components/webmail/MailboxForm.vue:29
+#: src/layouts/connected/ConnectedLayout.vue:17
 msgid "Close"
 msgstr "Fechar"
 
@@ -548,6 +576,15 @@ msgstr "Cor"
 #: src/components/contacts/ContactForm.vue:41
 msgid "Company"
 msgstr "Empresa"
+
+#: src/layouts/webmail/WebmailLayout.vue:28
+msgid "Compose"
+msgstr ""
+
+#: src/layouts/webmail/WebmailLayout.vue:66
+#, fuzzy
+msgid "Compress this mailbox"
+msgstr "Com caixa de correio"
 
 #: src/components/account/FilterForm.vue:14
 msgid "Conditions"
@@ -568,6 +605,11 @@ msgid ""
 msgstr ""
 "Parabéns! A autenticação de dois fatores usando senhas de uso único agora "
 "está habilitada para sua conta."
+
+#: src/components/webmail/ContactCard.vue:64
+#, fuzzy
+msgid "Contact added to address book"
+msgstr "Sincronize seus contatos com o catálogo de endereços"
 
 #: src/views/contacts/AddressBook.vue:3 src/views/contacts/AddressBook.vue:37
 msgid "Contacts"
@@ -600,7 +642,7 @@ msgstr "Copiar para área de transferência"
 msgid "Copy token to clipboard"
 msgstr "Copiar token para a área de transferência"
 
-#: src/components/tools/ParametersForm.vue:164
+#: src/components/tools/ParametersForm.vue:183
 msgid "Could not save parameters"
 msgstr "Não é possível salvar os parâmetros"
 
@@ -611,6 +653,7 @@ msgstr "País"
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
 #: src/components/calendars/CalendarForm.vue:80
+#: src/components/webmail/MailboxForm.vue:79
 msgid "Create"
 msgstr "Criar"
 
@@ -627,10 +670,20 @@ msgstr "Criar uma caixa de e-mail para o administrador."
 msgid "Create a new filter set"
 msgstr "Criar um novo conjunto de filtros"
 
+#: src/layouts/webmail/WebmailLayout.vue:49
+#, fuzzy
+msgid "Create a new mailbox"
+msgstr "Criar um novo conjunto de filtros"
+
 #: src/components/admin/domains/DomainCreationForm.vue:265
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
 msgid "Create aliases"
 msgstr "Criar apelidos"
+
+#: src/components/webmail/MailboxForm.vue:75
+#, fuzzy
+msgid "Create new mailbox"
+msgstr "Criar um novo conjunto de filtros"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
 msgid "Create standard aliases for the domain."
@@ -710,6 +763,16 @@ msgstr "Remover"
 msgid "Delete filter set"
 msgstr "Remover conjunto de filtros"
 
+#: src/layouts/webmail/WebmailLayout.vue:60
+#, fuzzy
+msgid "Delete this mailbox"
+msgstr "Com caixa de correio"
+
+#: src/layouts/webmail/WebmailLayout.vue:194
+#, fuzzy
+msgid "Delete this mailbox?"
+msgstr "Com caixa de correio"
+
 #: src/components/account/APISetupForm.vue:38
 msgid "Delete token"
 msgstr "Remover token"
@@ -734,6 +797,11 @@ msgstr "Desabilitar"
 msgid "Disable 2FA"
 msgstr "Desabilitar 2FA"
 
+#: src/views/webmail/EmailView.vue:74
+#, fuzzy
+msgid "Disable links"
+msgstr "Desabilitar"
+
 #: src/components/admin/domains/DomainList.vue:85
 msgid "disabled"
 msgstr "desabilitado"
@@ -749,6 +817,11 @@ msgstr "Exibir informações do catálogo de endereços"
 #: src/components/contacts/ContactForm.vue:31
 #: src/components/contacts/ContactList.vue:119
 msgid "Display name"
+msgstr "Nome de exibição"
+
+#: src/views/webmail/EmailView.vue:78
+#, fuzzy
+msgid "Display source"
 msgstr "Nome de exibição"
 
 #: src/components/admin/domains/DNSDetail.vue:103
@@ -778,8 +851,7 @@ msgid "DKIM key selector"
 msgstr "Seletor da chave DKIM"
 
 #: src/components/admin/domains/DNSDetail.vue:238
-msgid ""
-"DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "Já existem chaves DKIM para este domínio. Deseja sobrescrevê-las?"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:5
@@ -972,9 +1044,19 @@ msgstr "Editar evento"
 msgid "Edit filter"
 msgstr "Editar filtro"
 
+#: src/components/webmail/MailboxForm.vue:76
+#, fuzzy
+msgid "Edit mailbox"
+msgstr "Com caixa de correio"
+
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
 msgid "Edit provider"
 msgstr "Editar provedor"
+
+#: src/layouts/webmail/WebmailLayout.vue:54
+#, fuzzy
+msgid "Edit this mailbox"
+msgstr "Com caixa de correio"
 
 #: src/components/account/FidoAuthForm.vue:201
 msgid "Edit your device"
@@ -996,9 +1078,19 @@ msgstr "Endereço de e-mail"
 msgid "Email providers"
 msgstr "Provedores de e-mail"
 
+#: src/components/webmail/ComposeEmailForm.vue:268
+#, fuzzy
+msgid "Email sent"
+msgstr "E-mail"
+
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
 msgstr "Vazio"
+
+#: src/components/webmail/EmailList.vue:83
+#, fuzzy
+msgid "Empty mailbox"
+msgstr "Com caixa de correio"
 
 #: src/views/account/FiltersView.vue:355
 msgid "Enable"
@@ -1013,6 +1105,11 @@ msgstr "Habilitar assinatura DKIM"
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
 msgid "Enable DNS checks"
 msgstr "Habilitar verificações de DNS"
+
+#: src/views/webmail/EmailView.vue:69
+#, fuzzy
+msgid "Enable links"
+msgstr "Habilitar"
 
 #: src/components/account/AutoReplyForm.vue:7
 #: src/components/admin/domains/DomainCreationForm.vue:166
@@ -1117,7 +1214,7 @@ msgstr "Conjunto de filtros atualizado"
 msgid "Filter updated"
 msgstr "Filtro atualizado"
 
-#: src/layouts/account/AccountLayout.vue:32
+#: src/layouts/account/AccountLayout.vue:33
 msgid "Filters"
 msgstr "Filtros"
 
@@ -1128,7 +1225,7 @@ msgstr "Filtros"
 msgid "First name"
 msgstr "Nome"
 
-#: src/views/account/SettingsView.vue:14
+#: src/views/account/SettingsView.vue:14 src/views/webmail/EmailView.vue:23
 msgid "Forward"
 msgstr "Encaminhar"
 
@@ -1153,6 +1250,7 @@ msgstr "Forwarders com ARC"
 #: src/components/admin/logs/MessageList.vue:47
 #: src/components/calendars/EventForm.vue:24
 #: src/components/tools/TimeSerieChart.vue:19
+#: src/components/webmail/ComposeEmailForm.vue:29
 msgid "From"
 msgstr "De"
 
@@ -1254,8 +1352,8 @@ msgid ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 msgstr ""
-"Se você o configurou recentemente, aguarde o primeiro relatório ser recebido"
-" e processado."
+"Se você o configurou recentemente, aguarde o primeiro relatório ser recebido "
+"e processado."
 
 #: src/layouts/admin/AdminLayout.vue:70
 msgid "IMAP Migration"
@@ -1317,8 +1415,8 @@ msgstr "Informação"
 
 #: src/components/account/TotpAuthForm.vue:34
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from"
-" your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from "
+"your application repository and use that app to scan this QR code."
 msgstr ""
 "Instale um autenticador de token de software como FreeOTP ou Google "
 "Authenticator do repositório de aplicativos e use esse aplicativo para "
@@ -1421,8 +1519,7 @@ msgstr "Sair"
 #: src/views/admin/InformationView.vue:54
 msgid "Logout / Login with your current account so its password gets updated"
 msgstr ""
-"Saia e entre novamente com sua conta atual para que sua senha seja "
-"atualizada"
+"Saia e entre novamente com sua conta atual para que sua senha seja atualizada"
 
 #: src/components/admin/alarms/AlarmList.vue:95
 #: src/components/admin/identities/AccountCreationForm.vue:121
@@ -1434,6 +1531,26 @@ msgstr "Caixa de e-mail"
 #: src/components/admin/identities/AccountEditForm.vue:165
 msgid "Mailbox aliases:"
 msgstr "Apelidos de caixa de correio:"
+
+#: src/layouts/webmail/WebmailLayout.vue:188
+#, fuzzy
+msgid "Mailbox compressed"
+msgstr "Caixas de e-mail"
+
+#: src/components/webmail/MailboxForm.vue:105
+#, fuzzy
+msgid "Mailbox created"
+msgstr "Domínio criado"
+
+#: src/layouts/webmail/WebmailLayout.vue:205
+#, fuzzy
+msgid "Mailbox deleted"
+msgstr "Migração removida"
+
+#: src/components/webmail/MailboxForm.vue:98
+#, fuzzy
+msgid "Mailbox renamed"
+msgstr "Caixas de e-mail"
 
 #: src/components/admin/identities/AccountEditForm.vue:158
 msgid "Mailbox:"
@@ -1447,8 +1564,24 @@ msgstr "Caixas de e-mail"
 msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
-"Certifique-se de que a opção <strong>Atualizar esquema de senha no "
-"login</strong> esteja habilitada"
+"Certifique-se de que a opção <strong>Atualizar esquema de senha no login</"
+"strong> esteja habilitada"
+
+#: src/components/webmail/EmailList.vue:72
+msgid "Mark as followed"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:62
+msgid "Mark as read"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:77
+msgid "Mark as unfollowed"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:67
+msgid "Mark as unread"
+msgstr ""
 
 #: src/components/admin/domains/DomainSummary.vue:20
 #: src/components/admin/identities/AccountSummary.vue:49
@@ -1460,6 +1593,11 @@ msgstr "MB"
 msgid "Message"
 msgstr "Mensagem"
 
+#: src/views/webmail/EmailView.vue:254
+#, fuzzy
+msgid "Message deleted"
+msgstr "Filtros de mensagem"
+
 #: src/views/account/FiltersView.vue:3
 msgid "Message filters"
 msgstr "Filtros de mensagem"
@@ -1468,11 +1606,37 @@ msgstr "Filtros de mensagem"
 msgid "Message history"
 msgstr "Histórico de mensagens"
 
+#: src/views/webmail/EmailView.vue:268
+msgid "Message marked as junk"
+msgstr ""
+
+#: src/views/webmail/EmailView.vue:282
+msgid "Message marked as not junk"
+msgstr ""
+
 #: src/components/admin/domains/DomainCreationForm.vue:196
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
 #: src/components/admin/identities/AccountCreationForm.vue:134
 msgid "Message sending limit"
 msgstr "Limite de envio de mensagens"
+
+#: src/components/webmail/EmailList.vue:249
+#, fuzzy
+msgid "Message(s) deleted"
+msgstr "Filtros de mensagem"
+
+#: src/components/webmail/EmailList.vue:287
+#, fuzzy
+msgid "Message(s) flagged"
+msgstr "Filtros de mensagem"
+
+#: src/components/webmail/EmailList.vue:262
+msgid "Message(s) marked as junk"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:274
+msgid "Message(s) marked as not junk"
+msgstr ""
 
 #: src/components/admin/domains/DomainSummary.vue:32
 msgid "messages"
@@ -1553,6 +1717,7 @@ msgstr "nome"
 #: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/components/calendars/CalendarForm.vue:15
 #: src/components/contacts/CategoryForm.vue:10
+#: src/components/webmail/MailboxForm.vue:7
 #: src/views/account/FiltersView.vue:164
 #: src/views/admin/InformationView.vue:145
 msgid "Name"
@@ -1634,7 +1799,7 @@ msgstr "Novos códigos de recuperação"
 msgid "Next"
 msgstr "Próximo"
 
-#: src/plugins/filters.js:9
+#: src/plugins/filters.js:10
 msgid "no"
 msgstr "não"
 
@@ -1645,6 +1810,7 @@ msgstr "não"
 #: src/components/admin/identities/IdentityList.vue:212
 #: src/components/admin/identities/IdentityList.vue:238
 #: src/components/tools/CreationForm.vue:136
+#: src/layouts/webmail/WebmailLayout.vue:198
 msgid "No"
 msgstr "Não"
 
@@ -1660,6 +1826,10 @@ msgstr "Nenhum dado para exportar"
 msgid "No domain managed"
 msgstr "Nenhum domínio gerenciado"
 
+#: src/components/webmail/EmailList.vue:165
+msgid "No message yet in this mailbox"
+msgstr ""
+
 #: src/components/admin/identities/AccountSenderAddresses.vue:10
 msgid "No sender address defined for this account"
 msgstr "Nenhum endereço de remetente definido para esta conta"
@@ -1671,8 +1841,7 @@ msgstr "Sem limite de envio"
 #: src/components/account/BackupCodeAuthForm.vue:43
 msgid "No two-factor authentificator is yet set for your account."
 msgstr ""
-"Ainda não existe nenhum autenticador de dois fatores definido para sua "
-"conta."
+"Ainda não existe nenhum autenticador de dois fatores definido para sua conta."
 
 #: src/plugins/rules.js:7
 msgid "Not a valid email"
@@ -1724,6 +1893,10 @@ msgstr "OK"
 msgid "Old account"
 msgstr "Conta antiga"
 
+#: src/components/webmail/EmailList.vue:93
+msgid "on"
+msgstr ""
+
 #: src/views/admin/InformationView.vue:103
 msgid "One or more updates are available"
 msgstr "Uma ou mais atualizações estão disponíveis"
@@ -1749,9 +1922,14 @@ msgstr "Opções"
 msgid "or suggest a new language"
 msgstr "ou sugira um novo idioma"
 
-#: src/components/tools/ParametersForm.vue:159
+#: src/components/tools/ParametersForm.vue:178
 msgid "Parameters updated"
 msgstr "Parâmetros atualizados"
+
+#: src/components/webmail/MailboxForm.vue:13
+#, fuzzy
+msgid "Parent mailbox"
+msgstr "Com caixa de correio"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:128
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:148
@@ -1821,8 +1999,8 @@ msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
 msgstr ""
-"Observe que você verá esta mensagem até que <strong>TODAS</strong> as senhas"
-" dos usuários tenham sido convertidas usando o novo esquema."
+"Observe que você verá esta mensagem até que <strong>TODAS</strong> as senhas "
+"dos usuários tenham sido convertidas usando o novo esquema."
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
@@ -1853,6 +2031,13 @@ msgstr "Perfil atualizado"
 msgid "Provide a CSV file where lines respect one of the following formats:"
 msgstr ""
 "Forneça um arquivo CSV em que as linhas respeitem um dos seguintes formatos:"
+
+#: src/components/webmail/ComposeEmailForm.vue:124
+#: src/components/webmail/ComposeEmailForm.vue:54
+#: src/components/webmail/ComposeEmailForm.vue:97
+#, fuzzy
+msgid "Provide one or more addresses"
+msgstr "Endereços do remetente"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:79
 msgid "Provider"
@@ -1894,9 +2079,9 @@ msgstr "Cota"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
-" custom value or use domain's default one. Leave empty to define an "
-"unlimited value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
 "A cota para essa caixa de correio pode ser expressa em KB, MB (padrão) ou "
 "GB. Defina um valor personalizado ou use o padrão do domínio. Deixe em "
@@ -2001,6 +2186,14 @@ msgstr "Remover este administrador"
 msgid "Reopen alarm"
 msgstr "Reabrir alarme"
 
+#: src/views/webmail/EmailView.vue:12
+msgid "Reply"
+msgstr ""
+
+#: src/views/webmail/EmailView.vue:19
+msgid "Reply all"
+msgstr ""
+
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:99
 msgid "Reseller"
 msgstr "Revendedor"
@@ -2049,6 +2242,11 @@ msgstr "Salve suas alterações"
 msgid "Search"
 msgstr "Busca"
 
+#: src/components/webmail/EmailList.vue:14
+#, fuzzy
+msgid "Search in messages"
+msgstr "mensagens"
+
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:27
 msgid "Secondary email"
@@ -2081,6 +2279,7 @@ msgid "Select file"
 msgstr "Selecionar arquivo"
 
 #: src/components/calendars/ImportEventsForm.vue:30
+#: src/components/webmail/ComposeEmailForm.vue:13
 msgid "Send"
 msgstr "Enviar"
 
@@ -2126,7 +2325,7 @@ msgstr "Serviço"
 msgid "Service: "
 msgstr "Serviço: "
 
-#: src/layouts/account/AccountLayout.vue:26
+#: src/layouts/account/AccountLayout.vue:27
 #: src/layouts/admin/AdminLayout.vue:88
 msgid "Settings"
 msgstr "Configurações"
@@ -2176,6 +2375,7 @@ msgid "Status"
 msgstr "Status"
 
 #: src/components/account/AutoReplyForm.vue:12
+#: src/components/webmail/ComposeEmailForm.vue:137
 msgid "Subject"
 msgstr "Assunto"
 
@@ -2210,8 +2410,8 @@ msgid ""
 "be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
 "%(untildate)s"
 msgstr ""
-"O conteúdo da sua resposta. Você pode usar as seguintes variáveis, que serão"
-" substituídas automaticamente pelo valor apropriado: %(name)s, %(fromdate)s "
+"O conteúdo da sua resposta. Você pode usar as seguintes variáveis, que serão "
+"substituídas automaticamente pelo valor apropriado: %(name)s, %(fromdate)s "
 "%(untildate)s"
 
 #: src/components/calendars/CalendarDetail.vue:19
@@ -2242,12 +2442,12 @@ msgstr ""
 
 #: src/views/admin/InformationView.vue:22
 msgid ""
-"The password scheme you are using has been deprecated and will be removed in"
-" the next minor version. The procedure to upgrade to a stronger scheme is as"
-" follows:"
+"The password scheme you are using has been deprecated and will be removed in "
+"the next minor version. The procedure to upgrade to a stronger scheme is as "
+"follows:"
 msgstr ""
-"O esquema de senha que você está usando foi descontinuado e será removido na"
-" próxima atualização. O procedimento para atualizar para um esquema mais "
+"O esquema de senha que você está usando foi descontinuado e será removido na "
+"próxima atualização. O procedimento para atualizar para um esquema mais "
 "forte é o seguinte:"
 
 #: src/components/account/ProfileForm.vue:34
@@ -2265,13 +2465,15 @@ msgstr "Título"
 #: src/components/admin/logs/MessageList.vue:46
 #: src/components/calendars/EventForm.vue:34
 #: src/components/tools/TimeSerieChart.vue:20
+#: src/components/webmail/ComposeEmailForm.vue:46
+#: src/views/webmail/EmailView.vue:109
 msgid "To"
 msgstr "Para"
 
 #: src/components/contacts/AddressBookInfo.vue:9
 msgid ""
-"To access this address book from the outside (such as Mozilla Thunderbird or"
-" your smartphone), use the following URL:"
+"To access this address book from the outside (such as Mozilla Thunderbird or "
+"your smartphone), use the following URL:"
 msgstr ""
 "Para acessar esse catálogo de endereços externamente (como do Mozilla "
 "Thunderbird ou de seu celular), use a seguinte URL:"
@@ -2281,8 +2483,8 @@ msgid ""
 "To access this calendar from the outside (such as Mozilla Thunderbird or "
 "your smartphone), use the following URL:"
 msgstr ""
-"Para acessar esta calendário externamente (como do Mozilla Thunderbird ou de"
-" seu celular), use a seguinte URL:"
+"Para acessar esta calendário externamente (como do Mozilla Thunderbird ou de "
+"seu celular), use a seguinte URL:"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
@@ -2361,12 +2563,18 @@ msgstr "Até"
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactCategoriesForm.vue:24
 #: src/components/contacts/ContactForm.vue:185
+#: src/components/webmail/MailboxForm.vue:79
 msgid "Update"
 msgstr "Atualizar"
 
 #: src/components/account/AutoReplyForm.vue:54
 msgid "Update auto-reply"
 msgstr "Atualizar resposta automática"
+
+#: src/components/webmail/ContactCard.vue:23
+#, fuzzy
+msgid "Update contact"
+msgstr "Editar contato"
 
 #: src/components/account/ProfileForm.vue:75
 msgid "Update Password"
@@ -2417,6 +2625,7 @@ msgstr "atenção"
 #: src/components/admin/identities/IdentityList.vue:207
 #: src/components/admin/identities/IdentityList.vue:233
 #: src/components/tools/CreationForm.vue:129
+#: src/layouts/webmail/WebmailLayout.vue:193
 #: src/views/calendars/CalendarView.vue:246
 msgid "Warning"
 msgstr "Atenção"
@@ -2424,6 +2633,11 @@ msgstr "Atenção"
 #: src/components/account/FidoAuthForm.vue:6
 msgid "WebAuthn"
 msgstr "WebAuthn"
+
+#: src/views/webmail/MailboxView.vue:4
+#, fuzzy
+msgid "Webmail"
+msgstr "E-mail"
 
 #: src/components/tools/TimeSerieChart.vue:111
 msgid "Week"
@@ -2450,7 +2664,7 @@ msgstr "Escrita"
 msgid "Year"
 msgstr "Ano"
 
-#: src/plugins/filters.js:9
+#: src/plugins/filters.js:10
 msgid "yes"
 msgstr "sim"
 
@@ -2461,6 +2675,7 @@ msgstr "sim"
 #: src/components/admin/identities/IdentityList.vue:211
 #: src/components/admin/identities/IdentityList.vue:237
 #: src/components/tools/CreationForm.vue:135
+#: src/layouts/webmail/WebmailLayout.vue:197
 msgid "Yes"
 msgstr "Sim"
 
@@ -2469,8 +2684,8 @@ msgid ""
 "You already have generated backup codes for this account. If you don't "
 "remember them or have used them all, you can generate new ones."
 msgstr ""
-"Você já gerou códigos de backup para esta conta. Se você não se lembra deles"
-" ou já usou todos eles, pode gerar novos."
+"Você já gerou códigos de backup para esta conta. Se você não se lembra deles "
+"ou já usou todos eles, pode gerar novos."
 
 #: src/components/account/APISetupForm.vue:95
 msgid "You are about to delete your API access token"

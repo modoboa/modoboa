@@ -17,8 +17,8 @@ class GlobalParametersAPITestCase(ModoAPITestCase):
         url = reverse("v2:parameter-global-applications")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        # core, admin, limits, pdf credentials
-        self.assertEqual(len(resp.json()), 10)
+        # core, admin, limits, pdf credentials, ...
+        self.assertEqual(len(resp.json()), 11)
 
     def test_get_structure(self):
         url = reverse("v2:parameter-global-structure")
@@ -111,7 +111,7 @@ class UserParametersAPITestCase(ModoAPITestCase):
         url = reverse("v2:parameter-user-applications")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.json()), 1)
+        self.assertEqual(len(resp.json()), 2)
 
     def test_get_structure(self):
         url = reverse("v2:parameter-user-structure")
@@ -121,10 +121,11 @@ class UserParametersAPITestCase(ModoAPITestCase):
         resp_contacts = self.client.get(url + "?app=contacts")
         self.assertEqual(resp_contacts.status_code, 200)
 
-        self.assertEqual(len(resp_full.json()), len(resp_contacts.json()))
+        # Only 1 section for contacts
+        self.assertEqual(len(resp_contacts.json()), 1)
 
     def test_retrieve(self):
-        for app in ["contacts"]:
+        for app in ["contacts", "webmail"]:
             url = reverse("v2:parameter-user-detail", args=[app])
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)

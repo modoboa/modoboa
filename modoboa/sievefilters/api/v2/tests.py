@@ -12,6 +12,7 @@ from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 from modoboa.sievefilters import mocks
+from modoboa.webmail.mocks import IMAP4Mock
 
 Application = get_application_model()
 AccessToken = get_access_token_model()
@@ -51,7 +52,7 @@ class FilterSetViewSetTestCase(ModoAPITestCase):
 
         patcher = mock.patch("imaplib.IMAP4")
         self.mock_imap4 = patcher.start()
-        self.mock_imap4.return_value = mocks.IMAP4Mock()
+        self.mock_imap4.return_value = IMAP4Mock()
         self.addCleanup(patcher.stop)
 
     def authenticate(self, username: str = "user@test.com"):

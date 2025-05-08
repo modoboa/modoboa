@@ -37,3 +37,8 @@ modoboa.kdev4
 .kateproject
 test_project/cert.crt
 test_project/cert.key
+test_project/envfile
+
+# Docker
+docker/collections
+docker/redis

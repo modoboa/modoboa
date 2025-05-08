@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <NavBar :color="color" :menu-items="menuItems" />
+    <slot name="navbar">
+      <NavBar :color="color" :menu-items="menuItems" />
+    </slot>
     <TopMenu :user="authUser" />
     <ConnectedView />
     <v-snackbar

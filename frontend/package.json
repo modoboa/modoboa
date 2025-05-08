@@ -22,10 +22,16 @@
     "@fullcalendar/vue3": "^6.1.15",
     "@github/webauthn-json": "^2.1.1",
     "@mdi/font": "^7.3.67",
+    "@tiptap/extension-highlight": "^2.11.7",
+    "@tiptap/extension-text-align": "^2.11.7",
+    "@tiptap/pm": "^2.11.7",
+    "@tiptap/starter-kit": "^2.11.7",
+    "@tiptap/vue-3": "^2.11.7",
     "apexcharts": "^3.50.0",
     "axios": "^1.8.2",
     "core-js": "^3.37.1",
     "debounce": "^2.1.0",
+    "filesize": "^10.1.6",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.4",
     "oidc-client-ts": "^3.0.1",
@@ -36,7 +42,7 @@
     "vue-router": "^4.4.0",
     "vue3-apexcharts": "^1.5.3",
     "vue3-gettext": "^3.0.0-beta.6",
-    "vuetify": "^3.6.12"
+    "vuetify": "^3.8.3"
   },
   "devDependencies": {
     "@vitejs/plugin-basic-ssl": "^1.1.0",
@@ -47,7 +53,7 @@
     "prettier": "^3.3.2",
     "sass": "1.77.1",
     "unplugin-fonts": "^1.0.3",
-    "vite": "^5.4.18",
+    "vite": "^6.3.4",
     "vite-plugin-vuetify": "^2.0.3"
   }
 }
