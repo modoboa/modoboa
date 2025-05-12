@@ -37,4 +37,5 @@ urlpatterns += [
         views.NotificationsAPIView.as_view(),
         name="notifications",
     ),
+    path("capabilities/", views.CapabilitiesAPIView.as_view(), name="capabilities"),
 ]
