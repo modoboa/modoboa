@@ -50,7 +50,7 @@ dependencies = [
 	"dnspython==2.7.0",
 	"feedparser==6.0.11",
 	"fido2==1.2.0",
-	"gevent==25.4.2",
+	"gevent==25.5.1",
 	"Pillow",  # Optional dependency for django-ckeditor
 	"progressbar33==2.4",
 	"python-dateutil",
