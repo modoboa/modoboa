@@ -5,7 +5,7 @@ from typing import Optional
 
 from rest_framework.fields import empty
 
-from modoboa.lib import exceptions, form_utils, signals
+from modoboa.lib import exceptions, signals
 from modoboa.lib.sysutils import guess_extension_name
 
 
@@ -60,12 +60,6 @@ class Registry:
 
     def _load_default_values(self, level):
         """Load default values."""
-        for _app, data in list(self._registry[level].items()):
-            form = data["formclass"](load_values_from_db=False)
-            for name, field in list(form.fields.items()):
-                if isinstance(field, form_utils.SeparatorField):
-                    continue
-                data["defaults"][name] = field.initial
         for data in list(self._registry2[level].values()):
             serializer = data["serializer_class"]()
             for name, field in list(serializer.fields.items()):
@@ -89,26 +83,24 @@ class Registry:
     def get_label(self, level: str, app: str) -> str:
         return self._registry2[level][app]["label"]
 
-    def get_forms(self, level, *args, **kwargs):
+    def get_serializer_classes(self, level):
         """Return form instances for all app of the given level."""
         sorted_apps = []
-        first_app = kwargs.pop("first_app", "core")
-        if first_app in self._registry[level]:
+        first_app = "core"
+        if first_app in self._registry2[level]:
             sorted_apps.append(first_app)
         sorted_apps += sorted(
-            (a for a in self._registry[level] if a != first_app),
+            (a for a in self._registry2[level] if a != first_app),
             key=lambda a: self._registry[level][a]["label"],
         )
         result = []
         for app in sorted_apps:
-            data = self._registry[level][app]
-            if not data["formclass"].has_access(**kwargs):
-                continue
+            data = self._registry2[level][app]
             result.append(
                 {
                     "app": app,
                     "label": data["label"],
-                    "form": data["formclass"](*args, **kwargs),
+                    "serializer": data["serializer_class"](),
                 }
             )
         return result
@@ -160,12 +152,6 @@ class Registry:
 
     def exists(self, level: str, app: str, parameter: Optional[str] = None) -> bool:
         """Check if parameter exists."""
-        parameters = self._registry[level]
-        result = app in parameters
-        if parameter:
-            result = result and parameter in parameters[app]["defaults"]
-        if result:
-            return result
         parameters = self._registry2[level]
         result = app in parameters
         if parameter:
@@ -175,11 +161,6 @@ class Registry:
     def get_default(self, level: str, app: str, parameter: str):
         """Retrieve default value for parameter."""
         if (
-            app in self._registry[level]
-            and parameter in self._registry[level][app]["defaults"]
-        ):
-            return self._registry[level][app]["defaults"][parameter]
-        if (
             app in self._registry2[level]
             and parameter in self._registry2[level][app]["defaults"]
         ):
@@ -188,8 +169,6 @@ class Registry:
 
     def get_defaults(self, level: str, app: str) -> dict:
         """Retrieve default values for application."""
-        if app in self._registry[level]:
-            return self._registry[level][app]["defaults"]
         if app in self._registry2[level]:
             return self._registry2[level][app]["defaults"]
         raise NotDefined(app)
@@ -313,5 +292,5 @@ def get_global_parameters(app, **kwargs):
 
 def apply_to_django_settings():
     """Apply global parameters to Django settings module."""
-    for form in registry.get_forms("global"):
-        form["form"].to_django_settings()
+    for serializer in registry.get_serializers("global"):
+        serializer["serializer"].to_django_settings()

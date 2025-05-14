@@ -4,10 +4,7 @@ Form rendering tags.
 
 from django import forms, template
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
-
-from modoboa.lib.form_utils import SeparatorField
 
 register = template.Library()
 
@@ -39,10 +36,6 @@ def configure_field_classes(field):
 @register.simple_tag
 def render_field(field, help_display_mode="tooltip", label_width="col-sm-4", **options):
     """Render a field."""
-    from modoboa.core.templatetags.core_tags import visirule
-
-    if isinstance(field.field, SeparatorField):
-        return f"<h5{visirule(field)}>{smart_str(field.label)}</h5>"
     configure_field_classes(field)
     context = {
         "field": field,

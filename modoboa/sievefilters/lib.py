@@ -8,7 +8,6 @@ from sievelib.parser import Parser
 
 from django.utils.translation import gettext as _
 
-from modoboa.lib.connections import ConnectionError
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.parameters import tools as param_tools
 
@@ -32,7 +31,7 @@ class SieveClient:
         if user and password:
             try:
                 ret, msg = self.login(user, password)
-            except (managesieve.Error, ConnectionError) as e:
+            except managesieve.Error as e:
                 raise SieveClientError(str(e)) from None
             if not ret:
                 raise SieveClientError(msg)

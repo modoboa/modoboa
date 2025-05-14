@@ -38,8 +38,16 @@ import rules from '@/plugins/rules.js'
 const { $gettext } = useGettext()
 
 const props = defineProps({ modelValue: { type: Object, default: null } })
+const emit = defineEmits(['update:modelValue'])
 
-const domain = computed(() => props.modelValue)
+const domain = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  },
+})
 
 const vFormRef = ref()
 
@@ -50,14 +58,14 @@ function cleanTransport(value) {
 }
 const domainTypes = [
   {
-    label: 'Domain',
+    label: $gettext('Domain'),
     icon: 'mdi-earth',
-    value: $gettext('domain'),
+    value: 'domain',
   },
   {
-    label: 'Relay domain',
+    label: $gettext('Relay domain'),
     icon: 'mdi-earth',
-    value: $gettext('relaydomain'),
+    value: 'relaydomain',
   },
 ]
 
