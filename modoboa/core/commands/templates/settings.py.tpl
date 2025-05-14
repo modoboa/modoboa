@@ -74,7 +74,6 @@ INSTALLED_APPS = (
     'django_otp.plugins.otp_static',
     'django_rename_app',
     'django_rq',
-{% if devmode %}    'djangobower',{% endif %}
 )
 
 # A dedicated place to register Modoboa applications
@@ -152,8 +151,6 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'modoboa.core.context_processors.top_notifications',
-                'modoboa.core.context_processors.new_admin_url',
             ],
             'debug': {{ devmode }},
         },
@@ -195,9 +192,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 STATIC_URL = '/sitestatic/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'sitestatic')
-STATICFILES_DIRS = (
-    '{{ bower_components_dir }}',
-)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

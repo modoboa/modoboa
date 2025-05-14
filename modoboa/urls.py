@@ -1,10 +1,5 @@
-from functools import reduce
-
-from ckeditor_uploader import views as cku_views
-
 from django.conf import settings
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_required
 from django.urls import include, path
 from django.views.i18n import JavaScriptCatalog
 
@@ -14,22 +9,12 @@ from drf_spectacular.views import (
     SpectacularRedocView,
 )
 
-from modoboa.admin.views import user as user_views
-from modoboa.core import signals as core_signals, views as core_views
+from modoboa.core import views as core_views
 from modoboa.core.extensions import exts_pool
 
 urlpatterns = [
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
-    path("ckeditor/upload/", login_required(cku_views.upload), name="ckeditor_upload"),
-    path("ckeditor/browse/", login_required(cku_views.browse), name="ckeditor_browse"),
     path("", include("modoboa.core.urls")),
-    path("admin/", include("modoboa.admin.urls")),
-    path("dnstools/", include("modoboa.dnstools.urls")),
-    path("pdfcredentials", include("modoboa.pdfcredentials.urls")),
-    path("stats/", include("modoboa.maillog.urls")),
-    path("dmarc/", include("modoboa.dmarc.urls")),
-    path("imap_migration/", include("modoboa.imap_migration.urls")),
-    path("user/forward/", user_views.forward, name="user_forward"),
     path(
         "accounts/password_reset/",
         core_views.PasswordResetView.as_view(),
@@ -64,11 +49,6 @@ urlpatterns = [
 
 exts_pool.load_all()
 urlpatterns += exts_pool.get_urls()
-
-extra_routes = core_signals.extra_uprefs_routes.send(sender="urls")
-if extra_routes:
-    extra_routes = reduce(lambda a, b: a + b, [route[1] for route in extra_routes])
-    urlpatterns += extra_routes
 
 # API urls
 urlpatterns += [
