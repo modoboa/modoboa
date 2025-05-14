@@ -1,7 +1,7 @@
-{% load i18n core_tags form_tags %}
+{% load i18n form_tags %}
 <div class="form-group
     {% if field.errors %}has-error{% endif %}
-    {{ extra_classes }}"{% visirule field %}
+    {{ extra_classes }}"
     {% if hidden %}style="display: none"{% endif %}
 >
 

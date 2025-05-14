@@ -3,6 +3,7 @@
 import django_otp
 import oath
 
+from django.conf import settings
 from django.db.models import Q
 
 from django.contrib.auth import password_validation
@@ -27,10 +28,10 @@ from modoboa.core import (
     models,
     sms_backends,
     app_settings,
-    context_processors,
 )
 from modoboa.core.models import User
 from modoboa.lib import fields as lib_fields, cryptutils
+from modoboa.parameters import tools as param_tools
 
 
 class CustomValidationError(APIException):
@@ -237,6 +238,112 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
             raise serializers.ValidationError(errors)
         return data
 
+    def post_save(self, request):
+        request.localconfig.need_dovecot_update = True
+        request.localconfig.save(update_fields=["need_dovecot_update"])
+
+    def _apply_ldap_settings(self, values, backend):
+        """Apply configuration for given backend."""
+        import ldap
+        from django_auth_ldap.config import (
+            LDAPSearch,
+            PosixGroupType,
+            GroupOfNamesType,
+            ActiveDirectoryGroupType,
+        )
+
+        if not hasattr(settings, backend.setting_fullname("USER_ATTR_MAP")):
+            setattr(
+                settings,
+                backend.setting_fullname("USER_ATTR_MAP"),
+                {"first_name": "givenName", "email": "mail", "last_name": "sn"},
+            )
+        ldap_uri = "ldaps://" if values["ldap_secured"] == "ssl" else "ldap://"
+        ldap_uri += f"{values[backend.srv_address_setting_name]}:{values[backend.srv_port_setting_name]}"
+        setattr(settings, backend.setting_fullname("SERVER_URI"), ldap_uri)
+        if values["ldap_secured"] == "starttls":
+            setattr(settings, backend.setting_fullname("START_TLS"), True)
+
+        if values["ldap_is_active_directory"]:
+            setattr(
+                settings,
+                backend.setting_fullname("GROUP_TYPE"),
+                ActiveDirectoryGroupType(),
+            )
+            searchfilter = "(objectClass=group)"
+        elif values["ldap_group_type"] == "groupofnames":
+            setattr(
+                settings, backend.setting_fullname("GROUP_TYPE"), GroupOfNamesType()
+            )
+            searchfilter = "(objectClass=groupOfNames)"
+        else:
+            setattr(settings, backend.setting_fullname("GROUP_TYPE"), PosixGroupType())
+            searchfilter = "(objectClass=posixGroup)"
+        setattr(
+            settings,
+            backend.setting_fullname("GROUP_SEARCH"),
+            LDAPSearch(
+                values["ldap_groups_search_base"], ldap.SCOPE_SUBTREE, searchfilter
+            ),
+        )
+        if values["ldap_auth_method"] == "searchbind":
+            setattr(
+                settings, backend.setting_fullname("BIND_DN"), values["ldap_bind_dn"]
+            )
+            setattr(
+                settings,
+                backend.setting_fullname("BIND_PASSWORD"),
+                values["ldap_bind_password"],
+            )
+            search = LDAPSearch(
+                values["ldap_search_base"],
+                ldap.SCOPE_SUBTREE,
+                values["ldap_search_filter"],
+            )
+            setattr(settings, backend.setting_fullname("USER_SEARCH"), search)
+        else:
+            setattr(
+                settings,
+                backend.setting_fullname("USER_DN_TEMPLATE"),
+                values["ldap_user_dn_template"],
+            )
+            setattr(
+                settings, backend.setting_fullname("BIND_AS_AUTHENTICATING_USER"), True
+            )
+        if values["ldap_is_active_directory"]:
+            setting = backend.setting_fullname("GLOBAL_OPTIONS")
+            if not hasattr(settings, setting):
+                setattr(settings, setting, {ldap.OPT_REFERRALS: False})
+            else:
+                getattr(settings, setting)[ldap.OPT_REFERRALS] = False
+
+    def to_django_settings(self):
+        """Apply LDAP related parameters to Django settings.
+
+        Doing so, we can use the django_auth_ldap module.
+        """
+        try:
+            import ldap  # noqa
+
+            ldap_available = True
+        except ImportError:
+            ldap_available = False
+
+        values = dict(param_tools.get_global_parameters("core"))
+        if not ldap_available or values["authentication_type"] != "ldap":
+            return
+
+        from modoboa.lib.authbackends import LDAPBackend
+
+        self._apply_ldap_settings(values, LDAPBackend)
+
+        if not values["ldap_enable_secondary_server"]:
+            return
+
+        from modoboa.lib.authbackends import LDAPSecondaryBackend
+
+        self._apply_ldap_settings(values, LDAPSecondaryBackend)
+
 
 class FIDOSerializer(serializers.ModelSerializer):
     class Meta:
@@ -348,7 +455,6 @@ class PasswordRecoveryEmailSerializer(serializers.Serializer):
             "token": default_token_generator.make_token(user),
             "protocol": "https",
         }
-        context.update(context_processors.new_admin_url())
         subject = loader.render_to_string(
             "registration/password_reset_subject.txt", context
         )

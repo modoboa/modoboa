@@ -8,7 +8,6 @@ from reversion.models import Version
 from django.contrib.sites import models as sites_models
 from django.db.models import signals
 from django.dispatch import receiver
-from django.urls import reverse
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
@@ -125,7 +124,6 @@ def check_for_new_versions(sender, include_all: bool, **kwargs) -> list:
         result += [
             {
                 "id": "newversionavailable",
-                "url": reverse("core:index") + "#info/",
                 "text": _("One or more updates are available"),
                 "level": "info",
             }
@@ -137,7 +135,6 @@ def check_for_new_versions(sender, include_all: bool, **kwargs) -> list:
         result += [
             {
                 "id": "deprecatedpasswordscheme",
-                "url": reverse("core:index") + "#info/",
                 "text": _("You are still using a deprecated password scheme (%s)")
                 % hasher.name,
                 "level": "warning",

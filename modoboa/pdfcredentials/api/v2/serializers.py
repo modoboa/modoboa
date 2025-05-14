@@ -2,7 +2,11 @@
 
 import os
 
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+
+from django.conf import settings
+from django.contrib.sites import models as sites_models
 
 from rest_framework import serializers, status
 from rest_framework.exceptions import PermissionDenied, APIException
@@ -44,6 +48,22 @@ class PDFCredentialsSettingsSerializer(serializers.Serializer):
     imap_connection_security = serializers.ChoiceField(
         choices=CONNECTION_SECURITY_MODES, default="starttls"
     )
+
+    @cached_property
+    def hostname(self):
+        """Return local hostname."""
+        return sites_models.Site.objects.get_current().domain
+
+    def __init__(self, *args, **kwargs):
+        """Set initial values."""
+        super().__init__(*args, **kwargs)
+        if not self.fields["webpanel_url"].default:
+            url = f"https://{self.hostname}{settings.LOGIN_URL}"
+            self.fields["webpanel_url"].default = url
+        if not self.fields["smtp_server_address"].default:
+            self.fields["smtp_server_address"].default = self.hostname
+        if not self.fields["imap_server_address"].default:
+            self.fields["imap_server_address"].default = self.hostname
 
     def validate(self, data):
         """Check that directory exists."""
