@@ -5,9 +5,11 @@ import shutil
 import tempfile
 from unittest import mock
 
-from django.core.management import call_command
 from django.test import override_settings
 from django.urls import reverse
+
+from django_rq import get_worker
+from rq import SimpleWorker
 
 from modoboa.lib.tests import ModoTestCase
 from .. import factories, models
@@ -45,7 +47,7 @@ class MailboxOperationTestCase(ModoTestCase):
             address="admin", domain__name="test.com"
         )
         self.ajax_post(reverse("admin:account_delete", args=[mb.user.pk]), {})
-        call_command("handle_mailbox_operations")
+        get_worker("dovecot", worker_class=SimpleWorker).work(burst=True)
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertFalse(os.path.exists(mb.mail_home))
 
@@ -69,7 +71,7 @@ class MailboxOperationTestCase(ModoTestCase):
         self.ajax_post(reverse("admin:account_change", args=[mb.user.pk]), values)
         path = f"{self.workdir}/test.com/admin2"
         mail_home_mock.__get__ = mock.Mock(return_value=path)
-        call_command("handle_mailbox_operations")
+        get_worker("dovecot", worker_class=SimpleWorker).work(burst=True)
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertTrue(os.path.exists(mb.mail_home))
 
@@ -80,6 +82,6 @@ class MailboxOperationTestCase(ModoTestCase):
         mail_home_mock.__get__ = mock.Mock(return_value=path)
         domain = models.Domain.objects.get(name="test.com")
         self.ajax_post(reverse("admin:domain_delete", args=[domain.pk]))
-        call_command("handle_mailbox_operations")
+        get_worker("dovecot", worker_class=SimpleWorker).work(burst=True)
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertFalse(os.path.exists(path))
