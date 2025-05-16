@@ -15,9 +15,6 @@ def load_core_settings():
     from . import app_settings
     from .api.v2 import serializers
 
-    param_tools.registry.add(
-        "global", app_settings.GeneralParametersForm, gettext_lazy("General")
-    )
     param_tools.registry.add2(
         "global",
         "core",

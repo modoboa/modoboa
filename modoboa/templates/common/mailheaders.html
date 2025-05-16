@@ -1,9 +1,0 @@
-{% load i18n lib_tags %}
-{% block emailheaders %}
-<div id="emailheaders" class="well">
-  {% for hdr in headers %}<div class="row">
-    <div class="header">{{ hdr.name|localize_header_name }}</div><div class="value">{{ hdr.value }}</div>
-  </div>{% endfor %}
-  {% block extraheaders %}{% endblock %}
-</div>
-{% endblock %}
