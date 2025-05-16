@@ -34,16 +34,6 @@ class DataMixin:
         )
 
 
-# class ViewsTestCase(DataMixin, ModoTestCase):
-#     """Views test cases."""
-
-#     def test_index(self):
-#         """Test index view."""
-#         url = reverse("modoboa_imap_migration:index")
-#         response = self.client.get(url)
-#         self.assertContains(response, '<div id="app">')
-
-
 class AuthenticationTestCase(DataMixin, ModoTestCase):
     """IMAP authentication test case."""
 
