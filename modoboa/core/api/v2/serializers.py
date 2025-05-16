@@ -69,7 +69,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         choices=[("local", gettext_lazy("Local")), ("ldap", "LDAP")], default="local"
     )
     password_scheme = serializers.ChoiceField(
-        choices=[("sha512crypt", "sha512crypt")], required=False
+        choices=[("sha512crypt", "sha512crypt")], default="sha512crypt", required=False
     )
     rounds_number = serializers.IntegerField(default=70000)
     update_scheme = serializers.BooleanField(default=True)
