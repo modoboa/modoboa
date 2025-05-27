@@ -1,18 +1,21 @@
 """PDF credentials handlers."""
 
 import logging
+import os
 
 from django.db.models import signals
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
+from modoboa.admin import signals as admin_signals
 from modoboa.core import models as core_models
 from modoboa.core import signals as core_signals
 from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 
 from .documents import credentials
-from .lib import init_storage_dir, delete_credentials
+from .lib import init_storage_dir, delete_credentials, get_creds_filename
 
 
 @receiver(core_signals.account_password_updated)
@@ -40,3 +43,27 @@ def password_updated(sender, account, password, created, **kwargs):
 def account_deleted(sender, instance, **kwargs):
     """Remove document."""
     delete_credentials(instance)
+
+
+@receiver(admin_signals.extra_account_identities_actions)
+def extra_identities_actions(sender, account, **kwargs):
+    """
+    Add download credential action for identity.
+    Used for api v2.
+    """
+    if not param_tools.get_global_parameter("enabled_pdfcredentials"):
+        return []
+    fname = get_creds_filename(account)
+    if not os.path.exists(fname):
+        return []
+    url = reverse("v2:get-credentials", args=[account.pk])
+    url = url.replace("/api/v2", "")
+    return {
+        "name": "get_credentials",
+        "icon": "mdi-file-download-outline",
+        "label": _("Download PDF credentials"),
+        "type": "download",
+        "content_type": "application/pdf",
+        "url": url,
+        "filename": os.path.basename(fname),
+    }

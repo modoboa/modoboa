@@ -293,6 +293,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         """
         from modoboa.lib.permissions import grant_access_to_object
 
+        # Check if domain's limit for domain admins is not reached yet
         core_signals.can_create_object.send(
             sender=self.__class__, context=self, object_type="domain_admins"
         )

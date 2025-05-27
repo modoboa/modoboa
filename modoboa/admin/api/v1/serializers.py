@@ -85,6 +85,10 @@ class DomainSerializer(serializers.ModelSerializer):
 
     def validate_name(self, value):
         """Check name constraints."""
+        if models.DomainAlias.objects.filter(name=value).exists():
+            raise serializers.ValidationError(
+                _("domain alias with this name already exists")
+            )
         domains_must_have_authorized_mx = param_tools.get_global_parameter(
             "domains_must_have_authorized_mx"
         )
@@ -439,7 +443,11 @@ class WritableAccountSerializer(AccountSerializer):
         mb = admin_models.Mailbox(
             user=account, address=self.address, domain=self.domain, **data
         )
-        mb.set_quota(quota, creator.has_perm("admin.add_domain"))
+        override_rules = (
+            creator.has_perm("admin.add_domain")
+            and not creator.userobjectlimit_set.get(name="quota").max_value
+        )
+        mb.set_quota(quota, override_rules)
         default_msg_limit = param_tools.get_global_parameter(
             "default_mailbox_message_limit"
         )
@@ -527,7 +535,7 @@ class AliasSerializer(serializers.ModelSerializer):
                 value, self.context["request"].user, instance=self.instance
             )
         except ValidationError as err:
-            raise serializers.ValidationError(err) from None
+            raise serializers.ValidationError(err.message) from None
         except AliasExists:
             raise serializers.ValidationError(_("This alias already exists")) from None
         return value.lower()
