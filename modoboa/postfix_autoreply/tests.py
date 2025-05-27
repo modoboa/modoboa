@@ -13,7 +13,7 @@ from django.utils.formats import date_format
 
 from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
 from modoboa.transport import models as tr_models
 
 from . import factories, models
@@ -106,7 +106,7 @@ Content-Type: text/html; charset=UTF-8
 """
 
 
-class EventsTestCase(ModoTestCase):
+class EventsTestCase(ModoAPITestCase):
 
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
@@ -114,23 +114,36 @@ class EventsTestCase(ModoTestCase):
         super().setUpTestData()
         admin_factories.populate_database()
 
+    def _create_armessage(self, account):
+        values = {
+            "mbox": account.mailbox.id,
+            "subject": "I'm off",
+            "content": "I'll back soon",
+            "enabled": True,
+        }
+        response = self.client.post(reverse("v2:armessage-list"), values, format="json")
+        self.assertEqual(response.status_code, 201)
+        return response
+
     def test_domain_created_event(self):
         values = {
             "name": "domain.tld",
             "quota": 100,
             "default_mailbox_quota": 1,
-            "create_dom_admin": False,
-            "stepid": "step3",
             "type": "domain",
         }
-        self.ajax_post(reverse("admin:domain_add"), values)
+        response = self.client.post(reverse("v2:domain-list"), values, format="json")
+        self.assertEqual(response.status_code, 201)
         self.assertTrue(
             tr_models.Transport.objects.filter(pattern="autoreply.domain.tld").exists()
         )
 
     def test_domain_deleted_event(self):
         dom = admin_models.Domain.objects.get(name="test.com")
-        self.ajax_post(reverse("admin:domain_delete", args=[dom.id]), {})
+        response = self.client.post(
+            reverse("v2:domain-delete", args=[dom.id]), {}, format="json"
+        )
+        self.assertEqual(response.status_code, 204)
         with self.assertRaises(tr_models.Transport.DoesNotExist):
             tr_models.Transport.objects.get(pattern="autoreply.test.com")
 
@@ -143,7 +156,10 @@ class EventsTestCase(ModoTestCase):
             "type": "domain",
         }
         dom = admin_models.Domain.objects.get(name="test.com")
-        self.ajax_post(reverse("admin:domain_change", args=[dom.id]), values)
+        response = self.client.put(
+            reverse("v2:domain-detail", args=[dom.id]), values, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(
             tr_models.Transport.objects.filter(pattern="autoreply.test.fr").exists()
         )
@@ -161,16 +177,20 @@ class EventsTestCase(ModoTestCase):
             "first_name": "Tester",
             "last_name": "Toto",
             "role": "SimpleUsers",
-            "quota_act": True,
+            "mailbox": {
+                "use_domain_quota": True,
+            },
             "is_active": True,
             "email": "leon@test.com",
-            "subject": "test",
-            "content": "test",
             "enabled": True,
             "language": "en",
         }
         account = User.objects.get(username="user@test.com")
-        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
+        self._create_armessage(account)
+        response = self.client.put(
+            reverse("v2:account-detail", args=[account.id]), values, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(
             admin_models.AliasRecipient.objects.filter(
                 alias__address="leon@test.com",
@@ -179,7 +199,9 @@ class EventsTestCase(ModoTestCase):
             ).exists()
         )
         values["enabled"] = False
-        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
+        self.client.put(
+            reverse("v2:account-detail", args=[account.id]), values, format="json"
+        )
         self.assertFalse(
             admin_models.AliasRecipient.objects.filter(
                 alias__address="leon@test.com",
@@ -190,7 +212,10 @@ class EventsTestCase(ModoTestCase):
 
     def test_mailbox_deleted_event(self):
         account = User.objects.get(username="user@test.com")
-        self.ajax_post(reverse("admin:account_delete", args=[account.id]), {})
+        self._create_armessage(account)
+        self.client.delete(
+            reverse("v2:account-delete", args=[account.id]), {}, format="json"
+        )
         self.assertFalse(
             admin_models.Alias.objects.filter(
                 address="user@test.com", internal=True
@@ -211,15 +236,17 @@ class EventsTestCase(ModoTestCase):
             "first_name": "Tester",
             "last_name": "Toto",
             "role": "SimpleUsers",
-            "quota_act": True,
+            "mailbox": {
+                "use_domain_quota": True,
+            },
             "is_active": True,
             "email": "leon@test.com",
-            "subject": "test",
-            "content": "test",
             "enabled": True,
             "language": "en",
         }
-        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
+        self.client.put(
+            reverse("v2:account-detail", args=[account.id]), values, format="json"
+        )
         self.assertFalse(
             admin_models.AliasRecipient.objects.filter(
                 alias__address="user@test.com",

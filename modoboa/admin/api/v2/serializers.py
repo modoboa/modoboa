@@ -21,10 +21,12 @@ from modoboa.lib import email_utils
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
 from modoboa.lib import validators, web_utils
+from modoboa.lib.permissions import get_object_owner
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
 from modoboa.limits import constants as limits_constants
 from modoboa.limits import models as limits_models
+from modoboa.limits.lib import allocate_resources_from_user
 from modoboa.transport import models as transport_models
 from modoboa.transport.api.v2 import serializers as transport_serializers
 
@@ -76,6 +78,21 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             raise serializers.ValidationError(
                 {"transport": _("This field is required")}
             )
+        elif dtype == "domain" and data.get("transport"):
+            raise serializers.ValidationError(
+                {"transport": _("This field is valid when type is relaydomain")}
+            )
+        user = self.context["request"].user
+        if user.role == "Resellers":
+            limit = user.userobjectlimit_set.get(name="quota")
+            if limit.max_value != 0:
+                quota = data["quota"]
+                msg = _("You can't define an unlimited quota.")
+                if quota == 0:
+                    raise serializers.ValidationError({"quota": msg})
+                default_mailbox_quota = data["default_mailbox_quota"]
+                if default_mailbox_quota == 0:
+                    raise serializers.ValidationError({"default_mailbox_quota": msg})
         return result
 
     def create(self, validated_data):
@@ -89,10 +106,14 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             transport.save()
             domain.transport = transport
             domain.save()
-
         if not domain_admin:
             return domain
 
+        # 0. Check user limit
+        user = self.context["request"].user
+        core_signals.can_create_object.send(
+            self.__class__, context=user, object_type="domain_admins"
+        )
         # 1. Create a domain administrator
         username = "{}@{}".format(domain_admin["username"], domain.name)
         try:
@@ -101,7 +122,6 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             pass
         else:
             raise lib_exceptions.Conflict(_("User '%s' already exists") % username)
-        user = self.context["request"].user
         core_signals.can_create_object.send(
             self.__class__, context=user, klass=models.Mailbox
         )
@@ -150,7 +170,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         """Update domain and create/update transport."""
         transport_def = validated_data.pop("transport", None)
         resources = validated_data.pop("domainobjectlimit_set", None)
-        super().update(instance, validated_data)
+        instance = super().update(instance, validated_data)
         if transport_def and instance.type == "relaydomain":
             transport = getattr(instance, "transport", None)
             created = False
@@ -618,10 +638,13 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         instance.save()
         resources = validated_data.get("resources")
         if resources:
+            owner = get_object_owner(instance)
             for resource in resources:
-                instance.userobjectlimit_set.filter(name=resource["name"]).update(
-                    max_value=resource["max_value"]
-                )
+                limit = instance.userobjectlimit_set.get(name=resource["name"])
+                if not owner.is_superuser:
+                    allocate_resources_from_user(limit, owner, resource["max_value"])
+                limit.max_value = resource["max_value"]
+                limit.save()
         self.set_permissions(instance, domains)
         return instance
 

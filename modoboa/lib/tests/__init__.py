@@ -103,16 +103,24 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
         """Create a default user."""
         super().setUpTestData()
         management.call_command("load_initial_data")
-        cls.token = Token.objects.create(
-            user=core_models.User.objects.get(username="admin")
-        )
+        cls.sadmin = core_models.User.objects.get(username="admin")
+        cls.token = Token.objects.create(user=cls.sadmin)
 
     def setUp(self):
         """Setup."""
         super().setUp()
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+        self._tokens = {self.sadmin: self.token}
+        self.authenticate_user(self.sadmin)
         self.workdir = tempfile.mkdtemp()
         self.set_global_parameter("storage_dir", self.workdir, app="pdfcredentials")
+
+    def authenticate_user(self, user: core_models.User) -> Token:
+        if user not in self._tokens:
+            self._tokens[user] = Token.objects.create(user=user)
+
+        token = self._tokens[user]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {token.key}")
+        return token
 
     def create_session(self):
         """Enable session storage across requests."""
