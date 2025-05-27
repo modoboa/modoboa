@@ -20,8 +20,11 @@ def check_object_limit(sender, context, **kwargs):
         # FIXME: Useless?
         if context.is_superuser:
             return True
-        ct = ContentType.objects.get_for_model(kwargs.get("klass"))
-        limits = context.userobjectlimit_set.filter(content_type=ct)
+        if "klass" in kwargs:
+            ct = ContentType.objects.get_for_model(kwargs.get("klass"))
+            limits = context.userobjectlimit_set.filter(content_type=ct)
+        else:
+            limits = context.userobjectlimit_set.filter(name=kwargs["object_type"])
     elif context.__class__.__name__ == "Domain":
         if not param_tools.get_global_parameter("enable_domain_limits"):
             return

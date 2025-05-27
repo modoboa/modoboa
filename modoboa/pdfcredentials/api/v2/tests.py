@@ -162,7 +162,7 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         """Test validation for unwritable directory."""
         self.set_global_parameter("storage_dir", "/nonexistentdir")
         self.set_global_parameter("enabled_pdfcredentials", False)
-        url = reverse("v2:parameter-detail", args=["pdfcredentials"])
+        url = reverse("v2:parameter-global-detail", args=["pdfcredentials"])
         data = {
             "webpanel_url": "http://localhost",
             "smtp_server_address": "mail.localhost",
