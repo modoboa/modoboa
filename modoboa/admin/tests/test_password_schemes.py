@@ -1,11 +1,11 @@
 from django.urls import reverse
 
 from modoboa.core.models import User
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import ModoAPITestCase
 from .. import factories
 
 
-class PasswordSchemesTestCase(ModoTestCase):
+class PasswordSchemesTestCase(ModoAPITestCase):
 
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
@@ -18,15 +18,14 @@ class PasswordSchemesTestCase(ModoTestCase):
             "username": "tester@test.com",
             "first_name": "Tester",
             "last_name": "Toto",
-            "password1": "Toto1234",
-            "password2": "Toto1234",
+            "password": "Toto1234",
             "role": "SimpleUsers",
-            "quota_act": True,
             "is_active": True,
             "email": "tester@test.com",
-            "stepid": "step2",
+            "mailbox": {"use_domain_quota": True},
         }
-        self.ajax_post(reverse("admin:account_add"), values)
+        response = self.client.post(reverse("v2:account-list"), values, format="json")
+        self.assertEqual(response.status_code, 201)
 
     def _test_scheme(self, name, startpattern):
         self.set_global_parameter("password_scheme", name, app="core")

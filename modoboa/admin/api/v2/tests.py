@@ -7,7 +7,7 @@ from django.utils.encoding import force_str
 from rest_framework.authtoken.models import Token
 
 from modoboa.admin import factories, models, constants
-from modoboa.core import models as core_models
+from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
 
@@ -98,6 +98,18 @@ class DomainViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 204)
 
+    def test_delete_auto_account_removal(self):
+        self.set_global_parameter("auto_account_removal", True)
+        dom = models.Domain.objects.get(name="test2.com")
+        url = reverse("v2:domain-delete", args=[dom.pk])
+        response = self.client.post(url, {}, format="json")
+        self.assertEqual(response.status_code, 204)
+        with self.assertRaises(models.Domain.DoesNotExist):
+            dom.refresh_from_db()
+        self.assertFalse(
+            core_models.User.objects.filter(username="admin@test2.com").exists()
+        )
+
     def test_administrators(self):
         domain = models.Domain.objects.get(name="test.com")
         url = reverse("v2:domain-administrators", args=[domain.pk])
@@ -169,8 +181,9 @@ class AccountViewSetTestCase(ModoAPITestCase):
 
     def test_create(self):
         url = reverse("v2:account-list")
+        username = "toto@test.com"
         data = {
-            "username": "toto@test.com",
+            "username": username,
             "role": "SimpleUsers",
             "mailbox": {"use_domain_quota": True},
             "password": "Toto12345",
@@ -180,6 +193,30 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
         self.assertTrue(models.Alias.objects.filter(address="alias3@test.com").exists())
+        # Check if self alias has been created
+        self.assertTrue(
+            models.AliasRecipient.objects.select_related("alias")
+            .filter(
+                alias__address=username,
+                address=username,
+                alias__internal=True,
+            )
+            .exists()
+        )
+
+    def test_create_with_existing_alias(self):
+        alias = models.Alias.objects.get(address="alias@test.com")
+        alias.set_recipients(["user@external.com"])
+        values = {
+            "username": "tester@test.com",
+            "role": "SimpleUsers",
+            "mailbox": {"use_domain_quota": True},
+            "is_active": True,
+            "aliases": ["alias@test.com"],
+        }
+        response = self.client.post(reverse("v2:account-list"), values, format="json")
+        self.assertTrue(response.status_code, 201)
+        self.assertTrue(alias.aliasrecipient_set.count() == 2)
 
     def test_create_admin(self):
         url = reverse("v2:account-list")
@@ -241,12 +278,43 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertIn("password", resp.json())
 
     def test_delete(self):
-        account = core_models.User.objects.get(username="user@test.com")
+        username = "user@test.com"
+        account = core_models.User.objects.get(username=username)
         url = reverse("v2:account-delete", args=[account.pk])
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 204)
         with self.assertRaises(core_models.User.DoesNotExist):
             account.refresh_from_db()
+        # Check if self alias has been deleted
+        self.assertFalse(
+            models.AliasRecipient.objects.select_related("alias")
+            .filter(
+                alias__address=username,
+                address=username,
+                alias__internal=True,
+            )
+            .exists()
+        )
+
+    def test_delete_default_superadmin(self):
+        """Delete default superadmin."""
+        sadmin2 = core_factories.UserFactory(username="admin2", is_superuser=True)
+        sadmin = core_models.User.objects.get(username="admin")
+        self.authenticate_user(sadmin2)
+        response = self.client.post(reverse("v2:account-delete", args=[sadmin.pk]), {})
+        self.assertEqual(response.status_code, 204)
+        values = {
+            "username": "user@test.com",
+            "role": "DomainAdmins",
+            "is_active": True,
+            "language": "en",
+            "mailbox": {"use_domain_quota": True},
+        }
+        account = core_models.User.objects.get(username="user@test.com")
+        response = self.client.put(
+            reverse("v2:account-detail", args=[account.pk]), values, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
 
     def test_update(self):
         account = core_models.User.objects.get(username="user@test.com")
@@ -260,6 +328,30 @@ class AccountViewSetTestCase(ModoAPITestCase):
         }
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
+
+    def test_rename(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        new_username = "user_updated@test.com"
+        data = {
+            "username": new_username,
+            "role": "SimpleUsers",
+            "password": "Toto12345",
+            "mailbox": {"quota": 10},
+            "aliases": ["aliasupdate1@test.com"],
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        # Check if self alias has been updated
+        self.assertTrue(
+            models.AliasRecipient.objects.select_related("alias")
+            .filter(
+                alias__address=new_username,
+                address=new_username,
+                alias__internal=True,
+            )
+            .exists()
+        )
 
     def test_mailbox_options_update(self):
         account = core_models.User.objects.get(username="user@test.com")
@@ -408,6 +500,49 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()["resources"]), 2)
 
+    def _set_quota(self, email, value, expected_status=200):
+        account = core_models.User.objects.get(username=email)
+        values = {
+            "username": email,
+            "role": "SimpleUsers",
+            "mailbox": {"use_domain_quota": False, "quota": value},
+            "is_active": True,
+            "language": "en",
+        }
+        response = self.client.put(
+            reverse("v2:account-detail", args=[account.id]), values, format="json"
+        )
+        self.assertEqual(response.status_code, expected_status)
+
+    def test_set_nul_quota_as_superadmin(self):
+        self._set_quota("user@test.com", 0)
+
+    def test_set_nul_quota_as_domainadmin(self):
+        """Check cases where a domain admin set unlimited quota."""
+        dadmin = core_models.User.objects.get(username="admin@test.com")
+        self.authenticate_user(dadmin)
+        # Fails because domain has a quota
+        self._set_quota("user@test.com", 0, 400)
+
+        dadmin = core_models.User.objects.get(username="admin@test2.com")
+        self.authenticate_user(dadmin)
+        # Ok because domain has no quota
+        self._set_quota("user@test2.com", 0)
+
+    def test_domain_quota(self):
+        """Check domain quota."""
+        dom = models.Domain.objects.get(name="test.com")
+        dom.quota = 100
+        dom.save(update_fields=["quota"])
+        # 2 x 10MB
+        self.assertEqual(dom.allocated_quota, 20)
+        self._set_quota("user@test.com", 80)
+        del dom.allocated_quota
+        # 10 + 80 < 100 => ok
+        self.assertEqual(dom.allocated_quota, 90)
+        # 30 + 80 > 100 => failure
+        self._set_quota("admin@test.com", 30, 400)
+
 
 class IdentityViewSetTestCase(ModoAPITestCase):
     @classmethod
@@ -524,6 +659,20 @@ class AliasViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertIn("address", resp.json())
+
+    def test_create_on_existing_account(self):
+        values = {
+            "address": "user@test.com",
+            "recipients": ["ext@doman.test"],
+            "enabled": True,
+        }
+        response = self.client.post(reverse("v2:alias-list"), values, format="json")
+        self.assertEqual(response.status_code, 201)
+        # Check that internal alias has not been updated
+        alias = models.Alias.objects.get(address="user@test.com", internal=True)
+        self.assertTrue(alias.aliasrecipient_set.count() == 1)
+        alias = models.Alias.objects.get(address="user@test.com", internal=False)
+        self.assertTrue(alias.aliasrecipient_set.count() == 1)
 
 
 class UserAccountViewSetTestCase(ModoAPITestCase):
