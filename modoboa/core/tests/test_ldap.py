@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.functional import cached_property
 
 from modoboa.lib import exceptions
-from modoboa.lib.tests import NO_LDAP, ModoTestCase
+from modoboa.lib.tests import NO_LDAP, ModoTestCase, ModoAPITestCase
 from .. import factories, models
 
 
@@ -136,7 +136,7 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.check_created_user("mailadmin@example.com", "DomainAdmins", False)
 
 
-class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
+class ProfileTestCase(LDAPTestCaseMixin, ModoAPITestCase):
     """Profile related tests."""
 
     @classmethod
@@ -159,14 +159,12 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.searchbind_mode()
 
         username = "testuser@example.com"
+        account = models.User.objects.get(username=username)
         self.authenticate(username, "test")
-        self.ajax_post(
-            reverse("core:user_profile"),
-            {
-                "language": "en",
-                "oldpassword": "test",
-                "newpassword": "Toto1234",
-                "confirmation": "Toto1234",
-            },
+        response = self.client.patch(
+            reverse("v2:account-detail", args=[account.id]),
+            {"password": "Toto1234"},
+            format="json",
         )
+        self.assertEqual(response.status_code, 200)
         self.authenticate(username, "Toto1234", False)

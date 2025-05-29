@@ -71,6 +71,15 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             many=True, source="domainobjectlimit_set", required=False
         )
 
+    def validate_enable_dkim(self, value):
+        """Check prerequisites."""
+        if not value:
+            return value
+        storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
+        if not storage_dir:
+            raise ValidationError(_("DKIM keys storage directory not configured"))
+        return value
+
     def validate(self, data):
         result = super().validate(data)
         dtype = data.get("type", "domain")
@@ -205,7 +214,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
 
     # Domain settings
     enable_mx_checks = serializers.BooleanField(default=True)
-    valid_mxs = serializers.CharField(allow_blank=True)
+    valid_mxs = serializers.CharField(default="", allow_blank=True)
     domains_must_have_authorized_mx = serializers.BooleanField(default=False)
     enable_ipv6_mx_checks = serializers.BooleanField(default=True)
     enable_spf_checks = serializers.BooleanField(default=True)

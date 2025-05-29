@@ -83,7 +83,7 @@ class Registry:
     def get_label(self, level: str, app: str) -> str:
         return self._registry2[level][app]["label"]
 
-    def get_serializer_classes(self, level):
+    def get_serializers(self, level):
         """Return form instances for all app of the given level."""
         sorted_apps = []
         first_app = "core"
