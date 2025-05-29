@@ -2,13 +2,12 @@
 
 from django.db.models import signals
 from django.dispatch import receiver
-from django.utils.translation import gettext as _
 
 from modoboa.admin import models as admin_models, signals as admin_signals
 from modoboa.core import signals as core_signals
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.transport import models as tr_models
-from . import forms, lib, models, postfix_maps
+from . import lib, models, postfix_maps
 
 
 @receiver(admin_signals.use_external_recipients)
@@ -47,48 +46,6 @@ def register_postfix_maps(sender, **kwargs):
         postfix_maps.RelayDomainsMap,
         postfix_maps.SplitedDomainsTransportMap,
         postfix_maps.RelayRecipientVerification,
-    ]
-
-
-@receiver(admin_signals.extra_domain_forms)
-def extra_domain_form(sender, user, **kwargs):
-    """Return relay settings for domain edition."""
-    if not user.has_perm("relaydomains.change_relaydomain"):
-        return []
-    domain = kwargs.get("domain")
-    if not domain or domain.type != "relaydomain":
-        return []
-    return [
-        {
-            "id": "relaydomain",
-            "title": _("Transport settings"),
-            "cls": forms.RelayDomainFormGeneral,
-            "formtpl": "transport/_transport_form.html",
-        }
-    ]
-
-
-@receiver(admin_signals.get_domain_form_instances)
-def fill_domain_instances(sender, user, domain, **kwargs):
-    """Fill the relaydomain form with the right instance."""
-    condition = (
-        not user.has_perm("transport.change_transport") or domain.type != "relaydomain"
-    )
-    if condition:
-        return {}
-    return {"relaydomain": domain.transport}
-
-
-@receiver(admin_signals.extra_domain_wizard_steps)
-def extra_wizard_step(sender, **kwargs):
-    """Return a step to configure the relay settings."""
-    return [
-        forms.RelayDomainWizardStep(
-            "relay",
-            forms.RelayDomainFormGeneral,
-            _("Transport"),
-            "transport/_transport_form.html",
-        )
     ]
 
 

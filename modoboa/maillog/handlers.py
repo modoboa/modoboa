@@ -1,24 +1,11 @@
 """Modoboa stats signal handlers."""
 
-from django.urls import reverse
 from django.dispatch import receiver
-from django.utils.translation import gettext as _
 
-from modoboa.core import signals as core_signals
 from modoboa.parameters import tools as param_tools
 
 from . import graphics
 from . import signals
-
-
-@receiver(core_signals.extra_user_menu_entries)
-def menu(sender, location, user, **kwargs):
-    """Return extra menu entry."""
-    if location != "top_menu" or user.role == "SimpleUsers":
-        return []
-    return [
-        {"name": "stats", "label": _("Statistics"), "url": reverse("maillog:fullindex")}
-    ]
 
 
 @receiver(signals.get_graph_sets)

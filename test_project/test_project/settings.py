@@ -162,8 +162,6 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "modoboa.core.context_processors.top_notifications",
-                "modoboa.core.context_processors.new_admin_url",
             ],
             "debug": DEBUG,
         },
@@ -194,7 +192,6 @@ USE_TZ = True
 
 STATIC_URL = "/sitestatic/"
 STATIC_ROOT = os.path.join(BASE_DIR, "sitestatic")
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "..", "modoboa", "bower_components"),)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
