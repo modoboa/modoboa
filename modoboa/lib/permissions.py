@@ -18,6 +18,9 @@ def get_account_roles(user, account=None):
     :param ``User`` account: account beeing modified (None on creation)
     :return: list of strings
     """
+    if account and user == account:
+        # Special case to ensure a user cannot change its own role
+        return [(user.role, "")]
     result = [core_constants.SIMPLEUSERS_ROLE]
     filters = core_signals.user_can_set_role.send(
         sender="get_account_roles", user=user, role="DomainAdmins", account=account

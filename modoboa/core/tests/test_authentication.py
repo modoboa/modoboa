@@ -428,7 +428,7 @@ class SMTPAuthenticationTestCase(ModoTestCase):
         data = {"username": username, "password": password}
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("core:user_index")))
+        self.assertEqual(response.url, "/")
         mock_smtp.return_value.login.assert_called_once_with(username, password)
         self.assertTrue(models.User.objects.filter(username=username).exists())
 

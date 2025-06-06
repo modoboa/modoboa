@@ -2,18 +2,15 @@
 
 import os
 import shutil
-import tempfile
 
 from django.core.management import call_command
 from django.urls import reverse
 
-from modoboa.core.tests.test_views import SETTINGS_SAMPLE
-
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import ModoAPITestCase, SETTINGS_SAMPLE
 from .. import factories
 
 
-class NeedDovecotUpdateTestCase(ModoTestCase):
+class NeedDovecotUpdateTestCase(ModoAPITestCase):
     """Test need dovecot ldap update command."""
 
     @classmethod
@@ -25,7 +22,6 @@ class NeedDovecotUpdateTestCase(ModoTestCase):
     def setUp(self):
         """Initiate initial env."""
         super().setUp()
-        self.workdir = tempfile.mkdtemp()
         self.localconfig.need_dovecot_update = False
         self.localconfig.save()
 
@@ -34,11 +30,10 @@ class NeedDovecotUpdateTestCase(ModoTestCase):
         shutil.rmtree(self.workdir)
 
     def test_update_dovecot_update_state_valid_form(self):
-        url = reverse("core:parameters")
-        settings = SETTINGS_SAMPLE.copy()
-        response = self.client.post(url, settings, format="json")
+        url = reverse("v2:parameter-global-detail", args=["core"])
+        settings = SETTINGS_SAMPLE["core"].copy()
+        response = self.client.put(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), "Parameters saved")
         self.localconfig.refresh_from_db()
         self.assertTrue(self.localconfig.need_dovecot_update)
 

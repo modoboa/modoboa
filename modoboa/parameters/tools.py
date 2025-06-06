@@ -29,16 +29,7 @@ class Registry:
 
     def __init__(self):
         """Constructor."""
-        self._registry = {"global": {}, "user": {}}
         self._registry2 = {"global": {}, "user": {}}
-
-    def add(self, level, formclass, label):
-        """Add a new class containing parameters."""
-        self._registry[level][formclass.app] = {
-            "label": label,
-            "formclass": formclass,
-            "defaults": {},
-        }
 
     def add2(
         self,
@@ -91,7 +82,7 @@ class Registry:
             sorted_apps.append(first_app)
         sorted_apps += sorted(
             (a for a in self._registry2[level] if a != first_app),
-            key=lambda a: self._registry[level][a]["label"],
+            key=lambda a: self._registry2[level][a]["label"],
         )
         result = []
         for app in sorted_apps:

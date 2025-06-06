@@ -328,9 +328,9 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
 class WritableAccountSerializer(AccountSerializer):
     """Serializer to create account."""
 
-    random_password = serializers.BooleanField(default=False)
+    random_password = serializers.BooleanField(default=False, write_only=True)
     role = serializers.ChoiceField(choices=core_constants.ROLES)
-    password = serializers.CharField(required=False)
+    password = serializers.CharField(required=False, write_only=True)
 
     class Meta(AccountSerializer.Meta):
         fields = AccountSerializer.Meta.fields + ("password", "random_password")
@@ -341,10 +341,6 @@ class WritableAccountSerializer(AccountSerializer):
         request = self.context.get("request")
         if not request:
             return
-        user = self.context["request"].user
-        self.fields["role"] = serializers.ChoiceField(
-            choices=permissions.get_account_roles(user)
-        )
         self.fields["domains"] = serializers.ListField(
             child=serializers.CharField(), allow_empty=False, required=False
         )
@@ -352,6 +348,13 @@ class WritableAccountSerializer(AccountSerializer):
     def validate_username(self, value):
         """Lower case username."""
         return value.lower()
+
+    def validate_role(self, value):
+        user = self.context["request"].user
+        allowed_values = permissions.get_account_roles(user, self.instance)
+        if value not in [role[0] for role in allowed_values]:
+            raise serializers.ValidationError("Invalid choice")
+        return value
 
     def validate(self, data):
         """Check constraints."""

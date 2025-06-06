@@ -159,8 +159,8 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoAPITestCase):
         self.searchbind_mode()
 
         username = "testuser@example.com"
-        account = models.User.objects.get(username=username)
         self.authenticate(username, "test")
+        account = models.User.objects.get(username=username)
         response = self.client.patch(
             reverse("v2:account-detail", args=[account.id]),
             {"password": "Toto1234"},
