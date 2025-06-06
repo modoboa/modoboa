@@ -46,31 +46,42 @@ class AccountTestCase(ModoAPITestCase):
         factories.populate_database()
 
     def test_aliases_update_on_disable(self):
-        """Check if aliases are updated when account is disabled."""
+        """Check if aliases are disabled when account is disabled."""
         account = User.objects.get(username="user@test.com")
         internal = models.Alias.objects.get(address=account.email, internal=True)
         forward = models.Alias.objects.create(address=account.email, internal=False)
+        factories.AliasRecipientFactory.create(
+            address=account.mailbox.full_address,
+            alias=forward,
+            r_mailbox=account.mailbox,
+        )
         values = {
             "username": "user@test.com",
             "role": "SimpleUsers",
-            "quota_act": True,
+            "mailbox": {
+                "use_domain_quota": True,
+            },
             "is_active": False,
             "email": "user@test.com",
             "language": "en",
-            "subject": "subject",
-            "content": "content",
         }
-        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
+        response = self.client.put(
+            reverse("v2:account-detail", args=[account.pk]), values, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
         internal.refresh_from_db()
         self.assertFalse(internal.enabled)
         forward.refresh_from_db()
         self.assertFalse(forward.enabled)
         values["is_active"] = True
-        self.ajax_post(reverse("admin:account_change", args=[account.id]), values)
+        response = self.client.put(
+            reverse("v2:account-detail", args=[account.pk]), values, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
         internal.refresh_from_db()
-        self.assertTrue(internal.enabled)
+        self.assertFalse(internal.enabled)
         forward.refresh_from_db()
-        self.assertTrue(forward.enabled)
+        self.assertFalse(forward.enabled)
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
@@ -200,6 +211,7 @@ class PermissionsTestCase(ModoAPITestCase):
     def test_self_modif(self):
         dadmin = User.objects.get(username="admin@test.com")
         self.authenticate_user(dadmin)
+        self.assertTrue(dadmin.can_access(models.Domain.objects.get(name="test.com")))
 
         values = {
             "username": "admin@test.com",
@@ -210,11 +222,11 @@ class PermissionsTestCase(ModoAPITestCase):
             },
             "is_active": True,
             "language": "en",
+            "domains": ["test.com"],
         }
         response = self.client.put(
             reverse("v2:account-detail", args=[dadmin.id]), values, format="json"
         )
-        print(response.json())
         self.assertEqual(response.status_code, 200)
         self.assertEqual(dadmin.role, "DomainAdmins")
         self.assertTrue(dadmin.can_access(models.Domain.objects.get(name="test.com")))
@@ -223,9 +235,8 @@ class PermissionsTestCase(ModoAPITestCase):
         response = self.client.put(
             reverse("v2:account-detail", args=[dadmin.id]), values, format="json"
         )
-        self.assertEqual(response.status_code, 200)
-        dadmin.refresh_from_db()
-        self.assertEqual(dadmin.role, "DomainAdmins")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["role"][0], "Invalid choice")
 
         self.authenticate_user(self.reseller)
         self.assertTrue(self.reseller.can_access(self.reseller))
@@ -234,6 +245,7 @@ class PermissionsTestCase(ModoAPITestCase):
             "first_name": "Reseller",
             "is_active": True,
             "language": "en",
+            "role": "Resellers",
         }
         response = self.client.put(
             reverse("v2:account-detail", args=[self.reseller.id]), values, format="json"
@@ -244,8 +256,8 @@ class PermissionsTestCase(ModoAPITestCase):
         response = self.client.put(
             reverse("v2:account-detail", args=[self.reseller.id]), values, format="json"
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.reseller.role, "Resellers")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["role"][0], "Invalid choice")
 
     def test_domainadmin_deletes_superadmin(self):
         """Check domain admins restrictions about super admins
@@ -306,7 +318,7 @@ class PermissionsTestCase(ModoAPITestCase):
 
     def test_domadmins_permissions(self):
         """
-        Check that two domain admins in the same domains see the same
+        Check that two domain admins in the same domain see the same
         content.
         """
         dom = models.Domain.objects.get(name="test.com")
@@ -327,7 +339,8 @@ class PermissionsTestCase(ModoAPITestCase):
             "mailbox": {"use_domain_quota": True},
             "is_active": True,
         }
-        self.client.post(reverse("v2:account-list"), values, format="json")
+        response = self.client.post(reverse("v2:account-list"), values, format="json")
+        self.assertEqual(response.status_code, 201)
 
-        new_mb = models.Mailbox.objects.get(user__username="new@test.com")
+        new_mb = models.Mailbox.objects.get(user__username=values["username"])
         self.assertTrue(mb.user.can_access(new_mb))
