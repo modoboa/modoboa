@@ -284,4 +284,5 @@ def get_global_parameters(app, **kwargs):
 def apply_to_django_settings():
     """Apply global parameters to Django settings module."""
     for serializer in registry.get_serializers("global"):
-        serializer["serializer"].to_django_settings()
+        if hasattr(serializer["serializer"], "to_django_settings"):
+            serializer["serializer"].to_django_settings()
