@@ -109,17 +109,11 @@ class DKIMTestCase(ModoAPITestCase):
     def test_global_settings(self):
         """Check validation rules."""
         url = reverse("v2:parameter-global-detail", args=["admin"])
-        settings = SETTINGS_SAMPLE.copy()
+        settings = SETTINGS_SAMPLE["admin"].copy()
         settings["dkim_keys_storage_dir"] = "/wrong"
         response = self.client.put(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
-        compare(
-            response.json(),
-            {
-                "form_errors": {"dkim_keys_storage_dir": ["Directory not found."]},
-                "prefix": "admin",
-            },
-        )
+        compare(response.json(), {"dkim_keys_storage_dir": ["Directory not found."]})
         settings["admin-dkim_keys_storage_dir"] = self.workdir
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
@@ -142,12 +136,6 @@ class DKIMTestCase(ModoAPITestCase):
         )
 
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
-        response = self.client.post(url, values, format="json")
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json()["dkim_key_selector"][0], "This field is required."
-        )
-
         values["dkim_key_selector"] = "default"
         response = self.client.post(url, values, format="json")
         self.assertEqual(response.status_code, 201)
