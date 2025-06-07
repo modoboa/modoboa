@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from modoboa.core import models
+from modoboa.parameters import tools as param_tools
 
 logger = logging.getLogger("modoboa.auth")
 
@@ -28,7 +29,16 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
 
     def validate_password(self, value):
         """Check password."""
-        if not self.instance.check_password(value):
+        authentication_type = param_tools.get_global_parameter("authentication_type")
+        if authentication_type != "ldap":
+            check = self.instance.check_password(value)
+        else:
+            from django_auth_ldap.backend import LDAPBackend
+
+            check = LDAPBackend().authenticate(
+                self.context["request"], self.instance.username, value
+            )
+        if not check:
             raise serializers.ValidationError("Password not correct")
         return value
 

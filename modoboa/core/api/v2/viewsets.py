@@ -76,7 +76,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
     )
     def set_me_password(self, request):
         serializer = core_v1_serializers.AccountPasswordSerializer(
-            instance=request.user, data=request.data
+            instance=request.user, data=request.data, context={"request": request}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
