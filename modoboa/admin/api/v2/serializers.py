@@ -1,6 +1,7 @@
 """Admin API v2 serializers."""
 
 import ipaddress
+import os
 from typing import List
 
 from django.conf import settings
@@ -262,6 +263,8 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     _("openssl not found, please make sure it is installed.")
                 )
+            if not os.path.exists(value):
+                raise serializers.ValidationError(_("Directory not found."))
         return value
 
     def validate_valid_mxs(self, value):
