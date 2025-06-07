@@ -3,7 +3,6 @@
 from unittest import mock
 
 from django.test import SimpleTestCase
-from django.urls import reverse
 from django.utils import timezone
 
 from dns.rdtypes.ANY.TXT import TXT
@@ -125,56 +124,6 @@ class LibTestCase(SimpleTestCase):
             self.assertEqual(str(ctx.exception), record[1])
         key = lib.check_dkim_syntax("v=DKIM1;p=XXX123")
         self.assertEqual(key, "XXX123")
-
-
-class ViewsTestCase(ModoTestCase):
-    """A test case for views."""
-
-    @classmethod
-    def setUpTestData(cls):
-        """Create some records."""
-        super().setUpTestData()
-        cls.spf_rec = factories.DNSRecordFactory(
-            type="spf", value="v=SPF1 mx -all", is_valid=True, domain__name="test.com"
-        )
-        cls.dmarc_rec = factories.DNSRecordFactory(
-            type="dmarc",
-            value="XXX",
-            is_valid=False,
-            error="Not a DMARC record",
-            domain__name="test.com",
-        )
-        cls.dkim_rec = factories.DNSRecordFactory(
-            type="dkim",
-            value="12345",
-            is_valid=False,
-            error="Public key mismatchs",
-            domain__name="test.com",
-        )
-        cls.ac_rec = factories.DNSRecordFactory(
-            type="autoconfig", value="1.2.3.4", is_valid=True, domain__name="test.com"
-        )
-
-    def test_record_detail_view(self):
-        url = reverse("dnstools:dns_record_detail", args=[self.spf_rec.pk])
-        response = self.client.get(url)
-        self.assertContains(response, "A DNS record has been found and is valid")
-        url = reverse("dnstools:dns_record_detail", args=[self.dmarc_rec.pk])
-        response = self.client.get(url)
-        self.assertContains(response, "Not a DMARC record")
-
-    def test_autoconfig_record_status_view(self):
-        url = reverse(
-            "dnstools:autoconfig_records_status", args=[self.ac_rec.domain.pk]
-        )
-        response = self.client.get(url)
-        self.assertContains(response, "autoconfig record (Mozilla) found")
-        self.assertContains(response, "autodiscover record (Microsoft) not found")
-
-    def test_domain_dns_configuration(self):
-        url = reverse("dnstools:domain_dns_configuration", args=[self.ac_rec.domain.pk])
-        response = self.client.get(url)
-        self.assertContains(response, "[IP address of your Modoboa server]")
 
 
 class DomainTestCase(ModoTestCase):

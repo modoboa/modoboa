@@ -162,8 +162,6 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "modoboa.core.context_processors.top_notifications",
-                "modoboa.core.context_processors.new_admin_url",
             ],
             "debug": DEBUG,
         },
@@ -194,7 +192,6 @@ USE_TZ = True
 
 STATIC_URL = "/sitestatic/"
 STATIC_ROOT = os.path.join(BASE_DIR, "sitestatic")
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "..", "modoboa", "bower_components"),)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -235,11 +232,11 @@ OAUTH2_PROVIDER = {
 
 REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
-        "user": "200/minute",
-        "ddos": "10/second",
+        "user": "400/minute",
+        "ddos": "50/second",
         "ddos_lesser": "200/minute",
         "login": "10/minute",
-        "password_recovery_request": "11/hour",
+        "password_recovery_request": "12/hour",
         "password_recovery_totp_check": "25/hour",
         "password_recovery_apply": "25/hour",
     },

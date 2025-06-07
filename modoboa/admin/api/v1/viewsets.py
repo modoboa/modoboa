@@ -14,6 +14,7 @@ from rest_framework.response import Response
 
 from modoboa.core import models as core_models
 from modoboa.core import sms_backends
+from modoboa.core.api.v1 import serializers as core_serializers
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
 from modoboa.lib.throttle import GetThrottleViewsetMixin, PasswordResetRequestThrottle
@@ -112,7 +113,7 @@ class AccountViewSet(
         action_dict = {
             "list": serializers.AccountSerializer,
             "retrieve": serializers.AccountSerializer,
-            "password": serializers.AccountPasswordSerializer,
+            "password": core_serializers.AccountPasswordSerializer,
             "reset_password": serializers.ResetPasswordSerializer,
         }
         return action_dict.get(self.action, serializers.WritableAccountSerializer)

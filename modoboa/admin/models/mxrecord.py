@@ -13,7 +13,8 @@ class MXRecordQuerySet(models.QuerySet):
 
     def has_valids(self):
         """Return managed results."""
-        if param_tools.get_global_parameter("valid_mxs").strip():
+        valid_mxs = param_tools.get_global_parameter("valid_mxs")
+        if valid_mxs and valid_mxs.strip():
             return self.filter(managed=True).exists()
         return self.exists()
 

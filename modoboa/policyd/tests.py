@@ -11,13 +11,12 @@ import time
 from django import db
 from django.core.management import call_command
 from django.test import TransactionTestCase
-from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
 from modoboa.lib.redis import get_redis_connection
-from modoboa.lib.tests import ModoTestCase, ParametersMixin
+from modoboa.lib.tests import ModoAPITestCase, ParametersMixin
 from modoboa.policyd import core as policyd_core
 
 from . import constants
@@ -210,7 +209,7 @@ sasl_username=user@test.com
         self.assertEqual(self.rclient.hget(constants.REDIS_HASHNAME, account.email), 10)
 
 
-class ModelsTestCase(RedisTestCaseMixin, ModoTestCase):
+class ModelsTestCase(RedisTestCaseMixin, ModoAPITestCase):
     """Admin models test cases."""
 
     @classmethod
@@ -218,24 +217,6 @@ class ModelsTestCase(RedisTestCaseMixin, ModoTestCase):
         """Create test data."""
         super().setUpTestData()
         admin_factories.populate_database()
-
-    def test_domain_detail_view(self):
-        domain = admin_models.Domain.objects.get(name="test.com")
-        domain.message_limit = 10
-        domain.save()
-        url = reverse("admin:domain_detail", args=[domain.pk])
-        response = self.client.get(url)
-        self.assertContains(response, "Message sending limit")
-
-    def test_account_detail_view(self):
-        account = core_models.User.objects.get(username="user@test.com")
-        mb = account.mailbox
-        mb.message_limit = 10
-        mb.save()
-
-        url = reverse("admin:account_detail", args=[account.pk])
-        response = self.client.get(url)
-        self.assertContains(response, "Message sending limit")
 
     def test_domain_signal_handler(self):
         domain = admin_models.Domain.objects.get(name="test.com")
