@@ -2391,7 +2391,7 @@ msgstr "ページ表示で優先する言語。"
 
 #: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr "もう 1 つのメールアドレス。万が一の際に利用します。"
+msgstr "別のメールアドレス。再設定が必要な際に利用します。"
 
 #: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
