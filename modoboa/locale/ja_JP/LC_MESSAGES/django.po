@@ -2723,7 +2723,7 @@ msgstr "トークンを再生成します。"
 
 #: core/templates/core/user_security.html:61
 msgid "Reset recovery codes"
-msgstr "復元コードのリセット"
+msgstr "再設定コードのリセット"
 
 #: core/templates/core/user_security.html:65
 msgid ""
