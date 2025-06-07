@@ -157,6 +157,5 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoAPITestCase):
             {"password": "test", "new_password": "Toto1234"},
             format="json",
         )
-        print(response.json())
         self.assertEqual(response.status_code, 200)
         self.authenticate(username, "Toto1234", False)
