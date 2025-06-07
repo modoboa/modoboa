@@ -160,10 +160,9 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoAPITestCase):
 
         username = "testuser@example.com"
         self.authenticate(username, "test")
-        account = models.User.objects.get(username=username)
-        response = self.client.put(
-            reverse("v2:account-password", args=[account.id]),
-            {"password": "test", "newpassword": "Toto1234"},
+        response = self.client.post(
+            reverse("v2:account-set-me-password"),
+            {"password": "test", "new_password": "Toto1234"},
             format="json",
         )
         self.assertEqual(response.status_code, 200)
