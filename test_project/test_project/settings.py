@@ -232,11 +232,11 @@ OAUTH2_PROVIDER = {
 
 REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
-        "user": "200/minute",
+        "user": "400/minute",
         "ddos": "10/second",
         "ddos_lesser": "200/minute",
         "login": "10/minute",
-        "password_recovery_request": "11/hour",
+        "password_recovery_request": "12/hour",
         "password_recovery_totp_check": "25/hour",
         "password_recovery_apply": "25/hour",
     },
