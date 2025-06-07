@@ -725,7 +725,7 @@ msgstr "重複はエラーにし、インポートしない"
 
 #: admin/forms/import_.py:37
 msgid "Crypt passwords"
-msgstr "パスワード暗号化"
+msgstr "パスワードを暗号化する"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
