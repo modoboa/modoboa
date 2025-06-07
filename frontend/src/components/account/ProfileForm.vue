@@ -123,8 +123,6 @@ async function updateGeneralSettings() {
     .updateAccount(form.value)
     .then(() => {
       busStore.displayNotification({ msg: $gettext('Profile updated') })
-      console.log(authStore.accountLanguage)
-      console.log(available)
       if (!(authStore.accountLanguage in available)) {
         languageError.value = $gettext('Language does no exist')
       }

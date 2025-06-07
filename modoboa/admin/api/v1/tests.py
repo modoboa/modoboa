@@ -87,7 +87,7 @@ class DomainAPITestCase(ModoAPITestCase):
         self.assertEqual(dom.name, "pouét.com")
         self.assertEqual(dom.quota, 1000)
         self.assertEqual(dom.default_mailbox_quota, 100)
-        self.assertEqual(dom.enabled, False)
+        self.assertTrue(dom.enabled)
         self.assertFalse(dom.admins)
 
     @mock.patch.object(dns.resolver.Resolver, "resolve")

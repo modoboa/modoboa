@@ -65,9 +65,10 @@ class MailboxOperationTestCase(ModoAPITestCase):
             "language": "en",
             "mailbox": {"use_domain_quota": True},
         }
-        self.client.post(
+        response = self.client.put(
             reverse("v2:account-detail", args=[mb.user.pk]), values, format="json"
         )
+        self.assertEqual(response.status_code, 200)
         path = f"{self.workdir}/test.com/admin2"
         mail_home_mock.__get__ = mock.Mock(return_value=path)
         call_command("handle_mailbox_operations")
