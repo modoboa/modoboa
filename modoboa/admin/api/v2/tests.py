@@ -331,6 +331,16 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    def test_user_updates_password(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        self.authenticate_user(account)
+        response = self.client.post(
+            reverse("v2:account-set-me-password"),
+            {"password": "toto", "new_password": "Toto1234"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_rename(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])
