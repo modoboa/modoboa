@@ -265,9 +265,7 @@ class ResellerTestCase(ResourceTestCase):
         resp = self._create_account(
             "admin3@domain.tld", role="DomainAdmins", status=400
         )
-        self.assertEqual(
-            resp.json()["role"][0], '"DomainAdmins" is not a valid choice.'
-        )
+        self.assertEqual(resp.json()["role"][0], "Invalid choice")
         self._check_limit("domain_admins", 2, 2)
 
         self.user.userobjectlimit_set.filter(name="mailboxes").update(max_value=3)
@@ -284,9 +282,7 @@ class ResellerTestCase(ResourceTestCase):
             reverse("v2:account-detail", args=[user.id]), values, format="json"
         )
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json()["role"][0], '"DomainAdmins" is not a valid choice.'
-        )
+        self.assertEqual(response.json()["role"][0], "Invalid choice")
         self._check_limit("domain_admins", 2, 2)
 
     def test_domain_admin_resource_are_empty(self):
