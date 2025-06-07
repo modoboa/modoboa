@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # cwatanab <chihiro.watanabe@live.jp>, 2016
 # Ian Moone, 2014
@@ -16,18 +16,17 @@ msgstr ""
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: INOUE Daisuke, 2025\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/tonio/modoboa/language/ja_JP/)\n"
-"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin/api/v1/serializers.py:41 admin/forms/domain.py:49
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr ""
-"すべてのメールボックス全体の容量制限。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
+msgstr "すべてのメールボックス全体の容量制限。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
 
 #: admin/api/v1/serializers.py:48
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -257,9 +256,7 @@ msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
-"DKIM プライベートキーを保存するディレクトリーの絶対パス。このディレクトリーが root "
-"ユーザー所有で、外の世界からは読めないことを確認してください。"
+msgstr "DKIM プライベートキーを保存するディレクトリーの絶対パス。このディレクトリーが root ユーザー所有で、外の世界からは読めないことを確認してください。"
 
 #: admin/app_settings.py:112 admin/app_settings.py:405
 msgid "Default DKIM key length"
@@ -469,9 +466,7 @@ msgid ""
 "Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
 " custom value or use domain's default one. Leave empty to define an "
 "unlimited value (not allowed for domain administrators)."
-msgstr ""
-"このメールボックスの容量制限。KB、MB ( デフォルト ) または GB "
-"で指定します。独自の値を指定するか、ドメインのデフォルト値を利用します。空にすると制限しません ( ドメイン管理者には許可されていません )。"
+msgstr "このメールボックスの容量制限。KB、MB ( デフォルト ) または GB で指定します。独自の値を指定するか、ドメインのデフォルト値を利用します。空にすると制限しません ( ドメイン管理者には許可されていません )。"
 
 #: admin/forms/account.py:254 admin/models/domain.py:39
 #: admin/models/mailbox.py:92 admin/templates/admin/account_detail.html:50
@@ -497,9 +492,7 @@ msgid ""
 "Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
 "to add a new input. To create a catchall alias, just enter the domain name "
 "(@domain.tld)."
-msgstr ""
-"このメールボックスのエイリアス。入力ごとに 1 つのアドレスのみを記入します。ENTER "
-"を押すと新しい入力欄が追加されます。「すべてキャッチ」エイリアスを作成するには、ドメイン名のみ ( @domain.tls ) を入力してください。"
+msgstr "このメールボックスのエイリアス。入力ごとに 1 つのアドレスのみを記入します。ENTER を押すと新しい入力欄が追加されます。「すべてキャッチ」エイリアスを作成するには、ドメイン名のみ ( @domain.tls ) を入力してください。"
 
 #: admin/forms/account.py:275
 msgid "Sender addresses"
@@ -510,8 +503,7 @@ msgid ""
 "Additional sender address(es) for this account. The user will be allowed to "
 "send emails using this address, even if it does not exist locally. Indicate "
 "one address per input. Press ENTER to add a new input."
-msgstr ""
-"このアカウントへの追加の送信者アドレス。ユーザーにこのアドレス――実際にはこのアドレスが存在しなくても――を使ってメールを送信することを許可します。"
+msgstr "このアカウントへの追加の送信者アドレス。ユーザーにこのアドレス――実際にはこのアドレスが存在しなくても――を使ってメールを送信することを許可します。"
 
 #: admin/forms/account.py:339 admin/forms/alias.py:95
 #: admin/models/mailbox.py:308
@@ -612,8 +604,7 @@ msgstr "キー セレクター"
 msgid ""
 "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
 "GB. A value of 0 means no quota."
-msgstr ""
-"各メールボックスの容量制限のデフォルト値。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
+msgstr "各メールボックスの容量制限のデフォルト値。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
 
 #: admin/forms/domain.py:106 admin/handlers.py:181
 msgid "domain alias"
@@ -734,11 +725,11 @@ msgstr "重複はエラーにし、インポートしない"
 
 #: admin/forms/import_.py:37
 msgid "Crypt passwords"
-msgstr "パスワード暗号化"
+msgstr "パスワードを暗号化する"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "ファイルに含まれるパスワードが暗号化されていない場合は、このオプションをチェックしてください"
+msgstr "ファイル内のパスワードが平文（未暗号）の場合はチェックを入れる"
 
 #: admin/handlers.py:229
 #, python-format
@@ -798,10 +789,8 @@ msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS 名前解決でタイムアウトが発生し、今のところ %s の問い合わせはできません"
 
 #: admin/lib.py:256
-#, fuzzy
-#| msgid "DNS name is too long: %s"
 msgid "DNS name is too long: {}"
-msgstr "DNS 名が長すぎます : %s"
+msgstr "DNS 名が長すぎます : {}"
 
 #: admin/lib.py:287
 #, python-brace-format
@@ -1105,7 +1094,7 @@ msgstr "最終ログイン"
 
 #: admin/templates/admin/account_detail.html:38 core/models.py:87
 msgid "Secondary email"
-msgstr "別のメール"
+msgstr "別のメールアドレス"
 
 #: admin/templates/admin/account_detail.html:38
 #: admin/templates/admin/account_detail.html:41
@@ -1193,7 +1182,7 @@ msgstr "要対応アラート : "
 #: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:119
 #: webmail/lib/imapemail.py:306
 msgid "Date"
-msgstr "日時"
+msgstr "日付"
 
 #: admin/templates/admin/domain_alarms.html:26 core/templates/core/logs.html:9
 msgid "Message"
@@ -1319,7 +1308,7 @@ msgstr "DNS 状態"
 #: admin/templates/admin/domain_headers.html:9
 #: admin/templates/admin/identity_headers.html:5
 msgid "Actions"
-msgstr "アクション"
+msgstr "操作"
 
 #: admin/templates/admin/domain_options_form.html:10
 msgid "You can't create a new domain administrator"
@@ -1338,13 +1327,13 @@ msgstr "キュー ID"
 #: admin/templates/admin/messages_log_headers.html:4
 #: lib/templatetags/lib_tags.py:117 postfix_autoreply/forms.py:18
 msgid "From"
-msgstr ""
+msgstr "差出人"
 
 #: admin/templates/admin/domains_log_headers.html:5
 #: admin/templates/admin/messages_log_headers.html:5
 #: lib/templatetags/lib_tags.py:118
 msgid "To"
-msgstr "To"
+msgstr "宛先"
 
 #: admin/templates/admin/domains_quota_headers.html:3
 #: admin/templates/admin/identities_quota_headers.html:4
@@ -1401,12 +1390,7 @@ msgid ""
 "verify recipients</em></li> </ul> <p>The first element of each line is "
 "mandatory and must be equal to one of the previous values.</p> <p>You can "
 "use a different character as separator.</p>"
-msgstr ""
-"各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>domain; ドメイン名; 容量制限; "
-"メールボックス容量制限のデフォルト値; 有効？</em></li> <li><em>domainalias; ドメインエイリアス名; 対象ドメイン; "
-"有効？</em></li> <li><em>relaydomain; リレードメイン名; 対象ホスト名; 対象ポート; サービス; 有効？; "
-"受信者を確認？</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> "
-"<p>区切り文字に別の文字も使えます。</p>"
+msgstr "各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>domain; ドメイン名; 容量制限; メールボックス容量制限のデフォルト値; 有効？</em></li> <li><em>domainalias; ドメインエイリアス名; 対象ドメイン; 有効？</em></li> <li><em>relaydomain; リレードメイン名; 対象ホスト名; 対象ポート; サービス; 有効？; 受信者を確認？</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> <p>区切り文字に別の文字も使えます。</p>"
 
 #: admin/templates/admin/import_identities_form.html:6
 msgid ""
@@ -1416,11 +1400,7 @@ msgid ""
 "recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
 "is mandatory and must be equal to one of the previous values.</p> <p>You can"
 " use a different character as separator.</p>"
-msgstr ""
-"各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>account; ログイン名; パスワード; 姓; 名;"
-" 有効？; グループ; アドレス; 容量制限; [, ドメイン, ...]</em></li> <li><em>alias; アドレス; 有効？; "
-"受信者; 受信者; ...</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> "
-"<p>区切り文字に別の文字も使えます。</p>"
+msgstr "各行、以下のいずれかの形式で CSV ファイルを作成してください : <ul> <li><em>account; ログイン名; パスワード; 姓; 名; 有効？; グループ; アドレス; 容量制限; [, ドメイン, ...]</em></li> <li><em>alias; アドレス; 有効？; 受信者; 受信者; ...</em></li> </ul> <p>各行の最初の項目は、必須であり、上記の通りにする必要があります。</p> <p>区切り文字に別の文字も使えます。</p>"
 
 #: admin/templates/admin/importform.html:6
 msgid "Help"
@@ -1466,9 +1446,7 @@ msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
-"ドメインの格付けが影響を与え、このドメインからのメールが SPAM とみなされる可能性があります。DNSBL 提供元に連絡し、検出された IP "
-"アドレスのリストからの削除を依頼する必要があります。"
+msgstr "ドメインの格付けが影響を与え、このドメインからのメールが SPAM とみなされる可能性があります。DNSBL 提供元に連絡し、検出された IP アドレスのリストからの削除を依頼する必要があります。"
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -1801,8 +1779,6 @@ msgstr "アドレス帳"
 
 #: core/api/v2/viewsets.py:171 core/api/v2/viewsets.py:173
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
-#, fuzzy
-#| msgid "E-mail"
 msgid "Webmail"
 msgstr "Web メール"
 
@@ -1834,8 +1810,7 @@ msgstr "ラウンド"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"ラウンド数 ( sha256crypt と sha512crypt のみ使用 ) 。1000 ～ 999999999 の間で設定してください。"
+msgstr "ラウンド数 ( sha256crypt と sha512crypt のみ使用 ) 。1000 ～ 999999999 の間で設定してください。"
 
 #: core/app_settings.py:71 core/app_settings.py:749
 msgid "Update password scheme at login"
@@ -1870,9 +1845,7 @@ msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"ユーザがパスワードを更新するための外部ページの URL。ローカルユーザー以外のユーザー、つまり外部認証 ( LDAP、SMTP ) "
-"が成功した後に自動作成されるユーザにのみ適用されます。"
+msgstr "ユーザがパスワードを更新するための外部ページの URL。ローカルユーザー以外のユーザー、つまり外部認証 ( LDAP、SMTP ) が成功した後に自動作成されるユーザにのみ適用されます。"
 
 #: core/app_settings.py:104 core/app_settings.py:790
 msgid "Password recovery announcement"
@@ -1953,7 +1926,7 @@ msgstr "セカンダリー LDAP サーバーの TCP ポート番号"
 #: sievefilters/app_settings.py:58 sievefilters/forms.py:44
 #: webmail/app_settings.py:45
 msgid "Use a secured connection"
-msgstr "セキュアな接続を使う"
+msgstr "暗号化接続を使う"
 
 #: core/app_settings.py:171 core/app_settings.py:885
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
@@ -1975,8 +1948,7 @@ msgstr "管理者グループ"
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators."
 " Use ';' characters to separate groups."
-msgstr ""
-"ここで指定する LDAP の Posix グループのメンバーをドメイン管理者として作成します。複数のグループを指定する際は「;」で区切ってください。"
+msgstr "ここで指定する LDAP の Posix グループのメンバーをドメイン管理者として作成します。複数のグループを指定する際は「;」で区切ってください。"
 
 #: core/app_settings.py:192 core/app_settings.py:912
 msgid "Group type"
@@ -2284,9 +2256,7 @@ msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
-msgstr ""
-"USE_TZ を False にすると、夏時間・冬時間の移行の際に問題となる可能性があります ( 例 : 時計が変更されることで、同じローカル時刻が 2"
-" 度発生します )。"
+msgstr "USE_TZ を False にすると、夏時間・冬時間の移行の際に問題となる可能性があります ( 例 : 時計が変更されることで、同じローカル時刻が 2 度発生します )。"
 
 #: core/checks.py:17
 msgid "Set `USE_TZ = True` in settings.py"
@@ -2421,7 +2391,7 @@ msgstr "ページ表示で優先する言語。"
 
 #: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
-msgstr "もう 1 つのメールアドレス。万が一の際に利用します。"
+msgstr "別のメールアドレス。再設定が必要な際に利用します。"
 
 #: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
@@ -2440,16 +2410,12 @@ msgid "You can't import an account with a role greater than yours"
 msgstr "自分のロール以上のアカウントはインポートできません"
 
 #: core/models.py:376
-#, fuzzy
-#| msgid "The simple user '%s' must have a valid email address"
 msgid "The simple user '{}' must have a valid email address"
-msgstr "標準ユーザー「%s」に有効なメールアドレスがありません"
+msgstr "標準ユーザー「{}」に有効なメールアドレスがありません"
 
 #: core/models.py:384
-#, fuzzy
-#| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
-msgstr "「%s」の場合、ユーザー名とメールアドレスの項目は同一にしてください。"
+msgstr "「{}」では、ユーザー名とメールアドレスの項目は同一にしてください。"
 
 #: core/password_validation.py:25
 msgid "Password must contain at least {} digit."
@@ -2547,9 +2513,7 @@ msgstr "新着情報"
 msgid ""
 "Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
 "weblog</a> for more information."
-msgstr ""
-"詳しくは <a href=\"https://modoboa.org/blog/\" target=\"_blank\">公式ブログ</a> "
-"をご覧ください。"
+msgstr "詳しくは <a href=\"https://modoboa.org/blog/\" target=\"_blank\">公式ブログ</a> をご覧ください。"
 
 #: core/templates/core/api_access.html:3
 msgid "API access"
@@ -2599,24 +2563,14 @@ msgid ""
 "<li>Logout / Login with your current account so its password gets "
 "updated</li> <li>Inform <strong>ALL</strong> your users that they must login"
 " to Modoboa to complete the operation</li> </ul>"
-msgstr ""
-"<strong>%(scheme)s</strong> のパスワード "
-"スキーマは非推奨となり、次のマイナーバージョンで削除します。より強力なスキーマにアップグレードする手順は以下の通りです : <ul> "
-"<li><strong>パラメーター > 全般</strong> のセクションへ</li> <li><strong>パスワード "
-"スキーマのデフォルト</strong>の値を変更</li> <li><strong>ログイン時にパスワード "
-"スキーマを更新</strong>が「はい」になっていることを確認</li> <li>変更を [ 保存 ] </li> "
-"<li>ご自身のアカウントでログアウト → ログインすることでパスワードが更新されます</li> "
-"<li>かならず<strong>すべての</strong> ユーザーに Modoboa "
-"にログインして操作を完了しなければならないことをアナウンスしてください</li> </ul>"
+msgstr "<strong>%(scheme)s</strong> のパスワード スキーマは非推奨となり、次のマイナーバージョンで削除します。より強力なスキーマにアップグレードする手順は以下の通りです : <ul> <li><strong>パラメーター > 全般</strong> のセクションへ</li> <li><strong>パスワード スキーマのデフォルト</strong>の値を変更</li> <li><strong>ログイン時にパスワード スキーマを更新</strong>が「はい」になっていることを確認</li> <li>変更を [ 保存 ] </li> <li>ご自身のアカウントでログアウト → ログインすることでパスワードが更新されます</li> <li>かならず<strong>すべての</strong> ユーザーに Modoboa にログインして操作を完了しなければならないことをアナウンスしてください</li> </ul>"
 
 #: core/templates/core/information.html:18
 msgid ""
 "You must apply this procedure <strong>BEFORE</strong> you install a newest "
 "version of Modoboa, otherwise <strong>you will be unable to connect to the "
 "web interface anymore</strong>."
-msgstr ""
-"Modoboa の <strong>新バージョンをインストールする前に</strong> 、必ずこの手順を実施してください。<strong>今後 Web"
-" インターフェースを開けなくなります</strong>。"
+msgstr "Modoboa の <strong>新バージョンをインストールする前に</strong> 、必ずこの手順を実施してください。<strong>今後 Web インターフェースを開けなくなります</strong>。"
 
 #: core/templates/core/information.html:23
 msgid ""
@@ -2671,9 +2625,7 @@ msgid ""
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] ""
-"\n"
-"  以下の更新が用意されています :\n"
+msgstr[0] "\n  以下の更新が用意されています :\n"
 
 #: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:70
 msgid "Parameters"
@@ -2729,8 +2681,7 @@ msgstr "2 要素認証"
 msgid ""
 "Install a soft token authenticator like FreeOTP or Google Authenticator from"
 " your application repository and use that app to scan this QR code."
-msgstr ""
-"FreeOTP や Google 認証システムなどのソフトウェアトークン認証アプリをインストールし、そのアプリでこの QR コードをスキャンします。"
+msgstr "FreeOTP や Google 認証システムなどのソフトウェアトークン認証アプリをインストールし、そのアプリでこの QR コードをスキャンします。"
 
 #: core/templates/core/user_security.html:25
 msgid "Pin code"
@@ -2772,15 +2723,13 @@ msgstr "トークンを再生成します。"
 
 #: core/templates/core/user_security.html:61
 msgid "Reset recovery codes"
-msgstr "復元コードのリセット"
+msgstr "再設定コードのリセット"
 
 #: core/templates/core/user_security.html:65
 msgid ""
 "Two-Factor Authentication (2FA) is not yet activated for your account. "
 "Enabling this feature will increase your account's security."
-msgstr ""
-"あなたのアカウントは、まだ 2 要素認証 ( 2 Factor Authentication - 2FA ) "
-"が有効になっていません。この機能を有効にすることであなたのアカウントのセキュリティーが向上します。"
+msgstr "あなたのアカウントは、まだ 2 要素認証 ( 2 Factor Authentication - 2FA ) が有効になっていません。この機能を有効にすることであなたのアカウントのセキュリティーが向上します。"
 
 #: core/templates/core/user_security.html:73
 msgid "Enable 2FA"
@@ -3184,9 +3133,7 @@ msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
 "filtered by the Folder Filter Exclusions. Example: debian.user, "
 "debian.personal "
-msgstr ""
-"除外フォルダーフィルターで対象から外れても同期に含めるフォルダーをカンマ区切りで明示します。例 : debian.user, "
-"debian.personal"
+msgstr "除外フォルダーフィルターで対象から外れても同期に含めるフォルダーをカンマ区切りで明示します。例 : debian.user, debian.personal"
 
 #: imap_migration/app_settings.py:107
 msgid "OfflineIMAP settings"
@@ -3201,10 +3148,9 @@ msgid "IMAP Migration"
 msgstr "IMAP 移行"
 
 #: imap_migration/auth_backends.py:49 webmail/lib/imaputils.py:241
-#, fuzzy, python-brace-format
-#| msgid "Connection to IMAP server failed: %s"
+#, python-brace-format
 msgid "Connection to IMAP server failed: {error}"
-msgstr "IMAP サーバーへの接続に失敗 : %s"
+msgstr "IMAP サーバーへの接続に失敗しました : {error}"
 
 #: imap_migration/checks.py:12
 msgid ""
@@ -3244,20 +3190,16 @@ msgid "Failed to communicate with public API: %s"
 msgstr "パブリック API での通信に失敗 : %s"
 
 #: lib/db_utils.py:22
-#, fuzzy
-#| msgid "Connection to database %s not configured"
 msgid "Connection to database {} not configured"
-msgstr "%s データベースへの接続が未構成"
+msgstr "{} データベースへの接続が未構成"
 
 #: lib/email_utils.py:139 lib/email_utils.py:350
 msgid "unable to determine encoding of string"
 msgstr "文字列のエンコード検出ができませんでした"
 
 #: lib/exceptions.py:85
-#, fuzzy
-#| msgid "Permission denied: %s"
 msgid "Permission denied: {}"
-msgstr "アクセス拒否 : %s"
+msgstr "アクセス拒否 : {}"
 
 #: lib/exceptions.py:86
 msgid "Permission denied"
@@ -3759,11 +3701,7 @@ msgid ""
 "Dear %s, this document contains the credentials you will need\n"
 "to connect to Modoboa. Learn the content and destroy\n"
 "the document as soon as possible.\n"
-msgstr ""
-"\n"
-"%s 様、この文書には Modoboa メールサーバーへの接続に必要な認証情報を記しています。\n"
-"認証情報が第三者に漏れれば、メールの内容をすべて読み取られるほか、なりすましによるメール送信も可能になります。\n"
-"内容を理解し必要な設定を終えたら、厳重に管理する・廃棄するなど、対応をおねがいします。\n"
+msgstr "\n%s 様、この文書には Modoboa メールサーバーへの接続に必要な認証情報を記しています。\n認証情報が第三者に漏れれば、メールの内容をすべて読み取られるほか、なりすましによるメール送信も可能になります。\n内容を理解し必要な設定を終えたら、厳重に管理する・廃棄するなど、対応をおねがいします。\n"
 
 #: pdfcredentials/documents.py:95
 msgid "Web panel:"
@@ -3774,10 +3712,7 @@ msgid ""
 "\n"
 "Here you can view your emails anytime online, create filters or manage\n"
 "your contacts.\n"
-msgstr ""
-"\n"
-"この画面からあなたのメールをオンラインで確認できるほか、表示フィルターを\n"
-"作成したり、連絡先を管理することができます。\n"
+msgstr "\nこの画面からあなたのメールをオンラインで確認できるほか、表示フィルターを\n作成したり、連絡先を管理することができます。\n"
 
 #: pdfcredentials/documents.py:126
 msgid "Please change your password!"
@@ -3799,7 +3734,7 @@ msgstr "PDF_credentials ディレクトリーの作成に失敗しました。�
 
 #: pdfcredentials/handlers.py:61
 msgid "Retrieve user's credentials as a PDF document"
-msgstr "ユーザーの認証情報を PDF 文書として取得"
+msgstr "ユーザーの認証情報 PDF 文書を取得"
 
 #: pdfcredentials/handlers.py:82
 msgid "Download PDF credentials"
@@ -3889,8 +3824,7 @@ msgid ""
 "The content of your answer. You can use the following variables, which will "
 "be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
 "%(untildate)s"
-msgstr ""
-"応答の本文。以下の変数を利用すると、それぞれ適切な値に置き換えられます : %(name)s、%(fromdate)s、%(untildate)s"
+msgstr "応答の本文。以下の変数を利用すると、それぞれ適切な値に置き換えられます : %(name)s、%(fromdate)s、%(untildate)s"
 
 #: postfix_autoreply/forms.py:118
 msgid "I'm off"
@@ -3907,13 +3841,7 @@ msgid ""
 "\n"
 "Best regards,\n"
 "%(name)s\n"
-msgstr ""
-"本日お休みをいただいております。\n"
-"\n"
-"出勤し次第、お返事いたします。\n"
-"ご迷惑をおかけいたしますが、よろしくお願いいたします。\n"
-"\n"
-"%(name)s\n"
+msgstr "本日お休みをいただいております。\n\n出勤し次第、お返事いたします。\nご迷惑をおかけいたしますが、よろしくお願いいたします。\n\n%(name)s\n"
 
 #: postfix_autoreply/handlers.py:114
 #: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
@@ -4014,12 +3942,12 @@ msgstr "IMAP サーバーのアドレス"
 #: sievefilters/app_settings.py:60 sievefilters/forms.py:46
 #: webmail/app_settings.py:47
 msgid "Use a secured connection to access IMAP server"
-msgstr "IMAP サーバーへのアクセスにセキュアな接続を使う"
+msgstr "IMAP サーバーに暗号化接続する"
 
 #: sievefilters/app_settings.py:68 sievefilters/forms.py:52
 #: webmail/app_settings.py:56
 msgid "Listening port of your IMAP server"
-msgstr "IMAP サーバーの待受ポート"
+msgstr "IMAP サーバーのポート"
 
 #: sievefilters/apps.py:15 sievefilters/apps.py:20
 msgid "Sieve filters"
@@ -4059,15 +3987,15 @@ msgstr "一致しない"
 
 #: sievefilters/constants.py:24
 msgid "Sender"
-msgstr "送信"
+msgstr "送信者"
 
 #: sievefilters/constants.py:26
 msgid "Cc"
-msgstr "Cc"
+msgstr "CC"
 
 #: sievefilters/constants.py:29
 msgid "Size"
-msgstr ""
+msgstr "サイズ"
 
 #: sievefilters/constants.py:31
 msgid "is greater than"
@@ -4107,11 +4035,11 @@ msgstr "作業エディターのモードを選択してください"
 
 #: sievefilters/forms.py:73 webmail/app_settings.py:182
 msgid "Trash folder"
-msgstr "ゴミ箱フォルダー"
+msgstr "ごみ箱"
 
 #: sievefilters/forms.py:74 webmail/app_settings.py:184
 msgid "Folder where deleted messages go"
-msgstr "削除されたメッセージが置かれるフォルダ"
+msgstr "削除メッセージの行き先フォルダー"
 
 #: sievefilters/forms.py:79 webmail/app_settings.py:191
 msgid "Sent folder"
@@ -4119,7 +4047,7 @@ msgstr "送信済みフォルダー"
 
 #: sievefilters/forms.py:80 webmail/app_settings.py:193
 msgid "Folder where copies of sent messages go"
-msgstr "送信されたメッセージのコピーが置かれるフォルダ"
+msgstr "送信済みメッセージの行き先フォルダー"
 
 #: sievefilters/forms.py:85 webmail/app_settings.py:200
 msgid "Drafts folder"
@@ -4127,7 +4055,7 @@ msgstr "下書きフォルダー"
 
 #: sievefilters/forms.py:86 webmail/app_settings.py:201
 msgid "Folder where drafts go"
-msgstr "下書きが置かれるフォルダ"
+msgstr "下書きの行き先フォルダー"
 
 #: sievefilters/lib.py:52
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
@@ -4220,8 +4148,7 @@ msgstr "パスワードを変更"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr ""
-"パスワードの再設定リンクが無効です。おそらくこのリンクからはすでに操作を終えたものと思われます。もう一度「パスワード再設定」の操作をしてください。"
+msgstr "パスワードの再設定リンクが無効です。おそらくこのリンクからはすでに操作を終えたものと思われます。もう一度「パスワード再設定」の操作をしてください。"
 
 #: templates/registration/password_reset_confirm_code.html:22
 msgid "Enter the code you've just received by SMS"
@@ -4241,9 +4168,7 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> "
-"<p>メールが届かなければ、入力したアドレスが正しいものだったかどうか、または SPAM フォルダーに配信されていないかを確認してください。</p>"
+msgstr "<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> <p>メールが届かなければ、入力したアドレスが正しいものだったかどうか、または SPAM フォルダーに配信されていないかを確認してください。</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -4251,9 +4176,7 @@ msgstr ""
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
-msgstr ""
-"パスワードの再設定処理をはじめます。対象のアカウントは %(username)s でよろしいですか？　よろしければ以下のリンクをクリックしてください :"
-" "
+msgstr "パスワードの再設定処理をはじめます。対象のアカウントは %(username)s でよろしいですか？　よろしければ以下のリンクをクリックしてください : "
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
@@ -4291,9 +4214,7 @@ msgstr "ワンタイム パスワード"
 msgid ""
 "Enter the code from the two-factor app on your mobile device. If you've lost"
 " your device, you may enter one of your recovery codes."
-msgstr ""
-"あなたのスマートフォンの 2 "
-"要素認証アプリのコードを入力してください。スマートフォンをなくしているなどの場合は、再設定コードのいずれかを入力してください。"
+msgstr "あなたのスマートフォンの 2 要素認証アプリのコードを入力してください。スマートフォンをなくしているなどの場合は、再設定コードのいずれかを入力してください。"
 
 #: templates/registration/twofactor_code_verify.html:42
 msgid "Verify code"
@@ -4329,57 +4250,38 @@ msgid "Maximum attachment size"
 msgstr "最大添付サイズ"
 
 #: webmail/app_settings.py:19
-#, fuzzy
-#| msgid ""
-#| "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
-msgstr "最大添付サイズ (B, KB, MB, GB 指定)"
+msgstr "添付ファイルの最大サイズをバイトで ( 必要に応じて KB, MB, GB も指定可 ) "
 
 #: webmail/app_settings.py:67
-#, fuzzy
-#| msgid "IMAP settings"
 msgid "SMTP settings"
 msgstr "SMTP 設定"
 
 #: webmail/app_settings.py:75
-#, fuzzy
-#| msgid "Address of your IMAP server"
 msgid "Address of your SMTP server"
 msgstr "SMTP サーバーのアドレス"
 
 #: webmail/app_settings.py:82
-#, fuzzy
-#| msgid "Use a secured connection"
 msgid "Secured connection mode"
-msgstr "セキュア接続モード"
+msgstr "暗号化接続モード"
 
 #: webmail/app_settings.py:84
-#, fuzzy
-#| msgid "Use a secured connection to access IMAP server"
 msgid "Use a secured connection to access SMTP server"
-msgstr "SMTP サーバーへのアクセスにセキュアな接続を使う"
+msgstr "SMTP サーバーに暗号化接続する"
 
 #: webmail/app_settings.py:93
-#, fuzzy
-#| msgid "Listening port of your IMAP server"
 msgid "Listening port of your SMTP server"
-msgstr "SMTP サーバーの待受ポート"
+msgstr "SMTP サーバーのポート"
 
 #: webmail/app_settings.py:100
-#, fuzzy
-#| msgid "Authentication method"
 msgid "Authentication required"
 msgstr "認証が必要"
 
 #: webmail/app_settings.py:102
-#, fuzzy
-#| msgid "The backend used for authentication"
 msgid "Server needs authentication"
 msgstr "サーバーが認証を求めています"
 
 #: webmail/app_settings.py:118
-#, fuzzy
-#| msgid "Display details"
 msgid "Display"
 msgstr "表示"
 
@@ -4388,80 +4290,64 @@ msgid "Default message display mode"
 msgstr "デフォルトのメッセージ表示モード"
 
 #: webmail/app_settings.py:126
-#, fuzzy
-#| msgid "The default redirection used when no application is specified"
 msgid "The default mode used when displaying a message"
-msgstr "メッセージを表示するときのデフォルトのモード"
+msgstr "メッセージを表示するモードのデフォルト値"
 
 #: webmail/app_settings.py:133
 msgid "Enable HTML links display"
-msgstr "HTMLリンクの表示を有効にします"
+msgstr "HTML リンク表示を有効に"
 
 #: webmail/app_settings.py:136
 msgid "Enable/Disable HTML links display"
-msgstr "HTMLリンクの表示を有効または無効にします"
+msgstr "HTML リンクの表示の有効・無効を設定します"
 
 #: webmail/app_settings.py:144
-#, fuzzy
-#| msgid "Number of displayed items per page"
 msgid "Number of displayed emails per page"
-msgstr "ページあたりに表示される電子メールの数"
+msgstr "1 ページに表示するメールの数"
 
 #: webmail/app_settings.py:147
 msgid "Sets the maximum number of messages displayed in a page"
-msgstr "1ページに表示されるメッセージの最大数を設定します"
+msgstr "1 ページに表示するメッセージの最大数を設定します"
 
 #: webmail/app_settings.py:154
 msgid "Listing refresh rate"
-msgstr "リストのリフレッシュレート"
+msgstr "一覧の表示更新間隔"
 
 #: webmail/app_settings.py:156
 msgid "Automatic listing refresh rate (in secconds)"
-msgstr ""
+msgstr "自動で一覧の表示を更新する間隔 ( 秒 )"
 
 #: webmail/app_settings.py:163
 msgid "Folder container's width"
-msgstr "メールボックスコンテナの幅"
+msgstr "フォルダーコンテナーの幅"
 
 #: webmail/app_settings.py:165
 msgid "The width of the folder list container"
-msgstr "メールボックスリストコンテナの幅"
+msgstr "フォルダーリストコンテナの幅"
 
 #: webmail/app_settings.py:176
-#, fuzzy
-#| msgid "Create Folders"
 msgid "Folders"
-msgstr ""
+msgstr "フォルダー"
 
 #: webmail/app_settings.py:207
-#, fuzzy
-#| msgid "Sent folder"
 msgid "Junk folder"
-msgstr "送信済みフォルダー"
+msgstr "SPAM フォルダー"
 
 #: webmail/app_settings.py:209
-#, fuzzy
-#| msgid "Folder where deleted messages go"
 msgid "Folder where junk messages should go"
-msgstr "削除されたメッセージが置かれるフォルダ"
+msgstr "SPAM メッセージの行き先フォルダー"
 
 #: webmail/app_settings.py:220
-#, fuzzy
-#| msgid "sent messages"
 msgid "Composing messages"
 msgstr "メッセージの作成"
 
 #: webmail/app_settings.py:226
-#, fuzzy
-#| msgid "Default top redirection"
 msgid "Default editor"
-msgstr "デフォルトエディタ"
+msgstr "デフォルトエディター"
 
 #: webmail/app_settings.py:228
-#, fuzzy
-#| msgid "The default redirection used when no application is specified"
 msgid "The default editor to use when composing a message"
-msgstr "メッセージを作成するときのデフォルトのエディター"
+msgstr "メッセージを作成するエディターのデフォルト値"
 
 #: webmail/app_settings.py:235
 msgid "Signature text"
@@ -4469,31 +4355,27 @@ msgstr "署名テキスト"
 
 #: webmail/app_settings.py:237
 msgid "User defined email signature"
-msgstr "ユーザー定義の電子メール署名"
+msgstr "ユーザー定義のメール署名"
 
 #: webmail/lib/attachments.py:113
-#, fuzzy
-#| msgid "Failed to create LDAP account: {}"
 msgid "Failed to remove attachment: "
-msgstr "添付ファイルの削除に失敗しました："
+msgstr "添付ファイルの削除に失敗 : "
 
 #: webmail/lib/imaputils.py:222
 msgid "Failed to retrieve hierarchy delimiter"
-msgstr "階層区切り文字を取得できませんでした"
+msgstr "階層区切りの取得に失敗"
 
 #: webmail/lib/imaputils.py:472
 msgid "Inbox"
 msgstr "受信トレイ"
 
 #: webmail/lib/imaputils.py:476
-#, fuzzy
-#| msgid "Drafts folder"
 msgid "Drafts"
 msgstr "下書き"
 
 #: webmail/lib/imaputils.py:481
 msgid "Junk"
-msgstr "迷惑メール"
+msgstr "SPAM"
 
 #: webmail/lib/imaputils.py:486
 msgid "Sent"
@@ -4506,4 +4388,4 @@ msgstr "ごみ箱"
 #: webmail/viewsets.py:343
 #, python-format
 msgid "Attachment is too big (limit: %s)"
-msgstr "添付ファイルが大きすぎます (上限： %s)"
+msgstr "添付ファイルが大きすぎます ( 最大 : %s )"
