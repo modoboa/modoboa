@@ -186,7 +186,9 @@ class EventsTestCase(ModoAPITestCase):
             "language": "en",
         }
         account = User.objects.get(username="user@test.com")
-        self._create_armessage(account)
+        armessage = self._create_armessage(account)
+
+        # Rename account and check if alias is updated
         response = self.client.put(
             reverse("v2:account-detail", args=[account.id]), values, format="json"
         )
@@ -198,9 +200,17 @@ class EventsTestCase(ModoAPITestCase):
                 address="leon@test.com@autoreply.test.com",
             ).exists()
         )
-        values["enabled"] = False
+
+        values = {
+            "mbox": account.mailbox.id,
+            "subject": "I'm off",
+            "content": "I'll back soon",
+            "enabled": False,
+        }
         self.client.put(
-            reverse("v2:account-detail", args=[account.id]), values, format="json"
+            reverse("v2:armessage-detail", args=[armessage.json()["id"]]),
+            values,
+            format="json",
         )
         self.assertFalse(
             admin_models.AliasRecipient.objects.filter(
@@ -213,12 +223,13 @@ class EventsTestCase(ModoAPITestCase):
     def test_mailbox_deleted_event(self):
         account = User.objects.get(username="user@test.com")
         self._create_armessage(account)
-        self.client.delete(
+        response = self.client.post(
             reverse("v2:account-delete", args=[account.id]), {}, format="json"
         )
+        self.assertEqual(response.status_code, 204)
         self.assertFalse(
-            admin_models.Alias.objects.filter(
-                address="user@test.com", internal=True
+            admin_models.AliasRecipient.objects.filter(
+                address="user@test.com@autoreply.test.com"
             ).exists()
         )
         self.assertFalse(
