@@ -1094,7 +1094,7 @@ msgstr "最終ログイン"
 
 #: admin/templates/admin/account_detail.html:38 core/models.py:87
 msgid "Secondary email"
-msgstr "別のメール"
+msgstr "別のメールアドレス"
 
 #: admin/templates/admin/account_detail.html:38
 #: admin/templates/admin/account_detail.html:41
