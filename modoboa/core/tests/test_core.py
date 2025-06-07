@@ -124,6 +124,7 @@ class APICommunicationTestCase(ModoTestCase):
 
         # Enable notifications
         self.set_global_parameter("send_new_versions_email", True)
+        self.set_global_parameter("new_versions_email_rcpt", "postmaster@domain.test")
         with httmock.HTTMock(
             mocks.modo_api_instance_search,
             mocks.modo_api_instance_create,

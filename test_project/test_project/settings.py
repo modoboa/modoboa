@@ -233,7 +233,7 @@ OAUTH2_PROVIDER = {
 REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "user": "400/minute",
-        "ddos": "10/second",
+        "ddos": "50/second",
         "ddos_lesser": "200/minute",
         "login": "10/minute",
         "password_recovery_request": "12/hour",

@@ -1,6 +1,7 @@
 """Modoboa admin settings."""
 
 import collections
+import copy
 import os
 
 from django.conf import settings
@@ -242,7 +243,8 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
 )
 
 
-def init_structure():
+def init_structure() -> dict:
+    structure = copy.deepcopy(GLOBAL_PARAMETERS_STRUCT)
     hide_fields = False
     dpath = None
     code, output = exec_cmd("which dovecot")
@@ -269,7 +271,8 @@ def init_structure():
     else:
         hide_fields = True
     if hide_fields:
-        del GLOBAL_PARAMETERS_STRUCT["mailboxes"]["params"]["handle_mailboxes"]
+        del structure["mailboxes"]["params"]["handle_mailboxes"]
+    return structure
 
 
 def load_admin_settings():
@@ -277,11 +280,11 @@ def load_admin_settings():
     from modoboa.parameters import tools as param_tools
     from .api.v2 import serializers
 
-    init_structure()
+    structure = init_structure()
     param_tools.registry.add2(
         "global",
         "admin",
         gettext_lazy("Administration"),
-        GLOBAL_PARAMETERS_STRUCT,
+        structure,
         serializers.AdminGlobalParametersSerializer,
     )

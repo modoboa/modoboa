@@ -114,8 +114,8 @@ class DKIMTestCase(ModoAPITestCase):
         response = self.client.put(url, settings, format="json")
         self.assertEqual(response.status_code, 400)
         compare(response.json(), {"dkim_keys_storage_dir": ["Directory not found."]})
-        settings["admin-dkim_keys_storage_dir"] = self.workdir
-        response = self.client.post(url, settings, format="json")
+        settings["dkim_keys_storage_dir"] = self.workdir
+        response = self.client.put(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
 
     def test_dkim_key_creation(self):
