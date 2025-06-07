@@ -2,12 +2,49 @@
 
 import logging
 
+from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
 from django.utils.html import escape
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
 
+from modoboa.core import models
+
 logger = logging.getLogger("modoboa.auth")
+
+
+class AccountPasswordSerializer(serializers.ModelSerializer):
+    """A serializer used to change a user password."""
+
+    new_password = serializers.CharField()
+
+    class Meta:
+        model = models.User
+        fields = (
+            "password",
+            "new_password",
+        )
+
+    def validate_password(self, value):
+        """Check password."""
+        if not self.instance.check_password(value):
+            raise serializers.ValidationError("Password not correct")
+        return value
+
+    def validate_new_password(self, value):
+        """Check new password."""
+        try:
+            password_validation.validate_password(value, self.instance)
+        except ValidationError as exc:
+            raise serializers.ValidationError(exc.messages[0]) from None
+        return value
+
+    def update(self, instance, validated_data):
+        """Set new password."""
+        instance.set_password(validated_data["new_password"])
+        instance.save()
+        return instance
 
 
 class CheckTFASetupSerializer(serializers.Serializer):
