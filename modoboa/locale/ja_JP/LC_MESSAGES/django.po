@@ -3734,7 +3734,7 @@ msgstr "PDF_credentials ディレクトリーの作成に失敗しました。�
 
 #: pdfcredentials/handlers.py:61
 msgid "Retrieve user's credentials as a PDF document"
-msgstr "ユーザーの認証情報を PDF 文書として取得"
+msgstr "ユーザーの認証情報 PDF 文書を取得"
 
 #: pdfcredentials/handlers.py:82
 msgid "Download PDF credentials"
