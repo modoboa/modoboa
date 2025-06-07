@@ -729,7 +729,7 @@ msgstr "パスワードを暗号化する"
 
 #: admin/forms/import_.py:40
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "ファイルに含まれるパスワードが暗号化されていない場合は、このオプションをチェックしてください"
+msgstr "ファイル内のパスワードが平文（未暗号）の場合はチェックを入れる"
 
 #: admin/handlers.py:229
 #, python-format
