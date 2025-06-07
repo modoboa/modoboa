@@ -274,7 +274,7 @@ class LimitsTestCase(ModoAPITestCase, Operations):
         self._check_limit("domains", 1, 2)
         self._create_relay_domain("relaydomain2.tld", quota=1, default_mailbox_quota=1)
         self._check_limit("domains", 2, 2)
-        self._create_relay_domain("relaydomain3.tld", 403)
+        self._create_relay_domain("relaydomain3.tld", 400)
         self._check_limit("domains", 2, 2)
         domid = admin_models.Domain.objects.get(name="relaydomain2.tld").id
         url = reverse("v2:domain-delete", args=[domid])

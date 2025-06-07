@@ -212,10 +212,11 @@ class AccountViewSetTestCase(ModoAPITestCase):
             "role": "SimpleUsers",
             "mailbox": {"use_domain_quota": True},
             "is_active": True,
+            "password": "Toto1234",
             "aliases": ["alias@test.com"],
         }
         response = self.client.post(reverse("v2:account-list"), values, format="json")
-        self.assertTrue(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
         self.assertTrue(alias.aliasrecipient_set.count() == 2)
 
     def test_create_admin(self):
@@ -298,7 +299,8 @@ class AccountViewSetTestCase(ModoAPITestCase):
 
     def test_delete_default_superadmin(self):
         """Delete default superadmin."""
-        sadmin2 = core_factories.UserFactory(username="admin2", is_superuser=True)
+        sadmin2 = core_factories.UserFactory(username="admin2")
+        sadmin2.role = "SuperAdmins"
         sadmin = core_models.User.objects.get(username="admin")
         self.authenticate_user(sadmin2)
         response = self.client.post(reverse("v2:account-delete", args=[sadmin.pk]), {})
