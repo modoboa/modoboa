@@ -9,7 +9,7 @@ from django.utils.functional import cached_property
 
 from modoboa.lib import exceptions
 from modoboa.lib.tests import NO_LDAP, ModoTestCase, ModoAPITestCase
-from .. import factories, models
+from .. import models
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
@@ -139,14 +139,6 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
 class ProfileTestCase(LDAPTestCaseMixin, ModoAPITestCase):
     """Profile related tests."""
 
-    @classmethod
-    def setUpTestData(cls):  # NOQA:N802
-        """Create test data."""
-        super().setUpTestData()
-        cls.account = factories.UserFactory(
-            username="user@test.com", groups=("SimpleUsers",)
-        )
-
     @override_settings(
         AUTHENTICATION_BACKENDS=(
             "modoboa.lib.authbackends.LDAPBackend",
@@ -165,5 +157,6 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoAPITestCase):
             {"password": "test", "new_password": "Toto1234"},
             format="json",
         )
+        print(response.json())
         self.assertEqual(response.status_code, 200)
         self.authenticate(username, "Toto1234", False)
