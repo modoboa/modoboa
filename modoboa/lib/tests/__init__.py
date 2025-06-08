@@ -189,11 +189,7 @@ class ParametersMixin:
 class SimpleModoTestCase(ParametersMixin, TestCase):
     """Simple class to add parameters editing."""
 
-    @classmethod
-    def setUpTestData(cls):  # noqa
-        """Create a default user."""
-        super().setUpTestData()
-        management.call_command("load_initial_data", "--no-frontend")
+    pass
 
 
 class ModoTestCase(ParametersMixin, TestCase):

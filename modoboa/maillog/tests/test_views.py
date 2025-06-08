@@ -53,6 +53,7 @@ class ManagementCommandsTestCase(RunCommandsMixin, SimpleModoTestCase):
     @classmethod
     def setUpTestData(cls):  # noqa
         super().setUpTestData()
+        call_command("load_initial_data", "--no-frontend")
         admin_factories.populate_database()
 
     def test_logparser(self):
