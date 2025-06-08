@@ -10,7 +10,7 @@ from django.core.management import call_command
 from django.test import override_settings
 
 from modoboa.admin import factories as admin_factories
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import SimpleModoTestCase
 
 
 class RunCommandsMixin:
@@ -47,7 +47,7 @@ class RunCommandsMixin:
 
 
 @override_settings(RRDTOOL_TEST_MODE=True)
-class ManagementCommandsTestCase(RunCommandsMixin, ModoTestCase):
+class ManagementCommandsTestCase(RunCommandsMixin, SimpleModoTestCase):
     """Management command test cases."""
 
     @classmethod

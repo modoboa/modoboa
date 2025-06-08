@@ -36,6 +36,16 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, expected_status)
         return data
 
+    def test_link_present_in_account_actions(self):
+        """Check if link is present after creation."""
+        self._create_account("leon@test.com")
+        url = reverse("v2:identities-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        for item in response.json():
+            if item["identity"] == "leon@test.com":
+                self.assertEqual(item["possible_actions"][0]["name"], "get_credentials")
+
     def test_pdfcredentials_disabled(self):
         self.set_global_parameter("enabled_pdfcredentials", False)
         values = self._create_account("leon5@test.com")
