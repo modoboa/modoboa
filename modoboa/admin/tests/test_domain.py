@@ -3,6 +3,7 @@
 import os
 import shutil
 import tempfile
+import unittest
 from unittest import mock
 
 from dateutil.relativedelta import relativedelta
@@ -459,6 +460,7 @@ class DKIMTestCase(ModoTestCase):
         response = self.client.post(url, settings, format="json")
         self.assertEqual(response.status_code, 200)
 
+    @unittest.skipIf(not utils.HAVE_REDIS, "Redis connection not configured")
     def test_dkim_key_creation(self):
         """Test DKIM key creation."""
         values = {
@@ -540,6 +542,7 @@ class DKIMTestCase(ModoTestCase):
         domain.refresh_from_db()
         self.assertEqual(domain.dkim_private_key_path, "")
 
+    @unittest.skipIf(not utils.HAVE_REDIS, "Redis connection not configured")
     def test_dkim_key_length_modification(self):
         """ """
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)

@@ -273,41 +273,61 @@ MODOBOA_API_URL = "https://api.modoboa.org/1/"
 
 PID_FILE_STORAGE_PATH = "/tmp"
 
-# REDIS
+if "REDIS_HOST" in os.environ and "REDIS_PORT" in os.environ:
+    # REDIS
 
-REDIS_SENTINEL = bool(os.environ.get("REDIS_SENTINEL", False))
-REDIS_SENTINELS = [
-    (
-        os.environ.get("REDIS_SENTINEL_HOST", "127.0.0.1"),
-        os.environ.get("REDIS_SENTINEL_PORT", 26379),
-    )
-]
-REDIS_MASTER = os.environ.get("REDIS_MASTER", "mymaster")
+    REDIS_SENTINEL = bool(os.environ.get("REDIS_SENTINEL", False))
+    REDIS_SENTINELS = [
+        (
+            os.environ.get("REDIS_SENTINEL_HOST", "127.0.0.1"),
+            os.environ.get("REDIS_SENTINEL_PORT", 26379),
+        )
+    ]
+    REDIS_MASTER = os.environ.get("REDIS_MASTER", "mymaster")
 
-REDIS_HOST = os.environ.get("REDIS_HOST", "127.0.0.1")
-REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
-REDIS_QUOTA_DB = 0
-REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_QUOTA_DB}"
+    REDIS_HOST = os.environ["REDIS_HOST"]
+    REDIS_PORT = os.environ["REDIS_PORT"]
+    REDIS_QUOTA_DB = 0
+    REDIS_URL = "redis://{}:{}/{}".format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
 
-# RQ
+    # RQ
 
-RQ_QUEUES = {
-    "dkim": {
-        "URL": REDIS_URL,
-    },
-    "modoboa": {
-        "URL": REDIS_URL,
-    },
-}
-
-# CACHE
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}",
+    RQ_QUEUES = {
+        "dkim": {
+            "URL": REDIS_URL,
+        },
+        "modoboa": {
+            "URL": REDIS_URL,
+        },
     }
-}
+
+    # CACHE
+
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}",
+        }
+    }
+else:
+    # REDIS
+
+    REDIS_HOST = ""
+    REDIS_PORT = "0"
+    REDIS_QUOTA_DB = 0
+    REDIS_URL = ""
+
+    # RQ
+
+    RQ_QUEUES = {}
+
+    # CACHE
+
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

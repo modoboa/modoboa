@@ -1,4 +1,5 @@
 """API v2 tests."""
+import unittest
 
 from django.core.files.base import ContentFile
 from django.urls import reverse
@@ -7,6 +8,7 @@ from django.utils.encoding import force_str
 from rest_framework.authtoken.models import Token
 
 from modoboa.admin import factories, models, constants
+from modoboa.admin.tests import utils
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
@@ -261,6 +263,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    @unittest.skipIf(not utils.HAVE_REDIS, "Redis connection not configured")
     def test_mailbox_options_update(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])
