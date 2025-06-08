@@ -4,21 +4,8 @@ Form rendering tags.
 
 from django import forms, template
 from django.template.loader import render_to_string
-from django.utils.safestring import mark_safe
 
 register = template.Library()
-
-
-@register.simple_tag
-def render_form(form, tpl=None):
-    """Render a form."""
-    if tpl is not None:
-        return render_to_string(tpl, {"form": form})
-
-    ret = ""
-    for field in form:
-        ret += f"{render_field(field)}\n"
-    return mark_safe(ret)
 
 
 def configure_field_classes(field):

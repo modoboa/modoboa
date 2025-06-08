@@ -189,6 +189,12 @@ class ParametersMixin:
 class SimpleModoTestCase(ParametersMixin, TestCase):
     """Simple class to add parameters editing."""
 
+    @classmethod
+    def setUpTestData(cls):  # noqa
+        """Create a default user."""
+        super().setUpTestData()
+        management.call_command("load_initial_data", "--no-frontend")
+
 
 class ModoTestCase(ParametersMixin, TestCase):
     """All test cases must inherit from this one."""
@@ -234,7 +240,7 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
     def setUpTestData(cls):  # noqa
         """Create a default user."""
         super().setUpTestData()
-        management.call_command("load_initial_data")
+        management.call_command("load_initial_data", "--no-frontend")
         cls.sadmin = core_models.User.objects.get(username="admin")
         cls.token = Token.objects.create(user=cls.sadmin)
 
