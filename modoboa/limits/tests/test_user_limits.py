@@ -299,7 +299,7 @@ class ResellerTestCase(ResourceTestCase):
         self._check_limit("domain_admins", 2, 2)
         self._check_limit("domains", 2, 3)
         response = self._create_domain("domain3.tld", withtpl=True, status=403)
-        self.assertEqual(response.json(), "Domain admins: limit reached")
+        self.assertEqual(response.json()["error"], "Domain admins: limit reached")
         self._check_limit("domain_admins", 2, 2)
         self._check_limit("domains", 2, 3)
 
@@ -309,7 +309,7 @@ class ResellerTestCase(ResourceTestCase):
         response = self._create_domain(
             "domain2.tld", status=403, withtpl=True, quota=1000
         )
-        self.assertEqual(response.json(), "Quota: limit reached")
+        self.assertEqual(response.json()["error"], "Quota: limit reached")
         dom1 = Domain.objects.get(name="domain1.tld")
         url = reverse("v2:domain-detail", args=[dom1.pk])
         values = {
@@ -533,6 +533,6 @@ class ResellerTestCase(ResourceTestCase):
             reverse("v2:account-detail", args=[user.id]), values, format="json"
         )
         self.assertEqual(response.status_code, 424)
-        self.assertEqual(response.json(), "Not enough resources")
+        self.assertEqual(response.json()["error"], "Not enough resources")
         self._check_limit("mailboxes", 1, 2)
         self._check_limit("mailbox_aliases", 0, 2)
