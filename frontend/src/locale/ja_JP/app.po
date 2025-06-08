@@ -168,6 +168,10 @@ msgstr "新しいフィルターを追加"
 msgid "Add sender address"
 msgstr "送信者アドレスを追加"
 
+#: src/components/webmail/ContactCard.vue:15
+msgid "Add to contacts"
+msgstr "連絡先に追加"
+
 #: src/components/admin/identities/DomainAdminDomains.vue:16
 msgid "Add/Remove from the domain page"
 msgstr "ドメインページから追加・削除"
@@ -347,6 +351,15 @@ msgstr "関連ドメイン"
 msgid "Associated domains"
 msgstr "関連ドメイン"
 
+#: src/components/webmail/AttachmentsDialog.vue:16
+msgid "Attach"
+msgstr "添付"
+
+#: src/components/webmail/AttachmentsDialog.vue:3
+#: src/components/webmail/ComposeEmailForm.vue:21
+msgid "Attachments"
+msgstr "添付ファイル"
+
 #: src/views/login/LoginCallbackView.vue:20 src/views/login/LoginView.vue:17
 msgid "Attempting to log you in."
 msgstr "ログインを試みています。"
@@ -400,6 +413,11 @@ msgstr "戻る"
 #: src/components/account/BackupCodeAuthForm.vue:6
 msgid "Backup codes"
 msgstr "再設定コード"
+
+#: src/components/webmail/ComposeEmailForm.vue:110
+#: src/components/webmail/ComposeEmailForm.vue:73
+msgid "Bcc"
+msgstr "BCC"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:23
 msgid "Bind/named format. Click to copy"
@@ -455,6 +473,11 @@ msgstr "カテゴリー"
 #: src/components/contacts/CategoryForm.vue:92
 msgid "Category deleted"
 msgstr "カレンダーを削除しました"
+
+#: src/components/webmail/ComposeEmailForm.vue:65
+#: src/components/webmail/ComposeEmailForm.vue:83
+msgid "Cc"
+msgstr "CC"
 
 #: src/views/admin/InformationView.vue:37
 msgid "Change the value of <strong>Default password scheme</strong>"
@@ -515,7 +538,9 @@ msgstr "クリックしてキーをコピー"
 #: src/components/contacts/ContactCategoriesForm.vue:21
 #: src/components/contacts/ContactForm.vue:148
 #: src/components/tools/ImportForm.vue:51
-#: src/layouts/connected/ConnectedLayout.vue:15
+#: src/components/webmail/AttachmentsDialog.vue:41
+#: src/components/webmail/MailboxForm.vue:29
+#: src/layouts/connected/ConnectedLayout.vue:17
 msgid "Close"
 msgstr "閉じる"
 
@@ -535,6 +560,14 @@ msgstr "色"
 msgid "Company"
 msgstr "勤務先"
 
+#: src/layouts/webmail/WebmailLayout.vue:28
+msgid "Compose"
+msgstr "作成"
+
+#: src/layouts/webmail/WebmailLayout.vue:66
+msgid "Compress this mailbox"
+msgstr "このメールボックスを圧縮"
+
 #: src/components/account/FilterForm.vue:14
 msgid "Conditions"
 msgstr "条件"
@@ -552,6 +585,10 @@ msgid ""
 "Congratulations! Two-factor authentication using one-time passwords is now "
 "enabled for your account."
 msgstr "おめでとうございます！　あなたのアカウントで 2 要素認証が有効になりました。"
+
+#: src/components/webmail/ContactCard.vue:64
+msgid "Contact added to address book"
+msgstr "アドレス帳に連絡先を追加しました"
 
 #: src/views/contacts/AddressBook.vue:3 src/views/contacts/AddressBook.vue:37
 msgid "Contacts"
@@ -583,7 +620,7 @@ msgstr "クリックしてコピー"
 msgid "Copy token to clipboard"
 msgstr "トークンをクリップボードにコピー"
 
-#: src/components/tools/ParametersForm.vue:164
+#: src/components/tools/ParametersForm.vue:183
 msgid "Could not save parameters"
 msgstr "パラメーターを保存できませんでした"
 
@@ -594,6 +631,7 @@ msgstr "国"
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
 #: src/components/calendars/CalendarForm.vue:80
+#: src/components/webmail/MailboxForm.vue:79
 msgid "Create"
 msgstr "作成"
 
@@ -610,10 +648,18 @@ msgstr "管理者用のメールボックスを作成します。"
 msgid "Create a new filter set"
 msgstr "新しいフィルターセットを作成"
 
+#: src/layouts/webmail/WebmailLayout.vue:49
+msgid "Create a new mailbox"
+msgstr "新しいメールボックスを作成"
+
 #: src/components/admin/domains/DomainCreationForm.vue:265
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
 msgid "Create aliases"
 msgstr "エイリアスを作成"
+
+#: src/components/webmail/MailboxForm.vue:75
+msgid "Create new mailbox"
+msgstr "新しいメールボックスを作成"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
 msgid "Create standard aliases for the domain."
@@ -692,6 +738,14 @@ msgstr "削除"
 msgid "Delete filter set"
 msgstr "フィルターセットを削除"
 
+#: src/layouts/webmail/WebmailLayout.vue:60
+msgid "Delete this mailbox"
+msgstr "このメールボックスを削除"
+
+#: src/layouts/webmail/WebmailLayout.vue:194
+msgid "Delete this mailbox?"
+msgstr "このメールボックスを削除しますか？"
+
 #: src/components/account/APISetupForm.vue:38
 msgid "Delete token"
 msgstr "トークンを削除"
@@ -716,6 +770,10 @@ msgstr "無効"
 msgid "Disable 2FA"
 msgstr "2FA を無効に"
 
+#: src/views/webmail/EmailView.vue:74
+msgid "Disable links"
+msgstr "リンクを無効に"
+
 #: src/components/admin/domains/DomainList.vue:85
 msgid "disabled"
 msgstr "無効"
@@ -732,6 +790,10 @@ msgstr "アドレス帳情報を表示"
 #: src/components/contacts/ContactList.vue:119
 msgid "Display name"
 msgstr "表示名"
+
+#: src/views/webmail/EmailView.vue:78
+msgid "Display source"
+msgstr "ソースを表示"
 
 #: src/components/admin/domains/DNSDetail.vue:103
 msgid "DKIM key"
@@ -951,9 +1013,17 @@ msgstr "イベントを編集"
 msgid "Edit filter"
 msgstr "フィルターを編集"
 
+#: src/components/webmail/MailboxForm.vue:76
+msgid "Edit mailbox"
+msgstr "メールボックスを編集"
+
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
 msgid "Edit provider"
 msgstr "事業者を編集"
+
+#: src/layouts/webmail/WebmailLayout.vue:54
+msgid "Edit this mailbox"
+msgstr "このメールボックスを編集"
 
 #: src/components/account/FidoAuthForm.vue:201
 msgid "Edit your device"
@@ -975,9 +1045,17 @@ msgstr "メールアドレス"
 msgid "Email providers"
 msgstr "メール発行者"
 
+#: src/components/webmail/ComposeEmailForm.vue:268
+msgid "Email sent"
+msgstr "メールを送信しました"
+
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
 msgstr "なし"
+
+#: src/components/webmail/EmailList.vue:83
+msgid "Empty mailbox"
+msgstr "メールボックスを空に"
 
 #: src/views/account/FiltersView.vue:355
 msgid "Enable"
@@ -992,6 +1070,10 @@ msgstr "DKIM 署名を有効"
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
 msgid "Enable DNS checks"
 msgstr "DNS チェック有効"
+
+#: src/views/webmail/EmailView.vue:69
+msgid "Enable links"
+msgstr "リンクを有効に"
 
 #: src/components/account/AutoReplyForm.vue:7
 #: src/components/admin/domains/DomainCreationForm.vue:166
@@ -1096,7 +1178,7 @@ msgstr "フィルターセットを更新しました"
 msgid "Filter updated"
 msgstr "フィルターを更新しました"
 
-#: src/layouts/account/AccountLayout.vue:32
+#: src/layouts/account/AccountLayout.vue:33
 msgid "Filters"
 msgstr "フィルター"
 
@@ -1107,7 +1189,7 @@ msgstr "フィルター"
 msgid "First name"
 msgstr "姓"
 
-#: src/views/account/SettingsView.vue:14
+#: src/views/account/SettingsView.vue:14 src/views/webmail/EmailView.vue:23
 msgid "Forward"
 msgstr "転送"
 
@@ -1132,6 +1214,7 @@ msgstr "ARC でのフォワーダー"
 #: src/components/admin/logs/MessageList.vue:47
 #: src/components/calendars/EventForm.vue:24
 #: src/components/tools/TimeSerieChart.vue:19
+#: src/components/webmail/ComposeEmailForm.vue:29
 msgid "From"
 msgstr "差出人"
 
@@ -1400,6 +1483,22 @@ msgstr "メールボックス"
 msgid "Mailbox aliases:"
 msgstr "メールボックス エイリアス : "
 
+#: src/layouts/webmail/WebmailLayout.vue:188
+msgid "Mailbox compressed"
+msgstr "メールボックスを圧縮"
+
+#: src/components/webmail/MailboxForm.vue:105
+msgid "Mailbox created"
+msgstr "メールボックスを作成しました"
+
+#: src/layouts/webmail/WebmailLayout.vue:205
+msgid "Mailbox deleted"
+msgstr "メールボックスを削除しました"
+
+#: src/components/webmail/MailboxForm.vue:98
+msgid "Mailbox renamed"
+msgstr "メールボックスを変名しました"
+
 #: src/components/admin/identities/AccountEditForm.vue:158
 msgid "Mailbox:"
 msgstr "メールボックス : "
@@ -1413,6 +1512,22 @@ msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr "<strong>ログイン時にパスワードスキーマを更新</strong> 設定が有効になっていることを確認してください"
 
+#: src/components/webmail/EmailList.vue:72
+msgid "Mark as followed"
+msgstr "フォローする"
+
+#: src/components/webmail/EmailList.vue:62
+msgid "Mark as read"
+msgstr "既読とマーク"
+
+#: src/components/webmail/EmailList.vue:77
+msgid "Mark as unfollowed"
+msgstr "フォローを解除"
+
+#: src/components/webmail/EmailList.vue:67
+msgid "Mark as unread"
+msgstr "未読とマーク"
+
 #: src/components/admin/domains/DomainSummary.vue:20
 #: src/components/admin/identities/AccountSummary.vue:49
 msgid "MB"
@@ -1423,6 +1538,10 @@ msgstr "MB"
 msgid "Message"
 msgstr "メッセージ"
 
+#: src/views/webmail/EmailView.vue:254
+msgid "Message deleted"
+msgstr "メッセージを削除しました"
+
 #: src/views/account/FiltersView.vue:3
 msgid "Message filters"
 msgstr "メッセージフィルター"
@@ -1431,11 +1550,35 @@ msgstr "メッセージフィルター"
 msgid "Message history"
 msgstr "メッセージ履歴"
 
+#: src/views/webmail/EmailView.vue:268
+msgid "Message marked as junk"
+msgstr "メッセージを SPAM とマークしました"
+
+#: src/views/webmail/EmailView.vue:282
+msgid "Message marked as not junk"
+msgstr "メッセージを HAM とマークしました"
+
 #: src/components/admin/domains/DomainCreationForm.vue:196
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
 #: src/components/admin/identities/AccountCreationForm.vue:134
 msgid "Message sending limit"
 msgstr "メッセージ送信通数制限"
+
+#: src/components/webmail/EmailList.vue:249
+msgid "Message(s) deleted"
+msgstr "メッセージを削除しました"
+
+#: src/components/webmail/EmailList.vue:287
+msgid "Message(s) flagged"
+msgstr "メッセージを重要とマークしました"
+
+#: src/components/webmail/EmailList.vue:262
+msgid "Message(s) marked as junk"
+msgstr "メッセージを SPAM とマークしました"
+
+#: src/components/webmail/EmailList.vue:274
+msgid "Message(s) marked as not junk"
+msgstr "メッセージを HAM とマークしました"
 
 #: src/components/admin/domains/DomainSummary.vue:32
 msgid "messages"
@@ -1516,6 +1659,7 @@ msgstr "名前"
 #: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/components/calendars/CalendarForm.vue:15
 #: src/components/contacts/CategoryForm.vue:10
+#: src/components/webmail/MailboxForm.vue:7
 #: src/views/account/FiltersView.vue:164
 #: src/views/admin/InformationView.vue:145
 msgid "Name"
@@ -1597,7 +1741,7 @@ msgstr "新しい再設定コード"
 msgid "Next"
 msgstr "次"
 
-#: src/plugins/filters.js:9
+#: src/plugins/filters.js:10
 msgid "no"
 msgstr "いいえ"
 
@@ -1608,6 +1752,7 @@ msgstr "いいえ"
 #: src/components/admin/identities/IdentityList.vue:212
 #: src/components/admin/identities/IdentityList.vue:238
 #: src/components/tools/CreationForm.vue:136
+#: src/layouts/webmail/WebmailLayout.vue:198
 msgid "No"
 msgstr "いいえ"
 
@@ -1622,6 +1767,10 @@ msgstr "エクスポートデータなし"
 #: src/components/admin/identities/DomainAdminDomains.vue:13
 msgid "No domain managed"
 msgstr "管理ドメインなし"
+
+#: src/components/webmail/EmailList.vue:165
+msgid "No message yet in this mailbox"
+msgstr "このメールボックスにはまだメッセージがありません"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:10
 msgid "No sender address defined for this account"
@@ -1681,6 +1830,10 @@ msgstr "OK"
 msgid "Old account"
 msgstr "古いアカウント"
 
+#: src/components/webmail/EmailList.vue:93
+msgid "on"
+msgstr "中"
+
 #: src/views/admin/InformationView.vue:103
 msgid "One or more updates are available"
 msgstr "アップデートが利用できます"
@@ -1706,9 +1859,13 @@ msgstr "設定"
 msgid "or suggest a new language"
 msgstr "もしくは新しい言語を提案してください"
 
-#: src/components/tools/ParametersForm.vue:159
+#: src/components/tools/ParametersForm.vue:178
 msgid "Parameters updated"
 msgstr "パラメーターを更新しました"
+
+#: src/components/webmail/MailboxForm.vue:13
+msgid "Parent mailbox"
+msgstr "上位のメールボックス"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:128
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:148
@@ -1807,6 +1964,12 @@ msgstr "プロフィールを更新しました"
 #: src/components/tools/ImportForm.vue:10
 msgid "Provide a CSV file where lines respect one of the following formats:"
 msgstr "以下の書式のいずれかに沿った行で構成した CSV ファイルを提供してください : "
+
+#: src/components/webmail/ComposeEmailForm.vue:124
+#: src/components/webmail/ComposeEmailForm.vue:54
+#: src/components/webmail/ComposeEmailForm.vue:97
+msgid "Provide one or more addresses"
+msgstr "1 つまたは複数のアドレスを入力してください"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:79
 msgid "Provider"
@@ -1952,6 +2115,14 @@ msgstr "この管理者を削除"
 msgid "Reopen alarm"
 msgstr "アラートを再開"
 
+#: src/views/webmail/EmailView.vue:12
+msgid "Reply"
+msgstr "返信"
+
+#: src/views/webmail/EmailView.vue:19
+msgid "Reply all"
+msgstr "全員に返信"
+
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:99
 msgid "Reseller"
 msgstr "リセラー"
@@ -2000,6 +2171,10 @@ msgstr "変更を保存"
 msgid "Search"
 msgstr "検索"
 
+#: src/components/webmail/EmailList.vue:14
+msgid "Search in messages"
+msgstr "メッセージを検索"
+
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:27
 msgid "Secondary email"
@@ -2032,6 +2207,7 @@ msgid "Select file"
 msgstr "ファイルを選択"
 
 #: src/components/calendars/ImportEventsForm.vue:30
+#: src/components/webmail/ComposeEmailForm.vue:13
 msgid "Send"
 msgstr "送信"
 
@@ -2077,7 +2253,7 @@ msgstr "サービス"
 msgid "Service: "
 msgstr "サービス : "
 
-#: src/layouts/account/AccountLayout.vue:26
+#: src/layouts/account/AccountLayout.vue:27
 #: src/layouts/admin/AdminLayout.vue:88
 msgid "Settings"
 msgstr "設定"
@@ -2127,6 +2303,7 @@ msgid "Status"
 msgstr "状態"
 
 #: src/components/account/AutoReplyForm.vue:12
+#: src/components/webmail/ComposeEmailForm.vue:137
 msgid "Subject"
 msgstr "件名"
 
@@ -2206,6 +2383,8 @@ msgstr "タイトル"
 #: src/components/admin/logs/MessageList.vue:46
 #: src/components/calendars/EventForm.vue:34
 #: src/components/tools/TimeSerieChart.vue:20
+#: src/components/webmail/ComposeEmailForm.vue:46
+#: src/views/webmail/EmailView.vue:109
 msgid "To"
 msgstr "宛先"
 
@@ -2298,12 +2477,17 @@ msgstr "終了日"
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactCategoriesForm.vue:24
 #: src/components/contacts/ContactForm.vue:185
+#: src/components/webmail/MailboxForm.vue:79
 msgid "Update"
 msgstr "更新"
 
 #: src/components/account/AutoReplyForm.vue:54
 msgid "Update auto-reply"
 msgstr "自動応答を更新"
+
+#: src/components/webmail/ContactCard.vue:23
+msgid "Update contact"
+msgstr "連絡先を更新"
 
 #: src/components/account/ProfileForm.vue:75
 msgid "Update Password"
@@ -2354,6 +2538,7 @@ msgstr "警告"
 #: src/components/admin/identities/IdentityList.vue:207
 #: src/components/admin/identities/IdentityList.vue:233
 #: src/components/tools/CreationForm.vue:129
+#: src/layouts/webmail/WebmailLayout.vue:193
 #: src/views/calendars/CalendarView.vue:246
 msgid "Warning"
 msgstr "警告"
@@ -2361,6 +2546,10 @@ msgstr "警告"
 #: src/components/account/FidoAuthForm.vue:6
 msgid "WebAuthn"
 msgstr "パスキー"
+
+#: src/views/webmail/MailboxView.vue:4
+msgid "Webmail"
+msgstr "Web メール"
 
 #: src/components/tools/TimeSerieChart.vue:111
 msgid "Week"
@@ -2387,7 +2576,7 @@ msgstr "書き込み"
 msgid "Year"
 msgstr "年"
 
-#: src/plugins/filters.js:9
+#: src/plugins/filters.js:10
 msgid "yes"
 msgstr "はい"
 
@@ -2398,6 +2587,7 @@ msgstr "はい"
 #: src/components/admin/identities/IdentityList.vue:211
 #: src/components/admin/identities/IdentityList.vue:237
 #: src/components/tools/CreationForm.vue:135
+#: src/layouts/webmail/WebmailLayout.vue:197
 msgid "Yes"
 msgstr "はい"
 
