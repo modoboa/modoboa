@@ -2,6 +2,14 @@
 
 import re
 
+from django.shortcuts import render
+
+
+def _render_error(request, errortpl="error", user_context=None):
+    if user_context is None:
+        user_context = {}
+    return render(request, f"common/{errortpl}.html", user_context)
+
 
 def size2integer(value: str, output_unit: str = "B") -> int:
     """
