@@ -10,7 +10,6 @@ def load_limits_settings():
     from . import app_settings
     from .api.v2 import serializers
 
-    param_tools.registry.add("global", app_settings.ParametersForm, _("Limits"))
     param_tools.registry.add2(
         "global",
         "limits",

@@ -1,15 +1,12 @@
 """Django signal handlers for modoboa_postfix_autoreply."""
 
-from django.urls import re_path
 from django.db.models import signals
 from django.dispatch import receiver
-from django.utils.translation import gettext as _
 
-from modoboa.admin import models as admin_models, signals as admin_signals
-from modoboa.core import signals as core_signals
+from modoboa.admin import models as admin_models
 from modoboa.transport import models as tr_models
 
-from . import forms, models
+from . import models
 
 
 @receiver(signals.post_save, sender=admin_models.Domain)
@@ -77,67 +74,3 @@ def manage_autoreply_alias(sender, instance, **kwargs):
         )
     else:
         admin_models.AliasRecipient.objects.filter(address=ar_alias_address).delete()
-
-
-@receiver(core_signals.extra_uprefs_routes)
-def extra_routes(sender, **kwargs):
-    """Add extra routes."""
-    from . import views
-
-    return [re_path(r"^user/autoreply/$", views.autoreply, name="autoreply")]
-
-
-@receiver(core_signals.extra_static_content)
-def extra_js(sender, caller, st_type, user, **kwargs):
-    """Add static content."""
-    if caller != "user_index" or st_type != "js":
-        return ""
-    return f"""function autoreply_cb() {{
-    $('.datefield').datetimepicker({{
-        format: 'YYYY-MM-DD HH:mm:ss',
-        locale: '{user.language}'
-    }});
-}}
-"""
-
-
-@receiver(core_signals.extra_user_menu_entries)
-def menu(sender, location, user, **kwargs):
-    """Inject new menu entries."""
-    if location != "uprefs_menu" or not hasattr(user, "mailbox"):
-        return []
-    return [
-        {
-            "name": "autoreply",
-            "class": "ajaxnav",
-            "url": "autoreply/",
-            "label": _("Auto-reply message"),
-        }
-    ]
-
-
-@receiver(admin_signals.extra_account_forms)
-def extra_account_form(sender, user, account, **kwargs):
-    """Add autoreply form to the account edition form."""
-    result = []
-    if user.role in ("SuperAdmins", "DomainAdmins"):
-        if hasattr(account, "mailbox"):
-            extraform = {
-                "id": "auto_reply_message",
-                "title": _("Auto reply"),
-                "cls": forms.ARmessageForm,
-                "new_args": [account.mailbox],
-            }
-            result.append(extraform)
-    return result
-
-
-@receiver(admin_signals.get_account_form_instances)
-def fill_account_tab(sender, user, account, **kwargs):
-    """Return form instance."""
-    condition = user.role not in ("SuperAdmins", "DomainAdmins") or not hasattr(
-        account, "mailbox"
-    )
-    if condition:
-        return {}
-    return {"auto_reply_message": account.mailbox.armessage_set.first()}

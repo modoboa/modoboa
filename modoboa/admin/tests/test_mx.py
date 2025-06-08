@@ -7,7 +7,6 @@ from testfixtures import LogCapture
 
 from django.core import mail, management
 from django.test import override_settings
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models, factories as core_factories
@@ -241,10 +240,6 @@ class DNSBLTestCase(ModoTestCase):
         self.assertFalse(
             models.DNSBLResult.objects.filter(domain=self.domain3).exists()
         )
-        response = self.client.get(
-            reverse("admin:dnsbl_domain_detail", args=[self.domain.pk])
-        )
-        self.assertEqual(response.status_code, 200)
         self.assertFalse(self.domain.uses_a_reserved_tld)
         self.assertTrue(self.domain2.uses_a_reserved_tld)
 
@@ -285,10 +280,6 @@ class DNSBLTestCase(ModoTestCase):
         self.assertEqual(models.DNSBLResult.objects.count(), 0)
         management.call_command("modo", "check_mx", "--no-dnsbl")
         self.assertFalse(models.DNSBLResult.objects.filter(domain=self.domain).exists())
-        response = self.client.get(
-            reverse("admin:dnsbl_domain_detail", args=[self.domain.pk])
-        )
-        self.assertEqual(response.status_code, 200)
 
 
 class DNSChecksTestCase(ModoTestCase):

@@ -2,19 +2,18 @@
 
 import os
 import shutil
-import tempfile
 from unittest import mock
 
 from django.core.management import call_command
 from django.test import override_settings
 from django.urls import reverse
 
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import ModoAPITestCase
 from .. import factories, models
 
 
 @override_settings(DOVECOT_LOOKUP_PATH=[f"{os.path.dirname(__file__)}/dovecot"])
-class MailboxOperationTestCase(ModoTestCase):
+class MailboxOperationTestCase(ModoAPITestCase):
     """Test management command."""
 
     @classmethod
@@ -26,7 +25,6 @@ class MailboxOperationTestCase(ModoTestCase):
     def setUp(self):
         """Initiate test env."""
         super().setUp()
-        self.workdir = tempfile.mkdtemp()
         path = f"{self.workdir}/test.com/admin"
         os.makedirs(path)
         self.set_global_parameter("handle_mailboxes", True)
@@ -44,7 +42,9 @@ class MailboxOperationTestCase(ModoTestCase):
         mb = models.Mailbox.objects.select_related("user").get(
             address="admin", domain__name="test.com"
         )
-        self.ajax_post(reverse("admin:account_delete", args=[mb.user.pk]), {})
+        self.client.post(
+            reverse("v2:account-delete", args=[mb.user.pk]), {}, format="json"
+        )
         call_command("handle_mailbox_operations")
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertFalse(os.path.exists(mb.mail_home))
@@ -63,10 +63,12 @@ class MailboxOperationTestCase(ModoTestCase):
             "is_active": True,
             "email": "admin2@test.com",
             "language": "en",
-            "subject": "test",
-            "content": "content",
+            "mailbox": {"use_domain_quota": True},
         }
-        self.ajax_post(reverse("admin:account_change", args=[mb.user.pk]), values)
+        response = self.client.put(
+            reverse("v2:account-detail", args=[mb.user.pk]), values, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
         path = f"{self.workdir}/test.com/admin2"
         mail_home_mock.__get__ = mock.Mock(return_value=path)
         call_command("handle_mailbox_operations")
@@ -79,7 +81,9 @@ class MailboxOperationTestCase(ModoTestCase):
         path = f"{self.workdir}/test.com/admin"
         mail_home_mock.__get__ = mock.Mock(return_value=path)
         domain = models.Domain.objects.get(name="test.com")
-        self.ajax_post(reverse("admin:domain_delete", args=[domain.pk]))
+        self.client.post(
+            reverse("v2:domain-delete", args=[domain.pk]), {}, format="json"
+        )
         call_command("handle_mailbox_operations")
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertFalse(os.path.exists(path))

@@ -9,17 +9,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-08 17:08+0200\n"
+"POT-Creation-Date: 2025-06-08 14:52+0200\n"
 "PO-Revision-Date: 2017-10-12 19:37+0000\n"
 "Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
-"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/"
+"language/el_GR/)\n"
 "Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/api/v1/serializers.py:41 admin/forms/domain.py:49
+#: admin/api/v1/serializers.py:41
 #, fuzzy
 #| msgid ""
 #| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -36,131 +37,145 @@ msgstr ""
 "Προκαθορισμένο quota σε MB που εφαρμόζεται στα γραμματοκιβώτια. Μια τιμή 0 "
 "σημαίνει ότι δεν υπάρχει quota.  "
 
-#: admin/api/v1/serializers.py:96 admin/forms/domain.py:118
+#: admin/api/v1/serializers.py:90
+#, fuzzy
+msgid "domain alias with this name already exists"
+msgstr "Υπάρχει είδη αυτό το ψευδώνυμο"
+
+#: admin/api/v1/serializers.py:100
 msgid "No authorized MX record found for this domain"
 msgstr "Δεν υπάρχουν ΜΧ έγραφες για αυτό το domain "
 
-#: admin/api/v1/serializers.py:114 admin/forms/domain.py:160
+#: admin/api/v1/serializers.py:118
 msgid "Cannot be greater than domain quota"
 msgstr "Δεν μπορεί να είναι μεγαλύτερο από το domain quota."
 
-#: admin/api/v1/serializers.py:160 admin/api/v1/serializers.py:385
-#: admin/api/v2/serializers.py:492 admin/models/alias.py:38
+#: admin/api/v1/serializers.py:164 admin/api/v1/serializers.py:359
+#: admin/api/v2/serializers.py:524 admin/models/alias.py:38
 msgid "Permission denied."
 msgstr "Η άδεια απορρίφθηκε."
 
-#: admin/api/v1/serializers.py:222 admin/api/v2/serializers.py:77
-#: admin/api/v2/serializers.py:424 admin/forms/alias.py:113
-#: admin/forms/alias.py:115 core/api/v2/serializers.py:224
-#: core/api/v2/serializers.py:226 core/api/v2/serializers.py:235
-#: core/app_settings.py:582 core/app_settings.py:584 core/app_settings.py:595
+#: admin/api/v1/serializers.py:226 admin/api/v2/serializers.py:89
+#: admin/api/v2/serializers.py:456 core/api/v2/serializers.py:225
+#: core/api/v2/serializers.py:227 core/api/v2/serializers.py:236
 #: transport/backends.py:40
 msgid "This field is required"
 msgstr "Αυτό το πεδίο είναι υποχρεωτικό"
 
-#: admin/api/v1/serializers.py:234
+#: admin/api/v1/serializers.py:238
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Λίστα διαχειριζόμενων domains (αφορά μόνο μεταπωλητές και διαχειριστές "
 "domain)"
 
-#: admin/api/v1/serializers.py:358 admin/api/v2/serializers.py:474
+#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:506
 msgid "Not allowed for this role."
 msgstr "Δεν επιτρέπεται για αυτόν τον ρόλο."
 
-#: admin/api/v1/serializers.py:376
+#: admin/api/v1/serializers.py:350
 msgid "Must be equal to mailbox full_address"
 msgstr "Πρέπει να είναι ίσο με την full_address του γραμματοκιβωτίου"
 
-#: admin/api/v1/serializers.py:418 admin/api/v2/serializers.py:526
-#: admin/forms/account.py:186 admin/forms/account.py:188
-#: admin/forms/domain.py:174 admin/forms/domain.py:302
-#: admin/forms/domain.py:304 calendars/serializers.py:175
-#: calendars/serializers.py:177 core/forms.py:92 core/forms.py:95
-#: core/forms.py:97
+#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:558
+#: calendars/serializers.py:175 calendars/serializers.py:177
 msgid "This field is required."
 msgstr "Αυτό το πεδίο απαιτείτε."
 
-#: admin/api/v1/serializers.py:430 admin/api/v2/serializers.py:543
+#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:575
 msgid "Local domain {} does not exist"
 msgstr "Το τοπικός domain {} δεν υπάρχει"
 
-#: admin/api/v1/serializers.py:516
+#: admin/api/v1/serializers.py:494
 msgid "A list of recipient"
 msgstr "Λίστα παραληπτών"
 
-#: admin/api/v1/serializers.py:532 admin/api/v2/viewsets.py:271
+#: admin/api/v1/serializers.py:510 admin/api/v2/viewsets.py:271
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "Ο χρήστης '%s' υπάρχει ήδη"
 
-#: admin/api/v1/serializers.py:568
+#: admin/api/v1/serializers.py:546
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this domain."
 msgstr "Δεν έχετε πρόσβαση σε αυτό το domain"
 
-#: admin/api/v1/serializers.py:577
+#: admin/api/v1/serializers.py:555
 #, fuzzy
 #| msgid "You don't have access to this domain"
 msgid "You don't have access to this mailbox."
 msgstr "Δεν έχετε πρόσβαση σε αυτό το domain"
 
-#: admin/api/v1/viewsets.py:183
+#: admin/api/v1/viewsets.py:184
 msgid "Here is your new Modoboa password: {}"
 msgstr ""
 
-#: admin/api/v2/serializers.py:103 admin/forms/domain.py:320
+#: admin/api/v2/serializers.py:81
+msgid "DKIM keys storage directory not configured"
+msgstr ""
+
+#: admin/api/v2/serializers.py:93
+msgid "This field is valid when type is relaydomain"
+msgstr ""
+
+#: admin/api/v2/serializers.py:100
+msgid "You can't define an unlimited quota."
+msgstr "Δεν μπορείτε  να ορίσετε ένα απεριόριστο quota."
+
+#: admin/api/v2/serializers.py:134
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Ο χρήστης '%s' υπάρχει ήδη"
 
-#: admin/api/v2/serializers.py:219 admin/api/v2/serializers.py:225
-#: admin/app_settings.py:230 admin/app_settings.py:236
-#: admin/forms/account.py:366
+#: admin/api/v2/serializers.py:249 admin/api/v2/serializers.py:255
 msgid "Must be a positive integer"
 msgstr "Πρέπει να είναι θετικός ακέραιος"
 
-#: admin/api/v2/serializers.py:234 admin/app_settings.py:248
+#: admin/api/v2/serializers.py:264
 msgid "openssl not found, please make sure it is installed."
 msgstr ""
 
-#: admin/api/v2/serializers.py:246 admin/app_settings.py:261
+#: admin/api/v2/serializers.py:267 pdfcredentials/api/v2/serializers.py:79
+#, fuzzy
+#| msgid "Domain not found."
+msgid "Directory not found."
+msgstr "To domain δεν βρέθηκε."
+
+#: admin/api/v2/serializers.py:278
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr ""
 
-#: admin/api/v2/serializers.py:259
+#: admin/api/v2/serializers.py:291
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 
-#: admin/api/v2/serializers.py:272 admin/app_settings.py:275
+#: admin/api/v2/serializers.py:304
 msgid "Define at least one authorized network / address"
 msgstr "Ορίστε τουλάχιστον μια εξουσιοδοτημένη διεύθυνση / δίκτυο"
 
-#: admin/api/v2/serializers.py:509
+#: admin/api/v2/serializers.py:541
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:531
+#: admin/api/v2/serializers.py:563
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Απαιτείται γραμματοκιβώτιο"
 
-#: admin/api/v2/serializers.py:694
+#: admin/api/v2/serializers.py:729
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
 msgstr "Άγνωστη"
 
-#: admin/api/v2/viewsets.py:84 admin/forms/account.py:379
-#: admin/forms/account.py:386 admin/forms/alias.py:97
+#: admin/api/v2/viewsets.py:84
 msgid "You don't have access to this domain"
 msgstr "Δεν έχετε πρόσβαση σε αυτό το domain"
 
-#: admin/api/v2/viewsets.py:87 admin/views/domain.py:248
+#: admin/api/v2/viewsets.py:87
 msgid "You can't delete your own domain"
 msgstr "Δεν μπορείτε να σβήσετε το δικό σας domain"
 
@@ -172,143 +187,140 @@ msgstr ""
 msgid "Received invalid alarm id(s)"
 msgstr ""
 
-#: admin/app_settings.py:23 admin/app_settings.py:287 admin/handlers.py:285
-#: admin/templates/admin/_global_statistics_widget.html:11
-#: admin/templates/admin/domains.html:5 limits/app_settings.py:36
-#: limits/app_settings.py:172 limits/constants.py:13
+#: admin/app_settings.py:19 limits/app_settings.py:38 limits/constants.py:13
 msgid "Domains"
 msgstr "Domains"
 
-#: admin/app_settings.py:26 admin/app_settings.py:293
+#: admin/app_settings.py:25
 msgid "Enable MX checks"
 msgstr "Ενεργοποίηση ελέγχου MX"
 
-#: admin/app_settings.py:28 admin/app_settings.py:295
+#: admin/app_settings.py:27
 msgid "Check that every domain has a valid MX record"
 msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
 
-#: admin/app_settings.py:32 admin/app_settings.py:302
+#: admin/app_settings.py:34
 msgid "Valid MXs"
 msgstr "Έγκυρα MXς"
 
-#: admin/app_settings.py:35 admin/app_settings.py:305
+#: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will"
-" be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will "
+"be sent if a record does not respect it."
 msgstr ""
 "Μια λίστα από IP ή δικτυακές διευθύνσεις που κάθε εγράφη MX πρέπει να "
 "ταιριάζει. "
 
-#: admin/app_settings.py:43 admin/app_settings.py:315
+#: admin/app_settings.py:47
 msgid "New domains must use authorized MX(s)"
 msgstr "Τα νέα domain πρέπει να χρησιμοποιούν εξουσιοδοτημένους MX(s)"
 
-#: admin/app_settings.py:46 admin/app_settings.py:319
+#: admin/app_settings.py:51
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
 msgstr ""
-"Αποτροπή δημιουργίας νέου domain, εάν η εγράφη MX  χρησιμοποιεί μια από τις"
-"  είδη ορισμένες διευθύνσεις."
+"Αποτροπή δημιουργίας νέου domain, εάν η εγράφη MX  χρησιμοποιεί μια από τις  "
+"είδη ορισμένες διευθύνσεις."
 
-#: admin/app_settings.py:52 admin/app_settings.py:327
+#: admin/app_settings.py:59
 #, fuzzy
 #| msgid "Enable DNS checks"
 msgid "Enable IPV6 checks"
 msgstr "Ενεργοποίση ελέγχου DNS"
 
-#: admin/app_settings.py:54 admin/app_settings.py:330
+#: admin/app_settings.py:62
 msgid "Check if MX setup for ipv6 is valid"
 msgstr ""
 
-#: admin/app_settings.py:58 admin/app_settings.py:337
+#: admin/app_settings.py:69
 #, fuzzy
 #| msgid "Enable DNS checks"
 msgid "Enable SPF checks"
 msgstr "Ενεργοποίση ελέγχου DNS"
 
-#: admin/app_settings.py:60 admin/app_settings.py:339
+#: admin/app_settings.py:71
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid SPF record"
 msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
 
-#: admin/app_settings.py:64 admin/app_settings.py:346
+#: admin/app_settings.py:78
 #, fuzzy
 #| msgid "Enable MX checks"
 msgid "Enable DKIM checks"
 msgstr "Ενεργοποίηση ελέγχου MX"
 
-#: admin/app_settings.py:67 admin/app_settings.py:348
+#: admin/app_settings.py:80
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
 msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
 
-#: admin/app_settings.py:72 admin/app_settings.py:356
+#: admin/app_settings.py:88
 #, fuzzy
 #| msgid "Enable MX checks"
 msgid "Enable DMARC checks"
 msgstr "Ενεργοποίηση ελέγχου MX"
 
-#: admin/app_settings.py:74 admin/app_settings.py:358
+#: admin/app_settings.py:90
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid DMARC record"
 msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
 
-#: admin/app_settings.py:78 admin/app_settings.py:365
+#: admin/app_settings.py:97
 #, fuzzy
 #| msgid "Enable MX checks"
 msgid "Enable autoconfig checks"
 msgstr "Ενεργοποίηση ελέγχου MX"
 
-#: admin/app_settings.py:81 admin/app_settings.py:367
+#: admin/app_settings.py:99
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid records for autoconfiguration"
 msgstr "Έλεγχος ότι κάθε domain έχει μια έγκυρη εγράφη MX"
 
-#: admin/app_settings.py:86 admin/app_settings.py:375
+#: admin/app_settings.py:107
 msgid "Enable DNSBL checks"
 msgstr "Ενεργοποίηση ελέγχου DNSBL"
 
-#: admin/app_settings.py:88 admin/app_settings.py:377
+#: admin/app_settings.py:109
 msgid "Check every domain against major DNSBL providers"
 msgstr "Έλεγχος κάθε domain κατά κύριους DNSBL πάροχους"
 
-#: admin/app_settings.py:92 admin/app_settings.py:384
+#: admin/app_settings.py:116
 msgid "Custom DNS server"
 msgstr ""
 
-#: admin/app_settings.py:96 admin/app_settings.py:386
+#: admin/app_settings.py:118
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr ""
 
-#: admin/app_settings.py:101 admin/app_settings.py:394
+#: admin/app_settings.py:126
 msgid "DKIM keys storage directory"
 msgstr ""
 
-#: admin/app_settings.py:104 admin/app_settings.py:396
+#: admin/app_settings.py:128
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
 msgstr ""
 
-#: admin/app_settings.py:112 admin/app_settings.py:405
+#: admin/app_settings.py:137
 msgid "Default DKIM key length"
 msgstr ""
 
-#: admin/app_settings.py:115 admin/app_settings.py:407
+#: admin/app_settings.py:139
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr ""
 
-#: admin/app_settings.py:119 admin/app_settings.py:414
+#: admin/app_settings.py:146
 msgid "Default domain quota"
 msgstr "Προκαθορισμένο domain quota"
 
-#: admin/app_settings.py:122 admin/app_settings.py:416
+#: admin/app_settings.py:148
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
@@ -316,31 +328,28 @@ msgstr ""
 "Προκαθορισμένο quota (σε MB) που εφαρμόζεται στα νέα domains χωρίς "
 "προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota. "
 
-#: admin/app_settings.py:128 admin/app_settings.py:424
+#: admin/app_settings.py:156
 #, fuzzy
 #| msgid "Default domain quota"
 msgid "Default domain sending limit"
 msgstr "Προκαθορισμένο domain quota"
 
-#: admin/app_settings.py:131 admin/app_settings.py:426
+#: admin/app_settings.py:158
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
 msgstr ""
 
-#: admin/app_settings.py:136 admin/app_settings.py:438
-#: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
-#: limits/app_settings.py:111 limits/app_settings.py:195
-#: limits/app_settings.py:269 limits/constants.py:31 limits/constants.py:84
-#: sievefilters/forms.py:69
+#: admin/app_settings.py:170 limits/app_settings.py:61
+#: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
 msgid "Mailboxes"
 msgstr "Γραμματοκιβώτια"
 
-#: admin/app_settings.py:139 admin/app_settings.py:444
+#: admin/app_settings.py:176
 msgid "Handle mailboxes on filesystem"
 msgstr "Χειριστείτε γραμματοκιβώτια στο σύστημα αρχείων"
 
-#: admin/app_settings.py:142 admin/app_settings.py:446
+#: admin/app_settings.py:178
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -348,75 +357,11 @@ msgstr ""
 "Μετονομασία και διαγραφή γραμματοκιβωτίων στο σύστημα αρχείων, όταν "
 "μετονομάζονται ή διαγράφονται από το Medaboa "
 
-#: admin/app_settings.py:148 admin/app_settings.py:454
-#: admin/forms/domain.py:54 admin/models/domain.py:36
-#: admin/templates/admin/domain_detail.html:64
+#: admin/app_settings.py:186 admin/models/domain.py:36
 msgid "Default mailbox quota"
 msgstr "Προκαθορισμένο quota γραμματοκιβωτίου "
 
-#: admin/app_settings.py:151
-#, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created domains with no "
-#| "value specified. A value of 0 means no quota."
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Προκαθορισμένο quota γραμματοκιβωτίου (σε MB) που εφαρμόζεται στα νέα "
-"domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota."
-" "
-
-#: admin/app_settings.py:157 admin/app_settings.py:465
-#, fuzzy
-#| msgid "Default mailbox quota"
-msgid "Default mailbox sending limit"
-msgstr "Προκαθορισμένο quota γραμματοκιβωτίου "
-
-#: admin/app_settings.py:160 admin/app_settings.py:467
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
-msgstr ""
-
-#: admin/app_settings.py:166 admin/app_settings.py:475
-msgid "Automatic account removal"
-msgstr "Αυτόματη αφαίρεση λογαριασμών"
-
-#: admin/app_settings.py:169 admin/app_settings.py:477
-msgid "When a mailbox is removed, also remove the associated account"
-msgstr ""
-"Όταν αφαιρείται ένα γραμματοκιβώτιο, να αφαιρείται και ο σχετικός "
-"λογαριασμός"
-
-#: admin/app_settings.py:174 admin/app_settings.py:486
-msgid "Automatic domain/mailbox creation"
-msgstr "Αυτόματη δημιουργία domain/γραμματοκιβωτίων"
-
-#: admin/app_settings.py:177 admin/app_settings.py:489
-msgid ""
-"Create a domain and a mailbox when an account is automatically created."
-msgstr ""
-"Δημιουργία domain και γραμματοκιβωτίου κατά την αυτόματη δημιουργία "
-"λογαριασμού"
-
-#: admin/app_settings.py:182 admin/app_settings.py:498
-msgid "Create an alias when a mailbox is renamed"
-msgstr "Δημιουργία ενός ψευδώνυμου κατά τη μετονομασία ενός γραμματοκιβωτίου"
-
-#: admin/app_settings.py:185 admin/app_settings.py:501
-msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
-"Δημιουργήστε ένα ψευδώνυμο χρησιμοποιώντας την παλιά διεύθυνση όταν "
-"μετονομάζεται ένα γραμματοκιβώτιο."
-
-#: admin/app_settings.py:244 pdfcredentials/api/v2/serializers.py:59
-#, fuzzy
-#| msgid "Domain not found."
-msgid "Directory not found."
-msgstr "To domain δεν βρέθηκε."
-
-#: admin/app_settings.py:456
+#: admin/app_settings.py:188
 #, fuzzy
 #| msgid ""
 #| "Default mailbox quota (in MB) applied to freshly created domains with no "
@@ -426,17 +371,54 @@ msgid ""
 "value specified. A value of 0 means no quota."
 msgstr ""
 "Προκαθορισμένο quota γραμματοκιβωτίου (σε MB) που εφαρμόζεται στα νέα "
-"domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota."
-" "
+"domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota. "
 
-#: admin/app_settings.py:520 admin/app_settings.py:525
-#: core/api/v2/viewsets.py:148
+#: admin/app_settings.py:197
+#, fuzzy
+#| msgid "Default mailbox quota"
+msgid "Default mailbox sending limit"
+msgstr "Προκαθορισμένο quota γραμματοκιβωτίου "
+
+#: admin/app_settings.py:199
+msgid ""
+"Number of messages freshly created mailboxes will be allowed to send per "
+"day. Leave empty for no limit."
+msgstr ""
+
+#: admin/app_settings.py:207
+msgid "Automatic account removal"
+msgstr "Αυτόματη αφαίρεση λογαριασμών"
+
+#: admin/app_settings.py:209
+msgid "When a mailbox is removed, also remove the associated account"
+msgstr ""
+"Όταν αφαιρείται ένα γραμματοκιβώτιο, να αφαιρείται και ο σχετικός λογαριασμός"
+
+#: admin/app_settings.py:218
+msgid "Automatic domain/mailbox creation"
+msgstr "Αυτόματη δημιουργία domain/γραμματοκιβωτίων"
+
+#: admin/app_settings.py:221
+msgid "Create a domain and a mailbox when an account is automatically created."
+msgstr ""
+"Δημιουργία domain και γραμματοκιβωτίου κατά την αυτόματη δημιουργία "
+"λογαριασμού"
+
+#: admin/app_settings.py:230
+msgid "Create an alias when a mailbox is renamed"
+msgstr "Δημιουργία ενός ψευδώνυμου κατά τη μετονομασία ενός γραμματοκιβωτίου"
+
+#: admin/app_settings.py:233
+msgid "Create an alias using the old address when a mailbox is renamed."
+msgstr ""
+"Δημιουργήστε ένα ψευδώνυμο χρησιμοποιώντας την παλιά διεύθυνση όταν "
+"μετονομάζεται ένα γραμματοκιβώτιο."
+
+#: admin/app_settings.py:287 core/api/v2/viewsets.py:162
 msgid "Administration"
 msgstr "Διαχείριση"
 
-#: admin/constants.py:21 admin/forms/alias.py:43
-#: admin/templates/admin/_per_domain_statistics_widget.html:7
-#: admin/templates/admin/domains_quota_headers.html:2
+#: admin/constants.py:21
 msgid "Domain"
 msgstr "Domain"
 
@@ -452,462 +434,70 @@ msgstr ""
 msgid "Closed"
 msgstr ""
 
-#: admin/forms/account.py:29 admin/templates/admin/domain_detail.html:159
-#: pdfcredentials/documents.py:98
-msgid "Username"
-msgstr "Όνομα Χρήστη"
-
-#: admin/forms/account.py:31
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
-msgstr ""
-"Το όνομα του χρήστη. Πρέπει να είναι μια έγκυρη e-mail διεύθυνση για απλούς "
-"χρήστες ή διαχειριστές με γραμματοκιβώτιο."
-
-#: admin/forms/account.py:36 admin/templates/admin/account_detail.html:29
-#: core/templates/core/information.html:60
-msgid "Role"
-msgstr "Ρόλος"
-
-#: admin/forms/account.py:37
-msgid "Choose"
-msgstr "Επιλογή"
-
-#: admin/forms/account.py:38
-msgid "What level of permission this user will have"
-msgstr "Το επίπεδο δικαιωμάτων αυτού του χρήστη"
-
-#: admin/forms/account.py:41 admin/forms/domain.py:262
-msgid "Random password"
-msgstr "Τυχαίως κωδικός"
-
-#: admin/forms/account.py:43
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
-msgstr ""
-"Δημιουργία ενός τυχαίου κωδικού.  Εάν ενημερώνεται αυτό το λογαριασμό και "
-"επιλέξετε το box, ένας νέος τυχαίος κωδικός θα δημιουργηθεί. "
-
-#: admin/forms/account.py:49 pdfcredentials/documents.py:99
-msgid "Password"
-msgstr "Κωδικός"
-
-#: admin/forms/account.py:55 core/forms.py:36
-msgid "Confirmation"
-msgstr "Επιβεβαίωση"
-
-#: admin/forms/account.py:57
-msgid "Enter the same password as above, for verification."
-msgstr "Εισάγετε τον ίδιο κωδικό για επιβεβαίωση. "
-
-#: admin/forms/account.py:71
-msgid "Enabled"
-msgstr "Ενεργοποιημένο"
-
-#: admin/forms/account.py:175
-msgid "Only super administrators are allowed for this mode"
-msgstr "Μόνο σε super διαχειριστές επιτρέπεται αυτή η λειτουργία. "
-
-#: admin/forms/account.py:193
-msgid "The two password fields didn't match."
-msgstr "Οι δύο κωδικοί δεν είναι ίδιοι"
-
-#: admin/forms/account.py:206
-msgid "You can't disable your own account"
-msgstr "Δεν μπορείτε να απενεργοποιήσετε τον δικό σας λογαριασμό"
-
-#: admin/forms/account.py:234
-msgid "E-mail"
-msgstr "E-mail"
-
-#: admin/forms/account.py:236
-msgid "Create an alias using the old address"
-msgstr "Δημιουργήστε ένα ψευδώνυμο χρησιμοποιώντας την παλιά διεύθυνση"
-
-#: admin/forms/account.py:241 admin/forms/domain.py:46
-#: admin/templates/admin/account_detail.html:45
-#: admin/templates/admin/domain_detail.html:49 limits/app_settings.py:73
-#: limits/app_settings.py:218 limits/constants.py:59
-msgid "Quota"
-msgstr "Quota"
-
-#: admin/forms/account.py:244
-#, fuzzy
-#| msgid ""
-#| "Quota in MB for this mailbox. Define a custom value or use domain's default "
-#| "one. Leave empty to define an unlimited value (not allowed for domain "
-#| "administrators)."
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
-" custom value or use domain's default one. Leave empty to define an "
-"unlimited value (not allowed for domain administrators)."
-msgstr ""
-"Quota σε ΜΒ για γραμματοκιβώτια. Ορίστε μια προσαρμοσμένη τιμή ή "
-"χρησιμοποιήστε την προεπιλεγμένη του τομέα. Αφήστε το κενό για να μη βάλετε "
-"όριο (δεν επιτρέπεται για διαχειριστές domain)."
-
-#: admin/forms/account.py:254 admin/models/domain.py:39
-#: admin/models/mailbox.py:92 admin/templates/admin/account_detail.html:50
-#: admin/templates/admin/domain_detail.html:69
-msgid "Message sending limit"
-msgstr ""
-
-#: admin/forms/account.py:257 admin/models/mailbox.py:95
-msgid "Number of messages this mailbox can send per day"
-msgstr ""
-
-#: admin/forms/account.py:262
-msgid "Block IMAP connection and incoming mails for this mailbox"
-msgstr ""
-
-#: admin/forms/account.py:266 admin/forms/domain.py:35
-#: admin/templates/admin/domain_headers.html:4
-msgid "Alias(es)"
-msgstr "Ψευδώνυμο(μα) "
-
-#: admin/forms/account.py:269
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Ψευδώνυμο(μα) αυτού του mailbox. Εισάγεται μόνο μια διεύθυνση τη φορά, "
-"πατήστε ENTER για να προσθέσετε επιπλέον. Για να δημιουργήσετε ένα  catchall"
-" ψευδώνυμο, εισάγετε το όνομα τομέα (@domain.tld)."
-
-#: admin/forms/account.py:275
-msgid "Sender addresses"
-msgstr "Διεύθυνση αποστολέα"
-
-#: admin/forms/account.py:278
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Επιπρόσθετη(τες) διεύθυνση(σεις)  αποστολέα για αυτό το λογαριασμό. Ο "
-"χρήστης επιτρέπεται να αποστέλλει email χρησιμοποιώντας αυτή την διεύθυνση, "
-"ακόμη και εάν αυτή δεν υπάρχει τοπικά στον server.  Εισάγετε μόνο μια "
-"διεύθυνση ανά γραμμή. Πιέστε ENTER για να εισάγεται επιπλέον διευθύνσεις.  "
-
-#: admin/forms/account.py:339 admin/forms/alias.py:95
-#: admin/models/mailbox.py:308
-msgid "Domain does not exist"
-msgstr "Το domain δεν υπάρχει"
-
-#: admin/forms/account.py:376
-msgid "Local domain does not exist"
-msgstr "To τοπικό domain δεν υπάρχει"
-
-#: admin/forms/account.py:503
-msgid "Domain(s)"
-msgstr "Domain(s)"
-
-#: admin/forms/account.py:505
-msgid "Domain(s) that user administrates"
-msgstr "Τα domains που ο χρήστης διαχειρίζεται"
-
-#: admin/forms/account.py:552 admin/forms/account.py:652
-#: admin/forms/domain.py:373 admin/forms/domain.py:445 core/apps.py:19
-#: core/apps.py:24 imap_migration/app_settings.py:17
-#: imap_migration/app_settings.py:99 maillog/apps.py:14 maillog/forms.py:20
-#: pdfcredentials/app_settings.py:23 pdfcredentials/app_settings.py:195
-#: postfix_autoreply/app_settings.py:12 postfix_autoreply/forms.py:105
-#: sievefilters/forms.py:59 webmail/app_settings.py:11
-msgid "General"
-msgstr "Γενικά"
-
-#: admin/forms/account.py:560 core/templates/core/user_profile.html:3
-#: core/templatetags/core_tags.py:133
-msgid "Profile"
-msgstr "Προφίλ"
-
-#: admin/forms/account.py:566 admin/forms/account.py:659
-msgid "Mail"
-msgstr "Μήνυμα"
-
-#: admin/forms/account.py:573
-msgid "Permissions"
-msgstr "Δικαιώματα"
-
-#: admin/forms/account.py:642
-msgid "Account updated"
-msgstr "Ο λογαριασμός ενημερώθηκε"
-
-#: admin/forms/account.py:668
-msgid "New account"
-msgstr "Νέος λογαριασμός"
-
-#: admin/forms/account.py:679
-msgid "Account created"
-msgstr "Ο λογαριασμός δημιουργήθηκε"
-
-#: admin/forms/alias.py:20
-msgid "Random address"
-msgstr "Τυχαία διεύθυνση"
-
-#: admin/forms/alias.py:23
-msgid "Email address"
-msgstr "Διεύθυνση Email"
-
-#: admin/forms/alias.py:25
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Διεύθυνση ψευδώνυμου.  Για να δημιουργήσεις catchall ψευδώνυμα, απλός "
-"εισάγεται το όνομα του domain (@domain.tld)."
-
-#: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
-msgid "Recipients"
-msgstr "Παραλήπτες"
-
-#: admin/forms/alias.py:34
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Οι διευθύνσεις στις οποίες το ψευδώνυμο θα δείχνει. Εισάγεται  μόνο μία "
-"διεύθυνση ανά εγράφη, πατήστε ENTER για να εισάγεται επιπλέον."
-
-#: admin/forms/alias.py:119
-msgid "No recipient defined"
-msgstr "Δεν έχει ορισθεί παραλήπτης"
-
-#: admin/forms/domain.py:32
-#: admin/templates/admin/_global_statistics_widget.html:7
-msgid "Type"
-msgstr "Τύπος"
-
-#: admin/forms/domain.py:38
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Ψευδώνυμο(μα) από το domain. Εισάγεται μόνο ένα όνομα ανά γραμμή, πατήστε "
-"ENTER για να εισάγεται επιπλέον.  "
-
-#: admin/forms/domain.py:43
-msgid "Key selector"
-msgstr ""
-
-#: admin/forms/domain.py:57
-#, fuzzy
-#| msgid ""
-#| "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
-msgstr ""
-"Προκαθορισμένο quota σε MB που εφαρμόζεται στα γραμματοκιβώτια. Μια τιμή 0 "
-"σημαίνει ότι δεν υπάρχει quota.  "
-
-#: admin/forms/domain.py:106 admin/handlers.py:181
+#: admin/handlers.py:179
 msgid "domain alias"
 msgstr "Ψευδώνυμα (alias) domain "
 
-#: admin/forms/domain.py:109 admin/forms/domain.py:185
-#: admin/forms/domain.py:192
-#, python-format
-msgid "A %s with this name already exists"
-msgstr "Το '%s' με αυτό το όνομα υπάρχει ήδη"
-
-#: admin/forms/domain.py:130
-msgid "DKIM keys storage directory not configured"
-msgstr ""
-
-#: admin/forms/domain.py:166
-msgid "You can't define an unlimited quota."
-msgstr "Δεν μπορείτε  να ορίσετε ένα απεριόριστο quota."
-
-#: admin/forms/domain.py:185 admin/forms/domain.py:189 policyd/core.py:118
-msgid "domain"
-msgstr "domain"
-
-#: admin/forms/domain.py:246
-msgid "Create a domain administrator"
-msgstr "Δημιουργία διαχειριστή domain"
-
-#: admin/forms/domain.py:248
-msgid "Automatically create an administrator for this domain"
-msgstr "Αυτόματη δημιουργία διαχειριστή για αυτό το domain"
-
-#: admin/forms/domain.py:252 admin/templates/admin/domain_detail.html:159
-#: admin/templates/admin/domain_headers.html:3
-#: admin/templates/admin/identity_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:9
-#: core/templates/core/information.html:37
-#: core/templates/core/information.html:59
-msgid "Name"
-msgstr "Όνομα"
-
-#: admin/forms/domain.py:255
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
-msgstr ""
-"Το όνομα του διαχειριστή. Μην συμπεριλάβετε το όνομα του domain, γιατί θα "
-"προσαρτηθεί αυτόματα στο τέλος."
-
-#: admin/forms/domain.py:264
-msgid "Generate a random password for the administrator."
-msgstr "Δημιουργήστε έναν τυχαίο κωδικό πρόσβασης για το διαχειριστή."
-
-#: admin/forms/domain.py:269
-msgid "With a mailbox"
-msgstr "Με ένα γραμματοκιβώτιο"
-
-#: admin/forms/domain.py:271
-msgid "Create a mailbox for the administrator."
-msgstr "Δημιουργήστε ένα γραμματοκιβώτιο για το διαχειριστή."
-
-#: admin/forms/domain.py:276
-msgid "Create aliases"
-msgstr "Δημιουργία Ψευδώνυμου"
-
-#: admin/forms/domain.py:278
-msgid "Automatically create standard aliases for this domain"
-msgstr "Δημιουργήστε αυτόματα standard ψευδώνυμα για αυτόν το domain"
-
-#: admin/forms/domain.py:294
-msgid "Invalid format"
-msgstr "Λάθος μορφοποίηση"
-
-#: admin/forms/domain.py:433
-msgid "Domain modified"
-msgstr "Το domain άλλαξε"
-
-#: admin/forms/domain.py:458
-msgid "Options"
-msgstr "Επιλογές"
-
-#: admin/forms/domain.py:467
-msgid "New domain"
-msgstr "Νέο domain"
-
-#: admin/forms/domain.py:481
-msgid "Domain created"
-msgstr "Το domain δημιουργήθηκε"
-
-#: admin/forms/export.py:9 admin/forms/import_.py:12
-msgid "Separator"
-msgstr "Διαχωριστικό"
-
-#: admin/forms/forward.py:12
-msgid "Recipient(s)"
-msgstr "Παραλήπτες"
-
-#: admin/forms/forward.py:15
-msgid "Indicate one or more recipients separated by a ','"
-msgstr "Προσθέστε παραπάνω από έναν παραλήπτη μετά το διαχωριστικό ','"
-
-#: admin/forms/forward.py:18
-msgid "Keep local copies"
-msgstr "Αποθήκευση τοπικών αντιγράφων"
-
-#: admin/forms/forward.py:21
-msgid "Forward messages and store copies into your local mailbox"
-msgstr ""
-"Προώθηση μηνυμάτων και αποθήκευση αντιγράφων στο τοπικό γραμματοκιβώτιο"
-
-#: admin/forms/import_.py:10
-msgid "Select a file"
-msgstr "Επιλέξτε αρχείο"
-
-#: admin/forms/import_.py:18
-msgid "Continue on error"
-msgstr "Συνέχεια σε περίπτωση σφάλματος"
-
-#: admin/forms/import_.py:20
-msgid "Don't treat duplicated objects as error"
-msgstr "Μην αντιμετωπίζετε τα διπλότυπα αντικείμενα ως σφάλματα"
-
-#: admin/forms/import_.py:37
-msgid "Crypt passwords"
-msgstr "Κρυπτογράφηση κωδικών"
-
-#: admin/forms/import_.py:40
-msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Επιλέξτε εάν οι κωδικοί που βρίσκονται στο αρχείο δεν είναι κρυπτογραφημένοι"
-
-#: admin/handlers.py:229
+#: admin/handlers.py:227
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Η εισαγωγή λογαριασμού απέτυχε (%s): το domain δεν υπάρχει"
 
-#: admin/handlers.py:244 admin/models/mailbox.py:340
+#: admin/handlers.py:242 admin/models/mailbox.py:340
 msgid "Mailbox {} already exists"
 msgstr "Το γραμματοκιβώτιο {} είδη υπάρχει "
 
-#: admin/handlers.py:253
+#: admin/handlers.py:251
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Η εισαγωγή του λογαριασμού (%s) απέτυχε: λάθος τιμή στο quota"
 
-#: admin/handlers.py:294
-#: admin/templates/admin/_global_statistics_widget.html:17
-#: admin/templates/admin/_per_domain_statistics_widget.html:8
-#: admin/templates/admin/identities.html:5
-msgid "Identities"
-msgstr "Ταυτότητες"
-
-#: admin/handlers.py:312 admin/templates/admin/forward.html:2
-msgid "Forward"
-msgstr "Προώθηση"
-
-#: admin/lib.py:47
-msgid "A mailbox is required"
-msgstr "Απαιτείται γραμματοκιβώτιο"
-
-#: admin/lib.py:141
+#: admin/lib.py:121
 msgid "You are not allowed to import domains"
 msgstr "Δεν έχετε δικαίωμα εισαγωγής domain"
 
-#: admin/lib.py:150
+#: admin/lib.py:130
 msgid "You are not allowed to import domain aliases."
 msgstr "Δεν επιτρέπεται να εισαγάγετε ψευδώνυμα στο domain."
 
-#: admin/lib.py:242 admin/tests/test_mx.py:154 admin/tests/test_mx.py:167
-#: admin/tests/test_mx.py:172
+#: admin/lib.py:222 admin/tests/test_mx.py:153 admin/tests/test_mx.py:166
+#: admin/tests/test_mx.py:171
 #, fuzzy, python-format
 #| msgid "No MX record found for this domain."
 msgid "No DNS record found for %s"
 msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
 
-#: admin/lib.py:245
+#: admin/lib.py:225
 #, fuzzy, python-format
 #| msgid "MX records of {}"
 msgid "No %(type)s record for %(name)s"
 msgstr "Έγραφες MX από{}"
 
-#: admin/lib.py:249 admin/tests/test_mx.py:157
+#: admin/lib.py:229 admin/tests/test_mx.py:156
 msgid "No working name servers found"
 msgstr ""
 
-#: admin/lib.py:252 admin/tests/test_mx.py:161
+#: admin/lib.py:232 admin/tests/test_mx.py:160
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 
-#: admin/lib.py:256
+#: admin/lib.py:236
 msgid "DNS name is too long: {}"
 msgstr ""
 
-#: admin/lib.py:287
+#: admin/lib.py:267
 #, fuzzy, python-brace-format
 #| msgid "Invalid quota value for domain '{}'"
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Μη έγκυρη τιμή quota για το domain '{}'"
 
-#: admin/lib.py:360
+#: admin/lib.py:340
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Το αντικείμενο υπάρχει ήδη: %s'"
 
-#: admin/lib.py:364
+#: admin/lib.py:344
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d αντικείμενα εισήχθησαν με επιτυχία"
@@ -996,12 +586,11 @@ msgstr "ενεργοποιημένο"
 msgid "Check to activate this alias"
 msgstr "Επιλέξτε για να ενεργοποιήσετε αυτό το ψευδώνυμο"
 
-#: admin/models/alias.py:102 admin/templates/admin/alias_detail.html:32
-#: core/templates/core/information.html:40
+#: admin/models/alias.py:102
 msgid "Description"
 msgstr "Περιγραφή"
 
-#: admin/models/alias.py:103 admin/templates/admin/alias_detail.html:29
+#: admin/models/alias.py:103
 msgid "Expire at"
 msgstr "Λήγει την "
 
@@ -1030,6 +619,10 @@ msgstr "όνομα"
 #: admin/models/domain.py:30
 msgid "The domain name"
 msgstr "Το όνομα του domain"
+
+#: admin/models/domain.py:39 admin/models/mailbox.py:92
+msgid "Message sending limit"
+msgstr ""
 
 #: admin/models/domain.py:42
 msgid "Number of messages this domain can send per day"
@@ -1060,37 +653,37 @@ msgstr ""
 msgid "Key length"
 msgstr ""
 
-#: admin/models/domain.py:366 admin/models/domain_alias.py:70
+#: admin/models/domain.py:321 admin/models/domain_alias.py:70
 #: core/models.py:353 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Λάθος γραμμή"
 
-#: admin/models/domain.py:376
+#: admin/models/domain.py:331
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "Δεν βρέθηκε εξουσιοδοτημένη εγγραφή MX για το domain {}"
 
-#: admin/models/domain.py:382
+#: admin/models/domain.py:337
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "Μη έγκυρη τιμή quota για το domain '{}'"
 
-#: admin/models/domain.py:388
+#: admin/models/domain.py:343
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr ""
 "Μη έγκυρη τιμή quota για το προεπιλεγμένο γραμματοκιβώτιο για το domain '{}'"
 
-#: admin/models/domain.py:395
+#: admin/models/domain.py:350
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
 msgstr ""
-"Το προεπιλεγμένο quota για το γραμματοκιβώτιο δεν πρέπει να είναι μεγαλύτερο"
-" από το domain quota. "
+"Το προεπιλεγμένο quota για το γραμματοκιβώτιο δεν πρέπει να είναι μεγαλύτερο "
+"από το domain quota. "
 
 #: admin/models/domain_alias.py:36
 msgid "The alias name"
@@ -1113,6 +706,10 @@ msgstr "Άγνωστο domain %s"
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Διεύθυνση γραμματοκιβωτίου (χωρίς το @domain.tld κομμάτι)"
 
+#: admin/models/mailbox.py:95
+msgid "Number of messages this mailbox can send per day"
+msgstr ""
+
 #: admin/models/mailbox.py:153
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
@@ -1128,459 +725,9 @@ msgstr "Ένα quota απαιτείται "
 msgid "{}: domain quota exceeded"
 msgstr "Υπέρβαση του domain quota"
 
-#: admin/templates/admin/_domain_dkim_key.html:6
-#: admin/templates/admin/_domain_dkim_key.html:20
-#: core/templates/core/user_security.html:83
-#: core/templates/core/user_security.html:99
-#: templates/common/generic_modal.html:6
-#: templates/common/generic_modal.html:13 templates/common/wizard_forms.html:6
-#: templates/common/wizard_forms.html:27
-msgid "Close"
-msgstr "Κλείσιμο"
-
-#: admin/templates/admin/_domain_dkim_key.html:7
-#, python-format
-msgid "DKIM public key for %(domain)s"
-msgstr ""
-
-#: admin/templates/admin/_domain_dkim_key.html:11
-msgid "Raw format. Click to copy"
-msgstr ""
-
-#: admin/templates/admin/_domain_dkim_key.html:15
-#, fuzzy
-#| msgid "Invalid format"
-msgid "Bind/named format. Click to copy"
-msgstr "Λάθος μορφοποίηση"
-
-#: admin/templates/admin/_domain_dnschecks_status.html:4
-msgctxt "checks"
-msgid "Disabled"
-msgstr "Απενεργοποιήθηκε "
-
-#: admin/templates/admin/_domain_dnschecks_status.html:6
-msgid "Awaiting checks"
-msgstr "Αναμονή ελέγχων"
-
-#: admin/templates/admin/_domain_dnschecks_status.html:16
-#: admin/templates/admin/_domain_dnschecks_status.html:26
-#: admin/templates/admin/_domain_dnschecks_status.html:34
-#: admin/templates/admin/_domain_dnschecks_status.html:42
-#, fuzzy
-#| msgid "No MX record found for this domain."
-msgid "No record found"
-msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#: admin/templates/admin/_domain_dnschecks_status.html:24
-msgid "Waiting for key to be generated"
-msgstr ""
-
-#: admin/templates/admin/_global_statistics_widget.html:4
-msgid "Global statistics"
-msgstr "Γενικά στατιστικά"
-
-#: admin/templates/admin/_global_statistics_widget.html:8
-msgid "Quantity"
-msgstr "Ποσότητα"
-
-#: admin/templates/admin/_global_statistics_widget.html:14
-#: admin/templates/admin/domain_detail.html:37
-#: admin/templates/admin/domain_detail.html:87 limits/app_settings.py:45
-#: limits/app_settings.py:101 limits/app_settings.py:183
-#: limits/app_settings.py:257 limits/constants.py:22 limits/constants.py:76
-msgid "Domain aliases"
-msgstr "Ψευδώνυμα domain"
-
-#: admin/templates/admin/_per_domain_statistics_widget.html:4
-msgid "Per-domain statistics"
-msgstr "Στατιστικά ανά-domain"
-
-#: admin/templates/admin/account_detail.html:16
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/domain_detail.html:19
-#: admin/templates/admin/identities_table.html:7
-msgid "(disabled)"
-msgstr "(απενεργοποιήθηκε)"
-
-#: admin/templates/admin/account_detail.html:22
-#: admin/templates/admin/alias_detail.html:22
-#: admin/templates/admin/domain_detail.html:25
-msgid "Summary"
-msgstr "Περίληψη"
-
-#: admin/templates/admin/account_detail.html:26
-msgid "Full name"
-msgstr "Πλήρες όνομα"
-
-#: admin/templates/admin/account_detail.html:32
-#: admin/templates/admin/alias_detail.html:26
-msgid "Created"
-msgstr "Δημιουργήθηκε"
-
-#: admin/templates/admin/account_detail.html:35
-#: core/templates/core/information.html:61
-msgid "Last login"
-msgstr "Τελευταία είσοδος χρήστη"
-
-#: admin/templates/admin/account_detail.html:38 core/models.py:87
-msgid "Secondary email"
-msgstr "Δευτερεύον email"
-
-#: admin/templates/admin/account_detail.html:38
-#: admin/templates/admin/account_detail.html:41
-msgid "Not defined"
-msgstr "Μη καθορισμένο"
-
-#: admin/templates/admin/account_detail.html:41 core/models.py:85
-msgid "Phone number"
-msgstr "Τηλέφωνο"
-
-#: admin/templates/admin/account_detail.html:61
-msgid "Administered domains"
-msgstr "Δια χειριζόμενα domains "
-
-#: admin/templates/admin/account_detail.html:67
-msgid "No domain defined."
-msgstr "Δεν ορίστηκε domain"
-
-#: admin/templates/admin/account_detail.html:81
-msgid "Aliases"
-msgstr "Ψευδώνυμα"
-
-#: admin/templates/admin/account_detail.html:87
-msgid "No alias defined"
-msgstr "Δεν ορίστηκε ψευδώνυμο"
-
-#: admin/templates/admin/account_detail.html:93
-msgid "Additional sender addresses"
-msgstr "Επιπρόσθετη διεύθυνση αποστολέα"
-
-#: admin/templates/admin/account_detail.html:99
-msgid "No sender address defined"
-msgstr "Δεν ορίστηκε διεύθυνση αποστολέα "
-
-#: admin/templates/admin/account_general_form.html:12
-#: admin/templates/admin/aliasform.html:13
-msgid "Domain is disabled"
-msgstr "Το domain είναι απενεργοποιημένο"
-
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/identities.html:33
-msgid "Alias"
-msgstr "Ψευδώνυμο "
-
-#: admin/templates/admin/alias_detail.html:27
-msgid "Modified"
-msgstr "Τροποποιήθηκε"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:10
-msgid "Provider"
-msgstr "Πάροχος"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:11
-#: admin/templates/admin/identities_quota_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:10
-msgid "Address"
-msgstr "Διεύθυνση"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:12
-#: admin/templates/admin/domain_detail.html:114
-#: admin/templates/admin/domains_log_headers.html:6
-#: admin/templates/admin/messages_log_headers.html:6
-msgid "Status"
-msgstr "Κατάσταση"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:21
-msgid "listed"
-msgstr "καταχωρημένο"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:29
-msgid "Everything is fine, this domain is not listed."
-msgstr "Όλα είναι καλά, αυτό το domain δεν είναι καταχωρημένο."
-
-#: admin/templates/admin/dnsbl_domain_detail.html:32
-msgid "No information available for this domain."
-msgstr "Δεν υπάρχουν διαθέσιμες πληροφορίες για αυτό το domain"
-
-#: admin/templates/admin/domain_alarms.html:19
-msgid "Opened alarms for"
-msgstr ""
-
-#: admin/templates/admin/domain_alarms.html:25
-#: admin/templates/admin/domains_log_headers.html:3
-#: admin/templates/admin/messages_log_headers.html:3
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:119
-#: webmail/lib/imapemail.py:306
-msgid "Date"
-msgstr "Ημερομηνία"
-
-#: admin/templates/admin/domain_alarms.html:26 core/templates/core/logs.html:9
-msgid "Message"
-msgstr "Μήνυμα"
-
-#: admin/templates/admin/domain_alarms.html:27
-#, fuzzy
-#| msgid "Mailboxes"
-msgid "Mailbox"
-msgstr "Γραμματοκιβώτια"
-
-#: admin/templates/admin/domain_alarms.html:40
-msgid "No opened alarm"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:29
-msgid "Creation date"
-msgstr "Ημερομηνία δημιουργίας"
-
-#: admin/templates/admin/domain_detail.html:33
-msgid "Last modification date"
-msgstr "Τελευταία ημερομηνία αλλαγής"
-
-#: admin/templates/admin/domain_detail.html:45 limits/app_settings.py:64
-#: limits/app_settings.py:120 limits/app_settings.py:207
-#: limits/app_settings.py:280 limits/constants.py:39 limits/constants.py:92
-msgid "Mailbox aliases"
-msgstr "Ψευδώνυμο γραμματοκιβωτίου "
-
-#: admin/templates/admin/domain_detail.html:50
-#: admin/templates/admin/domain_detail.html:57
-#: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domain_detail.html:65
-#: admin/templates/admin/domains_quotas.html:11
-#: admin/templates/admin/domains_quotas.html:12
-#: admin/templates/admin/newdomainform.html:3
-msgid "MB"
-msgstr "MB"
-
-#: admin/templates/admin/domain_detail.html:54
-#: admin/templates/admin/domain_detail.html:73
-msgid "Usage"
-msgstr "Χρήση"
-
-#: admin/templates/admin/domain_detail.html:57
-#: admin/templates/admin/domains_quotas.html:11
-msgctxt "quota"
-msgid "used"
-msgstr "χρησιμοποιείται "
-
-#: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domains_quotas.html:12
-msgid "allocated"
-msgstr "Κατανεμημένο"
-
-#: admin/templates/admin/domain_detail.html:70
-msgid "per day"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:76
-#, fuzzy
-#| msgctxt "quota"
-#| msgid "used"
-msgctxt "message count"
-msgid "used"
-msgstr "χρησιμοποιείται "
-
-#: admin/templates/admin/domain_detail.html:106
-msgid "DNS"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:121
-msgid "DKIM key"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:125
-msgid "Show key"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:133
-msgid "Warning"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:139
-msgid ""
-"DKIM keys already exist for this domain. Do you want to overwrite them?"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:142 core/constants.py:53
-#: lib/form_utils.py:399
-msgid "No"
-msgstr "Όχι"
-
-#: admin/templates/admin/domain_detail.html:143
-msgid "Generate new key"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:143 lib/form_utils.py:399
-msgid "Yes"
-msgstr "Ναι"
-
-#: admin/templates/admin/domain_detail.html:149
-#, fuzzy
-#| msgid "Not defined"
-msgid "Not generated"
-msgstr "Μη καθορισμένο"
-
-#: admin/templates/admin/domain_detail.html:156
-msgid "Administrators"
-msgstr "Διαχειριστές"
-
-#: admin/templates/admin/domain_detail.html:168
-#: admin/templatetags/admin_tags.py:306
-msgid "Remove this permission"
-msgstr "Αφαίρεση αυτού του δικαιώματος"
-
-#: admin/templates/admin/domain_detail.html:173
-msgid "No domain administrator defined yet."
-msgstr "Δεν έχει καθοριστεί ακόμη διαχειριστής του domain."
-
-#: admin/templates/admin/domain_headers.html:5
-#: admin/templates/admin/identity_headers.html:4
-msgid "Tags"
-msgstr "Ετικέτες"
-
-#: admin/templates/admin/domain_headers.html:7
-msgid "DNS status"
-msgstr "Κατάσταση DNS"
-
-#: admin/templates/admin/domain_headers.html:9
-#: admin/templates/admin/identity_headers.html:5
-msgid "Actions"
-msgstr "Ενέργειες"
-
-#: admin/templates/admin/domain_options_form.html:10
-msgid "You can't create a new domain administrator"
-msgstr "Δεν μπορείτε να δημιουργήσετε έναν νέο διαχειριστή domain"
-
-#: admin/templates/admin/domains.html:28
-#: admin/templates/admin/identities.html:29
-msgid "Add"
-msgstr "Προσθέτω"
-
-#: admin/templates/admin/domains_log_headers.html:2
-msgid "Queue ID"
-msgstr ""
-
-#: admin/templates/admin/domains_log_headers.html:4
-#: admin/templates/admin/messages_log_headers.html:4
-#: lib/templatetags/lib_tags.py:117 postfix_autoreply/forms.py:18
-msgid "From"
-msgstr "Από"
-
-#: admin/templates/admin/domains_log_headers.html:5
-#: admin/templates/admin/messages_log_headers.html:5
-#: lib/templatetags/lib_tags.py:118
-msgid "To"
-msgstr "Προς"
-
-#: admin/templates/admin/domains_quota_headers.html:3
-#: admin/templates/admin/identities_quota_headers.html:4
-msgid "Limit"
-msgstr "Όριο"
-
-#: admin/templates/admin/domains_quota_headers.html:4
-msgid "Used"
-msgstr "Χρησιμοποιούμενος"
-
-#: admin/templates/admin/domains_quota_headers.html:5
-msgid "Allocated"
-msgstr "Δεσμευμένος"
-
-#: admin/templates/admin/domains_quota_headers.html:6
-#: admin/templates/admin/identities_quota_headers.html:5
-#, python-format
-msgid "Usage (%%)"
-msgstr "Χρήση (%%)"
-
-#: admin/templates/admin/domains_table.html:5
-msgid "disabled"
-msgstr "απενεργοποιημένο"
-
-#: admin/templates/admin/forward.html:2
-msgid "Automatically forward emails to another address"
-msgstr "Αυτόματη προώθηση των email σε άλλη διεύθυνση"
-
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:84
-#: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:19 lib/form_utils.py:355
-#: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:10
-msgid "Update"
-msgstr "Ενημέρωση"
-
-#: admin/templates/admin/identities.html:32
-msgid "Account"
-msgstr "Λογαριασμός"
-
-#: admin/templates/admin/identities_quota_headers.html:3
-msgid "Value"
-msgstr "Τιμή"
-
-#: admin/templates/admin/identity_headers.html:3
-msgid "Fullname/Recipient"
-msgstr "Όνομα/Παραλήπτης"
-
-#: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Εισάγετε ένα αρχείο CSV όπου οι γραμμές ακολουθούν μία από τις παρακάτω μορφές:<ul><li><em>\n"
-"domain; όνομα; quota; προεπιλεγμένο quota γραμματοκιβωτίου;ενεργοποιημένα</em></li><li><em> domains; όνομα; target domain; ενεργοποιημένα</em></li><li><em> relaydomain; όνομα; target host;target port;υπηρεσία; ενεργοποιημένη; επαλήθευση παραληπτών</em></li></ul><p> Το πρώτο στοιχείο κάθε γραμμής είναι υποχρεωτικό και πρέπει να είναι ίσο με μία από τις προηγούμενες τιμές.</p><p> Μπορείτε να χρησιμοποιήσετε διαφορετικό χαρακτήρα ως διαχωριστικό.</p>"
-
-#: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group;"
-" address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can"
-" use a different character as separator.</p>"
-msgstr ""
-"Εισάγεται ένα αρχείο CSV όπου οι γραμμές ακολουθούν μία από τις ακόλουθες "
-"μορφές:<ul><li><em> account; login name; Κωδικός πρόσβασης; όνομα; επίθετο; "
-"ενεργοποιημένος; ομάδα; διεύθυνση; quota; [, domain, ...]</em></li><li><em> "
-"ψευδώνυμο; διεύθυνση; ενεργοποιημένος; παραλήπτης; παραλήπτης; "
-"...</em></li></ul><p> Το πρώτο στοιχείο κάθε γραμμής είναι υποχρεωτικό και "
-"πρέπει να είναι ίδιο με μία από τις προηγούμενες τιμές.</p><p> Μπορείτε να "
-"χρησιμοποιήσετε διαφορετικό χαρακτήρα ως διαχωριστικό."
-
-#: admin/templates/admin/importform.html:6
-msgid "Help"
-msgstr "Βοήθεια"
-
-#: admin/templates/admin/importform.html:13
-msgid "Importing..."
-msgstr "Εισαγωγή..."
-
-#: admin/templates/admin/mailboxes_raw.html:3
-msgid "Choose a value"
-msgstr "Επιλέξτε μία τιμή"
-
-#: admin/templates/admin/mailform.html:7
-msgid "Use domain default value"
-msgstr "Χρήση της προεπιλεγμένης τιμής του domain"
-
-#: admin/templates/admin/messages_log_headers.html:2
-msgid "ID"
-msgstr ""
-
-#: admin/templates/admin/mx_domain_detail.html:11
-msgid "Updated"
-msgstr "Ενημερώθηκε"
-
-#: admin/templates/admin/mx_domain_detail.html:23
-msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
-"Αυτή η διεύθυνση IP δεν αντιστοιχεί σε κανένα από τα έγκυρο MX που ορίζονται"
-" στις παραμέτρους"
-
-#: admin/templates/admin/mx_domain_detail.html:36
-msgid "No MX record found for this domain."
-msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
+#: admin/models/mailbox.py:308
+msgid "Domain does not exist"
+msgstr "Το domain δεν υπάρχει"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
@@ -1599,8 +746,8 @@ msgid ""
 msgstr ""
 "Η φήμη (reputation) του domain θα επηρεαστεί και υπάρχει πιθανότητα τα "
 "μηνύματα ηλεκτρονικού ταχυδρομείου που προέρχονται από αυτό να θεωρούνται "
-"ανεπιθύμητα. Θα πρέπει να επικοινωνήσετε με αυτούς τους παροχους και να τους"
-" ζητήσετε να σας βγάλουν από τη  λίστα ανεπιθύμητων διευθύνσεων IP."
+"ανεπιθύμητα. Θα πρέπει να επικοινωνήσετε με αυτούς τους παροχους και να τους "
+"ζητήσετε να σας βγάλουν από τη  λίστα ανεπιθύμητων διευθύνσεων IP."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -1608,152 +755,22 @@ msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
 msgstr ""
 "To Modoboa ανίχνευσε ότι το domain %(domain)s δεν έχει έγκυρη εγγραφή MX:"
 
-#: admin/templates/admin/searchform.html:6
-msgid "Search"
-msgstr "Αναζήτηση"
-
-#: admin/templatetags/admin_tags.py:18
-msgid "enabled_m"
-msgstr "enabled_m"
-
-#: admin/templatetags/admin_tags.py:18
-msgid "enabled_f"
-msgstr "enabled_f"
-
-#: admin/templatetags/admin_tags.py:46
-msgid "List domains"
-msgstr "Λίστα domains"
-
-#: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:123
-msgid "List quotas"
-msgstr "List Quotas"
-
-#: admin/templatetags/admin_tags.py:60
-msgid "Message logs"
-msgstr ""
-
-#: admin/templatetags/admin_tags.py:75 admin/templatetags/admin_tags.py:130
-#: admin/views/import_.py:50 admin/views/import_.py:71
-msgid "Import"
-msgstr "Εισαγωγή"
-
-#: admin/templatetags/admin_tags.py:83 admin/templatetags/admin_tags.py:138
-#: admin/views/export.py:41 admin/views/export.py:70
-msgid "Export"
-msgstr "Εξαγωγή"
-
-#: admin/templatetags/admin_tags.py:116
-msgid "List identities"
-msgstr "Λίστα ταυτοτήτων"
-
-#: admin/templatetags/admin_tags.py:157
-msgid "View the domain's identities"
-msgstr "Εμφάνιση των ταυτοτήτων του domain"
-
-#: admin/templatetags/admin_tags.py:166
-#, fuzzy
-#| msgid "domain alias"
-msgid "View domain's alarms"
-msgstr "Ψευδώνυμα (alias) domain "
-
-#: admin/templatetags/admin_tags.py:174 admin/templatetags/admin_tags.py:218
-#: admin/templatetags/admin_tags.py:235
-msgid "Edit {}"
-msgstr "Επεξεργασία{}"
-
-#: admin/templatetags/admin_tags.py:186 admin/templatetags/admin_tags.py:224
-#: admin/templatetags/admin_tags.py:241
-#, python-format
-msgid "Delete %s?"
-msgstr "Διαγραφή %s;"
-
-#: admin/tests/test_mx.py:156
+#: admin/tests/test_mx.py:155
 #, fuzzy, python-format
 #| msgid "MX records of {}"
 msgid "No MX record for %s"
 msgstr "Έγραφες MX από{}"
 
-#: admin/tests/test_mx.py:177 admin/tests/test_mx.py:183
+#: admin/tests/test_mx.py:176 admin/tests/test_mx.py:182
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr ""
 
-#: admin/tests/test_mx.py:200
+#: admin/tests/test_mx.py:199
 #, fuzzy, python-format
 #| msgid "MX records of {}"
 msgid "No AAAA record for %s"
 msgstr "Έγραφες MX από{}"
-
-#: admin/views/alias.py:30
-msgid "Alias with this name already exists"
-msgstr "Υπάρχει είδη αυτό το ψευδώνυμο"
-
-#: admin/views/alias.py:52
-msgid "Create"
-msgstr "Δημιουργία"
-
-#: admin/views/alias.py:64
-msgid "New alias"
-msgstr "Νέο ψευδώνυμο"
-
-#: admin/views/alias.py:64
-msgid "Alias created"
-msgstr "Το ψευδώνυμο δημιουργήθηκε"
-
-#: admin/views/alias.py:76
-msgid "Alias modified"
-msgstr "Το ψευδώνυμο τροποποιήθηκε"
-
-#: admin/views/alias.py:101
-msgid "Alias deleted"
-msgid_plural "Aliases deleted"
-msgstr[0] "Το ψευδώνυμο διαγράφηκε"
-msgstr[1] "Ψευδώνυμο διαγράφηκε"
-
-#: admin/views/dns.py:24
-msgid "MX records of {}"
-msgstr "Έγραφες MX από{}"
-
-#: admin/views/dns.py:42
-msgid "DNSBL summary for {}"
-msgstr "Περίληψη DNSBL για{}"
-
-#: admin/views/domain.py:251
-msgid "Domain deleted"
-msgid_plural "Domains deleted"
-msgstr[0] "Το domain διαφράφηκε"
-msgstr[1] "Τα domains διαφράφηκαν"
-
-#: admin/views/export.py:40
-msgid "Export identities"
-msgstr "Εξαγωγή ταυτοτήτων"
-
-#: admin/views/export.py:69
-msgid "Export domains"
-msgstr "Εξαγωγή των domain"
-
-#: admin/views/identity.py:110 admin/views/identity.py:197
-#: admin/views/identity.py:202 lib/form_utils.py:110 lib/form_utils.py:113
-msgid "Invalid request"
-msgstr "Λάθος αίτημα"
-
-#: admin/views/identity.py:187
-msgid "Account deleted"
-msgid_plural "Accounts deleted"
-msgstr[0] "Ο λογαριασμός διαγράφηκε"
-msgstr[1] "Οι λογαριασμοί διαγράφηκαν"
-
-#: admin/views/import_.py:49
-msgid "Import domains"
-msgstr "Εισαγωγή των domain"
-
-#: admin/views/import_.py:70
-msgid "Import identities"
-msgstr "Εισαγωγή ταυτοτήτων"
-
-#: admin/views/user.py:51
-msgid "Forward updated"
-msgstr "Η προώθηση ενημερώθηκε"
 
 #: calendars/app_settings.py:11
 #, fuzzy
@@ -1798,8 +815,7 @@ msgstr ""
 "Να επιτρέπεται σε αυτόν τον διαχειριστή η πρόσβαση στα γραμματοκιβώτια "
 "χρηστών"
 
-#: calendars/app_settings.py:60 core/app_settings.py:438
-#: core/app_settings.py:1255
+#: calendars/app_settings.py:60 core/app_settings.py:579
 msgid "Miscellaneous"
 msgstr "Διάφορα"
 
@@ -1812,7 +828,7 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:157
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:171
 msgid "Calendars"
 msgstr ""
 
@@ -1850,9 +866,7 @@ msgstr "Ρυθμίσεις LDAP"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr ""
 
-#: contacts/app_settings.py:51
-#: contacts/templates/modoboa_contacts/index.html:6
-#: core/api/v2/viewsets.py:164
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:178
 #, fuzzy
 #| msgid "Domains"
 msgid "Contacts"
@@ -1896,109 +910,106 @@ msgstr "Αριθμός εμφανίσεων ανά σελίδα"
 msgid "Minimum allowed value is 60s"
 msgstr ""
 
-#: core/api/v1/serializers.py:21
+#: core/api/v1/serializers.py:68
 #, fuzzy
 #| msgid "Invalid line"
 msgid "Invalid PIN code"
 msgstr "Λάθος γραμμή"
 
-#: core/api/v1/serializers.py:27
+#: core/api/v1/serializers.py:74
 msgid "2FA is already enabled"
 msgstr ""
 
-#: core/api/v1/serializers.py:40
+#: core/api/v1/serializers.py:87
 #, python-format
 msgid "Failed TFA settings editing attempt from '%s' as user '%s'"
 msgstr ""
 
-#: core/api/v1/serializers.py:44 core/api/v2/serializers.py:308
+#: core/api/v1/serializers.py:91 core/api/v2/serializers.py:415
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
 msgstr "Παλιός κωδικός"
 
-#: core/api/v1/viewsets.py:64 core/api/v1/viewsets.py:83
+#: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
 msgid "2FA is not enabled"
 msgstr ""
 
-#: core/api/v2/serializers.py:68 core/app_settings.py:48
+#: core/api/v2/serializers.py:69
 msgid "Local"
 msgstr "Τοπικός"
 
-#: core/api/v2/serializers.py:164 core/app_settings.py:24
+#: core/api/v2/serializers.py:165 core/app_settings.py:17
 msgid "User profile"
 msgstr "Προφίλ Χρήστη"
 
-#: core/api/v2/serializers.py:183 core/api/v2/serializers.py:190
-#: core/api/v2/serializers.py:197 core/app_settings.py:535
-#: core/app_settings.py:543 core/app_settings.py:551
-#: postfix_autoreply/forms.py:153
+#: core/api/v2/serializers.py:184 core/api/v2/serializers.py:191
+#: core/api/v2/serializers.py:198
 msgid "Invalid syntax"
 msgstr "Μη έγκυρη σύνταξη"
 
-#: core/api/v2/serializers.py:202 core/app_settings.py:557
+#: core/api/v2/serializers.py:203
 msgid "Invalid rounds number"
 msgstr "Λάθος αριθμός επαναλήψεων "
 
-#: core/api/v2/serializers.py:296 core/forms.py:201
+#: core/api/v2/serializers.py:403 core/forms.py:81
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:367 core/views/auth.py:199
-#: core/views/auth.py:252
+#: core/api/v2/serializers.py:473 core/views/auth.py:194 core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
-#: core/api/v2/viewsets.py:150
+#: core/api/v2/viewsets.py:164
 #, fuzzy
 #| msgid "Administration"
 msgid "Administration console"
 msgstr "Διαχείριση"
 
-#: core/api/v2/viewsets.py:159
+#: core/api/v2/viewsets.py:173
 msgid "Calendar"
 msgstr ""
 
-#: core/api/v2/viewsets.py:166
+#: core/api/v2/viewsets.py:180
 #, fuzzy
 #| msgid "Address"
 msgid "Address book"
 msgstr "Διεύθυνση"
 
-#: core/api/v2/viewsets.py:171 core/api/v2/viewsets.py:173
+#: core/api/v2/viewsets.py:185 core/api/v2/viewsets.py:187
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
 msgstr "Webmail"
 
-#: core/app_settings.py:44 core/app_settings.py:713
+#: core/app_settings.py:37
 msgid "Authentication"
 msgstr "Πιστοποίηση"
 
-#: core/app_settings.py:47 core/app_settings.py:719
+#: core/app_settings.py:43
 msgid "Authentication type"
 msgstr "Τύπος Πιστοποίησης"
 
-#: core/app_settings.py:50 core/app_settings.py:721
+#: core/app_settings.py:45
 msgid "The backend used for authentication"
 msgstr "Το backend που χρησιμοποιείται για πιστοποίηση"
 
-#: core/app_settings.py:55 core/app_settings.py:728
+#: core/app_settings.py:52
 msgid "Default password scheme"
 msgstr "Προεπιλεγμένος αλγόριθμος κωδικοποίησης"
 
-#: core/app_settings.py:58 core/app_settings.py:730
+#: core/app_settings.py:54
 msgid "Scheme used to crypt mailbox passwords"
 msgstr ""
 "Σχήμα που θα χρησιμοποιηθεί για την κρυπτογράφηση των κωδικών των "
 "λογαριασμών αλληλογραφίας"
 
-#: core/app_settings.py:62 core/app_settings.py:737
+#: core/app_settings.py:61
 msgid "Rounds"
 msgstr "Επαναλήψεων"
 
-#: core/app_settings.py:65 core/app_settings.py:739
+#: core/app_settings.py:63
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -2006,213 +1017,200 @@ msgstr ""
 "Αριθμός επαναλήψεων (μόνο για sha256crypt και sha512crypt). Μπορεί να είναι "
 "από 1000 έως και 999999999"
 
-#: core/app_settings.py:71 core/app_settings.py:749
+#: core/app_settings.py:73
 #, fuzzy
 #| msgid "Default password scheme"
 msgid "Update password scheme at login"
 msgstr "Προεπιλεγμένος αλγόριθμος κωδικοποίησης"
 
-#: core/app_settings.py:74 core/app_settings.py:752
+#: core/app_settings.py:76
 msgid "Update user password at login to use the default password scheme"
 msgstr ""
 
-#: core/app_settings.py:79 core/app_settings.py:760
+#: core/app_settings.py:84
 msgid "Default password"
 msgstr "Προκαθορισμένος κωδικός"
 
-#: core/app_settings.py:81 core/app_settings.py:762
+#: core/app_settings.py:86
 msgid "Default password for automatically created accounts."
 msgstr "Προκαθορισμένος κωδικός για αυτόματη δημιουργία λογαριασμών"
 
-#: core/app_settings.py:85 core/app_settings.py:769
+#: core/app_settings.py:93
 msgid "Random password length"
 msgstr "Μήκος τυχαίου κωδικού"
 
-#: core/app_settings.py:88 core/app_settings.py:771
+#: core/app_settings.py:95
 msgid "Length of randomly generated passwords."
 msgstr "Μήκος των τυχαίων  δημιουργημένων κωδικών"
 
-#: core/app_settings.py:92 core/app_settings.py:778
+#: core/app_settings.py:102
 #, fuzzy
 #| msgid "Default password scheme"
 msgid "Update password service URL"
 msgstr "Προεπιλεγμένος αλγόριθμος κωδικοποίησης"
 
-#: core/app_settings.py:96 core/app_settings.py:780
+#: core/app_settings.py:104
 msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
 msgstr ""
 
-#: core/app_settings.py:104 core/app_settings.py:790
+#: core/app_settings.py:114
 msgid "Password recovery announcement"
 msgstr ""
 
-#: core/app_settings.py:109 core/app_settings.py:792
+#: core/app_settings.py:116
 msgid "A temporary message that will be displayed on the reset password page."
 msgstr ""
 
-#: core/app_settings.py:114 core/app_settings.py:801
+#: core/app_settings.py:125
 msgid "Enable password recovery by SMS"
 msgstr ""
 
-#: core/app_settings.py:117 core/app_settings.py:804
+#: core/app_settings.py:128
 msgid "Enable password recovery by SMS for users who filled a phone number."
 msgstr ""
 
-#: core/app_settings.py:122 core/app_settings.py:812
+#: core/app_settings.py:136
 msgid "SMS provider"
 msgstr ""
 
-#: core/app_settings.py:124 core/app_settings.py:815
+#: core/app_settings.py:139
 msgid "Choose a provider to send password recovery SMS"
 msgstr ""
 
-#: core/app_settings.py:129
-msgid "LDAP settings"
-msgstr "Ρυθμίσεις LDAP"
+#: core/app_settings.py:151
+msgid "LDAP"
+msgstr ""
 
-#: core/app_settings.py:132 core/app_settings.py:833
-#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:51
-#: sievefilters/forms.py:16 sievefilters/forms.py:38
-#: webmail/app_settings.py:36 webmail/app_settings.py:73
+#: core/app_settings.py:157 sievefilters/app_settings.py:18
+#: sievefilters/app_settings.py:51 webmail/app_settings.py:36
+#: webmail/app_settings.py:73
 msgid "Server address"
 msgstr "Διεύθυνση εξυπηρετητή"
 
-#: core/app_settings.py:134 core/app_settings.py:835
+#: core/app_settings.py:159
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "Η IP διεύθυνση ή το DNS όνομα του εξυπηρετητή LDAP"
 
-#: core/app_settings.py:138 core/app_settings.py:842
-#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:67
-#: sievefilters/forms.py:23 sievefilters/forms.py:50
-#: webmail/app_settings.py:54 webmail/app_settings.py:91
+#: core/app_settings.py:166 sievefilters/app_settings.py:25
+#: sievefilters/app_settings.py:67 webmail/app_settings.py:54
+#: webmail/app_settings.py:91
 msgid "Server port"
 msgstr "Πόρτα εξυπηρετητή"
 
-#: core/app_settings.py:140 core/app_settings.py:844
+#: core/app_settings.py:168
 msgid "The TCP port number used by the LDAP server"
 msgstr "Η TCP πόρτα λειτουργίας του εξυπηρετητή LDAP"
 
-#: core/app_settings.py:144 core/app_settings.py:852
+#: core/app_settings.py:176
 msgid "Enable secondary server (fallback)"
 msgstr ""
 
-#: core/app_settings.py:147 core/app_settings.py:855
+#: core/app_settings.py:179
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
 msgstr ""
 
-#: core/app_settings.py:153 core/app_settings.py:863
+#: core/app_settings.py:187
 #, fuzzy
 #| msgid "Server address"
 msgid "Secondary server address"
 msgstr "Διεύθυνση εξυπηρετητή"
 
-#: core/app_settings.py:156 core/app_settings.py:866
+#: core/app_settings.py:190
 #, fuzzy
 #| msgid "The IP address or the DNS name of the LDAP server"
 msgid "The IP address or the DNS name of the seondary LDAP server"
 msgstr "Η IP διεύθυνση ή το DNS όνομα του εξυπηρετητή LDAP"
 
-#: core/app_settings.py:161 core/app_settings.py:873
+#: core/app_settings.py:197
 #, fuzzy
 #| msgid "Server port"
 msgid "Secondary server port"
 msgstr "Πόρτα εξυπηρετητή"
 
-#: core/app_settings.py:163 core/app_settings.py:876
+#: core/app_settings.py:200
 #, fuzzy
 #| msgid "The TCP port number used by the LDAP server"
 msgid "The TCP port number used by the LDAP secondary server"
 msgstr "Η TCP πόρτα λειτουργίας του εξυπηρετητή LDAP"
 
-#: core/app_settings.py:167 core/app_settings.py:883
-#: sievefilters/app_settings.py:58 sievefilters/forms.py:44
+#: core/app_settings.py:207 sievefilters/app_settings.py:58
 #: webmail/app_settings.py:45
 msgid "Use a secured connection"
 msgstr "Χρήση ασφαλής σύνδεσης"
 
-#: core/app_settings.py:171 core/app_settings.py:885
+#: core/app_settings.py:209
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgstr ""
-"Χρησιμοποιήστε μια σύνδεση SSL / STARTTLS για να συνδεθήκατε στον διακομιστή"
-" LDAP"
+"Χρησιμοποιήστε μια σύνδεση SSL / STARTTLS για να συνδεθήκατε στον διακομιστή "
+"LDAP"
 
-#: core/app_settings.py:176 core/app_settings.py:892
+#: core/app_settings.py:216
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:178 core/app_settings.py:894
+#: core/app_settings.py:218
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Ο εξυπηρετητής LDAP είναι Active Directory"
 
-#: core/app_settings.py:182 core/app_settings.py:901
+#: core/app_settings.py:225
 msgid "Administrator groups"
 msgstr "Groups Διαχειριστών"
 
-#: core/app_settings.py:185 core/app_settings.py:903
+#: core/app_settings.py:227
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators."
-" Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
 msgstr ""
-"Τα μέλη αυτών των LDAP Posix ομάδων χρηστών θα δημιουργηθούν ως διαχειριστές"
-" domain. Χρησιμοποιείστε τον χαραχτήρα ';' για να ξεχωρίσετε τις ομάδες."
+"Τα μέλη αυτών των LDAP Posix ομάδων χρηστών θα δημιουργηθούν ως διαχειριστές "
+"domain. Χρησιμοποιείστε τον χαραχτήρα ';' για να ξεχωρίσετε τις ομάδες."
 
-#: core/app_settings.py:192 core/app_settings.py:912
+#: core/app_settings.py:236
 msgid "Group type"
 msgstr "Τύπος ομάδας"
 
-#: core/app_settings.py:195 core/app_settings.py:914
+#: core/app_settings.py:238
 msgid "The LDAP group type to use with your directory."
 msgstr "Τύπος ομάδας LDAP που χρησιμοποιείται με τον κατάλογο σας."
 
-#: core/app_settings.py:199 core/app_settings.py:921
+#: core/app_settings.py:245
 msgid "Groups search base"
 msgstr "Base αναζήτησης ομάδων χρηστών"
 
-#: core/app_settings.py:202 core/app_settings.py:923
+#: core/app_settings.py:247
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Το Base DN αναζήτησης ομάδων χρηστών"
 
-#: core/app_settings.py:208 core/app_settings.py:931
+#: core/app_settings.py:255
 msgid "Password attribute"
 msgstr "Το πεδίο του κωδικού"
 
-#: core/app_settings.py:210 core/app_settings.py:933
+#: core/app_settings.py:257
 msgid "The attribute used to store user passwords"
 msgstr "Το πεδίο αποθήκευσης των κωδικών χρηστών"
 
-#: core/app_settings.py:214 core/app_settings.py:940
+#: core/app_settings.py:264
 #, fuzzy
 #| msgid "Authentication method"
 msgid "LDAP authentication settings"
 msgstr "Μέθοδος Πιστοποίησης"
 
-#: core/app_settings.py:217 core/app_settings.py:948
+#: core/app_settings.py:272
 msgid "Authentication method"
 msgstr "Μέθοδος Πιστοποίησης"
 
-#: core/app_settings.py:219 core/constants.py:59
-msgid "Search and bind"
-msgstr "Αναζήτηση χρήστη και bind"
-
-#: core/app_settings.py:220 core/constants.py:60
-msgid "Direct bind"
-msgstr "Χρήση Bind DN"
-
-#: core/app_settings.py:223 core/app_settings.py:951
+#: core/app_settings.py:275
 msgid "Choose the authentication method to use"
 msgstr "Επιλογή μεθόδου πιστοποίησης"
 
-#: core/app_settings.py:227 core/app_settings.py:279 core/app_settings.py:958
-#: core/app_settings.py:1021
+#: core/app_settings.py:282 core/app_settings.py:345
 msgid "Bind DN"
 msgstr "Bind DN"
 
-#: core/app_settings.py:230 core/app_settings.py:282 core/app_settings.py:960
-#: core/app_settings.py:1023
+#: core/app_settings.py:284 core/app_settings.py:347
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -2220,46 +1218,40 @@ msgstr ""
 "To distinguished name για το bind στον εξυπηρετητή LDAP. Αφήστε το κενό για "
 "anonymous"
 
-#: core/app_settings.py:237 core/app_settings.py:289 core/app_settings.py:969
-#: core/app_settings.py:1031
+#: core/app_settings.py:293 core/app_settings.py:355
 msgid "Bind password"
 msgstr "Bind κωδικός "
 
-#: core/app_settings.py:240 core/app_settings.py:292 core/app_settings.py:971
-#: core/app_settings.py:1033
+#: core/app_settings.py:295 core/app_settings.py:357
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Ο κωδικός για το bind στον εξυπηρετητή LDAP (αντιστοιχεί στο 'Bind DN')"
 
-#: core/app_settings.py:247 core/app_settings.py:335 core/app_settings.py:981
-#: core/app_settings.py:1086
+#: core/app_settings.py:305 core/app_settings.py:410
 msgid "Users search base"
 msgstr "Base αναζήτησης χρηστών"
 
-#: core/app_settings.py:250 core/app_settings.py:338 core/app_settings.py:983
-#: core/app_settings.py:1088
+#: core/app_settings.py:307 core/app_settings.py:412
 msgid "The distinguished name of the search base used to find users"
 msgstr "Το Base DN αναζήτησης χρηστών"
 
-#: core/app_settings.py:256 core/app_settings.py:344 core/app_settings.py:992
-#: core/app_settings.py:1097
+#: core/app_settings.py:316 core/app_settings.py:421
 msgid "Search filter"
 msgstr "Φίλτρο αναζήτησης"
 
-#: core/app_settings.py:259 core/app_settings.py:347 core/app_settings.py:994
-#: core/app_settings.py:1099
+#: core/app_settings.py:318 core/app_settings.py:423
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
 msgstr ""
-"Προαιρετικό φίλτρο (π.χ. '(objectClass=person)'). Για να είναι έγκυρο πρέπει"
-" να περικλείεται σε παρενθέσεις."
+"Προαιρετικό φίλτρο (π.χ. '(objectClass=person)'). Για να είναι έγκυρο πρέπει "
+"να περικλείεται σε παρενθέσεις."
 
-#: core/app_settings.py:266 core/app_settings.py:1003
+#: core/app_settings.py:327
 msgid "User DN template"
 msgstr "Πρότυπο για DN χρηστών"
 
-#: core/app_settings.py:269 core/app_settings.py:1005
+#: core/app_settings.py:329
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -2268,38 +1260,38 @@ msgstr ""
 "Το πρότυπο δημιουργίας DN χρηστών. Θα πρέπει να περιλαμβάνει έναν "
 "placeholder (π.χ. %(user)s)"
 
-#: core/app_settings.py:276 core/app_settings.py:1014
+#: core/app_settings.py:338
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "LDAP synchronization settings"
 msgstr "Ρυθμίσεις LDAP"
 
-#: core/app_settings.py:299 core/app_settings.py:1042
+#: core/app_settings.py:366
 msgid "Enable export to LDAP"
 msgstr ""
 
-#: core/app_settings.py:302 core/app_settings.py:1044
+#: core/app_settings.py:368
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 
-#: core/app_settings.py:308 core/app_settings.py:1053
+#: core/app_settings.py:377
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr ""
 
-#: core/app_settings.py:311 core/app_settings.py:1056
+#: core/app_settings.py:380
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
 msgstr ""
 
-#: core/app_settings.py:317 core/app_settings.py:1065
+#: core/app_settings.py:389
 #, fuzzy
 #| msgid "User DN template"
 msgid "Account DN template"
 msgstr "Πρότυπο για DN χρηστών"
 
-#: core/app_settings.py:320 core/app_settings.py:1067
+#: core/app_settings.py:391
 #, fuzzy, python-format
 #| msgid ""
 #| "The template used to construct a user's DN. It should contain one "
@@ -2311,186 +1303,181 @@ msgstr ""
 "Το πρότυπο δημιουργίας DN χρηστών. Θα πρέπει να περιλαμβάνει έναν "
 "placeholder (π.χ. %(user)s)"
 
-#: core/app_settings.py:327 core/app_settings.py:1076
+#: core/app_settings.py:400
 msgid "Enable import from LDAP"
 msgstr ""
 
-#: core/app_settings.py:330 core/app_settings.py:1078
+#: core/app_settings.py:402
 msgid "Enable account synchronization from LDAP directory to local database"
 msgstr ""
 
-#: core/app_settings.py:354 core/app_settings.py:1108
+#: core/app_settings.py:432
 #, fuzzy
 #| msgid "Password attribute"
 msgid "Username attribute"
 msgstr "Το πεδίο του κωδικού"
 
-#: core/app_settings.py:357 core/app_settings.py:1110
+#: core/app_settings.py:434
 msgid "The name of the LDAP attribute where the username can be found."
 msgstr ""
 
-#: core/app_settings.py:362 core/app_settings.py:1119
+#: core/app_settings.py:443
 #, fuzzy
 #| msgid "Enable communication"
 msgid "Enable Dovecot LDAP sync"
 msgstr "Ενεργοποίηση επικοινωνίας"
 
-#: core/app_settings.py:365 core/app_settings.py:1121
+#: core/app_settings.py:445
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
 msgstr ""
 
-#: core/app_settings.py:370 core/app_settings.py:1129
+#: core/app_settings.py:453
 msgid "Dovecot LDAP config file"
 msgstr ""
 
-#: core/app_settings.py:374 core/app_settings.py:1131
+#: core/app_settings.py:455
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
 msgstr ""
 
-#: core/app_settings.py:379 core/app_settings.py:1144
-#: core/templates/core/dashboard.html:5
+#: core/app_settings.py:468
 msgid "Dashboard"
 msgstr "Ταμπλό Συντομεύσεων"
 
-#: core/app_settings.py:382 core/app_settings.py:1150
+#: core/app_settings.py:474
 msgid "Custom RSS feed"
 msgstr "Κατά παραγγελία RSS feed"
 
-#: core/app_settings.py:385 core/app_settings.py:1152
+#: core/app_settings.py:476
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr ""
 "Προβολή κατά παραγγελία RSS feed για μεταπωλητές και διαχειριστές τομέα"
 
-#: core/app_settings.py:390 core/app_settings.py:1160
+#: core/app_settings.py:484
 msgid "Hide features widget"
 msgstr "Κρύβω τις λειτουργίες από τα widget"
 
-#: core/app_settings.py:393 core/app_settings.py:1162
+#: core/app_settings.py:486
 msgid "Hide features widget for resellers and domain administrators"
 msgstr ""
 "Κρύβω τις λειτουργίες από τα widget για τους μεταπωλητές και τους "
 "διαχειριστές του τομέα"
 
-#: core/app_settings.py:397 core/app_settings.py:1174
+#: core/app_settings.py:498
 msgid "Notifications"
 msgstr "Υπενθύμιση "
 
-#: core/app_settings.py:400 core/app_settings.py:1180
+#: core/app_settings.py:504
 msgid "Sender address"
 msgstr "Διεύθυνση αποστολέα"
 
-#: core/app_settings.py:402 core/app_settings.py:1182
+#: core/app_settings.py:506
 msgid "Email address used to send notifications."
 msgstr "Email διεύθυνση που χρησιμοποιείται για την αποστολή υπενθυμίσεων "
 
-#: core/app_settings.py:405 core/app_settings.py:1193
+#: core/app_settings.py:517
 msgid "Public API"
 msgstr "Δημόσιο API"
 
-#: core/app_settings.py:408 core/app_settings.py:1199
+#: core/app_settings.py:523
 msgid "Enable communication"
 msgstr "Ενεργοποίηση επικοινωνίας"
 
-#: core/app_settings.py:410
-msgid "Enable communication with Modoboa public API"
-msgstr "Ενεργοποίηση επικοινωνίας με δημόσιο API του Modaboa"
-
-#: core/app_settings.py:414 core/app_settings.py:1208
-msgid "Check new versions"
-msgstr "Έλεγχος ενημερώσεων"
-
-#: core/app_settings.py:416 core/app_settings.py:1201
-#: core/app_settings.py:1211
+#: core/app_settings.py:525 core/app_settings.py:535
 msgid "Automatically checks if a newer version is available"
 msgstr "Αυτόματος έλεγχος διαθέσιμων ενημερώσεων"
 
-#: core/app_settings.py:420 core/app_settings.py:1219
+#: core/app_settings.py:532
+msgid "Check new versions"
+msgstr "Έλεγχος ενημερώσεων"
+
+#: core/app_settings.py:543
 msgid "Send an email when new versions are found"
 msgstr ""
 
-#: core/app_settings.py:422 core/app_settings.py:1223
+#: core/app_settings.py:547
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 
-#: core/app_settings.py:425 core/app_settings.py:1230
-#: sievefilters/constants.py:25
+#: core/app_settings.py:554 sievefilters/constants.py:25
 msgid "Recipient"
 msgstr "Παραλήπτης"
 
-#: core/app_settings.py:427 core/app_settings.py:1233
+#: core/app_settings.py:557
 msgid "Recipient of new versions notification emails."
 msgstr ""
 
-#: core/app_settings.py:431 core/app_settings.py:1240
+#: core/app_settings.py:564
 msgid "Send statistics"
 msgstr "Αποστολή στατιστικών"
 
-#: core/app_settings.py:434 core/app_settings.py:1243
+#: core/app_settings.py:567
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Αποστολή στατιστικών στο public API του Motaboa (counters και used "
 "extensions)"
 
-#: core/app_settings.py:441 core/app_settings.py:1262
+#: core/app_settings.py:586
 #, fuzzy
 #| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
 msgstr "Όριο απενεργοποιημένων λογαριασμών  "
 
-#: core/app_settings.py:444 core/app_settings.py:1265
+#: core/app_settings.py:589
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account"
-" is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account "
+"is considered inactive if the user hasn't logged in"
 msgstr ""
 
-#: core/app_settings.py:451 core/app_settings.py:1274
+#: core/app_settings.py:598
 msgid "Inactive account threshold"
 msgstr "Όριο απενεργοποιημένων λογαριασμών  "
 
-#: core/app_settings.py:454 core/app_settings.py:1277
+#: core/app_settings.py:601
 msgid ""
-"An account with a last login date greater than this threshold (in days) will"
-" be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will "
+"be considered as inactive"
 msgstr "Όριο (σε ημέρες) για να απενεργοποιηθεί ένας Λογαριασμός."
 
-#: core/app_settings.py:460 core/app_settings.py:1286
+#: core/app_settings.py:610
 msgid "Top notifications check interval"
 msgstr "Μέγιστο διάστημα ελέγχου ειδοποιήσεων"
 
-#: core/app_settings.py:462 core/app_settings.py:1289
+#: core/app_settings.py:613
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Διάστημα μεταξύ των δύο πρώτων ελέγχων ειδοποιήσεων (σε δευτερόλεπτα)"
 
-#: core/app_settings.py:466 core/app_settings.py:1296
+#: core/app_settings.py:620
 msgid "Maximum log record age"
 msgstr "Μέγιστος χρόνος καταγραφής των log"
 
-#: core/app_settings.py:468 core/app_settings.py:1298
+#: core/app_settings.py:622
 msgid "The maximum age in days of a log record"
 msgstr "Μέγιστη διάρκεια σε ημέρες καταγραφής των log"
 
-#: core/app_settings.py:472 core/app_settings.py:1305
+#: core/app_settings.py:629
 msgid "Items per page"
 msgstr "Εμφανίσεις ανά σελίδα"
 
-#: core/app_settings.py:474 core/app_settings.py:1307
+#: core/app_settings.py:631
 msgid "Number of displayed items per page"
 msgstr "Αριθμός εμφανίσεων ανά σελίδα"
 
-#: core/app_settings.py:478 core/app_settings.py:1314
+#: core/app_settings.py:638
 msgid "Default top redirection"
 msgstr "Κύριες προκαθορισμένες αναδρομολογήσεις"
 
-#: core/app_settings.py:482 core/app_settings.py:1316
+#: core/app_settings.py:640
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "Προκαθορισμένες αναδρομολογήσεις που χρησιμοποιούνται όταν δεν υπάρχουν "
 "προκαθορισμένες εφαρμογές"
 
-#: core/app_settings.py:827
-msgid "LDAP"
-msgstr ""
+#: core/apps.py:21 imap_migration/app_settings.py:13 maillog/apps.py:14
+#: pdfcredentials/app_settings.py:13 postfix_autoreply/app_settings.py:12
+#: webmail/app_settings.py:11
+msgid "General"
+msgstr "Γενικά"
 
 #: core/checks.py:13
 msgid ""
@@ -2529,6 +1516,18 @@ msgstr "Μεταπωλητής "
 msgid "Super administrator"
 msgstr "Super διαχειριστής"
 
+#: core/constants.py:53
+msgid "No"
+msgstr "Όχι"
+
+#: core/constants.py:59
+msgid "Search and bind"
+msgstr "Αναζήτηση χρήστη και bind"
+
+#: core/constants.py:60
+msgid "Direct bind"
+msgstr "Χρήση Bind DN"
+
 #: core/constants.py:109
 msgid "Choose a provider"
 msgstr ""
@@ -2537,77 +1536,57 @@ msgstr ""
 msgid "Dummy"
 msgstr ""
 
-#: core/forms.py:26
-msgid "Old password"
-msgstr "Παλιός κωδικός"
-
-#: core/forms.py:31
-msgid "New password"
-msgstr "Νέος κωδικός"
-
-#: core/forms.py:70
-msgid "Old password mismatchs"
-msgstr "Αναντιστοιχία παλιού κωδικού"
-
-#: core/forms.py:83
-msgid "Passwords mismatch"
-msgstr "Αναντιστοιχία κωδικών"
-
-#: core/forms.py:130
-msgid "Enable API access"
-msgstr "Ενεργοποίηση πρόσβασης API"
-
-#: core/forms.py:176
+#: core/forms.py:56
 #, fuzzy
 #| msgid "Notifications"
 msgid "Verification code"
 msgstr "Υπενθύμιση "
 
-#: core/forms.py:187
+#: core/forms.py:67
 #, fuzzy
 #| msgid "Invalid line"
 msgid "Invalid code"
 msgstr "Λάθος γραμμή"
 
-#: core/handlers.py:37
+#: core/handlers.py:36
 msgid "added"
 msgstr "πρόσθεσε"
 
-#: core/handlers.py:40
+#: core/handlers.py:39
 msgid "modified"
 msgstr "άλλαξε"
 
-#: core/handlers.py:42
+#: core/handlers.py:41
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s του χρήστη %(user)s"
 
-#: core/handlers.py:65
+#: core/handlers.py:64
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s'%(name)s'%(action)s από"
 
-#: core/handlers.py:68
+#: core/handlers.py:67
 msgid "deleted"
 msgstr "Διαγράφηκε"
 
-#: core/handlers.py:72
+#: core/handlers.py:71
 msgid "user {}"
 msgstr "Χρήστης {}"
 
-#: core/handlers.py:74
+#: core/handlers.py:73
 msgid "management command"
 msgstr "Εντολή διαχείρισης"
 
-#: core/handlers.py:96
+#: core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "Δεν μπορείτε να διαγράψετε τον δικό σας λογαριασμό"
 
-#: core/handlers.py:129
+#: core/handlers.py:127
 msgid "One or more updates are available"
 msgstr "Υπάρχουν διαθέσιμες ενημερώσεις"
 
-#: core/handlers.py:141
+#: core/handlers.py:138
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
 msgstr ""
@@ -2628,7 +1607,7 @@ msgstr ""
 "Να επιτρέπεται σε αυτόν τον διαχειριστή η πρόσβαση στα γραμματοκιβώτια "
 "χρηστών"
 
-#: core/models.py:76 core/templates/core/user_security.html:119
+#: core/models.py:76
 msgid "password"
 msgstr "κωδικός"
 
@@ -2640,6 +1619,14 @@ msgstr "Γλώσσα "
 msgid "Prefered language to display pages."
 msgstr "Επιλογή γλώσσας για την εμφάνιση σελίδων."
 
+#: core/models.py:85
+msgid "Phone number"
+msgstr "Τηλέφωνο"
+
+#: core/models.py:87
+msgid "Secondary email"
+msgstr "Δευτερεύον email"
+
 #: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
@@ -2649,8 +1636,7 @@ msgstr ""
 #: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
-"Σφάλμα κατά την ενημέρωση του κωδικού: το LDAP module δεν είναι "
-"εγκατεστημένο"
+"Σφάλμα κατά την ενημέρωση του κωδικού: το LDAP module δεν είναι εγκατεστημένο"
 
 #: core/models.py:186 policyd/core.py:117
 msgid "account"
@@ -2762,141 +1748,6 @@ msgstr ""
 msgid "Appication secret"
 msgstr "Εφαρμογές"
 
-#: core/templates/core/_current_features.html:6
-msgid "Features looking for sponsoring"
-msgstr "Χαρακτηριστικά που αναζητούν χορηγία"
-
-#: core/templates/core/_current_features.html:12
-msgid "Goal:"
-msgstr "Στόχος:"
-
-#: core/templates/core/_current_features.html:18
-msgid "More"
-msgstr "Περισσότερα "
-
-#: core/templates/core/_current_features.html:22
-msgid "Nothing to sponsor yet."
-msgstr "Κανένας υποστηριχτής ακόμη."
-
-#: core/templates/core/_latest_news_widget.html:5
-msgid "Latest news"
-msgstr "Τελευταία νέα"
-
-#: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
-msgstr ""
-"Επισκέψου το<a href=\"https://modoboa.org/blog/\" target=\"_blank\">επίσιμο "
-"weblog</a>για περισσότερες πληροφορίες"
-
-#: core/templates/core/api_access.html:3
-msgid "API access"
-msgstr "πρόσβαση API"
-
-#: core/templates/core/api_access.html:3
-msgid "Control your access to Modoboa API"
-msgstr "Ρυθμίσεις πρόσβασης στο API του Modoboa"
-
-#: core/templates/core/api_access.html:7
-#, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
-msgstr ""
-"Οδηγίες για το API είναι διαθέσιμες <strong><a href=\"%(url)s\" "
-"target=\"_blank\">εδώ</a>"
-
-#: core/templates/core/api_access.html:14
-msgid "API access token"
-msgstr "Κωδικός πρόσβασης στο API"
-
-#: core/templates/core/dashboard.html:17
-#, python-format
-msgid "Hello %(user)s."
-msgstr "Για σου %(user)s."
-
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:58
-msgid "Information"
-msgstr "Πληροφορίες"
-
-#: core/templates/core/information.html:2
-msgid "Various information about Modoboa"
-msgstr "Διάφορες πληροφορίες για το Modoboa"
-
-#: core/templates/core/information.html:5
-msgid "You are using a deprecated password scheme!"
-msgstr ""
-
-#: core/templates/core/information.html:6
-#, python-format
-msgid ""
-"The password scheme <strong>%(scheme)s</strong> has been deprecated and will"
-" be removed in the next minor version. The procedure to upgrade to a "
-"stronger scheme is as follows: <ul> <li>Go to <strong>Parameters > "
-"General</strong> section</li> <li>Change the value of <strong>Default "
-"password scheme</strong></li> <li>Make sure <strong>Update password scheme "
-"at login</strong> option is enabled</li> <li>Save your changes</li> "
-"<li>Logout / Login with your current account so its password gets "
-"updated</li> <li>Inform <strong>ALL</strong> your users that they must login"
-" to Modoboa to complete the operation</li> </ul>"
-msgstr ""
-
-#: core/templates/core/information.html:18
-msgid ""
-"You must apply this procedure <strong>BEFORE</strong> you install a newest "
-"version of Modoboa, otherwise <strong>you will be unable to connect to the "
-"web interface anymore</strong>."
-msgstr ""
-
-#: core/templates/core/information.html:23
-msgid ""
-"Please note that you will see this message until <strong>ALL</strong> user "
-"passwords have been converted using the new scheme."
-msgstr ""
-
-#: core/templates/core/information.html:28
-msgid "One or more updates are available!"
-msgstr "Υπάρχουν διαθέσιμες ενημερώσεις!"
-
-#: core/templates/core/information.html:29
-msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Έλεγχος της ακόλουθης λίστας για εύρεση αρθρώματος(των) που μπορούν να "
-"αναβαθμιστούν."
-
-#: core/templates/core/information.html:33
-msgid "Applications"
-msgstr "Εφαρμογές"
-
-#: core/templates/core/information.html:38
-msgid "Installed version"
-msgstr "Εγκατεστημένη έκδοση"
-
-#: core/templates/core/information.html:39
-msgid "Last version"
-msgstr "Τελευταία έκδοση"
-
-#: core/templates/core/information.html:55
-msgid "Active users"
-msgstr "Ενεργοί χρήστες"
-
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:63
-msgid "Logs"
-msgstr "Καταγραφές"
-
-#: core/templates/core/logs.html:2
-msgid "Previously on Modoboa..."
-msgstr "Πρώην στο Modaboa... "
-
-#: core/templates/core/logs.html:7
-msgid "Level"
-msgstr "Επίπεδο"
-
-#: core/templates/core/logs.html:8
-msgid "Logger"
-msgstr "Καταχωρητής"
-
 #: core/templates/core/notifications/update_available.html:3
 #, fuzzy
 #| msgid "One or more updates are available"
@@ -2909,217 +1760,48 @@ msgid_plural ""
 msgstr[0] "Υπάρχουν διαθέσιμες ενημερώσεις"
 msgstr[1] "Υπάρχουν διαθέσιμες ενημερώσεις"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:70
-msgid "Parameters"
-msgstr "Παράμετροι"
-
-#: core/templates/core/parameters.html:2
-msgid "Configure Modoboa"
-msgstr "Ρυθμίστε το Modoboa"
-
-#: core/templates/core/parameters.html:6
-#: core/templates/core/user_preferences.html:10
-msgid "Save"
-msgstr "Αποθήκευση"
-
-#: core/templates/core/settings_header.html:5
-msgid "Modoboa settings"
-msgstr "Ρυθμίσεις Modoboa"
-
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:95
-msgid "Settings"
-msgstr "Ρυθμίσεις"
-
-#: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:139
-msgid "Preferences"
-msgstr "Προτιμήσεις"
-
-#: core/templates/core/user_preferences.html:2
-msgid "Customize Modoboa"
-msgstr "Προσαρμογή του Modoboa"
-
-#: core/templates/core/user_preferences.html:14
-msgid "No preferences available."
-msgstr "Δεν υπάρχουν διαθέσιμες προτιμήσεις."
-
-#: core/templates/core/user_profile.html:3
-msgid "Update your personal information"
-msgstr "Ενημέρωση προσωπικών πληροφοριών"
-
-#: core/templates/core/user_profile.html:13
-#, fuzzy
-#| msgid "Failed to update password: {}"
-msgid "Click here to update your password"
-msgstr "Αποτυχία ενημέρωσης κωδικού: {}"
-
-#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:145
-#, fuzzy
-#| msgid "Security options"
-msgid "Security"
-msgstr "Ρυθμίσεις Ασφαλείας"
-
-#: core/templates/core/user_security.html:6
-#, fuzzy
-#| msgid "The backend used for authentication"
-msgid "Two-Factor authentication"
-msgstr "Το backend που χρησιμοποιείται για πιστοποίηση"
-
-#: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from"
-" your application repository and use that app to scan this QR code."
-msgstr ""
-
-#: core/templates/core/user_security.html:25
-#, fuzzy
-#| msgid "Invalid line"
-msgid "Pin code"
-msgstr "Λάθος γραμμή"
-
-#: core/templates/core/user_security.html:28
-msgid "Register"
-msgstr ""
-
-#: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr ""
-
-#: core/templates/core/user_security.html:38
-#: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
-msgstr ""
-
-#: core/templates/core/user_security.html:53
-msgid "Two-Factor Authentication is enabled for your account."
-msgstr ""
-
-#: core/templates/core/user_security.html:57
-msgid "This will invalidate your registered application."
-msgstr ""
-
-#: core/templates/core/user_security.html:58
-#, fuzzy
-#| msgctxt "checks"
-#| msgid "Disabled"
-msgid "Disable 2FA"
-msgstr "Απενεργοποιήθηκε "
-
-#: core/templates/core/user_security.html:60
-msgid "This will regenerate your tokens."
-msgstr ""
-
-#: core/templates/core/user_security.html:61
-msgid "Reset recovery codes"
-msgstr ""
-
-#: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
-msgstr ""
-
-#: core/templates/core/user_security.html:73
-#, fuzzy
-#| msgid "Enabled"
-msgid "Enable 2FA"
-msgstr "Ενεργοποιημένο"
-
-#: core/templates/core/user_security.html:84
-#, fuzzy
-#| msgid "No MX record found for this domain."
-msgid "New recovery codes"
-msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#: core/templates/core/user_security.html:88
-msgid "Here are your new recovery codes. "
-msgstr ""
-
-#: core/templates/core/user_security.html:118
-#, fuzzy
-#| msgid "Crypt passwords"
-msgid "Confirm your password"
-msgstr "Κρυπτογράφηση κωδικών"
-
-#: core/templatetags/core_tags.py:34
-msgid "Modoboa"
-msgstr "Modoboa"
-
-#: core/templatetags/core_tags.py:110
-msgid "Logout"
-msgstr "Έξοδος"
-
-#: core/templatetags/core_tags.py:154
-msgid "API"
-msgstr "API"
-
 #: core/utils.py:41
 msgid "The core part of Modoboa"
 msgstr "Το βασικό μέρος του Modoboa"
 
-#: core/views/admin.py:42
-msgid "Parameters saved"
-msgstr "Οι παράμετροι αποθηκεύτηκαν"
-
-#: core/views/auth.py:70
+#: core/views/auth.py:65
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Επιτυχής είσοδος του χρήστη '%s'"
 
-#: core/views/auth.py:108
+#: core/views/auth.py:109
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:115
+#: core/views/auth.py:116
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:159
+#: core/views/auth.py:154
 msgid "User '{}' successfully logged out"
 msgstr "Ο χρήστης '{}'  αποσυνδέθηκε επιτυχώς"
 
-#: core/views/user.py:55
-msgid "Profile updated"
-msgstr "Το προφίλ ενημερώθηκε"
-
-#: core/views/user.py:89
-msgid "Preferences saved"
-msgstr "Οι προτιμήσεις αποθηκεύτηκαν"
-
-#: core/views/user.py:118
-msgid "Access updated"
-msgstr "Το πρόσβαση ενημερώθηκε"
-
-#: dmarc/forms.py:36 dmarc/forms.py:50
+#: dmarc/forms.py:15
 msgid "DNS settings"
 msgstr "Ρυθμίσεις DNS"
 
-#: dmarc/forms.py:39 dmarc/forms.py:56
+#: dmarc/forms.py:21
 msgid "Enable reverse lookups"
 msgstr "Ενεργοποίηση ανάστροφης αναζήτησης reverse lookups"
 
-#: dmarc/forms.py:41 dmarc/forms.py:58
+#: dmarc/forms.py:23
 msgid "Enable reverse DNS lookups (reports will be longer to display)"
 msgstr "Ενεργοποίηση reverse DNS lookups (η αναφορές θα καθυστερούν)"
 
-#: dmarc/forms.py:74 dmarc/forms.py:78
+#: dmarc/forms.py:42
 #, fuzzy
 #| msgid "DMARC tools"
 msgid "DMARC"
 msgstr "Εργαλεία DMARC"
 
-#: dmarc/handlers.py:21
-msgid "Show DMARC report for {}"
-msgstr "Εμφάνιση της έκθεσης DMARC του {}"
-
-#: dmarc/lib.py:294 dmarc/templatetags/dmarc_tags.py:61 dmarc/views.py:120
+#: dmarc/lib.py:294
 msgid "Not resolved"
 msgstr ""
 
@@ -3163,78 +1845,6 @@ msgstr "Πολιτική"
 #: dmarc/models.py:26
 msgid "Soft failure"
 msgstr "Πρόβλημα Soft"
-
-#: dmarc/templates/dmarc/_result_detail.html:6
-msgid "Total"
-msgstr "Σύνολο"
-
-#: dmarc/templates/dmarc/domain_report.html:21
-#: dmarc/templates/dmarc/domain_report.html:27
-msgid "Fully aligned"
-msgstr "Πλήρως ευθυγραμμισμένο"
-
-#: dmarc/templates/dmarc/domain_report.html:22
-#: dmarc/templates/dmarc/domain_report.html:28
-msgid "Partially aligned"
-msgstr "Μερικός ευθυγραμισμένα"
-
-#: dmarc/templates/dmarc/domain_report.html:23
-#: dmarc/templates/dmarc/domain_report.html:29
-#, fuzzy
-#| msgid "Forward"
-msgid "Forwarded"
-msgstr "Προώθηση"
-
-#: dmarc/templates/dmarc/domain_report.html:24
-#: dmarc/templates/dmarc/domain_report.html:30
-msgid "Failed"
-msgstr "Απέτυχε"
-
-#: dmarc/templates/dmarc/domain_report.html:52
-msgid "DMARC report for"
-msgstr "Έκθεση DMARC του"
-
-#: dmarc/templates/dmarc/domain_report.html:76
-msgid "processed"
-msgstr "Επεξεργάστηκε"
-
-#: dmarc/templates/dmarc/domain_report.html:85
-msgid "fully aligned"
-msgstr "πλήρως ευθυγραμμισμένο"
-
-#: dmarc/templates/dmarc/domain_report.html:94
-msgid "partially aligned"
-msgstr "Μερικώς ευθυγραμμισμένο"
-
-#: dmarc/templates/dmarc/domain_report.html:103
-#, fuzzy
-#| msgid "Forward"
-msgid "forwarded"
-msgstr "Προώθηση"
-
-#: dmarc/templates/dmarc/domain_report.html:112
-msgid "failed"
-msgstr "απέτυχε"
-
-#: dmarc/templates/dmarc/domain_report.html:122
-msgid "Display details"
-msgstr "Προβολή λεπτομερειών"
-
-#: dmarc/templates/dmarc/domain_report.html:126
-msgid "Trusted sources"
-msgstr "Αξιόπιστες πηγές"
-
-#: dmarc/templates/dmarc/domain_report.html:134
-msgid "Partially trusted sources / Forwarders"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:142
-msgid "Forwarders with ARC"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:150
-msgid "Unknown sources / Threats"
-msgstr "Άγνωστες πηγές / Απειλές"
 
 #: dnstools/lib.py:82
 msgid "Wrong ip4 mechanism syntax"
@@ -3328,139 +1938,74 @@ msgstr ""
 msgid "Public key mismatchs"
 msgstr ""
 
-#: dnstools/templates/dnstools/autoconfig_records_status.html:8
-msgid "autoconfig record (Mozilla) found: "
-msgstr ""
-
-#: dnstools/templates/dnstools/autoconfig_records_status.html:12
-msgid "autoconfig record (Mozilla) not found."
-msgstr ""
-
-#: dnstools/templates/dnstools/autoconfig_records_status.html:17
-msgid "autodiscover record (Microsoft) found: "
-msgstr ""
-
-#: dnstools/templates/dnstools/autoconfig_records_status.html:21
-msgid "autodiscover record (Microsoft) not found."
-msgstr ""
-
-#: dnstools/templates/dnstools/dns_record_detail.html:8
-msgid "A DNS record has been found and is valid."
-msgstr ""
-
-#: dnstools/templates/dnstools/dns_record_detail.html:12
-msgid "A DNS record has been found but its syntax is not valid:"
-msgstr ""
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between"
-" [ ] by the appropriate ones."
-msgstr ""
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:15
-msgid "IP address of your Modoboa server"
-msgstr ""
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:28
-msgid "Auto configuration"
-msgstr ""
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:30
-#: dnstools/templates/dnstools/domain_dns_configuration.html:31
-msgid "hostname of your automx server"
-msgstr ""
-
-#: dnstools/views.py:35
-msgid "{} record of {}"
-msgstr ""
-
-#: dnstools/views.py:64
-msgid "Auto configuration records for {}"
-msgstr ""
-
-#: dnstools/views.py:80
-msgid "DNS configuration for {}"
-msgstr ""
-
 #: imap_migration/api/v2/serializers.py:117
 #, fuzzy
 #| msgid "Access updated"
 msgid "Access denied"
 msgstr "Το πρόσβαση ενημερώθηκε"
 
-#: imap_migration/app_settings.py:23 imap_migration/app_settings.py:102
+#: imap_migration/app_settings.py:19
 #, fuzzy
 #| msgid "IMAP migration"
 msgid "Enable IMAP Migration"
 msgstr "Μετάβαση IMAP"
 
-#: imap_migration/app_settings.py:24 imap_migration/app_settings.py:104
+#: imap_migration/app_settings.py:20
 #, fuzzy
 #| msgid "IMAP migration"
 msgid "Enable IMAP Migration."
 msgstr "Μετάβαση IMAP"
 
-#: imap_migration/app_settings.py:34
+#: imap_migration/app_settings.py:30
 #, fuzzy
 #| msgid "OfflineIMAP settings"
 msgid "OfflineIMAP"
 msgstr "Ρυθμίσεις OfflineIMAP"
 
-#: imap_migration/app_settings.py:40 imap_migration/app_settings.py:110
+#: imap_migration/app_settings.py:36
 msgid "Concurrent sync jobs"
 msgstr "Ταυτόχρονες εργασίες συγχρονισμού"
 
-#: imap_migration/app_settings.py:42 imap_migration/app_settings.py:112
+#: imap_migration/app_settings.py:38
 msgid "The maximum number of concurrent synchronization jobs"
 msgstr "Ο μέγιστος αριθμός ταυτόχρονων εργασιών συγχρονισμού"
 
-#: imap_migration/app_settings.py:53
+#: imap_migration/app_settings.py:49
 #, fuzzy
 #| msgid "OfflineIMAP settings"
 msgid "OfflineIMAP Filter"
 msgstr "Ρυθμίσεις OfflineIMAP"
 
-#: imap_migration/app_settings.py:59 imap_migration/app_settings.py:118
+#: imap_migration/app_settings.py:55
 msgid "Create Folders"
 msgstr ""
 
-#: imap_migration/app_settings.py:61 imap_migration/app_settings.py:120
+#: imap_migration/app_settings.py:57
 msgid "Allow Creation of missing folders during sync"
 msgstr ""
 
-#: imap_migration/app_settings.py:68 imap_migration/app_settings.py:125
+#: imap_migration/app_settings.py:64
 msgid "Folder Filter Exclusions"
 msgstr ""
 
-#: imap_migration/app_settings.py:70 imap_migration/app_settings.py:128
+#: imap_migration/app_settings.py:66
 msgid ""
 "Use a regular expression to explicitly include folders in sync. Example: "
 "^Trash$|Del"
 msgstr ""
 
-#: imap_migration/app_settings.py:78 imap_migration/app_settings.py:135
+#: imap_migration/app_settings.py:74
 msgid "Folder Filter Inclusions"
 msgstr ""
 
-#: imap_migration/app_settings.py:80 imap_migration/app_settings.py:138
+#: imap_migration/app_settings.py:76
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, "
-"debian.personal "
+"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
+"personal "
 msgstr ""
 
-#: imap_migration/app_settings.py:107
-msgid "OfflineIMAP settings"
-msgstr "Ρυθμίσεις OfflineIMAP"
-
-#: imap_migration/app_settings.py:115
-#, fuzzy
-#| msgid "OfflineIMAP settings"
-msgid "OfflineIMAP Filter settings"
-msgstr "Ρυθμίσεις OfflineIMAP"
-
-#: imap_migration/apps.py:18 imap_migration/apps.py:23
+#: imap_migration/apps.py:20
 #, fuzzy
 #| msgid "IMAP migration"
 msgid "IMAP Migration"
@@ -3482,10 +2027,6 @@ msgstr ""
 msgid ""
 "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
-
-#: imap_migration/templates/imap_migration/index.html:6
-msgid "IMAP migration"
-msgstr "Μετάβαση IMAP"
 
 #: ldapsync/lib.py:82
 msgid "Failed to create LDAP account: {}"
@@ -3510,12 +2051,6 @@ msgstr ""
 msgid "Failed to communicate with public API: %s"
 msgstr "Ενεργοποίηση επικοινωνίας με δημόσιο API του Modaboa"
 
-#: lib/db_utils.py:22
-#, fuzzy
-#| msgid "Connection to database %s not configured"
-msgid "Connection to database {} not configured"
-msgstr "Δεν έχει ρυθμιστεί η σύνδεση με την βάση δεδομένων %s"
-
 #: lib/email_utils.py:139 lib/email_utils.py:350
 msgid "unable to determine encoding of string"
 msgstr ""
@@ -3530,48 +2065,36 @@ msgstr "Δεν επιτρέπεται η πρόσβαση: %s"
 msgid "Permission denied"
 msgstr "Δεν επιτρέπεται η πρόσβαση"
 
-#: lib/fields.py:14 lib/validators.py:13
-msgid "Enter a valid domain name"
-msgstr "Εισάγετε ένα έγκυρο όνομα domain"
-
-#: lib/fields.py:41 lib/fields.py:54
+#: lib/fields.py:13 lib/fields.py:26
 msgid "Enter a valid email address."
 msgstr "Εισαγωγή μιας πραγματικής διεύθυνσης email."
-
-#: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:25
-#: templates/registration/password_reset_confirm_code.html:27
-#: templates/registration/password_reset_form.html:23
-msgid "Submit"
-msgstr "Αποστολή"
 
 #: lib/ldap_utils.py:126
 msgid "Failed to update password: {}"
 msgstr "Αποτυχία ενημέρωσης κωδικού: {}"
 
-#: lib/templatetags/lib_tags.py:120 sievefilters/constants.py:23
-#: templates/common/email_searchbar.html:17 webmail/lib/imapemail.py:304
-msgid "Subject"
-msgstr "Τίτλος"
+#: lib/validators.py:13
+msgid "Enter a valid domain name"
+msgstr "Εισάγετε ένα έγκυρο όνομα domain"
 
-#: limits/app_settings.py:17 limits/app_settings.py:147
+#: limits/app_settings.py:13
 msgid "Default per-admin limits"
 msgstr "Προεπιλεγμένα όρια ανά διαχειριστή"
 
-#: limits/app_settings.py:20 limits/app_settings.py:153
+#: limits/app_settings.py:19
 msgid "Enable per-admin limits"
 msgstr "Ενεργοποίηση ορίων ανά διαχειριστή"
 
-#: limits/app_settings.py:22 limits/app_settings.py:154
+#: limits/app_settings.py:20
 msgid "Enable or disable per-admin limits"
 msgstr "Ενεργοποίηση ή απενεργοποίηση ορίων ανά διαχειριστή"
 
-#: limits/app_settings.py:26 limits/app_settings.py:91
-#: limits/app_settings.py:160 limits/app_settings.py:245
-#: limits/constants.py:47 limits/constants.py:101
+#: limits/app_settings.py:26 limits/app_settings.py:111 limits/constants.py:47
+#: limits/constants.py:101
 msgid "Domain admins"
 msgstr "Διαχειριστές domain"
 
-#: limits/app_settings.py:29 limits/app_settings.py:163
+#: limits/app_settings.py:29
 msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
@@ -3579,7 +2102,7 @@ msgstr ""
 "Μέγιστος αριθμός επιτρεπτών διαχειριστών domain ενός νέου διαχειριστή. (0 "
 "για καμία δημιουργία, -1 για απεριόριστες δημιουργίες)"
 
-#: limits/app_settings.py:39 limits/app_settings.py:175
+#: limits/app_settings.py:41
 msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3587,15 +2110,20 @@ msgstr ""
 "Μέγιστος αριθμός επιτρεπτών domain ενός νέου διαχειριστή. (0 για καμία "
 "δημιουργία, -1 για απεριόριστες δημιουργίες)"
 
-#: limits/app_settings.py:48 limits/app_settings.py:186
+#: limits/app_settings.py:49 limits/app_settings.py:123 limits/constants.py:22
+#: limits/constants.py:76
+msgid "Domain aliases"
+msgstr "Ψευδώνυμα domain"
+
+#: limits/app_settings.py:52
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
-" any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα για domain, για νέους "
 "διαχειριστές. (Το 0 δεν επιτρέπει κανένα, το -1 επιτρέπει απεριόριστα) "
 
-#: limits/app_settings.py:58 limits/app_settings.py:198
+#: limits/app_settings.py:64
 msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3603,7 +2131,12 @@ msgstr ""
 "Μέγιστος αριθμός επιτρεπτών γραμματοκιβωτίων ενός νέου διαχειριστή. (0 για "
 "καμία δημιουργία, -1 για απεριόριστες δημιουργίες)"
 
-#: limits/app_settings.py:67 limits/app_settings.py:210
+#: limits/app_settings.py:73 limits/app_settings.py:146 limits/constants.py:39
+#: limits/constants.py:92
+msgid "Mailbox aliases"
+msgstr "Ψευδώνυμο γραμματοκιβωτίου "
+
+#: limits/app_settings.py:76
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3611,35 +2144,39 @@ msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα  για νέους διαχειριστές. (Το 0 "
 "δεν επιτρέπει κανένα, το -1 επιτρέπει απεριόριστα) "
 
-#: limits/app_settings.py:76 limits/app_settings.py:220
+#: limits/app_settings.py:84 limits/constants.py:59
+msgid "Quota"
+msgstr "Quota"
+
+#: limits/app_settings.py:86
 msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
 msgstr ""
-"To quota που ένας μεταπωλητής επιτρέπεται να μοιράζει μεταξύ των domains που"
-" δημιουργεί. (0 σημαίνει χωρίς quota)"
+"To quota που ένας μεταπωλητής επιτρέπεται να μοιράζει μεταξύ των domains που "
+"δημιουργεί. (0 σημαίνει χωρίς quota)"
 
-#: limits/app_settings.py:82 limits/app_settings.py:232
+#: limits/app_settings.py:98
 msgid "Default per-domain limits"
 msgstr "Προκαθορισμένα ανά domain όρια"
 
-#: limits/app_settings.py:85 limits/app_settings.py:238
+#: limits/app_settings.py:104
 msgid "Enable per-domain limits"
 msgstr "Ενεργοποίηση ορίων ανά domain"
 
-#: limits/app_settings.py:87 limits/app_settings.py:239
+#: limits/app_settings.py:105
 msgid "Enable or disable per-domain limits"
 msgstr "Ενεργοποίηση ή απενεργοποίηση ορίων ανά domain"
 
-#: limits/app_settings.py:94 limits/app_settings.py:248
+#: limits/app_settings.py:114
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny"
-" any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny "
+"any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενους διαχειριστές domain για ένα νέο domain. "
 "(0 απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
 
-#: limits/app_settings.py:104 limits/app_settings.py:260
+#: limits/app_settings.py:126
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3647,7 +2184,7 @@ msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα domain  για ένα νέο domain. (0 "
 "απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
 
-#: limits/app_settings.py:114 limits/app_settings.py:272
+#: limits/app_settings.py:138
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3655,15 +2192,15 @@ msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα γραμματοκιβώτια για ένα νέο domain. (0 "
 "απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
 
-#: limits/app_settings.py:123 limits/app_settings.py:283
+#: limits/app_settings.py:149
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
-" -1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
+"-1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα  για ένα νέο domain. (0 "
 "απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
 
-#: limits/apps.py:13 limits/apps.py:17
+#: limits/apps.py:16
 msgid "Limits"
 msgstr "Όρια"
 
@@ -3713,20 +2250,12 @@ msgstr ""
 #: limits/constants.py:93
 msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr ""
-"Μέγιστος αριθμός από ψευδώνυμα γραμματοκιβωτίων που επιτρέπονται για αυτό το"
-" domain. "
+"Μέγιστος αριθμός από ψευδώνυμα γραμματοκιβωτίων που επιτρέπονται για αυτό το "
+"domain. "
 
 #: limits/constants.py:102
 msgid "Maximum number of domain admins allowed for this domain."
 msgstr "Μέγιστος αριθμός διαχειριστών domain για αυτό το domain"
-
-#: limits/forms.py:38 limits/forms.py:88
-msgid "Invalid limit"
-msgstr "Λάθος όριο"
-
-#: limits/handlers.py:118 limits/handlers.py:151
-msgid "Resources"
-msgstr "Πόροι"
 
 #: limits/lib.py:19
 #, python-format
@@ -3745,42 +2274,37 @@ msgstr "Δεν έχετε δικαίωμα καταχώρισης απεριόρ
 msgid "unlimited"
 msgstr "χωρίς περιορισμούς"
 
-#: limits/templates/limits/poolusage.html:3
-#: limits/templates/limits/resources_widget.html:5
-msgid "Resources usage"
-msgstr "Χρήση πόρων"
-
 #: maillog/api/v2/serializers.py:35
 msgid "You must provide start and end dates when period is custom"
 msgstr ""
 
-#: maillog/apps.py:20 maillog/forms.py:23
+#: maillog/apps.py:20
 msgid "Path to the log file"
 msgstr "Διαδρομή προς το αρχείο καταγραφής"
 
-#: maillog/apps.py:22 maillog/forms.py:25
+#: maillog/apps.py:22
 msgid "Path to log file used to collect statistics"
 msgstr "Διαδρομή προς το αρχείο καταγραφής για την συλλογή στατιστικών"
 
-#: maillog/apps.py:29 maillog/forms.py:30
+#: maillog/apps.py:29
 msgid "Directory to store RRD files"
 msgstr "Κατάλογος αρχείων για την αποθήκευση των αρχείων RRD"
 
-#: maillog/apps.py:31 maillog/forms.py:32
+#: maillog/apps.py:31
 msgid "Path to directory where RRD files are stored"
 msgstr "Διαδρομή προς τον κατάλογο αρχείων για την αποθήκευση αρχείων RRD"
 
-#: maillog/apps.py:38 maillog/forms.py:37
+#: maillog/apps.py:38
 msgid "Show greylisted messages"
 msgstr "Εμφάνιση μηνυμάτων greylisted"
 
-#: maillog/apps.py:40 maillog/forms.py:40
+#: maillog/apps.py:40
 msgid "Differentiate between hard and soft rejects (greylisting)"
 msgstr ""
 "Διαφοροποίηση μεταξύ σκληρών (hard) και μαλακών (soft) απορρίψεων "
 "(greylisting)"
 
-#: maillog/apps.py:58 maillog/apps.py:62 maillog/handlers.py:20
+#: maillog/apps.py:60
 msgid "Statistics"
 msgstr "Στατιστικά"
 
@@ -3852,114 +2376,63 @@ msgstr "Νέοι λογαριασμοί"
 msgid "Accounts"
 msgstr "Λογαριασμοί"
 
-#: maillog/templates/maillog/index.html:4
-msgid "Graphical statistics"
-msgstr "Γραφικά στατιστικά"
-
-#: maillog/templates/maillog/index.html:44
-msgid "Search a domain"
-msgstr "Αναζήτηση ενός domain"
-
-#: maillog/templates/maillog/index.html:77
-msgid "Apply"
-msgstr "Εφαρμογή"
-
-#: maillog/views.py:31
-msgid "No statistics available"
-msgstr "Δεν υπάρχουν διαθέσιμα στατιστικά"
-
-#: maillog/views.py:37
-msgid "Day"
-msgstr "Ημέρα"
-
-#: maillog/views.py:38
-msgid "Week"
-msgstr "Εβδομάδα"
-
-#: maillog/views.py:39
-msgid "Month"
-msgstr "Μήνας"
-
-#: maillog/views.py:40
-msgid "Year"
-msgstr "Έτος"
-
-#: maillog/views.py:41
-msgid "Custom"
-msgstr "Προσαρμοσμένο"
-
-#: maillog/views.py:64
-msgid "Unknown graphic set"
-msgstr "Άγνωστο σετ γραφικών"
-
-#: maillog/views.py:69
-#, fuzzy
-#| msgid "Unknown graphic set"
-msgid "Unknown domain"
-msgstr "Άγνωστο σετ γραφικών"
-
-#: maillog/views.py:74
-msgid "Bad custom period"
-msgstr "Λάθος προσαρμοσμένη περίοδος"
-
-#: pdfcredentials/api/v2/serializers.py:31 pdfcredentials/app_settings.py:236
-#: pdfcredentials/documents.py:60
+#: pdfcredentials/api/v2/serializers.py:35 pdfcredentials/documents.py:60
 msgid "Personal account information"
 msgstr "Προσωπικές πληροφορίες λογαριασμού"
 
-#: pdfcredentials/api/v2/serializers.py:61
+#: pdfcredentials/api/v2/serializers.py:81
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Directory is not writable"
 msgstr "To domain δεν βρέθηκε."
 
-#: pdfcredentials/api/v2/serializers.py:82 pdfcredentials/views.py:26
+#: pdfcredentials/api/v2/serializers.py:102
 msgid "No document available for this user"
 msgstr "Δεν υπάρχουν διαθέσιμα έγγραφα για αυτόν τον χρήστη"
 
-#: pdfcredentials/app_settings.py:29 pdfcredentials/app_settings.py:198
+#: pdfcredentials/app_settings.py:19
 #, fuzzy
 #| msgid "PDF credentials"
 msgid "Enable PDF credentials"
 msgstr "Διαπιστευτήρια PDF"
 
-#: pdfcredentials/app_settings.py:31 pdfcredentials/app_settings.py:200
+#: pdfcredentials/app_settings.py:21
 #, fuzzy
 #| msgid "Generate documents only at account creation"
 msgid "Enabled PDF credentials document generation on account creation."
 msgstr "Δημιουργία εγγράφων μόνο κατά την δημιουργία λογαριασμού"
 
-#: pdfcredentials/app_settings.py:42 pdfcredentials/app_settings.py:203
+#: pdfcredentials/app_settings.py:32
 msgid "Documents storage"
 msgstr "Αποθηκευτικός χώρος εγγράφων"
 
-#: pdfcredentials/app_settings.py:48 pdfcredentials/app_settings.py:206
+#: pdfcredentials/app_settings.py:38
 msgid "Directory to save documents into"
 msgstr "Κατάλογος αρχείων για την αποθήκευση εγγράφων"
 
-#: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:208
+#: pdfcredentials/app_settings.py:40
 msgid "Path to a directory where PDF documents will be saved"
 msgstr "Κατάλογος αρχείων για την αποθήκευση PDF εγγράφων"
 
-#: pdfcredentials/app_settings.py:61 pdfcredentials/app_settings.py:211
+#: pdfcredentials/app_settings.py:51
 msgid "Security options"
 msgstr "Ρυθμίσεις Ασφαλείας"
 
-#: pdfcredentials/app_settings.py:67 pdfcredentials/app_settings.py:214
+#: pdfcredentials/app_settings.py:57
 msgid "Delete documents after the first download"
 msgstr "Διαγραφή εγγράφων μετά την πρώτη λήψη"
 
-#: pdfcredentials/app_settings.py:69 pdfcredentials/app_settings.py:217
+#: pdfcredentials/app_settings.py:59
 msgid ""
 "Automatically delete a document just after its first download from this "
 "interface"
 msgstr "Αυτόματη διαγραφή εγγράφου μετά την πρώτη λήψη από αυτήν την διεπαφή"
 
-#: pdfcredentials/app_settings.py:78 pdfcredentials/app_settings.py:223
+#: pdfcredentials/app_settings.py:68
 msgid "Generate documents only at account creation"
 msgstr "Δημιουργία εγγράφων μόνο κατά την δημιουργία λογαριασμού"
 
-#: pdfcredentials/app_settings.py:81 pdfcredentials/app_settings.py:226
+#: pdfcredentials/app_settings.py:71
 msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
@@ -3968,39 +2441,39 @@ msgstr ""
 "επιλέξετε όχι, ένα νέο έγγραφο θα δημιουργείται κάθε φορά που ο κωδικός "
 "χρήστη ενημερώνεται."
 
-#: pdfcredentials/app_settings.py:94 pdfcredentials/app_settings.py:232
+#: pdfcredentials/app_settings.py:84
 msgid "Customization options"
 msgstr "Επιλογές προσαρμογής"
 
-#: pdfcredentials/app_settings.py:100 pdfcredentials/app_settings.py:235
+#: pdfcredentials/app_settings.py:90
 msgid "Title"
 msgstr "Τίτλος"
 
-#: pdfcredentials/app_settings.py:101 pdfcredentials/app_settings.py:237
+#: pdfcredentials/app_settings.py:91
 msgid "The document's title"
 msgstr "Ο τίτλος του εγγράφου"
 
-#: pdfcredentials/app_settings.py:107 pdfcredentials/app_settings.py:241
+#: pdfcredentials/app_settings.py:97
 msgid "Web panel url"
 msgstr "Διεύθυνση Web panel"
 
-#: pdfcredentials/app_settings.py:108 pdfcredentials/app_settings.py:241
+#: pdfcredentials/app_settings.py:98
 msgid "URL of the Modoboa web panel"
 msgstr "URL του Modoboa web panel"
 
-#: pdfcredentials/app_settings.py:114 pdfcredentials/app_settings.py:245
+#: pdfcredentials/app_settings.py:104
 msgid "Custom message"
 msgstr "Προσαρμοσμένο μήνυμα"
 
-#: pdfcredentials/app_settings.py:116 pdfcredentials/app_settings.py:246
+#: pdfcredentials/app_settings.py:106
 msgid "A custom message that will appear at the end of documents"
 msgstr "Ένα προσαρμοσμένο μήνυμα που θα εμφανιστεί στο τέλος των εγγράφων"
 
-#: pdfcredentials/app_settings.py:123 pdfcredentials/app_settings.py:251
+#: pdfcredentials/app_settings.py:113
 msgid "Include mail client connection settings"
 msgstr "Συμπεριλάβε τις ρυθμίσεις σύνδεσης προγράμματος αλληλογραφίας"
 
-#: pdfcredentials/app_settings.py:125 pdfcredentials/app_settings.py:254
+#: pdfcredentials/app_settings.py:115
 msgid ""
 "Include required SMTP and IMAP connection information to configure a mail "
 "client, a tablet or a phone"
@@ -4008,62 +2481,51 @@ msgstr ""
 "Συμπεριέλαβε της απαιτούμενες ρυθμίσης  SMTP και IMAP για διασύνδεση με "
 "προγράμματα emai, τάμπλετ και τηλέφωνα"
 
-#: pdfcredentials/app_settings.py:133 pdfcredentials/app_settings.py:260
-#: pdfcredentials/documents.py:133
+#: pdfcredentials/app_settings.py:123 pdfcredentials/documents.py:133
 msgid "SMTP server address"
 msgstr "Διεύθυνση SMTP Server"
 
-#: pdfcredentials/app_settings.py:136 pdfcredentials/app_settings.py:261
+#: pdfcredentials/app_settings.py:126
 msgid "Address of the SMTP server (hostname or IP)"
 msgstr "Διεύθυνση από τον SMTP server (hostname ή IP)"
 
-#: pdfcredentials/app_settings.py:143 pdfcredentials/app_settings.py:265
-#: pdfcredentials/documents.py:134
+#: pdfcredentials/app_settings.py:133 pdfcredentials/documents.py:134
 msgid "SMTP server port"
 msgstr "Θύρα SMTP server"
 
-#: pdfcredentials/app_settings.py:145 pdfcredentials/app_settings.py:267
+#: pdfcredentials/app_settings.py:135
 msgid "Listening port of the SMTP server"
 msgstr "Οι θύρες που ακούει ό SMTP Server"
 
-#: pdfcredentials/app_settings.py:151 pdfcredentials/app_settings.py:271
-#: pdfcredentials/documents.py:135
+#: pdfcredentials/app_settings.py:141 pdfcredentials/documents.py:135
 msgid "SMTP connection security"
 msgstr "Ασφάλεια σύνδεσης SMTP"
 
-#: pdfcredentials/app_settings.py:153 pdfcredentials/app_settings.py:179
-#: pdfcredentials/app_settings.py:274 pdfcredentials/app_settings.py:292
+#: pdfcredentials/app_settings.py:143 pdfcredentials/app_settings.py:169
 msgid "Connection security mechanism"
 msgstr "Μηχανισμός ασφαλείας σύνδεσης"
 
-#: pdfcredentials/app_settings.py:159 pdfcredentials/app_settings.py:278
-#: pdfcredentials/documents.py:136
+#: pdfcredentials/app_settings.py:149 pdfcredentials/documents.py:136
 msgid "IMAP server address"
 msgstr "Διεύθυνση IMAP server"
 
-#: pdfcredentials/app_settings.py:162 pdfcredentials/app_settings.py:279
+#: pdfcredentials/app_settings.py:152
 msgid "Address of the IMAP server (hostname or IP)"
 msgstr "Διεύθυνση του IMAP server (hostname ή IP)"
 
-#: pdfcredentials/app_settings.py:169 pdfcredentials/app_settings.py:283
-#: pdfcredentials/documents.py:137
+#: pdfcredentials/app_settings.py:159 pdfcredentials/documents.py:137
 msgid "IMAP server port"
 msgstr "θύρα IMAP Server"
 
-#: pdfcredentials/app_settings.py:171 pdfcredentials/app_settings.py:285
+#: pdfcredentials/app_settings.py:161
 msgid "Listening port of the IMAP server"
 msgstr "Η θύρα που ακούει ο IMAP Server"
 
-#: pdfcredentials/app_settings.py:177 pdfcredentials/app_settings.py:289
-#: pdfcredentials/documents.py:138
+#: pdfcredentials/app_settings.py:167 pdfcredentials/documents.py:138
 msgid "IMAP connection security"
 msgstr "Ασφάλεια σύνδεσης IMAP"
 
-#: pdfcredentials/apps.py:19
-msgid "PDF credentials"
-msgstr "Διαπιστευτήρια PDF"
-
-#: pdfcredentials/apps.py:24
+#: pdfcredentials/apps.py:21
 #, fuzzy
 #| msgid "PDF credentials"
 msgid "PDF Credentials"
@@ -4091,6 +2553,14 @@ msgstr ""
 msgid "Web panel:"
 msgstr "Web panel:"
 
+#: pdfcredentials/documents.py:98
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+#: pdfcredentials/documents.py:99
+msgid "Password"
+msgstr "Κωδικός"
+
 #: pdfcredentials/documents.py:116
 msgid ""
 "\n"
@@ -4098,7 +2568,8 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Εδώ μπορείτε να προβάλετε τα ηλεκτρονικά σας μηνύματα σε πραγματικό χρόνο, να δημιουργήσετε φίλτρα ή να διαχειριστείτε\n"
+"Εδώ μπορείτε να προβάλετε τα ηλεκτρονικά σας μηνύματα σε πραγματικό χρόνο, "
+"να δημιουργήσετε φίλτρα ή να διαχειριστείτε\n"
 " τις επαφές σας.\n"
 
 #: pdfcredentials/documents.py:126
@@ -4121,33 +2592,28 @@ msgid ""
 "the path."
 msgstr ""
 
-#: pdfcredentials/handlers.py:61
-msgid "Retrieve user's credentials as a PDF document"
-msgstr "Ανάκτηση διαπιστευτηρίων χρήστη σε αρχείο PDF"
-
-#: pdfcredentials/handlers.py:82
+#: pdfcredentials/handlers.py:64
 #, fuzzy
 #| msgid "PDF credentials"
 msgid "Download PDF credentials"
 msgstr "Διαπιστευτήρια PDF"
 
-#: pdfcredentials/lib.py:28
+#: pdfcredentials/lib.py:29
 #, fuzzy
-#| msgid ""
-#| "Failed to create the directory that will contain PDF documents (%s)"
+#| msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
 msgstr ""
-"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων"
-" (%s)"
+"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων "
+"(%s)"
 
-#: pdfcredentials/lib.py:34
+#: pdfcredentials/lib.py:35
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr ""
-"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων"
-" (%s)"
+"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων "
+"(%s)"
 
-#: pdfcredentials/lib.py:81
+#: pdfcredentials/lib.py:82
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
@@ -4158,6 +2624,10 @@ msgstr ""
 #| msgid "%s: limit reached"
 msgid "Daily sending limit reached"
 msgstr "%s: χρήση ορίου"
+
+#: policyd/core.py:118
+msgid "domain"
+msgstr "domain"
 
 #: policyd/core.py:136
 #, fuzzy
@@ -4170,41 +2640,40 @@ msgstr "%s: χρήση ορίου"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr ""
 
-#: postfix_autoreply/api/v2/serializers.py:42 postfix_autoreply/forms.py:86
+#: postfix_autoreply/api/v2/serializers.py:42
 #, fuzzy
 #| msgid "This field is required"
 msgid "This date is over"
 msgstr "Αυτή η ημερομηνία έχει παρέλθει"
 
-#: postfix_autoreply/api/v2/serializers.py:45 postfix_autoreply/forms.py:88
+#: postfix_autoreply/api/v2/serializers.py:45
 #, fuzzy
 #| msgid "Cannot be greater than domain quota"
 msgid "Must be greater than start date"
 msgstr "Πρέπει να είναι μεγαλύτερη από την ημερομηνία έναρξης"
 
-#: postfix_autoreply/app_settings.py:18 postfix_autoreply/forms.py:108
+#: postfix_autoreply/app_settings.py:18
 msgid "Automatic reply timeout"
 msgstr "Χρονικό όριο λήξης αυτόματης απάντησης"
 
-#: postfix_autoreply/app_settings.py:20 postfix_autoreply/forms.py:111
+#: postfix_autoreply/app_settings.py:20
 msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr ""
 "Χρονικό όριο λήξης σε δευτερόλεπτα μεταξύ δύο αυτόματων απαντήσεων προς τον "
 "ίδιο παραλήπτη"
 
 #: postfix_autoreply/app_settings.py:27 postfix_autoreply/app_settings.py:36
-#: postfix_autoreply/forms.py:117
 msgid "Default subject"
 msgstr "Προεπιλεγμένος τίτλος"
 
-#: postfix_autoreply/app_settings.py:29 postfix_autoreply/forms.py:120
+#: postfix_autoreply/app_settings.py:29
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
 msgstr ""
 "Προκαθορισμένο θέμα που θα χρησιμοποιείται όταν δημιουργούνται αυτόματες "
 "απαντήσεις μηνυμάτων"
 
-#: postfix_autoreply/app_settings.py:38 postfix_autoreply/forms.py:136
+#: postfix_autoreply/app_settings.py:38
 #, python-format
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
@@ -4213,70 +2682,11 @@ msgstr ""
 "Το προεπιλεγμένο κείμενο που θα χρησιμοποιείται στις αυτόματες απαντήσεις. "
 "Το macro '%(name)s' αντικαθίσταται από το όνομα του χρήστη. "
 
-#: postfix_autoreply/apps.py:14 postfix_autoreply/apps.py:20
-#: postfix_autoreply/forms.py:161
+#: postfix_autoreply/apps.py:15
 #, fuzzy
 #| msgid "Automatic account removal"
 msgid "Automatic replies"
 msgstr "Αυτόματες απαντήσεις"
-
-#: postfix_autoreply/forms.py:21
-msgid "Activate your auto reply from this date. Format : YYYY-MM-DD HH:mm:ss"
-msgstr ""
-"Ενεργοποίηση της αυτόματης απάντησης από αυτήν την ημερομηνία. Μορφή  : "
-"YYYY-MM-DD HH:mm:ss"
-
-#: postfix_autoreply/forms.py:26
-msgid "Until"
-msgstr "Έως"
-
-#: postfix_autoreply/forms.py:29
-msgid "Activate your auto reply until this date. Format : YYYY-MM-DD HH:mm:ss"
-msgstr ""
-"Ενεργοποίηση της αυτόματης απάντησης μέχρι αυτήν την ημερομηνία. Μορφή  : "
-"YYYY-MM-DD HH:mm:ss"
-
-#: postfix_autoreply/forms.py:37
-#, python-format
-msgid ""
-"The content of your answer. You can use the following variables, which will "
-"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
-"%(untildate)s"
-msgstr ""
-
-#: postfix_autoreply/forms.py:118
-msgid "I'm off"
-msgstr "Λείπω"
-
-#: postfix_autoreply/forms.py:127
-#, fuzzy
-#| msgid "Default domain quota"
-msgid "Default content"
-msgstr "Προεπιλεγμένο περιεχόμενο"
-
-#: postfix_autoreply/forms.py:129
-#, python-format
-msgid ""
-"I'm currently off. I'll answer as soon as I come back.\n"
-"\n"
-"Best regards,\n"
-"%(name)s\n"
-msgstr ""
-"Αυτή την στιγμή είμαι εκτός γραφείου. Θα σας απαντήσω μόλις επιστρέψω.\n"
-"\n"
-"Φιλικά,\n"
-"%(name)s\n"
-
-#: postfix_autoreply/handlers.py:114
-#: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
-#, fuzzy
-#| msgid "Custom message"
-msgid "Auto-reply message"
-msgstr "Κείμενο αυτόματης απάντησης"
-
-#: postfix_autoreply/handlers.py:127
-msgid "Auto reply"
-msgstr "Αυτόματη απάντηση"
 
 #: postfix_autoreply/models.py:15
 #, fuzzy
@@ -4300,26 +2710,8 @@ msgstr "Το κείμενο που θα φαίνεται στα απεσταλμ
 msgid "Activate/Deactivate your auto reply"
 msgstr "Ενεργοποίηση/Απενεργοποίηση της αυτόματης απάντησης"
 
-#: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
-msgid "Define a message to automatically send when you are off"
-msgstr "Ορίστε το μήνυμα αυτόματης απάντησης για όταν λείπετε"
-
-#: postfix_autoreply/views.py:28
-msgid "Auto reply message updated successfully."
-msgstr "Το μήνυμα αυτόματης απάντησης ενημερώθηκε επιτυχώς"
-
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
-msgstr ""
-
-#: relaydomains/handlers.py:64
-#, fuzzy
-#| msgid "Relay settings"
-msgid "Transport settings"
-msgstr "Ρυθμίσεις Relay"
-
-#: relaydomains/handlers.py:89
-msgid "Transport"
 msgstr ""
 
 #: relaydomains/transport.py:16
@@ -4340,65 +2732,55 @@ msgstr "επιβεβαίωση παραληπτών"
 msgid "Filter %s already exists"
 msgstr "Ο χρήστης '%s' υπάρχει ήδη"
 
-#: sievefilters/app_settings.py:12 sievefilters/forms.py:13
+#: sievefilters/app_settings.py:12
 #, fuzzy
 #| msgid "DNS settings"
 msgid "ManageSieve settings"
 msgstr "Ρυθμίσεις ManageSieve"
 
-#: sievefilters/app_settings.py:19 sievefilters/forms.py:18
+#: sievefilters/app_settings.py:19
 #, fuzzy
 #| msgid "Address of your IMAP server"
 msgid "Address of your MANAGESIEVE server"
 msgstr "Η διεύθυνση του εξυπηρετητή MANAGESIEVE"
 
-#: sievefilters/app_settings.py:27 sievefilters/forms.py:25
+#: sievefilters/app_settings.py:27
 #, fuzzy
 #| msgid "Listening port of your IMAP server"
 msgid "Listening port of your MANAGESIEVE server"
 msgstr "Η πόρτα λειτουργίας του MANAGESIEVE εξυπηρετητή σας"
 
-#: sievefilters/app_settings.py:34 sievefilters/forms.py:30
+#: sievefilters/app_settings.py:34
 msgid "Connect using STARTTLS"
 msgstr "Σύνδεση με χρήση STARTTLS"
 
-#: sievefilters/app_settings.py:35 sievefilters/forms.py:32
+#: sievefilters/app_settings.py:35
 msgid "Use the STARTTLS extension"
 msgstr "Χρήση του extension STARTTLS"
 
-#: sievefilters/app_settings.py:45 sievefilters/forms.py:35
-#: webmail/app_settings.py:30
+#: sievefilters/app_settings.py:45 webmail/app_settings.py:30
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "IMAP settings"
 msgstr "Ρυθμίσεις IMAP"
 
-#: sievefilters/app_settings.py:52 sievefilters/forms.py:40
-#: webmail/app_settings.py:38
+#: sievefilters/app_settings.py:52 webmail/app_settings.py:38
 msgid "Address of your IMAP server"
 msgstr "Η διεύθυνση του εξυπηρετητή IMAP"
 
-#: sievefilters/app_settings.py:60 sievefilters/forms.py:46
-#: webmail/app_settings.py:47
+#: sievefilters/app_settings.py:60 webmail/app_settings.py:47
 msgid "Use a secured connection to access IMAP server"
 msgstr "Χρήση ασφαλής σύνδεσης με τον εξυπηρετητή IMAP"
 
-#: sievefilters/app_settings.py:68 sievefilters/forms.py:52
-#: webmail/app_settings.py:56
+#: sievefilters/app_settings.py:68 webmail/app_settings.py:56
 msgid "Listening port of your IMAP server"
 msgstr "Η πόρτα λειτουργίας του εξυπηρετητή IMAP"
 
-#: sievefilters/apps.py:15 sievefilters/apps.py:20
+#: sievefilters/apps.py:15
 #, fuzzy
 #| msgid "Search filter"
 msgid "Sieve filters"
 msgstr "Φίλτρα Sieve"
-
-#: sievefilters/apps.py:28
-#, fuzzy
-#| msgid "Search filter"
-msgid "Message filters"
-msgstr "Φίλτρα μηνυμάτων"
 
 #: sievefilters/constants.py:10
 msgid "All of the following"
@@ -4431,6 +2813,10 @@ msgstr "είναι"
 #: sievefilters/constants.py:19
 msgid "is not"
 msgstr "δεν είναι"
+
+#: sievefilters/constants.py:23 webmail/lib/imapemail.py:304
+msgid "Subject"
+msgstr "Τίτλος"
 
 #: sievefilters/constants.py:24
 #, fuzzy
@@ -4482,48 +2868,14 @@ msgstr "Απόρριψη μηνύματος"
 msgid "Stop processing"
 msgstr "Ακύρωση επεξεργασίας"
 
-#: sievefilters/forms.py:63
-msgid "Editor mode"
-msgstr "Λειτουργία συντάκτη"
-
-#: sievefilters/forms.py:65
-msgid "Select the mode you want the editor to work in"
-msgstr "Επιλέξτε τη λειτουργία στην οποία θέλετε να εργάζεται ο συντάκτης"
-
-#: sievefilters/forms.py:73 webmail/app_settings.py:182
-msgid "Trash folder"
-msgstr "Φάκελος Διαγραμμένων"
-
-#: sievefilters/forms.py:74 webmail/app_settings.py:184
-#, fuzzy
-#| msgid "rejected messages"
-msgid "Folder where deleted messages go"
-msgstr "Ο φάκελος που αποθηκεύονται τα διεγραμμένα μηνύματα"
-
-#: sievefilters/forms.py:79 webmail/app_settings.py:191
-msgid "Sent folder"
-msgstr "Φάκελος Απεσταλμένων"
-
-#: sievefilters/forms.py:80 webmail/app_settings.py:193
-msgid "Folder where copies of sent messages go"
-msgstr "Ο φάκελος που αποθηκεύονται τα απεσταλμένα μηνύματα"
-
-#: sievefilters/forms.py:85 webmail/app_settings.py:200
-msgid "Drafts folder"
-msgstr "Φάκελος Πρόχειρων"
-
-#: sievefilters/forms.py:86 webmail/app_settings.py:201
-msgid "Folder where drafts go"
-msgstr "Ο φάκελος που αποθηκεύονται τα πρόχειρα"
-
-#: sievefilters/lib.py:52
+#: sievefilters/lib.py:51
 #, fuzzy
 #| msgid "Connection to IMAP server failed: %s"
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 "Η σύνδεση με τον εξυπηρετητή MANAGESIEVE απέτυχε, ελέγξτε τις ρυθμίσεις σας "
 
-#: sievefilters/lib.py:79
+#: sievefilters/lib.py:78
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4541,18 +2893,6 @@ msgstr "Η συγκεκριμένη σελίδα δεν υπάρχει."
 msgid "An internal error occured."
 msgstr "Εσωτερικό σφάλμα."
 
-#: templates/common/email_searchbar.html:5
-msgid "Search..."
-msgstr "Αναζήτηση..."
-
-#: templates/common/email_searchbar.html:10
-msgid "From address"
-msgstr "Διεύθυνση αποστολέα"
-
-#: templates/common/email_searchbar.html:33
-msgid "Both"
-msgstr "Και τα δύο"
-
 #: templates/common/error.html:4
 msgid "Error:"
 msgstr "Λάθος:"
@@ -4561,20 +2901,6 @@ msgstr "Λάθος:"
 #: templates/common/generic_fields_group.html:8
 msgid "Help:"
 msgstr "Βοήθεια:"
-
-#: templates/common/wizard_forms.html:31
-msgid "Previous"
-msgstr "Προηγούμενο"
-
-#: templates/common/wizard_forms.html:32
-msgid "Next"
-msgstr "Επόμενο"
-
-#: templates/nlayout.html:57
-#, fuzzy
-#| msgid "New domain"
-msgid "New admin"
-msgstr "Νέο domain"
 
 #: templates/registration/base.html:8
 msgid "Welcome to Modoboa"
@@ -4614,13 +2940,19 @@ msgstr ""
 msgid "Change password"
 msgstr "Αλλαγή κωδικού"
 
+#: templates/registration/password_reset_confirm.html:25
+#: templates/registration/password_reset_confirm_code.html:27
+#: templates/registration/password_reset_form.html:23
+msgid "Submit"
+msgstr "Αποστολή"
+
 #: templates/registration/password_reset_confirm.html:29
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
 msgstr ""
-"Ο σύνδεσμος για την επαναφορά του κωδικού ήταν άκυρος, πιθανότατα γιατί είχε"
-" είδη χρησιμοποιηθεί. Παρακαλώ ζητήστε μια νέα επαναφορά κωδικού."
+"Ο σύνδεσμος για την επαναφορά του κωδικού ήταν άκυρος, πιθανότατα γιατί είχε "
+"είδη χρησιμοποιηθεί. Παρακαλώ ζητήστε μια νέα επαναφορά κωδικού."
 
 #: templates/registration/password_reset_confirm_code.html:22
 msgid "Enter the code you've just received by SMS"
@@ -4644,8 +2976,8 @@ msgstr ""
 "Σας έχουμε αποστείλει με ηλεκτρονικό ταχυδρομείο οδηγίες για να ορίσετε των "
 "κωδικό σας, εφόσον υπάρχει ένας λογαριασμός με το διεύθυνση ηλεκτρονικής "
 "αλληλογραφίας που καταχωρήσατε.  Θα πρέπει να το λάβετε σύντομα. <p><p>Εάν "
-"δεν λάβατε το email, παρακαλώ συγουρευτείτε ότι εισάγατε σωστά την διεύθυνση"
-" σας και ελέγξτε τον φάκελο τον Spam σας. </p> "
+"δεν λάβατε το email, παρακαλώ συγουρευτείτε ότι εισάγατε σωστά την διεύθυνση "
+"σας και ελέγξτε τον φάκελο τον Spam σας. </p> "
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -4697,8 +3029,8 @@ msgstr "Παλιός κωδικός"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost"
-" your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost "
+"your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -4837,6 +3169,32 @@ msgstr "The width of the folder list container"
 msgid "Folders"
 msgstr "Φάκελοι"
 
+#: webmail/app_settings.py:182
+msgid "Trash folder"
+msgstr "Φάκελος Διαγραμμένων"
+
+#: webmail/app_settings.py:184
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Folder where deleted messages go"
+msgstr "Ο φάκελος που αποθηκεύονται τα διεγραμμένα μηνύματα"
+
+#: webmail/app_settings.py:191
+msgid "Sent folder"
+msgstr "Φάκελος Απεσταλμένων"
+
+#: webmail/app_settings.py:193
+msgid "Folder where copies of sent messages go"
+msgstr "Ο φάκελος που αποθηκεύονται τα απεσταλμένα μηνύματα"
+
+#: webmail/app_settings.py:200
+msgid "Drafts folder"
+msgstr "Φάκελος Πρόχειρων"
+
+#: webmail/app_settings.py:201
+msgid "Folder where drafts go"
+msgstr "Ο φάκελος που αποθηκεύονται τα πρόχειρα"
+
 #: webmail/app_settings.py:207
 #, fuzzy
 #| msgid "Sent folder"
@@ -4881,6 +3239,10 @@ msgstr "Προεπιλεγμένη υπογραφή χρήστη"
 msgid "Failed to remove attachment: "
 msgstr "Σφάλμα κατά την αφαίρεση του συνημμένου:"
 
+#: webmail/lib/imapemail.py:306
+msgid "Date"
+msgstr "Ημερομηνία"
+
 #: webmail/lib/imaputils.py:222
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr " Αποτυχία κατά την ανάκτηση της οροθετημένης ιεραρχίας "
@@ -4911,258 +3273,3 @@ msgstr "Σκουπιδοτενεκές"
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Το συνημμένο είναι πολύ μεγάλο (όριο: %s)"
-
-#, fuzzy
-#~ msgid "Authentication mechanism"
-#~ msgstr "Μηχανισμός πιστοποίησης"
-
-#, fuzzy
-#~ msgid "Directory non-writable"
-#~ msgstr "To domain δεν βρέθηκε."
-
-#~ msgid "Your username and password didn't match. Please try again."
-#~ msgstr "Λάθος όνομα χρήστη ή κωδικός. Παρακαλώ δοκιμάστε ξανά."
-
-#, fuzzy
-#~ msgid "Check to activate this filters set"
-#~ msgstr "Επιλέξτε για να ενεργοποιηθεί αυτό το σετ φίλτρων"
-
-#, fuzzy
-#~ msgid "Wrong filter name"
-#~ msgstr "Λάθος όνομα φίλτρου"
-
-#, fuzzy
-#~ msgid "Conditions"
-#~ msgstr "Συνθήκες"
-
-#, fuzzy
-#~ msgid "Active"
-#~ msgstr "Ενεργό"
-
-#, fuzzy
-#~ msgid "No filter defined yet"
-#~ msgstr "Δεν υπάρχει καθορισμένο φίλτρο"
-
-#~ msgid "Filter sets"
-#~ msgstr "Σετ φίλτρων"
-
-#~ msgid "active"
-#~ msgstr "ενεργό"
-
-#~ msgid ""
-#~ "No filters set defined yet. You must create one in order to define filters."
-#~ msgstr ""
-#~ "Δεν έχουν οριστεί ακόμη φίλτρα. Πρέπει να δημιουργήσετε τουλάχιστον ένα για "
-#~ "να καθοριστούν τα φίλτρα"
-
-#~ msgid "New filters set"
-#~ msgstr "Νέο σετ φίλτρων"
-
-#, fuzzy
-#~ msgid "New filter"
-#~ msgstr "Νέο φίλτρο"
-
-#, fuzzy
-#~ msgid "Save filters set"
-#~ msgstr "Αποθήκευση του σετ φίλτρων"
-
-#, fuzzy
-#~ msgid "Activate filters set"
-#~ msgstr "Ενεργοποίηση του σετ φίλτρων"
-
-#, fuzzy
-#~ msgid "Remove filters set"
-#~ msgstr "Αφαίρεση του σετ φίλτρων"
-
-#~ msgid "Download"
-#~ msgstr "Λήψη"
-
-#~ msgid "Edit filter"
-#~ msgstr "Επεξεργασία φίλτρου"
-
-#, fuzzy
-#~ msgid "Remove this filter"
-#~ msgstr "Αφαίρεση αυτού του φίλτρου"
-
-#~ msgid "Move this filter up"
-#~ msgstr "Μετακίνηση αυτού του φίλτρου πάνω"
-
-#, fuzzy
-#~ msgid "Move this filter down"
-#~ msgstr "Μετακίνηση αυτού του φίλτρου κάτω"
-
-#, fuzzy
-#~ msgid "Failed to retrieve filters set"
-#~ msgstr "Σφάλμα κατά την την λήψη του σετ φίλτρων"
-
-#, fuzzy
-#~ msgid "Filter created"
-#~ msgstr "Το φίλτρο δημιουργήθηκε"
-
-#, fuzzy
-#~ msgid "Filter modified"
-#~ msgstr "Το φίλτρο άλλαξε"
-
-#~ msgid "Filter removed"
-#~ msgstr "Το φίλτρο αφαιρέθηκε "
-
-#, fuzzy
-#~ msgid "Filters set saved"
-#~ msgstr "Το σετ φίλτρων αποθηκεύτηκε"
-
-#, fuzzy
-#~ msgid "Filters set created"
-#~ msgstr "Το σετ φίλτρων δημιουργήθηκε"
-
-#~ msgid "Create a new filters set"
-#~ msgstr "Δημιουργία νέου σετ φίλτρων"
-
-#, fuzzy
-#~ msgid "Filters set deleted"
-#~ msgstr "Το σετ φίλτρων διαγράφηκε"
-
-#~ msgid "Filters set activated"
-#~ msgstr "Το σετ φίλτρων ενεργοποιήθηκε"
-
-#, fuzzy
-#~ msgid "yes"
-#~ msgstr "ναι"
-
-#~ msgid "no"
-#~ msgstr "όχι"
-
-#, fuzzy
-#~ msgid "An alias with this name already exists."
-#~ msgstr "Υπάρχει είδη αυτό το ψευδώνυμο"
-
-#~ msgid "md5crypt (weak)"
-#~ msgstr "md5crypt (αδύναμο)"
-
-#~ msgid "sha256 (weak)"
-#~ msgstr "sha256 (αδύναμο)"
-
-#~ msgid "md5 (weak)"
-#~ msgstr "md5 (αδύναμο)"
-
-#~ msgid "crypt (weak)"
-#~ msgstr "crypt (αδύναμο)"
-
-#~ msgid "plain (weak)"
-#~ msgstr "plain (αδύναμο)"
-
-#~ msgid "A set of tools to ease DMARC integration"
-#~ msgstr "Ένα σετ εργαλείων για την απλοποίηση της ενσωμάτωσης του DMARC"
-
-#~ msgid "Generate PDF documents containing users' credentials"
-#~ msgstr "Δημιουργία PDF εγγράφων που να περιέχουν τα διαπιστευτήρια χρηστών"
-
-#, fuzzy
-#~ msgid "IMAP migrations"
-#~ msgstr "Μετάβαση IMAP"
-
-#~ msgid "IMAP migration using OfflineIMAP"
-#~ msgstr "Μετάβαση IMAP με χρήση του OfflineIMAP"
-
-#~ msgid "Migrate existing mailboxes using IMAP and OfflineIMAP"
-#~ msgstr ""
-#~ "Μετάβαση υπαρχόντων γραμματοκιβωτίων με χρήση IMAP και του OfflineIMAP"
-
-#~ msgid "Secret key"
-#~ msgstr "Μυστικό κλειδί"
-
-#~ msgid "Key used to encrypt/decrypt passwords"
-#~ msgstr ""
-#~ "Το κλειδί που χρησιμοποιείται για την κρυπτογράφηση/αποκρυπτογράφηση των "
-#~ "κωδικών"
-
-#~ msgid "Key must be either 16, 24, or 32 bytes long"
-#~ msgstr "Το κλειδί πρέπει να είναι μεγέθους 16, 24 ή 32 bytes"
-
-#~ msgid "Graphical statistics about emails traffic using RRDtool"
-#~ msgstr "Γραφικά στατιστικά της κίνησης email με RRDtool"
-
-#~ msgid "Postfix's master.cf path"
-#~ msgstr "Διαδρομή προς το αρχείο master.cf της Postfix"
-
-#~ msgid "Path to the master.cf configuration file"
-#~ msgstr "Διαδρομή προς το αρχείο ρυθμίσεων master.cf"
-
-#~ msgid "Relay domains"
-#~ msgstr "Relay domains"
-
-#~ msgid "The service name"
-#~ msgstr "Το όνομα της υπηρεσίας"
-
-#~ msgid "Remote address (hostname or IP) of this domain"
-#~ msgstr "Απομακρυσμένη διεύθυνση (hostname ή IP) από το domain"
-
-#~ msgid "Remote port of this domain"
-#~ msgstr "Απομακρυσμένα θύρα του domain"
-
-#~ msgid "Check for valid recipients"
-#~ msgstr "Έλεγχος για έγκυρους παραλήπτες"
-
-#~ msgid "Relay Domain"
-#~ msgstr "Relay Domain"
-
-#~ msgid "Scan"
-#~ msgstr "Σάρωση"
-
-#~ msgid "Mailboxes owner"
-#~ msgstr "Ο ιδιοκτήτης των γραμματοκιβωτίων"
-
-#~ msgid "The UNIX account who owns mailboxes on the filesystem"
-#~ msgstr ""
-#~ "Ο UNIX λογαριασμός που είναι ιδιοκτήτης των γραμματοκιβωτίων στο σύστημα "
-#~ "αρχείων"
-
-#, python-format
-#~ msgid "Domain '%s' does not exist"
-#~ msgstr "Το domain '%s' δεν υπάρχει"
-
-#, fuzzy
-#~ msgid "Raw format"
-#~ msgstr "Λάθος μορφοποίηση"
-
-#~ msgid "Admin"
-#~ msgstr "Διαχειριστής"
-
-#, fuzzy
-#~ msgid "No {type} record found for MX {mx}"
-#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#, fuzzy
-#~ msgid "No A record found for MX %(domain)s"
-#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#, fuzzy
-#~ msgid "No AAAA record found for MX %(domain)s"
-#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#~ msgid "Quota in MB shared between mailboxes. A value of 0 means no quota."
-#~ msgstr ""
-#~ "Κοινόχρηστο quota σε MB μεταξύ γραμματοκιβωτίων. Μια τιμή 0 σημαίνει ότι δεν"
-#~ " υπάρχει quota. "
-
-#, fuzzy
-#~ msgid "No DNS records found without MX for %s"
-#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#, fuzzy
-#~ msgid "No DNS records found without MX for %(domain)s"
-#~ msgstr "Δεν βρέθηκε εγράφη MX για αυτό το domain. "
-
-#~ msgid "Connection settings"
-#~ msgstr "Ρυθμίσεις σύνδεσης"
-
-#~ msgid "Cancel this account's migration"
-#~ msgstr "Ακύρωση της μετάβασης αυτού του λογαριασμού"
-
-#~ msgid "Cancel the migration for %s?"
-#~ msgstr "Ακύρωση της μετάβασης του %s;"
-
-#~ msgid "Unknow migration"
-#~ msgstr "Άγνωστη μετάβαση"
-
-#~ msgid "Migration cancelled successfully"
-#~ msgstr "Η μετάβαση ακυρώθηκε με επιτυχία"

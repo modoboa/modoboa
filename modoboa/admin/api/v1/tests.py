@@ -72,6 +72,24 @@ class DomainAPITestCase(ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def test_create_utf8(self):
+        """Test the creation of a domain with non-ASCII characters."""
+        url = reverse("v1:domain-list")
+        values = {
+            "name": "pouét.com",
+            "quota": 1000,
+            "default_mailbox_quota": 100,
+            "type": "domain",
+        }
+        response = self.client.post(url, values, format="json")
+        self.assertEqual(response.status_code, 201)
+        dom = models.Domain.objects.get(name="pouét.com")
+        self.assertEqual(dom.name, "pouét.com")
+        self.assertEqual(dom.quota, 1000)
+        self.assertEqual(dom.default_mailbox_quota, 100)
+        self.assertTrue(dom.enabled)
+        self.assertFalse(dom.admins)
+
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     @mock.patch("socket.getaddrinfo")
     def test_create_domain_with_mx_check(self, mock_getaddrinfo, mock_query):

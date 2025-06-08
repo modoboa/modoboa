@@ -13,7 +13,7 @@ from django.urls import reverse
 from django.utils import translation
 from django.utils.encoding import force_bytes
 from django.utils.html import escape
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 from django.views import generic
 from django.views.decorators.http import require_http_methods
@@ -33,7 +33,6 @@ from modoboa.parameters import tools as param_tools
 
 from .. import sms_backends
 from .. import signals
-from .base import find_nextlocation
 
 logger = logging.getLogger("modoboa.auth")
 
@@ -57,18 +56,20 @@ class LoginViewMixin:
             return None
 
     def login(self, user, rememberme):
-        encrypted_password = self.request.session.pop("password", None)
         login(self.request, user)
-        # FIXME: remove ASAP
-        if encrypted_password:
-            self.request.session["password"] = encrypted_password
         if not rememberme:
             self.request.session.set_expiry(0)
 
         translation.activate(user.language)
 
         self.logger.info(_("User '%s' successfully logged in") % user.username)
-        response = HttpResponseRedirect(find_nextlocation(self.request, user))
+        nextlocation = self.request.POST.get("next", self.request.GET.get("next"))
+        condition = nextlocation and url_has_allowed_host_and_scheme(
+            nextlocation, self.request.get_host()
+        )
+        if not condition:
+            nextlocation = "/"
+        response = HttpResponseRedirect(nextlocation)
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user.language)
         return response
 
@@ -121,12 +122,6 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
     def form_valid(self, form):
         user = form.get_user()
         self.check_password_hash(user, form)
-        # FIXME: remove ASAP
-        signals.user_login.send(
-            sender="LoginView",
-            user=user,
-            password=form.cleaned_data["password"],
-        )
         if user.tfa_enabled:
             self.request.session[constants.TFA_PRE_VERIFY_USER_PK] = user.pk
             self.request.session[constants.TFA_PRE_VERIFY_USER_BACKEND] = user.backend

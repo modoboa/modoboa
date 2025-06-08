@@ -51,11 +51,9 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
 
 def load_maillog_settings():
     """Load app settings."""
-    from modoboa.maillog import forms
     from modoboa.maillog.api.v2 import serializers
     from modoboa.parameters import tools as param_tools
 
-    param_tools.registry.add("global", forms.ParametersForm, gettext("Statistics"))
     param_tools.registry.add2(
         "global",
         "maillog",

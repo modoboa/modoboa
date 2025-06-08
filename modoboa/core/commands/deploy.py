@@ -234,10 +234,6 @@ class DeployCommand(Command):
             extra_settings = self.find_extra_settings(extensions)
             extensions = [extension[1] for extension in extensions]
 
-        bower_components_dir = os.path.realpath(
-            os.path.join(os.path.dirname(__file__), "../../bower_components")
-        )
-
         mod = __import__(parsed_args.name, globals(), locals(), [smart_str("settings")])
         tpl = self._render_template(
             f"{self._templates_dir}/settings.py.tpl",
@@ -248,7 +244,6 @@ class DeployCommand(Command):
                 "allowed_host": allowed_host,
                 "lang": parsed_args.lang,
                 "timezone": parsed_args.timezone,
-                "bower_components_dir": bower_components_dir,
                 "devmode": parsed_args.devel,
                 "extensions": extensions,
                 "extra_settings": extra_settings,

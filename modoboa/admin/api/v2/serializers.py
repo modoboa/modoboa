@@ -1,6 +1,7 @@
 """Admin API v2 serializers."""
 
 import ipaddress
+import os
 from typing import List
 
 from django.conf import settings
@@ -21,10 +22,12 @@ from modoboa.lib import email_utils
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import fields as lib_fields
 from modoboa.lib import validators, web_utils
+from modoboa.lib.permissions import get_object_owner
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
 from modoboa.limits import constants as limits_constants
 from modoboa.limits import models as limits_models
+from modoboa.limits.lib import allocate_resources_from_user
 from modoboa.transport import models as transport_models
 from modoboa.transport.api.v2 import serializers as transport_serializers
 
@@ -69,6 +72,15 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             many=True, source="domainobjectlimit_set", required=False
         )
 
+    def validate_enable_dkim(self, value):
+        """Check prerequisites."""
+        if not value:
+            return value
+        storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
+        if not storage_dir:
+            raise ValidationError(_("DKIM keys storage directory not configured"))
+        return value
+
     def validate(self, data):
         result = super().validate(data)
         dtype = data.get("type", "domain")
@@ -76,6 +88,21 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             raise serializers.ValidationError(
                 {"transport": _("This field is required")}
             )
+        elif dtype == "domain" and data.get("transport"):
+            raise serializers.ValidationError(
+                {"transport": _("This field is valid when type is relaydomain")}
+            )
+        user = self.context["request"].user
+        if user.role == "Resellers":
+            limit = user.userobjectlimit_set.get(name="quota")
+            if limit.max_value != 0:
+                quota = data["quota"]
+                msg = _("You can't define an unlimited quota.")
+                if quota == 0:
+                    raise serializers.ValidationError({"quota": msg})
+                default_mailbox_quota = data["default_mailbox_quota"]
+                if default_mailbox_quota == 0:
+                    raise serializers.ValidationError({"default_mailbox_quota": msg})
         return result
 
     def create(self, validated_data):
@@ -89,10 +116,14 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             transport.save()
             domain.transport = transport
             domain.save()
-
         if not domain_admin:
             return domain
 
+        # 0. Check user limit
+        user = self.context["request"].user
+        core_signals.can_create_object.send(
+            self.__class__, context=user, object_type="domain_admins"
+        )
         # 1. Create a domain administrator
         username = "{}@{}".format(domain_admin["username"], domain.name)
         try:
@@ -101,7 +132,6 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             pass
         else:
             raise lib_exceptions.Conflict(_("User '%s' already exists") % username)
-        user = self.context["request"].user
         core_signals.can_create_object.send(
             self.__class__, context=user, klass=models.Mailbox
         )
@@ -150,7 +180,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         """Update domain and create/update transport."""
         transport_def = validated_data.pop("transport", None)
         resources = validated_data.pop("domainobjectlimit_set", None)
-        super().update(instance, validated_data)
+        instance = super().update(instance, validated_data)
         if transport_def and instance.type == "relaydomain":
             transport = getattr(instance, "transport", None)
             created = False
@@ -185,7 +215,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
 
     # Domain settings
     enable_mx_checks = serializers.BooleanField(default=True)
-    valid_mxs = serializers.CharField(allow_blank=True)
+    valid_mxs = serializers.CharField(default="", allow_blank=True)
     domains_must_have_authorized_mx = serializers.BooleanField(default=False)
     enable_ipv6_mx_checks = serializers.BooleanField(default=True)
     enable_spf_checks = serializers.BooleanField(default=True)
@@ -233,6 +263,8 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     _("openssl not found, please make sure it is installed.")
                 )
+            if not os.path.exists(value):
+                raise serializers.ValidationError(_("Directory not found."))
         return value
 
     def validate_valid_mxs(self, value):
@@ -618,10 +650,13 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         instance.save()
         resources = validated_data.get("resources")
         if resources:
+            owner = get_object_owner(instance)
             for resource in resources:
-                instance.userobjectlimit_set.filter(name=resource["name"]).update(
-                    max_value=resource["max_value"]
-                )
+                limit = instance.userobjectlimit_set.get(name=resource["name"])
+                if not owner.is_superuser:
+                    allocate_resources_from_user(limit, owner, resource["max_value"])
+                limit.max_value = resource["max_value"]
+                limit.save()
         self.set_permissions(instance, domains)
         return instance
 

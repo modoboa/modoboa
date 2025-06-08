@@ -2,8 +2,7 @@
 
 from django.utils.translation import gettext as _
 
-import django_otp
-from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
+from django_otp.plugins.otp_static.models import StaticToken
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from rest_framework import permissions, response, viewsets
@@ -31,24 +30,6 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         instance, created = TOTPDevice.objects.get_or_create(
             user=request.user, defaults={"name": f"{request.user} TOTP device"}
         )
-        return response.Response()
-
-    @extend_schema(request=serializers.CheckTFASetupSerializer)
-    @action(methods=["post"], detail=False, url_path="tfa/setup/check")
-    def tfa_setup_check(self, request):
-        """Check TFA setup."""
-        serializer = serializers.CheckTFASetupSerializer(
-            data=request.data, context={"user": request.user}
-        )
-        serializer.is_valid(raise_exception=True)
-        # create static device for recovery purposes
-        device = StaticDevice.objects.create(
-            user=request.user, name=f"{request.user} static device"
-        )
-        for _cpt in range(10):
-            token = StaticToken.random_token()
-            device.token_set.create(token=token)
-        django_otp.login(self.request, request.user.totpdevice_set.first())
         return response.Response()
 
     @action(methods=["post"], detail=False, url_path="tfa/disable")

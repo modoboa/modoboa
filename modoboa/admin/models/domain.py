@@ -109,24 +109,6 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         return self.alarms.opened().count()
 
     @property
-    def tags(self):
-        label = ""
-        for dt in constants.DOMAIN_TYPES:
-            if self.type == dt[0]:
-                label = dt[1]
-        result = [{"name": self.type, "label": label, "type": "dom"}]
-        if self.transport:
-            result.append(
-                {
-                    "name": self.transport.service,
-                    "label": self.transport.service,
-                    "type": "srv",
-                    "color": "info",
-                }
-            )
-        return result
-
-    @property
     def admins(self):
         """Return the domain administrators of this domain.
 
@@ -194,16 +176,6 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             return "ok"
         return "critical"
 
-    @cached_property
-    def dnsbl_status_color(self):
-        """Shortcut to DNSBL results."""
-        if not self.dnsblresult_set.exists():
-            return "warning"
-        elif self.dnsblresult_set.blacklisted().exists():
-            return "danger"
-        else:
-            return "success"
-
     @property
     def spf_record(self):
         """Return SPF record."""
@@ -268,24 +240,6 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         """Return the key used to store messages count."""
         return self.name
 
-    @property
-    def bind_format_dkim_public_key(self):
-        """Return DKIM public key using Bind format."""
-        record = f"v=DKIM1;k=rsa;p={self.dkim_public_key}"
-        # TXT records longer than 255 characters need split into chunks
-        # split record into 74 character chunks (+2 for indent, +2 for quotes(")
-        # == 78 characters) to make more readable in text editors.
-        split_record = []
-        while record:
-            if len(record) > 74:
-                split_record.append(f'  "{record[:74]}"')
-                record = record[74:]
-            else:
-                split_record.append(f'  "{record}"')
-                break
-        record = "\n".join(split_record)
-        return f"{self.dkim_key_selector}._domainkey.{self.name}. IN TXT (\n{record})"
-
     def add_admin(self, account):
         """Add a new administrator to this domain.
 
@@ -293,6 +247,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         """
         from modoboa.lib.permissions import grant_access_to_object
 
+        # Check if domain's limit for domain admins is not reached yet
         core_signals.can_create_object.send(
             sender=self.__class__, context=self, object_type="domain_admins"
         )

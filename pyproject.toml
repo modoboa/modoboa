@@ -83,7 +83,6 @@ dependencies = [
 ]
 [project.optional-dependencies]
 dev = [
-	"django-bower",
 	"django-debug-toolbar",
 	"pre-commit",
 	"black",
