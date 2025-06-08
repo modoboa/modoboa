@@ -103,8 +103,8 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            response.content.decode(),
-            '"You\'re not allowed to define unlimited values"',
+            response.json()["error"],
+            "You're not allowed to define unlimited values",
         )
 
     def test_domain_aliases_limit(self):
