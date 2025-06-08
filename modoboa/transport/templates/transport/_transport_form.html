@@ -1,8 +1,0 @@
-{% load form_tags %}
-
-{% render_field form.service %}
-<div id="backend_settings">
-  {% for field in form.setting_fields %}
-    {% render_field field hidden=True %}
-  {% endfor %}
-</div>

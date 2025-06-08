@@ -48,38 +48,6 @@ def render_field(field, help_display_mode="tooltip", label_width="col-sm-4", **o
 
 
 @register.simple_tag
-def render_fields_group(form, pattern):
-    """Render a group of fields."""
-    first = forms.BoundField(form, form.fields[pattern], pattern)
-    configure_field_classes(first)
-    label = first.label
-    group = [first]
-    cpt = 1
-    haserror = len(first.errors) != 0
-    while True:
-        fname = f"{pattern}_{cpt}"
-        if fname not in form.fields:
-            break
-        bfield = forms.BoundField(form, form.fields[fname], fname)
-        if len(bfield.errors):
-            haserror = True
-        configure_field_classes(bfield)
-        group += [bfield]
-        cpt += 1
-
-    return render_to_string(
-        "common/generic_fields_group.html",
-        {
-            "label": label,
-            "help_text": first.help_text,
-            "group": group,
-            "haserror": haserror,
-            "pattern": pattern,
-        },
-    )
-
-
-@register.simple_tag
 def render_field_width(field):
     """."""
     form = field.form
