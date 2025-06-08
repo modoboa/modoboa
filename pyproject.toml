@@ -62,7 +62,7 @@ dependencies = [
 	"ovh",
 	"oath",
 	"redis>=4.2.0rc1",
-	"rrdtool>=0.1.10",
+	"rrdtool-bindings>=0.2.0",
 	"qrcode",
 	"aiosmtplib",
 	# PDF credentials
