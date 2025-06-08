@@ -176,16 +176,6 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             return "ok"
         return "critical"
 
-    @cached_property
-    def dnsbl_status_color(self):
-        """Shortcut to DNSBL results."""
-        if not self.dnsblresult_set.exists():
-            return "warning"
-        elif self.dnsblresult_set.blacklisted().exists():
-            return "danger"
-        else:
-            return "success"
-
     @property
     def spf_record(self):
         """Return SPF record."""

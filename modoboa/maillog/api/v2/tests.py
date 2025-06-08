@@ -45,6 +45,9 @@ class StatisticsViewSetTestCase(ModoAPITestCase):
         )
         self.assertEqual(resp.status_code, 200)
 
+        resp = self.client.get(url + "?gset=mailtraffic&period=day")
+        self.assertEqual(resp.status_code, 200)
+
         resp = self.client.get(
             url + "?gset=mailtraffic&period=day&searchquery=test2.com"
         )
