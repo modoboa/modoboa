@@ -93,7 +93,7 @@ class APIAdminLimitsTestCase(lib_tests.ModoAPITestCase):
         data["name"] = "test5.com"
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 403)
-        self.assertEqual(response.content.decode("utf-8"), '"Domains: limit reached"')
+        self.assertEqual(response.json()["error"], '"Domains: limit reached"')
 
         resp = self.client.delete(
             reverse("v1:domain-detail", args=[Domain.objects.get(name="test4.com").pk])
